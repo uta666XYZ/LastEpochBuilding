@@ -12,7 +12,7 @@ body:
     attributes:
       label: Check version
       options:
-        - label: I'm running the latest version of Last Epoch Planner and I've verified this by checking the [changelog](https://github.com/Musholic/LastEpochPlanner/blob/master/CHANGELOG.md)
+        - label: I'm running the latest version of Last Epoch Building and I've verified this by checking the [changelog](https://github.com/Musholic/LastEpochPlanner/blob/master/CHANGELOG.md)
           required: true
   - type: checkboxes
     id: duplicates
@@ -34,10 +34,10 @@ body:
   - type: textarea
     id: actual
     attributes:
-      label: What is the wording in Last Epoch Planner?
+      label: What is the wording in Last Epoch Building?
       description: Please write a clear and concise description of what actually happens.
       placeholder: |
-        E.g. When I look at the unique [...] in Last Epoch Planner it says [...].
+        E.g. When I look at the unique [...] in Last Epoch Building it says [...].
         [screenshot].
     validations:
       required: true

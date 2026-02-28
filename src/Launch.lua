@@ -1,12 +1,12 @@
 #@ SimpleGraphic
--- Last Epoch Planner
+-- Last Epoch Building
 --
 -- Module: Launch
 -- Program entry point; loads and runs the Main module within a protected environment
 --
 
 local startTime = GetTime()
-APP_NAME = "Last Epoch Planner"
+APP_NAME = "Last Epoch Building"
 
 SetWindowTitle(APP_NAME)
 ConExecute("set vid_mode 8")
@@ -264,7 +264,7 @@ function launch:DownloadPage(url, callback, params)
 			easy:setopt(curl.OPT_HTTPHEADER, header)
 		end
 		easy:setopt_url(url)
-		easy:setopt(curl.OPT_USERAGENT, "Last Epoch Planner/]]..self.versionNumber..[[")
+		easy:setopt(curl.OPT_USERAGENT, "Last Epoch Building/]]..self.versionNumber..[[")
 		easy:setopt(curl.OPT_ACCEPT_ENCODING, "")
 		if requestBody then
 			easy:setopt(curl.OPT_POST, true)

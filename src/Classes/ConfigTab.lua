@@ -1,4 +1,4 @@
--- Last Epoch Planner
+-- Last Epoch Building
 --
 -- Module: Config Tab
 -- Configuration tab for the current build.

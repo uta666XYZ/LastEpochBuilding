@@ -1,4 +1,4 @@
--- Last Epoch Planner
+-- Last Epoch Building
 --
 -- Module: Calcs
 -- Manages the calculation system.

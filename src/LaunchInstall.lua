@@ -1,5 +1,5 @@
 #@ SimpleGraphic
--- Last Epoch Planner
+-- Last Epoch Building
 --
 -- Module: Launch Install
 -- Installation bootstrap

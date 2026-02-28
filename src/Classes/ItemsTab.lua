@@ -1,4 +1,4 @@
--- Last Epoch Planner
+-- Last Epoch Building
 --
 -- Module: Items Tab
 -- Items tab for the current build.
@@ -236,7 +236,7 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 	self.controls.displayItemTip = new("LabelControl", {"TOPLEFT",self.controls.craftDisplayItem,"BOTTOMLEFT"}, 0, 8, 100, 16,
 [[^7Double-click an item from one of the lists to view or edit
 the item and add it to your build. You can
-also clone an item within Last Epoch Planner by
+also clone an item within Last Epoch Building by
 copying and pasting it with Ctrl+C and Ctrl+V.
 
 You can Control + Click an item to equip it, or

@@ -1,5 +1,5 @@
 #@
--- Last Epoch Planner
+-- Last Epoch Building
 --
 -- Module: Update Apply
 -- Applies updates.

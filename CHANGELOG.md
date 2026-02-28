@@ -1,5 +1,12 @@
 # Changelog
 
+## (2026/08/19)
+## What's Changed
+### Launch.lua
+- Changed APP_NAME = "Last Epoch Planner" to APP_NAME = "Last Epoch Building"
+
+
+
 ## [v0.9.1](https://github.com/PathOfBuildingCommunity/PathOfBuilding-PoE2/tree/v0.9.1) (2025/10/01)
 
 [Full Changelog](https://github.com/Musholic/LastEpochPlanner/compare/v0.9.0...v0.9.1)

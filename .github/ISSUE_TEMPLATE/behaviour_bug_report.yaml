@@ -12,7 +12,7 @@ body:
     attributes:
       label: Check version
       options:
-        - label: I'm running the latest version of Last Epoch Planner and I've verified this by checking the [changelog](https://github.com/Musholic/LastEpochPlanner/blob/master/CHANGELOG.md)
+        - label: I'm running the latest version of Last Epoch Building and I've verified this by checking the [changelog](https://github.com/Musholic/LastEpochPlanner/blob/master/CHANGELOG.md)
           required: true
   - type: checkboxes
     id: duplicates
@@ -39,9 +39,9 @@ body:
   - type: textarea
     id: actual
     attributes:
-      label: What is the behaviour in Last Epoch Planner?
+      label: What is the behaviour in Last Epoch Building?
       description: Please write a clear and concise description of what actually happens.
-      placeholder: E.g. In Last Epoch Planner something behaves incorrectly e.g. incorrect curse priority, auras not disabled by mod, skill not triggered correctly, etc.
+      placeholder: E.g. In Last Epoch Building something behaves incorrectly e.g. incorrect curse priority, auras not disabled by mod, skill not triggered correctly, etc.
     validations:
       required: true
   - type: textarea

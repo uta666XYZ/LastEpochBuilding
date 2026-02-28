@@ -1,4 +1,4 @@
--- Last Epoch Planner
+-- Last Epoch Building
 --
 -- Class: Item DB
 -- Item DB control.

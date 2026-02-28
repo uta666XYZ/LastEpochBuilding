@@ -1,4 +1,4 @@
-Skills in Last Epoch Planner are generated from what is called a template file.  These template files are used when exporting data from the ggpk and can be found [here](../src/Export/Skills).  While this tutorial will focus on the [combined data files](../src/Data/Skills) know that any changes will be overwritten unless added to the template files.  The script that combines these template files with the game data can be found [here](../src/Export/Scripts/skills.lua)
+Skills in Last Epoch Building are generated from what is called a template file.  These template files are used when exporting data from the ggpk and can be found [here](../src/Export/Skills).  While this tutorial will focus on the [combined data files](../src/Data/Skills) know that any changes will be overwritten unless added to the template files.  The script that combines these template files with the game data can be found [here](../src/Export/Scripts/skills.lua)
 
 ## Template files
 

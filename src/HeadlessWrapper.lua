@@ -176,7 +176,7 @@ build = mainObject.main.modes["BUILD"]
 
 -- Here's some helpful helper functions to help you get started
 function newBuild()
-	mainObject.main:SetMode("BUILD", false, "Help, I'm stuck in Last Epoch Planner!")
+	mainObject.main:SetMode("BUILD", false, "Help, I'm stuck in Last Epoch Building!")
 	runCallback("OnFrame")
 end
 function loadBuildFromXML(xmlText, name)

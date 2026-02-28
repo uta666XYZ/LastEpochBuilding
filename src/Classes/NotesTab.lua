@@ -1,4 +1,4 @@
--- Last Epoch Planner
+-- Last Epoch Building
 --
 -- Module: Notes Tab
 -- Notes tab for the current build.
