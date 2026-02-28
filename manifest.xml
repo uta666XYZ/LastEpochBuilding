@@ -128,7 +128,7 @@
 	<File name="d3dcompiler_47.dll" part="runtime" runtime="win32" sha1="27a4eff95e7f4a359718fda7138a528147969b27" />
 	<File name="fmt.dll" part="runtime" runtime="win32" sha1="e205006fcea5be4fb8143280fa1cc6ce95572be8" />
 	<File name="glfw3.dll" part="runtime" runtime="win32" sha1="ef78905dc9e79f709479ae3dd38d02a31cacb36f" />
-	<File name="Last Epoch Planner.exe" part="runtime" runtime="win32" sha1="8c67ee30e3ddb069ae29c9f97e36e8f6810e0a5a" />
+	<File name="Last Epoch Building.exe" part="runtime" runtime="win32" sha1="8c67ee30e3ddb069ae29c9f97e36e8f6810e0a5a" />
 	<File name="lcurl.dll" part="runtime" runtime="win32" sha1="6208fded95087b687ec16363a83fce2dc6a2ce34" />
 	<File name="libcurl.dll" part="runtime" runtime="win32" sha1="803c0e6e92c4c551b22e2f1b7a3d816383d0aba2" />
 	<File name="libEGL.dll" part="runtime" runtime="win32" sha1="530a3831883b89800344d84069a0ba48a9bdc460" />

@@ -1,5 +1,5 @@
 name: Application bug report
-description: Create a bug report to help us fix an issue in Last Epoch Planner
+description: Create a bug report to help us fix an issue in Last Epoch Building
 labels: [bug]
 body:
   - type: markdown
@@ -12,7 +12,7 @@ body:
     attributes:
       label: Check version
       options:
-        - label: I'm running the latest version of Last Epoch Planner and I've verified this by checking the [changelog](https://github.com/Musholic/LastEpochPlanner/blob/master/CHANGELOG.md)
+        - label: I'm running the latest version of Last Epoch Building and I've verified this by checking the [changelog](https://github.com/Musholic/LastEpochPlanner/blob/master/CHANGELOG.md)
           required: true
   - type: checkboxes
     id: duplicates
@@ -24,7 +24,7 @@ body:
   - type: textarea
     id: expected
     attributes:
-      label: How is Last Epoch Planner expected to behave?
+      label: How is Last Epoch Building expected to behave?
       description: Please write a clear and concise description of what should happen.
       placeholder: E.g. When I resize LEP all [...] should be accessible.
     validations:
@@ -32,7 +32,7 @@ body:
   - type: textarea
     id: actual
     attributes:
-      label: How does Last Epoch Planner behave?
+      label: How does Last Epoch Building behave?
       description: Please write a clear and concise description of what actually happens.
       placeholder: E.g. When I resize LEP some [...] become inaccessible. 
     validations:

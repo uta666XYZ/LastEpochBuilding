@@ -1,4 +1,4 @@
--- Last Epoch Planner
+-- Last Epoch Building
 --
 -- Class: Calc Breakdown Control
 -- Calculation breakdown control used in the Calcs tab

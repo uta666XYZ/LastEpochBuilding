@@ -1,4 +1,4 @@
--- Last Epoch Planner
+-- Last Epoch Building
 --
 -- Class: Item Slot
 -- Item Slot control, extends the basic dropdown control.

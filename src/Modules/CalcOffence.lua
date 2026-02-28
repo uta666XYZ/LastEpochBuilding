@@ -2028,68 +2028,89 @@ function calcs.offence(env, actor, activeSkill)
 			end
 		end
 
-		output.RuthlessBlowHitEffect = 1
-		output.RuthlessBlowAilmentEffect = 1
-		output.FistOfWarHitEffect = 1
-		output.FistOfWarAilmentEffect = 1
-		if env.mode_combat then
-			local ruthlessEffect = env.config.ruthlessSupportMode or "AVERAGE"
-			-- Calculate Ruthless Blow chance/multipliers + Fist of War multipliers
-			output.RuthlessBlowMaxCount = skillModList:Sum("BASE", cfg, "RuthlessBlowMaxCount")
-			if output.RuthlessBlowMaxCount > 0 and ( not skillCfg.skillCond["usedByMirage"] or (skillData.mirageUses or 0) > output.RuthlessBlowMaxCount ) then
-				if ruthlessEffect == "AVERAGE" then
-					output.RuthlessBlowChance = round(100 / output.RuthlessBlowMaxCount)
-				elseif ruthlessEffect == "MAX" then
-					output.RuthlessBlowChance = 100
-					skillData.dpsMultiplier = skillData.dpsMultiplier / (output.RuthlessBlowMaxCount or 1)
-				end
-			else
-				output.RuthlessBlowChance = 0
-			end
-			output.RuthlessBlowHitMultiplier = 1 + skillModList:Sum("BASE", cfg, "RuthlessBlowHitMultiplier") / 100
-			output.RuthlessBlowAilmentMultiplier = 1 + skillModList:Sum("BASE", cfg, "RuthlessBlowAilmentMultiplier") / 100
-			output.RuthlessBlowHitEffect = 1 - output.RuthlessBlowChance / 100 + output.RuthlessBlowChance / 100 * output.RuthlessBlowHitMultiplier
-			output.RuthlessBlowAilmentEffect = 1 - output.RuthlessBlowChance / 100 + output.RuthlessBlowChance / 100 * output.RuthlessBlowAilmentMultiplier
+-- Freeze Rate --
+local freezeRateBase = modDB:Sum("BASE", skillCfg, "FreezeRate")
+local freezeRateMult = modDB:Sum("BASE", skillCfg, "FreezeRateMultiplier")
 
-			globalOutput.FistOfWarCooldown = skillModList:Sum("BASE", cfg, "FistOfWarCooldown") or 0
+
+-- FreezeRateMultiplierは「+X%」という加算値なので、/100して割合に変換
+output.FreezeRate = freezeRateBase * (freezeRateMult / 100)
+
+**Freeze Chance計算式：**
+FreezeChance = (FreezeRate * FreezeRateMultiplier) / (MaxHealth + CurrentWard)
+
+
+-- Freeze Chance --
+-- Formula: FreezeChance = FreezeRate / (enemy MaxHealth + current Ward)
+-- FreezeRate already includes FreezeRateMultiplier in output.FreezeRate
+local enemyLife = enemyDB:Sum("BASE", nil, "Life") or 1000
+local enemyWard = enemyDB:Sum("BASE", nil, "Ward") or 0
+local enemyEHP  = m_max(enemyLife + enemyWard, 1)
+output.FreezeChance = m_min(output.FreezeRate / enemyEHP * 100, 100)
+
+
+		--output.RuthlessBlowHitEffect = 1
+		--output.RuthlessBlowAilmentEffect = 1
+		--output.FistOfWarHitEffect = 1
+		--output.FistOfWarAilmentEffect = 1
+		--if env.mode_combat then
+			--local ruthlessEffect = env.config.ruthlessSupportMode or "AVERAGE"
+			-- Calculate Ruthless Blow chance/multipliers + Fist of War multipliers
+			--output.RuthlessBlowMaxCount = skillModList:Sum("BASE", cfg, "RuthlessBlowMaxCount")
+			--if output.RuthlessBlowMaxCount > 0 and ( not skillCfg.skillCond["usedByMirage"] or (skillData.mirageUses or 0) > output.RuthlessBlowMaxCount ) then
+				--if ruthlessEffect == "AVERAGE" then
+					--output.RuthlessBlowChance = round(100 / output.RuthlessBlowMaxCount)
+				--elseif ruthlessEffect == "MAX" then
+				--	output.RuthlessBlowChance = 100
+				--	skillData.dpsMultiplier = skillData.dpsMultiplier / (output.RuthlessBlowMaxCount or 1)
+				--end
+			--else
+			--	output.RuthlessBlowChance = 0
+			--end
+			--output.RuthlessBlowHitMultiplier = 1 + skillModList:Sum("BASE", cfg, "RuthlessBlowHitMultiplier") / 100
+			--output.RuthlessBlowAilmentMultiplier = 1 + skillModList:Sum("BASE", cfg, "RuthlessBlowAilmentMultiplier") / 100
+			--output.RuthlessBlowHitEffect = 1 - output.RuthlessBlowChance / 100 + output.RuthlessBlowChance / 100 * output.RuthlessBlowHitMultiplier
+			--output.RuthlessBlowAilmentEffect = 1 - output.RuthlessBlowChance / 100 + output.RuthlessBlowChance / 100 * output.RuthlessBlowAilmentMultiplier
+
+			--globalOutput.FistOfWarCooldown = skillModList:Sum("BASE", cfg, "FistOfWarCooldown") or 0
 			-- If Fist of War & Active Skill is a Slam Skill & NOT a Vaal Skill & NOT used by mirage or other
-			if globalOutput.FistOfWarCooldown ~= 0 and activeSkill.skillTypes[SkillType.Slam] and not activeSkill.skillTypes[SkillType.Vaal] and not activeSkill.skillTypes[SkillType.OtherThingUsesSkill] then
-				globalOutput.FistOfWarHitMultiplier = skillModList:Sum("BASE", nil, "FistOfWarHitMultiplier") / 100
-				globalOutput.FistOfWarAilmentMultiplier = skillModList:Sum("BASE", nil, "FistOfWarAilmentMultiplier") / 100
-				globalOutput.FistOfWarUptimeRatio = m_min( (1 / output.Speed) / globalOutput.FistOfWarCooldown, 1) * 100
-				if globalBreakdown then
-					globalBreakdown.FistOfWarUptimeRatio = {
-						s_format("min( (1 / %.2f) ^8(second per attack)", output.Speed),
-						s_format("/ %.2f, 1) ^8(fist of war cooldown)", globalOutput.FistOfWarCooldown),
-						s_format("= %d%%", globalOutput.FistOfWarUptimeRatio),
-					}
-				end
-				globalOutput.AvgFistOfWarHit = globalOutput.FistOfWarHitMultiplier
-				globalOutput.AvgFistOfWarHitEffect = 1 + globalOutput.FistOfWarHitMultiplier * (globalOutput.FistOfWarUptimeRatio / 100)
-				if globalBreakdown then
-					globalBreakdown.AvgFistOfWarHitEffect = {
-						s_format("1 + (%.2f ^8(fist of war hit multiplier)", globalOutput.FistOfWarHitMultiplier),
-						s_format("x %.2f) ^8(fist of war uptime ratio)", globalOutput.FistOfWarUptimeRatio / 100),
-						s_format("= %.2f", globalOutput.AvgFistOfWarHitEffect),
-					}
-				end
-				globalOutput.AvgFistOfWarAilmentEffect = 1 + globalOutput.FistOfWarAilmentMultiplier * (globalOutput.FistOfWarUptimeRatio / 100)
-				globalOutput.MaxFistOfWarHitEffect = 1 + globalOutput.FistOfWarHitMultiplier
-				globalOutput.MaxFistOfWarAilmentEffect = 1 + globalOutput.FistOfWarAilmentMultiplier
-				if activeSkill.skillModList:Flag(nil, "Condition:WarcryMaxHit") then
-					output.FistOfWarHitEffect = globalOutput.MaxFistOfWarHitEffect
-					output.FistOfWarAilmentEffect = globalOutput.MaxFistOfWarAilmentEffect
-				else
-					output.FistOfWarHitEffect = globalOutput.AvgFistOfWarHitEffect
-					output.FistOfWarAilmentEffect = globalOutput.AvgFistOfWarAilmentEffect
-				end
-				globalOutput.TheoreticalOffensiveWarcryEffect = globalOutput.TheoreticalOffensiveWarcryEffect * globalOutput.AvgFistOfWarHitEffect
-				globalOutput.TheoreticalMaxOffensiveWarcryEffect = globalOutput.TheoreticalMaxOffensiveWarcryEffect * globalOutput.MaxFistOfWarHitEffect
-			else
-				output.FistOfWarHitEffect = 1
-				output.FistOfWarAilmentEffect = 1
-			end
-		end
+			--if globalOutput.FistOfWarCooldown ~= 0 and activeSkill.skillTypes[SkillType.Slam] and not activeSkill.skillTypes[SkillType.Vaal] and not activeSkill.skillTypes[SkillType.OtherThingUsesSkill] then
+			--	globalOutput.FistOfWarHitMultiplier = skillModList:Sum("BASE", nil, "FistOfWarHitMultiplier") / 100
+			--	globalOutput.FistOfWarAilmentMultiplier = skillModList:Sum("BASE", nil, "FistOfWarAilmentMultiplier") / 100
+			--	globalOutput.FistOfWarUptimeRatio = m_min( (1 / output.Speed) / globalOutput.FistOfWarCooldown, 1) * 100
+			--	if globalBreakdown then
+			--		globalBreakdown.FistOfWarUptimeRatio = {
+			--			s_format("min( (1 / %.2f) ^8(second per attack)", output.Speed),
+			--			s_format("/ %.2f, 1) ^8(fist of war cooldown)", globalOutput.FistOfWarCooldown),
+			--			s_format("= %d%%", globalOutput.FistOfWarUptimeRatio),
+			--		}
+			--	end
+			--	globalOutput.AvgFistOfWarHit = globalOutput.FistOfWarHitMultiplier
+			--	globalOutput.AvgFistOfWarHitEffect = 1 + globalOutput.FistOfWarHitMultiplier * (globalOutput.FistOfWarUptimeRatio / 100)
+			--	if globalBreakdown then
+			--		globalBreakdown.AvgFistOfWarHitEffect = {
+			--			s_format("1 + (%.2f ^8(fist of war hit multiplier)", globalOutput.FistOfWarHitMultiplier),
+			--			s_format("x %.2f) ^8(fist of war uptime ratio)", globalOutput.FistOfWarUptimeRatio / 100),
+			--			s_format("= %.2f", globalOutput.AvgFistOfWarHitEffect),
+			--		}
+			--	end
+			--	globalOutput.AvgFistOfWarAilmentEffect = 1 + globalOutput.FistOfWarAilmentMultiplier * (globalOutput.FistOfWarUptimeRatio / 100)
+			--	globalOutput.MaxFistOfWarHitEffect = 1 + globalOutput.FistOfWarHitMultiplier
+			--	globalOutput.MaxFistOfWarAilmentEffect = 1 + globalOutput.FistOfWarAilmentMultiplier
+			--	if activeSkill.skillModList:Flag(nil, "Condition:WarcryMaxHit") then
+			--		output.FistOfWarHitEffect = globalOutput.MaxFistOfWarHitEffect
+			--		output.FistOfWarAilmentEffect = globalOutput.MaxFistOfWarAilmentEffect
+			--	else
+			--		output.FistOfWarHitEffect = globalOutput.AvgFistOfWarHitEffect
+			--		output.FistOfWarAilmentEffect = globalOutput.AvgFistOfWarAilmentEffect
+			--	end
+			--	globalOutput.TheoreticalOffensiveWarcryEffect = globalOutput.TheoreticalOffensiveWarcryEffect * globalOutput.AvgFistOfWarHitEffect
+			--	globalOutput.TheoreticalMaxOffensiveWarcryEffect = globalOutput.TheoreticalMaxOffensiveWarcryEffect * globalOutput.MaxFistOfWarHitEffect
+			--else
+			--	output.FistOfWarHitEffect = 1
+			--	output.FistOfWarAilmentEffect = 1
+			--end
+		--end
 
 		-- Calculate maximum sustainable fuses and explosion rate for Explosive Arrow
 		-- Does not take into account mines or traps

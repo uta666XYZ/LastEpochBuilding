@@ -113,6 +113,7 @@ local modNameList = {
 	["cooldown recovery speed"] = "CooldownRecovery",
 	["melee range"] = "MeleeWeaponRange",
 	["to deal double damage"] = "DoubleDamageChance",
+	["freeze rate multiplier"] = "FreezeRateMultiplier",
 	-- Basic damage types
 	["damage"] = "Damage",
 	["elemental damage"] = {"FireDamage", "ColdDamage", "LightningDamage"},

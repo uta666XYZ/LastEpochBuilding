@@ -49,12 +49,12 @@ Steps:
 6. Open `./src/GameVersions.lua` and update `treeVersionList` and `treeVersions`
    according to the file's format. This is important, otherwise the JSON data converter
    won't trigger.
-7. Restart Last Epoch Planner. This should result in a new file `tree.lua`.
+7. Restart Last Epoch Building. This should result in a new file `tree.lua`.
 8. Remove `data.json` from the new directory. Do not commit this file.
 
 ## Installer creation
 
-Last Epoch Planner offers both installable and standalone releases. They're
+Last Epoch Building offers both installable and standalone releases. They're
 built with automation scripts found in the repository described below.
 
 Prerequisites:

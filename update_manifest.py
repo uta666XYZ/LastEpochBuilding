@@ -51,7 +51,7 @@ def _alphanumeric(key: str) -> list[int | str]:
 
 
 def create_manifest(version: str | None = None, replace: bool = False) -> None:
-    """Generate new SHA1 hashes and version number for Last Epoch Planner's manifest file.
+    """Generate new SHA1 hashes and version number for Last Epoch Building's manifest file.
 
     :param version: Three-part version number following https://semver.org/.
     :param replace: Whether to overwrite the existing manifest file.
@@ -134,12 +134,12 @@ def create_manifest(version: str | None = None, replace: bool = False) -> None:
 
 
 def cli() -> None:
-    """CLI for conveniently updating Last Epoch Planner's manifest file."""
+    """CLI for conveniently updating Last Epoch Building's manifest file."""
     import argparse
 
     parser = argparse.ArgumentParser(
         usage="%(prog)s [options]",
-        description="Update Last Epoch Planner's manifest file for a new release.",
+        description="Update Last Epoch Building's manifest file for a new release.",
         allow_abbrev=False,
     )
     parser.add_argument("--version", action="version", version="2.0.0")

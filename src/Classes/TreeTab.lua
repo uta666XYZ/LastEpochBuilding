@@ -1,4 +1,4 @@
--- Last Epoch Planner
+-- Last Epoch Building
 --
 -- Module: Tree Tab
 -- Passive skill tree tab for the current build.

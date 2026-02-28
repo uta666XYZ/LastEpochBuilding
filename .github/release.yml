@@ -9,7 +9,7 @@ changelog:
     authors:
       - github-actions
   categories:
-    - title: New to Last Epoch Planner
+    - title: New to Last Epoch Building
       labels:
         - enhancement
     - title: Fixed Crashes
