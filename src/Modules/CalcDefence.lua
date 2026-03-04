@@ -560,8 +560,6 @@ function calcs.defence(env, actor)
 		breakdown.LightRadiusMod = breakdown.mod(modDB, nil, "LightRadius")
 	end
 	output.CurseEffectOnSelf = modDB:More(nil, "CurseEffectOnSelf") * (100 + modDB:Sum("INC", nil, "CurseEffectOnSelf"))
-	output.ExposureEffectOnSelf = modDB:More(nil, "ExposureEffectOnSelf") * (100 + modDB:Sum("INC", nil, "ExposureEffectOnSelf"))
-	output.WitherEffectOnSelf = modDB:More(nil, "WitherEffectOnSelf") * (100 + modDB:Sum("INC", nil, "WitherEffectOnSelf"))
 
 	-- Ailment duration on self
 	output.DebuffExpirationRate = modDB:Sum("BASE", nil, "SelfDebuffExpirationRate")
@@ -1020,17 +1018,10 @@ function calcs.buildDefenceEstimations(env, actor)
 	do
 		local stunThresholdBase = 0
 		local stunThresholdSource = nil
-		if modDB:Flag(nil, "StunThresholdBasedOnEnergyShieldInsteadOfLife") then
-			local stunThresholdMult = modDB:Sum("BASE", nil, "StunThresholdEnergyShieldPercent")
-			stunThresholdBase = output.EnergyShield * stunThresholdMult / 100
-			stunThresholdSource = stunThresholdMult.."% of Energy Shield"
-		elseif modDB:Flag(nil, "StunThresholdBasedOnManaInsteadOfLife") then
+		if modDB:Flag(nil, "StunThresholdBasedOnManaInsteadOfLife") then
 			local stunThresholdMult = modDB:Sum("BASE", nil, "StunThresholdManaPercent")
 			stunThresholdBase = output.Mana * stunThresholdMult / 100
 			stunThresholdSource = stunThresholdMult.."% of Mana"
-		elseif modDB:Flag(nil, "ChaosInoculation") then
-			stunThresholdBase = modDB:Sum("BASE", nil, "Life")
-			stunThresholdSource = "Life before Chaos Inoculation"
 		else
 			stunThresholdBase = output.Life
 			stunThresholdSource = "Life"
@@ -1218,36 +1209,14 @@ function calcs.buildDefenceEstimations(env, actor)
 			output["TotalTotemLife"] = modDB:Sum("BASE", nil, "TotalTotemLife")
 		end
 		
-		-- from VaalRejuveTotem
-		output["VaalRejuvenationTotemAllyDamageMitigation"] = modDB:Sum("BASE", nil, "takenFromVaalRejuvenationTotemsBeforeYou") + output["TotemAllyDamageMitigation"]
-		if output["VaalRejuvenationTotemAllyDamageMitigation"] ~= output["TotemAllyDamageMitigation"] then
-			output["TotalVaalRejuvenationTotemLife"] = modDB:Sum("BASE", nil, "TotalVaalRejuvenationTotemLife")
-		end
-		
-		-- from Sentinel of Radiance
+				-- from Sentinel of Radiance
 		output["RadianceSentinelAllyDamageMitigation"] = modDB:Sum("BASE", nil, "takenFromRadianceSentinelBeforeYou")
 		if output["RadianceSentinelAllyDamageMitigation"] ~= 0 then
 			output["TotalRadianceSentinelLife"] = modDB:Sum("BASE", nil, "TotalRadianceSentinelLife")
 		end
 		
-		-- from Allied Energy Shield
-		output["SoulLinkMitigation"] = modDB:Sum("BASE", nil, "TakenFromParentESBeforeYou")
-		if output["SoulLinkMitigation"] ~= 0 then
-			output["AlliedEnergyShield"] = actor.parent.output.EnergyShieldRecoveryCap or 0
-		else
-			output["SoulLinkMitigation"] = modDB:Sum("BASE", nil, "TakenFromPartyMemberESBeforeYou")
-			if output["SoulLinkMitigation"] ~= 0 then
-				output["AlliedEnergyShield"] = actor.partyMembers.output.EnergyShieldRecoveryCap or 0
 			end
-		end
-	end
 	
-	-- Vaal Arctic Armour
-	do
-		output["VaalArcticArmourLife"] = modDB:Sum("BASE", nil, "VaalArcticArmourMaxHits")
-		output["VaalArcticArmourMitigation"] = m_min(-modDB:Sum("MORE", nil, "VaalArcticArmourMitigation") / 100, 1)
-	end
-
 	--total pool
 	for _, damageType in ipairs(dmgTypeList) do
 		output[damageType.."TotalPool"] = output.LifeRecoverable
@@ -1302,16 +1271,9 @@ function calcs.buildDefenceEstimations(env, actor)
 		if output.TotalTotemLife then
 			alliesTakenBeforeYou["totems"] = { remaining = output.TotalTotemLife, percent = output.TotemAllyDamageMitigation / 100 }
 		end
-		if output.TotalVaalRejuvenationTotemLife then
-			alliesTakenBeforeYou["vaalRejuvenationTotems"] = { remaining = output.TotalVaalRejuvenationTotemLife, percent = output.VaalRejuvenationTotemAllyDamageMitigation / 100 }
-		end
 		if output.TotalRadianceSentinelLife then
 			alliesTakenBeforeYou["radianceSentinel"] = { remaining = output.TotalRadianceSentinelLife, percent = output.RadianceSentinelAllyDamageMitigation / 100 }
 		end
-		if output.AlliedEnergyShield then
-			alliesTakenBeforeYou["soulLink"] = { remaining = output.AlliedEnergyShield, percent = output.SoulLinkMitigation / 100 }
-		end
-		
 		local poolTable = {
 			AlliesTakenBeforeYou = alliesTakenBeforeYou,
 			Aegis = aegis,
@@ -1333,11 +1295,6 @@ function calcs.buildDefenceEstimations(env, actor)
 		end
 		DamageIn["WardBypass"] = DamageIn["WardBypass"] or modDB:Sum("BASE", nil, "WardBypass") or 0
 		
-		local VaalArcticArmourHitsLeft = output.VaalArcticArmourLife
-		if DamageIn["cycles"] > 1 then
-			VaalArcticArmourHitsLeft = 0
-		end
-
 		local iterationMultiplier = 1
 		local damageTotal = 0
 		local maxDamage = data.misc.ehpCalcMaxDamage
@@ -1346,17 +1303,14 @@ function calcs.buildDefenceEstimations(env, actor)
 			DamageIn["iterations"] = DamageIn["iterations"] + 1
 			local Damage = { }
 			damageTotal = 0
-			local VaalArcticArmourMultiplier = VaalArcticArmourHitsLeft > 0 and (( 1 - output["VaalArcticArmourMitigation"] * m_min(VaalArcticArmourHitsLeft / iterationMultiplier, 1))) or 1
-			VaalArcticArmourHitsLeft = VaalArcticArmourHitsLeft - iterationMultiplier
 			for _, damageType in ipairs(dmgTypeList) do
-				Damage[damageType] = DamageIn[damageType] * iterationMultiplier * VaalArcticArmourMultiplier
+				Damage[damageType] = DamageIn[damageType] * iterationMultiplier
 				damageTotal = damageTotal + Damage[damageType]
 			end
 			if DamageIn.GainWhenHit and (iterationMultiplier > 1 or DamageIn["cycles"] > 1) then
 				local gainMult = iterationMultiplier * DamageIn["cycles"]
 				poolTable.Life = m_min(poolTable.Life + DamageIn.LifeWhenHit * (gainMult - 1), gainMult * (output.LifeRecoverable or 0))
 				poolTable.Mana = m_min(poolTable.Mana + DamageIn.ManaWhenHit * (gainMult - 1), gainMult * (output.Mana or 0))
-				poolTable.EnergyShield = m_min(poolTable.EnergyShield + DamageIn.EnergyShieldWhenHit * (gainMult - 1), gainMult * output.EnergyShieldRecoveryCap)
 			end
 			poolTable = calcs.reducePoolsByDamage(poolTable, Damage, actor)
 			
@@ -1367,7 +1321,6 @@ function calcs.buildDefenceEstimations(env, actor)
 			if DamageIn.GainWhenHit and poolTable.Life > 0 then
 				poolTable.Life = m_min(poolTable.Life + DamageIn.LifeWhenHit, output.LifeRecoverable or 0)
 				poolTable.Mana = m_min(poolTable.Mana + DamageIn.ManaWhenHit, output.Mana or 0)
-				poolTable.EnergyShield = m_min(poolTable.EnergyShield + DamageIn.EnergyShieldWhenHit, output.EnergyShieldRecoveryCap)
 			end
 			iterationMultiplier = 1
 			-- to speed it up, run recursively but accelerated
@@ -1382,8 +1335,7 @@ function calcs.buildDefenceEstimations(env, actor)
 					Damage.GainWhenHit = true
 					Damage.LifeWhenHit = DamageIn.LifeWhenHit
 					Damage.ManaWhenHit = DamageIn.ManaWhenHit
-					Damage.EnergyShieldWhenHit = DamageIn.EnergyShieldWhenHit
-				end
+					end
 				Damage["cycles"] = DamageIn["cycles"] * speedUp
 				Damage["iterations"] = DamageIn["iterations"]
 				iterationMultiplier = m_max((numberOfHitsToDie(Damage) - 1) * speedUp - 1, 1)
@@ -1700,10 +1652,8 @@ function calcs.buildDefenceEstimations(env, actor)
 	else
 		output.NetLifeRegen = output.LifeRegenRecovery
 		output.NetManaRegen = output.ManaRegenRecovery
-		output.NetEnergyShieldRegen = output.EnergyShieldRegenRecovery
 		local totalLifeDegen = 0
 		local totalManaDegen = 0
-		local totalEnergyShieldDegen = 0
 		if breakdown then
 			breakdown.NetLifeRegen = { 
 					label = "Total Life Degen",
@@ -1721,37 +1671,16 @@ function calcs.buildDefenceEstimations(env, actor)
 						{ label = "Degen", key = "degen" },
 					},
 				}
-			breakdown.NetEnergyShieldRegen = { 
-					label = "Total Energy Shield Degen",
-					rowList = { },
-					colList = {
-						{ label = "Type", key = "type" },
-						{ label = "Degen", key = "degen" },
-					},
-				}
-		end
+					end
 		for _, damageType in ipairs(dmgTypeList) do
 			if output[damageType.."Degen"] then 
-				local energyShieldDegen = 0
 				local lifeDegen = 0
 				local manaDegen = 0
 				local takenFromMana = output[damageType.."MindOverMatter"] + output["sharedMindOverMatter"]
-				if output.EnergyShieldRegenRecovery > 0 then 
-					if modDB:Flag(nil, "EnergyShieldProtectsMana") then
-						lifeDegen = output[damageType.."Degen"] * (1 - takenFromMana / 100)
-						energyShieldDegen = output[damageType.."Degen"] * (1 - output[damageType.."EnergyShieldBypass"] / 100) * (takenFromMana / 100)
-					else
-						lifeDegen = output[damageType.."Degen"] * (output[damageType.."EnergyShieldBypass"] / 100) * (1 - takenFromMana / 100)
-						energyShieldDegen = output[damageType.."Degen"] * (1 - output[damageType.."EnergyShieldBypass"] / 100)
-					end
-					manaDegen = output[damageType.."Degen"] * (output[damageType.."EnergyShieldBypass"] / 100) * (takenFromMana / 100)
-				else
-					lifeDegen = output[damageType.."Degen"] * (1 - takenFromMana / 100)
-					manaDegen = output[damageType.."Degen"] * (takenFromMana / 100)
-				end
+				lifeDegen = output[damageType.."Degen"] * (1 - takenFromMana / 100)
+				manaDegen = output[damageType.."Degen"] * (takenFromMana / 100)
 				totalLifeDegen = totalLifeDegen + lifeDegen
 				totalManaDegen = totalManaDegen + manaDegen
-				totalEnergyShieldDegen = totalEnergyShieldDegen + energyShieldDegen
 				if breakdown then
 					t_insert(breakdown.NetLifeRegen.rowList, {
 						type = s_format("%s", damageType),
@@ -1761,17 +1690,12 @@ function calcs.buildDefenceEstimations(env, actor)
 						type = s_format("%s", damageType),
 						degen = s_format("%.2f", manaDegen),
 					})
-					t_insert(breakdown.NetEnergyShieldRegen.rowList, {
-						type = s_format("%s", damageType),
-						degen = s_format("%.2f", energyShieldDegen),
-					})
 				end
 			end
 		end
 		output.NetLifeRegen = output.NetLifeRegen - totalLifeDegen
 		output.NetManaRegen = output.NetManaRegen - totalManaDegen
-		output.NetEnergyShieldRegen = output.NetEnergyShieldRegen - totalEnergyShieldDegen
-		output.TotalNetRegen = output.NetLifeRegen + output.NetManaRegen + output.NetEnergyShieldRegen
+		output.TotalNetRegen = output.NetLifeRegen + output.NetManaRegen
 		if breakdown then
 			t_insert(breakdown.NetLifeRegen, s_format("%.1f ^8(total life regen)", output.LifeRegenRecovery))
 			t_insert(breakdown.NetLifeRegen, s_format("- %.1f ^8(total life degen)", totalLifeDegen))
@@ -1779,13 +1703,9 @@ function calcs.buildDefenceEstimations(env, actor)
 			t_insert(breakdown.NetManaRegen, s_format("%.1f ^8(total mana regen)", output.ManaRegenRecovery))
 			t_insert(breakdown.NetManaRegen, s_format("- %.1f ^8(total mana degen)", totalManaDegen))
 			t_insert(breakdown.NetManaRegen, s_format("= %.1f", output.NetManaRegen))
-			t_insert(breakdown.NetEnergyShieldRegen, s_format("%.1f ^8(total energy shield regen)", output.EnergyShieldRegenRecovery))
-			t_insert(breakdown.NetEnergyShieldRegen, s_format("- %.1f ^8(total energy shield degen)", totalEnergyShieldDegen))
-			t_insert(breakdown.NetEnergyShieldRegen, s_format("= %.1f", output.NetEnergyShieldRegen))
 			breakdown.TotalNetRegen = {
 				s_format("Net Life Regen: %.1f", output.NetLifeRegen),
 				s_format("+ Net Mana Regen: %.1f", output.NetManaRegen),
-				s_format("+ Net Energy Shield Regen: %.1f", output.NetEnergyShieldRegen),
 				s_format("= Total Net Regen: %.1f", output.TotalNetRegen)
 			}
 		end
@@ -1834,18 +1754,9 @@ function calcs.buildDefenceEstimations(env, actor)
 			local poolProtected = output["TotalTotemLife"] / (output["TotemAllyDamageMitigation"] / 100) * (1 - output["TotemAllyDamageMitigation"] / 100)
 			output[damageType.."TotalHitPool"] = m_max(output[damageType.."TotalHitPool"] - poolProtected, 0) + m_min(output[damageType.."TotalHitPool"], poolProtected) / (1 - output["TotemAllyDamageMitigation"] / 100)
 		end
-		if output["TotalVaalRejuvenationTotemLife"] and output["TotalVaalRejuvenationTotemLife"] > 0 then
-			local poolProtected = output["TotalVaalRejuvenationTotemLife"] / (output["VaalRejuvenationTotemAllyDamageMitigation"] / 100) * (1 - output["VaalRejuvenationTotemAllyDamageMitigation"] / 100)
-			output[damageType.."TotalHitPool"] = m_max(output[damageType.."TotalHitPool"] - poolProtected, 0) + m_min(output[damageType.."TotalHitPool"], poolProtected) / (1 - output["VaalRejuvenationTotemAllyDamageMitigation"] / 100)
-		end
 		if output["TotalRadianceSentinelLife"] and output["TotalRadianceSentinelLife"] > 0 then
 			local poolProtected = output["TotalRadianceSentinelLife"] / (output["RadianceSentinelAllyDamageMitigation"] / 100) * (1 - output["RadianceSentinelAllyDamageMitigation"] / 100)
 			output[damageType.."TotalHitPool"] = m_max(output[damageType.."TotalHitPool"] - poolProtected, 0) + m_min(output[damageType.."TotalHitPool"], poolProtected) / (1 - output["RadianceSentinelAllyDamageMitigation"] / 100)
-		end
-		-- soul link
-		if output["AlliedEnergyShield"] and output["AlliedEnergyShield"] > 0 then
-			local poolProtected = output["AlliedEnergyShield"] / (output["SoulLinkMitigation"] / 100) * (1 - output["SoulLinkMitigation"] / 100)
-			output[damageType.."TotalHitPool"] = m_max(output[damageType.."TotalHitPool"] - poolProtected, 0) + m_min(output[damageType.."TotalHitPool"], poolProtected) / (1 - output["SoulLinkMitigation"] / 100)
 		end
 	end
 
@@ -1860,7 +1771,7 @@ function calcs.buildDefenceEstimations(env, actor)
 				local hitTaken = 0
 				local damageConvertedMulti = convertPercent / 100
 				local totalHitPool = output[damageConvertedType.."TotalHitPool"]
-				local totalTakenMulti = output[damageConvertedType.."AfterReductionTakenHitMulti"] * (1 - output["VaalArcticArmourMitigation"])
+				local totalTakenMulti = output[damageConvertedType.."AfterReductionTakenHitMulti"]
 
 				local drMulti = output[damageConvertedType.."ResistTakenHitMulti"] * (1 - output[damageConvertedType.."DamageReduction"] / 100)
 				hitTaken = m_max(totalHitPool / damageConvertedMulti / drMulti - takenFlat, 0) / totalTakenMulti

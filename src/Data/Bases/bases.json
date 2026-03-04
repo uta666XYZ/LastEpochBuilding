@@ -8309,7 +8309,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(30-50)% Increased Grand Idol Drop Rate"
-    ]
+    ],
+    "timeline": "Fall of the Outcasts"
   },
   "Grand Pride of Rebellion": {
     "type": "Blessing",
@@ -8321,7 +8322,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(51-100)% Increased Grand Idol Drop Rate"
-    ]
+    ],
+    "timeline": "Fall of the Outcasts"
   },
   "Sight of the Outcasts": {
     "type": "Blessing",
@@ -8333,7 +8335,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(30-50)% Increased Large Idol Drop Rate"
-    ]
+    ],
+    "timeline": "Fall of the Outcasts"
   },
   "Grand Sight of the Outcasts": {
     "type": "Blessing",
@@ -8345,7 +8348,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(51-100)% Increased Large Idol Drop Rate"
-    ]
+    ],
+    "timeline": "Fall of the Outcasts"
   },
   "Curse of Flesh": {
     "type": "Blessing",
@@ -8357,7 +8361,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(30-50)% Increased Huge Idol Drop Rate"
-    ]
+    ],
+    "timeline": "Fall of the Outcasts"
   },
   "Grand Curse of Flesh": {
     "type": "Blessing",
@@ -8369,7 +8374,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(51-100)% Increased Huge Idol Drop Rate"
-    ]
+    ],
+    "timeline": "Fall of the Outcasts"
   },
   "Favor of Souls": {
     "type": "Blessing",
@@ -8381,7 +8387,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(30-50)% Increased Ornate Idol Drop Rate"
-    ]
+    ],
+    "timeline": "Fall of the Outcasts"
   },
   "Grand Favor of Souls": {
     "type": "Blessing",
@@ -8393,7 +8400,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(51-100)% Increased Ornate Idol Drop Rate"
-    ]
+    ],
+    "timeline": "Fall of the Outcasts"
   },
   "Mark of Agony": {
     "type": "Blessing",
@@ -8405,7 +8413,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(30-50)% Increased Adorned Idol Drop Rate"
-    ]
+    ],
+    "timeline": "Fall of the Outcasts"
   },
   "Grand Mark of Agony": {
     "type": "Blessing",
@@ -8417,7 +8426,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(51-100)% Increased Adorned Idol Drop Rate"
-    ]
+    ],
+    "timeline": "Fall of the Outcasts"
   },
   "Memory of the Living": {
     "type": "Blessing",
@@ -8429,7 +8439,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(10-15)% Increased Glyph Drop Rate"
-    ]
+    ],
+    "timeline": "Fall of the Outcasts"
   },
   "Grand Memory of the Living": {
     "type": "Blessing",
@@ -8441,7 +8452,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(16-25)% Increased Glyph Drop Rate"
-    ]
+    ],
+    "timeline": "Fall of the Outcasts"
   },
   "Sign of Torment": {
     "type": "Blessing",
@@ -8453,7 +8465,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(10-15)% Increased Rune Drop Rate"
-    ]
+    ],
+    "timeline": "Fall of the Outcasts"
   },
   "Grand Sign of Torment": {
     "type": "Blessing",
@@ -8465,7 +8478,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(16-25)% Increased Rune Drop Rate"
-    ]
+    ],
+    "timeline": "Fall of the Outcasts"
   },
   "Cruelty of Formosus": {
     "type": "Blessing",
@@ -8477,7 +8491,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(30-45)% Increased Wand Drop Rate"
-    ]
+    ],
+    "timeline": "The Stolen Lance"
   },
   "Savior of the North": {
     "type": "Blessing",
@@ -8489,7 +8504,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(30-45)% Increased Sceptre Drop Rate"
-    ]
+    ],
+    "timeline": "The Stolen Lance"
   },
   "Chill of Death": {
     "type": "Blessing",
@@ -8501,7 +8517,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(30-45)% Increased Two-Handed Staff Drop Rate"
-    ]
+    ],
+    "timeline": "The Stolen Lance"
   },
   "Enmity of the Clans": {
     "type": "Blessing",
@@ -8513,7 +8530,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(30-45)% Increased One-Handed Sword Drop Rate"
-    ]
+    ],
+    "timeline": "The Stolen Lance"
   },
   "Ambition of the Empire": {
     "type": "Blessing",
@@ -8525,7 +8543,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(30-45)% Increased Two-Handed Sword Drop Rate"
-    ]
+    ],
+    "timeline": "The Stolen Lance"
   },
   "Scars of Blood": {
     "type": "Blessing",
@@ -8537,7 +8556,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(30-45)% Increased One-Handed Axe Drop Rate"
-    ]
+    ],
+    "timeline": "The Stolen Lance"
   },
   "Favor of the Wengari": {
     "type": "Blessing",
@@ -8549,7 +8569,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(30-45)% Increased Two-Handed Axe Drop Rate"
-    ]
+    ],
+    "timeline": "The Stolen Lance"
   },
   "Resolve of Frost": {
     "type": "Blessing",
@@ -8561,7 +8582,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(30-45)% Increased One-Handed Mace Drop Rate"
-    ]
+    ],
+    "timeline": "The Stolen Lance"
   },
   "Shards of Unity": {
     "type": "Blessing",
@@ -8573,7 +8595,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(30-45)% Increased Two-Handed Mace Drop Rate"
-    ]
+    ],
+    "timeline": "The Stolen Lance"
   },
   "Remorse of Heorot": {
     "type": "Blessing",
@@ -8585,7 +8608,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(30-45)% Increased Two-Handed Spear Drop Rate"
-    ]
+    ],
+    "timeline": "The Stolen Lance"
   },
   "Memory of Light": {
     "type": "Blessing",
@@ -8597,7 +8621,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "{rounding:Integer}+(30-42) Health"
-    ]
+    ],
+    "timeline": "The Black Sun"
   },
   "Grand Memory of Light": {
     "type": "Blessing",
@@ -8609,7 +8634,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "{rounding:Integer}+(45-70) Health"
-    ]
+    ],
+    "timeline": "The Black Sun"
   },
   "Echo of Solarum": {
     "type": "Blessing",
@@ -8621,7 +8647,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(25-40)% Void Resistance"
-    ]
+    ],
+    "timeline": "The Black Sun"
   },
   "Grand Echo of Solarum": {
     "type": "Blessing",
@@ -8633,7 +8660,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(55-75)% Void Resistance"
-    ]
+    ],
+    "timeline": "The Black Sun"
   },
   "Shadow of the Eclipse": {
     "type": "Blessing",
@@ -8645,7 +8673,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "{rounding:Integer}+(60-100) Dodge Rating"
-    ]
+    ],
+    "timeline": "The Black Sun"
   },
   "Grand Shadow of the Eclipse": {
     "type": "Blessing",
@@ -8657,7 +8686,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "{rounding:Integer}+(101-200) Dodge Rating"
-    ]
+    ],
+    "timeline": "The Black Sun"
   },
   "Wrath of Rahyeh": {
     "type": "Blessing",
@@ -8669,7 +8699,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(1.2-2)% of Throwing Damage Leeched as Health"
-    ]
+    ],
+    "timeline": "The Black Sun"
   },
   "Grand Wrath of Rahyeh": {
     "type": "Blessing",
@@ -8681,7 +8712,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(2.2-3.5)% of Throwing Damage Leeched as Health"
-    ]
+    ],
+    "timeline": "The Black Sun"
   },
   "Whisper of Orobyss": {
     "type": "Blessing",
@@ -8693,7 +8725,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "{rounding:Integer}(40-60)% increased Void Damage"
-    ]
+    ],
+    "timeline": "The Black Sun"
   },
   "Grand Whisper of Orobyss": {
     "type": "Blessing",
@@ -8705,7 +8738,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "{rounding:Integer}(65-100)% increased Void Damage"
-    ]
+    ],
+    "timeline": "The Black Sun"
   },
   "Flames of the Black Sun": {
     "type": "Blessing",
@@ -8717,7 +8751,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(40-60)% Chance to Ignite on Hit"
-    ]
+    ],
+    "timeline": "The Black Sun"
   },
   "Grand Flames of the Black Sun": {
     "type": "Blessing",
@@ -8729,7 +8764,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(65-100)% Chance to Ignite on Hit"
-    ]
+    ],
+    "timeline": "The Black Sun"
   },
   "Hunger of the Void": {
     "type": "Blessing",
@@ -8741,7 +8777,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(1.2-2)% of Spell Damage Leeched as Health"
-    ]
+    ],
+    "timeline": "The Black Sun"
   },
   "Grand Hunger of the Void": {
     "type": "Blessing",
@@ -8753,7 +8790,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(2.2-3.5)% of Spell Damage Leeched as Health"
-    ]
+    ],
+    "timeline": "The Black Sun"
   },
   "Strength of the Mountain": {
     "type": "Blessing",
@@ -8765,7 +8803,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "{rounding:Integer}(10-14) Health Gain on Block"
-    ]
+    ],
+    "timeline": "The Black Sun"
   },
   "Grand Strength of the Mountain": {
     "type": "Blessing",
@@ -8777,7 +8816,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "{rounding:Integer}(15-22) Health Gain on Block"
-    ]
+    ],
+    "timeline": "The Black Sun"
   },
   "Winds of Oblivion": {
     "type": "Blessing",
@@ -8789,7 +8829,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(30-50)% increased Critical Strike Chance"
-    ]
+    ],
+    "timeline": "The Black Sun"
   },
   "Grand Winds of Oblivion": {
     "type": "Blessing",
@@ -8801,7 +8842,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(51-80)% increased Critical Strike Chance"
-    ]
+    ],
+    "timeline": "The Black Sun"
   },
   "Depths of Infinity": {
     "type": "Blessing",
@@ -8813,7 +8855,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(10-20)% Chance to Shred Void Resistance on Hit"
-    ]
+    ],
+    "timeline": "The Black Sun"
   },
   "Grand Depths of Infinity": {
     "type": "Blessing",
@@ -8825,7 +8868,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(25-50)% Chance to Shred Void Resistance on Hit"
-    ]
+    ],
+    "timeline": "The Black Sun"
   },
   "Greed of Darkness": {
     "type": "Blessing",
@@ -8838,7 +8882,8 @@
     "implicits": [
       "{rounding:Integer}(6-10) Ward Gain on Kill",
       "{rounding:Integer}+(60-100) Ward Decay Threshold"
-    ]
+    ],
+    "timeline": "Blood, Frost, and Death"
   },
   "Grand Greed of Darkness": {
     "type": "Blessing",
@@ -8851,7 +8896,8 @@
     "implicits": [
       "{rounding:Integer}(12-18) Ward Gain on Kill",
       "{rounding:Integer}+(120-200) Ward Decay Threshold"
-    ]
+    ],
+    "timeline": "Blood, Frost, and Death"
   },
   "Emptiness of Ash": {
     "type": "Blessing",
@@ -8863,7 +8909,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(20-26)% Critical Strike Multiplier"
-    ]
+    ],
+    "timeline": "Blood, Frost, and Death"
   },
   "Grand Emptiness of Ash": {
     "type": "Blessing",
@@ -8875,7 +8922,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(27-40)% Critical Strike Multiplier"
-    ]
+    ],
+    "timeline": "Blood, Frost, and Death"
   },
   "Thirst of the Sun": {
     "type": "Blessing",
@@ -8887,7 +8935,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(20-30)% Increased Leech Rate"
-    ]
+    ],
+    "timeline": "Blood, Frost, and Death"
   },
   "Grand Thirst of the Sun": {
     "type": "Blessing",
@@ -8899,7 +8948,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(35-50)% Increased Leech Rate"
-    ]
+    ],
+    "timeline": "Blood, Frost, and Death"
   },
   "Hope of the Beginning": {
     "type": "Blessing",
@@ -8911,7 +8961,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(7-14)% Increased Prefix Shard Drop Rate"
-    ]
+    ],
+    "timeline": "Blood, Frost, and Death"
   },
   "Safety of the Labyrinth": {
     "type": "Blessing",
@@ -8923,7 +8974,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(10-20)% Increased Amulet Shard Drop Rate"
-    ]
+    ],
+    "timeline": "Blood, Frost, and Death"
   },
   "Remnants of the Living": {
     "type": "Blessing",
@@ -8935,7 +8987,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(20-30)% Increased Ring Shard Drop Rate"
-    ]
+    ],
+    "timeline": "Blood, Frost, and Death"
   },
   "Visions of Death": {
     "type": "Blessing",
@@ -8947,7 +9000,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(25-35)% Increased Two-Handed Spear Shard Drop Rate"
-    ]
+    ],
+    "timeline": "Blood, Frost, and Death"
   },
   "Inevitability of the Void": {
     "type": "Blessing",
@@ -8959,7 +9013,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(16-26)% Increased Two-Handed Staff Shard Drop Rate"
-    ]
+    ],
+    "timeline": "Blood, Frost, and Death"
   },
   "Rot of the World": {
     "type": "Blessing",
@@ -8971,7 +9026,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(25-35)% Increased Wand Shard Drop Rate"
-    ]
+    ],
+    "timeline": "Blood, Frost, and Death"
   },
   "Boon of the Scarab": {
     "type": "Blessing",
@@ -8983,7 +9039,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(25-35)% Increased Bow Shard Drop Rate"
-    ]
+    ],
+    "timeline": "Blood, Frost, and Death"
   },
   "Shadows of Infinity": {
     "type": "Blessing",
@@ -8995,7 +9052,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(10-20)% Increased Relic Shard Drop Rate"
-    ]
+    ],
+    "timeline": "Ending the Storm"
   },
   "Despair of the Empire": {
     "type": "Blessing",
@@ -9007,7 +9065,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(25-40)% Increased Ailment Shard Drop Rate"
-    ]
+    ],
+    "timeline": "Ending the Storm"
   },
   "Vigilance of the Damned": {
     "type": "Blessing",
@@ -9019,7 +9078,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(30-45)% Increased Bow Drop Rate"
-    ]
+    ],
+    "timeline": "Ending the Storm"
   },
   "Subtlety of Slaughter": {
     "type": "Blessing",
@@ -9031,7 +9091,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(30-45)% Increased Dagger Drop Rate"
-    ]
+    ],
+    "timeline": "Ending the Storm"
   },
   "Apex of Fortune": {
     "type": "Blessing",
@@ -9043,7 +9104,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(15-30)% Increased Quiver Drop Rate"
-    ]
+    ],
+    "timeline": "Ending the Storm"
   },
   "Arrogance of Argentus": {
     "type": "Blessing",
@@ -9055,7 +9117,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(10-20)% Increased Helmet Drop Rate"
-    ]
+    ],
+    "timeline": "Ending the Storm"
   },
   "Embrace of Ice": {
     "type": "Blessing",
@@ -9067,7 +9130,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(10-20)% Increased Body Armor Drop Rate"
-    ]
+    ],
+    "timeline": "Ending the Storm"
   },
   "Grip of the Lance": {
     "type": "Blessing",
@@ -9079,7 +9143,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(15-30)% Increased Gloves Drop Rate"
-    ]
+    ],
+    "timeline": "Ending the Storm"
   },
   "Right of Conquest": {
     "type": "Blessing",
@@ -9091,7 +9156,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(15-30)% Increased Boots Drop Rate"
-    ]
+    ],
+    "timeline": "Ending the Storm"
   },
   "Reach of Flame": {
     "type": "Blessing",
@@ -9103,7 +9169,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(15-30)% Increased Off-Hand Catalyst Drop Rate"
-    ]
+    ],
+    "timeline": "Ending the Storm"
   },
   "Binds of Sanctuary": {
     "type": "Blessing",
@@ -9115,7 +9182,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(15-30)% Increased Shield Drop Rate"
-    ]
+    ],
+    "timeline": "Fall of the Empire"
   },
   "Slumber of Morditas": {
     "type": "Blessing",
@@ -9127,7 +9195,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(12-25)% Increased Relic Drop Rate"
-    ]
+    ],
+    "timeline": "Fall of the Empire"
   },
   "Talon of Grandeur": {
     "type": "Blessing",
@@ -9139,7 +9208,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(15-30)% Increased Ring Drop Rate"
-    ]
+    ],
+    "timeline": "Fall of the Empire"
   },
   "Vision of the Aurora": {
     "type": "Blessing",
@@ -9151,7 +9221,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(15-30)% Increased Amulet Drop Rate"
-    ]
+    ],
+    "timeline": "Fall of the Empire"
   },
   "Might of the Siege": {
     "type": "Blessing",
@@ -9163,7 +9234,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(15-30)% Increased Belt Drop Rate"
-    ]
+    ],
+    "timeline": "Fall of the Empire"
   },
   "Bastion of Divinity": {
     "type": "Blessing",
@@ -9175,7 +9247,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(25-40)% Lightning Resistance"
-    ]
+    ],
+    "timeline": "Fall of the Empire"
   },
   "Grand Bastion of Divinity": {
     "type": "Blessing",
@@ -9187,7 +9260,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(55-75)% Lightning Resistance"
-    ]
+    ],
+    "timeline": "Fall of the Empire"
   },
   "Light of the Moon": {
     "type": "Blessing",
@@ -9199,7 +9273,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "{rounding:Integer}+(30-50) Mana"
-    ]
+    ],
+    "timeline": "Fall of the Empire"
   },
   "Grand Light of the Moon": {
     "type": "Blessing",
@@ -9211,7 +9286,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "{rounding:Integer}+(60-90) Mana"
-    ]
+    ],
+    "timeline": "Fall of the Empire"
   },
   "Rhythm of the Tide": {
     "type": "Blessing",
@@ -9224,7 +9300,8 @@
     "implicits": [
       "{rounding:Integer}(60-100)% increased Health Regen",
       "{rounding:Integer}+(6-10) Health Regen"
-    ]
+    ],
+    "timeline": "Fall of the Empire"
   },
   "Grand Rhythm of the Tide": {
     "type": "Blessing",
@@ -9237,7 +9314,8 @@
     "implicits": [
       "{rounding:Integer}(120-200)% increased Health Regen",
       "{rounding:Integer}+(12-20) Health Regen"
-    ]
+    ],
+    "timeline": "Fall of the Empire"
   },
   "Chaos of Lagon": {
     "type": "Blessing",
@@ -9249,7 +9327,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "{rounding:Integer}(40-60)% increased Lightning Damage"
-    ]
+    ],
+    "timeline": "Fall of the Empire"
   },
   "Grand Chaos of Lagon": {
     "type": "Blessing",
@@ -9261,7 +9340,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "{rounding:Integer}(65-100)% increased Lightning Damage"
-    ]
+    ],
+    "timeline": "Fall of the Empire"
   },
   "Might of the Sea Titan": {
     "type": "Blessing",
@@ -9273,7 +9353,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "{rounding:Integer}(40-60)% increased Cold Damage"
-    ]
+    ],
+    "timeline": "Reign of Dragons"
   },
   "Grand Might of the Sea Titan": {
     "type": "Blessing",
@@ -9285,7 +9366,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "{rounding:Integer}(65-100)% increased Cold Damage"
-    ]
+    ],
+    "timeline": "Reign of Dragons"
   },
   "Resonance of the Sea": {
     "type": "Blessing",
@@ -9297,7 +9379,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "{rounding:Integer}+(17-25) Ward per Second"
-    ]
+    ],
+    "timeline": "Reign of Dragons"
   },
   "Grand Resonance of the Sea": {
     "type": "Blessing",
@@ -9309,7 +9392,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "{rounding:Integer}+(30-42) Ward per Second"
-    ]
+    ],
+    "timeline": "Reign of Dragons"
   },
   "Mysteries of the Deep": {
     "type": "Blessing",
@@ -9321,7 +9405,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(10-20)% Chance to Shred Lightning Resistance on Hit"
-    ]
+    ],
+    "timeline": "Reign of Dragons"
   },
   "Grand Mysteries of the Deep": {
     "type": "Blessing",
@@ -9333,7 +9418,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(25-50)% Chance to Shred Lightning Resistance on Hit"
-    ]
+    ],
+    "timeline": "Reign of Dragons"
   },
   "Cruelty of the Meruna": {
     "type": "Blessing",
@@ -9345,7 +9431,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(40-60)% Chance to Shock on Hit"
-    ]
+    ],
+    "timeline": "Reign of Dragons"
   },
   "Grand Cruelty of the Meruna": {
     "type": "Blessing",
@@ -9357,7 +9444,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(65-100)% Chance to Shock on Hit"
-    ]
+    ],
+    "timeline": "Reign of Dragons"
   },
   "Weight of the Abyss": {
     "type": "Blessing",
@@ -9369,7 +9457,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(100-180)% Freeze Rate Multiplier"
-    ]
+    ],
+    "timeline": "Reign of Dragons"
   },
   "Grand Weight of the Abyss": {
     "type": "Blessing",
@@ -9381,7 +9470,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(200-300)% Freeze Rate Multiplier"
-    ]
+    ],
+    "timeline": "Reign of Dragons"
   },
   "Crash of the Waves": {
     "type": "Blessing",
@@ -9393,7 +9483,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(50-90)% Increased Stun Chance"
-    ]
+    ],
+    "timeline": "Reign of Dragons"
   },
   "Grand Crash of the Waves": {
     "type": "Blessing",
@@ -9405,7 +9496,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(100-160)% Increased Stun Chance"
-    ]
+    ],
+    "timeline": "Reign of Dragons"
   },
   "Trance of the Sirens": {
     "type": "Blessing",
@@ -9417,7 +9509,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(10-14)% Increased Shock Duration "
-    ]
+    ],
+    "timeline": "Reign of Dragons"
   },
   "Grand Trance of the Sirens": {
     "type": "Blessing",
@@ -9429,7 +9522,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(15-22)% Increased Shock Duration "
-    ]
+    ],
+    "timeline": "Reign of Dragons"
   },
   "Intellect of Liath": {
     "type": "Blessing",
@@ -9441,7 +9535,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(15-25)% Chance to Gain 30 Ward when Hit"
-    ]
+    ],
+    "timeline": "Fall of the Empire"
   },
   "Grand Intellect of Liath": {
     "type": "Blessing",
@@ -9453,7 +9548,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(30-50)% Chance to Gain 30 Ward when Hit"
-    ]
+    ],
+    "timeline": "Fall of the Empire"
   },
   "Grace of Water": {
     "type": "Blessing",
@@ -9466,7 +9562,8 @@
     "implicits": [
       "{rounding:Integer}(40-70) Ward Gained on Potion Use",
       "{rounding:Integer}+(80-140) Ward Decay Threshold"
-    ]
+    ],
+    "timeline": "Reign of Dragons"
   },
   "Grand Grace of Water": {
     "type": "Blessing",
@@ -9479,7 +9576,8 @@
     "implicits": [
       "{rounding:Integer}(80-130) Ward Gained on Potion Use",
       "{rounding:Integer}+(160-260) Ward Decay Threshold"
-    ]
+    ],
+    "timeline": "Reign of Dragons"
   },
   "Resolve of Humanity": {
     "type": "Blessing",
@@ -9491,7 +9589,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(7-12)% to All Resistances"
-    ]
+    ],
+    "timeline": "Reign of Dragons"
   },
   "Survival of Might": {
     "type": "Blessing",
@@ -9504,7 +9603,8 @@
     "implicits": [
       "+(30-45)% Critical Strike Avoidance",
       "{rounding:Integer}+(30-50) Dodge Rating"
-    ]
+    ],
+    "timeline": "Reign of Dragons"
   },
   "Dream of Eterra": {
     "type": "Blessing",
@@ -9516,7 +9616,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(25-40)% Necrotic Resistance"
-    ]
+    ],
+    "timeline": "The Age of Winter"
   },
   "Binds of Nature": {
     "type": "Blessing",
@@ -9528,7 +9629,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "{rounding:Integer}(40-60)% increased Poison Damage"
-    ]
+    ],
+    "timeline": "The Age of Winter"
   },
   "Despair of Flesh": {
     "type": "Blessing",
@@ -9540,7 +9642,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "{rounding:Integer}(40-60)% increased Necrotic Damage"
-    ]
+    ],
+    "timeline": "The Age of Winter"
   },
   "Cruelty of Strength": {
     "type": "Blessing",
@@ -9552,7 +9655,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "{rounding:Integer}(40-60)% increased Physical Damage"
-    ]
+    ],
+    "timeline": "The Age of Winter"
   },
   "Hemmorage of Marrow": {
     "type": "Blessing",
@@ -9564,7 +9668,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(40-60)% Chance to inflict Bleed on Hit"
-    ]
+    ],
+    "timeline": "The Age of Winter"
   },
   "Taste of Venom": {
     "type": "Blessing",
@@ -9576,7 +9681,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(40-60)% Chance to Poison on Hit"
-    ]
+    ],
+    "timeline": "The Age of Winter"
   },
   "Hunger of Dragons": {
     "type": "Blessing",
@@ -9588,7 +9694,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(2-4)% of Melee Damage Leeched as Health"
-    ]
+    ],
+    "timeline": "The Age of Winter"
   },
   "Virtue of Command": {
     "type": "Blessing",
@@ -9600,7 +9707,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(8-15)% to Minion All Resistances"
-    ]
+    ],
+    "timeline": "The Age of Winter"
   },
   "Persistance of Will": {
     "type": "Blessing",
@@ -9612,7 +9720,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(25-40)% Poison Resistance"
-    ]
+    ],
+    "timeline": "The Age of Winter"
   },
   "Guile of Wyrms": {
     "type": "Blessing",
@@ -9624,7 +9733,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(60-90)% Chance to Shred Poison Resistance on Hit"
-    ]
+    ],
+    "timeline": "The Age of Winter"
   },
   "Allure of Apathy": {
     "type": "Blessing",
@@ -9636,7 +9746,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(40-60)% Chance to Slow on Hit"
-    ]
+    ],
+    "timeline": "Spirits of Fire"
   },
   "Winds of Fortune": {
     "type": "Blessing",
@@ -9648,7 +9759,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(10-15)% Increased Unique Drop Rate"
-    ]
+    ],
+    "timeline": "Fall of the Outcasts"
   },
   "Grand Winds of Fortune": {
     "type": "Blessing",
@@ -9660,7 +9772,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(16-22)% Increased Unique Drop Rate"
-    ]
+    ],
+    "timeline": "Fall of the Outcasts"
   },
   "Strength of Mind": {
     "type": "Blessing",
@@ -9672,7 +9785,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(4-6)% Increased Experience"
-    ]
+    ],
+    "timeline": "Fall of the Outcasts"
   },
   "Grand Strength of Mind": {
     "type": "Blessing",
@@ -9684,7 +9798,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(7-10)% Increased Experience"
-    ]
+    ],
+    "timeline": "Fall of the Outcasts"
   },
   "Scales of Greed": {
     "type": "Blessing",
@@ -9696,7 +9811,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(25-40)% Increased Gold Drop Rate"
-    ]
+    ],
+    "timeline": "Fall of the Outcasts"
   },
   "Grand Scales of Greed": {
     "type": "Blessing",
@@ -9708,7 +9824,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(45-70)% Increased Gold Drop Rate"
-    ]
+    ],
+    "timeline": "Fall of the Outcasts"
   },
   "Grand Arrogance of Argentus": {
     "type": "Blessing",
@@ -9720,7 +9837,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(22-50)% Increased Helmet Drop Rate"
-    ]
+    ],
+    "timeline": "Ending the Storm"
   },
   "Grand Embrace of Ice": {
     "type": "Blessing",
@@ -9732,7 +9850,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(22-50)% Increased Body Armor Drop Rate"
-    ]
+    ],
+    "timeline": "Ending the Storm"
   },
   "Grand Grip of the Lance": {
     "type": "Blessing",
@@ -9744,7 +9863,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(35-75)% Increased Gloves Drop Rate"
-    ]
+    ],
+    "timeline": "Ending the Storm"
   },
   "Grand Right of Conquest": {
     "type": "Blessing",
@@ -9756,7 +9876,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(35-75)% Increased Boots Drop Rate"
-    ]
+    ],
+    "timeline": "Ending the Storm"
   },
   "Grand Reach of Flame": {
     "type": "Blessing",
@@ -9768,7 +9889,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(35-75)% Increased Off-Hand Catalyst Drop Rate"
-    ]
+    ],
+    "timeline": "Ending the Storm"
   },
   "Grand Binds of Sanctuary": {
     "type": "Blessing",
@@ -9780,7 +9902,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(35-75)% Increased Shield Drop Rate"
-    ]
+    ],
+    "timeline": "Fall of the Empire"
   },
   "Grand Slumber of Morditas": {
     "type": "Blessing",
@@ -9792,7 +9915,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(30-60)% Increased Relic Drop Rate"
-    ]
+    ],
+    "timeline": "Fall of the Empire"
   },
   "Grand Talon of Grandeur": {
     "type": "Blessing",
@@ -9804,7 +9928,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(35-75)% Increased Ring Drop Rate"
-    ]
+    ],
+    "timeline": "Fall of the Empire"
   },
   "Grand Vision of the Aurora": {
     "type": "Blessing",
@@ -9816,7 +9941,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(35-75)% Increased Amulet Drop Rate"
-    ]
+    ],
+    "timeline": "Fall of the Empire"
   },
   "Grand Might of the Siege": {
     "type": "Blessing",
@@ -9828,7 +9954,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(35-75)% Increased Belt Drop Rate"
-    ]
+    ],
+    "timeline": "Fall of the Empire"
   },
   "Grand Cruelty of Formosus": {
     "type": "Blessing",
@@ -9840,7 +9967,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(50-90)% Increased Wand Drop Rate"
-    ]
+    ],
+    "timeline": "The Stolen Lance"
   },
   "Grand Savior of the North": {
     "type": "Blessing",
@@ -9852,7 +9980,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(50-90)% Increased Sceptre Drop Rate"
-    ]
+    ],
+    "timeline": "The Stolen Lance"
   },
   "Grand Chill of Death": {
     "type": "Blessing",
@@ -9864,7 +9993,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(50-90)% Increased Two-Handed Staff Drop Rate"
-    ]
+    ],
+    "timeline": "The Stolen Lance"
   },
   "Grand Enmity of the Clans": {
     "type": "Blessing",
@@ -9876,7 +10006,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(50-90)% Increased One-Handed Sword Drop Rate"
-    ]
+    ],
+    "timeline": "The Stolen Lance"
   },
   "Grand Ambition of the Empire": {
     "type": "Blessing",
@@ -9888,7 +10019,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(50-90)% Increased Two-Handed Sword Drop Rate"
-    ]
+    ],
+    "timeline": "The Stolen Lance"
   },
   "Grand Scars of Blood": {
     "type": "Blessing",
@@ -9900,7 +10032,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(50-90)% Increased One-Handed Axe Drop Rate"
-    ]
+    ],
+    "timeline": "The Stolen Lance"
   },
   "Grand Favor of the Wengari": {
     "type": "Blessing",
@@ -9912,7 +10045,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(50-90)% Increased Two-Handed Axe Drop Rate"
-    ]
+    ],
+    "timeline": "The Stolen Lance"
   },
   "Grand Resolve of Frost": {
     "type": "Blessing",
@@ -9924,7 +10058,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(50-90)% Increased One-Handed Mace Drop Rate"
-    ]
+    ],
+    "timeline": "The Stolen Lance"
   },
   "Grand Shards of Unity": {
     "type": "Blessing",
@@ -9936,7 +10071,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(50-90)% Increased Two-Handed Mace Drop Rate"
-    ]
+    ],
+    "timeline": "The Stolen Lance"
   },
   "Grand Remorse of Heorot": {
     "type": "Blessing",
@@ -9948,7 +10084,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(50-90)% Increased Two-Handed Spear Drop Rate"
-    ]
+    ],
+    "timeline": "The Stolen Lance"
   },
   "Grand Hope of the Beginning": {
     "type": "Blessing",
@@ -9960,7 +10097,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(15-25)% Increased Prefix Shard Drop Rate"
-    ]
+    ],
+    "timeline": "Blood, Frost, and Death"
   },
   "Grand Safety of the Labyrinth": {
     "type": "Blessing",
@@ -9972,7 +10110,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(22-35)% Increased Amulet Shard Drop Rate"
-    ]
+    ],
+    "timeline": "Blood, Frost, and Death"
   },
   "Grand Remnants of the Living": {
     "type": "Blessing",
@@ -9984,7 +10123,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(33-50)% Increased Ring Shard Drop Rate"
-    ]
+    ],
+    "timeline": "Blood, Frost, and Death"
   },
   "Grand Visions of Death": {
     "type": "Blessing",
@@ -9996,7 +10136,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(40-60)% Increased Two-Handed Spear Shard Drop Rate"
-    ]
+    ],
+    "timeline": "Blood, Frost, and Death"
   },
   "Grand Inevitability of the Void": {
     "type": "Blessing",
@@ -10008,7 +10149,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(30-45)% Increased Two-Handed Staff Shard Drop Rate"
-    ]
+    ],
+    "timeline": "Blood, Frost, and Death"
   },
   "Grand Rot of the World": {
     "type": "Blessing",
@@ -10020,7 +10162,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(40-60)% Increased Wand Shard Drop Rate"
-    ]
+    ],
+    "timeline": "Blood, Frost, and Death"
   },
   "Grand Boon of the Scarab": {
     "type": "Blessing",
@@ -10032,7 +10175,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(40-60)% Increased Bow Shard Drop Rate"
-    ]
+    ],
+    "timeline": "Blood, Frost, and Death"
   },
   "Grand Shadows of Infinity": {
     "type": "Blessing",
@@ -10044,7 +10188,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(22-35)% Increased Relic Shard Drop Rate"
-    ]
+    ],
+    "timeline": "Ending the Storm"
   },
   "Grand Despair of the Empire": {
     "type": "Blessing",
@@ -10056,7 +10201,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(45-70)% Increased Ailment Shard Drop Rate"
-    ]
+    ],
+    "timeline": "Ending the Storm"
   },
   "Grand Vigilance of the Damned": {
     "type": "Blessing",
@@ -10068,7 +10214,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(50-75)% Increased Bow Drop Rate"
-    ]
+    ],
+    "timeline": "Ending the Storm"
   },
   "Grand Subtlety of Slaughter": {
     "type": "Blessing",
@@ -10080,7 +10227,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(50-75)% Increased Dagger Drop Rate"
-    ]
+    ],
+    "timeline": "Ending the Storm"
   },
   "Grand Apex of Fortune": {
     "type": "Blessing",
@@ -10092,7 +10240,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(41-60)% Increased Quiver Drop Rate"
-    ]
+    ],
+    "timeline": "Ending the Storm"
   },
   "Grand Resolve of Humanity": {
     "type": "Blessing",
@@ -10104,7 +10253,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(13-20)% to All Resistances"
-    ]
+    ],
+    "timeline": "Reign of Dragons"
   },
   "Grand Survival of Might": {
     "type": "Blessing",
@@ -10117,7 +10267,8 @@
     "implicits": [
       "+(50-70)% Critical Strike Avoidance",
       "{rounding:Integer}+(51-90) Dodge Rating"
-    ]
+    ],
+    "timeline": "Reign of Dragons"
   },
   "Grand Dream of Eterra": {
     "type": "Blessing",
@@ -10129,7 +10280,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(45-75)% Necrotic Resistance"
-    ]
+    ],
+    "timeline": "The Age of Winter"
   },
   "Grand Binds of Nature": {
     "type": "Blessing",
@@ -10141,7 +10293,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "{rounding:Integer}(65-100)% increased Poison Damage"
-    ]
+    ],
+    "timeline": "The Age of Winter"
   },
   "Grand Despair of Flesh": {
     "type": "Blessing",
@@ -10153,7 +10306,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "{rounding:Integer}(65-100)% increased Necrotic Damage"
-    ]
+    ],
+    "timeline": "The Age of Winter"
   },
   "Grand Cruelty of Strength": {
     "type": "Blessing",
@@ -10165,7 +10319,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "{rounding:Integer}(65-100)% increased Physical Damage"
-    ]
+    ],
+    "timeline": "The Age of Winter"
   },
   "Grand Hemmorage of Marrow": {
     "type": "Blessing",
@@ -10177,7 +10332,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(65-100)% Chance to inflict Bleed on Hit"
-    ]
+    ],
+    "timeline": "The Age of Winter"
   },
   "Grand Taste of Venom": {
     "type": "Blessing",
@@ -10189,7 +10345,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(65-100)% Chance to Poison on Hit"
-    ]
+    ],
+    "timeline": "The Age of Winter"
   },
   "Grand Hunger of Dragons": {
     "type": "Blessing",
@@ -10201,7 +10358,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(4.5-7)% of Melee Damage Leeched as Health"
-    ]
+    ],
+    "timeline": "The Age of Winter"
   },
   "Grand Virtue of Command": {
     "type": "Blessing",
@@ -10213,7 +10371,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(16-25)% to Minion All Resistances"
-    ]
+    ],
+    "timeline": "The Age of Winter"
   },
   "Grand Persistance of Will": {
     "type": "Blessing",
@@ -10225,7 +10384,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(55-75)% Poison Resistance"
-    ]
+    ],
+    "timeline": "The Age of Winter"
   },
   "Grand Guile of Wyrms": {
     "type": "Blessing",
@@ -10237,7 +10397,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(100-150)% Chance to Shred Poison Resistance on Hit"
-    ]
+    ],
+    "timeline": "The Age of Winter"
   },
   "Grand Allure of Apathy": {
     "type": "Blessing",
@@ -10249,7 +10410,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(65-100)% Chance to Slow on Hit"
-    ]
+    ],
+    "timeline": "Spirits of Fire"
   },
   "Temple of the Mind": {
     "type": "Blessing",
@@ -10261,7 +10423,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(12-20)% Increased Helmet Shard Drop Rate"
-    ]
+    ],
+    "timeline": "Additional"
   },
   "Grand Temple of the Mind": {
     "type": "Blessing",
@@ -10273,7 +10436,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(22-35)% Increased Helmet Shard Drop Rate"
-    ]
+    ],
+    "timeline": "Additional"
   },
   "Bastion of the Heart": {
     "type": "Blessing",
@@ -10285,7 +10449,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(12-20)% Increased Body Armor Shard Drop Rate"
-    ]
+    ],
+    "timeline": "Additional"
   },
   "Grand Bastion of the Heart": {
     "type": "Blessing",
@@ -10297,7 +10462,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(22-35)% Increased Body Armor Shard Drop Rate"
-    ]
+    ],
+    "timeline": "Additional"
   },
   "Binding of Ruin": {
     "type": "Blessing",
@@ -10309,7 +10475,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(20-30)% Increased Belt Shard Drop Rate"
-    ]
+    ],
+    "timeline": "Additional"
   },
   "Grand Binding of Ruin": {
     "type": "Blessing",
@@ -10321,7 +10488,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(32-50)% Increased Belt Shard Drop Rate"
-    ]
+    ],
+    "timeline": "Additional"
   },
   "Refuge of Despair": {
     "type": "Blessing",
@@ -10333,7 +10501,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(20-30)% Increased Shield Shard Drop Rate"
-    ]
+    ],
+    "timeline": "Additional"
   },
   "Grand Refuge of Despair": {
     "type": "Blessing",
@@ -10345,7 +10514,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(32-50)% Increased Shield Shard Drop Rate"
-    ]
+    ],
+    "timeline": "Additional"
   },
   "Comfort of the End": {
     "type": "Blessing",
@@ -10357,7 +10527,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(12-20)% Increased Suffix Shard Drop Rate"
-    ]
+    ],
+    "timeline": "Additional"
   },
   "Grand Comfort of the End": {
     "type": "Blessing",
@@ -10369,7 +10540,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(22-35)% Increased Suffix Shard Drop Rate"
-    ]
+    ],
+    "timeline": "Additional"
   },
   "Memory of Masters": {
     "type": "Blessing",
@@ -10381,7 +10553,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(10-18)% Increased Class Specific Shard Drop Rate"
-    ]
+    ],
+    "timeline": "Additional"
   },
   "Grand Memory of Masters": {
     "type": "Blessing",
@@ -10393,7 +10566,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(20-30)% Increased Class Specific Shard Drop Rate"
-    ]
+    ],
+    "timeline": "Additional"
   },
   "Grasp of Hope": {
     "type": "Blessing",
@@ -10405,7 +10579,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(20-30)% Increased Gloves Shard Drop Rate"
-    ]
+    ],
+    "timeline": "Additional"
   },
   "Grand Grasp of Hope": {
     "type": "Blessing",
@@ -10417,7 +10592,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(32-50)% Increased Gloves Shard Drop Rate"
-    ]
+    ],
+    "timeline": "Additional"
   },
   "Remnants of the Elders": {
     "type": "Blessing",
@@ -10429,7 +10605,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(20-30)% Increased Off-Hand Catalyst Shard Drop Rate"
-    ]
+    ],
+    "timeline": "Additional"
   },
   "Grand Remnants of the Elders": {
     "type": "Blessing",
@@ -10441,7 +10618,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(32-50)% Increased Off-Hand Catalyst Shard Drop Rate"
-    ]
+    ],
+    "timeline": "Additional"
   },
   "Knowledge of Skill": {
     "type": "Blessing",
@@ -10453,7 +10631,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(12-20)% Increased Skill Shard Drop Rate"
-    ]
+    ],
+    "timeline": "Additional"
   },
   "Grand Knowledge of Skill": {
     "type": "Blessing",
@@ -10465,7 +10644,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(22-35)% Increased Skill Shard Drop Rate"
-    ]
+    ],
+    "timeline": "Additional"
   },
   "Resolve of Grael": {
     "type": "Blessing",
@@ -10477,7 +10657,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(25-40)% Physical Resistance"
-    ]
+    ],
+    "timeline": "Spirits of Fire"
   },
   "Grand Resolve of Grael": {
     "type": "Blessing",
@@ -10489,7 +10670,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(55-75)% Physical Resistance"
-    ]
+    ],
+    "timeline": "Spirits of Fire"
   },
   "Protection of Heorot": {
     "type": "Blessing",
@@ -10501,7 +10683,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(25-40)% Cold Resistance"
-    ]
+    ],
+    "timeline": "Spirits of Fire"
   },
   "Grand Protection of Heorot": {
     "type": "Blessing",
@@ -10513,7 +10696,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(55-75)% Cold Resistance"
-    ]
+    ],
+    "timeline": "Spirits of Fire"
   },
   "Vigor of Jormun": {
     "type": "Blessing",
@@ -10525,7 +10709,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "{rounding:Integer}+(40-70) Endurance Threshold"
-    ]
+    ],
+    "timeline": "Spirits of Fire"
   },
   "Grand Vigor of Jormun": {
     "type": "Blessing",
@@ -10537,7 +10722,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "{rounding:Integer}+(80-150) Endurance Threshold"
-    ]
+    ],
+    "timeline": "Spirits of Fire"
   },
   "Maw of Artor": {
     "type": "Blessing",
@@ -10549,7 +10735,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(40-60)% Chance to apply Frostbite on Hit"
-    ]
+    ],
+    "timeline": "Spirits of Fire"
   },
   "Grand Maw of Artor": {
     "type": "Blessing",
@@ -10561,7 +10748,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(65-100)% Chance to apply Frostbite on Hit"
-    ]
+    ],
+    "timeline": "Spirits of Fire"
   },
   "Winds of Frost": {
     "type": "Blessing",
@@ -10573,7 +10761,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(30-50)% Freeze Rate per stack of Chill"
-    ]
+    ],
+    "timeline": "Spirits of Fire"
   },
   "Grand Winds of Frost": {
     "type": "Blessing",
@@ -10585,7 +10774,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(55-80)% Freeze Rate per stack of Chill"
-    ]
+    ],
+    "timeline": "Spirits of Fire"
   },
   "Rage of Winter": {
     "type": "Blessing",
@@ -10597,7 +10787,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(10-20)% Chance to Shred Cold Resistance on Hit"
-    ]
+    ],
+    "timeline": "Spirits of Fire"
   },
   "Grand Rage of Winter": {
     "type": "Blessing",
@@ -10609,7 +10800,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(25-50)% Chance to Shred Cold Resistance on Hit"
-    ]
+    ],
+    "timeline": "Spirits of Fire"
   },
   "Fury of the North": {
     "type": "Blessing",
@@ -10621,7 +10813,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(10-20)% Chance to Shred Physical Resistance on Hit"
-    ]
+    ],
+    "timeline": "Spirits of Fire"
   },
   "Grand Fury of the North": {
     "type": "Blessing",
@@ -10633,7 +10826,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(25-50)% Chance to Shred Physical Resistance on Hit"
-    ]
+    ],
+    "timeline": "Spirits of Fire"
   },
   "Heart of Ice": {
     "type": "Blessing",
@@ -10645,7 +10839,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(20-35)% Chance to Chill on Hit"
-    ]
+    ],
+    "timeline": "Spirits of Fire"
   },
   "Grand Heart of Ice": {
     "type": "Blessing",
@@ -10657,7 +10852,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(40-60)% Chance to Chill on Hit"
-    ]
+    ],
+    "timeline": "Spirits of Fire"
   },
   "Bones of Eternity": {
     "type": "Blessing",
@@ -10670,7 +10866,8 @@
     "implicits": [
       "+(3-4)% Block Chance",
       "{rounding:Integer}+(100-140) Block Effectiveness"
-    ]
+    ],
+    "timeline": "Spirits of Fire"
   },
   "Grand Bones of Eternity": {
     "type": "Blessing",
@@ -10683,7 +10880,8 @@
     "implicits": [
       "+(5-8)% Block Chance",
       "{rounding:Integer}+(180-240) Block Effectiveness"
-    ]
+    ],
+    "timeline": "Spirits of Fire"
   },
   "Bulwark of the Tundra": {
     "type": "Blessing",
@@ -10695,7 +10893,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "{rounding:Integer}(12-24)% increased Armor"
-    ]
+    ],
+    "timeline": "The Last Ruin"
   },
   "Grand Bulwark of the Tundra": {
     "type": "Blessing",
@@ -10707,7 +10906,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "{rounding:Integer}(25-55)% increased Armor"
-    ]
+    ],
+    "timeline": "The Last Ruin"
   },
   "Defiance of Yulia": {
     "type": "Blessing",
@@ -10719,7 +10919,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "{rounding:Integer}+(5-10) Spell Cold Damage While Channelling"
-    ]
+    ],
+    "timeline": "The Last Ruin"
   },
   "Grand Defiance of Yulia": {
     "type": "Blessing",
@@ -10731,7 +10932,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "{rounding:Integer}+(11-20) Spell Cold Damage While Channelling"
-    ]
+    ],
+    "timeline": "The Last Ruin"
   },
   "Heart of the Caldera": {
     "type": "Blessing",
@@ -10743,7 +10945,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(25-40)% Fire Resistance"
-    ]
+    ],
+    "timeline": "The Last Ruin"
   },
   "Grand Heart of the Caldera": {
     "type": "Blessing",
@@ -10755,7 +10958,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(55-75)% Fire Resistance"
-    ]
+    ],
+    "timeline": "The Last Ruin"
   },
   "Body of Obsidian": {
     "type": "Blessing",
@@ -10767,7 +10971,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "{rounding:Integer}+(120-180) Armor"
-    ]
+    ],
+    "timeline": "The Last Ruin"
   },
   "Grand Body of Obsidian": {
     "type": "Blessing",
@@ -10779,7 +10984,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "{rounding:Integer}+(200-320) Armor"
-    ]
+    ],
+    "timeline": "The Last Ruin"
   },
   "Curse of Sulphur": {
     "type": "Blessing",
@@ -10791,7 +10997,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(20-35)% Chance to apply Frailty on Hit"
-    ]
+    ],
+    "timeline": "The Last Ruin"
   },
   "Grand Curse of Sulphur": {
     "type": "Blessing",
@@ -10803,7 +11010,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(40-60)% Chance to apply Frailty on Hit"
-    ]
+    ],
+    "timeline": "The Last Ruin"
   },
   "Embers of Immortality": {
     "type": "Blessing",
@@ -10815,7 +11023,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(10-14)% Endurance"
-    ]
+    ],
+    "timeline": "The Last Ruin"
   },
   "Grand Embers of Immortality": {
     "type": "Blessing",
@@ -10827,7 +11036,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(18-30)% Endurance"
-    ]
+    ],
+    "timeline": "The Last Ruin"
   },
   "Swiftness of Logi": {
     "type": "Blessing",
@@ -10839,7 +11049,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "{rounding:Integer}(15-35)% increased Dodge Rating"
-    ]
+    ],
+    "timeline": "The Last Ruin"
   },
   "Grand Swiftness of Logi": {
     "type": "Blessing",
@@ -10851,7 +11062,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "{rounding:Integer}(40-70)% increased Dodge Rating"
-    ]
+    ],
+    "timeline": "The Last Ruin"
   },
   "Breath of Cinders": {
     "type": "Blessing",
@@ -10863,7 +11075,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(10-20)% Chance to Shred Fire Resistance on Hit"
-    ]
+    ],
+    "timeline": "The Last Ruin"
   },
   "Grand Breath of Cinders": {
     "type": "Blessing",
@@ -10875,7 +11088,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(25-50)% Chance to Shred Fire Resistance on Hit"
-    ]
+    ],
+    "timeline": "The Last Ruin"
   },
   "Promise of Death": {
     "type": "Blessing",
@@ -10887,7 +11101,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(10-20)% Chance to Shred Necrotic Resistance on Hit"
-    ]
+    ],
+    "timeline": "The Last Ruin"
   },
   "Grand Promise of Death": {
     "type": "Blessing",
@@ -10899,7 +11114,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(25-50)% Chance to Shred Necrotic Resistance on Hit"
-    ]
+    ],
+    "timeline": "The Last Ruin"
   },
   "Spirit of Command": {
     "type": "Blessing",
@@ -10911,7 +11127,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "{rounding:Integer}(40-60)% increased Minion Damage"
-    ]
+    ],
+    "timeline": "The Last Ruin"
   },
   "Grand Spirit of Command": {
     "type": "Blessing",
@@ -10923,7 +11140,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "{rounding:Integer}(65-100)% increased Minion Damage"
-    ]
+    ],
+    "timeline": "The Last Ruin"
   },
   "Might of Bhuldar": {
     "type": "Blessing",
@@ -10935,7 +11153,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(20-30)% Increased Stun Duration"
-    ]
+    ],
+    "timeline": "Additional"
   },
   "Grand Might of Bhuldar": {
     "type": "Blessing",
@@ -10947,7 +11166,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(32-50)% Increased Stun Duration"
-    ]
+    ],
+    "timeline": "Additional"
   },
   "Flames of Calamity": {
     "type": "Blessing",
@@ -10959,7 +11179,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "{rounding:Integer}(40-60)% increased Fire Damage"
-    ]
+    ],
+    "timeline": "Additional"
   },
   "Grand Flames of Calamity": {
     "type": "Blessing",
@@ -10971,7 +11192,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "{rounding:Integer}(65-100)% increased Fire Damage"
-    ]
+    ],
+    "timeline": "Additional"
   },
   "Patience of Herkir": {
     "type": "Blessing",
@@ -10983,7 +11205,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "{rounding:Integer}+(200-350) Armor While Channelling"
-    ]
+    ],
+    "timeline": "Additional"
   },
   "Grand Patience of Herkir": {
     "type": "Blessing",
@@ -10995,7 +11218,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "{rounding:Integer}+(400-650) Armor While Channelling"
-    ]
+    ],
+    "timeline": "Additional"
   },
   "Obscuring Lens of Battle": {
     "type": "Greater Lens",

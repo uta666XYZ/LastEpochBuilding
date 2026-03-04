@@ -325,6 +325,91 @@ return {
 	}, },
 } }
 } },
+-- LE Ailments & Status Effects
+{ 1, "LEAilments", 1, colorCodes.OFFENCE, {{ defaultCollapsed = false, label = "Ailments & Status", data = {
+	-- Freeze
+	{ label = "Freeze Rate", haveOutput = "FreezeRate", { format = "{2:output:FreezeRate}",
+		{ modName = { "FreezeRate", "FreezeRateMultiplier" }, cfg = "skill" },
+	}, },
+	{ label = "Freeze Chance", haveOutput = "FreezeChance", { format = "{0:output:FreezeChance}%",
+		{ modName = { "FreezeRate", "FreezeRateMultiplier" }, cfg = "skill" },
+	}, },
+	{ label = "Freeze Duration Mod", haveOutput = "EnemyFreezeDuration", { format = "x {2:output:EnemyFreezeDuration}",
+		{ modName = { "EnemyFreezeDuration", "Duration" }, cfg = "skill" },
+	}, },
+	-- Ignite
+	{ label = "Ignite Chance", haveOutput = "IgniteChance", { format = "{0:output:IgniteChance}%",
+		{ modName = "IgniteChance", cfg = "skill" },
+	}, },
+	{ label = "Ignite Duration Mod", haveOutput = "EnemyIgniteDuration", { format = "x {2:output:EnemyIgniteDuration}",
+		{ modName = { "EnemyIgniteDuration", "Duration" }, cfg = "skill" },
+	}, },
+	-- Bleed
+	{ label = "Bleed Chance", haveOutput = "BleedChance", { format = "{0:output:BleedChance}%",
+		{ modName = "BleedChance", cfg = "skill" },
+	}, },
+	{ label = "Bleed Duration Mod", haveOutput = "EnemyBleedDuration", { format = "x {2:output:EnemyBleedDuration}",
+		{ modName = { "EnemyBleedDuration", "Duration" }, cfg = "skill" },
+	}, },
+	-- Poison
+	{ label = "Poison Chance", haveOutput = "PoisonChance", { format = "{0:output:PoisonChance}%",
+		{ modName = "PoisonChance", cfg = "skill" },
+	}, },
+	{ label = "Poison Duration Mod", haveOutput = "EnemyPoisonDuration", { format = "x {2:output:EnemyPoisonDuration}",
+		{ modName = { "EnemyPoisonDuration", "Duration" }, cfg = "skill" },
+	}, },
+	-- Shock
+	{ label = "Shock Chance", haveOutput = "ShockChance", { format = "{0:output:ShockChance}%",
+		{ modName = "ShockChance", cfg = "skill" },
+	}, },
+	{ label = "Shock Duration Mod", haveOutput = "EnemyShockDuration", { format = "x {2:output:EnemyShockDuration}",
+		{ modName = { "EnemyShockDuration", "Duration" }, cfg = "skill" },
+	}, },
+	-- Chill
+	{ label = "Chill Chance", haveOutput = "ChillChance", { format = "{0:output:ChillChance}%",
+		{ modName = "ChillChance", cfg = "skill" },
+	}, },
+	{ label = "Chill Duration Mod", haveOutput = "EnemyChillDuration", { format = "x {2:output:EnemyChillDuration}",
+		{ modName = { "EnemyChillDuration", "Duration" }, cfg = "skill" },
+	}, },
+	-- Frostbite
+	{ label = "Frostbite Chance", haveOutput = "FrostbiteChance", { format = "{0:output:FrostbiteChance}%",
+		{ modName = "FrostbiteChance", cfg = "skill" },
+	}, },
+	{ label = "Frostbite Duration Mod", haveOutput = "EnemyFrostbiteDuration", { format = "x {2:output:EnemyFrostbiteDuration}",
+		{ modName = { "EnemyFrostbiteDuration", "Duration" }, cfg = "skill" },
+	}, },
+	-- Stun
+	{ label = "Stun Chance", haveOutput = "StunChance", { format = "{0:output:StunChance}%",
+		{ modName = "StunChance", cfg = "skill" },
+	}, },
+	{ label = "Stun Duration Mod", haveOutput = "EnemyStunDuration", { format = "x {2:output:EnemyStunDuration}",
+		{ modName = { "EnemyStunDuration", "Duration" }, cfg = "skill" },
+	}, },
+	-- Electrify
+	{ label = "Electrify Duration Mod", haveOutput = "EnemyElectrifyDuration", { format = "x {2:output:EnemyElectrifyDuration}",
+		{ modName = { "EnemyElectrifyDuration", "Duration" }, cfg = "skill" },
+	}, },
+	-- Armor Shred
+	{ label = "Armor Shred Chance", haveOutput = "ArmorShredChance", { format = "{0:output:ArmorShredChance}%",
+		{ modName = "ArmorShredChance", cfg = "skill" },
+	}, },
+	{ label = "Armor Shred Effect", haveOutput = "ArmorShredEffect", { format = "x {2:output:ArmorShredEffect}",
+		{ modName = "ArmorShredEffect", cfg = "skill" },
+	}, },
+	{ label = "Armor Shred Duration Mod", haveOutput = "EnemyArmorShredDuration", { format = "x {2:output:EnemyArmorShredDuration}",
+		{ modName = { "EnemyArmorShredDuration", "Duration" }, cfg = "skill" },
+	}, },
+	-- Time Rot
+	{ label = "Time Rot Duration Mod", haveOutput = "EnemyTimeRotDuration", { format = "x {2:output:EnemyTimeRotDuration}",
+		{ modName = { "EnemyTimeRotDuration", "Duration" }, cfg = "skill" },
+	}, },
+	-- Leech
+	{ label = "Leech Rate Mod", haveOutput = "LeechRate", { format = "x {2:output:LeechRate}",
+		{ modName = "LeechRate", cfg = "skill" },
+	}, },
+} }
+} },
 -- attributes/resists
 { 1, "Attributes", 2, colorCodes.NORMAL, {{ defaultCollapsed = false, label = "Attributes", data = generateTableByValues({},
 		Attributes, function(i, stat)
