@@ -289,6 +289,30 @@ local options = {
 	end },
 	-- Section: Enemy Stats
 	{ section = "Enemy Stats", col = 3 },
+	{ var = "leBossCategory", type = "list", label = "Is the enemy a Boss?",
+	  tooltip = data.enemyIsBossTooltip,
+	  list = {
+		{ val = "none",                    label = "None" },
+		{ val = "Empowered Monolith Boss", label = "Empowered Monolith Boss" },
+		{ val = "Dungeon Boss",            label = "Dungeon Boss (Tier 4)" },
+		{ val = "Pinnacle Boss",           label = "Pinnacle Boss (Aberroth)" },
+		{ val = "Uber Boss",               label = "Uber Boss (Herald of Oblivion)" },
+	  },
+	  apply = function(val, modList, enemyModList)
+		if val ~= "none" and data.bossStats[val] then
+			local s = data.bossStats[val]
+			if s.healthMean > 0 then
+				enemyModList:NewMod("Life", "BASE", s.healthMean, "BossConfig")
+			end
+			if s.wardMean > 0 then
+				enemyModList:NewMod("Ward", "BASE", s.wardMean, "BossConfig")
+			end
+			if s.damageModMean > 0 then
+				enemyModList:NewMod("Damage", "MORE", s.damageModMean, "BossConfig")
+			end
+			enemyModList:NewMod("Condition:Boss", "FLAG", true, "BossConfig")
+		end
+	  end },
 	{ var = "enemyLevel", type = "count", label = "Enemy / Area Level:", defaultPlaceholderState = 1, tooltip = "This overrides the default enemy level used to estimate your armor reduction and ^x33FF77dodge ^7chance.\n\nThe default level is set to your character level and cannot exceeds 100", apply = function(val, modList, enemyModList, build)
 		build.configTab.varControls['enemyLevel']:SetPlaceholder(build.configTab.enemyLevel, true)
 	end },

@@ -668,12 +668,17 @@ function buildMode:ReadLeToolsSave(saveContent)
 		["relic"] = 12
 	}
 
-	for i = 1, 7 do
-		slotMap["Blessing " .. i] = 32 + i
-	end
-	for i = 1, 3 do
-		slotMap["Blessing " .. (7 + i)] = 42 + i
-	end
+	-- Blessing slots: keyed by timeline name, inventoryId matches legacy numbering
+	slotMap["Fall of the Outcasts"] = 33
+	slotMap["The Stolen Lance"] = 34
+	slotMap["The Black Sun"] = 35
+	slotMap["Blood, Frost, and Death"] = 36
+	slotMap["Ending the Storm"] = 37
+	slotMap["Fall of the Empire"] = 38
+	slotMap["Reign of Dragons"] = 39
+	slotMap["The Age of Winter"] = 40
+	slotMap["Spirits of Fire"] = 41
+	slotMap["The Last Ruin"] = 42
 	function processItemData(slotName, itemData)
 		local item = {
 			["inventoryId"] = slotMap[slotName]
@@ -788,10 +793,25 @@ function buildMode:ReadLeToolsSave(saveContent)
 			table.insert(char["items"], item)
 		end
 	end
+	-- Load blessings by timeline slot
+	local blessingTimelines = {
+		"Fall of the Outcasts",
+		"The Stolen Lance",
+		"The Black Sun",
+		"Blood, Frost, and Death",
+		"Ending the Storm",
+		"Fall of the Empire",
+		"Reign of Dragons",
+		"The Age of Winter",
+		"Spirits of Fire",
+		"The Last Ruin",
+	}
 	for i = 1,10 do
-		local blessingData = saveContent["blessings"][i]
+		local blessingData = saveContent["blessings"] and saveContent["blessings"][i]
 		if blessingData then
-			local item = processItemData("Blessing " .. i, blessingData)
+			-- Try timeline slot name first, fall back to legacy "Blessing N"
+			local slotName = blessingTimelines[i] or ("Blessing " .. i)
+			local item = processItemData(slotName, blessingData)
 			if item then
 				table.insert(char["items"], item)
 			end

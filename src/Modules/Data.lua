@@ -395,65 +395,66 @@ data.itemTagSpecialExclusionPattern = {
 	},
 }
 
--- Load bosses
-do 
+-- Load bosses (Last Epoch)
+-- Categories: "Empowered Monolith Boss", "Dungeon Boss", "Pinnacle Boss", "Uber Boss"
+-- Stats are medians within each category (The Mountain Beneath excluded from Dungeon Boss).
+-- Ward: wardPct% of health for most bosses; Aberroth/Herald use flat ward values.
+do
 	data.bosses = { }
 	LoadModule("Data/Bosses", data.bosses)
-	
-	local count, uberCount = 0, 0
-	local armourTotal, evasionTotal = 0, 0
-	local uberArmourTotal, uberEvasionTotal = 0, 0
 
-	for _, boss in pairs(data.bosses) do
-		if boss.isUber then
-			uberCount = uberCount + 1
-			uberArmourTotal = uberArmourTotal + boss.armourMult
-			uberEvasionTotal = uberEvasionTotal + boss.evasionMult
-		end
-		count = count + 1
-		armourTotal = armourTotal + boss.armourMult
-		evasionTotal = evasionTotal + boss.evasionMult
+	local cats = {
+		"Empowered Monolith Boss",
+		"Dungeon Boss",
+		"Pinnacle Boss",
+		"Uber Boss",
+	}
+	local totals = { }
+	for _, cat in ipairs(cats) do
+		totals[cat] = { health = 0, ward = 0, damageMod = 0, count = 0 }
 	end
 
-	data.bossStats = {
-		PinnacleArmourMean = 100 + armourTotal / count,
-		PinnacleEvasionMean = 100 + evasionTotal / count,
-		UberArmourMean = 100 + uberArmourTotal / uberCount,
-		UberEvasionMean = 100 + uberEvasionTotal / uberCount
-	}
+	for _, boss in pairs(data.bosses) do
+		local t = totals[boss.category]
+		if t and boss.health and boss.health > 0 then
+			local w = (boss.wardPct and boss.wardPct > 0)
+				and m_floor(boss.health * boss.wardPct / 100)
+				or (boss.ward or 0)
+			t.health    = t.health    + boss.health
+			t.ward      = t.ward      + w
+			t.damageMod = t.damageMod + (boss.damageMod or 0)
+			t.count     = t.count     + 1
+		end
+	end
 
-	data.bossSkills, data.bossSkillsList = LoadModule("Data/BossSkills")
+	data.bossStats = { }
+	for _, cat in ipairs(cats) do
+		local t = totals[cat]
+		local n = m_max(t.count, 1)
+		data.bossStats[cat] = {
+			healthMean    = m_floor(t.health    / n),
+			wardMean      = m_floor(t.ward      / n),
+			damageModMean = t.damageMod / n,
+			count         = t.count,
+		}
+	end
 
-	data.enemyIsBossTooltip = [[Bosses' damage is monster damage scaled to an average damage of their attacks
-This is divided by 4.40 to represent 4 damage types + some (40% as much) ^xD02090chaos
-^7Fill in the exact damage numbers if more precision is needed
-
-Bosses' armour and evasion multiplier are calculated using the average of the boss type
-
-Standard Boss adds the following modifiers:
-	+40% to enemy Elemental Resistances
-	+25% to enemy ^xD02090Chaos Resistance
-	^7]]..tostring(m_floor(data.misc.stdBossDPSMult * 100))..[[% of monster Damage of each type
-	]]..tostring(m_floor(data.misc.stdBossDPSMult * 4.4 * 100))..[[% of monster Damage total
-
-Guardian / Pinnacle Boss adds the following modifiers:
-	+50% to enemy Elemental Resistances
-	+30% to enemy ^xD02090Chaos Resistance
-	^7]]..tostring(m_floor(data.bossStats.PinnacleArmourMean))..[[% of monster Armour
-	]]..tostring(m_floor(data.bossStats.PinnacleEvasionMean))..[[% of monster ^x33FF77Evasion
-	^7]]..tostring(m_floor(data.misc.pinnacleBossDPSMult * 100))..[[% of monster Damage of each type
-	]]..tostring(m_floor(data.misc.pinnacleBossDPSMult * 4.4 * 100))..[[% of monster Damage total
-	]]..tostring(data.misc.pinnacleBossPen)..[[% penetration
-
-Uber Pinnacle Boss adds the following modifiers:
-	+50% to enemy Elemental Resistances
-	+30% to enemy ^xD02090Chaos Resistance
-	^7]]..tostring(m_floor(data.bossStats.UberArmourMean))..[[% of monster Armour
-	]]..tostring(m_floor(data.bossStats.UberEvasionMean))..[[% of monster ^x33FF77Evasion
-	^770% less to enemy Damage taken
-	]]..tostring(m_floor(data.misc.uberBossDPSMult * 100))..[[% of monster Damage of each type
-	]]..tostring(m_floor(data.misc.uberBossDPSMult * 4.25 * 100))..[[% of monster Damage total
-	]]..tostring(data.misc.uberBossPen)..[[% penetration]]
+	local function bossLine(cat)
+		local s = data.bossStats[cat]
+		if not s or s.count == 0 then return cat .. ": (no data)" end
+		local line = cat .. "  HP=" .. s.healthMean
+		if s.wardMean > 0 then line = line .. "  Ward=" .. s.wardMean end
+		line = line .. "  MoreDmg=" .. m_floor(s.damageModMean) .. "%"
+		line = line .. "  (n=" .. s.count .. ")"
+		return line
+	end
+	data.enemyIsBossTooltip =
+		"Boss category averages (health / ward / More Damage %)\n" ..
+		"Source: lastepoch.tunklab.com v1.3 | Empowered lv100 0-Corruption | Dungeon Tier4 base\n\n" ..
+		bossLine("Empowered Monolith Boss") .. "\n" ..
+		bossLine("Dungeon Boss")            .. "\n" ..
+		bossLine("Pinnacle Boss")           .. "\n" ..
+		bossLine("Uber Boss")
 end
 
 -- Load skills

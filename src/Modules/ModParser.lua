@@ -88,8 +88,13 @@ local modNameList = {
 	["mana gain on block"] = "ManaOnBlock",
 	["ward gained on block"] = "WardOnBlock",
 	["ward gain on block"] = "WardOnBlock",
+	["ward gained on potion use"] = "WardOnPotionUse",
+	["ward gain on potion use"] = "WardOnPotionUse",
+	["ward gain on kill"] = "WardOnKill",
 	-- Stun/knockback modifiers
 	["stun duration on you"] = "StunDuration",
+	["armor while channelling"] = "ArmourWhileChannelling",
+	["leech rate"] = "LeechRate",
 	["stun duration"] = "EnemyStunDuration",
 	["knockback distance"] = "EnemyKnockbackDistance",
 	-- Auras/curses/buffs
@@ -289,6 +294,8 @@ local specialModList = {
 
 -- Modifiers that are recognised but unsupported
 local unsupportedModList = {
+	["chance to gain # ward when hit"] = true,
+	["chance to shred # resistance on hit"] = true,
 }
 
 -- Special lookups used for various modifier forms
