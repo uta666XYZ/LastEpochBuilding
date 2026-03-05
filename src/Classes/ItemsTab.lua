@@ -29,7 +29,6 @@ for i = 1, 20 do
 	table.insert(baseSlots, "Idol " .. i)
 end
 
--- Blessing slots: one per monolith timeline
 table.insert(baseSlots, "Fall of the Outcasts")
 table.insert(baseSlots, "The Stolen Lance")
 table.insert(baseSlots, "The Black Sun")
@@ -89,12 +88,17 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 		self.slotOrder[slot.slotName] = #self.orderedSlots
 		t_insert(self.controls, slot)
 	end
-	local blessingSlotNames = {["Fall of the Outcasts"]=true, ["The Stolen Lance"]=true, ["The Black Sun"]=true, ["Blood, Frost, and Death"]=true, ["Ending the Storm"]=true, ["Fall of the Empire"]=true, ["Reign of Dragons"]=true, ["The Age of Winter"]=true, ["Spirits of Fire"]=true, ["The Last Ruin"]=true}
+	local blessingSlotNames = {
+		["Fall of the Outcasts"]=true, ["The Stolen Lance"]=true, ["The Black Sun"]=true, ["Blood, Frost, and Death"]=true, ["Ending the Storm"]=true, ["Fall of the Empire"]=true, ["Reign of Dragons"]=true, ["The Age of Winter"]=true, ["Spirits of Fire"]=true, ["The Last Ruin"]=true
+	}
+	local lastVisibleSlot = self.slotAnchor
 	for index, slotName in ipairs(baseSlots) do
 		local slot = new("ItemSlotControl", {"TOPLEFT",prevSlot,"BOTTOMLEFT"}, 0, 2, self, slotName)
 		addSlot(slot)
 		if blessingSlotNames[slotName] then
 			slot.shown = function() return false end
+		else
+			lastVisibleSlot = slot
 		end
 		if slotName:match("Weapon") then
 			-- Add alternate weapon slot
@@ -122,7 +126,7 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 	end
 
 	-- Passive tree dropdown controls
-	self.controls.specSelect = new("DropDownControl", {"TOPLEFT",prevSlot,"BOTTOMLEFT"}, 0, 8, 216, 20, nil, function(index, value)
+	self.controls.specSelect = new("DropDownControl", {"TOPLEFT",lastVisibleSlot,"BOTTOMLEFT"}, 0, 8, 216, 20, nil, function(index, value)
 		if self.build.treeTab.specList[index] then
 			self.build.modFlag = true
 			self.build.treeTab:SetActiveSpec(index)
@@ -138,268 +142,266 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 	self.controls.specLabel = new("LabelControl", {"RIGHT",prevSlot,"LEFT"}, -2, 0, 0, 16, "^7Passive tree:")
 
 	self.controls.idolPositionsLabel = new("LabelControl", {"TOPLEFT",self.controls.specLabel,"BOTTOMLEFT"}, 0, 16, 0, 16, "Idol positions start from bottom left then left to right")
-
 	-- ===== BLESSING PANEL =====
-	-- Blessing data by timeline
 	local blessingData = {
 		["Fall of the Outcasts"] = {
 			normal = {
-				{name="Curse of Flesh", display="(30-50)% Increased Huge Idol Drop Rate", minVal=30.0, maxVal=50.0},
-				{name="Favor of Souls", display="(30-50)% Increased Ornate Idol Drop Rate", minVal=30.0, maxVal=50.0},
-				{name="Mark of Agony", display="(30-50)% Increased Adorned Idol Drop Rate", minVal=30.0, maxVal=50.0},
-				{name="Memory of the Living", display="(10-15)% Increased Glyph Drop Rate", minVal=10.0, maxVal=15.0},
-				{name="Pride of Rebellion", display="(30-50)% Increased Grand Idol Drop Rate", minVal=30.0, maxVal=50.0},
-				{name="Scales of Greed", display="(25-40)% Increased Gold Drop Rate", minVal=25.0, maxVal=40.0},
-				{name="Sight of the Outcasts", display="(30-50)% Increased Large Idol Drop Rate", minVal=30.0, maxVal=50.0},
-				{name="Sign of Torment", display="(10-15)% Increased Rune Drop Rate", minVal=10.0, maxVal=15.0},
-				{name="Strength of Mind", display="(4-6)% Increased Experience", minVal=4.0, maxVal=6.0},
-				{name="Winds of Fortune", display="(10-15)% Increased Unique Drop Rate", minVal=10.0, maxVal=15.0},
+				{name="Curse of Flesh", minVal=30.0, maxVal=50.0, implCount=1, impl1="(30-50)% Increased Huge Idol Drop Rate", label="(30-50)% Inc. Huge Idol Drop%"},
+				{name="Favor of Souls", minVal=30.0, maxVal=50.0, implCount=1, impl1="(30-50)% Increased Ornate Idol Drop Rate", label="(30-50)% Inc. Ornate Idol Drop%"},
+				{name="Mark of Agony", minVal=30.0, maxVal=50.0, implCount=1, impl1="(30-50)% Increased Adorned Idol Drop Rate", label="(30-50)% Inc. Adorned Idol Drop%"},
+				{name="Memory of the Living", minVal=10.0, maxVal=15.0, implCount=1, impl1="(10-15)% Increased Glyph Drop Rate", label="(10-15)% Inc. Glyph Drop%"},
+				{name="Pride of Rebellion", minVal=30.0, maxVal=50.0, implCount=1, impl1="(30-50)% Increased Grand Idol Drop Rate", label="(30-50)% Inc. Grand Idol Drop%"},
+				{name="Scales of Greed", minVal=25.0, maxVal=40.0, implCount=1, impl1="(25-40)% Increased Gold Drop Rate", label="(25-40)% Inc. Gold Drop%"},
+				{name="Sight of the Outcasts", minVal=30.0, maxVal=50.0, implCount=1, impl1="(30-50)% Increased Large Idol Drop Rate", label="(30-50)% Inc. Large Idol Drop%"},
+				{name="Sign of Torment", minVal=10.0, maxVal=15.0, implCount=1, impl1="(10-15)% Increased Rune Drop Rate", label="(10-15)% Inc. Rune Drop%"},
+				{name="Strength of Mind", minVal=4.0, maxVal=6.0, implCount=1, impl1="(4-6)% Increased Experience", label="(4-6)% Inc. Experience"},
+				{name="Winds of Fortune", minVal=10.0, maxVal=15.0, implCount=1, impl1="(10-15)% Increased Unique Drop Rate", label="(10-15)% Inc. Unique Drop%"},
 			},
 			grand = {
-				{name="Grand Curse of Flesh", display="(51-100)% Increased Huge Idol Drop Rate", minVal=51.0, maxVal=100.0},
-				{name="Grand Favor of Souls", display="(51-100)% Increased Ornate Idol Drop Rate", minVal=51.0, maxVal=100.0},
-				{name="Grand Mark of Agony", display="(51-100)% Increased Adorned Idol Drop Rate", minVal=51.0, maxVal=100.0},
-				{name="Grand Memory of the Living", display="(16-25)% Increased Glyph Drop Rate", minVal=16.0, maxVal=25.0},
-				{name="Grand Pride of Rebellion", display="(51-100)% Increased Grand Idol Drop Rate", minVal=51.0, maxVal=100.0},
-				{name="Grand Scales of Greed", display="(45-70)% Increased Gold Drop Rate", minVal=45.0, maxVal=70.0},
-				{name="Grand Sight of the Outcasts", display="(51-100)% Increased Large Idol Drop Rate", minVal=51.0, maxVal=100.0},
-				{name="Grand Sign of Torment", display="(16-25)% Increased Rune Drop Rate", minVal=16.0, maxVal=25.0},
-				{name="Grand Strength of Mind", display="(7-10)% Increased Experience", minVal=7.0, maxVal=10.0},
-				{name="Grand Winds of Fortune", display="(16-22)% Increased Unique Drop Rate", minVal=16.0, maxVal=22.0},
+				{name="Grand Curse of Flesh", minVal=51.0, maxVal=100.0, implCount=1, impl1="(51-100)% Increased Huge Idol Drop Rate", label="(51-100)% Inc. Huge Idol Drop%"},
+				{name="Grand Favor of Souls", minVal=51.0, maxVal=100.0, implCount=1, impl1="(51-100)% Increased Ornate Idol Drop Rate", label="(51-100)% Inc. Ornate Idol Drop%"},
+				{name="Grand Mark of Agony", minVal=51.0, maxVal=100.0, implCount=1, impl1="(51-100)% Increased Adorned Idol Drop Rate", label="(51-100)% Inc. Adorned Idol Drop%"},
+				{name="Grand Memory of the Living", minVal=16.0, maxVal=25.0, implCount=1, impl1="(16-25)% Increased Glyph Drop Rate", label="(16-25)% Inc. Glyph Drop%"},
+				{name="Grand Pride of Rebellion", minVal=51.0, maxVal=100.0, implCount=1, impl1="(51-100)% Increased Grand Idol Drop Rate", label="(51-100)% Inc. Grand Idol Drop%"},
+				{name="Grand Scales of Greed", minVal=45.0, maxVal=70.0, implCount=1, impl1="(45-70)% Increased Gold Drop Rate", label="(45-70)% Inc. Gold Drop%"},
+				{name="Grand Sight of the Outcasts", minVal=51.0, maxVal=100.0, implCount=1, impl1="(51-100)% Increased Large Idol Drop Rate", label="(51-100)% Inc. Large Idol Drop%"},
+				{name="Grand Sign of Torment", minVal=16.0, maxVal=25.0, implCount=1, impl1="(16-25)% Increased Rune Drop Rate", label="(16-25)% Inc. Rune Drop%"},
+				{name="Grand Strength of Mind", minVal=7.0, maxVal=10.0, implCount=1, impl1="(7-10)% Increased Experience", label="(7-10)% Inc. Experience"},
+				{name="Grand Winds of Fortune", minVal=16.0, maxVal=22.0, implCount=1, impl1="(16-22)% Increased Unique Drop Rate", label="(16-22)% Inc. Unique Drop%"},
 			},
 		},
 		["The Stolen Lance"] = {
 			normal = {
-				{name="Ambition of the Empire", display="(30-45)% Increased Two-Handed Sword Drop Rate", minVal=30.0, maxVal=45.0},
-				{name="Chill of Death", display="(30-45)% Increased Two-Handed Staff Drop Rate", minVal=30.0, maxVal=45.0},
-				{name="Cruelty of Formosus", display="(30-45)% Increased Wand Drop Rate", minVal=30.0, maxVal=45.0},
-				{name="Enmity of the Clans", display="(30-45)% Increased One-Handed Sword Drop Rate", minVal=30.0, maxVal=45.0},
-				{name="Favor of the Wengari", display="(30-45)% Increased Two-Handed Axe Drop Rate", minVal=30.0, maxVal=45.0},
-				{name="Remorse of Heorot", display="(30-45)% Increased Two-Handed Spear Drop Rate", minVal=30.0, maxVal=45.0},
-				{name="Resolve of Frost", display="(30-45)% Increased One-Handed Mace Drop Rate", minVal=30.0, maxVal=45.0},
-				{name="Savior of the North", display="(30-45)% Increased Sceptre Drop Rate", minVal=30.0, maxVal=45.0},
-				{name="Scars of Blood", display="(30-45)% Increased One-Handed Axe Drop Rate", minVal=30.0, maxVal=45.0},
-				{name="Shards of Unity", display="(30-45)% Increased Two-Handed Mace Drop Rate", minVal=30.0, maxVal=45.0},
+				{name="Ambition of the Empire", minVal=30.0, maxVal=45.0, implCount=1, impl1="(30-45)% Increased Two-Handed Sword Drop Rate", label="(30-45)% Inc. 2H Sword Drop%"},
+				{name="Chill of Death", minVal=30.0, maxVal=45.0, implCount=1, impl1="(30-45)% Increased Two-Handed Staff Drop Rate", label="(30-45)% Inc. 2H Staff Drop%"},
+				{name="Cruelty of Formosus", minVal=30.0, maxVal=45.0, implCount=1, impl1="(30-45)% Increased Wand Drop Rate", label="(30-45)% Inc. Wand Drop%"},
+				{name="Enmity of the Clans", minVal=30.0, maxVal=45.0, implCount=1, impl1="(30-45)% Increased One-Handed Sword Drop Rate", label="(30-45)% Inc. One-Handed Sword Drop%"},
+				{name="Favor of the Wengari", minVal=30.0, maxVal=45.0, implCount=1, impl1="(30-45)% Increased Two-Handed Axe Drop Rate", label="(30-45)% Inc. 2H Axe Drop%"},
+				{name="Remorse of Heorot", minVal=30.0, maxVal=45.0, implCount=1, impl1="(30-45)% Increased Two-Handed Spear Drop Rate", label="(30-45)% Inc. 2H Spear Drop%"},
+				{name="Resolve of Frost", minVal=30.0, maxVal=45.0, implCount=1, impl1="(30-45)% Increased One-Handed Mace Drop Rate", label="(30-45)% Inc. One-Handed Mace Drop%"},
+				{name="Savior of the North", minVal=30.0, maxVal=45.0, implCount=1, impl1="(30-45)% Increased Sceptre Drop Rate", label="(30-45)% Inc. Sceptre Drop%"},
+				{name="Scars of Blood", minVal=30.0, maxVal=45.0, implCount=1, impl1="(30-45)% Increased One-Handed Axe Drop Rate", label="(30-45)% Inc. One-Handed Axe Drop%"},
+				{name="Shards of Unity", minVal=30.0, maxVal=45.0, implCount=1, impl1="(30-45)% Increased Two-Handed Mace Drop Rate", label="(30-45)% Inc. 2H Mace Drop%"},
 			},
 			grand = {
-				{name="Grand Ambition of the Empire", display="(50-90)% Increased Two-Handed Sword Drop Rate", minVal=50.0, maxVal=90.0},
-				{name="Grand Chill of Death", display="(50-90)% Increased Two-Handed Staff Drop Rate", minVal=50.0, maxVal=90.0},
-				{name="Grand Cruelty of Formosus", display="(50-90)% Increased Wand Drop Rate", minVal=50.0, maxVal=90.0},
-				{name="Grand Enmity of the Clans", display="(50-90)% Increased One-Handed Sword Drop Rate", minVal=50.0, maxVal=90.0},
-				{name="Grand Favor of the Wengari", display="(50-90)% Increased Two-Handed Axe Drop Rate", minVal=50.0, maxVal=90.0},
-				{name="Grand Remorse of Heorot", display="(50-90)% Increased Two-Handed Spear Drop Rate", minVal=50.0, maxVal=90.0},
-				{name="Grand Resolve of Frost", display="(50-90)% Increased One-Handed Mace Drop Rate", minVal=50.0, maxVal=90.0},
-				{name="Grand Savior of the North", display="(50-90)% Increased Sceptre Drop Rate", minVal=50.0, maxVal=90.0},
-				{name="Grand Scars of Blood", display="(50-90)% Increased One-Handed Axe Drop Rate", minVal=50.0, maxVal=90.0},
-				{name="Grand Shards of Unity", display="(50-90)% Increased Two-Handed Mace Drop Rate", minVal=50.0, maxVal=90.0},
+				{name="Grand Ambition of the Empire", minVal=50.0, maxVal=90.0, implCount=1, impl1="(50-90)% Increased Two-Handed Sword Drop Rate", label="(50-90)% Inc. 2H Sword Drop%"},
+				{name="Grand Chill of Death", minVal=50.0, maxVal=90.0, implCount=1, impl1="(50-90)% Increased Two-Handed Staff Drop Rate", label="(50-90)% Inc. 2H Staff Drop%"},
+				{name="Grand Cruelty of Formosus", minVal=50.0, maxVal=90.0, implCount=1, impl1="(50-90)% Increased Wand Drop Rate", label="(50-90)% Inc. Wand Drop%"},
+				{name="Grand Enmity of the Clans", minVal=50.0, maxVal=90.0, implCount=1, impl1="(50-90)% Increased One-Handed Sword Drop Rate", label="(50-90)% Inc. One-Handed Sword Drop%"},
+				{name="Grand Favor of the Wengari", minVal=50.0, maxVal=90.0, implCount=1, impl1="(50-90)% Increased Two-Handed Axe Drop Rate", label="(50-90)% Inc. 2H Axe Drop%"},
+				{name="Grand Remorse of Heorot", minVal=50.0, maxVal=90.0, implCount=1, impl1="(50-90)% Increased Two-Handed Spear Drop Rate", label="(50-90)% Inc. 2H Spear Drop%"},
+				{name="Grand Resolve of Frost", minVal=50.0, maxVal=90.0, implCount=1, impl1="(50-90)% Increased One-Handed Mace Drop Rate", label="(50-90)% Inc. One-Handed Mace Drop%"},
+				{name="Grand Savior of the North", minVal=50.0, maxVal=90.0, implCount=1, impl1="(50-90)% Increased Sceptre Drop Rate", label="(50-90)% Inc. Sceptre Drop%"},
+				{name="Grand Scars of Blood", minVal=50.0, maxVal=90.0, implCount=1, impl1="(50-90)% Increased One-Handed Axe Drop Rate", label="(50-90)% Inc. One-Handed Axe Drop%"},
+				{name="Grand Shards of Unity", minVal=50.0, maxVal=90.0, implCount=1, impl1="(50-90)% Increased Two-Handed Mace Drop Rate", label="(50-90)% Inc. 2H Mace Drop%"},
 			},
 		},
 		["The Black Sun"] = {
 			normal = {
-				{name="Depths of Infinity", display="+(10-20)% Chance to Shred Void Resistance on Hit", minVal=10.0, maxVal=20.0},
-				{name="Echo of Solarum", display="+(25-40)% Void Resistance", minVal=25.0, maxVal=40.0},
-				{name="Flames of the Black Sun", display="+(40-60)% Chance to Ignite on Hit", minVal=40.0, maxVal=60.0},
-				{name="Hunger of the Void", display="(1.2-2)% of Spell Damage Leeched as Health", minVal=1.2, maxVal=2.0},
-				{name="Memory of Light", display="+(30-42) Health", minVal=30.0, maxVal=42.0},
-				{name="Shadow of the Eclipse", display="+(60-100) Dodge Rating", minVal=60.0, maxVal=100.0},
-				{name="Strength of the Mountain", display="(10-14) Health Gain on Block", minVal=10.0, maxVal=14.0},
-				{name="Whisper of Orobyss", display="(40-60)% increased Void Damage", minVal=40.0, maxVal=60.0},
-				{name="Winds of Oblivion", display="(30-50)% increased Critical Strike Chance", minVal=30.0, maxVal=50.0},
-				{name="Wrath of Rahyeh", display="(1.2-2)% of Throwing Damage Leeched as Health", minVal=1.2, maxVal=2.0},
+				{name="Depths of Infinity", minVal=10.0, maxVal=20.0, implCount=1, impl1="+(10-20)% Chance to Shred Void Resistance on Hit", label="+(10-20)% Shred Void Res on Hit"},
+				{name="Echo of Solarum", minVal=25.0, maxVal=40.0, implCount=1, impl1="+(25-40)% Void Resistance", label="+(25-40)% Void Res"},
+				{name="Flames of the Black Sun", minVal=40.0, maxVal=60.0, implCount=1, impl1="+(40-60)% Chance to Ignite on Hit", label="+(40-60)% Chance to Ignite on Hit"},
+				{name="Hunger of the Void", minVal=1.2, maxVal=2.0, implCount=1, impl1="(1.2-2)% of Spell Damage Leeched as Health", label="(1.2-2)% of Spell Dmg Leeched as Health"},
+				{name="Memory of Light", minVal=30.0, maxVal=42.0, implCount=1, impl1="+(30-42) Health", label="+(30-42) Health"},
+				{name="Shadow of the Eclipse", minVal=60.0, maxVal=100.0, implCount=1, impl1="+(60-100) Dodge Rating", label="+(60-100) Dodge Rating"},
+				{name="Strength of the Mountain", minVal=10.0, maxVal=14.0, implCount=1, impl1="(10-14) Health Gain on Block", label="(10-14) Health Gain on Block"},
+				{name="Whisper of Orobyss", minVal=40.0, maxVal=60.0, implCount=1, impl1="(40-60)% increased Void Damage", label="(40-60)% inc. Void Dmg"},
+				{name="Winds of Oblivion", minVal=30.0, maxVal=50.0, implCount=1, impl1="(30-50)% increased Critical Strike Chance", label="(30-50)% inc. Critical Strike Chance"},
+				{name="Wrath of Rahyeh", minVal=1.2, maxVal=2.0, implCount=1, impl1="(1.2-2)% of Throwing Damage Leeched as Health", label="(1.2-2)% of Throwing Dmg Leeched as Health"},
 			},
 			grand = {
-				{name="Grand Depths of Infinity", display="+(25-50)% Chance to Shred Void Resistance on Hit", minVal=25.0, maxVal=50.0},
-				{name="Grand Echo of Solarum", display="+(55-75)% Void Resistance", minVal=55.0, maxVal=75.0},
-				{name="Grand Flames of the Black Sun", display="+(65-100)% Chance to Ignite on Hit", minVal=65.0, maxVal=100.0},
-				{name="Grand Hunger of the Void", display="(2.2-3.5)% of Spell Damage Leeched as Health", minVal=2.2, maxVal=3.5},
-				{name="Grand Memory of Light", display="+(45-70) Health", minVal=45.0, maxVal=70.0},
-				{name="Grand Shadow of the Eclipse", display="+(101-200) Dodge Rating", minVal=101.0, maxVal=200.0},
-				{name="Grand Strength of the Mountain", display="(15-22) Health Gain on Block", minVal=15.0, maxVal=22.0},
-				{name="Grand Whisper of Orobyss", display="(65-100)% increased Void Damage", minVal=65.0, maxVal=100.0},
-				{name="Grand Winds of Oblivion", display="(51-80)% increased Critical Strike Chance", minVal=51.0, maxVal=80.0},
-				{name="Grand Wrath of Rahyeh", display="(2.2-3.5)% of Throwing Damage Leeched as Health", minVal=2.2, maxVal=3.5},
+				{name="Grand Depths of Infinity", minVal=25.0, maxVal=50.0, implCount=1, impl1="+(25-50)% Chance to Shred Void Resistance on Hit", label="+(25-50)% Shred Void Res on Hit"},
+				{name="Grand Echo of Solarum", minVal=55.0, maxVal=75.0, implCount=1, impl1="+(55-75)% Void Resistance", label="+(55-75)% Void Res"},
+				{name="Grand Flames of the Black Sun", minVal=65.0, maxVal=100.0, implCount=1, impl1="+(65-100)% Chance to Ignite on Hit", label="+(65-100)% Chance to Ignite on Hit"},
+				{name="Grand Hunger of the Void", minVal=2.2, maxVal=3.5, implCount=1, impl1="(2.2-3.5)% of Spell Damage Leeched as Health", label="(2.2-3.5)% of Spell Dmg Leeched as Health"},
+				{name="Grand Memory of Light", minVal=45.0, maxVal=70.0, implCount=1, impl1="+(45-70) Health", label="+(45-70) Health"},
+				{name="Grand Shadow of the Eclipse", minVal=101.0, maxVal=200.0, implCount=1, impl1="+(101-200) Dodge Rating", label="+(101-200) Dodge Rating"},
+				{name="Grand Strength of the Mountain", minVal=15.0, maxVal=22.0, implCount=1, impl1="(15-22) Health Gain on Block", label="(15-22) Health Gain on Block"},
+				{name="Grand Whisper of Orobyss", minVal=65.0, maxVal=100.0, implCount=1, impl1="(65-100)% increased Void Damage", label="(65-100)% inc. Void Dmg"},
+				{name="Grand Winds of Oblivion", minVal=51.0, maxVal=80.0, implCount=1, impl1="(51-80)% increased Critical Strike Chance", label="(51-80)% inc. Critical Strike Chance"},
+				{name="Grand Wrath of Rahyeh", minVal=2.2, maxVal=3.5, implCount=1, impl1="(2.2-3.5)% of Throwing Damage Leeched as Health", label="(2.2-3.5)% of Throwing Dmg Leeched as Health"},
 			},
 		},
 		["Blood, Frost, and Death"] = {
 			normal = {
-				{name="Boon of the Scarab", display="(25-35)% Increased Bow Shard Drop Rate", minVal=25.0, maxVal=35.0},
-				{name="Emptiness of Ash", display="+(20-26)% Critical Strike Multiplier", minVal=20.0, maxVal=26.0},
-				{name="Greed of Darkness", display="(6-10) Ward Gain on Kill / +(60-100) Ward Decay Threshold", minVal=6.0, maxVal=10.0},
-				{name="Hope of the Beginning", display="(7-14)% Increased Prefix Shard Drop Rate", minVal=7.0, maxVal=14.0},
-				{name="Inevitability of the Void", display="(16-26)% Increased Two-Handed Staff Shard Drop Rate", minVal=16.0, maxVal=26.0},
-				{name="Remnants of the Living", display="(20-30)% Increased Ring Shard Drop Rate", minVal=20.0, maxVal=30.0},
-				{name="Rot of the World", display="(25-35)% Increased Wand Shard Drop Rate", minVal=25.0, maxVal=35.0},
-				{name="Safety of the Labyrinth", display="(10-20)% Increased Amulet Shard Drop Rate", minVal=10.0, maxVal=20.0},
-				{name="Thirst of the Sun", display="(20-30)% Increased Leech Rate", minVal=20.0, maxVal=30.0},
-				{name="Visions of Death", display="(25-35)% Increased Two-Handed Spear Shard Drop Rate", minVal=25.0, maxVal=35.0},
+				{name="Boon of the Scarab", minVal=25.0, maxVal=35.0, implCount=1, impl1="(25-35)% Increased Bow Shard Drop Rate", label="(25-35)% Inc. Bow Shard Drop%"},
+				{name="Emptiness of Ash", minVal=20.0, maxVal=26.0, implCount=1, impl1="+(20-26)% Critical Strike Multiplier", label="+(20-26)% Critical Strike Multiplier"},
+				{name="Greed of Darkness", minVal=6.0, maxVal=10.0, implCount=2, impl1="(6-10) Ward Gain on Kill", label="(6-10) Ward Gain on Kill", impl2="+(60-100) Ward Decay Threshold"},
+				{name="Hope of the Beginning", minVal=7.0, maxVal=14.0, implCount=1, impl1="(7-14)% Increased Prefix Shard Drop Rate", label="(7-14)% Inc. Prefix Shard Drop%"},
+				{name="Inevitability of the Void", minVal=16.0, maxVal=26.0, implCount=1, impl1="(16-26)% Increased Two-Handed Staff Shard Drop Rate", label="(16-26)% Inc. 2H Staff Shard Drop%"},
+				{name="Remnants of the Living", minVal=20.0, maxVal=30.0, implCount=1, impl1="(20-30)% Increased Ring Shard Drop Rate", label="(20-30)% Inc. Ring Shard Drop%"},
+				{name="Rot of the World", minVal=25.0, maxVal=35.0, implCount=1, impl1="(25-35)% Increased Wand Shard Drop Rate", label="(25-35)% Inc. Wand Shard Drop%"},
+				{name="Safety of the Labyrinth", minVal=10.0, maxVal=20.0, implCount=1, impl1="(10-20)% Increased Amulet Shard Drop Rate", label="(10-20)% Inc. Amulet Shard Drop%"},
+				{name="Thirst of the Sun", minVal=20.0, maxVal=30.0, implCount=1, impl1="(20-30)% Increased Leech Rate", label="(20-30)% Inc. Leech Rate"},
+				{name="Visions of Death", minVal=25.0, maxVal=35.0, implCount=1, impl1="(25-35)% Increased Two-Handed Spear Shard Drop Rate", label="(25-35)% Inc. 2H Spear Shard Drop%"},
 			},
 			grand = {
-				{name="Grand Boon of the Scarab", display="(40-60)% Increased Bow Shard Drop Rate", minVal=40.0, maxVal=60.0},
-				{name="Grand Emptiness of Ash", display="+(27-40)% Critical Strike Multiplier", minVal=27.0, maxVal=40.0},
-				{name="Grand Greed of Darkness", display="(12-18) Ward Gain on Kill / +(120-200) Ward Decay Threshold", minVal=12.0, maxVal=18.0},
-				{name="Grand Hope of the Beginning", display="(15-25)% Increased Prefix Shard Drop Rate", minVal=15.0, maxVal=25.0},
-				{name="Grand Inevitability of the Void", display="(30-45)% Increased Two-Handed Staff Shard Drop Rate", minVal=30.0, maxVal=45.0},
-				{name="Grand Remnants of the Living", display="(33-50)% Increased Ring Shard Drop Rate", minVal=33.0, maxVal=50.0},
-				{name="Grand Rot of the World", display="(40-60)% Increased Wand Shard Drop Rate", minVal=40.0, maxVal=60.0},
-				{name="Grand Safety of the Labyrinth", display="(22-35)% Increased Amulet Shard Drop Rate", minVal=22.0, maxVal=35.0},
-				{name="Grand Thirst of the Sun", display="(35-50)% Increased Leech Rate", minVal=35.0, maxVal=50.0},
-				{name="Grand Visions of Death", display="(40-60)% Increased Two-Handed Spear Shard Drop Rate", minVal=40.0, maxVal=60.0},
+				{name="Grand Boon of the Scarab", minVal=40.0, maxVal=60.0, implCount=1, impl1="(40-60)% Increased Bow Shard Drop Rate", label="(40-60)% Inc. Bow Shard Drop%"},
+				{name="Grand Emptiness of Ash", minVal=27.0, maxVal=40.0, implCount=1, impl1="+(27-40)% Critical Strike Multiplier", label="+(27-40)% Critical Strike Multiplier"},
+				{name="Grand Greed of Darkness", minVal=12.0, maxVal=18.0, implCount=2, impl1="(12-18) Ward Gain on Kill", label="(12-18) Ward Gain on Kill", impl2="+(120-200) Ward Decay Threshold"},
+				{name="Grand Hope of the Beginning", minVal=15.0, maxVal=25.0, implCount=1, impl1="(15-25)% Increased Prefix Shard Drop Rate", label="(15-25)% Inc. Prefix Shard Drop%"},
+				{name="Grand Inevitability of the Void", minVal=30.0, maxVal=45.0, implCount=1, impl1="(30-45)% Increased Two-Handed Staff Shard Drop Rate", label="(30-45)% Inc. 2H Staff Shard Drop%"},
+				{name="Grand Remnants of the Living", minVal=33.0, maxVal=50.0, implCount=1, impl1="(33-50)% Increased Ring Shard Drop Rate", label="(33-50)% Inc. Ring Shard Drop%"},
+				{name="Grand Rot of the World", minVal=40.0, maxVal=60.0, implCount=1, impl1="(40-60)% Increased Wand Shard Drop Rate", label="(40-60)% Inc. Wand Shard Drop%"},
+				{name="Grand Safety of the Labyrinth", minVal=22.0, maxVal=35.0, implCount=1, impl1="(22-35)% Increased Amulet Shard Drop Rate", label="(22-35)% Inc. Amulet Shard Drop%"},
+				{name="Grand Thirst of the Sun", minVal=35.0, maxVal=50.0, implCount=1, impl1="(35-50)% Increased Leech Rate", label="(35-50)% Inc. Leech Rate"},
+				{name="Grand Visions of Death", minVal=40.0, maxVal=60.0, implCount=1, impl1="(40-60)% Increased Two-Handed Spear Shard Drop Rate", label="(40-60)% Inc. 2H Spear Shard Drop%"},
 			},
 		},
 		["Ending the Storm"] = {
 			normal = {
-				{name="Apex of Fortune", display="(15-30)% Increased Quiver Drop Rate", minVal=15.0, maxVal=30.0},
-				{name="Arrogance of Argentus", display="(10-20)% Increased Helmet Drop Rate", minVal=10.0, maxVal=20.0},
-				{name="Despair of the Empire", display="(25-40)% Increased Ailment Shard Drop Rate", minVal=25.0, maxVal=40.0},
-				{name="Embrace of Ice", display="(10-20)% Increased Body Armor Drop Rate", minVal=10.0, maxVal=20.0},
-				{name="Grip of the Lance", display="(15-30)% Increased Gloves Drop Rate", minVal=15.0, maxVal=30.0},
-				{name="Reach of Flame", display="(15-30)% Increased Off-Hand Catalyst Drop Rate", minVal=15.0, maxVal=30.0},
-				{name="Right of Conquest", display="(15-30)% Increased Boots Drop Rate", minVal=15.0, maxVal=30.0},
-				{name="Shadows of Infinity", display="(10-20)% Increased Relic Shard Drop Rate", minVal=10.0, maxVal=20.0},
-				{name="Subtlety of Slaughter", display="(30-45)% Increased Dagger Drop Rate", minVal=30.0, maxVal=45.0},
-				{name="Vigilance of the Damned", display="(30-45)% Increased Bow Drop Rate", minVal=30.0, maxVal=45.0},
+				{name="Apex of Fortune", minVal=15.0, maxVal=30.0, implCount=1, impl1="(15-30)% Increased Quiver Drop Rate", label="(15-30)% Inc. Quiver Drop%"},
+				{name="Arrogance of Argentus", minVal=10.0, maxVal=20.0, implCount=1, impl1="(10-20)% Increased Helmet Drop Rate", label="(10-20)% Inc. Helmet Drop%"},
+				{name="Despair of the Empire", minVal=25.0, maxVal=40.0, implCount=1, impl1="(25-40)% Increased Ailment Shard Drop Rate", label="(25-40)% Inc. Ailment Shard Drop%"},
+				{name="Embrace of Ice", minVal=10.0, maxVal=20.0, implCount=1, impl1="(10-20)% Increased Body Armor Drop Rate", label="(10-20)% Inc. Body Armor Drop%"},
+				{name="Grip of the Lance", minVal=15.0, maxVal=30.0, implCount=1, impl1="(15-30)% Increased Gloves Drop Rate", label="(15-30)% Inc. Gloves Drop%"},
+				{name="Reach of Flame", minVal=15.0, maxVal=30.0, implCount=1, impl1="(15-30)% Increased Off-Hand Catalyst Drop Rate", label="(15-30)% Inc. Off-Hand Catalyst Drop%"},
+				{name="Right of Conquest", minVal=15.0, maxVal=30.0, implCount=1, impl1="(15-30)% Increased Boots Drop Rate", label="(15-30)% Inc. Boots Drop%"},
+				{name="Shadows of Infinity", minVal=10.0, maxVal=20.0, implCount=1, impl1="(10-20)% Increased Relic Shard Drop Rate", label="(10-20)% Inc. Relic Shard Drop%"},
+				{name="Subtlety of Slaughter", minVal=30.0, maxVal=45.0, implCount=1, impl1="(30-45)% Increased Dagger Drop Rate", label="(30-45)% Inc. Dagger Drop%"},
+				{name="Vigilance of the Damned", minVal=30.0, maxVal=45.0, implCount=1, impl1="(30-45)% Increased Bow Drop Rate", label="(30-45)% Inc. Bow Drop%"},
 			},
 			grand = {
-				{name="Grand Apex of Fortune", display="(41-60)% Increased Quiver Drop Rate", minVal=41.0, maxVal=60.0},
-				{name="Grand Arrogance of Argentus", display="(22-50)% Increased Helmet Drop Rate", minVal=22.0, maxVal=50.0},
-				{name="Grand Despair of the Empire", display="(45-70)% Increased Ailment Shard Drop Rate", minVal=45.0, maxVal=70.0},
-				{name="Grand Embrace of Ice", display="(22-50)% Increased Body Armor Drop Rate", minVal=22.0, maxVal=50.0},
-				{name="Grand Grip of the Lance", display="(35-75)% Increased Gloves Drop Rate", minVal=35.0, maxVal=75.0},
-				{name="Grand Reach of Flame", display="(35-75)% Increased Off-Hand Catalyst Drop Rate", minVal=35.0, maxVal=75.0},
-				{name="Grand Right of Conquest", display="(35-75)% Increased Boots Drop Rate", minVal=35.0, maxVal=75.0},
-				{name="Grand Shadows of Infinity", display="(22-35)% Increased Relic Shard Drop Rate", minVal=22.0, maxVal=35.0},
-				{name="Grand Subtlety of Slaughter", display="(50-75)% Increased Dagger Drop Rate", minVal=50.0, maxVal=75.0},
-				{name="Grand Vigilance of the Damned", display="(50-75)% Increased Bow Drop Rate", minVal=50.0, maxVal=75.0},
+				{name="Grand Apex of Fortune", minVal=41.0, maxVal=60.0, implCount=1, impl1="(41-60)% Increased Quiver Drop Rate", label="(41-60)% Inc. Quiver Drop%"},
+				{name="Grand Arrogance of Argentus", minVal=22.0, maxVal=50.0, implCount=1, impl1="(22-50)% Increased Helmet Drop Rate", label="(22-50)% Inc. Helmet Drop%"},
+				{name="Grand Despair of the Empire", minVal=45.0, maxVal=70.0, implCount=1, impl1="(45-70)% Increased Ailment Shard Drop Rate", label="(45-70)% Inc. Ailment Shard Drop%"},
+				{name="Grand Embrace of Ice", minVal=22.0, maxVal=50.0, implCount=1, impl1="(22-50)% Increased Body Armor Drop Rate", label="(22-50)% Inc. Body Armor Drop%"},
+				{name="Grand Grip of the Lance", minVal=35.0, maxVal=75.0, implCount=1, impl1="(35-75)% Increased Gloves Drop Rate", label="(35-75)% Inc. Gloves Drop%"},
+				{name="Grand Reach of Flame", minVal=35.0, maxVal=75.0, implCount=1, impl1="(35-75)% Increased Off-Hand Catalyst Drop Rate", label="(35-75)% Inc. Off-Hand Catalyst Drop%"},
+				{name="Grand Right of Conquest", minVal=35.0, maxVal=75.0, implCount=1, impl1="(35-75)% Increased Boots Drop Rate", label="(35-75)% Inc. Boots Drop%"},
+				{name="Grand Shadows of Infinity", minVal=22.0, maxVal=35.0, implCount=1, impl1="(22-35)% Increased Relic Shard Drop Rate", label="(22-35)% Inc. Relic Shard Drop%"},
+				{name="Grand Subtlety of Slaughter", minVal=50.0, maxVal=75.0, implCount=1, impl1="(50-75)% Increased Dagger Drop Rate", label="(50-75)% Inc. Dagger Drop%"},
+				{name="Grand Vigilance of the Damned", minVal=50.0, maxVal=75.0, implCount=1, impl1="(50-75)% Increased Bow Drop Rate", label="(50-75)% Inc. Bow Drop%"},
 			},
 		},
 		["Fall of the Empire"] = {
 			normal = {
-				{name="Bastion of Divinity", display="+(25-40)% Lightning Resistance", minVal=25.0, maxVal=40.0},
-				{name="Binds of Sanctuary", display="(15-30)% Increased Shield Drop Rate", minVal=15.0, maxVal=30.0},
-				{name="Chaos of Lagon", display="(40-60)% increased Lightning Damage", minVal=40.0, maxVal=60.0},
-				{name="Intellect of Liath", display="(15-25)% Chance to Gain 30 Ward when Hit", minVal=15.0, maxVal=25.0},
-				{name="Light of the Moon", display="+(30-50) Mana", minVal=30.0, maxVal=50.0},
-				{name="Might of the Siege", display="(15-30)% Increased Belt Drop Rate", minVal=15.0, maxVal=30.0},
-				{name="Rhythm of the Tide", display="(60-100)% increased Health Regen / +(6-10) Health Regen", minVal=60.0, maxVal=100.0},
-				{name="Slumber of Morditas", display="(12-25)% Increased Relic Drop Rate", minVal=12.0, maxVal=25.0},
-				{name="Talon of Grandeur", display="(15-30)% Increased Ring Drop Rate", minVal=15.0, maxVal=30.0},
-				{name="Vision of the Aurora", display="(15-30)% Increased Amulet Drop Rate", minVal=15.0, maxVal=30.0},
+				{name="Bastion of Divinity", minVal=25.0, maxVal=40.0, implCount=1, impl1="+(25-40)% Lightning Resistance", label="+(25-40)% Lightning Res"},
+				{name="Binds of Sanctuary", minVal=15.0, maxVal=30.0, implCount=1, impl1="(15-30)% Increased Shield Drop Rate", label="(15-30)% Inc. Shield Drop%"},
+				{name="Chaos of Lagon", minVal=40.0, maxVal=60.0, implCount=1, impl1="(40-60)% increased Lightning Damage", label="(40-60)% inc. Lightning Dmg"},
+				{name="Intellect of Liath", minVal=15.0, maxVal=25.0, implCount=1, impl1="(15-25)% Chance to Gain 30 Ward when Hit", label="(15-25)% Chance to Gain 30 Ward when Hit"},
+				{name="Light of the Moon", minVal=30.0, maxVal=50.0, implCount=1, impl1="+(30-50) Mana", label="+(30-50) Mana"},
+				{name="Might of the Siege", minVal=15.0, maxVal=30.0, implCount=1, impl1="(15-30)% Increased Belt Drop Rate", label="(15-30)% Inc. Belt Drop%"},
+				{name="Rhythm of the Tide", minVal=60.0, maxVal=100.0, implCount=2, impl1="(60-100)% increased Health Regen", label="(60-100)% inc. Health Regen", impl2="+(6-10) Health Regen"},
+				{name="Slumber of Morditas", minVal=12.0, maxVal=25.0, implCount=1, impl1="(12-25)% Increased Relic Drop Rate", label="(12-25)% Inc. Relic Drop%"},
+				{name="Talon of Grandeur", minVal=15.0, maxVal=30.0, implCount=1, impl1="(15-30)% Increased Ring Drop Rate", label="(15-30)% Inc. Ring Drop%"},
+				{name="Vision of the Aurora", minVal=15.0, maxVal=30.0, implCount=1, impl1="(15-30)% Increased Amulet Drop Rate", label="(15-30)% Inc. Amulet Drop%"},
 			},
 			grand = {
-				{name="Grand Bastion of Divinity", display="+(55-75)% Lightning Resistance", minVal=55.0, maxVal=75.0},
-				{name="Grand Binds of Sanctuary", display="(35-75)% Increased Shield Drop Rate", minVal=35.0, maxVal=75.0},
-				{name="Grand Chaos of Lagon", display="(65-100)% increased Lightning Damage", minVal=65.0, maxVal=100.0},
-				{name="Grand Intellect of Liath", display="(30-50)% Chance to Gain 30 Ward when Hit", minVal=30.0, maxVal=50.0},
-				{name="Grand Light of the Moon", display="+(60-90) Mana", minVal=60.0, maxVal=90.0},
-				{name="Grand Might of the Siege", display="(35-75)% Increased Belt Drop Rate", minVal=35.0, maxVal=75.0},
-				{name="Grand Rhythm of the Tide", display="(120-200)% increased Health Regen / +(12-20) Health Regen", minVal=120.0, maxVal=200.0},
-				{name="Grand Slumber of Morditas", display="(30-60)% Increased Relic Drop Rate", minVal=30.0, maxVal=60.0},
-				{name="Grand Talon of Grandeur", display="(35-75)% Increased Ring Drop Rate", minVal=35.0, maxVal=75.0},
-				{name="Grand Vision of the Aurora", display="(35-75)% Increased Amulet Drop Rate", minVal=35.0, maxVal=75.0},
+				{name="Grand Bastion of Divinity", minVal=55.0, maxVal=75.0, implCount=1, impl1="+(55-75)% Lightning Resistance", label="+(55-75)% Lightning Res"},
+				{name="Grand Binds of Sanctuary", minVal=35.0, maxVal=75.0, implCount=1, impl1="(35-75)% Increased Shield Drop Rate", label="(35-75)% Inc. Shield Drop%"},
+				{name="Grand Chaos of Lagon", minVal=65.0, maxVal=100.0, implCount=1, impl1="(65-100)% increased Lightning Damage", label="(65-100)% inc. Lightning Dmg"},
+				{name="Grand Intellect of Liath", minVal=30.0, maxVal=50.0, implCount=1, impl1="(30-50)% Chance to Gain 30 Ward when Hit", label="(30-50)% Chance to Gain 30 Ward when Hit"},
+				{name="Grand Light of the Moon", minVal=60.0, maxVal=90.0, implCount=1, impl1="+(60-90) Mana", label="+(60-90) Mana"},
+				{name="Grand Might of the Siege", minVal=35.0, maxVal=75.0, implCount=1, impl1="(35-75)% Increased Belt Drop Rate", label="(35-75)% Inc. Belt Drop%"},
+				{name="Grand Rhythm of the Tide", minVal=120.0, maxVal=200.0, implCount=2, impl1="(120-200)% increased Health Regen", label="(120-200)% inc. Health Regen", impl2="+(12-20) Health Regen"},
+				{name="Grand Slumber of Morditas", minVal=30.0, maxVal=60.0, implCount=1, impl1="(30-60)% Increased Relic Drop Rate", label="(30-60)% Inc. Relic Drop%"},
+				{name="Grand Talon of Grandeur", minVal=35.0, maxVal=75.0, implCount=1, impl1="(35-75)% Increased Ring Drop Rate", label="(35-75)% Inc. Ring Drop%"},
+				{name="Grand Vision of the Aurora", minVal=35.0, maxVal=75.0, implCount=1, impl1="(35-75)% Increased Amulet Drop Rate", label="(35-75)% Inc. Amulet Drop%"},
 			},
 		},
 		["Reign of Dragons"] = {
 			normal = {
-				{name="Crash of the Waves", display="(50-90)% Increased Stun Chance", minVal=50.0, maxVal=90.0},
-				{name="Cruelty of the Meruna", display="+(40-60)% Chance to Shock on Hit", minVal=40.0, maxVal=60.0},
-				{name="Grace of Water", display="(40-70) Ward Gained on Potion Use / +(80-140) Ward Decay Threshold", minVal=40.0, maxVal=70.0},
-				{name="Might of the Sea Titan", display="(40-60)% increased Cold Damage", minVal=40.0, maxVal=60.0},
-				{name="Mysteries of the Deep", display="+(10-20)% Chance to Shred Lightning Resistance on Hit", minVal=10.0, maxVal=20.0},
-				{name="Resolve of Humanity", display="+(7-12)% to All Resistances", minVal=7.0, maxVal=12.0},
-				{name="Resonance of the Sea", display="+(17-25) Ward per Second", minVal=17.0, maxVal=25.0},
-				{name="Survival of Might", display="+(30-45)% Critical Strike Avoidance / +(30-50) Dodge Rating", minVal=30.0, maxVal=45.0},
-				{name="Trance of the Sirens", display="(10-14)% Increased Shock Duration", minVal=10.0, maxVal=14.0},
-				{name="Weight of the Abyss", display="+(100-180)% Freeze Rate Multiplier", minVal=100.0, maxVal=180.0},
+				{name="Crash of the Waves", minVal=50.0, maxVal=90.0, implCount=1, impl1="(50-90)% Increased Stun Chance", label="(50-90)% Inc. Stun Chance"},
+				{name="Cruelty of the Meruna", minVal=40.0, maxVal=60.0, implCount=1, impl1="+(40-60)% Chance to Shock on Hit", label="+(40-60)% Chance to Shock on Hit"},
+				{name="Grace of Water", minVal=40.0, maxVal=70.0, implCount=2, impl1="(40-70) Ward Gained on Potion Use", label="(40-70) Ward Gained on Potion Use", impl2="+(80-140) Ward Decay Threshold"},
+				{name="Might of the Sea Titan", minVal=40.0, maxVal=60.0, implCount=1, impl1="(40-60)% increased Cold Damage", label="(40-60)% inc. Cold Dmg"},
+				{name="Mysteries of the Deep", minVal=10.0, maxVal=20.0, implCount=1, impl1="+(10-20)% Chance to Shred Lightning Resistance on Hit", label="+(10-20)% Shred Lightning Res on Hit"},
+				{name="Resolve of Humanity", minVal=7.0, maxVal=12.0, implCount=1, impl1="+(7-12)% to All Resistances", label="+(7-12)% to All Ress"},
+				{name="Resonance of the Sea", minVal=17.0, maxVal=25.0, implCount=1, impl1="+(17-25) Ward per Second", label="+(17-25) Ward per Second"},
+				{name="Survival of Might", minVal=30.0, maxVal=45.0, implCount=2, impl1="+(30-45)% Critical Strike Avoidance", label="+(30-45)% Critical Strike Avoidance", impl2="+(30-50) Dodge Rating"},
+				{name="Trance of the Sirens", minVal=10.0, maxVal=14.0, implCount=1, impl1="(10-14)% Increased Shock Duration", label="(10-14)% Inc. Shock Duration"},
+				{name="Weight of the Abyss", minVal=100.0, maxVal=180.0, implCount=1, impl1="+(100-180)% Freeze Rate Multiplier", label="+(100-180)% Freeze Rate Multiplier"},
 			},
 			grand = {
-				{name="Grand Crash of the Waves", display="(100-160)% Increased Stun Chance", minVal=100.0, maxVal=160.0},
-				{name="Grand Cruelty of the Meruna", display="+(65-100)% Chance to Shock on Hit", minVal=65.0, maxVal=100.0},
-				{name="Grand Grace of Water", display="(80-130) Ward Gained on Potion Use / +(160-260) Ward Decay Threshold", minVal=80.0, maxVal=130.0},
-				{name="Grand Might of the Sea Titan", display="(65-100)% increased Cold Damage", minVal=65.0, maxVal=100.0},
-				{name="Grand Mysteries of the Deep", display="+(25-50)% Chance to Shred Lightning Resistance on Hit", minVal=25.0, maxVal=50.0},
-				{name="Grand Resolve of Humanity", display="+(13-20)% to All Resistances", minVal=13.0, maxVal=20.0},
-				{name="Grand Resonance of the Sea", display="+(30-42) Ward per Second", minVal=30.0, maxVal=42.0},
-				{name="Grand Survival of Might", display="+(50-70)% Critical Strike Avoidance / +(51-90) Dodge Rating", minVal=50.0, maxVal=70.0},
-				{name="Grand Trance of the Sirens", display="(15-22)% Increased Shock Duration", minVal=15.0, maxVal=22.0},
-				{name="Grand Weight of the Abyss", display="+(200-300)% Freeze Rate Multiplier", minVal=200.0, maxVal=300.0},
+				{name="Grand Crash of the Waves", minVal=100.0, maxVal=160.0, implCount=1, impl1="(100-160)% Increased Stun Chance", label="(100-160)% Inc. Stun Chance"},
+				{name="Grand Cruelty of the Meruna", minVal=65.0, maxVal=100.0, implCount=1, impl1="+(65-100)% Chance to Shock on Hit", label="+(65-100)% Chance to Shock on Hit"},
+				{name="Grand Grace of Water", minVal=80.0, maxVal=130.0, implCount=2, impl1="(80-130) Ward Gained on Potion Use", label="(80-130) Ward Gained on Potion Use", impl2="+(160-260) Ward Decay Threshold"},
+				{name="Grand Might of the Sea Titan", minVal=65.0, maxVal=100.0, implCount=1, impl1="(65-100)% increased Cold Damage", label="(65-100)% inc. Cold Dmg"},
+				{name="Grand Mysteries of the Deep", minVal=25.0, maxVal=50.0, implCount=1, impl1="+(25-50)% Chance to Shred Lightning Resistance on Hit", label="+(25-50)% Shred Lightning Res on Hit"},
+				{name="Grand Resolve of Humanity", minVal=13.0, maxVal=20.0, implCount=1, impl1="+(13-20)% to All Resistances", label="+(13-20)% to All Ress"},
+				{name="Grand Resonance of the Sea", minVal=30.0, maxVal=42.0, implCount=1, impl1="+(30-42) Ward per Second", label="+(30-42) Ward per Second"},
+				{name="Grand Survival of Might", minVal=50.0, maxVal=70.0, implCount=2, impl1="+(50-70)% Critical Strike Avoidance", label="+(50-70)% Critical Strike Avoidance", impl2="+(51-90) Dodge Rating"},
+				{name="Grand Trance of the Sirens", minVal=15.0, maxVal=22.0, implCount=1, impl1="(15-22)% Increased Shock Duration", label="(15-22)% Inc. Shock Duration"},
+				{name="Grand Weight of the Abyss", minVal=200.0, maxVal=300.0, implCount=1, impl1="+(200-300)% Freeze Rate Multiplier", label="+(200-300)% Freeze Rate Multiplier"},
 			},
 		},
 		["The Age of Winter"] = {
 			normal = {
-				{name="Binds of Nature", display="(40-60)% increased Poison Damage", minVal=40.0, maxVal=60.0},
-				{name="Cruelty of Strength", display="(40-60)% increased Physical Damage", minVal=40.0, maxVal=60.0},
-				{name="Despair of Flesh", display="(40-60)% increased Necrotic Damage", minVal=40.0, maxVal=60.0},
-				{name="Dream of Eterra", display="+(25-40)% Necrotic Resistance", minVal=25.0, maxVal=40.0},
-				{name="Guile of Wyrms", display="+(60-90)% Chance to Shred Poison Resistance on Hit", minVal=60.0, maxVal=90.0},
-				{name="Hemmorage of Marrow", display="+(40-60)% Chance to inflict Bleed on Hit", minVal=40.0, maxVal=60.0},
-				{name="Hunger of Dragons", display="(2-4)% of Melee Damage Leeched as Health", minVal=2.0, maxVal=4.0},
-				{name="Persistance of Will", display="+(25-40)% Poison Resistance", minVal=25.0, maxVal=40.0},
-				{name="Taste of Venom", display="+(40-60)% Chance to Poison on Hit", minVal=40.0, maxVal=60.0},
-				{name="Virtue of Command", display="+(8-15)% to Minion All Resistances", minVal=8.0, maxVal=15.0},
+				{name="Binds of Nature", minVal=40.0, maxVal=60.0, implCount=1, impl1="(40-60)% increased Poison Damage", label="(40-60)% inc. Poison Dmg"},
+				{name="Cruelty of Strength", minVal=40.0, maxVal=60.0, implCount=1, impl1="(40-60)% increased Physical Damage", label="(40-60)% inc. Physical Dmg"},
+				{name="Despair of Flesh", minVal=40.0, maxVal=60.0, implCount=1, impl1="(40-60)% increased Necrotic Damage", label="(40-60)% inc. Necrotic Dmg"},
+				{name="Dream of Eterra", minVal=25.0, maxVal=40.0, implCount=1, impl1="+(25-40)% Necrotic Resistance", label="+(25-40)% Necrotic Res"},
+				{name="Guile of Wyrms", minVal=60.0, maxVal=90.0, implCount=1, impl1="+(60-90)% Chance to Shred Poison Resistance on Hit", label="+(60-90)% Shred Poison Res on Hit"},
+				{name="Hemmorage of Marrow", minVal=40.0, maxVal=60.0, implCount=1, impl1="+(40-60)% Chance to inflict Bleed on Hit", label="+(40-60)% Chance to inflict Bleed on Hit"},
+				{name="Hunger of Dragons", minVal=2.0, maxVal=4.0, implCount=1, impl1="(2-4)% of Melee Damage Leeched as Health", label="(2-4)% of Melee Dmg Leeched as Health"},
+				{name="Persistance of Will", minVal=25.0, maxVal=40.0, implCount=1, impl1="+(25-40)% Poison Resistance", label="+(25-40)% Poison Res"},
+				{name="Taste of Venom", minVal=40.0, maxVal=60.0, implCount=1, impl1="+(40-60)% Chance to Poison on Hit", label="+(40-60)% Chance to Poison on Hit"},
+				{name="Virtue of Command", minVal=8.0, maxVal=15.0, implCount=1, impl1="+(8-15)% to Minion All Resistances", label="+(8-15)% to Minion All Ress"},
 			},
 			grand = {
-				{name="Grand Binds of Nature", display="(65-100)% increased Poison Damage", minVal=65.0, maxVal=100.0},
-				{name="Grand Cruelty of Strength", display="(65-100)% increased Physical Damage", minVal=65.0, maxVal=100.0},
-				{name="Grand Despair of Flesh", display="(65-100)% increased Necrotic Damage", minVal=65.0, maxVal=100.0},
-				{name="Grand Dream of Eterra", display="+(45-75)% Necrotic Resistance", minVal=45.0, maxVal=75.0},
-				{name="Grand Guile of Wyrms", display="+(100-150)% Chance to Shred Poison Resistance on Hit", minVal=100.0, maxVal=150.0},
-				{name="Grand Hemmorage of Marrow", display="+(65-100)% Chance to inflict Bleed on Hit", minVal=65.0, maxVal=100.0},
-				{name="Grand Hunger of Dragons", display="(4.5-7)% of Melee Damage Leeched as Health", minVal=4.5, maxVal=7.0},
-				{name="Grand Persistance of Will", display="+(55-75)% Poison Resistance", minVal=55.0, maxVal=75.0},
-				{name="Grand Taste of Venom", display="+(65-100)% Chance to Poison on Hit", minVal=65.0, maxVal=100.0},
-				{name="Grand Virtue of Command", display="+(16-25)% to Minion All Resistances", minVal=16.0, maxVal=25.0},
+				{name="Grand Binds of Nature", minVal=65.0, maxVal=100.0, implCount=1, impl1="(65-100)% increased Poison Damage", label="(65-100)% inc. Poison Dmg"},
+				{name="Grand Cruelty of Strength", minVal=65.0, maxVal=100.0, implCount=1, impl1="(65-100)% increased Physical Damage", label="(65-100)% inc. Physical Dmg"},
+				{name="Grand Despair of Flesh", minVal=65.0, maxVal=100.0, implCount=1, impl1="(65-100)% increased Necrotic Damage", label="(65-100)% inc. Necrotic Dmg"},
+				{name="Grand Dream of Eterra", minVal=45.0, maxVal=75.0, implCount=1, impl1="+(45-75)% Necrotic Resistance", label="+(45-75)% Necrotic Res"},
+				{name="Grand Guile of Wyrms", minVal=100.0, maxVal=150.0, implCount=1, impl1="+(100-150)% Chance to Shred Poison Resistance on Hit", label="+(100-150)% Shred Poison Res on Hit"},
+				{name="Grand Hemmorage of Marrow", minVal=65.0, maxVal=100.0, implCount=1, impl1="+(65-100)% Chance to inflict Bleed on Hit", label="+(65-100)% Chance to inflict Bleed on Hit"},
+				{name="Grand Hunger of Dragons", minVal=4.5, maxVal=7.0, implCount=1, impl1="(4.5-7)% of Melee Damage Leeched as Health", label="(4.5-7)% of Melee Dmg Leeched as Health"},
+				{name="Grand Persistance of Will", minVal=55.0, maxVal=75.0, implCount=1, impl1="+(55-75)% Poison Resistance", label="+(55-75)% Poison Res"},
+				{name="Grand Taste of Venom", minVal=65.0, maxVal=100.0, implCount=1, impl1="+(65-100)% Chance to Poison on Hit", label="+(65-100)% Chance to Poison on Hit"},
+				{name="Grand Virtue of Command", minVal=16.0, maxVal=25.0, implCount=1, impl1="+(16-25)% to Minion All Resistances", label="+(16-25)% to Minion All Ress"},
 			},
 		},
 		["Spirits of Fire"] = {
 			normal = {
-				{name="Allure of Apathy", display="+(40-60)% Chance to Slow on Hit", minVal=40.0, maxVal=60.0},
-				{name="Bones of Eternity", display="+(3-4)% Block Chance / +(100-140) Block Effectiveness", minVal=3.0, maxVal=4.0},
-				{name="Fury of the North", display="+(10-20)% Chance to Shred Physical Resistance on Hit", minVal=10.0, maxVal=20.0},
-				{name="Heart of Ice", display="+(20-35)% Chance to Chill on Hit", minVal=20.0, maxVal=35.0},
-				{name="Maw of Artor", display="+(40-60)% Chance to apply Frostbite on Hit", minVal=40.0, maxVal=60.0},
-				{name="Protection of Heorot", display="+(25-40)% Cold Resistance", minVal=25.0, maxVal=40.0},
-				{name="Rage of Winter", display="+(10-20)% Chance to Shred Cold Resistance on Hit", minVal=10.0, maxVal=20.0},
-				{name="Resolve of Grael", display="+(25-40)% Physical Resistance", minVal=25.0, maxVal=40.0},
-				{name="Vigor of Jormun", display="+(40-70) Endurance Threshold", minVal=40.0, maxVal=70.0},
-				{name="Winds of Frost", display="+(30-50)% Freeze Rate per stack of Chill", minVal=30.0, maxVal=50.0},
+				{name="Allure of Apathy", minVal=40.0, maxVal=60.0, implCount=1, impl1="+(40-60)% Chance to Slow on Hit", label="+(40-60)% Chance to Slow on Hit"},
+				{name="Bones of Eternity", minVal=3.0, maxVal=4.0, implCount=2, impl1="+(3-4)% Block Chance", label="+(3-4)% Block Chance", impl2="+(100-140) Block Effectiveness"},
+				{name="Fury of the North", minVal=10.0, maxVal=20.0, implCount=1, impl1="+(10-20)% Chance to Shred Physical Resistance on Hit", label="+(10-20)% Shred Physical Res on Hit"},
+				{name="Heart of Ice", minVal=20.0, maxVal=35.0, implCount=1, impl1="+(20-35)% Chance to Chill on Hit", label="+(20-35)% Chance to Chill on Hit"},
+				{name="Maw of Artor", minVal=40.0, maxVal=60.0, implCount=1, impl1="+(40-60)% Chance to apply Frostbite on Hit", label="+(40-60)% Chance to apply Frostbite on Hit"},
+				{name="Protection of Heorot", minVal=25.0, maxVal=40.0, implCount=1, impl1="+(25-40)% Cold Resistance", label="+(25-40)% Cold Res"},
+				{name="Rage of Winter", minVal=10.0, maxVal=20.0, implCount=1, impl1="+(10-20)% Chance to Shred Cold Resistance on Hit", label="+(10-20)% Shred Cold Res on Hit"},
+				{name="Resolve of Grael", minVal=25.0, maxVal=40.0, implCount=1, impl1="+(25-40)% Physical Resistance", label="+(25-40)% Physical Res"},
+				{name="Vigor of Jormun", minVal=40.0, maxVal=70.0, implCount=1, impl1="+(40-70) Endurance Threshold", label="+(40-70) Endurance Threshold"},
+				{name="Winds of Frost", minVal=30.0, maxVal=50.0, implCount=1, impl1="+(30-50)% Freeze Rate per stack of Chill", label="+(30-50)% Freeze Rate per stack of Chill"},
 			},
 			grand = {
-				{name="Grand Allure of Apathy", display="+(65-100)% Chance to Slow on Hit", minVal=65.0, maxVal=100.0},
-				{name="Grand Bones of Eternity", display="+(5-8)% Block Chance / +(180-240) Block Effectiveness", minVal=5.0, maxVal=8.0},
-				{name="Grand Fury of the North", display="+(25-50)% Chance to Shred Physical Resistance on Hit", minVal=25.0, maxVal=50.0},
-				{name="Grand Heart of Ice", display="+(40-60)% Chance to Chill on Hit", minVal=40.0, maxVal=60.0},
-				{name="Grand Maw of Artor", display="+(65-100)% Chance to apply Frostbite on Hit", minVal=65.0, maxVal=100.0},
-				{name="Grand Protection of Heorot", display="+(55-75)% Cold Resistance", minVal=55.0, maxVal=75.0},
-				{name="Grand Rage of Winter", display="+(25-50)% Chance to Shred Cold Resistance on Hit", minVal=25.0, maxVal=50.0},
-				{name="Grand Resolve of Grael", display="+(55-75)% Physical Resistance", minVal=55.0, maxVal=75.0},
-				{name="Grand Vigor of Jormun", display="+(80-150) Endurance Threshold", minVal=80.0, maxVal=150.0},
-				{name="Grand Winds of Frost", display="+(55-80)% Freeze Rate per stack of Chill", minVal=55.0, maxVal=80.0},
+				{name="Grand Allure of Apathy", minVal=65.0, maxVal=100.0, implCount=1, impl1="+(65-100)% Chance to Slow on Hit", label="+(65-100)% Chance to Slow on Hit"},
+				{name="Grand Bones of Eternity", minVal=5.0, maxVal=8.0, implCount=2, impl1="+(5-8)% Block Chance", label="+(5-8)% Block Chance", impl2="+(180-240) Block Effectiveness"},
+				{name="Grand Fury of the North", minVal=25.0, maxVal=50.0, implCount=1, impl1="+(25-50)% Chance to Shred Physical Resistance on Hit", label="+(25-50)% Shred Physical Res on Hit"},
+				{name="Grand Heart of Ice", minVal=40.0, maxVal=60.0, implCount=1, impl1="+(40-60)% Chance to Chill on Hit", label="+(40-60)% Chance to Chill on Hit"},
+				{name="Grand Maw of Artor", minVal=65.0, maxVal=100.0, implCount=1, impl1="+(65-100)% Chance to apply Frostbite on Hit", label="+(65-100)% Chance to apply Frostbite on Hit"},
+				{name="Grand Protection of Heorot", minVal=55.0, maxVal=75.0, implCount=1, impl1="+(55-75)% Cold Resistance", label="+(55-75)% Cold Res"},
+				{name="Grand Rage of Winter", minVal=25.0, maxVal=50.0, implCount=1, impl1="+(25-50)% Chance to Shred Cold Resistance on Hit", label="+(25-50)% Shred Cold Res on Hit"},
+				{name="Grand Resolve of Grael", minVal=55.0, maxVal=75.0, implCount=1, impl1="+(55-75)% Physical Resistance", label="+(55-75)% Physical Res"},
+				{name="Grand Vigor of Jormun", minVal=80.0, maxVal=150.0, implCount=1, impl1="+(80-150) Endurance Threshold", label="+(80-150) Endurance Threshold"},
+				{name="Grand Winds of Frost", minVal=55.0, maxVal=80.0, implCount=1, impl1="+(55-80)% Freeze Rate per stack of Chill", label="+(55-80)% Freeze Rate per stack of Chill"},
 			},
 		},
 		["The Last Ruin"] = {
 			normal = {
-				{name="Body of Obsidian", display="+(120-180) Armor", minVal=120.0, maxVal=180.0},
-				{name="Breath of Cinders", display="+(10-20)% Chance to Shred Fire Resistance on Hit", minVal=10.0, maxVal=20.0},
-				{name="Bulwark of the Tundra", display="(12-24)% increased Armor", minVal=12.0, maxVal=24.0},
-				{name="Curse of Sulphur", display="+(20-35)% Chance to apply Frailty on Hit", minVal=20.0, maxVal=35.0},
-				{name="Defiance of Yulia", display="+(5-10) Spell Cold Damage While Channelling", minVal=5.0, maxVal=10.0},
-				{name="Embers of Immortality", display="+(10-14)% Endurance", minVal=10.0, maxVal=14.0},
-				{name="Heart of the Caldera", display="+(25-40)% Fire Resistance", minVal=25.0, maxVal=40.0},
-				{name="Promise of Death", display="+(10-20)% Chance to Shred Necrotic Resistance on Hit", minVal=10.0, maxVal=20.0},
-				{name="Spirit of Command", display="(40-60)% increased Minion Damage", minVal=40.0, maxVal=60.0},
-				{name="Swiftness of Logi", display="(15-35)% increased Dodge Rating", minVal=15.0, maxVal=35.0},
+				{name="Body of Obsidian", minVal=120.0, maxVal=180.0, implCount=1, impl1="+(120-180) Armor", label="+(120-180) Armor"},
+				{name="Breath of Cinders", minVal=10.0, maxVal=20.0, implCount=1, impl1="+(10-20)% Chance to Shred Fire Resistance on Hit", label="+(10-20)% Shred Fire Res on Hit"},
+				{name="Bulwark of the Tundra", minVal=12.0, maxVal=24.0, implCount=1, impl1="(12-24)% increased Armor", label="(12-24)% inc. Armor"},
+				{name="Curse of Sulphur", minVal=20.0, maxVal=35.0, implCount=1, impl1="+(20-35)% Chance to apply Frailty on Hit", label="+(20-35)% Chance to apply Frailty on Hit"},
+				{name="Defiance of Yulia", minVal=5.0, maxVal=10.0, implCount=1, impl1="+(5-10) Spell Cold Damage While Channelling", label="+(5-10) Spell Cold Dmg While Channelling"},
+				{name="Embers of Immortality", minVal=10.0, maxVal=14.0, implCount=1, impl1="+(10-14)% Endurance", label="+(10-14)% Endurance"},
+				{name="Heart of the Caldera", minVal=25.0, maxVal=40.0, implCount=1, impl1="+(25-40)% Fire Resistance", label="+(25-40)% Fire Res"},
+				{name="Promise of Death", minVal=10.0, maxVal=20.0, implCount=1, impl1="+(10-20)% Chance to Shred Necrotic Resistance on Hit", label="+(10-20)% Shred Necrotic Res on Hit"},
+				{name="Spirit of Command", minVal=40.0, maxVal=60.0, implCount=1, impl1="(40-60)% increased Minion Damage", label="(40-60)% inc. Minion Dmg"},
+				{name="Swiftness of Logi", minVal=15.0, maxVal=35.0, implCount=1, impl1="(15-35)% increased Dodge Rating", label="(15-35)% inc. Dodge Rating"},
 			},
 			grand = {
-				{name="Grand Body of Obsidian", display="+(200-320) Armor", minVal=200.0, maxVal=320.0},
-				{name="Grand Breath of Cinders", display="+(25-50)% Chance to Shred Fire Resistance on Hit", minVal=25.0, maxVal=50.0},
-				{name="Grand Bulwark of the Tundra", display="(25-55)% increased Armor", minVal=25.0, maxVal=55.0},
-				{name="Grand Curse of Sulphur", display="+(40-60)% Chance to apply Frailty on Hit", minVal=40.0, maxVal=60.0},
-				{name="Grand Defiance of Yulia", display="+(11-20) Spell Cold Damage While Channelling", minVal=11.0, maxVal=20.0},
-				{name="Grand Embers of Immortality", display="+(18-30)% Endurance", minVal=18.0, maxVal=30.0},
-				{name="Grand Heart of the Caldera", display="+(55-75)% Fire Resistance", minVal=55.0, maxVal=75.0},
-				{name="Grand Promise of Death", display="+(25-50)% Chance to Shred Necrotic Resistance on Hit", minVal=25.0, maxVal=50.0},
-				{name="Grand Spirit of Command", display="(65-100)% increased Minion Damage", minVal=65.0, maxVal=100.0},
-				{name="Grand Swiftness of Logi", display="(40-70)% increased Dodge Rating", minVal=40.0, maxVal=70.0},
+				{name="Grand Body of Obsidian", minVal=200.0, maxVal=320.0, implCount=1, impl1="+(200-320) Armor", label="+(200-320) Armor"},
+				{name="Grand Breath of Cinders", minVal=25.0, maxVal=50.0, implCount=1, impl1="+(25-50)% Chance to Shred Fire Resistance on Hit", label="+(25-50)% Shred Fire Res on Hit"},
+				{name="Grand Bulwark of the Tundra", minVal=25.0, maxVal=55.0, implCount=1, impl1="(25-55)% increased Armor", label="(25-55)% inc. Armor"},
+				{name="Grand Curse of Sulphur", minVal=40.0, maxVal=60.0, implCount=1, impl1="+(40-60)% Chance to apply Frailty on Hit", label="+(40-60)% Chance to apply Frailty on Hit"},
+				{name="Grand Defiance of Yulia", minVal=11.0, maxVal=20.0, implCount=1, impl1="+(11-20) Spell Cold Damage While Channelling", label="+(11-20) Spell Cold Dmg While Channelling"},
+				{name="Grand Embers of Immortality", minVal=18.0, maxVal=30.0, implCount=1, impl1="+(18-30)% Endurance", label="+(18-30)% Endurance"},
+				{name="Grand Heart of the Caldera", minVal=55.0, maxVal=75.0, implCount=1, impl1="+(55-75)% Fire Resistance", label="+(55-75)% Fire Res"},
+				{name="Grand Promise of Death", minVal=25.0, maxVal=50.0, implCount=1, impl1="+(25-50)% Chance to Shred Necrotic Resistance on Hit", label="+(25-50)% Shred Necrotic Res on Hit"},
+				{name="Grand Spirit of Command", minVal=65.0, maxVal=100.0, implCount=1, impl1="(65-100)% increased Minion Damage", label="(65-100)% inc. Minion Dmg"},
+				{name="Grand Swiftness of Logi", minVal=40.0, maxVal=70.0, implCount=1, impl1="(40-70)% increased Dodge Rating", label="(40-70)% inc. Dodge Rating"},
 			},
 		},
 	}
@@ -407,72 +409,100 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 	local blessingTimelines = {"Fall of the Outcasts", "The Stolen Lance", "The Black Sun", "Blood, Frost, and Death", "Ending the Storm", "Fall of the Empire", "Reign of Dragons", "The Age of Winter", "Spirits of Fire", "The Last Ruin"}
 	self.blessingControls = {}
 
+	local function updateBlessingSlot(tl, blessEntry, rollFrac)
+		local slot = self.slots[tl]
+		if not slot then return end
+		local oldId = slot.selItemId
+		if oldId and oldId < 0 then self.items[oldId] = nil end
+		if not blessEntry or not blessEntry.name then
+			slot.selItemId = 0
+			if self.activeItemSet[tl] then self.activeItemSet[tl].selItemId = 0 end
+			self.build.buildFlag = true
+			return
+		end
+		local frac = rollFrac or 1.0
+		local val = blessEntry.minVal + frac * (blessEntry.maxVal - blessEntry.minVal)
+		local function resolveImpl(impl)
+			return impl:gsub("%([0-9.]+%-[0-9.]+%)", function()
+				return string.format("%d", math.floor(val + 0.5))
+			end)
+		end
+		local implCount = blessEntry.implCount or 1
+		local raw = "Rarity: NORMAL\n"..blessEntry.name.."\n"..blessEntry.name
+			.."\nImplicits: "..implCount.."\n"..resolveImpl(blessEntry.impl1 or "")
+		if blessEntry.impl2 then raw = raw.."\n"..resolveImpl(blessEntry.impl2) end
+		local item = new("Item", raw)
+		if not item or not item.base then return end
+		item:BuildModList()
+		item.id = -1
+		while self.items[item.id] do item.id = item.id - 1 end
+		self.items[item.id] = item
+		slot.selItemId = item.id
+		if self.activeItemSet[tl] then self.activeItemSet[tl].selItemId = item.id end
+		self.build.buildFlag = true
+	end
+
 	local prevBless = self.controls.idolPositionsLabel
-	self.controls.blessingHeader = new("LabelControl", {"TOPLEFT",prevBless,"BOTTOMLEFT"}, 0, 12, 0, 16, "^7Blessings (Monolith):")
+	self.controls.blessingHeader = new("LabelControl", {"TOPLEFT",prevBless,"BOTTOMLEFT"}, 0, 12, 310, 16, "^7Blessings (Monolith):")
 	prevBless = self.controls.blessingHeader
 
 	for _, tl in ipairs(blessingTimelines) do
 		local tlData = blessingData[tl]
-		if not tlData then goto blessContinue end
+		if tlData then
+			local isGrand = false
+			local slider, drop, gradeBtn
 
-		local isGrand = false
-
-		local function buildList(grand)
-			local list = {{label="None"}}
-			for _, b in ipairs(grand and tlData.grand or tlData.normal) do
-				t_insert(list, {label=b.display, name=b.name, minVal=b.minVal, maxVal=b.maxVal})
+			local function buildList(grand)
+				local list = { {label="None"} }
+				for _, b in ipairs(grand and tlData.grand or tlData.normal) do
+					t_insert(list, {label=b.label or b.impl1 or b.name, data=b})
+				end
+				return list
 			end
-			return list
-		end
 
-		-- Label (timeline name, right-aligned)
-		local tlLabel = new("LabelControl", {"TOPLEFT",prevBless,"BOTTOMLEFT"}, 0, 4, 96, 16, function()
-			return "^7"..tl..":"
-		end)
+			-- Row1: timeline label + dropdown (same y)
+			local tlLabel = new("LabelControl", {"TOPLEFT",prevBless,"BOTTOMLEFT"}, 0, 5, 144, 16, function()
+				return "^x888888"..tl..":"
+			end)
+			drop = new("DropDownControl", {"TOPLEFT",prevBless,"BOTTOMLEFT"}, 148, 5, 250, 40, buildList(false), function(index, value)
+				local frac = slider and slider.val or 1.0
+				updateBlessingSlot(tl, value and value.data, frac)
+			end)
+			drop.enableDroppedWidth = true
 
-		-- Blessing dropdown
-		local drop = new("DropDownControl", {"LEFT",tlLabel,"RIGHT"}, 4, 0, 260, 20, buildList(false), function(index, value)
-			self.build.buildFlag = true
-			self:AddUndoState()
-		end)
-		drop.enableDroppedWidth = true
-
-		-- Slider for roll value
-		local slider = new("SliderControl", {"LEFT",drop,"RIGHT"}, 6, 0, 90, 18, function(val)
-			self.build.buildFlag = true
-		end)
-		slider.val = 1.0
-
-		-- Value display
-		local valLabel = new("LabelControl", {"LEFT",slider,"RIGHT"}, 4, 0, 44, 16, function()
-			local sel = drop.list[drop.selIndex]
-			if not sel or not sel.name then return "^x7F7F7F--" end
-			local v = sel.minVal + slider.val * (sel.maxVal - sel.minVal)
-			if sel.maxVal == sel.minVal then return string.format("^7%.1f", v) end
-			return string.format("^7%.0f", v)
-		end)
-
-		-- Normal/Grand toggle
-		local gradeBtn = new("ButtonControl", {"LEFT",valLabel,"RIGHT"}, 4, 0, 56, 18, "Normal", function()
-			isGrand = not isGrand
-			gradeBtn.label = isGrand and "Grand" or "Normal"
-			drop:SetList(buildList(isGrand))
+			-- Row2: grade button + slider + value (anchored to tlLabel bottom, fixed offset for 40px drop)
+			local row2 = new("Control", {"TOPLEFT",tlLabel,"BOTTOMLEFT"}, 0, 28, 0, 20)
+			gradeBtn = new("ButtonControl", {"LEFT",row2,"RIGHT"}, 0, 2, 52, 16, "Normal", function()
+				isGrand = not isGrand
+				gradeBtn.label = isGrand and "Grand" or "Normal"
+				drop:SetList(buildList(isGrand))
+				local sel = drop.list[drop.selIndex]
+				updateBlessingSlot(tl, sel and sel.data, slider and slider.val or 1.0)
+			end)
+			slider = new("SliderControl", {"LEFT",gradeBtn,"RIGHT"}, 4, 2, 150, 16, function(val)
+				local sel = drop.list[drop.selIndex]
+				updateBlessingSlot(tl, sel and sel.data, val)
+			end)
 			slider.val = 1.0
-			self.build.buildFlag = true
-		end)
+			local valLabel = new("LabelControl", {"LEFT",slider,"RIGHT"}, 4, 0, 44, 16, function()
+				local sel = drop.list[drop.selIndex]
+				if not sel or not sel.data then return "^x555555--" end
+				local b = sel.data
+				local v = b.minVal + slider.val * (b.maxVal - b.minVal)
+				return string.format("^7%d", math.floor(v + 0.5))
+			end)
 
-		t_insert(self.controls, tlLabel)
-		t_insert(self.controls, drop)
-		t_insert(self.controls, slider)
-		t_insert(self.controls, valLabel)
-		t_insert(self.controls, gradeBtn)
-		self.blessingControls[tl] = {drop=drop, slider=slider, gradeBtn=gradeBtn, valLabel=valLabel}
-		prevBless = tlLabel
-
-		::blessContinue::
+			t_insert(self.controls, tlLabel)
+			t_insert(self.controls, drop)
+			t_insert(self.controls, row2)
+			t_insert(self.controls, gradeBtn)
+			t_insert(self.controls, slider)
+			t_insert(self.controls, valLabel)
+			self.blessingControls[tl] = {drop=drop, slider=slider, gradeBtn=gradeBtn}
+			prevBless = row2
+		end
 	end
 
-	-- Sentinel control so contentHeight includes the blessing panel
 	self.controls.blessingPanelEnd = new("Control", {"TOPLEFT",prevBless,"BOTTOMLEFT"}, 0, 4, 0, 0)
 	t_insert(self.controls, self.controls.blessingPanelEnd)
 	-- ===== END BLESSING PANEL =====
@@ -869,7 +899,7 @@ holding Shift will put it in the second.]])
 	self:SetActiveItemSet(1)
 
 	self:PopulateSlots()
-	self.lastSlot = self.slots[baseSlots[#baseSlots]]
+	self.lastSlot = lastVisibleSlot
 end)
 
 function ItemsTabClass:Load(xml, dbFileName)
