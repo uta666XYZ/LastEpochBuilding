@@ -152,9 +152,10 @@ end
 
 function DropDownClass:ScrollSelIntoView()
 	local width, height = self:GetSize()
+	local itemLineH = 20
 	local scrollBar = self.controls.scrollBar
-	scrollBar:SetContentDimension((height - 4) * self:GetDropCount(), self.dropHeight)
-	scrollBar:ScrollIntoView((self:ListIndexToDropIndex(self.selIndex, 1) - 2) * (height - 4), 3 * (height - 4))
+	scrollBar:SetContentDimension(itemLineH * self:GetDropCount(), self.dropHeight)
+	scrollBar:ScrollIntoView((self:ListIndexToDropIndex(self.selIndex, 1) - 2) * itemLineH, 3 * itemLineH)
 end
 
 function DropDownClass:IsMouseOver()
@@ -197,26 +198,27 @@ function DropDownClass:Draw(viewPort, noTooltip)
 	local enabled = self:IsEnabled()
 	local scrollBar = self.controls.scrollBar
 	local lineHeight = height - 4
-	self.dropHeight = lineHeight * m_min(#self.list, 20)
+	local itemLineH = 20  -- fixed item row height (font 16 + 4px padding)
+	self.dropHeight = itemLineH * m_min(#self.list, 20)
 	scrollBar.y = height + 1
 	if y + height + self.dropHeight + 4 <= viewPort.y + viewPort.height then
 		-- Drop fits below body
 		self.dropUp = false
 	else
-		local linesAbove = m_floor((y - viewPort.y - 4) / lineHeight)
-		local linesBelow = m_floor((viewPort.y + viewPort.height - y - height - 4) / lineHeight)
+		local linesAbove = m_floor((y - viewPort.y - 4) / itemLineH)
+		local linesBelow = m_floor((viewPort.y + viewPort.height - y - height - 4) / itemLineH)
 		if linesAbove > linesBelow then
 			-- There's more room above the body than below
 			self.dropUp = true
 			if y - viewPort.y < self.dropHeight + 4 then
 				-- Still doesn't fit, so clip it
-				self.dropHeight = lineHeight * linesAbove
+				self.dropHeight = itemLineH * linesAbove
 			end
 			scrollBar.y = -self.dropHeight - 3
 		else
 			-- Doesn't fit below body, so clip it
 			self.dropUp = false
-			self.dropHeight = lineHeight * linesBelow
+			self.dropHeight = itemLineH * linesBelow
 		end
 	end
 
@@ -225,11 +227,11 @@ function DropDownClass:Draw(viewPort, noTooltip)
 	end
 
 	-- fit dropHeight to filtered content but keep initial orientation
-	self.dropHeight = m_max(m_min(self.dropHeight, self:GetDropCount() * lineHeight), lineHeight)
+	self.dropHeight = m_max(m_min(self.dropHeight, self:GetDropCount() * itemLineH), itemLineH)
 	
 	local mOver, mOverComp = self:IsMouseOver()
 	local dropExtra = self.dropHeight + 4
-	scrollBar:SetContentDimension(lineHeight * self:GetDropCount(), self.dropHeight)
+	scrollBar:SetContentDimension(itemLineH * self:GetDropCount(), self.dropHeight)
 	local dropY = self.dropUp and y - dropExtra or y + height
 	if not enabled then
 		SetDrawColor(0.33, 0.33, 0.33)
@@ -301,8 +303,31 @@ function DropDownClass:Draw(viewPort, noTooltip)
 			selLabel = selLabel.label
 		end
 	end
-	SetViewport(x + 2, y + 2, width - height, lineHeight)
-	DrawString(0, 0, "LEFT", lineHeight, "VAR", selLabel or "")
+	local drawWidth = width - height
+	local fontSize = 16
+	if height >= 32 and selLabel and DrawStringWidth(fontSize, "VAR", selLabel) > drawWidth then
+		-- Tall dropdown: word-wrap into 2 lines with fixed font size 16, top-aligned
+		-- Find last space before pixel overflow
+		local cutoff = DrawStringCursorIndex(fontSize, "VAR", selLabel, drawWidth, 0)
+		local wrapAt = cutoff
+		-- Walk back to find a space boundary
+		for i = cutoff, 1, -1 do
+			if selLabel:sub(i, i) == " " then
+				wrapAt = i - 1
+				break
+			end
+		end
+		if wrapAt <= 0 then wrapAt = cutoff end  -- no space found, hard cut
+		local line1 = selLabel:sub(1, wrapAt)
+		local line2 = selLabel:sub(wrapAt + 2)  -- skip the space
+		SetViewport(x + 2, y + 2, drawWidth, height - 2)
+		DrawString(0, 0, "LEFT", fontSize, "VAR", line1)
+		DrawString(0, fontSize + 2, "LEFT", fontSize, "VAR", line2 or "")
+	else
+		-- Normal single-line: always use font size 16 regardless of control height
+		SetViewport(x + 2, y + 2, drawWidth, height - 2)
+		DrawString(0, (height - 4 - fontSize) / 2, "LEFT", fontSize, "VAR", selLabel or "")
+	end
 	SetViewport()
 
 	-- draw dropped down part with items
@@ -310,10 +335,12 @@ function DropDownClass:Draw(viewPort, noTooltip)
 		SetDrawLayer(nil, 5)
 		self:DrawControls(viewPort)
 		width = self.droppedWidth
+		local itemFontSize = 16
+		local itemLineH = itemFontSize + 4
 
 		-- draw tooltip for hovered item
 		local cursorX, cursorY = GetCursorPos()
-		self.hoverSelDrop = mOver and not scrollBar:IsMouseOver() and math.floor((cursorY - dropY + scrollBar.offset) / lineHeight) + 1
+		self.hoverSelDrop = mOver and not scrollBar:IsMouseOver() and math.floor((cursorY - dropY + scrollBar.offset) / itemLineH) + 1
 		self.hoverSel = self:DropIndexToListIndex(self.hoverSelDrop)
 		if self.hoverSel and not self.list[self.hoverSel] then
 			self.hoverSel = nil
@@ -321,8 +348,8 @@ function DropDownClass:Draw(viewPort, noTooltip)
 		if self.hoverSel and not noTooltip then
 			SetDrawLayer(nil, 100)
 			self:DrawTooltip(
-				x, dropY + 2 + (self.hoverSelDrop - 1) * lineHeight - scrollBar.offset,
-				width, lineHeight,
+				x, dropY + 2 + (self.hoverSelDrop - 1) * itemLineH - scrollBar.offset,
+				width, itemLineH,
 				viewPort,
 				"HOVER", self.hoverSel, self.list[self.hoverSel])
 			SetDrawLayer(nil, 5)
@@ -336,11 +363,11 @@ function DropDownClass:Draw(viewPort, noTooltip)
 			-- skip filtered out items if search is active
 			if not self:IsSearchActive() or searchInfo and searchInfo.matches then
 				dropIndex = dropIndex + 1
-				local y = (dropIndex - 1) * lineHeight - scrollBar.offset
+				local y = (dropIndex - 1) * itemLineH - scrollBar.offset
 				-- highlight background if hovered
 				if index == self.hoverSel then
 					SetDrawColor(0.33, 0.33, 0.33)
-					DrawImage(nil, 0, y, width - 4, lineHeight)
+					DrawImage(nil, 0, y, width - 4, itemLineH)
 				end
 				-- highlight font color if hovered or selected
 				if index == self.hoverSel or index == self.selIndex then
@@ -350,8 +377,8 @@ function DropDownClass:Draw(viewPort, noTooltip)
 				end
 				-- draw actual item label with search match highlight if available
 				local label = type(listVal) == "table" and listVal.label or listVal
-				DrawString(0, y, "LEFT", lineHeight, "VAR", label)
-				self:DrawSearchHighlights(label, searchInfo, 0, y, width - 4, lineHeight)
+				DrawString(0, y, "LEFT", itemFontSize, "VAR", label)
+				self:DrawSearchHighlights(label, searchInfo, 0, y, width - 4, itemFontSize)
 			end
 		end
 		SetDrawColor(1, 1, 1)
@@ -425,7 +452,7 @@ function DropDownClass:OnKeyUp(key)
 			local cursorX, cursorY = GetCursorPos()
 			local dropExtra = self.dropHeight + 4
 			local dropY = self.dropUp and y - dropExtra or y + height
-			self:SetSel(math.floor((cursorY - dropY + self.controls.scrollBar.offset) / (height - 4)) + 1)
+			self:SetSel(math.floor((cursorY - dropY + self.controls.scrollBar.offset) / 20) + 1)
 			self.dropped = false
 		end
 	elseif self.controls.scrollBar:IsScrollDownKey(key) then
