@@ -26,6 +26,7 @@ local TreeTabClass = newClass("TreeTab", "ControlHost", function(self, build)
 	self.isComparing = false;
 
 	self.viewer = new("PassiveTreeView")
+	self.viewer.filterMode = "passive"  -- TreeTab shows passive tree only (skill trees are in SkillsTab)
 
 	self.specList = { }
 	self.specList[1] = new("PassiveSpec", build, latestTreeVersion)
@@ -272,7 +273,13 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 		self.jumpToNode = false
 	end
 	self.viewer.compareSpec = self.isComparing and self.specList[self.activeCompareSpec] or nil
-	self.viewer:Draw(self.build, treeViewPort, inputEvents)
+	-- Pass a fresh copy of inputEvents to the tree viewer so that ProcessControlsInput
+	-- (which nils out LEFTBUTTON events when selControl is set) cannot block tree drag/zoom.
+	local treeInputEvents = {}
+	for i, e in ipairs(inputEvents) do
+		treeInputEvents[i] = e
+	end
+	self.viewer:Draw(self.build, treeViewPort, treeInputEvents)
 
 	local newSpecList = self:GetSpecList()
 	self.controls.compareSelect.selIndex = self.activeCompareSpec
@@ -788,4 +795,3 @@ function TreeTabClass:BuildPowerReportList(currentStat)
 
 	return report
 end
-

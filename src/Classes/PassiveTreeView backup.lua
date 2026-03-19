@@ -99,19 +99,14 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 			if self.selectedSkillIndex then
 				-- Show only the selected skill's tree
 				local ability = build.skillsTab.socketGroupList[self.selectedSkillIndex]
-				if ability then
-					-- Try treeId first, then skillId (for compatibility with original code)
-					local treeId = (ability.grantedEffect and ability.grantedEffect.treeId) or ability.skillId
-					if treeId then
-						return nodeId:match("^" .. treeId) ~= nil
-					end
+				if ability and ability.grantedEffect and ability.grantedEffect.treeId then
+					return nodeId:match("^" .. ability.grantedEffect.treeId) ~= nil
 				end
 				return false
 			else
 				-- Show all skill trees
 				for id, ability in pairs(build.skillsTab.socketGroupList) do
-					local treeId = (ability.grantedEffect and ability.grantedEffect.treeId) or ability.skillId
-					if treeId and nodeId:match("^" .. treeId) then
+					if ability.grantedEffect and ability.grantedEffect.treeId and nodeId:match("^" .. ability.grantedEffect.treeId) then
 						return true
 					end
 				end
@@ -130,18 +125,13 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 		elseif self.filterMode == "skill" then
 			if self.selectedSkillIndex then
 				local ability = build.skillsTab.socketGroupList[self.selectedSkillIndex]
-				if ability then
-					-- Try treeId first, then skillId (for compatibility with original code)
-					local treeId = (ability.grantedEffect and ability.grantedEffect.treeId) or ability.skillId
-					if treeId then
-						return connectorNodeId1:match("^" .. treeId) ~= nil
-					end
+				if ability and ability.grantedEffect and ability.grantedEffect.treeId then
+					return connectorNodeId1:match("^" .. ability.grantedEffect.treeId) ~= nil
 				end
 				return false
 			else
 				for id, ability in pairs(build.skillsTab.socketGroupList) do
-					local treeId = (ability.grantedEffect and ability.grantedEffect.treeId) or ability.skillId
-					if treeId and connectorNodeId1:match("^" .. treeId) then
+					if ability.grantedEffect and ability.grantedEffect.treeId and connectorNodeId1:match("^" .. ability.grantedEffect.treeId) then
 						return true
 					end
 				end
@@ -198,36 +188,21 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 
 	if not IsKeyDown("LEFTBUTTON") then
 		-- Left mouse button isn't down, stop dragging if dragging was in progress
-		if self.dragging then
-			self.dragging = false
-		end
+		self.dragging = false
 		self.dragX, self.dragY = nil, nil
 	end
-
-	-- Drag handling: use IsKeyDown directly so it works even if inputEvents was consumed
-	-- by ProcessControlsInput earlier in the frame.
-	-- We intentionally do NOT require mOver here so that drag continues even if cursor
-	-- briefly leaves the viewport during fast mouse movement.
-	if not self.disableDragging then
-		if IsKeyDown("LEFTBUTTON") then
-			if not self.dragX then
-				-- Only start a new drag if cursor is inside the viewport
-				if mOver then
-					self.dragX, self.dragY = cursorX, cursorY
-				end
-			else
-				-- Drag already started — continue regardless of mOver
-				if not self.dragging then
-					if math.abs(cursorX - self.dragX) > 5 or math.abs(cursorY - self.dragY) > 5 then
-						self.dragging = true
-					end
-				end
-				if self.dragging then
-					self.zoomX = self.zoomX + cursorX - self.dragX
-					self.zoomY = self.zoomY + cursorY - self.dragY
-					self.dragX, self.dragY = cursorX, cursorY
-				end
+	if self.dragX and not self.disableDragging then
+		-- Left mouse is down (only process if dragging is enabled)
+		if not self.dragging then
+			-- Check if mouse has moved more than a few pixels, and if so, initiate dragging
+			if math.abs(cursorX - self.dragX) > 5 or math.abs(cursorY - self.dragY) > 5 then
+				self.dragging = true
 			end
+		end
+		if self.dragging then
+			self.zoomX = self.zoomX + cursorX - self.dragX
+			self.zoomY = self.zoomY + cursorY - self.dragY
+			self.dragX, self.dragY = cursorX, cursorY
 		end
 	end
 
@@ -238,16 +213,13 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 	end
 
 	-- Clamp zoom offset
+	-- LE trees are much smaller than PoE, so we use a very small clamp factor
 	local clampFactor
-	if self.filterMode == "skill" and self.selectedSkillIndex then
-		-- Single skill tree: tight clamp (small tree, not much panning needed)
+	if self.filterMode == "passive" or self.filterMode == "skill" then
+		-- Very tight clamp for LE-specific views (almost no panning needed)
 		clampFactor = self.zoom * 0.08
-	elseif self.filterMode == "skill" then
-		-- All-trees mode: generous clamp to allow panning across all trees
-		clampFactor = self.zoom * 2.0
 	else
-		-- Passive tree (filterMode "all" or "passive"): original clamp
-		clampFactor = self.zoom * 2 / 3
+		clampFactor = self.zoom * 0.15
 	end
 	self.zoomX = self.zoomX ~= nil and m_min(m_max(self.zoomX, -viewPort.width * clampFactor), viewPort.width * clampFactor) or 1
 	self.zoomY = self.zoomY ~= nil and m_min(m_max(self.zoomY, -viewPort.height * clampFactor), viewPort.height * clampFactor) or 1
@@ -262,9 +234,8 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 		if self.selectedSkillIndex then
 			-- SINGLE TREE MODE: Show only the selected skill's tree
 			local ability = build.skillsTab.socketGroupList[self.selectedSkillIndex]
-			-- Try treeId first, then skillId (for compatibility with original code)
-			local treeId = ability and ((ability.grantedEffect and ability.grantedEffect.treeId) or ability.skillId)
-			if treeId then
+			if ability and ability.grantedEffect and ability.grantedEffect.treeId then
+				local treeId = ability.grantedEffect.treeId
 				local minX, maxX, minY, maxY = math.huge, -math.huge, math.huge, -math.huge
 				local hasNodes = false
 				local maxNodeRadius = 50  -- Default node radius estimate
@@ -328,7 +299,7 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 			end
 			self.treeOffsets = nil
 		else
-			-- ALL TREES MODE: Show all 5 skill trees stacked vertically with zoom/pan support
+			-- ALL TREES MODE: Show all 5 skill trees stacked vertically
 			local minX, maxX, minY, maxY = math.huge, -math.huge, math.huge, -math.huge
 			local hasNodes = false
 			local treeOffsets = {}
@@ -337,9 +308,8 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 			
 			for i = 1, 5 do
 				local ability = build.skillsTab.socketGroupList[i]
-				-- Try treeId first, then skillId (for compatibility with original code)
-				local treeId = ability and ((ability.grantedEffect and ability.grantedEffect.treeId) or ability.skillId)
-				if treeId then
+				if ability and ability.grantedEffect and ability.grantedEffect.treeId then
+					local treeId = ability.grantedEffect.treeId
 					local treeMinX, treeMaxX, treeMinY, treeMaxY = math.huge, -math.huge, math.huge, -math.huge
 					local treeHasNodes = false
 					
@@ -383,27 +353,14 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 				local vpW = viewPort.width - padding * 2
 				local vpH = viewPort.height - padding * 2
 				
-				-- Calculate base scale to fit all trees in viewport
-				local baseScaleX = vpW / treeWidth
-				local baseScaleY = vpH / treeHeight
-				local baseScale = m_min(baseScaleX, baseScaleY)
-				baseScale = m_max(0.05, m_min(baseScale, 0.8))
+				local scaleX = vpW / treeWidth
+				local scaleY = vpH / treeHeight
+				scale = m_min(scaleX, scaleY)
 				
-				-- Apply zoom multiplier (self.zoom starts at 1.2^22 but we use relative ratio)
-				-- We store the reference zoom level when first computed
-				if not self.skillBaseScale then
-					self.skillBaseScale = baseScale
-					self.skillRefZoom = self.zoom
-				end
-				-- Scale with zoom: multiply baseScale by zoom ratio
-				scale = self.skillBaseScale * (self.zoom / self.skillRefZoom)
-				scale = m_max(0.04, m_min(scale, 6.0))
+				scale = m_max(0.15, m_min(scale, 0.8))
 				
-				-- Center the tree in the viewport, then apply pan offset
-				local treeCenterX = (minX + maxX) / 2
-				local treeCenterY = (minY + maxY) / 2
-				offsetX = self.zoomX + viewPort.x + viewPort.width / 2 - treeCenterX * scale
-				offsetY = self.zoomY + viewPort.y + viewPort.height / 2 - treeCenterY * scale
+				offsetX = viewPort.x + padding - minX * scale
+				offsetY = viewPort.y + padding - minY * scale
 				
 				self.lastTreeWidth = treeWidth * scale + padding * 2
 				self.lastTreeHeight = treeHeight * scale + padding * 2
@@ -605,17 +562,8 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 				local scrX, scrY = treeToScreen(3000, 150)
 				self:DrawAsset(tree.assets.SkillBackground, scrX, scrY, scale)
 			end
-		elseif self.filterMode == "skill" and self.treeOffsets then
-			-- All-trees mode: draw each skill background at its Y offset
-			for i, treeData in pairs(self.treeOffsets) do
-				local ability = build.skillsTab.socketGroupList[i]
-				if ability and ability.grantedEffect and ability.grantedEffect.treeId then
-					local scrX, scrY = treeToScreen(3000, 150 + (treeData.yOffset or 0))
-					self:DrawAsset(tree.assets.SkillBackground, scrX, scrY, scale)
-				end
-			end
 		else
-			-- Draw all skill backgrounds (filterMode == "all")
+			-- Draw all skill backgrounds
 			for id,ability in pairs(build.skillsTab.socketGroupList) do
 				if ability.grantedEffect and ability.grantedEffect.treeId then
 					local scrX, scrY = treeToScreen(3000, 150 + (id - 1) * (tree.decAbilityPosY + 1000))
@@ -699,7 +647,7 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 	SetDrawLayer(nil, 20)
 	for _, connector in pairs(tree.connectors) do
 		if shouldShowConnector(connector.nodeId1) then
-			-- For skill mode with a single selected skill: use simple path (no Y offset needed)
+			-- For skill mode with selected skill
 			if self.filterMode == "skill" and self.selectedSkillIndex then
 				local node1, node2 = spec.nodes[connector.nodeId1], spec.nodes[connector.nodeId2]
 				if node1 and node2 then
@@ -744,7 +692,6 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 					end
 				end
 			else
-				-- All-trees mode or passive mode: use renderConnector (applies treeOffsets Y)
 				renderConnector(connector)
 			end
 		end
@@ -1004,11 +951,8 @@ end
 
 -- Zoom the tree in or out
 function PassiveTreeViewClass:Zoom(level, viewPort)
-	-- Passive tree zoom range: min=14 (2x of prev min 10), max=18 (0.5x of prev max 22)
-	-- Skill tree zoom range: 0-30 (unchanged)
-	local minLevel = (self.filterMode == "skill") and 0 or 14
-	local maxLevel = (self.filterMode == "skill") and 30 or 18
-	self.zoomLevel = m_max(minLevel, m_min(maxLevel, self.zoomLevel + level))
+	-- Calculate new zoom level and zoom factor
+	self.zoomLevel = m_max(0, m_min(30, self.zoomLevel + level))
 	local oldZoom = self.zoom
 	self.zoom = 1.2 ^ self.zoomLevel
 

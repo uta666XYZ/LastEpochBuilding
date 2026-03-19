@@ -897,7 +897,7 @@ function ImportTabClass:ImportItem(itemData, slotName)
         else
             self.build.itemsTab:AddItem(item, true)
         end
-        if slotName then
+        if slotName and self.build.itemsTab.slots[slotName] then
             self.build.itemsTab.slots[slotName]:SetSelItemId(item.id)
         end
     end

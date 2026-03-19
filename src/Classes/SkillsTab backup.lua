@@ -38,11 +38,11 @@ local SkillsTabClass = newClass("SkillsTab", "UndoHandler", "ControlHost", "Cont
 	self.defaultGemLevel = "normalMaximum"
 	self.defaultGemQuality = main.defaultGemQuality
 
-	-- Create a single Skill Tree Viewer for all skill trees (combined view)
+	-- Create a single Skill Tree Viewer for the selected skill
 	self.skillTreeViewer = new("PassiveTreeView")
 	self.skillTreeViewer.filterMode = "skill"
-	self.skillTreeViewer.selectedSkillIndex = nil  -- nil = show all trees in one viewport
-	self.selectedSkillTreeIndex = nil
+	self.skillTreeViewer.selectedSkillIndex = 1  -- Default to first skill
+	self.selectedSkillTreeIndex = nil  -- Currently selected skill (nil = none)
 
 	-- Set selector
 	self.controls.setSelect = new("DropDownControl", { "TOPLEFT", self, "TOPLEFT" }, 76, 8, 210, 20, nil, function(index, value)
@@ -59,7 +59,7 @@ local SkillsTabClass = newClass("SkillsTab", "UndoHandler", "ControlHost", "Cont
 	end)
 
 	-- Socket group list (fixed height for 5 skills)
-	self.controls.skillsSection = new("SectionControl", { "TOPLEFT", self, "TOPLEFT" }, 20, 54, 720, 150, "Skills")
+	self.controls.skillsSection = new("SectionControl", { "TOPLEFT", self, "TOPLEFT" }, 20, 54, 520, 150, "Skills")
 	self.controls.skillsSection.height = function()
 		return 40 + 24 * 5  -- Fixed: 5 skills only
 	end
@@ -154,10 +154,8 @@ end)
 
 function SkillsTabClass:InitSkillControl(i)
     if i <= 5 then
-		-- "Skill #:" label
 		self.controls['skillLabel-' .. i] = new("LabelControl", { "TOPLEFT", self.controls.skillsSection, "TOPLEFT" }, 20, 24 * i, 0, 16, "^7Skill " .. i .. ":")
-		-- Skill name dropdown
-		self.controls['skill-' .. i] = new("DropDownControl", { "LEFT", self.controls['skillLabel-' .. i], "RIGHT" }, 4, 0, 140, 20, nil, function(index, value)
+		self.controls['skill-' .. i] = new("DropDownControl", { "LEFT", self.controls['skillLabel-' .. i], "RIGHT" }, 10, 0, 140, 20, nil, function(index, value)
 			self:SelSkill(i, value.name)
 			self.build.spec:BuildAllDependsAndPaths()
 		end)
@@ -170,43 +168,7 @@ function SkillsTabClass:InitSkillControl(i)
 			return (colorCodes.SOURCE .. self.socketGroupList[i].displayLabel) or ""
 		end
 	end
-	-- Level label (shown after skill dropdown, before Enabled)
-	self.controls['skillLevel-'..i] = new("LabelControl", { "LEFT", self.controls['skill-' .. i], "RIGHT" }, 6, 0, 38, 16)
-	self.controls['skillLevel-'..i].shown = function()
-		return self.socketGroupList[i] ~= nil
-	end
-	self.controls['skillLevel-'..i].label = function()
-		local lvl = self:GetSkillLevel(i)
-		return "^7Lv " .. lvl
-	end
-	-- Points label (always shown with fixed width to keep Enabled checkbox anchored correctly)
-	self.controls['skillPts-'..i] = new("LabelControl", { "LEFT", self.controls['skillLevel-'..i], "RIGHT" }, 4, 0, 80, 16)
-	-- Note: always shown (even if empty) so groupEnabled anchor position is stable
-	self.controls['skillPts-'..i].shown = function()
-		return self.socketGroupList[i] ~= nil
-	end
-	self.controls['skillPts-'..i].label = function()
-		local sg = self.socketGroupList[i]
-		if not sg or not sg.grantedEffect or not sg.grantedEffect.treeId then
-			return ""  -- Empty but width still reserved, keeping Enabled in place
-		end
-		local used = self:GetUsedSkillPoints(i)
-		local maxPts = self:GetMaxSkillPoints(i)
-		local rem = maxPts - used
-		if rem > 0 then
-			return "^x4DD9FF" .. rem .. " pts left"
-		elseif rem == 0 then
-			return "^70 pts left"
-		else
-			return "^xFF6666" .. math.abs(rem) .. " pts over"
-		end
-	end
-	-- Enabled checkbox
-	-- NOTE: CheckBoxControl draws its label to the LEFT of the box (RIGHT_X aligned at x-5).
-	-- So we must add the label width to the x-offset to prevent overlap with skillPts.
-	-- labelWidth = DrawStringWidth(size-4=16, "VAR", "Enabled:") + 5 ≈ 70px
-	local enabledLabelW = 70
-	self.controls['groupEnabled-'..i] = new("CheckBoxControl", { "LEFT", self.controls['skillPts-'..i], "RIGHT" }, enabledLabelW + 6, 0, 20, "Enabled:", function(state)
+	self.controls['groupEnabled-'..i] = new("CheckBoxControl", { "LEFT", self.controls['skill-' .. i], "RIGHT" }, 70, 0, 20, "Enabled:", function(state)
 		self.socketGroupList[i].enabled = state
 		self:AddUndoState()
 		self.build.buildFlag = true
@@ -355,8 +317,22 @@ function SkillsTabClass:Draw(viewPort, inputEvents)
 	-- Calculate content height for scrolling
 	local skillsSectionHeight = self.controls.skillsSection.height()
 	
-	-- Content height: skills section + unified tree area (fills viewport)
-	local contentHeight = 54 + skillsSectionHeight + 20
+	-- Count skill trees
+	local numSkillTrees = 0
+	for i = 1, 5 do
+		local socketGroup = self.socketGroupList[i]
+		if socketGroup and socketGroup.grantedEffect and socketGroup.grantedEffect.treeId then
+			numSkillTrees = numSkillTrees + 1
+		end
+	end
+	
+	-- Each tree gets a fixed height section (must match draw section)
+	local HEADER_HEIGHT = 28
+	local TREE_HEIGHT = 280
+	local ENTRY_GAP = 8
+	local totalTreeHeight = numSkillTrees * (HEADER_HEIGHT + TREE_HEIGHT + ENTRY_GAP)
+	
+	local contentHeight = 54 + skillsSectionHeight + 20 + totalTreeHeight + 50
 	
 	-- Set scroll dimensions
 	self.controls.scrollBarV:SetContentDimension(contentHeight, viewPort.height)
@@ -379,29 +355,18 @@ function SkillsTabClass:Draw(viewPort, inputEvents)
 	self:ProcessControlsInput(inputEvents, viewPort)
 	
 	-- Handle scroll events (keyboard and mouse wheel)
-	-- If cursor is over the skill tree area, let PassiveTreeView handle wheel for zoom
-	local cursorX, cursorY = GetCursorPos()
-	local treeSectionStartY_check = 54 + self.controls.skillsSection.height()
-	local treeAreaTop = viewPort.y + treeSectionStartY_check + 20
-	local mouseOverTree = cursorX >= viewPort.x and cursorX < viewPort.x + viewPort.width
-		and cursorY >= treeAreaTop and cursorY < viewPort.y + viewPort.height
-
 	for _, event in ipairs(inputEvents) do
 		if event.type == "KeyUp" then
-			if not mouseOverTree then
-				if self.controls.scrollBarV:IsScrollDownKey(event.key) then
-					self.controls.scrollBarV:Scroll(1)
-				elseif self.controls.scrollBarV:IsScrollUpKey(event.key) then
-					self.controls.scrollBarV:Scroll(-1)
-				end
+			if self.controls.scrollBarV:IsScrollDownKey(event.key) then
+				self.controls.scrollBarV:Scroll(1)
+			elseif self.controls.scrollBarV:IsScrollUpKey(event.key) then
+				self.controls.scrollBarV:Scroll(-1)
 			end
 		elseif event.type == "KeyDown" then
-			if not mouseOverTree then
-				if event.key == "WHEELDOWN" then
-					self.controls.scrollBarV:Scroll(3)
-				elseif event.key == "WHEELUP" then
-					self.controls.scrollBarV:Scroll(-3)
-				end
+			if event.key == "WHEELDOWN" then
+				self.controls.scrollBarV:Scroll(3)
+			elseif event.key == "WHEELUP" then
+				self.controls.scrollBarV:Scroll(-3)
 			end
 		end
 	end
@@ -443,47 +408,103 @@ function SkillsTabClass:Draw(viewPort, inputEvents)
 		end
 	end
 
-	-- ===== SKILL TREES SECTION - Single unified viewport =====
+	-- ===== SKILL TREES SECTION - Vertical scrollable list =====
 	local treeSectionStartY = 54 + skillsSectionHeight + 20
+	
+	-- Layout constants
 	local PADDING = 10
+	local HEADER_HEIGHT = 28
+	local TREE_HEIGHT = 280
+	local ENTRY_GAP = 8
 	local TREE_WIDTH = viewPort.width - PADDING * 2 - 20
-
-	-- Count how many skills have trees
-	local numSkillTrees = 0
+	
+	-- Draw each skill tree as a separate entry
+	local currentY = self.y + treeSectionStartY
+	
 	for i = 1, 5 do
-		local sg = self.socketGroupList[i]
-		if sg and ((sg.grantedEffect and sg.grantedEffect.treeId) or sg.skillId) then
-			numSkillTrees = numSkillTrees + 1
+		local socketGroup = self.socketGroupList[i]
+		local hasTree = socketGroup and socketGroup.grantedEffect and socketGroup.grantedEffect.treeId
+		
+		if hasTree then
+			local skillName = socketGroup.grantedEffect.name or "Skill"
+			local skillLevel = self:GetSkillLevel(i)
+			local usedPoints = self:GetUsedSkillPoints(i)
+			local remainingPoints = skillLevel - usedPoints
+			
+			local entryHeight = HEADER_HEIGHT + TREE_HEIGHT
+			local drawX = viewPort.x + PADDING
+			local drawY = currentY
+			
+			-- Clipping: only draw if visible
+			if drawY + entryHeight > viewPort.y and drawY < viewPort.y + viewPort.height then
+				
+				-- === HEADER ===
+				if drawY + HEADER_HEIGHT > viewPort.y then
+					SetDrawColor(0.10, 0.10, 0.12)
+					DrawImage(nil, drawX, drawY, TREE_WIDTH, HEADER_HEIGHT)
+					
+					SetDrawColor(0.30, 0.30, 0.35)
+					DrawImage(nil, drawX, drawY, TREE_WIDTH, 1)
+					DrawImage(nil, drawX, drawY + HEADER_HEIGHT - 1, TREE_WIDTH, 1)
+					DrawImage(nil, drawX, drawY, 1, HEADER_HEIGHT)
+					DrawImage(nil, drawX + TREE_WIDTH - 1, drawY, 1, HEADER_HEIGHT)
+					
+					-- Skill number
+					SetDrawColor(0.3, 0.5, 0.7)
+					local numText = "[" .. i .. "]"
+					DrawString(drawX + 8, drawY + 6, "LEFT", 11, "VAR BOLD", numText)
+					
+					-- Skill name
+					local numWidth = DrawStringWidth(11, "VAR BOLD", numText)
+					SetDrawColor(1, 0.85, 0.4)
+					DrawString(drawX + 8 + numWidth + 8, drawY + 6, "LEFT", 11, "VAR BOLD", skillName)
+					
+					-- Level and points
+					local nameWidth = DrawStringWidth(11, "VAR BOLD", skillName)
+					local infoX = drawX + 8 + numWidth + 8 + nameWidth + 15
+					SetDrawColor(0.5, 0.5, 0.5)
+					DrawString(infoX, drawY + 7, "LEFT", 10, "VAR", "Lv " .. skillLevel .. " |")
+					
+					local lvWidth = DrawStringWidth(10, "VAR", "Lv " .. skillLevel .. " | ")
+					if remainingPoints > 0 then
+						SetDrawColor(0.3, 0.85, 1)
+						DrawString(infoX + lvWidth, drawY + 7, "LEFT", 10, "VAR", remainingPoints .. " pts left")
+					elseif remainingPoints == 0 then
+						SetDrawColor(0.5, 0.5, 0.5)
+						DrawString(infoX + lvWidth, drawY + 7, "LEFT", 10, "VAR", "0 pts")
+					else
+						SetDrawColor(1, 0.4, 0.4)
+						DrawString(infoX + lvWidth, drawY + 7, "LEFT", 10, "VAR", math.abs(remainingPoints) .. " pts over")
+					end
+				end
+				
+				-- === TREE AREA ===
+				local treeY = drawY + HEADER_HEIGHT
+				
+				if treeY + TREE_HEIGHT > viewPort.y and treeY < viewPort.y + viewPort.height then
+					SetDrawColor(0.04, 0.04, 0.05)
+					DrawImage(nil, drawX, treeY, TREE_WIDTH, TREE_HEIGHT)
+					
+					SetDrawColor(0.20, 0.20, 0.25)
+					DrawImage(nil, drawX, treeY + TREE_HEIGHT - 1, TREE_WIDTH, 1)
+					DrawImage(nil, drawX, treeY, 1, TREE_HEIGHT)
+					DrawImage(nil, drawX + TREE_WIDTH - 1, treeY, 1, TREE_HEIGHT)
+					
+					-- Tree viewport
+					local treeVP = {
+						x = drawX + 2,
+						y = treeY + 2,
+						width = TREE_WIDTH - 4,
+						height = TREE_HEIGHT - 4
+					}
+					
+					self.skillTreeViewer.selectedSkillIndex = i
+					self.skillTreeViewer:Draw(self.build, treeVP, inputEvents)
+				end
+			end
+			
+			currentY = currentY + entryHeight + ENTRY_GAP
 		end
-	end
-
-	if numSkillTrees > 0 then
-		-- Draw a single unified tree viewport that fills remaining space
-		local treeAreaY = self.y + treeSectionStartY
-		local treeAreaHeight = math.max(400, viewPort.height - treeSectionStartY - 10)
-		local drawX = viewPort.x + PADDING
-
-		-- Background
-		SetDrawColor(0.04, 0.04, 0.05)
-		DrawImage(nil, drawX, treeAreaY, TREE_WIDTH, treeAreaHeight)
-		-- Border
-		SetDrawColor(0.20, 0.20, 0.25)
-		DrawImage(nil, drawX, treeAreaY, TREE_WIDTH, 1)
-		DrawImage(nil, drawX, treeAreaY + treeAreaHeight - 1, TREE_WIDTH, 1)
-		DrawImage(nil, drawX, treeAreaY, 1, treeAreaHeight)
-		DrawImage(nil, drawX + TREE_WIDTH - 1, treeAreaY, 1, treeAreaHeight)
-
-		-- Unified tree viewport: show all skill trees stacked
-		local treeVP = {
-			x = drawX + 2,
-			y = treeAreaY + 2,
-			width = TREE_WIDTH - 4,
-			height = treeAreaHeight - 4,
-		}
-
-		-- Use "all trees" mode: selectedSkillIndex = nil
-		self.skillTreeViewer.selectedSkillIndex = nil
-		self.skillTreeViewer:Draw(self.build, treeVP, inputEvents)
 	end
 
 	self:DrawControls(viewPort)
@@ -717,29 +738,34 @@ function SkillsTabClass:SelSkill(index, skillId)
 	else
 		self.socketGroupList[index] = nil
 	end
-	-- Reset the zoom cache so the tree re-fits when skills change
-	self.skillTreeViewer.skillBaseScale = nil
-	self.skillTreeViewer.skillRefZoom = nil
 	self:AddUndoState()
 	self.build.buildFlag = true
 end
 
 -- Get skill level for a given skill slot
--- In Last Epoch, skill level = total allocated points in that skill's tree
+-- Default is 20, but can be modified by equipment
 function SkillsTabClass:GetSkillLevel(index)
 	local socketGroup = self.socketGroupList[index]
 	if not socketGroup or not socketGroup.grantedEffect then
 		return 0
 	end
-	-- Skill level equals the number of points spent in the skill tree
-	return self:GetUsedSkillPoints(index)
-end
-
--- Get the maximum skill points available for a skill tree
--- In Last Epoch, each skill has a hard cap of 20 points (skill level 20).
--- Equipment can push beyond 20 but base is always 20.
-function SkillsTabClass:GetMaxSkillPoints(index)
-	return 20
+	
+	-- Base skill level is 20
+	local baseLevel = 20
+	
+	-- TODO: Add equipment modifiers that increase skill level
+	-- For now, return base level
+	-- Check if there's a level modifier from the build's modDB
+	local bonusLevel = 0
+	if self.build.calcsTab and self.build.calcsTab.mainEnv then
+		local env = self.build.calcsTab.mainEnv
+		if env.modDB then
+			-- Look for skill level modifiers
+			bonusLevel = env.modDB:Sum("BASE", nil, "SkillLevel") or 0
+		end
+	end
+	
+	return baseLevel + bonusLevel
 end
 
 -- Get the number of skill points used in a skill tree
