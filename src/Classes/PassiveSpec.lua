@@ -392,11 +392,14 @@ end
 function PassiveSpecClass:ResetSkill(index)
 	if self.build.skillsTab.socketGroupList[index] then
 		-- Deallocate the skillId start node
-		local treeId = self.build.skillsTab.socketGroupList[index].grantedEffect.treeId
-		local oldStartNodeId = treeId .. "-0"
-		if oldStartNodeId and self.nodes[oldStartNodeId] then
-			self.nodes[oldStartNodeId].alloc = 0
-			self.allocNodes[oldStartNodeId] = nil
+		local ge = self.build.skillsTab.socketGroupList[index].grantedEffect
+		local treeId = ge and ge.treeId
+		if treeId then
+			local oldStartNodeId = treeId .. "-0"
+			if self.nodes[oldStartNodeId] then
+				self.nodes[oldStartNodeId].alloc = 0
+				self.allocNodes[oldStartNodeId] = nil
+			end
 		end
 	end
 end
@@ -654,8 +657,20 @@ function PassiveSpecClass:BuildAllDependsAndPaths()
 			end
 		end
 		for _,ability in pairs(self.build.skillsTab.socketGroupList) do
-			if ability.grantedEffect.treeId and nodeId:match("^" .. ability.grantedEffect.treeId) then
+			if ability and ability.grantedEffect and ability.grantedEffect.treeId and nodeId:match("^" .. ability.grantedEffect.treeId) then
 				self.visibleNodes[nodeId] = node
+			end
+		end
+	end
+
+	-- Ensure each skill's start node (treeId-0) is allocated so paths can be built from it
+	for _, ability in pairs(self.build.skillsTab.socketGroupList) do
+		if ability and ability.grantedEffect and ability.grantedEffect.treeId then
+			local startId = ability.grantedEffect.treeId .. "-0"
+			local startNode = self.nodes[startId]
+			if startNode and (startNode.alloc == nil or startNode.alloc == 0) then
+				startNode.alloc = 1
+				self.allocNodes[startId] = startNode
 			end
 		end
 	end
