@@ -711,6 +711,7 @@ function PassiveSpecClass:BuildAllDependsAndPaths()
 
 	for id, node in pairs(self.allocNodes) do
 		node.visited = true
+		if not node.depends then node.depends = { node } end  -- guard: node may not be in visibleNodes
 		local anyStartFound = (node.type == "ClassStart" or node.type == "AscendClassStart")
 		for _, other in ipairs(node.linked) do
 			if other.alloc > 0 and not isValueInArray(node.depends, other) then

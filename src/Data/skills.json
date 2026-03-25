@@ -397,7 +397,7 @@
       "ailment": true
     },
     "stats": {
-      "base_skill_effect_duration": 1E+09,
+      "base_skill_effect_duration": 1000000000.0,
       "maximum_stacks": 0,
       "damageEffectiveness": 1
     },
@@ -6388,5 +6388,31 @@
       "base_skill_effect_duration": 10
     },
     "fromMinion": true
+  },
+  "Bladestorm": {
+    "name": "Bladestorm",
+    "skillTypeTags": 2561,
+    "castTime": 0.6818182,
+    "baseFlags": {
+      "attack": true,
+      "hit": true
+    },
+    "stats": {
+      "damageEffectiveness": 1.0
+    },
+    "treeId": "bl5st"
+  },
+  "ShadowRend": {
+    "name": "Shadow Rend",
+    "skillTypeTags": 2561,
+    "castTime": 0.6818182,
+    "baseFlags": {
+      "attack": true,
+      "hit": true
+    },
+    "stats": {
+      "damageEffectiveness": 1.0
+    },
+    "treeId": "sh4re"
   }
 }

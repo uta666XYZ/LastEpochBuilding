@@ -25,9 +25,47 @@ local rarityDropList = {
 
 local baseSlots = { "Weapon 1", "Weapon 2", "Helmet", "Body Armor", "Gloves", "Boots", "Amulet", "Ring 1", "Ring 2", "Belt", "Relic" }
 
-for i = 1, 20 do
-	table.insert(baseSlots, "Idol " .. i)
+-- Idol inventory grid layout.
+-- Each row is a list of slot names (or false for invalid/blocked cells).
+-- 5×5 grid with 4 corners + center blocked = 20 valid slots.
+-- Import formula (posX=col-1, posY=row-1, 0-indexed from game export):
+--   idolPosition = posX + posY*5
+--   if posY > 0:                          -= 1   (col=4,row=0 blocked)
+--   if posY>2 or (posY==2 and posX>2):   -= 1   (col=2,row=2 blocked)
+--   if posY == 4:                         -= 1   (col=0,row=4 blocked)
+--   Row 0 (top):    inv | 1  | 2  | 3  | inv
+--   Row 1:          4   | 5  | 6  | 7  | 8
+--   Row 2:          9   | 10 | inv| 11 | 12
+--   Row 3:          13  | 14 | 15 | 16 | 17
+--   Row 4 (bottom): inv | 18 | 19 | 20 | inv
+local IDOL_GRID_LAYOUT = {
+	{ false,      "Idol 1",  "Idol 2",  "Idol 3",  false     }, -- row 0: corners blocked
+	{ "Idol 4",   "Idol 5",  "Idol 6",  "Idol 7",  "Idol 8"  }, -- row 1: all open
+	{ "Idol 9",   "Idol 10", false,     "Idol 11", "Idol 12" }, -- row 2: center blocked
+	{ "Idol 13",  "Idol 14", "Idol 15", "Idol 16", "Idol 17" }, -- row 3: all open
+	{ false,      "Idol 18", "Idol 19", "Idol 20", false     }, -- row 4: corners blocked
+}
+
+-- Reverse map: slotName -> {row, col} (1-indexed, matching IDOL_GRID_LAYOUT)
+local idolSlotPos = {}
+for r, rowData in ipairs(IDOL_GRID_LAYOUT) do
+	for c, slotName in ipairs(rowData) do
+		if slotName then idolSlotPos[slotName] = { r, c } end
+	end
 end
+
+-- Idol size in grid cells: {width (cols), height (rows)}
+local idolSize = {
+	["Minor Idol"]  = {1, 1},
+	["Small Idol"]  = {1, 1},
+	["Humble Idol"] = {2, 1},
+	["Stout Idol"]  = {1, 2},
+	["Grand Idol"]  = {3, 1},
+	["Large Idol"]  = {1, 3},
+	["Ornate Idol"] = {4, 1},
+	["Huge Idol"]   = {1, 4},
+	["Adorned Idol"]= {2, 2},
+}
 
 table.insert(baseSlots, "Fall of the Outcasts")
 table.insert(baseSlots, "The Stolen Lance")
@@ -125,6 +163,9 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 		end
 	end
 
+	-- Expose the layout so IdolsTab can reference it without duplicating the table
+	self.idolGridLayout = IDOL_GRID_LAYOUT
+
 	-- Passive tree dropdown controls
 	self.controls.specSelect = new("DropDownControl", {"TOPLEFT",lastVisibleSlot,"BOTTOMLEFT"}, 0, 8, 216, 20, nil, function(index, value)
 		if self.build.treeTab.specList[index] then
@@ -140,7 +181,6 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 		self.build.treeTab:OpenSpecManagePopup()
 	end)
 	self.controls.specLabel = new("LabelControl", {"RIGHT",prevSlot,"LEFT"}, -2, 0, 0, 16, "^7Passive tree:")
-
 	self.controls.idolPositionsLabel = new("LabelControl", {"TOPLEFT",self.controls.specLabel,"BOTTOMLEFT"}, 0, 16, 0, 16, "Idol positions start from bottom left then left to right")
 	-- ===== BLESSING PANEL =====
 	local blessingData = {
@@ -904,6 +944,7 @@ end)
 
 function ItemsTabClass:Load(xml, dbFileName)
 	self.activeItemSetId = 0
+	self.activeItemSet = nil   -- prevent SetActiveItemSet from saving back the constructor-time item set (which pre-dates idol slot registration)
 	self.itemSets = { }
 	self.itemSetOrderList = { }
 	for _, node in ipairs(xml) do
@@ -1058,7 +1099,7 @@ function ItemsTabClass:Draw(viewPort, inputEvents)
 	self.controls.scrollBarV.x = viewPort.x + viewPort.width - 18
 	self.controls.scrollBarV.y = viewPort.y
 	do
-		local maxY = select(2, (self.controls.blessingPanelEnd or self.controls.idolPositionsLabel):GetPos()) + 24
+		local maxY = select(2, self.controls.blessingPanelEnd:GetPos()) + 24
 		local maxX = self.anchorDisplayItem:GetPos() + 462
 		if self.displayItem then
 			local x, y = self.controls.displayItemTooltipAnchor:GetPos()
@@ -1163,6 +1204,28 @@ function ItemsTabClass:Draw(viewPort, inputEvents)
 	end
 
 	self.controls.specSelect:SetList(self.build.treeTab:GetSpecList())
+end
+
+-- Registers a slot that was created after the ItemsTab constructor finished
+-- (e.g. idol slots created by IdolGridControl).  Performs the same bookkeeping
+-- that the constructor loop does for the original slots:
+--   1. Add to drag-target lists so items can be dragged onto it.
+--   2. Add an entry to every existing item set so SetSelItemId / SetActiveItemSet
+--      never index a nil key.
+function ItemsTabClass:RegisterLateSlot(slot)
+	-- Drag targets
+	t_insert(self.controls.itemList.dragTargetList, slot)
+	t_insert(self.controls.uniqueDB.dragTargetList, slot)
+	t_insert(self.controls.rareDB.dragTargetList, slot)
+	t_insert(self.controls.sharedItemList.dragTargetList, slot)
+	-- Item sets
+	if not slot.nodeId then
+		for _, itemSet in pairs(self.itemSets) do
+			if not itemSet[slot.slotName] then
+				itemSet[slot.slotName] = { selItemId = 0 }
+			end
+		end
+	end
 end
 
 -- Creates a new item set
@@ -1627,7 +1690,19 @@ function ItemsTabClass:IsItemValidForSlot(item, slotName, itemSet)
 	elseif item.type == "Blessing" and item.base and item.base.timeline then
 		return slotName == item.base.timeline
 	elseif slotType == "Idol" then
-		return item.type:match("Idol$")
+		if not item.type:match("Idol$") then return false end
+		-- Size overflow check: verify the idol's cell footprint stays within valid grid cells
+		local size = idolSize[item.type]
+		local pos  = idolSlotPos[slotName]
+		if size and pos then
+			for dr = 0, size[2] - 1 do
+				for dc = 0, size[1] - 1 do
+					local row = IDOL_GRID_LAYOUT[pos[1] + dr]
+					if not row or not row[pos[2] + dc] then return false end
+				end
+			end
+		end
+		return true
 	elseif slotName == "Weapon 1" or slotName == "Weapon 1 Swap" or slotName == "Weapon" then
 		return item.base.weapon ~= nil
 	elseif slotName == "Weapon 2" or slotName == "Weapon 2 Swap" then
@@ -2357,11 +2432,12 @@ function ItemsTabClass:AddItemTooltip(tooltip, item, slot, dbMode)
 			GlobalCache.useFullDPS = GlobalCache.numActiveSkillInFullDPS > 0
 			local output = calcFunc({ repSlotName = compareSlot.slotName, repItem = item ~= selItem and item or nil }, {})
 			GlobalCache.useFullDPS = storedGlobalCacheDPSView
+			local slotLabel = compareSlot.label ~= "" and compareSlot.label or compareSlot.slotName
 			local header
 			if item == selItem then
-				header = "^7Removing this item from " .. compareSlot.label .. " will give you:"
+				header = "^7Removing this item from " .. slotLabel .. " will give you:"
 			else
-				header = string.format("^7Equipping this item in %s will give you:%s", compareSlot.label, selItem and "\n(replacing " .. colorCodes[selItem.rarity] .. selItem.name .. "^7)" or "")
+				header = string.format("^7Equipping this item in %s will give you:%s", slotLabel, selItem and "\n(replacing " .. colorCodes[selItem.rarity] .. selItem.name .. "^7)" or "")
 			end
 			self.build:AddStatComparesToTooltip(tooltip, calcBase, output, header)
 		end
