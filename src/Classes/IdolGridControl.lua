@@ -10,6 +10,14 @@ local t_insert = table.insert
 
 local CELL_GAP = 2
 
+-- Positions blocked in Default mode (no altar).
+-- These cells exist as slots (Idol 21-25) but are hidden unless an altar enables them.
+local DEFAULT_BLOCKED = {
+	[1] = { [1] = true, [5] = true },
+	[3] = { [3] = true },
+	[5] = { [1] = true, [5] = true },
+}
+
 -- Numeric idol dimensions in cells {width, height}
 local idolDims = {
 	["Minor Idol"]  = {1, 1},
@@ -89,23 +97,38 @@ local IdolGridControlClass = newClass("IdolGridControl", "Control", "ControlHost
 	self.layout = layout
 	self.imageHandles = {}
 
-	-- Create an ItemSlotControl for each valid cell and register it in itemsTab
+	-- Create an ItemSlotControl for EVERY cell (all 25 positions).
+	-- Cells blocked in Default mode (Idol 21-25) are hidden via slot.shown
+	-- until an altar layout enables them.
 	for row, rowData in ipairs(layout) do
 		for col, slotName in ipairs(rowData) do
-			if slotName then
-				local cx = (col - 1) * (self.cw + CELL_GAP)
-				local cy = (row - 1) * (self.ch + CELL_GAP)
-				-- slotLabel="" suppresses the left-side "Idol N:" label
-				local slot = new("ItemSlotControl", {"TOPLEFT", self, "TOPLEFT"}, cx, cy, itemsTab, slotName, "", nil, self.cw, self.ch)
-				slot.arrowH = self.ch / 4   -- halve the default height/2 arrow
-				t_insert(self.controls, slot)
+			local cx = (col - 1) * (self.cw + CELL_GAP)
+			local cy = (row - 1) * (self.ch + CELL_GAP)
+			-- slotLabel="" suppresses the left-side "Idol N:" label
+			local slot = new("ItemSlotControl", {"TOPLEFT", self, "TOPLEFT"}, cx, cy, itemsTab, slotName, "", nil, self.cw, self.ch)
+			slot.arrowH = self.ch / 4
 
-				-- Register in itemsTab so all existing slot logic continues to work
-				itemsTab.slots[slotName] = slot
-				t_insert(itemsTab.orderedSlots, slot)
-				itemsTab.slotOrder[slotName] = #itemsTab.orderedSlots
-				itemsTab:RegisterLateSlot(slot)
+			-- Show/hide based on active altar (or Default-blocked set)
+			local r, c = row, col
+			slot.shown = function()
+				local altarName = itemsTab.activeAltarLayout
+				if not altarName or altarName == "Default" then
+					return not (DEFAULT_BLOCKED[r] and DEFAULT_BLOCKED[r][c])
+				end
+				local altar = itemsTab.altarLayouts and itemsTab.altarLayouts[altarName]
+				if not altar or not altar.grid then
+					return not (DEFAULT_BLOCKED[r] and DEFAULT_BLOCKED[r][c])
+				end
+				return altar.grid[r][c] ~= 0
 			end
+
+			t_insert(self.controls, slot)
+
+			-- Register in itemsTab so all existing slot logic continues to work
+			itemsTab.slots[slotName] = slot
+			t_insert(itemsTab.orderedSlots, slot)
+			itemsTab.slotOrder[slotName] = #itemsTab.orderedSlots
+			itemsTab:RegisterLateSlot(slot)
 		end
 	end
 end)
@@ -182,9 +205,47 @@ local function drawBorder(cx, cy, w, h, r, g, b)
 	DrawImage(nil, cx + w - 1, cy,         1,  h)
 end
 
+local function drawBlockedCell(cx, cy, cw, ch)
+	SetDrawColor(0.07, 0.07, 0.07)
+	DrawImage(nil, cx, cy, cw, ch)
+	drawBorder(cx, cy, cw, ch, 0.17, 0.17, 0.17)
+	SetDrawColor(0.22, 0.22, 0.22)
+	DrawImageQuad(nil,
+		cx + 4,      cy + 4,
+		cx + 8,      cy + 4,
+		cx + cw - 4, cy + ch - 4,
+		cx + cw - 8, cy + ch - 4)
+	DrawImageQuad(nil,
+		cx + cw - 8, cy + 4,
+		cx + cw - 4, cy + 4,
+		cx + 8,      cy + ch - 4,
+		cx + 4,      cy + ch - 4)
+end
+
 function IdolGridControlClass:Draw(viewPort)
 	local x, y = self:GetPos()
 	local cw, ch = self.cw, self.ch
+
+	-- Get active altar grid (nil when "Default" or not found)
+	local altarGrid = nil
+	local activeAltarName = self.itemsTab.activeAltarLayout
+	if activeAltarName and activeAltarName ~= "Default" then
+		local altar = self.itemsTab.altarLayouts and self.itemsTab.altarLayouts[activeAltarName]
+		if altar then altarGrid = altar.grid end
+	end
+
+	-- Determine if a cell is blocked (altar grid takes full priority over base layout)
+	local function isBlocked(row, col)
+		if altarGrid then
+			return altarGrid[row][col] == 0
+		end
+		return DEFAULT_BLOCKED[row] and DEFAULT_BLOCKED[row][col] or false
+	end
+
+	-- Get altar cell value (0/1/2), nil if no altar active
+	local function altarVal(row, col)
+		return altarGrid and altarGrid[row] and altarGrid[row][col]
+	end
 
 	-- Pass 1: cell backgrounds (drawn under slot controls)
 	for row, rowData in ipairs(self.layout) do
@@ -192,34 +253,24 @@ function IdolGridControlClass:Draw(viewPort)
 			local cx = x + (col - 1) * (cw + CELL_GAP)
 			local cy = y + (row - 1) * (ch + CELL_GAP)
 
-			if not slotName then
-				-- Blocked / invalid cell
-				SetDrawColor(0.07, 0.07, 0.07)
-				DrawImage(nil, cx, cy, cw, ch)
-				drawBorder(cx, cy, cw, ch, 0.17, 0.17, 0.17)
-				-- Diagonal X
-				SetDrawColor(0.22, 0.22, 0.22)
-				DrawImageQuad(nil,
-					cx + 4,        cy + 4,
-					cx + 8,        cy + 4,
-					cx + cw - 4,   cy + ch - 4,
-					cx + cw - 8,   cy + ch - 4)
-				DrawImageQuad(nil,
-					cx + cw - 8,   cy + 4,
-					cx + cw - 4,   cy + 4,
-					cx + 8,        cy + ch - 4,
-					cx + 4,        cy + ch - 4)
+			if isBlocked(row, col) then
+				drawBlockedCell(cx, cy, cw, ch)
 			else
 				local slot = self.itemsTab.slots[slotName]
 				local item = slot and self.itemsTab.items[slot.selItemId]
-				local bg = item and rarityBg[item.rarity] or { 0.13, 0.13, 0.13 }
-				SetDrawColor(bg[1], bg[2], bg[3])
+				local av = altarVal(row, col)
+				if av == 2 and not item then
+					SetDrawColor(0.15, 0.05, 0.28)  -- purple tint for empty refracted cell
+				else
+					local bg = item and rarityBg[item.rarity] or { 0.13, 0.13, 0.13 }
+					SetDrawColor(bg[1], bg[2], bg[3])
+				end
 				DrawImage(nil, cx, cy, cw, ch)
 			end
 		end
 	end
 
-	-- Draw child slot controls (dropdown, tooltip, etc.)
+	-- Draw child slot controls (blocked slots have shown=false and are skipped automatically)
 	self:DrawControls(viewPort)
 
 	-- Pass 2: overlays on top of slot controls
@@ -227,11 +278,12 @@ function IdolGridControlClass:Draw(viewPort)
 	local drawnItems = {}
 	for row, rowData in ipairs(self.layout) do
 		for col, slotName in ipairs(rowData) do
-			if slotName then
+			if not isBlocked(row, col) then
 				local cx = x + (col - 1) * (cw + CELL_GAP)
 				local cy = y + (row - 1) * (ch + CELL_GAP)
 				local slot = self.itemsTab.slots[slotName]
 				local item = slot and self.itemsTab.items[slot.selItemId]
+				local av = altarVal(row, col)
 
 				if item and not drawnItems[slot.selItemId] then
 					drawnItems[slot.selItemId] = true
@@ -267,8 +319,12 @@ function IdolGridControlClass:Draw(viewPort)
 						DrawString(cx + pw - tw - 3, cy + ph - fs - 3, "LEFT", fs, "VAR", hint)
 					end
 				elseif not item then
-					-- Empty valid cell: border only (no slot number text)
-					drawBorder(cx, cy, cw, ch, 0.28, 0.28, 0.28)
+					-- Empty valid cell: border (purple for refracted, gray for normal)
+					if av == 2 then
+						drawBorder(cx, cy, cw, ch, 0.55, 0.25, 0.80)
+					else
+						drawBorder(cx, cy, cw, ch, 0.28, 0.28, 0.28)
+					end
 				end
 			end
 		end
