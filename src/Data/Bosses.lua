@@ -11,7 +11,7 @@
 -- Category reference difficulties:
 --   "Empowered Monolith Boss" : Empowered Monolith, level 100, 0 Corruption
 --   "Dungeon Boss"            : Tier 4, base stats (no dungeon modifiers)
---   "Pinnacle Boss"           : fixed (Aberroth)
+--   "Pinnacle Boss"           : fixed (Aberroth, Vision of the Observer)
 --   "Uber Boss"               : fixed (Herald of Oblivion)
 --
 local bosses = ...
@@ -23,6 +23,13 @@ bosses["Aberroth"] = {
 	ward      = 4243079,
 	wardPct   = 0,
 	damageMod = 14,
+}
+bosses["Vision of the Observer"] = {
+	category  = "Pinnacle Boss",
+	health    = 4892857,
+	ward      = 3669643,
+	wardPct   = 0,
+	damageMod = 0,
 }
 
 -- Uber Boss
