@@ -61,11 +61,14 @@ function buildMode:Init(dbFileName, buildName, buildXML, convertBuild)
 	if convertBuild then
 		self.targetVersion = liveTargetVersion
 	end
-	if self.targetVersion ~= liveTargetVersion then
+	if not treeVersions[self.targetVersion] then
+		-- Unknown/unsupported version: ask the user to convert
 		self.targetVersion = nil
 		self:OpenConversionPopup()
 		return
 	end
+	-- Switch global data tables to match this build's game version
+	data.setActiveVersion(self.targetVersion)
 
 	self.abortSave = true
 
@@ -370,14 +373,18 @@ function buildMode:Init(dbFileName, buildName, buildXML, convertBuild)
 		self.viewMode = "ITEMS"
 	end)
 	self.controls.modeItems.locked = function() return self.viewMode == "ITEMS" end
-	self.controls.modeCalcs = new("ButtonControl", {"LEFT",self.controls.modeItems,"RIGHT"}, 4, 0, 72, 20, "Calcs", function()
-		self.viewMode = "CALCS"
+	self.controls.modeIdols = new("ButtonControl", {"LEFT",self.controls.modeItems,"RIGHT"}, 4, 0, 56, 20, "Idols", function()
+		self.viewMode = "IDOLS"
 	end)
-	self.controls.modeCalcs.locked = function() return self.viewMode == "CALCS" end
+	self.controls.modeIdols.locked = function() return self.viewMode == "IDOLS" end
 	self.controls.modeParty = new("ButtonControl", {"TOPLEFT",self.anchorSideBar,"TOPLEFT"}, 0, 52, 72, 20, "Party", function()
 		self.viewMode = "PARTY"
 	end)
 	self.controls.modeParty.locked = function() return self.viewMode == "PARTY" end
+	self.controls.modeCalcs = new("ButtonControl", {"LEFT",self.controls.modeParty,"RIGHT"}, 4, 0, 72, 20, "Calcs", function()
+		self.viewMode = "CALCS"
+	end)
+	self.controls.modeCalcs.locked = function() return self.viewMode == "CALCS" end
 	-- Skills
 	self.controls.mainSkillLabel = new("LabelControl", {"TOPLEFT",self.anchorSideBar,"TOPLEFT"}, 0, 80, 300, 16, "^7Main Skill:")
 	self.controls.mainSocketGroup = new("DropDownControl", {"TOPLEFT",self.controls.mainSkillLabel,"BOTTOMLEFT"}, 0, 2, 300, 18, nil, function(index, value)
@@ -496,6 +503,7 @@ function buildMode:Init(dbFileName, buildName, buildXML, convertBuild)
 	self.partyTab = new("PartyTab", self)
 	self.configTab = new("ConfigTab", self)
 	self.itemsTab = new("ItemsTab", self)
+	self.idolsTab = new("IdolsTab", self)
 	self.skillsTab = new("SkillsTab", self)
 	self.treeTab = new("TreeTab", self)
 	self.calcsTab = new("CalcsTab", self)
@@ -686,15 +694,18 @@ function buildMode:ReadLeToolsSave(saveContent)
 		if slotName == "idol" then
 			local posX = itemData["x"] - 1
 			local posY = itemData["y"] - 1
+			-- Grid is 5x5 with 4 corners + center blocked (20 valid slots).
+			-- Each blocked cell that appears before (posX,posY) in reading order
+			-- reduces the slot index by 1.
 			local idolPosition = posX + posY * 5
 			if posY > 0 then
-				idolPosition = idolPosition - 1
+				idolPosition = idolPosition - 1  -- (col=4, row=0) blocked
+			end
+			if posY > 2 or (posY == 2 and posX > 2) then
+				idolPosition = idolPosition - 1  -- (col=2, row=2) center blocked
 			end
 			if posY == 4 then
-				idolPosition = idolPosition - 1
-			end
-			if posY == 1 and posX > 2 or posY > 1 then
-				idolPosition = idolPosition - 1
+				idolPosition = idolPosition - 1  -- (col=0, row=4) blocked
 			end
 			item["inventoryId"] = "Idol " .. idolPosition
 		end
@@ -1084,6 +1095,8 @@ function buildMode:OnFrame(inputEvents)
 		self.skillsTab:Draw(tabViewPort, inputEvents)
 	elseif self.viewMode == "ITEMS" then
 		self.itemsTab:Draw(tabViewPort, inputEvents)
+	elseif self.viewMode == "IDOLS" then
+		self.idolsTab:Draw(tabViewPort, inputEvents)
 	elseif self.viewMode == "CALCS" then
 		self.calcsTab:Draw(tabViewPort, inputEvents)
 	end

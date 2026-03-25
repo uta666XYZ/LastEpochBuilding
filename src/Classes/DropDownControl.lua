@@ -266,7 +266,8 @@ function DropDownClass:Draw(viewPort, noTooltip)
 	else
 		SetDrawColor(0.5, 0.5, 0.5)
 	end
-	main:DrawArrow(x + width - height/2, y + height/2, height/2, height/2, "DOWN")
+	local arrowH = self.arrowH or (height / 2)
+	main:DrawArrow(x + width - height/2, y + height/2, arrowH, arrowH, "DOWN")
 	if self.dropped then
 		SetDrawLayer(nil, 5)
 		SetDrawColor(0, 0, 0)
@@ -303,7 +304,7 @@ function DropDownClass:Draw(viewPort, noTooltip)
 			selLabel = selLabel.label
 		end
 	end
-	local drawWidth = width - height
+	local drawWidth = width - height/2 - arrowH  -- expands when arrowH < height/2 (e.g. idol grid cells)
 	local fontSize = 16
 	if height >= 32 and selLabel and DrawStringWidth(fontSize, "VAR", selLabel) > drawWidth then
 		-- Tall dropdown: word-wrap into 2 lines with fixed font size 16, top-aligned

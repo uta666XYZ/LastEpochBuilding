@@ -472,47 +472,88 @@ data.skills["Default"] = {
 -- Load minions
 data.minions = readJsonFile("Data/minions.json")
 
--- Item bases
-data.itemBases = readJsonFile("Data/Bases/bases.json")
 data.LETools_itemBases = readJsonFile("Data/LEToolsImport/bases.json")
 data.LETools_affixes = readJsonFile("Data/LEToolsImport/affixes.json")
 
--- Build lists of item bases, separated by type
-data.itemBaseLists = { }
-for name, base in pairs(data.itemBases) do
-	if not base.hidden then
-		local type = base.type
-		if base.subType then
-			type = type .. ": " .. base.subType
-		end
-		data.itemBaseLists[type] = data.itemBaseLists[type] or { }
-		table.insert(data.itemBaseLists[type], { label = name:gsub(" %(.+%)",""), name = name, base = base })
-	end
-end
-data.itemBaseTypeList = { }
-for type, list in pairs(data.itemBaseLists) do
-	table.insert(data.itemBaseTypeList, type)
-	table.sort(list, function(a, b)
-		if a.base.req and b.base.req then
-			if a.base.req.level == b.base.req.level then
-				return a.name < b.name
-			else
-				return (a.base.req.level or 1) > (b.base.req.level or 1)
+-- Helper: build itemBaseLists and itemBaseTypeList from a bases table
+local function buildItemBaseLists(itemBases)
+	local lists = { }
+	for name, base in pairs(itemBases) do
+		if not base.hidden then
+			local bType = base.type
+			if base.subType then
+				bType = bType .. ": " .. base.subType
 			end
-		elseif a.base.req and not b.base.req then
-			return true
-		elseif b.base.req and not a.base.req then
-			return false
-		else
-			return a.name < b.name
+			lists[bType] = lists[bType] or { }
+			table.insert(lists[bType], { label = name:gsub(" %(.+%)",""), name = name, base = base })
 		end
-	end)
+	end
+	local typeList = { }
+	for bType, list in pairs(lists) do
+		table.insert(typeList, bType)
+		table.sort(list, function(a, b)
+			if a.base.req and b.base.req then
+				if a.base.req.level == b.base.req.level then
+					return a.name < b.name
+				else
+					return (a.base.req.level or 1) > (b.base.req.level or 1)
+				end
+			elseif a.base.req and not b.base.req then
+				return true
+			elseif b.base.req and not a.base.req then
+				return false
+			else
+				return a.name < b.name
+			end
+		end)
+	end
+	table.sort(typeList)
+	return lists, typeList
 end
-table.sort(data.itemBaseTypeList)
+
+-- Load data for each supported game version
+-- Each version has a dedicated file: Data/ModItem_1_3.json, Data/Bases/bases_1_3.json, etc.
+data.versionData = { }
+for _, ver in ipairs(treeVersionList) do
+	local verMods    = readJsonFile("Data/ModItem_" .. ver .. ".json")
+	local verBases   = readJsonFile("Data/Bases/bases_" .. ver .. ".json")
+	local verUniques = readJsonFile("Data/Uniques/uniques_" .. ver .. ".json")
+	-- Safety fallback: if a version-specific file is missing, use the base files
+	if not verMods    then verMods    = readJsonFile("Data/ModItem.json")         end
+	if not verBases   then verBases   = readJsonFile("Data/Bases/bases.json")     end
+	if not verUniques then verUniques = readJsonFile("Data/Uniques/uniques.json") end
+	-- Ensure all affix entries have an affix name
+	if verMods then
+		for _, mod in pairs(verMods) do
+			if not mod.affix then mod.affix = "" end
+		end
+	end
+	local verBaseLists, verBaseTypeList = buildItemBaseLists(verBases or {})
+	data.versionData[ver] = {
+		itemMods         = { Item = verMods    or {} },
+		itemBases        = verBases   or {},
+		itemBaseLists    = verBaseLists,
+		itemBaseTypeList = verBaseTypeList,
+		uniques          = verUniques or {},
+	}
+end
+
+-- Switch all global data pointers to the specified game version.
+-- Called from Build.lua when a build is opened.
+function data.setActiveVersion(version)
+	local vd = data.versionData[version] or data.versionData[latestTreeVersion]
+	data.itemMods        = vd.itemMods
+	data.itemBases       = vd.itemBases
+	data.itemBaseLists   = vd.itemBaseLists
+	data.itemBaseTypeList = vd.itemBaseTypeList
+	data.uniques         = vd.uniques
+end
+
+-- Initialise with the latest version
+data.setActiveVersion(latestTreeVersion)
 
 -- Rare templates
 data.rares = {}
 
--- Uniques (loaded after version-specific data because reasons)
-data.uniques = readJsonFile("Data/Uniques/uniques.json")
+-- uniqueMods is populated at runtime
 data.uniqueMods = { }
