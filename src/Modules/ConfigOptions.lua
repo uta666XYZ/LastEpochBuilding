@@ -291,11 +291,12 @@ local options = {
 	{ section = "Enemy Stats", col = 3 },
 	{ var = "leBossCategory", type = "list", label = "Is the enemy a Boss?",
 	  tooltip = data.enemyIsBossTooltip,
+	  defaultIndex = 2,
 	  list = {
 		{ val = "none",                    label = "None" },
 		{ val = "Empowered Monolith Boss", label = "Empowered Monolith Boss" },
 		{ val = "Dungeon Boss",            label = "Dungeon Boss (Tier 4)" },
-		{ val = "Pinnacle Boss",           label = "Pinnacle Boss (Aberroth)" },
+		{ val = "Pinnacle Boss",           label = "Pinnacle Boss" },
 		{ val = "Uber Boss",               label = "Uber Boss (Herald of Oblivion)" },
 	  },
 	  apply = function(val, modList, enemyModList)
