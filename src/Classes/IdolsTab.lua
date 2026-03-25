@@ -12,16 +12,44 @@ local IdolsTabClass = newClass("IdolsTab", "ControlHost", "Control", function(se
 	self.Control()
 
 	self.build = build
+	local itemsTab = build.itemsTab
 
-	-- Label above the grid
+	-- Title
 	self.controls.title = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, 8, 8, 0, 20, "^7Idol Inventory")
 
-	-- Create the grid immediately so idol slots are registered in itemsTab
-	-- before any calculation runs (even if the user never opens this tab)
-	local itemsTab = build.itemsTab
+	-- Idol Altar dropdown (below title)
+	-- Build sorted list: "Default" first, then altars alphabetically
+	local altarLayouts = itemsTab.altarLayouts
+	local altarDropList = { { label = "Default", key = "Default" } }
+	do
+		local names = {}
+		for name in pairs(altarLayouts) do
+			table.insert(names, name)
+		end
+		table.sort(names)
+		for _, name in ipairs(names) do
+			local layout = altarLayouts[name]
+			table.insert(altarDropList, {
+				label = (layout.mirrorOf or name) .. (layout.isMirrored and " [Mirrored]" or ""),
+				key = name,
+			})
+		end
+	end
+
+	self.controls.altarSelect = new("DropDownControl",
+		{"TOPLEFT", self.controls.title, "BOTTOMLEFT"}, 0, 6, 260, 20,
+		altarDropList,
+		function(index, value)
+			itemsTab.activeAltarLayout = altarDropList[index].key
+			build.buildFlag = true
+		end)
+	self.controls.altarLabel = new("LabelControl",
+		{"RIGHT", self.controls.altarSelect, "LEFT"}, -4, 0, 0, 16, "^7Idol Altar:")
+
+	-- Create the idol grid immediately so slots are registered before any calculation
 	-- 2x the default cell size (68 → 136, 46 → 92)
 	self.controls.idolGrid = new("IdolGridControl",
-		{"TOPLEFT", self.controls.title, "BOTTOMLEFT"}, 0, 8,
+		{"TOPLEFT", self.controls.altarSelect, "BOTTOMLEFT"}, 0, 8,
 		itemsTab, itemsTab.idolGridLayout, 136, 92)
 end)
 

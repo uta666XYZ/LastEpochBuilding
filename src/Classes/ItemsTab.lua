@@ -38,12 +38,14 @@ local baseSlots = { "Weapon 1", "Weapon 2", "Helmet", "Body Armor", "Gloves", "B
 --   Row 2:          9   | 10 | inv| 11 | 12
 --   Row 3:          13  | 14 | 15 | 16 | 17
 --   Row 4 (bottom): inv | 18 | 19 | 20 | inv
+-- All 25 cells have names. "Idol 21-25" are the 5 positions blocked in Default mode
+-- but may be enabled by altar layouts (row1/5 corners + row3 center).
 local IDOL_GRID_LAYOUT = {
-	{ false,      "Idol 1",  "Idol 2",  "Idol 3",  false     }, -- row 0: corners blocked
-	{ "Idol 4",   "Idol 5",  "Idol 6",  "Idol 7",  "Idol 8"  }, -- row 1: all open
-	{ "Idol 9",   "Idol 10", false,     "Idol 11", "Idol 12" }, -- row 2: center blocked
-	{ "Idol 13",  "Idol 14", "Idol 15", "Idol 16", "Idol 17" }, -- row 3: all open
-	{ false,      "Idol 18", "Idol 19", "Idol 20", false     }, -- row 4: corners blocked
+	{ "Idol 21",  "Idol 1",  "Idol 2",  "Idol 3",  "Idol 22" }, -- row 1: corners = altar-only slots
+	{ "Idol 4",   "Idol 5",  "Idol 6",  "Idol 7",  "Idol 8"  }, -- row 2: all open
+	{ "Idol 9",   "Idol 10", "Idol 23", "Idol 11", "Idol 12" }, -- row 3: center = altar-only slot
+	{ "Idol 13",  "Idol 14", "Idol 15", "Idol 16", "Idol 17" }, -- row 4: all open
+	{ "Idol 24",  "Idol 18", "Idol 19", "Idol 20", "Idol 25" }, -- row 5: corners = altar-only slots
 }
 
 -- Reverse map: slotName -> {row, col} (1-indexed, matching IDOL_GRID_LAYOUT)
@@ -77,6 +79,31 @@ table.insert(baseSlots, "Reign of Dragons")
 table.insert(baseSlots, "The Age of Winter")
 table.insert(baseSlots, "Spirits of Fire")
 table.insert(baseSlots, "The Last Ruin")
+
+-- Maximum Omen Idol slots provided by an altar
+local MAX_OMEN_IDOL_SLOTS = 6
+
+-- Horizontally flips a grid (mirrors left-right)
+local function mirrorGrid(grid)
+	local result = {}
+	for y = 1, #grid do
+		local row = {}
+		local len = #grid[y]
+		for x = 1, len do row[x] = grid[y][len - x + 1] end
+		result[y] = row
+	end
+	return result
+end
+
+-- Load altar layouts from dedicated data file
+local IDOL_ALTAR_LAYOUTS = LoadModule("Data/IdolAltarLayouts")
+-- Resolve mirrorOf references
+for _, layout in pairs(IDOL_ALTAR_LAYOUTS) do
+	if layout.mirrorOf and not layout.grid then
+		local src = IDOL_ALTAR_LAYOUTS[layout.mirrorOf]
+		if src and src.grid then layout.grid = mirrorGrid(src.grid) end
+	end
+end
 
 local influenceInfo = itemLib.influenceInfo
 
@@ -165,6 +192,7 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 
 	-- Expose the layout so IdolsTab can reference it without duplicating the table
 	self.idolGridLayout = IDOL_GRID_LAYOUT
+	self.altarLayouts = IDOL_ALTAR_LAYOUTS
 
 	-- Passive tree dropdown controls
 	self.controls.specSelect = new("DropDownControl", {"TOPLEFT",lastVisibleSlot,"BOTTOMLEFT"}, 0, 8, 216, 20, nil, function(index, value)
@@ -182,6 +210,47 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 	end)
 	self.controls.specLabel = new("LabelControl", {"RIGHT",prevSlot,"LEFT"}, -2, 0, 0, 16, "^7Passive tree:")
 	self.controls.idolPositionsLabel = new("LabelControl", {"TOPLEFT",self.controls.specLabel,"BOTTOMLEFT"}, 0, 16, 0, 16, "Idol positions start from bottom left then left to right")
+
+	-- ===== IDOL ALTAR (S4) =====
+	self.activeAltarLayout = "Default"
+	local altarDropList = { { label = "Default", key = "Default" } }
+	do
+		local altarNames = {}
+		for name in pairs(IDOL_ALTAR_LAYOUTS) do t_insert(altarNames, name) end
+		table.sort(altarNames)
+		for _, name in ipairs(altarNames) do
+			local layout = IDOL_ALTAR_LAYOUTS[name]
+			t_insert(altarDropList, {
+				label = (layout.mirrorOf or name) .. (layout.isMirrored and " [Mirrored]" or ""),
+				key   = name,
+			})
+		end
+	end
+	self.controls.idolAltarSelect = new("DropDownControl",
+		{"TOPLEFT",self.controls.idolPositionsLabel,"BOTTOMLEFT"}, 0, 8, 216, 20,
+		altarDropList, function(index, value)
+			self.activeAltarLayout = altarDropList[index].key
+			self.build.buildFlag = true
+		end)
+	self.controls.idolAltarLabel = new("LabelControl",
+		{"RIGHT",self.controls.idolAltarSelect,"LEFT"}, -2, 0, 0, 16, "^7Idol Altar:")
+	local prevOmenSlot = self.controls.idolAltarSelect
+	for i = 1, MAX_OMEN_IDOL_SLOTS do
+		local omenSlot = new("ItemSlotControl", {"TOPLEFT",prevOmenSlot,"BOTTOMLEFT"}, 0, 2, self, "Omen Idol " .. i)
+		local slotNum = i
+		omenSlot.shown = function()
+			if self.activeAltarLayout == "Default" then return false end
+			local layout = IDOL_ALTAR_LAYOUTS[self.activeAltarLayout]
+			return layout ~= nil and slotNum <= layout.baseCapacity
+		end
+		self.slots[omenSlot.slotName] = omenSlot
+		t_insert(self.orderedSlots, omenSlot)
+		self.slotOrder[omenSlot.slotName] = #self.orderedSlots
+		t_insert(self.controls, omenSlot)
+		prevOmenSlot = omenSlot
+	end
+	self.controls.idolAltarEnd = new("Control", {"TOPLEFT",prevOmenSlot,"BOTTOMLEFT",true}, 0, 4, 0, 0)
+
 	-- ===== BLESSING PANEL =====
 	local blessingData = {
 		["Fall of the Outcasts"] = {
@@ -482,7 +551,7 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 		self.build.buildFlag = true
 	end
 
-	local prevBless = self.controls.idolPositionsLabel
+	local prevBless = self.controls.idolAltarEnd
 	self.controls.blessingHeader = new("LabelControl", {"TOPLEFT",prevBless,"BOTTOMLEFT"}, 0, 12, 310, 16, "^7Blessings (Monolith):")
 	prevBless = self.controls.blessingHeader
 
@@ -1703,6 +1772,8 @@ function ItemsTabClass:IsItemValidForSlot(item, slotName, itemSet)
 			end
 		end
 		return true
+	elseif slotType == "Omen Idol" then
+		return item.type ~= nil and item.type:match("Idol$") ~= nil
 	elseif slotName == "Weapon 1" or slotName == "Weapon 1 Swap" or slotName == "Weapon" then
 		return item.base.weapon ~= nil
 	elseif slotName == "Weapon 2" or slotName == "Weapon 2 Swap" then
