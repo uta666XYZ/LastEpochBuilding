@@ -776,6 +776,25 @@ function buildMode:ReadLeToolsSave(saveContent)
 			end
 		end
 
+		-- Build generated name for RARE items from affix names
+		if not uniqueId then
+			local forename, surname = "", ""
+			for _, p in ipairs(item.prefixes) do
+				local md = data.itemMods.Item[p.modId]
+				if md and md.affix and md.affix ~= "" then
+					if md.affix:sub(1,3) == "of " then surname = surname ~= "" and surname or md.affix
+					else forename = forename ~= "" and forename or md.affix end
+				end
+			end
+			for _, s in ipairs(item.suffixes) do
+				local md = data.itemMods.Item[s.modId]
+				if md and md.affix and md.affix ~= "" then
+					if md.affix:sub(1,3) == "of " then surname = surname ~= "" and surname or md.affix
+					else forename = forename ~= "" and forename or md.affix end
+				end
+			end
+			item.name = (forename ~= "" and forename .. " " or "") .. (item.name or "") .. (surname ~= "" and " " .. surname or "")
+		end
 		if uniqueId then
 			local uniqueBase = data.uniques[uniqueId]
 			if uniqueBase then

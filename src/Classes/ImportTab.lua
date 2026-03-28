@@ -802,7 +802,7 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
                                 -- There are cases where the "nbAffixesIndex" value is wrong, not sure why but
                                 -- we should at least prevent a crash when it's higher than expected (could it be lower?)
                                 if itemData["data"][dataId] then
-                                    local affixId = itemData["data"][dataId + 1] + (itemData["data"][dataId] % 4) * 256
+                                    local affixId = itemData["data"][dataId + 1] + (itemData["data"][dataId] % 16) * 256
                                     local affixTier = math.floor(itemData["data"][dataId] / 16)
                                     local modId = affixId .. "_" .. affixTier
                                     local modData = data.itemMods.Item[modId]
@@ -818,12 +818,11 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
                             end
                         end
                     else
-                        item["name"] = itemBaseName
                         item["rarity"] = "RARE"
                         for i = 0, 4 do
                             local dataId = 14 + i * 3
                             if #itemData["data"] > dataId then
-                                local affixId = itemData["data"][dataId] + (itemData["data"][dataId - 1] % 4) * 256
+                                local affixId = itemData["data"][dataId] + (itemData["data"][dataId - 1] % 16) * 256
                                 if affixId then
                                     local affixTier = math.floor(itemData["data"][dataId - 1] / 16)
                                     local modId = affixId .. "_" .. affixTier
@@ -840,6 +839,23 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
                                 end
                             end
                         end
+                        -- Build generated name: [forename] + baseName + [surname]
+                        local forename, surname = "", ""
+                        for _, p in ipairs(item.prefixes) do
+                            local md = data.itemMods.Item[p.modId]
+                            if md and md.affix and md.affix ~= "" then
+                                if md.affix:sub(1,3) == "of " then surname = surname ~= "" and surname or md.affix
+                                else forename = forename ~= "" and forename or md.affix end
+                            end
+                        end
+                        for _, s in ipairs(item.suffixes) do
+                            local md = data.itemMods.Item[s.modId]
+                            if md and md.affix and md.affix ~= "" then
+                                if md.affix:sub(1,3) == "of " then surname = surname ~= "" and surname or md.affix
+                                else forename = forename ~= "" and forename or md.affix end
+                            end
+                        end
+                        item["name"] = (forename ~= "" and forename .. " " or "") .. itemBaseName .. (surname ~= "" and " " .. surname or "")
                     end
                     table.insert(char["items"], item)
                 end

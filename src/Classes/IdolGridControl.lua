@@ -296,7 +296,7 @@ function IdolGridControlClass:Draw(viewPort)
 					SetDrawColor(bg[1], bg[2], bg[3])
 					DrawImage(nil, cx, cy, pw, ph)
 					-- Draw idol image (PNG may have transparency; shows rarity bg through it)
-					local handle = self:GetImage(nameToFilename(item.name))
+					local handle = self:GetImage(nameToFilename(item.baseName or item.name))
 					if handle and handle:IsValid() then
 						SetDrawColor(1, 1, 1, 1)
 						DrawImage(handle, cx, cy, pw, ph)
