@@ -1729,6 +1729,11 @@ function calcs.offence(env, actor, activeSkill)
 	output.FrostbiteChance = m_min(modDB:Sum("BASE", skillCfg, "FrostbiteChance"), 100)
 	output.StunChance      = m_min(modDB:Sum("BASE", skillCfg, "StunChance"), 100)
 	output.ArmorShredChance= m_min(modDB:Sum("BASE", skillCfg, "ArmorShredChance"), 100)
+	output.ElectrifyChance = m_min(modDB:Sum("BASE", skillCfg, "ElectrifyChance"), 100)
+	output.TimeRotChance   = m_min(modDB:Sum("BASE", skillCfg, "TimeRotChance"), 100)
+	output.BlindChance     = m_min(modDB:Sum("BASE", skillCfg, "BlindChance"), 100)
+	output.SlowChance      = m_min(modDB:Sum("BASE", skillCfg, "SlowChance"), 100)
+	output.FrailtyChance   = m_min(modDB:Sum("BASE", skillCfg, "FrailtyChance"), 100)
 
 	-- LE Armor Shred Effect --
 	output.ArmorShredEffect = calcLib.mod(skillModList, skillCfg, "ArmorShredEffect")
