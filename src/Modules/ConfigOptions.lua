@@ -87,41 +87,41 @@ local options = {
 	{ section = "Skill Options", col = 2 },
 
 	{ label = "Player is cursed by:" },
-	{ var = "conditionCursed", type = "check", label = "Are you Cursed?", ifCond = "Cursed", tooltip = "Acolyteのパッシブ・スキルによりプレイヤー自身がCurseを受けることがあります。\n'while cursed'などの修飾語が有効になります。", apply = function(val, modList, enemyModList)
+	{ var = "conditionCursed", type = "check", label = "Are you Cursed?", tooltip = "Check if the player is Cursed (e.g. via Acolyte passives/skills).\nEnables 'while cursed' modifiers.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:Cursed", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
-	{ var = "conditionTransformed", type = "check", label = "Are you Transformed?", ifCond = "Transformed", tooltip = "Druid/Primalistの変身形態（Werebear、Spriggan Form等）使用時にチェック。\n'while transformed'の修飾語が有効になります。", apply = function(val, modList, enemyModList)
+	{ var = "conditionTransformed", type = "check", label = "Are you Transformed?", tooltip = "Check if the player is Transformed (Werebear, Spriggan Form, etc.).\nEnables 'while transformed' modifiers.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:Transformed", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
-	{ var = "conditionHighHealth", type = "check", label = "Are you at High Health?", ifCond = "HighHealth", tooltip = "HealthがHigh Health閾値（通常50%以上）以上の場合にチェック。\n'while at high health'の修飾語が有効になります。", apply = function(val, modList, enemyModList)
+	{ var = "conditionHighHealth", type = "check", label = "Are you at High Health?", tooltip = "Check if you are at High Health (typically 50%+ of max health).\nEnables 'while at high health' modifiers.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:HighHealth", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
-	{ var = "conditionHaveWard", type = "check", label = "Do you have Ward?", ifCond = "HaveWard", apply = function(val, modList, enemyModList)
+	{ var = "conditionHaveWard", type = "check", label = "Do you have Ward?", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:HaveWard", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
-	{ var = "conditionHaveLightningAegis", type = "check", label = "Do you have Lightning Aegis?", ifCond = "HaveLightningAegis", tooltip = "Runemaster専用：Lightning Aegisバフ発動中にチェック。\n'while you have lightning aegis'の修飾語が有効になります。", apply = function(val, modList, enemyModList)
+	{ var = "conditionHaveLightningAegis", type = "check", label = "Do you have Lightning Aegis?", tooltip = "Check if you have the Lightning Aegis buff active (Runemaster).\nEnables 'while you have lightning aegis' modifiers.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:HaveLightningAegis", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
-	{ var = "conditionOnConsecratedGround", type = "check", label = "Are you on Consecrated Ground?", ifCond = "OnConsecratedGround", tooltip = "Paladin専用：Consecrated Ground上にいる時にチェック。", apply = function(val, modList, enemyModList)
+	{ var = "conditionOnConsecratedGround", type = "check", label = "Are you on Consecrated Ground?", tooltip = "Check if you are standing on Consecrated Ground (Paladin).", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:OnConsecratedGround", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
-	{ var = "conditionHaveCompanion", type = "check", label = "Do you have a Companion?", ifCond = "HaveCompanion", tooltip = "Beastmaster/Falconer：コンパニオンが少なくとも1体いる時にチェック。", apply = function(val, modList, enemyModList)
+	{ var = "conditionHaveCompanion", type = "check", label = "Do you have a Companion?", tooltip = "Check if you have at least one Companion (Beastmaster/Falconer).", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:HaveCompanion", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
-	{ var = "multiplierCompanion", type = "count", label = "# of Companions:", ifMult = "Companion", implyCond = "HaveCompanion", tooltip = "コンパニオンの数。HaveCompanion条件も同時に有効化されます。", apply = function(val, modList, enemyModList)
+	{ var = "multiplierCompanion", type = "count", label = "# of Companions:", implyCond = "HaveCompanion", tooltip = "Number of active Companions. Also implies HaveCompanion condition.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Multiplier:Companion", "BASE", val, "Config", { type = "Condition", var = "Combat" })
 		modList:NewMod("Condition:HaveCompanion", "FLAG", val >= 1, "Config", { type = "Condition", var = "Combat" })
 	end },
-	{ var = "conditionFrenzy", type = "check", label = "Do you have Frenzy?", ifCond = "Frenzy", tooltip = "Beastmaster専用：Frenzyスタックを持っている時にチェック。", apply = function(val, modList, enemyModList)
+	{ var = "conditionFrenzy", type = "check", label = "Do you have Frenzy?", tooltip = "Check if you have Frenzy stacks (Beastmaster).", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:Frenzy", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
-	{ var = "multiplierNearbyCorpses", type = "count", label = "# of Nearby Corpses:", ifMult = "NearbyCorpse", apply = function(val, modList, enemyModList)
+	{ var = "multiplierNearbyCorpses", type = "count", label = "# of Nearby Corpses:", apply = function(val, modList, enemyModList)
 		modList:NewMod("Multiplier:NearbyCorpse", "BASE", val, "Config", { type = "Condition", var = "Combat" })
 	end },
-	{ var = "conditionUsedPotionRecently", type = "check", label = "Used a Potion Recently?", ifCond = "UsedPotionRecently", apply = function(val, modList, enemyModList)
+	{ var = "conditionUsedPotionRecently", type = "check", label = "Used a Potion Recently?", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:UsedPotionRecently", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
-	{ var = "multiplierForgedWeapons", type = "count", label = "# of Forged Weapons:", ifMult = "ForgedWeapon", implyCond = "HaveForgedWeapon", tooltip = "Forge Guard専用：Forged Weaponの数。", apply = function(val, modList, enemyModList)
+	{ var = "multiplierForgedWeapons", type = "count", label = "# of Forged Weapons:", implyCond = "HaveForgedWeapon", tooltip = "Number of Forged Weapons active (Forge Guard).", apply = function(val, modList, enemyModList)
 		modList:NewMod("Multiplier:ForgedWeapon", "BASE", val, "Config", { type = "Condition", var = "Combat" })
 		modList:NewMod("Condition:HaveForgedWeapon", "FLAG", val >= 1, "Config", { type = "Condition", var = "Combat" })
 	end },
@@ -325,53 +325,53 @@ local options = {
 		enemyModList:NewMod("Condition:Shocked", "FLAG", true, "Config", { type = "Condition", var = "Effective" })
 		enemyModList:NewMod("Condition:ShockedConfig", "FLAG", true, "Config", { type = "Condition", var = "Effective" })
 	end },
-	{ var = "conditionEnemyCursed", type = "check", label = "Is the enemy Cursed?", ifEnemyCond = "Cursed", apply = function(val, modList, enemyModList)
+	{ var = "conditionEnemyCursed", type = "check", label = "Is the enemy Cursed?", apply = function(val, modList, enemyModList)
 		enemyModList:NewMod("Condition:Cursed", "FLAG", true, "Config", { type = "Condition", var = "Effective" })
 	end },
-	{ var = "conditionEnemySlowed", type = "check", label = "Is the enemy Slowed?", ifEnemyCond = "Slowed", apply = function(val, modList, enemyModList)
+	{ var = "conditionEnemySlowed", type = "check", label = "Is the enemy Slowed?", apply = function(val, modList, enemyModList)
 		enemyModList:NewMod("Condition:Slowed", "FLAG", true, "Config", { type = "Condition", var = "Effective" })
 	end },
-	{ var = "conditionEnemyHitRecently", type = "check", label = "Was the enemy Hit Recently?", ifEnemyCond = "HitRecently", apply = function(val, modList, enemyModList)
+	{ var = "conditionEnemyHitRecently", type = "check", label = "Was the enemy Hit Recently?", apply = function(val, modList, enemyModList)
 		enemyModList:NewMod("Condition:HitRecently", "FLAG", true, "Config", { type = "Condition", var = "Effective" })
 	end },
-	{ var = "conditionEnemyStunnedRecently", type = "check", label = "Was the enemy Stunned Recently?", ifEnemyCond = "StunnedRecently", apply = function(val, modList, enemyModList)
+	{ var = "conditionEnemyStunnedRecently", type = "check", label = "Was the enemy Stunned Recently?", apply = function(val, modList, enemyModList)
 		enemyModList:NewMod("Condition:StunnedRecently", "FLAG", true, "Config", { type = "Condition", var = "Effective" })
 	end },
-	{ var = "conditionEnemyKilledRecently", type = "check", label = "Was an enemy Killed Recently?", ifEnemyCond = "KilledRecently", apply = function(val, modList, enemyModList)
+	{ var = "conditionEnemyKilledRecently", type = "check", label = "Was an enemy Killed Recently?", apply = function(val, modList, enemyModList)
 		enemyModList:NewMod("Condition:KilledRecently", "FLAG", true, "Config", { type = "Condition", var = "Effective" })
 	end },
 	-- Enemy ailment stack counts (for per-stack modifiers)
-	{ var = "multiplierEnemyBleedStacks", type = "count", label = "Enemy Bleed Stacks:", ifEnemyMult = "BleedStack", implyCond = "Bleeding", apply = function(val, modList, enemyModList)
+	{ var = "multiplierEnemyBleedStacks", type = "count", label = "Enemy Bleed Stacks:", implyCond = "Bleeding", apply = function(val, modList, enemyModList)
 		enemyModList:NewMod("Multiplier:BleedStack", "BASE", val, "Config", { type = "Condition", var = "Effective" })
 		enemyModList:NewMod("Condition:Bleeding", "FLAG", val >= 1, "Config", { type = "Condition", var = "Effective" })
 	end },
-	{ var = "multiplierEnemyIgniteStacks", type = "count", label = "Enemy Ignite Stacks:", ifEnemyMult = "IgniteStack", implyCond = "Ignited", apply = function(val, modList, enemyModList)
+	{ var = "multiplierEnemyIgniteStacks", type = "count", label = "Enemy Ignite Stacks:", implyCond = "Ignited", apply = function(val, modList, enemyModList)
 		enemyModList:NewMod("Multiplier:IgniteStack", "BASE", val, "Config", { type = "Condition", var = "Effective" })
 		enemyModList:NewMod("Condition:Ignited", "FLAG", val >= 1, "Config", { type = "Condition", var = "Effective" })
 	end },
-	{ var = "multiplierEnemyShockStacks", type = "count", label = "Enemy Shock Stacks:", ifEnemyMult = "ShockStack", implyCond = "Shocked", apply = function(val, modList, enemyModList)
+	{ var = "multiplierEnemyShockStacks", type = "count", label = "Enemy Shock Stacks:", implyCond = "Shocked", apply = function(val, modList, enemyModList)
 		enemyModList:NewMod("Multiplier:ShockStack", "BASE", val, "Config", { type = "Condition", var = "Effective" })
 		enemyModList:NewMod("Condition:Shocked", "FLAG", val >= 1, "Config", { type = "Condition", var = "Effective" })
 	end },
-	{ var = "multiplierEnemyChillStacks", type = "count", label = "Enemy Chill Stacks:", ifEnemyMult = "ChillStack", implyCond = "Chilled", apply = function(val, modList, enemyModList)
+	{ var = "multiplierEnemyChillStacks", type = "count", label = "Enemy Chill Stacks:", implyCond = "Chilled", apply = function(val, modList, enemyModList)
 		enemyModList:NewMod("Multiplier:ChillStack", "BASE", val, "Config", { type = "Condition", var = "Effective" })
 		enemyModList:NewMod("Condition:Chilled", "FLAG", val >= 1, "Config", { type = "Condition", var = "Effective" })
 	end },
-	{ var = "multiplierEnemyTimeRotStacks", type = "count", label = "Enemy Time Rot Stacks:", ifEnemyMult = "TimeRotStack", apply = function(val, modList, enemyModList)
+	{ var = "multiplierEnemyTimeRotStacks", type = "count", label = "Enemy Time Rot Stacks:", apply = function(val, modList, enemyModList)
 		enemyModList:NewMod("Multiplier:TimeRotStack", "BASE", val, "Config", { type = "Condition", var = "Effective" })
 	end },
-	{ var = "multiplierEnemyDoomStacks", type = "count", label = "Enemy Doom Stacks:", ifEnemyMult = "DoomStack", apply = function(val, modList, enemyModList)
+	{ var = "multiplierEnemyDoomStacks", type = "count", label = "Enemy Doom Stacks:", apply = function(val, modList, enemyModList)
 		enemyModList:NewMod("Multiplier:DoomStack", "BASE", val, "Config", { type = "Condition", var = "Effective" })
 	end },
-	{ var = "multiplierEnemySlowStacks", type = "count", label = "Enemy Slow Stacks:", ifEnemyMult = "SlowStack", implyCond = "Slowed", apply = function(val, modList, enemyModList)
+	{ var = "multiplierEnemySlowStacks", type = "count", label = "Enemy Slow Stacks:", implyCond = "Slowed", apply = function(val, modList, enemyModList)
 		enemyModList:NewMod("Multiplier:SlowStack", "BASE", val, "Config", { type = "Condition", var = "Effective" })
 		enemyModList:NewMod("Condition:Slowed", "FLAG", val >= 1, "Config", { type = "Condition", var = "Effective" })
 	end },
-	{ var = "multiplierEnemyFrailtyStacks", type = "count", label = "Enemy Frailty Stacks:", ifEnemyMult = "FrailtyStack", implyCond = "Frail", apply = function(val, modList, enemyModList)
+	{ var = "multiplierEnemyFrailtyStacks", type = "count", label = "Enemy Frailty Stacks:", implyCond = "Frail", apply = function(val, modList, enemyModList)
 		enemyModList:NewMod("Multiplier:FrailtyStack", "BASE", val, "Config", { type = "Condition", var = "Effective" })
 		enemyModList:NewMod("Condition:Frail", "FLAG", val >= 1, "Config", { type = "Condition", var = "Effective" })
 	end },
-	{ var = "multiplierEnemyCurseStacks", type = "count", label = "Enemy Curse Stacks:", ifEnemyMult = "CurseStack", implyCond = "Cursed", apply = function(val, modList, enemyModList)
+	{ var = "multiplierEnemyCurseStacks", type = "count", label = "Enemy Curse Stacks:", implyCond = "Cursed", apply = function(val, modList, enemyModList)
 		enemyModList:NewMod("Multiplier:CurseStack", "BASE", val, "Config", { type = "Condition", var = "Effective" })
 		enemyModList:NewMod("Condition:Cursed", "FLAG", val >= 1, "Config", { type = "Condition", var = "Effective" })
 	end },
