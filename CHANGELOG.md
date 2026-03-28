@@ -1,5 +1,20 @@
 # Changelog
 
+## (2026-03-29)
+## What's Changed
+### New Features
+- **Config tab expanded** — All new options show without pressing "Show All Configurations"
+  - Skill Options: Cursed, Transformed, High Health, Ward, Lightning Aegis, Consecrated Ground, Companion count, Frenzy, Nearby Corpses, Used Potion Recently, Forged Weapons count
+  - For Effective DPS: Enemy Cursed, Slowed, Hit/Stunned/Killed Recently, enemy ailment stack counts (Bleed, Ignite, Shock, Chill, Time Rot, Doom, Slow, Frailty, Curse)
+- **New Offense outputs** — ElectrifyChance, TimeRotChance, BlindChance, SlowChance, FrailtyChance now shown in Calcs tab
+- **New Defense outputs** — ParryChance, DamageToManaBeforeHealth, ChanceToChillAttackers, ChanceToSlowAttackers, ChanceToShockAttackers
+- **ModParser improvements** — Item affixes now recognized: Slow/Frailty/Blind/Electrify/Time Rot application chances, Parry Chance, Damage to Mana Before Health, Chance to Chill/Slow/Shock Attackers, Healing Effectiveness, per-stack enemy ailment multipliers, UsedPotionRecently, ForgedWeapon
+- **Endurance system** — One-shot protection mechanic correctly calculated (threshold-based damage reduction)
+- **New player/enemy conditions** in ModParser: `while transformed`, `while at high health`, `while you have ward/lightning aegis`, `on consecrated ground`, `per companion`, `per forged weapon`, `after using a potion`, enemy hit/stunned/killed recently, per-stack ailment tags
+
+### Fixed
+- Config tooltip text was rendering as Unicode escape sequences when written in Japanese — all tooltips are now English only
+
 ## (2026/08/19)
 ## What's Changed
 ### Launch.lua

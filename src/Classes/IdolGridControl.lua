@@ -67,7 +67,7 @@ local rarityBorder = {
 	RELIC   = { 0.70, 0.35, 1.00 },
 }
 
--- Idol grid dimensions (width × height in cells), keyed on the base type string
+-- Idol grid dimensions in cells {width, height}, keyed on the base type string
 local idolSizeHint = {
 	["Minor Idol"]  = "1x1",
 	["Small Idol"]  = "1x1",
@@ -96,6 +96,12 @@ local IdolGridControlClass = newClass("IdolGridControl", "Control", "ControlHost
 	self.itemsTab = itemsTab
 	self.layout = layout
 	self.imageHandles = {}
+
+	-- Maps slotName -> {row, col} for secondary-slot tooltip redirect
+	self.slotToCell = {}
+
+	-- Maps [row][col] -> primary ItemSlotControl for multi-cell idols; rebuilt each Draw
+	self.cellPrimary = {}
 
 	-- Create an ItemSlotControl for EVERY cell (all 25 positions).
 	-- Cells blocked in Default mode (Idol 21-25) are hidden via slot.shown
@@ -129,6 +135,29 @@ local IdolGridControlClass = newClass("IdolGridControl", "Control", "ControlHost
 			t_insert(itemsTab.orderedSlots, slot)
 			itemsTab.slotOrder[slotName] = #itemsTab.orderedSlots
 			itemsTab:RegisterLateSlot(slot)
+
+			self.slotToCell[slotName] = {row, col}
+
+			-- Override tooltipFunc so secondary cells of multi-slot idols show
+			-- the primary slot's item tooltip when hovered.
+			-- cellPrimary is rebuilt each Draw; primary == slot means "I am the primary".
+			local gridSelf = self
+			local origTooltipFunc = slot.tooltipFunc
+			slot.tooltipFunc = function(tooltip, mode, index, itemId)
+				local cp = gridSelf.cellPrimary
+				local primarySlot = cp[r] and cp[r][c]
+				if primarySlot and primarySlot ~= slot then
+					-- Secondary cell: delegate to the primary slot's item
+					local item = itemsTab.items[primarySlot.selItemId]
+					if main.popups[1] or mode == "OUT" or not item then
+						tooltip:Clear()
+					elseif tooltip:CheckForUpdate(item, launch.devModeAlt, itemsTab.build.outputRevision) then
+						itemsTab:AddItemTooltip(tooltip, item, primarySlot)
+					end
+				else
+					origTooltipFunc(tooltip, mode, index, itemId)
+				end
+			end
 		end
 	end
 end)
@@ -147,6 +176,23 @@ end
 function IdolGridControlClass:IsMouseOver()
 	if not self:IsShown() then return false end
 	return self:IsMouseInBounds() or (self:GetMouseOverControl() ~= nil)
+end
+
+-- Redirect mouse-over for secondary cells of multi-slot idols to the primary slot,
+-- so that tooltips and key events work from any cell the idol occupies.
+function IdolGridControlClass:GetMouseOverControl()
+	local ctrl = self.ControlHost:GetMouseOverControl()
+	if ctrl and ctrl.slotName and ctrl.selItemId == 0 then
+		local pos = self.slotToCell[ctrl.slotName]
+		if pos then
+			local cp = self.cellPrimary
+			local primarySlot = cp[pos[1]] and cp[pos[1]][pos[2]]
+			if primarySlot and primarySlot ~= ctrl then
+				return primarySlot
+			end
+		end
+	end
+	return ctrl
 end
 
 -- Route key-down events to whichever child slot is under the mouse
@@ -205,21 +251,14 @@ local function drawBorder(cx, cy, w, h, r, g, b)
 	DrawImage(nil, cx + w - 1, cy,         1,  h)
 end
 
+-- Blocked cell: clean dark inset tile (no X/+ marks) to suggest unavailable area
 local function drawBlockedCell(cx, cy, cw, ch)
-	SetDrawColor(0.07, 0.07, 0.07)
+	-- Outer border (slightly lighter than interior for a framed look)
+	SetDrawColor(0.13, 0.11, 0.14)
 	DrawImage(nil, cx, cy, cw, ch)
-	drawBorder(cx, cy, cw, ch, 0.17, 0.17, 0.17)
-	SetDrawColor(0.22, 0.22, 0.22)
-	DrawImageQuad(nil,
-		cx + 4,      cy + 4,
-		cx + 8,      cy + 4,
-		cx + cw - 4, cy + ch - 4,
-		cx + cw - 8, cy + ch - 4)
-	DrawImageQuad(nil,
-		cx + cw - 8, cy + 4,
-		cx + cw - 4, cy + 4,
-		cx + 8,      cy + ch - 4,
-		cx + 4,      cy + ch - 4)
+	-- Inner recessed fill (darker)
+	SetDrawColor(0.06, 0.05, 0.07)
+	DrawImage(nil, cx + 2, cy + 2, cw - 4, ch - 4)
 end
 
 function IdolGridControlClass:Draw(viewPort)
@@ -247,6 +286,31 @@ function IdolGridControlClass:Draw(viewPort)
 		return altarGrid and altarGrid[row] and altarGrid[row][col]
 	end
 
+	-- Pre-pass: build cellPrimary BEFORE DrawControls so tooltipFunc can use it.
+	-- Maps [row][col] -> primary slot for every cell covered by a placed idol.
+	self.cellPrimary = {}
+	for row, rowData in ipairs(self.layout) do
+		for col, slotName in ipairs(rowData) do
+			if not isBlocked(row, col) then
+				local slot = self.itemsTab.slots[slotName]
+				local item = slot and self.itemsTab.items[slot.selItemId]
+				if item then
+					local dims = idolDims[item.type] or {1, 1}
+					for dr = 0, dims[2] - 1 do
+						if not self.cellPrimary[row + dr] then
+							self.cellPrimary[row + dr] = {}
+						end
+						for dc = 0, dims[1] - 1 do
+							if not self.cellPrimary[row + dr][col + dc] then
+								self.cellPrimary[row + dr][col + dc] = slot
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+
 	-- Pass 1: cell backgrounds (drawn under slot controls)
 	for row, rowData in ipairs(self.layout) do
 		for col, slotName in ipairs(rowData) do
@@ -260,7 +324,7 @@ function IdolGridControlClass:Draw(viewPort)
 				local item = slot and self.itemsTab.items[slot.selItemId]
 				local av = altarVal(row, col)
 				if av == 2 and not item then
-					SetDrawColor(0.15, 0.05, 0.28)  -- purple tint for empty refracted cell
+					SetDrawColor(0.15, 0.05, 0.28)  -- purple tint for empty fractured cell
 				else
 					local bg = item and rarityBg[item.rarity] or { 0.13, 0.13, 0.13 }
 					SetDrawColor(bg[1], bg[2], bg[3])
@@ -270,7 +334,7 @@ function IdolGridControlClass:Draw(viewPort)
 		end
 	end
 
-	-- Draw child slot controls (blocked slots have shown=false and are skipped automatically)
+	-- Draw child slot controls (tooltipFunc now has correct cellPrimary data)
 	self:DrawControls(viewPort)
 
 	-- Pass 2: overlays on top of slot controls
@@ -287,20 +351,36 @@ function IdolGridControlClass:Draw(viewPort)
 
 				if item and not drawnItems[slot.selItemId] then
 					drawnItems[slot.selItemId] = true
+
 					-- Pixel size of the idol (may span multiple cells)
 					local dims = idolDims[item.type] or {1, 1}
 					local pw = dims[1] * cw + (dims[1] - 1) * CELL_GAP
 					local ph = dims[2] * ch + (dims[2] - 1) * CELL_GAP
+
+					-- Check whether ANY covered cell is a fractured slot (altarVal == 2)
+					local hasFractured = false
+					for dr = 0, dims[2] - 1 do
+						for dc = 0, dims[1] - 1 do
+							if altarVal(row + dr, col + dc) == 2 then
+								hasFractured = true
+								break
+							end
+						end
+						if hasFractured then break end
+					end
+
 					-- Solid background to cover ItemSlotControl text beneath
 					local bg = rarityBg[item.rarity] or rarityBg.NORMAL
 					SetDrawColor(bg[1], bg[2], bg[3])
 					DrawImage(nil, cx, cy, pw, ph)
+
 					-- Draw idol image (PNG may have transparency; shows rarity bg through it)
 					local handle = self:GetImage(nameToFilename(item.baseName or item.name))
 					if handle and handle:IsValid() then
 						SetDrawColor(1, 1, 1, 1)
 						DrawImage(handle, cx, cy, pw, ph)
 					end
+
 					-- Rarity-coloured 2-px border spanning full idol area
 					local bc = rarityBorder[item.rarity] or rarityBorder.NORMAL
 					SetDrawColor(bc[1], bc[2], bc[3])
@@ -308,6 +388,24 @@ function IdolGridControlClass:Draw(viewPort)
 					DrawImage(nil, cx,          cy + ph - 2, pw, 2)
 					DrawImage(nil, cx,          cy,          2,  ph)
 					DrawImage(nil, cx + pw - 2, cy,          2,  ph)
+
+					-- Fractured (Shattered) slot highlight: bright purple border over the
+					-- entire idol area so it remains visible even when an idol is placed.
+					-- Drawn on top of the rarity border.
+					if hasFractured then
+						SetDrawColor(0.62, 0.22, 0.92)
+						DrawImage(nil, cx,          cy,          pw, 2)
+						DrawImage(nil, cx,          cy + ph - 2, pw, 2)
+						DrawImage(nil, cx,          cy,          2,  ph)
+						DrawImage(nil, cx + pw - 2, cy,          2,  ph)
+						-- Inner purple line for a double-border glow effect
+						SetDrawColor(0.45, 0.10, 0.70, 0.70)
+						DrawImage(nil, cx + 2,      cy + 2,      pw - 4, 1)
+						DrawImage(nil, cx + 2,      cy + ph - 3, pw - 4, 1)
+						DrawImage(nil, cx + 2,      cy + 2,      1,      ph - 4)
+						DrawImage(nil, cx + pw - 3, cy + 2,      1,      ph - 4)
+					end
+
 					-- Size hint badge (e.g. "2x1") in bottom-right corner of idol area
 					local hint = idolSizeHint[item.type]
 					if hint then
@@ -319,9 +417,9 @@ function IdolGridControlClass:Draw(viewPort)
 						DrawString(cx + pw - tw - 3, cy + ph - fs - 3, "LEFT", fs, "VAR", hint)
 					end
 				elseif not item then
-					-- Empty valid cell: border (purple for refracted, gray for normal)
+					-- Empty valid cell: border (purple for fractured, gray for normal)
 					if av == 2 then
-						drawBorder(cx, cy, cw, ch, 0.55, 0.25, 0.80)
+						drawBorder(cx, cy, cw, ch, 0.62, 0.22, 0.92)
 					else
 						drawBorder(cx, cy, cw, ch, 0.28, 0.28, 0.28)
 					end
