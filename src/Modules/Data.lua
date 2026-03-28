@@ -516,7 +516,13 @@ end
 data.versionData = { }
 for _, ver in ipairs(treeVersionList) do
 	local verMods    = readJsonFile("Data/ModItem_" .. ver .. ".json")
-	local verBases   = readJsonFile("Data/Bases/bases_" .. ver .. ".json")
+	local verBasesRaw = io.open("Data/Bases/bases_" .. ver .. ".json", "r")
+	local verBasesContent = verBasesRaw and verBasesRaw:read("*a") or ""
+	if verBasesRaw then verBasesRaw:close() end
+	local verBases, basesErr = processJson(verBasesContent)
+	if basesErr then
+		ConPrintf("bases_%s.json parse error: %s", ver, tostring(basesErr))
+	end
 	local verUniques = readJsonFile("Data/Uniques/uniques_" .. ver .. ".json")
 	-- Safety fallback: if a version-specific file is missing, use the base files
 	if not verMods    then verMods    = readJsonFile("Data/ModItem.json")         end
@@ -542,11 +548,24 @@ end
 -- Called from Build.lua when a build is opened.
 function data.setActiveVersion(version)
 	local vd = data.versionData[version] or data.versionData[latestTreeVersion]
-	data.itemMods        = vd.itemMods
-	data.itemBases       = vd.itemBases
 	data.itemBaseLists   = vd.itemBaseLists
 	data.itemBaseTypeList = vd.itemBaseTypeList
 	data.uniques         = vd.uniques
+	-- Use the requested version's itemBases/itemMods if non-empty,
+	-- otherwise fall back to the newest version that parsed successfully.
+	if next(vd.itemBases) then
+		data.itemMods  = vd.itemMods
+		data.itemBases = vd.itemBases
+	else
+		for i = #treeVersionList, 1, -1 do
+			local fallback = data.versionData[treeVersionList[i]]
+			if fallback and next(fallback.itemBases) then
+				data.itemMods  = fallback.itemMods
+				data.itemBases = fallback.itemBases
+				break
+			end
+		end
+	end
 end
 
 -- Initialise with the latest version

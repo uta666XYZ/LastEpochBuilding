@@ -752,9 +752,9 @@ function SkillsTabClass:GetUsedSkillPoints(index)
 	local treeId = socketGroup.grantedEffect.treeId
 	local usedPoints = 0
 	
-	-- Count allocated nodes in this skill's tree
+	-- Count allocated nodes in this skill's tree, excluding the root node (maxPoints=0)
 	for nodeId, node in pairs(self.build.spec.allocNodes) do
-		if nodeId:match("^" .. treeId) then
+		if nodeId:match("^" .. treeId) and (node.maxPoints or 0) > 0 then
 			usedPoints = usedPoints + (node.alloc or 0)
 		end
 	end

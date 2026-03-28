@@ -1,0 +1,301 @@
+# Skill Tree Comparison: Repo vs tunklab.com (Season 4 / v1.4)
+# Generated from scripts/tunklab_all.txt vs scripts/repo_skill_data.txt
+
+Total matched: 127, Discrepancies: 31, Unmatched: 6
+
+[bg36nl] Summon Bone Golem (tree_3.json):
+  DIFF [Amalgam of Rogues]: repo=5 tunklab=4
+  DIFF [Amalgam of Sentinels]: repo=5 tunklab=4
+  DIFF [Amalgam of Mages]: repo=5 tunklab=4
+  DIFF [Marrow Eater]: repo=5 tunklab=2
+
+[bh2] Black Hole (tree_1.json):
+  DIFF [Pocket Dimension]: repo=0 tunklab=1
+  EXTRA_IN_REPO: 'Massive':4
+
+[bp2nk] Marrow Shards (tree_3.json):
+  DIFF [Ghost Splinters]: repo=6 tunklab=4
+  DIFF [Ossumancy]: repo=7 tunklab=5
+  DIFF [Shredding Bones]: repo=5 tunklab=4
+  DIFF [Second Sight]: repo=0 tunklab=1
+
+[ch4bo] Chaos Bolts (tree_3.json):
+  TYPO_IN_REPO: 'Sudden Putrescence ' should be 'Sudden Putrescence'
+  TYPO_IN_REPO: 'Seed of Chaos ' should be 'Seed of Chaos'
+
+[dacn33] Dancing Strikes (tree_4.json):
+  DIFF [Underdog]: repo=5 tunklab=4
+  DIFF [Rupture]: repo=5 tunklab=4
+
+[dagg3] Shadow Cascade (tree_4.json):
+  MISSING_IN_REPO: Execution:3
+  EXTRA_IN_REPO: 'Excecution':3
+
+[detar] Detonating Arrow (tree_4.json):
+  TYPO_IN_REPO: 'Deadly Ailments ' should be 'Deadly Ailments'
+
+[ex4tp] Net (tree_4.json):
+  DIFF [Lightning Bomb]: repo=4 tunklab=5
+
+[f1b4d] Firebrand (tree_1.json):
+  MISSING_IN_REPO: Excitation:1
+  DIFF [Flare]: repo=5 tunklab=4
+  DIFF [Heat Wave]: repo=0 tunklab=3
+  EXTRA_IN_REPO: 'Mana Shell':1
+
+[fl44] Flay (tree_3.json):
+  DIFF [Spirit Stride]: repo=0 tunklab=3
+
+[fr11mv] Flame Reave (tree_1.json):
+  MISSING_IN_REPO: Thermopile:1
+  MISSING_IN_REPO: Reflash:1
+  DIFF [Scorched Earth]: repo=3 tunklab=1
+  EXTRA_IN_REPO: 'Volatile Strike':2
+  EXTRA_IN_REPO: 'Firewalker':1
+
+[frc87w] Runic Invocation (tree_1.json):
+  MISSING_IN_REPO: Unbridled Ruin:4
+  MISSING_IN_REPO: Stride to Safety:3
+  MISSING_IN_REPO: Warmage's Initiative:1
+  MISSING_IN_REPO: Interlude:1
+  MISSING_IN_REPO: Prologue:1
+  MISSING_IN_REPO: Attuned Approach:4
+  MISSING_IN_REPO: Rune Slinger:3
+  MISSING_IN_REPO: Elementalist's Call:5
+  MISSING_IN_REPO: Mastery of the Invoker:3
+  MISSING_IN_REPO: Glyphcarver's Dominance:3
+  MISSING_IN_REPO: Word of Rahyeh:4
+  MISSING_IN_REPO: Inscribed Patterns:3
+  MISSING_IN_REPO: Runic Energy:5
+  MISSING_IN_REPO: Spell Cascade:1
+  MISSING_IN_REPO: Copied Scrolls:4
+  MISSING_IN_REPO: Rune Powercore:1
+  MISSING_IN_REPO: Arcane Battery:1
+  MISSING_IN_REPO: Runic Energizer:1
+  MISSING_IN_REPO: Word of Heorot:4
+  MISSING_IN_REPO: Author of Arcana:1
+  MISSING_IN_REPO: Immutable Order:1
+  MISSING_IN_REPO: Adept Runescribing:4
+  MISSING_IN_REPO: Consolidator:1
+  MISSING_IN_REPO: Enigma:1
+  MISSING_IN_REPO: Transcriber of Power:4
+  MISSING_IN_REPO: Word of Lagon:3
+  MISSING_IN_REPO: Devastating Starfall:2
+  MISSING_IN_REPO: Cosmic Mind:2
+  MISSING_IN_REPO: Elemental Starfield:1
+  MISSING_IN_REPO: Scrivener's Haste:3
+  MISSING_IN_REPO: Elemental Lore:1
+  EXTRA_IN_REPO: 'Rending Cascade':4
+  EXTRA_IN_REPO: 'Glamdring':3
+  EXTRA_IN_REPO: 'Cold Star':3
+  EXTRA_IN_REPO: 'Gift of Winter':3
+  EXTRA_IN_REPO: 'Lava Talon':1
+  EXTRA_IN_REPO: 'Spark Artillery':1
+  EXTRA_IN_REPO: 'Fen of the Frozen':3
+  EXTRA_IN_REPO: 'Brightfrost':3
+  EXTRA_IN_REPO: "Artor's Sceptre":5
+  EXTRA_IN_REPO: 'Frost Beyond Time':1
+  EXTRA_IN_REPO: 'Celestial Conflux':3
+  EXTRA_IN_REPO: 'Cold and Calculating':1
+  EXTRA_IN_REPO: 'Kolheim Ballista':1
+  EXTRA_IN_REPO: 'Power Word: Hail':3
+  EXTRA_IN_REPO: 'Shiver Shell':3
+  EXTRA_IN_REPO: "Reowyn's Veil":1
+  EXTRA_IN_REPO: 'Macuahuitl':3
+  EXTRA_IN_REPO: 'Frozen Sleeper':3
+  EXTRA_IN_REPO: 'Chaos Whirl':4
+  EXTRA_IN_REPO: 'Age of Vengeance':1
+  EXTRA_IN_REPO: 'On Through The Snow':1
+  EXTRA_IN_REPO: 'Ever Onward':1
+  EXTRA_IN_REPO: 'Frozen Malice':1
+  EXTRA_IN_REPO: 'A Crack in the Ice':1
+  EXTRA_IN_REPO: 'Hand of Morditas':1
+  EXTRA_IN_REPO: 'Volley of Glass':1
+  EXTRA_IN_REPO: 'Frozen Reign':1
+  EXTRA_IN_REPO: 'Spark of Celerity':5
+
+[ma6hdr] Manifest Armor (tree_2.json):
+  EXTRA_IN_REPO: 'Shield-Bearer':1
+  EXTRA_IN_REPO: 'Lambent Metal':1
+  EXTRA_IN_REPO: 'Thornmail':1
+  EXTRA_IN_REPO: 'Blast Forge':1
+  EXTRA_IN_REPO: 'Whirlwind':1
+  EXTRA_IN_REPO: 'Dash Boots':1
+  EXTRA_IN_REPO: 'Titan Sword':1
+
+[me27] Meteor (tree_1.json):
+  DIFF [Infernal Descent]: repo=5 tunklab=4
+  DIFF [Crushing Force]: repo=5 tunklab=4
+  DIFF [Rapid Descent]: repo=5 tunklab=4
+  DIFF [Apocalyptic Impact]: repo=5 tunklab=4
+  DIFF [Extinction]: repo=4 tunklab=3
+
+[ne01t] Net (tree_4.json):
+  MISSING_IN_REPO: Ash Compartment:4
+  MISSING_IN_REPO: Hold This:1
+  MISSING_IN_REPO: Aspect of the Rabbit:1
+  MISSING_IN_REPO: Arrow Traps:1
+  MISSING_IN_REPO: Blasting Device:2
+  MISSING_IN_REPO: Static Mines:1
+  MISSING_IN_REPO: Lightning Bomb:5
+  MISSING_IN_REPO: Trapas:1
+  MISSING_IN_REPO: Coldsnap Mines:1
+  MISSING_IN_REPO: Flash Frozen:3
+  MISSING_IN_REPO: Freezing Trap:1
+  MISSING_IN_REPO: Tinkerer's Design:4
+  MISSING_IN_REPO: Adaptive Fuse:1
+  MISSING_IN_REPO: Prepared Demolition:4
+  MISSING_IN_REPO: Gadgeteer:2
+  MISSING_IN_REPO: Smoke Traps:1
+  MISSING_IN_REPO: Umbral Saboteur:1
+  MISSING_IN_REPO: Jelkhor's Blueprint:3
+  MISSING_IN_REPO: Sky Signal:1
+  MISSING_IN_REPO: Free Lofting Bird:1
+  MISSING_IN_REPO: Minefield:4
+  MISSING_IN_REPO: Clustered Explosives:2
+  MISSING_IN_REPO: Subtle Sabotage:2
+  MISSING_IN_REPO: Blast Rain:1
+  MISSING_IN_REPO: Impact Trigger:1
+  MISSING_IN_REPO: Trap Sprinkler:3
+  MISSING_IN_REPO: Automated Bombardment:1
+  MISSING_IN_REPO: Siege Engineering:2
+  MISSING_IN_REPO: Trapuchet:1
+  MISSING_IN_REPO: Instrument of the Alchemist:1
+  MISSING_IN_REPO: No Man's Land:1
+  EXTRA_IN_REPO: 'Rending Wires':4
+  EXTRA_IN_REPO: 'Advanced Engineering':3
+  EXTRA_IN_REPO: 'Surprise Snare':1
+  EXTRA_IN_REPO: 'Tanglewire':3
+  EXTRA_IN_REPO: 'Tangled and Prone':1
+  EXTRA_IN_REPO: 'Leading the Hunt':3
+  EXTRA_IN_REPO: 'Quick Throws':2
+  EXTRA_IN_REPO: 'Barbed Net':1
+  EXTRA_IN_REPO: 'Voltaic Device':1
+  EXTRA_IN_REPO: "Trapper's Crescendo":1
+  EXTRA_IN_REPO: 'Curved Hooks':5
+  EXTRA_IN_REPO: 'Acid Snare':1
+  EXTRA_IN_REPO: 'Bold Throw':1
+  EXTRA_IN_REPO: 'Net Trap':1
+  EXTRA_IN_REPO: 'Spear Trap':1
+  EXTRA_IN_REPO: 'Server of Tricks':2
+  EXTRA_IN_REPO: 'Trickster Artist':1
+  EXTRA_IN_REPO: 'Zone of Control':3
+  EXTRA_IN_REPO: 'Silvered Spikes':1
+  EXTRA_IN_REPO: "Tinkerer's Combo":1
+  EXTRA_IN_REPO: 'Agile Hunter':1
+  EXTRA_IN_REPO: 'Assault of the Huntress':1
+  EXTRA_IN_REPO: 'Into the Shadows':1
+  EXTRA_IN_REPO: 'Strongly Woven':4
+  EXTRA_IN_REPO: 'Hunters of Heorot':1
+  EXTRA_IN_REPO: 'Engineering Smarts':4
+  EXTRA_IN_REPO: 'Acrobatic':1
+  EXTRA_IN_REPO: 'Entangled Weapons':1
+  EXTRA_IN_REPO: 'Exposed Bait':4
+  EXTRA_IN_REPO: 'Weakening Threads':3
+
+[sb44eQ] Enchant Weapon (tree_1.json):
+  DIFF [Power Vent]: repo=0 tunklab=2
+
+[sbf4m] Swarmblade Form (tree_0.json):
+  EXTRA_IN_REPO: 'Needle-Like Sting':5
+  EXTRA_IN_REPO: 'Hornet Nest':1
+  EXTRA_IN_REPO: "Grasshopper's Frenzy":2
+  EXTRA_IN_REPO: "Viper's Call":1
+  EXTRA_IN_REPO: 'Endless Pressure':3
+  EXTRA_IN_REPO: 'Windfury Strikes':1
+  EXTRA_IN_REPO: 'Army of the Tempest':2
+  EXTRA_IN_REPO: 'Locust Master':1
+  EXTRA_IN_REPO: 'Soaring Scourge':1
+  EXTRA_IN_REPO: 'Carnage':5
+
+[sc36pi] Summon Scorpion (tree_0.json):
+  EXTRA_IN_REPO: 'Cold-Blooded':1
+  EXTRA_IN_REPO: 'Thunder Stinger':1
+  EXTRA_IN_REPO: 'Reverberating Strike':1
+  EXTRA_IN_REPO: 'Storm Conduit':1
+  EXTRA_IN_REPO: 'Winternid Jaws':1
+  EXTRA_IN_REPO: 'Rest for the WIcked':3
+
+[sf31rc] Sacrifice (tree_3.json):
+  DIFF [Ivory Ballista]: repo=1 tunklab=2
+
+[sm4g] Summon Skeletal Mage (tree_3.json):
+  DIFF [Gravetide]: repo=5 tunklab=4
+  DIFF [Flaming Attacks]: repo=5 tunklab=4
+  DIFF [Battle Hardened]: repo=3 tunklab=2
+  DIFF [Forbidden Arcana]: repo=5 tunklab=4
+
+[sp38] Summon Spriggan (tree_0.json):
+  EXTRA_IN_REPO: 'Nature’s Reach':3
+  EXTRA_IN_REPO: 'Lasting Roots':4
+  EXTRA_IN_REPO: 'Aura of Loyalty':4
+  EXTRA_IN_REPO: 'Frostleaf':5
+  EXTRA_IN_REPO: 'Aura of Evasion':1
+  EXTRA_IN_REPO: 'Garden of Nourishment':4
+  EXTRA_IN_REPO: 'Invading Underbrush':1
+  EXTRA_IN_REPO: 'Thorny Stalks':3
+  EXTRA_IN_REPO: 'Aura of Hordes':2
+  EXTRA_IN_REPO: 'Aura of Voracity':3
+
+[ss37kl] Summon Skeleton (tree_3.json):
+  DIFF [Unholy Rage]: repo=5 tunklab=4
+  DIFF [Marrow Tap]: repo=5 tunklab=4
+  DIFF [Ash and Frost]: repo=0 tunklab=1
+
+[ss3tre] Shatter Strike (tree_1.json):
+  DIFF [Icy Flow]: repo=5 tunklab=4
+  DIFF [Razor Ice]: repo=5 tunklab=4
+  DIFF [Iceblink]: repo=5 tunklab=4
+  DIFF [Solidify]: repo=5 tunklab=4
+  DIFF [Unrelenting Winter]: repo=1 tunklab=4
+  DIFF [Clash of Lightning]: repo=0 tunklab=1
+  DIFF [Stormfused]: repo=0 tunklab=2
+
+[st47ic] Static (tree_1.json):
+  MISSING_IN_REPO: Shock Armor:1
+  EXTRA_IN_REPO: 'Shock Armour':1
+
+[svz81] Volatile Zombie (tree_3.json):
+  DIFF [Leap Attack]: repo=4 tunklab=3
+  DIFF [Fervor]: repo=5 tunklab=4
+  DIFF [Path of Destruction]: repo=5 tunklab=4
+  DIFF [Forceful Commander]: repo=5 tunklab=4
+  MISSING_IN_REPO: Emerging Terrors:3
+  TYPO_IN_REPO: 'Ravenous ' should be 'Ravenous'
+  EXTRA_IN_REPO: 'Daunting Blast':4
+
+[to50] Tornado (tree_0.json):
+  DIFF [Voices of the Wind]: repo=0 tunklab=1
+  DIFF [Shelter of the Storm]: repo=0 tunklab=4
+
+[ts50pl] Transplant (tree_3.json):
+  DIFF [Frozen Form]: repo=0 tunklab=1
+
+[ub5d9] Umbral Blades (tree_4.json):
+  MISSING_IN_REPO: Honed Edge:4
+  MISSING_IN_REPO: Thousand Cuts:3
+  DIFF [Calling Card]: repo=0 tunklab=2
+  EXTRA_IN_REPO: 'Cacophony of Steel':1
+  EXTRA_IN_REPO: 'Steel Torrent':4
+  EXTRA_IN_REPO: 'Loathing':1
+
+[uph41] Upheaval (tree_0.json):
+  DIFF [Terrain Delving]: repo=5 tunklab=4
+
+[vo54] Dense Orb (tree_1.json):
+  DIFF [Winter's Fury]: repo=5 tunklab=4
+  DIFF [Ash Pelting]: repo=5 tunklab=4
+  DIFF [Eruption]: repo=8 tunklab=5
+  DIFF [Fiery Runes]: repo=7 tunklab=5
+  DIFF [Dense Orb]: repo=4 tunklab=3
+
+[wo42] Summon Wolf (tree_0.json):
+  DIFF [Lone Wolf]: repo=0 tunklab=1
+
+=== UNMATCHED ===
+bl5st: 'Bladestorm' (tree_4.json)
+falc0: 'Falconry' (tree_4.json)
+gy2dm: 'Glyph of Dominion' (tree_1.json)
+mas54: 'Maelstrom' (tree_0.json)
+sh4re: 'Shadow Rend' (tree_4.json)
+vr53sl: 'Volatile Reversal' (tree_2.json)

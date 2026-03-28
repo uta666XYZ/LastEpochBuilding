@@ -326,7 +326,7 @@ end
 
 -- Quick hack to convert JSON to valid lua
 function jsonToLua(json)
-	return json:gsub("%[","{"):gsub("%]","}"):gsub('"(%d[%d%.]*)":','[%1]='):gsub('([^\\])"([^"]+)":','%1["%2"]='):gsub("\\/","/"):gsub("{(%w+)}","{[0]=%1}")
+	return json:gsub("%[","{"):gsub("%]","}"):gsub('"(%d[%d%.]*)":','[%1]='):gsub('([^\\])"([^"]*)":','%1["%2"]='):gsub("\\/","/"):gsub("{(%w+)}","{[0]=%1}")
 		:gsub("\\u(%x%x%x%x)",function(hex) return codePointToUTF8(tonumber(hex,16)) end)
 end
 
