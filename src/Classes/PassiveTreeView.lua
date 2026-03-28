@@ -643,6 +643,7 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 	end
 	local function renderConnector(connector)
 		local node1, node2 = spec.nodes[connector.nodeId1], spec.nodes[connector.nodeId2]
+		if not node1 or not node2 then return end
 		setConnectorColor(1, 1, 1)
 		local state = getState(node1, node2)
 		local baseState = state
@@ -678,21 +679,23 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 				end
 			end
 		end
-		local vert = connector.vert[state]
-		connector.c[1], connector.c[2] = treeToScreen(vert[1], vert[2] + decY)
-		connector.c[3], connector.c[4] = treeToScreen(vert[3], vert[4] + decY)
-		connector.c[5], connector.c[6] = treeToScreen(vert[5], vert[6] + decY)
-		connector.c[7], connector.c[8] = treeToScreen(vert[7], vert[8] + decY)
+		local vert = connector.vert and connector.vert[state]
+		if vert and tree.assets[connector.type..state] then
+			connector.c[1], connector.c[2] = treeToScreen(vert[1], vert[2] + decY)
+			connector.c[3], connector.c[4] = treeToScreen(vert[3], vert[4] + decY)
+			connector.c[5], connector.c[6] = treeToScreen(vert[5], vert[6] + decY)
+			connector.c[7], connector.c[8] = treeToScreen(vert[7], vert[8] + decY)
 
-		if hoverDep and hoverDep[node1] and hoverDep[node2] then
-			-- Both nodes depend on the node currently being hovered over, so color the line red
-			setConnectorColor(1, 0, 0)
-		elseif connector.ascendancyName and connector.ascendancyName ~= spec.curAscendClassName then
-			-- Fade out lines in ascendancy classes other than the current one
-			setConnectorColor(0.75, 0.75, 0.75)
+			if hoverDep and hoverDep[node1] and hoverDep[node2] then
+				-- Both nodes depend on the node currently being hovered over, so color the line red
+				setConnectorColor(1, 0, 0)
+			elseif connector.ascendancyName and connector.ascendancyName ~= spec.curAscendClassName then
+				-- Fade out lines in ascendancy classes other than the current one
+				setConnectorColor(0.75, 0.75, 0.75)
+			end
+			SetDrawColor(unpack(connectorColor))
+			DrawImageQuad(tree.assets[connector.type..state].handle, unpack(connector.c))
 		end
-		SetDrawColor(unpack(connectorColor))
-		DrawImageQuad(tree.assets[connector.type..state].handle, unpack(connector.c))
 	end
 
 	-- Draw the connecting lines between nodes

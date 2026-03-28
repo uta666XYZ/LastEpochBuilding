@@ -1,0 +1,111 @@
+Loading main script...
+Loading passive tree data for version '1.4'...
+Loading passive tree assets...
+Processing tree...
+Loading 'C:/Users/yobk0/Documents/GitHub/LastEpochBuilding/src/Builds/~~temp~~.xml'...
+Startup time: 1550 ms
+Uniques loaded
+Rares loaded
+Downloading page at: https://www.lastepochtools.com/profile/Ys2072
+Download complete. Status: OK
+[ONLINE] char[1] fields: characterName=CrowdStrike, class=4, cycle=3, deaths=6, factions={"0":{"id":0,"isMember":true,"hasEverJoined":true,"rank":12,"reputation":0,"favor":280955,"factionSpecific":{}},"2":{"id":2,"isMember":true,"hasEverJoined":true,"rank":10,"reputation":0,"favor":100,"factionSpecific":{}}}, hardcore=false, level=68, masochist=false, mastery=3, solo=false, soloChar=false
+[ONLINE] maxCycle=7
+[ONLINE] CrowdStrike cycle=3 -> Legacy
+[ONLINE] GoodKnight cycle=3 -> Legacy
+[ONLINE] HoneyImCheatingATM cycle=3 -> Legacy
+[ONLINE] NoImPalmBeachPete cycle=7 -> Cycle
+[ONLINE] RIPConcord cycle=3 -> Legacy
+[ONLINE] S2_Ys_LorenzoSS cycle=5 -> Legacy
+[ONLINE] Two_Steps_Ahead cycle=4 -> Legacy
+[ONLINE] Ys401 cycle=3 -> Legacy
+[ONLINE] Ys403 cycle=3 -> Legacy
+[ONLINE] Ys404 cycle=3 -> Legacy
+[ONLINE] Ys451 cycle=3 -> Legacy
+[ONLINE] Ys500 cycle=3 -> Legacy
+[ONLINE] Ys502 cycle=4 -> Legacy
+[ONLINE] Ys503 cycle=3 -> Legacy
+[ONLINE] Ys666 cycle=2 -> Legacy
+[ONLINE] YsAberrothKiller cycle=6 -> Legacy
+[ONLINE] YsBonkVK_S2 cycle=5 -> Legacy
+[ONLINE] YsBonkVK_S2-Copy cycle=5 -> Legacy
+[ONLINE] YsBonkVK_S2_Prep002 cycle=4 -> Legacy
+[ONLINE] YsFADeadeye cycle=6 -> Legacy
+[ONLINE] YsFkTrumpTariffs_S2 cycle=5 -> Legacy
+[ONLINE] YsGhostflameReaper cycle=6 -> Legacy
+[ONLINE] YsMakeD4GreatAgainS9 cycle=5 -> Legacy
+[ONLINE] YsSupportCentre cycle=6 -> Legacy
+[ALTAR] scanning savedItems for char=prepfor1o1
+[ALTAR] not found in savedItems, checking saveContent keys
+[ALTAR] saveContent keys: _ts, abilityBar, activeMonolithMods, arenaTiersCompleted, blessingsDiscovered, characterClass, characterName, characterTreeNodeProgression, chosenMastery, clickedUnlockMasteriesButton, closedIdolsTooltip, closedMinSkillLevelTutorial, closedMonolithTooltip, closedPassivesTooltip, closedSkillsTooltip, competitiveCharacterVersion, currentArenaRunWaves, currentExp, currentMonolithRunDifficultyIndex, currentMonolithRunTimelineID, currentMonolithRunToSetBack, currentMonolithRunToSetBackDifficultyIndex, cycle, deaths, died, dungeonCompletion, factions, focusedQuest, hardcore, hasRerolledMonolithOptions, id, lanternLuminance, lastPlayed, level, masochist, maxWave, monolithDepth, monolithEchoesConquered, monolithOptions, monolithRuns, monolithTimelinesConquered, moveButtonBehaviour, oneTimeEvents, openedOneShotCaches, portalUnlocked, previousArenaRunWaves, previousMonolithEchoDifficultyIndex, previousMonolithEchoTimelineID, reachedTown, respecs, savedCharacterTree, savedItems, savedMonolithQuests, savedQuests, savedSkillTrees, sceneProgresses, seqNo, slot, soloChallenge, soloCharacterChallenge, soulEmbers, sprigganFormAbilityBar, swarmbladeAbilityBar, timelineCompletion, timelineDifficultyCompletion, timelineDifficultyUnlocks, uniquesPickedUp, unlockedWaypointScenes, version, werebearAbilityBar
+[OFFLINE] char=prepfor1o1 cycle=2
+[ALTAR] scanning savedItems for char=test
+[ALTAR] not found in savedItems, checking saveContent keys
+[ALTAR] saveContent keys: _ts, abilityBar, activeMonolithMods, arenaTiersCompleted, blessingsDiscovered, characterClass, characterName, characterTreeNodeProgression, chosenMastery, clickedUnlockMasteriesButton, closedIdolsTooltip, closedMinSkillLevelTutorial, closedMonolithTooltip, closedPassivesTooltip, closedSkillsTooltip, competitiveCharacterVersion, currentArenaRunWaves, currentExp, currentMonolithRunDifficultyIndex, currentMonolithRunTimelineID, currentMonolithRunToSetBack, currentMonolithRunToSetBackDifficultyIndex, cycle, deaths, died, dungeonCompletion, factions, focusedQuest, hardcore, hasRerolledMonolithOptions, id, lanternLuminance, lastPlayed, lastVisitedTownScene, level, masochist, maxWave, monolithDepth, monolithEchoesConquered, monolithOptions, monolithRuns, monolithTimelinesConquered, moveButtonBehaviour, nemesisData, oneTimeEvents, openBlessings, openedOneShotCaches, portalUnlocked, previousArenaRunWaves, previousMonolithEchoDifficultyIndex, previousMonolithEchoTimelineID, reachedTown, respecs, savedCharacterTree, savedItems, savedMonolithQuests, savedQuests, savedSkillTrees, sceneProgresses, seqNo, soloChallenge, soloCharacterChallenge, soulEmbers, sprigganFormAbilityBar, swarmbladeAbilityBar, timelineCompletion, timelineDifficultyCompletion, timelineDifficultyUnlocks, uniquesPickedUp, unlockedWaypointScenes, version, werebearAbilityBar
+[OFFLINE] char=test cycle=3
+[ALTAR] scanning savedItems for char=YsGhostSurfing
+[ALTAR] not found in savedItems, checking saveContent keys
+[ALTAR] saveContent keys: _ts, aberrothKillTracking, abilityBar, activeMonolithMods, arenaTiersCompleted, blessingsDiscovered, championMinLevel, characterClass, characterName, characterTreeNodeProgression, chosenMastery, clickedUnlockMasteriesButton, closedIdolsTooltip, closedMinSkillLevelTutorial, closedMonolithTooltip, closedPassivesTooltip, closedSkillsTooltip, closedTemporalShiftTooltip, competitiveCharacterVersion, currentArenaRunWaves, currentExp, currentMonolithRunDifficultyIndex, currentMonolithRunTimelineID, currentMonolithRunToSetBack, currentMonolithRunToSetBackDifficultyIndex, cycle, deaths, died, dungeonCompletion, factions, focusedQuest, hardcore, hasRerolledMonolithOptions, id, lanternLuminance, lastPlayed, lastVisitedTownScene, level, levelTracking, masochist, maxWave, minionAIToggle, monolithDepth, monolithEchoesConquered, monolithOptions, monolithRuns, monolithTimelinesConquered, moveButtonBehaviour, nemesisData, oneTimeEvents, openBlessings, openedOneShotCaches, originalMastery, portalUnlocked, previousArenaRunWaves, previousMonolithEchoDifficultyIndex, previousMonolithEchoTimelineID, reachedTown, respecs, savedCharacterTree, savedItems, savedMonolithQuests, savedQuests, savedSkillTrees, savedWeaverTree, sceneProgresses, seqNo, soloChallenge, soloCharacterChallenge, soulEmbers, sprigganFormAbilityBar, swarmbladeAbilityBar, timeBeastData, timelineCompletion, timelineDifficultyCompletion, timelineDifficultyUnlocks, uniquesPickedUp, unlockedWaypointScenes, version, werebearAbilityBar
+[OFFLINE] char=YsGhostSurfing cycle=6
+[ALTAR] scanning savedItems for char=YsMaidenPrimalist
+[ALTAR] not found in savedItems, checking saveContent keys
+[ALTAR] saveContent keys: _ts, aberrothKillTracking, abilityBar, activeMonolithMods, arenaTiersCompleted, blessingsDiscovered, championMinLevel, characterClass, characterName, characterTreeNodeProgression, chosenMastery, clickedUnlockMasteriesButton, closedIdolsTooltip, closedMinSkillLevelTutorial, closedMonolithTooltip, closedPassivesTooltip, closedSkillsTooltip, closedTemporalShiftTooltip, competitiveCharacterVersion, currentArenaRunWaves, currentExp, currentMonolithRunDifficultyIndex, currentMonolithRunTimelineID, currentMonolithRunToSetBack, currentMonolithRunToSetBackDifficultyIndex, cycle, deaths, died, dungeonCompletion, factions, focusedQuest, hardcore, hasRerolledMonolithOptions, id, lanternLuminance, lastPlayed, lastVisitedTownScene, level, levelTracking, masochist, maxWave, minionAIToggle, monolithDepth, monolithEchoesConquered, monolithOptions, monolithRuns, monolithTimelinesConquered, moveButtonBehaviour, nemesisData, oneTimeEvents, openBlessings, openedOneShotCaches, originalMastery, portalUnlocked, previousArenaRunWaves, previousMonolithEchoDifficultyIndex, previousMonolithEchoTimelineID, reachedTown, respecs, savedCharacterTree, savedItems, savedMonolithQuests, savedQuests, savedSkillTrees, savedWeaverTree, sceneProgresses, seqNo, soloChallenge, soloCharacterChallenge, soulEmbers, sprigganFormAbilityBar, swarmbladeAbilityBar, timeBeastData, timelineCompletion, timelineDifficultyCompletion, timelineDifficultyUnlocks, uniquesPickedUp, unlockedWaypointScenes, version, werebearAbilityBar
+[OFFLINE] char=YsMaidenPrimalist cycle=6
+[ALTAR] scanning savedItems for char=Nameless_King
+[ALTAR] not found in savedItems, checking saveContent keys
+[ALTAR] saveContent keys: _ts, abilityBar, activeMonolithMods, arenaTiersCompleted, blessingsDiscovered, characterClass, characterName, characterTreeNodeProgression, chosenMastery, clickedUnlockMasteriesButton, closedIdolsTooltip, closedMinSkillLevelTutorial, closedMonolithTooltip, closedPassivesTooltip, closedSkillsTooltip, competitiveCharacterVersion, currentArenaRunWaves, currentExp, currentMonolithRunDifficultyIndex, currentMonolithRunTimelineID, currentMonolithRunToSetBack, currentMonolithRunToSetBackDifficultyIndex, cycle, deaths, died, dungeonCompletion, factions, focusedQuest, hardcore, hasRerolledMonolithOptions, id, lanternLuminance, lastPlayed, lastVisitedTownScene, level, masochist, maxWave, monolithDepth, monolithEchoesConquered, monolithOptions, monolithRuns, monolithTimelinesConquered, moveButtonBehaviour, nemesisData, oneTimeEvents, openBlessings, openedOneShotCaches, portalUnlocked, previousArenaRunWaves, previousMonolithEchoDifficultyIndex, previousMonolithEchoTimelineID, reachedTown, respecs, savedCharacterTree, savedItems, savedMonolithQuests, savedQuests, savedSkillTrees, sceneProgresses, seqNo, soloChallenge, soloCharacterChallenge, soulEmbers, sprigganFormAbilityBar, swarmbladeAbilityBar, timelineCompletion, timelineDifficultyCompletion, timelineDifficultyUnlocks, uniquesPickedUp, unlockedWaypointScenes, version, werebearAbilityBar
+[ITEM] no base match: cid=1 baseTypeID=101 subTypeID=2
+[ITEM] no base match: cid=1 baseTypeID=103 subTypeID=0
+[OFFLINE] char=Nameless_King cycle=4
+[ALTAR] scanning savedItems for char=YsBonkVK_S2_Prep
+[ALTAR] not found in savedItems, checking saveContent keys
+[ALTAR] saveContent keys: _ts, abilityBar, activeMonolithMods, arenaTiersCompleted, blessingsDiscovered, characterClass, characterName, characterTreeNodeProgression, chosenMastery, clickedUnlockMasteriesButton, closedIdolsTooltip, closedMinSkillLevelTutorial, closedMonolithTooltip, closedPassivesTooltip, closedSkillsTooltip, competitiveCharacterVersion, currentArenaRunWaves, currentExp, currentMonolithRunDifficultyIndex, currentMonolithRunTimelineID, currentMonolithRunToSetBack, currentMonolithRunToSetBackDifficultyIndex, cycle, deaths, died, dungeonCompletion, factions, focusedQuest, hardcore, hasRerolledMonolithOptions, id, lanternLuminance, lastPlayed, lastVisitedTownScene, level, masochist, maxWave, monolithDepth, monolithEchoesConquered, monolithOptions, monolithRuns, monolithTimelinesConquered, moveButtonBehaviour, nemesisData, oneTimeEvents, openBlessings, openedOneShotCaches, portalUnlocked, previousArenaRunWaves, previousMonolithEchoDifficultyIndex, previousMonolithEchoTimelineID, reachedTown, respecs, savedCharacterTree, savedItems, savedMonolithQuests, savedQuests, savedSkillTrees, sceneProgresses, seqNo, soloChallenge, soloCharacterChallenge, soulEmbers, sprigganFormAbilityBar, swarmbladeAbilityBar, timelineCompletion, timelineDifficultyCompletion, timelineDifficultyUnlocks, uniquesPickedUp, unlockedWaypointScenes, version, werebearAbilityBar
+[OFFLINE] char=YsBonkVK_S2_Prep cycle=4
+[ALTAR] scanning savedItems for char=YsPrep001
+[ALTAR] not found in savedItems, checking saveContent keys
+[ALTAR] saveContent keys: _ts, abilityBar, activeMonolithMods, arenaTiersCompleted, blessingsDiscovered, characterClass, characterName, characterTreeNodeProgression, chosenMastery, clickedUnlockMasteriesButton, closedIdolsTooltip, closedMinSkillLevelTutorial, closedMonolithTooltip, closedPassivesTooltip, closedSkillsTooltip, competitiveCharacterVersion, currentArenaRunWaves, currentExp, currentMonolithRunDifficultyIndex, currentMonolithRunTimelineID, currentMonolithRunToSetBack, currentMonolithRunToSetBackDifficultyIndex, cycle, deaths, died, dungeonCompletion, factions, focusedQuest, hardcore, hasRerolledMonolithOptions, id, lanternLuminance, lastPlayed, level, masochist, maxWave, monolithDepth, monolithEchoesConquered, monolithOptions, monolithRuns, monolithTimelinesConquered, moveButtonBehaviour, nemesisData, oneTimeEvents, openBlessings, openedOneShotCaches, portalUnlocked, previousArenaRunWaves, previousMonolithEchoDifficultyIndex, previousMonolithEchoTimelineID, reachedTown, respecs, savedCharacterTree, savedItems, savedMonolithQuests, savedQuests, savedSkillTrees, sceneProgresses, seqNo, soloChallenge, soloCharacterChallenge, soulEmbers, sprigganFormAbilityBar, swarmbladeAbilityBar, timelineCompletion, timelineDifficultyCompletion, timelineDifficultyUnlocks, uniquesPickedUp, unlockedWaypointScenes, version, werebearAbilityBar
+[OFFLINE] char=YsPrep001 cycle=4
+[ALTAR] scanning savedItems for char=YsPrep002
+[ALTAR] not found in savedItems, checking saveContent keys
+[ALTAR] saveContent keys: _ts, abilityBar, activeMonolithMods, arenaTiersCompleted, blessingsDiscovered, characterClass, characterName, characterTreeNodeProgression, chosenMastery, clickedUnlockMasteriesButton, closedIdolsTooltip, closedMinSkillLevelTutorial, closedMonolithTooltip, closedPassivesTooltip, closedSkillsTooltip, competitiveCharacterVersion, currentArenaRunWaves, currentExp, currentMonolithRunDifficultyIndex, currentMonolithRunTimelineID, currentMonolithRunToSetBack, currentMonolithRunToSetBackDifficultyIndex, cycle, deaths, died, dungeonCompletion, factions, focusedQuest, hardcore, hasRerolledMonolithOptions, id, lanternLuminance, lastPlayed, lastVisitedTownScene, level, masochist, maxWave, monolithDepth, monolithEchoesConquered, monolithOptions, monolithRuns, monolithTimelinesConquered, moveButtonBehaviour, nemesisData, oneTimeEvents, openBlessings, openedOneShotCaches, portalUnlocked, previousArenaRunWaves, previousMonolithEchoDifficultyIndex, previousMonolithEchoTimelineID, reachedTown, respecs, savedCharacterTree, savedItems, savedMonolithQuests, savedQuests, savedSkillTrees, sceneProgresses, seqNo, soloChallenge, soloCharacterChallenge, soulEmbers, sprigganFormAbilityBar, swarmbladeAbilityBar, timelineCompletion, timelineDifficultyCompletion, timelineDifficultyUnlocks, uniquesPickedUp, unlockedWaypointScenes, version, werebearAbilityBar
+[OFFLINE] char=YsPrep002 cycle=4
+[ALTAR] scanning savedItems for char=YsS3Prep
+[ALTAR] not found in savedItems, checking saveContent keys
+[ALTAR] saveContent keys: _ts, abilityBar, activeMonolithMods, arenaTiersCompleted, blessingsDiscovered, championMinLevel, characterClass, characterName, characterTreeNodeProgression, chosenMastery, clickedUnlockMasteriesButton, closedIdolsTooltip, closedMinSkillLevelTutorial, closedMonolithTooltip, closedPassivesTooltip, closedSkillsTooltip, closedTemporalShiftTooltip, competitiveCharacterVersion, currentArenaRunWaves, currentExp, currentMonolithRunDifficultyIndex, currentMonolithRunTimelineID, currentMonolithRunToSetBack, currentMonolithRunToSetBackDifficultyIndex, cycle, deaths, died, dungeonCompletion, factions, focusedQuest, hardcore, hasRerolledMonolithOptions, id, lanternLuminance, lastPlayed, lastVisitedTownScene, level, levelTracking, masochist, maxWave, minionAIToggle, monolithDepth, monolithEchoesConquered, monolithOptions, monolithRuns, monolithTimelinesConquered, moveButtonBehaviour, nemesisData, oneTimeEvents, openBlessings, openedOneShotCaches, originalMastery, portalUnlocked, previousArenaRunWaves, previousMonolithEchoDifficultyIndex, previousMonolithEchoTimelineID, reachedTown, respecs, savedCharacterTree, savedItems, savedMonolithQuests, savedQuests, savedSkillTrees, savedWeaverTree, sceneProgresses, seqNo, soloChallenge, soloCharacterChallenge, soulEmbers, sprigganFormAbilityBar, swarmbladeAbilityBar, timelineCompletion, timelineDifficultyCompletion, timelineDifficultyUnlocks, uniquesPickedUp, unlockedWaypointScenes, version, werebearAbilityBar
+[OFFLINE] char=YsS3Prep cycle=5
+[ALTAR] scanning savedItems for char=ShutFackUp
+[ALTAR] cid=123 d=5,11,96,41,7,2,16,113,151,183,0,67,4,76,146,4,75,214,20,70,226,0
+[ALTAR] found: cid=123 d4=41 d5=7 name=Ocular Altar
+[OFFLINE] char=ShutFackUp cycle=7
+[ALTAR] scanning savedItems for char=YsFckAFKKick
+[ALTAR] not found in savedItems, checking saveContent keys
+[ALTAR] saveContent keys: _ts, aberrothKillTracking, abilityBar, activeMonolithMods, arenaTiersCompleted, blessingsDiscovered, championMinLevel, characterClass, characterName, characterTreeNodeProgression, chosenMastery, clickedUnlockMasteriesButton, closedIdolsTooltip, closedMinSkillLevelTutorial, closedMonolithTooltip, closedPassivesTooltip, closedSkillsTooltip, closedTemporalShiftTooltip, competitiveCharacterVersion, currentArenaRunWaves, currentExp, currentMonolithRunDifficultyIndex, currentMonolithRunTimelineID, currentMonolithRunToSetBack, currentMonolithRunToSetBackDifficultyIndex, cycle, deaths, died, dungeonCompletion, factions, focusedQuest, hardcore, hasRerolledMonolithOptions, id, lanternLuminance, lastPlayed, lastVisitedTownScene, level, levelTracking, masochist, maxWave, minionAIToggle, monolithDepth, monolithEchoesConquered, monolithOptions, monolithRuns, monolithTimelinesConquered, moveButtonBehaviour, nemesisData, oneTimeEvents, openBlessings, openedOneShotCaches, originalMastery, portalUnlocked, previousArenaRunWaves, previousMonolithEchoDifficultyIndex, previousMonolithEchoTimelineID, reachedTown, respecs, savedCharacterTree, savedItems, savedMonolithQuests, savedQuests, savedSkillTrees, savedWeaverTree, sceneProgresses, seqNo, soloChallenge, soloCharacterChallenge, soulEmbers, sprigganFormAbilityBar, swarmbladeAbilityBar, timeBeastData, timelineCompletion, timelineDifficultyCompletion, timelineDifficultyUnlocks, uniquesPickedUp, unlockedWaypointScenes, version, werebearAbilityBar
+[OFFLINE] char=YsFckAFKKick cycle=6
+[ALTAR] scanning savedItems for char=YsSmiteVK
+[ALTAR] not found in savedItems, checking saveContent keys
+[ALTAR] saveContent keys: _ts, abilityBar, activeMonolithMods, arenaTiersCompleted, blessingsDiscovered, championMinLevel, characterClass, characterName, characterTreeNodeProgression, chosenMastery, clickedUnlockMasteriesButton, closedIdolsTooltip, closedMinSkillLevelTutorial, closedMonolithTooltip, closedPassivesTooltip, closedSkillsTooltip, closedTemporalShiftTooltip, competitiveCharacterVersion, currentArenaRunWaves, currentExp, currentMonolithRunDifficultyIndex, currentMonolithRunTimelineID, currentMonolithRunToSetBack, currentMonolithRunToSetBackDifficultyIndex, cycle, deaths, died, dungeonCompletion, factions, focusedQuest, hardcore, hasRerolledMonolithOptions, id, lanternLuminance, lastPlayed, lastVisitedTownScene, level, levelTracking, masochist, maxWave, minionAIToggle, monolithDepth, monolithEchoesConquered, monolithOptions, monolithRuns, monolithTimelinesConquered, moveButtonBehaviour, nemesisData, oneTimeEvents, openBlessings, openedOneShotCaches, originalMastery, portalUnlocked, previousArenaRunWaves, previousMonolithEchoDifficultyIndex, previousMonolithEchoTimelineID, reachedTown, respecs, savedCharacterTree, savedItems, savedMonolithQuests, savedQuests, savedSkillTrees, savedWeaverTree, sceneProgresses, seqNo, soloChallenge, soloCharacterChallenge, soulEmbers, sprigganFormAbilityBar, swarmbladeAbilityBar, timeBeastData, timelineCompletion, timelineDifficultyCompletion, timelineDifficultyUnlocks, uniquesPickedUp, unlockedWaypointScenes, version, werebearAbilityBar
+[OFFLINE] char=YsSmiteVK cycle=6
+[OFFLINE] maxCycle=7
+[OFFLINE] prepfor1o1 cycle=2 -> Legacy
+[OFFLINE] test cycle=3 -> Legacy
+[OFFLINE] YsGhostSurfing cycle=6 -> Legacy
+[OFFLINE] YsMaidenPrimalist cycle=6 -> Legacy
+[OFFLINE] Nameless_King cycle=4 -> Legacy
+[OFFLINE] YsBonkVK_S2_Prep cycle=4 -> Legacy
+[OFFLINE] YsPrep001 cycle=4 -> Legacy
+[OFFLINE] YsPrep002 cycle=4 -> Legacy
+[OFFLINE] YsS3Prep cycle=5 -> Legacy
+[OFFLINE] ShutFackUp cycle=7 -> Cycle
+[OFFLINE] YsFckAFKKick cycle=6 -> Legacy
+[OFFLINE] YsSmiteVK cycle=6 -> Legacy
+[IMPORT] altarName=Ocular Altar
+[IMPORT] altar dropdown has 17 entries
+[IMPORT] altar entry[1] key=Default
+[IMPORT] altar entry[2] key=Archair Altar
+[IMPORT] altar entry[3] key=Auric Altar
+[IMPORT] altar entry[4] key=Carcinised Altar
+[IMPORT] altar entry[5] key=Impervious Altar
+[IMPORT] altar entry[6] key=Jagged Altar
+[IMPORT] altar entry[7] key=Lunar Altar
+[IMPORT] altar entry[8] key=Lunar Altar (Mirrored)
+[IMPORT] altar entry[9] key=Ocular Altar
+[IMPORT] altar set to index=9 key=Ocular Altar

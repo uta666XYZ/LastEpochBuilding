@@ -451,9 +451,24 @@ function ImportTabClass:DownloadCharacterListOnline()
         self.lastAccountHash = common.sha1(accountName)
         main.lastAccountName = accountName
         main.gameAccounts[accountName] = main.gameAccounts[accountName] or { }
+        -- Dump first char's keys to log so we can identify the correct cycle/league field
+        if charList[1] then
+            local keys = {}
+            for k, v in pairs(charList[1]) do
+                table.insert(keys, tostring(k) .. "=" .. tostring(v))
+            end
+            table.sort(keys)
+            ConPrintf("[ONLINE] char[1] fields: %s", table.concat(keys, ", "))
+        end
+        local maxCycle = 0
+        for _, char in ipairs(charList) do
+            if (char.cycle or 0) > maxCycle then maxCycle = char.cycle end
+        end
+        ConPrintf("[ONLINE] maxCycle=%d", maxCycle)
         local leagueList = { }
         for i, char in ipairs(charList) do
-            char.league = char.cycle == 6 and "Cycle" or "Legacy"
+            char.league = (char.cycle or 0) == maxCycle and maxCycle > 0 and "Cycle" or "Legacy"
+            ConPrintf("[ONLINE] %s cycle=%s -> %s", tostring(char.characterName or char.name), tostring(char.cycle), char.league)
             char.ascendancy = char.mastery
             char.ascendancyName = self.build.latestTree.classes[char.class].ascendancies[char.ascendancy].name
             char.name = char.characterName
@@ -517,12 +532,24 @@ function ImportTabClass:DownloadCharacterList()
     end
 
     local charList = {}
+    local maxCycle = 0
     for _, save in ipairs(saves) do
         local saveFile = io.open(save, "r")
         local saveFileContent = saveFile:read("*a")
         saveFile:close()
-        local char = self:ReadJsonSaveData(saveFileContent:sub(6))
-        table.insert(charList, char)
+        local ok, charOrErr = pcall(function() return self:ReadJsonSaveData(saveFileContent:sub(6)) end)
+        if ok then
+            ConPrintf("[OFFLINE] char=%s cycle=%s", tostring(charOrErr.name), tostring(charOrErr.cycle))
+            if (charOrErr.cycle or 0) > maxCycle then maxCycle = charOrErr.cycle end
+            table.insert(charList, charOrErr)
+        else
+            ConPrintf("SAVE ERR: %s error=%s", save, tostring(charOrErr))
+        end
+    end
+    ConPrintf("[OFFLINE] maxCycle=%d", maxCycle)
+    for _, char in ipairs(charList) do
+        char.league = (char.cycle or 0) == maxCycle and maxCycle > 0 and "Cycle" or "Legacy"
+        ConPrintf("[OFFLINE] %s cycle=%s -> %s", tostring(char.name), tostring(char.cycle), char.league)
     end
 
     self.charImportStatus = "Character list successfully retrieved."
@@ -651,7 +678,7 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
         ["items"] = {},
         ["hashes"] = { }
     }
-    char.league = saveContent["cycle"] == 6 and "Cycle" or "Legacy"
+    char.cycle = saveContent["cycle"] or 0
     for passiveIdx, passive in pairs(saveContent["savedCharacterTree"]["nodeIDs"]) do
         local nbPoints = saveContent["savedCharacterTree"]["nodePoints"][passiveIdx]
         table.insert(char["hashes"], className .. "-" .. passive .. "#" .. nbPoints)
@@ -667,18 +694,51 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
         end
 
         if skillName then
-            table.insert(char["hashes"], skillName .. "-" .. 0 .. "#1")
+            table.insert(char["hashes"], skillTree['treeID'] .. "-" .. 0 .. "#1")
             table.insert(char["abilities"], skillName)
             for skillIdx, skill in pairs(skillTree["nodeIDs"]) do
                 local nbPoints = skillTree["nodePoints"][skillIdx]
-                table.insert(char["hashes"], skillName .. "-" .. skill .. "#" .. nbPoints)
+                if nbPoints > 0 then
+                    table.insert(char["hashes"], skillTree['treeID'] .. "-" .. skill .. "#" .. nbPoints)
+                end
             end
         end
     end
+    -- Altar detection: baseTypeID=41 in any slot
+    local altarSubTypeNames = {
+        [0]="Twisted Altar", [1]="Jagged Altar", [2]="Skyward Altar",
+        [3]="Spire Altar", [4]="Carcinised Altar", [5]="Visage Altar",
+        [6]="Lunar Altar", [7]="Ocular Altar", [8]="Archair Altar",
+        [9]="Impervious Altar", [10]="Prophesied Altar", [11]="Pyramidal Altar",
+        [12]="Auric Altar",
+    }
+    ConPrintf("[ALTAR] scanning savedItems for char=%s", tostring(saveContent["characterName"]))
+    for _, itemData in pairsSortByKey(saveContent["savedItems"]) do
+        local d = itemData["data"]
+        local cid = itemData["containerID"]
+        -- Log all items that might be the altar (containerID >= 100)
+        if cid and cid >= 100 then
+            ConPrintf("[ALTAR] cid=%d d=%s", cid, d and table.concat(d, ",") or "nil")
+        end
+        if d and d[4] == 41 then
+            char.altarName = altarSubTypeNames[d[5]]
+            ConPrintf("[ALTAR] found: cid=%d d4=%d d5=%s name=%s", cid, d[4], tostring(d[5]), tostring(char.altarName))
+            break
+        end
+    end
+    if not char.altarName then
+        ConPrintf("[ALTAR] not found in savedItems, checking saveContent keys")
+        local keys = {}
+        for k in pairs(saveContent) do table.insert(keys, tostring(k)) end
+        table.sort(keys)
+        ConPrintf("[ALTAR] saveContent keys: %s", table.concat(keys, ", "))
+    end
+
     for _, itemData in pairsSortByKey(saveContent["savedItems"]) do
         if itemData["containerID"] <= 12 or
-                itemData["containerID"] >= 29 and itemData["containerID"] <= 36 or
-                itemData["containerID"] >= 40 and  itemData["containerID"] <= 43  then
+                itemData["containerID"] == 29 or
+                itemData["containerID"] >= 33 and itemData["containerID"] <= 43 or
+                itemData["containerID"] == 123 then
             local item = {
                 ["inventoryId"] = itemData["containerID"],
             }
@@ -687,23 +747,32 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
             if itemData["containerID"] == 29 then
                 local posX = itemData["inventoryPosition"]["x"]
                 local posY = itemData["inventoryPosition"]["y"]
-                local idolPosition = posX + posY * 5
-                if posY > 0 then
-                    idolPosition = idolPosition - 1
-                end
-                if posY == 4 then
-                    idolPosition = idolPosition - 1
-                end
-                item["inventoryId"] = "Idol " .. idolPosition
+                -- Use the same grid layout as the UI (matches IDOL_GRID_LAYOUT in ItemsTab.lua)
+                -- Rows are y=0..4 (top to bottom), cols are x=0..4 (left to right)
+                local idolGrid = {
+                    { "Idol 21", "Idol 1",  "Idol 2",  "Idol 3",  "Idol 22" }, -- y=0
+                    { "Idol 4",  "Idol 5",  "Idol 6",  "Idol 7",  "Idol 8"  }, -- y=1
+                    { "Idol 9",  "Idol 10", "Idol 23", "Idol 11", "Idol 12" }, -- y=2
+                    { "Idol 13", "Idol 14", "Idol 15", "Idol 16", "Idol 17" }, -- y=3
+                    { "Idol 24", "Idol 18", "Idol 19", "Idol 20", "Idol 25" }, -- y=4
+                }
+                local row = idolGrid[posY + 1]
+                item["inventoryId"] = row and row[posX + 1] or ("Idol " .. (posX + posY * 5))
             end
+            local matchedBase = false
             for itemBaseName, itemBase in pairs(self.build.data.itemBases) do
                 if itemBase.baseTypeID == baseTypeID and itemBase.subTypeID == subTypeID then
+                    matchedBase = true
                     item.baseName = itemBaseName
                     item.base = itemBase
                     item.implicitMods = {}
-                    for i, implicit in ipairs(itemBase.implicits) do
+                    for i, implicit in ipairs(itemBase.implicits or {}) do
                         local range = itemData["data"][7 + i]
                         table.insert(item.implicitMods, "{range: " .. range .. "}" .. implicit)
+                    end
+                    -- For blessing slots, set the roll fraction from implicitRollByte0 (data[8])
+                    if itemData["containerID"] >= 33 and itemData["containerID"] <= 43 then
+                        item.blessingRollFrac = itemData["data"][8] and (itemData["data"][8] / 255.0) or 1.0
                     end
                     local rarity = itemData["data"][6]
                     item["explicitMods"] = {}
@@ -775,6 +844,9 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
                     table.insert(char["items"], item)
                 end
             end
+            if not matchedBase then
+                ConPrintf("[ITEM] no base match: cid=%d baseTypeID=%s subTypeID=%s", itemData["containerID"], tostring(baseTypeID), tostring(subTypeID))
+            end
         end
     end
 
@@ -813,6 +885,41 @@ function ImportTabClass:ImportPassiveTreeAndJewels(charData)
 end
 
 function ImportTabClass:ImportItemsAndSkills(charData)
+    -- Use the latest non-empty itemBases and itemMods for ParseRaw compatibility
+    local savedItemBases = data.itemBases
+    local savedItemMods = data.itemMods
+    for i = #treeVersionList, 1, -1 do
+        local vd = data.versionData[treeVersionList[i]]
+        if vd and next(vd.itemBases) then
+            data.itemBases = vd.itemBases
+            data.itemMods = vd.itemMods
+            break
+        end
+    end
+
+    -- Build a lookup table: blessingName → {bc, index, entry, isGrand}
+    -- This searches ALL timelines so we find the right dropdown regardless of
+    -- which slot LETools assigns the blessing to.
+    local blessingLookup = {}
+    local blessingControls = self.build.itemsTab.blessingControls or {}
+    for tl, bc in pairs(blessingControls) do
+        -- Collect normal blessings (current list, all start as Normal)
+        for i, entry in ipairs(bc.drop.list) do
+            if entry.data then
+                blessingLookup[entry.data.name] = {bc=bc, index=i, entry=entry, isGrand=false}
+            end
+        end
+        -- Toggle to grand to collect grand blessings, then toggle back
+        bc.gradeBtn.onClick()
+        for i, entry in ipairs(bc.drop.list) do
+            if entry.data then
+                blessingLookup[entry.data.name] = {bc=bc, index=i, entry=entry, isGrand=true}
+            end
+        end
+        bc.gradeBtn.onClick()  -- restore to Normal
+    end
+    self.currentBlessingLookup = blessingLookup
+
     if self.controls.charImportItemsClearItems.state then
         for _, slot in pairs(self.build.itemsTab.slots) do
             if slot.selItemId ~= 0 and not slot.nodeId then
@@ -824,10 +931,37 @@ function ImportTabClass:ImportItemsAndSkills(charData)
         self.build.itemsTab:DeleteUnused()
     end
 
-    --ConPrintTable(charItemData)
+    -- Auto-set altar layout if detected
+    ConPrintf("[IMPORT] altarName=%s", tostring(charData.altarName))
+    if charData.altarName then
+        local altarDrop = self.build.itemsTab.controls.idolAltarSelect
+        if altarDrop then
+            ConPrintf("[IMPORT] altar dropdown has %d entries", #altarDrop.list)
+            for i, entry in ipairs(altarDrop.list) do
+                ConPrintf("[IMPORT] altar entry[%d] key=%s", i, tostring(entry.key))
+                if entry.key == charData.altarName then
+                    altarDrop.selIndex = i
+                    if altarDrop.selFunc then
+                        altarDrop.selFunc(i, altarDrop.list[i])
+                    end
+                    self.build.buildFlag = true
+                    ConPrintf("[IMPORT] altar set to index=%d key=%s", i, entry.key)
+                    break
+                end
+            end
+        else
+            ConPrintf("[IMPORT] idolAltarSelect control not found")
+        end
+    end
+
     for _, itemData in pairsSortByKey(charData.items) do
         self:ImportItem(itemData)
     end
+
+    -- Restore original data pointers
+    data.itemBases = savedItemBases
+    data.itemMods = savedItemMods
+
     self.build.itemsTab:PopulateSlots()
     self.build.itemsTab:AddUndoState()
     self.build.characterLevel = charData.level
@@ -859,16 +993,22 @@ end
 
 local slotMap = { [4] = "Weapon 1", [5] = "Weapon 2", [2] = "Helmet", [3] = "Body Armor", [6] = "Gloves", [8] = "Boots", [11] = "Amulet", [9] = "Ring 1", [10] = "Ring 2", [7] = "Belt", [12] = "Relic" }
 
-for i = 1, 21 do
+for i = 1, 25 do
     slotMap["Idol " .. i] = "Idol " .. i
 end
 
-for i = 1, 7 do
-    slotMap[32 + i] = "Blessing " .. i
-end
-for i = 1, 3 do
-    slotMap[42 + i] = "Blessing " .. (7 + i)
-end
+slotMap[33] = "Fall of the Outcasts"
+slotMap[34] = "The Stolen Lance"
+slotMap[35] = "The Black Sun"
+slotMap[36] = "Blood, Frost, and Death"
+slotMap[37] = "Ending the Storm"
+slotMap[38] = "Fall of the Empire"
+slotMap[39] = "Reign of Dragons"
+slotMap[40] = "The Age of Winter"
+slotMap[41] = "Spirits of Fire"
+slotMap[42] = "The Last Ruin"
+slotMap[43] = "Additional"
+slotMap[123] = "Idol Altar"
 
 
 function ImportTabClass:ImportItem(itemData, slotName)
@@ -876,11 +1016,52 @@ function ImportTabClass:ImportItem(itemData, slotName)
         slotName = slotMap[itemData.inventoryId]
     end
 
+    -- Blessing timeline slots use dropdown controls, not the normal item slot.
+    -- Search across ALL timelines since LETools slot order may differ from blessingData order.
+    if slotName and self.build.itemsTab.blessingControls and self.build.itemsTab.blessingControls[slotName] then
+        local blessingName = itemData.name or ""
+        local info = self.currentBlessingLookup and self.currentBlessingLookup[blessingName]
+        if info then
+            -- Use the TARGET slot's bc so the blessing lands in the correct timeline slot,
+            -- regardless of which dropdown the blessing entry was found in.
+            local targetBc = self.build.itemsTab.blessingControls[slotName]
+            -- Switch target bc to the correct grade mode
+            if info.isGrand and targetBc.gradeBtn.label ~= "Grand" then
+                targetBc.gradeBtn.onClick()
+            elseif not info.isGrand and targetBc.gradeBtn.label ~= "Normal" then
+                targetBc.gradeBtn.onClick()
+            end
+            -- Find entry in target bc's current list; if absent, add it for display
+            local foundIdx = nil
+            for i, e in ipairs(targetBc.drop.list) do
+                if e.data and e.data.name == blessingName then
+                    foundIdx = i
+                    break
+                end
+            end
+            if not foundIdx then
+                t_insert(targetBc.drop.list, info.entry)
+                foundIdx = #targetBc.drop.list
+            end
+            targetBc.drop.selIndex = foundIdx
+            -- Apply the actual roll fraction to the slider before calling selFunc
+            if targetBc.slider then
+                targetBc.slider.val = itemData.blessingRollFrac or 1.0
+            end
+            if targetBc.drop.selFunc then
+                targetBc.drop.selFunc(foundIdx, targetBc.drop.list[foundIdx])
+            end
+        else
+            ConPrintf("BLESS not found: slot=%s name=%s", tostring(slotName), tostring(blessingName))
+        end
+        return
+    end
+
     local item = self:BuildItem(itemData)
 
     -- Add and equip the new item
     --ConPrintf("%s", item.raw)
-    if item.base then
+    if item and item.base then
         local repIndex, repItem
         for index, item in pairs(self.build.itemsTab.items) do
             if item.uniqueID == itemData.id then

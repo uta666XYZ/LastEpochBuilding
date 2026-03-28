@@ -677,6 +677,8 @@ function buildMode:ReadLeToolsSave(saveContent)
 	}
 
 	-- Blessing slots: keyed by timeline name, inventoryId matches legacy numbering
+	slotMap["altar"] = 123
+	slotMap["idolAltar"] = 123
 	slotMap["Fall of the Outcasts"] = 33
 	slotMap["The Stolen Lance"] = 34
 	slotMap["The Black Sun"] = 35
@@ -709,11 +711,25 @@ function buildMode:ReadLeToolsSave(saveContent)
 			end
 			item["inventoryId"] = "Idol " .. idolPosition
 		end
-		local baseTypeID = data.LETools_itemBases[itemData.id].baseTypeId
-		local subTypeID = data.LETools_itemBases[itemData.id].subTypeId
-		local uniqueId = data.LETools_itemBases[itemData.id].uniqueId
+		local leBase = data.LETools_itemBases[itemData.id]
+		if not leBase then
+			ConPrintf("Unknown LETools item id: %s (slot: %s)", tostring(itemData.id), slotName)
+			return
+		end
+		local baseTypeID = leBase.baseTypeId
+		local subTypeID = leBase.subTypeId
+		local uniqueId = leBase.uniqueId
 		
-		for itemBaseName, itemBase in pairs(self.data.itemBases) do
+		-- Use newest non-empty itemBases (bases_1_4.json may fail to parse)
+		local latestBases = {}
+		for i = #treeVersionList, 1, -1 do
+			local vd = data.versionData[treeVersionList[i]]
+			if vd and next(vd.itemBases) then
+				latestBases = vd.itemBases
+				break
+			end
+		end
+		for itemBaseName, itemBase in pairs(latestBases) do
             if itemBase.baseTypeID == baseTypeID and itemBase.subTypeID == subTypeID then
                 item.base = itemBase
           		item.name = itemBaseName
@@ -735,9 +751,9 @@ function buildMode:ReadLeToolsSave(saveContent)
 					local modData = data.itemMods.Item[modId]
 					local range = (affixData.r or main.defaultItemAffixQuality)
 
-					if modData.type == "Prefix" then
+					if modData and modData.type == "Prefix" then
 						table.insert(item.prefixes, { ["range"] = range, ["modId"] = modId })
-					else
+					elseif modData then
 						table.insert(item.suffixes, { ["range"] = range, ["modId"] = modId })
 					end
 				end
@@ -750,13 +766,13 @@ function buildMode:ReadLeToolsSave(saveContent)
 				local affixTier = affixData.tier - 1
 				local modId = affixId .. "_" .. affixTier
 				local modData = data.itemMods.Item[modId]
-				local range = (affixData.r or defaultItemAffixQuality)
+				local range = (affixData.r or main.defaultItemAffixQuality)
 
-                if modData.type == "Prefix" then
-                    table.insert(item.prefixes, { ["range"] = range, ["modId"] = modId })
-				else
+				if modData and modData.type == "Prefix" then
+					table.insert(item.prefixes, { ["range"] = range, ["modId"] = modId })
+				elseif modData then
 					table.insert(item.suffixes, { ["range"] = range, ["modId"] = modId })
-                end
+				end
 			end
 		end
 
@@ -782,7 +798,7 @@ function buildMode:ReadLeToolsSave(saveContent)
 		
 		if item.base then
 			item.implicitMods= {}
-			for i,implicit in ipairs(item.base.implicits) do
+			for i,implicit in ipairs(item.base.implicits or {}) do
 				local range = main.defaultItemAffixQuality
 				if itemData['ir'] then
 					range = itemData["ir"][i]
@@ -824,6 +840,8 @@ function buildMode:ReadLeToolsSave(saveContent)
 			local slotName = blessingTimelines[i] or ("Blessing " .. i)
 			local item = processItemData(slotName, blessingData)
 			if item then
+				-- ir[1] stores the actual roll as a 0-255 integer; convert to 0-1 fraction
+				item.blessingRollFrac = (blessingData['ir'] and blessingData['ir'][1]) and (blessingData['ir'][1] / 255.0) or 1.0
 				table.insert(char["items"], item)
 			end
 		end

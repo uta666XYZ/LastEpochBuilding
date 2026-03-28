@@ -8,6 +8,22 @@
 local startTime = GetTime()
 APP_NAME = "Last Epoch Building"
 
+-- Log file: writes all ConPrintf output to debug.log in the repo root
+local _conPrintf = ConPrintf
+local _logFile = io.open("../debug.log", "w")
+if _logFile then
+	function ConPrintf(fmt, ...)
+		local ok, msg = pcall(string.format, fmt, ...)
+		if ok then
+			_conPrintf("%s", msg)
+			_logFile:write(msg .. "\n")
+			_logFile:flush()
+		else
+			_conPrintf(fmt, ...)
+		end
+	end
+end
+
 SetWindowTitle(APP_NAME)
 ConExecute("set vid_mode 8")
 ConExecute("set vid_resizable 3")

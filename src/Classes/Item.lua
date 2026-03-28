@@ -845,7 +845,8 @@ function ItemClass:Craft()
 		for i = 1, self.affixLimit / 2 do
 			local affix = list[i]
 			if not affix then
-				list[i] = { modId = "None" }
+				affix = { modId = "None" }
+				list[i] = affix
 			end
 			local mod = self.affixes[affix.modId]
 			if mod then

@@ -23,7 +23,7 @@ local rarityDropList = {
 	{ label = colorCodes.RELIC.."Relic", rarity = "RELIC" }
 }
 
-local baseSlots = { "Weapon 1", "Weapon 2", "Helmet", "Body Armor", "Gloves", "Boots", "Amulet", "Ring 1", "Ring 2", "Belt", "Relic" }
+local baseSlots = { "Weapon 1", "Weapon 2", "Helmet", "Body Armor", "Gloves", "Boots", "Amulet", "Ring 1", "Ring 2", "Belt", "Relic", "Idol Altar" }
 
 -- Idol inventory grid layout.
 -- Each row is a list of slot names (or false for invalid/blocked cells).
@@ -79,6 +79,7 @@ table.insert(baseSlots, "Reign of Dragons")
 table.insert(baseSlots, "The Age of Winter")
 table.insert(baseSlots, "Spirits of Fire")
 table.insert(baseSlots, "The Last Ruin")
+table.insert(baseSlots, "Additional")
 
 -- Maximum Omen Idol slots provided by an altar
 local MAX_OMEN_IDOL_SLOTS = 6
@@ -154,7 +155,7 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 		t_insert(self.controls, slot)
 	end
 	local blessingSlotNames = {
-		["Fall of the Outcasts"]=true, ["The Stolen Lance"]=true, ["The Black Sun"]=true, ["Blood, Frost, and Death"]=true, ["Ending the Storm"]=true, ["Fall of the Empire"]=true, ["Reign of Dragons"]=true, ["The Age of Winter"]=true, ["Spirits of Fire"]=true, ["The Last Ruin"]=true
+		["Fall of the Outcasts"]=true, ["The Stolen Lance"]=true, ["The Black Sun"]=true, ["Blood, Frost, and Death"]=true, ["Ending the Storm"]=true, ["Fall of the Empire"]=true, ["Reign of Dragons"]=true, ["The Age of Winter"]=true, ["Spirits of Fire"]=true, ["The Last Ruin"]=true, ["Additional"]=true
 	}
 	local lastVisibleSlot = self.slotAnchor
 	for index, slotName in ipairs(baseSlots) do
@@ -285,24 +286,24 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 				{name="Chill of Death", minVal=30.0, maxVal=45.0, implCount=1, impl1="(30-45)% Increased Two-Handed Staff Drop Rate", label="(30-45)% Inc. 2H Staff Drop%"},
 				{name="Cruelty of Formosus", minVal=30.0, maxVal=45.0, implCount=1, impl1="(30-45)% Increased Wand Drop Rate", label="(30-45)% Inc. Wand Drop%"},
 				{name="Enmity of the Clans", minVal=30.0, maxVal=45.0, implCount=1, impl1="(30-45)% Increased One-Handed Sword Drop Rate", label="(30-45)% Inc. One-Handed Sword Drop%"},
-				{name="Favor of the Wengari", minVal=30.0, maxVal=45.0, implCount=1, impl1="(30-45)% Increased Two-Handed Axe Drop Rate", label="(30-45)% Inc. 2H Axe Drop%"},
 				{name="Remorse of Heorot", minVal=30.0, maxVal=45.0, implCount=1, impl1="(30-45)% Increased Two-Handed Spear Drop Rate", label="(30-45)% Inc. 2H Spear Drop%"},
 				{name="Resolve of Frost", minVal=30.0, maxVal=45.0, implCount=1, impl1="(30-45)% Increased One-Handed Mace Drop Rate", label="(30-45)% Inc. One-Handed Mace Drop%"},
 				{name="Savior of the North", minVal=30.0, maxVal=45.0, implCount=1, impl1="(30-45)% Increased Sceptre Drop Rate", label="(30-45)% Inc. Sceptre Drop%"},
 				{name="Scars of Blood", minVal=30.0, maxVal=45.0, implCount=1, impl1="(30-45)% Increased One-Handed Axe Drop Rate", label="(30-45)% Inc. One-Handed Axe Drop%"},
 				{name="Shards of Unity", minVal=30.0, maxVal=45.0, implCount=1, impl1="(30-45)% Increased Two-Handed Mace Drop Rate", label="(30-45)% Inc. 2H Mace Drop%"},
+				{name="Favor of the Wengari", minVal=30.0, maxVal=45.0, implCount=1, impl1="(30-45)% Increased Two-Handed Axe Drop Rate", label="(30-45)% Inc. 2H Axe Drop%"},
 			},
 			grand = {
 				{name="Grand Ambition of the Empire", minVal=50.0, maxVal=90.0, implCount=1, impl1="(50-90)% Increased Two-Handed Sword Drop Rate", label="(50-90)% Inc. 2H Sword Drop%"},
 				{name="Grand Chill of Death", minVal=50.0, maxVal=90.0, implCount=1, impl1="(50-90)% Increased Two-Handed Staff Drop Rate", label="(50-90)% Inc. 2H Staff Drop%"},
 				{name="Grand Cruelty of Formosus", minVal=50.0, maxVal=90.0, implCount=1, impl1="(50-90)% Increased Wand Drop Rate", label="(50-90)% Inc. Wand Drop%"},
 				{name="Grand Enmity of the Clans", minVal=50.0, maxVal=90.0, implCount=1, impl1="(50-90)% Increased One-Handed Sword Drop Rate", label="(50-90)% Inc. One-Handed Sword Drop%"},
-				{name="Grand Favor of the Wengari", minVal=50.0, maxVal=90.0, implCount=1, impl1="(50-90)% Increased Two-Handed Axe Drop Rate", label="(50-90)% Inc. 2H Axe Drop%"},
 				{name="Grand Remorse of Heorot", minVal=50.0, maxVal=90.0, implCount=1, impl1="(50-90)% Increased Two-Handed Spear Drop Rate", label="(50-90)% Inc. 2H Spear Drop%"},
 				{name="Grand Resolve of Frost", minVal=50.0, maxVal=90.0, implCount=1, impl1="(50-90)% Increased One-Handed Mace Drop Rate", label="(50-90)% Inc. One-Handed Mace Drop%"},
 				{name="Grand Savior of the North", minVal=50.0, maxVal=90.0, implCount=1, impl1="(50-90)% Increased Sceptre Drop Rate", label="(50-90)% Inc. Sceptre Drop%"},
 				{name="Grand Scars of Blood", minVal=50.0, maxVal=90.0, implCount=1, impl1="(50-90)% Increased One-Handed Axe Drop Rate", label="(50-90)% Inc. One-Handed Axe Drop%"},
 				{name="Grand Shards of Unity", minVal=50.0, maxVal=90.0, implCount=1, impl1="(50-90)% Increased Two-Handed Mace Drop Rate", label="(50-90)% Inc. 2H Mace Drop%"},
+				{name="Grand Favor of the Wengari", minVal=50.0, maxVal=90.0, implCount=1, impl1="(50-90)% Increased Two-Handed Axe Drop Rate", label="(50-90)% Inc. 2H Axe Drop%"},
 			},
 		},
 		["The Black Sun"] = {
@@ -360,25 +361,25 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 		["Ending the Storm"] = {
 			normal = {
 				{name="Apex of Fortune", minVal=15.0, maxVal=30.0, implCount=1, impl1="(15-30)% Increased Quiver Drop Rate", label="(15-30)% Inc. Quiver Drop%"},
+				{name="Shadows of Infinity", minVal=10.0, maxVal=20.0, implCount=1, impl1="(10-20)% Increased Relic Shard Drop Rate", label="(10-20)% Inc. Relic Shard Drop%"},
 				{name="Arrogance of Argentus", minVal=10.0, maxVal=20.0, implCount=1, impl1="(10-20)% Increased Helmet Drop Rate", label="(10-20)% Inc. Helmet Drop%"},
 				{name="Despair of the Empire", minVal=25.0, maxVal=40.0, implCount=1, impl1="(25-40)% Increased Ailment Shard Drop Rate", label="(25-40)% Inc. Ailment Shard Drop%"},
 				{name="Embrace of Ice", minVal=10.0, maxVal=20.0, implCount=1, impl1="(10-20)% Increased Body Armor Drop Rate", label="(10-20)% Inc. Body Armor Drop%"},
 				{name="Grip of the Lance", minVal=15.0, maxVal=30.0, implCount=1, impl1="(15-30)% Increased Gloves Drop Rate", label="(15-30)% Inc. Gloves Drop%"},
 				{name="Reach of Flame", minVal=15.0, maxVal=30.0, implCount=1, impl1="(15-30)% Increased Off-Hand Catalyst Drop Rate", label="(15-30)% Inc. Off-Hand Catalyst Drop%"},
 				{name="Right of Conquest", minVal=15.0, maxVal=30.0, implCount=1, impl1="(15-30)% Increased Boots Drop Rate", label="(15-30)% Inc. Boots Drop%"},
-				{name="Shadows of Infinity", minVal=10.0, maxVal=20.0, implCount=1, impl1="(10-20)% Increased Relic Shard Drop Rate", label="(10-20)% Inc. Relic Shard Drop%"},
 				{name="Subtlety of Slaughter", minVal=30.0, maxVal=45.0, implCount=1, impl1="(30-45)% Increased Dagger Drop Rate", label="(30-45)% Inc. Dagger Drop%"},
 				{name="Vigilance of the Damned", minVal=30.0, maxVal=45.0, implCount=1, impl1="(30-45)% Increased Bow Drop Rate", label="(30-45)% Inc. Bow Drop%"},
 			},
 			grand = {
 				{name="Grand Apex of Fortune", minVal=41.0, maxVal=60.0, implCount=1, impl1="(41-60)% Increased Quiver Drop Rate", label="(41-60)% Inc. Quiver Drop%"},
+				{name="Grand Shadows of Infinity", minVal=22.0, maxVal=35.0, implCount=1, impl1="(22-35)% Increased Relic Shard Drop Rate", label="(22-35)% Inc. Relic Shard Drop%"},
 				{name="Grand Arrogance of Argentus", minVal=22.0, maxVal=50.0, implCount=1, impl1="(22-50)% Increased Helmet Drop Rate", label="(22-50)% Inc. Helmet Drop%"},
 				{name="Grand Despair of the Empire", minVal=45.0, maxVal=70.0, implCount=1, impl1="(45-70)% Increased Ailment Shard Drop Rate", label="(45-70)% Inc. Ailment Shard Drop%"},
 				{name="Grand Embrace of Ice", minVal=22.0, maxVal=50.0, implCount=1, impl1="(22-50)% Increased Body Armor Drop Rate", label="(22-50)% Inc. Body Armor Drop%"},
 				{name="Grand Grip of the Lance", minVal=35.0, maxVal=75.0, implCount=1, impl1="(35-75)% Increased Gloves Drop Rate", label="(35-75)% Inc. Gloves Drop%"},
 				{name="Grand Reach of Flame", minVal=35.0, maxVal=75.0, implCount=1, impl1="(35-75)% Increased Off-Hand Catalyst Drop Rate", label="(35-75)% Inc. Off-Hand Catalyst Drop%"},
 				{name="Grand Right of Conquest", minVal=35.0, maxVal=75.0, implCount=1, impl1="(35-75)% Increased Boots Drop Rate", label="(35-75)% Inc. Boots Drop%"},
-				{name="Grand Shadows of Infinity", minVal=22.0, maxVal=35.0, implCount=1, impl1="(22-35)% Increased Relic Shard Drop Rate", label="(22-35)% Inc. Relic Shard Drop%"},
 				{name="Grand Subtlety of Slaughter", minVal=50.0, maxVal=75.0, implCount=1, impl1="(50-75)% Increased Dagger Drop Rate", label="(50-75)% Inc. Dagger Drop%"},
 				{name="Grand Vigilance of the Damned", minVal=50.0, maxVal=75.0, implCount=1, impl1="(50-75)% Increased Bow Drop Rate", label="(50-75)% Inc. Bow Drop%"},
 			},
@@ -447,6 +448,7 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 				{name="Persistance of Will", minVal=25.0, maxVal=40.0, implCount=1, impl1="+(25-40)% Poison Resistance", label="+(25-40)% Poison Res"},
 				{name="Taste of Venom", minVal=40.0, maxVal=60.0, implCount=1, impl1="+(40-60)% Chance to Poison on Hit", label="+(40-60)% Chance to Poison on Hit"},
 				{name="Virtue of Command", minVal=8.0, maxVal=15.0, implCount=1, impl1="+(8-15)% to Minion All Resistances", label="+(8-15)% to Minion All Ress"},
+				{name="Knowledge of Skill", minVal=12.0, maxVal=20.0, implCount=1, impl1="(12-20)% Increased Skill Shard Drop Rate", label="(12-20)% Inc. Skill Shard Drop%"},
 			},
 			grand = {
 				{name="Grand Binds of Nature", minVal=65.0, maxVal=100.0, implCount=1, impl1="(65-100)% increased Poison Damage", label="(65-100)% inc. Poison Dmg"},
@@ -459,6 +461,7 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 				{name="Grand Persistance of Will", minVal=55.0, maxVal=75.0, implCount=1, impl1="+(55-75)% Poison Resistance", label="+(55-75)% Poison Res"},
 				{name="Grand Taste of Venom", minVal=65.0, maxVal=100.0, implCount=1, impl1="+(65-100)% Chance to Poison on Hit", label="+(65-100)% Chance to Poison on Hit"},
 				{name="Grand Virtue of Command", minVal=16.0, maxVal=25.0, implCount=1, impl1="+(16-25)% to Minion All Resistances", label="+(16-25)% to Minion All Ress"},
+				{name="Grand Knowledge of Skill", minVal=22.0, maxVal=35.0, implCount=1, impl1="(22-35)% Increased Skill Shard Drop Rate", label="(22-35)% Inc. Skill Shard Drop%"},
 			},
 		},
 		["Spirits of Fire"] = {
@@ -485,6 +488,36 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 				{name="Grand Resolve of Grael", minVal=55.0, maxVal=75.0, implCount=1, impl1="+(55-75)% Physical Resistance", label="+(55-75)% Physical Res"},
 				{name="Grand Vigor of Jormun", minVal=80.0, maxVal=150.0, implCount=1, impl1="+(80-150) Endurance Threshold", label="+(80-150) Endurance Threshold"},
 				{name="Grand Winds of Frost", minVal=55.0, maxVal=80.0, implCount=1, impl1="+(55-80)% Freeze Rate per stack of Chill", label="+(55-80)% Freeze Rate per stack of Chill"},
+			},
+		},
+		["Additional"] = {
+			normal = {
+				{name="Bastion of the Heart", minVal=12.0, maxVal=20.0, implCount=1, impl1="(12-20)% Increased Body Armor Shard Drop Rate", label="(12-20)% Inc. Body Armor Shard Drop%"},
+				{name="Binding of Ruin", minVal=20.0, maxVal=30.0, implCount=1, impl1="(20-30)% Increased Belt Shard Drop Rate", label="(20-30)% Inc. Belt Shard Drop%"},
+				{name="Comfort of the End", minVal=12.0, maxVal=20.0, implCount=1, impl1="(12-20)% Increased Suffix Shard Drop Rate", label="(12-20)% Inc. Suffix Shard Drop%"},
+				{name="Flames of Calamity", minVal=40.0, maxVal=60.0, implCount=1, impl1="(40-60)% increased Fire Damage", label="(40-60)% inc. Fire Dmg"},
+				{name="Grasp of Hope", minVal=20.0, maxVal=30.0, implCount=1, impl1="(20-30)% Increased Gloves Shard Drop Rate", label="(20-30)% Inc. Gloves Shard Drop%"},
+				{name="Knowledge of Skill", minVal=12.0, maxVal=20.0, implCount=1, impl1="(12-20)% Increased Skill Shard Drop Rate", label="(12-20)% Inc. Skill Shard Drop%"},
+				{name="Memory of Masters", minVal=10.0, maxVal=18.0, implCount=1, impl1="(10-18)% Increased Class Specific Shard Drop Rate", label="(10-18)% Inc. Class Shard Drop%"},
+				{name="Might of Bhuldar", minVal=20.0, maxVal=30.0, implCount=1, impl1="(20-30)% Increased Stun Duration", label="(20-30)% Inc. Stun Duration"},
+				{name="Patience of Herkir", minVal=200.0, maxVal=350.0, implCount=1, impl1="+(200-350) Armor While Channelling", label="+(200-350) Armor While Channelling"},
+				{name="Refuge of Despair", minVal=20.0, maxVal=30.0, implCount=1, impl1="(20-30)% Increased Shield Shard Drop Rate", label="(20-30)% Inc. Shield Shard Drop%"},
+				{name="Remnants of the Elders", minVal=20.0, maxVal=30.0, implCount=1, impl1="(20-30)% Increased Off-Hand Catalyst Shard Drop Rate", label="(20-30)% Inc. Off-Hand Shard Drop%"},
+				{name="Temple of the Mind", minVal=12.0, maxVal=20.0, implCount=1, impl1="(12-20)% Increased Helmet Shard Drop Rate", label="(12-20)% Inc. Helmet Shard Drop%"},
+			},
+			grand = {
+				{name="Grand Bastion of the Heart", minVal=22.0, maxVal=35.0, implCount=1, impl1="(22-35)% Increased Body Armor Shard Drop Rate", label="(22-35)% Inc. Body Armor Shard Drop%"},
+				{name="Grand Binding of Ruin", minVal=32.0, maxVal=50.0, implCount=1, impl1="(32-50)% Increased Belt Shard Drop Rate", label="(32-50)% Inc. Belt Shard Drop%"},
+				{name="Grand Comfort of the End", minVal=22.0, maxVal=35.0, implCount=1, impl1="(22-35)% Increased Suffix Shard Drop Rate", label="(22-35)% Inc. Suffix Shard Drop%"},
+				{name="Grand Flames of Calamity", minVal=65.0, maxVal=100.0, implCount=1, impl1="(65-100)% increased Fire Damage", label="(65-100)% inc. Fire Dmg"},
+				{name="Grand Grasp of Hope", minVal=32.0, maxVal=50.0, implCount=1, impl1="(32-50)% Increased Gloves Shard Drop Rate", label="(32-50)% Inc. Gloves Shard Drop%"},
+				{name="Grand Knowledge of Skill", minVal=22.0, maxVal=35.0, implCount=1, impl1="(22-35)% Increased Skill Shard Drop Rate", label="(22-35)% Inc. Skill Shard Drop%"},
+				{name="Grand Memory of Masters", minVal=20.0, maxVal=30.0, implCount=1, impl1="(20-30)% Increased Class Specific Shard Drop Rate", label="(20-30)% Inc. Class Shard Drop%"},
+				{name="Grand Might of Bhuldar", minVal=32.0, maxVal=50.0, implCount=1, impl1="(32-50)% Increased Stun Duration", label="(32-50)% Inc. Stun Duration"},
+				{name="Grand Patience of Herkir", minVal=400.0, maxVal=650.0, implCount=1, impl1="+(400-650) Armor While Channelling", label="+(400-650) Armor While Channelling"},
+				{name="Grand Refuge of Despair", minVal=32.0, maxVal=50.0, implCount=1, impl1="(32-50)% Increased Shield Shard Drop Rate", label="(32-50)% Inc. Shield Shard Drop%"},
+				{name="Grand Remnants of the Elders", minVal=32.0, maxVal=50.0, implCount=1, impl1="(32-50)% Increased Off-Hand Catalyst Shard Drop Rate", label="(32-50)% Inc. Off-Hand Shard Drop%"},
+				{name="Grand Temple of the Mind", minVal=22.0, maxVal=35.0, implCount=1, impl1="(22-35)% Increased Helmet Shard Drop Rate", label="(22-35)% Inc. Helmet Shard Drop%"},
 			},
 		},
 		["The Last Ruin"] = {
@@ -515,7 +548,7 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 		},
 	}
 
-	local blessingTimelines = {"Fall of the Outcasts", "The Stolen Lance", "The Black Sun", "Blood, Frost, and Death", "Ending the Storm", "Fall of the Empire", "Reign of Dragons", "The Age of Winter", "Spirits of Fire", "The Last Ruin"}
+	local blessingTimelines = {"Fall of the Outcasts", "The Stolen Lance", "The Black Sun", "Blood, Frost, and Death", "Ending the Storm", "Fall of the Empire", "Reign of Dragons", "The Age of Winter", "Spirits of Fire", "The Last Ruin", "Additional"}
 	self.blessingControls = {}
 
 	local function updateBlessingSlot(tl, blessEntry, rollFrac)
