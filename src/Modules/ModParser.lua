@@ -195,6 +195,8 @@ local modFlagList = {
 	["minion skills"] = { tag = { type = "SkillType", skillType = SkillType.Minion } },
 	["with elemental spells"] = { keywordFlags = bor(KeywordFlag.Lightning, KeywordFlag.Cold, KeywordFlag.Fire) },
 	["minion"] = { addToMinion = true },
+	-- Leech suffixes
+	["leeched as health"] = { modSuffix = "LifeLeech" },
 	-- Other
 	["global"] = { tag = { type = "Global" } },
 }
@@ -560,7 +562,14 @@ local function parseMod(line, order)
 
 	if modForm == "BASE_MORE" and modName ~= nil then
 		local modNameStr = type(modName) == "table" and modName[1] or modName
-		if modNameStr:match("Damage$") or modName == "Duration" then
+		local hasModSuffix = false
+		for _, flagEntry in ipairs(modFlags) do
+			if type(flagEntry) == "table" and flagEntry.modSuffix then
+				hasModSuffix = true
+				break
+			end
+		end
+		if not hasModSuffix and (modNameStr:match("Damage$") or modName == "Duration") then
 			modType = "MORE"
 		else
 			modType = "BASE"
