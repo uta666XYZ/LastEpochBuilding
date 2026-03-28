@@ -357,7 +357,7 @@ function buildMode:Init(dbFileName, buildName, buildXML, convertBuild)
 		self.viewMode = "NOTES"
 	end)
 	self.controls.modeNotes.locked = function() return self.viewMode == "NOTES" end
-	self.controls.modeConfig = new("ButtonControl", {"TOPRIGHT",self.anchorSideBar,"TOPLEFT"}, 300, 0, 100, 20, "Configuration", function()
+	self.controls.modeConfig = new("ButtonControl", {"LEFT",self.controls.modeNotes,"RIGHT"}, 4, 0, 72, 20, "Config", function()
 		self.viewMode = "CONFIG"
 	end)
 	self.controls.modeConfig.locked = function() return self.viewMode == "CONFIG" end
@@ -373,20 +373,17 @@ function buildMode:Init(dbFileName, buildName, buildXML, convertBuild)
 		self.viewMode = "ITEMS"
 	end)
 	self.controls.modeItems.locked = function() return self.viewMode == "ITEMS" end
-	self.controls.modeIdols = new("ButtonControl", {"LEFT",self.controls.modeItems,"RIGHT"}, 4, 0, 56, 20, "Idols", function()
-		self.viewMode = "IDOLS"
-	end)
-	self.controls.modeIdols.locked = function() return self.viewMode == "IDOLS" end
 	self.controls.modeParty = new("ButtonControl", {"TOPLEFT",self.anchorSideBar,"TOPLEFT"}, 0, 52, 72, 20, "Party", function()
 		self.viewMode = "PARTY"
 	end)
 	self.controls.modeParty.locked = function() return self.viewMode == "PARTY" end
-	self.controls.modeCalcs = new("ButtonControl", {"LEFT",self.controls.modeParty,"RIGHT"}, 4, 0, 72, 20, "Calcs", function()
+	self.controls.modeParty.shown = false
+	self.controls.modeCalcs = new("ButtonControl", {"LEFT",self.controls.modeItems,"RIGHT"}, 4, 0, 72, 20, "Calcs", function()
 		self.viewMode = "CALCS"
 	end)
 	self.controls.modeCalcs.locked = function() return self.viewMode == "CALCS" end
 	-- Skills
-	self.controls.mainSkillLabel = new("LabelControl", {"TOPLEFT",self.anchorSideBar,"TOPLEFT"}, 0, 80, 300, 16, "^7Main Skill:")
+	self.controls.mainSkillLabel = new("LabelControl", {"TOPLEFT",self.anchorSideBar,"TOPLEFT"}, 0, 52, 300, 16, "^7Main Skill:")
 	self.controls.mainSocketGroup = new("DropDownControl", {"TOPLEFT",self.controls.mainSkillLabel,"BOTTOMLEFT"}, 0, 2, 300, 18, nil, function(index, value)
 		self.mainSocketGroup = value.val
 		self.modFlag = true
@@ -501,9 +498,8 @@ function buildMode:Init(dbFileName, buildName, buildXML, convertBuild)
 	self.importTab = new("ImportTab", self)
 	self.notesTab = new("NotesTab", self)
 	self.partyTab = new("PartyTab", self)
-	self.configTab = new("ConfigTab", self)
 	self.itemsTab = new("ItemsTab", self)
-	self.idolsTab = new("IdolsTab", self)
+	self.configTab = new("ConfigTab", self)
 	self.skillsTab = new("SkillsTab", self)
 	self.treeTab = new("TreeTab", self)
 	self.calcsTab = new("CalcsTab", self)
@@ -943,6 +939,7 @@ function buildMode:Load(xml, fileName)
 	self.targetVersion = xml.attrib.targetVersion or legacyTargetVersion
 	if xml.attrib.viewMode then
 		self.viewMode = xml.attrib.viewMode
+		if self.viewMode == "IDOLS" then self.viewMode = "ITEMS" end
 	end
 	self.characterLevel = tonumber(xml.attrib.level) or 1
 	self.characterLevelAutoMode = xml.attrib.characterLevelAutoMode == "true"
@@ -1132,8 +1129,6 @@ function buildMode:OnFrame(inputEvents)
 		self.skillsTab:Draw(tabViewPort, inputEvents)
 	elseif self.viewMode == "ITEMS" then
 		self.itemsTab:Draw(tabViewPort, inputEvents)
-	elseif self.viewMode == "IDOLS" then
-		self.idolsTab:Draw(tabViewPort, inputEvents)
 	elseif self.viewMode == "CALCS" then
 		self.calcsTab:Draw(tabViewPort, inputEvents)
 	end

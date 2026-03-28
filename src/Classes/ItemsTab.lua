@@ -210,7 +210,7 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 		self.build.treeTab:OpenSpecManagePopup()
 	end)
 	self.controls.specLabel = new("LabelControl", {"RIGHT",prevSlot,"LEFT"}, -2, 0, 0, 16, "^7Passive tree:")
-	self.controls.idolPositionsLabel = new("LabelControl", {"TOPLEFT",self.controls.specLabel,"BOTTOMLEFT"}, 0, 16, 0, 16, "Idol positions start from bottom left then left to right")
+	self.controls.idolPositionsLabel = new("LabelControl", {"TOPLEFT",self.controls.specSelect,"BOTTOMLEFT"}, 0, 8, 0, 16, "Idol positions start from bottom left then left to right")
 
 	-- ===== IDOL ALTAR (S4) =====
 	self.activeAltarLayout = "Default"
@@ -228,7 +228,7 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 		end
 	end
 	self.controls.idolAltarSelect = new("DropDownControl",
-		{"TOPLEFT",self.controls.idolPositionsLabel,"BOTTOMLEFT"}, 0, 8, 216, 20,
+		{"TOPLEFT",self.controls.idolPositionsLabel,"BOTTOMLEFT"}, 0, 8, 310, 20,
 		altarDropList, function(index, value)
 			self.activeAltarLayout = altarDropList[index].key
 			self.build.buildFlag = true
@@ -237,7 +237,7 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 		{"RIGHT",self.controls.idolAltarSelect,"LEFT"}, -2, 0, 0, 16, "^7Idol Altar:")
 	local prevOmenSlot = self.controls.idolAltarSelect
 	for i = 1, MAX_OMEN_IDOL_SLOTS do
-		local omenSlot = new("ItemSlotControl", {"TOPLEFT",prevOmenSlot,"BOTTOMLEFT"}, 0, 2, self, "Omen Idol " .. i)
+		local omenSlot = new("ItemSlotControl", {"TOPLEFT",prevOmenSlot,"BOTTOMLEFT"}, 0, 2, self, "Omen Idol " .. i, tostring(i))
 		local slotNum = i
 		omenSlot.shown = function()
 			if self.activeAltarLayout == "Default" then return false end
@@ -549,6 +549,8 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 	}
 
 	local blessingTimelines = {"Fall of the Outcasts", "The Stolen Lance", "The Black Sun", "Blood, Frost, and Death", "Ending the Storm", "Fall of the Empire", "Reign of Dragons", "The Age of Winter", "Spirits of Fire", "The Last Ruin", "Additional"}
+	self.blessingData = blessingData
+	self.blessingTimelines = blessingTimelines
 	self.blessingControls = {}
 
 	local function updateBlessingSlot(tl, blessEntry, rollFrac)
@@ -583,71 +585,8 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 		if self.activeItemSet[tl] then self.activeItemSet[tl].selItemId = item.id end
 		self.build.buildFlag = true
 	end
-
-	local prevBless = self.controls.idolAltarEnd
-	self.controls.blessingHeader = new("LabelControl", {"TOPLEFT",prevBless,"BOTTOMLEFT"}, 0, 12, 310, 16, "^7Blessings (Monolith):")
-	prevBless = self.controls.blessingHeader
-
-	for _, tl in ipairs(blessingTimelines) do
-		local tlData = blessingData[tl]
-		if tlData then
-			local isGrand = false
-			local slider, drop, gradeBtn
-
-			local function buildList(grand)
-				local list = { {label="None"} }
-				for _, b in ipairs(grand and tlData.grand or tlData.normal) do
-					t_insert(list, {label=b.label or b.impl1 or b.name, data=b})
-				end
-				return list
-			end
-
-			-- Row1: timeline label + dropdown (same y)
-			local tlLabel = new("LabelControl", {"TOPLEFT",prevBless,"BOTTOMLEFT"}, 0, 5, 144, 16, function()
-				return "^x888888"..tl..":"
-			end)
-			drop = new("DropDownControl", {"TOPLEFT",prevBless,"BOTTOMLEFT"}, 148, 5, 250, 40, buildList(false), function(index, value)
-				local frac = slider and slider.val or 1.0
-				updateBlessingSlot(tl, value and value.data, frac)
-			end)
-			drop.enableDroppedWidth = true
-
-			-- Row2: grade button + slider + value (anchored to tlLabel bottom, fixed offset for 40px drop)
-			local row2 = new("Control", {"TOPLEFT",tlLabel,"BOTTOMLEFT"}, 0, 28, 0, 20)
-			gradeBtn = new("ButtonControl", {"LEFT",row2,"RIGHT"}, 0, 2, 52, 16, "Normal", function()
-				isGrand = not isGrand
-				gradeBtn.label = isGrand and "Grand" or "Normal"
-				drop:SetList(buildList(isGrand))
-				local sel = drop.list[drop.selIndex]
-				updateBlessingSlot(tl, sel and sel.data, slider and slider.val or 1.0)
-			end)
-			slider = new("SliderControl", {"LEFT",gradeBtn,"RIGHT"}, 4, 2, 150, 16, function(val)
-				local sel = drop.list[drop.selIndex]
-				updateBlessingSlot(tl, sel and sel.data, val)
-			end)
-			slider.val = 1.0
-			local valLabel = new("LabelControl", {"LEFT",slider,"RIGHT"}, 4, 0, 44, 16, function()
-				local sel = drop.list[drop.selIndex]
-				if not sel or not sel.data then return "^x555555--" end
-				local b = sel.data
-				local v = b.minVal + slider.val * (b.maxVal - b.minVal)
-				return string.format("^7%d", math.floor(v + 0.5))
-			end)
-
-			t_insert(self.controls, tlLabel)
-			t_insert(self.controls, drop)
-			t_insert(self.controls, row2)
-			t_insert(self.controls, gradeBtn)
-			t_insert(self.controls, slider)
-			t_insert(self.controls, valLabel)
-			self.blessingControls[tl] = {drop=drop, slider=slider, gradeBtn=gradeBtn}
-			prevBless = row2
-		end
-	end
-
-	self.controls.blessingPanelEnd = new("Control", {"TOPLEFT",prevBless,"BOTTOMLEFT"}, 0, 4, 0, 0)
-	t_insert(self.controls, self.controls.blessingPanelEnd)
-	-- ===== END BLESSING PANEL =====
+	self.updateBlessingSlot = updateBlessingSlot
+	-- ===== END BLESSING PANEL (UI moved to ConfigTab) =====
 
 	self.controls.slotHeader = new("LabelControl", {"BOTTOMLEFT",self.slotAnchor,"TOPLEFT"}, 0, -4, 0, 16, "^7Equipped items:")
 	self.controls.weaponSwap1 = new("ButtonControl", {"BOTTOMRIGHT",self.slotAnchor,"TOPRIGHT"}, -20, -2, 18, 18, "I", function()
@@ -1040,6 +979,16 @@ holding Shift will put it in the second.]])
 	self:NewItemSet(1)
 	self:SetActiveItemSet(1)
 
+	-- ===== IDOL GRID IN ITEMS TAB =====
+	-- Created here (after drag targets and item sets are ready) so RegisterLateSlot
+	-- can safely add the 25 idol slots to the drag lists and all item sets.
+	self.controls.idolGrid = new("IdolGridControl",
+		{"TOPLEFT", self.controls.idolAltarEnd, "BOTTOMLEFT"}, -81, 12,
+		self, self.idolGridLayout, 68, 46)
+	self.controls.idolGridPanelEnd = new("Control", {"TOPLEFT", self.controls.idolGrid, "BOTTOMLEFT"}, 0, 8, 0, 0)
+	t_insert(self.controls, self.controls.idolGridPanelEnd)
+	-- ===== END IDOL GRID =====
+
 	self:PopulateSlots()
 	self.lastSlot = lastVisibleSlot
 end)
@@ -1201,7 +1150,7 @@ function ItemsTabClass:Draw(viewPort, inputEvents)
 	self.controls.scrollBarV.x = viewPort.x + viewPort.width - 18
 	self.controls.scrollBarV.y = viewPort.y
 	do
-		local maxY = select(2, self.controls.blessingPanelEnd:GetPos()) + 24
+		local maxY = select(2, self.controls.idolGridPanelEnd:GetPos()) + 24
 		local maxX = self.anchorDisplayItem:GetPos() + 462
 		if self.displayItem then
 			local x, y = self.controls.displayItemTooltipAnchor:GetPos()
