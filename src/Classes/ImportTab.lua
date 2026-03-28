@@ -917,7 +917,7 @@ function ImportTabClass:ImportItemsAndSkills(charData)
     -- This searches ALL timelines so we find the right dropdown regardless of
     -- which slot LETools assigns the blessing to.
     local blessingLookup = {}
-    local blessingControls = self.build.itemsTab.blessingControls or {}
+    local blessingControls = self.build.configTab.blessingControls or {}
     for tl, bc in pairs(blessingControls) do
         -- Collect normal blessings (current list, all start as Normal)
         for i, entry in ipairs(bc.drop.list) do
@@ -1034,13 +1034,13 @@ function ImportTabClass:ImportItem(itemData, slotName)
 
     -- Blessing timeline slots use dropdown controls, not the normal item slot.
     -- Search across ALL timelines since LETools slot order may differ from blessingData order.
-    if slotName and self.build.itemsTab.blessingControls and self.build.itemsTab.blessingControls[slotName] then
+    if slotName and self.build.configTab.blessingControls and self.build.configTab.blessingControls[slotName] then
         local blessingName = itemData.name or ""
         local info = self.currentBlessingLookup and self.currentBlessingLookup[blessingName]
         if info then
             -- Use the TARGET slot's bc so the blessing lands in the correct timeline slot,
             -- regardless of which dropdown the blessing entry was found in.
-            local targetBc = self.build.itemsTab.blessingControls[slotName]
+            local targetBc = self.build.configTab.blessingControls[slotName]
             -- Switch target bc to the correct grade mode
             if info.isGrand and targetBc.gradeBtn.label ~= "Grand" then
                 targetBc.gradeBtn.onClick()
