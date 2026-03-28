@@ -12160,7 +12160,7 @@
     },
     "affixEffectModifier": 0,
     "implicits": [
-      "+2 PROP130_TAG0_TAGS5 [UNKNOWN_STAT]"
+      "+2 Huge Idols equipped at Maximum"
     ]
   },
   "Skyward Altar": {
@@ -12228,7 +12228,7 @@
     },
     "affixEffectModifier": 0,
     "implicits": [
-      "+2 PROP130_TAG0_TAGS7 [UNKNOWN_STAT]"
+      "+2 Adorned Idols equipped at Maximum"
     ]
   },
   "Archaic Altar": {
@@ -12251,7 +12251,7 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(15-35) PROP130_TAG0_TAGS12 [UNKNOWN_STAT]",
-      "+2 PROP130_TAG0_TAGS5 [UNKNOWN_STAT]"
+      "+2 Huge Idols equipped at Maximum"
     ]
   },
   "Prophesied Altar": {
@@ -12276,7 +12276,7 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+10% PROP130_TAG0_TAGS21 [UNKNOWN_STAT]",
-      "+2 PROP130_TAG0_TAGS5 [UNKNOWN_STAT]"
+      "+2 Huge Idols equipped at Maximum"
     ]
   },
   "Auric Altar": {

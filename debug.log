@@ -3,37 +3,9 @@ Loading passive tree data for version '1.4'...
 Loading passive tree assets...
 Processing tree...
 Loading 'C:/Users/yobk0/Documents/GitHub/LastEpochBuilding/src/Builds/~~temp~~.xml'...
-Startup time: 1550 ms
+Startup time: 1402 ms
 Uniques loaded
 Rares loaded
-Downloading page at: https://www.lastepochtools.com/profile/Ys2072
-Download complete. Status: OK
-[ONLINE] char[1] fields: characterName=CrowdStrike, class=4, cycle=3, deaths=6, factions={"0":{"id":0,"isMember":true,"hasEverJoined":true,"rank":12,"reputation":0,"favor":280955,"factionSpecific":{}},"2":{"id":2,"isMember":true,"hasEverJoined":true,"rank":10,"reputation":0,"favor":100,"factionSpecific":{}}}, hardcore=false, level=68, masochist=false, mastery=3, solo=false, soloChar=false
-[ONLINE] maxCycle=7
-[ONLINE] CrowdStrike cycle=3 -> Legacy
-[ONLINE] GoodKnight cycle=3 -> Legacy
-[ONLINE] HoneyImCheatingATM cycle=3 -> Legacy
-[ONLINE] NoImPalmBeachPete cycle=7 -> Cycle
-[ONLINE] RIPConcord cycle=3 -> Legacy
-[ONLINE] S2_Ys_LorenzoSS cycle=5 -> Legacy
-[ONLINE] Two_Steps_Ahead cycle=4 -> Legacy
-[ONLINE] Ys401 cycle=3 -> Legacy
-[ONLINE] Ys403 cycle=3 -> Legacy
-[ONLINE] Ys404 cycle=3 -> Legacy
-[ONLINE] Ys451 cycle=3 -> Legacy
-[ONLINE] Ys500 cycle=3 -> Legacy
-[ONLINE] Ys502 cycle=4 -> Legacy
-[ONLINE] Ys503 cycle=3 -> Legacy
-[ONLINE] Ys666 cycle=2 -> Legacy
-[ONLINE] YsAberrothKiller cycle=6 -> Legacy
-[ONLINE] YsBonkVK_S2 cycle=5 -> Legacy
-[ONLINE] YsBonkVK_S2-Copy cycle=5 -> Legacy
-[ONLINE] YsBonkVK_S2_Prep002 cycle=4 -> Legacy
-[ONLINE] YsFADeadeye cycle=6 -> Legacy
-[ONLINE] YsFkTrumpTariffs_S2 cycle=5 -> Legacy
-[ONLINE] YsGhostflameReaper cycle=6 -> Legacy
-[ONLINE] YsMakeD4GreatAgainS9 cycle=5 -> Legacy
-[ONLINE] YsSupportCentre cycle=6 -> Legacy
 [ALTAR] scanning savedItems for char=prepfor1o1
 [ALTAR] not found in savedItems, checking saveContent keys
 [ALTAR] saveContent keys: _ts, abilityBar, activeMonolithMods, arenaTiersCompleted, blessingsDiscovered, characterClass, characterName, characterTreeNodeProgression, chosenMastery, clickedUnlockMasteriesButton, closedIdolsTooltip, closedMinSkillLevelTutorial, closedMonolithTooltip, closedPassivesTooltip, closedSkillsTooltip, competitiveCharacterVersion, currentArenaRunWaves, currentExp, currentMonolithRunDifficultyIndex, currentMonolithRunTimelineID, currentMonolithRunToSetBack, currentMonolithRunToSetBackDifficultyIndex, cycle, deaths, died, dungeonCompletion, factions, focusedQuest, hardcore, hasRerolledMonolithOptions, id, lanternLuminance, lastPlayed, level, masochist, maxWave, monolithDepth, monolithEchoesConquered, monolithOptions, monolithRuns, monolithTimelinesConquered, moveButtonBehaviour, oneTimeEvents, openedOneShotCaches, portalUnlocked, previousArenaRunWaves, previousMonolithEchoDifficultyIndex, previousMonolithEchoTimelineID, reachedTown, respecs, savedCharacterTree, savedItems, savedMonolithQuests, savedQuests, savedSkillTrees, sceneProgresses, seqNo, slot, soloChallenge, soloCharacterChallenge, soulEmbers, sprigganFormAbilityBar, swarmbladeAbilityBar, timelineCompletion, timelineDifficultyCompletion, timelineDifficultyUnlocks, uniquesPickedUp, unlockedWaypointScenes, version, werebearAbilityBar
