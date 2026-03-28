@@ -387,6 +387,9 @@ return {
 		{ modName = { "EnemyStunDuration", "Duration" }, cfg = "skill" },
 	}, },
 	-- Electrify
+	{ label = "Electrify Chance", haveOutput = "ElectrifyChance", { format = "{0:output:ElectrifyChance}%",
+		{ modName = "ElectrifyChance", cfg = "skill" },
+	}, },
 	{ label = "Electrify Duration Mod", haveOutput = "EnemyElectrifyDuration", { format = "x {2:output:EnemyElectrifyDuration}",
 		{ modName = { "EnemyElectrifyDuration", "Duration" }, cfg = "skill" },
 	}, },
@@ -401,8 +404,23 @@ return {
 		{ modName = { "EnemyArmorShredDuration", "Duration" }, cfg = "skill" },
 	}, },
 	-- Time Rot
+	{ label = "Time Rot Chance", haveOutput = "TimeRotChance", { format = "{0:output:TimeRotChance}%",
+		{ modName = "TimeRotChance", cfg = "skill" },
+	}, },
 	{ label = "Time Rot Duration Mod", haveOutput = "EnemyTimeRotDuration", { format = "x {2:output:EnemyTimeRotDuration}",
 		{ modName = { "EnemyTimeRotDuration", "Duration" }, cfg = "skill" },
+	}, },
+	-- Blind
+	{ label = "Blind Chance", haveOutput = "BlindChance", { format = "{0:output:BlindChance}%",
+		{ modName = "BlindChance", cfg = "skill" },
+	}, },
+	-- Slow
+	{ label = "Slow Chance", haveOutput = "SlowChance", { format = "{0:output:SlowChance}%",
+		{ modName = "SlowChance", cfg = "skill" },
+	}, },
+	-- Frailty
+	{ label = "Frailty Chance", haveOutput = "FrailtyChance", { format = "{0:output:FrailtyChance}%",
+		{ modName = "FrailtyChance", cfg = "skill" },
 	}, },
 	-- Leech
 	{ label = "Leech Rate Mod", haveOutput = "LeechRate", { format = "x {2:output:LeechRate}",
@@ -513,6 +531,11 @@ return {
 -- misc defense
 { 1, "MiscDefences", 3, colorCodes.DEFENCE, {{ defaultCollapsed = false, label = "Other Defences", data = {
 	{ label = "Movement Speed", { format = "x {2:output:EffectiveMovementSpeedMod}", { breakdown = "EffectiveMovementSpeedMod" }, { modName = { "MovementSpeed", "MovementSpeedEqualHighestLinkedPlayers" } }, }, },
+	{ label = "Parry Chance", haveOutput = "ParryChance", { format = "{0:output:ParryChance}%", { modName = "ParryChance" }, }, },
+	{ label = "Dmg to Mana Before Health", haveOutput = "DamageToManaBeforeHealth", { format = "{0:output:DamageToManaBeforeHealth}%", { modName = "DamageToManaBeforeHealth" }, }, },
+	{ label = "Chance to Chill Attackers", haveOutput = "ChanceToChillAttackers", { format = "{0:output:ChanceToChillAttackers}%", { modName = "ChanceToChillAttackers" }, }, },
+	{ label = "Chance to Slow Attackers", haveOutput = "ChanceToSlowAttackers", { format = "{0:output:ChanceToSlowAttackers}%", { modName = "ChanceToSlowAttackers" }, }, },
+	{ label = "Chance to Shock Attackers", haveOutput = "ChanceToShockAttackers", { format = "{0:output:ChanceToShockAttackers}%", { modName = "ChanceToShockAttackers" }, }, },
 } },
 } },
 -- damage taken

@@ -109,6 +109,23 @@ function calcs.reducePoolsByDamage(poolTable, damageTable, actor)
 			ward = ward - tempDamage
 			damageRemainder = damageRemainder - tempDamage
 		end
+		-- Endurance: Last Epoch damage reduction when HP is at or below EnduranceThreshold
+		-- When a hit would cross the threshold, only the portion below is reduced
+		local endurancePct = (output.Endurance or 0) / 100
+		local enduranceThreshVal = output.EnduranceThresholdValue or 0
+		if endurancePct > 0 and enduranceThreshVal > 0 and damageRemainder > 0 then
+			if life > enduranceThreshVal then
+				local aboveThreshold = life - enduranceThreshVal
+				if damageRemainder > aboveThreshold then
+					-- Hit crosses into endurance threshold zone
+					local belowPortion = damageRemainder - aboveThreshold
+					damageRemainder = aboveThreshold + belowPortion * (1 - endurancePct)
+				end
+			else
+				-- Already at or below threshold: all damage reduced
+				damageRemainder = damageRemainder * (1 - endurancePct)
+			end
+		end
 		life = life - damageRemainder
 	end
 
@@ -1112,10 +1129,35 @@ function calcs.buildDefenceEstimations(env, actor)
 	end
 
 	-- Dissolution of the flesh life pool change
-	if modDB:Flag(nil, "DamageInsteadReservesLife") then 
+	if modDB:Flag(nil, "DamageInsteadReservesLife") then
 		output.LifeRecoverable = (output.LifeCancellableReservation / 100) * output.Life
 	end
-	
+
+	-- Endurance system (Last Epoch)
+	-- Endurance%: damage reduction that applies when HP is at or below EnduranceThreshold
+	-- EnduranceThreshold%: % of max life below which Endurance damage reduction kicks in
+	-- When a single hit crosses the threshold, only the below-threshold portion is reduced
+	output.Endurance = modDB:Sum("BASE", nil, "Endurance")
+	output.EnduranceThreshold = modDB:Sum("BASE", nil, "EnduranceThreshold")
+	output.EnduranceThresholdValue = m_floor((output.Life or 0) * output.EnduranceThreshold / 100)
+
+	-- Parry and Mana-before-Health
+	output.ParryChance = m_min(modDB:Sum("BASE", nil, "ParryChance"), 100)
+	output.DamageToManaBeforeHealth = m_min(modDB:Sum("BASE", nil, "DamageToManaBeforeHealth"), 100)
+
+	-- Attacker debuffs (reactive)
+	output.ChanceToSlowAttackers  = modDB:Sum("BASE", nil, "ChanceToSlowAttackers")
+	output.ChanceToChillAttackers = modDB:Sum("BASE", nil, "ChanceToChillAttackers")
+	output.ChanceToShockAttackers = modDB:Sum("BASE", nil, "ChanceToShockAttackers")
+	if breakdown and output.Endurance > 0 then
+		breakdown.Endurance = {
+			s_format("%d%% ^8(endurance damage reduction)", output.Endurance),
+			s_format("Threshold: %d HP ^8(%d%% of %d max life)", output.EnduranceThresholdValue, output.EnduranceThreshold, output.Life or 0),
+			"^8Damage taken while HP is at or below threshold is reduced by Endurance%%.",
+			"^8When a hit crosses the threshold, only the below-threshold portion is reduced.",
+		}
+	end
+
 	output.ehpSectionAnySpecificTypes = false
 
 	-- Guard
