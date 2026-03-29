@@ -1587,7 +1587,7 @@ function calcs.buildDefenceEstimations(env, actor)
 		local PvpElemental1 = data.misc.PvpElemental1
 		local PvpElemental2 = data.misc.PvpElemental2
 
-		local percentageNonElemental = (output["PhysicalTakenHit"] + output["ChaosTakenHit"]) / output["totalTakenHit"]
+		local percentageNonElemental = output["PhysicalTakenHit"] / output["totalTakenHit"]
 		local percentageElemental = 1 - percentageNonElemental
 		local portionNonElemental = (output["totalTakenHit"] / PvpTvalue / PvpNonElemental2 ) ^ PvpNonElemental1 * PvpTvalue * PvpNonElemental2 * percentageNonElemental
 		local portionElemental = (output["totalTakenHit"] / PvpTvalue / PvpElemental2 ) ^ PvpElemental1 * PvpTvalue * PvpElemental2 * percentageElemental
