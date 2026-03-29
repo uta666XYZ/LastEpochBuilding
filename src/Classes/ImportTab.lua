@@ -845,7 +845,8 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
                     else
                         local maxTier = 0
                         local affixCount = 0
-                        for i = 0, 3 do
+                        -- Read up to 5 affix slots: 4 regular + 1 sealed affix slot
+                        for i = 0, 4 do
                             local dataId = 14 + i * 3
                             if #itemData["data"] > dataId then
                                 local affixId = itemData["data"][dataId] + (itemData["data"][dataId - 1] % 16) * 256
@@ -855,6 +856,7 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
                                     local modData = data.itemMods.Item[modId]
                                     local range = itemData["data"][dataId + 1]
 
+                                    ConPrintf("[AFFIX] base=%s slot=%d affixId=%d tier=%d modId=%s valid=%s", itemBaseName, i, affixId, affixTier, modId, tostring(modData ~= nil))
                                     if modData then
                                         affixCount = affixCount + 1
                                         if affixTier > maxTier then
