@@ -879,6 +879,7 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
                         else
                             item["rarity"] = "NORMAL"
                         end
+                        ConPrintf("[RARITY] base=%s rarityByte=%d affixCount=%d maxTier=%d -> %s", itemBaseName, rarity, affixCount, maxTier, item["rarity"])
                         -- Build generated name: [forename] + baseName + [surname]
                         local forename, surname = "", ""
                         for _, p in ipairs(item.prefixes) do
