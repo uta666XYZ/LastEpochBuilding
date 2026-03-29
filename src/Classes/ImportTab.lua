@@ -797,7 +797,14 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
                     item["prefixes"] = {}
                     item["suffixes"] = {}
                     if rarity >= 7 and rarity <= 9 then
-                        item["rarity"] = "UNIQUE"
+                        -- 7 = Unique, 8 = Set, 9 = Legendary
+                        if rarity == 8 then
+                            item["rarity"] = "SET"
+                        elseif rarity == 9 then
+                            item["rarity"] = "LEGENDARY"
+                        else
+                            item["rarity"] = "UNIQUE"
+                        end
                         local uniqueIDIndex = 8 + 3 -- 3 is the maximum amount of implicits
                         local uniqueID = itemData["data"][uniqueIDIndex] * 256 + itemData["data"][uniqueIDIndex + 1]
                         local uniqueBase = self.build.data.uniques[uniqueID]
@@ -836,7 +843,16 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
                             end
                         end
                     else
-                        item["rarity"] = "RARE"
+                        -- 0 = Normal, 1 = Magic, 2 = Rare, 5-6 = Exalted
+                        if rarity >= 5 then
+                            item["rarity"] = "EXALTED"
+                        elseif rarity >= 2 then
+                            item["rarity"] = "RARE"
+                        elseif rarity >= 1 then
+                            item["rarity"] = "MAGIC"
+                        else
+                            item["rarity"] = "NORMAL"
+                        end
                         for i = 0, 4 do
                             local dataId = 14 + i * 3
                             if #itemData["data"] > dataId then
