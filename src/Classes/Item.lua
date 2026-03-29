@@ -313,15 +313,6 @@ function ItemClass:ParseRaw(raw, rarity, highQuality)
 			if colorCodes[rarity:upper()] then
 				self.rarity = rarity:upper()
 			end
-			if self.rarity == "UNIQUE" then
-				-- Hack for relics
-				for _, line in ipairs(self.rawLines) do
-					if line:find("Foil Unique") then
-						self.rarity = "RELIC"
-						break
-					end
-				end
-			end
 			l = l + 1
 		end
 	end
