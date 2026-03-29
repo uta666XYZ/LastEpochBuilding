@@ -791,7 +791,43 @@ function calcs.initEnv(build, mode, override, specEnv)
 	end
 
 	-- Merge modifiers for allocated passives
-	env.modDB:AddList(calcs.buildModListForNodeList(env, env.allocNodes))
+	-- Buff skill tree nodes are conditional: only apply when mode_buffs is true AND the skill is enabled
+	local buffSkillTreePrefixes = {}
+	for _, group in pairs(build.skillsTab.socketGroupList) do
+		local ge = group.grantedEffect
+		if ge and ge.treeId and ge.skillTypes and ge.skillTypes[SkillType.Buff] then
+			buffSkillTreePrefixes[ge.treeId .. "-"] = buffSkillTreePrefixes[ge.treeId .. "-"] or group.enabled
+		end
+	end
+
+	if next(buffSkillTreePrefixes) then
+		local activeNodes = {}
+		local inactiveNodes = {}
+		for nodeId, node in pairs(env.allocNodes) do
+			local isBuffNode = false
+			for prefix, enabled in pairs(buffSkillTreePrefixes) do
+				if nodeId:sub(1, #prefix) == prefix then
+					isBuffNode = true
+					if env.mode_buffs and enabled then
+						activeNodes[nodeId] = node
+					else
+						inactiveNodes[nodeId] = node
+					end
+					break
+				end
+			end
+			if not isBuffNode then
+				activeNodes[nodeId] = node
+			end
+		end
+		env.modDB:AddList(calcs.buildModListForNodeList(env, activeNodes))
+		-- Process inactive buff nodes for side effects (grantedSkills, finalModList) without adding mods
+		if next(inactiveNodes) then
+			calcs.buildModListForNodeList(env, inactiveNodes)
+		end
+	else
+		env.modDB:AddList(calcs.buildModListForNodeList(env, env.allocNodes))
+	end
 
 	-- Find skills granted by tree nodes
 	if not accelerate.nodeAlloc then
