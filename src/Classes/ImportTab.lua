@@ -745,25 +745,43 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
             local baseTypeID = itemData["data"][4]
             local subTypeID = itemData["data"][5]
             if itemData["containerID"] == 29 then
-                local posX = itemData["inventoryPosition"]["x"]
-                local posY = itemData["inventoryPosition"]["y"]
-                -- Use the same grid layout as the UI (matches IDOL_GRID_LAYOUT in ItemsTab.lua)
-                -- Rows are y=0..4 (top to bottom), cols are x=0..4 (left to right)
-                local idolGrid = {
-                    { "Idol 21", "Idol 1",  "Idol 2",  "Idol 3",  "Idol 22" }, -- y=0
-                    { "Idol 4",  "Idol 5",  "Idol 6",  "Idol 7",  "Idol 8"  }, -- y=1
-                    { "Idol 9",  "Idol 10", "Idol 23", "Idol 11", "Idol 12" }, -- y=2
-                    { "Idol 13", "Idol 14", "Idol 15", "Idol 16", "Idol 17" }, -- y=3
-                    { "Idol 24", "Idol 18", "Idol 19", "Idol 20", "Idol 25" }, -- y=4
-                }
-                local row = idolGrid[posY + 1]
-                item["inventoryId"] = row and row[posX + 1] or ("Idol " .. (posX + posY * 5))
+                item._idolPosX = itemData["inventoryPosition"]["x"]
+                item._idolPosY = itemData["inventoryPosition"]["y"]
             end
             local matchedBase = false
             for itemBaseName, itemBase in pairs(self.build.data.itemBases) do
                 if itemBase.baseTypeID == baseTypeID and itemBase.subTypeID == subTypeID then
                     matchedBase = true
                     item.baseName = itemBaseName
+                    -- Assign idol slot after base match so we know idol height
+                    if itemData["containerID"] == 29 and item._idolPosX then
+                        local posX = item._idolPosX
+                        local posY = item._idolPosY
+                        -- Idol height lookup from base name pattern
+                        local idolHeight = 1
+                        if itemBaseName:find("Stout") or itemBaseName:find("Adorned") then
+                            idolHeight = 2
+                        elseif itemBaseName:find("Large") then
+                            idolHeight = 3
+                        elseif itemBaseName:find("Huge") then
+                            idolHeight = 4
+                        end
+                        -- Game uses y=0 at bottom; anchor is bottom-left of idol.
+                        -- UI anchor is top-left. Convert: UI_row = 6 - posY - idolHeight
+                        local idolGrid = {
+                            { "Idol 21", "Idol 1",  "Idol 2",  "Idol 3",  "Idol 22" }, -- UI row 1 (top)
+                            { "Idol 4",  "Idol 5",  "Idol 6",  "Idol 7",  "Idol 8"  }, -- UI row 2
+                            { "Idol 9",  "Idol 10", "Idol 23", "Idol 11", "Idol 12" }, -- UI row 3
+                            { "Idol 13", "Idol 14", "Idol 15", "Idol 16", "Idol 17" }, -- UI row 4
+                            { "Idol 24", "Idol 18", "Idol 19", "Idol 20", "Idol 25" }, -- UI row 5 (bottom)
+                        }
+                        local uiRow = 6 - posY - idolHeight
+                        local row = idolGrid[uiRow]
+                        item["inventoryId"] = row and row[posX + 1] or ("Idol " .. (posX + posY * 5))
+                        ConPrintf("[IDOL] posX=%d posY=%d height=%d uiRow=%d -> slot=%s base=%s", posX, posY, idolHeight, uiRow, tostring(item["inventoryId"]), itemBaseName)
+                        item._idolPosX = nil
+                        item._idolPosY = nil
+                    end
                     item.base = itemBase
                     item.implicitMods = {}
                     for i, implicit in ipairs(itemBase.implicits or {}) do
