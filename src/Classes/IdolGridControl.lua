@@ -257,14 +257,16 @@ local function drawBorder(cx, cy, w, h, r, g, b)
 	DrawImage(nil, cx + w - 1, cy,         1,  h)
 end
 
--- Blocked cell: clean dark inset tile (no X/+ marks) to suggest unavailable area
+-- Blocked cell texture handle (lazy-loaded)
+local blockedCellImage
+
 local function drawBlockedCell(cx, cy, cw, ch)
-	-- Outer border (slightly lighter than interior for a framed look)
-	SetDrawColor(0.13, 0.11, 0.14)
-	DrawImage(nil, cx, cy, cw, ch)
-	-- Inner recessed fill (darker)
-	SetDrawColor(0.06, 0.05, 0.07)
-	DrawImage(nil, cx + 2, cy + 2, cw - 4, ch - 4)
+	if not blockedCellImage then
+		blockedCellImage = NewImageHandle()
+		blockedCellImage:Load("Assets/idol/idols_blocked.png", "ASYNC")
+	end
+	SetDrawColor(1, 1, 1)
+	DrawImage(blockedCellImage, cx, cy, cw, ch)
 end
 
 function IdolGridControlClass:Draw(viewPort)
