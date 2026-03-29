@@ -693,15 +693,6 @@ function calcs.initEnv(build, mode, override, specEnv)
 							end
 						end
 						env.itemModDB:ScaleAddList(otherRingList, scale)
-						for mult, property in pairs({["CorruptedItem"] = "corrupted", ["ShaperItem"] = "shaper", ["ElderItem"] = "elder"}) do
-							if otherRing[property] and not item[property] then
-								env.itemModDB.multipliers[mult] = (env.itemModDB.multipliers[mult] or 0) + 1
-								env.itemModDB.multipliers["Non"..mult] = (env.itemModDB.multipliers["Non"..mult] or 0) - 1
-							end
-						end
-						if (otherRing.elder or otherRing.shaper) and not (item.elder or item.shaper) then
-							env.itemModDB.multipliers.ShaperOrElderItem = (env.itemModDB.multipliers.ShaperOrElderItem or 0) + 1
-						end
 					end
 					env.itemModDB:ScaleAddList(srcList, scale)
 				elseif item.type == "Quiver" and items["Weapon 1"] and items["Weapon 1"].name:match("Widowhail") then
@@ -721,6 +712,12 @@ function calcs.initEnv(build, mode, override, specEnv)
 				local key
 				if item.rarity == "UNIQUE" then
 					key = "UniqueItem"
+				elseif item.rarity == "LEGENDARY" then
+					key = "LegendaryItem"
+				elseif item.rarity == "EXALTED" then
+					key = "ExaltedItem"
+				elseif item.rarity == "SET" then
+					key = "SetItem"
 				elseif item.rarity == "RARE" then
 					key = "RareItem"
 				elseif item.rarity == "MAGIC" then
@@ -730,16 +727,6 @@ function calcs.initEnv(build, mode, override, specEnv)
 				end
 				env.itemModDB.multipliers[key] = (env.itemModDB.multipliers[key] or 0) + 1
 				env.itemModDB.conditions[key .. "In" .. slotName] = true
-				for mult, property in pairs({["CorruptedItem"] = "corrupted", ["ShaperItem"] = "shaper", ["ElderItem"] = "elder"}) do
-					if item[property] then
-						env.itemModDB.multipliers[mult] = (env.itemModDB.multipliers[mult] or 0) + 1
-					else
-						env.itemModDB.multipliers["Non"..mult] = (env.itemModDB.multipliers["Non"..mult] or 0) + 1
-					end
-				end
-				if item.shaper or item.elder then
-					env.itemModDB.multipliers.ShaperOrElderItem = (env.itemModDB.multipliers.ShaperOrElderItem or 0) + 1
-				end
 				env.itemModDB.multipliers[item.type:gsub(" ", ""):gsub(".+Handed", "").."Item"] = (env.itemModDB.multipliers[item.type:gsub(" ", ""):gsub(".+Handed", "").."Item"] or 0) + 1
 			end
 		end

@@ -69,8 +69,7 @@ for _, curInfluenceInfo in ipairs(influenceInfo) do
 end
 
 local lineFlags = {
-	["crafted"] = true, ["crucible"] = true, ["custom"] = true, ["eater"] = true, ["enchant"] = true,
-	["exarch"] = true, ["fractured"] = true, ["implicit"] = true, ["scourge"] = true, ["synthesis"] = true,
+	["crafted"] = true, ["custom"] = true, ["enchant"] = true, ["implicit"] = true,
 }
 
 -- Special function to store unique instances of modifier on specific item slots
@@ -714,21 +713,6 @@ function ItemClass:BuildRaw()
 		if modLine.custom then
 			line = "{custom}" .. line
 		end
-		if modLine.scourge then
-			line = "{scourge}" .. line
-		end
-		if modLine.crucible then
-			line = "{crucible}" .. line
-		end
-		if modLine.fractured then
-			line = "{fractured}" .. line
-		end
-		if modLine.exarch then
-			line = "{exarch}" .. line
-		end
-		if modLine.eater then
-			line = "{eater}" .. line
-		end
 		if modLine.synthesis then
 			line = "{synthesis}" .. line
 		end
@@ -807,7 +791,7 @@ function ItemClass:BuildRaw()
 	if self.mirrored then
 		t_insert(rawLines, "Mirrored")
 	end
-	if self.corrupted or self.scourge then
+	if self.corrupted then
 		t_insert(rawLines, "Corrupted")
 	end
 	return table.concat(rawLines, "\n")

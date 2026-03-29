@@ -20,6 +20,9 @@ local rarityDropList = {
 	{ label = colorCodes.MAGIC.."Magic", rarity = "MAGIC" },
 	{ label = colorCodes.RARE.."Rare", rarity = "RARE" },
 	{ label = colorCodes.UNIQUE.."Unique", rarity = "UNIQUE" },
+	{ label = colorCodes.EXALTED.."Exalted", rarity = "EXALTED" },
+	{ label = colorCodes.LEGENDARY.."Legendary", rarity = "LEGENDARY" },
+	{ label = colorCodes.SET.."Set", rarity = "SET" },
 }
 
 local baseSlots = { "Weapon 1", "Weapon 2", "Helmet", "Body Armor", "Gloves", "Boots", "Amulet", "Ring 1", "Ring 2", "Belt", "Relic", "Idol Altar" }
@@ -2353,16 +2356,12 @@ function ItemsTabClass:AddItemTooltip(tooltip, item, slot, dbMode)
 	else
 		tooltip:AddLine(20, rarityCode..item.namePrefix..item.baseName:gsub(" %(.+%)","")..item.nameSuffix)
 	end
-	for _, curInfluenceInfo in ipairs(influenceInfo) do
-		if item[curInfluenceInfo.key] then
-			tooltip:AddLine(16, curInfluenceInfo.color..curInfluenceInfo.display.." Item")
-		end
-	end
-	if item.fractured then
-		tooltip:AddLine(16, colorCodes.FRACTURED.."Fractured Item")
-	end
-	if item.synthesised then
-		tooltip:AddLine(16, colorCodes.CRAFTED.."Synthesised Item")
+	if item.rarity == "EXALTED" then
+		tooltip:AddLine(16, colorCodes.EXALTED.."Exalted Item")
+	elseif item.rarity == "LEGENDARY" then
+		tooltip:AddLine(16, colorCodes.LEGENDARY.."Legendary Item")
+	elseif item.rarity == "SET" then
+		tooltip:AddLine(16, colorCodes.SET.."Set Item")
 	end
 	tooltip:AddSeparator(10)
 
