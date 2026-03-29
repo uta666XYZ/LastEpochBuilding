@@ -5,10 +5,10 @@
 --
 
 colorCodes = {
-	NORMAL = "^xC8C8C8",
-	MAGIC = "^x8888FF",
-	RARE = "^xFFFF77",
-	UNIQUE = "^xAF6025",
+	NORMAL = "^xFFFFFF",
+	MAGIC = "^x36A3E2",
+	RARE = "^xE3D157",
+	UNIQUE = "^xEB730A",
 	EXALTED = "^xC184FF",
 	LEGENDARY = "^xFF2674",
 	SET = "^x71E87D",
@@ -27,40 +27,15 @@ colorCodes = {
 	VOID = "^x7E1BC5",
 	POISON = "^x1DA546",
 	NECROTIC = "^x2DBF9C",
-	CHAOS = "^x2dbf9c",
 	POSITIVE = "^x33FF77",
 	NEGATIVE = "^xDD0022",
 	HIGHLIGHT ="^xFF0000",
 	OFFENCE = "^xE07030",
 	DEFENCE = "^x8080E0",
-	SCION = "^xFFF0F0",
-	MARAUDER = "^xE05030",
-	RANGER = "^x70FF70",
-	WITCH = "^x7070FF",
-	DUELIST = "^xE0E070",
-	TEMPLAR = "^xC040FF",
-	SHADOW = "^x30C0D0",
 	MAINHAND = "^x50FF50",
 	MAINHANDBG = "^x071907",
 	OFFHAND = "^xB7B7FF",
 	OFFHANDBG = "^x070719",
-	SHAPER = "^x55BBFF",
-	ELDER = "^xAA77CC",
-	FRACTURED = "^xA29160",
-	ADJUDICATOR = "^xE9F831",
-	BASILISK = "^x00CB3A",
-	CRUSADER = "^x2946FC",
-	EYRIE = "^xAAB7B8",
-	CLEANSING = "^xF24141",
-	TANGLE = "^x038C8C",
-	CHILLBG = "^x151e26",
-	FREEZEBG = "^x0c262b",
-	SHOCKBG = "^x191732",
-	SCORCHBG = "^x270b00",
-	BRITTLEBG = "^x00122b",
-	SAPBG = "^x261500",
-	SCOURGE = "^xFF6E25",
-	CRUCIBLE = "^xFFA500",
 
 	VITALITY = "^xFFFD60",
 	STRENGTH = "^xFF7B61",
@@ -69,8 +44,8 @@ colorCodes = {
 	ATTUNEMENT = "^xFD9CFF",
 }
 
-colorCodes.LIFE = colorCodes.MARAUDER
-colorCodes.MANA = colorCodes.WITCH
+colorCodes.LIFE = "^xE05030"
+colorCodes.MANA = "^x7070FF"
 colorCodes.ES = colorCodes.SOURCE
 colorCodes.WARD = colorCodes.RARE
 colorCodes.ENDURANCE = colorCodes.RARE
