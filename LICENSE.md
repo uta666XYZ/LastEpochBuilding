@@ -1,8 +1,8 @@
-Last Epoch Planner:
+Last Epoch Building:
 
 *******************************************************************************
 
-Copyright (c) 2024 Musholic
+Copyright (c) 2024-2026 uta666XYZ
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

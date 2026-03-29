@@ -1,4 +1,4 @@
-<LastEpochPlanner>
+<LastEpochBuilding>
 	<Build ascendClassName="Paladin" bandit="None" characterLevelAutoMode="false" className="Sentinel" level="97" mainSocketGroup="1" pantheonMajorGod="None" pantheonMinorGod="None" targetVersion="1_3" viewMode="TREE">
 		<PlayerStat stat="AverageHit" value="5349.56308992"></PlayerStat>
 		<PlayerStat stat="AverageBurstDamage" value="5349.56308992"></PlayerStat>
@@ -863,4 +863,4 @@ Implicits: 1
 		</Spec>
 	</Tree>
 	<TreeView searchStr="" showStatDifferences="true" zoomLevel="12" zoomX="0" zoomY="0"></TreeView>
-</LastEpochPlanner>
+</LastEpochBuilding>

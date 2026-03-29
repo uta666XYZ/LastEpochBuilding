@@ -7,7 +7,7 @@ if [ -z "$1" ]; then
 fi
 
 NEW_VALUE=$1
-ENDPOINT="repos/Musholic/LastEpochPlanner/rulesets/8548061"
+ENDPOINT="repos/uta666XYZ/LastEpochBuilding/rulesets/8548061"
 
 # In a single pipeline:
 # 1. Fetch the current ruleset configuration.

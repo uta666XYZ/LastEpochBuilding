@@ -1,4 +1,4 @@
--- Last Epoch Planner
+-- Last Epoch Building
 --
 -- Class: RectangleOutline Control
 -- Simple Outline Only Rectangle control

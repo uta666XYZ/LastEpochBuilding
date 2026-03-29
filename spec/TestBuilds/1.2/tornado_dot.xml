@@ -1,4 +1,4 @@
-<LastEpochPlanner>
+<LastEpochBuilding>
 	<Build ascendClassName="Druid" bandit="None" characterLevelAutoMode="false" className="Primalist" level="98" mainSocketGroup="3" pantheonMajorGod="None" pantheonMinorGod="None" targetVersion="1_3" viewMode="TREE">
 		<PlayerStat stat="AverageHit" value="162.816"></PlayerStat>
 		<PlayerStat stat="AverageBurstDamage" value="162.816"></PlayerStat>
@@ -962,4 +962,4 @@ Implicits: 1
 		</Spec>
 	</Tree>
 	<TreeView searchStr="" showStatDifferences="true" zoomLevel="12" zoomX="0" zoomY="0"></TreeView>
-</LastEpochPlanner>
+</LastEpochBuilding>

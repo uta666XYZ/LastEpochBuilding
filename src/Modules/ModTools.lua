@@ -1,4 +1,4 @@
--- Last Epoch Planner
+-- Last Epoch Building
 --
 -- Module: Mod Tools
 -- Various functions for dealing with modifiers
