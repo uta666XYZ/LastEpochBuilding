@@ -182,8 +182,8 @@ local PartyTabClass = newClass("PartyTab", "ControlHost", "Control", function(se
 		if not dbXML then
 			launch:ShowErrMsg("^1Error loading '%s': %s", fileName, errMsg)
 			return
-		elseif dbXML[1].elem ~= "LastEpochPlanner" then
-			launch:ShowErrMsg("^1Error parsing '%s': 'LastEpochPlanner' root element missing", fileName)
+		elseif dbXML[1].elem ~= "LastEpochBuilding" and dbXML[1].elem ~= "LastEpochPlanner" then
+			launch:ShowErrMsg("^1Error parsing '%s': 'LastEpochBuilding' root element missing", fileName)
 			return
 		end
 

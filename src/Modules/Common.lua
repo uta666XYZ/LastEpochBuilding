@@ -1,4 +1,4 @@
--- Last Epoch Planner
+-- Last Epoch Building
 --
 -- Module: Common
 -- Libraries, functions and classes used by various modules.

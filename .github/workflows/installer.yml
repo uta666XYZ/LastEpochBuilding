@@ -17,7 +17,7 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v3
               with:
-                repository: 'Musholic/LastEpochPlanner-Installer'
+                repository: 'uta666XYZ/LastEpochBuilding-Installer'
                 ref: 'master'
                 ssh-key: '${{ secrets.POB_INSTALLER_KEY }}'
             - name: Install NSIS

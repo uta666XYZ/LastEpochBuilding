@@ -1,4 +1,4 @@
--- Last Epoch Planner
+-- Last Epoch Building
 --
 -- Module: Calc Mirages
 -- Handles mirages that use player skills
