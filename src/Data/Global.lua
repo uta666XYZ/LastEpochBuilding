@@ -5,10 +5,10 @@
 --
 
 colorCodes = {
-	NORMAL = "^xC8C8C8",
-	MAGIC = "^x8888FF",
-	RARE = "^xFFFF77",
-	UNIQUE = "^xAF6025",
+	NORMAL = "^xFFFFFF",
+	MAGIC = "^x36A3E2",
+	RARE = "^xE3D157",
+	UNIQUE = "^xEB730A",
 	EXALTED = "^xC184FF",
 	LEGENDARY = "^xFF2674",
 	SET = "^x71E87D",
