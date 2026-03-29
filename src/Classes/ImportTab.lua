@@ -843,27 +843,23 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
                             end
                         end
                     else
-                        -- 0 = Normal, 1 = Magic, 2 = Rare, 5-6 = Exalted
-                        if rarity >= 5 then
-                            item["rarity"] = "EXALTED"
-                        elseif rarity >= 2 then
-                            item["rarity"] = "RARE"
-                        elseif rarity >= 1 then
-                            item["rarity"] = "MAGIC"
-                        else
-                            item["rarity"] = "NORMAL"
-                        end
+                        local maxTier = 0
+                        local affixCount = 0
                         for i = 0, 4 do
                             local dataId = 14 + i * 3
                             if #itemData["data"] > dataId then
                                 local affixId = itemData["data"][dataId] + (itemData["data"][dataId - 1] % 16) * 256
-                                if affixId then
+                                if affixId and affixId > 0 then
                                     local affixTier = math.floor(itemData["data"][dataId - 1] / 16)
                                     local modId = affixId .. "_" .. affixTier
                                     local modData = data.itemMods.Item[modId]
                                     local range = itemData["data"][dataId + 1]
 
                                     if modData then
+                                        affixCount = affixCount + 1
+                                        if affixTier > maxTier then
+                                            maxTier = affixTier
+                                        end
                                         if modData.type == "Prefix" then
                                             table.insert(item.prefixes, { ["range"] = range, ["modId"] = modId })
                                         else
@@ -872,6 +868,16 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
                                     end
                                 end
                             end
+                        end
+                        -- Determine rarity from affix tiers: T6+ = Exalted
+                        if maxTier >= 6 then
+                            item["rarity"] = "EXALTED"
+                        elseif affixCount >= 3 then
+                            item["rarity"] = "RARE"
+                        elseif affixCount >= 1 then
+                            item["rarity"] = "MAGIC"
+                        else
+                            item["rarity"] = "NORMAL"
                         end
                         -- Build generated name: [forename] + baseName + [surname]
                         local forename, surname = "", ""
