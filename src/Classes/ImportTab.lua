@@ -845,7 +845,7 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
                     else
                         local maxTier = 0
                         local affixCount = 0
-                        for i = 0, 4 do
+                        for i = 0, 3 do
                             local dataId = 14 + i * 3
                             if #itemData["data"] > dataId then
                                 local affixId = itemData["data"][dataId] + (itemData["data"][dataId - 1] % 16) * 256
@@ -869,17 +869,29 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
                                 end
                             end
                         end
-                        -- Determine rarity from affix tiers: T6+ = Exalted
+                        -- Determine rarity: T6+ affix = Exalted, otherwise by affix count
+                        -- Idols max out at 2 affixes (1 prefix + 1 suffix), so 2 = fully affixed
+                        local isIdol = itemBaseName:find("Idol") or itemBaseName:find("Altar")
                         if maxTier >= 6 then
                             item["rarity"] = "EXALTED"
-                        elseif affixCount >= 3 then
-                            item["rarity"] = "RARE"
-                        elseif affixCount >= 1 then
-                            item["rarity"] = "MAGIC"
+                        elseif isIdol then
+                            if affixCount >= 2 then
+                                item["rarity"] = "RARE"
+                            elseif affixCount >= 1 then
+                                item["rarity"] = "MAGIC"
+                            else
+                                item["rarity"] = "NORMAL"
+                            end
                         else
-                            item["rarity"] = "NORMAL"
+                            if affixCount >= 3 then
+                                item["rarity"] = "RARE"
+                            elseif affixCount >= 1 then
+                                item["rarity"] = "MAGIC"
+                            else
+                                item["rarity"] = "NORMAL"
+                            end
                         end
-                        ConPrintf("[RARITY] base=%s rarityByte=%d affixCount=%d maxTier=%d -> %s", itemBaseName, rarity, affixCount, maxTier, item["rarity"])
+                        ConPrintf("[RARITY] base=%s rarityByte=%d affixCount=%d maxTier=%d idol=%s -> %s", itemBaseName, rarity, affixCount, maxTier, tostring(isIdol), item["rarity"])
                         -- Build generated name: [forename] + baseName + [surname]
                         local forename, surname = "", ""
                         for _, p in ipairs(item.prefixes) do
@@ -1234,9 +1246,11 @@ function ImportTabClass:BuildItem(itemData)
     item.suffixes = itemData.suffixes;
     item.crafted = true
 
+    local rarityBefore = item.rarity
     item:BuildAndParseRaw()
     -- Craft the item since we only added the prefixes and suffixes and not their mod lines
     item:Craft()
+    ConPrintf("[BUILDITEM] name=%s rarity: %s -> %s (after BuildAndParseRaw+Craft)", tostring(item.title or item.baseName), tostring(rarityBefore), tostring(item.rarity))
 
     return item
 end
