@@ -1,4 +1,4 @@
--- Last Epoch Planner
+-- Last Epoch Building
 -- Boss Data
 -- Source: lastepoch.tunklab.com (game version 1.3)
 --

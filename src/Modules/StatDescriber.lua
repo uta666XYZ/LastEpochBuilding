@@ -1,4 +1,4 @@
--- Last Epoch Planner
+-- Last Epoch Building
 --
 -- Module: Stat Describer
 -- Manages stat description files, and provides stat descriptions

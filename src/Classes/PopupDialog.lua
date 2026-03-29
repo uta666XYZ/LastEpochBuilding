@@ -1,4 +1,4 @@
--- Last Epoch Planner
+-- Last Epoch Building
 --
 -- Class: Popup Dialog
 -- Popup Dialog Box with a configurable list of controls
