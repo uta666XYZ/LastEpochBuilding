@@ -49,26 +49,28 @@ local function nameToFilename(name)
 	return result .. ".png"
 end
 
--- Rarity background fill colors (R, G, B)
+-- Rarity background fill colors (R, G, B) — dimmed versions of LE rarity hex
 local rarityBg = {
 	NORMAL    = { 0.18, 0.18, 0.18 },
-	MAGIC     = { 0.07, 0.13, 0.30 },
-	RARE      = { 0.28, 0.22, 0.03 },
-	UNIQUE    = { 0.28, 0.13, 0.03 },
-	EXALTED   = { 0.16, 0.07, 0.28 },
-	LEGENDARY = { 0.28, 0.03, 0.10 },
-	SET       = { 0.05, 0.22, 0.08 },
+	MAGIC     = { 0.04, 0.13, 0.18 },
+	RARE      = { 0.18, 0.16, 0.07 },
+	UNIQUE    = { 0.18, 0.09, 0.01 },
+	EXALTED   = { 0.15, 0.08, 0.25 },
+	LEGENDARY = { 0.25, 0.03, 0.09 },
+	SET       = { 0.05, 0.18, 0.08 },
+	IDOL      = { 0.04, 0.15, 0.15 },
 }
 
--- Rarity border colors (R, G, B)
+-- Rarity border colors (R, G, B) — match LE color hex values
 local rarityBorder = {
 	NORMAL    = { 0.55, 0.55, 0.55 },
-	MAGIC     = { 0.35, 0.55, 1.00 },
-	RARE      = { 1.00, 0.82, 0.20 },
-	UNIQUE    = { 0.85, 0.45, 0.10 },
+	MAGIC     = { 0.21, 0.64, 0.89 },
+	RARE      = { 0.89, 0.82, 0.34 },
+	UNIQUE    = { 0.92, 0.45, 0.04 },
 	EXALTED   = { 0.76, 0.52, 1.00 },
 	LEGENDARY = { 1.00, 0.15, 0.45 },
 	SET       = { 0.44, 0.91, 0.49 },
+	IDOL      = { 0.21, 0.78, 0.78 },
 }
 
 -- Idol grid dimensions in cells {width, height}, keyed on the base type string
@@ -330,7 +332,7 @@ function IdolGridControlClass:Draw(viewPort)
 				if av == 2 and not item then
 					SetDrawColor(0.15, 0.05, 0.28)  -- purple tint for empty fractured cell
 				else
-					local bg = item and rarityBg[item.rarity] or { 0.13, 0.13, 0.13 }
+					local bg = item and rarityBg.IDOL or { 0.13, 0.13, 0.13 }
 					SetDrawColor(bg[1], bg[2], bg[3])
 				end
 				DrawImage(nil, cx, cy, cw, ch)
@@ -374,7 +376,7 @@ function IdolGridControlClass:Draw(viewPort)
 					end
 
 					-- Solid background to cover ItemSlotControl text beneath
-					local bg = rarityBg[item.rarity] or rarityBg.NORMAL
+					local bg = rarityBg.IDOL
 					SetDrawColor(bg[1], bg[2], bg[3])
 					DrawImage(nil, cx, cy, pw, ph)
 
@@ -386,7 +388,7 @@ function IdolGridControlClass:Draw(viewPort)
 					end
 
 					-- Rarity-coloured 2-px border spanning full idol area
-					local bc = rarityBorder[item.rarity] or rarityBorder.NORMAL
+					local bc = rarityBorder.IDOL
 					SetDrawColor(bc[1], bc[2], bc[3])
 					DrawImage(nil, cx,          cy,          pw, 2)
 					DrawImage(nil, cx,          cy + ph - 2, pw, 2)
