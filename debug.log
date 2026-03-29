@@ -3,7 +3,7 @@ Loading passive tree data for version '1.4'...
 Loading passive tree assets...
 Processing tree...
 Loading 'C:/Users/yobk0/Documents/GitHub/LastEpochBuilding/src/Builds/~~temp~~.xml'...
-Startup time: 1498 ms
+Startup time: 1326 ms
 Uniques loaded
 Rares loaded
 [ALTAR] scanning savedItems for char=prepfor1o1
@@ -45,8 +45,8 @@ Rares loaded
 [ALTAR] saveContent keys: _ts, abilityBar, activeMonolithMods, arenaTiersCompleted, blessingsDiscovered, championMinLevel, characterClass, characterName, characterTreeNodeProgression, chosenMastery, clickedUnlockMasteriesButton, closedIdolsTooltip, closedMinSkillLevelTutorial, closedMonolithTooltip, closedPassivesTooltip, closedSkillsTooltip, closedTemporalShiftTooltip, competitiveCharacterVersion, currentArenaRunWaves, currentExp, currentMonolithRunDifficultyIndex, currentMonolithRunTimelineID, currentMonolithRunToSetBack, currentMonolithRunToSetBackDifficultyIndex, cycle, deaths, died, dungeonCompletion, factions, focusedQuest, hardcore, hasRerolledMonolithOptions, id, lanternLuminance, lastPlayed, lastVisitedTownScene, level, levelTracking, masochist, maxWave, minionAIToggle, monolithDepth, monolithEchoesConquered, monolithOptions, monolithRuns, monolithTimelinesConquered, moveButtonBehaviour, nemesisData, oneTimeEvents, openBlessings, openedOneShotCaches, originalMastery, portalUnlocked, previousArenaRunWaves, previousMonolithEchoDifficultyIndex, previousMonolithEchoTimelineID, reachedTown, respecs, savedCharacterTree, savedItems, savedMonolithQuests, savedQuests, savedSkillTrees, savedWeaverTree, sceneProgresses, seqNo, soloChallenge, soloCharacterChallenge, soulEmbers, sprigganFormAbilityBar, swarmbladeAbilityBar, timelineCompletion, timelineDifficultyCompletion, timelineDifficultyUnlocks, uniquesPickedUp, unlockedWaypointScenes, version, werebearAbilityBar
 [OFFLINE] char=YsS3Prep cycle=5
 [ALTAR] scanning savedItems for char=ShutFackUp
-[ALTAR] cid=123 d=5,11,96,41,7,2,16,113,151,183,0,67,4,76,146,4,75,214,20,70,226,0
-[ALTAR] found: cid=123 d4=41 d5=7 name=Ocular Altar
+[ALTAR] cid=123 d=5,54,10,41,0,4,16,220,13,176,0,69,36,76,136,4,64,5,52,70,31,52,68,162,52,75,215,0
+[ALTAR] found: cid=123 d4=41 d5=0 name=Twisted Altar
 [OFFLINE] char=ShutFackUp cycle=7
 [ALTAR] scanning savedItems for char=YsFckAFKKick
 [ALTAR] not found in savedItems, checking saveContent keys
@@ -69,7 +69,7 @@ Rares loaded
 [OFFLINE] ShutFackUp cycle=7 -> Cycle
 [OFFLINE] YsFckAFKKick cycle=6 -> Legacy
 [OFFLINE] YsSmiteVK cycle=6 -> Legacy
-[IMPORT] altarName=Ocular Altar
+[IMPORT] altarName=Twisted Altar
 [IMPORT] altar dropdown has 17 entries
 [IMPORT] altar entry[1] key=Default
 [IMPORT] altar entry[2] key=Archair Altar
@@ -80,4 +80,10 @@ Rares loaded
 [IMPORT] altar entry[7] key=Lunar Altar
 [IMPORT] altar entry[8] key=Lunar Altar (Mirrored)
 [IMPORT] altar entry[9] key=Ocular Altar
-[IMPORT] altar set to index=9 key=Ocular Altar
+[IMPORT] altar entry[10] key=Prophesied Altar
+[IMPORT] altar entry[11] key=Pyramidal Altar
+[IMPORT] altar entry[12] key=Skyward Altar
+[IMPORT] altar entry[13] key=Spire Altar
+[IMPORT] altar entry[14] key=Spire Altar (Mirrored)
+[IMPORT] altar entry[15] key=Twisted Altar
+[IMPORT] altar set to index=15 key=Twisted Altar
