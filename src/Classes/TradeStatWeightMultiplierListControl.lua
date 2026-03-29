@@ -1,4 +1,4 @@
--- Last Epoch Planner
+-- Last Epoch Building
 --
 -- Class: Trade Stat Weight Multiplier List Control
 -- Specialized UI element for listing and modifying Trade Stat Weight Multipliers.
