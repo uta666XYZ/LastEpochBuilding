@@ -721,7 +721,7 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
     for _, itemData in pairsSortByKey(saveContent["savedItems"]) do
         if itemData["containerID"] <= 12 or
                 itemData["containerID"] == 29 or
-                itemData["containerID"] >= 33 and itemData["containerID"] <= 43 or
+                itemData["containerID"] >= 33 and itemData["containerID"] <= 45 or
                 itemData["containerID"] == 123 then
             local item = {
                 ["inventoryId"] = itemData["containerID"],
@@ -773,7 +773,7 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
                         table.insert(item.implicitMods, "{range: " .. range .. "}" .. implicit)
                     end
                     -- For blessing slots, set the roll fraction from implicitRollByte0 (data[8])
-                    if itemData["containerID"] >= 33 and itemData["containerID"] <= 43 then
+                    if itemData["containerID"] >= 33 and itemData["containerID"] <= 45 then
                         item.blessingRollFrac = itemData["data"][8] and (itemData["data"][8] / 255.0) or 1.0
                     end
                     local rarity = itemData["data"][6]
@@ -1059,6 +1059,8 @@ slotMap[40] = "The Age of Winter"
 slotMap[41] = "Spirits of Fire"
 slotMap[42] = "The Last Ruin"
 slotMap[43] = "Additional"
+slotMap[44] = "Additional 2"
+slotMap[45] = "Additional 3"
 slotMap[123] = "Idol Altar"
 
 
