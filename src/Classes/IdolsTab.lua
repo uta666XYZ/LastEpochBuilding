@@ -17,39 +17,23 @@ local IdolsTabClass = newClass("IdolsTab", "ControlHost", "Control", function(se
 	-- Title
 	self.controls.title = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, 8, 8, 0, 20, "^7Idol Inventory")
 
-	-- Idol Altar dropdown (below title)
-	-- Build sorted list: "Default" first, then altars alphabetically
-	local altarLayouts = itemsTab.altarLayouts
-	local altarDropList = { { label = "Default", key = "Default" } }
-	do
-		local names = {}
-		for name in pairs(altarLayouts) do
-			table.insert(names, name)
-		end
-		table.sort(names)
-		for _, name in ipairs(names) do
-			local layout = altarLayouts[name]
-			table.insert(altarDropList, {
-				label = (layout.mirrorOf or name) .. (layout.isMirrored and " [Mirrored]" or ""),
-				key = name,
-			})
-		end
-	end
-
-	self.controls.altarSelect = new("DropDownControl",
-		{"TOPLEFT", self.controls.title, "BOTTOMLEFT"}, 0, 6, 260, 20,
-		altarDropList,
-		function(index, value)
-			itemsTab.activeAltarLayout = altarDropList[index].key
-			build.buildFlag = true
+	-- Altar label showing current altar from ItemsTab
+	self.controls.altarInfo = new("LabelControl",
+		{"TOPLEFT", self.controls.title, "BOTTOMLEFT"}, 0, 6, 0, 16,
+		function()
+			local altarSlot = itemsTab.controls.idolAltarSlot
+			local item = altarSlot and itemsTab.items[altarSlot.selItemId]
+			if item then
+				return "^7Idol Altar: " .. colorCodes[item.rarity] .. item.name
+			else
+				return "^7Idol Altar: None"
+			end
 		end)
-	self.controls.altarLabel = new("LabelControl",
-		{"RIGHT", self.controls.altarSelect, "LEFT"}, -4, 0, 0, 16, "^7Idol Altar:")
 
 	-- Create the idol grid immediately so slots are registered before any calculation
 	-- 2x the default cell size (68 → 136, 46 → 92)
 	self.controls.idolGrid = new("IdolGridControl",
-		{"TOPLEFT", self.controls.altarSelect, "BOTTOMLEFT"}, 0, 8,
+		{"TOPLEFT", self.controls.altarInfo, "BOTTOMLEFT"}, 0, 8,
 		itemsTab, itemsTab.idolGridLayout, 136, 92)
 end)
 
