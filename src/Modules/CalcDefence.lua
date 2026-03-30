@@ -282,7 +282,7 @@ function calcs.defence(env, actor)
 		output.DamageTakenOnBlock = 100 - output.BlockEffect
 	end
 
-	-- Primary defences: Energy shield, evasion and armour
+	-- Primary defences: Ward, evasion and armour
 	do
 		local ward = 0
 		local armour = 0
@@ -1032,33 +1032,40 @@ function calcs.buildDefenceEstimations(env, actor)
 	end
 	
 	-- stun
+	-- Formula: StunChance = 2 * damage / (Life + Ward + StunAvoidance) * INC modifier
+	-- StunAvoidance is a flat stat from level, items, and passives added to the threshold pool.
 	do
 		local stunThresholdBase = 0
 		local stunThresholdSource = nil
+		local flatStunAvoidance = modDB:Sum("BASE", nil, "StunAvoidance")
+		output.StunAvoidance = m_max(round(flatStunAvoidance), 0)
+		local wardForStun = output.Ward or 0
 		if modDB:Flag(nil, "StunThresholdBasedOnManaInsteadOfLife") then
 			local stunThresholdMult = modDB:Sum("BASE", nil, "StunThresholdManaPercent")
-			stunThresholdBase = output.Mana * stunThresholdMult / 100
-			stunThresholdSource = stunThresholdMult.."% of Mana"
+			stunThresholdBase = output.Mana * stunThresholdMult / 100 + wardForStun + flatStunAvoidance
+			stunThresholdSource = stunThresholdMult.."% of Mana + Ward + Stun Avoidance"
 		else
-			stunThresholdBase = output.Life
-			stunThresholdSource = "Life"
+			stunThresholdBase = output.Life + wardForStun + flatStunAvoidance
+			stunThresholdSource = "Life + Ward + Stun Avoidance"
 		end
 		local StunThresholdMod = (1 + modDB:Sum("INC", nil, "StunThreshold") / 100)
 		output.StunThreshold = stunThresholdBase * StunThresholdMod
-		
+
 		local notAvoidChance = modDB:Flag(nil, "StunImmune") and 0 or 100 - m_min(modDB:Sum("BASE", nil, "AvoidStun"), 100)
 		output.StunAvoidChance = 100 - notAvoidChance
-		
+
 		if breakdown then
-			breakdown.StunThreshold = { s_format("%d ^8(base from %s)", stunThresholdBase, stunThresholdSource) }
+			breakdown.StunThreshold = {
+				s_format("%d ^8(life)", output.Life),
+				s_format("+ %d ^8(ward)", wardForStun),
+				s_format("+ %d ^8(stun avoidance)", output.StunAvoidance),
+				s_format("= %d ^8(base threshold)", stunThresholdBase),
+			}
 			if StunThresholdMod ~= 1 then
 				t_insert(breakdown.StunThreshold, s_format("* %.2f ^8(increased threshold)", StunThresholdMod))
 				t_insert(breakdown.StunThreshold, s_format("= %d", output.StunThreshold))
 			end
-			breakdown.StunAvoidChance = {
-				colorCodes.CUSTOM.."NOTE: Having any energy shield when the hit occurs grants 50% chance to avoid stun.",
-				colorCodes.CUSTOM.."POB only applies this modifier when ES > Total incoming damage.",
-			}
+			breakdown.StunAvoidChance = { }
 		end
 		if output.StunAvoidChance >= 100 then
 			output.StunDuration = 0
@@ -1176,7 +1183,7 @@ function calcs.buildDefenceEstimations(env, actor)
 				s_format("Total life protected:"),
 				s_format("%d ^8(guard limit)", output["sharedGuardAbsorb"]),
 				s_format("/ %.2f ^8(portion taken from guard)", output["sharedGuardAbsorbRate"] / 100),
-				s_format("x %.2f ^8(portion taken from life and energy shield)", 1 - output["sharedGuardAbsorbRate"] / 100),
+				s_format("x %.2f ^8(portion taken from life)", 1 - output["sharedGuardAbsorbRate"] / 100),
 				s_format("= %d", lifeProtected)
 			}
 		end
@@ -1194,7 +1201,7 @@ function calcs.buildDefenceEstimations(env, actor)
 					s_format("Total life protected:"),
 					s_format("%d ^8(guard limit)", output[damageType.."GuardAbsorb"]),
 					s_format("/ %.2f ^8(portion taken from guard)", output[damageType.."GuardAbsorbRate"] / 100),
-					s_format("x %.2f ^8(portion taken from life and energy shield)", 1 - output[damageType.."GuardAbsorbRate"] / 100),
+					s_format("x %.2f ^8(portion taken from life)", 1 - output[damageType.."GuardAbsorbRate"] / 100),
 					s_format("= %d", lifeProtected),
 				}
 			end
@@ -1238,7 +1245,7 @@ function calcs.buildDefenceEstimations(env, actor)
 				s_format("Total life protected:"),
 				s_format("%d ^8(frost shield limit)", output["FrostShieldLife"]),
 				s_format("/ %.2f ^8(portion taken from frost shield)", output["FrostShieldDamageMitigation"] / 100),
-				s_format("x %.2f ^8(portion taken from life and energy shield)", 1 - output["FrostShieldDamageMitigation"] / 100),
+				s_format("x %.2f ^8(portion taken from life)", 1 - output["FrostShieldDamageMitigation"] / 100),
 				s_format("= %d", lifeProtected),
 			}
 		end

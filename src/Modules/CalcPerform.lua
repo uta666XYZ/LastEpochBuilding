@@ -58,10 +58,9 @@ local function doActorLifeMana(actor)
 	local base = modDB:Sum("BASE", nil, "Life")
 	local inc = modDB:Sum("INC", nil, "Life")
 	local more = modDB:More(nil, "Life")
-	local conv = modDB:Sum("BASE", nil, "LifeConvertToEnergyShield")
-	output.Life = m_max(round(base * (1 + inc/100) * more * (1 - conv/100)), 1)
+	output.Life = m_max(round(base * (1 + inc/100) * more), 1)
 	if breakdown then
-		if inc ~= 0 or more ~= 1 or conv ~= 0 then
+		if inc ~= 0 or more ~= 1 then
 			breakdown.Life = { }
 			breakdown.Life[1] = s_format("%g ^8(base)", base)
 			if inc ~= 0 then
@@ -69,9 +68,6 @@ local function doActorLifeMana(actor)
 			end
 			if more ~= 1 then
 				t_insert(breakdown.Life, s_format("x %.2f ^8(more/less)", more))
-			end
-			if conv ~= 0 then
-				t_insert(breakdown.Life, s_format("x %.2f ^8(converted to Energy Shield)", 1 - conv/100))
 			end
 			t_insert(breakdown.Life, s_format("= %g", output.Life))
 		end

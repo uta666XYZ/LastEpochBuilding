@@ -17,7 +17,7 @@ return {
 	[3] = {
 		Resource = "ES",
 		Stat = "base_es_cost",
-		ResourceString = "{0} Energy Shield",
+		ResourceString = "{0} Ward",
 		Divisor = 1,
 	},
 	[4] = {
@@ -71,13 +71,13 @@ return {
 	[12] = {
 		Resource = "ESPerMinute",
 		Stat = "base_es_cost_per_minute",
-		ResourceString = "{0) Energy Shield per second",
+		ResourceString = "{0} Ward per second",
 		Divisor = 60,
 	},
 	[13] = {
 		Resource = "ESPercentPerMinute",
 		Stat = "base_es_cost_%_per_minute",
-		ResourceString = "{0}% Energy Shield per second",
+		ResourceString = "{0}% Ward per second",
 		Divisor = 60,
 	},
 	[14] = {

@@ -99,8 +99,6 @@ data.misc = { -- magic numbers
 	SuppressionChanceCap = 100,
 	SuppressionEffect = 50,
 	AvoidChanceCap = 75,
-	EnergyShieldRechargeBase = 0.33,
-	EnergyShieldRechargeDelay = 2,
 	WardRechargeDelay = 4,
 	Transfiguration = 0.3,
 	EnemyMaxResist = 75,
@@ -178,16 +176,10 @@ data.highPrecisionMods = {
 	["ManaRegenPercent"] = {
 		["BASE"] = 2,
 	},
-	["EnergyShieldRegenPercent"] = {
-		["BASE"] = 2,
-	},
 	["LifeRegen"] = {
 		["BASE"] = 1,
 	},
 	["ManaRegen"] = {
-		["BASE"] = 1,
-	},
-	["EnergyShieldRegen"] = {
 		["BASE"] = 1,
 	},
 	["LifeDegenPercent"] = {
@@ -196,16 +188,10 @@ data.highPrecisionMods = {
 	["ManaDegenPercent"] = {
 		["BASE"] = 2,
 	},
-	["EnergyShieldDegenPercent"] = {
-		["BASE"] = 2,
-	},
 	["LifeDegen"] = {
 		["BASE"] = 1,
 	},
 	["ManaDegen"] = {
-		["BASE"] = 1,
-	},
-	["EnergyShieldDegen"] = {
 		["BASE"] = 1,
 	},
 	["DamageLifeLeech"] = {
@@ -248,27 +234,6 @@ data.highPrecisionMods = {
 		["BASE"] = 2,
 	},
 	["ChaosDamageManaLeech"] = {
-		["BASE"] = 2,
-	},
-	["DamageEnergyShieldLeech"] = {
-		["BASE"] = 2,
-	},
-	["PhysicalDamageEnergyShieldLeech"] = {
-		["BASE"] = 2,
-	},
-	["ElementalDamageEnergyShieldLeech"] = {
-		["BASE"] = 2,
-	},
-	["FireDamageEnergyShieldLeech"] = {
-		["BASE"] = 2,
-	},
-	["ColdDamageEnergyShieldLeech"] = {
-		["BASE"] = 2,
-	},
-	["LightningDamageEnergyShieldLeech"] = {
-		["BASE"] = 2,
-	},
-	["ChaosDamageEnergyShieldLeech"] = {
 		["BASE"] = 2,
 	},
 	["SupportManaMultiplier"] = {
@@ -371,7 +336,6 @@ data.itemTagSpecialExclusionPattern = {
 		["body armour"] = {
 			"increased Damage while Leeching Life",
 			"Life as Physical Damage",
-			"Life as Extra Maximum Energy Shield",
 			"maximum Life as Fire Damage",
 			"when on Full Life",
 			"Enemy's life",
@@ -382,7 +346,6 @@ data.itemTagSpecialExclusionPattern = {
 			"Enemy's Life", -- Legacy of Fury
 		},
 		["belt"] = {
-			"Life as Extra Maximum Energy Shield", -- Soul Tether
 		},
 		["helmet"] = {
 			"Recouped as Life", -- Flame Exarch

@@ -538,7 +538,7 @@ return {
 	{ label = "Chance to Shock Attackers", haveOutput = "ChanceToShockAttackers", { format = "{0:output:ChanceToShockAttackers}%", { modName = "ChanceToShockAttackers" }, }, },
 	{ label = "Glancing Blow Chance", haveOutput = "GlancingBlowChance", { format = "{0:output:GlancingBlowChance}%", { modName = "GlancingBlowChance" }, }, },
 	{ label = "Crit Avoidance", haveOutput = "CritAvoidance", { format = "{0:output:CritAvoidance}%", { modName = "CritAvoidance" }, }, },
-	{ label = "Stun Avoidance", haveOutput = "StunAvoidChance", { format = "{0:output:StunAvoidChance}%", { modName = "AvoidStun" }, }, },
+	{ label = "Stun Avoidance", haveOutput = "StunAvoidance", { format = "{0:output:StunAvoidance}", { modName = "StunAvoidance" }, }, },
 } },
 } },
 -- damage taken
