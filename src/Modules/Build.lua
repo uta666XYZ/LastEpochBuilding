@@ -274,7 +274,7 @@ function buildMode:Init(dbFileName, buildName, buildXML, convertBuild)
 		{ stat = "TotalNetRegen", label = "Total Net Recovery", fmt = "+.1f" },
 		{ stat = "NetLifeRegen", label = "Net Life Recovery", fmt = "+.1f", color = colorCodes.LIFE },
 		{ stat = "NetManaRegen", label = "Net Mana Recovery", fmt = "+.1f", color = colorCodes.MANA },
-		{ stat = "NetEnergyShieldRegen", label = "Net ES Recovery", fmt = "+.1f", color = colorCodes.ES },
+		{ stat = "NetWardRegen", label = "Net Ward Recovery", fmt = "+.1f", color = colorCodes.WARD },
 		{ },
 		{ stat = "Evasion", label = "Evasion rating", fmt = "d", color = colorCodes.EVASION, compPercent = true },
 		{ stat = "Spec:EvasionInc", label = "%Inc Evasion from Tree", color = colorCodes.EVASION, fmt = "d%%" },
@@ -1461,11 +1461,7 @@ function buildMode:AddDisplayStatList(statList, actor)
 						local poolVal = output[statData.pool]
 						local colorOverride = nil
 						if statData.stat:match("Cost$") and not statData.stat:match("PerSecondCost$") and statVal and poolVal then
-							if statData.stat == "ManaCost" and output.EnergyShieldProtectsMana then
-								if statVal > output.ManaUnreserved + output.EnergyShield then
-									colorOverride = colorCodes.NEGATIVE
-								end
-							elseif statVal > poolVal then
+							if statVal > poolVal then
 								colorOverride = colorCodes.NEGATIVE
 							end
 						end
@@ -1494,9 +1490,9 @@ function buildMode:AddDisplayStatList(statList, actor)
 			end
 		end
 	end
-	for pool, warningFlag in pairs({["Life"] = "LifeCostWarning", ["Mana"] = "ManaCostWarning", ["Rage"] = "RageCostWarning", ["Energy Shield"] = "ESCostWarning"}) do
+	for pool, warningFlag in pairs({["Life"] = "LifeCostWarning", ["Mana"] = "ManaCostWarning", ["Rage"] = "RageCostWarning"}) do
 		if actor.output[warningFlag] then
-			local line = "You do not have enough "..(actor.output.EnergyShieldProtectsMana and pool == "Mana" and "Energy Shield and Mana" or pool).." to use: "
+			local line = "You do not have enough "..pool.." to use: "
 			for _, skill in ipairs(actor.output[warningFlag]) do
 				line = line..skill..", "
 			end

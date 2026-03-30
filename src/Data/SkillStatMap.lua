@@ -250,9 +250,6 @@ local result = {
 ["base_evasion_rating"] = {
 	mod("Evasion", "BASE", nil),
 },
-["base_maximum_energy_shield"] = {
-	mod("EnergyShield", "BASE", nil),
-},
 ["base_fire_damage_resistance_%"] = {
 	mod("FireResist", "BASE", nil),
 },
@@ -294,9 +291,6 @@ local result = {
 ["base_mana_regeneration_rate_per_minute"] = {
 	mod("ManaRegen", "BASE", nil),
 	div = 60,
-},
-["energy_shield_recharge_rate_+%"] = {
-	mod("EnergyShieldRecharge", "INC", nil),
 },
 ["base_mana_cost_-%"] = {
 	mod("ManaCost", "INC", nil),
@@ -360,23 +354,12 @@ local result = {
 	mod("ChaosDamageLifeLeech", "BASE", nil),
 	div = 100,
 },
-["energy_shield_leech_from_any_damage_permyriad"] = {
-	mod("DamageEnergyShieldLeech", "BASE", nil),
-	div = 100,
-},
 ["life_leech_from_physical_attack_damage_permyriad"] = {
 	mod("PhysicalDamageLifeLeech", "BASE", nil, ModFlag.Attack),
 	div = 100,
 },
-["base_energy_shield_leech_from_spell_damage_permyriad"] = {
-	mod("DamageEnergyShieldLeech", "BASE", nil, ModFlag.Spell),
-	div = 100,
-},
 ["maximum_life_leech_amount_per_leech_+%"] = {
 	mod("MaxLifeLeechRate", "INC", nil)
-},
-["maximum_energy_shield_leech_amount_per_leech_+%"] = {
-	mod("MaxEnergyShieldLeechRate", "INC", nil)
 },
 ["mana_gain_per_target"] = {
 	mod("ManaOnHit", "BASE", nil)
@@ -386,9 +369,6 @@ local result = {
 },
 ["damage_+%_while_mana_leeching"] = {
 	mod("Damage", "INC", nil, 0, 0, { type = "Condition", var = "LeechingMana" }),
-},
-["damage_+%_while_es_leeching"] = {
-	mod("Damage", "INC", nil, 0, 0, { type = "Condition", var = "LeechingEnergyShield" }),
 },
 ["aura_effect_+%"] = {
 	mod("AuraEffect", "INC", nil),
@@ -512,9 +492,6 @@ local result = {
 },
 ["critical_strike_multiplier_+_per_power_charge"] = {
 	mod("CritMultiplier", "BASE", nil, 0, 0, { type = "Multiplier", var = "PowerCharge" }),
-},
-["critical_multiplier_+%_per_100_max_es_on_shield"] = {
-	mod("CritMultiplier", "BASE", nil, 0, 0, { type = "PerStat", div = 100, stat = "EnergyShieldOnWeapon 2" }),
 },
 ["critical_strike_multiplier_+_if_dexterity_higher_than_intelligence"] = {
 	skill("CritMultiplier", nil, { type = "Condition", var = "DexHigherThanInt" }),
@@ -748,9 +725,6 @@ local result = {
 },
 ["shield_charge_damage_+%_maximum"] = {
 	mod("Damage", "MORE", nil, ModFlag.Hit, 0, { type = "DistanceRamp", ramp = {{0,0},{60,1}} }),
-},
-["damage_+%_on_full_energy_shield"] = {
-	mod("Damage", "INC", nil, 0, 0, { type = "Condition", var = "FullEnergyShield"})
 },
 ["damage_+%_when_on_low_life"] = {
 	mod("Damage", "INC", nil, 0, 0, { type = "Condition", var = "LowLife"})
@@ -1379,16 +1353,8 @@ local result = {
 	mod("PhysicalDegen", "BASE", nil, 0, 0, { type = "PerStat", stat = "Life", div = 1 }),
 	div = 6000,
 },
-["base_physical_damage_%_of_maximum_energy_shield_to_deal_per_minute"] = {
-	mod("PhysicalDegen", "BASE", nil, 0, 0, { type = "PerStat", stat = "EnergyShield", div = 1 }),
-	div = 6000,
-},
 ["base_nonlethal_fire_damage_%_of_maximum_life_taken_per_minute"] = {
 	mod("FireDegen", "BASE", nil, 0, 0, { type = "PerStat", stat = "Life", div = 1 }),
-	div = 6000,
-},
-["base_nonlethal_fire_damage_%_of_maximum_energy_shield_taken_per_minute"] = {
-	mod("FireDegen", "BASE", nil, 0, 0, { type = "PerStat", stat = "EnergyShield", div = 1 }),
 	div = 6000,
 },
 
@@ -1505,10 +1471,6 @@ local result = {
 },
 ["off_hand_maximum_added_fire_damage_per_15_shield_armour"] = {
 	mod("FireMax", "BASE", nil, 0, 0, { type = "Condition", var = "OffHandAttack" }, { type = "PerStat", stat = "ArmourOnWeapon 2", div = 15 }),
-},
-["additional_critical_strike_chance_per_10_shield_maximum_energy_shield_permyriad"] = {
-	mod("CritChance", "BASE", nil, 0, 0, { type = "PerStat", stat = "EnergyShieldOnWeapon 2", div = 10, }),
-	div = 100,
 },
 -- Impale
 ["attacks_impale_on_hit_%_chance"] = {
@@ -1780,9 +1742,6 @@ local result = {
 	mod("MinionModifier", "LIST", { mod = mod("LightningDamageLeech", "BASE", nil) }),
 	mod("MinionModifier", "LIST", { mod = mod("ColdDamageLeech", "BASE", nil) }),
 	div = 100
-},
-["active_skill_minion_energy_shield_+%_final"] = {
-	mod("MinionModifier", "LIST", { mod = mod("EnergyShield", "MORE", nil) }),
 },
 ["active_skill_minion_movement_velocity_+%_final"] = {
 	mod("MinionModifier", "LIST", { mod = mod("MovementSpeed", "MORE", nil) }),

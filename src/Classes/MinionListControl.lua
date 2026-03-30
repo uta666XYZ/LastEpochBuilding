@@ -50,9 +50,6 @@ function MinionListClass:AddValueTooltip(tooltip, index, minionId)
 		local minion = self.data.minions[minionId]
 		tooltip:AddLine(18, "^7"..minion.name)
 		tooltip:AddLine(14, s_format("^7Life Multiplier: x%.2f", minion.life))
-		if minion.energyShield then
-			tooltip:AddLine(14, s_format("^7Energy Shield: %d%% of base Life", minion.energyShield * 100))
-		end
 		if minion.armour then
 			tooltip:AddLine(14, s_format("^7Armour Multiplier: x%.2f", 1 + minion.armour))
 		end
