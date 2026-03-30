@@ -168,29 +168,6 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 		else
 			lastVisibleSlot = slot
 		end
-		if slotName:match("Weapon") then
-			-- Add alternate weapon slot
-			slot.weaponSet = 1
-			slot.shown = function()
-				return not self.activeItemSet.useSecondWeaponSet
-			end
-			local swapSlot = new("ItemSlotControl", {"TOPLEFT",prevSlot,"BOTTOMLEFT"}, 0, 2, self, slotName.." Swap", slotName)
-			addSlot(swapSlot)
-			swapSlot.weaponSet = 2
-			swapSlot.shown = function()
-				return self.activeItemSet.useSecondWeaponSet
-			end
-			for i = 1, 6 do
-				local abyssal = new("ItemSlotControl", {"TOPLEFT",prevSlot,"BOTTOMLEFT"}, 0, 2, self, slotName.." Swap Abyssal Socket "..i, "Abyssal #"..i)
-				addSlot(abyssal)
-				abyssal.parentSlot = swapSlot
-				abyssal.weaponSet = 2
-				abyssal.shown = function()
-					return not abyssal.inactive and self.activeItemSet.useSecondWeaponSet
-				end
-				swapSlot.abyssalSocketList[i] = abyssal
-			end
-		end
 	end
 
 	-- Expose the layout so IdolsTab can reference it without duplicating the table
@@ -599,48 +576,6 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 	-- ===== END BLESSING PANEL (UI moved to ConfigTab) =====
 
 	self.controls.slotHeader = new("LabelControl", {"BOTTOMLEFT",self.slotAnchor,"TOPLEFT"}, 0, -4, 0, 16, "^7Equipped items:")
-	self.controls.weaponSwap1 = new("ButtonControl", {"BOTTOMRIGHT",self.slotAnchor,"TOPRIGHT"}, -20, -2, 18, 18, "I", function()
-		if self.activeItemSet.useSecondWeaponSet then
-			self.activeItemSet.useSecondWeaponSet = false
-			self:AddUndoState()
-			self.build.buildFlag = true
-			local mainSocketGroup = self.build.skillsTab.socketGroupList[self.build.mainSocketGroup]
-			if mainSocketGroup and mainSocketGroup.slot and self.slots[mainSocketGroup.slot].weaponSet == 2 then
-				for index, socketGroup in pairs(self.build.skillsTab.socketGroupList) do
-					if socketGroup.slot and self.slots[socketGroup.slot].weaponSet == 1 then
-						self.build.mainSocketGroup = index
-						break
-					end
-				end
-			end
-		end
-	end)
-	self.controls.weaponSwap1.overSizeText = 3
-	self.controls.weaponSwap1.locked = function()
-		return not self.activeItemSet.useSecondWeaponSet
-	end
-	self.controls.weaponSwap2 = new("ButtonControl", {"BOTTOMRIGHT",self.slotAnchor,"TOPRIGHT"}, 0, -2, 18, 18, "II", function()
-		if not self.activeItemSet.useSecondWeaponSet then
-			self.activeItemSet.useSecondWeaponSet = true
-			self:AddUndoState()
-			self.build.buildFlag = true
-			local mainSocketGroup = self.build.skillsTab.socketGroupList[self.build.mainSocketGroup]
-			-- TODO: support second item slot
-			if mainSocketGroup and mainSocketGroup.slot and self.slots[mainSocketGroup.slot].weaponSet == 1 then
-				for index, socketGroup in pairs(self.build.skillsTab.socketGroupList) do
-					if socketGroup.slot and self.slots[socketGroup.slot].weaponSet == 2 then
-						self.build.mainSocketGroup = index
-						break
-					end
-				end
-			end
-		end
-	end)
-	self.controls.weaponSwap2.overSizeText = 3
-	self.controls.weaponSwap2.locked = function()
-		return self.activeItemSet.useSecondWeaponSet
-	end
-	self.controls.weaponSwapLabel = new("LabelControl", {"RIGHT",self.controls.weaponSwap1,"LEFT"}, -4, 0, 0, 14, "^7Weapon Set:")
 
 	-- All items list
 	if main.portraitMode then
@@ -1339,10 +1274,6 @@ end
 function ItemsTabClass:EquipItemInSet(item, itemSetId)
 	local itemSet = self.itemSets[itemSetId]
 	local slotName = item:GetPrimarySlot()
-	if self.slots[slotName].weaponSet == 1 and itemSet.useSecondWeaponSet then
-		-- Redirect to second weapon set
-		slotName = slotName .. " Swap"
-	end
 	if not item.id or not self.items[item.id] then
 		item = new("Item", item.raw)
 		self:AddItem(item, true)
@@ -1766,10 +1697,10 @@ function ItemsTabClass:IsItemValidForSlot(item, slotName, itemSet)
 		return true
 	elseif slotType == "Omen Idol" then
 		return item.type ~= nil and item.type:match("Idol$") ~= nil
-	elseif slotName == "Weapon 1" or slotName == "Weapon 1 Swap" or slotName == "Weapon" then
+	elseif slotName == "Weapon 1" or slotName == "Weapon" then
 		return item.base.weapon ~= nil
-	elseif slotName == "Weapon 2" or slotName == "Weapon 2 Swap" then
-		local weapon1Sel = itemSet[slotName == "Weapon 2" and "Weapon 1" or "Weapon 1 Swap"].selItemId or 0
+	elseif slotName == "Weapon 2" then
+		local weapon1Sel = itemSet["Weapon 1"].selItemId or 0
 		local weapon1Type = self.items[weapon1Sel] and self.items[weapon1Sel].base.type or "None"
 		if weapon1Type == "None" then
 			return item.type == "Shield" or item.type == "Off-Hand Catalyst" or (self.build.data.weaponTypeInfo[item.type] and self.build.data.weaponTypeInfo[item.type].oneHand)
@@ -2450,7 +2381,7 @@ function ItemsTabClass:AddItemTooltip(tooltip, item, slot, dbMode)
         end
     else
 		for slotName, slot in pairs(self.slots) do
-			if self:IsItemValidForSlot(item, slotName) and not slot.inactive and (not slot.weaponSet or slot.weaponSet == (self.activeItemSet.useSecondWeaponSet and 2 or 1)) then
+			if self:IsItemValidForSlot(item, slotName) and not slot.inactive then
 				t_insert(compareSlots, slot)
 			end
 		end
