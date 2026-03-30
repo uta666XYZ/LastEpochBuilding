@@ -25,7 +25,7 @@ local rarityDropList = {
 	{ label = colorCodes.SET.."Set", rarity = "SET" },
 }
 
-local baseSlots = { "Weapon 1", "Weapon 2", "Helmet", "Body Armor", "Gloves", "Boots", "Amulet", "Ring 1", "Ring 2", "Belt", "Relic", "Idol Altar" }
+local baseSlots = { "Weapon 1", "Weapon 2", "Helmet", "Body Armor", "Gloves", "Boots", "Amulet", "Ring 1", "Ring 2", "Belt", "Relic" }
 
 -- Idol inventory grid layout.
 -- Each row is a list of slot names (or false for invalid/blocked cells).
@@ -189,34 +189,30 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 		self.build.treeTab:OpenSpecManagePopup()
 	end)
 	self.controls.specLabel = new("LabelControl", {"RIGHT",prevSlot,"LEFT"}, -2, 0, 0, 16, "^7Passive tree:")
-	self.controls.idolPositionsLabel = new("LabelControl", {"TOPLEFT",self.controls.specSelect,"BOTTOMLEFT"}, 0, 8, 0, 16, "Idol positions start from bottom left then left to right")
-
 	-- ===== IDOL ALTAR (S4) =====
 	self.activeAltarLayout = "Default"
-	local altarDropList = { { label = "Default", key = "Default" } }
 	do
-		local altarNames = {}
-		for name in pairs(IDOL_ALTAR_LAYOUTS) do t_insert(altarNames, name) end
-		table.sort(altarNames)
-		for _, name in ipairs(altarNames) do
-			local layout = IDOL_ALTAR_LAYOUTS[name]
-			t_insert(altarDropList, {
-				label = (layout.mirrorOf or name) .. (layout.isMirrored and " [Mirrored]" or ""),
-				key   = name,
-			})
+		local altarSlot = new("ItemSlotControl", {"TOPLEFT",self.controls.specSelect,"BOTTOMLEFT"}, 0, 2, self, "Idol Altar", "Idol Altar")
+		self.slots[altarSlot.slotName] = altarSlot
+		t_insert(self.orderedSlots, altarSlot)
+		self.slotOrder[altarSlot.slotName] = #self.orderedSlots
+		t_insert(self.controls, altarSlot)
+		self.controls.idolAltarSlot = altarSlot
+		-- Wrap SetSelItemId to auto-update altar layout from equipped item
+		local origSetSelItemId = altarSlot.SetSelItemId
+		altarSlot.SetSelItemId = function(slot, selItemId)
+			origSetSelItemId(slot, selItemId)
+			local item = self.items[selItemId]
+			if item and item.baseName and IDOL_ALTAR_LAYOUTS[item.baseName] then
+				self.activeAltarLayout = item.baseName
+			else
+				self.activeAltarLayout = "Default"
+			end
 		end
 	end
-	self.controls.idolAltarSelect = new("DropDownControl",
-		{"TOPLEFT",self.controls.idolPositionsLabel,"BOTTOMLEFT"}, 0, 8, 310, 20,
-		altarDropList, function(index, value)
-			self.activeAltarLayout = altarDropList[index].key
-			self.build.buildFlag = true
-		end)
-	self.controls.idolAltarLabel = new("LabelControl",
-		{"RIGHT",self.controls.idolAltarSelect,"LEFT"}, -2, 0, 0, 16, "^7Idol Altar:")
-	local prevOmenSlot = self.controls.idolAltarSelect
+	local prevOmenSlot = self.controls.idolAltarSlot
 	for i = 1, MAX_OMEN_IDOL_SLOTS do
-		local omenSlot = new("ItemSlotControl", {"TOPLEFT",prevOmenSlot,"BOTTOMLEFT"}, 0, 2, self, "Omen Idol " .. i, tostring(i))
+		local omenSlot = new("ItemSlotControl", {"TOPLEFT",prevOmenSlot,"BOTTOMLEFT"}, 0, 2, self, "Omen Idol " .. i, "Fractured " .. i)
 		local slotNum = i
 		omenSlot.shown = function()
 			if self.activeAltarLayout == "Default" then return false end
