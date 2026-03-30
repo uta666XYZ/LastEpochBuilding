@@ -61,6 +61,7 @@ local modNameList = {
 	["maximum mana"] = "Mana",
 	["mana regen"] = "ManaRegen",
 	["mana cost"] = "ManaCost",
+	["channel cost"] = "ChannelCost",
 	-- Primary defences
 	["armour"] = "Armour",
 	["armor"] = "Armour",
@@ -71,6 +72,12 @@ local modNameList = {
 	["ward decay threshold"] = "WardDecayThreshold",
 	["ward per second"] = "WardPerSecond",
 	["ward retention"] = "WardRetention",
+	["ward regen"] = "WardPerSecond",
+	["glancing blow chance"] = "GlancingBlowChance",
+	["block effectiveness"] = "BlockEffect",
+	["stun avoidance"] = "AvoidStun",
+	["crit avoidance"] = "CritAvoidance",
+	["critical strike avoidance"] = "CritAvoidance",
 	-- Resistances
 	["elemental resistance"] = { "FireResist", "LightningResist", "ColdResist" },
 	["elemental resistances"] = { "FireResist", "LightningResist", "ColdResist" },
@@ -119,6 +126,10 @@ local modNameList = {
 	["melee range"] = "MeleeWeaponRange",
 	["to deal double damage"] = "DoubleDamageChance",
 	["freeze rate multiplier"] = "FreezeRateMultiplier",
+	["freeze rate"] = "FreezeRate",
+	["stun chance"] = "StunChance",
+	["kill threshold"] = "KillThreshold",
+	["chance to find potions"] = "ChanceToFindPotions",
 	-- Ailment application chances (from item affixes)
 	["to slow"] = "SlowChance",
 	["to apply frailty"] = "FrailtyChance",
@@ -230,6 +241,7 @@ local modTagList = {
 	["per (%d+) total attributes"] = function(num) return { tag = { type = "PerStat", statList = Attributes, div = num } } end,
 	["per (%d+) maximum mana"] = function(num) return { tag = { type = "PerStat", stat = "Mana", div = num } } end,
 	["per (%d+)%% block chance"] = function(num) return { tag = { type = "PerStat", stat = "BlockChance", div = num } } end,
+	["per (%d+) block effectiveness"] = function(num) return { tag = { type = "PerStat", stat = "BlockEffect", div = num } } end,
 	["per totem"] = { tag = { type = "PerStat", stat = "TotemsSummoned" } },
 	-- Slot conditions
 	["while dual wielding"] = { tag = { type = "Condition", var = "DualWielding" } },
@@ -347,11 +359,29 @@ end
 
 local specialModList = {
 	["no cooldown"] = { flag("NoCooldown") },
+	-- Ward when hit (item affix: "X% Chance to Gain 30 Ward when Hit")
+	["^(%d+)%% chance to gain (%d+) ward when hit$"] = function(num, chance, amount)
+		return { mod("ChanceToGainWardWhenHit", "BASE", tonumber(chance)), mod("WardGainedWhenHit", "BASE", tonumber(amount)) }
+	end,
+	-- Minion damage mods from uniques
+	["^your minions deal (%d+)%% increased damage$"] = function(num)
+		return { mod("MinionModifier", "LIST", { mod = mod("Damage", "INC", num) }) }
+	end,
+	["^you and your minions deal (%d+)%% increased melee damage$"] = function(num)
+		return { mod("Damage", "INC", num, "", ModFlag.Melee), mod("MinionModifier", "LIST", { mod = mod("Damage", "INC", num, "", ModFlag.Melee) }) }
+	end,
+	-- Bow Mastery unique item mod
+	["^bow mastery: (%d+)%% increased damage while using a bow$"] = function(num)
+		return { mod("Damage", "INC", num, "", 0, 0, { type = "Condition", var = "UsingBow" }) }
+	end,
+	-- Ward/Health on melee hit (item affix patterns)
+	["^(%d+)%% chance to gain (%d+) ward on melee hit$"] = function(num, chance, amount)
+		return { mod("ChanceToGainWardOnMeleeHit", "BASE", tonumber(chance)), mod("WardGainedOnMeleeHit", "BASE", tonumber(amount)) }
+	end,
 }
 
 -- Modifiers that are recognised but unsupported
 local unsupportedModList = {
-	["chance to gain # ward when hit"] = true,
 	["chance to shred # resistance on hit"] = true,
 }
 
