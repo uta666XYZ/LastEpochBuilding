@@ -176,8 +176,12 @@ function SkillsTabClass:InitSkillControl(i)
 		return self.socketGroupList[i] ~= nil
 	end
 	self.controls['skillLevel-'..i].label = function()
-		local lvl = self:GetSkillLevel(i)
-		return "^7Lv " .. lvl
+		local baseLvl = self:GetUsedSkillPoints(i)
+		local totalBonus = self:GetTotalSkillLevelBonus(i)
+		if totalBonus > 0 then
+			return "^7Lv " .. baseLvl .. "^x4DD9FF+" .. totalBonus
+		end
+		return "^7Lv " .. baseLvl
 	end
 	-- Points label (always shown with fixed width to keep Enabled checkbox anchored correctly)
 	self.controls['skillPts-'..i] = new("LabelControl", { "LEFT", self.controls['skillLevel-'..i], "RIGHT" }, 4, 0, 80, 16)
@@ -725,21 +729,35 @@ function SkillsTabClass:SelSkill(index, skillId)
 end
 
 -- Get skill level for a given skill slot
--- In Last Epoch, skill level = total allocated points in that skill's tree
+-- In Last Epoch, skill level = total allocated points + global bonus + per-skill bonus
 function SkillsTabClass:GetSkillLevel(index)
 	local socketGroup = self.socketGroupList[index]
 	if not socketGroup or not socketGroup.grantedEffect then
 		return 0
 	end
-	-- Skill level equals the number of points spent in the skill tree
-	return self:GetUsedSkillPoints(index)
+	return self:GetUsedSkillPoints(index) + self:GetTotalSkillLevelBonus(index)
+end
+
+-- Get the global +skill level bonus from equipment (e.g. "+1 Skills")
+function SkillsTabClass:GetSkillLevelBonus()
+	return self.build.skillLevelBonus or 0
+end
+
+-- Get the per-skill +level bonus from equipment (e.g. "+4 to Erasing Strike")
+function SkillsTabClass:GetPerSkillLevelBonus(index)
+	return (self.build.perSkillLevelBonus and self.build.perSkillLevelBonus[index]) or 0
+end
+
+-- Get total skill level bonus (global + per-skill)
+function SkillsTabClass:GetTotalSkillLevelBonus(index)
+	return self:GetSkillLevelBonus() + self:GetPerSkillLevelBonus(index)
 end
 
 -- Get the maximum skill points available for a skill tree
--- In Last Epoch, each skill has a hard cap of 20 points (skill level 20).
--- Equipment can push beyond 20 but base is always 20.
+-- In Last Epoch, each skill has a base cap of 20 points.
+-- Equipment "+X Skills" increases the effective max.
 function SkillsTabClass:GetMaxSkillPoints(index)
-	return 20
+	return 20 + self:GetTotalSkillLevelBonus(index)
 end
 
 -- Get the number of skill points used in a skill tree
