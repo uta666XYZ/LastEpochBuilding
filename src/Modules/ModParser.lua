@@ -75,7 +75,7 @@ local modNameList = {
 	["ward regen"] = "WardPerSecond",
 	["glancing blow chance"] = "GlancingBlowChance",
 	["block effectiveness"] = "BlockEffect",
-	["stun avoidance"] = "AvoidStun",
+	["stun avoidance"] = "StunAvoidance",
 	["crit avoidance"] = "CritAvoidance",
 	["critical strike avoidance"] = "CritAvoidance",
 	-- Resistances
