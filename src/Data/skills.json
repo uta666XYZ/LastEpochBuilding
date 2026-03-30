@@ -6400,6 +6400,9 @@
     "stats": {
       "damageEffectiveness": 1.0
     },
+    "baseMods": [
+      "4% increased Damage per player Dexterity"
+    ],
     "treeId": "bl5st"
   },
   "ShadowRend": {
@@ -6413,6 +6416,9 @@
     "stats": {
       "damageEffectiveness": 1.0
     },
+    "baseMods": [
+      "4% increased Damage per player Dexterity"
+    ],
     "treeId": "sh4re"
   }
 }
