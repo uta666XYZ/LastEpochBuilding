@@ -1145,6 +1145,10 @@ function calcs.buildDefenceEstimations(env, actor)
 	output.ParryChance = m_min(modDB:Sum("BASE", nil, "ParryChance"), 100)
 	output.DamageToManaBeforeHealth = m_min(modDB:Sum("BASE", nil, "DamageToManaBeforeHealth"), 100)
 
+	-- Glancing blow and crit avoidance
+	output.GlancingBlowChance = m_min(modDB:Sum("BASE", nil, "GlancingBlowChance"), 100)
+	output.CritAvoidance = m_min(modDB:Sum("BASE", nil, "CritAvoidance"), 100)
+
 	-- Attacker debuffs (reactive)
 	output.ChanceToSlowAttackers  = modDB:Sum("BASE", nil, "ChanceToSlowAttackers")
 	output.ChanceToChillAttackers = modDB:Sum("BASE", nil, "ChanceToChillAttackers")
