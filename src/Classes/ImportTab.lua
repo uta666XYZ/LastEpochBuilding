@@ -1209,20 +1209,8 @@ function ImportTabClass:BuildItem(itemData)
                 item.quality = tonumber(property.values[1][1]:match("%d+"))
             elseif property.name == "Limited to" then
                 item.limit = tonumber(property.values[1][1])
-            elseif property.name == "Evasion Rating" then
-                if item.baseName == "Two-Toned Boots (Armour/Energy Shield)" then
-                    -- Another hack for Two-Toned Boots
-                    item.baseName = "Two-Toned Boots (Armour/Evasion)"
-                    item.base = self.build.data.itemBases[item.baseName]
-                end
-            elseif property.name == "Energy Shield" then
-                if item.baseName == "Two-Toned Boots (Armour/Evasion)" then
-                    -- Yet another hack for Two-Toned Boots
-                    item.baseName = "Two-Toned Boots (Evasion/Energy Shield)"
-                    item.base = self.build.data.itemBases[item.baseName]
-                end
             end
-            if property.name == "Energy Shield" or property.name == "Ward" or property.name == "Armour" or property.name == "Evasion Rating" then
+            if property.name == "Ward" or property.name == "Armour" or property.name == "Evasion Rating" then
                 item.armourData = item.armourData or { }
                 for _, value in ipairs(property.values) do
                     item.armourData[property.name:gsub(" Rating", ""):gsub(" ", "")] = (item.armourData[property.name:gsub(" Rating", ""):gsub(" ", "")] or 0) + tonumber(value[1])

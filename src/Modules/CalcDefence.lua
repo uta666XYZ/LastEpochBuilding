@@ -282,7 +282,7 @@ function calcs.defence(env, actor)
 		output.DamageTakenOnBlock = 100 - output.BlockEffect
 	end
 
-	-- Primary defences: Energy shield, evasion and armour
+	-- Primary defences: Ward, evasion and armour
 	do
 		local ward = 0
 		local armour = 0
@@ -1183,7 +1183,7 @@ function calcs.buildDefenceEstimations(env, actor)
 				s_format("Total life protected:"),
 				s_format("%d ^8(guard limit)", output["sharedGuardAbsorb"]),
 				s_format("/ %.2f ^8(portion taken from guard)", output["sharedGuardAbsorbRate"] / 100),
-				s_format("x %.2f ^8(portion taken from life and energy shield)", 1 - output["sharedGuardAbsorbRate"] / 100),
+				s_format("x %.2f ^8(portion taken from life)", 1 - output["sharedGuardAbsorbRate"] / 100),
 				s_format("= %d", lifeProtected)
 			}
 		end
@@ -1201,7 +1201,7 @@ function calcs.buildDefenceEstimations(env, actor)
 					s_format("Total life protected:"),
 					s_format("%d ^8(guard limit)", output[damageType.."GuardAbsorb"]),
 					s_format("/ %.2f ^8(portion taken from guard)", output[damageType.."GuardAbsorbRate"] / 100),
-					s_format("x %.2f ^8(portion taken from life and energy shield)", 1 - output[damageType.."GuardAbsorbRate"] / 100),
+					s_format("x %.2f ^8(portion taken from life)", 1 - output[damageType.."GuardAbsorbRate"] / 100),
 					s_format("= %d", lifeProtected),
 				}
 			end
@@ -1245,7 +1245,7 @@ function calcs.buildDefenceEstimations(env, actor)
 				s_format("Total life protected:"),
 				s_format("%d ^8(frost shield limit)", output["FrostShieldLife"]),
 				s_format("/ %.2f ^8(portion taken from frost shield)", output["FrostShieldDamageMitigation"] / 100),
-				s_format("x %.2f ^8(portion taken from life and energy shield)", 1 - output["FrostShieldDamageMitigation"] / 100),
+				s_format("x %.2f ^8(portion taken from life)", 1 - output["FrostShieldDamageMitigation"] / 100),
 				s_format("= %d", lifeProtected),
 			}
 		end
