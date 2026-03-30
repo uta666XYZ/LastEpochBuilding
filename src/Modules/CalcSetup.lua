@@ -76,11 +76,39 @@ function calcs.buildModListForNode(env, node)
 end
 
 -- Build list of modifiers from the listed tree nodes
-function calcs.buildModListForNodeList(env, nodeList)
+function calcs.buildModListForNodeList(env, nodeList, stripSkillId)
 	-- Add node modifiers
 	local modList = new("ModList")
 	for _, node in pairs(nodeList) do
 		local nodeModList = calcs.buildModListForNode(env, node)
+		if stripSkillId then
+			-- Remove SkillId tags so buff skill tree mods apply globally
+			local strippedList = new("ModList")
+			for _, mod in ipairs(nodeModList) do
+				local hasSkillId = false
+				for _, tag in ipairs(mod) do
+					if tag.type == "SkillId" then
+						hasSkillId = true
+						break
+					end
+				end
+				if hasSkillId then
+					local newMod = copyTable(mod, true)
+					local j = 1
+					while newMod[j] do
+						if newMod[j].type == "SkillId" then
+							t_remove(newMod, j)
+						else
+							j = j + 1
+						end
+					end
+					strippedList:AddMod(newMod)
+				else
+					strippedList:AddMod(mod)
+				end
+			end
+			nodeModList = strippedList
+		end
 		modList:AddList(nodeModList)
 		if env.mode == "MAIN" then
 			node.finalModList = nodeModList
@@ -779,6 +807,7 @@ function calcs.initEnv(build, mode, override, specEnv)
 
 	-- Merge modifiers for allocated passives
 	-- Buff skill tree nodes are conditional: only apply when mode_buffs is true AND the skill is enabled
+	-- Their mods also have SkillId tags stripped so they apply globally (as buff effects should)
 	local buffSkillTreePrefixes = {}
 	for _, group in pairs(build.skillsTab.socketGroupList) do
 		local ge = group.grantedEffect
@@ -788,29 +817,35 @@ function calcs.initEnv(build, mode, override, specEnv)
 	end
 
 	if next(buffSkillTreePrefixes) then
-		local activeNodes = {}
-		local inactiveNodes = {}
+		local normalNodes = {}
+		local activeBuffNodes = {}
+		local inactiveBuffNodes = {}
 		for nodeId, node in pairs(env.allocNodes) do
 			local isBuffNode = false
 			for prefix, enabled in pairs(buffSkillTreePrefixes) do
 				if nodeId:sub(1, #prefix) == prefix then
 					isBuffNode = true
 					if env.mode_buffs and enabled then
-						activeNodes[nodeId] = node
+						activeBuffNodes[nodeId] = node
 					else
-						inactiveNodes[nodeId] = node
+						inactiveBuffNodes[nodeId] = node
 					end
 					break
 				end
 			end
 			if not isBuffNode then
-				activeNodes[nodeId] = node
+				normalNodes[nodeId] = node
 			end
 		end
-		env.modDB:AddList(calcs.buildModListForNodeList(env, activeNodes))
+		-- Normal (non-buff) nodes: apply with SkillId tags intact
+		env.modDB:AddList(calcs.buildModListForNodeList(env, normalNodes))
+		-- Active buff nodes: strip SkillId tags so mods apply globally
+		if next(activeBuffNodes) then
+			env.modDB:AddList(calcs.buildModListForNodeList(env, activeBuffNodes, true))
+		end
 		-- Process inactive buff nodes for side effects (grantedSkills, finalModList) without adding mods
-		if next(inactiveNodes) then
-			calcs.buildModListForNodeList(env, inactiveNodes)
+		if next(inactiveBuffNodes) then
+			calcs.buildModListForNodeList(env, inactiveBuffNodes)
 		end
 	else
 		env.modDB:AddList(calcs.buildModListForNodeList(env, env.allocNodes))
