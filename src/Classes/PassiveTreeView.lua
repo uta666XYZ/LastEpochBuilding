@@ -11,6 +11,7 @@ local t_remove = table.remove
 local m_min = math.min
 local m_max = math.max
 local m_floor = math.floor
+local m_sqrt = math.sqrt
 local band = bit.band
 local b_rshift = bit.rshift
 
@@ -40,10 +41,6 @@ local PassiveTreeViewClass = newClass("PassiveTreeView", function(self)
 	self.fixedSizeMode = false
 	self.fixedTreeSize = 400  -- Fixed tree viewport size in pixels
 	
-	-- Load reqPoints gate dot image
-	self.dotFilled = NewImageHandle()
-	self.dotFilled:Load("TreeData/PassiveBonusFilled.png")
-
 	-- Disable dragging (for LE-style fixed position trees)
 	self.disableDragging = false
 	
@@ -649,74 +646,11 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 	end
 	-- Returns true if the edge between n1 and n2 has an unmet reqPoints gate
 	local function isGatedUnmet(n1, n2)
-		local req = n2.reqFromParent and n2.reqFromParent[n1.id]
+		local req = n2.reqPointsMap and n2.reqPointsMap[n1.id]
 		if req and n1.alloc < req then return true end
-		req = n1.reqFromParent and n1.reqFromParent[n2.id]
+		req = n1.reqPointsMap and n1.reqPointsMap[n2.id]
 		if req and n2.alloc < req then return true end
 		return false
-	end
-
-	-- Get the reqPoints gate info for a connector (returns reqPts, parentAlloc or nil)
-	local function getGateInfo(n1, n2)
-		local req = n2.reqFromParent and n2.reqFromParent[n1.id]
-		if req then return req, n1.alloc end
-		req = n1.reqFromParent and n1.reqFromParent[n2.id]
-		if req then return req, n2.alloc end
-		return nil
-	end
-
-	-- Dot layout patterns per reqPoints count (game-style)
-	-- Each entry is a list of {along, perp} offsets from center, in spacing units
-	-- req 1:   *         req 2: * *       req 3: * * *
-	-- req 4: * *         req 5:   *
-	--        * *                * * *
-	--                            *
-	local dotLayouts = {
-		[1] = { {0, 0} },
-		[2] = { {0, -0.5}, {0, 0.5} },
-		[3] = { {-1, 0}, {0, 0}, {1, 0} },
-		[4] = { {-0.5, -0.5}, {0.5, -0.5}, {-0.5, 0.5}, {0.5, 0.5} },
-		[5] = { {0, -1}, {-1, 0}, {0, 0}, {1, 0}, {0, 1} },
-	}
-
-	-- Draw reqPoints gate dots along a connector line (LETools/Maxroll style)
-	-- screenCoords: the connector.c array with screen-space vertex coords (1-8)
-	local function drawGateDots(screenCoords, reqPts, parentAlloc)
-		if not reqPts or reqPts < 1 then return end
-		local layout = dotLayouts[reqPts]
-		if not layout then return end
-		-- Midpoints of the two long edges of the connector quad
-		local mx1 = (screenCoords[1] + screenCoords[7]) / 2
-		local my1 = (screenCoords[2] + screenCoords[8]) / 2
-		local mx2 = (screenCoords[3] + screenCoords[5]) / 2
-		local my2 = (screenCoords[4] + screenCoords[6]) / 2
-		-- Center of the connector
-		local cx = (mx1 + mx2) / 2
-		local cy = (my1 + my2) / 2
-		-- Direction along the connector (from node1 side to node2 side)
-		local dx = (screenCoords[7] - screenCoords[1] + screenCoords[5] - screenCoords[3]) / 2
-		local dy = (screenCoords[8] - screenCoords[2] + screenCoords[6] - screenCoords[4]) / 2
-		local len = m_max((dx * dx + dy * dy) ^ 0.5, 1)
-		dx = dx / len
-		dy = dy / len
-		-- Perpendicular direction (rotated 90 degrees)
-		local px_dir, py_dir = -dy, dx
-		local dotRadius = m_max(25 * scale, 3)
-		local spacing = dotRadius * 1.5
-		for i, offsets in ipairs(layout) do
-			local along, perp = offsets[1], offsets[2]
-			local dotX = cx + dx * along * spacing + px_dir * perp * spacing
-			local dotY = cy + dy * along * spacing + py_dir * perp * spacing
-			if i <= parentAlloc then
-				-- Filled: gold cream (#f0e6cd)
-				SetDrawColor(0.94, 0.90, 0.80)
-			else
-				-- Unfilled: dark (#444)
-				SetDrawColor(0.27, 0.27, 0.27)
-			end
-			DrawImage(self.dotFilled, dotX - dotRadius, dotY - dotRadius, dotRadius * 2, dotRadius * 2)
-		end
-		SetDrawColor(1, 1, 1)
 	end
 
 	local function renderConnector(connector)
@@ -774,12 +708,103 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 				-- Unmet reqPoints gate: dark brown (#342a27) - LETools reference
 				setConnectorColor(0.20, 0.16, 0.15)
 			end
+			-- Check for requirement dots
+			local reqPoints, dotAsset, dotFilled
+			if tree.treeUI then
+				reqPoints = node2.reqPointsMap and node2.reqPointsMap[node1.id]
+				if not reqPoints then
+					reqPoints = node1.reqPointsMap and node1.reqPointsMap[node2.id]
+				end
+				if reqPoints and reqPoints > 0 and reqPoints <= 5 then
+					local parentAlloc = 0
+					if node2.reqPointsMap and node2.reqPointsMap[node1.id] then
+						parentAlloc = node1.alloc or 0
+					elseif node1.reqPointsMap and node1.reqPointsMap[node2.id] then
+						parentAlloc = node2.alloc or 0
+					end
+					dotFilled = m_min(parentAlloc, reqPoints)
+					local dotName = "dot-" .. reqPoints .. "-" .. dotFilled
+					dotAsset = tree.treeUI[dotName]
+					if dotAsset and dotAsset.width <= 0 then dotAsset = nil end
+				end
+			end
+
 			SetDrawColor(unpack(connectorColor))
-			DrawImageQuad(tree.assets[connector.type..state].handle, unpack(connector.c))
-			-- Draw reqPoints gate dots on top of the connector
-			local reqPts, parentAlloc = getGateInfo(node1, node2)
-			if reqPts then
-				drawGateDots(connector.c, reqPts, parentAlloc)
+			local lineHandle = tree.assets[connector.type..state].handle
+			if dotAsset then
+				-- Split the connector line around the dot gap
+				local dotScale = scale * 0.4
+				local halfDot = m_max(dotAsset.width, dotAsset.height) * dotScale / 2
+				local x1, y1 = connector.c[1], connector.c[2]
+				local x2, y2 = connector.c[3], connector.c[4]
+				local x3, y3 = connector.c[5], connector.c[6]
+				local x4, y4 = connector.c[7], connector.c[8]
+				local s1, t1 = connector.c[9], connector.c[10]
+				local s2, t2 = connector.c[11], connector.c[12]
+				local s3, t3 = connector.c[13], connector.c[14]
+				local s4, t4 = connector.c[15], connector.c[16]
+				local smX = (x1 + x2) / 2
+				local smY = (y1 + y2) / 2
+				local emX = (x3 + x4) / 2
+				local emY = (y3 + y4) / 2
+				local lineLen = m_sqrt((emX - smX) * (emX - smX) + (emY - smY) * (emY - smY))
+				local gapRatio = 0
+				if lineLen > 0 then
+					gapRatio = halfDot / lineLen
+				end
+				local gapStart = 0.5 - gapRatio
+				local gapEnd = 0.5 + gapRatio
+				if gapStart > 0.05 then
+					local g = gapStart
+					local mx1 = x1 + (x4 - x1) * g
+					local my1 = y1 + (y4 - y1) * g
+					local mx2 = x2 + (x3 - x2) * g
+					local my2 = y2 + (y3 - y2) * g
+					local ms1 = s1 + (s4 - s1) * g
+					local mt1 = t1 + (t4 - t1) * g
+					local ms2 = s2 + (s3 - s2) * g
+					local mt2 = t2 + (t3 - t2) * g
+					DrawImageQuad(lineHandle, x1, y1, x2, y2, mx2, my2, mx1, my1, s1, t1, s2, t2, ms2, mt2, ms1, mt1)
+				end
+				if gapEnd < 0.95 then
+					local g = gapEnd
+					local mx1 = x1 + (x4 - x1) * g
+					local my1 = y1 + (y4 - y1) * g
+					local mx2 = x2 + (x3 - x2) * g
+					local my2 = y2 + (y3 - y2) * g
+					local ms1 = s1 + (s4 - s1) * g
+					local mt1 = t1 + (t4 - t1) * g
+					local ms2 = s2 + (s3 - s2) * g
+					local mt2 = t2 + (t3 - t2) * g
+					DrawImageQuad(lineHandle, mx1, my1, mx2, my2, x3, y3, x4, y4, ms1, mt1, ms2, mt2, s3, t3, s4, t4)
+				end
+				local midX = (smX + emX) / 2
+				local midY = (smY + emY) / 2
+				local dirX = emX - smX
+				local dirY = emY - smY
+				local dirLen = m_sqrt(dirX * dirX + dirY * dirY)
+				if dirLen > 0 then
+					dirX = dirX / dirLen
+					dirY = dirY / dirLen
+				else
+					dirX, dirY = 1, 0
+				end
+				local perpX, perpY = -dirY, dirX
+				local halfW = dotAsset.width * dotScale / 2
+				local halfH = dotAsset.height * dotScale / 2
+				local ds1, dt1, ds2, dt2, ds3, dt3, ds4, dt4 = 0, 0, 0, 1, 1, 1, 1, 0
+				if reqPoints == 2 and math.abs(dirX) > math.abs(dirY) then
+					ds1, dt1, ds2, dt2, ds3, dt3, ds4, dt4 = 1, 0, 0, 0, 0, 1, 1, 1
+				end
+				SetDrawColor(1, 1, 1)
+				DrawImageQuad(dotAsset.handle,
+					midX - dirX * halfW - perpX * halfH, midY - dirY * halfW - perpY * halfH,
+					midX - dirX * halfW + perpX * halfH, midY - dirY * halfW + perpY * halfH,
+					midX + dirX * halfW + perpX * halfH, midY + dirY * halfW + perpY * halfH,
+					midX + dirX * halfW - perpX * halfH, midY + dirY * halfW - perpY * halfH,
+					ds1, dt1, ds2, dt2, ds3, dt3, ds4, dt4)
+			else
+				DrawImageQuad(lineHandle, unpack(connector.c))
 			end
 		end
 	end
@@ -813,10 +838,9 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 					-- Check if vert data exists for this state
 					local vert = connector.vert and connector.vert[state]
 					if not vert then
-						-- Try fallback states
 						vert = connector.vert and (connector.vert["Normal"] or connector.vert["Active"] or connector.vert["Intermediate"])
 					end
-					
+
 					if vert and tree.assets[connector.type..state] then
 						connector.c[1], connector.c[2] = treeToScreen(vert[1], vert[2])
 						connector.c[3], connector.c[4] = treeToScreen(vert[3], vert[4])
@@ -830,12 +854,102 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 						elseif state ~= "Active" and isGatedUnmet(node1, node2) then
 							setConnectorColor(1, 0.6, 0)
 						end
+						-- Check for requirement dots
+						local reqPoints2, dotAsset2
+						if tree.treeUI then
+							reqPoints2 = node2.reqPointsMap and node2.reqPointsMap[node1.id]
+							if not reqPoints2 then
+								reqPoints2 = node1.reqPointsMap and node1.reqPointsMap[node2.id]
+							end
+							if reqPoints2 and reqPoints2 > 0 and reqPoints2 <= 5 then
+								local parentAlloc = 0
+								if node2.reqPointsMap and node2.reqPointsMap[node1.id] then
+									parentAlloc = node1.alloc or 0
+								elseif node1.reqPointsMap and node1.reqPointsMap[node2.id] then
+									parentAlloc = node2.alloc or 0
+								end
+								local filled = m_min(parentAlloc, reqPoints2)
+								local dotName = "dot-" .. reqPoints2 .. "-" .. filled
+								dotAsset2 = tree.treeUI[dotName]
+								if dotAsset2 and dotAsset2.width <= 0 then dotAsset2 = nil end
+							end
+						end
+
 						SetDrawColor(unpack(connectorColor))
-						DrawImageQuad(tree.assets[connector.type..state].handle, unpack(connector.c))
-						-- Draw reqPoints gate dots on top of the connector
-						local reqPts, parentAlloc = getGateInfo(node1, node2)
-						if reqPts then
-							drawGateDots(connector.c, reqPts, parentAlloc)
+						local lineHandle2 = tree.assets[connector.type..state].handle
+						if dotAsset2 then
+							local dotScale = scale * 0.4
+							local halfDot = m_max(dotAsset2.width, dotAsset2.height) * dotScale / 2
+							local x1, y1 = connector.c[1], connector.c[2]
+							local x2, y2 = connector.c[3], connector.c[4]
+							local x3, y3 = connector.c[5], connector.c[6]
+							local x4, y4 = connector.c[7], connector.c[8]
+							local s1, t1 = connector.c[9], connector.c[10]
+							local s2, t2 = connector.c[11], connector.c[12]
+							local s3, t3 = connector.c[13], connector.c[14]
+							local s4, t4 = connector.c[15], connector.c[16]
+							local smX = (x1 + x2) / 2
+							local smY = (y1 + y2) / 2
+							local emX = (x3 + x4) / 2
+							local emY = (y3 + y4) / 2
+							local lineLen = m_sqrt((emX - smX) * (emX - smX) + (emY - smY) * (emY - smY))
+							local gapRatio = 0
+							if lineLen > 0 then
+								gapRatio = halfDot / lineLen
+							end
+							local gapStart = 0.5 - gapRatio
+							local gapEnd = 0.5 + gapRatio
+							if gapStart > 0.05 then
+								local g = gapStart
+								local mx1 = x1 + (x4 - x1) * g
+								local my1 = y1 + (y4 - y1) * g
+								local mx2 = x2 + (x3 - x2) * g
+								local my2 = y2 + (y3 - y2) * g
+								local ms1 = s1 + (s4 - s1) * g
+								local mt1 = t1 + (t4 - t1) * g
+								local ms2 = s2 + (s3 - s2) * g
+								local mt2 = t2 + (t3 - t2) * g
+								DrawImageQuad(lineHandle2, x1, y1, x2, y2, mx2, my2, mx1, my1, s1, t1, s2, t2, ms2, mt2, ms1, mt1)
+							end
+							if gapEnd < 0.95 then
+								local g = gapEnd
+								local mx1 = x1 + (x4 - x1) * g
+								local my1 = y1 + (y4 - y1) * g
+								local mx2 = x2 + (x3 - x2) * g
+								local my2 = y2 + (y3 - y2) * g
+								local ms1 = s1 + (s4 - s1) * g
+								local mt1 = t1 + (t4 - t1) * g
+								local ms2 = s2 + (s3 - s2) * g
+								local mt2 = t2 + (t3 - t2) * g
+								DrawImageQuad(lineHandle2, mx1, my1, mx2, my2, x3, y3, x4, y4, ms1, mt1, ms2, mt2, s3, t3, s4, t4)
+							end
+							local midX = (smX + emX) / 2
+							local midY = (smY + emY) / 2
+							local dirX = emX - smX
+							local dirY = emY - smY
+							local dirLen = m_sqrt(dirX * dirX + dirY * dirY)
+							if dirLen > 0 then
+								dirX = dirX / dirLen
+								dirY = dirY / dirLen
+							else
+								dirX, dirY = 1, 0
+							end
+							local perpX, perpY = -dirY, dirX
+							local halfW = dotAsset2.width * dotScale / 2
+							local halfH = dotAsset2.height * dotScale / 2
+							local ds1, dt1, ds2, dt2, ds3, dt3, ds4, dt4 = 0, 0, 0, 1, 1, 1, 1, 0
+							if reqPoints2 == 2 and math.abs(dirX) > math.abs(dirY) then
+								ds1, dt1, ds2, dt2, ds3, dt3, ds4, dt4 = 1, 0, 0, 0, 0, 1, 1, 1
+							end
+							SetDrawColor(1, 1, 1)
+							DrawImageQuad(dotAsset2.handle,
+								midX - dirX * halfW - perpX * halfH, midY - dirY * halfW - perpY * halfH,
+								midX - dirX * halfW + perpX * halfH, midY - dirY * halfW + perpY * halfH,
+								midX + dirX * halfW + perpX * halfH, midY + dirY * halfW + perpY * halfH,
+								midX + dirX * halfW - perpX * halfH, midY + dirY * halfW - perpY * halfH,
+								ds1, dt1, ds2, dt2, ds3, dt3, ds4, dt4)
+						else
+							DrawImageQuad(lineHandle2, unpack(connector.c))
 						end
 					end
 				end
@@ -1200,8 +1314,8 @@ function PassiveTreeViewClass:AddNodeTooltip(tooltip, node, build)
 	self:AddNodeName(tooltip, node, build)
 
 	-- Show unmet reqPoints requirements
-	if node.reqFromParent then
-		for parentId, req in pairs(node.reqFromParent) do
+	if node.reqPointsMap then
+		for parentId, req in pairs(node.reqPointsMap) do
 			local parentNode = build.spec.nodes[parentId]
 			if parentNode then
 				local cur = parentNode.alloc or 0
