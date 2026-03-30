@@ -723,6 +723,44 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
                 itemData["containerID"] == 29 or
                 itemData["containerID"] >= 33 and itemData["containerID"] <= 45 or
                 itemData["containerID"] == 123 then
+            -- Debug: dump full byte data for corrupted affix investigation (Amulet=11, Body Armor=3, Relic=12)
+            local cid = itemData["containerID"]
+            if cid == 3 or cid == 11 or cid == 12 then
+                local d = itemData["data"]
+                local slotLabel = (cid == 3 and "BodyArmor") or (cid == 11 and "Amulet") or "Relic"
+                local hexDump = ""
+                for idx = 1, #d do
+                    hexDump = hexDump .. string.format("%02X ", d[idx])
+                end
+                ConPrintf("[CORRUPT-DBG] slot=%s cid=%d dataLen=%d", slotLabel, cid, #d)
+                ConPrintf("[CORRUPT-DBG] rawHex: %s", hexDump)
+                -- Decode known fields
+                ConPrintf("[CORRUPT-DBG] baseTypeID=%d subTypeID=%d rarity=%d", d[4] or -1, d[5] or -1, d[6] or -1)
+                -- Dump implicit ranges (bytes 7-9)
+                ConPrintf("[CORRUPT-DBG] implicitBytes: [7]=%s [8]=%s [9]=%s", tostring(d[7]), tostring(d[8]), tostring(d[9]))
+                -- Dump all 5 known affix slots (bytes 13-28) plus any extra bytes beyond
+                for i = 0, 4 do
+                    local off = 14 + i * 3
+                    if #d >= off + 1 then
+                        local tierByte = d[off - 1] or 0
+                        local idByte = d[off] or 0
+                        local rangeByte = d[off + 1] or 0
+                        local affixId = idByte + (tierByte % 16) * 256
+                        local affixTier = math.floor(tierByte / 16)
+                        ConPrintf("[CORRUPT-DBG]   affixSlot[%d] off=%d-%d bytes=[%02X %02X %02X] affixId=%d tier=%d range=%d",
+                            i, off-1, off+1, tierByte, idByte, rangeByte, affixId, affixTier, rangeByte)
+                    end
+                end
+                -- Dump extra bytes beyond the 5 known affix slots (byte 29+)
+                if #d > 28 then
+                    local extraHex = ""
+                    for idx = 29, #d do
+                        extraHex = extraHex .. string.format("%02X ", d[idx])
+                    end
+                    ConPrintf("[CORRUPT-DBG]   extraBytes[29..%d]: %s", #d, extraHex)
+                end
+            end
+
             local item = {
                 ["inventoryId"] = itemData["containerID"],
             }

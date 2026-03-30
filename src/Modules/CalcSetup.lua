@@ -976,6 +976,10 @@ function calcs.initEnv(build, mode, override, specEnv)
 			env.player.weaponData2 = env.player.itemList["Weapon 2"] and env.player.itemList["Weapon 2"].weaponData and env.player.itemList["Weapon 2"].weaponData[2] or { }
 		end
 
+		-- Compute +skill level bonus from equipment/modDB
+		env.skillLevelBonus = env.modDB:Sum("BASE", nil, "SkillLevel")
+		build.skillLevelBonus = env.skillLevelBonus
+
 		-- Determine main skill group
 		if env.mode == "CALCS" then
 			env.calcsInput.skill_number = m_min(m_max(1, unpack(tableKeys(build.skillsTab.socketGroupList))), env.calcsInput.skill_number or 1)
@@ -1083,6 +1087,25 @@ function calcs.initEnv(build, mode, override, specEnv)
 			}
 			env.player.mainSkill = calcs.createActiveSkill(defaultEffect, { }, env.player)
 			t_insert(env.player.activeSkillList, env.player.mainSkill)
+		end
+
+		-- Set effective skill level multipliers for each specialized skill
+		-- Effective level = allocated tree points + global bonus from "+X Skills" + per-skill bonus from "+X to [SkillName]"
+		-- Note: modDB:Sum with a skillCfg also includes untagged (global) mods, so we subtract
+		-- the global bonus to get only the skill-specific portion.
+		build.perSkillLevelBonus = build.perSkillLevelBonus or {}
+		for index, group in pairs(build.skillsTab.socketGroupList) do
+			if group.grantedEffect and group.grantedEffect.treeId then
+				local allocatedPoints = build.skillsTab:GetUsedSkillPoints(index)
+				-- Sum all SkillLevel mods matching this skill (includes global + skill-specific)
+				local skillCfg = { skillName = group.grantedEffect.name }
+				local totalSkillLevel = env.modDB:Sum("BASE", skillCfg, "SkillLevel")
+				-- Per-skill bonus = total - global (avoid double-counting global)
+				local perSkillBonus = totalSkillLevel - (env.skillLevelBonus or 0)
+				build.perSkillLevelBonus[index] = perSkillBonus
+				local effectiveLevel = allocatedPoints + (env.skillLevelBonus or 0) + perSkillBonus
+				env.modDB.multipliers["SkillLevel_" .. group.grantedEffect.name] = effectiveLevel
+			end
 		end
 
 		-- Build skill modifier lists

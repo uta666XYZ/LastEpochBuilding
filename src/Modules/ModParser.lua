@@ -152,7 +152,11 @@ local modNameList = {
 	-- Misc modifiers
 	["movespeed"] = "MovementSpeed",
 	["movement speed"] = "MovementSpeed",
-	["(%w+) and (%w+) resistance"] = function(d1, d2) return { d1:capitalize() .. "Resist", d2:capitalize() .. "Resist" } end
+	["(%w+) and (%w+) resistance"] = function(d1, d2) return { d1:capitalize() .. "Resist", d2:capitalize() .. "Resist" } end,
+	-- Skill level
+	["skills"] = "SkillLevel",
+	["level of"] = "SkillLevel",
+	["to level of all skills"] = "SkillLevel",
 }
 
 for i,stat in ipairs(LongAttributes) do
@@ -388,6 +392,7 @@ for _, skill in pairs(data.skills) do
 	skillNameList[skill.name:lower()] = { tag = { type = "SkillName", skillName = skill.name } }
 end
 
+
 local preSkillNameList = { }
 
 -- Scan a line for the earliest and longest match from the pattern list
@@ -506,6 +511,13 @@ local function parseMod(line, order)
 	end
 	if order == 1 and not skillTag then
 		skillTag, line = scan(line, skillNameList)
+	end
+
+	-- Fallback: if no modName found but a skill name was matched, treat as skill level
+	-- This handles "+X to [SkillName]" patterns (e.g. "+4 to Erasing Strike")
+	-- skillTag already provides the SkillName tag, so just set the mod name
+	if not modName and modForm == "BASE" and skillTag and skillTag.tag and skillTag.tag.type == "SkillName" then
+		modName = "SkillLevel"
 	end
 
 	-- Scan for flags

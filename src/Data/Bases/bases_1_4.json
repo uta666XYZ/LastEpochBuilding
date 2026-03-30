@@ -11847,7 +11847,7 @@
     "affixEffectModifier": 0.17,
     "implicits": [
       "+(51-83)% Lightning Resistance",
-      "+1 PROP88_TAG0_TAGS0 [UNKNOWN_STAT]",
+      "+1 Skills",
       "{rounding:Integer}(4-5)% less Damage Taken"
     ]
   },
