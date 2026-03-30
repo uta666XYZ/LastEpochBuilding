@@ -122,16 +122,26 @@ local IdolGridControlClass = newClass("IdolGridControl", "Control", "ControlHost
 
 			-- Show/hide based on active altar (or Default-blocked set)
 			local r, c = row, col
+			local gridRef = self  -- capture grid reference for closure
 			slot.shown = function()
 				local altarName = itemsTab.activeAltarLayout
+				local blocked
 				if not altarName or altarName == "Default" then
-					return not (DEFAULT_BLOCKED[r] and DEFAULT_BLOCKED[r][c])
+					blocked = DEFAULT_BLOCKED[r] and DEFAULT_BLOCKED[r][c]
+				else
+					local altar = itemsTab.altarLayouts and itemsTab.altarLayouts[altarName]
+					if not altar or not altar.grid then
+						blocked = DEFAULT_BLOCKED[r] and DEFAULT_BLOCKED[r][c]
+					else
+						blocked = altar.grid[r][c] == 0
+					end
 				end
-				local altar = itemsTab.altarLayouts and itemsTab.altarLayouts[altarName]
-				if not altar or not altar.grid then
-					return not (DEFAULT_BLOCKED[r] and DEFAULT_BLOCKED[r][c])
-				end
-				return altar.grid[r][c] ~= 0
+				if not blocked then return true end
+				-- Blocked cells are normally hidden, but keep them shown when
+				-- covered by a placed idol so hover tooltips work on all cells.
+				local cp = gridRef.cellPrimary
+				if cp[r] and cp[r][c] then return true end
+				return false
 			end
 
 			t_insert(self.controls, slot)
@@ -325,8 +335,13 @@ function IdolGridControlClass:Draw(viewPort)
 			local cx = x + (col - 1) * (cw + CELL_GAP)
 			local cy = y + (row - 1) * (ch + CELL_GAP)
 
-			if isBlocked(row, col) then
+			if isBlocked(row, col) and not (self.cellPrimary[row] and self.cellPrimary[row][col]) then
 				drawBlockedCell(cx, cy, cw, ch)
+			elseif isBlocked(row, col) then
+				-- Blocked cell covered by a placed idol: draw idol background
+				local bg = rarityBg.IDOL or { 0.13, 0.13, 0.13 }
+				SetDrawColor(bg[1], bg[2], bg[3])
+				DrawImage(nil, cx, cy, cw, ch)
 			else
 				local slot = self.itemsTab.slots[slotName]
 				local item = slot and self.itemsTab.items[slot.selItemId]
