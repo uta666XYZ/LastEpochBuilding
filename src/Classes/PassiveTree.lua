@@ -183,6 +183,23 @@ local PassiveTreeClass = newClass("PassiveTree", function(self, treeVersion)
         self:LoadImage(name .. ".png", cdnRoot .. (data[1] or ""), data, not name:match("[OL][ri][bn][ie][tC]") and "ASYNC" or nil)--, not name:match("[OL][ri][bn][ie][tC]") and "MIPMAP" or nil)
     end
 
+    -- Load game-accurate tree UI assets (requirement dots)
+    self.treeUI = { }
+    local function loadTreeUIAsset(name, path)
+        local data = { handle = NewImageHandle(), width = 0, height = 0, [1] = 0, [2] = 0, [3] = 1, [4] = 1 }
+        data.handle:Load(path)
+        data.width, data.height = data.handle:ImageSize()
+        self.treeUI[name] = data
+    end
+    -- Requirement dots (dot-N-M: N = required points, M = filled count)
+    for n = 1, 5 do
+        for m = 0, n do
+            local name = "dot-" .. n .. "-" .. m
+            local path = "Assets/tree/" .. name .. ".png"
+            loadTreeUIAsset(name, path)
+        end
+    end
+
     -- Load sprite sheets and build sprite map
     self.spriteMap = { }
     self.nodeOverlay = {
@@ -279,19 +296,14 @@ local PassiveTreeClass = newClass("PassiveTree", function(self, treeVersion)
         end
     end
 
-    -- Build reqFromParent lookup: for each node, map parentId -> minimum alloc required
-    -- Note: reqPoints array is stored in reverse order relative to in[] in the JSON data,
-    -- so we read reqPoints from the end backwards to match the correct parent.
+    -- Build reqPoints lookup: node.reqPointsMap[parentId] = requiredPoints
+    -- reqPoints array in JSON corresponds 1:1 with the "in" array
     for _, node in pairs(self.nodes) do
-        node.reqFromParent = {}
-        if node["in"] and node.reqPoints then
-            local numIn = #node["in"]
-            local numReq = #node.reqPoints
+        if node.reqPoints and node["in"] then
+            node.reqPointsMap = { }
             for i, parentId in ipairs(node["in"]) do
-                local revIdx = numReq - (i - 1)
-                local req = node.reqPoints[revIdx]
-                if req and req >= 1 then
-                    node.reqFromParent[parentId] = req
+                if node.reqPoints[i] then
+                    node.reqPointsMap[parentId] = node.reqPoints[i]
                 end
             end
         end
