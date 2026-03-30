@@ -548,9 +548,17 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 				{name="Grand Swiftness of Logi", minVal=40.0, maxVal=70.0, implCount=1, impl1="(40-70)% increased Dodge Rating", label="(40-70)% inc. Dodge Rating"},
 			},
 		},
+		["Additional 2"] = {
+			normal = {},
+			grand = {},
+		},
+		["Additional 3"] = {
+			normal = {},
+			grand = {},
+		},
 	}
 
-	local blessingTimelines = {"Fall of the Outcasts", "The Stolen Lance", "The Black Sun", "Blood, Frost, and Death", "Ending the Storm", "Fall of the Empire", "Reign of Dragons", "The Age of Winter", "Spirits of Fire", "The Last Ruin", "Additional"}
+	local blessingTimelines = {"Fall of the Outcasts", "The Stolen Lance", "The Black Sun", "Blood, Frost, and Death", "Ending the Storm", "Fall of the Empire", "Reign of Dragons", "The Age of Winter", "Spirits of Fire", "The Last Ruin", "Additional", "Additional 2", "Additional 3"}
 	self.blessingData = blessingData
 	self.blessingTimelines = blessingTimelines
 	self.blessingControls = {}
