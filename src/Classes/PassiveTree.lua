@@ -279,6 +279,24 @@ local PassiveTreeClass = newClass("PassiveTree", function(self, treeVersion)
         end
     end
 
+    -- Build reqFromParent lookup: for each node, map parentId -> minimum alloc required
+    -- Note: reqPoints array is stored in reverse order relative to in[] in the JSON data,
+    -- so we read reqPoints from the end backwards to match the correct parent.
+    for _, node in pairs(self.nodes) do
+        node.reqFromParent = {}
+        if node["in"] and node.reqPoints then
+            local numIn = #node["in"]
+            local numReq = #node.reqPoints
+            for i, parentId in ipairs(node["in"]) do
+                local revIdx = numReq - (i - 1)
+                local req = node.reqPoints[revIdx]
+                if req and req >= 1 then
+                    node.reqFromParent[parentId] = req
+                end
+            end
+        end
+    end
+
     for classId, class in pairs(self.classes) do
         local startNode = nodeMap[class.startNodeId]
         for _, nodeId in ipairs(startNode.linkedId) do
