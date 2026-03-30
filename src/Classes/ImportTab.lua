@@ -1025,26 +1025,79 @@ function ImportTabClass:ImportItemsAndSkills(charData)
         self.build.itemsTab:DeleteUnused()
     end
 
-    -- Auto-set altar layout if detected
-    --ConPrintf("[IMPORT] altarName=%s", tostring(charData.altarName))
-    if charData.altarName then
-        local altarDrop = self.build.itemsTab.controls.idolAltarSelect
-        if altarDrop then
-            for i, entry in ipairs(altarDrop.list) do
-                if entry.key == charData.altarName then
-                    altarDrop.selIndex = i
-                    if altarDrop.selFunc then
-                        altarDrop.selFunc(i, altarDrop.list[i])
-                    end
-                    self.build.buildFlag = true
-                    break
-                end
-            end
-        end
-    end
+    -- Altar layout is now auto-detected from the equipped Idol Altar item
+    -- via the SetSelItemId wrapper on the Idol Altar slot
 
     for _, itemData in pairsSortByKey(charData.items) do
         self:ImportItem(itemData)
+    end
+
+    -- Auto-populate Omen Idol (Fractured) slots from idols on fractured cells
+    local itemsTab = self.build.itemsTab
+    local altarName = itemsTab.activeAltarLayout
+    local altarLayouts = itemsTab.altarLayouts
+    if altarName and altarName ~= "Default" and altarLayouts and altarLayouts[altarName] then
+        local altarGrid = altarLayouts[altarName].grid
+        if altarGrid then
+            local idolGridSlots = {
+                { "Idol 21", "Idol 1",  "Idol 2",  "Idol 3",  "Idol 22" },
+                { "Idol 4",  "Idol 5",  "Idol 6",  "Idol 7",  "Idol 8"  },
+                { "Idol 9",  "Idol 10", "Idol 23", "Idol 11", "Idol 12" },
+                { "Idol 13", "Idol 14", "Idol 15", "Idol 16", "Idol 17" },
+                { "Idol 24", "Idol 18", "Idol 19", "Idol 20", "Idol 25" },
+            }
+            -- Build cell coverage map: for each cell, find which idol (if any) covers it
+            -- A multi-cell idol anchored at (anchorRow, anchorCol) covers multiple cells
+            local idolDims = {
+                ["Minor Idol"] = {1,1}, ["Small Idol"] = {1,1}, ["Humble Idol"] = {2,1},
+                ["Stout Idol"] = {1,2}, ["Grand Idol"] = {3,1}, ["Large Idol"] = {1,3},
+                ["Ornate Idol"] = {4,1}, ["Huge Idol"] = {1,4}, ["Adorned Idol"] = {2,2},
+            }
+            local cellCoveredBy = {} -- cellCoveredBy[row][col] = { slotName, itemId }
+            for row = 1, 5 do
+                cellCoveredBy[row] = {}
+            end
+            for row = 1, 5 do
+                for col = 1, 5 do
+                    local slotName = idolGridSlots[row][col]
+                    local slot = itemsTab.slots[slotName]
+                    if slot and slot.selItemId and slot.selItemId ~= 0 then
+                        local item = itemsTab.items[slot.selItemId]
+                        local dims = item and idolDims[item.type] or {1, 1}
+                        for dr = 0, dims[2] - 1 do
+                            for dc = 0, dims[1] - 1 do
+                                local cr, cc = row + dr, col + dc
+                                if cr <= 5 and cc <= 5 and not cellCoveredBy[cr][cc] then
+                                    cellCoveredBy[cr][cc] = { slotName = slotName, itemId = slot.selItemId }
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+            -- Collect idols covering fractured cells, deduplicated, sorted by slot number
+            local fracturedIdols = {}
+            local seen = {}
+            for row = 1, 5 do
+                for col = 1, 5 do
+                    if altarGrid[row] and altarGrid[row][col] == 2 and cellCoveredBy[row][col] then
+                        local info = cellCoveredBy[row][col]
+                        if not seen[info.itemId] then
+                            seen[info.itemId] = true
+                            local slotNum = tonumber(info.slotName:match("%d+"))
+                            table.insert(fracturedIdols, { slotNum = slotNum, itemId = info.itemId })
+                        end
+                    end
+                end
+            end
+            table.sort(fracturedIdols, function(a, b) return a.slotNum < b.slotNum end)
+            for i, fi in ipairs(fracturedIdols) do
+                local omenSlot = itemsTab.slots["Omen Idol " .. i]
+                if omenSlot then
+                    omenSlot:SetSelItemId(fi.itemId)
+                end
+            end
+        end
     end
 
     -- Restore original data pointers
