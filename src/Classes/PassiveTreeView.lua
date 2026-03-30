@@ -11,6 +11,7 @@ local t_remove = table.remove
 local m_min = math.min
 local m_max = math.max
 local m_floor = math.floor
+local m_sqrt = math.sqrt
 local band = bit.band
 local b_rshift = bit.rshift
 
@@ -693,8 +694,110 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 				-- Fade out lines in ascendancy classes other than the current one
 				setConnectorColor(0.75, 0.75, 0.75)
 			end
+			-- Check for requirement dots
+			local reqPoints, dotAsset, dotFilled
+			if tree.treeUI then
+				reqPoints = node2.reqPointsMap and node2.reqPointsMap[node1.id]
+				if not reqPoints then
+					reqPoints = node1.reqPointsMap and node1.reqPointsMap[node2.id]
+				end
+				if reqPoints and reqPoints > 0 and reqPoints <= 5 then
+					local parentAlloc = 0
+					if node2.reqPointsMap and node2.reqPointsMap[node1.id] then
+						parentAlloc = node1.alloc or 0
+					elseif node1.reqPointsMap and node1.reqPointsMap[node2.id] then
+						parentAlloc = node2.alloc or 0
+					end
+					dotFilled = m_min(parentAlloc, reqPoints)
+					local dotName = "dot-" .. reqPoints .. "-" .. dotFilled
+					dotAsset = tree.treeUI[dotName]
+					if dotAsset and dotAsset.width <= 0 then dotAsset = nil end
+				end
+			end
+
 			SetDrawColor(unpack(connectorColor))
-			DrawImageQuad(tree.assets[connector.type..state].handle, unpack(connector.c))
+			local lineHandle = tree.assets[connector.type..state].handle
+			if dotAsset then
+				-- Split the connector line around the dot gap
+				local dotScale = scale * 0.4
+				local halfDot = m_max(dotAsset.width, dotAsset.height) * dotScale / 2
+				-- gap ratio: what fraction of the line length the dot occupies
+				local x1, y1 = connector.c[1], connector.c[2]
+				local x2, y2 = connector.c[3], connector.c[4]
+				local x3, y3 = connector.c[5], connector.c[6]
+				local x4, y4 = connector.c[7], connector.c[8]
+				local s1, t1 = connector.c[9], connector.c[10]
+				local s2, t2 = connector.c[11], connector.c[12]
+				local s3, t3 = connector.c[13], connector.c[14]
+				local s4, t4 = connector.c[15], connector.c[16]
+				-- Line length in screen space
+				local smX = (x1 + x2) / 2
+				local smY = (y1 + y2) / 2
+				local emX = (x3 + x4) / 2
+				local emY = (y3 + y4) / 2
+				local lineLen = m_sqrt((emX - smX) * (emX - smX) + (emY - smY) * (emY - smY))
+				local gapRatio = 0
+				if lineLen > 0 then
+					gapRatio = halfDot / lineLen
+				end
+				local gapStart = 0.5 - gapRatio
+				local gapEnd = 0.5 + gapRatio
+				if gapStart > 0.05 then
+					-- First segment: start to gapStart
+					local g = gapStart
+					local mx1 = x1 + (x4 - x1) * g
+					local my1 = y1 + (y4 - y1) * g
+					local mx2 = x2 + (x3 - x2) * g
+					local my2 = y2 + (y3 - y2) * g
+					local ms1 = s1 + (s4 - s1) * g
+					local mt1 = t1 + (t4 - t1) * g
+					local ms2 = s2 + (s3 - s2) * g
+					local mt2 = t2 + (t3 - t2) * g
+					DrawImageQuad(lineHandle, x1, y1, x2, y2, mx2, my2, mx1, my1, s1, t1, s2, t2, ms2, mt2, ms1, mt1)
+				end
+				if gapEnd < 0.95 then
+					-- Second segment: gapEnd to end
+					local g = gapEnd
+					local mx1 = x1 + (x4 - x1) * g
+					local my1 = y1 + (y4 - y1) * g
+					local mx2 = x2 + (x3 - x2) * g
+					local my2 = y2 + (y3 - y2) * g
+					local ms1 = s1 + (s4 - s1) * g
+					local mt1 = t1 + (t4 - t1) * g
+					local ms2 = s2 + (s3 - s2) * g
+					local mt2 = t2 + (t3 - t2) * g
+					DrawImageQuad(lineHandle, mx1, my1, mx2, my2, x3, y3, x4, y4, ms1, mt1, ms2, mt2, s3, t3, s4, t4)
+				end
+				-- Draw the dot
+				local midX = (smX + emX) / 2
+				local midY = (smY + emY) / 2
+				local dirX = emX - smX
+				local dirY = emY - smY
+				local dirLen = m_sqrt(dirX * dirX + dirY * dirY)
+				if dirLen > 0 then
+					dirX = dirX / dirLen
+					dirY = dirY / dirLen
+				else
+					dirX, dirY = 1, 0
+				end
+				local perpX, perpY = -dirY, dirX
+				local halfW = dotAsset.width * dotScale / 2
+				local halfH = dotAsset.height * dotScale / 2
+				-- dot-2 image has vertical dot layout; rotate texture when line is more horizontal
+				local ds1, dt1, ds2, dt2, ds3, dt3, ds4, dt4 = 0, 0, 0, 1, 1, 1, 1, 0
+				if reqPoints == 2 and math.abs(dirX) > math.abs(dirY) then
+					ds1, dt1, ds2, dt2, ds3, dt3, ds4, dt4 = 1, 0, 0, 0, 0, 1, 1, 1
+				end
+				SetDrawColor(1, 1, 1)
+				DrawImageQuad(dotAsset.handle,
+					midX - dirX * halfW - perpX * halfH, midY - dirY * halfW - perpY * halfH,
+					midX - dirX * halfW + perpX * halfH, midY - dirY * halfW + perpY * halfH,
+					midX + dirX * halfW + perpX * halfH, midY + dirY * halfW + perpY * halfH,
+					midX + dirX * halfW - perpX * halfH, midY + dirY * halfW - perpY * halfH,
+					ds1, dt1, ds2, dt2, ds3, dt3, ds4, dt4)
+			else
+				DrawImageQuad(lineHandle, unpack(connector.c))
+			end
 		end
 	end
 
@@ -727,10 +830,9 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 					-- Check if vert data exists for this state
 					local vert = connector.vert and connector.vert[state]
 					if not vert then
-						-- Try fallback states
 						vert = connector.vert and (connector.vert["Normal"] or connector.vert["Active"] or connector.vert["Intermediate"])
 					end
-					
+
 					if vert and tree.assets[connector.type..state] then
 						connector.c[1], connector.c[2] = treeToScreen(vert[1], vert[2])
 						connector.c[3], connector.c[4] = treeToScreen(vert[3], vert[4])
@@ -742,8 +844,103 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 						elseif connector.ascendancyName and connector.ascendancyName ~= spec.curAscendClassName then
 							setConnectorColor(0.75, 0.75, 0.75)
 						end
+						-- Check for requirement dots
+						local reqPoints2, dotAsset2
+						if tree.treeUI then
+							reqPoints2 = node2.reqPointsMap and node2.reqPointsMap[node1.id]
+							if not reqPoints2 then
+								reqPoints2 = node1.reqPointsMap and node1.reqPointsMap[node2.id]
+							end
+							if reqPoints2 and reqPoints2 > 0 and reqPoints2 <= 5 then
+								local parentAlloc = 0
+								if node2.reqPointsMap and node2.reqPointsMap[node1.id] then
+									parentAlloc = node1.alloc or 0
+								elseif node1.reqPointsMap and node1.reqPointsMap[node2.id] then
+									parentAlloc = node2.alloc or 0
+								end
+								local filled = m_min(parentAlloc, reqPoints2)
+								local dotName = "dot-" .. reqPoints2 .. "-" .. filled
+								dotAsset2 = tree.treeUI[dotName]
+								if dotAsset2 and dotAsset2.width <= 0 then dotAsset2 = nil end
+							end
+						end
+
 						SetDrawColor(unpack(connectorColor))
-						DrawImageQuad(tree.assets[connector.type..state].handle, unpack(connector.c))
+						local lineHandle2 = tree.assets[connector.type..state].handle
+						if dotAsset2 then
+							local dotScale = scale * 0.4
+							local halfDot = m_max(dotAsset2.width, dotAsset2.height) * dotScale / 2
+							local x1, y1 = connector.c[1], connector.c[2]
+							local x2, y2 = connector.c[3], connector.c[4]
+							local x3, y3 = connector.c[5], connector.c[6]
+							local x4, y4 = connector.c[7], connector.c[8]
+							local s1, t1 = connector.c[9], connector.c[10]
+							local s2, t2 = connector.c[11], connector.c[12]
+							local s3, t3 = connector.c[13], connector.c[14]
+							local s4, t4 = connector.c[15], connector.c[16]
+							local smX = (x1 + x2) / 2
+							local smY = (y1 + y2) / 2
+							local emX = (x3 + x4) / 2
+							local emY = (y3 + y4) / 2
+							local lineLen = m_sqrt((emX - smX) * (emX - smX) + (emY - smY) * (emY - smY))
+							local gapRatio = 0
+							if lineLen > 0 then
+								gapRatio = halfDot / lineLen
+							end
+							local gapStart = 0.5 - gapRatio
+							local gapEnd = 0.5 + gapRatio
+							if gapStart > 0.05 then
+								local g = gapStart
+								local mx1 = x1 + (x4 - x1) * g
+								local my1 = y1 + (y4 - y1) * g
+								local mx2 = x2 + (x3 - x2) * g
+								local my2 = y2 + (y3 - y2) * g
+								local ms1 = s1 + (s4 - s1) * g
+								local mt1 = t1 + (t4 - t1) * g
+								local ms2 = s2 + (s3 - s2) * g
+								local mt2 = t2 + (t3 - t2) * g
+								DrawImageQuad(lineHandle2, x1, y1, x2, y2, mx2, my2, mx1, my1, s1, t1, s2, t2, ms2, mt2, ms1, mt1)
+							end
+							if gapEnd < 0.95 then
+								local g = gapEnd
+								local mx1 = x1 + (x4 - x1) * g
+								local my1 = y1 + (y4 - y1) * g
+								local mx2 = x2 + (x3 - x2) * g
+								local my2 = y2 + (y3 - y2) * g
+								local ms1 = s1 + (s4 - s1) * g
+								local mt1 = t1 + (t4 - t1) * g
+								local ms2 = s2 + (s3 - s2) * g
+								local mt2 = t2 + (t3 - t2) * g
+								DrawImageQuad(lineHandle2, mx1, my1, mx2, my2, x3, y3, x4, y4, ms1, mt1, ms2, mt2, s3, t3, s4, t4)
+							end
+							local midX = (smX + emX) / 2
+							local midY = (smY + emY) / 2
+							local dirX = emX - smX
+							local dirY = emY - smY
+							local dirLen = m_sqrt(dirX * dirX + dirY * dirY)
+							if dirLen > 0 then
+								dirX = dirX / dirLen
+								dirY = dirY / dirLen
+							else
+								dirX, dirY = 1, 0
+							end
+							local perpX, perpY = -dirY, dirX
+							local halfW = dotAsset2.width * dotScale / 2
+							local halfH = dotAsset2.height * dotScale / 2
+							local ds1, dt1, ds2, dt2, ds3, dt3, ds4, dt4 = 0, 0, 0, 1, 1, 1, 1, 0
+							if reqPoints2 == 2 and math.abs(dirX) > math.abs(dirY) then
+								ds1, dt1, ds2, dt2, ds3, dt3, ds4, dt4 = 1, 0, 0, 0, 0, 1, 1, 1
+							end
+							SetDrawColor(1, 1, 1)
+							DrawImageQuad(dotAsset2.handle,
+								midX - dirX * halfW - perpX * halfH, midY - dirY * halfW - perpY * halfH,
+								midX - dirX * halfW + perpX * halfH, midY - dirY * halfW + perpY * halfH,
+								midX + dirX * halfW + perpX * halfH, midY + dirY * halfW + perpY * halfH,
+								midX + dirX * halfW - perpX * halfH, midY + dirY * halfW - perpY * halfH,
+								ds1, dt1, ds2, dt2, ds3, dt3, ds4, dt4)
+						else
+							DrawImageQuad(lineHandle2, unpack(connector.c))
+						end
 					end
 				end
 			else
@@ -1007,10 +1204,8 @@ end
 
 -- Zoom the tree in or out
 function PassiveTreeViewClass:Zoom(level, viewPort)
-	-- Passive tree zoom range: min=14 (2x of prev min 10), max=18 (0.5x of prev max 22)
-	-- Skill tree zoom range: 0-30 (unchanged)
 	local minLevel = (self.filterMode == "skill") and 0 or 14
-	local maxLevel = (self.filterMode == "skill") and 30 or 18
+	local maxLevel = (self.filterMode == "skill") and 38 or 24
 	self.zoomLevel = m_max(minLevel, m_min(maxLevel, self.zoomLevel + level))
 	local oldZoom = self.zoom
 	self.zoom = 1.2 ^ self.zoomLevel
