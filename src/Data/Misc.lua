@@ -15,7 +15,6 @@ data.gameConstants = {
 	["MonsterEvasionIncremental"] = 16,
 	["MonsterEvasionIncrementalDexterity"] = 16,
 	["MonsterEvasionImprovement"] = 2.12,
-	["EnergyShieldRatioOfLife"] = 40,
 	["OldLeechModsEffectiveness"] = 20,
 	["AscendancyRespecCost"] = 5,
 	["SkillDamageBaseEffectiveness"] = 3.885209,

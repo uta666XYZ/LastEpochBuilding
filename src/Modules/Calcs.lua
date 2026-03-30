@@ -319,11 +319,10 @@ function calcs.buildOutput(build, mode)
 				calcs.buildActiveSkill(env, "CACHE", skill)
 			end
 			if GlobalCache.cachedData["CACHE"][uuid] then
-				output.EnergyShieldProtectsMana = env.modDB:Flag(nil, "EnergyShieldProtectsMana")
-				for pool, costResource in pairs({["LifeUnreserved"] = "LifeCost", ["ManaUnreserved"] = "ManaCost", ["Rage"] = "RageCost", ["EnergyShield"] = "ESCost"}) do
+				for pool, costResource in pairs({["LifeUnreserved"] = "LifeCost", ["ManaUnreserved"] = "ManaCost", ["Rage"] = "RageCost"}) do
 					local cachedCost = GlobalCache.cachedData["CACHE"][uuid].Env.player.output[costResource]
 					if cachedCost then
-						local totalPool = (output.EnergyShieldProtectsMana and costResource == "ManaCost" and output["EnergyShield"] or 0) + (output[pool] or 0)
+						local totalPool = output[pool] or 0
 						if totalPool < cachedCost then
 							output[costResource.."Warning"] = output[costResource.."Warning"] or {}
 							t_insert(output[costResource.."Warning"], skill.activeEffect.grantedEffect.name)
@@ -351,7 +350,7 @@ function calcs.buildOutput(build, mode)
 		output["Spec:ManaInc"] = env.modDB:Sum("INC", specCfg, "Mana")
 		output["Spec:ArmourInc"] = env.modDB:Sum("INC", specCfg, "Armour", "ArmourAndEvasion")
 		output["Spec:EvasionInc"] = env.modDB:Sum("INC", specCfg, "Evasion", "ArmourAndEvasion")
-		output["Spec:EnergyShieldInc"] = env.modDB:Sum("INC", specCfg, "EnergyShield")
+		output["Spec:WardInc"] = env.modDB:Sum("INC", specCfg, "Ward")
 
 		env.skillsUsed = { }
 		for _, activeSkill in ipairs(env.player.activeSkillList) do
