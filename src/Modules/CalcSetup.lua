@@ -527,12 +527,6 @@ function calcs.initEnv(build, mode, override, specEnv)
 			if item and item.baseModList and item.baseModList:Flag(nil, "CanExplode") then
 				t_insert(env.explodeSources, item)
 			end
-			if slot.weaponSet and slot.weaponSet ~= (build.itemsTab.activeItemSet.useSecondWeaponSet and 2 or 1) then
-				item = nil
-			end
-			if slot.weaponSet == 2 and build.itemsTab.activeItemSet.useSecondWeaponSet then
-				slotName = slotName:gsub(" Swap","")
-			end
 			items[slotName] = item
 		end
 
