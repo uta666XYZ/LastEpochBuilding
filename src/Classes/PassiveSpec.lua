@@ -526,21 +526,28 @@ function PassiveSpecClass:FindStartFromNode(node, visited, noAscend)
 		-- Either:
 		--  - the other node is a start node, or
 		--  - there is a path to a start node through the other node which didn't pass through any nodes which have already been visited
-		local startIndex = #visited + 1
-		if other.alloc > 0 and
-		  (other.type == "ClassStart" or other.type == "AscendClassStart" or
-		    (not other.visited and node.type ~= "Mastery" and self:FindStartFromNode(other, visited, noAscend))
-		  ) then
-			if node.ascendancyName and not other.ascendancyName then
-				-- Pathing out of Ascendant, un-visit the outside nodes
-				for i = startIndex, #visited do
-					visited[i].visited = false
-					visited[i] = nil
+		-- Also skip edges where the reqPoints gate is no longer satisfied
+		-- (e.g. 'node' requires N points from 'other', but other.alloc < N)
+		local reqPts = node.reqFromParent and node.reqFromParent[other.id]
+		if reqPts and other.alloc < reqPts then
+			-- Gate not met: don't trace connection through this parent
+		else
+			local startIndex = #visited + 1
+			if other.alloc > 0 and
+			  (other.type == "ClassStart" or other.type == "AscendClassStart" or
+			    (not other.visited and node.type ~= "Mastery" and self:FindStartFromNode(other, visited, noAscend))
+			  ) then
+				if node.ascendancyName and not other.ascendancyName then
+					-- Pathing out of Ascendant, un-visit the outside nodes
+					for i = startIndex, #visited do
+						visited[i].visited = false
+						visited[i] = nil
+					end
+				elseif not noAscend or other.type ~= "AscendClassStart" then
+					return true
 				end
-			elseif not noAscend or other.type ~= "AscendClassStart" then
-				return true
 			end
-		end
+		end -- end reqPoints gate check
 	end
 end
 
@@ -564,7 +571,11 @@ function PassiveSpecClass:BuildPathFromNode(root)
 			--    The one exception to that rule is that a path may start from an ascendancy node and pass into the main tree
 			--    This permits pathing from the Ascendant 'Path of the X' nodes into the respective class start areas
 			-- 3. They must not pass away from mastery nodes
-			if not other.pathDist then
+			-- 4. They must not cross a reqPoints gate that is not yet satisfied
+			local reqPts = other.reqFromParent and other.reqFromParent[node.id]
+			if reqPts and node.alloc < reqPts then
+				-- Gate not satisfied: node does not have enough allocated points to unlock 'other'
+			elseif not other.pathDist then
 				ConPrintTable(other, true)
 			elseif node.type ~= "Mastery" and other.type ~= "ClassStart" and other.type ~= "AscendClassStart" and other.pathDist > curDist and (node.ascendancyName == other.ascendancyName or (curDist == 1 and not other.ascendancyName)) then
 				-- The shortest path to the other node is through the current node

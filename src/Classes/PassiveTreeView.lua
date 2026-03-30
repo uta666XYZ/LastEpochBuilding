@@ -40,6 +40,10 @@ local PassiveTreeViewClass = newClass("PassiveTreeView", function(self)
 	self.fixedSizeMode = false
 	self.fixedTreeSize = 400  -- Fixed tree viewport size in pixels
 	
+	-- Load reqPoints gate dot image
+	self.dotFilled = NewImageHandle()
+	self.dotFilled:Load("TreeData/PassiveBonusFilled.png")
+
 	-- Disable dragging (for LE-style fixed position trees)
 	self.disableDragging = false
 	
@@ -397,7 +401,7 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 				end
 				-- Scale with zoom: multiply baseScale by zoom ratio
 				scale = self.skillBaseScale * (self.zoom / self.skillRefZoom)
-				scale = m_max(0.04, m_min(scale, 6.0))
+				scale = m_max(0.04, m_min(scale, 12.0))
 				
 				-- Center the tree in the viewport, then apply pan offset
 				local treeCenterX = (minX + maxX) / 2
@@ -560,6 +564,7 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 					if hoverNode.alloc < hoverNode.maxPoints then
 						hoverNode.alloc = hoverNode.alloc + 1
 						tree:ProcessStats(hoverNode)
+						spec:BuildAllDependsAndPaths()
 						spec:AddUndoState()
 						build.buildFlag = true
 					end
@@ -576,6 +581,7 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 			if hoverNode.alloc > 1 then
 				hoverNode.alloc = hoverNode.alloc - 1
 				tree:ProcessStats(hoverNode)
+				spec:BuildAllDependsAndPaths()
 				spec:AddUndoState()
 				build.buildFlag = true
 			else
@@ -641,6 +647,78 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 		end
 		return state
 	end
+	-- Returns true if the edge between n1 and n2 has an unmet reqPoints gate
+	local function isGatedUnmet(n1, n2)
+		local req = n2.reqFromParent and n2.reqFromParent[n1.id]
+		if req and n1.alloc < req then return true end
+		req = n1.reqFromParent and n1.reqFromParent[n2.id]
+		if req and n2.alloc < req then return true end
+		return false
+	end
+
+	-- Get the reqPoints gate info for a connector (returns reqPts, parentAlloc or nil)
+	local function getGateInfo(n1, n2)
+		local req = n2.reqFromParent and n2.reqFromParent[n1.id]
+		if req then return req, n1.alloc end
+		req = n1.reqFromParent and n1.reqFromParent[n2.id]
+		if req then return req, n2.alloc end
+		return nil
+	end
+
+	-- Dot layout patterns per reqPoints count (game-style)
+	-- Each entry is a list of {along, perp} offsets from center, in spacing units
+	-- req 1:   *         req 2: * *       req 3: * * *
+	-- req 4: * *         req 5:   *
+	--        * *                * * *
+	--                            *
+	local dotLayouts = {
+		[1] = { {0, 0} },
+		[2] = { {0, -0.5}, {0, 0.5} },
+		[3] = { {-1, 0}, {0, 0}, {1, 0} },
+		[4] = { {-0.5, -0.5}, {0.5, -0.5}, {-0.5, 0.5}, {0.5, 0.5} },
+		[5] = { {0, -1}, {-1, 0}, {0, 0}, {1, 0}, {0, 1} },
+	}
+
+	-- Draw reqPoints gate dots along a connector line (LETools/Maxroll style)
+	-- screenCoords: the connector.c array with screen-space vertex coords (1-8)
+	local function drawGateDots(screenCoords, reqPts, parentAlloc)
+		if not reqPts or reqPts < 1 then return end
+		local layout = dotLayouts[reqPts]
+		if not layout then return end
+		-- Midpoints of the two long edges of the connector quad
+		local mx1 = (screenCoords[1] + screenCoords[7]) / 2
+		local my1 = (screenCoords[2] + screenCoords[8]) / 2
+		local mx2 = (screenCoords[3] + screenCoords[5]) / 2
+		local my2 = (screenCoords[4] + screenCoords[6]) / 2
+		-- Center of the connector
+		local cx = (mx1 + mx2) / 2
+		local cy = (my1 + my2) / 2
+		-- Direction along the connector (from node1 side to node2 side)
+		local dx = (screenCoords[7] - screenCoords[1] + screenCoords[5] - screenCoords[3]) / 2
+		local dy = (screenCoords[8] - screenCoords[2] + screenCoords[6] - screenCoords[4]) / 2
+		local len = m_max((dx * dx + dy * dy) ^ 0.5, 1)
+		dx = dx / len
+		dy = dy / len
+		-- Perpendicular direction (rotated 90 degrees)
+		local px_dir, py_dir = -dy, dx
+		local dotRadius = m_max(25 * scale, 3)
+		local spacing = dotRadius * 1.5
+		for i, offsets in ipairs(layout) do
+			local along, perp = offsets[1], offsets[2]
+			local dotX = cx + dx * along * spacing + px_dir * perp * spacing
+			local dotY = cy + dy * along * spacing + py_dir * perp * spacing
+			if i <= parentAlloc then
+				-- Filled: gold cream (#f0e6cd)
+				SetDrawColor(0.94, 0.90, 0.80)
+			else
+				-- Unfilled: dark (#444)
+				SetDrawColor(0.27, 0.27, 0.27)
+			end
+			DrawImage(self.dotFilled, dotX - dotRadius, dotY - dotRadius, dotRadius * 2, dotRadius * 2)
+		end
+		SetDrawColor(1, 1, 1)
+	end
+
 	local function renderConnector(connector)
 		local node1, node2 = spec.nodes[connector.nodeId1], spec.nodes[connector.nodeId2]
 		if not node1 or not node2 then return end
@@ -692,9 +770,17 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 			elseif connector.ascendancyName and connector.ascendancyName ~= spec.curAscendClassName then
 				-- Fade out lines in ascendancy classes other than the current one
 				setConnectorColor(0.75, 0.75, 0.75)
+			elseif state ~= "Active" and isGatedUnmet(node1, node2) then
+				-- Unmet reqPoints gate: dark brown (#342a27) - LETools reference
+				setConnectorColor(0.20, 0.16, 0.15)
 			end
 			SetDrawColor(unpack(connectorColor))
 			DrawImageQuad(tree.assets[connector.type..state].handle, unpack(connector.c))
+			-- Draw reqPoints gate dots on top of the connector
+			local reqPts, parentAlloc = getGateInfo(node1, node2)
+			if reqPts then
+				drawGateDots(connector.c, reqPts, parentAlloc)
+			end
 		end
 	end
 
@@ -741,9 +827,16 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 							setConnectorColor(1, 0, 0)
 						elseif connector.ascendancyName and connector.ascendancyName ~= spec.curAscendClassName then
 							setConnectorColor(0.75, 0.75, 0.75)
+						elseif state ~= "Active" and isGatedUnmet(node1, node2) then
+							setConnectorColor(1, 0.6, 0)
 						end
 						SetDrawColor(unpack(connectorColor))
 						DrawImageQuad(tree.assets[connector.type..state].handle, unpack(connector.c))
+						-- Draw reqPoints gate dots on top of the connector
+						local reqPts, parentAlloc = getGateInfo(node1, node2)
+						if reqPts then
+							drawGateDots(connector.c, reqPts, parentAlloc)
+						end
 					end
 				end
 			else
@@ -1007,10 +1100,8 @@ end
 
 -- Zoom the tree in or out
 function PassiveTreeViewClass:Zoom(level, viewPort)
-	-- Passive tree zoom range: min=14 (2x of prev min 10), max=18 (0.5x of prev max 22)
-	-- Skill tree zoom range: 0-30 (unchanged)
 	local minLevel = (self.filterMode == "skill") and 0 or 14
-	local maxLevel = (self.filterMode == "skill") and 30 or 18
+	local maxLevel = (self.filterMode == "skill") and 38 or 24
 	self.zoomLevel = m_max(minLevel, m_min(maxLevel, self.zoomLevel + level))
 	local oldZoom = self.zoom
 	self.zoom = 1.2 ^ self.zoomLevel
@@ -1107,6 +1198,20 @@ end
 function PassiveTreeViewClass:AddNodeTooltip(tooltip, node, build)
 	-- Node name
 	self:AddNodeName(tooltip, node, build)
+
+	-- Show unmet reqPoints requirements
+	if node.reqFromParent then
+		for parentId, req in pairs(node.reqFromParent) do
+			local parentNode = build.spec.nodes[parentId]
+			if parentNode then
+				local cur = parentNode.alloc or 0
+				if cur < req then
+					tooltip:AddLine(16, colorCodes.WARNING .. "Requires " .. req .. " points in " .. parentNode.dn .. " (" .. cur .. "/" .. req .. " allocated)")
+				end
+			end
+		end
+	end
+
 	if launch.devModeAlt then
 		if node.power and node.power.offence then
 			-- Power debugging info
