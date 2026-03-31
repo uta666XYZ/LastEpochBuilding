@@ -1672,6 +1672,33 @@ function calcs.offence(env, actor, activeSkill)
 	output.EnemyTimeRotDuration   = calcLib.mod(skillModList, skillCfg, "EnemyTimeRotDuration", "Duration")
 	output.EnemyStunDuration      = calcLib.mod(skillModList, skillCfg, "EnemyStunDuration", "Duration")
 	output.EnemyArmorShredDuration= calcLib.mod(skillModList, skillCfg, "EnemyArmorShredDuration", "Duration")
+	output.EnemyDoomDuration      = calcLib.mod(skillModList, skillCfg, "EnemyDoomDuration", "Duration")
+	output.EnemyDamnedDuration    = calcLib.mod(skillModList, skillCfg, "EnemyDamnedDuration", "Duration")
+	output.EnemySlowDuration      = calcLib.mod(skillModList, skillCfg, "EnemySlowDuration", "Duration")
+	output.EnemyFrailtyDuration   = calcLib.mod(skillModList, skillCfg, "EnemyFrailtyDuration", "Duration")
+	output.EnemyBlindDuration     = calcLib.mod(skillModList, skillCfg, "EnemyBlindDuration", "Duration")
+	output.EnemyPlagueDuration    = calcLib.mod(skillModList, skillCfg, "EnemyPlagueDuration", "Duration")
+	output.EnemyWitchfireDuration       = calcLib.mod(skillModList, skillCfg, "EnemyWitchfireDuration", "Duration")
+	output.EnemySpreadingFlamesDuration = calcLib.mod(skillModList, skillCfg, "EnemySpreadingFlamesDuration", "Duration")
+	output.EnemyFutureStrikeDuration    = calcLib.mod(skillModList, skillCfg, "EnemyFutureStrikeDuration", "Duration")
+	output.EnemyAbyssalDecayDuration    = calcLib.mod(skillModList, skillCfg, "EnemyAbyssalDecayDuration", "Duration")
+	output.EnemySpiritPlagueDuration    = calcLib.mod(skillModList, skillCfg, "EnemySpiritPlagueDuration", "Duration")
+	-- Curse durations
+	output.EnemyBoneCurseDuration       = calcLib.mod(skillModList, skillCfg, "EnemyBoneCurseDuration", "Duration")
+	output.EnemyTormentDuration         = calcLib.mod(skillModList, skillCfg, "EnemyTormentDuration", "Duration")
+	output.EnemyDecrepifyDuration       = calcLib.mod(skillModList, skillCfg, "EnemyDecrepifyDuration", "Duration")
+	output.EnemyAnguishDuration         = calcLib.mod(skillModList, skillCfg, "EnemyAnguishDuration", "Duration")
+	output.EnemyPenanceDuration         = calcLib.mod(skillModList, skillCfg, "EnemyPenanceDuration", "Duration")
+	output.EnemyAcidSkinDuration        = calcLib.mod(skillModList, skillCfg, "EnemyAcidSkinDuration", "Duration")
+	output.EnemyExposedFleshDuration    = calcLib.mod(skillModList, skillCfg, "EnemyExposedFleshDuration", "Duration")
+	-- Skill-specific ailment durations
+	output.EnemySerpentVenomDuration    = calcLib.mod(skillModList, skillCfg, "EnemySerpentVenomDuration", "Duration")
+	output.EnemyHemorrhageDuration      = calcLib.mod(skillModList, skillCfg, "EnemyHemorrhageDuration", "Duration")
+	output.EnemyRavageDuration          = calcLib.mod(skillModList, skillCfg, "EnemyRavageDuration", "Duration")
+	-- Debuff durations
+	output.EnemyCritVulnDuration        = calcLib.mod(skillModList, skillCfg, "EnemyCriticalVulnerabilityDuration", "Duration")
+	output.EnemyMarkedForDeathDuration  = calcLib.mod(skillModList, skillCfg, "EnemyMarkedForDeathDuration", "Duration")
+	output.EnemyStaggerDuration         = calcLib.mod(skillModList, skillCfg, "EnemyStaggerDuration", "Duration")
 
 	-- LE Ailment Chances (player applies to enemy) --
 	output.BleedChance     = m_min(modDB:Sum("BASE", skillCfg, "BleedChance"), 100)
@@ -1687,12 +1714,115 @@ function calcs.offence(env, actor, activeSkill)
 	output.BlindChance     = m_min(modDB:Sum("BASE", skillCfg, "BlindChance"), 100)
 	output.SlowChance      = m_min(modDB:Sum("BASE", skillCfg, "SlowChance"), 100)
 	output.FrailtyChance   = m_min(modDB:Sum("BASE", skillCfg, "FrailtyChance"), 100)
+	output.DoomChance      = m_min(modDB:Sum("BASE", skillCfg, "DoomChance"), 100)
+	output.DamnedChance    = m_min(modDB:Sum("BASE", skillCfg, "DamnedChance"), 100)
+	output.PlagueChance           = m_min(modDB:Sum("BASE", skillCfg, "PlagueChance"), 100)
+	output.WitchfireChance        = m_min(modDB:Sum("BASE", skillCfg, "WitchfireChance"), 100)
+	output.SpreadingFlamesChance  = m_min(modDB:Sum("BASE", skillCfg, "SpreadingFlamesChance"), 100)
+	output.FutureStrikeChance     = m_min(modDB:Sum("BASE", skillCfg, "FutureStrikeChance"), 100)
+	output.AbyssalDecayChance     = m_min(modDB:Sum("BASE", skillCfg, "AbyssalDecayChance"), 100)
+	output.SpiritPlagueChance     = m_min(modDB:Sum("BASE", skillCfg, "SpiritPlagueChance"), 100)
+	-- Curse chances
+	output.BoneCurseChance        = m_min(modDB:Sum("BASE", skillCfg, "BoneCurseChance"), 100)
+	output.TormentChance          = m_min(modDB:Sum("BASE", skillCfg, "TormentChance"), 100)
+	output.DecrepifyChance        = m_min(modDB:Sum("BASE", skillCfg, "DecrepifyChance"), 100)
+	output.AnguishChance          = m_min(modDB:Sum("BASE", skillCfg, "AnguishChance"), 100)
+	output.PenanceChance          = m_min(modDB:Sum("BASE", skillCfg, "PenanceChance"), 100)
+	output.AcidSkinChance         = m_min(modDB:Sum("BASE", skillCfg, "AcidSkinChance"), 100)
+	output.ExposedFleshChance     = m_min(modDB:Sum("BASE", skillCfg, "ExposedFleshChance"), 100)
+	-- Skill-specific ailment chances
+	output.SerpentVenomChance     = m_min(modDB:Sum("BASE", skillCfg, "SerpentVenomChance"), 100)
+	output.HemorrhageChance       = m_min(modDB:Sum("BASE", skillCfg, "HemorrhageChance"), 100)
+	output.RavageChance           = m_min(modDB:Sum("BASE", skillCfg, "RavageChance"), 100)
+	-- Debuff chances
+	output.CriticalVulnerabilityChance = m_min(modDB:Sum("BASE", skillCfg, "CriticalVulnerabilityChance"), 100)
+	output.MarkedForDeathChance   = m_min(modDB:Sum("BASE", skillCfg, "MarkedForDeathChance"), 100)
+	output.StaggerChance          = m_min(modDB:Sum("BASE", skillCfg, "StaggerChance"), 100)
+
+	-- LE Resistance Shred Chances --
+	output.PhysicalResShredChance  = m_min(modDB:Sum("BASE", skillCfg, "PhysicalResShredChance"), 100)
+	output.FireResShredChance      = m_min(modDB:Sum("BASE", skillCfg, "FireResShredChance"), 100)
+	output.ColdResShredChance      = m_min(modDB:Sum("BASE", skillCfg, "ColdResShredChance"), 100)
+	output.LightningResShredChance = m_min(modDB:Sum("BASE", skillCfg, "LightningResShredChance"), 100)
+	output.NecroticResShredChance  = m_min(modDB:Sum("BASE", skillCfg, "NecroticResShredChance"), 100)
+	output.PoisonResShredChance    = m_min(modDB:Sum("BASE", skillCfg, "PoisonResShredChance"), 100)
+	output.VoidResShredChance      = m_min(modDB:Sum("BASE", skillCfg, "VoidResShredChance"), 100)
 
 	-- LE Armor Shred Effect --
 	output.ArmorShredEffect = calcLib.mod(skillModList, skillCfg, "ArmorShredEffect")
 
 	-- LE Leech Rate --
 	output.LeechRate = calcLib.mod(skillModList, skillCfg, "LeechRate")
+
+	-- LE Damaging Ailment DPS (per stack) --
+	for ailmentName, ailmentData in pairs(data.damagingAilment) do
+		local chance = output[ailmentName .. "Chance"] or 0
+		if chance > 0 then
+			local duration = ailmentData.duration
+			if ailmentData.dualType then
+				-- Dual-type ailment (e.g. Witchfire: Fire + Necrotic)
+				local totalDmg = 0
+				for dmgType, baseDmg in pairs(ailmentData.baseDamage) do
+					local incDamage = calcLib.mod(skillModList, skillCfg, ailmentName .. "Damage", "AilmentDamage", dmgType .. "Damage", "Damage")
+					totalDmg = totalDmg + baseDmg * incDamage
+				end
+				local moreDamage = calcLib.mod(skillModList, skillCfg, ailmentName .. "DamageMore") or 1
+				local totalDamagePerStack = totalDmg * moreDamage
+				local dpsPerStack = totalDamagePerStack / duration
+				output[ailmentName .. "DamagePerStack"] = totalDamagePerStack
+				output[ailmentName .. "DPSPerStack"] = dpsPerStack
+			else
+				-- Single-type ailment
+				local baseDmg = ailmentData.baseDamage
+				local incDamage = calcLib.mod(skillModList, skillCfg, ailmentName .. "Damage", "AilmentDamage", ailmentData.associatedType .. "Damage", "Damage")
+				local moreDamage = calcLib.mod(skillModList, skillCfg, ailmentName .. "DamageMore") or 1
+				local totalDamagePerStack = baseDmg * incDamage * moreDamage
+				local dpsPerStack = totalDamagePerStack / duration
+				output[ailmentName .. "DamagePerStack"] = totalDamagePerStack
+				output[ailmentName .. "DPSPerStack"] = dpsPerStack
+			end
+		end
+	end
+
+	-- LE Overload Calculations (Warlock) --
+	output.ActiveOverloads = modDB:Sum("BASE", nil, "Multiplier:ActiveOverload") or 0
+	-- Bleed Overload: 15% more physical DoT vs bosses and moving enemies
+	if modDB:Flag(nil, "Condition:BleedOverload") then
+		local enemyIsBoss = enemyDB:Flag(nil, "Condition:Boss")
+		local enemyIsMoving = enemyDB:Flag(nil, "Condition:Moving")
+		if enemyIsBoss or enemyIsMoving then
+			output.BleedOverloadMore = 15
+			modDB:NewMod("PhysicalDamage", "MORE", 15, "Bleed Overload", ModFlag.Dot)
+		end
+	end
+	-- Ignite Overload: 1% more fire damage per 20% global ignite chance
+	if modDB:Flag(nil, "Condition:IgniteOverload") then
+		local totalIgniteChance = modDB:Sum("BASE", skillCfg, "IgniteChance")
+		local moreFire = m_floor(totalIgniteChance / 20)
+		if moreFire > 0 then
+			output.IgniteOverloadMore = moreFire
+			modDB:NewMod("FireDamage", "MORE", moreFire, "Ignite Overload")
+		end
+	end
+	-- Poison Overload: +4% Poison Penetration per poison stack on target (max 100)
+	if modDB:Flag(nil, "Condition:PoisonOverload") then
+		local poisonStacks = enemyDB:Sum("BASE", nil, "Multiplier:PoisonStack") or 0
+		local poisonPen = m_min(poisonStacks, 100) * 4
+		if poisonPen > 0 then
+			output.PoisonOverloadPen = poisonPen
+			modDB:NewMod("PoisonPenetration", "BASE", poisonPen, "Poison Overload")
+		end
+	end
+	-- Damned Overload: 2% more damned per 1% missing HP (self) + 1% per 2% missing HP (target)
+	if modDB:Flag(nil, "Condition:DamnedOverload") then
+		local selfMissingHP = modDB:Sum("BASE", nil, "Multiplier:MissingHealthPercent") or 0
+		local enemyMissingHP = enemyDB:Sum("BASE", nil, "Multiplier:MissingHealthPercent") or 0
+		local moreDamned = selfMissingHP * 2 + m_floor(enemyMissingHP / 2)
+		if moreDamned > 0 then
+			output.DamnedOverloadMore = moreDamned
+			modDB:NewMod("DamnedDamage", "MORE", moreDamned, "Damned Overload")
+		end
+	end
 
 	--Calculate damage (exerts, crits, ruthless, DPS, etc)
 	for _, pass in ipairs(passList) do
