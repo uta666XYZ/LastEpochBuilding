@@ -1296,9 +1296,6 @@ function calcs.offence(env, actor, activeSkill)
 	if not skillModList:Flag(skillCfg, "HasNoCost") then
 		--Support cost multipliers are calculated first and rounded down after 4 digits
 		local mult = floor(skillModList:More(skillCfg, "SupportManaMultiplier"), 4)
-		-- First pass to calculate base costs. Used for cost conversion (e.g. Petrified Blood)
-		local additionalLifeCost = skillModList:Sum("BASE", skillCfg, "ManaCostAsLifeCost") / 100 -- Extra cost (e.g. Petrified Blood) calculations
-		local hybridLifeCost = skillModList:Sum("BASE", skillCfg, "HybridManaAndLifeCost_Life") / 100 -- Life/Mana mastery
 		for resource, val in pairs(costs) do
 			local skillCost = activeSkill.activeEffect.grantedEffect.stats.cost and activeSkill.activeEffect.grantedEffect.stats.cost[resource] or nil
 			local baseCost = round(skillCost and skillCost / data.costs[resource].Divisor or 0, 2)
@@ -1322,35 +1319,6 @@ function calcs.offence(env, actor, activeSkill)
 			val.baseCost = val.baseCost + baseCost
 			val.baseCostNoMult = val.baseCostNoMult + baseCostNoMult
 			val.finalBaseCost = (m_floor(val.baseCost * mult) + val.baseCostNoMult) + divineBlessingCorrection
-			if val.type == "Life" then
-				local manaType = resource:gsub("Life", "Mana")
-				if skillModList:Flag(skillCfg, "CostLifeInsteadOfMana") then -- Blood Magic / Lifetap
-					val.baseCost = val.baseCost + costs[manaType].baseCost
-					val.baseCostNoMult = val.baseCostNoMult + costs[manaType].baseCostNoMult
-					val.finalBaseCost = val.finalBaseCost + costs[manaType].finalBaseCost
-					costs[manaType].baseCost = 0
-					costs[manaType].baseCostNoMult = 0
-					costs[manaType].finalBaseCost = 0
-				elseif additionalLifeCost > 0 or hybridLifeCost > 0 then
-					val.baseCost = costs[manaType].baseCost
-					val.finalBaseCost = val.finalBaseCost + round(costs[manaType].finalBaseCost * (hybridLifeCost + additionalLifeCost))
-				end
-			elseif val.type == "ES" then
-				local manaType = resource:gsub("ES", "Mana")
-				if additionalESCost > 0 then
-					val.baseCost = costs[manaType].baseCost
-					val.finalBaseCost = val.finalBaseCost + round(costs[manaType].finalBaseCost * additionalESCost)
-				end
-			elseif val.type == "Rage" then
-				if skillModList:Flag(skillCfg, "CostRageInsteadOfSouls") then -- Hateforge
-					val.baseCost = val.baseCost + costs.Soul.baseCost
-					val.baseCostNoMult = val.baseCostNoMult + costs.Soul.baseCostNoMult
-					val.finalBaseCost = val.finalBaseCost + costs.Soul.finalBaseCost
-					costs.Soul.baseCost = 0
-					costs.Soul.baseCostNoMult = 0
-					costs.Soul.finalBaseCost = 0
-				end
-			end
 		end
 		for resource, val in pairs(costs) do
 			local resource = val.upfront and resource or resource:gsub("Minute", "Second")
@@ -1381,9 +1349,6 @@ function calcs.offence(env, actor, activeSkill)
 					output[costName] = m_max(0, m_floor(moreCost * output[costName]))
 				end
 				output[costName] = m_max(0, output[costName] + val.totalCost)
-				if val.type == "Mana" and hybridLifeCost > 0 then -- Life/Mana Mastery
-					output[costName] = m_max(0, m_floor((1 - hybridLifeCost) * output[costName]))
-				end
 			else
 				moreType = skillModList:More(skillCfg, val.type.."Cost")
 				inc = skillModList:Sum("INC", skillCfg, val.type.."Cost")
@@ -1402,12 +1367,6 @@ function calcs.offence(env, actor, activeSkill)
 				if val.baseCostNoMult ~= 0 then
 					t_insert(breakdown[costName], s_format("+ %d ^8(additional "..val.text.." cost)", val.baseCostNoMult))
 				end
-				if val.type == "Life" and (hybridLifeCost + additionalLifeCost) ~= 0 and not skillModList:Flag(skillCfg, "CostLifeInsteadOfMana") then
-					t_insert(breakdown[costName], s_format("* %.2f ^8(mana cost conversion)", hybridLifeCost + additionalLifeCost))
-				end
-				if val.type == "ES" and additionalESCost ~= 0 and not skillModList:Flag(skillCfg, "CostLifeInsteadOfMana") then
-					t_insert(breakdown[costName], s_format("* %.2f ^8(mana cost conversion)", additionalESCost))
-				end
 				if inc ~= 0 then
 					t_insert(breakdown[costName], s_format("x %.2f ^8(increased/reduced "..val.text.." cost)", 1 + inc/100))
 				end
@@ -1419,9 +1378,6 @@ function calcs.offence(env, actor, activeSkill)
 				end
 				if val.totalCost ~= 0 then
 					t_insert(breakdown[costName], s_format("%+d ^8(total "..val.text.." cost)", val.totalCost))
-				end
-				if val.type == "Mana" and hybridLifeCost > 0 then
-					t_insert(breakdown[costName], s_format("x %.2f ^8(%d%% paid for with life)", (1-hybridLifeCost), hybridLifeCost*100))
 				end
 				t_insert(breakdown[costName], s_format("= %"..(val.upfront and "d" or ".2f")..(val.percent and "%%" or ""), output[costName]))
 			end
