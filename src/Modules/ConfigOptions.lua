@@ -112,8 +112,74 @@ local options = {
 		modList:NewMod("Multiplier:Companion", "BASE", val, "Config", { type = "Condition", var = "Combat" })
 		modList:NewMod("Condition:HaveCompanion", "FLAG", val >= 1, "Config", { type = "Condition", var = "Combat" })
 	end },
-	{ var = "conditionFrenzy", type = "check", label = "Do you have Frenzy?", tooltip = "Check if you have Frenzy stacks (Beastmaster).", apply = function(val, modList, enemyModList)
+	{ var = "conditionFrenzy", type = "check", label = "Do you have Frenzy?", tooltip = "Check if you have Frenzy stacks (Beastmaster).\n20% increased Attack and Cast Speed.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:Frenzy", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
+		modList:NewMod("Speed", "INC", 20, "Frenzy")
+	end },
+	{ var = "conditionHaste", type = "check", label = "Do you have Haste?", tooltip = "30% increased Movement Speed for 4 seconds.", apply = function(val, modList, enemyModList)
+		modList:NewMod("Condition:Haste", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
+		modList:NewMod("MovementSpeed", "INC", 30, "Haste")
+	end },
+	-- Overloads (Warlock)
+	{ var = "conditionBleedOverload", type = "check", label = "Bleed Overload active?", tooltip = "Warlock: 15% more physical DoT vs bosses and moving enemies.\nRequires Cauldron of Blood (5pt).", apply = function(val, modList, enemyModList)
+		modList:NewMod("Condition:BleedOverload", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
+		modList:NewMod("Multiplier:ActiveOverload", "BASE", 1, "Config", { type = "Condition", var = "Combat" })
+	end },
+	{ var = "conditionIgniteOverload", type = "check", label = "Ignite Overload active?", tooltip = "Warlock: 1% more fire damage to ignited enemies per 20% global ignite chance for fire skills.", apply = function(val, modList, enemyModList)
+		modList:NewMod("Condition:IgniteOverload", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
+		modList:NewMod("Multiplier:ActiveOverload", "BASE", 1, "Config", { type = "Condition", var = "Combat" })
+	end },
+	{ var = "conditionPoisonOverload", type = "check", label = "Poison Overload active?", tooltip = "Warlock: +4% Poison Penetration per stack of poison on the target, up to 100 stacks.", apply = function(val, modList, enemyModList)
+		modList:NewMod("Condition:PoisonOverload", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
+		modList:NewMod("Multiplier:ActiveOverload", "BASE", 1, "Config", { type = "Condition", var = "Combat" })
+	end },
+	{ var = "conditionDamnedOverload", type = "check", label = "Damned Overload active?", tooltip = "Warlock: 2% more damned damage per 1% missing health on you\nand 1% more damned damage per 2% missing health on target.", apply = function(val, modList, enemyModList)
+		modList:NewMod("Condition:DamnedOverload", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
+		modList:NewMod("Multiplier:ActiveOverload", "BASE", 1, "Config", { type = "Condition", var = "Combat" })
+	end },
+	-- Positive buff stacks
+	{ var = "multiplierDuskShroudStacks", type = "count", label = "Dusk Shroud Stacks:", tooltip = "5% Glancing Blow chance and +50 Dodge Rating per stack.", apply = function(val, modList, enemyModList)
+		modList:NewMod("GlancingBlowChance", "BASE", val * 5, "Dusk Shroud")
+		modList:NewMod("Evasion", "BASE", val * 50, "Dusk Shroud")
+	end },
+	{ var = "multiplierVoidEssenceStacks", type = "count", label = "Void Essence Stacks:", tooltip = "3% more Void Damage, 3% more Melee Damage, 15% reduced stun duration per stack. Max 3.", apply = function(val, modList, enemyModList)
+		val = math.min(val, 3)
+		modList:NewMod("VoidDamage", "MORE", val * 3, "Void Essence")
+		modList:NewMod("Damage", "MORE", val * 3, "Void Essence", ModFlag.Melee)
+	end },
+	{ var = "multiplierContemptStacks", type = "count", label = "Contempt Stacks:", tooltip = "+10% All Resistances and 10% more Armor per stack. Max 5.", apply = function(val, modList, enemyModList)
+		val = math.min(val, 5)
+		for _, res in ipairs({"FireResist", "LightningResist", "ColdResist", "PhysicalResist", "PoisonResist", "NecroticResist", "VoidResist"}) do
+			modList:NewMod(res, "BASE", val * 10, "Contempt")
+		end
+		modList:NewMod("Armour", "MORE", val * 10, "Contempt")
+	end },
+	{ var = "multiplierVoidBarrierStacks", type = "count", label = "Void Barrier Stacks:", tooltip = "5% less Damage Taken per stack. Max 6.", apply = function(val, modList, enemyModList)
+		val = math.min(val, 6)
+		modList:NewMod("DamageTaken", "MORE", -val * 5, "Void Barrier")
+	end },
+	{ var = "multiplierTotemArmorStacks", type = "count", label = "Totem Armor Stacks:", tooltip = "80% increased Armor and 15% more Damage per stack. Max 3.", apply = function(val, modList, enemyModList)
+		val = math.min(val, 3)
+		modList:NewMod("Armour", "INC", val * 80, "Totem Armor")
+		modList:NewMod("Damage", "MORE", val * 15, "Totem Armor")
+	end },
+	{ var = "multiplierMoltenInfusionStacks", type = "count", label = "Molten Infusion Stacks:", tooltip = "+15 Fire Melee Damage and +30% Ignite Chance per stack.", apply = function(val, modList, enemyModList)
+		modList:NewMod("FireDamage", "BASE", val * 15, "Molten Infusion", ModFlag.Melee)
+		modList:NewMod("IgniteChance", "BASE", val * 30, "Molten Infusion")
+	end },
+	{ var = "multiplierStormInfusionStacks", type = "count", label = "Storm Infusion Stacks:", tooltip = "+21 Lightning Spell/Melee/Bow/Throwing Damage per stack. Max 3.", apply = function(val, modList, enemyModList)
+		val = math.min(val, 3)
+		modList:NewMod("LightningDamage", "BASE", val * 21, "Storm Infusion")
+	end },
+	{ var = "conditionDamageImmunity", type = "check", label = "Damage Immunity active?", tooltip = "100% less Damage Taken for 3 seconds.", apply = function(val, modList, enemyModList)
+		modList:NewMod("DamageTaken", "MORE", -100, "Damage Immunity")
+	end },
+	-- Missing health for Damned Overload
+	{ var = "playerMissingHealthPercent", type = "count", label = "Your Missing Health %:", tooltip = "Percentage of your maximum health that is missing.\nUsed for Damned Overload calculation (2% more damned per 1% missing).", apply = function(val, modList, enemyModList)
+		modList:NewMod("Multiplier:MissingHealthPercent", "BASE", val, "Config", { type = "Condition", var = "Combat" })
+	end },
+	{ var = "enemyMissingHealthPercent", type = "count", label = "Enemy Missing Health %:", tooltip = "Percentage of the enemy's maximum health that is missing.\nUsed for Damned Overload calculation (1% more damned per 2% missing).", apply = function(val, modList, enemyModList)
+		enemyModList:NewMod("Multiplier:MissingHealthPercent", "BASE", val, "Config", { type = "Condition", var = "Effective" })
 	end },
 	{ var = "multiplierNearbyCorpses", type = "count", label = "# of Nearby Corpses:", apply = function(val, modList, enemyModList)
 		modList:NewMod("Multiplier:NearbyCorpse", "BASE", val, "Config", { type = "Condition", var = "Combat" })
