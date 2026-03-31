@@ -28,6 +28,8 @@ local dmgTypeList = DamageTypes
 local resistTypeList = dmgTypeList
 
 -- Calculate damage reduction from armour, float
+-- LE: armor is 70% as effective against non-physical damage
+-- Cap: 85% (data.misc.ArmorCap)
 function calcs.armourReductionF(armour, enemyLevel)
 	if armour == 0 then
 		return 0
@@ -35,7 +37,7 @@ function calcs.armourReductionF(armour, enemyLevel)
 	local adjustedEnemyLevel = enemyLevel + 5
 	local firstPart = 1.2 * armour / ( (80 + 0.05 * adjustedEnemyLevel ^ 2) + 1.2 * armour) * 0.3
 	local secondPart = 0.0015 * armour ^ 2 / (180 * adjustedEnemyLevel + 0.0015 * armour ^ 2) * 0.55
-	return (firstPart + secondPart) * 100
+	return m_min((firstPart + secondPart) * 100, data.misc.ArmorCap)
 end
 
 -- Calculate damage reduction from armour, int
@@ -1137,12 +1139,12 @@ function calcs.buildDefenceEstimations(env, actor)
 	-- Endurance%: damage reduction that applies when HP is at or below EnduranceThreshold
 	-- EnduranceThreshold%: % of max life below which Endurance damage reduction kicks in
 	-- When a single hit crosses the threshold, only the below-threshold portion is reduced
-	output.Endurance = modDB:Sum("BASE", nil, "Endurance")
+	output.Endurance = m_min(modDB:Sum("BASE", nil, "Endurance"), data.misc.EnduranceCap)
 	output.EnduranceThreshold = modDB:Sum("BASE", nil, "EnduranceThreshold")
 	output.EnduranceThresholdValue = m_floor((output.Life or 0) * output.EnduranceThreshold / 100)
 
 	-- Parry and Mana-before-Health
-	output.ParryChance = m_min(modDB:Sum("BASE", nil, "ParryChance"), 100)
+	output.ParryChance = m_min(modDB:Sum("BASE", nil, "ParryChance"), data.misc.ParryCap)
 	output.DamageToManaBeforeHealth = m_min(modDB:Sum("BASE", nil, "DamageToManaBeforeHealth"), 100)
 
 	-- Glancing blow and crit avoidance

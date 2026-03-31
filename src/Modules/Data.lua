@@ -91,11 +91,12 @@ data.misc = { -- magic numbers
 	LowPoolThreshold = 0.5,
 	TemporalChainsEffectCap = 75,
 	BuffExpirationSlowCap = 0.25,
-	DamageReductionCap = 90,
+	-- LE defense caps
+	DamageReductionCap = 85, -- LE armor mitigation cap
 	ResistFloor = -200,
-	MaxResistCap = 90,
+	MaxResistCap = 75, -- LE resistance cap (75%)
 	EvadeChanceCap = 95,
-	DodgeChanceCap = 75,
+	DodgeChanceCap = 85, -- LE dodge chance cap (85%)
 	SuppressionChanceCap = 100,
 	SuppressionEffect = 50,
 	AvoidChanceCap = 75,
@@ -106,22 +107,55 @@ data.misc = { -- magic numbers
 	EnemyMaxResist = 75,
 	LeechRateBase = 0.02,
 	DotDpsCap = 35791394, -- (2 ^ 31 - 1) / 60 (int max / 60 seconds)
+	-- LE ailment base values (from support.lastepoch.com)
+	BleedBaseDamage = 53, -- Physical DoT per stack
+	BleedDurationBase = 3, -- seconds
+	IgniteBaseDamage = 40, -- Fire DoT per stack
+	IgniteDurationBase = 2.5, -- seconds
+	PoisonBaseDamage = 28, -- Poison DoT per stack
+	PoisonDurationBase = 3, -- seconds
+	FrostbiteBaseDamage = 50, -- Cold DoT per stack
+	FrostbiteDurationBase = 3, -- seconds
+	ElectrifyBaseDamage = 44, -- Lightning DoT per stack
+	ElectrifyDurationBase = 2.5, -- seconds
+	DamnedBaseDamage = 35, -- Necrotic DoT per stack
+	DamnedDurationBase = 2.5, -- seconds
+	TimeRotBaseDamage = 60, -- Void DoT per stack
+	TimeRotDurationBase = 3, -- seconds
+	-- Legacy PoE ailment values (kept for backward compat until full migration)
 	BleedPercentBase = 70,
-	BleedDurationBase = 5,
 	PoisonPercentBase = 0.30,
-	PoisonDurationBase = 2,
 	IgnitePercentBase = 0.9,
-	IgniteDurationBase = 4,
 	ImpaleStoredDamageBase = 0.1,
 	TrapTriggerRadiusBase = 10,
 	MineDetonationRadiusBase = 60,
 	MineAuraRadiusBase = 35,
 	BrandAttachmentRangeBase = 30,
 	ProjectileDistanceCap = 150,
+	-- LE stun mechanics
 	MinStunChanceNeeded = 20,
 	StunBaseMult = 200,
-	StunBaseDuration = 0.35,
+	StunBaseDuration = 0.4, -- LE stun base duration (0.4s)
+	StunMeleeDamageMult = 3, -- LE: player melee damage 3x for stun calc
+	StunOtherDamageMult = 2, -- LE: other player damage 2x for stun calc
 	StunNotMeleeDamageMult = 0.75,
+	StunBossHealthMult = 1.5, -- LE: bosses treat HP as 50% higher for stun/freeze
+	-- LE freeze mechanics
+	FreezeDurationBase = 1.2, -- seconds
+	FreezeBossHealthMult = 1.5, -- bosses treat HP as 50% higher for freeze
+	-- LE defense caps
+	EnduranceCap = 60, -- LE endurance cap (60% less damage taken)
+	ParryCap = 75, -- LE parry chance cap (75%)
+	GlancingBlowReduction = 35, -- LE glancing blow reduces hit damage by 35%
+	ArmorCap = 85, -- LE armor mitigation cap (85%)
+	BlockEffectivenessCap = 85, -- LE block effectiveness cap (85%)
+	-- LE leech mechanics
+	LeechDuration = 3, -- LE: health from leech granted over 3 seconds
+	-- LE mana-before-health
+	ManaShieldsHealthRatio = 5, -- LE: 1 mana shields 5 health
+	-- LE enemy scaling
+	EnemyPenPerLevel = 1, -- All enemies gain 1% pen per area level
+	EnemyPenCap = 75, -- max 75% enemy pen
 	MaxEnemyLevel = 100,
 	maxExperiencePenaltyFreeAreaLevel = 70,
 	experiencePenaltyMultiplier = 0.06,
@@ -148,19 +182,99 @@ data.misc = { -- magic numbers
 
 data.skillColorMap = { colorCodes.STRENGTH, colorCodes.DEXTERITY, colorCodes.INTELLIGENCE, colorCodes.NORMAL }
 
--- TODO
-data.ailmentTypeList = { "Ignite" }
-data.elementalAilmentTypeList = { "Ignite" }
-data.nonDamagingAilmentTypeList = {}
-data.nonElementalAilmentTypeList = {}
+-- LE damaging ailments (from support.lastepoch.com)
+data.ailmentTypeList = { "Ignite", "Bleed", "Poison", "Frostbite", "Electrify", "Damned", "TimeRot" }
+data.elementalAilmentTypeList = { "Ignite", "Frostbite", "Electrify" }
+data.nonDamagingAilmentTypeList = { "Chill", "Shock", "Slow", "Blind", "Frailty" }
+data.nonElementalAilmentTypeList = { "Bleed", "Poison", "Damned", "TimeRot" }
 
+-- LE damaging ailment definitions
+data.damagingAilment = {
+	["Bleed"]     = { associatedType = "Physical", baseDamage = 53,  duration = 3,   maxStacks = nil, penType = "Physical" },
+	["Ignite"]    = { associatedType = "Fire",     baseDamage = 40,  duration = 2.5, maxStacks = nil, penType = "Fire" },
+	["Poison"]    = { associatedType = "Poison",   baseDamage = 28,  duration = 3,   maxStacks = nil, penType = "Poison",
+		resistShred = { first30 = true, perStack = 5 }, lessVsPlayers = 60, lessVsBosses = 60 },
+	["Frostbite"] = { associatedType = "Cold",     baseDamage = 50,  duration = 3,   maxStacks = nil, penType = "Cold",
+		freezeChancePerStack = 20, maxFreezeStacks = 15 },
+	["Electrify"] = { associatedType = "Lightning", baseDamage = 44, duration = 2.5, maxStacks = nil, penType = "Lightning" },
+	["Damned"]    = { associatedType = "Necrotic", baseDamage = 35,  duration = 2.5, maxStacks = nil, penType = "Necrotic",
+		reducedHealthRegen = 20 },
+	["TimeRot"]   = { associatedType = "Void",     baseDamage = 60,  duration = 3,   maxStacks = 12,  penType = "Void",
+		incStunDuration = 5 },
+	["Plague"]    = { associatedType = "Poison",  baseDamage = 150, duration = 4,   maxStacks = 1,   penType = "Poison",
+		spreads = { range = 6, delay = 0.6, maxTargets = nil, spreadsOnDeath = true } },
+	["Witchfire"] = { associatedType = { "Fire", "Necrotic" }, baseDamage = { Fire = 600, Necrotic = 600 },
+		duration = 12, maxStacks = 1, penType = { "Fire", "Necrotic" }, dualType = true },
+	["SpreadingFlames"] = { associatedType = "Fire", baseDamage = 200, duration = 4, maxStacks = 1, penType = "Fire",
+		spreads = { range = 5, delay = 0.6, maxTargets = nil } },
+	["FutureStrike"] = { associatedType = "Void", baseDamage = 60, duration = 3, maxStacks = nil, penType = "Void",
+		dealsAllDamageAtEnd = true },
+	["AbyssalDecay"] = { associatedType = "Void", baseDamage = 100, duration = 5, maxStacks = 1, penType = "Void",
+		appliesRemainingOnHit = true },
+	["AbyssalDecayStacking"] = { associatedType = "Void", baseDamage = 30, duration = 3, maxStacks = nil, penType = "Void",
+		appliesRemainingOnHit = true },
+	["SpiritPlague"] = { associatedType = "Necrotic", baseDamage = 90, duration = 3, maxStacks = 1, penType = "Necrotic",
+		isCurse = true, spreads = { range = 9, maxTargets = 1, spreadsOnDeath = true } },
+	-- Curses (player-applied)
+	["BoneCurse"]  = { associatedType = "Physical", baseDamage = 4, duration = 8, maxStacks = 1, penType = "Physical",
+		isCurse = true, takesSpellPhysDmgWhenHit = true },
+	["Torment"]    = { associatedType = "Necrotic", baseDamage = 120, duration = 3, maxStacks = 1, penType = "Necrotic",
+		isCurse = true, lessMoveSpeed = 18 },
+	["Decrepify"]  = { associatedType = "Physical", baseDamage = 200, duration = 10, maxStacks = 1, penType = "Physical",
+		isCurse = true, moreDoTTaken = 15 },
+	["Anguish"]    = { associatedType = "Necrotic", baseDamage = 40, duration = 10, maxStacks = 1, penType = "Necrotic",
+		isCurse = true, lessDoT = 15 },
+	["Penance"]    = { associatedType = "Fire", baseDamage = 20, duration = 15, maxStacks = 1, penType = "Fire",
+		isCurse = true, fireOnHitCooldown = 0.35 },
+	["AcidSkin"]   = { associatedType = "Poison", baseDamage = 80, duration = 5, maxStacks = 1, penType = "Poison",
+		isCurse = true, incCritReceived = 20 },
+	-- Skill-specific damaging ailments
+	["SerpentVenom"]  = { associatedType = "Poison", baseDamage = 400, duration = 3, maxStacks = 1, penType = "Poison" },
+	["Hemorrhage"]    = { associatedType = "Physical", baseDamage = 300, duration = 3, maxStacks = nil, penType = "Physical" },
+	["Ravage"]        = { associatedType = "Void", baseDamage = 135, duration = 6, maxStacks = 1, penType = "Void" },
+	["Laceration"]    = { associatedType = "Physical", baseDamage = 1, duration = 3, maxStacks = 1, penType = "Physical" },
+	["SnakeInfection"]= { associatedType = "Poison", baseDamage = 300, duration = 12, maxStacks = 1, penType = "Poison" },
+	["Chained"]       = { associatedType = "Necrotic", baseDamage = 40, duration = 2, maxStacks = 1, penType = "Necrotic" },
+	["Pestilence"]    = { associatedType = "Poison", baseDamage = 30, duration = 0.5, maxStacks = 2, penType = "Poison" },
+	-- Brand ailments (Falcon skills)
+	["BrandOfDeception"]   = { associatedType = "Lightning", baseDamage = 400, duration = 3, maxStacks = 1, penType = "Lightning" },
+	["BrandOfSubjugation"] = { associatedType = "Cold", baseDamage = 400, duration = 3, maxStacks = 1, penType = "Cold" },
+	["BrandOfTrespass"]    = { associatedType = "Fire", baseDamage = 400, duration = 3, maxStacks = 1, penType = "Fire" },
+}
+
+-- LE non-damaging ailment definitions
 data.nonDamagingAilment = {
-	["Chill"] = { associatedType = "Cold", alt = false, default = 10, min = 5, max = 30, precision = 0, duration = 2 },
-	["Freeze"] = { associatedType = "Cold", alt = false, default = nil, min = 0.3, max = 3, precision = 2, duration = nil },
-	["Shock"] = { associatedType = "Lightning", alt = false, default = 15, min = 5, max = 50, precision = 0, duration = 2 },
-	["Scorch"] = { associatedType = "Fire", alt = true, default = 10, min = 0, max = 30, precision = 0, duration = 4 },
-	["Brittle"] = { associatedType = "Cold", alt = true, default = 2, min = 0, max = 6, precision = 2, duration = 4 },
-	["Sap"] = { associatedType = "Lightning", alt = true, default = 6, min = 0, max = 20, precision = 0, duration = 4 },
+	["Chill"]    = { associatedType = "Cold",      duration = 4, maxStacks = 3,
+		effects = { lessAttackSpeed = 12, lessCastSpeed = 12, lessMoveSpeed = 12 }, lessVsPlayers = 50, lessVsBosses = 50 },
+	["Shock"]    = { associatedType = "Lightning", duration = 4, maxStacks = 10,
+		effects = { incStunChance = 20, negLightningRes = 5 }, lessVsPlayers = 60, lessVsBosses = 60 },
+	["Slow"]     = { associatedType = nil,         duration = 4, maxStacks = 3,
+		effects = { lessMoveSpeed = 20 }, lessVsPlayers = 50, lessVsBosses = 50 },
+	["Blind"]    = { associatedType = nil,         duration = 4, maxStacks = 1,
+		effects = { lessCritChance = 100 } },
+	["Frailty"]  = { associatedType = nil,         duration = 4, maxStacks = 3,
+		effects = { lessDamage = 6 } },
+	["Freeze"]   = { associatedType = "Cold",      duration = 1.2, maxStacks = 1 },
+	["CriticalVulnerability"] = { associatedType = nil, duration = 4, maxStacks = 10,
+		effects = { incCritReceived = 2, negCritAvoidance = 10 } },
+	["MarkedForDeath"] = { associatedType = nil, duration = 8, maxStacks = 1,
+		effects = { negAllResistances = 25 } },
+	["Stagger"]  = { associatedType = nil,         duration = 10, maxStacks = 1,
+		effects = { negArmor = 100, incDamageTaken = 10 } },
+	["ExposedFlesh"] = { associatedType = "Cold",  duration = 8, maxStacks = 1,
+		effects = { negColdRes = 15, incFreezeChance = 30 } },
+}
+
+-- LE resistance shred ailments
+data.resistShredAilment = {
+	["ShredArmor"]          = { duration = 4, maxStacks = nil, perStack = 100, stat = "Armor",            lessVsPlayers = 0,  lessVsBosses = 0 },
+	["ShredPhysicalRes"]    = { duration = 4, maxStacks = 10,  perStack = 5,   stat = "PhysicalResist",   lessVsPlayers = 60, lessVsBosses = 60 },
+	["ShredFireRes"]        = { duration = 4, maxStacks = 10,  perStack = 5,   stat = "FireResist",       lessVsPlayers = 60, lessVsBosses = 60 },
+	["ShredColdRes"]        = { duration = 4, maxStacks = 10,  perStack = 5,   stat = "ColdResist",       lessVsPlayers = 60, lessVsBosses = 60 },
+	["ShredLightningRes"]   = { duration = 4, maxStacks = 10,  perStack = 5,   stat = "LightningResist",  lessVsPlayers = 60, lessVsBosses = 60 },
+	["ShredNecroticRes"]    = { duration = 4, maxStacks = 10,  perStack = 5,   stat = "NecroticResist",   lessVsPlayers = 60, lessVsBosses = 60 },
+	["ShredPoisonRes"]      = { duration = 4, maxStacks = 10,  perStack = 5,   stat = "PoisonResist",     lessVsPlayers = 60, lessVsBosses = 60 },
+	["ShredVoidRes"]        = { duration = 4, maxStacks = 10,  perStack = 5,   stat = "VoidResist",       lessVsPlayers = 60, lessVsBosses = 60 },
 }
 
 -- Used in ModStoreClass:ScaleAddMod(...) to identify high precision modifiers
