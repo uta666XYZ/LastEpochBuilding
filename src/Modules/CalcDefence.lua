@@ -30,6 +30,7 @@ local resistTypeList = dmgTypeList
 -- Calculate damage reduction from armour, float
 -- LE: armor is 70% as effective against non-physical damage
 -- Cap: 85% (data.misc.ArmorCap)
+-- Formula source: lastepoch.tunklab.com/armor (v1.1 / "082")
 function calcs.armourReductionF(armour, enemyLevel)
 	if armour == 0 then
 		return 0
@@ -43,6 +44,32 @@ end
 -- Calculate damage reduction from armour, int
 function calcs.armourReduction(armour, enemyLevel)
 	return round(calcs.armourReductionF(armour, enemyLevel))
+end
+
+-- Calculate damage reduction from block effectiveness rating, float
+-- Formula source: lastepoch.tunklab.com/block
+-- Cap: 85% (data.misc.BlockEffectivenessCap)
+function calcs.blockMitigationF(blockEffectiveness, enemyLevel)
+	if blockEffectiveness <= 0 then
+		return 0
+	end
+	local L = enemyLevel + 5
+	local firstPart = 3 * blockEffectiveness / (40 + 0.03 * L ^ 2 + 3 * blockEffectiveness) * 0.25
+	local secondPart = (1.2 * blockEffectiveness + 0.0006 * blockEffectiveness ^ 2) / (60 * L + 1.2 * blockEffectiveness + 0.0006 * blockEffectiveness ^ 2) * 0.6
+	return m_min((firstPart + secondPart) * 100, data.misc.BlockEffectivenessCap)
+end
+
+-- Calculate dodge chance from dodge rating (evasion), float
+-- Formula source: lastepoch.tunklab.com/dodge
+-- Cap: 85% (data.misc.DodgeChanceCap)
+function calcs.dodgeChanceF(dodgeRating, enemyLevel)
+	if dodgeRating <= 0 then
+		return 0
+	end
+	local L = enemyLevel + 5
+	local firstPart = dodgeRating / (80 + 0.05 * L ^ 2 + dodgeRating) * 0.25
+	local secondPart = 0.001 * dodgeRating ^ 2 / (32 * L + 0.001 * dodgeRating ^ 2) * 0.6
+	return m_min((firstPart + secondPart) * 100, data.misc.DodgeChanceCap)
 end
 
 ---Calculates the taken damages from enemy outgoing damage
@@ -276,12 +303,24 @@ function calcs.defence(env, actor)
 		output.SpellProjectileBlockChance = 0
 	end
 	output.AverageBlockChance = (output.BlockChance + output.ProjectileBlockChance + output.SpellBlockChance + output.SpellProjectileBlockChance) / 4
-	output.BlockEffect = m_max(100 - modDB:Sum("BASE", nil, "BlockEffect"), 0)
-	if output.BlockEffect == 0 or output.BlockEffect == 100 then
-		output.BlockEffect = 100
-	else
+	-- Block Effectiveness rating -> damage reduction % (tunklab formula)
+	local blockEffectivenessRating = m_max(modDB:Sum("BASE", nil, "BlockEffectiveness") * calcLib.mod(modDB, nil, "BlockEffectiveness"), 0)
+	output.BlockEffectiveness = round(blockEffectivenessRating)
+	local blockMitigation = calcs.blockMitigationF(blockEffectivenessRating, env.config.enemyLevel)
+	output.BlockMitigation = round(blockMitigation)
+	output.BlockEffect = blockMitigation > 0 and blockMitigation or 0
+	if output.BlockEffect > 0 then
 		output.ShowBlockEffect = true
 		output.DamageTakenOnBlock = 100 - output.BlockEffect
+	else
+		output.BlockEffect = 0
+	end
+	if breakdown and output.BlockEffectiveness > 0 then
+		breakdown.BlockMitigation = {
+			s_format("Block Effectiveness: %d", output.BlockEffectiveness),
+			s_format("Enemy Level: %d", env.config.enemyLevel),
+			s_format("Block Mitigation: %d%%", output.BlockMitigation),
+		}
 	end
 
 	-- Primary defences: Ward, evasion and armour
@@ -329,6 +368,21 @@ function calcs.defence(env, actor)
 		output.LowestOfArmourAndEvasion = m_min(output.Armour, output.Evasion)
 		output.Ward = m_max(round(ward), 0)
 
+		-- Ward Decay per second at steady-state ward (tunklab formula)
+		-- wardDecay(W, R) = (0.2*W + 0.00005*W^2) / (1 + 0.5*(R/100))
+		if output.Ward > 0 then
+			local wardRetention = modDB:Sum("BASE", nil, "WardRetention")
+			local wardDecayThreshold = modDB:Sum("BASE", nil, "WardDecayThreshold")
+			local effectiveWard = m_max(output.Ward - wardDecayThreshold, 0)
+			output.WardDecayPerSecond = round((0.2 * effectiveWard + 0.00005 * effectiveWard ^ 2) / (1 + 0.5 * wardRetention / 100))
+		else
+			output.WardDecayPerSecond = 0
+		end
+
+		-- Armor mitigation for display (Physical and Elemental)
+		output.ArmorMitigationPhysical = round(calcs.armourReductionF(output.Armour, env.config.enemyLevel))
+		output.ArmorMitigationElemental = round(calcs.armourReductionF(output.Armour, env.config.enemyLevel) * 0.7)
+
 	end
 		output.EvadeChance = 0
 		output.MeleeEvadeChance = 0
@@ -372,8 +426,10 @@ function calcs.defence(env, actor)
 	output.SpellSuppressionChanceOverCap = m_max(0, totalSpellSuppressionChance - data.misc.SuppressionChanceCap)
 
 	-- Dodge
-	local totalAttackDodgeChance = modDB:Sum("BASE", nil, "AttackDodgeChance")
-	local totalSpellDodgeChance = modDB:Sum("BASE", nil, "SpellDodgeChance")
+	-- Dodge chance is derived from Dodge Rating (Evasion) via tunklab formula, plus any flat dodge chance mods
+	local dodgeFromRating = calcs.dodgeChanceF(output.Evasion, env.config.enemyLevel)
+	local totalAttackDodgeChance = dodgeFromRating + modDB:Sum("BASE", nil, "AttackDodgeChance")
+	local totalSpellDodgeChance = dodgeFromRating + modDB:Sum("BASE", nil, "SpellDodgeChance")
 	local attackDodgeChanceMax = data.misc.DodgeChanceCap
 	local spellDodgeChanceMax = modDB:Override(nil, "SpellDodgeChanceMax") or modDB:Sum("BASE", nil, "SpellDodgeChanceMax")
 	local enemyReduceDodgeChance = enemyDB:Sum("BASE", nil, "reduceEnemyDodge") or 0
@@ -391,12 +447,16 @@ function calcs.defence(env, actor)
 
 	if breakdown then
 		breakdown.AttackDodgeChance = {
-			"Base: "..totalAttackDodgeChance.."%",
+			s_format("Dodge Rating: %d", output.Evasion),
+			s_format("Enemy Level: %d", env.config.enemyLevel),
+			s_format("From Rating: %.1f%%", dodgeFromRating),
+			s_format("Flat Bonus: %.1f%%", modDB:Sum("BASE", nil, "AttackDodgeChance")),
 			"Max: "..attackDodgeChanceMax.."%",
 			"Total: "..output.AttackDodgeChance+output.AttackDodgeChanceOverCap.."%",
 		}
 		breakdown.SpellDodgeChance = {
-			"Base: "..totalSpellDodgeChance.."%",
+			s_format("From Rating: %.1f%%", dodgeFromRating),
+			s_format("Flat Bonus: %.1f%%", modDB:Sum("BASE", nil, "SpellDodgeChance")),
 			"Max: "..spellDodgeChanceMax.."%",
 			"Total: "..output.SpellDodgeChance+output.SpellDodgeChanceOverCap.."%",
 		}
