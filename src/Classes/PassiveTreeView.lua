@@ -596,6 +596,24 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 			local scrX, scrY = treeToScreen(-220, i * 1000)
 			self:DrawAsset(tree.assets.ClassBackground, scrX, scrY, scale)
 		end
+
+		-- Draw subclass badges on the left side of the tree
+		if spec.curClass and spec.curClass.classes then
+			local badgeX = -380
+			local badgeStartY = 200
+			local badgeSpacing = 250
+			for ascendId, ascendClass in ipairs(spec.curClass.classes) do
+				if ascendId > 0 and ascendClass.name then
+					local badgeName = "badge_" .. ascendClass.name:lower():gsub("%s+", "_")
+					local scrX, scrY = treeToScreen(badgeX, badgeStartY + (ascendId - 1) * badgeSpacing)
+					local badgeSprite = tree.spriteMap[badgeName]
+					if badgeSprite then
+						SetDrawColor(1, 1, 1)
+						self:DrawAsset(badgeSprite, scrX, scrY, scale)
+					end
+				end
+			end
+		end
 	end
 
 	-- Draw skills background art for all selected skills

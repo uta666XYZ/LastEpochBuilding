@@ -247,6 +247,12 @@ local modNameList = {
 	["skills"] = "SkillLevel",
 	["level of"] = "SkillLevel",
 	["to level of all skills"] = "SkillLevel",
+	-- Attribute conversion (Season 4 / 1.4)
+	["strength converted to brutality"] = "StrengthConvertedToBrutality",
+	["intelligence converted to madness"] = "IntelligenceConvertedToMadness",
+	["dexterity converted to guile"] = "DexterityConvertedToGuile",
+	["attunement converted to apathy"] = "AttunementConvertedToApathy",
+	["vitality converted to rampancy"] = "VitalityConvertedToRampancy",
 }
 
 for i,stat in ipairs(LongAttributes) do
@@ -326,6 +332,10 @@ local modTagList = {
 	["per (%d+)%% block chance"] = function(num) return { tag = { type = "PerStat", stat = "BlockChance", div = num } } end,
 	["per (%d+) block effectiveness"] = function(num) return { tag = { type = "PerStat", stat = "BlockEffect", div = num } } end,
 	["per totem"] = { tag = { type = "PerStat", stat = "TotemsSummoned" } },
+	["for each of your totems"] = { tag = { type = "PerStat", stat = "TotemsSummoned" } },
+	["for your totems"] = { tag = { type = "Scope", scope = "totem" } },
+	["for minions"] = { tag = { type = "Scope", scope = "minion" } },
+	["for your minions"] = { tag = { type = "Scope", scope = "minion" } },
 	-- Slot conditions
 	["while dual wielding"] = { tag = { type = "Condition", var = "DualWielding" } },
 	["while wielding a two handed melee weapon"] = { tagList = { { type = "Condition", var = "UsingTwoHandedWeapon" }, { type = "Condition", var = "UsingMeleeWeapon" } } },
@@ -460,6 +470,15 @@ local specialModList = {
 	-- Ward/Health on melee hit (item affix patterns)
 	["^(%d+)%% chance to gain (%d+) ward on melee hit$"] = function(num, chance, amount)
 		return { mod("ChanceToGainWardOnMeleeHit", "BASE", tonumber(chance)), mod("WardGainedOnMeleeHit", "BASE", tonumber(amount)) }
+	end,
+	-- Chance to Gain [BuffName] for [Duration] seconds
+	-- e.g. "20% chance to gain Unholy Might for 4 seconds"
+	["^(%d+)%% chance to gain (.+) for (%d+) seconds$"] = function(line, chance, buffName, duration)
+		local buffVar = buffName:gsub("%s+", ""):gsub("[^%a%d_]", "")
+		return {
+			mod("ChanceToGain" .. buffVar, "BASE", tonumber(chance)),
+			mod(buffVar .. "Duration", "BASE", tonumber(duration)),
+		}
 	end,
 }
 
