@@ -1,5 +1,10 @@
 # Changelog
 
+## (2026-04-02)
+## What's Changed
+### Analysis
+- **Mod recognition rate verification** — Full audit of ModCache (13,743 entries): 89.7% recognition rate (12,321 parsed, 1,422 unparsed). Unparsed mods categorized: skill mechanics (1,091), timing/delay/cast (100), summon/companion (90), stacks/charges (54), additional/extra effects (41), damage conversion (31), abyssal/void (15). Conclusion: 89.7% is sufficient for practical use; most unparsed entries are skill-specific behavior descriptions not suited for item affix parser.
+
 ## (2026-03-29)
 ## What's Changed
 ### New Features
