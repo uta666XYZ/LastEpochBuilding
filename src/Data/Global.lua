@@ -42,15 +42,21 @@ colorCodes = {
 	DEXTERITY = "^x9EFF76",
 	INTELLIGENCE = "^x8EFFFF",
 	ATTUNEMENT = "^xFD9CFF",
+
+	BRUTALITY = "^xFF4040",
+	MADNESS = "^xFF60FF",
+	GUILE = "^x60FF60",
+	APATHY = "^x6060FF",
+	RAMPANCY = "^xFF8040",
 }
 
 colorCodes.LIFE = "^xE05030"
 colorCodes.MANA = "^x7070FF"
 colorCodes.ES = colorCodes.SOURCE
-colorCodes.WARD = colorCodes.RARE
-colorCodes.ENDURANCE = colorCodes.RARE
-colorCodes.ARMOUR = colorCodes.NORMAL
-colorCodes.EVASION = colorCodes.POSITIVE
+colorCodes.WARD = "^x90C8FF"
+colorCodes.ENDURANCE = "^x71E87D"
+colorCodes.ARMOUR = "^xFCDFC0"
+colorCodes.EVASION = "^x9EFF76"
 colorCodes.RAGE = colorCodes.WARNING
 colorCodes.PHYS = colorCodes.NORMAL
 
