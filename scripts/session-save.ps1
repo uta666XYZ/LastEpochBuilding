@@ -5,10 +5,22 @@ $repoRoot = "C:\Users\yobk0\Documents\GitHub\LastEpochBuilding"
 $sessionFile = Join-Path $repoRoot ".claude\active_session.md"
 $obsidianDir = "C:\Users\yobk0\Documents\Obsidian\Last Epoch Building"
 $obsidianSession = Join-Path $obsidianDir "active_session.md"
+$logFile = Join-Path $repoRoot ".claude\session-hook.log"
 
-Set-Location $repoRoot
+# Detect worktree: use CLAUDE_WORKING_DIRECTORY if available, else try CWD
+$workDir = $env:CLAUDE_WORKING_DIRECTORY
+if (-not $workDir) { $workDir = $PWD.Path }
 
-# Gather git state
+# If workDir looks like a worktree, use it; otherwise use repoRoot
+if ($workDir -match '\.claude[\\/]worktrees[\\/]') {
+    $gitDir = $workDir
+} else {
+    $gitDir = $repoRoot
+}
+
+Set-Location $gitDir
+
+# Gather git state from actual working directory
 $branch = git branch --show-current 2>$null
 $status = git status --short 2>$null
 $recentLog = git log --oneline -5 2>$null
@@ -22,6 +34,7 @@ $lines += "# Active Session Context"
 $lines += ""
 $lines += "Updated: $timestamp"
 $lines += "Branch: $branch"
+$lines += "WorkDir: $gitDir"
 $lines += ""
 
 if ($stagedStat) {
@@ -69,4 +82,15 @@ if (Test-Path $obsidianDir) {
     $content | Out-File -FilePath $obsidianSession -Encoding utf8 -Force
 }
 
-Write-Host "Session context saved ($timestamp)"
+# Log for debugging (append, keep last 20 lines)
+$logEntry = "$timestamp | Branch: $branch | WorkDir: $gitDir | OK"
+$logEntry | Out-File -FilePath $logFile -Encoding utf8 -Append
+# Trim log to last 20 lines
+if (Test-Path $logFile) {
+    $logLines = Get-Content $logFile
+    if ($logLines.Count -gt 20) {
+        $logLines | Select-Object -Last 20 | Out-File -FilePath $logFile -Encoding utf8 -Force
+    }
+}
+
+Write-Host "Session context saved ($timestamp) from $gitDir"
