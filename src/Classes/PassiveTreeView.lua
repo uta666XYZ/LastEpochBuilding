@@ -49,6 +49,11 @@ local PassiveTreeViewClass = newClass("PassiveTreeView", function(self)
 	
 	-- Anchor position: "center" (default), "left", "top-left"
 	self.anchorPosition = "center"
+
+	-- Selected mastery index for passive tree: nil = show all, 0 = base class, 1-3 = ascendancies
+	self.selectedMastery = 0
+	-- Track when mastery changes to auto-focus
+	self.lastSelectedMastery = nil
 end)
 
 function PassiveTreeViewClass:Load(xml, fileName)
@@ -94,7 +99,18 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 			return true
 		elseif self.filterMode == "passive" then
 			-- Show only passive tree nodes (class-based nodes)
-			return nodeId:match("^" .. spec.curClassName) ~= nil
+			if nodeId:match("^" .. spec.curClassName) == nil then
+				return false
+			end
+			-- Hide ClassStart and AscendClassStart nodes (header badges replace them)
+			if node.type == "ClassStart" or node.type == "AscendClassStart" then
+				return false
+			end
+			-- If a specific mastery is selected, filter by mastery index
+			if self.selectedMastery ~= nil and node.mastery ~= nil then
+				return node.mastery == self.selectedMastery
+			end
+			return true
 		elseif self.filterMode == "skill" then
 			-- Show only skill tree nodes
 			if self.selectedSkillIndex then
@@ -123,11 +139,32 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 	end
 
 	-- Helper function to check if a connector should be visible
-	local function shouldShowConnector(connectorNodeId1)
+	local function shouldShowConnector(connectorNodeId1, connectorNodeId2)
 		if self.filterMode == "all" then
 			return true
 		elseif self.filterMode == "passive" then
-			return connectorNodeId1:match("^" .. spec.curClassName) ~= nil
+			if connectorNodeId1:match("^" .. spec.curClassName) == nil then
+				return false
+			end
+			-- Hide connectors to ClassStart/AscendClassStart nodes
+			local n1 = spec.nodes[connectorNodeId1]
+			local n2 = connectorNodeId2 and spec.nodes[connectorNodeId2]
+			if n1 and (n1.type == "ClassStart" or n1.type == "AscendClassStart") then
+				return false
+			end
+			if n2 and (n2.type == "ClassStart" or n2.type == "AscendClassStart") then
+				return false
+			end
+			-- If a specific mastery is selected, check both nodes' mastery
+			if self.selectedMastery ~= nil then
+				if n1 and n1.mastery ~= nil and n1.mastery ~= self.selectedMastery then
+					return false
+				end
+				if n2 and n2.mastery ~= nil and n2.mastery ~= self.selectedMastery then
+					return false
+				end
+			end
+			return true
 		elseif self.filterMode == "skill" then
 			if self.selectedSkillIndex then
 				local ability = build.skillsTab.socketGroupList[self.selectedSkillIndex]
@@ -420,15 +457,52 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 	else
 		-- For passive tree: use original calculation with zoom (centered)
 		self.treeOffsets = nil
-		local referenceSize
-		if self.fixedSizeMode then
-			referenceSize = self.fixedTreeSize or 600
+
+		if self.selectedMastery ~= nil and self.filterMode == "passive" then
+			-- Single mastery mode: fit the selected mastery's nodes to viewport
+			local minX, maxX, minY, maxY = math.huge, -math.huge, math.huge, -math.huge
+			local nodeCount = 0
+			local maxNodeRadius = 0
+			for nodeId, node in pairs(spec.visibleNodes) do
+				if node.mastery == self.selectedMastery and nodeId:match("^" .. spec.curClassName) then
+					if node.type ~= "ClassStart" and node.type ~= "AscendClassStart" then
+						if node.x < minX then minX = node.x end
+						if node.x > maxX then maxX = node.x end
+						if node.y < minY then minY = node.y end
+						if node.y > maxY then maxY = node.y end
+						nodeCount = nodeCount + 1
+						local r = node.rsq and math.sqrt(node.rsq) or 40
+						if r > maxNodeRadius then maxNodeRadius = r end
+					end
+				end
+			end
+			if nodeCount > 1 then
+				local padding = maxNodeRadius + 60
+				local treeW = (maxX - minX) + padding * 2
+				local treeH = (maxY - minY) + padding * 2
+				local centerX = (minX + maxX) / 2
+				local centerY = (minY + maxY) / 2
+				scale = m_max(0.05, m_min(viewPort.width / treeW, viewPort.height / treeH, 1.5))
+				offsetX = viewPort.x + viewPort.width / 2 - centerX * scale
+				offsetY = viewPort.y + viewPort.height / 2 - centerY * scale
+			else
+				-- Fallback: center on mastery Y position
+				local masteryY = self.selectedMastery * 1000
+				scale = 0.3
+				offsetX = viewPort.x + viewPort.width / 2
+				offsetY = viewPort.y + viewPort.height / 2 - masteryY * scale
+			end
 		else
-			referenceSize = m_min(viewPort.width, viewPort.height)
+			local referenceSize
+			if self.fixedSizeMode then
+				referenceSize = self.fixedTreeSize or 600
+			else
+				referenceSize = m_min(viewPort.width, viewPort.height)
+			end
+			scale = referenceSize / tree.size * self.zoom
+			offsetX = self.zoomX + viewPort.x + viewPort.width / 2
+			offsetY = self.zoomY + viewPort.y + viewPort.height / 2
 		end
-		scale = referenceSize / tree.size * self.zoom
-		offsetX = self.zoomX + viewPort.x + viewPort.width / 2
-		offsetY = self.zoomY + viewPort.y + viewPort.height / 2
 	end
 	
 	-- Store scale for use in helper functions
@@ -590,29 +664,12 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 	end
 
 	-- Draw classes background art for the main class and the three ascension classes
-	-- Only draw if showing passive tree
-	if self.filterMode ~= "skill" then
+	-- Only draw if showing passive tree and NOT in single-mastery view
+	-- (In single-mastery view, the header already shows badges, so skip the large background)
+	if self.filterMode ~= "skill" and self.selectedMastery == nil then
 		for i = 0, 3 do
 			local scrX, scrY = treeToScreen(-220, i * 1000)
 			self:DrawAsset(tree.assets.ClassBackground, scrX, scrY, scale)
-		end
-
-		-- Draw subclass badges on the left side of the tree
-		if spec.curClass and spec.curClass.classes then
-			local badgeX = -380
-			local badgeStartY = 200
-			local badgeSpacing = 250
-			for ascendId, ascendClass in ipairs(spec.curClass.classes) do
-				if ascendId > 0 and ascendClass.name then
-					local badgeName = "badge_" .. ascendClass.name:lower():gsub("%s+", "_")
-					local scrX, scrY = treeToScreen(badgeX, badgeStartY + (ascendId - 1) * badgeSpacing)
-					local badgeSprite = tree.spriteMap[badgeName]
-					if badgeSprite then
-						SetDrawColor(1, 1, 1)
-						self:DrawAsset(badgeSprite, scrX, scrY, scale)
-					end
-				end
-			end
 		end
 	end
 
@@ -824,13 +881,14 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 			else
 				DrawImageQuad(lineHandle, unpack(connector.c))
 			end
+
 		end
 	end
 
 	-- Draw the connecting lines between nodes
 	SetDrawLayer(nil, 20)
 	for _, connector in pairs(tree.connectors) do
-		if shouldShowConnector(connector.nodeId1) then
+		if shouldShowConnector(connector.nodeId1, connector.nodeId2) then
 			-- For skill mode with a single selected skill: use simple path (no Y offset needed)
 			if self.filterMode == "skill" and self.selectedSkillIndex then
 				local node1, node2 = spec.nodes[connector.nodeId1], spec.nodes[connector.nodeId2]
@@ -1295,6 +1353,15 @@ function PassiveTreeViewClass:Focus(x, y, viewPort, build)
 	
 	self.zoomX = -x * scale
 	self.zoomY = -y * scale
+end
+
+function PassiveTreeViewClass:SelectMastery(index)
+	self.selectedMastery = index
+	-- Reset zoom/pan to center on the new mastery
+	self.zoomLevel = 20
+	self.zoom = 1.2 ^ self.zoomLevel
+	self.zoomX = 0
+	self.zoomY = 0
 end
 
 function PassiveTreeViewClass:DoesNodeMatchSearchParams(node)
