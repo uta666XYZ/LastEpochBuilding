@@ -1151,13 +1151,13 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 		-- Draw mastery/tattoo effect artwork
 		if effect then
 			SetDrawLayer(nil, 15)
-			self:DrawAsset(effect, scrX, scrY, scale)
+			self:DrawAsset(effect, scrX, scrY, scale, nil, true)
 			SetDrawLayer(nil, 25)
 		end
 
 		-- Draw base artwork
 		if base then
-			self:DrawAsset(base, scrX, scrY, scale)
+			self:DrawAsset(base, scrX, scrY, scale, nil, true)
 			-- Draw the allocated number
 			if node.maxPoints > 0 then
 				DrawString(scrX, scrY + 48 * scale, "CENTER_X", round(50 * scale), "VAR", "^7" .. node.alloc .. "/" .. node.maxPoints)
@@ -1184,7 +1184,7 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 					end
 				end
 			end
-			self:DrawAsset(tree.spriteMap[overlay], scrX, scrY, scale)
+			self:DrawAsset(tree.spriteMap[overlay], scrX, scrY, scale, nil, true)
 			SetDrawColor(1, 1, 1)
 		end
 		if self.searchStrResults[nodeId] then
@@ -1210,7 +1210,7 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 end
 
 -- Draws the given asset at the given position
-function PassiveTreeViewClass:DrawAsset(data, x, y, scale, isHalf)
+function PassiveTreeViewClass:DrawAsset(data, x, y, scale, isHalf, useFixedSize)
 	if not data then
 		return
 	end
@@ -1220,8 +1220,10 @@ function PassiveTreeViewClass:DrawAsset(data, x, y, scale, isHalf)
 			return
 		end
 	end
-	local width = data.width * scale * 1.33
-	local height = data.height * scale * 1.33
+	local w = useFixedSize and 42 or data.width
+	local h = useFixedSize and 42 or data.height
+	local width = w * scale * 1.33
+	local height = h * scale * 1.33
 	if isHalf then
 		DrawImage(data.handle, x - width, y - height * 2, width * 2, height * 2)
 		DrawImage(data.handle, x - width, y, width * 2, height * 2, 0, 1, 1, 0)
