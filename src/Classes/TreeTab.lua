@@ -19,14 +19,24 @@ local s_gsub = string.gsub
 local s_byte = string.byte
 local dkjson = require "dkjson"
 
+-- Layout constants for Maxroll-style header and skill bar
+local HEADER_HEIGHT = 130
+local SKILL_BAR_HEIGHT = 90
+
 local TreeTabClass = newClass("TreeTab", "ControlHost", function(self, build)
 	self.ControlHost()
 
 	self.build = build
-	self.isComparing = false;
+	self.isComparing = false
+
+	-- Badge image cache for class/mastery icons
+	self.badgeHandles = {}
 
 	self.viewer = new("PassiveTreeView")
 	self.viewer.filterMode = "passive"  -- TreeTab shows passive tree only (skill trees are in SkillsTab)
+	self.viewer.selectedMastery = 0     -- Default: show base class tree (0=base, 1-3=masteries)
+	self.viewer.disableDragging = true  -- No panning (Maxroll-style fixed layout)
+	self.viewer.disableZooming = true   -- No zooming (Maxroll-style fixed layout)
 
 	self.specList = { }
 	self.specList[1] = new("PassiveSpec", build, latestTreeVersion)
@@ -219,7 +229,178 @@ local TreeTabClass = newClass("TreeTab", "ControlHost", function(self, build)
 	self.jumpToY = 0
 end)
 
+function TreeTabClass:GetBadgeHandle(name)
+	if not name then return nil end
+	local key = name:lower():gsub(" ", "_")
+	if not self.badgeHandles[key] then
+		self.badgeHandles[key] = NewImageHandle()
+		self.badgeHandles[key]:Load("TreeData/sprites/badge_" .. key .. ".png")
+	end
+	return self.badgeHandles[key]
+end
+
+-- Lazy-load a sprite from Assets/tree/ directory (extracted from panels_ui.webp)
+function TreeTabClass:GetSpriteHandle(spriteName)
+	local key = "sprite_" .. spriteName
+	if not self.badgeHandles[key] then
+		self.badgeHandles[key] = NewImageHandle()
+		self.badgeHandles[key]:Load("Assets/tree/" .. spriteName .. ".png")
+	end
+	return self.badgeHandles[key]
+end
+
+-- Skill unlock data per mastery: maps mastery index to the skills unlocked
+-- by spending points in that mastery's passive tree.
+-- Format: { name = "SkillId", label = "Display Name", treeId = "treeId", level = unlockPoints }
+-- level = nil means unlocked by selecting the mastery (star skill)
+local MASTERY_SKILL_UNLOCKS = {
+	-- Primalist (classId 0)
+	["Primalist"] = {
+		[0] = { -- Base class
+			{ name = "Eterras Blessing", label = "Eterra's Blessing", treeId = "eb5656", level = 5, iconKey = "eterras_blessing" },
+			{ name = "Warcry", label = "Warcry", treeId = "wc57", level = 10, iconKey = "warcry" },
+			{ name = "SummonStormCrow", label = "Summon Storm Crows", treeId = "ssc50", level = 15, iconKey = "summon_storm_crows" },
+			{ name = "SerpentStrike", label = "Serpent Strike", treeId = "st31et", level = 20, iconKey = "serpent_strike" },
+		},
+		[1] = { -- Beastmaster
+			{ name = "SummonBear", label = "Summon Bear", treeId = "be36ar", level = 5, iconKey = "summon_bear" },
+			{ name = "SummonScorpion", label = "Summon Scorpion", treeId = "sc36pi", level = 15, iconKey = "summon_scorpion" },
+			{ name = "SummonFrenzyTotem", label = "Summon Frenzy Totem", treeId = "sf37", level = 25, iconKey = "summon_frenzy_totem" },
+			{ name = "SummonSabertooth", label = "Summon Sabertooth", treeId = "sa36oh", level = 35, iconKey = "summon_sabertooth" },
+		},
+		[2] = { -- Shaman
+			{ name = "Tornado", label = "Tornado", treeId = "to50", level = 5, iconKey = "tornado" },
+			{ name = "EarthquakeSlam", label = "Earthquake", treeId = "eq5s", level = 15, iconKey = "earthquake" },
+			{ name = "Avalanche", label = "Avalanche", treeId = "av75ch", level = 25, iconKey = "avalanche" },
+		},
+		[3] = { -- Druid
+			{ name = "SprigganForm", label = "Spriggan Form", treeId = "sf5rd", level = 5, iconKey = "spriggan_form" },
+			{ name = "SummonSpriggan", label = "Summon Spriggan", treeId = "sp38", level = 15, iconKey = "summon_spriggan" },
+			{ name = "Swarmblade Form", label = "Swarmblade Form", treeId = "sbf4m", level = 25, iconKey = "swarmblade_form" },
+			{ name = "EntanglingRoots", label = "Entangling Roots", treeId = "er6no", level = 35, iconKey = "entangling_roots" },
+		},
+	},
+	-- Mage (classId 1)
+	["Mage"] = {
+		[0] = { -- Base class
+			{ name = "Glacier", label = "Glacier", treeId = "gl14", level = 5 },
+			{ name = "Disintegrate", label = "Disintegrate", treeId = "dig5", level = 10 },
+			{ name = "VolcanicOrb", label = "Volcanic Orb", treeId = "vo54", level = 15 },
+			{ name = "Focus", label = "Focus", treeId = "vm53dx", level = 20 },
+		},
+		[1] = { -- Sorcerer
+			{ name = "StaticOrb", label = "Static Orb", treeId = "so35a", level = 5 },
+			{ name = "IceBarrage", label = "Ice Barrage", treeId = "ib5g3", level = 15 },
+			{ name = "ArcaneAscendance", label = "Arcane Ascendance", treeId = "arcas", level = 30 },
+			{ name = "BlackHole", label = "Black Hole", treeId = "bh2", level = 40 },
+		},
+		[2] = { -- Spellblade
+			{ name = "FlameReave", label = "Flame Reave", treeId = "fr11mv", level = 5 },
+			{ name = "EnchantWeapon", label = "Enchant Weapon", treeId = "sb44eQ", level = 15 },
+			{ name = "Firebrand", label = "Firebrand", treeId = "f1b4d", level = 30 },
+			{ name = "Surge", label = "Surge", treeId = "su5g3", level = 40 },
+		},
+		[3] = { -- Runemaster
+			{ name = "FlameRush", label = "Flame Rush", treeId = "fl71ds", level = 5 },
+			{ name = "FrostWall", label = "Frost Wall", treeId = "fr4wl", level = 15 },
+			{ name = "Runebolt", label = "Runebolt", treeId = "fb8fe", level = 30 },
+			{ name = "GlyphOfDominion", label = "Glyph of Dominion", treeId = "gy2dm", level = 35 },
+		},
+	},
+	-- Sentinel (classId 2)
+	["Sentinel"] = {
+		[0] = { -- Base class
+			{ name = "Rebuke", label = "Rebuke", treeId = "re82ke", level = 5 },
+			{ name = "ShieldRush", label = "Shield Rush", treeId = "sr31hu", level = 10 },
+			{ name = "Multistrike", label = "Multistrike", treeId = "multis", level = 15 },
+			{ name = "Smite", label = "Smite", treeId = "sm87r4", level = 20 },
+		},
+		[1] = { -- Void Knight
+			{ name = "VolatileReversal", label = "Volatile Reversal", treeId = "vr53sl", level = 5 },
+			{ name = "AbyssalEchoes", label = "Abyssal Echoes", treeId = "ab0lh", level = 10 },
+			{ name = "DevouringOrb", label = "Devouring Orb", treeId = "do5vr", level = 15 },
+			{ name = "Anomaly", label = "Anomaly", treeId = "an0my", level = 30 },
+		},
+		[2] = { -- Forge Guard
+			{ name = "ShieldThrow", label = "Shield Throw", treeId = "st31io", level = 5 },
+			{ name = "ManifestArmor", label = "Manifest Armor", treeId = "ma6hdr", level = 15 },
+			{ name = "RingOfShields", label = "Ring of Shields", treeId = "rs31hi", level = 30 },
+			{ name = "SmeltersWrath", label = "Smelter's Wrath", treeId = "st4th", level = 40 },
+		},
+		[3] = { -- Paladin
+			{ name = "HealingHands", label = "Healing Hands", treeId = "hh7pa3", level = 5 },
+			{ name = "SymbolsOfHope", label = "Symbols of Hope", treeId = "si4lgl", level = 15 },
+			{ name = "Judgement", label = "Judgement", treeId = "pa67ju", level = 30 },
+		},
+	},
+	-- Acolyte (classId 3)
+	["Acolyte"] = {
+		[0] = { -- Base class
+			{ name = "HungeringSouls", label = "Hungering Souls", treeId = "hs18gu", level = 5 },
+			{ name = "SummonBoneGolem", label = "Summon Bone Golem", treeId = "bg36nl", level = 10 },
+			{ name = "SpiritPlague", label = "Spirit Plague", treeId = "sp5g2", level = 15 },
+			{ name = "InfernalShade", label = "Infernal Shade", treeId = "is40", level = 20 },
+		},
+		[1] = { -- Necromancer
+			{ name = "SummonSkeletalMage", label = "Summon Skeletal Mage", treeId = "sm4g", level = 5 },
+			{ name = "Sacrifice", label = "Sacrifice", treeId = "sf31rc", level = 10 },
+			{ name = "DreadShade", label = "Dread Shade", treeId = "ds4d3", level = 30 },
+			{ name = "AssembleAbomination", label = "Assemble Abomination", treeId = "aa710", level = 40 },
+		},
+		[2] = { -- Lich
+			{ name = "DrainLife", label = "Drain Life", treeId = "dl73", level = 5 },
+			{ name = "AuraOfDecay", label = "Aura of Decay", treeId = "ad0ry", level = 10 },
+			{ name = "Flay", label = "Flay", treeId = "fl44", level = 30 },
+			{ name = "DeathSeal", label = "Death Seal", treeId = "ds34l", level = 35 },
+		},
+		[3] = { -- Warlock
+			{ name = "ChaosBolts", label = "Chaos Bolts", treeId = "ch4bo", level = 5 },
+			{ name = "Ghostflame", label = "Ghostflame", treeId = "gh0fl", level = 15 },
+			{ name = "SoulFeast", label = "Soul Feast", treeId = "fe8at", level = 30 },
+			{ name = "ProfaneVeil", label = "Profane Veil", treeId = "pr5fm", level = 35 },
+		},
+	},
+	-- Rogue (classId 4)
+	["Rogue"] = {
+		[0] = { -- Base class
+			{ name = "SmokeBomb", label = "Smoke Bomb", treeId = "smbmb", level = 5 },
+			{ name = "Bladestorm", label = "Bladestorm", treeId = "bl5st", level = 10 },
+			{ name = "SummonBallista", label = "Ballista", treeId = "ba1574", level = 15 },
+			{ name = "UmbralBlades", label = "Umbral Blades", treeId = "ub5d9", level = 20 },
+		},
+		[1] = { -- Bladedancer
+			{ name = "ShadowCascade", label = "Shadow Cascade", treeId = "dagg3", level = 5 },
+			{ name = "SynchronizedStrike", label = "Synchronized Strike", treeId = "sync5", level = 10 },
+			{ name = "LethalMirage", label = "Lethal Mirage", treeId = "mira59", level = 30 },
+		},
+		[2] = { -- Marksman
+			{ name = "Multishot", label = "Multishot", treeId = "mush9", level = 5 },
+			{ name = "DarkQuiver", label = "Dark Quiver", treeId = "dqv5", level = 15 },
+			{ name = "Heartseeker", label = "Heartseeker", treeId = "htsk5", level = 30 },
+			{ name = "HailOfArrows", label = "Hail of Arrows", treeId = "exvol8", level = 35 },
+		},
+		[3] = { -- Falconer
+			{ name = "ExplosiveTrap", label = "Explosive Trap", treeId = "ex4tp", level = 5 },
+			{ name = "Net", label = "Net", treeId = "ne01t", level = 15 },
+			{ name = "AerialAssault", label = "Aerial Assault", treeId = "aa989", level = 30 },
+			{ name = "DiveBomb", label = "Dive Bomb", treeId = "db992", level = 35 },
+		},
+	},
+}
+
+function TreeTabClass:GetMasterySkillUnlocks(spec, masteryIndex)
+	local className = spec.curClassName or ""
+	local classData = MASTERY_SKILL_UNLOCKS[className]
+	if classData and classData[masteryIndex or 0] then
+		return classData[masteryIndex or 0]
+	end
+	return {}
+end
+
 function TreeTabClass:Draw(viewPort, inputEvents)
+	local spec = self.build.spec
+	local tree = spec.tree
+
 	self.anchorControls.x = viewPort.x + 4
 	self.anchorControls.y = viewPort.y + viewPort.height - 24
 
@@ -240,6 +421,40 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 			end
 		end
 	end
+
+	-- Handle badge clicks before processing controls
+	local cursorX, cursorY = GetCursorPos()
+	local badgeSize = 80
+	local badgeGap = 6
+	local badgeStartX = viewPort.x + 10
+	local badgeY = viewPort.y + 6
+	local isMouseDown = IsKeyDown("LEFTBUTTON")
+	if not self.badgeMouseWasDown then self.badgeMouseWasDown = false end
+	local badgeClicked = self.badgeMouseWasDown and not isMouseDown
+	local inBadgeArea = cursorY >= badgeY and cursorY <= badgeY + badgeSize
+		and cursorX >= badgeStartX and cursorX <= badgeStartX + 4 * (badgeSize + badgeGap)
+	if isMouseDown and inBadgeArea then
+		self.badgeMouseWasDown = true
+	elseif not isMouseDown then
+		self.badgeMouseWasDown = false
+	end
+
+	if badgeClicked and inBadgeArea then
+		if cursorX >= badgeStartX and cursorX <= badgeStartX + badgeSize then
+			self.viewer.selectedMastery = 0
+		else
+			if spec.curClass then
+				for i, ascClass in ipairs(spec.curClass.classes) do
+					local bx = badgeStartX + i * (badgeSize + badgeGap)
+					if cursorX >= bx and cursorX <= bx + badgeSize then
+						self.viewer.selectedMastery = i
+						break
+					end
+				end
+			end
+		end
+	end
+
 	self:ProcessControlsInput(inputEvents, viewPort)
 
 	-- Determine positions if one line of controls doesn't fit in the screen width
@@ -252,7 +467,6 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 		self.controls.treeSearch:SetAnchor("TOPLEFT", self.controls.specSelect, "BOTTOMLEFT", 0, 4)
 		self.controls.powerReportList:SetAnchor("TOPLEFT", self.controls.treeSearch, "BOTTOMLEFT", 0, self.controls.treeHeatMap.y + self.controls.treeHeatMap.height + 4)
 	end
-	-- determine positions for convert line of controls
 	local convertTwoLineHeight = 24
 	local convertMaxWidth = 900
 	if viewPort.width >= convertMaxWidth then
@@ -267,14 +481,21 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 	local bottomDrawerHeight = self.controls.powerReportList.shown and 194 or 0
 	self.controls.specSelect.y = -bottomDrawerHeight - twoLineHeight
 
-	local treeViewPort = { x = viewPort.x, y = viewPort.y, width = viewPort.width, height = viewPort.height - (self.showConvert and 64 + bottomDrawerHeight + twoLineHeight or 32 + bottomDrawerHeight + twoLineHeight)}
+	-- Calculate bottom controls height
+	local bottomBarHeight = self.showConvert and 64 + bottomDrawerHeight + twoLineHeight or 32 + bottomDrawerHeight + twoLineHeight
+
+	-- Tree viewport: shrink from top (header) and bottom (skill bar + controls)
+	local treeViewPort = {
+		x = viewPort.x,
+		y = viewPort.y + HEADER_HEIGHT,
+		width = viewPort.width,
+		height = viewPort.height - HEADER_HEIGHT - SKILL_BAR_HEIGHT - bottomBarHeight
+	}
 	if self.jumpToNode then
 		self.viewer:Focus(self.jumpToX, self.jumpToY, treeViewPort, self.build)
 		self.jumpToNode = false
 	end
 	self.viewer.compareSpec = self.isComparing and self.specList[self.activeCompareSpec] or nil
-	-- Pass a fresh copy of inputEvents to the tree viewer so that ProcessControlsInput
-	-- (which nils out LEFTBUTTON events when selControl is set) cannot block tree drag/zoom.
 	local treeInputEvents = {}
 	for i, e in ipairs(inputEvents) do
 		treeInputEvents[i] = e
@@ -303,6 +524,312 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 
 	SetDrawLayer(1)
 
+	-- =====================
+	-- HEADER AREA (Maxroll-style class badges + name)
+	-- =====================
+	local baseSprName = (self.viewer.selectedMastery == 0) and "class-base-selected" or "class-base"
+	local baseBadgeSpr = self:GetSpriteHandle(baseSprName)
+	SetDrawColor(1, 1, 1)
+	DrawImage(baseBadgeSpr, badgeStartX, badgeY, badgeSize, badgeSize)
+
+	if spec.curClass then
+		for i, ascClass in ipairs(spec.curClass.classes) do
+			local bx = badgeStartX + i * (badgeSize + badgeGap)
+			local ascSprName
+			if self.viewer.selectedMastery == i then
+				ascSprName = "class-mastery-selected"
+			else
+				ascSprName = "class-mastery"
+			end
+			local ascBadgeSpr = self:GetSpriteHandle(ascSprName)
+			SetDrawColor(1, 1, 1)
+			DrawImage(ascBadgeSpr, bx, badgeY, badgeSize, badgeSize)
+		end
+	end
+
+	-- Badge icon overlay
+	local baseBadge = self:GetBadgeHandle(spec.curClassName)
+	if baseBadge then
+		if self.viewer.selectedMastery == 0 then
+			SetDrawColor(1, 1, 1)
+		else
+			SetDrawColor(0.5, 0.5, 0.5)
+		end
+		local iconInset = 6
+		DrawImage(baseBadge, badgeStartX + iconInset, badgeY + iconInset, badgeSize - iconInset * 2, badgeSize - iconInset * 2)
+	end
+	if spec.curClass then
+		for i, ascClass in ipairs(spec.curClass.classes) do
+			local ascBadge = self:GetBadgeHandle(ascClass.name)
+			if ascBadge then
+				local bx = badgeStartX + i * (badgeSize + badgeGap)
+				if self.viewer.selectedMastery == i then
+					SetDrawColor(1, 1, 1)
+				else
+					SetDrawColor(0.5, 0.5, 0.5)
+				end
+				local iconInset = 6
+				DrawImage(ascBadge, bx + iconInset, badgeY + iconInset, badgeSize - iconInset * 2, badgeSize - iconInset * 2)
+			end
+		end
+	end
+
+	-- Lock icon on non-allocated mastery badges (bottom-center of badge)
+	if spec.curClass then
+		local lockSpr = self:GetSpriteHandle("class-mastery-locked")
+		local lockSize = 32
+		for i, ascClass in ipairs(spec.curClass.classes) do
+			local isAllocated = false
+			if ascClass.startNodeId and spec.allocNodes[ascClass.startNodeId] then
+				isAllocated = true
+			end
+			if not isAllocated then
+				local bx = badgeStartX + i * (badgeSize + badgeGap)
+				SetDrawColor(1, 1, 1)
+				DrawImage(lockSpr, bx + (badgeSize - lockSize) / 2, badgeY + badgeSize - lockSize - 2, lockSize, lockSize)
+			end
+		end
+	end
+
+	-- Class/mastery name display
+	local nameX = badgeStartX + 4 * (badgeSize + badgeGap) + 16
+	SetDrawColor(1, 1, 1)
+	local selMastery = self.viewer.selectedMastery or 0
+	if selMastery > 0 and spec.curClass then
+		local ascClass = spec.curClass.classes[selMastery]
+		local ascName = ascClass and ascClass.name or ("Mastery " .. selMastery)
+		DrawString(nameX, viewPort.y + 8, "LEFT", 20, "VAR", "^7" .. ascName)
+		DrawString(nameX, viewPort.y + 30, "LEFT", 14, "VAR", "^8PASSIVE BONUSES")
+		if ascClass and ascClass.startNodeId then
+			local startNode = spec.nodes[ascClass.startNodeId]
+			if startNode and startNode.sd then
+				local bonusY = viewPort.y + 48
+				for idx, line in ipairs(startNode.sd) do
+					if idx <= 3 then
+						DrawString(nameX + 8, bonusY, "LEFT", 12, "VAR", "^x8888FF" .. "* " .. line)
+						bonusY = bonusY + 16
+					end
+				end
+			end
+		end
+	else
+		DrawString(nameX, viewPort.y + 12, "LEFT", 20, "VAR", "^7" .. (spec.curClassName or "No Class"))
+		DrawString(nameX, viewPort.y + 36, "LEFT", 14, "VAR", "^8BASE CLASS")
+	end
+
+	-- Unspent points display
+	local used = spec:CountAllocNodes()
+	local unspentText = (113 - used) .. " UNSPENT POINTS"
+	local unspentY = viewPort.y + HEADER_HEIGHT - 22
+	SetDrawColor(1, 1, 1)
+	DrawString(viewPort.x + viewPort.width / 2, unspentY, "CENTER_X", 14, "VAR", "^x8888AA" .. unspentText)
+
+	-- =====================
+	-- SKILL UNLOCK BAR (gold progress line with skill icons)
+	-- =====================
+	local skillBarY = viewPort.y + viewPort.height - bottomBarHeight - SKILL_BAR_HEIGHT
+
+	SetDrawColor(0.05, 0.05, 0.08)
+	DrawImage(nil, viewPort.x, skillBarY, viewPort.width, SKILL_BAR_HEIGHT)
+
+	local masterySkills = self:GetMasterySkillUnlocks(spec, selMastery)
+
+	-- Calculate points spent in current mastery
+	local masteryPointsSpent = 0
+	for nodeId, node in pairs(spec.allocNodes) do
+		if nodeId:match("^" .. (spec.curClassName or "")) and node.mastery == selMastery then
+			if node.type ~= "ClassStart" and node.type ~= "AscendClassStart" then
+				masteryPointsSpent = masteryPointsSpent + (node.alloc or 0)
+			end
+		end
+	end
+
+	local maxSkillLevel = 0
+	local minUnlockLevel = 999
+	for _, sk in ipairs(masterySkills) do
+		if sk.level then
+			if sk.level > maxSkillLevel then maxSkillLevel = sk.level end
+			if sk.level < minUnlockLevel then minUnlockLevel = sk.level end
+		end
+	end
+	if maxSkillLevel == 0 then maxSkillLevel = 20 end
+	if minUnlockLevel == 999 then minUnlockLevel = 5 end
+	-- Tree point cap: base class = 25, mastery = 45
+	local maxUnlockLevel = (selMastery == 0) and 25 or 45
+
+	local numSkills = #masterySkills
+	local frameSize = 68
+	local iconSize = 52
+	local fs2 = frameSize / 2
+	local slotY = skillBarY + 50
+
+	local barPadding = 50
+	local lineLeft = viewPort.x + barPadding
+	local lineRight = viewPort.x + viewPort.width - barPadding
+	local lineWidth = lineRight - lineLeft
+	local lineY = skillBarY + 14
+
+	local progressFrac = m_min(1.0, masteryPointsSpent / maxUnlockLevel)
+	local progressX = lineLeft + lineWidth * progressFrac
+
+	-- Progress bar assets
+	local barBgHandle = self:GetSpriteHandle("passive-slider-bg")
+	local barHorizFillHandle = self:GetSpriteHandle("progress-fill")
+	local sliderBarHandle = self:GetSpriteHandle("passive-slider-bar")
+	local barBgH = 34
+	local barFillH = 12
+
+	-- Draw full background track (includes ornate arrow endpoints)
+	SetDrawColor(1, 1, 1)
+	DrawImage(barBgHandle, lineLeft - 30, lineY - barBgH / 2, lineWidth + 60, barBgH)
+
+	-- Draw gold fill using progress-fill.png (horizontal bar asset)
+	if progressFrac > 0 then
+		SetDrawColor(1, 1, 1)
+		DrawImage(barHorizFillHandle, lineLeft, lineY - barFillH / 2, progressX - lineLeft, barFillH)
+	end
+
+	-- Tick marks on progress bar (1 per point, taller every 5 points)
+	for pt = 1, maxUnlockLevel - 1 do
+		local tickX = lineLeft + lineWidth * (pt / maxUnlockLevel)
+		local isPassed = masteryPointsSpent >= pt
+		if pt % 5 == 0 then
+			-- Large tick (diamond marker) every 5 points
+			local tickH = 16
+			if isPassed then
+				SetDrawColor(1, 0.85, 0.2)
+			else
+				SetDrawColor(0.35, 0.30, 0.12)
+			end
+			DrawImage(nil, tickX - 1, lineY - tickH / 2, 2, tickH)
+		else
+			-- Small tick every 1 point
+			local tickH = 8
+			if isPassed then
+				SetDrawColor(0.8, 0.68, 0.15)
+			else
+				SetDrawColor(0.25, 0.22, 0.08)
+			end
+			DrawImage(nil, tickX, lineY - tickH / 2, 1, tickH)
+		end
+	end
+
+	-- Native aspect ratio for passive-slider-bar / passive-lock-bar (19x372)
+	local barNativeW = 19
+	local barNativeH = 372
+	local barAspect = barNativeW / barNativeH
+	local barTop = viewPort.y + HEADER_HEIGHT
+
+	-- Passive lock bar at 22.5/45 midpoint for unselected mastery trees
+	-- Disappears when this mastery is the build's chosen mastery
+	-- Medallion (bottom of image) sits on the progress bar
+	if selMastery > 0 and spec.curAscendClassId ~= selMastery then
+		local lockBarHandle = self:GetSpriteHandle("passive-lock-bar")
+		local lockFrac = 22.5 / maxUnlockLevel
+		local lockX = lineLeft + lineWidth * lockFrac
+		local lockBot = lineY + 20
+		local lockH = lockBot - barTop
+		local lockW = lockH * barAspect
+		SetDrawColor(1, 1, 1)
+		DrawImage(lockBarHandle, lockX - lockW / 2, barTop, lockW, lockH)
+	end
+
+	-- Upward vertical indicator line from progress bar to tree bottom (Maxroll-style)
+	local sliderBot = lineY + 6
+	local sliderH = sliderBot - barTop
+	local sliderW = sliderH * barAspect
+	SetDrawColor(1, 0.85, 0.2)
+	DrawImage(sliderBarHandle, progressX - sliderW / 2, barTop, sliderW, sliderH)
+
+	local frameHandle = self:GetSpriteHandle("skill-icon-frame")
+	local frameLockedHandle = self:GetSpriteHandle("skill-icon-frame-locked")
+	local levelBadgeHandle = self:GetSpriteHandle("skill-req-mastery-level")
+	local levelLockedHandle = self:GetSpriteHandle("skill-req-mastery-level")
+
+	if numSkills > 0 then
+		for idx, sk in ipairs(masterySkills) do
+			local frac = (sk.level or (idx * 5)) / maxUnlockLevel
+			local slotCenterX = lineLeft + lineWidth * frac
+			local isUnlocked = masteryPointsSpent >= (sk.level or 0)
+
+			-- Vertical drop line from bar to skill frame using passive-slider-bar
+			-- The asset is 19x372 vertical: diamond at top, gold line descending
+			local dropTop = lineY - 6
+			local dropBot = slotY - fs2
+			local dropW = 19
+			if isUnlocked then
+				SetDrawColor(1, 1, 1)
+			else
+				SetDrawColor(0.25, 0.22, 0.10)
+			end
+			DrawImage(sliderBarHandle, slotCenterX - dropW / 2, dropTop, dropW, dropBot - dropTop)
+
+			-- Skill frame
+			if isUnlocked then
+				SetDrawColor(1, 1, 1)
+				DrawImage(frameHandle, slotCenterX - fs2, slotY - fs2, frameSize, frameSize)
+			else
+				SetDrawColor(0.6, 0.6, 0.6)
+				DrawImage(frameLockedHandle, slotCenterX - fs2, slotY - fs2, frameSize, frameSize)
+			end
+
+			-- Skill icon
+			local rootNodeId = sk.treeId and (sk.treeId .. "-0") or nil
+			local rootNode = rootNodeId and spec.nodes[rootNodeId] or nil
+			local iconName = rootNode and rootNode.icon or nil
+			if iconName then
+				local squareName = iconName:gsub("%-root$", "")
+				local cacheKey = "sqicon_" .. squareName
+				if not self.badgeHandles[cacheKey] then
+					self.badgeHandles[cacheKey] = NewImageHandle()
+					self.badgeHandles[cacheKey]:Load("TreeData/sprites/" .. squareName .. ".png")
+					local w, h = self.badgeHandles[cacheKey]:ImageSize()
+					if (not w or w == 0) and squareName ~= iconName then
+						self.badgeHandles[cacheKey]:Load("TreeData/sprites/" .. iconName .. ".png")
+					end
+				end
+				local iconHandle = self.badgeHandles[cacheKey]
+				if iconHandle then
+					if isUnlocked then
+						SetDrawColor(1, 1, 1)
+					else
+						SetDrawColor(0.35, 0.35, 0.35)
+					end
+					DrawImage(iconHandle, slotCenterX - iconSize / 2, slotY - iconSize / 2, iconSize, iconSize)
+				end
+			end
+
+			-- Level badge (centered on skill icon)
+			if sk.level then
+				local lvBadgeW = 38
+				local lvBadgeH = 32
+				local lvBadgeX = slotCenterX - lvBadgeW / 2
+				local lvBadgeY = slotY - lvBadgeH / 2
+				if isUnlocked then
+					SetDrawColor(1, 1, 1)
+					DrawImage(levelBadgeHandle, lvBadgeX, lvBadgeY, lvBadgeW, lvBadgeH)
+				else
+					SetDrawColor(0.6, 0.6, 0.6)
+					DrawImage(levelLockedHandle, lvBadgeX, lvBadgeY, lvBadgeW, lvBadgeH)
+				end
+				SetDrawColor(1, 1, 1)
+				DrawString(lvBadgeX + lvBadgeW / 2, lvBadgeY + lvBadgeH / 2 - 5, "CENTER_X", 10, "VAR", "^7" .. tostring(sk.level))
+			end
+
+			-- Skill name below frame
+			local skillName = (sk.label or sk.name or ""):upper()
+			if isUnlocked then
+				SetDrawColor(1, 1, 1)
+			else
+				SetDrawColor(0.4, 0.4, 0.4)
+			end
+			DrawString(slotCenterX, slotY + fs2 + 4, "CENTER_X", 9, "VAR", skillName)
+		end
+	end
+
+	-- =====================
+	-- BOTTOM CONTROLS BAR
+	-- =====================
 	SetDrawColor(0.05, 0.05, 0.05)
 	DrawImage(nil, viewPort.x, viewPort.y + viewPort.height - (28 + bottomDrawerHeight + twoLineHeight), viewPort.width, 28 + bottomDrawerHeight + twoLineHeight)
 	if self.showConvert then
@@ -312,7 +839,6 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 		SetDrawColor(0.85, 0.85, 0.85)
 		DrawImage(nil, viewPort.x, viewPort.y + viewPort.height - (64 + bottomDrawerHeight + twoLineHeight + convertTwoLineHeight), viewPort.width, 4)
 	end
-	-- let white lines overwrite the black sections, regardless of showConvert
 	SetDrawColor(0.85, 0.85, 0.85)
 	DrawImage(nil, viewPort.x, viewPort.y + viewPort.height - (32 + bottomDrawerHeight + twoLineHeight), viewPort.width, 4)
 
