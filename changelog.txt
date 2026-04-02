@@ -1,3 +1,31 @@
+VERSION[0.10.0][2026/04/03]
+
+--- New Features ---
+- Config tab expanded with skill options and effective DPS conditions
+- New offense outputs: Electrify, Time Rot, Blind, Slow, Frailty chances
+- New defense outputs: Parry, Damage to Mana, Chill/Slow/Shock Attackers
+- Endurance system (one-shot protection)
+- Full ailment/debuff/buff/Overload implementation
+- Tunklab defense formulas (block, dodge, ward)
+- Multi-Model Routing system
+- UI color fixes, subclass badges
+- Idol Altar UI redesign with Fractured Slot auto-population
+- Equipment +skill level mods (global and per-skill)
+- Empowered monolith blessing slots
+- Skill tree connector line requirement dots
+
+--- ModParser Improvements ---
+- Mod recognition rate: 89.7% (12,321/13,743)
+- New conditions: transformed, high health, ward, lightning aegis, consecrated ground, per companion/forged weapon, potion recently, enemy ailment stacks
+
+--- Fixed ---
+- Removed PoE-specific remnants (Chaos, Energy Shield, cost conversion)
+- Removed weapon set swap UI
+- Stun threshold formula corrected
+- Idol tooltip on all occupied cells
+- Config tooltip Unicode issue resolved
+
+
 VERSION[0.9.1][2025/10/01]
 
 --- Fixed Crashes ---

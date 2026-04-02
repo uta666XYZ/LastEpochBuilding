@@ -1,29 +1,33 @@
 # Changelog
 
-## (2026-04-02)
-## What's Changed
-### Analysis
-- **Mod recognition rate verification** — Full audit of ModCache (13,743 entries): 89.7% recognition rate (12,321 parsed, 1,422 unparsed). Unparsed mods categorized: skill mechanics (1,091), timing/delay/cast (100), summon/companion (90), stacks/charges (54), additional/extra effects (41), damage conversion (31), abyssal/void (15). Conclusion: 89.7% is sufficient for practical use; most unparsed entries are skill-specific behavior descriptions not suited for item affix parser.
+## [v0.10.0](https://github.com/uta666XYZ/LastEpochBuilding/tree/v0.10.0) (2026/04/03)
 
-## (2026-03-29)
+[Full Changelog](https://github.com/uta666XYZ/LastEpochBuilding/compare/v0.9.1...v0.10.0)
+
 ## What's Changed
 ### New Features
-- **Config tab expanded** — All new options show without pressing "Show All Configurations"
-  - Skill Options: Cursed, Transformed, High Health, Ward, Lightning Aegis, Consecrated Ground, Companion count, Frenzy, Nearby Corpses, Used Potion Recently, Forged Weapons count
-  - For Effective DPS: Enemy Cursed, Slowed, Hit/Stunned/Killed Recently, enemy ailment stack counts (Bleed, Ignite, Shock, Chill, Time Rot, Doom, Slow, Frailty, Curse)
-- **New Offense outputs** — ElectrifyChance, TimeRotChance, BlindChance, SlowChance, FrailtyChance now shown in Calcs tab
-- **New Defense outputs** — ParryChance, DamageToManaBeforeHealth, ChanceToChillAttackers, ChanceToSlowAttackers, ChanceToShockAttackers
-- **ModParser improvements** — Item affixes now recognized: Slow/Frailty/Blind/Electrify/Time Rot application chances, Parry Chance, Damage to Mana Before Health, Chance to Chill/Slow/Shock Attackers, Healing Effectiveness, per-stack enemy ailment multipliers, UsedPotionRecently, ForgedWeapon
-- **Endurance system** — One-shot protection mechanic correctly calculated (threshold-based damage reduction)
-- **New player/enemy conditions** in ModParser: `while transformed`, `while at high health`, `while you have ward/lightning aegis`, `on consecrated ground`, `per companion`, `per forged weapon`, `after using a potion`, enemy hit/stunned/killed recently, per-stack ailment tags
+- Config tab expanded with skill options and effective DPS conditions
+- New offense outputs: Electrify, Time Rot, Blind, Slow, Frailty chances
+- New defense outputs: Parry, Damage to Mana, Chill/Slow/Shock Attackers
+- Endurance system (one-shot protection)
+- Full ailment/debuff/buff/Overload implementation (28 damaging + 10 non-damaging + 8 res shred + 4 Overload + 10 buff)
+- Tunklab defense formulas (block, dodge, ward)
+- Idol Altar UI redesign with Fractured Slot auto-population
+- Equipment +skill level mods (global and per-skill)
+- Empowered monolith blessing slots (containerID 44-45)
+- Skill tree connector line requirement dot indicators
+- UI color fixes and subclass badges
+
+### ModParser Improvements
+- Mod recognition rate: 89.7% (12,321/13,743 entries)
+- New conditions: transformed, high health, ward, lightning aegis, consecrated ground, per companion/forged weapon, potion recently, enemy ailment stacks
 
 ### Fixed
-- Config tooltip text was rendering as Unicode escape sequences when written in Japanese — all tooltips are now English only
-
-## (2026/08/19)
-## What's Changed
-### Launch.lua
-- Changed APP_NAME = "Last Epoch Building" to APP_NAME = "Last Epoch Building"
+- Removed PoE-specific remnants (Chaos, Energy Shield, cost conversion)
+- Removed weapon set swap UI (LE has no weapon swap)
+- Stun threshold formula corrected (includes Ward and flat Stun Avoidance)
+- Idol tooltip on all occupied cells including blocked positions
+- Config tooltip Unicode issue resolved
 
 
 
