@@ -1016,6 +1016,10 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 		if not shouldShowNode(nodeId, node) then
 			goto continue_node_loop
 		end
+		-- Skip badge nodes (subclass icons)
+		if node.icon and node.icon:match("^badge_") then
+			goto continue_node_loop
+		end
 
 		-- Determine the base and overlay images for this node based on type and state
 		local compareNode = self.compareSpec and self.compareSpec.nodes[nodeId] or nil
@@ -1148,16 +1152,49 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 			end
 		end
 
+		-- Determine icon display size based on node type
+		local iconSize = 34  -- default for circle nodes (smallest)
+		if node.icon then
+			if node.icon:match("-root$") then
+				iconSize = 56  -- root nodes are largest
+			elseif node.icon:match("-hex$") then
+				iconSize = 48  -- hex nodes are medium
+			end
+		end
+
 		-- Draw mastery/tattoo effect artwork
 		if effect then
 			SetDrawLayer(nil, 15)
-			self:DrawAsset(effect, scrX, scrY, scale, nil, true)
+			self:DrawAsset(effect, scrX, scrY, scale, nil, iconSize)
 			SetDrawLayer(nil, 25)
 		end
 
 		-- Draw base artwork
 		if base then
-			self:DrawAsset(base, scrX, scrY, scale, nil, true)
+			self:DrawAsset(base, scrX, scrY, scale, nil, iconSize)
+
+			-- Draw node frame overlay
+			SetDrawColor(1, 1, 1)
+			local frameName, frameSize
+			local isPassiveNode = nodeId:sub(1, 1):match("%u") ~= nil
+			if node.icon then
+				if node.icon:match("-root$") then
+					frameName = isAlloc and "frame-root-alloc" or "frame-root-unalloc"
+					frameSize = 68
+				elseif isPassiveNode or node.icon:match("-hex$") then
+					-- Hex nodes: silver (unalloc) / gold (alloc)
+					frameName = isAlloc and "frame-hex-alloc" or "frame-hex-unalloc"
+					frameSize = 54
+				else
+					-- Skill tree circle nodes
+					frameName = isAlloc and "frame-circle-alloc" or "frame-circle-unalloc"
+					frameSize = 48
+				end
+			end
+			if frameName and tree.treeUI[frameName] then
+				self:DrawAsset(tree.treeUI[frameName], scrX, scrY, scale, nil, frameSize)
+			end
+
 			-- Draw the allocated number
 			if node.maxPoints > 0 then
 				DrawString(scrX, scrY + 48 * scale, "CENTER_X", round(50 * scale), "VAR", "^7" .. node.alloc .. "/" .. node.maxPoints)
@@ -1184,7 +1221,7 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 					end
 				end
 			end
-			self:DrawAsset(tree.spriteMap[overlay], scrX, scrY, scale, nil, true)
+			self:DrawAsset(tree.spriteMap[overlay], scrX, scrY, scale, nil, iconSize)
 			SetDrawColor(1, 1, 1)
 		end
 		if self.searchStrResults[nodeId] then
@@ -1210,7 +1247,7 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 end
 
 -- Draws the given asset at the given position
-function PassiveTreeViewClass:DrawAsset(data, x, y, scale, isHalf, useFixedSize)
+function PassiveTreeViewClass:DrawAsset(data, x, y, scale, isHalf, fixedSize)
 	if not data then
 		return
 	end
@@ -1220,8 +1257,8 @@ function PassiveTreeViewClass:DrawAsset(data, x, y, scale, isHalf, useFixedSize)
 			return
 		end
 	end
-	local w = useFixedSize and 42 or data.width
-	local h = useFixedSize and 42 or data.height
+	local w = fixedSize or data.width
+	local h = fixedSize or data.height
 	local width = w * scale * 1.33
 	local height = h * scale * 1.33
 	if isHalf then
