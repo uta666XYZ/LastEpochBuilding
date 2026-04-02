@@ -200,6 +200,17 @@ local PassiveTreeClass = newClass("PassiveTree", function(self, treeVersion)
         end
     end
 
+    -- Load node frame assets
+    local frameNames = {
+        "frame-hex-alloc", "frame-hex-unalloc",
+        "frame-skill-hex-alloc", "frame-skill-hex-unalloc",
+        "frame-circle-alloc", "frame-circle-unalloc",
+        "frame-root-alloc", "frame-root-unalloc",
+    }
+    for _, name in ipairs(frameNames) do
+        loadTreeUIAsset(name, "Assets/tree/" .. name .. ".png")
+    end
+
     -- Load sprite sheets and build sprite map
     self.spriteMap = { }
     self.nodeOverlay = {
