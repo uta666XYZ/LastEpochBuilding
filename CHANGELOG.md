@@ -1,5 +1,22 @@
 # Changelog
 
+## [Unreleased]
+
+## What's Changed
+### New Features
+- Skills tab LETools/Maxroll-style UI Phase 2
+  - Damage type icons (physical/lightning/cold/fire/void/necrotic/poison) per skill, bright for base types, gray for conversion-only types
+  - Skill icons: pointy-top hex mask (`-spec.png`) for spec slots, edge-fill square (`-sq.png`) for skill grid
+  - 132 new sprite variants generated via `gen-spec-icons.py` (Pillow/PIL)
+  - Spec slot selected border aspect-ratio fix (126×80 image)
+  - Spec slot level badge centered; shows skill points used
+  - Mastered badge for star-unlock mastery skills
+  - Word-wrap for long skill names in skill grid
+  - Back button relocated to viewport top-left
+  - Locked/unlocked skill dimming in all sections including Passive Unlock
+
+
+
 ## [v0.10.0](https://github.com/uta666XYZ/LastEpochBuilding/tree/v0.10.0) (2026/04/03)
 
 [Full Changelog](https://github.com/uta666XYZ/LastEpochBuilding/compare/v0.9.1...v0.10.0)
