@@ -6,7 +6,7 @@ VERSION[0.10.0][2026/04/03]
 - New defense outputs: Parry, Damage to Mana, Chill/Slow/Shock Attackers
 - Endurance system (one-shot protection)
 - Full ailment/debuff/buff/Overload implementation
-- Tunklab defense formulas (block, dodge, ward)
+- Defense formulas from external sources (block, dodge, ward)
 - Multi-Model Routing system
 - UI color fixes, subclass badges
 - Idol Altar UI redesign with Fractured Slot auto-population
@@ -15,7 +15,7 @@ VERSION[0.10.0][2026/04/03]
 - Skill tree connector line requirement dots
 
 --- ModParser Improvements ---
-- Mod recognition rate: 89.7% (12,321/13,743)
+- Mod recognition rate improved significantly
 - New conditions: transformed, high health, ward, lightning aegis, consecrated ground, per companion/forged weapon, potion recently, enemy ailment stacks
 
 --- Fixed ---
@@ -62,7 +62,7 @@ VERSION[0.8.0][2025/08/22]
 --- Fixed bugs ---
 * Remove the "Add Crucible mod..." button that causes a crash
 * Fix mod cache picking wrong skills
-* Fix import of unique with duplicate names from letools
+* Fix import of unique items with duplicate names from external sources
 * Fix unable to select some skills in CalcsTab when less than 5 skills are selected
 
 --- Other changes ---
@@ -70,7 +70,7 @@ VERSION[0.8.0][2025/08/22]
 * Minor automated testing improvement
 
 --- Mod parsing progression ---
-* Out of 14,246 mods, 5,020 (35%) mods are recognized by the parser
+* Out of ~14k mods, a significant portion is recognized by the parser
 
 VERSION[0.7.1][2025/08/08]
 
@@ -101,7 +101,7 @@ VERSION[0.7.0][2025/07/23]
 * Correctly import mods and items on offline import
 
 --- Mod parsing progression ---
-* Out of 13,274 mods, 4,082 (31%) mods are recognized by the parser
+* Out of ~13k mods, a growing portion is recognized by the parser
 
 VERSION[0.6.0][2025/07/02]
 
@@ -115,7 +115,7 @@ VERSION[0.6.0][2025/07/02]
 --- Fixed calculations ---
 - Review mod parsing (simplification + removing irrelevant mods)
   - Add the support of a bit more mods
-  - Add a slider to set the range of all mods of all items (making it easier to compare builds from LETools)
+  - Add a slider to set the range of all mods of all items (making it easier to compare builds from external planners)
 
 --- Mod parsing progression ---
 * **Out of 13,274 mods, 4,082 (31%) mods are recognized by the parser**. Even if a mod is recognized, it's not guaranteed that it will work as expected.
@@ -147,7 +147,7 @@ VERSION[0.5.0][2025/06/04]
 Finally updated with game data from season 2 along with several changes:
 
 * Support for minion skills
-* Online character import through https://www.lastepochtools.com/profile/
+* Online character import through external build planners
 * Some fixes on DOT calculation
 * Support of additional abilities and mods
 
@@ -199,7 +199,7 @@ so most content is not yet relevant to the game.
 
 The following features are supported (or partially):
 * Passive tree
-* Character import: for offline character and from LE tools build planner
+* Character import: for offline character and from external build planners
 * Most stats and mods/affixes are not working correctly (either not recognized or not applied correctly)
 * Items: Imported from character import and can be crafted / modified
 * Unique items (no support for legendary yet)
@@ -207,4 +207,4 @@ The following features are supported (or partially):
 * Skills: Can select up to 5 skills which allows to spend points in the associated skill trees
 
 Note that online character import is not directly available,
-but you can import from Last Epoch Tools build planner (which can do online character import).
+but you can import from external build planners (which can do online character import).
