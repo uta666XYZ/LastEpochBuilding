@@ -31,3 +31,6 @@ manifest-updated.xml
 devenv.lock
 
 runtime/imgui.ini
+
+# Hook logs
+.claude/command-log.txt
