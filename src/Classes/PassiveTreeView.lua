@@ -485,6 +485,8 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 				scale = m_max(0.05, m_min(viewPort.width / treeW, viewPort.height / treeH, 1.5))
 				offsetX = viewPort.x + viewPort.width / 2 - centerX * scale
 				offsetY = viewPort.y + viewPort.height / 2 - centerY * scale
+				self.passiveNodeMinX = minX
+				self.passiveNodeMaxX = maxX
 			else
 				-- Fallback: center on mastery Y position
 				local masteryY = self.selectedMastery * 1000
@@ -505,8 +507,9 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 		end
 	end
 	
-	-- Store scale for use in helper functions
+	-- Store scale and offset for use by TreeTab (progress bar alignment)
 	self.currentScale = scale
+	self.currentOffsetX = offsetX
 	self.currentTreeOffsets = self.treeOffsets
 	
 	-- Helper function to get Y offset for a node based on its tree
@@ -662,6 +665,20 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 					end
 				end
 			end
+			-- Check if reducing this node would drop total mastery points below any allocated node's masteryRequirement
+			if not blockedByReq and hoverNode.mastery ~= nil then
+				local curMasteryTotal = spec.masteryAllocedPoints and (spec.masteryAllocedPoints[hoverNode.mastery] or 0) or 0
+				local newMasteryTotal = curMasteryTotal - 1
+				for id, allocNode in pairs(spec.allocNodes) do
+					if allocNode ~= hoverNode
+						and allocNode.mastery == hoverNode.mastery
+						and allocNode.masteryRequirement and allocNode.masteryRequirement > 0
+						and allocNode.masteryRequirement > newMasteryTotal then
+						blockedByReq = true
+						break
+					end
+				end
+			end
 			if not blockedByReq then
 				if hoverNode.alloc > 1 then
 					hoverNode.alloc = hoverNode.alloc - 1
@@ -795,8 +812,7 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 				-- Fade out lines in ascendancy classes other than the current one
 				setConnectorColor(0.75, 0.75, 0.75)
 			elseif state ~= "Active" and isGatedUnmet(node1, node2) then
-				-- Unmet reqPoints gate: dark brown (#342a27) - LETools reference
-				setConnectorColor(0.20, 0.16, 0.15)
+				setConnectorColor(1, 0.6, 0)
 			end
 			-- Check for requirement dots
 			local reqPoints, dotAsset, dotFilled
@@ -1452,6 +1468,17 @@ function PassiveTreeViewClass:AddNodeTooltip(tooltip, node, build)
 	-- Node name
 	self:AddNodeName(tooltip, node, build)
 
+	-- Show unmet masteryRequirement
+	if node.masteryRequirement and node.masteryRequirement > 0 then
+		local spec = build.spec
+		local mPts = spec.masteryAllocedPoints and (spec.masteryAllocedPoints[node.mastery] or 0) or 0
+		if mPts < node.masteryRequirement then
+			local masteryLabel = (node.mastery == 0) and "Base Passives" or "Mastery Passives"
+			tooltip:AddLine(16, colorCodes.WARNING .. "Requires " .. node.masteryRequirement
+				.. " points in " .. masteryLabel .. " (" .. mPts .. "/" .. node.masteryRequirement .. ")")
+		end
+	end
+
 	-- Show unmet reqPoints requirements
 	if node.reqPointsMap then
 		for parentId, req in pairs(node.reqPointsMap) do
@@ -1495,6 +1522,22 @@ function PassiveTreeViewClass:AddNodeTooltip(tooltip, node, build)
 		tooltip:AddLine(16, "")
 		for i, line in ipairs(node.sd) do
 			addModInfoToTooltip(node, i, line)
+		end
+	end
+
+	-- Point bonus section (notScalingStats)
+	if node.noScalingPointThreshold and node.noScalingPointThreshold > 0
+		and node.notScalingStats and #node.notScalingStats > 0 then
+		local bonusReached = (node.alloc or 0) >= node.noScalingPointThreshold
+		tooltip:AddSeparator(14)
+		if bonusReached then
+			tooltip:AddLine(14, "^xFFD700" .. node.noScalingPointThreshold .. " point bonus (active):")
+		else
+			tooltip:AddLine(14, "^xBBBBBB" .. node.noScalingPointThreshold .. " point bonus ("
+				.. (node.alloc or 0) .. "/" .. node.noScalingPointThreshold .. " - does not scale with points):")
+		end
+		for _, line in ipairs(node.notScalingStats) do
+			tooltip:AddLine(14, (bonusReached and colorCodes.MAGIC or "^x666666") .. line)
 		end
 	end
 
