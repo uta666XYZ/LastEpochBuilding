@@ -528,7 +528,7 @@ function PassiveSpecClass:FindStartFromNode(node, visited, noAscend)
 		--  - there is a path to a start node through the other node which didn't pass through any nodes which have already been visited
 		-- Also skip edges where the reqPoints gate is no longer satisfied
 		-- (e.g. 'node' requires N points from 'other', but other.alloc < N)
-		local reqPts = node.reqFromParent and node.reqFromParent[other.id]
+		local reqPts = node.reqPointsMap and node.reqPointsMap[other.id]
 		if reqPts and other.alloc < reqPts then
 			-- Gate not met: don't trace connection through this parent
 		else
@@ -572,7 +572,7 @@ function PassiveSpecClass:BuildPathFromNode(root)
 			--    This permits pathing from the Ascendant 'Path of the X' nodes into the respective class start areas
 			-- 3. They must not pass away from mastery nodes
 			-- 4. They must not cross a reqPoints gate that is not yet satisfied
-			local reqPts = other.reqFromParent and other.reqFromParent[node.id]
+			local reqPts = other.reqPointsMap and other.reqPointsMap[node.id]
 			if reqPts and node.alloc < reqPts then
 				-- Gate not satisfied: node does not have enough allocated points to unlock 'other'
 			elseif not other.pathDist then

@@ -27,7 +27,7 @@ local sortGemTypeList = {
 -- Layout constants for visual skill panel
 local SLOT_SIZE = 76
 local SLOT_GAP = 12
-local SLOT_ROW_HEIGHT = 100
+local SLOT_ROW_HEIGHT = 116  -- slot height + damage type icon row
 local ICON_SIZE = 72
 local FRAME_SIZE = 84
 local CELL_W = 100
@@ -810,6 +810,18 @@ function SkillsTabClass:Draw(viewPort, inputEvents)
 
 	main:DrawBackground(viewPort)
 
+	-- Detect class change and reset all skill slots
+	local curClassId = self.build.spec.curClassId
+	if self.lastClassId and self.lastClassId ~= curClassId then
+		for i = 1, 5 do
+			self:SelSkill(i, nil)
+		end
+		self.viewMode = "overview"
+		self.viewingTreeSlot = nil
+		self.selectedSlotIndex = nil
+	end
+	self.lastClassId = curClassId
+
 	-- Ensure socket groups are initialised for all 5 slots
 	local skillList = { { label = "None" } }
 	for _, v in ipairs(self.build.spec.curClass.skills) do
@@ -828,17 +840,98 @@ function SkillsTabClass:Draw(viewPort, inputEvents)
 		end
 	end
 
-	-- Draw spec slots (always visible at top)
+	-- Compute layout
 	local slotBarY = viewPort.y + 10
-	self:DrawSpecSlots(viewPort, inputEvents, slotBarY)
-
-	-- Route to view mode
 	local contentY = slotBarY + SLOT_ROW_HEIGHT
+
+	-- Draw tree/overview first so slots always render on top
 	if self.viewMode == "tree" and self.viewingTreeSlot then
 		self:DrawSkillTree(viewPort, inputEvents, contentY)
 	else
 		self:DrawSkillOverview(viewPort, inputEvents, contentY)
 	end
+
+	-- Draw spec slots on top of everything (high draw layer)
+	SetDrawLayer(nil, 150)
+	self:DrawSpecSlots(viewPort, inputEvents, slotBarY)
+	SetDrawLayer(nil, 0)
+end
+
+-- Skills that legitimately allow multiple simultaneous conversions from the same damage type.
+-- For all others, the last-allocated conversion per fromType wins.
+local MULTI_CONV_TREES = {
+	["ex4tp"] = true,  -- Explosive Trap (fire -> cold AND fire -> lightning)
+}
+
+-- Get damage types for a spec slot, accounting for allocated conversion nodes.
+-- Returns array of {type, isBase} sorted by DAMAGE_TYPE_ORDER.
+function SkillsTabClass:GetDynamicDamageTypes(slotIndex)
+	local sg = self.socketGroupList[slotIndex]
+	if not sg or not sg.grantedEffect or not sg.grantedEffect.treeId then return {} end
+	local treeId = sg.grantedEffect.treeId
+
+	-- Build base/conv sets from static table
+	local baseSet, convSet = {}, {}
+	local staticData = TREE_ID_DAMAGE_TYPES[treeId]
+	if staticData then
+		for _, t in ipairs(staticData.base or {}) do baseSet[t] = true end
+		for _, t in ipairs(staticData.conv or {}) do convSet[t] = true end
+	end
+
+	-- Scan allocated nodes for conversion descriptions.
+	-- convMap[fromType] = toType  (last-wins for regular skills)
+	-- For MULTI_CONV_TREES, collect all pairs instead.
+	local TYPE_NAMES = { "physical", "fire", "cold", "lightning", "void", "necrotic", "poison" }
+	local TYPE_SET   = {}
+	for _, t in ipairs(TYPE_NAMES) do TYPE_SET[t] = true end
+	local isMultiConv = MULTI_CONV_TREES[treeId]
+	local convMap   = {}   -- fromType -> toType  (single, last wins)
+	local multiList = {}   -- {fromType, toType} pairs (multi-conv skills)
+
+	for nodeId, node in pairs(self.build.spec.allocNodes) do
+		if nodeId:match("^" .. treeId) and (node.maxPoints or 0) > 0 and node.description then
+			for _, line in ipairs(node.description) do
+				local lo = line:lower()
+				for _, fromType in ipairs(TYPE_NAMES) do
+					local toType = lo:match(fromType .. " damage is converted to%s+(%a+)")
+					             or lo:match("base " .. fromType .. " damage is converted to%s+(%a+)")
+					if toType and TYPE_SET[toType] then
+						if isMultiConv then
+							t_insert(multiList, { fromType, toType })
+						else
+							convMap[fromType] = toType  -- overwrite: last allocation wins
+						end
+					end
+				end
+			end
+		end
+	end
+
+	-- Apply conversions
+	local function applyConv(fromType, toType)
+		if baseSet[fromType] then
+			baseSet[fromType] = nil
+			convSet[fromType] = true
+		end
+		if convSet[toType] then
+			convSet[toType] = nil
+			baseSet[toType] = true
+		end
+	end
+	if isMultiConv then
+		for _, pair in ipairs(multiList) do applyConv(pair[1], pair[2]) end
+	else
+		for fromType, toType in pairs(convMap) do applyConv(fromType, toType) end
+	end
+
+	-- Build sorted result
+	local result = {}
+	for t in pairs(baseSet) do t_insert(result, { type = t, isBase = true }) end
+	for t in pairs(convSet) do t_insert(result, { type = t, isBase = false }) end
+	table.sort(result, function(a, b)
+		return (DAMAGE_TYPE_ORDER[a.type] or 99) < (DAMAGE_TYPE_ORDER[b.type] or 99)
+	end)
+	return result
 end
 
 -- Draw 5 hex specialization slots centered at top
@@ -901,6 +994,8 @@ function SkillsTabClass:DrawSpecSlots(viewPort, inputEvents, startY)
 		-- Level badge (drawn on top of border, in front)
 		if sg then
 			local used = self:GetUsedSkillPoints(i)
+			local maxPts = self:GetMaxSkillPoints(i)
+			local rem = maxPts - used
 			local lvlHandle = self:GetSpriteHandle("spec-slot-level")
 			local lvlW = 50
 			local lvlH = 34
@@ -909,6 +1004,47 @@ function SkillsTabClass:DrawSpecSlots(viewPort, inputEvents, startY)
 			SetDrawColor(1, 1, 1)
 			DrawImage(lvlHandle, lvlX, lvlY, lvlW, lvlH)
 			DrawString(lvlX + lvlW / 2, lvlY + 11, "CENTER_X", 12, "VAR", "^7" .. used)
+
+			-- Remaining points badge (blue square, top-right corner of slot)
+			if rem > 0 then
+				local badgeW = 18
+				local badgeH = 18
+				local badgeX = sx + SLOT_SIZE - badgeW + 0
+				local badgeY = sy + 3
+				SetDrawColor(0.05, 0.30, 0.80)
+				DrawImage(nil, badgeX, badgeY, badgeW, badgeH)
+				SetDrawColor(0.6, 0.80, 1.0)
+				DrawImage(nil, badgeX,             badgeY,              badgeW, 1)
+				DrawImage(nil, badgeX,             badgeY + badgeH - 1, badgeW, 1)
+				DrawImage(nil, badgeX,             badgeY,              1, badgeH)
+				DrawImage(nil, badgeX + badgeW - 1, badgeY,             1, badgeH)
+				SetDrawColor(1, 1, 1)
+				DrawString(badgeX + badgeW / 2, badgeY + 3, "CENTER_X", 11, "VAR", "^7" .. rem)
+			end
+		end
+
+		-- Damage type icons below slot (horizontally centered)
+		if sg then
+			local dtTypes = self:GetDynamicDamageTypes(i)
+			if #dtTypes > 0 then
+				local dtSize = 14
+				local dtGap = 2
+				local totalDtW = #dtTypes * dtSize + (#dtTypes - 1) * dtGap
+				local dtX = sx + m_floor((SLOT_SIZE - totalDtW) / 2)
+				local dtY = sy + SLOT_SIZE + 4
+				for _, dtInfo in ipairs(dtTypes) do
+					local dtHandle = self:GetSpriteHandle("skill-damage-" .. dtInfo.type)
+					if dtHandle then
+						if dtInfo.isBase then
+							SetDrawColor(1, 1, 1)
+						else
+							SetDrawColor(0.4, 0.4, 0.4)
+						end
+						DrawImage(dtHandle, dtX, dtY, dtSize, dtSize)
+					end
+					dtX = dtX + dtSize + dtGap
+				end
+			end
 		end
 
 		-- Hover highlight
@@ -923,7 +1059,7 @@ function SkillsTabClass:DrawSpecSlots(viewPort, inputEvents, startY)
 				if event.type == "KeyUp" then
 					if event.key == "LEFTBUTTON" then
 						if sg then
-							-- Open tree view
+							-- Open tree view for filled slot
 							self.viewMode = "tree"
 							self.viewingTreeSlot = i
 							self.selectedSlotIndex = i
@@ -931,7 +1067,10 @@ function SkillsTabClass:DrawSpecSlots(viewPort, inputEvents, startY)
 							self.skillTreeViewer.skillBaseScale = nil
 							self.skillTreeViewer.skillRefZoom = nil
 						else
+							-- Open skill selection overview for empty slot
 							self.selectedSlotIndex = i
+							self.viewMode = "overview"
+							self.viewingTreeSlot = nil
 						end
 						inputEvents[id] = nil
 					elseif event.key == "RIGHTBUTTON" then
@@ -1310,10 +1449,33 @@ function SkillsTabClass:DrawSkillTree(viewPort, inputEvents, startY)
 		end
 	end
 
-	-- (skill info bar removed - level shown in slot badge)
+	-- Skill name + unspent points bar (between spec slots and tree)
+	-- Draw at layer 145 so it stays above the skill background art (layer 15) and tree nodes (25)
+	local infoBarH = 42
+	local infoY = startY + 4
+	if sg then
+		local used = self:GetUsedSkillPoints(slot)
+		local maxPts = self:GetMaxSkillPoints(slot)
+		local rem = maxPts - used
+		local skillName = (sg.grantedEffect and sg.grantedEffect.name) or "???"
+		SetDrawLayer(nil, 145)
+		-- Thin dark background strip so text is always legible
+		SetDrawColor(0, 0, 0, 0.5)
+		DrawImage(nil, viewPort.x, infoY - 2, viewPort.width, infoBarH - 4)
+		-- Skill name (gold, centered)
+		SetDrawColor(1, 1, 1)
+		DrawString(viewPort.x + viewPort.width / 2, infoY, "CENTER_X", 14, "VAR", "^xDDC080" .. skillName:upper())
+		-- Unspent points (blue if > 0, gray if 0)
+		if rem > 0 then
+			DrawString(viewPort.x + viewPort.width / 2, infoY + 16, "CENTER_X", 14, "VAR", "^x4DD9FF" .. rem .. " UNSPENT POINTS")
+		else
+			DrawString(viewPort.x + viewPort.width / 2, infoY + 16, "CENTER_X", 14, "VAR", "^x666666" .. used .. " / " .. maxPts .. " POINTS USED")
+		end
+		SetDrawLayer(nil, 0)
+	end
 
 	-- Tree viewport (fills remaining space)
-	local treeY = startY + 36
+	local treeY = startY + infoBarH
 	local treeH = m_max(300, viewPort.y + viewPort.height - treeY - 4)
 	local treeVP = {
 		x = viewPort.x + 2,

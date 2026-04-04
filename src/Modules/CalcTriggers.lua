@@ -74,6 +74,9 @@ local function findTriggerSkill(env, skill, source, triggerRate, comparer)
 
 	local uuid = cacheSkillUUID(skill, env)
 	if not GlobalCache.cachedData["CACHE"][uuid] then
+		-- Set a placeholder first to prevent re-entrant infinite recursion
+		-- (e.g. "cast on hit" -> buildActiveSkill -> initEnv -> triggers -> cast on hit -> ...)
+		GlobalCache.cachedData["CACHE"][uuid] = {}
 		calcs.buildActiveSkill(env, "CACHE", skill)
 	end
 
