@@ -77,12 +77,14 @@ local MASTERY_SKILL_UNLOCKS = {
 			{ name = "IceBarrage", label = "Ice Barrage", treeId = "ib5g3", level = 15 },
 			{ name = "ArcaneAscendance", label = "Arcane Ascendance", treeId = "arcas", level = 30 },
 			{ name = "BlackHole", label = "Black Hole", treeId = "bh2", level = 40 },
+			{ name = "Meteor", label = "Meteor", treeId = "me27" },
 		},
 		[2] = {
 			{ name = "FlameReave", label = "Flame Reave", treeId = "fr11mv", level = 5 },
 			{ name = "EnchantWeapon", label = "Enchant Weapon", treeId = "sb44eQ", level = 15 },
 			{ name = "Firebrand", label = "Firebrand", treeId = "f1b4d", level = 30 },
 			{ name = "Surge", label = "Surge", treeId = "su5g3", level = 40 },
+			{ name = "ShatterStrike", label = "Shatter Strike", treeId = "ss3tre" },
 		},
 		[3] = {
 			{ name = "FlameRush", label = "Flame Rush", treeId = "fl71ds", level = 5 },
@@ -104,17 +106,20 @@ local MASTERY_SKILL_UNLOCKS = {
 			{ name = "AbyssalEchoes", label = "Abyssal Echoes", treeId = "ab0lh", level = 10 },
 			{ name = "DevouringOrb", label = "Devouring Orb", treeId = "do5vr", level = 15 },
 			{ name = "Anomaly", label = "Anomaly", treeId = "an0my", level = 30 },
+			{ name = "ErasingStrike", label = "Erasing Strike", treeId = "es6ai" },
 		},
 		[2] = {
 			{ name = "ShieldThrow", label = "Shield Throw", treeId = "st31io", level = 5 },
 			{ name = "ManifestArmor", label = "Manifest Armor", treeId = "ma6hdr", level = 15 },
 			{ name = "RingOfShields", label = "Ring of Shields", treeId = "rs31hi", level = 30 },
 			{ name = "SmeltersWrath", label = "Smelter's Wrath", treeId = "st4th", level = 40 },
+			{ name = "ForgeStrike", label = "Forge Strike", treeId = "fs3e3" },
 		},
 		[3] = {
 			{ name = "HealingHands", label = "Healing Hands", treeId = "hh7pa3", level = 5 },
 			{ name = "SymbolsOfHope", label = "Symbols of Hope", treeId = "si4lgl", level = 15 },
 			{ name = "Judgement", label = "Judgement", treeId = "pa67ju", level = 30 },
+			{ name = "HolyAura", label = "Holy Aura", treeId = "ah443" },
 		},
 	},
 	["Acolyte"] = {
@@ -129,6 +134,7 @@ local MASTERY_SKILL_UNLOCKS = {
 			{ name = "Sacrifice", label = "Sacrifice", treeId = "sf31rc", level = 10 },
 			{ name = "DreadShade", label = "Dread Shade", treeId = "ds4d3", level = 30 },
 			{ name = "AssembleAbomination", label = "Assemble Abomination", treeId = "aa710", level = 40 },
+			{ name = "SummonWraith", label = "Summon Wraith", treeId = "sw42ih" },
 		},
 		[2] = {
 			{ name = "DrainLife", label = "Drain Life", treeId = "dl73", level = 5 },
@@ -156,12 +162,14 @@ local MASTERY_SKILL_UNLOCKS = {
 			{ name = "ShadowCascade", label = "Shadow Cascade", treeId = "dagg3", level = 5 },
 			{ name = "SynchronizedStrike", label = "Synchronized Strike", treeId = "sync5", level = 10 },
 			{ name = "LethalMirage", label = "Lethal Mirage", treeId = "mira59", level = 30 },
+			{ name = "DancingStrike", label = "Dancing Strikes", treeId = "dacn33" },
 		},
 		[2] = {
 			{ name = "Multishot", label = "Multishot", treeId = "mush9", level = 5 },
 			{ name = "DarkQuiver", label = "Dark Quiver", treeId = "dqv5", level = 15 },
 			{ name = "Heartseeker", label = "Heartseeker", treeId = "htsk5", level = 30 },
 			{ name = "HailOfArrows", label = "Hail of Arrows", treeId = "exvol8", level = 35 },
+			{ name = "DetonatingArrow", label = "Detonating Arrow", treeId = "detar" },
 		},
 		[3] = {
 			{ name = "ExplosiveTrap", label = "Explosive Trap", treeId = "ex4tp", level = 5 },
@@ -179,6 +187,22 @@ local BASE_SKILL_ORDER = {
 	["Primalist"] = {
 		"wo42", "ga2st", "fl13", "th39",   -- Summon Wolf, Gathering Storm, Fury Leap, Summon Thorn Totem
 		"sw43", "ts85i", "mas54", "uph41", -- Swipe, Tempest Strike, Maelstrom, Upheaval
+	},
+	["Acolyte"] = {
+		"rb31pl", "ss37kl", "bp2nk", "ws54hm",  -- Rip Blood, Summon Skeleton, Marrow Shards, Wandering Spirits
+		"ha84", "bc53", "ts50pl", "svz81",       -- Harvest, Bone Curse, Transplant, Summon Volatile Zombie
+	},
+	["Mage"] = {
+		"lb23il", "fi9", "sw31a", "en6",         -- Lightning Blast, Fireball, Snap Freeze, Elemental Nova
+		"ms26", "fw3d", "te44", "frc87w", "st47ic", -- Mana Strike, Flame Ward, Teleport, Frost Claw, Static
+	},
+	["Rogue"] = {
+		"flur3", "srk21", "sh4re", "aacfl",      -- Flurry, Shurikens, Shadow Rend, Acid Flask
+		"pun22", "shiif", "cstri", "deeco",      -- Puncture, Shift, Cinder Strike, Decoy
+	},
+	["Sentinel"] = {
+		"gs15de", "va53st", "ht16aw", "lu25ng",  -- Vengeance, Warpath, Hammer Throw, Lunge
+		"sndr1", "sb4h", "javeli", "v01cv",      -- Rive, Shield Bash, Javelin, Void Cleave
 	},
 }
 
@@ -602,8 +626,8 @@ end
 
 -- Damage type display priority order
 local DAMAGE_TYPE_ORDER = {
-	physical = 1, fire = 2, cold = 3, lightning = 4, poison = 5,
-	necrotic = 6, void = 7,
+	physical = 1, fire = 2, cold = 3, lightning = 4, necrotic = 5,
+	poison = 6, void = 7,
 }
 
 -- Damage type data per treeId (from LETools: base tags / minion tags / skill tree conversion tags)
@@ -616,7 +640,7 @@ local TREE_ID_DAMAGE_TYPES = {
 	["fl13"]   = { base = { "physical" },              conv = { "lightning" } },            -- Fury Leap
 	["th39"]   = { base = { "physical" },              conv = { "cold" } },                -- Summon Thorn Totem
 	["ts85i"]  = { base = { "physical", "lightning", "cold" }, conv = {} },                -- Tempest Strike
-	["mas54"]  = { base = { "physical", "cold" },      conv = {} },                        -- Maelstrom
+	["mas54"]  = { base = { "cold" },                  conv = { "physical" } },            -- Maelstrom
 	["uph41"]  = { base = { "physical" },              conv = { "fire", "cold", "lightning" } }, -- Upheaval
 	-- Primalist passive unlock
 	["eb5656"] = { base = {},                          conv = {} },                        -- Eterra's Blessing
@@ -625,7 +649,7 @@ local TREE_ID_DAMAGE_TYPES = {
 	["st31et"] = { base = { "physical", "poison" },    conv = { "cold" } },                -- Serpent Strike
 	-- Beastmaster
 	["be36ar"] = { base = { "physical" },              conv = { "lightning" } },            -- Summon Bear
-	["sc36pi"] = { base = { "physical" },              conv = { "cold", "lightning", "poison" } }, -- Summon Scorpion
+	["sc36pi"] = { base = { "physical", "poison" },    conv = { "lightning", "cold" } },   -- Summon Scorpion
 	["sf37"]   = { base = {},                          conv = {} },                        -- Summon Frenzy Totem
 	["sa36oh"] = { base = { "physical" },              conv = { "cold" } },                -- Summon Sabertooth
 	["srtor"]  = { base = { "physical" },              conv = { "fire" } },                -- Summon Raptor
@@ -633,21 +657,24 @@ local TREE_ID_DAMAGE_TYPES = {
 	["to50"]   = { base = { "physical" },              conv = { "fire", "lightning" } },   -- Tornado
 	["eq5s"]   = { base = { "physical" },              conv = { "fire", "lightning" } },   -- Earthquake
 	["av75ch"] = { base = { "physical", "cold" },      conv = {} },                        -- Avalanche
-	["st38ml"] = { base = {},                          conv = { "cold", "lightning" } },   -- Summon Storm Totem
+	["st38ml"] = { base = { "lightning" },             conv = { "cold" } },                -- Summon Storm Totem
 	-- Druid
-	["sf5rd"]  = { base = {},                          conv = { "physical", "cold" } },    -- Spriggan Form
+	["sf5rd"]  = { base = { "physical" },              conv = { "cold" } },                -- Spriggan Form
 	["sp38"]   = { base = { "physical" },              conv = { "cold" } },                -- Summon Spriggan
-	["sbf4m"]  = { base = {},                          conv = { "physical", "cold" } },    -- Swarmblade Form
+	["sbf4m"]  = { base = { "physical" },              conv = { "cold" } },                -- Swarmblade Form
 	["er6no"]  = { base = { "physical" },              conv = { "cold", "poison" } },      -- Entangling Roots
-	["wb8fo"]  = { base = {},                          conv = { "physical", "lightning" } }, -- Werebear Form
+	["wb8fo"]  = { base = { "physical" },              conv = { "lightning" } },           -- Werebear Form
 	-- Mage base
 	["lb23il"] = { base = { "lightning" },             conv = { "cold" } },                -- Lightning Blast
 	["fi9"]    = { base = { "fire" },                  conv = { "lightning" } },            -- Fireball
 	["ms26"]   = { base = { "lightning" },             conv = {} },                        -- Mana Strike
 	["en6"]    = { base = { "fire", "cold", "lightning" }, conv = {} },                    -- Elemental Nova
-	["ib19"]   = { base = { "cold" },                  conv = {} },                        -- Snap Freeze
+	["sw31a"]  = { base = { "cold" },                  conv = { "lightning" } },            -- Snap Freeze
 	["gl14"]   = { base = { "cold" },                  conv = {} },                        -- Glacier
-	["dig5"]   = { base = { "fire" },                  conv = { "lightning" } },            -- Disintegrate
+	["dig5"]   = { base = { "lightning", "fire" },     conv = {} },                        -- Disintegrate
+	["fw3d"]   = { base = { "fire" },                  conv = { "lightning", "cold" } },   -- Flame Ward
+	["frc87w"] = { base = { "cold" },                  conv = { "lightning", "fire" } },   -- Frost Claw
+	["st47ic"] = { base = { "lightning" },             conv = {} },                        -- Static
 	["vo54"]   = { base = { "fire" },                  conv = { "cold" } },                -- Volcanic Orb
 	["vm53dx"] = { base = {},                          conv = { "lightning" } },            -- Focus
 	["te44"]   = { base = {},                          conv = {} },                        -- Teleport
@@ -660,12 +687,13 @@ local TREE_ID_DAMAGE_TYPES = {
 	-- Spellblade
 	["fr11mv"] = { base = { "fire" },                  conv = { "lightning" } },            -- Flame Reave
 	["sb44eQ"] = { base = {},                          conv = {} },                        -- Enchant Weapon
+	["ss3tre"] = { base = { "cold" },                  conv = { "lightning" } },            -- Shatter Strike
 	["f1b4d"]  = { base = { "fire" },                  conv = { "lightning" } },            -- Firebrand
 	["su5g3"]  = { base = { "lightning" },             conv = { "fire", "cold" } },        -- Surge
 	-- Runemaster
 	["fl71ds"] = { base = { "fire" },                  conv = { "cold", "lightning" } },   -- Flame Rush
 	["fr4wl"]  = { base = { "cold" },                  conv = { "fire", "lightning" } },   -- Frost Wall
-	["fb8fe"]  = { base = { "fire" },                  conv = { "cold", "lightning" } },   -- Runebolt
+	["fb8fe"]  = { base = { "fire", "cold", "lightning" }, conv = {} },                    -- Runebolt
 	["gy2dm"]  = { base = { "lightning" },             conv = { "fire" } },                -- Glyph of Dominion
 	["rn7iv"]  = { base = { "fire", "cold", "lightning" }, conv = {} },                    -- Runic Invocation
 	-- Sentinel base
@@ -678,32 +706,43 @@ local TREE_ID_DAMAGE_TYPES = {
 	["sr31hu"] = { base = { "physical" },              conv = { "void" } },                -- Shield Rush
 	["multis"] = { base = { "physical" },              conv = {} },                        -- Multistrike
 	["sm87r4"] = { base = { "fire" },                  conv = { "lightning", "void" } },   -- Smite
+	["sb4h"]   = { base = { "physical" },              conv = { "fire" } },                -- Shield Bash
+	["javeli"] = { base = { "physical" },              conv = { "lightning" } },           -- Javelin
+	["v01cv"]  = { base = { "void" },                  conv = { "physical", "fire" } },    -- Void Cleave
 	-- Void Knight
 	["vr53sl"] = { base = { "void" },                  conv = { "fire" } },                -- Volatile Reversal
 	["ab0lh"]  = { base = { "void" },                  conv = { "fire" } },                -- Abyssal Echoes
 	["do5vr"]  = { base = { "void" },                  conv = {} },                        -- Devouring Orb
+	["es6ai"]  = { base = { "void" },                  conv = {} },                        -- Erasing Strike
 	["an0my"]  = { base = { "void" },                  conv = {} },                        -- Anomaly
 	-- Forge Guard
 	["st31io"] = { base = { "physical" },              conv = { "fire" } },                -- Shield Throw
 	["ma6hdr"] = { base = { "physical" },              conv = { "fire" } },                -- Manifest Armor
+	["fs3e3"]  = { base = { "physical" },              conv = { "fire" } },                -- Forge Strike
 	["rs31hi"] = { base = {},                          conv = { "fire" } },                -- Ring of Shields
 	["st4th"]  = { base = { "physical", "fire" },      conv = {} },                        -- Smelter's Wrath
 	-- Paladin
 	["hh7pa3"] = { base = {},                          conv = {} },                        -- Healing Hands
 	["si4lgl"] = { base = {},                          conv = {} },                        -- Sigils of Hope
 	["pa67ju"] = { base = { "fire" },                  conv = {} },                        -- Judgement
+	["ah443"]  = { base = {},                          conv = {} },                        -- Holy Aura
 	-- Acolyte base
-	["bp2nk"]  = { base = { "physical" },              conv = { "cold" } },                -- Marrow Shards
-	["ss37kl"] = { base = { "physical" },              conv = { "fire", "cold" } },        -- Summon Skeleton
 	["rb31pl"] = { base = { "physical" },              conv = { "necrotic" } },            -- Rip Blood
+	["ss37kl"] = { base = { "physical" },              conv = { "cold", "fire" } },        -- Summon Skeleton
+	["bp2nk"]  = { base = { "physical" },              conv = { "cold" } },                -- Marrow Shards
+	["ws54hm"] = { base = { "necrotic" },              conv = { "poison" } },              -- Wandering Spirits
+	["ha84"]   = { base = { "necrotic" },              conv = { "physical", "cold" } },    -- Harvest
+	["bc53"]   = { base = { "physical" },              conv = { "necrotic" } },            -- Bone Curse
 	["ts50pl"] = { base = { "physical" },              conv = { "necrotic" } },            -- Transplant
+	["svz81"]  = { base = { "physical", "fire" },      conv = { "necrotic" } },            -- Summon Volatile Zombie
 	["hs18gu"] = { base = { "necrotic" },              conv = { "fire" } },                -- Hungering Souls
-	["bg36nl"] = { base = { "physical" },              conv = { "fire", "cold" } },        -- Summon Bone Golem
+	["bg36nl"] = { base = { "physical" },              conv = { "cold", "fire" } },        -- Summon Bone Golem
 	["sp5g2"]  = { base = { "necrotic" },              conv = {} },                        -- Spirit Plague
-	["is40"]   = { base = { "fire", "physical" },      conv = {} },                        -- Infernal Shade
+	["is40"]   = { base = { "fire" },                  conv = { "physical" } },            -- Infernal Shade
 	-- Necromancer
-	["sm4g"]   = { base = { "necrotic" },              conv = { "fire", "cold" } },        -- Summon Skeletal Mage
+	["sm4g"]   = { base = { "necrotic" },              conv = { "cold", "fire" } },        -- Summon Skeletal Mage
 	["sf31rc"] = { base = { "physical" },              conv = { "fire" } },                -- Sacrifice
+	["sw42ih"] = { base = { "physical" },              conv = { "fire", "necrotic", "poison" } }, -- Summon Wraith
 	["ds4d3"]  = { base = { "necrotic" },              conv = {} },                        -- Dread Shade
 	["aa710"]  = { base = { "physical" },              conv = {} },                        -- Assemble Abomination
 	-- Lich
@@ -719,23 +758,28 @@ local TREE_ID_DAMAGE_TYPES = {
 	["pr5fm"]  = { base = { "necrotic" },              conv = { "physical", "fire" } },    -- Profane Veil
 	["ch0fs"]  = { base = { "fire", "necrotic" },      conv = { "physical", "poison" } },  -- Chthonic Fissure
 	-- Rogue base
-	["pun22"]  = { base = { "physical" },              conv = {} },                        -- Puncture
 	["flur3"]  = { base = { "physical" },              conv = {} },                        -- Flurry
+	["srk21"]  = { base = { "physical" },              conv = { "lightning" } },           -- Shurikens
+	["sh4re"]  = { base = { "physical" },              conv = { "lightning" } },           -- Shadow Rend
+	["aacfl"]  = { base = { "physical", "poison" },    conv = { "fire" } },                -- Acid Flask
+	["pun22"]  = { base = { "physical" },              conv = {} },                        -- Puncture
 	["shiif"]  = { base = {},                          conv = {} },                        -- Shift
-	["detar"]  = { base = { "lightning" },             conv = { "fire", "cold", "poison" } }, -- Detonating Arrow
+	["cstri"]  = { base = { "fire" },                  conv = {} },                        -- Cinder Strike
 	["deeco"]  = { base = { "fire" },                  conv = { "cold" } },                -- Decoy
 	["smbmb"]  = { base = {},                          conv = {} },                        -- Smoke Bomb
 	["bl5st"]  = { base = { "physical" },              conv = { "cold", "poison" } },      -- Bladestorm
 	["ba1574"] = { base = { "physical" },              conv = {} },                        -- Ballista
-	["ub5d9"]  = { base = { "physical" },              conv = { "fire", "cold", "poison" } }, -- Umbral Blades
+	["ub5d9"]  = { base = { "physical" },              conv = { "cold", "fire", "poison" } }, -- Umbral Blades
 	-- Bladedancer
 	["dagg3"]  = { base = { "physical" },              conv = {} },                        -- Shadow Cascade
 	["sync5"]  = { base = { "physical" },              conv = {} },                        -- Synchronized Strike
+	["dacn33"] = { base = { "physical" },              conv = { "poison" } },              -- Dancing Strikes
 	["mira59"] = { base = { "physical" },              conv = { "lightning" } },            -- Lethal Mirage
 	-- Marksman
+	["detar"]  = { base = { "lightning" },             conv = { "cold", "fire", "poison" } }, -- Detonating Arrow
 	["mush9"]  = { base = { "physical" },              conv = {} },                        -- Multishot
 	["dqv5"]   = { base = {},                          conv = {} },                        -- Dark Quiver
-	["htsk5"]  = { base = { "physical" },              conv = { "fire", "cold" } },        -- Heartseeker
+	["htsk5"]  = { base = { "physical" },              conv = { "cold", "fire" } },        -- Heartseeker
 	["exvol8"] = { base = { "physical" },              conv = { "fire", "cold", "poison" } }, -- Hail of Arrows
 	-- Falconer
 	["ex4tp"]  = { base = { "fire" },                  conv = { "cold", "lightning" } },   -- Explosive Trap
@@ -1354,6 +1398,7 @@ function SkillsTabClass:DrawSkillGrid(x, y, w, skills, inputEvents, cursorX, cur
 		local nameColor = isLocked and "^8" or (isUnlocked and "^7" or "^x999999")
 		local maxNameW = CELL_W - 4
 		local nameW = DrawStringWidth(10, "VAR", displayName)
+		local nameLines = 1
 		if nameW > maxNameW then
 			local words = {}
 			for word in displayName:gmatch("%S+") do t_insert(words, word) end
@@ -1370,9 +1415,17 @@ function SkillsTabClass:DrawSkillGrid(x, y, w, skills, inputEvents, cursorX, cur
 			DrawString(cx + CELL_W / 2, nameY, "CENTER_X", 10, "VAR", nameColor .. line1)
 			if line2 ~= "" then
 				DrawString(cx + CELL_W / 2, nameY + 12, "CENTER_X", 10, "VAR", nameColor .. line2)
+				nameLines = 2
 			end
 		else
 			DrawString(cx + CELL_W / 2, nameY, "CENTER_X", 10, "VAR", nameColor .. displayName)
+		end
+
+		-- Curse tag (Bone Curse, Spirit Plague, Chthonic Fissure)
+		local CURSE_SKILL_IDS = { ["bc53"] = true, ["sp5g2"] = true, ["ch0fs"] = true }
+		if CURSE_SKILL_IDS[skill.treeId] then
+			local curseColor = isLocked and "^8" or (isUnlocked and "^xBB66FF" or "^x775599")
+			DrawString(cx + CELL_W / 2, nameY + nameLines * 12, "CENTER_X", 9, "VAR", curseColor .. "CURSE")
 		end
 
 		-- Click: assign skill to selected slot
