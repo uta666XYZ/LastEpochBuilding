@@ -649,16 +649,31 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 	elseif treeClick == "RIGHT" then
 		if hoverNode and hoverNode.maxPoints > 0 then
 			-- User right-clicked on a node
-			if hoverNode.alloc > 1 then
-				hoverNode.alloc = hoverNode.alloc - 1
-				tree:ProcessStats(hoverNode)
-				spec:BuildAllDependsAndPaths()
-				spec:AddUndoState()
-				build.buildFlag = true
-			else
-				spec:DeallocNode(hoverNode)
-				spec:AddUndoState()
-				build.buildFlag = true
+			-- Check if any allocated linked node requires more points from hoverNode than (alloc - 1)
+			local newAlloc = hoverNode.alloc - 1
+			local blockedByReq = false
+			if newAlloc >= 0 then
+				for _, linkedNode in ipairs(hoverNode.linked) do
+					if linkedNode.alloc > 0 and linkedNode.reqPointsMap and linkedNode.reqPointsMap[hoverNode.id] then
+						if newAlloc < linkedNode.reqPointsMap[hoverNode.id] then
+							blockedByReq = true
+							break
+						end
+					end
+				end
+			end
+			if not blockedByReq then
+				if hoverNode.alloc > 1 then
+					hoverNode.alloc = hoverNode.alloc - 1
+					tree:ProcessStats(hoverNode)
+					spec:BuildAllDependsAndPaths()
+					spec:AddUndoState()
+					build.buildFlag = true
+				else
+					spec:DeallocNode(hoverNode)
+					spec:AddUndoState()
+					build.buildFlag = true
+				end
 			end
 		end
 	end
@@ -1253,7 +1268,7 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 				self:DrawAsset(tree.treeUI[frameName], scrX, scrY, scale, nil, frameSize)
 			end
 
-			-- Draw the allocated number
+			-- Draw alloc/max text below node (both passive and skill tree)
 			if node.maxPoints > 0 then
 				DrawString(scrX, scrY + 48 * scale, "CENTER_X", round(50 * scale), "VAR", "^7" .. node.alloc .. "/" .. node.maxPoints)
 			end
