@@ -15,6 +15,10 @@ local m_ceil = math.ceil
 local m_floor = math.floor
 local m_modf = math.modf
 
+local function itemDisplayColor(item)
+	return (item.type and item.type:find("Idol")) and colorCodes.IDOL or colorCodes[item.rarity]
+end
+
 local rarityDropList = {
 	{ label = colorCodes.NORMAL.."Normal", rarity = "NORMAL" },
 	{ label = colorCodes.MAGIC.."Magic", rarity = "MAGIC" },
@@ -580,78 +584,10 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 		self.controls.itemList = new("ItemListControl", {"TOPLEFT",self.controls.setManage,"TOPRIGHT"}, 20, 20, 360, 308, self, true)
 	end
 
-	-- Database selector
-	self.controls.selectDBLabel = new("LabelControl", {"TOPLEFT",self.controls.itemList,"BOTTOMLEFT"}, 0, 14, 0, 16, "^7Import from:")
-	self.controls.selectDBLabel.shown = function()
-		return self.height < 980
-	end
-	self.controls.selectDB = new("DropDownControl", {"LEFT",self.controls.selectDBLabel,"RIGHT"}, 4, 0, 150, 18, { "Uniques", "Rare Templates" })
-
-	-- Unique database
-	self.controls.uniqueDB = new("ItemDBControl", {"TOPLEFT",self.controls.itemList,"BOTTOMLEFT"}, 0, 76, 360, function(c) return m_min(244, self.maxY - select(2, c:GetPos())) end, self, main.uniqueDB, "UNIQUE")
-	self.controls.uniqueDB.y = function()
-		return self.controls.selectDBLabel:IsShown() and 118 or 96
-	end
-	self.controls.uniqueDB.shown = function()
-		return not self.controls.selectDBLabel:IsShown() or self.controls.selectDB.selIndex == 1
-	end
-
-	-- Rare template database
-	self.controls.rareDB = new("ItemDBControl", {"TOPLEFT",self.controls.itemList,"BOTTOMLEFT"}, 0, 76, 360, function(c) return m_min(260, self.maxY - select(2, c:GetPos())) end, self, main.rareDB, "RARE")
-	self.controls.rareDB.y = function()
-		return self.controls.selectDBLabel:IsShown() and 78 or 396
-	end
-	self.controls.rareDB.shown = function()
-		return not self.controls.selectDBLabel:IsShown() or self.controls.selectDB.selIndex == 2
-	end
-	-- Set all item ranges
-	self.controls.allItemRangeSlider = new("SliderControl", {"TOPLEFT",main.portraitMode and self.controls.setManage or self.controls.itemList,"TOPRIGHT"}, 20, main.portraitMode and 0 or -20, 100, 18, function ()
-		self:UpdateAllItemRangeLabel()
-	end)
-
-
-	self.controls.allItemRangeButton = new("ButtonControl", {"TOPLEFT",self.controls.allItemRangeSlider,"TOPRIGHT"}, 8, 0, 250, 20, "Set all mods range of all items", function()
-		local range = self.controls.allItemRangeSlider.val * 256
-		-- Fix for allowing half range values
-		if range > 127.2 and range < 127.8 then
-			range = 127.5
-		else
-			range = round(range)
-		end
-		self:SetAllItemRanges(range)
-		self:AddUndoState()
-	end)
-
-	self.controls.allItemRangeSlider.val = main.defaultItemAffixQuality / 256;
-	self:UpdateAllItemRangeLabel()
-
-	-- Create/import item
-	self.controls.craftDisplayItem = new("ButtonControl", {"TOPLEFT",self.controls.allItemRangeSlider,"BOTTOMLEFT"}, 0, 8, 120, 20, "Craft item...", function()
-		self:CraftItem()
-	end)
-	self.controls.craftDisplayItem.shown = function()
-		return self.displayItem == nil
-	end
-	self.controls.newDisplayItem = new("ButtonControl", {"TOPLEFT",self.controls.craftDisplayItem,"TOPRIGHT"}, 8, 0, 120, 20, "Create custom...", function()
-		self:EditDisplayItemText()
-	end)
-	self.controls.displayItemTip = new("LabelControl", {"TOPLEFT",self.controls.craftDisplayItem,"BOTTOMLEFT"}, 0, 8, 100, 16,
-[[^7Double-click an item from one of the lists to view or edit
-the item and add it to your build. You can
-also clone an item within Last Epoch Building by
-copying and pasting it with Ctrl+C and Ctrl+V.
-
-You can Control + Click an item to equip it, or
-drag it onto the slot.  This will also add it to
-your build if it's from the unique/template list.
-If there's 2 slots an item can go in,
-holding Shift will put it in the second.]])
-	self.controls.sharedItemList = new("SharedItemListControl", {"TOPLEFT",self.controls.craftDisplayItem, "BOTTOMLEFT"}, 0, 232, 340, 308, self, true)
-
 	-- Display item
 	self.displayItemTooltip = new("Tooltip")
 	self.displayItemTooltip.maxWidth = 458
-	self.anchorDisplayItem = new("Control", {"TOPLEFT",self.controls.allItemRangeSlider,"BOTTOMLEFT"}, 0, 8, 0, 0)
+	self.anchorDisplayItem = new("Control", {"TOPLEFT",self.controls.itemList,"TOPRIGHT"}, 20, 0, 0, 0)
 	self.anchorDisplayItem.shown = function()
 		return self.displayItem ~= nil
 	end
@@ -897,21 +833,9 @@ holding Shift will put it in the second.]])
 	self.controls.scrollBarV = new("ScrollBarControl", nil, 0, 0, 18, 0, 100, "VERTICAL", true)
 
 	-- Initialise drag target lists
-	t_insert(self.controls.itemList.dragTargetList, self.controls.sharedItemList)
 	t_insert(self.controls.itemList.dragTargetList, build.controls.mainSkillMinion)
-	t_insert(self.controls.uniqueDB.dragTargetList, self.controls.itemList)
-	t_insert(self.controls.uniqueDB.dragTargetList, self.controls.sharedItemList)
-	t_insert(self.controls.uniqueDB.dragTargetList, build.controls.mainSkillMinion)
-	t_insert(self.controls.rareDB.dragTargetList, self.controls.itemList)
-	t_insert(self.controls.rareDB.dragTargetList, self.controls.sharedItemList)
-	t_insert(self.controls.rareDB.dragTargetList, build.controls.mainSkillMinion)
-	t_insert(self.controls.sharedItemList.dragTargetList, self.controls.itemList)
-	t_insert(self.controls.sharedItemList.dragTargetList, build.controls.mainSkillMinion)
 	for _, slot in pairs(self.slots) do
 		t_insert(self.controls.itemList.dragTargetList, slot)
-		t_insert(self.controls.uniqueDB.dragTargetList, slot)
-		t_insert(self.controls.rareDB.dragTargetList, slot)
-		t_insert(self.controls.sharedItemList.dragTargetList, slot)
 	end
 
 	-- Initialise item sets
@@ -1138,16 +1062,6 @@ function ItemsTabClass:Draw(viewPort, inputEvents)
 			elseif event.key == "y" and IsKeyDown("CTRL") then
 				self:Redo()
 				self.build.buildFlag = true
-			elseif event.key == "f" and IsKeyDown("CTRL") then
-				local selUnique = self.selControl == self.controls.uniqueDB.controls.search
-				local selRare = self.selControl == self.controls.rareDB.controls.search
-				if selUnique or (self.controls.selectDB:IsShown() and not selRare and self.controls.selectDB.selIndex == 2) then
-					self:SelectControl(self.controls.rareDB.controls.search)
-					self.controls.selectDB.selIndex = 2
-				else
-					self:SelectControl(self.controls.uniqueDB.controls.search)
-					self.controls.selectDB.selIndex = 1
-				end
 			end
 		end
 	end
@@ -1207,9 +1121,6 @@ end
 function ItemsTabClass:RegisterLateSlot(slot)
 	-- Drag targets
 	t_insert(self.controls.itemList.dragTargetList, slot)
-	t_insert(self.controls.uniqueDB.dragTargetList, slot)
-	t_insert(self.controls.rareDB.dragTargetList, slot)
-	t_insert(self.controls.sharedItemList.dragTargetList, slot)
 	-- Item sets
 	if not slot.nodeId then
 		for _, itemSet in pairs(self.itemSets) do
@@ -1292,16 +1203,6 @@ function ItemsTabClass:EquipItemInSet(item, itemSetId)
 	self:PopulateSlots()
 	self:AddUndoState()
 	self.build.buildFlag = true
-end
-
-function ItemsTabClass:UpdateAllItemRangeLabel()
-	local range = self.controls.allItemRangeSlider.val * 256
-	if range > 127.2 and range < 127.8 then
-		range = 127.5
-	else
-		range = round(range)
-	end
-	self.controls.allItemRangeButton.label = "Set all mods range of all items (" .. round(range / 255 * 100,1) .. "%)"
 end
 
 -- Update the item lists for all the slot controls
@@ -2268,7 +2169,7 @@ function ItemsTabClass:AddItemSetTooltip(tooltip, itemSet)
 		if not slot.nodeId then
 			local item = self.items[itemSet[slot.slotName].selItemId]
 			if item then
-				tooltip:AddLine(16, s_format("^7%s: %s%s", slot.label, colorCodes[item.rarity], item.name))
+				tooltip:AddLine(16, s_format("^7%s: %s%s", slot.label, itemDisplayColor(item), item.name))
 			end
 		end
 	end
@@ -2282,7 +2183,7 @@ end
 
 function ItemsTabClass:AddItemTooltip(tooltip, item, slot, dbMode)
 	-- Item name
-	local rarityCode = colorCodes[item.rarity]
+	local rarityCode = itemDisplayColor(item)
 	tooltip.center = true
 	tooltip.color = rarityCode
 	if item.title then
@@ -2422,7 +2323,7 @@ function ItemsTabClass:AddItemTooltip(tooltip, item, slot, dbMode)
 			if item == selItem then
 				header = "^7Removing this item from " .. slotLabel .. " will give you:"
 			else
-				header = string.format("^7Equipping this item in %s will give you:%s", slotLabel, selItem and "\n(replacing " .. colorCodes[selItem.rarity] .. selItem.name .. "^7)" or "")
+				header = string.format("^7Equipping this item in %s will give you:%s", slotLabel, selItem and "\n(replacing " .. itemDisplayColor(selItem) .. selItem.name .. "^7)" or "")
 			end
 			self.build:AddStatComparesToTooltip(tooltip, calcBase, output, header)
 		end
