@@ -56,7 +56,8 @@ function ItemListClass:GetRowValue(column, index, itemId)
 		elseif itemSet then
 			used = "  ^9(Used in '" .. (itemSet.title or "Default") .. "')"
 		end
-		return colorCodes[item.rarity] .. item.name .. used
+		local color = (item.type and item.type:find("Idol")) and colorCodes.IDOL or colorCodes[item.rarity]
+		return color .. item.name .. used
 	end
 end
 
