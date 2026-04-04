@@ -663,9 +663,20 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 	local fs2 = frameSize / 2
 	local slotY = skillBarY + 50
 
-	local barPadding = 50
-	local lineLeft = viewPort.x + barPadding
-	local lineRight = viewPort.x + viewPort.width - barPadding
+	-- Align bar with the leftmost/rightmost passive node columns in the tree viewport
+	local lineLeft, lineRight
+	local vwrScale = self.viewer.currentScale
+	local vwrOffX = self.viewer.currentOffsetX
+	local passMinX = self.viewer.passiveNodeMinX
+	local passMaxX = self.viewer.passiveNodeMaxX
+	if vwrScale and vwrOffX and passMinX and passMaxX then
+		lineLeft = m_max(viewPort.x + 10, passMinX * vwrScale + vwrOffX)
+		lineRight = m_min(viewPort.x + viewPort.width - 10, passMaxX * vwrScale + vwrOffX)
+	else
+		local barPadding = 50
+		lineLeft = viewPort.x + barPadding
+		lineRight = viewPort.x + viewPort.width - barPadding
+	end
 	local lineWidth = lineRight - lineLeft
 	local lineY = skillBarY + 14
 

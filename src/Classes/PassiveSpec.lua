@@ -573,11 +573,13 @@ function PassiveSpecClass:BuildPathFromNode(root)
 			-- 3. They must not pass away from mastery nodes
 			-- 4. They must not cross a reqPoints gate that is not yet satisfied
 			local reqPts = other.reqPointsMap and other.reqPointsMap[node.id]
+			local mReq = other.masteryRequirement
+			local mPts = (mReq and mReq > 0 and self.masteryAllocedPoints) and (self.masteryAllocedPoints[other.mastery] or 0) or 0
 			if reqPts and node.alloc < reqPts then
 				-- Gate not satisfied: node does not have enough allocated points to unlock 'other'
-			elseif not other.pathDist then
-				ConPrintTable(other, true)
-			elseif node.type ~= "Mastery" and other.type ~= "ClassStart" and other.type ~= "AscendClassStart" and other.pathDist > curDist and (node.ascendancyName == other.ascendancyName or (curDist == 1 and not other.ascendancyName)) then
+			elseif mReq and mReq > 0 and mPts < mReq then
+				-- Mastery requirement not satisfied: not enough total points in this mastery
+			elseif other.pathDist and node.type ~= "Mastery" and other.type ~= "ClassStart" and other.type ~= "AscendClassStart" and other.pathDist > curDist and (node.ascendancyName == other.ascendancyName or (curDist == 1 and not other.ascendancyName)) then
 				-- The shortest path to the other node is through the current node
 				other.pathDist = curDist
 				other.path = wipeTable(other.path)
@@ -783,6 +785,15 @@ function PassiveSpecClass:BuildAllDependsAndPaths()
 			for _, depNode in ipairs(node.depends) do
 				self:DeallocSingleNode(depNode)
 			end
+		end
+	end
+
+	-- Pre-compute total allocated points per mastery index for masteryRequirement gating
+	self.masteryAllocedPoints = {}
+	for id, node in pairs(self.allocNodes) do
+		if node.type ~= "ClassStart" and node.type ~= "AscendClassStart" and node.mastery ~= nil then
+			local m = node.mastery
+			self.masteryAllocedPoints[m] = (self.masteryAllocedPoints[m] or 0) + (node.alloc or 0)
 		end
 	end
 
