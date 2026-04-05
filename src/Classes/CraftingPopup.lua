@@ -12,7 +12,9 @@ local m_ceil = math.ceil
 local pairs = pairs
 local ipairs = ipairs
 
--- Rarity tier color mapping: maps affix tier sum to rarity display
+local MAX_MOD_LINES = 3
+
+-- Rarity tier color mapping
 local function getRarityForTierSum(tierSum, hasAffix)
 	if not hasAffix then return "NORMAL" end
 	if tierSum <= 4 then return "MAGIC" end
@@ -20,7 +22,7 @@ local function getRarityForTierSum(tierSum, hasAffix)
 	return "EXALTED"
 end
 
--- Clean implicit text: remove formatting tags and filter out UNKNOWN_STAT entries
+-- Clean implicit text: remove formatting tags and filter UNKNOWN_STAT
 local function cleanImplicitText(line)
 	if line:find("%[UNKNOWN_STAT%]") then
 		return nil
@@ -28,14 +30,42 @@ local function cleanImplicitText(line)
 	return line:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
 end
 
+-- Check if a mod line template contains a (min-max) range
+local function hasRange(line)
+	return line:match("%(%-?%d+%.?%d*%-%-?%d+%.?%d*%)") ~= nil
+end
+
+-- Compute the actual displayed value from a mod line and range
+local function computeModValue(line, range)
+	local computed = itemLib.applyRange(line, range, nil, nil)
+	if not computed then return nil end
+	computed = computed:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
+	local num = computed:match("([%-]?%d+%.?%d*)")
+	return tonumber(num)
+end
+
+-- Reverse-map: given a desired value and mod line template, find range (0-256)
+local function reverseModRange(line, targetValue)
+	local min, max = line:match("%(([%-]?%d+%.?%d*)%-([%-]?%d+%.?%d*)%)")
+	if not min or not max then return 128 end
+	min, max = tonumber(min), tonumber(max)
+	local precision = 100
+	if line:find("{rounding:Integer}") then precision = 1
+	elseif line:find("{rounding:Tenth}") then precision = 10
+	elseif line:find("{rounding:Thousandth}") then precision = 1000 end
+	if line:find("%%") and precision >= 100 then precision = precision / 100 end
+	local rangeSize = max - min + 1 / precision
+	if rangeSize == 0 then return 0 end
+	local range = (targetValue - min) / rangeSize * 255
+	return m_max(0, m_min(256, m_floor(range + 0.5)))
+end
+
 -- Ordered item type list with category headers
--- Headers have isSeparator=true and are not selectable
 local function buildOrderedTypeList(dataTypeList)
 	local available = {}
 	for _, t in ipairs(dataTypeList) do
 		available[t] = true
 	end
-
 	local ordered = {}
 	local sections = {
 		{ header = "-- Armor --", types = {
@@ -60,7 +90,6 @@ local function buildOrderedTypeList(dataTypeList)
 			"Idol Altar",
 		}},
 	}
-
 	local used = {}
 	for _, sec in ipairs(sections) do
 		t_insert(ordered, { label = "^8" .. sec.header, isSeparator = true })
@@ -71,15 +100,11 @@ local function buildOrderedTypeList(dataTypeList)
 			end
 		end
 	end
-
-	-- Append any remaining types not in the predefined order
 	for _, t in ipairs(dataTypeList) do
-		if not used[t] and t ~= "" and t ~= "Blessing"
-			and not t:find("Lens$") then
+		if not used[t] and t ~= "" and t ~= "Blessing" and not t:find("Lens$") then
 			t_insert(ordered, { label = t, typeName = t })
 		end
 	end
-
 	return ordered
 end
 
@@ -88,27 +113,19 @@ local CraftingPopupClass = newClass("CraftingPopup", "ControlHost", "Control", f
 	local popupH = 600
 	self.ControlHost()
 	self.Control(nil, 0, 0, popupW, popupH)
-	self.x = function()
-		return m_floor((main.screenW - popupW) / 2)
-	end
-	self.y = function()
-		return m_floor((main.screenH - popupH) / 2)
-	end
+	self.x = function() return m_floor((main.screenW - popupW) / 2) end
+	self.y = function() return m_floor((main.screenH - popupH) / 2) end
 	self.itemsTab = itemsTab
 	self.build = itemsTab.build
 
-	-- State
-	self.currentTab = "select"  -- "select" or "edit"
+	self.currentTab = "select"
 	self.selectedTypeIndex = 1
-	self.selectedBaseCategory = "basic" -- "basic", "unique", or "set"
+	self.selectedBaseCategory = "basic"
 	self.editItem = nil
+	self.rebuilding = false
 
-	-- Load set data
 	self.setItems = self:LoadSetData()
-
-	-- Build ordered type list
 	self.orderedTypeList = buildOrderedTypeList(self.build.data.itemBaseTypeList)
-	-- Find first selectable index
 	for i, entry in ipairs(self.orderedTypeList) do
 		if not entry.isSeparator then
 			self.selectedTypeIndex = i
@@ -116,20 +133,29 @@ local CraftingPopupClass = newClass("CraftingPopup", "ControlHost", "Control", f
 		end
 	end
 
-	-- Affix state: each entry = { modKey = nil, tier = 0, range = 128 }
+	-- Affix state: ranges is per-line array
 	self.affixState = {
-		prefix1  = { modKey = nil, tier = 0, range = 128 },
-		prefix2  = { modKey = nil, tier = 0, range = 128 },
-		suffix1  = { modKey = nil, tier = 0, range = 128 },
-		suffix2  = { modKey = nil, tier = 0, range = 128 },
-		sealed   = { modKey = nil, tier = 0, range = 128 },
+		prefix1 = { modKey = nil, tier = 0, ranges = {} },
+		prefix2 = { modKey = nil, tier = 0, ranges = {} },
+		suffix1 = { modKey = nil, tier = 0, ranges = {} },
+		suffix2 = { modKey = nil, tier = 0, ranges = {} },
+		sealed  = { modKey = nil, tier = 0, ranges = {} },
 	}
 	self.corrupted = false
+
+	-- Mod info cache for edit tab display
+	self.slotModInfo = {}
+	for _, k in ipairs({"prefix1","prefix2","suffix1","suffix2","sealed"}) do
+		self.slotModInfo[k] = { count = 0, lines = {} }
+	end
+
+	-- Dynamic Y positions for edit tab
+	self.editY = {}
+	self:RecalcEditLayout()
 
 	self:BuildControls()
 end)
 
--- Load set data from JSON
 function CraftingPopupClass:LoadSetData()
 	local ver = self.build.targetVersion or "1_4"
 	local setData = readJsonFile("Data/Set/set_" .. ver .. ".json")
@@ -139,20 +165,116 @@ function CraftingPopupClass:LoadSetData()
 	return setData or {}
 end
 
--- Get the currently selected type name
 function CraftingPopupClass:GetSelectedTypeName()
 	local entry = self.orderedTypeList[self.selectedTypeIndex]
 	return entry and entry.typeName or nil
 end
 
--- Build all UI controls
+-- Compute max tier for a given statOrderKey
+function CraftingPopupClass:GetMaxTier(statOrderKey)
+	local itemMods = data.itemMods.Item
+	if not itemMods then return 0 end
+	for tier = 7, 0, -1 do
+		if itemMods[tostring(statOrderKey) .. "_" .. tostring(tier)] then
+			return tier
+		end
+	end
+	return 0
+end
+
+-- Recalculate dynamic Y positions for edit tab
+function CraftingPopupClass:RecalcEditLayout()
+	local y = 200
+	local LINE_H = 18
+	local TIER_H = 22
+	local GAP = 4
+
+	self.editY = {}
+
+	local sectionOrder = {
+		{ label = "prefixLabel", slots = {"prefix1", "prefix2"} },
+		{ label = "suffixLabel", slots = {"suffix1", "suffix2"} },
+		{ label = "sealedLabel", slots = {"sealed"} },
+	}
+
+	for si, sec in ipairs(sectionOrder) do
+		self.editY[sec.label] = y
+		y = y + LINE_H + GAP
+
+		for _, slotKey in ipairs(sec.slots) do
+			local st = self.affixState[slotKey]
+			self.editY[slotKey] = {}
+
+			if st.modKey then
+				local lc = self.slotModInfo[slotKey].count
+				if lc == 0 then lc = 1 end
+				for i = 1, MAX_MOD_LINES do
+					self.editY[slotKey][i] = y + (i - 1) * LINE_H
+				end
+				y = y + lc * LINE_H
+				self.editY[slotKey].tier = y
+				y = y + TIER_H + GAP
+			else
+				self.editY[slotKey].add = y
+				y = y + TIER_H + GAP
+			end
+		end
+		y = y + GAP
+	end
+
+	self.editY.corrupted = y
+end
+
+-- Update mod line cache for a slot
+function CraftingPopupClass:UpdateSlotModInfo(slotKey)
+	local info = { count = 0, lines = {} }
+	local st = self.affixState[slotKey]
+	if st.modKey then
+		local modKey = tostring(st.modKey) .. "_" .. tostring(st.tier)
+		local mod = data.itemMods.Item and data.itemMods.Item[modKey]
+		if mod then
+			for k = 1, 10 do
+				local line = mod[k]
+				if line and type(line) == "string" then
+					info.count = info.count + 1
+					info.lines[info.count] = line
+					if info.count >= MAX_MOD_LINES then break end
+				end
+			end
+		end
+	end
+	self.slotModInfo[slotKey] = info
+end
+
+-- Update all value edit controls for a slot (call after tier change or affix selection)
+function CraftingPopupClass:UpdateSlotValueEdits(slotKey)
+	local info = self.slotModInfo[slotKey]
+	local st = self.affixState[slotKey]
+	for i = 1, MAX_MOD_LINES do
+		local valCtrl = self.controls[slotKey .. "Val" .. i]
+		if valCtrl and valCtrl.SetText then
+			if i <= info.count and hasRange(info.lines[i]) then
+				local range = st.ranges[i] or 128
+				local val = computeModValue(info.lines[i], range)
+				if val then
+					valCtrl:SetText(tostring(val))
+				else
+					valCtrl:SetText("")
+				end
+			else
+				valCtrl:SetText("")
+			end
+		end
+	end
+end
+
 function CraftingPopupClass:BuildControls()
 	local self_ref = self
-	local controls = { }
+	local controls = {}
 	self.controls = controls
 
 	-- ========================
-	-- Tab buttons (top)
+	-- Tab buttons
 	-- ========================
 	controls.tabSelect = new("ButtonControl", {"TOPLEFT", self, "TOPLEFT"}, 10, 10, 80, 24, function()
 		return self_ref.currentTab == "select" and "^7>> Select <<" or "^7Select"
@@ -173,24 +295,19 @@ function CraftingPopupClass:BuildControls()
 	end)
 
 	-- ========================
-	-- SELECT TAB controls
+	-- SELECT TAB
 	-- ========================
-
-	-- Item Type label + dropdown
 	controls.typeLabel = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, 15, 50, 0, 16, "^7Item Type:")
 	controls.typeLabel.shown = function() return self_ref.currentTab == "select" end
 
-	-- Build dropdown list from ordered types
 	local typeDropList = {}
 	for _, entry in ipairs(self.orderedTypeList) do
 		t_insert(typeDropList, entry)
 	end
 
 	controls.typeDropdown = new("DropDownControl", {"LEFT", controls.typeLabel, "RIGHT"}, 5, 0, 220, 20,
-		typeDropList,
-		function(index, value)
+		typeDropList, function(index, value)
 			if value.isSeparator then
-				-- Skip separators: find next selectable
 				for i = index + 1, #typeDropList do
 					if not typeDropList[i].isSeparator then
 						controls.typeDropdown.selIndex = i
@@ -209,7 +326,7 @@ function CraftingPopupClass:BuildControls()
 	controls.typeDropdown.enableDroppedWidth = true
 	controls.typeDropdown.maxDroppedWidth = 300
 
-	-- Category tabs: Basic / Unique / Set
+	-- Category tabs
 	controls.catBasic = new("ButtonControl", {"TOPLEFT", self, "TOPLEFT"}, 15, 80, 80, 20, function()
 		return self_ref.selectedBaseCategory == "basic" and "^7Basic" or "^8Basic"
 	end, function()
@@ -237,38 +354,31 @@ function CraftingPopupClass:BuildControls()
 	controls.catSet.shown = function() return self_ref.currentTab == "select" end
 	controls.catSet.locked = function() return self_ref.selectedBaseCategory == "set" end
 
-	-- Column headers (between category tabs and item list)
+	-- Column headers
 	controls.colHeaderName = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, 18, 106, 0, 14, "^8Item Name")
 	controls.colHeaderName.shown = function() return self_ref.currentTab == "select" end
-	controls.colHeaderType = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, 318, 106, 0, 14, "^8Type")
+	controls.colHeaderType = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, 498, 106, 0, 14, "^8Type")
 	controls.colHeaderType.shown = function() return self_ref.currentTab == "select" end
-	controls.colHeaderLv = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, 478, 106, 0, 14, "^8Lv Req")
+	controls.colHeaderLv = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, 658, 106, 0, 14, "^8Lv Req")
 	controls.colHeaderLv.shown = function() return self_ref.currentTab == "select" end
-
-	-- Separator line under headers
-	-- (drawn in Draw())
 
 	-- Base item list (scrollbar enabled)
 	controls.baseList = new("ListControl", {"TOPLEFT", self, "TOPLEFT"}, 15, 122, 770, 420, 20, true, false, {})
 	controls.baseList.shown = function() return self_ref.currentTab == "select" end
 	controls.baseList.colList = {
-		{ width = function() return 300 end },
+		{ width = function() return 480 end },
 		{ width = function() return 160 end },
 		{ width = function() return 80 end },
 	}
 	controls.baseList.GetRowValue = function(control, column, index, entry)
 		if entry.isImplicitRow then
-			-- Sub-row showing implicit text
 			if column == 1 then
 				return "^8    " .. (entry.implicitText or "")
 			end
 			return ""
 		end
 		if column == 1 then
-			local colorCode = colorCodes.NORMAL
-			if entry.rarity then
-				colorCode = colorCodes[entry.rarity] or colorCodes.NORMAL
-			end
+			local colorCode = colorCodes[entry.rarity] or colorCodes.NORMAL
 			return colorCode .. (entry.label or entry.name or "?")
 		elseif column == 2 then
 			return "^7" .. (entry.displayType or "")
@@ -278,37 +388,43 @@ function CraftingPopupClass:BuildControls()
 		end
 	end
 	controls.baseList.OnSelClick = function(control, index, entry, doubleClick)
-		if entry and entry.isImplicitRow then
-			-- Clicking implicit sub-row selects the parent
-			return
+		if entry and entry.isImplicitRow and entry.parentEntry then
+			-- Redirect to parent item
+			for i = index - 1, 1, -1 do
+				if control.list[i] == entry.parentEntry then
+					control.selIndex = i
+					control.selValue = entry.parentEntry
+					entry = entry.parentEntry
+					break
+				end
+			end
 		end
-		if doubleClick then
+		if doubleClick and entry and not entry.isImplicitRow then
 			self_ref:SelectBase(entry)
 		end
 	end
-	controls.baseList.OverrideSelectIndex = function(control, index)
-		-- Prevent selecting implicit sub-rows
-		local entry = control.list[index]
-		if entry and entry.isImplicitRow then
-			return true
-		end
-	end
 
-	-- Select button
 	controls.selectBtn = new("ButtonControl", {"BOTTOMRIGHT", self, "BOTTOMRIGHT"}, -15, -15, 100, 28, "Select", function()
 		local list = controls.baseList.list
 		local idx = controls.baseList.selIndex
-		if list[idx] and not list[idx].isImplicitRow then
-			self_ref:SelectBase(list[idx])
+		local entry = list[idx]
+		if entry and entry.isImplicitRow then
+			for i = idx - 1, 1, -1 do
+				if not list[i].isImplicitRow then
+					entry = list[i]
+					break
+				end
+			end
+		end
+		if entry and not entry.isImplicitRow then
+			self_ref:SelectBase(entry)
 		end
 	end)
 	controls.selectBtn.shown = function() return self_ref.currentTab == "select" end
 
 	-- ========================
-	-- EDIT TAB controls
+	-- EDIT TAB
 	-- ========================
-
-	-- Item name display
 	controls.editItemName = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, 15, 50, 0, 18, "")
 	controls.editItemName.shown = function() return self_ref.currentTab == "edit" end
 	controls.editItemName.label = function()
@@ -318,17 +434,14 @@ function CraftingPopupClass:BuildControls()
 		return col .. (item.title or item.namePrefix .. item.baseName .. item.nameSuffix)
 	end
 
-	-- "Change Item" button
 	controls.changeItemBtn = new("ButtonControl", {"LEFT", controls.editItemName, "LEFT"}, 0, 22, 100, 20, "Change Item", function()
 		self_ref.currentTab = "select"
 	end)
 	controls.changeItemBtn.shown = function() return self_ref.currentTab == "edit" end
 
-	-- Implicits section label
 	controls.implicitLabel = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, 15, 100, 0, 14, colorCodes.UNIQUE .. "IMPLICITS")
 	controls.implicitLabel.shown = function() return self_ref.currentTab == "edit" end
 
-	-- Implicit lines (dynamic labels, up to 8)
 	for i = 1, 8 do
 		local key = "implicit" .. i
 		controls[key] = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, 25, 100 + i * 18, 0, 14, "")
@@ -338,110 +451,188 @@ function CraftingPopupClass:BuildControls()
 		end
 		controls[key].label = function()
 			if not self_ref.editItem or not self_ref.editItem.implicitModLines[i] then return "" end
-			local ml = self_ref.editItem.implicitModLines[i]
-			return "^7" .. itemLib.formatModLine(ml)
+			return "^7" .. itemLib.formatModLine(self_ref.editItem.implicitModLines[i])
 		end
 	end
 
-	-- Affix sections
+	-- Affix section controls
 	local affixSections = {
-		{ key = "prefix",  label = "PREFIXES",       slots = {"prefix1", "prefix2"}, type = "Prefix", y = 210 },
-		{ key = "suffix",  label = "SUFFIXES",       slots = {"suffix1", "suffix2"}, type = "Suffix", y = 310 },
-		{ key = "sealed",  label = "SEALED AFFIX",   slots = {"sealed"},             type = nil,      y = 400 },
+		{ key = "prefix",  label = "PREFIXES",     slots = {"prefix1", "prefix2"} },
+		{ key = "suffix",  label = "SUFFIXES",     slots = {"suffix1", "suffix2"} },
+		{ key = "sealed",  label = "SEALED AFFIX", slots = {"sealed"} },
 	}
 
 	for _, section in ipairs(affixSections) do
-		-- Section label
 		local labelKey = section.key .. "Label"
-		controls[labelKey] = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, 15, section.y, 0, 14,
-			colorCodes.UNIQUE .. section.label)
+		controls[labelKey] = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, 15,
+			function() return self_ref.editY[labelKey] or 200 end,
+			0, 14, colorCodes.UNIQUE .. section.label)
 		controls[labelKey].shown = function() return self_ref.currentTab == "edit" end
 
-		for slotIdx, slotKey in ipairs(section.slots) do
-			local slotY = section.y + slotIdx * 26
+		for _, slotKey in ipairs(section.slots) do
+			-- Mod line labels and value edits (up to MAX_MOD_LINES per slot)
+			for li = 1, MAX_MOD_LINES do
+				local lineKey = slotKey .. "Line" .. li
+				local valKey = slotKey .. "Val" .. li
 
-			-- Affix display label (shows selected affix text)
-			local dispKey = slotKey .. "Display"
-			controls[dispKey] = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, 25, slotY, 0, 14, "")
-			controls[dispKey].shown = function()
-				if self_ref.currentTab ~= "edit" then return false end
-				return self_ref.affixState[slotKey].modKey ~= nil
-			end
-			controls[dispKey].label = function()
-				return self_ref:GetAffixDisplayText(slotKey)
-			end
-
-			-- Range value edit (numeric input for direct value entry, 0-256)
-			local rangeKey = slotKey .. "Range"
-			controls[rangeKey] = new("EditControl", {"TOPLEFT", self, "TOPLEFT"}, 450, slotY - 1, 60, 18,
-				"128", nil, "%D", nil, function(buf)
-					local val = tonumber(buf) or 128
-					val = m_max(0, m_min(256, val))
-					self_ref.affixState[slotKey].range = val
-					self_ref:RebuildEditItem()
-				end)
-			controls[rangeKey].shown = function()
-				if self_ref.currentTab ~= "edit" then return false end
-				return self_ref.affixState[slotKey].modKey ~= nil
-			end
-			controls[rangeKey].numberInc = 1
-
-			-- Tier display button (right side)
-			local tierKey = slotKey .. "Tier"
-			controls[tierKey] = new("ButtonControl", {"TOPLEFT", self, "TOPLEFT"}, 530, slotY, 40, 18,
-				function()
+				-- Mod line label
+				controls[lineKey] = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, 25,
+					function()
+						local ey = self_ref.editY[slotKey]
+						return ey and ey[li] or 0
+					end, 0, 14, "")
+				controls[lineKey].shown = function()
+					if self_ref.currentTab ~= "edit" then return false end
+					if not self_ref.affixState[slotKey].modKey then return false end
+					return li <= self_ref.slotModInfo[slotKey].count
+				end
+				controls[lineKey].label = function()
+					local info = self_ref.slotModInfo[slotKey]
+					if li > info.count then return "" end
+					local line = info.lines[li]
 					local st = self_ref.affixState[slotKey]
-					if st.modKey then
-						return "^7T" .. tostring(st.tier + 1)
-					end
-					return ""
-				end,
+					local range = st.ranges[li] or 128
+					local computed = itemLib.applyRange(line, range, nil, nil) or line
+					computed = computed:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
+					local col = "^7"
+					if st.tier >= 5 then col = colorCodes.EXALTED
+					elseif st.tier >= 3 then col = colorCodes.RARE
+					else col = colorCodes.MAGIC end
+					return col .. computed
+				end
+
+				-- Value edit control
+				controls[valKey] = new("EditControl", {"TOPLEFT", self, "TOPLEFT"}, 500,
+					function()
+						local ey = self_ref.editY[slotKey]
+						return ey and (ey[li] or 0) - 1 or 0
+					end, 55, 18, "", nil, "%D", nil,
+					function(buf)
+						if self_ref.rebuilding then return end
+						local val = tonumber(buf)
+						if not val then return end
+						local info = self_ref.slotModInfo[slotKey]
+						if li > info.count then return end
+						local line = info.lines[li]
+						local range = reverseModRange(line, val)
+						self_ref.affixState[slotKey].ranges[li] = range
+						self_ref:RebuildEditItem()
+					end)
+				controls[valKey].shown = function()
+					if self_ref.currentTab ~= "edit" then return false end
+					if not self_ref.affixState[slotKey].modKey then return false end
+					local info = self_ref.slotModInfo[slotKey]
+					return li <= info.count and hasRange(info.lines[li])
+				end
+				controls[valKey].numberInc = 1
+			end
+
+			-- Tier label
+			local tierLabelKey = slotKey .. "TierLabel"
+			controls[tierLabelKey] = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, 570,
 				function()
-					self_ref:CycleTier(slotKey)
-				end)
-			controls[tierKey].shown = function()
+					local ey = self_ref.editY[slotKey]
+					return ey and ey.tier or 0
+				end, 0, 14, "")
+			controls[tierLabelKey].shown = function()
 				if self_ref.currentTab ~= "edit" then return false end
 				return self_ref.affixState[slotKey].modKey ~= nil
 			end
-			controls[tierKey].tooltipFunc = function(tooltip, mode)
+			controls[tierLabelKey].label = function()
+				local st = self_ref.affixState[slotKey]
+				return "^7T" .. tostring(st.tier + 1)
+			end
+			controls[tierLabelKey].tooltipFunc = function(tooltip, mode)
 				if mode == "OUT" then return end
 				self_ref:BuildTierTooltip(tooltip, slotKey)
 			end
 
-			-- Remove affix button
+			-- Tier up button (+)
+			local tierUpKey = slotKey .. "TierUp"
+			controls[tierUpKey] = new("ButtonControl", {"TOPLEFT", self, "TOPLEFT"}, 600,
+				function()
+					local ey = self_ref.editY[slotKey]
+					return ey and ey.tier or 0
+				end, 20, 18, "+", function()
+					local st = self_ref.affixState[slotKey]
+					if not st.modKey then return end
+					local maxTier = self_ref:GetMaxTier(st.modKey)
+					st.tier = st.tier + 1
+					if st.tier > maxTier then st.tier = 0 end
+					self_ref:UpdateSlotModInfo(slotKey)
+					self_ref:UpdateSlotValueEdits(slotKey)
+					self_ref:RebuildEditItem()
+				end)
+			controls[tierUpKey].shown = function()
+				if self_ref.currentTab ~= "edit" then return false end
+				return self_ref.affixState[slotKey].modKey ~= nil
+			end
+
+			-- Tier down button (-)
+			local tierDownKey = slotKey .. "TierDown"
+			controls[tierDownKey] = new("ButtonControl", {"TOPLEFT", self, "TOPLEFT"}, 622,
+				function()
+					local ey = self_ref.editY[slotKey]
+					return ey and ey.tier or 0
+				end, 20, 18, "-", function()
+					local st = self_ref.affixState[slotKey]
+					if not st.modKey then return end
+					local maxTier = self_ref:GetMaxTier(st.modKey)
+					st.tier = st.tier - 1
+					if st.tier < 0 then st.tier = maxTier end
+					self_ref:UpdateSlotModInfo(slotKey)
+					self_ref:UpdateSlotValueEdits(slotKey)
+					self_ref:RebuildEditItem()
+				end)
+			controls[tierDownKey].shown = function()
+				if self_ref.currentTab ~= "edit" then return false end
+				return self_ref.affixState[slotKey].modKey ~= nil
+			end
+
+			-- Remove button (x)
 			local removeKey = slotKey .. "Remove"
-			controls[removeKey] = new("ButtonControl", {"TOPLEFT", self, "TOPLEFT"}, 580, slotY, 20, 18, "x", function()
-				self_ref.affixState[slotKey].modKey = nil
-				self_ref.affixState[slotKey].tier = 0
-				self_ref.affixState[slotKey].range = 128
-				if controls[rangeKey].SetText then
-					controls[rangeKey]:SetText("128")
-				end
-				self_ref:RebuildEditItem()
-			end)
+			controls[removeKey] = new("ButtonControl", {"TOPLEFT", self, "TOPLEFT"}, 650,
+				function()
+					local ey = self_ref.editY[slotKey]
+					return ey and ey.tier or 0
+				end, 20, 18, "x", function()
+					self_ref.affixState[slotKey].modKey = nil
+					self_ref.affixState[slotKey].tier = 0
+					self_ref.affixState[slotKey].ranges = {}
+					self_ref:UpdateSlotModInfo(slotKey)
+					self_ref:RebuildEditItem()
+				end)
 			controls[removeKey].shown = function()
 				if self_ref.currentTab ~= "edit" then return false end
 				return self_ref.affixState[slotKey].modKey ~= nil
 			end
 
-			-- "Add" dropdown (shown when no affix selected)
+			-- Add dropdown (shown when no affix selected)
 			local addKey = slotKey .. "Add"
-			controls[addKey] = new("DropDownControl", {"TOPLEFT", self, "TOPLEFT"}, 25, slotY, 400, 18,
+			controls[addKey] = new("DropDownControl", {"TOPLEFT", self, "TOPLEFT"}, 25,
+				function()
+					local ey = self_ref.editY[slotKey]
+					return ey and ey.add or 0
+				end, 400, 18,
 				{}, function(index, value)
 					if value and value.statOrderKey then
-						self_ref.affixState[slotKey].modKey = value.statOrderKey
-						self_ref.affixState[slotKey].tier = value.maxTier or 0
-						self_ref.affixState[slotKey].range = 128
-						if controls[rangeKey].SetText then
-							controls[rangeKey]:SetText("128")
+						local st = self_ref.affixState[slotKey]
+						st.modKey = value.statOrderKey
+						st.tier = value.maxTier or 0
+						st.ranges = {}
+						-- Default all ranges to 128
+						self_ref:UpdateSlotModInfo(slotKey)
+						local info = self_ref.slotModInfo[slotKey]
+						for i = 1, info.count do
+							st.ranges[i] = 128
 						end
+						self_ref:UpdateSlotValueEdits(slotKey)
 						self_ref:RebuildEditItem()
 					end
 				end)
 			controls[addKey].shown = function()
 				if self_ref.currentTab ~= "edit" then return false end
 				if self_ref.affixState[slotKey].modKey ~= nil then return false end
-				-- For second prefix/suffix, only show if first slot is filled
 				if slotKey == "prefix2" then
 					return self_ref.affixState.prefix1.modKey ~= nil
 				elseif slotKey == "suffix2" then
@@ -460,29 +651,31 @@ function CraftingPopupClass:BuildControls()
 		end
 	end
 
-	-- Corrupted checkbox
-	controls.corruptedLabel = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, 15, 460, 0, 14,
-		colorCodes.UNIQUE .. "CORRUPTED")
+	-- Corrupted
+	controls.corruptedLabel = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, 15,
+		function() return self_ref.editY.corrupted or 460 end,
+		0, 14, colorCodes.UNIQUE .. "CORRUPTED")
 	controls.corruptedLabel.shown = function() return self_ref.currentTab == "edit" end
 
-	controls.corruptedCheck = new("CheckBoxControl", {"TOPLEFT", self, "TOPLEFT"}, 115, 460, 18, "", function(state)
-		self_ref.corrupted = state
-		self_ref:RebuildEditItem()
-	end)
+	controls.corruptedCheck = new("CheckBoxControl", {"TOPLEFT", self, "TOPLEFT"}, 115,
+		function() return self_ref.editY.corrupted or 460 end,
+		18, "", function(state)
+			self_ref.corrupted = state
+			self_ref:RebuildEditItem()
+		end)
 	controls.corruptedCheck.shown = function() return self_ref.currentTab == "edit" end
 
-	-- Save button
+	-- Save / Cancel
 	controls.saveBtn = new("ButtonControl", {"BOTTOMRIGHT", self, "BOTTOMRIGHT"}, -15, -15, 100, 28, "Save", function()
 		self_ref:SaveItem()
 	end)
 	controls.saveBtn.shown = function() return self_ref.currentTab == "edit" and self_ref.editItem ~= nil end
 
-	-- Cancel button
 	controls.cancelBtn = new("ButtonControl", {"BOTTOMRIGHT", self, "BOTTOMRIGHT"}, -125, -15, 100, 28, "Cancel", function()
 		self_ref:Close()
 	end)
 
-	-- Set up anchoring
+	-- Anchoring
 	for id, control in pairs(self.controls) do
 		if not control.anchor.point then
 			control:SetAnchor("TOP", self, "TOP")
@@ -493,12 +686,11 @@ function CraftingPopupClass:BuildControls()
 		end
 	end
 
-	-- Initial population
 	self:RefreshBaseList()
 	self:RefreshAffixDropdowns()
 end
 
--- Refresh the base item list based on selected type and category
+-- Refresh base item list
 function CraftingPopupClass:RefreshBaseList()
 	local typeName = self:GetSelectedTypeName()
 	if not typeName then return end
@@ -510,27 +702,19 @@ function CraftingPopupClass:RefreshBaseList()
 		if bases then
 			for _, entry in ipairs(bases) do
 				t_insert(list, {
-					label = entry.name,
-					name = entry.name,
-					base = entry.base,
-					type = typeName,
-					displayType = entry.base.type or "",
-					rarity = "NORMAL",
-					category = "basic",
+					label = entry.name, name = entry.name, base = entry.base,
+					type = typeName, displayType = entry.base.type or "",
+					rarity = "NORMAL", category = "basic",
 				})
 			end
 		end
-		-- Sort by level requirement ascending
 		table.sort(list, function(a, b)
 			local lvlA = a.base and a.base.req and a.base.req.level or 0
 			local lvlB = b.base and b.base.req and b.base.req.level or 0
-			if lvlA == lvlB then
-				return a.name < b.name
-			end
+			if lvlA == lvlB then return a.name < b.name end
 			return lvlA < lvlB
 		end)
 	elseif self.selectedBaseCategory == "unique" then
-		-- Find uniques matching the current type
 		local bases = self.build.data.itemBaseLists[typeName]
 		if bases then
 			for uid, unique in pairs(self.build.data.uniques) do
@@ -538,16 +722,11 @@ function CraftingPopupClass:RefreshBaseList()
 					if baseEntry.base.baseTypeID == unique.baseTypeID and
 					   baseEntry.base.subTypeID == unique.subTypeID then
 						t_insert(list, {
-							label = unique.name,
-							name = unique.name,
-							base = baseEntry.base,
-							baseName = baseEntry.name,
-							type = typeName,
-							displayType = baseEntry.base.type or "",
-							rarity = "UNIQUE",
-							category = "unique",
-							uniqueData = unique,
-							uniqueID = uid,
+							label = unique.name, name = unique.name,
+							base = baseEntry.base, baseName = baseEntry.name,
+							type = typeName, displayType = baseEntry.base.type or "",
+							rarity = "UNIQUE", category = "unique",
+							uniqueData = unique, uniqueID = uid,
 						})
 						break
 					end
@@ -556,7 +735,6 @@ function CraftingPopupClass:RefreshBaseList()
 			table.sort(list, function(a, b) return a.label < b.label end)
 		end
 	elseif self.selectedBaseCategory == "set" then
-		-- Find set items matching the current type
 		local bases = self.build.data.itemBaseLists[typeName]
 		if bases then
 			for sid, setItem in pairs(self.setItems) do
@@ -564,16 +742,11 @@ function CraftingPopupClass:RefreshBaseList()
 					if baseEntry.base.baseTypeID == setItem.baseTypeID and
 					   baseEntry.base.subTypeID == setItem.subTypeID then
 						t_insert(list, {
-							label = setItem.name,
-							name = setItem.name,
-							base = baseEntry.base,
-							baseName = baseEntry.name,
-							type = typeName,
-							displayType = baseEntry.base.type or "",
-							rarity = "SET",
-							category = "set",
-							setData = setItem,
-							setID = sid,
+							label = setItem.name, name = setItem.name,
+							base = baseEntry.base, baseName = baseEntry.name,
+							type = typeName, displayType = baseEntry.base.type or "",
+							rarity = "SET", category = "set",
+							setData = setItem, setID = sid,
 						})
 						break
 					end
@@ -583,7 +756,7 @@ function CraftingPopupClass:RefreshBaseList()
 		end
 	end
 
-	-- Insert implicit sub-rows below each base item (filter UNKNOWN_STAT)
+	-- Insert implicit sub-rows
 	local expandedList = {}
 	for _, entry in ipairs(list) do
 		t_insert(expandedList, entry)
@@ -605,29 +778,18 @@ function CraftingPopupClass:RefreshBaseList()
 	self.controls.baseList.selIndex = 1
 end
 
--- Select a base item and switch to Edit tab
+-- Select a base item
 function CraftingPopupClass:SelectBase(entry)
 	if not entry or entry.isImplicitRow then return end
 
-	-- Reset affix state
 	for _, st in pairs(self.affixState) do
 		st.modKey = nil
 		st.tier = 0
-		st.range = 128
+		st.ranges = {}
 	end
 	self.corrupted = false
 	self.controls.corruptedCheck.state = false
 
-	-- Reset range edits
-	local slotKeys = {"prefix1", "prefix2", "suffix1", "suffix2", "sealed"}
-	for _, slotKey in ipairs(slotKeys) do
-		local rangeCtrl = self.controls[slotKey .. "Range"]
-		if rangeCtrl and rangeCtrl.SetText then
-			rangeCtrl:SetText("128")
-		end
-	end
-
-	-- Create item
 	local item = new("Item")
 	item.name = entry.name
 	item.baseName = entry.baseName or entry.name
@@ -644,14 +806,11 @@ function CraftingPopupClass:SelectBase(entry)
 		item.rarity = "UNIQUE"
 		item.title = entry.uniqueData.name
 		item.uniqueID = entry.uniqueID
-		-- Add unique mods as explicit lines
 		if entry.uniqueData.mods then
 			for i, modText in ipairs(entry.uniqueData.mods) do
 				local rollId = entry.uniqueData.rollIds and entry.uniqueData.rollIds[i]
 				local modLine = { line = modText }
-				if rollId then
-					modLine.range = 128
-				end
+				if rollId then modLine.range = 128 end
 				t_insert(item.explicitModLines, modLine)
 			end
 		end
@@ -659,14 +818,11 @@ function CraftingPopupClass:SelectBase(entry)
 		item.rarity = "SET"
 		item.title = entry.setData.name
 		item.setID = entry.setID
-		-- Add set mods as explicit lines
 		if entry.setData.mods then
 			for i, modText in ipairs(entry.setData.mods) do
 				local rollId = entry.setData.rollIds and entry.setData.rollIds[i]
 				local modLine = { line = modText }
-				if rollId then
-					modLine.range = 128
-				end
+				if rollId then modLine.range = 128 end
 				t_insert(item.explicitModLines, modLine)
 			end
 		end
@@ -675,7 +831,6 @@ function CraftingPopupClass:SelectBase(entry)
 		item.title = "New Item"
 	end
 
-	-- Add implicit mod lines (filter UNKNOWN_STAT)
 	if entry.base.implicits then
 		for _, line in ipairs(entry.base.implicits) do
 			if not line:find("%[UNKNOWN_STAT%]") then
@@ -691,73 +846,50 @@ function CraftingPopupClass:SelectBase(entry)
 	self.editBaseEntry = entry
 	self.currentTab = "edit"
 
+	-- Update mod info for all slots
+	for _, k in ipairs({"prefix1","prefix2","suffix1","suffix2","sealed"}) do
+		self:UpdateSlotModInfo(k)
+	end
+	self:RecalcEditLayout()
 	self:RefreshAffixDropdowns()
 end
 
--- Refresh all affix dropdown lists based on current item
+-- Refresh affix dropdown lists
 function CraftingPopupClass:RefreshAffixDropdowns()
 	if not self.editItem then return end
 
 	local itemMods = self.editItem.affixes or data.itemMods.Item
 	if not itemMods then return end
 
-	-- Build grouped affix lists by statOrderKey
 	local prefixGroups = {}
 	local suffixGroups = {}
 
 	for modId, mod in pairs(itemMods) do
 		if mod.statOrderKey then
-			if mod.type == "Prefix" then
-				if not prefixGroups[mod.statOrderKey] then
+			local groups = mod.type == "Prefix" and prefixGroups or (mod.type == "Suffix" and suffixGroups or nil)
+			if groups then
+				if not groups[mod.statOrderKey] then
 					local labelParts = {}
 					for k = 1, 10 do
-						if mod[k] then
-							t_insert(labelParts, mod[k])
-						end
+						if mod[k] then t_insert(labelParts, mod[k]) end
 					end
 					local label = table.concat(labelParts, " / ")
 					label = label:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
-					prefixGroups[mod.statOrderKey] = {
+					groups[mod.statOrderKey] = {
 						label = label,
 						statOrderKey = mod.statOrderKey,
 						affix = mod.affix,
-						type = "Prefix",
+						type = mod.type,
 						maxTier = mod.tier or 0,
 					}
 				else
-					local g = prefixGroups[mod.statOrderKey]
-					if mod.tier and mod.tier > g.maxTier then
-						g.maxTier = mod.tier
-					end
-				end
-			elseif mod.type == "Suffix" then
-				if not suffixGroups[mod.statOrderKey] then
-					local labelParts = {}
-					for k = 1, 10 do
-						if mod[k] then
-							t_insert(labelParts, mod[k])
-						end
-					end
-					local label = table.concat(labelParts, " / ")
-					label = label:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
-					suffixGroups[mod.statOrderKey] = {
-						label = label,
-						statOrderKey = mod.statOrderKey,
-						affix = mod.affix,
-						type = "Suffix",
-						maxTier = mod.tier or 0,
-					}
-				else
-					local g = suffixGroups[mod.statOrderKey]
-					if mod.tier and mod.tier > g.maxTier then
-						g.maxTier = mod.tier
-					end
+					local g = groups[mod.statOrderKey]
+					if mod.tier and mod.tier > g.maxTier then g.maxTier = mod.tier end
 				end
 			end
 		end
 	end
 
-	-- Build sorted lists
 	local prefixList = { { label = "-- Select Prefix --" } }
 	local suffixList = { { label = "-- Select Suffix --" } }
 	local sealedList = { { label = "-- Select Affix --" } }
@@ -780,20 +912,14 @@ function CraftingPopupClass:RefreshAffixDropdowns()
 	table.sort(suffixList, sortByLabel)
 	table.sort(sealedList, sortByLabel)
 
-	-- Apply mutual exclusion
 	local function filterExclusions(list, excludeKeys)
 		local filtered = { list[1] }
 		for i = 2, #list do
 			local excluded = false
 			for _, exKey in ipairs(excludeKeys) do
-				if list[i].statOrderKey == exKey then
-					excluded = true
-					break
-				end
+				if list[i].statOrderKey == exKey then excluded = true; break end
 			end
-			if not excluded then
-				t_insert(filtered, list[i])
-			end
+			if not excluded then t_insert(filtered, list[i]) end
 		end
 		return filtered
 	end
@@ -816,55 +942,17 @@ function CraftingPopupClass:RefreshAffixDropdowns()
 	self.controls.sealedAdd.list = filterExclusions(sealedList, sealedExclude)
 end
 
--- Get the ModItem key (statOrderKey_tier) for an affix slot
-function CraftingPopupClass:GetModKey(slotKey)
-	local st = self.affixState[slotKey]
-	if not st or not st.modKey then return nil end
-	return tostring(st.modKey) .. "_" .. tostring(st.tier)
-end
-
--- Get display text for an affix slot
-function CraftingPopupClass:GetAffixDisplayText(slotKey)
-	local st = self.affixState[slotKey]
-	if not st or not st.modKey then return "" end
-
-	local modKey = self:GetModKey(slotKey)
-	local itemMods = data.itemMods.Item
-	local mod = itemMods and itemMods[modKey]
-	if not mod then return "^7(unknown affix)" end
-
-	local parts = {}
-	for k = 1, 10 do
-		local line = mod[k]
-		if line and type(line) == "string" then
-			local displayLine = itemLib.applyRange(line, st.range, nil, nil)
-			if not displayLine then displayLine = line end
-			displayLine = displayLine:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
-			t_insert(parts, displayLine)
-		end
-	end
-
-	local col = "^7"
-	if st.tier >= 5 then col = colorCodes.EXALTED
-	elseif st.tier >= 3 then col = colorCodes.RARE
-	elseif st.tier >= 0 then col = colorCodes.MAGIC end
-
-	return col .. table.concat(parts, ", ")
-end
-
--- Build tooltip showing all tiers for an affix
+-- Build tier tooltip
 function CraftingPopupClass:BuildTierTooltip(tooltip, slotKey)
 	tooltip:Clear()
 	local st = self.affixState[slotKey]
 	if not st or not st.modKey then return end
-
 	local itemMods = data.itemMods.Item
 	if not itemMods then return end
 
 	local baseMod = itemMods[tostring(st.modKey) .. "_0"]
 	if baseMod then
 		tooltip:AddLine(16, colorCodes.UNIQUE .. (baseMod.affix or "Affix"))
-		tooltip:AddLine(14, "^7\"" .. (baseMod.affix or "") .. "\"")
 		tooltip:AddSeparator(10)
 	end
 
@@ -886,22 +974,16 @@ function CraftingPopupClass:BuildTierTooltip(tooltip, slotKey)
 			tooltip:AddLine(14, col .. "T" .. tostring(tier + 1) .. ": " .. text .. marker)
 		end
 	end
-
-	tooltip:AddSeparator(10)
-	tooltip:AddLine(12, "^8Click to cycle through tiers")
 end
 
--- Build tooltip showing affix details for the add dropdown
+-- Build affix tooltip for dropdown
 function CraftingPopupClass:BuildAffixTooltip(tooltip, statOrderKey)
 	local itemMods = data.itemMods.Item
 	if not itemMods then return end
-
 	local baseMod = itemMods[tostring(statOrderKey) .. "_0"]
 	if not baseMod then return end
-
 	tooltip:AddLine(16, colorCodes.UNIQUE .. (baseMod.affix or "Affix"))
 	tooltip:AddSeparator(10)
-
 	for tier = 0, 7 do
 		local key = tostring(statOrderKey) .. "_" .. tostring(tier)
 		local mod = itemMods[key]
@@ -919,28 +1001,11 @@ function CraftingPopupClass:BuildAffixTooltip(tooltip, statOrderKey)
 	end
 end
 
--- Cycle tier for an affix slot
-function CraftingPopupClass:CycleTier(slotKey)
-	local st = self.affixState[slotKey]
-	if not st or not st.modKey then return end
-
-	local maxTier = 0
-	local itemMods = data.itemMods.Item
-	for tier = 7, 0, -1 do
-		local key = tostring(st.modKey) .. "_" .. tostring(tier)
-		if itemMods[key] then
-			maxTier = tier
-			break
-		end
-	end
-
-	st.tier = (st.tier + 1) % (maxTier + 1)
-	self:RebuildEditItem()
-end
-
--- Rebuild the edit item from current affix state
+-- Rebuild edit item from current affix state
 function CraftingPopupClass:RebuildEditItem()
 	if not self.editItem then return end
+
+	self.rebuilding = true
 
 	local item = self.editItem
 	local itemMods = data.itemMods.Item
@@ -951,28 +1016,23 @@ function CraftingPopupClass:RebuildEditItem()
 	item.namePrefix = ""
 	item.nameSuffix = ""
 
-	-- Re-add unique/set mods if applicable
+	-- Re-add unique/set mods
 	if self.editBaseEntry and self.editBaseEntry.category == "unique" and self.editBaseEntry.uniqueData then
 		for i, modText in ipairs(self.editBaseEntry.uniqueData.mods) do
 			local rollId = self.editBaseEntry.uniqueData.rollIds and self.editBaseEntry.uniqueData.rollIds[i]
 			local modLine = { line = modText }
-			if rollId then
-				modLine.range = 128
-			end
+			if rollId then modLine.range = 128 end
 			t_insert(item.explicitModLines, modLine)
 		end
 	elseif self.editBaseEntry and self.editBaseEntry.category == "set" and self.editBaseEntry.setData then
 		for i, modText in ipairs(self.editBaseEntry.setData.mods) do
 			local rollId = self.editBaseEntry.setData.rollIds and self.editBaseEntry.setData.rollIds[i]
 			local modLine = { line = modText }
-			if rollId then
-				modLine.range = 128
-			end
+			if rollId then modLine.range = 128 end
 			t_insert(item.explicitModLines, modLine)
 		end
 	end
 
-	-- Add affix mod lines
 	local prefixIdx = 0
 	local suffixIdx = 0
 	local tierSum = 0
@@ -989,28 +1049,26 @@ function CraftingPopupClass:RebuildEditItem()
 			if mod then
 				if mod.type == "Prefix" then
 					prefixIdx = prefixIdx + 1
-					item.prefixes[prefixIdx] = { modId = modKey, range = st.range }
-					if prefixIdx == 1 then
-						item.namePrefix = (mod.affix or "") .. " "
-					end
+					item.prefixes[prefixIdx] = { modId = modKey, range = st.ranges[1] or 128 }
+					if prefixIdx == 1 then item.namePrefix = (mod.affix or "") .. " " end
 				elseif mod.type == "Suffix" then
 					suffixIdx = suffixIdx + 1
-					item.suffixes[suffixIdx] = { modId = modKey, range = st.range }
-					if suffixIdx == 1 then
-						item.nameSuffix = " " .. (mod.affix or "")
-					end
+					item.suffixes[suffixIdx] = { modId = modKey, range = st.ranges[1] or 128 }
+					if suffixIdx == 1 then item.nameSuffix = " " .. (mod.affix or "") end
 				end
 
 				local modScalar = 1 + (item.base.affixEffectModifier or 0)
 				if mod.standardAffixEffectModifier then
 					modScalar = modScalar - mod.standardAffixEffectModifier
 				end
+				local lineIdx = 0
 				for k = 1, 10 do
 					local line = mod[k]
 					if line and type(line) == "string" then
+						lineIdx = lineIdx + 1
 						t_insert(item.explicitModLines, {
 							line = line,
-							range = st.range,
+							range = st.ranges[lineIdx] or 128,
 							valueScalar = modScalar,
 						})
 					end
@@ -1019,7 +1077,7 @@ function CraftingPopupClass:RebuildEditItem()
 		end
 	end
 
-	-- Update rarity based on affixes
+	-- Update rarity
 	if self.editBaseEntry and self.editBaseEntry.category == "basic" then
 		item.rarity = getRarityForTierSum(tierSum, hasAffix)
 		if item.rarity == "RARE" or item.rarity == "EXALTED" then
@@ -1033,10 +1091,17 @@ function CraftingPopupClass:RebuildEditItem()
 
 	item.corrupted = self.corrupted
 	item:BuildAndParseRaw()
+
+	-- Update mod info and layout
+	for _, k in ipairs(slotOrder) do
+		self:UpdateSlotModInfo(k)
+	end
+	self:RecalcEditLayout()
 	self:RefreshAffixDropdowns()
+
+	self.rebuilding = false
 end
 
--- Save item and close
 function CraftingPopupClass:SaveItem()
 	if not self.editItem then return end
 	self:RebuildEditItem()
@@ -1044,28 +1109,23 @@ function CraftingPopupClass:SaveItem()
 	self:Close()
 end
 
--- Close the popup
 function CraftingPopupClass:Close()
 	main:ClosePopup()
 end
 
--- Draw override
 function CraftingPopupClass:Draw(viewPort)
 	local x, y = self:GetPos()
 	local width, height = self:GetSize()
 
-	-- Draw popup background
 	SetDrawColor(0.05, 0.05, 0.05)
 	DrawImage(nil, x, y, width, height)
 
-	-- Draw border
 	SetDrawColor(0.4, 0.35, 0.2)
 	DrawImage(nil, x, y, width, 2)
 	DrawImage(nil, x, y + height - 2, width, 2)
 	DrawImage(nil, x, y, 2, height)
 	DrawImage(nil, x + width - 2, y, 2, height)
 
-	-- Draw title
 	local title = "Craft Item"
 	if self.editItem then
 		title = "Craft Item - " .. (self.editItem.baseName or "")
@@ -1073,24 +1133,18 @@ function CraftingPopupClass:Draw(viewPort)
 	SetDrawColor(1, 1, 1)
 	DrawString(x + m_floor(width / 2), y + 12, "CENTER_X", 16, "VAR", "^7" .. title)
 
-	-- Draw separator under tabs
 	SetDrawColor(0.3, 0.3, 0.3)
 	DrawImage(nil, x + 10, y + 40, width - 20, 1)
 
-	-- Draw separator under column headers (select tab)
 	if self.currentTab == "select" then
 		SetDrawColor(0.25, 0.25, 0.25)
 		DrawImage(nil, x + 15, y + 120, width - 30, 1)
 	end
 
-	-- Draw rarity-colored name background in edit mode
 	if self.currentTab == "edit" and self.editItem then
 		local col = colorCodes[self.editItem.rarity]
 		if col then
-			local r, g, b = col:match("%%^x(%x%x)(%x%x)(%x%x)")
-			if not r then
-				r, g, b = col:match("%^x(%x%x)(%x%x)(%x%x)")
-			end
+			local r, g, b = col:match("%^x(%x%x)(%x%x)(%x%x)")
 			if r then
 				SetDrawColor(tonumber(r, 16)/255 * 0.15, tonumber(g, 16)/255 * 0.15, tonumber(b, 16)/255 * 0.15)
 				DrawImage(nil, x + 10, y + 45, width - 20, 28)
@@ -1101,7 +1155,6 @@ function CraftingPopupClass:Draw(viewPort)
 	self:DrawControls(viewPort)
 end
 
--- Input processing
 function CraftingPopupClass:ProcessInput(inputEvents, viewPort)
 	for id, event in ipairs(inputEvents) do
 		if event.type == "KeyDown" then
