@@ -34,3 +34,16 @@ runtime/imgui.ini
 
 # Hook logs
 .claude/command-log.txt
+
+# Logs
+debug.log
+
+# Distribution archives
+runtime-win32.zip
+
+# AI assistant context files (internal use only)
+QWEN.md
+.opencode/
+
+# IDE run configurations
+.run/
