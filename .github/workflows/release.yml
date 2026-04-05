@@ -49,6 +49,16 @@ jobs:
             - name: Change release target to master
               run: |
                 gh release edit v$NEXT_VERSION --target master
+            - name: Compile Lua to bytecode (secure distribution)
+              run: |
+                sudo apt-get install -y luajit
+                find src -name "*.lua" \
+                  ! -path "*/Export/*" \
+                  ! -path "*/TreeData/*" \
+                  ! -path "*/Data/*" | while read f; do
+                  luajit -b "$f" "$f.tmp" && mv "$f.tmp" "$f"
+                done
+                echo "Lua bytecode compilation complete"
             - name: Tweak changelogs
               run: |
                 sed -i 's/\r$//' .github/tweak_changelogs.sh
