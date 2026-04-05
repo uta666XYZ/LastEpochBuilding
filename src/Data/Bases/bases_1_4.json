@@ -11790,12 +11790,12 @@
     "baseTypeID": 2,
     "subTypeID": 13,
     "req": {
-      "level": 0
+      "level": 1
     },
     "affixEffectModifier": 0,
     "implicits": [
       "+1 Potion Slots",
-      "+1 PROP98_TAG0_TAGS557 [UNKNOWN_STAT]"
+      "1 Evade Charges gained on Potion Use"
     ]
   },
   "Corruption Binding": {
@@ -11803,12 +11803,12 @@
     "baseTypeID": 2,
     "subTypeID": 14,
     "req": {
-      "level": 0
+      "level": 1
     },
     "affixEffectModifier": 0,
     "implicits": [
       "+8 Potion Slots",
-      "(37-31)% PROP48_TAG0_TAGS0 [UNKNOWN_STAT]"
+      "(37-31)% reduced Health Gained on Potion Use"
     ]
   },
   "Iron Smoker": {
@@ -11820,7 +11820,7 @@
     },
     "affixEffectModifier": 0.17,
     "implicits": [
-      "+(50-150) PROP17_TAG0_TAGS8192 [UNKNOWN_STAT]"
+      "+(50-150) Minion Health Regen"
     ]
   },
   "Deadstar Amulet": {
@@ -11881,13 +11881,13 @@
     "baseTypeID": 21,
     "subTypeID": 14,
     "req": {
-      "level": 0
+      "level": 1
     },
     "affixEffectModifier": 0,
     "implicits": [
       "(13-19)% increased Cooldown Recovery Speed for Evade",
-      "+(3-4) PROP98_TAG0_TAGS459 [UNKNOWN_STAT]",
-      "+(6-7)% PROP98_TAG0_TAGS603 [UNKNOWN_STAT]"
+      "(3-4) Seconds of Frenzy after you use Evade",
+      "+(6-7)% increased Damage Taken while you have Frenzy"
     ]
   },
   "Opal Eye Ring": {
@@ -11923,13 +11923,13 @@
     "baseTypeID": 22,
     "subTypeID": 65,
     "req": {
-      "level": 0
+      "level": 1
     },
     "affixEffectModifier": 0,
     "implicits": [
-      "+(11-17) PROP0_TAG0_TAGS8720 [UNKNOWN_STAT]",
-      "+(11-17) PROP0_TAG0_TAGS8464 [UNKNOWN_STAT]",
-      "(23-17)% PROP64_TAG0_TAGS8192 [UNKNOWN_STAT]"
+      "+(11-17) Minion Void Melee Damage",
+      "+(11-17) Minion Void Spell Damage",
+      "(-23--17)% Minion Physical Resistance"
     ],
     "classReq": 1
   },
@@ -11938,13 +11938,13 @@
     "baseTypeID": 22,
     "subTypeID": 66,
     "req": {
-      "level": 0
+      "level": 1
     },
     "affixEffectModifier": 0,
     "implicits": [
       "{rounding:Integer}+(7-13) Ward per Second",
-      "+(11-13)% PROP98_TAG0_TAGS610 [UNKNOWN_STAT]",
-      "{rounding:Integer}(9-7)% increased Health"
+      "(11-13)% of Maximum Health gained as Ward Decay Threshold",
+      "{rounding:Integer}(9-7)% reduced Health"
     ],
     "classReq": 2
   },
@@ -11998,11 +11998,11 @@
     "baseTypeID": 22,
     "subTypeID": 70,
     "req": {
-      "level": 0
+      "level": 1
     },
     "affixEffectModifier": 0,
     "implicits": [
-      "+(20-40) PROP85_TAG0_TAGS0 [UNKNOWN_STAT]",
+      "+(20-40) Damage Reflected to Attackers",
       "{rounding:Integer}+(5-10) Minion Spell Damage"
     ],
     "classReq": 1
@@ -12146,7 +12146,7 @@
     "baseTypeID": 41,
     "subTypeID": 0,
     "req": {
-      "level": 0
+      "level": 1
     },
     "affixEffectModifier": 0,
     "implicits": []
@@ -12168,7 +12168,7 @@
     "baseTypeID": 41,
     "subTypeID": 2,
     "req": {
-      "level": 0
+      "level": 1
     },
     "affixEffectModifier": 0,
     "implicits": []
@@ -12178,11 +12178,11 @@
     "baseTypeID": 41,
     "subTypeID": 3,
     "req": {
-      "level": 0
+      "level": 1
     },
     "affixEffectModifier": 0,
     "implicits": [
-      "+(7-24) PROP130_TAG0_TAGS23 [UNKNOWN_STAT]"
+      "+(7-24) Mana per Idol in a Refracted Slot"
     ]
   },
   "Carcinised Altar": {
@@ -12194,7 +12194,7 @@
     },
     "affixEffectModifier": 0,
     "implicits": [
-      "+(64-256) PROP130_TAG0_TAGS24 [UNKNOWN_STAT]"
+      "+(64-256) Armor per Idol in a Refracted Slot"
     ]
   },
   "Visage Altar": {
@@ -12202,11 +12202,11 @@
     "baseTypeID": 41,
     "subTypeID": 5,
     "req": {
-      "level": 0
+      "level": 1
     },
     "affixEffectModifier": 0,
     "implicits": [
-      "+(6-10) PROP130_TAG0_TAGS19 [UNKNOWN_STAT]"
+      "+(6-10) Health per Equipped Omen Idol"
     ]
   },
   "Lunar Altar": {
@@ -12214,7 +12214,7 @@
     "baseTypeID": 41,
     "subTypeID": 6,
     "req": {
-      "level": 0
+      "level": 1
     },
     "affixEffectModifier": 0,
     "implicits": []
@@ -12228,7 +12228,7 @@
     },
     "affixEffectModifier": 0,
     "implicits": [
-      "+2 Adorned Idols equipped at Maximum"
+      "2 Adorned Idols equipped at Maximum"
     ]
   },
   "Archaic Altar": {
@@ -12246,12 +12246,12 @@
     "baseTypeID": 41,
     "subTypeID": 9,
     "req": {
-      "level": 65
+      "level": 1
     },
     "affixEffectModifier": 0,
     "implicits": [
-      "+(15-35) PROP130_TAG0_TAGS12 [UNKNOWN_STAT]",
-      "+2 Huge Idols equipped at Maximum"
+      "+(15-35) Ward Decay Threshold per Equipped Corrupted Idol",
+      "2 Weaver Idols equipped at Maximum"
     ]
   },
   "Prophesied Altar": {
@@ -12263,7 +12263,7 @@
     },
     "affixEffectModifier": 0,
     "implicits": [
-      "+(10-40)% PROP130_TAG0_TAGS3 [UNKNOWN_STAT]"
+      "(10-40)% increased Effect of Suffixes for Idols in Refracted Slots"
     ]
   },
   "Pyramidal Altar": {
@@ -12275,8 +12275,8 @@
     },
     "affixEffectModifier": 0,
     "implicits": [
-      "+10% PROP130_TAG0_TAGS21 [UNKNOWN_STAT]",
-      "+2 Huge Idols equipped at Maximum"
+      "10% Increased Cooldown Recovery Speed if there are no larger idols above smaller ones in the grid",
+      "2 Weaver Idols equipped at Maximum"
     ]
   },
   "Auric Altar": {
@@ -12288,7 +12288,7 @@
     },
     "affixEffectModifier": 0,
     "implicits": [
-      "+2% PROP130_TAG0_TAGS20 [UNKNOWN_STAT]"
+      "2% more Damage to Bosses per Equipped Unique or Legendary Idol"
     ]
   }
 }
