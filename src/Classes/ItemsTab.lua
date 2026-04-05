@@ -612,7 +612,11 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 		return self.items[self.displayItem.id] and "Save" or "Add to build"
 	end
 	self.controls.editDisplayItem = new("ButtonControl", {"LEFT",self.controls.addDisplayItem,"RIGHT"}, 8, 0, 60, 20, "Edit...", function()
-		self:EditDisplayItemText()
+		if self.displayItem and self.displayItem.crafted then
+			self:CraftItem(self.displayItem)
+		else
+			self:EditDisplayItemText()
+		end
 	end)
 	self.controls.removeDisplayItem = new("ButtonControl", {"LEFT",self.controls.editDisplayItem,"RIGHT"}, 8, 0, 60, 20, "Cancel", function()
 		self:SetDisplayItem()
@@ -1292,9 +1296,9 @@ function ItemsTabClass:SetAllItemRanges(range)
 	self.build.buildFlag = true
 end
 
--- Opens the item crafting popup
-function ItemsTabClass:CraftItem()
-	local popup = new("CraftingPopup", self)
+-- Opens the item crafting popup (optionally with an existing crafted item to edit)
+function ItemsTabClass:CraftItem(existingItem)
+	local popup = new("CraftingPopup", self, existingItem)
 	t_insert(main.popups, 1, popup)
 end
 

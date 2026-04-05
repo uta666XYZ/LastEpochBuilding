@@ -1,0 +1,1502 @@
+{
+  "0": {
+    "name": "Apiarist's Suit",
+    "baseTypeID": 1,
+    "subTypeID": 1,
+    "req": {
+      "level": 38
+    },
+    "mods": [
+      "{rounding:Integer}+(2-3) Bees Per 10 Seconds",
+      "{rounding:Integer}+(4-6) Health Regeneration per Summoned Bee",
+      "{rounding:Integer}+(8-18) Attunement",
+      "{rounding:Integer}+(80-150) health for you and your minions",
+      "{rounding:Integer}+(200-400) armor for you and your minions",
+      "+(20-30)% Physical Resistance",
+      "+(50-75)% Poison Resistance"
+    ],
+    "rollIds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "set": {
+      "name": "Apiarist's Set",
+      "setId": 0,
+      "bonus": {
+        "2": "Your bees cannot be damaged for 4 seconds after being summoned",
+        "3": "Summon the Queen Bee"
+      }
+    }
+  },
+  "1": {
+    "name": "Apiarist's Smoker",
+    "baseTypeID": 19,
+    "subTypeID": 0,
+    "req": {
+      "level": 40
+    },
+    "mods": [],
+    "rollIds": [],
+    "set": {
+      "name": "Apiarist's Set",
+      "setId": 0,
+      "bonus": {
+        "2": "Your bees cannot be damaged for 4 seconds after being summoned",
+        "3": "Summon the Queen Bee"
+      }
+    }
+  },
+  "2": {
+    "name": "Apiarist's Comb",
+    "baseTypeID": 7,
+    "subTypeID": 0,
+    "req": {
+      "level": 42
+    },
+    "mods": [],
+    "rollIds": [],
+    "set": {
+      "name": "Apiarist's Set",
+      "setId": 0,
+      "bonus": {
+        "2": "Your bees cannot be damaged for 4 seconds after being summoned",
+        "3": "Summon the Queen Bee"
+      }
+    }
+  },
+  "3": {
+    "name": "The Last Bear's Lament",
+    "baseTypeID": 0,
+    "subTypeID": 4,
+    "req": {
+      "level": 20
+    },
+    "mods": [
+      "+2 to Level of Warcry",
+      "+(10-20) Health Regen",
+      "+(25-45)% Void Resistance",
+      "+(50-150) Endurance Threshold",
+      "+100% Chance to taunt nearby enemies for 2 seconds when you stun an enemy"
+    ],
+    "rollIds": [
+      0,
+      1,
+      2,
+      3,
+      null
+    ],
+    "set": {
+      "name": "Last Bear's Set",
+      "setId": 1,
+      "bonus": {
+        "2": "+2 Endurance Threshold per Strength",
+        "3": "+30 Strength"
+      }
+    }
+  },
+  "4": {
+    "name": "The Last Bear's Fury",
+    "baseTypeID": 4,
+    "subTypeID": 5,
+    "req": {
+      "level": 31
+    },
+    "mods": [
+      "+1 to Level of Swipe",
+      "(30-75)% increased Physical Melee Damage",
+      "3% Increased Health Regen per point of Strength",
+      "(30-100)% Increased Melee Stun Chance",
+      "+3% Critical Strike Chance with Swipe"
+    ],
+    "rollIds": [
+      0,
+      1,
+      null,
+      2,
+      null
+    ],
+    "set": {
+      "name": "Last Bear's Set",
+      "setId": 1,
+      "bonus": {
+        "2": "+2 Endurance Threshold per Strength",
+        "3": "+30 Strength"
+      }
+    }
+  },
+  "5": {
+    "name": "The Last Bear's Scorn",
+    "baseTypeID": 1,
+    "subTypeID": 4,
+    "req": {
+      "level": 27
+    },
+    "mods": [
+      "+3 to Level of Werebear Form",
+      "+10 Strength",
+      "100% Increased health regen if you have stunned an enemy recently",
+      "+(20-30)% Endurance",
+      "(1.5-3)% of Physical Damage Leeched as Health on Hit"
+    ],
+    "rollIds": [
+      0,
+      null,
+      null,
+      0,
+      1
+    ],
+    "set": {
+      "name": "Last Bear's Set",
+      "setId": 1,
+      "bonus": {
+        "2": "+2 Endurance Threshold per Strength",
+        "3": "+30 Strength"
+      }
+    }
+  },
+  "6": {
+    "name": "Isadora's Tomb Binding",
+    "baseTypeID": 2,
+    "subTypeID": 2,
+    "req": {
+      "level": 19
+    },
+    "mods": [
+      "+200 Armor",
+      "+(10-15)% increased Cast Speed",
+      "+(20-35)% increased Armor",
+      "80% Increased Necrotic Damage if you have been Hit Recently"
+    ],
+    "rollIds": [
+      null,
+      0,
+      1,
+      null
+    ],
+    "set": {
+      "name": "Isadora's Set",
+      "setId": 2,
+      "bonus": {
+        "2": "+100% Chance to apply Damned on hit with Necrotic Spells",
+        "3": "30% Necrotic Penetration with Damned, +30% Mana Efficiency with Necrotic Spells"
+      }
+    }
+  },
+  "7": {
+    "name": "Isadora's Gravechill",
+    "baseTypeID": 4,
+    "subTypeID": 4,
+    "req": {
+      "level": 31
+    },
+    "mods": [
+      "+(48-80) Health",
+      "+(12-20) Cold Spell Damage",
+      "+100% chance to chill with necrotic abilities if you have killed an enemy in the last 5 seconds"
+    ],
+    "rollIds": [
+      0,
+      1,
+      null
+    ],
+    "set": {
+      "name": "Isadora's Set",
+      "setId": 2,
+      "bonus": {
+        "2": "+100% Chance to apply Damned on hit with Necrotic Spells",
+        "3": "30% Necrotic Penetration with Damned, +30% Mana Efficiency with Necrotic Spells"
+      }
+    }
+  },
+  "8": {
+    "name": "Isadora's Revenge",
+    "baseTypeID": 0,
+    "subTypeID": 5,
+    "req": {
+      "level": 39
+    },
+    "mods": [
+      "+(6-12)% Necrotic Penetration",
+      "+(180-300) Stun Avoidance",
+      "+(40-82) Health",
+      "+(36-48)% Increased Duration of Chill Applied by Necrotic Spells"
+    ],
+    "rollIds": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "set": {
+      "name": "Isadora's Set",
+      "setId": 2,
+      "bonus": {
+        "2": "+100% Chance to apply Damned on hit with Necrotic Spells",
+        "3": "30% Necrotic Penetration with Damned, +30% Mana Efficiency with Necrotic Spells"
+      }
+    }
+  },
+  "9": {
+    "name": "Doppelganger's Facade",
+    "baseTypeID": 0,
+    "subTypeID": 47,
+    "req": {
+      "level": 45,
+      "class": "Rogue"
+    },
+    "mods": [
+      "{rounding:Integer}(70-120) Health Gained on Shadow Creation",
+      "Consuming a Shadow grants a stack of Dusk Shroud",
+      "+(10-24)% Chance to receive a Glancing Blow when hit",
+      "+(8-14)% increased Health",
+      "+(70-110) Dodge Rating"
+    ],
+    "rollIds": [
+      0,
+      null,
+      1,
+      2,
+      3
+    ],
+    "set": {
+      "name": "Doppelganger's Set",
+      "setId": 3,
+      "bonus": {
+        "2": "Evade creates a Shadow at your original position",
+        "3": "Traversal skills create 2 Shadows along their path"
+      }
+    }
+  },
+  "10": {
+    "name": "Doppelganger's Deception",
+    "baseTypeID": 1,
+    "subTypeID": 48,
+    "req": {
+      "level": 51,
+      "class": "Rogue"
+    },
+    "mods": [
+      "+1 Maximum Shadows",
+      "+(120-180)% Increased Damage for skills used by Shadows",
+      "+(120-170) Health",
+      "+(120-210) Dodge Rating",
+      "+(30-50)% Critical Strike Avoidance"
+    ],
+    "rollIds": [
+      null,
+      0,
+      1,
+      2,
+      3
+    ],
+    "set": {
+      "name": "Doppelganger's Set",
+      "setId": 3,
+      "bonus": {
+        "2": "Evade creates a Shadow at your original position",
+        "3": "Traversal skills create 2 Shadows along their path"
+      }
+    }
+  },
+  "11": {
+    "name": "Doppelganger's Mimicry",
+    "baseTypeID": 22,
+    "subTypeID": 52,
+    "req": {
+      "level": 45,
+      "class": "Rogue"
+    },
+    "mods": [
+      "+(20-30)% Chance for consumed Shadows to create a new Shadow",
+      "+(6-9)% Critical Strike Chance for skills used by Shadows",
+      "+(60-90)% Increased Damage for skills used by Shadows",
+      "+(14-28)% Physical Resistance"
+    ],
+    "rollIds": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "set": {
+      "name": "Doppelganger's Set",
+      "setId": 3,
+      "bonus": {
+        "2": "Evade creates a Shadow at your original position",
+        "3": "Traversal skills create 2 Shadows along their path"
+      }
+    }
+  },
+  "12": {
+    "name": "Kuzon's Guise",
+    "baseTypeID": 0,
+    "subTypeID": 66,
+    "req": {
+      "level": 49,
+      "class": "Rogue"
+    },
+    "mods": [
+      "+(2-4) to Level of Shadow Cascade",
+      "Shadow Cascade is converted to Fire",
+      "+(12-18) Fire Throwing Damage",
+      "+100% Chance to apply Blind on Hit with Fire Skills",
+      "+(7-14)% increased Health",
+      "+(8-12)% Endurance"
+    ],
+    "rollIds": [
+      0,
+      null,
+      1,
+      null,
+      2,
+      3
+    ],
+    "set": {
+      "name": "Kuzon's Set",
+      "setId": 4,
+      "bonus": {
+        "2": "Throwing a Burning Dagger grants a stack of Dancing Dragon for 4 seconds"
+      }
+    }
+  },
+  "13": {
+    "name": "Kuzon's Fury",
+    "baseTypeID": 9,
+    "subTypeID": 0,
+    "req": {
+      "level": 49,
+      "class": "Rogue"
+    },
+    "mods": [],
+    "rollIds": [],
+    "set": {
+      "name": "Kuzon's Set",
+      "setId": 4,
+      "bonus": {
+        "2": "Throwing a Burning Dagger grants a stack of Dancing Dragon for 4 seconds"
+      }
+    }
+  },
+  "14": {
+    "name": "Corsair's Blood Cowl",
+    "baseTypeID": 0,
+    "subTypeID": 69,
+    "req": {
+      "level": 57,
+      "class": "Rogue"
+    },
+    "mods": [
+      "+(17-35)% Physical Penetration with Bleed",
+      "+(17-35)% Increased Bleed Duration",
+      "+(17-35)% increased Block Effectiveness",
+      "+(35-85)% Increased Chance To Find Potions",
+      "+(35-85)% Increased Area of mirage attacks with Lethal Mirage"
+    ],
+    "rollIds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "set": {
+      "name": "Corsair's Set",
+      "setId": 5,
+      "bonus": {
+        "2": "100% of Glancing Blow Chance Converted to Block Chance, 35% less Necrotic Damage Taken on Block"
+      }
+    }
+  },
+  "15": {
+    "name": "Corsair's Boarding Shield",
+    "baseTypeID": 18,
+    "subTypeID": 0,
+    "req": {
+      "level": 35
+    },
+    "mods": [],
+    "rollIds": [],
+    "set": {
+      "name": "Corsair's Set",
+      "setId": 5,
+      "bonus": {
+        "2": "100% of Glancing Blow Chance Converted to Block Chance, 35% less Necrotic Damage Taken on Block"
+      }
+    }
+  },
+  "16": {
+    "name": "Boardman's Legacy",
+    "baseTypeID": 0,
+    "subTypeID": 30,
+    "req": {
+      "level": 63,
+      "class": "Primalist"
+    },
+    "mods": [
+      "21% less Damage Taken for Totems",
+      "+(30-75)% Lightning resistance to allies nearby Storm Totem",
+      "You gain haste for 3 seconds when hit by your Storm Totem",
+      "21% increased minion attack and cast speed",
+      "+(10-21)% Increased Area of Storm Totem Aura"
+    ],
+    "rollIds": [
+      null,
+      0,
+      null,
+      null,
+      1
+    ],
+    "set": {
+      "name": "Boardman's Set",
+      "setId": 6,
+      "bonus": {
+        "1": "Limited to One Active Companion",
+        "2": "Storm Totem can hit allies to grant 21 health",
+        "3": "Storm Totem can hit allies to grant 21 ward"
+      }
+    }
+  },
+  "17": {
+    "name": "Boardman's Plank",
+    "baseTypeID": 8,
+    "subTypeID": 0,
+    "req": {
+      "level": 63,
+      "class": "Primalist"
+    },
+    "mods": [],
+    "rollIds": [],
+    "set": {
+      "name": "Boardman's Set",
+      "setId": 6,
+      "bonus": {
+        "1": "Limited to One Active Companion",
+        "2": "Storm Totem can hit allies to grant 21 health",
+        "3": "Storm Totem can hit allies to grant 21 ward"
+      }
+    }
+  },
+  "18": {
+    "name": "Boardman's Fallacy",
+    "baseTypeID": 1,
+    "subTypeID": 29,
+    "req": {
+      "level": 63,
+      "class": "Primalist"
+    },
+    "mods": [
+      "+(221-321)% increased Minion Health",
+      "+(221-321)% increased Minion Health Regen",
+      "+(10-21)% Minion Lightning Penetration",
+      "+(30-75)% Cold resistance to allies nearby Storm Totem",
+      "You are Frenzied for 3 seconds when hit by your Storm Totem",
+      "+(10-21)% Increased Area of Storm Totem Aura"
+    ],
+    "rollIds": [
+      0,
+      1,
+      2,
+      3,
+      null,
+      4
+    ],
+    "set": {
+      "name": "Boardman's Set",
+      "setId": 6,
+      "bonus": {
+        "1": "Limited to One Active Companion",
+        "2": "Storm Totem can hit allies to grant 21 health",
+        "3": "Storm Totem can hit allies to grant 21 ward"
+      }
+    }
+  },
+  "19": {
+    "name": "Sunforged Greathelm",
+    "baseTypeID": 0,
+    "subTypeID": 39,
+    "req": {
+      "level": 72,
+      "class": "Sentinel"
+    },
+    "mods": [
+      "+(250-350) Armor",
+      "+(25-35)% increased Armor",
+      "+(10-12)% Increased Armor per Forged Weapon",
+      "+(3-6) Health Regen per Forged Weapon"
+    ],
+    "rollIds": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "set": {
+      "name": "Sunforged Set",
+      "setId": 7,
+      "bonus": {
+        "2": "+3 to Forge Strike, +3 to Smelter's Wrath",
+        "3": "+3 Maximum Forged Weapons"
+      }
+    }
+  },
+  "20": {
+    "name": "Sunforged Cuirass",
+    "baseTypeID": 1,
+    "subTypeID": 39,
+    "req": {
+      "level": 60,
+      "class": "Sentinel"
+    },
+    "mods": [
+      "+(600-850) Armor",
+      "+(60-85)% Fire Resistance",
+      "+(10-20)% Chance to forge a weapon when hit",
+      "+(20-40)% Increased Fire Damage per Forged Weapon"
+    ],
+    "rollIds": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "set": {
+      "name": "Sunforged Set",
+      "setId": 7,
+      "bonus": {
+        "2": "+3 to Forge Strike, +3 to Smelter's Wrath",
+        "3": "+3 Maximum Forged Weapons"
+      }
+    }
+  },
+  "21": {
+    "name": "Sunforged Hammer",
+    "baseTypeID": 13,
+    "subTypeID": 0,
+    "req": {
+      "level": 68
+    },
+    "mods": [],
+    "rollIds": [],
+    "set": {
+      "name": "Sunforged Set",
+      "setId": 7,
+      "bonus": {
+        "2": "+3 to Forge Strike, +3 to Smelter's Wrath",
+        "3": "+3 Maximum Forged Weapons"
+      }
+    }
+  },
+  "22": {
+    "name": "Gaspar's Insight",
+    "baseTypeID": 0,
+    "subTypeID": 5,
+    "req": {
+      "level": 80
+    },
+    "mods": [
+      "+(35-45)% Void Resistance",
+      "+(35-45)% Cold Resistance",
+      "+(135-185)% Freeze Rate Multiplier",
+      "+(7-12)% increased Cold Cast Speed",
+      "100% Chance to cast Decimate when you directly use a Cold Spell (3 second cooldown)"
+    ],
+    "rollIds": [
+      0,
+      1,
+      2,
+      3,
+      null
+    ],
+    "set": {
+      "name": "Gaspar's Set",
+      "setId": 8,
+      "bonus": {
+        "2": "50% Cooldown Reduction for Decimate",
+        "3": "15% more Void Damage to Bosses and Rare Enemies, 100% Increased Area with Decimate"
+      }
+    }
+  },
+  "23": {
+    "name": "Gaspar's Acuity",
+    "baseTypeID": 1,
+    "subTypeID": 3,
+    "req": {
+      "level": 72
+    },
+    "mods": [
+      "{rounding:Integer}+(2-7) Spell Damage",
+      "+(35-45)% Void Resistance",
+      "+(35-45)% Lightning Resistance",
+      "+(235-345)% Chance to apply Shock on Hit with Void Spell Skills",
+      "+(7-12)% increased Lightning Cast Speed",
+      "100% Chance to cast Decimate when you directly use a Lightning Spell (3 second cooldown)"
+    ],
+    "rollIds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      null
+    ],
+    "set": {
+      "name": "Gaspar's Set",
+      "setId": 8,
+      "bonus": {
+        "2": "50% Cooldown Reduction for Decimate",
+        "3": "15% more Void Damage to Bosses and Rare Enemies, 100% Increased Area with Decimate"
+      }
+    }
+  },
+  "24": {
+    "name": "Gaspar's Will",
+    "baseTypeID": 8,
+    "subTypeID": 0,
+    "req": {
+      "level": 75
+    },
+    "mods": [],
+    "rollIds": [],
+    "set": {
+      "name": "Gaspar's Set",
+      "setId": 8,
+      "bonus": {
+        "2": "50% Cooldown Reduction for Decimate",
+        "3": "15% more Void Damage to Bosses and Rare Enemies, 100% Increased Area with Decimate"
+      }
+    }
+  },
+  "25": {
+    "name": "Vilatria's Storm Crown",
+    "baseTypeID": 0,
+    "subTypeID": 57,
+    "req": {
+      "level": 14,
+      "class": "Mage"
+    },
+    "mods": [
+      "+(14-34)% increased Spell Damage",
+      "+1 to Level of Lightning Spell Skills",
+      "+(12-20)% Lightning Penetration",
+      "+(4-8) Intelligence",
+      "+1% Shock Chance per Intelligence"
+    ],
+    "rollIds": [
+      0,
+      null,
+      1,
+      2,
+      null
+    ],
+    "set": {
+      "name": "Vilatria's Set",
+      "setId": 9,
+      "bonus": {
+        "2": "+1 Spell Lightning Damage per 2 Intelligence"
+      }
+    }
+  },
+  "26": {
+    "name": "Vilatria's Downfall",
+    "baseTypeID": 15,
+    "subTypeID": 0,
+    "req": {
+      "level": 46,
+      "class": "Mage"
+    },
+    "mods": [],
+    "rollIds": [],
+    "set": {
+      "name": "Vilatria's Set",
+      "setId": 9,
+      "bonus": {
+        "2": "+1 Spell Lightning Damage per 2 Intelligence"
+      }
+    }
+  },
+  "27": {
+    "name": "Halvar's Stand",
+    "baseTypeID": 3,
+    "subTypeID": 5,
+    "req": {
+      "level": 45
+    },
+    "mods": [
+      "+(10-40)% Cold Resistance",
+      "+(100-200)% Freeze Rate Multiplier",
+      "+(5-10)% Mana Efficiency",
+      "+(35-70)% Increased physical spell damage if you have directly cast a cold spell recently",
+      "+(20-40)% Chance to gain Haste when you kill an enemy with a spell",
+      "+(12-18)% increased Movement Speed"
+    ],
+    "rollIds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "set": {
+      "name": "Halvar's Set",
+      "setId": 10,
+      "bonus": {
+        "2": "+20 Cold Spell Damage, +20 Physical Spell Damage",
+        "3": "+100% Chance to cast Avalanche Boulder at target when you critically hit with a spell, +2 to Level of Avalanche"
+      }
+    }
+  },
+  "28": {
+    "name": "Halvar's Pledge",
+    "baseTypeID": 15,
+    "subTypeID": 0,
+    "req": {
+      "level": 46
+    },
+    "mods": [],
+    "rollIds": [],
+    "set": {
+      "name": "Halvar's Set",
+      "setId": 10,
+      "bonus": {
+        "2": "+20 Cold Spell Damage, +20 Physical Spell Damage",
+        "3": "+100% Chance to cast Avalanche Boulder at target when you critically hit with a spell, +2 to Level of Avalanche"
+      }
+    }
+  },
+  "29": {
+    "name": "Last Gift of the Mountain",
+    "baseTypeID": 22,
+    "subTypeID": 7,
+    "req": {
+      "level": 42
+    },
+    "mods": [
+      "+(35-70)% Increased cold spell damage if cast physical spell recently",
+      "+(30-60)% Increased Spell Stun Chance",
+      "+(75-150)% Chance to apply Shred Armor on Spell Hit",
+      "+(50-100)% Chance to apply Frostbite on Spell Hit",
+      "+(20-60) Health"
+    ],
+    "rollIds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "set": {
+      "name": "Halvar's Set",
+      "setId": 10,
+      "bonus": {
+        "2": "+20 Cold Spell Damage, +20 Physical Spell Damage",
+        "3": "+100% Chance to cast Avalanche Boulder at target when you critically hit with a spell, +2 to Level of Avalanche"
+      }
+    }
+  },
+  "30": {
+    "name": "Jormun's Hunger",
+    "baseTypeID": 5,
+    "subTypeID": 3,
+    "req": {
+      "level": 38
+    },
+    "mods": [
+      "+(44-60) Melee Damage",
+      "+(20-40)% Chance to apply Critical Vulnerability on Melee Hit",
+      "+(80-130)% Chance to apply Bleed on Melee Hit",
+      "+(16-28)% increased Melee Attack Speed",
+      "+(6-12)% of Melee Damage Leeched as Health",
+      "+(6-10) Strength and Dexterity"
+    ],
+    "rollIds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "set": {
+      "name": "Jormun's Set",
+      "setId": 11,
+      "bonus": {
+        "2": "20% more Damage while Dual Wielding if your Mainhand is a different item type than your Offhand",
+        "3": "+10% Critical Strike Multiplier"
+      }
+    }
+  },
+  "31": {
+    "name": "Jormun's Feast",
+    "baseTypeID": 9,
+    "subTypeID": 0,
+    "req": {
+      "level": 42
+    },
+    "mods": [],
+    "rollIds": [],
+    "set": {
+      "name": "Jormun's Set",
+      "setId": 11,
+      "bonus": {
+        "2": "20% more Damage while Dual Wielding if your Mainhand is a different item type than your Offhand",
+        "3": "+10% Critical Strike Multiplier"
+      }
+    }
+  },
+  "32": {
+    "name": "Jormun's Thirst",
+    "baseTypeID": 2,
+    "subTypeID": 5,
+    "req": {
+      "level": 39
+    },
+    "mods": [
+      "+(30-40)% Chance to not consume a Potion when you use a Potion and restore at least 20% of Maximum Health",
+      "{rounding:Integer}+(1-2) Potion Slots",
+      "{rounding:Integer}(250-380) Health Gained on Potion Use",
+      "+(74-140) Health",
+      "+(600-900) Stun Avoidance",
+      "+(22-44)% Physical Resistance"
+    ],
+    "rollIds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "set": {
+      "name": "Jormun's Set",
+      "setId": 11,
+      "bonus": {
+        "2": "20% more Damage while Dual Wielding if your Mainhand is a different item type than your Offhand",
+        "3": "+10% Critical Strike Multiplier"
+      }
+    }
+  },
+  "33": {
+    "name": "Keplahan's Cryolith",
+    "baseTypeID": 21,
+    "subTypeID": 2,
+    "req": {
+      "level": 50
+    },
+    "mods": [
+      "100% Chance to cast cold Volcanic Orb on cold melee/traversal skill (3s CD)",
+      "+(30-60)% increased Cold Damage",
+      "+(6-12) Dexterity",
+      "+(60-84) Health",
+      "+(25-50)% increased Critical Strike Chance"
+    ],
+    "rollIds": [
+      null,
+      0,
+      1,
+      2,
+      3
+    ],
+    "set": {
+      "name": "Keplahan's Set",
+      "setId": 12,
+      "bonus": {
+        "2": "Volcanic Orbs now orbit you, 30% Increased Volcanic Orb Duration if last cast was different element"
+      }
+    }
+  },
+  "34": {
+    "name": "Keplahan's Pyrolith",
+    "baseTypeID": 21,
+    "subTypeID": 1,
+    "req": {
+      "level": 50
+    },
+    "mods": [
+      "100% Chance to cast fire Volcanic Orb on fire melee/traversal skill (3s CD)",
+      "+(30-60)% increased Fire Damage",
+      "+(6-12) Intelligence",
+      "+(20-40) Ward per Second",
+      "+(15-30)% Critical Strike Multiplier"
+    ],
+    "rollIds": [
+      null,
+      0,
+      1,
+      2,
+      3
+    ],
+    "set": {
+      "name": "Keplahan's Set",
+      "setId": 12,
+      "bonus": {
+        "2": "Volcanic Orbs now orbit you, 30% Increased Volcanic Orb Duration if last cast was different element"
+      }
+    }
+  },
+  "35": {
+    "name": "Locket of the Forgotten Knight",
+    "baseTypeID": 20,
+    "subTypeID": 2,
+    "req": {
+      "level": 24
+    },
+    "mods": [
+      "+(29-70)% increased Void Damage",
+      "+(2-3)% Critical Strike Chance with Void Skills",
+      "+(21-28)% Chance to apply Time Rot on Hit",
+      "+(15-20)% Chance to create a Void Rift on hit (2s CD)"
+    ],
+    "rollIds": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "set": {
+      "name": "Forgotten Knight Set",
+      "setId": 13,
+      "bonus": {
+        "2": "50% Void Penetration with Time Rot",
+        "3": "3% more Void Damage per stack of Time Rot"
+      }
+    }
+  },
+  "36": {
+    "name": "Blade of the Forgotten Knight",
+    "baseTypeID": 9,
+    "subTypeID": 0,
+    "req": {
+      "level": 50
+    },
+    "mods": [],
+    "rollIds": [],
+    "set": {
+      "name": "Forgotten Knight Set",
+      "setId": 13,
+      "bonus": {
+        "2": "50% Void Penetration with Time Rot",
+        "3": "3% more Void Damage per stack of Time Rot"
+      }
+    }
+  },
+  "37": {
+    "name": "Defiance of the Forgotten Knight",
+    "baseTypeID": 18,
+    "subTypeID": 0,
+    "req": {
+      "level": 30
+    },
+    "mods": [],
+    "rollIds": [],
+    "set": {
+      "name": "Forgotten Knight Set",
+      "setId": 13,
+      "bonus": {
+        "2": "50% Void Penetration with Time Rot",
+        "3": "3% more Void Damage per stack of Time Rot"
+      }
+    }
+  },
+  "38": {
+    "name": "The Invoker's Frozen Heart",
+    "baseTypeID": 20,
+    "subTypeID": 2,
+    "req": {
+      "level": 24
+    },
+    "mods": [
+      "+(30-75)% Freeze Rate Multiplier",
+      "+1 to Level of Snap Freeze",
+      "+(30-60)% Critical Strike Multiplier against Frozen Enemies",
+      "21% increased Cold Cast Speed"
+    ],
+    "rollIds": [
+      0,
+      null,
+      1,
+      null
+    ],
+    "set": {
+      "name": "Invoker's Set",
+      "setId": 14,
+      "bonus": {
+        "2": "15% increased Elemental Cast Speed",
+        "3": "+2 to Fire Spells, +2 to Lightning Spells, +2 to Cold Spells"
+      }
+    }
+  },
+  "39": {
+    "name": "The Invoker's Scorching Grasp",
+    "baseTypeID": 21,
+    "subTypeID": 1,
+    "req": {
+      "level": 35
+    },
+    "mods": [],
+    "rollIds": [],
+    "set": {
+      "name": "Invoker's Set",
+      "setId": 14,
+      "bonus": {
+        "2": "15% increased Elemental Cast Speed",
+        "3": "+2 to Fire Spells, +2 to Lightning Spells, +2 to Cold Spells"
+      }
+    }
+  },
+  "40": {
+    "name": "The Invoker's Static Touch",
+    "baseTypeID": 21,
+    "subTypeID": 2,
+    "req": {
+      "level": 35
+    },
+    "mods": [],
+    "rollIds": [],
+    "set": {
+      "name": "Invoker's Set",
+      "setId": 14,
+      "bonus": {
+        "2": "15% increased Elemental Cast Speed",
+        "3": "+2 to Fire Spells, +2 to Lightning Spells, +2 to Cold Spells"
+      }
+    }
+  },
+  "41": {
+    "name": "Abandoned Chitin of the Weaver",
+    "baseTypeID": 21,
+    "subTypeID": 11,
+    "req": {
+      "level": 54
+    },
+    "mods": [
+      "1% of Armor Mitigation also applies to DoT per 10 Total Attributes",
+      "+(120-160) Armor",
+      "+(20-30) Ward per Second",
+      "+(5-8) Strength",
+      "+(18-30)% Physical Resistance"
+    ],
+    "rollIds": [
+      null,
+      0,
+      1,
+      2,
+      3
+    ],
+    "set": {
+      "name": "Weaver Set",
+      "setId": 15,
+      "bonus": {
+        "2": "Legendary affixes on equipped Weaver's Will weapons have 50% increased effect"
+      }
+    }
+  },
+  "42": {
+    "name": "Abandoned Eyes of the Weaver",
+    "baseTypeID": 20,
+    "subTypeID": 18,
+    "req": {
+      "level": 54
+    },
+    "mods": [
+      "+1% Critical Strike Chance per 40 Total Attributes",
+      "+1 to Level of All Skills per 120 Total Attributes",
+      "+(150-300) Ward Decay Threshold",
+      "+(18-30)% Lightning Resistance",
+      "+(18-30)% Poison Resistance"
+    ],
+    "rollIds": [
+      null,
+      null,
+      0,
+      1,
+      2
+    ],
+    "set": {
+      "name": "Weaver Set",
+      "setId": 15,
+      "bonus": {
+        "2": "Legendary affixes on equipped Weaver's Will weapons have 50% increased effect"
+      }
+    }
+  },
+  "43": {
+    "name": "Ferebor's Chisel",
+    "baseTypeID": 6,
+    "subTypeID": 0,
+    "req": {
+      "level": 71
+    },
+    "mods": [],
+    "rollIds": [],
+    "set": {
+      "name": "Ferebor's Set",
+      "setId": 16,
+      "bonus": {
+        "2": "+2 to Level of Totem Skills"
+      }
+    }
+  },
+  "44": {
+    "name": "Ferebor's Persistence",
+    "baseTypeID": 21,
+    "subTypeID": 8,
+    "req": {
+      "level": 72
+    },
+    "mods": [
+      "+(100-181) Armor",
+      "+(100-181) Armor for Totems",
+      "+(10-18) Intelligence",
+      "+(10-18) Health Regen",
+      "+(10-18) Health Regen for Totems"
+    ],
+    "rollIds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "set": {
+      "name": "Ferebor's Set",
+      "setId": 16,
+      "bonus": {
+        "2": "+2 to Level of Totem Skills"
+      }
+    }
+  },
+  "45": {
+    "name": "Fragments of the Shattered Lance",
+    "baseTypeID": 22,
+    "subTypeID": 10,
+    "req": {
+      "level": 65
+    },
+    "mods": [
+      "+(70-100)% increased Health Regen",
+      "+(50-100)% Freeze Rate Multiplier",
+      "{rounding:Integer}(10-13) Health Gain on Freeze",
+      "+(50-70)% increased Cold Melee Damage"
+    ],
+    "rollIds": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "set": {
+      "name": "Shattered Lance Set",
+      "setId": 17,
+      "bonus": {
+        "2": "4% Increased Melee Cold Damage per 10 Health Regen, up to 2000%"
+      }
+    }
+  },
+  "46": {
+    "name": "Shard of the Shattered Lance",
+    "baseTypeID": 9,
+    "subTypeID": 0,
+    "req": {
+      "level": 68
+    },
+    "mods": [],
+    "rollIds": [],
+    "set": {
+      "name": "Shattered Lance Set",
+      "setId": 17,
+      "bonus": {
+        "2": "4% Increased Melee Cold Damage per 10 Health Regen, up to 2000%"
+      }
+    }
+  },
+  "47": {
+    "name": "Lich's Envy",
+    "baseTypeID": 4,
+    "subTypeID": 4,
+    "req": {
+      "level": 64
+    },
+    "mods": [
+      "{rounding:Integer}+(14-24) Spell Fire Damage for Damage Over Time Spells",
+      "{rounding:Integer}+(14-24) Spell Fire Damage for Infernal Shade per Active Dread Shade",
+      "+(28-48)% Increased Area for Infernal Shade per Active Dread Shade",
+      "{rounding:Integer}(-14 to -8) Mana Cost for Infernal Shade",
+      "{rounding:Integer}(-14 to -8) Mana Cost for Dread Shade"
+    ],
+    "rollIds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "set": {
+      "name": "Lich's Set",
+      "setId": 18,
+      "bonus": {
+        "2": "+4 Maximum Shades"
+      }
+    }
+  },
+  "48": {
+    "name": "Lich's Scorn",
+    "baseTypeID": 19,
+    "subTypeID": 0,
+    "req": {
+      "level": 63
+    },
+    "mods": [],
+    "rollIds": [],
+    "set": {
+      "name": "Lich's Set",
+      "setId": 18,
+      "bonus": {
+        "2": "+4 Maximum Shades"
+      }
+    }
+  },
+  "49": {
+    "name": "Pebbles' Bitemarked Sash",
+    "baseTypeID": 2,
+    "subTypeID": 0,
+    "req": {
+      "level": 12
+    },
+    "mods": [
+      "+(24-42)% increased Minion Damage",
+      "+3 Intelligence",
+      "+(24-42)% Fire Resistance",
+      "+3 Melee Fire Damage for Minions"
+    ],
+    "rollIds": [
+      0,
+      null,
+      1,
+      null
+    ],
+    "set": {
+      "name": "Pebbles' Set",
+      "setId": 19,
+      "bonus": {
+        "2": "+5% Chance to replenish one potion when Bone Golem hits an enemy",
+        "3": "Your Summon Skeletons' spells and attacks deal +42 fire, cold or lightning damage"
+      }
+    }
+  },
+  "50": {
+    "name": "Pebbles' Femur",
+    "baseTypeID": 10,
+    "subTypeID": 0,
+    "req": {
+      "level": 30
+    },
+    "mods": [],
+    "rollIds": [],
+    "set": {
+      "name": "Pebbles' Set",
+      "setId": 19,
+      "bonus": {
+        "2": "+5% Chance to replenish one potion when Bone Golem hits an enemy",
+        "3": "Your Summon Skeletons' spells and attacks deal +42 fire, cold or lightning damage"
+      }
+    }
+  },
+  "51": {
+    "name": "Pebbles' Collar",
+    "baseTypeID": 22,
+    "subTypeID": 0,
+    "req": {
+      "level": 12
+    },
+    "mods": [
+      "+(24-42)% increased Minion Damage",
+      "+3 Intelligence",
+      "+(24-42)% Cold Resistance",
+      "+3 Melee Cold Damage for Minions"
+    ],
+    "rollIds": [
+      0,
+      null,
+      1,
+      null
+    ],
+    "set": {
+      "name": "Pebbles' Set",
+      "setId": 19,
+      "bonus": {
+        "2": "+5% Chance to replenish one potion when Bone Golem hits an enemy",
+        "3": "Your Summon Skeletons' spells and attacks deal +42 fire, cold or lightning damage"
+      }
+    }
+  },
+  "52": {
+    "name": "Ruby Fang Cleaver",
+    "baseTypeID": 5,
+    "subTypeID": 3,
+    "req": {
+      "level": 55
+    },
+    "mods": [
+      "+(55-75) Fire Melee Damage",
+      "+(75-100)% Chance to apply Poison on Melee Hit",
+      "+(35-50)% Poison Penetration with Poison",
+      "10% increased Melee Attack Speed",
+      "+75% Poison Resistance"
+    ],
+    "rollIds": [
+      0,
+      1,
+      2,
+      null,
+      null
+    ],
+    "set": {
+      "name": "Ruby Fang Set",
+      "setId": 20,
+      "bonus": {
+        "2": "+1% Melee Poison Chance per 1% uncapped Fire Resistance, +1 Melee Fire Damage per 5% uncapped Poison Resistance"
+      }
+    }
+  },
+  "53": {
+    "name": "Ruby Fang Aegis",
+    "baseTypeID": 18,
+    "subTypeID": 0,
+    "req": {
+      "level": 55
+    },
+    "mods": [],
+    "rollIds": [],
+    "set": {
+      "name": "Ruby Fang Set",
+      "setId": 20,
+      "bonus": {
+        "2": "+1% Melee Poison Chance per 1% uncapped Fire Resistance, +1 Melee Fire Damage per 5% uncapped Poison Resistance"
+      }
+    }
+  },
+  "54": {
+    "name": "Sinathia's Dying Breath",
+    "baseTypeID": 7,
+    "subTypeID": 0,
+    "req": {
+      "level": 60
+    },
+    "mods": [],
+    "rollIds": [],
+    "set": {
+      "name": "Sinathia's Set",
+      "setId": 21,
+      "bonus": {
+        "2": "+3 to Curse Skills, +3 to Minion Skills"
+      }
+    }
+  },
+  "55": {
+    "name": "Sinathia's Resurrection",
+    "baseTypeID": 18,
+    "subTypeID": 0,
+    "req": {
+      "level": 60
+    },
+    "mods": [],
+    "rollIds": [],
+    "set": {
+      "name": "Sinathia's Set",
+      "setId": 21,
+      "bonus": {
+        "2": "+3 to Curse Skills, +3 to Minion Skills"
+      }
+    }
+  },
+  "56": {
+    "name": "Zerrick's Greed",
+    "baseTypeID": 4,
+    "subTypeID": 5,
+    "req": {
+      "level": 57
+    },
+    "mods": [
+      "+(130-390) Dodge Rating",
+      "+(100-130)% increased Damage Over Time",
+      "Cannot Leech Health from Damage over Time",
+      "+(3-4)% of Damage Leeched as Health on Crit"
+    ],
+    "rollIds": [
+      0,
+      1,
+      null,
+      2
+    ],
+    "set": {
+      "name": "Zerrick's Set",
+      "setId": 22,
+      "bonus": {
+        "2": "Potions no longer heal you, but instead grant +54 necrotic damage to melee and throwing attacks and mark you for death for 4 seconds",
+        "3": "72% Increased Chance To Find Potions, 18% less Poison and Necrotic Damage Taken"
+      }
+    }
+  },
+  "57": {
+    "name": "Zerrick's Guile",
+    "baseTypeID": 2,
+    "subTypeID": 1,
+    "req": {
+      "level": 49
+    },
+    "mods": [
+      "+100% Critical Strike Avoidance for 4 seconds when you use a Potion",
+      "+75% Poison Resistance for 4 seconds when you use a Potion",
+      "+(15-20)% increased Melee and Throwing Attack Speed for 4 seconds when you use a Potion",
+      "+(125-375) Dodge Rating"
+    ],
+    "rollIds": [
+      null,
+      null,
+      0,
+      1
+    ],
+    "set": {
+      "name": "Zerrick's Set",
+      "setId": 22,
+      "bonus": {
+        "2": "Potions no longer heal you, but instead grant +54 necrotic damage to melee and throwing attacks and mark you for death for 4 seconds",
+        "3": "72% Increased Chance To Find Potions, 18% less Poison and Necrotic Damage Taken"
+      }
+    }
+  },
+  "58": {
+    "name": "Zerrick's Ambition",
+    "baseTypeID": 3,
+    "subTypeID": 4,
+    "req": {
+      "level": 52
+    },
+    "mods": [
+      "+(30-50)% Melee Critical Strike Multiplier while at Full Health",
+      "+(30-50)% Throwing Critical Strike Multiplier while at Full Health",
+      "+(15-23)% increased Movement Speed",
+      "+(23-35)% Increased Leech Rate"
+    ],
+    "rollIds": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "set": {
+      "name": "Zerrick's Set",
+      "setId": 22,
+      "bonus": {
+        "2": "Potions no longer heal you, but instead grant +54 necrotic damage to melee and throwing attacks and mark you for death for 4 seconds",
+        "3": "72% Increased Chance To Find Potions, 18% less Poison and Necrotic Damage Taken"
+      }
+    }
+  }
+}
