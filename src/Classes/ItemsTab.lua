@@ -584,6 +584,20 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 		self.controls.itemList = new("ItemListControl", {"TOPLEFT",self.controls.setManage,"TOPRIGHT"}, 20, 20, 360, 308, self, true)
 	end
 
+	-- Create/import item buttons
+	self.controls.craftDisplayItem = new("ButtonControl", {"TOPLEFT",self.controls.itemList,"BOTTOMLEFT"}, 0, 8, 120, 20, "Craft item...", function()
+		self:CraftItem()
+	end)
+	self.controls.craftDisplayItem.shown = function()
+		return self.displayItem == nil
+	end
+	self.controls.newDisplayItem = new("ButtonControl", {"TOPLEFT",self.controls.craftDisplayItem,"TOPRIGHT"}, 8, 0, 120, 20, "Create custom...", function()
+		self:EditDisplayItemText()
+	end)
+	self.controls.newDisplayItem.shown = function()
+		return self.displayItem == nil
+	end
+
 	-- Display item
 	self.displayItemTooltip = new("Tooltip")
 	self.displayItemTooltip.maxWidth = 458
@@ -1644,74 +1658,8 @@ end
 
 -- Opens the item crafting popup
 function ItemsTabClass:CraftItem()
-	local controls = { }
-	local function makeItem(base)
-		local item = new("Item")
-		item.name = base.name
-		item.base = base.base
-		item.baseName = base.name
-		item.buffModLines = { }
-		item.enchantModLines = { }
-		item.classRequirementModLines = { }
-		item.implicitModLines = { }
-		item.explicitModLines = { }
-		item.quality = 0
-		local raritySel = controls.rarity.selIndex
-		if raritySel == 2 or raritySel == 3 then
-			item.crafted = true
-		end
-		item.rarity = controls.rarity.list[raritySel].rarity
-		if raritySel >= 3 then
-			item.title = controls.title.buf:match("%S") and controls.title.buf or "New Item"
-		end
-		if base.base.implicits then
-			local implicitIndex = 1
-			for _,line in ipairs(base.base.implicits) do
-				t_insert(item.implicitModLines, { line = line})
-				implicitIndex = implicitIndex + 1
-			end
-		end
-		item:NormaliseQuality()
-		item:BuildAndParseRaw()
-		return item
-	end
-	controls.rarityLabel = new("LabelControl", {"TOPRIGHT",nil,"TOPLEFT"}, 50, 20, 0, 16, "Rarity:")
-	controls.rarity = new("DropDownControl", nil, -80, 20, 100, 18, rarityDropList)
-	controls.rarity.selIndex = self.lastCraftRaritySel or 3
-	controls.title = new("EditControl", nil, 70, 20, 190, 18, "", "Name")
-	controls.title.shown = function()
-		return controls.rarity.selIndex >= 3
-	end
-	controls.typeLabel = new("LabelControl", {"TOPRIGHT",nil,"TOPLEFT"}, 50, 45, 0, 16, "Type:")
-	controls.type = new("DropDownControl", {"TOPLEFT",nil,"TOPLEFT"}, 55, 45, 295, 18, self.build.data.itemBaseTypeList, function(index, value)
-		controls.base.list = self.build.data.itemBaseLists[self.build.data.itemBaseTypeList[index]]
-		controls.base.selIndex = 1
-	end)
-	controls.type.selIndex = self.lastCraftTypeSel or 1
-	controls.baseLabel = new("LabelControl", {"TOPRIGHT",nil,"TOPLEFT"}, 50, 70, 0, 16, "Base:")
-	controls.base = new("DropDownControl", {"TOPLEFT",nil,"TOPLEFT"}, 55, 70, 200, 18, self.build.data.itemBaseLists[self.build.data.itemBaseTypeList[controls.type.selIndex]])
-	controls.base.selIndex = self.lastCraftBaseSel or 1
-	controls.base.tooltipFunc = function(tooltip, mode, index, value)
-		tooltip:Clear()
-		if mode ~= "OUT" then
-			self:AddItemTooltip(tooltip, makeItem(value), nil, true)
-		end
-	end
-	controls.save = new("ButtonControl", nil, -45, 100, 80, 20, "Create", function()
-		main:ClosePopup()
-		local item = makeItem(controls.base.list[controls.base.selIndex])
-		self:SetDisplayItem(item)
-		if not item.crafted and item.rarity ~= "NORMAL" then
-			self:EditDisplayItemText()
-		end
-		self.lastCraftRaritySel = controls.rarity.selIndex
-		self.lastCraftTypeSel = controls.type.selIndex
-		self.lastCraftBaseSel = controls.base.selIndex
-	end)
-	controls.cancel = new("ButtonControl", nil, 45, 100, 80, 20, "Cancel", function()
-		main:ClosePopup()
-	end)
-	main:OpenPopup(370, 130, "Craft Item", controls)
+	local popup = new("CraftingPopup", self)
+	t_insert(main.popups, 1, popup)
 end
 
 -- Opens the item text editor popup
