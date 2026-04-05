@@ -135,17 +135,18 @@ local CraftingPopupClass = newClass("CraftingPopup", "ControlHost", "Control", f
 
 	-- Affix state: ranges is per-line array
 	self.affixState = {
-		prefix1 = { modKey = nil, tier = 0, ranges = {} },
-		prefix2 = { modKey = nil, tier = 0, ranges = {} },
-		suffix1 = { modKey = nil, tier = 0, ranges = {} },
-		suffix2 = { modKey = nil, tier = 0, ranges = {} },
-		sealed  = { modKey = nil, tier = 0, ranges = {} },
+		prefix1    = { modKey = nil, tier = 0, ranges = {} },
+		prefix2    = { modKey = nil, tier = 0, ranges = {} },
+		suffix1    = { modKey = nil, tier = 0, ranges = {} },
+		suffix2    = { modKey = nil, tier = 0, ranges = {} },
+		sealed     = { modKey = nil, tier = 0, ranges = {} },
+		primordial = { modKey = nil, tier = 7, ranges = {} },
 	}
 	self.corrupted = false
 
 	-- Mod info cache for edit tab display
 	self.slotModInfo = {}
-	for _, k in ipairs({"prefix1","prefix2","suffix1","suffix2","sealed"}) do
+	for _, k in ipairs({"prefix1","prefix2","suffix1","suffix2","sealed","primordial"}) do
 		self.slotModInfo[k] = { count = 0, lines = {} }
 	end
 
@@ -195,6 +196,7 @@ function CraftingPopupClass:RecalcEditLayout()
 		{ label = "prefixLabel", slots = {"prefix1", "prefix2"} },
 		{ label = "suffixLabel", slots = {"suffix1", "suffix2"} },
 		{ label = "sealedLabel", slots = {"sealed"} },
+		{ label = "primordialLabel", slots = {"primordial"} },
 	}
 
 	for si, sec in ipairs(sectionOrder) do
@@ -457,9 +459,10 @@ function CraftingPopupClass:BuildControls()
 
 	-- Affix section controls
 	local affixSections = {
-		{ key = "prefix",  label = "PREFIXES",     slots = {"prefix1", "prefix2"} },
-		{ key = "suffix",  label = "SUFFIXES",     slots = {"suffix1", "suffix2"} },
-		{ key = "sealed",  label = "SEALED AFFIX", slots = {"sealed"} },
+		{ key = "prefix",     label = "PREFIXES",        slots = {"prefix1", "prefix2"} },
+		{ key = "suffix",     label = "SUFFIXES",        slots = {"suffix1", "suffix2"} },
+		{ key = "sealed",     label = "SEALED AFFIX",    slots = {"sealed"} },
+		{ key = "primordial", label = "PRIMORDIAL AFFIX", slots = {"primordial"} },
 	}
 
 	for _, section in ipairs(affixSections) do
@@ -501,8 +504,8 @@ function CraftingPopupClass:BuildControls()
 					return col .. computed
 				end
 
-				-- Value edit control
-				controls[valKey] = new("EditControl", {"TOPLEFT", self, "TOPLEFT"}, 500,
+				-- Value edit control (left side, after mod text)
+				controls[valKey] = new("EditControl", {"TOPLEFT", self, "TOPLEFT"}, 380,
 					function()
 						local ey = self_ref.editY[slotKey]
 						return ey and (ey[li] or 0) - 1 or 0
@@ -525,6 +528,17 @@ function CraftingPopupClass:BuildControls()
 					return li <= info.count and hasRange(info.lines[li])
 				end
 				controls[valKey].numberInc = 1
+				controls[valKey].tooltipFunc = function(tooltip, mode)
+					if mode == "OUT" then return end
+					tooltip:Clear()
+					local info = self_ref.slotModInfo[slotKey]
+					if li > info.count then return end
+					local line = info.lines[li]
+					local min, max = line:match("%(([%-]?%d+%.?%d*)%-([%-]?%d+%.?%d*)%)")
+					if min and max then
+						tooltip:AddLine(14, "^7Range: " .. min .. " - " .. max)
+					end
+				end
 			end
 
 			-- Tier label
@@ -540,6 +554,7 @@ function CraftingPopupClass:BuildControls()
 			end
 			controls[tierLabelKey].label = function()
 				local st = self_ref.affixState[slotKey]
+				if slotKey == "primordial" then return "^7T8" end
 				return "^7T" .. tostring(st.tier + 1)
 			end
 			controls[tierLabelKey].tooltipFunc = function(tooltip, mode)
@@ -565,7 +580,12 @@ function CraftingPopupClass:BuildControls()
 				end)
 			controls[tierUpKey].shown = function()
 				if self_ref.currentTab ~= "edit" then return false end
+				if slotKey == "primordial" then return false end
 				return self_ref.affixState[slotKey].modKey ~= nil
+			end
+			controls[tierUpKey].tooltipFunc = function(tooltip, mode)
+				if mode == "OUT" then return end
+				self_ref:BuildTierTooltip(tooltip, slotKey)
 			end
 
 			-- Tier down button (-)
@@ -586,7 +606,12 @@ function CraftingPopupClass:BuildControls()
 				end)
 			controls[tierDownKey].shown = function()
 				if self_ref.currentTab ~= "edit" then return false end
+				if slotKey == "primordial" then return false end
 				return self_ref.affixState[slotKey].modKey ~= nil
+			end
+			controls[tierDownKey].tooltipFunc = function(tooltip, mode)
+				if mode == "OUT" then return end
+				self_ref:BuildTierTooltip(tooltip, slotKey)
 			end
 
 			-- Remove button (x)
@@ -597,7 +622,7 @@ function CraftingPopupClass:BuildControls()
 					return ey and ey.tier or 0
 				end, 20, 18, "x", function()
 					self_ref.affixState[slotKey].modKey = nil
-					self_ref.affixState[slotKey].tier = 0
+					self_ref.affixState[slotKey].tier = (slotKey == "primordial") and 7 or 0
 					self_ref.affixState[slotKey].ranges = {}
 					self_ref:UpdateSlotModInfo(slotKey)
 					self_ref:RebuildEditItem()
@@ -782,9 +807,9 @@ end
 function CraftingPopupClass:SelectBase(entry)
 	if not entry or entry.isImplicitRow then return end
 
-	for _, st in pairs(self.affixState) do
+	for key, st in pairs(self.affixState) do
 		st.modKey = nil
-		st.tier = 0
+		st.tier = (key == "primordial") and 7 or 0
 		st.ranges = {}
 	end
 	self.corrupted = false
@@ -847,7 +872,7 @@ function CraftingPopupClass:SelectBase(entry)
 	self.currentTab = "edit"
 
 	-- Update mod info for all slots
-	for _, k in ipairs({"prefix1","prefix2","suffix1","suffix2","sealed"}) do
+	for _, k in ipairs({"prefix1","prefix2","suffix1","suffix2","sealed","primordial"}) do
 		self:UpdateSlotModInfo(k)
 	end
 	self:RecalcEditLayout()
@@ -893,14 +918,43 @@ function CraftingPopupClass:RefreshAffixDropdowns()
 	local prefixList = { { label = "-- Select Prefix --" } }
 	local suffixList = { { label = "-- Select Suffix --" } }
 	local sealedList = { { label = "-- Select Affix --" } }
+	local primordialList = { { label = "-- Select T8 Affix --" } }
 
 	for _, g in pairs(prefixGroups) do
 		t_insert(prefixList, g)
 		t_insert(sealedList, { label = g.label, statOrderKey = g.statOrderKey, affix = g.affix, type = g.type, maxTier = g.maxTier })
+		-- Only add to primordial if T8 (tier 7) exists
+		if g.maxTier >= 7 then
+			-- Build T8 label from tier 7 data
+			local t8Key = tostring(g.statOrderKey) .. "_7"
+			local t8Mod = itemMods[t8Key]
+			if t8Mod then
+				local t8Parts = {}
+				for k = 1, 10 do
+					if t8Mod[k] then t_insert(t8Parts, t8Mod[k]) end
+				end
+				local t8Label = table.concat(t8Parts, " / ")
+				t8Label = t8Label:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
+				t_insert(primordialList, { label = t8Label, statOrderKey = g.statOrderKey, affix = g.affix, type = g.type, maxTier = 7 })
+			end
+		end
 	end
 	for _, g in pairs(suffixGroups) do
 		t_insert(suffixList, g)
 		t_insert(sealedList, { label = g.label, statOrderKey = g.statOrderKey, affix = g.affix, type = g.type, maxTier = g.maxTier })
+		if g.maxTier >= 7 then
+			local t8Key = tostring(g.statOrderKey) .. "_7"
+			local t8Mod = itemMods[t8Key]
+			if t8Mod then
+				local t8Parts = {}
+				for k = 1, 10 do
+					if t8Mod[k] then t_insert(t8Parts, t8Mod[k]) end
+				end
+				local t8Label = table.concat(t8Parts, " / ")
+				t8Label = t8Label:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
+				t_insert(primordialList, { label = t8Label, statOrderKey = g.statOrderKey, affix = g.affix, type = g.type, maxTier = 7 })
+			end
+		end
 	end
 
 	local function sortByLabel(a, b)
@@ -911,6 +965,7 @@ function CraftingPopupClass:RefreshAffixDropdowns()
 	table.sort(prefixList, sortByLabel)
 	table.sort(suffixList, sortByLabel)
 	table.sort(sealedList, sortByLabel)
+	table.sort(primordialList, sortByLabel)
 
 	local function filterExclusions(list, excludeKeys)
 		local filtered = { list[1] }
@@ -928,6 +983,7 @@ function CraftingPopupClass:RefreshAffixDropdowns()
 	local p2Key = self.affixState.prefix2.modKey
 	local s1Key = self.affixState.suffix1.modKey
 	local s2Key = self.affixState.suffix2.modKey
+	local prKey = self.affixState.primordial.modKey
 
 	self.controls.prefix1Add.list = filterExclusions(prefixList, p2Key and {p2Key} or {})
 	self.controls.prefix2Add.list = filterExclusions(prefixList, p1Key and {p1Key} or {})
@@ -940,6 +996,13 @@ function CraftingPopupClass:RefreshAffixDropdowns()
 	if s1Key then t_insert(sealedExclude, s1Key) end
 	if s2Key then t_insert(sealedExclude, s2Key) end
 	self.controls.sealedAdd.list = filterExclusions(sealedList, sealedExclude)
+
+	local primExclude = {}
+	if p1Key then t_insert(primExclude, p1Key) end
+	if p2Key then t_insert(primExclude, p2Key) end
+	if s1Key then t_insert(primExclude, s1Key) end
+	if s2Key then t_insert(primExclude, s2Key) end
+	self.controls.primordialAdd.list = filterExclusions(primordialList, primExclude)
 end
 
 -- Build tier tooltip
@@ -1038,7 +1101,7 @@ function CraftingPopupClass:RebuildEditItem()
 	local tierSum = 0
 	local hasAffix = false
 
-	local slotOrder = {"prefix1", "prefix2", "suffix1", "suffix2", "sealed"}
+	local slotOrder = {"prefix1", "prefix2", "suffix1", "suffix2", "sealed", "primordial"}
 	for _, slotKey in ipairs(slotOrder) do
 		local st = self.affixState[slotKey]
 		if st.modKey then
