@@ -20,6 +20,14 @@ local function getRarityForTierSum(tierSum, hasAffix)
 	return "EXALTED"
 end
 
+-- Clean implicit text: remove formatting tags and filter out UNKNOWN_STAT entries
+local function cleanImplicitText(line)
+	if line:find("%[UNKNOWN_STAT%]") then
+		return nil
+	end
+	return line:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
+end
+
 -- Ordered item type list with category headers
 -- Headers have isSeparator=true and are not selectable
 local function buildOrderedTypeList(dataTypeList)
@@ -92,8 +100,11 @@ local CraftingPopupClass = newClass("CraftingPopup", "ControlHost", "Control", f
 	-- State
 	self.currentTab = "select"  -- "select" or "edit"
 	self.selectedTypeIndex = 1
-	self.selectedBaseCategory = "basic" -- "basic" or "unique"
+	self.selectedBaseCategory = "basic" -- "basic", "unique", or "set"
 	self.editItem = nil
+
+	-- Load set data
+	self.setItems = self:LoadSetData()
 
 	-- Build ordered type list
 	self.orderedTypeList = buildOrderedTypeList(self.build.data.itemBaseTypeList)
@@ -117,6 +128,16 @@ local CraftingPopupClass = newClass("CraftingPopup", "ControlHost", "Control", f
 
 	self:BuildControls()
 end)
+
+-- Load set data from JSON
+function CraftingPopupClass:LoadSetData()
+	local ver = self.build.targetVersion or "1_4"
+	local setData = readJsonFile("Data/Set/set_" .. ver .. ".json")
+	if not setData then
+		setData = readJsonFile("Data/Set/set_1_4.json")
+	end
+	return setData or {}
+end
 
 -- Get the currently selected type name
 function CraftingPopupClass:GetSelectedTypeName()
@@ -188,31 +209,52 @@ function CraftingPopupClass:BuildControls()
 	controls.typeDropdown.enableDroppedWidth = true
 	controls.typeDropdown.maxDroppedWidth = 300
 
-	-- Category tabs: Basic / Unique
+	-- Category tabs: Basic / Unique / Set
 	controls.catBasic = new("ButtonControl", {"TOPLEFT", self, "TOPLEFT"}, 15, 80, 80, 20, function()
-		return self_ref.selectedBaseCategory == "basic" and "^7[Basic]" or "^7Basic"
+		return self_ref.selectedBaseCategory == "basic" and "^7Basic" or "^8Basic"
 	end, function()
 		self_ref.selectedBaseCategory = "basic"
 		self_ref:RefreshBaseList()
 	end)
 	controls.catBasic.shown = function() return self_ref.currentTab == "select" end
+	controls.catBasic.locked = function() return self_ref.selectedBaseCategory == "basic" end
 
 	controls.catUnique = new("ButtonControl", {"LEFT", controls.catBasic, "RIGHT"}, 5, 0, 80, 20, function()
-		return self_ref.selectedBaseCategory == "unique" and "^7[Unique]" or "^7Unique"
+		return self_ref.selectedBaseCategory == "unique" and "^7Unique" or "^8Unique"
 	end, function()
 		self_ref.selectedBaseCategory = "unique"
 		self_ref:RefreshBaseList()
 	end)
 	controls.catUnique.shown = function() return self_ref.currentTab == "select" end
+	controls.catUnique.locked = function() return self_ref.selectedBaseCategory == "unique" end
 
-	-- Base item list
-	controls.baseList = new("ListControl", {"TOPLEFT", self, "TOPLEFT"}, 15, 108, 770, 430, 20, false, false, {})
+	controls.catSet = new("ButtonControl", {"LEFT", controls.catUnique, "RIGHT"}, 5, 0, 80, 20, function()
+		return self_ref.selectedBaseCategory == "set" and "^7Set" or "^8Set"
+	end, function()
+		self_ref.selectedBaseCategory = "set"
+		self_ref:RefreshBaseList()
+	end)
+	controls.catSet.shown = function() return self_ref.currentTab == "select" end
+	controls.catSet.locked = function() return self_ref.selectedBaseCategory == "set" end
+
+	-- Column headers (between category tabs and item list)
+	controls.colHeaderName = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, 18, 106, 0, 14, "^8Item Name")
+	controls.colHeaderName.shown = function() return self_ref.currentTab == "select" end
+	controls.colHeaderType = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, 318, 106, 0, 14, "^8Type")
+	controls.colHeaderType.shown = function() return self_ref.currentTab == "select" end
+	controls.colHeaderLv = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, 478, 106, 0, 14, "^8Lv Req")
+	controls.colHeaderLv.shown = function() return self_ref.currentTab == "select" end
+
+	-- Separator line under headers
+	-- (drawn in Draw())
+
+	-- Base item list (scrollbar enabled)
+	controls.baseList = new("ListControl", {"TOPLEFT", self, "TOPLEFT"}, 15, 122, 770, 420, 20, true, false, {})
 	controls.baseList.shown = function() return self_ref.currentTab == "select" end
 	controls.baseList.colList = {
-		{ width = function() return 300 end, label = "Item Name" },
-		{ width = function() return 160 end, label = "Type" },
-		{ width = function() return 80 end,  label = "Lv Req" },
-		{ width = function() return 210 end, label = "Implicits" },
+		{ width = function() return 300 end },
+		{ width = function() return 160 end },
+		{ width = function() return 80 end },
 	}
 	controls.baseList.GetRowValue = function(control, column, index, entry)
 		if entry.isImplicitRow then
@@ -233,17 +275,6 @@ function CraftingPopupClass:BuildControls()
 		elseif column == 3 then
 			local lvl = entry.base and entry.base.req and entry.base.req.level or 0
 			return "^7" .. tostring(lvl)
-		elseif column == 4 then
-			-- Show first implicit inline
-			if entry.base and entry.base.implicits and entry.base.implicits[1] then
-				local line = entry.base.implicits[1]
-				line = line:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
-				if #entry.base.implicits > 1 then
-					line = line .. " (+" .. (#entry.base.implicits - 1) .. " more)"
-				end
-				return "^7" .. line
-			end
-			return "^7-"
 		end
 	end
 	controls.baseList.OnSelClick = function(control, index, entry, doubleClick)
@@ -340,40 +371,24 @@ function CraftingPopupClass:BuildControls()
 				return self_ref:GetAffixDisplayText(slotKey)
 			end
 
-			-- Range slider for value adjustment (shown next to affix)
+			-- Range value edit (numeric input for direct value entry, 0-256)
 			local rangeKey = slotKey .. "Range"
-			controls[rangeKey] = new("SliderControl", {"TOPLEFT", self, "TOPLEFT"}, 450, slotY, 80, 16, function(val)
-				self_ref.affixState[slotKey].range = val * 256
-				self_ref:RebuildEditItem()
-			end)
+			controls[rangeKey] = new("EditControl", {"TOPLEFT", self, "TOPLEFT"}, 450, slotY - 1, 60, 18,
+				"128", nil, "%D", nil, function(buf)
+					local val = tonumber(buf) or 128
+					val = m_max(0, m_min(256, val))
+					self_ref.affixState[slotKey].range = val
+					self_ref:RebuildEditItem()
+				end)
 			controls[rangeKey].shown = function()
 				if self_ref.currentTab ~= "edit" then return false end
 				return self_ref.affixState[slotKey].modKey ~= nil
 			end
-			controls[rangeKey].tooltipFunc = function(tooltip, val)
-				tooltip:Clear()
-				local st = self_ref.affixState[slotKey]
-				if not st.modKey then return end
-				local modKey = tostring(st.modKey) .. "_" .. tostring(st.tier)
-				local mod = data.itemMods.Item[modKey]
-				if not mod then return end
-				tooltip:AddLine(14, "^7Adjust value within tier range")
-				tooltip:AddLine(14, "^7Roll: " .. tostring(m_floor(val * 256)) .. " / 256")
-				for k = 1, 10 do
-					local line = mod[k]
-					if line and type(line) == "string" then
-						local displayLine = itemLib.applyRange(line, val * 256, nil, nil)
-						if displayLine then
-							displayLine = displayLine:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
-							tooltip:AddLine(14, colorCodes.MAGIC .. displayLine)
-						end
-					end
-				end
-			end
+			controls[rangeKey].numberInc = 1
 
 			-- Tier display button (right side)
 			local tierKey = slotKey .. "Tier"
-			controls[tierKey] = new("ButtonControl", {"TOPLEFT", self, "TOPLEFT"}, 545, slotY, 40, 18,
+			controls[tierKey] = new("ButtonControl", {"TOPLEFT", self, "TOPLEFT"}, 530, slotY, 40, 18,
 				function()
 					local st = self_ref.affixState[slotKey]
 					if st.modKey then
@@ -395,10 +410,13 @@ function CraftingPopupClass:BuildControls()
 
 			-- Remove affix button
 			local removeKey = slotKey .. "Remove"
-			controls[removeKey] = new("ButtonControl", {"TOPLEFT", self, "TOPLEFT"}, 595, slotY, 20, 18, "x", function()
+			controls[removeKey] = new("ButtonControl", {"TOPLEFT", self, "TOPLEFT"}, 580, slotY, 20, 18, "x", function()
 				self_ref.affixState[slotKey].modKey = nil
 				self_ref.affixState[slotKey].tier = 0
 				self_ref.affixState[slotKey].range = 128
+				if controls[rangeKey].SetText then
+					controls[rangeKey]:SetText("128")
+				end
 				self_ref:RebuildEditItem()
 			end)
 			controls[removeKey].shown = function()
@@ -414,7 +432,9 @@ function CraftingPopupClass:BuildControls()
 						self_ref.affixState[slotKey].modKey = value.statOrderKey
 						self_ref.affixState[slotKey].tier = value.maxTier or 0
 						self_ref.affixState[slotKey].range = 128
-						controls[rangeKey].val = 128 / 256
+						if controls[rangeKey].SetText then
+							controls[rangeKey]:SetText("128")
+						end
 						self_ref:RebuildEditItem()
 					end
 				end)
@@ -535,20 +555,48 @@ function CraftingPopupClass:RefreshBaseList()
 			end
 			table.sort(list, function(a, b) return a.label < b.label end)
 		end
+	elseif self.selectedBaseCategory == "set" then
+		-- Find set items matching the current type
+		local bases = self.build.data.itemBaseLists[typeName]
+		if bases then
+			for sid, setItem in pairs(self.setItems) do
+				for _, baseEntry in ipairs(bases) do
+					if baseEntry.base.baseTypeID == setItem.baseTypeID and
+					   baseEntry.base.subTypeID == setItem.subTypeID then
+						t_insert(list, {
+							label = setItem.name,
+							name = setItem.name,
+							base = baseEntry.base,
+							baseName = baseEntry.name,
+							type = typeName,
+							displayType = baseEntry.base.type or "",
+							rarity = "SET",
+							category = "set",
+							setData = setItem,
+							setID = sid,
+						})
+						break
+					end
+				end
+			end
+			table.sort(list, function(a, b) return a.label < b.label end)
+		end
 	end
 
-	-- Insert implicit sub-rows below each base item
+	-- Insert implicit sub-rows below each base item (filter UNKNOWN_STAT)
 	local expandedList = {}
 	for _, entry in ipairs(list) do
 		t_insert(expandedList, entry)
 		if entry.base and entry.base.implicits then
 			for _, impl in ipairs(entry.base.implicits) do
-				local text = impl:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
-				t_insert(expandedList, {
-					isImplicitRow = true,
-					implicitText = text,
-					parentEntry = entry,
-				})
+				local text = cleanImplicitText(impl)
+				if text then
+					t_insert(expandedList, {
+						isImplicitRow = true,
+						implicitText = text,
+						parentEntry = entry,
+					})
+				end
 			end
 		end
 	end
@@ -570,11 +618,12 @@ function CraftingPopupClass:SelectBase(entry)
 	self.corrupted = false
 	self.controls.corruptedCheck.state = false
 
-	-- Reset range sliders
+	-- Reset range edits
 	local slotKeys = {"prefix1", "prefix2", "suffix1", "suffix2", "sealed"}
 	for _, slotKey in ipairs(slotKeys) do
-		if self.controls[slotKey .. "Range"] then
-			self.controls[slotKey .. "Range"].val = 128 / 256
+		local rangeCtrl = self.controls[slotKey .. "Range"]
+		if rangeCtrl and rangeCtrl.SetText then
+			rangeCtrl:SetText("128")
 		end
 	end
 
@@ -606,15 +655,32 @@ function CraftingPopupClass:SelectBase(entry)
 				t_insert(item.explicitModLines, modLine)
 			end
 		end
+	elseif entry.category == "set" then
+		item.rarity = "SET"
+		item.title = entry.setData.name
+		item.setID = entry.setID
+		-- Add set mods as explicit lines
+		if entry.setData.mods then
+			for i, modText in ipairs(entry.setData.mods) do
+				local rollId = entry.setData.rollIds and entry.setData.rollIds[i]
+				local modLine = { line = modText }
+				if rollId then
+					modLine.range = 128
+				end
+				t_insert(item.explicitModLines, modLine)
+			end
+		end
 	else
 		item.rarity = "RARE"
 		item.title = "New Item"
 	end
 
-	-- Add implicit mod lines
+	-- Add implicit mod lines (filter UNKNOWN_STAT)
 	if entry.base.implicits then
 		for _, line in ipairs(entry.base.implicits) do
-			t_insert(item.implicitModLines, { line = line })
+			if not line:find("%[UNKNOWN_STAT%]") then
+				t_insert(item.implicitModLines, { line = line })
+			end
 		end
 	end
 
@@ -885,10 +951,19 @@ function CraftingPopupClass:RebuildEditItem()
 	item.namePrefix = ""
 	item.nameSuffix = ""
 
-	-- Re-add unique mods if applicable
+	-- Re-add unique/set mods if applicable
 	if self.editBaseEntry and self.editBaseEntry.category == "unique" and self.editBaseEntry.uniqueData then
 		for i, modText in ipairs(self.editBaseEntry.uniqueData.mods) do
 			local rollId = self.editBaseEntry.uniqueData.rollIds and self.editBaseEntry.uniqueData.rollIds[i]
+			local modLine = { line = modText }
+			if rollId then
+				modLine.range = 128
+			end
+			t_insert(item.explicitModLines, modLine)
+		end
+	elseif self.editBaseEntry and self.editBaseEntry.category == "set" and self.editBaseEntry.setData then
+		for i, modText in ipairs(self.editBaseEntry.setData.mods) do
+			local rollId = self.editBaseEntry.setData.rollIds and self.editBaseEntry.setData.rollIds[i]
 			local modLine = { line = modText }
 			if rollId then
 				modLine.range = 128
@@ -1002,11 +1077,20 @@ function CraftingPopupClass:Draw(viewPort)
 	SetDrawColor(0.3, 0.3, 0.3)
 	DrawImage(nil, x + 10, y + 40, width - 20, 1)
 
+	-- Draw separator under column headers (select tab)
+	if self.currentTab == "select" then
+		SetDrawColor(0.25, 0.25, 0.25)
+		DrawImage(nil, x + 15, y + 120, width - 30, 1)
+	end
+
 	-- Draw rarity-colored name background in edit mode
 	if self.currentTab == "edit" and self.editItem then
 		local col = colorCodes[self.editItem.rarity]
 		if col then
-			local r, g, b = col:match("%^x(%x%x)(%x%x)(%x%x)")
+			local r, g, b = col:match("%%^x(%x%x)(%x%x)(%x%x)")
+			if not r then
+				r, g, b = col:match("%^x(%x%x)(%x%x)(%x%x)")
+			end
 			if r then
 				SetDrawColor(tonumber(r, 16)/255 * 0.15, tonumber(g, 16)/255 * 0.15, tonumber(b, 16)/255 * 0.15)
 				DrawImage(nil, x + 10, y + 45, width - 20, 28)
