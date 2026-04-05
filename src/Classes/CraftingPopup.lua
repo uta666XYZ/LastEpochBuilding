@@ -35,6 +35,23 @@ local function hasRange(line)
 	return line:match("%(%-?%d+%.?%d*%-%-?%d+%.?%d*%)") ~= nil
 end
 
+-- Get precision for a mod line based on rounding tag
+local function getModPrecision(line)
+	local precision = 100
+	if line:find("{rounding:Integer}") then precision = 1
+	elseif line:find("{rounding:Tenth}") then precision = 10
+	elseif line:find("{rounding:Thousandth}") then precision = 1000 end
+	if line:find("%%") and precision >= 100 then precision = precision / 100 end
+	return precision
+end
+
+-- Extract min and max from a mod line template
+local function extractMinMax(line)
+	local min, max = line:match("%(([%-]?%d+%.?%d*)%-([%-]?%d+%.?%d*)%)")
+	if min and max then return tonumber(min), tonumber(max) end
+	return nil, nil
+end
+
 -- Compute the actual displayed value from a mod line and range
 local function computeModValue(line, range)
 	local computed = itemLib.applyRange(line, range, nil, nil)
@@ -46,18 +63,38 @@ end
 
 -- Reverse-map: given a desired value and mod line template, find range (0-256)
 local function reverseModRange(line, targetValue)
-	local min, max = line:match("%(([%-]?%d+%.?%d*)%-([%-]?%d+%.?%d*)%)")
+	local min, max = extractMinMax(line)
 	if not min or not max then return 128 end
-	min, max = tonumber(min), tonumber(max)
-	local precision = 100
-	if line:find("{rounding:Integer}") then precision = 1
-	elseif line:find("{rounding:Tenth}") then precision = 10
-	elseif line:find("{rounding:Thousandth}") then precision = 1000 end
-	if line:find("%%") and precision >= 100 then precision = precision / 100 end
+	local precision = getModPrecision(line)
 	local rangeSize = max - min + 1 / precision
 	if rangeSize == 0 then return 0 end
 	local range = (targetValue - min) / rangeSize * 255
 	return m_max(0, m_min(256, m_floor(range + 0.5)))
+end
+
+-- Clamp a value to valid range for a mod line and return the clamped value
+local function clampModValue(line, value)
+	local min, max = extractMinMax(line)
+	if not min or not max then return value end
+	if min <= max then
+		return m_max(min, m_min(max, value))
+	else
+		return m_max(max, m_min(min, value))
+	end
+end
+
+-- Format a value for display (integer vs decimal based on mod precision)
+local function formatModValue(line, value)
+	local precision = getModPrecision(line)
+	if precision <= 1 then
+		return tostring(m_floor(value + 0.5))
+	elseif precision <= 10 then
+		return string.format("%.1f", value)
+	elseif precision <= 100 then
+		return string.format("%.2f", value)
+	else
+		return string.format("%.3f", value)
+	end
 end
 
 -- Ordered item type list with category headers
@@ -143,6 +180,7 @@ local CraftingPopupClass = newClass("CraftingPopup", "ControlHost", "Control", f
 		primordial = { modKey = nil, tier = 7, ranges = {} },
 	}
 	self.corrupted = false
+	self.corruptedAffix = nil
 
 	-- Mod info cache for edit tab display
 	self.slotModInfo = {}
@@ -259,9 +297,18 @@ function CraftingPopupClass:UpdateSlotValueEdits(slotKey)
 				local range = st.ranges[i] or 128
 				local val = computeModValue(info.lines[i], range)
 				if val then
-					valCtrl:SetText(tostring(val))
+					valCtrl:SetText(formatModValue(info.lines[i], val))
 				else
 					valCtrl:SetText("")
+				end
+				-- Update numberInc based on precision
+				local precision = getModPrecision(info.lines[i])
+				if precision <= 1 then
+					valCtrl.numberInc = 1
+				elseif precision <= 10 then
+					valCtrl.numberInc = 0.1
+				else
+					valCtrl.numberInc = 0.01
 				end
 			else
 				valCtrl:SetText("")
@@ -509,7 +556,7 @@ function CraftingPopupClass:BuildControls()
 					function()
 						local ey = self_ref.editY[slotKey]
 						return ey and (ey[li] or 0) - 1 or 0
-					end, 55, 18, "", nil, "%D", nil,
+					end, 55, 18, "", nil, "^%-%d", nil,
 					function(buf)
 						if self_ref.rebuilding then return end
 						local val = tonumber(buf)
@@ -517,8 +564,17 @@ function CraftingPopupClass:BuildControls()
 						local info = self_ref.slotModInfo[slotKey]
 						if li > info.count then return end
 						local line = info.lines[li]
+						-- Clamp to valid range
+						val = clampModValue(line, val)
 						local range = reverseModRange(line, val)
 						self_ref.affixState[slotKey].ranges[li] = range
+						-- Update display to clamped value
+						local actual = computeModValue(line, range)
+						if actual then
+							self_ref.rebuilding = true
+							controls[valKey]:SetText(formatModValue(line, actual))
+							self_ref.rebuilding = false
+						end
 						self_ref:RebuildEditItem()
 					end)
 				controls[valKey].shown = function()
@@ -528,17 +584,20 @@ function CraftingPopupClass:BuildControls()
 					return li <= info.count and hasRange(info.lines[li])
 				end
 				controls[valKey].numberInc = 1
+				-- Tooltip on the EditControl itself
 				controls[valKey].tooltipFunc = function(tooltip, mode)
 					if mode == "OUT" then return end
 					tooltip:Clear()
 					local info = self_ref.slotModInfo[slotKey]
 					if li > info.count then return end
 					local line = info.lines[li]
-					local min, max = line:match("%(([%-]?%d+%.?%d*)%-([%-]?%d+%.?%d*)%)")
+					local min, max = extractMinMax(line)
 					if min and max then
-						tooltip:AddLine(14, "^7Range: " .. min .. " - " .. max)
+						tooltip:AddLine(14, "^7Range: " .. tostring(min) .. " - " .. tostring(max))
 					end
 				end
+				-- Propagate tooltip to +/- buttons
+				controls[valKey].tooltipPropagated = true
 			end
 
 			-- Tier label
@@ -572,6 +631,10 @@ function CraftingPopupClass:BuildControls()
 					local st = self_ref.affixState[slotKey]
 					if not st.modKey then return end
 					local maxTier = self_ref:GetMaxTier(st.modKey)
+					-- If primordial slot is used, cap normal slots at T7 (tier 6)
+					if slotKey ~= "primordial" and self_ref.affixState.primordial.modKey then
+						maxTier = m_min(maxTier, 6)
+					end
 					st.tier = st.tier + 1
 					if st.tier > maxTier then st.tier = 0 end
 					self_ref:UpdateSlotModInfo(slotKey)
@@ -598,6 +661,10 @@ function CraftingPopupClass:BuildControls()
 					local st = self_ref.affixState[slotKey]
 					if not st.modKey then return end
 					local maxTier = self_ref:GetMaxTier(st.modKey)
+					-- If primordial slot is used, cap normal slots at T7 (tier 6)
+					if slotKey ~= "primordial" and self_ref.affixState.primordial.modKey then
+						maxTier = m_min(maxTier, 6)
+					end
 					st.tier = st.tier - 1
 					if st.tier < 0 then st.tier = maxTier end
 					self_ref:UpdateSlotModInfo(slotKey)
@@ -689,6 +756,63 @@ function CraftingPopupClass:BuildControls()
 			self_ref:RebuildEditItem()
 		end)
 	controls.corruptedCheck.shown = function() return self_ref.currentTab == "edit" end
+
+	-- Corrupted affix dropdown (shown when corrupted is checked)
+	controls.corruptedAffixAdd = new("DropDownControl", {"TOPLEFT", self, "TOPLEFT"}, 25,
+		function() return (self_ref.editY.corrupted or 460) + 22 end,
+		400, 18, {}, function(index, value)
+			if value and value.statOrderKey then
+				self_ref.corruptedAffix = {
+					modKey = value.statOrderKey,
+					tier = value.maxTier or 0,
+					range = 128,
+				}
+				self_ref:RebuildEditItem()
+			end
+		end)
+	controls.corruptedAffixAdd.shown = function()
+		if self_ref.currentTab ~= "edit" then return false end
+		return self_ref.corrupted and not self_ref.corruptedAffix
+	end
+	controls.corruptedAffixAdd.enableDroppedWidth = true
+	controls.corruptedAffixAdd.maxDroppedWidth = 500
+
+	-- Corrupted affix display (when selected)
+	controls.corruptedAffixDisplay = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, 25,
+		function() return (self_ref.editY.corrupted or 460) + 22 end,
+		0, 14, "")
+	controls.corruptedAffixDisplay.shown = function()
+		if self_ref.currentTab ~= "edit" then return false end
+		return self_ref.corrupted and self_ref.corruptedAffix ~= nil
+	end
+	controls.corruptedAffixDisplay.label = function()
+		if not self_ref.corruptedAffix then return "" end
+		local modKey = tostring(self_ref.corruptedAffix.modKey) .. "_" .. tostring(self_ref.corruptedAffix.tier)
+		local mod = data.itemMods.Item and data.itemMods.Item[modKey]
+		if not mod then return "^7(unknown)" end
+		local parts = {}
+		for k = 1, 10 do
+			local line = mod[k]
+			if line and type(line) == "string" then
+				local dl = itemLib.applyRange(line, self_ref.corruptedAffix.range, nil, nil) or line
+				dl = dl:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
+				t_insert(parts, dl)
+			end
+		end
+		return colorCodes.NEGATIVE .. table.concat(parts, ", ")
+	end
+
+	-- Corrupted affix remove button
+	controls.corruptedAffixRemove = new("ButtonControl", {"TOPLEFT", self, "TOPLEFT"}, 450,
+		function() return (self_ref.editY.corrupted or 460) + 22 end,
+		20, 18, "x", function()
+			self_ref.corruptedAffix = nil
+			self_ref:RebuildEditItem()
+		end)
+	controls.corruptedAffixRemove.shown = function()
+		if self_ref.currentTab ~= "edit" then return false end
+		return self_ref.corrupted and self_ref.corruptedAffix ~= nil
+	end
 
 	-- Save / Cancel
 	controls.saveBtn = new("ButtonControl", {"BOTTOMRIGHT", self, "BOTTOMRIGHT"}, -15, -15, 100, 28, "Save", function()
@@ -813,6 +937,7 @@ function CraftingPopupClass:SelectBase(entry)
 		st.ranges = {}
 	end
 	self.corrupted = false
+	self.corruptedAffix = nil
 	self.controls.corruptedCheck.state = false
 
 	local item = new("Item")
@@ -1003,6 +1128,29 @@ function CraftingPopupClass:RefreshAffixDropdowns()
 	if s1Key then t_insert(primExclude, s1Key) end
 	if s2Key then t_insert(primExclude, s2Key) end
 	self.controls.primordialAdd.list = filterExclusions(primordialList, primExclude)
+
+	-- Corrupted affix dropdown: all prefixes + suffixes
+	local corruptedList = { { label = "-- Select Corrupted Affix --" } }
+	for _, g in pairs(prefixGroups) do
+		t_insert(corruptedList, { label = g.label, statOrderKey = g.statOrderKey, affix = g.affix, type = g.type, maxTier = g.maxTier })
+	end
+	for _, g in pairs(suffixGroups) do
+		t_insert(corruptedList, { label = g.label, statOrderKey = g.statOrderKey, affix = g.affix, type = g.type, maxTier = g.maxTier })
+	end
+	table.sort(corruptedList, sortByLabel)
+	self.controls.corruptedAffixAdd.list = corruptedList
+
+	-- Enforce T8 exclusion: if primordial is set, cap prefix/suffix tiers to 6 (T7)
+	if prKey then
+		for _, slotKey in ipairs({"prefix1","prefix2","suffix1","suffix2"}) do
+			local st = self.affixState[slotKey]
+			if st.modKey and st.tier >= 7 then
+				st.tier = 6
+				self:UpdateSlotModInfo(slotKey)
+				self:UpdateSlotValueEdits(slotKey)
+			end
+		end
+	end
 end
 
 -- Build tier tooltip
@@ -1150,6 +1298,25 @@ function CraftingPopupClass:RebuildEditItem()
 		end
 	elseif self.editBaseEntry and self.editBaseEntry.category == "unique" and hasAffix then
 		item.rarity = "LEGENDARY"
+	end
+
+	-- Add corrupted affix mod lines
+	if self.corrupted and self.corruptedAffix then
+		local ca = self.corruptedAffix
+		local modKey = tostring(ca.modKey) .. "_" .. tostring(ca.tier)
+		local mod = itemMods[modKey]
+		if mod then
+			for k = 1, 10 do
+				local line = mod[k]
+				if line and type(line) == "string" then
+					t_insert(item.explicitModLines, {
+						line = line,
+						range = ca.range,
+						crafted = true,
+					})
+				end
+			end
+		end
 	end
 
 	item.corrupted = self.corrupted
