@@ -49,6 +49,7 @@ jobs:
                   --exclude='Builds/' \
                   src/ dist/LastEpochBuilding/src/
                 cp manifest.xml changelog.txt help.txt LICENSE.md Launch.bat dist/LastEpochBuilding/
+                cp manifest.xml dist/LastEpochBuilding/src/manifest.xml
                 cd dist
                 zip -r "LastEpochBuilding-v${VERSION}-win.zip" LastEpochBuilding/
             - name: Upload to release
