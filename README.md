@@ -1,67 +1,84 @@
-# Last Epoch Building
+# Last Epoch Building (LEB)
 
-This is a fork of Path Of Building adapted to work for the game **Last Epoch**.
+A Path of Building-style offline build planner for **Last Epoch**.
 
-> [!WARNING]
-> This is a Third Party Program, any issues or bugs a player might experience in game related to the use of this program
-> are not the responsibility of EHG and EHG will not be able to assist.
+> Not affiliated with Eleventh Hour Games.
+> This is a third-party tool. Any in-game issues are not the responsibility of EHG.
 
-The following features are supported (or partially):
-* Passive tree
-* Character import: for offline character and from LE tools build planner
-* A lot of stats and mods/affixes are not working correctly.
-  * **Out of 13,091 mods, 4,519 (36%) mods are recognized by the parser**. Even if a mod is recognized, it's not guaranteed that it will work as expected.
-  * The total amount of mods is made of 
-    * the implicits (one for each implicit of each item)
-    * the prefixes and suffixes (one for each tier of each)
-    * the unique modifiers (one for each mod of each unique)
-    * the passive and skill trees (one for each mod of each node)
-* Items: Imported from character import and can be crafted / modified.
-* Unique items
-* Legendary items supported through LE tools import
-* Basic support for following stat calculation: health, mana, armor, attributes
-* Skills: Can select up to 5 skills which allows to spend points in the associated skill trees
-* DPS calculation: support for several skills
-* Support for ailments chance
-* Support for debuffs effects (resistance shred, chill, ...)
+---
 
-Note that **most content (docs or code) is outdated** since they only apply to the original project. Everything should be migrated as time goes by.
+## Support Development
 
-## Running
-The current build can be run by running `./runtime/Last Epoch Building.exe`. 
+If LEB has helped your builds, consider buying me a coffee!
 
-## Linux support
-For linux, there may be a native support in the future but for now it runs fine with wine
+☕ [Buy Me a Coffee](https://buymeacoffee.com/yobk0831a)
+
+Feedback and bug reports are always welcome — see [Contributing](#contributing).
+
+---
+
+## Features
+
+- **Passive tree** — all classes and masteries
+- **Skill trees** — all skills with full node support
+- **Equipment simulation** with crafting UI
+- **DPS calculation** with ailments and debuffs
+- **Defense stats** — armor, dodge, block, ward, resistances
+- **Unique & Legendary items**
+- **Set items** (Set bonus effect accuracy may vary — see Roadmap)
+- **Idols** including Season 4 Altar
+- **Blessings** (found in the Config tab)
+- **Character import** — offline save files and online characters via LEtools build planner
+- **Season 4: Shattered Omens** support
+
+> **Note:** Mod recognition rate is ~90% (89.7% verified as of v0.10). Recognized mods
+> are not always calculated with full accuracy. Development is focused on Last Epoch 1.4.
+> Limited support exists for 1.2 and 1.3 builds.
+
+---
+
+## Installation
+
+1. Download the latest release from the [Releases](../../releases) page
+2. Extract the zip file
+3. Run **`runtime\Last Epoch Building.exe`**
+
+> **Tip:** You can also double-click `Launch.bat` in the root folder as a shortcut.
+
+---
 
 ## Roadmap
-* Legendary items (for offline import)
-* Web version
-* Blessings support
-* Have a selected skill dps correctly computed
-* Points requirements and constraints in skills and passives
-* Work on other stats (ward, ...)
-* Work on other skills ...
 
-## Features to be (possibly) automated from game files extracts
-* Passive tree and skills sprites
-* Any incorrect display names
-* Item sprites
-* Some stats formula data may be extracted
-* Any missing stats on items or passives
-* Skills info that would help in dps calculation
+- Improve calculation accuracy across all stats and skills
+- Set item bonus effect verification and fixes
+- Idol and Idol Altar crafting system
+- Auto-populate Config tab from equipped item affixes
+  (e.g. "you have Frenzy" on an item → Frenzy automatically checked in Config)
+- Automatic or fast updates when Last Epoch patches release
+- Improved support for legacy character import (1.2, 1.3)
+- Build sharing (generate a shareable link for your build)
+- Web version
 
-## Contribute
-You can find instructions on how to contribute code and bug reports [here](CONTRIBUTING.md).
+---
 
-## Contributors
-Special thanks for all the work made prior to this fork (and also to all future work that may be integrated in some ways) to the Path of Building Community contributors at https://github.com/PathOfBuildingCommunity/PathOfBuilding
+## Contributing
+
+Feedback, bug reports, and feature requests are always welcome!
+
+Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details on how to report bugs
+and submit pull requests.
+
+---
+
+## License
+
+[MIT](LICENSE.md) — see LICENSE.md for third-party licenses.
+
+## Credits
+
+Based on [Path of Building Community](https://github.com/PathOfBuildingCommunity/PathOfBuilding),
+originally forked from [Musholic/LastEpochPlanner](https://github.com/Musholic/LastEpochPlanner).
 
 ## Changelog
-You can find the full version history [here](CHANGELOG.md).
 
-## Licence
-
-[MIT](https://opensource.org/licenses/MIT)
-
-For 3rd-party licences, see [LICENSE](LICENSE.md).
-The licencing information is considered to be part of the documentation.
+Full version history: [CHANGELOG.md](CHANGELOG.md)
