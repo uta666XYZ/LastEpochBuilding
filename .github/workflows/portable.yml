@@ -24,7 +24,7 @@ jobs:
                 echo "VERSION=$VERSION" >> "$GITHUB_ENV"
             - name: Patch manifest for auto-updater
               run: |
-                sed -i 's/<Version number="\([^"]*\)"/<Version number="\1" branch="master" platform="win32"/' manifest.xml
+                sed -i 's/<Version number="\([^"]*\)"/<Version number="\1" branch="dev" platform="win32"/' manifest.xml
             - name: Build portable zip
               run: |
                 mkdir -p dist/LastEpochBuilding

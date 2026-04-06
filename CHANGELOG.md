@@ -1,6 +1,8 @@
 # Changelog
 
-## [Unreleased]
+## [v0.10.0](https://github.com/uta666XYZ/LastEpochBuilding/tree/v0.10.0) (2026/04/07)
+
+[Full Changelog](https://github.com/uta666XYZ/LastEpochBuilding/compare/v0.9.1...v0.10.0)
 
 ### New Features
 - Skills tab LETools/Maxroll-style UI
@@ -10,14 +12,6 @@
   - Spec slot level badge, word-wrap for long skill names
   - Back button relocated to viewport top-left
 - Switched to portable distribution — no installer required (extract zip and run)
-
----
-
-## [v0.10.0](https://github.com/uta666XYZ/LastEpochBuilding/tree/v0.10.0) (2026/04/03)
-
-[Full Changelog](https://github.com/uta666XYZ/LastEpochBuilding/compare/v0.9.1...v0.10.0)
-
-### New Features
 - Config tab expanded with skill options and effective DPS conditions
 - New offense outputs: Electrify, Time Rot, Blind, Slow, Frailty chances
 - New defense outputs: Parry, Damage to Mana, Chill/Slow/Shock Attackers
