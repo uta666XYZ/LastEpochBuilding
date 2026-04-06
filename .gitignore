@@ -61,3 +61,14 @@ scripts/repo_skill_data.txt
 
 # IDE run configurations
 .run/
+
+# Game data extraction scripts (internal tools)
+gameFileExtractScript/
+tests/
+
+# Game data source files (extracted/scraped data, not for public repo)
+src/Data/LEToolsImport/
+
+# Unused asset archives (kept locally, not for public repo)
+src/Assets/bin/
+src/TreeData/bin/
