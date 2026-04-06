@@ -1149,9 +1149,6 @@ slotMap[39] = "Reign of Dragons"
 slotMap[40] = "The Age of Winter"
 slotMap[41] = "Spirits of Fire"
 slotMap[42] = "The Last Ruin"
-slotMap[43] = "Additional"
-slotMap[44] = "Additional 2"
-slotMap[45] = "Additional 3"
 slotMap[123] = "Idol Altar"
 
 
