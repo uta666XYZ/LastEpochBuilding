@@ -11,6 +11,8 @@ on:
 jobs:
   push-beta:
     runs-on: ubuntu-22.04
+    permissions:
+      contents: write
     if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'push' }}
     steps:
       - name: Set line endings
