@@ -22,15 +22,6 @@ jobs:
               run: |
                 VERSION=$(grep -o '<Version number="[^"]*"' manifest.xml | grep -o '"[^"]*"' | tr -d '"')
                 echo "VERSION=$VERSION" >> "$GITHUB_ENV"
-            - name: Compile Lua to bytecode
-              run: |
-                sudo apt-get install -y luajit
-                find src -name "*.lua" \
-                  ! -path "*/Export/*" \
-                  ! -path "*/TreeData/*" \
-                  ! -path "*/Data/*" | while read f; do
-                  luajit -b "$f" "$f.tmp" && mv "$f.tmp" "$f"
-                done
             - name: Patch manifest for auto-updater
               run: |
                 sed -i 's/<Version number="\([^"]*\)"/<Version number="\1" branch="master" platform="win32"/' manifest.xml
