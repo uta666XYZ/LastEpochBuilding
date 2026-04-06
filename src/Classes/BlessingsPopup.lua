@@ -12,6 +12,38 @@ local function blessingIconFile(name)
 	return (name:lower():gsub("[^a-z0-9]+", "_"):gsub("_+$", "")) .. ".png"
 end
 
+-- Correct word-wrap: breaks BEFORE the word that would exceed width
+local function wrapText(str, fontSize, maxW)
+	local lines = {}
+	local lineStart = 1
+	local prevBreak, prevNext
+	local searchFrom = 1
+	while true do
+		local s, e = str:find("%s+", searchFrom)
+		if not s then s = #str + 1 end
+		local chunk = str:sub(lineStart, s - 1)
+		if DrawStringWidth(fontSize, "VAR", chunk) > maxW then
+			if prevBreak and prevBreak >= lineStart then
+				t_insert(lines, str:sub(lineStart, prevBreak))
+				lineStart = prevNext
+			else
+				t_insert(lines, chunk)
+				lineStart = (e or s) + 1
+			end
+		end
+		prevBreak = s - 1
+		prevNext = (e or s) + 1
+		searchFrom = prevNext
+		if s > #str then
+			local rest = str:sub(lineStart)
+			if #rest > 0 then t_insert(lines, rest) end
+			break
+		end
+	end
+	if #lines == 0 then t_insert(lines, str) end
+	return lines
+end
+
 -- ============================================================
 -- Layout constants
 
@@ -27,7 +59,7 @@ local CARD_AREA_W  = POPUP_W - LEFT_W - 8 - 16  -- 586 (16 reserved for scrollba
 local CARD_AREA_H  = POPUP_H - CARD_AREA_Y - 8  -- 436
 local CARD_COL_GAP = 8
 local CARD_W       = m_floor((CARD_AREA_W - CARD_COL_GAP) / 2)  -- 289
-local CARD_H       = 120
+local CARD_H       = 100
 local CARD_ROW_GAP = 6
 
 -- ============================================================
@@ -246,7 +278,7 @@ function BlessingsPopupClass:BuildControls()
 
 	-- Value decrement button
 	local valMinus = new("ButtonControl",
-		{"TOPLEFT", self, "TOPLEFT"}, LEFT_W + 10, 136, 22, 18,
+		{"TOPLEFT", self, "TOPLEFT"}, LEFT_W + 10, 146, 22, 18,
 		"-", function() self:AdjustValue(-1) end
 	)
 	valMinus.shown = function()
@@ -258,7 +290,7 @@ function BlessingsPopupClass:BuildControls()
 
 	-- Value increment button
 	local valPlus = new("ButtonControl",
-		{"TOPLEFT", self, "TOPLEFT"}, LEFT_W + 78, 136, 22, 18,
+		{"TOPLEFT", self, "TOPLEFT"}, LEFT_W + 78, 146, 22, 18,
 		"+", function() self:AdjustValue(1) end
 	)
 	valPlus.shown = function()
@@ -396,21 +428,26 @@ function BlessingsPopupClass:DrawCard(cx, cy, entry, isGrand, isEquipped, isHove
 
 	-- Text (right of icon)
 	local tx    = m_floor(cx + 46)
-	local ty    = m_floor(cy + 8)
-	local textW = CARD_W - 46 - 6   -- available width for wrapped text
+	local ty    = m_floor(cy + 6)
+	local textW = CARD_W - 46 - 8   -- available width for wrapped text
 
-	-- Name (gold, uppercase)
+	-- Name (gold, uppercase, wrapped)
 	SetDrawColor(1, 1, 1)
-	DrawString(tx, ty, "LEFT", 14, "VAR", "^xC8A040" .. entry.name:upper())
+	local nameLines = wrapText(entry.name:upper(), 14, textW)
+	local lineY = ty
+	DrawString(tx, lineY, "LEFT", 14, "VAR", "^xC8A040" .. (nameLines[1] or ""))
+	lineY = lineY + 16
 
-	-- Stat1 (wrapped, bigger font)
+	-- Stat1 (wrapped)
 	local stat1raw   = (entry.impl1 or ""):gsub("{[^}]+}", "")
-	local stat1Lines = main:WrapString(stat1raw, 14, textW)
-	local lineY = ty + 18
+	local stat1Lines = wrapText(stat1raw, 14, textW)
+	lineY = lineY + 2
+	local maxStatLines = entry.impl2 and 2 or 3
 	for i, line in ipairs(stat1Lines) do
+		if lineY + 16 > cy + ch - 4 then break end
 		DrawString(tx, lineY, "LEFT", 14, "VAR", "^xCCCCCC" .. line)
 		lineY = lineY + 16
-		if i >= 2 then break end
+		if i >= maxStatLines then break end
 	end
 
 	-- Stat2 (wrapped, strip embedded color codes so color is consistent)
@@ -418,11 +455,12 @@ function BlessingsPopupClass:DrawCard(cx, cy, entry, isGrand, isEquipped, isHove
 		local stat2raw   = entry.impl2:gsub("{[^}]+}", "")
 			:gsub("%^x%x%x%x%x%x%x", "")
 			:gsub("%^%d", "")
-		local stat2Lines = main:WrapString(stat2raw, 13, textW)
-		lineY = ty + 56
+		local stat2Lines = wrapText(stat2raw, 14, textW)
+		lineY = lineY + 2
 		for i, line in ipairs(stat2Lines) do
-			DrawString(tx, lineY, "LEFT", 13, "VAR", "^xCCCCCC" .. line)
-			lineY = lineY + 15
+			if lineY + 16 > cy + ch - 4 then break end
+			DrawString(tx, lineY, "LEFT", 14, "VAR", "^xCCCCCC" .. line)
+			lineY = lineY + 16
 			if i >= 2 then break end
 		end
 	end
@@ -534,33 +572,30 @@ function BlessingsPopupClass:Draw(viewPort)
 	local areaB  = areaY + CARD_AREA_H
 	local curSt2 = bst[self.selectedTL]
 
+	SetViewport(areaX, areaY, CARD_AREA_W, CARD_AREA_H)
 	for ri, row in ipairs(rows) do
-		local cardRowY = m_floor(areaY + (ri - 1) * (CARD_H + CARD_ROW_GAP) - scrollOffset)
-		if cardRowY + CARD_H >= areaY and cardRowY < areaB then
+		local cardRelY = m_floor((ri - 1) * (CARD_H + CARD_ROW_GAP) - scrollOffset)
+		if cardRelY + CARD_H >= 0 and cardRelY < CARD_AREA_H then
 
 			if row.normal then
 				local isEq  = curSt2 and curSt2.entry == row.normal
 				local isHov = self.hoveredCard
 					and self.hoveredCard.entry == row.normal
 					and not self.hoveredCard.isGrand
-				self:DrawCard(areaX, cardRowY, row.normal, false, isEq, isHov)
+				self:DrawCard(0, cardRelY, row.normal, false, isEq, isHov)
 			end
 
 			if row.grand then
-				local cx    = areaX + CARD_W + CARD_COL_GAP
+				local gcx   = CARD_W + CARD_COL_GAP
 				local isEq  = curSt2 and curSt2.entry == row.grand
 				local isHov = self.hoveredCard
 					and self.hoveredCard.entry == row.grand
 					and self.hoveredCard.isGrand
-				self:DrawCard(cx, cardRowY, row.grand, true, isEq, isHov)
+				self:DrawCard(gcx, cardRelY, row.grand, true, isEq, isHov)
 			end
 		end
 	end
-
-	-- Mask card overflow: cover header zone and bottom strip with panel bg
-	-- (draw BEFORE header text so header is always visible on top)
-	drawRect(areaX, py + 36, CARD_AREA_W + 16, CARD_AREA_Y - 36, 0.05, 0.05, 0.07)
-	drawRect(areaX, areaB, CARD_AREA_W + 16, 8, 0.05, 0.05, 0.07)
+	SetViewport()
 
 	-- === RIGHT PANEL HEADER (drawn after cards + mask so it's always on top) ===
 	local rpx = px + LEFT_W + 10
@@ -576,21 +611,33 @@ function BlessingsPopupClass:Draw(viewPort)
 		-- Blessing name (gold, large)
 		DrawString(rpx, py + 65, "LEFT", 16, "VAR", "^xC8A040" .. b.name:upper())
 
-		-- Stat lines
+		-- Stat lines (wrapped to fit header width)
+		local headerTextW = POPUP_W - LEFT_W - 120
 		local stat1 = (b.impl1 or ""):gsub("{[^}]+}", "")
-		DrawString(rpx, py + 92, "LEFT", 13, "VAR", "^xCCCCCC" .. stat1)
+		local stat1Lines = wrapText(stat1, 12, headerTextW)
+		local hLineY = py + 92
+		for i, line in ipairs(stat1Lines) do
+			DrawString(rpx, hLineY, "LEFT", 12, "VAR", "^xCCCCCC" .. line)
+			hLineY = hLineY + 14
+			if i >= 2 then break end
+		end
 		if b.impl2 then
 			local stat2 = b.impl2:gsub("{[^}]+}", "")
-			DrawString(rpx, py + 108, "LEFT", 12, "VAR", "^xAAAA88" .. stat2)
+			local stat2Lines = wrapText(stat2, 12, headerTextW)
+			for i, line in ipairs(stat2Lines) do
+				DrawString(rpx, hLineY, "LEFT", 12, "VAR", "^xAAAA88" .. line)
+				hLineY = hLineY + 14
+				if i >= 2 then break end
+			end
 		end
 
 		-- Range + value
 		if curSt.rollVal then
 			local minV = m_floor(b.minVal + 0.5)
 			local maxV = m_ceil(b.maxVal)
-			DrawString(rpx, py + 116, "LEFT", 11, "VAR",
+			DrawString(rpx, hLineY + 2, "LEFT", 10, "VAR",
 				string.format("^x666666Range: %d - %d", minV, maxV))
-			DrawString(px + LEFT_W + 36, py + 140, "LEFT", 14, "VAR",
+			DrawString(px + LEFT_W + 36, hLineY + 16, "LEFT", 14, "VAR",
 				"^7" .. tostring(curSt.rollVal))
 		end
 	else
