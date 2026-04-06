@@ -549,8 +549,8 @@ data.skills["Default"] = {
 -- Load minions
 data.minions = readJsonFile("Data/minions.json")
 
-data.LETools_itemBases = readJsonFile("Data/LEToolsImport/bases.json")
-data.LETools_affixes = readJsonFile("Data/LEToolsImport/affixes.json")
+data.LETools_itemBases = readJsonFile("Data/LEToolsImport/bases.json") or {}
+data.LETools_affixes = readJsonFile("Data/LEToolsImport/affixes.json") or {}
 
 -- Helper: build itemBaseLists and itemBaseTypeList from a bases table
 local function buildItemBaseLists(itemBases)
