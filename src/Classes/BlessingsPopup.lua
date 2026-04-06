@@ -100,7 +100,7 @@ end
 -- BlessingsPopup class
 
 local BlessingsPopupClass = newClass("BlessingsPopup", "ControlHost", "Control",
-	function(self, itemsTab)
+	function(self, itemsTab, initialTL)
 		self.ControlHost()
 		self.Control(nil, 0, 0, POPUP_W, POPUP_H)
 		self.width  = function() return POPUP_W end
@@ -113,7 +113,7 @@ local BlessingsPopupClass = newClass("BlessingsPopup", "ControlHost", "Control",
 		self.blessingData = itemsTab.blessingData
 
 		-- UI state
-		self.selectedTL  = TIMELINE_ORDER[1]
+		self.selectedTL  = initialTL or TIMELINE_ORDER[1]
 		self.searchText  = ""
 		self.hoveredCard = nil  -- {entry, isGrand}
 
@@ -556,38 +556,44 @@ function BlessingsPopupClass:ProcessInput(inputEvents, viewPort)
 			if event.key == "ESCAPE" then
 				self:Close()
 				return
-			end
+			elseif event.key == "LEFTBUTTON" then
+				-- Slot grid clicks
+				for _, sg in ipairs(SLOT_GRID) do
+					local sp = SLOT_POS[sg.tl]
+					local sx = px + sp.x
+					local sy = py + sp.y
+					if mx >= sx and mx < sx + SLOT_SIZE and my >= sy and my < sy + SLOT_SIZE then
+						self.selectedTL = sg.tl
+						if sb then sb:SetOffset(0) end
+					end
+				end
 
-		elseif event.type == "mousewheel" then
-			if mx >= areaX and mx < areaX + CARD_AREA_W + 20 and my >= areaY and my < areaB then
-				if sb then sb:Scroll(-event.val) end
-			end
-
-		elseif event.type == "LButtonDown" then
-			-- Slot grid clicks
-			for _, sg in ipairs(SLOT_GRID) do
-				local sp = SLOT_POS[sg.tl]
-				local sx = px + sp.x
-				local sy = py + sp.y
-				if mx >= sx and mx < sx + SLOT_SIZE and my >= sy and my < sy + SLOT_SIZE then
-					self.selectedTL = sg.tl
-					if sb then sb:SetOffset(0) end
+				-- Card clicks
+				if mx >= areaX and mx < areaX + CARD_AREA_W and my >= areaY and my < areaB then
+					local rows  = self:GetCardRows()
+					local relY  = my - areaY + scrollOffset
+					local ri    = m_floor(relY / (CARD_H + CARD_ROW_GAP)) + 1
+					local rowY0 = (ri - 1) * (CARD_H + CARD_ROW_GAP)
+					if ri >= 1 and ri <= #rows and (relY - rowY0) < CARD_H then
+						local row     = rows[ri]
+						local isGrand = (mx - areaX) >= (CARD_W + CARD_COL_GAP)
+						local entry   = isGrand and row.grand or row.normal
+						if entry then
+							self:EquipBlessing(self.selectedTL, entry, isGrand)
+						end
+					end
 				end
 			end
 
-			-- Card clicks
-			if mx >= areaX and mx < areaX + CARD_AREA_W and my >= areaY and my < areaB then
-				local rows  = self:GetCardRows()
-				local relY  = my - areaY + scrollOffset
-				local ri    = m_floor(relY / (CARD_H + CARD_ROW_GAP)) + 1
-				local rowY0 = (ri - 1) * (CARD_H + CARD_ROW_GAP)
-				if ri >= 1 and ri <= #rows and (relY - rowY0) < CARD_H then
-					local row     = rows[ri]
-					local isGrand = (mx - areaX) >= (CARD_W + CARD_COL_GAP)
-					local entry   = isGrand and row.grand or row.normal
-					if entry then
-						self:EquipBlessing(self.selectedTL, entry, isGrand)
-					end
+		elseif event.type == "KeyUp" then
+			-- Mouse wheel scrolling in card area
+			local inCardArea = mx >= areaX and mx < areaX + CARD_AREA_W + 20
+				and my >= areaY and my < areaB
+			if sb and inCardArea then
+				if sb:IsScrollDownKey(event.key) then
+					sb:Scroll(1)
+				elseif sb:IsScrollUpKey(event.key) then
+					sb:Scroll(-1)
 				end
 			end
 		end
