@@ -5,7 +5,7 @@
 - Push access to the `dev` branch
 - GitHub Actions enabled on the repository
 - `APP_ID` and `PRIVATE_KEY` secrets configured in repository settings
-- `POB_INSTALLER_KEY` secret configured (SSH key for the private runtime repo)
+- `POB_INSTALLER_KEY` secret configured (SSH key for the private `LastEpochBuilding-Installer` runtime repo)
 
 ## Choosing a Version Number
 
