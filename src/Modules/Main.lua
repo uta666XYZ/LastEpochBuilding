@@ -49,10 +49,11 @@ function main:Init()
 	self.modes["LIST"] = LoadModule("Modules/BuildList")
 	self.modes["BUILD"] = LoadModule("Modules/Build")
 
-	if launch.devMode or (GetScriptPath() == GetRuntimePath() and not launch.installedMode) then
-		-- If running in dev mode or standalone mode, put user data in the script path
+	if launch.devMode or not launch.installedMode then
+		-- Dev mode or portable mode: store user data alongside the scripts
 		self.userPath = GetScriptPath().."/"
 	else
+		-- Installed mode (installed.cfg present): store in user profile
 		self.userPath = GetUserPath().."/Last Epoch Building/"
 		MakeDir(self.userPath)
 	end
