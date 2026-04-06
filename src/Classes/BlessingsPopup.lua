@@ -8,6 +8,10 @@ local m_ceil   = math.ceil
 local m_max    = math.max
 local m_min    = math.min
 
+local function blessingIconFile(name)
+	return (name:lower():gsub("[^a-z0-9]+", "_"):gsub("_+$", "")) .. ".png"
+end
+
 -- ============================================================
 -- Layout constants
 
@@ -111,6 +115,7 @@ local BlessingsPopupClass = newClass("BlessingsPopup", "ControlHost", "Control",
 		self.itemsTab     = itemsTab
 		self.build        = itemsTab.build
 		self.blessingData = itemsTab.blessingData
+		self.imageHandles = {}
 
 		-- UI state
 		self.selectedTL  = initialTL or TIMELINE_ORDER[1]
@@ -160,6 +165,26 @@ local BlessingsPopupClass = newClass("BlessingsPopup", "ControlHost", "Control",
 
 -- ============================================================
 -- Control construction
+
+function BlessingsPopupClass:GetBlessingImage(name)
+	if not name then return nil end
+	local fname = blessingIconFile(name)
+	if not self.imageHandles[fname] then
+		local h = NewImageHandle()
+		h:Load("Assets/blessings/" .. fname, "ASYNC")
+		self.imageHandles[fname] = h
+	end
+	return self.imageHandles[fname]
+end
+
+function BlessingsPopupClass:GetCircleMask()
+	if not self.imageHandles["__mask"] then
+		local h = NewImageHandle()
+		h:Load("Assets/blessings/circle_mask.png", "ASYNC")
+		self.imageHandles["__mask"] = h
+	end
+	return self.imageHandles["__mask"]
+end
 
 function BlessingsPopupClass:BuildControls()
 	-- Close button
@@ -331,13 +356,15 @@ function BlessingsPopupClass:DrawCard(cx, cy, entry, isGrand, isEquipped, isHove
 	local cw, ch = CARD_W, CARD_H
 
 	-- Background
+	local bgR, bgG, bgB
 	if isEquipped then
-		drawRect(cx, cy, cw, ch, 0.15, 0.08, 0.22)
+		bgR, bgG, bgB = 0.15, 0.08, 0.22
 	elseif isHovered then
-		drawRect(cx, cy, cw, ch, 0.12, 0.09, 0.17)
+		bgR, bgG, bgB = 0.12, 0.09, 0.17
 	else
-		drawRect(cx, cy, cw, ch, 0.07, 0.07, 0.10)
+		bgR, bgG, bgB = 0.07, 0.07, 0.10
 	end
+	drawRect(cx, cy, cw, ch, bgR, bgG, bgB)
 
 	-- Border
 	if isEquipped then
@@ -350,18 +377,30 @@ function BlessingsPopupClass:DrawCard(cx, cy, entry, isGrand, isEquipped, isHove
 		drawBorder(cx, cy, cw, ch, 0.24, 0.20, 0.08)
 	end
 
-	-- Icon placeholder (40x40)
-	local iconX = cx + 5
-	local iconY = cy + m_floor((ch - 40) / 2)
-	if isGrand then
-		drawRect(iconX, iconY, 40, 40, 0.38, 0.26, 0.07)
+	-- Icon (32x32, circular masked)
+	local iconSz = 32
+	local iconX  = cx + 8
+	local iconY  = cy + m_floor((ch - iconSz) / 2)
+	local img = self:GetBlessingImage(entry.name)
+	if img and img:IsValid() then
+		SetDrawColor(1, 1, 1)
+		DrawImage(img, iconX, iconY, iconSz, iconSz)
+		local mask = self:GetCircleMask()
+		if mask and mask:IsValid() then
+			SetDrawColor(bgR, bgG, bgB)
+			DrawImage(mask, iconX, iconY, iconSz, iconSz)
+		end
 	else
-		drawRect(iconX, iconY, 40, 40, 0.22, 0.16, 0.05)
+		if isGrand then
+			drawRect(iconX, iconY, iconSz, iconSz, 0.38, 0.26, 0.07)
+		else
+			drawRect(iconX, iconY, iconSz, iconSz, 0.22, 0.16, 0.05)
+		end
+		drawBorder(iconX, iconY, iconSz, iconSz, 0.52, 0.38, 0.14)
 	end
-	drawBorder(iconX, iconY, 40, 40, 0.52, 0.38, 0.14)
 
 	-- Text (right of icon)
-	local tx = cx + 52
+	local tx = cx + 46
 	local ty = cy + 6
 
 	-- Name (gold, uppercase)
@@ -423,17 +462,34 @@ function BlessingsPopupClass:Draw(viewPort)
 			drawBorder(sx, sy, SLOT_SIZE, SLOT_SIZE, 0.25, 0.20, 0.08)
 		end
 
-		-- 2-letter abbreviation
-		local abbr = tl:sub(1, 2):upper()
-		SetDrawColor(1, 1, 1)
-		DrawString(sx + m_floor(SLOT_SIZE / 2), sy + m_floor(SLOT_SIZE / 2) - 7,
-			"CENTER_X", 11, "VAR",
-			(has and "^xAACC88" or "^x555555") .. abbr)
-
-		-- Filled indicator dot
-		if has then
-			drawRect(sx + m_floor(SLOT_SIZE / 2) - 3,
-				sy + SLOT_SIZE - 8, 6, 5, 0.35, 0.75, 0.35)
+		-- Icon or abbreviation
+		local st = bst[tl]
+		local equippedName = st and st.entry and st.entry.name
+		local img = equippedName and self:GetBlessingImage(equippedName)
+		if img and img:IsValid() then
+			local pad = 5
+			local isz = SLOT_SIZE - pad * 2
+			SetDrawColor(1, 1, 1)
+			DrawImage(img, sx + pad, sy + pad, isz, isz)
+			local mask = self:GetCircleMask()
+			if mask and mask:IsValid() then
+				local slotBgR, slotBgG, slotBgB
+				if sel then
+					slotBgR, slotBgG, slotBgB = 0.20, 0.11, 0.30
+				elseif has then
+					slotBgR, slotBgG, slotBgB = 0.14, 0.10, 0.05
+				else
+					slotBgR, slotBgG, slotBgB = 0.08, 0.07, 0.10
+				end
+				SetDrawColor(slotBgR, slotBgG, slotBgB)
+				DrawImage(mask, sx + pad, sy + pad, isz, isz)
+			end
+		else
+			local abbr = tl:sub(1, 2):upper()
+			SetDrawColor(1, 1, 1)
+			DrawString(sx + m_floor(SLOT_SIZE / 2), sy + m_floor(SLOT_SIZE / 2) - 7,
+				"CENTER_X", 11, "VAR",
+				(has and "^xAACC88" or "^x555555") .. abbr)
 		end
 	end
 
