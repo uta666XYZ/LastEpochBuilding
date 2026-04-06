@@ -53,9 +53,11 @@ Feature requests are welcome. Please open an issue and describe:
    git clone -b dev https://github.com/uta666XYZ/LastEpochBuilding.git
    ```
 
-2. Run the app from the repository:
+2. Download the latest release zip, extract, and copy the `runtime/` folder into the repo root.
+
+3. Run the app:
    ```
-   runtime\Last Epoch Building.exe
+   Launch.bat
    ```
    Running from the repo automatically enables **Dev Mode**:
    - `F5` — restart in-place

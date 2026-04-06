@@ -1,0 +1,57 @@
+name: Create portable zip
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Tag to build'
+        required: true
+        default: 'v0.x.x'
+env:
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+              with:
+                ref: ${{ github.event.release.tag_name || github.event.inputs.tag_name }}
+            - name: Get version
+              run: |
+                VERSION=$(grep -o '<Version number="[^"]*"' manifest.xml | grep -o '"[^"]*"' | tr -d '"')
+                echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+            - name: Compile Lua to bytecode
+              run: |
+                sudo apt-get install -y luajit
+                find src -name "*.lua" \
+                  ! -path "*/Export/*" \
+                  ! -path "*/TreeData/*" \
+                  ! -path "*/Data/*" | while read f; do
+                  luajit -b "$f" "$f.tmp" && mv "$f.tmp" "$f"
+                done
+            - name: Patch manifest for auto-updater
+              run: |
+                sed -i 's/<Version number="\([^"]*\)"/<Version number="\1" branch="master" platform="win"/' manifest.xml
+            - name: Build portable zip
+              run: |
+                mkdir -p dist/LastEpochBuilding
+                rsync -a \
+                  --exclude='msvcr100.dll' \
+                  --exclude='SimpleGraphic.cfg' \
+                  runtime/ dist/LastEpochBuilding/runtime/
+                rsync -a \
+                  --exclude='HeadlessWrapper.lua' \
+                  --exclude='LaunchInstall.lua' \
+                  --exclude='Settings.xml' \
+                  --exclude='Export/' \
+                  --exclude='Builds/' \
+                  src/ dist/LastEpochBuilding/src/
+                cp manifest.xml changelog.txt help.txt LICENSE.md Launch.bat dist/LastEpochBuilding/
+                cd dist
+                zip -r "LastEpochBuilding-v${VERSION}-win.zip" LastEpochBuilding/
+            - name: Upload to release
+              run: |
+                gh release upload "${{ github.event.release.tag_name || github.event.inputs.tag_name }}" \
+                  "dist/LastEpochBuilding-v${VERSION}-win.zip" --clobber
