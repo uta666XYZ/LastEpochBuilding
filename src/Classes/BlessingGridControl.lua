@@ -8,6 +8,10 @@ local m_floor  = math.floor
 local m_max    = math.max
 local m_min    = math.min
 
+local function blessingIconFile(name)
+	return (name:lower():gsub("[^a-z0-9]+", "_"):gsub("_+$", "")) .. ".png"
+end
+
 local SLOT_GRID = {
 	{tl="Fall of the Outcasts",    row=1},
 	{tl="The Stolen Lance",        row=1},
@@ -53,11 +57,32 @@ local BlessingGridControlClass = newClass("BlessingGridControl", "Control",
 		local w = 4 * SLOT_SIZE + 3 * SLOT_GAP + 8  -- 202
 		local h = 3 * SLOT_SIZE + 2 * SLOT_GAP + 8  -- 148
 		self.Control(anchor, x, y, w, h)
-		self.itemsTab = itemsTab
-		self.slotPos  = computeSlotPositions(w)
-		self.hovered  = nil
+		self.itemsTab     = itemsTab
+		self.slotPos      = computeSlotPositions(w)
+		self.hovered      = nil
+		self.imageHandles = {}
 	end
 )
+
+function BlessingGridControlClass:GetBlessingImage(name)
+	if not name then return nil end
+	local fname = blessingIconFile(name)
+	if not self.imageHandles[fname] then
+		local h = NewImageHandle()
+		h:Load("Assets/blessings/" .. fname, "ASYNC")
+		self.imageHandles[fname] = h
+	end
+	return self.imageHandles[fname]
+end
+
+function BlessingGridControlClass:GetCircleMask()
+	if not self.imageHandles["__mask"] then
+		local h = NewImageHandle()
+		h:Load("Assets/blessings/circle_mask.png", "ASYNC")
+		self.imageHandles["__mask"] = h
+	end
+	return self.imageHandles["__mask"]
+end
 
 function BlessingGridControlClass:IsMouseOver()
 	if not self:IsShown() then return false end
@@ -98,13 +123,15 @@ function BlessingGridControlClass:Draw(viewPort)
 		local hov = (hoveredTL == tl)
 
 		-- Outer circle (fake by drawing a square with rounded look via border)
+		local bgR, bgG, bgB
 		if hov then
-			SetDrawColor(0.22, 0.18, 0.08)
+			bgR, bgG, bgB = 0.22, 0.18, 0.08
 		elseif hasBlessing then
-			SetDrawColor(0.18, 0.13, 0.05)
+			bgR, bgG, bgB = 0.18, 0.13, 0.05
 		else
-			SetDrawColor(0.08, 0.08, 0.10)
+			bgR, bgG, bgB = 0.08, 0.08, 0.10
 		end
+		SetDrawColor(bgR, bgG, bgB)
 		DrawImage(nil, sx, sy, SLOT_SIZE, SLOT_SIZE)
 
 		-- Border (gold ring)
@@ -128,15 +155,27 @@ function BlessingGridControlClass:Draw(viewPort)
 		DrawImage(nil, sx+SLOT_SIZE-3,  sy+2,            1, SLOT_SIZE-4)
 
 		-- Icon content
-		SetDrawColor(1, 1, 1)
 		if hasBlessing then
-			local item   = items[slot.selItemId]
-			local abbr   = item and item.name and item.name:sub(1, 2):upper() or "??"
-			DrawString(sx + m_floor(SLOT_SIZE / 2), sy + m_floor(SLOT_SIZE / 2) - 7,
-				"CENTER_X", 11, "VAR", "^xAACC88" .. abbr)
-			-- Small green dot at bottom
-			SetDrawColor(0.30, 0.70, 0.30)
-			DrawImage(nil, sx + m_floor(SLOT_SIZE / 2) - 3, sy + SLOT_SIZE - 9, 6, 5)
+			local item  = items[slot.selItemId]
+			local iname = item and item.name
+			local img   = iname and self:GetBlessingImage(iname)
+			if img and img:IsValid() then
+				local pad  = 5
+				local isz  = SLOT_SIZE - pad * 2
+				SetDrawColor(1, 1, 1)
+				DrawImage(img, sx + pad, sy + pad, isz, isz)
+				-- Circular mask overlay
+				local mask = self:GetCircleMask()
+				if mask and mask:IsValid() then
+					SetDrawColor(bgR, bgG, bgB)
+					DrawImage(mask, sx + pad, sy + pad, isz, isz)
+				end
+			else
+				local abbr = iname and iname:sub(1, 2):upper() or "??"
+				SetDrawColor(1, 1, 1)
+				DrawString(sx + m_floor(SLOT_SIZE / 2), sy + m_floor(SLOT_SIZE / 2) - 7,
+					"CENTER_X", 11, "VAR", "^xAACC88" .. abbr)
+			end
 		else
 			-- "+" symbol
 			local mid = m_floor(SLOT_SIZE / 2)
