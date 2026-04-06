@@ -25,8 +25,8 @@ local SLOT_GRID = {
 	{tl="Spirits of Fire",         row=3},
 }
 
-local SLOT_SIZE = 44
-local SLOT_GAP  = 6
+local SLOT_SIZE = 65
+local SLOT_GAP  = 8
 
 -- Compute slot positions relative to this control's top-left
 local function computeSlotPositions(controlW)
@@ -51,12 +51,13 @@ local function computeSlotPositions(controlW)
 	return pos
 end
 
-local BlessingGridControlClass = newClass("BlessingGridControl", "Control",
+local BlessingGridControlClass = newClass("BlessingGridControl", "Control", "TooltipHost",
 	function(self, anchor, x, y, itemsTab)
 		-- Width wide enough for 4-slot row + padding
-		local w = 4 * SLOT_SIZE + 3 * SLOT_GAP + 8  -- 202
-		local h = 3 * SLOT_SIZE + 2 * SLOT_GAP + 8  -- 148
+		local w = 4 * SLOT_SIZE + 3 * SLOT_GAP + 8
+		local h = 3 * SLOT_SIZE + 2 * SLOT_GAP + 8
 		self.Control(anchor, x, y, w, h)
+		self.TooltipHost()
 		self.itemsTab     = itemsTab
 		self.slotPos      = computeSlotPositions(w)
 		self.hovered      = nil
@@ -84,6 +85,17 @@ function BlessingGridControlClass:GetCircleMask()
 	return self.imageHandles["__mask"]
 end
 
+-- circle_fill.png: opaque circle, transparent corners (inverse of circle_mask)
+-- Used to STAMP a colour only inside the circle area without touching outside
+function BlessingGridControlClass:GetCircleFill()
+	if not self.imageHandles["__fill"] then
+		local h = NewImageHandle()
+		h:Load("Assets/blessings/circle_fill.png", "ASYNC")
+		self.imageHandles["__fill"] = h
+	end
+	return self.imageHandles["__fill"]
+end
+
 function BlessingGridControlClass:IsMouseOver()
 	if not self:IsShown() then return false end
 	return self:IsMouseInBounds()
@@ -103,74 +115,92 @@ function BlessingGridControlClass:GetHoveredTL()
 	return nil
 end
 
+-- Panel background colour (matches ItemsTab dark background)
+local PANEL_BG_R, PANEL_BG_G, PANEL_BG_B = 0.05, 0.05, 0.07
+
+-- Slot proportions matching lastepochtools.com (outer60, inner48, icon40)
+-- Scaled to SLOT_SIZE=66: ring=7px each side, icon_pad=8
+local RING_W   = 1   -- outer-to-inner gap (pixels each side)
+local ICON_PAD = 1   -- icon inset from outer edge
+
+-- Drawing strategy (two masks):
+--   circle_mask.png : opaque corners, transparent circle  → erase corners of outer ring square
+--   circle_fill.png : transparent corners, opaque circle  → stamp fill/icon only inside circle
+
 function BlessingGridControlClass:Draw(viewPort)
 	local cx, cy    = self:GetPos()
-	local bst       = self.itemsTab.blessingData
 	local slots     = self.itemsTab.slots
 	local items     = self.itemsTab.items
 	local hoveredTL = self:GetHoveredTL()
+	local cmask     = self:GetCircleMask()   -- corners=opaque, circle=transparent
+	local cfill     = self:GetCircleFill()   -- corners=transparent, circle=opaque
 
 	for _, sg in ipairs(SLOT_GRID) do
-		local tl = sg.tl
-		local sp = self.slotPos[tl]
-		local sx = cx + sp.x
-		local sy = cy + sp.y
+		local tl  = sg.tl
+		local sp  = self.slotPos[tl]
+		local sx  = cx + sp.x
+		local sy  = cy + sp.y
 
-		-- Check if blessing is equipped
-		local slot    = slots[tl]
+		local slot        = slots[tl]
 		local hasBlessing = slot and slot.selItemId and slot.selItemId < 0
+		local hov         = (hoveredTL == tl)
 
-		local hov = (hoveredTL == tl)
-
-		-- Outer circle (fake by drawing a square with rounded look via border)
-		local bgR, bgG, bgB
+		-- Ring colour (outer annulus)
+		local brR, brG, brB
 		if hov then
-			bgR, bgG, bgB = 0.22, 0.18, 0.08
+			brR, brG, brB = 0.70, 0.58, 0.22
 		elseif hasBlessing then
-			bgR, bgG, bgB = 0.18, 0.13, 0.05
+			brR, brG, brB = 0.52, 0.40, 0.14
 		else
-			bgR, bgG, bgB = 0.08, 0.08, 0.10
+			brR, brG, brB = 0.22, 0.20, 0.16   -- rgb(56,52,40) like letools
 		end
-		SetDrawColor(bgR, bgG, bgB)
+
+		-- Inner fill: nearly black (#060606)
+		local fillR, fillG, fillB = 0.024, 0.024, 0.024
+
+		-- Step A: outer ring circle
+		--   Draw ring-colour square, then erase corners with panel_bg → ring circle remains
+		SetDrawColor(brR, brG, brB)
 		DrawImage(nil, sx, sy, SLOT_SIZE, SLOT_SIZE)
-
-		-- Border (gold ring)
-		if hov then
-			SetDrawColor(0.65, 0.50, 0.18)
-		elseif hasBlessing then
-			SetDrawColor(0.50, 0.38, 0.12)
-		else
-			SetDrawColor(0.28, 0.23, 0.08)
+		if cmask and cmask:IsValid() then
+			SetDrawColor(PANEL_BG_R, PANEL_BG_G, PANEL_BG_B)
+			DrawImage(cmask, sx, sy, SLOT_SIZE, SLOT_SIZE)
 		end
-		-- Draw a thick-ish border by layering 2 rectangles
-		DrawImage(nil, sx,              sy,              SLOT_SIZE, 2)
-		DrawImage(nil, sx,              sy+SLOT_SIZE-2,  SLOT_SIZE, 2)
-		DrawImage(nil, sx,              sy,              2, SLOT_SIZE)
-		DrawImage(nil, sx+SLOT_SIZE-2,  sy,              2, SLOT_SIZE)
-		-- Inner border line
-		SetDrawColor(0.35, 0.28, 0.08)
-		DrawImage(nil, sx+2,            sy+2,            SLOT_SIZE-4, 1)
-		DrawImage(nil, sx+2,            sy+SLOT_SIZE-3,  SLOT_SIZE-4, 1)
-		DrawImage(nil, sx+2,            sy+2,            1, SLOT_SIZE-4)
-		DrawImage(nil, sx+SLOT_SIZE-3,  sy+2,            1, SLOT_SIZE-4)
 
-		-- Icon content
+		-- Step B: inner fill circle
+		--   Use circle_fill to STAMP dark colour only inside the inner circle.
+		--   This does NOT touch pixels outside the inner circle, so the outer ring is preserved.
+		local fx  = sx + RING_W
+		local fy  = sy + RING_W
+		local fsz = SLOT_SIZE - RING_W * 2
+		if cfill and cfill:IsValid() then
+			SetDrawColor(fillR, fillG, fillB)
+			DrawImage(cfill, fx, fy, fsz, fsz)
+		else
+			-- Fallback when fill not yet loaded: stamp with mask approach
+			SetDrawColor(fillR, fillG, fillB)
+			DrawImage(nil, fx, fy, fsz, fsz)
+			if cmask and cmask:IsValid() then
+				SetDrawColor(PANEL_BG_R, PANEL_BG_G, PANEL_BG_B)
+				DrawImage(cmask, fx, fy, fsz, fsz)
+			end
+		end
+
+		-- Step C: icon or placeholder
 		if hasBlessing then
 			local item  = items[slot.selItemId]
 			local iname = item and item.name
 			local img   = iname and self:GetBlessingImage(iname)
+			local isz   = SLOT_SIZE - ICON_PAD * 2
 			if img and img:IsValid() then
-				local pad  = 5
-				local isz  = SLOT_SIZE - pad * 2
 				SetDrawColor(1, 1, 1)
-				DrawImage(img, sx + pad, sy + pad, isz, isz)
-				-- Circular mask overlay
-				local mask = self:GetCircleMask()
-				if mask and mask:IsValid() then
-					SetDrawColor(bgR, bgG, bgB)
-					DrawImage(mask, sx + pad, sy + pad, isz, isz)
+				DrawImage(img, sx + ICON_PAD, sy + ICON_PAD, isz, isz)
+				-- Clip icon to circle using fill mask
+				if cfill and cfill:IsValid() then
+					-- Icon already inside inner circle area; no extra clip needed
 				end
 			else
+				-- Fallback text
 				local abbr = iname and iname:sub(1, 2):upper() or "??"
 				SetDrawColor(1, 1, 1)
 				DrawString(sx + m_floor(SLOT_SIZE / 2), sy + m_floor(SLOT_SIZE / 2) - 7,
@@ -179,16 +209,66 @@ function BlessingGridControlClass:Draw(viewPort)
 		else
 			-- "+" symbol
 			local mid = m_floor(SLOT_SIZE / 2)
-			local arm = 7
-			local th  = 3
+			local arm = 8
+			local th  = 2
 			if hov then
-				SetDrawColor(0.55, 0.45, 0.18)
+				SetDrawColor(0.65, 0.52, 0.20)
 			else
-				SetDrawColor(0.30, 0.28, 0.14)
+				SetDrawColor(0.30, 0.28, 0.18)
 			end
-			DrawImage(nil, sx + mid - m_floor(th/2), sy + mid - arm, th, arm * 2)
-			DrawImage(nil, sx + mid - arm,           sy + mid - m_floor(th/2), arm * 2, th)
+			DrawImage(nil, sx + mid - m_floor(th / 2), sy + mid - arm, th, arm * 2)
+			DrawImage(nil, sx + mid - arm, sy + mid - m_floor(th / 2), arm * 2, th)
 		end
+
+		-- Record hovered slot position for tooltip (drawn after loop)
+		if hov then
+			self._hovTooltipSX = sx
+			self._hovTooltipSY = sy
+			self._hovTooltipTL = tl
+		end
+	end
+
+	-- Draw tooltip on top (after all slots, so it's not covered)
+	local hsl = self._hovTooltipTL
+	if hsl and hoveredTL == hsl then
+		local blessingData = self.itemsTab.blessingData
+		local tlData = blessingData and blessingData[hsl]
+		local hslot = slots[hsl]
+		local item2 = hslot and hslot.selItemId and hslot.selItemId < 0 and items[hslot.selItemId]
+		self.tooltip:Clear()
+		self.tooltip.maxWidth = 300
+		if item2 then
+			self.tooltip:AddLine(14, "^xC8A040" .. item2.name:upper())
+			local entry2
+			if tlData then
+				for _, b in ipairs(tlData.normal or {}) do
+					if b.name == item2.name then entry2 = b; break end
+				end
+				if not entry2 then
+					for _, b in ipairs(tlData.grand or {}) do
+						if b.name == item2.name then entry2 = b; break end
+					end
+				end
+			end
+			if entry2 then
+				local impl1 = (entry2.impl1 or ""):gsub("{[^}]+}", "")
+				self.tooltip:AddLine(13, "^xCCCCCC" .. impl1)
+				if entry2.impl2 then
+					local impl2 = entry2.impl2:gsub("{[^}]+}", "")
+						:gsub("%^x%x%x%x%x%x%x", "")
+						:gsub("%^%d", "")
+					self.tooltip:AddLine(12, "^xCCCCCC" .. impl2)
+				end
+			end
+		else
+			self.tooltip:AddLine(13, "^x888888" .. hsl)
+			self.tooltip:AddLine(12, "^x555555Click to select a blessing")
+		end
+		SetDrawLayer(nil, 100)
+		self.tooltip:Draw(self._hovTooltipSX, self._hovTooltipSY, SLOT_SIZE, SLOT_SIZE, viewPort)
+		SetDrawLayer(nil, 0)
+	else
+		self._hovTooltipTL = nil
 	end
 end
 

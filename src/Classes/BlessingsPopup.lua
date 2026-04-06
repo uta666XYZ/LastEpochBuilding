@@ -22,12 +22,12 @@ local SLOT_SIZE = 44
 local SLOT_GAP  = 6
 
 local CARD_AREA_X  = LEFT_W + 8          -- 218
-local CARD_AREA_Y  = 196
+local CARD_AREA_Y  = 172
 local CARD_AREA_W  = POPUP_W - LEFT_W - 8 - 16  -- 586 (16 reserved for scrollbar)
 local CARD_AREA_H  = POPUP_H - CARD_AREA_Y - 8  -- 436
 local CARD_COL_GAP = 8
 local CARD_W       = m_floor((CARD_AREA_W - CARD_COL_GAP) / 2)  -- 289
-local CARD_H       = 90
+local CARD_H       = 120
 local CARD_ROW_GAP = 6
 
 -- ============================================================
@@ -186,6 +186,15 @@ function BlessingsPopupClass:GetCircleMask()
 	return self.imageHandles["__mask"]
 end
 
+function BlessingsPopupClass:GetCircleFill()
+	if not self.imageHandles["__fill"] then
+		local h = NewImageHandle()
+		h:Load("Assets/blessings/circle_fill.png", "ASYNC")
+		self.imageHandles["__fill"] = h
+	end
+	return self.imageHandles["__fill"]
+end
+
 function BlessingsPopupClass:BuildControls()
 	-- Close button
 	t_insert(self.controls, new("ButtonControl",
@@ -258,20 +267,6 @@ function BlessingsPopupClass:BuildControls()
 	end
 	t_insert(self.controls, valPlus)
 	self.controls.valPlus = valPlus
-
-	-- Search edit control
-	local searchEdit = new("EditControl",
-		{"TOPLEFT", self, "TOPLEFT"}, CARD_AREA_X, 170, CARD_AREA_W, 20,
-		"", "Search blessings...", nil, nil,
-		function(buf)
-			self.searchText = buf:lower()
-			if self.controls.cardScrollbar then
-				self.controls.cardScrollbar:SetOffset(0)
-			end
-		end
-	)
-	t_insert(self.controls, searchEdit)
-	self.controls.searchEdit = searchEdit
 
 	-- Card area scrollbar
 	local sb = new("ScrollBarControl",
@@ -400,24 +395,36 @@ function BlessingsPopupClass:DrawCard(cx, cy, entry, isGrand, isEquipped, isHove
 	end
 
 	-- Text (right of icon)
-	local tx = cx + 46
-	local ty = cy + 6
+	local tx    = m_floor(cx + 46)
+	local ty    = m_floor(cy + 8)
+	local textW = CARD_W - 46 - 6   -- available width for wrapped text
 
 	-- Name (gold, uppercase)
 	SetDrawColor(1, 1, 1)
-	DrawString(tx, ty, "LEFT", 13, "VAR", "^xC8A040" .. entry.name:upper())
+	DrawString(tx, ty, "LEFT", 14, "VAR", "^xC8A040" .. entry.name:upper())
 
-	-- Type + timeline (small grey)
-	DrawString(tx, ty + 17, "LEFT", 10, "VAR",
-		"^x666666BLESSING   ^x505050" .. self.selectedTL:upper())
+	-- Stat1 (wrapped, bigger font)
+	local stat1raw   = (entry.impl1 or ""):gsub("{[^}]+}", "")
+	local stat1Lines = main:WrapString(stat1raw, 14, textW)
+	local lineY = ty + 18
+	for i, line in ipairs(stat1Lines) do
+		DrawString(tx, lineY, "LEFT", 14, "VAR", "^xCCCCCC" .. line)
+		lineY = lineY + 16
+		if i >= 2 then break end
+	end
 
-	-- Stat text
-	local stat1 = (entry.impl1 or ""):gsub("{[^}]+}", "")
-	DrawString(tx, ty + 31, "LEFT", 12, "VAR", "^xBBBBBB" .. stat1)
-
+	-- Stat2 (wrapped, strip embedded color codes so color is consistent)
 	if entry.impl2 then
-		local stat2 = entry.impl2:gsub("{[^}]+}", "")
-		DrawString(tx, ty + 47, "LEFT", 11, "VAR", "^x9A9A70" .. stat2)
+		local stat2raw   = entry.impl2:gsub("{[^}]+}", "")
+			:gsub("%^x%x%x%x%x%x%x", "")
+			:gsub("%^%d", "")
+		local stat2Lines = main:WrapString(stat2raw, 13, textW)
+		lineY = ty + 56
+		for i, line in ipairs(stat2Lines) do
+			DrawString(tx, lineY, "LEFT", 13, "VAR", "^xCCCCCC" .. line)
+			lineY = lineY + 15
+			if i >= 2 then break end
+		end
 	end
 end
 
@@ -442,7 +449,12 @@ function BlessingsPopupClass:Draw(viewPort)
 	drawRect(px + LEFT_W + 2, py + 8, 1, POPUP_H - 16, 0.22, 0.18, 0.07)
 
 	-- === SLOT GRID ===
-	local bst = self.blessingState
+	local PBR, PBG, PBB = 0.05, 0.05, 0.07
+	local S_RING_W   = 4
+	local S_ICON_PAD = 5
+	local bst   = self.blessingState
+	local smask = self:GetCircleMask()   -- opaque corners, transparent circle
+	local sfill = self:GetCircleFill()   -- transparent corners, opaque circle
 	for _, sg in ipairs(SLOT_GRID) do
 		local tl  = sg.tl
 		local sp  = SLOT_POS[tl]
@@ -451,44 +463,58 @@ function BlessingsPopupClass:Draw(viewPort)
 		local sel = (self.selectedTL == tl)
 		local has = bst[tl] and bst[tl].entry ~= nil
 
+		local brR, brG, brB
 		if sel then
-			drawRect(sx, sy, SLOT_SIZE, SLOT_SIZE, 0.20, 0.11, 0.30)
-			drawBorder(sx, sy, SLOT_SIZE, SLOT_SIZE, 0.58, 0.26, 0.78)
+			brR, brG, brB = 0.58, 0.26, 0.78
 		elseif has then
-			drawRect(sx, sy, SLOT_SIZE, SLOT_SIZE, 0.14, 0.10, 0.05)
-			drawBorder(sx, sy, SLOT_SIZE, SLOT_SIZE, 0.50, 0.35, 0.12)
+			brR, brG, brB = 0.52, 0.40, 0.14
 		else
-			drawRect(sx, sy, SLOT_SIZE, SLOT_SIZE, 0.08, 0.07, 0.10)
-			drawBorder(sx, sy, SLOT_SIZE, SLOT_SIZE, 0.25, 0.20, 0.08)
+			brR, brG, brB = 0.22, 0.20, 0.16
+		end
+		local fillR, fillG, fillB
+		if sel then
+			fillR, fillG, fillB = 0.18, 0.08, 0.28
+		else
+			fillR, fillG, fillB = 0.024, 0.024, 0.024
 		end
 
-		-- Icon or abbreviation
+		-- Step A: outer ring circle (erase corners with panel bg)
+		SetDrawColor(brR, brG, brB)
+		DrawImage(nil, sx, sy, SLOT_SIZE, SLOT_SIZE)
+		if smask and smask:IsValid() then
+			SetDrawColor(PBR, PBG, PBB)
+			DrawImage(smask, sx, sy, SLOT_SIZE, SLOT_SIZE)
+		end
+
+		-- Step B: inner fill circle (stamp only inside inner circle)
+		local fx  = sx + S_RING_W
+		local fy  = sy + S_RING_W
+		local fsz = SLOT_SIZE - S_RING_W * 2
+		if sfill and sfill:IsValid() then
+			SetDrawColor(fillR, fillG, fillB)
+			DrawImage(sfill, fx, fy, fsz, fsz)
+		else
+			SetDrawColor(fillR, fillG, fillB)
+			DrawImage(nil, fx, fy, fsz, fsz)
+			if smask and smask:IsValid() then
+				SetDrawColor(PBR, PBG, PBB)
+				DrawImage(smask, fx, fy, fsz, fsz)
+			end
+		end
+
+		-- Step C: icon or abbreviation
 		local st = bst[tl]
 		local equippedName = st and st.entry and st.entry.name
 		local img = equippedName and self:GetBlessingImage(equippedName)
 		if img and img:IsValid() then
-			local pad = 5
-			local isz = SLOT_SIZE - pad * 2
+			local isz = SLOT_SIZE - S_ICON_PAD * 2
 			SetDrawColor(1, 1, 1)
-			DrawImage(img, sx + pad, sy + pad, isz, isz)
-			local mask = self:GetCircleMask()
-			if mask and mask:IsValid() then
-				local slotBgR, slotBgG, slotBgB
-				if sel then
-					slotBgR, slotBgG, slotBgB = 0.20, 0.11, 0.30
-				elseif has then
-					slotBgR, slotBgG, slotBgB = 0.14, 0.10, 0.05
-				else
-					slotBgR, slotBgG, slotBgB = 0.08, 0.07, 0.10
-				end
-				SetDrawColor(slotBgR, slotBgG, slotBgB)
-				DrawImage(mask, sx + pad, sy + pad, isz, isz)
-			end
+			DrawImage(img, sx + S_ICON_PAD, sy + S_ICON_PAD, isz, isz)
 		else
 			local abbr = tl:sub(1, 2):upper()
 			SetDrawColor(1, 1, 1)
 			DrawString(sx + m_floor(SLOT_SIZE / 2), sy + m_floor(SLOT_SIZE / 2) - 7,
-				"CENTER_X", 11, "VAR",
+				"CENTER_X", 10, "VAR",
 				(has and "^xAACC88" or "^x555555") .. abbr)
 		end
 	end
@@ -496,7 +522,47 @@ function BlessingsPopupClass:Draw(viewPort)
 	-- Slot grid / timeline-list separator
 	drawRect(px + 4, py + 200, LEFT_W - 8, 1, 0.22, 0.18, 0.07)
 
-	-- === RIGHT PANEL HEADER ===
+	-- === CARD AREA ===
+	local sb           = self.controls.cardScrollbar
+	local scrollOffset = sb and sb.offset or 0
+	local rows         = self:GetCardRows()
+	local totalH       = #rows * (CARD_H + CARD_ROW_GAP)
+	if sb then sb:SetContentDimension(totalH, CARD_AREA_H) end
+
+	local areaX  = px + CARD_AREA_X
+	local areaY  = py + CARD_AREA_Y
+	local areaB  = areaY + CARD_AREA_H
+	local curSt2 = bst[self.selectedTL]
+
+	for ri, row in ipairs(rows) do
+		local cardRowY = m_floor(areaY + (ri - 1) * (CARD_H + CARD_ROW_GAP) - scrollOffset)
+		if cardRowY + CARD_H >= areaY and cardRowY < areaB then
+
+			if row.normal then
+				local isEq  = curSt2 and curSt2.entry == row.normal
+				local isHov = self.hoveredCard
+					and self.hoveredCard.entry == row.normal
+					and not self.hoveredCard.isGrand
+				self:DrawCard(areaX, cardRowY, row.normal, false, isEq, isHov)
+			end
+
+			if row.grand then
+				local cx    = areaX + CARD_W + CARD_COL_GAP
+				local isEq  = curSt2 and curSt2.entry == row.grand
+				local isHov = self.hoveredCard
+					and self.hoveredCard.entry == row.grand
+					and self.hoveredCard.isGrand
+				self:DrawCard(cx, cardRowY, row.grand, true, isEq, isHov)
+			end
+		end
+	end
+
+	-- Mask card overflow: cover header zone and bottom strip with panel bg
+	-- (draw BEFORE header text so header is always visible on top)
+	drawRect(areaX, py + 36, CARD_AREA_W + 16, CARD_AREA_Y - 36, 0.05, 0.05, 0.07)
+	drawRect(areaX, areaB, CARD_AREA_W + 16, 8, 0.05, 0.05, 0.07)
+
+	-- === RIGHT PANEL HEADER (drawn after cards + mask so it's always on top) ===
 	local rpx = px + LEFT_W + 10
 
 	-- Timeline name
@@ -518,14 +584,13 @@ function BlessingsPopupClass:Draw(viewPort)
 			DrawString(rpx, py + 108, "LEFT", 12, "VAR", "^xAAAA88" .. stat2)
 		end
 
-		-- Range + value (value is drawn between the - and + buttons)
+		-- Range + value
 		if curSt.rollVal then
 			local minV = m_floor(b.minVal + 0.5)
 			local maxV = m_ceil(b.maxVal)
-			DrawString(rpx, py + 128, "LEFT", 11, "VAR",
+			DrawString(rpx, py + 116, "LEFT", 11, "VAR",
 				string.format("^x666666Range: %d - %d", minV, maxV))
-			-- Value text (between valMinus x=LEFT_W+10+22=242 and valPlus x=LEFT_W+78)
-			DrawString(px + LEFT_W + 36, py + 138, "LEFT", 14, "VAR",
+			DrawString(px + LEFT_W + 36, py + 140, "LEFT", 14, "VAR",
 				"^7" .. tostring(curSt.rollVal))
 		end
 	else
@@ -534,41 +599,6 @@ function BlessingsPopupClass:Draw(viewPort)
 
 	-- Header separator
 	drawRect(rpx - 4, py + 162, POPUP_W - LEFT_W - 10, 1, 0.22, 0.18, 0.07)
-
-	-- === CARD AREA ===
-	local sb           = self.controls.cardScrollbar
-	local scrollOffset = sb and sb.offset or 0
-	local rows         = self:GetCardRows()
-	local totalH       = #rows * (CARD_H + CARD_ROW_GAP)
-	if sb then sb:SetContentDimension(totalH, CARD_AREA_H) end
-
-	local areaX = px + CARD_AREA_X
-	local areaY = py + CARD_AREA_Y
-	local areaB = areaY + CARD_AREA_H
-	local curSt2 = bst[self.selectedTL]
-
-	for ri, row in ipairs(rows) do
-		local cardRowY = areaY + (ri - 1) * (CARD_H + CARD_ROW_GAP) - scrollOffset
-		if cardRowY + CARD_H >= areaY and cardRowY < areaB then
-
-			if row.normal then
-				local isEq  = curSt2 and curSt2.entry == row.normal
-				local isHov = self.hoveredCard
-					and self.hoveredCard.entry == row.normal
-					and not self.hoveredCard.isGrand
-				self:DrawCard(areaX, cardRowY, row.normal, false, isEq, isHov)
-			end
-
-			if row.grand then
-				local cx    = areaX + CARD_W + CARD_COL_GAP
-				local isEq  = curSt2 and curSt2.entry == row.grand
-				local isHov = self.hoveredCard
-					and self.hoveredCard.entry == row.grand
-					and self.hoveredCard.isGrand
-				self:DrawCard(cx, cardRowY, row.grand, true, isEq, isHov)
-			end
-		end
-	end
 
 	-- Card area top rule
 	drawRect(px + CARD_AREA_X - 2, py + CARD_AREA_Y - 1, CARD_AREA_W + 20, 1, 0.22, 0.18, 0.07)
