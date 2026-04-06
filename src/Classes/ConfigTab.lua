@@ -580,80 +580,11 @@ local ConfigTabClass = newClass("ConfigTab", "UndoHandler", "ControlHost", "Cont
 	end
 	self.controls.scrollBar = new("ScrollBarControl", {"TOPRIGHT",self,"TOPRIGHT"}, 0, 0, 18, 0, 50, "VERTICAL", true)
 
-	-- ===== BLESSING PANEL (moved from ItemsTab; UI configured by ConfigTab, data/logic on itemsTab) =====
-	local itemsTab = self.build.itemsTab
-	local blessingData = itemsTab.blessingData
-	local blessingTimelines = itemsTab.blessingTimelines
-
-	-- blessingAnchor is repositioned each Draw() below all config sections
-	self.controls.blessingAnchor = new("Control", {"TOPLEFT", self.controls.sectionAnchor, "TOPLEFT"}, 10, 0, 0, 0)
-	self.controls.blessingSection = new("SectionControl", {"TOPLEFT", self.controls.blessingAnchor, "TOPLEFT"}, 0, 0, 360, 0, "Blessings")
-	t_insert(self.controls, self.controls.blessingSection)
-	local blessingInner = new("Control", {"TOPLEFT", self.controls.blessingSection, "TOPLEFT"}, 6, 10, 0, 0)
-	t_insert(self.controls, blessingInner)
-	local prevBless = blessingInner
+	-- blessingControls kept as empty table for legacy references
 	self.blessingControls = {}
-
-	for _, tl in ipairs(blessingTimelines) do
-		local tlData = blessingData[tl]
-		if tlData then
-			local isGrand = false
-			local slider, drop, gradeBtn
-
-			local function buildList(grand)
-				local list = { {label="None"} }
-				for _, b in ipairs(grand and tlData.grand or tlData.normal) do
-					t_insert(list, {label=b.label or b.impl1 or b.name, data=b})
-				end
-				return list
-			end
-
-			-- Row1: timeline label + dropdown
-			local tlLabel = new("LabelControl", {"TOPLEFT",prevBless,"BOTTOMLEFT"}, 0, 5, 144, 16, function()
-				return "^x888888"..tl..":"
-			end)
-			drop = new("DropDownControl", {"TOPLEFT",prevBless,"BOTTOMLEFT"}, 148, 5, 250, 40, buildList(false), function(index, value)
-				local frac = slider and slider.val or 1.0
-				self.build.itemsTab:updateBlessingSlot(tl, value and value.data, frac)
-			end)
-			drop.enableDroppedWidth = true
-
-			-- Row2: grade button + slider + value
-			local row2 = new("Control", {"TOPLEFT",tlLabel,"BOTTOMLEFT"}, 0, 28, 0, 20)
-			gradeBtn = new("ButtonControl", {"LEFT",row2,"RIGHT"}, 0, 2, 52, 16, "Normal", function()
-				isGrand = not isGrand
-				gradeBtn.label = isGrand and "Grand" or "Normal"
-				drop:SetList(buildList(isGrand))
-				local sel = drop.list[drop.selIndex]
-				self.build.itemsTab:updateBlessingSlot(tl, sel and sel.data, slider and slider.val or 1.0)
-			end)
-			slider = new("SliderControl", {"LEFT",gradeBtn,"RIGHT"}, 4, 2, 150, 16, function(val)
-				local sel = drop.list[drop.selIndex]
-				self.build.itemsTab:updateBlessingSlot(tl, sel and sel.data, val)
-			end)
-			slider.val = 1.0
-			local valLabel = new("LabelControl", {"LEFT",slider,"RIGHT"}, 4, 0, 44, 16, function()
-				local sel = drop.list[drop.selIndex]
-				if not sel or not sel.data then return "^x555555--" end
-				local b = sel.data
-				local v = b.minVal + slider.val * (b.maxVal - b.minVal)
-				return string.format("^7%d", math.floor(v + 0.5))
-			end)
-
-			t_insert(self.controls, tlLabel)
-			t_insert(self.controls, drop)
-			t_insert(self.controls, row2)
-			t_insert(self.controls, gradeBtn)
-			t_insert(self.controls, slider)
-			t_insert(self.controls, valLabel)
-			self.blessingControls[tl] = {drop=drop, slider=slider, gradeBtn=gradeBtn}
-			prevBless = row2
-		end
-	end
-
-	self.controls.blessingPanelEnd = new("Control", {"TOPLEFT",prevBless,"BOTTOMLEFT"}, 0, 4, 0, 0)
+	self.controls.blessingAnchor = new("Control", {"TOPLEFT", self.controls.sectionAnchor, "TOPLEFT"}, 10, 0, 0, 0)
+	self.controls.blessingPanelEnd = new("Control", {"TOPLEFT", self.controls.blessingAnchor, "TOPLEFT"}, 0, 0, 0, 0)
 	t_insert(self.controls, self.controls.blessingPanelEnd)
-	-- ===== END BLESSING PANEL =====
 end)
 
 function ConfigTabClass:Load(xml, fileName)
@@ -837,9 +768,7 @@ function ConfigTabClass:Draw(viewPort, inputEvents)
 	-- Set anchor so GetPos() resolves correctly for content height calculation
 	self.controls.sectionAnchor.y = 20 - self.controls.scrollBar.offset
 
-	local blessSectionY = select(2, self.controls.blessingSection:GetPos())
 	local blessEndY = select(2, self.controls.blessingPanelEnd:GetPos())
-	self.controls.blessingSection.height = blessEndY - blessSectionY + 10
 	local scrollContent = blessEndY - viewPort.y + self.controls.scrollBar.offset + 30
 
 	self.controls.scrollBar.height = viewPort.height
