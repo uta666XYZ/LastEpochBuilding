@@ -33,13 +33,15 @@ jobs:
                 done
             - name: Patch manifest for auto-updater
               run: |
-                sed -i 's/<Version number="\([^"]*\)"/<Version number="\1" branch="master" platform="win"/' manifest.xml
+                sed -i 's/<Version number="\([^"]*\)"/<Version number="\1" branch="master" platform="win32"/' manifest.xml
             - name: Build portable zip
               run: |
                 mkdir -p dist/LastEpochBuilding
                 rsync -a \
                   --exclude='msvcr100.dll' \
                   --exclude='SimpleGraphic.cfg' \
+                  --exclude='imgui.ini' \
+                  --exclude='lua-profiler.lua' \
                   runtime/ dist/LastEpochBuilding/runtime/
                 rsync -a \
                   --exclude='HeadlessWrapper.lua' \
