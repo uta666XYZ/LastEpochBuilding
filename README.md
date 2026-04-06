@@ -1,6 +1,7 @@
 # Last Epoch Building (LEB)
 
 A Path of Building-style offline build planner for **Last Epoch**.
+![Passive Tree](./docs/passiveTrees.png) ![Skill Selection](./docs/skillSelectionWindow.png) ![Skill Tree](./docs/skillTree.png) ![Items Window](./docs/itemsWindow.png)
 
 > Not affiliated with Eleventh Hour Games.
 > This is a third-party tool. Any in-game issues are not the responsibility of EHG.
@@ -26,9 +27,9 @@ Feedback and bug reports are always welcome — see [Contributing](#contributing
 - **Defense stats** — armor, dodge, block, ward, resistances
 - **Unique & Legendary items**
 - **Set items** (Set bonus effect accuracy may vary — see Roadmap)
-- **Idols** including Season 4 Altar
+- **Idols** including Season 4 Idol Altar
 - **Blessings** (found in the Config tab)
-- **Character import** — offline save files and online characters via LEtools build planner
+- **Character import** — offline save files and online characters via LE Tools build planner
 - **Season 4: Shattered Omens** support
 
 > **Note:** Mod recognition rate is ~90% (89.7% verified as of v0.10). Recognized mods
