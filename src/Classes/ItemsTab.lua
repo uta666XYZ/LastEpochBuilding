@@ -631,7 +631,6 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 	self.controls.displayItemTooltipAnchor = new("Control", {"TOPLEFT",self.controls.addDisplayItem,"BOTTOMLEFT"}, 0, 8)
 
 	-- Scroll bars
-	self.controls.scrollBarH = new("ScrollBarControl", nil, 0, 0, 0, 18, 100, "HORIZONTAL", true)
 	self.controls.scrollBarV = new("ScrollBarControl", nil, 0, 0, 18, 0, 100, "VERTICAL", true)
 
 	-- Initialise drag target lists
@@ -816,39 +815,22 @@ function ItemsTabClass:Draw(viewPort, inputEvents)
 	self.y = viewPort.y
 	self.width = viewPort.width
 	self.height = viewPort.height
-	self.controls.scrollBarH.width = viewPort.width
-	self.controls.scrollBarH.x = viewPort.x
-	self.controls.scrollBarH.y = viewPort.y + viewPort.height - 18
-	self.controls.scrollBarV.height = viewPort.height - 18
+	self.controls.scrollBarV.height = viewPort.height
 	self.controls.scrollBarV.x = viewPort.x + viewPort.width - 18
 	self.controls.scrollBarV.y = viewPort.y
 	do
-		local maxY = select(2, self.controls.idolGridPanelEnd:GetPos()) + 24
-		local maxX = self.anchorDisplayItem:GetPos() + 462
+		local blessGridY = select(2, self.controls.blessingGrid:GetPos())
+		local _, blessGridH = self.controls.blessingGrid:GetSize()
+		local maxY = m_max(select(2, self.controls.idolGridPanelEnd:GetPos()) + 24, blessGridY + blessGridH + 8)
 		if self.displayItem then
 			local x, y = self.controls.displayItemTooltipAnchor:GetPos()
 			local ttW, ttH = self.displayItemTooltip:GetDynamicSize(viewPort)
 			maxY = m_max(maxY, y + ttH + 4)
-			maxX = m_max(maxX, x + ttW + 80)
 		end
 		local contentHeight = maxY - self.y
-		local contentWidth = maxX - self.x
-		local v = contentHeight > viewPort.height
-		local h = contentWidth > viewPort.width - (v and 20 or 0)
-		if h then
-			v = contentHeight > viewPort.height - 20
-		end
-		self.controls.scrollBarV:SetContentDimension(contentHeight, viewPort.height - (h and 20 or 0))
-		self.controls.scrollBarH:SetContentDimension(contentWidth, viewPort.width - (v and 20 or 0))
-		if self.snapHScroll == "RIGHT" then
-			self.controls.scrollBarH:SetOffset(self.controls.scrollBarH.offsetMax)
-		elseif self.snapHScroll == "LEFT" then
-			self.controls.scrollBarH:SetOffset(0)
-		end
-		self.snapHScroll = nil
-		self.maxY = h and self.controls.scrollBarH.y or viewPort.y + viewPort.height
+		self.controls.scrollBarV:SetContentDimension(contentHeight, viewPort.height)
+		self.maxY = viewPort.y + viewPort.height
 	end
-	self.x = self.x - self.controls.scrollBarH.offset
 	self.y = self.y - self.controls.scrollBarV.offset
 
 	for _, event in ipairs(inputEvents) do
@@ -877,17 +859,9 @@ function ItemsTabClass:Draw(viewPort, inputEvents)
 	for _, event in ipairs(inputEvents) do
 		if event.type == "KeyUp" then
 			if self.controls.scrollBarV:IsScrollDownKey(event.key) then
-				if self.controls.scrollBarV:IsMouseOver() or not self.controls.scrollBarH:IsShown() then
-					self.controls.scrollBarV:Scroll(1)
-				else
-					self.controls.scrollBarH:Scroll(1)
-				end
+				self.controls.scrollBarV:Scroll(1)
 			elseif self.controls.scrollBarV:IsScrollUpKey(event.key) then
-				if self.controls.scrollBarV:IsMouseOver() or not self.controls.scrollBarH:IsShown() then
-					self.controls.scrollBarV:Scroll(-1)
-				else
-					self.controls.scrollBarH:Scroll(-1)
-				end
+				self.controls.scrollBarV:Scroll(-1)
 			end
 		end
 	end
@@ -910,9 +884,6 @@ function ItemsTabClass:Draw(viewPort, inputEvents)
 	end
 
 	self:DrawControls(viewPort)
-	if self.controls.scrollBarH:IsShown() then
-		self.controls.scrollBarH:Draw(viewPort)
-	end
 	if self.controls.scrollBarV:IsShown() then
 		self.controls.scrollBarV:Draw(viewPort)
 	end

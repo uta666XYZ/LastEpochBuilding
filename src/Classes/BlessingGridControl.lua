@@ -252,17 +252,17 @@ function BlessingGridControlClass:Draw(viewPort)
 			end
 			if entry2 then
 				local impl1 = (entry2.impl1 or ""):gsub("{[^}]+}", "")
-				self.tooltip:AddLine(13, "^xCCCCCC" .. impl1)
+				self.tooltip:AddLine(14, "^xCCCCCC" .. impl1)
 				if entry2.impl2 then
 					local impl2 = entry2.impl2:gsub("{[^}]+}", "")
 						:gsub("%^x%x%x%x%x%x%x", "")
 						:gsub("%^%d", "")
-					self.tooltip:AddLine(12, "^xCCCCCC" .. impl2)
+					self.tooltip:AddLine(14, "^xCCCCCC" .. impl2)
 				end
 			end
 		else
-			self.tooltip:AddLine(13, "^x888888" .. hsl)
-			self.tooltip:AddLine(12, "^x555555Click to select a blessing")
+			self.tooltip:AddLine(14, "^x888888" .. hsl)
+			self.tooltip:AddLine(14, "^x555555Click to select a blessing")
 		end
 		SetDrawLayer(nil, 100)
 		self.tooltip:Draw(self._hovTooltipSX, self._hovTooltipSY, SLOT_SIZE, SLOT_SIZE, viewPort)
