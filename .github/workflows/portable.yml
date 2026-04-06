@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
             - name: Checkout
-              uses: actions/checkout@v4
+              uses: actions/checkout@v4.2.2
             - name: Get version
               run: |
                 VERSION=$(grep -o '<Version number="[^"]*"' manifest.xml | grep -o '"[^"]*"' | tr -d '"')
@@ -62,7 +62,7 @@ jobs:
                   "dist/LastEpochBuilding-v${VERSION}-win.zip" --clobber
             - name: Save as artifact (manual test run)
               if: github.event_name == 'workflow_dispatch'
-              uses: actions/upload-artifact@v4
+              uses: actions/upload-artifact@v4.6.2
               with:
                 name: LastEpochBuilding-v${{ env.VERSION }}-win
                 path: dist/*.zip
