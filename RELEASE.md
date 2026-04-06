@@ -5,6 +5,7 @@
 - Push access to the `dev` branch
 - GitHub Actions enabled on the repository
 - `APP_ID` and `PRIVATE_KEY` secrets configured in repository settings
+- `POB_INSTALLER_KEY` secret configured (SSH key for the private runtime repo)
 
 ## Choosing a Version Number
 
@@ -30,6 +31,15 @@ Current version is shown in `manifest.xml`.
 5. Review the PR, edit release notes as needed
 6. Merge the PR into `master`
 7. The release is published automatically
+8. The [portable zip workflow](../../actions/workflows/portable.yml) triggers and uploads `LastEpochBuilding-vX.X.X-win.zip` to the release
+
+## Portable Distribution
+
+LEB is distributed as a portable zip — no installer required.
+
+Users download the zip, extract it, and run `Launch.bat` or `Last Epoch Building.exe` directly. User data (builds, settings) is stored in the same folder as the executable.
+
+The portable zip is built by `portable.yml`, which uses the private `LastEpochBuilding-Installer` repository and its `make_portable.py` script to bundle the runtime and Lua files.
 
 ## Updating Game Data (New LE Patch)
 
@@ -41,9 +51,3 @@ When Last Epoch releases a patch:
 4. Rebuild ModCache: launch the app with `Ctrl` held to force rebuild
 5. Run tests: `busted --lua=luajit`
 6. Merge to `dev`, then release normally
-
-## Installer and Portable
-
-The `installer.yml` workflow builds both:
-- An installable `.exe` setup
-- A portable zip (extract and run — no installation needed)

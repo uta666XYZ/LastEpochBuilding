@@ -8,9 +8,9 @@
 local startTime = GetTime()
 APP_NAME = "Last Epoch Building"
 
--- Log file: writes all ConPrintf output to debug.log in the repo root
+-- Log file: writes all ConPrintf output to debug.log
 local _conPrintf = ConPrintf
-local _logFile = io.open("../debug.log", "w")
+local _logFile = io.open("debug.log", "w")
 if _logFile then
 	function ConPrintf(fmt, ...)
 		local ok, msg = pcall(string.format, fmt, ...)
@@ -40,22 +40,6 @@ function launch:OnInit()
 	self.lastUpdateCheck = GetTime()
 	self.subScripts = { }
 	self.startTime = startTime
-	local firstRunFile = io.open("first.run", "r")
-	if firstRunFile then
-		firstRunFile:close()
-		os.remove("first.run")
-		-- This is a fresh installation
-		-- Perform an immediate update to download the latest version
-		ConClear()
-		ConPrintf("Please wait while we complete installation...\n")
-		local updateMode, errMsg = LoadModule("UpdateCheck")
-		if not updateMode then
-			self.updateErrMsg = errMsg
-		elseif updateMode ~= "none" then
-			self:ApplyUpdate(updateMode)
-			return
-		end
-	end
 	local xml = require("xml")
 	local localManXML = xml.LoadXMLFile("manifest.xml") or xml.LoadXMLFile("../manifest.xml")
 	if localManXML and localManXML[1].elem == "LEPVersion" then
