@@ -644,6 +644,15 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 	t_insert(self.controls, self.controls.idolGridPanelEnd)
 	-- ===== END IDOL GRID =====
 
+	-- Edit Blessings button (below idol grid)
+	local editBlessBtn = new("ButtonControl",
+		{"TOPLEFT", self.controls.idolGridPanelEnd, "TOPLEFT"}, 0, 0, 160, 22,
+		"Edit Blessings...",
+		function() self:EditBlessings() end
+	)
+	t_insert(self.controls, editBlessBtn)
+	self.controls.editBlessBtn = editBlessBtn
+
 	self:PopulateSlots()
 	self.lastSlot = lastVisibleSlot
 end)

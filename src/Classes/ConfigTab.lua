@@ -580,20 +580,11 @@ local ConfigTabClass = newClass("ConfigTab", "UndoHandler", "ControlHost", "Cont
 	end
 	self.controls.scrollBar = new("ScrollBarControl", {"TOPRIGHT",self,"TOPRIGHT"}, 0, 0, 18, 0, 50, "VERTICAL", true)
 
-	-- ===== BLESSINGS BUTTON (replaces old inline blessing panel) =====
-	-- blessingControls kept as empty table for any legacy references
+	-- blessingControls kept as empty table for legacy references
 	self.blessingControls = {}
 	self.controls.blessingAnchor = new("Control", {"TOPLEFT", self.controls.sectionAnchor, "TOPLEFT"}, 10, 0, 0, 0)
-	local blessBtn = new("ButtonControl",
-		{"TOPLEFT", self.controls.blessingAnchor, "TOPLEFT"}, 0, 10, 200, 28,
-		"Edit Blessings...",
-		function() self.build.itemsTab:EditBlessings() end
-	)
-	t_insert(self.controls, blessBtn)
-	self.controls.blessingBtn = blessBtn
-	self.controls.blessingPanelEnd = new("Control", {"BOTTOMLEFT", blessBtn, "BOTTOMLEFT"}, 0, 4, 0, 0)
+	self.controls.blessingPanelEnd = new("Control", {"TOPLEFT", self.controls.blessingAnchor, "TOPLEFT"}, 0, 0, 0, 0)
 	t_insert(self.controls, self.controls.blessingPanelEnd)
-	-- ===== END BLESSINGS BUTTON =====
 end)
 
 function ConfigTabClass:Load(xml, fileName)
