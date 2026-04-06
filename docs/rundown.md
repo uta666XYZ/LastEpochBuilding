@@ -142,26 +142,15 @@
 * **Launch.lua**
     Updates on first start, discerns whether LEP is running in dev mode, initialises renderer, loads `Main` module, has callbacks for exiting the program, advancing frames, registering key presses, launching non-blocking subscripts, updating, notification and error prompts.
 * **LaunchInstall.lua**
-    Downloads and installs the auto-updater on finishing program installation.
+    Legacy installer entry point. Not included in the portable distribution.
 * **LICENSE.md**
     MIT licence
 * **manifest.xml**
     Contains file name : SHA-1 hash pairings used to determine which files to update.
 * **README.md**
     Project overview
-* **runtime-win32.zip**
-    Contains LEP executable, update executable, compiled libraries `libcurl` (HTTPS requests), `lcurl` (libcurl bindings for Lua), `lua51` (LuaJIT 5.1), `lzip` (DEFLATE), `SimpleGraphic` (custom 2D graphics host), Lua libraries for Base64, JSON, SHA-1, XML, and fonts.
-* **tree-2_6.zip**
-* **tree-3_6.zip**
-* **tree-3_7.zip**
-* **tree-3_8.zip**
-* **tree-3_9.zip**
-* **tree-3_10.zip**
-* **tree-3_11.zip**
-* **tree-3_12.zip**
-* **update_manifest.py**
-    Generates SHA-1 hashes for files in `manifest.xml`.
-    New files have to be manually added to `manifest.xml` to be processed.
+* **runtime/**
+    Contains LEB executable, compiled libraries (`libcurl`, `lcurl`, `lua51`/LuaJIT, `lzip`, `SimpleGraphic`), Lua standard libraries (Base64, JSON, SHA-1, XML), and fonts. Bundled into the portable zip at release time.
 * **UpdateApply.lua**
     Consumes and applies table of update instructions. Updating the runtime itself is done from a separate host environment.
 * **UpdateCheck.lua**

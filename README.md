@@ -40,11 +40,15 @@ Feedback and bug reports are always welcome — see [Contributing](#contributing
 
 ## Installation
 
-1. Download the latest release from the [Releases](../../releases) page
-2. Extract the zip file
+LEB is distributed as a **portable zip — no installation required**.
+
+1. Download `LastEpochBuilding-vX.X.X-win.zip` from the [Releases](../../releases) page
+2. Extract the zip to any folder
 3. Run **`runtime\Last Epoch Building.exe`**
 
 > **Tip:** You can also double-click `Launch.bat` in the root folder as a shortcut.
+
+User data (builds, settings) is stored alongside the executable, so keep all files in the same folder.
 
 ---
 
