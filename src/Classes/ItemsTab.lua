@@ -644,9 +644,14 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 	t_insert(self.controls, self.controls.idolGridPanelEnd)
 	-- ===== END IDOL GRID =====
 
-	-- Edit Blessings button (below idol grid)
+	-- Blessing slot grid + button (below idol grid)
+	local blessGrid = new("BlessingGridControl",
+		{"TOPLEFT", self.controls.idolGridPanelEnd, "TOPLEFT"}, 0, 0, self)
+	t_insert(self.controls, blessGrid)
+	self.controls.blessingGrid = blessGrid
+
 	local editBlessBtn = new("ButtonControl",
-		{"TOPLEFT", self.controls.idolGridPanelEnd, "TOPLEFT"}, 0, 0, 160, 22,
+		{"TOPLEFT", blessGrid, "BOTTOMLEFT"}, 0, 4, 160, 22,
 		"Edit Blessings...",
 		function() self:EditBlessings() end
 	)
@@ -1304,9 +1309,9 @@ function ItemsTabClass:CraftItem(existingItem)
 	t_insert(main.popups, 1, popup)
 end
 
--- Opens the blessing selection popup
-function ItemsTabClass:EditBlessings()
-	local popup = new("BlessingsPopup", self)
+-- Opens the blessing selection popup (optionally pre-selecting a timeline)
+function ItemsTabClass:EditBlessings(initialTL)
+	local popup = new("BlessingsPopup", self, initialTL)
 	t_insert(main.popups, 1, popup)
 end
 
