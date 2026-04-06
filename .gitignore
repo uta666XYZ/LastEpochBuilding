@@ -37,6 +37,8 @@ runtime/imgui.ini
 
 # Logs
 debug.log
+src/*.log
+src/Settings.xml
 
 # Distribution archives
 runtime-win32.zip

@@ -47,6 +47,7 @@ jobs:
                   --exclude='HeadlessWrapper.lua' \
                   --exclude='LaunchInstall.lua' \
                   --exclude='Settings.xml' \
+                  --exclude='*.log' \
                   --exclude='Export/' \
                   --exclude='Builds/' \
                   src/ dist/LastEpochBuilding/src/
