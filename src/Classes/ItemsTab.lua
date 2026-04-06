@@ -536,6 +536,8 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 		if not slot then return end
 		local oldId = slot.selItemId
 		if oldId and oldId < 0 then self.items[oldId] = nil end
+		self.blessingFracs = self.blessingFracs or {}
+		self.blessingFracs[tl] = rollFrac or 1.0
 		if not blessEntry or not blessEntry.name then
 			slot.selItemId = 0
 			if self.activeItemSet[tl] then self.activeItemSet[tl].selItemId = 0 end
@@ -641,6 +643,20 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 	self.controls.idolGridPanelEnd = new("Control", {"TOPLEFT", self.controls.idolGrid, "BOTTOMLEFT"}, 0, 8, 0, 0)
 	t_insert(self.controls, self.controls.idolGridPanelEnd)
 	-- ===== END IDOL GRID =====
+
+	-- Blessing slot grid + button (below idol grid)
+	local blessGrid = new("BlessingGridControl",
+		{"TOPLEFT", self.controls.idolGridPanelEnd, "TOPLEFT"}, 0, 0, self)
+	t_insert(self.controls, blessGrid)
+	self.controls.blessingGrid = blessGrid
+
+	local editBlessBtn = new("ButtonControl",
+		{"TOPLEFT", blessGrid, "BOTTOMLEFT"}, 0, 4, 160, 22,
+		"Edit Blessings...",
+		function() self:EditBlessings() end
+	)
+	t_insert(self.controls, editBlessBtn)
+	self.controls.editBlessBtn = editBlessBtn
 
 	self:PopulateSlots()
 	self.lastSlot = lastVisibleSlot
@@ -1291,6 +1307,17 @@ end
 function ItemsTabClass:CraftItem(existingItem)
 	local popup = new("CraftingPopup", self, existingItem)
 	t_insert(main.popups, 1, popup)
+end
+
+-- Opens the blessing selection popup (optionally pre-selecting a timeline)
+function ItemsTabClass:EditBlessings(initialTL)
+	local popup = new("BlessingsPopup", self, initialTL)
+	t_insert(main.popups, 1, popup)
+end
+
+-- Public wrapper so BlessingsPopup can call via colon syntax
+function ItemsTabClass:UpdateBlessingSlot(tl, blessEntry, rollFrac)
+	self.updateBlessingSlot(tl, blessEntry, rollFrac)
 end
 
 -- Opens the item text editor popup

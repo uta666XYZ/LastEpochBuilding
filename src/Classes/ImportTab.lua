@@ -991,26 +991,17 @@ function ImportTabClass:ImportItemsAndSkills(charData)
         end
     end
 
-    -- Build a lookup table: blessingName → {bc, index, entry, isGrand}
-    -- This searches ALL timelines so we find the right dropdown regardless of
-    -- which slot LETools assigns the blessing to.
+    -- Build a lookup table: blessingName → {tl, entry, isGrand}
+    -- Uses blessingData directly so import works without ConfigTab dropdown controls.
     local blessingLookup = {}
-    local blessingControls = self.build.configTab.blessingControls or {}
-    for tl, bc in pairs(blessingControls) do
-        -- Collect normal blessings (current list, all start as Normal)
-        for i, entry in ipairs(bc.drop.list) do
-            if entry.data then
-                blessingLookup[entry.data.name] = {bc=bc, index=i, entry=entry, isGrand=false}
-            end
+    local blessingData = self.build.itemsTab.blessingData or {}
+    for tl, tlData in pairs(blessingData) do
+        for _, b in ipairs(tlData.normal or {}) do
+            blessingLookup[b.name] = {tl=tl, entry=b, isGrand=false}
         end
-        -- Toggle to grand to collect grand blessings, then toggle back
-        bc.gradeBtn.onClick()
-        for i, entry in ipairs(bc.drop.list) do
-            if entry.data then
-                blessingLookup[entry.data.name] = {bc=bc, index=i, entry=entry, isGrand=true}
-            end
+        for _, b in ipairs(tlData.grand or {}) do
+            blessingLookup[b.name] = {tl=tl, entry=b, isGrand=true}
         end
-        bc.gradeBtn.onClick()  -- restore to Normal
     end
     self.currentBlessingLookup = blessingLookup
 
@@ -1157,41 +1148,13 @@ function ImportTabClass:ImportItem(itemData, slotName)
         slotName = slotMap[itemData.inventoryId]
     end
 
-    -- Blessing timeline slots use dropdown controls, not the normal item slot.
-    -- Search across ALL timelines since LETools slot order may differ from blessingData order.
-    if slotName and self.build.configTab.blessingControls and self.build.configTab.blessingControls[slotName] then
+    -- Blessing timeline slots are handled directly via UpdateBlessingSlot.
+    if slotName and self.build.itemsTab.blessingData and self.build.itemsTab.blessingData[slotName] then
         local blessingName = itemData.name or ""
         local info = self.currentBlessingLookup and self.currentBlessingLookup[blessingName]
         if info then
-            -- Use the TARGET slot's bc so the blessing lands in the correct timeline slot,
-            -- regardless of which dropdown the blessing entry was found in.
-            local targetBc = self.build.configTab.blessingControls[slotName]
-            -- Switch target bc to the correct grade mode
-            if info.isGrand and targetBc.gradeBtn.label ~= "Grand" then
-                targetBc.gradeBtn.onClick()
-            elseif not info.isGrand and targetBc.gradeBtn.label ~= "Normal" then
-                targetBc.gradeBtn.onClick()
-            end
-            -- Find entry in target bc's current list; if absent, add it for display
-            local foundIdx = nil
-            for i, e in ipairs(targetBc.drop.list) do
-                if e.data and e.data.name == blessingName then
-                    foundIdx = i
-                    break
-                end
-            end
-            if not foundIdx then
-                t_insert(targetBc.drop.list, info.entry)
-                foundIdx = #targetBc.drop.list
-            end
-            targetBc.drop.selIndex = foundIdx
-            -- Apply the actual roll fraction to the slider before calling selFunc
-            if targetBc.slider then
-                targetBc.slider.val = itemData.blessingRollFrac or 1.0
-            end
-            if targetBc.drop.selFunc then
-                targetBc.drop.selFunc(foundIdx, targetBc.drop.list[foundIdx])
-            end
+            local rollFrac = itemData.blessingRollFrac or 1.0
+            self.build.itemsTab:UpdateBlessingSlot(slotName, info.entry, rollFrac)
         else
             ConPrintf("BLESS not found: slot=%s name=%s", tostring(slotName), tostring(blessingName))
         end
