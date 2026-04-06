@@ -5,18 +5,19 @@ on:
   workflow_dispatch:
     inputs:
       tag_name:
-        description: 'Tag to build (e.g. v0.10.0). Leave empty to build from dev without uploading.'
+        description: 'Tag to upload zip to (e.g. v0.10.0). Leave empty to test build only.'
         required: false
+permissions:
+  contents: write
 env:
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 jobs:
   release:
     runs-on: ubuntu-latest
     steps:
             - name: Checkout
               uses: actions/checkout@v4
-              with:
-                ref: ${{ github.event.release.tag_name || github.event.inputs.tag_name || 'dev' }}
             - name: Get version
               run: |
                 VERSION=$(grep -o '<Version number="[^"]*"' manifest.xml | grep -o '"[^"]*"' | tr -d '"')
@@ -52,8 +53,10 @@ jobs:
                 cp manifest.xml changelog.txt help.txt LICENSE.md Launch.bat dist/LastEpochBuilding/
                 cd dist
                 zip -r "LastEpochBuilding-v${VERSION}-win.zip" LastEpochBuilding/
+                echo "Built: LastEpochBuilding-v${VERSION}-win.zip"
+                ls -lh "LastEpochBuilding-v${VERSION}-win.zip"
             - name: Upload to release
-              if: github.event.release.tag_name != '' || (github.event.inputs.tag_name != '' && github.event.inputs.tag_name != null)
+              if: github.event.release.tag_name != '' || github.event.inputs.tag_name != ''
               run: |
                 TAG="${{ github.event.release.tag_name || github.event.inputs.tag_name }}"
                 gh release upload "$TAG" "dist/LastEpochBuilding-v${VERSION}-win.zip" --clobber
