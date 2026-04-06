@@ -536,6 +536,8 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 		if not slot then return end
 		local oldId = slot.selItemId
 		if oldId and oldId < 0 then self.items[oldId] = nil end
+		self.blessingFracs = self.blessingFracs or {}
+		self.blessingFracs[tl] = rollFrac or 1.0
 		if not blessEntry or not blessEntry.name then
 			slot.selItemId = 0
 			if self.activeItemSet[tl] then self.activeItemSet[tl].selItemId = 0 end
@@ -1291,6 +1293,17 @@ end
 function ItemsTabClass:CraftItem(existingItem)
 	local popup = new("CraftingPopup", self, existingItem)
 	t_insert(main.popups, 1, popup)
+end
+
+-- Opens the blessing selection popup
+function ItemsTabClass:EditBlessings()
+	local popup = new("BlessingsPopup", self)
+	t_insert(main.popups, 1, popup)
+end
+
+-- Public wrapper so BlessingsPopup can call via colon syntax
+function ItemsTabClass:UpdateBlessingSlot(tl, blessEntry, rollFrac)
+	self.updateBlessingSlot(tl, blessEntry, rollFrac)
 end
 
 -- Opens the item text editor popup
