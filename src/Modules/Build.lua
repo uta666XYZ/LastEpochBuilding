@@ -714,7 +714,7 @@ function buildMode:ReadLeToolsSave(saveContent)
 		end
 		local baseTypeID = leBase.baseTypeId
 		local subTypeID = leBase.subTypeId
-		local uniqueId = leBase.uniqueId
+		local uniqueId = leBase.uniqueId ~= nil and tostring(leBase.uniqueId) or nil
 		
 		-- Use newest non-empty itemBases (bases_1_4.json may fail to parse)
 		local latestBases = {}
@@ -811,8 +811,8 @@ function buildMode:ReadLeToolsSave(saveContent)
 			end
 		end
 		
+		item.implicitMods = {}
 		if item.base then
-			item.implicitMods= {}
 			for i,implicit in ipairs(item.base.implicits or {}) do
 				local range = main.defaultItemAffixQuality
 				if itemData['ir'] then
@@ -820,16 +820,16 @@ function buildMode:ReadLeToolsSave(saveContent)
 				end
 				table.insert(item.implicitMods, "{range: " .. range .. "}".. implicit)
 			end
-			return item
 		end
+		return item
 	end
-	for slotName,itemData in pairsSortByKey(saveContent["equipment"]) do
+	for slotName,itemData in pairsSortByKey(saveContent["equipment"] or {}) do
 		local item = processItemData(slotName, itemData)
 		if item then
 			table.insert(char["items"], item)
 		end
 	end
-	for _,itemData in pairs(saveContent["idols"]) do
+	for _,itemData in pairs(saveContent["idols"] or {}) do
 		local item = processItemData("idol", itemData)
 		if item then
 			table.insert(char["items"], item)
