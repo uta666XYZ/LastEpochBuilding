@@ -29,7 +29,7 @@ local ConfigTabClass = newClass("ConfigTab", "UndoHandler", "ControlHost", "Cont
 	
 	self:BuildModList()
 	
-	self.toggleConfigs = false
+	self.toggleConfigs = true
 
 	self.controls.sectionAnchor = new("LabelControl", { "TOPLEFT", self, "TOPLEFT" }, 0, 20, 0, 0, "")
 	self.controls.search = new("EditControl", { "TOPLEFT", self.controls.sectionAnchor, "TOPLEFT" }, 8, -15, 360, 20, "", "Search", "%c", 100, function()

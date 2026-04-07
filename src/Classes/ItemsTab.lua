@@ -213,7 +213,15 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 			end
 		end
 	end
-	local prevOmenSlot = self.controls.idolAltarSlot
+	self.controls.idolAltarTypeLabelRight = new("LabelControl", {"TOPLEFT",self.controls.idolAltarSlot,"BOTTOMLEFT"}, 0, 4, 200, 16, function()
+		local item = self.items[self.controls.idolAltarSlot.selItemId]
+		if item and item.baseName then
+			return "^8" .. item.baseName
+		end
+		return ""
+	end)
+	self.controls.idolAltarTypeLabelLeft = new("LabelControl", {"RIGHT",self.controls.idolAltarTypeLabelRight,"LEFT"}, -2, 0, 0, 16, "^7Type:")
+	local prevOmenSlot = self.controls.idolAltarTypeLabelRight
 	for i = 1, MAX_OMEN_IDOL_SLOTS do
 		local omenSlot = new("ItemSlotControl", {"TOPLEFT",prevOmenSlot,"BOTTOMLEFT"}, 0, 2, self, "Omen Idol " .. i, "Fractured " .. i)
 		local slotNum = i

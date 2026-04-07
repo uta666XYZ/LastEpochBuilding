@@ -84,6 +84,8 @@ and submit pull requests.
 Based on [Path of Building Community](https://github.com/PathOfBuildingCommunity/PathOfBuilding),
 originally forked from [Musholic/LastEpochPlanner](https://github.com/Musholic/LastEpochPlanner).
 
+Development assisted by [Claude Code](https://claude.ai/code) (Anthropic).
+
 ## Changelog
 
 Full version history: [CHANGELOG.md](CHANGELOG.md)
