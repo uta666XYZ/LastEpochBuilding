@@ -458,17 +458,17 @@ function ImportTabClass:DownloadCharacterListOnline()
                 table.insert(keys, tostring(k) .. "=" .. tostring(v))
             end
             table.sort(keys)
-            --ConPrintf("[ONLINE] char[1] fields: %s", table.concat(keys, ", "))
+            ConPrintf("[ONLINE] char[1] fields: %s", table.concat(keys, ", "))
         end
         local maxCycle = 0
         for _, char in ipairs(charList) do
             if (char.cycle or 0) > maxCycle then maxCycle = char.cycle end
         end
-        --ConPrintf("[ONLINE] maxCycle=%d", maxCycle)
+        ConPrintf("[ONLINE] maxCycle=%d", maxCycle)
         local leagueList = { }
         for i, char in ipairs(charList) do
             char.league = (char.cycle or 0) == maxCycle and maxCycle > 0 and "Cycle" or "Legacy"
-            --ConPrintf("[ONLINE] %s cycle=%s -> %s", tostring(char.characterName or char.name), tostring(char.cycle), char.league)
+            ConPrintf("[ONLINE] %s cycle=%s -> %s", tostring(char.characterName or char.name), tostring(char.cycle), char.league)
             char.ascendancy = char.mastery
             char.ascendancyName = self.build.latestTree.classes[char.class].ascendancies[char.ascendancy].name
             char.name = char.characterName
@@ -539,7 +539,7 @@ function ImportTabClass:DownloadCharacterList()
         saveFile:close()
         local ok, charOrErr = pcall(function() return self:ReadJsonSaveData(saveFileContent:sub(6)) end)
         if ok then
-            --ConPrintf("[OFFLINE] char=%s cycle=%s", tostring(charOrErr.name), tostring(charOrErr.cycle))
+            ConPrintf("[OFFLINE] char=%s cycle=%s", tostring(charOrErr.name), tostring(charOrErr.cycle))
             if (charOrErr.cycle or 0) > maxCycle then maxCycle = charOrErr.cycle end
             table.insert(charList, charOrErr)
         else
@@ -800,7 +800,7 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
                         local uiRow = 6 - posY - idolHeight
                         local row = idolGrid[uiRow]
                         item["inventoryId"] = row and row[posX + 1] or ("Idol " .. (posX + posY * 5))
-                        --ConPrintf("[IDOL] posX=%d posY=%d height=%d uiRow=%d -> slot=%s base=%s", posX, posY, idolHeight, uiRow, tostring(item["inventoryId"]), itemBaseName)
+                        ConPrintf("[IDOL] posX=%d posY=%d height=%d uiRow=%d -> slot=%s base=%s", posX, posY, idolHeight, uiRow, tostring(item["inventoryId"]), itemBaseName)
                         item._idolPosX = nil
                         item._idolPosY = nil
                     end
@@ -878,7 +878,7 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
                                     local modData = data.itemMods.Item[modId]
                                     local range = itemData["data"][dataId + 1]
 
-                                    --ConPrintf("[AFFIX] base=%s slot=%d affixId=%d tier=%d modId=%s valid=%s", itemBaseName, i, affixId, affixTier, modId, tostring(modData ~= nil))
+                                    ConPrintf("[AFFIX] base=%s slot=%d affixId=%d tier=%d modId=%s valid=%s", itemBaseName, i, affixId, affixTier, modId, tostring(modData ~= nil))
                                     if modData then
                                         affixCount = affixCount + 1
                                         if affixTier > maxTier then
@@ -916,7 +916,7 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
                                 item["rarity"] = "NORMAL"
                             end
                         end
-                        --ConPrintf("[RARITY] base=%s rarityByte=%d affixCount=%d maxTier=%d idol=%s -> %s", itemBaseName, rarity, affixCount, maxTier, tostring(isIdol), item["rarity"])
+                        ConPrintf("[RARITY] base=%s rarityByte=%d affixCount=%d maxTier=%d idol=%s -> %s", itemBaseName, rarity, affixCount, maxTier, tostring(isIdol), item["rarity"])
                         -- Build generated name: [forename] + baseName + [surname]
                         local forename, surname = "", ""
                         for _, p in ipairs(item.prefixes) do
@@ -1186,7 +1186,7 @@ function ImportTabClass:ImportItem(itemData, slotName)
     local item = self:BuildItem(itemData)
 
     -- Add and equip the new item
-    --ConPrintf("%s", item.raw)
+    ConPrintf("%s", item.raw)
     if item and item.base then
         local repIndex, repItem
         if itemData.id ~= nil then
@@ -1297,7 +1297,7 @@ function ImportTabClass:BuildItem(itemData)
     item:BuildAndParseRaw()
     -- Craft the item since we only added the prefixes and suffixes and not their mod lines
     item:Craft()
-    --ConPrintf("[BUILDITEM] name=%s rarity: %s -> %s (after BuildAndParseRaw+Craft)", tostring(item.title or item.baseName), tostring(rarityBefore), tostring(item.rarity))
+    ConPrintf("[BUILDITEM] name=%s rarity: %s -> %s (after BuildAndParseRaw+Craft)", tostring(item.title or item.baseName), tostring(rarityBefore), tostring(item.rarity))
 
     return item
 end
