@@ -548,7 +548,10 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 			.."\nImplicits: "..implCount.."\n"..resolveImpl(blessEntry.impl1 or "")
 		if blessEntry.impl2 then raw = raw.."\n"..resolveImpl(blessEntry.impl2) end
 		local item = new("Item", raw)
-		if not item or not item.base then return end
+		if not item or not item.base then
+			ConPrintf("[BLESS] ERR item.base=nil for %s in slot %s", blessEntry.name, tl)
+			return
+		end
 		item:BuildModList()
 		item.id = -1
 		while self.items[item.id] do item.id = item.id - 1 end
@@ -1192,8 +1195,17 @@ function ItemsTabClass:IsItemValidForSlot(item, slotName, itemSet)
 	end
 	if item.type == slotType then
 		return true
-	elseif item.type == "Blessing" and item.base and item.base.timeline then
-		return slotName == item.base.timeline
+	elseif item.type == "Blessing" then
+		-- Use blessingData as source of truth (bases_1_4.json timeline fields are unreliable)
+		local tlData = self.blessingData and self.blessingData[slotName]
+		if not tlData then return false end
+		for _, b in ipairs(tlData.normal or {}) do
+			if b.name == item.name then return true end
+		end
+		for _, b in ipairs(tlData.grand or {}) do
+			if b.name == item.name then return true end
+		end
+		return false
 	elseif slotType == "Idol" then
 		if not item.type:match("Idol$") then return false end
 		-- Size overflow check: verify the idol's cell footprint stays within valid grid cells
