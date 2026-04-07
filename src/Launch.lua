@@ -9,19 +9,31 @@ local startTime = GetTime()
 APP_NAME = "Last Epoch Building"
 
 -- Log file: writes all ConPrintf output to debug.log
+-- Try worktree/repo root first (../), fall back to current dir
 local _conPrintf = ConPrintf
-local _logFile = io.open("debug.log", "w")
+local _logPath = (io.open("../manifest.xml", "r") and io.close(io.open("../manifest.xml", "r")) and "../debug.log") or "debug.log"
+local _logFile = io.open(_logPath, "w")
 if _logFile then
 	function ConPrintf(fmt, ...)
 		local ok, msg = pcall(string.format, fmt, ...)
 		if ok then
 			_conPrintf("%s", msg)
-			_logFile:write(msg .. "\n")
-			_logFile:flush()
+			if _logFile then
+				_logFile:write(msg .. "\n")
+				_logFile:flush()
+			end
 		else
 			_conPrintf(fmt, ...)
 		end
 	end
+end
+
+-- Clears debug.log and restarts logging (call at the start of each import)
+function ResetDebugLog()
+	if _logFile then
+		_logFile:close()
+	end
+	_logFile = io.open(_logPath, "w")
 end
 
 SetWindowTitle(APP_NAME)
