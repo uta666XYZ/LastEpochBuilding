@@ -535,7 +535,12 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 		local slot = self.slots[tl]
 		if not slot then return end
 		local oldId = slot.selItemId
-		if oldId and oldId < 0 then self.items[oldId] = nil end
+		if oldId and oldId < 0 then
+			self.items[oldId] = nil
+			for i, id in ipairs(self.itemOrderList) do
+				if id == oldId then t_remove(self.itemOrderList, i); break end
+			end
+		end
 		self.blessingFracs = self.blessingFracs or {}
 		self.blessingFracs[tl] = rollFrac or 1.0
 		if not blessEntry or not blessEntry.name then
@@ -561,9 +566,11 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 			return
 		end
 		item:BuildModList()
+		item.uniqueID = "blessing:" .. tl  -- prevent nil==nil match with regular items in ImportItem
 		item.id = -1
 		while self.items[item.id] do item.id = item.id - 1 end
 		self.items[item.id] = item
+		t_insert(self.itemOrderList, item.id)
 		slot.selItemId = item.id
 		if self.activeItemSet[tl] then self.activeItemSet[tl].selItemId = item.id end
 		self.build.buildFlag = true
@@ -942,6 +949,15 @@ function ItemsTabClass:SetActiveItemSet(itemSetId)
 				slot.controls.activate.state = slot.active
 			end
 		end
+	end
+	-- Restore altar layout: SetActiveItemSet sets selItemId directly (bypasses the
+	-- SetSelItemId override), so activeAltarLayout must be updated explicitly here.
+	local altarSelId = curSet["Idol Altar"] and curSet["Idol Altar"].selItemId
+	local altarItem = altarSelId and self.items[altarSelId]
+	if altarItem and altarItem.baseName and IDOL_ALTAR_LAYOUTS[altarItem.baseName] then
+		self.activeAltarLayout = altarItem.baseName
+	else
+		self.activeAltarLayout = "Default"
 	end
 	self.build.buildFlag = true
 	self:PopulateSlots()

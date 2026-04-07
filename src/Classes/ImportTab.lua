@@ -1157,9 +1157,10 @@ slotMap[36] = "Blood, Frost, and Death"
 slotMap[37] = "Ending the Storm"
 slotMap[38] = "Fall of the Empire"
 slotMap[39] = "Reign of Dragons"
-slotMap[40] = "The Last Ruin"
-slotMap[41] = "The Age of Winter"
-slotMap[42] = "Spirits of Fire"
+-- cid=40,41,42 are unused/unknown in observed save files
+slotMap[43] = "The Last Ruin"
+slotMap[44] = "The Age of Winter"
+slotMap[45] = "Spirits of Fire"
 slotMap[123] = "Idol Altar"
 
 
@@ -1188,11 +1189,13 @@ function ImportTabClass:ImportItem(itemData, slotName)
     --ConPrintf("%s", item.raw)
     if item and item.base then
         local repIndex, repItem
-        for index, item in pairs(self.build.itemsTab.items) do
-            if item.uniqueID == itemData.id then
-                repIndex = index
-                repItem = item
-                break
+        if itemData.id ~= nil then
+            for index, item in pairs(self.build.itemsTab.items) do
+                if item.uniqueID == itemData.id then
+                    repIndex = index
+                    repItem = item
+                    break
+                end
             end
         end
         if repIndex then
