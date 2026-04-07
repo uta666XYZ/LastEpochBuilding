@@ -239,25 +239,10 @@ function BlessingGridControlClass:Draw(viewPort)
 		self.tooltip.maxWidth = 300
 		if item2 then
 			self.tooltip:AddLine(14, "^xC8A040" .. item2.name:upper())
-			local entry2
-			if tlData then
-				for _, b in ipairs(tlData.normal or {}) do
-					if b.name == item2.name then entry2 = b; break end
-				end
-				if not entry2 then
-					for _, b in ipairs(tlData.grand or {}) do
-						if b.name == item2.name then entry2 = b; break end
-					end
-				end
-			end
-			if entry2 then
-				local impl1 = (entry2.impl1 or ""):gsub("{[^}]+}", "")
-				self.tooltip:AddLine(14, "^xCCCCCC" .. impl1)
-				if entry2.impl2 then
-					local impl2 = entry2.impl2:gsub("{[^}]+}", "")
-						:gsub("%^x%x%x%x%x%x%x", "")
-						:gsub("%^%d", "")
-					self.tooltip:AddLine(14, "^xCCCCCC" .. impl2)
+			if item2.implicitModLines and #item2.implicitModLines > 0 then
+				for _, modLine in ipairs(item2.implicitModLines) do
+					local lineText = modLine.line or modLine.extra or ""
+					self.tooltip:AddLine(14, "^xCCCCCC" .. lineText)
 				end
 			end
 		else
