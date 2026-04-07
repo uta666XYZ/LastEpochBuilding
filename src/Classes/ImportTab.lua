@@ -674,7 +674,8 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
         ["classId"] = classId,
         ["abilities"] = {},
         ["items"] = {},
-        ["hashes"] = { }
+        ["hashes"] = { },
+        ["_parseErrors"] = 0,
     }
     char.cycle = saveContent["cycle"] or 0
     for passiveIdx, passive in pairs(saveContent["savedCharacterTree"]["nodeIDs"]) do
@@ -830,6 +831,11 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
                         local uniqueIDIndex = 8 + 3 -- 3 is the maximum amount of implicits
                         local uniqueID = itemData["data"][uniqueIDIndex] * 256 + itemData["data"][uniqueIDIndex + 1]
                         local uniqueBase = self.build.data.uniques[uniqueID]
+                        if not uniqueBase then
+                            ConPrintf("[ITEM-ERR] Unknown uniqueID=%d cid=%d baseTypeID=%d subTypeID=%d", uniqueID, itemData["containerID"], baseTypeID, subTypeID)
+                            char._parseErrors = char._parseErrors + 1
+                            break
+                        end
                         item["name"] = uniqueBase.name
                         for i, modLine in ipairs(uniqueBase.mods) do
                             if itemLib.hasRange(modLine) then
@@ -941,6 +947,7 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
             if not matchedBase then
                 local tag = (itemData["containerID"] >= 33 and itemData["containerID"] <= 45) and "[BLESS]" or "[ITEM]"
                 ConPrintf("%s no base match: cid=%d baseTypeID=%s subTypeID=%s", tag, itemData["containerID"], tostring(baseTypeID), tostring(subTypeID))
+                char._parseErrors = char._parseErrors + 1
             end
         end
     end
@@ -1024,8 +1031,16 @@ function ImportTabClass:ImportItemsAndSkills(charData)
     -- Altar layout is now auto-detected from the equipped Idol Altar item
     -- via the SetSelItemId wrapper on the Idol Altar slot
 
+    local importOk, importFail, importSkip = 0, 0, 0
     for _, itemData in pairsSortByKey(charData.items) do
-        self:ImportItem(itemData)
+        local status = self:ImportItem(itemData)
+        if status == "ok" or status == "bless_ok" then
+            importOk = importOk + 1
+        elseif status == "fail" or status == "bless_fail" then
+            importFail = importFail + 1
+        else
+            importSkip = importSkip + 1
+        end
     end
 
     -- Auto-populate Omen Idol (Fractured) slots from idols on fractured cells
@@ -1138,6 +1153,14 @@ function ImportTabClass:ImportItemsAndSkills(charData)
             ConPrintf("[IMPORT]   %-30s -> %s", tl, item and item.name or "(unknown)")
         end
     end
+    ConPrintf("[IMPORT] === Import Summary ===")
+    ConPrintf("[IMPORT]   Parse errors (no base/unknown unique): %d", charData._parseErrors or 0)
+    ConPrintf("[IMPORT]   Items imported OK:  %d", importOk)
+    ConPrintf("[IMPORT]   Items failed:       %d", importFail)
+    ConPrintf("[IMPORT]   Items skipped:      %d", importSkip)
+    if (charData._parseErrors or 0) > 0 or importFail > 0 then
+        ConPrintf("[IMPORT]   !! %d issue(s) detected - check [ITEM-ERR]/[BLESS ERR] lines above", (charData._parseErrors or 0) + importFail)
+    end
     ConPrintf("[IMPORT] === Import End ===")
 
     self.charImportStatus = colorCodes.POSITIVE .. "Items and skills successfully imported."
@@ -1177,38 +1200,48 @@ function ImportTabClass:ImportItem(itemData, slotName)
             local rollFrac = itemData.blessingRollFrac or 1.0
             ConPrintf("[BLESS] OK  cid=%-3d slot=%-30s name=%s  roll=%.3f", itemData.inventoryId, slotName, blessingName, rollFrac)
             self.build.itemsTab:UpdateBlessingSlot(slotName, info.entry, rollFrac)
+            return "bless_ok"
         else
             ConPrintf("[BLESS] ERR cid=%-3d slot=%-30s name=%s  (not in blessingLookup)", itemData.inventoryId, slotName, tostring(blessingName))
+            return "bless_fail"
         end
-        return
     end
 
     local item = self:BuildItem(itemData)
 
+    if not item or not item.base then
+        ConPrintf("[ITEM-ERR] BuildItem returned nil: cid=%s inventoryId=%s", tostring(itemData.inventoryId), tostring(itemData.inventoryId))
+        return "fail"
+    end
+
     -- Add and equip the new item
     ConPrintf("%s", item.raw)
-    if item and item.base then
-        local repIndex, repItem
-        if itemData.id ~= nil then
-            for index, item in pairs(self.build.itemsTab.items) do
-                if item.uniqueID == itemData.id then
-                    repIndex = index
-                    repItem = item
-                    break
-                end
+    local repIndex, repItem
+    if itemData.id ~= nil then
+        for index, existingItem in pairs(self.build.itemsTab.items) do
+            if existingItem.uniqueID == itemData.id then
+                repIndex = index
+                repItem = existingItem
+                break
             end
         end
-        if repIndex then
-            -- Item already exists in the build, overwrite it
-            item.id = repItem.id
-            self.build.itemsTab.items[item.id] = item
-            item:BuildModList()
-        else
-            self.build.itemsTab:AddItem(item, true)
+    end
+    if repIndex then
+        -- Item already exists in the build, overwrite it
+        item.id = repItem.id
+        self.build.itemsTab.items[item.id] = item
+        item:BuildModList()
+    else
+        self.build.itemsTab:AddItem(item, true)
+    end
+    if slotName and self.build.itemsTab.slots[slotName] then
+        self.build.itemsTab.slots[slotName]:SetSelItemId(item.id)
+        return "ok"
+    else
+        if not slotName then
+            ConPrintf("[ITEM] no slot mapping: inventoryId=%s name=%s", tostring(itemData.inventoryId), tostring(item.title or item.baseName))
         end
-        if slotName and self.build.itemsTab.slots[slotName] then
-            self.build.itemsTab.slots[slotName]:SetSelItemId(item.id)
-        end
+        return "skip"
     end
 end
 
