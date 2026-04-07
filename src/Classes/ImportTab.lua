@@ -939,7 +939,8 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
                 end
             end
             if not matchedBase then
-                ConPrintf("[ITEM] no base match: cid=%d baseTypeID=%s subTypeID=%s", itemData["containerID"], tostring(baseTypeID), tostring(subTypeID))
+                local tag = (itemData["containerID"] >= 33 and itemData["containerID"] <= 45) and "[BLESS]" or "[ITEM]"
+                ConPrintf("%s no base match: cid=%d baseTypeID=%s subTypeID=%s", tag, itemData["containerID"], tostring(baseTypeID), tostring(subTypeID))
             end
         end
     end
@@ -979,6 +980,10 @@ function ImportTabClass:ImportPassiveTreeAndJewels(charData)
 end
 
 function ImportTabClass:ImportItemsAndSkills(charData)
+    -- Reset debug.log so it only contains data from the most recent import
+    if ResetDebugLog then ResetDebugLog() end
+    ConPrintf("[IMPORT] === Character Import Start: %s (level %s) ===", tostring(charData.name), tostring(charData.level))
+
     -- Use the latest non-empty itemBases and itemMods for ParseRaw compatibility
     local savedItemBases = data.itemBases
     local savedItemMods = data.itemMods
@@ -1120,6 +1125,21 @@ function ImportTabClass:ImportItemsAndSkills(charData)
         end
     end
 
+    -- Log equipped blessings summary
+    ConPrintf("[IMPORT] === Blessing Summary ===")
+    local blessingData = self.build.itemsTab.blessingData or {}
+    local slots = self.build.itemsTab.slots
+    local items = self.build.itemsTab.items
+    for tl, _ in pairs(blessingData) do
+        local slot = slots[tl]
+        local hasBlessing = slot and slot.selItemId and slot.selItemId < 0
+        if hasBlessing then
+            local item = items[slot.selItemId]
+            ConPrintf("[IMPORT]   %-30s -> %s", tl, item and item.name or "(unknown)")
+        end
+    end
+    ConPrintf("[IMPORT] === Import End ===")
+
     self.charImportStatus = colorCodes.POSITIVE .. "Items and skills successfully imported."
     return charData -- For the wrapper
 end
@@ -1137,9 +1157,9 @@ slotMap[36] = "Blood, Frost, and Death"
 slotMap[37] = "Ending the Storm"
 slotMap[38] = "Fall of the Empire"
 slotMap[39] = "Reign of Dragons"
-slotMap[40] = "The Age of Winter"
-slotMap[41] = "Spirits of Fire"
-slotMap[42] = "The Last Ruin"
+slotMap[40] = "The Last Ruin"
+slotMap[41] = "The Age of Winter"
+slotMap[42] = "Spirits of Fire"
 slotMap[123] = "Idol Altar"
 
 
@@ -1154,9 +1174,10 @@ function ImportTabClass:ImportItem(itemData, slotName)
         local info = self.currentBlessingLookup and self.currentBlessingLookup[blessingName]
         if info then
             local rollFrac = itemData.blessingRollFrac or 1.0
+            ConPrintf("[BLESS] OK  cid=%-3d slot=%-30s name=%s  roll=%.3f", itemData.inventoryId, slotName, blessingName, rollFrac)
             self.build.itemsTab:UpdateBlessingSlot(slotName, info.entry, rollFrac)
         else
-            ConPrintf("BLESS not found: slot=%s name=%s", tostring(slotName), tostring(blessingName))
+            ConPrintf("[BLESS] ERR cid=%-3d slot=%-30s name=%s  (not in blessingLookup)", itemData.inventoryId, slotName, tostring(blessingName))
         end
         return
     end
