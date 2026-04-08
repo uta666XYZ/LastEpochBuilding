@@ -600,8 +600,9 @@ for _, ver in ipairs(treeVersionList) do
 	if basesErr then
 		ConPrintf("bases_%s.json parse error: %s", ver, tostring(basesErr))
 	end
-	local verUniques = readJsonFile("Data/Uniques/uniques_" .. ver .. ".json")
-	-- Safety fallback: if a version-specific file is missing, use the base files
+\tlocal verUniques     = readJsonFile("Data/Uniques/uniques_" .. ver .. ".json")
+\tlocal verIdolAffixes = readJsonFile("Data/ModIdolAffixes_" .. ver .. ".json")
+: if a version-specific file is missing, use the base files
 	if not verMods    then verMods    = readJsonFile("Data/ModItem.json")         end
 	if not verBases   then verBases   = readJsonFile("Data/Bases/bases.json")     end
 	if not verUniques then verUniques = readJsonFile("Data/Uniques/uniques.json") end
@@ -611,6 +612,17 @@ for _, ver in ipairs(treeVersionList) do
 			if not mod.affix then mod.affix = "" end
 		end
 	end
+	-- Convert idol affix whitelist arrays to sets for O(1) lookup
+	local verIdolAffixSets = {}
+	if verIdolAffixes then
+		for statKey, idolTypeList in pairs(verIdolAffixes) do
+			local set = {}
+			for _, t in ipairs(idolTypeList) do
+				set[t] = true
+			end
+			verIdolAffixSets[statKey] = set
+		end
+	end
 	local verBaseLists, verBaseTypeList = buildItemBaseLists(verBases or {})
 	data.versionData[ver] = {
 		itemMods         = { Item = verMods    or {} },
@@ -618,6 +630,7 @@ for _, ver in ipairs(treeVersionList) do
 		itemBaseLists    = verBaseLists,
 		itemBaseTypeList = verBaseTypeList,
 		uniques          = verUniques or {},
+		idolAffixes      = verIdolAffixSets,
 	}
 end
 
@@ -628,6 +641,7 @@ function data.setActiveVersion(version)
 	data.itemBaseLists   = vd.itemBaseLists
 	data.itemBaseTypeList = vd.itemBaseTypeList
 	data.uniques         = vd.uniques
+	data.idolAffixes     = vd.idolAffixes or {}
 	-- Use the requested version's itemBases/itemMods if non-empty,
 	-- otherwise fall back to the newest version that parsed successfully.
 	if next(vd.itemBases) then
