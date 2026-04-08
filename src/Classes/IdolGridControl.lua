@@ -339,7 +339,14 @@ function IdolGridControlClass:Draw(viewPort)
 				drawBlockedCell(cx, cy, cw, ch)
 			elseif isBlocked(row, col) then
 				-- Blocked cell covered by a placed idol: draw idol background
-				local bg = rarityBg.IDOL or { 0.13, 0.13, 0.13 }
+				local bg = rarityBg.IDOL
+				local primarySlot = self.cellPrimary[row] and self.cellPrimary[row][col]
+				if primarySlot then
+					local placedItem = self.itemsTab.items[primarySlot.selItemId]
+					if placedItem then
+						bg = rarityBg[placedItem.rarity] or rarityBg.IDOL
+					end
+				end
 				SetDrawColor(bg[1], bg[2], bg[3])
 				DrawImage(nil, cx, cy, cw, ch)
 			else
@@ -349,7 +356,7 @@ function IdolGridControlClass:Draw(viewPort)
 				if av == 2 and not item then
 					SetDrawColor(0.15, 0.05, 0.28)  -- purple tint for empty fractured cell
 				else
-					local bg = item and rarityBg.IDOL or { 0.13, 0.13, 0.13 }
+					local bg = item and (rarityBg[item.rarity] or rarityBg.IDOL) or { 0.13, 0.13, 0.13 }
 					SetDrawColor(bg[1], bg[2], bg[3])
 				end
 				DrawImage(nil, cx, cy, cw, ch)
@@ -393,19 +400,23 @@ function IdolGridControlClass:Draw(viewPort)
 					end
 
 					-- Solid background to cover ItemSlotControl text beneath
-					local bg = rarityBg.IDOL
+					local bg = rarityBg[item.rarity] or rarityBg.IDOL
 					SetDrawColor(bg[1], bg[2], bg[3])
 					DrawImage(nil, cx, cy, pw, ph)
 
 					-- Draw idol image (PNG may have transparency; shows rarity bg through it)
-					local handle = self:GetImage(nameToFilename(item.baseName or item.name))
+					local iconName = item.baseName or item.name
+					if (item.rarity == "UNIQUE" or item.rarity == "SET" or item.rarity == "LEGENDARY") and item.title then
+						iconName = item.title
+					end
+					local handle = self:GetImage(nameToFilename(iconName))
 					if handle and handle:IsValid() then
 						SetDrawColor(1, 1, 1, 1)
 						DrawImage(handle, cx, cy, pw, ph)
 					end
 
 					-- Rarity-coloured 2-px border spanning full idol area
-					local bc = rarityBorder.IDOL
+					local bc = rarityBorder[item.rarity] or rarityBorder.IDOL
 					SetDrawColor(bc[1], bc[2], bc[3])
 					DrawImage(nil, cx,          cy,          pw, 2)
 					DrawImage(nil, cx,          cy + ph - 2, pw, 2)

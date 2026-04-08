@@ -523,7 +523,12 @@ function CraftingPopupClass:BuildControls()
 	controls.editItemName.label = function()
 		if not self_ref.editItem then return "" end
 		local item = self_ref.editItem
-		local col = colorCodes[item.rarity] or colorCodes.NORMAL
+		local col
+		if item.type and item.type:find("Idol") and item.rarity ~= "UNIQUE" and item.rarity ~= "SET" and item.rarity ~= "LEGENDARY" then
+			col = colorCodes.IDOL
+		else
+			col = colorCodes[item.rarity] or colorCodes.NORMAL
+		end
 		return col .. (item.title or item.namePrefix .. item.baseName .. item.nameSuffix)
 	end
 
@@ -564,10 +569,15 @@ function CraftingPopupClass:BuildControls()
 
 	for _, section in ipairs(affixSections) do
 		local labelKey = section.key .. "Label"
+		local capturedSectionKey = section.key
 		controls[labelKey] = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, 15,
 			function() return self_ref.editY[labelKey] or 200 end,
 			0, 14, colorCodes.UNIQUE .. section.label)
-		controls[labelKey].shown = function() return self_ref.currentTab == "edit" end
+		controls[labelKey].shown = function()
+			if self_ref.currentTab ~= "edit" then return false end
+			if capturedSectionKey ~= "corrupted" and self_ref:IsUniqueIdol() then return false end
+			return true
+		end
 
 		-- Corrupted checkbox (next to corrupted label)
 		if section.key == "corrupted" then
@@ -799,6 +809,8 @@ function CraftingPopupClass:BuildControls()
 			controls[addKey].shown = function()
 				if self_ref.currentTab ~= "edit" then return false end
 				if self_ref.affixState[slotKey].modKey ~= nil then return false end
+				-- Unique idols can only have corrupted affix; hide all other slots
+				if slotKey ~= "corrupted" and self_ref:IsUniqueIdol() then return false end
 				if slotKey == "corrupted" then
 					return self_ref.corrupted
 				end
@@ -911,7 +923,7 @@ function CraftingPopupClass:RefreshBaseList()
 		end
 	end
 
-	-- Insert implicit sub-rows
+	-- Insert implicit sub-rows (and unique/set mods for idols)
 	local expandedList = {}
 	for _, entry in ipairs(list) do
 		t_insert(expandedList, entry)
@@ -924,6 +936,23 @@ function CraftingPopupClass:RefreshBaseList()
 						implicitText = text,
 						parentEntry = entry,
 					})
+				end
+			end
+		end
+		-- For unique/set idols show their mods as sub-rows (idols have no base implicits)
+		if entry.type and entry.type:find("Idol") then
+			local modData = (entry.category == "unique" and entry.uniqueData)
+			             or (entry.category == "set" and entry.setData)
+			if modData and modData.mods then
+				for _, modText in ipairs(modData.mods) do
+					local text = cleanImplicitText(modText)
+					if text then
+						t_insert(expandedList, {
+							isImplicitRow = true,
+							implicitText = text,
+							parentEntry = entry,
+						})
+					end
 				end
 			end
 		end
@@ -1220,6 +1249,15 @@ function CraftingPopupClass:BuildAffixTooltip(tooltip, statOrderKey)
 	end
 end
 
+-- Returns true when the current edit item is a unique idol
+function CraftingPopupClass:IsUniqueIdol()
+	return self.editBaseEntry
+		and self.editBaseEntry.category == "unique"
+		and self.editBaseEntry.type
+		and self.editBaseEntry.type:find("Idol")
+		and true or false
+end
+
 -- Rebuild edit item from current affix state
 function CraftingPopupClass:RebuildEditItem()
 	if not self.editItem then return end
@@ -1432,7 +1470,13 @@ function CraftingPopupClass:Draw(viewPort)
 	end
 
 	if self.currentTab == "edit" and self.editItem then
-		local col = colorCodes[self.editItem.rarity]
+		local item = self.editItem
+		local col
+		if item.type and item.type:find("Idol") and item.rarity ~= "UNIQUE" and item.rarity ~= "SET" and item.rarity ~= "LEGENDARY" then
+			col = colorCodes.IDOL
+		else
+			col = colorCodes[item.rarity]
+		end
 		if col then
 			local r, g, b = col:match("%^x(%x%x)(%x%x)(%x%x)")
 			if r then
