@@ -16,7 +16,13 @@ local m_floor = math.floor
 local m_modf = math.modf
 
 local function itemDisplayColor(item)
-	return (item.type and item.type:find("Idol")) and colorCodes.IDOL or colorCodes[item.rarity]
+	if item.type and item.type:find("Idol") then
+		if item.rarity == "UNIQUE" or item.rarity == "SET" or item.rarity == "LEGENDARY" then
+			return colorCodes[item.rarity]
+		end
+		return colorCodes.IDOL
+	end
+	return colorCodes[item.rarity]
 end
 
 local rarityDropList = {
@@ -1033,6 +1039,10 @@ end
 
 -- Adds the current display item to the build's item list
 function ItemsTabClass:AddDisplayItem(noAutoEquip)
+	-- Idols are placed manually in the grid; skip auto-equip
+	if self.displayItem and self.displayItem.type and self.displayItem.type:find("Idol$") then
+		noAutoEquip = true
+	end
 	-- Add it to the list and clear the current display item
 	self:AddItem(self.displayItem, noAutoEquip)
 	self:SetDisplayItem()
@@ -1211,6 +1221,36 @@ end
 
 -- Check if the given item could be equipped in the given slot, taking into account possible conflicts with currently equipped items
 -- For example, a shield is not valid for Weapon 2 if Weapon 1 is a staff, and a wand is not valid for Weapon 2 if Weapon 1 is a dagger
+-- Returns true if the footprint of item placed at slotName overlaps any existing idol,
+-- excluding the idol with id excludeItemId (used for replacement checks).
+function ItemsTabClass:IdolFootprintOverlaps(item, slotName, excludeItemId)
+	local size = idolSize[item.type]
+	local pos  = idolSlotPos[slotName]
+	if not size or not pos then return false end
+	for dr = 0, size[2] - 1 do
+		for dc = 0, size[1] - 1 do
+			local targetRow = pos[1] + dr
+			local targetCol = pos[2] + dc
+			for otherSlotName, otherSlot in pairs(self.slots) do
+				if otherSlotName:match("^Idol ") and otherSlot.selItemId ~= 0 and otherSlot.selItemId ~= excludeItemId then
+					local existItem = self.items[otherSlot.selItemId]
+					if existItem then
+						local eSize = idolSize[existItem.type] or {1, 1}
+						local ePos  = idolSlotPos[otherSlotName]
+						if ePos then
+							if targetRow >= ePos[1] and targetRow < ePos[1] + eSize[2] and
+							   targetCol >= ePos[2] and targetCol < ePos[2] + eSize[1] then
+								return true
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+	return false
+end
+
 function ItemsTabClass:IsItemValidForSlot(item, slotName, itemSet)
 	itemSet = itemSet or self.activeItemSet
 	local slotType, slotId = slotName:match("^([%a ]+) (%d+)$")
