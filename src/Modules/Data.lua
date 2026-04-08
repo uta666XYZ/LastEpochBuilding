@@ -1,4 +1,4 @@
--- Last Epoch Building
+﻿-- Last Epoch Building
 --
 -- Module: Data
 -- Contains static data used by other modules.
@@ -600,9 +600,9 @@ for _, ver in ipairs(treeVersionList) do
 	if basesErr then
 		ConPrintf("bases_%s.json parse error: %s", ver, tostring(basesErr))
 	end
-\tlocal verUniques     = readJsonFile("Data/Uniques/uniques_" .. ver .. ".json")
-\tlocal verIdolAffixes = readJsonFile("Data/ModIdolAffixes_" .. ver .. ".json")
-: if a version-specific file is missing, use the base files
+	local verUniques     = readJsonFile("Data/Uniques/uniques_" .. ver .. ".json")
+	local verIdolAffixes = readJsonFile("Data/ModIdolAffixes_" .. ver .. ".json")
+	-- Safety fallback: if a version-specific file is missing, use the base files
 	if not verMods    then verMods    = readJsonFile("Data/ModItem.json")         end
 	if not verBases   then verBases   = readJsonFile("Data/Bases/bases.json")     end
 	if not verUniques then verUniques = readJsonFile("Data/Uniques/uniques.json") end
