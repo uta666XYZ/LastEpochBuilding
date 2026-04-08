@@ -1045,11 +1045,25 @@ function CraftingPopupClass:RefreshAffixDropdowns()
 	local itemMods = self.editItem.affixes or data.itemMods.Item
 	if not itemMods then return end
 
+	-- For idol items, restrict affixes to those valid for this idol type
+	local idolType = nil
+	if self.editItem.type and self.editItem.type:find("Idol$") then
+		idolType = self.editItem.type
+	end
+	local idolAffixes = idolType and data.idolAffixes
+
 	local prefixGroups = {}
 	local suffixGroups = {}
 
 	for modId, mod in pairs(itemMods) do
 		if mod.statOrderKey then
+			-- If editing an idol, skip affixes not in the idol whitelist for this idol type
+			if idolAffixes then
+				local validSet = idolAffixes[tostring(mod.statOrderKey)]
+				if not validSet or not validSet[idolType] then
+					goto continue_affix
+				end
+			end
 			local groups = mod.type == "Prefix" and prefixGroups or (mod.type == "Suffix" and suffixGroups or nil)
 			if groups then
 				if not groups[mod.statOrderKey] then
@@ -1072,6 +1086,7 @@ function CraftingPopupClass:RefreshAffixDropdowns()
 				end
 			end
 		end
+		::continue_affix::
 	end
 
 	local prefixList = { { label = "-- Select Prefix --" } }
