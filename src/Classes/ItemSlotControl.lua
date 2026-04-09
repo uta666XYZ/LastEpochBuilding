@@ -70,7 +70,12 @@ function ItemSlotClass:Populate()
 	for _, item in pairs(self.itemsTab.items) do
 		if self.itemsTab:IsItemValidForSlot(item, self.slotName) then
 			t_insert(self.items, item.id)
-			local itemColor = (item.type and item.type:find("Idol")) and colorCodes.IDOL or colorCodes[item.rarity]
+			local itemColor
+			if item.type and item.type:find("Idol") and item.rarity ~= "UNIQUE" and item.rarity ~= "SET" and item.rarity ~= "LEGENDARY" then
+				itemColor = colorCodes.IDOL
+			else
+				itemColor = colorCodes[item.rarity]
+			end
 			t_insert(self.list, itemColor..item.name)
 			if item.id == self.selItemId then
 				self.selIndex = #self.list
@@ -93,7 +98,15 @@ function ItemSlotClass:Populate()
 end
 
 function ItemSlotClass:CanReceiveDrag(type, value)
-	return type == "Item" and self.itemsTab:IsItemValidForSlot(value, self.slotName)
+	if type ~= "Item" then return false end
+	if not self.itemsTab:IsItemValidForSlot(value, self.slotName) then return false end
+	-- For idol slots, ensure the idol's footprint doesn't overlap other placed idols
+	if value.type and value.type:find("Idol$") and self.slotName:match("^Idol ") then
+		if self.itemsTab:IdolFootprintOverlaps(value, self.slotName, self.selItemId ~= 0 and self.selItemId or nil) then
+			return false
+		end
+	end
+	return true
 end
 
 function ItemSlotClass:ReceiveDrag(type, value, source)
