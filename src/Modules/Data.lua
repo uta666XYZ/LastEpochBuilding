@@ -601,7 +601,7 @@ for _, ver in ipairs(treeVersionList) do
 		ConPrintf("bases_%s.json parse error: %s", ver, tostring(basesErr))
 	end
 	local verUniques     = readJsonFile("Data/Uniques/uniques_" .. ver .. ".json")
-	local verIdolAffixes = readJsonFile("Data/ModIdolAffixes_" .. ver .. ".json")
+	local verIdolMods    = readJsonFile("Data/ModIdol_" .. ver .. ".json")
 	-- Safety fallback: if a version-specific file is missing, use the base files
 	if not verMods    then verMods    = readJsonFile("Data/ModItem.json")         end
 	if not verBases   then verBases   = readJsonFile("Data/Bases/bases.json")     end
@@ -612,16 +612,17 @@ for _, ver in ipairs(treeVersionList) do
 			if not mod.affix then mod.affix = "" end
 		end
 	end
-	-- Convert idol affix whitelist arrays to sets for O(1) lookup
-	local verIdolAffixSets = {}
-	if verIdolAffixes then
-		for statKey, idolTypeList in pairs(verIdolAffixes) do
-			local set = {}
-			for _, t in ipairs(idolTypeList) do
-				set[t] = true
+	-- Build flat lookup for idol affixes (merged general/enchanted/corrupted/weaver)
+	if verIdolMods then
+		local flat = {}
+		for _, entries in pairs(verIdolMods) do
+			if type(entries) == "table" then
+				for k, v in pairs(entries) do
+					if type(v) == "table" then flat[k] = v end
+				end
 			end
-			verIdolAffixSets[statKey] = set
 		end
+		verIdolMods.flat = flat
 	end
 	local verBaseLists, verBaseTypeList = buildItemBaseLists(verBases or {})
 	data.versionData[ver] = {
@@ -630,7 +631,7 @@ for _, ver in ipairs(treeVersionList) do
 		itemBaseLists    = verBaseLists,
 		itemBaseTypeList = verBaseTypeList,
 		uniques          = verUniques or {},
-		idolAffixes      = verIdolAffixSets,
+		idolMods         = verIdolMods or {},
 	}
 end
 
@@ -641,7 +642,7 @@ function data.setActiveVersion(version)
 	data.itemBaseLists   = vd.itemBaseLists
 	data.itemBaseTypeList = vd.itemBaseTypeList
 	data.uniques         = vd.uniques
-	data.idolAffixes     = vd.idolAffixes or {}
+	data.modIdol         = vd.idolMods or {}
 	-- Use the requested version's itemBases/itemMods if non-empty,
 	-- otherwise fall back to the newest version that parsed successfully.
 	if next(vd.itemBases) then
