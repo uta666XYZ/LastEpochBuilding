@@ -1328,8 +1328,8 @@ function CraftingPopupClass:RefreshIdolAffixDropdowns()
 		end
 		if not hasLarge then return false end
 		local cs = mod.classSpecificity or 0
-		-- omen: cs must equal idolCsBit exactly (pure class) or cs==0 (all classes)
-		return cs == 0 or cs == idolCsBit
+		-- omen: cs must equal idolCsBit exactly (pure class only, no universal cs==0)
+		return cs == idolCsBit
 	end
 
 	-- prefix / suffix from general section (+ weaver extras if applicable)
