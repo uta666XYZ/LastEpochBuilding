@@ -6737,7 +6737,7 @@
     },
     "affixEffectModifier": 0,
     "implicits": [
-      "{rounding:Integer}+(3-4) Health Regen"
+      "{rounding:Integer}+(7-12) Health Regen"
     ]
   },
   "Defiled Bones": {
