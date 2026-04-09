@@ -55,11 +55,6 @@ QWEN.md
 .claude/session-hook.log
 .claude/command-log.txt
 
-# Data source reference files (internal research)
-scripts/tunklab_*.txt
-scripts/skill_comparison.txt
-scripts/repo_skill_data.txt
-
 
 # IDE run configurations
 .run/
