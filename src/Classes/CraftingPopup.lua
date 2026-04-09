@@ -596,23 +596,50 @@ function CraftingPopupClass:BuildControls()
 	-- No T8 for all non-primordial slots (T8 is primordial only)
 	local noT8Slots = { prefix1 = true, prefix2 = true, suffix1 = true, suffix2 = true, sealed = true, corrupted = true }
 
+	-- Returns available affix count from a dropdown control's list (excludes placeholder entry)
+	local function affixCount(ctrl)
+		local list = ctrl and ctrl.list
+		return list and #list > 1 and (#list - 1) or 0
+	end
+
+	-- Returns section label with dynamic available count appended
+	local function sectionLabelWithCount(baseLabel, countCtrlKey)
+		return function()
+			local n = affixCount(self_ref.controls[countCtrlKey])
+			return colorCodes.UNIQUE .. baseLabel .. " (" .. n .. ")"
+		end
+	end
+
 	for _, section in ipairs(affixSections) do
 		local labelKey = section.key .. "Label"
 		local capturedSectionKey = section.key
 		local capturedSectionLabel = section.label
+		-- Map each section to its primary dropdown control key for count
+		local countCtrlKeys = {
+			prefix    = "prefix1Add",
+			suffix    = "suffix1Add",
+			sealed    = "sealedAdd",
+			primordial = "primordialAdd",
+			corrupted = "corruptedAdd",
+		}
+		local countCtrlKey = countCtrlKeys[capturedSectionKey]
 		controls[labelKey] = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, 15,
 			function() return self_ref.editY[labelKey] or 200 end,
 			0, 14, colorCodes.UNIQUE .. section.label)
 		if capturedSectionKey == "sealed" then
 			controls[labelKey].label = function()
-				if self_ref:IsAnyIdol() then return colorCodes.UNIQUE .. "ENCHANTED 1" end
-				return colorCodes.UNIQUE .. capturedSectionLabel
+				local base = self_ref:IsAnyIdol() and "ENCHANTED 1" or capturedSectionLabel
+				local n = affixCount(self_ref.controls[countCtrlKey])
+				return colorCodes.UNIQUE .. base .. " (" .. n .. ")"
 			end
 		elseif capturedSectionKey == "primordial" then
 			controls[labelKey].label = function()
-				if self_ref:IsAnyIdol() then return colorCodes.UNIQUE .. "ENCHANTED 2" end
-				return colorCodes.UNIQUE .. capturedSectionLabel
+				local base = self_ref:IsAnyIdol() and "ENCHANTED 2" or capturedSectionLabel
+				local n = affixCount(self_ref.controls[countCtrlKey])
+				return colorCodes.UNIQUE .. base .. " (" .. n .. ")"
 			end
+		else
+			controls[labelKey].label = sectionLabelWithCount(capturedSectionLabel, countCtrlKey)
 		end
 		controls[labelKey].shown = function()
 			if self_ref.currentTab ~= "edit" then return false end
