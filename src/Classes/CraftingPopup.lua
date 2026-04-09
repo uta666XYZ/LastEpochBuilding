@@ -655,7 +655,7 @@ function CraftingPopupClass:BuildControls()
 
 		-- Corrupted checkbox (next to corrupted label)
 		if section.key == "corrupted" then
-			controls.corruptedCheck = new("CheckBoxControl", {"TOPLEFT", self, "TOPLEFT"}, 115,
+			controls.corruptedCheck = new("CheckBoxControl", {"TOPLEFT", self, "TOPLEFT"}, 150,
 				function() return self_ref.editY[labelKey] or 200 end,
 				18, "", function(state)
 					self_ref.corrupted = state
@@ -1297,12 +1297,22 @@ function CraftingPopupClass:RefreshIdolAffixDropdowns()
 		return s:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
 	end
 
+	-- ModIdol classSpecificity uses game encoding: 2=Primalist,4=Mage,8=Sentinel,16=Acolyte,32=Rogue
+	-- idol classReq (from bases) uses LEB encoding: 1=Primalist,2=Mage,4=Sentinel,8=Acolyte,16=Rogue
+	-- Conversion: game_cs_bit = idol_classReq * 2
+	local idolClassReq = self.editBaseEntry and self.editBaseEntry.base and self.editBaseEntry.base.classReq or 0
+	local idolCsBit = idolClassReq * 2
+
 	local function canRollOnIdol(mod)
 		if not mod.canRollOn then return false end
+		local btMatch = false
 		for _, bt in ipairs(mod.canRollOn) do
-			if bt == baseTypeID then return true end
+			if bt == baseTypeID then btMatch = true; break end
 		end
-		return false
+		if not btMatch then return false end
+		-- classSpecificity filter: 0 = all classes; otherwise must match idol's class bit
+		local cs = mod.classSpecificity or 0
+		return cs == 0 or idolCsBit == 0 or bit.band(cs, idolCsBit) ~= 0
 	end
 
 	-- prefix / suffix from general section (+ weaver extras if applicable)
@@ -1463,14 +1473,16 @@ function CraftingPopupClass:IsAnyIdol()
 		and true or false
 end
 
--- Returns true when the idol supports enchanted affixes (Grand/Large/Ornate/Huge/Adorned, non-omen)
+-- Returns true when the idol is a Heretical variant (enchanted affixes only on heretical)
+-- Grand/Large/Ornate/Huge(29-32): heretical = subTypeID 5-9
+-- Adorned(33): heretical = subTypeID 7-11 (5,6 are Silver/Volcano, hidden)
 function CraftingPopupClass:IsEnchantableIdol()
 	if not self.editBaseEntry or not self.editBaseEntry.base then return false end
 	local bt = self.editBaseEntry.base.baseTypeID
-	local st = self.editBaseEntry.base.subTypeID
-	-- Only Grand(29), Large(30), Ornate(31), Huge(32), Adorned(33) can have enchanted
-	-- Omen idols (subTypeID >= 10) do NOT have enchanted
-	return bt and bt >= 29 and (st == nil or st < 10) and true or false
+	local st = self.editBaseEntry.base.subTypeID or 0
+	if bt == nil or bt < 29 then return false end
+	if bt == 33 then return st >= 7 and st <= 11 end
+	return st >= 5 and st <= 9
 end
 
 -- Returns true when the current idol is a Weaver variant
