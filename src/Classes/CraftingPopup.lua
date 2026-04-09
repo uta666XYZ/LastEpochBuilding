@@ -1303,6 +1303,10 @@ function CraftingPopupClass:RefreshIdolAffixDropdowns()
 	local idolClassReq = self.editBaseEntry and self.editBaseEntry.base and self.editBaseEntry.base.classReq or 0
 	local idolCsBit = idolClassReq * 2
 
+	local isOmen = self:IsOmenIdol()
+	-- Large idol baseTypeIDs: 29=Grand, 30=Large, 31=Ornate, 32=Huge, 33=Adorned
+	local LARGE_IDS = { [29]=true, [30]=true, [31]=true, [32]=true, [33]=true }
+
 	local function canRollOnIdol(mod)
 		if not mod.canRollOn then return false end
 		local btMatch = false
@@ -1310,22 +1314,48 @@ function CraftingPopupClass:RefreshIdolAffixDropdowns()
 			if bt == baseTypeID then btMatch = true; break end
 		end
 		if not btMatch then return false end
-		-- classSpecificity filter: 0 = all classes; otherwise must match idol's class bit
 		local cs = mod.classSpecificity or 0
 		return cs == 0 or idolCsBit == 0 or bit.band(cs, idolCsBit) ~= 0
+	end
+
+	-- Omen: single-stat affix (no mod[2]) with cs == idolCsBit exactly, canRollOn intersects large bts
+	local function canRollOnOmen(mod)
+		if not mod.canRollOn then return false end
+		if mod[2] then return false end  -- skip dual-stat (multi) affixes
+		local hasLarge = false
+		for _, bt in ipairs(mod.canRollOn) do
+			if LARGE_IDS[bt] then hasLarge = true; break end
+		end
+		if not hasLarge then return false end
+		local cs = mod.classSpecificity or 0
+		-- omen: cs must equal idolCsBit exactly (pure class) or cs==0 (all classes)
+		return cs == 0 or cs == idolCsBit
 	end
 
 	-- prefix / suffix from general section (+ weaver extras if applicable)
 	local prefixList = { { label = "-- Select Prefix --" } }
 	local suffixList = { { label = "-- Select Suffix --" } }
-	for _, pool in ipairs({ general, weaver }) do
-		for _, mod in pairs(pool) do
-			if mod.statOrderKey and canRollOnIdol(mod) then
+	if isOmen then
+		for _, mod in pairs(general) do
+			if mod.statOrderKey and canRollOnOmen(mod) then
 				local entry = { label = buildLabel(mod), statOrderKey = mod.statOrderKey, affix = mod.affix, type = mod.type, maxTier = 0 }
 				if mod.type == "Prefix" then
 					t_insert(prefixList, entry)
 				elseif mod.type == "Suffix" then
 					t_insert(suffixList, entry)
+				end
+			end
+		end
+	else
+		for _, pool in ipairs({ general, weaver }) do
+			for _, mod in pairs(pool) do
+				if mod.statOrderKey and canRollOnIdol(mod) then
+					local entry = { label = buildLabel(mod), statOrderKey = mod.statOrderKey, affix = mod.affix, type = mod.type, maxTier = 0 }
+					if mod.type == "Prefix" then
+						t_insert(prefixList, entry)
+					elseif mod.type == "Suffix" then
+						t_insert(suffixList, entry)
+					end
 				end
 			end
 		end
@@ -1339,10 +1369,20 @@ function CraftingPopupClass:RefreshIdolAffixDropdowns()
 		end
 	end
 
-	-- corrupted affixes from modIdol.corrupted
+	-- corrupted affixes: omen shows all corrupted from any large idol (bt 29-33); class shows bt-exact match
 	local corruptedList = { { label = "-- Select Corrupted Affix --" } }
 	for _, mod in pairs(corrupted) do
-		if mod.statOrderKey and canRollOnIdol(mod) then
+		local show = false
+		if isOmen then
+			if mod.canRollOn then
+				for _, bt in ipairs(mod.canRollOn) do
+					if LARGE_IDS[bt] then show = true; break end
+				end
+			end
+		else
+			show = mod.statOrderKey and canRollOnIdol(mod)
+		end
+		if show and mod.statOrderKey then
 			t_insert(corruptedList, { label = buildLabel(mod), statOrderKey = mod.statOrderKey, affix = mod.affix, type = mod.type, maxTier = 0 })
 		end
 	end
@@ -1483,6 +1523,15 @@ function CraftingPopupClass:IsEnchantableIdol()
 	if bt == nil or bt < 29 then return false end
 	if bt == 33 then return st >= 7 and st <= 11 end
 	return st >= 5 and st <= 9
+end
+
+-- Returns true when the current idol is an Omen variant
+-- Only Grand(29) and Large(30) have omen subtypes (subTypeID 10-14)
+function CraftingPopupClass:IsOmenIdol()
+	if not self.editBaseEntry or not self.editBaseEntry.base then return false end
+	local bt = self.editBaseEntry.base.baseTypeID
+	local st = self.editBaseEntry.base.subTypeID or 0
+	return (bt == 29 or bt == 30) and st >= 10 and st <= 14
 end
 
 -- Returns true when the current idol is a Weaver variant
