@@ -1261,6 +1261,7 @@ function CraftingPopupClass:RefreshIdolAffixDropdowns()
 	local general   = data.modIdol.general   or {}
 	local enchanted = data.modIdol.enchanted  or {}
 	local corrupted = data.modIdol.corrupted  or {}
+	local weaver    = self:IsWeaverIdol() and (data.modIdol.weaver or {}) or {}
 
 	local function buildLabel(mod)
 		local parts = {}
@@ -1277,16 +1278,18 @@ function CraftingPopupClass:RefreshIdolAffixDropdowns()
 		return false
 	end
 
-	-- prefix / suffix from general section
+	-- prefix / suffix from general section (+ weaver extras if applicable)
 	local prefixList = { { label = "-- Select Prefix --" } }
 	local suffixList = { { label = "-- Select Suffix --" } }
-	for _, mod in pairs(general) do
-		if mod.statOrderKey and canRollOnIdol(mod) then
-			local entry = { label = buildLabel(mod), statOrderKey = mod.statOrderKey, affix = mod.affix, type = mod.type, maxTier = 0 }
-			if mod.type == "Prefix" then
-				t_insert(prefixList, entry)
-			elseif mod.type == "Suffix" then
-				t_insert(suffixList, entry)
+	for _, pool in ipairs({ general, weaver }) do
+		for _, mod in pairs(pool) do
+			if mod.statOrderKey and canRollOnIdol(mod) then
+				local entry = { label = buildLabel(mod), statOrderKey = mod.statOrderKey, affix = mod.affix, type = mod.type, maxTier = 0 }
+				if mod.type == "Prefix" then
+					t_insert(prefixList, entry)
+				elseif mod.type == "Suffix" then
+					t_insert(suffixList, entry)
+				end
 			end
 		end
 	end
@@ -1441,6 +1444,17 @@ function CraftingPopupClass:IsEnchantableIdol()
 	-- Only Grand(29), Large(30), Ornate(31), Huge(32), Adorned(33) can have enchanted
 	-- Omen idols (subTypeID >= 10) do NOT have enchanted
 	return bt and bt >= 29 and (st == nil or st < 10) and true or false
+end
+
+-- Returns true when the current idol is a Weaver variant
+-- Small(25): subTypeID==2, Minor/Humble/Stout(26-28): subTypeID==1
+function CraftingPopupClass:IsWeaverIdol()
+	if not self.editBaseEntry or not self.editBaseEntry.base then return false end
+	local bt = self.editBaseEntry.base.baseTypeID
+	local st = self.editBaseEntry.base.subTypeID
+	if bt == 25 then return st == 2 end
+	if bt == 26 or bt == 27 or bt == 28 then return st == 1 end
+	return false
 end
 
 -- Returns the classReq bitmask for the current character class (0 if unknown)
