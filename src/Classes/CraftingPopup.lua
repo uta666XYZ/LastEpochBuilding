@@ -596,23 +596,50 @@ function CraftingPopupClass:BuildControls()
 	-- No T8 for all non-primordial slots (T8 is primordial only)
 	local noT8Slots = { prefix1 = true, prefix2 = true, suffix1 = true, suffix2 = true, sealed = true, corrupted = true }
 
+	-- Returns available affix count from a dropdown control's list (excludes placeholder entry)
+	local function affixCount(ctrl)
+		local list = ctrl and ctrl.list
+		return list and #list > 1 and (#list - 1) or 0
+	end
+
+	-- Returns section label with dynamic available count appended
+	local function sectionLabelWithCount(baseLabel, countCtrlKey)
+		return function()
+			local n = affixCount(self_ref.controls[countCtrlKey])
+			return colorCodes.UNIQUE .. baseLabel .. " (" .. n .. ")"
+		end
+	end
+
 	for _, section in ipairs(affixSections) do
 		local labelKey = section.key .. "Label"
 		local capturedSectionKey = section.key
 		local capturedSectionLabel = section.label
+		-- Map each section to its primary dropdown control key for count
+		local countCtrlKeys = {
+			prefix    = "prefix1Add",
+			suffix    = "suffix1Add",
+			sealed    = "sealedAdd",
+			primordial = "primordialAdd",
+			corrupted = "corruptedAdd",
+		}
+		local countCtrlKey = countCtrlKeys[capturedSectionKey]
 		controls[labelKey] = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, 15,
 			function() return self_ref.editY[labelKey] or 200 end,
 			0, 14, colorCodes.UNIQUE .. section.label)
 		if capturedSectionKey == "sealed" then
 			controls[labelKey].label = function()
-				if self_ref:IsAnyIdol() then return colorCodes.UNIQUE .. "ENCHANTED 1" end
-				return colorCodes.UNIQUE .. capturedSectionLabel
+				local base = self_ref:IsAnyIdol() and "ENCHANTED 1" or capturedSectionLabel
+				local n = affixCount(self_ref.controls[countCtrlKey])
+				return colorCodes.UNIQUE .. base .. " (" .. n .. ")"
 			end
 		elseif capturedSectionKey == "primordial" then
 			controls[labelKey].label = function()
-				if self_ref:IsAnyIdol() then return colorCodes.UNIQUE .. "ENCHANTED 2" end
-				return colorCodes.UNIQUE .. capturedSectionLabel
+				local base = self_ref:IsAnyIdol() and "ENCHANTED 2" or capturedSectionLabel
+				local n = affixCount(self_ref.controls[countCtrlKey])
+				return colorCodes.UNIQUE .. base .. " (" .. n .. ")"
 			end
+		else
+			controls[labelKey].label = sectionLabelWithCount(capturedSectionLabel, countCtrlKey)
 		end
 		controls[labelKey].shown = function()
 			if self_ref.currentTab ~= "edit" then return false end
@@ -628,7 +655,7 @@ function CraftingPopupClass:BuildControls()
 
 		-- Corrupted checkbox (next to corrupted label)
 		if section.key == "corrupted" then
-			controls.corruptedCheck = new("CheckBoxControl", {"TOPLEFT", self, "TOPLEFT"}, 115,
+			controls.corruptedCheck = new("CheckBoxControl", {"TOPLEFT", self, "TOPLEFT"}, 150,
 				function() return self_ref.editY[labelKey] or 200 end,
 				18, "", function(state)
 					self_ref.corrupted = state
@@ -1261,6 +1288,7 @@ function CraftingPopupClass:RefreshIdolAffixDropdowns()
 	local general   = data.modIdol.general   or {}
 	local enchanted = data.modIdol.enchanted  or {}
 	local corrupted = data.modIdol.corrupted  or {}
+	local weaver    = self:IsWeaverIdol() and (data.modIdol.weaver or {}) or {}
 
 	local function buildLabel(mod)
 		local parts = {}
@@ -1269,24 +1297,66 @@ function CraftingPopupClass:RefreshIdolAffixDropdowns()
 		return s:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
 	end
 
+	-- ModIdol classSpecificity uses game encoding: 2=Primalist,4=Mage,8=Sentinel,16=Acolyte,32=Rogue
+	-- idol classReq (from bases) uses LEB encoding: 1=Primalist,2=Mage,4=Sentinel,8=Acolyte,16=Rogue
+	-- Conversion: game_cs_bit = idol_classReq * 2
+	local idolClassReq = self.editBaseEntry and self.editBaseEntry.base and self.editBaseEntry.base.classReq or 0
+	local idolCsBit = idolClassReq * 2
+
+	local isOmen = self:IsOmenIdol()
+	-- Large idol baseTypeIDs: 29=Grand, 30=Large, 31=Ornate, 32=Huge, 33=Adorned
+	local LARGE_IDS = { [29]=true, [30]=true, [31]=true, [32]=true, [33]=true }
+
 	local function canRollOnIdol(mod)
 		if not mod.canRollOn then return false end
+		local btMatch = false
 		for _, bt in ipairs(mod.canRollOn) do
-			if bt == baseTypeID then return true end
+			if bt == baseTypeID then btMatch = true; break end
 		end
-		return false
+		if not btMatch then return false end
+		local cs = mod.classSpecificity or 0
+		return cs == 0 or idolCsBit == 0 or bit.band(cs, idolCsBit) ~= 0
 	end
 
-	-- prefix / suffix from general section
+	-- Omen: single-stat affix (no mod[2]) with cs == idolCsBit exactly, canRollOn intersects large bts
+	local function canRollOnOmen(mod)
+		if not mod.canRollOn then return false end
+		if mod[2] then return false end  -- skip dual-stat (multi) affixes
+		local hasLarge = false
+		for _, bt in ipairs(mod.canRollOn) do
+			if LARGE_IDS[bt] then hasLarge = true; break end
+		end
+		if not hasLarge then return false end
+		local cs = mod.classSpecificity or 0
+		-- omen: cs must equal idolCsBit exactly (pure class only, no universal cs==0)
+		return cs == idolCsBit
+	end
+
+	-- prefix / suffix from general section (+ weaver extras if applicable)
 	local prefixList = { { label = "-- Select Prefix --" } }
 	local suffixList = { { label = "-- Select Suffix --" } }
-	for _, mod in pairs(general) do
-		if mod.statOrderKey and canRollOnIdol(mod) then
-			local entry = { label = buildLabel(mod), statOrderKey = mod.statOrderKey, affix = mod.affix, type = mod.type, maxTier = 0 }
-			if mod.type == "Prefix" then
-				t_insert(prefixList, entry)
-			elseif mod.type == "Suffix" then
-				t_insert(suffixList, entry)
+	if isOmen then
+		for _, mod in pairs(general) do
+			if mod.statOrderKey and canRollOnOmen(mod) then
+				local entry = { label = buildLabel(mod), statOrderKey = mod.statOrderKey, affix = mod.affix, type = mod.type, maxTier = 0 }
+				if mod.type == "Prefix" then
+					t_insert(prefixList, entry)
+				elseif mod.type == "Suffix" then
+					t_insert(suffixList, entry)
+				end
+			end
+		end
+	else
+		for _, pool in ipairs({ general, weaver }) do
+			for _, mod in pairs(pool) do
+				if mod.statOrderKey and canRollOnIdol(mod) then
+					local entry = { label = buildLabel(mod), statOrderKey = mod.statOrderKey, affix = mod.affix, type = mod.type, maxTier = 0 }
+					if mod.type == "Prefix" then
+						t_insert(prefixList, entry)
+					elseif mod.type == "Suffix" then
+						t_insert(suffixList, entry)
+					end
+				end
 			end
 		end
 	end
@@ -1299,10 +1369,20 @@ function CraftingPopupClass:RefreshIdolAffixDropdowns()
 		end
 	end
 
-	-- corrupted affixes from modIdol.corrupted
+	-- corrupted affixes: omen shows all corrupted from any large idol (bt 29-33); class shows bt-exact match
 	local corruptedList = { { label = "-- Select Corrupted Affix --" } }
 	for _, mod in pairs(corrupted) do
-		if mod.statOrderKey and canRollOnIdol(mod) then
+		local show = false
+		if isOmen then
+			if mod.canRollOn then
+				for _, bt in ipairs(mod.canRollOn) do
+					if LARGE_IDS[bt] then show = true; break end
+				end
+			end
+		else
+			show = mod.statOrderKey and canRollOnIdol(mod)
+		end
+		if show and mod.statOrderKey then
 			t_insert(corruptedList, { label = buildLabel(mod), statOrderKey = mod.statOrderKey, affix = mod.affix, type = mod.type, maxTier = 0 })
 		end
 	end
@@ -1433,14 +1513,36 @@ function CraftingPopupClass:IsAnyIdol()
 		and true or false
 end
 
--- Returns true when the idol supports enchanted affixes (Grand/Large/Ornate/Huge/Adorned, non-omen)
+-- Returns true when the idol is a Heretical variant (enchanted affixes only on heretical)
+-- Grand/Large/Ornate/Huge(29-32): heretical = subTypeID 5-9
+-- Adorned(33): heretical = subTypeID 7-11 (5,6 are Silver/Volcano, hidden)
 function CraftingPopupClass:IsEnchantableIdol()
 	if not self.editBaseEntry or not self.editBaseEntry.base then return false end
 	local bt = self.editBaseEntry.base.baseTypeID
+	local st = self.editBaseEntry.base.subTypeID or 0
+	if bt == nil or bt < 29 then return false end
+	if bt == 33 then return st >= 7 and st <= 11 end
+	return st >= 5 and st <= 9
+end
+
+-- Returns true when the current idol is an Omen variant
+-- Only Grand(29) and Large(30) have omen subtypes (subTypeID 10-14)
+function CraftingPopupClass:IsOmenIdol()
+	if not self.editBaseEntry or not self.editBaseEntry.base then return false end
+	local bt = self.editBaseEntry.base.baseTypeID
+	local st = self.editBaseEntry.base.subTypeID or 0
+	return (bt == 29 or bt == 30) and st >= 10 and st <= 14
+end
+
+-- Returns true when the current idol is a Weaver variant
+-- Small(25): subTypeID==2, Minor/Humble/Stout(26-28): subTypeID==1
+function CraftingPopupClass:IsWeaverIdol()
+	if not self.editBaseEntry or not self.editBaseEntry.base then return false end
+	local bt = self.editBaseEntry.base.baseTypeID
 	local st = self.editBaseEntry.base.subTypeID
-	-- Only Grand(29), Large(30), Ornate(31), Huge(32), Adorned(33) can have enchanted
-	-- Omen idols (subTypeID >= 10) do NOT have enchanted
-	return bt and bt >= 29 and (st == nil or st < 10) and true or false
+	if bt == 25 then return st == 2 end
+	if bt == 26 or bt == 27 or bt == 28 then return st == 1 end
+	return false
 end
 
 -- Returns the classReq bitmask for the current character class (0 if unknown)
