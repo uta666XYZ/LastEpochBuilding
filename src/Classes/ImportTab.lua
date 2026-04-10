@@ -87,7 +87,7 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
     end
 
     -- Stage: select character and import data
-    self.controls.source = new("ButtonControl", { "TOPLEFT", self.controls.sectionCharImport, "TOPLEFT" }, 6, 50, 438, 18, "^7Source: ^x4040FFhttps://lastepochtools.com")
+    self.controls.source = new("ButtonControl", { "TOPLEFT", self.controls.sectionCharImport, "TOPLEFT" }, 6, 50, 438, 18, "^7Source: ^x4040FFhttps://planners.maxroll.gg")
     self.controls.source.shown = function()
         if self.charImportMode == "SELECTCHAR" then
             return self.isOnlineMode
@@ -107,7 +107,7 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
         return self.charImportMode == "SELECTCHAR"
     end
     self.controls.charDownload = new("ButtonControl", { "TOPLEFT", self.controls.charSelect, "BOTTOMLEFT" }, 0, 8, 100, 20, "Download", function()
-        self:DownloadFromLETools()
+        self:DownloadFromMaxroll()
     end)
     self.controls.charDownload.shown = function()
         local charSelect = self.controls.charSelect
@@ -390,17 +390,9 @@ function ImportTabClass:DownloadCharacterListOnline()
     self.charImportStatus = "Retrieving character list..."
     -- Trim Trailing/Leading spaces
     local accountName = self.controls.accountName.buf:gsub('%s+', '')
-    launch:DownloadPage("https://www.lastepochtools.com/profile/" .. accountName, function(response, errMsg)
-        if errMsg == "Response code: 401" then
-            self.charImportStatus = colorCodes.NEGATIVE .. "Sign-in is required."
-            self.charImportMode = "GETSESSIONID"
-            return
-        elseif errMsg == "Response code: 403" then
-            self.charImportStatus = colorCodes.NEGATIVE .. "Account profile is private."
-            self.charImportMode = "GETSESSIONID"
-            return
-        elseif errMsg == "Response code: 404" then
-            self.charImportStatus = colorCodes.NEGATIVE .. "Account name is incorrect."
+    launch:DownloadPage("https://planners.maxroll.gg/lastepoch/characters/" .. accountName, function(response, errMsg)
+        if errMsg == "Response code: 404" then
+            self.charImportStatus = colorCodes.NEGATIVE .. "Account not found. Check the account name and ensure the profile is public on Maxroll."
             self.charImportMode = "GETACCOUNTNAME"
             return
         elseif errMsg then
@@ -408,88 +400,37 @@ function ImportTabClass:DownloadCharacterListOnline()
             self.charImportMode = "GETACCOUNTNAME"
             return
         end
-        -- Variable names are obfuscated (e.g. "let boce7c7e = [...]"), match by content instead
-        local jsonChars = response.body:match("let accountCharacters = (%b[])")
-        if not jsonChars then
-            for arr in response.body:gmatch("let %w+ = (%b[])") do
-                if arr:find('"characterName"') then
-                    jsonChars = arr
-                    break
-                end
-            end
-        end
-        if not jsonChars then
-            self.charImportStatus = colorCodes.NEGATIVE .. "Error processing character list.\nlastepochtools.com may have changed their page structure.\nPlease check for a newer version of LEB or report the issue."
+        local charList, parseErr = processJson(response.body)
+        if parseErr or type(charList) ~= "table" then
+            self.charImportStatus = colorCodes.NEGATIVE .. "Error processing character list, try again."
             self.charImportMode = "GETACCOUNTNAME"
             return
         end
-        local charList, errMsg = processJson(jsonChars)
-        if errMsg then
-            self.charImportStatus = colorCodes.NEGATIVE .. "Error processing character list.\nlastepochtools.com may have changed their page structure.\nPlease check for a newer version of LEB or report the issue."
-            self.charImportMode = "GETACCOUNTNAME"
-            return
-        end
-        local jsonAccountInfo = response.body:match("let accountInfo = (%b{})")
-        if not jsonAccountInfo then
-            for obj in response.body:gmatch("let %w+ = (%b{})") do
-                if obj:find('"accountName"') or obj:find('"lastFetched"') then
-                    jsonAccountInfo = obj
-                    break
-                end
-            end
-        end
-        if not jsonAccountInfo then
-            self.charImportStatus = colorCodes.NEGATIVE .. "Failed to retrieve account info, try again."
-            return
-        end
-        local accountInfo, errMsg = processJson(jsonAccountInfo)
-        if errMsg then
-            self.charImportStatus = colorCodes.NEGATIVE .. "Failed to retrieve account info, try again."
-            return
-        end
-        local lastFetched = "";
-        if accountInfo.lastFetched then
-            lastFetched = " Last update was on " .. os.date("%c",accountInfo.lastFetched / 1000)
-        else
-            lastFetched = " Never fetched"
-        end
-        --ConPrintTable(charList)
         if #charList == 0 then
             self.charImportStatus = colorCodes.NEGATIVE .. "The account has no characters to import."
         else
             self.charImportStatus = "Character list successfully retrieved."
         end
-        self.charImportStatus = self.charImportStatus .. colorCodes.NORMAL .. lastFetched .. colorCodes.NEGATIVE .. "\n\tManually click on source link to trigger an update"
         self.charImportMode = "SELECTCHAR"
-        self.controls.source.label = "^7Source: ^x4040FFhttps://www.lastepochtools.com/profile/" .. accountName
+        self.controls.source.label = "^7Source: ^x4040FFhttps://planners.maxroll.gg/lastepoch/characters/" .. accountName
         self.controls.source.onClick = function()
-            OpenURL("https://www.lastepochtools.com/profile/" .. accountName)
+            OpenURL("https://planners.maxroll.gg/lastepoch/characters/" .. accountName)
         end
         self.lastAccountHash = common.sha1(accountName)
         main.lastAccountName = accountName
         main.gameAccounts[accountName] = main.gameAccounts[accountName] or { }
-        -- Dump first char's keys to log so we can identify the correct cycle/league field
-        if charList[1] then
-            local keys = {}
-            for k, v in pairs(charList[1]) do
-                table.insert(keys, tostring(k) .. "=" .. tostring(v))
-            end
-            table.sort(keys)
-            ConPrintf("[ONLINE] char[1] fields: %s", table.concat(keys, ", "))
-        end
         local maxCycle = 0
         for _, char in ipairs(charList) do
             if (char.cycle or 0) > maxCycle then maxCycle = char.cycle end
         end
-        ConPrintf("[ONLINE] maxCycle=%d", maxCycle)
         local leagueList = { }
         for i, char in ipairs(charList) do
+            local classId = char.characterClass
             char.league = (char.cycle or 0) == maxCycle and maxCycle > 0 and "Cycle" or "Legacy"
-            ConPrintf("[ONLINE] %s cycle=%s -> %s", tostring(char.characterName or char.name), tostring(char.cycle), char.league)
-            char.ascendancy = char.mastery
-            char.ascendancyName = self.build.latestTree.classes[char.class].ascendancies[char.ascendancy].name
+            char.ascendancy = char.chosenMastery
+            char.ascendancyName = self.build.latestTree.classes[classId].ascendancies[char.chosenMastery].name
             char.name = char.characterName
-            char.class = self.build.latestTree.classes[char.class].name
+            char.class = self.build.latestTree.classes[classId].name
             if not isValueInArray(leagueList, char.league) then
                 t_insert(leagueList, char.league)
             end
@@ -510,8 +451,6 @@ function ImportTabClass:DownloadCharacterListOnline()
         end
         self.lastCharList = charList
         self:BuildCharacterList(self.controls.charSelectLeague:GetSelValue("league"))
-
-        -- We only get here if the accountname was correct, found, and not private, so add it to the account history.
         self:SaveAccountHistory()
     end)
 end
@@ -630,61 +569,29 @@ function ImportTabClass:SaveAccountHistory()
     end
 end
 
-function ImportTabClass:DownloadFromLETools()
-    self.charImportStatus = "Downloading build info from Last Epoch Tools..."
+function ImportTabClass:DownloadFromMaxroll()
+    self.charImportStatus = "Downloading build data from Maxroll..."
     local charSelect = self.controls.charSelect
     local charData = charSelect.list[charSelect.selIndex].char
-    local accountName = self.controls.accountName.buf
-    launch:DownloadPage("https://www.lastepochtools.com/profile/" .. accountName .. "/character/" .. charData.name, function(response, errMsg)
+    local accountName = self.controls.accountName.buf:gsub('%s+', '')
+    launch:DownloadPage("https://planners.maxroll.gg/lastepoch/characters/" .. accountName .. "/" .. charData.name, function(response, errMsg)
         self.charImportMode = "SELECTCHAR"
         if errMsg then
-            self.charImportStatus = colorCodes.NEGATIVE .. "Error importing character data, try again (" .. errMsg:gsub("\n", " ") .. ")"
-            return
-        elseif response.body == "false" then
-            self.charImportStatus = colorCodes.NEGATIVE .. "Failed to retrieve character data, try again."
+            self.charImportStatus = colorCodes.NEGATIVE .. "Error downloading character data, try again (" .. errMsg:gsub("\n", " ") .. ")"
             return
         end
-        local jsonBuild = response.body:match("let buildInfo = (%b{})")
-        if not jsonBuild then
-            for obj in response.body:gmatch("let %w+ = (%b{})") do
-                if obj:find('"equipment"') then
-                    jsonBuild = obj
-                    break
-                end
-            end
-        end
-        if not jsonBuild then
-            self.charImportStatus = colorCodes.NEGATIVE .. "Failed to retrieve character data, try again."
+        local ok, charOrErr = pcall(function() return self:ReadJsonSaveData(response.body) end)
+        if not ok then
+            self.charImportStatus = colorCodes.NEGATIVE .. "Failed to parse character data, try again."
             return
         end
-        local buildInfo, errMsg = processJson(jsonBuild)
-        if errMsg then
-            self.charImportStatus = colorCodes.NEGATIVE .. "Failed to retrieve character data, try again."
-            return
+        local lastUpdated = ""
+        if charData.lastUpdated then
+            lastUpdated = colorCodes.NORMAL .. " Last updated: " .. os.date("%c", charData.lastUpdated)
         end
-        local jsonCharInfo = response.body:match("let charInfo = (%b{})")
-        if not jsonCharInfo then
-            for obj in response.body:gmatch("let %w+ = (%b{})") do
-                if obj:find('"characterName"') and obj:find('"cycle"') then
-                    jsonCharInfo = obj
-                    break
-                end
-            end
-        end
-        if not jsonCharInfo then
-            self.charImportStatus = colorCodes.NEGATIVE .. "Failed to retrieve character info, try again."
-            return
-        end
-        local charInfo, errMsg = processJson(jsonCharInfo)
-        if errMsg then
-            self.charImportStatus = colorCodes.NEGATIVE .. "Failed to retrieve character info, try again."
-            return
-        end
-        local lastFetched = os.date("%c",charInfo.lastFetched / 1000)
-        charSelect.list[charSelect.selIndex].char = self.build:ReadLeToolsSave(buildInfo.data)
-        charSelect.list[charSelect.selIndex].char.name = charData.name
-        self.charImportStatus = colorCodes.POSITIVE .. "Build info successfully downloaded. ".. colorCodes.NORMAL .. "Last update was on " .. lastFetched .. colorCodes.NEGATIVE .. "\n\tManually click on source link to trigger an update"
-    end, sessionID and { header = "Cookie: POESESSID=" .. sessionID })
+        charSelect.list[charSelect.selIndex].char = charOrErr
+        self.charImportStatus = colorCodes.POSITIVE .. "Build data successfully downloaded." .. lastUpdated
+    end)
 end
 
 function ImportTabClass:DownloadPassiveTree()
