@@ -408,7 +408,9 @@ function ImportTabClass:DownloadCharacterListOnline()
             self.charImportMode = "GETACCOUNTNAME"
             return
         end
-        local jsonChars = response.body:match("let accountCharacters = (%b[])")
+        -- Variable names are obfuscated (e.g. "let boce7c7e = [...]"), match by structure instead
+        local jsonChars = response.body:match("let accountCharacters = (%b[])") or
+                          response.body:match("pagePath = %b{};%s*let %w+ = (%b[])")
         if not jsonChars then
             self.charImportStatus = colorCodes.NEGATIVE .. "Error processing character list, try again later"
             self.charImportMode = "GETACCOUNTNAME"
@@ -421,6 +423,14 @@ function ImportTabClass:DownloadCharacterListOnline()
             return
         end
         local jsonAccountInfo = response.body:match("let accountInfo = (%b{})")
+        if not jsonAccountInfo then
+            for obj in response.body:gmatch("let %w+ = (%b{})") do
+                if obj:find('"accountName"') or obj:find('"lastFetched"') then
+                    jsonAccountInfo = obj
+                    break
+                end
+            end
+        end
         if not jsonAccountInfo then
             self.charImportStatus = colorCodes.NEGATIVE .. "Failed to retrieve account info, try again."
             return
@@ -629,6 +639,14 @@ function ImportTabClass:DownloadFromLETools()
         end
         local jsonBuild = response.body:match("let buildInfo = (%b{})")
         if not jsonBuild then
+            for obj in response.body:gmatch("let %w+ = (%b{})") do
+                if obj:find('"equipment"') then
+                    jsonBuild = obj
+                    break
+                end
+            end
+        end
+        if not jsonBuild then
             self.charImportStatus = colorCodes.NEGATIVE .. "Failed to retrieve character data, try again."
             return
         end
@@ -638,6 +656,14 @@ function ImportTabClass:DownloadFromLETools()
             return
         end
         local jsonCharInfo = response.body:match("let charInfo = (%b{})")
+        if not jsonCharInfo then
+            for obj in response.body:gmatch("let %w+ = (%b{})") do
+                if obj:find('"characterName"') and obj:find('"cycle"') then
+                    jsonCharInfo = obj
+                    break
+                end
+            end
+        end
         if not jsonCharInfo then
             self.charImportStatus = colorCodes.NEGATIVE .. "Failed to retrieve character info, try again."
             return
