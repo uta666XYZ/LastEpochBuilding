@@ -1,5 +1,26 @@
 # Changelog
 
+## [v0.11.0](https://github.com/uta666XYZ/LastEpochBuilding/tree/v0.11.0) (2026/04/10)
+
+[Full Changelog](https://github.com/uta666XYZ/LastEpochBuilding/compare/v0.10.0...v0.11.0)
+
+### New Features
+- Blessing UI visual overhaul (circular slots, icons, hover popup card)
+- Idol crafting system with dedicated affix data, affix count labels, Weaver-specific affixes, and unique idol color
+- Idol Altar type label added to Idol Altar UI
+- Omen idol affix pool (partial implementation)
+- Updated app icon to new LEB design
+
+### Data
+- Updated to game version 1.4.2 (balance and item changes)
+
+### Fixed
+- Blessing save/load, import, and slot mapping corrections
+- Idol crafting class filtering
+- Omen idol affix filter
+
+---
+
 ## [v0.10.0](https://github.com/uta666XYZ/LastEpochBuilding/tree/v0.10.0) (2026/04/07)
 
 [Full Changelog](https://github.com/uta666XYZ/LastEpochBuilding/compare/v0.9.1...v0.10.0)
