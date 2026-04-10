@@ -408,9 +408,16 @@ function ImportTabClass:DownloadCharacterListOnline()
             self.charImportMode = "GETACCOUNTNAME"
             return
         end
-        -- Variable names are obfuscated (e.g. "let boce7c7e = [...]"), match by structure instead
-        local jsonChars = response.body:match("let accountCharacters = (%b[])") or
-                          response.body:match("pagePath = %b{};%s*let %w+ = (%b[])")
+        -- Variable names are obfuscated (e.g. "let boce7c7e = [...]"), match by content instead
+        local jsonChars = response.body:match("let accountCharacters = (%b[])")
+        if not jsonChars then
+            for arr in response.body:gmatch("let %w+ = (%b[])") do
+                if arr:find('"characterName"') then
+                    jsonChars = arr
+                    break
+                end
+            end
+        end
         if not jsonChars then
             self.charImportStatus = colorCodes.NEGATIVE .. "Error processing character list, try again later"
             self.charImportMode = "GETACCOUNTNAME"
