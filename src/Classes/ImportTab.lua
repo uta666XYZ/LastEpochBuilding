@@ -419,13 +419,13 @@ function ImportTabClass:DownloadCharacterListOnline()
             end
         end
         if not jsonChars then
-            self.charImportStatus = colorCodes.NEGATIVE .. "Error processing character list, try again later"
+            self.charImportStatus = colorCodes.NEGATIVE .. "Error processing character list.\nlastepochtools.com may have changed their page structure.\nPlease check for a newer version of LEB or report the issue."
             self.charImportMode = "GETACCOUNTNAME"
             return
         end
         local charList, errMsg = processJson(jsonChars)
         if errMsg then
-            self.charImportStatus = colorCodes.NEGATIVE .. "Error processing character list, try again later"
+            self.charImportStatus = colorCodes.NEGATIVE .. "Error processing character list.\nlastepochtools.com may have changed their page structure.\nPlease check for a newer version of LEB or report the issue."
             self.charImportMode = "GETACCOUNTNAME"
             return
         end
