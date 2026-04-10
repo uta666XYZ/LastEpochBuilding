@@ -553,7 +553,7 @@ function CraftingPopupClass:BuildControls()
 		if not self_ref.editItem then return "" end
 		local item = self_ref.editItem
 		local col
-		if item.type and item.type:find("Idol") and item.rarity ~= "UNIQUE" and item.rarity ~= "SET" and item.rarity ~= "LEGENDARY" then
+		if item.type and item.type:find("Idol") and item.rarity ~= "UNIQUE" then
 			col = colorCodes.IDOL
 		else
 			col = colorCodes[item.rarity] or colorCodes.NORMAL
