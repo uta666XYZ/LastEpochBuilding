@@ -1,3 +1,21 @@
+VERSION[0.11.0][2026/04/10]
+
+--- New Features ---
+- Blessing UI visual overhaul (circular slots, icons, hover popup card)
+- Idol crafting system with affix count labels, Weaver-specific affixes, and unique idol color
+- Idol Altar type label added to Idol Altar UI
+- Omen idol affix pool (partial implementation)
+- Updated app icon to new LEB design
+
+--- Data ---
+- Updated to game version 1.4.2 (balance and item changes)
+
+--- Fixed ---
+- Blessing save/load, import, and slot mapping corrections
+- Idol crafting class filtering
+- Omen idol affix filter
+
+
 VERSION[0.10.0][2026/04/03]
 
 --- New Features ---
