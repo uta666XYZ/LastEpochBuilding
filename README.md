@@ -27,13 +27,13 @@ Feedback and bug reports are always welcome — see [Contributing](#contributing
 - **Defense stats** — armor, dodge, block, ward, resistances
 - **Unique & Legendary items**
 - **Set items** (Set bonus effect accuracy may vary — see Roadmap)
-- **Idols** including Season 4 Idol Altar
-- **Blessings** (found in the Config tab)
+- **Idols** — Season 4 Idol Altar with crafting system (affix selection, class filtering, Weaver-specific affixes)
+- **Blessings** — visual slot UI with icons and hover detail cards
 - **Character import** — offline save files and online characters via LE Tools build planner
 - **Season 4: Shattered Omens** support
 
 > **Note:** Mod recognition rate is ~90% (89.7% verified as of v0.10). Recognized mods
-> are not always calculated with full accuracy. Development is focused on Last Epoch 1.4.
+> are not always calculated with full accuracy. Development is focused on Last Epoch 1.4.2.
 > Limited support exists for 1.2 and 1.3 builds.
 
 ---
