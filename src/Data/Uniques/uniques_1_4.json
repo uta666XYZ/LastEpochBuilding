@@ -410,7 +410,7 @@
     },
     "mods": [
       "(30-100)% increased Freeze Rate Multiplier",
-      "(8-10)% increased Movement Speed"
+      "(10-20)% increased Movement Speed"
     ],
     "rollIds": [
       0,
@@ -790,9 +790,9 @@
     },
     "mods": [
       "+(20-45)% Chance to Ignite on Melee Hit",
-      "+(20-35)% Chance to inflict Bleed on Melee Hit",
+      "+(20-45)% Chance to inflict Bleed on Melee Hit",
       "+(20-45)% Chance to Chill on Melee Hit",
-      "+(15-35)% Chance to Shock on Melee Hit",
+      "+(20-45)% Chance to Shock on Melee Hit",
       "+(20-45)% Chance to Slow on Melee Hit",
       "+(20-45)% Chance to Poison on Melee Hit",
       "+(20-45)% Chance to Blind on Melee Hit",
@@ -1351,7 +1351,7 @@
     "rollIds": [
       0,
       null,
-      0,
+      1,
       null
     ]
   },
@@ -1564,45 +1564,75 @@
     ]
   },
   "77": {
-    "name": "Bee Keeper Helmet",
-    "baseTypeID": 0,
-    "subTypeID": 0,
+    "name": "Apiarist's Smoker",
+    "baseTypeID": 19,
+    "subTypeID": 20,
     "req": {
-      "level": 0
+      "level": 40
     },
     "mods": [
-      "+5 Bees Per 10 Seconds"
+      "+(2-3) Bees Per 10 Seconds",
+      "+(30-60)% Chance to apply Poison on Hit with Minion Skills",
+      "Your bees are immune to damage over time",
+      "(20-35)% increased Minion Movement Speed",
+      "+(200-400) Minion Dodge Rating",
+      "+(12-18)% Endurance"
     ],
     "rollIds": [
-      null
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
     ]
   },
   "78": {
-    "name": "Bee Keeper Armor",
+    "name": "Apiarist's Suit",
     "baseTypeID": 1,
-    "subTypeID": 0,
+    "subTypeID": 1,
     "req": {
-      "level": 0
+      "level": 38
     },
     "mods": [
-      "+7 Bees Per 10 Seconds"
+      "+(2-3) Bees Per 10 Seconds",
+      "+(4-6) Health Regeneration per Summoned Bee",
+      "+(8-18) Attunement",
+      "+(80-150) Health for you and your Minions",
+      "+(200-400) Armor for you and your Minions",
+      "+(20-30)% Physical Resistance",
+      "+(50-75)% Poison Resistance"
     ],
     "rollIds": [
-      null
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
     ]
   },
   "79": {
-    "name": "Bee Keeper Belt",
-    "baseTypeID": 2,
-    "subTypeID": 0,
+    "name": "Apiarist's Comb",
+    "baseTypeID": 7,
+    "subTypeID": 3,
     "req": {
-      "level": 0
+      "level": 42
     },
     "mods": [
-      "+3 Bees Per 10 Seconds"
+      "+(4-8) Bees Per 10 Seconds",
+      "+(12-24) Melee Damage for your Summoned Bees",
+      "(40-80)% increased Minion Damage",
+      "(8-18)% increased Minion Attack Speed",
+      "+(30-60)% Chance to apply Bleed on Hit with Minion Skills"
     ],
     "rollIds": [
-      null
+      0,
+      1,
+      2,
+      3,
+      4
     ]
   },
   "80": {
@@ -1767,7 +1797,7 @@
       "level": 0
     },
     "mods": [
-      "{rounding:Integer}(20-30)% increased Armor",
+      "{rounding:Integer}(25-35)% increased Armor",
       "{rounding:Integer}+(250-350) Armor",
       "(10-12)% Increased Armor per Forged Weapon",
       "{rounding:Integer}+(3-6) Health Regen per Forged Weapon",
@@ -2144,7 +2174,7 @@
     },
     "mods": [
       "+(70-105)% Melee Critical Strike Multiplier",
-      "(11-14)% increased Movement Speed",
+      "(17-22)% increased Movement Speed",
       "-75% Physical Resistance",
       "+56 Armor"
     ],
@@ -2753,7 +2783,7 @@
       "+35% Physical Resistance",
       "+35% Poison Resistance",
       "+35% Necrotic Resistance",
-      "(11-14)% increased Movement Speed",
+      "(10-18)% increased Movement Speed",
       "+56 Armor"
     ],
     "rollIds": [
@@ -2919,7 +2949,7 @@
     "mods": [
       "+(30-50)% Melee Critical Strike Multiplier while at Full Health",
       "+(30-50)% Throwing Critical Strike Multiplier while at Full Health",
-      "(11-14)% increased Movement Speed",
+      "(15-23)% increased Movement Speed",
       "(23-35)% Increased Leech Rate",
       "+56 Armor"
     ],
@@ -3069,7 +3099,7 @@
       "{rounding:Integer}+(13-20) Health gained when you Dodge",
       "{rounding:Integer}(70-95)% increased Cold Damage",
       "+4 to All Attributes",
-      "(11-14)% increased Movement Speed",
+      "(10-13)% increased Movement Speed",
       "(50-25)% reduced Duration of Stuns Received",
       "(16-32)% increased Cooldown Recovery Speed for Evade",
       "(10-13)% increased Movement Speed"
@@ -3575,7 +3605,7 @@
       "level": 60
     },
     "mods": [
-      "+(30-33)% to Minion All Resistances",
+      "+(40-60)% to Minion All Resistances",
       "{rounding:Integer}(91-166)% increased Curse Damage",
       "{rounding:Integer}+(66-91) Curse Spell Damage",
       "+(30-33)% to All Resistances",
@@ -3665,7 +3695,7 @@
       "level": 55
     },
     "mods": [
-      "+(55-75)% Chance to Poison on Fire Hit",
+      "+(75-100)% Chance to Poison on Fire Hit",
       "{rounding:Integer}(30-10)% less Poison Damage Taken",
       "+75% Fire Resistance",
       "100% Chance to gain a stack of Ruby Venom for 8 seconds on Block"
@@ -5839,7 +5869,7 @@
     "mods": [
       "{rounding:Integer}+(12-16) Added Health for Bees per Attunement",
       "(7-12)% Increased Damage for Bees per Attunement",
-      "+(4-6)% Physical Penetration with Bleed inflicted by Bees per Strength",
+      "+(6-8)% Physical Penetration with Bleed inflicted by Bees per Strength",
       "+1 When you directly cast Thorn Shield, the nearest Bee also gains Thorn Shield",
       "+(32-56)% Chance to apply Frailty on hit for Bees",
       "4% of Minion Physical Damage Leeched as Health",
@@ -5891,7 +5921,7 @@
       "level": 58
     },
     "mods": [
-      "{rounding:Integer}+(6-10) Bees released when Decoy explodes",
+      "{rounding:Integer}+(3-4) Bees released when Decoy explodes",
       "+(22-34)% Mana efficiency for Decoy",
       "{rounding:Integer}+(40-90) Health",
       "+110 Armor",
@@ -6279,7 +6309,7 @@
     "mods": [
       "+1 to Lightning Skills",
       "(100-200)% increased Spark Charge Explosion Area",
-      "(65-125)% Increased Spark Charge Effect with Melee Attacks",
+      "(150-175)% Increased Spark Charge Effect with Melee Attacks",
       "+(10-12)% Chance to apply a Spark Charge on Hit",
       "+1 Lightning Damage for Spark Charge per Intelligence",
       "+1 Spark Charge to all targets around the destination when you Teleport"
@@ -6509,7 +6539,7 @@
       "level": 0
     },
     "mods": [
-      "(8-10)% increased Movement Speed",
+      "(5-11)% increased Movement Speed",
       "{rounding:Integer}(30-60) Ward gained when you gain Haste or refresh its duration",
       "(5-11)% chance to gain Haste for 3 seconds when a nearby enemy dies",
       "(35-15)% less Damage over Time taken while you have Haste",
@@ -6551,7 +6581,7 @@
     "mods": [
       "+1 to Mage Skills",
       "(5-9)% of Damage Dealt to Mana Before Health",
-      "{rounding:Integer}+(6-9) Effective Endurance Threshold per 10 Missing Mana"
+      "{rounding:Integer}+(5-9) Effective Endurance Threshold per 10 Missing Mana"
     ],
     "rollIds": [
       null,
@@ -8227,9 +8257,9 @@
       "level": 64
     },
     "mods": [
-      "{rounding:Integer}(12-18)% increased Health",
+      "{rounding:Integer}(8-12)% increased Health",
       "(16-24)% of Damage Redirected to your Highest Health Minion",
-      "{rounding:Integer}(12-18)% increased Minion Health",
+      "{rounding:Integer}(8-12)% increased Minion Health",
       "{rounding:Integer}+(12-16) Strength",
       "(6-10)% increased Movement Speed",
       "{rounding:Integer}+(1-2) to Strength Minion Skills"
@@ -9188,7 +9218,7 @@
       "+(50-75)% Fire Resistance",
       "{rounding:Integer}(17-25)% increased Health",
       "+(4-7)% Chance to Ignite on Hit per 10% uncapped Fire Resistance",
-      "(32-36)% Chance to create a Wildfire Wisp next to an ignited enemy",
+      "(25-30)% Chance to create a Wildfire Wisp next to an ignited enemy",
       "(10-12)% Chance for Wildfire Wisps within 12 metres to repeat Fire Skills",
       "+(60-100)% Fire Penetration with Ignite for skills cast from Wildfire Wisps",
       "+(240-300)% Ignite Chance for skills cast from Wildfire Wisps"
@@ -9494,8 +9524,8 @@
     },
     "mods": [
       "(40-85)% of Overkill damage from your hits and your minion hits dealt as direct damage to surrounding enemies",
-      "+(4-9)% Critical Strike Chance",
-      "+(4-9)% Minion Critical Strike Chance",
+      "+(6-15)% Critical Strike Chance",
+      "+(6-15)% Minion Critical Strike Chance",
       "{rounding:Integer}(20-80) Health Gain on Kill",
       "(6-15)% of Overkill Damage Leeched as Health",
       "{rounding:Integer}(190-275)% increased Hit Damage",
@@ -9641,7 +9671,7 @@
     "mods": [
       "100% chance to gain a stack of Excoriation when Flay kills an enemy or hits a boss or rare enemy",
       "(6-13)% increased Melee Attack Speed",
-      "(11-14)% increased Movement Speed",
+      "(13-26)% increased Movement Speed",
       "(26-52)% more Melee Damage to High Health Enemies",
       "(16-32)% increased Cooldown Recovery Speed for Evade"
     ],
@@ -9681,8 +9711,8 @@
     "mods": [
       "{rounding:Integer}(20-10)% reduced Spell Mana Cost",
       "(10-20)% Reduced Health Cost of Spells",
-      "{rounding:Integer}+(2-4) Health per Attunement",
-      "{rounding:Integer}+(2-4) Mana per Attunement",
+      "{rounding:Integer}+(3-6) Health per Attunement",
+      "{rounding:Integer}+(3-6) Mana per Attunement",
       "(20-10)% less Damage Taken from Bosses and Rare Enemies while below half mana",
       "(10-20)% more Damage to Bosses and Rare Enemies while above half mana",
       "{rounding:Integer}+(3-4) to Attunement Skills",
@@ -9808,9 +9838,9 @@
     },
     "mods": [
       "You cannot be Stunned by Hits you Block",
-      "(11-30)% chance to gain Haste for 5 seconds after you Block",
+      "(13-25)% chance to gain Haste for 5 seconds after you Block",
       "+(9-15)% chance to Block hits taken while Moving",
-      "+(13-25) Block Effectiveness per 1% Increased Movement Speed",
+      "+(11-30) Block Effectiveness per 1% Increased Movement Speed",
       "You are Immune to Slow"
     ],
     "rollIds": [
@@ -9991,7 +10021,7 @@
     "mods": [
       "Shadow Rend no longer moves you",
       "Shadow Rend always manifests a melee shadow in front of you and a bow shadow behind you",
-      "(8-10)% increased Movement Speed",
+      "(14-18)% increased Movement Speed",
       "(30-60)% Increased Damage for skills used by Shadows",
       "(14-8)% less Damage Over Time Taken",
       "+(30-50) Health",
@@ -10063,10 +10093,10 @@
     "mods": [
       "Aura of Decay is converted to fire, inflicting ignite instead of poison",
       "Your Volatile Zombies which explode inside your Aura of Decay have a (20-25)% chance to resurrect",
-      "(8-10)% increased Movement Speed",
-      "(30-50)% Increased effect of Haste on you while Aura of Decay is active",
+      "(14-20)% increased Movement Speed",
+      "(20-25)% Increased effect of Haste on you while Aura of Decay is active",
       "+(50-90)% Chance to Ignite on Hit for You and your Minions",
-      "+(1-3)% of Fire Damage Over Time Damage Leeched as Health",
+      "+(5-9)% of Fire Damage Over Time Damage Leeched as Health",
       "+1 Evade Charge"
     ],
     "rollIds": [
@@ -10138,11 +10168,11 @@
     ],
     "rollIds": [
       0,
+      5,
+      4,
       1,
       2,
-      3,
-      4,
-      5
+      3
     ]
   },
   "465": {
