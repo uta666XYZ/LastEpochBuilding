@@ -416,7 +416,7 @@ function IdolGridControlClass:Draw(viewPort)
 					end
 
 					-- Rarity-coloured 2-px border spanning full idol area
-					local bc = rarityBorder[item.rarity] or rarityBorder.IDOL
+					local bc = (item.rarity == "UNIQUE") and rarityBorder.UNIQUE or rarityBorder.IDOL
 					SetDrawColor(bc[1], bc[2], bc[3])
 					DrawImage(nil, cx,          cy,          pw, 2)
 					DrawImage(nil, cx,          cy + ph - 2, pw, 2)
