@@ -1,0 +1,76 @@
+name: Hotfix release
+run-name: Hotfix release v${{ inputs.version }}
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version number (e.g. 0.11.1)'
+        required: true
+      branch:
+        description: 'Branch to build from'
+        required: true
+        default: 'dev'
+
+permissions:
+  contents: write
+
+env:
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  hotfix:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set line endings
+        run: git config --global core.autocrlf true
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.branch }}
+      - name: Compile Lua to bytecode
+        run: |
+          sudo apt-get install -y luajit
+          find src -name "*.lua" \
+            ! -path "*/Export/*" \
+            ! -path "*/TreeData/*" \
+            ! -path "*/Data/*" | while read f; do
+            luajit -b "$f" "$f.tmp" && mv "$f.tmp" "$f"
+          done
+      - name: Update manifest version
+        run: |
+          VERSION=${{ github.event.inputs.version }}
+          sed -ri "s/<Version number=\"([^\"]*)\"/<Version number=\"$VERSION\"/g" manifest.xml
+          sed -i 's/<Version number="\([^"]*\)"/<Version number="\1" branch="dev" platform="win32"/' manifest.xml
+      - name: Build portable zip
+        run: |
+          VERSION=${{ github.event.inputs.version }}
+          mkdir -p dist/LastEpochBuilding
+          rsync -a \
+            --exclude='msvcr100.dll' \
+            --exclude='SimpleGraphic.cfg' \
+            --exclude='imgui.ini' \
+            --exclude='lua-profiler.lua' \
+            runtime/ dist/LastEpochBuilding/runtime/
+          rsync -a \
+            --exclude='HeadlessWrapper.lua' \
+            --exclude='LaunchInstall.lua' \
+            --exclude='Settings.xml' \
+            --exclude='*.log' \
+            --exclude='Export/' \
+            --exclude='Builds/' \
+            src/ dist/LastEpochBuilding/src/
+          cp manifest.xml changelog.txt help.txt LICENSE.md Launch.bat dist/LastEpochBuilding/
+          cp manifest.xml dist/LastEpochBuilding/src/manifest.xml
+          cd dist
+          zip -r "LastEpochBuilding-v${VERSION}-win.zip" LastEpochBuilding/
+          echo "Built: LastEpochBuilding-v${VERSION}-win.zip"
+          ls -lh "LastEpochBuilding-v${VERSION}-win.zip"
+      - name: Create draft release
+        run: |
+          VERSION=${{ github.event.inputs.version }}
+          gh release create "v${VERSION}" \
+            --title "Release $VERSION" \
+            --draft \
+            --notes "Fix online character import" \
+            "dist/LastEpochBuilding-v${VERSION}-win.zip"
