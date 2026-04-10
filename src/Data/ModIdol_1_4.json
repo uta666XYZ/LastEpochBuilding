@@ -1093,23 +1093,6 @@
       ],
       "classSpecificity": 32
     },
-    "126_0": {
-      "1": "+(20-60)% Chance to inflict Bleed on Cold Hit",
-      "affix": "Jagged",
-      "level": 0,
-      "statOrderKey": 21,
-      "statOrder": [
-        21
-      ],
-      "tier": 0,
-      "type": "Prefix",
-      "standardAffixEffectModifier": 0,
-      "rerollChance": 1,
-      "canRollOn": [
-        30
-      ],
-      "classSpecificity": 2
-    },
     "138_0": {
       "1": "+(13-36)% Chance to inflict Bleed on Hit",
       "affix": "Serrated",

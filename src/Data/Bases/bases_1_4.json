@@ -7707,7 +7707,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.83,
-    "implicits": []
+    "implicits": [],
+    "hidden": true
   },
   "Small Weaver Idol": {
     "type": "Small Idol",
@@ -7787,7 +7788,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.33,
-    "implicits": []
+    "implicits": [],
+    "classReq": 1
   },
   "Grand Glass Idol": {
     "type": "Grand Idol",
@@ -7797,7 +7799,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.33,
-    "implicits": []
+    "implicits": [],
+    "classReq": 2
   },
   "Grand Solar Idol": {
     "type": "Grand Idol",
@@ -7807,7 +7810,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.33,
-    "implicits": []
+    "implicits": [],
+    "classReq": 4
   },
   "Grand Bone Idol": {
     "type": "Grand Idol",
@@ -7817,7 +7821,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.33,
-    "implicits": []
+    "implicits": [],
+    "classReq": 8
   },
   "Grand Majasan Idol": {
     "type": "Grand Idol",
@@ -7827,7 +7832,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.33,
-    "implicits": []
+    "implicits": [],
+    "classReq": 16
   },
   "Heretical Grand Heorot Idol": {
     "type": "Grand Idol",
@@ -7837,7 +7843,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.33,
-    "implicits": []
+    "implicits": [],
+    "classReq": 1
   },
   "Heretical Grand Glass Idol": {
     "type": "Grand Idol",
@@ -7847,7 +7854,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.33,
-    "implicits": []
+    "implicits": [],
+    "classReq": 2
   },
   "Heretical Grand Solar Idol": {
     "type": "Grand Idol",
@@ -7857,7 +7865,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.33,
-    "implicits": []
+    "implicits": [],
+    "classReq": 4
   },
   "Heretical Grand Bone Idol": {
     "type": "Grand Idol",
@@ -7867,7 +7876,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.33,
-    "implicits": []
+    "implicits": [],
+    "classReq": 8
   },
   "Heretical Grand Majasan Idol": {
     "type": "Grand Idol",
@@ -7877,7 +7887,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.33,
-    "implicits": []
+    "implicits": [],
+    "classReq": 16
   },
   "Large Nomad Idol": {
     "type": "Large Idol",
@@ -7887,7 +7898,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.33,
-    "implicits": []
+    "implicits": [],
+    "classReq": 1
   },
   "Large Arcane Idol": {
     "type": "Large Idol",
@@ -7897,7 +7909,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.33,
-    "implicits": []
+    "implicits": [],
+    "classReq": 2
   },
   "Large Rahyeh Idol": {
     "type": "Large Idol",
@@ -7907,7 +7920,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.33,
-    "implicits": []
+    "implicits": [],
+    "classReq": 4
   },
   "Large Immortal Idol": {
     "type": "Large Idol",
@@ -7917,7 +7931,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.33,
-    "implicits": []
+    "implicits": [],
+    "classReq": 8
   },
   "Large Shadow Idol": {
     "type": "Large Idol",
@@ -7927,7 +7942,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.33,
-    "implicits": []
+    "implicits": [],
+    "classReq": 16
   },
   "Heretical Large Nomad Idol": {
     "type": "Large Idol",
@@ -7937,7 +7953,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.33,
-    "implicits": []
+    "implicits": [],
+    "classReq": 1
   },
   "Heretical Large Arcane Idol": {
     "type": "Large Idol",
@@ -7947,7 +7964,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.33,
-    "implicits": []
+    "implicits": [],
+    "classReq": 2
   },
   "Heretical Large Rahyeh Idol": {
     "type": "Large Idol",
@@ -7957,7 +7975,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.33,
-    "implicits": []
+    "implicits": [],
+    "classReq": 4
   },
   "Heretical Large Immortal Idol": {
     "type": "Large Idol",
@@ -7967,7 +7986,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.33,
-    "implicits": []
+    "implicits": [],
+    "classReq": 8
   },
   "Heretical Large Shadow Idol": {
     "type": "Large Idol",
@@ -7977,7 +7997,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.33,
-    "implicits": []
+    "implicits": [],
+    "classReq": 16
   },
   "Ornate Heorot Idol": {
     "type": "Ornate Idol",
@@ -7987,7 +8008,8 @@
       "level": 0
     },
     "affixEffectModifier": 0,
-    "implicits": []
+    "implicits": [],
+    "classReq": 1
   },
   "Ornate Glass Idol": {
     "type": "Ornate Idol",
@@ -7997,7 +8019,8 @@
       "level": 0
     },
     "affixEffectModifier": 0,
-    "implicits": []
+    "implicits": [],
+    "classReq": 2
   },
   "Ornate Solar Idol": {
     "type": "Ornate Idol",
@@ -8007,7 +8030,8 @@
       "level": 0
     },
     "affixEffectModifier": 0,
-    "implicits": []
+    "implicits": [],
+    "classReq": 4
   },
   "Ornate Bone Idol": {
     "type": "Ornate Idol",
@@ -8017,7 +8041,8 @@
       "level": 0
     },
     "affixEffectModifier": 0,
-    "implicits": []
+    "implicits": [],
+    "classReq": 8
   },
   "Ornate Majasan Idol": {
     "type": "Ornate Idol",
@@ -8027,7 +8052,8 @@
       "level": 0
     },
     "affixEffectModifier": 0,
-    "implicits": []
+    "implicits": [],
+    "classReq": 16
   },
   "Heretical Ornate Heorot Idol": {
     "type": "Ornate Idol",
@@ -8037,7 +8063,8 @@
       "level": 0
     },
     "affixEffectModifier": 0,
-    "implicits": []
+    "implicits": [],
+    "classReq": 1
   },
   "Heretical Ornate Glass Idol": {
     "type": "Ornate Idol",
@@ -8047,7 +8074,8 @@
       "level": 0
     },
     "affixEffectModifier": 0,
-    "implicits": []
+    "implicits": [],
+    "classReq": 2
   },
   "Heretical Ornate Solar Idol": {
     "type": "Ornate Idol",
@@ -8057,7 +8085,8 @@
       "level": 0
     },
     "affixEffectModifier": 0,
-    "implicits": []
+    "implicits": [],
+    "classReq": 4
   },
   "Heretical Ornate Bone Idol": {
     "type": "Ornate Idol",
@@ -8067,7 +8096,8 @@
       "level": 0
     },
     "affixEffectModifier": 0,
-    "implicits": []
+    "implicits": [],
+    "classReq": 8
   },
   "Heretical Ornate Majasan Idol": {
     "type": "Ornate Idol",
@@ -8077,7 +8107,8 @@
       "level": 0
     },
     "affixEffectModifier": 0,
-    "implicits": []
+    "implicits": [],
+    "classReq": 16
   },
   "Huge Nomad Idol": {
     "type": "Huge Idol",
@@ -8087,7 +8118,8 @@
       "level": 0
     },
     "affixEffectModifier": 0,
-    "implicits": []
+    "implicits": [],
+    "classReq": 1
   },
   "Huge Arcane Idol": {
     "type": "Huge Idol",
@@ -8097,7 +8129,8 @@
       "level": 0
     },
     "affixEffectModifier": 0,
-    "implicits": []
+    "implicits": [],
+    "classReq": 2
   },
   "Huge Rahyeh Idol": {
     "type": "Huge Idol",
@@ -8107,7 +8140,8 @@
       "level": 0
     },
     "affixEffectModifier": 0,
-    "implicits": []
+    "implicits": [],
+    "classReq": 4
   },
   "Huge Immortal Idol": {
     "type": "Huge Idol",
@@ -8117,7 +8151,8 @@
       "level": 0
     },
     "affixEffectModifier": 0,
-    "implicits": []
+    "implicits": [],
+    "classReq": 8
   },
   "Huge Shadow Idol": {
     "type": "Huge Idol",
@@ -8127,7 +8162,8 @@
       "level": 0
     },
     "affixEffectModifier": 0,
-    "implicits": []
+    "implicits": [],
+    "classReq": 16
   },
   "Heretical Huge Nomad Idol": {
     "type": "Huge Idol",
@@ -8137,7 +8173,8 @@
       "level": 0
     },
     "affixEffectModifier": 0,
-    "implicits": []
+    "implicits": [],
+    "classReq": 1
   },
   "Heretical Huge Arcane Idol": {
     "type": "Huge Idol",
@@ -8147,7 +8184,8 @@
       "level": 0
     },
     "affixEffectModifier": 0,
-    "implicits": []
+    "implicits": [],
+    "classReq": 2
   },
   "Heretical Huge Rahyeh Idol": {
     "type": "Huge Idol",
@@ -8157,7 +8195,8 @@
       "level": 0
     },
     "affixEffectModifier": 0,
-    "implicits": []
+    "implicits": [],
+    "classReq": 4
   },
   "Heretical Huge Immortal Idol": {
     "type": "Huge Idol",
@@ -8167,7 +8206,8 @@
       "level": 0
     },
     "affixEffectModifier": 0,
-    "implicits": []
+    "implicits": [],
+    "classReq": 8
   },
   "Heretical Huge Shadow Idol": {
     "type": "Huge Idol",
@@ -8177,7 +8217,8 @@
       "level": 0
     },
     "affixEffectModifier": 0,
-    "implicits": []
+    "implicits": [],
+    "classReq": 16
   },
   "Adorned Heorot Idol": {
     "type": "Adorned Idol",
@@ -8187,7 +8228,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.05,
-    "implicits": []
+    "implicits": [],
+    "classReq": 1
   },
   "Adorned Arcane Idol": {
     "type": "Adorned Idol",
@@ -8197,7 +8239,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.05,
-    "implicits": []
+    "implicits": [],
+    "classReq": 2
   },
   "Adorned Rahyeh Idol": {
     "type": "Adorned Idol",
@@ -8207,7 +8250,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.05,
-    "implicits": []
+    "implicits": [],
+    "classReq": 4
   },
   "Adorned Immortal Idol": {
     "type": "Adorned Idol",
@@ -8217,7 +8261,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.05,
-    "implicits": []
+    "implicits": [],
+    "classReq": 8
   },
   "Adorned Majasan Idol": {
     "type": "Adorned Idol",
@@ -8227,7 +8272,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.05,
-    "implicits": []
+    "implicits": [],
+    "classReq": 16
   },
   "Adorned Silver Idol": {
     "type": "Adorned Idol",
@@ -8237,7 +8283,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.05,
-    "implicits": []
+    "implicits": [],
+    "hidden": true
   },
   "Adorned Volcano Idol": {
     "type": "Adorned Idol",
@@ -8247,7 +8294,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.05,
-    "implicits": []
+    "implicits": [],
+    "hidden": true
   },
   "Heretical Adorned Heorot Idol": {
     "type": "Adorned Idol",
@@ -8257,7 +8305,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.05,
-    "implicits": []
+    "implicits": [],
+    "classReq": 1
   },
   "Heretical Adorned Arcane Idol": {
     "type": "Adorned Idol",
@@ -8267,7 +8316,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.05,
-    "implicits": []
+    "implicits": [],
+    "classReq": 2
   },
   "Heretical Adorned Rahyeh Idol": {
     "type": "Adorned Idol",
@@ -8277,7 +8327,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.05,
-    "implicits": []
+    "implicits": [],
+    "classReq": 4
   },
   "Heretical Adorned Immortal Idol": {
     "type": "Adorned Idol",
@@ -8287,7 +8338,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.05,
-    "implicits": []
+    "implicits": [],
+    "classReq": 8
   },
   "Heretical Adorned Majasan Idol": {
     "type": "Adorned Idol",
@@ -8297,7 +8349,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.05,
-    "implicits": []
+    "implicits": [],
+    "classReq": 16
   },
   "Pride of Rebellion": {
     "type": "Blessing",
