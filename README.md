@@ -1,7 +1,21 @@
 # Last Epoch Building (LEB)
 
-A Path of Building-style offline build planner for **Last Epoch**.
-![Passive Tree](./docs/passiveTrees.png) ![Skill Selection](./docs/skillSelectionWindow.png) ![Skill Tree](./docs/skillTree.png) ![Items Window](./docs/itemsWindow.png)
+## A Path of Building-style offline build planner for **Last Epoch**.
+
+<table>
+  <tr>
+    <td><img src="./docs/passiveTrees.png" width="400"/></td>
+    <td><img src="./docs/skillSelectionWindow.png" width="400"/></td>
+  </tr>
+  <tr>
+    <td><img src="./docs/skillTree.png" width="400"/></td>
+    <td><img src="./docs/itemWindow2026_04_10.png" width="400"/></td>
+  </tr>
+  <tr>
+    <td><img src="./docs/craftUI_Select.png" width="400"/></td>
+    <td><img src="./docs/craftUI_Edit.png" width="400"/></td>
+  </tr>
+</table>
 
 > Not affiliated with Eleventh Hour Games.
 > This is a third-party tool. Any in-game issues are not the responsibility of EHG.
@@ -10,7 +24,7 @@ A Path of Building-style offline build planner for **Last Epoch**.
 
 ## Support Development
 
-If LEB has helped your builds, consider buying me a coffee!
+If you'd like to support LEB's development, consider buying me a coffee!
 
 ☕ [Buy Me a Coffee](https://buymeacoffee.com/yobk0831a)
 
@@ -33,7 +47,7 @@ Feedback and bug reports are always welcome — see [Contributing](#contributing
 - **Season 4: Shattered Omens** support
 
 > **Note:** Mod recognition rate is ~90% (89.7% verified as of v0.10). Recognized mods
-> are not always calculated with full accuracy. Development is focused on Last Epoch 1.4.2.
+> are not always calculated with full accuracy. Development is focused on Last Epoch Season 4 (1.4)
 > Limited support exists for 1.2 and 1.3 builds.
 
 ---
