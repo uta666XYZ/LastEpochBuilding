@@ -10,6 +10,13 @@ on:
           releaseNoteUrl:
               description: 'Enter the location of edited release notes to use'
               required: false
+permissions:
+  contents: write
+
+env:
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -17,14 +24,9 @@ jobs:
             - name: Set line endings
               run: git config --global core.autocrlf true
             - name: Checkout
-              uses: actions/checkout@v5
+              uses: actions/checkout@v4
               with:
                 ref: 'dev'
-            - uses: actions/create-github-app-token@v2
-              id: app-token
-              with:
-                app-id: ${{ secrets.APP_ID }}
-                private-key: ${{ secrets.PRIVATE_KEY }}
             - name: Calculate the next version
               run: |
                 MANIFEST_VERSION=$(grep -o '<Version number="[^"]*' manifest.xml | sed 's/<Version number="//')
@@ -35,8 +37,6 @@ jobs:
                   NEXT_VERSION=$(echo $MANIFEST_VERSION | awk -F. '{print $1"."$2+1".0"}')
                 fi
                 echo "NEXT_VERSION=$NEXT_VERSION" >> "$GITHUB_ENV"
-            - name: Connect with gh auth login
-              run: echo "${{ steps.app-token.outputs.token }}" | gh auth login --with-token;
             - name: Generate Release notes
               if: ${{ github.event.inputs.releaseNoteUrl == '' }}
               run: >
@@ -45,10 +45,6 @@ jobs:
               if: ${{ github.event.inputs.releaseNoteUrl != '' }}
               run: >
                 gh release view $(basename ${{ github.event.inputs.releaseNoteUrl }}) > temp_change.md
-              # The initial draft release must target dev for the changelog generation, but the final release should use the last commit on master to avoid tagging a wrong commit
-            - name: Change release target to master
-              run: |
-                gh release edit v$NEXT_VERSION --target master
             - name: Compile Lua to bytecode (secure distribution)
               run: |
                 sudo apt-get install -y luajit
@@ -67,21 +63,30 @@ jobs:
             - name: Update manifest version
               run: |
                 sed -ri "s/<Version number=\"([^\"]*)\"/<Version number=\"$NEXT_VERSION\"/g" manifest.xml
+                sed -i 's/<Version number="\([^"]*\)"/<Version number="\1" branch="dev" platform="win32"/' manifest.xml
             - name: Update manifest.xml
               run: python3 update_manifest.py --quiet --in-place
-            - name: Change branch rule to require up-to-date branch
+            - name: Build portable zip
               run: |
-                sed -i 's/\r$//' .github/set_ruleset_strict.sh
-                chmod +x .github/set_ruleset_strict.sh
-                ./.github/set_ruleset_strict.sh true
-            - name: Create Pull Request
-              uses: peter-evans/create-pull-request@v7
-              with:
-                  token: ${{ steps.app-token.outputs.token }}
-                  title: Release ${{ env.NEXT_VERSION }}
-                  branch: release-${{ env.NEXT_VERSION }}
-                  body: |
-                      Draft release of ${{ env.NEXT_VERSION }}
-
-                      Edits will be made as necessary to prepare the codebase for release.
-                  commit-message: 'Prepare release ${{ env.NEXT_VERSION }}'
+                mkdir -p dist/LastEpochBuilding
+                rsync -a \
+                  --exclude='msvcr100.dll' \
+                  --exclude='SimpleGraphic.cfg' \
+                  --exclude='imgui.ini' \
+                  --exclude='lua-profiler.lua' \
+                  runtime/ dist/LastEpochBuilding/runtime/
+                rsync -a \
+                  --exclude='HeadlessWrapper.lua' \
+                  --exclude='LaunchInstall.lua' \
+                  --exclude='Settings.xml' \
+                  --exclude='*.log' \
+                  --exclude='Export/' \
+                  --exclude='Builds/' \
+                  src/ dist/LastEpochBuilding/src/
+                cp manifest.xml changelog.txt help.txt LICENSE.md Launch.bat dist/LastEpochBuilding/
+                cp manifest.xml dist/LastEpochBuilding/src/manifest.xml
+                cd dist
+                zip -r "LastEpochBuilding-v${NEXT_VERSION}-win.zip" LastEpochBuilding/
+            - name: Upload zip to draft release
+              run: |
+                gh release upload "v$NEXT_VERSION" "dist/LastEpochBuilding-v${NEXT_VERSION}-win.zip" --clobber
