@@ -1,0 +1,73 @@
+name: Monitor lastepochtools.com import compatibility
+on:
+  schedule:
+    - cron: '0 9 * * 1'  # Every Monday 9:00 UTC
+  workflow_dispatch:
+
+permissions:
+  issues: write
+
+env:
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check lastepochtools.com profile page structure
+        id: check
+        run: |
+          # Fetch a known public profile page
+          HTTP_CODE=$(curl -s -o /tmp/letools_response.html -w "%{http_code}" \
+            -H "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" \
+            "https://www.lastepochtools.com/profile/Ys2072")
+
+          echo "http_code=$HTTP_CODE" >> "$GITHUB_OUTPUT"
+
+          if [ "$HTTP_CODE" != "200" ]; then
+            echo "status=error" >> "$GITHUB_OUTPUT"
+            echo "detail=HTTP $HTTP_CODE from lastepochtools.com/profile" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # Check for characterName field in any array variable (our current matching strategy)
+          if grep -q '"characterName"' /tmp/letools_response.html; then
+            echo "status=ok" >> "$GITHUB_OUTPUT"
+          else
+            echo "status=broken" >> "$GITHUB_OUTPUT"
+            echo "detail=characterName field not found in profile page. Page structure may have changed." >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Check if issue already open
+        if: steps.check.outputs.status != 'ok'
+        id: existing
+        run: |
+          COUNT=$(gh issue list --repo ${{ github.repository }} \
+            --label "import-monitor" --state open --json number | jq length)
+          echo "count=$COUNT" >> "$GITHUB_OUTPUT"
+
+      - name: Create issue if broken and no open issue
+        if: steps.check.outputs.status != 'ok' && steps.existing.outputs.count == '0'
+        run: |
+          gh issue create \
+            --repo ${{ github.repository }} \
+            --title "[Auto] Online import may be broken - lastepochtools.com structure changed" \
+            --label "bug,import-monitor" \
+            --body "## Online character import monitor alert
+
+          **Status:** ${{ steps.check.outputs.status }}
+          **Detail:** ${{ steps.check.outputs.detail }}
+
+          The weekly check detected that the online character import from lastepochtools.com may be broken.
+
+          ### What to check
+          1. Open LEB and try importing a character via Start Online
+          2. If you see an error, inspect the page source at \`https://www.lastepochtools.com/profile/YOUR_ACCOUNT\`
+          3. Check if \`\"characterName\"\` still appears in an inline \`let \` variable
+          4. Update the matching logic in \`src/Classes/ImportTab.lua\` if needed
+
+          ### How to fix
+          See the hotfix process in CLAUDE.md.
+
+          *This issue was created automatically by the monitor workflow.*"
