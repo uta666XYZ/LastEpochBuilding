@@ -28,15 +28,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ github.event.inputs.branch }}
-      - name: Compile Lua to bytecode
-        run: |
-          sudo apt-get install -y luajit
-          find src -name "*.lua" \
-            ! -path "*/Export/*" \
-            ! -path "*/TreeData/*" \
-            ! -path "*/Data/*" | while read f; do
-            luajit -b "$f" "$f.tmp" && mv "$f.tmp" "$f"
-          done
       - name: Update manifest version
         run: |
           VERSION=${{ github.event.inputs.version }}
