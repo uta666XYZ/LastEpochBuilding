@@ -165,12 +165,13 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
     self.controls.sectionBuild = new("SectionControl", { "TOPLEFT", self.controls.sectionCharImport, "BOTTOMLEFT" }, 0, 18, 650, 182 + 16, "Build Sharing")
     self.controls.generateCodeLabel = new("LabelControl", { "TOPLEFT", self.controls.sectionBuild, "TOPLEFT" }, 6, 14, 0, 16, "^7Generate a code to share this build with other Last Epoch Building users:")
     self.controls.generateCode = new("ButtonControl", { "LEFT", self.controls.generateCodeLabel, "RIGHT" }, 4, 0, 80, 20, "Generate", function()
-        self.controls.generateCodeOut:SetText(common.base64.encode(Deflate(self.build:SaveDB("code"))):gsub("+", "-"):gsub("/", "_"))
+        self.controls.generateCodeOut:SetText("!" .. common.base85.encode(Deflate(self.build:SaveDB("code"))))
     end)
     self.controls.enablePartyExportBuffs = new("CheckBoxControl", { "LEFT", self.controls.generateCode, "RIGHT" }, 100, 0, 18, "Export Support", function(state)
         self.build.partyTab.enableExportBuffs = state
         self.build.buildFlag = true
     end, "This is for party play, to export support character, it enables the exporting of auras, curses and modifiers to the enemy", false)
+    self.controls.enablePartyExportBuffs.shown = false
     self.controls.generateCodeOut = new("EditControl", { "TOPLEFT", self.controls.generateCodeLabel, "BOTTOMLEFT" }, 0, 8, 250, 20, "", "Code", "%Z")
     self.controls.generateCodeOut.enabled = function()
         return #self.controls.generateCodeOut.buf > 0
@@ -183,57 +184,33 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
         return #self.controls.generateCodeOut.buf > 0
     end
 
-    local getExportSitesFromImportList = function()
-        local exportWebsites = { }
-        for k, v in pairs(buildSites.websiteList) do
-            -- if entry has fields needed for Export
-            if buildSites.websiteList[k].postUrl and buildSites.websiteList[k].postFields and buildSites.websiteList[k].codeOut then
-                table.insert(exportWebsites, v)
-            end
-        end
-        return exportWebsites
-    end
-    local exportWebsitesList = getExportSitesFromImportList()
-
-    self.controls.exportFrom = new("DropDownControl", { "LEFT", self.controls.generateCodeCopy, "RIGHT" }, 8, 0, 120, 20, exportWebsitesList, function(_, selectedWebsite)
-        main.lastExportWebsite = selectedWebsite.id
-        self.exportWebsiteSelected = selectedWebsite.id
-    end)
-    self.controls.exportFrom:SelByValue(self.exportWebsiteSelected or main.lastExportWebsite or "Pastebin", "id")
-    self.controls.generateCodeByLink = new("ButtonControl", { "LEFT", self.controls.exportFrom, "RIGHT" }, 8, 0, 100, 20, "Share", function()
-        local exportWebsite = exportWebsitesList[self.controls.exportFrom.selIndex]
-        local response = buildSites.UploadBuild(self.controls.generateCodeOut.buf, exportWebsite)
+    self.controls.generateCodeByLink = new("ButtonControl", { "LEFT", self.controls.generateCodeCopy, "RIGHT" }, 8, 0, 110, 20, "Get Short Link", function()
+        local code = self.controls.generateCodeOut.buf
+        if #code == 0 then return end
+        self.controls.generateCodeByLink.label = "Uploading..."
+        local response = buildSites.UploadToRentry(code)
         if response then
-            self.controls.generateCodeOut:SetText("")
-            self.controls.generateCodeByLink.label = "Creating link..."
-            launch:RegisterSubScript(response, function(pasteLink, errMsg)
-                self.controls.generateCodeByLink.label = "Share"
+            launch:RegisterSubScript(response, function(rentryURL, errMsg)
+                self.controls.generateCodeByLink.label = "Get Short Link"
                 if errMsg then
-                    main:OpenMessagePopup(exportWebsite.id, "Error creating link:\n" .. errMsg)
+                    main:OpenMessagePopup("Rentry", "Error uploading to Rentry.co:\n" .. errMsg)
                 else
-                    self.controls.generateCodeOut:SetText(exportWebsite.codeOut .. pasteLink)
+                    self.controls.generateCodeOut:SetText(rentryURL)
                 end
             end)
         end
     end)
     self.controls.generateCodeByLink.enabled = function()
-        for _, exportSite in ipairs(exportWebsitesList) do
-            if #self.controls.generateCodeOut.buf > 0 and self.controls.generateCodeOut.buf:match(exportSite.matchURL) then
-                return false
-            end
-        end
-        return #self.controls.generateCodeOut.buf > 0
+        local buf = self.controls.generateCodeOut.buf
+        return #buf > 0 and not buf:match("rentry%.co/")
     end
-    self.controls.exportFrom.enabled = function()
-        for _, exportSite in ipairs(exportWebsitesList) do
-            if #self.controls.generateCodeOut.buf > 0 and self.controls.generateCodeOut.buf:match(exportSite.matchURL) then
-                return false
-            end
-        end
-        return #self.controls.generateCodeOut.buf > 0
+    self.controls.generateCodeByLink.tooltipFunc = function(tooltip)
+        tooltip:Clear()
+        tooltip:AddLine(14, "^7Upload to Rentry.co and get a short link.")
+        tooltip:AddLine(14, "^7Requires an internet connection.")
     end
-    self.controls.generateCodeNote = new("LabelControl", { "TOPLEFT", self.controls.generateCodeOut, "BOTTOMLEFT" }, 0, 4, 0, 14, "^7Note: this code can be very long; you can use 'Share' to shrink it. (Not yet supported)")
-    self.controls.importCodeHeader = new("LabelControl", { "TOPLEFT", self.controls.generateCodeNote, "BOTTOMLEFT" }, 0, 26, 0, 16, "^7To import a build, enter URL or code here:\nNote that you can import from LETools")
+    self.controls.generateCodeNote = new("LabelControl", { "TOPLEFT", self.controls.generateCodeOut, "BOTTOMLEFT" }, 0, 4, 0, 14, "^7Paste the code in chat or Discord, or use 'Get Short Link' to get a shareable URL (requires internet).")
+    self.controls.importCodeHeader = new("LabelControl", { "TOPLEFT", self.controls.generateCodeNote, "BOTTOMLEFT" }, 0, 26, 0, 16, "^7To import a build, paste the code here:\nNote: this code only works within Last Epoch Building.")
 
     local importCodeHandle = function(buf)
         self.importCodeSite = nil
@@ -272,7 +249,14 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
             end
         end
 
-        local xmlText = Inflate(common.base64.decode(buf:gsub("-", "+"):gsub("_", "/")))
+        local xmlText
+        if buf:sub(1, 1) == "!" then
+            -- Base85 format (prefix "!")
+            xmlText = Inflate(common.base85.decode(buf:sub(2)))
+        else
+            -- Base64 URL-safe format (legacy)
+            xmlText = Inflate(common.base64.decode(buf:gsub("-", "+"):gsub("_", "/")))
+        end
         if not xmlText then
             return
         end
