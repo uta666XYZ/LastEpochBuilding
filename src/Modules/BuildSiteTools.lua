@@ -57,6 +57,73 @@ function buildSites.UploadBuild(buildCode, websiteInfo)
 	return response
 end
 
+--- Uploads a build code to Rentry.co (two-step: GET csrf token, then POST)
+--- @param buildCode String The build code to upload
+--- @return handle The subscript handle to pass to launch:RegisterSubScript
+function buildSites.UploadToRentry(buildCode)
+	return LaunchSubScript([[
+		local code, connectionProtocol, proxyURL = ...
+		local curl = require("lcurl.safe")
+
+		local function urlencode(s)
+			return s:gsub("[^%w%-_%.~]", function(c)
+				return ("%%%02X"):format(c:byte())
+			end)
+		end
+
+		-- Step 1: GET rentry.co to obtain the CSRF token cookie
+		local csrftoken = ""
+		local req1 = curl.easy()
+		req1:setopt_url("https://rentry.co")
+		req1:setopt(curl.OPT_USERAGENT, "Last Epoch Building/]] .. launch.versionNumber .. [[")
+		req1:setopt(curl.OPT_ACCEPT_ENCODING, "")
+		req1:setopt_headerfunction(function(header)
+			local token = header:match("Set%-Cookie: csrftoken=([^;]+)")
+			if token then csrftoken = token end
+			return true
+		end)
+		req1:setopt_writefunction(function() return true end)
+		if connectionProtocol then req1:setopt(curl.OPT_IPRESOLVE, connectionProtocol) end
+		if proxyURL then req1:setopt(curl.OPT_PROXY, proxyURL) end
+		req1:perform()
+		req1:close()
+
+		if csrftoken == "" then
+			return nil, "Could not connect to Rentry.co"
+		end
+
+		-- Step 2: POST the build code to rentry.co/api
+		local page = ""
+		local req2 = curl.easy()
+		req2:setopt_url("https://rentry.co/api")
+		req2:setopt(curl.OPT_POST, true)
+		req2:setopt(curl.OPT_USERAGENT, "Last Epoch Building/]] .. launch.versionNumber .. [[")
+		req2:setopt(curl.OPT_ACCEPT_ENCODING, "")
+		req2:setopt(curl.OPT_HTTPHEADER, {"Referer: https://rentry.co"})
+		req2:setopt(curl.OPT_COOKIE, "csrftoken=" .. csrftoken)
+		req2:setopt(curl.OPT_POSTFIELDS, "csrfmiddlewaretoken=" .. csrftoken .. "&text=" .. urlencode(code))
+		req2:setopt_writefunction(function(data)
+			page = page .. data
+			return true
+		end)
+		if connectionProtocol then req2:setopt(curl.OPT_IPRESOLVE, connectionProtocol) end
+		if proxyURL then req2:setopt(curl.OPT_PROXY, proxyURL) end
+		req2:perform()
+		local res = req2:getinfo_response_code()
+		req2:close()
+
+		if res == 200 then
+			local url = page:match('"url"%s*:%s*"([^"]+)"')
+			if url then
+				return "https://rentry.co/" .. url
+			end
+			return nil, "Unexpected response from Rentry.co"
+		else
+			return nil, "Upload failed (HTTP " .. tostring(res) .. ")"
+		end
+	]], "", "", buildCode, launch.connectionProtocol, launch.proxyURL)
+end
+
 --- Downloads a LEP build code from a website
 --- @param link String A link to the site that contains the link to the raw build code
 --- @param websiteInfo Table Contains the downloadUrl
