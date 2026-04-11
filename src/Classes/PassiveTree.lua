@@ -202,10 +202,10 @@ local PassiveTreeClass = newClass("PassiveTree", function(self, treeVersion)
 
     -- Load node frame assets
     local frameNames = {
-        "frame-hex-alloc", "frame-hex-unalloc",
+        "frame-hex-alloc", "frame-hex-unalloc", "frame-hex-hover",
         "frame-skill-hex-alloc", "frame-skill-hex-unalloc",
         "frame-circle-alloc", "frame-circle-unalloc",
-        "frame-root-alloc", "frame-root-unalloc",
+        "frame-root-alloc", "frame-root-unalloc", "frame-root-hover",
     }
     for _, name in ipairs(frameNames) do
         loadTreeUIAsset(name, "Assets/tree/" .. name .. ".png")

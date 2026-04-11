@@ -527,7 +527,15 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 	-- =====================
 	-- HEADER AREA (Maxroll-style class badges + name)
 	-- =====================
-	local baseSprName = (self.viewer.selectedMastery == 0) and "class-base-selected" or "class-base"
+	-- Frame logic (4 states):
+	--   chosen  + viewing   -> class-base-selected  (circular bright,  ss2)
+	--   chosen  + not view  -> class-base            (circular dark,    ss1)
+	--   unchosen + viewing  -> class-mastery-selected (square bright,   ss4)
+	--   unchosen + not view -> class-mastery          (square dark,     ss3)
+	-- Base class is always "chosen".
+	local selMastery = self.viewer.selectedMastery or 0
+	local baseViewing = (selMastery == 0)
+	local baseSprName = baseViewing and "badges/class-base-selected" or "badges/class-base"
 	local baseBadgeSpr = self:GetSpriteHandle(baseSprName)
 	SetDrawColor(1, 1, 1)
 	DrawImage(baseBadgeSpr, badgeStartX, badgeY, badgeSize, badgeSize)
@@ -535,11 +543,13 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 	if spec.curClass then
 		for i, ascClass in ipairs(spec.curClass.classes) do
 			local bx = badgeStartX + i * (badgeSize + badgeGap)
+			local isViewing = (selMastery == i)
+			local isChosen = ascClass.startNodeId and spec.allocNodes[ascClass.startNodeId]
 			local ascSprName
-			if self.viewer.selectedMastery == i then
-				ascSprName = "class-mastery-selected"
+			if isChosen then
+				ascSprName = isViewing and "badges/class-base-selected" or "badges/class-base"
 			else
-				ascSprName = "class-mastery"
+				ascSprName = isViewing and "badges/class-mastery-selected" or "badges/class-mastery"
 			end
 			local ascBadgeSpr = self:GetSpriteHandle(ascSprName)
 			SetDrawColor(1, 1, 1)
@@ -547,14 +557,10 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 		end
 	end
 
-	-- Badge icon overlay
+	-- Badge icon overlay (viewing = full brightness, not viewing = dimmed)
 	local baseBadge = self:GetBadgeHandle(spec.curClassName)
 	if baseBadge then
-		if self.viewer.selectedMastery == 0 then
-			SetDrawColor(1, 1, 1)
-		else
-			SetDrawColor(0.5, 0.5, 0.5)
-		end
+		SetDrawColor(baseViewing and 1 or 0.55, baseViewing and 1 or 0.55, baseViewing and 1 or 0.55)
 		local iconInset = 6
 		DrawImage(baseBadge, badgeStartX + iconInset, badgeY + iconInset, badgeSize - iconInset * 2, badgeSize - iconInset * 2)
 	end
@@ -563,11 +569,9 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 			local ascBadge = self:GetBadgeHandle(ascClass.name)
 			if ascBadge then
 				local bx = badgeStartX + i * (badgeSize + badgeGap)
-				if self.viewer.selectedMastery == i then
-					SetDrawColor(1, 1, 1)
-				else
-					SetDrawColor(0.5, 0.5, 0.5)
-				end
+				local isViewing = (selMastery == i)
+				local c = isViewing and 1 or 0.55
+				SetDrawColor(c, c, c)
 				local iconInset = 6
 				DrawImage(ascBadge, bx + iconInset, badgeY + iconInset, badgeSize - iconInset * 2, badgeSize - iconInset * 2)
 			end
@@ -576,7 +580,7 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 
 	-- Lock icon on non-allocated mastery badges (bottom-center of badge)
 	if spec.curClass then
-		local lockSpr = self:GetSpriteHandle("class-mastery-locked")
+		local lockSpr = self:GetSpriteHandle("badges/class-mastery-locked")
 		local lockSize = 32
 		for i, ascClass in ipairs(spec.curClass.classes) do
 			local isAllocated = false
@@ -658,9 +662,10 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 	local maxUnlockLevel = (selMastery == 0) and 25 or 45
 
 	local numSkills = #masterySkills
-	local frameSize = 68
+	local frameSizeLocked   = 68  -- Skill_Locked_Default: 143px source
+	local frameSizeUnlocked = 75  -- Skill_Learned_Default: 158px source, scaled to match locked visual size
 	local iconSize = 52
-	local fs2 = frameSize / 2
+	local fs2 = frameSizeLocked / 2  -- used for drop-line positioning (locked is baseline)
 	local slotY = skillBarY + 50
 
 	-- Align bar with the leftmost/rightmost passive node columns in the tree viewport
@@ -775,16 +780,7 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 			end
 			DrawImage(sliderBarHandle, slotCenterX - dropW / 2, dropTop, dropW, dropBot - dropTop)
 
-			-- Skill frame
-			if isUnlocked then
-				SetDrawColor(1, 1, 1)
-				DrawImage(frameHandle, slotCenterX - fs2, slotY - fs2, frameSize, frameSize)
-			else
-				SetDrawColor(0.6, 0.6, 0.6)
-				DrawImage(frameLockedHandle, slotCenterX - fs2, slotY - fs2, frameSize, frameSize)
-			end
-
-			-- Skill icon
+			-- Skill icon (drawn first so frame overlays on top)
 			local rootNodeId = sk.treeId and (sk.treeId .. "-0") or nil
 			local rootNode = rootNodeId and spec.nodes[rootNodeId] or nil
 			local iconName = rootNode and rootNode.icon or nil
@@ -808,6 +804,16 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 					end
 					DrawImage(iconHandle, slotCenterX - iconSize / 2, slotY - iconSize / 2, iconSize, iconSize)
 				end
+			end
+
+			-- Skill frame (drawn on top of icon to contain it visually)
+			if isUnlocked then
+				local fh = frameSizeUnlocked / 2
+				SetDrawColor(1, 1, 1)
+				DrawImage(frameHandle, slotCenterX - fh, slotY - fh, frameSizeUnlocked, frameSizeUnlocked)
+			else
+				SetDrawColor(0.6, 0.6, 0.6)
+				DrawImage(frameLockedHandle, slotCenterX - fs2, slotY - fs2, frameSizeLocked, frameSizeLocked)
 			end
 
 			-- Level badge (centered on skill icon)
