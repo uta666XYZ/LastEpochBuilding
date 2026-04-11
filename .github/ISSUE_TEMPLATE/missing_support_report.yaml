@@ -1,0 +1,77 @@
+name: Missing support report
+description: Report a skill node, passive, or mod that is not yet supported (shown in red)
+labels: ["missing-support"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for reporting unsupported content.
+        Please try to fill in as much of the form below as you're able to. Some of the fields marked with an asterisk (*) are required.
+        **Note:** Red text in Last Epoch Building means the mod is recognised but not yet calculated. This template is for those cases.
+  - type: checkboxes
+    id: version
+    attributes:
+      label: Check version
+      options:
+        - label: I'm running the latest version of Last Epoch Building and I've verified this by checking the [changelog](https://github.com/uta666XYZ/LastEpochBuilding/blob/master/CHANGELOG.md)
+          required: true
+  - type: checkboxes
+    id: duplicates
+    attributes:
+      label: Check for duplicates
+      options:
+        - label: I've checked for duplicate open **and closed** issues by using the search function of the [issue tracker](https://github.com/uta666XYZ/LastEpochBuilding/issues?q=is%3Aissue)
+          required: true
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      description: What type of content is unsupported?
+      options:
+        - Skill tree node
+        - Passive tree node
+        - Item mod / affix
+        - Unique item effect
+        - Blessing
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: unsupported_mod
+    attributes:
+      label: What is not supported?
+      description: Provide the exact name and location of the unsupported node or mod.
+      placeholder: |
+        E.g.
+        - Skill: Summon Skeletal Mage
+        - Node name: Underlings → Profane Oblation
+        - Mod text (exact in-game wording): "..."
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What should it do?
+      description: Describe what the node or mod does in-game so we know how to implement it.
+      placeholder: E.g. Profane Oblation causes each Skeletal Mage to sacrifice itself to deal X% necrotic damage in an area, scaling with minion damage.
+    validations:
+      required: true
+  - type: textarea
+    id: build_code
+    attributes:
+      label: Character build code or Maxroll profile
+      description: Provide a build code or a Maxroll profile link that demonstrates the unsupported content. This helps us reproduce the issue quickly.
+      placeholder: |
+        Build code from "Import/Export Build" tab, or:
+        https://maxroll.gg/last-epoch/planner/...
+      render: shell
+    validations:
+      required: false
+  - type: textarea
+    id: context
+    attributes:
+      label: Screenshots
+      description: Screenshot of the red text or missing calculation in Last Epoch Building. In-game screenshots of the node/mod are also helpful.
+      placeholder: Attach images directly (copy paste) or link to them.
+    validations:
+      required: false
