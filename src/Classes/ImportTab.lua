@@ -188,25 +188,25 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
         local code = self.controls.generateCodeOut.buf
         if #code == 0 then return end
         self.controls.generateCodeByLink.label = "Uploading..."
-        local response = buildSites.UploadToRentry(code)
+        local response = buildSites.UploadToBytebin(code)
         if response then
-            launch:RegisterSubScript(response, function(rentryURL, errMsg)
+            launch:RegisterSubScript(response, function(url, errMsg)
                 self.controls.generateCodeByLink.label = "Get Short Link"
                 if errMsg then
-                    main:OpenMessagePopup("Rentry", "Error uploading to Rentry.co:\n" .. errMsg)
+                    main:OpenMessagePopup("bytebin", "Error uploading to bytebin:\n" .. errMsg)
                 else
-                    self.controls.generateCodeOut:SetText(rentryURL)
+                    self.controls.generateCodeOut:SetText(url)
                 end
             end)
         end
     end)
     self.controls.generateCodeByLink.enabled = function()
         local buf = self.controls.generateCodeOut.buf
-        return #buf > 0 and not buf:match("rentry%.co/")
+        return #buf > 0 and not buf:match("bytebin%.lucko%.me/") and not buf:match("rentry%.co/")
     end
     self.controls.generateCodeByLink.tooltipFunc = function(tooltip)
         tooltip:Clear()
-        tooltip:AddLine(14, "^7Upload to Rentry.co and get a short link.")
+        tooltip:AddLine(14, "^7Upload to bytebin and get a short link.")
         tooltip:AddLine(14, "^7Requires an internet connection.")
     end
     self.controls.generateCodeNote = new("LabelControl", { "TOPLEFT", self.controls.generateCodeOut, "BOTTOMLEFT" }, 0, 4, 0, 14, "^7Paste the code in chat or Discord, or use 'Get Short Link' to get a shareable URL (requires internet).")
