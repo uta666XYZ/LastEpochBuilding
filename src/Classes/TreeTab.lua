@@ -578,10 +578,12 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 		end
 	end
 
-	-- Lock icon on non-allocated mastery badges (bottom-center of badge)
-	if spec.curClass then
-		local lockSpr = self:GetSpriteHandle("badges/class-mastery-locked")
-		local lockSize = 32
+	-- Lock icon overlay on non-selected mastery badges before subclass is chosen
+	-- mastery-lock-icon.png: the lock diamond icon from game assets, drawn small at bottom-center
+	if spec.curClass and spec.curAscendClassId == 0 then
+		local lockSpr = self:GetSpriteHandle("badges/mastery-lock-icon")
+		local lockW = 44
+		local lockH = 39  -- aspect ratio 95:84
 		for i, ascClass in ipairs(spec.curClass.classes) do
 			local isAllocated = false
 			if ascClass.startNodeId and spec.allocNodes[ascClass.startNodeId] then
@@ -590,8 +592,28 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 			if not isAllocated then
 				local bx = badgeStartX + i * (badgeSize + badgeGap)
 				SetDrawColor(1, 1, 1)
-				DrawImage(lockSpr, bx + (badgeSize - lockSize) / 2, badgeY + badgeSize - lockSize - 2, lockSize, lockSize)
+				DrawImage(lockSpr, bx + m_floor((badgeSize - lockW) / 2), badgeY + badgeSize - lockH - 2, lockW, lockH)
 			end
+		end
+	end
+
+	-- Points badge (spec-slot-level.png) at bottom of each mastery icon
+	local lvlHandle = self:GetSpriteHandle("spec-slot-level")
+	local lvlW = 50
+	local lvlH = 34
+	-- Base class (mastery 0)
+	local basePts = (spec.masteryAllocedPoints and spec.masteryAllocedPoints[0]) or 0
+	SetDrawColor(1, 1, 1)
+	DrawImage(lvlHandle, badgeStartX + m_floor((badgeSize - lvlW) / 2), badgeY + badgeSize - 35, lvlW, lvlH)
+	DrawString(badgeStartX + m_floor(badgeSize / 2), badgeY + badgeSize - 24, "CENTER_X", 12, "VAR", "^7" .. basePts)
+	-- Ascendancy classes: only show counter after subclass is selected
+	if spec.curClass and spec.curAscendClassId ~= 0 then
+		for i, ascClass in ipairs(spec.curClass.classes) do
+			local bx = badgeStartX + i * (badgeSize + badgeGap)
+			local mPts = (spec.masteryAllocedPoints and spec.masteryAllocedPoints[i]) or 0
+			SetDrawColor(1, 1, 1)
+			DrawImage(lvlHandle, bx + m_floor((badgeSize - lvlW) / 2), badgeY + badgeSize - 35, lvlW, lvlH)
+			DrawString(bx + m_floor(badgeSize / 2), badgeY + badgeSize - 24, "CENTER_X", 12, "VAR", "^7" .. mPts)
 		end
 	end
 
