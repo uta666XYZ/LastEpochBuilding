@@ -28,7 +28,8 @@ local sortGemTypeList = {
 local SLOT_SIZE = 76
 local SLOT_GAP = 12
 local SLOT_ROW_HEIGHT = 116  -- slot height + damage type icon row
-local ICON_SIZE = 72
+local ICON_SIZE = 72         -- icon size in spec slots
+local GRID_ICON_SIZE = 56   -- icon size in skill selection grid (fits within frame border)
 local FRAME_SIZE = 84
 local CELL_W = 100
 local CELL_H = 120
@@ -154,7 +155,7 @@ local MASTERY_SKILL_UNLOCKS = {
 	["Rogue"] = {
 		[0] = {
 			{ name = "SmokeBomb", label = "Smoke Bomb", treeId = "smbmb", level = 5 },
-			{ name = "Bladestorm", label = "Bladestorm", treeId = "bl5st", level = 10 },
+			{ name = "Bladestorm Throw", label = "Bladestorm Throw", treeId = "bl5st", level = 10 },
 			{ name = "SummonBallista", label = "Ballista", treeId = "ba1574", level = 15 },
 			{ name = "UmbralBlades", label = "Umbral Blades", treeId = "ub5d9", level = 20 },
 		},
@@ -564,20 +565,31 @@ function SkillsTabClass:GetSkillIconFromTree(treeId, useSpec)
 	end
 	local baseName = iconName:gsub("%-root$", "")
 	local handle = NewImageHandle()
+	local w, h
 	if useSpec then
 		-- Try pointy-top hex version for spec slots
 		handle:Load("TreeData/sprites/" .. baseName .. "-spec.png")
-		local w, h = handle:ImageSize()
+		w, h = handle:ImageSize()
+		if not w or w == 0 then
+			-- Fallback to hex version (same pointy-top shape)
+			handle:Load("TreeData/sprites/" .. baseName .. "-hex.png")
+			w, h = handle:ImageSize()
+		end
 		if not w or w == 0 then
 			-- Fallback to circle version
 			handle:Load("TreeData/sprites/" .. baseName .. ".png")
 		end
+		-- Note: -root.png is flat-top hex (wrong shape for spec slots), not used here
 	else
-		-- Square version for skill grid, fallback to circle, then root
+		-- Square version for skill grid, fallback to circle, then hex, then root
 		handle:Load("TreeData/sprites/" .. baseName .. "-sq.png")
-		local w, h = handle:ImageSize()
+		w, h = handle:ImageSize()
 		if not w or w == 0 then
 			handle:Load("TreeData/sprites/" .. baseName .. ".png")
+			w, h = handle:ImageSize()
+		end
+		if not w or w == 0 then
+			handle:Load("TreeData/sprites/" .. baseName .. "-hex.png")
 			w, h = handle:ImageSize()
 		end
 		if (not w or w == 0) and baseName ~= iconName then
@@ -767,7 +779,7 @@ local TREE_ID_DAMAGE_TYPES = {
 	["cstri"]  = { base = { "fire" },                  conv = {} },                        -- Cinder Strike
 	["deeco"]  = { base = { "fire" },                  conv = { "cold" } },                -- Decoy
 	["smbmb"]  = { base = {},                          conv = {} },                        -- Smoke Bomb
-	["bl5st"]  = { base = { "physical" },              conv = { "cold", "poison" } },      -- Bladestorm
+	["bl5st"]  = { base = { "physical" },              conv = { "cold", "poison" } },      -- Bladestorm Throw
 	["ba1574"] = { base = { "physical" },              conv = {} },                        -- Ballista
 	["ub5d9"]  = { base = { "physical" },              conv = { "cold", "fire", "poison" } }, -- Umbral Blades
 	-- Bladedancer
@@ -1309,14 +1321,14 @@ function SkillsTabClass:DrawSkillGrid(x, y, w, skills, inputEvents, cursorX, cur
 		-- Icon (use root node icon lookup, same as TreeTab)
 		local treeId = skill.treeId
 		local iconHandle = self:GetSkillIconFromTree(treeId)
-		local iconX = cx + m_floor((CELL_W - ICON_SIZE) / 2)
+		local iconX = cx + m_floor((CELL_W - GRID_ICON_SIZE) / 2)
 		local iconY = cy + 4
 
 		-- Frame: gold if unlocked, silver if locked/not-yet-unlocked
 		local isUnlocked = skill.isUnlocked
 		local frameName = isUnlocked and "skill-icon-frame" or "skill-icon-frame-locked"
 		local frameHandle = self:GetSpriteHandle(frameName)
-		local frameOff = m_floor((ICON_SIZE - FRAME_SIZE) / 2)
+		local frameOff = m_floor((GRID_ICON_SIZE - FRAME_SIZE) / 2)
 
 		if isLocked then
 			SetDrawColor(0.35, 0.35, 0.35)
@@ -1326,7 +1338,7 @@ function SkillsTabClass:DrawSkillGrid(x, y, w, skills, inputEvents, cursorX, cur
 			SetDrawColor(1, 1, 1)
 		end
 		if iconHandle then
-			DrawImage(iconHandle, iconX, iconY, ICON_SIZE, ICON_SIZE)
+			DrawImage(iconHandle, iconX, iconY, GRID_ICON_SIZE, GRID_ICON_SIZE)
 		end
 		SetDrawColor(1, 1, 1)
 		DrawImage(frameHandle, iconX + frameOff, iconY + frameOff, FRAME_SIZE, FRAME_SIZE)
@@ -1337,8 +1349,8 @@ function SkillsTabClass:DrawSkillGrid(x, y, w, skills, inputEvents, cursorX, cur
 		if skill.level and not isUnlocked then
 			local lvBadgeW = 48
 			local lvBadgeH = 40
-			local lvBadgeX = iconX + ICON_SIZE / 2 - lvBadgeW / 2
-			local lvBadgeY = iconY + ICON_SIZE / 2 - lvBadgeH / 2
+			local lvBadgeX = iconX + GRID_ICON_SIZE / 2 - lvBadgeW / 2
+			local lvBadgeY = iconY + GRID_ICON_SIZE / 2 - lvBadgeH / 2
 			if isLocked then
 				SetDrawColor(0.6, 0.6, 0.6)
 			else
@@ -1354,8 +1366,8 @@ function SkillsTabClass:DrawSkillGrid(x, y, w, skills, inputEvents, cursorX, cur
 		if not skill.level and skill.isMastery and not isUnlocked then
 			local lvBadgeW = 48
 			local lvBadgeH = 40
-			local lvBadgeX = iconX + ICON_SIZE / 2 - lvBadgeW / 2
-			local lvBadgeY = iconY + ICON_SIZE / 2 - lvBadgeH / 2
+			local lvBadgeX = iconX + GRID_ICON_SIZE / 2 - lvBadgeW / 2
+			local lvBadgeY = iconY + GRID_ICON_SIZE / 2 - lvBadgeH / 2
 			if isLocked then
 				SetDrawColor(0.6, 0.6, 0.6)
 			else
@@ -1368,7 +1380,7 @@ function SkillsTabClass:DrawSkillGrid(x, y, w, skills, inputEvents, cursorX, cur
 			local starHandle = self:GetSpriteHandle("skill-req-mastery-mastered")
 			local starSize = 24
 			SetDrawColor(1, 1, 1)
-			DrawImage(starHandle, iconX + ICON_SIZE / 2 - starSize / 2, iconY + ICON_SIZE / 2 - starSize / 2, starSize, starSize)
+			DrawImage(starHandle, iconX + GRID_ICON_SIZE / 2 - starSize / 2, iconY + GRID_ICON_SIZE / 2 - starSize / 2, starSize, starSize)
 		end
 
 		-- Damage type icons (right side of icon, top-aligned)
@@ -1376,7 +1388,7 @@ function SkillsTabClass:DrawSkillGrid(x, y, w, skills, inputEvents, cursorX, cur
 		local damageTypes = self:GetSkillDamageTypes(skill.skillId or skill.name, skill.treeId)
 		if #damageTypes > 0 then
 			local dtSize = 16
-			local dtX = iconX + ICON_SIZE + 2
+			local dtX = iconX + GRID_ICON_SIZE + 2
 			local dtY = iconY
 			for _, dtInfo in ipairs(damageTypes) do
 				local dtHandle = self:GetSpriteHandle("skill-damage-" .. dtInfo.type)
