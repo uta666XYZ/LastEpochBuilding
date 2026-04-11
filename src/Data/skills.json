@@ -6405,6 +6405,22 @@
     ],
     "treeId": "bl5st"
   },
+  "Bladestorm Throw": {
+    "name": "Bladestorm Throw",
+    "skillTypeTags": 2561,
+    "castTime": 0.6818182,
+    "baseFlags": {
+      "attack": true,
+      "hit": true
+    },
+    "stats": {
+      "damageEffectiveness": 1.0
+    },
+    "baseMods": [
+      "4% increased Damage per player Dexterity"
+    ],
+    "treeId": "bl5st"
+  },
   "ShadowRend": {
     "name": "Shadow Rend",
     "skillTypeTags": 2561,
