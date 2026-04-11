@@ -1266,13 +1266,21 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 			SetDrawColor(1, 1, 1)
 			local frameName, frameSize
 			local isPassiveNode = nodeId:sub(1, 1):match("%u") ~= nil
+			local isHover = node == hoverNode
 			if node.icon then
 				if node.icon:match("-root$") then
-					frameName = isAlloc and "frame-root-alloc" or "frame-root-unalloc"
+					if isHover then
+						frameName = "frame-root-hover"
+					else
+						frameName = isAlloc and "frame-root-alloc" or "frame-root-unalloc"
+					end
 					frameSize = 68
 				elseif isPassiveNode or node.icon:match("-hex$") then
-					-- Hex nodes: silver (unalloc) / gold (alloc)
-					frameName = isAlloc and "frame-hex-alloc" or "frame-hex-unalloc"
+					if isHover then
+						frameName = "frame-hex-hover"
+					else
+						frameName = isAlloc and "frame-hex-alloc" or "frame-hex-unalloc"
+					end
 					frameSize = 54
 				else
 					-- Skill tree circle nodes
@@ -1346,7 +1354,7 @@ function PassiveTreeViewClass:DrawAsset(data, x, y, scale, isHalf, fixedSize)
 			return
 		end
 	end
-	local w = fixedSize or data.width
+	local w = fixedSize and (fixedSize * data.width / data.height) or data.width
 	local h = fixedSize or data.height
 	local width = w * scale * 1.33
 	local height = h * scale * 1.33
