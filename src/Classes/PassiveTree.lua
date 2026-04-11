@@ -9,6 +9,7 @@ local pairs = pairs
 local ipairs = ipairs
 local t_insert = table.insert
 local t_remove = table.remove
+local m_floor = math.floor
 local m_min = math.min
 local m_max = math.max
 local m_pi = math.pi
@@ -244,9 +245,19 @@ local PassiveTreeClass = newClass("PassiveTree", function(self, treeVersion)
     for _, node in pairs(self.nodes) do
         node.alloc = 0
         node.maxPoints = node.maxPoints or 0
-        -- Fix coordinates (avoid overlaps of masteries and skills
-        node.x = node.x * 2
-        node.y = node.y * 2
+        -- Fix coordinates (avoid overlaps of masteries and skills)
+        -- v1.2 coordinate system is 4x larger than v1.3/v1.4; normalize to same display scale
+        local coordScale = versionNum < 1.3 and 0.5 or 2
+        if versionNum < 1.3 then
+            -- v1.2 encodes mastery sections as vertical y offsets (1600 units per section).
+            -- Detect mastery from y position and remove section offset before scaling,
+            -- so the existing mastery*1000 offset produces correct screen positions.
+            local masterySection = m_max(0, m_min(3, m_floor((node.y + 800) / 1600)))
+            node.mastery = masterySection
+            node.y = node.y - masterySection * 1600
+        end
+        node.x = node.x * coordScale
+        node.y = node.y * coordScale
         if node.mastery then
             node.y = node.y + node.mastery * 1000
         end
