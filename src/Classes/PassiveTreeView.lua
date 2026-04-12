@@ -203,6 +203,8 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 				end
 			elseif event.key == "p" then
 				self.showHeatMap = not self.showHeatMap
+			elseif event.key == "i" and launch.devMode then
+				self.showIconPreview = not self.showIconPreview
 			elseif event.key == "d" and IsKeyDown("CTRL") then
 				self.showStatDifferences = not self.showStatDifferences
 			elseif event.key == "PAGEUP" and not self.disableZooming then
@@ -1118,7 +1120,7 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 		SetDrawLayer(nil, 25)
 
 		local state
-		if self.showHeatMap or isAlloc or node == hoverNode or (self.traceMode and node == self.tracePath[#self.tracePath])then
+		if self.showHeatMap or self.showIconPreview or isAlloc or node == hoverNode or (self.traceMode and node == self.tracePath[#self.tracePath])then
 			-- Show node as allocated if it is being hovered over
 			-- Also if the heat map is turned on (makes the nodes more visible)
 			state = "alloc"
