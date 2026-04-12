@@ -40,6 +40,7 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
         return self.charImportMode == "GETACCOUNTNAME"
     end
     self.controls.accountName = new("EditControl", { "TOPLEFT", self.controls.accountNameHeader, "BOTTOMLEFT" }, 0, 4, 200, 20, main.lastAccountName or "", nil, "%c", nil, nil, nil, nil, true)
+    self.controls.accountName.placeholder = "Account name"
     self.controls.accountName.pasteFilter = function(text)
         return text:gsub("[\128-\255]", function(c)
             return codePointToUTF8(c:byte(1)):gsub(".", function(c)
@@ -69,6 +70,7 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
     self.controls.accountHistory = new("DropDownControl", { "LEFT", self.controls.accountNameGo, "RIGHT" }, 8, 0, 200, 20, historyList, function()
         self.controls.accountName.buf = self.controls.accountHistory.list[self.controls.accountHistory.selIndex]
     end)
+    self.controls.accountHistory.placeholder = "History"
     self.controls.accountHistory:SelByValue(main.lastAccountName)
     self.controls.accountHistory:CheckDroppedWidth(true)
 
@@ -256,7 +258,39 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
                     self.controls.importCodeIn:SetText(urlText, false)
                 end
                 if buildSites.websiteList[j].id == "lastepochtools" then
-                    self.importCodeXML = buf:match("window%[\"buildInfo\"%] = (%b{})")
+                    -- Extract XOR key (short lowercase hex) and encrypted data (long base64).
+                    -- Variable names are random per-page; match by value shape, not by name.
+                    local keyHex
+                    for candidate in buf:gmatch("\tvar%s+[%w_]+%s*=%s*'([0-9a-f]+)'") do
+                        if #candidate >= 8 and #candidate <= 64 then
+                            keyHex = candidate
+                            break
+                        end
+                    end
+                    local b64
+                    for candidate in buf:gmatch("\tvar%s+[%w_]+%s*=%s*'([A-Za-z0-9+/=]+)'") do
+                        if #candidate >= 200 then
+                            b64 = candidate
+                            break
+                        end
+                    end
+                    if keyHex and b64 then
+                        local keyBytes = {}
+                        for hex in keyHex:gmatch("..") do
+                            table.insert(keyBytes, tonumber(hex, 16))
+                        end
+                        local keyLen = #keyBytes
+                        local csvText = common.base64.decode(b64)
+                        local chars = {}
+                        local i = 0
+                        for numStr in csvText:gmatch("[^,]+") do
+                            local byte = tonumber(numStr) or 0
+                            local keyByte = keyBytes[(i % keyLen) + 1]
+                            table.insert(chars, string.char(bit.bxor(byte, keyByte)))
+                            i = i + 1
+                        end
+                        self.importCodeXML = table.concat(chars)
+                    end
                 end
                 return
             end
@@ -597,6 +631,7 @@ function ImportTabClass:DownloadPassiveTree()
     local charSelect = self.controls.charSelect
     local charData = charSelect.list[charSelect.selIndex].char
     self:ImportPassiveTreeAndJewels(charData)
+    self.charImportMode = "GETACCOUNTNAME"
 end
 
 function ImportTabClass:ReadJsonSaveData(saveFileContent)
@@ -631,7 +666,7 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
         local nbPoints = saveContent["savedCharacterTree"]["nodePoints"][passiveIdx]
         table.insert(char["hashes"], className .. "-" .. passive .. "#" .. nbPoints)
     end
-    for _, skillTree in pairs(saveContent["savedSkillTrees"]) do
+    for _, skillTree in pairs(saveContent["savedSkillTrees"] or {}) do
         local skillName
 
         local skillList = self.build.latestTree.classes[classId].skills
@@ -726,7 +761,7 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
                     item.base = itemBase
                     item.implicitMods = {}
                     for i, implicit in ipairs(itemBase.implicits or {}) do
-                        local range = d[BASE + 3 + i]
+                        local range = d[BASE + 3 + i] or 128
                         table.insert(item.implicitMods, "{range: " .. range .. "}" .. implicit)
                     end
                     -- For blessing slots, set the roll fraction from the first implicit roll byte
@@ -885,11 +920,15 @@ function ImportTabClass:DownloadItems()
     local charSelect = self.controls.charSelect
     local charData = charSelect.list[charSelect.selIndex].char
     self:ImportItemsAndSkills(charData)
+    self.charImportMode = "GETACCOUNTNAME"
 end
 
 function ImportTabClass:DownloadFullImport()
-    self:DownloadPassiveTree()
-    self:DownloadItems()
+    local charSelect = self.controls.charSelect
+    local charData = charSelect.list[charSelect.selIndex].char
+    self:ImportPassiveTreeAndJewels(charData)
+    self:ImportItemsAndSkills(charData)
+    self.charImportMode = "GETACCOUNTNAME"
     self.charImportStatus = colorCodes.POSITIVE.."Full import successful."
 end
 
@@ -915,7 +954,6 @@ function ImportTabClass:ImportItemsAndSkills(charData)
     -- Reset debug.log so it only contains data from the most recent import
     if ResetDebugLog then ResetDebugLog() end
     ConPrintf("[IMPORT] === Character Import Start: %s (level %s) ===", tostring(charData.name), tostring(charData.level))
-
     -- Use the latest non-empty itemBases and itemMods for ParseRaw compatibility
     local savedItemBases = data.itemBases
     local savedItemMods = data.itemMods
