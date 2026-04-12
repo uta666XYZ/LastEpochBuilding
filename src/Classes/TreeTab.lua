@@ -187,6 +187,14 @@ local TreeTabClass = newClass("TreeTab", "ControlHost", function(self, build)
 		self.controls.powerReportList.shown = not self.controls.powerReportList.shown
 	end)
 
+	-- Icon Preview checkbox (dev mode only); anchor updated dynamically in Draw()
+	if launch.devMode then
+		self.controls.treeIconPreview = new("CheckBoxControl", { "LEFT", self.controls.nodePowerMaxDepthSelect, "RIGHT" }, 8, 0, 20, "Icon Preview:", function(state)
+			self.viewer.showIconPreview = state
+		end)
+		self.controls.treeIconPreview.tooltipText = "[Dev] Show all nodes as allocated (no heat map overlay). Shortcut: I"
+	end
+
 	-- Power Report List
 	local yPos = self.controls.treeHeatMap.y == 0 and self.controls.specSelect.height + 4 or self.controls.specSelect.height * 2 + 8
 	self.controls.powerReportList = new("PowerReportListControl", {"TOPLEFT", self.controls.specSelect, "BOTTOMLEFT"}, 0, yPos, 700, 220, function(selectedNode)
@@ -515,6 +523,14 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 
 	self.controls.treeHeatMap.state = self.viewer.showHeatMap
 	self.controls.treeHeatMapStatSelect.shown = self.viewer.showHeatMap
+	if self.controls.treeIconPreview then
+		self.controls.treeIconPreview.state = self.viewer.showIconPreview
+		if self.viewer.showHeatMap then
+			self.controls.treeIconPreview:SetAnchor("LEFT", self.controls.powerReport, "RIGHT", 8, 0)
+		else
+			self.controls.treeIconPreview:SetAnchor("LEFT", self.controls.nodePowerMaxDepthSelect, "RIGHT", 8, 0)
+		end
+	end
 	self.controls.treeHeatMapStatSelect.list = self.powerStatList
 	self.controls.treeHeatMapStatSelect.selIndex = 1
 	self.controls.treeHeatMapStatSelect:CheckDroppedWidth(true)
