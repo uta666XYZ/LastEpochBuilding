@@ -575,10 +575,13 @@ function PassiveSpecClass:BuildPathFromNode(root)
 			local reqPts = other.reqPointsMap and other.reqPointsMap[node.id]
 			local mReq = other.masteryRequirement
 			local mPts = (mReq and mReq > 0 and self.masteryAllocedPoints) and (self.masteryAllocedPoints[other.mastery] or 0) or 0
+			local basePts = self.masteryAllocedPoints and (self.masteryAllocedPoints[0] or 0) or 0
 			if reqPts and node.alloc < reqPts then
 				-- Gate not satisfied: node does not have enough allocated points to unlock 'other'
 			elseif mReq and mReq > 0 and mPts < mReq then
 				-- Mastery requirement not satisfied: not enough total points in this mastery
+			elseif node.type == "AscendClassStart" and other.mastery and other.mastery ~= 0 and basePts < 20 then
+				-- Cannot allocate subclass nodes without 20 base class passive points
 			elseif other.pathDist and node.type ~= "Mastery" and other.type ~= "ClassStart" and other.type ~= "AscendClassStart" and other.pathDist > curDist and (node.ascendancyName == other.ascendancyName or (curDist == 1 and not other.ascendancyName)) then
 				-- The shortest path to the other node is through the current node
 				other.pathDist = curDist
@@ -789,9 +792,10 @@ function PassiveSpecClass:BuildAllDependsAndPaths()
 	end
 
 	-- Pre-compute total allocated points per mastery index for masteryRequirement gating
+	-- Exclude ClassStart/AscendClassStart (free nodes) and skill tree nodes (skillId set, mastery=0 but not passive)
 	self.masteryAllocedPoints = {}
 	for id, node in pairs(self.allocNodes) do
-		if node.type ~= "ClassStart" and node.type ~= "AscendClassStart" and node.mastery ~= nil then
+		if node.type ~= "ClassStart" and node.type ~= "AscendClassStart" and node.mastery ~= nil and not node.skillId then
 			local m = node.mastery
 			self.masteryAllocedPoints[m] = (self.masteryAllocedPoints[m] or 0) + (node.alloc or 0)
 		end
