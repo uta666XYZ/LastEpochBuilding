@@ -1514,6 +1514,34 @@ function SkillsTabClass:DrawSkillTree(viewPort, inputEvents, startY)
 		end
 	end
 
+	-- Icon Preview toggle (dev mode only)
+	if launch.devMode then
+		local ipW = 110
+		local ipX = backX + backW + 6
+		local ipY = backY
+		local overIP = cursorX >= ipX and cursorX < ipX + ipW
+			and cursorY >= ipY and cursorY < ipY + backH
+		if overIP then
+			SetDrawColor(0.3, 0.3, 0.35)
+		else
+			SetDrawColor(0.15, 0.15, 0.2)
+		end
+		DrawImage(nil, ipX, ipY, ipW, backH)
+		SetDrawColor(0.5, 0.5, 0.55)
+		DrawImage(nil, ipX, ipY, ipW, 1)
+		DrawImage(nil, ipX, ipY + backH, ipW, 1)
+		DrawImage(nil, ipX, ipY, 1, backH)
+		DrawImage(nil, ipX + ipW, ipY, 1, backH)
+		local ipLabel = self.skillTreeViewer.showIconPreview and "^2Icon Preview: ON" or "^8Icon Preview: OFF"
+		DrawString(ipX + ipW / 2, ipY + 4, "CENTER_X", 14, "VAR", ipLabel)
+		for id, event in ipairs(inputEvents) do
+			if event.type == "KeyUp" and event.key == "LEFTBUTTON" and overIP then
+				self.skillTreeViewer.showIconPreview = not self.skillTreeViewer.showIconPreview
+				inputEvents[id] = nil
+			end
+		end
+	end
+
 	-- Skill name + unspent points bar (between spec slots and tree)
 	-- Draw at layer 145 so it stays above the skill background art (layer 15) and tree nodes (25)
 	local infoBarH = 42
