@@ -1333,8 +1333,8 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 			DrawImage(self.highlightRing, scrX - size, scrY - size, size * 2, size * 2)
 		end
 		if node == hoverNode and (node.type ~= "Socket" or not IsKeyDown("SHIFT")) and (node.type ~= "Mastery" or node.masteryEffects) and not IsKeyDown("CTRL") and not main.popups[1] then
-			-- Draw tooltip
-			SetDrawLayer(nil, 100)
+			-- Draw tooltip above skill bar (TreeTab draws skill bar at layer 1, so use layer 2)
+			SetDrawLayer(2)
 			local size = m_floor(node.size * scale)
 			if self.tooltip:CheckForUpdate(node, self.showStatDifferences, self.tracePath, launch.devModeAlt, build.outputRevision) then
 				self:AddNodeTooltip(self.tooltip, node, build)
