@@ -662,9 +662,12 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
     }
     for _, itemData in pairsSortByKey(saveContent["savedItems"]) do
         local d = itemData["data"]
-        if d and d[4] == 41 then
-            char.altarName = altarSubTypeNames[d[5]]
-            break
+        if d then
+            local altarBase = (d[1] == 2) and 2 or 4
+            if d[altarBase] == 41 then
+                char.altarName = altarSubTypeNames[d[altarBase + 1]]
+                break
+            end
         end
     end
 
@@ -673,49 +676,15 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
                 itemData["containerID"] == 29 or
                 itemData["containerID"] >= 33 and itemData["containerID"] <= 45 or
                 itemData["containerID"] == 123 then
-            -- Debug: dump full byte data for corrupted affix investigation (Amulet=11, Body Armor=3, Relic=12)
-            local cid = itemData["containerID"]
-            if cid == 3 or cid == 11 or cid == 12 then
-                local d = itemData["data"]
-                local slotLabel = (cid == 3 and "BodyArmor") or (cid == 11 and "Amulet") or "Relic"
-                local hexDump = ""
-                for idx = 1, #d do
-                    hexDump = hexDump .. string.format("%02X ", d[idx])
-                end
-                ConPrintf("[CORRUPT-DBG] slot=%s cid=%d dataLen=%d", slotLabel, cid, #d)
-                ConPrintf("[CORRUPT-DBG] rawHex: %s", hexDump)
-                -- Decode known fields
-                ConPrintf("[CORRUPT-DBG] baseTypeID=%d subTypeID=%d rarity=%d", d[4] or -1, d[5] or -1, d[6] or -1)
-                -- Dump implicit ranges (bytes 7-9)
-                ConPrintf("[CORRUPT-DBG] implicitBytes: [7]=%s [8]=%s [9]=%s", tostring(d[7]), tostring(d[8]), tostring(d[9]))
-                -- Dump all 5 known affix slots (bytes 13-28) plus any extra bytes beyond
-                for i = 0, 4 do
-                    local off = 14 + i * 3
-                    if #d >= off + 1 then
-                        local tierByte = d[off - 1] or 0
-                        local idByte = d[off] or 0
-                        local rangeByte = d[off + 1] or 0
-                        local affixId = idByte + (tierByte % 16) * 256
-                        local affixTier = math.floor(tierByte / 16)
-                        ConPrintf("[CORRUPT-DBG]   affixSlot[%d] off=%d-%d bytes=[%02X %02X %02X] affixId=%d tier=%d range=%d",
-                            i, off-1, off+1, tierByte, idByte, rangeByte, affixId, affixTier, rangeByte)
-                    end
-                end
-                -- Dump extra bytes beyond the 5 known affix slots (byte 29+)
-                if #d > 28 then
-                    local extraHex = ""
-                    for idx = 29, #d do
-                        extraHex = extraHex .. string.format("%02X ", d[idx])
-                    end
-                    ConPrintf("[CORRUPT-DBG]   extraBytes[29..%d]: %s", #d, extraHex)
-                end
-            end
-
             local item = {
                 ["inventoryId"] = itemData["containerID"],
             }
-            local baseTypeID = itemData["data"][4]
-            local subTypeID = itemData["data"][5]
+            local d = itemData["data"]
+            -- Format version 2 (older seasons) has no seed bytes, so all offsets shift by -2.
+            -- Format version 3/5 (current) has a 2-byte seed before baseTypeID.
+            local BASE = (d and d[1] == 2) and 2 or 4
+            local baseTypeID = d[BASE]
+            local subTypeID = d[BASE + 1]
             if itemData["containerID"] == 29 then
                 item._idolPosX = itemData["inventoryPosition"]["x"]
                 item._idolPosY = itemData["inventoryPosition"]["y"]
@@ -757,14 +726,14 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
                     item.base = itemBase
                     item.implicitMods = {}
                     for i, implicit in ipairs(itemBase.implicits or {}) do
-                        local range = itemData["data"][7 + i]
+                        local range = d[BASE + 3 + i]
                         table.insert(item.implicitMods, "{range: " .. range .. "}" .. implicit)
                     end
-                    -- For blessing slots, set the roll fraction from implicitRollByte0 (data[8])
+                    -- For blessing slots, set the roll fraction from the first implicit roll byte
                     if itemData["containerID"] >= 33 and itemData["containerID"] <= 45 then
-                        item.blessingRollFrac = itemData["data"][8] and (itemData["data"][8] / 255.0) or 1.0
+                        item.blessingRollFrac = d[BASE + 4] and (d[BASE + 4] / 255.0) or 1.0
                     end
-                    local rarity = itemData["data"][6]
+                    local rarity = d[BASE + 2]
                     item["explicitMods"] = {}
                     item["prefixes"] = {}
                     item["suffixes"] = {}
@@ -777,8 +746,9 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
                         else
                             item["rarity"] = "UNIQUE"
                         end
-                        local uniqueIDIndex = 8 + 3 -- 3 is the maximum amount of implicits
-                        local uniqueID = itemData["data"][uniqueIDIndex] * 256 + itemData["data"][uniqueIDIndex + 1]
+                        -- uniqueID is at BASE+7, BASE+8 (after 3 implicits + 1 flags byte)
+                        local uniqueIDIndex = BASE + 7
+                        local uniqueID = d[uniqueIDIndex] * 256 + d[uniqueIDIndex + 1]
                         local uniqueBase = self.build.data.uniques[uniqueID]
                         if not uniqueBase then
                             ConPrintf("[ITEM-ERR] Unknown uniqueID=%d cid=%d baseTypeID=%d subTypeID=%d", uniqueID, itemData["containerID"], baseTypeID, subTypeID)
@@ -790,7 +760,7 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
                             if itemLib.hasRange(modLine) then
                                 local rollId = uniqueBase.rollIds[i]
                                 if rollId then
-                                    local range = itemData["data"][uniqueIDIndex + 2 + rollId]
+                                    local range = d[uniqueIDIndex + 2 + rollId]
                                     -- TODO: avoid using crafted
                                     table.insert(item.explicitMods, "{crafted}{range: " .. (range or 0) .. "}".. modLine)
                                 else
@@ -801,18 +771,19 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
                             end
                         end
                         if rarity == 9 then
-                            local nbAffixesIndex = uniqueIDIndex + 2 + 8 -- 8 is the maximum amount of unique mods
-                            local nbMods = itemData["data"][nbAffixesIndex]
+                            -- 8 is the maximum amount of unique mod roll bytes
+                            local nbAffixesIndex = uniqueIDIndex + 2 + 8
+                            local nbMods = d[nbAffixesIndex]
                             for i = 0, nbMods - 1 do
                                 local dataId = nbAffixesIndex + 1 + 3 * i
                                 -- There are cases where the "nbAffixesIndex" value is wrong, not sure why but
                                 -- we should at least prevent a crash when it's higher than expected (could it be lower?)
-                                if itemData["data"][dataId] then
-                                    local affixId = itemData["data"][dataId + 1] + (itemData["data"][dataId] % 16) * 256
-                                    local affixTier = math.floor(itemData["data"][dataId] / 16)
+                                if d[dataId] then
+                                    local affixId = d[dataId + 1] + (d[dataId] % 16) * 256
+                                    local affixTier = math.floor(d[dataId] / 16)
                                     local modId = affixId .. "_" .. affixTier
                                     local modData = data.itemMods.Item[modId]
-                                    local range = itemData["data"][dataId + 2]
+                                    local range = d[dataId + 2]
                                     if modData then
                                         if modData.type == "Prefix" then
                                             table.insert(item.prefixes, { ["range"] = range, ["modId"] = modId })
@@ -827,15 +798,16 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
                         local maxTier = 0
                         local affixCount = 0
                         -- Read up to 5 affix slots: 4 regular + 1 sealed affix slot
+                        -- Affixes start at BASE+9 (byte0/tierByte), BASE+10 (byte1/idByte)
                         for i = 0, 4 do
-                            local dataId = 14 + i * 3
-                            if #itemData["data"] > dataId then
-                                local affixId = itemData["data"][dataId] + (itemData["data"][dataId - 1] % 16) * 256
+                            local dataId = BASE + 10 + i * 3
+                            if #d > dataId then
+                                local affixId = d[dataId] + (d[dataId - 1] % 16) * 256
                                 if affixId and affixId > 0 then
-                                    local affixTier = math.floor(itemData["data"][dataId - 1] / 16)
+                                    local affixTier = math.floor(d[dataId - 1] / 16)
                                     local modId = affixId .. "_" .. affixTier
                                     local modData = data.itemMods.Item[modId]
-                                    local range = itemData["data"][dataId + 1]
+                                    local range = d[dataId + 1]
 
                                     ConPrintf("[AFFIX] base=%s slot=%d affixId=%d tier=%d modId=%s valid=%s", itemBaseName, i, affixId, affixTier, modId, tostring(modData ~= nil))
                                     if modData then
