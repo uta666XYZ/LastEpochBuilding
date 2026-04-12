@@ -229,6 +229,18 @@ local SkillsTabClass = newClass("SkillsTab", "UndoHandler", "ControlHost", "Cont
 	self.skillTreeViewer.selectedSkillIndex = nil  -- nil = show all trees in one viewport
 	self.selectedSkillTreeIndex = nil
 
+	-- Search state
+	self.skillOverviewSearchStr = ""
+	self.skillOverviewSearchCache = { str = nil, results = {} }
+	self.controls.skillTreeSearch = new("EditControl", nil, 0, 0, 200, 20, "", nil, "%c", 100, function(buf)
+		self.skillTreeViewer.searchStr = buf
+	end, nil, nil, true)
+	self.controls.skillTreeSearch.placeholder = "Search Nodes..."
+	self.controls.skillOverviewSearch = new("EditControl", nil, 0, 0, 200, 20, "", nil, "%c", 100, function(buf)
+		self.skillOverviewSearchStr = buf
+	end, nil, nil, true)
+	self.controls.skillOverviewSearch.placeholder = "Search Nodes..."
+
 	-- Phase 2: Visual skill panel state
 	self.viewMode = "overview"       -- "overview" or "tree"
 	self.selectedSlotIndex = 1       -- which spec slot is selected (1-5)
@@ -843,12 +855,34 @@ function SkillsTabClass:Draw(viewPort, inputEvents)
 	self.width = viewPort.width
 	self.height = viewPort.height
 
+	-- Layout constants (needed before input processing)
+	local slotBarY = viewPort.y + 10
+	local contentY = slotBarY + SLOT_ROW_HEIGHT
+	local bottomBarH = 28
+
 	-- Hide all legacy controls (including scroll bars - new UI doesn't scroll)
 	for key, ctrl in pairs(self.controls) do
 		ctrl.shown = false
 	end
 
-	-- Handle ESC: tree -> overview
+	-- Show and position the active search control in the bottom bar
+	local searchY = viewPort.y + viewPort.height - bottomBarH + 4
+	if self.viewMode == "tree" then
+		local ctrl = self.controls.skillTreeSearch
+		ctrl.shown = true
+		ctrl.x = viewPort.x + 4
+		ctrl.y = searchY
+		if not ctrl.hasFocus then
+			ctrl:SetText(self.skillTreeViewer.searchStr)
+		end
+	else
+		local ctrl = self.controls.skillOverviewSearch
+		ctrl.shown = true
+		ctrl.x = viewPort.x + 4
+		ctrl.y = searchY
+	end
+
+	-- Handle ESC: tree -> overview; CTRL+F: focus search
 	for id, event in ipairs(inputEvents) do
 		if event.type == "KeyDown" then
 			if event.key == "ESCAPE" and self.viewMode == "tree" then
@@ -860,9 +894,18 @@ function SkillsTabClass:Draw(viewPort, inputEvents)
 			elseif event.key == "y" and IsKeyDown("CTRL") then
 				self:Redo()
 				self.build.buildFlag = true
+			elseif event.key == "f" and IsKeyDown("CTRL") then
+				if self.viewMode == "tree" then
+					self:SelectControl(self.controls.skillTreeSearch)
+				else
+					self:SelectControl(self.controls.skillOverviewSearch)
+				end
+				inputEvents[id] = nil
 			end
 		end
 	end
+
+	self:ProcessControlsInput(inputEvents, viewPort)
 
 	main:DrawBackground(viewPort)
 
@@ -896,9 +939,10 @@ function SkillsTabClass:Draw(viewPort, inputEvents)
 		end
 	end
 
-	-- Compute layout
-	local slotBarY = viewPort.y + 10
-	local contentY = slotBarY + SLOT_ROW_HEIGHT
+	-- Rebuild overview search cache when search string changes
+	if self.skillOverviewSearchCache.str ~= self.skillOverviewSearchStr then
+		self:BuildOverviewSearchResults(self.build, self.skillOverviewSearchStr)
+	end
 
 	-- Draw tree/overview first so slots always render on top
 	if self.viewMode == "tree" and self.viewingTreeSlot then
@@ -911,6 +955,14 @@ function SkillsTabClass:Draw(viewPort, inputEvents)
 	SetDrawLayer(nil, 150)
 	self:DrawSpecSlots(viewPort, inputEvents, slotBarY)
 	SetDrawLayer(nil, 0)
+
+	-- Draw bottom search bar (main layer 1, same as TreeTab footer)
+	SetDrawLayer(1)
+	SetDrawColor(0.05, 0.05, 0.05)
+	DrawImage(nil, viewPort.x, viewPort.y + viewPort.height - bottomBarH, viewPort.width, bottomBarH)
+	SetDrawColor(0.85, 0.85, 0.85)
+	DrawImage(nil, viewPort.x, viewPort.y + viewPort.height - bottomBarH - 4, viewPort.width, 4)
+	self:DrawControls(viewPort)
 end
 
 -- Skills that legitimately allow multiple simultaneous conversions from the same damage type.
@@ -1146,6 +1198,66 @@ function SkillsTabClass:DrawSpecSlots(viewPort, inputEvents, startY)
 	end
 end
 
+-- Build a cache of treeId -> boolean for skills matching the search string.
+-- Searches skill name, node names, and node description text.
+function SkillsTabClass:BuildOverviewSearchResults(build, searchStr)
+	local results = {}
+	if not searchStr or searchStr == "" then
+		self.skillOverviewSearchCache = { str = searchStr, results = results }
+		return
+	end
+
+	local searchLower = searchStr:lower()
+	local searchWords = {}
+	for word in searchLower:gmatch("%S+") do
+		t_insert(searchWords, word)
+	end
+	if #searchWords == 0 then
+		self.skillOverviewSearchCache = { str = searchStr, results = results }
+		return
+	end
+
+	local function matchesAll(text)
+		if not text then return false end
+		local ltext = text:lower()
+		for _, word in ipairs(searchWords) do
+			if not ltext:find(word, 1, true) then return false end
+		end
+		return true
+	end
+
+	for _, skill in ipairs(build.spec.curClass.skills) do
+		local treeId = skill.treeId
+		if treeId and not results[treeId] then
+			-- Check skill name
+			if matchesAll(skill.label) or matchesAll(skill.name) then
+				results[treeId] = true
+			else
+				-- Check all nodes belonging to this skill tree
+				for nodeId, node in pairs(build.spec.visibleNodes) do
+					if nodeId:match("^" .. treeId) then
+						if matchesAll(node.dn) then
+							results[treeId] = true
+							break
+						end
+						if node.sd then
+							for _, line in ipairs(node.sd) do
+								if type(line) == "string" and matchesAll(line) then
+									results[treeId] = true
+									break
+								end
+							end
+						end
+						if results[treeId] then break end
+					end
+				end
+			end
+		end
+	end
+
+	self.skillOverviewSearchCache = { str = searchStr, results = results }
+end
+
 -- Draw skill selection grid (overview mode)
 function SkillsTabClass:DrawSkillOverview(viewPort, inputEvents, startY)
 	local spec = self.build.spec
@@ -1271,17 +1383,21 @@ function SkillsTabClass:DrawSkillOverview(viewPort, inputEvents, startY)
 	-- Draw left column (force 4 columns for base class layout)
 	local ly = startY
 	for _, section in ipairs(leftSections) do
-		ly = self:DrawSectionTitle(leftX, ly, colW, section.title)
-		ly = self:DrawSkillGrid(leftX, ly, colW, section.skills, inputEvents, cursorX, cursorY, 4)
-		ly = ly + 8
+		if #section.skills > 0 then
+			ly = self:DrawSectionTitle(leftX, ly, colW, section.title)
+			ly = self:DrawSkillGrid(leftX, ly, colW, section.skills, inputEvents, cursorX, cursorY, 4)
+			ly = ly + 8
+		end
 	end
 
 	-- Draw right column
 	local ry = startY
 	for _, section in ipairs(rightSections) do
-		ry = self:DrawSectionTitle(rightX, ry, colW, section.title)
-		ry = self:DrawSkillGrid(rightX, ry, colW, section.skills, inputEvents, cursorX, cursorY)
-		ry = ry + 8
+		if #section.skills > 0 then
+			ry = self:DrawSectionTitle(rightX, ry, colW, section.title)
+			ry = self:DrawSkillGrid(rightX, ry, colW, section.skills, inputEvents, cursorX, cursorY)
+			ry = ry + 8
+		end
 	end
 end
 
@@ -1330,6 +1446,10 @@ function SkillsTabClass:DrawSkillGrid(x, y, w, skills, inputEvents, cursorX, cur
 		local frameHandle = self:GetSpriteHandle(frameName)
 		local frameOff = m_floor((GRID_ICON_SIZE - FRAME_SIZE) / 2)
 
+		-- Search highlight: determine match state
+		local hasSearch = self.skillOverviewSearchStr ~= ""
+		local isMatch = not hasSearch or self.skillOverviewSearchCache.results[skill.treeId] ~= nil
+
 		if isLocked then
 			SetDrawColor(0.35, 0.35, 0.35)
 		elseif not isUnlocked then
@@ -1340,8 +1460,24 @@ function SkillsTabClass:DrawSkillGrid(x, y, w, skills, inputEvents, cursorX, cur
 		if iconHandle then
 			DrawImage(iconHandle, iconX, iconY, GRID_ICON_SIZE, GRID_ICON_SIZE)
 		end
+
 		SetDrawColor(1, 1, 1)
 		DrawImage(frameHandle, iconX + frameOff, iconY + frameOff, FRAME_SIZE, FRAME_SIZE)
+
+		-- Search match: red square outline
+		if hasSearch and isMatch then
+			local ringSize = m_floor(GRID_ICON_SIZE * 1.5)
+			local cx2 = iconX + m_floor(GRID_ICON_SIZE / 2)
+			local cy2 = iconY + m_floor(GRID_ICON_SIZE / 2)
+			local rx = cx2 - m_floor(ringSize / 2)
+			local ry = cy2 - m_floor(ringSize / 2)
+			local thick = 3
+			SetDrawColor(1, 0, 0)
+			DrawImage(nil, rx, ry, ringSize, thick)
+			DrawImage(nil, rx, ry + ringSize - thick, ringSize, thick)
+			DrawImage(nil, rx, ry, thick, ringSize)
+			DrawImage(nil, rx + ringSize - thick, ry, thick, ringSize)
+		end
 
 		-- (slot assignment indicator removed)
 
@@ -1438,6 +1574,12 @@ function SkillsTabClass:DrawSkillGrid(x, y, w, skills, inputEvents, cursorX, cur
 		if CURSE_SKILL_IDS[skill.treeId] then
 			local curseColor = isLocked and "^8" or (isUnlocked and "^xBB66FF" or "^x775599")
 			DrawString(cx + CELL_W / 2, nameY + nameLines * 12, "CENTER_X", 9, "VAR", curseColor .. "CURSE")
+		end
+
+		-- Dim non-matching skills when search is active
+		if hasSearch and not isMatch then
+			SetDrawColor(0, 0, 0, 0.6)
+			DrawImage(nil, cx, cy, CELL_W, CELL_H)
 		end
 
 		-- Click: assign skill to selected slot
@@ -1567,9 +1709,9 @@ function SkillsTabClass:DrawSkillTree(viewPort, inputEvents, startY)
 		SetDrawLayer(nil, 0)
 	end
 
-	-- Tree viewport (fills remaining space)
+	-- Tree viewport (fills remaining space, leave room for bottom search bar)
 	local treeY = startY + infoBarH
-	local treeH = m_max(300, viewPort.y + viewPort.height - treeY - 4)
+	local treeH = m_max(300, viewPort.y + viewPort.height - treeY - 4 - 32)
 	local treeVP = {
 		x = viewPort.x + 2,
 		y = treeY,
