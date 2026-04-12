@@ -26,7 +26,7 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
     end)
 
     -- Stage: input account name
-    self.controls.accountNameHeaderOffline = new("LabelControl", { "TOPLEFT", self.controls.sectionCharImport, "TOPLEFT" }, 6, 40, 200, 16, "^7To start importing an **offline** character, click Start Offline:")
+    self.controls.accountNameHeaderOffline = new("LabelControl", { "TOPLEFT", self.controls.sectionCharImport, "TOPLEFT" }, 6, 40, 200, 16, "^7To start importing an Offline character, click Start Offline:")
     self.controls.accountNameHeaderOffline.shown = function()
         return self.charImportMode == "GETACCOUNTNAME"
     end
@@ -35,7 +35,7 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
         self:DownloadCharacterList()
     end)
     -- Stage: input account name (Online)
-    self.controls.accountNameHeader = new("LabelControl", { "TOPLEFT", self.controls.accountNameGoOffline, "BOTTOMLEFT" }, 0, 4, 200, 16, "^7To start importing an Online character, click Start Online:")
+    self.controls.accountNameHeader = new("LabelControl", { "TOPLEFT", self.controls.accountNameGoOffline, "BOTTOMLEFT" }, 0, 4, 450, 16, "^7To start importing an Online character, click Start Online: ^1Note: import may take a moment.")
     self.controls.accountNameHeader.shown = function()
         return self.charImportMode == "GETACCOUNTNAME"
     end
@@ -162,17 +162,56 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
     end)
 
     -- Build import/export
-    self.controls.sectionBuild = new("SectionControl", { "TOPLEFT", self.controls.sectionCharImport, "BOTTOMLEFT" }, 0, 18, 650, 182 + 16, "Build Sharing")
+    self.controls.sectionBuild = new("SectionControl", { "TOPLEFT", self.controls.sectionCharImport, "BOTTOMLEFT" }, 0, 18, 650, 268, "Build Sharing")
     self.controls.generateCodeLabel = new("LabelControl", { "TOPLEFT", self.controls.sectionBuild, "TOPLEFT" }, 6, 14, 0, 16, "^7Generate a code to share this build with other Last Epoch Building users:")
-    self.controls.generateCode = new("ButtonControl", { "LEFT", self.controls.generateCodeLabel, "RIGHT" }, 4, 0, 80, 20, "Generate", function()
+
+    -- Online sharing (primary)
+    self.controls.generateCodeByLink = new("ButtonControl", { "TOPLEFT", self.controls.generateCodeLabel, "BOTTOMLEFT" }, 0, 6, 110, 20, "Get Short Link", function()
+        local code = self.controls.generateCodeOut.buf
+        if #code == 0 then
+            code = "!" .. common.base85.encode(Deflate(self.build:SaveDB("code")))
+            self.controls.generateCodeOut:SetText(code)
+        end
+        self.controls.generateCodeByLink.label = "Uploading..."
+        local response = buildSites.UploadToBytebin(code)
+        if response then
+            launch:RegisterSubScript(response, function(url, errMsg)
+                self.controls.generateCodeByLink.label = "Get Short Link"
+                if errMsg then
+                    main:OpenMessagePopup("bytebin", "Error uploading to bytebin:\n" .. errMsg)
+                else
+                    self.controls.generateURLOut:SetText(url)
+                end
+            end)
+        end
+    end)
+    self.controls.generateCodeByLink.tooltipFunc = function(tooltip)
+        tooltip:Clear()
+        tooltip:AddLine(14, "^7Generate code and upload to bytebin to get a short link.")
+        tooltip:AddLine(14, "^7Requires an internet connection.")
+    end
+    self.controls.generateURLOut = new("EditControl", { "LEFT", self.controls.generateCodeByLink, "RIGHT" }, 8, 0, 220, 20, "", "Link (Requires Internet)", "%Z")
+    self.controls.generateURLOut.enabled = function()
+        return #self.controls.generateURLOut.buf > 0
+    end
+    self.controls.generateURLCopy = new("ButtonControl", { "LEFT", self.controls.generateURLOut, "RIGHT" }, 8, 0, 60, 20, "Copy", function()
+        Copy(self.controls.generateURLOut.buf)
+        self.controls.generateURLOut:SetText("")
+    end)
+    self.controls.generateURLCopy.enabled = function()
+        return #self.controls.generateURLOut.buf > 0
+    end
+
+    -- Code sharing (secondary)
+    self.controls.generateCode = new("ButtonControl", { "TOPLEFT", self.controls.generateCodeByLink, "BOTTOMLEFT" }, 0, 8, 110, 20, "Generate Code", function()
         self.controls.generateCodeOut:SetText("!" .. common.base85.encode(Deflate(self.build:SaveDB("code"))))
     end)
-    self.controls.enablePartyExportBuffs = new("CheckBoxControl", { "LEFT", self.controls.generateCode, "RIGHT" }, 100, 0, 18, "Export Support", function(state)
+    self.controls.enablePartyExportBuffs = new("CheckBoxControl", { "LEFT", self.controls.generateCode, "RIGHT" }, 8, 0, 18, "Export Support", function(state)
         self.build.partyTab.enableExportBuffs = state
         self.build.buildFlag = true
     end, "This is for party play, to export support character, it enables the exporting of auras, curses and modifiers to the enemy", false)
     self.controls.enablePartyExportBuffs.shown = false
-    self.controls.generateCodeOut = new("EditControl", { "TOPLEFT", self.controls.generateCodeLabel, "BOTTOMLEFT" }, 0, 8, 250, 20, "", "Code", "%Z")
+    self.controls.generateCodeOut = new("EditControl", { "LEFT", self.controls.generateCode, "RIGHT" }, 8, 0, 220, 20, "", "Offline Code", "%Z")
     self.controls.generateCodeOut.enabled = function()
         return #self.controls.generateCodeOut.buf > 0
     end
@@ -183,34 +222,8 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
     self.controls.generateCodeCopy.enabled = function()
         return #self.controls.generateCodeOut.buf > 0
     end
-
-    self.controls.generateCodeByLink = new("ButtonControl", { "LEFT", self.controls.generateCodeCopy, "RIGHT" }, 8, 0, 110, 20, "Get Short Link", function()
-        local code = self.controls.generateCodeOut.buf
-        if #code == 0 then return end
-        self.controls.generateCodeByLink.label = "Uploading..."
-        local response = buildSites.UploadToBytebin(code)
-        if response then
-            launch:RegisterSubScript(response, function(url, errMsg)
-                self.controls.generateCodeByLink.label = "Get Short Link"
-                if errMsg then
-                    main:OpenMessagePopup("bytebin", "Error uploading to bytebin:\n" .. errMsg)
-                else
-                    self.controls.generateCodeOut:SetText(url)
-                end
-            end)
-        end
-    end)
-    self.controls.generateCodeByLink.enabled = function()
-        local buf = self.controls.generateCodeOut.buf
-        return #buf > 0 and not buf:match("bytebin%.lucko%.me/") and not buf:match("rentry%.co/")
-    end
-    self.controls.generateCodeByLink.tooltipFunc = function(tooltip)
-        tooltip:Clear()
-        tooltip:AddLine(14, "^7Upload to bytebin and get a short link.")
-        tooltip:AddLine(14, "^7Requires an internet connection.")
-    end
-    self.controls.generateCodeNote = new("LabelControl", { "TOPLEFT", self.controls.generateCodeOut, "BOTTOMLEFT" }, 0, 4, 0, 14, "^7Paste the code in chat or Discord, or use 'Get Short Link' to get a shareable URL (requires internet).")
-    self.controls.importCodeHeader = new("LabelControl", { "TOPLEFT", self.controls.generateCodeNote, "BOTTOMLEFT" }, 0, 26, 0, 16, "^7To import a build, paste the code here:\nNote: this code only works within Last Epoch Building.")
+    self.controls.generateCodeNote = new("LabelControl", { "TOPLEFT", self.controls.generateCode, "BOTTOMLEFT" }, 0, 8, 0, 14, "^7Paste the code in chat or Discord.")
+    self.controls.importCodeHeader = new("LabelControl", { "TOPLEFT", self.controls.generateCodeNote, "BOTTOMLEFT" }, 0, 26, 0, 16, "^7To import a build, paste the link or the offline code here:\nNote: this code only works within Last Epoch Building.")
 
     local importCodeHandle = function(buf)
         self.importCodeSite = nil
@@ -566,6 +579,7 @@ function ImportTabClass:DownloadFromMaxroll()
         end
         local ok, charOrErr = pcall(function() return self:ReadJsonSaveData(response.body) end)
         if not ok then
+            ConPrintf("[IMPORT-ERR] Failed to parse character data: %s", tostring(charOrErr))
             self.charImportStatus = colorCodes.NEGATIVE .. "Failed to parse character data, try again."
             return
         end
@@ -587,14 +601,25 @@ end
 
 function ImportTabClass:ReadJsonSaveData(saveFileContent)
     local saveContent = processJson(saveFileContent)
+    if not saveContent or type(saveContent) ~= "table" then
+        error("Invalid JSON response")
+    end
     local classId = saveContent["characterClass"]
+    if not classId or not self.build.latestTree.classes[classId] then
+        error("Unknown character class: " .. tostring(classId))
+    end
     local className = self.build.latestTree.classes[classId].name
+    local chosenMastery = saveContent['chosenMastery'] or 0
+    local ascendancyData = self.build.latestTree.classes[classId].ascendancies[chosenMastery]
+    if not ascendancyData then
+        error("Unknown mastery: " .. tostring(chosenMastery) .. " for class " .. tostring(classId))
+    end
     local char = {
         ["name"] = saveContent["characterName"],
         ["level"] = saveContent["level"],
         ["class"] = className,
-        ["ascendancy"] = saveContent['chosenMastery'],
-        ["ascendancyName"] = self.build.latestTree.classes[classId].ascendancies[saveContent['chosenMastery']].name,
+        ["ascendancy"] = chosenMastery,
+        ["ascendancyName"] = ascendancyData.name,
         ["classId"] = classId,
         ["abilities"] = {},
         ["items"] = {},
@@ -764,10 +789,14 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
                         for i, modLine in ipairs(uniqueBase.mods) do
                             if itemLib.hasRange(modLine) then
                                 local rollId = uniqueBase.rollIds[i]
-                                local range = itemData["data"][uniqueIDIndex + 2 +  rollId]
-                                -- TODO: avoid using crafted
-                                table.insert(item.explicitMods, "{crafted}{range: " .. range .. "}".. modLine)
+                                if rollId then
+                                    local range = itemData["data"][uniqueIDIndex + 2 + rollId]
+                                    -- TODO: avoid using crafted
+                                    table.insert(item.explicitMods, "{crafted}{range: " .. (range or 0) .. "}".. modLine)
                                 else
+                                    table.insert(item.explicitMods, "{crafted}".. modLine)
+                                end
+                            else
                                 table.insert(item.explicitMods, "{crafted}".. modLine)
                             end
                         end
