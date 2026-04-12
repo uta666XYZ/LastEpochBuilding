@@ -29,6 +29,7 @@ local PassiveTreeViewClass = newClass("PassiveTreeView", function(self)
 	self.searchStrSaved = ""
 	self.searchStrCached = ""
 	self.searchStrResults = {}
+	self.searchParams = {}
 	self.showStatDifferences = true
 	self.hoverNode = nil
 	
@@ -54,6 +55,10 @@ local PassiveTreeViewClass = newClass("PassiveTreeView", function(self)
 	self.selectedMastery = 0
 	-- Track when mastery changes to auto-focus
 	self.lastSelectedMastery = nil
+
+	-- Search highlight ring image
+	self.searchHighlightRing = NewImageHandle()
+	self.searchHighlightRing:Load("Assets/tree/frame-circle-alloc.png")
 end)
 
 function PassiveTreeViewClass:Load(xml, fileName)
@@ -1325,12 +1330,17 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 			SetDrawColor(1, 1, 1)
 		end
 		if self.searchStrResults[nodeId] then
-			-- Node matches the search string, show the highlight circle
+			-- Node matches the search string, show high-contrast red ring
 			SetDrawLayer(nil, 30)
-			local rgbColor = rgbColor or {1, 0, 0}
-			SetDrawColor(rgbColor[1], rgbColor[2], rgbColor[3])
-			local size = 175 * scale / self.zoom ^ 0.4
-			DrawImage(self.highlightRing, scrX - size, scrY - size, size * 2, size * 2)
+			SetDrawColor(1, 0, 0)
+			local size = iconSize * scale * 1.33 * 2.5
+			DrawImage(self.searchHighlightRing, scrX - size, scrY - size, size * 2, size * 2)
+		elseif #self.searchParams > 0 then
+			-- Dim non-matching nodes
+			SetDrawLayer(nil, 26)
+			SetDrawColor(0, 0, 0, 0.6)
+			local dimSize = iconSize * scale * 1.33
+			DrawImage(nil, scrX - dimSize, scrY - dimSize, dimSize * 2, dimSize * 2)
 		end
 		if node == hoverNode and (node.type ~= "Socket" or not IsKeyDown("SHIFT")) and (node.type ~= "Mastery" or node.masteryEffects) and not IsKeyDown("CTRL") and not main.popups[1] then
 			-- Draw tooltip
