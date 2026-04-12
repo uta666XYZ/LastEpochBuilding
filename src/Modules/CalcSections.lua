@@ -750,6 +750,7 @@ return {
 	{ label = "Mana on Block", haveOutput = "ManaOnBlock", { format = "{0:output:ManaOnBlock}", { modName = "ManaOnBlock" }, }, },
 } }, { defaultCollapsed = false, label = "Dodge", data = {
 	{ label = "Dodge Rating", { format = "{0:output:Evasion}", { modName = "Evasion" }, }, },
+	{ label = "Total Increased", { format = "{0:mod:1}%", { modName = { "Evasion", "ArmourAndEvasion", "Defences" }, modType = "INC" }, }, },
 	{ label = "Dodge Chance", { format = "{0:output:AttackDodgeChance}% (+{0:output:AttackDodgeChanceOverCap}%)",
 		{ breakdown = "AttackDodgeChance" },
 		{ modName = { "Evasion", "AttackDodgeChance" } },
