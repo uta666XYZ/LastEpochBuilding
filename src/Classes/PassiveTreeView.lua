@@ -1340,6 +1340,8 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 				self:AddNodeTooltip(self.tooltip, node, build)
 			end
 			self.tooltip:Draw(m_floor(scrX - size), m_floor(scrY - size), size * 2, size * 2, viewPort)
+			-- Reset main layer so subsequent nodes in this loop draw below the tooltip
+			SetDrawLayer(0)
 		end
 
 		::continue_node_loop::
