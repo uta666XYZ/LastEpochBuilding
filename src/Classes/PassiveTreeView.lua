@@ -1117,10 +1117,11 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 
 		local base, overlay, effect
 		local isAlloc = node.alloc > 0 or build.calcsTab.mainEnv.grantedPassives[nodeId] or (compareNode and compareNode.alloc)
+		local displayAlloc = isAlloc or (self.showIconPreview and launch.devMode)
 		SetDrawLayer(nil, 25)
 
 		local state
-		if self.showHeatMap or self.showIconPreview or isAlloc or node == hoverNode or (self.traceMode and node == self.tracePath[#self.tracePath])then
+		if self.showHeatMap or displayAlloc or node == hoverNode or (self.traceMode and node == self.tracePath[#self.tracePath])then
 			-- Show node as allocated if it is being hovered over
 			-- Also if the heat map is turned on (makes the nodes more visible)
 			state = "alloc"
@@ -1236,7 +1237,7 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 					-- Both have or both have not, use white
 					SetDrawColor(1, 1, 1)
 				end
-			elseif isAlloc or node.maxPoints == 0 then
+			elseif displayAlloc or node.maxPoints == 0 then
 				SetDrawColor(1, 1, 1)
 			else
 				SetDrawColor(0.3, 0.3, 0.3)
@@ -1274,19 +1275,19 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 					if isHover then
 						frameName = "frame-root-hover"
 					else
-						frameName = isAlloc and "frame-root-alloc" or "frame-root-unalloc"
+						frameName = displayAlloc and "frame-root-alloc" or "frame-root-unalloc"
 					end
 					frameSize = 68
 				elseif isPassiveNode or node.icon:match("-hex$") then
 					if isHover then
 						frameName = "frame-hex-hover"
 					else
-						frameName = isAlloc and "frame-hex-alloc" or "frame-hex-unalloc"
+						frameName = displayAlloc and "frame-hex-alloc" or "frame-hex-unalloc"
 					end
 					frameSize = 54
 				else
 					-- Skill tree circle nodes
-					frameName = isAlloc and "frame-circle-alloc" or "frame-circle-unalloc"
+					frameName = displayAlloc and "frame-circle-alloc" or "frame-circle-unalloc"
 					frameSize = 48
 				end
 			end
