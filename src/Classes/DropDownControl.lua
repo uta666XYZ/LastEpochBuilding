@@ -327,7 +327,13 @@ function DropDownClass:Draw(viewPort, noTooltip)
 	else
 		-- Normal single-line: always use font size 16 regardless of control height
 		SetViewport(x + 2, y + 2, drawWidth, height - 2)
-		DrawString(0, (height - 4 - fontSize) / 2, "LEFT", fontSize, "VAR", selLabel or "")
+		if not selLabel and self.placeholder then
+			SetDrawColor(0.5, 0.5, 0.5)
+			DrawString(0, (height - 4 - fontSize) / 2, "LEFT", fontSize, "VAR", self.placeholder)
+			SetDrawColor(1, 1, 1)
+		else
+			DrawString(0, (height - 4 - fontSize) / 2, "LEFT", fontSize, "VAR", selLabel or "")
+		end
 	end
 	SetViewport()
 
