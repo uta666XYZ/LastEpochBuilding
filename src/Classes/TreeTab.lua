@@ -813,6 +813,10 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 					self.badgeHandles[cacheKey] = NewImageHandle()
 					self.badgeHandles[cacheKey]:Load("TreeData/sprites/" .. squareName .. ".png")
 					local w, h = self.badgeHandles[cacheKey]:ImageSize()
+					if (not w or w == 0) then
+						self.badgeHandles[cacheKey]:Load("TreeData/sprites/" .. squareName .. "-sq.png")
+						w, h = self.badgeHandles[cacheKey]:ImageSize()
+					end
 					if (not w or w == 0) and squareName ~= iconName then
 						self.badgeHandles[cacheKey]:Load("TreeData/sprites/" .. iconName .. ".png")
 					end
