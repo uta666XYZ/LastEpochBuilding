@@ -1,15 +1,15 @@
 # Last Epoch Building (LEB)
 
-## A Path of Building-style offline build planner for **Last Epoch**.
+## 🌟 A Path of Building-style offline build planner for **Last Epoch**.
 
 <table>
   <tr>
-    <td><img src="./docs/passiveTrees.png" width="400"/></td>
-    <td><img src="./docs/skillSelectionWindow.png" width="400"/></td>
+    <td><img src="./docs/passiveTrees_v0.11.0.png" width="400"/></td>
+    <td><img src="./docs/skillSelection_v0.11.0.png" width="400"/></td>
   </tr>
   <tr>
-    <td><img src="./docs/skillTree.png" width="400"/></td>
-    <td><img src="./docs/itemWindow2026_04_10.png" width="400"/></td>
+    <td><img src="./docs/skillTree_v0.11.0.png" width="400"/></td>
+    <td><img src="./docs/itemWindow_v0.11.0.png" width="400"/></td>
   </tr>
   <tr>
     <td><img src="./docs/craftUI_Select.png" width="400"/></td>
@@ -22,7 +22,7 @@
 
 ---
 
-## Support Development
+## 🤝 Support Development
 
 If you'd like to support LEB's development, consider buying me a coffee!
 
@@ -32,7 +32,7 @@ Feedback and bug reports are always welcome — see [Contributing](#contributing
 
 ---
 
-## Features
+## ✨ Features
 
 - **Passive tree** — all classes and masteries
 - **Skill trees** — all skills with full node support
@@ -52,7 +52,7 @@ Feedback and bug reports are always welcome — see [Contributing](#contributing
 
 ---
 
-## Installation
+## 🚀 Installation
 
 LEB is distributed as a **portable zip — no installation required**.
 
@@ -66,7 +66,7 @@ User data (builds, settings) is stored alongside the executable, so keep all fil
 
 ---
 
-## Roadmap
+## 🛠️ Roadmap
 
 - Improve calculation accuracy across all stats and skills
 - Set item bonus effect verification and fixes
@@ -80,7 +80,7 @@ User data (builds, settings) is stored alongside the executable, so keep all fil
 
 ---
 
-## Contributing
+## 🤝 Contributing
 
 Feedback, bug reports, and feature requests are always welcome!
 
@@ -89,17 +89,17 @@ and submit pull requests.
 
 ---
 
-## License
+## 📄 License
 
 [MIT](LICENSE.md) — see LICENSE.md for third-party licenses.
 
-## Credits
+## 📖 Credits
 
 Based on [Path of Building Community](https://github.com/PathOfBuildingCommunity/PathOfBuilding),
 originally forked from [Musholic/LastEpochPlanner](https://github.com/Musholic/LastEpochPlanner).
 
 Development assisted by [Claude Code](https://claude.ai/code) (Anthropic).
 
-## Changelog
+## 📖 Changelog
 
 Full version history: [CHANGELOG.md](CHANGELOG.md)

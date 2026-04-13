@@ -353,6 +353,7 @@ function calcs.defence(env, actor)
 			end
 		end
 		evasionBase = modDB:Sum("BASE", nil, "Evasion", "ArmourAndEvasion")
+		ConPrintf("[EVASION-DBG] evasionBase=%s EvasionINC=%s ArmourAndEvasionINC=%s DefencesINC=%s", tostring(evasionBase), tostring(modDB:Sum("INC", nil, "Evasion")), tostring(modDB:Sum("INC", nil, "ArmourAndEvasion")), tostring(modDB:Sum("INC", nil, "Defences")))
 		if evasionBase > 0 then
 			evasion = evasion + evasionBase * calcLib.mod(modDB, nil, "Evasion", "ArmourAndEvasion", "Defences")
 			if breakdown then
