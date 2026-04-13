@@ -349,12 +349,8 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
     end
     self.controls.importCodeGo = new("ButtonControl", { "LEFT", self.controls.importCodeMode, "RIGHT" }, 8, 0, 160, 20, "Import", function()
         if self.importCodeSite and not self.importCodeXML then
-            local selectedWebsite = buildSites.websiteList[self.importCodeSite]
-            if selectedWebsite.id == "maxroll" then
-                self:DownloadMaxrollPlannerBuild(self.controls.importCodeIn.buf)
-                return
-            end
             self.importCodeFetching = true
+            local selectedWebsite = buildSites.websiteList[self.importCodeSite]
             buildSites.DownloadBuild(self.controls.importCodeIn.buf, selectedWebsite, function(isSuccess, data)
                 self.importCodeFetching = false
                 if not isSuccess then
@@ -602,125 +598,6 @@ function ImportTabClass:SaveAccountHistory()
         end)
         self.controls.accountHistory:CheckDroppedWidth(true)
     end
-end
-
-function ImportTabClass:DownloadMaxrollPlannerBuild(url)
-    self.importCodeFetching = true
-    self.importCodeDetail = colorCodes.NORMAL .. "Downloading from maxroll.gg..."
-
-    local plannerCode = url:match("maxroll%.gg/last%-epoch/planner/(%w+)")
-    if not plannerCode then
-        self.importCodeFetching = false
-        self.importCodeDetail = colorCodes.NEGATIVE .. "Could not parse maxroll URL"
-        return
-    end
-
-    local dataParam = "last-epoch-planner-by-id"
-    local apiURL = "https://maxroll.gg/last-epoch/planner/" .. plannerCode .. "?_data=" .. dataParam
-    launch:DownloadPage(apiURL, function(response, errMsg)
-        self.importCodeFetching = false
-        if errMsg then
-            self.importCodeDetail = colorCodes.NEGATIVE .. "Download failed: " .. errMsg:gsub("\n", " ")
-            return
-        end
-
-        local jsonData, parseErr = processJson(response.body)
-        if parseErr or type(jsonData) ~= "table" then
-            self.importCodeDetail = colorCodes.NEGATIVE .. "Failed to parse maxroll response"
-            return
-        end
-
-        local profile = jsonData.profile
-        if not profile or not profile.data then
-            self.importCodeDetail = colorCodes.NEGATIVE .. "No build data in maxroll response"
-            return
-        end
-
-        local buildData, parseErr2 = processJson(profile.data)
-        if parseErr2 or type(buildData) ~= "table" or not buildData.profiles then
-            self.importCodeDetail = colorCodes.NEGATIVE .. "Failed to parse maxroll build data"
-            return
-        end
-
-        local profileData = buildData.profiles[1]
-        if not profileData then
-            self.importCodeDetail = colorCodes.NEGATIVE .. "No profile found in maxroll build data"
-            return
-        end
-
-        local classId = profileData["class"] or 0
-        if not self.build.latestTree.classes[classId] then
-            self.importCodeDetail = colorCodes.NEGATIVE .. "Unknown class: " .. tostring(classId)
-            return
-        end
-        local className = self.build.latestTree.classes[classId].name
-        local mastery = profileData.mastery or 0
-        local ascendancyData = self.build.latestTree.classes[classId].ascendancies[mastery]
-        if not ascendancyData then
-            self.importCodeDetail = colorCodes.NEGATIVE .. "Unknown mastery: " .. tostring(mastery)
-            return
-        end
-
-        local char = {
-            name = profile.name or "Maxroll Build",
-            level = profileData.level or 1,
-            class = className,
-            classId = classId,
-            ascendancy = mastery,
-            ascendancyName = ascendancyData.name,
-            league = "Maxroll",
-            abilities = {},
-            items = {},
-            hashes = {},
-            _parseErrors = 0,
-        }
-
-        -- Build passive hashes from allocation history
-        if profileData.passives and profileData.passives.history then
-            local nodeCount = {}
-            for _, nodeId in ipairs(profileData.passives.history) do
-                nodeCount[nodeId] = (nodeCount[nodeId] or 0) + 1
-            end
-            for nodeId, count in pairs(nodeCount) do
-                table.insert(char.hashes, className .. "-" .. nodeId .. "#" .. count)
-            end
-        end
-
-        -- Build skill hashes from skillTrees
-        if profileData.skillTrees then
-            local skillList = self.build.latestTree.classes[classId].skills or {}
-            for treeIdStr, treeData in pairs(profileData.skillTrees) do
-                local treeIdNum = tonumber(treeIdStr)
-                if treeIdNum then
-                    local skillName
-                    for _, skill in ipairs(skillList) do
-                        if skill.treeId == treeIdNum then
-                            skillName = skill.name
-                            break
-                        end
-                    end
-                    if skillName then
-                        table.insert(char.abilities, skillName)
-                        table.insert(char.hashes, treeIdStr .. "-0#1")
-                        if treeData.history then
-                            local nodeCount = {}
-                            for _, nodeId in ipairs(treeData.history) do
-                                nodeCount[nodeId] = (nodeCount[nodeId] or 0) + 1
-                            end
-                            for nodeId, count in pairs(nodeCount) do
-                                if count > 0 then
-                                    table.insert(char.hashes, treeIdStr .. "-" .. nodeId .. "#" .. count)
-                                end
-                            end
-                        end
-                    end
-                end
-            end
-        end
-
-        self:ImportPassiveTreeAndJewels(char)
-        self.importCodeDetail = colorCodes.POSITIVE .. "Maxroll build imported."
-    end)
 end
 
 function ImportTabClass:DownloadFromMaxroll()
