@@ -1,5 +1,34 @@
 # Changelog
 
+## [v0.12.0](https://github.com/uta666XYZ/LastEpochBuilding/tree/v0.12.0) (2026/04/14)
+
+[Full Changelog](https://github.com/uta666XYZ/LastEpochBuilding/compare/v0.11.0...v0.12.0)
+
+### New Features
+- New desktop app icon
+- Online character import now uses Maxroll's character import (note: may be a bit slow)
+- Build sharing — generate a short link or offline code to share your build
+- Node search (Ctrl+F) in passive tree, skill tree, and skill selection
+  — also searches node names of unequipped skills
+- Import UI redesigned into 3 sections (offline and online)
+
+### Improvements
+- Icon quality overhaul — passive nodes, skill icons, blessings, and idols
+
+### Data
+- Updated to game version 1.4.3
+
+### Fixed
+- Online import: skill slots empty and wrong relic after import
+- Online import: Weaver's Will items now correctly recognized (fingers crossed — please report if issues persist!)
+- Online import: Season 2 characters (format v2) now supported
+- Skill icon fixes
+
+### Mod Recognition
+- Mod recognition: 100% (recognized mods are not always fully reflected in calculations — calculator still in progress)
+
+---
+
 ## [v0.11.0](https://github.com/uta666XYZ/LastEpochBuilding/tree/v0.11.0) (2026/04/10)
 
 [Full Changelog](https://github.com/uta666XYZ/LastEpochBuilding/compare/v0.10.0...v0.11.0)

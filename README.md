@@ -4,17 +4,20 @@
 
 <table>
   <tr>
-    <td><img src="./docs/passiveTrees_v0.11.0.png" width="400"/></td>
-    <td><img src="./docs/skillSelection_v0.11.0.png" width="400"/></td>
+    <td><img src="./docs/passiveTrees.png" width="400"/></td>
+    <td><img src="./docs/skillSelectionWindow.png" width="400"/></td>
   </tr>
   <tr>
-    <td><img src="./docs/skillTree_v0.11.0.png" width="400"/></td>
+    <td><img src="./docs/skillTree.png" width="400"/></td>
     <td><img src="./docs/itemWindow_v0.11.0.png" width="400"/></td>
   </tr>
   <tr>
     <td><img src="./docs/craftUI_Select.png" width="400"/></td>
     <td><img src="./docs/craftUI_Edit.png" width="400"/></td>
   </tr>
+  <tr>
+    <td><img src="./docs/importScreen_v0.11.0.png" width="400"/></td>
+  </tr>  
 </table>
 
 > Not affiliated with Eleventh Hour Games.
@@ -43,11 +46,14 @@ Feedback and bug reports are always welcome — see [Contributing](#contributing
 - **Set items** (Set bonus effect accuracy may vary — see Roadmap)
 - **Idols** — Season 4 Idol Altar with crafting system (affix selection, class filtering, Weaver-specific affixes)
 - **Blessings** — visual slot UI with icons and hover detail cards
-- **Character import** — offline save files and online characters via LE Tools build planner
+- **Character import** — offline save files and online characters via Maxroll
+- **Build sharing** — generate a short link or offline code to share your build
+- **Node search** — Ctrl+F in passive tree, skill tree, and skill selection
 - **Season 4: Shattered Omens** support
 
-> **Note:** Mod recognition rate is ~90% (89.7% verified as of v0.10). Recognized mods
-> are not always calculated with full accuracy. Development is focused on Last Epoch Season 4 (1.4)
+> **Note:** Mod recognition rate is 100% as of LEB v0.12.0. Recognized mods
+> are not always calculated with full accuracy — calculator improvements are ongoing.
+> Development is focused on Last Epoch Season 4 (LE 1.4).
 > Limited support exists for 1.2 and 1.3 builds.
 
 ---
@@ -75,7 +81,6 @@ User data (builds, settings) is stored alongside the executable, so keep all fil
   (e.g. "you have Frenzy" on an item → Frenzy automatically checked in Config)
 - Automatic or fast updates when Last Epoch patches release
 - Improved support for legacy character import (1.2, 1.3)
-- Build sharing (generate a shareable link for your build)
 - Web version
 
 ---

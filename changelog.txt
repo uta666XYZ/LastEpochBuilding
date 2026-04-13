@@ -1,3 +1,27 @@
+VERSION[0.12.0][2026/04/14]
+
+--- New Features ---
+- New desktop app icon
+- Online character import via Maxroll (note: may be a bit slow)
+- Build sharing (short link and offline code)
+- Node search (Ctrl+F) in passive tree, skill tree, skill selection
+- Import UI: 3-section layout (offline and online)
+
+--- Improvements ---
+- Icon quality overhaul (passive nodes, skills, blessings, idols)
+
+--- Data ---
+- Updated to game version 1.4.3
+
+--- Fixed ---
+- Online import: skill slots, wrong relic, Season 2 support
+- Weaver's Will items online import (fingers crossed!)
+- Skill icon fixes
+
+--- Mod Recognition ---
+- 100% mod recognition (calculator still in progress)
+
+
 VERSION[0.11.0][2026/04/10]
 
 --- New Features ---
