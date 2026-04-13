@@ -251,7 +251,7 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
     self.controls.importCodeHeader.shown = function()
         return self.charImportMode == "GETACCOUNTNAME" and self.activeImportSection ~= 1 and self.activeImportSection ~= 2
     end
-    self.controls.importCodeNoteLabel = new("LabelControl", { "TOPLEFT", self.controls.importCodeHeader, "BOTTOMLEFT" }, 0, 4, 720, 28, "^7Note: e.g. ^x4080FFhttps://bytebin.lucko.me/XXXXXX^7, ^x4080FFhttps://www.lastepochtools.com/planner/XXXXXX^7,\n^x4080FFhttps://www.maxroll.gg/last-epoch/planner/XXXXX^7, or ^x4080FF!XXXXX...^7 (offline code)")
+    self.controls.importCodeNoteLabel = new("LabelControl", { "TOPLEFT", self.controls.importCodeHeader, "BOTTOMLEFT" }, 0, 4, 720, 14, "^7Note: e.g. ^x4080FFhttps://bytebin.lucko.me/XXXXXX^7, ^x4080FFhttps://www.lastepochtools.com/planner/XXXXXX^7,\n^x4080FFhttps://www.maxroll.gg/last-epoch/planner/XXXXX^7, or ^x4080FF!XXXXX...^7 (offline code)")
     self.controls.importCodeNoteLabel.shown = function()
         return self.charImportMode == "GETACCOUNTNAME" and self.activeImportSection ~= 1 and self.activeImportSection ~= 2
     end
@@ -364,7 +364,7 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
         end
     end
 
-    self.controls.importCodeIn = new("EditControl", { "TOPLEFT", self.controls.importCodeNoteLabel, "BOTTOMLEFT" }, 0, 8, 328, 20, "", nil, nil, nil, importCodeHandle, nil, nil, true)
+    self.controls.importCodeIn = new("EditControl", { "TOPLEFT", self.controls.importCodeNoteLabel, "BOTTOMLEFT" }, 0, 22, 328, 20, "", nil, nil, nil, importCodeHandle, nil, nil, true)
     self.controls.importCodeIn.placeholder = "Enter code or link here"
     self.controls.importCodeIn.shown = function()
         return self.charImportMode == "GETACCOUNTNAME" and self.activeImportSection ~= 1 and self.activeImportSection ~= 2
