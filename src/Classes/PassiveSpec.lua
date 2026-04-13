@@ -193,6 +193,8 @@ function PassiveSpecClass:ImportFromNodeList(classId, ascendClassId, abilities, 
 		for index, skillId in ipairs(abilities) do
 			self.build.skillsTab:SelSkill(index, skillId)
 		end
+		-- Sync lastClassId so Draw() doesn't detect a "class change" and wipe the imported skills
+		self.build.skillsTab.lastClassId = self.curClassId
 	end
 
 	-- Rebuild all the node paths and dependencies

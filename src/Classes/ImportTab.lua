@@ -732,32 +732,33 @@ function ImportTabClass:DownloadMaxrollPlannerBuild(url)
 
         -- Build skill hashes from skillTrees
         if profileData.skillTrees then
-            local skillList = self.build.latestTree.classes[classId].skills or {}
             for treeIdStr, treeData in pairs(profileData.skillTrees) do
-                local treeIdNum = tonumber(treeIdStr)
-                if treeIdNum then
-                    local skillName
-                    for _, skill in ipairs(skillList) do
-                        if skill.treeId == treeIdNum then
+                local skillName
+                for _, class in pairs(self.build.latestTree.classes) do
+                    for _, skill in ipairs(class.skills or {}) do
+                        if skill.treeId == treeIdStr then
                             skillName = skill.name
                             break
                         end
                     end
-                    if skillName then
-                        table.insert(char.abilities, skillName)
-                        table.insert(char.hashes, treeIdStr .. "-0#1")
-                        if treeData.history then
-                            local nodeCount = {}
-                            for _, nodeId in ipairs(treeData.history) do
-                                nodeCount[nodeId] = (nodeCount[nodeId] or 0) + 1
-                            end
-                            for nodeId, count in pairs(nodeCount) do
-                                if count > 0 then
-                                    table.insert(char.hashes, treeIdStr .. "-" .. nodeId .. "#" .. count)
-                                end
+                    if skillName then break end
+                end
+                if skillName then
+                    table.insert(char.abilities, skillName)
+                    table.insert(char.hashes, treeIdStr .. "-0#1")
+                    if treeData.history then
+                        local nodeCount = {}
+                        for _, nodeId in ipairs(treeData.history) do
+                            nodeCount[nodeId] = (nodeCount[nodeId] or 0) + 1
+                        end
+                        for nodeId, count in pairs(nodeCount) do
+                            if count > 0 then
+                                table.insert(char.hashes, treeIdStr .. "-" .. nodeId .. "#" .. count)
                             end
                         end
                     end
+                else
+                    ConPrintf("[IMPORT-SKILL] No match for Maxroll treeId: %s", tostring(treeIdStr))
                 end
             end
         end
@@ -834,12 +835,17 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
     end
     for _, skillTree in pairs(saveContent["savedSkillTrees"] or {}) do
         local skillName
-
-        local skillList = self.build.latestTree.classes[classId].skills
-        for _, skill in ipairs(skillList) do
-            if skill.treeId == skillTree['treeID'] then
-               skillName = skill.name
+        for _, class in pairs(self.build.latestTree.classes) do
+            for _, skill in ipairs(class.skills or {}) do
+                if skill.treeId == skillTree['treeID'] then
+                    skillName = skill.name
+                    break
+                end
             end
+            if skillName then break end
+        end
+        if not skillName then
+            ConPrintf("[IMPORT-SKILL] No match for treeID: %s", tostring(skillTree['treeID']))
         end
 
         if skillName then
@@ -935,14 +941,17 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
                         item.blessingRollFrac = d[BASE + 4] and (d[BASE + 4] / 255.0) or 1.0
                     end
                     local rarity = d[BASE + 2]
+                    -- Weaver's Will items have bit 6 set in the rarity byte (e.g. 64+9=73 for Legendary)
+                    local isWeaversWill = rarity >= 64
+                    local effectiveRarity = isWeaversWill and (rarity - 64) or rarity
                     item["explicitMods"] = {}
                     item["prefixes"] = {}
                     item["suffixes"] = {}
-                    if rarity >= 7 and rarity <= 9 then
+                    if effectiveRarity >= 7 and effectiveRarity <= 9 then
                         -- 7 = Unique, 8 = Set, 9 = Legendary
-                        if rarity == 8 then
+                        if effectiveRarity == 8 then
                             item["rarity"] = "SET"
-                        elseif rarity == 9 then
+                        elseif effectiveRarity == 9 then
                             item["rarity"] = "LEGENDARY"
                         else
                             item["rarity"] = "UNIQUE"
@@ -971,7 +980,7 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
                                 table.insert(item.explicitMods, "{crafted}".. modLine)
                             end
                         end
-                        if rarity == 9 then
+                        if effectiveRarity == 9 then
                             -- 8 is the maximum amount of unique mod roll bytes
                             local nbAffixesIndex = uniqueIDIndex + 2 + 8
                             local nbMods = d[nbAffixesIndex]
@@ -1109,7 +1118,7 @@ function ImportTabClass:ImportPassiveTreeAndJewels(charData)
     self.build.configTab:UpdateControls()
     self.build.buildFlag = true
 
-    main:SetWindowTitleSubtext(string.format("%s (%s, %s, %s)", self.build.buildName, charData.name, charData.class, charData.league))
+    main:SetWindowTitleSubtext(string.format("%s (%s, %s, %s)", self.build.buildName, tostring(charData.name), tostring(charData.class), tostring(charData.league)))
 
     self.charImportStatus = colorCodes.POSITIVE .. "Passive tree successfully imported."
 end
