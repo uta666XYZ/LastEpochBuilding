@@ -646,11 +646,20 @@ function buildMode:ReadLeToolsSave(saveContent)
 	end
 	for _, skillTree in pairs(saveContent["skillTrees"]) do
 		table.insert(char["hashes"], skillTree['treeID'] .. "-" .. 0 .. "#1")
-		local skillList = self.latestTree.classes[classId].skills
-		for _, skill in ipairs(skillList) do
-			if skill.treeId == skillTree['treeID'] then
-				table.insert(char["abilities"], skill.name)
+		local skillName
+		for _, class in pairs(self.latestTree.classes) do
+			for _, skill in ipairs(class.skills or {}) do
+				if skill.treeId == skillTree['treeID'] then
+					skillName = skill.name
+					break
+				end
 			end
+			if skillName then break end
+		end
+		if skillName then
+			table.insert(char["abilities"], skillName)
+		else
+			ConPrintf("[IMPORT-SKILL] No match for treeID: %s (type: %s)", tostring(skillTree['treeID']), type(skillTree['treeID']))
 		end
 		for skill, nbPoints in pairs(skillTree["selected"]) do
 			if nbPoints > 0 then
@@ -714,7 +723,7 @@ function buildMode:ReadLeToolsSave(saveContent)
 		end
 		local baseTypeID = leBase.baseTypeId
 		local subTypeID = leBase.subTypeId
-		local uniqueId = leBase.uniqueId ~= nil and tostring(leBase.uniqueId) or nil
+		local uniqueId = leBase.uniqueId  -- integer key; nil for non-unique items
 		
 		-- Use newest non-empty itemBases (bases_1_4.json may fail to parse)
 		local latestBases = {}
