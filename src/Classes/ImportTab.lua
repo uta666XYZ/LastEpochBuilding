@@ -227,7 +227,7 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
     end
 
     -- Code sharing (secondary)
-    self.controls.generateCode = new("ButtonControl", { "TOPLEFT", self.controls.generateCodeByLink, "BOTTOMLEFT" }, 0, 8, 110, 20, "Generate Code", function()
+    self.controls.generateCode = new("ButtonControl", { "TOPLEFT", self.controls.generateCodeByLink, "BOTTOMLEFT" }, 0, 8, 110, 20, "Generate Offline Code", function()
         self.controls.generateCodeOut:SetText("!" .. common.base85.encode(Deflate(self.build:SaveDB("code"))))
     end)
     self.controls.enablePartyExportBuffs = new("CheckBoxControl", { "LEFT", self.controls.generateCode, "RIGHT" }, 8, 0, 18, "Export Support", function(state)
@@ -365,7 +365,7 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
     end
 
     self.controls.importCodeIn = new("EditControl", { "TOPLEFT", self.controls.importCodeNoteLabel, "BOTTOMLEFT" }, 0, 22, 328, 20, "", nil, nil, nil, importCodeHandle, nil, nil, true)
-    self.controls.importCodeIn.placeholder = "Enter code or link here"
+    self.controls.importCodeIn.placeholder = "Enter Code or Link"
     self.controls.importCodeIn.shown = function()
         return self.charImportMode == "GETACCOUNTNAME" and self.activeImportSection ~= 1 and self.activeImportSection ~= 2
     end
