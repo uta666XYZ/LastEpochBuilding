@@ -17,6 +17,7 @@ buildSites.websiteList = {
 	{ label = "PastebinP.com", id = "pastebinProxy", matchURL = "pastebinp%.com/%w+", regexURL = "pastebinp%.com/(%w+)%s*$", downloadURL = "pastebinp.com/raw/%1" },
 	{ label = "Rentry.co", id = "rentry", matchURL = "rentry%.co/%w+", regexURL = "rentry%.co/(%w+)%s*$", downloadURL = "rentry.co/paste/%1/raw" },
 	{ label = "bytebin", id = "bytebin", matchURL = "bytebin%.lucko%.me/%w+", regexURL = "bytebin%.lucko%.me/(%w+)%s*$", downloadURL = "bytebin.lucko.me/%1" },
+	{ label = "maxroll.gg Planner", id = "maxroll", matchURL = "maxroll%.gg/last%-epoch/planner/%w+", regexURL = "maxroll%.gg/last%-epoch/planner/(%w+)", downloadURL = "maxroll.gg/last-epoch/planner/%1" },
 }
 
 --- Uploads a LEP build code to a website
