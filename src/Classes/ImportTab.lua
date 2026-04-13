@@ -20,27 +20,38 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
     self.isOnlineMode = false
     self.charImportMode = "GETACCOUNTNAME"
     self.charImportStatus = "Idle"
-    self.controls.sectionCharImport = new("SectionControl", { "TOPLEFT", self, "TOPLEFT" }, 10, 18, 750, 300, "Character Import")
-    self.controls.charImportStatusLabel = new("LabelControl", { "TOPLEFT", self.controls.sectionCharImport, "TOPLEFT" }, 6, 14, 200, 16, function()
+    self.activeImportSection = nil
+    self.controls.sectionCharImport = new("SectionControl", { "TOPLEFT", self, "TOPLEFT" }, 10, 18, 750, 320, "Character Import")
+    self.controls.charImportStatusLabel = new("LabelControl", { "TOPLEFT", self.controls.sectionCharImport, "TOPLEFT" }, 6, 14, 400, 16, function()
         return "^7Character import status: " .. self.charImportStatus
     end)
+    self.controls.charImportStatusLabel.shown = function()
+        return self.charImportStatus ~= "Idle"
+    end
 
     -- Stage: input account name
-    self.controls.accountNameHeaderOffline = new("LabelControl", { "TOPLEFT", self.controls.sectionCharImport, "TOPLEFT" }, 6, 40, 200, 16, "^7To start importing an Offline character, click Start Offline:")
+    self.controls.accountNameHeaderOffline = new("LabelControl", { "TOPLEFT", self.controls.sectionCharImport, "TOPLEFT" }, 6, 40, 400, 16, "^71. Offline Import")
     self.controls.accountNameHeaderOffline.shown = function()
-        return self.charImportMode == "GETACCOUNTNAME"
+        return self.charImportMode == "GETACCOUNTNAME" and self.activeImportSection ~= 2 and self.activeImportSection ~= 3
     end
-    self.controls.accountNameGoOffline = new("ButtonControl", { "TOPLEFT", self.controls.accountNameHeaderOffline, "BOTTOMLEFT" }, 0, 4, 100, 20, "Start Offline", function()
+    self.controls.accountNameGoOffline = new("ButtonControl", { "TOPLEFT", self.controls.accountNameHeaderOffline, "BOTTOMLEFT" }, 0, 4, 180, 20, "Import Offline Character", function()
         self.isOnlineMode = false
+        self.activeImportSection = 1
         self:DownloadCharacterList()
     end)
+    self.controls.accountNameGoOffline.shown = function()
+        return self.charImportMode == "GETACCOUNTNAME" and self.activeImportSection ~= 2 and self.activeImportSection ~= 3
+    end
     -- Stage: input account name (Online)
-    self.controls.accountNameHeader = new("LabelControl", { "TOPLEFT", self.controls.accountNameGoOffline, "BOTTOMLEFT" }, 0, 4, 450, 16, "^7To start importing an Online character, click Start Online: ^1Note: import may take a moment.")
+    self.controls.accountNameHeader = new("LabelControl", { "TOPLEFT", self.controls.accountNameGoOffline, "BOTTOMLEFT" }, 0, 10, 450, 16, "^72. Online Import (via Maxroll)")
     self.controls.accountNameHeader.shown = function()
-        return self.charImportMode == "GETACCOUNTNAME"
+        return self.charImportMode == "GETACCOUNTNAME" and self.activeImportSection ~= 1 and self.activeImportSection ~= 3
     end
     self.controls.accountName = new("EditControl", { "TOPLEFT", self.controls.accountNameHeader, "BOTTOMLEFT" }, 0, 4, 200, 20, main.lastAccountName or "", nil, "%c", nil, nil, nil, nil, true)
     self.controls.accountName.placeholder = "Account name"
+    self.controls.accountName.shown = function()
+        return self.charImportMode == "GETACCOUNTNAME" and self.activeImportSection ~= 1 and self.activeImportSection ~= 3
+    end
     self.controls.accountName.pasteFilter = function(text)
         return text:gsub("[\128-\255]", function(c)
             return codePointToUTF8(c:byte(1)):gsub(".", function(c)
@@ -59,10 +70,14 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
             return a:lower() < b:lower()
         end)
     end -- don't load the list many times
-    self.controls.accountNameGo = new("ButtonControl", { "LEFT", self.controls.accountName, "RIGHT" }, 8, 0, 100, 20, "Start Online", function()
+    self.controls.accountNameGo = new("ButtonControl", { "LEFT", self.controls.accountName, "RIGHT" }, 8, 0, 100, 20, "Start Import", function()
         self.isOnlineMode = true
+        self.activeImportSection = 2
         self:DownloadCharacterListOnline()
     end)
+    self.controls.accountNameGo.shown = function()
+        return self.charImportMode == "GETACCOUNTNAME" and self.activeImportSection ~= 1 and self.activeImportSection ~= 3
+    end
     self.controls.accountNameGo.enabled = function()
         return self.controls.accountName.buf:match("%S")
     end
@@ -71,6 +86,9 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
         self.controls.accountName.buf = self.controls.accountHistory.list[self.controls.accountHistory.selIndex]
     end)
     self.controls.accountHistory.placeholder = "History"
+    self.controls.accountHistory.shown = function()
+        return self.charImportMode == "GETACCOUNTNAME" and self.activeImportSection ~= 1 and self.activeImportSection ~= 3
+    end
     self.controls.accountHistory:SelByValue(main.lastAccountName)
     self.controls.accountHistory:CheckDroppedWidth(true)
 
@@ -82,6 +100,9 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
             main.gameAccounts[accountName] = nil
         end
     end)
+    self.controls.removeAccount.shown = function()
+        return self.charImportMode == "GETACCOUNTNAME" and self.activeImportSection ~= 1 and self.activeImportSection ~= 3
+    end
 
     self.controls.removeAccount.tooltipFunc = function(tooltip)
         tooltip:Clear()
@@ -161,10 +182,11 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
     self.controls.charClose = new("ButtonControl", { "TOPLEFT", self.controls.charSelect, "BOTTOMLEFT" }, 0, 136, 60, 20, "Close", function()
         self.charImportMode = "GETACCOUNTNAME"
         self.charImportStatus = "Idle"
+        self.activeImportSection = nil
     end)
 
     -- Build import/export
-    self.controls.sectionBuild = new("SectionControl", { "TOPLEFT", self.controls.sectionCharImport, "BOTTOMLEFT" }, 0, 18, 650, 268, "Build Sharing")
+    self.controls.sectionBuild = new("SectionControl", { "TOPLEFT", self.controls.sectionCharImport, "BOTTOMLEFT" }, 0, 18, 650, 140, "Build Sharing")
     self.controls.generateCodeLabel = new("LabelControl", { "TOPLEFT", self.controls.sectionBuild, "TOPLEFT" }, 6, 14, 0, 16, "^7Generate a code to share this build with other Last Epoch Building users:")
 
     -- Online sharing (primary)
@@ -205,7 +227,7 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
     end
 
     -- Code sharing (secondary)
-    self.controls.generateCode = new("ButtonControl", { "TOPLEFT", self.controls.generateCodeByLink, "BOTTOMLEFT" }, 0, 8, 110, 20, "Generate Code", function()
+    self.controls.generateCode = new("ButtonControl", { "TOPLEFT", self.controls.generateCodeByLink, "BOTTOMLEFT" }, 0, 8, 150, 20, "Generate Offline Code", function()
         self.controls.generateCodeOut:SetText("!" .. common.base85.encode(Deflate(self.build:SaveDB("code"))))
     end)
     self.controls.enablePartyExportBuffs = new("CheckBoxControl", { "LEFT", self.controls.generateCode, "RIGHT" }, 8, 0, 18, "Export Support", function(state)
@@ -225,7 +247,14 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
         return #self.controls.generateCodeOut.buf > 0
     end
     self.controls.generateCodeNote = new("LabelControl", { "TOPLEFT", self.controls.generateCode, "BOTTOMLEFT" }, 0, 8, 0, 14, "^7Paste the code in chat or Discord.")
-    self.controls.importCodeHeader = new("LabelControl", { "TOPLEFT", self.controls.generateCodeNote, "BOTTOMLEFT" }, 0, 26, 0, 16, "^7To import a build, paste the link or the offline code here:\nNote: this code only works within Last Epoch Building.")
+    self.controls.importCodeHeader = new("LabelControl", { "TOPLEFT", self.controls.sectionCharImport, "TOPLEFT" }, 6, 152, 0, 16, "^73. Import using the code/link from LEB, Last Epoch Tools, or Maxroll")
+    self.controls.importCodeHeader.shown = function()
+        return self.charImportMode == "GETACCOUNTNAME" and self.activeImportSection ~= 1 and self.activeImportSection ~= 2
+    end
+    self.controls.importCodeNoteLabel = new("LabelControl", { "TOPLEFT", self.controls.importCodeHeader, "BOTTOMLEFT" }, 0, 4, 720, 14, "^7Note: e.g. ^x4080FFhttps://bytebin.lucko.me/XXXXXX^7, ^x4080FFhttps://www.lastepochtools.com/planner/XXXXXX^7,\n^x4080FFhttps://www.maxroll.gg/last-epoch/planner/XXXXX^7, or ^x4080FF!XXXXX...^7 (offline code)")
+    self.controls.importCodeNoteLabel.shown = function()
+        return self.charImportMode == "GETACCOUNTNAME" and self.activeImportSection ~= 1 and self.activeImportSection ~= 2
+    end
 
     local importCodeHandle = function(buf)
         self.importCodeSite = nil
@@ -234,8 +263,10 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
         self.importCodeValid = false
 
         if #buf == 0 then
+            self.activeImportSection = nil
             return
         end
+        self.activeImportSection = 3
 
         if not self.build.dbFileName then
             self.controls.importCodeMode.selIndex = 2
@@ -333,7 +364,11 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
         end
     end
 
-    self.controls.importCodeIn = new("EditControl", { "TOPLEFT", self.controls.importCodeHeader, "BOTTOMLEFT" }, 0, 4 + 16, 328, 20, "", nil, nil, nil, importCodeHandle, nil, nil, true)
+    self.controls.importCodeIn = new("EditControl", { "TOPLEFT", self.controls.importCodeNoteLabel, "BOTTOMLEFT" }, 0, 22, 328, 20, "", nil, nil, nil, importCodeHandle, nil, nil, true)
+    self.controls.importCodeIn.placeholder = "Enter Code or Link"
+    self.controls.importCodeIn.shown = function()
+        return self.charImportMode == "GETACCOUNTNAME" and self.activeImportSection ~= 1 and self.activeImportSection ~= 2
+    end
     self.controls.importCodeIn.enterFunc = function()
         if self.importCodeValid then
             self.controls.importCodeGo.onClick()
@@ -343,14 +378,24 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
     self.controls.importCodeState.label = function()
         return self.importCodeDetail or ""
     end
+    self.controls.importCodeState.shown = function()
+        return self.charImportMode == "GETACCOUNTNAME" and self.activeImportSection ~= 1 and self.activeImportSection ~= 2
+    end
     self.controls.importCodeMode = new("DropDownControl", { "TOPLEFT", self.controls.importCodeIn, "BOTTOMLEFT" }, 0, 4, 160, 20, { "Import to this build", "Import to a new build" })
+    self.controls.importCodeMode.shown = function()
+        return self.charImportMode == "GETACCOUNTNAME" and self.activeImportSection ~= 1 and self.activeImportSection ~= 2
+    end
     self.controls.importCodeMode.enabled = function()
         return self.build.dbFileName and self.importCodeValid
     end
     self.controls.importCodeGo = new("ButtonControl", { "LEFT", self.controls.importCodeMode, "RIGHT" }, 8, 0, 160, 20, "Import", function()
         if self.importCodeSite and not self.importCodeXML then
-            self.importCodeFetching = true
             local selectedWebsite = buildSites.websiteList[self.importCodeSite]
+            if selectedWebsite.id == "maxroll" then
+                self:DownloadMaxrollPlannerBuild(self.controls.importCodeIn.buf)
+                return
+            end
+            self.importCodeFetching = true
             buildSites.DownloadBuild(self.controls.importCodeIn.buf, selectedWebsite, function(isSuccess, data)
                 self.importCodeFetching = false
                 if not isSuccess then
@@ -368,6 +413,9 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
     end)
     self.controls.importCodeGo.label = function()
         return self.importCodeFetching and "Retrieving paste.." or "Import"
+    end
+    self.controls.importCodeGo.shown = function()
+        return self.charImportMode == "GETACCOUNTNAME" and self.activeImportSection ~= 1 and self.activeImportSection ~= 2
     end
     self.controls.importCodeGo.enabled = function()
         return self.importCodeValid and not self.importCodeFetching
@@ -600,6 +648,125 @@ function ImportTabClass:SaveAccountHistory()
     end
 end
 
+function ImportTabClass:DownloadMaxrollPlannerBuild(url)
+    self.importCodeFetching = true
+    self.importCodeDetail = colorCodes.NORMAL .. "Downloading from maxroll.gg..."
+
+    local plannerCode = url:match("maxroll%.gg/last%-epoch/planner/(%w+)")
+    if not plannerCode then
+        self.importCodeFetching = false
+        self.importCodeDetail = colorCodes.NEGATIVE .. "Could not parse maxroll URL"
+        return
+    end
+
+    local dataParam = "last-epoch-planner-by-id"
+    local apiURL = "https://maxroll.gg/last-epoch/planner/" .. plannerCode .. "?_data=" .. dataParam
+    launch:DownloadPage(apiURL, function(response, errMsg)
+        self.importCodeFetching = false
+        if errMsg then
+            self.importCodeDetail = colorCodes.NEGATIVE .. "Download failed: " .. errMsg:gsub("\n", " ")
+            return
+        end
+
+        local jsonData, parseErr = processJson(response.body)
+        if parseErr or type(jsonData) ~= "table" then
+            self.importCodeDetail = colorCodes.NEGATIVE .. "Failed to parse maxroll response"
+            return
+        end
+
+        local profile = jsonData.profile
+        if not profile or not profile.data then
+            self.importCodeDetail = colorCodes.NEGATIVE .. "No build data in maxroll response"
+            return
+        end
+
+        local buildData, parseErr2 = processJson(profile.data)
+        if parseErr2 or type(buildData) ~= "table" or not buildData.profiles then
+            self.importCodeDetail = colorCodes.NEGATIVE .. "Failed to parse maxroll build data"
+            return
+        end
+
+        local profileData = buildData.profiles[1]
+        if not profileData then
+            self.importCodeDetail = colorCodes.NEGATIVE .. "No profile found in maxroll build data"
+            return
+        end
+
+        local classId = profileData["class"] or 0
+        if not self.build.latestTree.classes[classId] then
+            self.importCodeDetail = colorCodes.NEGATIVE .. "Unknown class: " .. tostring(classId)
+            return
+        end
+        local className = self.build.latestTree.classes[classId].name
+        local mastery = profileData.mastery or 0
+        local ascendancyData = self.build.latestTree.classes[classId].ascendancies[mastery]
+        if not ascendancyData then
+            self.importCodeDetail = colorCodes.NEGATIVE .. "Unknown mastery: " .. tostring(mastery)
+            return
+        end
+
+        local char = {
+            name = profile.name or "Maxroll Build",
+            level = profileData.level or 1,
+            class = className,
+            classId = classId,
+            ascendancy = mastery,
+            ascendancyName = ascendancyData.name,
+            league = "Maxroll",
+            abilities = {},
+            items = {},
+            hashes = {},
+            _parseErrors = 0,
+        }
+
+        -- Build passive hashes from allocation history
+        if profileData.passives and profileData.passives.history then
+            local nodeCount = {}
+            for _, nodeId in ipairs(profileData.passives.history) do
+                nodeCount[nodeId] = (nodeCount[nodeId] or 0) + 1
+            end
+            for nodeId, count in pairs(nodeCount) do
+                table.insert(char.hashes, className .. "-" .. nodeId .. "#" .. count)
+            end
+        end
+
+        -- Build skill hashes from skillTrees
+        if profileData.skillTrees then
+            local skillList = self.build.latestTree.classes[classId].skills or {}
+            for treeIdStr, treeData in pairs(profileData.skillTrees) do
+                local treeIdNum = tonumber(treeIdStr)
+                if treeIdNum then
+                    local skillName
+                    for _, skill in ipairs(skillList) do
+                        if skill.treeId == treeIdNum then
+                            skillName = skill.name
+                            break
+                        end
+                    end
+                    if skillName then
+                        table.insert(char.abilities, skillName)
+                        table.insert(char.hashes, treeIdStr .. "-0#1")
+                        if treeData.history then
+                            local nodeCount = {}
+                            for _, nodeId in ipairs(treeData.history) do
+                                nodeCount[nodeId] = (nodeCount[nodeId] or 0) + 1
+                            end
+                            for nodeId, count in pairs(nodeCount) do
+                                if count > 0 then
+                                    table.insert(char.hashes, treeIdStr .. "-" .. nodeId .. "#" .. count)
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+
+        self:ImportPassiveTreeAndJewels(char)
+        self.importCodeDetail = colorCodes.POSITIVE .. "Maxroll build imported."
+    end)
+end
+
 function ImportTabClass:DownloadFromMaxroll()
     self.charImportStatus = "Downloading build data from Maxroll..."
     local charSelect = self.controls.charSelect
@@ -631,7 +798,6 @@ function ImportTabClass:DownloadPassiveTree()
     local charSelect = self.controls.charSelect
     local charData = charSelect.list[charSelect.selIndex].char
     self:ImportPassiveTreeAndJewels(charData)
-    self.charImportMode = "GETACCOUNTNAME"
 end
 
 function ImportTabClass:ReadJsonSaveData(saveFileContent)
@@ -920,7 +1086,6 @@ function ImportTabClass:DownloadItems()
     local charSelect = self.controls.charSelect
     local charData = charSelect.list[charSelect.selIndex].char
     self:ImportItemsAndSkills(charData)
-    self.charImportMode = "GETACCOUNTNAME"
 end
 
 function ImportTabClass:DownloadFullImport()
@@ -928,7 +1093,6 @@ function ImportTabClass:DownloadFullImport()
     local charData = charSelect.list[charSelect.selIndex].char
     self:ImportPassiveTreeAndJewels(charData)
     self:ImportItemsAndSkills(charData)
-    self.charImportMode = "GETACCOUNTNAME"
     self.charImportStatus = colorCodes.POSITIVE.."Full import successful."
 end
 
