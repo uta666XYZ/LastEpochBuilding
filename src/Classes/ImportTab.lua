@@ -26,16 +26,16 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
     end)
 
     -- Stage: input account name
-    self.controls.accountNameHeaderOffline = new("LabelControl", { "TOPLEFT", self.controls.sectionCharImport, "TOPLEFT" }, 6, 40, 200, 16, "^7To start importing an Offline character, click Start Offline:")
+    self.controls.accountNameHeaderOffline = new("LabelControl", { "TOPLEFT", self.controls.sectionCharImport, "TOPLEFT" }, 6, 40, 400, 16, "^71. Offline Import")
     self.controls.accountNameHeaderOffline.shown = function()
         return self.charImportMode == "GETACCOUNTNAME"
     end
-    self.controls.accountNameGoOffline = new("ButtonControl", { "TOPLEFT", self.controls.accountNameHeaderOffline, "BOTTOMLEFT" }, 0, 4, 100, 20, "Start Offline", function()
+    self.controls.accountNameGoOffline = new("ButtonControl", { "TOPLEFT", self.controls.accountNameHeaderOffline, "BOTTOMLEFT" }, 0, 4, 140, 20, "Import Offline Char", function()
         self.isOnlineMode = false
         self:DownloadCharacterList()
     end)
     -- Stage: input account name (Online)
-    self.controls.accountNameHeader = new("LabelControl", { "TOPLEFT", self.controls.accountNameGoOffline, "BOTTOMLEFT" }, 0, 4, 450, 16, "^7To start importing an Online character, click Start Online: ^1Note: import may take a moment.")
+    self.controls.accountNameHeader = new("LabelControl", { "TOPLEFT", self.controls.accountNameGoOffline, "BOTTOMLEFT" }, 0, 10, 450, 16, "^72. API Online Import")
     self.controls.accountNameHeader.shown = function()
         return self.charImportMode == "GETACCOUNTNAME"
     end
@@ -59,7 +59,7 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
             return a:lower() < b:lower()
         end)
     end -- don't load the list many times
-    self.controls.accountNameGo = new("ButtonControl", { "LEFT", self.controls.accountName, "RIGHT" }, 8, 0, 100, 20, "Start Online", function()
+    self.controls.accountNameGo = new("ButtonControl", { "LEFT", self.controls.accountName, "RIGHT" }, 8, 0, 100, 20, "Start Import", function()
         self.isOnlineMode = true
         self:DownloadCharacterListOnline()
     end)
@@ -225,7 +225,8 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
         return #self.controls.generateCodeOut.buf > 0
     end
     self.controls.generateCodeNote = new("LabelControl", { "TOPLEFT", self.controls.generateCode, "BOTTOMLEFT" }, 0, 8, 0, 14, "^7Paste the code in chat or Discord.")
-    self.controls.importCodeHeader = new("LabelControl", { "TOPLEFT", self.controls.sectionCharImport, "TOPLEFT" }, 6, 295, 0, 16, "^7To import a build, paste the link or the offline code here:\nNote: this code only works within Last Epoch Building.")
+    self.controls.importCodeHeader = new("LabelControl", { "TOPLEFT", self.controls.sectionCharImport, "TOPLEFT" }, 6, 300, 0, 16, "^73. Import using the code/link from LEB or Last Epoch Tools")
+    self.controls.importCodeNoteLabel = new("LabelControl", { "TOPLEFT", self.controls.importCodeHeader, "BOTTOMLEFT" }, 0, 4, 700, 14, "^7Note: e.g. bytebin.lucko.me/XXXXX, lastepochtools.com/planner/XXXXX, maxroll.gg/last-epoch/planner/XXXXX, or !XXXXX... (offline code)")
 
     local importCodeHandle = function(buf)
         self.importCodeSite = nil
@@ -333,7 +334,8 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
         end
     end
 
-    self.controls.importCodeIn = new("EditControl", { "TOPLEFT", self.controls.importCodeHeader, "BOTTOMLEFT" }, 0, 4 + 16, 328, 20, "", nil, nil, nil, importCodeHandle, nil, nil, true)
+    self.controls.importCodeIn = new("EditControl", { "TOPLEFT", self.controls.importCodeNoteLabel, "BOTTOMLEFT" }, 0, 6, 328, 20, "", nil, nil, nil, importCodeHandle, nil, nil, true)
+    self.controls.importCodeIn.placeholder = "Enter code or link here"
     self.controls.importCodeIn.enterFunc = function()
         if self.importCodeValid then
             self.controls.importCodeGo.onClick()
