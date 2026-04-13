@@ -646,11 +646,20 @@ function buildMode:ReadLeToolsSave(saveContent)
 	end
 	for _, skillTree in pairs(saveContent["skillTrees"]) do
 		table.insert(char["hashes"], skillTree['treeID'] .. "-" .. 0 .. "#1")
-		local skillList = self.latestTree.classes[classId].skills
-		for _, skill in ipairs(skillList) do
-			if skill.treeId == skillTree['treeID'] then
-				table.insert(char["abilities"], skill.name)
+		local skillName
+		for _, class in pairs(self.latestTree.classes) do
+			for _, skill in ipairs(class.skills or {}) do
+				if skill.treeId == skillTree['treeID'] then
+					skillName = skill.name
+					break
+				end
 			end
+			if skillName then break end
+		end
+		if skillName then
+			table.insert(char["abilities"], skillName)
+		else
+			ConPrintf("[IMPORT-SKILL] No match for treeID: %s (type: %s)", tostring(skillTree['treeID']), type(skillTree['treeID']))
 		end
 		for skill, nbPoints in pairs(skillTree["selected"]) do
 			if nbPoints > 0 then
@@ -714,8 +723,22 @@ function buildMode:ReadLeToolsSave(saveContent)
 		end
 		local baseTypeID = leBase.baseTypeId
 		local subTypeID = leBase.subTypeId
-		local uniqueId = leBase.uniqueId ~= nil and tostring(leBase.uniqueId) or nil
-		
+		local uniqueId = leBase.uniqueId  -- integer key; nil for non-unique / legendary items
+		local isLegendary = false
+
+		-- Legendary fallback: unique + exalted merged item gets a different LeTools ID
+		-- that maps to the non-unique base entry. Recover uniqueId from another entry
+		-- with the same baseTypeId+subTypeId that does have a uniqueId.
+		if not uniqueId then
+			for _, baseEntry in pairs(data.LETools_itemBases) do
+				if baseEntry.baseTypeId == baseTypeID and baseEntry.subTypeId == subTypeID and baseEntry.uniqueId then
+					uniqueId = baseEntry.uniqueId
+					isLegendary = true
+					break
+				end
+			end
+		end
+
 		-- Use newest non-empty itemBases (bases_1_4.json may fail to parse)
 		local latestBases = {}
 		for i = #treeVersionList, 1, -1 do
@@ -795,7 +818,7 @@ function buildMode:ReadLeToolsSave(saveContent)
 			local uniqueBase = data.uniques[uniqueId]
 			if uniqueBase then
 			    item.name = uniqueBase.name
-				item["rarity"] = "UNIQUE"
+				item["rarity"] = isLegendary and "LEGENDARY" or "UNIQUE"
 				for i, modLine in ipairs(uniqueBase.mods) do
                     if itemLib.hasRange(modLine) then
                         local range = main.defaultItemAffixQuality
