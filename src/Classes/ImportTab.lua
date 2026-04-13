@@ -20,7 +20,7 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
     self.isOnlineMode = false
     self.charImportMode = "GETACCOUNTNAME"
     self.charImportStatus = "Idle"
-    self.controls.sectionCharImport = new("SectionControl", { "TOPLEFT", self, "TOPLEFT" }, 10, 18, 750, 300, "Character Import")
+    self.controls.sectionCharImport = new("SectionControl", { "TOPLEFT", self, "TOPLEFT" }, 10, 18, 750, 400, "Character Import")
     self.controls.charImportStatusLabel = new("LabelControl", { "TOPLEFT", self.controls.sectionCharImport, "TOPLEFT" }, 6, 14, 200, 16, function()
         return "^7Character import status: " .. self.charImportStatus
     end)
@@ -164,7 +164,7 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
     end)
 
     -- Build import/export
-    self.controls.sectionBuild = new("SectionControl", { "TOPLEFT", self.controls.sectionCharImport, "BOTTOMLEFT" }, 0, 18, 650, 268, "Build Sharing")
+    self.controls.sectionBuild = new("SectionControl", { "TOPLEFT", self.controls.sectionCharImport, "BOTTOMLEFT" }, 0, 18, 650, 140, "Build Sharing")
     self.controls.generateCodeLabel = new("LabelControl", { "TOPLEFT", self.controls.sectionBuild, "TOPLEFT" }, 6, 14, 0, 16, "^7Generate a code to share this build with other Last Epoch Building users:")
 
     -- Online sharing (primary)
@@ -225,7 +225,7 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
         return #self.controls.generateCodeOut.buf > 0
     end
     self.controls.generateCodeNote = new("LabelControl", { "TOPLEFT", self.controls.generateCode, "BOTTOMLEFT" }, 0, 8, 0, 14, "^7Paste the code in chat or Discord.")
-    self.controls.importCodeHeader = new("LabelControl", { "TOPLEFT", self.controls.generateCodeNote, "BOTTOMLEFT" }, 0, 26, 0, 16, "^7To import a build, paste the link or the offline code here:\nNote: this code only works within Last Epoch Building.")
+    self.controls.importCodeHeader = new("LabelControl", { "TOPLEFT", self.controls.sectionCharImport, "TOPLEFT" }, 6, 295, 0, 16, "^7To import a build, paste the link or the offline code here:\nNote: this code only works within Last Epoch Building.")
 
     local importCodeHandle = function(buf)
         self.importCodeSite = nil
