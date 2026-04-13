@@ -1118,7 +1118,7 @@ function ImportTabClass:ImportPassiveTreeAndJewels(charData)
     self.build.configTab:UpdateControls()
     self.build.buildFlag = true
 
-    main:SetWindowTitleSubtext(string.format("%s (%s, %s, %s)", self.build.buildName, charData.name, charData.class, charData.league))
+    main:SetWindowTitleSubtext(string.format("%s (%s, %s, %s)", self.build.buildName, tostring(charData.name), tostring(charData.class), tostring(charData.league)))
 
     self.charImportStatus = colorCodes.POSITIVE .. "Passive tree successfully imported."
 end
