@@ -22,9 +22,12 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
     self.charImportStatus = "Idle"
     self.activeImportSection = nil
     self.controls.sectionCharImport = new("SectionControl", { "TOPLEFT", self, "TOPLEFT" }, 10, 18, 750, 320, "Character Import")
-    self.controls.charImportStatusLabel = new("LabelControl", { "TOPLEFT", self.controls.sectionCharImport, "TOPLEFT" }, 6, 14, 200, 16, function()
+    self.controls.charImportStatusLabel = new("LabelControl", { "TOPLEFT", self.controls.sectionCharImport, "TOPLEFT" }, 6, 14, 400, 16, function()
         return "^7Character import status: " .. self.charImportStatus
     end)
+    self.controls.charImportStatusLabel.shown = function()
+        return self.charImportStatus ~= "Idle"
+    end
 
     -- Stage: input account name
     self.controls.accountNameHeaderOffline = new("LabelControl", { "TOPLEFT", self.controls.sectionCharImport, "TOPLEFT" }, 6, 40, 400, 16, "^71. Offline Import")
@@ -244,11 +247,11 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
         return #self.controls.generateCodeOut.buf > 0
     end
     self.controls.generateCodeNote = new("LabelControl", { "TOPLEFT", self.controls.generateCode, "BOTTOMLEFT" }, 0, 8, 0, 14, "^7Paste the code in chat or Discord.")
-    self.controls.importCodeHeader = new("LabelControl", { "TOPLEFT", self.controls.accountName, "BOTTOMLEFT" }, 0, 14, 0, 16, "^73. Import using the code/link from LEB, Last Epoch Tools, or Maxroll")
+    self.controls.importCodeHeader = new("LabelControl", { "TOPLEFT", self.controls.sectionCharImport, "TOPLEFT" }, 6, 152, 0, 16, "^73. Import using the code/link from LEB, Last Epoch Tools, or Maxroll")
     self.controls.importCodeHeader.shown = function()
         return self.charImportMode == "GETACCOUNTNAME" and self.activeImportSection ~= 1 and self.activeImportSection ~= 2
     end
-    self.controls.importCodeNoteLabel = new("LabelControl", { "TOPLEFT", self.controls.importCodeHeader, "BOTTOMLEFT" }, 0, 4, 720, 14, "^7Note: e.g. ^x4080FFhttps://bytebin.lucko.me/XXXXXX^7, ^x4080FFhttps://www.lastepochtools.com/planner/XXXXXX^7,\n^x4080FFhttps://www.maxroll.gg/last-epoch/planner/XXXXX^7, or ^x4080FF!XXXXX...^7 (offline code)")
+    self.controls.importCodeNoteLabel = new("LabelControl", { "TOPLEFT", self.controls.importCodeHeader, "BOTTOMLEFT" }, 0, 4, 720, 28, "^7Note: e.g. ^x4080FFhttps://bytebin.lucko.me/XXXXXX^7, ^x4080FFhttps://www.lastepochtools.com/planner/XXXXXX^7,\n^x4080FFhttps://www.maxroll.gg/last-epoch/planner/XXXXX^7, or ^x4080FF!XXXXX...^7 (offline code)")
     self.controls.importCodeNoteLabel.shown = function()
         return self.charImportMode == "GETACCOUNTNAME" and self.activeImportSection ~= 1 and self.activeImportSection ~= 2
     end
@@ -361,7 +364,7 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
         end
     end
 
-    self.controls.importCodeIn = new("EditControl", { "TOPLEFT", self.controls.importCodeNoteLabel, "BOTTOMLEFT" }, 0, 6, 328, 20, "", nil, nil, nil, importCodeHandle, nil, nil, true)
+    self.controls.importCodeIn = new("EditControl", { "TOPLEFT", self.controls.importCodeNoteLabel, "BOTTOMLEFT" }, 0, 8, 328, 20, "", nil, nil, nil, importCodeHandle, nil, nil, true)
     self.controls.importCodeIn.placeholder = "Enter code or link here"
     self.controls.importCodeIn.shown = function()
         return self.charImportMode == "GETACCOUNTNAME" and self.activeImportSection ~= 1 and self.activeImportSection ~= 2
@@ -795,7 +798,6 @@ function ImportTabClass:DownloadPassiveTree()
     local charSelect = self.controls.charSelect
     local charData = charSelect.list[charSelect.selIndex].char
     self:ImportPassiveTreeAndJewels(charData)
-    self.charImportMode = "GETACCOUNTNAME"
 end
 
 function ImportTabClass:ReadJsonSaveData(saveFileContent)
@@ -1084,7 +1086,6 @@ function ImportTabClass:DownloadItems()
     local charSelect = self.controls.charSelect
     local charData = charSelect.list[charSelect.selIndex].char
     self:ImportItemsAndSkills(charData)
-    self.charImportMode = "GETACCOUNTNAME"
 end
 
 function ImportTabClass:DownloadFullImport()
@@ -1092,7 +1093,6 @@ function ImportTabClass:DownloadFullImport()
     local charData = charSelect.list[charSelect.selIndex].char
     self:ImportPassiveTreeAndJewels(charData)
     self:ImportItemsAndSkills(charData)
-    self.charImportMode = "GETACCOUNTNAME"
     self.charImportStatus = colorCodes.POSITIVE.."Full import successful."
 end
 
