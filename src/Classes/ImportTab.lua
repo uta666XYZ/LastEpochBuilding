@@ -227,7 +227,7 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
     end
 
     -- Code sharing (secondary)
-    self.controls.generateCode = new("ButtonControl", { "TOPLEFT", self.controls.generateCodeByLink, "BOTTOMLEFT" }, 0, 8, 110, 20, "Generate Offline Code", function()
+    self.controls.generateCode = new("ButtonControl", { "TOPLEFT", self.controls.generateCodeByLink, "BOTTOMLEFT" }, 0, 8, 150, 20, "Generate Offline Code", function()
         self.controls.generateCodeOut:SetText("!" .. common.base85.encode(Deflate(self.build:SaveDB("code"))))
     end)
     self.controls.enablePartyExportBuffs = new("CheckBoxControl", { "LEFT", self.controls.generateCode, "RIGHT" }, 8, 0, 18, "Export Support", function(state)
