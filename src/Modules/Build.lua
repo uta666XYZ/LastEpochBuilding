@@ -723,8 +723,22 @@ function buildMode:ReadLeToolsSave(saveContent)
 		end
 		local baseTypeID = leBase.baseTypeId
 		local subTypeID = leBase.subTypeId
-		local uniqueId = leBase.uniqueId  -- integer key; nil for non-unique items
-		
+		local uniqueId = leBase.uniqueId  -- integer key; nil for non-unique / legendary items
+		local isLegendary = false
+
+		-- Legendary fallback: unique + exalted merged item gets a different LeTools ID
+		-- that maps to the non-unique base entry. Recover uniqueId from another entry
+		-- with the same baseTypeId+subTypeId that does have a uniqueId.
+		if not uniqueId then
+			for _, baseEntry in pairs(data.LETools_itemBases) do
+				if baseEntry.baseTypeId == baseTypeID and baseEntry.subTypeId == subTypeID and baseEntry.uniqueId then
+					uniqueId = baseEntry.uniqueId
+					isLegendary = true
+					break
+				end
+			end
+		end
+
 		-- Use newest non-empty itemBases (bases_1_4.json may fail to parse)
 		local latestBases = {}
 		for i = #treeVersionList, 1, -1 do
@@ -804,7 +818,7 @@ function buildMode:ReadLeToolsSave(saveContent)
 			local uniqueBase = data.uniques[uniqueId]
 			if uniqueBase then
 			    item.name = uniqueBase.name
-				item["rarity"] = "UNIQUE"
+				item["rarity"] = isLegendary and "LEGENDARY" or "UNIQUE"
 				for i, modLine in ipairs(uniqueBase.mods) do
                     if itemLib.hasRange(modLine) then
                         local range = main.defaultItemAffixQuality
