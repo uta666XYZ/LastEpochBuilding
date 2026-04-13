@@ -1234,7 +1234,7 @@ function SkillsTabClass:BuildOverviewSearchResults(build, searchStr)
 				results[treeId] = true
 			else
 				-- Check all nodes belonging to this skill tree
-				for nodeId, node in pairs(build.spec.visibleNodes) do
+				for nodeId, node in pairs(build.spec.nodes) do
 					if nodeId:match("^" .. treeId) then
 						if matchesAll(node.dn) then
 							results[treeId] = true
