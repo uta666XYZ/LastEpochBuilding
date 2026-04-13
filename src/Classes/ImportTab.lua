@@ -941,14 +941,17 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
                         item.blessingRollFrac = d[BASE + 4] and (d[BASE + 4] / 255.0) or 1.0
                     end
                     local rarity = d[BASE + 2]
+                    -- Weaver's Will items have bit 6 set in the rarity byte (e.g. 64+9=73 for Legendary)
+                    local isWeaversWill = rarity >= 64
+                    local effectiveRarity = isWeaversWill and (rarity - 64) or rarity
                     item["explicitMods"] = {}
                     item["prefixes"] = {}
                     item["suffixes"] = {}
-                    if rarity >= 7 and rarity <= 9 then
+                    if effectiveRarity >= 7 and effectiveRarity <= 9 then
                         -- 7 = Unique, 8 = Set, 9 = Legendary
-                        if rarity == 8 then
+                        if effectiveRarity == 8 then
                             item["rarity"] = "SET"
-                        elseif rarity == 9 then
+                        elseif effectiveRarity == 9 then
                             item["rarity"] = "LEGENDARY"
                         else
                             item["rarity"] = "UNIQUE"
@@ -977,7 +980,7 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
                                 table.insert(item.explicitMods, "{crafted}".. modLine)
                             end
                         end
-                        if rarity == 9 then
+                        if effectiveRarity == 9 then
                             -- 8 is the maximum amount of unique mod roll bytes
                             local nbAffixesIndex = uniqueIDIndex + 2 + 8
                             local nbMods = d[nbAffixesIndex]
