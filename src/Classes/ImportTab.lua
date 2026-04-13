@@ -732,32 +732,33 @@ function ImportTabClass:DownloadMaxrollPlannerBuild(url)
 
         -- Build skill hashes from skillTrees
         if profileData.skillTrees then
-            local skillList = self.build.latestTree.classes[classId].skills or {}
             for treeIdStr, treeData in pairs(profileData.skillTrees) do
-                local treeIdNum = tonumber(treeIdStr)
-                if treeIdNum then
-                    local skillName
-                    for _, skill in ipairs(skillList) do
-                        if skill.treeId == treeIdNum then
+                local skillName
+                for _, class in pairs(self.build.latestTree.classes) do
+                    for _, skill in ipairs(class.skills or {}) do
+                        if skill.treeId == treeIdStr then
                             skillName = skill.name
                             break
                         end
                     end
-                    if skillName then
-                        table.insert(char.abilities, skillName)
-                        table.insert(char.hashes, treeIdStr .. "-0#1")
-                        if treeData.history then
-                            local nodeCount = {}
-                            for _, nodeId in ipairs(treeData.history) do
-                                nodeCount[nodeId] = (nodeCount[nodeId] or 0) + 1
-                            end
-                            for nodeId, count in pairs(nodeCount) do
-                                if count > 0 then
-                                    table.insert(char.hashes, treeIdStr .. "-" .. nodeId .. "#" .. count)
-                                end
+                    if skillName then break end
+                end
+                if skillName then
+                    table.insert(char.abilities, skillName)
+                    table.insert(char.hashes, treeIdStr .. "-0#1")
+                    if treeData.history then
+                        local nodeCount = {}
+                        for _, nodeId in ipairs(treeData.history) do
+                            nodeCount[nodeId] = (nodeCount[nodeId] or 0) + 1
+                        end
+                        for nodeId, count in pairs(nodeCount) do
+                            if count > 0 then
+                                table.insert(char.hashes, treeIdStr .. "-" .. nodeId .. "#" .. count)
                             end
                         end
                     end
+                else
+                    ConPrintf("[IMPORT-SKILL] No match for Maxroll treeId: %s", tostring(treeIdStr))
                 end
             end
         end
@@ -834,12 +835,17 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
     end
     for _, skillTree in pairs(saveContent["savedSkillTrees"] or {}) do
         local skillName
-
-        local skillList = self.build.latestTree.classes[classId].skills
-        for _, skill in ipairs(skillList) do
-            if skill.treeId == skillTree['treeID'] then
-               skillName = skill.name
+        for _, class in pairs(self.build.latestTree.classes) do
+            for _, skill in ipairs(class.skills or {}) do
+                if skill.treeId == skillTree['treeID'] then
+                    skillName = skill.name
+                    break
+                end
             end
+            if skillName then break end
+        end
+        if not skillName then
+            ConPrintf("[IMPORT-SKILL] No match for treeID: %s", tostring(skillTree['treeID']))
         end
 
         if skillName then
