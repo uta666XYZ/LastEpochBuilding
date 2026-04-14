@@ -1,7 +1,8 @@
 VERSION[0.12.1][2026/04/15]
 
 --- Fixed ---
-- Auto-updater: version and platform info now correctly preserved
+- Auto-updater re-downloading all files on every launch
+- Version label incorrectly showing "(Dev)" on released builds
 
 VERSION[0.12.0][2026/04/14]
 
