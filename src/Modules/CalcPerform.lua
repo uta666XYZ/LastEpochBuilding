@@ -209,6 +209,25 @@ local function doActorAttribsConditions(env, actor)
 		output.TotalAttr = output.TotalAttr + output[stat]
 	end
 
+	-- Season 4 (1.4): attribute conversion
+	-- Converted amount is subtracted from the base attribute so PerStat bonuses don't double-count.
+	local attrConversions = {
+		{ src = "Str", dst = "Brutality", modName = "StrengthConvertedToBrutality" },
+		{ src = "Dex", dst = "Guile",     modName = "DexterityConvertedToGuile" },
+		{ src = "Int", dst = "Madness",   modName = "IntelligenceConvertedToMadness" },
+		{ src = "Att", dst = "Apathy",    modName = "AttunementConvertedToApathy" },
+		{ src = "Vit", dst = "Rampancy",  modName = "VitalityConvertedToRampancy" },
+	}
+	for _, conv in ipairs(attrConversions) do
+		local pct = modDB:Sum("BASE", nil, conv.modName)
+		if pct and pct > 0 then
+			local converted = round(output[conv.src] * pct / 100)
+			output[conv.dst] = converted
+			output[conv.src] = output[conv.src] - converted
+		else
+			output[conv.dst] = 0
+		end
+	end
 
 	doActorLifeMana(actor)
 end
