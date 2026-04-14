@@ -65,7 +65,12 @@ function launch:OnInit()
 			end
 		end
 	end
-	if localManXML and not self.versionBranch and not self.versionPlatform then
+	local gitHead = io.open(".git/HEAD", "r") or io.open("../.git/HEAD", "r")
+	if gitHead then
+		-- Running from a git repository, enable dev mode
+		self.devMode = true
+		gitHead:close()
+	elseif localManXML and not self.versionBranch and not self.versionPlatform then
 		-- Looks like a remote manifest, so we're probably running from a repository
 		-- Enable dev mode to disable updates and set user path to be the script path
 		self.devMode = true
