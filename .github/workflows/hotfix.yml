@@ -65,5 +65,5 @@ jobs:
           gh release create "v${VERSION}" \
             --title "Release $VERSION" \
             --draft \
-            --notes "Fix online character import" \
+            --notes "See changelog for details" \
             "dist/LastEpochBuilding-v${VERSION}-win.zip"
