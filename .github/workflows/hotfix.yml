@@ -32,6 +32,8 @@ jobs:
         run: |
           VERSION=${{ github.event.inputs.version }}
           sed -ri "s/<Version number=\"([^\"]*)\"/<Version number=\"$VERSION\"/g" manifest.xml
+          sed -i 's/ branch="[^"]*"//g' manifest.xml
+          sed -i 's/ platform="[^"]*"//g' manifest.xml
           sed -i 's/<Version number="\([^"]*\)"/<Version number="\1" platform="win32"/' manifest.xml
       - name: Build portable zip
         run: |
