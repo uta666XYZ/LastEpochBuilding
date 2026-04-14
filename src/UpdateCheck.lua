@@ -11,7 +11,6 @@ local sha1 = require("sha1")
 local curl = require("lcurl.safe")
 local lzip = require("lzip")
 
-local globalRetryLimit = 10
 local function downloadFileText(source, file)
 	for i = 1, 5 do
 		if i > 1 then
@@ -29,7 +28,7 @@ local function downloadFileText(source, file)
 			easy:setopt(curl.OPT_PROXY, proxyURL)
 		end
 		easy:setopt_writefunction(function(data)
-			text = text..data 
+			text = text..data
 			return true
 		end)
 		local _, error = easy:perform()
@@ -38,10 +37,9 @@ local function downloadFileText(source, file)
 			return text
 		end
 		ConPrintf("Download failed (%s)", error:msg())
-		if globalRetryLimit == 0 or i == 5 then
+		if i == 5 then
 			return nil, error:msg()
 		end
-		globalRetryLimit = globalRetryLimit - 1
 	end
 end
 local function downloadFile(source, file, outName)
@@ -68,10 +66,9 @@ local function downloadFile(source, file, outName)
 			return true
 		end
 		ConPrintf("Download failed (%s)", error:msg())
-		if globalRetryLimit == 0 or i == 5 then
+		if i == 5 then
 			return nil, error:msg()
 		end
-		globalRetryLimit = globalRetryLimit - 1
 	end
 	return true
 end
