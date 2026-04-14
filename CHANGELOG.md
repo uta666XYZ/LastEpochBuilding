@@ -27,6 +27,9 @@
 ### Mod Recognition
 - Mod recognition: 100% (recognized mods are not always fully reflected in calculations — calculator still in progress)
 
+### Special Thanks
+- WarMachine237 — LEB's very first supporter
+
 ---
 
 ## [v0.11.0](https://github.com/uta666XYZ/LastEpochBuilding/tree/v0.11.0) (2026/04/10)

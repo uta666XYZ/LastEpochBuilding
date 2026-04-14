@@ -98,6 +98,15 @@ and submit pull requests.
 
 [MIT](LICENSE.md) — see LICENSE.md for third-party licenses.
 
+## 💛 Special Thanks
+
+The first few supporters will have their names hidden somewhere in LEB as easter eggs.
+Since I have a limited number of good hiding spots in mind, I'll add names in supporter order as new spots come to me.
+
+| Supporter | Note |
+|-----------|------|
+| WarMachine237 | First ever supporter — a permanent mark in LEB's history |
+
 ## 📖 Credits
 
 Based on [Path of Building Community](https://github.com/PathOfBuildingCommunity/PathOfBuilding),
