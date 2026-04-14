@@ -649,10 +649,23 @@ return {
 } }
 } },
 -- attributes/resists
-{ 1, "Attributes", 2, colorCodes.NORMAL, {{ defaultCollapsed = false, label = "Attributes", data = generateTableByValues({},
-		Attributes, function(i, stat)
+{ 1, "Attributes", 2, colorCodes.NORMAL, {{ defaultCollapsed = false, label = "Attributes", data =
+	-- Season 4 (1.4): append converted attribute rows after base attributes
+	generateTableByValues(
+		generateTableByValues({}, Attributes, function(i, stat)
 			return { label = AttributesColored[i], { format = "{0:output:" .. stat .. "}", { breakdown = stat }, { modName = stat }, }, }
 		end),
+		{
+			{ stat = "Brutality", color = colorCodes.BRUTALITY },
+			{ stat = "Guile",     color = colorCodes.GUILE },
+			{ stat = "Madness",   color = colorCodes.MADNESS },
+			{ stat = "Apathy",    color = colorCodes.APATHY },
+			{ stat = "Rampancy",  color = colorCodes.RAMPANCY },
+		},
+		function(_, conv)
+			return { label = conv.color .. "  " .. conv.stat, haveOutput = conv.stat, { format = "{0:output:" .. conv.stat .. "}", }, }
+		end
+	),
 }
 } },
 -- primary defenses

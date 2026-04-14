@@ -404,6 +404,15 @@ function calcs.initEnv(build, mode, override, specEnv)
 		modDB:NewMod("PoisonResist", "BASE", 1, "Vitality", {type = "PerStat", stat = "Vit"})
 		modDB:NewMod("NecroticResist", "BASE", 1, "Vitality", {type = "PerStat", stat = "Vit"})
 
+		-- Season 4 (1.4): converted attribute bonuses (same values as base attributes)
+		modDB:NewMod("Armour", "INC", 4, "Brutality", {type = "PerStat", stat = "Brutality"})
+		modDB:NewMod("Evasion", "BASE", 4, "Guile", {type = "PerStat", stat = "Guile"})
+		modDB:NewMod("WardRetention", "BASE", 2, "Madness", {type = "PerStat", stat = "Madness"})
+		modDB:NewMod("Mana", "BASE", 2, "Apathy", {type = "PerStat", stat = "Apathy"})
+		modDB:NewMod("Life", "BASE", 6, "Rampancy", {type = "PerStat", stat = "Rampancy"})
+		modDB:NewMod("PoisonResist", "BASE", 1, "Rampancy", {type = "PerStat", stat = "Rampancy"})
+		modDB:NewMod("NecroticResist", "BASE", 1, "Rampancy", {type = "PerStat", stat = "Rampancy"})
+
 		-- Initialise enemy modifier database
 		calcs.initModDB(env, enemyDB)
 		enemyDB:NewMod("Condition:AgainstDamageOverTime", "FLAG", true, "Base", ModFlag.Dot, { type = "ActorCondition", actor = "player", var = "Combat" })
