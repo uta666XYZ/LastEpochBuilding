@@ -480,6 +480,10 @@ local specialModList = {
 			mod(buffVar .. "Duration", "BASE", tonumber(duration)),
 		}
 	end,
+	-- Capped PerStat: e.g. "+2 Dodge Rating per 1 Intelligence, up to +100" (Spellblade: Illusory Combatant)
+	["^%+(%d+) dodge rating per 1 intelligence, up to %+(%d+)$"] = function(num, rate, cap)
+		return { mod("EvasionPerInt", "BASE", tonumber(rate)), mod("EvasionPerIntCap", "BASE", tonumber(cap)) }
+	end,
 }
 
 -- Modifiers that are recognised but unsupported
