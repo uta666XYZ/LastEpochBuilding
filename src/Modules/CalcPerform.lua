@@ -229,6 +229,15 @@ local function doActorAttribsConditions(env, actor)
 		end
 	end
 
+	-- Capped PerStat bonuses (e.g. +2 Dodge Rating per 1 Int, up to +100)
+	local evasionPerInt = modDB:Sum("BASE", nil, "EvasionPerInt")
+	if evasionPerInt > 0 then
+		local evasionPerIntCap = modDB:Sum("BASE", nil, "EvasionPerIntCap")
+		if evasionPerIntCap == 0 then evasionPerIntCap = 100 end
+		local bonus = math.min(output.Int * evasionPerInt, evasionPerIntCap)
+		modDB:NewMod("Evasion", "BASE", bonus, "EvasionPerIntBonus")
+	end
+
 	doActorLifeMana(actor)
 end
 
