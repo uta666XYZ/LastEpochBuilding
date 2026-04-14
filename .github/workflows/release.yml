@@ -54,12 +54,12 @@ jobs:
                   luajit -b "$f" "$f.tmp" && mv "$f.tmp" "$f"
                 done
                 echo "Lua bytecode compilation complete"
-            - name: Update manifest version
+            - name: Update manifest.xml SHA1s
+              run: python3 update_manifest.py --quiet --in-place
+            - name: Update manifest version and branch
               run: |
                 sed -ri "s/<Version number=\"([^\"]*)\"/<Version number=\"$NEXT_VERSION\"/g" manifest.xml
                 sed -i 's/<Version number="\([^"]*\)"/<Version number="\1" branch="dev" platform="win32"/' manifest.xml
-            - name: Update manifest.xml
-              run: python3 update_manifest.py --quiet --in-place
             - name: Build portable zip
               run: |
                 mkdir -p dist/LastEpochBuilding
