@@ -50,6 +50,13 @@ jobs:
               run: |
                 sed -ri "s/<Version number=\"([^\"]*)\"/<Version number=\"$NEXT_VERSION\"/g" manifest.xml
                 sed -i 's/<Version number="\([^"]*\)"/<Version number="\1" branch="dev" platform="win32"/' manifest.xml
+            - name: Push updated manifest to dev
+              run: |
+                git config user.email "github-actions[bot]@users.noreply.github.com"
+                git config user.name "github-actions[bot]"
+                git add manifest.xml
+                git commit -m "chore: update manifest.xml for v$NEXT_VERSION"
+                git push origin dev
             - name: Build portable zip
               run: |
                 mkdir -p dist/LastEpochBuilding
