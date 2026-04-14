@@ -9,6 +9,8 @@ local t_remove = table.remove
 local b_rshift = bit.rshift
 local band = bit.band
 
+local dkjson = require "dkjson"
+
 local influenceInfo = itemLib.influenceInfo
 
 local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(self, build)
@@ -251,7 +253,7 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
     self.controls.importCodeHeader.shown = function()
         return self.charImportMode == "GETACCOUNTNAME" and self.activeImportSection ~= 1 and self.activeImportSection ~= 2
     end
-    self.controls.importCodeNoteLabel = new("LabelControl", { "TOPLEFT", self.controls.importCodeHeader, "BOTTOMLEFT" }, 0, 4, 720, 14, "^7Note: e.g. ^x4080FFhttps://bytebin.lucko.me/XXXXXX^7, ^x4080FFhttps://www.lastepochtools.com/planner/XXXXXX^7,\n^x4080FFhttps://www.maxroll.gg/last-epoch/planner/XXXXX^7, or ^x4080FF!XXXXX...^7 (offline code)")
+    self.controls.importCodeNoteLabel = new("LabelControl", { "TOPLEFT", self.controls.importCodeHeader, "BOTTOMLEFT" }, 0, 4, 720, 14, "^7Note: e.g. ^x4080FFhttps://bytebin.lucko.me/XXXXXX^7,\n^x4080FFhttps://www.maxroll.gg/last-epoch/planner/XXXXX^7, or ^x4080FF!XXXXX...^7 (offline code)")
     self.controls.importCodeNoteLabel.shown = function()
         return self.charImportMode == "GETACCOUNTNAME" and self.activeImportSection ~= 1 and self.activeImportSection ~= 2
     end
@@ -287,41 +289,6 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
                 self.importCodeSite = j
                 if buf ~= urlText then
                     self.controls.importCodeIn:SetText(urlText, false)
-                end
-                if buildSites.websiteList[j].id == "lastepochtools" then
-                    -- Extract XOR key (short lowercase hex) and encrypted data (long base64).
-                    -- Variable names are random per-page; match by value shape, not by name.
-                    local keyHex
-                    for candidate in buf:gmatch("\tvar%s+[%w_]+%s*=%s*'([0-9a-f]+)'") do
-                        if #candidate >= 8 and #candidate <= 64 then
-                            keyHex = candidate
-                            break
-                        end
-                    end
-                    local b64
-                    for candidate in buf:gmatch("\tvar%s+[%w_]+%s*=%s*'([A-Za-z0-9+/=]+)'") do
-                        if #candidate >= 200 then
-                            b64 = candidate
-                            break
-                        end
-                    end
-                    if keyHex and b64 then
-                        local keyBytes = {}
-                        for hex in keyHex:gmatch("..") do
-                            table.insert(keyBytes, tonumber(hex, 16))
-                        end
-                        local keyLen = #keyBytes
-                        local csvText = common.base64.decode(b64)
-                        local chars = {}
-                        local i = 0
-                        for numStr in csvText:gmatch("[^,]+") do
-                            local byte = tonumber(numStr) or 0
-                            local keyByte = keyBytes[(i % keyLen) + 1]
-                            table.insert(chars, string.char(bit.bxor(byte, keyByte)))
-                            i = i + 1
-                        end
-                        self.importCodeXML = table.concat(chars)
-                    end
                 end
                 return
             end
@@ -395,6 +362,11 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
                 self:DownloadMaxrollPlannerBuild(self.controls.importCodeIn.buf)
                 return
             end
+            if selectedWebsite.id == "lastepochtools" then
+                self.importCodeDetail = colorCodes.NEGATIVE .. "Import failed: lastepochtools.com import is no longer supported (site changed)"
+                self.importCodeValid = false
+                return
+            end
             self.importCodeFetching = true
             buildSites.DownloadBuild(self.controls.importCodeIn.buf, selectedWebsite, function(isSuccess, data)
                 self.importCodeFetching = false
@@ -403,6 +375,15 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
                     self.importCodeValid = false
                 else
                     importCodeHandle(data)
+                    if not self.importCodeXML then
+                        if data:find("Just a moment", 1, true) or data:find("Enable JavaScript and cookies", 1, true) then
+                            self.importCodeDetail = colorCodes.NEGATIVE .. "Import failed: site requires browser authentication (Cloudflare)"
+                        elseif self.importCodeDetail == "" or not self.importCodeValid then
+                            self.importCodeDetail = colorCodes.NEGATIVE .. "Import failed: could not extract build data from page"
+                        end
+                        self.importCodeValid = false
+                        return
+                    end
                     importSelectedBuild()
                 end
             end)
@@ -668,7 +649,7 @@ function ImportTabClass:DownloadMaxrollPlannerBuild(url)
             return
         end
 
-        local jsonData, parseErr = processJson(response.body)
+        local jsonData, _, parseErr = dkjson.decode(response.body)
         if parseErr or type(jsonData) ~= "table" then
             self.importCodeDetail = colorCodes.NEGATIVE .. "Failed to parse maxroll response"
             return
@@ -680,7 +661,7 @@ function ImportTabClass:DownloadMaxrollPlannerBuild(url)
             return
         end
 
-        local buildData, parseErr2 = processJson(profile.data)
+        local buildData, _, parseErr2 = dkjson.decode(profile.data)
         if parseErr2 or type(buildData) ~= "table" or not buildData.profiles then
             self.importCodeDetail = colorCodes.NEGATIVE .. "Failed to parse maxroll build data"
             return
