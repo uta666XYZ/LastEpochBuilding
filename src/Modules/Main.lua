@@ -1178,7 +1178,7 @@ function main:OpenAboutPopup(helpSectionIndex)
 		controls.changelog.sectionHeights = helpSectionHeights
 	end)
 	controls.changelog = new("TextListControl", nil, 0, 103, popupWidth - 20, 515, {{ x = 1, align = "LEFT" }, { x = 135, align = "LEFT" }}, helpSectionIndex and helpList or changeList, helpSectionIndex and helpSectionHeights or changeVersionHeights)
-	if helpSectionIndex then
+	if helpSectionIndex and helpSections[helpSectionIndex] then
 		controls.changelog.controls.scrollBar.offset = helpSections[helpSectionIndex].height * textSize
 	end
 	self:OpenPopup(popupWidth, 628, "About", controls)
