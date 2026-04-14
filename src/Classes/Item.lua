@@ -1121,15 +1121,6 @@ function ItemClass:BuildModList()
 	end
 	for _, modLine in ipairs(self.implicitModLines) do
 		processModLine(modLine)
-		if modLine.modList then
-			for _, mod in ipairs(modLine.modList) do
-				if mod.name == "Evasion" then
-					ConPrintf("[EVASION-MOD] item=%s implicit line=%s extra=%s modName=%s modType=%s modValue=%s", tostring(self.title or self.baseName), tostring(modLine.line), tostring(modLine.extra), tostring(mod.name), tostring(mod.type), tostring(mod.value))
-				end
-			end
-		else
-			ConPrintf("[EVASION-MOD] item=%s implicit line=%s modList=nil extra=%s", tostring(self.title or self.baseName), tostring(modLine.line), tostring(modLine.extra))
-		end
 	end
 	for _, modLine in ipairs(self.explicitModLines) do
 		processModLine(modLine)
