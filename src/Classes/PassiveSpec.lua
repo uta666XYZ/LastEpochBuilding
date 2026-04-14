@@ -582,7 +582,7 @@ function PassiveSpecClass:BuildPathFromNode(root)
 				-- Gate not satisfied: node does not have enough allocated points to unlock 'other'
 			elseif mReq and mReq > 0 and mPts < mReq then
 				-- Mastery requirement not satisfied: not enough total points in this mastery
-			elseif node.type == "AscendClassStart" and other.mastery and other.mastery ~= 0 and basePts < 20 then
+			elseif other.mastery and other.mastery ~= 0 and not other.isAscendancyStart and basePts < 20 then
 				-- Cannot allocate subclass nodes without 20 base class passive points
 			elseif other.pathDist and node.type ~= "Mastery" and other.type ~= "ClassStart" and other.type ~= "AscendClassStart" and other.pathDist > curDist and (node.ascendancyName == other.ascendancyName or (curDist == 1 and not other.ascendancyName)) then
 				-- The shortest path to the other node is through the current node
