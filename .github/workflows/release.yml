@@ -44,6 +44,21 @@ jobs:
                 # Delete existing draft release if present (from a failed previous run)
                 gh release delete "v$NEXT_VERSION" --yes 2>/dev/null || true
                 gh release create --target dev "v$NEXT_VERSION" --title "Release $NEXT_VERSION" --draft --notes-file temp_notes.md
+            - name: Compile Lua to bytecode (LuaJIT 2.0.5)
+              run: |
+                wget -q https://luajit.org/download/LuaJIT-2.0.5.tar.gz
+                tar -xzf LuaJIT-2.0.5.tar.gz
+                cd LuaJIT-2.0.5
+                make -j$(nproc) BUILDMODE=static 2>/dev/null
+                sudo make install 2>/dev/null
+                cd ..
+                find src -name "*.lua" \
+                  ! -path "*/Export/*" \
+                  ! -path "*/TreeData/*" \
+                  ! -path "*/Data/*" | while read f; do
+                  luajit -b "$f" "$f.tmp" && mv "$f.tmp" "$f" || true
+                done
+                echo "Lua bytecode compilation complete"
             - name: Update manifest.xml SHA1s
               run: python3 update_manifest.py --quiet --in-place
             - name: Update manifest version and branch
