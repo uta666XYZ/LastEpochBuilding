@@ -102,6 +102,12 @@ local options = {
 	{ var = "conditionHaveLightningAegis", type = "check", label = "Do you have Lightning Aegis?", tooltip = "Check if you have the Lightning Aegis buff active (Runemaster).\nEnables 'while you have lightning aegis' modifiers.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:HaveLightningAegis", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
+	{ var = "conditionStandingOnGlyphOfDominion", type = "check", label = "Standing on Glyph of Dominion?", tooltip = "Check if you are standing on your Glyph of Dominion (Runemaster).\nEnables 'while standing on your Glyph of Dominion' modifiers.", apply = function(val, modList, enemyModList)
+		modList:NewMod("Condition:StandingOnGlyphOfDominion", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
+	end },
+	{ var = "multiplierArcaneMomentumStack", type = "count", label = "Arcane Momentum Stacks:", tooltip = "Number of active Arcane Momentum stacks (Runemaster).\nEach stack grants increased cast speed.", apply = function(val, modList, enemyModList)
+		modList:NewMod("Multiplier:ArcaneMomentumStack", "BASE", val, "Config", { type = "Condition", var = "Combat" })
+	end },
 	{ var = "conditionOnConsecratedGround", type = "check", label = "Are you on Consecrated Ground?", tooltip = "Check if you are standing on Consecrated Ground (Paladin).", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:OnConsecratedGround", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },

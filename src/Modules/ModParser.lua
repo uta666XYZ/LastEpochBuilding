@@ -405,6 +405,9 @@ local modTagList = {
 	["after using a potion"] = { tag = { type = "Condition", var = "UsedPotionRecently" } },
 	["per forged weapon"] = { tag = { type = "Multiplier", var = "ForgedWeapon" } },
 	["while you have a forged weapon"] = { tag = { type = "Condition", var = "HaveForgedWeapon" } },
+	-- Runemaster: Glyph of Dominion / Arcane Momentum
+	["while standing on your glyph of dominion"] = { tag = { type = "Condition", var = "StandingOnGlyphOfDominion" } },
+	["per arcane momentum stack"] = { tag = { type = "Multiplier", var = "ArcaneMomentumStack" } },
 }
 
 for i,stat in ipairs(LongAttributes) do
