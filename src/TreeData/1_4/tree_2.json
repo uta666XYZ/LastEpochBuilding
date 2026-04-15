@@ -3726,7 +3726,7 @@
       "notScalingStats": [],
       "noScalingPointThreshold": 0,
       "in": ["an0my-10", "an0my-12"],
-      "reqPoints": [1, 3],
+      "reqPoints": [1, 1],
       "out": ["an0my-10", "an0my-14"],
       "description": [
         "{Time Rot} inflicted by Anomaly lasts longer and has additional Void Penetration"
