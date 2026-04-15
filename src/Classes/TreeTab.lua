@@ -823,7 +823,7 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 			local rootNode = rootNodeId and spec.nodes[rootNodeId] or nil
 			local iconName = rootNode and rootNode.icon or nil
 			if iconName then
-				local squareName = iconName:gsub("%-root$", "")
+				local squareName = iconName:gsub("%-root$", ""):gsub("%-hex$", "")
 				local cacheKey = "sqicon_" .. squareName
 				if not self.badgeHandles[cacheKey] then
 					self.badgeHandles[cacheKey] = NewImageHandle()
@@ -859,31 +859,17 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 				DrawImage(frameLockedHandle, slotCenterX - fs2, slotY - fs2, frameSizeLocked, frameSizeLocked)
 			end
 
-			-- Level badge (centered on skill icon)
-			if sk.level then
+			-- Level badge (centered on skill icon, hidden when unlocked)
+			if sk.level and not isUnlocked then
 				local lvBadgeW = 38
 				local lvBadgeH = 32
 				local lvBadgeX = slotCenterX - lvBadgeW / 2
 				local lvBadgeY = slotY - lvBadgeH / 2
-				if isUnlocked then
-					SetDrawColor(1, 1, 1)
-					DrawImage(levelBadgeHandle, lvBadgeX, lvBadgeY, lvBadgeW, lvBadgeH)
-				else
-					SetDrawColor(0.6, 0.6, 0.6)
-					DrawImage(levelLockedHandle, lvBadgeX, lvBadgeY, lvBadgeW, lvBadgeH)
-				end
+				SetDrawColor(0.6, 0.6, 0.6)
+				DrawImage(levelLockedHandle, lvBadgeX, lvBadgeY, lvBadgeW, lvBadgeH)
 				SetDrawColor(1, 1, 1)
 				DrawString(lvBadgeX + lvBadgeW / 2, lvBadgeY + lvBadgeH / 2 - 5, "CENTER_X", 10, "VAR", "^7" .. tostring(sk.level))
 			end
-
-			-- Skill name below frame
-			local skillName = (sk.label or sk.name or ""):upper()
-			if isUnlocked then
-				SetDrawColor(1, 1, 1)
-			else
-				SetDrawColor(0.4, 0.4, 0.4)
-			end
-			DrawString(slotCenterX, slotY + fs2 + 4, "CENTER_X", 9, "VAR", skillName)
 		end
 	end
 
