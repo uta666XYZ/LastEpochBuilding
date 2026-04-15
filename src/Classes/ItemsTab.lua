@@ -734,6 +734,13 @@ function ItemsTabClass:Load(xml, dbFileName)
 					slot.controls.activate.state = slot.active
 				end
 			end
+		elseif node.elem == "BlessingFracs" then
+			self.blessingFracs = self.blessingFracs or {}
+			for _, child in ipairs(node) do
+				if child.elem == "BlessingFrac" and child.attrib.timeline then
+					self.blessingFracs[child.attrib.timeline] = tonumber(child.attrib.frac) or 1.0
+				end
+			end
 		elseif node.elem == "ItemSet" then
 			local itemSet = self:NewItemSet(tonumber(node.attrib.id))
 			itemSet.title = node.attrib.title
@@ -812,6 +819,14 @@ function ItemsTabClass:Save(xml)
 			end
 		end
 		t_insert(xml, child)
+	end
+	-- Save blessing roll fractions so +/- button positions are restored on load
+	if self.blessingFracs and next(self.blessingFracs) then
+		local fracChild = { elem = "BlessingFracs", attrib = {} }
+		for tl, frac in pairs(self.blessingFracs) do
+			t_insert(fracChild, { elem = "BlessingFrac", attrib = { timeline = tl, frac = tostring(frac) } })
+		end
+		t_insert(xml, fracChild)
 	end
 end
 
