@@ -102,6 +102,12 @@ local options = {
 	{ var = "conditionHaveLightningAegis", type = "check", label = "Do you have Lightning Aegis?", tooltip = "Check if you have the Lightning Aegis buff active (Runemaster).\nEnables 'while you have lightning aegis' modifiers.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:HaveLightningAegis", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
+	{ var = "conditionStandingOnGlyphOfDominion", type = "check", label = "Standing on Glyph of Dominion?", tooltip = "Check if you are standing on your Glyph of Dominion (Runemaster).\nEnables 'while standing on your Glyph of Dominion' modifiers.", apply = function(val, modList, enemyModList)
+		modList:NewMod("Condition:StandingOnGlyphOfDominion", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
+	end },
+	{ var = "multiplierArcaneMomentumStack", type = "count", label = "Arcane Momentum Stacks:", tooltip = "Number of active Arcane Momentum stacks (Runemaster).\nEach stack grants increased cast speed.", apply = function(val, modList, enemyModList)
+		modList:NewMod("Multiplier:ArcaneMomentumStack", "BASE", val, "Config", { type = "Condition", var = "Combat" })
+	end },
 	{ var = "conditionOnConsecratedGround", type = "check", label = "Are you on Consecrated Ground?", tooltip = "Check if you are standing on Consecrated Ground (Paladin).", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:OnConsecratedGround", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
@@ -416,20 +422,25 @@ local options = {
 		enemyModList:NewMod("Condition:Ignited", "FLAG", val >= 1, "Config", { type = "Condition", var = "Effective" })
 	end },
 	{ var = "multiplierEnemyShockStacks", type = "count", label = "Enemy Shock Stacks:", implyCond = "Shocked", apply = function(val, modList, enemyModList)
+		val = math.min(val, 10)
 		enemyModList:NewMod("Multiplier:ShockStack", "BASE", val, "Config", { type = "Condition", var = "Effective" })
 		enemyModList:NewMod("Condition:Shocked", "FLAG", val >= 1, "Config", { type = "Condition", var = "Effective" })
 	end },
 	{ var = "multiplierEnemyChillStacks", type = "count", label = "Enemy Chill Stacks:", implyCond = "Chilled", apply = function(val, modList, enemyModList)
+		val = math.min(val, 3)
 		enemyModList:NewMod("Multiplier:ChillStack", "BASE", val, "Config", { type = "Condition", var = "Effective" })
 		enemyModList:NewMod("Condition:Chilled", "FLAG", val >= 1, "Config", { type = "Condition", var = "Effective" })
 	end },
 	{ var = "multiplierEnemyTimeRotStacks", type = "count", label = "Enemy Time Rot Stacks:", apply = function(val, modList, enemyModList)
+		val = math.min(val, 12)
 		enemyModList:NewMod("Multiplier:TimeRotStack", "BASE", val, "Config", { type = "Condition", var = "Effective" })
 	end },
 	{ var = "multiplierEnemyDoomStacks", type = "count", label = "Enemy Doom Stacks:", apply = function(val, modList, enemyModList)
+		val = math.min(val, 4)
 		enemyModList:NewMod("Multiplier:DoomStack", "BASE", val, "Config", { type = "Condition", var = "Effective" })
 	end },
 	{ var = "multiplierEnemySlowStacks", type = "count", label = "Enemy Slow Stacks:", implyCond = "Slowed", apply = function(val, modList, enemyModList)
+		val = math.min(val, 3)
 		enemyModList:NewMod("Multiplier:SlowStack", "BASE", val, "Config", { type = "Condition", var = "Effective" })
 		enemyModList:NewMod("Condition:Slowed", "FLAG", val >= 1, "Config", { type = "Condition", var = "Effective" })
 	end },

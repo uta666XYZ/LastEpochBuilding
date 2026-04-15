@@ -556,10 +556,11 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 			return
 		end
 		local frac = rollFrac or 1.0
-		local val = blessEntry.minVal + frac * (blessEntry.maxVal - blessEntry.minVal)
 		local function resolveImpl(impl)
-			return impl:gsub("%([0-9.]+%-[0-9.]+%)", function()
-				return string.format("%d", math.floor(val + 0.5))
+			return impl:gsub("%([0-9.]+%-[0-9.]+%)", function(range)
+				local implMin, implMax = range:match("%(([0-9.]+)%-([0-9.]+)%)")
+				local implVal = tonumber(implMin) + frac * (tonumber(implMax) - tonumber(implMin))
+				return string.format("%d", math.floor(implVal + 0.5))
 			end)
 		end
 		local implCount = blessEntry.implCount or 1
