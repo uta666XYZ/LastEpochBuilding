@@ -54,6 +54,7 @@ QWEN.md
 .claude/active_session.md
 .claude/session-hook.log
 .claude/command-log.txt
+.claude/session_notes.md
 
 
 # IDE run configurations
