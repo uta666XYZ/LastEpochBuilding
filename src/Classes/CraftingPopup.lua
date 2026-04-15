@@ -460,7 +460,7 @@ function CraftingPopupClass:BuildControls()
 	controls.catBasic.locked = function() return self_ref.selectedBaseCategory == "basic" end
 
 	controls.catUnique = new("ButtonControl", {"LEFT", controls.catBasic, "RIGHT"}, 5, 0, 80, 20, function()
-		return self_ref.selectedBaseCategory == "unique" and "^7Unique" or "^8Unique"
+		return colorCodes.UNIQUE .. "Unique"
 	end, function()
 		self_ref.selectedBaseCategory = "unique"
 		self_ref:RefreshBaseList()
@@ -469,7 +469,7 @@ function CraftingPopupClass:BuildControls()
 	controls.catUnique.locked = function() return self_ref.selectedBaseCategory == "unique" end
 
 	controls.catSet = new("ButtonControl", {"LEFT", controls.catUnique, "RIGHT"}, 5, 0, 80, 20, function()
-		return self_ref.selectedBaseCategory == "set" and "^7Set" or "^8Set"
+		return colorCodes.SET .. "Set"
 	end, function()
 		self_ref.selectedBaseCategory = "set"
 		self_ref:RefreshBaseList()
@@ -982,19 +982,23 @@ function CraftingPopupClass:RefreshBaseList()
 	elseif self.selectedBaseCategory == "unique" then
 		local bases = self.build.data.itemBaseLists[typeName]
 		if bases then
+			local myClassBit = self:GetCurrentClassReqBit()
 			for uid, unique in pairs(self.build.data.uniques) do
 				for _, baseEntry in ipairs(bases) do
 					if baseEntry.base.baseTypeID == unique.baseTypeID and
 					   baseEntry.base.subTypeID == unique.subTypeID then
-						local isWW = unique.name and unique.name:find("an Erased ") and true or false
-						t_insert(list, {
-							label = unique.name, name = unique.name,
-							base = baseEntry.base, baseName = baseEntry.name,
-							type = typeName, displayType = baseEntry.base.type or "",
-							rarity = isWW and "WWUNIQUE" or "UNIQUE",
-							category = isWW and "ww" or "unique",
-							uniqueData = unique, uniqueID = uid,
-						})
+						local classReq = baseEntry.base.classReq or 0
+						if classReq == 0 or myClassBit == 0 or bit.band(classReq, myClassBit) ~= 0 then
+							local isWW = unique.name and unique.name:find("an Erased ") and true or false
+							t_insert(list, {
+								label = unique.name, name = unique.name,
+								base = baseEntry.base, baseName = baseEntry.name,
+								type = typeName, displayType = baseEntry.base.type or "",
+								rarity = isWW and "WWUNIQUE" or "UNIQUE",
+								category = isWW and "ww" or "unique",
+								uniqueData = unique, uniqueID = uid,
+							})
+						end
 						break
 					end
 				end
@@ -1004,17 +1008,21 @@ function CraftingPopupClass:RefreshBaseList()
 	elseif self.selectedBaseCategory == "set" then
 		local bases = self.build.data.itemBaseLists[typeName]
 		if bases then
+			local myClassBit = self:GetCurrentClassReqBit()
 			for sid, setItem in pairs(self.setItems) do
 				for _, baseEntry in ipairs(bases) do
 					if baseEntry.base.baseTypeID == setItem.baseTypeID and
 					   baseEntry.base.subTypeID == setItem.subTypeID then
-						t_insert(list, {
-							label = setItem.name, name = setItem.name,
-							base = baseEntry.base, baseName = baseEntry.name,
-							type = typeName, displayType = baseEntry.base.type or "",
-							rarity = "SET", category = "set",
-							setData = setItem, setID = sid,
-						})
+						local classReq = baseEntry.base.classReq or 0
+						if classReq == 0 or myClassBit == 0 or bit.band(classReq, myClassBit) ~= 0 then
+							t_insert(list, {
+								label = setItem.name, name = setItem.name,
+								base = baseEntry.base, baseName = baseEntry.name,
+								type = typeName, displayType = baseEntry.base.type or "",
+								rarity = "SET", category = "set",
+								setData = setItem, setID = sid,
+							})
+						end
 						break
 					end
 				end
@@ -1037,6 +1045,13 @@ function CraftingPopupClass:RefreshBaseList()
 			if not matched and (entry.rarity == "WWUNIQUE" or entry.rarity == "WWLEGENDARY") then
 				if query == "ww" or ("weavers will"):find(query, 1, true) or ("weaver's will"):find(query, 1, true) then
 					matched = true
+				end
+			end
+			-- Match basic item implicit texts
+			if not matched and entry.category == "basic" and entry.base and entry.base.implicits then
+				for _, implText in ipairs(entry.base.implicits) do
+					local cleaned = cleanImplicitText(implText)
+					if cleaned and cleaned:lower():find(query, 1, true) then matched = true; break end
 				end
 			end
 			-- Match unique/ww mod texts and affix field
@@ -1216,6 +1231,8 @@ function CraftingPopupClass:RefreshAffixDropdowns()
 		wwPool = bt and data.wwMods and data.wwMods[tostring(bt)]
 		wwClassBit = self:GetWWClassBit()
 	end
+	-- classSpecificity bit for non-WW items (game encoding: Primalist=2,Mage=4,Sentinel=8,Acolyte=16,Rogue=32)
+	local playerCsBit = self:GetCurrentClassReqBit() * 2
 
 	local prefixGroups = {}
 	local suffixGroups = {}
@@ -1226,6 +1243,10 @@ function CraftingPopupClass:RefreshAffixDropdowns()
 				local cs = wwPool[tostring(mod.statOrderKey)]
 				if cs == nil then goto continue end
 				if cs ~= 0 and wwClassBit ~= 0 and bit.band(cs, wwClassBit) == 0 then goto continue end
+			else
+				-- Filter class-specific affixes for non-WW items
+				local cs = mod.classSpecificity or 0
+				if cs ~= 0 and playerCsBit ~= 0 and bit.band(cs, playerCsBit) == 0 then goto continue end
 			end
 			local groups = mod.type == "Prefix" and prefixGroups or (mod.type == "Suffix" and suffixGroups or nil)
 			if groups then
@@ -1383,11 +1404,15 @@ function CraftingPopupClass:RefreshIdolAffixDropdowns()
 		return s:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
 	end
 
-	-- ModIdol classSpecificity uses game encoding: 2=Primalist,4=Mage,8=Sentinel,16=Acolyte,32=Rogue
+	-- ModIdol classSpecificity encoding:
+	--   bit 0 (value 1): "available on small/universal idols" flag — NOT a class bit
+	--   bits 1-5 (values 2,4,8,16,32): class bits — 2=Primalist,4=Mage,8=Sentinel,16=Acolyte,32=Rogue
 	-- idol classReq (from bases) uses LEB encoding: 1=Primalist,2=Mage,4=Sentinel,8=Acolyte,16=Rogue
 	-- Conversion: game_cs_bit = idol_classReq * 2
 	local idolClassReq = self.editBaseEntry and self.editBaseEntry.base and self.editBaseEntry.base.classReq or 0
-	local idolCsBit = idolClassReq * 2
+	-- For universal idols (classReq=0), fall back to the player's current class bit
+	local effectiveClassReq = idolClassReq ~= 0 and idolClassReq or self:GetCurrentClassReqBit()
+	local idolCsBit = effectiveClassReq * 2
 
 	local isOmen = self:IsOmenIdol()
 	-- Large idol baseTypeIDs: 29=Grand, 30=Large, 31=Ornate, 32=Huge, 33=Adorned
@@ -1401,10 +1426,12 @@ function CraftingPopupClass:RefreshIdolAffixDropdowns()
 		end
 		if not btMatch then return false end
 		local cs = mod.classSpecificity or 0
-		return cs == 0 or idolCsBit == 0 or bit.band(cs, idolCsBit) ~= 0
+		-- Strip bit 0 (small-idol availability flag) before class comparison
+		local classMask = bit.band(cs, 0xFFFFFFFE)
+		return classMask == 0 or idolCsBit == 0 or bit.band(classMask, idolCsBit) ~= 0
 	end
 
-	-- Omen: single-stat affix (no mod[2]) with cs == idolCsBit exactly, canRollOn intersects large bts
+	-- Omen: single-stat affix (no mod[2]) with classMask == idolCsBit exactly, canRollOn intersects large bts
 	local function canRollOnOmen(mod)
 		if not mod.canRollOn then return false end
 		if mod[2] then return false end  -- skip dual-stat (multi) affixes
@@ -1414,8 +1441,9 @@ function CraftingPopupClass:RefreshIdolAffixDropdowns()
 		end
 		if not hasLarge then return false end
 		local cs = mod.classSpecificity or 0
-		-- omen: cs must equal idolCsBit exactly (pure class only, no universal cs==0)
-		return cs == idolCsBit
+		-- Strip bit 0 (small-idol flag), then require exact class match (no universal cs==0)
+		local classMask = bit.band(cs, 0xFFFFFFFE)
+		return classMask ~= 0 and classMask == idolCsBit
 	end
 
 	-- prefix / suffix from general section (+ weaver extras if applicable)
