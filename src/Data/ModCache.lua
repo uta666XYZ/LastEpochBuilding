@@ -1334,7 +1334,7 @@ c["+1 Frailty Stacks"]={{},"  Stacks "}
 c["+1 Frailty Stacks Applied"]={{},"  Stacks Applied "}
 c["+1 Frailty Stacks on Feather Burst"]={{},"  Stacks on Feather Burst "}
 c["+1 Frailty Stacks on Screech"]={{},"  Stacks on Screech "}
-c["+1 Freeze Rate Per Int"]={{}," Freeze Rate Per Int "}
+c["+1 Freeze Rate Per Int"]={{[1]={[1]={stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="FreezeRate",type="BASE",value=1}},nil}
 c["+1 Freeze Rate Per Level"]={{}," Freeze Rate  "}
 c["+1 Freeze Rate per 1% Cold Res"]={{}," Freeze Rate per 1%  Res "}
 c["+1 Freezing Grasp Damage per Vitality"]={{[1]={[1]={stat="Vit",type="PerStat"},flags=0,keywordFlags=0,name="Damage",type="BASE",value=1}}," Freezing Grasp   "}
@@ -1492,8 +1492,8 @@ c["+1 Spell Damage Per 20% Freeze Rate Multiplier"]={{[1]={flags=0,keywordFlags=
 c["+1 Spell Damage Per 3 Melee Damage"]={{[1]={flags=0,keywordFlags=768,name="Damage",type="BASE",value=1}},"   Per 3  Damage "}
 c["+1 Spell Damage per 10 Max Mana for Doom Pulse"]={{[1]={[1]={skillName="Doom Pulse",type="SkillName"},flags=0,keywordFlags=256,name="Damage",type="BASE",value=1}},"   per 10 Max Mana for  "}
 c["+1 Spell Damage per 2 Strength"]={{[1]={[1]={div=2,stat="Str",type="PerStat"},flags=0,keywordFlags=256,name="Damage",type="BASE",value=1}},nil}
-c["+1 Spell Damage per 20 Max Mana"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=1}},"   per 20 Max Mana "}
-c["+1 Spell Damage per 20 max mana"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=1}},"   per 20 max mana "}
+c["+1 Spell Damage per 20 Max Mana"]={{[1]={[1]={div=20,stat="Mana",type="PerStat"},flags=0,keywordFlags=256,name="Damage",type="BASE",value=1}},nil}
+c["+1 Spell Damage per 20 max mana"]={{[1]={[1]={div=20,stat="Mana",type="PerStat"},flags=0,keywordFlags=256,name="Damage",type="BASE",value=1}},nil}
 c["+1 Spell Damage per 20% increased Healing Effectiveness"]={{[1]={[1]={skillName="Healing",type="SkillName"},flags=0,keywordFlags=256,name="Damage",type="BASE",value=1}},"   per 20% increased  Effectiveness "}
 c["+1 Spell Damage per 3 Melee Damage"]={{[1]={flags=0,keywordFlags=768,name="Damage",type="BASE",value=1}},"   per 3  Damage "}
 c["+1 Spell Damage per 30 Ward Consumed"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=1}},"   per 30 Ward Consumed "}
@@ -1547,7 +1547,7 @@ c["+1 Ward Decay Threshold Per Intelligence"]={{[1]={[1]={stat="Int",type="PerSt
 c["+1 Ward Gained Per 3 Int Per Second"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=1}},"  Gained Per 3 Int Per Second "}
 c["+1 Ward Granted"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=1}},"  Granted "}
 c["+1 Ward Granted per 25 Intelligence"]={{[1]={[1]={div=25,stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="Ward",type="BASE",value=1}},"  Granted  "}
-c["+1 Ward Per Second Per 10 Max Mana"]={{[1]={flags=0,keywordFlags=0,name="WardPerSecond",type="BASE",value=1}},"  Per 10 Max Mana "}
+c["+1 Ward Per Second Per 10 Max Mana"]={{[1]={[1]={div=10,stat="Mana",type="PerStat"},flags=0,keywordFlags=0,name="WardPerSecond",type="BASE",value=1}},nil}
 c["+1 Ward Per Second Per 3 Intelligence While Channeling"]={{[1]={[1]={div=3,stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="WardPerSecond",type="BASE",value=1}},"   While Channeling "}
 c["+1 Ward Per Second Per 5% Uncapped Resistances"]={{[1]={flags=0,keywordFlags=0,name="WardPerSecond",type="BASE",value=1}},"  Per 5% Uncapped Resistances "}
 c["+1 Ward Per Second Per Fire Aura"]={{[1]={[1]={skillName="Fire Aura",type="SkillName"},flags=0,keywordFlags=0,name="WardPerSecond",type="BASE",value=1}},"  Per  "}
@@ -1714,7 +1714,7 @@ c["+1% Melee Health Leech"]={{[1]={flags=0,keywordFlags=512,name="Life",type="BA
 c["+1% Minion Critical Multiplier per 3% Crit Avoidance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=16,name="CritMultiplier",type="BASE",value=1}}}},"   per 3% Crit Aance "}
 c["+1% Minion Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="CritChance",type="BASE",value=1}}}},nil}
 c["+1% Minion Critical Strike Chance per player Attunement"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={actor="parent",stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="CritChance",type="BASE",value=1}}}},nil}
-c["+1% More Damage per 25 max mana"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=1}},"  per 25 max mana "}
+c["+1% More Damage per 25 max mana"]={{[1]={[1]={div=25,stat="Mana",type="PerStat"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=1}},nil}
 c["+1% More Damage per Dexterity"]={{[1]={[1]={stat="Dex",type="PerStat"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=1}},nil}
 c["+1% Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="BASE",value=1}},nil}
 c["+1% Movement Speed per Rogue Absorbed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="BASE",value=1}},"  per Rogue Absorbed "}
@@ -3450,7 +3450,7 @@ c["+2 Armour Per Attunement Per Stack"]={{[1]={[1]={stat="Att",type="PerStat"},f
 c["+2 Armour per Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="Armour",type="BASE",value=2}},nil}
 c["+2 Attunement"]={{[1]={flags=0,keywordFlags=0,name="Att",type="BASE",value=2}},nil}
 c["+2 Black Arrows Dropped by Dark Quiver"]={{}," Black Arrows Dropped by  "}
-c["+2 Block Effectiveness Per Dex"]={{}," Block Effectiveness Per Dex "}
+c["+2 Block Effectiveness Per Dex"]={{[1]={[1]={stat="Dex",type="PerStat"},flags=0,keywordFlags=0,name="BlockEffectiveness",type="BASE",value=2}},nil}
 c["+2 Charge On Melee Hit"]={{}," Charge  "}
 c["+2 Charge for Void Cleave"]={{}," Charge for  "}
 c["+2 Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="BASE",value=2}},nil}
@@ -3675,7 +3675,7 @@ c["+2% Falcon Increased Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=512,
 c["+2% Feather Storm Damage Bonus Per Second"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=2}}," Feather Storm  Bonus Per Second "}
 c["+2% Fire Damage per Second"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="MORE",value=2}},"  per Second "}
 c["+2% Fire Penetration"]={{[1]={flags=0,keywordFlags=0,name="FirePenetration",type="BASE",value=2}},nil}
-c["+2% Fire Penetration Per Int With Staff"]={{[1]={flags=0,keywordFlags=0,name="FirePenetration",type="BASE",value=2}},"  Per Int With Staff "}
+c["+2% Fire Penetration Per Int With Staff"]={{[1]={[1]={stat="Int",type="PerStat"},[2]={type="Condition",var="UsingStaff"},flags=0,keywordFlags=0,name="FirePenetration",type="BASE",value=2}},nil}
 c["+2% Fire Penetration with Ignite "]={{[1]={[1]={skillName="Ignite",type="SkillName"},flags=0,keywordFlags=0,name="FirePenetration",type="BASE",value=2}},"  with   "}
 c["+2% Fire Resistance"]={{[1]={flags=0,keywordFlags=0,name="FireResist",type="BASE",value=2}},nil}
 c["+2% Fissure Direct Damage bonus per Second"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=2}}," Fissure Direct  bonus per Second "}
@@ -6088,7 +6088,7 @@ c["+5 Stun Avoidance Per Attunement"]={{}," Stun Aance  "}
 c["+5 Throwing Fire Damage"]={{[1]={flags=0,keywordFlags=1024,name="FireDamage",type="BASE",value=5}},nil}
 c["+5 Vitality"]={{[1]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=5}},nil}
 c["+5 Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="BASE",value=5}},nil}
-c["+5 Ward Decay Threshold Per Int"]={{[1]={flags=0,keywordFlags=0,name="WardDecayThreshold",type="BASE",value=5}},"  Per Int "}
+c["+5 Ward Decay Threshold Per Int"]={{[1]={[1]={stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="WardDecayThreshold",type="BASE",value=5}},nil}
 c["+5 Ward Gained On Block"]={{[1]={flags=0,keywordFlags=0,name="WardOnBlock",type="BASE",value=5}},nil}
 c["+5 Ward On Crit"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=5}},"  On Crit "}
 c["+5 Ward On Spirit Thorns Cast"]={{[1]={[1]={skillName="Spirit Thorns",type="SkillName"},flags=0,keywordFlags=0,name="Ward",type="BASE",value=5}},"  On  Cast "}
@@ -7623,9 +7623,9 @@ c["-1 Stacks Required To Cast Lightning"]={{}," Stacks Required To Cast  "}
 c["-1% Damage Over Time Taken"]={{[1]={flags=0,keywordFlags=0,name="DamageTakenOverTime",type="BASE",value=-1}},nil}
 c["-1% Damage Taken While Moving"]={{[1]={[1]={type="Condition",var="Moving"},flags=0,keywordFlags=0,name="DamageTaken",type="BASE",value=-1}},nil}
 c["-1% Elemental Resistances"]={{[1]={flags=0,keywordFlags=0,name="FireResist",type="BASE",value=-1},[2]={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=-1},[3]={flags=0,keywordFlags=0,name="ColdResist",type="BASE",value=-1}},nil}
-c["-1% Enemy Poison Resistance Per Int"]={{[1]={flags=0,keywordFlags=0,name="PoisonResist",type="BASE",value=-1}}," Enemy  Per Int "}
+c["-1% Enemy Poison Resistance Per Int"]={{[1]={[1]={stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="PoisonResist",type="BASE",value=-1}}," Enemy  "}
 c["-1% Less Damage Taken from Ignited Shocked or Chilled Enemies"]={{[1]={[1]={skillName="Ignite",type="SkillName"},flags=0,keywordFlags=0,name="DamageTaken",type="MORE",value=1}},"  from d Shocked or Chilled Enemies "}
-c["-1% Poison Resistance Per Int"]={{[1]={flags=0,keywordFlags=0,name="PoisonResist",type="BASE",value=-1}},"  Per Int "}
+c["-1% Poison Resistance Per Int"]={{[1]={[1]={stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="PoisonResist",type="BASE",value=-1}},nil}
 c["-1.5 Cooldown Duration (seconds)"]={{[1]={flags=0,keywordFlags=0,name="CooldownRecovery",type="BASE",value=-1.5}},"  (seconds) "}
 c["-10 Mana Cost Per Second if Lightning Blast Cannot Chain"]={{[1]={[1]={skillName="Lightning Blast",type="SkillName"},flags=0,keywordFlags=0,name="ManaCost",type="BASE",value=-10}},"  Per Second if  Cannot Chain "}
 c["-10 Next Melee Attack Mana Cost"]={{[1]={[1]={skillName="Melee Attack",type="SkillName"},flags=0,keywordFlags=0,name="ManaCost",type="BASE",value=-10}}," Next   "}
