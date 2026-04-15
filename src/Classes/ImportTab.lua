@@ -744,14 +744,18 @@ function ImportTabClass:DownloadMaxrollPlannerBuild(url)
             end
         end
 
-        self:BuildItemsFromMaxroll(profileData, char)
+        self:BuildItemsFromMaxroll(buildData, profileData, char)
         self:ImportPassiveTreeAndJewels(char)
         self:ImportItemsAndSkills(char)
         self.importCodeDetail = colorCodes.POSITIVE .. "Maxroll build imported."
     end)
 end
 
-function ImportTabClass:BuildItemsFromMaxroll(profileData, char)
+function ImportTabClass:BuildItemsFromMaxroll(buildData, profileData, char)
+    -- buildData.items is the shared item dictionary keyed by numeric string ("20", "21", ...)
+    -- profileData.items slots may contain inline item objects OR numeric references into this dict
+    local sharedItems = type(buildData.items) == "table" and buildData.items or {}
+
     local maxrollSlotToInventoryId = {
         weapon = 4, offhand = 5, head = 2, body = 3, hands = 6, feet = 8,
         neck = 11, finger1 = 9, finger2 = 10, waist = 7, relic = 12,
@@ -897,10 +901,16 @@ function ImportTabClass:BuildItemsFromMaxroll(profileData, char)
         return item
     end
 
+    -- Resolve a slot value: inline object or numeric reference into sharedItems
+    local function resolveItem(v)
+        if type(v) == "number" then return sharedItems[tostring(v)] end
+        return v
+    end
+
     -- Main equipment slots
     if type(profileData.items) == "table" then
         for slotKey, inventoryId in pairs(maxrollSlotToInventoryId) do
-            local mi = profileData.items[slotKey]
+            local mi = resolveItem(profileData.items[slotKey])
             if mi and type(mi) == "table" and mi.itemType then
                 local item = parseItem(mi, inventoryId)
                 if item then table.insert(char.items, item) end
@@ -911,10 +921,11 @@ function ImportTabClass:BuildItemsFromMaxroll(profileData, char)
     -- Idol grid (array of up to 25, null entries are false after nullval=false decode)
     if type(profileData.idols) == "table" then
         for i, idol in ipairs(profileData.idols) do
-            if idol and type(idol) == "table" and idol.itemType then
+            local mi = resolveItem(idol)
+            if mi and type(mi) == "table" and mi.itemType then
                 local slotName = idolGridSlots[i]
                 if slotName then
-                    local item = parseItem(idol, slotName)
+                    local item = parseItem(mi, slotName)
                     if item then table.insert(char.items, item) end
                 end
             end
