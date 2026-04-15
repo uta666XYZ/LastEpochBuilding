@@ -5482,6 +5482,23 @@
         33
       ],
       "classSpecificity": 16
+    },
+    "1073_0": {
+      "1": "+(13-40)% Chance to inflict Bleed on Cold Hit",
+      "affix": "Jagged",
+      "level": 0,
+      "statOrderKey": 311,
+      "statOrder": [
+        311
+      ],
+      "tier": 0,
+      "type": "Prefix",
+      "standardAffixEffectModifier": -0.33,
+      "rerollChance": 1,
+      "canRollOn": [
+        30
+      ],
+      "classSpecificity": 2
     }
   },
   "enchanted": {
