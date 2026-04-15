@@ -712,8 +712,32 @@ function ImportTabClass:DownloadMaxrollPlannerBuild(url)
         end
 
         -- Build skill hashes from skillTrees
+        -- skillTrees may be an array [{treeID, slot, history}] or a dict {treeId: {slot, history}}
         if profileData.skillTrees then
-            for treeIdStr, treeData in pairs(profileData.skillTrees) do
+            local skillTreeList = {}
+            if type(profileData.skillTrees[1]) == "table" then
+                -- Array format: elements have treeID/treeId field
+                for i, treeData in ipairs(profileData.skillTrees) do
+                    local treeId = treeData.treeID or treeData.treeId
+                    local slot = treeData.slot or treeData.slotIndex or (i - 1)
+                    ConPrintf("[MAXROLL-SKILL] array[%d] treeId=%s slot=%s", i, tostring(treeId), tostring(slot))
+                    if treeId then
+                        table.insert(skillTreeList, { treeId = tostring(treeId), treeData = treeData, slot = slot })
+                    end
+                end
+            else
+                -- Dict format: key is treeId string
+                for treeId, treeData in pairs(profileData.skillTrees) do
+                    local slot = type(treeData) == "table" and (treeData.slot or treeData.slotIndex or 99) or 99
+                    ConPrintf("[MAXROLL-SKILL] dict key=%s slot=%s", tostring(treeId), tostring(slot))
+                    table.insert(skillTreeList, { treeId = tostring(treeId), treeData = treeData, slot = slot })
+                end
+            end
+            table.sort(skillTreeList, function(a, b) return a.slot < b.slot end)
+
+            for _, entry in ipairs(skillTreeList) do
+                local treeIdStr = entry.treeId
+                local treeData = entry.treeData
                 local skillName
                 for _, class in pairs(self.build.latestTree.classes) do
                     for _, skill in ipairs(class.skills or {}) do
@@ -858,9 +882,10 @@ function ImportTabClass:BuildItemsFromMaxroll(buildData, profileData, char)
             end
 
             local affixCount, maxTier = 0, 0
-            for _, affix in ipairs(allAffixes) do
+            for i, affix in ipairs(allAffixes) do
                 local modId   = affix.id .. "_" .. affix.tier
                 local modData = data.itemMods.Item[modId]
+                ConPrintf("[MAXROLL-AFFIX] base=%s slot=%d modId=%s tier=%d roll=%d valid=%s", itemBaseName, i, modId, affix.tier, affix.roll or 0, tostring(modData ~= nil))
                 if modData then
                     affixCount = affixCount + 1
                     if affix.tier > maxTier then maxTier = affix.tier end
@@ -880,6 +905,7 @@ function ImportTabClass:BuildItemsFromMaxroll(buildData, profileData, char)
             else
                 item.rarity = affixCount >= 3 and "RARE" or (affixCount >= 1 and "MAGIC" or "NORMAL")
             end
+            ConPrintf("[MAXROLL-RARITY] base=%s affixCount=%d maxTier=%d idol=%s -> %s", itemBaseName, affixCount, maxTier, tostring(isIdol ~= nil), item.rarity)
 
             local forename, surname = "", ""
             for _, p in ipairs(item.prefixes) do
@@ -927,7 +953,10 @@ function ImportTabClass:BuildItemsFromMaxroll(buildData, profileData, char)
                 local slotName = idolGridSlots[i]
                 if slotName then
                     local item = parseItem(mi, slotName)
-                    if item then table.insert(char.items, item) end
+                    if item then
+                        ConPrintf("[MAXROLL-IDOL] idx=%d slot=%s base=%s", i, slotName, item.baseName or "?")
+                        table.insert(char.items, item)
+                    end
                 end
             end
         end
