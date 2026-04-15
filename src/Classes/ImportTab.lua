@@ -747,6 +747,7 @@ function ImportTabClass:DownloadMaxrollPlannerBuild(url)
         self:BuildItemsFromMaxroll(buildData, profileData, char)
         self:ImportPassiveTreeAndJewels(char)
         self:ImportItemsAndSkills(char)
+        self:ImportBlessingsFromMaxroll(profileData)
         self.importCodeDetail = colorCodes.POSITIVE .. "Maxroll build imported."
     end)
 end
@@ -928,6 +929,44 @@ function ImportTabClass:BuildItemsFromMaxroll(buildData, profileData, char)
                     local item = parseItem(mi, slotName)
                     if item then table.insert(char.items, item) end
                 end
+            end
+        end
+    end
+
+    -- Altar (Idol Altar slot, inventoryId=123)
+    if type(profileData.items) == "table" and profileData.items.altar then
+        local mi = resolveItem(profileData.items.altar)
+        if mi and type(mi) == "table" and mi.itemType then
+            local item = parseItem(mi, 123)
+            if item then table.insert(char.items, item) end
+        end
+    end
+end
+
+function ImportTabClass:ImportBlessingsFromMaxroll(profileData)
+    local blessings = profileData.blessings
+    if type(blessings) ~= "table" then return end
+    for _, blessing in ipairs(blessings) do
+        if blessing and type(blessing) == "table" and blessing.itemType == 34 then
+            local blessingName
+            for name, base in pairs(self.build.data.itemBases) do
+                if base.baseTypeID == 34 and base.subTypeID == blessing.subType then
+                    blessingName = name
+                    break
+                end
+            end
+            if blessingName and self.currentBlessingLookup then
+                local info = self.currentBlessingLookup[blessingName]
+                if info then
+                    local roll = (type(blessing.implicits) == "table" and blessing.implicits[1]) or 255
+                    local rollFrac = roll / 255.0
+                    ConPrintf("[MAXROLL-BLESS] %s -> %s (roll=%.3f)", blessingName, info.tl, rollFrac)
+                    self.build.itemsTab:UpdateBlessingSlot(info.tl, info.entry, rollFrac)
+                else
+                    ConPrintf("[MAXROLL-BLESS] Not in blessingLookup: %s", blessingName)
+                end
+            else
+                ConPrintf("[MAXROLL-BLESS] No base for itemType=34 subType=%s", tostring(blessing.subType))
             end
         end
     end
