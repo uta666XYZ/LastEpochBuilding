@@ -13261,7 +13261,11 @@ c["8% Increased area of effect with Acid Flask"]={{[1]={[1]={skillName="Acid Fla
 c["8% Kill Threshold"]={{}," Kill Threshold "}
 c["8% Less Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="DamageTaken",type="MORE",value=-8}},nil}
 c["8% Less Damage Taken from Withered"]={{[1]={flags=0,keywordFlags=0,name="DamageTaken",type="MORE",value=-8}},"  from Withered "}
-c["8% Less Hit Damage"]={{[1]={flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=-8}},nil}
+c["8% Less Hit Damage"]={{[1]={flags=8388608,keywordFlags=0,name="DamageTaken",type="MORE",value=-8}},nil}
+c["16% Less Hit Damage"]={{[1]={flags=8388608,keywordFlags=0,name="DamageTaken",type="MORE",value=-16}},nil}
+c["24% Less Hit Damage"]={{[1]={flags=8388608,keywordFlags=0,name="DamageTaken",type="MORE",value=-24}},nil}
+c["32% Less Hit Damage"]={{[1]={flags=8388608,keywordFlags=0,name="DamageTaken",type="MORE",value=-32}},nil}
+c["40% Less Hit Damage"]={{[1]={flags=8388608,keywordFlags=0,name="DamageTaken",type="MORE",value=-40}},nil}
 c["8% Melee Ignite Chance"]={{[1]={flags=8388608,keywordFlags=512,name="ChanceToTriggerOnHit_Ailment_Ignite",type="BASE",value=8}},nil}
 c["8% Minion Storm Stack Chance"]={{},"  Storm Stack Chance "}
 c["8% More Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=8}},nil}
