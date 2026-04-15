@@ -373,7 +373,20 @@ function calcs.defence(env, actor)
 		-- wardDecay(W, R) = (0.2*W + 0.00005*W^2) / (1 + 0.5*(R/100))
 		if output.Ward > 0 then
 			local effectiveWard = m_max(output.Ward - output.WardDecayThreshold, 0)
-			output.WardDecayPerSecond = round((0.2 * effectiveWard + 0.00005 * effectiveWard ^ 2) / (1 + 0.5 * output.WardRetention / 100))
+			local retentionDivisor = 1 + 0.5 * output.WardRetention / 100
+			local decayNumerator = 0.2 * effectiveWard + 0.00005 * effectiveWard ^ 2
+			output.WardDecayPerSecond = round(decayNumerator / retentionDivisor)
+			if breakdown then
+				breakdown.WardDecayPerSecond = {
+					s_format("%d ^8(ward)", output.Ward),
+					s_format("- %d ^8(decay threshold)", output.WardDecayThreshold),
+					s_format("= %d ^8(effective ward)", effectiveWard),
+					s_format("Decay = (0.2 x W + 0.00005 x W^2) / (1 + 0.5 x R/100)"),
+					s_format("= (%.1f + %.1f) / %.4f", 0.2 * effectiveWard, 0.00005 * effectiveWard ^ 2, retentionDivisor),
+					s_format("= %.2f / %.4f", decayNumerator, retentionDivisor),
+					s_format("= %d", output.WardDecayPerSecond),
+				}
+			end
 		else
 			output.WardDecayPerSecond = 0
 		end
