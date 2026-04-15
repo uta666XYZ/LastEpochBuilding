@@ -334,16 +334,17 @@ function calcs.defence(env, actor)
 			breakdown.Evasion = { slots = { } }
 		end
 		local armourBase, evasionBase, wardPerSecond
-		wardPerSecond = modDB:Sum("BASE", nil, "WardPerSecond")
+		-- Use output.WardPerSecond set by CalcPerform (includes INC/MORE modifiers)
+		wardPerSecond = output.WardPerSecond or 0
 
 		-- Ward lost per second formula is (0.00005 * ( ward - wardDecayThreshold )^2 + 0.2 * (ward - wardDecayThreshold)) / (1 + 0.5 * wardRetention), we can deduce ward when this is equal to wardPerSecond:
 		-- ward = wardDecayThreshold + ((-0.2 + sqrt(0.04 + 0.0002 * wardPerSecond * (1 + 0.5 * wardRetention))) / 0.0001)
 
 		if wardPerSecond > 0 then
-		local wardDecayThreshold = modDB:Sum("BASE", nil, "WardDecayThreshold")
-		local wardRetention = modDB:Sum("BASE", nil, "WardRetention")
+		local wardDecayThreshold = output.WardDecayThreshold or 0
+		local wardRetention = output.WardRetention or 0
 		ward = wardDecayThreshold + ((-0.2 + math.sqrt(0.04 + 0.0002 * wardPerSecond * (1 + 0.5 * wardRetention / 100))) / 0.0001)
-		ward = ward + wardPerSecond * calcLib.mod(modDB, nil, "Ward", "Defences")
+		ward = ward * calcLib.mod(modDB, nil, "Ward", "Defences")
 		end
 		armourBase = modDB:Sum("BASE", nil, "Armour", "ArmourAndEvasion")
 		if armourBase > 0 then
@@ -371,13 +372,25 @@ function calcs.defence(env, actor)
 		-- Ward Decay per second at steady-state ward (tunklab formula)
 		-- wardDecay(W, R) = (0.2*W + 0.00005*W^2) / (1 + 0.5*(R/100))
 		if output.Ward > 0 then
-			local wardRetention = modDB:Sum("BASE", nil, "WardRetention")
-			local wardDecayThreshold = modDB:Sum("BASE", nil, "WardDecayThreshold")
-			local effectiveWard = m_max(output.Ward - wardDecayThreshold, 0)
-			output.WardDecayPerSecond = round((0.2 * effectiveWard + 0.00005 * effectiveWard ^ 2) / (1 + 0.5 * wardRetention / 100))
+			local effectiveWard = m_max(output.Ward - output.WardDecayThreshold, 0)
+			local retentionDivisor = 1 + 0.5 * output.WardRetention / 100
+			local decayNumerator = 0.2 * effectiveWard + 0.00005 * effectiveWard ^ 2
+			output.WardDecayPerSecond = round(decayNumerator / retentionDivisor)
+			if breakdown then
+				breakdown.WardDecayPerSecond = {
+					s_format("%d ^8(ward)", output.Ward),
+					s_format("- %d ^8(decay threshold)", output.WardDecayThreshold),
+					s_format("= %d ^8(effective ward)", effectiveWard),
+					s_format("Decay = (0.2 x W + 0.00005 x W^2) / (1 + 0.5 x R/100)"),
+					s_format("= (%.1f + %.1f) / %.4f", 0.2 * effectiveWard, 0.00005 * effectiveWard ^ 2, retentionDivisor),
+					s_format("= %.2f / %.4f", decayNumerator, retentionDivisor),
+					s_format("= %d", output.WardDecayPerSecond),
+				}
+			end
 		else
 			output.WardDecayPerSecond = 0
 		end
+		output.NetWardRegen = wardPerSecond > 0 and (wardPerSecond - output.WardDecayPerSecond) or 0
 
 		-- Armor mitigation for display (Physical and Elemental)
 		output.ArmorMitigationPhysical = round(calcs.armourReductionF(output.Armour, env.config.enemyLevel))
@@ -1810,7 +1823,8 @@ function calcs.buildDefenceEstimations(env, actor)
 		end
 		output.NetLifeRegen = output.NetLifeRegen - totalLifeDegen
 		output.NetManaRegen = output.NetManaRegen - totalManaDegen
-		output.TotalNetRegen = output.NetLifeRegen + output.NetManaRegen
+		local netWardRegen = output.NetWardRegen or 0
+		output.TotalNetRegen = output.NetLifeRegen + output.NetManaRegen + netWardRegen
 		if breakdown then
 			t_insert(breakdown.NetLifeRegen, s_format("%.1f ^8(total life regen)", output.LifeRegenRecovery))
 			t_insert(breakdown.NetLifeRegen, s_format("- %.1f ^8(total life degen)", totalLifeDegen))
@@ -1821,8 +1835,11 @@ function calcs.buildDefenceEstimations(env, actor)
 			breakdown.TotalNetRegen = {
 				s_format("Net Life Regen: %.1f", output.NetLifeRegen),
 				s_format("+ Net Mana Regen: %.1f", output.NetManaRegen),
-				s_format("= Total Net Regen: %.1f", output.TotalNetRegen)
 			}
+			if netWardRegen ~= 0 then
+				t_insert(breakdown.TotalNetRegen, s_format("+ Net Ward Regen: %.1f", netWardRegen))
+			end
+			t_insert(breakdown.TotalNetRegen, s_format("= Total Net Regen: %.1f", output.TotalNetRegen))
 		end
 	end
 	
