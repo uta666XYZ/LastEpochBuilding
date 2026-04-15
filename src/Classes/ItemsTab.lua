@@ -33,6 +33,8 @@ local rarityDropList = {
 	{ label = colorCodes.EXALTED.."Exalted", rarity = "EXALTED" },
 	{ label = colorCodes.LEGENDARY.."Legendary", rarity = "LEGENDARY" },
 	{ label = colorCodes.SET.."Set", rarity = "SET" },
+	{ label = colorCodes.WWUNIQUE.."WW Unique", rarity = "WWUNIQUE" },
+	{ label = colorCodes.WWLEGENDARY.."WW Legendary", rarity = "WWLEGENDARY" },
 }
 
 local baseSlots = { "Weapon 1", "Weapon 2", "Helmet", "Body Armor", "Gloves", "Boots", "Amulet", "Ring 1", "Ring 2", "Belt", "Relic" }
