@@ -66,6 +66,13 @@ function launch:OnInit()
 		end
 	end
 	local gitHead = io.open(".git/HEAD", "r") or io.open("../.git/HEAD", "r")
+	if not gitHead then
+		-- .git may be a file (git worktree) rather than a directory
+		local gitFile = io.open(".git", "r") or io.open("../.git", "r")
+		if gitFile then
+			gitHead = gitFile
+		end
+	end
 	if gitHead then
 		-- Running from a git repository, enable dev mode
 		self.devMode = true
