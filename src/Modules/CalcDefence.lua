@@ -344,7 +344,7 @@ function calcs.defence(env, actor)
 		local wardDecayThreshold = output.WardDecayThreshold or 0
 		local wardRetention = output.WardRetention or 0
 		ward = wardDecayThreshold + ((-0.2 + math.sqrt(0.04 + 0.0002 * wardPerSecond * (1 + 0.5 * wardRetention / 100))) / 0.0001)
-		ward = ward + wardPerSecond * calcLib.mod(modDB, nil, "Ward", "Defences")
+		ward = ward * calcLib.mod(modDB, nil, "Ward", "Defences")
 		end
 		armourBase = modDB:Sum("BASE", nil, "Armour", "ArmourAndEvasion")
 		if armourBase > 0 then
