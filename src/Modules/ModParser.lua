@@ -436,6 +436,40 @@ local function flag(name, ...)
 	return mod(name, "FLAG", true, ...)
 end
 
+local dmgTypeNames = {}
+for _, dt in ipairs(DamageTypes) do
+	dmgTypeNames[dt:lower()] = dt
+	dmgTypeNames[dt:lower() .. " damage"] = dt
+	dmgTypeNames[dt:lower() .. " conversion"] = dt
+end
+dmgTypeNames["base damage"] = "Physical"
+dmgTypeNames["base physical damage"] = "Physical"
+dmgTypeNames["base melee damage"] = "Physical"
+dmgTypeNames["melee base damage"] = "Physical"
+dmgTypeNames["base necrotic damage"] = "Necrotic"
+dmgTypeNames["base lightning damage"] = "Lightning"
+dmgTypeNames["base cold damage"] = "Cold"
+dmgTypeNames["base fire damage"] = "Fire"
+dmgTypeNames["base void damage"] = "Void"
+dmgTypeNames["base poison damage"] = "Poison"
+
+local function parseArrowConversion(line)
+	local ll = line:lower()
+	local pctStr, srcText, dstText
+	pctStr, srcText, dstText = ll:match("^%s*%+?(%d+%.?%d*)%%%s+(.-)%s*%->%s*(.-)%s*$")
+	if not pctStr then
+		srcText, dstText = ll:match("^%s*(.-)%s*%->%s*(.-)%s*$")
+		pctStr = "100"
+	end
+	if not srcText or not dstText then return nil end
+	local srcType = dmgTypeNames[srcText]
+	local dstType = dmgTypeNames[dstText]
+	if srcType and dstType and srcType ~= dstType then
+		return { mod(srcType .. "DamageConvertTo" .. dstType, "BASE", tonumber(pctStr)) }
+	end
+	return nil
+end
+
 local explodeFunc = function(chance, amount, type, ...)
 	local amountNumber = tonumber(amount) or (amount == "tenth" and 10) or (amount == "quarter" and 25)
 	if not amountNumber then
@@ -576,9 +610,19 @@ local function scan(line, patternList, plain, matchAll)
 end
 
 local function parseMod(line, order)
+	-- Strip leading/trailing whitespace
+	line = line:match("^%s*(.-)%s*$") or line
 	-- Check if this is a special modifier
 	local lineLower = line:lower()
 	if unsupportedModList[lineLower] then
+		return { }, line
+	end
+	-- Handle -> conversion syntax
+	if line:find("->", 1, true) then
+		local convMods = parseArrowConversion(line)
+		if convMods then
+			return convMods, ""
+		end
 		return { }, line
 	end
 	local specialMod, specialLine, cap = scan(line, specialModList)
@@ -611,7 +655,7 @@ local function parseMod(line, order)
 	local modForm, formCap
 	modForm, line, formCap = scan(line, formList)
 	if not modForm then
-		return nil, line
+		return { }, line
 	end
 
 	-- Check for tags (per-charge, conditionals)
@@ -643,7 +687,7 @@ local function parseMod(line, order)
 	if modForm == "FLAG" then
 		formCap[1], line = scan(line, flagTypes, false)
 		if not formCap[1] then
-			return nil, line
+			return { }, line
 		end
 		modName, line = scan(line, modNameList, true)
 	else
