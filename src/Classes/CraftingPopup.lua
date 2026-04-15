@@ -1434,45 +1434,17 @@ function CraftingPopupClass:RefreshIdolAffixDropdowns()
 		end
 	end
 
-	-- Omen: single-stat affix (no mod[2]) with classMask == idolCsBit exactly, canRollOn intersects large bts
-	local function canRollOnOmen(mod)
-		if not mod.canRollOn then return false end
-		if mod[2] then return false end  -- skip dual-stat (multi) affixes
-		local hasLarge = false
-		for _, bt in ipairs(mod.canRollOn) do
-			if LARGE_IDS[bt] then hasLarge = true; break end
-		end
-		if not hasLarge then return false end
-		local cs = mod.classSpecificity or 0
-		-- Strip bit 0 (small-idol flag), then require exact class match (no universal cs==0)
-		local classMask = bit.band(cs, 0xFFFFFFFE)
-		return classMask ~= 0 and classMask == idolCsBit
-	end
-
 	-- prefix / suffix from general section (+ weaver extras if applicable)
 	local prefixList = { { label = "-- Select Prefix --" } }
 	local suffixList = { { label = "-- Select Suffix --" } }
-	if isOmen then
-		for _, mod in pairs(general) do
-			if mod.statOrderKey and canRollOnOmen(mod) then
+	for _, pool in ipairs({ general, weaver }) do
+		for _, mod in pairs(pool) do
+			if mod.statOrderKey and canRollOnIdol(mod) then
 				local entry = { label = buildLabel(mod), statOrderKey = mod.statOrderKey, affix = mod.affix, type = mod.type, maxTier = 0 }
 				if mod.type == "Prefix" then
 					t_insert(prefixList, entry)
 				elseif mod.type == "Suffix" then
 					t_insert(suffixList, entry)
-				end
-			end
-		end
-	else
-		for _, pool in ipairs({ general, weaver }) do
-			for _, mod in pairs(pool) do
-				if mod.statOrderKey and canRollOnIdol(mod) then
-					local entry = { label = buildLabel(mod), statOrderKey = mod.statOrderKey, affix = mod.affix, type = mod.type, maxTier = 0 }
-					if mod.type == "Prefix" then
-						t_insert(prefixList, entry)
-					elseif mod.type == "Suffix" then
-						t_insert(suffixList, entry)
-					end
 				end
 			end
 		end
