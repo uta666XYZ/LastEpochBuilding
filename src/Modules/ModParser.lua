@@ -416,6 +416,13 @@ for i,stat in ipairs(LongAttributes) do
 	modTagList["per (%d+) " .. stat:lower()] = function(num) return { tag = { type = "PerStat", stat = Attributes[i], div = num } } end
 	modTagList["w?h?i[lf]e? you have at least (%d+) " .. stat:lower()] = function(num) return { tag = { type = "StatThreshold", stat = Attributes[i], threshold = num } } end
 end
+-- Also handle abbreviated attribute names (e.g. "Per Int" in addition to "Per Intelligence")
+for i,stat in ipairs(Attributes) do
+	local abbr = stat:lower()
+	modTagList["per " .. abbr] = { tag = { type = "PerStat", stat = Attributes[i] } }
+	modTagList["per player " .. abbr] = { tag = { type = "PerStat", stat = Attributes[i], actor = "parent" } }
+	modTagList["per (%d+) " .. abbr] = function(num) return { tag = { type = "PerStat", stat = Attributes[i], div = num } } end
+end
 for _, weapon in ipairs(DamageSourceWeapons) do
 	modTagList["with an? " .. weapon:lower()] = { tag = { type = "Condition", var = "Using" .. weapon } }
 	modTagList["while wielding a " .. weapon:lower()] = { tag = { type = "Condition", var = "Using" .. weapon } }
