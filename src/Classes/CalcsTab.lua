@@ -132,6 +132,10 @@ Effective DPS: Curses and enemy properties (such as resistances and status condi
 
 	self.controls.breakdown = new("CalcBreakdownControl", self)
 
+	self.controls.search = new("EditControl", {"TOPLEFT",self,"TOPLEFT"}, 4, 4, 250, 20, "", "Search", "%c", 100, function()
+		self.build.buildFlag = true
+	end, nil, nil, true)
+
 	self.controls.scrollBar = new("ScrollBarControl", {"TOPRIGHT",self,"TOPRIGHT"}, 0, 0, 18, 0, 50, "VERTICAL", true)
 	self.powerBuilderInitialized = nil
 end)
@@ -207,7 +211,7 @@ function CalcsTabClass:Draw(viewPort, inputEvents)
 
 	-- Arrange the sections
 	local baseX = viewPort.x + 4
-	local baseY = viewPort.y + 4
+	local baseY = viewPort.y + 30
 	local maxCol = m_floor(viewPort.width / (self.colWidth + 8))
 	if main.portraitMode then maxCol = 3 end
 	local colY = { }
@@ -386,6 +390,16 @@ function CalcsTabClass:CheckFlag(obj)
 		elseif not actor.output[obj.haveOutput] or actor.output[obj.haveOutput] == 0 then
 			return
 		end
+	end
+	return true
+end
+
+function CalcsTabClass:SearchMatch(rowData)
+	if not self.controls.search then return true end
+	local searchStr = self.controls.search.buf:lower():gsub("[%-%.%+%[%]%$%^%%%?%*]", "%%%0")
+	if searchStr:match("%S") then
+		if not rowData.label then return true end
+		return (rowData.label):lower():find(searchStr, 1, true) ~= nil
 	end
 	return true
 end
