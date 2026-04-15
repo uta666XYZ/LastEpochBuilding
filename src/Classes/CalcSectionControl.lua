@@ -100,7 +100,7 @@ function CalcSectionClass:UpdateSize()
 		local tempHeight = 0
 		yOffset = yOffset + 22
 		for _, rowData in ipairs(subSec.data) do
-			rowData.enabled = self.calcsTab:CheckFlag(rowData)
+			rowData.enabled = self.calcsTab:CheckFlag(rowData) and (self.id == "SkillSelect" or self.calcsTab:SearchMatch(rowData))
 			if rowData.enabled then
 				self.enabled = true
 				local xOffset = 134
