@@ -9,6 +9,8 @@ local t_remove = table.remove
 local b_rshift = bit.rshift
 local band = bit.band
 
+local dkjson = require "dkjson"
+
 local influenceInfo = itemLib.influenceInfo
 
 local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(self, build)
@@ -251,7 +253,7 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
     self.controls.importCodeHeader.shown = function()
         return self.charImportMode == "GETACCOUNTNAME" and self.activeImportSection ~= 1 and self.activeImportSection ~= 2
     end
-    self.controls.importCodeNoteLabel = new("LabelControl", { "TOPLEFT", self.controls.importCodeHeader, "BOTTOMLEFT" }, 0, 4, 720, 14, "^7Note: e.g. ^x4080FFhttps://bytebin.lucko.me/XXXXXX^7, ^x4080FFhttps://www.lastepochtools.com/planner/XXXXXX^7,\n^x4080FFhttps://www.maxroll.gg/last-epoch/planner/XXXXX^7, or ^x4080FF!XXXXX...^7 (offline code)")
+    self.controls.importCodeNoteLabel = new("LabelControl", { "TOPLEFT", self.controls.importCodeHeader, "BOTTOMLEFT" }, 0, 4, 720, 14, "^7Note: e.g. ^x4080FFhttps://bytebin.lucko.me/XXXXXX^7,\n^x4080FFhttps://www.maxroll.gg/last-epoch/planner/XXXXX^7, or ^x4080FF!XXXXX...^7 (offline code)")
     self.controls.importCodeNoteLabel.shown = function()
         return self.charImportMode == "GETACCOUNTNAME" and self.activeImportSection ~= 1 and self.activeImportSection ~= 2
     end
@@ -287,41 +289,6 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
                 self.importCodeSite = j
                 if buf ~= urlText then
                     self.controls.importCodeIn:SetText(urlText, false)
-                end
-                if buildSites.websiteList[j].id == "lastepochtools" then
-                    -- Extract XOR key (short lowercase hex) and encrypted data (long base64).
-                    -- Variable names are random per-page; match by value shape, not by name.
-                    local keyHex
-                    for candidate in buf:gmatch("\tvar%s+[%w_]+%s*=%s*'([0-9a-f]+)'") do
-                        if #candidate >= 8 and #candidate <= 64 then
-                            keyHex = candidate
-                            break
-                        end
-                    end
-                    local b64
-                    for candidate in buf:gmatch("\tvar%s+[%w_]+%s*=%s*'([A-Za-z0-9+/=]+)'") do
-                        if #candidate >= 200 then
-                            b64 = candidate
-                            break
-                        end
-                    end
-                    if keyHex and b64 then
-                        local keyBytes = {}
-                        for hex in keyHex:gmatch("..") do
-                            table.insert(keyBytes, tonumber(hex, 16))
-                        end
-                        local keyLen = #keyBytes
-                        local csvText = common.base64.decode(b64)
-                        local chars = {}
-                        local i = 0
-                        for numStr in csvText:gmatch("[^,]+") do
-                            local byte = tonumber(numStr) or 0
-                            local keyByte = keyBytes[(i % keyLen) + 1]
-                            table.insert(chars, string.char(bit.bxor(byte, keyByte)))
-                            i = i + 1
-                        end
-                        self.importCodeXML = table.concat(chars)
-                    end
                 end
                 return
             end
@@ -395,6 +362,11 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
                 self:DownloadMaxrollPlannerBuild(self.controls.importCodeIn.buf)
                 return
             end
+            if selectedWebsite.id == "lastepochtools" then
+                self.importCodeDetail = colorCodes.NEGATIVE .. "Import failed: lastepochtools.com import is no longer supported (site changed)"
+                self.importCodeValid = false
+                return
+            end
             self.importCodeFetching = true
             buildSites.DownloadBuild(self.controls.importCodeIn.buf, selectedWebsite, function(isSuccess, data)
                 self.importCodeFetching = false
@@ -403,6 +375,15 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
                     self.importCodeValid = false
                 else
                     importCodeHandle(data)
+                    if not self.importCodeXML then
+                        if data:find("Just a moment", 1, true) or data:find("Enable JavaScript and cookies", 1, true) then
+                            self.importCodeDetail = colorCodes.NEGATIVE .. "Import failed: site requires browser authentication (Cloudflare)"
+                        elseif self.importCodeDetail == "" or not self.importCodeValid then
+                            self.importCodeDetail = colorCodes.NEGATIVE .. "Import failed: could not extract build data from page"
+                        end
+                        self.importCodeValid = false
+                        return
+                    end
                     importSelectedBuild()
                 end
             end)
@@ -668,7 +649,7 @@ function ImportTabClass:DownloadMaxrollPlannerBuild(url)
             return
         end
 
-        local jsonData, parseErr = processJson(response.body)
+        local jsonData, _, parseErr = dkjson.decode(response.body, 1, false)
         if parseErr or type(jsonData) ~= "table" then
             self.importCodeDetail = colorCodes.NEGATIVE .. "Failed to parse maxroll response"
             return
@@ -680,7 +661,7 @@ function ImportTabClass:DownloadMaxrollPlannerBuild(url)
             return
         end
 
-        local buildData, parseErr2 = processJson(profile.data)
+        local buildData, _, parseErr2 = dkjson.decode(profile.data, 1, false)
         if parseErr2 or type(buildData) ~= "table" or not buildData.profiles then
             self.importCodeDetail = colorCodes.NEGATIVE .. "Failed to parse maxroll build data"
             return
@@ -763,9 +744,232 @@ function ImportTabClass:DownloadMaxrollPlannerBuild(url)
             end
         end
 
+        self:BuildItemsFromMaxroll(buildData, profileData, char)
         self:ImportPassiveTreeAndJewels(char)
+        self:ImportItemsAndSkills(char)
+        self:ImportBlessingsFromMaxroll(profileData)
         self.importCodeDetail = colorCodes.POSITIVE .. "Maxroll build imported."
     end)
+end
+
+function ImportTabClass:BuildItemsFromMaxroll(buildData, profileData, char)
+    -- buildData.items is the shared item dictionary keyed by numeric string ("20", "21", ...)
+    -- profileData.items slots may contain inline item objects OR numeric references into this dict
+    local sharedItems = type(buildData.items) == "table" and buildData.items or {}
+
+    local maxrollSlotToInventoryId = {
+        weapon = 4, offhand = 5, head = 2, body = 3, hands = 6, feet = 8,
+        neck = 11, finger1 = 9, finger2 = 10, waist = 7, relic = 12,
+    }
+    -- 5x5 idol grid in row-major order; index i (1-based) → slot name
+    local idolGridSlots = {
+        "Idol 21","Idol 1","Idol 2","Idol 3","Idol 22",
+        "Idol 4","Idol 5","Idol 6","Idol 7","Idol 8",
+        "Idol 9","Idol 10","Idol 23","Idol 11","Idol 12",
+        "Idol 13","Idol 14","Idol 15","Idol 16","Idol 17",
+        "Idol 24","Idol 18","Idol 19","Idol 20","Idol 25",
+    }
+
+    local function parseItem(maxrollItem, inventoryId)
+        if not maxrollItem or not maxrollItem.itemType then return nil end
+        local baseTypeID = maxrollItem.itemType
+        local subTypeID  = maxrollItem.subType
+        local itemBaseName, itemBase
+        for name, base in pairs(self.build.data.itemBases) do
+            if base.baseTypeID == baseTypeID and base.subTypeID == subTypeID then
+                itemBaseName = name
+                itemBase = base
+                break
+            end
+        end
+        if not itemBase then
+            ConPrintf("[MAXROLL-ITEM] No base: itemType=%d subType=%d inv=%s", baseTypeID, subTypeID, tostring(inventoryId))
+            char._parseErrors = char._parseErrors + 1
+            return nil
+        end
+
+        local item = {
+            inventoryId = inventoryId,
+            baseName    = itemBaseName,
+            base        = itemBase,
+            corrupted   = maxrollItem.corrupted or false,
+            implicitMods = {},
+            explicitMods = {},
+            prefixes     = {},
+            suffixes     = {},
+        }
+
+        -- Implicits
+        for i, implicit in ipairs(itemBase.implicits or {}) do
+            local range = (type(maxrollItem.implicits) == "table" and maxrollItem.implicits[i]) or 128
+            table.insert(item.implicitMods, "{range: " .. range .. "}" .. implicit)
+        end
+
+        local uniqueID = maxrollItem.uniqueID
+        if uniqueID and uniqueID > 0 then
+            -- Unique or Legendary
+            local uniqueBase = self.build.data.uniques[uniqueID]
+            if not uniqueBase then
+                ConPrintf("[MAXROLL-ITEM] Unknown uniqueID=%d inv=%s", uniqueID, tostring(inventoryId))
+                char._parseErrors = char._parseErrors + 1
+                return nil
+            end
+            item.name = uniqueBase.name
+            local uniqueRolls = type(maxrollItem.uniqueRolls) == "table" and maxrollItem.uniqueRolls or {}
+            for i, modLine in ipairs(uniqueBase.mods) do
+                if itemLib.hasRange(modLine) then
+                    local rollId = uniqueBase.rollIds[i]
+                    if rollId then
+                        local range = uniqueRolls[rollId + 1] or 0
+                        table.insert(item.explicitMods, "{crafted}{range: " .. range .. "}" .. modLine)
+                    else
+                        table.insert(item.explicitMods, "{crafted}" .. modLine)
+                    end
+                else
+                    table.insert(item.explicitMods, "{crafted}" .. modLine)
+                end
+            end
+            -- Legendary: unique base + extra forged affixes
+            local legendAffixes = type(maxrollItem.affixes) == "table" and maxrollItem.affixes or {}
+            if #legendAffixes > 0 then
+                item.rarity = "LEGENDARY"
+                for _, affix in ipairs(legendAffixes) do
+                    local modId   = affix.id .. "_" .. affix.tier
+                    local modData = data.itemMods.Item[modId]
+                    if modData then
+                        if modData.type == "Prefix" then
+                            table.insert(item.prefixes, { range = affix.roll, modId = modId })
+                        else
+                            table.insert(item.suffixes, { range = affix.roll, modId = modId })
+                        end
+                    end
+                end
+            else
+                item.rarity = "UNIQUE"
+            end
+        else
+            -- Magic / Rare / Exalted / Normal
+            local allAffixes = {}
+            if type(maxrollItem.affixes) == "table" then
+                for _, a in ipairs(maxrollItem.affixes) do table.insert(allAffixes, a) end
+            end
+            if type(maxrollItem.corruptedAffixes) == "table" then
+                for _, a in ipairs(maxrollItem.corruptedAffixes) do table.insert(allAffixes, a) end
+            end
+
+            local affixCount, maxTier = 0, 0
+            for _, affix in ipairs(allAffixes) do
+                local modId   = affix.id .. "_" .. affix.tier
+                local modData = data.itemMods.Item[modId]
+                if modData then
+                    affixCount = affixCount + 1
+                    if affix.tier > maxTier then maxTier = affix.tier end
+                    if modData.type == "Prefix" then
+                        table.insert(item.prefixes, { range = affix.roll, modId = modId })
+                    else
+                        table.insert(item.suffixes, { range = affix.roll, modId = modId })
+                    end
+                end
+            end
+
+            local isIdol = itemBaseName:find("Idol") or itemBaseName:find("Altar")
+            if maxTier >= 5 then
+                item.rarity = "EXALTED"
+            elseif isIdol then
+                item.rarity = affixCount >= 2 and "RARE" or (affixCount >= 1 and "MAGIC" or "NORMAL")
+            else
+                item.rarity = affixCount >= 3 and "RARE" or (affixCount >= 1 and "MAGIC" or "NORMAL")
+            end
+
+            local forename, surname = "", ""
+            for _, p in ipairs(item.prefixes) do
+                local md = data.itemMods.Item[p.modId]
+                if md and md.affix and md.affix ~= "" then
+                    if md.affix:sub(1,3) == "of " then surname = surname ~= "" and surname or md.affix
+                    else forename = forename ~= "" and forename or md.affix end
+                end
+            end
+            for _, s in ipairs(item.suffixes) do
+                local md = data.itemMods.Item[s.modId]
+                if md and md.affix and md.affix ~= "" then
+                    if md.affix:sub(1,3) == "of " then surname = surname ~= "" and surname or md.affix
+                    else forename = forename ~= "" and forename or md.affix end
+                end
+            end
+            item.name = (forename ~= "" and forename .. " " or "") .. itemBaseName .. (surname ~= "" and " " .. surname or "")
+        end
+
+        return item
+    end
+
+    -- Resolve a slot value: inline object or numeric reference into sharedItems
+    local function resolveItem(v)
+        if type(v) == "number" then return sharedItems[tostring(v)] end
+        return v
+    end
+
+    -- Main equipment slots
+    if type(profileData.items) == "table" then
+        for slotKey, inventoryId in pairs(maxrollSlotToInventoryId) do
+            local mi = resolveItem(profileData.items[slotKey])
+            if mi and type(mi) == "table" and mi.itemType then
+                local item = parseItem(mi, inventoryId)
+                if item then table.insert(char.items, item) end
+            end
+        end
+    end
+
+    -- Idol grid (array of up to 25, null entries are false after nullval=false decode)
+    if type(profileData.idols) == "table" then
+        for i, idol in ipairs(profileData.idols) do
+            local mi = resolveItem(idol)
+            if mi and type(mi) == "table" and mi.itemType then
+                local slotName = idolGridSlots[i]
+                if slotName then
+                    local item = parseItem(mi, slotName)
+                    if item then table.insert(char.items, item) end
+                end
+            end
+        end
+    end
+
+    -- Altar (Idol Altar slot, inventoryId=123)
+    if type(profileData.items) == "table" and profileData.items.altar then
+        local mi = resolveItem(profileData.items.altar)
+        if mi and type(mi) == "table" and mi.itemType then
+            local item = parseItem(mi, 123)
+            if item then table.insert(char.items, item) end
+        end
+    end
+end
+
+function ImportTabClass:ImportBlessingsFromMaxroll(profileData)
+    local blessings = profileData.blessings
+    if type(blessings) ~= "table" then return end
+    for _, blessing in ipairs(blessings) do
+        if blessing and type(blessing) == "table" and blessing.itemType == 34 then
+            local blessingName
+            for name, base in pairs(self.build.data.itemBases) do
+                if base.baseTypeID == 34 and base.subTypeID == blessing.subType then
+                    blessingName = name
+                    break
+                end
+            end
+            if blessingName and self.currentBlessingLookup then
+                local info = self.currentBlessingLookup[blessingName]
+                if info then
+                    local roll = (type(blessing.implicits) == "table" and blessing.implicits[1]) or 255
+                    local rollFrac = roll / 255.0
+                    ConPrintf("[MAXROLL-BLESS] %s -> %s (roll=%.3f)", blessingName, info.tl, rollFrac)
+                    self.build.itemsTab:UpdateBlessingSlot(info.tl, info.entry, rollFrac)
+                else
+                    ConPrintf("[MAXROLL-BLESS] Not in blessingLookup: %s", blessingName)
+                end
+            else
+                ConPrintf("[MAXROLL-BLESS] No base for itemType=34 subType=%s", tostring(blessing.subType))
+            end
+        end
+    end
 end
 
 function ImportTabClass:DownloadFromMaxroll()
