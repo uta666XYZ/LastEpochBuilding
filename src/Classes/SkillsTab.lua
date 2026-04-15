@@ -1155,6 +1155,52 @@ function SkillsTabClass:DrawSpecSlots(viewPort, inputEvents, startY)
 			end
 		end
 
+		-- Buff skill enabled toggle (below damage type icons)
+		if sg then
+			local ge = sg.grantedEffect
+			if ge and ge.skillTypes and ge.skillTypes[SkillType.Buff] then
+				local boxSize = 12
+				local toggleY = sy + SLOT_SIZE + 20
+				local label = "Enabled"
+				local labelW = DrawStringWidth(11, "VAR", label)
+				local totalW = boxSize + 3 + labelW
+				local boxX = sx + m_floor((SLOT_SIZE - totalW) / 2)
+				local labelX = boxX + boxSize + 3
+
+				-- Checkbox background
+				SetDrawColor(0.08, 0.08, 0.08)
+				DrawImage(nil, boxX, toggleY, boxSize, boxSize)
+				-- Checkbox border
+				SetDrawColor(0.55, 0.55, 0.55)
+				DrawImage(nil, boxX, toggleY, boxSize, 1)
+				DrawImage(nil, boxX, toggleY + boxSize - 1, boxSize, 1)
+				DrawImage(nil, boxX, toggleY, 1, boxSize)
+				DrawImage(nil, boxX + boxSize - 1, toggleY, 1, boxSize)
+				-- Checkmark if enabled
+				if sg.enabled ~= false then
+					SetDrawColor(0.3, 0.85, 0.3)
+					DrawImage(nil, boxX + 2, toggleY + 2, boxSize - 4, boxSize - 4)
+				end
+				-- Label
+				SetDrawColor(1, 1, 1)
+				DrawString(labelX, toggleY + 1, "LEFT", 11, "VAR", "^7" .. label)
+
+				-- Click detection for toggle (separate from slot isHover)
+				local toggleHover = cursorX >= boxX and cursorX < boxX + totalW
+					and cursorY >= toggleY and cursorY < toggleY + boxSize + 2
+				if toggleHover then
+					for id, event in ipairs(inputEvents) do
+						if event.type == "KeyUp" and event.key == "LEFTBUTTON" then
+							sg.enabled = not (sg.enabled ~= false)
+							self:AddUndoState()
+							self.build.buildFlag = true
+							inputEvents[id] = nil
+						end
+					end
+				end
+			end
+		end
+
 		-- Hover highlight
 		if isHover then
 			SetDrawColor(1, 1, 1, 0.15)
