@@ -708,7 +708,8 @@ return {
 	{ label = "Retention", { format = "{0:output:WardRetention}%", { modName = "WardRetention" } }, },
 	{ label = "Decay Threshold", { format = "{0:output:WardDecayThreshold}", { modName = "WardDecayThreshold" } }, },
 	{ label = "Regen Per Second", { format = "{0:output:WardPerSecond}", { modName = "WardPerSecond" } }, },
-	{ label = "Decay Per Second", haveOutput = "WardDecayPerSecond", { format = "{0:output:WardDecayPerSecond}", }, },
+	{ label = "Decay Per Second", haveOutput = "WardDecayPerSecond", { format = "{0:output:WardDecayPerSecond}", { breakdown = "WardDecayPerSecond" }, }, },
+	{ label = "Net Regen", haveOutput = "NetWardRegen", { format = "{0:output:NetWardRegen}", }, },
 	{ label = "Total", { format = "{0:output:Ward}", { breakdown = "Ward" }, }, },
 } }
 } },

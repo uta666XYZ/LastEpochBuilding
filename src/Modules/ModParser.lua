@@ -329,6 +329,7 @@ local modTagList = {
 	-- Per stat
 	["per (%d+) total attributes"] = function(num) return { tag = { type = "PerStat", statList = Attributes, div = num } } end,
 	["per (%d+) maximum mana"] = function(num) return { tag = { type = "PerStat", stat = "Mana", div = num } } end,
+	["per (%d+) max mana"] = function(num) return { tag = { type = "PerStat", stat = "Mana", div = num } } end,
 	["per (%d+)%% block chance"] = function(num) return { tag = { type = "PerStat", stat = "BlockChance", div = num } } end,
 	["per (%d+) block effectiveness"] = function(num) return { tag = { type = "PerStat", stat = "BlockEffect", div = num } } end,
 	["per totem"] = { tag = { type = "PerStat", stat = "TotemsSummoned" } },
@@ -415,6 +416,13 @@ for i,stat in ipairs(LongAttributes) do
 	modTagList["per player " .. stat:lower()] = { tag = { type = "PerStat", stat = Attributes[i], actor = "parent" } }
 	modTagList["per (%d+) " .. stat:lower()] = function(num) return { tag = { type = "PerStat", stat = Attributes[i], div = num } } end
 	modTagList["w?h?i[lf]e? you have at least (%d+) " .. stat:lower()] = function(num) return { tag = { type = "StatThreshold", stat = Attributes[i], threshold = num } } end
+end
+-- Also handle abbreviated attribute names (e.g. "Per Int" in addition to "Per Intelligence")
+for i,stat in ipairs(Attributes) do
+	local abbr = stat:lower()
+	modTagList["per " .. abbr] = { tag = { type = "PerStat", stat = Attributes[i] } }
+	modTagList["per player " .. abbr] = { tag = { type = "PerStat", stat = Attributes[i], actor = "parent" } }
+	modTagList["per (%d+) " .. abbr] = function(num) return { tag = { type = "PerStat", stat = Attributes[i], div = num } } end
 end
 for _, weapon in ipairs(DamageSourceWeapons) do
 	modTagList["with an? " .. weapon:lower()] = { tag = { type = "Condition", var = "Using" .. weapon } }
