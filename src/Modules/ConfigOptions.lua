@@ -422,7 +422,7 @@ local options = {
 		enemyModList:NewMod("Condition:Ignited", "FLAG", val >= 1, "Config", { type = "Condition", var = "Effective" })
 	end },
 	{ var = "multiplierEnemyShockStacks", type = "count", label = "Enemy Shock Stacks:", implyCond = "Shocked", apply = function(val, modList, enemyModList)
-		val = math.min(val, 3)
+		val = math.min(val, 10)
 		enemyModList:NewMod("Multiplier:ShockStack", "BASE", val, "Config", { type = "Condition", var = "Effective" })
 		enemyModList:NewMod("Condition:Shocked", "FLAG", val >= 1, "Config", { type = "Condition", var = "Effective" })
 	end },
@@ -432,9 +432,11 @@ local options = {
 		enemyModList:NewMod("Condition:Chilled", "FLAG", val >= 1, "Config", { type = "Condition", var = "Effective" })
 	end },
 	{ var = "multiplierEnemyTimeRotStacks", type = "count", label = "Enemy Time Rot Stacks:", apply = function(val, modList, enemyModList)
+		val = math.min(val, 12)
 		enemyModList:NewMod("Multiplier:TimeRotStack", "BASE", val, "Config", { type = "Condition", var = "Effective" })
 	end },
 	{ var = "multiplierEnemyDoomStacks", type = "count", label = "Enemy Doom Stacks:", apply = function(val, modList, enemyModList)
+		val = math.min(val, 4)
 		enemyModList:NewMod("Multiplier:DoomStack", "BASE", val, "Config", { type = "Condition", var = "Effective" })
 	end },
 	{ var = "multiplierEnemySlowStacks", type = "count", label = "Enemy Slow Stacks:", implyCond = "Slowed", apply = function(val, modList, enemyModList)
