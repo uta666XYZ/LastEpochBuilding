@@ -1405,14 +1405,12 @@ function CraftingPopupClass:RefreshIdolAffixDropdowns()
 	end
 
 	-- ModIdol classSpecificity encoding:
-	--   bit 0 (value 1): "available on small/universal idols" flag — NOT a class bit
+	--   bit 0 (value 1): "available on universal/small idols for ALL classes" flag
 	--   bits 1-5 (values 2,4,8,16,32): class bits — 2=Primalist,4=Mage,8=Sentinel,16=Acolyte,32=Rogue
 	-- idol classReq (from bases) uses LEB encoding: 1=Primalist,2=Mage,4=Sentinel,8=Acolyte,16=Rogue
 	-- Conversion: game_cs_bit = idol_classReq * 2
 	local idolClassReq = self.editBaseEntry and self.editBaseEntry.base and self.editBaseEntry.base.classReq or 0
-	-- For universal idols (classReq=0), fall back to the player's current class bit
-	local effectiveClassReq = idolClassReq ~= 0 and idolClassReq or self:GetCurrentClassReqBit()
-	local idolCsBit = effectiveClassReq * 2
+	local idolCsBit = idolClassReq * 2  -- 0 for universal idols (bt=25-28)
 
 	local isOmen = self:IsOmenIdol()
 	-- Large idol baseTypeIDs: 29=Grand, 30=Large, 31=Ornate, 32=Huge, 33=Adorned
@@ -1426,9 +1424,14 @@ function CraftingPopupClass:RefreshIdolAffixDropdowns()
 		end
 		if not btMatch then return false end
 		local cs = mod.classSpecificity or 0
-		-- Strip bit 0 (small-idol availability flag) before class comparison
-		local classMask = bit.band(cs, 0xFFFFFFFE)
-		return classMask == 0 or idolCsBit == 0 or bit.band(classMask, idolCsBit) ~= 0
+		if idolClassReq == 0 then
+			-- Universal idol (Small/Minor/Humble/Stout): bit 0 means available to all classes
+			return cs == 0 or bit.band(cs, 1) ~= 0
+		else
+			-- Class-specific large idol: strip bit 0, then filter by class
+			local classMask = bit.band(cs, 0xFFFFFFFE)
+			return classMask == 0 or idolCsBit == 0 or bit.band(classMask, idolCsBit) ~= 0
+		end
 	end
 
 	-- Omen: single-stat affix (no mod[2]) with classMask == idolCsBit exactly, canRollOn intersects large bts
