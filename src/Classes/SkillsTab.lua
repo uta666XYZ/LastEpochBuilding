@@ -575,7 +575,7 @@ function SkillsTabClass:GetSkillIconFromTree(treeId, useSpec)
 		self.spriteHandles[cacheKey] = false
 		return nil
 	end
-	local baseName = iconName:gsub("%-root$", "")
+	local baseName = iconName:gsub("%-root$", ""):gsub("%-hex$", "")
 	local handle = NewImageHandle()
 	local w, h
 	if useSpec then
