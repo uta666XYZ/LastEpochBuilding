@@ -187,6 +187,7 @@ local CraftingPopupClass = newClass("CraftingPopup", "ControlHost", "Control", f
 	self.currentTab = "select"
 	self.selectedTypeIndex = 1
 	self.selectedBaseCategory = "basic"
+	self.searchText = ""
 	self.editItem = nil
 	self.rebuilding = false
 
@@ -475,6 +476,15 @@ function CraftingPopupClass:BuildControls()
 	end)
 	controls.catSet.shown = function() return self_ref.currentTab == "select" end
 	controls.catSet.locked = function() return self_ref.selectedBaseCategory == "set" end
+
+	-- Search bar
+	controls.searchLabel = new("LabelControl", {"LEFT", controls.catSet, "RIGHT"}, 18, 0, 0, 14, "^8Search:")
+	controls.searchLabel.shown = function() return self_ref.currentTab == "select" end
+	controls.searchEdit = new("EditControl", {"LEFT", controls.searchLabel, "RIGHT"}, 5, 0, 200, 18, "", nil, nil, nil, function(buf)
+		self_ref.searchText = buf
+		self_ref:RefreshBaseList()
+	end)
+	controls.searchEdit.shown = function() return self_ref.currentTab == "select" end
 
 	-- Column headers
 	controls.colHeaderName = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, 18, 106, 0, 14, "^8Item Name")
@@ -864,7 +874,9 @@ function CraftingPopupClass:BuildControls()
 					if value and value.statOrderKey then
 						local st = self_ref.affixState[slotKey]
 						st.modKey = value.statOrderKey
-						st.tier = value.maxTier or 0
+						-- Default to T5 (tier index 4); cap at maxTier if lower
+						local maxT = value.maxTier or 0
+						st.tier = m_min(4, maxT)
 						-- Sealed and corrupted: cap at tier 6 (no T8)
 						if noT8Slots[slotKey] and st.tier > 6 then
 							st.tier = 6
@@ -974,11 +986,13 @@ function CraftingPopupClass:RefreshBaseList()
 				for _, baseEntry in ipairs(bases) do
 					if baseEntry.base.baseTypeID == unique.baseTypeID and
 					   baseEntry.base.subTypeID == unique.subTypeID then
+						local isWW = unique.name and unique.name:find("an Erased ") and true or false
 						t_insert(list, {
 							label = unique.name, name = unique.name,
 							base = baseEntry.base, baseName = baseEntry.name,
 							type = typeName, displayType = baseEntry.base.type or "",
-							rarity = "UNIQUE", category = "unique",
+							rarity = isWW and "WWUNIQUE" or "UNIQUE",
+							category = isWW and "ww" or "unique",
 							uniqueData = unique, uniqueID = uid,
 						})
 						break
@@ -1007,6 +1021,52 @@ function CraftingPopupClass:RefreshBaseList()
 			end
 			table.sort(list, function(a, b) return a.label < b.label end)
 		end
+	end
+
+	-- Apply search filter
+	local query = (self.searchText or ""):lower():gsub("^%s*(.-)%s*$", "%1")
+	if query ~= "" then
+		local filtered = {}
+		for _, entry in ipairs(list) do
+			local matched = false
+			-- Match item name
+			if (entry.label or entry.name or ""):lower():find(query, 1, true) then
+				matched = true
+			end
+			-- WW alias: "ww", "weaver", "weavers will", "weaver's will"
+			if not matched and (entry.rarity == "WWUNIQUE" or entry.rarity == "WWLEGENDARY") then
+				if query == "ww" or ("weavers will"):find(query, 1, true) or ("weaver's will"):find(query, 1, true) then
+					matched = true
+				end
+			end
+			-- Match unique/ww mod texts and affix field
+			if not matched then
+				local modData = (entry.category == "unique" or entry.category == "ww") and entry.uniqueData
+				             or (entry.category == "set" and entry.setData)
+				if modData then
+					if modData.mods then
+						for _, modText in ipairs(modData.mods) do
+							if modText:lower():find(query, 1, true) then matched = true; break end
+						end
+					end
+					-- Set bonus effects
+					if not matched and modData.set then
+						if modData.set.name and modData.set.name:lower():find(query, 1, true) then
+							matched = true
+						end
+						if not matched and modData.set.bonus then
+							for _, bonusText in pairs(modData.set.bonus) do
+								if tostring(bonusText):lower():find(query, 1, true) then matched = true; break end
+							end
+						end
+					end
+				end
+			end
+			if matched then
+				t_insert(filtered, entry)
+			end
+		end
+		list = filtered
 	end
 
 	-- Insert implicit sub-rows (and unique/set mods for idols)
@@ -1084,6 +1144,18 @@ function CraftingPopupClass:SelectBase(entry)
 				t_insert(item.explicitModLines, modLine)
 			end
 		end
+	elseif entry.category == "ww" then
+		item.rarity = "WWUNIQUE"
+		item.title = entry.uniqueData.name
+		item.uniqueID = entry.uniqueID
+		if entry.uniqueData.mods then
+			for i, modText in ipairs(entry.uniqueData.mods) do
+				local rollId = entry.uniqueData.rollIds and entry.uniqueData.rollIds[i]
+				local modLine = { line = modText }
+				if rollId then modLine.range = 128 end
+				t_insert(item.explicitModLines, modLine)
+			end
+		end
 	elseif entry.category == "set" then
 		item.rarity = "SET"
 		item.title = entry.setData.name
@@ -1137,11 +1209,24 @@ function CraftingPopupClass:RefreshAffixDropdowns()
 	local itemMods = self.editItem.affixes or data.itemMods.Item
 	if not itemMods then return end
 
+	local wwPool = nil
+	local wwClassBit = 0
+	if self:IsWWItem() then
+		local bt = self.editBaseEntry and self.editBaseEntry.base and self.editBaseEntry.base.baseTypeID
+		wwPool = bt and data.wwMods and data.wwMods[tostring(bt)]
+		wwClassBit = self:GetWWClassBit()
+	end
+
 	local prefixGroups = {}
 	local suffixGroups = {}
 
 	for modId, mod in pairs(itemMods) do
 		if mod.statOrderKey then
+			if wwPool then
+				local cs = wwPool[tostring(mod.statOrderKey)]
+				if cs == nil then goto continue end
+				if cs ~= 0 and wwClassBit ~= 0 and bit.band(cs, wwClassBit) == 0 then goto continue end
+			end
 			local groups = mod.type == "Prefix" and prefixGroups or (mod.type == "Suffix" and suffixGroups or nil)
 			if groups then
 				if not groups[mod.statOrderKey] then
@@ -1164,6 +1249,7 @@ function CraftingPopupClass:RefreshAffixDropdowns()
 				end
 			end
 		end
+		::continue::
 	end
 
 	local prefixList = { { label = "-- Select Prefix --" } }
@@ -1553,6 +1639,26 @@ function CraftingPopupClass:GetCurrentClassReqBit()
 	return CLASS_REQ_BITS[name] or 0
 end
 
+-- Returns true when the current item has a WW rarity (WWUNIQUE or WWLEGENDARY)
+function CraftingPopupClass:IsWWItem()
+	local r = self.editItem and self.editItem.rarity
+	return r == "WWUNIQUE" or r == "WWLEGENDARY"
+end
+
+-- Returns the WW class specificity bit for filtering the WW affix pool.
+-- WW uses game encoding: Primalist=2, Mage=4, Sentinel=8, Acolyte=16, Rogue=32.
+-- Falls back to current build class if item name has no class keyword.
+local WW_CLASS_BITS = { Primalist=2, Mage=4, Sentinel=8, Acolyte=16, Rogue=32 }
+function CraftingPopupClass:GetWWClassBit()
+	local title = self.editItem and (self.editItem.title or self.editItem.name) or ""
+	for class, bit in pairs(WW_CLASS_BITS) do
+		if title:find(class) then return bit end
+	end
+	local spec = self.build and self.build.spec
+	local name = spec and spec.curClassName
+	return WW_CLASS_BITS[name] or 0
+end
+
 -- Rebuild edit item from current affix state
 function CraftingPopupClass:RebuildEditItem()
 	if not self.editItem then return end
@@ -1648,6 +1754,8 @@ function CraftingPopupClass:RebuildEditItem()
 		end
 	elseif self.editBaseEntry and self.editBaseEntry.category == "unique" and hasAffix then
 		item.rarity = "LEGENDARY"
+	elseif self.editBaseEntry and self.editBaseEntry.category == "ww" then
+		item.rarity = hasAffix and "WWLEGENDARY" or "WWUNIQUE"
 	end
 
 	-- Add corrupted affix mod lines

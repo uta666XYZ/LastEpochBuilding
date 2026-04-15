@@ -602,6 +602,7 @@ for _, ver in ipairs(treeVersionList) do
 	end
 	local verUniques     = readJsonFile("Data/Uniques/uniques_" .. ver .. ".json")
 	local verIdolMods    = readJsonFile("Data/ModIdol_" .. ver .. ".json")
+	local verWWMods      = readJsonFile("Data/ModItemWW_" .. ver .. ".json")
 	-- Safety fallback: if a version-specific file is missing, use the base files
 	if not verMods    then verMods    = readJsonFile("Data/ModItem.json")         end
 	if not verBases   then verBases   = readJsonFile("Data/Bases/bases.json")     end
@@ -632,6 +633,7 @@ for _, ver in ipairs(treeVersionList) do
 		itemBaseTypeList = verBaseTypeList,
 		uniques          = verUniques or {},
 		idolMods         = verIdolMods or {},
+		wwMods           = verWWMods or {},
 	}
 end
 
@@ -643,6 +645,7 @@ function data.setActiveVersion(version)
 	data.itemBaseTypeList = vd.itemBaseTypeList
 	data.uniques         = vd.uniques
 	data.modIdol         = vd.idolMods or {}
+	data.wwMods          = vd.wwMods or {}
 	-- Use the requested version's itemBases/itemMods if non-empty,
 	-- otherwise fall back to the newest version that parsed successfully.
 	if next(vd.itemBases) then
