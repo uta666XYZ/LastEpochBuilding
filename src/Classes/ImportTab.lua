@@ -1317,7 +1317,8 @@ function ImportTabClass:ImportPassiveTreeAndJewels(charData)
     self.build.configTab:UpdateLevel()
     self.build.controls.characterLevel:SetText(charData.level)
     self.build:EstimatePlayerProgress()
-    self.build.configTab.input["campaignBonuses"] = true
+    self.build.configTab.input["questApophisMajasa"] = true
+    self.build.configTab.input["questTempleOfEterra"] = true
     self.build.configTab:BuildModList()
     self.build.configTab:UpdateControls()
     self.build.buildFlag = true
