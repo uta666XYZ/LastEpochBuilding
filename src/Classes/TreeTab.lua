@@ -490,7 +490,7 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 	self.controls.specSelect.y = -bottomDrawerHeight - twoLineHeight
 
 	-- Calculate bottom controls height
-	local bottomBarHeight = self.showConvert and 64 + bottomDrawerHeight + twoLineHeight or 32 + bottomDrawerHeight + twoLineHeight
+	local bottomBarHeight = self.showConvert and 64 + bottomDrawerHeight + twoLineHeight + convertTwoLineHeight or 32 + bottomDrawerHeight + twoLineHeight
 
 	-- Tree viewport: shrink from top (header) and bottom (skill bar + controls)
 	local treeViewPort = {
