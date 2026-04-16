@@ -600,15 +600,6 @@ function calcs.offence(env, actor, activeSkill)
 			break
 		end
 	end
-	if skillModList:Flag(nil, "CritChanceIncreasedBySpellSuppressChance") then
-		for i, value in ipairs(modDB:Tabulate("FLAG", nil, "CritChanceIncreasedBySpellSuppressChance")) do
-			local mod = value.mod
-			skillModList:NewMod("CritChance", "INC", output.SpellSuppressionChance, mod.source)
-			break
-		end
-
-	end
-
 	if skillModList:Flag(nil, "LightRadiusAppliesToAreaOfEffect") then
 		-- Light Radius conversion from Wreath of Phrecia
 		for i, value in ipairs(skillModList:Tabulate("INC",  { }, "LightRadius")) do
@@ -2391,104 +2382,6 @@ function calcs.offence(env, actor, activeSkill)
 		end
 
 
-		-- Calculate PvP values
-
-		--setup flags
-		skillFlags.isPvP = false
-		skillFlags.notAttackPvP = false
-		skillFlags.attackPvP = false
-		skillFlags.weapon1AttackPvP = false
-		skillFlags.weapon2AttackPvP = false
-		skillFlags.notAveragePvP = false
-
-		if env.config.PvpScaling then
-			skillFlags.isPvP = true
-			skillFlags.attackPvP = skillFlags.attack
-			skillFlags.notAttackPvP = not skillFlags.attack
-			skillFlags.weapon1AttackPvP = skillFlags.weapon1Attack
-			skillFlags.weapon2AttackPvP = skillFlags.weapon2Attack
-			skillFlags.notAveragePvP = skillFlags.notAverage
-			local PvpTvalue = env.config.multiplierPvpTvalueOverride or nil
-			if PvpTvalue then
-				PvpTvalue = PvpTvalue / 1000
-			else
-				if skillData.cooldown then
-					PvpTvalue = skillData.cooldown
-				elseif skillFlags.mine then
-					PvpTvalue = (output.MineLayingTime or 1) / globalOutput.ActionSpeedMod
-				elseif skillFlags.trap then
-					PvpTvalue = (output.TrapThrowingTime or 1) / globalOutput.ActionSpeedMod
-				else
-					PvpTvalue = 1/((globalOutput.HitSpeed or globalOutput.Speed)/globalOutput.ActionSpeedMod) * skillModList:More(cfg, "PvpTvalueMultiplier")
-				end
-				if PvpTvalue > 2147483647 then
-					PvpTvalue = 1
-				end
-			end
-			local PvpMultiplier = skillModList:More(cfg, "PvpDamageMultiplier")
-
-			local PvpNonElemental1 = data.misc.PvpNonElemental1
-			local PvpNonElemental2 = data.misc.PvpNonElemental2
-			local PvpElemental1 = data.misc.PvpElemental1
-			local PvpElemental2 = data.misc.PvpElemental2
-
-			local percentageNonElemental = (output["PhysicalHitAverage"] / totalHitAvg)
-			local percentageElemental = 1 - percentageNonElemental
-			local portionNonElemental = (output.AverageHit / PvpTvalue / PvpNonElemental2 ) ^ PvpNonElemental1 * PvpTvalue * PvpNonElemental2 * percentageNonElemental
-			local portionElemental = (output.AverageHit / PvpTvalue / PvpElemental2 ) ^ PvpElemental1 * PvpTvalue * PvpElemental2 * percentageElemental
-			output.PvpAverageHit = (portionNonElemental + portionElemental) * PvpMultiplier
-			output.PvpAverageDamage = output.PvpAverageHit * output.HitChance / 100
-			output.PvpTotalDPS = output.PvpAverageDamage * (globalOutput.HitSpeed or globalOutput.Speed) * skillData.dpsMultiplier
-
-			-- fix for these being nan
-			if output.PvpAverageHit ~= output.PvpAverageHit then
-				output.PvpAverageHit = 0
-			end
-			if output.PvpAverageDamage ~= output.PvpAverageDamage then
-				output.PvpAverageDamage = 0
-			end
-			if output.PvpTotalDPS ~= output.PvpTotalDPS then
-				output.PvpTotalDPS = 0
-			end
-
-			if breakdown then
-				breakdown.PvpAverageHit = { }
-				local percentBoth = (percentageNonElemental > 0) and (percentageElemental > 0)
-				t_insert(breakdown.PvpAverageHit, s_format("Pvp Formula is (D/(T*M))^E*T*%s, where D is the damage, T is the time taken,", percentBoth and "M*P" or "M" ))
-				t_insert(breakdown.PvpAverageHit, s_format(" M is the multiplier%s", percentBoth and ", E is the exponent and P is the percentage of that type (ele or non ele)" or " and E is the exponent" ))
-				if percentBoth then
-					t_insert(breakdown.PvpAverageHit, s_format("(M= %.1f for ele and %.1f for non-ele)(E= %.2f for ele and %.2f for non-ele)", PvpElemental2, PvpNonElemental2, PvpElemental1, PvpNonElemental1))
-					t_insert(breakdown.PvpAverageHit, s_format("(%.1f / (%.2f * %.1f)) ^ %.2f * %.2f * %.1f * %.2f = %.1f", output.AverageHit, PvpTvalue,  PvpNonElemental2, PvpNonElemental1, PvpTvalue, PvpNonElemental2, percentageNonElemental, portionNonElemental))
-					t_insert(breakdown.PvpAverageHit, s_format("(%.1f / (%.2f * %.1f)) ^ %.2f * %.2f * %.1f * %.2f = %.1f", output.AverageHit, PvpTvalue,  PvpElemental2, PvpElemental1, PvpTvalue, PvpElemental2, percentageElemental, portionElemental))
-					t_insert(breakdown.PvpAverageHit, s_format("(portionNonElemental + portionElemental)%s", PvpMultiplier ~= 1 and " * PvP multiplier" or " "))
-					if PvpMultiplier ~= 1 then
-						t_insert(breakdown.PvpAverageHit, s_format("(%.1f + %.1f) * %g", portionNonElemental, portionElemental, PvpMultiplier))
-					else
-						t_insert(breakdown.PvpAverageHit, s_format("%.1f + %.1f", portionNonElemental, portionElemental))
-					end
-				elseif percentageElemental <= 0 then
-					t_insert(breakdown.PvpAverageHit, s_format("(M= %.1f for non-ele)(E= %.2f for non-ele)", PvpNonElemental2, PvpNonElemental1))
-					t_insert(breakdown.PvpAverageHit, s_format("(%.1f / (%.2f * %.1f)) ^ %.2f * %.2f * %.1f = %.1f", output.AverageHit, PvpTvalue,  PvpNonElemental2, PvpNonElemental1, PvpTvalue, PvpNonElemental2, portionNonElemental))
-					if PvpMultiplier ~= 1 then
-						t_insert(breakdown.PvpAverageHit, s_format("%.1f * %g ^8(portionNonElemental * PvP multiplier)", portionNonElemental, PvpMultiplier))
-					end
-				elseif percentageNonElemental <= 0 then
-					t_insert(breakdown.PvpAverageHit, s_format("(M= %.1f for ele)(E= %.2f for ele)", PvpElemental2, PvpElemental1))
-					t_insert(breakdown.PvpAverageHit, s_format("(%.1f / (%.2f * %.1f)) ^ %.2f * %.2f * %.1f = %.1f", output.AverageHit, PvpTvalue,  PvpElemental2, PvpElemental1, PvpTvalue, PvpElemental2, portionElemental))
-					if PvpMultiplier ~= 1 then
-						t_insert(breakdown.PvpAverageHit, s_format("%.1f * %g ^8(portionElemental * PvP multiplier)", portionElemental, PvpMultiplier))
-					end
-				end
-				t_insert(breakdown.PvpAverageHit, s_format("= %.1f", output.PvpAverageHit))
-				if isAttack then
-					breakdown.PvpAverageDamage = { }
-					t_insert(breakdown.PvpAverageDamage, s_format("%s:", pass.label))
-					t_insert(breakdown.PvpAverageDamage, s_format("%.1f ^8(average pvp hit)", output.PvpAverageHit))
-					t_insert(breakdown.PvpAverageDamage, s_format("x %.2f ^8(chance to hit)", output.HitChance / 100))
-					t_insert(breakdown.PvpAverageDamage, s_format("= %.1f", output.PvpAverageDamage))
-				end
-			end
-		end
 	end
 
 	if env.mode == "CALCS" then
@@ -2532,25 +2425,6 @@ function calcs.offence(env, actor, activeSkill)
 			t_insert(breakdown.TotalDPS, s_format("x %g ^8(quantity multiplier for this skill)", quantityMultiplier))
 		end
 		t_insert(breakdown.TotalDPS, s_format("= %.1f", output.TotalDPS))
-		if skillFlags.isPvP then
-			local rateType = "cast"
-			if isAttack then
-				rateType = "attack"
-			elseif skillData.triggered then
-				rateType = "trigger"
-			end
-			breakdown.PvpTotalDPS = {
-				s_format("%.1f ^8(average pvp hit)", output.PvpAverageDamage),
-				output.HitSpeed and s_format("x %.2f ^8(hit rate)", output.HitSpeed) or s_format("x %.2f ^8(%s rate)", output.Speed, rateType),
-			}
-			if skillData.dpsMultiplier ~= 1 then
-				t_insert(breakdown.PvpTotalDPS, s_format("x %g ^8(DPS multiplier for this skill)", skillData.dpsMultiplier))
-			end
-			if quantityMultiplier > 1 then
-				t_insert(breakdown.PvpTotalDPS, s_format("x %g ^8(quantity multiplier for this skill)", quantityMultiplier))
-			end
-			t_insert(breakdown.PvpTotalDPS, s_format("= %.1f", output.PvpTotalDPS))
-		end
 	end
 
 	if skillFlags.minion then
