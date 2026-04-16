@@ -31,6 +31,8 @@ manifest-updated.xml
 devenv.lock
 
 runtime/imgui.ini
+runtime/*.exe
+runtime/*.dll
 
 # Hook logs
 .claude/command-log.txt
@@ -46,6 +48,10 @@ runtime-win32.zip
 # AI assistant context files (internal use only)
 QWEN.md
 .opencode/
+claude-project/
+
+# Local memo files
+*.txt
 
 # Claude Code internal files
 .claudeignore
