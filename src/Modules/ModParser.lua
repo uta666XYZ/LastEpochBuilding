@@ -102,6 +102,7 @@ local modNameList = {
 	["mana gain on potion use"] = "ManaOnPotionUse",
 	["health gained on potion use"] = "LifeOnPotionUse",
 	["health gain on potion use"] = "LifeOnPotionUse",
+	["ward gained when you use .+"] = "WardOnSkillUse",
 	["ward gain on kill"] = "WardOnKill",
 	-- Stun/knockback modifiers
 	["stun duration on you"] = "StunDuration",
