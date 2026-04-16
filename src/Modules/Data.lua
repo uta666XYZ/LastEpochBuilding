@@ -97,8 +97,6 @@ data.misc = { -- magic numbers
 	MaxResistCap = 75, -- LE resistance cap (75%)
 	EvadeChanceCap = 95,
 	DodgeChanceCap = 85, -- LE dodge chance cap (85%)
-	SuppressionChanceCap = 100,
-	SuppressionEffect = 50,
 	AvoidChanceCap = 75,
 	WardRechargeDelay = 4,
 	Transfiguration = 0.3,
@@ -124,7 +122,6 @@ data.misc = { -- magic numbers
 	BleedPercentBase = 70,
 	PoisonPercentBase = 0.30,
 	IgnitePercentBase = 0.9,
-	ImpaleStoredDamageBase = 0.1,
 	TrapTriggerRadiusBase = 10,
 	MineDetonationRadiusBase = 60,
 	MineAuraRadiusBase = 35,
@@ -171,11 +168,6 @@ data.misc = { -- magic numbers
 	ehpCalcMaxIterationsToCalc = 50,
 	-- maximum increase for stat weights, only used in trader for now.
 	maxStatIncrease = 2, -- 100% increased
-	-- PvP scaling used for hogm
-	PvpElemental1 = 0.55,
-	PvpElemental2 = 150,
-	PvpNonElemental1 = 0.57,
-	PvpNonElemental2 = 90,
 }
 
 data.skillColorMap = { colorCodes.STRENGTH, colorCodes.DEXTERITY, colorCodes.INTELLIGENCE, colorCodes.NORMAL }
