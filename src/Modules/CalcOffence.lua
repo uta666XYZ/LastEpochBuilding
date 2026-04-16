@@ -1656,7 +1656,10 @@ function calcs.offence(env, actor, activeSkill)
 	do
 		local enemyLife = enemyDB:Sum("BASE", nil, "Life") or 1000
 		local enemyWard = enemyDB:Sum("BASE", nil, "Ward") or 0
-		local enemyEHP  = m_max(enemyLife + enemyWard, 1)
+		-- vs Boss: treat HP as 1.5x higher (makes freeze harder on bosses)
+		local enemyIsBoss = enemyDB:Flag(nil, "Condition:Boss")
+		local bossHPMult = enemyIsBoss and data.misc.StunBossHealthMult or 1
+		local enemyEHP  = m_max(enemyLife * bossHPMult + enemyWard, 1)
 		output.FreezeChance = m_min(output.FreezeRate / enemyEHP * 100, 100)
 	end
 
@@ -1707,7 +1710,7 @@ function calcs.offence(env, actor, activeSkill)
 	output.ShockChance     = m_min(modDB:Sum("BASE", skillCfg, "ShockChance"), 100)
 	output.ChillChance     = m_min(modDB:Sum("BASE", skillCfg, "ChillChance"), 100)
 	output.FrostbiteChance = m_min(modDB:Sum("BASE", skillCfg, "FrostbiteChance"), 100)
-	output.StunChance      = m_min(modDB:Sum("BASE", skillCfg, "StunChance"), 100)
+	-- StunChance computed after AverageHit is available (see below)
 	output.ArmorShredChance= m_min(modDB:Sum("BASE", skillCfg, "ArmorShredChance"), 100)
 	output.ElectrifyChance = m_min(modDB:Sum("BASE", skillCfg, "ElectrifyChance"), 100)
 	output.TimeRotChance   = m_min(modDB:Sum("BASE", skillCfg, "TimeRotChance"), 100)
@@ -2310,6 +2313,22 @@ function calcs.offence(env, actor, activeSkill)
 			end
 		end
 		output.AverageDamage = output.AverageHit * output.HitChance / 100
+
+		-- LE Stun Chance: (averageHit * multiplier) / (enemyHP + enemyStunAvoid) * 100
+		-- Melee attacks use 3x multiplier, all others use 2x; vs Boss: HP treated as 1.5x
+		do
+			local stunMult = skillFlags.melee and data.misc.StunMeleeDamageMult or data.misc.StunOtherDamageMult
+			local sEnemyLife = enemyDB:Sum("BASE", nil, "Life") or 1000
+			local sEnemyWard = enemyDB:Sum("BASE", nil, "Ward") or 0
+			local sEnemyStunAvoid = enemyDB:Sum("BASE", nil, "StunAvoidance") or 0
+			local sEnemyIsBoss = enemyDB:Flag(nil, "Condition:Boss")
+			local sBossHPMult = sEnemyIsBoss and data.misc.StunBossHealthMult or 1
+			local sEnemyHP = m_max(sEnemyLife * sBossHPMult + sEnemyWard + sEnemyStunAvoid, 1)
+			local formulaChance = (output.AverageHit or 0) * stunMult / sEnemyHP * 100
+			local flatBonus = modDB:Sum("BASE", skillCfg, "StunChance")
+			output.StunChance = m_min(formulaChance + flatBonus, 100)
+		end
+
 		globalOutput.AverageBurstHits = output.AverageBurstHits or 1
 		local repeatPenalty = skillModList:Flag(nil, "HasSeals") and activeSkill.skillTypes[SkillType.CanRapidFire]  and not skillModList:Flag(nil, "NoRepeatBonuses") and calcLib.mod(skillModList, skillCfg, "SealRepeatPenalty") or 1
 		globalOutput.AverageBurstDamage = output.AverageDamage + output.AverageDamage * (globalOutput.AverageBurstHits - 1) * repeatPenalty or 0

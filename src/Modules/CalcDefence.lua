@@ -138,6 +138,22 @@ function calcs.reducePoolsByDamage(poolTable, damageTable, actor)
 			ward = ward - tempDamage
 			damageRemainder = damageRemainder - tempDamage
 		end
+		-- Damage Taken From Mana Before Health (LE: 1 mana shields 5 health)
+		-- X% of damage (after Ward) redirected to Mana; if Mana<=0, all goes to Life
+		local dmgToManaPct = (output.DamageToManaBeforeHealth or 0) / 100
+		if dmgToManaPct > 0 and mana > 0 and damageRemainder > 0 then
+			local manaPortion = damageRemainder * dmgToManaPct
+			local manaRequired = manaPortion / data.misc.ManaShieldsHealthRatio
+			if manaRequired <= mana then
+				mana = mana - manaRequired
+				damageRemainder = damageRemainder - manaPortion
+			else
+				-- Not enough mana: absorb what mana can cover, rest goes to Life
+				local manaAbsorbed = mana * data.misc.ManaShieldsHealthRatio
+				damageRemainder = damageRemainder - manaAbsorbed
+				mana = 0
+			end
+		end
 		-- Endurance: Last Epoch damage reduction when HP is at or below EnduranceThreshold
 		-- When a hit would cross the threshold, only the portion below is reduced
 		local endurancePct = (output.Endurance or 0) / 100
@@ -1856,6 +1872,11 @@ function calcs.buildDefenceEstimations(env, actor)
 			output[damageType.."TotalHitPool"] = sourcePool
 		else
 			output[damageType.."TotalHitPool"] = output[damageType.."TotalHitPool"] + output.Ward or 0
+		end
+		-- Damage Taken From Mana Before Health: 1 Mana shields ManaShieldsHealthRatio HP
+		local dmgToManaPct = (output.DamageToManaBeforeHealth or 0) / 100
+		if dmgToManaPct > 0 and (output.Mana or 0) > 0 then
+			output[damageType.."TotalHitPool"] = output[damageType.."TotalHitPool"] + output.Mana * data.misc.ManaShieldsHealthRatio
 		end
 		-- aegis
 		output[damageType.."TotalHitPool"] = output[damageType.."TotalHitPool"] + m_max(m_max(output[damageType.."Aegis"], output["sharedAegis"]), isElemental[damageType] and output[damageType.."AegisDisplay"] or 0)
