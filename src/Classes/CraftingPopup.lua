@@ -984,7 +984,6 @@ function CraftingPopupClass:RefreshBaseList()
 		if bases then
 			local myClassBit = self:GetCurrentClassReqBit()
 			for uid, unique in pairs(self.build.data.uniques) do
-				local found = false
 				for _, baseEntry in ipairs(bases) do
 					if baseEntry.base.baseTypeID == unique.baseTypeID and
 					   baseEntry.base.subTypeID == unique.subTypeID then
@@ -1000,28 +999,7 @@ function CraftingPopupClass:RefreshBaseList()
 								uniqueData = unique, uniqueID = uid,
 							})
 						end
-						found = true
 						break
-					end
-				end
-				-- Also search hidden bases (e.g. Adorned Silver/Volcano Idol)
-				if not found and self.build.data.itemBases then
-					for baseName, base in pairs(self.build.data.itemBases) do
-						if base.hidden and base.type == typeName and
-						   base.baseTypeID == unique.baseTypeID and
-						   base.subTypeID == unique.subTypeID then
-							local classReq = base.classReq or 0
-							if classReq == 0 or myClassBit == 0 or bit.band(classReq, myClassBit) ~= 0 then
-								t_insert(list, {
-									label = unique.name, name = unique.name,
-									base = base, baseName = baseName,
-									type = typeName, displayType = base.type or "",
-									rarity = "UNIQUE", category = "unique",
-									uniqueData = unique, uniqueID = uid,
-								})
-							end
-							break
-						end
 					end
 				end
 			end
