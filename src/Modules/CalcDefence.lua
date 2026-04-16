@@ -458,6 +458,11 @@ function calcs.defence(env, actor)
 	output.LifeOnBlock = modDB:Sum("BASE", nil, "LifeOnBlock")
 	output.ManaOnBlock = modDB:Sum("BASE", nil, "ManaOnBlock")
 
+	-- Gain on Potion Use
+	output.WardOnPotionUse = modDB:Sum("BASE", nil, "WardOnPotionUse")
+	output.ManaOnPotionUse = modDB:Sum("BASE", nil, "ManaOnPotionUse")
+	output.LifeOnPotionUse = modDB:Sum("BASE", nil, "LifeOnPotionUse")
+
 	-- Recovery modifiers
 	output.LifeRecoveryRateMod = calcLib.mod(modDB, nil, "LifeRecoveryRate")
 	output.ManaRecoveryRateMod = calcLib.mod(modDB, nil, "ManaRecoveryRate")
@@ -587,6 +592,11 @@ function calcs.defence(env, actor)
 	-- recovery on block, needs to be after primary defences
 	output.LifeOnBlock = modDB:Sum("BASE", nil, "LifeOnBlock")
 	output.ManaOnBlock = modDB:Sum("BASE", nil, "ManaOnBlock")
+
+	-- gain on potion use
+	output.WardOnPotionUse = modDB:Sum("BASE", nil, "WardOnPotionUse")
+	output.ManaOnPotionUse = modDB:Sum("BASE", nil, "ManaOnPotionUse")
+	output.LifeOnPotionUse = modDB:Sum("BASE", nil, "LifeOnPotionUse")
 
 	-- damage avoidances
 	output.specificTypeAvoidance = false
