@@ -438,6 +438,11 @@ local modTagList = {
 	-- Player: Potion / Forged Weapon
 	["while you have used a potion recently"] = { tag = { type = "Condition", var = "UsedPotionRecently" } },
 	["after using a potion"] = { tag = { type = "Condition", var = "UsedPotionRecently" } },
+	["when you use a potion"] = { tag = { type = "Condition", var = "UsedPotionRecently" } },
+	-- Player: Offhand type conditions
+	["while using evade"] = { tag = { type = "Condition", var = "UsingEvade" } },
+	["while using a catalyst"] = { tag = { type = "Condition", var = "UsingCatalyst" } },
+	["while using a shield"] = { tag = { type = "Condition", var = "UsingShield" } },
 	["per forged weapon"] = { tag = { type = "Multiplier", var = "ForgedWeapon" } },
 	["while you have a forged weapon"] = { tag = { type = "Condition", var = "HaveForgedWeapon" } },
 	-- Runemaster: Glyph of Dominion / Arcane Momentum
