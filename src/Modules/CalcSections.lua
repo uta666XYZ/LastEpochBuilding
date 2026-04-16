@@ -749,6 +749,7 @@ return {
 	{ label = "Ward on Potion Use", haveOutput = "WardOnPotionUse", { format = "{0:output:WardOnPotionUse}", { modName = "WardOnPotionUse" }, }, },
 	{ label = "Mana on Potion Use", haveOutput = "ManaOnPotionUse", { format = "{0:output:ManaOnPotionUse}", { modName = "ManaOnPotionUse" }, }, },
 	{ label = "Life on Potion Use", haveOutput = "LifeOnPotionUse", { format = "{0:output:LifeOnPotionUse}", { modName = "LifeOnPotionUse" }, }, },
+	{ label = "Ward on Skill Use", haveOutput = "WardOnSkillUse", { format = "{0:output:WardOnSkillUse}", { modName = "WardOnSkillUse" }, }, },
 } }, { defaultCollapsed = false, label = "Dodge", data = {
 	{ label = "Dodge Rating", { format = "{0:output:Evasion}", { modName = "Evasion" }, }, },
 	{ label = "Total Increased", { format = "{0:mod:1}%", { modName = { "Evasion", "ArmourAndEvasion", "Defences" }, modType = "INC" }, }, },
