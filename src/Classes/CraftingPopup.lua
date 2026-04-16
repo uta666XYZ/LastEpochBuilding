@@ -14,12 +14,13 @@ local ipairs = ipairs
 
 local MAX_MOD_LINES = 3
 
--- Rarity tier color mapping
-local function getRarityForTierSum(tierSum, hasAffix)
-	if not hasAffix then return "NORMAL" end
-	if tierSum <= 4 then return "MAGIC" end
-	if tierSum <= 6 then return "RARE" end
-	return "EXALTED"
+-- Rarity for crafted items based on affix count and highest tier index (0-based)
+-- Rules: no affixes=NORMAL, any T6+(tier>=5)=EXALTED, 3+ affixes=RARE, else MAGIC
+local function getRarityForAffixes(affixCount, maxTier)
+	if affixCount == 0 then return "NORMAL" end
+	if maxTier >= 5 then return "EXALTED" end
+	if affixCount >= 3 then return "RARE" end
+	return "MAGIC"
 end
 
 -- Clean implicit text: remove formatting tags and filter UNKNOWN_STAT
@@ -248,9 +249,10 @@ end
 function CraftingPopupClass:GetMaxTier(statOrderKey)
 	-- Idol affixes are always single-tier (T1 only)
 	if self:IsAnyIdol() then return 0 end
+	local pool = self:IsIdolAltar() and (data.itemMods["Idol Altar"] or {}) or (data.itemMods.Item or {})
 	for tier = 7, 0, -1 do
 		local key = tostring(statOrderKey) .. "_" .. tostring(tier)
-		if data.itemMods.Item and data.itemMods.Item[key] then
+		if pool[key] then
 			return tier
 		end
 	end
@@ -356,9 +358,15 @@ function CraftingPopupClass:UpdateSlotModInfo(slotKey)
 	local st = self.affixState[slotKey]
 	if st.modKey then
 		local modKey = tostring(st.modKey) .. "_" .. tostring(st.tier)
-		local mod = data.itemMods.Item and data.itemMods.Item[modKey]
-		if not mod and data.modIdol and data.modIdol.flat then
-			mod = data.modIdol.flat[modKey]
+		local mod
+		if self:IsIdolAltar() then
+			local altarMods = data.itemMods["Idol Altar"]
+			mod = altarMods and altarMods[modKey]
+		else
+			mod = data.itemMods.Item and data.itemMods.Item[modKey]
+			if not mod and data.modIdol and data.modIdol.flat then
+				mod = data.modIdol.flat[modKey]
+			end
 		end
 		if mod then
 			for k = 1, 10 do
@@ -577,7 +585,7 @@ function CraftingPopupClass:BuildControls()
 		if not self_ref.editItem then return "" end
 		local item = self_ref.editItem
 		local col
-		if item.type and item.type:find("Idol") and item.rarity ~= "UNIQUE" then
+		if item.type and item.type:find("Idol") and item.type ~= "Idol Altar" and item.rarity ~= "UNIQUE" then
 			col = colorCodes.IDOL
 		else
 			col = colorCodes[item.rarity] or colorCodes.NORMAL
@@ -1248,8 +1256,8 @@ function CraftingPopupClass:SelectBase(entry)
 			end
 		end
 	else
-		item.rarity = "RARE"
-		item.title = "New Item"
+		item.rarity = "NORMAL"
+		item.title = nil
 	end
 
 	if entry.base.implicits then
@@ -1271,6 +1279,9 @@ function CraftingPopupClass:SelectBase(entry)
 	for _, k in ipairs({"prefix1","prefix2","suffix1","suffix2","sealed","primordial","corrupted"}) do
 		self:UpdateSlotModInfo(k)
 	end
+	if entry.category == "basic" then
+		self:RebuildEditItem()
+	end
 	self:RecalcEditLayout()
 	self:RefreshAffixDropdowns()
 end
@@ -1285,7 +1296,12 @@ function CraftingPopupClass:RefreshAffixDropdowns()
 		return
 	end
 
-	local itemMods = self.editItem.affixes or data.itemMods.Item
+	local itemMods
+	if self:IsIdolAltar() then
+		itemMods = data.itemMods["Idol Altar"] or {}
+	else
+		itemMods = self.editItem.affixes or data.itemMods.Item
+	end
 	if not itemMods then return end
 
 	local wwPool = nil
@@ -1303,6 +1319,8 @@ function CraftingPopupClass:RefreshAffixDropdowns()
 
 	for modId, mod in pairs(itemMods) do
 		if mod.statOrderKey then
+			-- Skip corrupted altar affixes from regular prefix/suffix groups
+			if mod.specialAffixType and mod.specialAffixType ~= 0 then goto continue end
 			if wwPool then
 				local cs = wwPool[tostring(mod.statOrderKey)]
 				if cs == nil then goto continue end
@@ -1426,16 +1444,45 @@ function CraftingPopupClass:RefreshAffixDropdowns()
 	if s2Key then t_insert(primExclude, s2Key) end
 	self.controls.primordialAdd.list = filterExclusions(primordialList, primExclude)
 
-	-- Corrupted affix dropdown: all prefixes + suffixes (no T8 filter)
+	-- Corrupted affix dropdown
 	local corruptedList = { { label = "-- Select Corrupted Affix --" } }
-	for _, g in pairs(prefixGroups) do
-		-- Cap maxTier to 6 for corrupted (no T8)
-		local mt = m_min(g.maxTier, 6)
-		t_insert(corruptedList, { label = g.label, statOrderKey = g.statOrderKey, affix = g.affix, type = g.type, maxTier = mt })
-	end
-	for _, g in pairs(suffixGroups) do
-		local mt = m_min(g.maxTier, 6)
-		t_insert(corruptedList, { label = g.label, statOrderKey = g.statOrderKey, affix = g.affix, type = g.type, maxTier = mt })
+	if self:IsIdolAltar() then
+		-- Altar: only show specialAffixType=6 entries
+		local corruptedGroups = {}
+		for modId, mod in pairs(itemMods) do
+			if mod.statOrderKey and mod.specialAffixType == 6 then
+				if not corruptedGroups[mod.statOrderKey] then
+					local labelParts = {}
+					for k = 1, 10 do if mod[k] then t_insert(labelParts, mod[k]) end end
+					local label = table.concat(labelParts, " / ")
+					label = label:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
+					corruptedGroups[mod.statOrderKey] = {
+						label = label,
+						statOrderKey = mod.statOrderKey,
+						affix = mod.affix,
+						type = mod.type,
+						maxTier = mod.tier or 0,
+					}
+				else
+					local g = corruptedGroups[mod.statOrderKey]
+					if mod.tier and mod.tier > g.maxTier then g.maxTier = mod.tier end
+				end
+			end
+		end
+		for _, g in pairs(corruptedGroups) do
+			local mt = m_min(g.maxTier, 6)
+			t_insert(corruptedList, { label = g.label, statOrderKey = g.statOrderKey, affix = g.affix, type = g.type, maxTier = mt })
+		end
+	else
+		-- Regular items: all prefixes + suffixes (no T8 filter)
+		for _, g in pairs(prefixGroups) do
+			local mt = m_min(g.maxTier, 6)
+			t_insert(corruptedList, { label = g.label, statOrderKey = g.statOrderKey, affix = g.affix, type = g.type, maxTier = mt })
+		end
+		for _, g in pairs(suffixGroups) do
+			local mt = m_min(g.maxTier, 6)
+			t_insert(corruptedList, { label = g.label, statOrderKey = g.statOrderKey, affix = g.affix, type = g.type, maxTier = mt })
+		end
 	end
 	table.sort(corruptedList, sortByLabel)
 	self.controls.corruptedAdd.list = corruptedList
@@ -1603,6 +1650,10 @@ function CraftingPopupClass:BuildTierTooltip(tooltip, slotKey)
 	local st = self.affixState[slotKey]
 	if not st or not st.modKey then return end
 	local function getMod(key)
+		if self:IsIdolAltar() then
+			local altarMods = data.itemMods["Idol Altar"]
+			return altarMods and altarMods[key]
+		end
 		local m = data.itemMods.Item and data.itemMods.Item[key]
 		if not m and data.modIdol and data.modIdol.flat then m = data.modIdol.flat[key] end
 		return m
@@ -1640,6 +1691,10 @@ end
 -- Build affix tooltip for dropdown
 function CraftingPopupClass:BuildAffixTooltip(tooltip, statOrderKey)
 	local function getMod(key)
+		if self:IsIdolAltar() then
+			local altarMods = data.itemMods["Idol Altar"]
+			return altarMods and altarMods[key]
+		end
 		local m = data.itemMods.Item and data.itemMods.Item[key]
 		if not m and data.modIdol and data.modIdol.flat then m = data.modIdol.flat[key] end
 		return m
@@ -1675,11 +1730,19 @@ function CraftingPopupClass:IsUniqueIdol()
 		and true or false
 end
 
--- Returns true when any idol type is being edited
+-- Returns true when any idol type is being edited (excludes Idol Altar)
 function CraftingPopupClass:IsAnyIdol()
 	return self.editBaseEntry
 		and self.editBaseEntry.type
 		and self.editBaseEntry.type:find("Idol")
+		and self.editBaseEntry.type ~= "Idol Altar"
+		and true or false
+end
+
+-- Returns true when the current edit item is an Idol Altar
+function CraftingPopupClass:IsIdolAltar()
+	return self.editBaseEntry
+		and self.editBaseEntry.type == "Idol Altar"
 		and true or false
 end
 
@@ -1761,7 +1824,8 @@ function CraftingPopupClass:RebuildEditItem()
 	self.rebuilding = true
 
 	local item = self.editItem
-	local itemMods = data.itemMods.Item
+	local isAltarItem = self:IsIdolAltar()
+	local itemMods = isAltarItem and (data.itemMods["Idol Altar"] or {}) or (data.itemMods.Item or {})
 
 	wipeTable(item.explicitModLines)
 	wipeTable(item.prefixes)
@@ -1788,18 +1852,18 @@ function CraftingPopupClass:RebuildEditItem()
 
 	local prefixIdx = 0
 	local suffixIdx = 0
-	local tierSum = 0
-	local hasAffix = false
+	local affixCount = 0
+	local maxTier = 0
 
 	local slotOrder = {"prefix1", "prefix2", "suffix1", "suffix2", "sealed", "primordial"}
 	for _, slotKey in ipairs(slotOrder) do
 		local st = self.affixState[slotKey]
 		if st.modKey then
-			hasAffix = true
-			tierSum = tierSum + st.tier
+			affixCount = affixCount + 1
+			if st.tier > maxTier then maxTier = st.tier end
 			local modKey = tostring(st.modKey) .. "_" .. tostring(st.tier)
 			local mod = itemMods[modKey]
-			if not mod and data.modIdol and data.modIdol.flat then
+			if not mod and not isAltarItem and data.modIdol and data.modIdol.flat then
 				mod = data.modIdol.flat[modKey]
 			end
 			if mod then
@@ -1841,7 +1905,7 @@ function CraftingPopupClass:RebuildEditItem()
 
 	-- Update rarity
 	if self.editBaseEntry and self.editBaseEntry.category == "basic" then
-		item.rarity = getRarityForTierSum(tierSum, hasAffix)
+		item.rarity = getRarityForAffixes(affixCount, maxTier)
 		if item.rarity == "RARE" or item.rarity == "EXALTED" then
 			item.title = item.title or "New Item"
 		else
@@ -1859,7 +1923,7 @@ function CraftingPopupClass:RebuildEditItem()
 		if ca.modKey then
 			local modKey = tostring(ca.modKey) .. "_" .. tostring(ca.tier)
 			local mod = itemMods[modKey]
-			if not mod and data.modIdol and data.modIdol.flat then
+			if not mod and not isAltarItem and data.modIdol and data.modIdol.flat then
 				mod = data.modIdol.flat[modKey]
 			end
 			if mod then
@@ -1976,7 +2040,7 @@ function CraftingPopupClass:Draw(viewPort)
 	if self.currentTab == "edit" and self.editItem then
 		local item = self.editItem
 		local col
-		if item.type and item.type:find("Idol") and item.rarity ~= "UNIQUE" and item.rarity ~= "SET" and item.rarity ~= "LEGENDARY" then
+		if item.type and item.type:find("Idol") and item.type ~= "Idol Altar" and item.rarity ~= "UNIQUE" and item.rarity ~= "SET" and item.rarity ~= "LEGENDARY" then
 			col = colorCodes.IDOL
 		else
 			col = colorCodes[item.rarity]
