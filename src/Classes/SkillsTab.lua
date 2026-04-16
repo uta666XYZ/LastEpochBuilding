@@ -1791,7 +1791,7 @@ function SkillsTabClass:DrawSkillTree(viewPort, inputEvents, startY)
 	end
 
 	-- Tree viewport (fills remaining space, leave room for history bar + bottom search bar)
-	local HISTORY_BAR_H = 48
+	local HISTORY_BAR_H = self.skillTreeViewer.historyExpanded and 72 or 48
 	local treeY = startY + infoBarH
 	local treeH = m_max(200, viewPort.y + viewPort.height - treeY - 4 - 32 - HISTORY_BAR_H)
 	local treeVP = {
