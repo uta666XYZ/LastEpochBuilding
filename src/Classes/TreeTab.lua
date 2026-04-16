@@ -20,8 +20,9 @@ local s_byte = string.byte
 local dkjson = require "dkjson"
 
 -- Layout constants for Maxroll-style header and skill bar
-local HEADER_HEIGHT = 130
-local SKILL_BAR_HEIGHT = 90
+local HEADER_HEIGHT      = 130
+local SKILL_BAR_HEIGHT   = 90
+local HISTORY_BAR_HEIGHT = 48
 
 local TreeTabClass = newClass("TreeTab", "ControlHost", function(self, build)
 	self.ControlHost()
@@ -125,6 +126,12 @@ local TreeTabClass = newClass("TreeTab", "ControlHost", function(self, build)
 	self.controls.reset.selIndex = 0
 	self.controls.reset.enableDroppedWidth = true
 	self.controls.reset.maxDroppedWidth = 300
+
+	-- Leveling order badges toggle (next to Reset dropdown)
+	self.controls.showOrderBadges = new("CheckBoxControl", { "LEFT", self.controls.reset, "RIGHT" }, 8, 0, 20, "Badges:", function(state)
+		self.viewer.showOrderBadges = state
+	end)
+	self.controls.showOrderBadges.state = true
 
 	-- Tree Version Dropdown
 	self.treeVersions = { }
@@ -511,12 +518,12 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 	-- Calculate bottom controls height
 	local bottomBarHeight = self.showConvert and 64 + bottomDrawerHeight + twoLineHeight + convertTwoLineHeight or 32 + bottomDrawerHeight + twoLineHeight
 
-	-- Tree viewport: shrink from top (header) and bottom (skill bar + controls)
+	-- Tree viewport: shrink from top (header) and bottom (history bar + skill bar + controls)
 	local treeViewPort = {
 		x = viewPort.x,
 		y = viewPort.y + HEADER_HEIGHT,
 		width = viewPort.width,
-		height = viewPort.height - HEADER_HEIGHT - SKILL_BAR_HEIGHT - bottomBarHeight
+		height = viewPort.height - HEADER_HEIGHT - HISTORY_BAR_HEIGHT - SKILL_BAR_HEIGHT - bottomBarHeight
 	}
 	if self.jumpToNode then
 		self.viewer:Focus(self.jumpToX, self.jumpToY, treeViewPort, self.build)
@@ -528,6 +535,16 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 		treeInputEvents[i] = e
 	end
 	self.viewer:Draw(self.build, treeViewPort, treeInputEvents)
+
+	-- Leveling order history bar (sits between tree and skill bar)
+	local histBarY = treeViewPort.y + treeViewPort.height
+	local histBarVP = {
+		x      = viewPort.x,
+		y      = histBarY,
+		width  = viewPort.width,
+		height = HISTORY_BAR_HEIGHT,
+	}
+	self.viewer:DrawHistoryBar(self.build, histBarVP, inputEvents)
 
 	local newSpecList = self:GetSpecList()
 	self.controls.compareSelect.selIndex = self.activeCompareSpec
