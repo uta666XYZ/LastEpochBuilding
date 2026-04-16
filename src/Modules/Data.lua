@@ -556,12 +556,14 @@ data.LETools_affixes = readJsonFile("Data/LEToolsImport/affixes.json") or {}
 local function buildItemBaseLists(itemBases)
 	local lists = { }
 	for name, base in pairs(itemBases) do
-		local bType = base.type
-		if base.subType then
-			bType = bType .. ": " .. base.subType
+		if not base.hidden then
+			local bType = base.type
+			if base.subType then
+				bType = bType .. ": " .. base.subType
+			end
+			lists[bType] = lists[bType] or { }
+			table.insert(lists[bType], { label = name:gsub(" %(.+%)",""), name = name, base = base })
 		end
-		lists[bType] = lists[bType] or { }
-		table.insert(lists[bType], { label = name:gsub(" %(.+%)",""), name = name, base = base })
 	end
 	local typeList = { }
 	for bType, list in pairs(lists) do
