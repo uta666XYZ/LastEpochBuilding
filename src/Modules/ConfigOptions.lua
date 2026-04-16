@@ -275,6 +275,9 @@ local options = {
 	{ var = "multiplierPoisonOnSelf", type = "count", label = "# of Poison on You:", ifMult = "PoisonStack", implyCond = "Poisoned", tooltip = "This also implies that you are Poisoned.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Multiplier:PoisonStack", "BASE", val, "Config", { type = "Condition", var = "Effective" })
 	end },
+	{ var = "conditionBlocking", type = "check", label = "Are you Blocking?", ifCond = "Blocking", apply = function(val, modList, enemyModList)
+		modList:NewMod("Condition:Blocking", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
+	end },
 	{ var = "conditionNearEnemy", type = "check", label = "Are you Near an Enemy?", ifCond = "NearEnemy", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:NearEnemy", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
