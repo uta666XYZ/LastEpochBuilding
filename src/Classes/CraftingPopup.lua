@@ -984,6 +984,7 @@ function CraftingPopupClass:RefreshBaseList()
 		if bases then
 			local myClassBit = self:GetCurrentClassReqBit()
 			for uid, unique in pairs(self.build.data.uniques) do
+				local found = false
 				for _, baseEntry in ipairs(bases) do
 					if baseEntry.base.baseTypeID == unique.baseTypeID and
 					   baseEntry.base.subTypeID == unique.subTypeID then
@@ -999,7 +1000,28 @@ function CraftingPopupClass:RefreshBaseList()
 								uniqueData = unique, uniqueID = uid,
 							})
 						end
+						found = true
 						break
+					end
+				end
+				-- Also search hidden bases (e.g. Adorned Silver/Volcano Idol)
+				if not found and self.build.data.itemBases then
+					for baseName, base in pairs(self.build.data.itemBases) do
+						if base.hidden and base.type == typeName and
+						   base.baseTypeID == unique.baseTypeID and
+						   base.subTypeID == unique.subTypeID then
+							local classReq = base.classReq or 0
+							if classReq == 0 or myClassBit == 0 or bit.band(classReq, myClassBit) ~= 0 then
+								t_insert(list, {
+									label = unique.name, name = unique.name,
+									base = base, baseName = baseName,
+									type = typeName, displayType = base.type or "",
+									rarity = "UNIQUE", category = "unique",
+									uniqueData = unique, uniqueID = uid,
+								})
+							end
+							break
+						end
 					end
 				end
 			end
@@ -1416,11 +1438,28 @@ function CraftingPopupClass:RefreshIdolAffixDropdowns()
 	-- Large idol baseTypeIDs: 29=Grand, 30=Large, 31=Ornate, 32=Huge, 33=Adorned
 	local LARGE_IDS = { [29]=true, [30]=true, [31]=true, [32]=true, [33]=true }
 
+	-- Omen idols share a combined affix pool across multiple base types:
+	-- Grand omen (bt=29) uses {29, 31, 33}; Large omen (bt=30) uses {30, 32, 33}
+	local omenPool = nil
+	if isOmen then
+		if baseTypeID == 29 then
+			omenPool = { [29]=true, [31]=true, [33]=true }
+		elseif baseTypeID == 30 then
+			omenPool = { [30]=true, [32]=true, [33]=true }
+		end
+	end
+
 	local function canRollOnIdol(mod)
 		if not mod.canRollOn then return false end
 		local btMatch = false
-		for _, bt in ipairs(mod.canRollOn) do
-			if bt == baseTypeID then btMatch = true; break end
+		if omenPool then
+			for _, bt in ipairs(mod.canRollOn) do
+				if omenPool[bt] then btMatch = true; break end
+			end
+		else
+			for _, bt in ipairs(mod.canRollOn) do
+				if bt == baseTypeID then btMatch = true; break end
+			end
 		end
 		if not btMatch then return false end
 		local cs = mod.classSpecificity or 0

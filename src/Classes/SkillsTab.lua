@@ -1633,6 +1633,7 @@ function SkillsTabClass:DrawSkillGrid(x, y, w, skills, inputEvents, cursorX, cur
 			for id, event in ipairs(inputEvents) do
 				if event.type == "KeyUp" and event.key == "LEFTBUTTON" then
 					local targetSlot = assignedSlot or self.selectedSlotIndex
+					if not targetSlot then goto continueSkillClick end
 					if not self.socketGroupList[targetSlot] or assignedSlot then
 						if not assignedSlot then
 							self:SelSkill(targetSlot, skill.skillId or skill.name)
@@ -1658,6 +1659,7 @@ function SkillsTabClass:DrawSkillGrid(x, y, w, skills, inputEvents, cursorX, cur
 						end
 					end
 					inputEvents[id] = nil
+					::continueSkillClick::
 				end
 			end
 		end
