@@ -440,6 +440,8 @@ local modTagList = {
 	["while you have a forged weapon"] = { tag = { type = "Condition", var = "HaveForgedWeapon" } },
 	-- Runemaster: Glyph of Dominion / Arcane Momentum
 	["while standing on your glyph of dominion"] = { tag = { type = "Condition", var = "StandingOnGlyphOfDominion" } },
+	["while near an enemy"] = { tag = { type = "Condition", var = "NearEnemy" } },
+	["from nearby enemies"] = { tag = { type = "Condition", var = "NearEnemy" } },
 	["per arcane momentum stack"] = { tag = { type = "Multiplier", var = "ArcaneMomentumStack" } },
 }
 
