@@ -7712,7 +7712,7 @@ c["-2 Mana Cost"]={{[1]={flags=0,keywordFlags=0,name="ManaCost",type="BASE",valu
 c["-2 Mana Cost "]={{[1]={flags=0,keywordFlags=0,name="ManaCost",type="BASE",value=-2}},nil}
 c["-2 Ward Gain Cooldown Duration"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=-2}},"  Gain Cooldown Duration "}
 c["-2% Attack Speed"]={{[1]={flags=3584,keywordFlags=0,name="Speed",type="BASE",value=-2}},nil}
-c["-2% Damage Taken From Nearby Enemies"]={{[1]={flags=0,keywordFlags=0,name="DamageTaken",type="BASE",value=-2}},"  From Nearby Enemies "}
+c["-2% Damage Taken From Nearby Enemies"]={{[1]={[1]={type="Condition",var="NearEnemy"},flags=0,keywordFlags=0,name="DamageTaken",type="BASE",value=-2}},nil}
 c["-2% Damage Taken in Arena"]={{[1]={flags=0,keywordFlags=0,name="DamageTaken",type="BASE",value=-2}},"  in Arena "}
 c["-2% Damage Taken with Arcane Shield"]={{[1]={flags=0,keywordFlags=0,name="DamageTaken",type="BASE",value=-2}},"  with Arcane Shield "}
 c["-20 Base Freeze Rate"]={{}," Freeze Rate "}
@@ -8209,7 +8209,7 @@ c["1% Increased Poison Duration "]={{[1]={[1]={skillName="Poison",type="SkillNam
 c["1% Increased Spell Damage Per Second"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=1}},"   Per Second "}
 c["1% Increased Spell Damage Per Stack"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=1}},"   Per Stack "}
 c["1% Increased Spell Damage When Hit"]={{[1]={flags=8388608,keywordFlags=256,name="Damage",type="INC",value=1}},"   When  "}
-c["1% Increased damage taken from nearby enemies"]={{[1]={flags=0,keywordFlags=0,name="DamageTaken",type="INC",value=1}},"  from nearby enemies "}
+c["1% Increased damage taken from nearby enemies"]={{[1]={[1]={type="Condition",var="NearEnemy"},flags=0,keywordFlags=0,name="DamageTaken",type="INC",value=1}},nil}
 c["1% Less Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="DamageTaken",type="MORE",value=-1}},nil}
 c["1% Less Damage Taken from Shocked Enemies"]={{[1]={[1]={skillName="Shock",type="SkillName"},flags=0,keywordFlags=0,name="DamageTaken",type="MORE",value=-1}},"  from ed Enemies "}
 c["1% Less Fire Damage Taken Per 10% Overcapped Fire Res"]={{[1]={flags=0,keywordFlags=8,name="FireDamageTaken",type="MORE",value=-1}},"  Per 10% Overcapped  Res "}
