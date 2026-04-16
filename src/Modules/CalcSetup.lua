@@ -775,6 +775,16 @@ function calcs.initEnv(build, mode, override, specEnv)
 		end
 	end
 
+	-- Auto-detect offhand type conditions
+	if items["Weapon 2"] then
+		local offhandType = items["Weapon 2"].type
+		if offhandType == "Shield" then
+			env.modDB.conditions["UsingShield"] = true
+		elseif offhandType == "Catalyst" then
+			env.modDB.conditions["UsingCatalyst"] = true
+		end
+	end
+
 	-- Merge env.itemModDB with env.ModDB
 	mergeDB(env.modDB, env.itemModDB)
 
