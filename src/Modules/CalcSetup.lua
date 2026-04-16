@@ -773,15 +773,14 @@ function calcs.initEnv(build, mode, override, specEnv)
 				env.flasks[override.toggleFlask] = true
 			end
 		end
-	end
-
-	-- Auto-detect offhand type conditions
-	if items["Weapon 2"] then
-		local offhandType = items["Weapon 2"].type
-		if offhandType == "Shield" then
-			env.modDB.conditions["UsingShield"] = true
-		elseif offhandType == "Catalyst" then
-			env.modDB.conditions["UsingCatalyst"] = true
+		-- Auto-detect offhand type conditions
+		if items["Weapon 2"] then
+			local offhandType = items["Weapon 2"].type
+			if offhandType == "Shield" then
+				env.modDB.conditions["UsingShield"] = true
+			elseif offhandType == "Catalyst" then
+				env.modDB.conditions["UsingCatalyst"] = true
+			end
 		end
 	end
 
