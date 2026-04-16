@@ -377,6 +377,7 @@ local modTagList = {
 	["while moving"] = { tag = { type = "Condition", var = "Moving" } },
 	["while charging"] = { tag = { type = "Condition", var = "Charging" } },
 	["while channelling"] = { tag = { type = "Condition", var = "Channelling" } },
+	["while channeling"] = { tag = { type = "Condition", var = "Channelling" } },
 	["while leeching"] = { tag = { type = "Condition", var = "Leeching" } },
 	["while frozen"] = { tag = { type = "Condition", var = "Frozen" } },
 	["while cursed"] = { tag = { type = "Condition", var = "Cursed" } },
