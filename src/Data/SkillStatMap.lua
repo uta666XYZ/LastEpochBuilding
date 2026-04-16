@@ -757,10 +757,6 @@ local result = {
 ["physical_weapon_damage_+%_per_10_str"] = {
 	mod("PhysicalDamage", "INC", nil, ModFlag.Weapon, 0, { type = "PerStat", stat = "Str", div = 10 }),
 },
--- PvP Damage
-["support_makes_skill_mine_pvp_damage_+%_final"] = {
-	mod("PvpDamageMultiplier", "MORE", nil),
-},
 -- Conversion
 ["physical_damage_%_to_add_as_lightning"] = {
 	mod("PhysicalDamageGainAsLightning", "BASE", nil),
