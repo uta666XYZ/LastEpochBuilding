@@ -1101,7 +1101,7 @@ function calcs.initEnv(build, mode, override, specEnv)
 			if group.grantedEffect and group.grantedEffect.treeId then
 				local allocatedPoints = build.skillsTab:GetUsedSkillPoints(index)
 				-- Sum all SkillLevel mods matching this skill (includes global + skill-specific)
-				local skillCfg = { skillName = group.grantedEffect.name }
+				local skillCfg = { skillName = group.grantedEffect.name, skillTypes = group.grantedEffect.skillTypes }
 				local totalSkillLevel = env.modDB:Sum("BASE", skillCfg, "SkillLevel")
 				-- Per-skill bonus = total - global (avoid double-counting global)
 				local perSkillBonus = totalSkillLevel - (env.skillLevelBonus or 0)
