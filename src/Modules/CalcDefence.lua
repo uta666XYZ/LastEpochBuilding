@@ -1258,13 +1258,9 @@ function calcs.buildDefenceEstimations(env, actor)
 		if (not modDB:Flag(nil, "WardNotBreak")) and DamageIn["cycles"] > 1 then
 			ward = 0
 		end
-		local aegis = { }
-		aegis["shared"] = output["sharedAegis"] or 0
-		aegis["sharedElemental"] = output["sharedElementalAegis"] or 0
 		local guard = { }
 		guard["shared"] = output.sharedGuardAbsorb or 0
 		for _, damageType in ipairs(dmgTypeList) do
-			aegis[damageType] = output[damageType.."Aegis"] or 0
 			guard[damageType] = output[damageType.."GuardAbsorb"] or 0
 		end
 		local alliesTakenBeforeYou = {}
@@ -1282,7 +1278,6 @@ function calcs.buildDefenceEstimations(env, actor)
 		end
 		local poolTable = {
 			AlliesTakenBeforeYou = alliesTakenBeforeYou,
-			Aegis = aegis,
 			Guard = guard,
 			Ward = ward,
 			Mana = output.Mana or 0,
@@ -1693,8 +1688,6 @@ function calcs.buildDefenceEstimations(env, actor)
 		if dmgToManaPct > 0 and (output.Mana or 0) > 0 then
 			output[damageType.."TotalHitPool"] = output[damageType.."TotalHitPool"] + output.Mana * data.misc.ManaShieldsHealthRatio
 		end
-		-- aegis
-		output[damageType.."TotalHitPool"] = output[damageType.."TotalHitPool"] + m_max(m_max(output[damageType.."Aegis"], output["sharedAegis"]), isElemental[damageType] and output[damageType.."AegisDisplay"] or 0)
 		-- guard skill
 		local GuardAbsorbRate = output["sharedGuardAbsorbRate"] or 0 + output[damageType.."GuardAbsorbRate"] or 0
 		if GuardAbsorbRate > 0 then
