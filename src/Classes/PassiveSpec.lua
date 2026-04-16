@@ -128,6 +128,13 @@ function PassiveSpecClass:Load(xml, dbFileName)
 			end
 		end
 		self:ImportFromNodeList(tonumber(xml.attrib.classId), tonumber(xml.attrib.ascendClassId), nil, hashList, self.hashOverrides)
+		-- Restore allocating order history
+		if xml.attrib.allocHistory then
+			self.history = { }
+			for nodeId in xml.attrib.allocHistory:gmatch("[^,]+") do
+				t_insert(self.history, nodeId)
+			end
+		end
 	elseif url then
 		self:DecodeURL(url)
 	end
@@ -146,6 +153,8 @@ function PassiveSpecClass:Save(xml)
 		classId = tostring(self.curClassId),
 		ascendClassId = tostring(self.curAscendClassId),
 		nodes = table.concat(allocNodeIdList, ","),
+		-- Allocating order history (comma-separated node IDs, one per point allocated)
+		allocHistory = #self.history > 0 and table.concat(self.history, ",") or nil,
 	}
 
 	local overrides = {

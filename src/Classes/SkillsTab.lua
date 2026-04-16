@@ -1159,39 +1159,23 @@ function SkillsTabClass:DrawSpecSlots(viewPort, inputEvents, startY)
 		if sg then
 			local ge = sg.grantedEffect
 			if ge and ge.skillTypes and ge.skillTypes[SkillType.Buff] then
-				local boxSize = 12
-				local toggleY = sy + SLOT_SIZE + 20
-				local label = "Enabled"
-				local labelW = DrawStringWidth(11, "VAR", label)
-				local totalW = boxSize + 3 + labelW
-				local boxX = sx + m_floor((SLOT_SIZE - totalW) / 2)
-				local labelX = boxX + boxSize + 3
+				local TW, TH = 22, 12  -- slightly smaller than damage type icons
+				local toggleY = sy + SLOT_SIZE + 4 + 14 + 2  -- below damage type icons
+				local toggleX = sx + m_floor((SLOT_SIZE - TW) / 2)
 
-				-- Checkbox background
-				SetDrawColor(0.08, 0.08, 0.08)
-				DrawImage(nil, boxX, toggleY, boxSize, boxSize)
-				-- Checkbox border
-				SetDrawColor(0.55, 0.55, 0.55)
-				DrawImage(nil, boxX, toggleY, boxSize, 1)
-				DrawImage(nil, boxX, toggleY + boxSize - 1, boxSize, 1)
-				DrawImage(nil, boxX, toggleY, 1, boxSize)
-				DrawImage(nil, boxX + boxSize - 1, toggleY, 1, boxSize)
-				-- Checkmark if enabled
-				if sg.enabled ~= false then
-					SetDrawColor(0.3, 0.85, 0.3)
-					DrawImage(nil, boxX + 2, toggleY + 2, boxSize - 4, boxSize - 4)
-				end
-				-- Label
+				-- Draw iOS-style toggle sprite
+				local isEnabled = sg.enabled ~= false
+				local toggleSprite = self:GetSpriteHandle(isEnabled and "toggle_on" or "toggle_off")
 				SetDrawColor(1, 1, 1)
-				DrawString(labelX, toggleY + 1, "LEFT", 11, "VAR", "^7" .. label)
+				DrawImage(toggleSprite, toggleX, toggleY, TW, TH)
 
-				-- Click detection for toggle (separate from slot isHover)
-				local toggleHover = cursorX >= boxX and cursorX < boxX + totalW
-					and cursorY >= toggleY and cursorY < toggleY + boxSize + 2
+				-- Click detection
+				local toggleHover = cursorX >= toggleX and cursorX < toggleX + TW
+					and cursorY >= toggleY and cursorY < toggleY + TH
 				if toggleHover then
 					for id, event in ipairs(inputEvents) do
 						if event.type == "KeyUp" and event.key == "LEFTBUTTON" then
-							sg.enabled = not (sg.enabled ~= false)
+							sg.enabled = not isEnabled
 							self:AddUndoState()
 							self.build.buildFlag = true
 							inputEvents[id] = nil
@@ -1701,6 +1685,55 @@ function SkillsTabClass:DrawSkillTree(viewPort, inputEvents, startY)
 			self.viewMode = "overview"
 			self.viewingTreeSlot = nil
 			inputEvents[id] = nil
+		end
+	end
+
+	-- Steps mode button (below Back button, cycles none→all→min→none)
+	do
+		local STEP_MODES   = { "none", "all", "min" }
+		local STEP_LABELS  = { "Steps", "Steps: All", "Steps: Min" }
+		local STEP_TOOLTIP = "Show allocating order numbers on allocated nodes.\nAll: every step the node was allocated (e.g. 3,7,12)\nMin: only the first allocation step (e.g. 3)"
+		local cur    = self.skillTreeViewer.stepMode or "none"
+		local curIdx = 1
+		for i, m in ipairs(STEP_MODES) do if m == cur then curIdx = i end end
+
+		-- Width wide enough for "Steps: Min" at font 13
+		local stepBtnW = 82
+		local stepX = backX
+		local stepY = backY + backH + 4
+		local overStep = cursorX >= stepX and cursorX < stepX + stepBtnW
+		              and cursorY >= stepY and cursorY < stepY + backH
+		if overStep then
+			SetDrawColor(0.3, 0.3, 0.35)
+		else
+			SetDrawColor(0.15, 0.15, 0.2)
+		end
+		DrawImage(nil, stepX, stepY, stepBtnW, backH)
+		SetDrawColor(0.5, 0.5, 0.55)
+		DrawImage(nil, stepX,            stepY,          stepBtnW, 1)
+		DrawImage(nil, stepX,            stepY + backH,  stepBtnW, 1)
+		DrawImage(nil, stepX,            stepY,          1,        backH)
+		DrawImage(nil, stepX + stepBtnW, stepY,          1,        backH)
+		local stepColor = curIdx == 1 and "^8" or "^2"
+		DrawString(stepX + m_floor(stepBtnW / 2), stepY + 4, "CENTER_X", 13, "VAR", stepColor .. STEP_LABELS[curIdx])
+
+		-- Tooltip on hover (drawn at high layer to appear in front)
+		if overStep then
+			SetDrawLayer(nil, 200)
+			local tooltip = new("Tooltip")
+			tooltip:Clear()
+			for line in STEP_TOOLTIP:gmatch("[^\n]+") do
+				tooltip:AddLine(14, line)
+			end
+			tooltip:Draw(stepX, stepY, stepBtnW, backH, viewPort)
+			SetDrawLayer(nil, 0)
+		end
+
+		for id, event in ipairs(inputEvents) do
+			if event.type == "KeyUp" and event.key == "LEFTBUTTON" and overStep then
+				self.skillTreeViewer.stepMode = STEP_MODES[(curIdx % #STEP_MODES) + 1]
+				inputEvents[id] = nil
+			end
 		end
 	end
 

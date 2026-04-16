@@ -127,11 +127,7 @@ local TreeTabClass = newClass("TreeTab", "ControlHost", function(self, build)
 	self.controls.reset.enableDroppedWidth = true
 	self.controls.reset.maxDroppedWidth = 300
 
-	-- Leveling order badges toggle (next to Reset dropdown)
-	self.controls.showOrderBadges = new("CheckBoxControl", { "LEFT", self.controls.reset, "RIGHT" }, 8, 0, 20, "Badges:", function(state)
-		self.viewer.showOrderBadges = state
-	end)
-	self.controls.showOrderBadges.state = true
+	-- Step Number mode button is drawn raw in Draw() next to the Reset dropdown
 
 	-- Tree Version Dropdown
 	self.treeVersions = { }
@@ -545,6 +541,63 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 		height = HISTORY_BAR_HEIGHT,
 	}
 	self.viewer:DrawHistoryBar(self.build, histBarVP, inputEvents)
+
+	-- Step Number cycle button (raw-drawn next to Reset dropdown)
+	do
+		local STEP_MODES   = { "none", "all", "min" }
+		local STEP_LABELS  = { "Steps", "Steps: All", "Steps: Min" }
+		local STEP_TOOLTIP = "Show allocating order numbers on allocated nodes.\nAll: every step the node was allocated (e.g. 3,7,12)\nMin: only the first allocation step (e.g. 3)"
+		local cur    = self.viewer.stepMode or "none"
+		local curIdx = 1
+		for i, m in ipairs(STEP_MODES) do if m == cur then curIdx = i end end
+
+		-- Position: right of Reset dropdown
+		-- Reset control top = headerAnchor.y - resetH/2 = (viewPort.y+HEADER_HEIGHT-28) - 10
+		local btnX = viewPort.x + 10 + 80 + 8
+		local btnH = 20
+		local btnY = viewPort.y + HEADER_HEIGHT - 28 - (btnH / 2)  -- align with Reset control top
+		-- Width: fit longest label "Steps: Min" at font 14
+		local btnW = 90
+		local cursorX, cursorY = GetCursorPos()
+		local overBtn = cursorX >= btnX and cursorX < btnX + btnW
+		             and cursorY >= btnY and cursorY < btnY + btnH
+
+		SetDrawLayer(nil, 50)
+		if overBtn then
+			SetDrawColor(0.3, 0.3, 0.35)
+		else
+			SetDrawColor(0.14, 0.14, 0.18)
+		end
+		DrawImage(nil, btnX, btnY, btnW, btnH)
+		SetDrawColor(0.35, 0.35, 0.42)
+		DrawImage(nil, btnX,          btnY,         btnW, 1)
+		DrawImage(nil, btnX,          btnY + btnH,  btnW, 1)
+		DrawImage(nil, btnX,          btnY,         1,    btnH)
+		DrawImage(nil, btnX + btnW,   btnY,         1,    btnH)
+		local labelColor = curIdx == 1 and "^8" or "^2"
+		DrawString(btnX + m_floor(btnW / 2), btnY + 2, "CENTER_X", 14, "VAR", labelColor .. STEP_LABELS[curIdx])
+
+		-- Tooltip on hover (drawn at layer 2 to appear above controls at layer 1)
+		if overBtn then
+			SetDrawLayer(2)
+			local tooltip = new("Tooltip")
+			tooltip:Clear()
+			for line in STEP_TOOLTIP:gmatch("[^\n]+") do
+				tooltip:AddLine(14, line)
+			end
+			tooltip:Draw(btnX, btnY, btnW, btnH, viewPort)
+			SetDrawLayer(0)
+		end
+
+		-- Click to cycle mode
+		for id, event in ipairs(inputEvents) do
+			if event.type == "KeyUp" and event.key == "LEFTBUTTON" and overBtn then
+				self.viewer.stepMode = STEP_MODES[(curIdx % #STEP_MODES) + 1]
+				inputEvents[id] = nil
+			end
+		end
+		SetDrawLayer(nil, 0)
+	end
 
 	local newSpecList = self:GetSpecList()
 	self.controls.compareSelect.selIndex = self.activeCompareSpec
