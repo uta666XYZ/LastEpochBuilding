@@ -259,8 +259,13 @@ end
 
 -- Recalculate dynamic Y positions for edit tab
 function CraftingPopupClass:RecalcEditLayout()
-	local y = 200
 	local LINE_H = 18
+	local implicitCount = self.editItem and #self.editItem.implicitModLines or 0
+	local rarity = self.editItem and self.editItem.rarity
+	local uniqueModCount = (rarity == "UNIQUE" or rarity == "WWUNIQUE" or rarity == "SET")
+		and self.editItem and #self.editItem.explicitModLines or 0
+	local totalDisplayCount = implicitCount + uniqueModCount
+	local y = math.max(200, 126 + totalDisplayCount * LINE_H)
 	local GAP = 4
 
 	self.editY = {}
@@ -579,16 +584,36 @@ function CraftingPopupClass:BuildControls()
 	controls.implicitLabel = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, 15, 100, 0, 14, colorCodes.UNIQUE .. "IMPLICITS")
 	controls.implicitLabel.shown = function() return self_ref.currentTab == "edit" end
 
-	for i = 1, 8 do
+	for i = 1, 20 do
 		local key = "implicit" .. i
 		controls[key] = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, 25, 100 + i * 18, 0, 14, "")
 		controls[key].shown = function()
 			if self_ref.currentTab ~= "edit" or not self_ref.editItem then return false end
-			return self_ref.editItem.implicitModLines[i] ~= nil
+			local item = self_ref.editItem
+			local implicitCount = #item.implicitModLines
+			if i <= implicitCount then return true end
+			local rarity = item.rarity
+			if rarity == "UNIQUE" or rarity == "WWUNIQUE" or rarity == "SET" then
+				local j = i - implicitCount
+				return item.explicitModLines[j] ~= nil
+			end
+			return false
 		end
 		controls[key].label = function()
-			if not self_ref.editItem or not self_ref.editItem.implicitModLines[i] then return "" end
-			return "^7" .. itemLib.formatModLine(self_ref.editItem.implicitModLines[i])
+			if not self_ref.editItem then return "" end
+			local item = self_ref.editItem
+			local implicitCount = #item.implicitModLines
+			if i <= implicitCount then
+				return "^7" .. itemLib.formatModLine(item.implicitModLines[i])
+			end
+			local rarity = item.rarity
+			if rarity == "UNIQUE" or rarity == "WWUNIQUE" or rarity == "SET" then
+				local j = i - implicitCount
+				if item.explicitModLines[j] then
+					return "^7" .. itemLib.formatModLine(item.explicitModLines[j])
+				end
+			end
+			return ""
 		end
 	end
 
