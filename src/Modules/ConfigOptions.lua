@@ -55,6 +55,9 @@ local options = {
 	{ var = "conditionMoving", type = "check", label = "Are you always moving?", ifCond = "Moving", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:Moving", "FLAG", true, "Config")
 	end },
+	{ var = "conditionCharging", type = "check", label = "Are you Charging?", ifCond = "Charging", tooltip = "Check if the player is Charging (Shield Charge, Lunge, etc.).\nEnables 'while charging' modifiers.", apply = function(val, modList, enemyModList)
+		modList:NewMod("Condition:Charging", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
+	end },
 	{ var = "conditionFullLife", type = "check", label = "Are you always on Full ^xE05030Life?", ifCond = "FullLife", tooltip = FullLifeTooltip, apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:FullLife", "FLAG", true, "Config")
 	end },
