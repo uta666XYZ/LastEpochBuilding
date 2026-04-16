@@ -3922,7 +3922,7 @@
     },
     "stats": {
       "damageEffectiveness": 1,
-      "melee_base_lightning_damage": 15,
+      "melee_base_lightning_damage": 2,
       "base_critical_strike_multiplier_+": 100,
       "critChance": 5,
       "base_skill_effect_duration": 10
@@ -4656,8 +4656,8 @@
       "duration": true
     },
     "stats": {
-      "damageEffectiveness": 2,
-      "melee_base_physical_damage": 20,
+      "damageEffectiveness": 3,
+      "melee_base_physical_damage": 2,
       "base_critical_strike_multiplier_+": 100,
       "critChance": 10,
       "base_skill_effect_duration": 10
@@ -5897,8 +5897,8 @@
       "duration": true
     },
     "stats": {
-      "damageEffectiveness": 0.5,
-      "spell_base_physical_damage": 10,
+      "damageEffectiveness": 0.45,
+      "spell_base_physical_damage": 9,
       "no_critical_strike_multiplier": 1,
       "base_skill_effect_duration": 4000,
       "damage_interval": 400
@@ -5984,7 +5984,7 @@
       "duration": true
     },
     "stats": {
-      "damageEffectiveness": 1.5,
+      "damageEffectiveness": 2,
       "melee_base_physical_damage": 2,
       "base_critical_strike_multiplier_+": 100,
       "critChance": 5,
@@ -6118,8 +6118,8 @@
       "duration": true
     },
     "stats": {
-      "damageEffectiveness": 0.8,
-      "spell_base_fire_damage": 16,
+      "damageEffectiveness": 2,
+      "spell_base_fire_damage": 40,
       "base_critical_strike_multiplier_+": 100,
       "critChance": 5,
       "base_skill_effect_duration": 3300,
