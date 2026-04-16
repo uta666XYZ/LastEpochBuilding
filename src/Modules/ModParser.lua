@@ -53,6 +53,7 @@ local modNameList = {
 	-- Attributes
 	["all attributes"] = Attributes,
 	-- Life/mana
+	["health leech"] = "DamageLifeLeech",
 	["health"] = "Life",
 	["health regen"] = "LifeRegen",
 	["health regeneration"] = "LifeRegen",
@@ -140,6 +141,24 @@ local modNameList = {
 	["doom chance"] = "DoomChance",
 	["to apply damned"] = "DamnedChance",
 	["damned chance"] = "DamnedChance",
+	-- Basic ailment application chances (stat form without "to")
+	["bleed chance"] = "BleedChance",
+	["ignite chance"] = "IgniteChance",
+	["poison chance"] = "PoisonChance",
+	["shock chance"] = "ShockChance",
+	["chill chance"] = "ChillChance",
+	["frostbite chance"] = "FrostbiteChance",
+	-- Alt "X chance" forms for ailments that only had "to X" or "to apply X" forms
+	["frailty chance"] = "FrailtyChance",
+	["electrify chance"] = "ElectrifyChance",
+	["time rot chance"] = "TimeRotChance",
+	["slow chance"] = "SlowChance",
+	["blind chance"] = "BlindChance",
+	-- Shred chance stat forms (complement existing "to shred X resistance" forms)
+	["armor shred chance"] = "ArmorShredChance",
+	["armour shred chance"] = "ArmorShredChance",
+	["armor shred effect"] = "ArmorShredEffect",
+	["armour shred effect"] = "ArmorShredEffect",
 	["to shred physical resistance"] = "PhysicalResShredChance",
 	["to shred fire resistance"] = "FireResShredChance",
 	["to shred cold resistance"] = "ColdResShredChance",
@@ -147,6 +166,13 @@ local modNameList = {
 	["to shred necrotic resistance"] = "NecroticResShredChance",
 	["to shred poison resistance"] = "PoisonResShredChance",
 	["to shred void resistance"] = "VoidResShredChance",
+	["physical res shred chance"] = "PhysicalResShredChance",
+	["fire res shred chance"] = "FireResShredChance",
+	["cold res shred chance"] = "ColdResShredChance",
+	["lightning res shred chance"] = "LightningResShredChance",
+	["necrotic res shred chance"] = "NecroticResShredChance",
+	["poison res shred chance"] = "PoisonResShredChance",
+	["void res shred chance"] = "VoidResShredChance",
 	["plague chance"] = "PlagueChance",
 	["to inflict plague"] = "PlagueChance",
 	["witchfire chance"] = "WitchfireChance",
@@ -314,6 +340,12 @@ for _, damageType in ipairs(DamageTypes) do
 	modFlagList[damageType:lower()] = { keywordFlags = ModFlag[damageType] }
 end
 
+for _, weapon in ipairs(DamageSourceWeapons) do
+	if not modFlagList[weapon:lower()] then
+		modFlagList[weapon:lower()] = { tag = { type = "Condition", var = "Using" .. weapon } }
+	end
+end
+
 -- List of modifier flags/tags that appear at the start of a line
 local preFlagList = {
 }
@@ -426,10 +458,13 @@ for i,stat in ipairs(Attributes) do
 end
 for _, weapon in ipairs(DamageSourceWeapons) do
 	modTagList["with an? " .. weapon:lower()] = { tag = { type = "Condition", var = "Using" .. weapon } }
+	modTagList["with " .. weapon:lower()] = { tag = { type = "Condition", var = "Using" .. weapon } }
 	modTagList["while wielding a " .. weapon:lower()] = { tag = { type = "Condition", var = "Using" .. weapon } }
 	modTagList["per equipped " .. weapon:lower()] = { tag = { type = "Multiplier", var = weapon .. "Item" } }
 	modTagList["per " .. weapon:lower()] = { tag = { type = "Multiplier", var = weapon .. "Item" } }
 end
+modTagList["with spear"] = { tag = { type = "Condition", var = "UsingSpear" } }
+modTagList["with a spear"] = { tag = { type = "Condition", var = "UsingSpear" } }
 
 local mod = modLib.createMod
 local function flag(name, ...)
