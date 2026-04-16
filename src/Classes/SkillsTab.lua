@@ -1757,9 +1757,10 @@ function SkillsTabClass:DrawSkillTree(viewPort, inputEvents, startY)
 		SetDrawLayer(nil, 0)
 	end
 
-	-- Tree viewport (fills remaining space, leave room for bottom search bar)
+	-- Tree viewport (fills remaining space, leave room for history bar + bottom search bar)
+	local HISTORY_BAR_H = 48
 	local treeY = startY + infoBarH
-	local treeH = m_max(300, viewPort.y + viewPort.height - treeY - 4 - 32)
+	local treeH = m_max(200, viewPort.y + viewPort.height - treeY - 4 - 32 - HISTORY_BAR_H)
 	local treeVP = {
 		x = viewPort.x + 2,
 		y = treeY,
@@ -1773,6 +1774,15 @@ function SkillsTabClass:DrawSkillTree(viewPort, inputEvents, startY)
 
 	self.skillTreeViewer.selectedSkillIndex = slot
 	self.skillTreeViewer:Draw(self.build, treeVP, inputEvents)
+
+	-- Leveling order history bar (sits between tree and search bar)
+	local histBarVP = {
+		x      = viewPort.x + 2,
+		y      = treeY + treeH,
+		width  = viewPort.width - 4,
+		height = HISTORY_BAR_H,
+	}
+	self.skillTreeViewer:DrawHistoryBar(self.build, histBarVP, inputEvents)
 end
 
 function SkillsTabClass:getGemAltQualityList(gemData)

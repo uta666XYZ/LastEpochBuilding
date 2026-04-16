@@ -8,6 +8,7 @@ local pairs = pairs
 local ipairs = ipairs
 local t_insert = table.insert
 local t_remove = table.remove
+local t_concat = table.concat
 local m_min = math.min
 local m_max = math.max
 local m_floor = math.floor
@@ -50,6 +51,9 @@ local PassiveTreeViewClass = newClass("PassiveTreeView", function(self)
 	
 	-- Anchor position: "center" (default), "left", "top-left"
 	self.anchorPosition = "center"
+
+	-- Show leveling order badges on allocated nodes (Phase 1)
+	self.showOrderBadges = true
 
 	-- Selected mastery index for passive tree: nil = show all, 0 = base class, 1-3 = ascendancies
 	self.selectedMastery = 0
@@ -643,16 +647,43 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 			else
 				if hoverNode.alloc > 0 then
 					if hoverNode.alloc < hoverNode.maxPoints then
-						hoverNode.alloc = hoverNode.alloc + 1
-						tree:ProcessStats(hoverNode)
-						spec:BuildAllDependsAndPaths()
+						-- Check skill tree total point budget
+						local canIncrement = true
+						if self.filterMode == "skill" and build.skillsTab and self.selectedSkillIndex then
+							local used = build.skillsTab:GetUsedSkillPoints(self.selectedSkillIndex)
+							local maxPts = build.skillsTab:GetMaxSkillPoints(self.selectedSkillIndex)
+							canIncrement = used < maxPts
+						end
+						if canIncrement then
+							t_insert(spec.history, hoverNode.id)
+							hoverNode.alloc = hoverNode.alloc + 1
+							tree:ProcessStats(hoverNode)
+							spec:BuildAllDependsAndPaths()
+							spec:AddUndoState()
+							build.buildFlag = true
+						end
+					end
+				else
+					-- Check point budget before allocating
+					local canAlloc = true
+					if self.filterMode ~= "skill" then
+						-- Passive tree: cap at 113 total passive points
+						if spec:CountAllocNodes() >= 113 then
+							canAlloc = false
+						end
+					else
+						-- Skill tree: cap at max skill points
+						if build.skillsTab and self.selectedSkillIndex then
+							local used = build.skillsTab:GetUsedSkillPoints(self.selectedSkillIndex)
+							local maxPts = build.skillsTab:GetMaxSkillPoints(self.selectedSkillIndex)
+							canAlloc = used < maxPts
+						end
+					end
+					if canAlloc then
+						spec:AllocNode(hoverNode, self.tracePath and hoverNode == self.tracePath[#self.tracePath] and self.tracePath)
 						spec:AddUndoState()
 						build.buildFlag = true
 					end
-				else
-					spec:AllocNode(hoverNode, self.tracePath and hoverNode == self.tracePath[#self.tracePath] and self.tracePath)
-					spec:AddUndoState()
-					build.buildFlag = true
 				end
 			end
 		end
@@ -688,6 +719,7 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 			end
 			if not blockedByReq then
 				if hoverNode.alloc > 1 then
+					spec:RemoveLastFromHistory(hoverNode.id)
 					hoverNode.alloc = hoverNode.alloc - 1
 					tree:ProcessStats(hoverNode)
 					spec:BuildAllDependsAndPaths()
@@ -1106,6 +1138,17 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 		end
 	end
 
+	-- Build node order map from spec history for badge display
+	local nodeOrderMap = { }
+	if self.showOrderBadges and spec.history then
+		for step, hId in ipairs(spec.history) do
+			if not nodeOrderMap[hId] then
+				nodeOrderMap[hId] = { }
+			end
+			t_insert(nodeOrderMap[hId], step)
+		end
+	end
+
 	-- Draw the nodes
 	for nodeId, node in pairs(spec.visibleNodes) do
 		-- Skip nodes that don't match the filter
@@ -1303,6 +1346,28 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 			-- Draw alloc/max text below node (both passive and skill tree)
 			if node.maxPoints > 0 then
 				DrawString(scrX, scrY + 48 * scale, "CENTER_X", round(50 * scale), "VAR", "^7" .. node.alloc .. "/" .. node.maxPoints)
+			end
+
+			-- Draw leveling order badge (top-right corner of node)
+			if self.showOrderBadges and displayAlloc and nodeOrderMap[nodeId] then
+				local orders = nodeOrderMap[nodeId]
+				local badgeText
+				if #orders == 1 then
+					badgeText = tostring(orders[1])
+				else
+					-- Always show all step numbers (e.g. "3,7,12")
+					badgeText = t_concat(orders, ",")
+				end
+				local fontSize = m_max(round(13 * scale), 8)
+				local badgeX = scrX + iconSize * scale * 0.42
+				local badgeY = scrY - iconSize * scale * 0.72
+				local badgeW = fontSize * #badgeText * 0.62 + 4
+				SetDrawLayer(nil, 28)
+				SetDrawColor(0, 0, 0, 0.72)
+				DrawImage(nil, badgeX - 1, badgeY - 1, badgeW, fontSize + 2)
+				SetDrawColor(1, 0.85, 0.2)
+				DrawString(badgeX, badgeY, "LEFT", fontSize, "VAR", badgeText)
+				SetDrawColor(1, 1, 1)
 			end
 		end
 
@@ -1667,4 +1732,161 @@ function PassiveTreeViewClass:AddNodeTooltip(tooltip, node, build)
 	tooltip:AddLine(14, colorCodes.TIP.."Tip: Hold Ctrl to hide this tooltip.")
 	tooltip:AddLine(14, colorCodes.TIP.."Tip: Right click to remove allocated points.")
 	tooltip:AddLine(14, colorCodes.TIP.."Tip: Hold Alt and left click to edit this node.")
+end
+
+-- Draw the leveling order history bar below the tree viewport.
+-- barVP: { x, y, width, height } of the bar area
+function PassiveTreeViewClass:DrawHistoryBar(build, barVP, inputEvents)
+	local spec = build.spec
+	local tree = spec.tree
+	local ICON_SIZE = 32
+	local ICON_PAD  = 6
+	local ITEM_W    = ICON_SIZE + ICON_PAD
+
+	-- Build filtered list from spec.history based on current view mode
+	local filtered = {}
+	for _, nodeId in ipairs(spec.history) do
+		local node = spec.nodes[nodeId]
+		if not node then goto hist_filter_continue end
+		local include = false
+		if self.filterMode == "passive" then
+			-- Passive node IDs start with an uppercase letter (class name prefix)
+			include = nodeId:sub(1, 1):match("%u") ~= nil
+		elseif self.filterMode == "skill" then
+			if self.selectedSkillIndex and build.skillsTab then
+				local sg = build.skillsTab.socketGroupList[self.selectedSkillIndex]
+				if sg and sg.grantedEffect and sg.grantedEffect.treeId then
+					include = nodeId:match("^" .. sg.grantedEffect.treeId .. "%-") ~= nil
+				end
+			end
+		else
+			include = true
+		end
+		if include then
+			t_insert(filtered, { nodeId = nodeId, node = node })
+		end
+		::hist_filter_continue::
+	end
+
+	-- Group consecutive allocations to the same node (e.g. 3 pts → show x3)
+	local grouped = {}
+	for _, entry in ipairs(filtered) do
+		if #grouped > 0 and grouped[#grouped].nodeId == entry.nodeId then
+			grouped[#grouped].count = grouped[#grouped].count + 1
+		else
+			t_insert(grouped, { nodeId = entry.nodeId, node = entry.node, count = 1 })
+		end
+	end
+
+	-- Background strip
+	SetDrawLayer(nil, 1)
+	SetDrawColor(0.05, 0.05, 0.08)
+	DrawImage(nil, barVP.x, barVP.y, barVP.width, barVP.height)
+	-- Top border line
+	SetDrawColor(0.14, 0.14, 0.22)
+	DrawImage(nil, barVP.x, barVP.y, barVP.width, 1)
+
+	local cursorX, cursorY = GetCursorPos()
+
+	-- Content area (full width of bar)
+	local contentW = barVP.width - 8
+
+	if #grouped == 0 then
+		SetDrawLayer(nil, 2)
+		SetDrawColor(0.35, 0.35, 0.42)
+		DrawString(barVP.x + m_floor(contentW / 2), barVP.y + m_floor(barVP.height / 2) - 7, "CENTER_X", 12, "VAR", "No leveling order recorded yet")
+		return
+	end
+
+	-- Scroll state (per-viewer instance)
+	if not self.historyScroll then self.historyScroll = 0 end
+	local totalW    = #grouped * ITEM_W
+	local scrollMax = m_max(0, totalW - contentW + 4)
+
+	-- Mouse-wheel scroll when cursor is in the content area
+	local inContent = cursorX >= barVP.x and cursorX < barVP.x + contentW
+	               and cursorY >= barVP.y and cursorY < barVP.y + barVP.height
+	if inContent then
+		for id, event in ipairs(inputEvents) do
+			if event.type == "KeyDown" then
+				if event.key == "WHEELDOWN" then
+					self.historyScroll = m_min(scrollMax, self.historyScroll + ITEM_W * 3)
+					inputEvents[id] = nil
+				elseif event.key == "WHEELUP" then
+					self.historyScroll = m_max(0, self.historyScroll - ITEM_W * 3)
+					inputEvents[id] = nil
+				end
+			end
+		end
+	end
+	self.historyScroll = m_max(0, m_min(scrollMax, self.historyScroll))
+
+	-- Draw icons
+	local iconY = barVP.y + m_floor((barVP.height - ICON_SIZE) / 2)
+	SetDrawLayer(nil, 2)
+
+	for i, grp in ipairs(grouped) do
+		local ix = barVP.x + 4 + (i - 1) * ITEM_W - self.historyScroll
+		-- Cull icons outside the visible content area
+		if ix + ICON_SIZE < barVP.x or ix > barVP.x + contentW then
+			goto hist_icon_continue
+		end
+
+		-- Hover highlight
+		local isHover = cursorX >= ix and cursorX < ix + ICON_SIZE
+		             and cursorY >= iconY and cursorY < iconY + ICON_SIZE
+		if isHover then
+			SetDrawColor(0.28, 0.28, 0.44, 0.85)
+			DrawImage(nil, ix - 2, iconY - 2, ICON_SIZE + 4, ICON_SIZE + 4)
+		end
+
+		-- Load sprite into tree cache if not yet loaded
+		local node = grp.node
+		if node.icon and not tree.spriteMap[node.icon] then
+			local sheet = { handle = NewImageHandle() }
+			sheet.handle:Load("TreeData/sprites/" .. node.icon .. ".png")
+			sheet.width, sheet.height = sheet.handle:ImageSize()
+			tree.spriteMap[node.icon] = {
+				handle = sheet.handle,
+				width  = sheet.width,
+				height = sheet.height,
+				[1] = 0, [2] = 0, [3] = 1, [4] = 1,
+			}
+		end
+		local spr = node.icon and tree.spriteMap[node.icon]
+		if spr then
+			SetDrawColor(1, 1, 1)
+			DrawImage(spr.handle, ix, iconY, ICON_SIZE, ICON_SIZE, spr[1], spr[2], spr[3], spr[4])
+		else
+			SetDrawColor(0.22, 0.22, 0.28)
+			DrawImage(nil, ix, iconY, ICON_SIZE, ICON_SIZE)
+		end
+
+		-- Count badge (x3, x2, …) for multi-point nodes
+		if grp.count > 1 then
+			local badgeStr = "x" .. grp.count
+			local badgeFontSize = 14
+			local bw = m_floor(DrawStringWidth(badgeFontSize, "VAR", badgeStr)) + 4
+			local bh = badgeFontSize + 2
+			local bx = ix + ICON_SIZE - bw
+			local by = iconY + ICON_SIZE - bh
+			SetDrawColor(0, 0, 0, 0.82)
+			DrawImage(nil, bx, by, bw, bh)
+			SetDrawColor(0.2, 1.0, 0.2)
+			DrawString(bx + 2, by + 1, "LEFT", badgeFontSize, "VAR", badgeStr)
+		end
+
+		::hist_icon_continue::
+	end
+
+	-- Scroll arrows
+	SetDrawLayer(nil, 3)
+	if self.historyScroll > 0 then
+		SetDrawColor(0.65, 0.65, 0.75)
+		DrawString(barVP.x + 2, barVP.y + m_floor((barVP.height - 14) / 2), "LEFT", 14, "VAR", "<")
+	end
+	if self.historyScroll < scrollMax then
+		SetDrawColor(0.65, 0.65, 0.75)
+		DrawString(barVP.x + contentW - 2, barVP.y + m_floor((barVP.height - 14) / 2), "RIGHT", 14, "VAR", ">")
+	end
 end
