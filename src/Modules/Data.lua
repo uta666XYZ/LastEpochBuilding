@@ -591,7 +591,8 @@ end
 -- Each version has a dedicated file: Data/ModItem_1_3.json, Data/Bases/bases_1_3.json, etc.
 data.versionData = { }
 for _, ver in ipairs(treeVersionList) do
-	local verMods    = readJsonFile("Data/ModItem_" .. ver .. ".json")
+	local verMods          = readJsonFile("Data/ModItem_" .. ver .. ".json")
+	local verAltarMods     = readJsonFile("Data/ModItem_IdolAltar_" .. ver .. ".json")
 	local verBasesRaw = io.open("Data/Bases/bases_" .. ver .. ".json", "r")
 	local verBasesContent = verBasesRaw and verBasesRaw:read("*a") or ""
 	if verBasesRaw then verBasesRaw:close() end
@@ -626,7 +627,7 @@ for _, ver in ipairs(treeVersionList) do
 	end
 	local verBaseLists, verBaseTypeList = buildItemBaseLists(verBases or {})
 	data.versionData[ver] = {
-		itemMods         = { Item = verMods    or {} },
+		itemMods         = { Item = verMods or {}, ["Idol Altar"] = verAltarMods or {} },
 		itemBases        = verBases   or {},
 		itemBaseLists    = verBaseLists,
 		itemBaseTypeList = verBaseTypeList,
