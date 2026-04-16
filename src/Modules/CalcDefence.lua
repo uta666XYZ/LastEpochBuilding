@@ -698,6 +698,17 @@ function calcs.buildDefenceEstimations(env, actor)
 	do
 		output["totalEnemyDamage"] = 0
 		output["totalEnemyDamageIn"] = 0
+		local corruptionLevel = m_max(env.config.corruption or 0, 0)
+		local corruptionMorePct
+		if corruptionLevel <= data.misc.CorruptionBreakpoint then
+			corruptionMorePct = data.misc.CorruptionLinearRate * corruptionLevel
+		else
+			corruptionMorePct = data.misc.CorruptionPowerCoeff * corruptionLevel ^ data.misc.CorruptionPower
+			                  + data.misc.CorruptionLinearCoeff * corruptionLevel
+			                  + data.misc.CorruptionConstant
+		end
+		local corruptionHitMult = 1 + corruptionMorePct / 100
+		local corruptionDoTMult = 1 + corruptionMorePct / 200
 		if breakdown then
 			breakdown["totalEnemyDamage"] = { 
 				label = "Total damage from the enemy",
@@ -727,7 +738,10 @@ function calcs.buildDefenceEstimations(env, actor)
 
 			-- Add enemy damage from mods
 			enemyDamage = enemyDamage + enemyDB:Sum("BASE", enemyCfg, (damageType.."Damage"))
-			
+
+			-- Apply Monolith Corruption scaling (More % to enemy hit damage)
+			enemyDamage = enemyDamage * corruptionHitMult
+
 			-- Conversion and Gain As Mods
 			local conversionTotal = 0
 			
