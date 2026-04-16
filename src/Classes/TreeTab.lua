@@ -44,6 +44,7 @@ local TreeTabClass = newClass("TreeTab", "ControlHost", function(self, build)
 	self:SetCompareSpec(1)
 
 	self.anchorControls = new("Control", nil, 0, 0, 0, 20)
+	self.headerAnchor = new("Control", nil, 0, 0, 0, 0)
 
 	-- Tree list dropdown
 	self.controls.specSelect = new("DropDownControl", {"LEFT",self.anchorControls,"RIGHT"}, 0, 0, 190, 20, nil, function(index, value)
@@ -84,9 +85,9 @@ local TreeTabClass = newClass("TreeTab", "ControlHost", function(self, build)
 		self:SetCompareSpec(self.activeCompareSpec)
 		self.controls.compareSelect.shown = state
 		if state then
-			self.controls.reset:SetAnchor("LEFT", self.controls.compareSelect, "RIGHT", nil, nil, nil)
+			self.controls.versionText:SetAnchor("LEFT", self.controls.compareSelect, "RIGHT", 8, 0)
 		else
-			self.controls.reset:SetAnchor("LEFT", self.controls.compareCheck, "RIGHT", nil, nil, nil)
+			self.controls.versionText:SetAnchor("LEFT", self.controls.compareCheck, "RIGHT", 8, 0)
 		end
 	end)
 
@@ -100,21 +101,37 @@ local TreeTabClass = newClass("TreeTab", "ControlHost", function(self, build)
 	self.controls.compareSelect.maxDroppedWidth = 1000
 	self.controls.compareSelect.enableDroppedWidth = true
 	self.controls.compareSelect.enableChangeBoxWidth = true
-	self.controls.reset = new("ButtonControl", { "LEFT", self.controls.compareCheck, "RIGHT" }, 8, 0, 60, 20, "Reset", function()
-		main:OpenConfirmPopup("Reset Tree", "Are you sure you want to reset your passive tree?", "Reset", function()
-			self.build.spec:ResetNodes()
-			self.build.spec:BuildAllDependsAndPaths()
-			self.build.spec:AddUndoState()
-			self.build.buildFlag = true
-		end)
+	self.controls.reset = new("DropDownControl", { "LEFT", self.headerAnchor, "LEFT" }, 0, 0, 80, 20, {}, function(index, value)
+		local spec = self.build.spec
+		self.controls.reset.selIndex = 0
+		if value.masteryIndex == -1 then
+			main:OpenConfirmPopup("Reset Tree", "Reset all passive nodes?", "Reset", function()
+				spec:ResetNodes()
+				spec:BuildAllDependsAndPaths()
+				spec:AddUndoState()
+				self.build.buildFlag = true
+			end)
+		else
+			local mi = value.masteryIndex
+			main:OpenConfirmPopup("Reset " .. value.name, "Reset all passive nodes for " .. value.name .. "?", "Reset", function()
+				spec:ResetMasteryNodes(mi)
+				spec:BuildAllDependsAndPaths()
+				spec:AddUndoState()
+				self.build.buildFlag = true
+			end)
+		end
 	end)
+	self.controls.reset.placeholder = "Reset"
+	self.controls.reset.selIndex = 0
+	self.controls.reset.enableDroppedWidth = true
+	self.controls.reset.maxDroppedWidth = 300
 
 	-- Tree Version Dropdown
 	self.treeVersions = { }
 	for _, num in ipairs(treeVersionList) do
 		t_insert(self.treeVersions, treeVersions[num].display)
 	end
-	self.controls.versionText = new("LabelControl", { "LEFT", self.controls.reset, "RIGHT" }, 8, 0, 0, 16, "Version:")
+	self.controls.versionText = new("LabelControl", { "LEFT", self.controls.compareCheck, "RIGHT" }, 8, 0, 0, 16, "Version:")
 	self.controls.versionSelect = new("DropDownControl", { "LEFT", self.controls.versionText, "RIGHT" }, 8, 0, 100, 20, self.treeVersions, function(index, value)
 		if value ~= self.build.spec.treeVersion then
 			self:OpenVersionConvertPopup(value:gsub("[%(%)]", ""):gsub("[%.%s]", "_"), true)
@@ -411,6 +428,8 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 
 	self.anchorControls.x = viewPort.x + 4
 	self.anchorControls.y = viewPort.y + viewPort.height - 24
+	self.headerAnchor.x = viewPort.x + 10
+	self.headerAnchor.y = viewPort.y + HEADER_HEIGHT - 28
 
 	for id, event in ipairs(inputEvents) do
 		if event.type == "KeyDown" then
@@ -516,6 +535,18 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 	t_insert(newSpecList, "Manage trees... (ctrl-m)")
 	self.controls.specSelect.selIndex = self.activeSpec
 	self.controls.specSelect:SetList(newSpecList)
+
+	-- Update reset dropdown list with current class/mastery names
+	local resetList = { { label = "Reset All", masteryIndex = -1, name = "All" } }
+	if spec.curClass then
+		t_insert(resetList, { label = "Reset " .. (spec.curClassName or "Base"), masteryIndex = 0, name = spec.curClassName or "Base" })
+		for i, ascClass in ipairs(spec.curClass.classes) do
+			if ascClass.name and ascClass.name ~= "None" then
+				t_insert(resetList, { label = "Reset " .. ascClass.name, masteryIndex = i, name = ascClass.name })
+			end
+		end
+	end
+	self.controls.reset:SetList(resetList)
 
 	if not self.controls.treeSearch.hasFocus then
 		self.controls.treeSearch:SetText(self.viewer.searchStr)

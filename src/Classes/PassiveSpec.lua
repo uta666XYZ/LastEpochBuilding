@@ -461,6 +461,18 @@ function PassiveSpecClass:ResetNodes()
 	wipeTable(self.masterySelections)
 end
 
+-- Reset only nodes belonging to the specified mastery index (0=base, 1-3=ascendancy)
+function PassiveSpecClass:ResetMasteryNodes(masteryIndex)
+	for id, node in pairs(self.nodes) do
+		if node.mastery == masteryIndex
+			and node.type ~= "ClassStart"
+			and node.type ~= "AscendClassStart" then
+			node.alloc = 0
+			self.allocNodes[id] = nil
+		end
+	end
+end
+
 -- Allocate the given node, if possible, and all nodes along the path to the node
 -- An alternate path to the node may be provided, otherwise the default path will be used
 -- The path must always contain the given node, as will be the case for the default path
