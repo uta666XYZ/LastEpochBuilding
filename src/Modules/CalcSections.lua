@@ -746,6 +746,10 @@ return {
 	{ label = "Taken From Block", haveOutput = "ShowBlockEffect", { format = "{0:output:DamageTakenOnBlock}%", }, },
 	{ label = "Life on Block", haveOutput = "LifeOnBlock", { format = "{0:output:LifeOnBlock}", { modName = "LifeOnBlock" }, }, },
 	{ label = "Mana on Block", haveOutput = "ManaOnBlock", { format = "{0:output:ManaOnBlock}", { modName = "ManaOnBlock" }, }, },
+	{ label = "Ward on Potion Use", haveOutput = "WardOnPotionUse", { format = "{0:output:WardOnPotionUse}", { modName = "WardOnPotionUse" }, }, },
+	{ label = "Mana on Potion Use", haveOutput = "ManaOnPotionUse", { format = "{0:output:ManaOnPotionUse}", { modName = "ManaOnPotionUse" }, }, },
+	{ label = "Life on Potion Use", haveOutput = "LifeOnPotionUse", { format = "{0:output:LifeOnPotionUse}", { modName = "LifeOnPotionUse" }, }, },
+	{ label = "Ward on Skill Use", haveOutput = "WardOnSkillUse", { format = "{0:output:WardOnSkillUse}", { modName = "WardOnSkillUse" }, }, },
 } }, { defaultCollapsed = false, label = "Dodge", data = {
 	{ label = "Dodge Rating", { format = "{0:output:Evasion}", { modName = "Evasion" }, }, },
 	{ label = "Total Increased", { format = "{0:mod:1}%", { modName = { "Evasion", "ArmourAndEvasion", "Defences" }, modType = "INC" }, }, },
