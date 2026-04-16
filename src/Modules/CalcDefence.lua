@@ -417,43 +417,6 @@ function calcs.defence(env, actor)
 		output.MeleeEvadeChance = 0
 		output.ProjectileEvadeChance = 0
 
-	-- Spell Suppression
-	local weaponsCfg = {
-		flags = bit.bor(env.player.weaponData1 and env.player.weaponData1.type and ModFlag[env.player.weaponData1.type] or 0, env.player.weaponData2 and env.player.weaponData2.type and ModFlag[env.player.weaponData2.type] or 0)
-	}
-
-	-- Add weapon dependent mods as unflagged mods if the correct weapons are equipped
-	for _, value in ipairs(modDB:Tabulate("BASE",  weaponsCfg, "SpellSuppressionChance")) do
-		if value.mod.flags ~= 0 and bit.band(value.mod.flags and weaponsCfg.flags) == value.mod.flags then
-			local mod = copyTable(value.mod)
-			mod.flags = 0
-			modDB:AddMod(mod)
-		end
-	end
-
-	local spellSuppressionChance =  modDB:Sum("BASE", nil, "SpellSuppressionChance")
-	local totalSpellSuppressionChance = modDB:Override(nil, "SpellSuppressionChance") or spellSuppressionChance
-
-	-- Dodge
-	-- Acrobatics Spell Suppression to Spell Dodge Chance conversion.
-	if modDB:Flag(nil, "ConvertSpellSuppressionToSpellDodge") then
-		modDB:NewMod("SpellDodgeChance", "BASE", spellSuppressionChance / 2, "Acrobatics")
-	end
-	
-	output.SpellSuppressionChance = m_min(totalSpellSuppressionChance, data.misc.SuppressionChanceCap)
-	output.SpellSuppressionEffect = m_max(data.misc.SuppressionEffect + modDB:Sum("BASE", nil, "SpellSuppressionEffect"), 0)
-	
-	output.EffectiveSpellSuppressionChance = enemyDB:Flag(nil, "CannotBeSuppressed") and 0 or output.SpellSuppressionChance
-	if output.EffectiveSpellSuppressionChance > 0 then
-		if env.mode_effective and modDB:Flag(nil, "SpellSuppressionChanceIsUnlucky") then
-			output.EffectiveSpellSuppressionChance = output.EffectiveSpellSuppressionChance / 100 * output.EffectiveSpellSuppressionChance
-		elseif env.mode_effective and modDB:Flag(nil, "SpellSuppressionChanceIsLucky") then
-			output.EffectiveSpellSuppressionChance = (1 - (1 - output.EffectiveSpellSuppressionChance / 100) ^ 2) * 100
-		end
-	end
-	
-	output.SpellSuppressionChanceOverCap = m_max(0, totalSpellSuppressionChance - data.misc.SuppressionChanceCap)
-
 	-- Dodge
 	-- Dodge chance is derived from Dodge Rating (Evasion) via tunklab formula, plus any flat dodge chance mods
 	local dodgeFromRating = calcs.dodgeChanceF(output.Evasion, env.config.enemyLevel)
@@ -638,12 +601,6 @@ function calcs.defence(env, actor)
 	output.AvoidAllDamageFromHitsChance = m_min(modDB:Sum("BASE", nil, "AvoidAllDamageFromHitsChance"), data.misc.AvoidChanceCap)
 	-- other avoidances etc
 	output.BlindAvoidChance = m_min(modDB:Sum("BASE", nil, "AvoidBlind"), 100)
-
-	if modDB:Flag(nil, "SpellSuppressionAppliesToAilmentAvoidance") then
-		local spellSuppressionToAilmentPercent = (modDB:Sum("BASE", nil, "SpellSuppressionAppliesToAilmentAvoidancePercent") or 0) / 100
-		-- Ancestral Vision
-		modDB:NewMod("AvoidElementalAilments", "BASE", m_floor(spellSuppressionToAilmentPercent * spellSuppressionChance), "Ancestral Vision")
-	end
 
 	-- This is only used for breakdown purposes
 	if modDB:Flag(nil, "ShockAvoidAppliesToElementalAilments") then
@@ -967,7 +924,6 @@ function calcs.buildDefenceEstimations(env, actor)
 			},
 		}
 	end
-	local enemyImpaleChance = (enemyDB:Sum("BASE", { flags = (damageCategoryConfig == "Melee" or damageCategoryConfig == "Projectile" or damageCategoryConfig == "Average") and ModFlag.Attack or 0, keywordFlags = 0 } , "ImpaleChance") or 0) * (damageCategoryConfig == "Average" and 0.5 or 1) * (1 - (output.ImpaleAvoidChance or 0))
 	for _, damageType in ipairs(dmgTypeList) do
 		-- Calculate incoming damage multiplier
 		local resist = modDB:Flag(nil, "SelfIgnore"..damageType.."Resistance") and 0 or output[damageType.."ResistWhenHit"] or output[damageType.."Resist"]
@@ -975,7 +931,6 @@ function calcs.buildDefenceEstimations(env, actor)
 		local enemyPen = modDB:Flag(nil, "SelfIgnore"..damageType.."Resistance") and 0 or output[damageType.."EnemyPen"]
 		local enemyOverwhelm = modDB:Flag(nil, "SelfIgnore"..damageType.."DamageReduction") and 0 or output[damageType.."EnemyOverwhelm"]
 		local damage = output[damageType.."TakenDamage"]
-		local impaleDamage = enemyImpaleChance > 0 and (damageType == "Physical" and (damage * data.misc.ImpaleStoredDamageBase) or 0) or 0
 		local armourReduct = 0
 		local percentOfArmourApplies = 100
 		-- Only applies at 70% for non-physical damage
@@ -1024,25 +979,22 @@ function calcs.buildDefenceEstimations(env, actor)
 			end
 		end
 		local takenMult = output[damageType.."TakenHitMult"]
-		local spellSuppressMult = 1
 		if damageCategoryConfig == "Melee" or damageCategoryConfig == "Projectile" then
 			takenMult = output[damageType.."AttackTakenHitMult"]
 		elseif damageCategoryConfig == "Spell" or damageCategoryConfig == "SpellProjectile" then
 			takenMult = output[damageType.."SpellTakenHitMult"]
-			spellSuppressMult = output.EffectiveSpellSuppressionChance == 100 and (1 - output.SpellSuppressionEffect / 100) or 1
 		elseif damageCategoryConfig == "Average" then
 			takenMult = (output[damageType.."SpellTakenHitMult"] + output[damageType.."AttackTakenHitMult"]) / 2
-			spellSuppressMult = output.EffectiveSpellSuppressionChance == 100 and (1 - output.SpellSuppressionEffect / 100 / 2) or 1
 		end
 		output[damageType.."EffectiveAppliedArmour"] = effectiveAppliedArmour
 		output[damageType.."ResistTakenHitMulti"] = resMult
-		local afterReductionMulti = takenMult * spellSuppressMult
+		local afterReductionMulti = takenMult
 		output[damageType.."AfterReductionTakenHitMulti"] = afterReductionMulti
 		local baseMult = resMult * reductMult
 		output[damageType.."BaseTakenHitMult"] = baseMult * afterReductionMulti
 		local takenMultReflect = output[damageType.."TakenReflect"]
 		local finalReflect = baseMult * takenMultReflect
-		output[damageType.."TakenHit"] = m_max(damage * baseMult + takenFlat, 0) * takenMult * spellSuppressMult + impaleDamage
+		output[damageType.."TakenHit"] = m_max(damage * baseMult + takenFlat, 0) * takenMult
 		output[damageType.."TakenHitMult"] = (damage > 0) and (output[damageType.."TakenHit"] / damage) or 0
 		output["totalTakenHit"] = output["totalTakenHit"] + output[damageType.."TakenHit"]
 		if output.AnyTakenReflect then
@@ -1088,13 +1040,7 @@ function calcs.buildDefenceEstimations(env, actor)
 			if takenMult ~= 1 then
 				t_insert(breakdown[damageType.."TakenHitMult"], s_format("x Taken: %.3f", takenMult))
 			end
-			if spellSuppressMult ~= 1 then
-				t_insert(breakdown[damageType.."TakenHitMult"], s_format("x Spell Suppression: %.3f", spellSuppressMult))
-			end
-			if impaleDamage ~= 0 then
-				t_insert(breakdown[damageType.."TakenHitMult"], s_format("+ Impale: %.1f", impaleDamage))
-			end
-			if takenMult ~= 1 or takenFlat ~= 0 or spellSuppressMult ~= 1 or impaleDamage ~= 0 then
+			if takenMult ~= 1 or takenFlat ~= 0 then
 				t_insert(breakdown[damageType.."TakenHitMult"], s_format("= %.3f", output[damageType.."TakenHitMult"]))
 			end
 			breakdown[damageType.."TakenHit"] = {
@@ -1262,104 +1208,6 @@ function calcs.buildDefenceEstimations(env, actor)
 
 	output.ehpSectionAnySpecificTypes = false
 
-	-- Guard
-	output.AnyGuard = false
-	output["sharedGuardAbsorbRate"] = m_min(modDB:Sum("BASE", nil, "GuardAbsorbRate"), 100)
-	if output["sharedGuardAbsorbRate"] > 0 then
-		output.OnlySharedGuard = true
-		output["sharedGuardAbsorb"] = calcLib.val(modDB, "GuardAbsorbLimit")
-		local lifeProtected = output["sharedGuardAbsorb"] / (output["sharedGuardAbsorbRate"] / 100) * (1 - output["sharedGuardAbsorbRate"] / 100)
-		if breakdown then
-			breakdown["sharedGuardAbsorb"] = {
-				s_format("Total life protected:"),
-				s_format("%d ^8(guard limit)", output["sharedGuardAbsorb"]),
-				s_format("/ %.2f ^8(portion taken from guard)", output["sharedGuardAbsorbRate"] / 100),
-				s_format("x %.2f ^8(portion taken from life)", 1 - output["sharedGuardAbsorbRate"] / 100),
-				s_format("= %d", lifeProtected)
-			}
-		end
-	end
-	for _, damageType in ipairs(dmgTypeList) do
-		output[damageType.."GuardAbsorbRate"] = m_min(modDB:Sum("BASE", nil, damageType.."GuardAbsorbRate"), 100)
-		if output[damageType.."GuardAbsorbRate"] > 0 then
-			output.ehpSectionAnySpecificTypes = true
-			output.AnyGuard = true
-			output.OnlySharedGuard = false
-			output[damageType.."GuardAbsorb"] = calcLib.val(modDB, damageType.."GuardAbsorbLimit")
-			local lifeProtected = output[damageType.."GuardAbsorb"] / (output[damageType.."GuardAbsorbRate"] / 100) * (1 - output[damageType.."GuardAbsorbRate"] / 100)
-			if breakdown then
-				breakdown[damageType.."GuardAbsorb"] = {
-					s_format("Total life protected:"),
-					s_format("%d ^8(guard limit)", output[damageType.."GuardAbsorb"]),
-					s_format("/ %.2f ^8(portion taken from guard)", output[damageType.."GuardAbsorbRate"] / 100),
-					s_format("x %.2f ^8(portion taken from life)", 1 - output[damageType.."GuardAbsorbRate"] / 100),
-					s_format("= %d", lifeProtected),
-				}
-			end
-		end
-	end
-	
-	--aegis
-	output.AnyAegis = false
-	output["sharedAegis"] = modDB:Max(nil, "AegisValue") or 0
-	output["sharedElementalAegis"] = modDB:Max(nil, "ElementalAegisValue") or 0
-	if output["sharedAegis"] > 0 then
-		output.AnyAegis = true
-	end
-	if output["sharedElementalAegis"] > 0 then
-		output.ehpSectionAnySpecificTypes = true
-		output.AnyAegis = true
-	end
-	for _, damageType in ipairs(dmgTypeList) do
-		local aegisValue = modDB:Max(nil, damageType.."AegisValue") or 0
-		if aegisValue > 0 then
-			output.ehpSectionAnySpecificTypes = true
-			output.AnyAegis = true
-			output[damageType.."Aegis"] = aegisValue
-		else
-			output[damageType.."Aegis"] = 0
-		end
-		if isElemental[damageType] then
-			output[damageType.."AegisDisplay"] = output[damageType.."Aegis"] + output["sharedElementalAegis"]
-		end
-	end
-	
-	-- taken from allies before you, eg. frost shield
-	do
-		-- frost shield
-		output["FrostShieldLife"] = modDB:Sum("BASE", nil, "FrostGlobeHealth")
-		output["FrostShieldDamageMitigation"] = modDB:Sum("BASE", nil, "FrostGlobeDamageMitigation")
-		
-		local lifeProtected = output["FrostShieldLife"] / (output["FrostShieldDamageMitigation"] / 100) * (1 - output["FrostShieldDamageMitigation"] / 100)
-		if breakdown then
-			breakdown["FrostShieldLife"] = {
-				s_format("Total life protected:"),
-				s_format("%d ^8(frost shield limit)", output["FrostShieldLife"]),
-				s_format("/ %.2f ^8(portion taken from frost shield)", output["FrostShieldDamageMitigation"] / 100),
-				s_format("x %.2f ^8(portion taken from life)", 1 - output["FrostShieldDamageMitigation"] / 100),
-				s_format("= %d", lifeProtected),
-			}
-		end
-		
-		-- from specters
-		output["SpectreAllyDamageMitigation"] = modDB:Sum("BASE", nil, "takenFromSpectresBeforeYou")
-		if output["SpectreAllyDamageMitigation"] ~= 0 then
-			output["TotalSpectreLife"] = modDB:Sum("BASE", nil, "TotalSpectreLife")
-		end
-		
-		-- from totems
-		output["TotemAllyDamageMitigation"] = modDB:Sum("BASE", nil, "takenFromTotemsBeforeYou")
-		if output["TotemAllyDamageMitigation"] ~= 0 then
-			output["TotalTotemLife"] = modDB:Sum("BASE", nil, "TotalTotemLife")
-		end
-		
-				-- from Sentinel of Radiance
-		output["RadianceSentinelAllyDamageMitigation"] = modDB:Sum("BASE", nil, "takenFromRadianceSentinelBeforeYou")
-		if output["RadianceSentinelAllyDamageMitigation"] ~= 0 then
-			output["TotalRadianceSentinelLife"] = modDB:Sum("BASE", nil, "TotalRadianceSentinelLife")
-		end
-		
-			end
 	
 	--total pool
 	for _, damageType in ipairs(dmgTypeList) do
@@ -1679,53 +1527,6 @@ function calcs.buildDefenceEstimations(env, actor)
 		end
 	end
 	
-	-- pvp
-	if env.config.PvpScaling then
-		local PvpTvalue = output.enemySkillTime
-		local PvpMultiplier = (env.config.enemyMultiplierPvpDamage or 100) / 100
-		
-		local PvpNonElemental1 = data.misc.PvpNonElemental1
-		local PvpNonElemental2 = data.misc.PvpNonElemental2
-		local PvpElemental1 = data.misc.PvpElemental1
-		local PvpElemental2 = data.misc.PvpElemental2
-
-		local percentageNonElemental = output["PhysicalTakenHit"] / output["totalTakenHit"]
-		local percentageElemental = 1 - percentageNonElemental
-		local portionNonElemental = (output["totalTakenHit"] / PvpTvalue / PvpNonElemental2 ) ^ PvpNonElemental1 * PvpTvalue * PvpNonElemental2 * percentageNonElemental
-		local portionElemental = (output["totalTakenHit"] / PvpTvalue / PvpElemental2 ) ^ PvpElemental1 * PvpTvalue * PvpElemental2 * percentageElemental
-		output.PvPTotalTakenHit = ((portionNonElemental or 0) + (portionElemental or 0)) * PvpMultiplier
-
-		if breakdown then
-			breakdown.PvPTotalTakenHit = { }
-			local percentBoth = (percentageNonElemental > 0) and (percentageElemental > 0)
-			t_insert(breakdown.PvPTotalTakenHit, s_format("Pvp Formula is (D/(T*M))^E*T*%s, where D is the damage, T is the time taken,", percentBoth and "M*P" or "M" ))
-			t_insert(breakdown.PvPTotalTakenHit, s_format(" M is the multiplier%s", percentBoth and ", E is the exponent and P is the percentage of that type (ele or non ele)" or " and E is the exponent" ))
-			if percentBoth then
-				t_insert(breakdown.PvPTotalTakenHit, s_format("(M= %.1f for ele and %.1f for non-ele)(E= %.2f for ele and %.2f for non-ele)", PvpElemental2, PvpNonElemental2, PvpElemental1, PvpNonElemental1))
-				t_insert(breakdown.PvPTotalTakenHit, s_format("(%.1f / (%.2f * %.1f)) ^ %.2f * %.2f * %.1f * %.2f = %.1f", output["totalTakenHit"], PvpTvalue,  PvpNonElemental2, PvpNonElemental1, PvpTvalue, PvpNonElemental2, percentageNonElemental, portionNonElemental))
-				t_insert(breakdown.PvPTotalTakenHit, s_format("(%.1f / (%.2f * %.1f)) ^ %.2f * %.2f * %.1f * %.2f = %.1f", output["totalTakenHit"], PvpTvalue,  PvpElemental2, PvpElemental1, PvpTvalue, PvpElemental2, percentageElemental, portionElemental))
-				t_insert(breakdown.PvPTotalTakenHit, s_format("(portionNonElemental + portionElemental)%s", PvpMultiplier ~= 1 and " * PvP multiplier" or " "))
-				if PvpMultiplier ~= 1 then
-					t_insert(breakdown.PvPTotalTakenHit, s_format("(%.1f + %.1f) * %g", portionNonElemental, portionElemental, PvpMultiplier))
-				else
-					t_insert(breakdown.PvPTotalTakenHit, s_format("%.1f + %.1f", portionNonElemental, portionElemental))
-				end
-			elseif percentageElemental <= 0 then
-				t_insert(breakdown.PvPTotalTakenHit, s_format("(M= %.1f for non-ele)(E= %.2f for non-ele)", PvpNonElemental2, PvpNonElemental1))
-				t_insert(breakdown.PvPTotalTakenHit, s_format("(%.1f / (%.2f * %.1f)) ^ %.2f * %.2f * %.1f = %.1f", output["totalTakenHit"], PvpTvalue,  PvpNonElemental2, PvpNonElemental1, PvpTvalue, PvpNonElemental2, portionNonElemental))
-				if PvpMultiplier ~= 1 then
-					t_insert(breakdown.PvPTotalTakenHit, s_format("%.1f * %g ^8(portionNonElemental * PvP multiplier)", portionNonElemental, PvpMultiplier))
-				end
-			elseif percentageNonElemental <= 0 then
-				t_insert(breakdown.PvPTotalTakenHit, s_format("(M= %.1f for ele)(E= %.2f for ele)", PvpElemental2, PvpElemental1))
-				t_insert(breakdown.PvPTotalTakenHit, s_format("(%.1f / (%.2f * %.1f)) ^ %.2f * %.2f * %.1f = %.1f", output["totalTakenHit"], PvpTvalue,  PvpElemental2, PvpElemental1, PvpTvalue, PvpElemental2, portionElemental))
-				if PvpMultiplier ~= 1 then
-					t_insert(breakdown.PvPTotalTakenHit, s_format("%.1f * %g ^8(portionElemental * PvP multiplier)", portionElemental, PvpMultiplier))
-				end
-			end
-			t_insert(breakdown.PvPTotalTakenHit, s_format("= %.1f", output.PvPTotalTakenHit))
-		end
-	end
 
 	-- effective health pool vs dots
 	for _, damageType in ipairs(dmgTypeList) do
