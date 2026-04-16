@@ -456,6 +456,9 @@ local modTagList = {
 	["while near an enemy"] = { tag = { type = "Condition", var = "NearEnemy" } },
 	["from nearby enemies"] = { tag = { type = "Condition", var = "NearEnemy" } },
 	["per arcane momentum stack"] = { tag = { type = "Multiplier", var = "ArcaneMomentumStack" } },
+	-- Blocking
+	["on block"] = { tag = { type = "Condition", var = "Blocking" } },
+	["while blocking"] = { tag = { type = "Condition", var = "Blocking" } },
 }
 
 for i,stat in ipairs(LongAttributes) do
