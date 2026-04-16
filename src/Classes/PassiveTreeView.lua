@@ -52,8 +52,9 @@ local PassiveTreeViewClass = newClass("PassiveTreeView", function(self)
 	-- Anchor position: "center" (default), "left", "top-left"
 	self.anchorPosition = "center"
 
-	-- Show leveling order badges on allocated nodes (Phase 1)
-	self.showOrderBadges = true
+	-- Show allocating order badges on allocated nodes (Phase 1)
+	-- Step Number display mode: "none" | "all" | "min"
+	self.stepMode = "none"
 
 	-- Selected mastery index for passive tree: nil = show all, 0 = base class, 1-3 = ascendancies
 	self.selectedMastery = 0
@@ -1138,9 +1139,9 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 		end
 	end
 
-	-- Build node order map from spec history for badge display
+	-- Build node order map from spec history for step number display
 	local nodeOrderMap = { }
-	if self.showOrderBadges and spec.history then
+	if self.stepMode ~= "none" and spec.history then
 		for step, hId in ipairs(spec.history) do
 			if not nodeOrderMap[hId] then
 				nodeOrderMap[hId] = { }
@@ -1348,24 +1349,29 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 				DrawString(scrX, scrY + 48 * scale, "CENTER_X", round(50 * scale), "VAR", "^7" .. node.alloc .. "/" .. node.maxPoints)
 			end
 
-			-- Draw leveling order badge (top-right corner of node)
-			if self.showOrderBadges and displayAlloc and nodeOrderMap[nodeId] then
+			-- Draw step number (top-right corner of node)
+			if self.stepMode ~= "none" and displayAlloc and nodeOrderMap[nodeId] then
 				local orders = nodeOrderMap[nodeId]
 				local badgeText
-				if #orders == 1 then
+				if self.stepMode == "min" then
+					-- Min: show only the first (initial allocation) step
 					badgeText = tostring(orders[1])
 				else
-					-- Always show all step numbers (e.g. "3,7,12")
-					badgeText = t_concat(orders, ",")
+					-- All: show every step e.g. "3,7,12"
+					if #orders == 1 then
+						badgeText = tostring(orders[1])
+					else
+						badgeText = t_concat(orders, ",")
+					end
 				end
-				local fontSize = m_max(round(13 * scale), 8)
+				local fontSize = m_max(round(14 * scale), 12)
 				local badgeX = scrX + iconSize * scale * 0.42
 				local badgeY = scrY - iconSize * scale * 0.72
 				local badgeW = fontSize * #badgeText * 0.62 + 4
 				SetDrawLayer(nil, 28)
 				SetDrawColor(0, 0, 0, 0.72)
 				DrawImage(nil, badgeX - 1, badgeY - 1, badgeW, fontSize + 2)
-				SetDrawColor(1, 0.85, 0.2)
+				SetDrawColor(0.2, 1.0, 0.2)
 				DrawString(badgeX, badgeY, "LEFT", fontSize, "VAR", badgeText)
 				SetDrawColor(1, 1, 1)
 			end
@@ -1734,7 +1740,7 @@ function PassiveTreeViewClass:AddNodeTooltip(tooltip, node, build)
 	tooltip:AddLine(14, colorCodes.TIP.."Tip: Hold Alt and left click to edit this node.")
 end
 
--- Draw the leveling order history bar below the tree viewport.
+-- Draw the allocating order history bar below the tree viewport.
 -- barVP: { x, y, width, height } of the bar area
 function PassiveTreeViewClass:DrawHistoryBar(build, barVP, inputEvents)
 	local spec = build.spec
@@ -1794,7 +1800,7 @@ function PassiveTreeViewClass:DrawHistoryBar(build, barVP, inputEvents)
 	if #grouped == 0 then
 		SetDrawLayer(nil, 2)
 		SetDrawColor(0.35, 0.35, 0.42)
-		DrawString(barVP.x + m_floor(contentW / 2), barVP.y + m_floor(barVP.height / 2) - 7, "CENTER_X", 12, "VAR", "No leveling order recorded yet")
+		DrawString(barVP.x + m_floor(contentW / 2), barVP.y + m_floor(barVP.height / 2) - 7, "CENTER_X", 12, "VAR", "No allocating order recorded yet")
 		return
 	end
 
