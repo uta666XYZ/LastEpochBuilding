@@ -413,6 +413,20 @@ local options = {
 	{ var = "conditionEnemySlowed", type = "check", label = "Is the enemy Slowed?", apply = function(val, modList, enemyModList)
 		enemyModList:NewMod("Condition:Slowed", "FLAG", true, "Config", { type = "Condition", var = "Effective" })
 	end },
+	{ var = "warMachine237", type = "list", label = "# of WarMachine:", ifCond = "WarMachine237", doNotHighlight = true,
+	  list = { { val = "none", label = "None" }, { val = "237", label = "237" } },
+	  apply = function(val, modList, enemyModList, build)
+		if build and build.configTab then
+			local customControl = build.configTab.varControls["customMods"]
+			if customControl then
+				if val == "237" then
+					customControl:SetPlaceholder("^x66AAFFThank you very much for your support!")
+				else
+					customControl:SetPlaceholder("")
+				end
+			end
+		end
+	end },
 	{ var = "conditionEnemyHitRecently", type = "check", label = "Was the enemy Hit Recently?", apply = function(val, modList, enemyModList)
 		enemyModList:NewMod("Condition:HitRecently", "FLAG", true, "Config", { type = "Condition", var = "Effective" })
 	end },
