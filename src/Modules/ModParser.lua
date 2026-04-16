@@ -220,6 +220,7 @@ local modNameList = {
 	["to shock attackers"] = "ChanceToShockAttackers",
 	-- Defense stats
 	["of damage dealt to mana before health"] = "DamageToManaBeforeHealth",
+	["damage dealt to mana before health"] = "DamageToManaBeforeHealth",
 	["parry chance"] = "ParryChance",
 	["healing effectiveness"] = "HealingEffectiveness",
 	-- On-hit resource gains
@@ -374,6 +375,7 @@ local modTagList = {
 	["while wielding a two handed melee weapon"] = { tagList = { { type = "Condition", var = "UsingTwoHandedWeapon" }, { type = "Condition", var = "UsingMeleeWeapon" } } },
 	["while unarmed"] = { tag = { type = "Condition", var = "Unarmed" } },
 	["while moving"] = { tag = { type = "Condition", var = "Moving" } },
+	["while charging"] = { tag = { type = "Condition", var = "Charging" } },
 	["while channelling"] = { tag = { type = "Condition", var = "Channelling" } },
 	["while leeching"] = { tag = { type = "Condition", var = "Leeching" } },
 	["while frozen"] = { tag = { type = "Condition", var = "Frozen" } },
