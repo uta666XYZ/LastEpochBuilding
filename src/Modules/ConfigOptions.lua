@@ -203,6 +203,9 @@ local options = {
 	{ var = "conditionUsedPotionRecently", type = "check", label = "Used a Potion Recently?", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:UsedPotionRecently", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
+	{ var = "conditionUsingEvade", type = "check", label = "Are you Using Evade?", ifCond = "UsingEvade", apply = function(val, modList, enemyModList)
+		modList:NewMod("Condition:UsingEvade", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
+	end },
 	{ var = "multiplierForgedWeapons", type = "count", label = "# of Forged Weapons:", implyCond = "HaveForgedWeapon", tooltip = "Number of Forged Weapons active (Forge Guard).", apply = function(val, modList, enemyModList)
 		modList:NewMod("Multiplier:ForgedWeapon", "BASE", val, "Config", { type = "Condition", var = "Combat" })
 		modList:NewMod("Condition:HaveForgedWeapon", "FLAG", val >= 1, "Config", { type = "Condition", var = "Combat" })
