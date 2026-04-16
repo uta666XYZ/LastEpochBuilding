@@ -1,4 +1,4 @@
-local c=...c[" 0.5s Delay Before Casting"]={{},""}
+local c=...c[" 0.5s Delay Before Casting"]={{},""}-- behavior flag, not a stat; intentionally uncalculated
 c[" 100% Base Damage -> Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamageConvertToFire",type="BASE",value=100}},""}
 c[" 50% Base Damage -> Fire"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamageConvertToFire",type="BASE",value=50}},""}
 c[" Base Damage -> Cold"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamageConvertToCold",type="BASE",value=100}},""}
