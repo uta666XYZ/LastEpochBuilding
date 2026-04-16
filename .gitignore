@@ -48,6 +48,7 @@ QWEN.md
 .opencode/
 
 # Claude Code internal files
+.claudeignore
 .claude/settings.local.json
 .claude/skills/
 .claude/worktrees/
