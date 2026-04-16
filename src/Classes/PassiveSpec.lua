@@ -64,6 +64,9 @@ function PassiveSpecClass:Init(treeVersion, convert)
 
 	-- Keys are node IDs, values are the replacement node
 	self.hashOverrides = { }
+
+	-- Leveling order history: array of nodeIds, one entry per point allocated (in order)
+	self.history = { }
 end
 
 function PassiveSpecClass:Load(xml, dbFileName)
@@ -459,18 +462,28 @@ function PassiveSpecClass:ResetNodes()
 		end
 	end
 	wipeTable(self.masterySelections)
+	self.history = { }
 end
 
 -- Reset only nodes belonging to the specified mastery index (0=base, 1-3=ascendancy)
 function PassiveSpecClass:ResetMasteryNodes(masteryIndex)
+	local removedIds = { }
 	for id, node in pairs(self.nodes) do
 		if node.mastery == masteryIndex
 			and node.type ~= "ClassStart"
 			and node.type ~= "AscendClassStart" then
 			node.alloc = 0
 			self.allocNodes[id] = nil
+			removedIds[id] = true
 		end
 	end
+	local newHistory = { }
+	for _, hId in ipairs(self.history) do
+		if not removedIds[hId] then
+			t_insert(newHistory, hId)
+		end
+	end
+	self.history = newHistory
 end
 
 -- Allocate the given node, if possible, and all nodes along the path to the node
@@ -484,8 +497,12 @@ function PassiveSpecClass:AllocNode(node, altPath)
 
 	-- Allocate all nodes along the path
 	for _, pathNode in ipairs(altPath or node.path) do
+		local wasAlloc = pathNode.alloc > 0
 		pathNode.alloc = 1
 		self.allocNodes[pathNode.id] = pathNode
+		if not wasAlloc then
+			t_insert(self.history, pathNode.id)
+		end
 	end
 
 	if node.isMultipleChoiceOption then
@@ -503,7 +520,29 @@ function PassiveSpecClass:AllocNode(node, altPath)
 	self:BuildAllDependsAndPaths()
 end
 
+-- Remove all history entries for a given nodeId
+function PassiveSpecClass:RemoveFromHistory(nodeId)
+	local newHistory = { }
+	for _, hId in ipairs(self.history) do
+		if hId ~= nodeId then
+			t_insert(newHistory, hId)
+		end
+	end
+	self.history = newHistory
+end
+
+-- Remove only the last history entry for a given nodeId (used when decrementing a multi-point node)
+function PassiveSpecClass:RemoveLastFromHistory(nodeId)
+	for i = #self.history, 1, -1 do
+		if self.history[i] == nodeId then
+			t_remove(self.history, i)
+			return
+		end
+	end
+end
+
 function PassiveSpecClass:DeallocSingleNode(node)
+	self:RemoveFromHistory(node.id)
 	node.alloc = 0
 	self.allocNodes[node.id] = nil
 end
@@ -867,17 +906,23 @@ function PassiveSpecClass:CreateUndoState()
 	for nodeId in pairs(self.allocNodes) do
 		t_insert(allocNodeIdList, nodeId)
 	end
+	local historyCopy = { }
+	for _, hId in ipairs(self.history) do
+		t_insert(historyCopy, hId)
+	end
 	return {
 		classId = self.curClassId,
 		ascendClassId = self.curAscendClassId,
 		hashList = allocNodeIdList,
 		hashOverrides = self.hashOverrides,
-		treeVersion = self.treeVersion
+		treeVersion = self.treeVersion,
+		history = historyCopy,
 	}
 end
 
 function PassiveSpecClass:RestoreUndoState(state, treeVersion)
 	self:ImportFromNodeList(state.classId, state.ascendClassId, state.abilities, state.hashList, state.hashOverrides, treeVersion or state.treeVersion)
+	self.history = state.history or { }
 	self:SetWindowTitleWithBuildClass()
 end
 
