@@ -259,8 +259,13 @@ end
 
 -- Recalculate dynamic Y positions for edit tab
 function CraftingPopupClass:RecalcEditLayout()
-	local y = 200
 	local LINE_H = 18
+	local implicitCount = self.editItem and #self.editItem.implicitModLines or 0
+	local rarity = self.editItem and self.editItem.rarity
+	local uniqueModCount = (rarity == "UNIQUE" or rarity == "WWUNIQUE" or rarity == "SET")
+		and self.editItem and #self.editItem.explicitModLines or 0
+	local totalDisplayCount = implicitCount + uniqueModCount
+	local y = math.max(200, 126 + totalDisplayCount * LINE_H)
 	local GAP = 4
 
 	self.editY = {}
@@ -294,11 +299,20 @@ function CraftingPopupClass:RecalcEditLayout()
 	local isUniqueIdol     = self:IsUniqueIdol()
 	local isAnyIdol        = self:IsAnyIdol()
 	local isEnchantable    = self:IsEnchantableIdol()
+	local isUniqueItem     = self:IsUniqueItem()
+	local isSetItem        = self:IsSetItem()
 
 	for si, sec in ipairs(sectionOrder) do
 		-- Skip sections that are hidden for this item type
 		local skip = false
 		if isUniqueIdol and sec.label ~= "corruptedLabel" then skip = true end
+		-- Set items: no affix sections
+		if isSetItem then skip = true end
+		-- Unique items (non-idol): skip sealed and primordial
+		if not skip and isUniqueItem
+			and (sec.label == "sealedLabel" or sec.label == "primordialLabel") then
+			skip = true
+		end
 		if isAnyIdol and not isEnchantable
 			and (sec.label == "sealedLabel" or sec.label == "primordialLabel") then
 			skip = true
@@ -579,16 +593,36 @@ function CraftingPopupClass:BuildControls()
 	controls.implicitLabel = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, 15, 100, 0, 14, colorCodes.UNIQUE .. "IMPLICITS")
 	controls.implicitLabel.shown = function() return self_ref.currentTab == "edit" end
 
-	for i = 1, 8 do
+	for i = 1, 20 do
 		local key = "implicit" .. i
 		controls[key] = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, 25, 100 + i * 18, 0, 14, "")
 		controls[key].shown = function()
 			if self_ref.currentTab ~= "edit" or not self_ref.editItem then return false end
-			return self_ref.editItem.implicitModLines[i] ~= nil
+			local item = self_ref.editItem
+			local implicitCount = #item.implicitModLines
+			if i <= implicitCount then return true end
+			local rarity = item.rarity
+			if rarity == "UNIQUE" or rarity == "WWUNIQUE" or rarity == "SET" then
+				local j = i - implicitCount
+				return item.explicitModLines[j] ~= nil
+			end
+			return false
 		end
 		controls[key].label = function()
-			if not self_ref.editItem or not self_ref.editItem.implicitModLines[i] then return "" end
-			return "^7" .. itemLib.formatModLine(self_ref.editItem.implicitModLines[i])
+			if not self_ref.editItem then return "" end
+			local item = self_ref.editItem
+			local implicitCount = #item.implicitModLines
+			if i <= implicitCount then
+				return "^7" .. itemLib.formatModLine(item.implicitModLines[i])
+			end
+			local rarity = item.rarity
+			if rarity == "UNIQUE" or rarity == "WWUNIQUE" or rarity == "SET" then
+				local j = i - implicitCount
+				if item.explicitModLines[j] then
+					return "^7" .. itemLib.formatModLine(item.explicitModLines[j])
+				end
+			end
+			return ""
 		end
 	end
 
@@ -655,6 +689,11 @@ function CraftingPopupClass:BuildControls()
 			if self_ref.currentTab ~= "edit" then return false end
 			-- Unique idols: only show corrupted section
 			if capturedSectionKey ~= "corrupted" and self_ref:IsUniqueIdol() then return false end
+			-- Set items: no affix sections at all
+			if self_ref:IsSetItem() then return false end
+			-- Unique items (non-idol): hide sealed and primordial
+			if (capturedSectionKey == "sealed" or capturedSectionKey == "primordial")
+				and self_ref:IsUniqueItem() then return false end
 			-- Enchanted slots: only for Grand/Large/Ornate/Huge/Adorned non-omen idols
 			if (capturedSectionKey == "sealed" or capturedSectionKey == "primordial")
 				and self_ref:IsAnyIdol() and not self_ref:IsEnchantableIdol() then
@@ -897,6 +936,10 @@ function CraftingPopupClass:BuildControls()
 				if self_ref.affixState[slotKey].modKey ~= nil then return false end
 				-- Unique idols can only have corrupted affix; hide all other slots
 				if slotKey ~= "corrupted" and self_ref:IsUniqueIdol() then return false end
+				-- Set items: no affixes at all
+				if self_ref:IsSetItem() then return false end
+				-- Unique items (non-idol): hide sealed and primordial
+				if (slotKey == "sealed" or slotKey == "primordial") and self_ref:IsUniqueItem() then return false end
 				-- Idols have only 1 prefix and 1 suffix (no prefix2/suffix2)
 				if (slotKey == "prefix2" or slotKey == "suffix2") and self_ref:IsAnyIdol() then return false end
 				-- Enchanted slots only for Grand/Large/Ornate/Huge/Adorned non-omen idols
@@ -1122,10 +1165,9 @@ function CraftingPopupClass:RefreshBaseList()
 				end
 			end
 		end
-		-- For unique/set idols show their mods as sub-rows (idols have no base implicits)
-		if entry.type and entry.type:find("Idol") then
-			local modData = (entry.category == "unique" and entry.uniqueData)
-			             or (entry.category == "set" and entry.setData)
+		-- For unique/set/ww items show their mods as sub-rows
+		if entry.category == "unique" or entry.category == "ww" or entry.category == "set" then
+			local modData = (entry.category == "set" and entry.setData) or entry.uniqueData
 			if modData and modData.mods then
 				for _, modText in ipairs(modData.mods) do
 					local text = cleanImplicitText(modText)
@@ -1639,6 +1681,17 @@ function CraftingPopupClass:IsAnyIdol()
 		and self.editBaseEntry.type
 		and self.editBaseEntry.type:find("Idol")
 		and true or false
+end
+
+-- Returns true when the current edit item is any unique (including WW unique, idol or not)
+function CraftingPopupClass:IsUniqueItem()
+	local cat = self.editBaseEntry and self.editBaseEntry.category
+	return cat == "unique" or cat == "ww"
+end
+
+-- Returns true when the current edit item is a set item
+function CraftingPopupClass:IsSetItem()
+	return self.editBaseEntry and self.editBaseEntry.category == "set"
 end
 
 -- Returns true when the idol is a Heretical variant (enchanted affixes only on heretical)

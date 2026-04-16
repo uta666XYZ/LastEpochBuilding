@@ -1576,17 +1576,17 @@ c["+1 to All Minion Skills"]={{}," All  "}
 c["+1 to All Skills"]={{[1]={flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}},nil}
 c["+1 to All Skills per Complete Set"]={{}," All Skills per Complete Set "}
 c["+1 to All Totem Skills"]={{}," All Totem Skills "}
-c["+1 to Cold Skills"]={{},"  Skills "}
+c["+1 to Cold Skills"]={{[1]={[1]={skillType=4,type="SkillType"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}},"  Skills "}
 c["+1 to Damage Over Time Minion Skills"]={{[1]={[1]={skillType=8192,type="SkillType"},flags=4096,keywordFlags=0,name="Damage",type="BASE",value=1}},nil}
 c["+1 to Damage Over Time Spells"]={{[1]={flags=4096,keywordFlags=256,name="Damage",type="BASE",value=1}},"  s "}
 c["+1 to Dexterity Skills"]={{[1]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=1}},"  Skills "}
 c["+1 to Elemental Skills"]={{},"  Skills "}
 c["+1 to Elemental Spells"]={{},"  s "}
-c["+1 to Fire Skills"]={{},"  Skills "}
+c["+1 to Fire Skills"]={{[1]={[1]={skillType=8,type="SkillType"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}},"  Skills "}
 c["+1 to Fire Spells"]={{},"  s "}
 c["+1 to Flame Ward"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=1}}," Flame  "}
 c["+1 to Glyph of Dominion"]={{},"  "}
-c["+1 to Lightning Skills"]={{},"  Skills "}
+c["+1 to Lightning Skills"]={{[1]={[1]={skillType=2,type="SkillType"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}},"  Skills "}
 c["+1 to Lightning Spells"]={{},"  s "}
 c["+1 to Mage Skills"]={{}," Mage Skills "}
 c["+1 to Mana Strike"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=1}},"  Strike "}
