@@ -127,6 +127,13 @@ local options = {
 	{ var = "conditionStandingOnGlyphOfDominion", type = "check", label = "Standing on Glyph of Dominion?", tooltip = "Check if you are standing on your Glyph of Dominion (Runemaster).\nEnables 'while standing on your Glyph of Dominion' modifiers.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:StandingOnGlyphOfDominion", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
+	{ var = "conditionRecentlyUsedTeleport", type = "check", label = "Recently Used Teleport?", tooltip = "Check if you have cast Teleport within the past 4 seconds (Mage / Spellblade).\nEnables Teleport skill tree nodes that only apply after casting Teleport recently.", apply = function(val, modList, enemyModList)
+		modList:NewMod("Condition:RecentlyUsedTeleport", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
+	end },
+	{ var = "multiplierArcaneShieldStack", type = "count", label = "# of Arcane Shields:", implyCond = "HaveArcaneShield", tooltip = "Number of active Arcane Shield stacks (Mage).\nEnables 'with Arcane Shield' and 'per Arcane Shield' modifiers.", apply = function(val, modList, enemyModList)
+		modList:NewMod("Multiplier:ArcaneShieldStack", "BASE", val, "Config", { type = "Condition", var = "Combat" })
+		modList:NewMod("Condition:HaveArcaneShield", "FLAG", val >= 1, "Config", { type = "Condition", var = "Combat" })
+	end },
 	{ var = "multiplierArcaneMomentumStack", type = "count", label = "Arcane Momentum Stacks:", tooltip = "Number of active Arcane Momentum stacks (Runemaster).\nEach stack grants increased cast speed.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Multiplier:ArcaneMomentumStack", "BASE", val, "Config", { type = "Condition", var = "Combat" })
 	end },
@@ -456,6 +463,9 @@ local options = {
 	{ var = "conditionEnemySlowed", type = "check", label = "Is the enemy Slowed?", tooltip = "The enemy's Movement and Action Speed is reduced. Enable if your build has 'against Slowed enemies' modifiers.", apply = function(val, modList, enemyModList)
 		enemyModList:NewMod("Condition:Slowed", "FLAG", true, "Config", { type = "Condition", var = "Effective" })
 	end },
+	{ var = "conditionEnemyTimeRotted", type = "check", label = "Does the enemy have Time Rot?", tooltip = "The enemy has Time Rot applied. Enables 'to/from Time Rotting enemies' modifiers.\nEnable if your build applies Time Rot and has modifiers for it.", apply = function(val, modList, enemyModList)
+		enemyModList:NewMod("Condition:TimeRotted", "FLAG", true, "Config", { type = "Condition", var = "Effective" })
+	end },
 	{ var = "warMachine237", type = "list", label = "# of WarMachine:", ifCond = "WarMachine237", doNotHighlight = true,
 	  list = { { val = "none", label = "None" }, { val = "237", label = "237" } },
 	  apply = function(val, modList, enemyModList, build)
@@ -492,6 +502,7 @@ local options = {
 		val = math.min(val, 10)
 		enemyModList:NewMod("Multiplier:ShockStack", "BASE", val, "Config", { type = "Condition", var = "Effective" })
 		enemyModList:NewMod("Condition:Shocked", "FLAG", val >= 1, "Config", { type = "Condition", var = "Effective" })
+		enemyModList:NewMod("DamageTaken", "INC", val * 5, "Config", { type = "Condition", var = "Effective" })
 	end },
 	{ var = "multiplierEnemyChillStacks", type = "count", label = "Enemy Chill Stacks:", implyCond = "Chilled", tooltip = "Number of Chill stacks (max 3). Reduces enemy Movement and Action Speed.\nAlso implies the enemy is Chilled.", apply = function(val, modList, enemyModList)
 		val = math.min(val, 3)
