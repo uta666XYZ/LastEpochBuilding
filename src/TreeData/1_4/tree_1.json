@@ -18131,7 +18131,17 @@
         },
         {
           "name": "Runemaster 05c1 Runebolt Fire",
-          "label": "Runebolt",
+          "label": "Runebolt (Fire)",
+          "treeId": "fb8fe"
+        },
+        {
+          "name": "Runemaster 05c2 Runebolt Cold",
+          "label": "Runebolt (Cold)",
+          "treeId": "fb8fe"
+        },
+        {
+          "name": "Runemaster 05c3 Runebolt Lightning",
+          "label": "Runebolt (Lightning)",
           "treeId": "fb8fe"
         },
         {
