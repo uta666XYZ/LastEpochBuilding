@@ -151,18 +151,22 @@ local options = {
 	-- Overloads (Warlock)
 	{ var = "conditionBleedOverload", type = "check", label = "Bleed Overload active?", tooltip = "Warlock: 15% more physical DoT vs bosses and moving enemies.\nRequires Cauldron of Blood (5pt).", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:BleedOverload", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
+		modList:NewMod("Condition:HaveAilmentOverload", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 		modList:NewMod("Multiplier:ActiveOverload", "BASE", 1, "Config", { type = "Condition", var = "Combat" })
 	end },
 	{ var = "conditionIgniteOverload", type = "check", label = "Ignite Overload active?", tooltip = "Warlock: 1% more fire damage to ignited enemies per 20% global ignite chance for fire skills.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:IgniteOverload", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
+		modList:NewMod("Condition:HaveAilmentOverload", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 		modList:NewMod("Multiplier:ActiveOverload", "BASE", 1, "Config", { type = "Condition", var = "Combat" })
 	end },
 	{ var = "conditionPoisonOverload", type = "check", label = "Poison Overload active?", tooltip = "Warlock: +4% Poison Penetration per stack of poison on the target, up to 100 stacks.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:PoisonOverload", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
+		modList:NewMod("Condition:HaveAilmentOverload", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 		modList:NewMod("Multiplier:ActiveOverload", "BASE", 1, "Config", { type = "Condition", var = "Combat" })
 	end },
 	{ var = "conditionDamnedOverload", type = "check", label = "Damned Overload active?", tooltip = "Warlock: 2% more damned damage per 1% missing health on you\nand 1% more damned damage per 2% missing health on target.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:DamnedOverload", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
+		modList:NewMod("Condition:HaveAilmentOverload", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 		modList:NewMod("Multiplier:ActiveOverload", "BASE", 1, "Config", { type = "Condition", var = "Combat" })
 	end },
 	-- Positive buff stacks
