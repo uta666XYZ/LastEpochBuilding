@@ -8880,7 +8880,7 @@
     },
     "ch4bo-22": {
       "skill": "ch4bo-22",
-      "name": "Sudden Putrescence ",
+      "name": "Sudden Putrescence",
       "icon": "zombie_poison_bite",
       "x": 512.4,
       "y": 134.8,
@@ -9026,7 +9026,7 @@
     },
     "ch4bo-27": {
       "skill": "ch4bo-27",
-      "name": "Seed of Chaos ",
+      "name": "Seed of Chaos",
       "icon": "chaos-bolts-sequence-hex",
       "x": 502.7,
       "y": 285.5,
@@ -23396,7 +23396,7 @@
     },
     "svz81-28": {
       "skill": "svz81-28",
-      "name": "Ravenous ",
+      "name": "Ravenous",
       "icon": "zombie_bite",
       "x": 2,
       "y": -195,
