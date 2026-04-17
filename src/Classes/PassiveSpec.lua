@@ -462,16 +462,24 @@ function PassiveSpecClass:IsClassConnected(classId)
 	return false
 end
 
--- Clear the allocated status of all non-class-start nodes
+-- Clear the allocated status of all passive tree nodes (IDs start with uppercase class prefix)
+-- Skill tree nodes (lowercase IDs) and their history entries are preserved
 function PassiveSpecClass:ResetNodes()
 	for id, node in pairs(self.nodes) do
-		if node.type ~= "ClassStart" and node.type ~= "AscendClassStart" then
+		if id:sub(1,1):match("%u") and node.type ~= "ClassStart" and node.type ~= "AscendClassStart" then
 			node.alloc = 0
 			self.allocNodes[id] = nil
 		end
 	end
 	wipeTable(self.masterySelections)
-	self.history = { }
+	-- Preserve skill tree history (entries with lowercase IDs)
+	local newHistory = { }
+	for _, hId in ipairs(self.history) do
+		if hId:sub(1,1):match("%u") == nil then
+			t_insert(newHistory, hId)
+		end
+	end
+	self.history = newHistory
 end
 
 -- Reset only nodes belonging to the specified mastery index (0=base, 1-3=ascendancy)
