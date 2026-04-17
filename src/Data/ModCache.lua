@@ -2790,7 +2790,7 @@ c["+3 Minion Melee Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="Minion
 c["+3 Minion Spell Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="Damage",type="BASE",value=3}}}},nil}
 c["+3 Minion Throwing Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=1024,name="Damage",type="BASE",value=3}}}},nil}
 c["+3 Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="BASE",value=3}},nil}
-c["+3 Potion Slots if you have at least 900 Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=3}}," Potion Slots if you have at least 900  "}
+c["+3 Potion Slots if you have at least 900 Mana"]={nil," Potion Slots if you have at least 900 Mana "}
 c["+3 Projectiles with Spirit Thorns"]={{[1]={[1]={skillName="Spirit Thorns",type="SkillName"},flags=0,keywordFlags=0,name="ProjectileCount",type="BASE",value=3}},"  with  "}
 c["+3 Spell Cold Damage"]={{[1]={flags=0,keywordFlags=256,name="ColdDamage",type="BASE",value=3}},nil}
 c["+3 Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=3}},nil}
@@ -5655,8 +5655,8 @@ c["10% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",t
 c["10% increased area for Lightning Area Skills"]={{[1]={flags=0,keywordFlags=2,name="AreaOfEffect",type="INC",value=10}},"  for  Area Skills "}
 c["10% less Damage Taken for Totems"]={{[1]={flags=0,keywordFlags=0,name="DamageTaken",type="MORE",value=-10}},"  for Totems "}
 c["10% less Damage Taken from Bosses and Rare Enemies while below half mana"]={{[1]={flags=0,keywordFlags=0,name="DamageTaken",type="MORE",value=-10}},"  from Bosses and Rare Enemies while below half mana "}
-c["10% less Damage Taken if you have at least 1000 Ward"]={{[1]={flags=0,keywordFlags=0,name="DamageTaken",type="MORE",value=-10}},"  if you have at least 1000 Ward "}
-c["10% less Damage Taken if you have at least 180 Total Attributes"]={{[1]={flags=0,keywordFlags=0,name="DamageTaken",type="MORE",value=-10}},"  if you have at least 180 Total Attributes "}
+c["10% less Damage Taken if you have at least 1000 Ward"]={{[1]={[1]={stat="Ward",threshold=1000,type="StatThreshold"},flags=0,keywordFlags=0,name="DamageTaken",type="MORE",value=-10}},nil}
+c["10% less Damage Taken if you have at least 180 Total Attributes"]={{[1]={[1]={stat="TotalAttr",threshold=180,type="StatThreshold"},flags=0,keywordFlags=0,name="DamageTaken",type="MORE",value=-10}},nil}
 c["10% less Damage Taken while Leeching"]={{[1]={[1]={type="Condition",var="Leeching"},flags=0,keywordFlags=0,name="DamageTaken",type="MORE",value=-10}},nil}
 c["10% less Fire Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="FireDamageTaken",type="MORE",value=-10}},nil}
 c["10% less Necrotic Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamageTaken",type="MORE",value=-10}},nil}
