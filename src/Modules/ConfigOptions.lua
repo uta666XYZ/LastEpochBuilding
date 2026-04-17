@@ -103,6 +103,18 @@ local options = {
 	{ var = "conditionTransformed", type = "check", label = "Are you Transformed?", tooltip = "Check if the player is Transformed (Werebear, Spriggan Form, etc.).\nEnables 'while transformed' modifiers.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:Transformed", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
+	{ var = "conditionInWerebearForm", type = "check", label = "Are you in Werebear Form?", ifCond = "InWerebearForm", implyCond = "Transformed", tooltip = "This also implies that you are Transformed.", apply = function(val, modList, enemyModList)
+		modList:NewMod("Condition:InWerebearForm", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
+		modList:NewMod("Condition:Transformed", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
+	end },
+	{ var = "conditionInSprigganForm", type = "check", label = "Are you in Spriggan Form?", ifCond = "InSprigganForm", implyCond = "Transformed", tooltip = "This also implies that you are Transformed.", apply = function(val, modList, enemyModList)
+		modList:NewMod("Condition:InSprigganForm", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
+		modList:NewMod("Condition:Transformed", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
+	end },
+	{ var = "conditionInSwarmbladeForm", type = "check", label = "Are you in Swarmblade Form?", ifCond = "InSwarmbladeForm", implyCond = "Transformed", tooltip = "This also implies that you are Transformed.", apply = function(val, modList, enemyModList)
+		modList:NewMod("Condition:InSwarmbladeForm", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
+		modList:NewMod("Condition:Transformed", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
+	end },
 	{ var = "conditionHighHealth", type = "check", label = "Are you at High Health?", tooltip = "Check if you are at High Health (typically 50%+ of max health).\nEnables 'while at high health' modifiers.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:HighHealth", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
