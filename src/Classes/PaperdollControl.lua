@@ -40,6 +40,20 @@ local GHOST_SPRITES = {
     relic   = "Assets/paperdoll/Soul_Gambler_Relic.png",
 }
 
+-- Weapon 2 ghost key: weapon types use "weapon" sprite, off-hand uses "offhand"
+local WEAPON2_OFFHAND_TYPES = { ["Shield"] = true, ["Quiver"] = true, ["Off-Hand Catalyst"] = true }
+
+local function getGhostKey(def, itemsTab)
+    if def.slot ~= "Weapon 2" then return def.ghost end
+    local slot = itemsTab.slots and itemsTab.slots["Weapon 2"]
+    if not slot then return def.ghost end
+    local item = itemsTab.items and itemsTab.items[slot.selItemId]
+    if item and item.type and not WEAPON2_OFFHAND_TYPES[item.type] and item.base and item.base.weapon then
+        return "weapon"
+    end
+    return "offhand"
+end
+
 local PANEL_W   = 288
 local TITLE_H   = 22  -- title bar height
 local PANEL_H   = 390 + TITLE_H
@@ -143,8 +157,8 @@ function PaperdollControlClass:Draw(viewPort)
 
         drawSlotFrame(sx, sy, def.w, def.h, hov)
 
-        -- Ghost sprite centered in slot
-        local ghostHandle = self.imgHandles[def.ghost]
+        -- Ghost sprite centered in slot (Weapon 2 switches based on equipped type)
+        local ghostHandle = self.imgHandles[getGhostKey(def, self.itemsTab)]
         if ghostHandle and ghostHandle:IsValid() then
             local gw, gh = ghostHandle:ImageSize()
             if gw > 0 and gh > 0 then
