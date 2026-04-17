@@ -64,16 +64,16 @@ local options = {
 	{ var = "conditionLowLife", type = "check", label = "Are you always on Low ^xE05030Life?", ifCond = "LowLife", tooltip = LowLifeTooltip, apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:LowLife", "FLAG", true, "Config")
 	end },
-	{ var = "conditionFullMana", type = "check", label = "Are you always on Full ^x7070FFMana?", ifCond = "FullMana", apply = function(val, modList, enemyModList)
+	{ var = "conditionFullMana", type = "check", label = "Are you always on Full ^x7070FFMana?", ifCond = "FullMana", tooltip = "Enable only if your build maintains full mana at all times (e.g., zero-cost skills or high mana regen).\nLeave unchecked for typical combat where mana is spent regularly.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:FullMana", "FLAG", true, "Config")
 	end },
 	{ var = "conditionLowMana", type = "check", label = "Are you always on Low ^x7070FFMana?", ifCond = "LowMana", tooltip = "You will automatically be considered to be on Low ^x7070FFMana ^7if you have at least 50% ^x7070FFmana ^7reserved,\nbut you can use this option to force it if necessary.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:LowMana", "FLAG", true, "Config")
 	end },
-	{ var = "minionsConditionFullLife", type = "check", label = "Are your Minions always on Full ^xE05030Life?", ifMinionCond = "FullLife", apply = function(val, modList, enemyModList)
+	{ var = "minionsConditionFullLife", type = "check", label = "Are your Minions always on Full ^xE05030Life?", ifMinionCond = "FullLife", tooltip = "Enables 'while at full life' modifiers for minions.\nLeave unchecked for realistic estimates unless your minions never take damage.", apply = function(val, modList, enemyModList)
 		modList:NewMod("MinionModifier", "LIST", { mod = modLib.createMod("Condition:FullLife", "FLAG", true, "Config") }, "Config")
 	end },
-	{ var = "minionsConditionCreatedRecently", type = "check", label = "Have your Minions been created Recently?", ifCond = "MinionsCreatedRecently", apply = function(val, modList, enemyModList)
+	{ var = "minionsConditionCreatedRecently", type = "check", label = "Have your Minions been created Recently?", ifCond = "MinionsCreatedRecently", tooltip = "Enable if your minions are regularly re-summoned during combat.\nFor boss DPS estimates, leave unchecked unless you refresh minions frequently.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:MinionsCreatedRecently", "FLAG", true, "Config")
 	end },
 	{ var = "lifeRegenMode", type = "list", label = "^xE05030Life ^7regen calculation mode:", ifCond = { "LifeRegenBurstAvg", "LifeRegenBurstFull" }, tooltip = "Controls how ^xE05030life ^7regeneration is calculated:\n\tMinimum: does not include burst regen\n\tAverage: includes burst regen, averaged based on uptime\n\tBurst: includes full burst regen", list = {{val="MIN",label="Minimum"},{val="AVERAGE",label="Average"},{val="FULL",label="Burst"}}, apply = function(val, modList, enemyModList)
@@ -118,7 +118,7 @@ local options = {
 	{ var = "conditionHighHealth", type = "check", label = "Are you at High Health?", tooltip = "Check if you are at High Health (typically 50%+ of max health).\nEnables 'while at high health' modifiers.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:HighHealth", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
-	{ var = "conditionHaveWard", type = "check", label = "Do you have Ward?", apply = function(val, modList, enemyModList)
+	{ var = "conditionHaveWard", type = "check", label = "Do you have Ward?", tooltip = "Enable if your build generates Ward during combat.\nWard is a temporary shield that absorbs damage before Health. Enables 'while you have Ward' modifiers.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:HaveWard", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
 	{ var = "conditionHaveLightningAegis", type = "check", label = "Do you have Lightning Aegis?", tooltip = "Check if you have the Lightning Aegis buff active (Runemaster).\nEnables 'while you have lightning aegis' modifiers.", apply = function(val, modList, enemyModList)
@@ -213,13 +213,13 @@ local options = {
 	{ var = "enemyMissingHealthPercent", type = "count", label = "Enemy Missing Health %:", tooltip = "Percentage of the enemy's maximum health that is missing.\nUsed for Damned Overload calculation (1% more damned per 2% missing).", apply = function(val, modList, enemyModList)
 		enemyModList:NewMod("Multiplier:MissingHealthPercent", "BASE", val, "Config", { type = "Condition", var = "Effective" })
 	end },
-	{ var = "multiplierNearbyCorpses", type = "count", label = "# of Nearby Corpses:", apply = function(val, modList, enemyModList)
+	{ var = "multiplierNearbyCorpses", type = "count", label = "# of Nearby Corpses:", tooltip = "Number of corpses near you. Used for 'per nearby corpse' modifiers (Necromancer, Acolyte).\nSet a realistic value for your typical combat scenario.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Multiplier:NearbyCorpse", "BASE", val, "Config", { type = "Condition", var = "Combat" })
 	end },
-	{ var = "conditionUsedPotionRecently", type = "check", label = "Used a Potion Recently?", apply = function(val, modList, enemyModList)
+	{ var = "conditionUsedPotionRecently", type = "check", label = "Used a Potion Recently?", tooltip = "Enable if you regularly use potions during combat to maintain 'after using a potion' modifiers.\nFor boss fights with limited potion uses, consider leaving unchecked.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:UsedPotionRecently", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
-	{ var = "conditionUsingEvade", type = "check", label = "Are you Using Evade?", ifCond = "UsingEvade", apply = function(val, modList, enemyModList)
+	{ var = "conditionUsingEvade", type = "check", label = "Are you Using Evade?", ifCond = "UsingEvade", tooltip = "Enable only if your build has modifiers that specifically apply while actively using the Evade action.\nNot the same as having Dodge Chance.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:UsingEvade", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
 	{ var = "multiplierForgedWeapons", type = "count", label = "# of Forged Weapons:", implyCond = "HaveForgedWeapon", tooltip = "Number of Forged Weapons active (Forge Guard).", apply = function(val, modList, enemyModList)
@@ -263,41 +263,41 @@ local options = {
 	{ var = "multiplierSummonedMinion", type = "count", label = "# of Summoned Minions:", ifMult = "SummonedMinion", apply = function(val, modList, enemyModList)
 		modList:NewMod("Multiplier:SummonedMinion", "BASE", val, "Config", { type = "Condition", var = "Combat" })
 	end },
-	{ var = "conditionBlinded", type = "check", label = "Are you Blinded?", ifCond = "Blinded", apply = function(val, modList, enemyModList)
+	{ var = "conditionBlinded", type = "check", label = "Are you Blinded?", ifCond = "Blinded", tooltip = "You are Blinded by an enemy debuff.\nOnly enable if your build has modifiers that specifically benefit from being Blinded.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:Blinded", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
-	{ var = "conditionIgnited", type = "check", label = "Are you ^xB97123Ignited?", ifCond = "Ignited", implyCond = "Burning", apply = function(val, modList, enemyModList)
+	{ var = "conditionIgnited", type = "check", label = "Are you ^xB97123Ignited?", ifCond = "Ignited", implyCond = "Burning", tooltip = "You are on fire. Only enable if your build has 'while Ignited' modifiers or benefits from being Ignited.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:Ignited", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
-	{ var = "conditionChilled", type = "check", label = "Are you ^x3F6DB3Chilled?", apply = function(val, modList, enemyModList)
+	{ var = "conditionChilled", type = "check", label = "Are you ^x3F6DB3Chilled?", tooltip = "You are Chilled (Action Speed reduced). Only enable if your build has 'while Chilled' modifiers.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:Chilled", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
 	{ var = "conditionChilledEffect", type = "count", label = "Effect of ^x3F6DB3Chill:", ifOption = "conditionChilled", apply = function(val, modList, enemyModList)
 		modList:NewMod("ChillVal", "OVERRIDE", val, "Chill", { type = "Condition", var = "Chilled" })
 	end },
-	{ var = "conditionFrozen", type = "check", label = "Are you ^x3F6DB3Frozen?", ifCond = "Frozen", apply = function(val, modList, enemyModList)
+	{ var = "conditionFrozen", type = "check", label = "Are you ^x3F6DB3Frozen?", ifCond = "Frozen", tooltip = "You are Frozen (unable to act). Only enable if your build has 'while Frozen' modifiers.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:Frozen", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
 	{ var = "conditionShocked", type = "check", label = "Are you ^xADAA47Shocked?", ifCond = "Shocked", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:Shocked", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 		modList:NewMod("DamageTaken", "INC", 15, "Shock", { type = "Condition", var = "Shocked" })
 	end },
-	{ var = "conditionBleeding", type = "check", label = "Are you Bleeding?", ifCond = "Bleeding", apply = function(val, modList, enemyModList)
+	{ var = "conditionBleeding", type = "check", label = "Are you Bleeding?", ifCond = "Bleeding", tooltip = "You are Bleeding. Only enable if your build has 'while Bleeding' modifiers.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:Bleeding", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
-	{ var = "conditionPoisoned", type = "check", label = "Are you Poisoned?", ifCond = "Poisoned", apply = function(val, modList, enemyModList)
+	{ var = "conditionPoisoned", type = "check", label = "Are you Poisoned?", ifCond = "Poisoned", tooltip = "You are Poisoned. Only enable if your build has 'while Poisoned' modifiers.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:Poisoned", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
 	{ var = "multiplierPoisonOnSelf", type = "count", label = "# of Poison on You:", ifMult = "PoisonStack", implyCond = "Poisoned", tooltip = "This also implies that you are Poisoned.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Multiplier:PoisonStack", "BASE", val, "Config", { type = "Condition", var = "Effective" })
 	end },
-	{ var = "conditionBlocking", type = "check", label = "Are you Blocking?", ifCond = "Blocking", apply = function(val, modList, enemyModList)
+	{ var = "conditionBlocking", type = "check", label = "Are you Blocking?", ifCond = "Blocking", tooltip = "You are actively blocking with a shield. Enable for high-block builds with 'while Blocking' modifiers.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:Blocking", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
-	{ var = "conditionNearEnemy", type = "check", label = "Are you Near an Enemy?", ifCond = "NearEnemy", apply = function(val, modList, enemyModList)
+	{ var = "conditionNearEnemy", type = "check", label = "Are you Near an Enemy?", ifCond = "NearEnemy", tooltip = "You are in close proximity to an enemy. Enable for melee builds or builds that fight at point-blank range.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:NearEnemy", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
-	{ var = "multiplierNearbyEnemies", type = "count", label = "# of nearby Enemies:", ifMult = "NearbyEnemies", apply = function(val, modList, enemyModList)
+	{ var = "multiplierNearbyEnemies", type = "count", label = "# of nearby Enemies:", ifMult = "NearbyEnemies", tooltip = "Number of enemies near you. Used for 'per nearby enemy' modifiers.\nFor single-target boss DPS, set to 1. For AoE clear evaluation, set higher.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Multiplier:NearbyEnemies", "BASE", val, "Config", { type = "Condition", var = "Combat" })
 		modList:NewMod("Condition:OnlyOneNearbyEnemy", "FLAG", val == 1, "Config", { type = "Condition", var = "Combat" })
 	end },
@@ -328,40 +328,40 @@ local options = {
 	{ var = "conditionHitRecentlyWithWeapon", type = "check", label = "Have you Hit Recently with Your Weapon?", ifCond = "HitRecentlyWithWeapon", tooltip = "This also implies that you have Hit Recently.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:HitRecentlyWithWeapon", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
-	{ var = "conditionKilledRecently", type = "check", label = "Have you Killed Recently?", ifCond = "KilledRecently", apply = function(val, modList, enemyModList)
+	{ var = "conditionKilledRecently", type = "check", label = "Have you Killed Recently?", ifCond = "KilledRecently", tooltip = "You killed an enemy in the last 4 seconds.\nFor accurate DPS vs bosses, leave unchecked — kills don't happen during a boss fight.\nEnable only when evaluating clear speed or trash mob scenarios.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:KilledRecently", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
-	{ var = "multiplierKilledRecently", type = "count", label = "# of Enemies Killed Recently:", ifMult = "EnemyKilledRecently", implyCond = "KilledRecently", tooltip = "This also implies that you have Killed Recently.", apply = function(val, modList, enemyModList)
+	{ var = "multiplierKilledRecently", type = "count", label = "# of Enemies Killed Recently:", ifMult = "EnemyKilledRecently", implyCond = "KilledRecently", tooltip = "Number of enemies killed in the last 4 seconds. Also implies Killed Recently.\nFor accurate boss DPS, leave at 0. Set higher only for clear speed evaluation.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Multiplier:EnemyKilledRecently", "BASE", val, "Config", { type = "Condition", var = "Combat" })
 		modList:NewMod("Condition:KilledRecently", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
 	{ var = "conditionKilledLast3Seconds", type = "check", label = "Have you Killed in the last 3 Seconds?", ifCond = "KilledLast3Seconds", implyCond = "KilledRecently", tooltip = "This also implies that you have Killed Recently.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:KilledLast3Seconds", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
-	{ var = "conditionMinionsKilledRecently", type = "check", label = "Have your Minions Killed Recently?", ifCond = "MinionsKilledRecently", apply = function(val, modList, enemyModList)
+	{ var = "conditionMinionsKilledRecently", type = "check", label = "Have your Minions Killed Recently?", ifCond = "MinionsKilledRecently", tooltip = "Your minions killed an enemy in the last 4 seconds.\nFor accurate boss DPS, leave unchecked. Enable only for trash clear or AoE evaluation.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:MinionsKilledRecently", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
-	{ var = "conditionMinionsDiedRecently", type = "check", label = "Has a Minion Died Recently?", ifCond = "MinionsDiedRecently", apply = function(val, modList, enemyModList)
+	{ var = "conditionMinionsDiedRecently", type = "check", label = "Has a Minion Died Recently?", ifCond = "MinionsDiedRecently", tooltip = "One of your minions died in the last 4 seconds.\nEnable only if your build specifically benefits when minions die (e.g., on-death triggers).", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:MinionsDiedRecently", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
 	{ var = "multiplierMinionsKilledRecently", type = "count", label = "# of Enemies Killed by Minions Recently:", ifMult = "EnemyKilledByMinionsRecently", implyCond = "MinionsKilledRecently", tooltip = "This also implies that your Minions have Killed Recently.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Multiplier:EnemyKilledByMinionsRecently", "BASE", val, "Config", { type = "Condition", var = "Combat" })
 		modList:NewMod("Condition:MinionsKilledRecently", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
-	{ var = "multiplierManaSpentRecently", type = "count", label = "# of ^x7070FFMana ^7spent Recently:", ifMult = "ManaSpentRecently", apply = function(val, modList, enemyModList)
+	{ var = "multiplierManaSpentRecently", type = "count", label = "# of ^x7070FFMana ^7spent Recently:", ifMult = "ManaSpentRecently", tooltip = "Total mana spent in the last 4 seconds.\nEstimate: your skill's mana cost multiplied by casts per 4 seconds.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Multiplier:ManaSpentRecently", "BASE", val, "Config", { type = "Condition", var = "Combat" })
 	end },
-	{ var = "conditionBeenHitRecently", type = "check", label = "Have you been Hit Recently?", ifCond = "BeenHitRecently", apply = function(val, modList, enemyModList)
+	{ var = "conditionBeenHitRecently", type = "check", label = "Have you been Hit Recently?", ifCond = "BeenHitRecently", tooltip = "You were hit by an enemy in the last 4 seconds.\nFor boss fights, you are typically being hit — enable for realistic defensive evaluation.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:BeenHitRecently", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
 	{ var = "multiplierBeenHitRecently", type = "count", label = "# of times you have been Hit Recently:", ifMult = "BeenHitRecently", apply = function(val, modList, enemyModList)
 		modList:NewMod("Multiplier:BeenHitRecently", "BASE", val, "Config", { type = "Condition", var = "Combat" })
 		modList:NewMod("Condition:BeenHitRecently", "FLAG", 1 <= val, "Config", { type = "Condition", var = "Combat" })
 	end },
-	{ var = "conditionBeenCritRecently", type = "check", label = "Have you been Crit Recently?", ifCond = "BeenCritRecently", apply = function(val, modList, enemyModList)
+	{ var = "conditionBeenCritRecently", type = "check", label = "Have you been Crit Recently?", ifCond = "BeenCritRecently", tooltip = "You were critically hit by an enemy in the last 4 seconds.\nEnable only if your build has modifiers that activate on being critically hit.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:BeenCritRecently", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
-	{ var = "conditionBlockedRecently", type = "check", label = "Have you Blocked Recently?", ifCond = "BlockedRecently", apply = function(val, modList, enemyModList)
+	{ var = "conditionBlockedRecently", type = "check", label = "Have you Blocked Recently?", ifCond = "BlockedRecently", tooltip = "You blocked an incoming hit in the last 4 seconds.\nEnable for shield builds with 'after blocking' modifiers.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:BlockedRecently", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
 	{ var = "conditionBlockedAttackRecently", type = "check", label = "Have you Blocked an Attack Recently?", ifCond = "BlockedAttackRecently", implyCond = "BlockedRecently", tooltip = "This also implies that you have Blocked Recently.", apply = function(val, modList, enemyModList)
@@ -372,10 +372,10 @@ local options = {
 		modList:NewMod("Condition:BlockedSpellRecently", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 		modList:NewMod("Condition:BlockedRecently", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
-	{ var = "conditionUsedSkillRecently", type = "check", label = "Have you used a Skill Recently?", ifCond = "UsedSkillRecently", apply = function(val, modList, enemyModList)
+	{ var = "conditionUsedSkillRecently", type = "check", label = "Have you used a Skill Recently?", ifCond = "UsedSkillRecently", tooltip = "You used any skill in the last 4 seconds.\nFor most active builds this is always true in combat — enable freely if your build has these modifiers.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:UsedSkillRecently", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
-	{ var = "multiplierSkillUsedRecently", type = "count", label = "# of Skills Used Recently:", ifMult = "SkillUsedRecently", implyCond = "UsedSkillRecently", apply = function(val, modList, enemyModList)
+	{ var = "multiplierSkillUsedRecently", type = "count", label = "# of Skills Used Recently:", ifMult = "SkillUsedRecently", implyCond = "UsedSkillRecently", tooltip = "Number of skill uses in the last 4 seconds. Also implies Used Skill Recently.\nEstimate based on your cast rate × 4 seconds.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Multiplier:SkillUsedRecently", "BASE", val, "Config", { type = "Condition", var = "Combat" })
 		modList:NewMod("Condition:UsedSkillRecently", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
@@ -387,50 +387,50 @@ local options = {
 		modList:NewMod("Condition:CastSpellRecently", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 		modList:NewMod("Condition:UsedSkillRecently", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
-	{ var = "conditionStunnedEnemyRecently", type = "check", label = "Have you Stunned an Enemy Recently?", ifCond = "StunnedEnemyRecently", apply = function(val, modList, enemyModList)
+	{ var = "conditionStunnedEnemyRecently", type = "check", label = "Have you Stunned an Enemy Recently?", ifCond = "StunnedEnemyRecently", tooltip = "You stunned an enemy in the last 4 seconds.\nEnable only if your build has modifiers that trigger after stunning an enemy.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:StunnedEnemyRecently", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
-	{ var = "conditionEchoedRecently", type = "check", label = "Have you Echoed Recently?", ifCond = "EchoedRecently", apply = function(val, modList, enemyModList)
+	{ var = "conditionEchoedRecently", type = "check", label = "Have you Echoed Recently?", ifCond = "EchoedRecently", tooltip = "A skill was echoed (Shaman) in the last 4 seconds.\nEnable if Echo is a regular part of your skill rotation.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:EchoedRecently", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
-	{ var = "conditionDirectlyCastColdSpellRecently", type = "check", label = "Have you Directly Cast a Cold Spell Recently?", ifCond = "DirectlyCastColdSpellRecently", apply = function(val, modList, enemyModList)
+	{ var = "conditionDirectlyCastColdSpellRecently", type = "check", label = "Have you Directly Cast a Cold Spell Recently?", ifCond = "DirectlyCastColdSpellRecently", tooltip = "You directly cast a Cold spell in the last 4 seconds (not via trigger or echo).\nEnable if Cold spells are in your regular skill rotation.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:DirectlyCastColdSpellRecently", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
-	{ var = "conditionDirectlyCastPhysSpellRecently", type = "check", label = "Have you Directly Cast a Physical Spell Recently?", ifCond = "DirectlyCastPhysSpellRecently", apply = function(val, modList, enemyModList)
+	{ var = "conditionDirectlyCastPhysSpellRecently", type = "check", label = "Have you Directly Cast a Physical Spell Recently?", ifCond = "DirectlyCastPhysSpellRecently", tooltip = "You directly cast a Physical spell in the last 4 seconds (not via trigger or echo).\nEnable if Physical spells are in your regular skill rotation.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:DirectlyCastPhysSpellRecently", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
-	{ var = "conditionCastDevouringOrbRecently", type = "check", label = "Have you Cast Devouring Orb Recently?", ifCond = "CastDevouringOrbRecently", apply = function(val, modList, enemyModList)
+	{ var = "conditionCastDevouringOrbRecently", type = "check", label = "Have you Cast Devouring Orb Recently?", ifCond = "CastDevouringOrbRecently", tooltip = "You cast Devouring Orb in the last 4 seconds.\nEnable if Devouring Orb is part of your regular skill rotation.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:CastDevouringOrbRecently", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
-	{ var = "multiplierMeteorCastRecently", type = "count", label = "# of Meteors Cast Recently (max 18):", ifMult = "MeteorCastRecently", apply = function(val, modList, enemyModList)
+	{ var = "multiplierMeteorCastRecently", type = "count", label = "# of Meteors Cast Recently (max 18):", ifMult = "MeteorCastRecently", tooltip = "Meteors cast in the last 4 seconds (max 18). Used for 'per recent meteor' modifiers (Sorcerer).\nEstimate: your Meteor cast rate × 4 seconds.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Multiplier:MeteorCastRecently", "BASE", val, "Config", { type = "Condition", var = "Combat" })
 	end },
 	-- Section: Effective DPS options
 	{ section = "For Effective DPS", col = 1 },
 	{ var = "meleeDistance", type = "count", label = "Melee distance to enemy:", ifTagType = "MeleeProximity", ifFlag = "melee" },
 	{ var = "projectileDistance", type = "count", label = "Projectile travel distance:", ifTagType = "DistanceRamp", ifFlag = "projectile" },
-	{ var = "conditionAtCloseRange", type = "check", label = "Is the enemy at Close Range?", ifCond = "AtCloseRange", apply = function(val, modList, enemyModList)
+	{ var = "conditionAtCloseRange", type = "check", label = "Is the enemy at Close Range?", ifCond = "AtCloseRange", tooltip = "The enemy is within close range (melee or point-blank). Enable for melee builds or builds that fight at close quarters.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:AtCloseRange", "FLAG", true, "Config", { type = "Condition", var = "Effective" })
 	end },
-	{ var = "conditionEnemyMoving", type = "check", label = "Is the enemy Moving?", ifMod = "BleedChance", apply = function(val, modList, enemyModList)
+	{ var = "conditionEnemyMoving", type = "check", label = "Is the enemy Moving?", ifMod = "BleedChance", tooltip = "The enemy is moving. Required for Bleed application and 'against moving enemies' modifiers.\nEnable when fighting mobile enemies or adds.", apply = function(val, modList, enemyModList)
 		enemyModList:NewMod("Condition:Moving", "FLAG", true, "Config", { type = "Condition", var = "Effective" })
 	end },
-	{ var = "conditionEnemyFullLife", type = "check", label = "Is the enemy on Full ^xE05030Life?", ifEnemyCond = "FullLife", apply = function(val, modList, enemyModList)
+	{ var = "conditionEnemyFullLife", type = "check", label = "Is the enemy on Full ^xE05030Life?", ifEnemyCond = "FullLife", tooltip = "The enemy is at full health.\nFor realistic sustained DPS, leave unchecked — most combat occurs below full life.\nEnable only to evaluate opener burst or 'against full life' specific modifiers.", apply = function(val, modList, enemyModList)
 		enemyModList:NewMod("Condition:FullLife", "FLAG", true, "Config", { type = "Condition", var = "Effective" })
 	end },
-	{ var = "conditionEnemyLowLife", type = "check", label = "Is the enemy on Low ^xE05030Life?", ifEnemyCond = "LowLife", apply = function(val, modList, enemyModList)
+	{ var = "conditionEnemyLowLife", type = "check", label = "Is the enemy on Low ^xE05030Life?", ifEnemyCond = "LowLife", tooltip = "The enemy is below 35% health.\nEnable only to evaluate execute-range burst damage. Leave unchecked for average sustained DPS.", apply = function(val, modList, enemyModList)
 		enemyModList:NewMod("Condition:LowLife", "FLAG", true, "Config", { type = "Condition", var = "Effective" })
 	end },
-	{ var = "conditionEnemyStunned", type = "check", label = "Is the enemy Stunned?", ifEnemyCond = "Stunned", apply = function(val, modList, enemyModList)
+	{ var = "conditionEnemyStunned", type = "check", label = "Is the enemy Stunned?", ifEnemyCond = "Stunned", tooltip = "The enemy is Stunned (briefly unable to act). Enable only if your build has 'against Stunned enemies' modifiers.", apply = function(val, modList, enemyModList)
 		enemyModList:NewMod("Condition:Stunned", "FLAG", true, "Config", { type = "Condition", var = "Effective" })
 	end },
-	{ var = "conditionEnemyBleeding", type = "check", label = "Is the enemy Bleeding?", ifEnemyCond = "Bleeding", apply = function(val, modList, enemyModList)
+	{ var = "conditionEnemyBleeding", type = "check", label = "Is the enemy Bleeding?", ifEnemyCond = "Bleeding", tooltip = "The enemy is Bleeding. Enables Bleed DoT and 'against Bleeding enemies' modifiers.\nEnable if your build applies and benefits from Bleed.", apply = function(val, modList, enemyModList)
 		enemyModList:NewMod("Condition:Bleeding", "FLAG", true, "Config", { type = "Condition", var = "Effective" })
 	end },
-	{ var = "conditionEnemyPoisoned", type = "check", label = "Is the enemy Poisoned?", ifEnemyCond = "Poisoned", apply = function(val, modList, enemyModList)
+	{ var = "conditionEnemyPoisoned", type = "check", label = "Is the enemy Poisoned?", ifEnemyCond = "Poisoned", tooltip = "The enemy is Poisoned. Enables Poison DoT and 'against Poisoned enemies' modifiers.\nEnable if your build applies and benefits from Poison.", apply = function(val, modList, enemyModList)
 		enemyModList:NewMod("Condition:Poisoned", "FLAG", true, "Config", { type = "Condition", var = "Effective" })
 	end },
-	{ var = "multiplierPoisonOnEnemy", type = "count", label = "# of Poison on enemy:", ifEnemyMult = "PoisonStack", implyCond = "Poisoned", apply = function(val, modList, enemyModList)
+	{ var = "multiplierPoisonOnEnemy", type = "count", label = "# of Poison on enemy:", ifEnemyMult = "PoisonStack", implyCond = "Poisoned", tooltip = "Number of Poison stacks on the enemy. Also implies Poisoned.\nSet a realistic average value — avoid setting to max to prevent inflated DPS estimates.", apply = function(val, modList, enemyModList)
 		enemyModList:NewMod("Multiplier:PoisonStack", "BASE", val, "Config", { type = "Condition", var = "Effective" })
 	end },
 	{ var = "conditionEnemyBlinded", type = "check", label = "Is the enemy Blinded?", tooltip = "In addition to allowing 'against Blinded Enemies' modifiers to apply,\n Blind applies the following effects.\n -20% Accuracy \n -20% ^x33FF77Evasion", apply = function(val, modList, enemyModList)
@@ -443,17 +443,17 @@ local options = {
 		enemyModList:NewMod("Condition:Chilled", "FLAG", true, "Config", { type = "Condition", var = "Effective" })
 		enemyModList:NewMod("Condition:ChilledConfig", "FLAG", true, "Config", { type = "Condition", var = "Effective" })
 	end },
-	{ var = "conditionEnemyFrozen", type = "check", label = "Is the enemy ^x3F6DB3Frozen?", ifEnemyCond = "Frozen", apply = function(val, modList, enemyModList)
+	{ var = "conditionEnemyFrozen", type = "check", label = "Is the enemy ^x3F6DB3Frozen?", ifEnemyCond = "Frozen", tooltip = "The enemy is Frozen (unable to act). Enable only if your build has 'against Frozen enemies' modifiers.", apply = function(val, modList, enemyModList)
 		enemyModList:NewMod("Condition:Frozen", "FLAG", true, "Config", { type = "Condition", var = "Effective" })
 	end },
 	{ var = "conditionEnemyShocked", type = "check", label = "Is the enemy ^xADAA47Shocked?", tooltip = "In addition to allowing any 'against ^xADAA47Shocked ^7Enemies' modifiers to apply,\nthis will allow you to input the effect of the ^xADAA47Shock ^7applied to the enemy.", apply = function(val, modList, enemyModList)
 		enemyModList:NewMod("Condition:Shocked", "FLAG", true, "Config", { type = "Condition", var = "Effective" })
 		enemyModList:NewMod("Condition:ShockedConfig", "FLAG", true, "Config", { type = "Condition", var = "Effective" })
 	end },
-	{ var = "conditionEnemyCursed", type = "check", label = "Is the enemy Cursed?", apply = function(val, modList, enemyModList)
+	{ var = "conditionEnemyCursed", type = "check", label = "Is the enemy Cursed?", tooltip = "The enemy is Cursed. Enables 'against Cursed enemies' modifiers.\nEnable only if your build has curse-interaction mechanics.", apply = function(val, modList, enemyModList)
 		enemyModList:NewMod("Condition:Cursed", "FLAG", true, "Config", { type = "Condition", var = "Effective" })
 	end },
-	{ var = "conditionEnemySlowed", type = "check", label = "Is the enemy Slowed?", apply = function(val, modList, enemyModList)
+	{ var = "conditionEnemySlowed", type = "check", label = "Is the enemy Slowed?", tooltip = "The enemy's Movement and Action Speed is reduced. Enable if your build has 'against Slowed enemies' modifiers.", apply = function(val, modList, enemyModList)
 		enemyModList:NewMod("Condition:Slowed", "FLAG", true, "Config", { type = "Condition", var = "Effective" })
 	end },
 	{ var = "warMachine237", type = "list", label = "# of WarMachine:", ifCond = "WarMachine237", doNotHighlight = true,
@@ -470,52 +470,52 @@ local options = {
 			end
 		end
 	end },
-	{ var = "conditionEnemyHitRecently", type = "check", label = "Was the enemy Hit Recently?", apply = function(val, modList, enemyModList)
+	{ var = "conditionEnemyHitRecently", type = "check", label = "Was the enemy Hit Recently?", tooltip = "The enemy was hit in the last 4 seconds.\nFor most active builds this is always true — enable freely if your build has these modifiers.", apply = function(val, modList, enemyModList)
 		enemyModList:NewMod("Condition:HitRecently", "FLAG", true, "Config", { type = "Condition", var = "Effective" })
 	end },
-	{ var = "conditionEnemyStunnedRecently", type = "check", label = "Was the enemy Stunned Recently?", apply = function(val, modList, enemyModList)
+	{ var = "conditionEnemyStunnedRecently", type = "check", label = "Was the enemy Stunned Recently?", tooltip = "The enemy was stunned in the last 4 seconds.\nEnable only if your build has modifiers that activate after the enemy is stunned.", apply = function(val, modList, enemyModList)
 		enemyModList:NewMod("Condition:StunnedRecently", "FLAG", true, "Config", { type = "Condition", var = "Effective" })
 	end },
-	{ var = "conditionEnemyKilledRecently", type = "check", label = "Was an enemy Killed Recently?", apply = function(val, modList, enemyModList)
+	{ var = "conditionEnemyKilledRecently", type = "check", label = "Was an enemy Killed Recently?", tooltip = "A different enemy was killed in the last 4 seconds.\nRelevant for on-kill auras that affect the current target. Leave unchecked for boss DPS estimates.", apply = function(val, modList, enemyModList)
 		enemyModList:NewMod("Condition:KilledRecently", "FLAG", true, "Config", { type = "Condition", var = "Effective" })
 	end },
 	-- Enemy ailment stack counts (for per-stack modifiers)
-	{ var = "multiplierEnemyBleedStacks", type = "count", label = "Enemy Bleed Stacks:", implyCond = "Bleeding", apply = function(val, modList, enemyModList)
+	{ var = "multiplierEnemyBleedStacks", type = "count", label = "Enemy Bleed Stacks:", implyCond = "Bleeding", tooltip = "Number of Bleed stacks on the enemy. Also implies the enemy is Bleeding.\nSet a realistic average value for your typical combat scenario.", apply = function(val, modList, enemyModList)
 		enemyModList:NewMod("Multiplier:BleedStack", "BASE", val, "Config", { type = "Condition", var = "Effective" })
 		enemyModList:NewMod("Condition:Bleeding", "FLAG", val >= 1, "Config", { type = "Condition", var = "Effective" })
 	end },
-	{ var = "multiplierEnemyIgniteStacks", type = "count", label = "Enemy Ignite Stacks:", implyCond = "Ignited", apply = function(val, modList, enemyModList)
+	{ var = "multiplierEnemyIgniteStacks", type = "count", label = "Enemy Ignite Stacks:", implyCond = "Ignited", tooltip = "Number of Ignite stacks on the enemy. Also implies the enemy is Ignited.\nSet a realistic average value for your typical combat scenario.", apply = function(val, modList, enemyModList)
 		enemyModList:NewMod("Multiplier:IgniteStack", "BASE", val, "Config", { type = "Condition", var = "Effective" })
 		enemyModList:NewMod("Condition:Ignited", "FLAG", val >= 1, "Config", { type = "Condition", var = "Effective" })
 	end },
-	{ var = "multiplierEnemyShockStacks", type = "count", label = "Enemy Shock Stacks:", implyCond = "Shocked", apply = function(val, modList, enemyModList)
+	{ var = "multiplierEnemyShockStacks", type = "count", label = "Enemy Shock Stacks:", implyCond = "Shocked", tooltip = "Number of Shock stacks (max 10). Each stack increases damage the enemy takes.\nAlso implies the enemy is Shocked. Set a realistic sustained value.", apply = function(val, modList, enemyModList)
 		val = math.min(val, 10)
 		enemyModList:NewMod("Multiplier:ShockStack", "BASE", val, "Config", { type = "Condition", var = "Effective" })
 		enemyModList:NewMod("Condition:Shocked", "FLAG", val >= 1, "Config", { type = "Condition", var = "Effective" })
 	end },
-	{ var = "multiplierEnemyChillStacks", type = "count", label = "Enemy Chill Stacks:", implyCond = "Chilled", apply = function(val, modList, enemyModList)
+	{ var = "multiplierEnemyChillStacks", type = "count", label = "Enemy Chill Stacks:", implyCond = "Chilled", tooltip = "Number of Chill stacks (max 3). Reduces enemy Movement and Action Speed.\nAlso implies the enemy is Chilled.", apply = function(val, modList, enemyModList)
 		val = math.min(val, 3)
 		enemyModList:NewMod("Multiplier:ChillStack", "BASE", val, "Config", { type = "Condition", var = "Effective" })
 		enemyModList:NewMod("Condition:Chilled", "FLAG", val >= 1, "Config", { type = "Condition", var = "Effective" })
 	end },
-	{ var = "multiplierEnemyTimeRotStacks", type = "count", label = "Enemy Time Rot Stacks:", apply = function(val, modList, enemyModList)
+	{ var = "multiplierEnemyTimeRotStacks", type = "count", label = "Enemy Time Rot Stacks:", tooltip = "Number of Time Rot stacks on the enemy (max 12). Lich skill mechanic.", apply = function(val, modList, enemyModList)
 		val = math.min(val, 12)
 		enemyModList:NewMod("Multiplier:TimeRotStack", "BASE", val, "Config", { type = "Condition", var = "Effective" })
 	end },
-	{ var = "multiplierEnemyDoomStacks", type = "count", label = "Enemy Doom Stacks:", apply = function(val, modList, enemyModList)
+	{ var = "multiplierEnemyDoomStacks", type = "count", label = "Enemy Doom Stacks:", tooltip = "Number of Doom stacks on the enemy (max 4). Used for 'per Doom stack' modifiers.", apply = function(val, modList, enemyModList)
 		val = math.min(val, 4)
 		enemyModList:NewMod("Multiplier:DoomStack", "BASE", val, "Config", { type = "Condition", var = "Effective" })
 	end },
-	{ var = "multiplierEnemySlowStacks", type = "count", label = "Enemy Slow Stacks:", implyCond = "Slowed", apply = function(val, modList, enemyModList)
+	{ var = "multiplierEnemySlowStacks", type = "count", label = "Enemy Slow Stacks:", implyCond = "Slowed", tooltip = "Number of Slow stacks (max 3). Also implies the enemy is Slowed.\nUsed for 'per Slow stack' modifiers.", apply = function(val, modList, enemyModList)
 		val = math.min(val, 3)
 		enemyModList:NewMod("Multiplier:SlowStack", "BASE", val, "Config", { type = "Condition", var = "Effective" })
 		enemyModList:NewMod("Condition:Slowed", "FLAG", val >= 1, "Config", { type = "Condition", var = "Effective" })
 	end },
-	{ var = "multiplierEnemyFrailtyStacks", type = "count", label = "Enemy Frailty Stacks:", implyCond = "Frail", apply = function(val, modList, enemyModList)
+	{ var = "multiplierEnemyFrailtyStacks", type = "count", label = "Enemy Frailty Stacks:", implyCond = "Frail", tooltip = "Number of Frailty stacks on the enemy. Also implies the enemy is Frail.\nUsed for 'per Frailty stack' modifiers.", apply = function(val, modList, enemyModList)
 		enemyModList:NewMod("Multiplier:FrailtyStack", "BASE", val, "Config", { type = "Condition", var = "Effective" })
 		enemyModList:NewMod("Condition:Frail", "FLAG", val >= 1, "Config", { type = "Condition", var = "Effective" })
 	end },
-	{ var = "multiplierEnemyCurseStacks", type = "count", label = "Enemy Curse Stacks:", implyCond = "Cursed", apply = function(val, modList, enemyModList)
+	{ var = "multiplierEnemyCurseStacks", type = "count", label = "Enemy Curse Stacks:", implyCond = "Cursed", tooltip = "Number of Curse stacks on the enemy. Also implies the enemy is Cursed.\nUsed for 'per Curse stack' modifiers.", apply = function(val, modList, enemyModList)
 		enemyModList:NewMod("Multiplier:CurseStack", "BASE", val, "Config", { type = "Condition", var = "Effective" })
 		enemyModList:NewMod("Condition:Cursed", "FLAG", val >= 1, "Config", { type = "Condition", var = "Effective" })
 	end },
