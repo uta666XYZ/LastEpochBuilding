@@ -562,7 +562,29 @@ function calcs.defence(env, actor)
 			end
 		end
 	end
-	
+
+	-- Sanguine Runestones: "X% Health Regen also Applies to Ward"
+	local lifeRegenToWard = modDB:Sum("BASE", nil, "LifeRegenAppliesToWard")
+	if lifeRegenToWard > 0 and (output.LifeRegen or 0) > 0 then
+		local bonusWardPerSec = (output.LifeRegen or 0) * lifeRegenToWard / 100
+		output.WardPerSecond = (output.WardPerSecond or 0) + bonusWardPerSec
+		local wps = output.WardPerSecond
+		local wardDecayThreshold = output.WardDecayThreshold or 0
+		local wardRetention = output.WardRetention or 0
+		local ward = wardDecayThreshold + ((-0.2 + math.sqrt(0.04 + 0.0002 * wps * (1 + 0.5 * wardRetention / 100))) / 0.0001)
+		ward = ward * calcLib.mod(modDB, nil, "Ward", "Defences")
+		output.Ward = m_max(round(ward), 0)
+		if output.Ward > 0 then
+			local effectiveWard = m_max(output.Ward - wardDecayThreshold, 0)
+			local retentionDivisor = 1 + 0.5 * wardRetention / 100
+			local decayNumerator = 0.2 * effectiveWard + 0.00005 * effectiveWard ^ 2
+			output.WardDecayPerSecond = round(decayNumerator / retentionDivisor)
+		else
+			output.WardDecayPerSecond = 0
+		end
+		output.NetWardRegen = wps > 0 and (wps - output.WardDecayPerSecond) or 0
+	end
+
 	-- Damage Reduction
 	output.DamageReductionMax = modDB:Override(nil, "DamageReductionMax") or data.misc.DamageReductionCap
 	modDB:NewMod("ArmourAppliesToPhysicalDamageTaken", "BASE", 100)
@@ -1210,6 +1232,11 @@ function calcs.buildDefenceEstimations(env, actor)
 	output.Endurance = m_min(modDB:Sum("BASE", nil, "Endurance"), data.misc.EnduranceCap)
 	output.EnduranceThreshold = modDB:Sum("BASE", nil, "EnduranceThreshold")
 	output.EnduranceThresholdValue = m_floor((output.Life or 0) * output.EnduranceThreshold / 100)
+	-- Cerulean Runestones: "X% Mana Gained as Endurance Threshold"
+	local manaAsEndThresh = modDB:Sum("BASE", nil, "ManaAsEnduranceThreshold")
+	if manaAsEndThresh > 0 then
+		output.EnduranceThresholdValue = output.EnduranceThresholdValue + m_floor((output.Mana or 0) * manaAsEndThresh / 100)
+	end
 
 	-- Parry and Mana-before-Health
 	output.ParryChance = m_min(modDB:Sum("BASE", nil, "ParryChance"), data.misc.ParryCap)
