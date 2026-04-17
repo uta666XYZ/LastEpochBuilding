@@ -188,9 +188,53 @@ function IdolGridControlClass:GetImage(filename)
 	return self.imageHandles[filename]
 end
 
--- Let IdolsTab's ProcessControlsInput find this control when the mouse is over it
+-- Determine whether a cell is blocked (altar layout or default blocked set).
+function IdolGridControlClass:IsBlockedCell(row, col)
+	local altarName = self.itemsTab.activeAltarLayout
+	if altarName and altarName ~= "Default" then
+		local altar = self.itemsTab.altarLayouts and self.itemsTab.altarLayouts[altarName]
+		if altar and altar.grid then
+			return altar.grid[row][col] == 0
+		end
+	end
+	return DEFAULT_BLOCKED[row] and DEFAULT_BLOCKED[row][col] or false
+end
+
+-- Build/rebuild the cellPrimary map. Called at the start of Draw() and also
+-- in IsMouseOver() so tooltips work on secondary cells before the first draw.
+function IdolGridControlClass:RebuildCellPrimary()
+	self.cellPrimary = {}
+	for row, rowData in ipairs(self.layout) do
+		for col, slotName in ipairs(rowData) do
+			if not self:IsBlockedCell(row, col) then
+				local slot = self.itemsTab.slots[slotName]
+				local item = slot and self.itemsTab.items[slot.selItemId]
+				if item then
+					local dims = idolDims[item.type] or {1, 1}
+					for dr = 0, dims[2] - 1 do
+						if not self.cellPrimary[row + dr] then
+							self.cellPrimary[row + dr] = {}
+						end
+						for dc = 0, dims[1] - 1 do
+							if not self.cellPrimary[row + dr][col + dc] then
+								self.cellPrimary[row + dr][col + dc] = slot
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+end
+
+-- Let IdolsTab's ProcessControlsInput find this control when the mouse is over it.
+-- Also ensures cellPrimary is ready so secondary-cell tooltips work before the
+-- first Draw() call (e.g. when an idol is placed and the mouse is already over it).
 function IdolGridControlClass:IsMouseOver()
 	if not self:IsShown() then return false end
+	if not next(self.cellPrimary) then
+		self:RebuildCellPrimary()
+	end
 	return self:IsMouseInBounds() or (self:GetMouseOverControl() ~= nil)
 end
 
@@ -305,29 +349,7 @@ function IdolGridControlClass:Draw(viewPort)
 	end
 
 	-- Pre-pass: build cellPrimary BEFORE DrawControls so tooltipFunc can use it.
-	-- Maps [row][col] -> primary slot for every cell covered by a placed idol.
-	self.cellPrimary = {}
-	for row, rowData in ipairs(self.layout) do
-		for col, slotName in ipairs(rowData) do
-			if not isBlocked(row, col) then
-				local slot = self.itemsTab.slots[slotName]
-				local item = slot and self.itemsTab.items[slot.selItemId]
-				if item then
-					local dims = idolDims[item.type] or {1, 1}
-					for dr = 0, dims[2] - 1 do
-						if not self.cellPrimary[row + dr] then
-							self.cellPrimary[row + dr] = {}
-						end
-						for dc = 0, dims[1] - 1 do
-							if not self.cellPrimary[row + dr][col + dc] then
-								self.cellPrimary[row + dr][col + dc] = slot
-							end
-						end
-					end
-				end
-			end
-		end
-	end
+	self:RebuildCellPrimary()
 
 	-- Pass 1: cell backgrounds (drawn under slot controls)
 	for row, rowData in ipairs(self.layout) do
@@ -403,6 +425,13 @@ function IdolGridControlClass:Draw(viewPort)
 					local bg = rarityBg[item.rarity] or rarityBg.IDOL
 					SetDrawColor(bg[1], bg[2], bg[3])
 					DrawImage(nil, cx, cy, pw, ph)
+					-- Erase CELL_GAP seam lines between cells of the same idol
+					for dc = 1, dims[1] - 1 do
+						DrawImage(nil, cx + dc * (cw + CELL_GAP) - CELL_GAP, cy, CELL_GAP, ph)
+					end
+					for dr = 1, dims[2] - 1 do
+						DrawImage(nil, cx, cy + dr * (ch + CELL_GAP) - CELL_GAP, pw, CELL_GAP)
+					end
 
 					-- Draw idol image (PNG may have transparency; shows rarity bg through it)
 					local iconName = item.baseName or item.name
