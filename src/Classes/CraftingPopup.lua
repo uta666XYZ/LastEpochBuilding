@@ -1816,7 +1816,7 @@ function CraftingPopupClass:Draw(viewPort)
 	local visY = tlY - self.typeScrollY
 	for i, entry in ipairs(self.orderedTypeList) do
 		local cardY = visY + (i - 1) * rowH
-		if cardY + rowH > tlY and cardY < tlY + tlH then
+		if cardY >= tlY and cardY + rowH <= tlY + tlH then
 			if not entry.isSeparator then
 				t_insert(self.typeCards, { y1 = cardY, y2 = cardY + rowH, entry = entry, index = i })
 			end
