@@ -2317,10 +2317,8 @@ c["+23 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=23}
 c["+23 Dodge Rating if you have been hit recently"]={{[1]={[1]={type="Condition",var="BeenHitRecently"},flags=0,keywordFlags=0,name="Evasion",type="BASE",value=23}},nil}
 c["+23 Endurance Threshold"]={{[1]={flags=0,keywordFlags=0,name="EnduranceThreshold",type="BASE",value=23}},nil}
 c["+23 Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="BASE",value=23}},nil}
-c["+23 Health Regen while in Spriggan Form"]={{[1]={[1]={skillName="Spriggan Form",type="SkillName"},flags=0,keywordFlags=0,name="LifeRegen",type="BASE",value=23}},"  while in  "}
 c["+23 Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=23}},nil}
 c["+23 Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="BASE",value=23}},nil}
-c["+23 Melee cold damage in Werebear Form"]={{[1]={[1]={skillName="Werebear Form",type="SkillName"},flags=0,keywordFlags=512,name="ColdDamage",type="BASE",value=23}},"   in  "}
 c["+23 Minion Bow Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=2048,name="Damage",type="BASE",value=23}}}},nil}
 c["+23 Minion Melee Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="Damage",type="BASE",value=23}}}},nil}
 c["+23 Minion Poison Damage Over Time"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=4160,keywordFlags=0,name="PoisonDamage",type="BASE",value=23}}}},nil}
@@ -6069,7 +6067,6 @@ c["13% of Missing Health gained as Ward per second"]={{[1]={flags=0,keywordFlags
 c["13% of Physical Damage Taken as Void"]={{[1]={flags=0,keywordFlags=16,name="PhysicalDamageTaken",type="BASE",value=13}},"  as  "}
 c["13% reduced Bonus Damage Taken from Critical Strikes"]={{[1]={[1]={type="Condition",var="CriticalStrike"},flags=0,keywordFlags=0,name="DamageTaken",type="INC",value=-13}}," Bonus   "}
 c["130% Increased Cooldown Recovery Speed for Decoy"]={{[1]={[1]={skillName="Decoy",type="SkillName"},flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=130}},"  for  "}
-c["130% Increased damage while in Spriggan Form"]={{[1]={[1]={skillName="Spriggan Form",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="INC",value=130}},"  while in  "}
 c["130% increased Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="Damage",type="INC",value=130}},nil}
 c["130% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=130}},nil}
 c["130% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=130}}}},nil}

@@ -441,6 +441,13 @@ local modTagList = {
 	["per slow stack"] = { tag = { type = "Multiplier", var = "SlowStack", actor = "enemy" } },
 	["per frailty stack"] = { tag = { type = "Multiplier", var = "FrailtyStack", actor = "enemy" } },
 	["per curse stack"] = { tag = { type = "Multiplier", var = "CurseStack", actor = "enemy" } },
+	-- Transformation form conditions
+	["while in werebear form"] = { tag = { type = "Condition", var = "InWerebearForm" } },
+	["in werebear form"] = { tag = { type = "Condition", var = "InWerebearForm" } },
+	["while in spriggan form"] = { tag = { type = "Condition", var = "InSprigganForm" } },
+	["in spriggan form"] = { tag = { type = "Condition", var = "InSprigganForm" } },
+	["while in swarmblade form"] = { tag = { type = "Condition", var = "InSwarmbladeForm" } },
+	["in swarmblade form"] = { tag = { type = "Condition", var = "InSwarmbladeForm" } },
 	-- "recently" conditions not yet handled
 	["if echoed recently"] = { tag = { type = "Condition", var = "EchoedRecently" } },
 	["if you have directly cast a cold spell recently"] = { tag = { type = "Condition", var = "DirectlyCastColdSpellRecently" } },
