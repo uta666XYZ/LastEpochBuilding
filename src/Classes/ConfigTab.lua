@@ -41,6 +41,18 @@ local ConfigTabClass = newClass("ConfigTab", "UndoHandler", "ControlHost", "Cont
 	end, function()
 		self.toggleConfigs = not self.toggleConfigs
 	end)
+	self.controls.resetDefaults = new("ButtonControl", { "LEFT", self.controls.toggleConfigs, "RIGHT" }, 10, 0, 120, 20, "Reset to Defaults", function()
+		self.input = { }
+		self.placeholder = { }
+		self:AddUndoState()
+		self:BuildModList()
+		self:UpdateControls()
+		self.build.buildFlag = true
+	end)
+	self.controls.resetDefaults.tooltipFunc = function(tooltip)
+		tooltip:AddLine(14, "Clear all configuration options back to their default values.")
+		tooltip:AddLine(14, "Useful when you want a clean baseline for DPS comparison.")
+	end
 
 	local function searchMatch(varData)
 		local searchStr = self.controls.search.buf:lower():gsub("[%-%.%+%[%]%$%^%%%?%*]", "%%%0")
