@@ -1136,6 +1136,15 @@ function calcs.perform(env, fullDPSSkipEHP)
 
 	doActorMisc(env, env.enemy)
 
+	-- Propagate enemy ailment stack counts from enemyDB mods to enemyDB.multipliers
+	-- so that "per X stack" Multiplier tags resolve correctly
+	for _, var in ipairs({"BleedStack","IgniteStack","ShockStack","ChillStack","PoisonStack","TimeRotStack","DoomStack","SlowStack","FrailtyStack","CurseStack"}) do
+		local val = enemyDB:Sum("BASE", nil, "Multiplier:"..var)
+		if val and val > 0 then
+			enemyDB.multipliers[var] = val
+		end
+	end
+
 	for _, activeSkill in ipairs(env.player.activeSkillList) do
 		if activeSkill.skillFlags.totem then
 			local limit = env.player.mainSkill.skillModList:Sum("BASE", env.player.mainSkill.skillCfg, "ActiveTotemLimit", "ActiveBallistaLimit" )
