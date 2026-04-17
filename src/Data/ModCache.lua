@@ -6198,7 +6198,7 @@ c["15% Fire Penetrationper second spent Unattached"]={{[1]={flags=0,keywordFlags
 c["15% Fireball Chance On Enemy Pass Through"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Fireball",type="BASE",value=15}},"  On Enemy Pass Through "}
 c["15% Haste Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Haste",type="BASE",value=15}},nil}
 c["15% Health Cost"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=15}},"  Cost "}
-c["15% Health Regen also Applies to Ward"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="BASE",value=15}},"  also Applies to Ward "}
+c["15% Health Regen also Applies to Ward"]={{[1]={flags=0,keywordFlags=0,name="LifeRegenAppliesToWard",type="BASE",value=15}},nil}
 c["15% Increased Abyssal Decay Duration "]={{[1]={[1]={skillName="Abyssal Decay",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=15}},nil}
 c["15% Increased Area"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=15}},nil}
 c["15% Increased Aspect Of The Shark Duration"]={{[1]={[1]={skillName="Aspect of the Shark",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=15}},nil}
@@ -7405,7 +7405,7 @@ c["30% Increased Stun Duration"]={{[1]={flags=0,keywordFlags=0,name="EnemyStunDu
 c["30% Increased Time Rot Duration"]={{[1]={[1]={skillName="Time Rot",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=30}},nil}
 c["30% Increased area with the first attack of Cinder Strike"]={{[1]={[1]={skillName="Cinder Strike",type="SkillName"},flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=30}},"  with the first attack of  "}
 c["30% Lightning Damage Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="MORE",value=30}},"  Effectiveness "}
-c["30% Mana Gained as Endurance Threshold"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=30}},"  Gained as Endurance Threshold "}
+c["30% Mana Gained as Endurance Threshold"]={{[1]={flags=0,keywordFlags=0,name="ManaAsEnduranceThreshold",type="BASE",value=30}},nil}
 c["30% Max Bonus Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=30}}," Max Bonus  "}
 c["30% Max Bonus Radius"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="BASE",value=30}}," Max Bonus  "}
 c["30% Max Damage Bonus"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=30}}," Max  Bonus "}
