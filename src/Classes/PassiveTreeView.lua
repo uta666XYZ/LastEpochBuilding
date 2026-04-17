@@ -1334,8 +1334,8 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 			SetDrawLayer(nil, 25)
 		end
 
-		-- Draw base artwork
-		if base then
+		-- Draw base artwork (skip center icon for allocated mastery nodes)
+		if base and not (node.type == "Mastery" and node.masteryEffects and isAlloc) then
 			self:DrawAsset(base, scrX, scrY, scale, nil, iconSize)
 
 			-- Draw node frame overlay
