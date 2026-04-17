@@ -86,7 +86,14 @@ local function getModPrecision(line)
 	if line:find("{rounding:Integer}") then precision = 1
 	elseif line:find("{rounding:Tenth}") then precision = 10
 	elseif line:find("{rounding:Thousandth}") then precision = 1000 end
-	if line:find("%%") and precision >= 100 then precision = precision / 100 end
+	if line:find("%%") and precision >= 100 then
+		local decPart = line:match("%(%-?%d+%.(%d+)%-") or line:match("%-%-?%d+%.(%d+)%)")
+		if decPart then
+			precision = 10 ^ #decPart
+		else
+			precision = 1
+		end
+	end
 	return precision
 end
 

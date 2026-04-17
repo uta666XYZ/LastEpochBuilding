@@ -104,6 +104,7 @@ end
 --- @param websiteInfo Table Contains the downloadUrl
 --- @param callback Function The function to call when the download is complete
 function buildSites.DownloadBuild(link, websiteInfo, callback)
+	link = link:gsub("#[^%s]*", "")
 	local siteCodeURL
 	-- Only called on program start via protocol handler
 	if not websiteInfo then
