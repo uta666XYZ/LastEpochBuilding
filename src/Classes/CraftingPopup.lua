@@ -715,15 +715,22 @@ function CraftingPopupClass:BuildControls()
 		if capturedSectionKey == "sealed" then
 			controls[labelKey].label = function()
 				local base = self_ref:IsAnyIdol() and "ENCHANTED 1" or capturedSectionLabel
-				return colorCodes.UNIQUE .. base
+				local n = #(self_ref.affixLists.sealed or {})
+				return colorCodes.UNIQUE .. base .. " (" .. n .. ")"
 			end
 		elseif capturedSectionKey == "primordial" then
 			controls[labelKey].label = function()
 				local base = self_ref:IsAnyIdol() and "ENCHANTED 2" or capturedSectionLabel
-				return colorCodes.UNIQUE .. base
+				local n = #(self_ref.affixLists.primordial or {})
+				return colorCodes.UNIQUE .. base .. " (" .. n .. ")"
 			end
 		else
-			controls[labelKey].label = function() return colorCodes.UNIQUE .. capturedSectionLabel end
+			local sectionListKeyMap = { prefix = "prefix1", suffix = "suffix1", corrupted = "corrupted" }
+			local capturedListKey = sectionListKeyMap[capturedSectionKey] or capturedSectionKey
+			controls[labelKey].label = function()
+				local n = #(self_ref.affixLists[capturedListKey] or {})
+				return colorCodes.UNIQUE .. capturedSectionLabel .. " (" .. n .. ")"
+			end
 		end
 
 		controls[labelKey].shown = function()
