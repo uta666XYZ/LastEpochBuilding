@@ -492,6 +492,7 @@ local options = {
 		val = math.min(val, 10)
 		enemyModList:NewMod("Multiplier:ShockStack", "BASE", val, "Config", { type = "Condition", var = "Effective" })
 		enemyModList:NewMod("Condition:Shocked", "FLAG", val >= 1, "Config", { type = "Condition", var = "Effective" })
+		enemyModList:NewMod("DamageTaken", "INC", val * 5, "Config", { type = "Condition", var = "Effective" })
 	end },
 	{ var = "multiplierEnemyChillStacks", type = "count", label = "Enemy Chill Stacks:", implyCond = "Chilled", tooltip = "Number of Chill stacks (max 3). Reduces enemy Movement and Action Speed.\nAlso implies the enemy is Chilled.", apply = function(val, modList, enemyModList)
 		val = math.min(val, 3)
