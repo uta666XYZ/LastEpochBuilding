@@ -3052,8 +3052,8 @@
       "isAscendancyStart": true,
       "mastery": 2,
       "stats": [
-        "1% of damage dealt is leeched as health",
-        "Spells and Melee attacks deal increased damage equal to your missing health"
+        "1% of damage dealt is leeched as Health",
+        "Spells and Melee attacks deal increased damage equal to your missing Health"
       ],
       "in": [],
       "out": []
