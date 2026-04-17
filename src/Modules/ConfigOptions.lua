@@ -127,6 +127,9 @@ local options = {
 	{ var = "conditionStandingOnGlyphOfDominion", type = "check", label = "Standing on Glyph of Dominion?", tooltip = "Check if you are standing on your Glyph of Dominion (Runemaster).\nEnables 'while standing on your Glyph of Dominion' modifiers.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:StandingOnGlyphOfDominion", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
+	{ var = "conditionRecentlyUsedTeleport", type = "check", label = "Recently Used Teleport?", tooltip = "Check if you have cast Teleport within the past 4 seconds (Mage / Spellblade).\nEnables Teleport skill tree nodes that only apply after casting Teleport recently.", apply = function(val, modList, enemyModList)
+		modList:NewMod("Condition:RecentlyUsedTeleport", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
+	end },
 	{ var = "multiplierArcaneMomentumStack", type = "count", label = "Arcane Momentum Stacks:", tooltip = "Number of active Arcane Momentum stacks (Runemaster).\nEach stack grants increased cast speed.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Multiplier:ArcaneMomentumStack", "BASE", val, "Config", { type = "Condition", var = "Combat" })
 	end },
