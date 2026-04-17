@@ -2099,51 +2099,61 @@ function CraftingPopupClass:ProcessInput(inputEvents, viewPort)
 			if event.key == "ESCAPE" then
 				self:Close()
 				return
-			end
-		elseif event.type == "MouseButtonDown" and event.button == 1 then
-			-- Type list click
-			local tlX = px + 4
-			local tlY = py + TYPE_LIST_Y
-			local tlW = LEFT_W - 8
-			local tlH = TYPE_LIST_H
-			if mx >= tlX and mx < tlX + tlW and my >= tlY and my < tlY + tlH then
-				for _, card in ipairs(self.typeCards) do
-					if my >= card.y1 and my < card.y2 then
-						self.selectedTypeIndex = card.index
-						self.rightScrollY = 0
-						self.searchText   = ""
-						if self.controls.rightSearch then
-							self.controls.rightSearch:SetText("")
+			elseif event.key == "LEFTBUTTON" then
+				-- Type list click
+				local tlX = px + 4
+				local tlY = py + TYPE_LIST_Y
+				local tlW = LEFT_W - 8
+				local tlH = TYPE_LIST_H
+				if mx >= tlX and mx < tlX + tlW and my >= tlY and my < tlY + tlH then
+					for _, card in ipairs(self.typeCards) do
+						if my >= card.y1 and my < card.y2 then
+							self.selectedTypeIndex = card.index
+							self.rightScrollY = 0
+							self.searchText   = ""
+							if self.controls.rightSearch then
+								self.controls.rightSearch:SetText("")
+							end
+							self:RefreshBaseList()
+							break
 						end
-						self:RefreshBaseList()
-						break
 					end
 				end
-			end
 
-			-- Right panel card click
-			local rpX = px + RP_X
-			if mx >= rpX and mx < px + pw then
-				for _, card in ipairs(self.rightCards) do
-					if mx >= card.x1 and mx < card.x2 and my >= card.y1 and my < card.y2 then
-						if self.rightTab == "item" then
-							self:SelectBase(card.entry)
-						else
-							self:SelectAffixEntry(card.entry)
+				-- Right panel card click
+				local rpX = px + RP_X
+				if mx >= rpX and mx < px + pw then
+					for _, card in ipairs(self.rightCards) do
+						if mx >= card.x1 and mx < card.x2 and my >= card.y1 and my < card.y2 then
+							if self.rightTab == "item" then
+								self:SelectBase(card.entry)
+							else
+								self:SelectAffixEntry(card.entry)
+							end
+							break
 						end
-						break
 					end
 				end
-			end
-		elseif event.type == "MouseWheel" then
-			local tlX = px + 4
-			local tlY = py + TYPE_LIST_Y
-			local tlW = LEFT_W - 8
-			local tlH = TYPE_LIST_H
-			if mx >= tlX and mx < tlX + tlW and my >= tlY and my < tlY + tlH then
-				self.typeScrollY = self.typeScrollY - event.direction * TYPE_ROW_H * 3
-			elseif mx >= px + RP_X and mx < px + pw then
-				self.rightScrollY = self.rightScrollY - event.direction * AC_H * 3
+			elseif event.key == "WHEELDOWN" then
+				local tlX = px + 4
+				local tlY = py + TYPE_LIST_Y
+				local tlW = LEFT_W - 8
+				local tlH = TYPE_LIST_H
+				if mx >= tlX and mx < tlX + tlW and my >= tlY and my < tlY + tlH then
+					self.typeScrollY = self.typeScrollY + TYPE_ROW_H * 3
+				elseif mx >= px + RP_X and mx < px + pw then
+					self.rightScrollY = self.rightScrollY + AC_H * 3
+				end
+			elseif event.key == "WHEELUP" then
+				local tlX = px + 4
+				local tlY = py + TYPE_LIST_Y
+				local tlW = LEFT_W - 8
+				local tlH = TYPE_LIST_H
+				if mx >= tlX and mx < tlX + tlW and my >= tlY and my < tlY + tlH then
+					self.typeScrollY = self.typeScrollY - TYPE_ROW_H * 3
+				elseif mx >= px + RP_X and mx < px + pw then
+					self.rightScrollY = self.rightScrollY - AC_H * 3
+				end
 			end
 		end
 	end
