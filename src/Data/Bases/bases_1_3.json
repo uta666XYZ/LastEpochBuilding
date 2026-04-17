@@ -1021,6 +1021,7 @@
     ]
   },
   "Forest Cuirass": {
+    "legacy": true,
     "type": "Body Armor",
     "baseTypeID": 1,
     "subTypeID": 7,
@@ -7720,6 +7721,7 @@
     "implicits": []
   },
   "Minor Lagonian Idol": {
+    "legacy": true,
     "type": "Minor Idol",
     "baseTypeID": 26,
     "subTypeID": 0,
