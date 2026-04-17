@@ -170,10 +170,17 @@ function calcs.calcFullDPS(build, mode, override, specEnv)
 	local causticGroundSource = ""
 	
 	-- calc defences extra part should only run on the last skill of FullDPS
+	-- Also count skills per treeId to detect cycling skill groups (e.g. Runebolt Tri-Elemental)
 	local numActiveSkillInFullDPS = 0
+	local treeIdGroupCount = {}
 	for _, activeSkill in ipairs(fullEnv.player.activeSkillList) do
 		if activeSkill.socketGroup and activeSkill.socketGroup.includeInFullDPS and not GlobalCache.excludeFullDpsList[cacheSkillUUID(activeSkill, fullEnv)] then
 			numActiveSkillInFullDPS = numActiveSkillInFullDPS + 1
+			local ge = activeSkill.activeEffect and activeSkill.activeEffect.grantedEffect
+			local treeId = ge and ge.treeId
+			if treeId then
+				treeIdGroupCount[treeId] = (treeIdGroupCount[treeId] or 0) + 1
+			end
 		end
 	end
 	
@@ -254,8 +261,13 @@ function calcs.calcFullDPS(build, mode, override, specEnv)
 			end
 
 			if usedEnv.player.output.TotalDPS and usedEnv.player.output.TotalDPS > 0 then
-				t_insert(fullDPS.skills, { name = activeSkill.activeEffect.grantedEffect.name, dps = usedEnv.player.output.TotalDPS, count = activeSkillCount, trigger = activeSkill.infoTrigger, skillPart = minionName and activeSkill.infoMessage2 or activeSkill.skillPartName })
-				fullDPS.combinedDPS = fullDPS.combinedDPS + usedEnv.player.output.TotalDPS * activeSkillCount
+				local cycleGE = activeSkill.activeEffect and activeSkill.activeEffect.grantedEffect
+				local cycleN = (cycleGE and cycleGE.treeId and treeIdGroupCount[cycleGE.treeId]) or 1
+				local cycleWeight = cycleN > 1 and (1 / cycleN) or 1
+				local basePart = (minionName and activeSkill.infoMessage2) or activeSkill.skillPartName
+				local skillPartLabel = cycleN > 1 and (((basePart and basePart ~= "") and (basePart .. " ") or "") .. "x1/" .. cycleN .. " cycle") or basePart
+				t_insert(fullDPS.skills, { name = activeSkill.activeEffect.grantedEffect.name, dps = usedEnv.player.output.TotalDPS * cycleWeight, count = activeSkillCount, trigger = activeSkill.infoTrigger, skillPart = skillPartLabel })
+				fullDPS.combinedDPS = fullDPS.combinedDPS + usedEnv.player.output.TotalDPS * activeSkillCount * cycleWeight
 			end
 			if usedEnv.player.output.CullMultiplier and usedEnv.player.output.CullMultiplier > 1 and usedEnv.player.output.CullMultiplier > fullDPS.cullingMulti then
 				fullDPS.cullingMulti = usedEnv.player.output.CullMultiplier
