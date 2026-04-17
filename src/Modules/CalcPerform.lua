@@ -210,7 +210,8 @@ local function doActorAttribsConditions(env, actor)
 	end
 
 	-- Season 4 (1.4): attribute conversion
-	-- Converted amount is subtracted from the base attribute so PerStat bonuses don't double-count.
+	-- First initialise S4 attributes from direct grants (passives/gear granting Guile, Brutality, etc.)
+	-- Converted amount is then added on top, and subtracted from the source so PerStat bonuses don't double-count.
 	local attrConversions = {
 		{ src = "Str", dst = "Brutality", modName = "StrengthConvertedToBrutality" },
 		{ src = "Dex", dst = "Guile",     modName = "DexterityConvertedToGuile" },
@@ -219,13 +220,14 @@ local function doActorAttribsConditions(env, actor)
 		{ src = "Vit", dst = "Rampancy",  modName = "VitalityConvertedToRampancy" },
 	}
 	for _, conv in ipairs(attrConversions) do
+		output[conv.dst] = round(calcLib.val(modDB, conv.dst))
+	end
+	for _, conv in ipairs(attrConversions) do
 		local pct = modDB:Sum("BASE", nil, conv.modName)
 		if pct and pct > 0 then
 			local converted = round(output[conv.src] * pct / 100)
-			output[conv.dst] = converted
+			output[conv.dst] = output[conv.dst] + converted
 			output[conv.src] = output[conv.src] - converted
-		else
-			output[conv.dst] = 0
 		end
 	end
 
