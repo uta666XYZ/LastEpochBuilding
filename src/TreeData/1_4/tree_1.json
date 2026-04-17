@@ -18056,7 +18056,7 @@
       "maxPoints": 3,
       "mastery": 0,
       "masteryRequirement": 0,
-      "stats": ["+1 Frost Claw on Impact"],
+      "stats": ["1 Frost Claws"],
       "notScalingStats": [],
       "noScalingPointThreshold": 0,
       "in": ["me27-11"],
