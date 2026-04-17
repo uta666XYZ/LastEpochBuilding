@@ -426,6 +426,14 @@ local modTagList = {
 	["to cursed enemies"] = { tag = { type = "ActorCondition", actor = "enemy", var = "Cursed" } },
 	["against slowed enemies"] = { tag = { type = "ActorCondition", actor = "enemy", var = "Slowed" } },
 	["to slowed enemies"] = { tag = { type = "ActorCondition", actor = "enemy", var = "Slowed" } },
+	-- "from X enemies" — damage taken conditional tags
+	["from chilled enemies"] = { tag = { type = "ActorCondition", actor = "enemy", var = "Chilled" } },
+	["from ignited enemies"] = { tag = { type = "ActorCondition", actor = "enemy", var = "Ignited" } },
+	["from shocked enemies"] = { tag = { type = "ActorCondition", actor = "enemy", var = "Shocked" } },
+	["from slowed enemies"] = { tag = { type = "ActorCondition", actor = "enemy", var = "Slowed" } },
+	["from frozen enemies"] = { tag = { type = "ActorCondition", actor = "enemy", var = "Frozen" } },
+	["from bleeding enemies"] = { tag = { type = "ActorCondition", actor = "enemy", var = "Bleeding" } },
+	["from poisoned enemies"] = { tag = { type = "ActorCondition", actor = "enemy", var = "Poisoned" } },
 	["against frail enemies"] = { tag = { type = "ActorCondition", actor = "enemy", var = "Frail" } },
 	["to frail enemies"] = { tag = { type = "ActorCondition", actor = "enemy", var = "Frail" } },
 	["against enemies hit recently"] = { tag = { type = "ActorCondition", actor = "enemy", var = "HitRecently" } },
@@ -473,6 +481,11 @@ local modTagList = {
 	["while standing on your glyph of dominion"] = { tag = { type = "Condition", var = "StandingOnGlyphOfDominion" } },
 	["while near an enemy"] = { tag = { type = "Condition", var = "NearEnemy" } },
 	["from nearby enemies"] = { tag = { type = "Condition", var = "NearEnemy" } },
+	-- Player health threshold conditions
+	["at low health"] = { tag = { type = "Condition", var = "LowLife" } },
+	["while at low health"] = { tag = { type = "Condition", var = "LowLife" } },
+	["at low life"] = { tag = { type = "Condition", var = "LowLife" } },
+	["while at low life"] = { tag = { type = "Condition", var = "LowLife" } },
 	["per arcane momentum stack"] = { tag = { type = "Multiplier", var = "ArcaneMomentumStack" } },
 	-- Blocking
 	["on block"] = { tag = { type = "Condition", var = "Blocking" } },
@@ -562,6 +575,7 @@ local specialQuickFixModList = {
 	["^([%+%-]?[%d%.]+%%) Movespeed"] = "%1 increased Movespeed",
 	["%(up to %d+%)%s*$"] = "",
 	-- Normalize "X% [Type] Damage Taken" (without increased/reduced keyword) to INC type
+	["^([%+%-]?[%d%.]+%%) Damage Over Time Taken"] = "%1 increased Damage Over Time Taken",
 	["^([%+%-]?[%d%.]+%%) Damage Taken"] = "%1 increased Damage Taken",
 	["^([%+%-]?[%d%.]+%%) Elemental Damage Taken"] = "%1 increased Elemental Damage Taken",
 	["^([%+%-]?[%d%.]+%%) Cold Damage Taken"] = "%1 increased Cold Damage Taken",
