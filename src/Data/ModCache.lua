@@ -2079,7 +2079,7 @@ c["+20% Hit Damage Against Bleeding"]={{[1]={[1]={skillName="Bleed",type="SkillN
 c["+20% Hit Damage Against High Health"]={{[1]={flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=20}},"   Against High Health "}
 c["+20% Hit Damage Against Rares And Bosses"]={{[1]={flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=20}},"   Against Rares And Bosses "}
 c["+20% Hit Damage To Slowed Target"]={{[1]={[1]={skillName="Slow",type="SkillName"},flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=20}},"   To ed Target "}
-c["+20% Hit Damage To Time Rotting Enemies"]={{[1]={[1]={skillName="Time Rot",type="SkillName"},flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=20}},"   To ting Enemies "}
+c["+20% Hit Damage To Time Rotting Enemies"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="TimeRotted"},flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=20}},nil}
 c["+20% Hit Damage Vs Ignited Enemies"]={{[1]={[1]={skillName="Ignite",type="SkillName"},flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=20}},"   Vs d Enemies "}
 c["+20% Hit Damage vs Slowed"]={{[1]={[1]={skillName="Slow",type="SkillName"},flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=20}},"   vs ed "}
 c["+20% Ignite Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Ignite",type="BASE",value=20}},nil}
@@ -5157,7 +5157,7 @@ c["-2 Ward Gain Cooldown Duration"]={{[1]={flags=0,keywordFlags=0,name="Ward",ty
 c["-2% Attack Speed"]={{[1]={flags=3584,keywordFlags=0,name="Speed",type="BASE",value=-2}},nil}
 c["-2% Damage Taken From Nearby Enemies"]={{[1]={[1]={type="Condition",var="NearEnemy"},flags=0,keywordFlags=0,name="DamageTaken",type="INC",value=-2}},nil}
 c["-2% Damage Taken in Arena"]={{[1]={flags=0,keywordFlags=0,name="DamageTaken",type="BASE",value=-2}},"  in Arena "}
-c["-2% Damage Taken with Arcane Shield"]={{[1]={flags=0,keywordFlags=0,name="DamageTaken",type="BASE",value=-2}},"  with Arcane Shield "}
+c["-2% Damage Taken with Arcane Shield"]={{[1]={[1]={type="Condition",var="HaveArcaneShield"},flags=0,keywordFlags=0,name="DamageTaken",type="BASE",value=-2}},nil}
 c["-20% All Resistances"]={{[1]={flags=0,keywordFlags=0,name="FireResist",type="BASE",value=-20},[2]={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=-20},[3]={flags=0,keywordFlags=0,name="ColdResist",type="BASE",value=-20},[4]={flags=0,keywordFlags=0,name="PhysicalResist",type="BASE",value=-20},[5]={flags=0,keywordFlags=0,name="PoisonResist",type="BASE",value=-20},[6]={flags=0,keywordFlags=0,name="NecroticResist",type="BASE",value=-20},[7]={flags=0,keywordFlags=0,name="VoidResist",type="BASE",value=-20}},nil}
 c["-20% Attack Speed"]={{[1]={flags=3584,keywordFlags=0,name="Speed",type="BASE",value=-20}},nil}
 c["-20% Cast Speed"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",value=-20}},nil}
@@ -5232,7 +5232,7 @@ c["-5% Cast Speed"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",valu
 c["-5% Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=-5}},nil}
 c["-5% Damage Over Time Taken per Crimson Shroud"]={{[1]={[1]={skillName="Crimson Shroud",type="SkillName"},flags=0,keywordFlags=0,name="DamageTakenOverTime",type="BASE",value=-5}},"  per  "}
 c["-5% Damage Taken From Slowed Enemies"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="Slowed"},flags=0,keywordFlags=0,name="DamageTaken",type="INC",value=-5}},nil}
-c["-5% Damage Taken From Time Rotting Enemies"]={{[1]={[1]={skillName="Time Rot",type="SkillName"},flags=0,keywordFlags=0,name="DamageTaken",type="BASE",value=-5}},"  From ting Enemies "}
+c["-5% Damage Taken From Time Rotting Enemies"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="TimeRotted"},flags=0,keywordFlags=0,name="DamageTaken",type="INC",value=-5}},nil}
 c["-5% Damage over Time Taken per Stack of Crimson Shroud"]={{[1]={[1]={skillName="Crimson Shroud",type="SkillName"},flags=0,keywordFlags=0,name="DamageTakenOverTime",type="BASE",value=-5}},"  per Stack of  "}
 c["-5% Enemy Poison Resistance"]={{[1]={flags=0,keywordFlags=0,name="PoisonResist",type="BASE",value=-5}}," Enemy  "}
 c["-5% First Strike Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=-5}}," First Strike  "}
@@ -7780,7 +7780,7 @@ c["4 Taunt Duration (seconds)"]={{[1]={flags=0,keywordFlags=0,name="Duration",ty
 c["4 Ward Gain Per Stack"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=4}},"  Gain Per Stack "}
 c["4 Ward Gain on Kill"]={{[1]={[1]={type="Condition",var="KilledRecently"},flags=0,keywordFlags=0,name="Ward",type="BASE",value=4}},"  Gain  "}
 c["4 Ward Gained On Dodge"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=4}},"  Gained On Dodge "}
-c["4 Ward Per Second with Arcane Shield"]={{[1]={flags=0,keywordFlags=0,name="WardPerSecond",type="BASE",value=4}},"  with Arcane Shield "}
+c["4 Ward Per Second with Arcane Shield"]={{[1]={[1]={type="Condition",var="HaveArcaneShield"},flags=0,keywordFlags=0,name="WardPerSecond",type="BASE",value=4}},nil}
 c["4 Ward gained per second while wielding a Staff"]={{[1]={[1]={type="Condition",var="UsingStaff"},flags=0,keywordFlags=0,name="Ward",type="BASE",value=4}},"  gained per second  "}
 c["4 ward gained on melee hit"]={{[1]={flags=8389120,keywordFlags=0,name="Ward",type="BASE",value=4}},"  gained  "}
 c["4% Armour Shred Chance per stack of Sharpshooter"]={{[1]={[1]={skillName="Sharpshooter",type="SkillName"},flags=0,keywordFlags=0,name="Armour",type="BASE",value=4}},"  Shred Chance per stack of  "}
@@ -7799,7 +7799,7 @@ c["4% Health Per Point Of Attunement"]={{[1]={flags=0,keywordFlags=0,name="Life"
 c["4% Increased Area For Area Skills"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=4}},"  For Area Skills "}
 c["4% Increased Area for Area Skills"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=4}},"  for Area Skills "}
 c["4% Increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=4}},nil}
-c["4% Increased Armour Per Arcane Shield"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=4}},"  Per Arcane Shield "}
+c["4% Increased Armour Per Arcane Shield"]={{[1]={[1]={type="Multiplier",var="ArcaneShieldStack"},flags=0,keywordFlags=0,name="Armour",type="INC",value=4}},nil}
 c["4% Increased Attack Speed Per Second"]={{[1]={flags=3584,keywordFlags=0,name="Speed",type="INC",value=4}},"  Per Second "}
 c["4% Increased Ballista Attack Speed"]={{[1]={[1]={skillName="Ballista",type="SkillName"},flags=3584,keywordFlags=0,name="Speed",type="INC",value=4}},nil}
 c["4% Increased Bleed Duration "]={{[1]={[1]={skillName="Bleed",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=4}},nil}
