@@ -601,6 +601,14 @@ local specialModList = {
 	["^%+(%d+) dodge rating per 1 intelligence, up to %+(%d+)$"] = function(num, rate, cap)
 		return { mod("EvasionPerInt", "BASE", tonumber(rate)), mod("EvasionPerIntCap", "BASE", tonumber(cap)) }
 	end,
+	-- Runemaster: Cerulean Runestones 6-point bonus
+	["^(%d+)%% mana gained as endurance threshold$"] = function(num)
+		return { mod("ManaAsEnduranceThreshold", "BASE", tonumber(num)) }
+	end,
+	-- Runemaster: Sanguine Runestones 6-point bonus
+	["^(%d+)%% health regen also applies to ward$"] = function(num)
+		return { mod("LifeRegenAppliesToWard", "BASE", tonumber(num)) }
+	end,
 }
 
 -- Modifiers that are recognised but unsupported
