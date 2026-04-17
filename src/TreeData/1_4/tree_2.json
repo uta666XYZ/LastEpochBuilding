@@ -11,7 +11,7 @@
       "mastery": 2,
       "stats": [
         "+35% physical and fire resistance",
-        "3% increased armor for each hit you have taken in the last 10 seconds"
+        "You gain a stack of Stalwart when hit. Stalwart grants 5% increased armor, lasts 10 seconds, and stacks up to 10 times."
       ],
       "in": [],
       "out": []
