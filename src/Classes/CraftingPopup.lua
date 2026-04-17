@@ -1271,9 +1271,9 @@ function CraftingPopupClass:RefreshAffixDropdowns()
 
 	local wwPool    = nil
 	local wwClassBit = 0
+	local itemBaseTypeID = self.editBaseEntry and self.editBaseEntry.base and self.editBaseEntry.base.baseTypeID
 	if self:IsWWItem() then
-		local bt = self.editBaseEntry and self.editBaseEntry.base and self.editBaseEntry.base.baseTypeID
-		wwPool       = bt and data.wwMods and data.wwMods[tostring(bt)]
+		wwPool       = itemBaseTypeID and data.wwMods and data.wwMods[tostring(itemBaseTypeID)]
 		wwClassBit   = self:GetWWClassBit()
 	end
 	local playerCsBit = self:GetCurrentClassReqBit() * 2
@@ -1284,6 +1284,15 @@ function CraftingPopupClass:RefreshAffixDropdowns()
 	for modId, mod in pairs(itemMods) do
 		if mod.statOrderKey then
 			if mod.specialAffixType and mod.specialAffixType ~= 0 then goto continue end
+			-- canRollOn filter: skip affixes that cannot roll on this item base type
+			local cro = mod.canRollOn
+			if cro and #cro > 0 and itemBaseTypeID then
+				local canRoll = false
+				for _, btid in ipairs(cro) do
+					if btid == itemBaseTypeID then canRoll = true; break end
+				end
+				if not canRoll then goto continue end
+			end
 			if wwPool then
 				local cs = wwPool[tostring(mod.statOrderKey)]
 				if cs == nil then goto continue end
