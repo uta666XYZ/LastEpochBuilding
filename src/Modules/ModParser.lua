@@ -395,6 +395,8 @@ local modTagList = {
 	["while you have an ailment overload"] = { tag = { type = "Condition", var = "HaveAilmentOverload" } },
 	["while on consecrated ground"] = { tag = { type = "Condition", var = "OnConsecratedGround" } },
 	["while you have a companion"] = { tag = { type = "Condition", var = "HaveCompanion" } },
+	["with arcane shield"] = { tag = { type = "Condition", var = "HaveArcaneShield" } },
+	["per arcane shield"] = { tag = { type = "Multiplier", var = "ArcaneShieldStack" } },
 	["per companion"] = { tag = { type = "Multiplier", var = "Companion" } },
 	["if you[' ]h?a?ve dealt a critical strike recently"] = { tag = { type = "Condition", var = "CritRecently" } },
 	["on kill"] = { tag = { type = "Condition", var = "KilledRecently" } },
@@ -426,6 +428,17 @@ local modTagList = {
 	["to cursed enemies"] = { tag = { type = "ActorCondition", actor = "enemy", var = "Cursed" } },
 	["against slowed enemies"] = { tag = { type = "ActorCondition", actor = "enemy", var = "Slowed" } },
 	["to slowed enemies"] = { tag = { type = "ActorCondition", actor = "enemy", var = "Slowed" } },
+	-- "from X enemies" — damage taken conditional tags
+	["from chilled enemies"] = { tag = { type = "ActorCondition", actor = "enemy", var = "Chilled" } },
+	["from ignited enemies"] = { tag = { type = "ActorCondition", actor = "enemy", var = "Ignited" } },
+	["from shocked enemies"] = { tag = { type = "ActorCondition", actor = "enemy", var = "Shocked" } },
+	["from slowed enemies"] = { tag = { type = "ActorCondition", actor = "enemy", var = "Slowed" } },
+	["from frozen enemies"] = { tag = { type = "ActorCondition", actor = "enemy", var = "Frozen" } },
+	["from bleeding enemies"] = { tag = { type = "ActorCondition", actor = "enemy", var = "Bleeding" } },
+	["from poisoned enemies"] = { tag = { type = "ActorCondition", actor = "enemy", var = "Poisoned" } },
+	["from time rotting enemies"] = { tag = { type = "ActorCondition", actor = "enemy", var = "TimeRotted" } },
+	["to time rotting enemies"] = { tag = { type = "ActorCondition", actor = "enemy", var = "TimeRotted" } },
+	["against time rotting enemies"] = { tag = { type = "ActorCondition", actor = "enemy", var = "TimeRotted" } },
 	["against frail enemies"] = { tag = { type = "ActorCondition", actor = "enemy", var = "Frail" } },
 	["to frail enemies"] = { tag = { type = "ActorCondition", actor = "enemy", var = "Frail" } },
 	["against enemies hit recently"] = { tag = { type = "ActorCondition", actor = "enemy", var = "HitRecently" } },
@@ -473,6 +486,11 @@ local modTagList = {
 	["while standing on your glyph of dominion"] = { tag = { type = "Condition", var = "StandingOnGlyphOfDominion" } },
 	["while near an enemy"] = { tag = { type = "Condition", var = "NearEnemy" } },
 	["from nearby enemies"] = { tag = { type = "Condition", var = "NearEnemy" } },
+	-- Player health threshold conditions
+	["at low health"] = { tag = { type = "Condition", var = "LowLife" } },
+	["while at low health"] = { tag = { type = "Condition", var = "LowLife" } },
+	["at low life"] = { tag = { type = "Condition", var = "LowLife" } },
+	["while at low life"] = { tag = { type = "Condition", var = "LowLife" } },
 	["per arcane momentum stack"] = { tag = { type = "Multiplier", var = "ArcaneMomentumStack" } },
 	-- Blocking
 	["on block"] = { tag = { type = "Condition", var = "Blocking" } },
@@ -561,6 +579,17 @@ local specialQuickFixModList = {
 	["^([%+%-]?[%d%.]+%%) Duration"] = "%1 increased Duration",
 	["^([%+%-]?[%d%.]+%%) Movespeed"] = "%1 increased Movespeed",
 	["%(up to %d+%)%s*$"] = "",
+	-- Normalize "X% [Type] Damage Taken" (without increased/reduced keyword) to INC type
+	["^([%+%-]?[%d%.]+%%) Damage Over Time Taken"] = "%1 increased Damage Over Time Taken",
+	["^([%+%-]?[%d%.]+%%) Damage Taken"] = "%1 increased Damage Taken",
+	["^([%+%-]?[%d%.]+%%) Elemental Damage Taken"] = "%1 increased Elemental Damage Taken",
+	["^([%+%-]?[%d%.]+%%) Cold Damage Taken"] = "%1 increased Cold Damage Taken",
+	["^([%+%-]?[%d%.]+%%) Fire Damage Taken"] = "%1 increased Fire Damage Taken",
+	["^([%+%-]?[%d%.]+%%) Lightning Damage Taken"] = "%1 increased Lightning Damage Taken",
+	["^([%+%-]?[%d%.]+%%) Physical Damage Taken"] = "%1 increased Physical Damage Taken",
+	["^([%+%-]?[%d%.]+%%) Void Damage Taken"] = "%1 increased Void Damage Taken",
+	["^([%+%-]?[%d%.]+%%) Necrotic Damage Taken"] = "%1 increased Necrotic Damage Taken",
+	["^([%+%-]?[%d%.]+%%) Poison Damage Taken"] = "%1 increased Poison Damage Taken",
 }
 
 for _, damageType in ipairs(DamageTypes) do

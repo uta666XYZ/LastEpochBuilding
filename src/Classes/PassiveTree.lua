@@ -345,12 +345,35 @@ local PassiveTreeClass = newClass("PassiveTree", function(self, treeVersion)
     end
 end)
 
+-- Mapping from description substrings to Condition var names.
+-- When a node's description contains any of these phrases, all of its mods
+-- receive the corresponding Condition tag so they are only applied when that
+-- config condition is enabled.
+local nodeDescriptionConditions = {
+    { phrase = "if you have cast teleport recently", condVar = "RecentlyUsedTeleport" },
+}
+
 function PassiveTreeClass:ProcessStats(node, startIndex)
     startIndex = startIndex or 1
     if startIndex == 1 then
         node.modKey = ""
         node.mods = { }
         node.modList = new("ModList")
+        -- Detect conditional descriptions and cache the required condition var
+        node.descConditionVar = nil
+        if node.description then
+            local descList = type(node.description) == "table" and node.description or { node.description }
+            for _, descLine in ipairs(descList) do
+                local lower = descLine:lower()
+                for _, entry in ipairs(nodeDescriptionConditions) do
+                    if lower:find(entry.phrase, 1, true) then
+                        node.descConditionVar = entry.condVar
+                        break
+                    end
+                end
+                if node.descConditionVar then break end
+            end
+        end
     end
 
     node.sd = {}
@@ -416,6 +439,9 @@ function PassiveTreeClass:ProcessStats(node, startIndex)
                 mod = modLib.setSource(mod, "Tree:" .. node.id)
                 if node.skillId then
                     table.insert(mod, {type = "SkillId", skillId = node.skillId})
+                end
+                if node.descConditionVar then
+                    table.insert(mod, { type = "Condition", var = node.descConditionVar })
                 end
                 if node.alloc > 1 then
                     if type(mod.value) == "table" then
