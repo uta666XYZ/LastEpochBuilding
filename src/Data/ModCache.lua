@@ -1732,7 +1732,6 @@ c["+19% Critical Strike Multiplier"]={{[1]={flags=0,keywordFlags=0,name="CritMul
 c["+19% Critical Strike Multiplier While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="CritMultiplier",type="BASE",value=19}},nil}
 c["+19% Critical Strike Multiplier against Frozen Enemies"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="Frozen"},flags=0,keywordFlags=0,name="CritMultiplier",type="BASE",value=19}},nil}
 c["+19% Fire Resistance"]={{[1]={flags=0,keywordFlags=0,name="FireResist",type="BASE",value=19}},nil}
-c["+19% Increased Cast Speed while you have Lightning Aegis"]={{[1]={flags=256,keywordFlags=2,name="Speed",type="INC",value=19}},"  while you have  Aegis "}
 c["+19% Increased Projectile Speed with Bone Nova"]={{[1]={flags=0,keywordFlags=0,name="ProjectileSpeed",type="INC",value=19}},"  with Bone Nova "}
 c["+19% Increased Projectile Speed with Marrow Shards"]={{[1]={[1]={skillName="Marrow Shards",type="SkillName"},flags=0,keywordFlags=0,name="ProjectileSpeed",type="INC",value=19}},"  with  "}
 c["+19% Lightning Critical Strike Multiplier"]={{[1]={flags=0,keywordFlags=2,name="CritMultiplier",type="BASE",value=19}},nil}
@@ -3764,7 +3763,6 @@ c["+47 Spell Damage While Channelling"]={{[1]={[1]={type="Condition",var="Channe
 c["+47% Chance to Electrify on Lightning Hit"]={{[1]={flags=8388608,keywordFlags=2,name="ChanceToTriggerOnHit_Ailment_Electrify",type="BASE",value=47}},nil}
 c["+47% Chance to Ignite on Fire Hit"]={{[1]={flags=8388608,keywordFlags=8,name="ChanceToTriggerOnHit_Ailment_Ignite",type="BASE",value=47}},nil}
 c["+47% Chance to Shock on Lightning Hit"]={{[1]={flags=8388608,keywordFlags=2,name="ChanceToTriggerOnHit_Ailment_Shock",type="BASE",value=47}},nil}
-c["+47% Increased Lightning Damage while you have Lightning Aegis"]={{[1]={flags=0,keywordFlags=2,name="LightningDamage",type="INC",value=47}},"  while you have  Aegis "}
 c["+47% Increased damage with Blood Splatter"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=47}},"  with Blood Splatter "}
 c["+47% Increased damage with Rip Blood"]={{[1]={[1]={skillName="Rip Blood",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="INC",value=47}},"  with  "}
 c["+475 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=475}},nil}
@@ -8709,7 +8707,6 @@ c["65% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",t
 c["65% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=65}},nil}
 c["65% increased Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=256,name="CritChance",type="INC",value=65}},nil}
 c["65% less Damage depending on Area Level for You and your Minions"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="MORE",value=-65}}}},"  depending on Area Level for You and your s "}
-c["65% of Damage Reflected while you have Lightning Aegis"]={{[1]={flags=0,keywordFlags=2,name="Damage",type="BASE",value=65}},"  Reflected while you have  Aegis "}
 c["65% of Shurikens Base Damage converted to Lightning"]={{[1]={[1]={skillName="Shurikens",type="SkillName"},flags=0,keywordFlags=2,name="Damage",type="BASE",value=65}},"  Base  converted to  "}
 c["66% Chance to Chill Attackers"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Chill",type="BASE",value=66}},"  Attackers "}
 c["66% Chance to Shock Attackers"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Shock",type="BASE",value=66}},"  Attackers "}
