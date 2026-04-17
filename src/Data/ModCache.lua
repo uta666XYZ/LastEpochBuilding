@@ -1344,7 +1344,7 @@ c["+15% Damage Over Time Taken"]={{[1]={flags=0,keywordFlags=0,name="DamageTaken
 c["+15% Damage Per Dagger"]={{[1]={[1]={type="Multiplier",var="DaggerItem"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=15}},nil}
 c["+15% Damage Per Sword"]={{[1]={[1]={type="Multiplier",var="SwordItem"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=15}},nil}
 c["+15% Damage Per Tier"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=15}},"  Per Tier "}
-c["+15% Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="DamageTaken",type="BASE",value=15}},nil}
+c["+15% Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="DamageTaken",type="INC",value=15}},nil}
 c["+15% Damage to Rares and Bosses"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=15}},"  to Rares and Bosses "}
 c["+15% Damage vs Low Health with Runeword: Cataclysm"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=15}},"  vs Low Health with Runeword: Cataclysm "}
 c["+15% Divine Flare Area Per Symbol"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="BASE",value=15}}," Divine Flare  Per Symbol "}
@@ -1380,7 +1380,7 @@ c["+15% Hit Damage"]={{[1]={flags=8388608,keywordFlags=0,name="Damage",type="MOR
 c["+15% Hit Damage Against Chilled Or Frozen Enemies"]={{[1]={[1]={actor="enemy",type="ActorCondition",varList={[1]="Chilled",[2]="Frozen"}},flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=15}},nil}
 c["+15% Hit Damage Against Ignited Enemies"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="Ignited"},flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=15}},nil}
 c["+15% Hit Damage Against Shocked Enemies"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="Shocked"},flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=15}},nil}
-c["+15% Hit Damage Taken While Frozen"]={{[1]={[1]={type="Condition",var="Frozen"},flags=8388608,keywordFlags=0,name="DamageTaken",type="BASE",value=15}},nil}
+c["+15% Hit Damage Taken While Frozen"]={{[1]={[1]={type="Condition",var="Frozen"},flags=8388608,keywordFlags=0,name="DamageTaken",type="INC",value=15}},nil}
 c["+15% Hit Damage To Moving Enemies"]={{[1]={flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=15}},"   To Moving Enemies "}
 c["+15% Hit Damage While Totem Active"]={{[1]={flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=15}},"   While Totem Active "}
 c["+15% Ignite Chance with Rah Rune"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Ignite",type="BASE",value=15}},"  with Rah Rune "}
@@ -2843,7 +2843,7 @@ c["+3% Bow Critical Strike Chance"]={{[1]={flags=0,keywordFlags=2048,name="CritC
 c["+3% Bow Damage"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="MORE",value=3}},nil}
 c["+3% Cast Speed"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",value=3}},nil}
 c["+3% Cast Speed With A Shield"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",value=3}},"  With A Shield "}
-c["+3% Cold Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="ColdDamageTaken",type="BASE",value=3}},nil}
+c["+3% Cold Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="ColdDamageTaken",type="INC",value=3}},nil}
 c["+3% Cold Penetration"]={{[1]={flags=0,keywordFlags=0,name="ColdPenetration",type="BASE",value=3}},nil}
 c["+3% Cold Resistance"]={{[1]={flags=0,keywordFlags=0,name="ColdResist",type="BASE",value=3}},nil}
 c["+3% Cold Spell Cast Speed"]={{[1]={flags=256,keywordFlags=260,name="Speed",type="BASE",value=3}},nil}
@@ -3050,7 +3050,7 @@ c["+30% Upheaval Totem Damage Per Totem Consumed"]={{[1]={[1]={stat="TotemsSummo
 c["+30% Venom Nova Area"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="BASE",value=30}}," Venom Nova  "}
 c["+30% Venom Nova Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=30}}," Venom Nova  "}
 c["+30% Vine Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=30}}," Vine  "}
-c["+30% Void Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="VoidDamageTaken",type="BASE",value=30}},nil}
+c["+30% Void Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="VoidDamageTaken",type="INC",value=30}},nil}
 c["+30% Ward from Greater Fragments"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=30}},"  from Greater Fragments "}
 c["+30% Wave of Death Area"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="BASE",value=30}}," Wave of Death  "}
 c["+300 Armor With Buff"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=300}},"  With Buff "}
@@ -4831,8 +4831,8 @@ c["+8% Critical Strike Multiplier with a Wand"]={{[1]={[1]={type="Condition",var
 c["+8% Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=8}},nil}
 c["+8% Damage Over Time Taken"]={{[1]={flags=0,keywordFlags=0,name="DamageTakenOverTime",type="BASE",value=8}},nil}
 c["+8% Damage Over Time vs Possessed"]={{[1]={[1]={skillName="Possess",type="SkillName"},flags=4096,keywordFlags=0,name="Damage",type="MORE",value=8}},"  vs ed "}
-c["+8% Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="DamageTaken",type="BASE",value=8}},nil}
-c["+8% Damage Taken While Dual Wielding"]={{[1]={[1]={type="Condition",var="DualWielding"},flags=0,keywordFlags=0,name="DamageTaken",type="BASE",value=8}},nil}
+c["+8% Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="DamageTaken",type="INC",value=8}},nil}
+c["+8% Damage Taken While Dual Wielding"]={{[1]={[1]={type="Condition",var="DualWielding"},flags=0,keywordFlags=0,name="DamageTaken",type="INC",value=8}},nil}
 c["+8% Damage To Shocked"]={{[1]={[1]={skillName="Shock",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=8}},"  To ed "}
 c["+8% Damage With Haste"]={{[1]={[1]={skillName="Haste",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=8}},"  With  "}
 c["+8% Damage to Rares and Bosses"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=8}},"  to Rares and Bosses "}
@@ -5084,7 +5084,7 @@ c["-1 Mana Cost"]={{[1]={flags=0,keywordFlags=0,name="ManaCost",type="BASE",valu
 c["-1 Mana Drained When Hit"]={{[1]={flags=8388608,keywordFlags=0,name="Mana",type="BASE",value=-1}},"  Drained When  "}
 c["-1 Mana Gained"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=-1}},"  Gained "}
 c["-1% Damage Over Time Taken"]={{[1]={flags=0,keywordFlags=0,name="DamageTakenOverTime",type="BASE",value=-1}},nil}
-c["-1% Damage Taken While Moving"]={{[1]={[1]={type="Condition",var="Moving"},flags=0,keywordFlags=0,name="DamageTaken",type="BASE",value=-1}},nil}
+c["-1% Damage Taken While Moving"]={{[1]={[1]={type="Condition",var="Moving"},flags=0,keywordFlags=0,name="DamageTaken",type="INC",value=-1}},nil}
 c["-1% Elemental Resistances"]={{[1]={flags=0,keywordFlags=0,name="FireResist",type="BASE",value=-1},[2]={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=-1},[3]={flags=0,keywordFlags=0,name="ColdResist",type="BASE",value=-1}},nil}
 c["-1% Enemy Poison Resistance Per Int"]={{[1]={[1]={stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="PoisonResist",type="BASE",value=-1}}," Enemy  "}
 c["-1% Less Damage Taken from Ignited Shocked or Chilled Enemies"]={{[1]={[1]={skillName="Ignite",type="SkillName"},flags=0,keywordFlags=0,name="DamageTaken",type="MORE",value=1}},"  from d Shocked or Chilled Enemies "}
@@ -5097,13 +5097,13 @@ c["-10% Area"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="BASE",val
 c["-10% Attack Speed"]={{[1]={flags=3584,keywordFlags=0,name="Speed",type="BASE",value=-10}},nil}
 c["-10% Cast Speed"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",value=-10}},nil}
 c["-10% Cast Speed Per Extra Projectile"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",value=-10}},"  Per Extra Projectile "}
-c["-10% Cold Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="ColdDamageTaken",type="BASE",value=-10}},nil}
+c["-10% Cold Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="ColdDamageTaken",type="INC",value=-10}},nil}
 c["-10% Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=-10}},nil}
 c["-10% Damage Over Time Taken"]={{[1]={flags=0,keywordFlags=0,name="DamageTakenOverTime",type="BASE",value=-10}},nil}
 c["-10% Damage Taken While Rushing"]={{[1]={flags=0,keywordFlags=0,name="DamageTaken",type="BASE",value=-10}},"  While Rushing "}
 c["-10% Damage Taken at Low Health"]={{[1]={flags=0,keywordFlags=0,name="DamageTaken",type="BASE",value=-10}},"  at Low Health "}
 c["-10% Duration"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="INC",value=-10}},nil}
-c["-10% Elemental Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="ElementalDamageTaken",type="BASE",value=-10}},nil}
+c["-10% Elemental Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="ElementalDamageTaken",type="INC",value=-10}},nil}
 c["-10% Elemental Resistance"]={{[1]={flags=0,keywordFlags=0,name="FireResist",type="BASE",value=-10},[2]={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=-10},[3]={flags=0,keywordFlags=0,name="ColdResist",type="BASE",value=-10}},nil}
 c["-10% Explosion Hit Damage"]={{[1]={flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=-10}}," Explosi  "}
 c["-10% Fear Duration"]={{[1]={[1]={skillName="Fear",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="MORE",value=-10}},nil}
@@ -5113,7 +5113,7 @@ c["-10% Hit Damage"]={{[1]={flags=8388608,keywordFlags=0,name="Damage",type="MOR
 c["-10% Less Duration"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="MORE",value=10}},nil}
 c["-10% Mana Cost"]={{[1]={flags=0,keywordFlags=0,name="ManaCost",type="BASE",value=-10}},nil}
 c["-10% Mirror Image Duration"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="MORE",value=-10}}," Mirror Image  "}
-c["-10% Necrotic Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamageTaken",type="BASE",value=-10}},nil}
+c["-10% Necrotic Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamageTaken",type="INC",value=-10}},nil}
 c["-10% Physical Resistance"]={{[1]={flags=0,keywordFlags=0,name="PhysicalResist",type="BASE",value=-10}},nil}
 c["-10% Projectile Speed"]={{[1]={flags=0,keywordFlags=0,name="ProjectileSpeed",type="BASE",value=-10}},nil}
 c["-10% Shield Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="DamageTaken",type="BASE",value=-10}}," Shield  "}
@@ -5121,13 +5121,13 @@ c["-10% Shield Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",va
 c["-10% Spirit Movespeed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="BASE",value=-10}}," Spirit  "}
 c["-10% Stack Duration"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="MORE",value=-10}}," Stack  "}
 c["-10% Thrown Blades Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=-10}}," Thrown Blades  "}
-c["-10% Void Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="VoidDamageTaken",type="BASE",value=-10}},nil}
+c["-10% Void Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="VoidDamageTaken",type="INC",value=-10}},nil}
 c["-100% Current Health Drain"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=-100}}," Current  Drain "}
 c["-100% Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="BASE",value=-100}},nil}
 c["-100% Mana From Burst"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=-100}},"  From Burst "}
 c["-12 Ward Consumed Per Ignite"]={{[1]={[1]={skillName="Ignite",type="SkillName"},flags=0,keywordFlags=0,name="Ward",type="BASE",value=-12}},"  Consumed Per  "}
 c["-12 to -8 Judgement Mana Cost while Unarmed"]={{[1]={[1]={type="Condition",var="Unarmed"},[2]={skillName="Judgement",type="SkillName"},flags=0,keywordFlags=0,name="ManaCost",type="BASE",value=-12}}," -8    "}
-c["-12% Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="DamageTaken",type="BASE",value=-12}},nil}
+c["-12% Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="DamageTaken",type="INC",value=-12}},nil}
 c["-12% Mana Drain"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=-12}},"  Drain "}
 c["-12% Physical Damage From Netted Enemies"]={{[1]={[1]={skillName="Netted",type="SkillName"},flags=0,keywordFlags=0,name="PhysicalDamage",type="MORE",value=-12}},"  From  Enemies "}
 c["-13% Health Decay"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=-13}},"  Decay "}
@@ -5139,9 +5139,9 @@ c["-15% Cooldown Duration"]={{[1]={flags=0,keywordFlags=0,name="CooldownRecovery
 c["-15% Cooldown Recovery Speed"]={{[1]={flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=-15}},nil}
 c["-15% Critical Multiplier"]={{[1]={flags=0,keywordFlags=0,name="CritMultiplier",type="BASE",value=-15}},nil}
 c["-15% Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=-15}},nil}
-c["-15% Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="DamageTaken",type="BASE",value=-15}},nil}
+c["-15% Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="DamageTaken",type="INC",value=-15}},nil}
 c["-15% Duration"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="INC",value=-15}},nil}
-c["-15% Elemental Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="ElementalDamageTaken",type="BASE",value=-15}},nil}
+c["-15% Elemental Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="ElementalDamageTaken",type="INC",value=-15}},nil}
 c["-15% Health Decay"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=-15}},"  Decay "}
 c["-15% Mana Cost"]={{[1]={flags=0,keywordFlags=0,name="ManaCost",type="BASE",value=-15}},nil}
 c["-15% Pulls Strength"]={{[1]={flags=0,keywordFlags=0,name="Str",type="BASE",value=-15}}," Pulls  "}
@@ -5155,7 +5155,7 @@ c["-2 Mana Cost"]={{[1]={flags=0,keywordFlags=0,name="ManaCost",type="BASE",valu
 c["-2 Mana Cost "]={{[1]={flags=0,keywordFlags=0,name="ManaCost",type="BASE",value=-2}},nil}
 c["-2 Ward Gain Cooldown Duration"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=-2}},"  Gain Cooldown Duration "}
 c["-2% Attack Speed"]={{[1]={flags=3584,keywordFlags=0,name="Speed",type="BASE",value=-2}},nil}
-c["-2% Damage Taken From Nearby Enemies"]={{[1]={[1]={type="Condition",var="NearEnemy"},flags=0,keywordFlags=0,name="DamageTaken",type="BASE",value=-2}},nil}
+c["-2% Damage Taken From Nearby Enemies"]={{[1]={[1]={type="Condition",var="NearEnemy"},flags=0,keywordFlags=0,name="DamageTaken",type="INC",value=-2}},nil}
 c["-2% Damage Taken in Arena"]={{[1]={flags=0,keywordFlags=0,name="DamageTaken",type="BASE",value=-2}},"  in Arena "}
 c["-2% Damage Taken with Arcane Shield"]={{[1]={flags=0,keywordFlags=0,name="DamageTaken",type="BASE",value=-2}},"  with Arcane Shield "}
 c["-20% All Resistances"]={{[1]={flags=0,keywordFlags=0,name="FireResist",type="BASE",value=-20},[2]={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=-20},[3]={flags=0,keywordFlags=0,name="ColdResist",type="BASE",value=-20},[4]={flags=0,keywordFlags=0,name="PhysicalResist",type="BASE",value=-20},[5]={flags=0,keywordFlags=0,name="PoisonResist",type="BASE",value=-20},[6]={flags=0,keywordFlags=0,name="NecroticResist",type="BASE",value=-20},[7]={flags=0,keywordFlags=0,name="VoidResist",type="BASE",value=-20}},nil}
@@ -5199,19 +5199,19 @@ c["-30% Elemental Resistance"]={{[1]={flags=0,keywordFlags=0,name="FireResist",t
 c["-30% Less Area"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="MORE",value=30}},nil}
 c["-30% Projectile Speed"]={{[1]={flags=0,keywordFlags=0,name="ProjectileSpeed",type="BASE",value=-30}},nil}
 c["-35% Area"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="BASE",value=-35}},nil}
-c["-35% Cold Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="ColdDamageTaken",type="BASE",value=-35}},nil}
+c["-35% Cold Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="ColdDamageTaken",type="INC",value=-35}},nil}
 c["-35% Orbit Duration with Orbital Fulmination"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="MORE",value=-35}}," Orbit  with Orbital Fulmination "}
 c["-4 Bow Attack Mana Cost"]={{[1]={[1]={skillName="Bow Attack",type="SkillName"},flags=0,keywordFlags=0,name="ManaCost",type="BASE",value=-4}},nil}
 c["-4 Fire Spell Mana Cost"]={{[1]={flags=0,keywordFlags=264,name="ManaCost",type="BASE",value=-4}},nil}
 c["-4 Mana Cost"]={{[1]={flags=0,keywordFlags=0,name="ManaCost",type="BASE",value=-4}},nil}
 c["-4 Spell Mana Cost"]={{[1]={flags=0,keywordFlags=256,name="ManaCost",type="BASE",value=-4}},nil}
 c["-4 Throwing Attack Mana Cost"]={{[1]={flags=0,keywordFlags=1024,name="ManaCost",type="BASE",value=-4}},"  Attack  "}
-c["-4% Damage Taken While Moving"]={{[1]={[1]={type="Condition",var="Moving"},flags=0,keywordFlags=0,name="DamageTaken",type="BASE",value=-4}},nil}
+c["-4% Damage Taken While Moving"]={{[1]={[1]={type="Condition",var="Moving"},flags=0,keywordFlags=0,name="DamageTaken",type="INC",value=-4}},nil}
 c["-4% Damage Taken from Chilled Enemies"]={{[1]={[1]={skillName="Chill",type="SkillName"},flags=0,keywordFlags=0,name="DamageTaken",type="BASE",value=-4}},"  from ed Enemies "}
 c["-4% Damage Taken from Ignited Enemies"]={{[1]={[1]={skillName="Ignite",type="SkillName"},flags=0,keywordFlags=0,name="DamageTaken",type="BASE",value=-4}},"  from d Enemies "}
 c["-4% Damage Taken from Shocked Enemies"]={{[1]={[1]={skillName="Shock",type="SkillName"},flags=0,keywordFlags=0,name="DamageTaken",type="BASE",value=-4}},"  from ed Enemies "}
 c["-4% Enemy Movespeed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="BASE",value=-4}}," Enemy  "}
-c["-4% Void Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="VoidDamageTaken",type="BASE",value=-4}},nil}
+c["-4% Void Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="VoidDamageTaken",type="INC",value=-4}},nil}
 c["-40 Mana Cost"]={{[1]={flags=0,keywordFlags=0,name="ManaCost",type="BASE",value=-40}},nil}
 c["-40% Area"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="BASE",value=-40}},nil}
 c["-40% Cast Speed"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",value=-40}},nil}
@@ -5237,7 +5237,7 @@ c["-5% Damage over Time Taken per Stack of Crimson Shroud"]={{[1]={[1]={skillNam
 c["-5% Enemy Poison Resistance"]={{[1]={flags=0,keywordFlags=0,name="PoisonResist",type="BASE",value=-5}}," Enemy  "}
 c["-5% First Strike Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=-5}}," First Strike  "}
 c["-5% Less Attack Speed"]={{[1]={flags=3584,keywordFlags=0,name="Speed",type="MORE",value=5}},nil}
-c["-5% Poison Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamageTaken",type="BASE",value=-5}},nil}
+c["-5% Poison Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamageTaken",type="INC",value=-5}},nil}
 c["-5% Second Strike Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=-5}}," Second Strike  "}
 c["-5% Summoning Cast Speed"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="BASE",value=-5}}," Summoning  "}
 c["-5% Void And Physical Damage Taken"]={{[1]={flags=0,keywordFlags=16,name="PhysicalDamageTaken",type="BASE",value=-5}},"  And  "}
@@ -5250,7 +5250,7 @@ c["-50% Cursed Limbs and Cursed Ground duration"]={{[1]={flags=0,keywordFlags=0,
 c["-50% Duration"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="INC",value=-50}},nil}
 c["-50% Explosion Hit Damage"]={{[1]={flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=-50}}," Explosi  "}
 c["-50% Extra Projectiles"]={{[1]={flags=0,keywordFlags=0,name="ProjectileCount",type="BASE",value=-50}},nil}
-c["-50% Fire Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="FireDamageTaken",type="BASE",value=-50}},nil}
+c["-50% Fire Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="FireDamageTaken",type="INC",value=-50}},nil}
 c["-50% Infernal Shade Mana Cost"]={{[1]={[1]={skillName="Infernal Shade",type="SkillName"},flags=0,keywordFlags=0,name="ManaCost",type="BASE",value=-50}},nil}
 c["-50% Less Duration"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="MORE",value=50}},nil}
 c["-50% Maelstrom Mana Cost"]={{[1]={[1]={skillName="Maelstrom",type="SkillName"},flags=0,keywordFlags=0,name="ManaCost",type="BASE",value=-50}},nil}
@@ -5268,13 +5268,13 @@ c["-6 to -3 Totem Mana Cost"]={{[1]={flags=0,keywordFlags=0,name="ManaCost",type
 c["-6% Ailment Damage Per Orb Consumed"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=-6}}," Ailment  Per Orb Consumed "}
 c["-6% Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=-6}},nil}
 c["-6% Bonus Damage from Crits with a Catalyst"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=-6}}," Bonus  from Crits with a Catalyst "}
-c["-6% Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="DamageTaken",type="BASE",value=-6}},nil}
+c["-6% Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="DamageTaken",type="INC",value=-6}},nil}
 c["-6% Radius"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="BASE",value=-6}},nil}
 c["-6% Target Area per stack"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="BASE",value=-6}}," Target  per stack "}
 c["-60% Blaze Shade Duration"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="MORE",value=-60}}," Blaze Shade  "}
 c["-7 Spell Mana Cost"]={{[1]={flags=0,keywordFlags=256,name="ManaCost",type="BASE",value=-7}},nil}
 c["-7 Throwing Attack Mana Cost"]={{[1]={flags=0,keywordFlags=1024,name="ManaCost",type="BASE",value=-7}},"  Attack  "}
-c["-7% Elemental Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="ElementalDamageTaken",type="BASE",value=-7}},nil}
+c["-7% Elemental Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="ElementalDamageTaken",type="INC",value=-7}},nil}
 c["-70% Shadow Falcon Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=-70}}," Shadow Falcon  "}
 c["-75% Forged Weapon Duration"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="MORE",value=-75}}," Forged Weapon  "}
 c["-75% Physical Resistance"]={{[1]={flags=0,keywordFlags=0,name="PhysicalResist",type="BASE",value=-75}},nil}

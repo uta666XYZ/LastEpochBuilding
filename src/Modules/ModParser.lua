@@ -561,6 +561,16 @@ local specialQuickFixModList = {
 	["^([%+%-]?[%d%.]+%%) Duration"] = "%1 increased Duration",
 	["^([%+%-]?[%d%.]+%%) Movespeed"] = "%1 increased Movespeed",
 	["%(up to %d+%)%s*$"] = "",
+	-- Normalize "X% [Type] Damage Taken" (without increased/reduced keyword) to INC type
+	["^([%+%-]?[%d%.]+%%) Damage Taken"] = "%1 increased Damage Taken",
+	["^([%+%-]?[%d%.]+%%) Elemental Damage Taken"] = "%1 increased Elemental Damage Taken",
+	["^([%+%-]?[%d%.]+%%) Cold Damage Taken"] = "%1 increased Cold Damage Taken",
+	["^([%+%-]?[%d%.]+%%) Fire Damage Taken"] = "%1 increased Fire Damage Taken",
+	["^([%+%-]?[%d%.]+%%) Lightning Damage Taken"] = "%1 increased Lightning Damage Taken",
+	["^([%+%-]?[%d%.]+%%) Physical Damage Taken"] = "%1 increased Physical Damage Taken",
+	["^([%+%-]?[%d%.]+%%) Void Damage Taken"] = "%1 increased Void Damage Taken",
+	["^([%+%-]?[%d%.]+%%) Necrotic Damage Taken"] = "%1 increased Necrotic Damage Taken",
+	["^([%+%-]?[%d%.]+%%) Poison Damage Taken"] = "%1 increased Poison Damage Taken",
 }
 
 for _, damageType in ipairs(DamageTypes) do
