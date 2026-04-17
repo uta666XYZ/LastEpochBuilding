@@ -2308,7 +2308,7 @@
       "mastery": 1,
       "stats": [
         "+50 mana",
-        "Spells deal increased damage equal to their mana cost"
+        "Spells deal 1% more damage per 2 mana cost, up to 50% more"
       ],
       "in": [],
       "out": []
@@ -2323,8 +2323,8 @@
       "isAscendancyStart": true,
       "mastery": 2,
       "stats": [
-        "4 ward gained on melee hit",
-        "Mana spent on melee attacks is converted to ward"
+        "12 ward gained on melee use and hit at least one enemy",
+        "40% of added melee damage on weapons is also gained as added spell damage"
       ],
       "in": [],
       "out": []
