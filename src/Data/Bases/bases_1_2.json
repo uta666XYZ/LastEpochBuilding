@@ -1,5 +1,6 @@
 {
   "Refuge Helmet": {
+    "legacy": true,
     "type": "Helmet",
     "baseTypeID": 0,
     "subTypeID": 0,
@@ -38,6 +39,7 @@
     ]
   },
   "Wolf Helmet": {
+    "legacy": true,
     "type": "Helmet",
     "baseTypeID": 0,
     "subTypeID": 3,
