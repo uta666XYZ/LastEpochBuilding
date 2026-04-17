@@ -75,6 +75,7 @@ local modNameList = {
 	["ward retention"] = "WardRetention",
 	["ward regen"] = "WardPerSecond",
 	["glancing blow chance"] = "GlancingBlowChance",
+	["chance to take 0 damage when hit"] = "GlancingBlowChance",
 	["block effectiveness"] = "BlockEffectiveness",
 	["stun avoidance"] = "StunAvoidance",
 	["crit avoidance"] = "CritAvoidance",
@@ -359,6 +360,8 @@ local preFlagList = {
 -- List of modifier tags
 local modTagList = {
 	[". this effect is doubled if you have (%d+) or more maximum mana."] = function(num) return { tag = { type = "StatThreshold", stat = "Mana", threshold = num, mult = 2 } } end,
+	["if you have at least (%d+) ward"] = function(num) return { tag = { type = "StatThreshold", stat = "Ward", threshold = num } } end,
+	["if you have at least (%d+) total attributes"] = function(num) return { tag = { type = "StatThreshold", stat = "TotalAttr", threshold = num } } end,
 	["for (%d+) seconds"] = { },
 	[" on critical strike"] = { tag = { type = "Condition", var = "CriticalStrike" } },
 	["from critical strikes"] = { tag = { type = "Condition", var = "CriticalStrike" } },
@@ -509,6 +512,20 @@ for i,stat in ipairs(Attributes) do
 	modTagList["per " .. abbr] = { tag = { type = "PerStat", stat = Attributes[i] } }
 	modTagList["per player " .. abbr] = { tag = { type = "PerStat", stat = Attributes[i], actor = "parent" } }
 	modTagList["per (%d+) " .. abbr] = function(num) return { tag = { type = "PerStat", stat = Attributes[i], div = num } } end
+end
+-- Season 4 (1.4) converted attributes
+local S4Attributes = {
+	{ long = "guile",     stat = "Guile" },
+	{ long = "brutality", stat = "Brutality" },
+	{ long = "madness",   stat = "Madness" },
+	{ long = "apathy",    stat = "Apathy" },
+	{ long = "rampancy",  stat = "Rampancy" },
+}
+for _, s4 in ipairs(S4Attributes) do
+	local s = s4.stat
+	modTagList["per " .. s4.long] = { tag = { type = "PerStat", stat = s } }
+	modTagList["per (%d+) " .. s4.long] = function(num) return { tag = { type = "PerStat", stat = s, div = num } } end
+	modTagList["w?h?i[lf]e? you have at least (%d+) " .. s4.long] = function(num) return { tag = { type = "StatThreshold", stat = s, threshold = num } } end
 end
 for _, weapon in ipairs(DamageSourceWeapons) do
 	modTagList["with an? " .. weapon:lower()] = { tag = { type = "Condition", var = "Using" .. weapon } }
