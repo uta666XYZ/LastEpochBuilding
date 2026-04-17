@@ -374,6 +374,21 @@ local options = {
 	{ var = "conditionStunnedEnemyRecently", type = "check", label = "Have you Stunned an Enemy Recently?", ifCond = "StunnedEnemyRecently", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:StunnedEnemyRecently", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
+	{ var = "conditionEchoedRecently", type = "check", label = "Have you Echoed Recently?", ifCond = "EchoedRecently", apply = function(val, modList, enemyModList)
+		modList:NewMod("Condition:EchoedRecently", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
+	end },
+	{ var = "conditionDirectlyCastColdSpellRecently", type = "check", label = "Have you Directly Cast a Cold Spell Recently?", ifCond = "DirectlyCastColdSpellRecently", apply = function(val, modList, enemyModList)
+		modList:NewMod("Condition:DirectlyCastColdSpellRecently", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
+	end },
+	{ var = "conditionDirectlyCastPhysSpellRecently", type = "check", label = "Have you Directly Cast a Physical Spell Recently?", ifCond = "DirectlyCastPhysSpellRecently", apply = function(val, modList, enemyModList)
+		modList:NewMod("Condition:DirectlyCastPhysSpellRecently", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
+	end },
+	{ var = "conditionCastDevouringOrbRecently", type = "check", label = "Have you Cast Devouring Orb Recently?", ifCond = "CastDevouringOrbRecently", apply = function(val, modList, enemyModList)
+		modList:NewMod("Condition:CastDevouringOrbRecently", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
+	end },
+	{ var = "multiplierMeteorCastRecently", type = "count", label = "# of Meteors Cast Recently (max 18):", ifMult = "MeteorCastRecently", apply = function(val, modList, enemyModList)
+		modList:NewMod("Multiplier:MeteorCastRecently", "BASE", val, "Config", { type = "Condition", var = "Combat" })
+	end },
 	-- Section: Effective DPS options
 	{ section = "For Effective DPS", col = 1 },
 	{ var = "meleeDistance", type = "count", label = "Melee distance to enemy:", ifTagType = "MeleeProximity", ifFlag = "melee" },
