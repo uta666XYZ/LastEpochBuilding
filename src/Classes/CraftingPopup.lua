@@ -64,6 +64,12 @@ local NO_T8_SLOTS = { prefix1=true, prefix2=true, suffix1=true, suffix2=true, se
 -- Fixed-tier slots
 local FIXED_TIER_SLOTS = { primordial=true }
 
+-- Convert item display name to image filename
+-- "Acolyte's Sceptre" -> "acolyte_s_sceptre.png"
+local function itemNameToFilename(name)
+	return name:lower():gsub("'", "_"):gsub("[^%a%d]+", "_"):gsub("_+", "_"):gsub("^_",""):gsub("_$","") .. ".png"
+end
+
 -- Rarity for crafted items based on affix count and highest tier index (0-based)
 local function getRarityForAffixes(affixCount, maxTier)
 	if affixCount == 0 then return "NORMAL" end
@@ -219,6 +225,9 @@ local CraftingPopupClass = newClass("CraftingPopup", "ControlHost", "Control", f
 	self.typeCards  = {}
 	self.rightCards = {}
 
+	-- Image handle cache for item cards
+	self.imageHandles = {}
+
 	-- Affix lists per slot (populated by RefreshAffixDropdowns)
 	self.affixLists = {
 		prefix1={}, prefix2={}, suffix1={}, suffix2={},
@@ -265,6 +274,20 @@ function CraftingPopupClass:LoadSetData()
 	local setData = readJsonFile("Data/Set/set_" .. ver .. ".json")
 	if not setData then setData = readJsonFile("Data/Set/set_1_4.json") end
 	return setData or {}
+end
+
+function CraftingPopupClass:GetItemImage(name, rarity)
+	local isUnique = rarity == "UNIQUE" or rarity == "WWUNIQUE" or rarity == "SET"
+	local filename = itemNameToFilename(name)
+	local cacheKey = (isUnique and "u:" or "b:") .. filename
+	if not self.imageHandles[cacheKey] then
+		local h = NewImageHandle()
+		local path = isUnique and ("Assets/items/uniques/" .. filename)
+		             or ("Assets/items/bases/" .. filename)
+		h:Load(path, "ASYNC")
+		self.imageHandles[cacheKey] = h
+	end
+	return self.imageHandles[cacheKey]
 end
 
 function CraftingPopupClass:GetSelectedTypeName()
@@ -1816,7 +1839,7 @@ function CraftingPopupClass:Draw(viewPort)
 	local visY = tlY - self.typeScrollY
 	for i, entry in ipairs(self.orderedTypeList) do
 		local cardY = visY + (i - 1) * rowH
-		if cardY + rowH > tlY and cardY < tlY + tlH then
+		if cardY >= tlY and cardY + rowH <= tlY + tlH then
 			if not entry.isSeparator then
 				t_insert(self.typeCards, { y1 = cardY, y2 = cardY + rowH, entry = entry, index = i })
 			end
@@ -1954,28 +1977,42 @@ function CraftingPopupClass:DrawItemCards(areaX, areaY, areaW, areaH, mx, my)
 			end
 			DrawImage(nil, cx, cy, 3, IC_H)
 
+			-- Item image (46x46, left side)
+			local IMG = 46
+			local imgHandle = self:GetItemImage(entry.name, entry.rarity)
+			if imgHandle and imgHandle:IsValid() then
+				SetDrawColor(1, 1, 1)
+				DrawImage(imgHandle, cx + 4, cy + 4, IMG, IMG)
+			end
+			local textX = cx + IMG + 8
+
 			-- Item name
 			SetDrawColor(1, 1, 1)
-			DrawString(cx + 6, cy + 5, "LEFT", 13, "VAR", (col3 or "^7") .. (entry.label or entry.name))
+			local maxChars = m_floor((IC_W - IMG - 12) / 7)
+			local label = entry.label or entry.name
+			local truncLabel = #label > maxChars and label:sub(1, maxChars - 2) .. ".." or label
+			DrawString(textX, cy + 5, "LEFT", 13, "VAR", (col3 or "^7") .. truncLabel)
 
 			-- Type and Lv Req
 			local lvReq = entry.base and entry.base.req and entry.base.req.level or 0
 			local typeStr = "^8" .. (entry.displayType or "") ..
 				(lvReq > 0 and ("  Lv " .. tostring(lvReq)) or "")
-			DrawString(cx + 6, cy + 22, "LEFT", 11, "VAR", typeStr)
+			DrawString(textX, cy + 22, "LEFT", 11, "VAR", typeStr)
 
 			-- Implicit (first one)
 			if entry.base and entry.base.implicits and entry.base.implicits[1] then
 				local impl = cleanImplicitText(entry.base.implicits[1])
 				if impl then
-					local truncated = #impl > 30 and impl:sub(1,28) .. ".." or impl
-					DrawString(cx + 6, cy + 37, "LEFT", 11, "VAR", "^8" .. truncated)
+					local maxImpl = m_floor((IC_W - IMG - 12) / 6)
+					local truncated = #impl > maxImpl and impl:sub(1, maxImpl - 2) .. ".." or impl
+					DrawString(textX, cy + 37, "LEFT", 11, "VAR", "^8" .. truncated)
 				end
 			elseif entry.uniqueData and entry.uniqueData.mods and entry.uniqueData.mods[1] then
 				local mod = cleanImplicitText(entry.uniqueData.mods[1])
 				if mod then
-					local truncated = #mod > 30 and mod:sub(1,28) .. ".." or mod
-					DrawString(cx + 6, cy + 37, "LEFT", 11, "VAR", "^8" .. truncated)
+					local maxImpl = m_floor((IC_W - IMG - 12) / 6)
+					local truncated = #mod > maxImpl and mod:sub(1, maxImpl - 2) .. ".." or mod
+					DrawString(textX, cy + 37, "LEFT", 11, "VAR", "^8" .. truncated)
 				end
 			end
 
@@ -2099,51 +2136,61 @@ function CraftingPopupClass:ProcessInput(inputEvents, viewPort)
 			if event.key == "ESCAPE" then
 				self:Close()
 				return
-			end
-		elseif event.type == "MouseButtonDown" and event.button == 1 then
-			-- Type list click
-			local tlX = px + 4
-			local tlY = py + TYPE_LIST_Y
-			local tlW = LEFT_W - 8
-			local tlH = TYPE_LIST_H
-			if mx >= tlX and mx < tlX + tlW and my >= tlY and my < tlY + tlH then
-				for _, card in ipairs(self.typeCards) do
-					if my >= card.y1 and my < card.y2 then
-						self.selectedTypeIndex = card.index
-						self.rightScrollY = 0
-						self.searchText   = ""
-						if self.controls.rightSearch then
-							self.controls.rightSearch:SetText("")
+			elseif event.key == "LEFTBUTTON" then
+				-- Type list click
+				local tlX = px + 4
+				local tlY = py + TYPE_LIST_Y
+				local tlW = LEFT_W - 8
+				local tlH = TYPE_LIST_H
+				if mx >= tlX and mx < tlX + tlW and my >= tlY and my < tlY + tlH then
+					for _, card in ipairs(self.typeCards) do
+						if my >= card.y1 and my < card.y2 then
+							self.selectedTypeIndex = card.index
+							self.rightScrollY = 0
+							self.searchText   = ""
+							if self.controls.rightSearch then
+								self.controls.rightSearch:SetText("")
+							end
+							self:RefreshBaseList()
+							break
 						end
-						self:RefreshBaseList()
-						break
 					end
 				end
-			end
 
-			-- Right panel card click
-			local rpX = px + RP_X
-			if mx >= rpX and mx < px + pw then
-				for _, card in ipairs(self.rightCards) do
-					if mx >= card.x1 and mx < card.x2 and my >= card.y1 and my < card.y2 then
-						if self.rightTab == "item" then
-							self:SelectBase(card.entry)
-						else
-							self:SelectAffixEntry(card.entry)
+				-- Right panel card click
+				local rpX = px + RP_X
+				if mx >= rpX and mx < px + pw then
+					for _, card in ipairs(self.rightCards) do
+						if mx >= card.x1 and mx < card.x2 and my >= card.y1 and my < card.y2 then
+							if self.rightTab == "item" then
+								self:SelectBase(card.entry)
+							else
+								self:SelectAffixEntry(card.entry)
+							end
+							break
 						end
-						break
 					end
 				end
-			end
-		elseif event.type == "MouseWheel" then
-			local tlX = px + 4
-			local tlY = py + TYPE_LIST_Y
-			local tlW = LEFT_W - 8
-			local tlH = TYPE_LIST_H
-			if mx >= tlX and mx < tlX + tlW and my >= tlY and my < tlY + tlH then
-				self.typeScrollY = self.typeScrollY - event.direction * TYPE_ROW_H * 3
-			elseif mx >= px + RP_X and mx < px + pw then
-				self.rightScrollY = self.rightScrollY - event.direction * AC_H * 3
+			elseif event.key == "WHEELDOWN" then
+				local tlX = px + 4
+				local tlY = py + TYPE_LIST_Y
+				local tlW = LEFT_W - 8
+				local tlH = TYPE_LIST_H
+				if mx >= tlX and mx < tlX + tlW and my >= tlY and my < tlY + tlH then
+					self.typeScrollY = self.typeScrollY + TYPE_ROW_H * 3
+				elseif mx >= px + RP_X and mx < px + pw then
+					self.rightScrollY = self.rightScrollY + AC_H * 3
+				end
+			elseif event.key == "WHEELUP" then
+				local tlX = px + 4
+				local tlY = py + TYPE_LIST_Y
+				local tlW = LEFT_W - 8
+				local tlH = TYPE_LIST_H
+				if mx >= tlX and mx < tlX + tlW and my >= tlY and my < tlY + tlH then
+					self.typeScrollY = self.typeScrollY - TYPE_ROW_H * 3
+				elseif mx >= px + RP_X and mx < px + pw then
+					self.rightScrollY = self.rightScrollY - AC_H * 3
+				end
 			end
 		end
 	end
