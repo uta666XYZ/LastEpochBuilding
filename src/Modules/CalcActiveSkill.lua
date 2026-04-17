@@ -184,16 +184,12 @@ local function getWeaponFlags(env, weaponData, weaponTypes)
 	end
 	if weaponTypes then
 		for _, types in ipairs(weaponTypes) do
-			if not types[weaponData.type] and
-			(not weaponData.countsAsAll1H or not (types["Claw"] or types["Dagger"] or types["One Handed Axe"] or types["One Handed Mace"] or types["One Handed Sword"])) then
+			if not types[weaponData.type] then
 				return nil, info
 			end
 		end
 	end
 	local flags = ModFlag[info.flag] or 0
-	if weaponData.countsAsAll1H then
-		flags = bor(ModFlag.Axe, ModFlag.Claw, ModFlag.Dagger, ModFlag.Mace, ModFlag.Sword)
-	end
 	if weaponData.type ~= "None" then
 		flags = bor(flags, ModFlag.Weapon)
 		if info.oneHand then
@@ -353,9 +349,6 @@ function calcs.buildActiveSkillModList(env, activeSkill)
 	if skillTypes[SkillType.Movement] then
 		skillKeywordFlags = bor(skillKeywordFlags, KeywordFlag.Movement)
 	end
-	if skillTypes[SkillType.Vaal] then
-		skillKeywordFlags = bor(skillKeywordFlags, KeywordFlag.Vaal)
-	end
 	if skillTypes[SkillType.Lightning] then
 		skillKeywordFlags = bor(skillKeywordFlags, KeywordFlag.Lightning)
 	end
@@ -374,15 +367,8 @@ function calcs.buildActiveSkillModList(env, activeSkill)
 	if skillFlags.weapon1Attack and band(activeSkill.weapon1Flags, ModFlag.Bow) ~= 0 then
 		skillKeywordFlags = bor(skillKeywordFlags, KeywordFlag.Bow)
 	end
-	if skillFlags.brand then
-		skillKeywordFlags = bor(skillKeywordFlags, KeywordFlag.Brand)
-	end
 	if skillFlags.totem then
 		skillKeywordFlags = bor(skillKeywordFlags, KeywordFlag.Totem)
-	elseif skillFlags.trap then
-		skillKeywordFlags = bor(skillKeywordFlags, KeywordFlag.Trap)
-	elseif skillFlags.mine then
-		skillKeywordFlags = bor(skillKeywordFlags, KeywordFlag.Mine)
 	elseif not skillTypes[SkillType.Triggered] then
 		skillFlags.selfCast = true
 	end
@@ -544,19 +530,6 @@ function calcs.buildActiveSkillModList(env, activeSkill)
 	if skillFlags.totem then
 		activeSkill.skillData.totemLevel = activeEffect.grantedEffectLevel.levelRequirement
 	end
-
-	-- Add active mine multiplier
-	if skillFlags.mine then
-		activeSkill.activeMineCount = (env.mode == "CALCS" and activeEffect.srcInstance.skillMineCountCalcs) or (env.mode ~= "CALCS" and activeEffect.srcInstance.skillMineCount)
-		if activeSkill.activeMineCount and activeSkill.activeMineCount > 0 then
-			skillModList:NewMod("Multiplier:ActiveMineCount", "BASE", activeSkill.activeMineCount, "Base")
-			env.enemy.modDB.multipliers["ActiveMineCount"] = m_max(activeSkill.activeMineCount or 0, env.enemy.modDB.multipliers["ActiveMineCount"] or 0)
-		end
-	elseif activeEffect.srcInstance and not (activeEffect.gemData and activeEffect.gemData.secondaryGrantedEffect) then
-		activeEffect.srcInstance.skillMineCountCalcs = nil
-		activeEffect.srcInstance.skillMineCount = nil
-	end
-	
 
 	-- Determine if it possible to have a stage on this skill based upon skill parts.
 	local noPotentialStage = true

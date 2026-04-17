@@ -2317,10 +2317,8 @@ c["+23 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=23}
 c["+23 Dodge Rating if you have been hit recently"]={{[1]={[1]={type="Condition",var="BeenHitRecently"},flags=0,keywordFlags=0,name="Evasion",type="BASE",value=23}},nil}
 c["+23 Endurance Threshold"]={{[1]={flags=0,keywordFlags=0,name="EnduranceThreshold",type="BASE",value=23}},nil}
 c["+23 Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="BASE",value=23}},nil}
-c["+23 Health Regen while in Spriggan Form"]={{[1]={[1]={skillName="Spriggan Form",type="SkillName"},flags=0,keywordFlags=0,name="LifeRegen",type="BASE",value=23}},"  while in  "}
 c["+23 Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=23}},nil}
 c["+23 Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="BASE",value=23}},nil}
-c["+23 Melee cold damage in Werebear Form"]={{[1]={[1]={skillName="Werebear Form",type="SkillName"},flags=0,keywordFlags=512,name="ColdDamage",type="BASE",value=23}},"   in  "}
 c["+23 Minion Bow Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=2048,name="Damage",type="BASE",value=23}}}},nil}
 c["+23 Minion Melee Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="Damage",type="BASE",value=23}}}},nil}
 c["+23 Minion Poison Damage Over Time"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=4160,keywordFlags=0,name="PoisonDamage",type="BASE",value=23}}}},nil}
@@ -5493,7 +5491,6 @@ c["1% increased Movement Speed per 4 Character Levels"]={{[1]={flags=0,keywordFl
 c["1% increased Shock Duration per Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},[2]={skillName="Shock",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=1}},nil}
 c["1% increased healing effectiveness per point of attunement"]={{[1]={[1]={skillName="Healing",type="SkillName"},flags=0,keywordFlags=0,name="Att",type="INC",value=1}},"  effectiveness per point of  "}
 c["1% less Damage Over Time Taken"]={{[1]={flags=0,keywordFlags=0,name="DamageTakenOverTime",type="MORE",value=-1}},nil}
-c["1% less Damage Taken for each Meteor you have cast recently (up to 18)"]={{[1]={[1]={skillName="Meteor",type="SkillName"},flags=0,keywordFlags=0,name="DamageTaken",type="MORE",value=-1}},"  for each  you have cast recently (up to 18) "}
 c["1% less Damage Taken per 2% Resistance above the normal cap"]={{[1]={flags=0,keywordFlags=0,name="DamageTaken",type="MORE",value=-1}},"  per 2% Resistance above the normal cap "}
 c["1% more Voidwinter Bolt Damage per 10% uncapped Time Rot Chance with Melee Attacks"]={{[1]={[1]={skillName="Voidwinter Bolt",type="SkillName"},flags=0,keywordFlags=512,name="Damage",type="MORE",value=1}},"   per 10% uncapped Time Rot Chance with  Attacks "}
 c["1% more more Damage per stack of Shock"]={{[1]={[1]={skillName="Shock",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=1}}," more  per stack of  "}
@@ -5986,8 +5983,6 @@ c["125% of Mana Spent Gained as Ward"]={{[1]={flags=0,keywordFlags=0,name="Mana"
 c["126% Increased Area with Dancing Strikes"]={{[1]={[1]={skillName="Dancing Strikes",type="SkillName"},flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=126}},"  with  "}
 c["126% Increased Bleed Duration "]={{[1]={[1]={skillName="Bleed",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=126}},nil}
 c["126% Increased Bleed Duration for Minions "]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={skillName="Bleed",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=126}}}},"   for s  "}
-c["126% Increased cold spell damage if you have directly cast a physical spell recently"]={{[1]={flags=0,keywordFlags=257,name="ColdDamage",type="INC",value=126}},"  if you have directly cast a   recently "}
-c["126% Increased physical spell damage if you have directly cast a cold spell recently"]={{[1]={flags=0,keywordFlags=260,name="PhysicalDamage",type="INC",value=126}},"  if you have directly cast a   recently "}
 c["126% increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=126}},nil}
 c["126% increased Cold Damage Over Time"]={{[1]={flags=4100,keywordFlags=0,name="ColdDamage",type="INC",value=126}},nil}
 c["126% increased Elemental Critical Strike Chance"]={{[1]={flags=0,keywordFlags=14,name="CritChance",type="INC",value=126}},nil}
@@ -6072,7 +6067,6 @@ c["13% of Missing Health gained as Ward per second"]={{[1]={flags=0,keywordFlags
 c["13% of Physical Damage Taken as Void"]={{[1]={flags=0,keywordFlags=16,name="PhysicalDamageTaken",type="BASE",value=13}},"  as  "}
 c["13% reduced Bonus Damage Taken from Critical Strikes"]={{[1]={[1]={type="Condition",var="CriticalStrike"},flags=0,keywordFlags=0,name="DamageTaken",type="INC",value=-13}}," Bonus   "}
 c["130% Increased Cooldown Recovery Speed for Decoy"]={{[1]={[1]={skillName="Decoy",type="SkillName"},flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=130}},"  for  "}
-c["130% Increased damage while in Spriggan Form"]={{[1]={[1]={skillName="Spriggan Form",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="INC",value=130}},"  while in  "}
 c["130% increased Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="Damage",type="INC",value=130}},nil}
 c["130% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=130}},nil}
 c["130% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=130}}}},nil}
@@ -6348,8 +6342,6 @@ c["16% Increased Ignite Duration "]={{[1]={[1]={skillName="Ignite",type="SkillNa
 c["16% Increased Spreading Flames Duration "]={{[1]={[1]={skillName="Spreading Flames",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=16}},nil}
 c["16% Increased area with the first attack of Cinder Strike"]={{[1]={[1]={skillName="Cinder Strike",type="SkillName"},flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=16}},"  with the first attack of  "}
 c["16% Increased aura area of Storm Totem"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=16}}," aura  of Storm Totem "}
-c["16% Increased cold spell damage if you have directly cast a physical spell recently"]={{[1]={flags=0,keywordFlags=257,name="ColdDamage",type="INC",value=16}},"  if you have directly cast a   recently "}
-c["16% Increased physical spell damage if you have directly cast a cold spell recently"]={{[1]={flags=0,keywordFlags=260,name="PhysicalDamage",type="INC",value=16}},"  if you have directly cast a   recently "}
 c["16% Maximum Damage Bonus"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=16}}," Maximum  Bonus "}
 c["16% Portion of Mana Cost Recovered"]={{[1]={flags=0,keywordFlags=0,name="ManaCost",type="BASE",value=16}}," Portion of  Recovered "}
 c["16% increased Area for Area Skills"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=16}},"  for Area Skills "}
@@ -6484,8 +6476,6 @@ c["18% Increased Spell Damage per Skeletal Mage"]={{[1]={flags=0,keywordFlags=25
 c["18% Increased Stun Duration"]={{[1]={flags=0,keywordFlags=0,name="EnemyStunDuration",type="INC",value=18}},nil}
 c["18% Increased area of effect with Acid Flask"]={{[1]={[1]={skillName="Acid Flask",type="SkillName"},flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=18}},"  with  "}
 c["18% Increased attack, cast, and movement speed for Locusts"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=18}}," attack, cast, and  for Locusts "}
-c["18% Increased cold spell damage if you have directly cast a physical spell recently"]={{[1]={flags=0,keywordFlags=257,name="ColdDamage",type="INC",value=18}},"  if you have directly cast a   recently "}
-c["18% Increased physical spell damage if you have directly cast a cold spell recently"]={{[1]={flags=0,keywordFlags=260,name="PhysicalDamage",type="INC",value=18}},"  if you have directly cast a   recently "}
 c["18% More Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=18}},nil}
 c["18% Reduced Health Cost of Spells"]={{[1]={flags=0,keywordFlags=256,name="Life",type="INC",value=-18}},"  Cost of s "}
 c["18% increased Area for Area Skills"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=18}},"  for Area Skills "}
@@ -6919,8 +6909,6 @@ c["22% Increased Damage with Shadow Cascade per Active Shadow"]={{[1]={[1]={skil
 c["22% Increased Duration for Profane Veil"]={{[1]={[1]={skillName="Profane Veil",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=22}},"  for  "}
 c["22% Increased Poison Duration "]={{[1]={[1]={skillName="Poison",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=22}},nil}
 c["22% Increased Skeleton Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=22}}," Skeleton  "}
-c["22% Increased cold spell damage if you have directly cast a physical spell recently"]={{[1]={flags=0,keywordFlags=257,name="ColdDamage",type="INC",value=22}},"  if you have directly cast a   recently "}
-c["22% Increased physical spell damage if you have directly cast a cold spell recently"]={{[1]={flags=0,keywordFlags=260,name="PhysicalDamage",type="INC",value=22}},"  if you have directly cast a   recently "}
 c["22% Reduced Health Cost of Spells"]={{[1]={flags=0,keywordFlags=256,name="Life",type="INC",value=-22}},"  Cost of s "}
 c["22% increased Cooldown Recovery Speed for Evade"]={{[1]={flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=22}},"  for Evade "}
 c["22% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=22}},nil}
@@ -7129,8 +7117,6 @@ c["26% Increased Damage with Dive Bomb"]={{[1]={[1]={skillName="Dive Bomb",type=
 c["26% Increased Fire Aura Area"]={{[1]={[1]={skillName="Fire Aura",type="SkillName"},flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=26}},nil}
 c["26% Increased Frostbite Duration "]={{[1]={[1]={skillName="Frostbite",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=26}},nil}
 c["26% Increased Melee Stun Duration"]={{[1]={flags=0,keywordFlags=512,name="EnemyStunDuration",type="INC",value=26}},nil}
-c["26% Increased cold spell damage if you have directly cast a physical spell recently"]={{[1]={flags=0,keywordFlags=257,name="ColdDamage",type="INC",value=26}},"  if you have directly cast a   recently "}
-c["26% Increased physical spell damage if you have directly cast a cold spell recently"]={{[1]={flags=0,keywordFlags=260,name="PhysicalDamage",type="INC",value=26}},"  if you have directly cast a   recently "}
 c["26% Reduced Health Cost of Spells"]={{[1]={flags=0,keywordFlags=256,name="Life",type="INC",value=-26}},"  Cost of s "}
 c["26% increased Block Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="BlockEffectiveness",type="INC",value=26}},nil}
 c["26% increased Bow Damage"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="INC",value=26}},nil}
@@ -7511,9 +7497,7 @@ c["32% Increased Aspect of the Boar Duration"]={{[1]={[1]={skillName="Aspect of 
 c["32% Increased Damage with Dive Bomb"]={{[1]={[1]={skillName="Dive Bomb",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="INC",value=32}},"  with  "}
 c["32% Increased Damage with Hammer Throw"]={{[1]={[1]={skillName="Hammer Throw",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="INC",value=32}},"  with  "}
 c["32% Increased Skeletal Mage Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=32}}," Skeletal Mage  "}
-c["32% Increased cold spell damage if you have directly cast a physical spell recently"]={{[1]={flags=0,keywordFlags=257,name="ColdDamage",type="INC",value=32}},"  if you have directly cast a   recently "}
 c["32% Increased damage with Smelter's Wrath"]={{[1]={[1]={skillName="Smelter's Wrath",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="INC",value=32}},"  with  "}
-c["32% Increased physical spell damage if you have directly cast a cold spell recently"]={{[1]={flags=0,keywordFlags=260,name="PhysicalDamage",type="INC",value=32}},"  if you have directly cast a   recently "}
 c["32% Increased spell critical strike chance. This effect is doubled if you have 300 or more maximum mana."]={{[1]={[1]={mult=2,stat="Mana",threshold=300,type="StatThreshold"},flags=0,keywordFlags=256,name="CritChance",type="INC",value=32}},nil}
 c["32% More Damage with your next Movement Skill Every 3 Seconds"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=32}},"  with your next Movement Skill Every 3 Seconds "}
 c["32% increased Area for Area Skills"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=32}},"  for Area Skills "}
@@ -7982,7 +7966,6 @@ c["400 Ward Granted On Activation"]={{[1]={flags=0,keywordFlags=0,name="Ward",ty
 c["400% Maximum Damage Benefit"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=400}}," Maximum  Benefit "}
 c["41% Increased Aspect of the Boar Duration"]={{[1]={[1]={skillName="Aspect of the Boar",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=41}},nil}
 c["41% Increased Stun Duration"]={{[1]={flags=0,keywordFlags=0,name="EnemyStunDuration",type="INC",value=41}},nil}
-c["41% Increased damage if you have cast Devouring Orb recently"]={{[1]={[1]={skillName="Devouring Orb",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="INC",value=41}},"  if you have cast  recently "}
 c["41% increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=41}},nil}
 c["41% increased Bow Attack Speed"]={{[1]={flags=3584,keywordFlags=2048,name="Speed",type="INC",value=41}},nil}
 c["41% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=41}},nil}
@@ -8073,10 +8056,7 @@ c["45% Increased Bleed Duration"]={{[1]={[1]={skillName="Bleed",type="SkillName"
 c["45% Increased Damage with Hammer Throw"]={{[1]={[1]={skillName="Hammer Throw",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="INC",value=45}},"  with  "}
 c["45% Increased Fire Aura Area"]={{[1]={[1]={skillName="Fire Aura",type="SkillName"},flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=45}},nil}
 c["45% Increased Spell Damage per Skeletal Mage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=45}},"   per Skeletal Mage "}
-c["45% Increased cold spell damage if you have directly cast a physical spell recently"]={{[1]={flags=0,keywordFlags=257,name="ColdDamage",type="INC",value=45}},"  if you have directly cast a   recently "}
 c["45% Increased damage with Smelter's Wrath"]={{[1]={[1]={skillName="Smelter's Wrath",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="INC",value=45}},"  with  "}
-c["45% Increased melee damage if Echoed recently"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=45}},"   if Echoed recently "}
-c["45% Increased physical spell damage if you have directly cast a cold spell recently"]={{[1]={flags=0,keywordFlags=260,name="PhysicalDamage",type="INC",value=45}},"  if you have directly cast a   recently "}
 c["45% Increased spell critical strike chance. This effect is doubled if you have 300 or more maximum mana."]={{[1]={[1]={mult=2,stat="Mana",threshold=300,type="StatThreshold"},flags=0,keywordFlags=256,name="CritChance",type="INC",value=45}},nil}
 c["45% Reduced Health Cost of Spells"]={{[1]={flags=0,keywordFlags=256,name="Life",type="INC",value=-45}},"  Cost of s "}
 c["45% increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=45}},nil}
@@ -8494,11 +8474,8 @@ c["55% Increased Armor Shred Effect "]={{[1]={flags=0,keywordFlags=0,name="Armou
 c["55% Increased Critical Strike chance with Flurry"]={{[1]={[1]={skillName="Flurry",type="SkillName"},flags=0,keywordFlags=0,name="CritChance",type="INC",value=55}},"  with  "}
 c["55% Increased Damage with Smite"]={{[1]={[1]={skillName="Smite",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="INC",value=55}},"  with  "}
 c["55% Increased area with the first attack of Cinder Strike"]={{[1]={[1]={skillName="Cinder Strike",type="SkillName"},flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=55}},"  with the first attack of  "}
-c["55% Increased cold spell damage if you have directly cast a physical spell recently"]={{[1]={flags=0,keywordFlags=257,name="ColdDamage",type="INC",value=55}},"  if you have directly cast a   recently "}
 c["55% Increased critical strike chance with Shield Throw"]={{[1]={[1]={skillName="Shield Throw",type="SkillName"},flags=0,keywordFlags=0,name="CritChance",type="INC",value=55}},"  with  "}
 c["55% Increased damage with Vengeance"]={{[1]={[1]={skillName="Vengeance",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="INC",value=55}},"  with  "}
-c["55% Increased physical spell damage if you have directly cast a cold spell recently"]={{[1]={flags=0,keywordFlags=260,name="PhysicalDamage",type="INC",value=55}},"  if you have directly cast a   recently "}
-c["55% Increased void damage if Echoed recently"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=55}},"  if Echoed recently "}
 c["55% increased Cold Damage Over Time"]={{[1]={flags=4100,keywordFlags=0,name="ColdDamage",type="INC",value=55}},nil}
 c["55% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=55}},nil}
 c["55% increased Critical Strike Chance for Totems"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=55}},"  for Totems "}
@@ -8734,8 +8711,6 @@ c["65% Chance to Slow Attackers"]={{[1]={flags=8388608,keywordFlags=0,name="Chan
 c["65% Increased Damage for skills used by Shadows"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=65}},"  for skills used by Shadows "}
 c["65% Increased Fire Aura Damage"]={{[1]={[1]={skillName="Fire Aura",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="INC",value=65}},nil}
 c["65% Increased Stun Duration"]={{[1]={flags=0,keywordFlags=0,name="EnemyStunDuration",type="INC",value=65}},nil}
-c["65% Increased cold spell damage if you have directly cast a physical spell recently"]={{[1]={flags=0,keywordFlags=257,name="ColdDamage",type="INC",value=65}},"  if you have directly cast a   recently "}
-c["65% Increased physical spell damage if you have directly cast a cold spell recently"]={{[1]={flags=0,keywordFlags=260,name="PhysicalDamage",type="INC",value=65}},"  if you have directly cast a   recently "}
 c["65% Serpent Damage Buff on Heal"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=65}}," Serpent  Buff on Heal "}
 c["65% increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=65}},nil}
 c["65% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=65}},nil}
