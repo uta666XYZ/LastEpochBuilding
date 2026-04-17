@@ -390,6 +390,8 @@ local modTagList = {
 	["while at high health"] = { tag = { type = "Condition", var = "HighHealth" } },
 	["while you have ward"] = { tag = { type = "Condition", var = "HaveWard" } },
 	["while you have lightning aegis"] = { tag = { type = "Condition", var = "HaveLightningAegis" } },
+	["while you have haste"] = { tag = { type = "Condition", var = "Haste" } },
+	["while you have frenzy"] = { tag = { type = "Condition", var = "Frenzy" } },
 	["while on consecrated ground"] = { tag = { type = "Condition", var = "OnConsecratedGround" } },
 	["while you have a companion"] = { tag = { type = "Condition", var = "HaveCompanion" } },
 	["per companion"] = { tag = { type = "Multiplier", var = "Companion" } },
