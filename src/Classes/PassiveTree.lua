@@ -259,8 +259,9 @@ local PassiveTreeClass = newClass("PassiveTree", function(self, treeVersion)
         node.x = node.x * coordScale
         node.y = node.y * coordScale
         -- mastery * 1000 vertical offset separates passive tree sections (base + 3 ascendancies).
-        -- Skill tree nodes use lowercase IDs; they must NOT receive this offset.
-        if node.mastery and node.id:sub(1,1):match("%u") then
+        -- Skill tree nodes use lowercase IDs (node.skill); they must NOT receive this offset.
+        -- Note: node.id is assigned later; use node.skill here.
+        if node.mastery and node.skill and node.skill:sub(1,1):match("%u") then
             node.y = node.y + node.mastery * 1000
         end
         if node.skillId then
