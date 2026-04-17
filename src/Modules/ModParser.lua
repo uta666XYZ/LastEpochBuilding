@@ -399,6 +399,7 @@ local modTagList = {
 	["while on consecrated ground"] = { tag = { type = "Condition", var = "OnConsecratedGround" } },
 	["while you have a companion"] = { tag = { type = "Condition", var = "HaveCompanion" } },
 	["with arcane shield"] = { tag = { type = "Condition", var = "HaveArcaneShield" } },
+	["with concentration"] = { tag = { type = "Condition", var = "Concentration" } },
 	["per arcane shield"] = { tag = { type = "Multiplier", var = "ArcaneShieldStack" } },
 	["per companion"] = { tag = { type = "Multiplier", var = "Companion" } },
 	["if you[' ]h?a?ve dealt a critical strike recently"] = { tag = { type = "Condition", var = "CritRecently" } },

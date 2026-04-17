@@ -5602,7 +5602,7 @@ c["10% Increased Totem Duration"]={{[1]={flags=0,keywordFlags=0,name="TotemDurat
 c["10% Large Meteor Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Meteor",type="BASE",value=10}}," Large  "}
 c["10% Less Attack Speed"]={{[1]={flags=3584,keywordFlags=0,name="Speed",type="MORE",value=-10}},nil}
 c["10% Less Attack and Cast Speed for You and Your Minions"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Speed",type="MORE",value=-10}}}},"  for You and Your s "}
-c["10% Less Hit Damage Taken With Concentration"]={{[1]={flags=8388608,keywordFlags=0,name="DamageTaken",type="MORE",value=-10}},"   With Concentration "}
+c["10% Less Hit Damage Taken With Concentration"]={{[1]={[1]={type="Condition",var="Concentration"},flags=8388608,keywordFlags=0,name="DamageTaken",type="MORE",value=-10}},nil}
 c["10% Mana Gained -> Ward Gain"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=10}},"  Gained -> Ward Gain "}
 c["10% Mana Overcharge"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=10}},"  Overcharge "}
 c["10% Mana Refunded"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=10}},"  Refunded "}
@@ -6674,7 +6674,7 @@ c["2% Increased Shock Duration "]={{[1]={[1]={skillName="Shock",type="SkillName"
 c["2% Increased Silver Shroud Duration "]={{[1]={[1]={skillName="Silver Shroud",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=2}},nil}
 c["2% Increased Spell Damage per Stack"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=2}},"   per Stack "}
 c["2% Increased Throwing Attack Speed"]={{[1]={flags=3584,keywordFlags=1024,name="Speed",type="INC",value=2}},nil}
-c["2% Increased movement speed with Concentration"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=2}},"  with Concentration "}
+c["2% Increased movement speed with Concentration"]={{[1]={[1]={type="Condition",var="Concentration"},flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=2}},nil}
 c["2% Less Damage Taken Per Curse On Target"]={{[1]={flags=0,keywordFlags=0,name="DamageTaken",type="MORE",value=-2}},"  Per Curse On Target "}
 c["2% Less Poison Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamageTaken",type="MORE",value=-2}},nil}
 c["2% Minimum percentage of health to gain when a nearby enemy or ally dies (2 second cooldown)"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=2}}," Minimum percentage of  to gain when a nearby enemy or ally dies (2 second cooldown) "}
@@ -6683,7 +6683,7 @@ c["2% Minion Increased Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="Mini
 c["2% More Damage Per Slow"]={{[1]={[1]={skillName="Slow",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=2}},"  Per  "}
 c["2% More Damage With An Axe"]={{[1]={[1]={type="Condition",var="UsingAxe"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=2}},nil}
 c["2% More Damage per Mana Consumed"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=2}},"  per Mana Consumed "}
-c["2% More Damage with Concentration"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=2}},"  with Concentration "}
+c["2% More Damage with Concentration"]={{[1]={[1]={type="Condition",var="Concentration"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=2}},nil}
 c["2% More Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="MORE",value=2}},nil}
 c["2% More Witchfire Damage per Ignite chance"]={{[1]={[1]={skillName="Ignite",type="SkillName"},flags=0,keywordFlags=0,name="FireDamage",type="MORE",value=2}}," Witch per  chance "}
 c["2% Percent Of Damage Taken Stored"]={{[1]={flags=0,keywordFlags=0,name="DamageTaken",type="BASE",value=2}}," Percent Of  Stored "}
@@ -8236,7 +8236,7 @@ c["5% Increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifi
 c["5% Increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=5}},nil}
 c["5% Increased Poison Duration "]={{[1]={[1]={skillName="Poison",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=5}},nil}
 c["5% Increased Throwing Damage"]={{[1]={flags=0,keywordFlags=1024,name="Damage",type="INC",value=5}},nil}
-c["5% Increased dodge rating with Concentration"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=5}},"  with Concentration "}
+c["5% Increased dodge rating with Concentration"]={{[1]={[1]={type="Condition",var="Concentration"},flags=0,keywordFlags=0,name="Evasion",type="INC",value=5}},nil}
 c["5% Less Cold Damage Taken On Hit"]={{[1]={flags=8388608,keywordFlags=0,name="ColdDamageTaken",type="MORE",value=-5}},nil}
 c["5% Less Damage Dealt by Non-critical Hits"]={{[1]={flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=-5}},"  Dealt by Non-critical s "}
 c["5% Less Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="MORE",value=-5}},nil}
