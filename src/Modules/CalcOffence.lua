@@ -1829,35 +1829,7 @@ function calcs.offence(env, actor, activeSkill)
 			output.PreEffectiveCritChance = 0
 			output.CritChance = 0
 			output.CritMultiplier = 0
-			output.BonusCritDotMultiplier = 0
 			output.CritEffect = 1
-		elseif skillModList:Flag(cfg, "SpellSkillsCannotDealCriticalStrikesExceptOnFinalRepeat") then
-			if (output.Repeats or 1) == 1 then
-				output.PreEffectiveCritChance = 0
-				output.CritChance = 0
-				output.CritMultiplier = 0
-				output.BonusCritDotMultiplier = 0
-				output.CritEffect = 1
-			elseif skillModList:Flag(cfg, "SpellSkillsAlwaysDealCriticalStrikesOnFinalRepeat") then
-				if env.config.repeatMode == "None" then
-					output.PreEffectiveCritChance = 0
-					output.CritChance = 0
-				elseif env.config.repeatMode == "AVERAGE" then
-					output.PreEffectiveCritChance = 100 / output.Repeats
-					output.CritChance = 100 / output.Repeats
-					if breakdown then
-						breakdown.CritChance = {
-							s_format("100%%"),
-							s_format("/ %d ^8(number of repeats)", output.Repeats),
-							s_format("= %.2f%% average critical strike chance", output.CritChance)
-						}
-					end
-				else
-					output.PreEffectiveCritChance = 100
-					output.CritChance = 100
-				end
-				--else -- this shouldn't ever be a case but leaving this here if someone wants to implement it
-			end
 		else
 			local critOverride = skillModList:Override(cfg, "CritChance")
 			-- destructive link
@@ -1961,7 +1933,6 @@ function calcs.offence(env, actor, activeSkill)
 			end
 			local critChancePercentage = output.CritChance / 100
 			output.CritEffect = 1 - critChancePercentage + critChancePercentage * output.CritMultiplier
-			output.BonusCritDotMultiplier = (skillModList:Sum("BASE", cfg, "CritMultiplier") - 50) * skillModList:Sum("BASE", cfg, "CritMultiplierAppliesToDegen") / 10000
 			if breakdown and output.CritEffect ~= 1 then
 				breakdown.CritEffect = {
 					s_format("(1 - %.4f) ^8(portion of damage from non-crits)", critChancePercentage),
@@ -1981,11 +1952,6 @@ function calcs.offence(env, actor, activeSkill)
 		-- Calculate chance and multiplier for dealing double damage on Normal and Crit
 		output.DoubleDamageChanceOnCrit = m_min(skillModList:Sum("BASE", cfg, "DoubleDamageChanceOnCrit"), 100)
 		output.DoubleDamageChance = m_min(skillModList:Sum("BASE", cfg, "DoubleDamageChance") + (env.mode_effective and enemyDB:Sum("BASE", cfg, "SelfDoubleDamageChance") or 0) + (output.DoubleDamageChanceOnCrit * output.CritChance / 100), 100)
-		if globalOutput.IntimidatingUpTimeRatio and activeSkill.skillModList:Flag(nil, "Condition:WarcryMaxHit") then
-			output.DoubleDamageChance = 100
-		elseif globalOutput.IntimidatingUpTimeRatio then
-			output.DoubleDamageChance = m_min(output.DoubleDamageChance + globalOutput.IntimidatingUpTimeRatio, 100)
-		end
 		-- Triple Damage overrides Double Damage. If you have both, it's the same as just having Triple
 		-- We need to subtract the probability of both happening in favor of Triple Damage
 		if output.TripleDamageChance > 0 then
