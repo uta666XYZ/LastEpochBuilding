@@ -1143,13 +1143,34 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 	end
 
 	-- Build node order map from spec history for step number display
+	-- Use relative step numbers within the current filter mode (passive/skill), not absolute indices
 	local nodeOrderMap = { }
 	if self.stepMode ~= "none" and spec.history then
-		for step, hId in ipairs(spec.history) do
-			if not nodeOrderMap[hId] then
-				nodeOrderMap[hId] = { }
+		-- Determine skill tree prefix filter for "skill" mode
+		local skillPrefix = nil
+		if self.filterMode == "skill" and self.selectedSkillIndex and build.skillsTab then
+			local sg = build.skillsTab.socketGroupList[self.selectedSkillIndex]
+			if sg and sg.grantedEffect and sg.grantedEffect.treeId then
+				skillPrefix = "^" .. sg.grantedEffect.treeId .. "%-"
 			end
-			t_insert(nodeOrderMap[hId], step)
+		end
+		local relStep = 0
+		for _, hId in ipairs(spec.history) do
+			local include = false
+			if self.filterMode == "passive" then
+				include = hId:sub(1,1):match("%u") ~= nil
+			elseif self.filterMode == "skill" then
+				include = skillPrefix ~= nil and hId:match(skillPrefix) ~= nil
+			else
+				include = true
+			end
+			if include then
+				relStep = relStep + 1
+				if not nodeOrderMap[hId] then
+					nodeOrderMap[hId] = { }
+				end
+				t_insert(nodeOrderMap[hId], relStep)
+			end
 		end
 	end
 
@@ -1416,10 +1437,10 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 			local dimSize = iconSize * scale * 1.33
 			DrawImage(nil, scrX - dimSize, scrY - dimSize, dimSize * 2, dimSize * 2)
 		end
-		-- Bar→Tree: blue ring when this node is hovered in the history bar
-		if self.historyHoverNodeId == nodeId and #self.searchParams == 0 then
+		-- Bar→Tree: red ring when this node is hovered in the history bar
+		if self.historyHoverNodeId == nodeId and not self.searchStrResults[nodeId] then
 			SetDrawLayer(nil, 30)
-			SetDrawColor(0.2, 0.65, 1.0)
+			SetDrawColor(1, 0, 0)
 			local size = iconSize * scale * 1.33 * 2.5
 			DrawImage(self.searchHighlightRing, scrX - size, scrY - size, size * 2, size * 2)
 		end
