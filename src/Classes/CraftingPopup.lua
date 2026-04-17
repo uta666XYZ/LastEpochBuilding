@@ -1,7 +1,9 @@
 -- Last Epoch Building
 --
 -- Class: Crafting Popup
--- Maxroll-style crafting UI with Select/Edit tabs for item creation.
+-- LETools-style left-right split crafting UI.
+-- Left panel (320px): type list + item preview with inline affix controls.
+-- Right panel (680px): item browser (item tab) or affix browser (prefix/suffix/etc tab).
 --
 local t_insert = table.insert
 local t_remove = table.remove
@@ -14,8 +16,55 @@ local ipairs = ipairs
 
 local MAX_MOD_LINES = 3
 
+-- Layout constants
+local POPUP_W       = 1000
+local LEFT_W        = 320
+local DIVIDER_X     = LEFT_W
+local TYPE_LIST_Y   = 34
+local TYPE_LIST_H   = 190
+local TYPE_ROW_H    = 20
+local PREVIEW_Y     = TYPE_LIST_Y + TYPE_LIST_H + 6   -- ~230
+
+-- Right panel layout
+local RP_X          = LEFT_W + 1
+local RP_W          = POPUP_W - LEFT_W - 1
+local RP_TAB_Y      = 34
+local RP_TAB_H      = 24
+local RP_FILTER_Y   = RP_TAB_Y + RP_TAB_H + 3
+local RP_FILTER_H   = 20
+local RP_CATTAB_Y   = RP_FILTER_Y + RP_FILTER_H + 3
+local RP_CATTAB_H   = 20
+local RP_CARD_Y     = RP_CATTAB_Y + RP_CATTAB_H + 4
+local RP_CARD_PAD   = 8
+
+-- Item cards (item tab, right panel)
+local IC_COLS       = 3
+local IC_GAP        = 6
+local IC_W          = m_floor((RP_W - 2 * RP_CARD_PAD - (IC_COLS - 1) * IC_GAP) / IC_COLS)
+local IC_H          = 54
+
+-- Affix cards (affix tabs, right panel) -- compact single-row cards
+local AC_H          = 22
+local AC_GAP        = 2
+
+-- Left panel control positions
+local LP_LABEL_X    = 15
+local LP_LINE_X     = 20
+local LP_LINE_W     = 118
+local LP_VAL_X      = 142
+local LP_VAL_W      = 50
+local LP_TIER_X     = 196
+local LP_TRUP_X     = 213
+local LP_TRDN_X     = 233
+local LP_REM_X      = 254
+local LP_REM_W      = 18
+
+-- Slots where T8 is not allowed
+local NO_T8_SLOTS = { prefix1=true, prefix2=true, suffix1=true, suffix2=true, sealed=true, corrupted=true }
+-- Fixed-tier slots
+local FIXED_TIER_SLOTS = { primordial=true }
+
 -- Rarity for crafted items based on affix count and highest tier index (0-based)
--- Rules: no affixes=NORMAL, any T6+(tier>=5)=EXALTED, 3+ affixes=RARE, else MAGIC
 local function getRarityForAffixes(affixCount, maxTier)
 	if affixCount == 0 then return "NORMAL" end
 	if maxTier >= 5 then return "EXALTED" end
@@ -23,20 +72,15 @@ local function getRarityForAffixes(affixCount, maxTier)
 	return "MAGIC"
 end
 
--- Clean implicit text: remove formatting tags and filter UNKNOWN_STAT
 local function cleanImplicitText(line)
-	if line:find("%[UNKNOWN_STAT%]") then
-		return nil
-	end
+	if line:find("%[UNKNOWN_STAT%]") then return nil end
 	return line:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
 end
 
--- Check if a mod line template contains a (min-max) range
 local function hasRange(line)
 	return line:match("%(%-?%d+%.?%d*%-%-?%d+%.?%d*%)") ~= nil
 end
 
--- Get precision for a mod line based on rounding tag
 local function getModPrecision(line)
 	local precision = 100
 	if line:find("{rounding:Integer}") then precision = 1
@@ -46,7 +90,6 @@ local function getModPrecision(line)
 	return precision
 end
 
--- Extract rounding tag string from mod line for passing to itemLib.applyRange
 local function getRounding(line)
 	if line:find("{rounding:Integer}") then return "Integer"
 	elseif line:find("{rounding:Tenth}") then return "Tenth"
@@ -54,14 +97,12 @@ local function getRounding(line)
 	return nil
 end
 
--- Extract min and max from a mod line template
 local function extractMinMax(line)
 	local min, max = line:match("%(([%-]?%d+%.?%d*)%-([%-]?%d+%.?%d*)%)")
 	if min and max then return tonumber(min), tonumber(max) end
 	return nil, nil
 end
 
--- Compute the actual displayed value from a mod line and range
 local function computeModValue(line, range)
 	local computed = itemLib.applyRange(line, range, nil, getRounding(line))
 	if not computed then return nil end
@@ -70,9 +111,6 @@ local function computeModValue(line, range)
 	return tonumber(num)
 end
 
--- Reverse-map: given a desired value and mod line template, find range (0-256)
--- Uses m_ceil to counteract the m_floor in applyRange's forward computation,
--- then verifies with forward pass and adjusts if needed.
 local function reverseModRange(line, targetValue)
 	local min, max = extractMinMax(line)
 	if not min or not max then return 128 end
@@ -81,45 +119,29 @@ local function reverseModRange(line, targetValue)
 	if rangeSize == 0 then return 0 end
 	local rawRange = (targetValue - min) / rangeSize * 255
 	local range = m_max(0, m_min(256, m_ceil(rawRange)))
-	-- Verify forward computation matches; adjust up if needed
 	local actual = computeModValue(line, range)
-	if actual and actual < targetValue and range < 256 then
-		range = range + 1
-	end
+	if actual and actual < targetValue and range < 256 then range = range + 1 end
 	return range
 end
 
--- Clamp a value to valid range for a mod line and return the clamped value
 local function clampModValue(line, value)
 	local min, max = extractMinMax(line)
 	if not min or not max then return value end
-	if min <= max then
-		return m_max(min, m_min(max, value))
-	else
-		return m_max(max, m_min(min, value))
-	end
+	if min <= max then return m_max(min, m_min(max, value))
+	else return m_max(max, m_min(min, value)) end
 end
 
--- Format a value for display (integer vs decimal based on mod precision)
 local function formatModValue(line, value)
 	local precision = getModPrecision(line)
-	if precision <= 1 then
-		return tostring(m_floor(value + 0.5))
-	elseif precision <= 10 then
-		return string.format("%.1f", value)
-	elseif precision <= 100 then
-		return string.format("%.2f", value)
-	else
-		return string.format("%.3f", value)
-	end
+	if precision <= 1 then return tostring(m_floor(value + 0.5))
+	elseif precision <= 10 then return string.format("%.1f", value)
+	elseif precision <= 100 then return string.format("%.2f", value)
+	else return string.format("%.3f", value) end
 end
 
--- Ordered item type list with category headers
 local function buildOrderedTypeList(dataTypeList)
 	local available = {}
-	for _, t in ipairs(dataTypeList) do
-		available[t] = true
-	end
+	for _, t in ipairs(dataTypeList) do available[t] = true end
 	local ordered = {}
 	local sections = {
 		{ header = "-- Armor --", types = {
@@ -162,36 +184,48 @@ local function buildOrderedTypeList(dataTypeList)
 	return ordered
 end
 
+-- =============================================================================
+-- CraftingPopup class
+-- =============================================================================
 local CraftingPopupClass = newClass("CraftingPopup", "ControlHost", "Control", function(self, itemsTab, existingItem)
-	local popupW = 800
 	local popupMinH = 600
 	self.ControlHost()
-	self.Control(nil, 0, 0, popupW, popupMinH)
+	self.Control(nil, 0, 0, POPUP_W, popupMinH)
 	self.editContentH = popupMinH
-	self.width = function()
-		return popupW
-	end
+	self.width  = function() return POPUP_W end
 	self.height = function()
-		if self.currentTab == "edit" then
-			return m_max(popupMinH, m_min(self.editContentH, main.screenH - 40))
-		end
-		return popupMinH
+		return m_max(popupMinH, m_min(self.editContentH, main.screenH - 40))
 	end
-	self.x = function() return m_floor((main.screenW - popupW) / 2) end
+	self.x = function() return m_floor((main.screenW - POPUP_W) / 2) end
 	self.y = function()
 		local _, h = self:GetSize()
 		return m_max(20, m_floor((main.screenH - h) / 2))
 	end
 	self.itemsTab = itemsTab
-	self.build = itemsTab.build
+	self.build    = itemsTab.build
 
-	self.currentTab = "select"
-	self.selectedTypeIndex = 1
+	-- Right panel state
+	self.rightTab             = "item"   -- "item"|"prefix1"|"prefix2"|"suffix1"|"suffix2"|"sealed"|"primordial"|"corrupted"
 	self.selectedBaseCategory = "basic"
-	self.searchText = ""
-	self.editItem = nil
-	self.rebuilding = false
+	self.searchText           = ""
+	self.editItem             = nil
+	self.rebuilding           = false
 
+	-- Scroll offsets (pixels)
+	self.typeScrollY  = 0   -- type list scroll
+	self.rightScrollY = 0   -- right panel card scroll
+
+	-- Hit-test arrays rebuilt in Draw()
+	self.typeCards  = {}
+	self.rightCards = {}
+
+	-- Affix lists per slot (populated by RefreshAffixDropdowns)
+	self.affixLists = {
+		prefix1={}, prefix2={}, suffix1={}, suffix2={},
+		sealed={}, primordial={}, corrupted={},
+	}
+
+	self.selectedTypeIndex = 1
 	self.setItems = self:LoadSetData()
 	self.orderedTypeList = buildOrderedTypeList(self.build.data.itemBaseTypeList)
 	for i, entry in ipairs(self.orderedTypeList) do
@@ -201,7 +235,6 @@ local CraftingPopupClass = newClass("CraftingPopup", "ControlHost", "Control", f
 		end
 	end
 
-	-- Affix state: ranges is per-line array
 	self.affixState = {
 		prefix1    = { modKey = nil, tier = 0, ranges = {} },
 		prefix2    = { modKey = nil, tier = 0, ranges = {} },
@@ -213,19 +246,15 @@ local CraftingPopupClass = newClass("CraftingPopup", "ControlHost", "Control", f
 	}
 	self.corrupted = false
 
-	-- Mod info cache for edit tab display
 	self.slotModInfo = {}
 	for _, k in ipairs({"prefix1","prefix2","suffix1","suffix2","sealed","primordial","corrupted"}) do
 		self.slotModInfo[k] = { count = 0, lines = {} }
 	end
 
-	-- Dynamic Y positions for edit tab
 	self.editY = {}
 	self:RecalcEditLayout()
-
 	self:BuildControls()
 
-	-- Restore existing crafted item for re-editing
 	if existingItem and existingItem.craftState then
 		self:RestoreCraftState(existingItem)
 	end
@@ -234,9 +263,7 @@ end)
 function CraftingPopupClass:LoadSetData()
 	local ver = self.build.targetVersion or "1_4"
 	local setData = readJsonFile("Data/Set/set_" .. ver .. ".json")
-	if not setData then
-		setData = readJsonFile("Data/Set/set_1_4.json")
-	end
+	if not setData then setData = readJsonFile("Data/Set/set_1_4.json") end
 	return setData or {}
 end
 
@@ -245,37 +272,43 @@ function CraftingPopupClass:GetSelectedTypeName()
 	return entry and entry.typeName or nil
 end
 
--- Compute max tier for a given statOrderKey
 function CraftingPopupClass:GetMaxTier(statOrderKey)
-	-- Idol affixes are always single-tier (T1 only)
 	if self:IsAnyIdol() then return 0 end
 	local pool = self:IsIdolAltar() and (data.itemMods["Idol Altar"] or {}) or (data.itemMods.Item or {})
 	for tier = 7, 0, -1 do
 		local key = tostring(statOrderKey) .. "_" .. tostring(tier)
-		if pool[key] then
-			return tier
-		end
+		if pool[key] then return tier end
 	end
 	return 0
 end
 
--- Recalculate dynamic Y positions for edit tab
+-- Recalculate dynamic Y positions for left panel item preview.
+-- All Y values are absolute from the popup's TOPLEFT.
 function CraftingPopupClass:RecalcEditLayout()
-	local LINE_H = 18
+	local LINE_H        = 18
 	local implicitCount = self.editItem and #self.editItem.implicitModLines or 0
-	local rarity = self.editItem and self.editItem.rarity
+	local rarity        = self.editItem and self.editItem.rarity
 	local uniqueModCount = (rarity == "UNIQUE" or rarity == "WWUNIQUE" or rarity == "SET")
 		and self.editItem and #self.editItem.explicitModLines or 0
 	local totalDisplayCount = implicitCount + uniqueModCount
-	local y = math.max(200, 126 + totalDisplayCount * LINE_H)
+
+	-- Affix sections start below the preview header and implicit lines
+	local EDIT_START = m_max(330, PREVIEW_Y + 90 + totalDisplayCount * LINE_H)
+	local y = EDIT_START
 	local GAP = 4
 
 	self.editY = {}
 
+	local isUniqueIdol  = self:IsUniqueIdol()
+	local isAnyIdol     = self:IsAnyIdol()
+	local isEnchantable = self:IsEnchantableIdol()
+	local isUniqueItem  = self:IsUniqueItem()
+	local isSetItem     = self:IsSetItem()
+
 	local sectionOrder = {
-		{ label = "prefixLabel", slots = {"prefix1", "prefix2"} },
-		{ label = "suffixLabel", slots = {"suffix1", "suffix2"} },
-		{ label = "sealedLabel", slots = {"sealed"} },
+		{ label = "prefixLabel",    slots = {"prefix1", "prefix2"} },
+		{ label = "suffixLabel",    slots = {"suffix1", "suffix2"} },
+		{ label = "sealedLabel",    slots = {"sealed"} },
 		{ label = "primordialLabel", slots = {"primordial"} },
 		{ label = "corruptedLabel", slots = {"corrupted"} },
 	}
@@ -298,19 +331,10 @@ function CraftingPopupClass:RecalcEditLayout()
 		end
 	end
 
-	local isUniqueIdol     = self:IsUniqueIdol()
-	local isAnyIdol        = self:IsAnyIdol()
-	local isEnchantable    = self:IsEnchantableIdol()
-	local isUniqueItem     = self:IsUniqueItem()
-	local isSetItem        = self:IsSetItem()
-
 	for si, sec in ipairs(sectionOrder) do
-		-- Skip sections that are hidden for this item type
 		local skip = false
 		if isUniqueIdol and sec.label ~= "corruptedLabel" then skip = true end
-		-- Set items: no affix sections
 		if isSetItem then skip = true end
-		-- Unique items (non-idol): skip sealed and primordial
 		if not skip and isUniqueItem
 			and (sec.label == "sealedLabel" or sec.label == "primordialLabel") then
 			skip = true
@@ -320,10 +344,7 @@ function CraftingPopupClass:RecalcEditLayout()
 			skip = true
 		end
 		if skip then
-			-- Zero-out positions so hidden controls stay at top (invisible)
-			for _, slotKey in ipairs(sec.slots) do
-				self.editY[slotKey] = {}
-			end
+			for _, slotKey in ipairs(sec.slots) do self.editY[slotKey] = {} end
 			self.editY[sec.label] = 0
 		else
 			self.editY[sec.label] = y
@@ -336,10 +357,8 @@ function CraftingPopupClass:RecalcEditLayout()
 					layoutSlots(sec.slots)
 				end
 			else
-				-- For idols, skip prefix2/suffix2 from layout
 				if isAnyIdol and (sec.label == "prefixLabel" or sec.label == "suffixLabel") then
-					local mainSlot = sec.slots[1]
-					layoutSlots({mainSlot})
+					layoutSlots({sec.slots[1]})
 				else
 					layoutSlots(sec.slots)
 				end
@@ -348,11 +367,9 @@ function CraftingPopupClass:RecalcEditLayout()
 		end
 	end
 
-	-- Store total content height for dynamic sizing
-	self.editContentH = y + 50
+	self.editContentH = y + 60
 end
 
--- Update mod line cache for a slot
 function CraftingPopupClass:UpdateSlotModInfo(slotKey)
 	local info = { count = 0, lines = {} }
 	local st = self.affixState[slotKey]
@@ -382,7 +399,6 @@ function CraftingPopupClass:UpdateSlotModInfo(slotKey)
 	self.slotModInfo[slotKey] = info
 end
 
--- Update all value edit controls for a slot (call after tier change or affix selection)
 function CraftingPopupClass:UpdateSlotValueEdits(slotKey)
 	local info = self.slotModInfo[slotKey]
 	local st = self.affixState[slotKey]
@@ -397,15 +413,10 @@ function CraftingPopupClass:UpdateSlotValueEdits(slotKey)
 				else
 					valCtrl:SetText("")
 				end
-				-- Update numberInc based on precision
 				local precision = getModPrecision(info.lines[i])
-				if precision <= 1 then
-					valCtrl.numberInc = 1
-				elseif precision <= 10 then
-					valCtrl.numberInc = 0.1
-				else
-					valCtrl.numberInc = 0.01
-				end
+				if precision <= 1 then valCtrl.numberInc = 1
+				elseif precision <= 10 then valCtrl.numberInc = 0.1
+				else valCtrl.numberInc = 0.01 end
 			else
 				valCtrl:SetText("")
 			end
@@ -418,171 +429,121 @@ function CraftingPopupClass:BuildControls()
 	local controls = {}
 	self.controls = controls
 
-	-- ========================
-	-- Tab buttons
-	-- ========================
-	controls.tabSelect = new("ButtonControl", {"TOPLEFT", self, "TOPLEFT"}, 10, 10, 80, 24, function()
-		return self_ref.currentTab == "select" and "^7>> Select <<" or "^7Select"
-	end, function()
-		self_ref.currentTab = "select"
-	end)
-
-	controls.tabEdit = new("ButtonControl", {"LEFT", controls.tabSelect, "RIGHT"}, 5, 0, 80, 24, function()
-		return self_ref.currentTab == "edit" and "^7>> Edit <<" or "^7Edit"
-	end, function()
-		if self_ref.editItem then
-			self_ref.currentTab = "edit"
-		end
-	end)
-
+	-- Close button (always visible)
 	controls.closeBtn = new("ButtonControl", {"TOPRIGHT", self, "TOPRIGHT"}, -10, 10, 40, 24, "X", function()
 		self_ref:Close()
 	end)
 
-	-- ========================
-	-- SELECT TAB
-	-- ========================
-	controls.typeLabel = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, 15, 50, 0, 16, "^7Item Type:")
-	controls.typeLabel.shown = function() return self_ref.currentTab == "select" end
-
-	local typeDropList = {}
-	for _, entry in ipairs(self.orderedTypeList) do
-		t_insert(typeDropList, entry)
+	-- =========================================================================
+	-- RIGHT PANEL: tab buttons
+	-- =========================================================================
+	local rightTabDefs = {
+		{ key = "item",       label = function()
+			local n = self_ref.currentItemList and #self_ref.currentItemList or 0
+			return self_ref.rightTab == "item" and "^7Item(" .. n .. ")" or "^8Item(" .. n .. ")"
+		end },
+		{ key = "prefix1",   label = function()
+			local n = #(self_ref.affixLists.prefix1 or {})
+			return (self_ref.rightTab == "prefix1" and "^7" or "^8") .. "Pfx 1(" .. n .. ")"
+		end },
+		{ key = "prefix2",   label = function()
+			local n = #(self_ref.affixLists.prefix2 or {})
+			return (self_ref.rightTab == "prefix2" and "^7" or "^8") .. "Pfx 2(" .. n .. ")"
+		end },
+		{ key = "suffix1",   label = function()
+			local n = #(self_ref.affixLists.suffix1 or {})
+			return (self_ref.rightTab == "suffix1" and "^7" or "^8") .. "Sfx 1(" .. n .. ")"
+		end },
+		{ key = "suffix2",   label = function()
+			local n = #(self_ref.affixLists.suffix2 or {})
+			return (self_ref.rightTab == "suffix2" and "^7" or "^8") .. "Sfx 2(" .. n .. ")"
+		end },
+		{ key = "sealed",    label = function()
+			local base = self_ref:IsAnyIdol() and "Enc1" or "Sealed"
+			local n = #(self_ref.affixLists.sealed or {})
+			return (self_ref.rightTab == "sealed" and "^7" or "^8") .. base .. "(" .. n .. ")"
+		end },
+		{ key = "primordial", label = function()
+			local base = self_ref:IsAnyIdol() and "Enc2" or "Primordial"
+			local n = #(self_ref.affixLists.primordial or {})
+			return (self_ref.rightTab == "primordial" and "^7" or "^8") .. base .. "(" .. n .. ")"
+		end },
+		{ key = "corrupted", label = function()
+			local n = #(self_ref.affixLists.corrupted or {})
+			return (self_ref.rightTab == "corrupted" and "^7" or "^8") .. "Crpt(" .. n .. ")"
+		end },
+	}
+	-- Spread 8 tabs across RP_W pixels
+	local tabW = m_floor((RP_W - 4) / #rightTabDefs)
+	for i, def in ipairs(rightTabDefs) do
+		local tabX = LEFT_W + 2 + (i - 1) * tabW
+		local capturedKey = def.key
+		local capturedLabel = def.label
+		controls["rtab_" .. def.key] = new("ButtonControl", {"TOPLEFT", self, "TOPLEFT"},
+			tabX, RP_TAB_Y, tabW - 2, RP_TAB_H,
+			capturedLabel,
+			function()
+				self_ref.rightTab = capturedKey
+				self_ref.rightScrollY = 0
+			end)
+		controls["rtab_" .. def.key].locked = function()
+			return self_ref.rightTab == capturedKey
+		end
+		-- Hide affix tabs when no item selected
+		if def.key ~= "item" then
+			controls["rtab_" .. def.key].shown = function()
+				return self_ref.editItem ~= nil
+			end
+		end
 	end
 
-	controls.typeDropdown = new("DropDownControl", {"LEFT", controls.typeLabel, "RIGHT"}, 5, 0, 220, 20,
-		typeDropList, function(index, value)
-			if value.isSeparator then
-				for i = index + 1, #typeDropList do
-					if not typeDropList[i].isSeparator then
-						controls.typeDropdown.selIndex = i
-						self_ref.selectedTypeIndex = i
-						self_ref:RefreshBaseList()
-						return
-					end
-				end
-				return
+	-- Right panel search bar
+	controls.rightSearch = new("EditControl", {"TOPLEFT", self, "TOPLEFT"},
+		LEFT_W + 2, RP_FILTER_Y, RP_W - 80, RP_FILTER_H, "", "^8Search", nil, nil,
+		function(buf)
+			self_ref.searchText = buf
+			self_ref.rightScrollY = 0
+			if self_ref.rightTab == "item" then
+				self_ref:RefreshBaseList()
 			end
-			self_ref.selectedTypeIndex = index
+		end)
+
+	-- Right panel category tabs (item mode only)
+	controls.catBasic = new("ButtonControl", {"TOPLEFT", self, "TOPLEFT"},
+		LEFT_W + 2, RP_CATTAB_Y, 70, RP_CATTAB_H,
+		function() return self_ref.selectedBaseCategory == "basic" and "^7Basic" or "^8Basic" end,
+		function()
+			self_ref.selectedBaseCategory = "basic"
 			self_ref:RefreshBaseList()
 		end)
-	controls.typeDropdown.shown = function() return self_ref.currentTab == "select" end
-	controls.typeDropdown.selIndex = self.selectedTypeIndex
-	controls.typeDropdown.enableDroppedWidth = true
-	controls.typeDropdown.maxDroppedWidth = 300
-
-	-- Category tabs
-	controls.catBasic = new("ButtonControl", {"TOPLEFT", self, "TOPLEFT"}, 15, 80, 80, 20, function()
-		return self_ref.selectedBaseCategory == "basic" and "^7Basic" or "^8Basic"
-	end, function()
-		self_ref.selectedBaseCategory = "basic"
-		self_ref:RefreshBaseList()
-	end)
-	controls.catBasic.shown = function() return self_ref.currentTab == "select" end
 	controls.catBasic.locked = function() return self_ref.selectedBaseCategory == "basic" end
+	controls.catBasic.shown  = function() return self_ref.rightTab == "item" end
 
-	controls.catUnique = new("ButtonControl", {"LEFT", controls.catBasic, "RIGHT"}, 5, 0, 80, 20, function()
-		return colorCodes.UNIQUE .. "Unique"
-	end, function()
-		self_ref.selectedBaseCategory = "unique"
-		self_ref:RefreshBaseList()
-	end)
-	controls.catUnique.shown = function() return self_ref.currentTab == "select" end
+	controls.catUnique = new("ButtonControl", {"LEFT", controls.catBasic, "RIGHT"}, 4, 0, 70, RP_CATTAB_H,
+		function() return colorCodes.UNIQUE .. "Unique" end,
+		function()
+			self_ref.selectedBaseCategory = "unique"
+			self_ref:RefreshBaseList()
+		end)
 	controls.catUnique.locked = function() return self_ref.selectedBaseCategory == "unique" end
+	controls.catUnique.shown  = function() return self_ref.rightTab == "item" end
 
-	controls.catSet = new("ButtonControl", {"LEFT", controls.catUnique, "RIGHT"}, 5, 0, 80, 20, function()
-		return colorCodes.SET .. "Set"
-	end, function()
-		self_ref.selectedBaseCategory = "set"
-		self_ref:RefreshBaseList()
-	end)
-	controls.catSet.shown = function() return self_ref.currentTab == "select" end
+	controls.catSet = new("ButtonControl", {"LEFT", controls.catUnique, "RIGHT"}, 4, 0, 55, RP_CATTAB_H,
+		function() return colorCodes.SET .. "Set" end,
+		function()
+			self_ref.selectedBaseCategory = "set"
+			self_ref:RefreshBaseList()
+		end)
 	controls.catSet.locked = function() return self_ref.selectedBaseCategory == "set" end
+	controls.catSet.shown  = function() return self_ref.rightTab == "item" end
 
-	-- Search bar
-	controls.searchLabel = new("LabelControl", {"LEFT", controls.catSet, "RIGHT"}, 18, 0, 0, 14, "^8Search:")
-	controls.searchLabel.shown = function() return self_ref.currentTab == "select" end
-	controls.searchEdit = new("EditControl", {"LEFT", controls.searchLabel, "RIGHT"}, 5, 0, 200, 18, "", nil, nil, nil, function(buf)
-		self_ref.searchText = buf
-		self_ref:RefreshBaseList()
-	end)
-	controls.searchEdit.shown = function() return self_ref.currentTab == "select" end
-
-	-- Column headers
-	controls.colHeaderName = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, 18, 106, 0, 14, "^8Item Name")
-	controls.colHeaderName.shown = function() return self_ref.currentTab == "select" end
-	controls.colHeaderType = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, 498, 106, 0, 14, "^8Type")
-	controls.colHeaderType.shown = function() return self_ref.currentTab == "select" end
-	controls.colHeaderLv = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, 658, 106, 0, 14, "^8Lv Req")
-	controls.colHeaderLv.shown = function() return self_ref.currentTab == "select" end
-
-	-- Base item list (scrollbar enabled)
-	controls.baseList = new("ListControl", {"TOPLEFT", self, "TOPLEFT"}, 15, 122, 770, 420, 20, true, false, {})
-	controls.baseList.shown = function() return self_ref.currentTab == "select" end
-	controls.baseList.colList = {
-		{ width = function() return 480 end },
-		{ width = function() return 160 end },
-		{ width = function() return 80 end },
-	}
-	controls.baseList.GetRowValue = function(control, column, index, entry)
-		if entry.isImplicitRow then
-			if column == 1 then
-				return "^8    " .. (entry.implicitText or "")
-			end
-			return ""
-		end
-		if column == 1 then
-			local colorCode = colorCodes[entry.rarity] or colorCodes.NORMAL
-			return colorCode .. (entry.label or entry.name or "?")
-		elseif column == 2 then
-			return "^7" .. (entry.displayType or "")
-		elseif column == 3 then
-			local lvl = entry.base and entry.base.req and entry.base.req.level or 0
-			return "^7" .. tostring(lvl)
-		end
-	end
-	controls.baseList.OnSelClick = function(control, index, entry, doubleClick)
-		if entry and entry.isImplicitRow and entry.parentEntry then
-			-- Redirect to parent item
-			for i = index - 1, 1, -1 do
-				if control.list[i] == entry.parentEntry then
-					control.selIndex = i
-					control.selValue = entry.parentEntry
-					entry = entry.parentEntry
-					break
-				end
-			end
-		end
-		if doubleClick and entry and not entry.isImplicitRow then
-			self_ref:SelectBase(entry)
-		end
-	end
-
-	controls.selectBtn = new("ButtonControl", {"BOTTOMRIGHT", self, "BOTTOMRIGHT"}, -15, -15, 100, 28, "Select", function()
-		local list = controls.baseList.list
-		local idx = controls.baseList.selIndex
-		local entry = list[idx]
-		if entry and entry.isImplicitRow then
-			for i = idx - 1, 1, -1 do
-				if not list[i].isImplicitRow then
-					entry = list[i]
-					break
-				end
-			end
-		end
-		if entry and not entry.isImplicitRow then
-			self_ref:SelectBase(entry)
-		end
-	end)
-	controls.selectBtn.shown = function() return self_ref.currentTab == "select" end
-
-	-- ========================
-	-- EDIT TAB
-	-- ========================
-	controls.editItemName = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, 15, 50, 0, 18, "")
-	controls.editItemName.shown = function() return self_ref.currentTab == "edit" end
+	-- =========================================================================
+	-- LEFT PANEL: item preview controls
+	-- =========================================================================
+	controls.editItemName = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, LP_LABEL_X,
+		function() return PREVIEW_Y + 4 end, 0, 16, "")
 	controls.editItemName.label = function()
-		if not self_ref.editItem then return "" end
+		if not self_ref.editItem then return "^8<- Select an item" end
 		local item = self_ref.editItem
 		local col
 		if item.type and item.type:find("Idol") and item.type ~= "Idol Altar" and item.rarity ~= "UNIQUE" then
@@ -590,28 +551,26 @@ function CraftingPopupClass:BuildControls()
 		else
 			col = colorCodes[item.rarity] or colorCodes.NORMAL
 		end
-		return col .. (item.title or item.namePrefix .. item.baseName .. item.nameSuffix)
+		return col .. (item.title or (item.namePrefix or "") .. (item.baseName or item.name or "") .. (item.nameSuffix or ""))
 	end
 
-	controls.changeItemBtn = new("ButtonControl", {"LEFT", controls.editItemName, "LEFT"}, 0, 22, 100, 20, "Change Item", function()
-		self_ref.currentTab = "select"
-	end)
-	controls.changeItemBtn.shown = function() return self_ref.currentTab == "edit" end
-
-	controls.implicitLabel = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, 15, 100, 0, 14, colorCodes.UNIQUE .. "IMPLICITS")
-	controls.implicitLabel.shown = function() return self_ref.currentTab == "edit" end
+	controls.implicitLabel = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, LP_LABEL_X,
+		function() return PREVIEW_Y + 44 end, 0, 14, colorCodes.UNIQUE .. "IMPLICITS")
+	controls.implicitLabel.shown = function()
+		return self_ref.editItem ~= nil
+	end
 
 	for i = 1, 20 do
 		local key = "implicit" .. i
-		controls[key] = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, 25, 100 + i * 18, 0, 14, "")
+		controls[key] = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, LP_LINE_X,
+			function() return PREVIEW_Y + 44 + 14 + 4 + i * 14 end, 0, 13, "")
 		controls[key].shown = function()
-			if self_ref.currentTab ~= "edit" or not self_ref.editItem then return false end
+			if not self_ref.editItem then return false end
 			local item = self_ref.editItem
-			local implicitCount = #item.implicitModLines
-			if i <= implicitCount then return true end
+			if i <= #item.implicitModLines then return true end
 			local rarity = item.rarity
 			if rarity == "UNIQUE" or rarity == "WWUNIQUE" or rarity == "SET" then
-				local j = i - implicitCount
+				local j = i - #item.implicitModLines
 				return item.explicitModLines[j] ~= nil
 			end
 			return false
@@ -619,13 +578,12 @@ function CraftingPopupClass:BuildControls()
 		controls[key].label = function()
 			if not self_ref.editItem then return "" end
 			local item = self_ref.editItem
-			local implicitCount = #item.implicitModLines
-			if i <= implicitCount then
+			if i <= #item.implicitModLines then
 				return "^7" .. itemLib.formatModLine(item.implicitModLines[i])
 			end
 			local rarity = item.rarity
 			if rarity == "UNIQUE" or rarity == "WWUNIQUE" or rarity == "SET" then
-				local j = i - implicitCount
+				local j = i - #item.implicitModLines
 				if item.explicitModLines[j] then
 					return "^7" .. itemLib.formatModLine(item.explicitModLines[j])
 				end
@@ -636,111 +594,73 @@ function CraftingPopupClass:BuildControls()
 
 	-- Affix section controls
 	local affixSections = {
-		{ key = "prefix",     label = "PREFIXES",        slots = {"prefix1", "prefix2"} },
-		{ key = "suffix",     label = "SUFFIXES",        slots = {"suffix1", "suffix2"} },
-		{ key = "sealed",     label = "SEALED AFFIX",    slots = {"sealed"} },
+		{ key = "prefix",     label = "PREFIXES",         slots = {"prefix1", "prefix2"} },
+		{ key = "suffix",     label = "SUFFIXES",         slots = {"suffix1", "suffix2"} },
+		{ key = "sealed",     label = "SEALED AFFIX",     slots = {"sealed"} },
 		{ key = "primordial", label = "PRIMORDIAL AFFIX", slots = {"primordial"} },
-		{ key = "corrupted",  label = "CORRUPTED",       slots = {"corrupted"} },
+		{ key = "corrupted",  label = "CORRUPTED",        slots = {"corrupted"} },
 	}
 
-	-- Fixed-tier slots: primordial (always T8)
-	local fixedTierSlots = { primordial = true }
-	-- No T8 for all non-primordial slots (T8 is primordial only)
-	local noT8Slots = { prefix1 = true, prefix2 = true, suffix1 = true, suffix2 = true, sealed = true, corrupted = true }
-
-	-- Returns available affix count from a dropdown control's list (excludes placeholder entry)
-	local function affixCount(ctrl)
-		local list = ctrl and ctrl.list
-		return list and #list > 1 and (#list - 1) or 0
-	end
-
-	-- Returns section label with dynamic available count appended
-	local function sectionLabelWithCount(baseLabel, countCtrlKey)
-		return function()
-			local n = affixCount(self_ref.controls[countCtrlKey])
-			return colorCodes.UNIQUE .. baseLabel .. " (" .. n .. ")"
-		end
-	end
-
 	for _, section in ipairs(affixSections) do
-		local labelKey = section.key .. "Label"
-		local capturedSectionKey = section.key
+		local labelKey          = section.key .. "Label"
+		local capturedSectionKey   = section.key
 		local capturedSectionLabel = section.label
-		-- Map each section to its primary dropdown control key for count
-		local countCtrlKeys = {
-			prefix    = "prefix1Add",
-			suffix    = "suffix1Add",
-			sealed    = "sealedAdd",
-			primordial = "primordialAdd",
-			corrupted = "corruptedAdd",
-		}
-		local countCtrlKey = countCtrlKeys[capturedSectionKey]
-		controls[labelKey] = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, 15,
-			function() return self_ref.editY[labelKey] or 200 end,
-			0, 14, colorCodes.UNIQUE .. section.label)
+
+		controls[labelKey] = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, LP_LABEL_X,
+			function() return self_ref.editY[labelKey] or 0 end, 0, 14, "")
+
 		if capturedSectionKey == "sealed" then
 			controls[labelKey].label = function()
 				local base = self_ref:IsAnyIdol() and "ENCHANTED 1" or capturedSectionLabel
-				local n = affixCount(self_ref.controls[countCtrlKey])
-				return colorCodes.UNIQUE .. base .. " (" .. n .. ")"
+				return colorCodes.UNIQUE .. base
 			end
 		elseif capturedSectionKey == "primordial" then
 			controls[labelKey].label = function()
 				local base = self_ref:IsAnyIdol() and "ENCHANTED 2" or capturedSectionLabel
-				local n = affixCount(self_ref.controls[countCtrlKey])
-				return colorCodes.UNIQUE .. base .. " (" .. n .. ")"
+				return colorCodes.UNIQUE .. base
 			end
 		else
-			controls[labelKey].label = sectionLabelWithCount(capturedSectionLabel, countCtrlKey)
-		end
-		controls[labelKey].shown = function()
-			if self_ref.currentTab ~= "edit" then return false end
-			-- Unique idols: only show corrupted section
-			if capturedSectionKey ~= "corrupted" and self_ref:IsUniqueIdol() then return false end
-			-- Set items: no affix sections at all
-			if self_ref:IsSetItem() then return false end
-			-- Unique items (non-idol): hide sealed and primordial
-			if (capturedSectionKey == "sealed" or capturedSectionKey == "primordial")
-				and self_ref:IsUniqueItem() then return false end
-			-- Enchanted slots: only for Grand/Large/Ornate/Huge/Adorned non-omen idols
-			if (capturedSectionKey == "sealed" or capturedSectionKey == "primordial")
-				and self_ref:IsAnyIdol() and not self_ref:IsEnchantableIdol() then
-				return false
-			end
-			return true
+			controls[labelKey].label = function() return colorCodes.UNIQUE .. capturedSectionLabel end
 		end
 
-		-- Corrupted checkbox (next to corrupted label)
+		controls[labelKey].shown = function()
+			if not self_ref.editItem then return false end
+			if capturedSectionKey ~= "corrupted" and self_ref:IsUniqueIdol() then return false end
+			if self_ref:IsSetItem() then return false end
+			if (capturedSectionKey == "sealed" or capturedSectionKey == "primordial")
+				and self_ref:IsUniqueItem() then return false end
+			if (capturedSectionKey == "sealed" or capturedSectionKey == "primordial")
+				and self_ref:IsAnyIdol() and not self_ref:IsEnchantableIdol() then return false end
+			return self_ref.editY[labelKey] ~= nil and self_ref.editY[labelKey] > 0
+		end
+
 		if section.key == "corrupted" then
-			controls.corruptedCheck = new("CheckBoxControl", {"TOPLEFT", self, "TOPLEFT"}, 150,
-				function() return self_ref.editY[labelKey] or 200 end,
-				18, "", function(state)
+			controls.corruptedCheck = new("CheckBoxControl", {"TOPLEFT", self, "TOPLEFT"}, LP_LABEL_X + 110,
+				function() return self_ref.editY[labelKey] or 0 end, 18, "", function(state)
 					self_ref.corrupted = state
 					if not state then
 						self_ref.affixState.corrupted.modKey = nil
-						self_ref.affixState.corrupted.tier = 0
+						self_ref.affixState.corrupted.tier   = 0
 						self_ref.affixState.corrupted.ranges = {}
 						self_ref:UpdateSlotModInfo("corrupted")
 					end
 					self_ref:RebuildEditItem()
 				end)
-			controls.corruptedCheck.shown = function() return self_ref.currentTab == "edit" end
+			controls.corruptedCheck.shown = function() return self_ref.editItem ~= nil end
 		end
 
 		for _, slotKey in ipairs(section.slots) do
-			-- Mod line labels and value edits (up to MAX_MOD_LINES per slot)
 			for li = 1, MAX_MOD_LINES do
 				local lineKey = slotKey .. "Line" .. li
-				local valKey = slotKey .. "Val" .. li
+				local valKey  = slotKey .. "Val"  .. li
 
-				-- Mod line label
-				controls[lineKey] = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, 25,
+				controls[lineKey] = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, LP_LINE_X,
 					function()
 						local ey = self_ref.editY[slotKey]
 						return ey and ey[li] or 0
-					end, 0, 14, "")
+					end, LP_LINE_W, 14, "")
 				controls[lineKey].shown = function()
-					if self_ref.currentTab ~= "edit" then return false end
+					if not self_ref.editItem then return false end
 					if not self_ref.affixState[slotKey].modKey then return false end
 					if slotKey == "corrupted" and not self_ref.corrupted then return false end
 					return li <= self_ref.slotModInfo[slotKey].count
@@ -748,8 +668,8 @@ function CraftingPopupClass:BuildControls()
 				controls[lineKey].label = function()
 					local info = self_ref.slotModInfo[slotKey]
 					if li > info.count then return "" end
-					local line = info.lines[li]
-					local st = self_ref.affixState[slotKey]
+					local line  = info.lines[li]
+					local st    = self_ref.affixState[slotKey]
 					local range = st.ranges[li] or 128
 					local computed = itemLib.applyRange(line, range, nil, getRounding(line)) or line
 					computed = computed:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
@@ -757,15 +677,15 @@ function CraftingPopupClass:BuildControls()
 					if st.tier >= 5 then col = colorCodes.EXALTED
 					elseif st.tier >= 3 then col = colorCodes.RARE
 					else col = colorCodes.MAGIC end
+					if #computed > 20 then computed = computed:sub(1, 18) .. ".." end
 					return col .. computed
 				end
 
-				-- Value edit control (right side, after mod text)
-				controls[valKey] = new("EditControl", {"TOPLEFT", self, "TOPLEFT"}, 500,
+				controls[valKey] = new("EditControl", {"TOPLEFT", self, "TOPLEFT"}, LP_VAL_X,
 					function()
 						local ey = self_ref.editY[slotKey]
-						return ey and (ey[li] or 0) - 1 or 0
-					end, 65, 18, "", nil, "^%-%d%.", nil,
+						return ey and ((ey[li] or 0) - 1) or 0
+					end, LP_VAL_W, 18, "", nil, "^%-%d%.", nil,
 					function(buf)
 						if self_ref.rebuilding then return end
 						local val = tonumber(buf)
@@ -773,11 +693,9 @@ function CraftingPopupClass:BuildControls()
 						local info = self_ref.slotModInfo[slotKey]
 						if li > info.count then return end
 						local line = info.lines[li]
-						-- Clamp to valid range
 						val = clampModValue(line, val)
 						local range = reverseModRange(line, val)
 						self_ref.affixState[slotKey].ranges[li] = range
-						-- Update display to clamped value
 						local actual = computeModValue(line, range)
 						if actual then
 							self_ref.rebuilding = true
@@ -787,14 +705,13 @@ function CraftingPopupClass:BuildControls()
 						self_ref:RebuildEditItem()
 					end)
 				controls[valKey].shown = function()
-					if self_ref.currentTab ~= "edit" then return false end
+					if not self_ref.editItem then return false end
 					if not self_ref.affixState[slotKey].modKey then return false end
 					if slotKey == "corrupted" and not self_ref.corrupted then return false end
 					local info = self_ref.slotModInfo[slotKey]
 					return li <= info.count and hasRange(info.lines[li])
 				end
 				controls[valKey].numberInc = 1
-				-- Tooltip on the EditControl itself
 				controls[valKey].tooltipFunc = function(tooltip, mode)
 					if mode == "OUT" then return end
 					tooltip:Clear()
@@ -806,19 +723,18 @@ function CraftingPopupClass:BuildControls()
 						tooltip:AddLine(14, "^7Range: " .. tostring(min) .. " - " .. tostring(max))
 					end
 				end
-				-- Propagate tooltip to +/- buttons
 				controls[valKey].tooltipPropagated = true
 			end
 
-			-- Tier label (on first mod line)
+			-- Tier label
 			local tierLabelKey = slotKey .. "TierLabel"
-			controls[tierLabelKey] = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, 600,
+			controls[tierLabelKey] = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, LP_TIER_X,
 				function()
 					local ey = self_ref.editY[slotKey]
 					return ey and ey[1] or 0
 				end, 0, 14, "")
 			controls[tierLabelKey].shown = function()
-				if self_ref.currentTab ~= "edit" then return false end
+				if not self_ref.editItem then return false end
 				if slotKey == "corrupted" and not self_ref.corrupted then return false end
 				return self_ref.affixState[slotKey].modKey ~= nil
 			end
@@ -831,9 +747,9 @@ function CraftingPopupClass:BuildControls()
 				self_ref:BuildTierTooltip(tooltip, slotKey)
 			end
 
-			-- Tier up button (+) - hidden for primordial (fixed T8)
+			-- Tier up (+)
 			local tierUpKey = slotKey .. "TierUp"
-			controls[tierUpKey] = new("ButtonControl", {"TOPLEFT", self, "TOPLEFT"}, 625,
+			controls[tierUpKey] = new("ButtonControl", {"TOPLEFT", self, "TOPLEFT"}, LP_TRUP_X,
 				function()
 					local ey = self_ref.editY[slotKey]
 					return ey and ey[1] or 0
@@ -841,9 +757,7 @@ function CraftingPopupClass:BuildControls()
 					local st = self_ref.affixState[slotKey]
 					if not st.modKey then return end
 					local maxTier = self_ref:GetMaxTier(st.modKey)
-					if noT8Slots[slotKey] then
-						maxTier = m_min(maxTier, 6)
-					end
+					if NO_T8_SLOTS[slotKey] then maxTier = m_min(maxTier, 6) end
 					st.tier = st.tier + 1
 					if st.tier > maxTier then st.tier = 0 end
 					self_ref:UpdateSlotModInfo(slotKey)
@@ -851,8 +765,8 @@ function CraftingPopupClass:BuildControls()
 					self_ref:RebuildEditItem()
 				end)
 			controls[tierUpKey].shown = function()
-				if self_ref.currentTab ~= "edit" then return false end
-				if fixedTierSlots[slotKey] then return false end
+				if not self_ref.editItem then return false end
+				if FIXED_TIER_SLOTS[slotKey] then return false end
 				if slotKey == "corrupted" and not self_ref.corrupted then return false end
 				return self_ref.affixState[slotKey].modKey ~= nil
 			end
@@ -861,9 +775,9 @@ function CraftingPopupClass:BuildControls()
 				self_ref:BuildTierTooltip(tooltip, slotKey)
 			end
 
-			-- Tier down button (-)
+			-- Tier down (-)
 			local tierDownKey = slotKey .. "TierDown"
-			controls[tierDownKey] = new("ButtonControl", {"TOPLEFT", self, "TOPLEFT"}, 645,
+			controls[tierDownKey] = new("ButtonControl", {"TOPLEFT", self, "TOPLEFT"}, LP_TRDN_X,
 				function()
 					local ey = self_ref.editY[slotKey]
 					return ey and ey[1] or 0
@@ -871,9 +785,7 @@ function CraftingPopupClass:BuildControls()
 					local st = self_ref.affixState[slotKey]
 					if not st.modKey then return end
 					local maxTier = self_ref:GetMaxTier(st.modKey)
-					if noT8Slots[slotKey] then
-						maxTier = m_min(maxTier, 6)
-					end
+					if NO_T8_SLOTS[slotKey] then maxTier = m_min(maxTier, 6) end
 					st.tier = st.tier - 1
 					if st.tier < 0 then st.tier = maxTier end
 					self_ref:UpdateSlotModInfo(slotKey)
@@ -881,8 +793,8 @@ function CraftingPopupClass:BuildControls()
 					self_ref:RebuildEditItem()
 				end)
 			controls[tierDownKey].shown = function()
-				if self_ref.currentTab ~= "edit" then return false end
-				if fixedTierSlots[slotKey] then return false end
+				if not self_ref.editItem then return false end
+				if FIXED_TIER_SLOTS[slotKey] then return false end
 				if slotKey == "corrupted" and not self_ref.corrupted then return false end
 				return self_ref.affixState[slotKey].modKey ~= nil
 			end
@@ -891,102 +803,38 @@ function CraftingPopupClass:BuildControls()
 				self_ref:BuildTierTooltip(tooltip, slotKey)
 			end
 
-			-- Remove button (x)
+			-- Remove (x)
 			local removeKey = slotKey .. "Remove"
-			controls[removeKey] = new("ButtonControl", {"TOPLEFT", self, "TOPLEFT"}, 670,
+			controls[removeKey] = new("ButtonControl", {"TOPLEFT", self, "TOPLEFT"}, LP_REM_X,
 				function()
 					local ey = self_ref.editY[slotKey]
 					return ey and ey[1] or 0
-				end, 18, 18, "x", function()
-					self_ref.affixState[slotKey].modKey = nil
-					self_ref.affixState[slotKey].tier = (slotKey == "primordial") and 7 or 0
-					self_ref.affixState[slotKey].ranges = {}
+				end, LP_REM_W, 18, "x", function()
+					self_ref.affixState[slotKey].modKey  = nil
+					self_ref.affixState[slotKey].tier    = (slotKey == "primordial") and 7 or 0
+					self_ref.affixState[slotKey].ranges  = {}
 					self_ref:UpdateSlotModInfo(slotKey)
 					self_ref:RebuildEditItem()
 				end)
 			controls[removeKey].shown = function()
-				if self_ref.currentTab ~= "edit" then return false end
+				if not self_ref.editItem then return false end
 				if slotKey == "corrupted" and not self_ref.corrupted then return false end
 				return self_ref.affixState[slotKey].modKey ~= nil
-			end
-
-			-- Add dropdown (shown when no affix selected)
-			local addKey = slotKey .. "Add"
-			controls[addKey] = new("DropDownControl", {"TOPLEFT", self, "TOPLEFT"}, 25,
-				function()
-					local ey = self_ref.editY[slotKey]
-					return ey and ey.add or 0
-				end, 400, 18,
-				{}, function(index, value)
-					if value and value.statOrderKey then
-						local st = self_ref.affixState[slotKey]
-						st.modKey = value.statOrderKey
-						-- Default to T5 (tier index 4); cap at maxTier if lower
-						local maxT = value.maxTier or 0
-						st.tier = m_min(4, maxT)
-						-- Sealed and corrupted: cap at tier 6 (no T8)
-						if noT8Slots[slotKey] and st.tier > 6 then
-							st.tier = 6
-						end
-						st.ranges = {}
-						-- Default all ranges to 128
-						self_ref:UpdateSlotModInfo(slotKey)
-						local info = self_ref.slotModInfo[slotKey]
-						for i = 1, info.count do
-							st.ranges[i] = 128
-						end
-						self_ref:UpdateSlotValueEdits(slotKey)
-						self_ref:RebuildEditItem()
-					end
-				end)
-			controls[addKey].shown = function()
-				if self_ref.currentTab ~= "edit" then return false end
-				if self_ref.affixState[slotKey].modKey ~= nil then return false end
-				-- Unique idols can only have corrupted affix; hide all other slots
-				if slotKey ~= "corrupted" and self_ref:IsUniqueIdol() then return false end
-				-- Set items: no affixes at all
-				if self_ref:IsSetItem() then return false end
-				-- Unique items (non-idol): hide sealed and primordial
-				if (slotKey == "sealed" or slotKey == "primordial") and self_ref:IsUniqueItem() then return false end
-				-- Idols have only 1 prefix and 1 suffix (no prefix2/suffix2)
-				if (slotKey == "prefix2" or slotKey == "suffix2") and self_ref:IsAnyIdol() then return false end
-				-- Enchanted slots only for Grand/Large/Ornate/Huge/Adorned non-omen idols
-				if (slotKey == "sealed" or slotKey == "primordial")
-					and self_ref:IsAnyIdol() and not self_ref:IsEnchantableIdol() then
-					return false
-				end
-				if slotKey == "corrupted" then
-					return self_ref.corrupted
-				end
-				if slotKey == "prefix2" then
-					return self_ref.affixState.prefix1.modKey ~= nil
-				elseif slotKey == "suffix2" then
-					return self_ref.affixState.suffix1.modKey ~= nil
-				end
-				return true
-			end
-			controls[addKey].enableDroppedWidth = true
-			controls[addKey].maxDroppedWidth = 500
-			controls[addKey].tooltipFunc = function(tooltip, mode, index, value)
-				tooltip:Clear()
-				if mode ~= "OUT" and value and value.statOrderKey then
-					self_ref:BuildAffixTooltip(tooltip, value.statOrderKey)
-				end
 			end
 		end
 	end
 
 	-- Save / Cancel
-	controls.saveBtn = new("ButtonControl", {"BOTTOMRIGHT", self, "BOTTOMRIGHT"}, -15, -15, 100, 28, "Save", function()
+	controls.saveBtn = new("ButtonControl", {"BOTTOMLEFT", self, "BOTTOMLEFT"}, LP_LABEL_X, -15, 90, 28, "Save", function()
 		self_ref:SaveItem()
 	end)
-	controls.saveBtn.shown = function() return self_ref.currentTab == "edit" and self_ref.editItem ~= nil end
+	controls.saveBtn.shown = function() return self_ref.editItem ~= nil end
 
-	controls.cancelBtn = new("ButtonControl", {"BOTTOMRIGHT", self, "BOTTOMRIGHT"}, -125, -15, 100, 28, "Cancel", function()
+	controls.cancelBtn = new("ButtonControl", {"LEFT", controls.saveBtn, "RIGHT"}, 8, 0, 90, 28, "Cancel", function()
 		self_ref:Close()
 	end)
 
-	-- Anchoring
+	-- Fix anchoring
 	for id, control in pairs(self.controls) do
 		if not control.anchor.point then
 			control:SetAnchor("TOP", self, "TOP")
@@ -1001,10 +849,12 @@ function CraftingPopupClass:BuildControls()
 	self:RefreshAffixDropdowns()
 end
 
--- Refresh base item list
+-- =============================================================================
+-- Data refresh
+-- =============================================================================
 function CraftingPopupClass:RefreshBaseList()
 	local typeName = self:GetSelectedTypeName()
-	if not typeName then return end
+	if not typeName then self.currentItemList = {}; return end
 
 	local list = {}
 
@@ -1014,7 +864,6 @@ function CraftingPopupClass:RefreshBaseList()
 			local myClassBit = self:GetCurrentClassReqBit()
 			for _, entry in ipairs(bases) do
 				local classReq = entry.base.classReq or 0
-				-- Skip idol bases restricted to a different class
 				if classReq == 0 or myClassBit == 0 or bit.band(classReq, myClassBit) ~= 0 then
 					t_insert(list, {
 						label = entry.name, name = entry.name, base = entry.base,
@@ -1038,7 +887,7 @@ function CraftingPopupClass:RefreshBaseList()
 				local found = false
 				for _, baseEntry in ipairs(bases) do
 					if baseEntry.base.baseTypeID == unique.baseTypeID and
-					   baseEntry.base.subTypeID == unique.subTypeID then
+					   baseEntry.base.subTypeID  == unique.subTypeID then
 						local classReq = baseEntry.base.classReq or 0
 						if classReq == 0 or myClassBit == 0 or bit.band(classReq, myClassBit) ~= 0 then
 							local isWW = unique.name and unique.name:find("an Erased ") and true or false
@@ -1055,12 +904,11 @@ function CraftingPopupClass:RefreshBaseList()
 						break
 					end
 				end
-				-- Also search hidden bases (e.g. Adorned Silver/Volcano Idol)
 				if not found and self.build.data.itemBases then
 					for baseName, base in pairs(self.build.data.itemBases) do
 						if base.hidden and base.type == typeName and
 						   base.baseTypeID == unique.baseTypeID and
-						   base.subTypeID == unique.subTypeID then
+						   base.subTypeID  == unique.subTypeID then
 							local classReq = base.classReq or 0
 							if classReq == 0 or myClassBit == 0 or bit.band(classReq, myClassBit) ~= 0 then
 								t_insert(list, {
@@ -1085,7 +933,7 @@ function CraftingPopupClass:RefreshBaseList()
 			for sid, setItem in pairs(self.setItems) do
 				for _, baseEntry in ipairs(bases) do
 					if baseEntry.base.baseTypeID == setItem.baseTypeID and
-					   baseEntry.base.subTypeID == setItem.subTypeID then
+					   baseEntry.base.subTypeID  == setItem.subTypeID then
 						local classReq = baseEntry.base.classReq or 0
 						if classReq == 0 or myClassBit == 0 or bit.band(classReq, myClassBit) ~= 0 then
 							t_insert(list, {
@@ -1104,30 +952,24 @@ function CraftingPopupClass:RefreshBaseList()
 		end
 	end
 
-	-- Apply search filter
+	-- Search filter
 	local query = (self.searchText or ""):lower():gsub("^%s*(.-)%s*$", "%1")
 	if query ~= "" then
 		local filtered = {}
 		for _, entry in ipairs(list) do
 			local matched = false
-			-- Match item name
-			if (entry.label or entry.name or ""):lower():find(query, 1, true) then
-				matched = true
-			end
-			-- WW alias: "ww", "weaver", "weavers will", "weaver's will"
+			if (entry.label or entry.name or ""):lower():find(query, 1, true) then matched = true end
 			if not matched and (entry.rarity == "WWUNIQUE" or entry.rarity == "WWLEGENDARY") then
 				if query == "ww" or ("weavers will"):find(query, 1, true) or ("weaver's will"):find(query, 1, true) then
 					matched = true
 				end
 			end
-			-- Match basic item implicit texts
 			if not matched and entry.category == "basic" and entry.base and entry.base.implicits then
 				for _, implText in ipairs(entry.base.implicits) do
 					local cleaned = cleanImplicitText(implText)
 					if cleaned and cleaned:lower():find(query, 1, true) then matched = true; break end
 				end
 			end
-			-- Match unique/ww mod texts and affix field
 			if not matched then
 				local modData = (entry.category == "unique" or entry.category == "ww") and entry.uniqueData
 				             or (entry.category == "set" and entry.setData)
@@ -1137,7 +979,6 @@ function CraftingPopupClass:RefreshBaseList()
 							if modText:lower():find(query, 1, true) then matched = true; break end
 						end
 					end
-					-- Set bonus effects
 					if not matched and modData.set then
 						if modData.set.name and modData.set.name:lower():find(query, 1, true) then
 							matched = true
@@ -1150,78 +991,42 @@ function CraftingPopupClass:RefreshBaseList()
 					end
 				end
 			end
-			if matched then
-				t_insert(filtered, entry)
-			end
+			if matched then t_insert(filtered, entry) end
 		end
 		list = filtered
 	end
 
-	-- Insert implicit sub-rows (and unique/set mods for idols)
-	local expandedList = {}
-	for _, entry in ipairs(list) do
-		t_insert(expandedList, entry)
-		if entry.base and entry.base.implicits then
-			for _, impl in ipairs(entry.base.implicits) do
-				local text = cleanImplicitText(impl)
-				if text then
-					t_insert(expandedList, {
-						isImplicitRow = true,
-						implicitText = text,
-						parentEntry = entry,
-					})
-				end
-			end
-		end
-		-- For unique/set/ww items show their mods as sub-rows
-		if entry.category == "unique" or entry.category == "ww" or entry.category == "set" then
-			local modData = (entry.category == "set" and entry.setData) or entry.uniqueData
-			if modData and modData.mods then
-				for _, modText in ipairs(modData.mods) do
-					local text = cleanImplicitText(modText)
-					if text then
-						t_insert(expandedList, {
-							isImplicitRow = true,
-							implicitText = text,
-							parentEntry = entry,
-						})
-					end
-				end
-			end
-		end
-	end
-
-	self.controls.baseList.list = expandedList
-	self.controls.baseList.selIndex = 1
+	self.currentItemList = list
 end
 
--- Select a base item
 function CraftingPopupClass:SelectBase(entry)
 	if not entry or entry.isImplicitRow then return end
 
 	for key, st in pairs(self.affixState) do
 		st.modKey = nil
-		st.tier = (key == "primordial") and 7 or 0
+		st.tier   = (key == "primordial") and 7 or 0
 		st.ranges = {}
 	end
 	self.corrupted = false
-	self.controls.corruptedCheck.state = false
+	if self.controls.corruptedCheck then
+		self.controls.corruptedCheck.state = false
+	end
 
 	local item = new("Item")
-	item.name = entry.name
-	item.baseName = entry.baseName or entry.name
-	item.base = entry.base
-	item.buffModLines = {}
-	item.enchantModLines = {}
+	item.name       = entry.name
+	item.baseName   = entry.baseName or entry.name
+	item.base       = entry.base
+	item.buffModLines          = {}
+	item.enchantModLines       = {}
 	item.classRequirementModLines = {}
-	item.implicitModLines = {}
-	item.explicitModLines = {}
-	item.quality = 0
-	item.crafted = true
+	item.implicitModLines      = {}
+	item.explicitModLines      = {}
+	item.quality  = 0
+	item.crafted  = true
 
 	if entry.category == "unique" then
-		item.rarity = "UNIQUE"
-		item.title = entry.uniqueData.name
+		item.rarity   = "UNIQUE"
+		item.title    = entry.uniqueData.name
 		item.uniqueID = entry.uniqueID
 		if entry.uniqueData.mods then
 			for i, modText in ipairs(entry.uniqueData.mods) do
@@ -1232,8 +1037,8 @@ function CraftingPopupClass:SelectBase(entry)
 			end
 		end
 	elseif entry.category == "ww" then
-		item.rarity = "WWUNIQUE"
-		item.title = entry.uniqueData.name
+		item.rarity   = "WWUNIQUE"
+		item.title    = entry.uniqueData.name
 		item.uniqueID = entry.uniqueID
 		if entry.uniqueData.mods then
 			for i, modText in ipairs(entry.uniqueData.mods) do
@@ -1244,9 +1049,9 @@ function CraftingPopupClass:SelectBase(entry)
 			end
 		end
 	elseif entry.category == "set" then
-		item.rarity = "SET"
-		item.title = entry.setData.name
-		item.setID = entry.setID
+		item.rarity  = "SET"
+		item.title   = entry.setData.name
+		item.setID   = entry.setID
 		if entry.setData.mods then
 			for i, modText in ipairs(entry.setData.mods) do
 				local rollId = entry.setData.rollIds and entry.setData.rollIds[i]
@@ -1257,7 +1062,7 @@ function CraftingPopupClass:SelectBase(entry)
 		end
 	else
 		item.rarity = "NORMAL"
-		item.title = nil
+		item.title  = nil
 	end
 
 	if entry.base.implicits then
@@ -1271,26 +1076,54 @@ function CraftingPopupClass:SelectBase(entry)
 	item:NormaliseQuality()
 	item:BuildAndParseRaw()
 
-	self.editItem = item
+	self.editItem      = item
 	self.editBaseEntry = entry
-	self.currentTab = "edit"
+	-- Stay on item tab if just selected; user can switch to affix tabs
+	if self.rightTab == "item" then
+		-- auto-advance to prefix1 for basic items to help workflow
+		if entry.category == "basic" then
+			self.rightTab = "prefix1"
+		end
+	end
+	self.rightScrollY = 0
 
-	-- Update mod info for all slots
 	for _, k in ipairs({"prefix1","prefix2","suffix1","suffix2","sealed","primordial","corrupted"}) do
 		self:UpdateSlotModInfo(k)
 	end
-	if entry.category == "basic" then
-		self:RebuildEditItem()
-	end
+	if entry.category == "basic" then self:RebuildEditItem() end
 	self:RecalcEditLayout()
 	self:RefreshAffixDropdowns()
 end
 
--- Refresh affix dropdown lists
+-- Select or deselect an affix card in the right panel
+function CraftingPopupClass:SelectAffixEntry(entry)
+	local slotKey = self.rightTab
+	if slotKey == "item" or not entry or not entry.statOrderKey then return end
+	local st = self.affixState[slotKey]
+	if st.modKey == entry.statOrderKey then
+		-- Deselect
+		st.modKey  = nil
+		st.tier    = (slotKey == "primordial") and 7 or 0
+		st.ranges  = {}
+	else
+		st.modKey = entry.statOrderKey
+		local maxT = entry.maxTier or 0
+		st.tier   = m_min(4, maxT)
+		if NO_T8_SLOTS[slotKey] and st.tier > 6 then st.tier = 6 end
+		st.ranges = {}
+		self:UpdateSlotModInfo(slotKey)
+		local info = self.slotModInfo[slotKey]
+		for i = 1, info.count do st.ranges[i] = 128 end
+		self:UpdateSlotValueEdits(slotKey)
+	end
+	self:RebuildEditItem()
+end
+
+-- =============================================================================
+-- Affix list refresh (populates self.affixLists instead of dropdown controls)
+-- =============================================================================
 function CraftingPopupClass:RefreshAffixDropdowns()
 	if not self.editItem then return end
-
-	-- Route idol items to dedicated handler
 	if self:IsAnyIdol() and data.modIdol and next(data.modIdol) then
 		self:RefreshIdolAffixDropdowns()
 		return
@@ -1304,14 +1137,13 @@ function CraftingPopupClass:RefreshAffixDropdowns()
 	end
 	if not itemMods then return end
 
-	local wwPool = nil
+	local wwPool    = nil
 	local wwClassBit = 0
 	if self:IsWWItem() then
 		local bt = self.editBaseEntry and self.editBaseEntry.base and self.editBaseEntry.base.baseTypeID
-		wwPool = bt and data.wwMods and data.wwMods[tostring(bt)]
-		wwClassBit = self:GetWWClassBit()
+		wwPool       = bt and data.wwMods and data.wwMods[tostring(bt)]
+		wwClassBit   = self:GetWWClassBit()
 	end
-	-- classSpecificity bit for non-WW items (game encoding: Primalist=2,Mage=4,Sentinel=8,Acolyte=16,Rogue=32)
 	local playerCsBit = self:GetCurrentClassReqBit() * 2
 
 	local prefixGroups = {}
@@ -1319,14 +1151,12 @@ function CraftingPopupClass:RefreshAffixDropdowns()
 
 	for modId, mod in pairs(itemMods) do
 		if mod.statOrderKey then
-			-- Skip corrupted altar affixes from regular prefix/suffix groups
 			if mod.specialAffixType and mod.specialAffixType ~= 0 then goto continue end
 			if wwPool then
 				local cs = wwPool[tostring(mod.statOrderKey)]
 				if cs == nil then goto continue end
 				if cs ~= 0 and wwClassBit ~= 0 and bit.band(cs, wwClassBit) == 0 then goto continue end
 			else
-				-- Filter class-specific affixes for non-WW items
 				local cs = mod.classSpecificity or 0
 				if cs ~= 0 and playerCsBit ~= 0 and bit.band(cs, playerCsBit) == 0 then goto continue end
 			end
@@ -1334,17 +1164,12 @@ function CraftingPopupClass:RefreshAffixDropdowns()
 			if groups then
 				if not groups[mod.statOrderKey] then
 					local labelParts = {}
-					for k = 1, 10 do
-						if mod[k] then t_insert(labelParts, mod[k]) end
-					end
+					for k = 1, 10 do if mod[k] then t_insert(labelParts, mod[k]) end end
 					local label = table.concat(labelParts, " / ")
 					label = label:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
 					groups[mod.statOrderKey] = {
-						label = label,
-						statOrderKey = mod.statOrderKey,
-						affix = mod.affix,
-						type = mod.type,
-						maxTier = mod.tier or 0,
+						label = label, statOrderKey = mod.statOrderKey,
+						affix = mod.affix, type = mod.type, maxTier = mod.tier or 0,
 					}
 				else
 					local g = groups[mod.statOrderKey]
@@ -1355,26 +1180,27 @@ function CraftingPopupClass:RefreshAffixDropdowns()
 		::continue::
 	end
 
-	local prefixList = { { label = "-- Select Prefix --" } }
-	local suffixList = { { label = "-- Select Suffix --" } }
-	local sealedList = { { label = "-- Select Affix --" } }
-	local primordialList = { { label = "-- Select T8 Affix --" } }
+	local function sortByLabel(a, b)
+		if not a.statOrderKey then return true end
+		if not b.statOrderKey then return false end
+		return (a.label or "") < (b.label or "")
+	end
+
+	local prefixList    = {}
+	local suffixList    = {}
+	local sealedList    = {}
+	local primordialList = {}
 
 	for _, g in pairs(prefixGroups) do
 		t_insert(prefixList, g)
 		t_insert(sealedList, { label = g.label, statOrderKey = g.statOrderKey, affix = g.affix, type = g.type, maxTier = m_min(g.maxTier, 6) })
-		-- Only add to primordial if T8 (tier 7) exists
 		if g.maxTier >= 7 then
-			-- Build T8 label from tier 7 data
 			local t8Key = tostring(g.statOrderKey) .. "_7"
 			local t8Mod = itemMods[t8Key]
 			if t8Mod then
 				local t8Parts = {}
-				for k = 1, 10 do
-					if t8Mod[k] then t_insert(t8Parts, t8Mod[k]) end
-				end
-				local t8Label = table.concat(t8Parts, " / ")
-				t8Label = t8Label:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
+				for k = 1, 10 do if t8Mod[k] then t_insert(t8Parts, t8Mod[k]) end end
+				local t8Label = table.concat(t8Parts, " / "):gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
 				t_insert(primordialList, { label = t8Label, statOrderKey = g.statOrderKey, affix = g.affix, type = g.type, maxTier = 7 })
 			end
 		end
@@ -1387,20 +1213,11 @@ function CraftingPopupClass:RefreshAffixDropdowns()
 			local t8Mod = itemMods[t8Key]
 			if t8Mod then
 				local t8Parts = {}
-				for k = 1, 10 do
-					if t8Mod[k] then t_insert(t8Parts, t8Mod[k]) end
-				end
-				local t8Label = table.concat(t8Parts, " / ")
-				t8Label = t8Label:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
+				for k = 1, 10 do if t8Mod[k] then t_insert(t8Parts, t8Mod[k]) end end
+				local t8Label = table.concat(t8Parts, " / "):gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
 				t_insert(primordialList, { label = t8Label, statOrderKey = g.statOrderKey, affix = g.affix, type = g.type, maxTier = 7 })
 			end
 		end
-	end
-
-	local function sortByLabel(a, b)
-		if not a.statOrderKey then return true end
-		if not b.statOrderKey then return false end
-		return (a.label or "") < (b.label or "")
 	end
 	table.sort(prefixList, sortByLabel)
 	table.sort(suffixList, sortByLabel)
@@ -1408,13 +1225,13 @@ function CraftingPopupClass:RefreshAffixDropdowns()
 	table.sort(primordialList, sortByLabel)
 
 	local function filterExclusions(list, excludeKeys)
-		local filtered = { list[1] }
-		for i = 2, #list do
+		local filtered = {}
+		for _, entry in ipairs(list) do
 			local excluded = false
 			for _, exKey in ipairs(excludeKeys) do
-				if list[i].statOrderKey == exKey then excluded = true; break end
+				if entry.statOrderKey == exKey then excluded = true; break end
 			end
-			if not excluded then t_insert(filtered, list[i]) end
+			if not excluded then t_insert(filtered, entry) end
 		end
 		return filtered
 	end
@@ -1423,45 +1240,33 @@ function CraftingPopupClass:RefreshAffixDropdowns()
 	local p2Key = self.affixState.prefix2.modKey
 	local s1Key = self.affixState.suffix1.modKey
 	local s2Key = self.affixState.suffix2.modKey
-	local prKey = self.affixState.primordial.modKey
 
-	self.controls.prefix1Add.list = filterExclusions(prefixList, p2Key and {p2Key} or {})
-	self.controls.prefix2Add.list = filterExclusions(prefixList, p1Key and {p1Key} or {})
-	self.controls.suffix1Add.list = filterExclusions(suffixList, s2Key and {s2Key} or {})
-	self.controls.suffix2Add.list = filterExclusions(suffixList, s1Key and {s1Key} or {})
+	self.affixLists.prefix1    = filterExclusions(prefixList, p2Key and {p2Key} or {})
+	self.affixLists.prefix2    = filterExclusions(prefixList, p1Key and {p1Key} or {})
+	self.affixLists.suffix1    = filterExclusions(suffixList, s2Key and {s2Key} or {})
+	self.affixLists.suffix2    = filterExclusions(suffixList, s1Key and {s1Key} or {})
 
 	local sealedExclude = {}
 	if p1Key then t_insert(sealedExclude, p1Key) end
 	if p2Key then t_insert(sealedExclude, p2Key) end
 	if s1Key then t_insert(sealedExclude, s1Key) end
 	if s2Key then t_insert(sealedExclude, s2Key) end
-	self.controls.sealedAdd.list = filterExclusions(sealedList, sealedExclude)
+	self.affixLists.sealed     = filterExclusions(sealedList, sealedExclude)
+	self.affixLists.primordial = filterExclusions(primordialList, sealedExclude)
 
-	local primExclude = {}
-	if p1Key then t_insert(primExclude, p1Key) end
-	if p2Key then t_insert(primExclude, p2Key) end
-	if s1Key then t_insert(primExclude, s1Key) end
-	if s2Key then t_insert(primExclude, s2Key) end
-	self.controls.primordialAdd.list = filterExclusions(primordialList, primExclude)
-
-	-- Corrupted affix dropdown
-	local corruptedList = { { label = "-- Select Corrupted Affix --" } }
+	-- Corrupted list
+	local corruptedList = {}
 	if self:IsIdolAltar() then
-		-- Altar: only show specialAffixType=6 entries
 		local corruptedGroups = {}
 		for modId, mod in pairs(itemMods) do
 			if mod.statOrderKey and mod.specialAffixType == 6 then
 				if not corruptedGroups[mod.statOrderKey] then
 					local labelParts = {}
 					for k = 1, 10 do if mod[k] then t_insert(labelParts, mod[k]) end end
-					local label = table.concat(labelParts, " / ")
-					label = label:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
+					local label = table.concat(labelParts, " / "):gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
 					corruptedGroups[mod.statOrderKey] = {
-						label = label,
-						statOrderKey = mod.statOrderKey,
-						affix = mod.affix,
-						type = mod.type,
-						maxTier = mod.tier or 0,
+						label = label, statOrderKey = mod.statOrderKey,
+						affix = mod.affix, type = mod.type, maxTier = mod.tier or 0,
 					}
 				else
 					local g = corruptedGroups[mod.statOrderKey]
@@ -1470,24 +1275,20 @@ function CraftingPopupClass:RefreshAffixDropdowns()
 			end
 		end
 		for _, g in pairs(corruptedGroups) do
-			local mt = m_min(g.maxTier, 6)
-			t_insert(corruptedList, { label = g.label, statOrderKey = g.statOrderKey, affix = g.affix, type = g.type, maxTier = mt })
+			t_insert(corruptedList, { label = g.label, statOrderKey = g.statOrderKey, affix = g.affix, type = g.type, maxTier = m_min(g.maxTier, 6) })
 		end
 	else
-		-- Regular items: all prefixes + suffixes (no T8 filter)
 		for _, g in pairs(prefixGroups) do
-			local mt = m_min(g.maxTier, 6)
-			t_insert(corruptedList, { label = g.label, statOrderKey = g.statOrderKey, affix = g.affix, type = g.type, maxTier = mt })
+			t_insert(corruptedList, { label = g.label, statOrderKey = g.statOrderKey, affix = g.affix, type = g.type, maxTier = m_min(g.maxTier, 6) })
 		end
 		for _, g in pairs(suffixGroups) do
-			local mt = m_min(g.maxTier, 6)
-			t_insert(corruptedList, { label = g.label, statOrderKey = g.statOrderKey, affix = g.affix, type = g.type, maxTier = mt })
+			t_insert(corruptedList, { label = g.label, statOrderKey = g.statOrderKey, affix = g.affix, type = g.type, maxTier = m_min(g.maxTier, 6) })
 		end
 	end
 	table.sort(corruptedList, sortByLabel)
-	self.controls.corruptedAdd.list = corruptedList
+	self.affixLists.corrupted = corruptedList
 
-	-- Enforce T8 exclusion: cap non-primordial slots at T7 (tier 6)
+	-- Enforce T8 exclusion for non-primordial slots
 	for _, slotKey in ipairs({"prefix1","prefix2","suffix1","suffix2","sealed","corrupted"}) do
 		local st = self.affixState[slotKey]
 		if st.modKey and st.tier >= 7 then
@@ -1498,7 +1299,6 @@ function CraftingPopupClass:RefreshAffixDropdowns()
 	end
 end
 
--- Refresh affix dropdowns for idol items using ModIdol data
 function CraftingPopupClass:RefreshIdolAffixDropdowns()
 	local baseTypeID = self.editBaseEntry and self.editBaseEntry.base and self.editBaseEntry.base.baseTypeID
 	if not baseTypeID then return end
@@ -1511,31 +1311,18 @@ function CraftingPopupClass:RefreshIdolAffixDropdowns()
 	local function buildLabel(mod)
 		local parts = {}
 		for k = 1, 10 do if mod[k] then t_insert(parts, mod[k]) end end
-		local s = table.concat(parts, " / ")
-		return s:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
+		return table.concat(parts, " / "):gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
 	end
 
-	-- ModIdol classSpecificity encoding:
-	--   bit 0 (value 1): "available on universal/small idols for ALL classes" flag
-	--   bits 1-5 (values 2,4,8,16,32): class bits — 2=Primalist,4=Mage,8=Sentinel,16=Acolyte,32=Rogue
-	-- idol classReq (from bases) uses LEB encoding: 1=Primalist,2=Mage,4=Sentinel,8=Acolyte,16=Rogue
-	-- Conversion: game_cs_bit = idol_classReq * 2
 	local idolClassReq = self.editBaseEntry and self.editBaseEntry.base and self.editBaseEntry.base.classReq or 0
-	local idolCsBit = idolClassReq * 2  -- 0 for universal idols (bt=25-28)
+	local idolCsBit    = idolClassReq * 2
+	local isOmen       = self:IsOmenIdol()
+	local LARGE_IDS    = { [29]=true, [30]=true, [31]=true, [32]=true, [33]=true }
 
-	local isOmen = self:IsOmenIdol()
-	-- Large idol baseTypeIDs: 29=Grand, 30=Large, 31=Ornate, 32=Huge, 33=Adorned
-	local LARGE_IDS = { [29]=true, [30]=true, [31]=true, [32]=true, [33]=true }
-
-	-- Omen idols share a combined affix pool across multiple base types:
-	-- Grand omen (bt=29) uses {29, 31, 33}; Large omen (bt=30) uses {30, 32, 33}
 	local omenPool = nil
 	if isOmen then
-		if baseTypeID == 29 then
-			omenPool = { [29]=true, [31]=true, [33]=true }
-		elseif baseTypeID == 30 then
-			omenPool = { [30]=true, [32]=true, [33]=true }
-		end
+		if baseTypeID == 29 then omenPool = { [29]=true, [31]=true, [33]=true }
+		elseif baseTypeID == 30 then omenPool = { [30]=true, [32]=true, [33]=true } end
 	end
 
 	local function canRollOnIdol(mod)
@@ -1553,41 +1340,34 @@ function CraftingPopupClass:RefreshIdolAffixDropdowns()
 		if not btMatch then return false end
 		local cs = mod.classSpecificity or 0
 		if idolClassReq == 0 then
-			-- Universal idol (Small/Minor/Humble/Stout): bit 0 means available to all classes
 			return cs == 0 or bit.band(cs, 1) ~= 0
 		else
-			-- Class-specific large idol: strip bit 0, then filter by class
 			local classMask = bit.band(cs, 0xFFFFFFFE)
 			return classMask == 0 or idolCsBit == 0 or bit.band(classMask, idolCsBit) ~= 0
 		end
 	end
 
-	-- prefix / suffix from general section (+ weaver extras if applicable)
-	local prefixList = { { label = "-- Select Prefix --" } }
-	local suffixList = { { label = "-- Select Suffix --" } }
+	local prefixList    = {}
+	local suffixList    = {}
+	local enchantedList = {}
+
 	for _, pool in ipairs({ general, weaver }) do
 		for _, mod in pairs(pool) do
 			if mod.statOrderKey and canRollOnIdol(mod) then
 				local entry = { label = buildLabel(mod), statOrderKey = mod.statOrderKey, affix = mod.affix, type = mod.type, maxTier = 0 }
-				if mod.type == "Prefix" then
-					t_insert(prefixList, entry)
-				elseif mod.type == "Suffix" then
-					t_insert(suffixList, entry)
-				end
+				if mod.type == "Prefix" then t_insert(prefixList, entry)
+				elseif mod.type == "Suffix" then t_insert(suffixList, entry) end
 			end
 		end
 	end
 
-	-- enchanted affixes (sealed slot = ENCHANTED 1, primordial slot = ENCHANTED 2)
-	local enchantedList = { { label = "-- Select Enchanted --" } }
 	for _, mod in pairs(enchanted) do
 		if mod.statOrderKey and canRollOnIdol(mod) then
 			t_insert(enchantedList, { label = buildLabel(mod), statOrderKey = mod.statOrderKey, affix = mod.affix, type = mod.type, maxTier = 0 })
 		end
 	end
 
-	-- corrupted affixes: omen shows all corrupted from any large idol (bt 29-33); class shows bt-exact match
-	local corruptedList = { { label = "-- Select Corrupted Affix --" } }
+	local corruptedList = {}
 	for _, mod in pairs(corrupted) do
 		local show = false
 		if isOmen then
@@ -1615,25 +1395,25 @@ function CraftingPopupClass:RefreshIdolAffixDropdowns()
 	table.sort(corruptedList, sortByLabel)
 
 	local function filterExclusions(list, excludeKeys)
-		local filtered = { list[1] }
-		for i = 2, #list do
+		local filtered = {}
+		for _, entry in ipairs(list) do
 			local excluded = false
 			for _, exKey in ipairs(excludeKeys) do
-				if list[i].statOrderKey == exKey then excluded = true; break end
+				if entry.statOrderKey == exKey then excluded = true; break end
 			end
-			if not excluded then t_insert(filtered, list[i]) end
+			if not excluded then t_insert(filtered, entry) end
 		end
 		return filtered
 	end
 
-	self.controls.prefix1Add.list = prefixList
-	self.controls.suffix1Add.list = suffixList
-	-- sealed/primordial controls are reused as enchanted 1/2
-	self.controls.sealedAdd.list    = filterExclusions(enchantedList, self.affixState.primordial.modKey and {self.affixState.primordial.modKey} or {})
-	self.controls.primordialAdd.list = filterExclusions(enchantedList, self.affixState.sealed.modKey and {self.affixState.sealed.modKey} or {})
-	self.controls.corruptedAdd.list = corruptedList
+	self.affixLists.prefix1    = prefixList
+	self.affixLists.prefix2    = {}    -- idols have only 1 prefix/suffix
+	self.affixLists.suffix1    = suffixList
+	self.affixLists.suffix2    = {}
+	self.affixLists.sealed     = filterExclusions(enchantedList, self.affixState.primordial.modKey and {self.affixState.primordial.modKey} or {})
+	self.affixLists.primordial = filterExclusions(enchantedList, self.affixState.sealed.modKey and {self.affixState.sealed.modKey} or {})
+	self.affixLists.corrupted  = corruptedList
 
-	-- Cap all idol slot tiers to 0 (all idol affixes are T1 only)
 	for _, slotKey in ipairs({"prefix1","suffix1","sealed","primordial","corrupted"}) do
 		local st = self.affixState[slotKey]
 		if st.modKey and st.tier ~= 0 then
@@ -1644,7 +1424,9 @@ function CraftingPopupClass:RefreshIdolAffixDropdowns()
 	end
 end
 
--- Build tier tooltip
+-- =============================================================================
+-- Tooltips
+-- =============================================================================
 function CraftingPopupClass:BuildTierTooltip(tooltip, slotKey)
 	tooltip:Clear()
 	local st = self.affixState[slotKey]
@@ -1658,13 +1440,11 @@ function CraftingPopupClass:BuildTierTooltip(tooltip, slotKey)
 		if not m and data.modIdol and data.modIdol.flat then m = data.modIdol.flat[key] end
 		return m
 	end
-
 	local baseMod = getMod(tostring(st.modKey) .. "_0")
 	if baseMod then
 		tooltip:AddLine(16, colorCodes.UNIQUE .. (baseMod.affix or "Affix"))
 		tooltip:AddSeparator(10)
 	end
-
 	local maxTierShow = 7
 	if slotKey == "sealed" or slotKey == "corrupted" then maxTierShow = 6 end
 	if self:IsAnyIdol() then maxTierShow = 0 end
@@ -1676,19 +1456,16 @@ function CraftingPopupClass:BuildTierTooltip(tooltip, slotKey)
 			for k = 1, 10 do
 				local line = mod[k]
 				if line and type(line) == "string" then
-					line = line:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
-					t_insert(parts, line)
+					t_insert(parts, line:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", ""))
 				end
 			end
-			local text = table.concat(parts, ", ")
 			local marker = (tier == st.tier) and " <<" or ""
-			local col = (tier == st.tier) and colorCodes.UNIQUE or "^7"
-			tooltip:AddLine(14, col .. "T" .. tostring(tier + 1) .. ": " .. text .. marker)
+			local col    = (tier == st.tier) and colorCodes.UNIQUE or "^7"
+			tooltip:AddLine(14, col .. "T" .. tostring(tier + 1) .. ": " .. table.concat(parts, ", ") .. marker)
 		end
 	end
 end
 
--- Build affix tooltip for dropdown
 function CraftingPopupClass:BuildAffixTooltip(tooltip, statOrderKey)
 	local function getMod(key)
 		if self:IsIdolAltar() then
@@ -1712,8 +1489,7 @@ function CraftingPopupClass:BuildAffixTooltip(tooltip, statOrderKey)
 			for k = 1, 10 do
 				local line = mod[k]
 				if line and type(line) == "string" then
-					line = line:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
-					t_insert(parts, line)
+					t_insert(parts, line:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", ""))
 				end
 			end
 			tooltip:AddLine(14, "^7T" .. tostring(tier + 1) .. ": " .. table.concat(parts, ", "))
@@ -1721,45 +1497,33 @@ function CraftingPopupClass:BuildAffixTooltip(tooltip, statOrderKey)
 	end
 end
 
--- Returns true when the current edit item is a unique idol
+-- =============================================================================
+-- Type helpers
+-- =============================================================================
 function CraftingPopupClass:IsUniqueIdol()
-	return self.editBaseEntry
-		and self.editBaseEntry.category == "unique"
-		and self.editBaseEntry.type
-		and self.editBaseEntry.type:find("Idol")
-		and true or false
+	return self.editBaseEntry and self.editBaseEntry.category == "unique"
+		and self.editBaseEntry.type and self.editBaseEntry.type:find("Idol") and true or false
 end
 
--- Returns true when any idol type is being edited (excludes Idol Altar)
 function CraftingPopupClass:IsAnyIdol()
-	return self.editBaseEntry
-		and self.editBaseEntry.type
+	return self.editBaseEntry and self.editBaseEntry.type
 		and self.editBaseEntry.type:find("Idol")
-		and self.editBaseEntry.type ~= "Idol Altar"
-		and true or false
+		and self.editBaseEntry.type ~= "Idol Altar" and true or false
 end
 
--- Returns true when the current edit item is an Idol Altar
 function CraftingPopupClass:IsIdolAltar()
-	return self.editBaseEntry
-		and self.editBaseEntry.type == "Idol Altar"
-		and true or false
+	return self.editBaseEntry and self.editBaseEntry.type == "Idol Altar" and true or false
 end
 
--- Returns true when the current edit item is any unique (including WW unique, idol or not)
 function CraftingPopupClass:IsUniqueItem()
 	local cat = self.editBaseEntry and self.editBaseEntry.category
 	return cat == "unique" or cat == "ww"
 end
 
--- Returns true when the current edit item is a set item
 function CraftingPopupClass:IsSetItem()
 	return self.editBaseEntry and self.editBaseEntry.category == "set"
 end
 
--- Returns true when the idol is a Heretical variant (enchanted affixes only on heretical)
--- Grand/Large/Ornate/Huge(29-32): heretical = subTypeID 5-9
--- Adorned(33): heretical = subTypeID 7-11 (5,6 are Silver/Volcano, hidden)
 function CraftingPopupClass:IsEnchantableIdol()
 	if not self.editBaseEntry or not self.editBaseEntry.base then return false end
 	local bt = self.editBaseEntry.base.baseTypeID
@@ -1769,8 +1533,6 @@ function CraftingPopupClass:IsEnchantableIdol()
 	return st >= 5 and st <= 9
 end
 
--- Returns true when the current idol is an Omen variant
--- Only Grand(29) and Large(30) have omen subtypes (subTypeID 10-14)
 function CraftingPopupClass:IsOmenIdol()
 	if not self.editBaseEntry or not self.editBaseEntry.base then return false end
 	local bt = self.editBaseEntry.base.baseTypeID
@@ -1778,8 +1540,6 @@ function CraftingPopupClass:IsOmenIdol()
 	return (bt == 29 or bt == 30) and st >= 10 and st <= 14
 end
 
--- Returns true when the current idol is a Weaver variant
--- Small(25): subTypeID==2, Minor/Humble/Stout(26-28): subTypeID==1
 function CraftingPopupClass:IsWeaverIdol()
 	if not self.editBaseEntry or not self.editBaseEntry.base then return false end
 	local bt = self.editBaseEntry.base.baseTypeID
@@ -1789,7 +1549,6 @@ function CraftingPopupClass:IsWeaverIdol()
 	return false
 end
 
--- Returns the classReq bitmask for the current character class (0 if unknown)
 local CLASS_REQ_BITS = { Primalist=1, Mage=2, Sentinel=4, Acolyte=8, Rogue=16 }
 function CraftingPopupClass:GetCurrentClassReqBit()
 	local spec = self.build and self.build.spec
@@ -1797,15 +1556,11 @@ function CraftingPopupClass:GetCurrentClassReqBit()
 	return CLASS_REQ_BITS[name] or 0
 end
 
--- Returns true when the current item has a WW rarity (WWUNIQUE or WWLEGENDARY)
 function CraftingPopupClass:IsWWItem()
 	local r = self.editItem and self.editItem.rarity
 	return r == "WWUNIQUE" or r == "WWLEGENDARY"
 end
 
--- Returns the WW class specificity bit for filtering the WW affix pool.
--- WW uses game encoding: Primalist=2, Mage=4, Sentinel=8, Acolyte=16, Rogue=32.
--- Falls back to current build class if item name has no class keyword.
 local WW_CLASS_BITS = { Primalist=2, Mage=4, Sentinel=8, Acolyte=16, Rogue=32 }
 function CraftingPopupClass:GetWWClassBit()
 	local title = self.editItem and (self.editItem.title or self.editItem.name) or ""
@@ -1817,15 +1572,16 @@ function CraftingPopupClass:GetWWClassBit()
 	return WW_CLASS_BITS[name] or 0
 end
 
--- Rebuild edit item from current affix state
+-- =============================================================================
+-- Rebuild edit item
+-- =============================================================================
 function CraftingPopupClass:RebuildEditItem()
 	if not self.editItem then return end
-
 	self.rebuilding = true
 
-	local item = self.editItem
-	local isAltarItem = self:IsIdolAltar()
-	local itemMods = isAltarItem and (data.itemMods["Idol Altar"] or {}) or (data.itemMods.Item or {})
+	local item         = self.editItem
+	local isAltarItem  = self:IsIdolAltar()
+	local itemMods     = isAltarItem and (data.itemMods["Idol Altar"] or {}) or (data.itemMods.Item or {})
 
 	wipeTable(item.explicitModLines)
 	wipeTable(item.prefixes)
@@ -1833,33 +1589,34 @@ function CraftingPopupClass:RebuildEditItem()
 	item.namePrefix = ""
 	item.nameSuffix = ""
 
-	-- Re-add unique/set mods
 	if self.editBaseEntry and self.editBaseEntry.category == "unique" and self.editBaseEntry.uniqueData then
 		for i, modText in ipairs(self.editBaseEntry.uniqueData.mods) do
-			local rollId = self.editBaseEntry.uniqueData.rollIds and self.editBaseEntry.uniqueData.rollIds[i]
+			local rollId  = self.editBaseEntry.uniqueData.rollIds and self.editBaseEntry.uniqueData.rollIds[i]
 			local modLine = { line = modText }
 			if rollId then modLine.range = 128 end
 			t_insert(item.explicitModLines, modLine)
 		end
 	elseif self.editBaseEntry and self.editBaseEntry.category == "set" and self.editBaseEntry.setData then
 		for i, modText in ipairs(self.editBaseEntry.setData.mods) do
-			local rollId = self.editBaseEntry.setData.rollIds and self.editBaseEntry.setData.rollIds[i]
+			local rollId  = self.editBaseEntry.setData.rollIds and self.editBaseEntry.setData.rollIds[i]
 			local modLine = { line = modText }
 			if rollId then modLine.range = 128 end
 			t_insert(item.explicitModLines, modLine)
 		end
 	end
 
-	local prefixIdx = 0
-	local suffixIdx = 0
+	local prefixIdx  = 0
+	local suffixIdx  = 0
 	local affixCount = 0
-	local maxTier = 0
+	local maxTier    = 0
+	local hasAffix   = false
 
-	local slotOrder = {"prefix1", "prefix2", "suffix1", "suffix2", "sealed", "primordial"}
+	local slotOrder = {"prefix1","prefix2","suffix1","suffix2","sealed","primordial"}
 	for _, slotKey in ipairs(slotOrder) do
 		local st = self.affixState[slotKey]
 		if st.modKey then
 			affixCount = affixCount + 1
+			hasAffix   = true
 			if st.tier > maxTier then maxTier = st.tier end
 			local modKey = tostring(st.modKey) .. "_" .. tostring(st.tier)
 			local mod = itemMods[modKey]
@@ -1882,7 +1639,6 @@ function CraftingPopupClass:RebuildEditItem()
 						item.nameSuffix = " " .. sfxName
 					end
 				end
-
 				local modScalar = 1 + (item.base.affixEffectModifier or 0)
 				if mod.standardAffixEffectModifier then
 					modScalar = modScalar - mod.standardAffixEffectModifier
@@ -1893,8 +1649,7 @@ function CraftingPopupClass:RebuildEditItem()
 					if line and type(line) == "string" then
 						lineIdx = lineIdx + 1
 						t_insert(item.explicitModLines, {
-							line = line,
-							range = st.ranges[lineIdx] or 128,
+							line = line, range = st.ranges[lineIdx] or 128,
 							valueScalar = modScalar,
 						})
 					end
@@ -1903,7 +1658,6 @@ function CraftingPopupClass:RebuildEditItem()
 		end
 	end
 
-	-- Update rarity
 	if self.editBaseEntry and self.editBaseEntry.category == "basic" then
 		item.rarity = getRarityForAffixes(affixCount, maxTier)
 		if item.rarity == "RARE" or item.rarity == "EXALTED" then
@@ -1917,7 +1671,6 @@ function CraftingPopupClass:RebuildEditItem()
 		item.rarity = hasAffix and "WWLEGENDARY" or "WWUNIQUE"
 	end
 
-	-- Add corrupted affix mod lines
 	if self.corrupted then
 		local ca = self.affixState.corrupted
 		if ca.modKey then
@@ -1933,8 +1686,7 @@ function CraftingPopupClass:RebuildEditItem()
 					if line and type(line) == "string" then
 						lineIdx = lineIdx + 1
 						t_insert(item.explicitModLines, {
-							line = line,
-							range = ca.ranges[lineIdx] or 128,
+							line = line, range = ca.ranges[lineIdx] or 128,
 							crafted = true,
 						})
 					end
@@ -1946,10 +1698,7 @@ function CraftingPopupClass:RebuildEditItem()
 	item.corrupted = self.corrupted
 	item:BuildAndParseRaw()
 
-	-- Update mod info and layout
-	for _, k in ipairs(slotOrder) do
-		self:UpdateSlotModInfo(k)
-	end
+	for _, k in ipairs(slotOrder) do self:UpdateSlotModInfo(k) end
 	self:UpdateSlotModInfo("corrupted")
 	self:RecalcEditLayout()
 	self:RefreshAffixDropdowns()
@@ -1957,21 +1706,21 @@ function CraftingPopupClass:RebuildEditItem()
 	self.rebuilding = false
 end
 
+-- =============================================================================
+-- Save / Restore / Close
+-- =============================================================================
 function CraftingPopupClass:SaveItem()
 	if not self.editItem then return end
 	self:RebuildEditItem()
-	-- Save craft state for re-editing
 	local savedState = {}
 	for key, st in pairs(self.affixState) do
 		savedState[key] = { modKey = st.modKey, tier = st.tier, ranges = {} }
-		for i, r in ipairs(st.ranges) do
-			savedState[key].ranges[i] = r
-		end
+		for i, r in ipairs(st.ranges) do savedState[key].ranges[i] = r end
 	end
 	self.editItem.craftState = {
 		affixState = savedState,
-		corrupted = self.corrupted,
-		baseEntry = self.editBaseEntry,
+		corrupted  = self.corrupted,
+		baseEntry  = self.editBaseEntry,
 	}
 	self.itemsTab:SetDisplayItem(self.editItem)
 	self:Close()
@@ -1980,91 +1729,424 @@ end
 function CraftingPopupClass:RestoreCraftState(existingItem)
 	local cs = existingItem.craftState
 	self.editBaseEntry = cs.baseEntry
-	self.editItem = existingItem
-	self.corrupted = cs.corrupted
-	self.controls.corruptedCheck.state = cs.corrupted
-
+	self.editItem      = existingItem
+	self.corrupted     = cs.corrupted
+	if self.controls.corruptedCheck then
+		self.controls.corruptedCheck.state = cs.corrupted
+	end
 	for key, saved in pairs(cs.affixState) do
 		local st = self.affixState[key]
 		if st then
 			st.modKey = saved.modKey
-			st.tier = saved.tier
+			st.tier   = saved.tier
 			st.ranges = {}
-			for i, r in ipairs(saved.ranges) do
-				st.ranges[i] = r
-			end
+			for i, r in ipairs(saved.ranges) do st.ranges[i] = r end
 		end
 	end
-
 	for _, k in ipairs({"prefix1","prefix2","suffix1","suffix2","sealed","primordial","corrupted"}) do
 		self:UpdateSlotModInfo(k)
 		self:UpdateSlotValueEdits(k)
 	end
 	self:RecalcEditLayout()
 	self:RefreshAffixDropdowns()
-	self.currentTab = "edit"
+	self.rightTab = "prefix1"
 end
 
 function CraftingPopupClass:Close()
 	main:ClosePopup()
 end
 
+-- =============================================================================
+-- Draw
+-- =============================================================================
 function CraftingPopupClass:Draw(viewPort)
-	local x, y = self:GetPos()
-	local width, height = self:GetSize()
+	local px, py = self:GetPos()
+	local pw, ph = self:GetSize()
 
+	-- Popup background
 	SetDrawColor(0.05, 0.05, 0.05)
-	DrawImage(nil, x, y, width, height)
+	DrawImage(nil, px, py, pw, ph)
 
+	-- Outer border
 	SetDrawColor(0.4, 0.35, 0.2)
-	DrawImage(nil, x, y, width, 2)
-	DrawImage(nil, x, y + height - 2, width, 2)
-	DrawImage(nil, x, y, 2, height)
-	DrawImage(nil, x + width - 2, y, 2, height)
+	DrawImage(nil, px,          py,          pw, 2)
+	DrawImage(nil, px,          py + ph - 2, pw, 2)
+	DrawImage(nil, px,          py,          2,  ph)
+	DrawImage(nil, px + pw - 2, py,          2,  ph)
 
-	local title = "Craft Item"
-	if self.editItem then
-		title = "Craft Item - " .. (self.editItem.baseName or "")
-	end
+	-- Title
 	SetDrawColor(1, 1, 1)
-	DrawString(x + m_floor(width / 2), y + 12, "CENTER_X", 16, "VAR", "^7" .. title)
+	DrawString(px + m_floor(LEFT_W / 2), py + 12, "CENTER_X", 16, "VAR",
+		"^7" .. (self.editItem and ("Craft - " .. (self.editItem.baseName or "")) or "Craft Item"))
 
+	-- -------------------------------------------------------------------------
+	-- Vertical divider
+	-- -------------------------------------------------------------------------
+	SetDrawColor(0.25, 0.25, 0.25)
+	DrawImage(nil, px + DIVIDER_X, py + 30, 1, ph - 32)
+
+	-- Top horizontal separator
 	SetDrawColor(0.3, 0.3, 0.3)
-	DrawImage(nil, x + 10, y + 40, width - 20, 1)
+	DrawImage(nil, px + 4, py + 30, pw - 8, 1)
 
-	if self.currentTab == "select" then
-		SetDrawColor(0.25, 0.25, 0.25)
-		DrawImage(nil, x + 15, y + 120, width - 30, 1)
-	end
+	-- -------------------------------------------------------------------------
+	-- Left panel: type list
+	-- -------------------------------------------------------------------------
+	local tlX  = px + 4
+	local tlY  = py + TYPE_LIST_Y
+	local tlW  = LEFT_W - 8
+	local tlH  = TYPE_LIST_H
+	local rowH = TYPE_ROW_H
 
-	if self.currentTab == "edit" and self.editItem then
-		local item = self.editItem
-		local col
-		if item.type and item.type:find("Idol") and item.type ~= "Idol Altar" and item.rarity ~= "UNIQUE" and item.rarity ~= "SET" and item.rarity ~= "LEGENDARY" then
-			col = colorCodes.IDOL
-		else
-			col = colorCodes[item.rarity]
-		end
-		if col then
-			local r, g, b = col:match("%^x(%x%x)(%x%x)(%x%x)")
-			if r then
-				SetDrawColor(tonumber(r, 16)/255 * 0.15, tonumber(g, 16)/255 * 0.15, tonumber(b, 16)/255 * 0.15)
-				DrawImage(nil, x + 10, y + 45, width - 20, 28)
+	-- Type list background
+	SetDrawColor(0.08, 0.08, 0.08)
+	DrawImage(nil, tlX, tlY, tlW, tlH)
+
+	-- Compute visible range
+	local mx, my = GetCursorPos()
+	local isInTypeList = mx >= tlX and mx < tlX + tlW and my >= tlY and my < tlY + tlH
+
+	-- Clamp scroll
+	local totalTypeH = #self.orderedTypeList * rowH
+	local maxScroll  = m_max(0, totalTypeH - tlH)
+	self.typeScrollY = m_max(0, m_min(self.typeScrollY, maxScroll))
+
+	-- Rebuild typeCards for hit-testing
+	self.typeCards = {}
+	local visY = tlY - self.typeScrollY
+	for i, entry in ipairs(self.orderedTypeList) do
+		local cardY = visY + (i - 1) * rowH
+		if cardY + rowH > tlY and cardY < tlY + tlH then
+			if not entry.isSeparator then
+				t_insert(self.typeCards, { y1 = cardY, y2 = cardY + rowH, entry = entry, index = i })
+			end
+			-- Background highlight for selected type
+			local isSelected = (i == self.selectedTypeIndex)
+			local isHovered  = isInTypeList and mx >= tlX and mx < tlX + tlW
+			              and my >= cardY and my < cardY + rowH
+
+			if entry.isSeparator then
+				-- Category header row
+				SetDrawColor(0.12, 0.12, 0.12)
+				DrawImage(nil, tlX, cardY, tlW, rowH)
+				SetDrawColor(0.55, 0.55, 0.55)
+				local headerText = entry.label:gsub("%^8", "")
+				DrawString(tlX + 4, cardY + 3, "LEFT", 12, "VAR", "^8" .. headerText)
+			elseif isSelected then
+				SetDrawColor(0.20, 0.18, 0.10)
+				DrawImage(nil, tlX, cardY, tlW, rowH)
+				SetDrawColor(0.8, 0.75, 0.4)
+				DrawImage(nil, tlX, cardY, 2, rowH)
+				SetDrawColor(1, 1, 1)
+				DrawString(tlX + 6, cardY + 3, "LEFT", 13, "VAR", "^7" .. (entry.typeName or entry.label))
+			elseif isHovered then
+				SetDrawColor(0.14, 0.14, 0.14)
+				DrawImage(nil, tlX, cardY, tlW, rowH)
+				SetDrawColor(1, 1, 1)
+				DrawString(tlX + 6, cardY + 3, "LEFT", 13, "VAR", "^8" .. (entry.typeName or entry.label))
+			else
+				SetDrawColor(1, 1, 1)
+				DrawString(tlX + 6, cardY + 3, "LEFT", 13, "VAR", "^8" .. (entry.typeName or entry.label))
 			end
 		end
 	end
 
+	-- Type list bottom border
+	SetDrawColor(0.25, 0.25, 0.25)
+	DrawImage(nil, tlX, tlY + tlH, tlW, 1)
+
+	-- -------------------------------------------------------------------------
+	-- Left panel: item preview header (below type list)
+	-- -------------------------------------------------------------------------
+	if self.editItem then
+		local item = self.editItem
+		-- Type and Lv req row
+		local lvReq = item.base and item.base.req and item.base.req.level or 0
+		local typeStr = (item.base and item.base.type or item.type or "") ..
+			(lvReq > 0 and ("  Lv " .. tostring(lvReq)) or "")
+		SetDrawColor(1, 1, 1)
+		DrawString(px + LP_LABEL_X, py + PREVIEW_Y + 22, "LEFT", 12, "VAR", "^8" .. typeStr)
+
+		-- Divider below item name area
+		SetDrawColor(0.2, 0.2, 0.2)
+		DrawImage(nil, px + 4, py + PREVIEW_Y + 38, LEFT_W - 8, 1)
+	end
+
+	-- -------------------------------------------------------------------------
+	-- Right panel: background
+	-- -------------------------------------------------------------------------
+	local rpX = px + RP_X
+	local rpY = py
+	SetDrawColor(0.06, 0.06, 0.06)
+	DrawImage(nil, rpX, rpY + 30, RP_W - 1, ph - 32)
+
+	-- -------------------------------------------------------------------------
+	-- Right panel: card content area
+	-- -------------------------------------------------------------------------
+	local cardAreaX = rpX + RP_CARD_PAD
+	local cardAreaY = py + RP_CARD_Y
+	local cardAreaW = RP_W - 2 * RP_CARD_PAD
+	local cardAreaH = ph - RP_CARD_Y - 8
+
+	self.rightCards = {}
+
+	if self.rightTab == "item" then
+		self:DrawItemCards(cardAreaX, cardAreaY, cardAreaW, cardAreaH, mx, my)
+	else
+		self:DrawAffixCards(cardAreaX, cardAreaY, cardAreaW, cardAreaH, mx, my)
+	end
+
+	-- -------------------------------------------------------------------------
+	-- Draw Controls (overlays drawn items)
+	-- -------------------------------------------------------------------------
 	self:DrawControls(viewPort)
 end
 
+-- Draw item cards in the right panel
+function CraftingPopupClass:DrawItemCards(areaX, areaY, areaW, areaH, mx, my)
+	local list = self.currentItemList or {}
+	if #list == 0 then
+		SetDrawColor(1, 1, 1)
+		DrawString(areaX + 4, areaY + 20, "LEFT", 14, "VAR", "^8No items found.")
+		return
+	end
+
+	-- Clamp scroll
+	local totalRows  = m_ceil(#list / IC_COLS)
+	local totalH     = totalRows * (IC_H + IC_GAP)
+	local maxScroll  = m_max(0, totalH - areaH)
+	self.rightScrollY = m_max(0, m_min(self.rightScrollY, maxScroll))
+
+	self.rightCards = {}
+	local scrollY = self.rightScrollY
+
+	for i, entry in ipairs(list) do
+		local col  = (i - 1) % IC_COLS
+		local row  = m_floor((i - 1) / IC_COLS)
+		local cx   = areaX + col * (IC_W + IC_GAP)
+		local cy   = areaY + row * (IC_H + IC_GAP) - scrollY
+		local cx2  = cx + IC_W
+		local cy2  = cy + IC_H
+
+		if cy2 > areaY and cy < areaY + areaH then
+			t_insert(self.rightCards, { x1=cx, y1=cy, x2=cx2, y2=cy2, entry=entry })
+
+			local isSelected = self.editBaseEntry and self.editBaseEntry.name == entry.name
+			local isHovered  = mx >= cx and mx < cx2 and my >= cy and my < cy2
+
+			-- Card background
+			if isSelected then
+				SetDrawColor(0.18, 0.16, 0.08)
+			elseif isHovered then
+				SetDrawColor(0.14, 0.14, 0.14)
+			else
+				SetDrawColor(0.10, 0.10, 0.10)
+			end
+			DrawImage(nil, cx, cy, IC_W, IC_H)
+
+			-- Left accent bar (rarity color)
+			local col3 = colorCodes[entry.rarity] or colorCodes.NORMAL
+			local r, g, b = col3:match("%^x(%x%x)(%x%x)(%x%x)")
+			if r then
+				SetDrawColor(tonumber(r,16)/255, tonumber(g,16)/255, tonumber(b,16)/255)
+			else
+				SetDrawColor(0.5, 0.5, 0.5)
+			end
+			DrawImage(nil, cx, cy, 3, IC_H)
+
+			-- Item name
+			SetDrawColor(1, 1, 1)
+			DrawString(cx + 6, cy + 5, "LEFT", 13, "VAR", (col3 or "^7") .. (entry.label or entry.name))
+
+			-- Type and Lv Req
+			local lvReq = entry.base and entry.base.req and entry.base.req.level or 0
+			local typeStr = "^8" .. (entry.displayType or "") ..
+				(lvReq > 0 and ("  Lv " .. tostring(lvReq)) or "")
+			DrawString(cx + 6, cy + 22, "LEFT", 11, "VAR", typeStr)
+
+			-- Implicit (first one)
+			if entry.base and entry.base.implicits and entry.base.implicits[1] then
+				local impl = cleanImplicitText(entry.base.implicits[1])
+				if impl then
+					local truncated = #impl > 30 and impl:sub(1,28) .. ".." or impl
+					DrawString(cx + 6, cy + 37, "LEFT", 11, "VAR", "^8" .. truncated)
+				end
+			elseif entry.uniqueData and entry.uniqueData.mods and entry.uniqueData.mods[1] then
+				local mod = cleanImplicitText(entry.uniqueData.mods[1])
+				if mod then
+					local truncated = #mod > 30 and mod:sub(1,28) .. ".." or mod
+					DrawString(cx + 6, cy + 37, "LEFT", 11, "VAR", "^8" .. truncated)
+				end
+			end
+
+			-- Card border
+			if isSelected then
+				SetDrawColor(0.8, 0.7, 0.3)
+			elseif isHovered then
+				SetDrawColor(0.35, 0.35, 0.35)
+			else
+				SetDrawColor(0.2, 0.2, 0.2)
+			end
+			DrawImage(nil, cx,      cy,      IC_W, 1)
+			DrawImage(nil, cx,      cy+IC_H-1, IC_W, 1)
+			DrawImage(nil, cx,      cy,      1, IC_H)
+			DrawImage(nil, cx+IC_W-1, cy,    1, IC_H)
+		end
+	end
+end
+
+-- Draw affix cards in the right panel (compact list)
+function CraftingPopupClass:DrawAffixCards(areaX, areaY, areaW, areaH, mx, my)
+	local slotKey = self.rightTab
+	local list    = self.affixLists[slotKey] or {}
+
+	if not self.editItem then
+		SetDrawColor(1, 1, 1)
+		DrawString(areaX + 4, areaY + 20, "LEFT", 14, "VAR", "^8Select an item first.")
+		return
+	end
+	if #list == 0 then
+		SetDrawColor(1, 1, 1)
+		DrawString(areaX + 4, areaY + 20, "LEFT", 14, "VAR", "^8No affixes available.")
+		return
+	end
+
+	-- Apply search filter
+	local query = (self.searchText or ""):lower():gsub("^%s*(.-)%s*$", "%1")
+	local filteredList = list
+	if query ~= "" then
+		filteredList = {}
+		for _, entry in ipairs(list) do
+			if (entry.label or ""):lower():find(query, 1, true) or
+			   (entry.affix or ""):lower():find(query, 1, true) then
+				t_insert(filteredList, entry)
+			end
+		end
+	end
+
+	-- Clamp scroll
+	local totalH  = #filteredList * (AC_H + AC_GAP)
+	local maxScroll = m_max(0, totalH - areaH)
+	self.rightScrollY = m_max(0, m_min(self.rightScrollY, maxScroll))
+
+	self.rightCards = {}
+	local scrollY   = self.rightScrollY
+	local curModKey = self.affixState[slotKey] and self.affixState[slotKey].modKey
+
+	for i, entry in ipairs(filteredList) do
+		local cy  = areaY + (i - 1) * (AC_H + AC_GAP) - scrollY
+		local cy2 = cy + AC_H
+
+		if cy2 > areaY and cy < areaY + areaH then
+			t_insert(self.rightCards, { x1=areaX, y1=cy, x2=areaX+areaW, y2=cy2, entry=entry })
+
+			local isSelected = (curModKey == entry.statOrderKey)
+			local isHovered  = mx >= areaX and mx < areaX + areaW and my >= cy and my < cy2
+
+			-- Card background
+			if isSelected then
+				SetDrawColor(0.18, 0.16, 0.08)
+			elseif isHovered then
+				SetDrawColor(0.13, 0.13, 0.13)
+			else
+				SetDrawColor(0.09, 0.09, 0.09)
+			end
+			DrawImage(nil, areaX, cy, areaW, AC_H)
+
+			-- Type badge (Prefix / Suffix)
+			local typeStr = entry.type or ""
+			local badgeCol = typeStr == "Prefix" and "^x5599FF" or "^xFF9955"
+			DrawString(areaX + 4, cy + 4, "LEFT", 11, "VAR", badgeCol .. typeStr:sub(1,3))
+
+			-- Affix name
+			local nameCol = isSelected and colorCodes.UNIQUE or "^7"
+			DrawString(areaX + 34, cy + 4, "LEFT", 13, "VAR", nameCol .. (entry.affix or entry.label or ""))
+
+			-- Max tier label
+			local maxT = entry.maxTier or 0
+			local tierStr = maxT > 0 and ("T1-T" .. tostring(maxT + 1)) or "T1"
+			DrawString(areaX + areaW - 50, cy + 4, "LEFT", 11, "VAR", "^8" .. tierStr)
+
+			-- Selection indicator
+			if isSelected then
+				SetDrawColor(0.8, 0.7, 0.3)
+				DrawImage(nil, areaX, cy, 3, AC_H)
+				-- Show current tier
+				local st = self.affixState[slotKey]
+				if st and st.modKey then
+					DrawString(areaX + areaW - 50, cy + 4, "LEFT", 11, "VAR",
+						colorCodes.UNIQUE .. "T" .. tostring(st.tier + 1) .. " <<")
+				end
+			end
+
+			-- Card bottom border
+			SetDrawColor(0.18, 0.18, 0.18)
+			DrawImage(nil, areaX, cy2, areaW, 1)
+		end
+	end
+end
+
+-- =============================================================================
+-- Input handling
+-- =============================================================================
 function CraftingPopupClass:ProcessInput(inputEvents, viewPort)
+	local mx, my = GetCursorPos()
+	local px, py = self:GetPos()
+	local pw, ph = self:GetSize()
+
 	for id, event in ipairs(inputEvents) do
 		if event.type == "KeyDown" then
 			if event.key == "ESCAPE" then
 				self:Close()
 				return
 			end
+		elseif event.type == "MouseButtonDown" and event.button == 1 then
+			-- Type list click
+			local tlX = px + 4
+			local tlY = py + TYPE_LIST_Y
+			local tlW = LEFT_W - 8
+			local tlH = TYPE_LIST_H
+			if mx >= tlX and mx < tlX + tlW and my >= tlY and my < tlY + tlH then
+				for _, card in ipairs(self.typeCards) do
+					if my >= card.y1 and my < card.y2 then
+						self.selectedTypeIndex = card.index
+						self.rightScrollY = 0
+						self.searchText   = ""
+						if self.controls.rightSearch then
+							self.controls.rightSearch:SetText("")
+						end
+						self:RefreshBaseList()
+						break
+					end
+				end
+			end
+
+			-- Right panel card click
+			local rpX = px + RP_X
+			if mx >= rpX and mx < px + pw then
+				for _, card in ipairs(self.rightCards) do
+					if mx >= card.x1 and mx < card.x2 and my >= card.y1 and my < card.y2 then
+						if self.rightTab == "item" then
+							self:SelectBase(card.entry)
+						else
+							self:SelectAffixEntry(card.entry)
+						end
+						break
+					end
+				end
+			end
+		elseif event.type == "MouseWheel" then
+			local tlX = px + 4
+			local tlY = py + TYPE_LIST_Y
+			local tlW = LEFT_W - 8
+			local tlH = TYPE_LIST_H
+			if mx >= tlX and mx < tlX + tlW and my >= tlY and my < tlY + tlH then
+				self.typeScrollY = self.typeScrollY - event.direction * TYPE_ROW_H * 3
+			elseif mx >= px + RP_X and mx < px + pw then
+				self.rightScrollY = self.rightScrollY - event.direction * AC_H * 3
+			end
 		end
 	end
+
 	self:ProcessControlsInput(inputEvents, viewPort)
 end
