@@ -103,6 +103,18 @@ local options = {
 	{ var = "conditionTransformed", type = "check", label = "Are you Transformed?", tooltip = "Check if the player is Transformed (Werebear, Spriggan Form, etc.).\nEnables 'while transformed' modifiers.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:Transformed", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
+	{ var = "conditionInWerebearForm", type = "check", label = "Are you in Werebear Form?", ifCond = "InWerebearForm", implyCond = "Transformed", tooltip = "This also implies that you are Transformed.", apply = function(val, modList, enemyModList)
+		modList:NewMod("Condition:InWerebearForm", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
+		modList:NewMod("Condition:Transformed", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
+	end },
+	{ var = "conditionInSprigganForm", type = "check", label = "Are you in Spriggan Form?", ifCond = "InSprigganForm", implyCond = "Transformed", tooltip = "This also implies that you are Transformed.", apply = function(val, modList, enemyModList)
+		modList:NewMod("Condition:InSprigganForm", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
+		modList:NewMod("Condition:Transformed", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
+	end },
+	{ var = "conditionInSwarmbladeForm", type = "check", label = "Are you in Swarmblade Form?", ifCond = "InSwarmbladeForm", implyCond = "Transformed", tooltip = "This also implies that you are Transformed.", apply = function(val, modList, enemyModList)
+		modList:NewMod("Condition:InSwarmbladeForm", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
+		modList:NewMod("Condition:Transformed", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
+	end },
 	{ var = "conditionHighHealth", type = "check", label = "Are you at High Health?", tooltip = "Check if you are at High Health (typically 50%+ of max health).\nEnables 'while at high health' modifiers.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:HighHealth", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
@@ -373,6 +385,21 @@ local options = {
 	end },
 	{ var = "conditionStunnedEnemyRecently", type = "check", label = "Have you Stunned an Enemy Recently?", ifCond = "StunnedEnemyRecently", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:StunnedEnemyRecently", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
+	end },
+	{ var = "conditionEchoedRecently", type = "check", label = "Have you Echoed Recently?", ifCond = "EchoedRecently", apply = function(val, modList, enemyModList)
+		modList:NewMod("Condition:EchoedRecently", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
+	end },
+	{ var = "conditionDirectlyCastColdSpellRecently", type = "check", label = "Have you Directly Cast a Cold Spell Recently?", ifCond = "DirectlyCastColdSpellRecently", apply = function(val, modList, enemyModList)
+		modList:NewMod("Condition:DirectlyCastColdSpellRecently", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
+	end },
+	{ var = "conditionDirectlyCastPhysSpellRecently", type = "check", label = "Have you Directly Cast a Physical Spell Recently?", ifCond = "DirectlyCastPhysSpellRecently", apply = function(val, modList, enemyModList)
+		modList:NewMod("Condition:DirectlyCastPhysSpellRecently", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
+	end },
+	{ var = "conditionCastDevouringOrbRecently", type = "check", label = "Have you Cast Devouring Orb Recently?", ifCond = "CastDevouringOrbRecently", apply = function(val, modList, enemyModList)
+		modList:NewMod("Condition:CastDevouringOrbRecently", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
+	end },
+	{ var = "multiplierMeteorCastRecently", type = "count", label = "# of Meteors Cast Recently (max 18):", ifMult = "MeteorCastRecently", apply = function(val, modList, enemyModList)
+		modList:NewMod("Multiplier:MeteorCastRecently", "BASE", val, "Config", { type = "Condition", var = "Combat" })
 	end },
 	-- Section: Effective DPS options
 	{ section = "For Effective DPS", col = 1 },
