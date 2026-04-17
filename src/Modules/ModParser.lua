@@ -441,6 +441,21 @@ local modTagList = {
 	["per slow stack"] = { tag = { type = "Multiplier", var = "SlowStack", actor = "enemy" } },
 	["per frailty stack"] = { tag = { type = "Multiplier", var = "FrailtyStack", actor = "enemy" } },
 	["per curse stack"] = { tag = { type = "Multiplier", var = "CurseStack", actor = "enemy" } },
+	-- Transformation form conditions
+	["while in werebear form"] = { tag = { type = "Condition", var = "InWerebearForm" } },
+	["in werebear form"] = { tag = { type = "Condition", var = "InWerebearForm" } },
+	["while in spriggan form"] = { tag = { type = "Condition", var = "InSprigganForm" } },
+	["in spriggan form"] = { tag = { type = "Condition", var = "InSprigganForm" } },
+	["while in swarmblade form"] = { tag = { type = "Condition", var = "InSwarmbladeForm" } },
+	["in swarmblade form"] = { tag = { type = "Condition", var = "InSwarmbladeForm" } },
+	-- "recently" conditions not yet handled
+	["if echoed recently"] = { tag = { type = "Condition", var = "EchoedRecently" } },
+	["if you have directly cast a cold spell recently"] = { tag = { type = "Condition", var = "DirectlyCastColdSpellRecently" } },
+	["if you have directly cast a physical spell recently"] = { tag = { type = "Condition", var = "DirectlyCastPhysSpellRecently" } },
+	["if cast physical spell recently"] = { tag = { type = "Condition", var = "DirectlyCastPhysSpellRecently" } },
+	["if cast cold spell recently"] = { tag = { type = "Condition", var = "DirectlyCastColdSpellRecently" } },
+	["if you have cast devouring orb recently"] = { tag = { type = "Condition", var = "CastDevouringOrbRecently" } },
+	["for each meteor you have cast recently"] = { tag = { type = "Multiplier", var = "MeteorCastRecently" } },
 	-- Player: Potion / Forged Weapon
 	["while you have used a potion recently"] = { tag = { type = "Condition", var = "UsedPotionRecently" } },
 	["after using a potion"] = { tag = { type = "Condition", var = "UsedPotionRecently" } },
@@ -542,6 +557,7 @@ local specialQuickFixModList = {
 	["^([%+%-]?[%d%.]+%%) Cooldown Recovery Speed"] = "%1 increased Cooldown Recovery Speed",
 	["^([%+%-]?[%d%.]+%%) Duration"] = "%1 increased Duration",
 	["^([%+%-]?[%d%.]+%%) Movespeed"] = "%1 increased Movespeed",
+	["%(up to %d+%)%s*$"] = "",
 }
 
 for _, damageType in ipairs(DamageTypes) do
