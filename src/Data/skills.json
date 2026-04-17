@@ -4495,6 +4495,49 @@
     ],
     "treeId": "fb8fe"
   },
+  "Runemaster 05c2 Runebolt Lightning": {
+    "name": "Runebolt",
+    "skillTypeTags": 264,
+    "castTime": 0.6818181,
+    "baseFlags": {
+      "spell": true,
+      "hit": true,
+      "duration": true
+    },
+    "stats": {
+      "damageEffectiveness": 1,
+      "spell_base_lightning_damage": 20,
+      "base_critical_strike_multiplier_+": 100,
+      "critChance": 5,
+      "base_skill_effect_duration": 400
+    },
+    "baseMods": [
+      "4% increased Damage per player Intelligence"
+    ],
+    "treeId": "fb8fe"
+  },
+  "Runemaster 05c3 Runebolt Cold": {
+    "name": "Runebolt",
+    "skillTypeTags": 264,
+    "castTime": 0.6818181,
+    "baseFlags": {
+      "spell": true,
+      "hit": true,
+      "duration": true
+    },
+    "stats": {
+      "damageEffectiveness": 1,
+      "spell_base_cold_damage": 20,
+      "base_critical_strike_multiplier_+": 100,
+      "critChance": 5,
+      "base_skill_effect_duration": 400
+    },
+    "baseMods": [
+      "4% increased Damage per player Intelligence",
+      "+40 Freeze Rate"
+    ],
+    "treeId": "fb8fe"
+  },
   "Runemaster 06 Flame Rush": {
     "name": "Flame Rush",
     "skillTypeTags": 264,
