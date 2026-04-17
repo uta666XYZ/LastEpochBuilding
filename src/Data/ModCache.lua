@@ -1023,7 +1023,7 @@ c["+12% Void Essence Chance On Kill"]={{[1]={[1]={type="Condition",var="KilledRe
 c["+12% Void Penetration"]={{[1]={flags=0,keywordFlags=0,name="VoidPenetration",type="BASE",value=12}},nil}
 c["+12% Void Resistance"]={{[1]={flags=0,keywordFlags=0,name="VoidResist",type="BASE",value=12}},nil}
 c["+12% Ward Retention with a Sceptre"]={{[1]={[1]={type="Condition",var="UsingSceptre"},flags=0,keywordFlags=0,name="WardRetention",type="BASE",value=12}},nil}
-c["+12% increased Damage Taken while you have Frenzy"]={{[1]={[1]={skillName="Frenzy",type="SkillName"},flags=0,keywordFlags=0,name="DamageTaken",type="INC",value=12}},"  while you have  "}
+
 c["+12% to All Resistances"]={{[1]={flags=0,keywordFlags=0,name="FireResist",type="BASE",value=12},[2]={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=12},[3]={flags=0,keywordFlags=0,name="ColdResist",type="BASE",value=12},[4]={flags=0,keywordFlags=0,name="PhysicalResist",type="BASE",value=12},[5]={flags=0,keywordFlags=0,name="PoisonResist",type="BASE",value=12},[6]={flags=0,keywordFlags=0,name="NecroticResist",type="BASE",value=12},[7]={flags=0,keywordFlags=0,name="VoidResist",type="BASE",value=12}},nil}
 c["+12% to Minion All Resistances"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="FireResist",type="BASE",value=12}}},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=12}}},[3]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="ColdResist",type="BASE",value=12}}},[4]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="PhysicalResist",type="BASE",value=12}}},[5]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="PoisonResist",type="BASE",value=12}}},[6]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="NecroticResist",type="BASE",value=12}}},[7]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="VoidResist",type="BASE",value=12}}}},nil}
 c["+120 Block Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="BlockEffectiveness",type="BASE",value=120}},nil}
@@ -4022,7 +4022,7 @@ c["+50 Health and Armor"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",
 c["+50 Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=50}},nil}
 c["+50 Mana Cost"]={{[1]={flags=0,keywordFlags=0,name="ManaCost",type="BASE",value=50}},nil}
 c["+50 Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="BASE",value=50}},nil}
-c["+50 Melee Damage while you have Frenzy"]={{[1]={[1]={skillName="Frenzy",type="SkillName"},flags=0,keywordFlags=512,name="Damage",type="BASE",value=50}},"   while you have  "}
+
 c["+50 Melee Necrotic Damage"]={{[1]={flags=0,keywordFlags=512,name="NecroticDamage",type="BASE",value=50}},nil}
 c["+50 Melee Void Damage"]={{[1]={flags=0,keywordFlags=512,name="VoidDamage",type="BASE",value=50}},nil}
 c["+50 Minion Armor"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Armour",type="BASE",value=50}}}},nil}
@@ -5648,7 +5648,6 @@ c["10% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",t
 c["10% increased Lightning Spell Cast Speed"]={{[1]={flags=256,keywordFlags=258,name="Speed",type="INC",value=10}},nil}
 c["10% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=10}},nil}
 c["10% increased Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=512,name="Speed",type="INC",value=10}},nil}
-c["10% increased Melee Damage while you have Frenzy"]={{[1]={[1]={skillName="Frenzy",type="SkillName"},flags=0,keywordFlags=512,name="Damage",type="INC",value=10}},"   while you have  "}
 c["10% increased Melee Elemental Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="INC",value=10},[2]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=10},[3]={flags=0,keywordFlags=512,name="LightningDamage",type="INC",value=10}},nil}
 c["10% increased Minion Bow Attack Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=3584,keywordFlags=2048,name="Speed",type="INC",value=10}}}},nil}
 c["10% increased Minion Cast Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=256,keywordFlags=0,name="Speed",type="INC",value=10}}}},nil}
@@ -5965,7 +5964,6 @@ c["12% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",t
 c["12% less Necrotic Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamageTaken",type="MORE",value=-12}},nil}
 c["12% more Cold Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="ColdDamageTaken",type="MORE",value=12}},nil}
 c["12% more Damage per stack of Crystalwind consumed"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=12}},"  per stack of Crystalwind consumed "}
-c["12% more Melee Damage while you have Frenzy"]={{[1]={[1]={skillName="Frenzy",type="SkillName"},flags=0,keywordFlags=512,name="Damage",type="MORE",value=12}},"   while you have  "}
 c["12% of Damage Dealt to Mana Before Health"]={{[1]={flags=0,keywordFlags=0,name="DamageToManaBeforeHealth",type="BASE",value=12}},nil}
 c["12% of Health Leech also drains the health of the nearest enemy within 6 meters"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=12}},"  Leech also drains the health of the nearest enemy within 6 meters "}
 c["12% of Mana Spent Gained as Ward"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=12}},"  Spent Gained as Ward "}
@@ -6137,7 +6135,6 @@ c["14% increased Lightning Spell Cast Speed"]={{[1]={flags=256,keywordFlags=258,
 c["14% increased Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="INC",value=14}},nil}
 c["14% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=14}},nil}
 c["14% increased Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=512,name="Speed",type="INC",value=14}},nil}
-c["14% increased Melee Damage while you have Frenzy"]={{[1]={[1]={skillName="Frenzy",type="SkillName"},flags=0,keywordFlags=512,name="Damage",type="INC",value=14}},"   while you have  "}
 c["14% increased Melee Elemental Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="INC",value=14},[2]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=14},[3]={flags=0,keywordFlags=512,name="LightningDamage",type="INC",value=14}},nil}
 c["14% increased Minion Cooldown Recovery Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=14}}}},nil}
 c["14% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=14}}}},nil}
@@ -6286,7 +6283,6 @@ c["15% increased Throwing Attack Speed"]={{[1]={flags=3584,keywordFlags=1024,nam
 c["15% increased Throwing Damage"]={{[1]={flags=0,keywordFlags=1024,name="Damage",type="INC",value=15}},nil}
 c["15% increased Volatile Zombie Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=15}}," Volatile Zombie  "}
 c["15% less Damage Taken per Active Shadow (1 in 6 chance)"]={{[1]={flags=0,keywordFlags=0,name="DamageTaken",type="MORE",value=-15}},"  per Active Shadow (1 in 6 chance) "}
-c["15% less Damage over Time taken while you have Haste"]={{[1]={[1]={skillName="Haste",type="SkillName"},flags=0,keywordFlags=0,name="DamageTakenOverTime",type="MORE",value=-15}},"  while you have  "}
 c["15% less Necrotic Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamageTaken",type="MORE",value=-15}},nil}
 c["15% more Damage to Bosses and Rare Enemies while above half mana"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=15}},"  to Bosses and Rare Enemies while above half mana "}
 c["15% more Melee Damage to High Health Enemies"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="MORE",value=15}},"   to High Health Enemies "}
@@ -6709,7 +6705,6 @@ c["2% increased Echo Damage when a skill is Echoed"]={{[1]={flags=0,keywordFlags
 c["2% increased Elemental Damage Over Time"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=2},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=2},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=2}},"  Over Time "}
 c["2% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=2}},nil}
 c["2% increased Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=512,name="Speed",type="INC",value=2}},nil}
-c["2% increased Melee Damage while you have Frenzy"]={{[1]={[1]={skillName="Frenzy",type="SkillName"},flags=0,keywordFlags=512,name="Damage",type="INC",value=2}},"   while you have  "}
 c["2% increased Melee Elemental Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="INC",value=2},[2]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=2},[3]={flags=0,keywordFlags=512,name="LightningDamage",type="INC",value=2}},nil}
 c["2% increased Minion Bow Attack Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=3584,keywordFlags=2048,name="Speed",type="INC",value=2}}}},nil}
 c["2% increased Minion Cast Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=256,keywordFlags=0,name="Speed",type="INC",value=2}}}},nil}
@@ -6919,7 +6914,6 @@ c["22% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="
 c["22% increased Hail of Arrows Duration"]={{[1]={[1]={skillName="Hail of Arrows",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=22}},nil}
 c["22% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=22}},nil}
 c["22% increased Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=512,name="Speed",type="INC",value=22}},nil}
-c["22% increased Melee Damage while you have Frenzy"]={{[1]={[1]={skillName="Frenzy",type="SkillName"},flags=0,keywordFlags=512,name="Damage",type="INC",value=22}},"   while you have  "}
 c["22% increased Throwing Attack Speed"]={{[1]={flags=3584,keywordFlags=1024,name="Speed",type="INC",value=22}},nil}
 c["22% increased area for Melee Area Skills"]={{[1]={flags=0,keywordFlags=512,name="AreaOfEffect",type="INC",value=22}},"  for  Area Skills "}
 c["22% of Mana Spent Gained as Ward"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=22}},"  Spent Gained as Ward "}
@@ -7226,7 +7220,6 @@ c["28% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="Cr
 c["28% increased Damage for Totems"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=28}},"  for Totems "}
 c["28% increased Elemental Damage Over Time"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=28},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=28},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=28}},"  Over Time "}
 c["28% increased Frost Wall Duration"]={{[1]={[1]={skillName="Frost Wall",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=28}},nil}
-c["28% increased Melee Damage while you have Frenzy"]={{[1]={[1]={skillName="Frenzy",type="SkillName"},flags=0,keywordFlags=512,name="Damage",type="INC",value=28}},"   while you have  "}
 c["28% increased Minion Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="CritChance",type="INC",value=28}}}},nil}
 c["28% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=28}}}},nil}
 c["28% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=28}}}},nil}
@@ -7238,7 +7231,6 @@ c["28% more Physical Damage while at Full Health"]={{[1]={flags=0,keywordFlags=0
 c["28% of Armor Mitigation also applies to Damage over Time"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=28}},"  Mitigation also applies to Damage over Time "}
 c["28% of Block Effectiveness applies to Damage over Time as if it had been Blocked"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="BASE",value=28}}," Block Effectiveness applies to  as if it had been Blocked "}
 c["28% of Current Health Lost per second"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=28}}," Current  Lost per second "}
-c["28% of Health Leech also drains the health of the nearest enemy within 6 meters while you have Frenzy"]={{[1]={[1]={skillName="Frenzy",type="SkillName"},flags=0,keywordFlags=0,name="Life",type="BASE",value=28}},"  Leech also drains the health of the nearest enemy within 6 meters while you have  "}
 c["28% of Hit Damage Taken from Bosses and Rare enemies is dealt over 4 seconds instead"]={{[1]={flags=8388608,keywordFlags=0,name="DamageTaken",type="BASE",value=28}},"   from Bosses and Rare enemies is dealt over 4 seconds instead "}
 c["28% of Missing Health gained as Ward per second"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=28}}," Missing  gained as Ward per second "}
 c["28% of Necrotic Damage Taken as Physical"]={{[1]={flags=0,keywordFlags=1,name="NecroticDamageTaken",type="BASE",value=28}},"  as  "}
@@ -7882,7 +7874,6 @@ c["4% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type
 c["4% increased Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=512,name="Speed",type="INC",value=4}},nil}
 c["4% increased Melee Damage per player Dexterity"]={{[1]={[1]={actor="parent",stat="Dex",type="PerStat"},flags=0,keywordFlags=512,name="Damage",type="INC",value=4}},nil}
 c["4% increased Melee Damage per player Strength"]={{[1]={[1]={actor="parent",stat="Str",type="PerStat"},flags=0,keywordFlags=512,name="Damage",type="INC",value=4}},nil}
-c["4% increased Melee Damage while you have Frenzy"]={{[1]={[1]={skillName="Frenzy",type="SkillName"},flags=0,keywordFlags=512,name="Damage",type="INC",value=4}},"   while you have  "}
 c["4% increased Melee Elemental Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="INC",value=4},[2]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=4},[3]={flags=0,keywordFlags=512,name="LightningDamage",type="INC",value=4}},nil}
 c["4% increased Minion Bow Attack Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=3584,keywordFlags=2048,name="Speed",type="INC",value=4}}}},nil}
 c["4% increased Minion Cast Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=256,keywordFlags=0,name="Speed",type="INC",value=4}}}},nil}
@@ -7903,7 +7894,6 @@ c["4% of Armor Mitigation also applies to Damage over Time"]={{[1]={flags=0,keyw
 c["4% of Current Health Lost per second"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=4}}," Current  Lost per second "}
 c["4% of Current Health converted to Ward when you directly cast a Necrotic Spell"]={{[1]={flags=0,keywordFlags=288,name="Life",type="BASE",value=4}}," Current  converted to Ward when you directly cast a   "}
 c["4% of Damage Dealt to Mana Before Health"]={{[1]={flags=0,keywordFlags=0,name="DamageToManaBeforeHealth",type="BASE",value=4}},nil}
-c["4% of Melee Damage leeched as Health while you have Frenzy"]={{[1]={[1]={skillName="Frenzy",type="SkillName"},flags=0,keywordFlags=512,name="Damage",type="BASE",value=4}},"   leeched as Health while you have  "}
 c["4% of Missing Health gained as Ward per second"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=4}}," Missing  gained as Ward per second "}
 c["4% reduced Bonus Damage Taken from Critical Strikes"]={{[1]={[1]={type="Condition",var="CriticalStrike"},flags=0,keywordFlags=0,name="DamageTaken",type="INC",value=-4}}," Bonus   "}
 c["40 Detonation Mana Cost"]={{[1]={flags=0,keywordFlags=0,name="ManaCost",type="BASE",value=40}}," Detonation  "}
@@ -8600,7 +8590,6 @@ c["6% increased Lightning Spell Cast Speed"]={{[1]={flags=256,keywordFlags=258,n
 c["6% increased Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="INC",value=6}},nil}
 c["6% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=6}},nil}
 c["6% increased Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=512,name="Speed",type="INC",value=6}},nil}
-c["6% increased Melee Damage while you have Frenzy"]={{[1]={[1]={skillName="Frenzy",type="SkillName"},flags=0,keywordFlags=512,name="Damage",type="INC",value=6}},"   while you have  "}
 c["6% increased Melee Elemental Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="INC",value=6},[2]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=6},[3]={flags=0,keywordFlags=512,name="LightningDamage",type="INC",value=6}},nil}
 c["6% increased Minion Bow Attack Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=3584,keywordFlags=2048,name="Speed",type="INC",value=6}}}},nil}
 c["6% increased Minion Cast Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=256,keywordFlags=0,name="Speed",type="INC",value=6}}}},nil}
