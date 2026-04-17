@@ -1940,6 +1940,11 @@ function PassiveTreeViewClass:DrawHistoryBar(build, barVP, inputEvents)
 
 		if isBarHover then
 			newHoverNodeId = grp.nodeId
+			-- Phase 3: auto-switch passive tree to the mastery that contains this node
+			if self.filterMode == "passive" and grp.node.mastery ~= nil
+			   and self.selectedMastery ~= grp.node.mastery then
+				self.selectedMastery = grp.node.mastery
+			end
 		end
 
 		-- Mastery background tint (passive tree only, drawn before icon)
