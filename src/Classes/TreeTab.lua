@@ -20,9 +20,11 @@ local s_byte = string.byte
 local dkjson = require "dkjson"
 
 -- Layout constants for Maxroll-style header and skill bar
-local HEADER_HEIGHT      = 130
-local SKILL_BAR_HEIGHT   = 90
-local HISTORY_BAR_HEIGHT = 48
+local HEADER_HEIGHT    = 130
+local SKILL_BAR_HEIGHT = 90
+-- History bar height: 48 compact, 72 expanded (48px icon + 14px name + padding)
+local HISTORY_BAR_COMPACT  = 48
+local HISTORY_BAR_EXPANDED = 72
 
 local TreeTabClass = newClass("TreeTab", "ControlHost", function(self, build)
 	self.ControlHost()
@@ -514,6 +516,7 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 	-- Calculate bottom controls height
 	local bottomBarHeight = self.showConvert and 64 + bottomDrawerHeight + twoLineHeight + convertTwoLineHeight or 32 + bottomDrawerHeight + twoLineHeight
 
+	local HISTORY_BAR_HEIGHT = self.viewer.historyExpanded and HISTORY_BAR_EXPANDED or HISTORY_BAR_COMPACT
 	-- Tree viewport: shrink from top (header) and bottom (history bar + skill bar + controls)
 	local treeViewPort = {
 		x = viewPort.x,
