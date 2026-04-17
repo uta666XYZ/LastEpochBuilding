@@ -950,13 +950,15 @@ function CraftingPopupClass:RefreshBaseList()
 		if bases then
 			local myClassBit = self:GetCurrentClassReqBit()
 			for _, entry in ipairs(bases) do
-				local classReq = entry.base.classReq or 0
-				if classReq == 0 or myClassBit == 0 or bit.band(classReq, myClassBit) ~= 0 then
-					t_insert(list, {
-						label = entry.name, name = entry.name, base = entry.base,
-						type = typeName, displayType = entry.base.type or "",
-						rarity = "NORMAL", category = "basic",
-					})
+				if not entry.base.legacy then
+					local classReq = entry.base.classReq or 0
+					if classReq == 0 or myClassBit == 0 or bit.band(classReq, myClassBit) ~= 0 then
+						t_insert(list, {
+							label = entry.name, name = entry.name, base = entry.base,
+							type = typeName, displayType = entry.base.type or "",
+							rarity = "NORMAL", category = "basic",
+						})
+					end
 				end
 			end
 		end
