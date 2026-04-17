@@ -41,6 +41,22 @@ describe("TestSkills #skills", function()
         assert.are.equals((25 + (10 + 30) * 1.25) * 4 * 1.05 * castSpeed, build.calcsTab.mainOutput.TotalDPS)
     end)
 
+    it("Test Runebolt Cold variant calculates cold DPS", function()
+        build.skillsTab:SelSkill(1, "Runemaster 05c2 Runebolt Cold")
+        runCallback("OnFrame")
+        local castSpeed = 1 / build.calcsTab.mainEnv.player.mainSkill.activeEffect.grantedEffect.castTime
+        -- base cold damage 20, no extra mods, damageEffectiveness 1
+        assert.are.equals(round(20 * 1.05 * castSpeed, 4), round(build.calcsTab.mainOutput.TotalDPS, 4))
+    end)
+
+    it("Test Runebolt Lightning variant calculates lightning DPS", function()
+        build.skillsTab:SelSkill(1, "Runemaster 05c3 Runebolt Lightning")
+        runCallback("OnFrame")
+        local castSpeed = 1 / build.calcsTab.mainEnv.player.mainSkill.activeEffect.grantedEffect.castTime
+        -- base lightning damage 20, no extra mods, damageEffectiveness 1
+        assert.are.equals(round(20 * 1.05 * castSpeed, 4), round(build.calcsTab.mainOutput.TotalDPS, 4))
+    end)
+
     it("Test dot spell skill with basic weapon", function()
         build.itemsTab:CreateDisplayItemFromRaw([[Rarity: RARE
         Brass Sceptre
