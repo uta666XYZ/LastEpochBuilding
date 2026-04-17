@@ -1881,9 +1881,31 @@ function PassiveTreeViewClass:DrawHistoryBar(build, barVP, inputEvents)
 		end
 	end
 
-	-- Mouse-wheel scroll when cursor is in the content area
 	local inContent = cursorX >= barVP.x and cursorX < barVP.x + contentW
 	               and cursorY >= barVP.y and cursorY < barVP.y + barVP.height
+
+	-- Click-drag scroll: start drag on LEFTBUTTON down in content area
+	if not self.historyDragStartX and inContent then
+		for id, event in ipairs(inputEvents) do
+			if event.type == "KeyDown" and event.key == "LEFTBUTTON" then
+				self.historyDragStartX     = cursorX
+				self.historyDragStartScroll = self.historyScroll
+				inputEvents[id] = nil
+				break
+			end
+		end
+	end
+	if self.historyDragStartX then
+		if IsKeyDown("LEFTBUTTON") then
+			local delta = self.historyDragStartX - cursorX
+			self.historyScroll = m_max(0, m_min(scrollMax, self.historyDragStartScroll + delta))
+		else
+			self.historyDragStartX      = nil
+			self.historyDragStartScroll = nil
+		end
+	end
+
+	-- Mouse-wheel scroll (secondary)
 	if inContent then
 		for id, event in ipairs(inputEvents) do
 			if event.type == "KeyDown" then
@@ -1920,7 +1942,15 @@ function PassiveTreeViewClass:DrawHistoryBar(build, barVP, inputEvents)
 			newHoverNodeId = grp.nodeId
 		end
 
-		-- Highlight background
+		-- Mastery background tint (passive tree only, drawn before icon)
+		local node = grp.node
+		if self.filterMode == "passive" and node.mastery ~= nil then
+			local mc = MASTERY_COLORS[node.mastery] or MASTERY_COLORS[0]
+			SetDrawColor(mc[1], mc[2], mc[3], 0.28)
+			DrawImage(nil, ix, iconY, ICON_SIZE, ICON_SIZE)
+		end
+
+		-- Highlight background (drawn on top of tint)
 		if isTreeHover then
 			SetDrawColor(0.12, 0.30, 0.60, 0.85)
 			DrawImage(nil, ix - 2, iconY - 2, ICON_SIZE + 4, ICON_SIZE + 4)
@@ -1930,7 +1960,6 @@ function PassiveTreeViewClass:DrawHistoryBar(build, barVP, inputEvents)
 		end
 
 		-- Load sprite into tree cache if not yet loaded
-		local node = grp.node
 		if node.icon and not tree.spriteMap[node.icon] then
 			local sheet = { handle = NewImageHandle() }
 			sheet.handle:Load("TreeData/sprites/" .. node.icon .. ".png")
@@ -1951,11 +1980,21 @@ function PassiveTreeViewClass:DrawHistoryBar(build, barVP, inputEvents)
 			DrawImage(nil, ix, iconY, ICON_SIZE, ICON_SIZE)
 		end
 
-		-- Mastery color indicator strip (passive tree only)
+		-- Vertical dotted divider when next icon has a different mastery (passive tree)
 		if self.filterMode == "passive" and node.mastery ~= nil then
-			local mc = MASTERY_COLORS[node.mastery] or MASTERY_COLORS[0]
-			SetDrawColor(mc[1], mc[2], mc[3])
-			DrawImage(nil, ix, iconY + ICON_SIZE - 3, ICON_SIZE, 3)
+			local nextGrp = grouped[i + 1]
+			if nextGrp and nextGrp.node.mastery ~= nil and nextGrp.node.mastery ~= node.mastery then
+				local divX = ix + ICON_SIZE + m_floor(ICON_PAD / 2) - 1
+				SetDrawLayer(nil, 3)
+				local mc = MASTERY_COLORS[nextGrp.node.mastery] or MASTERY_COLORS[0]
+				SetDrawColor(mc[1], mc[2], mc[3], 0.75)
+				local dy = iconY
+				while dy < iconY + ICON_SIZE do
+					DrawImage(nil, divX, dy, 1, 2)
+					dy = dy + 4
+				end
+				SetDrawLayer(nil, 2)
+			end
 		end
 
 		-- Count badge (x3, x2, …)
@@ -1988,15 +2027,5 @@ function PassiveTreeViewClass:DrawHistoryBar(build, barVP, inputEvents)
 	end
 
 	self.historyHoverNodeId = newHoverNodeId
-
-	-- Scroll arrows
-	SetDrawLayer(nil, 3)
-	if self.historyScroll > 0 then
-		SetDrawColor(0.65, 0.65, 0.75)
-		DrawString(barVP.x + 2, barVP.y + m_floor((barVP.height - 14) / 2), "LEFT", 14, "VAR", "<")
-	end
-	if self.historyScroll < scrollMax then
-		SetDrawColor(0.65, 0.65, 0.75)
-		DrawString(barVP.x + contentW - 2, barVP.y + m_floor((barVP.height - 14) / 2), "RIGHT", 14, "VAR", ">")
-	end
+	SetDrawLayer(nil, 0)
 end
