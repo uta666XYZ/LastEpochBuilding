@@ -16,6 +16,51 @@ local ipairs = ipairs
 
 local MAX_MOD_LINES = 3
 
+-- Slot -> allowed item types (nil = show all)
+local SLOT_TYPE_FILTER = {
+	["Helmet"]     = { "Helmet" },
+	["Body Armor"] = { "Body Armor" },
+	["Gloves"]     = { "Gloves" },
+	["Boots"]      = { "Boots" },
+	["Belt"]       = { "Belt" },
+	["Amulet"]     = { "Amulet" },
+	["Ring 1"]     = { "Ring" },
+	["Ring 2"]     = { "Ring" },
+	["Relic"]      = { "Relic" },
+	["Weapon 1"]   = {
+		"One-Handed Axe", "Dagger", "One-Handed Mace", "Sceptre",
+		"One-Handed Sword", "Wand", "Two-Handed Axe", "Two-Handed Mace",
+		"Two-Handed Spear", "Two-Handed Staff", "Two-Handed Sword", "Bow",
+	},
+	["Weapon 2"]   = {
+		"One-Handed Axe", "Dagger", "One-Handed Mace", "Sceptre",
+		"One-Handed Sword", "Wand", "Two-Handed Axe", "Two-Handed Mace",
+		"Two-Handed Spear", "Two-Handed Staff", "Two-Handed Sword", "Bow",
+		"Quiver", "Shield", "Off-Hand Catalyst",
+	},
+}
+
+local function filterTypeList(orderedList, slotName)
+	local filter = SLOT_TYPE_FILTER[slotName]
+	if not filter then return orderedList end
+	local allowed = {}
+	for _, t in ipairs(filter) do allowed[t] = true end
+	local pending_sep = nil
+	local filtered = {}
+	for _, entry in ipairs(orderedList) do
+		if entry.isSeparator then
+			pending_sep = entry
+		elseif allowed[entry.typeName] then
+			if pending_sep then
+				t_insert(filtered, pending_sep)
+				pending_sep = nil
+			end
+			t_insert(filtered, entry)
+		end
+	end
+	return filtered
+end
+
 -- Layout constants
 local POPUP_W       = 1000
 local LEFT_W        = 320
@@ -63,6 +108,20 @@ local LP_REM_W      = 18
 local NO_T8_SLOTS = { prefix1=true, prefix2=true, suffix1=true, suffix2=true, sealed=true, corrupted=true }
 -- Fixed-tier slots
 local FIXED_TIER_SLOTS = { primordial=true }
+
+-- Tier color codes: index = 1-based tier (T1=best, T7=worst)
+local TIER_COLORS = {
+	[1] = "^xFFBF00",  -- T1: gold
+	[2] = "^xE8872A",  -- T2: orange
+	[3] = "^xA8D44A",  -- T3: yellow-green
+	[4] = "^x40B0A0",  -- T4: teal
+	[5] = "^x5090E0",  -- T5: blue
+	[6] = "^xA060D0",  -- T6: purple
+	[7] = "^x909090",  -- T7: gray
+}
+local function tierColor(tier0)
+	return TIER_COLORS[tier0 + 1] or "^7"
+end
 
 -- Convert item display name to image filename
 -- "Acolyte's Sceptre" -> "acolyte_s_sceptre.png"
@@ -200,7 +259,7 @@ end
 -- =============================================================================
 -- CraftingPopup class
 -- =============================================================================
-local CraftingPopupClass = newClass("CraftingPopup", "ControlHost", "Control", function(self, itemsTab, existingItem)
+local CraftingPopupClass = newClass("CraftingPopup", "ControlHost", "Control", function(self, itemsTab, existingItem, slotName)
 	local popupMinH = 600
 	self.ControlHost()
 	self.Control(nil, 0, 0, POPUP_W, popupMinH)
@@ -243,7 +302,8 @@ local CraftingPopupClass = newClass("CraftingPopup", "ControlHost", "Control", f
 
 	self.selectedTypeIndex = 1
 	self.setItems = self:LoadSetData()
-	self.orderedTypeList = buildOrderedTypeList(self.build.data.itemBaseTypeList)
+	self.orderedTypeList = filterTypeList(
+		buildOrderedTypeList(self.build.data.itemBaseTypeList), slotName)
 	for i, entry in ipairs(self.orderedTypeList) do
 		if not entry.isSeparator then
 			self.selectedTypeIndex = i
@@ -703,10 +763,7 @@ function CraftingPopupClass:BuildControls()
 					local range = st.ranges[li] or 128
 					local computed = itemLib.applyRange(line, range, nil, getRounding(line)) or line
 					computed = computed:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
-					local col = "^7"
-					if st.tier >= 5 then col = colorCodes.EXALTED
-					elseif st.tier >= 3 then col = colorCodes.RARE
-					else col = colorCodes.MAGIC end
+					local col = tierColor(st.tier)
 					if #computed > 20 then computed = computed:sub(1, 18) .. ".." end
 					return col .. computed
 				end
@@ -770,7 +827,7 @@ function CraftingPopupClass:BuildControls()
 			end
 			controls[tierLabelKey].label = function()
 				local st = self_ref.affixState[slotKey]
-				return "^7T" .. tostring(st.tier + 1)
+				return tierColor(st.tier) .. "T" .. tostring(st.tier + 1)
 			end
 			controls[tierLabelKey].tooltipFunc = function(tooltip, mode)
 				if mode == "OUT" then return end
@@ -2106,20 +2163,25 @@ function CraftingPopupClass:DrawAffixCards(areaX, areaY, areaW, areaH, mx, my)
 			local nameCol = isSelected and colorCodes.UNIQUE or "^7"
 			DrawString(areaX + 34, cy + 4, "LEFT", 13, "VAR", nameCol .. (entry.affix or entry.label or ""))
 
-			-- Max tier label
+			-- Tier range badge (T1 = best, colored gold; last tier in gray)
 			local maxT = entry.maxTier or 0
-			local tierStr = maxT > 0 and ("T1-T" .. tostring(maxT + 1)) or "T1"
-			DrawString(areaX + areaW - 50, cy + 4, "LEFT", 11, "VAR", "^8" .. tierStr)
+			if not isSelected then
+				local tierStr = maxT > 0
+					and (TIER_COLORS[1] .. "T1^8-" .. TIER_COLORS[maxT + 1] .. "T" .. tostring(maxT + 1))
+					or (TIER_COLORS[1] .. "T1")
+				DrawString(areaX + areaW - 60, cy + 4, "LEFT", 11, "VAR", tierStr)
+			end
 
 			-- Selection indicator
 			if isSelected then
 				SetDrawColor(0.8, 0.7, 0.3)
 				DrawImage(nil, areaX, cy, 3, AC_H)
-				-- Show current tier
+				-- Show current tier with tier color
 				local st = self.affixState[slotKey]
 				if st and st.modKey then
+					local t1 = st.tier + 1
 					DrawString(areaX + areaW - 50, cy + 4, "LEFT", 11, "VAR",
-						colorCodes.UNIQUE .. "T" .. tostring(st.tier + 1) .. " <<")
+						tierColor(st.tier) .. "T" .. tostring(t1) .. " ^8<<")
 				end
 			end
 
