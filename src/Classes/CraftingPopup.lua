@@ -2419,30 +2419,35 @@ function CraftingPopupClass:DrawAffixCards(areaX, areaY, areaW, areaH, mx, my)
 			end
 			DrawImage(nil, areaX, cy, 3, rowH)
 
-			-- Affix name
+			-- Affix name (row 1 in card mode, only row in list mode)
 			local nameCol = isSelected and colorCodes.UNIQUE or "^7"
-			local nameSz  = cardMode and 14 or 13
 			local nameX   = areaX + 10
-			local nameY   = cy + (cardMode and 5 or 4)
-			DrawString(nameX, nameY, "LEFT", nameSz, "VAR",
+			local nameY   = cy + (cardMode and 6 or 4)
+			DrawString(nameX, nameY, "LEFT", 13, "VAR",
 				nameCol .. (entry.affix or entry.label or ""))
 
 			if cardMode then
-				-- Tier badge row: T1 T2 T3 ... colored by tier quality
+				-- Row 2: modifier description (abbreviated, gray)
+				local desc = entry.label or ""
+				desc = desc:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
+				if #desc > 36 then desc = desc:sub(1, 34) .. ".." end
+				DrawString(nameX, cy + 22, "LEFT", 11, "VAR", "^8" .. desc)
+
+				-- Row 3: tier badge row right-aligned
 				local maxT     = entry.maxTier or 0
 				local badgeStr = ""
 				for t = 0, maxT do
 					if t > 0 then badgeStr = badgeStr .. "^8 " end
 					badgeStr = badgeStr .. tierColor(t) .. "T" .. tostring(t + 1)
 				end
-				DrawString(areaX + areaW - 6, cy + 4, "RIGHT", 11, "VAR", badgeStr)
+				DrawString(areaX + areaW - 6, cy + 38, "RIGHT", 11, "VAR", badgeStr)
 
 				-- Card border (bottom)
 				SetDrawColor(0.20, 0.20, 0.20)
 				DrawImage(nil, areaX, cy2 - 1, areaW, 1)
 			end
 
-			-- Tier range (top-right, list mode only; card mode shows badge row)
+			-- Tier range (top-right, list mode only)
 			local maxT = entry.maxTier or 0
 			if not isSelected and not cardMode then
 				local tierStr = maxT > 0
@@ -2460,12 +2465,24 @@ function CraftingPopupClass:DrawAffixCards(areaX, areaY, areaW, areaH, mx, my)
 					local t1 = st.tier + 1
 					local indicator = tierColor(st.tier) .. "T" .. tostring(t1)
 					if slotLabel then indicator = indicator .. " ^8(" .. slotLabel .. ")" end
-					-- In card mode show on same row as tier badges; in list mode show top-right
-					local indY = cardMode and (cy + 26) or (cy + 4)
+					-- In card mode align with tier badge row; in list mode show top-right
+					local indY = cardMode and (cy + 38) or (cy + 4)
 					DrawString(areaX + areaW - 6, indY, "RIGHT", 11, "VAR", indicator)
 				end
 			end
 		end
+	end
+
+	-- Scrollbar on right border (visible when content overflows)
+	if maxScroll > 0 then
+		local sbX  = areaX + areaW + 2
+		local sbH  = areaH
+		local thH  = m_max(20, m_floor(areaH * areaH / totalH))
+		local thY  = areaY + m_floor((sbH - thH) * self.rightScrollY / maxScroll)
+		SetDrawColor(0.15, 0.15, 0.15)
+		DrawImage(nil, sbX, areaY, 4, areaH)
+		SetDrawColor(0.50, 0.45, 0.30)
+		DrawImage(nil, sbX, thY, 4, thH)
 	end
 end
 
