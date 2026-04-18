@@ -13,6 +13,7 @@
     ]
   },
   "Jewelled Circlet": {
+    "legacy": true,
     "type": "Helmet",
     "baseTypeID": 0,
     "subTypeID": 1,
@@ -27,6 +28,7 @@
     ]
   },
   "Iron Casque": {
+    "legacy": true,
     "type": "Helmet",
     "baseTypeID": 0,
     "subTypeID": 2,
@@ -53,6 +55,7 @@
     ]
   },
   "Dome Cap": {
+    "legacy": true,
     "type": "Helmet",
     "baseTypeID": 0,
     "subTypeID": 4,
@@ -65,6 +68,7 @@
     ]
   },
   "Bronze Casque": {
+    "legacy": true,
     "type": "Helmet",
     "baseTypeID": 0,
     "subTypeID": 5,
@@ -77,6 +81,7 @@
     ]
   },
   "Gladiator Helmet": {
+    "legacy": true,
     "type": "Helmet",
     "baseTypeID": 0,
     "subTypeID": 6,
@@ -89,6 +94,7 @@
     ]
   },
   "Forest Helmet": {
+    "legacy": true,
     "type": "Helmet",
     "baseTypeID": 0,
     "subTypeID": 7,
