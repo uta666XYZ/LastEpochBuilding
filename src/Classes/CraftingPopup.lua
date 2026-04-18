@@ -535,11 +535,11 @@ function CraftingPopupClass:BuildControls()
 		end },
 		{ key = "prefix",    label = function()
 			local n = #(self_ref.affixLists.prefix1 or {})
-			return (self_ref.rightTab == "prefix" and "^7" or "^8") .. "Prefix(" .. n .. ")"
+			return (self_ref.rightTab == "prefix" and "^7" or "^8") .. "Pre(" .. n .. ")"
 		end },
 		{ key = "suffix",    label = function()
 			local n = #(self_ref.affixLists.suffix1 or {})
-			return (self_ref.rightTab == "suffix" and "^7" or "^8") .. "Suffix(" .. n .. ")"
+			return (self_ref.rightTab == "suffix" and "^7" or "^8") .. "Suf(" .. n .. ")"
 		end },
 		{ key = "sealed",    label = function()
 			local base = self_ref:IsAnyIdol() and "Enc1" or "Sealed"
@@ -547,13 +547,13 @@ function CraftingPopupClass:BuildControls()
 			return (self_ref.rightTab == "sealed" and "^7" or "^8") .. base .. "(" .. n .. ")"
 		end },
 		{ key = "primordial", label = function()
-			local base = self_ref:IsAnyIdol() and "Enc2" or "Primordial"
+			local base = self_ref:IsAnyIdol() and "Enc2" or "Primo"
 			local n = #(self_ref.affixLists.primordial or {})
 			return (self_ref.rightTab == "primordial" and "^7" or "^8") .. base .. "(" .. n .. ")"
 		end },
 		{ key = "corrupted", label = function()
 			local n = #(self_ref.affixLists.corrupted or {})
-			return (self_ref.rightTab == "corrupted" and "^7" or "^8") .. "Corrupted(" .. n .. ")"
+			return (self_ref.rightTab == "corrupted" and "^7" or "^8") .. "Corrupt(" .. n .. ")"
 		end },
 	}
 	-- Spread 6 tabs across RP_W pixels
@@ -1933,12 +1933,16 @@ end
 -- Draw
 -- =============================================================================
 function CraftingPopupClass:Draw(viewPort)
+	-- Reset alpha to 1.0 in case the dim overlay (SetDrawColor 0,0,0,0.5) left a
+	-- persistent alpha state in the rendering context.
+	SetDrawColor(1, 1, 1, 1)
 	local px, py = self:GetPos()
 	px = m_floor(px); py = m_floor(py)
 	local pw, ph = self:GetSize()
+	pw = m_floor(pw); ph = m_floor(ph)
 
 	-- Popup background
-	SetDrawColor(0.05, 0.05, 0.05)
+	SetDrawColor(0.05, 0.05, 0.05, 1)
 	DrawImage(nil, px, py, pw, ph)
 
 	-- Outer border
@@ -2291,35 +2295,30 @@ function CraftingPopupClass:DrawAffixCards(areaX, areaY, areaW, areaH, mx, my)
 				nameCol .. (entry.affix or entry.label or ""))
 
 			if cardMode then
-				-- Value description on second line
-				local desc = (entry.label or ""):gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
-				desc = desc:gsub("^%s+", ""):gsub("%s+$", "")
-				local maxDesc = m_floor((areaW - 80) / 6)
-				if #desc > maxDesc then desc = desc:sub(1, maxDesc - 2) .. ".." end
-				DrawString(nameX, cy + 25, "LEFT", 11, "VAR",
-					TIER_COLORS[1] .. "T1: ^8" .. desc)
-
-				-- Tier count badge bottom-right
-				local maxT = entry.maxTier or 0
-				local tierCount = maxT + 1
-				local tierBadge = "^8" .. tostring(tierCount) .. " tier" .. (tierCount ~= 1 and "s" or "")
-				DrawString(areaX + areaW - 6, cy + 36, "RIGHT", 10, "VAR", tierBadge)
+				-- Tier badge row: T1 T2 T3 ... colored by tier quality
+				local maxT     = entry.maxTier or 0
+				local badgeStr = ""
+				for t = 0, maxT do
+					if t > 0 then badgeStr = badgeStr .. "^8 " end
+					badgeStr = badgeStr .. tierColor(t) .. "T" .. tostring(t + 1)
+				end
+				DrawString(nameX, cy + 26, "LEFT", 11, "VAR", badgeStr)
 
 				-- Card border (bottom)
 				SetDrawColor(0.20, 0.20, 0.20)
 				DrawImage(nil, areaX, cy2 - 1, areaW, 1)
 			end
 
-			-- Tier range (top-right, both modes)
+			-- Tier range (top-right, list mode only; card mode shows badge row)
 			local maxT = entry.maxTier or 0
-			if not isSelected then
+			if not isSelected and not cardMode then
 				local tierStr = maxT > 0
 					and (TIER_COLORS[1] .. "T1^8-" .. tierColor(maxT) .. "T" .. tostring(maxT + 1))
 					or  (TIER_COLORS[1] .. "T1")
 				DrawString(areaX + areaW - 6, cy + 4, "RIGHT", 11, "VAR", tierStr)
 			end
 
-			-- Selection indicator: golden bar + slot label + tier
+			-- Selection indicator: golden bar + slot label + selected tier
 			if isSelected then
 				SetDrawColor(0.8, 0.7, 0.3)
 				DrawImage(nil, areaX, cy, 3, rowH)
@@ -2328,7 +2327,9 @@ function CraftingPopupClass:DrawAffixCards(areaX, areaY, areaW, areaH, mx, my)
 					local t1 = st.tier + 1
 					local indicator = tierColor(st.tier) .. "T" .. tostring(t1)
 					if slotLabel then indicator = indicator .. " ^8(" .. slotLabel .. ")" end
-					DrawString(areaX + areaW - 6, cy + 4, "RIGHT", 11, "VAR", indicator)
+					-- In card mode show on same row as tier badges; in list mode show top-right
+					local indY = cardMode and (cy + 26) or (cy + 4)
+					DrawString(areaX + areaW - 6, indY, "RIGHT", 11, "VAR", indicator)
 				end
 			end
 		end
