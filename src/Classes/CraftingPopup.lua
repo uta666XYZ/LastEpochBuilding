@@ -277,7 +277,7 @@ local CraftingPopupClass = newClass("CraftingPopup", "ControlHost", "Control", f
 	self.build    = itemsTab.build
 
 	-- Right panel state
-	self.rightTab             = "item"   -- "item"|"prefix1"|"prefix2"|"suffix1"|"suffix2"|"sealed"|"primordial"|"corrupted"
+	self.rightTab             = "item"   -- "item"|"prefix"|"suffix"|"sealed"|"primordial"|"corrupted"
 	self.selectedBaseCategory = "basic"
 	self.searchText           = ""
 	self.editItem             = nil
@@ -531,23 +531,15 @@ function CraftingPopupClass:BuildControls()
 	local rightTabDefs = {
 		{ key = "item",       label = function()
 			local n = self_ref.currentItemList and #self_ref.currentItemList or 0
-			return self_ref.rightTab == "item" and "^7Item(" .. n .. ")" or "^8Item(" .. n .. ")"
+			return (self_ref.rightTab == "item" and "^7" or "^8") .. "Item(" .. n .. ")"
 		end },
-		{ key = "prefix1",   label = function()
+		{ key = "prefix",    label = function()
 			local n = #(self_ref.affixLists.prefix1 or {})
-			return (self_ref.rightTab == "prefix1" and "^7" or "^8") .. "Pfx 1(" .. n .. ")"
+			return (self_ref.rightTab == "prefix" and "^7" or "^8") .. "Prefix(" .. n .. ")"
 		end },
-		{ key = "prefix2",   label = function()
-			local n = #(self_ref.affixLists.prefix2 or {})
-			return (self_ref.rightTab == "prefix2" and "^7" or "^8") .. "Pfx 2(" .. n .. ")"
-		end },
-		{ key = "suffix1",   label = function()
+		{ key = "suffix",    label = function()
 			local n = #(self_ref.affixLists.suffix1 or {})
-			return (self_ref.rightTab == "suffix1" and "^7" or "^8") .. "Sfx 1(" .. n .. ")"
-		end },
-		{ key = "suffix2",   label = function()
-			local n = #(self_ref.affixLists.suffix2 or {})
-			return (self_ref.rightTab == "suffix2" and "^7" or "^8") .. "Sfx 2(" .. n .. ")"
+			return (self_ref.rightTab == "suffix" and "^7" or "^8") .. "Suffix(" .. n .. ")"
 		end },
 		{ key = "sealed",    label = function()
 			local base = self_ref:IsAnyIdol() and "Enc1" or "Sealed"
@@ -561,10 +553,10 @@ function CraftingPopupClass:BuildControls()
 		end },
 		{ key = "corrupted", label = function()
 			local n = #(self_ref.affixLists.corrupted or {})
-			return (self_ref.rightTab == "corrupted" and "^7" or "^8") .. "Crpt(" .. n .. ")"
+			return (self_ref.rightTab == "corrupted" and "^7" or "^8") .. "Corrupted(" .. n .. ")"
 		end },
 	}
-	-- Spread 8 tabs across RP_W pixels
+	-- Spread 6 tabs across RP_W pixels
 	local tabW = m_floor((RP_W - 4) / #rightTabDefs)
 	for i, def in ipairs(rightTabDefs) do
 		local tabX = LEFT_W + 2 + (i - 1) * tabW
@@ -940,7 +932,11 @@ function CraftingPopupClass:BuildControls()
 						return ey and (ey.add or 0) or 0
 					end, 220, 18, addLabel,
 					function()
-						self_ref.rightTab      = capturedSlotKey
+						-- Map internal slot keys to consolidated tab keys
+						local tabKey = (capturedSectionKey == "prefix") and "prefix"
+						           or (capturedSectionKey == "suffix") and "suffix"
+						           or capturedSlotKey
+						self_ref.rightTab      = tabKey
 						self_ref.rightScrollY  = 0
 					end)
 				controls[addKey].shown = function()
@@ -1212,9 +1208,9 @@ function CraftingPopupClass:SelectBase(entry)
 	self.editBaseEntry = entry
 	-- Stay on item tab if just selected; user can switch to affix tabs
 	if self.rightTab == "item" then
-		-- auto-advance to prefix1 for basic items to help workflow
+		-- auto-advance to prefix tab for basic items to help workflow
 		if entry.category == "basic" then
-			self.rightTab = "prefix1"
+			self.rightTab = "prefix"
 		end
 	end
 	self.rightScrollY = 0
@@ -1231,6 +1227,42 @@ end
 function CraftingPopupClass:SelectAffixEntry(entry)
 	local slotKey = self.rightTab
 	if slotKey == "item" or not entry or not entry.statOrderKey then return end
+
+	-- Consolidated prefix/suffix tabs: map to internal slot keys
+	if slotKey == "prefix" or slotKey == "suffix" then
+		local slot1 = slotKey == "prefix" and "prefix1" or "suffix1"
+		local slot2 = slotKey == "prefix" and "prefix2" or "suffix2"
+		local st1   = self.affixState[slot1]
+		local st2   = self.affixState[slot2]
+		-- Deselect if already selected in either slot
+		if st1.modKey == entry.statOrderKey then
+			st1.modKey = nil; st1.tier = 0; st1.ranges = {}
+			self:RebuildEditItem()
+			return
+		elseif st2.modKey == entry.statOrderKey then
+			st2.modKey = nil; st2.tier = 0; st2.ranges = {}
+			self:RebuildEditItem()
+			return
+		end
+		-- Assign to first empty slot (slot1 first, then slot2)
+		local actualKey = (st1.modKey == nil) and slot1 or slot2
+		local st = self.affixState[actualKey]
+		if not st then return end  -- both slots occupied, ignore
+		local maxT = entry.maxTier or 0
+		st.modKey = entry.statOrderKey
+		st.tier   = m_min(4, maxT)
+		st.ranges = {}
+		self:UpdateSlotModInfo(actualKey)
+		local info = self.slotModInfo[actualKey]
+		if info then
+			for i = 1, info.count do st.ranges[i] = 128 end
+			self:UpdateSlotValueEdits(actualKey)
+		end
+		self:RebuildEditItem()
+		return
+	end
+
+	-- Single-slot tabs (sealed, primordial, corrupted)
 	local st = self.affixState[slotKey]
 	if st.modKey == entry.statOrderKey then
 		-- Deselect
@@ -1890,7 +1922,7 @@ function CraftingPopupClass:RestoreCraftState(existingItem)
 	end
 	self:RecalcEditLayout()
 	self:RefreshAffixDropdowns()
-	self.rightTab = "prefix1"
+	self.rightTab = "prefix"
 end
 
 function CraftingPopupClass:Close()
@@ -1902,6 +1934,7 @@ end
 -- =============================================================================
 function CraftingPopupClass:Draw(viewPort)
 	local px, py = self:GetPos()
+	px = m_floor(px); py = m_floor(py)
 	local pw, ph = self:GetSize()
 
 	-- Popup background
@@ -2153,9 +2186,14 @@ end
 -- Draw affix cards in the right panel (list or card view)
 function CraftingPopupClass:DrawAffixCards(areaX, areaY, areaW, areaH, mx, my)
 	local slotKey  = self.rightTab
-	local list     = self.affixLists[slotKey] or {}
+	-- Map consolidated tabs to their primary internal list
+	local listKey  = (slotKey == "prefix") and "prefix1"
+	              or (slotKey == "suffix") and "suffix1"
+	              or slotKey
+	local list     = self.affixLists[listKey] or {}
 	local cardMode = (self.affixViewMode == "card")
-	local rowH     = cardMode and 44 or AC_H   -- expanded 44px in card mode, 22px in list mode
+	local rowH     = cardMode and 54 or AC_H   -- expanded 54px in card mode, 22px in list mode
+	local gap      = cardMode and 4  or AC_GAP
 
 	if not self.editItem then
 		SetDrawColor(1, 1, 1)
@@ -2181,80 +2219,118 @@ function CraftingPopupClass:DrawAffixCards(areaX, areaY, areaW, areaH, mx, my)
 		end
 	end
 
+	-- For consolidated prefix/suffix tabs, check both slots for selection
+	local function isEntrySelected(statOrderKey)
+		if slotKey == "prefix" then
+			return (self.affixState.prefix1.modKey == statOrderKey)
+			    or (self.affixState.prefix2.modKey == statOrderKey)
+		elseif slotKey == "suffix" then
+			return (self.affixState.suffix1.modKey == statOrderKey)
+			    or (self.affixState.suffix2.modKey == statOrderKey)
+		else
+			return self.affixState[slotKey] and self.affixState[slotKey].modKey == statOrderKey
+		end
+	end
+
+	-- For consolidated tabs, find the active selected slot (for tier display)
+	local function getSelectedSlotState(statOrderKey)
+		if slotKey == "prefix" then
+			if self.affixState.prefix1.modKey == statOrderKey then return self.affixState.prefix1, "P1" end
+			if self.affixState.prefix2.modKey == statOrderKey then return self.affixState.prefix2, "P2" end
+		elseif slotKey == "suffix" then
+			if self.affixState.suffix1.modKey == statOrderKey then return self.affixState.suffix1, "S1" end
+			if self.affixState.suffix2.modKey == statOrderKey then return self.affixState.suffix2, "S2" end
+		else
+			return self.affixState[slotKey], nil
+		end
+	end
+
 	-- Clamp scroll
-	local totalH    = #filteredList * (rowH + AC_GAP)
+	local totalH    = #filteredList * (rowH + gap)
 	local maxScroll = m_max(0, totalH - areaH)
 	self.rightScrollY = m_max(0, m_min(self.rightScrollY, maxScroll))
 
 	self.rightCards = {}
 	local scrollY   = self.rightScrollY
-	local curModKey = self.affixState[slotKey] and self.affixState[slotKey].modKey
 
 	for i, entry in ipairs(filteredList) do
-		local cy  = areaY + (i - 1) * (rowH + AC_GAP) - scrollY
+		local cy  = areaY + (i - 1) * (rowH + gap) - scrollY
 		local cy2 = cy + rowH
 
 		if cy2 > areaY and cy < areaY + areaH then
 			t_insert(self.rightCards, { x1=areaX, y1=cy, x2=areaX+areaW, y2=cy2, entry=entry })
 
-			local isSelected = (curModKey == entry.statOrderKey)
+			local isSelected = isEntrySelected(entry.statOrderKey)
 			local isHovered  = mx >= areaX and mx < areaX + areaW and my >= cy and my < cy2
 
 			-- Card background
 			if isSelected then
 				SetDrawColor(0.18, 0.16, 0.08)
 			elseif isHovered then
-				SetDrawColor(0.13, 0.13, 0.13)
+				SetDrawColor(0.14, 0.14, 0.14)
 			else
-				SetDrawColor(0.09, 0.09, 0.09)
+				SetDrawColor(0.10, 0.10, 0.10)
 			end
 			DrawImage(nil, areaX, cy, areaW, rowH)
 
-			-- Type badge (Prefix / Suffix)
+			-- Left accent bar: blue for Prefix, orange for Suffix
 			local typeStr  = entry.type or ""
-			local badgeCol = typeStr == "Prefix" and "^x5599FF" or "^xFF9955"
-			DrawString(areaX + 4, cy + 4, "LEFT", 11, "VAR", badgeCol .. typeStr:sub(1,3))
+			if typeStr == "Prefix" then
+				SetDrawColor(0.33, 0.60, 1.0)
+			else
+				SetDrawColor(1.0, 0.60, 0.33)
+			end
+			DrawImage(nil, areaX, cy, 3, rowH)
 
-			-- Affix name (larger text in card mode)
-			local nameCol  = isSelected and colorCodes.UNIQUE or "^7"
-			local nameSz   = cardMode and 14 or 13
-			DrawString(areaX + 34, cy + (cardMode and 3 or 4), "LEFT", nameSz, "VAR",
+			-- Affix name
+			local nameCol = isSelected and colorCodes.UNIQUE or "^7"
+			local nameSz  = cardMode and 14 or 13
+			local nameX   = areaX + 10
+			local nameY   = cy + (cardMode and 5 or 4)
+			DrawString(nameX, nameY, "LEFT", nameSz, "VAR",
 				nameCol .. (entry.affix or entry.label or ""))
 
-			-- Card mode: T1 description on second line
 			if cardMode then
+				-- Value description on second line
 				local desc = (entry.label or ""):gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
 				desc = desc:gsub("^%s+", ""):gsub("%s+$", "")
-				if #desc > 56 then desc = desc:sub(1, 54) .. ".." end
-				DrawString(areaX + 34, cy + 22, "LEFT", 11, "VAR",
+				local maxDesc = m_floor((areaW - 80) / 6)
+				if #desc > maxDesc then desc = desc:sub(1, maxDesc - 2) .. ".." end
+				DrawString(nameX, cy + 25, "LEFT", 11, "VAR",
 					TIER_COLORS[1] .. "T1: ^8" .. desc)
+
+				-- Tier count badge bottom-right
+				local maxT = entry.maxTier or 0
+				local tierCount = maxT + 1
+				local tierBadge = "^8" .. tostring(tierCount) .. " tier" .. (tierCount ~= 1 and "s" or "")
+				DrawString(areaX + areaW - 6, cy + 36, "RIGHT", 10, "VAR", tierBadge)
+
+				-- Card border (bottom)
+				SetDrawColor(0.20, 0.20, 0.20)
+				DrawImage(nil, areaX, cy2 - 1, areaW, 1)
 			end
 
-			-- Tier range badge (T1 – Tn, top-right corner)
+			-- Tier range (top-right, both modes)
 			local maxT = entry.maxTier or 0
 			if not isSelected then
 				local tierStr = maxT > 0
 					and (TIER_COLORS[1] .. "T1^8-" .. tierColor(maxT) .. "T" .. tostring(maxT + 1))
 					or  (TIER_COLORS[1] .. "T1")
-				local badgeY = cardMode and (cy + 4) or (cy + 4)
-				DrawString(areaX + areaW - 60, badgeY, "LEFT", 11, "VAR", tierStr)
+				DrawString(areaX + areaW - 6, cy + 4, "RIGHT", 11, "VAR", tierStr)
 			end
 
-			-- Selection indicator (left accent bar + current tier)
+			-- Selection indicator: golden bar + slot label + tier
 			if isSelected then
 				SetDrawColor(0.8, 0.7, 0.3)
 				DrawImage(nil, areaX, cy, 3, rowH)
-				local st = self.affixState[slotKey]
+				local st, slotLabel = getSelectedSlotState(entry.statOrderKey)
 				if st and st.modKey then
 					local t1 = st.tier + 1
-					DrawString(areaX + areaW - 50, cy + 4, "LEFT", 11, "VAR",
-						tierColor(st.tier) .. "T" .. tostring(t1) .. " ^8<<")
+					local indicator = tierColor(st.tier) .. "T" .. tostring(t1)
+					if slotLabel then indicator = indicator .. " ^8(" .. slotLabel .. ")" end
+					DrawString(areaX + areaW - 6, cy + 4, "RIGHT", 11, "VAR", indicator)
 				end
 			end
-
-			-- Card bottom border
-			SetDrawColor(0.18, 0.18, 0.18)
-			DrawImage(nil, areaX, cy2, areaW, 1)
 		end
 	end
 end
