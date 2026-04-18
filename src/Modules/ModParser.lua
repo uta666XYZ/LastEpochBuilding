@@ -592,6 +592,8 @@ end
 
 -- List of special modifiers
 local specialQuickFixModList = {
+	-- "Added" after a number is LE terminology for flat/base; strip it so parsers don't choke on it
+	["^([%+%-]?[%d%.]+%%?) Added "] = "%1 ",
 	["^([%+%-]?[%d%.]+%%) Cast Speed"] = "%1 increased Cast Speed",
 	["^([%+%-]?[%d%.]+%%) Cooldown Recovery Speed"] = "%1 increased Cooldown Recovery Speed",
 	["^([%+%-]?[%d%.]+%%) Duration"] = "%1 increased Duration",
