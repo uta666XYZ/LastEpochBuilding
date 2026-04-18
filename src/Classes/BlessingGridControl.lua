@@ -120,11 +120,8 @@ end
 
 function BlessingGridControlClass:IsMouseOver()
 	if not self:IsShown() then return false end
-	if self:IsMouseInBounds() then return true end
-	if self.sharedDropdown and self.sharedDropdown.shown then
-		return self.sharedDropdown:IsMouseOver()
-	end
-	return false
+	if self.sharedDropdown and self.sharedDropdown.shown then return true end
+	return self:IsMouseInBounds()
 end
 
 function BlessingGridControlClass:GetHoveredTL()

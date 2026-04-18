@@ -2235,7 +2235,7 @@ function CraftingPopupClass:DrawItemCards(areaX, areaY, areaW, areaH, mx, my)
 		local cx2  = cx + IC_W
 		local cy2  = cy + IC_H
 
-		if cy2 > areaY and cy < areaY + areaH then
+		if cy >= areaY and cy2 <= areaY + areaH then
 			t_insert(self.rightCards, { x1=cx, y1=cy, x2=cx2, y2=cy2, entry=entry })
 
 			local isSelected = self.editBaseEntry and self.editBaseEntry.name == entry.name
@@ -2390,7 +2390,7 @@ function CraftingPopupClass:DrawAffixCards(areaX, areaY, areaW, areaH, mx, my)
 		local cy  = areaY + (i - 1) * (rowH + gap) - scrollY
 		local cy2 = cy + rowH
 
-		if cy2 > areaY and cy < areaY + areaH then
+		if cy >= areaY and cy2 <= areaY + areaH then
 			t_insert(self.rightCards, { x1=areaX, y1=cy, x2=areaX+areaW, y2=cy2, entry=entry })
 
 			local isSelected = isEntrySelected(entry.statOrderKey)
@@ -2431,7 +2431,7 @@ function CraftingPopupClass:DrawAffixCards(areaX, areaY, areaW, areaH, mx, my)
 					if t > 0 then badgeStr = badgeStr .. "^8 " end
 					badgeStr = badgeStr .. tierColor(t) .. "T" .. tostring(t + 1)
 				end
-				DrawString(nameX, cy + 26, "LEFT", 11, "VAR", badgeStr)
+				DrawString(areaX + areaW - 6, cy + 4, "RIGHT", 11, "VAR", badgeStr)
 
 				-- Card border (bottom)
 				SetDrawColor(0.20, 0.20, 0.20)

@@ -694,16 +694,25 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 	t_insert(self.controls, blessGrid)
 	self.controls.blessingGrid = blessGrid
 
-	-- Craft shortcut buttons below the blessing grid
-	self.controls.craftIdolBtn = new("ButtonControl", {"TOPLEFT", blessGrid, "BOTTOMLEFT"}, 0, 8, 100, 20, "Craft Idol...", function()
+	-- Craft shortcut buttons in the same row as Craft item.../Create custom... (Equipment section)
+	self.controls.craftIdolBtn = new("ButtonControl", {"TOPLEFT", self.controls.newDisplayItem, "TOPRIGHT"}, 8, 0, 100, 20, "Craft Idol...", function()
 		self:CraftItem()
 	end)
+	self.controls.craftIdolBtn.shown = function()
+		return self.displayItem == nil
+	end
 	self.controls.craftIdolAltarBtn = new("ButtonControl", {"LEFT", self.controls.craftIdolBtn, "RIGHT"}, 4, 0, 130, 20, "Craft Idol Altar...", function()
 		self:CraftItem(nil, "Idol Altar")
 	end)
+	self.controls.craftIdolAltarBtn.shown = function()
+		return self.displayItem == nil
+	end
 	self.controls.craftBlessingBtn = new("ButtonControl", {"LEFT", self.controls.craftIdolAltarBtn, "RIGHT"}, 4, 0, 120, 20, "Craft Blessing...", function()
 		self:EditBlessings(nil)
 	end)
+	self.controls.craftBlessingBtn.shown = function()
+		return self.displayItem == nil
+	end
 
 	self:PopulateSlots()
 	self.lastSlot = lastVisibleSlot
