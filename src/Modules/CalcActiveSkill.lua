@@ -496,7 +496,7 @@ function calcs.buildActiveSkillModList(env, activeSkill)
 	-- Add extra modifiers from granted effect level
 	local stats = activeGrantedEffect.stats
 	activeSkill.skillData.CritChance = stats.critChance
-	if stats.cooldown and not skillModList:Flag(activeSkill.skillCfg, "NoCooldown") then
+	if stats.cooldown then
 		activeSkill.skillData.cooldown = stats.cooldown
 	end
 
