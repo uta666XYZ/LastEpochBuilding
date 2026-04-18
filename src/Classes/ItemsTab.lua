@@ -539,21 +539,44 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 	self.blessingTimelines = blessingTimelines
 	self.blessingControls = {}
 
+	-- Mock slot proxies for blessing timelines so updateBlessingSlot and NewItemSet work.
+	-- These are invisible (IsShown=false) but tracked in self.slots so item-set logic works.
+	for _, tl in ipairs(blessingTimelines) do
+		local tl_name = tl
+		local mockSlot = {
+			slotName = tl_name,
+			selItemId = 0,
+			nodeId = nil,
+			controls = {},
+		}
+		mockSlot.SetSelItemId = function(s, id)
+			s.selItemId = id
+			if self.activeItemSet and self.activeItemSet[tl_name] then
+				self.activeItemSet[tl_name].selItemId = id
+			end
+		end
+		mockSlot.Populate = function() end
+		mockSlot.IsShown = function() return false end
+		self.slots[tl_name] = mockSlot
+		t_insert(self.orderedSlots, mockSlot)
+		self.slotOrder[tl_name] = #self.orderedSlots
+	end
+
 	local function updateBlessingSlot(tl, blessEntry, rollFrac)
 		local slot = self.slots[tl]
 		if not slot then return end
 		local oldId = slot.selItemId
-		if oldId and oldId < 0 then
+		if oldId and oldId ~= 0 then
 			self.items[oldId] = nil
 			for i, id in ipairs(self.itemOrderList) do
 				if id == oldId then t_remove(self.itemOrderList, i); break end
 			end
+			slot:SetSelItemId(0)
 		end
 		self.blessingFracs = self.blessingFracs or {}
 		self.blessingFracs[tl] = rollFrac or 1.0
 		if not blessEntry or not blessEntry.name then
-			slot.selItemId = 0
-			if self.activeItemSet[tl] then self.activeItemSet[tl].selItemId = 0 end
+			slot:SetSelItemId(0)
 			self.build.buildFlag = true
 			return
 		end
@@ -574,14 +597,10 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 			ConPrintf("[BLESS] ERR item.base=nil for %s in slot %s", blessEntry.name, tl)
 			return
 		end
-		item:BuildModList()
 		item.uniqueID = "blessing:" .. tl  -- prevent nil==nil match with regular items in ImportItem
-		item.id = -1
-		while self.items[item.id] do item.id = item.id - 1 end
-		self.items[item.id] = item
-		t_insert(self.itemOrderList, item.id)
-		slot.selItemId = item.id
-		if self.activeItemSet[tl] then self.activeItemSet[tl].selItemId = item.id end
+		item.id = nil  -- let AddItem assign a positive ID so blessing appears in All Items
+		self:AddItem(item, true)  -- noAutoEquip=true, also calls BuildModList
+		slot:SetSelItemId(item.id)
 		self.build.buildFlag = true
 	end
 	self.updateBlessingSlot = updateBlessingSlot
@@ -610,9 +629,9 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 		return self.displayItem == nil
 	end
 
-	-- Paperdoll frame (below Craft/Create buttons; shown only when no display item)
+	-- Paperdoll frame (shown only when no display item; anchor updated below)
 	self.controls.paperdoll = new("PaperdollControl",
-		{"TOPLEFT", self.controls.craftDisplayItem, "BOTTOMLEFT"}, 0, 10, self)
+		{"TOPLEFT", self.controls.craftDisplayItem, "BOTTOMLEFT"}, 0, 50, self)
 	self.controls.paperdoll.shown = function()
 		return self.displayItem == nil
 	end
@@ -669,11 +688,34 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 	t_insert(self.controls, self.controls.idolGridPanelEnd)
 	-- ===== END IDOL GRID =====
 
-	-- Blessing slot grid (below idol grid; clicking a slot opens BlessingsPopup)
+	-- Blessing slot grid (below idol grid; clicking a slot shows blessing dropdown)
 	local blessGrid = new("BlessingGridControl",
 		{"TOPLEFT", self.controls.idolGridPanelEnd, "TOPLEFT"}, 0, 0, self)
 	t_insert(self.controls, blessGrid)
 	self.controls.blessingGrid = blessGrid
+
+	-- Craft shortcut buttons: new row below Craft item.../Create custom...
+	self.controls.craftIdolBtn = new("ButtonControl", {"TOPLEFT", self.controls.craftDisplayItem, "BOTTOMLEFT"}, 0, 8, 100, 28, "Craft Idol...", function()
+		self:CraftItem()
+	end)
+	self.controls.craftIdolBtn:SetImage("Assets/idol/harbingersNeedle.png")
+	self.controls.craftIdolBtn.shown = function()
+		return self.displayItem == nil
+	end
+	self.controls.craftIdolAltarBtn = new("ButtonControl", {"LEFT", self.controls.craftIdolBtn, "RIGHT"}, 4, 0, 130, 28, "Craft Idol Altar...", function()
+		self:CraftItem(nil, "Idol Altar")
+	end)
+	self.controls.craftIdolAltarBtn:SetImage("Assets/idol/idol_altar_empty.png")
+	self.controls.craftIdolAltarBtn.shown = function()
+		return self.displayItem == nil
+	end
+	self.controls.craftBlessingBtn = new("ButtonControl", {"LEFT", self.controls.craftIdolAltarBtn, "RIGHT"}, 4, 0, 120, 28, "Craft Blessing...", function()
+		self:EditBlessings(nil)
+	end)
+	self.controls.craftBlessingBtn:SetImage("Assets/blessings/memory_of_light.png")
+	self.controls.craftBlessingBtn.shown = function()
+		return self.displayItem == nil
+	end
 
 	self:PopulateSlots()
 	self.lastSlot = lastVisibleSlot

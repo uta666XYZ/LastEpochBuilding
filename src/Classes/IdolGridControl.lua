@@ -7,6 +7,7 @@
 -- Pass cellW / cellH to override default cell dimensions (e.g. 2x for IdolsTab).
 --
 local t_insert = table.insert
+local m_floor  = math.floor
 
 local CELL_GAP = 2
 
@@ -323,6 +324,32 @@ local function drawBlockedCell(cx, cy, cw, ch)
 	DrawImage(blockedCellImage, cx, cy, cw, ch)
 end
 
+-- Container/frame image constants
+-- idol_container.png is 268x324; circle occupies rows 0-60, grid area rows 61-324
+local CONTAINER_NATIVE_W = 268
+local CONTAINER_NATIVE_H = 324
+local CONTAINER_CIRCLE_ROWS = 61   -- rows 0-60 = circle area
+-- idol_altar_empty.png is 128x121
+local ALTAR_EMPTY_SIZE = 54  -- draw size (square) for the altar circle icon
+
+function IdolGridControlClass:GetContainerImage()
+	if not self.imageHandles["__container"] then
+		local h = NewImageHandle()
+		h:Load("Assets/idol/idol_container.png", "ASYNC")
+		self.imageHandles["__container"] = h
+	end
+	return self.imageHandles["__container"]
+end
+
+function IdolGridControlClass:GetAltarEmptyImage()
+	if not self.imageHandles["__altarEmpty"] then
+		local h = NewImageHandle()
+		h:Load("Assets/idol/idol_altar_empty.png", "ASYNC")
+		self.imageHandles["__altarEmpty"] = h
+	end
+	return self.imageHandles["__altarEmpty"]
+end
+
 function IdolGridControlClass:Draw(viewPort)
 	local x, y = self:GetPos()
 	local cw, ch = self.cw, self.ch
@@ -350,6 +377,35 @@ function IdolGridControlClass:Draw(viewPort)
 
 	-- Pre-pass: build cellPrimary BEFORE DrawControls so tooltipFunc can use it.
 	self:RebuildCellPrimary()
+
+	-- Container frame: draw idol_container.png behind the grid.
+	-- Scale to match grid width; circle area extends above the grid.
+	do
+		local numCols  = #self.layout[1]
+		local numRows  = #self.layout
+		local gridW    = numCols * cw + (numCols - 1) * CELL_GAP
+		local gridH    = numRows * ch + (numRows - 1) * CELL_GAP
+		local scale    = gridW / CONTAINER_NATIVE_W
+		local contH    = m_floor(CONTAINER_NATIVE_H * scale)
+		local circleH  = m_floor(CONTAINER_CIRCLE_ROWS * scale)
+		-- Draw container so its grid area (below circle) aligns with the idol grid
+		local cimg = self:GetContainerImage()
+		if cimg and cimg:IsValid() then
+			SetDrawColor(1, 1, 1)
+			DrawImage(cimg, x, y - circleH, gridW, contH)
+		end
+		-- Draw altar-empty icon in circle center when no altar is equipped
+		local hasAltar = activeAltarName and activeAltarName ~= "Default"
+		if not hasAltar then
+			local aimg = self:GetAltarEmptyImage()
+			if aimg and aimg:IsValid() then
+				local iconX = x + m_floor((gridW - ALTAR_EMPTY_SIZE) / 2)
+				local iconY = y - circleH + m_floor((circleH - ALTAR_EMPTY_SIZE) / 2)
+				SetDrawColor(1, 1, 1)
+				DrawImage(aimg, iconX, iconY, ALTAR_EMPTY_SIZE, ALTAR_EMPTY_SIZE)
+			end
+		end
+	end
 
 	-- Pass 1: cell backgrounds (drawn under slot controls)
 	for row, rowData in ipairs(self.layout) do
