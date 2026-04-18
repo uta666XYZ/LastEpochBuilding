@@ -49,6 +49,8 @@ function itemLib.applyRange(line, range, valueScalar, rounding)
     if not valueScalar then
         valueScalar = 1.0
     end
+    -- Non-scalar % affixes (e.g. "18% increased Health") use round; flat and scalar affixes use floor
+    local useRound = line:find("%%") ~= nil and valueScalar == 1.0
     line = line:gsub("(%+?)%((%-?%d+%.?%d*)%-(%-?%d+%.?%d*)%)",
             function(plus, min, max)
                 min = min * valueScalar
@@ -62,7 +64,11 @@ function itemLib.applyRange(line, range, valueScalar, rounding)
                 max = m_floor(max * precision + 0.5) / precision
                 numbers = numbers + 1
                 local numVal = (tonumber(min) + range * (tonumber(max) - tonumber(min) + 1 / precision))
-                numVal = m_floor(numVal * precision) / precision
+                if useRound then
+                    numVal = m_floor(numVal * precision + 0.5) / precision
+                else
+                    numVal = m_floor(numVal * precision) / precision
+                end
                 if numVal > max then
                     numVal = max
                 end
