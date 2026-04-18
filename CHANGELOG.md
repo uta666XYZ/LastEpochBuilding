@@ -1,5 +1,60 @@
 # Changelog
 
+## [v0.13.0](https://github.com/uta666XYZ/LastEpochBuilding/tree/v0.13.0) (2026/04/18)
+
+[Full Changelog](https://github.com/uta666XYZ/LastEpochBuilding/compare/v0.12.1...v0.13.0)
+
+### New Features
+- Craft UI: permanent left-right split layout with item image card browser
+- Craft UI: affix Card/List toggle, Add Prefix/Suffix buttons, available affix count display
+- Craft UI: class/type filtering, class-specific base items, Weaver's Will support, legacy item filter
+- Craft UI: Paperdoll slot-filter shortcut button
+- Config tab: tooltips for all options
+- Config tab: Reset to Defaults button
+- Config tab: Arcane Shield, Time Rotting, Teleport-conditional, Arcane Momentum, Glyph of Dominion toggles
+- Sidebar stat labels aligned with in-game terminology
+- Runebolt Tri-Elemental average DPS display
+- Ailment Overload / Haste / Frenzy / Lightning Aegis conditions linked to Config toggles
+- Calcs tab search bar
+- Ward Decay Per Second breakdown
+- Weapon slot ghost sprite reflects equipped item type
+
+### Calculations
+- Base skill damage now correctly calculated (was 0 for all skills due to missing stat mappings)
+- Corruption scaling formula implemented
+- S4 attribute grants now apply to PerStat bonuses
+- Recently/Transformation conditions fixed
+- Conditional DamageTaken mods now apply with correct type and conditions
+- Shock stacks correctly increase enemy damage taken by 5% per stack
+- Enemy ailment stack multipliers now use Config settings
+- PoE legacy code removed (Impale, Spell Suppression, Guard, PvP scaling)
+
+### Data
+- 63 missing item images added
+- Ascendancy passive texts synced with game v1.4.3
+- Large Idol [1x3] Jagged prefix added
+- Legacy base items flagged
+
+### Fixed
+- maxroll URL with fragment suffix (e.g. `#2`) now imports correctly
+- Mastery skills: central passive tree icon now hidden after allocation
+- Craft UI: %mod decimal precision now auto-detected
+- Cerulean and Sanguine Runestones 6-point bonuses now apply
+- Ward equilibrium formula corrected
+- Ailment stack caps corrected (Shock=10, Doom=4, Time Rot=12)
+
+---
+
+## [v0.12.1](https://github.com/uta666XYZ/LastEpochBuilding/tree/v0.12.1) (2026/04/15)
+
+[Full Changelog](https://github.com/uta666XYZ/LastEpochBuilding/compare/v0.12.0...v0.12.1)
+
+### Fixed
+- Auto-updater re-downloading all files on every launch
+- Version label incorrectly showing "(Dev)" on released builds
+
+---
+
 ## [v0.12.0](https://github.com/uta666XYZ/LastEpochBuilding/tree/v0.12.0) (2026/04/14)
 
 [Full Changelog](https://github.com/uta666XYZ/LastEpochBuilding/compare/v0.11.0...v0.12.0)
