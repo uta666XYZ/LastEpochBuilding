@@ -1,3 +1,36 @@
+VERSION[0.13.0][2026/04/18]
+
+--- New Features ---
+- Craft UI: left-right split layout with item image card browser
+- Craft UI: Card/List toggle, Add Prefix/Suffix buttons, affix count display
+- Craft UI: class/type filtering, Weaver's Will support, legacy item filter
+- Config tab: tooltips, Reset to Defaults button, new condition toggles
+- Sidebar stat labels aligned with in-game terminology
+- Runebolt Tri-Elemental average DPS display
+- Ailment Overload / Haste / Frenzy conditions linked to Config
+- Calcs tab search bar, Ward Decay breakdown
+
+--- Calculations ---
+- Base skill damage fixed (was 0 for all skills)
+- Corruption scaling formula implemented
+- S4 attribute PerStat bonuses fixed
+- Recently/Transformation/Conditional DamageTaken mods fixed
+- Shock stack enemy damage bonus fixed (5%/stack)
+- PoE legacy code removed
+
+--- Data ---
+- 63 missing item images added
+- Ascendancy passive texts synced (v1.4.3)
+- Large Idol [1x3] Jagged prefix added
+
+--- Fixed ---
+- maxroll URL fragment suffix import fix
+- Mastery skills central icon hidden after allocation
+- Craft UI %mod decimal precision fix
+- Cerulean/Sanguine Runestones 6-point bonuses
+- Ward equilibrium formula corrected
+- Ailment stack caps corrected
+
 VERSION[0.12.1][2026/04/15]
 
 --- Fixed ---
