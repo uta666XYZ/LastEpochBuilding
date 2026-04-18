@@ -92,18 +92,48 @@ Feature requests are welcome. Please open an issue and describe:
 
 LEB uses [Busted](https://olivinelabs.com/busted/) for Lua testing.
 
+### Option A — Docker (recommended, no local Lua setup needed)
+
+```bash
+# Run all tests
+docker run --rm -v "$(pwd):/app" -w /app \
+  ghcr.io/pathofbuildingcommunity/pathofbuilding-tests:latest \
+  busted --lua=luajit --exclude-tags=""
+```
+
+On Windows with Git Bash, prefix the command with `MSYS_NO_PATHCONV=1` and use `//app` for `-w`:
+```bash
+MSYS_NO_PATHCONV=1 docker run --rm -v "$(pwd -W):/app" -w //app \
+  ghcr.io/pathofbuildingcommunity/pathofbuilding-tests:latest \
+  busted --lua=luajit --exclude-tags=""
+```
+
+### Option B — Local Lua
+
 ```bash
 # Install
 luarocks install busted
 
-# Run tests
-busted --lua=luajit
+# Run all tests (including 1.4 snapshot tests)
+busted --lua=luajit --exclude-tags=""
 ```
 
-### Adding test builds:
-1. Add build XML to `spec/TestBuilds/1.4/`
-2. Run `busted --lua=luajit -r generate` to generate expected output
-3. Run `busted --lua=luajit` to verify
+> **Note:** Without `--exclude-tags=""`, snapshot tests tagged with version markers may be skipped.
+
+### Adding test builds
+
+1. Add a build JSON to `spec/TestBuilds/1.4/` (export from LEB via the build save file)
+2. Run generation to create the expected output snapshot:
+   ```bash
+   # Docker
+   docker run --rm -v "$(pwd -W):/app" -w //app \
+     ghcr.io/pathofbuildingcommunity/pathofbuilding-tests:latest \
+     busted --lua=luajit -r generate
+
+   # or local
+   busted --lua=luajit -r generate
+   ```
+3. Run `busted --lua=luajit --exclude-tags=""` to verify all tests pass
 
 ---
 

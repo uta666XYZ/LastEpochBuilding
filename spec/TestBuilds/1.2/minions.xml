@@ -1,118 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <LastEpochBuilding>
-	<Build ascendClassName="Necromancer" bandit="None" characterLevelAutoMode="false" className="Acolyte" level="100" mainSocketGroup="3" pantheonMajorGod="None" pantheonMinorGod="None" targetVersion="1_3" viewMode="TREE">
-		<PlayerStat stat="AverageHit" value="110.9808"></PlayerStat>
-		<PlayerStat stat="AverageBurstDamage" value="110.9808"></PlayerStat>
-		<PlayerStat stat="Speed" value="1.4666666275556"></PlayerStat>
-		<PlayerStat stat="PreEffectiveCritChance" value="0"></PlayerStat>
-		<PlayerStat stat="CritChance" value="0"></PlayerStat>
-		<PlayerStat stat="CritMultiplier" value="0"></PlayerStat>
-		<PlayerStat stat="TotalDPS" value="3206.1119145037"></PlayerStat>
-		<PlayerStat stat="CombinedDPS" value="3206.1119145037"></PlayerStat>
-		<PlayerStat stat="ManaCost" value="0"></PlayerStat>
-		<PlayerStat stat="ManaPercentCost" value="0"></PlayerStat>
-		<PlayerStat stat="ManaPerSecondCost" value="0"></PlayerStat>
-		<PlayerStat stat="ManaPercentPerSecondCost" value="0"></PlayerStat>
-		<PlayerStat stat="Vit" value="6"></PlayerStat>
-		<PlayerStat stat="Str" value="1"></PlayerStat>
-		<PlayerStat stat="Dex" value="14"></PlayerStat>
-		<PlayerStat stat="Int" value="97"></PlayerStat>
-		<PlayerStat stat="Att" value="1"></PlayerStat>
-		<PlayerStat stat="TotalEHP" value="16235.613342564"></PlayerStat>
-		<PlayerStat stat="FireMaximumHitTaken" value="18018.050830113"></PlayerStat>
-		<PlayerStat stat="LightningMaximumHitTaken" value="31711.769460998"></PlayerStat>
-		<PlayerStat stat="ColdMaximumHitTaken" value="14681.374750462"></PlayerStat>
-		<PlayerStat stat="PhysicalMaximumHitTaken" value="35045.154330945"></PlayerStat>
-		<PlayerStat stat="PoisonMaximumHitTaken" value="11325.631950356"></PlayerStat>
-		<PlayerStat stat="NecroticMaximumHitTaken" value="31711.769460998"></PlayerStat>
-		<PlayerStat stat="VoidMaximumHitTaken" value="30492.08602019"></PlayerStat>
-		<PlayerStat stat="Life" value="2922"></PlayerStat>
-		<PlayerStat stat="Spec:LifeInc" value="24"></PlayerStat>
-		<PlayerStat stat="LifeRegenRecovery" value="22"></PlayerStat>
-		<PlayerStat stat="LifeLeechGainRate" value="0"></PlayerStat>
-		<PlayerStat stat="Mana" value="103"></PlayerStat>
-		<PlayerStat stat="Spec:ManaInc" value="0"></PlayerStat>
-		<PlayerStat stat="ManaRegenRecovery" value="10.8"></PlayerStat>
-		<PlayerStat stat="ManaLeechGainRate" value="0"></PlayerStat>
-		<PlayerStat stat="Ward" value="3566"></PlayerStat>
-		<PlayerStat stat="WardRetention" value="408"></PlayerStat>
-		<PlayerStat stat="Evasion" value="113"></PlayerStat>
-		<PlayerStat stat="Spec:EvasionInc" value="0"></PlayerStat>
-		<PlayerStat stat="MeleeEvadeChance" value="0"></PlayerStat>
-		<PlayerStat stat="ProjectileEvadeChance" value="0"></PlayerStat>
-		<PlayerStat stat="Armour" value="1160"></PlayerStat>
-		<PlayerStat stat="Spec:ArmourInc" value="0"></PlayerStat>
-		<PlayerStat stat="PhysicalDamageReduction" value="25.946966148514"></PlayerStat>
-		<PlayerStat stat="BlockChance" value="0"></PlayerStat>
-		<PlayerStat stat="SpellBlockChance" value="0"></PlayerStat>
-		<PlayerStat stat="AttackDodgeChance" value="0"></PlayerStat>
-		<PlayerStat stat="SpellDodgeChance" value="0"></PlayerStat>
-		<PlayerStat stat="FireResist" value="56"></PlayerStat>
-		<PlayerStat stat="FireResistOverCap" value="0"></PlayerStat>
-		<PlayerStat stat="LightningResist" value="75"></PlayerStat>
-		<PlayerStat stat="LightningResistOverCap" value="25"></PlayerStat>
-		<PlayerStat stat="ColdResist" value="46"></PlayerStat>
-		<PlayerStat stat="ColdResistOverCap" value="0"></PlayerStat>
-		<PlayerStat stat="PhysicalResist" value="75"></PlayerStat>
-		<PlayerStat stat="PhysicalResistOverCap" value="8"></PlayerStat>
-		<PlayerStat stat="PoisonResist" value="30"></PlayerStat>
-		<PlayerStat stat="PoisonResistOverCap" value="0"></PlayerStat>
-		<PlayerStat stat="NecroticResist" value="75"></PlayerStat>
-		<PlayerStat stat="NecroticResistOverCap" value="127"></PlayerStat>
-		<PlayerStat stat="VoidResist" value="74"></PlayerStat>
-		<PlayerStat stat="VoidResistOverCap" value="0"></PlayerStat>
-		<PlayerStat stat="EffectiveMovementSpeedMod" value="1.81"></PlayerStat>
-		<PlayerStat stat="FullDPS" value="3206.1119145037"></PlayerStat>
-		<FullDPSSkill skillPart="" source="" stat="Infernal Shade" value="3206.1119145037"></FullDPSSkill>
+	<Build level="100" targetVersion="1_4" pantheonMajorGod="None" bandit="None" className="Acolyte" ascendClassName="Necromancer" characterLevelAutoMode="false" mainSocketGroup="3" viewMode="TREE" pantheonMinorGod="None">
+		<PlayerStat stat="AverageHit" value="384.912"/>
+		<PlayerStat stat="AverageBurstDamage" value="384.912"/>
+		<PlayerStat stat="Speed" value="2.6399999296"/>
+		<PlayerStat stat="PreEffectiveCritChance" value="0"/>
+		<PlayerStat stat="CritChance" value="0"/>
+		<PlayerStat stat="CritMultiplier" value="0"/>
+		<PlayerStat stat="TotalDPS" value="20015.423466255"/>
+		<PlayerStat stat="CombinedDPS" value="20015.423466255"/>
+		<PlayerStat stat="ManaCost" value="0"/>
+		<PlayerStat stat="ManaPercentCost" value="0"/>
+		<PlayerStat stat="ManaPerSecondCost" value="0"/>
+		<PlayerStat stat="ManaPercentPerSecondCost" value="0"/>
+		<PlayerStat stat="Vit" value="17"/>
+		<PlayerStat stat="Str" value="5"/>
+		<PlayerStat stat="Dex" value="18"/>
+		<PlayerStat stat="Int" value="115"/>
+		<PlayerStat stat="Att" value="5"/>
+		<PlayerStat stat="TotalEHP" value="21213.62175508"/>
+		<PlayerStat stat="FireMaximumHitTaken" value="13295.208486503"/>
+		<PlayerStat stat="LightningMaximumHitTaken" value="18613.291881105"/>
+		<PlayerStat stat="ColdMaximumHitTaken" value="10340.717711725"/>
+		<PlayerStat stat="PhysicalMaximumHitTaken" value="19908.595894701"/>
+		<PlayerStat stat="PoisonMaximumHitTaken" value="9306.6459405524"/>
+		<PlayerStat stat="NecroticMaximumHitTaken" value="18613.291881105"/>
+		<PlayerStat stat="VoidMaximumHitTaken" value="18613.291881105"/>
+		<PlayerStat stat="Life" value="3060"/>
+		<PlayerStat stat="Spec:LifeInc" value="24"/>
+		<PlayerStat stat="LifeRegenRecovery" value="37.4"/>
+		<PlayerStat stat="LifeLeechGainRate" value="0"/>
+		<PlayerStat stat="Mana" value="111"/>
+		<PlayerStat stat="Spec:ManaInc" value="0"/>
+		<PlayerStat stat="ManaRegenRecovery" value="10.8"/>
+		<PlayerStat stat="ManaLeechGainRate" value="0"/>
+		<PlayerStat stat="Ward" value="3404"/>
+		<PlayerStat stat="WardRetention" value="444"/>
+		<PlayerStat stat="NetWardRegen" value="0"/>
+		<PlayerStat stat="Evasion" value="153"/>
+		<PlayerStat stat="Spec:EvasionInc" value="0"/>
+		<PlayerStat stat="MeleeEvadeChance" value="0"/>
+		<PlayerStat stat="ProjectileEvadeChance" value="0"/>
+		<PlayerStat stat="Armour" value="678"/>
+		<PlayerStat stat="Spec:ArmourInc" value="0"/>
+		<PlayerStat stat="PhysicalDamageReduction" value="18.829032014753"/>
+		<PlayerStat stat="BlockChance" value="0"/>
+		<PlayerStat stat="SpellBlockChance" value="0"/>
+		<PlayerStat stat="AttackDodgeChance" value="5.292396969569"/>
+		<PlayerStat stat="SpellDodgeChance" value="0"/>
+		<PlayerStat stat="FireResist" value="65"/>
+		<PlayerStat stat="FireResistOverCap" value="0"/>
+		<PlayerStat stat="LightningResist" value="75"/>
+		<PlayerStat stat="LightningResistOverCap" value="34"/>
+		<PlayerStat stat="ColdResist" value="55"/>
+		<PlayerStat stat="ColdResistOverCap" value="0"/>
+		<PlayerStat stat="PhysicalResist" value="75"/>
+		<PlayerStat stat="PhysicalResistOverCap" value="17"/>
+		<PlayerStat stat="PoisonResist" value="50"/>
+		<PlayerStat stat="PoisonResistOverCap" value="0"/>
+		<PlayerStat stat="NecroticResist" value="75"/>
+		<PlayerStat stat="NecroticResistOverCap" value="147"/>
+		<PlayerStat stat="VoidResist" value="75"/>
+		<PlayerStat stat="VoidResistOverCap" value="8"/>
+		<PlayerStat stat="EffectiveMovementSpeedMod" value="1.81"/>
+		<PlayerStat stat="FullDPS" value="20015.423466255"/>
+		<FullDPSSkill skillPart="" source="" stat="Infernal Shade" value="20015.423466255"/>
 	</Build>
 	<Calcs>
-		<Input name="misc_buffMode" string="EFFECTIVE"></Input>
-		<Input name="skill_number" number="3"></Input>
-		<Section collapsed="false" id="SkillSelect" subsection="ViewSkillDetails"></Section>
-		<Section collapsed="false" id="HitDamage" subsection="SkillDamage"></Section>
-		<Section collapsed="false" id="Speed" subsection="AttackCastRate"></Section>
-		<Section collapsed="false" id="Crit" subsection="Crits"></Section>
-		<Section collapsed="false" id="SkillTypeStats" subsection="SkilltypespecificStats"></Section>
-		<Section collapsed="false" id="LeechGain" subsection="LeechGainonHit"></Section>
-		<Section collapsed="false" id="MiscEffects" subsection="OtherEffects"></Section>
-		<Section collapsed="false" id="Attributes" subsection="Attributes"></Section>
-		<Section collapsed="false" id="Life" subsection="Health"></Section>
-		<Section collapsed="false" id="Mana" subsection="Mana"></Section>
-		<Section collapsed="false" id="Ward" subsection="Ward"></Section>
-		<Section collapsed="false" id="Endurance" subsection="Endurance"></Section>
-		<Section collapsed="false" id="Resist" subsection="Resists"></Section>
-		<Section collapsed="false" id="Armour" subsection="Armor"></Section>
-		<Section collapsed="false" id="DamageAvoidance" subsection="Block"></Section>
-		<Section collapsed="false" id="DamageAvoidance" subsection="Dodge"></Section>
-		<Section collapsed="false" id="MiscDefences" subsection="OtherDefences"></Section>
-		<Section collapsed="false" id="DamageTaken" subsection="DamageTaken"></Section>
-		<Section collapsed="false" id="DamageTaken" subsection="DamagingHits"></Section>
-		<Section collapsed="false" id="DamageTaken" subsection="EffectiveHealthPool"></Section>
-		<Section collapsed="false" id="DamageTaken" subsection="MaximumHitTaken"></Section>
-		<Section collapsed="false" id="DamageTaken" subsection="DotsandDegens"></Section>
+		<Input name="misc_buffMode" string="EFFECTIVE"/>
+		<Input name="skill_number" number="3"/>
+		<Section subsection="ViewSkillDetails" collapsed="false" id="SkillSelect"/>
+		<Section subsection="SkillDamage" collapsed="false" id="HitDamage"/>
+		<Section subsection="AttackCastRate" collapsed="false" id="Speed"/>
+		<Section subsection="Crits" collapsed="false" id="Crit"/>
+		<Section subsection="SkilltypespecificStats" collapsed="false" id="SkillTypeStats"/>
+		<Section subsection="LeechGainonHit" collapsed="false" id="LeechGain"/>
+		<Section subsection="OtherEffects" collapsed="false" id="MiscEffects"/>
+		<Section subsection="AilmentsStatus" collapsed="false" id="LEAilments"/>
+		<Section subsection="Attributes" collapsed="false" id="Attributes"/>
+		<Section subsection="Health" collapsed="false" id="Life"/>
+		<Section subsection="Mana" collapsed="false" id="Mana"/>
+		<Section subsection="Ward" collapsed="false" id="Ward"/>
+		<Section subsection="Endurance" collapsed="false" id="Endurance"/>
+		<Section subsection="Resists" collapsed="false" id="Resist"/>
+		<Section subsection="Armor" collapsed="false" id="Armour"/>
+		<Section subsection="Block" collapsed="false" id="DamageAvoidance"/>
+		<Section subsection="Dodge" collapsed="false" id="DamageAvoidance"/>
+		<Section subsection="OtherDefences" collapsed="false" id="MiscDefences"/>
+		<Section subsection="DamageTaken" collapsed="false" id="DamageTaken"/>
+		<Section subsection="DamagingHits" collapsed="false" id="DamageTaken"/>
+		<Section subsection="EffectiveHealthPool" collapsed="false" id="DamageTaken"/>
+		<Section subsection="MaximumHitTaken" collapsed="false" id="DamageTaken"/>
+		<Section subsection="DotsandDegens" collapsed="false" id="DamageTaken"/>
 	</Calcs>
 	<Config>
-		<Input name="bandit" string="None"></Input>
-		<Input boolean="true" name="campaignBonuses"></Input>
-		<Input name="pantheonMajorGod" string="None"></Input>
-		<Input name="pantheonMinorGod" string="None"></Input>
-		<Placeholder name="enemyColdDamage" number="1000"></Placeholder>
-		<Placeholder name="enemyCritChance" number="5"></Placeholder>
-		<Placeholder name="enemyCritDamage" number="30"></Placeholder>
-		<Placeholder name="enemyDamageRollRange" number="70"></Placeholder>
-		<Placeholder name="enemyFireDamage" number="1000"></Placeholder>
-		<Placeholder name="enemyLevel" number="100"></Placeholder>
-		<Placeholder name="enemyLightningDamage" number="1000"></Placeholder>
-		<Placeholder name="enemyNecroticDamage" number="1000"></Placeholder>
-		<Placeholder name="enemyPhysicalDamage" number="1000"></Placeholder>
-		<Placeholder name="enemyPoisonDamage" number="1000"></Placeholder>
-		<Placeholder name="enemySpeed" number="700"></Placeholder>
-		<Placeholder name="enemyVoidDamage" number="1000"></Placeholder>
+		<Input name="bandit" string="None"/>
+		<Input name="pantheonMajorGod" string="None"/>
+		<Input name="pantheonMinorGod" string="None"/>
+		<Input name="questApophisMajasa" boolean="true"/>
+		<Input name="questTempleOfEterra" boolean="true"/>
+		<Placeholder name="enemyColdDamage" number="1000"/>
+		<Placeholder name="enemyCritChance" number="5"/>
+		<Placeholder name="enemyCritDamage" number="30"/>
+		<Placeholder name="enemyDamageRollRange" number="70"/>
+		<Placeholder name="enemyFireDamage" number="1000"/>
+		<Placeholder name="enemyLevel" number="100"/>
+		<Placeholder name="enemyLightningDamage" number="1000"/>
+		<Placeholder name="enemyNecroticDamage" number="1000"/>
+		<Placeholder name="enemyPhysicalDamage" number="1000"/>
+		<Placeholder name="enemyPoisonDamage" number="1000"/>
+		<Placeholder name="enemySpeed" number="700"/>
+		<Placeholder name="enemyVoidDamage" number="1000"/>
 	</Config>
-	<Import exportParty="false"></Import>
+	<Import exportParty="false"/>
 	<Items activeItemSet="1" useSecondWeaponSet="nil">
 		<Item id="1">
-			Rarity: RARE
-Bone Amulet
+			Rarity: LEGENDARY
+Pearls of the Swine
 Bone Amulet
 Unique ID: 11
 Crafted: true
@@ -132,14 +136,26 @@ Implicits: 2
 {range:153}{scalar:1.17}{rounding:Integer}(190-230)% increased Minion Health
 {range:227}{scalar:1.17}{rounding:Integer}(40-60)% increased Minion Damage
 {range:113}{scalar:1.17}{rounding:Integer}(20-24)% increased Mana Regen
-			<ModRange id="1" range="41"></ModRange>
-			<ModRange id="2" range="213"></ModRange>
-			<ModRange id="3" range="178"></ModRange>
-			<ModRange id="4" range="163"></ModRange>
-			<ModRange id="5" range="163"></ModRange>
-			<ModRange id="6" range="153"></ModRange>
-			<ModRange id="7" range="227"></ModRange>
-			<ModRange id="8" range="113"></ModRange>
+{crafted}+100% Bone Curse also inflicts Penance
+{crafted}{range:127.5}{rounding:Integer}(113-166) Ward per Second for each Curse affecting you
+{crafted}{range:127.5}{rounding:Integer}(31-55)% increased Fire Damage
+{crafted}{range:127.5}{rounding:Integer}+(5-9) Vitality
+{crafted}{range:127.5}+(7-11)% to All Resistances
+{crafted}{range:127.5}{rounding:Integer}+(1-4) to All Attributes
+			<ModRange range="41" id="1"/>
+			<ModRange range="213" id="2"/>
+			<ModRange range="178" id="3"/>
+			<ModRange range="163" id="4"/>
+			<ModRange range="163" id="5"/>
+			<ModRange range="153" id="6"/>
+			<ModRange range="227" id="7"/>
+			<ModRange range="113" id="8"/>
+			<ModRange range="127.5" id="9"/>
+			<ModRange range="127.5" id="10"/>
+			<ModRange range="127.5" id="11"/>
+			<ModRange range="127.5" id="12"/>
+			<ModRange range="127.5" id="13"/>
+			<ModRange range="127.5" id="14"/>
 		</Item>
 		<Item id="2">
 			Rarity: UNIQUE
@@ -166,17 +182,17 @@ Implicits: 2
 {crafted}20% of Current Health Lost per second
 {crafted}20% of Missing Health gained as Ward per second
 {crafted}100% Bleed Immunity while on Low Health
-			<ModRange id="1" range="127.5"></ModRange>
-			<ModRange id="2" range="121"></ModRange>
-			<ModRange id="3" range="236"></ModRange>
-			<ModRange id="4" range="127.5"></ModRange>
-			<ModRange id="5" range="206"></ModRange>
-			<ModRange id="6" range="230"></ModRange>
-			<ModRange id="7" range="230"></ModRange>
-			<ModRange id="8" range="230"></ModRange>
-			<ModRange id="9" range="127.5"></ModRange>
-			<ModRange id="10" range="127.5"></ModRange>
-			<ModRange id="11" range="127.5"></ModRange>
+			<ModRange range="127.5" id="1"/>
+			<ModRange range="121" id="2"/>
+			<ModRange range="236" id="3"/>
+			<ModRange range="127.5" id="4"/>
+			<ModRange range="206" id="5"/>
+			<ModRange range="230" id="6"/>
+			<ModRange range="230" id="7"/>
+			<ModRange range="230" id="8"/>
+			<ModRange range="127.5" id="9"/>
+			<ModRange range="127.5" id="10"/>
+			<ModRange range="127.5" id="11"/>
 		</Item>
 		<Item id="3">
 			Rarity: UNIQUE
@@ -203,21 +219,21 @@ Implicits: 3
 {crafted}{range:200}(30-36)% increased Movement Speed
 {crafted}{range:203}+(300-400)% Freeze Rate Multiplier while at Low Health
 {crafted}100% You are chilled every 3 seconds
-			<ModRange id="1" range="127.5"></ModRange>
-			<ModRange id="2" range="163"></ModRange>
-			<ModRange id="3" range="145"></ModRange>
-			<ModRange id="4" range="206"></ModRange>
-			<ModRange id="5" range="127.5"></ModRange>
-			<ModRange id="6" range="182"></ModRange>
-			<ModRange id="7" range="200"></ModRange>
-			<ModRange id="8" range="200"></ModRange>
-			<ModRange id="9" range="200"></ModRange>
-			<ModRange id="10" range="203"></ModRange>
-			<ModRange id="11" range="127.5"></ModRange>
+			<ModRange range="127.5" id="1"/>
+			<ModRange range="163" id="2"/>
+			<ModRange range="145" id="3"/>
+			<ModRange range="206" id="4"/>
+			<ModRange range="127.5" id="5"/>
+			<ModRange range="182" id="6"/>
+			<ModRange range="200" id="7"/>
+			<ModRange range="200" id="8"/>
+			<ModRange range="200" id="9"/>
+			<ModRange range="203" id="10"/>
+			<ModRange range="127.5" id="11"/>
 		</Item>
 		<Item id="4">
-			Rarity: RARE
-Plated Gauntlets
+			Rarity: LEGENDARY
+Falcon Fists
 Plated Gauntlets
 Unique ID: 6
 Crafted: true
@@ -238,15 +254,33 @@ Implicits: 2
 {range:188}(14-16)% of Missing Health gained as Ward per second
 {range:17}{rounding:Integer}+(5-6) Intelligence
 {range:151}{rounding:Integer}+(5-7) Throwing Damage
-			<ModRange id="1" range="127.5"></ModRange>
-			<ModRange id="2" range="78"></ModRange>
-			<ModRange id="3" range="35"></ModRange>
-			<ModRange id="4" range="77"></ModRange>
-			<ModRange id="5" range="127.5"></ModRange>
-			<ModRange id="6" range="188"></ModRange>
-			<ModRange id="7" range="188"></ModRange>
-			<ModRange id="8" range="17"></ModRange>
-			<ModRange id="9" range="151"></ModRange>
+{crafted}{range:127.5}{rounding:Integer}+(12-16) Cinder Strike Melee Damage per Level of Falconry While Unarmed
+{crafted}{range:127.5}(3-4)% increased Cinder Strike Area per Level of Falconry While Unarmed
+{crafted}+4 Cinder Strike Melee Damage per Falcon Hit in the past 6 seconds if you are unarmed
+{crafted}1% increased Cinder Strike Area per Falcon Hit in the past 6 seconds if you are unarmed
+{crafted}{range:127.5}{rounding:Integer}+(1-4) to Cinder Strike
+{crafted}{range:127.5}{rounding:Integer}+(1-4) to Falconry
+{crafted}{range:127.5}(12-27)% increased Melee Attack Speed
+{crafted}{range:127.5}{rounding:Integer}+(12-27) Melee Fire Damage
+{crafted}{range:127.5}{rounding:Integer}+(12-27) Minion Melee Fire Damage
+			<ModRange range="127.5" id="1"/>
+			<ModRange range="78" id="2"/>
+			<ModRange range="35" id="3"/>
+			<ModRange range="77" id="4"/>
+			<ModRange range="127.5" id="5"/>
+			<ModRange range="188" id="6"/>
+			<ModRange range="188" id="7"/>
+			<ModRange range="17" id="8"/>
+			<ModRange range="151" id="9"/>
+			<ModRange range="127.5" id="10"/>
+			<ModRange range="127.5" id="11"/>
+			<ModRange range="127.5" id="12"/>
+			<ModRange range="127.5" id="13"/>
+			<ModRange range="127.5" id="14"/>
+			<ModRange range="127.5" id="15"/>
+			<ModRange range="127.5" id="16"/>
+			<ModRange range="127.5" id="17"/>
+			<ModRange range="127.5" id="18"/>
 		</Item>
 		<Item id="5">
 			Rarity: UNIQUE
@@ -270,18 +304,18 @@ Implicits: 1
 {crafted}{range:235}{rounding:Integer}+(6-13) Intelligence
 {crafted}{range:220}+(35-65)% Necrotic Resistance
 {crafted}1 Ward per Second per 3% uncapped Necrotic Resistance
-			<ModRange id="1" range="127.5"></ModRange>
-			<ModRange id="2" range="189"></ModRange>
-			<ModRange id="3" range="64"></ModRange>
-			<ModRange id="4" range="127.5"></ModRange>
-			<ModRange id="5" range="235"></ModRange>
-			<ModRange id="6" range="235"></ModRange>
-			<ModRange id="7" range="220"></ModRange>
-			<ModRange id="8" range="127.5"></ModRange>
+			<ModRange range="127.5" id="1"/>
+			<ModRange range="189" id="2"/>
+			<ModRange range="64" id="3"/>
+			<ModRange range="127.5" id="4"/>
+			<ModRange range="235" id="5"/>
+			<ModRange range="235" id="6"/>
+			<ModRange range="220" id="7"/>
+			<ModRange range="127.5" id="8"/>
 		</Item>
 		<Item id="6">
 			Rarity: RARE
-Decaying Homunculus
+Commander&apos;s Decaying Homunculus of Sparks
 Decaying Homunculus
 Unique ID: 12
 Crafted: true
@@ -299,16 +333,16 @@ Implicits: 2
 {range:214}{rounding:Integer}+(61-90) Health
 {range:225}{rounding:Integer}(96-120)% increased Minion Damage
 {range:247}{rounding:Integer}+(7-8) Intelligence
-			<ModRange id="1" range="220"></ModRange>
-			<ModRange id="2" range="210"></ModRange>
-			<ModRange id="3" range="84"></ModRange>
-			<ModRange id="4" range="214"></ModRange>
-			<ModRange id="5" range="225"></ModRange>
-			<ModRange id="6" range="247"></ModRange>
+			<ModRange range="220" id="1"/>
+			<ModRange range="210" id="2"/>
+			<ModRange range="84" id="3"/>
+			<ModRange range="214" id="4"/>
+			<ModRange range="225" id="5"/>
+			<ModRange range="247" id="6"/>
 		</Item>
 		<Item id="7">
-			Rarity: RARE
-Ivory Ring
+			Rarity: LEGENDARY
+Ferebor&apos;s Persistence
 Ivory Ring
 Unique ID: 9
 Crafted: true
@@ -329,15 +363,25 @@ Implicits: 2
 {range:186}{rounding:Integer}+(14-16) Intelligence
 {range:63}{rounding:Integer}(22-27)% increased Minion Damage
 3 Minions teleported around you after you use a Traversal Skill
-			<ModRange id="1" range="127"></ModRange>
-			<ModRange id="2" range="165"></ModRange>
-			<ModRange id="3" range="211"></ModRange>
-			<ModRange id="4" range="178"></ModRange>
-			<ModRange id="5" range="178"></ModRange>
-			<ModRange id="6" range="121"></ModRange>
-			<ModRange id="7" range="186"></ModRange>
-			<ModRange id="8" range="63"></ModRange>
-			<ModRange id="9" range="127.5"></ModRange>
+{crafted}{range:127.5}{rounding:Integer}+(100-181) Armor
+{crafted}{range:127.5}{rounding:Integer}+(100-181) Armor for Totems
+{crafted}{range:127.5}{rounding:Integer}+(10-18) Intelligence
+{crafted}{range:127.5}{rounding:Integer}+(10-18) Health Regen
+{crafted}{range:127.5}{rounding:Integer}+(10-18) Health Regen for Totems
+			<ModRange range="127" id="1"/>
+			<ModRange range="165" id="2"/>
+			<ModRange range="211" id="3"/>
+			<ModRange range="178" id="4"/>
+			<ModRange range="178" id="5"/>
+			<ModRange range="121" id="6"/>
+			<ModRange range="186" id="7"/>
+			<ModRange range="63" id="8"/>
+			<ModRange range="127.5" id="9"/>
+			<ModRange range="127.5" id="10"/>
+			<ModRange range="127.5" id="11"/>
+			<ModRange range="127.5" id="12"/>
+			<ModRange range="127.5" id="13"/>
+			<ModRange range="127.5" id="14"/>
 		</Item>
 		<Item id="8">
 			Rarity: UNIQUE
@@ -364,17 +408,17 @@ Implicits: 2
 {crafted}{range:112}(2-4)% of Minion Melee Damage Leeched as Health on Hit
 {crafted}{range:174}(20-40)% Minion Increased Leech Rate
 {crafted}+100% Minion Critical Strike Avoidance
-			<ModRange id="1" range="140"></ModRange>
-			<ModRange id="2" range="52"></ModRange>
-			<ModRange id="3" range="217"></ModRange>
-			<ModRange id="4" range="217"></ModRange>
-			<ModRange id="5" range="52"></ModRange>
-			<ModRange id="6" range="230"></ModRange>
-			<ModRange id="7" range="144"></ModRange>
-			<ModRange id="8" range="60"></ModRange>
-			<ModRange id="9" range="112"></ModRange>
-			<ModRange id="10" range="174"></ModRange>
-			<ModRange id="11" range="127.5"></ModRange>
+			<ModRange range="140" id="1"/>
+			<ModRange range="52" id="2"/>
+			<ModRange range="217" id="3"/>
+			<ModRange range="217" id="4"/>
+			<ModRange range="52" id="5"/>
+			<ModRange range="230" id="6"/>
+			<ModRange range="144" id="7"/>
+			<ModRange range="60" id="8"/>
+			<ModRange range="112" id="9"/>
+			<ModRange range="174" id="10"/>
+			<ModRange range="127.5" id="11"/>
 		</Item>
 		<Item id="9">
 			Rarity: UNIQUE
@@ -397,13 +441,13 @@ Implicits: 1
 {crafted}{range:198}+(30-70)% Ward Retention
 {crafted}{range:250}{rounding:Integer}(18-30) Ward Gain on Kill
 {crafted}{range:168}{rounding:Integer}+(7-18) Ward per Second
-			<ModRange id="1" range="127.5"></ModRange>
-			<ModRange id="2" range="245"></ModRange>
-			<ModRange id="3" range="232"></ModRange>
-			<ModRange id="4" range="105"></ModRange>
-			<ModRange id="5" range="198"></ModRange>
-			<ModRange id="6" range="250"></ModRange>
-			<ModRange id="7" range="168"></ModRange>
+			<ModRange range="127.5" id="1"/>
+			<ModRange range="245" id="2"/>
+			<ModRange range="232" id="3"/>
+			<ModRange range="105" id="4"/>
+			<ModRange range="198" id="5"/>
+			<ModRange range="250" id="6"/>
+			<ModRange range="168" id="7"/>
 		</Item>
 		<Item id="10">
 			Rarity: UNIQUE
@@ -429,21 +473,21 @@ Implicits: 2
 {crafted}{range:213}(150-210)% of Player Poison Damage Applies to Skeleton Rogues
 {crafted}8% of Minion Poison Damage Leeched as Health
 {crafted}{range:213}(150-210)% of Player Poison Damage Applies to your Falcon
-{crafted}{range:34}{rounding:Integer}+(1-3) to Throwing Minion Skills
-			<ModRange id="1" range="127.5"></ModRange>
-			<ModRange id="2" range="226"></ModRange>
-			<ModRange id="3" range="188"></ModRange>
-			<ModRange id="4" range="49"></ModRange>
-			<ModRange id="5" range="238"></ModRange>
-			<ModRange id="6" range="127.5"></ModRange>
-			<ModRange id="7" range="213"></ModRange>
-			<ModRange id="8" range="127.5"></ModRange>
-			<ModRange id="9" range="213"></ModRange>
-			<ModRange id="10" range="34"></ModRange>
+{crafted}{range:34}{rounding:Integer}+(1-3) to Level of Minion Throwing Skills
+			<ModRange range="127.5" id="1"/>
+			<ModRange range="226" id="2"/>
+			<ModRange range="188" id="3"/>
+			<ModRange range="49" id="4"/>
+			<ModRange range="238" id="5"/>
+			<ModRange range="127.5" id="6"/>
+			<ModRange range="213" id="7"/>
+			<ModRange range="127.5" id="8"/>
+			<ModRange range="213" id="9"/>
+			<ModRange range="34" id="10"/>
 		</Item>
 		<Item id="11">
 			Rarity: RARE
-Heretical Large Immortal Idol
+Ward decay threshold and Ward per second Heretical Large Immortal Idol of Preservation
 Heretical Large Immortal Idol
 Unique ID: Idol 4
 Crafted: true
@@ -462,19 +506,19 @@ Implicits: 0
 3% reduced Bonus Damage Taken from Critical Strikes
 {range:163}{rounding:Integer}+(3-6) Ward per Second
 {range:163}{rounding:Integer}(3-9)% increased Health
-			<ModRange id="1" range="224"></ModRange>
-			<ModRange id="2" range="160"></ModRange>
-			<ModRange id="3" range="160"></ModRange>
-			<ModRange id="4" range="127.5"></ModRange>
-			<ModRange id="5" range="127.5"></ModRange>
-			<ModRange id="6" range="163"></ModRange>
-			<ModRange id="7" range="163"></ModRange>
+			<ModRange range="224" id="1"/>
+			<ModRange range="160" id="2"/>
+			<ModRange range="160" id="3"/>
+			<ModRange range="127.5" id="4"/>
+			<ModRange range="127.5" id="5"/>
+			<ModRange range="163" id="6"/>
+			<ModRange range="163" id="7"/>
 		</Item>
 		<Item id="12">
 			Rarity: RARE
+Ward decay threshold and Ward per second Heretical Large Immortal Idol of Impact
 Heretical Large Immortal Idol
-Heretical Large Immortal Idol
-Unique ID: Idol 7
+Unique ID: Idol 8
 Crafted: true
 Prefix: {range:76}295_0
 Prefix: {range:76}897_5
@@ -491,17 +535,17 @@ Implicits: 0
 {range:91}{rounding:Integer}(1-2) Ward gained per second while wielding a Staff
 {range:240}{rounding:Integer}+(3-6) Ward per Second
 {range:240}{rounding:Integer}(3-9)% increased Health
-			<ModRange id="1" range="76"></ModRange>
-			<ModRange id="2" range="76"></ModRange>
-			<ModRange id="3" range="76"></ModRange>
-			<ModRange id="4" range="127.5"></ModRange>
-			<ModRange id="5" range="91"></ModRange>
-			<ModRange id="6" range="240"></ModRange>
-			<ModRange id="7" range="240"></ModRange>
+			<ModRange range="76" id="1"/>
+			<ModRange range="76" id="2"/>
+			<ModRange range="76" id="3"/>
+			<ModRange range="127.5" id="4"/>
+			<ModRange range="91" id="5"/>
+			<ModRange range="240" id="6"/>
+			<ModRange range="240" id="7"/>
 		</Item>
 		<Item id="13">
 			Rarity: RARE
-Minor Weaver Idol
+Preserving Minor Weaver Idol of Many Threads
 Minor Weaver Idol
 Unique ID: Idol 3
 Crafted: true
@@ -517,14 +561,14 @@ Implicits: 0
 {range:145}+(4-6)% Minion Elemental Resistance
 {range:239}+(5-7)% Ward Retention
 {range:239}{rounding:Integer}+(5-8) Ward per Second
-			<ModRange id="1" range="145"></ModRange>
-			<ModRange id="2" range="145"></ModRange>
-			<ModRange id="3" range="239"></ModRange>
-			<ModRange id="4" range="239"></ModRange>
+			<ModRange range="145" id="1"/>
+			<ModRange range="145" id="2"/>
+			<ModRange range="239" id="3"/>
+			<ModRange range="239" id="4"/>
 		</Item>
 		<Item id="14">
 			Rarity: RARE
-Stout Weaver Idol
+Vigorous Stout Weaver Idol of Refuge
 Stout Weaver Idol
 Unique ID: Idol 2
 Crafted: true
@@ -539,13 +583,13 @@ Implicits: 0
 {range:112}+(18-23)% Cold Resistance
 {range:112}+(18-23)% Minion Cold Resistance
 {range:237}{scalar:0.38}{rounding:Integer}(5-11)% increased Health
-			<ModRange id="1" range="112"></ModRange>
-			<ModRange id="2" range="112"></ModRange>
-			<ModRange id="3" range="237"></ModRange>
+			<ModRange range="112" id="1"/>
+			<ModRange range="112" id="2"/>
+			<ModRange range="237" id="3"/>
 		</Item>
 		<Item id="15">
 			Rarity: RARE
-Minor Weaver Idol
+Preserving Minor Weaver Idol of Refuge
 Minor Weaver Idol
 Unique ID: Idol 18
 Crafted: true
@@ -561,14 +605,14 @@ Implicits: 0
 {range:22}+(9-12)% Minion Cold Resistance
 {range:136}+(5-7)% Ward Retention
 {range:136}{rounding:Integer}+(5-8) Ward per Second
-			<ModRange id="1" range="22"></ModRange>
-			<ModRange id="2" range="22"></ModRange>
-			<ModRange id="3" range="136"></ModRange>
-			<ModRange id="4" range="136"></ModRange>
+			<ModRange range="22" id="1"/>
+			<ModRange range="22" id="2"/>
+			<ModRange range="136" id="3"/>
+			<ModRange range="136" id="4"/>
 		</Item>
 		<Item id="16">
 			Rarity: RARE
-Stout Weaver Idol
+Vanquisher&apos;s Stout Weaver Idol of Frost
 Stout Weaver Idol
 Unique ID: Idol 15
 Crafted: true
@@ -583,13 +627,13 @@ Implicits: 0
 {range:194}{scalar:0.38}+(20-45)% Cold Resistance
 {range:152}{rounding:Integer}(9-20) Health Gain on Kill
 {range:152}{rounding:Integer}(5-6)% increased Health
-			<ModRange id="1" range="194"></ModRange>
-			<ModRange id="2" range="152"></ModRange>
-			<ModRange id="3" range="152"></ModRange>
+			<ModRange range="194" id="1"/>
+			<ModRange range="152" id="2"/>
+			<ModRange range="152" id="3"/>
 		</Item>
 		<Item id="17">
 			Rarity: RARE
-Minor Weaver Idol
+Preserving Minor Weaver Idol of the Salamander
 Minor Weaver Idol
 Unique ID: Idol 11
 Crafted: true
@@ -605,16 +649,16 @@ Implicits: 0
 {range:41}+(9-12)% Minion Fire Resistance
 {range:175}+(5-7)% Ward Retention
 {range:175}{rounding:Integer}+(5-8) Ward per Second
-			<ModRange id="1" range="41"></ModRange>
-			<ModRange id="2" range="41"></ModRange>
-			<ModRange id="3" range="175"></ModRange>
-			<ModRange id="4" range="175"></ModRange>
+			<ModRange range="41" id="1"/>
+			<ModRange range="41" id="2"/>
+			<ModRange range="175" id="3"/>
+			<ModRange range="175" id="4"/>
 		</Item>
 		<Item id="18">
 			Rarity: RARE
+Preserving Minor Weaver Idol of the Salamander
 Minor Weaver Idol
-Minor Weaver Idol
-Unique ID: Idol 6
+Unique ID: Idol 7
 Crafted: true
 Prefix: {range:189}852_0
 Prefix: None
@@ -628,14 +672,14 @@ Implicits: 0
 {range:189}+(9-12)% Minion Fire Resistance
 {range:108}+(5-7)% Ward Retention
 {range:108}{rounding:Integer}+(5-8) Ward per Second
-			<ModRange id="1" range="189"></ModRange>
-			<ModRange id="2" range="189"></ModRange>
-			<ModRange id="3" range="108"></ModRange>
-			<ModRange id="4" range="108"></ModRange>
+			<ModRange range="189" id="1"/>
+			<ModRange range="189" id="2"/>
+			<ModRange range="108" id="3"/>
+			<ModRange range="108" id="4"/>
 		</Item>
 		<Item id="19">
 			Rarity: RARE
-Minor Weaver Idol
+Preserving Minor Weaver Idol of Frost
 Minor Weaver Idol
 Unique ID: Idol 16
 Crafted: true
@@ -650,13 +694,13 @@ Implicits: 0
 {range:25}{scalar:0.17}+(20-45)% Cold Resistance
 {range:241}+(5-7)% Ward Retention
 {range:241}{rounding:Integer}+(5-8) Ward per Second
-			<ModRange id="1" range="25"></ModRange>
-			<ModRange id="2" range="241"></ModRange>
-			<ModRange id="3" range="241"></ModRange>
+			<ModRange range="25" id="1"/>
+			<ModRange range="241" id="2"/>
+			<ModRange range="241" id="3"/>
 		</Item>
 		<Item id="20">
 			Rarity: RARE
-Heretical Huge Immortal Idol
+Increased damage over time and Endurance Heretical Huge Immortal Idol of Preservation
 Heretical Huge Immortal Idol
 Unique ID: Idol 1
 Crafted: true
@@ -674,16 +718,16 @@ Implicits: 0
 {range:154}{scalar:1.33}{rounding:Integer}+(5-6) Ward Decay Threshold
 {range:154}{scalar:1.33}{rounding:Integer}+(5-6) Ward per Second
 {range:158}+(10-30)% Increased Aura of Decay Area
-			<ModRange id="1" range="97"></ModRange>
-			<ModRange id="2" range="127.5"></ModRange>
-			<ModRange id="3" range="127.5"></ModRange>
-			<ModRange id="4" range="154"></ModRange>
-			<ModRange id="5" range="154"></ModRange>
-			<ModRange id="6" range="158"></ModRange>
+			<ModRange range="97" id="1"/>
+			<ModRange range="127.5" id="2"/>
+			<ModRange range="127.5" id="3"/>
+			<ModRange range="154" id="4"/>
+			<ModRange range="154" id="5"/>
+			<ModRange range="158" id="6"/>
 		</Item>
 		<Item id="21">
 			Rarity: RARE
-Minor Weaver Idol
+Preserving Minor Weaver Idol of Insulation
 Minor Weaver Idol
 Unique ID: Idol 20
 Crafted: true
@@ -698,136 +742,87 @@ Implicits: 0
 {range:151}{scalar:0.17}+(8-20)% Elemental Resistance
 {range:249}+(5-7)% Ward Retention
 {range:249}{rounding:Integer}+(5-8) Ward per Second
-			<ModRange id="1" range="151"></ModRange>
-			<ModRange id="2" range="249"></ModRange>
-			<ModRange id="3" range="249"></ModRange>
+			<ModRange range="151" id="1"/>
+			<ModRange range="249" id="2"/>
+			<ModRange range="249" id="3"/>
+		</Item>
+		<Item id="-1">
+			Rarity: NORMAL
+Grand Winds of Fortune
+Grand Winds of Fortune
+Unique ID: blessing:Fall of the Outcasts
+LevelReq: 0
+Implicits: 1
+21% Increased Unique Drop Rate
+			<ModRange range="127.5" id="1"/>
+		</Item>
+		<Item id="-2">
+			Rarity: NORMAL
+Grand Slumber of Morditas
+Grand Slumber of Morditas
+Unique ID: blessing:The Stolen Lance
+LevelReq: 0
+Implicits: 1
+55% Increased Relic Drop Rate
+			<ModRange range="127.5" id="1"/>
+		</Item>
+		<Item id="-3">
+			Rarity: NORMAL
+Grand Echo of Solarum
+Grand Echo of Solarum
+Unique ID: blessing:The Black Sun
+LevelReq: 0
+Implicits: 1
++74% Void Resistance
+			<ModRange range="127.5" id="1"/>
+		</Item>
+		<Item id="-4">
+			Rarity: NORMAL
+Grand Scars of Blood
+Grand Scars of Blood
+Unique ID: blessing:Blood, Frost, and Death
+LevelReq: 0
+Implicits: 1
+79% Increased One-Handed Axe Drop Rate
+			<ModRange range="127.5" id="1"/>
+		</Item>
+		<Item id="-5">
+			Rarity: NORMAL
+Grand Resonance of the Sea
+Grand Resonance of the Sea
+Unique ID: blessing:Ending the Storm
+LevelReq: 0
+Implicits: 1
++35 Ward per Second
+			<ModRange range="127.5" id="1"/>
+		</Item>
+		<Item id="-6">
+			Rarity: NORMAL
+Grand Hope of the Beginning
+Grand Hope of the Beginning
+Unique ID: blessing:Fall of the Empire
+LevelReq: 0
+Implicits: 1
+18% Increased Prefix Shard Drop Rate
+			<ModRange range="127.5" id="1"/>
+		</Item>
+		<Item id="-7">
+			Rarity: NORMAL
+Grand Survival of Might
+Grand Survival of Might
+Unique ID: blessing:Reign of Dragons
+LevelReq: 0
+Implicits: 2
++65% Critical Strike Avoidance
++81 Dodge Rating
+			<ModRange range="127.5" id="1"/>
+			<ModRange range="127.5" id="2"/>
 		</Item>
 		<Item id="22">
 			Rarity: RARE
-Grand Winds of Fortune
-Grand Winds of Fortune
-Unique ID: 33
-Crafted: true
-Prefix: None
-Prefix: None
-Prefix: None
-Suffix: None
-Suffix: None
-Suffix: None
-LevelReq: 0
-Implicits: 1
-{range:226}(16-22)% Increased Unique Drop Rate
-			<ModRange id="1" range="226"></ModRange>
-		</Item>
-		<Item id="23">
-			Rarity: RARE
-Grand Slumber of Morditas
-Grand Slumber of Morditas
-Unique ID: 34
-Crafted: true
-Prefix: None
-Prefix: None
-Prefix: None
-Suffix: None
-Suffix: None
-Suffix: None
-LevelReq: 0
-Implicits: 1
-{range:209}(30-60)% Increased Relic Drop Rate
-			<ModRange id="1" range="209"></ModRange>
-		</Item>
-		<Item id="24">
-			Rarity: RARE
-Grand Echo of Solarum
-Grand Echo of Solarum
-Unique ID: 35
-Crafted: true
-Prefix: None
-Prefix: None
-Prefix: None
-Suffix: None
-Suffix: None
-Suffix: None
-LevelReq: 0
-Implicits: 1
-{range:238}+(55-75)% Void Resistance
-			<ModRange id="1" range="238"></ModRange>
-		</Item>
-		<Item id="25">
-			Rarity: RARE
-Grand Scars of Blood
-Grand Scars of Blood
-Unique ID: 36
-Crafted: true
-Prefix: None
-Prefix: None
-Prefix: None
-Suffix: None
-Suffix: None
-Suffix: None
-LevelReq: 0
-Implicits: 1
-{range:188}(50-90)% Increased One-Handed Axe Drop Rate
-			<ModRange id="1" range="188"></ModRange>
-		</Item>
-		<Item id="26">
-			Rarity: RARE
-Grand Resonance of the Sea
-Grand Resonance of the Sea
-Unique ID: 37
-Crafted: true
-Prefix: None
-Prefix: None
-Prefix: None
-Suffix: None
-Suffix: None
-Suffix: None
-LevelReq: 0
-Implicits: 1
-{range:116}{rounding:Integer}+(30-42) Ward per Second
-			<ModRange id="1" range="116"></ModRange>
-		</Item>
-		<Item id="27">
-			Rarity: RARE
-Grand Hope of the Beginning
-Grand Hope of the Beginning
-Unique ID: 38
-Crafted: true
-Prefix: None
-Prefix: None
-Prefix: None
-Suffix: None
-Suffix: None
-Suffix: None
-LevelReq: 0
-Implicits: 1
-{range:74}(15-25)% Increased Prefix Shard Drop Rate
-			<ModRange id="1" range="74"></ModRange>
-		</Item>
-		<Item id="28">
-			Rarity: RARE
-Grand Survival of Might
-Grand Survival of Might
-Unique ID: 39
-Crafted: true
-Prefix: None
-Prefix: None
-Prefix: None
-Suffix: None
-Suffix: None
-Suffix: None
-LevelReq: 0
-Implicits: 2
-{range:197}+(50-70)% Critical Strike Avoidance
-{range:41}{rounding:Integer}+(51-90) Dodge Rating
-			<ModRange id="1" range="197"></ModRange>
-			<ModRange id="2" range="41"></ModRange>
-		</Item>
-		<Item id="29">
-			Rarity: RARE
 Grand Memory of Masters
 Grand Memory of Masters
-Unique ID: 43
+Unique ID: 40
 Crafted: true
 Prefix: None
 Prefix: None
@@ -838,13 +833,13 @@ Suffix: None
 LevelReq: 0
 Implicits: 1
 {range:151}(20-30)% Increased Class Specific Shard Drop Rate
-			<ModRange id="1" range="151"></ModRange>
+			<ModRange range="151" id="1"/>
 		</Item>
-		<Item id="30">
+		<Item id="23">
 			Rarity: RARE
 Grand Bulwark of the Tundra
 Grand Bulwark of the Tundra
-Unique ID: 44
+Unique ID: 41
 Crafted: true
 Prefix: None
 Prefix: None
@@ -855,13 +850,13 @@ Suffix: None
 LevelReq: 0
 Implicits: 1
 {range:230}{rounding:Integer}(25-55)% increased Armor
-			<ModRange id="1" range="230"></ModRange>
+			<ModRange range="230" id="1"/>
 		</Item>
-		<Item id="31">
+		<Item id="24">
 			Rarity: RARE
 Grand Body of Obsidian
 Grand Body of Obsidian
-Unique ID: 45
+Unique ID: 42
 Crafted: true
 Prefix: None
 Prefix: None
@@ -872,84 +867,91 @@ Suffix: None
 LevelReq: 0
 Implicits: 1
 {range:252}{rounding:Integer}+(200-320) Armor
-			<ModRange id="1" range="252"></ModRange>
+			<ModRange range="252" id="1"/>
 		</Item>
-		<ItemSet id="1" useSecondWeaponSet="nil">
-			<Slot itemId="1" itemPbURL="" name="Amulet"></Slot>
-			<Slot itemId="9" itemPbURL="" name="Belt"></Slot>
-			<Slot itemId="22" itemPbURL="" name="Blessing 1"></Slot>
-			<Slot itemId="31" itemPbURL="" name="Blessing 10"></Slot>
-			<Slot itemId="23" itemPbURL="" name="Blessing 2"></Slot>
-			<Slot itemId="24" itemPbURL="" name="Blessing 3"></Slot>
-			<Slot itemId="25" itemPbURL="" name="Blessing 4"></Slot>
-			<Slot itemId="26" itemPbURL="" name="Blessing 5"></Slot>
-			<Slot itemId="27" itemPbURL="" name="Blessing 6"></Slot>
-			<Slot itemId="28" itemPbURL="" name="Blessing 7"></Slot>
-			<Slot itemId="29" itemPbURL="" name="Blessing 8"></Slot>
-			<Slot itemId="30" itemPbURL="" name="Blessing 9"></Slot>
-			<Slot itemId="2" itemPbURL="" name="Body Armor"></Slot>
-			<Slot itemId="3" itemPbURL="" name="Boots"></Slot>
-			<Slot itemId="4" itemPbURL="" name="Gloves"></Slot>
-			<Slot itemId="5" itemPbURL="" name="Helmet"></Slot>
-			<Slot itemId="20" itemPbURL="" name="Idol 1"></Slot>
-			<Slot itemId="0" itemPbURL="" name="Idol 10"></Slot>
-			<Slot itemId="17" itemPbURL="" name="Idol 11"></Slot>
-			<Slot itemId="0" itemPbURL="" name="Idol 12"></Slot>
-			<Slot itemId="0" itemPbURL="" name="Idol 13"></Slot>
-			<Slot itemId="0" itemPbURL="" name="Idol 14"></Slot>
-			<Slot itemId="16" itemPbURL="" name="Idol 15"></Slot>
-			<Slot itemId="19" itemPbURL="" name="Idol 16"></Slot>
-			<Slot itemId="0" itemPbURL="" name="Idol 17"></Slot>
-			<Slot itemId="15" itemPbURL="" name="Idol 18"></Slot>
-			<Slot itemId="0" itemPbURL="" name="Idol 19"></Slot>
-			<Slot itemId="14" itemPbURL="" name="Idol 2"></Slot>
-			<Slot itemId="21" itemPbURL="" name="Idol 20"></Slot>
-			<Slot itemId="13" itemPbURL="" name="Idol 3"></Slot>
-			<Slot itemId="11" itemPbURL="" name="Idol 4"></Slot>
-			<Slot itemId="0" itemPbURL="" name="Idol 5"></Slot>
-			<Slot itemId="18" itemPbURL="" name="Idol 6"></Slot>
-			<Slot itemId="12" itemPbURL="" name="Idol 7"></Slot>
-			<Slot itemId="0" itemPbURL="" name="Idol 8"></Slot>
-			<Slot itemId="0" itemPbURL="" name="Idol 9"></Slot>
-			<Slot itemId="6" itemPbURL="" name="Relic"></Slot>
-			<Slot itemId="7" itemPbURL="" name="Ring 1"></Slot>
-			<Slot itemId="8" itemPbURL="" name="Ring 2"></Slot>
-			<Slot itemId="10" itemPbURL="" name="Weapon 1"></Slot>
-			<Slot itemId="0" itemPbURL="" name="Weapon 1 Swap"></Slot>
-			<Slot itemId="0" itemPbURL="" name="Weapon 1 Swap Abyssal Socket 1"></Slot>
-			<Slot itemId="0" itemPbURL="" name="Weapon 1 Swap Abyssal Socket 2"></Slot>
-			<Slot itemId="0" itemPbURL="" name="Weapon 1 Swap Abyssal Socket 3"></Slot>
-			<Slot itemId="0" itemPbURL="" name="Weapon 1 Swap Abyssal Socket 4"></Slot>
-			<Slot itemId="0" itemPbURL="" name="Weapon 1 Swap Abyssal Socket 5"></Slot>
-			<Slot itemId="0" itemPbURL="" name="Weapon 1 Swap Abyssal Socket 6"></Slot>
-			<Slot itemId="0" itemPbURL="" name="Weapon 2"></Slot>
-			<Slot itemId="0" itemPbURL="" name="Weapon 2 Swap"></Slot>
-			<Slot itemId="0" itemPbURL="" name="Weapon 2 Swap Abyssal Socket 1"></Slot>
-			<Slot itemId="0" itemPbURL="" name="Weapon 2 Swap Abyssal Socket 2"></Slot>
-			<Slot itemId="0" itemPbURL="" name="Weapon 2 Swap Abyssal Socket 3"></Slot>
-			<Slot itemId="0" itemPbURL="" name="Weapon 2 Swap Abyssal Socket 4"></Slot>
-			<Slot itemId="0" itemPbURL="" name="Weapon 2 Swap Abyssal Socket 5"></Slot>
-			<Slot itemId="0" itemPbURL="" name="Weapon 2 Swap Abyssal Socket 6"></Slot>
+		<ItemSet useSecondWeaponSet="nil" id="1">
+			<Slot itemPbURL="" name="Amulet" itemId="1"/>
+			<Slot itemPbURL="" name="Belt" itemId="9"/>
+			<Slot itemPbURL="" name="Blood, Frost, and Death" itemId="-4"/>
+			<Slot itemPbURL="" name="Body Armor" itemId="2"/>
+			<Slot itemPbURL="" name="Boots" itemId="3"/>
+			<Slot itemPbURL="" name="Ending the Storm" itemId="-5"/>
+			<Slot itemPbURL="" name="Fall of the Empire" itemId="-6"/>
+			<Slot itemPbURL="" name="Fall of the Outcasts" itemId="-1"/>
+			<Slot itemPbURL="" name="Gloves" itemId="4"/>
+			<Slot itemPbURL="" name="Helmet" itemId="5"/>
+			<Slot itemPbURL="" name="Idol 1" itemId="20"/>
+			<Slot itemPbURL="" name="Idol 10" itemId="0"/>
+			<Slot itemPbURL="" name="Idol 11" itemId="17"/>
+			<Slot itemPbURL="" name="Idol 12" itemId="0"/>
+			<Slot itemPbURL="" name="Idol 13" itemId="0"/>
+			<Slot itemPbURL="" name="Idol 14" itemId="0"/>
+			<Slot itemPbURL="" name="Idol 15" itemId="16"/>
+			<Slot itemPbURL="" name="Idol 16" itemId="19"/>
+			<Slot itemPbURL="" name="Idol 17" itemId="0"/>
+			<Slot itemPbURL="" name="Idol 18" itemId="15"/>
+			<Slot itemPbURL="" name="Idol 19" itemId="0"/>
+			<Slot itemPbURL="" name="Idol 2" itemId="14"/>
+			<Slot itemPbURL="" name="Idol 20" itemId="21"/>
+			<Slot itemPbURL="" name="Idol 21" itemId="0"/>
+			<Slot itemPbURL="" name="Idol 22" itemId="0"/>
+			<Slot itemPbURL="" name="Idol 23" itemId="0"/>
+			<Slot itemPbURL="" name="Idol 24" itemId="0"/>
+			<Slot itemPbURL="" name="Idol 25" itemId="0"/>
+			<Slot itemPbURL="" name="Idol 3" itemId="13"/>
+			<Slot itemPbURL="" name="Idol 4" itemId="11"/>
+			<Slot itemPbURL="" name="Idol 5" itemId="0"/>
+			<Slot itemPbURL="" name="Idol 6" itemId="0"/>
+			<Slot itemPbURL="" name="Idol 7" itemId="18"/>
+			<Slot itemPbURL="" name="Idol 8" itemId="12"/>
+			<Slot itemPbURL="" name="Idol 9" itemId="0"/>
+			<Slot itemPbURL="" name="Idol Altar" itemId="0"/>
+			<Slot itemPbURL="" name="Omen Idol 1" itemId="0"/>
+			<Slot itemPbURL="" name="Omen Idol 2" itemId="0"/>
+			<Slot itemPbURL="" name="Omen Idol 3" itemId="0"/>
+			<Slot itemPbURL="" name="Omen Idol 4" itemId="0"/>
+			<Slot itemPbURL="" name="Omen Idol 5" itemId="0"/>
+			<Slot itemPbURL="" name="Omen Idol 6" itemId="0"/>
+			<Slot itemPbURL="" name="Reign of Dragons" itemId="-7"/>
+			<Slot itemPbURL="" name="Relic" itemId="6"/>
+			<Slot itemPbURL="" name="Ring 1" itemId="7"/>
+			<Slot itemPbURL="" name="Ring 2" itemId="8"/>
+			<Slot itemPbURL="" name="Spirits of Fire" itemId="0"/>
+			<Slot itemPbURL="" name="The Age of Winter" itemId="0"/>
+			<Slot itemPbURL="" name="The Black Sun" itemId="-3"/>
+			<Slot itemPbURL="" name="The Last Ruin" itemId="0"/>
+			<Slot itemPbURL="" name="The Stolen Lance" itemId="-2"/>
+			<Slot itemPbURL="" name="Weapon 1" itemId="10"/>
+			<Slot itemPbURL="" name="Weapon 2" itemId="0"/>
 		</ItemSet>
+		<BlessingFracs>
+			<BlessingFrac timeline="Ending the Storm" frac="0.45490196078431"/>
+			<BlessingFrac timeline="The Stolen Lance" frac="0.81960784313725"/>
+			<BlessingFrac timeline="Fall of the Outcasts" frac="0.88627450980392"/>
+			<BlessingFrac timeline="Blood, Frost, and Death" frac="0.73725490196078"/>
+			<BlessingFrac timeline="Reign of Dragons" frac="0.77254901960784"/>
+			<BlessingFrac timeline="The Black Sun" frac="0.93333333333333"/>
+			<BlessingFrac timeline="Fall of the Empire" frac="0.29019607843137"/>
+		</BlessingFracs>
 	</Items>
 	<Notes>
 		
 	</Notes>
-	<Party ShowAdvanceTools="false" append="false" destination="All"></Party>
-	<Skills activeSkillSet="1" defaultGemLevel="normalMaximum" defaultGemQuality="nil" showAltQualityGems="false" showSupportGemTypes="ALL" sortGemsByDPS="true" sortGemsByDPSField="CombinedDPS">
+	<Party destination="All" ShowAdvanceTools="false" append="false"/>
+	<Skills sortGemsByDPSField="CombinedDPS" activeSkillSet="1" sortGemsByDPS="true" defaultGemQuality="nil" defaultGemLevel="normalMaximum" showSupportGemTypes="ALL" showAltQualityGems="false">
 		<SkillSet id="1">
-			<Skill enabled="true" includeInFullDPS="false" index="1" mainActiveSkill="1" mainActiveSkillCalcs="nil" skillId="SummonWraith" slot="Skill 1"></Skill>
-			<Skill enabled="true" includeInFullDPS="false" index="2" mainActiveSkill="1" mainActiveSkillCalcs="nil" skillId="SummonBoneGolem" slot="Skill 2"></Skill>
-			<Skill enabled="true" includeInFullDPS="true" index="3" mainActiveSkill="1" mainActiveSkillCalcs="1" skillId="InfernalShade" slot="Skill 3"></Skill>
-			<Skill enabled="true" includeInFullDPS="false" index="4" mainActiveSkill="1" mainActiveSkillCalcs="nil" skillId="DreadShade" slot="Skill 4"></Skill>
-			<Skill enabled="true" includeInFullDPS="false" index="5" mainActiveSkill="1" mainActiveSkillCalcs="nil" skillId="AuraOfDecay" slot="Skill 5"></Skill>
-			<Skill enabled="true" includeInFullDPS="false" index="6" label="Poison (from Aura Of Decay)" mainActiveSkill="1" mainActiveSkillCalcs="nil" skillId="Ailment_Poison" source="SkillId:AuraOfDecay"></Skill>
+			<Skill skillId="SummonWraith" slot="Skill 1" mainActiveSkill="1" includeInFullDPS="false" index="1" enabled="true" mainActiveSkillCalcs="nil"/>
+			<Skill skillId="SummonBoneGolem" slot="Skill 2" mainActiveSkill="1" includeInFullDPS="false" index="2" enabled="true" mainActiveSkillCalcs="nil"/>
+			<Skill skillId="InfernalShade" slot="Skill 3" mainActiveSkill="1" includeInFullDPS="true" index="3" enabled="true" mainActiveSkillCalcs="1"/>
+			<Skill skillId="DreadShade" slot="Skill 4" mainActiveSkill="1" includeInFullDPS="false" index="4" enabled="true" mainActiveSkillCalcs="nil"/>
+			<Skill skillId="AuraOfDecay" slot="Skill 5" mainActiveSkill="1" includeInFullDPS="false" index="5" enabled="true" mainActiveSkillCalcs="nil"/>
+			<Skill skillId="Ailment_Poison" mainActiveSkill="1" includeInFullDPS="false" label="Poison (from Aura Of Decay)" index="6" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:AuraOfDecay"/>
 		</SkillSet>
 	</Skills>
 	<Tree activeSpec="1">
-		<Spec ascendClassId="1" classId="3" nodes="Acolyte#1,Acolyte-0#1,Acolyte-1#8,Acolyte-11#8,Acolyte-15#5,Acolyte-16#10,Acolyte-21#1,Acolyte-23#8,Acolyte-26#10,Acolyte-3#1,Acolyte-32#8,Acolyte-34#8,Acolyte-38#8,Acolyte-4#3,Acolyte-55#5,Acolyte-58#5,Acolyte-59#1,Acolyte-62#5,Acolyte-63#5,Acolyte-7#5,Acolyte-8#1,Acolyte-80#1,Acolyte-83#6,Necromancer#1,ad0ry-0#1,ad0ry-13#4,ad0ry-14#1,ad0ry-15#3,ad0ry-20#1,ad0ry-21#3,ad0ry-22#1,ad0ry-28#4,ad0ry-30#3,bg36nl-0#1,bg36nl-13#1,bg36nl-15#4,bg36nl-16#1,bg36nl-2#5,bg36nl-5#3,bg36nl-7#1,bg36nl-8#5,ds4d3-0#1,ds4d3-14#1,ds4d3-15#1,ds4d3-16#3,ds4d3-2#2,ds4d3-20#4,ds4d3-4#1,ds4d3-8#3,is40-0#1,is40-13#2,is40-14#4,is40-17#1,is40-19#3,is40-20#1,is40-21#1,is40-22#1,is40-23#1,is40-24#3,is40-25#3,sw42ih-0#1,sw42ih-10#1,sw42ih-11#1,sw42ih-12#3,sw42ih-2#1,sw42ih-22#1,sw42ih-23#5,sw42ih-28#5,sw42ih-4#3,sw42ih-9#2" treeVersion="1_3">
-			<Overrides></Overrides>
+		<Spec ascendClassId="1" nodes="Acolyte#1,Acolyte-0#1,Acolyte-1#8,Acolyte-11#8,Acolyte-15#5,Acolyte-16#10,Acolyte-21#1,Acolyte-23#8,Acolyte-26#10,Acolyte-3#1,Acolyte-32#8,Acolyte-34#8,Acolyte-38#8,Acolyte-4#3,Acolyte-55#5,Acolyte-58#5,Acolyte-59#1,Acolyte-62#5,Acolyte-63#5,Acolyte-7#5,Acolyte-8#1,Acolyte-80#1,Acolyte-83#6,Necromancer#1,ad0ry-0#1,ad0ry-13#4,ad0ry-14#1,ad0ry-15#3,ad0ry-20#1,ad0ry-21#3,ad0ry-22#1,ad0ry-28#4,ad0ry-30#3,bg36nl-0#1,bg36nl-13#1,bg36nl-2#5,bg36nl-5#3,bg36nl-7#1,bg36nl-8#5,ds4d3-0#1,ds4d3-14#1,ds4d3-15#1,ds4d3-16#3,ds4d3-2#2,ds4d3-20#4,ds4d3-4#1,ds4d3-8#3,is40-0#1,is40-13#2,is40-14#4,is40-17#1,is40-19#3,is40-20#1,is40-21#1,is40-22#1,is40-23#1,is40-24#3,is40-25#3,sw42ih-0#1,sw42ih-10#1,sw42ih-11#1,sw42ih-12#3,sw42ih-2#1,sw42ih-22#1,sw42ih-23#5,sw42ih-28#5,sw42ih-4#3,sw42ih-9#2" treeVersion="1_4" classId="3">
+			<Overrides/>
 		</Spec>
 	</Tree>
-	<TreeView searchStr="" showStatDifferences="true" zoomLevel="12" zoomX="0" zoomY="0"></TreeView>
+	<TreeView searchStr="" zoomY="0" zoomLevel="22" showStatDifferences="true" zoomX="0"/>
 </LastEpochBuilding>
