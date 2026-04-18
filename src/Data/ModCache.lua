@@ -390,7 +390,7 @@ c["+1.4% Shock Chance per Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},
 c["+1.5% Base Crit Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="BASE",value=1.5}},nil}
 c["+1.5% Critical Strike Chance for Totems per Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="CritChance",type="BASE",value=1.5}},"  for Totems  "}
 c["+1.5% Damage Per Minion"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="MORE",value=1.5}}}},"  Per  "}
-c["+10 Added Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="BASE",value=10}}," Added  "}
+c["+10 Added Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="BASE",value=10}},nil}
 c["+10 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=10}},nil}
 c["+10 Armor Per Stack"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=10}},"  Per Stack "}
 c["+10 Armor per Strength"]={{[1]={[1]={stat="Str",type="PerStat"},flags=0,keywordFlags=0,name="Armour",type="BASE",value=10}},nil}
@@ -1753,7 +1753,7 @@ c["+193 Curse Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",v
 c["+194 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=194}},nil}
 c["+196 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=196}},nil}
 c["+196 Block Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="BlockEffectiveness",type="BASE",value=196}},nil}
-c["+2 Added Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="BASE",value=2}}," Added  "}
+c["+2 Added Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="BASE",value=2}},nil}
 c["+2 Armor Per 10 Missing Health"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=2}},"  Per 10 Missing Health "}
 c["+2 Armor While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="Armour",type="BASE",value=2}},nil}
 c["+2 Armour Per Attunement Per Stack"]={{[1]={[1]={stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="Armour",type="BASE",value=2}},"   Per Stack "}
@@ -1854,7 +1854,7 @@ c["+2 to Intelligence Skills"]={{[1]={flags=0,keywordFlags=0,name="Int",type="BA
 c["+2 to Mana Strike"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=2}},"  Strike "}
 c["+2 to Manifest Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=2}}," Manifest  "}
 c["+2 to Strength Minion Skills"]={{[1]={[1]={skillType=8192,type="SkillType"},flags=0,keywordFlags=0,name="Str",type="BASE",value=2}},nil}
-c["+2% Added Bow Critical Strike Chance"]={{[1]={flags=0,keywordFlags=2048,name="CritChance",type="BASE",value=2}}," Added   "}
+c["+2% Added Bow Critical Strike Chance"]={{[1]={flags=0,keywordFlags=2048,name="CritChance",type="BASE",value=2}},nil}
 c["+2% Attack Speed"]={{[1]={flags=3584,keywordFlags=0,name="Speed",type="BASE",value=2}},nil}
 c["+2% Attack Speed Per Hit"]={{[1]={flags=8392192,keywordFlags=0,name="Speed",type="BASE",value=2}},"  Per  "}
 c["+2% Attack Speed While Dual Wielding"]={{[1]={[1]={type="Condition",var="DualWielding"},flags=3584,keywordFlags=0,name="Speed",type="BASE",value=2}},nil}
@@ -3783,8 +3783,8 @@ c["+49 Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="BASE",
 c["+49 Spell Physical Damage with Sacrifice"]={{[1]={[1]={skillName="Sacrifice",type="SkillName"},flags=0,keywordFlags=256,name="PhysicalDamage",type="BASE",value=49}},"   with  "}
 c["+49 Ward per Second per Gon Rune"]={{[1]={flags=0,keywordFlags=0,name="WardPerSecond",type="BASE",value=49}},"  per Gon Rune "}
 c["+49% Lightning Penetration with Electrify"]={{[1]={[1]={skillName="Electrify",type="SkillName"},flags=0,keywordFlags=0,name="LightningPenetration",type="BASE",value=49}},"  with  "}
-c["+5 Added Melee Cold Damage"]={{[1]={flags=0,keywordFlags=512,name="ColdDamage",type="BASE",value=5}}," Added   "}
-c["+5 Added Melee Lightning Damage"]={{[1]={flags=0,keywordFlags=512,name="LightningDamage",type="BASE",value=5}}," Added   "}
+c["+5 Added Melee Cold Damage"]={{[1]={flags=0,keywordFlags=512,name="ColdDamage",type="BASE",value=5}},nil}
+c["+5 Added Melee Lightning Damage"]={{[1]={flags=0,keywordFlags=512,name="LightningDamage",type="BASE",value=5}},nil}
 c["+5 Additional Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="BASE",value=5}},nil}
 c["+5 Ally Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="BASE",value=5}}," Ally  "}
 c["+5 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=5}},nil}
@@ -4893,7 +4893,7 @@ c["+8% Void Penetration"]={{[1]={flags=0,keywordFlags=0,name="VoidPenetration",t
 c["+8% Ward Retention"]={{[1]={flags=0,keywordFlags=0,name="WardRetention",type="BASE",value=8}},nil}
 c["+8% to All Resistances"]={{[1]={flags=0,keywordFlags=0,name="FireResist",type="BASE",value=8},[2]={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=8},[3]={flags=0,keywordFlags=0,name="ColdResist",type="BASE",value=8},[4]={flags=0,keywordFlags=0,name="PhysicalResist",type="BASE",value=8},[5]={flags=0,keywordFlags=0,name="PoisonResist",type="BASE",value=8},[6]={flags=0,keywordFlags=0,name="NecroticResist",type="BASE",value=8},[7]={flags=0,keywordFlags=0,name="VoidResist",type="BASE",value=8}},nil}
 c["+8% to All Resistances While Channelling"]={{[1]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="FireResist",type="BASE",value=8},[2]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=8},[3]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="ColdResist",type="BASE",value=8},[4]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="PhysicalResist",type="BASE",value=8},[5]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="PoisonResist",type="BASE",value=8},[6]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="NecroticResist",type="BASE",value=8},[7]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="VoidResist",type="BASE",value=8}},nil}
-c["+80 Added Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="BASE",value=80}}," Added  "}
+c["+80 Added Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="BASE",value=80}},nil}
 c["+80 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=80}},nil}
 c["+80 Armor Granted To Nearby Minions"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Armour",type="BASE",value=80}}}},"  Granted To Nearby s "}
 c["+80 Armor for Totems"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=80}},"  for Totems "}
