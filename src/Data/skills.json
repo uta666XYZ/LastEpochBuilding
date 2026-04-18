@@ -2590,6 +2590,8 @@
       "duration": true
     },
     "stats": {
+      "base_critical_strike_multiplier_+": 100,
+      "critChance": 5,
       "base_skill_effect_duration": 10
     },
     "baseMods": [
