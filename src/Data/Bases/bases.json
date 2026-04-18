@@ -1,5 +1,6 @@
 {
   "Refuge Helmet": {
+    "legacy": true,
     "type": "Helmet",
     "baseTypeID": 0,
     "subTypeID": 0,
@@ -38,6 +39,7 @@
     ]
   },
   "Wolf Helmet": {
+    "legacy": true,
     "type": "Helmet",
     "baseTypeID": 0,
     "subTypeID": 3,
@@ -1021,6 +1023,7 @@
     ]
   },
   "Forest Cuirass": {
+    "legacy": true,
     "type": "Body Armor",
     "baseTypeID": 1,
     "subTypeID": 7,
@@ -7721,6 +7724,7 @@
     "implicits": []
   },
   "Minor Lagonian Idol": {
+    "legacy": true,
     "type": "Minor Idol",
     "baseTypeID": 26,
     "subTypeID": 0,
@@ -11865,6 +11869,7 @@
     ]
   },
   "Iron Smoker": {
+    "legacy": true,
     "type": "Off-Hand Catalyst",
     "baseTypeID": 19,
     "subTypeID": 20,
@@ -11905,6 +11910,7 @@
     ]
   },
   "Spider Eye Amulet": {
+    "legacy": true,
     "type": "Amulet",
     "baseTypeID": 20,
     "subTypeID": 18,
@@ -12047,6 +12053,7 @@
     "classReq": 16
   },
   "Bramble Totem": {
+    "legacy": true,
     "type": "Relic",
     "baseTypeID": 22,
     "subTypeID": 70,
@@ -12061,6 +12068,7 @@
     "classReq": 1
   },
   "Artificer's Device": {
+    "legacy": true,
     "type": "Relic",
     "baseTypeID": 22,
     "subTypeID": 71,

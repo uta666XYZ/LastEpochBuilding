@@ -610,6 +610,13 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 		return self.displayItem == nil
 	end
 
+	-- Paperdoll frame (below Craft/Create buttons; shown only when no display item)
+	self.controls.paperdoll = new("PaperdollControl",
+		{"TOPLEFT", self.controls.craftDisplayItem, "BOTTOMLEFT"}, 0, 10, self)
+	self.controls.paperdoll.shown = function()
+		return self.displayItem == nil
+	end
+
 	-- Display item
 	self.displayItemTooltip = new("Tooltip")
 	self.displayItemTooltip.maxWidth = 458
@@ -1353,8 +1360,8 @@ function ItemsTabClass:SetAllItemRanges(range)
 end
 
 -- Opens the item crafting popup (optionally with an existing crafted item to edit)
-function ItemsTabClass:CraftItem(existingItem)
-	local popup = new("CraftingPopup", self, existingItem)
+function ItemsTabClass:CraftItem(existingItem, slotName)
+	local popup = new("CraftingPopup", self, existingItem, slotName)
 	t_insert(main.popups, 1, popup)
 end
 
