@@ -631,7 +631,7 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 
 	-- Paperdoll frame (shown only when no display item; anchor updated below)
 	self.controls.paperdoll = new("PaperdollControl",
-		{"TOPLEFT", self.controls.craftDisplayItem, "BOTTOMLEFT"}, 0, 42, self)
+		{"TOPLEFT", self.controls.craftDisplayItem, "BOTTOMLEFT"}, 0, 50, self)
 	self.controls.paperdoll.shown = function()
 		return self.displayItem == nil
 	end
@@ -695,21 +695,24 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 	self.controls.blessingGrid = blessGrid
 
 	-- Craft shortcut buttons: new row below Craft item.../Create custom...
-	self.controls.craftIdolBtn = new("ButtonControl", {"TOPLEFT", self.controls.craftDisplayItem, "BOTTOMLEFT"}, 0, 8, 100, 20, "Craft Idol...", function()
+	self.controls.craftIdolBtn = new("ButtonControl", {"TOPLEFT", self.controls.craftDisplayItem, "BOTTOMLEFT"}, 0, 8, 100, 28, "Craft Idol...", function()
 		self:CraftItem()
 	end)
+	self.controls.craftIdolBtn:SetImage("Assets/idol/harbingersNeedle.png")
 	self.controls.craftIdolBtn.shown = function()
 		return self.displayItem == nil
 	end
-	self.controls.craftIdolAltarBtn = new("ButtonControl", {"LEFT", self.controls.craftIdolBtn, "RIGHT"}, 4, 0, 130, 20, "Craft Idol Altar...", function()
+	self.controls.craftIdolAltarBtn = new("ButtonControl", {"LEFT", self.controls.craftIdolBtn, "RIGHT"}, 4, 0, 130, 28, "Craft Idol Altar...", function()
 		self:CraftItem(nil, "Idol Altar")
 	end)
+	self.controls.craftIdolAltarBtn:SetImage("Assets/idol/idol_altar_empty.png")
 	self.controls.craftIdolAltarBtn.shown = function()
 		return self.displayItem == nil
 	end
-	self.controls.craftBlessingBtn = new("ButtonControl", {"LEFT", self.controls.craftIdolAltarBtn, "RIGHT"}, 4, 0, 120, 20, "Craft Blessing...", function()
+	self.controls.craftBlessingBtn = new("ButtonControl", {"LEFT", self.controls.craftIdolAltarBtn, "RIGHT"}, 4, 0, 120, 28, "Craft Blessing...", function()
 		self:EditBlessings(nil)
 	end)
+	self.controls.craftBlessingBtn:SetImage("Assets/blessings/memory_of_light.png")
 	self.controls.craftBlessingBtn.shown = function()
 		return self.displayItem == nil
 	end
