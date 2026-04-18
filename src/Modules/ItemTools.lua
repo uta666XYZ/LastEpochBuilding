@@ -49,8 +49,10 @@ function itemLib.applyRange(line, range, valueScalar, rounding)
     if not valueScalar then
         valueScalar = 1.0
     end
-    -- Non-scalar % affixes (e.g. "18% increased Health") use round; flat and scalar affixes use floor
-    local useRound = line:find("%%") ~= nil and valueScalar == 1.0
+    -- Only "% increased/reduced/more/less" affixes use round; flat %, scalars, and flat values use floor
+    local useRound = valueScalar == 1.0
+        and (line:find("%% increased") ~= nil or line:find("%% reduced") ~= nil
+             or line:find("%% more") ~= nil or line:find("%% less") ~= nil)
     line = line:gsub("(%+?)%((%-?%d+%.?%d*)%-(%-?%d+%.?%d*)%)",
             function(plus, min, max)
                 min = min * valueScalar
