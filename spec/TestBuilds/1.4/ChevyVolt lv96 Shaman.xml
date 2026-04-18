@@ -1,0 +1,832 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LastEpochBuilding>
+	<Build level="96" targetVersion="1_4" pantheonMajorGod="None" bandit="None" className="Primalist" ascendClassName="Shaman" characterLevelAutoMode="false" mainSocketGroup="1" viewMode="IMPORT" pantheonMinorGod="None">
+		<PlayerStat stat="AverageHit" value="2743.15939744"/>
+		<PlayerStat stat="AverageDamage" value="2743.15939744"/>
+		<PlayerStat stat="AverageBurstDamage" value="2743.15939744"/>
+		<PlayerStat stat="Speed" value="1.2649999604688"/>
+		<PlayerStat stat="PreEffectiveCritChance" value="17.2"/>
+		<PlayerStat stat="CritChance" value="17.2"/>
+		<PlayerStat stat="CritMultiplier" value="2.15"/>
+		<PlayerStat stat="HitChance" value="100"/>
+		<PlayerStat stat="TotalDPS" value="3470.0965293211"/>
+		<PlayerStat stat="CombinedDPS" value="3470.0965293211"/>
+		<PlayerStat stat="ManaCost" value="0"/>
+		<PlayerStat stat="ManaPercentCost" value="0"/>
+		<PlayerStat stat="ManaPerSecondCost" value="0"/>
+		<PlayerStat stat="ManaPercentPerSecondCost" value="0"/>
+		<PlayerStat stat="Vit" value="8"/>
+		<PlayerStat stat="Str" value="13"/>
+		<PlayerStat stat="Dex" value="2"/>
+		<PlayerStat stat="Int" value="2"/>
+		<PlayerStat stat="Att" value="50"/>
+		<PlayerStat stat="TotalEHP" value="12242.79411736"/>
+		<PlayerStat stat="FireMaximumHitTaken" value="7620.1328544153"/>
+		<PlayerStat stat="LightningMaximumHitTaken" value="5442.9520388681"/>
+		<PlayerStat stat="ColdMaximumHitTaken" value="7620.1328544153"/>
+		<PlayerStat stat="PhysicalMaximumHitTaken" value="9333.4726607838"/>
+		<PlayerStat stat="PoisonMaximumHitTaken" value="5772.8279200116"/>
+		<PlayerStat stat="NecroticMaximumHitTaken" value="7620.1328544153"/>
+		<PlayerStat stat="VoidMaximumHitTaken" value="3810.0664272076"/>
+		<PlayerStat stat="Life" value="2134"/>
+		<PlayerStat stat="Spec:LifeInc" value="2"/>
+		<PlayerStat stat="LifeRegenRecovery" value="85.3"/>
+		<PlayerStat stat="LifeLeechGainRate" value="0"/>
+		<PlayerStat stat="Mana" value="304"/>
+		<PlayerStat stat="Spec:ManaInc" value="0"/>
+		<PlayerStat stat="ManaRegenRecovery" value="14.9"/>
+		<PlayerStat stat="ManaLeechGainRate" value="0"/>
+		<PlayerStat stat="Ward" value="0"/>
+		<PlayerStat stat="WardRetention" value="4"/>
+		<PlayerStat stat="NetWardRegen" value="0"/>
+		<PlayerStat stat="Evasion" value="229"/>
+		<PlayerStat stat="Spec:EvasionInc" value="0"/>
+		<PlayerStat stat="MeleeEvadeChance" value="0"/>
+		<PlayerStat stat="ProjectileEvadeChance" value="0"/>
+		<PlayerStat stat="Armour" value="2419"/>
+		<PlayerStat stat="Spec:ArmourInc" value="0"/>
+		<PlayerStat stat="PhysicalDamageReduction" value="42.840138993325"/>
+		<PlayerStat stat="BlockChance" value="0"/>
+		<PlayerStat stat="SpellBlockChance" value="0"/>
+		<PlayerStat stat="AttackDodgeChance" value="7.9477947648217"/>
+		<PlayerStat stat="SpellDodgeChance" value="0"/>
+		<PlayerStat stat="FireResist" value="75"/>
+		<PlayerStat stat="FireResistOverCap" value="40"/>
+		<PlayerStat stat="LightningResist" value="65"/>
+		<PlayerStat stat="LightningResistOverCap" value="0"/>
+		<PlayerStat stat="ColdResist" value="75"/>
+		<PlayerStat stat="ColdResistOverCap" value="24"/>
+		<PlayerStat stat="PhysicalResist" value="75"/>
+		<PlayerStat stat="PhysicalResistOverCap" value="3"/>
+		<PlayerStat stat="PoisonResist" value="67"/>
+		<PlayerStat stat="PoisonResistOverCap" value="0"/>
+		<PlayerStat stat="NecroticResist" value="75"/>
+		<PlayerStat stat="NecroticResistOverCap" value="27"/>
+		<PlayerStat stat="VoidResist" value="50"/>
+		<PlayerStat stat="VoidResistOverCap" value="0"/>
+		<PlayerStat stat="EffectiveMovementSpeedMod" value="1.4"/>
+		<PlayerStat stat="FullDPS" value="5243.109652723"/>
+		<FullDPSSkill skillPart="" source="" stat="Gathering Storm" value="3470.0965293211"/>
+		<FullDPSSkill skillPart="" source="GatheringStormMelee" stat="Storm Bolt" value="1559.6879573517"/>
+		<FullDPSSkill skillPart="" source="PrimalLightning" stat="Storm Bolt" value="181.4224917042"/>
+		<FullDPSSkill skillPart="x1/2 cycle" source="GatheringStormMelee" stat="Maelstrom" value="28.311957790251"/>
+		<FullDPSSkill skillPart="x1/2 cycle" source="PrimalLightning" stat="Maelstrom" value="3.5907165557901"/>
+	</Build>
+	<Calcs>
+		<Input name="misc_buffMode" string="EFFECTIVE"/>
+		<Input name="skill_number" number="1"/>
+		<Section subsection="ViewSkillDetails" collapsed="false" id="SkillSelect"/>
+		<Section subsection="SkillDamage" collapsed="false" id="HitDamage"/>
+		<Section subsection="AttackCastRate" collapsed="false" id="Speed"/>
+		<Section subsection="Crits" collapsed="false" id="Crit"/>
+		<Section subsection="SkilltypespecificStats" collapsed="false" id="SkillTypeStats"/>
+		<Section subsection="LeechGainonHit" collapsed="false" id="LeechGain"/>
+		<Section subsection="OtherEffects" collapsed="false" id="MiscEffects"/>
+		<Section subsection="AilmentsStatus" collapsed="false" id="LEAilments"/>
+		<Section subsection="Attributes" collapsed="false" id="Attributes"/>
+		<Section subsection="Health" collapsed="false" id="Life"/>
+		<Section subsection="Mana" collapsed="false" id="Mana"/>
+		<Section subsection="Ward" collapsed="false" id="Ward"/>
+		<Section subsection="Endurance" collapsed="false" id="Endurance"/>
+		<Section subsection="Resists" collapsed="false" id="Resist"/>
+		<Section subsection="Armor" collapsed="false" id="Armour"/>
+		<Section subsection="Block" collapsed="false" id="DamageAvoidance"/>
+		<Section subsection="Dodge" collapsed="false" id="DamageAvoidance"/>
+		<Section subsection="OtherDefences" collapsed="false" id="MiscDefences"/>
+		<Section subsection="DamageTaken" collapsed="false" id="DamageTaken"/>
+		<Section subsection="DamagingHits" collapsed="false" id="DamageTaken"/>
+		<Section subsection="EffectiveHealthPool" collapsed="false" id="DamageTaken"/>
+		<Section subsection="MaximumHitTaken" collapsed="false" id="DamageTaken"/>
+		<Section subsection="DotsandDegens" collapsed="false" id="DamageTaken"/>
+	</Calcs>
+	<Config>
+		<Input name="bandit" string="None"/>
+		<Input name="pantheonMajorGod" string="None"/>
+		<Input name="pantheonMinorGod" string="None"/>
+		<Input name="questApophisMajasa" boolean="true"/>
+		<Input name="questTempleOfEterra" boolean="true"/>
+		<Placeholder name="enemyColdDamage" number="1000"/>
+		<Placeholder name="enemyCritChance" number="5"/>
+		<Placeholder name="enemyCritDamage" number="30"/>
+		<Placeholder name="enemyDamageRollRange" number="70"/>
+		<Placeholder name="enemyFireDamage" number="1000"/>
+		<Placeholder name="enemyLevel" number="96"/>
+		<Placeholder name="enemyLightningDamage" number="1000"/>
+		<Placeholder name="enemyNecroticDamage" number="1000"/>
+		<Placeholder name="enemyPhysicalDamage" number="1000"/>
+		<Placeholder name="enemyPoisonDamage" number="1000"/>
+		<Placeholder name="enemySpeed" number="700"/>
+		<Placeholder name="enemyVoidDamage" number="1000"/>
+	</Config>
+	<Import lastAccountHash="a6e0093d33eebeb2c16bc50dad78668794e3b919" exportParty="false"/>
+	<Items activeItemSet="1" useSecondWeaponSet="false">
+		<Item id="1">
+			Rarity: EXALTED
+Level of Summon Storm Totem Tusked Greathelm of Regrowth
+Tusked Greathelm
+Unique ID: 2
+Crafted: true
+Prefix: {range:87}22_4
+Prefix: {range:28}25_4
+Prefix: None
+Suffix: {range:25}585_5
+Suffix: {range:21}73_4
+Suffix: None
+LevelReq: 73
+Implicits: 3
++124 Armor
+{range:246}{rounding:Integer}(6-12)% increased Health
+{range:94}(2-3)% of Damage Leeched as Health on Hit
+{range:87}{rounding:Integer}(54-82)% increased Health Regen
+{range:28}{rounding:Integer}+(61-90) Health
++3 to Summon Storm Totem
+{range:25}{rounding:Integer}(71-80)% increased Damage for Totems
+{range:21}{rounding:Integer}+(61-90) Minion Health Regen
+			<ModRange range="127.5" id="1"/>
+			<ModRange range="246" id="2"/>
+			<ModRange range="94" id="3"/>
+			<ModRange range="87" id="4"/>
+			<ModRange range="28" id="5"/>
+			<ModRange range="127.5" id="6"/>
+			<ModRange range="25" id="7"/>
+			<ModRange range="21" id="8"/>
+		</Item>
+		<Item id="2">
+			Rarity: EXALTED
+Shared Lightning Damage Meruna Carapace of Frost
+Meruna Carapace
+Unique ID: 3
+Crafted: true
+Prefix: {range:211}17_1
+Prefix: {range:225}25_4
+Prefix: {range:18}52_4
+Suffix: {range:68}333_6
+Suffix: {range:181}541_2
+Suffix: None
+LevelReq: 52
+Implicits: 2
++372 Armor
+{range:22}{rounding:Integer}+(72-372) Stun Avoidance
+{range:211}{scalar:1.5}+(10-14)% Cold Resistance
+{range:225}{scalar:1.5}{rounding:Integer}+(61-90) Health
+{range:18}{scalar:1.5}{rounding:Integer}(10-12)% increased Health
+{range:68}{scalar:1.5}{rounding:Integer}(76-100)% increased Lightning Damage
+{range:68}{scalar:1.5}{rounding:Integer}(76-100)% increased Minion Lightning Damage
++1 to Tornado
+{range:181}{rounding:Integer}(31-45)% increased Spell Damage
+			<ModRange range="127.5" id="1"/>
+			<ModRange range="22" id="2"/>
+			<ModRange range="211" id="3"/>
+			<ModRange range="225" id="4"/>
+			<ModRange range="18" id="5"/>
+			<ModRange range="68" id="6"/>
+			<ModRange range="68" id="7"/>
+			<ModRange range="127.5" id="8"/>
+			<ModRange range="181" id="9"/>
+		</Item>
+		<Item id="3">
+			Rarity: EXALTED
+Conduit&apos;s Gate Staff of Lethargy
+Gate Staff
+Unique ID: 4
+Crafted: true
+Prefix: {range:191}57_4
+Prefix: {range:235}85_4
+Prefix: None
+Suffix: {range:177}23_5
+Suffix: {range:41}5_4
+Suffix: None
+Quality: 0
+LevelReq: 80
+Implicits: 3
++92 Melee Damage
+{range:127}{rounding:Integer}+(102-122) Spell Damage
+{range:210}{rounding:Integer}(20-52)% increased Spell Mana Cost
+{range:191}{scalar:3.2}+(24-30)% Chance to Slow on Hit
+{range:235}{scalar:3.2}+(24-30)% Chance to Shock on Hit
+{range:177}{scalar:3.2}{rounding:Integer}(75-95)% increased Lightning Damage
+{range:41}{scalar:3.2}(36-50)% increased Critical Strike Chance
+			<ModRange range="127.5" id="1"/>
+			<ModRange range="127" id="2"/>
+			<ModRange range="210" id="3"/>
+			<ModRange range="191" id="4"/>
+			<ModRange range="235" id="5"/>
+			<ModRange range="177" id="6"/>
+			<ModRange range="41" id="7"/>
+		</Item>
+		<Item id="4">
+			Rarity: EXALTED
+Conqueror&apos;s Eternal Gauntlets of Renewal
+Eternal Gauntlets
+Unique ID: 6
+Crafted: true
+Prefix: {range:94}90_3
+Prefix: {range:123}715_6
+Prefix: {range:14}7_4
+Suffix: {range:242}101_4
+Suffix: {range:161}5_4
+Suffix: None
+LevelReq: 86
+Implicits: 2
++211 Armor
+{range:187}(11-24)% of Armor Mitigation also applies to Damage over Time
+{range:94}{rounding:Integer}+(8-10) Health Regen
+{range:123}{rounding:Integer}+(171-220) Armor
+{range:123}(46-60)% reduced Bonus Damage Taken from Critical Strikes
+{range:14}+(30-45)% Void Resistance
+{range:242}(16-20)% increased Area for Area Skills
+{range:161}(36-50)% increased Critical Strike Chance
+			<ModRange range="127.5" id="1"/>
+			<ModRange range="187" id="2"/>
+			<ModRange range="94" id="3"/>
+			<ModRange range="123" id="4"/>
+			<ModRange range="123" id="5"/>
+			<ModRange range="14" id="6"/>
+			<ModRange range="242" id="7"/>
+			<ModRange range="161" id="8"/>
+		</Item>
+		<Item id="5">
+			Rarity: EXALTED
+Experimental Traversal Cooldown Recovery on Potion Use Noble Sash of Evasion
+Noble Sash
+Unique ID: 7
+Crafted: true
+Prefix: {range:229}8_5
+Prefix: {range:239}22_4
+Prefix: None
+Suffix: {range:48}713_2
+Suffix: {range:108}23_5
+Suffix: {range:156}330_4
+LevelReq: 14
+Implicits: 2
+{range:106}{rounding:Integer}+(16-32) Mana
++3 Potion Slots
+{range:229}{rounding:Integer}+(110-150) Dodge Rating
+{range:239}{rounding:Integer}(54-82)% increased Health Regen
+0.7 Seconds of Traversal Skill Cooldowns Recovered on Potion Use
+{range:48}(26-32)% Increased Chance To Find Potions
+{range:108}{rounding:Integer}(75-95)% increased Lightning Damage
+{range:156}{rounding:Integer}(30-38)% increased Mana Regen
+			<ModRange range="106" id="1"/>
+			<ModRange range="127.5" id="2"/>
+			<ModRange range="229" id="3"/>
+			<ModRange range="239" id="4"/>
+			<ModRange range="127.5" id="5"/>
+			<ModRange range="48" id="6"/>
+			<ModRange range="108" id="7"/>
+			<ModRange range="156" id="8"/>
+		</Item>
+		<Item id="6">
+			Rarity: EXALTED
+Mercurial Solarum Greaves of Defense
+Solarum Greaves
+Unique ID: 8
+Crafted: true
+Prefix: {range:60}1_6
+Prefix: {range:89}715_4
+Prefix: None
+Suffix: {range:5}28_4
+Suffix: {range:152}504_4
+Suffix: None
+LevelReq: 67
+Implicits: 3
++90 Armor
+{range:250}(15-18)% increased Movement Speed
+{range:245}+(30-45)% Fire Resistance
+{range:60}{rounding:Integer}(51-70)% increased Armor
+{range:89}{rounding:Integer}+(71-95) Armor
+{range:89}(25-30)% reduced Bonus Damage Taken from Critical Strikes
+{range:5}(15-18)% increased Movement Speed
+{range:152}{rounding:Integer}+(7-8) Attunement
+			<ModRange range="127.5" id="1"/>
+			<ModRange range="250" id="2"/>
+			<ModRange range="245" id="3"/>
+			<ModRange range="60" id="4"/>
+			<ModRange range="89" id="5"/>
+			<ModRange range="89" id="6"/>
+			<ModRange range="5" id="7"/>
+			<ModRange range="152" id="8"/>
+		</Item>
+		<Item id="7">
+			Rarity: EXALTED
+Blighted Coral Ring of Tenacity
+Coral Ring
+Unique ID: 10
+Crafted: true
+Prefix: {range:80}51_2
+Prefix: {range:109}19_3
+Prefix: None
+Suffix: {range:187}72_1
+Suffix: {range:222}23_5
+Suffix: {range:248}38_4
+LevelReq: 48
+Implicits: 2
+{range:39}{rounding:Integer}+(3-6) Vitality
+{range:44}{rounding:Integer}+(3-6) Health Regen
+{range:80}{rounding:Integer}+(136-210) Stun Avoidance
+{range:109}+(22-29)% Poison Resistance
+{range:187}{rounding:Integer}(13-21)% increased Damage Over Time
+{range:222}{rounding:Integer}(75-95)% increased Lightning Damage
+{range:248}{rounding:Integer}(40-60)% increased Spell Damage
+			<ModRange range="39" id="1"/>
+			<ModRange range="44" id="2"/>
+			<ModRange range="80" id="3"/>
+			<ModRange range="109" id="4"/>
+			<ModRange range="187" id="5"/>
+			<ModRange range="222" id="6"/>
+			<ModRange range="248" id="7"/>
+		</Item>
+		<Item id="8">
+			Rarity: EXALTED
+Conduit&apos;s Silver Ring of Sanctuary
+Silver Ring
+Unique ID: 9
+Crafted: true
+Prefix: {range:186}97_4
+Prefix: {range:75}19_4
+Prefix: None
+Suffix: {range:36}23_5
+Suffix: {range:181}5_4
+Suffix: None
+LevelReq: 0
+Implicits: 1
+{range:190}(3-8)% increased Movement Speed
+{range:186}+(25-37)% Critical Strike Avoidance
+{range:186}{rounding:Integer}+(62-80) Dodge Rating
+{range:75}+(30-45)% Poison Resistance
+{range:36}{rounding:Integer}(75-95)% increased Lightning Damage
+{range:181}(36-50)% increased Critical Strike Chance
+			<ModRange range="190" id="1"/>
+			<ModRange range="186" id="2"/>
+			<ModRange range="186" id="3"/>
+			<ModRange range="75" id="4"/>
+			<ModRange range="36" id="5"/>
+			<ModRange range="181" id="6"/>
+		</Item>
+		<Item id="9">
+			Rarity: EXALTED
+Eviscerating Bone Amulet of Acid
+Bone Amulet
+Unique ID: 11
+Crafted: true
+Prefix: {range:15}86_2
+Prefix: {range:247}85_4
+Prefix: None
+Suffix: {range:15}6_2
+Suffix: {range:182}84_6
+Suffix: {range:124}38_4
+LevelReq: 58
+Implicits: 2
+{range:234}+(13-40)% Physical Resistance
+{range:70}+(13-40)% Necrotic Resistance
+{range:15}{scalar:1.17}+(41-55)% Chance to Shred Armor on Hit
+{range:247}{scalar:1.17}+(24-30)% Chance to Shock on Hit
+{range:15}{scalar:1.17}+(13-16)% Critical Strike Multiplier
+{range:182}{scalar:1.17}(116-150)% increased Spell Critical Strike Chance
+{range:124}{scalar:1.17}{rounding:Integer}(40-60)% increased Spell Damage
+			<ModRange range="234" id="1"/>
+			<ModRange range="70" id="2"/>
+			<ModRange range="15" id="3"/>
+			<ModRange range="247" id="4"/>
+			<ModRange range="15" id="5"/>
+			<ModRange range="182" id="6"/>
+			<ModRange range="124" id="7"/>
+		</Item>
+		<Item id="10">
+			Rarity: UNIQUE
+Stormcarved Testament
+Stone Tablet
+Unique ID: 12
+Crafted: true
+Prefix: None
+Prefix: None
+Prefix: None
+Suffix: None
+Suffix: None
+Suffix: None
+LevelReq: 78
+Implicits: 1
+{range:127}+(36-44)% Physical Resistance
+{crafted}+12% Lightning Penetration for Totems
+{crafted}+6 Spell Lightning Damage for Totems
+{crafted}{range:108}+(60-94)% Chance to Shock on Hit for Totems
+{crafted}12% Chance to summon a Storm Totem on hit (8 second cooldown)
+{crafted}{range:146}+(36-44)% Lightning Resistance
+{crafted}{range:146}+(36-44)% Lightning Resistance for Totems
+{crafted}{range:151}{rounding:Integer}+(60-94) Mana
+{crafted}+6 Attunement
+{crafted}+12% Lightning Penetration
+{crafted}+6 Spell Lightning Damage
+{crafted}{range:108}+(60-94)% Chance to Shock on Hit
+			<ModRange range="127" id="1"/>
+			<ModRange range="127.5" id="2"/>
+			<ModRange range="127.5" id="3"/>
+			<ModRange range="108" id="4"/>
+			<ModRange range="127.5" id="5"/>
+			<ModRange range="146" id="6"/>
+			<ModRange range="146" id="7"/>
+			<ModRange range="151" id="8"/>
+			<ModRange range="127.5" id="9"/>
+			<ModRange range="127.5" id="10"/>
+			<ModRange range="127.5" id="11"/>
+			<ModRange range="108" id="12"/>
+		</Item>
+		<Item id="11">
+			Rarity: RARE
+Vigorous Stout Lagonian Idol of Life
+Stout Lagonian Idol
+Unique ID: Idol 15
+Crafted: true
+Prefix: {range:134}105_0
+Prefix: None
+Prefix: None
+Suffix: {range:13}107_0
+Suffix: None
+Suffix: None
+LevelReq: 0
+Implicits: 0
+{range:134}{scalar:0.38}{rounding:Integer}+(30-80) Health
+{range:13}{scalar:0.38}{rounding:Integer}(5-11)% increased Health
+			<ModRange range="134" id="1"/>
+			<ModRange range="13" id="2"/>
+		</Item>
+		<Item id="12">
+			Rarity: RARE
+Bountiful Small Eterran Idol of Hope
+Small Eterran Idol
+Unique ID: Idol 3
+Crafted: true
+Prefix: {range:98}115_0
+Prefix: None
+Prefix: None
+Suffix: {range:192}108_0
+Suffix: None
+Suffix: None
+LevelReq: 0
+Implicits: 0
+{range:98}{scalar:0.17}+(20-45)% Void Resistance
+{range:192}{scalar:0.17}{rounding:Integer}(25-68)% increased Health Regen
+			<ModRange range="98" id="1"/>
+			<ModRange range="192" id="2"/>
+		</Item>
+		<Item id="13">
+			Rarity: RARE
+Vigorous Stout Lagonian Idol of Life
+Stout Lagonian Idol
+Unique ID: Idol 12
+Crafted: true
+Prefix: {range:80}105_0
+Prefix: None
+Prefix: None
+Suffix: {range:218}107_0
+Suffix: None
+Suffix: None
+LevelReq: 0
+Implicits: 0
+{range:80}{scalar:0.38}{rounding:Integer}+(30-80) Health
+{range:218}{scalar:0.38}{rounding:Integer}(5-11)% increased Health
+			<ModRange range="80" id="1"/>
+			<ModRange range="218" id="2"/>
+		</Item>
+		<Item id="14">
+			Rarity: RARE
+Lunar Minor Lagonian Idol of Life
+Minor Lagonian Idol
+Unique ID: Idol 13
+Crafted: true
+Prefix: {range:225}105_0
+Prefix: None
+Prefix: None
+Suffix: {range:32}109_0
+Suffix: None
+Suffix: None
+LevelReq: 0
+Implicits: 0
+{range:225}{scalar:0.17}{rounding:Integer}+(30-80) Health
+{range:32}{scalar:0.17}{rounding:Integer}+(15-40) Mana
+			<ModRange range="225" id="1"/>
+			<ModRange range="32" id="2"/>
+		</Item>
+		<Item id="15">
+			Rarity: RARE
+Vital Humble Eterran Idol of Hope
+Humble Eterran Idol
+Unique ID: Idol 1
+Crafted: true
+Prefix: {range:198}115_0
+Prefix: None
+Prefix: None
+Suffix: {range:198}124_0
+Suffix: None
+Suffix: None
+LevelReq: 0
+Implicits: 0
+{range:198}{scalar:0.38}+(20-45)% Void Resistance
+{range:198}{scalar:0.38}{rounding:Integer}+(3-7) Vitality
+			<ModRange range="198" id="1"/>
+			<ModRange range="198" id="2"/>
+		</Item>
+		<Item id="16">
+			Rarity: RARE
+Vigorous Stout Lagonian Idol of Life
+Stout Lagonian Idol
+Unique ID: Idol 16
+Crafted: true
+Prefix: {range:106}105_0
+Prefix: None
+Prefix: None
+Suffix: {range:230}107_0
+Suffix: None
+Suffix: None
+LevelReq: 0
+Implicits: 0
+{range:106}{scalar:0.38}{rounding:Integer}+(30-80) Health
+{range:230}{scalar:0.38}{rounding:Integer}(5-11)% increased Health
+			<ModRange range="106" id="1"/>
+			<ModRange range="230" id="2"/>
+		</Item>
+		<Item id="17">
+			Rarity: RARE
+Isolated Ornate Heorot Idol of the Viper
+Ornate Heorot Idol
+Unique ID: Idol 5
+Crafted: true
+Prefix: {range:124}230_0
+Prefix: None
+Prefix: None
+Suffix: {range:149}736_0
+Suffix: None
+Suffix: None
+LevelReq: 0
+Implicits: 0
+{range:124}(10-25)% Increased Aspect of the Viper Effect
+{range:149}(12-30)% Less Frequency of expending Storm Stacks
+{range:149}{rounding:Integer}+(6-18) Spell Damage for Storm Bolt
+			<ModRange range="124" id="1"/>
+			<ModRange range="149" id="2"/>
+			<ModRange range="149" id="3"/>
+		</Item>
+		<Item id="18">
+			Rarity: RARE
+Porcine Large Nomad Idol of Thunder
+Large Nomad Idol
+Unique ID: Idol 10
+Crafted: true
+Prefix: {range:201}168_0
+Prefix: None
+Prefix: None
+Suffix: {range:11}229_0
+Suffix: None
+Suffix: None
+LevelReq: 0
+Implicits: 0
+{range:201}{scalar:0.67}(19-50)% increased Lightning Critical Strike Chance
+{range:201}{scalar:0.67}(19-50)% increased Minion Lightning Critical Strike Chance
+{range:11}{scalar:0.67}(9-30)% Increased Aspect of the Boar Duration
+			<ModRange range="201" id="1"/>
+			<ModRange range="201" id="2"/>
+			<ModRange range="11" id="3"/>
+		</Item>
+		<Item id="19">
+			Rarity: RARE
+Vigorous Stout Lagonian Idol of Life
+Stout Lagonian Idol
+Unique ID: Idol 4
+Crafted: true
+Prefix: {range:77}105_0
+Prefix: None
+Prefix: None
+Suffix: {range:195}107_0
+Suffix: None
+Suffix: None
+LevelReq: 0
+Implicits: 0
+{range:77}{scalar:0.38}{rounding:Integer}+(30-80) Health
+{range:195}{scalar:0.38}{rounding:Integer}(5-11)% increased Health
+			<ModRange range="77" id="1"/>
+			<ModRange range="195" id="2"/>
+		</Item>
+		<Item id="20">
+			Rarity: RARE
+Plated Minor Lagonian Idol of Life
+Minor Lagonian Idol
+Unique ID: Idol 11
+Crafted: true
+Prefix: {range:66}105_0
+Prefix: None
+Prefix: None
+Suffix: {range:101}110_0
+Suffix: None
+Suffix: None
+LevelReq: 0
+Implicits: 0
+{range:66}{scalar:0.17}{rounding:Integer}+(30-80) Health
+{range:101}{scalar:0.17}{rounding:Integer}+(58-156) Armor
+			<ModRange range="66" id="1"/>
+			<ModRange range="101" id="2"/>
+		</Item>
+		<Item id="-1">
+			Rarity: NORMAL
+Sight of the Outcasts
+Sight of the Outcasts
+Unique ID: blessing:Fall of the Outcasts
+LevelReq: 0
+Implicits: 1
+41% Increased Large Idol Drop Rate
+			<ModRange range="127.5" id="1"/>
+		</Item>
+		<Item id="-2">
+			Rarity: NORMAL
+Grand Talon of Grandeur
+Grand Talon of Grandeur
+Unique ID: blessing:The Stolen Lance
+LevelReq: 0
+Implicits: 1
+43% Increased Ring Drop Rate
+			<ModRange range="127.5" id="1"/>
+		</Item>
+		<Item id="-3">
+			Rarity: NORMAL
+Grand Hunger of the Void
+Grand Hunger of the Void
+Unique ID: blessing:The Black Sun
+LevelReq: 0
+Implicits: 1
+3% of Spell Damage Leeched as Health
+			<ModRange range="127.5" id="1"/>
+		</Item>
+		<Item id="-4">
+			Rarity: NORMAL
+Chill of Death
+Chill of Death
+Unique ID: blessing:Blood, Frost, and Death
+LevelReq: 0
+Implicits: 1
+41% Increased Two-Handed Staff Drop Rate
+			<ModRange range="127.5" id="1"/>
+		</Item>
+		<Item id="-5">
+			Rarity: NORMAL
+Grand Chaos of Lagon
+Grand Chaos of Lagon
+Unique ID: blessing:Ending the Storm
+LevelReq: 0
+Implicits: 1
+84% increased Lightning Damage
+			<ModRange range="127.5" id="1"/>
+		</Item>
+		<Item id="-6">
+			Rarity: NORMAL
+Grand Remnants of the Living
+Grand Remnants of the Living
+Unique ID: blessing:Fall of the Empire
+LevelReq: 0
+Implicits: 1
+48% Increased Ring Shard Drop Rate
+			<ModRange range="127.5" id="1"/>
+		</Item>
+		<Item id="-7">
+			Rarity: NORMAL
+Grand Dream of Eterra
+Grand Dream of Eterra
+Unique ID: blessing:Reign of Dragons
+LevelReq: 0
+Implicits: 1
++74% Necrotic Resistance
+			<ModRange range="127.5" id="1"/>
+		</Item>
+		<Item id="-8">
+			Rarity: NORMAL
+Grand Memory of Masters
+Grand Memory of Masters
+Unique ID: blessing:The Last Ruin
+LevelReq: 0
+Implicits: 1
+25% Increased Class Specific Shard Drop Rate
+			<ModRange range="127.5" id="1"/>
+		</Item>
+		<Item id="-9">
+			Rarity: NORMAL
+Grand Protection of Heorot
+Grand Protection of Heorot
+Unique ID: blessing:The Age of Winter
+LevelReq: 0
+Implicits: 1
++55% Cold Resistance
+			<ModRange range="127.5" id="1"/>
+		</Item>
+		<Item id="-10">
+			Rarity: NORMAL
+Grand Heart of the Caldera
+Grand Heart of the Caldera
+Unique ID: blessing:Spirits of Fire
+LevelReq: 0
+Implicits: 1
++70% Fire Resistance
+			<ModRange range="127.5" id="1"/>
+		</Item>
+		<ItemSet useSecondWeaponSet="false" id="1">
+			<Slot itemPbURL="" name="Amulet" itemId="9"/>
+			<Slot itemPbURL="" name="Belt" itemId="5"/>
+			<Slot itemPbURL="" name="Blood, Frost, and Death" itemId="-4"/>
+			<Slot itemPbURL="" name="Body Armor" itemId="2"/>
+			<Slot itemPbURL="" name="Boots" itemId="6"/>
+			<Slot itemPbURL="" name="Ending the Storm" itemId="-5"/>
+			<Slot itemPbURL="" name="Fall of the Empire" itemId="-6"/>
+			<Slot itemPbURL="" name="Fall of the Outcasts" itemId="-1"/>
+			<Slot itemPbURL="" name="Gloves" itemId="4"/>
+			<Slot itemPbURL="" name="Helmet" itemId="1"/>
+			<Slot itemPbURL="" name="Idol 1" itemId="15"/>
+			<Slot itemPbURL="" name="Idol 10" itemId="18"/>
+			<Slot itemPbURL="" name="Idol 11" itemId="20"/>
+			<Slot itemPbURL="" name="Idol 12" itemId="13"/>
+			<Slot itemPbURL="" name="Idol 13" itemId="14"/>
+			<Slot itemPbURL="" name="Idol 14" itemId="0"/>
+			<Slot itemPbURL="" name="Idol 15" itemId="11"/>
+			<Slot itemPbURL="" name="Idol 16" itemId="16"/>
+			<Slot itemPbURL="" name="Idol 17" itemId="0"/>
+			<Slot itemPbURL="" name="Idol 18" itemId="0"/>
+			<Slot itemPbURL="" name="Idol 19" itemId="0"/>
+			<Slot itemPbURL="" name="Idol 2" itemId="0"/>
+			<Slot itemPbURL="" name="Idol 20" itemId="0"/>
+			<Slot itemPbURL="" name="Idol 21" itemId="0"/>
+			<Slot itemPbURL="" name="Idol 22" itemId="0"/>
+			<Slot itemPbURL="" name="Idol 23" itemId="0"/>
+			<Slot itemPbURL="" name="Idol 24" itemId="0"/>
+			<Slot itemPbURL="" name="Idol 25" itemId="0"/>
+			<Slot itemPbURL="" name="Idol 3" itemId="12"/>
+			<Slot itemPbURL="" name="Idol 4" itemId="19"/>
+			<Slot itemPbURL="" name="Idol 5" itemId="17"/>
+			<Slot itemPbURL="" name="Idol 6" itemId="0"/>
+			<Slot itemPbURL="" name="Idol 7" itemId="0"/>
+			<Slot itemPbURL="" name="Idol 8" itemId="0"/>
+			<Slot itemPbURL="" name="Idol 9" itemId="0"/>
+			<Slot itemPbURL="" name="Idol Altar" itemId="0"/>
+			<Slot itemPbURL="" name="Omen Idol 1" itemId="0"/>
+			<Slot itemPbURL="" name="Omen Idol 2" itemId="0"/>
+			<Slot itemPbURL="" name="Omen Idol 3" itemId="0"/>
+			<Slot itemPbURL="" name="Omen Idol 4" itemId="0"/>
+			<Slot itemPbURL="" name="Omen Idol 5" itemId="0"/>
+			<Slot itemPbURL="" name="Omen Idol 6" itemId="0"/>
+			<Slot itemPbURL="" name="Reign of Dragons" itemId="-7"/>
+			<Slot itemPbURL="" name="Relic" itemId="10"/>
+			<Slot itemPbURL="" name="Ring 1" itemId="8"/>
+			<Slot itemPbURL="" name="Ring 2" itemId="7"/>
+			<Slot itemPbURL="" name="Spirits of Fire" itemId="-10"/>
+			<Slot itemPbURL="" name="The Age of Winter" itemId="-9"/>
+			<Slot itemPbURL="" name="The Black Sun" itemId="-3"/>
+			<Slot itemPbURL="" name="The Last Ruin" itemId="-8"/>
+			<Slot itemPbURL="" name="The Stolen Lance" itemId="-2"/>
+			<Slot itemPbURL="" name="Weapon 1" itemId="3"/>
+			<Slot itemPbURL="" name="Weapon 2" itemId="0"/>
+		</ItemSet>
+		<BlessingFracs>
+			<BlessingFrac timeline="Ending the Storm" frac="0.53725490196078"/>
+			<BlessingFrac timeline="Fall of the Outcasts" frac="0.53333333333333"/>
+			<BlessingFrac timeline="Reign of Dragons" frac="0.95294117647059"/>
+			<BlessingFrac timeline="The Age of Winter" frac="0.007843137254902"/>
+			<BlessingFrac timeline="The Stolen Lance" frac="0.19607843137255"/>
+			<BlessingFrac timeline="Spirits of Fire" frac="0.74117647058824"/>
+			<BlessingFrac timeline="The Last Ruin" frac="0.48627450980392"/>
+			<BlessingFrac timeline="Blood, Frost, and Death" frac="0.75686274509804"/>
+			<BlessingFrac timeline="The Black Sun" frac="0.90588235294118"/>
+			<BlessingFrac timeline="Fall of the Empire" frac="0.88235294117647"/>
+		</BlessingFracs>
+	</Items>
+	<Notes>
+		
+	</Notes>
+	<Party destination="All" ShowAdvanceTools="false" append="false"/>
+	<Skills sortGemsByDPSField="CombinedDPS" activeSkillSet="1" sortGemsByDPS="true" defaultGemQuality="0" defaultGemLevel="normalMaximum" showSupportGemTypes="ALL" showAltQualityGems="false">
+		<SkillSet id="1">
+			<Skill skillId="GatheringStormMelee" slot="Skill 1" mainActiveSkill="1" includeInFullDPS="true" index="1" enabled="true" mainActiveSkillCalcs="1"/>
+			<Skill skillId="FuryLeap" slot="Skill 2" mainActiveSkill="1" includeInFullDPS="false" index="2" enabled="true" mainActiveSkillCalcs="1"/>
+			<Skill skillId="SummonStormTotem" slot="Skill 3" mainActiveSkill="1" includeInFullDPS="false" index="3" enabled="true" mainActiveSkillCalcs="1"/>
+			<Skill skillId="SummonWolf" slot="Skill 4" mainActiveSkill="1" includeInFullDPS="false" index="4" enabled="true" mainActiveSkillCalcs="1"/>
+			<Skill skillId="Maelstrom" slot="Skill 5" mainActiveSkill="1" includeInFullDPS="false" index="5" enabled="true" mainActiveSkillCalcs="1"/>
+			<Skill skillId="Ailment_ArmourShred" mainActiveSkill="1" includeInFullDPS="true" label="Shred Armor (from Gathering Storm)" index="6" enabled="true" mainActiveSkillCalcs="1" source="SkillId:GatheringStormMelee"/>
+			<Skill skillId="Ailment_AspectOfTheBoarVisuals" mainActiveSkill="1" includeInFullDPS="true" label="Aspect of the Boar (from Gathering Storm)" index="7" enabled="true" mainActiveSkillCalcs="1" source="SkillId:GatheringStormMelee"/>
+			<Skill skillId="Ailment_Haste" mainActiveSkill="1" includeInFullDPS="true" label="Haste (from Gathering Storm)" index="8" enabled="true" mainActiveSkillCalcs="1" source="SkillId:GatheringStormMelee"/>
+			<Skill skillId="Ailment_Shock" mainActiveSkill="1" includeInFullDPS="true" label="Shock (from Gathering Storm)" index="9" enabled="true" mainActiveSkillCalcs="1" source="SkillId:GatheringStormMelee"/>
+			<Skill skillId="Ailment_Slow" mainActiveSkill="1" includeInFullDPS="true" label="Slow (from Gathering Storm)" index="10" enabled="true" mainActiveSkillCalcs="1" source="SkillId:GatheringStormMelee"/>
+			<Skill skillId="Maelstrom" mainActiveSkill="1" includeInFullDPS="true" label="Maelstrom (from Gathering Storm)" index="11" enabled="true" mainActiveSkillCalcs="1" source="SkillId:GatheringStormMelee"/>
+			<Skill skillId="PrimalLightning" mainActiveSkill="1" includeInFullDPS="true" label="Storm Bolt (from Gathering Storm)" index="12" enabled="true" mainActiveSkillCalcs="1" source="SkillId:GatheringStormMelee"/>
+			<Skill skillId="Ailment_ArmourShred" mainActiveSkill="1" includeInFullDPS="false" label="Shred Armor (from Fury Leap)" index="13" enabled="true" mainActiveSkillCalcs="1" source="SkillId:FuryLeap"/>
+			<Skill skillId="Ailment_AspectOfTheBoarVisuals" mainActiveSkill="1" includeInFullDPS="false" label="Aspect of the Boar (from Fury Leap)" index="14" enabled="true" mainActiveSkillCalcs="1" source="SkillId:FuryLeap"/>
+			<Skill skillId="Ailment_Shock" mainActiveSkill="1" includeInFullDPS="false" label="Shock (from Fury Leap)" index="15" enabled="true" mainActiveSkillCalcs="1" source="SkillId:FuryLeap"/>
+			<Skill skillId="Ailment_Slow" mainActiveSkill="1" includeInFullDPS="false" label="Slow (from Fury Leap)" index="16" enabled="true" mainActiveSkillCalcs="1" source="SkillId:FuryLeap"/>
+			<Skill skillId="Ailment_ArmourShred" mainActiveSkill="1" includeInFullDPS="true" label="Shred Armor (from Storm Bolt)" index="17" enabled="true" mainActiveSkillCalcs="1" source="SkillId:PrimalLightning"/>
+			<Skill skillId="Ailment_Haste" mainActiveSkill="1" includeInFullDPS="true" label="Haste (from Storm Bolt)" index="18" enabled="true" mainActiveSkillCalcs="1" source="SkillId:PrimalLightning"/>
+			<Skill skillId="Ailment_Shock" mainActiveSkill="1" includeInFullDPS="true" label="Shock (from Storm Bolt)" index="19" enabled="true" mainActiveSkillCalcs="1" source="SkillId:PrimalLightning"/>
+			<Skill skillId="Ailment_Slow" mainActiveSkill="1" includeInFullDPS="true" label="Slow (from Storm Bolt)" index="20" enabled="true" mainActiveSkillCalcs="1" source="SkillId:PrimalLightning"/>
+			<Skill skillId="Maelstrom" mainActiveSkill="1" includeInFullDPS="true" label="Maelstrom (from Storm Bolt)" index="21" enabled="true" mainActiveSkillCalcs="1" source="SkillId:PrimalLightning"/>
+			<Skill skillId="PrimalLightning" mainActiveSkill="1" includeInFullDPS="true" label="Storm Bolt (from Storm Bolt)" index="22" enabled="true" mainActiveSkillCalcs="1" source="SkillId:PrimalLightning"/>
+		</SkillSet>
+	</Skills>
+	<Tree activeSpec="1">
+		<Spec ascendClassId="2" nodes="Primalist#1,Primalist-1#8,Primalist-108#1,Primalist-12#8,Primalist-19#5,Primalist-2#6,Primalist-24#3,Primalist-3#1,Primalist-36#5,Primalist-40#8,Primalist-41#5,Primalist-43#6,Primalist-45#8,Primalist-50#5,Primalist-56#5,Primalist-60#5,Primalist-61#5,Primalist-63#5,Primalist-69#5,Primalist-7#5,Primalist-70#5,Primalist-89#5,Shaman#1,fl13-0#1,fl13-14#4,fl13-20#4,fl13-24#1,fl13-4#1,fl13-5#5,fl13-6#1,fl13-7#4,ga2st-0#1,ga2st-12#2,ga2st-13#2,ga2st-14#1,ga2st-16#1,ga2st-17#1,ga2st-2#2,ga2st-3#3,ga2st-30#1,ga2st-4#2,ga2st-6#3,ga2st-7#1,ga2st-9#1,mas54-0#1,mas54-13#3,mas54-15#1,mas54-17#4,mas54-18#1,mas54-2#5,mas54-20#2,mas54-6#2,mas54-9#2,sa36oh-0#1,sc36pi-0#1,sc36pi-1#3,sc36pi-10#2,sc36pi-11#4,sc36pi-20#4,sc36pi-7#3,sc36pi-8#4,sf5rd-0#1,sf5rd-11#3,sf5rd-20#4,sf5rd-21#1,sf5rd-22#3,sf5rd-23#2,sf5rd-24#1,sf5rd-7#3,sf5rd-8#1,srtor-0#1,srtor-12#5,srtor-15#5,srtor-16#4,srtor-19#1,srtor-8#5,st38ml-0#1,st38ml-10#2,st38ml-11#2,st38ml-12#3,st38ml-13#4,st38ml-16#1,st38ml-2#2,st38ml-5#1,st38ml-6#1,st38ml-7#4,st38ml-8#3,th39-0#1,th39-13#3,th39-2#4,th39-25#1,th39-5#3,th39-6#5,th39-8#4,wo42-0#1,wo42-11#1,wo42-12#1,wo42-16#4,wo42-18#5,wo42-19#2,wo42-20#1,wo42-21#1,wo42-22#4,wo42-23#1" treeVersion="1_4" classId="0">
+			<Overrides/>
+		</Spec>
+	</Tree>
+	<TreeView searchStr="" zoomY="0" zoomLevel="22" showStatDifferences="true" zoomX="0"/>
+</LastEpochBuilding>
