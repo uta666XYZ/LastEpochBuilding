@@ -1,7 +1,7 @@
 -- Last Epoch Building
 -- Class: BlessingGridControl
 -- Displays the 10 blessing timeline slots (3-4-3 grid) in the ItemsTab.
--- Clicking a slot opens BlessingsPopup.
+-- Clicking a slot shows a dropdown of All Items blessings for that timeline.
 
 local t_insert = table.insert
 local m_floor  = math.floor
@@ -51,17 +51,39 @@ local function computeSlotPositions(controlW)
 	return pos
 end
 
-local BlessingGridControlClass = newClass("BlessingGridControl", "Control", "TooltipHost",
+local BlessingGridControlClass = newClass("BlessingGridControl", "Control", "ControlHost", "TooltipHost",
 	function(self, anchor, x, y, itemsTab)
 		-- Width wide enough for 4-slot row + padding
 		local w = 4 * SLOT_SIZE + 3 * SLOT_GAP + 8
 		local h = 3 * SLOT_SIZE + 2 * SLOT_GAP + 8
 		self.Control(anchor, x, y, w, h)
+		self.ControlHost()
 		self.TooltipHost()
 		self.itemsTab     = itemsTab
 		self.slotPos      = computeSlotPositions(w)
 		self.hovered      = nil
 		self.imageHandles = {}
+		self.activeDropdownTL = nil
+
+		-- Shared dropdown; repositioned before each show
+		local self_ref = self
+		self.sharedDropdown = new("DropDownControl",
+			{"TOPLEFT", self, "TOPLEFT"}, 0, 0, 250, 20, {}, function(index, value)
+				local itemId = self_ref.sharedDropdown._itemIds
+					and self_ref.sharedDropdown._itemIds[index] or 0
+				local tl = self_ref.activeDropdownTL
+				local slot = tl and self_ref.itemsTab.slots[tl]
+				if slot then
+					slot:SetSelItemId(itemId)
+				end
+				self_ref.itemsTab.build.buildFlag = true
+				self_ref.sharedDropdown.shown = false
+				self_ref.sharedDropdown.dropped = false
+				self_ref.activeDropdownTL = nil
+			end)
+		self.sharedDropdown.shown    = false
+		self.sharedDropdown._itemIds = {0}
+		t_insert(self.controls, self.sharedDropdown)
 	end
 )
 
@@ -98,7 +120,11 @@ end
 
 function BlessingGridControlClass:IsMouseOver()
 	if not self:IsShown() then return false end
-	return self:IsMouseInBounds()
+	if self:IsMouseInBounds() then return true end
+	if self.sharedDropdown and self.sharedDropdown.shown then
+		return self.sharedDropdown:IsMouseOver()
+	end
+	return false
 end
 
 function BlessingGridControlClass:GetHoveredTL()
@@ -113,6 +139,34 @@ function BlessingGridControlClass:GetHoveredTL()
 		end
 	end
 	return nil
+end
+
+-- Populate and position the shared dropdown for a given timeline
+function BlessingGridControlClass:PopulateBlessingDropdown(tl)
+	local dd = self.sharedDropdown
+	local list = {"None"}
+	local itemIds = {0}
+	for _, item in pairs(self.itemsTab.items) do
+		if item.type == "Blessing" and self.itemsTab:IsItemValidForSlot(item, tl) then
+			t_insert(list, (colorCodes[item.rarity] or "^7") .. item.name)
+			t_insert(itemIds, item.id)
+		end
+	end
+	dd.list = list
+	dd._itemIds = itemIds
+	dd.selIndex = 1
+	local slot = self.itemsTab.slots[tl]
+	if slot then
+		local selId = slot.selItemId or 0
+		for i, id in ipairs(itemIds) do
+			if id == selId then dd.selIndex = i; break end
+		end
+	end
+	self.activeDropdownTL = tl
+	-- Position dropdown below the clicked slot
+	local sp = self.slotPos[tl]
+	dd.x = sp.x
+	dd.y = sp.y + SLOT_SIZE + 2
 end
 
 -- Panel background colour (matches ItemsTab dark background)
@@ -142,7 +196,7 @@ function BlessingGridControlClass:Draw(viewPort)
 		local sy  = cy + sp.y
 
 		local slot        = slots[tl]
-		local hasBlessing = slot and slot.selItemId and slot.selItemId < 0
+		local hasBlessing = slot and slot.selItemId and slot.selItemId ~= 0
 		local hov         = (hoveredTL == tl)
 
 		-- Ring colour (outer annulus)
@@ -195,10 +249,6 @@ function BlessingGridControlClass:Draw(viewPort)
 			if img and img:IsValid() then
 				SetDrawColor(1, 1, 1)
 				DrawImage(img, sx + ICON_PAD, sy + ICON_PAD, isz, isz)
-				-- Clip icon to circle using fill mask
-				if cfill and cfill:IsValid() then
-					-- Icon already inside inner circle area; no extra clip needed
-				end
 			else
 				-- Fallback text
 				local abbr = iname and iname:sub(1, 2):upper() or "??"
@@ -228,13 +278,16 @@ function BlessingGridControlClass:Draw(viewPort)
 		end
 	end
 
-	-- Draw tooltip on top (after all slots, so it's not covered)
+	-- Draw child controls (shared dropdown) on top of slots
+	self:DrawControls(viewPort)
+
+	-- Draw tooltip on top (after all slots and controls, so it's not covered)
 	local hsl = self._hovTooltipTL
 	if hsl and hoveredTL == hsl then
 		local blessingData = self.itemsTab.blessingData
 		local tlData = blessingData and blessingData[hsl]
 		local hslot = slots[hsl]
-		local item2 = hslot and hslot.selItemId and hslot.selItemId < 0 and items[hslot.selItemId]
+		local item2 = hslot and hslot.selItemId and hslot.selItemId ~= 0 and items[hslot.selItemId]
 		self.tooltip:Clear()
 		self.tooltip.maxWidth = 300
 		if item2 then
@@ -257,16 +310,42 @@ function BlessingGridControlClass:Draw(viewPort)
 	end
 end
 
-function BlessingGridControlClass:OnKeyDown(key)
+function BlessingGridControlClass:OnKeyDown(key, doubleClick)
 	if not self:IsShown() then return end
+	-- Route to dropdown first when it is open
+	if self.sharedDropdown.shown then
+		local result = self.sharedDropdown:OnKeyDown(key, doubleClick)
+		if result then return self end
+		-- Click outside the dropdown: close it
+		if key == "LEFTBUTTON" then
+			self.sharedDropdown.shown = false
+			self.sharedDropdown.dropped = false
+			self.activeDropdownTL = nil
+		end
+		return self
+	end
 	if key == "LEFTBUTTON" then
 		local tl = self:GetHoveredTL()
 		if tl then
-			self.itemsTab:EditBlessings(tl)
+			self:PopulateBlessingDropdown(tl)
+			self.sharedDropdown.shown   = true
+			self.sharedDropdown.dropped = true
 			return self
 		end
 	end
 end
 
 function BlessingGridControlClass:OnKeyUp(key)
+	if not self:IsShown() then return end
+	if self.sharedDropdown.shown and self.sharedDropdown.OnKeyUp then
+		local result = self.sharedDropdown:OnKeyUp(key)
+		if result then return self end
+	end
+end
+
+function BlessingGridControlClass:OnChar(key)
+	if not self:IsShown() then return end
+	if self.sharedDropdown.shown and self.sharedDropdown.OnChar then
+		return self.sharedDropdown:OnChar(key) and self
+	end
 end
