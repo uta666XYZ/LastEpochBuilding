@@ -2234,7 +2234,7 @@ function CraftingPopupClass:DrawAffixCards(areaX, areaY, areaW, areaH, mx, my)
 			local maxT = entry.maxTier or 0
 			if not isSelected then
 				local tierStr = maxT > 0
-					and (TIER_COLORS[1] .. "T1^8-" .. TIER_COLORS[maxT + 1] .. "T" .. tostring(maxT + 1))
+					and (TIER_COLORS[1] .. "T1^8-" .. tierColor(maxT) .. "T" .. tostring(maxT + 1))
 					or  (TIER_COLORS[1] .. "T1")
 				local badgeY = cardMode and (cy + 4) or (cy + 4)
 				DrawString(areaX + areaW - 60, badgeY, "LEFT", 11, "VAR", tierStr)
