@@ -105,6 +105,37 @@ local ConfigTabClass = newClass("ConfigTab", "UndoHandler", "ControlHost", "Cont
 		return false
 	end
 
+	local buffDetectPatterns = {
+		{ name = "Haste", pat = "haste" },
+		{ name = "Frenzy", pat = "frenzy" },
+		{ name = "Concentration", pat = "concentration" },
+		{ name = "LightningAegis", pat = "lightning aegis" },
+		{ name = "ArcaneShield", pat = "arcane shield" },
+	}
+	local function detectGrantedBuffs()
+		if self.detectedBuffs then
+			return self.detectedBuffs
+		end
+		local detected = {}
+		for _, node in pairs(self.build.spec.allocNodes) do
+			local sdList = node.sd or node.stats
+			if sdList then
+				for _, statText in ipairs(sdList) do
+					local lower = statText:lower()
+					if not lower:match("while you have") and not lower:match("if you have") then
+						for _, buff in ipairs(buffDetectPatterns) do
+							if not detected[buff.name] and lower:match(buff.pat) then
+								detected[buff.name] = true
+							end
+						end
+					end
+				end
+			end
+		end
+		self.detectedBuffs = detected
+		return detected
+	end
+
 	local function listOrSingleIfOption(ifOption, ifFunc)
 		return function()
 			if type(ifOption) == "table" then
@@ -586,6 +617,29 @@ local ConfigTabClass = newClass("ConfigTab", "UndoHandler", "ControlHost", "Cont
 				end
 			end
 
+			if varData.suggestBuff then
+				local innerSuggestLabel = labelControl.label
+				local buffName = varData.suggestBuff
+				local function isSuggestActive()
+					if varData.type == "check" then
+						return self.input[varData.var]
+					end
+					return (self.input[varData.var] or 0) > 0
+				end
+				labelControl.label = function()
+					local label = type(innerSuggestLabel) == "function" and innerSuggestLabel() or innerSuggestLabel
+					if detectGrantedBuffs()[buffName] and not isSuggestActive() then
+						return "^xFFAA00" .. StripEscapes(label)
+					end
+					return label
+				end
+				t_insert(tooltipFuncs, function()
+					if detectGrantedBuffs()[buffName] and not isSuggestActive() then
+						return "^xFFAA00Your passive/skill tree can grant " .. buffName .. ". Consider enabling this option."
+					end
+				end)
+			end
+
 			t_insert(self.controls, control)
 			t_insert(lastSection.varControlList, control)
 		end
@@ -803,6 +857,7 @@ function ConfigTabClass:UpdateLevel()
 end
 
 function ConfigTabClass:BuildModList()
+	self.detectedBuffs = nil
 	local modList = new("ModList")
 	self.modList = modList
 	local enemyModList = new("ModList")
