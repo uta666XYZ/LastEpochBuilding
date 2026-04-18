@@ -24,6 +24,8 @@ function calcs.initModDB(env, modDB)
 	modDB:NewMod("Chill", "FLAG", true, "Base", { type = "Condition", var = "Chilled" })
 	modDB:NewMod("Freeze", "FLAG", true, "Base", { type = "Condition", var = "Frozen" })
 	modDB:NewMod("CritChanceCap", "BASE", 100, "Base")
+	modDB:NewMod("BlockChanceMax", "BASE", 75, "Base")
+	modDB:NewMod("SpellBlockChanceMax", "BASE", 75, "Base")
 	modDB.conditions["Buffed"] = env.mode_buffs
 	modDB.conditions["Combat"] = env.mode_combat
 	modDB.conditions["Effective"] = env.mode_effective
@@ -986,6 +988,33 @@ function calcs.initEnv(build, mode, override, specEnv)
 			env.player.weaponData2 = env.player.itemList["Weapon 1"].weaponData[2]
 		else
 			env.player.weaponData2 = env.player.itemList["Weapon 2"] and env.player.itemList["Weapon 2"].weaponData and env.player.itemList["Weapon 2"].weaponData[2] or { }
+		end
+
+		-- Set weapon-type conditions derived from equipped weapons
+		do
+			local w1type = env.player.weaponData1.type
+			local w1info = env.data.weaponTypeInfo[w1type]
+			if w1info then
+				if w1type == "None" then
+					env.modDB.conditions["Unarmed"] = true
+				else
+					local flag = w1info.flag
+					if flag == "Bow" then env.modDB.conditions["UsingBow"] = true
+					elseif flag == "Dagger" then env.modDB.conditions["UsingDagger"] = true
+					elseif flag == "Staff" then env.modDB.conditions["UsingStaff"] = true
+					elseif flag == "Wand" then env.modDB.conditions["UsingWand"] = true
+					elseif flag == "Axe" then env.modDB.conditions["UsingAxe"] = true
+					elseif flag == "Sword" then env.modDB.conditions["UsingSword"] = true
+					end
+					if w1type == "Sceptre" then env.modDB.conditions["UsingSceptre"] = true end
+					if not w1info.oneHand then env.modDB.conditions["UsingTwoHandedWeapon"] = true end
+					if w1info.melee then env.modDB.conditions["UsingMeleeWeapon"] = true end
+				end
+			end
+			local w2type = env.player.weaponData2 and env.player.weaponData2.type
+			if w2type and env.data.weaponTypeInfo[w2type] then
+				env.modDB.conditions["DualWielding"] = true
+			end
 		end
 
 		-- Compute +skill level bonus from equipment/modDB
