@@ -83,10 +83,10 @@ local RP_CARD_Y     = RP_CATTAB_Y + RP_CATTAB_H + 4
 local RP_CARD_PAD   = 8
 
 -- Item cards (item tab, right panel)
-local IC_COLS       = 3
+local IC_COLS       = 2
 local IC_GAP        = 6
 local IC_W          = m_floor((RP_W - 2 * RP_CARD_PAD - (IC_COLS - 1) * IC_GAP) / IC_COLS)
-local IC_H          = 54
+local IC_H          = 80
 
 -- Affix cards (affix tabs, right panel) -- compact single-row cards
 local AC_H          = 22
@@ -379,9 +379,7 @@ function CraftingPopupClass:RecalcEditLayout()
 	local LINE_H        = 18
 	local implicitCount = self.editItem and #self.editItem.implicitModLines or 0
 	local rarity        = self.editItem and self.editItem.rarity
-	local uniqueModCount = (rarity == "UNIQUE" or rarity == "WWUNIQUE" or rarity == "SET")
-		and self.editItem and #self.editItem.explicitModLines or 0
-	local totalDisplayCount = implicitCount + uniqueModCount
+	local totalDisplayCount = implicitCount
 
 	-- Affix sections start below the preview header and implicit lines
 	local EDIT_START = m_max(330, PREVIEW_Y + 90 + totalDisplayCount * LINE_H)
@@ -456,6 +454,48 @@ function CraftingPopupClass:RecalcEditLayout()
 			end
 			y = y + GAP
 		end
+	end
+
+	-- Unique/Set explicit mods shown after affix sections
+	local isUniqueOrSet = (rarity == "UNIQUE" or rarity == "WWUNIQUE" or rarity == "SET")
+	if isUniqueOrSet and self.editItem and #self.editItem.explicitModLines > 0 then
+		self.editY.uniqueModsLabel = y
+		y = y + LINE_H + GAP
+		self.editY.uniqueMods = {}
+		for i = 1, #self.editItem.explicitModLines do
+			self.editY.uniqueMods[i] = y
+			y = y + LINE_H
+		end
+		y = y + GAP
+	else
+		self.editY.uniqueModsLabel = 0
+		self.editY.uniqueMods = {}
+	end
+
+	-- Set info block (members + bonuses) for set items
+	self.editY.setInfoY = 0
+	if isSetItem then
+		self.editY.setInfoY = y
+		y = y + LINE_H + GAP  -- "ITEM SET" header + set name
+		y = y + LINE_H        -- set name line
+		-- count members
+		local entrySetData = self.editBaseEntry and self.editBaseEntry.setData
+		local setId = entrySetData and entrySetData.set and entrySetData.set.setId
+		if setId ~= nil then
+			local memberCount = 0
+			for _, si in pairs(self.setItems or {}) do
+				if si.set and si.set.setId == setId then memberCount = memberCount + 1 end
+			end
+			y = y + memberCount * LINE_H + GAP
+		end
+		-- bonuses
+		local bonus = entrySetData and entrySetData.set and entrySetData.set.bonus
+		if bonus then
+			local bonusCount = 0
+			for _ in pairs(bonus) do bonusCount = bonusCount + 1 end
+			y = y + LINE_H + GAP + bonusCount * LINE_H
+		end
+		y = y + GAP
 	end
 
 	self.editContentH = y + 60
@@ -652,7 +692,7 @@ function CraftingPopupClass:BuildControls()
 	controls.implicitLabel = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, LP_LABEL_X,
 		function() return PREVIEW_Y + 44 end, 0, 14, colorCodes.UNIQUE .. "IMPLICITS")
 	controls.implicitLabel.shown = function()
-		return self_ref.editItem ~= nil
+		return self_ref.editItem ~= nil and #self_ref.editItem.implicitModLines > 0
 	end
 
 	for i = 1, 20 do
@@ -661,29 +701,45 @@ function CraftingPopupClass:BuildControls()
 			function() return PREVIEW_Y + 44 + 14 + 4 + i * 14 end, 0, 13, "")
 		controls[key].shown = function()
 			if not self_ref.editItem then return false end
-			local item = self_ref.editItem
-			if i <= #item.implicitModLines then return true end
-			local rarity = item.rarity
-			if rarity == "UNIQUE" or rarity == "WWUNIQUE" or rarity == "SET" then
-				local j = i - #item.implicitModLines
-				return item.explicitModLines[j] ~= nil
-			end
-			return false
+			return i <= #self_ref.editItem.implicitModLines
 		end
 		controls[key].label = function()
 			if not self_ref.editItem then return "" end
-			local item = self_ref.editItem
-			if i <= #item.implicitModLines then
-				return "^7" .. itemLib.formatModLine(item.implicitModLines[i])
-			end
-			local rarity = item.rarity
-			if rarity == "UNIQUE" or rarity == "WWUNIQUE" or rarity == "SET" then
-				local j = i - #item.implicitModLines
-				if item.explicitModLines[j] then
-					return "^7" .. itemLib.formatModLine(item.explicitModLines[j])
-				end
-			end
-			return ""
+			local ml = self_ref.editItem.implicitModLines[i]
+			if not ml then return "" end
+			return "^7" .. itemLib.formatModLine(ml)
+		end
+	end
+
+	-- Unique/Set explicit mod controls (MODIFIERS section)
+	controls.uniqueModsLabel = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, LP_LABEL_X,
+		function() return self_ref.editY.uniqueModsLabel or 0 end, 0, 14,
+		colorCodes.UNIQUE .. "MODIFIERS")
+	controls.uniqueModsLabel.shown = function()
+		if not self_ref.editItem then return false end
+		local r = self_ref.editItem.rarity
+		return (r == "UNIQUE" or r == "WWUNIQUE" or r == "SET")
+			and #self_ref.editItem.explicitModLines > 0
+			and (self_ref.editY.uniqueModsLabel or 0) > 0
+	end
+
+	for i = 1, 20 do
+		local umKey = "uniqueMod" .. i
+		controls[umKey] = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, LP_LINE_X,
+			function() return self_ref.editY.uniqueMods and self_ref.editY.uniqueMods[i] or 0 end,
+			0, 13, "")
+		controls[umKey].shown = function()
+			if not self_ref.editItem then return false end
+			local r = self_ref.editItem.rarity
+			if r ~= "UNIQUE" and r ~= "WWUNIQUE" and r ~= "SET" then return false end
+			return self_ref.editItem.explicitModLines[i] ~= nil
+				and (self_ref.editY.uniqueMods and self_ref.editY.uniqueMods[i] or 0) > 0
+		end
+		controls[umKey].label = function()
+			if not self_ref.editItem then return "" end
+			local ml = self_ref.editItem.explicitModLines[i]
+			if not ml then return "" end
+			return "^7" .. itemLib.formatModLine(ml)
 		end
 	end
 
@@ -1288,6 +1344,12 @@ end
 -- =============================================================================
 function CraftingPopupClass:RefreshAffixDropdowns()
 	if not self.editItem then return end
+	if self:IsSetItem() then
+		for _, k in ipairs({"prefix1","prefix2","suffix1","suffix2","sealed","primordial","corrupted"}) do
+			self.affixLists[k] = {}
+		end
+		return
+	end
 	if self:IsAnyIdol() and data.modIdol and next(data.modIdol) then
 		self:RefreshIdolAffixDropdowns()
 		return
@@ -1930,6 +1992,69 @@ function CraftingPopupClass:Close()
 end
 
 -- =============================================================================
+-- Set info panel (item set members + bonuses)
+-- =============================================================================
+function CraftingPopupClass:DrawSetInfo(px, py)
+	local entry = self.editBaseEntry
+	if not entry or entry.category ~= "set" then return end
+	local sd = entry.setData
+	if not sd or not sd.set then return end
+
+	local set    = sd.set
+	local setId  = set.setId
+	local LINE_H = 18
+	local GAP    = 4
+	local y      = self.editY.setInfoY
+	if not y or y <= 0 then return end
+
+	SetDrawColor(1, 1, 1)
+	DrawString(px + LP_LABEL_X, py + y, "LEFT", 14, "VAR", colorCodes.SET .. "ITEM SET")
+	y = y + LINE_H + GAP
+	DrawString(px + LP_LINE_X, py + y, "LEFT", 13, "VAR", "^7" .. (set.name or ""))
+	y = y + LINE_H
+
+	-- Collect and sort set members
+	local members = {}
+	for _, si in pairs(self.setItems or {}) do
+		if si.set and si.set.setId == setId then
+			local typeName = ""
+			for tname, bases in pairs(self.build.data.itemBaseLists or {}) do
+				for _, bEntry in ipairs(bases) do
+					if bEntry.base.baseTypeID == si.baseTypeID and bEntry.base.subTypeID == si.subTypeID then
+						typeName = bEntry.base.type or tname
+						break
+					end
+				end
+				if typeName ~= "" then break end
+			end
+			t_insert(members, { name = si.name, typeName = typeName })
+		end
+	end
+	table.sort(members, function(a, b) return a.name < b.name end)
+	for _, m in ipairs(members) do
+		DrawString(px + LP_LINE_X + 8, py + y, "LEFT", 12, "VAR",
+			"^8" .. m.name .. (m.typeName ~= "" and ("  " .. m.typeName) or ""))
+		y = y + LINE_H
+	end
+	y = y + GAP
+
+	-- Set bonuses
+	local bonus = set.bonus
+	if bonus and next(bonus) then
+		DrawString(px + LP_LABEL_X, py + y, "LEFT", 14, "VAR", colorCodes.SET .. "SET BONUSES")
+		y = y + LINE_H + GAP
+		local bonusKeys = {}
+		for k in pairs(bonus) do t_insert(bonusKeys, k) end
+		table.sort(bonusKeys, function(a, b) return tonumber(a) < tonumber(b) end)
+		for _, k in ipairs(bonusKeys) do
+			DrawString(px + LP_LINE_X, py + y, "LEFT", 13, "VAR",
+				"^8" .. k .. " set: ^7" .. tostring(bonus[k]))
+			y = y + LINE_H
+		end
+	end
+end
+
+-- =============================================================================
 -- Draw
 -- =============================================================================
 function CraftingPopupClass:Draw(viewPort)
@@ -2048,6 +2173,10 @@ function CraftingPopupClass:Draw(viewPort)
 		-- Divider below item name area
 		SetDrawColor(0.2, 0.2, 0.2)
 		DrawImage(nil, px + 4, py + PREVIEW_Y + 38, LEFT_W - 8, 1)
+
+		if self:IsSetItem() then
+			self:DrawSetInfo(px, py)
+		end
 	end
 
 	-- -------------------------------------------------------------------------
@@ -2141,34 +2270,34 @@ function CraftingPopupClass:DrawItemCards(areaX, areaY, areaW, areaH, mx, my)
 			end
 			local textX = cx + IMG + 8
 
-			-- Item name
-			SetDrawColor(1, 1, 1)
-			local maxChars = m_floor((IC_W - IMG - 12) / 7)
+			-- Item name (line 1)
+			local textW = IC_W - IMG - 12
+			local maxChars = m_floor(textW / 7)
 			local label = entry.label or entry.name
 			local truncLabel = #label > maxChars and label:sub(1, maxChars - 2) .. ".." or label
-			DrawString(textX, cy + 5, "LEFT", 13, "VAR", (col3 or "^7") .. truncLabel)
+			DrawString(textX, cy + 6, "LEFT", 14, "VAR", (col3 or "^7") .. truncLabel)
 
-			-- Type and Lv Req
-			local lvReq = entry.base and entry.base.req and entry.base.req.level or 0
-			local typeStr = "^8" .. (entry.displayType or "") ..
-				(lvReq > 0 and ("  Lv " .. tostring(lvReq)) or "")
-			DrawString(textX, cy + 22, "LEFT", 11, "VAR", typeStr)
+			-- Item type (line 2)
+			local typeStr = "^8" .. (entry.displayType or "")
+			DrawString(textX, cy + 24, "LEFT", 12, "VAR", typeStr)
 
-			-- Implicit (first one)
+			-- Implicit (line 3)
+			local implText
 			if entry.base and entry.base.implicits and entry.base.implicits[1] then
-				local impl = cleanImplicitText(entry.base.implicits[1])
-				if impl then
-					local maxImpl = m_floor((IC_W - IMG - 12) / 6)
-					local truncated = #impl > maxImpl and impl:sub(1, maxImpl - 2) .. ".." or impl
-					DrawString(textX, cy + 37, "LEFT", 11, "VAR", "^8" .. truncated)
-				end
+				implText = cleanImplicitText(entry.base.implicits[1])
 			elseif entry.uniqueData and entry.uniqueData.mods and entry.uniqueData.mods[1] then
-				local mod = cleanImplicitText(entry.uniqueData.mods[1])
-				if mod then
-					local maxImpl = m_floor((IC_W - IMG - 12) / 6)
-					local truncated = #mod > maxImpl and mod:sub(1, maxImpl - 2) .. ".." or mod
-					DrawString(textX, cy + 37, "LEFT", 11, "VAR", "^8" .. truncated)
-				end
+				implText = cleanImplicitText(entry.uniqueData.mods[1])
+			end
+			if implText then
+				local maxImpl = m_floor(textW / 6)
+				local truncImpl = #implText > maxImpl and implText:sub(1, maxImpl - 2) .. ".." or implText
+				DrawString(textX, cy + 40, "LEFT", 11, "VAR", "^8" .. truncImpl)
+			end
+
+			-- Level requirement (line 4)
+			local lvReq = entry.base and entry.base.req and entry.base.req.level or 0
+			if lvReq > 0 then
+				DrawString(textX, cy + 58, "LEFT", 11, "VAR", "^8Lv. " .. tostring(lvReq))
 			end
 
 			-- Card border
