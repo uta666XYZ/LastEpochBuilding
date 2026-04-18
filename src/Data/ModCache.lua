@@ -403,6 +403,14 @@ c["+10 Dexterity"]={{[1]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=10
 c["+10 Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="BASE",value=10}},nil}
 c["+10 Dodge Rating Per Dexterity"]={{[1]={[1]={stat="Dex",type="PerStat"},flags=0,keywordFlags=0,name="Evasion",type="BASE",value=10}},nil}
 c["+10 Dodge Rating if you have been hit recently"]={{[1]={[1]={type="Condition",var="BeenHitRecently"},flags=0,keywordFlags=0,name="Evasion",type="BASE",value=10}},nil}
+c["10 Dodge Rating, Doubled if Hit Recently"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="BASE",value=10},[2]={[1]={type="Condition",var="BeenHitRecently"},flags=0,keywordFlags=0,name="Evasion",type="BASE",value=10}},nil}
+c["20 Dodge Rating, Doubled if Hit Recently"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="BASE",value=20},[2]={[1]={type="Condition",var="BeenHitRecently"},flags=0,keywordFlags=0,name="Evasion",type="BASE",value=20}},nil}
+c["30 Dodge Rating, Doubled if Hit Recently"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="BASE",value=30},[2]={[1]={type="Condition",var="BeenHitRecently"},flags=0,keywordFlags=0,name="Evasion",type="BASE",value=30}},nil}
+c["40 Dodge Rating, Doubled if Hit Recently"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="BASE",value=40},[2]={[1]={type="Condition",var="BeenHitRecently"},flags=0,keywordFlags=0,name="Evasion",type="BASE",value=40}},nil}
+c["50 Dodge Rating, Doubled if Hit Recently"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="BASE",value=50},[2]={[1]={type="Condition",var="BeenHitRecently"},flags=0,keywordFlags=0,name="Evasion",type="BASE",value=50}},nil}
+c["60 Dodge Rating, Doubled if Hit Recently"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="BASE",value=60},[2]={[1]={type="Condition",var="BeenHitRecently"},flags=0,keywordFlags=0,name="Evasion",type="BASE",value=60}},nil}
+c["70 Dodge Rating, Doubled if Hit Recently"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="BASE",value=70},[2]={[1]={type="Condition",var="BeenHitRecently"},flags=0,keywordFlags=0,name="Evasion",type="BASE",value=70}},nil}
+c["80 Dodge Rating, Doubled if Hit Recently"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="BASE",value=80},[2]={[1]={type="Condition",var="BeenHitRecently"},flags=0,keywordFlags=0,name="Evasion",type="BASE",value=80}},nil}
 c["+10 Dodge Rating per Stack of Perfection"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="BASE",value=10}},"  per Stack of Perfection "}
 c["+10 Endurance Threshold"]={{[1]={flags=0,keywordFlags=0,name="EnduranceThreshold",type="BASE",value=10}},nil}
 c["+10 Forged Weapon Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="BASE",value=10}}," Forged Weapon  "}
@@ -6286,7 +6294,7 @@ c["15% more Damage to Bosses and Rare Enemies while above half mana"]={{[1]={fla
 c["15% more Melee Damage to High Health Enemies"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="MORE",value=15}},"   to High Health Enemies "}
 c["15% more Spell Damage to Low Health Enemies"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="MORE",value=15}},"   to Low Health Enemies "}
 c["15% more Throwing Damage to Bosses and Rare Enemies"]={{[1]={flags=0,keywordFlags=1024,name="Damage",type="MORE",value=15}},"   to Bosses and Rare Enemies "}
-c["15% more dodge rating (multiplicative with other modifiers)"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="MORE",value=15}},"  (multiplicative with other modifiers) "}
+c["15% more dodge rating (multiplicative with other modifiers)"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="MORE",value=15}},nil}
 c["15% more more Damage Over Time per stack of A Plague"]={{[1]={[1]={skillName="Plague",type="SkillName"},flags=4096,keywordFlags=0,name="Damage",type="MORE",value=15}}," more  per stack of A  "}
 c["15% of Armor Mitigation also applies to Damage over Time"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=15}},"  Mitigation also applies to Damage over Time "}
 c["15% of Current Health Lost per second"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=15}}," Current  Lost per second "}
