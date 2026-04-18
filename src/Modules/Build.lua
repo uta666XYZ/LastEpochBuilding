@@ -821,8 +821,8 @@ function buildMode:ReadLeToolsSave(saveContent)
 				for i, modLine in ipairs(uniqueBase.mods) do
                     if itemLib.hasRange(modLine) then
                         local range = main.defaultItemAffixQuality
-                        if itemData['ur'] and #itemData['ur'] > 0 then
-                            range = itemData["ur"][uniqueBase.rollIds[i] + 1]
+                        if itemData['ur'] and #itemData['ur'] > 0 and uniqueBase.rollIds and uniqueBase.rollIds[i] ~= nil then
+                            range = itemData["ur"][uniqueBase.rollIds[i] + 1] or main.defaultItemAffixQuality
                         end
                         -- TODO: avoid using crafted
                         table.insert(item.explicitMods, "{crafted}{range: " .. range .. "}" .. modLine)
