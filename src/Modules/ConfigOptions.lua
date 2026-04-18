@@ -25,14 +25,14 @@ end
 local options = {
 	-- Section: General options
 	{ section = "General", col = 1 },
-	{ var = "questApophisMajasa", type = "check", label = "Apophis and Majasa?", tooltip = "+1 to all attributes", apply = function(val, modList, enemyModList)
+	{ var = "questApophisMajasa", type = "check", label = "Apophis and Majasa?", tooltip = "Quest reward: +1 to all attributes. Enable once you have defeated Apophis and Majasa on this character.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Str", "BASE", 1, "Quest")
 		modList:NewMod("Dex", "BASE", 1, "Quest")
 		modList:NewMod("Int", "BASE", 1, "Quest")
 		modList:NewMod("Att", "BASE", 1, "Quest")
 		modList:NewMod("Vit", "BASE", 1, "Quest")
 	end },
-	{ var = "questTempleOfEterra", type = "check", label = "Temple of Eterra?", tooltip = "+1 to all attributes", apply = function(val, modList, enemyModList)
+	{ var = "questTempleOfEterra", type = "check", label = "Temple of Eterra?", tooltip = "Quest reward: +1 to all attributes. Enable once you have completed the Temple of Eterra on this character.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Str", "BASE", 1, "Quest")
 		modList:NewMod("Dex", "BASE", 1, "Quest")
 		modList:NewMod("Int", "BASE", 1, "Quest")
@@ -52,7 +52,7 @@ local options = {
 			modList:NewMod("Condition:Stationary", "FLAG", true, "Config")
 		end
 	end },
-	{ var = "conditionMoving", type = "check", label = "Are you always moving?", ifCond = "Moving", apply = function(val, modList, enemyModList)
+	{ var = "conditionMoving", type = "check", label = "Are you always moving?", ifCond = "Moving", tooltip = "Enable if your build is always moving during combat (e.g., movement-based attack builds).\nEnables 'while moving' modifiers.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:Moving", "FLAG", true, "Config")
 	end },
 	{ var = "conditionCharging", type = "check", label = "Are you Charging?", ifCond = "Charging", tooltip = "Check if the player is Charging (Shield Charge, Lunge, etc.).\nEnables 'while charging' modifiers.", apply = function(val, modList, enemyModList)
@@ -254,7 +254,7 @@ local options = {
 	{ var = "conditionLeeching", type = "check", label = "Are you Leeching?", ifCond = "Leeching", tooltip = "You will automatically be considered to be Leeching if you have '^xE05030Life ^7Leech effects are not removed at Full ^xE05030Life^7',\nbut you can use this option to force it if necessary.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:Leeching", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
-	{ var = "conditionLeechingLife", type = "check", label = "Are you Leeching ^xE05030Life?", ifCond = "LeechingLife", implyCond = "Leeching", apply = function(val, modList, enemyModList)
+	{ var = "conditionLeechingLife", type = "check", label = "Are you Leeching ^xE05030Life?", ifCond = "LeechingLife", implyCond = "Leeching", tooltip = "You are Leeching Life. Also implies that you are Leeching.\nEnable if your build uses Life Leech and has 'while Leeching Life' modifiers.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:Leeching", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
 	{ var = "conditionHaveTotem", type = "check", label = "Do you have a Totem summoned?", ifCond = "HaveTotem", tooltip = "You will automatically be considered to have a Totem if your main skill is a Totem,\nbut you can use this option to force it if necessary.", apply = function(val, modList, enemyModList)
@@ -267,10 +267,10 @@ local options = {
 		modList:NewMod("TotemsSummoned", "OVERRIDE", val, "Config", { type = "Condition", var = "Combat" })
 		modList:NewMod("Condition:HaveTotem", "FLAG", val >= 1, "Config", { type = "Condition", var = "Combat" })
 	end },
-	{ var = "multiplierNearbyAlly", type = "count", label = "# of Nearby Allies:", ifMult = "NearbyAlly", apply = function(val, modList, enemyModList)
+	{ var = "multiplierNearbyAlly", type = "count", label = "# of Nearby Allies:", ifMult = "NearbyAlly", tooltip = "Number of allied players or persistent minions near you. Used for 'per nearby ally' modifiers.\nFor solo play with no summons, set to 0.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Multiplier:NearbyAlly", "BASE", val, "Config", { type = "Condition", var = "Combat" })
 	end },
-	{ var = "multiplierSummonedMinion", type = "count", label = "# of Summoned Minions:", ifMult = "SummonedMinion", apply = function(val, modList, enemyModList)
+	{ var = "multiplierSummonedMinion", type = "count", label = "# of Summoned Minions:", ifMult = "SummonedMinion", tooltip = "Number of active summoned minions. Used for 'per summoned minion' modifiers.\nSet to your typical active minion count during combat.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Multiplier:SummonedMinion", "BASE", val, "Config", { type = "Condition", var = "Combat" })
 	end },
 	{ var = "conditionBlinded", type = "check", label = "Are you Blinded?", ifCond = "Blinded", tooltip = "You are Blinded by an enemy debuff.\nOnly enable if your build has modifiers that specifically benefit from being Blinded.", apply = function(val, modList, enemyModList)
@@ -288,7 +288,7 @@ local options = {
 	{ var = "conditionFrozen", type = "check", label = "Are you ^x3F6DB3Frozen?", ifCond = "Frozen", tooltip = "You are Frozen (unable to act). Only enable if your build has 'while Frozen' modifiers.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:Frozen", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
-	{ var = "conditionShocked", type = "check", label = "Are you ^xADAA47Shocked?", ifCond = "Shocked", apply = function(val, modList, enemyModList)
+	{ var = "conditionShocked", type = "check", label = "Are you ^xADAA47Shocked?", ifCond = "Shocked", tooltip = "You are ^xADAA47Shocked ^7(15% increased Damage Taken). Only enable if your build has 'while Shocked' modifiers that benefit from being Shocked.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:Shocked", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 		modList:NewMod("DamageTaken", "INC", 15, "Shock", { type = "Condition", var = "Shocked" })
 	end },
@@ -446,10 +446,10 @@ local options = {
 	{ var = "conditionEnemyBlinded", type = "check", label = "Is the enemy Blinded?", tooltip = "In addition to allowing 'against Blinded Enemies' modifiers to apply,\n Blind applies the following effects.\n -20% Accuracy \n -20% ^x33FF77Evasion", apply = function(val, modList, enemyModList)
 		enemyModList:NewMod("Condition:Blinded", "FLAG", true, "Config", { type = "Condition", var = "Effective" })
 	end },
-	{ var = "conditionEnemyIgnited", type = "check", label = "Is the enemy ^xB97123Ignited?", ifEnemyCond = "Ignited", implyCond = "Burning", apply = function(val, modList, enemyModList)
+	{ var = "conditionEnemyIgnited", type = "check", label = "Is the enemy ^xB97123Ignited?", ifEnemyCond = "Ignited", implyCond = "Burning", tooltip = "The enemy is ^xB97123Ignited. ^7Enables ^xB97123Ignite ^7DoT and 'against Ignited enemies' modifiers. Also implies the enemy is Burning.\nEnable if your build applies and benefits from ^xB97123Ignite.", apply = function(val, modList, enemyModList)
 		enemyModList:NewMod("Condition:Ignited", "FLAG", true, "Config", { type = "Condition", var = "Effective" })
 	end },
-	{ var = "conditionEnemyChilled", type = "check", label = "Is the enemy ^x3F6DB3Chilled?", apply = function(val, modList, enemyModList)
+	{ var = "conditionEnemyChilled", type = "check", label = "Is the enemy ^x3F6DB3Chilled?", tooltip = "The enemy is ^x3F6DB3Chilled ^7(Action Speed reduced). Enables Chill DoT and 'against Chilled enemies' modifiers.\nEnable if your build applies and benefits from Chill.", apply = function(val, modList, enemyModList)
 		enemyModList:NewMod("Condition:Chilled", "FLAG", true, "Config", { type = "Condition", var = "Effective" })
 		enemyModList:NewMod("Condition:ChilledConfig", "FLAG", true, "Config", { type = "Condition", var = "Effective" })
 	end },
