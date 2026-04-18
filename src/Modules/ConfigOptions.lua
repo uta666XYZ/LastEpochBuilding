@@ -121,7 +121,7 @@ local options = {
 	{ var = "conditionHaveWard", type = "check", label = "Do you have Ward?", tooltip = "Enable if your build generates Ward during combat.\nWard is a temporary shield that absorbs damage before Health. Enables 'while you have Ward' modifiers.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:HaveWard", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
-	{ var = "conditionHaveLightningAegis", type = "check", label = "Do you have Lightning Aegis?", tooltip = "Check if you have the Lightning Aegis buff active (Runemaster).\nEnables 'while you have lightning aegis' modifiers.", apply = function(val, modList, enemyModList)
+	{ var = "conditionHaveLightningAegis", type = "check", label = "Do you have Lightning Aegis?", suggestBuff = "LightningAegis", tooltip = "Check if you have the Lightning Aegis buff active (Runemaster).\nEnables 'while you have lightning aegis' modifiers.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:HaveLightningAegis", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
 	{ var = "conditionStandingOnGlyphOfDominion", type = "check", label = "Standing on Glyph of Dominion?", tooltip = "Check if you are standing on your Glyph of Dominion (Runemaster).\nEnables 'while standing on your Glyph of Dominion' modifiers.", apply = function(val, modList, enemyModList)
@@ -130,7 +130,7 @@ local options = {
 	{ var = "conditionRecentlyUsedTeleport", type = "check", label = "Recently Used Teleport?", tooltip = "Check if you have cast Teleport within the past 4 seconds (Mage / Spellblade).\nEnables Teleport skill tree nodes that only apply after casting Teleport recently.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:RecentlyUsedTeleport", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
-	{ var = "multiplierArcaneShieldStack", type = "count", label = "# of Arcane Shields:", implyCond = "HaveArcaneShield", tooltip = "Number of active Arcane Shield stacks (Mage).\nEnables 'with Arcane Shield' and 'per Arcane Shield' modifiers.", apply = function(val, modList, enemyModList)
+	{ var = "multiplierArcaneShieldStack", type = "count", label = "# of Arcane Shields:", implyCond = "HaveArcaneShield", suggestBuff = "ArcaneShield", tooltip ="Number of active Arcane Shield stacks (Mage).\nEnables 'with Arcane Shield' and 'per Arcane Shield' modifiers.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Multiplier:ArcaneShieldStack", "BASE", val, "Config", { type = "Condition", var = "Combat" })
 		modList:NewMod("Condition:HaveArcaneShield", "FLAG", val >= 1, "Config", { type = "Condition", var = "Combat" })
 	end },
@@ -147,15 +147,15 @@ local options = {
 		modList:NewMod("Multiplier:Companion", "BASE", val, "Config", { type = "Condition", var = "Combat" })
 		modList:NewMod("Condition:HaveCompanion", "FLAG", val >= 1, "Config", { type = "Condition", var = "Combat" })
 	end },
-	{ var = "conditionFrenzy", type = "check", label = "Do you have Frenzy?", tooltip = "Check if you have Frenzy stacks (Beastmaster).\n20% increased Attack and Cast Speed.", apply = function(val, modList, enemyModList)
+	{ var = "conditionFrenzy", type = "check", label = "Do you have Frenzy?", suggestBuff = "Frenzy", tooltip ="Check if you have Frenzy stacks (Beastmaster).\n20% increased Attack and Cast Speed.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:Frenzy", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 		modList:NewMod("Speed", "INC", 20, "Frenzy")
 	end },
-	{ var = "conditionHaste", type = "check", label = "Do you have Haste?", tooltip = "30% increased Movement Speed for 4 seconds.", apply = function(val, modList, enemyModList)
+	{ var = "conditionHaste", type = "check", label = "Do you have Haste?", suggestBuff = "Haste", tooltip ="30% increased Movement Speed for 4 seconds.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:Haste", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 		modList:NewMod("MovementSpeed", "INC", 30, "Haste")
 	end },
-	{ var = "conditionConcentration", type = "check", label = "Do you have Concentration?", tooltip = "Marksman buff (Rogue-22 passive). Enables 'with Concentration' modifiers (Dodge Rating, Movement Speed, Damage, Hit Damage Taken).", apply = function(val, modList, enemyModList)
+	{ var = "conditionConcentration", type = "check", label = "Do you have Concentration?", suggestBuff = "Concentration", tooltip ="Marksman buff (Rogue-22 passive). Enables 'with Concentration' modifiers (Dodge Rating, Movement Speed, Damage, Hit Damage Taken).", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:Concentration", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
 	-- Overloads (Warlock)
