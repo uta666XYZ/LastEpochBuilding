@@ -39,9 +39,9 @@ Feedback and bug reports are always welcome — see [Contributing](#contributing
 
 - **Passive tree** — all classes and masteries
 - **Skill trees** — all skills with full node support
-- **Equipment simulation** with crafting UI
-- **DPS calculation** with ailments and debuffs
-- **Defense stats** — armor, dodge, block, ward, resistances
+- **Equipment simulation** with crafting UI (left/right split layout, card browser)
+- **DPS calculation** with ailments, debuffs, and corruption scaling
+- **Defense stats** — armor, dodge, block, ward, resistances, endurance
 - **Unique & Legendary items**
 - **Set items** (Set bonus effect accuracy may vary — see Roadmap)
 - **Idols** — Season 4 Idol Altar with crafting system (affix selection, class filtering, Weaver-specific affixes)
@@ -49,6 +49,7 @@ Feedback and bug reports are always welcome — see [Contributing](#contributing
 - **Character import** — offline save files and online characters via Maxroll
 - **Build sharing** — generate a short link or offline code to share your build
 - **Node search** — Ctrl+F in passive tree, skill tree, and skill selection
+- **Config tab** — smart buff suggestions when your build can grant Haste, Frenzy, etc.
 - **Season 4: Shattered Omens** support
 
 > **Note:** Mod recognition rate is 100% as of LEB v0.12.0. Recognized mods
@@ -78,7 +79,7 @@ User data (builds, settings) is stored alongside the executable, so keep all fil
 - Set item bonus effect verification and fixes
 - Idol and Idol Altar crafting system
 - Auto-populate Config tab from equipped item affixes
-  (e.g. "you have Frenzy" on an item → Frenzy automatically checked in Config)
+  (passive/skill tree detection is live; item affix detection coming)
 - Automatic or fast updates when Last Epoch patches release
 - Improved support for legacy character import (1.2, 1.3)
 - Web version
