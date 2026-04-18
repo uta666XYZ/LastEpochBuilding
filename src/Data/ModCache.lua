@@ -349,7 +349,7 @@ c["+1% Mana Efficiency per player Intelligence"]={{[1]={[1]={actor="parent",stat
 c["+1% Maximum Health Gained As Endurance Threshold"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=1}},"  Gained As Endurance Threshold "}
 c["+1% Melee Cold Penetration Per 3 Strength"]={{[1]={[1]={div=3,stat="Str",type="PerStat"},flags=0,keywordFlags=512,name="ColdPenetration",type="BASE",value=1}},nil}
 c["+1% Melee Critical Strike Chance"]={{[1]={flags=0,keywordFlags=512,name="CritChance",type="BASE",value=1}},nil}
-c["+1% Melee Critical Strike multiplier per 10 Max Mana"]={{[1]={flags=0,keywordFlags=512,name="CritMultiplier",type="BASE",value=1}},"   per 10 Max Mana "}
+c["+1% Melee Critical Strike multiplier per 10 Max Mana"]={{[1]={[1]={div=10,stat="Mana",type="PerStat"},flags=0,keywordFlags=512,name="CritMultiplier",type="BASE",value=1}},nil}
 c["+1% Melee Damage Per Poison"]={{[1]={[1]={skillName="Poison",type="SkillName"},flags=0,keywordFlags=512,name="Damage",type="MORE",value=1}},"   Per  "}
 c["+1% Melee Damage and Health per Skeleton Warrior"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="MORE",value=1}},"   and Health per Skeleton Warrior "}
 c["+1% Melee Damager per Bleed"]={{[1]={[1]={skillName="Bleed",type="SkillName"},flags=0,keywordFlags=512,name="Damage",type="MORE",value=1}},"  r per  "}
