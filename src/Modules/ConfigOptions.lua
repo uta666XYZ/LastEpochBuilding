@@ -155,6 +155,9 @@ local options = {
 		modList:NewMod("Condition:Haste", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 		modList:NewMod("MovementSpeed", "INC", 30, "Haste")
 	end },
+	{ var = "conditionConcentration", type = "check", label = "Do you have Concentration?", tooltip = "Marksman buff (Rogue-22 passive). Enables 'with Concentration' modifiers (Dodge Rating, Movement Speed, Damage, Hit Damage Taken).", apply = function(val, modList, enemyModList)
+		modList:NewMod("Condition:Concentration", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
+	end },
 	-- Overloads (Warlock)
 	{ var = "conditionBleedOverload", type = "check", label = "Bleed Overload active?", tooltip = "Warlock: 15% more physical DoT vs bosses and moving enemies.\nRequires Cauldron of Blood (5pt).", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:BleedOverload", "FLAG", true, "Config", { type = "Condition", var = "Combat" })

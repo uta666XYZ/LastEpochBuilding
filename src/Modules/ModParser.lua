@@ -399,6 +399,7 @@ local modTagList = {
 	["while on consecrated ground"] = { tag = { type = "Condition", var = "OnConsecratedGround" } },
 	["while you have a companion"] = { tag = { type = "Condition", var = "HaveCompanion" } },
 	["with arcane shield"] = { tag = { type = "Condition", var = "HaveArcaneShield" } },
+	["with concentration"] = { tag = { type = "Condition", var = "Concentration" } },
 	["per arcane shield"] = { tag = { type = "Multiplier", var = "ArcaneShieldStack" } },
 	["per companion"] = { tag = { type = "Multiplier", var = "Companion" } },
 	["if you[' ]h?a?ve dealt a critical strike recently"] = { tag = { type = "Condition", var = "CritRecently" } },
@@ -591,6 +592,8 @@ end
 
 -- List of special modifiers
 local specialQuickFixModList = {
+	-- "Added" after a number is LE terminology for flat/base; strip it so parsers don't choke on it
+	["^([%+%-]?[%d%.]+%%?) Added "] = "%1 ",
 	["^([%+%-]?[%d%.]+%%) Cast Speed"] = "%1 increased Cast Speed",
 	["^([%+%-]?[%d%.]+%%) Cooldown Recovery Speed"] = "%1 increased Cooldown Recovery Speed",
 	["^([%+%-]?[%d%.]+%%) Duration"] = "%1 increased Duration",
