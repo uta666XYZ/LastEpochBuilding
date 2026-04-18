@@ -432,6 +432,8 @@ function CraftingPopupClass:RecalcEditLayout()
 			and (sec.label == "sealedLabel" or sec.label == "primordialLabel") then
 			skip = true
 		end
+		-- Idols use only one enchant slot (sealed); hide primordial entirely
+		if isAnyIdol and sec.label == "primordialLabel" then skip = true end
 		if skip then
 			for _, slotKey in ipairs(sec.slots) do self.editY[slotKey] = {} end
 			self.editY[sec.label] = 0
@@ -727,7 +729,7 @@ function CraftingPopupClass:BuildControls()
 		local umKey = "uniqueMod" .. i
 		controls[umKey] = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, LP_LINE_X,
 			function() return self_ref.editY.uniqueMods and self_ref.editY.uniqueMods[i] or 0 end,
-			0, 13, "")
+			LEFT_W - LP_LINE_X - 4, 13, "")
 		controls[umKey].shown = function()
 			if not self_ref.editItem then return false end
 			local r = self_ref.editItem.rarity
@@ -762,15 +764,14 @@ function CraftingPopupClass:BuildControls()
 
 		if capturedSectionKey == "sealed" then
 			controls[labelKey].label = function()
-				local base = self_ref:IsAnyIdol() and "ENCHANTED 1" or capturedSectionLabel
+				local base = self_ref:IsAnyIdol() and "ENCHANT" or capturedSectionLabel
 				local n = #(self_ref.affixLists.sealed or {})
 				return colorCodes.UNIQUE .. base .. " (" .. n .. ")"
 			end
 		elseif capturedSectionKey == "primordial" then
 			controls[labelKey].label = function()
-				local base = self_ref:IsAnyIdol() and "ENCHANTED 2" or capturedSectionLabel
 				local n = #(self_ref.affixLists.primordial or {})
-				return colorCodes.UNIQUE .. base .. " (" .. n .. ")"
+				return colorCodes.UNIQUE .. capturedSectionLabel .. " (" .. n .. ")"
 			end
 		else
 			local sectionListKeyMap = { prefix = "prefix1", suffix = "suffix1", corrupted = "corrupted" }
@@ -789,6 +790,7 @@ function CraftingPopupClass:BuildControls()
 				and self_ref:IsUniqueItem() then return false end
 			if (capturedSectionKey == "sealed" or capturedSectionKey == "primordial")
 				and self_ref:IsAnyIdol() and not self_ref:IsEnchantableIdol() then return false end
+			if capturedSectionKey == "primordial" and self_ref:IsAnyIdol() then return false end
 			return self_ref.editY[labelKey] ~= nil and self_ref.editY[labelKey] > 0
 		end
 
@@ -1068,6 +1070,7 @@ function CraftingPopupClass:RefreshBaseList()
 		if bases then
 			local myClassBit = self:GetCurrentClassReqBit()
 			for uid, unique in pairs(self.build.data.uniques) do
+				if unique.name and unique.name:lower():sub(1, 9) == "cocooned " then goto continueUID end
 				local found = false
 				for _, baseEntry in ipairs(bases) do
 					if baseEntry.base.baseTypeID == unique.baseTypeID and
@@ -1107,6 +1110,7 @@ function CraftingPopupClass:RefreshBaseList()
 						end
 					end
 				end
+				::continueUID::
 			end
 			table.sort(list, function(a, b) return a.label < b.label end)
 		end

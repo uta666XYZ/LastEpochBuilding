@@ -312,8 +312,14 @@ function BlessingGridControlClass:OnKeyDown(key, doubleClick)
 	-- Route to dropdown first when it is open
 	if self.sharedDropdown.shown then
 		local result = self.sharedDropdown:OnKeyDown(key, doubleClick)
+		-- DropDownControl closes itself (dropped=false) and returns self (truthy) on outside click.
+		-- Detect the closed state and hide our wrapper.
+		if not self.sharedDropdown.dropped then
+			self.sharedDropdown.shown = false
+			self.activeDropdownTL = nil
+			return self
+		end
 		if result then return self end
-		-- Click outside the dropdown: close it
 		if key == "LEFTBUTTON" then
 			self.sharedDropdown.shown = false
 			self.sharedDropdown.dropped = false
