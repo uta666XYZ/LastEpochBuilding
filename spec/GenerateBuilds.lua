@@ -25,20 +25,23 @@ end
 
 local function formatXmlFile(filepath)
     local command = "xmllint --c14n " .. filepath
-
-    -- Open the command process for reading ('r')
     local handle = io.popen(command, 'r')
-    if not handle then
-        return nil, "Failed to run xmllint. Is it installed and in your PATH?"
+    local result = handle and handle:read("*a") or ""
+    if handle then handle:close() end
+
+    if not result or result == "" then
+        local srcHnd = io.open(filepath, "r")
+        if srcHnd then
+            result = srcHnd:read("*a")
+            srcHnd:close()
+        end
     end
 
-    -- Read the entire output from the command
-    local result = handle:read("*a")
-    handle:close()
-
-    local fileHnd, errMsg = io.open(filepath:gsub("-unformatted", ""), "w")
-    fileHnd:write(result)
-    fileHnd:close()
+    local fileHnd = io.open(filepath:gsub("-unformatted", ""), "w")
+    if fileHnd then
+        fileHnd:write(result)
+        fileHnd:close()
+    end
 end
 
 function buildTable(tableName, values, string)
