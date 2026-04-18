@@ -2318,6 +2318,17 @@ function CraftingPopupClass:DrawItemCards(areaX, areaY, areaW, areaH, mx, my)
 			DrawImage(nil, cx+IC_W-1, cy,    1, IC_H)
 		end
 	end
+
+	-- Scrollbar
+	if maxScroll > 0 then
+		local sbX = areaX + areaW + 2
+		local thH = m_max(20, m_floor(areaH * areaH / totalH))
+		local thY = areaY + m_floor((areaH - thH) * self.rightScrollY / maxScroll)
+		SetDrawColor(0.15, 0.15, 0.15)
+		DrawImage(nil, sbX, areaY, 4, areaH)
+		SetDrawColor(0.50, 0.45, 0.30)
+		DrawImage(nil, sbX, thY, 4, thH)
+	end
 end
 
 -- Draw affix cards in the right panel (list or card view)
@@ -2427,11 +2438,13 @@ function CraftingPopupClass:DrawAffixCards(areaX, areaY, areaW, areaH, mx, my)
 				nameCol .. (entry.affix or entry.label or ""))
 
 			if cardMode then
-				-- Row 2: modifier description (abbreviated, gray)
+				-- Row 2: first stat from modifier description (gray)
 				local desc = entry.label or ""
 				desc = desc:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
-				if #desc > 36 then desc = desc:sub(1, 34) .. ".." end
-				DrawString(nameX, cy + 22, "LEFT", 11, "VAR", "^8" .. desc)
+				-- For multi-stat affixes show only first part (before " / ")
+				local firstPart = desc:match("^(.-)%s*/%s*.+$") or desc
+				if #firstPart > 55 then firstPart = firstPart:sub(1, 53) .. ".." end
+				DrawString(nameX, cy + 22, "LEFT", 11, "VAR", "^8" .. firstPart)
 
 				-- Row 3: tier badge row right-aligned
 				local maxT     = entry.maxTier or 0
@@ -2542,7 +2555,8 @@ function CraftingPopupClass:ProcessInput(inputEvents, viewPort)
 				if mx >= tlX and mx < tlX + tlW and my >= tlY and my < tlY + tlH then
 					self.typeScrollY = self.typeScrollY + TYPE_ROW_H * 3
 				elseif mx >= px + RP_X and mx < px + pw then
-					self.rightScrollY = self.rightScrollY + AC_H * 3
+					local rowStep = (self.rightTab ~= "item" and self.affixViewMode == "card") and 54 or AC_H
+					self.rightScrollY = self.rightScrollY + rowStep * 3
 				end
 			elseif event.key == "WHEELUP" then
 				local tlX = px + 4
@@ -2552,7 +2566,8 @@ function CraftingPopupClass:ProcessInput(inputEvents, viewPort)
 				if mx >= tlX and mx < tlX + tlW and my >= tlY and my < tlY + tlH then
 					self.typeScrollY = self.typeScrollY - TYPE_ROW_H * 3
 				elseif mx >= px + RP_X and mx < px + pw then
-					self.rightScrollY = self.rightScrollY - AC_H * 3
+					local rowStep = (self.rightTab ~= "item" and self.affixViewMode == "card") and 54 or AC_H
+					self.rightScrollY = self.rightScrollY - rowStep * 3
 				end
 			end
 		end
