@@ -1,5 +1,6 @@
 {
   "Refuge Helmet": {
+    "legacy": true,
     "type": "Helmet",
     "baseTypeID": 0,
     "subTypeID": 0,
@@ -12,6 +13,7 @@
     ]
   },
   "Jewelled Circlet": {
+    "legacy": true,
     "type": "Helmet",
     "baseTypeID": 0,
     "subTypeID": 1,
@@ -26,6 +28,7 @@
     ]
   },
   "Iron Casque": {
+    "legacy": true,
     "type": "Helmet",
     "baseTypeID": 0,
     "subTypeID": 2,
@@ -38,6 +41,7 @@
     ]
   },
   "Wolf Helmet": {
+    "legacy": true,
     "type": "Helmet",
     "baseTypeID": 0,
     "subTypeID": 3,
@@ -51,6 +55,7 @@
     ]
   },
   "Dome Cap": {
+    "legacy": true,
     "type": "Helmet",
     "baseTypeID": 0,
     "subTypeID": 4,
@@ -63,6 +68,7 @@
     ]
   },
   "Bronze Casque": {
+    "legacy": true,
     "type": "Helmet",
     "baseTypeID": 0,
     "subTypeID": 5,
@@ -75,6 +81,7 @@
     ]
   },
   "Gladiator Helmet": {
+    "legacy": true,
     "type": "Helmet",
     "baseTypeID": 0,
     "subTypeID": 6,
@@ -87,6 +94,7 @@
     ]
   },
   "Forest Helmet": {
+    "legacy": true,
     "type": "Helmet",
     "baseTypeID": 0,
     "subTypeID": 7,
@@ -108,7 +116,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+6 Armor"
-    ]
+    ],
+    "classReq": 8
   },
   "Bone Mask": {
     "type": "Helmet",
@@ -121,7 +130,8 @@
     "implicits": [
       "+13 Armor",
       "+(5-19)% Poison Resistance"
-    ]
+    ],
+    "classReq": 8
   },
   "Skull Cage": {
     "type": "Helmet",
@@ -134,7 +144,8 @@
     "implicits": [
       "+9 Armor",
       "{rounding:Integer}+(2-3) Spell Damage"
-    ]
+    ],
+    "classReq": 8
   },
   "Death Mask": {
     "type": "Helmet",
@@ -146,7 +157,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+61 Armor"
-    ]
+    ],
+    "classReq": 8
   },
   "Fiend Cowl": {
     "type": "Helmet",
@@ -159,7 +171,8 @@
     "implicits": [
       "+49 Armor",
       "+(7-41)% Necrotic Resistance"
-    ]
+    ],
+    "classReq": 8
   },
   "Burial Mask": {
     "type": "Helmet",
@@ -172,7 +185,8 @@
     "implicits": [
       "+151 Armor",
       "+(11-15)% Endurance"
-    ]
+    ],
+    "classReq": 8
   },
   "Profane Crown": {
     "type": "Helmet",
@@ -186,7 +200,8 @@
       "+129 Armor",
       "(9-23)% increased Area for Area Skills",
       "(9-23)% increased area for Minion Area Skills"
-    ]
+    ],
+    "classReq": 8
   },
   "Revenant Mask": {
     "type": "Helmet",
@@ -200,7 +215,8 @@
       "+163 Armor",
       "+(11-16)% Endurance",
       "(11-16)% reduced Bonus Damage Taken from Critical Strikes"
-    ]
+    ],
+    "classReq": 8
   },
   "Copper Circlet": {
     "type": "Helmet",
@@ -212,7 +228,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+8 Armor"
-    ]
+    ],
+    "classReq": 2
   },
   "Adept Helm": {
     "type": "Helmet",
@@ -224,7 +241,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+20 Armor"
-    ]
+    ],
+    "classReq": 2
   },
   "Keeper Helm": {
     "type": "Helmet",
@@ -237,7 +255,8 @@
     "implicits": [
       "+28 Armor",
       "{rounding:Integer}+(6-28) Mana"
-    ]
+    ],
+    "classReq": 2
   },
   "Temple Veil": {
     "type": "Helmet",
@@ -250,7 +269,8 @@
     "implicits": [
       "+35 Armor",
       "{rounding:Integer}+(3-15) Ward per Second"
-    ]
+    ],
+    "classReq": 2
   },
   "Lunar Helm": {
     "type": "Helmet",
@@ -263,7 +283,8 @@
     "implicits": [
       "+63 Armor",
       "{rounding:Integer}(9-18)% increased Mana Regen"
-    ]
+    ],
+    "classReq": 2
   },
   "Mystic Helm": {
     "type": "Helmet",
@@ -276,7 +297,8 @@
     "implicits": [
       "+184 Armor",
       "+(20-40)% Critical Strike Avoidance"
-    ]
+    ],
+    "classReq": 2
   },
   "Celestial Helm": {
     "type": "Helmet",
@@ -289,7 +311,8 @@
     "implicits": [
       "+96 Armor",
       "(40-72)% increased Critical Strike Chance"
-    ]
+    ],
+    "classReq": 2
   },
   "Runed Visage": {
     "type": "Helmet",
@@ -303,7 +326,8 @@
       "+77 Armor",
       "(30-77)% of Mana Spent Gained as Ward",
       "{rounding:Integer}(14-30)% increased Mana Regen"
-    ]
+    ],
+    "classReq": 2
   },
   "Oak Helm": {
     "type": "Helmet",
@@ -315,7 +339,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+15 Armor"
-    ]
+    ],
+    "classReq": 1
   },
   "Wolf Pelt": {
     "type": "Helmet",
@@ -328,7 +353,8 @@
     "implicits": [
       "+18 Armor",
       "{rounding:Integer}+(1-4) Strength"
-    ]
+    ],
+    "classReq": 1
   },
   "Forest Cowl": {
     "type": "Helmet",
@@ -342,7 +368,8 @@
       "+36 Armor",
       "{rounding:Integer}(10-16)% increased Health Regen",
       "{rounding:Integer}(10-16)% increased Mana Regen"
-    ]
+    ],
+    "classReq": 1
   },
   "Chitin Helm": {
     "type": "Helmet",
@@ -355,7 +382,8 @@
     "implicits": [
       "+86 Armor",
       "+(10-40)% Poison Resistance"
-    ]
+    ],
+    "classReq": 1
   },
   "Raptor Helm": {
     "type": "Helmet",
@@ -369,7 +397,8 @@
       "+65 Armor",
       "+(2-3)% Critical Strike Chance",
       "+(2-3)% Minion Critical Strike Chance"
-    ]
+    ],
+    "classReq": 1
   },
   "Icewolf Pelt": {
     "type": "Helmet",
@@ -383,7 +412,8 @@
       "+84 Armor",
       "+(32-44)% Cold Resistance",
       "+(104-208)% Freeze Rate Multiplier"
-    ]
+    ],
+    "classReq": 1
   },
   "Darkwolf Pelt": {
     "type": "Helmet",
@@ -397,7 +427,8 @@
       "+84 Armor",
       "{rounding:Integer}(32-64)% increased Physical Damage",
       "{rounding:Integer}(32-64)% increased Minion Physical Damage"
-    ]
+    ],
+    "classReq": 1
   },
   "Greatwood Visage": {
     "type": "Helmet",
@@ -411,7 +442,8 @@
       "+142 Armor",
       "{rounding:Integer}+(24-64) Mana",
       "{rounding:Integer}(14-32)% increased Mana Regen"
-    ]
+    ],
+    "classReq": 1
   },
   "Leather Helm": {
     "type": "Helmet",
@@ -423,7 +455,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+35 Armor"
-    ]
+    ],
+    "classReq": 4
   },
   "Infantry Helm": {
     "type": "Helmet",
@@ -435,7 +468,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+40 Armor"
-    ]
+    ],
+    "classReq": 4
   },
   "Iron Visor": {
     "type": "Helmet",
@@ -448,7 +482,8 @@
     "implicits": [
       "+56 Armor",
       "(10-25)% Increased Stun Chance"
-    ]
+    ],
+    "classReq": 4
   },
   "Full Helm": {
     "type": "Helmet",
@@ -460,7 +495,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+95 Armor"
-    ]
+    ],
+    "classReq": 4
   },
   "Winged Helm": {
     "type": "Helmet",
@@ -473,7 +509,8 @@
     "implicits": [
       "+110 Armor",
       "(5-8)% increased Movement Speed"
-    ]
+    ],
+    "classReq": 4
   },
   "Myrmidon Helm": {
     "type": "Helmet",
@@ -486,7 +523,8 @@
     "implicits": [
       "+125 Armor",
       "+(10-25)% Critical Strike Multiplier"
-    ]
+    ],
+    "classReq": 4
   },
   "Augury Helm": {
     "type": "Helmet",
@@ -500,7 +538,8 @@
       "+260 Armor",
       "(6-10)% Increased Cooldown Recovery Speed",
       "+(16-42)% Void Resistance"
-    ]
+    ],
+    "classReq": 4
   },
   "Solarum Greathelm": {
     "type": "Helmet",
@@ -514,7 +553,8 @@
       "+365 Armor",
       "{rounding:Integer}+(15-75) Endurance Threshold",
       "{rounding:Integer}(15-75)% increased Fire Damage"
-    ]
+    ],
+    "classReq": 4
   },
   "Tyrant Crown": {
     "type": "Helmet",
@@ -527,7 +567,8 @@
     "implicits": [
       "+130 Armor",
       "(1-3)% of Elemental Damage Leeched as Health"
-    ]
+    ],
+    "classReq": 2
   },
   "Tusked Greathelm": {
     "type": "Helmet",
@@ -541,7 +582,8 @@
       "+124 Armor",
       "{rounding:Integer}(6-12)% increased Health",
       "(2-3)% of Damage Leeched as Health on Hit"
-    ]
+    ],
+    "classReq": 1
   },
   "Cloth Hood": {
     "type": "Helmet",
@@ -553,7 +595,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+14 Armor"
-    ]
+    ],
+    "classReq": 16
   },
   "Leather Mask": {
     "type": "Helmet",
@@ -566,7 +609,8 @@
     "implicits": [
       "+9 Armor",
       "+(15-26)% Poison Resistance"
-    ]
+    ],
+    "classReq": 16
   },
   "Bandit Helm": {
     "type": "Helmet",
@@ -578,7 +622,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+32 Armor"
-    ]
+    ],
+    "classReq": 16
   },
   "Outcast Hat": {
     "type": "Helmet",
@@ -592,7 +637,8 @@
       "+27 Armor",
       "(5-7)% increased Bow Attack Speed",
       "(5-7)% increased Throwing Attack Speed"
-    ]
+    ],
+    "classReq": 16
   },
   "Horned Helm": {
     "type": "Helmet",
@@ -606,7 +652,8 @@
       "+62 Armor",
       "+(6-18)% Physical Resistance",
       "{rounding:Integer}(6-18)% increased Physical Damage"
-    ]
+    ],
+    "classReq": 16
   },
   "Umbral Hood": {
     "type": "Helmet",
@@ -619,7 +666,8 @@
     "implicits": [
       "+81 Armor",
       "{rounding:Integer}+(54-81) Stun Avoidance"
-    ]
+    ],
+    "classReq": 16
   },
   "Exile Hat": {
     "type": "Helmet",
@@ -633,7 +681,8 @@
       "+56 Armor",
       "{rounding:Integer}(35-65)% increased Bow Damage",
       "{rounding:Integer}(35-65)% increased Throwing Damage"
-    ]
+    ],
+    "classReq": 16
   },
   "Pinnacle Helm": {
     "type": "Helmet",
@@ -646,7 +695,8 @@
     "implicits": [
       "+142 Armor",
       "(1-2)% of Damage Leeched as Health"
-    ]
+    ],
+    "classReq": 16
   },
   "Falconry Helm": {
     "type": "Helmet",
@@ -660,7 +710,8 @@
       "+108 Armor",
       "{rounding:Integer}+(3-6) Dexterity",
       "{rounding:Integer}+(12-24) Melee and Throwing Damage for your Falcon"
-    ]
+    ],
+    "classReq": 16
   },
   "Necropolis Helm": {
     "type": "Helmet",
@@ -674,7 +725,8 @@
       "+143 Armor",
       "{rounding:Integer}+(66-173) Ward Decay Threshold",
       "{rounding:Integer}(6-17) Ward Gain on Kill"
-    ]
+    ],
+    "classReq": 8
   },
   "Terror Crown": {
     "type": "Helmet",
@@ -688,7 +740,8 @@
       "+313 Armor",
       "{rounding:Integer}+(1-7) Vitality",
       "(13-130)% increased Echo Damage when a skill is Echoed"
-    ]
+    ],
+    "classReq": 4
   },
   "Avian Helm": {
     "type": "Helmet",
@@ -701,7 +754,8 @@
     "implicits": [
       "+22 Armor",
       "(11-33)% Increased Stun Chance"
-    ]
+    ],
+    "classReq": 1
   },
   "Kolheim Cowl": {
     "type": "Helmet",
@@ -714,7 +768,8 @@
     "implicits": [
       "+72 Armor",
       "+(21-43)% Fire Resistance"
-    ]
+    ],
+    "classReq": 1
   },
   "Meruna Helm": {
     "type": "Helmet",
@@ -727,7 +782,8 @@
     "implicits": [
       "+265 Armor",
       "+(25-45)% Lightning Resistance"
-    ]
+    ],
+    "classReq": 1
   },
   "Ancestral Crown": {
     "type": "Helmet",
@@ -741,7 +797,8 @@
       "+116 Armor",
       "+(11-16)% Endurance",
       "(6-10)% of Maximum Health gained as Endurance Threshold"
-    ]
+    ],
+    "classReq": 1
   },
   "Weathered Crown": {
     "type": "Helmet",
@@ -754,7 +811,8 @@
     "implicits": [
       "+14 Armor",
       "{rounding:Integer}(14-34)% increased Spell Damage"
-    ]
+    ],
+    "classReq": 2
   },
   "Arcane Visage": {
     "type": "Helmet",
@@ -768,7 +826,8 @@
       "+117 Armor",
       "(7-15)% Increased Cooldown Recovery Speed",
       "{rounding:Integer}(7-15)% increased Mana"
-    ]
+    ],
+    "classReq": 2
   },
   "Arena Helm": {
     "type": "Helmet",
@@ -781,7 +840,8 @@
     "implicits": [
       "+50 Armor",
       "+(10-20)% Fire Resistance"
-    ]
+    ],
+    "classReq": 4
   },
   "Spiked Helm": {
     "type": "Helmet",
@@ -795,7 +855,8 @@
       "+70 Armor",
       "+(12-27)% Physical Resistance",
       "{rounding:Integer}(12-27)% increased Physical Damage"
-    ]
+    ],
+    "classReq": 4
   },
   "Leonine Greathelm": {
     "type": "Helmet",
@@ -808,7 +869,8 @@
     "implicits": [
       "+550 Armor",
       "(50-85)% reduced Bonus Damage Taken from Critical Strikes"
-    ]
+    ],
+    "classReq": 4
   },
   "Witch Hat": {
     "type": "Helmet",
@@ -821,7 +883,8 @@
     "implicits": [
       "+26 Armor",
       "{rounding:Integer}(13-19)% increased Mana Regen"
-    ]
+    ],
+    "classReq": 8
   },
   "Coven Hat": {
     "type": "Helmet",
@@ -835,7 +898,8 @@
       "+66 Armor",
       "{rounding:Integer}+(13-33) Mana",
       "{rounding:Integer}(13-33)% increased Mana Regen"
-    ]
+    ],
+    "classReq": 8
   },
   "Immortal Crown": {
     "type": "Helmet",
@@ -849,7 +913,8 @@
       "+137 Armor",
       "(7-13)% Increased Cooldown Recovery Speed",
       "(13-23)% increased Minion Cooldown Recovery Speed"
-    ]
+    ],
+    "classReq": 8
   },
   "Grolehide Hood": {
     "type": "Helmet",
@@ -862,7 +927,8 @@
     "implicits": [
       "+44 Armor",
       "(10-20)% increased Critical Strike Chance"
-    ]
+    ],
+    "classReq": 16
   },
   "Scalebane Grimace": {
     "type": "Helmet",
@@ -876,7 +942,8 @@
       "+95 Armor",
       "+(15-35)% Poison Resistance",
       "+(15-35)% Fire Resistance"
-    ]
+    ],
+    "classReq": 16
   },
   "Blood Visage": {
     "type": "Helmet",
@@ -890,7 +957,8 @@
       "+115 Armor",
       "{rounding:Integer}(50-95)% increased Damage Over Time",
       "(10-25)% Increased Bleed Duration "
-    ]
+    ],
+    "classReq": 16
   },
   "Dragon Visage": {
     "type": "Helmet",
@@ -904,7 +972,8 @@
       "+126 Armor",
       "+(27-45)% Fire Resistance",
       "+(18-36)% Critical Strike Multiplier"
-    ]
+    ],
+    "classReq": 16
   },
   "Gorgonscale Coif": {
     "type": "Helmet",
@@ -918,7 +987,8 @@
       "+152 Armor",
       "(5-12)% Increased Cooldown Recovery Speed",
       "(52-86)% Increased Stun Chance"
-    ]
+    ],
+    "classReq": 16
   },
   "Raven Crown": {
     "type": "Helmet",
@@ -932,7 +1002,8 @@
       "+115 Armor",
       "{rounding:Integer}+(10-15) Spell Damage",
       "{rounding:Integer}+(10-15) Minion Spell Damage"
-    ]
+    ],
+    "classReq": 8
   },
   "Refuge Armor": {
     "type": "Body Armor",
@@ -1021,6 +1092,7 @@
     ]
   },
   "Forest Cuirass": {
+    "legacy": true,
     "type": "Body Armor",
     "baseTypeID": 1,
     "subTypeID": 7,
@@ -1043,7 +1115,8 @@
     "affixEffectModifier": 0.5,
     "implicits": [
       "+17 Armor"
-    ]
+    ],
+    "classReq": 8
   },
   "Heretic Garb": {
     "type": "Body Armor",
@@ -1055,7 +1128,8 @@
     "affixEffectModifier": 0.5,
     "implicits": [
       "+23 Armor"
-    ]
+    ],
+    "classReq": 8
   },
   "Initiate Robes": {
     "type": "Body Armor",
@@ -1068,7 +1142,8 @@
     "implicits": [
       "+26 Armor",
       "{rounding:Integer}+(13-26) Mana"
-    ]
+    ],
+    "classReq": 8
   },
   "Ribbed Cuirass": {
     "type": "Body Armor",
@@ -1080,7 +1155,8 @@
     "affixEffectModifier": 0.5,
     "implicits": [
       "+79 Armor"
-    ]
+    ],
+    "classReq": 8
   },
   "Fiend Robes": {
     "type": "Body Armor",
@@ -1093,7 +1169,8 @@
     "implicits": [
       "+96 Armor",
       "+(19-36)% Fire Resistance"
-    ]
+    ],
+    "classReq": 8
   },
   "Burial Plate": {
     "type": "Body Armor",
@@ -1107,7 +1184,8 @@
       "+257 Armor",
       "+(23-39)% Cold Resistance",
       "{rounding:Integer}+(57-139) Stun Avoidance"
-    ]
+    ],
+    "classReq": 8
   },
   "Profane Regalia": {
     "type": "Body Armor",
@@ -1121,7 +1199,8 @@
       "+191 Armor",
       "(37-61)% increased Critical Strike Chance",
       "(37-61)% increased Minion Critical Strike Chance"
-    ]
+    ],
+    "classReq": 8
   },
   "Revenant Plate": {
     "type": "Body Armor",
@@ -1134,7 +1213,8 @@
     "implicits": [
       "+279 Armor",
       "(3-6)% of Maximum Health gained as Endurance Threshold"
-    ]
+    ],
+    "classReq": 8
   },
   "Traveling Coat": {
     "type": "Body Armor",
@@ -1146,7 +1226,8 @@
     "affixEffectModifier": 0.5,
     "implicits": [
       "+18 Armor"
-    ]
+    ],
+    "classReq": 2
   },
   "Adept Robes": {
     "type": "Body Armor",
@@ -1159,7 +1240,8 @@
     "implicits": [
       "+24 Armor",
       "{rounding:Integer}(6-18)% increased Elemental Damage"
-    ]
+    ],
+    "classReq": 2
   },
   "Archive Robes": {
     "type": "Body Armor",
@@ -1172,7 +1254,8 @@
     "implicits": [
       "+41 Armor",
       "+(11-24)% Void Resistance"
-    ]
+    ],
+    "classReq": 2
   },
   "Temple Garb": {
     "type": "Body Armor",
@@ -1185,7 +1268,8 @@
     "implicits": [
       "+48 Armor",
       "{rounding:Integer}+(30-60) Ward Decay Threshold"
-    ]
+    ],
+    "classReq": 2
   },
   "Opulent Robes": {
     "type": "Body Armor",
@@ -1199,7 +1283,8 @@
       "+64 Armor",
       "{rounding:Integer}+(12-48) Mana",
       "{rounding:Integer}(16-24)% increased Mana Regen"
-    ]
+    ],
+    "classReq": 2
   },
   "Mystic Plate": {
     "type": "Body Armor",
@@ -1212,7 +1297,8 @@
     "implicits": [
       "+324 Armor",
       "+(20-40)% Critical Strike Avoidance"
-    ]
+    ],
+    "classReq": 2
   },
   "Celestial Raiment": {
     "type": "Body Armor",
@@ -1226,7 +1312,8 @@
       "+135 Armor",
       "+(15-30)% Critical Strike Multiplier",
       "+(75-215)% Freeze Rate Multiplier"
-    ]
+    ],
+    "classReq": 2
   },
   "Vul'kaur Regalia": {
     "type": "Body Armor",
@@ -1252,7 +1339,8 @@
     "affixEffectModifier": 0.5,
     "implicits": [
       "+20 Armor"
-    ]
+    ],
+    "classReq": 1
   },
   "Oak Armor": {
     "type": "Body Armor",
@@ -1264,7 +1352,8 @@
     "affixEffectModifier": 0.5,
     "implicits": [
       "+32 Armor"
-    ]
+    ],
+    "classReq": 1
   },
   "Forest Garb": {
     "type": "Body Armor",
@@ -1277,7 +1366,8 @@
     "implicits": [
       "+42 Armor",
       "{rounding:Integer}+(3-7) Health Regen"
-    ]
+    ],
+    "classReq": 1
   },
   "Icewolf Garb": {
     "type": "Body Armor",
@@ -1291,7 +1381,8 @@
       "+78 Armor",
       "+(14-28)% Cold Resistance",
       "{rounding:Integer}(28-56)% increased Cold Damage"
-    ]
+    ],
+    "classReq": 1
   },
   "Shamanic Garb": {
     "type": "Body Armor",
@@ -1305,7 +1396,8 @@
       "+136 Armor",
       "{rounding:Integer}+(2-6) Attunement",
       "{rounding:Integer}(36-60)% increased Minion Damage"
-    ]
+    ],
+    "classReq": 1
   },
   "Kolheim Armor": {
     "type": "Body Armor",
@@ -1318,7 +1410,8 @@
     "implicits": [
       "+180 Armor",
       "+(32-46)% Physical Resistance"
-    ]
+    ],
+    "classReq": 1
   },
   "Meruna Carapace": {
     "type": "Body Armor",
@@ -1331,7 +1424,8 @@
     "implicits": [
       "+372 Armor",
       "{rounding:Integer}+(72-372) Stun Avoidance"
-    ]
+    ],
+    "classReq": 1
   },
   "Greatwood Coat": {
     "type": "Body Armor",
@@ -1345,7 +1439,8 @@
       "+185 Armor",
       "{rounding:Integer}+(8-15) Spell Damage",
       "{rounding:Integer}+(8-15) Minion Spell Damage"
-    ]
+    ],
+    "classReq": 1
   },
   "Ringmail Hauberk": {
     "type": "Body Armor",
@@ -1357,7 +1452,8 @@
     "affixEffectModifier": 0.5,
     "implicits": [
       "+50 Armor"
-    ]
+    ],
+    "classReq": 4
   },
   "Infantry Hauberk": {
     "type": "Body Armor",
@@ -1369,7 +1465,8 @@
     "affixEffectModifier": 0.5,
     "implicits": [
       "+65 Armor"
-    ]
+    ],
+    "classReq": 4
   },
   "Iron Cuirass": {
     "type": "Body Armor",
@@ -1382,7 +1479,8 @@
     "implicits": [
       "+100 Armor",
       "+(5-15)% Cold Resistance"
-    ]
+    ],
+    "classReq": 4
   },
   "Full Plate": {
     "type": "Body Armor",
@@ -1394,7 +1492,8 @@
     "affixEffectModifier": 0.5,
     "implicits": [
       "+165 Armor"
-    ]
+    ],
+    "classReq": 4
   },
   "Noble Plate": {
     "type": "Body Armor",
@@ -1407,7 +1506,8 @@
     "implicits": [
       "+240 Armor",
       "+(12-36)% Lightning Resistance"
-    ]
+    ],
+    "classReq": 4
   },
   "Myrmidon Plate": {
     "type": "Body Armor",
@@ -1420,7 +1520,8 @@
     "implicits": [
       "+280 Armor",
       "(25-60)% increased Critical Strike Chance"
-    ]
+    ],
+    "classReq": 4
   },
   "Augury Plate": {
     "type": "Body Armor",
@@ -1433,7 +1534,8 @@
     "implicits": [
       "+475 Armor",
       "{rounding:Integer}(18-35)% increased Mana Regen"
-    ]
+    ],
+    "classReq": 4
   },
   "Solarum Plate": {
     "type": "Body Armor",
@@ -1447,7 +1549,8 @@
       "+420 Armor",
       "+(10-15)% Endurance",
       "{rounding:Integer}(20-80)% increased Fire Damage"
-    ]
+    ],
+    "classReq": 4
   },
   "Apocalypse Plate": {
     "type": "Body Armor",
@@ -1461,7 +1564,8 @@
       "+513 Armor",
       "{rounding:Integer}+(113-253) Stun Avoidance",
       "(13-130)% increased Echo Damage when a skill is Echoed"
-    ]
+    ],
+    "classReq": 4
   },
   "Tyrant Regalia": {
     "type": "Body Armor",
@@ -1475,7 +1579,8 @@
       "+147 Armor",
       "(5-14)% increased Cast Speed",
       "{rounding:Integer}+(5-14) Spell Damage"
-    ]
+    ],
+    "classReq": 2
   },
   "Ancestral Garb": {
     "type": "Body Armor",
@@ -1489,7 +1594,8 @@
       "+172 Armor",
       "{rounding:Integer}(6-12)% increased Health",
       "(6-12)% Increased Cooldown Recovery Speed"
-    ]
+    ],
+    "classReq": 1
   },
   "Cloth Armor": {
     "type": "Body Armor",
@@ -1501,7 +1607,8 @@
     "affixEffectModifier": 0.5,
     "implicits": [
       "+24 Armor"
-    ]
+    ],
+    "classReq": 16
   },
   "Leather Hauberk": {
     "type": "Body Armor",
@@ -1513,7 +1620,8 @@
     "affixEffectModifier": 0.5,
     "implicits": [
       "+33 Armor"
-    ]
+    ],
+    "classReq": 16
   },
   "Bandit Garb": {
     "type": "Body Armor",
@@ -1526,7 +1634,8 @@
     "implicits": [
       "+40 Armor",
       "{rounding:Integer}(10-18)% increased Physical Damage"
-    ]
+    ],
+    "classReq": 16
   },
   "Outcast Coat": {
     "type": "Body Armor",
@@ -1539,7 +1648,8 @@
     "implicits": [
       "+64 Armor",
       "+(12-32)% Necrotic Resistance"
-    ]
+    ],
+    "classReq": 16
   },
   "Brigandine Armor": {
     "type": "Body Armor",
@@ -1552,7 +1662,8 @@
     "implicits": [
       "+105 Armor",
       "+(10-35)% Physical Resistance"
-    ]
+    ],
+    "classReq": 16
   },
   "Umbral Coat": {
     "type": "Body Armor",
@@ -1565,7 +1676,8 @@
     "implicits": [
       "+118 Armor",
       "(39-90)% Increased Damage for skills used by Shadows"
-    ]
+    ],
+    "classReq": 16
   },
   "Exile Coat": {
     "type": "Body Armor",
@@ -1579,7 +1691,8 @@
       "+94 Armor",
       "(14-34)% increased Critical Strike Chance",
       "{rounding:Integer}(14-34)% increased Dodge Rating"
-    ]
+    ],
+    "classReq": 16
   },
   "Elite Regalia": {
     "type": "Body Armor",
@@ -1593,7 +1706,8 @@
       "+175 Armor",
       "+(7-15)% Endurance",
       "{rounding:Integer}(15-25)% increased Mana Regen"
-    ]
+    ],
+    "classReq": 16
   },
   "Falconry Armor": {
     "type": "Body Armor",
@@ -1607,7 +1721,8 @@
       "+202 Armor",
       "{rounding:Integer}+(4-8) Dexterity",
       "{rounding:Integer}+(12-24) Melee and Throwing Damage for your Falcon"
-    ]
+    ],
+    "classReq": 16
   },
   "Necropolis Plate": {
     "type": "Body Armor",
@@ -1621,7 +1736,8 @@
       "+179 Armor",
       "{rounding:Integer}+(83-179) Ward Decay Threshold",
       "{rounding:Integer}(8-19) Ward Gain on Kill"
-    ]
+    ],
+    "classReq": 8
   },
   "Avian Garb": {
     "type": "Body Armor",
@@ -1634,7 +1750,8 @@
     "implicits": [
       "+38 Armor",
       "{rounding:Integer}+(1-4) Attunement"
-    ]
+    ],
+    "classReq": 1
   },
   "Chitin Carapace": {
     "type": "Body Armor",
@@ -1647,7 +1764,8 @@
     "implicits": [
       "+194 Armor",
       "+(4-9)% Endurance"
-    ]
+    ],
+    "classReq": 1
   },
   "Beastmail": {
     "type": "Body Armor",
@@ -1661,7 +1779,8 @@
       "+156 Armor",
       "(5-10)% increased Movement Speed",
       "{rounding:Integer}+(5-16) Health Regen"
-    ]
+    ],
+    "classReq": 1
   },
   "Keeper Raiment": {
     "type": "Body Armor",
@@ -1674,7 +1793,8 @@
     "implicits": [
       "+35 Armor",
       "{rounding:Integer}(10-15)% increased Mana Regen"
-    ]
+    ],
+    "classReq": 2
   },
   "Lunar Raiment": {
     "type": "Body Armor",
@@ -1688,7 +1808,8 @@
       "+70 Armor",
       "+(7-35)% Cold Resistance",
       "+(7-35)% Lightning Resistance"
-    ]
+    ],
+    "classReq": 2
   },
   "Arcane Regalia": {
     "type": "Body Armor",
@@ -1702,7 +1823,8 @@
       "+196 Armor",
       "{rounding:Integer}(7-14)% increased Mana",
       "{rounding:Integer}(21-42)% increased Mana Regen"
-    ]
+    ],
+    "classReq": 2
   },
   "Worn Plate": {
     "type": "Body Armor",
@@ -1714,7 +1836,8 @@
     "affixEffectModifier": 0.5,
     "implicits": [
       "+75 Armor"
-    ]
+    ],
+    "classReq": 4
   },
   "Forge Plate": {
     "type": "Body Armor",
@@ -1727,7 +1850,8 @@
     "implicits": [
       "+210 Armor",
       "+(21-35)% Physical Resistance"
-    ]
+    ],
+    "classReq": 4
   },
   "Champion Regalia": {
     "type": "Body Armor",
@@ -1740,7 +1864,8 @@
     "implicits": [
       "+700 Armor",
       "(10-17)% of Armor Mitigation also applies to Damage over Time"
-    ]
+    ],
+    "classReq": 4
   },
   "Witch Robes": {
     "type": "Body Armor",
@@ -1753,7 +1878,8 @@
     "implicits": [
       "+53 Armor",
       "(7-13)% increased Cast Speed"
-    ]
+    ],
+    "classReq": 8
   },
   "Coven Robes": {
     "type": "Body Armor",
@@ -1767,7 +1893,8 @@
       "+83 Armor",
       "(8-15)% increased Cast Speed",
       "{rounding:Integer}(15-29)% increased Mana Regen"
-    ]
+    ],
+    "classReq": 8
   },
   "Immortal Regalia": {
     "type": "Body Armor",
@@ -1781,7 +1908,8 @@
       "+213 Armor",
       "+(7-13)% to All Resistances",
       "+(7-13)% to Minion All Resistances"
-    ]
+    ],
+    "classReq": 8
   },
   "Grolehide Coat": {
     "type": "Body Armor",
@@ -1794,7 +1922,8 @@
     "implicits": [
       "+52 Armor",
       "{rounding:Integer}(12-20)% increased Mana Regen"
-    ]
+    ],
+    "classReq": 16
   },
   "Scalebane Coat": {
     "type": "Body Armor",
@@ -1808,7 +1937,8 @@
       "+154 Armor",
       "+(25-44)% Poison Resistance",
       "+(25-44)% Cold Resistance"
-    ]
+    ],
+    "classReq": 16
   },
   "Wyrmhide Coat": {
     "type": "Body Armor",
@@ -1822,7 +1952,8 @@
       "+168 Armor",
       "{rounding:Integer}(25-50)% increased Dodge Rating",
       "{rounding:Integer}(25-50)% increased Damage Over Time"
-    ]
+    ],
+    "classReq": 16
   },
   "Dragonhide Coat": {
     "type": "Body Armor",
@@ -1836,7 +1967,8 @@
       "+180 Armor",
       "+(25-38)% Critical Strike Avoidance",
       "+(2-3)% Critical Strike Chance"
-    ]
+    ],
+    "classReq": 16
   },
   "Gorgonscale Coat": {
     "type": "Body Armor",
@@ -1850,7 +1982,8 @@
       "+255 Armor",
       "(10-15)% Chance to receive a Glancing Blow when hit",
       "+(35-45)% Lightning Resistance"
-    ]
+    ],
+    "classReq": 16
   },
   "Sanguine Regalia": {
     "type": "Body Armor",
@@ -1864,7 +1997,8 @@
       "+261 Armor",
       "(1-2)% of Damage Leeched as Health",
       "(1-2)% of Minion Damage Leeched as Health"
-    ]
+    ],
+    "classReq": 8
   },
   "Sash": {
     "type": "Belt",
@@ -6750,7 +6884,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "{rounding:Integer}(13-19)% increased Spell Damage"
-    ]
+    ],
+    "classReq": 8
   },
   "Caged Souls": {
     "type": "Relic",
@@ -6763,7 +6898,8 @@
     "implicits": [
       "{rounding:Integer}(9-29) Ward Gained on Potion Use",
       "+(9-29)% Ward Retention"
-    ]
+    ],
+    "classReq": 8
   },
   "Homunculus Bile": {
     "type": "Relic",
@@ -6775,7 +6911,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(13-31)% Chance to Poison on Hit"
-    ]
+    ],
+    "classReq": 8
   },
   "Cursed Bones": {
     "type": "Relic",
@@ -6788,7 +6925,8 @@
     "implicits": [
       "+(13-45)% Fire Resistance",
       "{rounding:Integer}(13-63)% increased Curse Damage"
-    ]
+    ],
+    "classReq": 8
   },
   "Runed Bones": {
     "type": "Relic",
@@ -6802,7 +6940,8 @@
       "{rounding:Integer}(6-36)% increased Minion Damage",
       "(6-16)% increased Minion Movement Speed",
       "{rounding:Integer}(6-66)% increased Minion Health"
-    ]
+    ],
+    "classReq": 8
   },
   "Decaying Homunculus": {
     "type": "Relic",
@@ -6815,7 +6954,8 @@
     "implicits": [
       "{rounding:Integer}(31-61)% increased Necrotic Damage",
       "{rounding:Integer}(31-61)% increased Minion Necrotic Damage"
-    ]
+    ],
+    "classReq": 8
   },
   "Damned Souls": {
     "type": "Relic",
@@ -6828,7 +6968,8 @@
     "implicits": [
       "{rounding:Integer}(13-91)% increased Fire Damage",
       "{rounding:Integer}(13-91)% increased Minion Fire Damage"
-    ]
+    ],
+    "classReq": 8
   },
   "Homunculus Blood": {
     "type": "Relic",
@@ -6841,7 +6982,8 @@
     "implicits": [
       "+(13-41)% Chance to inflict Bleed on Hit",
       "+(13-41)% Chance to inflict Bleed on Minion Hit"
-    ]
+    ],
+    "classReq": 8
   },
   "Putrid Souls": {
     "type": "Relic",
@@ -6854,7 +6996,8 @@
     "implicits": [
       "+(31-45)% Poison Resistance",
       "{rounding:Integer}+(13-45) Ward per Second"
-    ]
+    ],
+    "classReq": 8
   },
   "Runic Scroll": {
     "type": "Relic",
@@ -6866,7 +7009,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "{rounding:Integer}+(2-3) Spell Damage"
-    ]
+    ],
+    "classReq": 2
   },
   "Arcane Quill": {
     "type": "Relic",
@@ -6878,7 +7022,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "{rounding:Integer}(3-5) Ward Gain on Kill"
-    ]
+    ],
+    "classReq": 2
   },
   "Third Eye": {
     "type": "Relic",
@@ -6892,7 +7037,8 @@
       "+(3-9)% Physical Resistance",
       "+(3-9)% Fire Resistance",
       "+(3-9)% Poison Resistance"
-    ]
+    ],
+    "classReq": 2
   },
   "Scrivening Quill": {
     "type": "Relic",
@@ -6904,7 +7050,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "{rounding:Integer}+(11-33) Ward per Second"
-    ]
+    ],
+    "classReq": 2
   },
   "Ancient Scroll": {
     "type": "Relic",
@@ -6918,7 +7065,8 @@
       "(6-12)% Increased Chill Duration ",
       "(6-12)% Increased Shock Duration ",
       "(6-12)% Increased Ignite Duration "
-    ]
+    ],
+    "classReq": 2
   },
   "Scrying Eye": {
     "type": "Relic",
@@ -6930,7 +7078,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(12-24)% Elemental Critical Strike Multiplier"
-    ]
+    ],
+    "classReq": 2
   },
   "Warding Scroll": {
     "type": "Relic",
@@ -6943,7 +7092,8 @@
     "implicits": [
       "{rounding:Integer}+(14-40) Mana",
       "(14-40)% of Mana Spent Gained as Ward"
-    ]
+    ],
+    "classReq": 2
   },
   "Rune Quill": {
     "type": "Relic",
@@ -6955,7 +7105,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "{rounding:Integer}(40-84)% increased Elemental Damage Over Time"
-    ]
+    ],
+    "classReq": 2
   },
   "Elder Eye": {
     "type": "Relic",
@@ -6969,7 +7120,8 @@
       "{rounding:Integer}(24-48)% increased Cold Damage",
       "+(12-24)% Chance to Chill on Hit",
       "+(120-240)% Freeze Rate Multiplier"
-    ]
+    ],
+    "classReq": 2
   },
   "Dream Catcher": {
     "type": "Relic",
@@ -6982,7 +7134,8 @@
     "implicits": [
       "{rounding:Integer}+(7-14) Health",
       "{rounding:Integer}(7-14)% increased Minion Health"
-    ]
+    ],
+    "classReq": 1
   },
   "Sage Antler": {
     "type": "Relic",
@@ -6995,7 +7148,8 @@
     "implicits": [
       "{rounding:Integer}(8-19)% increased Physical Damage",
       "{rounding:Integer}(8-19)% increased Minion Physical Damage"
-    ]
+    ],
+    "classReq": 1
   },
   "Living Seed": {
     "type": "Relic",
@@ -7008,7 +7162,8 @@
     "implicits": [
       "(1-2.4)% of Damage Leeched as Health on Hit",
       "(1-2.4)% of Minion Damage Leeched as Health on Hit"
-    ]
+    ],
+    "classReq": 1
   },
   "Ochre Antler": {
     "type": "Relic",
@@ -7020,7 +7175,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(11-15)% Endurance"
-    ]
+    ],
+    "classReq": 1
   },
   "Spriggan Seed": {
     "type": "Relic",
@@ -7034,7 +7190,8 @@
       "{rounding:Integer}(16-32)% increased Minion Damage",
       "(12-24)% Increased Companion Revive Range",
       "(12-24)% Increased Companion Revive Speed"
-    ]
+    ],
+    "classReq": 1
   },
   "Blood Catcher": {
     "type": "Relic",
@@ -7047,7 +7204,8 @@
     "implicits": [
       "+(24-40)% Chance to inflict Bleed on Hit",
       "(7-21)% Increased Aspect of the Shark Effect"
-    ]
+    ],
+    "classReq": 1
   },
   "Frostborn Seed": {
     "type": "Relic",
@@ -7060,7 +7218,8 @@
     "implicits": [
       "{rounding:Integer}+(4-8) Spell Cold Damage",
       "+(10-24)% Chance to cast Maelstrom every 3 seconds"
-    ]
+    ],
+    "classReq": 1
   },
   "Spirit Catcher": {
     "type": "Relic",
@@ -7073,7 +7232,8 @@
     "implicits": [
       "+(27-44)% Cold Resistance",
       "+(27-44)% Necrotic Resistance"
-    ]
+    ],
+    "classReq": 1
   },
   "Woad Antler": {
     "type": "Relic",
@@ -7086,7 +7246,8 @@
     "implicits": [
       "{rounding:Integer}+(4-10) Melee Cold Damage",
       "{rounding:Integer}+(4-10) Minion Melee Cold Damage"
-    ]
+    ],
+    "classReq": 1
   },
   "Sunrise Emblem": {
     "type": "Relic",
@@ -7098,7 +7259,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(8-16)% Chance to Ignite on Hit"
-    ]
+    ],
+    "classReq": 4
   },
   "Heretical Script": {
     "type": "Relic",
@@ -7111,7 +7273,8 @@
     "implicits": [
       "{rounding:Integer}(5-12)% increased Armor",
       "+(5-12)% Void Resistance"
-    ]
+    ],
+    "classReq": 4
   },
   "Mournful Pennant": {
     "type": "Relic",
@@ -7124,7 +7287,8 @@
     "implicits": [
       "{rounding:Integer}+(15-25) Health",
       "{rounding:Integer}(3-5) Health Gain on Melee Hit"
-    ]
+    ],
+    "classReq": 4
   },
   "Inscribed Tablet": {
     "type": "Relic",
@@ -7137,7 +7301,8 @@
     "implicits": [
       "{rounding:Integer}+(10-30) Mana",
       "-3 Melee Attack Mana Cost"
-    ]
+    ],
+    "classReq": 4
   },
   "Solarum Banner": {
     "type": "Relic",
@@ -7150,7 +7315,8 @@
     "implicits": [
       "+(2-5)% Block Chance",
       "{rounding:Integer}(2-5) Health Gain on Block"
-    ]
+    ],
+    "classReq": 4
   },
   "Solar Commandment": {
     "type": "Relic",
@@ -7163,7 +7329,8 @@
     "implicits": [
       "{rounding:Integer}(25-60)% increased Fire Damage",
       "(25-60)% Increased Healing Effectiveness"
-    ]
+    ],
+    "classReq": 4
   },
   "Argent Crest": {
     "type": "Relic",
@@ -7176,7 +7343,8 @@
     "implicits": [
       "+(30-45)% Cold Resistance",
       "+(30-45)% Lightning Resistance"
-    ]
+    ],
+    "classReq": 4
   },
   "Dread Banner": {
     "type": "Relic",
@@ -7189,7 +7357,8 @@
     "implicits": [
       "{rounding:Integer}(43-73)% increased Void Damage",
       "+(15-30)% Chance to apply Future Strike on Melee Hit"
-    ]
+    ],
+    "classReq": 4
   },
   "Tainted Effigy": {
     "type": "Relic",
@@ -7202,7 +7371,8 @@
     "implicits": [
       "{rounding:Integer}+(5-10) Melee Void Damage",
       "{rounding:Integer}+(5-10) Spell Void Damage"
-    ]
+    ],
+    "classReq": 4
   },
   "Ivory Dice": {
     "type": "Relic",
@@ -7214,7 +7384,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "(16-28)% increased Critical Strike Chance"
-    ]
+    ],
+    "classReq": 16
   },
   "Venom Phial": {
     "type": "Relic",
@@ -7226,7 +7397,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(10-22)% Chance to Poison on Hit"
-    ]
+    ],
+    "classReq": 16
   },
   "Weathered Coins": {
     "type": "Relic",
@@ -7238,7 +7410,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(16-40)% Chance to Shred Armor on Hit"
-    ]
+    ],
+    "classReq": 16
   },
   "Stolen Tithe": {
     "type": "Relic",
@@ -7251,7 +7424,8 @@
     "implicits": [
       "(1-2)% of Damage Leeched as Health on Hit",
       "(10-20)% increased Damage Leeched as Health"
-    ]
+    ],
+    "classReq": 16
   },
   "Oil Vial": {
     "type": "Relic",
@@ -7264,7 +7438,8 @@
     "implicits": [
       "{rounding:Integer}(26-44)% increased Fire Damage",
       "+(14-26)% Chance to Ignite on Hit"
-    ]
+    ],
+    "classReq": 16
   },
   "Jade Dice": {
     "type": "Relic",
@@ -7276,7 +7451,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "{rounding:Integer}(6-24)% increased Dodge Rating"
-    ]
+    ],
+    "classReq": 16
   },
   "Ruby Dice": {
     "type": "Relic",
@@ -7289,7 +7465,8 @@
     "implicits": [
       "+(36-42)% Fire Resistance",
       "+(6-36)% Chance to inflict Bleed on Hit"
-    ]
+    ],
+    "classReq": 16
   },
   "Antidote Vial": {
     "type": "Relic",
@@ -7302,7 +7479,8 @@
     "implicits": [
       "+(30-45)% Poison Resistance",
       "(30-60)% Increased Leech Rate"
-    ]
+    ],
+    "classReq": 16
   },
   "Ancient Coins": {
     "type": "Relic",
@@ -7315,7 +7493,8 @@
     "implicits": [
       "(10-100)% increased Critical Strike Chance",
       "{rounding:Integer}(3-6) Health Gain on Crit"
-    ]
+    ],
+    "classReq": 16
   },
   "Lost Anchor": {
     "type": "Relic",
@@ -7375,7 +7554,8 @@
     "affixEffectModifier": 0,
     "implicits": [
       "+(9-18)% Ward Retention"
-    ]
+    ],
+    "classReq": 2
   },
   "Stone Egg": {
     "type": "Relic",
@@ -7426,7 +7606,8 @@
     "weapon": {
       "AttackRateBase": 1.05,
       "Range": 1
-    }
+    },
+    "classReq": 16
   },
   "Birch Bow": {
     "type": "Bow",
@@ -7443,7 +7624,8 @@
     "weapon": {
       "AttackRateBase": 0.98,
       "Range": 1
-    }
+    },
+    "classReq": 16
   },
   "Salvaged Bow": {
     "type": "Bow",
@@ -7460,7 +7642,8 @@
     "weapon": {
       "AttackRateBase": 1.05,
       "Range": 1
-    }
+    },
+    "classReq": 16
   },
   "Imperial Bow": {
     "type": "Bow",
@@ -7477,7 +7660,8 @@
     "weapon": {
       "AttackRateBase": 0.95,
       "Range": 1
-    }
+    },
+    "classReq": 16
   },
   "Recurve Bow": {
     "type": "Bow",
@@ -7494,7 +7678,8 @@
     "weapon": {
       "AttackRateBase": 1.05,
       "Range": 1
-    }
+    },
+    "classReq": 16
   },
   "Northern Bow": {
     "type": "Bow",
@@ -7511,7 +7696,8 @@
     "weapon": {
       "AttackRateBase": 0.98,
       "Range": 1
-    }
+    },
+    "classReq": 16
   },
   "Longbow": {
     "type": "Bow",
@@ -7527,7 +7713,8 @@
     "weapon": {
       "AttackRateBase": 0.92,
       "Range": 1
-    }
+    },
+    "classReq": 16
   },
   "Dreadthorn Bow": {
     "type": "Bow",
@@ -7545,7 +7732,8 @@
     "weapon": {
       "AttackRateBase": 0.98,
       "Range": 1
-    }
+    },
+    "classReq": 16
   },
   "Serpent Bow": {
     "type": "Bow",
@@ -7563,7 +7751,8 @@
     "weapon": {
       "AttackRateBase": 1.05,
       "Range": 1
-    }
+    },
+    "classReq": 16
   },
   "Osprix Bow": {
     "type": "Bow",
@@ -7581,7 +7770,8 @@
     "weapon": {
       "AttackRateBase": 0.98,
       "Range": 1
-    }
+    },
+    "classReq": 16
   },
   "Obsidian Bow": {
     "type": "Bow",
@@ -7599,7 +7789,8 @@
     "weapon": {
       "AttackRateBase": 1.1,
       "Range": 1
-    }
+    },
+    "classReq": 16
   },
   "Storm Bow": {
     "type": "Bow",
@@ -7615,7 +7806,8 @@
     "weapon": {
       "AttackRateBase": 0.9,
       "Range": 1
-    }
+    },
+    "classReq": 16
   },
   "Aphelion Bow": {
     "type": "Bow",
@@ -7669,7 +7861,8 @@
     "weapon": {
       "AttackRateBase": 1.05,
       "Range": 1
-    }
+    },
+    "classReq": 16
   },
   "Avenged Silverwing Bow": {
     "type": "Bow",
@@ -7687,7 +7880,8 @@
     "weapon": {
       "AttackRateBase": 1.05,
       "Range": 1
-    }
+    },
+    "classReq": 16
   },
   "Small Eterran Idol": {
     "type": "Small Idol",
@@ -7720,6 +7914,7 @@
     "implicits": []
   },
   "Minor Lagonian Idol": {
+    "legacy": true,
     "type": "Minor Idol",
     "baseTypeID": 26,
     "subTypeID": 0,
@@ -7787,7 +7982,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.33,
-    "implicits": []
+    "implicits": [],
+    "classReq": 1
   },
   "Grand Glass Idol": {
     "type": "Grand Idol",
@@ -7797,7 +7993,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.33,
-    "implicits": []
+    "implicits": [],
+    "classReq": 2
   },
   "Grand Solar Idol": {
     "type": "Grand Idol",
@@ -7807,7 +8004,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.33,
-    "implicits": []
+    "implicits": [],
+    "classReq": 4
   },
   "Grand Bone Idol": {
     "type": "Grand Idol",
@@ -7817,7 +8015,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.33,
-    "implicits": []
+    "implicits": [],
+    "classReq": 8
   },
   "Grand Majasan Idol": {
     "type": "Grand Idol",
@@ -7827,7 +8026,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.33,
-    "implicits": []
+    "implicits": [],
+    "classReq": 16
   },
   "Heretical Grand Heorot Idol": {
     "type": "Grand Idol",
@@ -7837,7 +8037,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.33,
-    "implicits": []
+    "implicits": [],
+    "classReq": 1
   },
   "Heretical Grand Glass Idol": {
     "type": "Grand Idol",
@@ -7847,7 +8048,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.33,
-    "implicits": []
+    "implicits": [],
+    "classReq": 2
   },
   "Heretical Grand Solar Idol": {
     "type": "Grand Idol",
@@ -7857,7 +8059,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.33,
-    "implicits": []
+    "implicits": [],
+    "classReq": 4
   },
   "Heretical Grand Bone Idol": {
     "type": "Grand Idol",
@@ -7867,7 +8070,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.33,
-    "implicits": []
+    "implicits": [],
+    "classReq": 8
   },
   "Heretical Grand Majasan Idol": {
     "type": "Grand Idol",
@@ -7877,7 +8081,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.33,
-    "implicits": []
+    "implicits": [],
+    "classReq": 16
   },
   "Large Nomad Idol": {
     "type": "Large Idol",
@@ -7887,7 +8092,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.33,
-    "implicits": []
+    "implicits": [],
+    "classReq": 1
   },
   "Large Arcane Idol": {
     "type": "Large Idol",
@@ -7897,7 +8103,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.33,
-    "implicits": []
+    "implicits": [],
+    "classReq": 2
   },
   "Large Rahyeh Idol": {
     "type": "Large Idol",
@@ -7907,7 +8114,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.33,
-    "implicits": []
+    "implicits": [],
+    "classReq": 4
   },
   "Large Immortal Idol": {
     "type": "Large Idol",
@@ -7917,7 +8125,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.33,
-    "implicits": []
+    "implicits": [],
+    "classReq": 8
   },
   "Large Shadow Idol": {
     "type": "Large Idol",
@@ -7927,7 +8136,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.33,
-    "implicits": []
+    "implicits": [],
+    "classReq": 16
   },
   "Heretical Large Nomad Idol": {
     "type": "Large Idol",
@@ -7937,7 +8147,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.33,
-    "implicits": []
+    "implicits": [],
+    "classReq": 1
   },
   "Heretical Large Arcane Idol": {
     "type": "Large Idol",
@@ -7947,7 +8158,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.33,
-    "implicits": []
+    "implicits": [],
+    "classReq": 2
   },
   "Heretical Large Rahyeh Idol": {
     "type": "Large Idol",
@@ -7957,7 +8169,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.33,
-    "implicits": []
+    "implicits": [],
+    "classReq": 4
   },
   "Heretical Large Immortal Idol": {
     "type": "Large Idol",
@@ -7967,7 +8180,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.33,
-    "implicits": []
+    "implicits": [],
+    "classReq": 8
   },
   "Heretical Large Shadow Idol": {
     "type": "Large Idol",
@@ -7977,7 +8191,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.33,
-    "implicits": []
+    "implicits": [],
+    "classReq": 16
   },
   "Ornate Heorot Idol": {
     "type": "Ornate Idol",
@@ -7987,7 +8202,8 @@
       "level": 0
     },
     "affixEffectModifier": 0,
-    "implicits": []
+    "implicits": [],
+    "classReq": 1
   },
   "Ornate Glass Idol": {
     "type": "Ornate Idol",
@@ -7997,7 +8213,8 @@
       "level": 0
     },
     "affixEffectModifier": 0,
-    "implicits": []
+    "implicits": [],
+    "classReq": 2
   },
   "Ornate Solar Idol": {
     "type": "Ornate Idol",
@@ -8007,7 +8224,8 @@
       "level": 0
     },
     "affixEffectModifier": 0,
-    "implicits": []
+    "implicits": [],
+    "classReq": 4
   },
   "Ornate Bone Idol": {
     "type": "Ornate Idol",
@@ -8017,7 +8235,8 @@
       "level": 0
     },
     "affixEffectModifier": 0,
-    "implicits": []
+    "implicits": [],
+    "classReq": 8
   },
   "Ornate Majasan Idol": {
     "type": "Ornate Idol",
@@ -8027,7 +8246,8 @@
       "level": 0
     },
     "affixEffectModifier": 0,
-    "implicits": []
+    "implicits": [],
+    "classReq": 16
   },
   "Heretical Ornate Heorot Idol": {
     "type": "Ornate Idol",
@@ -8037,7 +8257,8 @@
       "level": 0
     },
     "affixEffectModifier": 0,
-    "implicits": []
+    "implicits": [],
+    "classReq": 1
   },
   "Heretical Ornate Glass Idol": {
     "type": "Ornate Idol",
@@ -8047,7 +8268,8 @@
       "level": 0
     },
     "affixEffectModifier": 0,
-    "implicits": []
+    "implicits": [],
+    "classReq": 2
   },
   "Heretical Ornate Solar Idol": {
     "type": "Ornate Idol",
@@ -8057,7 +8279,8 @@
       "level": 0
     },
     "affixEffectModifier": 0,
-    "implicits": []
+    "implicits": [],
+    "classReq": 4
   },
   "Heretical Ornate Bone Idol": {
     "type": "Ornate Idol",
@@ -8067,7 +8290,8 @@
       "level": 0
     },
     "affixEffectModifier": 0,
-    "implicits": []
+    "implicits": [],
+    "classReq": 8
   },
   "Heretical Ornate Majasan Idol": {
     "type": "Ornate Idol",
@@ -8077,7 +8301,8 @@
       "level": 0
     },
     "affixEffectModifier": 0,
-    "implicits": []
+    "implicits": [],
+    "classReq": 16
   },
   "Huge Nomad Idol": {
     "type": "Huge Idol",
@@ -8087,7 +8312,8 @@
       "level": 0
     },
     "affixEffectModifier": 0,
-    "implicits": []
+    "implicits": [],
+    "classReq": 1
   },
   "Huge Arcane Idol": {
     "type": "Huge Idol",
@@ -8097,7 +8323,8 @@
       "level": 0
     },
     "affixEffectModifier": 0,
-    "implicits": []
+    "implicits": [],
+    "classReq": 2
   },
   "Huge Rahyeh Idol": {
     "type": "Huge Idol",
@@ -8107,7 +8334,8 @@
       "level": 0
     },
     "affixEffectModifier": 0,
-    "implicits": []
+    "implicits": [],
+    "classReq": 4
   },
   "Huge Immortal Idol": {
     "type": "Huge Idol",
@@ -8117,7 +8345,8 @@
       "level": 0
     },
     "affixEffectModifier": 0,
-    "implicits": []
+    "implicits": [],
+    "classReq": 8
   },
   "Huge Shadow Idol": {
     "type": "Huge Idol",
@@ -8127,7 +8356,8 @@
       "level": 0
     },
     "affixEffectModifier": 0,
-    "implicits": []
+    "implicits": [],
+    "classReq": 16
   },
   "Heretical Huge Nomad Idol": {
     "type": "Huge Idol",
@@ -8137,7 +8367,8 @@
       "level": 0
     },
     "affixEffectModifier": 0,
-    "implicits": []
+    "implicits": [],
+    "classReq": 1
   },
   "Heretical Huge Arcane Idol": {
     "type": "Huge Idol",
@@ -8147,7 +8378,8 @@
       "level": 0
     },
     "affixEffectModifier": 0,
-    "implicits": []
+    "implicits": [],
+    "classReq": 2
   },
   "Heretical Huge Rahyeh Idol": {
     "type": "Huge Idol",
@@ -8157,7 +8389,8 @@
       "level": 0
     },
     "affixEffectModifier": 0,
-    "implicits": []
+    "implicits": [],
+    "classReq": 4
   },
   "Heretical Huge Immortal Idol": {
     "type": "Huge Idol",
@@ -8167,7 +8400,8 @@
       "level": 0
     },
     "affixEffectModifier": 0,
-    "implicits": []
+    "implicits": [],
+    "classReq": 8
   },
   "Heretical Huge Shadow Idol": {
     "type": "Huge Idol",
@@ -8177,7 +8411,8 @@
       "level": 0
     },
     "affixEffectModifier": 0,
-    "implicits": []
+    "implicits": [],
+    "classReq": 16
   },
   "Adorned Heorot Idol": {
     "type": "Adorned Idol",
@@ -8187,7 +8422,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.05,
-    "implicits": []
+    "implicits": [],
+    "classReq": 1
   },
   "Adorned Arcane Idol": {
     "type": "Adorned Idol",
@@ -8197,7 +8433,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.05,
-    "implicits": []
+    "implicits": [],
+    "classReq": 2
   },
   "Adorned Rahyeh Idol": {
     "type": "Adorned Idol",
@@ -8207,7 +8444,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.05,
-    "implicits": []
+    "implicits": [],
+    "classReq": 4
   },
   "Adorned Immortal Idol": {
     "type": "Adorned Idol",
@@ -8217,7 +8455,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.05,
-    "implicits": []
+    "implicits": [],
+    "classReq": 8
   },
   "Adorned Majasan Idol": {
     "type": "Adorned Idol",
@@ -8227,7 +8466,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.05,
-    "implicits": []
+    "implicits": [],
+    "classReq": 16
   },
   "Adorned Silver Idol": {
     "type": "Adorned Idol",
@@ -8257,7 +8497,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.05,
-    "implicits": []
+    "implicits": [],
+    "classReq": 1
   },
   "Heretical Adorned Arcane Idol": {
     "type": "Adorned Idol",
@@ -8267,7 +8508,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.05,
-    "implicits": []
+    "implicits": [],
+    "classReq": 2
   },
   "Heretical Adorned Rahyeh Idol": {
     "type": "Adorned Idol",
@@ -8277,7 +8519,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.05,
-    "implicits": []
+    "implicits": [],
+    "classReq": 4
   },
   "Heretical Adorned Immortal Idol": {
     "type": "Adorned Idol",
@@ -8287,7 +8530,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.05,
-    "implicits": []
+    "implicits": [],
+    "classReq": 8
   },
   "Heretical Adorned Majasan Idol": {
     "type": "Adorned Idol",
@@ -8297,7 +8541,8 @@
       "level": 0
     },
     "affixEffectModifier": -0.05,
-    "implicits": []
+    "implicits": [],
+    "classReq": 16
   },
   "Pride of Rebellion": {
     "type": "Blessing",
