@@ -501,7 +501,7 @@ local result = {
 	mod("CritChance", "INC", nil, ModFlag.Attack),
 },
 ["base_critical_strike_multiplier_+"] = {
-	mod("CritMultiplier", "BASE", nil),
+	mod("SkillBaseCritMultiplier", "BASE", nil),
 },
 ["critical_strike_chance_+%_vs_shocked_enemies"] = {
 	mod("CritChance", "INC", nil, 0, 0, { type = "ActorCondition", actor = "enemy", var = "Shocked" }),

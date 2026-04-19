@@ -371,7 +371,9 @@ function calcs.defence(env, actor)
 		end
 		evasionBase = modDB:Sum("BASE", nil, "Evasion", "ArmourAndEvasion")
 		if evasionBase > 0 then
-			evasion = evasion + evasionBase * calcLib.mod(modDB, nil, "Evasion", "ArmourAndEvasion", "Defences")
+			-- Game displays Evasion using only INC modifiers (no MORE); use INC only here
+			local evasionInc = 1 + modDB:Sum("INC", nil, "Evasion", "ArmourAndEvasion", "Defences") / 100
+			evasion = evasion + evasionBase * evasionInc
 			if breakdown then
 				breakdown.slot("Global", nil, nil, evasionBase, nil, "Evasion", "ArmourAndEvasion", "Defences")
 			end
