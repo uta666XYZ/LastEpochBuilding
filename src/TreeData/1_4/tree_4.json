@@ -27,6 +27,7 @@
       "isAscendancyStart": true,
       "mastery": 3,
       "stats": [
+        "+12 Dexterity",
         "+1 Falcon Melee Damage per 4 Dexterity"
       ],
       "in": [],
