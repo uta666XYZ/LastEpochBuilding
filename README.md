@@ -30,6 +30,7 @@
 If you'd like to support LEB's development, consider buying me a coffee!
 
 ☕ [Buy Me a Coffee](https://buymeacoffee.com/yobk0831a)
+🍵 [Ko-fi](https://ko-fi.com/lastepochbuilding)
 
 Feedback and bug reports are always welcome — see [Contributing](#contributing).
 
@@ -114,6 +115,10 @@ Based on [Path of Building Community](https://github.com/PathOfBuildingCommunity
 originally forked from [Musholic/LastEpochPlanner](https://github.com/Musholic/LastEpochPlanner).
 
 Development assisted by [Claude Code](https://claude.ai/code) (Anthropic).
+
+## 🛠️ Development Process
+
+See [DEVELOPMENT.md](./DEVELOPMENT.md) for release cadence, testing, and development workflow details.
 
 ## 📖 Changelog
 
