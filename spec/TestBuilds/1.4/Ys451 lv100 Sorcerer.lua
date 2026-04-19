@@ -1,4 +1,4 @@
-﻿return {
+return {
     output = {
 ["Armour"] = 2047,
 ["Att"] = 8,

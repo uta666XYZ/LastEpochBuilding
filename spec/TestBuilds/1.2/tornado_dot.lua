@@ -1,4 +1,4 @@
-﻿return {
+return {
     output = {["AbyssalDecayChance"] = 0,
 ["AccuracyHitChance"] = 100,
 ["AcidSkinChance"] = 0,

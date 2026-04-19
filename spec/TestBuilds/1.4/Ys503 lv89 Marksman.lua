@@ -1,4 +1,4 @@
-﻿return {
+return {
     output = {
 ["AverageBurstDamage"] = 313.27730000000002519,
 ["AverageDamage"] = 313.27730000000002519,
