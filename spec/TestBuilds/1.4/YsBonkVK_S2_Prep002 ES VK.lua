@@ -1,6 +1,5 @@
 return {
-    output = {
-["AbyssalDecayChance"] = 0,
+    output = {["AbyssalDecayChance"] = 0,
 ["AccuracyHitChance"] = 100,
 ["AcidSkinChance"] = 0,
 ["ActionSpeedMod"] = 1,
@@ -613,4 +612,5 @@ return {
 ["totalTakenDamage"] = 11368,
 ["totalTakenHit"] = 5376.4813,
 }
+
 }
