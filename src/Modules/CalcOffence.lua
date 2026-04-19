@@ -1911,7 +1911,9 @@ function calcs.offence(env, actor, activeSkill)
 			if skillModList:Flag(cfg, "NoCritMultiplier") then
 				output.CritMultiplier = 1
 			else
-				local extraDamage = skillModList:Sum("BASE", cfg, "CritMultiplier") / 100
+				local skillBase = skillModList:Sum("BASE", cfg, "SkillBaseCritMultiplier")
+				local playerExtra = skillModList:Sum("BASE", cfg, "CritMultiplier")
+				local extraDamage = m_max(skillBase, playerExtra) / 100
 				local multiOverride = skillModList:Override(skillCfg, "CritMultiplier")
 				if multiOverride then
 					extraDamage = (multiOverride - 100) / 100
@@ -1922,7 +1924,7 @@ function calcs.offence(env, actor, activeSkill)
 					extraDamage = round(extraDamage * enemyInc, 2)
 					if breakdown and enemyInc ~= 1 then
 						breakdown.CritMultiplier = {
-							s_format("%d%% ^8(additional extra damage)", (enemyDB:Sum("BASE", nil, "SelfCritMultiplier") + skillModList:Sum("BASE", cfg, "CritMultiplier")) / 100),
+							s_format("%d%% ^8(additional extra damage)", (enemyDB:Sum("BASE", nil, "SelfCritMultiplier") + m_max(skillBase, playerExtra)) / 100),
 							s_format("x %.2f ^8(increased/reduced extra crit damage taken by enemy)", enemyInc),
 							s_format("= %d%% ^8(extra crit damage)", extraDamage * 100),
 						}
