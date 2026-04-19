@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LastEpochBuilding>
 	<Build level="97" targetVersion="1_4" pantheonMajorGod="None" bandit="None" className="Sentinel" ascendClassName="Paladin" characterLevelAutoMode="false" mainSocketGroup="1" viewMode="TREE" pantheonMinorGod="None">
-		<PlayerStat stat="AverageHit" value="6483.9333888"/>
-		<PlayerStat stat="AverageBurstDamage" value="6483.9333888"/>
+		<PlayerStat stat="AverageHit" value="6765.59824512"/>
+		<PlayerStat stat="AverageBurstDamage" value="6765.59824512"/>
 		<PlayerStat stat="Speed" value="1.5986666240356"/>
 		<PlayerStat stat="PreEffectiveCritChance" value="16"/>
 		<PlayerStat stat="CritChance" value="16"/>
-		<PlayerStat stat="CritMultiplier" value="3.36"/>
-		<PlayerStat stat="TotalDPS" value="10365.647901144"/>
-		<PlayerStat stat="CombinedDPS" value="10365.647901144"/>
+		<PlayerStat stat="CritMultiplier" value="3.72"/>
+		<PlayerStat stat="TotalDPS" value="10815.936106107"/>
+		<PlayerStat stat="CombinedDPS" value="10815.936106107"/>
 		<PlayerStat stat="ManaCost" value="0"/>
 		<PlayerStat stat="ManaPercentCost" value="0"/>
 		<PlayerStat stat="ManaPerSecondCost" value="0"/>
@@ -18,17 +18,17 @@
 		<PlayerStat stat="Dex" value="4"/>
 		<PlayerStat stat="Int" value="16"/>
 		<PlayerStat stat="Att" value="22"/>
-		<PlayerStat stat="TotalEHP" value="27936.361744087"/>
-		<PlayerStat stat="FireMaximumHitTaken" value="17736.830407995"/>
-		<PlayerStat stat="LightningMaximumHitTaken" value="17736.830407995"/>
-		<PlayerStat stat="ColdMaximumHitTaken" value="17736.830407995"/>
-		<PlayerStat stat="PhysicalMaximumHitTaken" value="8028.2093370337"/>
-		<PlayerStat stat="PoisonMaximumHitTaken" value="17736.830407995"/>
-		<PlayerStat stat="NecroticMaximumHitTaken" value="17736.830407995"/>
-		<PlayerStat stat="VoidMaximumHitTaken" value="17736.830407995"/>
-		<PlayerStat stat="Life" value="3410"/>
+		<PlayerStat stat="TotalEHP" value="28475.508399685"/>
+		<PlayerStat stat="FireMaximumHitTaken" value="17878.12167"/>
+		<PlayerStat stat="LightningMaximumHitTaken" value="17878.12167"/>
+		<PlayerStat stat="ColdMaximumHitTaken" value="17878.12167"/>
+		<PlayerStat stat="PhysicalMaximumHitTaken" value="8113.890713161"/>
+		<PlayerStat stat="PoisonMaximumHitTaken" value="17878.12167"/>
+		<PlayerStat stat="NecroticMaximumHitTaken" value="17878.12167"/>
+		<PlayerStat stat="VoidMaximumHitTaken" value="17878.12167"/>
+		<PlayerStat stat="Life" value="3430"/>
 		<PlayerStat stat="Spec:LifeInc" value="24"/>
-		<PlayerStat stat="LifeRegenRecovery" value="212.5"/>
+		<PlayerStat stat="LifeRegenRecovery" value="409.6"/>
 		<PlayerStat stat="LifeLeechGainRate" value="0"/>
 		<PlayerStat stat="Mana" value="249"/>
 		<PlayerStat stat="Spec:ManaInc" value="24"/>
@@ -37,16 +37,16 @@
 		<PlayerStat stat="Ward" value="0"/>
 		<PlayerStat stat="WardRetention" value="32"/>
 		<PlayerStat stat="NetWardRegen" value="0"/>
-		<PlayerStat stat="Evasion" value="105"/>
+		<PlayerStat stat="Evasion" value="194"/>
 		<PlayerStat stat="Spec:EvasionInc" value="0"/>
 		<PlayerStat stat="MeleeEvadeChance" value="0"/>
 		<PlayerStat stat="ProjectileEvadeChance" value="0"/>
-		<PlayerStat stat="Armour" value="2324"/>
+		<PlayerStat stat="Armour" value="2355"/>
 		<PlayerStat stat="Spec:ArmourInc" value="24"/>
-		<PlayerStat stat="PhysicalDamageReduction" value="41.525774402093"/>
+		<PlayerStat stat="PhysicalDamageReduction" value="41.894673849666"/>
 		<PlayerStat stat="BlockChance" value="0"/>
 		<PlayerStat stat="SpellBlockChance" value="0"/>
-		<PlayerStat stat="AttackDodgeChance" value="3.9243314609623"/>
+		<PlayerStat stat="AttackDodgeChance" value="6.7907259471016"/>
 		<PlayerStat stat="SpellDodgeChance" value="0"/>
 		<PlayerStat stat="FireResist" value="75"/>
 		<PlayerStat stat="FireResistOverCap" value="41"/>
@@ -62,9 +62,9 @@
 		<PlayerStat stat="NecroticResistOverCap" value="10"/>
 		<PlayerStat stat="VoidResist" value="75"/>
 		<PlayerStat stat="VoidResistOverCap" value="1"/>
-		<PlayerStat stat="EffectiveMovementSpeedMod" value="1.56"/>
-		<PlayerStat stat="FullDPS" value="11799.69355613"/>
-		<FullDPSSkill skillPart="" source="" stat="Smite" value="10365.647901144"/>
+		<PlayerStat stat="EffectiveMovementSpeedMod" value="1.58"/>
+		<PlayerStat stat="FullDPS" value="12249.981761092"/>
+		<FullDPSSkill skillPart="" source="" stat="Smite" value="10815.936106107"/>
 		<FullDPSSkill skillPart="" source="Smite" stat="Ignite" value="1231.5462626254"/>
 		<FullDPSSkill skillPart="" source="Smite" stat="Electrify" value="202.49939236002"/>
 	</Build>
@@ -663,7 +663,7 @@ Implicits: 0
 			<ModRange range="249" id="3"/>
 			<ModRange range="249" id="4"/>
 		</Item>
-		<Item id="-1">
+		<Item id="20">
 			Rarity: NORMAL
 Grand Memory of the Living
 Grand Memory of the Living
@@ -673,7 +673,7 @@ Implicits: 1
 25% Increased Glyph Drop Rate
 			<ModRange range="127.5" id="1"/>
 		</Item>
-		<Item id="-2">
+		<Item id="21">
 			Rarity: NORMAL
 Grand Emptiness of Ash
 Grand Emptiness of Ash
@@ -683,7 +683,7 @@ Implicits: 1
 +36% Critical Strike Multiplier
 			<ModRange range="127.5" id="1"/>
 		</Item>
-		<Item id="-3">
+		<Item id="22">
 			Rarity: NORMAL
 Grand Rhythm of the Tide
 Grand Rhythm of the Tide
@@ -695,7 +695,7 @@ Implicits: 2
 			<ModRange range="127.5" id="1"/>
 			<ModRange range="127.5" id="2"/>
 		</Item>
-		<Item id="-4">
+		<Item id="23">
 			Rarity: NORMAL
 Grand Survival of Might
 Grand Survival of Might
@@ -707,7 +707,7 @@ Implicits: 2
 			<ModRange range="127.5" id="1"/>
 			<ModRange range="127.5" id="2"/>
 		</Item>
-		<Item id="20">
+		<Item id="24">
 			Rarity: RARE
 Grand Binding of Ruin
 Grand Binding of Ruin
@@ -724,7 +724,7 @@ Implicits: 1
 {range:181}(32-50)% Increased Belt Shard Drop Rate
 			<ModRange range="181" id="1"/>
 		</Item>
-		<Item id="21">
+		<Item id="25">
 			Rarity: RARE
 Grand Resolve of Grael
 Grand Resolve of Grael
@@ -741,7 +741,7 @@ Implicits: 1
 {range:0}+(55-75)% Physical Resistance
 			<ModRange range="0" id="1"/>
 		</Item>
-		<Item id="22">
+		<Item id="26">
 			Rarity: RARE
 Grand Curse of Sulphur
 Grand Curse of Sulphur
@@ -764,9 +764,9 @@ Implicits: 1
 			<Slot itemPbURL="" name="Blood, Frost, and Death" itemId="0"/>
 			<Slot itemPbURL="" name="Body Armor" itemId="2"/>
 			<Slot itemPbURL="" name="Boots" itemId="3"/>
-			<Slot itemPbURL="" name="Ending the Storm" itemId="-3"/>
+			<Slot itemPbURL="" name="Ending the Storm" itemId="22"/>
 			<Slot itemPbURL="" name="Fall of the Empire" itemId="0"/>
-			<Slot itemPbURL="" name="Fall of the Outcasts" itemId="-1"/>
+			<Slot itemPbURL="" name="Fall of the Outcasts" itemId="20"/>
 			<Slot itemPbURL="" name="Gloves" itemId="4"/>
 			<Slot itemPbURL="" name="Helmet" itemId="5"/>
 			<Slot itemPbURL="" name="Idol 1" itemId="17"/>
@@ -801,13 +801,13 @@ Implicits: 1
 			<Slot itemPbURL="" name="Omen Idol 4" itemId="0"/>
 			<Slot itemPbURL="" name="Omen Idol 5" itemId="0"/>
 			<Slot itemPbURL="" name="Omen Idol 6" itemId="0"/>
-			<Slot itemPbURL="" name="Reign of Dragons" itemId="-4"/>
+			<Slot itemPbURL="" name="Reign of Dragons" itemId="23"/>
 			<Slot itemPbURL="" name="Relic" itemId="6"/>
 			<Slot itemPbURL="" name="Ring 1" itemId="7"/>
 			<Slot itemPbURL="" name="Ring 2" itemId="8"/>
 			<Slot itemPbURL="" name="Spirits of Fire" itemId="0"/>
 			<Slot itemPbURL="" name="The Age of Winter" itemId="0"/>
-			<Slot itemPbURL="" name="The Black Sun" itemId="-2"/>
+			<Slot itemPbURL="" name="The Black Sun" itemId="21"/>
 			<Slot itemPbURL="" name="The Last Ruin" itemId="0"/>
 			<Slot itemPbURL="" name="The Stolen Lance" itemId="0"/>
 			<Slot itemPbURL="" name="Weapon 1" itemId="10"/>
