@@ -1,15 +1,15 @@
-return {
+﻿return {
     output = {
-["AverageBurstDamage"] = 330.246658,
-["AverageDamage"] = 330.246658,
-["AverageHit"] = 330.246658,
+["AverageBurstDamage"] = 313.27730000000002519,
+["AverageDamage"] = 313.27730000000002519,
+["AverageHit"] = 313.27730000000002519,
 ["Speed"] = 1.8391999509547,
 ["PreEffectiveCritChance"] = 5.75,
 ["CritChance"] = 5.75,
-["CritMultiplier"] = 3.07,
+["CritMultiplier"] = 2.0699999999999998401,
 ["HitChance"] = 100,
-["TotalDPS"] = 607.38963719654,
-["CombinedDPS"] = 607.38963719654,
+["TotalDPS"] = 576.1794999999999618,
+["CombinedDPS"] = 576.1794999999999618,
 ["ManaCost"] = 0,
 ["ManaPercentCost"] = 0,
 ["ManaPerSecondCost"] = 0,
@@ -33,7 +33,7 @@ return {
 ["LifeLeechGainRate"] = 0,
 ["Mana"] = 249,
 ["Spec:ManaInc"] = 0,
-["ManaRegenRecovery"] = 20.2,
+["ManaRegenRecovery"] = 20.300000000000000711,
 ["ManaLeechGainRate"] = 0,
 ["Ward"] = 0,
 ["WardRetention"] = 28,
@@ -63,6 +63,6 @@ return {
 ["VoidResist"] = 75,
 ["VoidResistOverCap"] = 24,
 ["EffectiveMovementSpeedMod"] = 1.69,
-["FullDPS"] = 8671.1499279309,
+["FullDPS"] = 8692.671200000000681,
 }
 }
