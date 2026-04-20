@@ -1002,14 +1002,14 @@ function ImportTabClass:BuildItemsFromLETools(data, char)
             end
         end
     end
-    -- Idols: LETools provides x,y (0-indexed, top-left origin assumed).
-    -- Maxroll expects a 25-slot array in row-major order; idolGridSlots[i] is
-    -- the slot name. We place each idol at y*5 + x + 1 so BuildItemsFromMaxroll
-    -- picks the right slot.
+    -- Idols: LETools provides x,y (1-indexed, top-left origin; observed
+    -- range 1..5 on each axis). Maxroll expects a 25-slot array in row-major
+    -- order with idolGridSlots[i] giving the slot name.
     if type(data.idols) == "table" then
         for _, idol in ipairs(data.idols) do
             if type(idol) == "table" and idol.id and type(idol.x) == "number" and type(idol.y) == "number" then
-                local idx = idol.y * 5 + idol.x + 1
+                local idx = (idol.y - 1) * 5 + idol.x
+                ConPrintf("[LETOOLS-IDOL] id=%s xy=(%d,%d) -> idx=%d", tostring(idol.id), idol.x, idol.y, idx)
                 if idx >= 1 and idx <= 25 then
                     local mx = self:ConvertLEToolsItem(idol, itemMap, affixMap)
                     if mx then profileData.idols[idx] = mx end
