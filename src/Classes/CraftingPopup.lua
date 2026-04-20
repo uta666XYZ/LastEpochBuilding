@@ -295,6 +295,11 @@ local CraftingPopupClass = newClass("CraftingPopup", "ControlHost", "Control", f
 	self.typeCards  = {}
 	self.rightCards = {}
 
+	-- Phase 2: collapse state per slot -> per subcategory
+	-- slotKey "prefix"/"suffix"/"sealed"/"primordial"/"corrupted" -> { [subcat]=true }
+	-- Default: all expanded (nil means expanded)
+	self.collapsedSubcats = {}
+
 	-- Image handle cache for item cards
 	self.imageHandles = {}
 
@@ -2590,19 +2595,93 @@ function CraftingPopupClass:DrawAffixCards(areaX, areaY, areaW, areaH, mx, my)
 		end
 	end
 
-	-- Clamp scroll
-	local totalH    = #filteredList * (rowH + gap)
+	-- Phase 2: group entries by subcategory
+	local SUBCAT_ORDER = { "general", "class_only", "set_only", "champion", "personal", "corrupted" }
+	local SUBCAT_LABELS = {
+		general    = "General",
+		class_only = "Class Specific",
+		set_only   = "Reforged / Set",
+		champion   = "Champion",
+		personal   = "Personal",
+		corrupted  = "Corrupted Only",
+	}
+	local groups = {}
+	for _, sc in ipairs(SUBCAT_ORDER) do groups[sc] = {} end
+	for _, entry in ipairs(filteredList) do
+		local sc = entry.subcategory or "general"
+		if not groups[sc] then groups[sc] = {}; t_insert(SUBCAT_ORDER, sc) end
+		t_insert(groups[sc], entry)
+	end
+
+	-- Build a flat render plan (headers + entries), respecting collapse state
+	self.collapsedSubcats[slotKey] = self.collapsedSubcats[slotKey] or {}
+	local collapsed = self.collapsedSubcats[slotKey]
+	local HEADER_H = 20
+	local plan = {}  -- each item: { kind="header"|"entry", subcat=..., entry=..., h=... }
+	for _, sc in ipairs(SUBCAT_ORDER) do
+		local g = groups[sc]
+		if g and #g > 0 then
+			-- Always show header if there is more than one non-empty subcat total, or if it's non-general.
+			local showHeader = (sc ~= "general") or false
+			-- If general is the only group, skip its header; otherwise show a header for it too.
+			if sc == "general" then
+				local otherNonEmpty = false
+				for _, sc2 in ipairs(SUBCAT_ORDER) do
+					if sc2 ~= "general" and groups[sc2] and #groups[sc2] > 0 then
+						otherNonEmpty = true; break
+					end
+				end
+				showHeader = otherNonEmpty
+			end
+			if showHeader then
+				t_insert(plan, { kind = "header", subcat = sc, h = HEADER_H, count = #g })
+			end
+			if not collapsed[sc] then
+				for _, entry in ipairs(g) do
+					t_insert(plan, { kind = "entry", entry = entry, h = rowH })
+				end
+			end
+		end
+	end
+
+	-- Compute total height
+	local totalH = 0
+	for _, it in ipairs(plan) do totalH = totalH + it.h + gap end
 	local maxScroll = m_max(0, totalH - areaH)
 	self.rightScrollY = m_max(0, m_min(self.rightScrollY, maxScroll))
 
 	self.rightCards = {}
 	local scrollY   = self.rightScrollY
+	local yCursor   = areaY - scrollY
 
-	for i, entry in ipairs(filteredList) do
-		local cy  = areaY + (i - 1) * (rowH + gap) - scrollY
-		local cy2 = cy + rowH
+	for _, it in ipairs(plan) do
+		local cy  = yCursor
+		local cy2 = cy + it.h
+		yCursor = cy2 + gap
 
-		if cy >= areaY and cy2 <= areaY + areaH then
+		if it.kind == "header" then
+			if cy < areaY + areaH and cy2 > areaY then
+				-- Header hit-test + background
+				t_insert(self.rightCards, { x1=areaX, y1=cy, x2=areaX+areaW, y2=cy2, isHeader=true, subcat=it.subcat })
+				local isHoveredH = mx >= areaX and mx < areaX + areaW and my >= cy and my < cy2
+				if isHoveredH then
+					SetDrawColor(0.20, 0.20, 0.22)
+				else
+					SetDrawColor(0.13, 0.13, 0.16)
+				end
+				DrawImage(nil, areaX, cy, areaW, it.h)
+				SetDrawColor(0.35, 0.35, 0.40)
+				DrawImage(nil, areaX, cy2 - 1, areaW, 1)
+				local arrow = collapsed[it.subcat] and "^7> " or "^7v "
+				local title = arrow .. "^xFFCC66" .. (SUBCAT_LABELS[it.subcat] or it.subcat)
+				              .. " ^8(" .. tostring(it.count) .. ")"
+				DrawString(areaX + 8, cy + 4, "LEFT", 12, "VAR", title)
+			end
+		end
+		if it.kind == "entry" then
+			local entry = it.entry
+
+			if cy >= areaY and cy2 <= areaY + areaH then
 			t_insert(self.rightCards, { x1=areaX, y1=cy, x2=areaX+areaW, y2=cy2, entry=entry })
 
 			local isSelected = isEntrySelected(entry.statOrderKey)
@@ -2681,6 +2760,7 @@ function CraftingPopupClass:DrawAffixCards(areaX, areaY, areaW, areaH, mx, my)
 				end
 			end
 		end
+		end
 	end
 
 	-- Scrollbar on right border (visible when content overflows)
@@ -2735,7 +2815,12 @@ function CraftingPopupClass:ProcessInput(inputEvents, viewPort)
 				if mx >= rpX and mx < px + pw then
 					for _, card in ipairs(self.rightCards) do
 						if mx >= card.x1 and mx < card.x2 and my >= card.y1 and my < card.y2 then
-							if self.rightTab == "item" then
+							if card.isHeader then
+								-- Toggle subcategory collapse state
+								local slotKey = self.rightTab
+								self.collapsedSubcats[slotKey] = self.collapsedSubcats[slotKey] or {}
+								self.collapsedSubcats[slotKey][card.subcat] = not self.collapsedSubcats[slotKey][card.subcat]
+							elseif self.rightTab == "item" then
 								self:SelectBase(card.entry)
 							else
 								self:SelectAffixEntry(card.entry)
