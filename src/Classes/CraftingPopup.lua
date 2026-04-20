@@ -2654,7 +2654,8 @@ function CraftingPopupClass:DrawAffixCards(areaX, areaY, areaW, areaH, mx, my)
 				for k = 1, 10 do
 					local line = mod[k]
 					if line and type(line) == "string" then
-						t_insert(parts, line:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", ""))
+						local s = line:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
+						t_insert(parts, s)
 					end
 				end
 				t_insert(out, { tier = tier, text = table.concat(parts, ", ") })
