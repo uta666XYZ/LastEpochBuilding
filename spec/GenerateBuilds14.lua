@@ -10,18 +10,13 @@ local function fetchBuilds(path, buildList)
                 fetchBuilds(f, buildList)
             else
                 if file:match("^.+(%..+)$") == ".xml" and not file:match("%-unformatted%.xml$") then
-                    local luaPath = f:gsub("%.xml$", ".lua")
-                    local luaHnd = io.open(luaPath, "r")
-                    if luaHnd then
-                        luaHnd:close()
-                        local fileHnd, errMsg = io.open(f, "r")
-                        if not fileHnd then
-                            return nil, errMsg
-                        end
-                        local fileText = fileHnd:read("*a")
-                        fileHnd:close()
-                        buildList[f] = fileText
+                    local fileHnd, errMsg = io.open(f, "r")
+                    if not fileHnd then
+                        return nil, errMsg
                     end
+                    local fileText = fileHnd:read("*a")
+                    fileHnd:close()
+                    buildList[f] = fileText
                 end
             end
         end
