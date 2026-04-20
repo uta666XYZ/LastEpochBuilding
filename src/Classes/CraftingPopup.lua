@@ -89,7 +89,7 @@ local IC_W          = m_floor((RP_W - 2 * RP_CARD_PAD - (IC_COLS - 1) * IC_GAP) 
 local IC_H          = 80
 
 -- Affix cards (affix tabs, right panel) -- compact single-row cards
-local AC_H          = 22
+local AC_H          = 24
 local AC_GAP        = 2
 
 -- Left panel control positions
@@ -140,6 +140,33 @@ end
 local function cleanImplicitText(line)
 	if line:find("%[UNKNOWN_STAT%]") then return nil end
 	return line:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
+end
+
+-- Wrap a single logical line into word-bounded chunks of at most maxChars.
+-- Returns a table of strings (always at least one element if input is non-empty).
+local function wrapTextLine(text, maxChars)
+	if not text or text == "" then return { "" } end
+	if maxChars < 1 then return { text } end
+	local out = {}
+	local cur = ""
+	for word in text:gmatch("%S+") do
+		if cur == "" then
+			cur = word
+		elseif #cur + 1 + #word <= maxChars then
+			cur = cur .. " " .. word
+		else
+			t_insert(out, cur)
+			cur = word
+		end
+		-- Hard-break a single word longer than maxChars
+		while #cur > maxChars do
+			t_insert(out, cur:sub(1, maxChars))
+			cur = cur:sub(maxChars + 1)
+		end
+	end
+	if cur ~= "" then t_insert(out, cur) end
+	if #out == 0 then out[1] = text end
+	return out
 end
 
 local function hasRange(line)
@@ -220,9 +247,10 @@ local function buildOrderedTypeList(dataTypeList)
 			"Helmet", "Body Armor", "Belt", "Boots", "Gloves",
 		}},
 		{ header = "-- Weapons --", types = {
-			"One-Handed Axe", "Dagger", "One-Handed Mace", "Sceptre",
-			"One-Handed Sword", "Wand", "Two-Handed Axe", "Two-Handed Mace",
-			"Two-Handed Spear", "Two-Handed Staff", "Two-Handed Sword", "Bow",
+			"One-Handed Sword", "One-Handed Axe", "One-Handed Mace",
+			"Dagger", "Sceptre", "Wand",
+			"Two-Handed Sword", "Two-Handed Axe", "Two-Handed Mace",
+			"Two-Handed Spear", "Two-Handed Staff", "Bow",
 		}},
 		{ header = "-- Off-Hand --", types = {
 			"Quiver", "Shield", "Off-Hand Catalyst",
@@ -313,12 +341,21 @@ local CraftingPopupClass = newClass("CraftingPopup", "ControlHost", "Control", f
 	self.setItems = self:LoadSetData()
 	self.orderedTypeList = filterTypeList(
 		buildOrderedTypeList(self.build.data.itemBaseTypeList), slotName)
+
+	-- Default type selection: if this is the off-hand slot (Weapon 2), prefer the
+	-- Off-Hand section (Shield first). Otherwise pick the first non-separator entry.
+	local preferOffhand = (slotName == "Weapon 2")
+	local offhandTypes = { ["Shield"] = true, ["Off-Hand Catalyst"] = true, ["Quiver"] = true }
+	local firstOffhandIdx, firstAnyIdx
 	for i, entry in ipairs(self.orderedTypeList) do
 		if not entry.isSeparator then
-			self.selectedTypeIndex = i
-			break
+			if not firstAnyIdx then firstAnyIdx = i end
+			if preferOffhand and not firstOffhandIdx and offhandTypes[entry.typeName] then
+				firstOffhandIdx = i
+			end
 		end
 	end
+	self.selectedTypeIndex = firstOffhandIdx or firstAnyIdx or 1
 
 	self.affixState = {
 		prefix1    = { modKey = nil, tier = 0, ranges = {} },
@@ -2328,20 +2365,48 @@ function CraftingPopupClass:DrawItemCards(areaX, areaY, areaW, areaH, mx, my)
 	local isDetail = (firstCat == "unique" or firstCat == "set" or firstCat == "ww")
 
 	local IMG = 46
+	local DETAIL_FONT = 14       -- bumped from 12
+	local DETAIL_LINE_H = 18     -- bumped from 16 to match font
+	-- Approx char width for font size 14, VAR font (~7.2 px/char empirically)
+	local DETAIL_CHAR_W = 7.2
+	-- computeWrapLines returns the total number of visual lines after wrapping
+	local function computeWrapLines(text, maxChars)
+		if not text then return 0 end
+		return #wrapTextLine(text, maxChars)
+	end
 
 	-- Helper: compute card height given entry (detail mode)
 	local function computeCardH(entry)
-		local nImpl = (entry.base and entry.base.implicits) and #entry.base.implicits or 0
+		-- Card's text area width = cw - 12 (6px pad each side), chars = width / charW
+		local lineW = IC_W - 12
+		local maxLineChars = m_max(10, m_floor(lineW / DETAIL_CHAR_W))
+		local nImplLines = 0
+		if entry.base and entry.base.implicits then
+			for _, implText in ipairs(entry.base.implicits) do
+				local cleaned = cleanImplicitText(implText)
+				if cleaned then
+					nImplLines = nImplLines + computeWrapLines(cleaned, maxLineChars)
+				end
+			end
+		end
 		local mods
 		if entry.category == "set" then
 			mods = entry.setData and entry.setData.mods
 		else
 			mods = entry.uniqueData and entry.uniqueData.mods
 		end
-		local nMods = mods and #mods or 0
-		-- Header: name(18) + type(16) + level(16) = ~50, then per-line 16px
-		local extraLines = nImpl + nMods + (nImpl > 0 and nMods > 0 and 1 or 0) -- separator
-		local h = 4 + 18 + 16 + 16 + 4 + extraLines * 16 + 8
+		local nModLines = 0
+		if mods then
+			for _, modText in ipairs(mods) do
+				local cleaned = cleanImplicitText(modText)
+				if cleaned then
+					nModLines = nModLines + computeWrapLines(cleaned, maxLineChars)
+				end
+			end
+		end
+		local sep = (nImplLines > 0 and nModLines > 0) and 6 or 0
+		-- Header: name(18) + type(16) + level(16) = ~58, then per-line DETAIL_LINE_H
+		local h = 4 + 18 + 16 + 16 + 4 + (nImplLines + nModLines) * DETAIL_LINE_H + sep + 8
 		return m_max(IC_H, h)
 	end
 
@@ -2449,33 +2514,47 @@ function CraftingPopupClass:DrawItemCards(areaX, areaY, areaW, areaH, mx, my)
 			local maxChars = m_floor(textW / 7)
 			local label = entry.label or entry.name
 			local truncLabel = #label > maxChars and label:sub(1, maxChars - 2) .. ".." or label
-			DrawString(textX, cy + 6, "LEFT", 14, "VAR", (col3 or "^7") .. truncLabel)
+			DrawString(textX, cy + 4, "LEFT", 16, "VAR", (col3 or "^7") .. truncLabel)
 
 			-- Item type (line 2)
 			local typeStr = "^8" .. (entry.displayType or "")
-			DrawString(textX, cy + 24, "LEFT", 12, "VAR", typeStr)
+			DrawString(textX, cy + 24, "LEFT", 14, "VAR", typeStr)
 
 			-- Level requirement (line 3)
 			local lvReq = entry.base and entry.base.req and entry.base.req.level or 0
 			if lvReq > 0 then
-				DrawString(textX, cy + 40, "LEFT", 12, "VAR", "^8Lv. " .. tostring(lvReq))
+				DrawString(textX, cy + 40, "LEFT", 14, "VAR", "^8Lv. " .. tostring(lvReq))
 			end
 
 			if isDetail then
 				-- Full implicits + modifiers list, spans full card width below header
 				local lineX = cx + 6
 				local lineW = cw - 12
-				local maxLineChars = m_floor(lineW / 6.5)
+				local maxLineChars = m_max(10, m_floor(lineW / DETAIL_CHAR_W))
 				local ly = cy + 58
-				local function drawLine(text, color)
+				-- Alternating affix background: each affix (implicit or modifier)
+				-- gets its own bg band so wrapped lines visually group together.
+				local affixIdx = 0
+				local function drawAffix(text, color)
 					if not text then return end
-					if #text > maxLineChars then text = text:sub(1, maxLineChars - 2) .. ".." end
-					DrawString(lineX, ly, "LEFT", 12, "VAR", (color or "^8") .. text)
-					ly = ly + 16
+					local lines = wrapTextLine(text, maxLineChars)
+					local blockH = #lines * DETAIL_LINE_H
+					affixIdx = affixIdx + 1
+					-- Alternating bands: darker/lighter based on affixIdx parity.
+					if affixIdx % 2 == 1 then
+						SetDrawColor(0.14, 0.14, 0.16)
+					else
+						SetDrawColor(0.09, 0.09, 0.11)
+					end
+					DrawImage(nil, lineX - 2, ly - 1, lineW + 4, blockH)
+					for _, ln in ipairs(lines) do
+						DrawString(lineX, ly, "LEFT", DETAIL_FONT, "VAR", (color or "^8") .. ln)
+						ly = ly + DETAIL_LINE_H
+					end
 				end
 				if entry.base and entry.base.implicits then
 					for _, implText in ipairs(entry.base.implicits) do
-						drawLine(cleanImplicitText(implText), "^x8888FF")
+						drawAffix(cleanImplicitText(implText), "^x8888FF")
 					end
 				end
 				local mods
@@ -2486,10 +2565,10 @@ function CraftingPopupClass:DrawItemCards(areaX, areaY, areaW, areaH, mx, my)
 				end
 				if mods and #mods > 0 then
 					if entry.base and entry.base.implicits and #entry.base.implicits > 0 then
-						ly = ly + 4
+						ly = ly + 6
 					end
 					for _, modText in ipairs(mods) do
-						drawLine(cleanImplicitText(modText), "^7")
+						drawAffix(cleanImplicitText(modText), "^7")
 					end
 				end
 			else
@@ -2501,7 +2580,7 @@ function CraftingPopupClass:DrawItemCards(areaX, areaY, areaW, areaH, mx, my)
 				if implText then
 					local maxImpl = m_floor(textW / 6.5)
 					local truncImpl = #implText > maxImpl and implText:sub(1, maxImpl - 2) .. ".." or implText
-					DrawString(textX, cy + 58, "LEFT", 12, "VAR", "^8" .. truncImpl)
+					DrawString(textX, cy + 58, "LEFT", 14, "VAR", "^8" .. truncImpl)
 				end
 			end
 
@@ -2542,8 +2621,11 @@ function CraftingPopupClass:DrawAffixCards(areaX, areaY, areaW, areaH, mx, my)
 	              or slotKey
 	local list     = self.affixLists[listKey] or {}
 	local cardMode = (self.affixViewMode == "card")
-	local rowH     = cardMode and 54 or AC_H   -- expanded 54px in card mode, 22px in list mode
-	local gap      = cardMode and 4  or AC_GAP
+	local rowH     = cardMode and 72 or AC_H   -- taller card rows for larger text
+	local gap      = cardMode and 6  or AC_GAP
+	local nCols    = cardMode and 2 or 1        -- card mode: 2-column layout
+	local colGap   = 6
+	local cardW    = cardMode and m_floor((areaW - colGap) / 2) or areaW
 
 	if not self.editItem then
 		SetDrawColor(1, 1, 1)
@@ -2637,8 +2719,19 @@ function CraftingPopupClass:DrawAffixCards(areaX, areaY, areaW, areaH, mx, my)
 				t_insert(plan, { kind = "header", subcat = sc, h = HEADER_H, count = #g })
 			end
 			if not collapsed[sc] then
-				for _, entry in ipairs(g) do
-					t_insert(plan, { kind = "entry", entry = entry, h = rowH })
+				if cardMode then
+					-- Pack entries into rows of up to nCols
+					for i = 1, #g, nCols do
+						local rowEntries = {}
+						for k = 0, nCols - 1 do
+							if g[i + k] then t_insert(rowEntries, g[i + k]) end
+						end
+						t_insert(plan, { kind = "entryRow", entries = rowEntries, h = rowH })
+					end
+				else
+					for _, entry in ipairs(g) do
+						t_insert(plan, { kind = "entry", entry = entry, h = rowH })
+					end
 				end
 			end
 		end
@@ -2675,7 +2768,69 @@ function CraftingPopupClass:DrawAffixCards(areaX, areaY, areaW, areaH, mx, my)
 				local arrow = collapsed[it.subcat] and "^7> " or "^7v "
 				local title = arrow .. "^xFFCC66" .. (SUBCAT_LABELS[it.subcat] or it.subcat)
 				              .. " ^8(" .. tostring(it.count) .. ")"
-				DrawString(areaX + 8, cy + 4, "LEFT", 12, "VAR", title)
+				DrawString(areaX + 8, cy + 2, "LEFT", 14, "VAR", title)
+			end
+		end
+		if it.kind == "entryRow" then
+			-- 2-column card row
+			for ci, entry in ipairs(it.entries) do
+				local cx1 = areaX + (ci - 1) * (cardW + colGap)
+				local cx2 = cx1 + cardW
+				if cy >= areaY and cy2 <= areaY + areaH then
+					t_insert(self.rightCards, { x1=cx1, y1=cy, x2=cx2, y2=cy2, entry=entry })
+					local isSelected = isEntrySelected(entry.statOrderKey)
+					local isHovered  = mx >= cx1 and mx < cx2 and my >= cy and my < cy2
+					-- Card background + border (distinct card look)
+					if isSelected then
+						SetDrawColor(0.30, 0.26, 0.10)
+					elseif isHovered then
+						SetDrawColor(0.18, 0.18, 0.20)
+					else
+						SetDrawColor(0.12, 0.12, 0.14)
+					end
+					DrawImage(nil, cx1, cy, cardW, rowH)
+					-- Outer border
+					SetDrawColor(isSelected and 0.70 or 0.32, isSelected and 0.60 or 0.32, isSelected and 0.22 or 0.36)
+					DrawImage(nil, cx1, cy, cardW, 1)
+					DrawImage(nil, cx1, cy2 - 1, cardW, 1)
+					DrawImage(nil, cx1, cy, 1, rowH)
+					DrawImage(nil, cx2 - 1, cy, 1, rowH)
+					-- Left accent bar: Prefix=blue, Suffix=orange
+					local typeStr = entry.type or ""
+					if typeStr == "Prefix" then
+						SetDrawColor(0.33, 0.60, 1.0)
+					else
+						SetDrawColor(1.0, 0.60, 0.33)
+					end
+					DrawImage(nil, cx1 + 1, cy + 1, 4, rowH - 2)
+					-- Affix name
+					local nameCol = isSelected and colorCodes.UNIQUE or "^7"
+					DrawString(cx1 + 10, cy + 6, "LEFT", 15, "VAR",
+						nameCol .. (entry.affix or entry.label or ""))
+					-- First stat (description)
+					local desc = entry.label or ""
+					desc = desc:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
+					local firstPart = desc:match("^(.-)%s*/%s*.+$") or desc
+					local maxChars = m_floor((cardW - 20) / 7)
+					if #firstPart > maxChars then firstPart = firstPart:sub(1, maxChars - 2) .. ".." end
+					DrawString(cx1 + 10, cy + 26, "LEFT", 13, "VAR", "^8" .. firstPart)
+					-- Tier range inside card (bottom-right)
+					local maxT = entry.maxTier or 0
+					local tierStr = maxT > 0
+						and (TIER_COLORS[1] .. "T1^8-" .. tierColor(maxT) .. "T" .. tostring(maxT + 1))
+						or  (TIER_COLORS[1] .. "T1")
+					DrawString(cx2 - 8, cy + rowH - 18, "RIGHT", 13, "VAR", tierStr)
+					-- Selection indicator
+					if isSelected then
+						local st, slotLabel = getSelectedSlotState(entry.statOrderKey)
+						if st and st.modKey then
+							local t1 = st.tier + 1
+							local indicator = tierColor(st.tier) .. "T" .. tostring(t1)
+							if slotLabel then indicator = indicator .. " ^8(" .. slotLabel .. ")" end
+							DrawString(cx1 + 10, cy + rowH - 18, "LEFT", 13, "VAR", "^xFFCC44> " .. indicator)
+						end
+					end
+				end
 			end
 		end
 		if it.kind == "entry" then
@@ -2710,7 +2865,7 @@ function CraftingPopupClass:DrawAffixCards(areaX, areaY, areaW, areaH, mx, my)
 			local nameCol = isSelected and colorCodes.UNIQUE or "^7"
 			local nameX   = areaX + 10
 			local nameY   = cy + (cardMode and 6 or 4)
-			DrawString(nameX, nameY, "LEFT", 13, "VAR",
+			DrawString(nameX, nameY, "LEFT", 14, "VAR",
 				nameCol .. (entry.affix or entry.label or ""))
 
 			if cardMode then
@@ -2742,7 +2897,7 @@ function CraftingPopupClass:DrawAffixCards(areaX, areaY, areaW, areaH, mx, my)
 				local tierStr = maxT > 0
 					and (TIER_COLORS[1] .. "T1^8-" .. tierColor(maxT) .. "T" .. tostring(maxT + 1))
 					or  (TIER_COLORS[1] .. "T1")
-				DrawString(areaX + areaW - 6, cy + 4, "RIGHT", 11, "VAR", tierStr)
+				DrawString(areaX + areaW - 6, cy + 4, "RIGHT", 13, "VAR", tierStr)
 			end
 
 			-- Selection indicator: golden bar + slot label + selected tier
@@ -2756,7 +2911,7 @@ function CraftingPopupClass:DrawAffixCards(areaX, areaY, areaW, areaH, mx, my)
 					if slotLabel then indicator = indicator .. " ^8(" .. slotLabel .. ")" end
 					-- In card mode align with tier badge row; in list mode show top-right
 					local indY = cardMode and (cy + 38) or (cy + 4)
-					DrawString(areaX + areaW - 6, indY, "RIGHT", 11, "VAR", indicator)
+					DrawString(areaX + areaW - 6, indY, "RIGHT", 13, "VAR", indicator)
 				end
 			end
 		end
