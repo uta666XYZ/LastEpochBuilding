@@ -1348,16 +1348,13 @@ end
 -- =============================================================================
 function CraftingPopupClass:RefreshAffixDropdowns()
 	if not self.editItem then return end
-	if self:IsSetItem() then
-		for _, k in ipairs({"prefix1","prefix2","suffix1","suffix2","sealed","primordial","corrupted"}) do
-			self.affixLists[k] = {}
-		end
-		return
-	end
 	if self:IsAnyIdol() and data.modIdol and next(data.modIdol) then
 		self:RefreshIdolAffixDropdowns()
 		return
 	end
+	-- Rarity gate: Unique / Set items cannot roll reforged (set_only, sat=3) affixes
+	-- and have no Sealed / Primordial pools (those are Basic-only mechanics).
+	local isUniqueOrSet = self:IsUniqueItem() or self:IsSetItem()
 
 	local itemMods
 	if self:IsIdolAltar() then
@@ -1463,15 +1460,32 @@ function CraftingPopupClass:RefreshAffixDropdowns()
 		end
 		return out
 	end
-	-- Prefix/Suffix tabs: general + class_only + set_only (matches LETools Basic Craft)
-	local prefixIter = flattenBuckets(prefixGroups, { "general", "class_only", "set_only" })
-	local suffixIter = flattenBuckets(suffixGroups, { "general", "class_only", "set_only" })
-	-- Sealed/Primordial: prefix + suffix + champion/personal (sat=2)
-	local sealedPrefixIter = flattenBuckets(prefixGroups, { "general", "class_only", "set_only", "champion", "personal" })
-	local sealedSuffixIter = flattenBuckets(suffixGroups, { "general", "class_only", "set_only", "champion", "personal" })
-	-- Corrupted: all prefix + suffix + corrupted-only (sat=6)
-	local corruptedPrefixIter = flattenBuckets(prefixGroups, { "general", "class_only", "set_only", "champion", "personal", "corrupted" })
-	local corruptedSuffixIter = flattenBuckets(suffixGroups, { "general", "class_only", "set_only", "champion", "personal", "corrupted" })
+	-- Subcategory sets per rarity:
+	--   Basic  : Prefix/Suffix = general+class_only+set_only ; Sealed/Primo adds champion+personal ; Corrupted adds corrupted-only
+	--   Unique/
+	--   Set    : Prefix/Suffix = general+class_only (set_only excluded) ; Sealed/Primo empty ; Corrupted = general+class_only+champion+personal+corrupted-only
+	local ptabCats, corruptCats
+	if isUniqueOrSet then
+		ptabCats    = { "general", "class_only" }
+		corruptCats = { "general", "class_only", "champion", "personal", "corrupted" }
+	else
+		ptabCats    = { "general", "class_only", "set_only" }
+		corruptCats = { "general", "class_only", "set_only", "champion", "personal", "corrupted" }
+	end
+	local prefixIter = flattenBuckets(prefixGroups, ptabCats)
+	local suffixIter = flattenBuckets(suffixGroups, ptabCats)
+	-- Sealed/Primordial are Basic-only; for Unique/Set we feed empty iters so
+	-- sealedList / primordialList stay empty.
+	local sealedPrefixIter, sealedSuffixIter
+	if isUniqueOrSet then
+		sealedPrefixIter = {}
+		sealedSuffixIter = {}
+	else
+		sealedPrefixIter = flattenBuckets(prefixGroups, { "general", "class_only", "set_only", "champion", "personal" })
+		sealedSuffixIter = flattenBuckets(suffixGroups, { "general", "class_only", "set_only", "champion", "personal" })
+	end
+	local corruptedPrefixIter = flattenBuckets(prefixGroups, corruptCats)
+	local corruptedSuffixIter = flattenBuckets(suffixGroups, corruptCats)
 
 	local function sortByLabel(a, b)
 		if not a.statOrderKey then return true end
