@@ -194,11 +194,14 @@ end
 -- Uses char-count heuristic: VAR font ~= size * 0.6 px per char (conservative).
 local function wrapForLabel(text, width, size)
 	if not text or text == "" then return "", 1 end
+	-- Consume ALL leading color codes (e.g. "^7^x8888FF") as the prefix so
+	-- every wrapped line repeats the same leading color sequence.
 	local colorPrefix = ""
 	local rest = text
-	local cp = rest:match("^(%^x%x%x%x%x%x%x)") or rest:match("^(%^%d)")
-	if cp then
-		colorPrefix = cp
+	while true do
+		local cp = rest:match("^(%^x%x%x%x%x%x%x)") or rest:match("^(%^%d)")
+		if not cp then break end
+		colorPrefix = colorPrefix .. cp
 		rest = rest:sub(#cp + 1)
 	end
 	local perChar = m_max(4, size * 0.6)
@@ -1080,7 +1083,8 @@ function CraftingPopupClass:BuildControls()
 			end
 			controls[tierLabelKey].label = function()
 				local st = self_ref.affixState[slotKey]
-				return tierColor(st.tier) .. "Tier " .. tostring(st.tier + 1)
+				-- Abbreviate in the preview to save space; "Tier 5" -> "T5"
+				return tierColor(st.tier) .. "T" .. tostring(st.tier + 1)
 			end
 			controls[tierLabelKey].tooltipFunc = function(tooltip, mode)
 				if mode == "OUT" then return end
@@ -1153,6 +1157,14 @@ function CraftingPopupClass:BuildControls()
 					self_ref.affixState[slotKey].modKey  = nil
 					self_ref.affixState[slotKey].tier    = (slotKey == "primordial") and 7 or 0
 					self_ref.affixState[slotKey].ranges  = {}
+					-- Keep lastAffixSlot in sync so SelectAffixEntry doesn't
+					-- try to replace a now-empty slot on the next click.
+					local tabKey = slotKey:match("^(prefix)") or slotKey:match("^(suffix)")
+					if tabKey and self_ref.lastAffixSlot and self_ref.lastAffixSlot[tabKey] == slotKey then
+						local otherSlot = (slotKey == tabKey .. "1") and (tabKey .. "2") or (tabKey .. "1")
+						local otherSt   = self_ref.affixState[otherSlot]
+						self_ref.lastAffixSlot[tabKey] = (otherSt and otherSt.modKey) and otherSlot or nil
+					end
 					self_ref:UpdateSlotModInfo(slotKey)
 					self_ref:RebuildEditItem()
 				end)
@@ -1378,6 +1390,7 @@ function CraftingPopupClass:SelectBase(entry)
 		st.tier   = (key == "primordial") and 7 or 0
 		st.ranges = {}
 	end
+	self.lastAffixSlot = {}
 	self.corrupted = false
 	if self.controls.corruptedCheck then
 		self.controls.corruptedCheck.state = false
@@ -1458,13 +1471,18 @@ function CraftingPopupClass:SelectBase(entry)
 	self.editItem      = item
 	self.editBaseEntry = entry
 	-- Stay on item tab if just selected; user can switch to affix tabs
+	local prevTab = self.rightTab
 	if self.rightTab == "item" then
 		-- auto-advance to prefix tab for basic items to help workflow
 		if entry.category == "basic" then
 			self.rightTab = "prefix"
 		end
 	end
-	self.rightScrollY = 0
+	-- Only reset scroll when tab actually changed; preserve scroll when the
+	-- user is just picking different items in the same list.
+	if self.rightTab ~= prevTab then
+		self.rightScrollY = 0
+	end
 
 	for _, k in ipairs({"prefix1","prefix2","suffix1","suffix2","sealed","primordial","corrupted"}) do
 		self:UpdateSlotModInfo(k)
@@ -1486,23 +1504,50 @@ function CraftingPopupClass:SelectAffixEntry(entry)
 		local st1   = self.affixState[slot1]
 		local st2   = self.affixState[slot2]
 		-- Deselect if already selected in either slot
+		self.lastAffixSlot = self.lastAffixSlot or {}
 		if st1.modKey == entry.statOrderKey then
 			st1.modKey = nil; st1.tier = 0; st1.ranges = {}
+			if self.lastAffixSlot[slotKey] == slot1 then
+				self.lastAffixSlot[slotKey] = st2.modKey and slot2 or nil
+			end
 			self:RebuildEditItem()
 			return
 		elseif st2.modKey == entry.statOrderKey then
 			st2.modKey = nil; st2.tier = 0; st2.ranges = {}
+			if self.lastAffixSlot[slotKey] == slot2 then
+				self.lastAffixSlot[slotKey] = st1.modKey and slot1 or nil
+			end
 			self:RebuildEditItem()
 			return
 		end
-		-- Assign to first empty slot (slot1 first, then slot2)
-		local actualKey = (st1.modKey == nil) and slot1 or slot2
+		-- Pick a target slot:
+		--   1. If slot1 is empty, always fill slot1 first.
+		--   2. If only slot2 is empty, fill slot2.
+		--   3. If both are occupied, replace the one that was filled
+		--      FIRST (i.e. not the most recent). This preserves the user's
+		--      most recent selection and avoids silently overwriting the
+		--      latest card they clicked.
+		self.lastAffixSlot = self.lastAffixSlot or {}
+		local actualKey
+		if st1.modKey == nil then
+			actualKey = slot1
+		elseif st2.modKey == nil then
+			actualKey = slot2
+		else
+			local lastKey = self.lastAffixSlot[slotKey]
+			if lastKey == slot2 then
+				actualKey = slot1
+			else
+				actualKey = slot2
+			end
+		end
 		local st = self.affixState[actualKey]
-		if not st then return end  -- both slots occupied, ignore
+		if not st then return end
 		local maxT = entry.maxTier or 0
 		st.modKey = entry.statOrderKey
 		st.tier   = m_min(4, maxT)
 		st.ranges = {}
+		self.lastAffixSlot[slotKey] = actualKey
 		self:UpdateSlotModInfo(actualKey)
 		local info = self.slotModInfo[actualKey]
 		if info then
