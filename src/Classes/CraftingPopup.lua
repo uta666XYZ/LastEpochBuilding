@@ -33,9 +33,7 @@ local SLOT_TYPE_FILTER = {
 		"Two-Handed Spear", "Two-Handed Staff", "Two-Handed Sword", "Bow",
 	},
 	["Weapon 2"]   = {
-		"One-Handed Axe", "Dagger", "One-Handed Mace", "Sceptre",
-		"One-Handed Sword", "Wand", "Two-Handed Axe", "Two-Handed Mace",
-		"Two-Handed Spear", "Two-Handed Staff", "Two-Handed Sword", "Bow",
+		-- Off-Hand slot: only off-hand base types.
 		"Quiver", "Shield", "Off-Hand Catalyst",
 	},
 }
@@ -1818,8 +1816,10 @@ function CraftingPopupClass:BuildTierTooltip(tooltip, slotKey)
 		tooltip:AddLine(16, colorCodes.UNIQUE .. (baseMod.affix or "Affix"))
 		tooltip:AddSeparator(10)
 	end
-	local maxTierShow = 7
-	if slotKey == "sealed" or slotKey == "corrupted" then maxTierShow = 6 end
+	-- Non-primordial affixes cap at T7 (tier index 6). Only the Primordial slot
+	-- exposes the T8 (tier index 7) roll.
+	local maxTierShow = 6
+	if slotKey == "primordial" then maxTierShow = 7 end
 	if self:IsAnyIdol() then maxTierShow = 0 end
 	for tier = 0, maxTierShow do
 		local key = tostring(st.modKey) .. "_" .. tostring(tier)
@@ -1853,7 +1853,8 @@ function CraftingPopupClass:BuildAffixTooltip(tooltip, statOrderKey)
 	if not baseMod then return end
 	tooltip:AddLine(16, colorCodes.UNIQUE .. (baseMod.affix or "Affix"))
 	tooltip:AddSeparator(10)
-	local maxTierTooltip = self:IsAnyIdol() and 0 or 7
+	-- Non-primordial affixes display tiers T1-T7 only.
+	local maxTierTooltip = self:IsAnyIdol() and 0 or 6
 	for tier = 0, maxTierTooltip do
 		local key = tostring(statOrderKey) .. "_" .. tostring(tier)
 		local mod = getMod(key)
@@ -2627,6 +2628,42 @@ function CraftingPopupClass:DrawAffixCards(areaX, areaY, areaW, areaH, mx, my)
 	local colGap   = 6
 	local cardW    = cardMode and m_floor((areaW - colGap) / 2) or areaW
 
+	-- List-mode layout (vertical tier list)
+	local LIST_NAME_H = 18
+	local LIST_TIER_H = 15
+	local LIST_PAD    = 4
+	-- Fetch + cache tier stat lines for an entry (reused from BuildAffixTooltip logic).
+	local self_ref = self
+	local function getAffixTierLines(entry)
+		if entry._tierLines then return entry._tierLines end
+		local function getMod(key)
+			if self_ref:IsIdolAltar() then
+				local altarMods = data.itemMods["Idol Altar"]
+				return altarMods and altarMods[key]
+			end
+			local m = data.itemMods.Item and data.itemMods.Item[key]
+			if not m and data.modIdol and data.modIdol.flat then m = data.modIdol.flat[key] end
+			return m
+		end
+		local out  = {}
+		local maxT = entry.maxTier or 0
+		for tier = 0, maxT do
+			local mod = getMod(tostring(entry.statOrderKey) .. "_" .. tostring(tier))
+			if mod then
+				local parts = {}
+				for k = 1, 10 do
+					local line = mod[k]
+					if line and type(line) == "string" then
+						t_insert(parts, line:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", ""))
+					end
+				end
+				t_insert(out, { tier = tier, text = table.concat(parts, ", ") })
+			end
+		end
+		entry._tierLines = out
+		return out
+	end
+
 	if not self.editItem then
 		SetDrawColor(1, 1, 1)
 		DrawString(areaX + 4, areaY + 20, "LEFT", 14, "VAR", "^8Select an item first.")
@@ -2730,7 +2767,11 @@ function CraftingPopupClass:DrawAffixCards(areaX, areaY, areaW, areaH, mx, my)
 					end
 				else
 					for _, entry in ipairs(g) do
-						t_insert(plan, { kind = "entry", entry = entry, h = rowH })
+						local lines = getAffixTierLines(entry)
+						local nTiers = #lines
+						if nTiers == 0 then nTiers = 1 end
+						local eH = LIST_PAD * 2 + LIST_NAME_H + nTiers * LIST_TIER_H
+						t_insert(plan, { kind = "entry", entry = entry, h = eH })
 					end
 				end
 			end
@@ -2835,8 +2876,9 @@ function CraftingPopupClass:DrawAffixCards(areaX, areaY, areaW, areaH, mx, my)
 		end
 		if it.kind == "entry" then
 			local entry = it.entry
+			local entryH = it.h
 
-			if cy >= areaY and cy2 <= areaY + areaH then
+			if cy < areaY + areaH and cy2 > areaY then
 			t_insert(self.rightCards, { x1=areaX, y1=cy, x2=areaX+areaW, y2=cy2, entry=entry })
 
 			local isSelected = isEntrySelected(entry.statOrderKey)
@@ -2850,7 +2892,7 @@ function CraftingPopupClass:DrawAffixCards(areaX, areaY, areaW, areaH, mx, my)
 			else
 				SetDrawColor(0.10, 0.10, 0.10)
 			end
-			DrawImage(nil, areaX, cy, areaW, rowH)
+			DrawImage(nil, areaX, cy, areaW, entryH)
 
 			-- Left accent bar: blue for Prefix, orange for Suffix
 			local typeStr  = entry.type or ""
@@ -2859,61 +2901,53 @@ function CraftingPopupClass:DrawAffixCards(areaX, areaY, areaW, areaH, mx, my)
 			else
 				SetDrawColor(1.0, 0.60, 0.33)
 			end
-			DrawImage(nil, areaX, cy, 3, rowH)
+			DrawImage(nil, areaX, cy, 3, entryH)
 
-			-- Affix name (row 1 in card mode, only row in list mode)
+			-- Affix name
 			local nameCol = isSelected and colorCodes.UNIQUE or "^7"
 			local nameX   = areaX + 10
-			local nameY   = cy + (cardMode and 6 or 4)
+			local nameY   = cy + LIST_PAD
 			DrawString(nameX, nameY, "LEFT", 14, "VAR",
 				nameCol .. (entry.affix or entry.label or ""))
 
-			if cardMode then
-				-- Row 2: first stat from modifier description (gray)
-				local desc = entry.label or ""
-				desc = desc:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
-				-- For multi-stat affixes show only first part (before " / ")
-				local firstPart = desc:match("^(.-)%s*/%s*.+$") or desc
-				if #firstPart > 55 then firstPart = firstPart:sub(1, 53) .. ".." end
-				DrawString(nameX, cy + 22, "LEFT", 11, "VAR", "^8" .. firstPart)
-
-				-- Row 3: tier badge row right-aligned
-				local maxT     = entry.maxTier or 0
-				local badgeStr = ""
-				for t = 0, maxT do
-					if t > 0 then badgeStr = badgeStr .. "^8 " end
-					badgeStr = badgeStr .. tierColor(t) .. "T" .. tostring(t + 1)
-				end
-				DrawString(areaX + areaW - 6, cy + 38, "RIGHT", 11, "VAR", badgeStr)
-
-				-- Card border (bottom)
-				SetDrawColor(0.20, 0.20, 0.20)
-				DrawImage(nil, areaX, cy2 - 1, areaW, 1)
+			-- Vertical tier list: "Tier N: <stat text>"
+			local tierLines = getAffixTierLines(entry)
+			local lineX   = areaX + 14
+			local lineY   = cy + LIST_PAD + LIST_NAME_H
+			local availW  = areaW - (lineX - areaX) - 10
+			local maxCh   = m_floor(availW / 6.8)
+			local selTier = nil
+			if isSelected then
+				local st = getSelectedSlotState(entry.statOrderKey)
+				if st then selTier = st.tier end
+			end
+			for _, tl in ipairs(tierLines) do
+				local tLabel = tierColor(tl.tier) .. "Tier " .. tostring(tl.tier + 1) .. ":"
+				local txt = tl.text or ""
+				if #txt > maxCh - 10 then txt = txt:sub(1, maxCh - 12) .. ".." end
+				local marker = (selTier == tl.tier) and "  <<" or ""
+				local col = (selTier == tl.tier) and colorCodes.UNIQUE or "^8"
+				DrawString(lineX, lineY, "LEFT", 13, "VAR",
+					tLabel .. " " .. col .. txt .. marker)
+				lineY = lineY + LIST_TIER_H
 			end
 
-			-- Tier range (top-right, list mode only)
-			local maxT = entry.maxTier or 0
-			if not isSelected and not cardMode then
-				local tierStr = maxT > 0
-					and (TIER_COLORS[1] .. "T1^8-" .. tierColor(maxT) .. "T" .. tostring(maxT + 1))
-					or  (TIER_COLORS[1] .. "T1")
-				DrawString(areaX + areaW - 6, cy + 4, "RIGHT", 13, "VAR", tierStr)
-			end
-
-			-- Selection indicator: golden bar + slot label + selected tier
+			-- Selection indicator bar
 			if isSelected then
 				SetDrawColor(0.8, 0.7, 0.3)
-				DrawImage(nil, areaX, cy, 3, rowH)
+				DrawImage(nil, areaX, cy, 3, entryH)
 				local st, slotLabel = getSelectedSlotState(entry.statOrderKey)
 				if st and st.modKey then
 					local t1 = st.tier + 1
 					local indicator = tierColor(st.tier) .. "T" .. tostring(t1)
 					if slotLabel then indicator = indicator .. " ^8(" .. slotLabel .. ")" end
-					-- In card mode align with tier badge row; in list mode show top-right
-					local indY = cardMode and (cy + 38) or (cy + 4)
-					DrawString(areaX + areaW - 6, indY, "RIGHT", 13, "VAR", indicator)
+					DrawString(areaX + areaW - 6, cy + LIST_PAD, "RIGHT", 13, "VAR", indicator)
 				end
 			end
+
+			-- Row separator
+			SetDrawColor(0.18, 0.18, 0.20)
+			DrawImage(nil, areaX, cy2 - 1, areaW, 1)
 		end
 		end
 	end
