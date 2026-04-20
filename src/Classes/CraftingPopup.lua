@@ -2008,18 +2008,29 @@ function CraftingPopupClass:RebuildEditItem()
 				mod = data.modIdol.flat[modKey]
 			end
 			if mod then
+				-- Guard against malformed affix data where mod.affix holds the
+				-- stat description instead of the crafting title (e.g. "Increased
+				-- Cooldown Recovery Speed while Transformed"). Such strings contain
+				-- digits, %, parentheses, or are unusually long.
+				local function isValidCraftName(s)
+					if not s or s == "" or s == "UNKNOWN" then return false end
+					if #s > 25 then return false end
+					if s:find("[%%%(%)%+]") then return false end
+					if s:find("%d") then return false end
+					return true
+				end
 				if mod.type == "Prefix" then
 					prefixIdx = prefixIdx + 1
 					item.prefixes[prefixIdx] = { modId = modKey, range = st.ranges[1] or 128 }
 					local pfxName = mod.affix
-					if pfxName and pfxName ~= "UNKNOWN" and prefixIdx == 1 then
+					if isValidCraftName(pfxName) and prefixIdx == 1 then
 						item.namePrefix = pfxName .. " "
 					end
 				elseif mod.type == "Suffix" then
 					suffixIdx = suffixIdx + 1
 					item.suffixes[suffixIdx] = { modId = modKey, range = st.ranges[1] or 128 }
 					local sfxName = mod.affix
-					if sfxName and sfxName ~= "UNKNOWN" and suffixIdx == 1 then
+					if isValidCraftName(sfxName) and suffixIdx == 1 then
 						item.nameSuffix = " " .. sfxName
 					end
 				end
@@ -2638,10 +2649,15 @@ function CraftingPopupClass:DrawAffixCards(areaX, areaY, areaW, areaH, mx, my)
 	local colGap   = 6
 	local cardW    = cardMode and m_floor((areaW - colGap) / 2) or areaW
 
-	-- List-mode layout (vertical tier list)
-	local LIST_NAME_H = 18
-	local LIST_TIER_H = 15
-	local LIST_PAD    = 4
+	-- List-mode layout (2-col cards with stat_name / craft_name / Tier N lines)
+	local LIST_STAT_H  = 18  -- stat name header
+	local LIST_CRAFT_H = 16  -- craft name subheader
+	local LIST_TIER_H  = 15  -- per-tier line
+	local LIST_PAD     = 6
+	local listColGap   = 6
+	local listCardW    = m_floor((areaW - listColGap) / 2)
+	-- Kept for legacy single-col path (no longer used but harmless if referenced)
+	local LIST_NAME_H = LIST_STAT_H
 	-- Fetch + cache tier stat lines for an entry (reused from BuildAffixTooltip logic).
 	local self_ref = self
 	local function getAffixTierLines(entry)
@@ -2777,12 +2793,22 @@ function CraftingPopupClass:DrawAffixCards(areaX, areaY, areaW, areaH, mx, my)
 						t_insert(plan, { kind = "entryRow", entries = rowEntries, h = rowH })
 					end
 				else
-					for _, entry in ipairs(g) do
-						local lines = getAffixTierLines(entry)
-						local nTiers = #lines
-						if nTiers == 0 then nTiers = 1 end
-						local eH = LIST_PAD * 2 + LIST_NAME_H + nTiers * LIST_TIER_H
-						t_insert(plan, { kind = "entry", entry = entry, h = eH })
+					-- List mode: 2-col rows with dynamic per-row height
+					for i = 1, #g, 2 do
+						local rowEntries = {}
+						local maxH = 0
+						for k = 0, 1 do
+							local e = g[i + k]
+							if e then
+								t_insert(rowEntries, e)
+								local nT = #getAffixTierLines(e)
+								if nT == 0 then nT = 1 end
+								local eH = LIST_PAD * 2 + LIST_STAT_H + LIST_CRAFT_H + nT * LIST_TIER_H
+								if eH > maxH then maxH = eH end
+							end
+						end
+						if maxH == 0 then maxH = LIST_PAD * 2 + LIST_STAT_H + LIST_CRAFT_H + LIST_TIER_H end
+						t_insert(plan, { kind = "listRow", entries = rowEntries, h = maxH })
 					end
 				end
 			end
@@ -2885,7 +2911,91 @@ function CraftingPopupClass:DrawAffixCards(areaX, areaY, areaW, areaH, mx, my)
 				end
 			end
 		end
-		if it.kind == "entry" then
+		if it.kind == "listRow" then
+			local rowEntryH = it.h
+			for ci, entry in ipairs(it.entries) do
+				local cx1 = areaX + (ci - 1) * (listCardW + listColGap)
+				local cx2 = cx1 + listCardW
+				if cy < areaY + areaH and cy2 > areaY then
+					t_insert(self.rightCards, { x1=cx1, y1=cy, x2=cx2, y2=cy2, entry=entry })
+					local isSelected = isEntrySelected(entry.statOrderKey)
+					local isHovered  = mx >= cx1 and mx < cx2 and my >= cy and my < cy2
+					-- Card background
+					if isSelected then
+						SetDrawColor(0.22, 0.18, 0.06)
+					elseif isHovered then
+						SetDrawColor(0.14, 0.14, 0.16)
+					else
+						SetDrawColor(0.10, 0.10, 0.12)
+					end
+					DrawImage(nil, cx1, cy, listCardW, rowEntryH)
+					-- Border
+					SetDrawColor(isSelected and 0.78 or 0.26, isSelected and 0.64 or 0.26, isSelected and 0.16 or 0.30)
+					DrawImage(nil, cx1, cy, listCardW, 1)
+					DrawImage(nil, cx1, cy2 - 1, listCardW, 1)
+					DrawImage(nil, cx1, cy, 1, rowEntryH)
+					DrawImage(nil, cx2 - 1, cy, 1, rowEntryH)
+					-- Accent bar: Prefix=blue, Suffix=orange
+					local typeStr = entry.type or ""
+					if typeStr == "Prefix" then
+						SetDrawColor(0.33, 0.60, 1.0)
+					else
+						SetDrawColor(1.0, 0.60, 0.33)
+					end
+					DrawImage(nil, cx1 + 1, cy + 1, 3, rowEntryH - 2)
+
+					local textX  = cx1 + 10
+					local availW = listCardW - (textX - cx1) - 8
+					local maxCh  = m_floor(availW / 6.8)
+
+					-- Row 1: stat name (stripped label)
+					local stat = (entry.label or ""):gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
+					stat = stat:match("^(.-)%s*/%s*.+$") or stat
+					if #stat > maxCh then stat = stat:sub(1, maxCh - 2) .. ".." end
+					local statCol = isSelected and colorCodes.UNIQUE or "^7"
+					DrawString(textX, cy + LIST_PAD, "LEFT", 14, "VAR", statCol .. stat)
+
+					-- Row 2: craft name (entry.affix)
+					local craft = entry.affix or ""
+					if #craft > maxCh then craft = craft:sub(1, maxCh - 2) .. ".." end
+					DrawString(textX, cy + LIST_PAD + LIST_STAT_H, "LEFT", 12, "VAR",
+						"^8" .. craft)
+
+					-- Row 3+: per-tier "Tier N: ..." lines
+					local tierLines = getAffixTierLines(entry)
+					local selTier = nil
+					if isSelected then
+						local st = getSelectedSlotState(entry.statOrderKey)
+						if st then selTier = st.tier end
+					end
+					local lineY = cy + LIST_PAD + LIST_STAT_H + LIST_CRAFT_H
+					for _, tl in ipairs(tierLines) do
+						local tLabel = tierColor(tl.tier) .. "Tier " .. tostring(tl.tier + 1) .. ":"
+						local txt = tl.text or ""
+						local budget = maxCh - 10
+						if #txt > budget then txt = txt:sub(1, budget - 2) .. ".." end
+						local marker = (selTier == tl.tier) and "  <<" or ""
+						local col = (selTier == tl.tier) and colorCodes.UNIQUE or tierColor(tl.tier)
+						DrawString(textX + 2, lineY, "LEFT", 13, "VAR",
+							tLabel .. " " .. col .. txt .. marker)
+						lineY = lineY + LIST_TIER_H
+					end
+
+					-- Selection right indicator
+					if isSelected then
+						local st, slotLabel = getSelectedSlotState(entry.statOrderKey)
+						if st and st.modKey then
+							local t1 = st.tier + 1
+							local indicator = tierColor(st.tier) .. "T" .. tostring(t1)
+							if slotLabel then indicator = indicator .. " ^8(" .. slotLabel .. ")" end
+							DrawString(cx2 - 8, cy + LIST_PAD, "RIGHT", 12, "VAR",
+								"^xFFCC44> " .. indicator)
+						end
+					end
+				end
+			end
+		end
+		if false and it.kind == "entry" then
 			local entry = it.entry
 			local entryH = it.h
 
