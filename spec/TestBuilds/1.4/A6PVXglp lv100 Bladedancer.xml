@@ -1,0 +1,934 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LastEpochBuilding>
+	<Build level="100" targetVersion="1_4" pantheonMajorGod="None" bandit="None" className="Rogue" ascendClassName="Bladedancer" characterLevelAutoMode="false" mainSocketGroup="4" viewMode="ITEMS" pantheonMinorGod="None">
+		<PlayerStat stat="AverageHit" value="1436.01156"/>
+		<PlayerStat stat="AverageDamage" value="1436.01156"/>
+		<PlayerStat stat="AverageBurstDamage" value="1436.01156"/>
+		<PlayerStat stat="Speed" value="2.5717999314187"/>
+		<PlayerStat stat="PreEffectiveCritChance" value="5.2"/>
+		<PlayerStat stat="CritChance" value="5.2"/>
+		<PlayerStat stat="CritMultiplier" value="2"/>
+		<PlayerStat stat="HitChance" value="100"/>
+		<PlayerStat stat="TotalDPS" value="3693.1344315244"/>
+		<PlayerStat stat="CombinedDPS" value="3693.1344315244"/>
+		<PlayerStat stat="ManaCost" value="0"/>
+		<PlayerStat stat="ManaPercentCost" value="0"/>
+		<PlayerStat stat="ManaPerSecondCost" value="0"/>
+		<PlayerStat stat="ManaPercentPerSecondCost" value="0"/>
+		<PlayerStat stat="Vit" value="26"/>
+		<PlayerStat stat="Str" value="17"/>
+		<PlayerStat stat="Dex" value="73"/>
+		<PlayerStat stat="Int" value="17"/>
+		<PlayerStat stat="Att" value="9"/>
+		<PlayerStat stat="TotalEHP" value="53477.307384093"/>
+		<PlayerStat stat="FireMaximumHitTaken" value="42483.158304165"/>
+		<PlayerStat stat="LightningMaximumHitTaken" value="42483.158304165"/>
+		<PlayerStat stat="ColdMaximumHitTaken" value="42483.158304165"/>
+		<PlayerStat stat="PhysicalMaximumHitTaken" value="48413.572588402"/>
+		<PlayerStat stat="PoisonMaximumHitTaken" value="42483.158304165"/>
+		<PlayerStat stat="NecroticMaximumHitTaken" value="42483.158304165"/>
+		<PlayerStat stat="VoidMaximumHitTaken" value="23088.672991394"/>
+		<PlayerStat stat="Life" value="5403"/>
+		<PlayerStat stat="Spec:LifeInc" value="0"/>
+		<PlayerStat stat="LifeRegenRecovery" value="26"/>
+		<PlayerStat stat="LifeLeechGainRate" value="15.430799588512"/>
+		<PlayerStat stat="Mana" value="119"/>
+		<PlayerStat stat="Spec:ManaInc" value="0"/>
+		<PlayerStat stat="ManaRegenRecovery" value="9"/>
+		<PlayerStat stat="ManaLeechGainRate" value="0"/>
+		<PlayerStat stat="Ward" value="27"/>
+		<PlayerStat stat="WardRetention" value="34"/>
+		<PlayerStat stat="NetWardRegen" value="0"/>
+		<PlayerStat stat="Evasion" value="726"/>
+		<PlayerStat stat="Spec:EvasionInc" value="34"/>
+		<PlayerStat stat="MeleeEvadeChance" value="0"/>
+		<PlayerStat stat="ProjectileEvadeChance" value="0"/>
+		<PlayerStat stat="Armour" value="4087"/>
+		<PlayerStat stat="Spec:ArmourInc" value="0"/>
+		<PlayerStat stat="PhysicalDamageReduction" value="57.929996054755"/>
+		<PlayerStat stat="BlockChance" value="0"/>
+		<PlayerStat stat="SpellBlockChance" value="0"/>
+		<PlayerStat stat="AttackDodgeChance" value="21.508450878937"/>
+		<PlayerStat stat="SpellDodgeChance" value="0"/>
+		<PlayerStat stat="FireResist" value="75"/>
+		<PlayerStat stat="FireResistOverCap" value="8"/>
+		<PlayerStat stat="LightningResist" value="75"/>
+		<PlayerStat stat="LightningResistOverCap" value="68"/>
+		<PlayerStat stat="ColdResist" value="75"/>
+		<PlayerStat stat="ColdResistOverCap" value="5"/>
+		<PlayerStat stat="PhysicalResist" value="69"/>
+		<PlayerStat stat="PhysicalResistOverCap" value="0"/>
+		<PlayerStat stat="PoisonResist" value="75"/>
+		<PlayerStat stat="PoisonResistOverCap" value="9"/>
+		<PlayerStat stat="NecroticResist" value="75"/>
+		<PlayerStat stat="NecroticResistOverCap" value="19"/>
+		<PlayerStat stat="VoidResist" value="54"/>
+		<PlayerStat stat="VoidResistOverCap" value="0"/>
+		<PlayerStat stat="EffectiveMovementSpeedMod" value="1.27"/>
+		<PlayerStat stat="FullDPS" value="6913.6437074684"/>
+		<FullDPSSkill skillPart="" source="" stat="Puncture" value="3693.1344315244"/>
+		<FullDPSSkill skillPart="" source="Puncture" stat="Bleed" value="3133.6689498569"/>
+		<FullDPSSkill skillPart="" source="Puncture" stat="Poison" value="86.840326087086"/>
+	</Build>
+	<Calcs>
+		<Input name="misc_buffMode" string="EFFECTIVE"/>
+		<Input name="skill_number" number="4"/>
+		<Section subsection="ViewSkillDetails" collapsed="false" id="SkillSelect"/>
+		<Section subsection="SkillDamage" collapsed="false" id="HitDamage"/>
+		<Section subsection="AttackCastRate" collapsed="false" id="Speed"/>
+		<Section subsection="Crits" collapsed="false" id="Crit"/>
+		<Section subsection="SkilltypespecificStats" collapsed="false" id="SkillTypeStats"/>
+		<Section subsection="LeechGainonHit" collapsed="false" id="LeechGain"/>
+		<Section subsection="OtherEffects" collapsed="false" id="MiscEffects"/>
+		<Section subsection="AilmentsStatus" collapsed="false" id="LEAilments"/>
+		<Section subsection="Attributes" collapsed="false" id="Attributes"/>
+		<Section subsection="Health" collapsed="false" id="Life"/>
+		<Section subsection="Mana" collapsed="false" id="Mana"/>
+		<Section subsection="Ward" collapsed="false" id="Ward"/>
+		<Section subsection="Endurance" collapsed="false" id="Endurance"/>
+		<Section subsection="Resists" collapsed="false" id="Resist"/>
+		<Section subsection="Armor" collapsed="false" id="Armour"/>
+		<Section subsection="Block" collapsed="false" id="DamageAvoidance"/>
+		<Section subsection="Dodge" collapsed="false" id="DamageAvoidance"/>
+		<Section subsection="OtherDefences" collapsed="false" id="MiscDefences"/>
+		<Section subsection="DamageTaken" collapsed="false" id="DamageTaken"/>
+		<Section subsection="DamagingHits" collapsed="false" id="DamageTaken"/>
+		<Section subsection="EffectiveHealthPool" collapsed="false" id="DamageTaken"/>
+		<Section subsection="MaximumHitTaken" collapsed="false" id="DamageTaken"/>
+		<Section subsection="DotsandDegens" collapsed="false" id="DamageTaken"/>
+	</Calcs>
+	<Config>
+		<Input name="bandit" string="None"/>
+		<Input name="pantheonMajorGod" string="None"/>
+		<Input name="pantheonMinorGod" string="None"/>
+		<Input name="questApophisMajasa" boolean="true"/>
+		<Input name="questTempleOfEterra" boolean="true"/>
+		<Placeholder name="enemyColdDamage" number="1000"/>
+		<Placeholder name="enemyCritChance" number="5"/>
+		<Placeholder name="enemyCritDamage" number="30"/>
+		<Placeholder name="enemyDamageRollRange" number="70"/>
+		<Placeholder name="enemyFireDamage" number="1000"/>
+		<Placeholder name="enemyLevel" number="100"/>
+		<Placeholder name="enemyLightningDamage" number="1000"/>
+		<Placeholder name="enemyNecroticDamage" number="1000"/>
+		<Placeholder name="enemyPhysicalDamage" number="1000"/>
+		<Placeholder name="enemyPoisonDamage" number="1000"/>
+		<Placeholder name="enemySpeed" number="700"/>
+		<Placeholder name="enemyVoidDamage" number="1000"/>
+	</Config>
+	<Import exportParty="false"/>
+	<Items activeItemSet="1" useSecondWeaponSet="nil">
+		<Item id="1">
+			Rarity: EXALTED
+Warrior&apos;s Ruby Dice of Purity
+Ruby Dice
+Unique ID: 12
+Crafted: true
+Prefix: {range:127}30_4
+Prefix: {range:240}612_6
+Prefix: None
+Suffix: {range:26}10_3
+Suffix: {range:135}25_4
+Suffix: None
+LevelReq: 62
+Implicits: 2
+{range:151}+(36-42)% Fire Resistance
+{range:178}+(6-36)% Chance to inflict Bleed on Hit
+{range:127}{rounding:Integer}(40-60)% increased Physical Damage
++4 to Dancing Strikes
+{range:240}{rounding:Integer}(81-100)% increased Melee Damage
+{range:26}+(22-29)% Necrotic Resistance
+{range:135}{rounding:Integer}+(61-90) Health
+			<ModRange range="151" id="1"/>
+			<ModRange range="178" id="2"/>
+			<ModRange range="127" id="3"/>
+			<ModRange range="127.5" id="4"/>
+			<ModRange range="240" id="5"/>
+			<ModRange range="26" id="6"/>
+			<ModRange range="135" id="7"/>
+		</Item>
+		<Item id="2">
+			Rarity: EXALTED
+Dexterous Coral Ring of Life
+Coral Ring
+Unique ID: 9
+Crafted: true
+Prefix: {range:177}503_4
+Prefix: {range:159}30_4
+Prefix: None
+Suffix: {range:190}25_5
+Suffix: {range:158}17_4
+Suffix: None
+LevelReq: 48
+Implicits: 2
+{range:177}{rounding:Integer}+(3-6) Vitality
+{range:253}{rounding:Integer}+(3-6) Health Regen
+{range:177}{rounding:Integer}+(7-8) Dexterity
+{range:159}{rounding:Integer}(40-60)% increased Physical Damage
+{range:190}{rounding:Integer}+(100-130) Health
+{range:158}+(30-45)% Cold Resistance
+			<ModRange range="177" id="1"/>
+			<ModRange range="253" id="2"/>
+			<ModRange range="177" id="3"/>
+			<ModRange range="159" id="4"/>
+			<ModRange range="190" id="5"/>
+			<ModRange range="158" id="6"/>
+		</Item>
+		<Item id="3">
+			Rarity: RARE
+Deft Nagasa Scymitar of Wounds
+Nagasa Scymitar
+Unique ID: 5
+Crafted: true
+Prefix: {range:144}2_4
+Prefix: {range:173}30_4
+Prefix: None
+Suffix: {range:80}68_4
+Suffix: {range:221}86_2
+Suffix: None
+Quality: 0
+LevelReq: 54
+Implicits: 2
++36 Melee Damage
+{range:108}{rounding:Integer}(35-65)% increased Damage Over Time
+{range:144}{scalar:1.75}(12-15)% increased Melee Attack Speed
+{range:173}{scalar:1.75}{rounding:Integer}(40-60)% increased Physical Damage
+{range:80}{scalar:1.75}+(24-30)% Chance to inflict Bleed on Hit
+{range:221}{scalar:1.75}+(41-55)% Chance to Shred Armor on Hit
+			<ModRange range="127.5" id="1"/>
+			<ModRange range="108" id="2"/>
+			<ModRange range="144" id="3"/>
+			<ModRange range="173" id="4"/>
+			<ModRange range="80" id="5"/>
+			<ModRange range="221" id="6"/>
+		</Item>
+		<Item id="4">
+			Rarity: EXALTED
+Level of Shurikens Blood Visage of the Ox
+Blood Visage
+Unique ID: 2
+Crafted: true
+Prefix: {range:182}611_4
+Prefix: {range:90}503_5
+Prefix: None
+Suffix: {range:107}52_4
+Suffix: {range:141}715_4
+Suffix: None
+LevelReq: 74
+Implicits: 3
++115 Armor
+{range:204}{rounding:Integer}(50-95)% increased Damage Over Time
+{range:225}(10-25)% Increased Bleed Duration
++2 to Shurikens
+{range:182}{rounding:Integer}(41-60)% increased Throwing Damage
+{range:90}{rounding:Integer}+(11-13) Dexterity
+{range:107}{rounding:Integer}(10-12)% increased Health
+{range:141}{rounding:Integer}+(71-95) Armor
+{range:141}(25-30)% reduced Bonus Damage Taken from Critical Strikes
+			<ModRange range="127.5" id="1"/>
+			<ModRange range="204" id="2"/>
+			<ModRange range="225" id="3"/>
+			<ModRange range="127.5" id="4"/>
+			<ModRange range="182" id="5"/>
+			<ModRange range="90" id="6"/>
+			<ModRange range="107" id="7"/>
+			<ModRange range="141" id="8"/>
+			<ModRange range="141" id="9"/>
+		</Item>
+		<Item id="5">
+			Rarity: LEGENDARY
+Pearls of the Swine
+Bone Amulet
+Unique ID: 11
+Crafted: true
+Prefix: None
+Prefix: None
+Prefix: None
+Suffix: {range:209}25_6
+Suffix: None
+Suffix: None
+LevelReq: 58
+Implicits: 2
+{range:19}+(13-40)% Physical Resistance
+{range:225}+(13-40)% Necrotic Resistance
+{range:209}{scalar:1.17}{rounding:Integer}+(131-180) Health
+{crafted}+100% Bone Curse also inflicts Decrepify
+{crafted}{range:244}{rounding:Integer}(113-166) Ward per Second for each Curse affecting you
+{crafted}{range:244}{rounding:Integer}(31-55)% increased Physical Damage
+{crafted}{range:243}{rounding:Integer}+(5-9) Vitality
+{crafted}{range:144}+(7-11)% to All Resistances
+{crafted}{range:130}{rounding:Integer}+(1-4) to All Attributes
+			<ModRange range="19" id="1"/>
+			<ModRange range="225" id="2"/>
+			<ModRange range="209" id="3"/>
+			<ModRange range="127.5" id="4"/>
+			<ModRange range="244" id="5"/>
+			<ModRange range="244" id="6"/>
+			<ModRange range="243" id="7"/>
+			<ModRange range="144" id="8"/>
+			<ModRange range="130" id="9"/>
+		</Item>
+		<Item id="6">
+			Rarity: LEGENDARY
+Salt the Wound
+Serrated Bracers
+Unique ID: 6
+Crafted: true
+Prefix: {range:203}675_6
+Prefix: None
+Prefix: None
+Suffix: None
+Suffix: None
+Suffix: None
+LevelReq: 62
+Implicits: 3
++45 Armor
+{range:116}(5-15)% Increased Bleed Duration
+{range:251}(5-15)% Increased Poison Duration
+{range:203}(17-20)% of Current Health Lost per second
+{range:203}(17-20)% of Missing Health gained as Ward per second
+{crafted}{range:22}+(25-40)% Critical Strike Multiplier
+{crafted}{range:107}{rounding:Integer}(25-40)% increased Damage Over Time
+{crafted}{range:126}+(15-45)% Physical Resistance
+{crafted}{range:241}+(15-45)% Poison Resistance
+{crafted}{range:196}(40-50)% of added Critical Strike Multiplier Converted to Physical Penetration with Bleed
+{crafted}{range:79}(40-50)% of added Critical Strike Multiplier Converted to Poison Penetration with Poison
+			<ModRange range="127.5" id="1"/>
+			<ModRange range="116" id="2"/>
+			<ModRange range="251" id="3"/>
+			<ModRange range="203" id="4"/>
+			<ModRange range="203" id="5"/>
+			<ModRange range="22" id="6"/>
+			<ModRange range="107" id="7"/>
+			<ModRange range="126" id="8"/>
+			<ModRange range="241" id="9"/>
+			<ModRange range="196" id="10"/>
+			<ModRange range="79" id="11"/>
+		</Item>
+		<Item id="7">
+			Rarity: EXALTED
+Cleansing Praetorian Belt of the Ox
+Praetorian Belt
+Unique ID: 7
+Crafted: true
+Prefix: {range:94}75_1
+Prefix: {range:69}958_2
+Prefix: None
+Suffix: {range:130}52_6
+Suffix: {range:182}36_4
+Suffix: None
+LevelReq: 66
+Implicits: 2
+{range:222}{rounding:Integer}+(125-250) Armor
++4 Potion Slots
+{range:94}{rounding:Integer}(31-40) Ward Gained on Potion Use
+100% chance to Cleanse All Ailments on Potion Use
+{range:69}+(9-12)% Chance to not consume a Potion when you use a Potion and restore at least 20% of Maximum Health
+{range:69}{rounding:Integer}+(90-120) Overhealing from potions does not count towards triggering this effect Health Gained on Potion Use
+{range:130}{rounding:Integer}(21-26)% increased Health
+{range:182}{rounding:Integer}+(46-68) Health
+5% increased Health
+			<ModRange range="222" id="1"/>
+			<ModRange range="127.5" id="2"/>
+			<ModRange range="94" id="3"/>
+			<ModRange range="127.5" id="4"/>
+			<ModRange range="69" id="5"/>
+			<ModRange range="69" id="6"/>
+			<ModRange range="130" id="7"/>
+			<ModRange range="182" id="8"/>
+			<ModRange range="127.5" id="9"/>
+		</Item>
+		<Item id="8">
+			Rarity: EXALTED
+Dexterous Gold Ring of Life
+Gold Ring
+Unique ID: 10
+Crafted: true
+Prefix: {range:255}503_4
+Prefix: None
+Prefix: None
+Suffix: {range:255}25_5
+Suffix: {range:255}7_4
+Suffix: None
+LevelReq: 25
+Implicits: 1
+{range:255}+(5-18)% Elemental Resistance
+{range:255}{rounding:Integer}+(7-8) Dexterity
+{range:255}{rounding:Integer}+(100-130) Health
+{range:255}+(30-45)% Void Resistance
+			<ModRange range="255" id="1"/>
+			<ModRange range="255" id="2"/>
+			<ModRange range="255" id="3"/>
+			<ModRange range="255" id="4"/>
+		</Item>
+		<Item id="9">
+			Rarity: LEGENDARY
+Architects of Astral Blood
+Banded Armor
+Unique ID: 3
+Crafted: true
+Prefix: None
+Prefix: None
+Prefix: None
+Suffix: {range:241}52_6
+Suffix: None
+Suffix: None
+LevelReq: 27
+Implicits: 1
++85 Armor
+{range:241}{scalar:1.5}{rounding:Integer}(21-26)% increased Health
+{crafted}{range:26}(200-240)% of Maximum Health applied as a Ward Limit
+{crafted}20% of Current Health Lost per second
+{crafted}{range:204}(36-42)% of Missing Health gained as Ward per second
+{crafted}{range:217}(36-42)% of Maximum Health gained as Ward Decay Threshold
+{crafted}{range:125}{rounding:Integer}+(72-168) Health
+{crafted}{range:239}{rounding:Integer}+(72-168) Stun Avoidance
+{crafted}{range:23}{rounding:Integer}+(4-6) to All Attributes
+			<ModRange range="127.5" id="1"/>
+			<ModRange range="241" id="2"/>
+			<ModRange range="26" id="3"/>
+			<ModRange range="127.5" id="4"/>
+			<ModRange range="204" id="5"/>
+			<ModRange range="217" id="6"/>
+			<ModRange range="125" id="7"/>
+			<ModRange range="239" id="8"/>
+			<ModRange range="23" id="9"/>
+		</Item>
+		<Item id="10">
+			Rarity: LEGENDARY
+Blood of the Exile
+Iron Greaves
+Unique ID: 8
+Crafted: true
+Prefix: None
+Prefix: None
+Prefix: None
+Suffix: {range:255}36_6
+Suffix: None
+Suffix: None
+LevelReq: 16
+Implicits: 2
++35 Armor
+{range:95}(8-10)% increased Movement Speed
+{range:255}{rounding:Integer}+(106-135) Health
+{range:255}{rounding:Integer}(8-10)% increased Health
+{crafted}{range:127.5}(8-10)% increased Movement Speed
+{crafted}{range:255}(30-67)% Increased Bleed Duration
+{crafted}{range:255}(30-40)% more Physical Ailment Damage to Moving Enemies
+{crafted}{range:255}{rounding:Integer}+(5-8) Strength
+{crafted}{range:255}{rounding:Integer}+(5-8) Dexterity
+{crafted}{range:255}{rounding:Integer}+(5-8) Intelligence
+			<ModRange range="127.5" id="1"/>
+			<ModRange range="95" id="2"/>
+			<ModRange range="255" id="3"/>
+			<ModRange range="255" id="4"/>
+			<ModRange range="127.5" id="5"/>
+			<ModRange range="255" id="6"/>
+			<ModRange range="255" id="7"/>
+			<ModRange range="255" id="8"/>
+			<ModRange range="255" id="9"/>
+			<ModRange range="255" id="10"/>
+		</Item>
+		<Item id="11">
+			Rarity: EXALTED
+Deft Dragonbone Axe of Wounds
+Dragonbone Axe
+Unique ID: 4
+Crafted: true
+Prefix: {range:32}2_6
+Prefix: {range:93}957_0
+Prefix: None
+Suffix: {range:163}68_2
+Suffix: {range:19}54_1
+Suffix: None
+Quality: 0
+LevelReq: 80
+Implicits: 3
++51 Melee Damage
+{range:181}{rounding:Integer}+(10-14) Minion Melee Damage
+{range:97}+(70-100)% Chance to inflict Bleed on Hit
+{range:32}{scalar:1.75}(24-30)% increased Melee Attack Speed
+{range:93}+(4-6)% Chance to apply Critical Vulnerability on Melee Hit
+{range:93}+(1-2)% Each stack of Critical Vulnerability adds an additional 2% chance to be crit, reduces critical strike avoidance by 10%, and lasts 4 seconds. Stacks up to 10 times. Melee Attack Speed
+{range:163}{scalar:1.75}+(17-20)% Chance to inflict Bleed on Hit
+{range:19}{scalar:1.75}+(13-16)% Chance to Poison on Hit
+			<ModRange range="127.5" id="1"/>
+			<ModRange range="181" id="2"/>
+			<ModRange range="97" id="3"/>
+			<ModRange range="32" id="4"/>
+			<ModRange range="93" id="5"/>
+			<ModRange range="93" id="6"/>
+			<ModRange range="163" id="7"/>
+			<ModRange range="19" id="8"/>
+		</Item>
+		<Item id="12">
+			Rarity: RARE
+Survivalist&apos;s Heretical Large Shadow Idol of Blood Loss
+Heretical Large Shadow Idol
+Unique ID: Idol 21
+Crafted: true
+Prefix: {range:161}942_0
+Prefix: None
+Prefix: None
+Suffix: {range:123}466_0
+Suffix: {range:74}933_3
+Suffix: {range:135}892_1
+LevelReq: 0
+Implicits: 0
+{range:161}{rounding:Integer}+(8-18) Dodge Rating
+{range:161}{rounding:Integer}(3-9)% increased Health
+{range:123}{scalar:0.67}{rounding:Integer}(33-90)% increased Physical Damage Over Time
+1% Chance to receive a Glancing Blow when hit
+3% increased Dodge Rating
+{range:135}(3-4)% increased Critical Strike Chance
++2% Critical Strike Multiplier
+			<ModRange range="161" id="1"/>
+			<ModRange range="161" id="2"/>
+			<ModRange range="123" id="3"/>
+			<ModRange range="127.5" id="4"/>
+			<ModRange range="127.5" id="5"/>
+			<ModRange range="135" id="6"/>
+			<ModRange range="127.5" id="7"/>
+		</Item>
+		<Item id="13">
+			Rarity: RARE
+Armored Minor Weaver Idol of Frost
+Minor Weaver Idol
+Unique ID: Idol 1
+Crafted: true
+Prefix: {range:255}842_0
+Prefix: None
+Prefix: None
+Suffix: {range:255}112_0
+Suffix: None
+Suffix: None
+LevelReq: 0
+Implicits: 0
+{range:255}{rounding:Integer}+(28-40) Armor
+{range:255}{rounding:Integer}(2-5)% increased Armor
+{range:255}{scalar:0.17}+(20-45)% Cold Resistance
+			<ModRange range="255" id="1"/>
+			<ModRange range="255" id="2"/>
+			<ModRange range="255" id="3"/>
+		</Item>
+		<Item id="14">
+			Rarity: RARE
+Armored Minor Weaver Idol of Insulation
+Minor Weaver Idol
+Unique ID: Idol 3
+Crafted: true
+Prefix: {range:255}842_0
+Prefix: None
+Prefix: None
+Suffix: {range:255}117_0
+Suffix: None
+Suffix: None
+LevelReq: 0
+Implicits: 0
+{range:255}{rounding:Integer}+(28-40) Armor
+{range:255}{rounding:Integer}(2-5)% increased Armor
+{range:255}{scalar:0.17}+(8-20)% Elemental Resistance
+			<ModRange range="255" id="1"/>
+			<ModRange range="255" id="2"/>
+			<ModRange range="255" id="3"/>
+		</Item>
+		<Item id="15">
+			Rarity: RARE
+Survivalist&apos;s Heretical Large Shadow Idol of Blood Loss
+Heretical Large Shadow Idol
+Unique ID: Idol 22
+Crafted: true
+Prefix: {range:206}942_0
+Prefix: None
+Prefix: None
+Suffix: {range:26}466_0
+Suffix: {range:129}897_1
+Suffix: {range:253}933_3
+LevelReq: 0
+Implicits: 0
+{range:206}{rounding:Integer}+(8-18) Dodge Rating
+{range:206}{rounding:Integer}(3-9)% increased Health
+{range:26}{scalar:0.67}{rounding:Integer}(33-90)% increased Physical Damage Over Time
+{range:129}{rounding:Integer}+(3-4) Ward Decay Threshold
+{range:129}{rounding:Integer}+(3-4) Ward per Second
+1% Chance to receive a Glancing Blow when hit
+3% increased Dodge Rating
+			<ModRange range="206" id="1"/>
+			<ModRange range="206" id="2"/>
+			<ModRange range="26" id="3"/>
+			<ModRange range="129" id="4"/>
+			<ModRange range="129" id="5"/>
+			<ModRange range="127.5" id="6"/>
+			<ModRange range="127.5" id="7"/>
+		</Item>
+		<Item id="16">
+			Rarity: EXALTED
+Survivalist&apos;s Heretical Large Shadow Idol of Obscurity
+Heretical Large Shadow Idol
+Unique ID: Idol 10
+Crafted: true
+Prefix: {range:255}942_0
+Prefix: None
+Prefix: None
+Suffix: {range:137}436_0
+Suffix: {range:242}933_6
+Suffix: None
+LevelReq: 0
+Implicits: 0
+{range:255}{rounding:Integer}+(8-18) Dodge Rating
+{range:255}{rounding:Integer}(3-9)% increased Health
+{range:137}{scalar:0.67}{rounding:Integer}(5-15) Ward Gained on Shadow Creation
+4% Chance to receive a Glancing Blow when hit
+{range:242}{rounding:Integer}(7-8)% increased Dodge Rating
+			<ModRange range="255" id="1"/>
+			<ModRange range="255" id="2"/>
+			<ModRange range="137" id="3"/>
+			<ModRange range="127.5" id="4"/>
+			<ModRange range="242" id="5"/>
+		</Item>
+		<Item id="17">
+			Rarity: RARE
+Survivalist&apos;s Heretical Large Shadow Idol of Shifting
+Heretical Large Shadow Idol
+Unique ID: Idol 23
+Crafted: true
+Prefix: {range:224}942_0
+Prefix: None
+Prefix: None
+Suffix: {range:253}531_0
+Suffix: {range:115}933_3
+Suffix: {range:191}937_1
+LevelReq: 0
+Implicits: 0
+{range:224}{rounding:Integer}+(8-18) Dodge Rating
+{range:224}{rounding:Integer}(3-9)% increased Health
+{range:253}{scalar:0.67}{rounding:Integer}+(17-45) Ward gained when you use Shift
+1% Chance to receive a Glancing Blow when hit
+3% increased Dodge Rating
+2% Increased Poison Duration
+2% chance to throw Acid Flask on Bow Hit
+			<ModRange range="224" id="1"/>
+			<ModRange range="224" id="2"/>
+			<ModRange range="253" id="3"/>
+			<ModRange range="127.5" id="4"/>
+			<ModRange range="127.5" id="5"/>
+			<ModRange range="127.5" id="6"/>
+			<ModRange range="127.5" id="7"/>
+		</Item>
+		<Item id="18">
+			Rarity: RARE
+Survivalist&apos;s Heretical Large Shadow Idol of Obscurity
+Heretical Large Shadow Idol
+Unique ID: Idol 11
+Crafted: true
+Prefix: {range:250}942_0
+Prefix: None
+Prefix: None
+Suffix: {range:215}436_0
+Suffix: {range:15}939_4
+Suffix: {range:73}933_0
+LevelReq: 0
+Implicits: 0
+{range:250}{rounding:Integer}+(8-18) Dodge Rating
+{range:250}{rounding:Integer}(3-9)% increased Health
+{range:215}{scalar:0.67}{rounding:Integer}(5-15) Ward Gained on Shadow Creation
++5% Fire Resistance
+5% Increased Ignite Duration
+1% Chance to receive a Glancing Blow when hit
+1% increased Dodge Rating
+			<ModRange range="250" id="1"/>
+			<ModRange range="250" id="2"/>
+			<ModRange range="215" id="3"/>
+			<ModRange range="127.5" id="4"/>
+			<ModRange range="127.5" id="5"/>
+			<ModRange range="127.5" id="6"/>
+			<ModRange range="127.5" id="7"/>
+		</Item>
+		<Item id="19">
+			Rarity: RARE
+Armored Minor Weaver Idol of Insulation
+Minor Weaver Idol
+Unique ID: Idol 24
+Crafted: true
+Prefix: {range:255}842_0
+Prefix: None
+Prefix: None
+Suffix: {range:255}117_0
+Suffix: None
+Suffix: None
+LevelReq: 0
+Implicits: 0
+{range:255}{rounding:Integer}+(28-40) Armor
+{range:255}{rounding:Integer}(2-5)% increased Armor
+{range:255}{scalar:0.17}+(8-20)% Elemental Resistance
+			<ModRange range="255" id="1"/>
+			<ModRange range="255" id="2"/>
+			<ModRange range="255" id="3"/>
+		</Item>
+		<Item id="20">
+			Rarity: RARE
+Armored Minor Weaver Idol of Life
+Minor Weaver Idol
+Unique ID: Idol 25
+Crafted: true
+Prefix: {range:243}842_0
+Prefix: None
+Prefix: None
+Suffix: {range:237}105_0
+Suffix: None
+Suffix: None
+LevelReq: 0
+Implicits: 0
+{range:243}{rounding:Integer}+(28-40) Armor
+{range:243}{rounding:Integer}(2-5)% increased Armor
+{range:237}{scalar:0.17}{rounding:Integer}+(30-80) Health
+			<ModRange range="243" id="1"/>
+			<ModRange range="243" id="2"/>
+			<ModRange range="237" id="3"/>
+		</Item>
+		<Item id="21">
+			Rarity: RARE
+Carcinised Altar of the Woven Sun
+Carcinised Altar
+Unique ID: 123
+Crafted: true
+Prefix: None
+Prefix: None
+Prefix: None
+Suffix: {range:198}1097_2
+Suffix: {range:241}1099_0
+Suffix: None
+LevelReq: 32
+Implicits: 1
+{range:249}+(64-256) Armor per Idol in a Refracted Slot
+(4)% Reduced Bonus Damage Taken from Critical Strikes per Equipped Heretical Idol
+(1)% Increased Health per Equipped Huge Idol
+			<ModRange range="249" id="1"/>
+			<ModRange range="127.5" id="2"/>
+			<ModRange range="127.5" id="3"/>
+		</Item>
+		<Item id="22">
+			Rarity: NORMAL
+Grand Enmity of the Clans
+Grand Enmity of the Clans
+Unique ID: blessing:Blood, Frost, and Death
+LevelReq: 0
+Implicits: 1
+67% Increased One-Handed Sword Drop Rate
+			<ModRange range="127.5" id="1"/>
+		</Item>
+		<Item id="23">
+			Rarity: NORMAL
+Grand Knowledge of Skill
+Grand Knowledge of Skill
+Unique ID: blessing:The Last Ruin
+LevelReq: 0
+Implicits: 1
+32% Increased Skill Shard Drop Rate
+			<ModRange range="127.5" id="1"/>
+		</Item>
+		<Item id="24">
+			Rarity: NORMAL
+Grand Strength of Mind
+Grand Strength of Mind
+Unique ID: blessing:Fall of the Outcasts
+LevelReq: 0
+Implicits: 1
+10% Increased Experience
+			<ModRange range="127.5" id="1"/>
+		</Item>
+		<Item id="25">
+			Rarity: NORMAL
+Grand Bastion of Divinity
+Grand Bastion of Divinity
+Unique ID: blessing:Ending the Storm
+LevelReq: 0
+Implicits: 1
++55% Lightning Resistance
+			<ModRange range="127.5" id="1"/>
+		</Item>
+		<Item id="26">
+			Rarity: NORMAL
+Grand Bulwark of the Tundra
+Grand Bulwark of the Tundra
+Unique ID: blessing:The Age of Winter
+LevelReq: 0
+Implicits: 1
+53% increased Armor
+			<ModRange range="127.5" id="1"/>
+		</Item>
+		<Item id="27">
+			Rarity: NORMAL
+Grand Despair of the Empire
+Grand Despair of the Empire
+Unique ID: blessing:Fall of the Empire
+LevelReq: 0
+Implicits: 1
+56% Increased Ailment Shard Drop Rate
+			<ModRange range="127.5" id="1"/>
+		</Item>
+		<Item id="28">
+			Rarity: NORMAL
+Grand Emptiness of Ash
+Grand Emptiness of Ash
+Unique ID: blessing:The Black Sun
+LevelReq: 0
+Implicits: 1
++36% Critical Strike Multiplier
+			<ModRange range="127.5" id="1"/>
+		</Item>
+		<Item id="29">
+			Rarity: NORMAL
+Grand Hemmorage of Marrow
+Grand Hemmorage of Marrow
+Unique ID: blessing:Reign of Dragons
+LevelReq: 0
+Implicits: 1
++100% Chance to inflict Bleed on Hit
+			<ModRange range="127.5" id="1"/>
+		</Item>
+		<Item id="30">
+			Rarity: NORMAL
+Grand Vision of the Aurora
+Grand Vision of the Aurora
+Unique ID: blessing:The Stolen Lance
+LevelReq: 0
+Implicits: 1
+40% Increased Amulet Drop Rate
+			<ModRange range="127.5" id="1"/>
+		</Item>
+		<Item id="31">
+			Rarity: NORMAL
+Grand Body of Obsidian
+Grand Body of Obsidian
+Unique ID: blessing:Spirits of Fire
+LevelReq: 0
+Implicits: 1
++316 Armor
+			<ModRange range="127.5" id="1"/>
+		</Item>
+		<ItemSet useSecondWeaponSet="nil" id="1">
+			<Slot itemPbURL="" name="Amulet" itemId="5"/>
+			<Slot itemPbURL="" name="Belt" itemId="7"/>
+			<Slot itemPbURL="" name="Blood, Frost, and Death" itemId="22"/>
+			<Slot itemPbURL="" name="Body Armor" itemId="9"/>
+			<Slot itemPbURL="" name="Boots" itemId="10"/>
+			<Slot itemPbURL="" name="Ending the Storm" itemId="25"/>
+			<Slot itemPbURL="" name="Fall of the Empire" itemId="27"/>
+			<Slot itemPbURL="" name="Fall of the Outcasts" itemId="24"/>
+			<Slot itemPbURL="" name="Gloves" itemId="6"/>
+			<Slot itemPbURL="" name="Helmet" itemId="4"/>
+			<Slot itemPbURL="" name="Idol 1" itemId="13"/>
+			<Slot itemPbURL="" name="Idol 10" itemId="16"/>
+			<Slot itemPbURL="" name="Idol 11" itemId="18"/>
+			<Slot itemPbURL="" name="Idol 12" itemId="0"/>
+			<Slot itemPbURL="" name="Idol 13" itemId="0"/>
+			<Slot itemPbURL="" name="Idol 14" itemId="0"/>
+			<Slot itemPbURL="" name="Idol 15" itemId="0"/>
+			<Slot itemPbURL="" name="Idol 16" itemId="0"/>
+			<Slot itemPbURL="" name="Idol 17" itemId="0"/>
+			<Slot itemPbURL="" name="Idol 18" itemId="0"/>
+			<Slot itemPbURL="" name="Idol 19" itemId="0"/>
+			<Slot itemPbURL="" name="Idol 2" itemId="0"/>
+			<Slot itemPbURL="" name="Idol 20" itemId="0"/>
+			<Slot itemPbURL="" name="Idol 21" itemId="12"/>
+			<Slot itemPbURL="" name="Idol 22" itemId="15"/>
+			<Slot itemPbURL="" name="Idol 23" itemId="17"/>
+			<Slot itemPbURL="" name="Idol 24" itemId="19"/>
+			<Slot itemPbURL="" name="Idol 25" itemId="20"/>
+			<Slot itemPbURL="" name="Idol 3" itemId="14"/>
+			<Slot itemPbURL="" name="Idol 4" itemId="0"/>
+			<Slot itemPbURL="" name="Idol 5" itemId="0"/>
+			<Slot itemPbURL="" name="Idol 6" itemId="0"/>
+			<Slot itemPbURL="" name="Idol 7" itemId="0"/>
+			<Slot itemPbURL="" name="Idol 8" itemId="0"/>
+			<Slot itemPbURL="" name="Idol 9" itemId="0"/>
+			<Slot itemPbURL="" name="Idol Altar" itemId="21"/>
+			<Slot itemPbURL="" name="Omen Idol 1" itemId="16"/>
+			<Slot itemPbURL="" name="Omen Idol 2" itemId="18"/>
+			<Slot itemPbURL="" name="Omen Idol 3" itemId="0"/>
+			<Slot itemPbURL="" name="Omen Idol 4" itemId="0"/>
+			<Slot itemPbURL="" name="Omen Idol 5" itemId="0"/>
+			<Slot itemPbURL="" name="Omen Idol 6" itemId="0"/>
+			<Slot itemPbURL="" name="Reign of Dragons" itemId="29"/>
+			<Slot itemPbURL="" name="Relic" itemId="1"/>
+			<Slot itemPbURL="" name="Ring 1" itemId="2"/>
+			<Slot itemPbURL="" name="Ring 2" itemId="8"/>
+			<Slot itemPbURL="" name="Spirits of Fire" itemId="31"/>
+			<Slot itemPbURL="" name="The Age of Winter" itemId="26"/>
+			<Slot itemPbURL="" name="The Black Sun" itemId="28"/>
+			<Slot itemPbURL="" name="The Last Ruin" itemId="23"/>
+			<Slot itemPbURL="" name="The Stolen Lance" itemId="30"/>
+			<Slot itemPbURL="" name="Weapon 1" itemId="11"/>
+			<Slot itemPbURL="" name="Weapon 2" itemId="3"/>
+		</ItemSet>
+		<BlessingFracs>
+			<BlessingFrac timeline="Ending the Storm" frac="0"/>
+			<BlessingFrac timeline="Fall of the Outcasts" frac="0.96078431372549"/>
+			<BlessingFrac timeline="Reign of Dragons" frac="0.9921568627451"/>
+			<BlessingFrac timeline="The Age of Winter" frac="0.94509803921569"/>
+			<BlessingFrac timeline="The Stolen Lance" frac="0.13333333333333"/>
+			<BlessingFrac timeline="Blood, Frost, and Death" frac="0.41960784313725"/>
+			<BlessingFrac timeline="The Last Ruin" frac="0.74509803921569"/>
+			<BlessingFrac timeline="Spirits of Fire" frac="0.96470588235294"/>
+			<BlessingFrac timeline="The Black Sun" frac="0.66274509803922"/>
+			<BlessingFrac timeline="Fall of the Empire" frac="0.43921568627451"/>
+		</BlessingFracs>
+	</Items>
+	<Notes>
+		
+	</Notes>
+	<Party destination="All" ShowAdvanceTools="false" append="false"/>
+	<Skills sortGemsByDPSField="CombinedDPS" activeSkillSet="1" sortGemsByDPS="true" defaultGemQuality="0" defaultGemLevel="normalMaximum" showSupportGemTypes="ALL" showAltQualityGems="false">
+		<SkillSet id="1">
+			<Skill skillId="DancingStrike1" slot="Skill 1" mainActiveSkill="1" includeInFullDPS="false" index="1" enabled="true" mainActiveSkillCalcs="nil"/>
+			<Skill skillId="Smoke Bomb" slot="Skill 2" mainActiveSkill="1" includeInFullDPS="false" index="2" enabled="true" mainActiveSkillCalcs="nil"/>
+			<Skill skillId="Shurikens" slot="Skill 3" mainActiveSkill="1" includeInFullDPS="false" index="3" enabled="true" mainActiveSkillCalcs="nil"/>
+			<Skill skillId="Puncture" slot="Skill 4" mainActiveSkill="1" includeInFullDPS="true" index="4" enabled="true" mainActiveSkillCalcs="1"/>
+			<Skill skillId="Falconer 04 Explosive Trap" slot="Skill 5" mainActiveSkill="1" includeInFullDPS="false" index="5" enabled="true" mainActiveSkillCalcs="nil"/>
+			<Skill skillId="Ailment_ArmourShred" mainActiveSkill="1" includeInFullDPS="false" label="Shred Armor (from Dancing Strikes)" index="6" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:DancingStrike1"/>
+			<Skill skillId="Ailment_Bleed" mainActiveSkill="1" includeInFullDPS="false" label="Bleed (from Dancing Strikes)" index="7" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:DancingStrike1"/>
+			<Skill skillId="Ailment_CrimsonShroud" mainActiveSkill="1" includeInFullDPS="false" label="Crimson Shroud (from Dancing Strikes)" index="8" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:DancingStrike1"/>
+			<Skill skillId="Ailment_DuskShroud" mainActiveSkill="1" includeInFullDPS="false" label="Dusk Shroud (from Dancing Strikes)" index="9" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:DancingStrike1"/>
+			<Skill skillId="Ailment_Frailty" mainActiveSkill="1" includeInFullDPS="false" label="Frailty (from Dancing Strikes)" index="10" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:DancingStrike1"/>
+			<Skill skillId="Ailment_Haste" mainActiveSkill="1" includeInFullDPS="false" label="Haste (from Dancing Strikes)" index="11" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:DancingStrike1"/>
+			<Skill skillId="Ailment_Poison" mainActiveSkill="1" includeInFullDPS="false" label="Poison (from Dancing Strikes)" index="12" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:DancingStrike1"/>
+			<Skill skillId="Ailment_ArmourShred" mainActiveSkill="1" includeInFullDPS="false" label="Shred Armor (from Smoke Bomb)" index="13" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:Smoke Bomb"/>
+			<Skill skillId="Ailment_Bleed" mainActiveSkill="1" includeInFullDPS="false" label="Bleed (from Smoke Bomb)" index="14" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:Smoke Bomb"/>
+			<Skill skillId="Ailment_Blind" mainActiveSkill="1" includeInFullDPS="false" label="Blind (from Smoke Bomb)" index="15" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:Smoke Bomb"/>
+			<Skill skillId="Ailment_CrimsonShroud" mainActiveSkill="1" includeInFullDPS="false" label="Crimson Shroud (from Smoke Bomb)" index="16" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:Smoke Bomb"/>
+			<Skill skillId="Ailment_DuskShroud" mainActiveSkill="1" includeInFullDPS="false" label="Dusk Shroud (from Smoke Bomb)" index="17" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:Smoke Bomb"/>
+			<Skill skillId="Ailment_Frailty" mainActiveSkill="1" includeInFullDPS="false" label="Frailty (from Smoke Bomb)" index="18" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:Smoke Bomb"/>
+			<Skill skillId="Ailment_Haste" mainActiveSkill="1" includeInFullDPS="false" label="Haste (from Smoke Bomb)" index="19" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:Smoke Bomb"/>
+			<Skill skillId="Ailment_Poison" mainActiveSkill="1" includeInFullDPS="false" label="Poison (from Smoke Bomb)" index="20" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:Smoke Bomb"/>
+			<Skill skillId="Ailment_ArmourShred" mainActiveSkill="1" includeInFullDPS="false" label="Shred Armor (from Shurikens)" index="21" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:Shurikens"/>
+			<Skill skillId="Ailment_Bleed" mainActiveSkill="1" includeInFullDPS="false" label="Bleed (from Shurikens)" index="22" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:Shurikens"/>
+			<Skill skillId="Ailment_CrimsonShroud" mainActiveSkill="1" includeInFullDPS="false" label="Crimson Shroud (from Shurikens)" index="23" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:Shurikens"/>
+			<Skill skillId="Ailment_DuskShroud" mainActiveSkill="1" includeInFullDPS="false" label="Dusk Shroud (from Shurikens)" index="24" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:Shurikens"/>
+			<Skill skillId="Ailment_Frailty" mainActiveSkill="1" includeInFullDPS="false" label="Frailty (from Shurikens)" index="25" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:Shurikens"/>
+			<Skill skillId="Ailment_PhysicalResistanceShred" mainActiveSkill="1" includeInFullDPS="false" label="Shred Physical Resistance (from Shurikens)" index="26" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:Shurikens"/>
+			<Skill skillId="Ailment_Poison" mainActiveSkill="1" includeInFullDPS="false" label="Poison (from Shurikens)" index="27" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:Shurikens"/>
+			<Skill skillId="Ailment_PoisonResistanceShred" mainActiveSkill="1" includeInFullDPS="false" label="Shred Poison Resistance (from Shurikens)" index="28" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:Shurikens"/>
+			<Skill skillId="Shurikens" mainActiveSkill="1" includeInFullDPS="false" label="Shurikens (from Shurikens)" index="29" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:Shurikens"/>
+			<Skill skillId="Ailment_ArmourShred" mainActiveSkill="1" includeInFullDPS="true" label="Shred Armor (from Puncture)" index="30" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:Puncture"/>
+			<Skill skillId="Ailment_Bleed" mainActiveSkill="1" includeInFullDPS="true" label="Bleed (from Puncture)" index="31" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:Puncture"/>
+			<Skill skillId="Ailment_CrimsonShroud" mainActiveSkill="1" includeInFullDPS="true" label="Crimson Shroud (from Puncture)" index="32" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:Puncture"/>
+			<Skill skillId="Ailment_DuskShroud" mainActiveSkill="1" includeInFullDPS="true" label="Dusk Shroud (from Puncture)" index="33" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:Puncture"/>
+			<Skill skillId="Ailment_EfficaciousToxin" mainActiveSkill="1" includeInFullDPS="true" label="Efficacious Toxin (from Puncture)" index="34" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:Puncture"/>
+			<Skill skillId="Ailment_Frailty" mainActiveSkill="1" includeInFullDPS="true" label="Frailty (from Puncture)" index="35" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:Puncture"/>
+			<Skill skillId="Ailment_Poison" mainActiveSkill="1" includeInFullDPS="true" label="Poison (from Puncture)" index="36" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:Puncture"/>
+			<Skill skillId="Ailment_ArmourShred" mainActiveSkill="1" includeInFullDPS="false" label="Shred Armor (from Explosive Trap)" index="37" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:Falconer 04 Explosive Trap"/>
+			<Skill skillId="Ailment_Bleed" mainActiveSkill="1" includeInFullDPS="false" label="Bleed (from Explosive Trap)" index="38" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:Falconer 04 Explosive Trap"/>
+			<Skill skillId="Ailment_CrimsonShroud" mainActiveSkill="1" includeInFullDPS="false" label="Crimson Shroud (from Explosive Trap)" index="39" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:Falconer 04 Explosive Trap"/>
+			<Skill skillId="Ailment_DuskShroud" mainActiveSkill="1" includeInFullDPS="false" label="Dusk Shroud (from Explosive Trap)" index="40" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:Falconer 04 Explosive Trap"/>
+			<Skill skillId="Ailment_Frailty" mainActiveSkill="1" includeInFullDPS="false" label="Frailty (from Explosive Trap)" index="41" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:Falconer 04 Explosive Trap"/>
+			<Skill skillId="Ailment_Poison" mainActiveSkill="1" includeInFullDPS="false" label="Poison (from Explosive Trap)" index="42" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:Falconer 04 Explosive Trap"/>
+		</SkillSet>
+	</Skills>
+	<Tree activeSpec="1">
+		<Spec ascendClassId="1" nodes="Bladedancer#1,Rogue#1,Rogue-0#7,Rogue-1#1,Rogue-10#1,Rogue-12#3,Rogue-14#4,Rogue-16#5,Rogue-2#3,Rogue-4#3,Rogue-49#5,Rogue-50#8,Rogue-54#3,Rogue-55#5,Rogue-56#1,Rogue-57#1,Rogue-58#5,Rogue-6#4,Rogue-62#5,Rogue-65#8,Rogue-66#3,Rogue-7#5,Rogue-71#8,Rogue-72#5,Rogue-75#5,Rogue-78#5,Rogue-8#5,Rogue-9#5,dacn33-0#1,dacn33-10#1,dacn33-16#3,dacn33-19#1,dacn33-2#2,dacn33-20#2,dacn33-22#1,dacn33-23#5,dacn33-24#1,dacn33-26#2,dacn33-27#1,dacn33-4#2,dacn33-5#3,ex4tp-0#1,ex4tp-13#2,ex4tp-15#4,ex4tp-16#2,ex4tp-17#1,ex4tp-2#2,ex4tp-23#1,ex4tp-28#3,ex4tp-29#1,ex4tp-3#1,ex4tp-31#1,ex4tp-32#1,ex4tp-4#1,pun22-0#1,pun22-11#4,pun22-12#3,pun22-2#2,pun22-3#4,pun22-7#2,pun22-8#4,pun22-9#1,smbmb-0#1,smbmb-10#2,smbmb-12#1,smbmb-16#1,smbmb-17#2,smbmb-18#1,smbmb-19#1,smbmb-20#2,smbmb-21#1,smbmb-29#1,smbmb-30#4,smbmb-34#4,srk21-0#1,srk21-15#3,srk21-18#1,srk21-20#1,srk21-21#1,srk21-23#3,srk21-27#4,srk21-3#4,srk21-4#1,srk21-6#1,srk21-9#3" treeVersion="1_4" classId="4">
+			<Overrides/>
+		</Spec>
+	</Tree>
+	<TreeView searchStr="" zoomY="0" zoomLevel="22" showStatDifferences="true" zoomX="0"/>
+</LastEpochBuilding>
