@@ -363,8 +363,7 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
                 return
             end
             if selectedWebsite.id == "lastepochtools" then
-                self.importCodeDetail = colorCodes.NEGATIVE .. "Import failed: lastepochtools.com import is no longer supported (site changed)"
-                self.importCodeValid = false
+                self:DownloadLEToolsPlannerBuild(self.controls.importCodeIn.buf)
                 return
             end
             self.importCodeFetching = true
@@ -774,6 +773,144 @@ function ImportTabClass:DownloadMaxrollPlannerBuild(url)
         self:ImportBlessingsFromMaxroll(profileData)
         self.importCodeDetail = colorCodes.POSITIVE .. "Maxroll build imported."
     end)
+end
+
+function ImportTabClass:DownloadLEToolsPlannerBuild(url)
+    self.importCodeFetching = true
+    self.importCodeDetail = colorCodes.NORMAL .. "Downloading from lastepochtools.com..."
+
+    local buildId = url:match("lastepochtools%.com/planner/([%w_%-]+)")
+    if not buildId then
+        self.importCodeFetching = false
+        self.importCodeDetail = colorCodes.NEGATIVE .. "Could not parse LETools URL"
+        return
+    end
+
+    -- Cloudflare on LETools rejects the default LEB UA; pretend to be a browser.
+    local browserUA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36"
+    local plannerURL = "https://www.lastepochtools.com/planner/" .. buildId
+
+    launch:DownloadPage(plannerURL, function(response, errMsg)
+        if errMsg then
+            self.importCodeFetching = false
+            self.importCodeDetail = colorCodes.NEGATIVE .. "Download failed: " .. errMsg:gsub("\n", " ")
+            return
+        end
+        local token = response.body:match("var%s+[%w_]+%s*=%s*'([0-9a-f]+)'")
+        if not token or #token < 16 then
+            self.importCodeFetching = false
+            self.importCodeDetail = colorCodes.NEGATIVE .. "Could not extract token from LETools page"
+            return
+        end
+        local apiURL = "https://www.lastepochtools.com/api/internal/planner_data/" .. token
+        launch:DownloadPage(apiURL, function(apiResponse, apiErr)
+            self.importCodeFetching = false
+            if apiErr then
+                self.importCodeDetail = colorCodes.NEGATIVE .. "API fetch failed: " .. apiErr:gsub("\n", " ")
+                return
+            end
+            local jsonData, _, parseErr = dkjson.decode(apiResponse.body, 1, false)
+            if parseErr or type(jsonData) ~= "table" then
+                self.importCodeDetail = colorCodes.NEGATIVE .. "Failed to parse LETools response"
+                return
+            end
+            local data = jsonData.data
+            if type(data) ~= "table" then
+                self.importCodeDetail = colorCodes.NEGATIVE .. "No data field in LETools response"
+                return
+            end
+            local char = self:BuildCharFromLETools(jsonData, data, buildId)
+            if not char then return end
+            self:ImportPassiveTreeAndJewels(char)
+            self:ImportItemsAndSkills(char)
+            self.importCodeDetail = colorCodes.POSITIVE .. "LETools build imported (skeleton only: equip items/idols/blessings manually)."
+        end, { header = "User-Agent: " .. browserUA })
+    end, { header = "User-Agent: " .. browserUA })
+end
+
+function ImportTabClass:BuildCharFromLETools(jsonData, data, buildId)
+    local bio = data.bio or {}
+    local classId = bio.characterClass or jsonData["class"] or 0
+    local mastery = bio.chosenMastery or jsonData.mastery or 0
+    local level = bio.level or jsonData.level or 1
+
+    if not self.build.latestTree.classes[classId] then
+        self.importCodeDetail = colorCodes.NEGATIVE .. "Unknown class: " .. tostring(classId)
+        return nil
+    end
+    local className = self.build.latestTree.classes[classId].name
+    local ascendancyData = self.build.latestTree.classes[classId].ascendancies[mastery]
+    if not ascendancyData then
+        self.importCodeDetail = colorCodes.NEGATIVE .. "Unknown mastery: " .. tostring(mastery)
+        return nil
+    end
+
+    local char = {
+        name = "LETools " .. buildId,
+        level = level,
+        class = className,
+        classId = classId,
+        ascendancy = mastery,
+        ascendancyName = ascendancyData.name,
+        league = "LETools",
+        abilities = {},
+        items = {},
+        hashes = {},
+        _parseErrors = 0,
+    }
+
+    -- Passive hashes from charTree.selected (dict: nodeId string -> points)
+    local charTree = data.charTree
+    if type(charTree) == "table" and type(charTree.selected) == "table" then
+        for nodeId, points in pairs(charTree.selected) do
+            if type(points) == "number" and points > 0 then
+                table.insert(char.hashes, className .. "-" .. nodeId .. "#" .. points)
+            end
+        end
+    end
+
+    -- Skill hashes from skillTrees array (each entry: {treeID, selected, slotNumber, level})
+    if type(data.skillTrees) == "table" then
+        local entries = {}
+        for i, tree in ipairs(data.skillTrees) do
+            local treeId = tree.treeID or tree.treeId
+            local slot = tree.slotNumber or tree.slot or (i - 1)
+            if treeId then
+                table.insert(entries, { treeId = tostring(treeId), treeData = tree, slot = slot })
+            end
+        end
+        table.sort(entries, function(a, b) return a.slot < b.slot end)
+
+        for _, entry in ipairs(entries) do
+            local treeIdStr = entry.treeId
+            local treeData = entry.treeData
+            local skillName
+            for _, class in pairs(self.build.latestTree.classes) do
+                for _, skill in ipairs(class.skills or {}) do
+                    if skill.treeId == treeIdStr then
+                        skillName = skill.name
+                        break
+                    end
+                end
+                if skillName then break end
+            end
+            if skillName then
+                table.insert(char.abilities, skillName)
+                table.insert(char.hashes, treeIdStr .. "-0#1")
+                if type(treeData.selected) == "table" then
+                    for nodeId, points in pairs(treeData.selected) do
+                        if type(points) == "number" and points > 0 then
+                            table.insert(char.hashes, treeIdStr .. "-" .. nodeId .. "#" .. points)
+                        end
+                    end
+                end
+            else
+                ConPrintf("[IMPORT-SKILL] No match for LETools treeId: %s", tostring(treeIdStr))
+            end
+        end
+    end
+
+    return char
 end
 
 function ImportTabClass:BuildItemsFromMaxroll(buildData, profileData, char)
