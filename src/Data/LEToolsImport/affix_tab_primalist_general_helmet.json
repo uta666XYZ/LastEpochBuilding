@@ -1,0 +1,1490 @@
+{
+  "meta": {
+    "classInfo": [],
+    "note": "Primalist, general (no class-specific) helmet"
+  },
+  "tabs": {
+    "prefix1": {
+      "label": "Prefix 1 (45)",
+      "cardCount": 45,
+      "affixes": [
+        {
+          "name": "Armor And Minion Armor",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMzBMQ",
+          "suffixId": null
+        },
+        {
+          "name": "Attunement",
+          "title": "Attuned",
+          "type": "Prefix",
+          "prefixId": "AKwBgLEA",
+          "suffixId": null
+        },
+        {
+          "name": "Cast Speed for Totems",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMwFgTEA",
+          "suffixId": null
+        },
+        {
+          "name": "Chance to Gain a Storm Stack when you use Gathering Storm and Hit an enemy",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AOwZmQ",
+          "suffixId": null
+        },
+        {
+          "name": "Critical Strike Multiplier While Transformed",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMzAcQ",
+          "suffixId": null
+        },
+        {
+          "name": "Damage Over Time While Transformed",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMwVgjEA",
+          "suffixId": null
+        },
+        {
+          "name": "Dexterity",
+          "title": "Dexterous",
+          "type": "Prefix",
+          "prefixId": "AKwBgzEA",
+          "suffixId": null
+        },
+        {
+          "name": "Freeze Rate per stack of Chill",
+          "title": "Boreal",
+          "type": "Prefix",
+          "prefixId": "AMwFgjEA",
+          "suffixId": null
+        },
+        {
+          "name": "Increased Aspect of the Boar Duration",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMwVgLEA",
+          "suffixId": null
+        },
+        {
+          "name": "Increased Aspect of the Lynx Effect",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMwVgbEA",
+          "suffixId": null
+        },
+        {
+          "name": "Increased Aspect of the Shark Effect",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMwVmQ",
+          "suffixId": null
+        },
+        {
+          "name": "Increased Aspect of the Viper Effect",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMwVhQ",
+          "suffixId": null
+        },
+        {
+          "name": "Increased Attack and Cast Speed for Summoned Vines",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AGwo",
+          "suffixId": null
+        },
+        {
+          "name": "Increased Cooldown Recovery Speed while Transformed",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMzCsQ",
+          "suffixId": null
+        },
+        {
+          "name": "Intelligence",
+          "title": "Scholar's",
+          "type": "Prefix",
+          "prefixId": "AKwBgTEA",
+          "suffixId": null
+        },
+        {
+          "name": "Level of Earthquake",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AGwJgnEA",
+          "suffixId": null
+        },
+        {
+          "name": "Level of Entangling Roots",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AKzCcQ",
+          "suffixId": null
+        },
+        {
+          "name": "Level of Summon Bear",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AKwo",
+          "suffixId": null
+        },
+        {
+          "name": "Level of Summon Spriggan",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AKwFhQ",
+          "suffixId": null
+        },
+        {
+          "name": "Level of Summon Storm Totem",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AKwDmQ",
+          "suffixId": null
+        },
+        {
+          "name": "Level of Summon Thorn Totem",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AKwFgzEA",
+          "suffixId": null
+        },
+        {
+          "name": "Level of Summon Wolf",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AKwFgDEA",
+          "suffixId": null
+        },
+        {
+          "name": "Level of Werebear Form",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AGwBgTEA",
+          "suffixId": null
+        },
+        {
+          "name": "Mana",
+          "title": "Manafused",
+          "type": "Prefix",
+          "prefixId": "AAwZgLEA",
+          "suffixId": null
+        },
+        {
+          "name": "Melee Damage While Transformed",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMwFgnEA",
+          "suffixId": null
+        },
+        {
+          "name": "Minion Chance to Inflict Bleed on Hit",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMwFg7EA",
+          "suffixId": null
+        },
+        {
+          "name": "Minion Critical Strike Multiplier",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMzBsQ",
+          "suffixId": null
+        },
+        {
+          "name": "Minion Dodge Rating",
+          "title": "Feline",
+          "type": "Prefix",
+          "prefixId": "AAwdgjEA",
+          "suffixId": null
+        },
+        {
+          "name": "Minion Health",
+          "title": "Ursine",
+          "type": "Prefix",
+          "prefixId": "AAwdmQ",
+          "suffixId": null
+        },
+        {
+          "name": "Minion Health Regen",
+          "title": "Reptilian",
+          "type": "Prefix",
+          "prefixId": "AAwdgzEA",
+          "suffixId": null
+        },
+        {
+          "name": "Minion Melee Damage Leeched As Health",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMwFgbEA",
+          "suffixId": null
+        },
+        {
+          "name": "Minion Spell Critical Strike Chance",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMzDsQ",
+          "suffixId": null
+        },
+        {
+          "name": "Shared Bleed Duration",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMwFmQ",
+          "suffixId": null
+        },
+        {
+          "name": "Shared Cold Damage",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMwFgDEA",
+          "suffixId": null
+        },
+        {
+          "name": "Shared Increased Melee Damage",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMwFgrEA",
+          "suffixId": null
+        },
+        {
+          "name": "Shared Increased Spell Damage",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMwFhQ",
+          "suffixId": null
+        },
+        {
+          "name": "Shared Lightning Damage",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMwo",
+          "suffixId": null
+        },
+        {
+          "name": "Spell Damage for Storm Crows",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AGwFgHEA",
+          "suffixId": null
+        },
+        {
+          "name": "Spell Damage for Totems",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMzAsQ",
+          "suffixId": null
+        },
+        {
+          "name": "Spell Damage While Transformed",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMwVgDEA",
+          "suffixId": null
+        },
+        {
+          "name": "Spell Damage with Tempest Strike",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AAwJgjEA",
+          "suffixId": null
+        },
+        {
+          "name": "Strength",
+          "title": "Mighty",
+          "type": "Prefix",
+          "prefixId": "AKwBgjEA",
+          "suffixId": null
+        },
+        {
+          "name": "Totem Critical Strike Chance",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMwVgTEA",
+          "suffixId": null
+        },
+        {
+          "name": "Totem Damage",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMwVg7EA",
+          "suffixId": null
+        },
+        {
+          "name": "Vitality",
+          "title": "Vital",
+          "type": "Prefix",
+          "prefixId": "AKwBmQ",
+          "suffixId": null
+        }
+      ]
+    },
+    "prefix2": {
+      "label": "Prefix 2 (45)",
+      "cardCount": 45,
+      "affixes": [
+        {
+          "name": "Armor And Minion Armor",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMzBMQ",
+          "suffixId": null
+        },
+        {
+          "name": "Attunement",
+          "title": "Attuned",
+          "type": "Prefix",
+          "prefixId": "AKwBgLEA",
+          "suffixId": null
+        },
+        {
+          "name": "Cast Speed for Totems",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMwFgTEA",
+          "suffixId": null
+        },
+        {
+          "name": "Chance to Gain a Storm Stack when you use Gathering Storm and Hit an enemy",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AOwZmQ",
+          "suffixId": null
+        },
+        {
+          "name": "Critical Strike Multiplier While Transformed",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMzAcQ",
+          "suffixId": null
+        },
+        {
+          "name": "Damage Over Time While Transformed",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMwVgjEA",
+          "suffixId": null
+        },
+        {
+          "name": "Dexterity",
+          "title": "Dexterous",
+          "type": "Prefix",
+          "prefixId": "AKwBgzEA",
+          "suffixId": null
+        },
+        {
+          "name": "Freeze Rate per stack of Chill",
+          "title": "Boreal",
+          "type": "Prefix",
+          "prefixId": "AMwFgjEA",
+          "suffixId": null
+        },
+        {
+          "name": "Increased Aspect of the Boar Duration",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMwVgLEA",
+          "suffixId": null
+        },
+        {
+          "name": "Increased Aspect of the Lynx Effect",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMwVgbEA",
+          "suffixId": null
+        },
+        {
+          "name": "Increased Aspect of the Shark Effect",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMwVmQ",
+          "suffixId": null
+        },
+        {
+          "name": "Increased Aspect of the Viper Effect",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMwVhQ",
+          "suffixId": null
+        },
+        {
+          "name": "Increased Attack and Cast Speed for Summoned Vines",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AGwo",
+          "suffixId": null
+        },
+        {
+          "name": "Increased Cooldown Recovery Speed while Transformed",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMzCsQ",
+          "suffixId": null
+        },
+        {
+          "name": "Intelligence",
+          "title": "Scholar's",
+          "type": "Prefix",
+          "prefixId": "AKwBgTEA",
+          "suffixId": null
+        },
+        {
+          "name": "Level of Earthquake",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AGwJgnEA",
+          "suffixId": null
+        },
+        {
+          "name": "Level of Entangling Roots",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AKzCcQ",
+          "suffixId": null
+        },
+        {
+          "name": "Level of Summon Bear",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AKwo",
+          "suffixId": null
+        },
+        {
+          "name": "Level of Summon Spriggan",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AKwFhQ",
+          "suffixId": null
+        },
+        {
+          "name": "Level of Summon Storm Totem",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AKwDmQ",
+          "suffixId": null
+        },
+        {
+          "name": "Level of Summon Thorn Totem",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AKwFgzEA",
+          "suffixId": null
+        },
+        {
+          "name": "Level of Summon Wolf",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AKwFgDEA",
+          "suffixId": null
+        },
+        {
+          "name": "Level of Werebear Form",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AGwBgTEA",
+          "suffixId": null
+        },
+        {
+          "name": "Mana",
+          "title": "Manafused",
+          "type": "Prefix",
+          "prefixId": "AAwZgLEA",
+          "suffixId": null
+        },
+        {
+          "name": "Melee Damage While Transformed",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMwFgnEA",
+          "suffixId": null
+        },
+        {
+          "name": "Minion Chance to Inflict Bleed on Hit",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMwFg7EA",
+          "suffixId": null
+        },
+        {
+          "name": "Minion Critical Strike Multiplier",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMzBsQ",
+          "suffixId": null
+        },
+        {
+          "name": "Minion Dodge Rating",
+          "title": "Feline",
+          "type": "Prefix",
+          "prefixId": "AAwdgjEA",
+          "suffixId": null
+        },
+        {
+          "name": "Minion Health",
+          "title": "Ursine",
+          "type": "Prefix",
+          "prefixId": "AAwdmQ",
+          "suffixId": null
+        },
+        {
+          "name": "Minion Health Regen",
+          "title": "Reptilian",
+          "type": "Prefix",
+          "prefixId": "AAwdgzEA",
+          "suffixId": null
+        },
+        {
+          "name": "Minion Melee Damage Leeched As Health",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMwFgbEA",
+          "suffixId": null
+        },
+        {
+          "name": "Minion Spell Critical Strike Chance",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMzDsQ",
+          "suffixId": null
+        },
+        {
+          "name": "Shared Bleed Duration",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMwFmQ",
+          "suffixId": null
+        },
+        {
+          "name": "Shared Cold Damage",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMwFgDEA",
+          "suffixId": null
+        },
+        {
+          "name": "Shared Increased Melee Damage",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMwFgrEA",
+          "suffixId": null
+        },
+        {
+          "name": "Shared Increased Spell Damage",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMwFhQ",
+          "suffixId": null
+        },
+        {
+          "name": "Shared Lightning Damage",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMwo",
+          "suffixId": null
+        },
+        {
+          "name": "Spell Damage for Storm Crows",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AGwFgHEA",
+          "suffixId": null
+        },
+        {
+          "name": "Spell Damage for Totems",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMzAsQ",
+          "suffixId": null
+        },
+        {
+          "name": "Spell Damage While Transformed",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMwVgDEA",
+          "suffixId": null
+        },
+        {
+          "name": "Spell Damage with Tempest Strike",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AAwJgjEA",
+          "suffixId": null
+        },
+        {
+          "name": "Strength",
+          "title": "Mighty",
+          "type": "Prefix",
+          "prefixId": "AKwBgjEA",
+          "suffixId": null
+        },
+        {
+          "name": "Totem Critical Strike Chance",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMwVgTEA",
+          "suffixId": null
+        },
+        {
+          "name": "Totem Damage",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMwVg7EA",
+          "suffixId": null
+        },
+        {
+          "name": "Vitality",
+          "title": "Vital",
+          "type": "Prefix",
+          "prefixId": "AKwBmQ",
+          "suffixId": null
+        }
+      ]
+    },
+    "suffix1": {
+      "label": "Suffix 1 (19)",
+      "cardCount": 19,
+      "affixes": [
+        {
+          "name": "Armor",
+          "title": "of the Turtle",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AAwZgjEA"
+        },
+        {
+          "name": "Armor",
+          "title": "of Defense",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AAzCMQ"
+        },
+        {
+          "name": "Armor and Reduced Bonus Damage from Crits",
+          "title": "of Fortification",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AOwRgrEA"
+        },
+        {
+          "name": "Cold Resistance",
+          "title": "of Frost",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AAwRg7EA"
+        },
+        {
+          "name": "Critical Strike Avoidance and Added Dodge Rating",
+          "title": "of Sanctuary",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AAwTg7EA"
+        },
+        {
+          "name": "Dodge Rating",
+          "title": "of Evasion",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AAzAcQ"
+        },
+        {
+          "name": "Elemental Resistance",
+          "title": "of Insulation",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AAwDmQ"
+        },
+        {
+          "name": "Endurance",
+          "title": "of Endurance",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AAwTgTEA"
+        },
+        {
+          "name": "Fire Resistance",
+          "title": "of Embers",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AAwRgzEA"
+        },
+        {
+          "name": "Health",
+          "title": "of Life",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AAwJgrEA"
+        },
+        {
+          "name": "Health",
+          "title": "of the Ox",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AAwVgTEA"
+        },
+        {
+          "name": "Health Regen per Second",
+          "title": "of Renewal",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AAwTmQ"
+        },
+        {
+          "name": "Health Regeneration",
+          "title": "of Regrowth",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AAwJhQ"
+        },
+        {
+          "name": "Lightning Resistance",
+          "title": "of Sparks",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AAwJgLEA"
+        },
+        {
+          "name": "Necrotic Resistance",
+          "title": "of Purity",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AAwRmQ"
+        },
+        {
+          "name": "Physical Resistance",
+          "title": "of Deflection",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AAwFgrEA"
+        },
+        {
+          "name": "Poison Resistance",
+          "title": "of Remedy",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AAwRgnEA"
+        },
+        {
+          "name": "Void Resistance",
+          "title": "of Hope",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AAzDsQ"
+        },
+        {
+          "name": "Ward per Second",
+          "title": "of Warding",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AMwDgTEA"
+        }
+      ]
+    },
+    "suffix2": {
+      "label": "Suffix 2 (19)",
+      "cardCount": 19,
+      "affixes": [
+        {
+          "name": "Armor",
+          "title": "of the Turtle",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AAwZgjEA"
+        },
+        {
+          "name": "Armor",
+          "title": "of Defense",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AAzCMQ"
+        },
+        {
+          "name": "Armor and Reduced Bonus Damage from Crits",
+          "title": "of Fortification",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AOwRgrEA"
+        },
+        {
+          "name": "Cold Resistance",
+          "title": "of Frost",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AAwRg7EA"
+        },
+        {
+          "name": "Critical Strike Avoidance and Added Dodge Rating",
+          "title": "of Sanctuary",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AAwTg7EA"
+        },
+        {
+          "name": "Dodge Rating",
+          "title": "of Evasion",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AAzAcQ"
+        },
+        {
+          "name": "Elemental Resistance",
+          "title": "of Insulation",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AAwDmQ"
+        },
+        {
+          "name": "Endurance",
+          "title": "of Endurance",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AAwTgTEA"
+        },
+        {
+          "name": "Fire Resistance",
+          "title": "of Embers",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AAwRgzEA"
+        },
+        {
+          "name": "Health",
+          "title": "of Life",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AAwJgrEA"
+        },
+        {
+          "name": "Health",
+          "title": "of the Ox",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AAwVgTEA"
+        },
+        {
+          "name": "Health Regen per Second",
+          "title": "of Renewal",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AAwTmQ"
+        },
+        {
+          "name": "Health Regeneration",
+          "title": "of Regrowth",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AAwJhQ"
+        },
+        {
+          "name": "Lightning Resistance",
+          "title": "of Sparks",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AAwJgLEA"
+        },
+        {
+          "name": "Necrotic Resistance",
+          "title": "of Purity",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AAwRmQ"
+        },
+        {
+          "name": "Physical Resistance",
+          "title": "of Deflection",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AAwFgrEA"
+        },
+        {
+          "name": "Poison Resistance",
+          "title": "of Remedy",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AAwRgnEA"
+        },
+        {
+          "name": "Void Resistance",
+          "title": "of Hope",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AAzDsQ"
+        },
+        {
+          "name": "Ward per Second",
+          "title": "of Warding",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AMwDgTEA"
+        }
+      ]
+    },
+    "sealed": {
+      "label": "Sealed Affix (0)",
+      "cardCount": 0,
+      "affixes": []
+    },
+    "primordial": {
+      "label": "Primordial Affix (0)",
+      "cardCount": 0,
+      "affixes": []
+    },
+    "corrupted": {
+      "label": "Corrupted Affix (78)",
+      "cardCount": 78,
+      "affixes": [
+        {
+          "name": "Armor",
+          "title": "of the Turtle",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AAwZgjEA"
+        },
+        {
+          "name": "Armor",
+          "title": "of Defense",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AAzCMQ"
+        },
+        {
+          "name": "Armor And Minion Armor",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMzBMQ",
+          "suffixId": null
+        },
+        {
+          "name": "Armor and Reduced Bonus Damage from Crits",
+          "title": "of Fortification",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AOwRgrEA"
+        },
+        {
+          "name": "Attunement",
+          "title": "Attuned",
+          "type": "Prefix",
+          "prefixId": "AKwBgLEA",
+          "suffixId": null
+        },
+        {
+          "name": "Cast Speed for Totems",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMwFgTEA",
+          "suffixId": null
+        },
+        {
+          "name": "Chance to Gain a Storm Stack when you use Gathering Storm and Hit an enemy",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AOwZmQ",
+          "suffixId": null
+        },
+        {
+          "name": "Cold Resistance",
+          "title": "of Frost",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AAwRg7EA"
+        },
+        {
+          "name": "Critical Strike Avoidance and Added Dodge Rating",
+          "title": "of Sanctuary",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AAwTg7EA"
+        },
+        {
+          "name": "Critical Strike Multiplier While Transformed",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMzAcQ",
+          "suffixId": null
+        },
+        {
+          "name": "Damage Over Time While Transformed",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMwVgjEA",
+          "suffixId": null
+        },
+        {
+          "name": "Dexterity",
+          "title": "Dexterous",
+          "type": "Prefix",
+          "prefixId": "AKwBgzEA",
+          "suffixId": null
+        },
+        {
+          "name": "Dodge Rating",
+          "title": "of Evasion",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AAzAcQ"
+        },
+        {
+          "name": "Elemental Resistance",
+          "title": "of Insulation",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AAwDmQ"
+        },
+        {
+          "name": "Endurance",
+          "title": "of Endurance",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AAwTgTEA"
+        },
+        {
+          "name": "Fire Resistance",
+          "title": "of Embers",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AAwRgzEA"
+        },
+        {
+          "name": "Freeze Rate per stack of Chill",
+          "title": "Boreal",
+          "type": "Prefix",
+          "prefixId": "AMwFgjEA",
+          "suffixId": null
+        },
+        {
+          "name": "Health",
+          "title": "of Life",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AAwJgrEA"
+        },
+        {
+          "name": "Health",
+          "title": "of the Ox",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AAwVgTEA"
+        },
+        {
+          "name": "Health Regen per Second",
+          "title": "of Renewal",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AAwTmQ"
+        },
+        {
+          "name": "Health Regeneration",
+          "title": "of Regrowth",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AAwJhQ"
+        },
+        {
+          "name": "Increased Aspect of the Boar Duration",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMwVgLEA",
+          "suffixId": null
+        },
+        {
+          "name": "Increased Aspect of the Lynx Effect",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMwVgbEA",
+          "suffixId": null
+        },
+        {
+          "name": "Increased Aspect of the Shark Effect",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMwVmQ",
+          "suffixId": null
+        },
+        {
+          "name": "Increased Aspect of the Viper Effect",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMwVhQ",
+          "suffixId": null
+        },
+        {
+          "name": "Increased Attack and Cast Speed for Summoned Vines",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AGwo",
+          "suffixId": null
+        },
+        {
+          "name": "Increased Cooldown Recovery Speed while Transformed",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMzCsQ",
+          "suffixId": null
+        },
+        {
+          "name": "Intelligence",
+          "title": "Scholar's",
+          "type": "Prefix",
+          "prefixId": "AKwBgTEA",
+          "suffixId": null
+        },
+        {
+          "name": "Level of Earthquake",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AGwJgnEA",
+          "suffixId": null
+        },
+        {
+          "name": "Level of Entangling Roots",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AKzCcQ",
+          "suffixId": null
+        },
+        {
+          "name": "Level of Summon Bear",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AKwo",
+          "suffixId": null
+        },
+        {
+          "name": "Level of Summon Spriggan",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AKwFhQ",
+          "suffixId": null
+        },
+        {
+          "name": "Level of Summon Storm Totem",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AKwDmQ",
+          "suffixId": null
+        },
+        {
+          "name": "Level of Summon Thorn Totem",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AKwFgzEA",
+          "suffixId": null
+        },
+        {
+          "name": "Level of Summon Wolf",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AKwFgDEA",
+          "suffixId": null
+        },
+        {
+          "name": "Level of Werebear Form",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AGwBgTEA",
+          "suffixId": null
+        },
+        {
+          "name": "Lightning Resistance",
+          "title": "of Sparks",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AAwJgLEA"
+        },
+        {
+          "name": "Mana",
+          "title": "Manafused",
+          "type": "Prefix",
+          "prefixId": "AAwZgLEA",
+          "suffixId": null
+        },
+        {
+          "name": "Melee Damage While Transformed",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMwFgnEA",
+          "suffixId": null
+        },
+        {
+          "name": "Minion Chance to Inflict Bleed on Hit",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMwFg7EA",
+          "suffixId": null
+        },
+        {
+          "name": "Minion Critical Strike Multiplier",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMzBsQ",
+          "suffixId": null
+        },
+        {
+          "name": "Minion Dodge Rating",
+          "title": "Feline",
+          "type": "Prefix",
+          "prefixId": "AAwdgjEA",
+          "suffixId": null
+        },
+        {
+          "name": "Minion Health",
+          "title": "Ursine",
+          "type": "Prefix",
+          "prefixId": "AAwdmQ",
+          "suffixId": null
+        },
+        {
+          "name": "Minion Health Regen",
+          "title": "Reptilian",
+          "type": "Prefix",
+          "prefixId": "AAwdgzEA",
+          "suffixId": null
+        },
+        {
+          "name": "Minion Melee Damage Leeched As Health",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMwFgbEA",
+          "suffixId": null
+        },
+        {
+          "name": "Minion Spell Critical Strike Chance",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMzDsQ",
+          "suffixId": null
+        },
+        {
+          "name": "Necrotic Resistance",
+          "title": "of Purity",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AAwRmQ"
+        },
+        {
+          "name": "Physical Resistance",
+          "title": "of Deflection",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AAwFgrEA"
+        },
+        {
+          "name": "Poison Resistance",
+          "title": "of Remedy",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AAwRgnEA"
+        },
+        {
+          "name": "Shared Bleed Duration",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMwFmQ",
+          "suffixId": null
+        },
+        {
+          "name": "Shared Cold Damage",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMwFgDEA",
+          "suffixId": null
+        },
+        {
+          "name": "Shared Increased Melee Damage",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMwFgrEA",
+          "suffixId": null
+        },
+        {
+          "name": "Shared Increased Spell Damage",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMwFhQ",
+          "suffixId": null
+        },
+        {
+          "name": "Shared Lightning Damage",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMwo",
+          "suffixId": null
+        },
+        {
+          "name": "Spell Damage for Storm Crows",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AGwFgHEA",
+          "suffixId": null
+        },
+        {
+          "name": "Spell Damage for Totems",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMzAsQ",
+          "suffixId": null
+        },
+        {
+          "name": "Spell Damage While Transformed",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMwVgDEA",
+          "suffixId": null
+        },
+        {
+          "name": "Spell Damage with Tempest Strike",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AAwJgjEA",
+          "suffixId": null
+        },
+        {
+          "name": "Strength",
+          "title": "Mighty",
+          "type": "Prefix",
+          "prefixId": "AKwBgjEA",
+          "suffixId": null
+        },
+        {
+          "name": "Totem Critical Strike Chance",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMwVgTEA",
+          "suffixId": null
+        },
+        {
+          "name": "Totem Damage",
+          "title": "Primalist's",
+          "type": "Prefix",
+          "prefixId": "AMwVg7EA",
+          "suffixId": null
+        },
+        {
+          "name": "Vitality",
+          "title": "Vital",
+          "type": "Prefix",
+          "prefixId": "AKwBmQ",
+          "suffixId": null
+        },
+        {
+          "name": "Void Resistance",
+          "title": "of Hope",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AAzDsQ"
+        },
+        {
+          "name": "Ward per Second",
+          "title": "of Warding",
+          "type": "Suffix",
+          "prefixId": null,
+          "suffixId": "AMwDgTEA"
+        },
+        {
+          "name": "Added Attunement and Increased Mana Regen",
+          "title": "-",
+          "type": "Prefix",
+          "prefixId": "AIwBmFYg",
+          "suffixId": null
+        },
+        {
+          "name": "Added Dexterity and Increased Dodge Rating",
+          "title": "-",
+          "type": "Prefix",
+          "prefixId": "AIwBmHYg",
+          "suffixId": null
+        },
+        {
+          "name": "Added Intelligence and Ward Per Second",
+          "title": "-",
+          "type": "Prefix",
+          "prefixId": "AIwBmDYg",
+          "suffixId": null
+        },
+        {
+          "name": "Added Strength and Added Armor",
+          "title": "-",
+          "type": "Prefix",
+          "prefixId": "AIwBmA4g",
+          "suffixId": null
+        },
+        {
+          "name": "Cold Resistance and Void Resistance",
+          "title": "-",
+          "type": "Prefix",
+          "prefixId": "AIwBgTA7EA",
+          "suffixId": null
+        },
+        {
+          "name": "Damage Dealt to Mana before Health and Added Mana",
+          "title": "-",
+          "type": "Prefix",
+          "prefixId": "AIwBgTGQ",
+          "suffixId": null
+        },
+        {
+          "name": "Elemental Resistance and Necrotic Resistance",
+          "title": "-",
+          "type": "Prefix",
+          "prefixId": "AIwBgTALEA",
+          "suffixId": null
+        },
+        {
+          "name": "Fire Resistance and Necrotic Resistance",
+          "title": "-",
+          "type": "Prefix",
+          "prefixId": "AIwBgTAHEA",
+          "suffixId": null
+        },
+        {
+          "name": "Increased Health and Health Regen applies to Ward",
+          "title": "-",
+          "type": "Prefix",
+          "prefixId": "AIwBmE4g",
+          "suffixId": null
+        },
+        {
+          "name": "Increased Mana and Mana Spent Gained as Ward",
+          "title": "-",
+          "type": "Prefix",
+          "prefixId": "AIwBgTMQ",
+          "suffixId": null
+        },
+        {
+          "name": "Lightning Resistance and Poison Resistance",
+          "title": "-",
+          "type": "Prefix",
+          "prefixId": "AIwBgTAbEA",
+          "suffixId": null
+        },
+        {
+          "name": "Maximum Health gained as Endurance Threshold and Endurance",
+          "title": "-",
+          "type": "Prefix",
+          "prefixId": "AIwBgTCQ",
+          "suffixId": null
+        },
+        {
+          "name": "Physical Resistance and Poison Resistance",
+          "title": "-",
+          "type": "Prefix",
+          "prefixId": "AIwBgTArEA",
+          "suffixId": null
+        },
+        {
+          "name": "Physical Resistance and Void Resistance",
+          "title": "-",
+          "type": "Prefix",
+          "prefixId": "AIwBgTAzEA",
+          "suffixId": null
+        }
+      ]
+    }
+  }
+}
