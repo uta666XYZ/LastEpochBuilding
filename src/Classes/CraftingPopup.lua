@@ -1376,13 +1376,43 @@ function CraftingPopupClass:RefreshAffixDropdowns()
 	end
 	local playerCsBit = self:GetCurrentClassReqBit() * 2
 
-	local prefixGroups = {}
-	local suffixGroups = {}
+	-- Classify each affix into a subcategory so Phase 2 UI can section them.
+	-- Buckets (keyed by statOrderKey):
+	--   prefixGroups.general      : sat=0, cs=0
+	--   prefixGroups.class_only   : sat=0, cs!=0 (still class-matched to player)
+	--   prefixGroups.set_only     : sat=3 (reforged/set)
+	--   prefixGroups.champion     : sat=2 with subcategory="champion"
+	--   prefixGroups.personal     : sat=2 with subcategory="personal"
+	--   prefixGroups.corrupted    : sat=6 (corrupted-only affix)
+	-- Same shape for suffixGroups.
+	local function newBuckets()
+		return { general = {}, class_only = {}, set_only = {}, champion = {}, personal = {}, corrupted = {} }
+	end
+	local prefixGroups = newBuckets()
+	local suffixGroups = newBuckets()
+
+	local function classifySubcategory(mod)
+		local sat = mod.specialAffixType or 0
+		if sat == 0 then
+			local cs = mod.classSpecificity or 0
+			return cs ~= 0 and "class_only" or "general"
+		elseif sat == 2 then
+			return mod.subcategory == "champion" and "champion" or "personal"
+		elseif sat == 3 then
+			return "set_only"
+		elseif sat == 6 then
+			return "corrupted"
+		end
+		-- sat=1 (experimental) and sat=4/5 (sealed idol) are handled elsewhere
+		return nil
+	end
 
 	for modId, mod in pairs(itemMods) do
 		if mod.statOrderKey then
-			if mod.specialAffixType and mod.specialAffixType ~= 0 then goto continue end
-			-- canRollOn filter: skip affixes that cannot roll on this item base type
+			local subcat = classifySubcategory(mod)
+			if not subcat then goto continue end
+			-- canRollOn filter: in both LEB bases.json and LETools affixes, the
+			-- base type slot code is the same integer (e.g. Amulet=20, Shield=18).
 			local cro = mod.canRollOn
 			if cro and #cro > 0 and itemBaseTypeID then
 				local canRoll = false
@@ -1391,6 +1421,9 @@ function CraftingPopupClass:RefreshAffixDropdowns()
 				end
 				if not canRoll then goto continue end
 			end
+			-- Class filter: sat=0/2/3 respect classSpecificity vs player class.
+			-- sat=6 (corrupted) typically has no class restriction but we check
+			-- anyway for safety.
 			if wwPool then
 				local cs = wwPool[tostring(mod.statOrderKey)]
 				if cs == nil then goto continue end
@@ -1399,8 +1432,9 @@ function CraftingPopupClass:RefreshAffixDropdowns()
 				local cs = mod.classSpecificity or 0
 				if cs ~= 0 and playerCsBit ~= 0 and bit.band(cs, playerCsBit) == 0 then goto continue end
 			end
-			local groups = mod.type == "Prefix" and prefixGroups or (mod.type == "Suffix" and suffixGroups or nil)
-			if groups then
+			local buckets = mod.type == "Prefix" and prefixGroups or (mod.type == "Suffix" and suffixGroups or nil)
+			if buckets then
+				local groups = buckets[subcat]
 				if not groups[mod.statOrderKey] then
 					local labelParts = {}
 					for k = 1, 10 do if mod[k] then t_insert(labelParts, mod[k]) end end
@@ -1409,6 +1443,7 @@ function CraftingPopupClass:RefreshAffixDropdowns()
 					groups[mod.statOrderKey] = {
 						label = label, statOrderKey = mod.statOrderKey,
 						affix = mod.affix, type = mod.type, maxTier = mod.tier or 0,
+						subcategory = subcat,
 					}
 				else
 					local g = groups[mod.statOrderKey]
@@ -1418,6 +1453,25 @@ function CraftingPopupClass:RefreshAffixDropdowns()
 		end
 		::continue::
 	end
+
+	-- Flatten buckets into legacy per-affix-type iterables. Preserves previous
+	-- `for _, g in pairs(prefixGroups)` loop shape downstream.
+	local function flattenBuckets(buckets, includeSubcats)
+		local out = {}
+		for _, sc in ipairs(includeSubcats) do
+			for _, g in pairs(buckets[sc]) do t_insert(out, g) end
+		end
+		return out
+	end
+	-- Prefix/Suffix tabs: general + class_only + set_only (matches LETools Basic Craft)
+	local prefixIter = flattenBuckets(prefixGroups, { "general", "class_only", "set_only" })
+	local suffixIter = flattenBuckets(suffixGroups, { "general", "class_only", "set_only" })
+	-- Sealed/Primordial: prefix + suffix + champion/personal (sat=2)
+	local sealedPrefixIter = flattenBuckets(prefixGroups, { "general", "class_only", "set_only", "champion", "personal" })
+	local sealedSuffixIter = flattenBuckets(suffixGroups, { "general", "class_only", "set_only", "champion", "personal" })
+	-- Corrupted: all prefix + suffix + corrupted-only (sat=6)
+	local corruptedPrefixIter = flattenBuckets(prefixGroups, { "general", "class_only", "set_only", "champion", "personal", "corrupted" })
+	local corruptedSuffixIter = flattenBuckets(suffixGroups, { "general", "class_only", "set_only", "champion", "personal", "corrupted" })
 
 	local function sortByLabel(a, b)
 		if not a.statOrderKey then return true end
@@ -1430,9 +1484,12 @@ function CraftingPopupClass:RefreshAffixDropdowns()
 	local sealedList    = {}
 	local primordialList = {}
 
-	for _, g in pairs(prefixGroups) do
-		t_insert(prefixList, g)
-		t_insert(sealedList, { label = g.label, statOrderKey = g.statOrderKey, affix = g.affix, type = g.type, maxTier = m_min(g.maxTier, 6) })
+	-- Sealed helper: push a copy capped at T6, and push a T8 primordial entry if available.
+	local function pushSealedAndPrimordial(g)
+		t_insert(sealedList, {
+			label = g.label, statOrderKey = g.statOrderKey, affix = g.affix, type = g.type,
+			maxTier = m_min(g.maxTier, 6), subcategory = g.subcategory,
+		})
 		if g.maxTier >= 7 then
 			local t8Key = tostring(g.statOrderKey) .. "_7"
 			local t8Mod = itemMods[t8Key]
@@ -1440,24 +1497,21 @@ function CraftingPopupClass:RefreshAffixDropdowns()
 				local t8Parts = {}
 				for k = 1, 10 do if t8Mod[k] then t_insert(t8Parts, t8Mod[k]) end end
 				local t8Label = table.concat(t8Parts, " / "):gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
-				t_insert(primordialList, { label = t8Label, statOrderKey = g.statOrderKey, affix = g.affix, type = g.type, maxTier = 7 })
+				t_insert(primordialList, {
+					label = t8Label, statOrderKey = g.statOrderKey, affix = g.affix, type = g.type,
+					maxTier = 7, subcategory = g.subcategory,
+				})
 			end
 		end
 	end
-	for _, g in pairs(suffixGroups) do
-		t_insert(suffixList, g)
-		t_insert(sealedList, { label = g.label, statOrderKey = g.statOrderKey, affix = g.affix, type = g.type, maxTier = m_min(g.maxTier, 6) })
-		if g.maxTier >= 7 then
-			local t8Key = tostring(g.statOrderKey) .. "_7"
-			local t8Mod = itemMods[t8Key]
-			if t8Mod then
-				local t8Parts = {}
-				for k = 1, 10 do if t8Mod[k] then t_insert(t8Parts, t8Mod[k]) end end
-				local t8Label = table.concat(t8Parts, " / "):gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
-				t_insert(primordialList, { label = t8Label, statOrderKey = g.statOrderKey, affix = g.affix, type = g.type, maxTier = 7 })
-			end
-		end
-	end
+
+	-- Prefix / Suffix tabs use the narrower iter (general + class_only + set_only).
+	for _, g in ipairs(prefixIter) do t_insert(prefixList, g) end
+	for _, g in ipairs(suffixIter) do t_insert(suffixList, g) end
+	-- Sealed / Primordial include champion/personal (sat=2) on top.
+	for _, g in ipairs(sealedPrefixIter) do pushSealedAndPrimordial(g) end
+	for _, g in ipairs(sealedSuffixIter) do pushSealedAndPrimordial(g) end
+
 	table.sort(prefixList, sortByLabel)
 	table.sort(suffixList, sortByLabel)
 	table.sort(sealedList, sortByLabel)
@@ -1493,7 +1547,8 @@ function CraftingPopupClass:RefreshAffixDropdowns()
 	self.affixLists.sealed     = filterExclusions(sealedList, sealedExclude)
 	self.affixLists.primordial = filterExclusions(primordialList, sealedExclude)
 
-	-- Corrupted list
+	-- Corrupted list: Sealed content ∪ sat=6 corrupted-only affixes.
+	-- Idol altar keeps its standalone sat=6-only path (weaver refracted slots).
 	local corruptedList = {}
 	if self:IsIdolAltar() then
 		local corruptedGroups = {}
@@ -1506,6 +1561,7 @@ function CraftingPopupClass:RefreshAffixDropdowns()
 					corruptedGroups[mod.statOrderKey] = {
 						label = label, statOrderKey = mod.statOrderKey,
 						affix = mod.affix, type = mod.type, maxTier = mod.tier or 0,
+						subcategory = "corrupted",
 					}
 				else
 					local g = corruptedGroups[mod.statOrderKey]
@@ -1514,14 +1570,14 @@ function CraftingPopupClass:RefreshAffixDropdowns()
 			end
 		end
 		for _, g in pairs(corruptedGroups) do
-			t_insert(corruptedList, { label = g.label, statOrderKey = g.statOrderKey, affix = g.affix, type = g.type, maxTier = m_min(g.maxTier, 6) })
+			t_insert(corruptedList, { label = g.label, statOrderKey = g.statOrderKey, affix = g.affix, type = g.type, maxTier = m_min(g.maxTier, 6), subcategory = g.subcategory })
 		end
 	else
-		for _, g in pairs(prefixGroups) do
-			t_insert(corruptedList, { label = g.label, statOrderKey = g.statOrderKey, affix = g.affix, type = g.type, maxTier = m_min(g.maxTier, 6) })
+		for _, g in ipairs(corruptedPrefixIter) do
+			t_insert(corruptedList, { label = g.label, statOrderKey = g.statOrderKey, affix = g.affix, type = g.type, maxTier = m_min(g.maxTier, 6), subcategory = g.subcategory })
 		end
-		for _, g in pairs(suffixGroups) do
-			t_insert(corruptedList, { label = g.label, statOrderKey = g.statOrderKey, affix = g.affix, type = g.type, maxTier = m_min(g.maxTier, 6) })
+		for _, g in ipairs(corruptedSuffixIter) do
+			t_insert(corruptedList, { label = g.label, statOrderKey = g.statOrderKey, affix = g.affix, type = g.type, maxTier = m_min(g.maxTier, 6), subcategory = g.subcategory })
 		end
 	end
 	table.sort(corruptedList, sortByLabel)
