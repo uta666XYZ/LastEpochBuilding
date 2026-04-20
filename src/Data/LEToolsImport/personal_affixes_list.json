@@ -1,0 +1,74 @@
+[
+  {
+    "encodedId": "AOwBgHEA",
+    "type": "Prefix",
+    "name": "Andinai's",
+    "title": "Andinai's"
+  },
+  {
+    "encodedId": "AOwBgzEA",
+    "type": "Prefix",
+    "name": "Bloom Tender's",
+    "title": "Bloom Tender's"
+  },
+  {
+    "encodedId": "AOwBhQ",
+    "type": "Prefix",
+    "name": "Cave Druid's",
+    "title": "Cave Druid's"
+  },
+  {
+    "encodedId": "AOwVgHEA",
+    "type": "Prefix",
+    "name": "Cursed",
+    "title": "Cursed"
+  },
+  {
+    "encodedId": "AOwBgbEA",
+    "type": "Prefix",
+    "name": "Hirish's",
+    "title": "Hirish's"
+  },
+  {
+    "encodedId": "AGwTgHEA",
+    "type": "Prefix",
+    "name": "Julra's",
+    "title": "Julra's"
+  },
+  {
+    "encodedId": "AOwBmQ",
+    "type": "Suffix",
+    "name": "Of the Last Hermit",
+    "title": "of the Last Hermit"
+  },
+  {
+    "encodedId": "AGwThQ",
+    "type": "Suffix",
+    "name": "Of the Timelost Outcast",
+    "title": "of the Timelost Outcast"
+  },
+  {
+    "encodedId": "AOwBgLEA",
+    "type": "Prefix",
+    "name": "Orian's",
+    "title": "Orian's"
+  },
+  {
+    "encodedId": "AOwBgTEA",
+    "type": "Prefix",
+    "name": "Solar Deserter's",
+    "title": "Solar Deserter's"
+  },
+  {
+    "encodedId": "AOwBgrEA",
+    "type": "Prefix",
+    "name": "Ucenui's",
+    "title": "Ucenui's"
+  },
+  {
+    "encodedId": "AOwBgjEA",
+    "type": "Suffix",
+    "name": "Ward gained when damage leaves you at low health",
+    "title": "Avel's"
+  }
+]
