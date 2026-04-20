@@ -25,6 +25,16 @@ jobs:
 
           echo "http_code=$HTTP_CODE" >> "$GITHUB_OUTPUT"
 
+          # Treat bot-protection / rate-limit / transient upstream errors as skip,
+          # since GitHub runner IPs are frequently blocked by Cloudflare.
+          case "$HTTP_CODE" in
+            403|429|502|503|504)
+              echo "status=skip" >> "$GITHUB_OUTPUT"
+              echo "detail=HTTP $HTTP_CODE (likely bot protection or transient); skipping check" >> "$GITHUB_OUTPUT"
+              exit 0
+              ;;
+          esac
+
           if [ "$HTTP_CODE" != "200" ]; then
             echo "status=error" >> "$GITHUB_OUTPUT"
             echo "detail=HTTP $HTTP_CODE from lastepochtools.com/profile" >> "$GITHUB_OUTPUT"
@@ -39,8 +49,16 @@ jobs:
             echo "detail=characterName field not found in profile page. Page structure may have changed." >> "$GITHUB_OUTPUT"
           fi
 
+      - name: Ensure labels exist
+        if: steps.check.outputs.status == 'broken' || steps.check.outputs.status == 'error'
+        run: |
+          gh label create import-monitor --repo ${{ github.repository }} \
+            --color "d73a4a" --description "Auto-opened by monitor workflow" 2>/dev/null || true
+          gh label create bug --repo ${{ github.repository }} \
+            --color "d73a4a" --description "Something isn't working" 2>/dev/null || true
+
       - name: Check if issue already open
-        if: steps.check.outputs.status != 'ok'
+        if: steps.check.outputs.status == 'broken' || steps.check.outputs.status == 'error'
         id: existing
         run: |
           COUNT=$(gh issue list --repo ${{ github.repository }} \
@@ -48,7 +66,7 @@ jobs:
           echo "count=$COUNT" >> "$GITHUB_OUTPUT"
 
       - name: Create issue if broken and no open issue
-        if: steps.check.outputs.status != 'ok' && steps.existing.outputs.count == '0'
+        if: (steps.check.outputs.status == 'broken' || steps.check.outputs.status == 'error') && steps.existing.outputs.count == '0'
         run: |
           gh issue create \
             --repo ${{ github.repository }} \
