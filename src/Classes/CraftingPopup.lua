@@ -260,7 +260,7 @@ end
 -- CraftingPopup class
 -- =============================================================================
 local CraftingPopupClass = newClass("CraftingPopup", "ControlHost", "Control", function(self, itemsTab, existingItem, slotName)
-	local popupMinH = 760
+	local popupMinH = 900
 	self.ControlHost()
 	self.Control(nil, 0, 0, POPUP_W, popupMinH)
 	self.editContentH = popupMinH
@@ -275,6 +275,9 @@ local CraftingPopupClass = newClass("CraftingPopup", "ControlHost", "Control", f
 	end
 	self.itemsTab = itemsTab
 	self.build    = itemsTab.build
+	self.slotName = slotName
+	-- Expose the currently-edited slot so ItemSlotControl can highlight it.
+	itemsTab.craftingSlotName = slotName
 
 	-- Right panel state
 	self.rightTab             = "item"   -- "item"|"prefix"|"suffix"|"sealed"|"primordial"|"corrupted"
@@ -1240,6 +1243,14 @@ function CraftingPopupClass:SelectBase(entry)
 		item.rarity  = "SET"
 		item.title   = entry.setData.name
 		item.setID   = entry.setID
+		-- Preserve set metadata so CalcSetup can aggregate N-piece bonuses.
+		if entry.setData.set then
+			item.setInfo = {
+				setId = entry.setData.set.setId,
+				name  = entry.setData.set.name,
+				bonus = entry.setData.set.bonus,
+			}
+		end
 		if entry.setData.mods then
 			for i, modText in ipairs(entry.setData.mods) do
 				local rollId = entry.setData.rollIds and entry.setData.rollIds[i]
@@ -2073,6 +2084,9 @@ function CraftingPopupClass:RestoreCraftState(existingItem)
 end
 
 function CraftingPopupClass:Close()
+	if self.itemsTab then
+		self.itemsTab.craftingSlotName = nil
+	end
 	main:ClosePopup()
 end
 
@@ -2320,9 +2334,9 @@ function CraftingPopupClass:DrawItemCards(areaX, areaY, areaW, areaH, mx, my)
 			mods = entry.uniqueData and entry.uniqueData.mods
 		end
 		local nMods = mods and #mods or 0
-		-- Header: name(18) + type(16) + level(14) = ~48, then per-line 14px
+		-- Header: name(18) + type(16) + level(16) = ~50, then per-line 16px
 		local extraLines = nImpl + nMods + (nImpl > 0 and nMods > 0 and 1 or 0) -- separator
-		local h = 4 + 18 + 16 + 14 + 2 + extraLines * 14 + 6
+		local h = 4 + 18 + 16 + 16 + 4 + extraLines * 16 + 8
 		return m_max(IC_H, h)
 	end
 
@@ -2364,28 +2378,38 @@ function CraftingPopupClass:DrawItemCards(areaX, areaY, areaW, areaH, mx, my)
 	self.rightCards = {}
 	local scrollY = self.rightScrollY
 
+	-- Clip card rendering to the card area so cards that scroll above/below
+	-- the area don't overlap the tab bar or other popup controls. SetViewport
+	-- both clips and translates the origin, so all card draw coordinates
+	-- below are relative to (areaX, areaY). Hit-test rects are still stored
+	-- in absolute screen coordinates.
+	SetViewport(areaX, areaY, areaW, areaH)
+
 	for i, entry in ipairs(list) do
-		local cx, cy, cw, ch
-		local col  = (i - 1) % IC_COLS
+		local ax, ay, cw, ch         -- absolute screen coords (for hit-test)
+		local col = (i - 1) % IC_COLS
 		if isDetail then
-			cx = areaX + col * (IC_W + IC_GAP)
-			cy = areaY + cardYs[i] - scrollY
+			ax = areaX + col * (IC_W + IC_GAP)
+			ay = areaY + cardYs[i] - scrollY
 			cw = IC_W
 			ch = cardHs[i]
 		else
-			local row  = m_floor((i - 1) / IC_COLS)
-			cx = areaX + col * (IC_W + IC_GAP)
-			cy = areaY + row * (IC_H + IC_GAP) - scrollY
+			local row = m_floor((i - 1) / IC_COLS)
+			ax = areaX + col * (IC_W + IC_GAP)
+			ay = areaY + row * (IC_H + IC_GAP) - scrollY
 			cw = IC_W
 			ch = IC_H
 		end
-		local cx2, cy2 = cx + cw, cy + ch
+		local ax2, ay2 = ax + cw, ay + ch
+		-- Viewport-relative coords for drawing
+		local cx = ax - areaX
+		local cy = ay - areaY
 
-		if cy2 > areaY and cy < areaY + areaH then
-			t_insert(self.rightCards, { x1=cx, y1=cy, x2=cx2, y2=cy2, entry=entry })
+		if ay2 > areaY and ay < areaY + areaH then
+			t_insert(self.rightCards, { x1=ax, y1=ay, x2=ax2, y2=ay2, entry=entry })
 
 			local isSelected = self.editBaseEntry and self.editBaseEntry.name == entry.name
-			local isHovered  = mx >= cx and mx < cx2 and my >= cy and my < cy2
+			local isHovered  = mx >= ax and mx < ax2 and my >= ay and my < ay2
 
 			-- Card background
 			if isSelected then
@@ -2429,20 +2453,20 @@ function CraftingPopupClass:DrawItemCards(areaX, areaY, areaW, areaH, mx, my)
 			-- Level requirement (line 3)
 			local lvReq = entry.base and entry.base.req and entry.base.req.level or 0
 			if lvReq > 0 then
-				DrawString(textX, cy + 40, "LEFT", 11, "VAR", "^8Lv. " .. tostring(lvReq))
+				DrawString(textX, cy + 40, "LEFT", 12, "VAR", "^8Lv. " .. tostring(lvReq))
 			end
 
 			if isDetail then
 				-- Full implicits + modifiers list, spans full card width below header
 				local lineX = cx + 6
 				local lineW = cw - 12
-				local maxLineChars = m_floor(lineW / 6)
-				local ly = cy + 56
+				local maxLineChars = m_floor(lineW / 6.5)
+				local ly = cy + 58
 				local function drawLine(text, color)
 					if not text then return end
 					if #text > maxLineChars then text = text:sub(1, maxLineChars - 2) .. ".." end
-					DrawString(lineX, ly, "LEFT", 11, "VAR", (color or "^8") .. text)
-					ly = ly + 14
+					DrawString(lineX, ly, "LEFT", 12, "VAR", (color or "^8") .. text)
+					ly = ly + 16
 				end
 				if entry.base and entry.base.implicits then
 					for _, implText in ipairs(entry.base.implicits) do
@@ -2457,7 +2481,7 @@ function CraftingPopupClass:DrawItemCards(areaX, areaY, areaW, areaH, mx, my)
 				end
 				if mods and #mods > 0 then
 					if entry.base and entry.base.implicits and #entry.base.implicits > 0 then
-						ly = ly + 2
+						ly = ly + 4
 					end
 					for _, modText in ipairs(mods) do
 						drawLine(cleanImplicitText(modText), "^7")
@@ -2470,9 +2494,9 @@ function CraftingPopupClass:DrawItemCards(areaX, areaY, areaW, areaH, mx, my)
 					implText = cleanImplicitText(entry.base.implicits[1])
 				end
 				if implText then
-					local maxImpl = m_floor(textW / 6)
+					local maxImpl = m_floor(textW / 6.5)
 					local truncImpl = #implText > maxImpl and implText:sub(1, maxImpl - 2) .. ".." or implText
-					DrawString(textX, cy + 58, "LEFT", 11, "VAR", "^8" .. truncImpl)
+					DrawString(textX, cy + 58, "LEFT", 12, "VAR", "^8" .. truncImpl)
 				end
 			end
 
@@ -2490,6 +2514,7 @@ function CraftingPopupClass:DrawItemCards(areaX, areaY, areaW, areaH, mx, my)
 			DrawImage(nil, cx+cw-1, cy,      1, ch)
 		end
 	end
+	SetViewport()
 
 	-- Scrollbar
 	if maxScroll > 0 then
