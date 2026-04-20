@@ -1495,9 +1495,13 @@ function CraftingPopupClass:RefreshAffixDropdowns()
 			local buckets = mod.type == "Prefix" and prefixGroups or (mod.type == "Suffix" and suffixGroups or nil)
 			if buckets then
 				local groups = buckets[subcat]
+				-- Always derive the canonical label from tier 0 so UI sees a
+				-- stable stat description (prior code used whichever tier
+				-- iterated first, which looked like a random tier string).
+				local t0 = itemMods[tostring(mod.statOrderKey) .. "_0"] or mod
 				if not groups[mod.statOrderKey] then
 					local labelParts = {}
-					for k = 1, 10 do if mod[k] then t_insert(labelParts, mod[k]) end end
+					for k = 1, 10 do if t0[k] then t_insert(labelParts, t0[k]) end end
 					local label = table.concat(labelParts, " / ")
 					label = label:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
 					groups[mod.statOrderKey] = {
@@ -2671,20 +2675,40 @@ function CraftingPopupClass:DrawAffixCards(areaX, areaY, areaW, areaH, mx, my)
 			if not m and data.modIdol and data.modIdol.flat then m = data.modIdol.flat[key] end
 			return m
 		end
+		-- Extract LETools-style "a to b%" or "n%" range from a cleaned stat line.
+		local function extractRange(text)
+			if not text or text == "" then return text or "" end
+			-- Range in parentheses: (a-b) optionally followed by %
+			local a, b, pct = text:match("%((%-?[%d%.]+)%-(%-?[%d%.]+)%)(%%?)")
+			if a and b then
+				return a .. (pct or "") .. " to " .. b .. (pct or "")
+			end
+			-- Single value: +5% or 6 or -2
+			local sign, n, pct2 = text:match("([%+%-]?)([%d%.]+)(%%?)")
+			if n then
+				return (sign or "") .. n .. (pct2 or "")
+			end
+			return text
+		end
 		local out  = {}
 		local maxT = entry.maxTier or 0
 		for tier = 0, maxT do
 			local mod = getMod(tostring(entry.statOrderKey) .. "_" .. tostring(tier))
 			if mod then
-				local parts = {}
+				local parts, ranges = {}, {}
 				for k = 1, 10 do
 					local line = mod[k]
 					if line and type(line) == "string" then
 						local s = line:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
 						t_insert(parts, s)
+						t_insert(ranges, extractRange(s))
 					end
 				end
-				t_insert(out, { tier = tier, text = table.concat(parts, ", ") })
+				t_insert(out, {
+					tier = tier,
+					text = table.concat(parts, ", "),
+					range = table.concat(ranges, ", "),
+				})
 			end
 		end
 		entry._tierLines = out
@@ -2955,13 +2979,21 @@ function CraftingPopupClass:DrawAffixCards(areaX, areaY, areaW, areaH, mx, my)
 					local statCol = isSelected and colorCodes.UNIQUE or "^7"
 					DrawString(textX, cy + LIST_PAD, "LEFT", 14, "VAR", statCol .. stat)
 
-					-- Row 2: craft name (entry.affix)
-					local craft = entry.affix or ""
+					-- Row 2: craft name (entry.affix) — only when it looks like a real name
+					local rawCraft = entry.affix or ""
+					local function isName(s)
+						if not s or s == "" or s == "UNKNOWN" then return false end
+						if #s > 25 then return false end
+						if s:find("[%%%(%)%+]") then return false end
+						if s:find("%d") then return false end
+						return true
+					end
+					local craft = isName(rawCraft) and rawCraft or "—"
 					if #craft > maxCh then craft = craft:sub(1, maxCh - 2) .. ".." end
 					DrawString(textX, cy + LIST_PAD + LIST_STAT_H, "LEFT", 12, "VAR",
 						"^8" .. craft)
 
-					-- Row 3+: per-tier "Tier N: ..." lines
+					-- Row 3+: per-tier lines, LETools style "Tier N   a to b%"
 					local tierLines = getAffixTierLines(entry)
 					local selTier = nil
 					if isSelected then
@@ -2970,14 +3002,14 @@ function CraftingPopupClass:DrawAffixCards(areaX, areaY, areaW, areaH, mx, my)
 					end
 					local lineY = cy + LIST_PAD + LIST_STAT_H + LIST_CRAFT_H
 					for _, tl in ipairs(tierLines) do
-						local tLabel = tierColor(tl.tier) .. "Tier " .. tostring(tl.tier + 1) .. ":"
-						local txt = tl.text or ""
+						local tLabel = tierColor(tl.tier) .. "Tier " .. tostring(tl.tier + 1)
+						local txt = tl.range or tl.text or ""
 						local budget = maxCh - 10
 						if #txt > budget then txt = txt:sub(1, budget - 2) .. ".." end
 						local marker = (selTier == tl.tier) and "  <<" or ""
 						local col = (selTier == tl.tier) and colorCodes.UNIQUE or tierColor(tl.tier)
 						DrawString(textX + 2, lineY, "LEFT", 13, "VAR",
-							tLabel .. " " .. col .. txt .. marker)
+							tLabel .. "   " .. col .. txt .. marker)
 						lineY = lineY + LIST_TIER_H
 					end
 
