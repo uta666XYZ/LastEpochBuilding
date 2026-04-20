@@ -363,8 +363,7 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
                 return
             end
             if selectedWebsite.id == "lastepochtools" then
-                self.importCodeDetail = colorCodes.NEGATIVE .. "Import failed: lastepochtools.com import is no longer supported (site changed)"
-                self.importCodeValid = false
+                self:DownloadLEToolsPlannerBuild(self.controls.importCodeIn.buf)
                 return
             end
             self.importCodeFetching = true
@@ -774,6 +773,286 @@ function ImportTabClass:DownloadMaxrollPlannerBuild(url)
         self:ImportBlessingsFromMaxroll(profileData)
         self.importCodeDetail = colorCodes.POSITIVE .. "Maxroll build imported."
     end)
+end
+
+function ImportTabClass:DownloadLEToolsPlannerBuild(url)
+    self.importCodeFetching = true
+    self.importCodeDetail = colorCodes.NORMAL .. "Downloading from lastepochtools.com..."
+
+    local buildId = url:match("lastepochtools%.com/planner/([%w_%-]+)")
+    if not buildId then
+        self.importCodeFetching = false
+        self.importCodeDetail = colorCodes.NEGATIVE .. "Could not parse LETools URL"
+        return
+    end
+
+    -- Cloudflare on LETools rejects the default LEB UA; pretend to be a browser.
+    local browserUA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36"
+    local plannerURL = "https://www.lastepochtools.com/planner/" .. buildId
+
+    launch:DownloadPage(plannerURL, function(response, errMsg)
+        if errMsg then
+            self.importCodeFetching = false
+            self.importCodeDetail = colorCodes.NEGATIVE .. "Download failed: " .. errMsg:gsub("\n", " ")
+            return
+        end
+        local token = response.body:match("var%s+[%w_]+%s*=%s*'([0-9a-f]+)'")
+        if not token or #token < 16 then
+            self.importCodeFetching = false
+            self.importCodeDetail = colorCodes.NEGATIVE .. "Could not extract token from LETools page"
+            return
+        end
+        local apiURL = "https://www.lastepochtools.com/api/internal/planner_data/" .. token
+        launch:DownloadPage(apiURL, function(apiResponse, apiErr)
+            self.importCodeFetching = false
+            if apiErr then
+                self.importCodeDetail = colorCodes.NEGATIVE .. "API fetch failed: " .. apiErr:gsub("\n", " ")
+                return
+            end
+            local jsonData, _, parseErr = dkjson.decode(apiResponse.body, 1, false)
+            if parseErr or type(jsonData) ~= "table" then
+                self.importCodeDetail = colorCodes.NEGATIVE .. "Failed to parse LETools response"
+                return
+            end
+            local data = jsonData.data
+            if type(data) ~= "table" then
+                self.importCodeDetail = colorCodes.NEGATIVE .. "No data field in LETools response"
+                return
+            end
+            local char = self:BuildCharFromLETools(jsonData, data, buildId)
+            if not char then return end
+            self:BuildItemsFromLETools(data, char)
+            self:ImportPassiveTreeAndJewels(char)
+            self:ImportItemsAndSkills(char)
+            self:ImportBlessingsFromLETools(data)
+            local msg = "LETools build imported."
+            if char._parseErrors and char._parseErrors > 0 then
+                msg = msg .. " (" .. char._parseErrors .. " items skipped)"
+            end
+            self.importCodeDetail = colorCodes.POSITIVE .. msg
+        end, { header = "User-Agent: " .. browserUA })
+    end, { header = "User-Agent: " .. browserUA })
+end
+
+function ImportTabClass:BuildCharFromLETools(jsonData, data, buildId)
+    local bio = data.bio or {}
+    local classId = bio.characterClass or jsonData["class"] or 0
+    local mastery = bio.chosenMastery or jsonData.mastery or 0
+    local level = bio.level or jsonData.level or 1
+
+    if not self.build.latestTree.classes[classId] then
+        self.importCodeDetail = colorCodes.NEGATIVE .. "Unknown class: " .. tostring(classId)
+        return nil
+    end
+    local className = self.build.latestTree.classes[classId].name
+    local ascendancyData = self.build.latestTree.classes[classId].ascendancies[mastery]
+    if not ascendancyData then
+        self.importCodeDetail = colorCodes.NEGATIVE .. "Unknown mastery: " .. tostring(mastery)
+        return nil
+    end
+
+    local char = {
+        name = "LETools " .. buildId,
+        level = level,
+        class = className,
+        classId = classId,
+        ascendancy = mastery,
+        ascendancyName = ascendancyData.name,
+        league = "LETools",
+        abilities = {},
+        items = {},
+        hashes = {},
+        _parseErrors = 0,
+    }
+
+    -- Passive hashes from charTree.selected (dict: nodeId string -> points)
+    local charTree = data.charTree
+    if type(charTree) == "table" and type(charTree.selected) == "table" then
+        for nodeId, points in pairs(charTree.selected) do
+            if type(points) == "number" and points > 0 then
+                table.insert(char.hashes, className .. "-" .. nodeId .. "#" .. points)
+            end
+        end
+    end
+
+    -- Skill hashes from skillTrees array (each entry: {treeID, selected, slotNumber, level})
+    if type(data.skillTrees) == "table" then
+        local entries = {}
+        for i, tree in ipairs(data.skillTrees) do
+            local treeId = tree.treeID or tree.treeId
+            local slot = tree.slotNumber or tree.slot or (i - 1)
+            if treeId then
+                table.insert(entries, { treeId = tostring(treeId), treeData = tree, slot = slot })
+            end
+        end
+        table.sort(entries, function(a, b) return a.slot < b.slot end)
+
+        for _, entry in ipairs(entries) do
+            local treeIdStr = entry.treeId
+            local treeData = entry.treeData
+            local skillName
+            for _, class in pairs(self.build.latestTree.classes) do
+                for _, skill in ipairs(class.skills or {}) do
+                    if skill.treeId == treeIdStr then
+                        skillName = skill.name
+                        break
+                    end
+                end
+                if skillName then break end
+            end
+            if skillName then
+                table.insert(char.abilities, skillName)
+                table.insert(char.hashes, treeIdStr .. "-0#1")
+                if type(treeData.selected) == "table" then
+                    for nodeId, points in pairs(treeData.selected) do
+                        if type(points) == "number" and points > 0 then
+                            table.insert(char.hashes, treeIdStr .. "-" .. nodeId .. "#" .. points)
+                        end
+                    end
+                end
+            else
+                ConPrintf("[IMPORT-SKILL] No match for LETools treeId: %s", tostring(treeIdStr))
+            end
+        end
+    end
+
+    return char
+end
+
+-- Lazy-loaded LETools id -> {b,s,u?,lt?} and affix-id-string -> affixId-int maps
+function ImportTabClass:LoadLEToolsMaps()
+    if self._letoolsItemMap and self._letoolsAffixMap then
+        return self._letoolsItemMap, self._letoolsAffixMap
+    end
+    local function readJson(path)
+        local f = io.open(path, "r")
+        if not f then return nil end
+        local body = f:read("*a"); f:close()
+        local t = dkjson.decode(body, 1, false)
+        return t
+    end
+    local base = "Data/LEToolsImport/"
+    self._letoolsItemMap  = readJson(base .. "letools_item_map.json") or {}
+    self._letoolsAffixMap = readJson(base .. "letools_affix_map.json") or {}
+    return self._letoolsItemMap, self._letoolsAffixMap
+end
+
+-- Convert one LETools equipment/idol item into a Maxroll-shaped item so the
+-- existing BuildItemsFromMaxroll / parseItem pipeline can consume it unchanged.
+function ImportTabClass:ConvertLEToolsItem(letoolsItem, itemMap, affixMap)
+    if type(letoolsItem) ~= "table" or not letoolsItem.id then return nil end
+    local entry = itemMap[letoolsItem.id]
+    if not entry then
+        ConPrintf("[LETOOLS-ITEM] Unknown id: %s", tostring(letoolsItem.id))
+        return nil
+    end
+    local subType
+    if type(entry.s) == "table" then
+        subType = entry.s[1]
+    else
+        subType = entry.s
+    end
+    local mx = {
+        itemType = entry.b,
+        subType  = subType,
+        corrupted = false,
+        implicits = letoolsItem.ir or {},
+        affixes = {},
+    }
+    if entry.u and entry.u > 0 then
+        mx.uniqueID    = entry.u
+        mx.uniqueRolls = letoolsItem.ur or {}
+    end
+    if type(letoolsItem.affixes) == "table" then
+        for _, a in ipairs(letoolsItem.affixes) do
+            local affixInt = affixMap[a.id]
+            if affixInt ~= nil then
+                -- LETools tiers are user-facing 1-indexed (T1..T7); LEB
+                -- ModItem keys and save-format tiers are 0-indexed.
+                local tier0 = (a.tier or 1) - 1
+                if tier0 < 0 then tier0 = 0 end
+                t_insert(mx.affixes, { id = affixInt, tier = tier0, roll = a.r or 0 })
+            else
+                ConPrintf("[LETOOLS-AFFIX] Unknown id: %s (tier=%s)", tostring(a.id), tostring(a.tier))
+            end
+        end
+    end
+    return mx
+end
+
+-- Populate char.items from LETools data.equipment + data.idols by reshaping
+-- the entries into Maxroll format and delegating to BuildItemsFromMaxroll.
+function ImportTabClass:BuildItemsFromLETools(data, char)
+    local itemMap, affixMap = self:LoadLEToolsMaps()
+    local letoolsSlotToMaxroll = {
+        head = "head", chest = "body", weapon1 = "weapon", weapon2 = "offhand",
+        hands = "hands", waist = "waist", feet = "feet",
+        ring1 = "finger1", ring2 = "finger2", amulet = "neck",
+        relic = "relic", idol_altar = "altar",
+    }
+    local profileData = { items = {}, idols = {} }
+    -- Prefill idol grid so ipairs in BuildItemsFromMaxroll walks all 25 slots.
+    for i = 1, 25 do profileData.idols[i] = false end
+    if type(data.equipment) == "table" then
+        for slotKey, letoolsItem in pairs(data.equipment) do
+            local mxKey = letoolsSlotToMaxroll[slotKey]
+            if mxKey then
+                local mx = self:ConvertLEToolsItem(letoolsItem, itemMap, affixMap)
+                if mx then profileData.items[mxKey] = mx end
+            end
+        end
+    end
+    -- Idols: LETools provides x,y (1-indexed, top-left origin; observed
+    -- range 1..5 on each axis). Maxroll expects a 25-slot array in row-major
+    -- order with idolGridSlots[i] giving the slot name.
+    if type(data.idols) == "table" then
+        for _, idol in ipairs(data.idols) do
+            if type(idol) == "table" and idol.id and type(idol.x) == "number" and type(idol.y) == "number" then
+                local idx = (idol.y - 1) * 5 + idol.x
+                ConPrintf("[LETOOLS-IDOL] id=%s xy=(%d,%d) -> idx=%d", tostring(idol.id), idol.x, idol.y, idx)
+                if idx >= 1 and idx <= 25 then
+                    local mx = self:ConvertLEToolsItem(idol, itemMap, affixMap)
+                    if mx then profileData.idols[idx] = mx end
+                end
+            end
+        end
+    end
+    self:BuildItemsFromMaxroll({}, profileData, char)
+end
+
+-- Apply LETools blessings via the shared itemsTab.UpdateBlessingSlot path.
+function ImportTabClass:ImportBlessingsFromLETools(data)
+    local blessings = data.blessings
+    if type(blessings) ~= "table" then return end
+    local itemMap = self:LoadLEToolsMaps()
+    for _, bl in pairs(blessings) do
+        if type(bl) == "table" and bl.id then
+            local entry = itemMap[bl.id]
+            if entry and entry.b == 34 then
+                local subType = type(entry.s) == "table" and entry.s[1] or entry.s
+                local blessingName
+                for name, base in pairs(self.build.data.itemBases) do
+                    if base.baseTypeID == 34 and base.subTypeID == subType then
+                        blessingName = name; break
+                    end
+                end
+                if blessingName and self.currentBlessingLookup then
+                    local info = self.currentBlessingLookup[blessingName]
+                    if info then
+                        local ir = bl.ir or {}
+                        local roll = ir[1] or 255
+                        local rollFrac = roll / 255.0
+                        ConPrintf("[LETOOLS-BLESS] %s -> %s (roll=%.3f)", blessingName, info.tl, rollFrac)
+                        self.build.itemsTab:UpdateBlessingSlot(info.tl, info.entry, rollFrac)
+                    else
+                        ConPrintf("[LETOOLS-BLESS] Not in blessingLookup: %s", blessingName)
+                    end
+                else
+                    ConPrintf("[LETOOLS-BLESS] No base for subType=%s", tostring(subType))
+                end
+            end
+        end
+    end
 end
 
 function ImportTabClass:BuildItemsFromMaxroll(buildData, profileData, char)
