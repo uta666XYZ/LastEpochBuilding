@@ -62,7 +62,7 @@ local function filterTypeList(orderedList, slotName)
 end
 
 -- Layout constants
-local POPUP_W       = 1000
+local POPUP_W       = 1200
 local LEFT_W        = 320
 local DIVIDER_X     = LEFT_W
 local TYPE_LIST_Y   = 34
@@ -260,7 +260,7 @@ end
 -- CraftingPopup class
 -- =============================================================================
 local CraftingPopupClass = newClass("CraftingPopup", "ControlHost", "Control", function(self, itemsTab, existingItem, slotName)
-	local popupMinH = 600
+	local popupMinH = 760
 	self.ControlHost()
 	self.Control(nil, 0, 0, POPUP_W, popupMinH)
 	self.editContentH = popupMinH
@@ -1352,9 +1352,20 @@ function CraftingPopupClass:RefreshAffixDropdowns()
 		self:RefreshIdolAffixDropdowns()
 		return
 	end
-	-- Rarity gate: Unique / Set items cannot roll reforged (set_only, sat=3) affixes
+	-- Set items are uncraftable: all affix tabs empty.
+	if self:IsSetItem() then
+		self.affixLists.prefix1    = {}
+		self.affixLists.prefix2    = {}
+		self.affixLists.suffix1    = {}
+		self.affixLists.suffix2    = {}
+		self.affixLists.sealed     = {}
+		self.affixLists.primordial = {}
+		self.affixLists.corrupted  = {}
+		return
+	end
+	-- Rarity gate: Unique items cannot roll reforged (set_only, sat=3) affixes
 	-- and have no Sealed / Primordial pools (those are Basic-only mechanics).
-	local isUniqueOrSet = self:IsUniqueItem() or self:IsSetItem()
+	local isUniqueOrSet = self:IsUniqueItem()
 
 	local itemMods
 	if self:IsIdolAltar() then
@@ -2316,23 +2327,33 @@ function CraftingPopupClass:DrawItemCards(areaX, areaY, areaW, areaH, mx, my)
 	end
 
 	-- Precompute layout
-	local layoutW, layoutCols
 	local cardHs, cardYs = {}, {}
 	local totalH
 
 	if isDetail then
-		layoutCols = 1
-		layoutW    = areaW - 4 -- leave room for scrollbar
+		-- 2-column grid; each row shares the max height of its pair so the two
+		-- cards on the same row are the same size.
 		local y = 0
-		for i, entry in ipairs(list) do
-			cardHs[i] = computeCardH(entry)
-			cardYs[i] = y
-			y = y + cardHs[i] + IC_GAP
+		for i = 1, #list, IC_COLS do
+			local rowH = 0
+			for j = 0, IC_COLS - 1 do
+				local idx = i + j
+				if list[idx] then
+					local h = computeCardH(list[idx])
+					if h > rowH then rowH = h end
+				end
+			end
+			for j = 0, IC_COLS - 1 do
+				local idx = i + j
+				if list[idx] then
+					cardHs[idx] = rowH
+					cardYs[idx] = y
+				end
+			end
+			y = y + rowH + IC_GAP
 		end
 		totalH = y
 	else
-		layoutCols = IC_COLS
-		layoutW    = IC_W
 		local rows = m_ceil(#list / IC_COLS)
 		totalH     = rows * (IC_H + IC_GAP)
 	end
@@ -2345,13 +2366,13 @@ function CraftingPopupClass:DrawItemCards(areaX, areaY, areaW, areaH, mx, my)
 
 	for i, entry in ipairs(list) do
 		local cx, cy, cw, ch
+		local col  = (i - 1) % IC_COLS
 		if isDetail then
-			cx = areaX
+			cx = areaX + col * (IC_W + IC_GAP)
 			cy = areaY + cardYs[i] - scrollY
-			cw = layoutW
+			cw = IC_W
 			ch = cardHs[i]
 		else
-			local col  = (i - 1) % IC_COLS
 			local row  = m_floor((i - 1) / IC_COLS)
 			cx = areaX + col * (IC_W + IC_GAP)
 			cy = areaY + row * (IC_H + IC_GAP) - scrollY
