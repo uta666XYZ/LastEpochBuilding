@@ -219,7 +219,7 @@ return {
 ["FreezeRate"] = 0,
 ["FrostbiteAvoidChance"] = 0,
 ["FrostbiteChance"] = 0,
-["FullDPS"] = 1028.2897,
+["FullDPS"] = 982.0995,
 ["FullLifePercentage"] = 100,
 ["FutureStrikeChance"] = 0,
 ["GlancingBlowChance"] = 6,

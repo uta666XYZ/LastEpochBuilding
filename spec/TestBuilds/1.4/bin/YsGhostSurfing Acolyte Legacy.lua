@@ -163,7 +163,7 @@ return {
 ["EnemyFutureStrikeDuration"] = 1,
 ["EnemyHemorrhageDuration"] = 1,
 ["EnemyIgniteDuration"] = 1,
-["EnemyLifeRegen"] = 0,
+["EnemyLifeRegen"] = -94,
 ["EnemyManaRegen"] = 0,
 ["EnemyMarkedForDeathDuration"] = 1,
 ["EnemyPenanceDuration"] = 1,
