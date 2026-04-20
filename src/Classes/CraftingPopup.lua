@@ -164,38 +164,34 @@ local function cleanImplicitText(line)
 	return line:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
 end
 
--- Word-wrap text to max pixel width. Returns array of lines.
--- Unlike main:WrapString (which wraps one word too late), this wraps at the
--- last word boundary whose prefix still fits within `width`.
-local function wrapByWidth(str, size, width)
+-- Char-count-based word wrap. Reliable because DrawStringWidth with VAR
+-- font has been observed to underestimate actual render width in practice.
+-- Approximate per-char width for VAR at this size; conservative = more wrap.
+local function wrapByChars(str, maxChars)
 	local out = {}
 	if not str or str == "" then return out end
-	local lineStart = 1
-	local lastBreak, lastSpace = nil, nil
-	local pos = 1
-	while true do
-		local s, e = str:find("%s+", pos)
-		if not s then
-			t_insert(out, str:sub(lineStart, -1))
-			break
-		end
-		-- Measure segment including current word: lineStart..s-1
-		if DrawStringWidth(size, "VAR", str:sub(lineStart, s - 1)) > width and lastBreak then
-			t_insert(out, str:sub(lineStart, lastBreak))
-			lineStart = lastSpace
-			lastBreak, lastSpace = nil, nil
-			pos = lineStart
+	local cur = ""
+	for word in str:gmatch("%S+") do
+		if cur == "" then
+			cur = word
+		elseif #cur + 1 + #word <= maxChars then
+			cur = cur .. " " .. word
 		else
-			lastBreak = s - 1
-			lastSpace = e + 1
-			pos = e + 1
+			t_insert(out, cur)
+			cur = word
+		end
+		while #cur > maxChars do
+			t_insert(out, cur:sub(1, maxChars))
+			cur = cur:sub(maxChars + 1)
 		end
 	end
+	if cur ~= "" then t_insert(out, cur) end
 	return out
 end
 
 -- Wrap raw text (strips leading color code, preserves it on each line) to a
 -- multi-line string joined with "\n", plus returns line count.
+-- Uses char-count heuristic: VAR font ~= size * 0.6 px per char (conservative).
 local function wrapForLabel(text, width, size)
 	if not text or text == "" then return "", 1 end
 	local colorPrefix = ""
@@ -205,8 +201,10 @@ local function wrapForLabel(text, width, size)
 		colorPrefix = cp
 		rest = rest:sub(#cp + 1)
 	end
-	local wrapped = wrapByWidth(rest, size, width)
-	if #wrapped == 0 then return colorPrefix .. rest, 1 end
+	local perChar = m_max(4, size * 0.6)
+	local maxChars = m_max(10, m_floor(width / perChar))
+	local wrapped = wrapByChars(rest, maxChars)
+	if #wrapped <= 1 then return colorPrefix .. rest, 1 end
 	for i = 1, #wrapped do wrapped[i] = colorPrefix .. wrapped[i] end
 	return table.concat(wrapped, "\n"), #wrapped
 end
