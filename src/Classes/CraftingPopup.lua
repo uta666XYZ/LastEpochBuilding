@@ -33,8 +33,12 @@ local SLOT_TYPE_FILTER = {
 		"Two-Handed Spear", "Two-Handed Staff", "Two-Handed Sword", "Bow",
 	},
 	["Weapon 2"]   = {
-		-- Off-Hand slot: only off-hand base types.
+		-- Off-Hand slot: off-hand base types, plus weapons for dual-wield.
 		"Quiver", "Shield", "Off-Hand Catalyst",
+		"One-Handed Sword", "One-Handed Axe", "One-Handed Mace",
+		"Dagger", "Sceptre", "Wand",
+		"Two-Handed Sword", "Two-Handed Axe", "Two-Handed Mace",
+		"Two-Handed Spear", "Two-Handed Staff", "Bow",
 	},
 }
 
@@ -44,17 +48,36 @@ local function filterTypeList(orderedList, slotName)
 	local allowed = {}
 	for _, t in ipairs(filter) do allowed[t] = true end
 	local pending_sep = nil
-	local filtered = {}
+	local groups = {}
+	local current = nil
 	for _, entry in ipairs(orderedList) do
 		if entry.isSeparator then
 			pending_sep = entry
+			current = nil
 		elseif allowed[entry.typeName] then
 			if pending_sep then
-				t_insert(filtered, pending_sep)
+				current = { sep = pending_sep, items = {} }
+				t_insert(groups, current)
 				pending_sep = nil
 			end
-			t_insert(filtered, entry)
+			if current then t_insert(current.items, entry) end
 		end
+	end
+	-- For Weapon 2 (Off-Hand), show Off-Hand section first, then Weapons below.
+	if slotName == "Weapon 2" then
+		table.sort(groups, function(a, b)
+			local function rank(sep)
+				if sep.label:find("Off.Hand") then return 0 end
+				if sep.label:find("Weapons") then return 1 end
+				return 2
+			end
+			return rank(a.sep) < rank(b.sep)
+		end)
+	end
+	local filtered = {}
+	for _, g in ipairs(groups) do
+		t_insert(filtered, g.sep)
+		for _, e in ipairs(g.items) do t_insert(filtered, e) end
 	end
 	return filtered
 end
@@ -785,7 +808,9 @@ function CraftingPopupClass:BuildControls()
 			if not self_ref.editItem then return "" end
 			local ml = self_ref.editItem.explicitModLines[i]
 			if not ml then return "" end
-			return "^7" .. itemLib.formatModLine(ml)
+			local formatted = itemLib.formatModLine(ml)
+			if not formatted then return "" end
+			return "^7" .. formatted
 		end
 	end
 
@@ -1812,6 +1837,7 @@ end
 -- =============================================================================
 function CraftingPopupClass:BuildTierTooltip(tooltip, slotKey)
 	tooltip:Clear()
+	tooltip.maxWidth = 520
 	local st = self.affixState[slotKey]
 	if not st or not st.modKey then return end
 	local function getMod(key)
@@ -1864,6 +1890,7 @@ function CraftingPopupClass:BuildAffixTooltip(tooltip, statOrderKey)
 	end
 	local baseMod = getMod(tostring(statOrderKey) .. "_0")
 	if not baseMod then return end
+	tooltip.maxWidth = 520
 	tooltip:AddLine(16, colorCodes.UNIQUE .. (baseMod.affix or "Affix"))
 	tooltip:AddSeparator(10)
 	-- Non-primordial affixes display tiers T1-T7 only.
@@ -2708,6 +2735,8 @@ function CraftingPopupClass:DrawAffixCards(areaX, areaY, areaW, areaH, mx, my)
 					tier = tier,
 					text = table.concat(parts, ", "),
 					range = table.concat(ranges, ", "),
+					parts = parts,
+					ranges = ranges,
 				})
 			end
 		end
@@ -2825,9 +2854,22 @@ function CraftingPopupClass:DrawAffixCards(areaX, areaY, areaW, areaH, mx, my)
 							local e = g[i + k]
 							if e then
 								t_insert(rowEntries, e)
-								local nT = #getAffixTierLines(e)
+								local tls = getAffixTierLines(e)
+								local nT = #tls
 								if nT == 0 then nT = 1 end
-								local eH = LIST_PAD * 2 + LIST_STAT_H + LIST_CRAFT_H + nT * LIST_TIER_H
+								local function isCraftName(s)
+									if not s or s == "" or s == "UNKNOWN" then return false end
+									if #s > 25 then return false end
+									if s:find("[%%%(%)%+]") then return false end
+									if s:find("%d") then return false end
+									return true
+								end
+								local craftH = isCraftName(e.affix or "") and LIST_CRAFT_H or 0
+								local headerH = 0
+								if tls[1] and tls[1].ranges and #tls[1].ranges >= 2 then
+									headerH = LIST_TIER_H
+								end
+								local eH = LIST_PAD * 2 + LIST_STAT_H + craftH + headerH + nT * LIST_TIER_H
 								if eH > maxH then maxH = eH end
 							end
 						end
@@ -2988,10 +3030,13 @@ function CraftingPopupClass:DrawAffixCards(areaX, areaY, areaW, areaH, mx, my)
 						if s:find("%d") then return false end
 						return true
 					end
-					local craft = isName(rawCraft) and rawCraft or "—"
-					if #craft > maxCh then craft = craft:sub(1, maxCh - 2) .. ".." end
-					DrawString(textX, cy + LIST_PAD + LIST_STAT_H, "LEFT", 12, "VAR",
-						"^8" .. craft)
+					local hasCraft = isName(rawCraft)
+					if hasCraft then
+						local craft = rawCraft
+						if #craft > maxCh then craft = craft:sub(1, maxCh - 2) .. ".." end
+						DrawString(textX, cy + LIST_PAD + LIST_STAT_H, "LEFT", 12, "VAR",
+							"^8" .. craft)
+					end
 
 					-- Row 3+: per-tier lines, LETools style "Tier N   a to b%"
 					local tierLines = getAffixTierLines(entry)
@@ -3000,17 +3045,57 @@ function CraftingPopupClass:DrawAffixCards(areaX, areaY, areaW, areaH, mx, my)
 						local st = getSelectedSlotState(entry.statOrderKey)
 						if st then selTier = st.tier end
 					end
-					local lineY = cy + LIST_PAD + LIST_STAT_H + LIST_CRAFT_H
-					for _, tl in ipairs(tierLines) do
-						local tLabel = tierColor(tl.tier) .. "Tier " .. tostring(tl.tier + 1)
-						local txt = tl.range or tl.text or ""
-						local budget = maxCh - 10
-						if #txt > budget then txt = txt:sub(1, budget - 2) .. ".." end
-						local marker = (selTier == tl.tier) and "  <<" or ""
-						local col = (selTier == tl.tier) and colorCodes.UNIQUE or tierColor(tl.tier)
-						DrawString(textX + 2, lineY, "LEFT", 13, "VAR",
-							tLabel .. "   " .. col .. txt .. marker)
+					local craftSkip = hasCraft and LIST_CRAFT_H or 0
+					local lineY = cy + LIST_PAD + LIST_STAT_H + craftSkip
+
+					-- Detect multi-modifier affix (2+ stat lines)
+					local nMods = (tierLines[1] and tierLines[1].ranges) and #tierLines[1].ranges or 1
+					if nMods >= 2 then
+						-- Strip range tokens to get bare stat name
+						local function statName(s)
+							if not s or s == "" then return "" end
+							s = s:gsub("%b()%%?", "")
+							s = s:gsub("[%+%-]?[%d%.]+%%?", "")
+							s = s:gsub("^%s+", ""):gsub("%s+$", "")
+							s = s:gsub("%s+", " ")
+							return s
+						end
+						local parts0 = tierLines[1].parts or {}
+						local colW = m_floor((listCardW - (textX - cx1) - 8) / 2)
+						local col1X = textX + 2
+						local col2X = textX + 2 + colW
+						-- Header: two stat names
+						local n1 = statName(parts0[1] or "")
+						local n2 = statName(parts0[2] or "")
+						local nbudget = m_floor(colW / 6.8) - 1
+						if #n1 > nbudget then n1 = n1:sub(1, nbudget - 2) .. ".." end
+						if #n2 > nbudget then n2 = n2:sub(1, nbudget - 2) .. ".." end
+						DrawString(col1X, lineY, "LEFT", 11, "VAR", "^8" .. n1)
+						DrawString(col2X, lineY, "LEFT", 11, "VAR", "^8" .. n2)
 						lineY = lineY + LIST_TIER_H
+						for _, tl in ipairs(tierLines) do
+							local tLabel = tierColor(tl.tier) .. "T" .. tostring(tl.tier + 1)
+							local r1 = (tl.ranges and tl.ranges[1]) or ""
+							local r2 = (tl.ranges and tl.ranges[2]) or ""
+							local col = (selTier == tl.tier) and colorCodes.UNIQUE or tierColor(tl.tier)
+							local marker = (selTier == tl.tier) and "  <<" or ""
+							DrawString(col1X, lineY, "LEFT", 12, "VAR",
+								tLabel .. " " .. col .. r1)
+							DrawString(col2X, lineY, "LEFT", 12, "VAR", col .. r2 .. marker)
+							lineY = lineY + LIST_TIER_H
+						end
+					else
+						for _, tl in ipairs(tierLines) do
+							local tLabel = tierColor(tl.tier) .. "Tier " .. tostring(tl.tier + 1)
+							local txt = tl.range or tl.text or ""
+							local budget = maxCh - 10
+							if #txt > budget then txt = txt:sub(1, budget - 2) .. ".." end
+							local marker = (selTier == tl.tier) and "  <<" or ""
+							local col = (selTier == tl.tier) and colorCodes.UNIQUE or tierColor(tl.tier)
+							DrawString(textX + 2, lineY, "LEFT", 13, "VAR",
+								tLabel .. "   " .. col .. txt .. marker)
+							lineY = lineY + LIST_TIER_H
+						end
 					end
 
 					-- Selection right indicator
