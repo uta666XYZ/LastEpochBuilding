@@ -1,0 +1,407 @@
+{
+  "slot_code_mapping_confirmed": {
+    "0": "Helmet",
+    "2": "Belt",
+    "4": "Gloves",
+    "5": "One-Handed Axe",
+    "6": "Dagger",
+    "7": "One-Handed Mace",
+    "10": "Wand",
+    "12": "Two-Handed Axe",
+    "14": "Two-Handed Spear",
+    "15": "Two-Handed Staff",
+    "16": "Two-Handed Sword",
+    "20": "Amulet",
+    "21": "Ring",
+    "22": "Relic",
+    "1": "Body Armor",
+    "3": "Boots",
+    "17": "Quiver",
+    "18": "Shield",
+    "19": "Off-Hand Catalyst"
+  },
+  "slot_code_unknown": [
+    8,
+    9,
+    13,
+    23,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    41
+  ],
+  "champions_14": [
+    {
+      "affixId": 766,
+      "id": "AOwNhQ",
+      "name": "Death Grip Champion's",
+      "type": "Prefix",
+      "cs": 16,
+      "canRollOn": [
+        22
+      ],
+      "slots": [
+        "Relic"
+      ],
+      "class": "Acolyte"
+    },
+    {
+      "affixId": 767,
+      "id": "AOwNmQ",
+      "name": "Mirage Champion's",
+      "type": "Prefix",
+      "cs": 0,
+      "canRollOn": [
+        4
+      ],
+      "slots": [
+        "Gloves"
+      ]
+    },
+    {
+      "affixId": 768,
+      "id": "AOwNgHEA",
+      "name": "Spark Champion's",
+      "type": "Prefix",
+      "cs": 0,
+      "canRollOn": [
+        2
+      ],
+      "slots": [
+        "Belt"
+      ]
+    },
+    {
+      "affixId": 769,
+      "id": "AOwNgnEA",
+      "name": "Infernal Champion's",
+      "type": "Prefix",
+      "cs": 0,
+      "canRollOn": [
+        21
+      ],
+      "slots": [
+        "Ring"
+      ]
+    },
+    {
+      "affixId": 770,
+      "id": "AOzAMQ",
+      "name": "Whirlpool Champion's",
+      "type": "Prefix",
+      "cs": 0,
+      "canRollOn": [
+        20
+      ],
+      "slots": [
+        "Amulet"
+      ]
+    },
+    {
+      "affixId": 771,
+      "id": "AOzCMQ",
+      "name": "Volcano Champion's",
+      "type": "Prefix",
+      "cs": 0,
+      "canRollOn": [
+        2
+      ],
+      "slots": [
+        "Belt"
+      ]
+    },
+    {
+      "affixId": 772,
+      "id": "AOzBMQ",
+      "name": "Carnage Champion's",
+      "type": "Prefix",
+      "cs": 0,
+      "canRollOn": [
+        20
+      ],
+      "slots": [
+        "Amulet"
+      ]
+    },
+    {
+      "affixId": 773,
+      "id": "AOzDMQ",
+      "name": "Abyssal Champion's",
+      "type": "Prefix",
+      "cs": 0,
+      "canRollOn": [
+        16,
+        12
+      ],
+      "slots": [
+        "Two-Handed Sword",
+        "Two-Handed Axe"
+      ]
+    },
+    {
+      "affixId": 774,
+      "id": "AOzAsQ",
+      "name": "Profane Champion's",
+      "type": "Prefix",
+      "cs": 0,
+      "canRollOn": [
+        15,
+        12
+      ],
+      "slots": [
+        "Two-Handed Staff",
+        "Two-Handed Axe"
+      ]
+    },
+    {
+      "affixId": 775,
+      "id": "AOzCsQ",
+      "name": "Venomous Champion's",
+      "type": "Prefix",
+      "cs": 0,
+      "canRollOn": [
+        4
+      ],
+      "slots": [
+        "Gloves"
+      ]
+    },
+    {
+      "affixId": 776,
+      "id": "AOzBsQ",
+      "name": "Meteor Champion's",
+      "type": "Prefix",
+      "cs": 0,
+      "canRollOn": [
+        5,
+        6,
+        10
+      ],
+      "slots": [
+        "One-Handed Axe",
+        "Dagger",
+        "Wand"
+      ]
+    },
+    {
+      "affixId": 777,
+      "id": "AOwo",
+      "name": "River Champion's",
+      "type": "Prefix",
+      "cs": 2,
+      "canRollOn": [
+        0
+      ],
+      "slots": [
+        "Helmet"
+      ],
+      "class": "Primalist"
+    },
+    {
+      "affixId": 778,
+      "id": "AOzAcQ",
+      "name": "Storm Champion's",
+      "type": "Prefix",
+      "cs": 0,
+      "canRollOn": [
+        7,
+        14
+      ],
+      "slots": [
+        "One-Handed Mace",
+        "Two-Handed Spear"
+      ]
+    },
+    {
+      "affixId": 779,
+      "id": "AOzCcQ",
+      "name": "Portal Champion's",
+      "type": "Prefix",
+      "cs": 0,
+      "canRollOn": [
+        0
+      ],
+      "slots": [
+        "Helmet"
+      ]
+    }
+  ],
+  "filter_model_confirmed": {
+    "sealed_equal_primordial": true,
+    "sealed_formula": "sat=0/3 P/S (slot-match) UNION sat=2 Champion (slot-match AND cs==0 OR cs matches class bit)",
+    "corrupted_basic": "Sealed UNION sat=6 (slot-match)",
+    "corrupted_unique": "sat=0 P/S (slot-match, excludes sat=3 reforged) UNION sat=6",
+    "legacy_basic_hides": true,
+    "legacy_unique_set_visible": true
+  },
+  "personals_12": [
+    {
+      "affixId": 698,
+      "id": "AGwTgHEA",
+      "name": "Julra's",
+      "type": "Prefix",
+      "cs": 0,
+      "canRollOn": [
+        20
+      ],
+      "slots": [
+        "Amulet"
+      ]
+    },
+    {
+      "affixId": 699,
+      "id": "AGwThQ",
+      "name": "Of the Timelost Outcast",
+      "type": "Suffix",
+      "cs": 0,
+      "canRollOn": [
+        17
+      ],
+      "slots": [
+        "Quiver"
+      ]
+    },
+    {
+      "affixId": 700,
+      "id": "AOwBhQ",
+      "name": "Cave Druid's",
+      "type": "Prefix",
+      "cs": 0,
+      "canRollOn": [
+        15
+      ],
+      "slots": [
+        "Two-Handed Staff"
+      ]
+    },
+    {
+      "affixId": 701,
+      "id": "AOwBgjEA",
+      "name": "Ward gained when damage leaves you at low health",
+      "type": "Suffix",
+      "cs": 0,
+      "canRollOn": [
+        19
+      ],
+      "slots": [
+        "Off-Hand Catalyst"
+      ]
+    },
+    {
+      "affixId": 702,
+      "id": "AOwBgTEA",
+      "name": "Solar Deserter's",
+      "type": "Prefix",
+      "cs": 0,
+      "canRollOn": [
+        18
+      ],
+      "slots": [
+        "Shield"
+      ]
+    },
+    {
+      "affixId": 703,
+      "id": "AOwBgzEA",
+      "name": "Bloom Tender's",
+      "type": "Prefix",
+      "cs": 0,
+      "canRollOn": [
+        14
+      ],
+      "slots": [
+        "Two-Handed Spear"
+      ]
+    },
+    {
+      "affixId": 704,
+      "id": "AOwBgLEA",
+      "name": "Orian's",
+      "type": "Prefix",
+      "cs": 0,
+      "canRollOn": [
+        14
+      ],
+      "slots": [
+        "Two-Handed Spear"
+      ]
+    },
+    {
+      "affixId": 705,
+      "id": "AOwBgrEA",
+      "name": "Ucenui's",
+      "type": "Prefix",
+      "cs": 0,
+      "canRollOn": [
+        19
+      ],
+      "slots": [
+        "Off-Hand Catalyst"
+      ]
+    },
+    {
+      "affixId": 706,
+      "id": "AOwBgbEA",
+      "name": "Hirish's",
+      "type": "Prefix",
+      "cs": 0,
+      "canRollOn": [
+        1
+      ],
+      "slots": [
+        "Body Armor"
+      ]
+    },
+    {
+      "affixId": 707,
+      "id": "AOwBmQ",
+      "name": "Of the Last Hermit",
+      "type": "Suffix",
+      "cs": 0,
+      "canRollOn": [
+        17
+      ],
+      "slots": [
+        "Quiver"
+      ]
+    },
+    {
+      "affixId": 708,
+      "id": "AOwBgHEA",
+      "name": "Andinai's",
+      "type": "Prefix",
+      "cs": 0,
+      "canRollOn": [
+        6
+      ],
+      "slots": [
+        "Dagger"
+      ]
+    },
+    {
+      "affixId": 758,
+      "id": "AOwVgHEA",
+      "name": "Cursed",
+      "type": "Prefix",
+      "cs": 0,
+      "canRollOn": [
+        3
+      ],
+      "slots": [
+        "Boots"
+      ]
+    }
+  ]
+}
