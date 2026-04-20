@@ -166,6 +166,25 @@ end
 
 -- Wrap a single logical line into word-bounded chunks of at most maxChars.
 -- Returns a table of strings (always at least one element if input is non-empty).
+-- Wrap raw text (strips color codes for width calc, preserves leading color) to a
+-- multi-line string joined with "\n", plus returns line count. Uses main:WrapString.
+local function wrapForLabel(text, width, size)
+	if not text or text == "" then return "", 1 end
+	-- Strip leading color prefix to apply to each wrapped line
+	local colorPrefix = ""
+	local rest = text
+	local cp = rest:match("^(%^[%dxX][%x]*)")
+	if cp then
+		colorPrefix = cp
+		rest = rest:sub(#cp + 1)
+	end
+	local wrapped = main:WrapString(rest, size, width)
+	local copied = {}
+	for i = 1, #wrapped do copied[i] = colorPrefix .. wrapped[i] end
+	if #copied == 0 then return colorPrefix .. rest, 1 end
+	return table.concat(copied, "\n"), #copied
+end
+
 local function wrapTextLine(text, maxChars)
 	if not text or text == "" then return { "" } end
 	if maxChars < 1 then return { text } end
@@ -444,16 +463,36 @@ end
 -- All Y values are absolute from the popup's TOPLEFT.
 function CraftingPopupClass:RecalcEditLayout()
 	local LINE_H        = 18
+	local WRAP_H        = 15  -- per wrapped sub-line
 	local implicitCount = self.editItem and #self.editItem.implicitModLines or 0
 	local rarity        = self.editItem and self.editItem.rarity
-	local totalDisplayCount = implicitCount
-
-	-- Affix sections start below the preview header and implicit lines
-	local EDIT_START = m_max(330, PREVIEW_Y + 90 + totalDisplayCount * LINE_H)
-	local y = EDIT_START
-	local GAP = 4
 
 	self.editY = {}
+	self.editY.implicits = {}
+
+	-- Compute implicit Y positions, accounting for wrap
+	local implicitStartY = PREVIEW_Y + 44 + 14 + 4 + 14
+	local iy = implicitStartY
+	local IMPLICIT_WRAP_W = LEFT_W - LP_LINE_X - 4
+	for i = 1, implicitCount do
+		self.editY.implicits[i] = iy
+		local ml = self.editItem.implicitModLines[i]
+		local wrapCount = 1
+		if ml then
+			local formatted = itemLib.formatModLine(ml)
+			if formatted then
+				local _, n = wrapForLabel("^7" .. formatted, IMPLICIT_WRAP_W, 13)
+				wrapCount = n
+			end
+		end
+		iy = iy + wrapCount * WRAP_H
+	end
+	local implicitEndY = implicitCount > 0 and iy or (PREVIEW_Y + 90)
+
+	-- Affix sections start below the preview header and implicit lines
+	local EDIT_START = m_max(330, implicitEndY + 8)
+	local y = EDIT_START
+	local GAP = 4
 
 	local isUniqueIdol  = self:IsUniqueIdol()
 	local isAnyIdol     = self:IsAnyIdol()
@@ -531,9 +570,19 @@ function CraftingPopupClass:RecalcEditLayout()
 		self.editY.uniqueModsLabel = y
 		y = y + LINE_H + GAP
 		self.editY.uniqueMods = {}
+		local um_w = LEFT_W - LP_LINE_X - 4
 		for i = 1, #self.editItem.explicitModLines do
 			self.editY.uniqueMods[i] = y
-			y = y + LINE_H
+			local ml = self.editItem.explicitModLines[i]
+			local wn = 1
+			if ml then
+				local formatted = itemLib.formatModLine(ml)
+				if formatted then
+					local _, n = wrapForLabel("^7" .. formatted, um_w, 13)
+					wn = n
+				end
+			end
+			y = y + wn * WRAP_H
 		end
 		y = y + GAP
 	else
@@ -764,19 +813,25 @@ function CraftingPopupClass:BuildControls()
 		return self_ref.editItem ~= nil and #self_ref.editItem.implicitModLines > 0
 	end
 
+	local IMPLICIT_WRAP_W = LEFT_W - LP_LINE_X - 4
 	for i = 1, 20 do
 		local key = "implicit" .. i
 		controls[key] = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, LP_LINE_X,
-			function() return PREVIEW_Y + 44 + 14 + 4 + i * 14 end, 0, 13, "")
+			function() return self_ref.editY.implicits and self_ref.editY.implicits[i] or 0 end,
+			IMPLICIT_WRAP_W, 13, "")
 		controls[key].shown = function()
 			if not self_ref.editItem then return false end
 			return i <= #self_ref.editItem.implicitModLines
+				and (self_ref.editY.implicits and self_ref.editY.implicits[i] or 0) > 0
 		end
 		controls[key].label = function()
 			if not self_ref.editItem then return "" end
 			local ml = self_ref.editItem.implicitModLines[i]
 			if not ml then return "" end
-			return "^7" .. itemLib.formatModLine(ml)
+			local formatted = itemLib.formatModLine(ml)
+			if not formatted then return "" end
+			local wrapped = wrapForLabel("^7" .. formatted, IMPLICIT_WRAP_W, 13)
+			return wrapped
 		end
 	end
 
@@ -810,7 +865,7 @@ function CraftingPopupClass:BuildControls()
 			if not ml then return "" end
 			local formatted = itemLib.formatModLine(ml)
 			if not formatted then return "" end
-			return "^7" .. formatted
+			return wrapForLabel("^7" .. formatted, LEFT_W - LP_LINE_X - 4, 13)
 		end
 	end
 
@@ -966,7 +1021,7 @@ function CraftingPopupClass:BuildControls()
 			end
 			controls[tierLabelKey].label = function()
 				local st = self_ref.affixState[slotKey]
-				return tierColor(st.tier) .. "T" .. tostring(st.tier + 1)
+				return tierColor(st.tier) .. "Tier " .. tostring(st.tier + 1)
 			end
 			controls[tierLabelKey].tooltipFunc = function(tooltip, mode)
 				if mode == "OUT" then return end
@@ -1873,7 +1928,7 @@ function CraftingPopupClass:BuildTierTooltip(tooltip, slotKey)
 			end
 			local marker = (tier == st.tier) and " <<" or ""
 			local col    = (tier == st.tier) and colorCodes.UNIQUE or "^7"
-			tooltip:AddLine(14, col .. "T" .. tostring(tier + 1) .. ": " .. table.concat(parts, ", ") .. marker)
+			tooltip:AddLine(14, col .. "Tier " .. tostring(tier + 1) .. ": " .. table.concat(parts, ", ") .. marker)
 		end
 	end
 end
@@ -1907,7 +1962,7 @@ function CraftingPopupClass:BuildAffixTooltip(tooltip, statOrderKey)
 					t_insert(parts, s)
 				end
 			end
-			tooltip:AddLine(14, "^7T" .. tostring(tier + 1) .. ": " .. table.concat(parts, ", "))
+			tooltip:AddLine(14, "^7Tier " .. tostring(tier + 1) .. ": " .. table.concat(parts, ", "))
 		end
 	end
 end
@@ -2401,6 +2456,21 @@ function CraftingPopupClass:Draw(viewPort)
 	-- Draw Controls (overlays drawn items)
 	-- -------------------------------------------------------------------------
 	self:DrawControls(viewPort)
+
+	-- Hover tooltip for affix right-panel cards (both list and card modes)
+	if self.rightTab ~= "item" then
+		for _, card in ipairs(self.rightCards or {}) do
+			if card.entry and mx >= card.x1 and mx < card.x2 and my >= card.y1 and my < card.y2 then
+				if not self.affixCardTooltip then
+					self.affixCardTooltip = new("Tooltip")
+				end
+				self.affixCardTooltip:Clear()
+				self:BuildAffixTooltip(self.affixCardTooltip, card.entry.statOrderKey)
+				self.affixCardTooltip:Draw(mx, my, nil, nil, viewPort)
+				break
+			end
+		end
+	end
 end
 
 -- Draw item cards in the right panel
@@ -2867,7 +2937,24 @@ function CraftingPopupClass:DrawAffixCards(areaX, areaY, areaW, areaH, mx, my)
 								local craftH = isCraftName(e.affix or "") and LIST_CRAFT_H or 0
 								local headerH = 0
 								if tls[1] and tls[1].ranges and #tls[1].ranges >= 2 then
-									headerH = LIST_TIER_H
+									local function statName(s)
+										if not s or s == "" then return "" end
+										s = s:gsub("%b()%%?", "")
+										s = s:gsub("[%+%-]?[%d%.]+%%?", "")
+										s = s:gsub("^%s+", ""):gsub("%s+$", "")
+										s = s:gsub("%s+", " ")
+										return s
+									end
+									local parts0 = tls[1].parts or {}
+									local tierColW = 48
+									local colW = m_floor((listCardW - 18 - tierColW) / 2)
+									local n1 = statName(parts0[1] or "")
+									local n2 = statName(parts0[2] or "")
+									local l1 = #main:WrapString(n1, 12, colW - 4)
+									-- WrapString reuses wrapTable; copy length before second call
+									local l2 = #main:WrapString(n2, 12, colW - 4)
+									local hl = m_max(l1, l2, 1)
+									headerH = hl * 13 + 2
 								end
 								local eH = LIST_PAD * 2 + LIST_STAT_H + craftH + headerH + nT * LIST_TIER_H
 								if eH > maxH then maxH = eH end
@@ -2961,15 +3048,15 @@ function CraftingPopupClass:DrawAffixCards(areaX, areaY, areaW, areaH, mx, my)
 					-- Tier range inside card (bottom-right)
 					local maxT = entry.maxTier or 0
 					local tierStr = maxT > 0
-						and (TIER_COLORS[1] .. "T1^8-" .. tierColor(maxT) .. "T" .. tostring(maxT + 1))
-						or  (TIER_COLORS[1] .. "T1")
+						and (TIER_COLORS[1] .. "Tier 1^8-" .. tierColor(maxT) .. "Tier " .. tostring(maxT + 1))
+						or  (TIER_COLORS[1] .. "Tier 1")
 					DrawString(cx2 - 8, cy + rowH - 18, "RIGHT", 13, "VAR", tierStr)
 					-- Selection indicator
 					if isSelected then
 						local st, slotLabel = getSelectedSlotState(entry.statOrderKey)
 						if st and st.modKey then
 							local t1 = st.tier + 1
-							local indicator = tierColor(st.tier) .. "T" .. tostring(t1)
+							local indicator = tierColor(st.tier) .. "Tier " .. tostring(t1)
 							if slotLabel then indicator = indicator .. " ^8(" .. slotLabel .. ")" end
 							DrawString(cx1 + 10, cy + rowH - 18, "LEFT", 13, "VAR", "^xFFCC44> " .. indicator)
 						end
@@ -3061,26 +3148,35 @@ function CraftingPopupClass:DrawAffixCards(areaX, areaY, areaW, areaH, mx, my)
 							return s
 						end
 						local parts0 = tierLines[1].parts or {}
-						local colW = m_floor((listCardW - (textX - cx1) - 8) / 2)
-						local col1X = textX + 2
-						local col2X = textX + 2 + colW
-						-- Header: two stat names
+						local tierColW = 48
+						local availColW = listCardW - (textX - cx1) - 8 - tierColW
+						local colW = m_floor(availColW / 2)
+						local tierX = textX + 2
+						local col1X = tierX + tierColW
+						local col2X = col1X + colW
+						-- Header: two stat names with word-wrap
 						local n1 = statName(parts0[1] or "")
 						local n2 = statName(parts0[2] or "")
-						local nbudget = m_floor(colW / 6.8) - 1
-						if #n1 > nbudget then n1 = n1:sub(1, nbudget - 2) .. ".." end
-						if #n2 > nbudget then n2 = n2:sub(1, nbudget - 2) .. ".." end
-						DrawString(col1X, lineY, "LEFT", 11, "VAR", "^8" .. n1)
-						DrawString(col2X, lineY, "LEFT", 11, "VAR", "^8" .. n2)
-						lineY = lineY + LIST_TIER_H
+						local w1 = main:WrapString(n1, 12, colW - 4)
+						local h1 = {}
+						for k = 1, #w1 do h1[k] = w1[k] end
+						local w2 = main:WrapString(n2, 12, colW - 4)
+						local h2 = {}
+						for k = 1, #w2 do h2[k] = w2[k] end
+						local headerLines = m_max(#h1, #h2, 1)
+						for k = 1, headerLines do
+							if h1[k] then DrawString(col1X, lineY + (k - 1) * 13, "LEFT", 12, "VAR", "^8" .. h1[k]) end
+							if h2[k] then DrawString(col2X, lineY + (k - 1) * 13, "LEFT", 12, "VAR", "^8" .. h2[k]) end
+						end
+						lineY = lineY + headerLines * 13 + 2
 						for _, tl in ipairs(tierLines) do
-							local tLabel = tierColor(tl.tier) .. "T" .. tostring(tl.tier + 1)
+							local tLabel = tierColor(tl.tier) .. "Tier " .. tostring(tl.tier + 1)
 							local r1 = (tl.ranges and tl.ranges[1]) or ""
 							local r2 = (tl.ranges and tl.ranges[2]) or ""
 							local col = (selTier == tl.tier) and colorCodes.UNIQUE or tierColor(tl.tier)
 							local marker = (selTier == tl.tier) and "  <<" or ""
-							DrawString(col1X, lineY, "LEFT", 12, "VAR",
-								tLabel .. " " .. col .. r1)
+							DrawString(tierX, lineY, "LEFT", 12, "VAR", tLabel)
+							DrawString(col1X, lineY, "LEFT", 12, "VAR", col .. r1)
 							DrawString(col2X, lineY, "LEFT", 12, "VAR", col .. r2 .. marker)
 							lineY = lineY + LIST_TIER_H
 						end
@@ -3103,7 +3199,7 @@ function CraftingPopupClass:DrawAffixCards(areaX, areaY, areaW, areaH, mx, my)
 						local st, slotLabel = getSelectedSlotState(entry.statOrderKey)
 						if st and st.modKey then
 							local t1 = st.tier + 1
-							local indicator = tierColor(st.tier) .. "T" .. tostring(t1)
+							local indicator = tierColor(st.tier) .. "Tier " .. tostring(t1)
 							if slotLabel then indicator = indicator .. " ^8(" .. slotLabel .. ")" end
 							DrawString(cx2 - 8, cy + LIST_PAD, "RIGHT", 12, "VAR",
 								"^xFFCC44> " .. indicator)
@@ -3177,7 +3273,7 @@ function CraftingPopupClass:DrawAffixCards(areaX, areaY, areaW, areaH, mx, my)
 				local st, slotLabel = getSelectedSlotState(entry.statOrderKey)
 				if st and st.modKey then
 					local t1 = st.tier + 1
-					local indicator = tierColor(st.tier) .. "T" .. tostring(t1)
+					local indicator = tierColor(st.tier) .. "Tier " .. tostring(t1)
 					if slotLabel then indicator = indicator .. " ^8(" .. slotLabel .. ")" end
 					DrawString(areaX + areaW - 6, cy + LIST_PAD, "RIGHT", 13, "VAR", indicator)
 				end
