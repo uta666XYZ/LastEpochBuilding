@@ -107,15 +107,16 @@ local NO_T8_SLOTS = { prefix1=true, prefix2=true, suffix1=true, suffix2=true, se
 -- Fixed-tier slots
 local FIXED_TIER_SLOTS = { primordial=true }
 
--- Tier color codes: index = 1-based tier (T1=best, T7=worst)
+-- Tier color codes: T1-T5 = Basic (magic blue), T6-T8 = Exalted (purple)
 local TIER_COLORS = {
-	[1] = "^xFFBF00",  -- T1: gold
-	[2] = "^xE8872A",  -- T2: orange
-	[3] = "^xA8D44A",  -- T3: yellow-green
-	[4] = "^x40B0A0",  -- T4: teal
-	[5] = "^x5090E0",  -- T5: blue
-	[6] = "^xA060D0",  -- T6: purple
-	[7] = "^x909090",  -- T7: gray
+	[1] = "^x36A3E2",  -- T1 basic
+	[2] = "^x36A3E2",  -- T2 basic
+	[3] = "^x36A3E2",  -- T3 basic
+	[4] = "^x36A3E2",  -- T4 basic
+	[5] = "^x36A3E2",  -- T5 basic
+	[6] = "^xC184FF",  -- T6 exalted
+	[7] = "^xC184FF",  -- T7 exalted
+	[8] = "^xC184FF",  -- T8 exalted (primordial only)
 }
 local function tierColor(tier0)
 	return TIER_COLORS[tier0 + 1] or "^7"
@@ -1582,8 +1583,15 @@ function CraftingPopupClass:RefreshAffixDropdowns()
 	end
 
 	-- Prefix / Suffix tabs use the narrower iter (general + class_only + set_only).
-	for _, g in ipairs(prefixIter) do t_insert(prefixList, g) end
-	for _, g in ipairs(suffixIter) do t_insert(suffixList, g) end
+	-- Cap maxTier at 6 (T7); T8 (index 7) is Primordial-only.
+	local function copyCapped(g)
+		return {
+			label = g.label, statOrderKey = g.statOrderKey, affix = g.affix,
+			type = g.type, maxTier = m_min(g.maxTier, 6), subcategory = g.subcategory,
+		}
+	end
+	for _, g in ipairs(prefixIter) do t_insert(prefixList, copyCapped(g)) end
+	for _, g in ipairs(suffixIter) do t_insert(suffixList, copyCapped(g)) end
 	-- Sealed / Primordial include champion/personal (sat=2) on top.
 	for _, g in ipairs(sealedPrefixIter) do pushSealedAndPrimordial(g) end
 	for _, g in ipairs(sealedSuffixIter) do pushSealedAndPrimordial(g) end
@@ -1829,7 +1837,8 @@ function CraftingPopupClass:BuildTierTooltip(tooltip, slotKey)
 			for k = 1, 10 do
 				local line = mod[k]
 				if line and type(line) == "string" then
-					t_insert(parts, line:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", ""))
+					local s = line:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
+					t_insert(parts, s)
 				end
 			end
 			local marker = (tier == st.tier) and " <<" or ""
@@ -1863,7 +1872,8 @@ function CraftingPopupClass:BuildAffixTooltip(tooltip, statOrderKey)
 			for k = 1, 10 do
 				local line = mod[k]
 				if line and type(line) == "string" then
-					t_insert(parts, line:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", ""))
+					local s = line:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
+					t_insert(parts, s)
 				end
 			end
 			tooltip:AddLine(14, "^7T" .. tostring(tier + 1) .. ": " .. table.concat(parts, ", "))
