@@ -1015,7 +1015,8 @@
     "affixEffectModifier": 0.5,
     "implicits": [
       "+20 Armor"
-    ]
+    ],
+    "legacy": true
   },
   "Leather Coat": {
     "type": "Body Armor",
@@ -1027,7 +1028,8 @@
     "affixEffectModifier": 0.5,
     "implicits": [
       "+25 Armor"
-    ]
+    ],
+    "legacy": true
   },
   "Iron Armor": {
     "type": "Body Armor",
@@ -1039,7 +1041,8 @@
     "affixEffectModifier": 0.5,
     "implicits": [
       "+50 Armor"
-    ]
+    ],
+    "legacy": true
   },
   "Noble Raiment": {
     "type": "Body Armor",
@@ -1052,7 +1055,8 @@
     "implicits": [
       "+32 Armor",
       "{rounding:Integer}+(2-7) Spell Damage"
-    ]
+    ],
+    "legacy": true
   },
   "Banded Armor": {
     "type": "Body Armor",
@@ -1064,7 +1068,8 @@
     "affixEffectModifier": 0.5,
     "implicits": [
       "+85 Armor"
-    ]
+    ],
+    "legacy": true
   },
   "Copper Plate": {
     "type": "Body Armor",
@@ -1077,7 +1082,8 @@
     "implicits": [
       "+114 Armor",
       "+(5-14)% Lightning Resistance"
-    ]
+    ],
+    "legacy": true
   },
   "Gladiator Armor": {
     "type": "Body Armor",
@@ -1089,7 +1095,8 @@
     "affixEffectModifier": 0.5,
     "implicits": [
       "+220 Armor"
-    ]
+    ],
+    "legacy": true
   },
   "Forest Cuirass": {
     "legacy": true,
@@ -1327,7 +1334,8 @@
       "+170 Armor",
       "(27-70)% of Mana Spent Gained as Ward",
       "{rounding:Integer}+(70-127) Ward Decay Threshold"
-    ]
+    ],
+    "legacy": true
   },
   "Hide Armor": {
     "type": "Body Armor",
