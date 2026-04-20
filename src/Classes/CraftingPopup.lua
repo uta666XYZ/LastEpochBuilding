@@ -164,26 +164,51 @@ local function cleanImplicitText(line)
 	return line:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
 end
 
--- Wrap a single logical line into word-bounded chunks of at most maxChars.
--- Returns a table of strings (always at least one element if input is non-empty).
--- Wrap raw text (strips color codes for width calc, preserves leading color) to a
--- multi-line string joined with "\n", plus returns line count. Uses main:WrapString.
+-- Word-wrap text to max pixel width. Returns array of lines.
+-- Unlike main:WrapString (which wraps one word too late), this wraps at the
+-- last word boundary whose prefix still fits within `width`.
+local function wrapByWidth(str, size, width)
+	local out = {}
+	if not str or str == "" then return out end
+	local lineStart = 1
+	local lastBreak, lastSpace = nil, nil
+	local pos = 1
+	while true do
+		local s, e = str:find("%s+", pos)
+		if not s then
+			t_insert(out, str:sub(lineStart, -1))
+			break
+		end
+		-- Measure segment including current word: lineStart..s-1
+		if DrawStringWidth(size, "VAR", str:sub(lineStart, s - 1)) > width and lastBreak then
+			t_insert(out, str:sub(lineStart, lastBreak))
+			lineStart = lastSpace
+			lastBreak, lastSpace = nil, nil
+			pos = lineStart
+		else
+			lastBreak = s - 1
+			lastSpace = e + 1
+			pos = e + 1
+		end
+	end
+	return out
+end
+
+-- Wrap raw text (strips leading color code, preserves it on each line) to a
+-- multi-line string joined with "\n", plus returns line count.
 local function wrapForLabel(text, width, size)
 	if not text or text == "" then return "", 1 end
-	-- Strip leading color prefix to apply to each wrapped line
 	local colorPrefix = ""
 	local rest = text
-	-- Match ^xRRGGBB (7 chars total) or ^N (2 chars total); no more, no less.
 	local cp = rest:match("^(%^x%x%x%x%x%x%x)") or rest:match("^(%^%d)")
 	if cp then
 		colorPrefix = cp
 		rest = rest:sub(#cp + 1)
 	end
-	local wrapped = main:WrapString(rest, size, width)
-	local copied = {}
-	for i = 1, #wrapped do copied[i] = colorPrefix .. wrapped[i] end
-	if #copied == 0 then return colorPrefix .. rest, 1 end
-	return table.concat(copied, "\n"), #copied
+	local wrapped = wrapByWidth(rest, size, width)
+	if #wrapped == 0 then return colorPrefix .. rest, 1 end
+	for i = 1, #wrapped do wrapped[i] = colorPrefix .. wrapped[i] end
+	return table.concat(wrapped, "\n"), #wrapped
 end
 
 local function wrapTextLine(text, maxChars)
@@ -470,6 +495,7 @@ function CraftingPopupClass:RecalcEditLayout()
 
 	self.editY = {}
 	self.editY.implicits = {}
+	self.editY.affixBands = {}
 
 	-- Compute implicit Y positions, accounting for wrap
 	local implicitStartY = PREVIEW_Y + 44 + 14 + 4 + 14
@@ -486,6 +512,7 @@ function CraftingPopupClass:RecalcEditLayout()
 				wrapCount = n
 			end
 		end
+		t_insert(self.editY.affixBands, { y = iy, h = wrapCount * WRAP_H })
 		iy = iy + wrapCount * WRAP_H
 	end
 	local implicitEndY = implicitCount > 0 and iy or (PREVIEW_Y + 90)
@@ -610,6 +637,7 @@ function CraftingPopupClass:RecalcEditLayout()
 					wn = n
 				end
 			end
+			t_insert(self.editY.affixBands, { y = y, h = wn * WRAP_H })
 			y = y + wn * WRAP_H
 		end
 		y = y + GAP
@@ -622,7 +650,7 @@ function CraftingPopupClass:RecalcEditLayout()
 	self.editY.setInfoY = 0
 	if isSetItem then
 		self.editY.setInfoY = y
-		y = y + LINE_H + GAP  -- "ITEM SET" header + set name
+		y = y + LINE_H + GAP  -- "ITEM SET" header
 		y = y + LINE_H        -- set name line
 		-- count members
 		local entrySetData = self.editBaseEntry and self.editBaseEntry.setData
@@ -634,12 +662,16 @@ function CraftingPopupClass:RecalcEditLayout()
 			end
 			y = y + memberCount * LINE_H + GAP
 		end
-		-- bonuses
+		-- bonuses (wrap-aware)
 		local bonus = entrySetData and entrySetData.set and entrySetData.set.bonus
 		if bonus then
-			local bonusCount = 0
-			for _ in pairs(bonus) do bonusCount = bonusCount + 1 end
-			y = y + LINE_H + GAP + bonusCount * LINE_H
+			y = y + LINE_H + GAP  -- "SET BONUSES" header
+			local bonusW = LEFT_W - LP_LINE_X - 4
+			for k, v in pairs(bonus) do
+				local line = tostring(k) .. " set: " .. tostring(v)
+				local _, n = wrapForLabel("^7" .. line, bonusW, 13)
+				y = y + n * WRAP_H + 2
+			end
 		end
 		y = y + GAP
 	end
@@ -2316,7 +2348,7 @@ function CraftingPopupClass:DrawSetInfo(px, py)
 	end
 	y = y + GAP
 
-	-- Set bonuses
+	-- Set bonuses (wrap to fit left panel width)
 	local bonus = set.bonus
 	if bonus and next(bonus) then
 		DrawString(px + LP_LABEL_X, py + y, "LEFT", 14, "VAR", colorCodes.SET .. "SET BONUSES")
@@ -2324,10 +2356,17 @@ function CraftingPopupClass:DrawSetInfo(px, py)
 		local bonusKeys = {}
 		for k in pairs(bonus) do t_insert(bonusKeys, k) end
 		table.sort(bonusKeys, function(a, b) return tonumber(a) < tonumber(b) end)
+		local bonusW = LEFT_W - LP_LINE_X - 4
+		local WRAP_H = 15
 		for _, k in ipairs(bonusKeys) do
-			DrawString(px + LP_LINE_X, py + y, "LEFT", 13, "VAR",
-				"^8" .. k .. " set: ^7" .. tostring(bonus[k]))
-			y = y + LINE_H
+			local full = "^8" .. k .. " set: ^7" .. tostring(bonus[k])
+			local wrapped, n = wrapForLabel(full, bonusW, 13)
+			-- wrapForLabel keeps only the leading ^8; re-insert ^7 after key
+			for line in (wrapped .. "\n"):gmatch("([^\n]*)\n") do
+				DrawString(px + LP_LINE_X, py + y, "LEFT", 13, "VAR", line)
+				y = y + WRAP_H
+			end
+			y = y + 2
 		end
 	end
 end
@@ -2452,6 +2491,20 @@ function CraftingPopupClass:Draw(viewPort)
 		SetDrawColor(0.2, 0.2, 0.2)
 		DrawImage(nil, px + 4, py + PREVIEW_Y + 38, LEFT_W - 8, 1)
 
+		-- Alternating affix background bands in the preview
+		if self.editY.affixBands and #self.editY.affixBands > 0 then
+			local bandX = px + LP_LINE_X - 2
+			local bandW = LEFT_W - LP_LINE_X - 2
+			for i, band in ipairs(self.editY.affixBands) do
+				if i % 2 == 1 then
+					SetDrawColor(0.14, 0.14, 0.16)
+				else
+					SetDrawColor(0.09, 0.09, 0.11)
+				end
+				DrawImage(nil, bandX, py + band.y - 1, bandW, band.h)
+			end
+		end
+
 		if self:IsSetItem() then
 			self:DrawSetInfo(px, py)
 		end
@@ -2557,8 +2610,28 @@ function CraftingPopupClass:DrawItemCards(areaX, areaY, areaW, areaH, mx, my)
 			end
 		end
 		local sep = (nImplLines > 0 and nModLines > 0) and 6 or 0
+		-- Set info block (name + members + bonuses) for set items
+		local setExtraH = 0
+		if entry.category == "set" and entry.setData and entry.setData.set then
+			local set = entry.setData.set
+			-- "ItemSet Name" header (1 line) + members + "Set Bonuses" header + bonuses
+			setExtraH = setExtraH + DETAIL_LINE_H    -- set name header
+			local memberCount = 0
+			for _, si in pairs(self.setItems or {}) do
+				if si.set and si.set.setId == set.setId then memberCount = memberCount + 1 end
+			end
+			setExtraH = setExtraH + memberCount * DETAIL_LINE_H
+			if set.bonus and next(set.bonus) then
+				setExtraH = setExtraH + DETAIL_LINE_H  -- "Set Bonuses" header
+				for k, v in pairs(set.bonus) do
+					local bl = tostring(k) .. " set: " .. tostring(v)
+					setExtraH = setExtraH + computeWrapLines(bl, maxLineChars) * DETAIL_LINE_H
+				end
+			end
+			setExtraH = setExtraH + 6  -- top gap
+		end
 		-- Header: name(18) + type(16) + level(16) = ~58, then per-line DETAIL_LINE_H
-		local h = 4 + 18 + 16 + 16 + 4 + (nImplLines + nModLines) * DETAIL_LINE_H + sep + 8
+		local h = 4 + 18 + 16 + 16 + 4 + (nImplLines + nModLines) * DETAIL_LINE_H + sep + setExtraH + 8
 		return m_max(IC_H, h)
 	end
 
@@ -2721,6 +2794,44 @@ function CraftingPopupClass:DrawItemCards(areaX, areaY, areaW, areaH, mx, my)
 					end
 					for _, modText in ipairs(mods) do
 						drawAffix(cleanImplicitText(modText), "^7")
+					end
+				end
+				-- Set info block (set item only)
+				if entry.category == "set" and entry.setData and entry.setData.set then
+					local set = entry.setData.set
+					ly = ly + 6
+					-- Set name header
+					DrawString(lineX, ly, "LEFT", DETAIL_FONT, "VAR",
+						colorCodes.SET .. (set.name or "Set"))
+					ly = ly + DETAIL_LINE_H
+					-- Members (sorted by name)
+					local members = {}
+					for _, si in pairs(self.setItems or {}) do
+						if si.set and si.set.setId == set.setId then
+							t_insert(members, si)
+						end
+					end
+					table.sort(members, function(a, b) return (a.name or "") < (b.name or "") end)
+					for _, si in ipairs(members) do
+						DrawString(lineX + 4, ly, "LEFT", DETAIL_FONT, "VAR",
+							"^8" .. (si.name or ""))
+						ly = ly + DETAIL_LINE_H
+					end
+					-- Bonuses
+					if set.bonus and next(set.bonus) then
+						DrawString(lineX, ly, "LEFT", DETAIL_FONT, "VAR",
+							colorCodes.SET .. "Set Bonuses")
+						ly = ly + DETAIL_LINE_H
+						local bonusKeys = {}
+						for k in pairs(set.bonus) do t_insert(bonusKeys, k) end
+						table.sort(bonusKeys, function(a, b) return tonumber(a) < tonumber(b) end)
+						for _, k in ipairs(bonusKeys) do
+							local bl = tostring(k) .. " set: " .. tostring(set.bonus[k])
+							for _, ln in ipairs(wrapTextLine(bl, maxLineChars)) do
+								DrawString(lineX + 4, ly, "LEFT", DETAIL_FONT, "VAR", "^7" .. ln)
+								ly = ly + DETAIL_LINE_H
+							end
+						end
 					end
 				end
 			else
