@@ -1,0 +1,371 @@
+[
+  {
+    "affixId": 701,
+    "type": "Suffix",
+    "name": "Item_Affixes.Item_Affix_701_DisplayName",
+    "title": "Item_Affixes.Item_Affix_701_Title",
+    "canRollOn": [
+      19
+    ],
+    "cs": 0,
+    "rarityTier": "T4",
+    "group": 0,
+    "weighting": 1,
+    "levelRequirement": 0
+  },
+  {
+    "affixId": 698,
+    "type": "Prefix",
+    "name": "Item_Affixes.Item_Affix_698_DisplayName",
+    "title": "Item_Affixes.Item_Affix_698_Title",
+    "canRollOn": [
+      20
+    ],
+    "cs": 0,
+    "rarityTier": "T4",
+    "group": 0,
+    "weighting": 1,
+    "levelRequirement": 0
+  },
+  {
+    "affixId": 699,
+    "type": "Suffix",
+    "name": "Item_Affixes.Item_Affix_699_DisplayName",
+    "title": "Item_Affixes.Item_Affix_699_Title",
+    "canRollOn": [
+      17
+    ],
+    "cs": 0,
+    "rarityTier": "T4",
+    "group": 0,
+    "weighting": 1,
+    "levelRequirement": 0
+  },
+  {
+    "affixId": 700,
+    "type": "Prefix",
+    "name": "Item_Affixes.Item_Affix_700_DisplayName",
+    "title": "Item_Affixes.Item_Affix_700_Title",
+    "canRollOn": [
+      15
+    ],
+    "cs": 0,
+    "rarityTier": "T4",
+    "group": 0,
+    "weighting": 1,
+    "levelRequirement": 0
+  },
+  {
+    "affixId": 702,
+    "type": "Prefix",
+    "name": "Item_Affixes.Item_Affix_702_DisplayName",
+    "title": "Item_Affixes.Item_Affix_702_Title",
+    "canRollOn": [
+      18
+    ],
+    "cs": 0,
+    "rarityTier": "T4",
+    "group": 0,
+    "weighting": 1,
+    "levelRequirement": 0
+  },
+  {
+    "affixId": 703,
+    "type": "Prefix",
+    "name": "Item_Affixes.Item_Affix_703_DisplayName",
+    "title": "Item_Affixes.Item_Affix_703_Title",
+    "canRollOn": [
+      14
+    ],
+    "cs": 0,
+    "rarityTier": "T4",
+    "group": 0,
+    "weighting": 1,
+    "levelRequirement": 0
+  },
+  {
+    "affixId": 704,
+    "type": "Prefix",
+    "name": "Item_Affixes.Item_Affix_704_DisplayName",
+    "title": "Item_Affixes.Item_Affix_704_Title",
+    "canRollOn": [
+      14
+    ],
+    "cs": 0,
+    "rarityTier": "T4",
+    "group": 0,
+    "weighting": 1,
+    "levelRequirement": 0
+  },
+  {
+    "affixId": 705,
+    "type": "Prefix",
+    "name": "Item_Affixes.Item_Affix_705_DisplayName",
+    "title": "Item_Affixes.Item_Affix_705_Title",
+    "canRollOn": [
+      19
+    ],
+    "cs": 0,
+    "rarityTier": "T4",
+    "group": 0,
+    "weighting": 1,
+    "levelRequirement": 0
+  },
+  {
+    "affixId": 706,
+    "type": "Prefix",
+    "name": "Item_Affixes.Item_Affix_706_DisplayName",
+    "title": "Item_Affixes.Item_Affix_706_Title",
+    "canRollOn": [
+      1
+    ],
+    "cs": 0,
+    "rarityTier": "T4",
+    "group": 0,
+    "weighting": 1,
+    "levelRequirement": 0
+  },
+  {
+    "affixId": 707,
+    "type": "Suffix",
+    "name": "Item_Affixes.Item_Affix_707_DisplayName",
+    "title": "Item_Affixes.Item_Affix_707_Title",
+    "canRollOn": [
+      17
+    ],
+    "cs": 0,
+    "rarityTier": "T4",
+    "group": 0,
+    "weighting": 1,
+    "levelRequirement": 0
+  },
+  {
+    "affixId": 708,
+    "type": "Prefix",
+    "name": "Item_Affixes.Item_Affix_708_DisplayName",
+    "title": "Item_Affixes.Item_Affix_708_Title",
+    "canRollOn": [
+      6
+    ],
+    "cs": 0,
+    "rarityTier": "T4",
+    "group": 0,
+    "weighting": 1,
+    "levelRequirement": 0
+  },
+  {
+    "affixId": 758,
+    "type": "Prefix",
+    "name": "Item_Affixes.Item_Affix_758_DisplayName",
+    "title": "Item_Affixes.Item_Affix_758_Title",
+    "canRollOn": [
+      3
+    ],
+    "cs": 0,
+    "rarityTier": "T4",
+    "group": 0,
+    "weighting": 1,
+    "levelRequirement": 0
+  },
+  {
+    "affixId": 766,
+    "type": "Prefix",
+    "name": "Item_Affixes.Item_Affix_766_DisplayName",
+    "title": "Item_Affixes.Item_Affix_766_Title",
+    "canRollOn": [
+      22
+    ],
+    "cs": 16,
+    "rarityTier": "T4",
+    "group": 0,
+    "weighting": 1,
+    "levelRequirement": 0
+  },
+  {
+    "affixId": 767,
+    "type": "Prefix",
+    "name": "Item_Affixes.Item_Affix_767_DisplayName",
+    "title": "Item_Affixes.Item_Affix_767_Title",
+    "canRollOn": [
+      4
+    ],
+    "cs": 0,
+    "rarityTier": "T4",
+    "group": 0,
+    "weighting": 1,
+    "levelRequirement": 0
+  },
+  {
+    "affixId": 768,
+    "type": "Prefix",
+    "name": "Item_Affixes.Item_Affix_768_DisplayName",
+    "title": "Item_Affixes.Item_Affix_768_Title",
+    "canRollOn": [
+      2
+    ],
+    "cs": 0,
+    "rarityTier": "T4",
+    "group": 0,
+    "weighting": 1,
+    "levelRequirement": 0
+  },
+  {
+    "affixId": 769,
+    "type": "Prefix",
+    "name": "Item_Affixes.Item_Affix_769_DisplayName",
+    "title": "Item_Affixes.Item_Affix_769_Title",
+    "canRollOn": [
+      21
+    ],
+    "cs": 0,
+    "rarityTier": "T4",
+    "group": 0,
+    "weighting": 1,
+    "levelRequirement": 0
+  },
+  {
+    "affixId": 770,
+    "type": "Prefix",
+    "name": "Item_Affixes.Item_Affix_770_DisplayName",
+    "title": "Item_Affixes.Item_Affix_770_Title",
+    "canRollOn": [
+      20
+    ],
+    "cs": 0,
+    "rarityTier": "T4",
+    "group": 0,
+    "weighting": 1,
+    "levelRequirement": 0
+  },
+  {
+    "affixId": 771,
+    "type": "Prefix",
+    "name": "Item_Affixes.Item_Affix_771_DisplayName",
+    "title": "Item_Affixes.Item_Affix_771_Title",
+    "canRollOn": [
+      2
+    ],
+    "cs": 0,
+    "rarityTier": "T4",
+    "group": 0,
+    "weighting": 1,
+    "levelRequirement": 0
+  },
+  {
+    "affixId": 772,
+    "type": "Prefix",
+    "name": "Item_Affixes.Item_Affix_772_DisplayName",
+    "title": "Item_Affixes.Item_Affix_772_Title",
+    "canRollOn": [
+      20
+    ],
+    "cs": 0,
+    "rarityTier": "T4",
+    "group": 0,
+    "weighting": 1,
+    "levelRequirement": 0
+  },
+  {
+    "affixId": 773,
+    "type": "Prefix",
+    "name": "Item_Affixes.Item_Affix_773_DisplayName",
+    "title": "Item_Affixes.Item_Affix_773_Title",
+    "canRollOn": [
+      16,
+      12
+    ],
+    "cs": 0,
+    "rarityTier": "T4",
+    "group": 0,
+    "weighting": 1,
+    "levelRequirement": 0
+  },
+  {
+    "affixId": 774,
+    "type": "Prefix",
+    "name": "Item_Affixes.Item_Affix_774_DisplayName",
+    "title": "Item_Affixes.Item_Affix_774_Title",
+    "canRollOn": [
+      15,
+      12
+    ],
+    "cs": 0,
+    "rarityTier": "T4",
+    "group": 0,
+    "weighting": 1,
+    "levelRequirement": 0
+  },
+  {
+    "affixId": 775,
+    "type": "Prefix",
+    "name": "Item_Affixes.Item_Affix_775_DisplayName",
+    "title": "Item_Affixes.Item_Affix_775_Title",
+    "canRollOn": [
+      4
+    ],
+    "cs": 0,
+    "rarityTier": "T4",
+    "group": 0,
+    "weighting": 1,
+    "levelRequirement": 0
+  },
+  {
+    "affixId": 776,
+    "type": "Prefix",
+    "name": "Item_Affixes.Item_Affix_776_DisplayName",
+    "title": "Item_Affixes.Item_Affix_776_Title",
+    "canRollOn": [
+      5,
+      6,
+      10
+    ],
+    "cs": 0,
+    "rarityTier": "T4",
+    "group": 0,
+    "weighting": 1,
+    "levelRequirement": 0
+  },
+  {
+    "affixId": 777,
+    "type": "Prefix",
+    "name": "Item_Affixes.Item_Affix_777_DisplayName",
+    "title": "Item_Affixes.Item_Affix_777_Title",
+    "canRollOn": [
+      0
+    ],
+    "cs": 2,
+    "rarityTier": "T4",
+    "group": 0,
+    "weighting": 1,
+    "levelRequirement": 0
+  },
+  {
+    "affixId": 778,
+    "type": "Prefix",
+    "name": "Item_Affixes.Item_Affix_778_DisplayName",
+    "title": "Item_Affixes.Item_Affix_778_Title",
+    "canRollOn": [
+      7,
+      14
+    ],
+    "cs": 0,
+    "rarityTier": "T4",
+    "group": 0,
+    "weighting": 1,
+    "levelRequirement": 0
+  },
+  {
+    "affixId": 779,
+    "type": "Prefix",
+    "name": "Item_Affixes.Item_Affix_779_DisplayName",
+    "title": "Item_Affixes.Item_Affix_779_Title",
+    "canRollOn": [
+      0
+    ],
+    "cs": 0,
+    "rarityTier": "T4",
+    "group": 0,
+    "weighting": 1,
+    "levelRequirement": 0
+  }
+]
