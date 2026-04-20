@@ -173,7 +173,8 @@ local function wrapForLabel(text, width, size)
 	-- Strip leading color prefix to apply to each wrapped line
 	local colorPrefix = ""
 	local rest = text
-	local cp = rest:match("^(%^[%dxX][%x]*)")
+	-- Match ^xRRGGBB (7 chars total) or ^N (2 chars total); no more, no less.
+	local cp = rest:match("^(%^x%x%x%x%x%x%x)") or rest:match("^(%^%d)")
 	if cp then
 		colorPrefix = cp
 		rest = rest:sub(#cp + 1)
@@ -508,17 +509,44 @@ function CraftingPopupClass:RecalcEditLayout()
 		{ label = "corruptedLabel", slots = {"corrupted"} },
 	}
 
+	local AFFIX_LINE_W = LEFT_W - LP_LINE_X - 4
+	local CTRL_H = 20
 	local function layoutSlots(slots)
 		for _, slotKey in ipairs(slots) do
 			local st = self.affixState[slotKey]
 			self.editY[slotKey] = {}
+			self.editY[slotKey].ctrl = {}
 			if st.modKey then
-				local lc = self.slotModInfo[slotKey].count
+				local info = self.slotModInfo[slotKey]
+				local lc = info.count
 				if lc == 0 then lc = 1 end
+				-- Initialize fallbacks for all MAX_MOD_LINES
 				for i = 1, MAX_MOD_LINES do
-					self.editY[slotKey][i] = y + (i - 1) * LINE_H
+					self.editY[slotKey][i] = y
+					self.editY[slotKey].ctrl[i] = y
 				end
-				y = y + lc * LINE_H + GAP
+				for i = 1, lc do
+					local line = info.lines[i]
+					local wrapN = 1
+					if line then
+						local range = (st.ranges and st.ranges[i]) or 128
+						local computed = itemLib.applyRange(line, range, nil, getRounding(line)) or line
+						computed = computed:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
+						local col = tierColor(st.tier)
+						local _, n = wrapForLabel(col .. computed, AFFIX_LINE_W, 13)
+						wrapN = n
+					end
+					self.editY[slotKey][i] = y
+					if wrapN > 1 then
+						-- Controls go below the wrapped text
+						self.editY[slotKey].ctrl[i] = y + wrapN * WRAP_H
+						y = y + wrapN * WRAP_H + CTRL_H + 2
+					else
+						self.editY[slotKey].ctrl[i] = y
+						y = y + LINE_H
+					end
+				end
+				y = y + GAP
 			else
 				self.editY[slotKey].add = y
 				y = y + LINE_H + GAP
@@ -938,11 +966,12 @@ function CraftingPopupClass:BuildControls()
 				local lineKey = slotKey .. "Line" .. li
 				local valKey  = slotKey .. "Val"  .. li
 
+				local AFFIX_LINE_W = LEFT_W - LP_LINE_X - 4
 				controls[lineKey] = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, LP_LINE_X,
 					function()
 						local ey = self_ref.editY[slotKey]
 						return ey and ey[li] or 0
-					end, LP_LINE_W, 14, "")
+					end, AFFIX_LINE_W, 13, "")
 				controls[lineKey].shown = function()
 					if not self_ref.editItem then return false end
 					if not self_ref.affixState[slotKey].modKey then return false end
@@ -958,14 +987,14 @@ function CraftingPopupClass:BuildControls()
 					local computed = itemLib.applyRange(line, range, nil, getRounding(line)) or line
 					computed = computed:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
 					local col = tierColor(st.tier)
-					if #computed > 20 then computed = computed:sub(1, 18) .. ".." end
-					return col .. computed
+					return wrapForLabel(col .. computed, AFFIX_LINE_W, 13)
 				end
 
 				controls[valKey] = new("EditControl", {"TOPLEFT", self, "TOPLEFT"}, LP_VAL_X,
 					function()
 						local ey = self_ref.editY[slotKey]
-						return ey and ((ey[li] or 0) - 1) or 0
+						local cy = ey and ey.ctrl and ey.ctrl[li]
+						return cy and (cy - 1) or 0
 					end, LP_VAL_W, 18, "", nil, "^%-%d%.", nil,
 					function(buf)
 						if self_ref.rebuilding then return end
@@ -1012,7 +1041,7 @@ function CraftingPopupClass:BuildControls()
 			controls[tierLabelKey] = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, LP_TIER_X,
 				function()
 					local ey = self_ref.editY[slotKey]
-					return ey and ey[1] or 0
+					return ey and ey.ctrl and ey.ctrl[1] or 0
 				end, 0, 14, "")
 			controls[tierLabelKey].shown = function()
 				if not self_ref.editItem then return false end
@@ -1033,7 +1062,7 @@ function CraftingPopupClass:BuildControls()
 			controls[tierUpKey] = new("ButtonControl", {"TOPLEFT", self, "TOPLEFT"}, LP_TRUP_X,
 				function()
 					local ey = self_ref.editY[slotKey]
-					return ey and ey[1] or 0
+					return ey and ey.ctrl and ey.ctrl[1] or 0
 				end, 18, 18, "+", function()
 					local st = self_ref.affixState[slotKey]
 					if not st.modKey then return end
@@ -1061,7 +1090,7 @@ function CraftingPopupClass:BuildControls()
 			controls[tierDownKey] = new("ButtonControl", {"TOPLEFT", self, "TOPLEFT"}, LP_TRDN_X,
 				function()
 					local ey = self_ref.editY[slotKey]
-					return ey and ey[1] or 0
+					return ey and ey.ctrl and ey.ctrl[1] or 0
 				end, 18, 18, "-", function()
 					local st = self_ref.affixState[slotKey]
 					if not st.modKey then return end
@@ -1089,7 +1118,7 @@ function CraftingPopupClass:BuildControls()
 			controls[removeKey] = new("ButtonControl", {"TOPLEFT", self, "TOPLEFT"}, LP_REM_X,
 				function()
 					local ey = self_ref.editY[slotKey]
-					return ey and ey[1] or 0
+					return ey and ey.ctrl and ey.ctrl[1] or 0
 				end, LP_REM_W, 18, "x", function()
 					self_ref.affixState[slotKey].modKey  = nil
 					self_ref.affixState[slotKey].tier    = (slotKey == "primordial") and 7 or 0
