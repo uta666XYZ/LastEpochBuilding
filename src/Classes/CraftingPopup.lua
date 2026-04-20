@@ -2292,9 +2292,51 @@ function CraftingPopupClass:DrawItemCards(areaX, areaY, areaW, areaH, mx, my)
 		return
 	end
 
-	-- Clamp scroll
-	local totalRows  = m_ceil(#list / IC_COLS)
-	local totalH     = totalRows * (IC_H + IC_GAP)
+	-- Category detection: unique/set/ww cards show full implicits + modifiers
+	-- (single-column, variable-height). Basic cards keep the 2-col 80px grid.
+	local firstCat = list[1] and list[1].category
+	local isDetail = (firstCat == "unique" or firstCat == "set" or firstCat == "ww")
+
+	local IMG = 46
+
+	-- Helper: compute card height given entry (detail mode)
+	local function computeCardH(entry)
+		local nImpl = (entry.base and entry.base.implicits) and #entry.base.implicits or 0
+		local mods
+		if entry.category == "set" then
+			mods = entry.setData and entry.setData.mods
+		else
+			mods = entry.uniqueData and entry.uniqueData.mods
+		end
+		local nMods = mods and #mods or 0
+		-- Header: name(18) + type(16) + level(14) = ~48, then per-line 14px
+		local extraLines = nImpl + nMods + (nImpl > 0 and nMods > 0 and 1 or 0) -- separator
+		local h = 4 + 18 + 16 + 14 + 2 + extraLines * 14 + 6
+		return m_max(IC_H, h)
+	end
+
+	-- Precompute layout
+	local layoutW, layoutCols
+	local cardHs, cardYs = {}, {}
+	local totalH
+
+	if isDetail then
+		layoutCols = 1
+		layoutW    = areaW - 4 -- leave room for scrollbar
+		local y = 0
+		for i, entry in ipairs(list) do
+			cardHs[i] = computeCardH(entry)
+			cardYs[i] = y
+			y = y + cardHs[i] + IC_GAP
+		end
+		totalH = y
+	else
+		layoutCols = IC_COLS
+		layoutW    = IC_W
+		local rows = m_ceil(#list / IC_COLS)
+		totalH     = rows * (IC_H + IC_GAP)
+	end
+
 	local maxScroll  = m_max(0, totalH - areaH)
 	self.rightScrollY = m_max(0, m_min(self.rightScrollY, maxScroll))
 
@@ -2302,14 +2344,23 @@ function CraftingPopupClass:DrawItemCards(areaX, areaY, areaW, areaH, mx, my)
 	local scrollY = self.rightScrollY
 
 	for i, entry in ipairs(list) do
-		local col  = (i - 1) % IC_COLS
-		local row  = m_floor((i - 1) / IC_COLS)
-		local cx   = areaX + col * (IC_W + IC_GAP)
-		local cy   = areaY + row * (IC_H + IC_GAP) - scrollY
-		local cx2  = cx + IC_W
-		local cy2  = cy + IC_H
+		local cx, cy, cw, ch
+		if isDetail then
+			cx = areaX
+			cy = areaY + cardYs[i] - scrollY
+			cw = layoutW
+			ch = cardHs[i]
+		else
+			local col  = (i - 1) % IC_COLS
+			local row  = m_floor((i - 1) / IC_COLS)
+			cx = areaX + col * (IC_W + IC_GAP)
+			cy = areaY + row * (IC_H + IC_GAP) - scrollY
+			cw = IC_W
+			ch = IC_H
+		end
+		local cx2, cy2 = cx + cw, cy + ch
 
-		if cy >= areaY and cy2 <= areaY + areaH then
+		if cy2 > areaY and cy < areaY + areaH then
 			t_insert(self.rightCards, { x1=cx, y1=cy, x2=cx2, y2=cy2, entry=entry })
 
 			local isSelected = self.editBaseEntry and self.editBaseEntry.name == entry.name
@@ -2323,7 +2374,7 @@ function CraftingPopupClass:DrawItemCards(areaX, areaY, areaW, areaH, mx, my)
 			else
 				SetDrawColor(0.10, 0.10, 0.10)
 			end
-			DrawImage(nil, cx, cy, IC_W, IC_H)
+			DrawImage(nil, cx, cy, cw, ch)
 
 			-- Left accent bar (rarity color)
 			local col3 = colorCodes[entry.rarity] or colorCodes.NORMAL
@@ -2333,19 +2384,18 @@ function CraftingPopupClass:DrawItemCards(areaX, areaY, areaW, areaH, mx, my)
 			else
 				SetDrawColor(0.5, 0.5, 0.5)
 			end
-			DrawImage(nil, cx, cy, 3, IC_H)
+			DrawImage(nil, cx, cy, 3, ch)
 
 			-- Item image (46x46, left side)
-			local IMG = 46
 			local imgHandle = self:GetItemImage(entry.name, entry.rarity)
 			if imgHandle and imgHandle:IsValid() then
 				SetDrawColor(1, 1, 1)
 				DrawImage(imgHandle, cx + 4, cy + 4, IMG, IMG)
 			end
 			local textX = cx + IMG + 8
+			local textW = cw - IMG - 12
 
 			-- Item name (line 1)
-			local textW = IC_W - IMG - 12
 			local maxChars = m_floor(textW / 7)
 			local label = entry.label or entry.name
 			local truncLabel = #label > maxChars and label:sub(1, maxChars - 2) .. ".." or label
@@ -2355,23 +2405,54 @@ function CraftingPopupClass:DrawItemCards(areaX, areaY, areaW, areaH, mx, my)
 			local typeStr = "^8" .. (entry.displayType or "")
 			DrawString(textX, cy + 24, "LEFT", 12, "VAR", typeStr)
 
-			-- Implicit (line 3)
-			local implText
-			if entry.base and entry.base.implicits and entry.base.implicits[1] then
-				implText = cleanImplicitText(entry.base.implicits[1])
-			elseif entry.uniqueData and entry.uniqueData.mods and entry.uniqueData.mods[1] then
-				implText = cleanImplicitText(entry.uniqueData.mods[1])
-			end
-			if implText then
-				local maxImpl = m_floor(textW / 6)
-				local truncImpl = #implText > maxImpl and implText:sub(1, maxImpl - 2) .. ".." or implText
-				DrawString(textX, cy + 40, "LEFT", 11, "VAR", "^8" .. truncImpl)
-			end
-
-			-- Level requirement (line 4)
+			-- Level requirement (line 3)
 			local lvReq = entry.base and entry.base.req and entry.base.req.level or 0
 			if lvReq > 0 then
-				DrawString(textX, cy + 58, "LEFT", 11, "VAR", "^8Lv. " .. tostring(lvReq))
+				DrawString(textX, cy + 40, "LEFT", 11, "VAR", "^8Lv. " .. tostring(lvReq))
+			end
+
+			if isDetail then
+				-- Full implicits + modifiers list, spans full card width below header
+				local lineX = cx + 6
+				local lineW = cw - 12
+				local maxLineChars = m_floor(lineW / 6)
+				local ly = cy + 56
+				local function drawLine(text, color)
+					if not text then return end
+					if #text > maxLineChars then text = text:sub(1, maxLineChars - 2) .. ".." end
+					DrawString(lineX, ly, "LEFT", 11, "VAR", (color or "^8") .. text)
+					ly = ly + 14
+				end
+				if entry.base and entry.base.implicits then
+					for _, implText in ipairs(entry.base.implicits) do
+						drawLine(cleanImplicitText(implText), "^x8888FF")
+					end
+				end
+				local mods
+				if entry.category == "set" then
+					mods = entry.setData and entry.setData.mods
+				else
+					mods = entry.uniqueData and entry.uniqueData.mods
+				end
+				if mods and #mods > 0 then
+					if entry.base and entry.base.implicits and #entry.base.implicits > 0 then
+						ly = ly + 2
+					end
+					for _, modText in ipairs(mods) do
+						drawLine(cleanImplicitText(modText), "^7")
+					end
+				end
+			else
+				-- Basic card: single implicit line
+				local implText
+				if entry.base and entry.base.implicits and entry.base.implicits[1] then
+					implText = cleanImplicitText(entry.base.implicits[1])
+				end
+				if implText then
+					local maxImpl = m_floor(textW / 6)
+					local truncImpl = #implText > maxImpl and implText:sub(1, maxImpl - 2) .. ".." or implText
+					DrawString(textX, cy + 58, "LEFT", 11, "VAR", "^8" .. truncImpl)
+				end
 			end
 
 			-- Card border
@@ -2382,10 +2463,10 @@ function CraftingPopupClass:DrawItemCards(areaX, areaY, areaW, areaH, mx, my)
 			else
 				SetDrawColor(0.2, 0.2, 0.2)
 			end
-			DrawImage(nil, cx,      cy,      IC_W, 1)
-			DrawImage(nil, cx,      cy+IC_H-1, IC_W, 1)
-			DrawImage(nil, cx,      cy,      1, IC_H)
-			DrawImage(nil, cx+IC_W-1, cy,    1, IC_H)
+			DrawImage(nil, cx,      cy,      cw, 1)
+			DrawImage(nil, cx,      cy+ch-1, cw, 1)
+			DrawImage(nil, cx,      cy,      1, ch)
+			DrawImage(nil, cx+cw-1, cy,      1, ch)
 		end
 	end
 
