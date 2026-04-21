@@ -2360,6 +2360,26 @@ function CraftingPopupClass:DrawSetInfo(px, py)
 	local y      = self.editY.setInfoY
 	if not y or y <= 0 then return end
 
+	-- Build set of member names that are currently equipped (by slot selItemId)
+	-- or currently being edited in this popup.
+	local equippedNames = {}
+	local itemsTab = self.itemsTab or (self.build and self.build.itemsTab)
+	if itemsTab then
+		for _, slot in pairs(itemsTab.slots or {}) do
+			local eqItem = slot.selItemId and itemsTab.items and itemsTab.items[slot.selItemId]
+			if eqItem and eqItem.setInfo and eqItem.setInfo.setId == setId then
+				equippedNames[eqItem.setInfo.name or ""] = true
+				if eqItem.title then equippedNames[eqItem.title] = true end
+			elseif eqItem and eqItem.rarity == "SET" and eqItem.title then
+				-- Fallback: match by title against set members
+				equippedNames[eqItem.title] = true
+			end
+		end
+	end
+	-- Highlight the piece being crafted right now
+	local editingName = self.editItem and self.editItem.title
+	if editingName then equippedNames[editingName] = true end
+
 	SetDrawColor(1, 1, 1)
 	DrawString(px + LP_LABEL_X, py + y, "LEFT", 14, "VAR", colorCodes.SET .. "ITEM SET")
 	y = y + LINE_H + GAP
@@ -2384,9 +2404,12 @@ function CraftingPopupClass:DrawSetInfo(px, py)
 		end
 	end
 	table.sort(members, function(a, b) return a.name < b.name end)
+	-- Orange highlight for equipped / currently-edited members; dim grey otherwise
+	local ORANGE = "^xFF9933"
 	for _, m in ipairs(members) do
+		local col = equippedNames[m.name] and ORANGE or "^8"
 		DrawString(px + LP_LINE_X + 8, py + y, "LEFT", 12, "VAR",
-			"^8" .. m.name .. (m.typeName ~= "" and ("  " .. m.typeName) or ""))
+			col .. m.name .. (m.typeName ~= "" and ("  " .. m.typeName) or ""))
 		y = y + LINE_H
 	end
 	y = y + GAP
