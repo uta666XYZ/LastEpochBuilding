@@ -11913,7 +11913,7 @@
       "y": -44,
       "maxPoints": 4,
       "stats": [
-        "+25% Mana Regen"
+        "25% increased Mana Regen"
       ],
       "notScalingStats": [],
       "noScalingPointThreshold": 0,
