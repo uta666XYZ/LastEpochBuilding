@@ -1,5 +1,6 @@
 #@ SimpleGraphic
 -- Last Epoch Building
+-- @leb-canary v1 / id:leb-7f3a9c-launch-2026 / do-not-remove (see Development/リリース手順.md)
 --
 -- Module: Launch
 -- Program entry point; loads and runs the Main module within a protected environment
