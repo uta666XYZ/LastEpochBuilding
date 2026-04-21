@@ -25,6 +25,18 @@ local function itemDisplayColor(item)
 	return colorCodes[item.rarity]
 end
 
+-- Lazy set data cache keyed by version, shared across tooltips.
+local tooltipSetDataCache = {}
+local function loadSetDataForTooltip(ver)
+	ver = ver or "1_4"
+	if tooltipSetDataCache[ver] == nil then
+		tooltipSetDataCache[ver] = readJsonFile("Data/Set/set_" .. ver .. ".json")
+			or readJsonFile("Data/Set/set_1_4.json")
+			or false
+	end
+	return tooltipSetDataCache[ver] or nil
+end
+
 local rarityDropList = {
 	{ label = colorCodes.NORMAL.."Normal", rarity = "NORMAL" },
 	{ label = colorCodes.MAGIC.."Magic", rarity = "MAGIC" },
@@ -1954,6 +1966,82 @@ function ItemsTabClass:AddItemTooltip(tooltip, item, slot, dbMode)
 			for _, modLine in ipairs(modList) do
 				if item:CheckModLineVariant(modLine) then
 					tooltip:AddLine(16, itemLib.formatModLine(modLine, dbMode))
+				end
+			end
+			tooltip:AddSeparator(10)
+		end
+	end
+
+	-- Item Set / Set Bonuses panel (mirrors CraftingPopup DrawSetInfo).
+	-- Trigger when the item is a real SET, or when setInfo is attached
+	-- (e.g. a freshly crafted Reforged basic item), or when the title matches
+	-- a known set member (covers saved-and-reloaded items where setInfo was
+	-- stripped by BuildRaw).
+	do
+		local ver = (self.build and self.build.targetVersion) or "1_4"
+		local setData = loadSetDataForTooltip(ver)
+		local setId, setName, bonus
+		if item.setInfo and item.setInfo.setId ~= nil then
+			setId   = item.setInfo.setId
+			setName = item.setInfo.name
+			bonus   = item.setInfo.bonus
+		end
+		if (not setId) and setData and item.title then
+			local titleKey = item.title:gsub(" Reforged$", "")
+			for _, e in pairs(setData) do
+				if e.set and (e.name == item.title or e.name == titleKey) then
+					setId   = e.set.setId
+					setName = e.set.name
+					bonus   = e.set.bonus
+					break
+				end
+			end
+		end
+		if setId and setData then
+			tooltip:AddSeparator(10)
+			tooltip:AddLine(16, colorCodes.SET .. "ITEM SET")
+			tooltip:AddLine(14, "^7" .. (setName or ""))
+			-- Build equipped-name set for orange highlighting
+			local equippedNames = {}
+			local function markName(s)
+				if not s or s == "" then return end
+				equippedNames[s] = true
+				local stripped = s:gsub(" Reforged$", "")
+				if stripped ~= s then equippedNames[stripped] = true end
+			end
+			for _, sl in pairs(self.slots or {}) do
+				local eq = sl.selItemId and self.items and self.items[sl.selItemId]
+				if eq then
+					if eq.setInfo and eq.setInfo.setId == setId then
+						markName(eq.setInfo.name)
+						markName(eq.title)
+					elseif eq.rarity == "SET" and eq.title then
+						markName(eq.title)
+					end
+				end
+			end
+			-- Members
+			local members = {}
+			for _, si in pairs(setData) do
+				if si.set and si.set.setId == setId then
+					t_insert(members, si.name)
+				end
+			end
+			table.sort(members)
+			local ORANGE = "^xFF9933"
+			for _, name in ipairs(members) do
+				local col = equippedNames[name] and ORANGE or "^8"
+				tooltip:AddLine(13, col .. name)
+			end
+			-- Bonuses
+			if bonus and next(bonus) then
+				tooltip:AddSeparator(6)
+				tooltip:AddLine(16, colorCodes.SET .. "SET BONUSES")
+				local keys = {}
+				for k in pairs(bonus) do t_insert(keys, k) end
+				table.sort(keys, function(a, b) return tonumber(a) < tonumber(b) end)
+				for _, k in ipairs(keys) do
+					tooltip:AddLine(13, "^8" .. k .. " set: ^7" .. tostring(bonus[k]))
 				end
 			end
 			tooltip:AddSeparator(10)

@@ -647,24 +647,28 @@ function CraftingPopupClass:RecalcEditLayout()
 		self.editY.uniqueMods = {}
 	end
 
-	-- Set info block (members + bonuses) for set items
+	-- Set info block (members + bonuses) for set items OR for Reforged crafted
+	-- basic items whose editItem.setInfo has been populated.
 	self.editY.setInfoY = 0
+	local layoutSetId, layoutBonus
 	if isSetItem then
+		local sd = self.editBaseEntry and self.editBaseEntry.setData
+		layoutSetId = sd and sd.set and sd.set.setId
+		layoutBonus = sd and sd.set and sd.set.bonus
+	elseif self.editItem and self.editItem.setInfo and self.editItem.setInfo.setId ~= nil then
+		layoutSetId = self.editItem.setInfo.setId
+		layoutBonus = self.editItem.setInfo.bonus
+	end
+	if layoutSetId ~= nil then
 		self.editY.setInfoY = y
 		y = y + LINE_H + GAP  -- "ITEM SET" header
 		y = y + LINE_H        -- set name line
-		-- count members
-		local entrySetData = self.editBaseEntry and self.editBaseEntry.setData
-		local setId = entrySetData and entrySetData.set and entrySetData.set.setId
-		if setId ~= nil then
-			local memberCount = 0
-			for _, si in pairs(self.setItems or {}) do
-				if si.set and si.set.setId == setId then memberCount = memberCount + 1 end
-			end
-			y = y + memberCount * LINE_H + GAP
+		local memberCount = 0
+		for _, si in pairs(self.setItems or {}) do
+			if si.set and si.set.setId == layoutSetId then memberCount = memberCount + 1 end
 		end
-		-- bonuses (wrap-aware)
-		local bonus = entrySetData and entrySetData.set and entrySetData.set.bonus
+		y = y + memberCount * LINE_H + GAP
+		local bonus = layoutBonus
 		if bonus then
 			y = y + LINE_H + GAP  -- "SET BONUSES" header
 			local bonusW = LEFT_W - LP_LINE_X - 4
@@ -2186,6 +2190,8 @@ function CraftingPopupClass:RebuildEditItem()
 	local hasAffix   = false
 
 	local slotOrder = {"prefix1","prefix2","suffix1","suffix2","sealed","primordial"}
+	local reforgedSetInfo  -- captured when a "<Name> Reforged" affix is applied
+	local reforgedTitle
 	for _, slotKey in ipairs(slotOrder) do
 		local st = self.affixState[slotKey]
 		if st.modKey then
@@ -2198,6 +2204,22 @@ function CraftingPopupClass:RebuildEditItem()
 				mod = data.modIdol.flat[modKey]
 			end
 			if mod then
+				-- Reforged Set affix: affix name like "<SetMemberName> Reforged".
+				-- Resolve setInfo by matching stripped name against self.setItems.
+				if mod.affix and mod.affix:sub(-9) == " Reforged" and self.setItems then
+					local bareName = mod.affix:sub(1, -10)
+					for _, si in pairs(self.setItems) do
+						if si and si.set and si.name == bareName then
+							reforgedSetInfo = {
+								setId = si.set.setId,
+								name  = si.set.name,
+								bonus = si.set.bonus,
+							}
+							reforgedTitle = mod.affix
+							break
+						end
+					end
+				end
 				-- Guard against malformed affix data where mod.affix holds the
 				-- stat description instead of the crafting title (e.g. "Increased
 				-- Cooldown Recovery Speed while Transformed"). Such strings contain
@@ -2244,11 +2266,19 @@ function CraftingPopupClass:RebuildEditItem()
 	end
 
 	if self.editBaseEntry and self.editBaseEntry.category == "basic" then
-		item.rarity = getRarityForAffixes(affixCount, maxTier)
-		if item.rarity == "RARE" or item.rarity == "EXALTED" then
-			item.title = item.title or "New Item"
+		if reforgedSetInfo then
+			-- Reforged Set item: force SET rarity + use "<memberName> Reforged" as title.
+			item.rarity    = "SET"
+			item.title     = reforgedTitle
+			item.namePrefix = ""
+			item.nameSuffix = ""
 		else
-			item.title = nil
+			item.rarity = getRarityForAffixes(affixCount, maxTier)
+			if item.rarity == "RARE" or item.rarity == "EXALTED" then
+				item.title = item.title or "New Item"
+			else
+				item.title = nil
+			end
 		end
 	elseif self.editBaseEntry and self.editBaseEntry.category == "unique" and hasAffix then
 		item.rarity = "LEGENDARY"
@@ -2282,6 +2312,10 @@ function CraftingPopupClass:RebuildEditItem()
 
 	item.corrupted = self.corrupted
 	item:BuildAndParseRaw()
+	-- Reforged items: restore setInfo stripped by BuildAndParseRaw round-trip.
+	if reforgedSetInfo then
+		item.setInfo = reforgedSetInfo
+	end
 
 	for _, k in ipairs(slotOrder) do self:UpdateSlotModInfo(k) end
 	self:UpdateSlotModInfo("corrupted")
@@ -2349,16 +2383,50 @@ end
 -- =============================================================================
 function CraftingPopupClass:DrawSetInfo(px, py)
 	local entry = self.editBaseEntry
-	if not entry or entry.category ~= "set" then return end
-	local sd = entry.setData
-	if not sd or not sd.set then return end
+	local set
+	if entry and entry.category == "set" and entry.setData and entry.setData.set then
+		set = entry.setData.set
+	elseif self.editItem and self.editItem.setInfo and self.editItem.setInfo.setId ~= nil then
+		-- Reforged crafted basic item: synthesize a set view from setInfo.
+		set = {
+			setId = self.editItem.setInfo.setId,
+			name  = self.editItem.setInfo.name,
+			bonus = self.editItem.setInfo.bonus,
+		}
+	end
+	if not set then return end
 
-	local set    = sd.set
 	local setId  = set.setId
 	local LINE_H = 18
 	local GAP    = 4
 	local y      = self.editY.setInfoY
 	if not y or y <= 0 then return end
+
+	-- Build set of member names that are currently equipped (by slot selItemId)
+	-- or currently being edited in this popup. Also register the title with any
+	-- trailing " Reforged" suffix stripped so Reforged crafted items match the
+	-- bare member name used in the member list.
+	local equippedNames = {}
+	local function markName(s)
+		if not s or s == "" then return end
+		equippedNames[s] = true
+		local stripped = s:gsub(" Reforged$", "")
+		if stripped ~= s then equippedNames[stripped] = true end
+	end
+	local itemsTab = self.itemsTab or (self.build and self.build.itemsTab)
+	if itemsTab then
+		for _, slot in pairs(itemsTab.slots or {}) do
+			local eqItem = slot.selItemId and itemsTab.items and itemsTab.items[slot.selItemId]
+			if eqItem and eqItem.setInfo and eqItem.setInfo.setId == setId then
+				markName(eqItem.setInfo.name)
+				markName(eqItem.title)
+			elseif eqItem and eqItem.rarity == "SET" and eqItem.title then
+				markName(eqItem.title)
+			end
+		end
+	end
+	-- Highlight the piece being crafted right now
+	markName(self.editItem and self.editItem.title)
 
 	SetDrawColor(1, 1, 1)
 	DrawString(px + LP_LABEL_X, py + y, "LEFT", 14, "VAR", colorCodes.SET .. "ITEM SET")
@@ -2384,9 +2452,12 @@ function CraftingPopupClass:DrawSetInfo(px, py)
 		end
 	end
 	table.sort(members, function(a, b) return a.name < b.name end)
+	-- Orange highlight for equipped / currently-edited members; dim grey otherwise
+	local ORANGE = "^xFF9933"
 	for _, m in ipairs(members) do
+		local col = equippedNames[m.name] and ORANGE or "^8"
 		DrawString(px + LP_LINE_X + 8, py + y, "LEFT", 12, "VAR",
-			"^8" .. m.name .. (m.typeName ~= "" and ("  " .. m.typeName) or ""))
+			col .. m.name .. (m.typeName ~= "" and ("  " .. m.typeName) or ""))
 		y = y + LINE_H
 	end
 	y = y + GAP
@@ -2548,7 +2619,7 @@ function CraftingPopupClass:Draw(viewPort)
 			end
 		end
 
-		if self:IsSetItem() then
+		if self:IsSetItem() or (self.editItem and self.editItem.setInfo and self.editItem.setInfo.setId ~= nil) then
 			self:DrawSetInfo(px, py)
 		end
 	end
