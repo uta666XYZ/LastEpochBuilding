@@ -9124,7 +9124,7 @@
       "maxPoints": 4,
       "mastery": 0,
       "masteryRequirement": 0,
-      "stats": ["+25% Mana Regen"],
+      "stats": ["25% increased Mana Regen"],
       "notScalingStats": [],
       "noScalingPointThreshold": 0,
       "in": ["fw3d-22"],

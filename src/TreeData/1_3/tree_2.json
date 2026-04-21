@@ -4545,7 +4545,7 @@
       "mastery": 0,
       "masteryRequirement": 0,
       "stats": [
-        "+10% Health Regen"
+        "10% increased Health Regen"
       ],
       "notScalingStats": [],
       "noScalingPointThreshold": 0,
@@ -14418,7 +14418,7 @@
       "mastery": 0,
       "masteryRequirement": 0,
       "stats": [
-        "+50% Health Regen"
+        "50% increased Health Regen"
       ],
       "notScalingStats": [],
       "noScalingPointThreshold": 0,
@@ -14644,7 +14644,7 @@
       "mastery": 0,
       "masteryRequirement": 0,
       "stats": [
-        "+25% Mana Regen"
+        "25% increased Mana Regen"
       ],
       "notScalingStats": [],
       "noScalingPointThreshold": 0,

@@ -4219,7 +4219,7 @@
       "y": -332,
       "maxPoints": 4,
       "stats": [
-        "+10% Health Regen"
+        "10% increased Health Regen"
       ],
       "notScalingStats": [],
       "noScalingPointThreshold": 0,
@@ -13382,7 +13382,7 @@
       "y": 0,
       "maxPoints": 4,
       "stats": [
-        "+50% Health Regen"
+        "50% increased Health Regen"
       ],
       "notScalingStats": [],
       "noScalingPointThreshold": 0,
@@ -13592,7 +13592,7 @@
       "y": 640,
       "maxPoints": 4,
       "stats": [
-        "+25% Mana Regen"
+        "25% increased Mana Regen"
       ],
       "notScalingStats": [],
       "noScalingPointThreshold": 0,
