@@ -88,6 +88,13 @@ function launch:OnInit()
 		installedFile:close()
 	end
 	RenderInit()
+	-- Log environment info for error reports
+	ConPrintf("=== LEB Startup ===")
+	ConPrintf("LEB version: v%s branch=%s platform=%s", tostring(self.versionNumber), tostring(self.versionBranch), tostring(self.versionPlatform))
+	ConPrintf("devMode: %s, installedMode: %s", tostring(self.devMode), tostring(self.installedMode))
+	local _sw, _sh = GetScreenSize()
+	ConPrintf("Screen size: %dx%d", _sw or 0, _sh or 0)
+	ConPrintf("===================")
 	ConPrintf("Loading main script...")
 	local errMsg
 	errMsg, self.main = PLoadModule("Modules/Main")
@@ -380,11 +387,17 @@ function launch:ShowPrompt(r, g, b, str, func)
 end
 
 function launch:ShowErrMsg(fmt, ...)
+	-- Always log the error to debug.log, even if a prompt is already shown
+	local errText = string.format(fmt, ...)
+	ConPrintf("=== ERROR ===")
+	ConPrintf("LEB v%s %s %s", tostring(self.versionNumber), tostring(self.versionBranch), tostring(self.versionPlatform))
+	ConPrintf("%s", errText)
+	ConPrintf("=============")
 	if not self.promptMsg then
-		local version = self.versionNumber and 
+		local version = self.versionNumber and
 			"^8v"..self.versionNumber..(self.versionBranch and " "..self.versionBranch or "")
 			or ""
-		self:ShowPrompt(1, 0, 0, "^1Error:\n\n^0"..string.format(fmt, ...).."\n"..version.."\n^0If this keeps happening, please take a screenshot and report it:\n  GitHub Issues: https://github.com/uta666XYZ/LastEpochBuilding/issues\n  Reddit: https://reddit.com/user/ukunZ626 (comment on the latest post)\n\n^0Press Enter/Escape to dismiss, or F5 to restart.")
+		self:ShowPrompt(1, 0, 0, "^1Error:\n\n^0"..errText.."\n"..version.."\n^0If this keeps happening, please take a screenshot and report it:\n  GitHub Issues: https://github.com/uta666XYZ/LastEpochBuilding/issues\n  Reddit: https://reddit.com/user/ukunZ626 (comment on the latest post)\n\n^0Press Enter/Escape to dismiss, or F5 to restart.")
 	end
 end
 
