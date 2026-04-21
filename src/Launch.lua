@@ -158,7 +158,7 @@ function launch:OnFrame()
 end
 
 function launch:OnKeyDown(key, doubleClick)
-	if key == "F5" and self.devMode then
+	if key == "F5" then
 		self.doRestart = "Restarting..."
 	elseif key == "F6" and self.devMode then
 		local before = collectgarbage("count")
@@ -384,7 +384,7 @@ function launch:ShowErrMsg(fmt, ...)
 		local version = self.versionNumber and 
 			"^8v"..self.versionNumber..(self.versionBranch and " "..self.versionBranch or "")
 			or ""
-		self:ShowPrompt(1, 0, 0, "^1Error:\n\n^0"..string.format(fmt, ...).."\n"..version.."\n^0Press Enter/Escape to dismiss, or F5 to restart the application.")
+		self:ShowPrompt(1, 0, 0, "^1Error:\n\n^0"..string.format(fmt, ...).."\n"..version.."\n^0If this keeps happening, please take a screenshot and report it:\n  GitHub Issues: https://github.com/uta666XYZ/LastEpochBuilding/issues\n  Reddit: https://reddit.com/user/ukunZ626 (comment on the latest post)\n\n^0Press Enter/Escape to dismiss, or F5 to restart.")
 	end
 end
 
