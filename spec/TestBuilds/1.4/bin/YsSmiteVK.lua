@@ -6255,7 +6255,7 @@ return {
 ["ESPercentPerSecondHasCost"] = false,
 ["EffectiveAttackDodgeChance"] = 0.5324,
 ["EffectiveMovementSpeedMod"] = 1,
-["EffectiveSourceRate"] = 1.4667,
+["EffectiveSourceRate"] = 1.6867,
 ["EffectiveSpellDodgeChance"] = 0,
 ["ElectrifyAvoidChance"] = 0,
 ["ElectrifyChance"] = 0,
