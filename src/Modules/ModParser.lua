@@ -655,6 +655,13 @@ local specialModList = {
 	["^(%d+)%% mana gained as endurance threshold$"] = function(num)
 		return { mod("ManaAsEnduranceThreshold", "BASE", tonumber(num)) }
 	end,
+	-- Primalist/Rogue/Sentinel tree: "X% Max[imum] Health Gained as Endurance Threshold"
+	["^%+?(%d+)%% max health gained as endurance threshold$"] = function(num)
+		return { mod("LifeAsEnduranceThreshold", "BASE", tonumber(num)) }
+	end,
+	["^%+?(%d+)%% maximum health gained as endurance threshold$"] = function(num)
+		return { mod("LifeAsEnduranceThreshold", "BASE", tonumber(num)) }
+	end,
 	-- Runemaster: Sanguine Runestones 6-point bonus
 	["^(%d+)%% health regen also applies to ward$"] = function(num)
 		return { mod("LifeRegenAppliesToWard", "BASE", tonumber(num)) }
