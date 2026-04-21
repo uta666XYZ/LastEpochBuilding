@@ -569,9 +569,17 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 		end
 		mockSlot.Populate = function() end
 		mockSlot.IsShown = function() return false end
+		-- A placeholder ItemSlotControl was already inserted into orderedSlots by the
+		-- baseSlots loop above (blessing names are members of baseSlots). Replace it in
+		-- place so blessing mods are not merged twice during calc setup.
+		local existingIdx = self.slotOrder[tl_name]
 		self.slots[tl_name] = mockSlot
-		t_insert(self.orderedSlots, mockSlot)
-		self.slotOrder[tl_name] = #self.orderedSlots
+		if existingIdx then
+			self.orderedSlots[existingIdx] = mockSlot
+		else
+			t_insert(self.orderedSlots, mockSlot)
+			self.slotOrder[tl_name] = #self.orderedSlots
+		end
 	end
 
 	local function updateBlessingSlot(tl, blessEntry, rollFrac)
