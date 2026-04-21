@@ -83,8 +83,6 @@ User data (builds, settings) is stored alongside the executable, so keep all fil
 ## 🛠️ Roadmap
 
 - Improve calculation accuracy across all stats and skills
-- Set item bonus effect verification and fixes
-- Idol and Idol Altar crafting system
 - Auto-populate Config tab from equipped item affixes
   (passive/skill tree detection is live; item affix detection coming)
 - Automatic or fast updates when Last Epoch patches release
@@ -100,17 +98,13 @@ Feedback, bug reports, and feature requests are always welcome!
 Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details on how to report bugs
 and submit pull requests.
 
----
+## 🛠️ Development Process
 
-## 📄 License
+See [DEVELOPMENT.md](./DEVELOPMENT.md) for release cadence, testing, and development workflow details.
 
-[MIT](LICENSE.md) — see LICENSE.md for third-party licenses.
+## 📖 Changelog
 
-## 💛 Special Thanks
-
-| Supporter     | Note                                                     |
-| ------------- | -------------------------------------------------------- |
-| WarMachine237 | First ever supporter — a permanent mark in LEB's history |
+Full version history: [CHANGELOG.md](CHANGELOG.md)
 
 ## 📖 Credits
 
@@ -119,10 +113,24 @@ originally forked from [Musholic/LastEpochPlanner](https://github.com/Musholic/L
 
 Development assisted by [Claude Code](https://claude.ai/code) (Anthropic).
 
-## 🛠️ Development Process
+## 💛 Special Thanks
 
-See [DEVELOPMENT.md](./DEVELOPMENT.md) for release cadence, testing, and development workflow details.
+### ☕ Supporters (Buy Me a Coffee)
 
-## 📖 Changelog
+| Supporter     | Note                                                     |
+| ------------- | -------------------------------------------------------- |
+| WarMachine237 | First ever supporter — a permanent mark in LEB's history |
 
-Full version history: [CHANGELOG.md](CHANGELOG.md)
+### 💬 Community Feedback
+
+**v0.13**
+
+- u/ratonbox, u/SottoSopra666, u/Bassndy, and u/Mr-Nabokov (thanks for sharing your builds)
+- u/pro185, and u/MRosvall (thanks for contributing ideas for the Step feature)
+- u/berethon (thanks for contributing ideas for idol/blessing comparison feature)
+
+---
+
+## 📄 License
+
+[MIT](LICENSE.md) — see LICENSE.md for third-party licenses.
