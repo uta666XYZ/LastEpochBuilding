@@ -43,6 +43,35 @@ ConExecute("set vid_resizable 3")
 launch = { }
 SetMainObject(launch)
 
+-- Action log: circular buffer of recent user-facing events, flushed on error
+local ACTION_LOG_MAX = 20
+
+function launch:LogAction(fmt, ...)
+	if not self.actionLog then
+		self.actionLog = {}
+	end
+	local ok, msg = pcall(string.format, fmt, ...)
+	if not ok then
+		msg = tostring(fmt)
+	end
+	local entry = string.format("[%.1fs] %s", (GetTime() - (self.startTime or 0)) / 1000, msg)
+	table.insert(self.actionLog, entry)
+	if #self.actionLog > ACTION_LOG_MAX then
+		table.remove(self.actionLog, 1)
+	end
+end
+
+function launch:DumpActionLog()
+	if not self.actionLog or #self.actionLog == 0 then
+		ConPrintf("Action log: (empty)")
+		return
+	end
+	ConPrintf("Action log (last %d):", #self.actionLog)
+	for _, entry in ipairs(self.actionLog) do
+		ConPrintf("  %s", entry)
+	end
+end
+
 function launch:OnInit()
 	self.devMode = false
 	self.installedMode = false
@@ -52,6 +81,7 @@ function launch:OnInit()
 	self.lastUpdateCheck = GetTime()
 	self.subScripts = { }
 	self.startTime = startTime
+	self.actionLog = {}
 	local xml = require("xml")
 	local localManXML = xml.LoadXMLFile("manifest.xml") or xml.LoadXMLFile("../manifest.xml")
 	if localManXML and localManXML[1].elem == "LEPVersion" then
@@ -391,6 +421,7 @@ function launch:ShowErrMsg(fmt, ...)
 	local errText = string.format(fmt, ...)
 	ConPrintf("=== ERROR ===")
 	ConPrintf("LEB v%s %s %s", tostring(self.versionNumber), tostring(self.versionBranch), tostring(self.versionPlatform))
+	self:DumpActionLog()
 	ConPrintf("%s", errText)
 	ConPrintf("=============")
 	if not self.promptMsg then
