@@ -13,5 +13,14 @@ end)
 
 function LabelClass:Draw()
 	local x, y = self:GetPos()
-	DrawString(x, y, "LEFT", self:GetProperty("height"), "VAR", self:GetProperty("label"))
+	local size = self:GetProperty("height")
+	local label = self:GetProperty("label") or ""
+	if label:find("\n") then
+		for line in (label .. "\n"):gmatch("([^\n]*)\n") do
+			DrawString(x, y, "LEFT", size, "VAR", line)
+			y = y + size + 2
+		end
+	else
+		DrawString(x, y, "LEFT", size, "VAR", label)
+	end
 end
