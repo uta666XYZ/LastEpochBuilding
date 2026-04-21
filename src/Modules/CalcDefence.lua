@@ -1228,17 +1228,24 @@ function calcs.buildDefenceEstimations(env, actor)
 	end
 
 	-- Endurance system (Last Epoch)
-	-- Endurance%: damage reduction that applies when HP is at or below EnduranceThreshold
-	-- EnduranceThreshold%: % of max life below which Endurance damage reduction kicks in
-	-- When a single hit crosses the threshold, only the below-threshold portion is reduced
+	-- Endurance%: damage reduction that applies when HP is at or below EnduranceThreshold (cap 60%)
+	-- EnduranceThreshold: flat HP value below which Endurance damage reduction kicks in (no cap)
+	-- Baseline 20% of max Life is already injected in CalcSetup via PerStat Life multiplier.
 	output.Endurance = m_min(modDB:Sum("BASE", nil, "Endurance"), data.misc.EnduranceCap)
-	output.EnduranceThreshold = modDB:Sum("BASE", nil, "EnduranceThreshold")
-	output.EnduranceThresholdValue = m_floor((output.Life or 0) * output.EnduranceThreshold / 100)
+	local etBase = modDB:Sum("BASE", nil, "EnduranceThreshold")
 	-- Cerulean Runestones: "X% Mana Gained as Endurance Threshold"
 	local manaAsEndThresh = modDB:Sum("BASE", nil, "ManaAsEnduranceThreshold")
 	if manaAsEndThresh > 0 then
-		output.EnduranceThresholdValue = output.EnduranceThresholdValue + m_floor((output.Mana or 0) * manaAsEndThresh / 100)
+		etBase = etBase + (output.Mana or 0) * manaAsEndThresh / 100
 	end
+	-- Primalist/Rogue/Sentinel trees: "X% Max Health Gained as Endurance Threshold"
+	local lifeAsEndThresh = modDB:Sum("BASE", nil, "LifeAsEnduranceThreshold")
+	if lifeAsEndThresh > 0 then
+		etBase = etBase + (output.Life or 0) * lifeAsEndThresh / 100
+	end
+	local etInc = m_max(calcLib.mod(modDB, nil, "EnduranceThreshold"), 0)
+	output.EnduranceThreshold = m_floor(etBase * etInc)
+	output.EnduranceThresholdValue = output.EnduranceThreshold
 
 	-- Parry and Mana-before-Health
 	output.ParryChance = m_min(modDB:Sum("BASE", nil, "ParryChance"), data.misc.ParryCap)
@@ -1253,9 +1260,11 @@ function calcs.buildDefenceEstimations(env, actor)
 	output.ChanceToChillAttackers = modDB:Sum("BASE", nil, "ChanceToChillAttackers")
 	output.ChanceToShockAttackers = modDB:Sum("BASE", nil, "ChanceToShockAttackers")
 	if breakdown and output.Endurance > 0 then
+		local life = output.Life or 0
+		local pctOfLife = life > 0 and (output.EnduranceThreshold / life * 100) or 0
 		breakdown.Endurance = {
 			s_format("%d%% ^8(endurance damage reduction)", output.Endurance),
-			s_format("Threshold: %d HP ^8(%d%% of %d max life)", output.EnduranceThresholdValue, output.EnduranceThreshold, output.Life or 0),
+			s_format("Threshold: %d HP ^8(%.0f%% of %d max life)", output.EnduranceThreshold, pctOfLife, life),
 			"^8Damage taken while HP is at or below threshold is reduced by Endurance%%.",
 			"^8When a hit crosses the threshold, only the below-threshold portion is reduced.",
 		}
