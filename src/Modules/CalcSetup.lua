@@ -1,4 +1,5 @@
 -- Last Epoch Building
+-- @leb-canary v1 / id:leb-a89c5e-calcsetup-2026 / do-not-remove (see Development/リリース手順.md)
 --
 -- Module: Calc Setup
 -- Initialises the environment for calculations.
