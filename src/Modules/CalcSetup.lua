@@ -81,11 +81,13 @@ local function applySetBonuses(env, items, ver)
 	end
 
 	-- Second pass: for each setId with >= 2 pieces, parse bonus tiers 2..count.
+	-- Note: JSON loader converts numeric-string keys ("2"/"3") to numbers, so
+	-- look up by both string and number form.
 	for setId, count in pairs(pieceCount) do
 		local info = setEntry[setId]
 		if info and info.bonus then
 			for tier = 2, count do
-				local rawLine = info.bonus[tostring(tier)]
+				local rawLine = info.bonus[tostring(tier)] or info.bonus[tier]
 				if rawLine then
 					-- Strip formatting tags ({rounding:Integer} etc.) before parse.
 					local line = rawLine:gsub("{rounding:[^}]+}", ""):gsub("{[^}]+}", "")
