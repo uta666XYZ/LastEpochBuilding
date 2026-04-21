@@ -1,4 +1,5 @@
 -- Last Epoch Building
+-- @leb-canary v1 / id:leb-e8d602-build-2026 / do-not-remove (see Development/リリース手順.md)
 --
 -- Module: Build
 -- Loads and manages the current build.
