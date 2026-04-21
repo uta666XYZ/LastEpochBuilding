@@ -50,9 +50,12 @@ local function applySetBonuses(env, items, ver)
 					setName    = item.setInfo.name
 				end
 				if not bonusTable then
-					-- Fallback: match by item.title against set_<ver>.json
+					-- Fallback: match by item.title against set_<ver>.json.
+					-- Strip trailing " Reforged" suffix for crafted Reforged items
+					-- whose setInfo was lost on BuildAndParseRaw round-trip.
+					local titleKey = item.title and item.title:gsub(" Reforged$", "") or nil
 					for _, e in pairs(setData) do
-						if e.name == item.title and e.set then
+						if e.set and (e.name == item.title or e.name == titleKey) then
 							setId      = e.set.setId
 							bonusTable = e.set.bonus
 							setName    = e.set.name
