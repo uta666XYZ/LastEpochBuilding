@@ -14,6 +14,77 @@ local m_max = math.max
 
 local tempTable1 = { }
 
+-- Cache of set data keyed by version, loaded lazily from Data/Set/set_<ver>.json.
+-- Used by set-bonus aggregation below.
+local setDataCache = {}
+local function loadSetData(ver)
+	ver = ver or "1_4"
+	if setDataCache[ver] == nil then
+		setDataCache[ver] = readJsonFile("Data/Set/set_" .. ver .. ".json")
+			or readJsonFile("Data/Set/set_1_4.json")
+			or false
+	end
+	return setDataCache[ver] or nil
+end
+
+-- Apply N-piece set bonuses: count equipped SET pieces per setId, then parse
+-- and add every bonus tier 2..N (so 3 pieces = 2-piece AND 3-piece bonus).
+local function applySetBonuses(env, items, ver)
+	local setData = loadSetData(ver)
+	if not setData then return end
+
+	-- First pass: resolve each equipped SET item to its setId by matching name.
+	local pieceCount = {} -- setId -> count
+	local setEntry   = {} -- setId -> a sample set entry (for bonus lookup)
+	for _, item in pairs(items) do
+		if item and item.rarity == "SET" then
+			local setId, bonusTable, setName
+			if item.setInfo then
+				setId      = item.setInfo.setId
+				bonusTable = item.setInfo.bonus
+				setName    = item.setInfo.name
+			end
+			if not setId then
+				-- Fallback: match by item.title (full piece name) against setData
+				for _, e in pairs(setData) do
+					if e.name == item.title and e.set then
+						setId      = e.set.setId
+						bonusTable = e.set.bonus
+						setName    = e.set.name
+						break
+					end
+				end
+			end
+			if setId then
+				pieceCount[setId] = (pieceCount[setId] or 0) + 1
+				if not setEntry[setId] then
+					setEntry[setId] = { bonus = bonusTable, name = setName }
+				end
+			end
+		end
+	end
+
+	-- Second pass: for each setId with >= 2 pieces, parse bonus tiers 2..count.
+	for setId, count in pairs(pieceCount) do
+		local info = setEntry[setId]
+		if info and info.bonus then
+			for tier = 2, count do
+				local line = info.bonus[tostring(tier)]
+				if line then
+					local mods = modLib.parseMod(line)
+					if mods then
+						local source = "Set: " .. (info.name or ("Set " .. tostring(setId))) .. " (" .. tier .. "pc)"
+						for _, mod in ipairs(mods) do
+							modLib.setSource(mod, source)
+							env.itemModDB:AddMod(mod)
+						end
+					end
+				end
+			end
+		end
+	end
+end
+
 -- Initialise modifier database with stats and conditions common to all actors
 function calcs.initModDB(env, modDB)
 	for _, damageType in ipairs(DamageTypes) do
@@ -784,6 +855,9 @@ function calcs.initEnv(build, mode, override, specEnv)
 				env.modDB.conditions["UsingCatalyst"] = true
 			end
 		end
+
+		-- Aggregate equipped SET pieces per setId and apply N-piece bonuses.
+		applySetBonuses(env, items, build.targetVersion)
 	end
 
 	-- Merge env.itemModDB with env.ModDB
