@@ -1281,6 +1281,7 @@ function ImportTabClass:ImportBlessingsFromMaxroll(profileData)
 end
 
 function ImportTabClass:DownloadFromMaxroll()
+    if launch.LogAction then launch:LogAction("Import: DownloadFromMaxroll") end
     self.charImportStatus = "Downloading build data from Maxroll..."
     local charSelect = self.controls.charSelect
     local charData = charSelect.list[charSelect.selIndex].char
@@ -1610,6 +1611,7 @@ function ImportTabClass:DownloadItems()
 end
 
 function ImportTabClass:DownloadFullImport()
+    if launch.LogAction then launch:LogAction("Import: DownloadFullImport") end
     local charSelect = self.controls.charSelect
     local charData = charSelect.list[charSelect.selIndex].char
     self:ImportPassiveTreeAndJewels(charData)

@@ -1054,6 +1054,12 @@ function buildMode:OnFrame(inputEvents)
 		return
 	end
 
+	-- Track viewMode changes for the action log (used in error reports)
+	if self._lastLoggedViewMode ~= self.viewMode then
+		if launch.LogAction then launch:LogAction("Switch tab: %s", tostring(self.viewMode)) end
+		self._lastLoggedViewMode = self.viewMode
+	end
+
 	if self.abortSave and not launch.devMode then
 		self:CloseBuild()
 	end
@@ -1704,6 +1710,7 @@ function buildMode:LoadDBFile()
 	if not self.dbFileName then
 		return
 	end
+	if launch.LogAction then launch:LogAction("Load build: %s", tostring(self.dbFileName)) end
 	ConPrintf("Loading '%s'...", self.dbFileName)
 	local file = io.open(self.dbFileName, "r")
 	if not file then
@@ -1747,6 +1754,7 @@ function buildMode:SaveDBFile()
 		self:OpenSaveAsPopup()
 		return
 	end
+	if launch.LogAction then launch:LogAction("Save build: %s", tostring(self.dbFileName)) end
 	local xmlText = self:SaveDB(self.dbFileName)
 	if not xmlText then
 		return true

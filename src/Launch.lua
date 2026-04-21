@@ -13,6 +13,9 @@ APP_NAME = "Last Epoch Building"
 local _conPrintf = ConPrintf
 local _logPath = (io.open("../manifest.xml", "r") and io.close(io.open("../manifest.xml", "r")) and "../debug.log") or "debug.log"
 local _logFile = io.open(_logPath, "w")
+-- In-memory ring buffer of ConPrintf output, used to build error reports
+local _logBuffer = {}
+local _logBufferMax = 500
 if _logFile then
 	function ConPrintf(fmt, ...)
 		local ok, msg = pcall(string.format, fmt, ...)
@@ -22,10 +25,19 @@ if _logFile then
 				_logFile:write(msg .. "\n")
 				_logFile:flush()
 			end
+			table.insert(_logBuffer, msg)
+			if #_logBuffer > _logBufferMax then
+				table.remove(_logBuffer, 1)
+			end
 		else
 			_conPrintf(fmt, ...)
 		end
 	end
+end
+
+-- Returns the recent ConPrintf output as a single string (up to _logBufferMax lines)
+function GetDebugLogText()
+	return table.concat(_logBuffer, "\n")
 end
 
 -- Clears debug.log and restarts logging (call at the start of each import)
@@ -43,6 +55,35 @@ ConExecute("set vid_resizable 3")
 launch = { }
 SetMainObject(launch)
 
+-- Action log: circular buffer of recent user-facing events, flushed on error
+local ACTION_LOG_MAX = 20
+
+function launch:LogAction(fmt, ...)
+	if not self.actionLog then
+		self.actionLog = {}
+	end
+	local ok, msg = pcall(string.format, fmt, ...)
+	if not ok then
+		msg = tostring(fmt)
+	end
+	local entry = string.format("[%.1fs] %s", (GetTime() - (self.startTime or 0)) / 1000, msg)
+	table.insert(self.actionLog, entry)
+	if #self.actionLog > ACTION_LOG_MAX then
+		table.remove(self.actionLog, 1)
+	end
+end
+
+function launch:DumpActionLog()
+	if not self.actionLog or #self.actionLog == 0 then
+		ConPrintf("Action log: (empty)")
+		return
+	end
+	ConPrintf("Action log (last %d):", #self.actionLog)
+	for _, entry in ipairs(self.actionLog) do
+		ConPrintf("  %s", entry)
+	end
+end
+
 function launch:OnInit()
 	self.devMode = false
 	self.installedMode = false
@@ -52,6 +93,7 @@ function launch:OnInit()
 	self.lastUpdateCheck = GetTime()
 	self.subScripts = { }
 	self.startTime = startTime
+	self.actionLog = {}
 	local xml = require("xml")
 	local localManXML = xml.LoadXMLFile("manifest.xml") or xml.LoadXMLFile("../manifest.xml")
 	if localManXML and localManXML[1].elem == "LEPVersion" then
@@ -88,6 +130,13 @@ function launch:OnInit()
 		installedFile:close()
 	end
 	RenderInit()
+	-- Log environment info for error reports
+	ConPrintf("=== LEB Startup ===")
+	ConPrintf("LEB version: v%s branch=%s platform=%s", tostring(self.versionNumber), tostring(self.versionBranch), tostring(self.versionPlatform))
+	ConPrintf("devMode: %s, installedMode: %s", tostring(self.devMode), tostring(self.installedMode))
+	local _sw, _sh = GetScreenSize()
+	ConPrintf("Screen size: %dx%d", _sw or 0, _sh or 0)
+	ConPrintf("===================")
 	ConPrintf("Loading main script...")
 	local errMsg
 	errMsg, self.main = PLoadModule("Modules/Main")
@@ -158,7 +207,7 @@ function launch:OnFrame()
 end
 
 function launch:OnKeyDown(key, doubleClick)
-	if key == "F5" and self.devMode then
+	if key == "F5" then
 		self.doRestart = "Restarting..."
 	elseif key == "F6" and self.devMode then
 		local before = collectgarbage("count")
@@ -379,13 +428,227 @@ function launch:ShowPrompt(r, g, b, str, func)
 	end
 end
 
-function launch:ShowErrMsg(fmt, ...)
-	if not self.promptMsg then
-		local version = self.versionNumber and 
-			"^8v"..self.versionNumber..(self.versionBranch and " "..self.versionBranch or "")
-			or ""
-		self:ShowPrompt(1, 0, 0, "^1Error:\n\n^0"..string.format(fmt, ...).."\n"..version.."\n^0Press Enter/Escape to dismiss, or F5 to restart the application.")
+-- Builds a plain-text error report, optionally appending a build code/URL
+function launch:BuildErrorReport(errText, buildUrl)
+	local lines = {}
+	table.insert(lines, "=== LEB Error Report ===")
+	table.insert(lines, string.format("Version: v%s %s %s", tostring(self.versionNumber), tostring(self.versionBranch), tostring(self.versionPlatform)))
+	table.insert(lines, "Error:")
+	table.insert(lines, errText or "(unknown)")
+	table.insert(lines, "")
+	if self.actionLog and #self.actionLog > 0 then
+		table.insert(lines, "Recent actions:")
+		for _, entry in ipairs(self.actionLog) do
+			table.insert(lines, "  " .. entry)
+		end
+		table.insert(lines, "")
 	end
+	if buildUrl then
+		table.insert(lines, "Build: " .. buildUrl)
+		table.insert(lines, "")
+	end
+	table.insert(lines, "--- debug.log ---")
+	if GetDebugLogText then
+		table.insert(lines, GetDebugLogText())
+	end
+	return table.concat(lines, "\n")
+end
+
+-- Copies the error report to the clipboard. If includeBuild is true and a build
+-- is loaded, the build code is uploaded to bytebin asynchronously and the URL is
+-- included. Updates self.promptMsg to reflect state (copying -> done / failed).
+function launch:CopyErrorReport(errText, includeBuild)
+	self._lastErrText = errText
+	local function finalize(buildUrl, uploadErr)
+		-- Clear any transient "Generating..." prompt before showing the result
+		self.promptMsg = nil
+		local report = self:BuildErrorReport(errText, buildUrl)
+		if Copy then
+			Copy(report)
+		end
+		local status
+		if includeBuild and uploadErr then
+			status = "^1Build URL upload failed: "..tostring(uploadErr).."\n^0Error report (without build URL) copied to clipboard."
+		elseif includeBuild and buildUrl then
+			status = "^2Error report copied to clipboard (build URL included)."
+		else
+			status = "^2Error report copied to clipboard."
+		end
+		self:ShowRichReportCopiedDialog(status)
+	end
+
+	if not includeBuild then
+		finalize(nil, nil)
+		return
+	end
+
+	-- Try to get a build code from the current build (requires main in BUILD mode)
+	local ok, code = pcall(function()
+		local buildMode = main and main.modes and main.mode and main.modes[main.mode]
+		if buildMode and buildMode.SaveDB and buildMode.targetVersion and common and common.base85 and Deflate then
+			local xml = buildMode:SaveDB("code")
+			if xml then
+				return "!" .. common.base85.encode(Deflate(xml))
+			end
+		end
+		return nil
+	end)
+	if not ok or not code then
+		finalize(nil, "No build available to include")
+		return
+	end
+
+	-- Upload to bytebin in the background; show a progress prompt in the meantime
+	self:ShowPrompt(1, 1, 0, "^0Generating build URL...\nPlease wait a moment.", function() return false end)
+	local buildSites = _G.buildSites
+	if not (buildSites and buildSites.UploadToBytebin) then
+		finalize(nil, "Build sharing module not loaded")
+		return
+	end
+	local id = buildSites.UploadToBytebin(code)
+	if not id then
+		finalize(nil, "Failed to launch upload")
+		return
+	end
+	launch:RegisterSubScript(id, function(url, uploadErr)
+		finalize(url, uploadErr)
+	end)
+end
+
+-- Shows the "report copied" confirmation (fallback: keyboard-only prompt)
+function launch:ShowReportCopiedPrompt(statusLine)
+	local msg = (statusLine or "^2Error report copied to clipboard.") ..
+		"\n\n^0Please paste it as a comment on the latest Reddit post:\n" ..
+		"  https://reddit.com/user/ukunZ626\n" ..
+		"Or open a GitHub issue at:\n" ..
+		"  https://github.com/uta666XYZ/LastEpochBuilding/issues\n\n" ..
+		"^0Press Enter/Escape to dismiss, or F5 to restart LEB."
+	self:ShowPrompt(0, 0.5, 0, msg)
+end
+
+-- Rich confirmation dialog using main:OpenPopup
+function launch:ShowRichReportCopiedDialog(statusLine)
+	if not (main and main.OpenPopup) then
+		self:ShowReportCopiedPrompt(statusLine)
+		return
+	end
+	local controls = {}
+	local y = 20
+	local lines = {
+		statusLine or "^2Error report has been copied to clipboard.",
+		"",
+		"^0Please paste it as a comment on the latest Reddit post:",
+		"  ^x4080FFhttps://reddit.com/user/ukunZ626",
+		"^0Or open a GitHub issue at:",
+		"  ^x4080FFhttps://github.com/uta666XYZ/LastEpochBuilding/issues",
+	}
+	for _, line in ipairs(lines) do
+		table.insert(controls, new("LabelControl", nil, 0, y, 0, 16, line))
+		y = y + 18
+	end
+	y = y + 6
+	table.insert(controls, new("LabelControl", nil, 0, y, 0, 14, "^8Press F5 to restart LEB"))
+	y = y + 24
+	controls.close = new("ButtonControl", nil, 0, y, 80, 20, "Close", function()
+		main:ClosePopup()
+	end)
+	y = y + 30
+	main:OpenPopup(560, y, "Report Copied", controls, "close", nil, "close")
+end
+
+-- Rich error dialog using main:OpenPopup (checkbox + buttons)
+function launch:ShowRichErrorDialog(errText)
+	if not (main and main.OpenPopup) then
+		return false
+	end
+	local controls = {}
+	local y = 20
+	-- Error text (split by newlines)
+	for line in (errText .. "\n"):gmatch("([^\n]*)\n") do
+		table.insert(controls, new("LabelControl", nil, 0, y, 0, 16, "^1" .. line))
+		y = y + 18
+	end
+	y = y + 6
+	-- Version info
+	local version = "^8v" .. tostring(self.versionNumber) ..
+		(self.versionBranch and (" " .. tostring(self.versionBranch)) or "") ..
+		(self.versionPlatform and (" " .. tostring(self.versionPlatform)) or "")
+	table.insert(controls, new("LabelControl", nil, 0, y, 0, 14, version))
+	y = y + 24
+	-- Reporting instructions
+	local intro = {
+		"^0If this keeps happening, please help us fix it by reporting:",
+		"  Reddit: ^x4080FFhttps://reddit.com/user/ukunZ626 ^0(comment on the latest post)",
+		"  GitHub: ^x4080FFhttps://github.com/uta666XYZ/LastEpochBuilding/issues",
+	}
+	for _, line in ipairs(intro) do
+		table.insert(controls, new("LabelControl", nil, 0, y, 0, 16, line))
+		y = y + 18
+	end
+	y = y + 8
+	-- Checkbox: include build
+	local includeBuildState = false
+	controls.includeBuild = new("CheckBoxControl", { "TOPLEFT", nil, "TOPLEFT" }, 18, y, 18,
+		"^7I agree to include my build in the report (helps us improve LEB)",
+		function(state) includeBuildState = state end)
+	controls.includeBuild.state = false
+	y = y + 28
+	-- Footer: F5 hint
+	table.insert(controls, new("LabelControl", nil, 0, y, 0, 14, "^8Press F5 to restart LEB"))
+	y = y + 24
+	-- Buttons (bottom right)
+	controls.copy = new("ButtonControl", nil, -55, y, 110, 20, "Copy Report", function()
+		main:ClosePopup()
+		self:CopyErrorReport(errText, includeBuildState)
+	end)
+	controls.close = new("ButtonControl", nil, 65, y, 80, 20, "Close", function()
+		main:ClosePopup()
+	end)
+	y = y + 30
+	main:OpenPopup(620, y, "Error", controls, "copy", nil, "close")
+	return true
+end
+
+function launch:ShowErrMsg(fmt, ...)
+	-- Always log the error to debug.log, even if a prompt is already shown
+	local errText = string.format(fmt, ...)
+	ConPrintf("=== ERROR ===")
+	ConPrintf("LEB v%s %s %s", tostring(self.versionNumber), tostring(self.versionBranch), tostring(self.versionPlatform))
+	self:DumpActionLog()
+	ConPrintf("%s", errText)
+	ConPrintf("=============")
+	if self.promptMsg then return end
+	-- Try rich UI first; fall back to keyboard-only prompt if main is unavailable
+	local ok = pcall(function() return self:ShowRichErrorDialog(errText) end)
+	if ok then
+		-- Re-check after the pcall in case it swallowed a failure
+		if main and main.popups and #main.popups > 0 then return end
+	end
+	-- Fallback: keyboard prompt (used when main is not initialized or OpenPopup fails)
+	local version = self.versionNumber and
+		"^8v"..self.versionNumber..(self.versionBranch and " "..self.versionBranch or "")
+		or ""
+	local msg = "^1Error:\n\n^0"..errText.."\n"..version..
+		"\n\n^0If this keeps happening, please report it:\n"..
+		"  Reddit: https://reddit.com/user/ukunZ626 (comment on the latest post)\n"..
+		"  GitHub: https://github.com/uta666XYZ/LastEpochBuilding/issues\n\n"..
+		"^0Press C to copy error report to clipboard.\n"..
+		"Press B to copy with build code (requires Internet).\n"..
+		"Press Enter/Escape to dismiss, or F5 to restart LEB."
+	self:ShowPrompt(1, 0, 0, msg, function(key)
+		if key == "RETURN" or key == "ESCAPE" then
+			return true
+		elseif key == "F5" then
+			self.doRestart = "Restarting..."
+			return true
+		elseif key == "c" or key == "C" then
+			self:CopyErrorReport(errText, false)
+			return false
+		elseif key == "b" or key == "B" then
+			self:CopyErrorReport(errText, true)
+			return false
+		end
+	end)
 end
 
 function launch:RunPromptFunc(key)
