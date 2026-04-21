@@ -32,6 +32,9 @@ If you'd like to support LEB's development, consider buying me a coffee!
 ☕ [Buy Me a Coffee](https://buymeacoffee.com/yobk0831a)
 🍵 [Ko-fi](https://ko-fi.com/lastepochbuilding)
 
+The first few supporters will have their names hidden somewhere in LEB as easter eggs.
+Since I have a limited number of good hiding spots in mind, I'll add names in supporter order as new spots come to me.
+
 Feedback and bug reports are always welcome — see [Contributing](#contributing).
 
 ---
@@ -102,11 +105,8 @@ and submit pull requests.
 
 ## 💛 Special Thanks
 
-The first few supporters will have their names hidden somewhere in LEB as easter eggs.
-Since I have a limited number of good hiding spots in mind, I'll add names in supporter order as new spots come to me.
-
-| Supporter | Note |
-|-----------|------|
+| Supporter     | Note                                                     |
+| ------------- | -------------------------------------------------------- |
 | WarMachine237 | First ever supporter — a permanent mark in LEB's history |
 
 ## 📖 Credits
