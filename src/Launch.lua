@@ -13,6 +13,9 @@ APP_NAME = "Last Epoch Building"
 local _conPrintf = ConPrintf
 local _logPath = (io.open("../manifest.xml", "r") and io.close(io.open("../manifest.xml", "r")) and "../debug.log") or "debug.log"
 local _logFile = io.open(_logPath, "w")
+-- In-memory ring buffer of ConPrintf output, used to build error reports
+local _logBuffer = {}
+local _logBufferMax = 2000
 if _logFile then
 	function ConPrintf(fmt, ...)
 		local ok, msg = pcall(string.format, fmt, ...)
@@ -22,10 +25,19 @@ if _logFile then
 				_logFile:write(msg .. "\n")
 				_logFile:flush()
 			end
+			table.insert(_logBuffer, msg)
+			if #_logBuffer > _logBufferMax then
+				table.remove(_logBuffer, 1)
+			end
 		else
 			_conPrintf(fmt, ...)
 		end
 	end
+end
+
+-- Returns the recent ConPrintf output as a single string (up to _logBufferMax lines)
+function GetDebugLogText()
+	return table.concat(_logBuffer, "\n")
 end
 
 -- Clears debug.log and restarts logging (call at the start of each import)
@@ -416,6 +428,101 @@ function launch:ShowPrompt(r, g, b, str, func)
 	end
 end
 
+-- Builds a plain-text error report, optionally appending a build code/URL
+function launch:BuildErrorReport(errText, buildUrl)
+	local lines = {}
+	table.insert(lines, "=== LEB Error Report ===")
+	table.insert(lines, string.format("Version: v%s %s %s", tostring(self.versionNumber), tostring(self.versionBranch), tostring(self.versionPlatform)))
+	table.insert(lines, "Error:")
+	table.insert(lines, errText or "(unknown)")
+	table.insert(lines, "")
+	if self.actionLog and #self.actionLog > 0 then
+		table.insert(lines, "Recent actions:")
+		for _, entry in ipairs(self.actionLog) do
+			table.insert(lines, "  " .. entry)
+		end
+		table.insert(lines, "")
+	end
+	if buildUrl then
+		table.insert(lines, "Build: " .. buildUrl)
+		table.insert(lines, "")
+	end
+	table.insert(lines, "--- debug.log ---")
+	if GetDebugLogText then
+		table.insert(lines, GetDebugLogText())
+	end
+	return table.concat(lines, "\n")
+end
+
+-- Copies the error report to the clipboard. If includeBuild is true and a build
+-- is loaded, the build code is uploaded to bytebin asynchronously and the URL is
+-- included. Updates self.promptMsg to reflect state (copying -> done / failed).
+function launch:CopyErrorReport(errText, includeBuild)
+	self._lastErrText = errText
+	local function finalize(buildUrl, uploadErr)
+		local report = self:BuildErrorReport(errText, buildUrl)
+		if Copy then
+			Copy(report)
+		end
+		local status
+		if includeBuild and uploadErr then
+			status = "^1Build URL upload failed: "..tostring(uploadErr).."\n^0Error report (without build URL) copied to clipboard."
+		elseif includeBuild and buildUrl then
+			status = "^2Error report copied to clipboard (build URL included)."
+		else
+			status = "^2Error report copied to clipboard."
+		end
+		self:ShowReportCopiedPrompt(status)
+	end
+
+	if not includeBuild then
+		finalize(nil, nil)
+		return
+	end
+
+	-- Try to get a build code from the current build (requires main in BUILD mode)
+	local ok, code = pcall(function()
+		local buildMode = main and main.modes and main.mode and main.modes[main.mode]
+		if buildMode and buildMode.SaveDB and buildMode.targetVersion and common and common.base85 and Deflate then
+			local xml = buildMode:SaveDB("code")
+			if xml then
+				return "!" .. common.base85.encode(Deflate(xml))
+			end
+		end
+		return nil
+	end)
+	if not ok or not code then
+		finalize(nil, "No build available to include")
+		return
+	end
+
+	-- Upload to bytebin in the background; show a progress prompt in the meantime
+	self:ShowPrompt(1, 1, 0, "^0Generating build URL...\nPlease wait a moment.", function() return false end)
+	local buildSites = _G.buildSites
+	if not (buildSites and buildSites.UploadToBytebin) then
+		finalize(nil, "Build sharing module not loaded")
+		return
+	end
+	local id = buildSites.UploadToBytebin(code)
+	if not id then
+		finalize(nil, "Failed to launch upload")
+		return
+	end
+	launch:RegisterSubScript(id, function(url, uploadErr)
+		finalize(url, uploadErr)
+	end)
+end
+
+-- Shows the "report copied" confirmation prompt with reminder to post on Reddit/GitHub
+function launch:ShowReportCopiedPrompt(statusLine)
+	local msg = (statusLine or "^2Error report copied to clipboard.") ..
+		"\n\n^0Please paste the report into a bug report:\n" ..
+		"  Reddit: https://reddit.com/user/ukunZ626 (comment on the latest post)\n" ..
+		"  GitHub Issues: https://github.com/uta666XYZ/LastEpochBuilding/issues\n\n" ..
+		"^0Press Enter/Escape to dismiss, or F5 to restart."
+	self:ShowPrompt(0, 0.5, 0, msg)
+end
+
 function launch:ShowErrMsg(fmt, ...)
 	-- Always log the error to debug.log, even if a prompt is already shown
 	local errText = string.format(fmt, ...)
@@ -428,7 +535,27 @@ function launch:ShowErrMsg(fmt, ...)
 		local version = self.versionNumber and
 			"^8v"..self.versionNumber..(self.versionBranch and " "..self.versionBranch or "")
 			or ""
-		self:ShowPrompt(1, 0, 0, "^1Error:\n\n^0"..errText.."\n"..version.."\n^0If this keeps happening, please take a screenshot and report it:\n  GitHub Issues: https://github.com/uta666XYZ/LastEpochBuilding/issues\n  Reddit: https://reddit.com/user/ukunZ626 (comment on the latest post)\n\n^0Press Enter/Escape to dismiss, or F5 to restart.")
+		local msg = "^1Error:\n\n^0"..errText.."\n"..version..
+			"\n\n^0If this keeps happening, please help us fix it by reporting:\n"..
+			"  Reddit: https://reddit.com/user/ukunZ626 (comment on the latest post)\n"..
+			"  GitHub Issues: https://github.com/uta666XYZ/LastEpochBuilding/issues\n\n"..
+			"^0Press C to copy error report to clipboard.\n"..
+			"Press B to copy with build code (requires Internet).\n"..
+			"Press Enter/Escape to dismiss, or F5 to restart."
+		self:ShowPrompt(1, 0, 0, msg, function(key)
+			if key == "RETURN" or key == "ESCAPE" then
+				return true
+			elseif key == "F5" then
+				self.doRestart = "Restarting..."
+				return true
+			elseif key == "c" or key == "C" then
+				self:CopyErrorReport(errText, false)
+				return false
+			elseif key == "b" or key == "B" then
+				self:CopyErrorReport(errText, true)
+				return false
+			end
+		end)
 	end
 end
 
