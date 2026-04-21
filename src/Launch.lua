@@ -15,7 +15,7 @@ local _logPath = (io.open("../manifest.xml", "r") and io.close(io.open("../manif
 local _logFile = io.open(_logPath, "w")
 -- In-memory ring buffer of ConPrintf output, used to build error reports
 local _logBuffer = {}
-local _logBufferMax = 2000
+local _logBufferMax = 500
 if _logFile then
 	function ConPrintf(fmt, ...)
 		local ok, msg = pcall(string.format, fmt, ...)
@@ -460,6 +460,8 @@ end
 function launch:CopyErrorReport(errText, includeBuild)
 	self._lastErrText = errText
 	local function finalize(buildUrl, uploadErr)
+		-- Clear any transient "Generating..." prompt before showing the result
+		self.promptMsg = nil
 		local report = self:BuildErrorReport(errText, buildUrl)
 		if Copy then
 			Copy(report)
@@ -472,7 +474,7 @@ function launch:CopyErrorReport(errText, includeBuild)
 		else
 			status = "^2Error report copied to clipboard."
 		end
-		self:ShowReportCopiedPrompt(status)
+		self:ShowRichReportCopiedDialog(status)
 	end
 
 	if not includeBuild then
@@ -513,14 +515,98 @@ function launch:CopyErrorReport(errText, includeBuild)
 	end)
 end
 
--- Shows the "report copied" confirmation prompt with reminder to post on Reddit/GitHub
+-- Shows the "report copied" confirmation (fallback: keyboard-only prompt)
 function launch:ShowReportCopiedPrompt(statusLine)
 	local msg = (statusLine or "^2Error report copied to clipboard.") ..
-		"\n\n^0Please paste the report into a bug report:\n" ..
-		"  Reddit: https://reddit.com/user/ukunZ626 (comment on the latest post)\n" ..
-		"  GitHub Issues: https://github.com/uta666XYZ/LastEpochBuilding/issues\n\n" ..
-		"^0Press Enter/Escape to dismiss, or F5 to restart."
+		"\n\n^0Please paste it as a comment on the latest Reddit post:\n" ..
+		"  https://reddit.com/user/ukunZ626\n" ..
+		"Or open a GitHub issue at:\n" ..
+		"  https://github.com/uta666XYZ/LastEpochBuilding/issues\n\n" ..
+		"^0Press Enter/Escape to dismiss, or F5 to restart LEB."
 	self:ShowPrompt(0, 0.5, 0, msg)
+end
+
+-- Rich confirmation dialog using main:OpenPopup
+function launch:ShowRichReportCopiedDialog(statusLine)
+	if not (main and main.OpenPopup) then
+		self:ShowReportCopiedPrompt(statusLine)
+		return
+	end
+	local controls = {}
+	local y = 20
+	local lines = {
+		statusLine or "^2Error report has been copied to clipboard.",
+		"",
+		"^0Please paste it as a comment on the latest Reddit post:",
+		"  ^x4080FFhttps://reddit.com/user/ukunZ626",
+		"^0Or open a GitHub issue at:",
+		"  ^x4080FFhttps://github.com/uta666XYZ/LastEpochBuilding/issues",
+	}
+	for _, line in ipairs(lines) do
+		table.insert(controls, new("LabelControl", nil, 0, y, 0, 16, line))
+		y = y + 18
+	end
+	y = y + 6
+	table.insert(controls, new("LabelControl", nil, 0, y, 0, 14, "^8Press F5 to restart LEB"))
+	y = y + 24
+	controls.close = new("ButtonControl", nil, 0, y, 80, 20, "Close", function()
+		main:ClosePopup()
+	end)
+	y = y + 30
+	main:OpenPopup(560, y, "Report Copied", controls, "close", nil, "close")
+end
+
+-- Rich error dialog using main:OpenPopup (checkbox + buttons)
+function launch:ShowRichErrorDialog(errText)
+	if not (main and main.OpenPopup) then
+		return false
+	end
+	local controls = {}
+	local y = 20
+	-- Error text (split by newlines)
+	for line in (errText .. "\n"):gmatch("([^\n]*)\n") do
+		table.insert(controls, new("LabelControl", nil, 0, y, 0, 16, "^1" .. line))
+		y = y + 18
+	end
+	y = y + 6
+	-- Version info
+	local version = "^8v" .. tostring(self.versionNumber) ..
+		(self.versionBranch and (" " .. tostring(self.versionBranch)) or "") ..
+		(self.versionPlatform and (" " .. tostring(self.versionPlatform)) or "")
+	table.insert(controls, new("LabelControl", nil, 0, y, 0, 14, version))
+	y = y + 24
+	-- Reporting instructions
+	local intro = {
+		"^0If this keeps happening, please help us fix it by reporting:",
+		"  Reddit: ^x4080FFhttps://reddit.com/user/ukunZ626 ^0(comment on the latest post)",
+		"  GitHub: ^x4080FFhttps://github.com/uta666XYZ/LastEpochBuilding/issues",
+	}
+	for _, line in ipairs(intro) do
+		table.insert(controls, new("LabelControl", nil, 0, y, 0, 16, line))
+		y = y + 18
+	end
+	y = y + 8
+	-- Checkbox: include build
+	local includeBuildState = false
+	controls.includeBuild = new("CheckBoxControl", { "TOPLEFT", nil, "TOPLEFT" }, 18, y, 18,
+		"^7I agree to include my build in the report (helps us improve LEB)",
+		function(state) includeBuildState = state end)
+	controls.includeBuild.state = false
+	y = y + 28
+	-- Footer: F5 hint
+	table.insert(controls, new("LabelControl", nil, 0, y, 0, 14, "^8Press F5 to restart LEB"))
+	y = y + 24
+	-- Buttons (bottom right)
+	controls.copy = new("ButtonControl", nil, -55, y, 110, 20, "Copy Report", function()
+		main:ClosePopup()
+		self:CopyErrorReport(errText, includeBuildState)
+	end)
+	controls.close = new("ButtonControl", nil, 65, y, 80, 20, "Close", function()
+		main:ClosePopup()
+	end)
+	y = y + 30
+	main:OpenPopup(620, y, "Error", controls, "copy", nil, "close")
+	return true
 end
 
 function launch:ShowErrMsg(fmt, ...)
@@ -531,32 +617,38 @@ function launch:ShowErrMsg(fmt, ...)
 	self:DumpActionLog()
 	ConPrintf("%s", errText)
 	ConPrintf("=============")
-	if not self.promptMsg then
-		local version = self.versionNumber and
-			"^8v"..self.versionNumber..(self.versionBranch and " "..self.versionBranch or "")
-			or ""
-		local msg = "^1Error:\n\n^0"..errText.."\n"..version..
-			"\n\n^0If this keeps happening, please help us fix it by reporting:\n"..
-			"  Reddit: https://reddit.com/user/ukunZ626 (comment on the latest post)\n"..
-			"  GitHub Issues: https://github.com/uta666XYZ/LastEpochBuilding/issues\n\n"..
-			"^0Press C to copy error report to clipboard.\n"..
-			"Press B to copy with build code (requires Internet).\n"..
-			"Press Enter/Escape to dismiss, or F5 to restart."
-		self:ShowPrompt(1, 0, 0, msg, function(key)
-			if key == "RETURN" or key == "ESCAPE" then
-				return true
-			elseif key == "F5" then
-				self.doRestart = "Restarting..."
-				return true
-			elseif key == "c" or key == "C" then
-				self:CopyErrorReport(errText, false)
-				return false
-			elseif key == "b" or key == "B" then
-				self:CopyErrorReport(errText, true)
-				return false
-			end
-		end)
+	if self.promptMsg then return end
+	-- Try rich UI first; fall back to keyboard-only prompt if main is unavailable
+	local ok = pcall(function() return self:ShowRichErrorDialog(errText) end)
+	if ok then
+		-- Re-check after the pcall in case it swallowed a failure
+		if main and main.popups and #main.popups > 0 then return end
 	end
+	-- Fallback: keyboard prompt (used when main is not initialized or OpenPopup fails)
+	local version = self.versionNumber and
+		"^8v"..self.versionNumber..(self.versionBranch and " "..self.versionBranch or "")
+		or ""
+	local msg = "^1Error:\n\n^0"..errText.."\n"..version..
+		"\n\n^0If this keeps happening, please report it:\n"..
+		"  Reddit: https://reddit.com/user/ukunZ626 (comment on the latest post)\n"..
+		"  GitHub: https://github.com/uta666XYZ/LastEpochBuilding/issues\n\n"..
+		"^0Press C to copy error report to clipboard.\n"..
+		"Press B to copy with build code (requires Internet).\n"..
+		"Press Enter/Escape to dismiss, or F5 to restart LEB."
+	self:ShowPrompt(1, 0, 0, msg, function(key)
+		if key == "RETURN" or key == "ESCAPE" then
+			return true
+		elseif key == "F5" then
+			self.doRestart = "Restarting..."
+			return true
+		elseif key == "c" or key == "C" then
+			self:CopyErrorReport(errText, false)
+			return false
+		elseif key == "b" or key == "B" then
+			self:CopyErrorReport(errText, true)
+			return false
+		end
+	end)
 end
 
 function launch:RunPromptFunc(key)
