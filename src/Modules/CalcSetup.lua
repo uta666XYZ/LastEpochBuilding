@@ -29,36 +29,52 @@ end
 
 -- Apply N-piece set bonuses: count equipped SET pieces per setId, then parse
 -- and add every bonus tier 2..N (so 3 pieces = 2-piece AND 3-piece bonus).
+-- Also matches "Reforged Set" items (basic items with item.setInfo.setId set by
+-- the crafting popup).
 local function applySetBonuses(env, items, ver)
 	local setData = loadSetData(ver)
 	if not setData then return end
 
-	-- First pass: resolve each equipped SET item to its setId by matching name.
+	-- First pass: resolve each equipped SET / Reforged piece to its setId.
 	local pieceCount = {} -- setId -> count
 	local setEntry   = {} -- setId -> a sample set entry (for bonus lookup)
 	for _, item in pairs(items) do
-		if item and item.rarity == "SET" then
-			local setId, bonusTable, setName
-			if item.setInfo then
-				setId      = item.setInfo.setId
-				bonusTable = item.setInfo.bonus
-				setName    = item.setInfo.name
-			end
-			if not setId then
-				-- Fallback: match by item.title (full piece name) against setData
-				for _, e in pairs(setData) do
-					if e.name == item.title and e.set then
-						setId      = e.set.setId
-						bonusTable = e.set.bonus
-						setName    = e.set.name
-						break
+		if item then
+			local isSet      = (item.rarity == "SET")
+			local hasSetInfo = (item.setInfo and item.setInfo.setId ~= nil)
+			if isSet or hasSetInfo then
+				local setId, bonusTable, setName
+				if hasSetInfo then
+					setId      = item.setInfo.setId
+					bonusTable = item.setInfo.bonus
+					setName    = item.setInfo.name
+				end
+				if not bonusTable then
+					-- Fallback: match by item.title against set_<ver>.json
+					for _, e in pairs(setData) do
+						if e.name == item.title and e.set then
+							setId      = e.set.setId
+							bonusTable = e.set.bonus
+							setName    = e.set.name
+							break
+						end
 					end
 				end
-			end
-			if setId then
-				pieceCount[setId] = (pieceCount[setId] or 0) + 1
-				if not setEntry[setId] then
-					setEntry[setId] = { bonus = bonusTable, name = setName }
+				if not bonusTable and setId then
+					-- Bonus missing but setId known: look up any member of the same set.
+					for _, e in pairs(setData) do
+						if e.set and e.set.setId == setId then
+							bonusTable = e.set.bonus
+							setName    = setName or e.set.name
+							break
+						end
+					end
+				end
+				if setId then
+					pieceCount[setId] = (pieceCount[setId] or 0) + 1
+					if not setEntry[setId] then
+						setEntry[setId] = { bonus = bonusTable, name = setName }
+					end
 				end
 			end
 		end
@@ -69,10 +85,12 @@ local function applySetBonuses(env, items, ver)
 		local info = setEntry[setId]
 		if info and info.bonus then
 			for tier = 2, count do
-				local line = info.bonus[tostring(tier)]
-				if line then
+				local rawLine = info.bonus[tostring(tier)]
+				if rawLine then
+					-- Strip formatting tags ({rounding:Integer} etc.) before parse.
+					local line = rawLine:gsub("{rounding:[^}]+}", ""):gsub("{[^}]+}", "")
 					local mods = modLib.parseMod(line)
-					if mods then
+					if mods and #mods > 0 then
 						local source = "Set: " .. (info.name or ("Set " .. tostring(setId))) .. " (" .. tier .. "pc)"
 						for _, mod in ipairs(mods) do
 							modLib.setSource(mod, source)
