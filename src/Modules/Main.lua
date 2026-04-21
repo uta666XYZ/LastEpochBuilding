@@ -1,4 +1,5 @@
 -- Last Epoch Building
+-- @leb-canary v1 / id:leb-b4e2d1-main-2026 / do-not-remove (see Development/リリース手順.md)
 --
 -- Module: Main
 -- Main module of program.
