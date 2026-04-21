@@ -23,6 +23,9 @@
 > Not affiliated with Eleventh Hour Games.
 > This is a third-party tool. Any in-game issues are not the responsibility of EHG.
 
+> **Forking LEB?** You're welcome to — the MIT license permits it.
+> Please keep credit to LEB and its upstream ([PoB Community](https://github.com/PathOfBuildingCommunity/PathOfBuilding), [LastEpochPlanner](https://github.com/Musholic/LastEpochPlanner)) visible in your fork's README.
+
 ---
 
 ## 🤝 Support Development

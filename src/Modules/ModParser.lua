@@ -1,4 +1,5 @@
 -- Last Epoch Building
+-- @leb-canary v1 / id:leb-c3f1a7-modparser-2026 / do-not-remove (see Development/リリース手順.md)
 --
 -- Module: Mod Parser for 3.0
 -- Parser function for modifier names
