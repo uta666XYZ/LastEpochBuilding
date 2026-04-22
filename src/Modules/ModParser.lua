@@ -845,6 +845,64 @@ specialModList["^%+?([%d%.]+)%% chance to cast (.+) when you use (.+)$"] = funct
 	return nsList(mod("ChanceToCast_" .. trig:gsub("%s+",""), "BASE", num, "", 0, 0, { type = "SkillName", skillName = trig }, { type = "Condition", var = "OnUse_" .. cast:gsub("%s+","") }))
 end
 
+-- Recognition-only catch-alls for remaining red-text idol patterns.
+-- These use broad (.+) captures and deliberately run AFTER the specific patterns above;
+-- scan() picks the longest match, so specific patterns still win when they apply.
+local function nsAny(num)
+	return nsList(mod("LEB_NotSupported", "BASE", num))
+end
+
+-- Buff-conditional stat scaling (e.g. "+19% Increased Cast Speed while you have Lightning Aegis")
+specialModList["^%+?([%d%.]+)%% increased (.+) while you have (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% reduced (.+) while you have (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% more (.+) while you have (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% less (.+) while you have (.+)$"] = nsAny
+
+-- Chance-to-gain <buff> on generic triggers (hit, crit, kill, dodge, block, potion use)
+-- Existing per-buff patterns for Echo/Totem still win via longest-match.
+specialModList["^%+?([%d%.]+)%% chance to gain (.+) when hit$"] = nsAny
+specialModList["^%+?([%d%.]+)%% chance to gain (.+) when you are hit$"] = nsAny
+specialModList["^%+?([%d%.]+)%% chance to gain (.+) on hit$"] = nsAny
+specialModList["^%+?([%d%.]+)%% chance to gain (.+) on kill$"] = nsAny
+specialModList["^%+?([%d%.]+)%% chance to gain (.+) on crit$"] = nsAny
+specialModList["^%+?([%d%.]+)%% chance to gain (.+) when you crit$"] = nsAny
+specialModList["^%+?([%d%.]+)%% chance to gain (.+) when you dodge$"] = nsAny
+specialModList["^%+?([%d%.]+)%% chance to gain (.+) when you block$"] = nsAny
+specialModList["^%+?([%d%.]+)%% chance to gain (.+) when you use a potion$"] = nsAny
+specialModList["^%+?([%d%.]+)%% chance to gain (.+) for (%d+) seconds? when hit$"] = nsAny
+specialModList["^%+?([%d%.]+)%% chance to gain (.+) for (%d+) seconds? on kill$"] = nsAny
+specialModList["^%+?([%d%.]+)%% chance to gain (.+) for (%d+) seconds? on crit$"] = nsAny
+specialModList["^%+?([%d%.]+)%% chance to gain (.+) for (%d+) seconds? when you dodge$"] = nsAny
+specialModList["^%+?([%d%.]+)%% chance to gain (.+) for (%d+) seconds? when you block$"] = nsAny
+
+-- Ailment / charge application (e.g. "+3% Chance to apply Frailty on Minion Hit",
+--                                     "+1% Chance to apply a Spark Charge on Lightning Melee Hit")
+specialModList["^%+?([%d%.]+)%% chance to apply (.+) on hit$"] = nsAny
+specialModList["^%+?([%d%.]+)%% chance to apply (.+) on kill$"] = nsAny
+specialModList["^%+?([%d%.]+)%% chance to apply (.+) on crit$"] = nsAny
+specialModList["^%+?([%d%.]+)%% chance to apply (.+) on (.+) hit$"] = nsAny
+specialModList["^%+?([%d%.]+)%% chance to apply (.+) when you (.+)$"] = nsAny
+
+-- Resource conversion / spend-gained (e.g. "40% of Mana Spent Gained as Ward")
+specialModList["^%+?([%d%.]+)%% of (.+) spent gained as (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% of (.+) gained as (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% of (.+) converted to (.+)$"] = nsAny
+
+-- "N <resource> gained when you use <skill>" variants (already covered per-skill above,
+-- but catch unknown-skill phrasing as recognition-only)
+specialModList["^%+?(%d+) (%a+) gained when you use (.+)$"] = nsAny
+specialModList["^%+?(%d+) (%a+) gained when hit$"] = nsAny
+specialModList["^%+?(%d+) (%a+) gained when you are hit$"] = nsAny
+specialModList["^%+?(%d+) (%a+) gained on kill$"] = nsAny
+specialModList["^%+?(%d+) (%a+) gained on crit$"] = nsAny
+specialModList["^%+?(%d+) (%a+) gained on hit$"] = nsAny
+
+-- Compound "... this effect is doubled if ..." clauses (e.g. doubled-at-300-mana lightning damage)
+specialModList["^%+?([%d%.]+)%% increased (.+)%. this effect is doubled if (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% reduced (.+)%. this effect is doubled if (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% more (.+)%. this effect is doubled if (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% less (.+)%. this effect is doubled if (.+)$"] = nsAny
+
 -- Modifiers that are recognised but unsupported
 local unsupportedModList = {
 	["chance to shred # resistance on hit"] = true,
