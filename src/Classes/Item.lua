@@ -471,6 +471,8 @@ function ItemClass:ParseRaw(raw, rarity, highQuality)
 						modLine.valueScalar = tonumber(val)
 					elseif k == "rounding" then
 						modLine.rounding = val
+					elseif k == "affixType" then
+						modLine.affixType = val
 					elseif lineFlags[k] then
 						modLine[k] = true
 					end
@@ -700,6 +702,9 @@ function ItemClass:BuildRaw()
 		local line = modLine.line
 		if modLine.rounding and itemLib.hasRange(line) then
 			line = "{rounding:" .. modLine.rounding .. "}" .. line
+		end
+		if modLine.affixType then
+			line = "{affixType:" .. modLine.affixType .. "}" .. line
 		end
 		if modLine.valueScalar and modLine.valueScalar ~= 1 then
 			line = "{scalar:" .. round(modLine.valueScalar, 3) .. "}" .. line
