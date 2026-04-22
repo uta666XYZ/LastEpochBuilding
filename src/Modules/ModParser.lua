@@ -665,6 +665,10 @@ local specialModList = {
 	["^%+?(%d+)%% maximum health gained as endurance threshold$"] = function(num)
 		return { mod("LifeAsEnduranceThreshold", "BASE", tonumber(num)) }
 	end,
+	-- Sentinel Defiance: "+1 Endurance Threshold Per 2% Uncapped Elemental Resistance"
+	["^%+?(%d+) endurance threshold per 2%% uncapped elemental resistance$"] = function(num)
+		return { mod("EnduranceThresholdPerUncappedEleRes", "BASE", tonumber(num)) }
+	end,
 	-- Runemaster: Sanguine Runestones 6-point bonus
 	["^(%d+)%% health regen also applies to ward$"] = function(num)
 		return { mod("LifeRegenAppliesToWard", "BASE", tonumber(num)) }

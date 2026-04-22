@@ -1243,6 +1243,12 @@ function calcs.buildDefenceEstimations(env, actor)
 	if lifeAsEndThresh > 0 then
 		etBase = etBase + (output.Life or 0) * lifeAsEndThresh / 100
 	end
+	-- Sentinel Defiance: "+N Endurance Threshold Per 2% Uncapped Elemental Resistance"
+	local etPerUncappedEleRes = modDB:Sum("BASE", nil, "EnduranceThresholdPerUncappedEleRes")
+	if etPerUncappedEleRes > 0 then
+		local totalUncapped = (output.FireResistTotal or 0) + (output.ColdResistTotal or 0) + (output.LightningResistTotal or 0)
+		etBase = etBase + m_floor(totalUncapped / 2) * etPerUncappedEleRes
+	end
 	local etInc = m_max(calcLib.mod(modDB, nil, "EnduranceThreshold"), 0)
 	output.EnduranceThreshold = m_floor(etBase * etInc)
 	output.EnduranceThresholdValue = output.EnduranceThreshold
