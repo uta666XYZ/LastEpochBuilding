@@ -825,6 +825,15 @@ function ImportTabClass:DownloadLEToolsPlannerBuild(url)
             self:ImportPassiveTreeAndJewels(char)
             self:ImportItemsAndSkills(char)
             self:ImportBlessingsFromLETools(data)
+            -- LETools' planner UI always displays stats with both quest
+            -- rewards included (confirmed via "Quest Reward: +2 Dexterity"
+            -- breakdown label on 2026-04-22). The API JSON itself carries
+            -- no quest flag, so auto-enable both to match LETools numbers.
+            self.build.configTab.input.questApophisMajasa = true
+            self.build.configTab.input.questTempleOfEterra = true
+            self.build.configTab:BuildModList()
+            self.build.configTab:UpdateControls()
+            self.build.buildFlag = true
             local msg = "LETools build imported."
             if char._parseErrors and char._parseErrors > 0 then
                 msg = msg .. " (" .. char._parseErrors .. " items skipped)"
