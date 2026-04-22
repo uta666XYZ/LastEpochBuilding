@@ -405,6 +405,20 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
             self.controls.importCodeGo.onClick()
         end
     end
+    -- Close button: clears the code/link input and restores sections 1 & 2.
+    -- Without this the user can't get back to the realm download flow once
+    -- anything has been typed into the code field.
+    self.controls.importCodeClose = new("ButtonControl", { "LEFT", self.controls.importCodeGo, "RIGHT" }, 8, 0, 60, 20, "Close", function()
+        self.controls.importCodeIn:SetText("", true)
+        self.importCodeSite = nil
+        self.importCodeDetail = ""
+        self.importCodeXML = nil
+        self.importCodeValid = false
+        self.activeImportSection = nil
+    end)
+    self.controls.importCodeClose.shown = function()
+        return self.charImportMode == "GETACCOUNTNAME" and self.activeImportSection ~= 1 and self.activeImportSection ~= 2
+    end
 end)
 
 function ImportTabClass:Load(xml, fileName)
@@ -1811,6 +1825,62 @@ function ImportTabClass:ImportItemsAndSkills(charData)
                 local omenSlot = itemsTab.slots["Omen Idol " .. i]
                 if omenSlot then
                     omenSlot:SetSelItemId(fi.itemId)
+                end
+            end
+
+            -- Apply Idol Altar "increased Effect of [Prefixes/Suffixes] for Idols
+            -- in Refracted Slots" to idols on fractured cells by scaling the
+            -- affix valueScalar. Applied once on the idol itself (which is
+            -- counted once in the regular idol slot; Omen Idol slots are
+            -- skipped in CalcSetup to avoid double-counting).
+            local altarSlot = itemsTab.slots["Idol Altar"]
+            if altarSlot and altarSlot.selItemId and altarSlot.selItemId ~= 0 and #fracturedIdols > 0 then
+                local altar = itemsTab.items[altarSlot.selItemId]
+                if altar and altar.explicitModLines then
+                    local prefixPct, suffixPct = 0, 0
+                    for _, modLine in ipairs(altar.explicitModLines) do
+                        local line = (modLine.range and itemLib.applyRange(modLine.line, modLine.range, modLine.valueScalar, modLine.rounding)) or modLine.line
+                        local v = line:match("(%d+)%% increased Effect of Prefixes and Suffixes for Idols in Refracted Slots")
+                        if v then
+                            prefixPct = prefixPct + tonumber(v)
+                            suffixPct = suffixPct + tonumber(v)
+                        else
+                            v = line:match("(%d+)%% increased Effect of Suffixes for Idols in Refracted Slots")
+                            if v then
+                                suffixPct = suffixPct + tonumber(v)
+                            else
+                                v = line:match("(%d+)%% increased Effect of Prefixes for Idols in Refracted Slots")
+                                if v then prefixPct = prefixPct + tonumber(v) end
+                            end
+                        end
+                    end
+                    if prefixPct > 0 or suffixPct > 0 then
+                        local prefixScalar = 1 + prefixPct / 100
+                        local suffixScalar = 1 + suffixPct / 100
+                        for _, fi in ipairs(fracturedIdols) do
+                            local idol = itemsTab.items[fi.itemId]
+                            if idol then
+                                if prefixPct > 0 and idol.prefixes then
+                                    for _, pfx in ipairs(idol.prefixes) do
+                                        if pfx.modId and pfx.modId ~= "None" then
+                                            pfx.valueScalar = prefixScalar
+                                        end
+                                    end
+                                end
+                                if suffixPct > 0 and idol.suffixes then
+                                    for _, sfx in ipairs(idol.suffixes) do
+                                        if sfx.modId and sfx.modId ~= "None" then
+                                            sfx.valueScalar = suffixScalar
+                                        end
+                                    end
+                                end
+                                if idol.Craft then
+                                    idol:Craft()
+                                    idol:BuildAndParseRaw()
+                                end
+                            end
+                        end
+                    end
                 end
             end
         end

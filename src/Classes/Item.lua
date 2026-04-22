@@ -469,8 +469,12 @@ function ItemClass:ParseRaw(raw, rarity, highQuality)
 						modLine.range = tonumber(val)
 					elseif k == "scalar" then
 						modLine.valueScalar = tonumber(val)
+					elseif k == "displayScalar" then
+						modLine.displayValueScalar = tonumber(val)
 					elseif k == "rounding" then
 						modLine.rounding = val
+					elseif k == "affixType" then
+						modLine.affixType = val
 					elseif lineFlags[k] then
 						modLine[k] = true
 					end
@@ -563,6 +567,9 @@ function ItemClass:ParseRaw(raw, rarity, highQuality)
 				if modList then
 					modLine.modList = modList
 					modLine.extra = extra
+					if modList.notSupported then
+						modLine.notSupported = true
+					end
 					t_insert(modLines, modLine)
 					if mode == "GAME" then
 						if gameModeStage == "FINDIMPLICIT" then
@@ -701,8 +708,14 @@ function ItemClass:BuildRaw()
 		if modLine.rounding and itemLib.hasRange(line) then
 			line = "{rounding:" .. modLine.rounding .. "}" .. line
 		end
+		if modLine.affixType then
+			line = "{affixType:" .. modLine.affixType .. "}" .. line
+		end
 		if modLine.valueScalar and modLine.valueScalar ~= 1 then
 			line = "{scalar:" .. round(modLine.valueScalar, 3) .. "}" .. line
+		end
+		if modLine.displayValueScalar and modLine.displayValueScalar ~= modLine.valueScalar then
+			line = "{displayScalar:" .. round(modLine.displayValueScalar, 3) .. "}" .. line
 		end
 		if modLine.range ~= nil and itemLib.hasRange(line) then
 			line = "{range:" .. round(modLine.range, 3) .. "}" .. line
@@ -835,7 +848,27 @@ function ItemClass:Craft()
 					if mod.standardAffixEffectModifier then
 						modScalar = modScalar - mod.standardAffixEffectModifier
 					end
-					local modLine = { line = line, range = affix.range, valueScalar = modScalar }
+					-- Universal affixes (no classSpecificity) are unaffected by the base's affixEffectModifier
+					-- (e.g., "of Insulation" on Omen Idols should not get the -33% penalty)
+					if self.base.affixEffectModifier and self.base.affixEffectModifier ~= 0
+					   and (not mod.classSpecificity or mod.classSpecificity == 0) then
+						modScalar = 1
+					end
+					-- Enchanted affix for Class-Specific Idols: specialAffixType=4 with
+					-- standardAffixEffectModifier=-0.33 rolls ~1.5x on neutral bases
+					-- (not 1.33x). +0.17 matches Maxroll parity on Solar Idol (affix 892).
+					if mod.specialAffixType == 4 and mod.standardAffixEffectModifier == -0.33
+					   and (not self.base.affixEffectModifier or self.base.affixEffectModifier == 0) then
+						modScalar = modScalar + 0.17
+					end
+					local displayScalar = modScalar
+					if affix.valueScalar then
+						modScalar = modScalar * affix.valueScalar
+					end
+					local modLine = { line = line, range = affix.range, valueScalar = modScalar, affixType = mod.type }
+					if affix.valueScalar and affix.valueScalar ~= 1 then
+						modLine.displayValueScalar = displayScalar
+					end
 					t_insert(self.explicitModLines, modLine)
 				end
 			end
