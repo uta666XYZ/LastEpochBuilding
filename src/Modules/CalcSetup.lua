@@ -730,8 +730,123 @@ function calcs.initEnv(build, mode, override, specEnv)
 			end
 		end
 
+		-- Idol Altar: count idols equipped in Omen Idol (Refracted) slots
+		-- so mods like "+N per Idol in a Refracted Slot" can scale.
+		local idolInRefractedSlotCount = 0
+		for slotName, item in pairs(items) do
+			if item and slotName:sub(1, 10) == "Omen Idol " then
+				idolInRefractedSlotCount = idolInRefractedSlotCount + 1
+			end
+		end
+		if idolInRefractedSlotCount > 0 then
+			modDB:NewMod("Multiplier:IdolInRefractedSlot", "BASE", idolInRefractedSlotCount, "Idol Altar")
+		end
+
+		-- Idol Altar: count equipped idols by type/designation for "per Equipped X Idol" mods.
+		-- Uses normal idol grid slots (Idol 1-25); dedupes by itemId to avoid double-counting
+		-- idols that also appear in Omen Idol slots.
+		do
+			local idolTypeCount = {}
+			local hereticalCount = 0
+			local seen = {}
+			for i = 1, 25 do
+				local item = items["Idol " .. i]
+				if item and not seen[item] then
+					seen[item] = true
+					if item.type then
+						idolTypeCount[item.type] = (idolTypeCount[item.type] or 0) + 1
+					end
+					if item.baseName and item.baseName:sub(1, 10) == "Heretical " then
+						hereticalCount = hereticalCount + 1
+					end
+				end
+			end
+			local typeToVar = {
+				["Minor Idol"]   = "EquippedMinorIdol",
+				["Small Idol"]   = "EquippedSmallIdol",
+				["Humble Idol"]  = "EquippedHumbleIdol",
+				["Stout Idol"]   = "EquippedStoutIdol",
+				["Grand Idol"]   = "EquippedGrandIdol",
+				["Large Idol"]   = "EquippedLargeIdol",
+				["Ornate Idol"]  = "EquippedOrnateIdol",
+				["Huge Idol"]    = "EquippedHugeIdol",
+				["Adorned Idol"] = "EquippedAdornedIdol",
+			}
+			for typeName, varName in pairs(typeToVar) do
+				local n = idolTypeCount[typeName]
+				if n and n > 0 then
+					modDB:NewMod("Multiplier:" .. varName, "BASE", n, "Idol Altar")
+				end
+			end
+			if hereticalCount > 0 then
+				modDB:NewMod("Multiplier:EquippedHereticalIdol", "BASE", hereticalCount, "Idol Altar")
+			end
+		end
+
+		-- Idol Altar: evaluate "no larger idols above smaller ones in the grid" condition.
+		-- For each grid column, walking top -> bottom, idol sizes (cell count) must be
+		-- non-decreasing; no larger idol may sit above a smaller one.
+		do
+			local idolDims = {
+				["Minor Idol"] = {1,1}, ["Small Idol"] = {1,1}, ["Humble Idol"] = {2,1},
+				["Stout Idol"] = {1,2}, ["Grand Idol"] = {3,1}, ["Large Idol"] = {1,3},
+				["Ornate Idol"] = {4,1}, ["Huge Idol"] = {1,4}, ["Adorned Idol"] = {2,2},
+			}
+			local idolGridSlots = {
+				{ "Idol 21", "Idol 1",  "Idol 2",  "Idol 3",  "Idol 22" },
+				{ "Idol 4",  "Idol 5",  "Idol 6",  "Idol 7",  "Idol 8"  },
+				{ "Idol 9",  "Idol 10", "Idol 23", "Idol 11", "Idol 12" },
+				{ "Idol 13", "Idol 14", "Idol 15", "Idol 16", "Idol 17" },
+				{ "Idol 24", "Idol 18", "Idol 19", "Idol 20", "Idol 25" },
+			}
+			-- Build per-cell occupancy map (cellOwner[row][col] = {id, size})
+			local cellOwner = {}
+			for r = 1, 5 do cellOwner[r] = {} end
+			for r = 1, 5 do
+				for c = 1, 5 do
+					local item = items[idolGridSlots[r][c]]
+					if item and item.type and idolDims[item.type] then
+						local w, h = idolDims[item.type][1], idolDims[item.type][2]
+						local size = w * h
+						for dr = 0, h - 1 do
+							for dc = 0, w - 1 do
+								local rr, cc = r + dr, c + dc
+								if rr <= 5 and cc <= 5 and not cellOwner[rr][cc] then
+									cellOwner[rr][cc] = { id = item, size = size, topRow = r }
+								end
+							end
+						end
+					end
+				end
+			end
+			local violation = false
+			for col = 1, 5 do
+				local prevSize, prevId = nil, nil
+				for row = 1, 5 do
+					local owner = cellOwner[row][col]
+					if owner and owner.id ~= prevId then
+						if prevSize and owner.size < prevSize then
+							violation = true
+							break
+						end
+						prevSize = owner.size
+						prevId = owner.id
+					end
+				end
+				if violation then break end
+			end
+			if not violation then
+				modDB.conditions["NoLargerIdolsAboveSmaller"] = true
+			end
+		end
+
 		for _, slot in pairs(build.itemsTab.orderedSlots) do
 			local slotName = slot.slotName
+			-- Omen Idol (Fractured) slots mirror an idol already placed in a regular
+			-- Idol slot. Skip them here to avoid double-counting the same item.
+			if slotName:find("^Omen Idol ") then
+				goto continue_orderedSlot
+			end
 			local item = items[slotName]
 			if slotName:sub(1, 10) == "Omen Idol " then
 				item = nil
@@ -900,6 +1015,7 @@ function calcs.initEnv(build, mode, override, specEnv)
 				env.itemModDB.conditions[key .. "In" .. slotName] = true
 				env.itemModDB.multipliers[item.type:gsub(" ", ""):gsub(".+Handed", "").."Item"] = (env.itemModDB.multipliers[item.type:gsub(" ", ""):gsub(".+Handed", "").."Item"] or 0) + 1
 			end
+			::continue_orderedSlot::
 		end
 		-- Override empty socket calculation if set in config
 		env.itemModDB.multipliers.EmptyRedSocketsInAnySlot = (env.config.overrideEmptyRedSockets or env.itemModDB.multipliers.EmptyRedSocketsInAnySlot)

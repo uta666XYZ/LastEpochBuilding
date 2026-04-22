@@ -256,7 +256,10 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 		omenSlot.shown = function()
 			if self.activeAltarLayout == "Default" then return false end
 			local layout = IDOL_ALTAR_LAYOUTS[self.activeAltarLayout]
-			return layout ~= nil and slotNum <= layout.baseCapacity
+			if not layout then return false end
+			local capacity = layout.baseCapacity + (self:GetOmenIdolCapacityBonus() or 0)
+			if capacity > MAX_OMEN_IDOL_SLOTS then capacity = MAX_OMEN_IDOL_SLOTS end
+			return slotNum <= capacity
 		end
 		self.slots[omenSlot.slotName] = omenSlot
 		t_insert(self.orderedSlots, omenSlot)
@@ -735,7 +738,7 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 	-- Craft shortcut buttons: square 48x48 image-only buttons below the paperdoll.
 	-- Centered under the 288px-wide paperdoll: 3*48 + 2*4 = 152px → x offset = (288-152)/2 = 68.
 	self.controls.craftIdolBtn = new("ButtonControl", {"TOPLEFT", self.controls.paperdoll, "BOTTOMLEFT"}, 68, 8, 48, 48, "", function()
-		self:CraftItem()
+		self:CraftItem(nil, "Idol")
 	end)
 	self.controls.craftIdolBtn:SetImage("Assets/idol/smallEterranIdol.png")
 	self.controls.craftIdolBtn.tooltipText = "Craft Idol..."
@@ -1010,6 +1013,22 @@ end
 --   1. Add to drag-target lists so items can be dragged onto it.
 --   2. Add an entry to every existing item set so SetSelItemId / SetActiveItemSet
 --      never index a nil key.
+-- Returns the bonus Omen Idol slot count granted by the equipped Idol Altar
+-- (from "+N Maximum Omen Idols Equipped" prefix affixes).
+function ItemsTabClass:GetOmenIdolCapacityBonus()
+	local altarSlot = self.controls.idolAltarSlot
+	if not altarSlot then return 0 end
+	local item = self.items[altarSlot.selItemId]
+	if not item or not item.modList then return 0 end
+	local bonus = 0
+	for _, mod in ipairs(item.modList) do
+		if mod.name == "MaximumOmenIdols" and mod.type == "BASE" then
+			bonus = bonus + (mod.value or 0)
+		end
+	end
+	return bonus
+end
+
 function ItemsTabClass:RegisterLateSlot(slot)
 	-- Drag targets
 	t_insert(self.controls.itemList.dragTargetList, slot)
@@ -2053,12 +2072,51 @@ function ItemsTabClass:AddItemTooltip(tooltip, item, slot, dbMode)
 		item.requirements.strMod, item.requirements.dexMod, item.requirements.intMod,
 		item.requirements.str or 0, item.requirements.dex or 0, item.requirements.int or 0)
 
+	-- Refracted Slot altar-boost preview: if this idol is hovered in an Omen Idol
+	-- slot, fetch the altar's "Effect ... for Idols in Refracted Slots" mods and
+	-- pass per-line boost fractions to formatModLine so the tooltip shows
+	-- "+20 Health  (-> +30 with Altar)".
+	local altarBoostPrefix, altarBoostSuffix, altarBoostWeaver = 0, 0, 0
+	if slot and slot.slotName and slot.slotName:match("^Omen Idol %d+$") then
+		local altarSlot = self.controls.idolAltarSlot
+		local altarItem = altarSlot and self.items[altarSlot.selItemId]
+		if altarItem and altarItem.modList then
+			local common = 0
+			for _, mod in ipairs(altarItem.modList) do
+				if mod.type == "INC" then
+					if mod.name == "IdolRefractedAffixEffect" then
+						common = common + (mod.value or 0)
+					elseif mod.name == "IdolRefractedPrefixEffect" then
+						altarBoostPrefix = altarBoostPrefix + (mod.value or 0)
+					elseif mod.name == "IdolRefractedSuffixEffect" then
+						altarBoostSuffix = altarBoostSuffix + (mod.value or 0)
+					elseif mod.name == "IdolRefractedWeaverEffect" then
+						altarBoostWeaver = altarBoostWeaver + (mod.value or 0)
+					end
+				end
+			end
+			altarBoostPrefix = (altarBoostPrefix + common) / 100
+			altarBoostSuffix = (altarBoostSuffix + common) / 100
+			altarBoostWeaver = (altarBoostWeaver + common) / 100
+		end
+	end
+
 	-- Modifiers
-	for _, modList in ipairs{item.enchantModLines, item.implicitModLines, item.explicitModLines} do
+	for listIdx, modList in ipairs{item.enchantModLines, item.implicitModLines, item.explicitModLines} do
 		if modList[1] then
 			for _, modLine in ipairs(modList) do
 				if item:CheckModLineVariant(modLine) then
-					tooltip:AddLine(16, itemLib.formatModLine(modLine, dbMode))
+					local boost
+					if listIdx == 1 then
+						boost = altarBoostWeaver
+					elseif listIdx == 3 then
+						if modLine.affixType == "Prefix" then
+							boost = altarBoostPrefix
+						elseif modLine.affixType == "Suffix" then
+							boost = altarBoostSuffix
+						end
+					end
+					tooltip:AddLine(16, itemLib.formatModLine(modLine, dbMode, boost))
 				end
 			end
 			tooltip:AddSeparator(10)

@@ -72,6 +72,8 @@ local modNameList = {
 	["endurance"] = "Endurance",
 	["endurance threshold"] = "EnduranceThreshold",
 	["ward decay threshold"] = "WardDecayThreshold",
+	["maximum omen idols equipped"] = "MaximumOmenIdols",
+	["maximum omen idols"] = "MaximumOmenIdols",
 	["ward per second"] = "WardPerSecond",
 	["ward retention"] = "WardRetention",
 	["ward regen"] = "WardPerSecond",
@@ -404,6 +406,18 @@ local modTagList = {
 	["per complete set"] = { tag = { type = "Multiplier", var = "CompleteSetCount" } },
 	["per arcane shield"] = { tag = { type = "Multiplier", var = "ArcaneShieldStack" } },
 	["per companion"] = { tag = { type = "Multiplier", var = "Companion" } },
+	["per idol in a refracted slot"] = { tag = { type = "Multiplier", var = "IdolInRefractedSlot" } },
+	["per equipped heretical idol"] = { tag = { type = "Multiplier", var = "EquippedHereticalIdol" } },
+	["per equipped huge idol"] = { tag = { type = "Multiplier", var = "EquippedHugeIdol" } },
+	["per equipped ornate idol"] = { tag = { type = "Multiplier", var = "EquippedOrnateIdol" } },
+	["per equipped grand idol"] = { tag = { type = "Multiplier", var = "EquippedGrandIdol" } },
+	["per equipped large idol"] = { tag = { type = "Multiplier", var = "EquippedLargeIdol" } },
+	["per equipped adorned idol"] = { tag = { type = "Multiplier", var = "EquippedAdornedIdol" } },
+	["per equipped stout idol"] = { tag = { type = "Multiplier", var = "EquippedStoutIdol" } },
+	["per equipped humble idol"] = { tag = { type = "Multiplier", var = "EquippedHumbleIdol" } },
+	["per equipped small idol"] = { tag = { type = "Multiplier", var = "EquippedSmallIdol" } },
+	["per equipped minor idol"] = { tag = { type = "Multiplier", var = "EquippedMinorIdol" } },
+	["if there are no larger idols above smaller ones in the grid"] = { tag = { type = "Condition", var = "NoLargerIdolsAboveSmaller" } },
 	["per symbol"] = { tag = { type = "Multiplier", var = "ActiveSymbol" } },
 	["per active symbol"] = { tag = { type = "Multiplier", var = "ActiveSymbol" } },
 	["per symbol consumed"] = { tag = { type = "Multiplier", var = "ActiveSymbol" } },
@@ -621,8 +635,48 @@ for _, damageType in ipairs(DamageTypes) do
 	specialQuickFixModList[damageType .. " Shred Chance"] = "Shred " .. damageType .. " Resistance Chance"
 end
 
+-- Build a mod list tagged as "recognised but not yet implemented in LEB".
+-- Item.lua propagates this flag to modLine.notSupported; formatModLine appends a
+-- "(NOT SUPPORTED IN LEB YET)" annotation so the line is neither red nor silently
+-- producing a ghost mod.
+local function nsList(...)
+	local list = { ... }
+	list.notSupported = true
+	return list
+end
+
+-- Lowercased skill name -> canonical name (used by idol-affix specialModList patterns)
+local skillNameByLower = {}
+for _, skill in pairs(data.skills) do
+	if skill.name then
+		skillNameByLower[skill.name:lower()] = skill.name
+	end
+end
+
+-- Normalize a captured skill phrase and return canonical skill name or nil
+local function canonicalSkillName(phrase)
+	if not phrase then return nil end
+	phrase = phrase:match("^%s*(.-)%s*$")
+	return skillNameByLower[phrase:lower()]
+end
+
 local specialModList = {
 	["no cooldown"] = { flag("NoCooldown") },
+	-- Idol Altar: Refracted Slot affix-effect modifiers.
+	-- Produce named INC mods so the values accumulate on modDB and are visible (not red);
+	-- actual per-affix scaling of refracted-slot idols is handled elsewhere.
+	["^(%d+)%% increased effect of prefixes and suffixes for idols in refracted slots$"] = function(num)
+		return { mod("IdolRefractedAffixEffect", "INC", num) }
+	end,
+	["^(%d+)%% increased effect of prefixes for idols in refracted slots$"] = function(num)
+		return { mod("IdolRefractedPrefixEffect", "INC", num) }
+	end,
+	["^(%d+)%% increased effect of suffixes for idols in refracted slots$"] = function(num)
+		return { mod("IdolRefractedSuffixEffect", "INC", num) }
+	end,
+	["^(%d+)%% increased effect of weaver enchantment affixes for idols in refracted slots$"] = function(num)
+		return { mod("IdolRefractedWeaverEffect", "INC", num) }
+	end,
 	-- Ward when hit (item affix: "X% Chance to Gain 30 Ward when Hit")
 	["^(%d+)%% chance to gain (%d+) ward when hit$"] = function(num, chance, amount)
 		return { mod("ChanceToGainWardWhenHit", "BASE", tonumber(chance)), mod("WardGainedWhenHit", "BASE", tonumber(amount)) }
@@ -680,7 +734,222 @@ local specialModList = {
 	end,
 	-- Rusted Cleaver unique: Intelligence gains a value equal to Strength
 	["^%+1 intelligence equals strength$"] = { flag("IntEqualsStr") },
+
+	-- Category A: "X% increased Damage for Totems" (distinct from "per totem")
+	["^%+?([%d%.]+)%% increased damage for totems$"] = function(num)
+		return { mod("Damage", "INC", num, "", 0, 0, { type = "Scope", scope = "totem" }) }
+	end,
 }
+
+-- Escape Lua pattern specials (non-word chars)
+local function escPat(s) return (s:gsub("(%W)", "%%%1")) end
+
+-- Per-skill idol affix patterns (recognised with proper SkillName tags).
+-- Only A (damage) and H (cooldown) are registered per-skill since they integrate
+-- with DPS calcs via SkillName. Trigger-chance / resource-gain mods are intentionally
+-- left unrecognised for now to avoid bloating specialModList with thousands of patterns.
+-- Skill names that collide with damage types / keywords — skip to avoid hijacking
+-- generic parsing of e.g. "increased poison damage".
+local skillNameBlacklist = { bleed = true, poison = true }
+for lower, canonical in pairs(skillNameByLower) do
+	if not skillNameBlacklist[lower] then
+		local esc = escPat(lower)
+		specialModList["^%+?([%d%.]+)%% increased damage with " .. esc .. "$"] = function(num)
+			return { mod("Damage", "INC", num, "", 0, 0, { type = "SkillName", skillName = canonical }) }
+		end
+		specialModList["^%+?([%d%.]+)%% increased " .. esc .. " damage$"] = function(num)
+			return { mod("Damage", "INC", num, "", 0, 0, { type = "SkillName", skillName = canonical }) }
+		end
+		specialModList["^%+?([%d%.]+)%% increased damage with " .. esc .. " per active shadow$"] = function(num)
+			return { mod("Damage", "INC", num, "", 0, 0, { type = "SkillName", skillName = canonical }, { type = "Multiplier", var = "ActiveShadow" }) }
+		end
+		specialModList["^%+?([%d%.]+)%% increased cooldown recovery speed for " .. esc .. "$"] = function(num)
+			return { mod("CooldownRecovery", "INC", num, "", 0, 0, { type = "SkillName", skillName = canonical }) }
+		end
+		specialModList["^%+?([%d%.]+)%% increased cooldown recovery speed of " .. esc .. "$"] = function(num)
+			return { mod("CooldownRecovery", "INC", num, "", 0, 0, { type = "SkillName", skillName = canonical }) }
+		end
+	end
+end
+
+-- Buff-effect recognition (named stats only; no DPS integration yet)
+local knownBuffsOnYou = { "Haste", "Frenzy", "Haven", "Rebuke", "Unholy Might", "Smoke Bomb" }
+for _, buff in ipairs(knownBuffsOnYou) do
+	local esc = escPat(buff:lower())
+	local bVar = buff:gsub("%s+", ""):gsub("[^%a%d_]", "")
+	specialModList["^%+?([%d%.]+)%% increased effect of " .. esc .. " on you$"] = function(num)
+		return nsList(mod(bVar .. "Effect", "INC", num))
+	end
+	-- D: Chance to gain <Buff> for N seconds when you Echo an ability
+	specialModList["^%+?(%d+)%% chance to gain " .. esc .. " for (%d+) seconds? when you echo an ability$"] = function(num, chance, duration)
+		return nsList(
+			mod("ChanceToGain" .. bVar .. "OnEcho", "BASE", tonumber(chance)),
+			mod(bVar .. "Duration", "BASE", tonumber(duration))
+		)
+	end
+	-- D: Chance to gain <Buff> for N seconds when you Summon a Totem
+	specialModList["^%+?(%d+)%% chance to gain " .. esc .. " for (%d+) seconds? when you summon a totem$"] = function(num, chance, duration)
+		return nsList(
+			mod("ChanceToGain" .. bVar .. "OnTotemSummon", "BASE", tonumber(chance)),
+			mod(bVar .. "Duration", "BASE", tonumber(duration))
+		)
+	end
+end
+
+-- Recognition-only: trigger-based resource gains (E)
+-- e.g. "3 Mana Gained when you use Vengeance and hit an enemy"
+--      "+4 Mana Gained When you directly cast Smite"
+for lower, canonical in pairs(skillNameByLower) do
+	if not skillNameBlacklist[lower] then
+		local esc = escPat(lower)
+		specialModList["^%+?(%d+) mana gained when you use " .. esc .. " and hit an enemy$"] = function(num)
+			return nsList(mod("ManaGainOnUse_" .. canonical:gsub("%s+",""), "BASE", num, "", 0, 0, { type = "SkillName", skillName = canonical }))
+		end
+		specialModList["^%+?(%d+) mana gained when you directly cast " .. esc .. "$"] = function(num)
+			return nsList(mod("ManaGainOnCast_" .. canonical:gsub("%s+",""), "BASE", num, "", 0, 0, { type = "SkillName", skillName = canonical }))
+		end
+		specialModList["^%+?(%d+) ward gained when you use " .. esc .. "$"] = function(num)
+			return nsList(mod("WardGainOnUse_" .. canonical:gsub("%s+",""), "BASE", num, "", 0, 0, { type = "SkillName", skillName = canonical }))
+		end
+		specialModList["^%+?(%d+) health gained when you use " .. esc .. "$"] = function(num)
+			return nsList(mod("HealthGainOnUse_" .. canonical:gsub("%s+",""), "BASE", num, "", 0, 0, { type = "SkillName", skillName = canonical }))
+		end
+		-- G: Chance to cast <skill> on trigger
+		specialModList["^%+?([%d%.]+)%% chance to cast " .. esc .. " on kill$"] = function(num)
+			return nsList(mod("ChanceToCast_" .. canonical:gsub("%s+",""), "BASE", num, "", 0, 0, { type = "SkillName", skillName = canonical }, { type = "Condition", var = "OnKill" }))
+		end
+		specialModList["^%+?([%d%.]+)%% chance to cast " .. esc .. " on hit$"] = function(num)
+			return nsList(mod("ChanceToCast_" .. canonical:gsub("%s+",""), "BASE", num, "", 0, 0, { type = "SkillName", skillName = canonical }, { type = "Condition", var = "OnHit" }))
+		end
+		specialModList["^%+?([%d%.]+)%% chance to cast " .. esc .. " on crit$"] = function(num)
+			return nsList(mod("ChanceToCast_" .. canonical:gsub("%s+",""), "BASE", num, "", 0, 0, { type = "SkillName", skillName = canonical }, { type = "Condition", var = "OnCrit" }))
+		end
+		specialModList["^%+?([%d%.]+)%% chance to cast " .. esc .. " when you use a potion$"] = function(num)
+			return nsList(mod("ChanceToCast_" .. canonical:gsub("%s+",""), "BASE", num, "", 0, 0, { type = "SkillName", skillName = canonical }, { type = "Condition", var = "OnPotionUse" }))
+		end
+	end
+end
+
+-- Recognition-only: trigger one skill when you cast/use another
+-- e.g. "10% Chance to cast Marrow Shards when you cast Transplant"
+-- Single generic pattern with skill-name validation in the handler (avoids N^2 pattern blowup).
+specialModList["^%+?([%d%.]+)%% chance to cast (.+) when you cast (.+)$"] = function(num, _, triggerName, castName)
+	local trig = canonicalSkillName(triggerName)
+	local cast = canonicalSkillName(castName)
+	if not trig or not cast then return nil end
+	return nsList(mod("ChanceToCast_" .. trig:gsub("%s+",""), "BASE", num, "", 0, 0, { type = "SkillName", skillName = trig }, { type = "Condition", var = "OnCast_" .. cast:gsub("%s+","") }))
+end
+specialModList["^%+?([%d%.]+)%% chance to cast (.+) when you use (.+)$"] = function(num, _, triggerName, castName)
+	local trig = canonicalSkillName(triggerName)
+	local cast = canonicalSkillName(castName)
+	if not trig or not cast then return nil end
+	return nsList(mod("ChanceToCast_" .. trig:gsub("%s+",""), "BASE", num, "", 0, 0, { type = "SkillName", skillName = trig }, { type = "Condition", var = "OnUse_" .. cast:gsub("%s+","") }))
+end
+
+-- Recognition-only catch-alls for remaining red-text idol patterns.
+-- These use broad (.+) captures and deliberately run AFTER the specific patterns above;
+-- scan() picks the longest match, so specific patterns still win when they apply.
+local function nsAny(num)
+	return nsList(mod("LEB_NotSupported", "BASE", num))
+end
+
+-- Buff-conditional stat scaling (e.g. "+19% Increased Cast Speed while you have Lightning Aegis")
+specialModList["^%+?([%d%.]+)%% increased (.+) while you have (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% reduced (.+) while you have (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% more (.+) while you have (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% less (.+) while you have (.+)$"] = nsAny
+
+-- Chance-to-gain <buff> on generic triggers (hit, crit, kill, dodge, block, potion use)
+-- Existing per-buff patterns for Echo/Totem still win via longest-match.
+specialModList["^%+?([%d%.]+)%% chance to gain (.+) when hit$"] = nsAny
+specialModList["^%+?([%d%.]+)%% chance to gain (.+) when you are hit$"] = nsAny
+specialModList["^%+?([%d%.]+)%% chance to gain (.+) on hit$"] = nsAny
+specialModList["^%+?([%d%.]+)%% chance to gain (.+) on kill$"] = nsAny
+specialModList["^%+?([%d%.]+)%% chance to gain (.+) on crit$"] = nsAny
+specialModList["^%+?([%d%.]+)%% chance to gain (.+) when you crit$"] = nsAny
+specialModList["^%+?([%d%.]+)%% chance to gain (.+) when you dodge$"] = nsAny
+specialModList["^%+?([%d%.]+)%% chance to gain (.+) when you block$"] = nsAny
+specialModList["^%+?([%d%.]+)%% chance to gain (.+) when you use a potion$"] = nsAny
+specialModList["^%+?([%d%.]+)%% chance to gain (.+) for (%d+) seconds? when hit$"] = nsAny
+specialModList["^%+?([%d%.]+)%% chance to gain (.+) for (%d+) seconds? on kill$"] = nsAny
+specialModList["^%+?([%d%.]+)%% chance to gain (.+) for (%d+) seconds? on crit$"] = nsAny
+specialModList["^%+?([%d%.]+)%% chance to gain (.+) for (%d+) seconds? when you dodge$"] = nsAny
+specialModList["^%+?([%d%.]+)%% chance to gain (.+) for (%d+) seconds? when you block$"] = nsAny
+
+-- Ailment / charge application (e.g. "+3% Chance to apply Frailty on Minion Hit",
+--                                     "+1% Chance to apply a Spark Charge on Lightning Melee Hit")
+specialModList["^%+?([%d%.]+)%% chance to apply (.+) on hit$"] = nsAny
+specialModList["^%+?([%d%.]+)%% chance to apply (.+) on kill$"] = nsAny
+specialModList["^%+?([%d%.]+)%% chance to apply (.+) on crit$"] = nsAny
+specialModList["^%+?([%d%.]+)%% chance to apply (.+) on (.+) hit$"] = nsAny
+specialModList["^%+?([%d%.]+)%% chance to apply (.+) when you (.+)$"] = nsAny
+
+-- Resource conversion / spend-gained (e.g. "40% of Mana Spent Gained as Ward")
+specialModList["^%+?([%d%.]+)%% of (.+) spent gained as (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% of (.+) gained as (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% of (.+) converted to (.+)$"] = nsAny
+
+-- "N <resource> gained when you use <skill>" variants (already covered per-skill above,
+-- but catch unknown-skill phrasing as recognition-only)
+specialModList["^%+?(%d+) (%a+) gained when you use (.+)$"] = nsAny
+specialModList["^%+?(%d+) (%a+) gained when hit$"] = nsAny
+specialModList["^%+?(%d+) (%a+) gained when you are hit$"] = nsAny
+specialModList["^%+?(%d+) (%a+) gained on kill$"] = nsAny
+specialModList["^%+?(%d+) (%a+) gained on crit$"] = nsAny
+specialModList["^%+?(%d+) (%a+) gained on hit$"] = nsAny
+
+-- Flat stat while wielding a weapon type (e.g. "+1 Spell Damage while wielding a Staff")
+specialModList["^%+?([%d%.]+) (.+) while wielding (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+) (.+) while wielding a (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+) (.+) while wielding an (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+) (.+) while dual wielding$"] = nsAny
+specialModList["^%+?([%d%.]+) (.+) while using a (.+)$"] = nsAny
+
+-- Buff-duration grants after action (e.g. "1 second of Haste after you Transform",
+--                                         "4 seconds of Haste after you use Evade")
+specialModList["^%+?(%d+) seconds? of (.+) after you (.+)$"] = nsAny
+specialModList["^%+?(%d+) seconds? of (.+) on (.+)$"] = nsAny
+specialModList["^%+?(%d+) seconds? of (.+) when (.+)$"] = nsAny
+
+-- Per-active / per-equipped / per-stack multipliers
+-- (e.g. "5% increased Cold Damage per active Totem",
+--       "+5% Chance to inflict Bleed on Hit per equipped Sword")
+specialModList["^%+?([%d%.]+)%% increased (.+) per active (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% reduced (.+) per active (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% more (.+) per active (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% less (.+) per active (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% increased (.+) per equipped (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% reduced (.+) per equipped (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% chance to (.+) per active (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% chance to (.+) per equipped (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+) (.+) per active (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+) (.+) per equipped (.+)$"] = nsAny
+
+-- Exotic chance-to-cast triggers with qualifier / trailing parenthetical
+-- (e.g. "+5% Chance to cast Fire Aura on Kill with Fire Skills (1 second cooldown)",
+--       "+5% Chance to cast Smite on Hit with Throwing Attacks (up to 10 times per 2 seconds)")
+specialModList["^%+?([%d%.]+)%% chance to cast (.+) on (.+) with (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% chance to cast (.+) on (.+) with (.+) %(.+%)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% chance to cast (.+) on (.+) %(.+%)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% chance to cast (.+) when you (.+) %(.+%)$"] = nsAny
+
+-- Damage-taken reductions with qualifier / source
+-- (e.g. "3% reduced Bonus Damage Taken from Critical Strikes",
+--       "5% less Damage Taken from Bosses", "4% reduced Physical Damage Taken")
+specialModList["^%+?([%d%.]+)%% reduced bonus damage taken from (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% less bonus damage taken from (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% reduced damage taken from (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% less damage taken from (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% reduced (.+) damage taken$"] = nsAny
+specialModList["^%+?([%d%.]+)%% less (.+) damage taken$"] = nsAny
+specialModList["^%+?([%d%.]+)%% increased (.+) damage taken$"] = nsAny
+specialModList["^%+?([%d%.]+)%% more (.+) damage taken$"] = nsAny
+
+-- Compound "... this effect is doubled if ..." clauses (e.g. doubled-at-300-mana lightning damage)
+specialModList["^%+?([%d%.]+)%% increased (.+)%. this effect is doubled if (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% reduced (.+)%. this effect is doubled if (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% more (.+)%. this effect is doubled if (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% less (.+)%. this effect is doubled if (.+)$"] = nsAny
 
 -- Modifiers that are recognised but unsupported
 local unsupportedModList = {

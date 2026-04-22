@@ -40,6 +40,13 @@ local SLOT_TYPE_FILTER = {
 		"Two-Handed Sword", "Two-Handed Axe", "Two-Handed Mace",
 		"Two-Handed Spear", "Two-Handed Staff", "Bow",
 	},
+	-- Synthetic slot keys used by the paperdoll craft shortcut buttons.
+	-- These don't correspond to real equip slots, they just scope the type list.
+	["Idol"]       = {
+		"Small Idol", "Minor Idol", "Humble Idol", "Stout Idol",
+		"Grand Idol", "Large Idol", "Ornate Idol", "Huge Idol", "Adorned Idol",
+	},
+	["Idol Altar"] = { "Idol Altar" },
 }
 
 local function filterTypeList(orderedList, slotName)
