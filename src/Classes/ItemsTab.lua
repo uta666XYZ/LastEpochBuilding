@@ -735,7 +735,7 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 	-- Craft shortcut buttons: square 48x48 image-only buttons below the paperdoll.
 	-- Centered under the 288px-wide paperdoll: 3*48 + 2*4 = 152px → x offset = (288-152)/2 = 68.
 	self.controls.craftIdolBtn = new("ButtonControl", {"TOPLEFT", self.controls.paperdoll, "BOTTOMLEFT"}, 68, 8, 48, 48, "", function()
-		self:CraftItem()
+		self:CraftItem(nil, "Idol")
 	end)
 	self.controls.craftIdolBtn:SetImage("Assets/idol/smallEterranIdol.png")
 	self.controls.craftIdolBtn.tooltipText = "Craft Idol..."

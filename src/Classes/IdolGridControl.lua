@@ -88,9 +88,25 @@ local idolSizeHint = {
 }
 
 -- cellW, cellH are optional; defaults to 68 x 46
-local IdolGridControlClass = newClass("IdolGridControl", "Control", "ControlHost", function(self, anchor, x, y, itemsTab, layout, cellW, cellH)
+local IdolGridControlClass = newClass("IdolGridControl", "Control", "ControlHost", "TooltipHost", function(self, anchor, x, y, itemsTab, layout, cellW, cellH)
 	self.cw = cellW or 68
 	self.ch = cellH or 46
+	self.TooltipHost()
+
+	-- Tooltip renderer for the decorative altar icon at the top of the frame.
+	-- Delegates to itemsTab.slots["Idol Altar"] (the real equipment slot) so
+	-- hovering the icon shows the equipped Idol Altar's full item tooltip.
+	self.tooltipFunc = function(tooltip)
+		local altarSlot = itemsTab.slots and itemsTab.slots["Idol Altar"]
+		local item = altarSlot and itemsTab.items[altarSlot.selItemId]
+		if main.popups[1] or not item then
+			tooltip:Clear()
+			return
+		end
+		if tooltip:CheckForUpdate(item, launch.devModeAlt, itemsTab.build.outputRevision) then
+			itemsTab:AddItemTooltip(tooltip, item, altarSlot)
+		end
+	end
 
 	local numCols = #layout[1]
 	local numRows = #layout
@@ -460,6 +476,23 @@ function IdolGridControlClass:Draw(viewPort)
 			local iconY = y - FRAME_DEST_TOP_PAD + m_floor((circleH - ALTAR_EMPTY_SIZE) / 2)
 			SetDrawColor(1, 1, 1)
 			DrawImage(aimg, iconX, iconY, ALTAR_EMPTY_SIZE, ALTAR_EMPTY_SIZE)
+			-- Remember the icon rect so hover detection below can match it.
+			self.altarIconRect = { x = iconX, y = iconY, w = ALTAR_EMPTY_SIZE, h = ALTAR_EMPTY_SIZE }
+		else
+			self.altarIconRect = nil
+		end
+	end
+
+	-- Hover tooltip on the altar icon: show the equipped Idol Altar's item.
+	-- Only triggers when no grid cell is already the mouse-over target so it
+	-- doesn't clobber idol-cell tooltips.
+	if self.altarIconRect and not self:GetMouseOverControl() then
+		local mx, my = GetCursorPos()
+		local r = self.altarIconRect
+		if mx >= r.x and mx < r.x + r.w and my >= r.y and my < r.y + r.h then
+			SetDrawLayer(nil, 100)
+			self:DrawTooltip(r.x, r.y, r.w, r.h, viewPort)
+			SetDrawLayer(nil, 0)
 		end
 	end
 
