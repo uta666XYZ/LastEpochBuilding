@@ -634,6 +634,16 @@ for _, damageType in ipairs(DamageTypes) do
 	specialQuickFixModList[damageType .. " Shred Chance"] = "Shred " .. damageType .. " Resistance Chance"
 end
 
+-- Build a mod list tagged as "recognised but not yet implemented in LEB".
+-- Item.lua propagates this flag to modLine.notSupported; formatModLine appends a
+-- "(NOT SUPPORTED IN LEB YET)" annotation so the line is neither red nor silently
+-- producing a ghost mod.
+local function nsList(...)
+	local list = { ... }
+	list.notSupported = true
+	return list
+end
+
 -- Lowercased skill name -> canonical name (used by idol-affix specialModList patterns)
 local skillNameByLower = {}
 for _, skill in pairs(data.skills) do
@@ -767,22 +777,72 @@ for _, buff in ipairs(knownBuffsOnYou) do
 	local esc = escPat(buff:lower())
 	local bVar = buff:gsub("%s+", ""):gsub("[^%a%d_]", "")
 	specialModList["^%+?([%d%.]+)%% increased effect of " .. esc .. " on you$"] = function(num)
-		return { mod(bVar .. "Effect", "INC", num) }
+		return nsList(mod(bVar .. "Effect", "INC", num))
 	end
 	-- D: Chance to gain <Buff> for N seconds when you Echo an ability
 	specialModList["^%+?(%d+)%% chance to gain " .. esc .. " for (%d+) seconds? when you echo an ability$"] = function(num, chance, duration)
-		return {
+		return nsList(
 			mod("ChanceToGain" .. bVar .. "OnEcho", "BASE", tonumber(chance)),
-			mod(bVar .. "Duration", "BASE", tonumber(duration)),
-		}
+			mod(bVar .. "Duration", "BASE", tonumber(duration))
+		)
 	end
 	-- D: Chance to gain <Buff> for N seconds when you Summon a Totem
 	specialModList["^%+?(%d+)%% chance to gain " .. esc .. " for (%d+) seconds? when you summon a totem$"] = function(num, chance, duration)
-		return {
+		return nsList(
 			mod("ChanceToGain" .. bVar .. "OnTotemSummon", "BASE", tonumber(chance)),
-			mod(bVar .. "Duration", "BASE", tonumber(duration)),
-		}
+			mod(bVar .. "Duration", "BASE", tonumber(duration))
+		)
 	end
+end
+
+-- Recognition-only: trigger-based resource gains (E)
+-- e.g. "3 Mana Gained when you use Vengeance and hit an enemy"
+--      "+4 Mana Gained When you directly cast Smite"
+for lower, canonical in pairs(skillNameByLower) do
+	if not skillNameBlacklist[lower] then
+		local esc = escPat(lower)
+		specialModList["^%+?(%d+) mana gained when you use " .. esc .. " and hit an enemy$"] = function(num)
+			return nsList(mod("ManaGainOnUse_" .. canonical:gsub("%s+",""), "BASE", num, "", 0, 0, { type = "SkillName", skillName = canonical }))
+		end
+		specialModList["^%+?(%d+) mana gained when you directly cast " .. esc .. "$"] = function(num)
+			return nsList(mod("ManaGainOnCast_" .. canonical:gsub("%s+",""), "BASE", num, "", 0, 0, { type = "SkillName", skillName = canonical }))
+		end
+		specialModList["^%+?(%d+) ward gained when you use " .. esc .. "$"] = function(num)
+			return nsList(mod("WardGainOnUse_" .. canonical:gsub("%s+",""), "BASE", num, "", 0, 0, { type = "SkillName", skillName = canonical }))
+		end
+		specialModList["^%+?(%d+) health gained when you use " .. esc .. "$"] = function(num)
+			return nsList(mod("HealthGainOnUse_" .. canonical:gsub("%s+",""), "BASE", num, "", 0, 0, { type = "SkillName", skillName = canonical }))
+		end
+		-- G: Chance to cast <skill> on trigger
+		specialModList["^%+?([%d%.]+)%% chance to cast " .. esc .. " on kill$"] = function(num)
+			return nsList(mod("ChanceToCast_" .. canonical:gsub("%s+",""), "BASE", num, "", 0, 0, { type = "SkillName", skillName = canonical }, { type = "Condition", var = "OnKill" }))
+		end
+		specialModList["^%+?([%d%.]+)%% chance to cast " .. esc .. " on hit$"] = function(num)
+			return nsList(mod("ChanceToCast_" .. canonical:gsub("%s+",""), "BASE", num, "", 0, 0, { type = "SkillName", skillName = canonical }, { type = "Condition", var = "OnHit" }))
+		end
+		specialModList["^%+?([%d%.]+)%% chance to cast " .. esc .. " on crit$"] = function(num)
+			return nsList(mod("ChanceToCast_" .. canonical:gsub("%s+",""), "BASE", num, "", 0, 0, { type = "SkillName", skillName = canonical }, { type = "Condition", var = "OnCrit" }))
+		end
+		specialModList["^%+?([%d%.]+)%% chance to cast " .. esc .. " when you use a potion$"] = function(num)
+			return nsList(mod("ChanceToCast_" .. canonical:gsub("%s+",""), "BASE", num, "", 0, 0, { type = "SkillName", skillName = canonical }, { type = "Condition", var = "OnPotionUse" }))
+		end
+	end
+end
+
+-- Recognition-only: trigger one skill when you cast/use another
+-- e.g. "10% Chance to cast Marrow Shards when you cast Transplant"
+-- Single generic pattern with skill-name validation in the handler (avoids N^2 pattern blowup).
+specialModList["^%+?([%d%.]+)%% chance to cast (.+) when you cast (.+)$"] = function(num, _, triggerName, castName)
+	local trig = canonicalSkillName(triggerName)
+	local cast = canonicalSkillName(castName)
+	if not trig or not cast then return nil end
+	return nsList(mod("ChanceToCast_" .. trig:gsub("%s+",""), "BASE", num, "", 0, 0, { type = "SkillName", skillName = trig }, { type = "Condition", var = "OnCast_" .. cast:gsub("%s+","") }))
+end
+specialModList["^%+?([%d%.]+)%% chance to cast (.+) when you use (.+)$"] = function(num, _, triggerName, castName)
+	local trig = canonicalSkillName(triggerName)
+	local cast = canonicalSkillName(castName)
+	if not trig or not cast then return nil end
+	return nsList(mod("ChanceToCast_" .. trig:gsub("%s+",""), "BASE", num, "", 0, 0, { type = "SkillName", skillName = trig }, { type = "Condition", var = "OnUse_" .. cast:gsub("%s+","") }))
 end
 
 -- Modifiers that are recognised but unsupported
