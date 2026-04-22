@@ -57,6 +57,11 @@ end
 local PANEL_W   = 288
 local TITLE_H   = 22  -- title bar height
 local PANEL_H   = 390 + TITLE_H
+-- Craft section extends the drawn bg below the paperdoll's anchor area so the
+-- dark panel visually wraps the 3 craft shortcut buttons (Idol / Idol Altar /
+-- Blessing) that ItemsTab anchors to paperdoll BOTTOMLEFT.
+-- Buttons: 48 tall, anchored +8 below the paperdoll, so bg extends 8+48+8=64px.
+local CRAFT_SECTION_EXTRA_H = 64
 local PAD       = 4   -- slot inner padding for ghost sprite
 
 -- Slot border colours (dark brownish, like in-game equipment panel)
@@ -135,9 +140,16 @@ end
 function PaperdollControlClass:Draw(viewPort)
     local cx, cy = self:GetPos()
 
-    -- Panel background
+    -- Panel background. Extended beyond the control's own height to cover the
+    -- craft shortcut buttons (Craft Idol / Idol Altar / Blessing) that
+    -- ItemsTab anchors to paperdoll BOTTOMLEFT — together this forms the
+    -- "craft section". ControlHost iterates children via pairs() (undefined
+    -- order), so the extended bg is pushed to a lower draw layer to ensure
+    -- the buttons render on top regardless of iteration order.
+    SetDrawLayer(nil, -10)
     SetDrawColor(BG_R, BG_G, BG_B)
-    DrawImage(nil, cx, cy, PANEL_W, PANEL_H)
+    DrawImage(nil, cx, cy, PANEL_W, PANEL_H + CRAFT_SECTION_EXTRA_H)
+    SetDrawLayer(nil, 0)
 
     -- Title bar
     SetDrawColor(0.12, 0.11, 0.08)
@@ -146,7 +158,7 @@ function PaperdollControlClass:Draw(viewPort)
     DrawImage(nil, cx, cy + TITLE_H - 1, PANEL_W, 2)
     SetDrawColor(1, 1, 1)
     DrawString(cx + m_floor(PANEL_W / 2), cy + m_floor((TITLE_H - 12) / 2),
-        "CENTER_X", 12, "VAR", "^xD4BB88Equipment")
+        "CENTER_X", 12, "VAR", "^xD4BB88Crafting Items...")
 
     local hovDef = self:GetHoveredSlotDef()
 
@@ -179,6 +191,16 @@ function PaperdollControlClass:Draw(viewPort)
         end
 
         drawPlusMark(sx, sy, def.w, def.h, hov)
+    end
+
+    -- Tooltip for the hovered slot: "Craft <Slot>..."
+    if hovDef then
+        local sx = cx + hovDef.x
+        local sy = cy + TITLE_H + hovDef.y
+        self.tooltipText = "Craft " .. hovDef.slot .. "..."
+        self:DrawTooltip(sx, sy, hovDef.w, hovDef.h, viewPort)
+    else
+        self.tooltipText = nil
     end
 end
 
