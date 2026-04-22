@@ -125,7 +125,7 @@ c["+1 Dodge Rating Per Dexterity"]={{[1]={[1]={stat="Dex",type="PerStat"},flags=
 c["+1 Dodge Rating per Dex inside Feather Storm"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="BASE",value=1}},"  per Dex inside Feather Storm "}
 c["+1 Duration (Seconds)"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="BASE",value=1}},"  (Seconds) "}
 c["+1 Duration (seconds)"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="BASE",value=1}},"  (seconds) "}
-c["+1 Endurance Threshold Per 2% Uncapped Elemental Resistance"]={{[1]={flags=0,keywordFlags=14,name="EnduranceThreshold",type="BASE",value=1}},"  Per 2% Uncapped  Resistance "}
+c["+1 Endurance Threshold Per 2% Uncapped Elemental Resistance"]={{[1]={flags=0,keywordFlags=0,name="EnduranceThresholdPerUncappedEleRes",type="BASE",value=1}},nil}
 c["+1 Endurance Threshold Per Attunement Per Stack"]={{[1]={[1]={stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="EnduranceThreshold",type="BASE",value=1}},"   Per Stack "}
 c["+1 Extra Projectiles"]={{[1]={flags=0,keywordFlags=0,name="ProjectileCount",type="BASE",value=1}},nil}
 c["+1 Falcon Melee Damage Buff"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="BASE",value=1}}," Falcon   Buff "}
