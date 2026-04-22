@@ -267,7 +267,15 @@ function DropDownClass:Draw(viewPort, noTooltip)
 		SetDrawColor(0.5, 0.5, 0.5)
 	end
 	local arrowH = self.arrowH or (height / 2)
-	main:DrawArrow(x + width - height/2, y + height/2, arrowH, arrowH, "DOWN")
+	if self.emptyPlusMarker then
+		-- Centered "+" marker (used by idol grid cells to match blessing slot style)
+		local cx = x + width / 2
+		local cy = y + height / 2
+		local len = arrowH
+		DrawString(cx, cy - len / 2 - 1, "CENTER_X", len, "VAR", "+")
+	else
+		main:DrawArrow(x + width - height/2, y + height/2, arrowH, arrowH, "DOWN")
+	end
 	if self.dropped then
 		SetDrawLayer(nil, 5)
 		SetDrawColor(0, 0, 0)
@@ -303,6 +311,11 @@ function DropDownClass:Draw(viewPort, noTooltip)
 		if type(selLabel) == "table" then
 			selLabel = selLabel.label
 		end
+	end
+	-- For idol-style cells the "+" marker already conveys empty state; suppress
+	-- the "None" label so its clipped left-edge pixels don't show as stray bars.
+	if self.emptyPlusMarker and self.selIndex == 1 then
+		selLabel = nil
 	end
 	local drawWidth = width - height/2 - arrowH  -- expands when arrowH < height/2 (e.g. idol grid cells)
 	local fontSize = 16
