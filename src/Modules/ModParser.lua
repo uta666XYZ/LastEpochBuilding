@@ -72,6 +72,8 @@ local modNameList = {
 	["endurance"] = "Endurance",
 	["endurance threshold"] = "EnduranceThreshold",
 	["ward decay threshold"] = "WardDecayThreshold",
+	["maximum omen idols equipped"] = "MaximumOmenIdols",
+	["maximum omen idols"] = "MaximumOmenIdols",
 	["ward per second"] = "WardPerSecond",
 	["ward retention"] = "WardRetention",
 	["ward regen"] = "WardPerSecond",
@@ -404,6 +406,17 @@ local modTagList = {
 	["per arcane shield"] = { tag = { type = "Multiplier", var = "ArcaneShieldStack" } },
 	["per companion"] = { tag = { type = "Multiplier", var = "Companion" } },
 	["per idol in a refracted slot"] = { tag = { type = "Multiplier", var = "IdolInRefractedSlot" } },
+	["per equipped heretical idol"] = { tag = { type = "Multiplier", var = "EquippedHereticalIdol" } },
+	["per equipped huge idol"] = { tag = { type = "Multiplier", var = "EquippedHugeIdol" } },
+	["per equipped ornate idol"] = { tag = { type = "Multiplier", var = "EquippedOrnateIdol" } },
+	["per equipped grand idol"] = { tag = { type = "Multiplier", var = "EquippedGrandIdol" } },
+	["per equipped large idol"] = { tag = { type = "Multiplier", var = "EquippedLargeIdol" } },
+	["per equipped adorned idol"] = { tag = { type = "Multiplier", var = "EquippedAdornedIdol" } },
+	["per equipped stout idol"] = { tag = { type = "Multiplier", var = "EquippedStoutIdol" } },
+	["per equipped humble idol"] = { tag = { type = "Multiplier", var = "EquippedHumbleIdol" } },
+	["per equipped small idol"] = { tag = { type = "Multiplier", var = "EquippedSmallIdol" } },
+	["per equipped minor idol"] = { tag = { type = "Multiplier", var = "EquippedMinorIdol" } },
+	["if there are no larger idols above smaller ones in the grid"] = { tag = { type = "Condition", var = "NoLargerIdolsAboveSmaller" } },
 	["per symbol"] = { tag = { type = "Multiplier", var = "ActiveSymbol" } },
 	["per active symbol"] = { tag = { type = "Multiplier", var = "ActiveSymbol" } },
 	["per symbol consumed"] = { tag = { type = "Multiplier", var = "ActiveSymbol" } },
@@ -623,6 +636,21 @@ end
 
 local specialModList = {
 	["no cooldown"] = { flag("NoCooldown") },
+	-- Idol Altar: Refracted Slot affix-effect modifiers.
+	-- Produce named INC mods so the values accumulate on modDB and are visible (not red);
+	-- actual per-affix scaling of refracted-slot idols is handled elsewhere.
+	["^(%d+)%% increased effect of prefixes and suffixes for idols in refracted slots$"] = function(num)
+		return { mod("IdolRefractedAffixEffect", "INC", num) }
+	end,
+	["^(%d+)%% increased effect of prefixes for idols in refracted slots$"] = function(num)
+		return { mod("IdolRefractedPrefixEffect", "INC", num) }
+	end,
+	["^(%d+)%% increased effect of suffixes for idols in refracted slots$"] = function(num)
+		return { mod("IdolRefractedSuffixEffect", "INC", num) }
+	end,
+	["^(%d+)%% increased effect of weaver enchantment affixes for idols in refracted slots$"] = function(num)
+		return { mod("IdolRefractedWeaverEffect", "INC", num) }
+	end,
 	-- Ward when hit (item affix: "X% Chance to Gain 30 Ward when Hit")
 	["^(%d+)%% chance to gain (%d+) ward when hit$"] = function(num, chance, amount)
 		return { mod("ChanceToGainWardWhenHit", "BASE", tonumber(chance)), mod("WardGainedWhenHit", "BASE", tonumber(amount)) }
