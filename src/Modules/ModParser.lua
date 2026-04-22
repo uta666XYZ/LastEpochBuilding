@@ -994,10 +994,14 @@ specialModList["^%+?([%d%.]+)%% of (.+) base damage converted to (.+)$"] = nsAny
 specialModList["^%+?([%d%.]+)%% added (.+) gained as added (.+)$"] = nsAny
 specialModList["^%+?([%d%.]+)%% of added (.+) gained as added (.+)$"] = nsAny
 
--- 21. Flat "+N to <skill>" intentionally NOT added as a special pattern — it would collide
--- with the generic path that handles "+1 to Strength / +1 to All Attributes".
--- "+1 to <skill>" mods (e.g. "+1 to Abyssal Echoes") therefore remain red unless a
--- dedicated skill-level system is added later.
+-- 21. "+N to <skill>" — recognition-only when the name resolves to a canonical skill.
+-- If it doesn't (e.g. "+1 to Strength", "+1 to All Attributes"), the handler returns
+-- nil and parseMod falls through to the generic chain so real stat mods keep working.
+specialModList["^%+?(%d+) to (.+)$"] = function(num, _, name)
+	local canonical = canonicalSkillName(name)
+	if not canonical then return nil end
+	return nsList(mod("SkillLevel_" .. canonical:gsub("%s+",""), "BASE", num, "", 0, 0, { type = "SkillName", skillName = canonical }))
+end
 
 -- 22. Flat charge count for a skill ("+1 Charge for Flame Ward")
 specialModList["^%+?(%d+) charges? for (.+)$"] = nsAny
@@ -1118,7 +1122,12 @@ local function parseMod(line, order)
 	local specialMod, specialLine, cap = scan(line, specialModList)
 	if specialMod and #specialLine == 0 then
 		if type(specialMod) == "function" then
-			return specialMod(tonumber(cap[1]), unpack(cap))
+			local result = specialMod(tonumber(cap[1]), unpack(cap))
+			if result ~= nil then
+				return result
+			end
+			-- Handler returned nil to decline (e.g. skill-name validation failed);
+			-- fall through to the generic parse chain so common forms still work.
 		else
 			return copyTable(specialMod)
 		end
