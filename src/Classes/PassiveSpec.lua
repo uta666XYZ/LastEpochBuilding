@@ -184,6 +184,16 @@ function PassiveSpecClass:ImportFromNodeList(classId, ascendClassId, abilities, 
 		self.build.treeTab.showConvert = self.treeVersion ~= latestTreeVersion
 	end
 	self:ResetNodes()
+	-- Character import is full-state: also wipe skill-tree (lowercase-id) allocs
+	-- that ResetNodes preserves, so stale entries from a prior build don't leak in.
+	if abilities then
+		for id, node in pairs(self.nodes) do
+			if id:sub(1,1):match("%u") == nil and node.alloc and node.alloc > 0 then
+				node.alloc = 0
+				self.allocNodes[id] = nil
+			end
+		end
+	end
 	self:SelectClass(classId)
 	self:SelectAscendClass(ascendClassId)
 	for _, id in pairs(hashList) do
