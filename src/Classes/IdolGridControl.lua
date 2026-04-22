@@ -119,7 +119,8 @@ local IdolGridControlClass = newClass("IdolGridControl", "Control", "ControlHost
 			local cy = (row - 1) * (self.ch + CELL_GAP)
 			-- slotLabel="" suppresses the left-side "Idol N:" label
 			local slot = new("ItemSlotControl", {"TOPLEFT", self, "TOPLEFT"}, cx, cy, itemsTab, slotName, "", nil, self.cw, self.ch)
-			slot.arrowH = self.ch / 4
+			slot.arrowH = self.ch / 2
+			slot.emptyPlusMarker = true
 
 			-- Show/hide based on active altar (or Default-blocked set)
 			local r, c = row, col
@@ -325,10 +326,16 @@ local function drawBlockedCell(cx, cy, cw, ch)
 end
 
 -- Container/frame image constants
--- idol_container.png is 268x324; circle occupies rows 0-60, grid area rows 61-324
+-- idol_container.png is 268x324. It is drawn so the visible border wraps the
+-- functional 5x5 cell grid from outside, with the altar circle area above.
+-- Padding values are in DESTINATION pixels (not native PNG pixels) so they
+-- visually wrap the cells consistently regardless of cell size.
 local CONTAINER_NATIVE_W = 268
 local CONTAINER_NATIVE_H = 324
-local CONTAINER_CIRCLE_ROWS = 61   -- rows 0-60 = circle area
+local FRAME_DEST_TOP_PAD  = 80  -- cells top to frame top (covers altar circle + top border)
+local FRAME_DEST_BOT_PAD  = 18  -- cells bottom to frame bottom
+local FRAME_DEST_SIDE_PAD = 16  -- cells side to frame side
+local CONTAINER_CIRCLE_ROWS = 61   -- vertical extent of altar-circle decoration (for altar-empty icon centering)
 -- idol_altar_empty.png is 128x121
 local ALTAR_EMPTY_SIZE = 54  -- draw size (square) for the altar circle icon
 
@@ -378,29 +385,30 @@ function IdolGridControlClass:Draw(viewPort)
 	-- Pre-pass: build cellPrimary BEFORE DrawControls so tooltipFunc can use it.
 	self:RebuildCellPrimary()
 
-	-- Container frame: draw idol_container.png behind the grid.
-	-- Scale to match grid width; circle area extends above the grid.
+	-- Container frame: stretch idol_container.png so its outer edges wrap the
+	-- functional 5x5 cell grid with fixed destination padding on each side.
+	-- Slight non-uniform stretch is acceptable because the PNG aspect (~1:1.21)
+	-- already matches the destination aspect closely.
 	do
-		local numCols  = #self.layout[1]
-		local numRows  = #self.layout
-		local gridW    = numCols * cw + (numCols - 1) * CELL_GAP
-		local gridH    = numRows * ch + (numRows - 1) * CELL_GAP
-		local scale    = gridW / CONTAINER_NATIVE_W
-		local contH    = m_floor(CONTAINER_NATIVE_H * scale)
-		local circleH  = m_floor(CONTAINER_CIRCLE_ROWS * scale)
-		-- Draw container so its grid area (below circle) aligns with the idol grid
+		local numCols   = #self.layout[1]
+		local numRows   = #self.layout
+		local gridW     = numCols * cw + (numCols - 1) * CELL_GAP
+		local gridH     = numRows * ch + (numRows - 1) * CELL_GAP
+		local destW     = gridW + 2 * FRAME_DEST_SIDE_PAD
+		local destH     = gridH + FRAME_DEST_TOP_PAD + FRAME_DEST_BOT_PAD
+		local circleH   = m_floor(CONTAINER_CIRCLE_ROWS * (destH / CONTAINER_NATIVE_H))
 		local cimg = self:GetContainerImage()
 		if cimg and cimg:IsValid() then
 			SetDrawColor(1, 1, 1)
-			DrawImage(cimg, x, y - circleH, gridW, contH)
+			DrawImage(cimg, x - FRAME_DEST_SIDE_PAD, y - FRAME_DEST_TOP_PAD, destW, destH)
 		end
 		-- Draw altar-empty icon in circle center when no altar is equipped
 		local hasAltar = activeAltarName and activeAltarName ~= "Default"
 		if not hasAltar then
 			local aimg = self:GetAltarEmptyImage()
 			if aimg and aimg:IsValid() then
-				local iconX = x + m_floor((gridW - ALTAR_EMPTY_SIZE) / 2)
-				local iconY = y - circleH + m_floor((circleH - ALTAR_EMPTY_SIZE) / 2)
+				local iconX = x - FRAME_DEST_SIDE_PAD + m_floor((destW - ALTAR_EMPTY_SIZE) / 2)
+				local iconY = y - FRAME_DEST_TOP_PAD + m_floor((circleH - ALTAR_EMPTY_SIZE) / 2)
 				SetDrawColor(1, 1, 1)
 				DrawImage(aimg, iconX, iconY, ALTAR_EMPTY_SIZE, ALTAR_EMPTY_SIZE)
 			end
