@@ -103,7 +103,7 @@ function itemLib.formatModLine(modLine, dbMode, altarBoost)
         local boostedScalar = (modLine.valueScalar or 1) * (1 + altarBoost)
         local boostedLine = itemLib.applyRange(modLine.line, modLine.range, boostedScalar, modLine.rounding)
         if boostedLine ~= line then
-            line = line .. "  ^8(-> " .. boostedLine .. " with Altar)"
+            line = line .. "  (-> " .. boostedLine .. " with Altar)"
         end
     end
     return colorCode .. line
