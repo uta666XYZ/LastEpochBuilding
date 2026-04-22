@@ -1833,10 +1833,10 @@ function PassiveTreeViewClass:DrawHistoryBar(build, barVP, inputEvents)
 
 	local cursorX, cursorY = GetCursorPos()
 
-	-- Expand/collapse toggle button (right side of bar)
+	-- Expand/collapse toggle button (left side of bar, before icon strip)
 	local EXPAND_BTN_W = 20
 	local EXPAND_BTN_H = 16
-	local expandBtnX = barVP.x + barVP.width - EXPAND_BTN_W - 4
+	local expandBtnX = barVP.x + 4
 	local expandBtnY = barVP.y + m_floor((barVP.height - EXPAND_BTN_H) / 2)
 	local overExpand = cursorX >= expandBtnX and cursorX < expandBtnX + EXPAND_BTN_W
 	               and cursorY >= expandBtnY and cursorY < expandBtnY + EXPAND_BTN_H
@@ -1853,13 +1853,14 @@ function PassiveTreeViewClass:DrawHistoryBar(build, barVP, inputEvents)
 		end
 	end
 
-	-- Content area (excludes expand button)
-	local contentW = barVP.width - EXPAND_BTN_W - 8 - 8
+	-- Content area (excludes expand button; icons start right of the button)
+	local iconStartX = barVP.x + 4 + EXPAND_BTN_W + 4
+	local contentW = barVP.width - (iconStartX - barVP.x) - 4
 
 	if #grouped == 0 then
 		SetDrawLayer(nil, 2)
 		SetDrawColor(0.35, 0.35, 0.42)
-		DrawString(barVP.x + m_floor(contentW / 2), barVP.y + m_floor(barVP.height / 2) - 7, "CENTER_X", 12, "VAR", "No allocating order recorded yet")
+		DrawString(iconStartX + m_floor(contentW / 2), barVP.y + m_floor(barVP.height / 2) - 7, "CENTER_X", 12, "VAR", "No allocating order recorded yet")
 		return
 	end
 
@@ -1881,7 +1882,7 @@ function PassiveTreeViewClass:DrawHistoryBar(build, barVP, inputEvents)
 		end
 	end
 
-	local inContent = cursorX >= barVP.x and cursorX < barVP.x + contentW
+	local inContent = cursorX >= iconStartX and cursorX < iconStartX + contentW
 	               and cursorY >= barVP.y and cursorY < barVP.y + barVP.height
 
 	-- Click-drag scroll: start drag on LEFTBUTTON down in content area
@@ -1929,8 +1930,8 @@ function PassiveTreeViewClass:DrawHistoryBar(build, barVP, inputEvents)
 	local newHoverNodeId = nil
 
 	for i, grp in ipairs(grouped) do
-		local ix = barVP.x + 4 + (i - 1) * ITEM_W - self.historyScroll
-		if ix + ICON_SIZE < barVP.x or ix > barVP.x + contentW then
+		local ix = iconStartX + (i - 1) * ITEM_W - self.historyScroll
+		if ix + ICON_SIZE < iconStartX or ix > iconStartX + contentW then
 			goto hist_icon_continue
 		end
 
