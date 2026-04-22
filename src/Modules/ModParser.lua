@@ -673,6 +673,8 @@ local specialModList = {
 	["^(%d+)%% health regen also applies to ward$"] = function(num)
 		return { mod("LifeRegenAppliesToWard", "BASE", tonumber(num)) }
 	end,
+	-- Rusted Cleaver unique: Intelligence gains a value equal to Strength
+	["^%+1 intelligence equals strength$"] = { flag("IntEqualsStr") },
 }
 
 -- Modifiers that are recognised but unsupported

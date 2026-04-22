@@ -149,7 +149,7 @@ c["+1 Health Regen Per 3 Attunement"]={{[1]={[1]={div=3,stat="Att",type="PerStat
 c["+1 Hungering Souls projectiles are fired in sequence and can all hit the same target"]={{[1]={[1]={skillName="Hungering Souls",type="SkillName"},flags=8388608,keywordFlags=8,name="ProjectileCount",type="BASE",value=1}},"   are d in sequence and can all  the same target "}
 c["+1 Increases to Fire Aura Area also apply to Glyph of Dominion"]={{[1]={[1]={skillName="Glyph of Dominion",type="SkillName"},flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_FireAura",type="BASE",value=1}}," Increases  Area also apply to  "}
 c["+1 Intelligence"]={{[1]={flags=0,keywordFlags=0,name="Int",type="BASE",value=1}},nil}
-c["+1 Intelligence Equals Strength"]={{[1]={flags=0,keywordFlags=0,name="Int",type="BASE",value=1}},"  Equals Strength "}
+c["+1 Intelligence Equals Strength"]={{[1]={flags=0,keywordFlags=0,name="IntEqualsStr",type="FLAG",value=true}},nil}
 c["+1 Intelligence with a Catalyst"]={{[1]={flags=0,keywordFlags=0,name="Int",type="BASE",value=1}},"  with a Catalyst "}
 c["+1 Level of Minion Skills"]={{[1]={[1]={skillType=8192,type="SkillType"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}}," Level of  "}
 c["+1 Lightning Damage Per Charge"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="BASE",value=1}},"  Per Charge "}
