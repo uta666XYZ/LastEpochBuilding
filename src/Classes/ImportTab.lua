@@ -405,6 +405,20 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
             self.controls.importCodeGo.onClick()
         end
     end
+    -- Close button: clears the code/link input and restores sections 1 & 2.
+    -- Without this the user can't get back to the realm download flow once
+    -- anything has been typed into the code field.
+    self.controls.importCodeClose = new("ButtonControl", { "LEFT", self.controls.importCodeGo, "RIGHT" }, 8, 0, 60, 20, "Close", function()
+        self.controls.importCodeIn:SetText("", true)
+        self.importCodeSite = nil
+        self.importCodeDetail = ""
+        self.importCodeXML = nil
+        self.importCodeValid = false
+        self.activeImportSection = nil
+    end)
+    self.controls.importCodeClose.shown = function()
+        return self.charImportMode == "GETACCOUNTNAME" and self.activeImportSection ~= 1 and self.activeImportSection ~= 2
+    end
 end)
 
 function ImportTabClass:Load(xml, fileName)
