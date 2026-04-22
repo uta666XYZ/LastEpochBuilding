@@ -127,15 +127,9 @@ function ItemSlotClass:Draw(viewPort)
 	local x, y = self:GetPos()
 	local width, height = self:GetSize()
 	if self.label ~= "" then
-		-- Highlight: orange for the slot currently being edited in the Craft popup,
-		-- and for any slot that has an item equipped (selItemId ~= 0), so set pieces
-		-- in use are easy to spot in the preview panel.
+		-- Slot label color: plain white. The previous orange highlight for
+		-- the active craft slot / equipped slots was removed per UI request.
 		local labelColor = "^7"
-		local isCraftSlot = self.itemsTab.craftingSlotName == self.slotName
-		local hasItem = self.selItemId and self.selItemId ~= 0
-		if isCraftSlot or hasItem then
-			labelColor = "^xFF9922"
-		end
 		DrawString(x + self.labelOffset, y + 2, "RIGHT_X", height - 4, "VAR", labelColor..self.label..":")
 	end
 	self.DropDownControl:Draw(viewPort)

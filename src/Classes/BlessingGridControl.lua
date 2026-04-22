@@ -27,6 +27,8 @@ local SLOT_GRID = {
 
 local SLOT_SIZE = 65
 local SLOT_GAP  = 8
+local TITLE_H   = 22  -- panel title bar height (matches PaperdollControl)
+local PANEL_PAD_TOP = 6  -- gap between title bar and first slot row
 
 -- Compute slot positions relative to this control's top-left
 local function computeSlotPositions(controlW)
@@ -35,7 +37,8 @@ local function computeSlotPositions(controlW)
 		t_insert(rowSlots[s.row], s)
 	end
 	local pos  = {}
-	local rowY = {4, 4 + SLOT_SIZE + SLOT_GAP, 4 + (SLOT_SIZE + SLOT_GAP) * 2}
+	local topY = TITLE_H + PANEL_PAD_TOP
+	local rowY = {topY, topY + SLOT_SIZE + SLOT_GAP, topY + (SLOT_SIZE + SLOT_GAP) * 2}
 	for r = 1, 3 do
 		local slots  = rowSlots[r]
 		local n      = #slots
@@ -55,7 +58,7 @@ local BlessingGridControlClass = newClass("BlessingGridControl", "Control", "Con
 	function(self, anchor, x, y, itemsTab)
 		-- Width wide enough for 4-slot row + padding
 		local w = 4 * SLOT_SIZE + 3 * SLOT_GAP + 8
-		local h = 3 * SLOT_SIZE + 2 * SLOT_GAP + 8
+		local h = TITLE_H + PANEL_PAD_TOP + 3 * SLOT_SIZE + 2 * SLOT_GAP + 8
 		self.Control(anchor, x, y, w, h)
 		self.ControlHost()
 		self.TooltipHost()
@@ -166,8 +169,11 @@ function BlessingGridControlClass:PopulateBlessingDropdown(tl)
 	dd.y = sp.y + SLOT_SIZE + 2
 end
 
--- Panel background colour (matches ItemsTab dark background)
+-- Panel background colour (matches PaperdollControl Equipment panel)
 local PANEL_BG_R, PANEL_BG_G, PANEL_BG_B = 0.05, 0.05, 0.07
+-- Title bar colours (match PaperdollControl Equipment panel)
+local TITLE_BG_R, TITLE_BG_G, TITLE_BG_B = 0.12, 0.11, 0.08
+local TITLE_BORDER_R, TITLE_BORDER_G, TITLE_BORDER_B = 0.48, 0.42, 0.32
 
 -- Slot proportions matching lastepochtools.com (outer60, inner48, icon40)
 -- Scaled to SLOT_SIZE=66: ring=7px each side, icon_pad=8
@@ -180,11 +186,24 @@ local ICON_PAD = 1   -- icon inset from outer edge
 
 function BlessingGridControlClass:Draw(viewPort)
 	local cx, cy    = self:GetPos()
+	local cw, ch    = self:GetSize()
 	local slots     = self.itemsTab.slots
 	local items     = self.itemsTab.items
 	local hoveredTL = self:GetHoveredTL()
 	local cmask     = self:GetCircleMask()   -- corners=opaque, circle=transparent
 	local cfill     = self:GetCircleFill()   -- corners=transparent, circle=opaque
+
+	-- Panel background (full control area, matches Equipment paperdoll panel)
+	SetDrawColor(PANEL_BG_R, PANEL_BG_G, PANEL_BG_B)
+	DrawImage(nil, cx, cy, cw, ch)
+	-- Title bar
+	SetDrawColor(TITLE_BG_R, TITLE_BG_G, TITLE_BG_B)
+	DrawImage(nil, cx, cy, cw, TITLE_H)
+	SetDrawColor(TITLE_BORDER_R, TITLE_BORDER_G, TITLE_BORDER_B)
+	DrawImage(nil, cx, cy + TITLE_H - 1, cw, 2)
+	SetDrawColor(1, 1, 1)
+	DrawString(cx + m_floor(cw / 2), cy + m_floor((TITLE_H - 12) / 2),
+		"CENTER_X", 12, "VAR", "^xD4BB88Equipped Blessings")
 
 	for _, sg in ipairs(SLOT_GRID) do
 		local tl  = sg.tl
