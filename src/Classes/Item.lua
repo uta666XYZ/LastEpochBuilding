@@ -835,7 +835,7 @@ function ItemClass:Craft()
 					if mod.standardAffixEffectModifier then
 						modScalar = modScalar - mod.standardAffixEffectModifier
 					end
-					local modLine = { line = line, range = affix.range, valueScalar = modScalar }
+					local modLine = { line = line, range = affix.range, valueScalar = modScalar, affixType = mod.type }
 					t_insert(self.explicitModLines, modLine)
 				end
 			end

@@ -2072,12 +2072,51 @@ function ItemsTabClass:AddItemTooltip(tooltip, item, slot, dbMode)
 		item.requirements.strMod, item.requirements.dexMod, item.requirements.intMod,
 		item.requirements.str or 0, item.requirements.dex or 0, item.requirements.int or 0)
 
+	-- Refracted Slot altar-boost preview: if this idol is hovered in an Omen Idol
+	-- slot, fetch the altar's "Effect ... for Idols in Refracted Slots" mods and
+	-- pass per-line boost fractions to formatModLine so the tooltip shows
+	-- "+20 Health  (-> +30 with Altar)".
+	local altarBoostPrefix, altarBoostSuffix, altarBoostWeaver = 0, 0, 0
+	if slot and slot.slotName and slot.slotName:match("^Omen Idol %d+$") then
+		local altarSlot = self.controls.idolAltarSlot
+		local altarItem = altarSlot and self.items[altarSlot.selItemId]
+		if altarItem and altarItem.modList then
+			local common = 0
+			for _, mod in ipairs(altarItem.modList) do
+				if mod.type == "INC" then
+					if mod.name == "IdolRefractedAffixEffect" then
+						common = common + (mod.value or 0)
+					elseif mod.name == "IdolRefractedPrefixEffect" then
+						altarBoostPrefix = altarBoostPrefix + (mod.value or 0)
+					elseif mod.name == "IdolRefractedSuffixEffect" then
+						altarBoostSuffix = altarBoostSuffix + (mod.value or 0)
+					elseif mod.name == "IdolRefractedWeaverEffect" then
+						altarBoostWeaver = altarBoostWeaver + (mod.value or 0)
+					end
+				end
+			end
+			altarBoostPrefix = (altarBoostPrefix + common) / 100
+			altarBoostSuffix = (altarBoostSuffix + common) / 100
+			altarBoostWeaver = (altarBoostWeaver + common) / 100
+		end
+	end
+
 	-- Modifiers
-	for _, modList in ipairs{item.enchantModLines, item.implicitModLines, item.explicitModLines} do
+	for listIdx, modList in ipairs{item.enchantModLines, item.implicitModLines, item.explicitModLines} do
 		if modList[1] then
 			for _, modLine in ipairs(modList) do
 				if item:CheckModLineVariant(modLine) then
-					tooltip:AddLine(16, itemLib.formatModLine(modLine, dbMode))
+					local boost
+					if listIdx == 1 then
+						boost = altarBoostWeaver
+					elseif listIdx == 3 then
+						if modLine.affixType == "Prefix" then
+							boost = altarBoostPrefix
+						elseif modLine.affixType == "Suffix" then
+							boost = altarBoostSuffix
+						end
+					end
+					tooltip:AddLine(16, itemLib.formatModLine(modLine, dbMode, boost))
 				end
 			end
 			tooltip:AddSeparator(10)
