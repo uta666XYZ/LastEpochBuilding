@@ -900,12 +900,10 @@ specialModList["^%+?(%d+) (%a+) gained on kill$"] = nsAny
 specialModList["^%+?(%d+) (%a+) gained on crit$"] = nsAny
 specialModList["^%+?(%d+) (%a+) gained on hit$"] = nsAny
 
--- Flat stat while wielding a weapon type (e.g. "+1 Spell Damage while wielding a Staff")
-specialModList["^%+?([%d%.]+) (.+) while wielding (.+)$"] = nsAny
-specialModList["^%+?([%d%.]+) (.+) while wielding a (.+)$"] = nsAny
-specialModList["^%+?([%d%.]+) (.+) while wielding an (.+)$"] = nsAny
-specialModList["^%+?([%d%.]+) (.+) while dual wielding$"] = nsAny
-specialModList["^%+?([%d%.]+) (.+) while using a (.+)$"] = nsAny
+-- Flat "while wielding" / "while dual wielding" intentionally NOT added here.
+-- modTagList already has "while wielding a <weapon>" and "while dual wielding" as
+-- proper Condition tags that the generic parse chain combines with any stat name.
+-- Catching them in specialModList would shadow real DPS-integrated mods.
 
 -- Buff-duration grants after action (e.g. "1 second of Haste after you Transform",
 --                                         "4 seconds of Haste after you use Evade")
@@ -934,6 +932,76 @@ specialModList["^%+?([%d%.]+)%% chance to cast (.+) on (.+) with (.+)$"] = nsAny
 specialModList["^%+?([%d%.]+)%% chance to cast (.+) on (.+) with (.+) %(.+%)$"] = nsAny
 specialModList["^%+?([%d%.]+)%% chance to cast (.+) on (.+) %(.+%)$"] = nsAny
 specialModList["^%+?([%d%.]+)%% chance to cast (.+) when you (.+) %(.+%)$"] = nsAny
+
+-- Non-idol item affix recognition catch-alls (found via data scan)
+
+-- 1. "Chance for <outcome> when you <action>" / 2. "Chance for <static outcome>"
+specialModList["^%+?([%d%.]+)%% chance for (.+) when you (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% chance for (.+) on (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% chance for (.+) to (.+)$"] = nsAny
+
+-- 3. Ailment chance per second (e.g. "X% Frostbite Chance per Second with Frost Wall")
+specialModList["^%+?([%d%.]+)%% (.+) chance per second with (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% (.+) chance per second$"] = nsAny
+
+-- 4. While-channelling modifier (e.g. "X% Endurance while channelling Warpath")
+specialModList["^%+?([%d%.]+)%% (.+) while channelling (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+) (.+) while channelling (.+)$"] = nsAny
+
+-- 5. Mitigation-also-applies-to-DoT (armor/resist mitigation crossover)
+specialModList["^%+?([%d%.]+)%% (.+) mitigation also applies to damage over time per (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% (.+) mitigation also applies to damage over time$"] = nsAny
+
+-- 8. Area / stat for <skill> per active <minion> (e.g. "% Increased Area for Infernal Shade per Active Dread Shade")
+specialModList["^%+?([%d%.]+)%% increased (.+) for (.+) per active (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% more (.+) for (.+) per active (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% less (.+) for (.+) per active (.+)$"] = nsAny
+
+-- 9. Per numeric stat threshold — intentionally NOT added; modTagList already handles
+-- "per N total attributes", "per N maximum mana", "per N <attribute>" etc. as PerStat
+-- tags which feed proper DPS. A generic catch-all here would shadow those.
+
+-- 10. "if wielding a <weapon>" intentionally NOT added — modTagList's weapon-condition
+-- handlers ("while wielding a <weapon>") already cover the DPS-integrated case. The
+-- "if wielding" phrasing in data generally normalises to the same condition.
+
+-- 11. Per-projectile scaling ("per arrow with Multishot") — anchored on concrete
+-- per-noun tokens to avoid shadowing generic per-tag handlers.
+specialModList["^%+?([%d%.]+)%% increased (.+) per arrow with (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% increased (.+) per projectile with (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% reduced (.+) per arrow with (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% reduced (.+) per projectile with (.+)$"] = nsAny
+
+-- 12. Per forged weapon (Forge Weapon summon count)
+specialModList["^%+?([%d%.]+)%% (.+) per forged weapon$"] = nsAny
+specialModList["^%+?([%d%.]+) (.+) per forged weapon$"] = nsAny
+
+-- 14. Depending on area level
+specialModList["^%+?([%d%.]+)%% (.+) depending on area level(.*)$"] = nsAny
+specialModList["^%+?([%d%.]+) (.+) depending on area level(.*)$"] = nsAny
+
+-- 15. Conditional on recent action ("if you have <action> recently")
+specialModList["^%+?([%d%.]+)%% (.+) if you have (.+) recently$"] = nsAny
+specialModList["^%+?([%d%.]+) (.+) if you have (.+) recently$"] = nsAny
+specialModList["^%+?([%d%.]+)%% (.+) if you have (.+) in the last (%d+) seconds?$"] = nsAny
+
+-- 17. Skill base damage conversion ("X% of <skill> Base Damage converted to <damageType>")
+-- Only the "base damage" variant is added — the generic "% of X damage converted to Y"
+-- is already handled by the generic conversion suffix chain.
+specialModList["^%+?([%d%.]+)%% of (.+) base damage converted to (.+)$"] = nsAny
+
+-- 19. Cross-type damage gained-as-added ("Added Melee Damage gained as Added Spell Damage")
+specialModList["^%+?([%d%.]+)%% added (.+) gained as added (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% of added (.+) gained as added (.+)$"] = nsAny
+
+-- 21. Flat "+N to <skill>" intentionally NOT added as a special pattern — it would collide
+-- with the generic path that handles "+1 to Strength / +1 to All Attributes".
+-- "+1 to <skill>" mods (e.g. "+1 to Abyssal Echoes") therefore remain red unless a
+-- dedicated skill-level system is added later.
+
+-- 22. Flat charge count for a skill ("+1 Charge for Flame Ward")
+specialModList["^%+?(%d+) charges? for (.+)$"] = nsAny
+specialModList["^%+?(%d+) additional charges? for (.+)$"] = nsAny
 
 -- Damage-taken reductions with qualifier / source
 -- (e.g. "3% reduced Bonus Damage Taken from Critical Strikes",
