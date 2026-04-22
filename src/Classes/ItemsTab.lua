@@ -256,7 +256,10 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 		omenSlot.shown = function()
 			if self.activeAltarLayout == "Default" then return false end
 			local layout = IDOL_ALTAR_LAYOUTS[self.activeAltarLayout]
-			return layout ~= nil and slotNum <= layout.baseCapacity
+			if not layout then return false end
+			local capacity = layout.baseCapacity + (self:GetOmenIdolCapacityBonus() or 0)
+			if capacity > MAX_OMEN_IDOL_SLOTS then capacity = MAX_OMEN_IDOL_SLOTS end
+			return slotNum <= capacity
 		end
 		self.slots[omenSlot.slotName] = omenSlot
 		t_insert(self.orderedSlots, omenSlot)
@@ -1010,6 +1013,22 @@ end
 --   1. Add to drag-target lists so items can be dragged onto it.
 --   2. Add an entry to every existing item set so SetSelItemId / SetActiveItemSet
 --      never index a nil key.
+-- Returns the bonus Omen Idol slot count granted by the equipped Idol Altar
+-- (from "+N Maximum Omen Idols Equipped" prefix affixes).
+function ItemsTabClass:GetOmenIdolCapacityBonus()
+	local altarSlot = self.controls.idolAltarSlot
+	if not altarSlot then return 0 end
+	local item = self.items[altarSlot.selItemId]
+	if not item or not item.modList then return 0 end
+	local bonus = 0
+	for _, mod in ipairs(item.modList) do
+		if mod.name == "MaximumOmenIdols" and mod.type == "BASE" then
+			bonus = bonus + (mod.value or 0)
+		end
+	end
+	return bonus
+end
+
 function ItemsTabClass:RegisterLateSlot(slot)
 	-- Drag targets
 	t_insert(self.controls.itemList.dragTargetList, slot)
