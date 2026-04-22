@@ -1232,6 +1232,17 @@ function calcs.buildDefenceEstimations(env, actor)
 	-- EnduranceThreshold: flat HP value below which Endurance damage reduction kicks in (no cap)
 	-- Baseline 20% of max Life is already injected in CalcSetup via PerStat Life multiplier.
 	output.Endurance = m_min(modDB:Sum("BASE", nil, "Endurance"), data.misc.EnduranceCap)
+	-- Sentinel Defiance: "+N Endurance Threshold Per 2% Uncapped Elemental Resistance"
+	-- Injected as its own modDB entry so it shows as a distinct breakdown row
+	-- (modDB is rebuilt in CalcSetup each recalc, so this does not accumulate).
+	local etPerUncappedEleRes = modDB:Sum("BASE", nil, "EnduranceThresholdPerUncappedEleRes")
+	if etPerUncappedEleRes > 0 then
+		local totalUncapped = (output.FireResistTotal or 0) + (output.ColdResistTotal or 0) + (output.LightningResistTotal or 0)
+		local defianceET = m_floor(totalUncapped / 2) * etPerUncappedEleRes
+		if defianceET > 0 then
+			modDB:NewMod("EnduranceThreshold", "BASE", defianceET, "Tree:Sentinel-71")
+		end
+	end
 	local etBase = modDB:Sum("BASE", nil, "EnduranceThreshold")
 	-- Cerulean Runestones: "X% Mana Gained as Endurance Threshold"
 	local manaAsEndThresh = modDB:Sum("BASE", nil, "ManaAsEnduranceThreshold")
@@ -1242,12 +1253,6 @@ function calcs.buildDefenceEstimations(env, actor)
 	local lifeAsEndThresh = modDB:Sum("BASE", nil, "LifeAsEnduranceThreshold")
 	if lifeAsEndThresh > 0 then
 		etBase = etBase + (output.Life or 0) * lifeAsEndThresh / 100
-	end
-	-- Sentinel Defiance: "+N Endurance Threshold Per 2% Uncapped Elemental Resistance"
-	local etPerUncappedEleRes = modDB:Sum("BASE", nil, "EnduranceThresholdPerUncappedEleRes")
-	if etPerUncappedEleRes > 0 then
-		local totalUncapped = (output.FireResistTotal or 0) + (output.ColdResistTotal or 0) + (output.LightningResistTotal or 0)
-		etBase = etBase + m_floor(totalUncapped / 2) * etPerUncappedEleRes
 	end
 	local etInc = m_max(calcLib.mod(modDB, nil, "EnduranceThreshold"), 0)
 	output.EnduranceThreshold = m_floor(etBase * etInc)
