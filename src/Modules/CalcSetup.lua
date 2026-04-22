@@ -811,6 +811,11 @@ function calcs.initEnv(build, mode, override, specEnv)
 
 		for _, slot in pairs(build.itemsTab.orderedSlots) do
 			local slotName = slot.slotName
+			-- Omen Idol (Fractured) slots mirror an idol already placed in a regular
+			-- Idol slot. Skip them here to avoid double-counting the same item.
+			if slotName:find("^Omen Idol ") then
+				goto continue_orderedSlot
+			end
 			local item = items[slotName]
 			if slotName:sub(1, 10) == "Omen Idol " then
 				item = nil
@@ -979,6 +984,7 @@ function calcs.initEnv(build, mode, override, specEnv)
 				env.itemModDB.conditions[key .. "In" .. slotName] = true
 				env.itemModDB.multipliers[item.type:gsub(" ", ""):gsub(".+Handed", "").."Item"] = (env.itemModDB.multipliers[item.type:gsub(" ", ""):gsub(".+Handed", "").."Item"] or 0) + 1
 			end
+			::continue_orderedSlot::
 		end
 		-- Override empty socket calculation if set in config
 		env.itemModDB.multipliers.EmptyRedSocketsInAnySlot = (env.config.overrideEmptyRedSockets or env.itemModDB.multipliers.EmptyRedSocketsInAnySlot)

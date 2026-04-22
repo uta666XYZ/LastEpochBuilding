@@ -53,19 +53,26 @@ function itemLib.applyRange(line, range, valueScalar, rounding)
     local useRound = valueScalar == 1.0
         and (line:find("%% increased") ~= nil or line:find("%% reduced") ~= nil
              or line:find("%% more") ~= nil or line:find("%% less") ~= nil)
+    local function roundHalfDownOnHalf(v)
+        -- Round half-up, except x.5 rounds down (floor). Matches LE's endpoint rounding.
+        if v * precision % 1 == 0.5 then
+            return m_floor(v * precision) / precision
+        end
+        return m_floor(v * precision + 0.5) / precision
+    end
     line = line:gsub("(%+?)%((%-?%d+%.?%d*)%-(%-?%d+%.?%d*)%)",
             function(plus, min, max)
-                min = min * valueScalar
-                -- If min decimal part is exactly 0.5, round down
-                if min * precision % 1 == 0.5 then
-                    min = m_floor(min * precision) / precision
-                else
-                    min = m_floor(min * precision + 0.5) / precision
-                end
-                max = max * valueScalar
-                max = m_floor(max * precision + 0.5) / precision
+                min = roundHalfDownOnHalf(min * valueScalar)
+                max = roundHalfDownOnHalf(max * valueScalar)
                 numbers = numbers + 1
-                local numVal = (tonumber(min) + range * (tonumber(max) - tonumber(min) + 1 / precision))
+                -- Flat values (useRound=false) use (max-min+1/precision) span so the
+                -- top byte (255) reaches max; percentage-with-word affixes (useRound=true)
+                -- use the plain (max-min) span, matching LETools/Maxroll displays.
+                local span = tonumber(max) - tonumber(min)
+                if not useRound then
+                    span = span + 1 / precision
+                end
+                local numVal = tonumber(min) + range * span
                 if useRound then
                     numVal = m_floor(numVal * precision + 0.5) / precision
                 else
@@ -77,6 +84,15 @@ function itemLib.applyRange(line, range, valueScalar, rounding)
                 return (numVal < 0 and "" or plus) .. tostring(numVal)
             end)
                :gsub("%-(%d+%.?%d*%%) (%a+)", antonymFunc)
+    -- Single-value scaling: affixes like "+5% Critical Strike Multiplier" have no
+    -- (x-x) range, but still need valueScalar applied when the affix scales with
+    -- the base (e.g. Class-Specific Idol enchants). Only applied when scalar != 1.
+    if valueScalar ~= 1.0 and numbers == 0 then
+        line = line:gsub("^(%+?)(%-?%d+%.?%d*)", function(plus, num)
+            local v = roundHalfDownOnHalf(tonumber(num) * valueScalar)
+            return plus .. tostring(v)
+        end, 1)
+    end
     return line
 end
 
@@ -85,7 +101,8 @@ function itemLib.hasRange(line)
 end
 
 function itemLib.formatModLine(modLine, dbMode, altarBoost)
-    local line = (not dbMode and modLine.range and itemLib.applyRange(modLine.line, modLine.range, modLine.valueScalar, modLine.rounding)) or modLine.line
+    local displayScalar = modLine.displayValueScalar or modLine.valueScalar
+    local line = (not dbMode and modLine.range and itemLib.applyRange(modLine.line, modLine.range, displayScalar, modLine.rounding)) or modLine.line
     if line:match("^%+?0%%? ") or (line:match(" %+?0%%? ") and not line:match("0 to [1-9]")) or line:match(" 0%-0 ") or line:match(" 0 to 0 ") then
         -- Hack to hide 0-value modifiers
         return
