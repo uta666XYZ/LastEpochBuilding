@@ -403,6 +403,7 @@ local modTagList = {
 	["with concentration"] = { tag = { type = "Condition", var = "Concentration" } },
 	["per arcane shield"] = { tag = { type = "Multiplier", var = "ArcaneShieldStack" } },
 	["per companion"] = { tag = { type = "Multiplier", var = "Companion" } },
+	["per idol in a refracted slot"] = { tag = { type = "Multiplier", var = "IdolInRefractedSlot" } },
 	["per symbol"] = { tag = { type = "Multiplier", var = "ActiveSymbol" } },
 	["per active symbol"] = { tag = { type = "Multiplier", var = "ActiveSymbol" } },
 	["per symbol consumed"] = { tag = { type = "Multiplier", var = "ActiveSymbol" } },
