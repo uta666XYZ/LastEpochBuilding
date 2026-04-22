@@ -693,6 +693,9 @@ function calcs.initEnv(build, mode, override, specEnv)
 		for _, slot in pairs(build.itemsTab.orderedSlots) do
 			local slotName = slot.slotName
 			local item = items[slotName]
+			if slotName:sub(1, 10) == "Omen Idol " then
+				item = nil
+			end
 			if item and item.type == "Flask" then
 				if slot.active then
 					env.flasks[item] = true
