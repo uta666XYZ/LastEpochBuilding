@@ -40,18 +40,18 @@ local GHOST_SPRITES = {
     relic   = "Assets/paperdoll/Soul_Gambler_Relic.png",
 }
 
--- Weapon 2 ghost key: weapon types use "weapon" sprite, off-hand uses "offhand"
-local WEAPON2_OFFHAND_TYPES = { ["Shield"] = true, ["Quiver"] = true, ["Off-Hand Catalyst"] = true }
+-- The paperdoll is used purely as a craft-button shortcut panel; slots are
+-- never visually "equipped". For a bit of variety, randomise each weapon
+-- slot's ghost (sword vs shield) once per launch.
+math.randomseed(os.time())
+local STARTUP_GHOST = {
+    ["Weapon 1"] = (math.random(2) == 1) and "weapon" or "offhand",
+    ["Weapon 2"] = (math.random(2) == 1) and "weapon" or "offhand",
+}
 
 local function getGhostKey(def, itemsTab)
-    if def.slot ~= "Weapon 2" then return def.ghost end
-    local slot = itemsTab.slots and itemsTab.slots["Weapon 2"]
-    if not slot then return def.ghost end
-    local item = itemsTab.items and itemsTab.items[slot.selItemId]
-    if item and item.type and not WEAPON2_OFFHAND_TYPES[item.type] and item.base and item.base.weapon then
-        return "weapon"
-    end
-    return "offhand"
+    if STARTUP_GHOST[def.slot] then return STARTUP_GHOST[def.slot] end
+    return def.ghost
 end
 
 local PANEL_W   = 288
