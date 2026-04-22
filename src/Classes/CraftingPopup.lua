@@ -16,6 +16,51 @@ local ipairs = ipairs
 
 local MAX_MOD_LINES = 3
 
+-- Item type -> 16x16 icon filename (in Assets/).
+-- Mirrors ItemListControl.TYPE_ICON so the craft-popup left menu shows the same icons
+-- used by the All Items list.
+local TYPE_ICON = {
+	["Amulet"]            = "Icon_Amulet.png",
+	["Belt"]              = "Icon_Belt.png",
+	["Body Armor"]        = "Icon_Armor.png",
+	["Boots"]             = "Icon_Boots.png",
+	["Bow"]               = "Icon_Bow.png",
+	["Dagger"]            = "Icon_Dagger.png",
+	["Gloves"]            = "Icon_Gloves.png",
+	["Helmet"]            = "Icon_Helmet.png",
+	["Off-Hand Catalyst"] = "Icon_Shield.png",
+	["One-Handed Axe"]    = "Icon_Axe.png",
+	["Two-Handed Axe"]    = "Icon_Axe.png",
+	["One-Handed Mace"]   = "Icon_Mace.png",
+	["Two-Handed Mace"]   = "Icon_Mace.png",
+	["One-Handed Sword"]  = "Icon_Sword.png",
+	["Two-Handed Sword"]  = "Icon_Sword.png",
+	["Two-Handed Spear"]  = "Icon_Polearm.png",
+	["Two-Handed Staff"]  = "Icon_Staff.png",
+	["Quiver"]            = "Icon_Quiver.png",
+	["Relic"]             = "Icon_Relic.png",
+	["Ring"]              = "Icon_Ring.png",
+	["Sceptre"]           = "Icon_Sceptre.png",
+	["Shield"]            = "Icon_Shield.png",
+	["Wand"]              = "Icon_Wand.png",
+	["Idol Altar"]        = "idol/Idol_Altar_Pyramidal_Altar.png",
+	["Blessing"]          = "blessings/body_of_obsidian.png",
+}
+
+local iconHandles = {}
+local function getTypeIcon(typeName)
+	if not typeName then return nil end
+	local f = TYPE_ICON[typeName]
+	if not f and typeName:find("Idol") then f = "Icon_Idol.png" end
+	if not f then return nil end
+	if not iconHandles[f] then
+		local h = NewImageHandle()
+		h:Load("Assets/" .. f, "ASYNC")
+		iconHandles[f] = h
+	end
+	return iconHandles[f]
+end
+
 -- Slot -> allowed item types (nil = show all)
 local SLOT_TYPE_FILTER = {
 	["Helmet"]     = { "Helmet" },
@@ -2573,21 +2618,28 @@ function CraftingPopupClass:Draw(viewPort)
 				SetDrawColor(0.55, 0.55, 0.55)
 				local headerText = entry.label:gsub("%^8", "")
 				DrawString(tlX + 4, cardY + 3, "LEFT", 12, "VAR", "^8" .. headerText)
-			elseif isSelected then
-				SetDrawColor(0.20, 0.18, 0.10)
-				DrawImage(nil, tlX, cardY, tlW, rowH)
-				SetDrawColor(0.8, 0.75, 0.4)
-				DrawImage(nil, tlX, cardY, 2, rowH)
-				SetDrawColor(1, 1, 1)
-				DrawString(tlX + 6, cardY + 3, "LEFT", 13, "VAR", "^7" .. (entry.typeName or entry.label))
-			elseif isHovered then
-				SetDrawColor(0.14, 0.14, 0.14)
-				DrawImage(nil, tlX, cardY, tlW, rowH)
-				SetDrawColor(1, 1, 1)
-				DrawString(tlX + 6, cardY + 3, "LEFT", 13, "VAR", "^8" .. (entry.typeName or entry.label))
 			else
+				-- Row background for selected/hovered state
+				if isSelected then
+					SetDrawColor(0.20, 0.18, 0.10)
+					DrawImage(nil, tlX, cardY, tlW, rowH)
+					SetDrawColor(0.8, 0.75, 0.4)
+					DrawImage(nil, tlX, cardY, 2, rowH)
+				elseif isHovered then
+					SetDrawColor(0.14, 0.14, 0.14)
+					DrawImage(nil, tlX, cardY, tlW, rowH)
+				end
+				-- 16x16 type icon (leaves room for text to the right)
+				local iconH = getTypeIcon(entry.typeName)
+				local textX = tlX + 6
+				if iconH then
+					SetDrawColor(1, 1, 1)
+					DrawImage(iconH, tlX + 6, cardY + 2, 16, 16)
+					textX = tlX + 6 + 16 + 4
+				end
 				SetDrawColor(1, 1, 1)
-				DrawString(tlX + 6, cardY + 3, "LEFT", 13, "VAR", "^8" .. (entry.typeName or entry.label))
+				local color = isSelected and "^7" or "^8"
+				DrawString(textX, cardY + 3, "LEFT", 13, "VAR", color .. (entry.typeName or entry.label))
 			end
 		end
 	end
