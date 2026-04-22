@@ -209,10 +209,11 @@ local function doActorAttribsConditions(env, actor)
 		output.TotalAttr = output.TotalAttr + output[stat]
 	end
 
-	-- Rusted Cleaver: "Intelligence Equals Strength" — Int gains a value equal to Str
+	-- Cleaver Solution (Rusted Cleaver unique): "Your Intelligence is equal to your Strength"
+	-- Overrides Int with the Str value; other Int sources are replaced, not added.
 	if modDB:Flag(nil, "IntEqualsStr") then
-		output.Int = output.Int + output.Str
-		output.TotalAttr = output.TotalAttr + output.Str
+		output.TotalAttr = output.TotalAttr - output.Int + output.Str
+		output.Int = output.Str
 		if breakdown then
 			breakdown.Int = breakdown.simple(nil, nil, output.Int, "Int")
 		end
