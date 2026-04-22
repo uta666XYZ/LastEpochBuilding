@@ -91,6 +91,11 @@ local function applySetBonuses(env, items, ver)
 	-- every set, but cannot single-handedly activate sets the player does not
 	-- otherwise carry).
 	local countsAsEvery = env.itemModDB:Flag(nil, "CountsAsEveryItemSet")
+	ConPrintf("[SET-BONUS] countsAsEvery=%s", tostring(countsAsEvery))
+	for setId, count in pairs(pieceCount) do
+		local info = setEntry[setId]
+		ConPrintf("[SET-BONUS] pre  setId=%s name=%q realCount=%d", tostring(setId), tostring(info and info.name), count)
+	end
 	if countsAsEvery then
 		for setId, _ in pairs(pieceCount) do
 			local info = setEntry[setId]
@@ -132,12 +137,15 @@ local function applySetBonuses(env, items, ver)
 				end
 			end
 			if fired then completeSetCount = completeSetCount + 1 end
+			ConPrintf("[SET-BONUS] fire setId=%s name=%q tiersApplied=2..%d fired=%s",
+				tostring(setId), tostring(info.name), count, tostring(fired))
 		end
 	end
 
 	-- Publish CompleteSetCount multiplier so "per Complete Set" mods scale at
 	-- ModDB query time (e.g., Legends Entwined's +N to All Attributes).
 	env.itemModDB.multipliers["CompleteSetCount"] = completeSetCount
+	ConPrintf("[SET-BONUS] CompleteSetCount=%d", completeSetCount)
 end
 
 -- Initialise modifier database with stats and conditions common to all actors
