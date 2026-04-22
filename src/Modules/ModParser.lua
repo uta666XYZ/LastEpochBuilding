@@ -401,6 +401,7 @@ local modTagList = {
 	["while you have a companion"] = { tag = { type = "Condition", var = "HaveCompanion" } },
 	["with arcane shield"] = { tag = { type = "Condition", var = "HaveArcaneShield" } },
 	["with concentration"] = { tag = { type = "Condition", var = "Concentration" } },
+	["per complete set"] = { tag = { type = "Multiplier", var = "CompleteSetCount" } },
 	["per arcane shield"] = { tag = { type = "Multiplier", var = "ArcaneShieldStack" } },
 	["per companion"] = { tag = { type = "Multiplier", var = "Companion" } },
 	["per symbol"] = { tag = { type = "Multiplier", var = "ActiveSymbol" } },
