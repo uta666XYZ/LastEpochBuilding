@@ -705,8 +705,9 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 	-- interior grid so the PNG border and functional cells overlap cleanly.
 	-- Y offset (90) clears the container frame's altar-circle + top border (~83px)
 	-- above the grid so the circle does not overlap the Fractured 1..4 dropdowns.
+	-- Visual centering on the Equipped items dropdown column. Tuned by eye.
 	self.controls.idolGrid = new("IdolGridControl",
-		{"TOPLEFT", self.controls.idolAltarEnd, "BOTTOMLEFT"}, -40, 90,
+		{"TOPLEFT", self.controls.idolAltarEnd, "BOTTOMLEFT"}, 0, 90,
 		self, self.idolGridLayout, 48, 46)
 	-- Padding below the grid clears the frame's bottom border (~18px) before
 	-- the blessing grid is placed, so Blessing sits fully under the new frame.
@@ -714,9 +715,10 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 	t_insert(self.controls, self.controls.idolGridPanelEnd)
 	-- ===== END IDOL GRID =====
 
-	-- Blessing slot grid (below idol grid; clicking a slot shows blessing dropdown)
+	-- Blessing slot grid: width 292, anchored to idolGrid x with -22 offset to
+	-- share the same horizontal center as the idol frame.
 	local blessGrid = new("BlessingGridControl",
-		{"TOPLEFT", self.controls.idolGridPanelEnd, "TOPLEFT"}, 0, 0, self)
+		{"TOPLEFT", self.controls.idolGridPanelEnd, "TOPLEFT"}, -22, 0, self)
 	t_insert(self.controls, blessGrid)
 	self.controls.blessingGrid = blessGrid
 
