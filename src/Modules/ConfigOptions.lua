@@ -189,6 +189,10 @@ local options = {
 		modList:NewMod("VoidDamage", "MORE", val * 3, "Void Essence")
 		modList:NewMod("Damage", "MORE", val * 3, "Void Essence", ModFlag.Melee)
 	end },
+	{ var = "multiplierActiveSymbols", type = "count", label = "# of Active Symbols:", defaultPlaceholderState = 3, tooltip = "Number of active Symbols of Hope (Paladin). Max 3. Enables 'per Symbol' / 'per Active Symbol' modifiers.", apply = function(val, modList, enemyModList)
+		val = math.min(val, 3)
+		modList:NewMod("Multiplier:ActiveSymbol", "BASE", val, "Config", { type = "Condition", var = "Combat" })
+	end },
 	{ var = "multiplierContemptStacks", type = "count", label = "Contempt Stacks:", tooltip = "+10% All Resistances and 10% more Armor per stack. Max 5.", apply = function(val, modList, enemyModList)
 		val = math.min(val, 5)
 		for _, res in ipairs({"FireResist", "LightningResist", "ColdResist", "PhysicalResist", "PoisonResist", "NecroticResist", "VoidResist"}) do
