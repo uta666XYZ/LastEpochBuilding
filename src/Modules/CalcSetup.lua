@@ -702,6 +702,9 @@ function calcs.initEnv(build, mode, override, specEnv)
 		for _, slot in pairs(build.itemsTab.orderedSlots) do
 			local slotName = slot.slotName
 			local item = items[slotName]
+			if slotName:sub(1, 10) == "Omen Idol " then
+				item = nil
+			end
 			if item and item.type == "Flask" then
 				if slot.active then
 					env.flasks[item] = true
@@ -970,6 +973,15 @@ function calcs.initEnv(build, mode, override, specEnv)
 		end
 	else
 		env.modDB:AddList(calcs.buildModListForNodeList(env, env.allocNodes))
+	end
+
+	-- Auto-compute active Symbols of Hope count (baseline 3 + MaximumSymbols from tree).
+	-- Top up Multiplier:ActiveSymbol so it reaches the gameplay max; Config can still
+	-- override HIGHER via the 'multiplierActiveSymbols' slider.
+	local maxSymbols = 3 + env.modDB:Sum("BASE", nil, "MaximumSymbols")
+	local curSymbols = env.modDB:Sum("BASE", nil, "Multiplier:ActiveSymbol")
+	if curSymbols < maxSymbols then
+		env.modDB:NewMod("Multiplier:ActiveSymbol", "BASE", maxSymbols - curSymbols, "Auto:Symbols of Hope")
 	end
 
 	-- Find skills granted by tree nodes

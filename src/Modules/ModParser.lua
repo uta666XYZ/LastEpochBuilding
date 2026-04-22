@@ -669,6 +669,10 @@ local specialModList = {
 	["^%+?(%d+) endurance threshold per 2%% uncapped elemental resistance$"] = function(num)
 		return { mod("EnduranceThresholdPerUncappedEleRes", "BASE", tonumber(num)) }
 	end,
+	-- Paladin: "+N Maximum Symbols" (Polygram, Tetragram etc.)
+	["^%+?(%d+) maximum symbols?$"] = function(num)
+		return { mod("MaximumSymbols", "BASE", tonumber(num)) }
+	end,
 	-- Runemaster: Sanguine Runestones 6-point bonus
 	["^(%d+)%% health regen also applies to ward$"] = function(num)
 		return { mod("LifeRegenAppliesToWard", "BASE", tonumber(num)) }
