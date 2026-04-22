@@ -3,6 +3,17 @@
 -- Class: Button Control
 -- Basic button control.
 --
+-- Shared close-button sprite used whenever a button's label is "x".
+-- Lazily loaded so NewImageHandle isn't called before the engine is ready.
+local closeBtnImage = nil
+local function getCloseBtnImage()
+	if not closeBtnImage then
+		closeBtnImage = NewImageHandle()
+		closeBtnImage:Load("Assets/close-button-default.png", "ASYNC")
+	end
+	return closeBtnImage
+end
+
 local ButtonClass = newClass("ButtonControl", "Control", "TooltipHost", function(self, anchor, x, y, width, height, label, onClick, onHover, forceTooltip)
 	self.Control(anchor, x, y, width, height)
 	self.TooltipHost()
@@ -82,8 +93,12 @@ function ButtonClass:Draw(viewPort, noTooltip)
 	elseif label == "-" then
 		DrawImage(nil, x + width * 0.2, y + height * 0.45, width * 0.6, height * 0.1)
 	elseif label == "x" then
-		DrawImageQuad(nil, x + width * 0.2, y + height * 0.3, x + width * 0.3, y + height * 0.2, x + width * 0.8, y + height * 0.7, x + width * 0.7, y + height * 0.8)
-		DrawImageQuad(nil, x + width * 0.7, y + height * 0.2, x + width * 0.8, y + height * 0.3, x + width * 0.3, y + height * 0.8, x + width * 0.2, y + height * 0.7)
+		-- Use the imported close-button sprite instead of drawing lines.
+		-- Falls back silently until the async image finishes loading.
+		local img = getCloseBtnImage()
+		if img and img:IsValid() then
+			DrawImage(img, x + 2, y + 2, width - 4, height - 4)
+		end
 	else
 		local overSize = self.overSizeText or 0
 		DrawString(x + width / 2, y + 2 - overSize, "CENTER_X", height - 4 + overSize * 2, "VAR", label)

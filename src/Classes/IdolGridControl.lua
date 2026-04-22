@@ -336,6 +336,11 @@ local FRAME_DEST_TOP_PAD  = 80  -- cells top to frame top (covers altar circle +
 local FRAME_DEST_BOT_PAD  = 18  -- cells bottom to frame bottom
 local FRAME_DEST_SIDE_PAD = 16  -- cells side to frame side
 local CONTAINER_CIRCLE_ROWS = 61   -- vertical extent of altar-circle decoration (for altar-empty icon centering)
+local IDOL_TITLE_H = 22            -- title bar height above the container frame
+-- Title bar colours (match PaperdollControl / BlessingGridControl)
+local IDOL_TITLE_BG_R, IDOL_TITLE_BG_G, IDOL_TITLE_BG_B = 0.12, 0.11, 0.08
+local IDOL_TITLE_BORDER_R, IDOL_TITLE_BORDER_G, IDOL_TITLE_BORDER_B = 0.48, 0.42, 0.32
+local IDOL_PANEL_BG_R, IDOL_PANEL_BG_G, IDOL_PANEL_BG_B = 0.05, 0.05, 0.07
 -- idol_altar_empty.png is 128x121
 local ALTAR_EMPTY_SIZE = 54  -- draw size (square) for the altar circle icon
 
@@ -355,6 +360,28 @@ function IdolGridControlClass:GetAltarEmptyImage()
 		self.imageHandles["__altarEmpty"] = h
 	end
 	return self.imageHandles["__altarEmpty"]
+end
+
+-- Map an active altar layout name (e.g. "Lunar Altar", "Spire Altar (Mirrored)")
+-- to its icon filename (e.g. "Idol_Altar_Lunar_Altar.png"). Handles common
+-- suffixes like "(Mirrored)" and a known data typo ("Archair" -> "Archaic").
+local function altarIconFilename(name)
+	if not name or name == "" or name == "Default" then return nil end
+	local base = name:gsub("%s*%(Mirrored%)%s*$", "")
+	base = base:gsub("^Archair ", "Archaic ")
+	return "Idol_Altar_" .. base:gsub("%s+", "_") .. ".png"
+end
+
+function IdolGridControlClass:GetAltarImage(altarName)
+	local fname = altarIconFilename(altarName)
+	if not fname then return nil end
+	local key = "__altar_" .. fname
+	if not self.imageHandles[key] then
+		local h = NewImageHandle()
+		h:Load("Assets/idol/" .. fname, "ASYNC")
+		self.imageHandles[key] = h
+	end
+	return self.imageHandles[key]
 end
 
 function IdolGridControlClass:Draw(viewPort)
@@ -397,21 +424,42 @@ function IdolGridControlClass:Draw(viewPort)
 		local destW     = gridW + 2 * FRAME_DEST_SIDE_PAD
 		local destH     = gridH + FRAME_DEST_TOP_PAD + FRAME_DEST_BOT_PAD
 		local circleH   = m_floor(CONTAINER_CIRCLE_ROWS * (destH / CONTAINER_NATIVE_H))
+		-- Panel background behind the frame + title bar (matches Blessings / Equipment).
+		-- Drawn BEFORE the container PNG so transparent regions of the PNG show the
+		-- dark panel colour, and the panel extends up to include the title bar.
+		local bx   = x - FRAME_DEST_SIDE_PAD
+		local byT  = y - FRAME_DEST_TOP_PAD - IDOL_TITLE_H   -- top of title bar
+		local totH = IDOL_TITLE_H + destH
+		SetDrawColor(IDOL_PANEL_BG_R, IDOL_PANEL_BG_G, IDOL_PANEL_BG_B)
+		DrawImage(nil, bx, byT, destW, totH)
+
 		local cimg = self:GetContainerImage()
 		if cimg and cimg:IsValid() then
 			SetDrawColor(1, 1, 1)
 			DrawImage(cimg, x - FRAME_DEST_SIDE_PAD, y - FRAME_DEST_TOP_PAD, destW, destH)
 		end
-		-- Draw altar-empty icon in circle center when no altar is equipped
+		-- Title bar above the frame (matches Blessings / Equipment panel style)
+		do
+			SetDrawColor(IDOL_TITLE_BG_R, IDOL_TITLE_BG_G, IDOL_TITLE_BG_B)
+			DrawImage(nil, bx, byT, destW, IDOL_TITLE_H)
+			SetDrawColor(IDOL_TITLE_BORDER_R, IDOL_TITLE_BORDER_G, IDOL_TITLE_BORDER_B)
+			DrawImage(nil, bx, byT + IDOL_TITLE_H - 1, destW, 2)
+			SetDrawColor(1, 1, 1)
+			DrawString(bx + m_floor(destW / 2), byT + m_floor((IDOL_TITLE_H - 12) / 2),
+				"CENTER_X", 12, "VAR", "^xD4BB88Equipped Idols / Idol Altar")
+		end
+		-- Draw altar icon in circle center. When an altar is equipped, show the
+		-- matching Idol_Altar_<Name>.png; otherwise fall back to idol_altar_empty.
 		local hasAltar = activeAltarName and activeAltarName ~= "Default"
-		if not hasAltar then
-			local aimg = self:GetAltarEmptyImage()
-			if aimg and aimg:IsValid() then
-				local iconX = x - FRAME_DEST_SIDE_PAD + m_floor((destW - ALTAR_EMPTY_SIZE) / 2)
-				local iconY = y - FRAME_DEST_TOP_PAD + m_floor((circleH - ALTAR_EMPTY_SIZE) / 2)
-				SetDrawColor(1, 1, 1)
-				DrawImage(aimg, iconX, iconY, ALTAR_EMPTY_SIZE, ALTAR_EMPTY_SIZE)
-			end
+		local aimg = hasAltar and self:GetAltarImage(activeAltarName) or nil
+		if not (aimg and aimg:IsValid()) then
+			aimg = self:GetAltarEmptyImage()
+		end
+		if aimg and aimg:IsValid() then
+			local iconX = x - FRAME_DEST_SIDE_PAD + m_floor((destW - ALTAR_EMPTY_SIZE) / 2)
+			local iconY = y - FRAME_DEST_TOP_PAD + m_floor((circleH - ALTAR_EMPTY_SIZE) / 2)
+			SetDrawColor(1, 1, 1)
+			DrawImage(aimg, iconX, iconY, ALTAR_EMPTY_SIZE, ALTAR_EMPTY_SIZE)
 		end
 	end
 
