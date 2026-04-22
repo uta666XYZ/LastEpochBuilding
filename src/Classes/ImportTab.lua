@@ -825,6 +825,15 @@ function ImportTabClass:DownloadLEToolsPlannerBuild(url)
             self:ImportPassiveTreeAndJewels(char)
             self:ImportItemsAndSkills(char)
             self:ImportBlessingsFromLETools(data)
+            -- LETools' planner UI always displays stats with both quest
+            -- rewards included (confirmed via "Quest Reward: +2 Dexterity"
+            -- breakdown label on 2026-04-22). The API JSON itself carries
+            -- no quest flag, so auto-enable both to match LETools numbers.
+            self.build.configTab.input.questApophisMajasa = true
+            self.build.configTab.input.questTempleOfEterra = true
+            self.build.configTab:BuildModList()
+            self.build.configTab:UpdateControls()
+            self.build.buildFlag = true
             local msg = "LETools build imported."
             if char._parseErrors and char._parseErrors > 0 then
                 msg = msg .. " (" .. char._parseErrors .. " items skipped)"
@@ -963,20 +972,26 @@ function ImportTabClass:ConvertLEToolsItem(letoolsItem, itemMap, affixMap)
         mx.uniqueID    = entry.u
         mx.uniqueRolls = letoolsItem.ur or {}
     end
-    if type(letoolsItem.affixes) == "table" then
-        for _, a in ipairs(letoolsItem.affixes) do
-            local affixInt = affixMap[a.id]
-            if affixInt ~= nil then
-                -- LETools tiers are user-facing 1-indexed (T1..T7); LEB
-                -- ModItem keys and save-format tiers are 0-indexed.
-                local tier0 = (a.tier or 1) - 1
-                if tier0 < 0 then tier0 = 0 end
-                t_insert(mx.affixes, { id = affixInt, tier = tier0, roll = a.r or 0 })
-            else
-                ConPrintf("[LETOOLS-AFFIX] Unknown id: %s (tier=%s)", tostring(a.id), tostring(a.tier))
-            end
+    local function pushAffix(a, kind)
+        if type(a) ~= "table" or a.id == nil then return end
+        local affixInt = affixMap[a.id]
+        if affixInt ~= nil then
+            -- LETools tiers are user-facing 1-indexed (T1..T7); LEB
+            -- ModItem keys and save-format tiers are 0-indexed.
+            local tier0 = (a.tier or 1) - 1
+            if tier0 < 0 then tier0 = 0 end
+            t_insert(mx.affixes, { id = affixInt, tier = tier0, roll = a.r or 0 })
+        else
+            ConPrintf("[LETOOLS-AFFIX] Unknown id: %s (tier=%s, kind=%s)", tostring(a.id), tostring(a.tier), kind)
         end
     end
+    if type(letoolsItem.affixes) == "table" then
+        for _, a in ipairs(letoolsItem.affixes) do pushAffix(a, "normal") end
+    end
+    -- Extra affix slots returned as standalone fields rather than in affixes[]
+    pushAffix(letoolsItem.sealedAffix, "sealed")
+    pushAffix(letoolsItem.primordialAffix, "primordial")
+    pushAffix(letoolsItem.corruptedAffix, "corrupted")
     return mx
 end
 
