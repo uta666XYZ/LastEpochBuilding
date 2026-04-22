@@ -81333,7 +81333,7 @@
 	"860_0": {
 		"affix": "Predator's",
 		"1": "{rounding:Integer}(9-20) Health Gain on Kill",
-		"2": "{rounding:Integer}+(15-20) Health",
+		"2": "{rounding:Integer}+(28-36) Health",
 		"level": 0,
 		"statOrderKey": 860,
 		"statOrder": [
@@ -81458,8 +81458,8 @@
 	},
 	"867_0": {
 		"affix": "of Silk",
-		"1": "+(18-23)% Necrotic Resistance",
-		"2": "+(18-23)% Minion Necrotic Resistance",
+		"1": "+(18-24)% Necrotic Resistance",
+		"2": "+(18-24)% Minion Necrotic Resistance",
 		"level": 0,
 		"statOrderKey": 867,
 		"statOrder": [
@@ -81476,8 +81476,8 @@
 	},
 	"868_0": {
 		"affix": "of Phobia",
-		"1": "+(18-23)% Void Resistance",
-		"2": "+(18-23)% Minion Void Resistance",
+		"1": "+(18-24)% Void Resistance",
+		"2": "+(18-24)% Minion Void Resistance",
 		"level": 0,
 		"statOrderKey": 868,
 		"statOrder": [
@@ -81494,8 +81494,8 @@
 	},
 	"869_0": {
 		"affix": "of Antivenom",
-		"1": "+(18-23)% Poison Resistance",
-		"2": "+(18-23)% Minion Poison Resistance",
+		"1": "+(18-24)% Poison Resistance",
+		"2": "+(18-24)% Minion Poison Resistance",
 		"level": 0,
 		"statOrderKey": 869,
 		"statOrder": [
@@ -81512,8 +81512,8 @@
 	},
 	"870_0": {
 		"affix": "of Chitin",
-		"1": "+(18-23)% Physical Resistance",
-		"2": "+(18-23)% Minion Physical Resistance",
+		"1": "+(18-24)% Physical Resistance",
+		"2": "+(18-24)% Minion Physical Resistance",
 		"level": 0,
 		"statOrderKey": 870,
 		"statOrder": [
@@ -81782,8 +81782,8 @@
 	},
 	"885_0": {
 		"affix": "of Refuge",
-		"1": "+(18-23)% Cold Resistance",
-		"2": "+(18-23)% Minion Cold Resistance",
+		"1": "+(18-24)% Cold Resistance",
+		"2": "+(18-24)% Minion Cold Resistance",
 		"level": 0,
 		"statOrderKey": 885,
 		"statOrder": [
@@ -81800,8 +81800,8 @@
 	},
 	"886_0": {
 		"affix": "of Many Threads",
-		"1": "+(9-12)% Elemental Resistance",
-		"2": "+(9-12)% Minion Elemental Resistance",
+		"1": "+(8-12)% Elemental Resistance",
+		"2": "+(8-12)% Minion Elemental Resistance",
 		"level": 0,
 		"statOrderKey": 886,
 		"statOrder": [
@@ -81818,8 +81818,8 @@
 	},
 	"887_0": {
 		"affix": "of the Salamander",
-		"1": "+(18-23)% Fire Resistance",
-		"2": "+(18-23)% Minion Fire Resistance",
+		"1": "+(18-24)% Fire Resistance",
+		"2": "+(18-24)% Minion Fire Resistance",
 		"level": 0,
 		"statOrderKey": 887,
 		"statOrder": [
@@ -81836,8 +81836,8 @@
 	},
 	"888_0": {
 		"affix": "of Golden Light",
-		"1": "+(18-23)% Lightning Resistance",
-		"2": "+(18-23)% Minion Lightning Resistance",
+		"1": "+(18-24)% Lightning Resistance",
+		"2": "+(18-24)% Minion Lightning Resistance",
 		"level": 0,
 		"statOrderKey": 888,
 		"statOrder": [
