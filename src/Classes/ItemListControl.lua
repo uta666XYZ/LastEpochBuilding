@@ -6,6 +6,58 @@
 local pairs = pairs
 local t_insert = table.insert
 
+-- Item type -> 16x16 icon filename (in Assets/).
+-- Weapon/shield subtypes map to generic weapon icons.
+local TYPE_ICON = {
+	["Amulet"]            = "Icon_Amulet.png",
+	["Belt"]              = "Icon_Belt.png",
+	["Body Armor"]        = "Icon_Armor.png",
+	["Boots"]             = "Icon_Boots.png",
+	["Bow"]               = "Icon_Bow.png",
+	["Dagger"]            = "Icon_Dagger.png",
+	["Gloves"]            = "Icon_Gloves.png",
+	["Helmet"]            = "Icon_Helmet.png",
+	["Off-Hand Catalyst"] = "Icon_Shield.png",
+	["One-Handed Axe"]    = "Icon_Axe.png",
+	["Two-Handed Axe"]    = "Icon_Axe.png",
+	["One-Handed Mace"]   = "Icon_Mace.png",
+	["Two-Handed Mace"]   = "Icon_Mace.png",
+	["One-Handed Sword"]  = "Icon_Sword.png",
+	["Two-Handed Sword"]  = "Icon_Sword.png",
+	["Two-Handed Spear"]  = "Icon_Polearm.png",
+	["Two-Handed Staff"]  = "Icon_Staff.png",
+	["Quiver"]            = "Icon_Quiver.png",
+	["Relic"]             = "Icon_Relic.png",
+	["Ring"]              = "Icon_Ring.png",
+	["Sceptre"]           = "Icon_Sceptre.png",
+	["Shield"]            = "Icon_Shield.png",
+	["Wand"]              = "Icon_Wand.png",
+	["Idol Altar"]        = "idol/Idol_Altar_Pyramidal_Altar.png",
+	-- Blessings reuse an existing blessing sprite as a generic icon
+	["Blessing"]          = "blessings/body_of_obsidian.png",
+}
+
+local function iconFileForItem(item)
+	if not item or not item.type then return nil end
+	local t = item.type
+	local f = TYPE_ICON[t]
+	if f then return f end
+	-- All Idol size variants (Minor/Small/Humble/Stout/Grand/Large/Ornate/Huge/Adorned)
+	if t:find("Idol") then return "Icon_Idol.png" end
+	return nil
+end
+
+local iconHandles = {}
+local function getIconHandle(filename)
+	if not filename then return nil end
+	if not iconHandles[filename] then
+		local h = NewImageHandle()
+		h:Load("Assets/" .. filename, "ASYNC")
+		iconHandles[filename] = h
+	end
+	return iconHandles[filename]
+end
+
 local ItemListClass = newClass("ItemListControl", "ListControl", function(self, anchor, x, y, width, height, itemsTab, forceTooltip)
 	self.ListControl(anchor, x, y, width, height, 16, "VERTICAL", true, itemsTab.itemOrderList, forceTooltip)
 	self.itemsTab = itemsTab
@@ -41,9 +93,18 @@ local ItemListClass = newClass("ItemListControl", "ListControl", function(self, 
 	self.controls.deleteUnused.enabled = function()
 		return #self.list > 0
 	end
+	-- Sort toggles between Category and Equipment modes. Tooltip shows the
+	-- mode that will be applied on the next click.
 	self.controls.sort = new("ButtonControl", {"RIGHT",self.controls.deleteUnused,"LEFT"}, -4, 0, 60, 18, "Sort", function()
-		itemsTab:SortItemList()
+		itemsTab:ToggleSortMode()
 	end)
+	self.controls.sort.tooltipText = function()
+		if itemsTab.sortMode == "category" then
+			return "Click to sort by equipped state\n(currently: by category)"
+		else
+			return "Click to sort by category\n(currently: by equipped state)"
+		end
+	end
 end)
 
 function ItemListClass:GetRowValue(column, index, itemId)
@@ -57,13 +118,24 @@ function ItemListClass:GetRowValue(column, index, itemId)
 			used = "  ^9(Used in '" .. (itemSet.title or "Default") .. "')"
 		end
 		local color
-		if item.type and item.type:find("Idol") and item.rarity ~= "UNIQUE" and item.rarity ~= "SET" and item.rarity ~= "LEGENDARY" then
+		if item.type == "Idol Altar" then
+			-- Idol Altar is always shown in Exalted (purple) colour
+			color = colorCodes.EXALTED
+		elseif item.type and item.type:find("Idol") and item.rarity ~= "UNIQUE" and item.rarity ~= "SET" and item.rarity ~= "LEGENDARY" then
 			color = colorCodes.IDOL
 		else
 			color = colorCodes[item.rarity]
 		end
 		return color .. item.name .. used
 	end
+end
+
+function ItemListClass:GetRowIcon(column, index, itemId)
+	if column ~= 1 then return nil end
+	local item = self.itemsTab.items[itemId]
+	local h = getIconHandle(iconFileForItem(item))
+	if h and h:IsValid() then return h end
+	return nil
 end
 
 function ItemListClass:AddValueTooltip(tooltip, index, itemId)
@@ -117,7 +189,9 @@ function ItemListClass:OnSelClick(index, itemId, doubleClick)
 			self.itemsTab:AddUndoState()
 			self.itemsTab.build.buildFlag = true
 		end
-	elseif doubleClick then
+	else
+		-- Single click (or double click) opens the item editor on the right.
+		-- This is more discoverable than the PoB-style double-click-only flow.
 		local newItem = new("Item", item:BuildRaw())
 		newItem.id = item.id
 		self.itemsTab:SetDisplayItem(newItem)

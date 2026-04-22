@@ -16,6 +16,11 @@ local m_floor = math.floor
 local m_modf = math.modf
 
 local function itemDisplayColor(item)
+	-- Idol Altar: always displayed with Exalted (purple) text/frame colour,
+	-- regardless of the item's actual rarity.
+	if item.type == "Idol Altar" then
+		return colorCodes.EXALTED
+	end
 	if item.type and item.type:find("Idol") then
 		if item.rarity == "UNIQUE" or item.rarity == "SET" or item.rarity == "LEGENDARY" then
 			return colorCodes[item.rarity]
@@ -144,6 +149,9 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 
 	self.items = { }
 	self.itemOrderList = { }
+	-- Sort toggle state: "category" or "equipment". Button label reflects the
+	-- NEXT mode to apply, so clicking toggles and re-sorts.
+	self.sortMode = "equipment"
 
 
 	-- Set selector
@@ -707,7 +715,9 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 	-- above the grid so the circle does not overlap the Fractured 1..4 dropdowns.
 	-- Visual centering on the Equipped items dropdown column. Tuned by eye.
 	self.controls.idolGrid = new("IdolGridControl",
-		{"TOPLEFT", self.controls.idolAltarEnd, "BOTTOMLEFT"}, 0, 90,
+		-- Y offset raised from 90 to 112 to leave room for the 22px title bar
+		-- drawn above the container frame ("Equipped Idols / Idol Altar").
+		{"TOPLEFT", self.controls.idolAltarEnd, "BOTTOMLEFT"}, 0, 112,
 		self, self.idolGridLayout, 48, 46)
 	-- Padding below the grid clears the frame's bottom border (~18px) before
 	-- the blessing grid is placed, so Blessing sits fully under the new frame.
@@ -1151,21 +1161,12 @@ function ItemsTabClass:AddDisplayItem(noAutoEquip)
 	self.build.buildFlag = true
 end
 
--- Sorts the build's item list
+-- Sorts the build's item list by equipped state:
+-- equipped items (grouped by slot, then set) come before unequipped; ties broken by name.
 function ItemsTabClass:SortItemList()
 	table.sort(self.itemOrderList, function(a, b)
 		local itemA = self.items[a]
 		local itemB = self.items[b]
-		local primSlotA = itemA:GetPrimarySlot()
-		local primSlotB = itemB:GetPrimarySlot()
-		if primSlotA ~= primSlotB then
-			if not self.slotOrder[primSlotA] then
-				return false
-			elseif not self.slotOrder[primSlotB] then
-				return true
-			end
-			return self.slotOrder[primSlotA] < self.slotOrder[primSlotB]
-		end
 		local equipSlotA, equipSetA = self:GetEquippedSlotForItem(itemA)
 		local equipSlotB, equipSetB = self:GetEquippedSlotForItem(itemB)
 		if equipSlotA and equipSlotB then
@@ -1184,6 +1185,78 @@ function ItemsTabClass:SortItemList()
 			return false
 		end
 		return itemA.name < itemB.name
+	end)
+	self:AddUndoState()
+end
+
+-- Toggle between category-based sort and equipped-state sort.
+-- Called by the Sort button in ItemListControl; returns the mode that was just applied.
+function ItemsTabClass:ToggleSortMode()
+	if self.sortMode == "category" then
+		self.sortMode = "equipment"
+		self:SortItemList()
+	else
+		self.sortMode = "category"
+		self:SortItemListByCategory()
+	end
+	return self.sortMode
+end
+
+-- Category ordering for SortItemListByCategory:
+--   Weapon < Armor < Jewelry < Relic < Idol Altar < Idol < Blessing < Other
+local SORT_CATEGORY_ORDER = {
+	Weapon = 1, Armor = 2, Jewelry = 3, Relic = 4,
+	["Idol Altar"] = 5, Idol = 6, Blessing = 7, Other = 8,
+}
+local SORT_TYPE_TO_CATEGORY = {
+	-- Weapons
+	["One-Handed Axe"] = "Weapon", ["Two-Handed Axe"] = "Weapon",
+	["One-Handed Mace"] = "Weapon", ["Two-Handed Mace"] = "Weapon",
+	["One-Handed Sword"] = "Weapon", ["Two-Handed Sword"] = "Weapon",
+	["Two-Handed Spear"] = "Weapon", ["Two-Handed Staff"] = "Weapon",
+	["Bow"] = "Weapon", ["Dagger"] = "Weapon", ["Wand"] = "Weapon", ["Sceptre"] = "Weapon",
+	-- Armor (includes off-hand defensives)
+	["Helmet"] = "Armor", ["Body Armor"] = "Armor", ["Gloves"] = "Armor",
+	["Boots"] = "Armor", ["Belt"] = "Armor",
+	["Shield"] = "Armor", ["Off-Hand Catalyst"] = "Armor", ["Quiver"] = "Armor",
+	-- Jewelry
+	["Amulet"] = "Jewelry", ["Ring"] = "Jewelry",
+	-- Relic
+	["Relic"] = "Relic",
+	-- Idol Altar is its own category (separated from Idol)
+	["Idol Altar"] = "Idol Altar",
+	-- Blessing
+	["Blessing"] = "Blessing",
+}
+-- Rarity order within a type group (higher = earlier)
+local SORT_RARITY_ORDER = {
+	LEGENDARY = 1, UNIQUE = 2, SET = 3, EXALTED = 4, RARE = 5, MAGIC = 6, NORMAL = 7,
+}
+
+local function getSortCategory(item)
+	if not item or not item.type then return "Other" end
+	local c = SORT_TYPE_TO_CATEGORY[item.type]
+	if c then return c end
+	if item.type:find("Idol") then return "Idol" end
+	return "Other"
+end
+
+-- Sort items by broad category: Weapon / Armor / Jewelry / Relic / Idol / Blessing.
+-- Within a category, groups by item.type, then rarity (Legendary first), then name.
+function ItemsTabClass:SortItemListByCategory()
+	table.sort(self.itemOrderList, function(a, b)
+		local itemA = self.items[a]
+		local itemB = self.items[b]
+		local catA = SORT_CATEGORY_ORDER[getSortCategory(itemA)] or 99
+		local catB = SORT_CATEGORY_ORDER[getSortCategory(itemB)] or 99
+		if catA ~= catB then return catA < catB end
+		local typeA = itemA.type or ""
+		local typeB = itemB.type or ""
+		if typeA ~= typeB then return typeA < typeB end
+		local rA = SORT_RARITY_ORDER[itemA.rarity] or 99
+		local rB = SORT_RARITY_ORDER[itemB.rarity] or 99
+		if rA ~= rB then return rA < rB end
+		return (itemA.name or "") < (itemB.name or "")
 	end)
 	self:AddUndoState()
 end
