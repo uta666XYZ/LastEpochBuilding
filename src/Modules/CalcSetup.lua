@@ -963,6 +963,14 @@ function calcs.initEnv(build, mode, override, specEnv)
 		env.modDB:AddList(calcs.buildModListForNodeList(env, env.allocNodes))
 	end
 
+	-- Auto-compute active Symbols of Hope count (baseline 3 + MaximumSymbols from tree).
+	-- Only auto-fill when Config 'multiplierActiveSymbols' has not been set explicitly
+	-- (so users can still override via the Config tab).
+	if env.modDB:Sum("BASE", nil, "Multiplier:ActiveSymbol") == 0 then
+		local maxSymbols = 3 + env.modDB:Sum("BASE", nil, "MaximumSymbols")
+		env.modDB:NewMod("Multiplier:ActiveSymbol", "BASE", maxSymbols, "Auto:Symbols of Hope")
+	end
+
 	-- Find skills granted by tree nodes
 	if not accelerate.nodeAlloc then
 		for _, node in pairs(env.allocNodes) do
