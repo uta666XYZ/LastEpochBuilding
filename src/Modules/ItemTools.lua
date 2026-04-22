@@ -84,7 +84,7 @@ function itemLib.hasRange(line)
     return line:find("%(%-?%d+%.?%d*%-%-?%d+%.?%d*%)");
 end
 
-function itemLib.formatModLine(modLine, dbMode)
+function itemLib.formatModLine(modLine, dbMode, altarBoost)
     local line = (not dbMode and modLine.range and itemLib.applyRange(modLine.line, modLine.range, modLine.valueScalar, modLine.rounding)) or modLine.line
     if line:match("^%+?0%%? ") or (line:match(" %+?0%%? ") and not line:match("0 to [1-9]")) or line:match(" 0%-0 ") or line:match(" 0 to 0 ") then
         -- Hack to hide 0-value modifiers
@@ -98,6 +98,13 @@ function itemLib.formatModLine(modLine, dbMode)
         end
     else
         colorCode = (modLine.crafted and colorCodes.CRAFTED) or (modLine.custom and colorCodes.CUSTOM) or colorCodes.MAGIC
+    end
+    if altarBoost and altarBoost > 0 and not dbMode and modLine.range then
+        local boostedScalar = (modLine.valueScalar or 1) * (1 + altarBoost)
+        local boostedLine = itemLib.applyRange(modLine.line, modLine.range, boostedScalar, modLine.rounding)
+        if boostedLine ~= line then
+            line = line .. "  (-> " .. boostedLine .. " with Altar)"
+        end
     end
     return colorCode .. line
 end
