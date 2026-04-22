@@ -1214,20 +1214,30 @@ function ImportTabClass:BuildItemsFromMaxroll(buildData, profileData, char)
                     -- Resolve the stripped member name against set_<ver>.json to
                     -- capture setId/name/bonus so the item imports as a SET piece
                     -- (same effect as CraftingPopup's Reforged path).
+                    ConPrintf("[REFORGED-SCAN] base=%s modId=%s affixName=%q", itemBaseName, modId, tostring(modData.affix))
                     if modData.affix and modData.affix:sub(-9) == " Reforged" then
                         local bareName = modData.affix:sub(1, -10)
                         local setData = self:LoadSetDataForImport()
+                        ConPrintf("[REFORGED-MATCH] bareName=%q setDataLoaded=%s", bareName, tostring(setData ~= nil))
                         if setData then
+                            local candidates = 0
                             for _, si in pairs(setData) do
-                                if si and si.set and si.name == bareName then
-                                    reforgedSetInfo = {
-                                        setId = si.set.setId,
-                                        name  = si.set.name,
-                                        bonus = si.set.bonus,
-                                    }
-                                    reforgedTitle = modData.affix
-                                    break
+                                if si and si.set and si.name then
+                                    candidates = candidates + 1
+                                    if si.name == bareName then
+                                        reforgedSetInfo = {
+                                            setId = si.set.setId,
+                                            name  = si.set.name,
+                                            bonus = si.set.bonus,
+                                        }
+                                        reforgedTitle = modData.affix
+                                        ConPrintf("[REFORGED-HIT] bare=%q -> setId=%s setName=%q", bareName, tostring(si.set.setId), tostring(si.set.name))
+                                        break
+                                    end
                                 end
+                            end
+                            if not reforgedSetInfo then
+                                ConPrintf("[REFORGED-MISS] bare=%q (scanned %d set members, no match)", bareName, candidates)
                             end
                         end
                     end
@@ -1253,6 +1263,12 @@ function ImportTabClass:BuildItemsFromMaxroll(buildData, profileData, char)
                 item.rarity = affixCount >= 3 and "RARE" or (affixCount >= 1 and "MAGIC" or "NORMAL")
             end
             ConPrintf("[MAXROLL-RARITY] base=%s affixCount=%d maxTier=%d idol=%s -> %s", itemBaseName, affixCount, maxTier, tostring(isIdol ~= nil), item.rarity)
+            if reforgedSetInfo then
+                ConPrintf("[REFORGED-PARSED] base=%s title=%q rarity=%s setId=%s bonusKeys=%s",
+                    itemBaseName, tostring(item.title), tostring(item.rarity),
+                    tostring(reforgedSetInfo.setId),
+                    (function() local ks = {} for k,_ in pairs(reforgedSetInfo.bonus or {}) do ks[#ks+1] = tostring(k) end return table.concat(ks, ",") end)())
+            end
 
             if not reforgedSetInfo then
                 local forename, surname = "", ""
@@ -2108,9 +2124,17 @@ function ImportTabClass:BuildItem(itemData)
     -- Reforged items: restore SET rarity + setInfo (both get stripped by
     -- BuildAndParseRaw/Craft since the base item is classed as "basic").
     if itemData.setInfo and itemData.setInfo.setId ~= nil then
+        ConPrintf("[REFORGED-RESTORE] base=%s titleBefore=%q rarityBefore=%s setIdIn=%s",
+            tostring(item.baseName), tostring(item.title), tostring(item.rarity),
+            tostring(itemData.setInfo.setId))
         item.rarity  = "SET"
         item.setInfo = itemData.setInfo
         if itemData.title then item.title = itemData.title end
+        ConPrintf("[REFORGED-RESTORE] after: title=%q rarity=%s setInfo.setId=%s",
+            tostring(item.title), tostring(item.rarity), tostring(item.setInfo.setId))
+    elseif itemData.rarity == "SET" then
+        ConPrintf("[REFORGED-WARN] itemData.rarity=SET but no setInfo carried (base=%s title=%q)",
+            tostring(item.baseName), tostring(itemData.title))
     end
     ConPrintf("[BUILDITEM] name=%s rarity: %s -> %s (after BuildAndParseRaw+Craft)", tostring(item.title or item.baseName), tostring(rarityBefore), tostring(item.rarity))
 
