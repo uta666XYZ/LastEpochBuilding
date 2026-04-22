@@ -578,7 +578,7 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 		DrawImage(nil, btnX,          btnY,         1,    btnH)
 		DrawImage(nil, btnX + btnW,   btnY,         1,    btnH)
 		local labelColor = curIdx == 1 and "^8" or "^2"
-		DrawString(btnX + m_floor(btnW / 2), btnY + 2, "CENTER_X", 14, "VAR", labelColor .. STEP_LABELS[curIdx])
+		DrawString(btnX + m_floor(btnW / 2), btnY + 4, "CENTER_X", 14, "VAR", labelColor .. STEP_LABELS[curIdx])
 
 		-- Tooltip on hover (drawn at layer 2 to appear above controls at layer 1)
 		if overBtn then
