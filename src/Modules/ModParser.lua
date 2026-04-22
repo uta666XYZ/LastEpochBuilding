@@ -634,6 +634,21 @@ for _, damageType in ipairs(DamageTypes) do
 	specialQuickFixModList[damageType .. " Shred Chance"] = "Shred " .. damageType .. " Resistance Chance"
 end
 
+-- Lowercased skill name -> canonical name (used by idol-affix specialModList patterns)
+local skillNameByLower = {}
+for _, skill in pairs(data.skills) do
+	if skill.name then
+		skillNameByLower[skill.name:lower()] = skill.name
+	end
+end
+
+-- Normalize a captured skill phrase and return canonical skill name or nil
+local function canonicalSkillName(phrase)
+	if not phrase then return nil end
+	phrase = phrase:match("^%s*(.-)%s*$")
+	return skillNameByLower[phrase:lower()]
+end
+
 local specialModList = {
 	["no cooldown"] = { flag("NoCooldown") },
 	-- Idol Altar: Refracted Slot affix-effect modifiers.
@@ -708,7 +723,67 @@ local specialModList = {
 	end,
 	-- Rusted Cleaver unique: Intelligence gains a value equal to Strength
 	["^%+1 intelligence equals strength$"] = { flag("IntEqualsStr") },
+
+	-- Category A: "X% increased Damage for Totems" (distinct from "per totem")
+	["^%+?([%d%.]+)%% increased damage for totems$"] = function(num)
+		return { mod("Damage", "INC", num, "", 0, 0, { type = "Scope", scope = "totem" }) }
+	end,
 }
+
+-- Escape Lua pattern specials (non-word chars)
+local function escPat(s) return (s:gsub("(%W)", "%%%1")) end
+
+-- Per-skill idol affix patterns (recognised with proper SkillName tags).
+-- Only A (damage) and H (cooldown) are registered per-skill since they integrate
+-- with DPS calcs via SkillName. Trigger-chance / resource-gain mods are intentionally
+-- left unrecognised for now to avoid bloating specialModList with thousands of patterns.
+-- Skill names that collide with damage types / keywords — skip to avoid hijacking
+-- generic parsing of e.g. "increased poison damage".
+local skillNameBlacklist = { bleed = true, poison = true }
+for lower, canonical in pairs(skillNameByLower) do
+	if not skillNameBlacklist[lower] then
+		local esc = escPat(lower)
+		specialModList["^%+?([%d%.]+)%% increased damage with " .. esc .. "$"] = function(num)
+			return { mod("Damage", "INC", num, "", 0, 0, { type = "SkillName", skillName = canonical }) }
+		end
+		specialModList["^%+?([%d%.]+)%% increased " .. esc .. " damage$"] = function(num)
+			return { mod("Damage", "INC", num, "", 0, 0, { type = "SkillName", skillName = canonical }) }
+		end
+		specialModList["^%+?([%d%.]+)%% increased damage with " .. esc .. " per active shadow$"] = function(num)
+			return { mod("Damage", "INC", num, "", 0, 0, { type = "SkillName", skillName = canonical }, { type = "Multiplier", var = "ActiveShadow" }) }
+		end
+		specialModList["^%+?([%d%.]+)%% increased cooldown recovery speed for " .. esc .. "$"] = function(num)
+			return { mod("CooldownRecovery", "INC", num, "", 0, 0, { type = "SkillName", skillName = canonical }) }
+		end
+		specialModList["^%+?([%d%.]+)%% increased cooldown recovery speed of " .. esc .. "$"] = function(num)
+			return { mod("CooldownRecovery", "INC", num, "", 0, 0, { type = "SkillName", skillName = canonical }) }
+		end
+	end
+end
+
+-- Buff-effect recognition (named stats only; no DPS integration yet)
+local knownBuffsOnYou = { "Haste", "Frenzy", "Haven", "Rebuke", "Unholy Might", "Smoke Bomb" }
+for _, buff in ipairs(knownBuffsOnYou) do
+	local esc = escPat(buff:lower())
+	local bVar = buff:gsub("%s+", ""):gsub("[^%a%d_]", "")
+	specialModList["^%+?([%d%.]+)%% increased effect of " .. esc .. " on you$"] = function(num)
+		return { mod(bVar .. "Effect", "INC", num) }
+	end
+	-- D: Chance to gain <Buff> for N seconds when you Echo an ability
+	specialModList["^%+?(%d+)%% chance to gain " .. esc .. " for (%d+) seconds? when you echo an ability$"] = function(num, chance, duration)
+		return {
+			mod("ChanceToGain" .. bVar .. "OnEcho", "BASE", tonumber(chance)),
+			mod(bVar .. "Duration", "BASE", tonumber(duration)),
+		}
+	end
+	-- D: Chance to gain <Buff> for N seconds when you Summon a Totem
+	specialModList["^%+?(%d+)%% chance to gain " .. esc .. " for (%d+) seconds? when you summon a totem$"] = function(num, chance, duration)
+		return {
+			mod("ChanceToGain" .. bVar .. "OnTotemSummon", "BASE", tonumber(chance)),
+			mod(bVar .. "Duration", "BASE", tonumber(duration)),
+		}
+	end
+end
 
 -- Modifiers that are recognised but unsupported
 local unsupportedModList = {
