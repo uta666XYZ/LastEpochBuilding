@@ -897,6 +897,18 @@ specialModList["^%+?(%d+) (%a+) gained on kill$"] = nsAny
 specialModList["^%+?(%d+) (%a+) gained on crit$"] = nsAny
 specialModList["^%+?(%d+) (%a+) gained on hit$"] = nsAny
 
+-- Damage-taken reductions with qualifier / source
+-- (e.g. "3% reduced Bonus Damage Taken from Critical Strikes",
+--       "5% less Damage Taken from Bosses", "4% reduced Physical Damage Taken")
+specialModList["^%+?([%d%.]+)%% reduced bonus damage taken from (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% less bonus damage taken from (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% reduced damage taken from (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% less damage taken from (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% reduced (.+) damage taken$"] = nsAny
+specialModList["^%+?([%d%.]+)%% less (.+) damage taken$"] = nsAny
+specialModList["^%+?([%d%.]+)%% increased (.+) damage taken$"] = nsAny
+specialModList["^%+?([%d%.]+)%% more (.+) damage taken$"] = nsAny
+
 -- Compound "... this effect is doubled if ..." clauses (e.g. doubled-at-300-mana lightning damage)
 specialModList["^%+?([%d%.]+)%% increased (.+)%. this effect is doubled if (.+)$"] = nsAny
 specialModList["^%+?([%d%.]+)%% reduced (.+)%. this effect is doubled if (.+)$"] = nsAny
