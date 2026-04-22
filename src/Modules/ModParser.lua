@@ -897,6 +897,41 @@ specialModList["^%+?(%d+) (%a+) gained on kill$"] = nsAny
 specialModList["^%+?(%d+) (%a+) gained on crit$"] = nsAny
 specialModList["^%+?(%d+) (%a+) gained on hit$"] = nsAny
 
+-- Flat stat while wielding a weapon type (e.g. "+1 Spell Damage while wielding a Staff")
+specialModList["^%+?([%d%.]+) (.+) while wielding (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+) (.+) while wielding a (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+) (.+) while wielding an (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+) (.+) while dual wielding$"] = nsAny
+specialModList["^%+?([%d%.]+) (.+) while using a (.+)$"] = nsAny
+
+-- Buff-duration grants after action (e.g. "1 second of Haste after you Transform",
+--                                         "4 seconds of Haste after you use Evade")
+specialModList["^%+?(%d+) seconds? of (.+) after you (.+)$"] = nsAny
+specialModList["^%+?(%d+) seconds? of (.+) on (.+)$"] = nsAny
+specialModList["^%+?(%d+) seconds? of (.+) when (.+)$"] = nsAny
+
+-- Per-active / per-equipped / per-stack multipliers
+-- (e.g. "5% increased Cold Damage per active Totem",
+--       "+5% Chance to inflict Bleed on Hit per equipped Sword")
+specialModList["^%+?([%d%.]+)%% increased (.+) per active (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% reduced (.+) per active (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% more (.+) per active (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% less (.+) per active (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% increased (.+) per equipped (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% reduced (.+) per equipped (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% chance to (.+) per active (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% chance to (.+) per equipped (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+) (.+) per active (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+) (.+) per equipped (.+)$"] = nsAny
+
+-- Exotic chance-to-cast triggers with qualifier / trailing parenthetical
+-- (e.g. "+5% Chance to cast Fire Aura on Kill with Fire Skills (1 second cooldown)",
+--       "+5% Chance to cast Smite on Hit with Throwing Attacks (up to 10 times per 2 seconds)")
+specialModList["^%+?([%d%.]+)%% chance to cast (.+) on (.+) with (.+)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% chance to cast (.+) on (.+) with (.+) %(.+%)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% chance to cast (.+) on (.+) %(.+%)$"] = nsAny
+specialModList["^%+?([%d%.]+)%% chance to cast (.+) when you (.+) %(.+%)$"] = nsAny
+
 -- Damage-taken reductions with qualifier / source
 -- (e.g. "3% reduced Bonus Damage Taken from Critical Strikes",
 --       "5% less Damage Taken from Bosses", "4% reduced Physical Damage Taken")
