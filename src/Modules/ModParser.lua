@@ -403,6 +403,9 @@ local modTagList = {
 	["with concentration"] = { tag = { type = "Condition", var = "Concentration" } },
 	["per arcane shield"] = { tag = { type = "Multiplier", var = "ArcaneShieldStack" } },
 	["per companion"] = { tag = { type = "Multiplier", var = "Companion" } },
+	["per symbol"] = { tag = { type = "Multiplier", var = "ActiveSymbol" } },
+	["per active symbol"] = { tag = { type = "Multiplier", var = "ActiveSymbol" } },
+	["per symbol consumed"] = { tag = { type = "Multiplier", var = "ActiveSymbol" } },
 	["if you[' ]h?a?ve dealt a critical strike recently"] = { tag = { type = "Condition", var = "CritRecently" } },
 	["on kill"] = { tag = { type = "Condition", var = "KilledRecently" } },
 	["on melee kill"] = { flags = ModFlag.WeaponMelee, tag = { type = "Condition", var = "KilledRecently" } },
@@ -661,6 +664,10 @@ local specialModList = {
 	end,
 	["^%+?(%d+)%% maximum health gained as endurance threshold$"] = function(num)
 		return { mod("LifeAsEnduranceThreshold", "BASE", tonumber(num)) }
+	end,
+	-- Sentinel Defiance: "+1 Endurance Threshold Per 2% Uncapped Elemental Resistance"
+	["^%+?(%d+) endurance threshold per 2%% uncapped elemental resistance$"] = function(num)
+		return { mod("EnduranceThresholdPerUncappedEleRes", "BASE", tonumber(num)) }
 	end,
 	-- Runemaster: Sanguine Runestones 6-point bonus
 	["^(%d+)%% health regen also applies to ward$"] = function(num)
