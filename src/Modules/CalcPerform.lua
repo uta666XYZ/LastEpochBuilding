@@ -209,6 +209,16 @@ local function doActorAttribsConditions(env, actor)
 		output.TotalAttr = output.TotalAttr + output[stat]
 	end
 
+	-- Cleaver Solution (Rusted Cleaver unique): "Your Intelligence is equal to your Strength"
+	-- Overrides Int with the Str value; other Int sources are replaced, not added.
+	if modDB:Flag(nil, "IntEqualsStr") then
+		output.TotalAttr = output.TotalAttr - output.Int + output.Str
+		output.Int = output.Str
+		if breakdown then
+			breakdown.Int = breakdown.simple(nil, nil, output.Int, "Int")
+		end
+	end
+
 	-- Season 4 (1.4): attribute conversion
 	-- First initialise S4 attributes from direct grants (passives/gear granting Guile, Brutality, etc.)
 	-- Converted amount is then added on top, and subtracted from the source so PerStat bonuses don't double-count.
