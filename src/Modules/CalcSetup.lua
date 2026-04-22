@@ -699,6 +699,18 @@ function calcs.initEnv(build, mode, override, specEnv)
 			end
 		end
 
+		-- Idol Altar: count idols equipped in Omen Idol (Refracted) slots
+		-- so mods like "+N per Idol in a Refracted Slot" can scale.
+		local idolInRefractedSlotCount = 0
+		for slotName, item in pairs(items) do
+			if item and slotName:sub(1, 10) == "Omen Idol " then
+				idolInRefractedSlotCount = idolInRefractedSlotCount + 1
+			end
+		end
+		if idolInRefractedSlotCount > 0 then
+			modDB:NewMod("Multiplier:IdolInRefractedSlot", "BASE", idolInRefractedSlotCount, "Idol Altar")
+		end
+
 		for _, slot in pairs(build.itemsTab.orderedSlots) do
 			local slotName = slot.slotName
 			local item = items[slotName]
