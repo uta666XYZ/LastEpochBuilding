@@ -116,6 +116,9 @@ function itemLib.formatModLine(modLine, dbMode, altarBoost)
     else
         colorCode = (modLine.crafted and colorCodes.CRAFTED) or (modLine.custom and colorCodes.CUSTOM) or colorCodes.MAGIC
     end
+    if modLine.notSupported and not modLine.extra then
+        line = line .. "  " .. colorCodes.NORMAL .. "(NOT SUPPORTED IN LEB YET)"
+    end
     if altarBoost and altarBoost > 0 and not dbMode and modLine.range then
         local boostedScalar = (modLine.valueScalar or 1) * (1 + altarBoost)
         local boostedLine = itemLib.applyRange(modLine.line, modLine.range, boostedScalar, modLine.rounding)
