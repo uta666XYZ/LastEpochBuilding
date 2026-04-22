@@ -904,16 +904,11 @@ function ImportTabClass:BuildCharFromLETools(jsonData, data, buildId)
                 table.insert(char.abilities, skillName)
                 table.insert(char.hashes, treeIdStr .. "-0#1")
                 if type(treeData.selected) == "table" then
-                    local dbgTotal, dbgCount = 0, 0
                     for nodeId, points in pairs(treeData.selected) do
                         if type(points) == "number" and points > 0 then
                             table.insert(char.hashes, treeIdStr .. "-" .. nodeId .. "#" .. points)
-                            ConPrintf("[IMPORT-SKILL-DBG] %s (%s) node=%s points=%s", skillName, treeIdStr, tostring(nodeId), tostring(points))
-                            dbgTotal = dbgTotal + points
-                            dbgCount = dbgCount + 1
                         end
                     end
-                    ConPrintf("[IMPORT-SKILL-DBG] %s (%s) TOTAL nodes=%d points=%d", skillName, treeIdStr, dbgCount, dbgTotal)
                 end
             else
                 ConPrintf("[IMPORT-SKILL] No match for LETools treeId: %s", tostring(treeIdStr))
