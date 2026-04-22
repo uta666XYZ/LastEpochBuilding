@@ -701,10 +701,16 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 	-- ===== IDOL GRID IN ITEMS TAB =====
 	-- Created here (after drag targets and item sets are ready) so RegisterLateSlot
 	-- can safely add the 25 idol slots to the drag lists and all item sets.
+	-- cw=48, ch=46 makes the 5x5 grid aspect ratio match idol_container.png's
+	-- interior grid so the PNG border and functional cells overlap cleanly.
+	-- Y offset (90) clears the container frame's altar-circle + top border (~83px)
+	-- above the grid so the circle does not overlap the Fractured 1..4 dropdowns.
 	self.controls.idolGrid = new("IdolGridControl",
-		{"TOPLEFT", self.controls.idolAltarEnd, "BOTTOMLEFT"}, -81, 12,
-		self, self.idolGridLayout, 68, 46)
-	self.controls.idolGridPanelEnd = new("Control", {"TOPLEFT", self.controls.idolGrid, "BOTTOMLEFT"}, 0, 8, 0, 0)
+		{"TOPLEFT", self.controls.idolAltarEnd, "BOTTOMLEFT"}, -40, 90,
+		self, self.idolGridLayout, 48, 46)
+	-- Padding below the grid clears the frame's bottom border (~18px) before
+	-- the blessing grid is placed, so Blessing sits fully under the new frame.
+	self.controls.idolGridPanelEnd = new("Control", {"TOPLEFT", self.controls.idolGrid, "BOTTOMLEFT"}, 0, 24, 0, 0)
 	t_insert(self.controls, self.controls.idolGridPanelEnd)
 	-- ===== END IDOL GRID =====
 
@@ -714,25 +720,29 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 	t_insert(self.controls, blessGrid)
 	self.controls.blessingGrid = blessGrid
 
-	-- Craft shortcut buttons: new row below Craft item.../Create custom...
-	self.controls.craftIdolBtn = new("ButtonControl", {"TOPLEFT", self.controls.craftDisplayItem, "BOTTOMLEFT"}, 0, 8, 100, 28, "Craft Idol...", function()
+	-- Craft shortcut buttons: square 48x48 image-only buttons below the paperdoll.
+	-- Centered under the 288px-wide paperdoll: 3*48 + 2*4 = 152px → x offset = (288-152)/2 = 68.
+	self.controls.craftIdolBtn = new("ButtonControl", {"TOPLEFT", self.controls.paperdoll, "BOTTOMLEFT"}, 68, 8, 48, 48, "", function()
 		self:CraftItem()
 	end)
-	self.controls.craftIdolBtn:SetImage("Assets/idol/harbingersNeedle.png")
+	self.controls.craftIdolBtn:SetImage("Assets/idol/smallEterranIdol.png")
+	self.controls.craftIdolBtn.tooltipText = "Craft Idol..."
 	self.controls.craftIdolBtn.shown = function()
 		return self.displayItem == nil
 	end
-	self.controls.craftIdolAltarBtn = new("ButtonControl", {"LEFT", self.controls.craftIdolBtn, "RIGHT"}, 4, 0, 130, 28, "Craft Idol Altar...", function()
+	self.controls.craftIdolAltarBtn = new("ButtonControl", {"LEFT", self.controls.craftIdolBtn, "RIGHT"}, 4, 0, 48, 48, "", function()
 		self:CraftItem(nil, "Idol Altar")
 	end)
-	self.controls.craftIdolAltarBtn:SetImage("Assets/idol/idol_altar_empty.png")
+	self.controls.craftIdolAltarBtn:SetImage("Assets/idol/Idol_Altar_Pyramidal_Altar.png")
+	self.controls.craftIdolAltarBtn.tooltipText = "Craft Idol Altar..."
 	self.controls.craftIdolAltarBtn.shown = function()
 		return self.displayItem == nil
 	end
-	self.controls.craftBlessingBtn = new("ButtonControl", {"LEFT", self.controls.craftIdolAltarBtn, "RIGHT"}, 4, 0, 120, 28, "Craft Blessing...", function()
+	self.controls.craftBlessingBtn = new("ButtonControl", {"LEFT", self.controls.craftIdolAltarBtn, "RIGHT"}, 4, 0, 48, 48, "", function()
 		self:EditBlessings(nil)
 	end)
 	self.controls.craftBlessingBtn:SetImage("Assets/blessings/memory_of_light.png")
+	self.controls.craftBlessingBtn.tooltipText = "Craft Blessing..."
 	self.controls.craftBlessingBtn.shown = function()
 		return self.displayItem == nil
 	end
