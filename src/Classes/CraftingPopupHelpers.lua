@@ -561,4 +561,80 @@ function H.buildOrderedTypeList(dataTypeList)
 	return ordered
 end
 
+-- Build a fresh Item from a base-list entry produced by H.buildBaseList.
+-- Shared by CraftingPopup:SelectBase and ItemsTab's Stage1 Base DD tooltip.
+function H.buildItemFromEntry(entry)
+	local item = new("Item")
+	item.name       = entry.name
+	item.baseName   = entry.baseName or entry.name
+	item.base       = entry.base
+	item.buffModLines             = {}
+	item.enchantModLines          = {}
+	item.classRequirementModLines = {}
+	item.implicitModLines         = {}
+	item.explicitModLines         = {}
+	item.quality = 0
+	item.crafted = true
+
+	if entry.category == "unique" then
+		item.rarity   = "UNIQUE"
+		item.title    = entry.uniqueData.name
+		item.uniqueID = entry.uniqueID
+		if entry.uniqueData.mods then
+			for i, modText in ipairs(entry.uniqueData.mods) do
+				local rollId = entry.uniqueData.rollIds and entry.uniqueData.rollIds[i]
+				local modLine = { line = modText }
+				if rollId then modLine.range = 128 end
+				t_insert(item.explicitModLines, modLine)
+			end
+		end
+	elseif entry.category == "ww" then
+		item.rarity   = "WWUNIQUE"
+		item.title    = entry.uniqueData.name
+		item.uniqueID = entry.uniqueID
+		if entry.uniqueData.mods then
+			for i, modText in ipairs(entry.uniqueData.mods) do
+				local rollId = entry.uniqueData.rollIds and entry.uniqueData.rollIds[i]
+				local modLine = { line = modText }
+				if rollId then modLine.range = 128 end
+				t_insert(item.explicitModLines, modLine)
+			end
+		end
+	elseif entry.category == "set" then
+		item.rarity = "SET"
+		item.title  = entry.setData.name
+		item.setID  = entry.setID
+		if entry.setData.set then
+			item.setInfo = {
+				setId = entry.setData.set.setId,
+				name  = entry.setData.set.name,
+				bonus = entry.setData.set.bonus,
+			}
+		end
+		if entry.setData.mods then
+			for i, modText in ipairs(entry.setData.mods) do
+				local rollId = entry.setData.rollIds and entry.setData.rollIds[i]
+				local modLine = { line = modText }
+				if rollId then modLine.range = 128 end
+				t_insert(item.explicitModLines, modLine)
+			end
+		end
+	else
+		item.rarity = "NORMAL"
+		item.title  = nil
+	end
+
+	if entry.base.implicits then
+		for _, line in ipairs(entry.base.implicits) do
+			if not line:find("%[UNKNOWN_STAT%]") then
+				t_insert(item.implicitModLines, { line = line })
+			end
+		end
+	end
+
+	item:NormaliseQuality()
+	item:BuildAndParseRaw()
+	return item
+end
+
 return H

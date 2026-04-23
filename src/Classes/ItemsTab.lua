@@ -1606,6 +1606,17 @@ function ItemsTabClass:OpenCraftItemSelector(slotName)
 	end)
 	controls.base.enableDroppedWidth = true
 	controls.base.maxDroppedWidth = 520
+	controls.base.tooltipFunc = function(tooltip, mode, index, value)
+		local entry = state.baseList[index]
+		if not entry or not entry.base then tooltip:Clear(); return end
+		if tooltip.currentEntry ~= entry then
+			tooltip:Clear()
+			tooltip.currentEntry = entry
+			local previewItem = CraftPopupH.buildItemFromEntry(entry)
+			local previewSlot = slotName and self.slots[slotName] or nil
+			self:AddItemTooltip(tooltip, previewItem, previewSlot)
+		end
+	end
 
 	controls.create = new("ButtonControl", nil, -45, 140, 80, 20, "Create", function()
 		local entry = state.baseList[state.baseIdx]
