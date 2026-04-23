@@ -263,4 +263,266 @@ describe("TestModParse", function()
             approxEq(build.configTab.modList:Sum("MORE", nil, "Damage"), -48)
         end)
     end)
+
+    describe("while channelling <skill>", function()
+        it("endurance while channelling Warpath applies only with condition", function()
+            build.configTab.input.customMods = "10% Endurance while channelling Warpath"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            -- Without ChannellingWarpath condition, mod is gated off.
+            assert.are.equals(0, build.configTab.modList:Sum("BASE", nil, "Endurance"))
+            -- With the skill-specific condition set via cfg.skillCond, mod applies.
+            local cfg = { skillCond = { ChannellingWarpath = true } }
+            assert.are.equals(10, build.configTab.modList:Sum("BASE", cfg, "Endurance"))
+        end)
+
+        it("endurance while channelling Warpath is NOT triggered by wrong skill", function()
+            build.configTab.input.customMods = "10% Endurance while channelling Warpath"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            -- ChannellingGhostflame condition should not activate the Warpath-tagged mod.
+            local cfg = { skillCond = { ChannellingGhostflame = true } }
+            assert.are.equals(0, build.configTab.modList:Sum("BASE", cfg, "Endurance"))
+        end)
+
+        it("ward per second while channeling Ghostflame (American spelling)", function()
+            build.configTab.input.customMods = "+50 Ward per Second while channeling Ghostflame"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            local cfg = { skillCond = { ChannellingGhostflame = true } }
+            assert.are.equals(50, build.configTab.modList:Sum("BASE", cfg, "WardPerSecond"))
+        end)
+
+        it("ward per second while channelling Ghostflame (British spelling)", function()
+            build.configTab.input.customMods = "+50 Ward per Second while channelling Ghostflame"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            local cfg = { skillCond = { ChannellingGhostflame = true } }
+            assert.are.equals(50, build.configTab.modList:Sum("BASE", cfg, "WardPerSecond"))
+        end)
+    end)
+
+    describe("buff-conditional stat scaling (while you have X)", function()
+        it("increased damage while you have Lightning Aegis — gated by HaveLightningAegis", function()
+            build.configTab.input.customMods = "19% Increased Damage while you have Lightning Aegis"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            assert.are.equals(0, build.configTab.modList:Sum("INC", nil, "Damage"))
+            local cfg = { skillCond = { HaveLightningAegis = true } }
+            assert.are.equals(19, build.configTab.modList:Sum("INC", cfg, "Damage"))
+        end)
+
+        it("increased damage while you have Frenzy — gated by Frenzy condition", function()
+            build.configTab.input.customMods = "30% Increased Damage while you have Frenzy"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            assert.are.equals(0, build.configTab.modList:Sum("INC", nil, "Damage"))
+            local cfg = { skillCond = { Frenzy = true } }
+            assert.are.equals(30, build.configTab.modList:Sum("INC", cfg, "Damage"))
+        end)
+
+        it("increased damage while you have Haste — gated by Haste condition", function()
+            build.configTab.input.customMods = "25% Increased Damage while you have Haste"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            assert.are.equals(0, build.configTab.modList:Sum("INC", nil, "Damage"))
+            local cfg = { skillCond = { Haste = true } }
+            assert.are.equals(25, build.configTab.modList:Sum("INC", cfg, "Damage"))
+        end)
+    end)
+
+    describe("per active/equipped multipliers", function()
+        it("increased damage per active Rune scales with Multiplier:ActiveRune", function()
+            build.configTab.input.customMods = "10% Increased Damage per active Rune"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            -- Zero without multiplier set
+            assert.are.equals(0, build.configTab.modList:Sum("INC", nil, "Damage"))
+            -- With 3 active runes: 10 * 3 = 30
+            build.configTab.modList.multipliers["ActiveRune"] = 3
+            assert.are.equals(30, build.configTab.modList:Sum("INC", nil, "Damage"))
+            build.configTab.modList.multipliers["ActiveRune"] = nil
+        end)
+
+        it("increased damage per active Dread Shade scales with Multiplier:ActiveDreadShade", function()
+            build.configTab.input.customMods = "15% Increased Damage per active Dread Shade"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            build.configTab.modList.multipliers["ActiveDreadShade"] = 2
+            assert.are.equals(30, build.configTab.modList:Sum("INC", nil, "Damage"))
+            build.configTab.modList.multipliers["ActiveDreadShade"] = nil
+        end)
+
+        it("increased damage per active Wandering Spirit scales with multiplier", function()
+            build.configTab.input.customMods = "8% Increased Damage per active Wandering Spirit"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            build.configTab.modList.multipliers["ActiveWanderingSpirit"] = 4
+            assert.are.equals(32, build.configTab.modList:Sum("INC", nil, "Damage"))
+            build.configTab.modList.multipliers["ActiveWanderingSpirit"] = nil
+        end)
+
+        it("increased damage per equipped Omen Idol scales with multiplier", function()
+            build.configTab.input.customMods = "5% Increased Damage per equipped Omen Idol"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            build.configTab.modList.multipliers["EquippedOmenIdol"] = 4
+            assert.are.equals(20, build.configTab.modList:Sum("INC", nil, "Damage"))
+            build.configTab.modList.multipliers["EquippedOmenIdol"] = nil
+        end)
+
+        it("increased damage per equipped Weaver Item scales with multiplier", function()
+            build.configTab.input.customMods = "7% Increased Damage per equipped Weaver Item"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            build.configTab.modList.multipliers["EquippedWeaverItem"] = 3
+            assert.are.equals(21, build.configTab.modList:Sum("INC", nil, "Damage"))
+            build.configTab.modList.multipliers["EquippedWeaverItem"] = nil
+        end)
+    end)
+
+    describe("per arrow/projectile scaling", function()
+        it("increased damage per arrow with Multishot — skill-gated + multiplier", function()
+            build.configTab.input.customMods = "11% Increased Damage per arrow with Multishot"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            -- No multiplier, no skill cfg: zero
+            assert.are.equals(0, build.configTab.modList:Sum("INC", nil, "Damage"))
+            -- Multiplier set but skill mismatch: still zero (SkillName gate)
+            build.configTab.modList.multipliers["ArrowsWithMultishot"] = 5
+            assert.are.equals(0, build.configTab.modList:Sum("INC", { skillName = "Volley" }, "Damage"))
+            -- Multishot context: 11 * 5 = 55
+            assert.are.equals(55, build.configTab.modList:Sum("INC", { skillName = "Multishot" }, "Damage"))
+            build.configTab.modList.multipliers["ArrowsWithMultishot"] = nil
+        end)
+
+        it("increased area per Projectile scales with ProjectileCountConfig multiplier", function()
+            build.configTab.input.customMods = "35% Increased Area per Projectile"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            assert.are.equals(0, build.configTab.modList:Sum("INC", nil, "AreaOfEffect"))
+            build.configTab.modList.multipliers["ProjectileCountConfig"] = 3
+            assert.are.equals(105, build.configTab.modList:Sum("INC", nil, "AreaOfEffect"))
+            build.configTab.modList.multipliers["ProjectileCountConfig"] = nil
+        end)
+
+        it("mana cost per Additional Totem Summoned scales with AdditionalTotem multiplier", function()
+            build.configTab.input.customMods = "+15 Mana Cost per Additional Totem Summoned"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            build.configTab.modList.multipliers["AdditionalTotem"] = 2
+            assert.are.equals(30, build.configTab.modList:Sum("BASE", nil, "ManaCost"))
+            build.configTab.modList.multipliers["AdditionalTotem"] = nil
+        end)
+    end)
+
+    describe("ailment/charge application on hit", function()
+        it("Chance to apply Frailty on Hit feeds FrailtyChance with Hit flag", function()
+            build.configTab.input.customMods = "+12% Chance to apply Frailty on Hit"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            -- Hit-flagged context sums the chance
+            assert.are.equals(12, build.configTab.modList:Sum("BASE", { flags = ModFlag.Hit }, "FrailtyChance"))
+        end)
+
+        it("Chance to inflict Plague on Hit feeds PlagueChance with Hit flag", function()
+            build.configTab.input.customMods = "+8% Chance to inflict Plague on Hit"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            assert.are.equals(8, build.configTab.modList:Sum("BASE", { flags = ModFlag.Hit }, "PlagueChance"))
+        end)
+
+        it("Chance to apply Poison on Hit feeds PoisonChance with Hit flag", function()
+            build.configTab.input.customMods = "+25% Chance to apply Poison on Hit"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            assert.are.equals(25, build.configTab.modList:Sum("BASE", { flags = ModFlag.Hit }, "PoisonChance"))
+        end)
+    end)
+
+    describe("damage-taken reductions with source", function()
+        it("reduced Bonus Damage Taken from Critical Strikes feeds ReduceCritExtraDamage", function()
+            build.configTab.input.customMods = "3% reduced Bonus Damage Taken from Critical Strikes"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            assert.are.equals(3, build.configTab.modList:Sum("BASE", nil, "ReduceCritExtraDamage"))
+        end)
+
+        it("less Physical Damage Taken reduces PhysicalDamageTaken", function()
+            build.configTab.input.customMods = "5% less Physical Damage Taken"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            -- "less" applies as MORE with negative sign
+            assert.are.equals(-5, build.configTab.modList:Sum("MORE", nil, "PhysicalDamageTaken"))
+        end)
+
+        it("less Damage Taken from Chilled Enemies gates via ActorCondition", function()
+            build.configTab.input.customMods = "8% less Damage Taken from Chilled Enemies"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            -- Without enemy-chilled condition: no reduction
+            assert.are.equals(0, build.configTab.modList:Sum("MORE", nil, "DamageTaken"))
+            -- Mod exists in modList (recognised + not nsAny-swallowed)
+            local found = false
+            for _, m in ipairs(build.configTab.modList) do
+                if m.name == "DamageTaken" and m.value == -8 then
+                    found = true
+                    break
+                end
+            end
+            assert.is_true(found)
+        end)
+    end)
+
+    describe("resource conversion (Mana to Ward)", function()
+        it("X% of Mana Spent Gained as Ward emits ManaSpentGainedAsWard", function()
+            build.configTab.input.customMods = "40% of Mana Spent Gained as Ward"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            assert.are.equals(40, build.configTab.modList:Sum("BASE", nil, "ManaSpentGainedAsWard"))
+        end)
+
+        it("unknown spent-gained combo still recognised (nsAny fallback, no ManaSpentGainedAsWard)", function()
+            build.configTab.input.customMods = "10% of Rage Spent Gained as Frenzy"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            -- Not the known Mana->Ward path
+            assert.are.equals(0, build.configTab.modList:Sum("BASE", nil, "ManaSpentGainedAsWard"))
+            -- But the mod is recognised (not an error)
+            local found = false
+            for _, m in ipairs(build.configTab.modList) do
+                if m.name == "LEB_NotSupported" then
+                    found = true
+                    break
+                end
+            end
+            assert.is_true(found)
+        end)
+    end)
+
+    describe("+N to <skill> skill level", function()
+        it("+N to <skill> emits SkillLevel tagged with SkillName", function()
+            build.configTab.input.customMods = "+3 to Flame Ward"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            -- Untagged sum (global) is 0: mod is gated by SkillName tag
+            assert.are.equals(0, build.configTab.modList:Sum("BASE", nil, "SkillLevel"))
+            -- With matching skill cfg: value applies
+            local cfg = { skillName = "Flame Ward" }
+            assert.are.equals(3, build.configTab.modList:Sum("BASE", cfg, "SkillLevel"))
+            -- With non-matching skill cfg: no bonus
+            local cfg2 = { skillName = "Fireball" }
+            assert.are.equals(0, build.configTab.modList:Sum("BASE", cfg2, "SkillLevel"))
+        end)
+
+        it("+N to non-skill name (e.g. Strength) falls through to generic stat mod", function()
+            build.configTab.input.customMods = "+5 to Strength"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            -- Should NOT emit SkillLevel
+            assert.are.equals(0, build.configTab.modList:Sum("BASE", nil, "SkillLevel"))
+            -- Should apply as Str (generic parse chain)
+            assert.are.equals(5, build.configTab.modList:Sum("BASE", nil, "Str"))
+        end)
+    end)
 end)
