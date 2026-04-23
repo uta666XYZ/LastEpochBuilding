@@ -128,6 +128,7 @@ end
 
 -- Load altar layouts from dedicated data file
 local IDOL_ALTAR_LAYOUTS = LoadModule("Data/IdolAltarLayouts")
+local CraftPopupH = LoadModule("Classes/CraftingPopupHelpers")
 -- Resolve mirrorOf references
 for _, layout in pairs(IDOL_ALTAR_LAYOUTS) do
 	if layout.mirrorOf and not layout.grid then
@@ -693,6 +694,9 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 
 	-- Tooltip anchor (directly after action buttons; old affix/custom/range UI removed)
 	self.controls.displayItemTooltipAnchor = new("Control", {"TOPLEFT",self.controls.addDisplayItem,"BOTTOMLEFT"}, 0, 8)
+
+	-- Inline craft editor (replaces CraftingPopup Stage 2)
+	self:BuildCraftControls()
 
 	-- Scroll bars
 	self.controls.scrollBarV = new("ScrollBarControl", nil, 0, 0, 18, 0, 100, "VERTICAL", true)
@@ -1525,10 +1529,129 @@ function ItemsTabClass:SetAllItemRanges(range)
 	self.build.buildFlag = true
 end
 
--- Opens the item crafting popup (optionally with an existing crafted item to edit)
+-- Opens the item crafting editor. For a new item, a small "Craft Item" selector
+-- popup (Stage 1) gathers rarity/type/base; for an existing crafted item the
+-- inline craft editor (Stage 2) opens directly with that item.
 function ItemsTabClass:CraftItem(existingItem, slotName)
-	local popup = new("CraftingPopup", self, existingItem, slotName)
-	t_insert(main.popups, 1, popup)
+	if existingItem then
+		self:OpenCraftEditor(existingItem, slotName)
+	else
+		self:OpenCraftItemSelector(slotName)
+	end
+end
+
+-- Stage 1 modal: Rarity + Search + Type + Base selectors. On Create, closes
+-- this popup and opens the CraftingPopup (Stage 2) with the chosen base
+-- pre-applied via its 4th constructor argument (presetEntry).
+function ItemsTabClass:OpenCraftItemSelector(slotName)
+	local controls = { }
+	local rarityDDList = {
+		{ label = "Basic",  category = "basic"  },
+		{ label = "Unique", category = "unique" },
+		{ label = "Set",    category = "set"    },
+	}
+	local orderedTypeList = CraftPopupH.filterTypeList(
+		CraftPopupH.buildOrderedTypeList(self.build.data.itemBaseTypeList), slotName)
+	local typeEntries = { }
+	for _, entry in ipairs(orderedTypeList) do
+		if not entry.isSeparator then
+			t_insert(typeEntries, entry)
+		end
+	end
+	if #typeEntries == 0 then
+		main:OpenMessagePopup("Craft Item", "No item types available for this slot.")
+		return
+	end
+
+	local setItems = CraftPopupH.loadSetData(self.build)
+	local classReqBit = CraftPopupH.getClassReqBit(self.build)
+
+	-- Prefer Shield/Off-Hand/Quiver for the Weapon 2 slot, matching Stage 2 default.
+	local selectedTypeIdx = 1
+	if slotName == "Weapon 2" then
+		local offhand = { ["Shield"] = true, ["Off-Hand Catalyst"] = true, ["Quiver"] = true }
+		for i, entry in ipairs(typeEntries) do
+			if offhand[entry.typeName] then selectedTypeIdx = i; break end
+		end
+	end
+
+	local state = {
+		category   = "basic",
+		searchText = "",
+		typeIdx    = selectedTypeIdx,
+		baseList   = {},
+		baseIdx    = 0,
+	}
+
+	local function refreshBases()
+		local typeName = typeEntries[state.typeIdx] and typeEntries[state.typeIdx].typeName or nil
+		state.baseList = CraftPopupH.buildBaseList(
+			self.build, setItems, typeName, state.category, state.searchText, classReqBit)
+		local labels = { }
+		for _, entry in ipairs(state.baseList) do
+			t_insert(labels, entry.label or entry.name or "?")
+		end
+		if #labels == 0 then t_insert(labels, "(no match)") end
+		controls.base:SetList(labels)
+		state.baseIdx = #state.baseList > 0 and 1 or 0
+		controls.base.selIndex = 1
+	end
+
+	controls.rarityLabel = new("LabelControl", nil, -180, 18, 0, 16, "^7Rarity:")
+	controls.rarity = new("DropDownControl", nil, -40, 15, 180, 20, rarityDDList, function(idx, val)
+		state.category = val.category
+		refreshBases()
+	end)
+	controls.rarity.selIndex = 1
+
+	controls.typeLabel = new("LabelControl", nil, -180, 48, 0, 16, "^7Type:")
+	local typeLabels = { }
+	for _, entry in ipairs(typeEntries) do t_insert(typeLabels, entry.typeName) end
+	controls.type = new("DropDownControl", nil, -40, 45, 180, 20, typeLabels, function(idx)
+		state.typeIdx = idx
+		refreshBases()
+	end)
+	controls.type.selIndex = selectedTypeIdx
+	controls.type.enableDroppedWidth = true
+	controls.type.maxDroppedWidth = 320
+
+	controls.searchLabel = new("LabelControl", nil, -180, 78, 0, 16, "^7Search:")
+	controls.search = new("EditControl", nil, -40, 75, 180, 20, "", "Name / Mod / Implicit", nil, nil, function(buf)
+		state.searchText = buf or ""
+		refreshBases()
+	end)
+
+	controls.baseLabel = new("LabelControl", nil, -180, 108, 0, 16, "^7Base:")
+	controls.base = new("DropDownControl", nil, -40, 105, 260, 20, { "(no match)" }, function(idx)
+		state.baseIdx = idx
+	end)
+	controls.base.enableDroppedWidth = true
+	controls.base.maxDroppedWidth = 520
+	controls.base.tooltipFunc = function(tooltip, mode, index, value)
+		local entry = state.baseList[index]
+		if not entry or not entry.base then tooltip:Clear(); return end
+		if tooltip.currentEntry ~= entry then
+			tooltip:Clear()
+			tooltip.currentEntry = entry
+			local previewItem = CraftPopupH.buildItemFromEntry(entry)
+			local previewSlot = slotName and self.slots[slotName] or nil
+			self:AddItemTooltip(tooltip, previewItem, previewSlot)
+		end
+	end
+
+	controls.create = new("ButtonControl", nil, -45, 140, 80, 20, "Create", function()
+		local entry = state.baseList[state.baseIdx]
+		if not entry then return end
+		main:ClosePopup()
+		self:OpenCraftEditor(nil, slotName, entry)
+	end)
+	controls.create.enabled = function() return state.baseList[state.baseIdx] ~= nil end
+	controls.cancel = new("ButtonControl", nil, 45, 140, 80, 20, "Cancel", function()
+		main:ClosePopup()
+	end)
+
+	refreshBases()
+	main:OpenPopup(560, 170, "Craft Item", controls, "create", nil, "cancel")
 end
 
 -- Opens the blessing selection popup (optionally pre-selecting a timeline)
@@ -2316,3 +2439,5 @@ function ItemsTabClass:RestoreUndoState(state)
 	self.activeItemSet = self.itemSets[self.activeItemSetId]
 	self:PopulateSlots()
 end
+
+LoadModule("Classes/ItemsTabCraft", ItemsTabClass, CraftPopupH)
