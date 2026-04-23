@@ -102827,6 +102827,12 @@
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
 		"2": "+2% Increases your maximum health Health Regen also applies to Ward",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+9% Health",
+				"2": "+3% Increases your maximum health Health Regen also applies to Ward"
+			}
+		},
 		"canRollOn": [
 			1,
 			0
@@ -102845,6 +102851,12 @@
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
 		"2": "+2% Increases your maximum health Health Regen also applies to Ward",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+11% Health",
+				"2": "+3% Increases your maximum health Health Regen also applies to Ward"
+			}
+		},
 		"canRollOn": [
 			1,
 			0
@@ -102863,6 +102875,12 @@
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
 		"2": "+2% Increases your maximum health Health Regen also applies to Ward",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+12% Health",
+				"2": "+3% Increases your maximum health Health Regen also applies to Ward"
+			}
+		},
 		"canRollOn": [
 			1,
 			0
@@ -102881,6 +102899,12 @@
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
 		"2": "+(2-3)% Increases your maximum health Health Regen also applies to Ward",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+14% Health",
+				"2": "+(3-5)% Increases your maximum health Health Regen also applies to Ward"
+			}
+		},
 		"canRollOn": [
 			1,
 			0
@@ -102899,6 +102923,12 @@
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
 		"2": "+3% Increases your maximum health Health Regen also applies to Ward",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+15% Health",
+				"2": "+5% Increases your maximum health Health Regen also applies to Ward"
+			}
+		},
 		"canRollOn": [
 			1,
 			0
@@ -102917,6 +102947,12 @@
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
 		"2": "+4% Increases your maximum health Health Regen also applies to Ward",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+17% Health",
+				"2": "+6% Increases your maximum health Health Regen also applies to Ward"
+			}
+		},
 		"canRollOn": [
 			1,
 			0
@@ -102935,6 +102971,12 @@
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
 		"2": "+4% Increases your maximum health Health Regen also applies to Ward",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+18% Health",
+				"2": "+6% Increases your maximum health Health Regen also applies to Ward"
+			}
+		},
 		"canRollOn": [
 			1,
 			0
@@ -102953,6 +102995,12 @@
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
 		"2": "+6% Increases your maximum health Health Regen also applies to Ward",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(21-24)% Health",
+				"2": "+9% Increases your maximum health Health Regen also applies to Ward"
+			}
+		},
 		"canRollOn": [
 			1,
 			0
