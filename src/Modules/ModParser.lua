@@ -977,6 +977,35 @@ specialModList["^%+?([%d%.]+)%% (.+) per forged weapon$"] = nsAny
 specialModList["^%+?([%d%.]+) (.+) per forged weapon$"] = nsAny
 
 -- 14. Depending on area level
+-- Formula: effective = min(rolled * min(areaLevel, 75) / 75, cap)
+-- implemented via existing Multiplier tag:
+--   mod value = rolled / 75
+--   tag: { type = "Multiplier", var = "AreaLevel", limit = 75, limitTotal = cap }
+-- For single-value form ("X% Y depending on area level") cap = rolled (self-capping).
+-- For ranged form ("X% to Z% Y depending on area level") cap = Z (explicit).
+-- Reference: dev blog "Overhauling Defenses" — 1% per area level, scaling up to 75%.
+local function areaLevelTag(cap)
+    -- limit=75 clamps the area-level multiplier at 75 (dev-blog cap).
+    -- valueCap clamps the final value at `cap` (either the rolled % for single-value
+    -- form, or the explicit "to Z%" cap for the ranged form).
+    return { type = "Multiplier", var = "AreaLevel", limit = 75, valueCap = cap }
+end
+-- Cursed prefix (boots): "less Damage" and "more Damage Taken", possibly with "to Z%".
+specialModList["^%+?([%d%.]+)%% to ([%d%.]+)%% less damage depending on area level.*$"] = function(num, _, capStr)
+    local cap = tonumber(capStr) or num
+    return { mod("Damage", "MORE", -num / 75, "", 0, 0, areaLevelTag(cap)) }
+end
+specialModList["^%+?([%d%.]+)%% to ([%d%.]+)%% more damage taken depending on area level.*$"] = function(num, _, capStr)
+    local cap = tonumber(capStr) or num
+    return { mod("DamageTaken", "MORE", num / 75, "", 0, 0, areaLevelTag(cap)) }
+end
+specialModList["^%+?([%d%.]+)%% less damage depending on area level.*$"] = function(num)
+    return { mod("Damage", "MORE", -num / 75, "", 0, 0, areaLevelTag(num)) }
+end
+specialModList["^%+?([%d%.]+)%% more damage taken depending on area level.*$"] = function(num)
+    return { mod("DamageTaken", "MORE", num / 75, "", 0, 0, areaLevelTag(num)) }
+end
+-- Fallback: any other "depending on area level" phrasing stays recognition-only.
 specialModList["^%+?([%d%.]+)%% (.+) depending on area level(.*)$"] = nsAny
 specialModList["^%+?([%d%.]+) (.+) depending on area level(.*)$"] = nsAny
 
