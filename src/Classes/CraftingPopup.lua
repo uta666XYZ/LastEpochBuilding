@@ -97,9 +97,10 @@ local CraftingPopupClass = newClass("CraftingPopup", "ControlHost", "Control", f
 		local _, h = self:GetSize()
 		return m_max(20, m_floor((main.screenH - h) / 2))
 	end
-	self.itemsTab = itemsTab
-	self.build    = itemsTab.build
-	self.slotName = slotName
+	self.itemsTab     = itemsTab
+	self.build        = itemsTab.build
+	self.slotName     = slotName
+	self.existingItem = existingItem
 	-- Expose the currently-edited slot so ItemSlotControl can highlight it.
 	itemsTab.craftingSlotName = slotName
 
@@ -1808,6 +1809,30 @@ function CraftingPopupClass:BuildAffixTooltip(tooltip, statOrderKey)
 			tooltip:AddLine(14, "^7Tier " .. tostring(tier + 1) .. ": " .. table.concat(parts, ", "))
 		end
 	end
+end
+
+-- PoB-style diff: "current build output" vs "build output with editItem in slot".
+-- Used by the preview hover tooltip in CraftingPopupDraw.lua.
+function CraftingPopupClass:BuildPreviewDiffTooltip(tooltip)
+	if not self.editItem or not self.slotName then return end
+	local build = self.build
+	if not build or not build.calcsTab or not build.calcsTab.GetMiscCalculator then return end
+	local calcFunc = build.calcsTab:GetMiscCalculator()
+	if not calcFunc then return end
+
+	local storedView = GlobalCache.useFullDPS
+	GlobalCache.useFullDPS = GlobalCache.numActiveSkillInFullDPS > 0
+	local outputBase = calcFunc({}, {})
+	local outputNew  = calcFunc({ repSlotName = self.slotName, repItem = self.editItem }, {})
+	GlobalCache.useFullDPS = storedView
+
+	local header
+	if self.existingItem then
+		header = "\n^7Applying this craft will give:"
+	else
+		header = "\n^7Equipping this craft will give:"
+	end
+	build:AddStatComparesToTooltip(tooltip, outputBase, outputNew, header)
 end
 
 -- =============================================================================

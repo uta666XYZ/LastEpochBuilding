@@ -368,6 +368,20 @@ function CraftingPopupClass:Draw(viewPort)
 			end
 		end
 	end
+
+	-- Hover tooltip: DPS/stat diff preview over the left-panel item header.
+	if self.editItem then
+		local hx1, hx2 = px + 4, px + LEFT_W - 4
+		local hy1, hy2 = py + PREVIEW_Y, py + PREVIEW_Y + 38
+		if mx >= hx1 and mx < hx2 and my >= hy1 and my < hy2 then
+			if not self.previewDiffTooltip then
+				self.previewDiffTooltip = new("Tooltip")
+			end
+			self.previewDiffTooltip:Clear()
+			self:BuildPreviewDiffTooltip(self.previewDiffTooltip)
+			self.previewDiffTooltip:Draw(mx, my, 12, 12, viewPort)
+		end
+	end
 end
 
 -- Draw item cards in the right panel
