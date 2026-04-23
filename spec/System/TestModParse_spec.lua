@@ -263,4 +263,42 @@ describe("TestModParse", function()
             approxEq(build.configTab.modList:Sum("MORE", nil, "Damage"), -48)
         end)
     end)
+
+    describe("while channelling <skill>", function()
+        it("endurance while channelling Warpath applies only with condition", function()
+            build.configTab.input.customMods = "10% Endurance while channelling Warpath"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            -- Without ChannellingWarpath condition, mod is gated off.
+            assert.are.equals(0, build.configTab.modList:Sum("BASE", nil, "Endurance"))
+            -- With the skill-specific condition set via cfg.skillCond, mod applies.
+            local cfg = { skillCond = { ChannellingWarpath = true } }
+            assert.are.equals(10, build.configTab.modList:Sum("BASE", cfg, "Endurance"))
+        end)
+
+        it("endurance while channelling Warpath is NOT triggered by wrong skill", function()
+            build.configTab.input.customMods = "10% Endurance while channelling Warpath"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            -- ChannellingGhostflame condition should not activate the Warpath-tagged mod.
+            local cfg = { skillCond = { ChannellingGhostflame = true } }
+            assert.are.equals(0, build.configTab.modList:Sum("BASE", cfg, "Endurance"))
+        end)
+
+        it("ward per second while channeling Ghostflame (American spelling)", function()
+            build.configTab.input.customMods = "+50 Ward per Second while channeling Ghostflame"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            local cfg = { skillCond = { ChannellingGhostflame = true } }
+            assert.are.equals(50, build.configTab.modList:Sum("BASE", cfg, "WardPerSecond"))
+        end)
+
+        it("ward per second while channelling Ghostflame (British spelling)", function()
+            build.configTab.input.customMods = "+50 Ward per Second while channelling Ghostflame"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            local cfg = { skillCond = { ChannellingGhostflame = true } }
+            assert.are.equals(50, build.configTab.modList:Sum("BASE", cfg, "WardPerSecond"))
+        end)
+    end)
 end)
