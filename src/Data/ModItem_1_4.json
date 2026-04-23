@@ -12814,9 +12814,15 @@
 		"type": "Prefix",
 		"classSpecificity": 19,
 		"slotOverrides": {
-			"body_armor": { "1": "{rounding:Integer}(22-52)% increased Minion Health" },
-			"amulet": { "1": "{rounding:Integer}(18-41)% increased Minion Health" },
-			"shield": { "1": "{rounding:Integer}(18-41)% increased Minion Health" }
+			"body_armor": {
+				"1": "{rounding:Integer}(22-52)% increased Minion Health"
+			},
+			"amulet": {
+				"1": "{rounding:Integer}(18-41)% increased Minion Health"
+			},
+			"shield": {
+				"1": "{rounding:Integer}(18-41)% increased Minion Health"
+			}
 		},
 		"canRollOn": [
 			0,
@@ -12843,9 +12849,15 @@
 		"type": "Prefix",
 		"classSpecificity": 19,
 		"slotOverrides": {
-			"body_armor": { "1": "{rounding:Integer}(54-83)% increased Minion Health" },
-			"amulet": { "1": "{rounding:Integer}(42-64)% increased Minion Health" },
-			"shield": { "1": "{rounding:Integer}(42-64)% increased Minion Health" }
+			"body_armor": {
+				"1": "{rounding:Integer}(54-83)% increased Minion Health"
+			},
+			"amulet": {
+				"1": "{rounding:Integer}(42-64)% increased Minion Health"
+			},
+			"shield": {
+				"1": "{rounding:Integer}(42-64)% increased Minion Health"
+			}
 		},
 		"canRollOn": [
 			0,
@@ -12872,9 +12884,15 @@
 		"type": "Prefix",
 		"classSpecificity": 19,
 		"slotOverrides": {
-			"body_armor": { "1": "{rounding:Integer}(84-113)% increased Minion Health" },
-			"amulet": { "1": "{rounding:Integer}(66-88)% increased Minion Health" },
-			"shield": { "1": "{rounding:Integer}(66-88)% increased Minion Health" }
+			"body_armor": {
+				"1": "{rounding:Integer}(84-113)% increased Minion Health"
+			},
+			"amulet": {
+				"1": "{rounding:Integer}(66-88)% increased Minion Health"
+			},
+			"shield": {
+				"1": "{rounding:Integer}(66-88)% increased Minion Health"
+			}
 		},
 		"canRollOn": [
 			0,
@@ -12901,9 +12919,15 @@
 		"type": "Prefix",
 		"classSpecificity": 19,
 		"slotOverrides": {
-			"body_armor": { "1": "{rounding:Integer}(114-150)% increased Minion Health" },
-			"amulet": { "1": "{rounding:Integer}(89-117)% increased Minion Health" },
-			"shield": { "1": "{rounding:Integer}(89-117)% increased Minion Health" }
+			"body_armor": {
+				"1": "{rounding:Integer}(114-150)% increased Minion Health"
+			},
+			"amulet": {
+				"1": "{rounding:Integer}(89-117)% increased Minion Health"
+			},
+			"shield": {
+				"1": "{rounding:Integer}(89-117)% increased Minion Health"
+			}
 		},
 		"canRollOn": [
 			0,
@@ -12930,9 +12954,15 @@
 		"type": "Prefix",
 		"classSpecificity": 19,
 		"slotOverrides": {
-			"body_armor": { "1": "{rounding:Integer}(152-225)% increased Minion Health" },
-			"amulet": { "1": "{rounding:Integer}(118-176)% increased Minion Health" },
-			"shield": { "1": "{rounding:Integer}(118-176)% increased Minion Health" }
+			"body_armor": {
+				"1": "{rounding:Integer}(152-225)% increased Minion Health"
+			},
+			"amulet": {
+				"1": "{rounding:Integer}(118-176)% increased Minion Health"
+			},
+			"shield": {
+				"1": "{rounding:Integer}(118-176)% increased Minion Health"
+			}
 		},
 		"canRollOn": [
 			0,
@@ -12959,9 +12989,15 @@
 		"type": "Prefix",
 		"classSpecificity": 19,
 		"slotOverrides": {
-			"body_armor": { "1": "{rounding:Integer}(285-345)% increased Minion Health" },
-			"amulet": { "1": "{rounding:Integer}(222-269)% increased Minion Health" },
-			"shield": { "1": "{rounding:Integer}(222-269)% increased Minion Health" }
+			"body_armor": {
+				"1": "{rounding:Integer}(285-345)% increased Minion Health"
+			},
+			"amulet": {
+				"1": "{rounding:Integer}(222-269)% increased Minion Health"
+			},
+			"shield": {
+				"1": "{rounding:Integer}(222-269)% increased Minion Health"
+			}
 		},
 		"canRollOn": [
 			0,
@@ -12988,9 +13024,15 @@
 		"type": "Prefix",
 		"classSpecificity": 19,
 		"slotOverrides": {
-			"body_armor": { "1": "{rounding:Integer}(347-450)% increased Minion Health" },
-			"amulet": { "1": "{rounding:Integer}(270-351)% increased Minion Health" },
-			"shield": { "1": "{rounding:Integer}(270-351)% increased Minion Health" }
+			"body_armor": {
+				"1": "{rounding:Integer}(347-450)% increased Minion Health"
+			},
+			"amulet": {
+				"1": "{rounding:Integer}(270-351)% increased Minion Health"
+			},
+			"shield": {
+				"1": "{rounding:Integer}(270-351)% increased Minion Health"
+			}
 		},
 		"canRollOn": [
 			0,
@@ -13017,9 +13059,15 @@
 		"type": "Prefix",
 		"classSpecificity": 19,
 		"slotOverrides": {
-			"body_armor": { "1": "{rounding:Integer}(750-900)% increased Minion Health" },
-			"amulet": { "1": "{rounding:Integer}(585-702)% increased Minion Health" },
-			"shield": { "1": "{rounding:Integer}(585-702)% increased Minion Health" }
+			"body_armor": {
+				"1": "{rounding:Integer}(750-900)% increased Minion Health"
+			},
+			"amulet": {
+				"1": "{rounding:Integer}(585-702)% increased Minion Health"
+			},
+			"shield": {
+				"1": "{rounding:Integer}(585-702)% increased Minion Health"
+			}
 		},
 		"canRollOn": [
 			0,
@@ -14701,9 +14749,15 @@
 		"tier": 0,
 		"type": "Suffix",
 		"slotOverrides": {
-			"body_armor": { "1": "+(6-8)% Elemental Resistance" },
-			"amulet": { "1": "+(5-6)% Elemental Resistance" },
-			"shield": { "1": "+(5-6)% Elemental Resistance" }
+			"body_armor": {
+				"1": "+(6-8)% Elemental Resistance"
+			},
+			"amulet": {
+				"1": "+(5-6)% Elemental Resistance"
+			},
+			"shield": {
+				"1": "+(5-6)% Elemental Resistance"
+			}
 		},
 		"canRollOn": [
 			0,
@@ -14731,9 +14785,15 @@
 		"tier": 1,
 		"type": "Suffix",
 		"slotOverrides": {
-			"body_armor": { "1": "+(9-12)% Elemental Resistance" },
-			"amulet": { "1": "+(7-9)% Elemental Resistance" },
-			"shield": { "1": "+(7-9)% Elemental Resistance" }
+			"body_armor": {
+				"1": "+(9-12)% Elemental Resistance"
+			},
+			"amulet": {
+				"1": "+(7-9)% Elemental Resistance"
+			},
+			"shield": {
+				"1": "+(7-9)% Elemental Resistance"
+			}
 		},
 		"canRollOn": [
 			0,
@@ -14761,9 +14821,15 @@
 		"tier": 2,
 		"type": "Suffix",
 		"slotOverrides": {
-			"body_armor": { "1": "+(14-17)% Elemental Resistance" },
-			"amulet": { "1": "+(11-13)% Elemental Resistance" },
-			"shield": { "1": "+(11-13)% Elemental Resistance" }
+			"body_armor": {
+				"1": "+(14-17)% Elemental Resistance"
+			},
+			"amulet": {
+				"1": "+(11-13)% Elemental Resistance"
+			},
+			"shield": {
+				"1": "+(11-13)% Elemental Resistance"
+			}
 		},
 		"canRollOn": [
 			0,
@@ -14791,9 +14857,15 @@
 		"tier": 3,
 		"type": "Suffix",
 		"slotOverrides": {
-			"body_armor": { "1": "+(18-22)% Elemental Resistance" },
-			"amulet": { "1": "+(14-18)% Elemental Resistance" },
-			"shield": { "1": "+(14-18)% Elemental Resistance" }
+			"body_armor": {
+				"1": "+(18-22)% Elemental Resistance"
+			},
+			"amulet": {
+				"1": "+(14-18)% Elemental Resistance"
+			},
+			"shield": {
+				"1": "+(14-18)% Elemental Resistance"
+			}
 		},
 		"canRollOn": [
 			0,
@@ -14821,9 +14893,15 @@
 		"tier": 4,
 		"type": "Suffix",
 		"slotOverrides": {
-			"body_armor": { "1": "+(24-30)% Elemental Resistance" },
-			"amulet": { "1": "+(19-23)% Elemental Resistance" },
-			"shield": { "1": "+(19-23)% Elemental Resistance" }
+			"body_armor": {
+				"1": "+(24-30)% Elemental Resistance"
+			},
+			"amulet": {
+				"1": "+(19-23)% Elemental Resistance"
+			},
+			"shield": {
+				"1": "+(19-23)% Elemental Resistance"
+			}
 		},
 		"canRollOn": [
 			0,
@@ -14851,9 +14929,15 @@
 		"tier": 5,
 		"type": "Suffix",
 		"slotOverrides": {
-			"body_armor": { "1": "+(36-45)% Elemental Resistance" },
-			"amulet": { "1": "+(28-35)% Elemental Resistance" },
-			"shield": { "1": "+(28-35)% Elemental Resistance" }
+			"body_armor": {
+				"1": "+(36-45)% Elemental Resistance"
+			},
+			"amulet": {
+				"1": "+(28-35)% Elemental Resistance"
+			},
+			"shield": {
+				"1": "+(28-35)% Elemental Resistance"
+			}
 		},
 		"canRollOn": [
 			0,
@@ -14881,9 +14965,15 @@
 		"tier": 6,
 		"type": "Suffix",
 		"slotOverrides": {
-			"body_armor": { "1": "+(47-60)% Elemental Resistance" },
-			"amulet": { "1": "+(36-47)% Elemental Resistance" },
-			"shield": { "1": "+(36-47)% Elemental Resistance" }
+			"body_armor": {
+				"1": "+(47-60)% Elemental Resistance"
+			},
+			"amulet": {
+				"1": "+(36-47)% Elemental Resistance"
+			},
+			"shield": {
+				"1": "+(36-47)% Elemental Resistance"
+			}
 		},
 		"canRollOn": [
 			0,
@@ -14911,9 +15001,15 @@
 		"tier": 7,
 		"type": "Suffix",
 		"slotOverrides": {
-			"body_armor": { "1": "+(96-113)% Elemental Resistance" },
-			"amulet": { "1": "+(75-88)% Elemental Resistance" },
-			"shield": { "1": "+(75-88)% Elemental Resistance" }
+			"body_armor": {
+				"1": "+(96-113)% Elemental Resistance"
+			},
+			"amulet": {
+				"1": "+(75-88)% Elemental Resistance"
+			},
+			"shield": {
+				"1": "+(75-88)% Elemental Resistance"
+			}
 		},
 		"canRollOn": [
 			0,
@@ -103527,7 +103623,17 @@
 			21,
 			22
 		],
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+21% Physical Resistance",
+				"2": "+21% Reduces all physical damage you take. Capped at 75%. Void Resistance"
+			},
+			"shield": {
+				"1": "+16% Physical Resistance",
+				"2": "+16% Reduces all physical damage you take. Capped at 75%. Void Resistance"
+			}
+		}
 	},
 	"1023_1": {
 		"affix": "Physical Resistance and Void Resistance",
@@ -103553,7 +103659,17 @@
 			21,
 			22
 		],
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+22% Physical Resistance",
+				"2": "+22% Reduces all physical damage you take. Capped at 75%. Void Resistance"
+			},
+			"shield": {
+				"1": "+18% Physical Resistance",
+				"2": "+18% Reduces all physical damage you take. Capped at 75%. Void Resistance"
+			}
+		}
 	},
 	"1023_2": {
 		"affix": "Physical Resistance and Void Resistance",
@@ -103579,7 +103695,17 @@
 			21,
 			22
 		],
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+24% Physical Resistance",
+				"2": "+24% Reduces all physical damage you take. Capped at 75%. Void Resistance"
+			},
+			"shield": {
+				"1": "+19% Physical Resistance",
+				"2": "+19% Reduces all physical damage you take. Capped at 75%. Void Resistance"
+			}
+		}
 	},
 	"1023_3": {
 		"affix": "Physical Resistance and Void Resistance",
@@ -103605,7 +103731,17 @@
 			21,
 			22
 		],
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+26% Physical Resistance",
+				"2": "+26% Reduces all physical damage you take. Capped at 75%. Void Resistance"
+			},
+			"shield": {
+				"1": "+20% Physical Resistance",
+				"2": "+20% Reduces all physical damage you take. Capped at 75%. Void Resistance"
+			}
+		}
 	},
 	"1023_4": {
 		"affix": "Physical Resistance and Void Resistance",
@@ -103631,7 +103767,17 @@
 			21,
 			22
 		],
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+27% Physical Resistance",
+				"2": "+27% Reduces all physical damage you take. Capped at 75%. Void Resistance"
+			},
+			"shield": {
+				"1": "+21% Physical Resistance",
+				"2": "+21% Reduces all physical damage you take. Capped at 75%. Void Resistance"
+			}
+		}
 	},
 	"1023_5": {
 		"affix": "Physical Resistance and Void Resistance",
@@ -103657,7 +103803,17 @@
 			21,
 			22
 		],
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+29% Physical Resistance",
+				"2": "+29% Reduces all physical damage you take. Capped at 75%. Void Resistance"
+			},
+			"shield": {
+				"1": "+22% Physical Resistance",
+				"2": "+22% Reduces all physical damage you take. Capped at 75%. Void Resistance"
+			}
+		}
 	},
 	"1023_6": {
 		"affix": "Physical Resistance and Void Resistance",
@@ -103683,7 +103839,17 @@
 			21,
 			22
 		],
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(30-32)% Physical Resistance",
+				"2": "+(30-32)% Reduces all physical damage you take. Capped at 75%. Void Resistance"
+			},
+			"shield": {
+				"1": "+(23-25)% Physical Resistance",
+				"2": "+(23-25)% Reduces all physical damage you take. Capped at 75%. Void Resistance"
+			}
+		}
 	},
 	"1023_7": {
 		"affix": "Physical Resistance and Void Resistance",
@@ -103709,7 +103875,17 @@
 			21,
 			22
 		],
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(45-52)% Physical Resistance",
+				"2": "+(45-52)% Reduces all physical damage you take. Capped at 75%. Void Resistance"
+			},
+			"shield": {
+				"1": "+(35-41)% Physical Resistance",
+				"2": "+(35-41)% Reduces all physical damage you take. Capped at 75%. Void Resistance"
+			}
+		}
 	},
 	"1024_0": {
 		"affix": "Elemental Resistance and Necrotic Resistance",
@@ -103735,7 +103911,17 @@
 			21,
 			22
 		],
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+6% Elemental Resistance",
+				"2": "+21% Adds to your fire, cold, and lightning resistances. Necrotic Resistance"
+			},
+			"shield": {
+				"1": "+5% Elemental Resistance",
+				"2": "+16% Adds to your fire, cold, and lightning resistances. Necrotic Resistance"
+			}
+		}
 	},
 	"1024_1": {
 		"affix": "Elemental Resistance and Necrotic Resistance",
@@ -103761,7 +103947,17 @@
 			21,
 			22
 		],
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+8% Elemental Resistance",
+				"2": "+22% Adds to your fire, cold, and lightning resistances. Necrotic Resistance"
+			},
+			"shield": {
+				"1": "+6% Elemental Resistance",
+				"2": "+18% Adds to your fire, cold, and lightning resistances. Necrotic Resistance"
+			}
+		}
 	},
 	"1024_2": {
 		"affix": "Elemental Resistance and Necrotic Resistance",
@@ -103787,7 +103983,17 @@
 			21,
 			22
 		],
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+8% Elemental Resistance",
+				"2": "+24% Adds to your fire, cold, and lightning resistances. Necrotic Resistance"
+			},
+			"shield": {
+				"1": "+6% Elemental Resistance",
+				"2": "+19% Adds to your fire, cold, and lightning resistances. Necrotic Resistance"
+			}
+		}
 	},
 	"1024_3": {
 		"affix": "Elemental Resistance and Necrotic Resistance",
@@ -103813,7 +104019,17 @@
 			21,
 			22
 		],
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+9% Elemental Resistance",
+				"2": "+26% Adds to your fire, cold, and lightning resistances. Necrotic Resistance"
+			},
+			"shield": {
+				"1": "+7% Elemental Resistance",
+				"2": "+20% Adds to your fire, cold, and lightning resistances. Necrotic Resistance"
+			}
+		}
 	},
 	"1024_4": {
 		"affix": "Elemental Resistance and Necrotic Resistance",
@@ -103839,7 +104055,17 @@
 			21,
 			22
 		],
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+9% Elemental Resistance",
+				"2": "+27% Adds to your fire, cold, and lightning resistances. Necrotic Resistance"
+			},
+			"shield": {
+				"1": "+7% Elemental Resistance",
+				"2": "+21% Adds to your fire, cold, and lightning resistances. Necrotic Resistance"
+			}
+		}
 	},
 	"1024_5": {
 		"affix": "Elemental Resistance and Necrotic Resistance",
@@ -103865,7 +104091,17 @@
 			21,
 			22
 		],
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+11% Elemental Resistance",
+				"2": "+29% Adds to your fire, cold, and lightning resistances. Necrotic Resistance"
+			},
+			"shield": {
+				"1": "+8% Elemental Resistance",
+				"2": "+22% Adds to your fire, cold, and lightning resistances. Necrotic Resistance"
+			}
+		}
 	},
 	"1024_6": {
 		"affix": "Elemental Resistance and Necrotic Resistance",
@@ -103891,7 +104127,17 @@
 			21,
 			22
 		],
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+11% Elemental Resistance",
+				"2": "+(30-32)% Adds to your fire, cold, and lightning resistances. Necrotic Resistance"
+			},
+			"shield": {
+				"1": "+8% Elemental Resistance",
+				"2": "+(23-25)% Adds to your fire, cold, and lightning resistances. Necrotic Resistance"
+			}
+		}
 	},
 	"1024_7": {
 		"affix": "Elemental Resistance and Necrotic Resistance",
@@ -103917,7 +104163,17 @@
 			21,
 			22
 		],
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(45-52)% Elemental Resistance",
+				"2": "+(45-52)% Adds to your fire, cold, and lightning resistances. Necrotic Resistance"
+			},
+			"shield": {
+				"1": "+(35-41)% Elemental Resistance",
+				"2": "+(35-41)% Adds to your fire, cold, and lightning resistances. Necrotic Resistance"
+			}
+		}
 	},
 	"1025_0": {
 		"affix": "Physical Resistance and Poison Resistance",
@@ -103943,7 +104199,17 @@
 			21,
 			22
 		],
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+21% Physical Resistance",
+				"2": "+21% Reduces all physical damage you take. Capped at 75%. Poison Resistance"
+			},
+			"shield": {
+				"1": "+16% Physical Resistance",
+				"2": "+16% Reduces all physical damage you take. Capped at 75%. Poison Resistance"
+			}
+		}
 	},
 	"1025_1": {
 		"affix": "Physical Resistance and Poison Resistance",
@@ -103969,7 +104235,17 @@
 			21,
 			22
 		],
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+22% Physical Resistance",
+				"2": "+22% Reduces all physical damage you take. Capped at 75%. Poison Resistance"
+			},
+			"shield": {
+				"1": "+18% Physical Resistance",
+				"2": "+18% Reduces all physical damage you take. Capped at 75%. Poison Resistance"
+			}
+		}
 	},
 	"1025_2": {
 		"affix": "Physical Resistance and Poison Resistance",
@@ -103995,7 +104271,17 @@
 			21,
 			22
 		],
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+24% Physical Resistance",
+				"2": "+24% Reduces all physical damage you take. Capped at 75%. Poison Resistance"
+			},
+			"shield": {
+				"1": "+19% Physical Resistance",
+				"2": "+19% Reduces all physical damage you take. Capped at 75%. Poison Resistance"
+			}
+		}
 	},
 	"1025_3": {
 		"affix": "Physical Resistance and Poison Resistance",
@@ -104021,7 +104307,17 @@
 			21,
 			22
 		],
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+26% Physical Resistance",
+				"2": "+26% Reduces all physical damage you take. Capped at 75%. Poison Resistance"
+			},
+			"shield": {
+				"1": "+20% Physical Resistance",
+				"2": "+20% Reduces all physical damage you take. Capped at 75%. Poison Resistance"
+			}
+		}
 	},
 	"1025_4": {
 		"affix": "Physical Resistance and Poison Resistance",
@@ -104047,7 +104343,17 @@
 			21,
 			22
 		],
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+27% Physical Resistance",
+				"2": "+27% Reduces all physical damage you take. Capped at 75%. Poison Resistance"
+			},
+			"shield": {
+				"1": "+21% Physical Resistance",
+				"2": "+21% Reduces all physical damage you take. Capped at 75%. Poison Resistance"
+			}
+		}
 	},
 	"1025_5": {
 		"affix": "Physical Resistance and Poison Resistance",
@@ -104073,7 +104379,17 @@
 			21,
 			22
 		],
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+29% Physical Resistance",
+				"2": "+29% Reduces all physical damage you take. Capped at 75%. Poison Resistance"
+			},
+			"shield": {
+				"1": "+22% Physical Resistance",
+				"2": "+22% Reduces all physical damage you take. Capped at 75%. Poison Resistance"
+			}
+		}
 	},
 	"1025_6": {
 		"affix": "Physical Resistance and Poison Resistance",
@@ -104099,7 +104415,17 @@
 			21,
 			22
 		],
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(30-32)% Physical Resistance",
+				"2": "+(30-32)% Reduces all physical damage you take. Capped at 75%. Poison Resistance"
+			},
+			"shield": {
+				"1": "+(23-25)% Physical Resistance",
+				"2": "+(23-25)% Reduces all physical damage you take. Capped at 75%. Poison Resistance"
+			}
+		}
 	},
 	"1025_7": {
 		"affix": "Physical Resistance and Poison Resistance",
@@ -104125,7 +104451,17 @@
 			21,
 			22
 		],
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(45-52)% Physical Resistance",
+				"2": "+(45-52)% Reduces all physical damage you take. Capped at 75%. Poison Resistance"
+			},
+			"shield": {
+				"1": "+(35-41)% Physical Resistance",
+				"2": "+(35-41)% Reduces all physical damage you take. Capped at 75%. Poison Resistance"
+			}
+		}
 	},
 	"1026_0": {
 		"affix": "Lightning Resistance and Poison Resistance",
@@ -104151,7 +104487,17 @@
 			21,
 			22
 		],
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+21% Lightning Resistance",
+				"2": "+21% Reduces all lightning damage you take. Capped at 75%. Poison Resistance"
+			},
+			"shield": {
+				"1": "+16% Lightning Resistance",
+				"2": "+16% Reduces all lightning damage you take. Capped at 75%. Poison Resistance"
+			}
+		}
 	},
 	"1026_1": {
 		"affix": "Lightning Resistance and Poison Resistance",
@@ -104177,7 +104523,17 @@
 			21,
 			22
 		],
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+22% Lightning Resistance",
+				"2": "+22% Reduces all lightning damage you take. Capped at 75%. Poison Resistance"
+			},
+			"shield": {
+				"1": "+18% Lightning Resistance",
+				"2": "+18% Reduces all lightning damage you take. Capped at 75%. Poison Resistance"
+			}
+		}
 	},
 	"1026_2": {
 		"affix": "Lightning Resistance and Poison Resistance",
@@ -104203,7 +104559,17 @@
 			21,
 			22
 		],
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+24% Lightning Resistance",
+				"2": "+24% Reduces all lightning damage you take. Capped at 75%. Poison Resistance"
+			},
+			"shield": {
+				"1": "+19% Lightning Resistance",
+				"2": "+19% Reduces all lightning damage you take. Capped at 75%. Poison Resistance"
+			}
+		}
 	},
 	"1026_3": {
 		"affix": "Lightning Resistance and Poison Resistance",
@@ -104229,7 +104595,17 @@
 			21,
 			22
 		],
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+26% Lightning Resistance",
+				"2": "+26% Reduces all lightning damage you take. Capped at 75%. Poison Resistance"
+			},
+			"shield": {
+				"1": "+20% Lightning Resistance",
+				"2": "+20% Reduces all lightning damage you take. Capped at 75%. Poison Resistance"
+			}
+		}
 	},
 	"1026_4": {
 		"affix": "Lightning Resistance and Poison Resistance",
@@ -104255,7 +104631,17 @@
 			21,
 			22
 		],
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+27% Lightning Resistance",
+				"2": "+27% Reduces all lightning damage you take. Capped at 75%. Poison Resistance"
+			},
+			"shield": {
+				"1": "+21% Lightning Resistance",
+				"2": "+21% Reduces all lightning damage you take. Capped at 75%. Poison Resistance"
+			}
+		}
 	},
 	"1026_5": {
 		"affix": "Lightning Resistance and Poison Resistance",
@@ -104281,7 +104667,17 @@
 			21,
 			22
 		],
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+29% Lightning Resistance",
+				"2": "+29% Reduces all lightning damage you take. Capped at 75%. Poison Resistance"
+			},
+			"shield": {
+				"1": "+22% Lightning Resistance",
+				"2": "+22% Reduces all lightning damage you take. Capped at 75%. Poison Resistance"
+			}
+		}
 	},
 	"1026_6": {
 		"affix": "Lightning Resistance and Poison Resistance",
@@ -104307,7 +104703,17 @@
 			21,
 			22
 		],
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(30-32)% Lightning Resistance",
+				"2": "+(30-32)% Reduces all lightning damage you take. Capped at 75%. Poison Resistance"
+			},
+			"shield": {
+				"1": "+(23-25)% Lightning Resistance",
+				"2": "+(23-25)% Reduces all lightning damage you take. Capped at 75%. Poison Resistance"
+			}
+		}
 	},
 	"1026_7": {
 		"affix": "Lightning Resistance and Poison Resistance",
@@ -104333,7 +104739,17 @@
 			21,
 			22
 		],
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(45-52)% Lightning Resistance",
+				"2": "+(45-52)% Reduces all lightning damage you take. Capped at 75%. Poison Resistance"
+			},
+			"shield": {
+				"1": "+(35-41)% Lightning Resistance",
+				"2": "+(35-41)% Reduces all lightning damage you take. Capped at 75%. Poison Resistance"
+			}
+		}
 	},
 	"1027_0": {
 		"affix": "Cold Resistance and Void Resistance",
@@ -104359,7 +104775,17 @@
 			21,
 			22
 		],
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+21% Cold Resistance",
+				"2": "+21% Reduces all cold damage you take. Capped at 75%. Void Resistance"
+			},
+			"shield": {
+				"1": "+16% Cold Resistance",
+				"2": "+16% Reduces all cold damage you take. Capped at 75%. Void Resistance"
+			}
+		}
 	},
 	"1027_1": {
 		"affix": "Cold Resistance and Void Resistance",
@@ -104385,7 +104811,17 @@
 			21,
 			22
 		],
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+22% Cold Resistance",
+				"2": "+22% Reduces all cold damage you take. Capped at 75%. Void Resistance"
+			},
+			"shield": {
+				"1": "+18% Cold Resistance",
+				"2": "+18% Reduces all cold damage you take. Capped at 75%. Void Resistance"
+			}
+		}
 	},
 	"1027_2": {
 		"affix": "Cold Resistance and Void Resistance",
@@ -104411,7 +104847,17 @@
 			21,
 			22
 		],
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+24% Cold Resistance",
+				"2": "+24% Reduces all cold damage you take. Capped at 75%. Void Resistance"
+			},
+			"shield": {
+				"1": "+19% Cold Resistance",
+				"2": "+19% Reduces all cold damage you take. Capped at 75%. Void Resistance"
+			}
+		}
 	},
 	"1027_3": {
 		"affix": "Cold Resistance and Void Resistance",
@@ -104437,7 +104883,17 @@
 			21,
 			22
 		],
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+26% Cold Resistance",
+				"2": "+26% Reduces all cold damage you take. Capped at 75%. Void Resistance"
+			},
+			"shield": {
+				"1": "+20% Cold Resistance",
+				"2": "+20% Reduces all cold damage you take. Capped at 75%. Void Resistance"
+			}
+		}
 	},
 	"1027_4": {
 		"affix": "Cold Resistance and Void Resistance",
@@ -104463,7 +104919,17 @@
 			21,
 			22
 		],
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+27% Cold Resistance",
+				"2": "+27% Reduces all cold damage you take. Capped at 75%. Void Resistance"
+			},
+			"shield": {
+				"1": "+21% Cold Resistance",
+				"2": "+21% Reduces all cold damage you take. Capped at 75%. Void Resistance"
+			}
+		}
 	},
 	"1027_5": {
 		"affix": "Cold Resistance and Void Resistance",
@@ -104489,7 +104955,17 @@
 			21,
 			22
 		],
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+29% Cold Resistance",
+				"2": "+29% Reduces all cold damage you take. Capped at 75%. Void Resistance"
+			},
+			"shield": {
+				"1": "+22% Cold Resistance",
+				"2": "+22% Reduces all cold damage you take. Capped at 75%. Void Resistance"
+			}
+		}
 	},
 	"1027_6": {
 		"affix": "Cold Resistance and Void Resistance",
@@ -104515,7 +104991,17 @@
 			21,
 			22
 		],
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(30-32)% Cold Resistance",
+				"2": "+(30-32)% Reduces all cold damage you take. Capped at 75%. Void Resistance"
+			},
+			"shield": {
+				"1": "+(23-25)% Cold Resistance",
+				"2": "+(23-25)% Reduces all cold damage you take. Capped at 75%. Void Resistance"
+			}
+		}
 	},
 	"1027_7": {
 		"affix": "Cold Resistance and Void Resistance",
@@ -104541,7 +105027,17 @@
 			21,
 			22
 		],
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(45-52)% Cold Resistance",
+				"2": "+(45-52)% Reduces all cold damage you take. Capped at 75%. Void Resistance"
+			},
+			"shield": {
+				"1": "+(35-41)% Cold Resistance",
+				"2": "+(35-41)% Reduces all cold damage you take. Capped at 75%. Void Resistance"
+			}
+		}
 	},
 	"1028_0": {
 		"affix": "Fire Resistance and Necrotic Resistance",
@@ -104567,7 +105063,17 @@
 			21,
 			22
 		],
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+21% Fire Resistance",
+				"2": "+21% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance"
+			},
+			"shield": {
+				"1": "+16% Fire Resistance",
+				"2": "+16% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance"
+			}
+		}
 	},
 	"1028_1": {
 		"affix": "Fire Resistance and Necrotic Resistance",
@@ -104593,7 +105099,17 @@
 			21,
 			22
 		],
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+22% Fire Resistance",
+				"2": "+22% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance"
+			},
+			"shield": {
+				"1": "+18% Fire Resistance",
+				"2": "+18% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance"
+			}
+		}
 	},
 	"1028_2": {
 		"affix": "Fire Resistance and Necrotic Resistance",
@@ -104619,7 +105135,17 @@
 			21,
 			22
 		],
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+24% Fire Resistance",
+				"2": "+24% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance"
+			},
+			"shield": {
+				"1": "+19% Fire Resistance",
+				"2": "+19% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance"
+			}
+		}
 	},
 	"1028_3": {
 		"affix": "Fire Resistance and Necrotic Resistance",
@@ -104645,7 +105171,17 @@
 			21,
 			22
 		],
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+26% Fire Resistance",
+				"2": "+26% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance"
+			},
+			"shield": {
+				"1": "+20% Fire Resistance",
+				"2": "+20% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance"
+			}
+		}
 	},
 	"1028_4": {
 		"affix": "Fire Resistance and Necrotic Resistance",
@@ -104671,7 +105207,17 @@
 			21,
 			22
 		],
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+27% Fire Resistance",
+				"2": "+27% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance"
+			},
+			"shield": {
+				"1": "+21% Fire Resistance",
+				"2": "+21% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance"
+			}
+		}
 	},
 	"1028_5": {
 		"affix": "Fire Resistance and Necrotic Resistance",
@@ -104697,7 +105243,17 @@
 			21,
 			22
 		],
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+29% Fire Resistance",
+				"2": "+29% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance"
+			},
+			"shield": {
+				"1": "+22% Fire Resistance",
+				"2": "+22% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance"
+			}
+		}
 	},
 	"1028_6": {
 		"affix": "Fire Resistance and Necrotic Resistance",
@@ -104723,7 +105279,17 @@
 			21,
 			22
 		],
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(30-32)% Fire Resistance",
+				"2": "+(30-32)% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance"
+			},
+			"shield": {
+				"1": "+(23-25)% Fire Resistance",
+				"2": "+(23-25)% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance"
+			}
+		}
 	},
 	"1028_7": {
 		"affix": "Fire Resistance and Necrotic Resistance",
@@ -104749,7 +105315,17 @@
 			21,
 			22
 		],
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(45-52)% Fire Resistance",
+				"2": "+(45-52)% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance"
+			},
+			"shield": {
+				"1": "+(35-41)% Fire Resistance",
+				"2": "+(35-41)% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance"
+			}
+		}
 	},
 	"1070_0": {
 		"affix": "All Resistances for you and your Minions",
