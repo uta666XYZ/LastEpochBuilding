@@ -711,6 +711,76 @@ function calcs.initEnv(build, mode, override, specEnv)
 			modDB:NewMod("Multiplier:IdolInRefractedSlot", "BASE", idolInRefractedSlotCount, "Idol Altar")
 		end
 
+		-- Idol Altar: collect items in Omen Idol (Refracted) slots and compute
+		-- altar boost fractions for prefix / suffix / weaver-enchant affixes.
+		-- The matching idol in the regular Idol 1-25 grid contributes its base
+		-- (un-boosted) mods; the Omen Idol slot path below contributes the
+		-- boost delta via a cloned item with scaled valueScalars. To avoid
+		-- double-count, the regular-grid copy is skipped in the main merge
+		-- loop when the same item reference is present in an Omen Idol slot.
+		local fracturedItemSet = {}
+		for slotName, item in pairs(items) do
+			if item and slotName:sub(1, 10) == "Omen Idol " then
+				fracturedItemSet[item] = true
+			end
+		end
+		local altarBoostPrefix, altarBoostSuffix, altarBoostWeaver = 0, 0, 0
+		if next(fracturedItemSet) then
+			local altarItem = items["Idol Altar"]
+			if altarItem and altarItem.modList then
+				local common = 0
+				for _, mod in ipairs(altarItem.modList) do
+					if mod.type == "INC" then
+						if mod.name == "IdolRefractedAffixEffect" then
+							common = common + (mod.value or 0)
+						elseif mod.name == "IdolRefractedPrefixEffect" then
+							altarBoostPrefix = altarBoostPrefix + (mod.value or 0)
+						elseif mod.name == "IdolRefractedSuffixEffect" then
+							altarBoostSuffix = altarBoostSuffix + (mod.value or 0)
+						elseif mod.name == "IdolRefractedWeaverEffect" then
+							altarBoostWeaver = altarBoostWeaver + (mod.value or 0)
+						end
+					end
+				end
+				altarBoostPrefix = (altarBoostPrefix + common) / 100
+				altarBoostSuffix = (altarBoostSuffix + common) / 100
+				altarBoostWeaver = (altarBoostWeaver + common) / 100
+			end
+		end
+		local function cloneWithAltarBoost(srcItem)
+			-- Reconstruct a parsed clone from raw so mutating valueScalar on
+			-- this clone does not affect the shared original (which is also
+			-- consumed by tooltip display with its own altarBoost path).
+			-- Each boosted modLine's valueScalar becomes value * (1 + boost)
+			-- so applyRange/parseMod during BuildAndParseRaw yields the
+			-- additively-boosted mod values in clone.modList.
+			local clone = new("Item", srcItem:BuildRaw())
+			local function scaleList(lines, boost)
+				if not boost or boost <= 0 then return end
+				for _, modLine in ipairs(lines) do
+					if modLine.range then
+						modLine.valueScalar = (modLine.valueScalar or 1) * (1 + boost)
+					end
+				end
+			end
+			scaleList(clone.enchantModLines, altarBoostWeaver)
+			for _, modLine in ipairs(clone.explicitModLines) do
+				if modLine.range then
+					local boost
+					if modLine.affixType == "Prefix" then
+						boost = altarBoostPrefix
+					elseif modLine.affixType == "Suffix" then
+						boost = altarBoostSuffix
+					end
+					if boost and boost > 0 then
+						modLine.valueScalar = (modLine.valueScalar or 1) * (1 + boost)
+					end
+				end
+			end
+			clone:BuildAndParseRaw()
+			return clone
+		end
+
 		-- Idol Altar: count equipped idols by type/designation for "per Equipped X Idol" mods.
 		-- Uses normal idol grid slots (Idol 1-25); dedupes by itemId to avoid double-counting
 		-- idols that also appear in Omen Idol slots.
@@ -813,6 +883,20 @@ function calcs.initEnv(build, mode, override, specEnv)
 			local slotName = slot.slotName
 			local item = items[slotName]
 			if slotName:sub(1, 10) == "Omen Idol " then
+				-- Idol is merged via the Omen Idol (Refracted) slot path so the
+				-- Idol Altar "increased Effect of Prefixes/Suffixes/Weaver
+				-- Enchantments for Idols in Refracted Slots" boost can be
+				-- applied. If any boost > 0, merge a clone with scaled
+				-- valueScalars; else merge the item as-is. The matching copy
+				-- in the regular Idol 1-25 grid is skipped below to avoid
+				-- double-count.
+				if item and (altarBoostPrefix > 0 or altarBoostSuffix > 0 or altarBoostWeaver > 0) then
+					item = cloneWithAltarBoost(item)
+				end
+			elseif item and fracturedItemSet[item] and slotName:match("^Idol %d+$") then
+				-- Same idol is also in an Omen Idol slot; the boosted clone is
+				-- merged from the Omen Idol path. Skip this copy to avoid
+				-- double-counting base mod values.
 				item = nil
 			end
 			if item and item.type == "Flask" then
