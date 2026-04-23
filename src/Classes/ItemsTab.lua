@@ -692,6 +692,9 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 	-- Tooltip anchor (directly after action buttons; old affix/custom/range UI removed)
 	self.controls.displayItemTooltipAnchor = new("Control", {"TOPLEFT",self.controls.addDisplayItem,"BOTTOMLEFT"}, 0, 8)
 
+	-- Inline craft editor (replaces CraftingPopup Stage 2)
+	self:BuildCraftControls()
+
 	-- Scroll bars
 	self.controls.scrollBarV = new("ScrollBarControl", nil, 0, 0, 18, 0, 100, "VERTICAL", true)
 
@@ -1507,13 +1510,12 @@ function ItemsTabClass:SetAllItemRanges(range)
 	self.build.buildFlag = true
 end
 
--- Opens the item crafting popup. For a new item, a small "Craft Item" selector
+-- Opens the item crafting editor. For a new item, a small "Craft Item" selector
 -- popup (Stage 1) gathers rarity/type/base; for an existing crafted item the
--- CraftingPopup (Stage 2) opens directly with that item.
+-- inline craft editor (Stage 2) opens directly with that item.
 function ItemsTabClass:CraftItem(existingItem, slotName)
 	if existingItem then
-		local popup = new("CraftingPopup", self, existingItem, slotName)
-		t_insert(main.popups, 1, popup)
+		self:OpenCraftEditor(existingItem, slotName)
 	else
 		self:OpenCraftItemSelector(slotName)
 	end
@@ -1622,8 +1624,7 @@ function ItemsTabClass:OpenCraftItemSelector(slotName)
 		local entry = state.baseList[state.baseIdx]
 		if not entry then return end
 		main:ClosePopup()
-		local popup = new("CraftingPopup", self, nil, slotName, entry)
-		t_insert(main.popups, 1, popup)
+		self:OpenCraftEditor(nil, slotName, entry)
 	end)
 	controls.create.enabled = function() return state.baseList[state.baseIdx] ~= nil end
 	controls.cancel = new("ButtonControl", nil, 45, 140, 80, 20, "Cancel", function()
@@ -2380,3 +2381,5 @@ function ItemsTabClass:RestoreUndoState(state)
 	self.activeItemSet = self.itemSets[self.activeItemSetId]
 	self:PopulateSlots()
 end
+
+LoadModule("Classes/ItemsTabCraft", ItemsTabClass, CraftPopupH)
