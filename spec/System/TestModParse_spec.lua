@@ -330,4 +330,54 @@ describe("TestModParse", function()
             assert.are.equals(25, build.configTab.modList:Sum("INC", cfg, "Damage"))
         end)
     end)
+
+    describe("per active/equipped multipliers", function()
+        it("increased damage per active Rune scales with Multiplier:ActiveRune", function()
+            build.configTab.input.customMods = "10% Increased Damage per active Rune"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            -- Zero without multiplier set
+            assert.are.equals(0, build.configTab.modList:Sum("INC", nil, "Damage"))
+            -- With 3 active runes: 10 * 3 = 30
+            build.configTab.modList.multipliers["ActiveRune"] = 3
+            assert.are.equals(30, build.configTab.modList:Sum("INC", nil, "Damage"))
+            build.configTab.modList.multipliers["ActiveRune"] = nil
+        end)
+
+        it("increased damage per active Dread Shade scales with Multiplier:ActiveDreadShade", function()
+            build.configTab.input.customMods = "15% Increased Damage per active Dread Shade"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            build.configTab.modList.multipliers["ActiveDreadShade"] = 2
+            assert.are.equals(30, build.configTab.modList:Sum("INC", nil, "Damage"))
+            build.configTab.modList.multipliers["ActiveDreadShade"] = nil
+        end)
+
+        it("increased damage per active Wandering Spirit scales with multiplier", function()
+            build.configTab.input.customMods = "8% Increased Damage per active Wandering Spirit"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            build.configTab.modList.multipliers["ActiveWanderingSpirit"] = 4
+            assert.are.equals(32, build.configTab.modList:Sum("INC", nil, "Damage"))
+            build.configTab.modList.multipliers["ActiveWanderingSpirit"] = nil
+        end)
+
+        it("increased damage per equipped Omen Idol scales with multiplier", function()
+            build.configTab.input.customMods = "5% Increased Damage per equipped Omen Idol"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            build.configTab.modList.multipliers["EquippedOmenIdol"] = 4
+            assert.are.equals(20, build.configTab.modList:Sum("INC", nil, "Damage"))
+            build.configTab.modList.multipliers["EquippedOmenIdol"] = nil
+        end)
+
+        it("increased damage per equipped Weaver Item scales with multiplier", function()
+            build.configTab.input.customMods = "7% Increased Damage per equipped Weaver Item"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            build.configTab.modList.multipliers["EquippedWeaverItem"] = 3
+            assert.are.equals(21, build.configTab.modList:Sum("INC", nil, "Damage"))
+            build.configTab.modList.multipliers["EquippedWeaverItem"] = nil
+        end)
+    end)
 end)

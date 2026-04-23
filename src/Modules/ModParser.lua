@@ -423,6 +423,16 @@ local modTagList = {
 	["per symbol"] = { tag = { type = "Multiplier", var = "ActiveSymbol" } },
 	["per active symbol"] = { tag = { type = "Multiplier", var = "ActiveSymbol" } },
 	["per symbol consumed"] = { tag = { type = "Multiplier", var = "ActiveSymbol" } },
+	-- Per-active minion/summon multipliers (DPS-integrated via Config tab counts)
+	["per active totem"] = { tag = { type = "PerStat", stat = "TotemsSummoned" } },
+	["per active dread shade"] = { tag = { type = "Multiplier", var = "ActiveDreadShade" } },
+	["per active maelstrom"] = { tag = { type = "Multiplier", var = "ActiveMaelstrom" } },
+	["per active rune"] = { tag = { type = "Multiplier", var = "ActiveRune" } },
+	["per active wandering spirit"] = { tag = { type = "Multiplier", var = "ActiveWanderingSpirit" } },
+	["per active crimson shroud"] = { tag = { type = "Multiplier", var = "ActiveCrimsonShroud" } },
+	["per active shadow"] = { tag = { type = "Multiplier", var = "ActiveShadow" } },
+	["per equipped omen idol"] = { tag = { type = "Multiplier", var = "EquippedOmenIdol" } },
+	["per equipped weaver item"] = { tag = { type = "Multiplier", var = "EquippedWeaverItem" } },
 	["if you[' ]h?a?ve dealt a critical strike recently"] = { tag = { type = "Condition", var = "CritRecently" } },
 	["on kill"] = { tag = { type = "Condition", var = "KilledRecently" } },
 	["on melee kill"] = { flags = ModFlag.WeaponMelee, tag = { type = "Condition", var = "KilledRecently" } },
@@ -931,18 +941,52 @@ specialModList["^%+?(%d+) seconds? of (.+) on (.+)$"] = nsAny
 specialModList["^%+?(%d+) seconds? of (.+) when (.+)$"] = nsAny
 
 -- Per-active / per-equipped / per-stack multipliers
--- (e.g. "5% increased Cold Damage per active Totem",
---       "+5% Chance to inflict Bleed on Hit per equipped Sword")
-specialModList["^%+?([%d%.]+)%% increased (.+) per active (.+)$"] = nsAny
-specialModList["^%+?([%d%.]+)%% reduced (.+) per active (.+)$"] = nsAny
-specialModList["^%+?([%d%.]+)%% more (.+) per active (.+)$"] = nsAny
-specialModList["^%+?([%d%.]+)%% less (.+) per active (.+)$"] = nsAny
-specialModList["^%+?([%d%.]+)%% increased (.+) per equipped (.+)$"] = nsAny
-specialModList["^%+?([%d%.]+)%% reduced (.+) per equipped (.+)$"] = nsAny
-specialModList["^%+?([%d%.]+)%% chance to (.+) per active (.+)$"] = nsAny
-specialModList["^%+?([%d%.]+)%% chance to (.+) per equipped (.+)$"] = nsAny
-specialModList["^%+?([%d%.]+) (.+) per active (.+)$"] = nsAny
-specialModList["^%+?([%d%.]+) (.+) per equipped (.+)$"] = nsAny
+-- DPS-integrated when the tail noun matches a known multiplier (handled via modTagList
+-- entries above — e.g. "per active Rune" → Multiplier:ActiveRune with a Config count).
+-- Unknown tail nouns fall through to nsAny for recognition only.
+local knownPerActive = {
+	["totem"] = true, ["totems"] = true,
+	["symbol"] = true, ["symbols"] = true,
+	["shadow"] = true, ["shadows"] = true,
+	["rune"] = true, ["runes"] = true,
+	["dread shade"] = true, ["dread shades"] = true,
+	["maelstrom"] = true, ["maelstroms"] = true,
+	["wandering spirit"] = true, ["wandering spirits"] = true,
+	["crimson shroud"] = true, ["crimson shrouds"] = true,
+}
+local knownPerEquipped = {
+	["sword"] = true, ["swords"] = true,
+	["dagger"] = true, ["daggers"] = true,
+	["omen idol"] = true, ["omen idols"] = true,
+	["weaver item"] = true, ["weaver items"] = true,
+	["heretical idol"] = true, ["huge idol"] = true, ["ornate idol"] = true,
+	["grand idol"] = true, ["large idol"] = true, ["adorned idol"] = true,
+	["stout idol"] = true, ["humble idol"] = true, ["small idol"] = true,
+	["minor idol"] = true, ["corrupted idol"] = true,
+}
+-- Handler args: (num, cap1_str, stat, tailNoun). Only tailNoun matters for routing.
+local function perActiveHandler(num, _, _, tailNoun)
+	if tailNoun and knownPerActive[tailNoun:lower()] then
+		return nil  -- fall through to generic parser (modTagList carries the Multiplier)
+	end
+	return nsAny(num)
+end
+local function perEquippedHandler(num, _, _, tailNoun)
+	if tailNoun and knownPerEquipped[tailNoun:lower()] then
+		return nil
+	end
+	return nsAny(num)
+end
+specialModList["^%+?([%d%.]+)%% increased (.+) per active (.+)$"] = perActiveHandler
+specialModList["^%+?([%d%.]+)%% reduced (.+) per active (.+)$"] = perActiveHandler
+specialModList["^%+?([%d%.]+)%% more (.+) per active (.+)$"] = perActiveHandler
+specialModList["^%+?([%d%.]+)%% less (.+) per active (.+)$"] = perActiveHandler
+specialModList["^%+?([%d%.]+)%% increased (.+) per equipped (.+)$"] = perEquippedHandler
+specialModList["^%+?([%d%.]+)%% reduced (.+) per equipped (.+)$"] = perEquippedHandler
+specialModList["^%+?([%d%.]+)%% chance to (.+) per active (.+)$"] = perActiveHandler
+specialModList["^%+?([%d%.]+)%% chance to (.+) per equipped (.+)$"] = perEquippedHandler
+specialModList["^%+?([%d%.]+) (.+) per active (.+)$"] = perActiveHandler
+specialModList["^%+?([%d%.]+) (.+) per equipped (.+)$"] = perEquippedHandler
 
 -- Exotic chance-to-cast triggers with qualifier / trailing parenthetical
 -- (e.g. "+5% Chance to cast Fire Aura on Kill with Fire Skills (1 second cooldown)",
