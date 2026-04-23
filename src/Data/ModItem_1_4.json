@@ -16964,7 +16964,12 @@
 			21,
 			22
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"shield": {
+				"1": "+(4-5)% Endurance"
+			}
+		}
 	},
 	"92_1": {
 		"affix": "of Endurance",
@@ -16984,7 +16989,12 @@
 			21,
 			22
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"shield": {
+				"1": "+(6-7)% Endurance"
+			}
+		}
 	},
 	"92_2": {
 		"affix": "of Endurance",
@@ -17004,7 +17014,12 @@
 			21,
 			22
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"shield": {
+				"1": "+(8-9)% Endurance"
+			}
+		}
 	},
 	"92_3": {
 		"affix": "of Endurance",
@@ -17024,7 +17039,12 @@
 			21,
 			22
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"shield": {
+				"1": "+(11-12)% Endurance"
+			}
+		}
 	},
 	"92_4": {
 		"affix": "of Endurance",
@@ -17044,7 +17064,12 @@
 			21,
 			22
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"shield": {
+				"1": "+(13-18)% Endurance"
+			}
+		}
 	},
 	"92_5": {
 		"affix": "of Endurance",
@@ -17064,7 +17089,12 @@
 			21,
 			22
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"shield": {
+				"1": "+(23-30)% Endurance"
+			}
+		}
 	},
 	"92_6": {
 		"affix": "of Endurance",
@@ -17084,7 +17114,12 @@
 			21,
 			22
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"shield": {
+				"1": "+(32-41)% Endurance"
+			}
+		}
 	},
 	"92_7": {
 		"affix": "of Endurance",
@@ -17104,7 +17139,12 @@
 			21,
 			22
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"shield": {
+				"1": "+(66-82)% Endurance"
+			}
+		}
 	},
 	"93_0": {
 		"affix": "Profane",
@@ -41749,7 +41789,12 @@
 			4,
 			22
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+2 Strength"
+			}
+		}
 	},
 	"501_1": {
 		"affix": "Mighty",
@@ -41770,7 +41815,12 @@
 			4,
 			22
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+3 Strength"
+			}
+		}
 	},
 	"501_2": {
 		"affix": "Mighty",
@@ -41791,7 +41841,12 @@
 			4,
 			22
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(5-6) Strength"
+			}
+		}
 	},
 	"501_3": {
 		"affix": "Mighty",
@@ -41812,7 +41867,12 @@
 			4,
 			22
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(8-9) Strength"
+			}
+		}
 	},
 	"501_4": {
 		"affix": "Mighty",
@@ -41833,7 +41893,12 @@
 			4,
 			22
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(11-12) Strength"
+			}
+		}
 	},
 	"501_5": {
 		"affix": "Mighty",
@@ -41854,7 +41919,12 @@
 			4,
 			22
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(17-20) Strength"
+			}
+		}
 	},
 	"501_6": {
 		"affix": "Mighty",
@@ -41875,7 +41945,12 @@
 			4,
 			22
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(21-24) Strength"
+			}
+		}
 	},
 	"501_7": {
 		"affix": "Mighty",
@@ -41896,7 +41971,12 @@
 			4,
 			22
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(36-42) Strength"
+			}
+		}
 	},
 	"502_0": {
 		"affix": "Scholar's",
@@ -41917,7 +41997,12 @@
 			4,
 			22
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+2 Intelligence"
+			}
+		}
 	},
 	"502_1": {
 		"affix": "Scholar's",
@@ -41938,7 +42023,12 @@
 			4,
 			22
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+3 Intelligence"
+			}
+		}
 	},
 	"502_2": {
 		"affix": "Scholar's",
@@ -41959,7 +42049,12 @@
 			4,
 			22
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(5-6) Intelligence"
+			}
+		}
 	},
 	"502_3": {
 		"affix": "Scholar's",
@@ -41980,7 +42075,12 @@
 			4,
 			22
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(8-9) Intelligence"
+			}
+		}
 	},
 	"502_4": {
 		"affix": "Scholar's",
@@ -42001,7 +42101,12 @@
 			4,
 			22
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(11-12) Intelligence"
+			}
+		}
 	},
 	"502_5": {
 		"affix": "Scholar's",
@@ -42022,7 +42127,12 @@
 			4,
 			22
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(17-20) Intelligence"
+			}
+		}
 	},
 	"502_6": {
 		"affix": "Scholar's",
@@ -42043,7 +42153,12 @@
 			4,
 			22
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(21-24) Intelligence"
+			}
+		}
 	},
 	"502_7": {
 		"affix": "Scholar's",
@@ -42064,7 +42179,12 @@
 			4,
 			22
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(36-42) Intelligence"
+			}
+		}
 	},
 	"503_0": {
 		"affix": "Dexterous",
@@ -42085,7 +42205,12 @@
 			22,
 			17
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+2 Dexterity"
+			}
+		}
 	},
 	"503_1": {
 		"affix": "Dexterous",
@@ -42106,7 +42231,12 @@
 			22,
 			17
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+3 Dexterity"
+			}
+		}
 	},
 	"503_2": {
 		"affix": "Dexterous",
@@ -42127,7 +42257,12 @@
 			22,
 			17
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(5-6) Dexterity"
+			}
+		}
 	},
 	"503_3": {
 		"affix": "Dexterous",
@@ -42148,7 +42283,12 @@
 			22,
 			17
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(8-9) Dexterity"
+			}
+		}
 	},
 	"503_4": {
 		"affix": "Dexterous",
@@ -42169,7 +42309,12 @@
 			22,
 			17
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(11-12) Dexterity"
+			}
+		}
 	},
 	"503_5": {
 		"affix": "Dexterous",
@@ -42190,7 +42335,12 @@
 			22,
 			17
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(17-20) Dexterity"
+			}
+		}
 	},
 	"503_6": {
 		"affix": "Dexterous",
@@ -42211,7 +42361,12 @@
 			22,
 			17
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(21-24) Dexterity"
+			}
+		}
 	},
 	"503_7": {
 		"affix": "Dexterous",
@@ -42232,7 +42387,12 @@
 			22,
 			17
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(36-42) Dexterity"
+			}
+		}
 	},
 	"504_0": {
 		"affix": "Attuned",
@@ -42253,7 +42413,12 @@
 			4,
 			22
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+2 Attunement"
+			}
+		}
 	},
 	"504_1": {
 		"affix": "Attuned",
@@ -42274,7 +42439,12 @@
 			4,
 			22
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+3 Attunement"
+			}
+		}
 	},
 	"504_2": {
 		"affix": "Attuned",
@@ -42295,7 +42465,12 @@
 			4,
 			22
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(5-6) Attunement"
+			}
+		}
 	},
 	"504_3": {
 		"affix": "Attuned",
@@ -42316,7 +42491,12 @@
 			4,
 			22
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(8-9) Attunement"
+			}
+		}
 	},
 	"504_4": {
 		"affix": "Attuned",
@@ -42337,7 +42517,12 @@
 			4,
 			22
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(11-12) Attunement"
+			}
+		}
 	},
 	"504_5": {
 		"affix": "Attuned",
@@ -42358,7 +42543,12 @@
 			4,
 			22
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(17-20) Attunement"
+			}
+		}
 	},
 	"504_6": {
 		"affix": "Attuned",
@@ -42379,7 +42569,12 @@
 			4,
 			22
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(21-24) Attunement"
+			}
+		}
 	},
 	"504_7": {
 		"affix": "Attuned",
@@ -42400,7 +42595,12 @@
 			4,
 			22
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(36-42) Attunement"
+			}
+		}
 	},
 	"505_0": {
 		"affix": "Vital",
@@ -68002,7 +68202,17 @@
 			2,
 			18
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(36-48) Armor",
+				"2": "(12-15)% reduced Bonus Damage Taken from Critical Strikes"
+			},
+			"shield": {
+				"1": "{rounding:Integer}+(28-37) Armor",
+				"2": "(9-12)% reduced Bonus Damage Taken from Critical Strikes"
+			}
+		}
 	},
 	"715_1": {
 		"affix": "of Fortification",
@@ -68023,7 +68233,17 @@
 			2,
 			18
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(50-63) Armor",
+				"2": "(17-21)% reduced Bonus Damage Taken from Critical Strikes"
+			},
+			"shield": {
+				"1": "{rounding:Integer}+(39-49) Armor",
+				"2": "(13-16)% reduced Bonus Damage Taken from Critical Strikes"
+			}
+		}
 	},
 	"715_2": {
 		"affix": "of Fortification",
@@ -68044,7 +68264,17 @@
 			2,
 			18
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(65-83) Armor",
+				"2": "(22-29)% reduced Bonus Damage Taken from Critical Strikes"
+			},
+			"shield": {
+				"1": "{rounding:Integer}+(50-64) Armor",
+				"2": "(18-22)% reduced Bonus Damage Taken from Critical Strikes"
+			}
+		}
 	},
 	"715_3": {
 		"affix": "of Fortification",
@@ -68065,7 +68295,17 @@
 			2,
 			18
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(84-105) Armor",
+				"2": "(30-36)% reduced Bonus Damage Taken from Critical Strikes"
+			},
+			"shield": {
+				"1": "{rounding:Integer}+(66-82) Armor",
+				"2": "(23-28)% reduced Bonus Damage Taken from Critical Strikes"
+			}
+		}
 	},
 	"715_4": {
 		"affix": "of Fortification",
@@ -68086,7 +68326,17 @@
 			2,
 			18
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(107-143) Armor",
+				"2": "(38-45)% reduced Bonus Damage Taken from Critical Strikes"
+			},
+			"shield": {
+				"1": "{rounding:Integer}+(83-111) Armor",
+				"2": "(29-35)% reduced Bonus Damage Taken from Critical Strikes"
+			}
+		}
 	},
 	"715_5": {
 		"affix": "of Fortification",
@@ -68107,7 +68357,17 @@
 			2,
 			18
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(195-255) Armor",
+				"2": "(57-68)% reduced Bonus Damage Taken from Critical Strikes"
+			},
+			"shield": {
+				"1": "{rounding:Integer}+(152-199) Armor",
+				"2": "(44-53)% reduced Bonus Damage Taken from Critical Strikes"
+			}
+		}
 	},
 	"715_6": {
 		"affix": "of Fortification",
@@ -68128,7 +68388,17 @@
 			2,
 			18
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(257-330) Armor",
+				"2": "(69-90)% reduced Bonus Damage Taken from Critical Strikes"
+			},
+			"shield": {
+				"1": "{rounding:Integer}+(200-257) Armor",
+				"2": "(54-70)% reduced Bonus Damage Taken from Critical Strikes"
+			}
+		}
 	},
 	"715_7": {
 		"affix": "of Fortification",
@@ -68149,7 +68419,17 @@
 			2,
 			18
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(528-660) Armor",
+				"2": "(90-135)% reduced Bonus Damage Taken from Critical Strikes"
+			},
+			"shield": {
+				"1": "{rounding:Integer}+(412-515) Armor",
+				"2": "(70-105)% reduced Bonus Damage Taken from Critical Strikes"
+			}
+		}
 	},
 	"716_0": {
 		"affix": "Ice Drake's",
