@@ -1866,6 +1866,11 @@ function CraftingPopupClass:RefreshAffixDropdowns()
 	self.affixLists.prefix2    = filterExclusions(prefixList, p1Key and {p1Key} or {})
 	self.affixLists.suffix1    = filterExclusions(suffixList, s2Key and {s2Key} or {})
 	self.affixLists.suffix2    = filterExclusions(suffixList, s1Key and {s1Key} or {})
+	-- Unfiltered pools for the consolidated Prefix/Suffix tabs in the right panel.
+	-- Using the p1-filtered list there would hide whichever affix is assigned to the
+	-- other slot (e.g. selecting prefix2 would make that card vanish from the tab).
+	self.affixLists.prefix     = prefixList
+	self.affixLists.suffix     = suffixList
 
 	local sealedExclude = {}
 	if p1Key then t_insert(sealedExclude, p1Key) end
@@ -2033,6 +2038,8 @@ function CraftingPopupClass:RefreshIdolAffixDropdowns()
 	self.affixLists.prefix2    = {}    -- idols have only 1 prefix/suffix
 	self.affixLists.suffix1    = suffixList
 	self.affixLists.suffix2    = {}
+	self.affixLists.prefix     = prefixList
+	self.affixLists.suffix     = suffixList
 	self.affixLists.sealed     = filterExclusions(enchantedList, self.affixState.primordial.modKey and {self.affixState.primordial.modKey} or {})
 	self.affixLists.primordial = filterExclusions(enchantedList, self.affixState.sealed.modKey and {self.affixState.sealed.modKey} or {})
 	self.affixLists.corrupted  = corruptedList
@@ -2721,7 +2728,9 @@ function CraftingPopupClass:Draw(viewPort)
 				end
 				self.affixCardTooltip:Clear()
 				self:BuildAffixTooltip(self.affixCardTooltip, card.entry.statOrderKey)
-				self.affixCardTooltip:Draw(mx, my, nil, nil, viewPort)
+				-- Offset tooltip from cursor so the first character isn't covered by the pointer.
+				-- Passing a cursor "box" (w,h) engages Tooltip's edge-clamping path.
+				self.affixCardTooltip:Draw(mx, my, 12, 12, viewPort)
 				break
 			end
 		end
@@ -3051,11 +3060,12 @@ end
 -- Draw affix cards in the right panel (list or card view)
 function CraftingPopupClass:DrawAffixCards(areaX, areaY, areaW, areaH, mx, my)
 	local slotKey  = self.rightTab
-	-- Map consolidated tabs to their primary internal list
-	local listKey  = (slotKey == "prefix") and "prefix1"
-	              or (slotKey == "suffix") and "suffix1"
+	-- Consolidated Prefix/Suffix tabs use the unfiltered pool so an affix assigned
+	-- to P2/S2 doesn't vanish from the tab (prefix1/suffix1 filter it out).
+	local listKey  = (slotKey == "prefix") and "prefix"
+	              or (slotKey == "suffix") and "suffix"
 	              or slotKey
-	local list     = self.affixLists[listKey] or {}
+	local list     = self.affixLists[listKey] or self.affixLists[slotKey] or {}
 	local cardMode = (self.affixViewMode == "card")
 	local rowH     = cardMode and 72 or AC_H   -- taller card rows for larger text
 	local gap      = cardMode and 6  or AC_GAP
