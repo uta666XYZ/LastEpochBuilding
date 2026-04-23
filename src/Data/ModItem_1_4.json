@@ -1288,6 +1288,9 @@
 			},
 			"amulet": {
 				"1": "+(6-11)% Void Resistance"
+			},
+			"shield": {
+				"1": "+(6-11)% Void Resistance"
 			}
 		},
 		"level": 6,
@@ -1320,6 +1323,9 @@
 				"1": "+(15-21)% Void Resistance"
 			},
 			"amulet": {
+				"1": "+(12-16)% Void Resistance"
+			},
+			"shield": {
 				"1": "+(12-16)% Void Resistance"
 			}
 		},
@@ -1354,6 +1360,9 @@
 			},
 			"amulet": {
 				"1": "+(18-25)% Void Resistance"
+			},
+			"shield": {
+				"1": "+(18-25)% Void Resistance"
 			}
 		},
 		"level": 6,
@@ -1387,6 +1396,9 @@
 			},
 			"amulet": {
 				"1": "+(26-34)% Void Resistance"
+			},
+			"shield": {
+				"1": "+(26-34)% Void Resistance"
 			}
 		},
 		"level": 6,
@@ -1419,6 +1431,9 @@
 				"1": "+(45-68)% Void Resistance"
 			},
 			"amulet": {
+				"1": "+(35-53)% Void Resistance"
+			},
+			"shield": {
 				"1": "+(35-53)% Void Resistance"
 			}
 		},
@@ -1864,6 +1879,9 @@
 			},
 			"amulet": {
 				"1": "+(6-11)% Necrotic Resistance"
+			},
+			"shield": {
+				"1": "+(6-11)% Necrotic Resistance"
 			}
 		},
 		"level": 19,
@@ -1896,6 +1914,9 @@
 				"1": "+(15-21)% Necrotic Resistance"
 			},
 			"amulet": {
+				"1": "+(12-16)% Necrotic Resistance"
+			},
+			"shield": {
 				"1": "+(12-16)% Necrotic Resistance"
 			}
 		},
@@ -1930,6 +1951,9 @@
 			},
 			"amulet": {
 				"1": "+(18-25)% Necrotic Resistance"
+			},
+			"shield": {
+				"1": "+(18-25)% Necrotic Resistance"
 			}
 		},
 		"level": 19,
@@ -1963,6 +1987,9 @@
 			},
 			"amulet": {
 				"1": "+(26-34)% Necrotic Resistance"
+			},
+			"shield": {
+				"1": "+(26-34)% Necrotic Resistance"
 			}
 		},
 		"level": 19,
@@ -1995,6 +2022,9 @@
 				"1": "+(45-68)% Necrotic Resistance"
 			},
 			"amulet": {
+				"1": "+(35-53)% Necrotic Resistance"
+			},
+			"shield": {
 				"1": "+(35-53)% Necrotic Resistance"
 			}
 		},
@@ -2520,6 +2550,9 @@
 			},
 			"amulet": {
 				"1": "+(6-11)% Fire Resistance"
+			},
+			"shield": {
+				"1": "+(6-11)% Fire Resistance"
 			}
 		},
 		"level": 0,
@@ -2552,6 +2585,9 @@
 				"1": "+(15-21)% Fire Resistance"
 			},
 			"amulet": {
+				"1": "+(12-16)% Fire Resistance"
+			},
+			"shield": {
 				"1": "+(12-16)% Fire Resistance"
 			}
 		},
@@ -2586,6 +2622,9 @@
 			},
 			"amulet": {
 				"1": "+(18-25)% Fire Resistance"
+			},
+			"shield": {
+				"1": "+(18-25)% Fire Resistance"
 			}
 		},
 		"level": 0,
@@ -2619,6 +2658,9 @@
 			},
 			"amulet": {
 				"1": "+(26-34)% Fire Resistance"
+			},
+			"shield": {
+				"1": "+(26-34)% Fire Resistance"
 			}
 		},
 		"level": 0,
@@ -2651,6 +2693,9 @@
 				"1": "+(45-68)% Fire Resistance"
 			},
 			"amulet": {
+				"1": "+(35-53)% Fire Resistance"
+			},
+			"shield": {
 				"1": "+(35-53)% Fire Resistance"
 			}
 		},
@@ -3416,6 +3461,9 @@
 			},
 			"amulet": {
 				"1": "+(6-11)% Cold Resistance"
+			},
+			"shield": {
+				"1": "+(6-11)% Cold Resistance"
 			}
 		},
 		"level": 8,
@@ -3448,6 +3496,9 @@
 				"1": "+(15-21)% Cold Resistance"
 			},
 			"amulet": {
+				"1": "+(12-16)% Cold Resistance"
+			},
+			"shield": {
 				"1": "+(12-16)% Cold Resistance"
 			}
 		},
@@ -3482,6 +3533,9 @@
 			},
 			"amulet": {
 				"1": "+(18-25)% Cold Resistance"
+			},
+			"shield": {
+				"1": "+(18-25)% Cold Resistance"
 			}
 		},
 		"level": 8,
@@ -3515,6 +3569,9 @@
 			},
 			"amulet": {
 				"1": "+(26-34)% Cold Resistance"
+			},
+			"shield": {
+				"1": "+(26-34)% Cold Resistance"
 			}
 		},
 		"level": 8,
@@ -3547,6 +3604,9 @@
 				"1": "+(45-68)% Cold Resistance"
 			},
 			"amulet": {
+				"1": "+(35-53)% Cold Resistance"
+			},
+			"shield": {
 				"1": "+(35-53)% Cold Resistance"
 			}
 		},
@@ -3912,6 +3972,9 @@
 			},
 			"amulet": {
 				"1": "+(6-11)% Poison Resistance"
+			},
+			"shield": {
+				"1": "+(6-11)% Poison Resistance"
 			}
 		},
 		"level": 10,
@@ -3944,6 +4007,9 @@
 				"1": "+(15-21)% Poison Resistance"
 			},
 			"amulet": {
+				"1": "+(12-16)% Poison Resistance"
+			},
+			"shield": {
 				"1": "+(12-16)% Poison Resistance"
 			}
 		},
@@ -3978,6 +4044,9 @@
 			},
 			"amulet": {
 				"1": "+(18-25)% Poison Resistance"
+			},
+			"shield": {
+				"1": "+(18-25)% Poison Resistance"
 			}
 		},
 		"level": 10,
@@ -4011,6 +4080,9 @@
 			},
 			"amulet": {
 				"1": "+(26-34)% Poison Resistance"
+			},
+			"shield": {
+				"1": "+(26-34)% Poison Resistance"
 			}
 		},
 		"level": 10,
@@ -4043,6 +4115,9 @@
 				"1": "+(45-68)% Poison Resistance"
 			},
 			"amulet": {
+				"1": "+(35-53)% Poison Resistance"
+			},
+			"shield": {
 				"1": "+(35-53)% Poison Resistance"
 			}
 		},
@@ -4912,6 +4987,9 @@
 			},
 			"amulet": {
 				"1": "+(6-11)% Lightning Resistance"
+			},
+			"shield": {
+				"1": "+(6-11)% Lightning Resistance"
 			}
 		},
 		"level": 0,
@@ -4944,6 +5022,9 @@
 				"1": "+(15-21)% Lightning Resistance"
 			},
 			"amulet": {
+				"1": "+(12-16)% Lightning Resistance"
+			},
+			"shield": {
 				"1": "+(12-16)% Lightning Resistance"
 			}
 		},
@@ -4978,6 +5059,9 @@
 			},
 			"amulet": {
 				"1": "+(18-25)% Lightning Resistance"
+			},
+			"shield": {
+				"1": "+(18-25)% Lightning Resistance"
 			}
 		},
 		"level": 0,
@@ -5011,6 +5095,9 @@
 			},
 			"amulet": {
 				"1": "+(26-34)% Lightning Resistance"
+			},
+			"shield": {
+				"1": "+(26-34)% Lightning Resistance"
 			}
 		},
 		"level": 0,
@@ -5043,6 +5130,9 @@
 				"1": "+(45-68)% Lightning Resistance"
 			},
 			"amulet": {
+				"1": "+(35-53)% Lightning Resistance"
+			},
+			"shield": {
 				"1": "+(35-53)% Lightning Resistance"
 			}
 		},
@@ -8153,6 +8243,9 @@
 			},
 			"amulet": {
 				"1": "+(6-11)% Physical Resistance"
+			},
+			"shield": {
+				"1": "+(6-11)% Physical Resistance"
 			}
 		},
 		"level": 0,
@@ -8184,6 +8277,9 @@
 				"1": "+(15-21)% Physical Resistance"
 			},
 			"amulet": {
+				"1": "+(12-16)% Physical Resistance"
+			},
+			"shield": {
 				"1": "+(12-16)% Physical Resistance"
 			}
 		},
@@ -8217,6 +8313,9 @@
 			},
 			"amulet": {
 				"1": "+(18-25)% Physical Resistance"
+			},
+			"shield": {
+				"1": "+(18-25)% Physical Resistance"
 			}
 		},
 		"level": 0,
@@ -8249,6 +8348,9 @@
 			},
 			"amulet": {
 				"1": "+(26-34)% Physical Resistance"
+			},
+			"shield": {
+				"1": "+(26-34)% Physical Resistance"
 			}
 		},
 		"level": 0,
@@ -8280,6 +8382,9 @@
 				"1": "+(45-68)% Physical Resistance"
 			},
 			"amulet": {
+				"1": "+(35-53)% Physical Resistance"
+			},
+			"shield": {
 				"1": "+(35-53)% Physical Resistance"
 			}
 		},
