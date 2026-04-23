@@ -144,9 +144,27 @@ local modNameList = {
 	["chance to find potions"] = "ChanceToFindPotions",
 	-- Ailment application chances (from item affixes)
 	["to slow"] = "SlowChance",
+	["to apply slow"] = "SlowChance",
 	["to apply frailty"] = "FrailtyChance",
 	["to blind"] = "BlindChance",
+	["to apply blind"] = "BlindChance",
 	["to electrify"] = "ElectrifyChance",
+	["to apply electrify"] = "ElectrifyChance",
+	-- "to apply/inflict <basic ailment>" alt forms (complement the "<ailment> chance" set)
+	["to apply bleed"] = "BleedChance",
+	["to apply a bleed"] = "BleedChance",
+	["to inflict bleed"] = "BleedChance",
+	["to inflict a bleed"] = "BleedChance",
+	["to apply ignite"] = "IgniteChance",
+	["to inflict ignite"] = "IgniteChance",
+	["to apply poison"] = "PoisonChance",
+	["to inflict poison"] = "PoisonChance",
+	["to apply shock"] = "ShockChance",
+	["to inflict shock"] = "ShockChance",
+	["to apply chill"] = "ChillChance",
+	["to inflict chill"] = "ChillChance",
+	["to apply frostbite"] = "FrostbiteChance",
+	["to inflict frostbite"] = "FrostbiteChance",
 	["to inflict time rot"] = "TimeRotChance",
 	["to inflict doom"] = "DoomChance",
 	["doom chance"] = "DoomChance",
@@ -423,6 +441,19 @@ local modTagList = {
 	["per symbol"] = { tag = { type = "Multiplier", var = "ActiveSymbol" } },
 	["per active symbol"] = { tag = { type = "Multiplier", var = "ActiveSymbol" } },
 	["per symbol consumed"] = { tag = { type = "Multiplier", var = "ActiveSymbol" } },
+	-- Per-active minion/summon multipliers (DPS-integrated via Config tab counts)
+	["per active totem"] = { tag = { type = "PerStat", stat = "TotemsSummoned" } },
+	["per active dread shade"] = { tag = { type = "Multiplier", var = "ActiveDreadShade" } },
+	["per active maelstrom"] = { tag = { type = "Multiplier", var = "ActiveMaelstrom" } },
+	["per active rune"] = { tag = { type = "Multiplier", var = "ActiveRune" } },
+	["per active wandering spirit"] = { tag = { type = "Multiplier", var = "ActiveWanderingSpirit" } },
+	["per active crimson shroud"] = { tag = { type = "Multiplier", var = "ActiveCrimsonShroud" } },
+	["per active shadow"] = { tag = { type = "Multiplier", var = "ActiveShadow" } },
+	["per equipped omen idol"] = { tag = { type = "Multiplier", var = "EquippedOmenIdol" } },
+	["per equipped weaver item"] = { tag = { type = "Multiplier", var = "EquippedWeaverItem" } },
+	-- Per-projectile / per-additional-totem global multipliers (fed by Config tab)
+	["per projectile"] = { tag = { type = "Multiplier", var = "ProjectileCountConfig" } },
+	["per additional totem summoned"] = { tag = { type = "Multiplier", var = "AdditionalTotem" } },
 	["if you[' ]h?a?ve dealt a critical strike recently"] = { tag = { type = "Condition", var = "CritRecently" } },
 	["on kill"] = { tag = { type = "Condition", var = "KilledRecently" } },
 	["on melee kill"] = { flags = ModFlag.WeaponMelee, tag = { type = "Condition", var = "KilledRecently" } },
@@ -856,10 +887,29 @@ local function nsAny(num)
 end
 
 -- Buff-conditional stat scaling (e.g. "+19% Increased Cast Speed while you have Lightning Aegis")
-specialModList["^%+?([%d%.]+)%% increased (.+) while you have (.+)$"] = nsAny
-specialModList["^%+?([%d%.]+)%% reduced (.+) while you have (.+)$"] = nsAny
-specialModList["^%+?([%d%.]+)%% more (.+) while you have (.+)$"] = nsAny
-specialModList["^%+?([%d%.]+)%% less (.+) while you have (.+)$"] = nsAny
+-- Known buff names round-trip through modTagList's "while you have <X>" keys below, so
+-- for those we return nil to let the generic parser apply the proper Condition tag.
+-- Unknown buff names still get nsAny for recognition-only fallback.
+local knownWhileYouHaveBuffs = {
+	["ward"] = true,
+	["lightning aegis"] = true,
+	["haste"] = true,
+	["frenzy"] = true,
+	["an ailment overload"] = true,
+	["a companion"] = true,
+	["a forged weapon"] = true,
+}
+-- Handler args: (num_as_number, cap1_as_string, stat, buff). We only care about the buff.
+local function whileYouHaveHandler(num, _, _, buff)
+	if buff and knownWhileYouHaveBuffs[buff:lower()] then
+		return nil  -- fall through to generic parser (modTagList carries the Condition tag)
+	end
+	return nsAny(num)
+end
+specialModList["^%+?([%d%.]+)%% increased (.+) while you have (.+)$"] = whileYouHaveHandler
+specialModList["^%+?([%d%.]+)%% reduced (.+) while you have (.+)$"] = whileYouHaveHandler
+specialModList["^%+?([%d%.]+)%% more (.+) while you have (.+)$"] = whileYouHaveHandler
+specialModList["^%+?([%d%.]+)%% less (.+) while you have (.+)$"] = whileYouHaveHandler
 
 -- Chance-to-gain <buff> on generic triggers (hit, crit, kill, dodge, block, potion use)
 -- Existing per-buff patterns for Echo/Totem still win via longest-match.
@@ -880,14 +930,66 @@ specialModList["^%+?([%d%.]+)%% chance to gain (.+) for (%d+) seconds? when you 
 
 -- Ailment / charge application (e.g. "+3% Chance to apply Frailty on Minion Hit",
 --                                     "+1% Chance to apply a Spark Charge on Lightning Melee Hit")
-specialModList["^%+?([%d%.]+)%% chance to apply (.+) on hit$"] = nsAny
-specialModList["^%+?([%d%.]+)%% chance to apply (.+) on kill$"] = nsAny
-specialModList["^%+?([%d%.]+)%% chance to apply (.+) on crit$"] = nsAny
-specialModList["^%+?([%d%.]+)%% chance to apply (.+) on (.+) hit$"] = nsAny
-specialModList["^%+?([%d%.]+)%% chance to apply (.+) when you (.+)$"] = nsAny
+-- DPS-integrated via the generic parse chain: modNameList has per-ailment
+-- "<ailment> chance" / "to apply <ailment>" → <Ailment>Chance stats, and
+-- modTagList handles "on hit" (ModFlag.Hit), "on melee hit", "on kill", etc.
+-- A smart handler falls through for recognized ailments so the mod actually
+-- applies; unknown names still get caught by nsAny for recognition-only.
+local knownAilmentChances = {
+	["bleed"] = true, ["a bleed"] = true,
+	["ignite"] = true, ["poison"] = true, ["shock"] = true, ["chill"] = true,
+	["frostbite"] = true, ["frailty"] = true, ["electrify"] = true,
+	["time rot"] = true, ["slow"] = true, ["blind"] = true,
+	["plague"] = true, ["witchfire"] = true, ["spreading flames"] = true,
+	["future strike"] = true, ["abyssal decay"] = true, ["spirit plague"] = true,
+	["bone curse"] = true, ["torment"] = true, ["decrepify"] = true,
+	["anguish"] = true, ["penance"] = true, ["acid skin"] = true,
+	["exposed flesh"] = true, ["serpent venom"] = true, ["hemorrhage"] = true,
+	["ravage"] = true, ["critical vulnerability"] = true,
+	["marked for death"] = true, ["mark for death"] = true,
+	["damned"] = true, ["doom"] = true,
+	["armor shred"] = true, ["armour shred"] = true,
+}
+-- Handler args: (num, cap1_str, ailmentName). Return nil on known → generic chain fires.
+local function ailmentApplyHandler(num, _, ailmentName)
+	if ailmentName and knownAilmentChances[ailmentName:lower()] then
+		return nil
+	end
+	return nsAny(num)
+end
+local function ailmentApplyHandler2(num, _, ailmentName)
+	-- For "on <X> hit" and "when you <X>" forms where cap[3] is the trigger qualifier.
+	if ailmentName and knownAilmentChances[ailmentName:lower()] then
+		return nil
+	end
+	return nsAny(num)
+end
+specialModList["^%+?([%d%.]+)%% chance to apply (.+) on hit$"] = ailmentApplyHandler
+specialModList["^%+?([%d%.]+)%% chance to apply (.+) on kill$"] = ailmentApplyHandler
+specialModList["^%+?([%d%.]+)%% chance to apply (.+) on crit$"] = ailmentApplyHandler
+specialModList["^%+?([%d%.]+)%% chance to apply (.+) on (.+) hit$"] = ailmentApplyHandler2
+specialModList["^%+?([%d%.]+)%% chance to apply (.+) when you (.+)$"] = ailmentApplyHandler2
+-- Also cover "chance to inflict" phrasing symmetrically.
+specialModList["^%+?([%d%.]+)%% chance to inflict (.+) on hit$"] = ailmentApplyHandler
+specialModList["^%+?([%d%.]+)%% chance to inflict (.+) on kill$"] = ailmentApplyHandler
+specialModList["^%+?([%d%.]+)%% chance to inflict (.+) on crit$"] = ailmentApplyHandler
+specialModList["^%+?([%d%.]+)%% chance to inflict (.+) on (.+) hit$"] = ailmentApplyHandler2
 
--- Resource conversion / spend-gained (e.g. "40% of Mana Spent Gained as Ward")
-specialModList["^%+?([%d%.]+)%% of (.+) spent gained as (.+)$"] = nsAny
+-- Resource conversion / spend-gained
+-- DPS-integrated: "X% of Mana Spent Gained as Ward" emits ManaSpentGainedAsWard,
+-- which CalcPerform consumes after offence computes ManaPerSecondCost to add to
+-- WardPerSecond. Unknown resource/target combos fall through to nsAny for
+-- recognition-only (keeps existing Obsidian notes / tests green).
+local function spendGainedHandler(num, _, resource, target)
+	if resource and target then
+		local r, t = resource:lower(), target:lower()
+		if r == "mana" and t == "ward" then
+			return { mod("ManaSpentGainedAsWard", "BASE", num) }
+		end
+	end
+	return nsAny(num)
+end
+specialModList["^%+?([%d%.]+)%% of (.+) spent gained as (.+)$"] = spendGainedHandler
 specialModList["^%+?([%d%.]+)%% of (.+) gained as (.+)$"] = nsAny
 specialModList["^%+?([%d%.]+)%% of (.+) converted to (.+)$"] = nsAny
 
@@ -912,18 +1014,52 @@ specialModList["^%+?(%d+) seconds? of (.+) on (.+)$"] = nsAny
 specialModList["^%+?(%d+) seconds? of (.+) when (.+)$"] = nsAny
 
 -- Per-active / per-equipped / per-stack multipliers
--- (e.g. "5% increased Cold Damage per active Totem",
---       "+5% Chance to inflict Bleed on Hit per equipped Sword")
-specialModList["^%+?([%d%.]+)%% increased (.+) per active (.+)$"] = nsAny
-specialModList["^%+?([%d%.]+)%% reduced (.+) per active (.+)$"] = nsAny
-specialModList["^%+?([%d%.]+)%% more (.+) per active (.+)$"] = nsAny
-specialModList["^%+?([%d%.]+)%% less (.+) per active (.+)$"] = nsAny
-specialModList["^%+?([%d%.]+)%% increased (.+) per equipped (.+)$"] = nsAny
-specialModList["^%+?([%d%.]+)%% reduced (.+) per equipped (.+)$"] = nsAny
-specialModList["^%+?([%d%.]+)%% chance to (.+) per active (.+)$"] = nsAny
-specialModList["^%+?([%d%.]+)%% chance to (.+) per equipped (.+)$"] = nsAny
-specialModList["^%+?([%d%.]+) (.+) per active (.+)$"] = nsAny
-specialModList["^%+?([%d%.]+) (.+) per equipped (.+)$"] = nsAny
+-- DPS-integrated when the tail noun matches a known multiplier (handled via modTagList
+-- entries above — e.g. "per active Rune" → Multiplier:ActiveRune with a Config count).
+-- Unknown tail nouns fall through to nsAny for recognition only.
+local knownPerActive = {
+	["totem"] = true, ["totems"] = true,
+	["symbol"] = true, ["symbols"] = true,
+	["shadow"] = true, ["shadows"] = true,
+	["rune"] = true, ["runes"] = true,
+	["dread shade"] = true, ["dread shades"] = true,
+	["maelstrom"] = true, ["maelstroms"] = true,
+	["wandering spirit"] = true, ["wandering spirits"] = true,
+	["crimson shroud"] = true, ["crimson shrouds"] = true,
+}
+local knownPerEquipped = {
+	["sword"] = true, ["swords"] = true,
+	["dagger"] = true, ["daggers"] = true,
+	["omen idol"] = true, ["omen idols"] = true,
+	["weaver item"] = true, ["weaver items"] = true,
+	["heretical idol"] = true, ["huge idol"] = true, ["ornate idol"] = true,
+	["grand idol"] = true, ["large idol"] = true, ["adorned idol"] = true,
+	["stout idol"] = true, ["humble idol"] = true, ["small idol"] = true,
+	["minor idol"] = true, ["corrupted idol"] = true,
+}
+-- Handler args: (num, cap1_str, stat, tailNoun). Only tailNoun matters for routing.
+local function perActiveHandler(num, _, _, tailNoun)
+	if tailNoun and knownPerActive[tailNoun:lower()] then
+		return nil  -- fall through to generic parser (modTagList carries the Multiplier)
+	end
+	return nsAny(num)
+end
+local function perEquippedHandler(num, _, _, tailNoun)
+	if tailNoun and knownPerEquipped[tailNoun:lower()] then
+		return nil
+	end
+	return nsAny(num)
+end
+specialModList["^%+?([%d%.]+)%% increased (.+) per active (.+)$"] = perActiveHandler
+specialModList["^%+?([%d%.]+)%% reduced (.+) per active (.+)$"] = perActiveHandler
+specialModList["^%+?([%d%.]+)%% more (.+) per active (.+)$"] = perActiveHandler
+specialModList["^%+?([%d%.]+)%% less (.+) per active (.+)$"] = perActiveHandler
+specialModList["^%+?([%d%.]+)%% increased (.+) per equipped (.+)$"] = perEquippedHandler
+specialModList["^%+?([%d%.]+)%% reduced (.+) per equipped (.+)$"] = perEquippedHandler
+specialModList["^%+?([%d%.]+)%% chance to (.+) per active (.+)$"] = perActiveHandler
+specialModList["^%+?([%d%.]+)%% chance to (.+) per equipped (.+)$"] = perEquippedHandler
+specialModList["^%+?([%d%.]+) (.+) per active (.+)$"] = perActiveHandler
+specialModList["^%+?([%d%.]+) (.+) per equipped (.+)$"] = perEquippedHandler
 
 -- Exotic chance-to-cast triggers with qualifier / trailing parenthetical
 -- (e.g. "+5% Chance to cast Fire Aura on Kill with Fire Skills (1 second cooldown)",
@@ -945,6 +1081,26 @@ specialModList["^%+?([%d%.]+)%% (.+) chance per second with (.+)$"] = nsAny
 specialModList["^%+?([%d%.]+)%% (.+) chance per second$"] = nsAny
 
 -- 4. While-channelling modifier (e.g. "X% Endurance while channelling Warpath")
+-- DPS-integrated for the subset of stat+skill combos actually present in affix data
+-- (Endurance while channelling Warpath; Ward per Second while channelling Ghostflame).
+-- Other variants fall through to nsAny recognition.
+-- Mechanic: Condition:Channelling<Skill> is set by CalcPerform when the player is
+-- channelling AND their main skill matches. This double-gates by skill identity.
+for _lowerCh, _canonicalCh in pairs(skillNameByLower) do
+	if not skillNameBlacklist[_lowerCh] then
+		local _escCh = escPat(_lowerCh)
+		local _condVar = "Channelling" .. _canonicalCh:gsub("%s+", "")
+		-- Endurance while channelling <skill>
+		specialModList["^%+?([%d%.]+)%% endurance while channell?ing " .. _escCh .. "$"] = function(num)
+			return { mod("Endurance", "BASE", num, "", 0, 0, { type = "Condition", var = _condVar }) }
+		end
+		-- Ward per Second while channelling <skill>
+		specialModList["^%+?([%d%.]+) ward per second while channell?ing " .. _escCh .. "$"] = function(num)
+			return { mod("WardPerSecond", "BASE", num, "", 0, 0, { type = "Condition", var = _condVar }) }
+		end
+	end
+end
+-- Fallback: unknown stat/skill combos still get recognised (but flagged unsupported).
 specialModList["^%+?([%d%.]+)%% (.+) while channelling (.+)$"] = nsAny
 specialModList["^%+?([%d%.]+) (.+) while channelling (.+)$"] = nsAny
 
@@ -965,12 +1121,32 @@ specialModList["^%+?([%d%.]+)%% less (.+) for (.+) per active (.+)$"] = nsAny
 -- handlers ("while wielding a <weapon>") already cover the DPS-integrated case. The
 -- "if wielding" phrasing in data generally normalises to the same condition.
 
--- 11. Per-projectile scaling ("per arrow with Multishot") — anchored on concrete
--- per-noun tokens to avoid shadowing generic per-tag handlers.
+-- 11. Per-projectile scaling ("per arrow with Multishot") — DPS-integrated for the
+-- Multishot subset found in affix data (every cached instance is Multishot-only).
+-- Mechanic: Multiplier:ArrowsWithMultishot is fed by the Config tab ("# of Arrows
+-- with Multishot"), and the mod is also skill-gated so it only scales Multishot
+-- damage. Unknown skill/stat combos still fall through to nsAny for recognition.
+for _lowerAr, _canonicalAr in pairs(skillNameByLower) do
+	if not skillNameBlacklist[_lowerAr] then
+		local _escAr = escPat(_lowerAr)
+		local _multVar = "ArrowsWith" .. _canonicalAr:gsub("%s+", "")
+		specialModList["^%+?([%d%.]+)%% increased damage per arrow with " .. _escAr .. "$"] = function(num)
+			return { mod("Damage", "INC", num, "", 0, 0, { type = "SkillName", skillName = _canonicalAr }, { type = "Multiplier", var = _multVar }) }
+		end
+		specialModList["^%+?([%d%.]+)%% increased damage per projectile with " .. _escAr .. "$"] = function(num)
+			return { mod("Damage", "INC", num, "", 0, 0, { type = "SkillName", skillName = _canonicalAr }, { type = "Multiplier", var = _multVar }) }
+		end
+	end
+end
+-- Fallback: unknown stat/skill combos still get recognised.
 specialModList["^%+?([%d%.]+)%% increased (.+) per arrow with (.+)$"] = nsAny
 specialModList["^%+?([%d%.]+)%% increased (.+) per projectile with (.+)$"] = nsAny
 specialModList["^%+?([%d%.]+)%% reduced (.+) per arrow with (.+)$"] = nsAny
 specialModList["^%+?([%d%.]+)%% reduced (.+) per projectile with (.+)$"] = nsAny
+
+-- 11b. "Per Arrow Before Limit" — recognition only (capped multiplier, depends on
+-- skill-specific arrow-limit mechanics not yet modelled).
+specialModList["^%+?([%d%.]+)%% (.+) per arrow before limit$"] = nsAny
 
 -- 12. Per forged weapon (Forge Weapon summon count)
 specialModList["^%+?([%d%.]+)%% (.+) per forged weapon$"] = nsAny
@@ -1023,13 +1199,15 @@ specialModList["^%+?([%d%.]+)%% of (.+) base damage converted to (.+)$"] = nsAny
 specialModList["^%+?([%d%.]+)%% added (.+) gained as added (.+)$"] = nsAny
 specialModList["^%+?([%d%.]+)%% of added (.+) gained as added (.+)$"] = nsAny
 
--- 21. "+N to <skill>" — recognition-only when the name resolves to a canonical skill.
--- If it doesn't (e.g. "+1 to Strength", "+1 to All Attributes"), the handler returns
--- nil and parseMod falls through to the generic chain so real stat mods keep working.
+-- 21. "+N to <skill>" — DPS-integrated: emits a SkillName-tagged SkillLevel BASE
+-- that CalcSetup consumes via env.modDB:Sum("BASE", skillCfg, "SkillLevel") to
+-- raise the specialized skill's effective level. If the captured name isn't a
+-- canonical skill (e.g. "+1 to Strength", "+1 to All Attributes"), return nil so
+-- parseMod falls through to the generic chain and the stat mod still applies.
 specialModList["^%+?(%d+) to (.+)$"] = function(num, _, name)
 	local canonical = canonicalSkillName(name)
 	if not canonical then return nil end
-	return nsList(mod("SkillLevel_" .. canonical:gsub("%s+",""), "BASE", num, "", 0, 0, { type = "SkillName", skillName = canonical }))
+	return { mod("SkillLevel", "BASE", num, "", 0, 0, { type = "SkillName", skillName = canonical }) }
 end
 
 -- 22. Flat charge count for a skill ("+1 Charge for Flame Ward")
@@ -1037,22 +1215,68 @@ specialModList["^%+?(%d+) charges? for (.+)$"] = nsAny
 specialModList["^%+?(%d+) additional charges? for (.+)$"] = nsAny
 
 -- Damage-taken reductions with qualifier / source
--- (e.g. "3% reduced Bonus Damage Taken from Critical Strikes",
---       "5% less Damage Taken from Bosses", "4% reduced Physical Damage Taken")
+-- DPS-integrated where possible via:
+--   * "bonus damage taken from critical strikes" → ReduceCritExtraDamage stat
+--     (consumed in CalcDefence.lua as a flat reduction to enemy crit extra damage)
+--   * "from <ailment> enemies" → ActorCondition tag in modTagList combined with
+--     "DamageTaken" from modNameList via the generic parse chain
+--   * "<type> damage taken" → auto-generated "<Type>DamageTaken" modNameList entry
+-- Known qualifiers fall through to the generic chain; unknown still get nsAny
+-- recognition so the mod is at least flagged rather than silently broken.
+specialModList["^%+?([%d%.]+)%% reduced bonus damage taken from critical strikes$"] = function(num)
+	return { mod("ReduceCritExtraDamage", "BASE", num) }
+end
+specialModList["^%+?([%d%.]+)%% less bonus damage taken from critical strikes$"] = function(num)
+	return { mod("ReduceCritExtraDamage", "BASE", num) }
+end
+-- "bonus damage taken from X" for other X values is not yet modeled.
 specialModList["^%+?([%d%.]+)%% reduced bonus damage taken from (.+)$"] = nsAny
 specialModList["^%+?([%d%.]+)%% less bonus damage taken from (.+)$"] = nsAny
-specialModList["^%+?([%d%.]+)%% reduced damage taken from (.+)$"] = nsAny
-specialModList["^%+?([%d%.]+)%% less damage taken from (.+)$"] = nsAny
-specialModList["^%+?([%d%.]+)%% reduced (.+) damage taken$"] = nsAny
-specialModList["^%+?([%d%.]+)%% less (.+) damage taken$"] = nsAny
-specialModList["^%+?([%d%.]+)%% increased (.+) damage taken$"] = nsAny
-specialModList["^%+?([%d%.]+)%% more (.+) damage taken$"] = nsAny
 
--- Compound "... this effect is doubled if ..." clauses (e.g. doubled-at-300-mana lightning damage)
-specialModList["^%+?([%d%.]+)%% increased (.+)%. this effect is doubled if (.+)$"] = nsAny
-specialModList["^%+?([%d%.]+)%% reduced (.+)%. this effect is doubled if (.+)$"] = nsAny
-specialModList["^%+?([%d%.]+)%% more (.+)%. this effect is doubled if (.+)$"] = nsAny
-specialModList["^%+?([%d%.]+)%% less (.+)%. this effect is doubled if (.+)$"] = nsAny
+-- Enemy-condition sources (chilled/ignited/shocked/slowed/bleeding/poisoned/
+-- frozen/time rotting/frail enemies, critical strikes) already have modTagList
+-- entries, so we fall through for known sources and only nsAny unknown ones.
+local knownDamageTakenSources = {
+	["critical strikes"] = true, ["crits"] = true,
+	["chilled enemies"] = true, ["ignited enemies"] = true, ["shocked enemies"] = true,
+	["slowed enemies"] = true, ["frozen enemies"] = true, ["bleeding enemies"] = true,
+	["poisoned enemies"] = true, ["time rotting enemies"] = true, ["frail enemies"] = true,
+}
+local function damageTakenFromHandler(num, _, source)
+	if source and knownDamageTakenSources[source:lower()] then
+		return nil
+	end
+	return nsAny(num)
+end
+specialModList["^%+?([%d%.]+)%% reduced damage taken from (.+)$"] = damageTakenFromHandler
+specialModList["^%+?([%d%.]+)%% less damage taken from (.+)$"] = damageTakenFromHandler
+
+-- "<type> damage taken" — auto-generated modNameList entries cover standard damage
+-- types (Physical/Fire/Cold/Lightning/Poison/Necrotic/Void) plus "Elemental" and
+-- bare "Damage Taken". Fall through to let the generic chain produce the flat mod.
+-- Unknown prefixes still hit nsAny to stay recognised.
+local knownDamageTakenTypes = {
+	["physical"] = true, ["fire"] = true, ["cold"] = true, ["lightning"] = true,
+	["poison"] = true, ["necrotic"] = true, ["void"] = true, ["elemental"] = true,
+	["hit"] = true, ["melee"] = true, ["spell"] = true, ["minion"] = true,
+	["damage over time"] = true, ["dot"] = true,
+}
+local function damageTakenTypeHandler(num, _, dtype)
+	if dtype and knownDamageTakenTypes[dtype:lower()] then
+		return nil
+	end
+	return nsAny(num)
+end
+specialModList["^%+?([%d%.]+)%% reduced (.+) damage taken$"] = damageTakenTypeHandler
+specialModList["^%+?([%d%.]+)%% less (.+) damage taken$"] = damageTakenTypeHandler
+specialModList["^%+?([%d%.]+)%% increased (.+) damage taken$"] = damageTakenTypeHandler
+specialModList["^%+?([%d%.]+)%% more (.+) damage taken$"] = damageTakenTypeHandler
+
+-- Compound "... this effect is doubled if ..." clauses (e.g. doubled-at-300-mana).
+-- Intentionally NOT hooked as specialModList — the trailing clause is matched via
+-- modTagList ("this effect is doubled if you have N or more maximum mana") which
+-- emits a StatThreshold tag with mult=2, letting the generic parser handle the
+-- "X% increased <stat>" head. Hooking nsAny here would swallow the whole line.
 
 -- Modifiers that are recognised but unsupported
 local unsupportedModList = {
