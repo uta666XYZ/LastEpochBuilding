@@ -1282,6 +1282,11 @@
 	"7_0": {
 		"affix": "of Hope",
 		"1": "+(5-9)% Void Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(8-14)% Void Resistance"
+			}
+		},
 		"level": 6,
 		"statOrderKey": 7,
 		"statOrder": [
@@ -1307,6 +1312,11 @@
 	"7_1": {
 		"affix": "of Hope",
 		"1": "+(10-14)% Void Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(15-21)% Void Resistance"
+			}
+		},
 		"level": 6,
 		"statOrderKey": 7,
 		"statOrder": [
@@ -1332,6 +1342,11 @@
 	"7_2": {
 		"affix": "of Hope",
 		"1": "+(15-21)% Void Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(22-32)% Void Resistance"
+			}
+		},
 		"level": 6,
 		"statOrderKey": 7,
 		"statOrder": [
@@ -1357,6 +1372,11 @@
 	"7_3": {
 		"affix": "of Hope",
 		"1": "+(22-29)% Void Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(33-43)% Void Resistance"
+			}
+		},
 		"level": 6,
 		"statOrderKey": 7,
 		"statOrder": [
@@ -1382,6 +1402,11 @@
 	"7_4": {
 		"affix": "of Hope",
 		"1": "+(30-45)% Void Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(45-68)% Void Resistance"
+			}
+		},
 		"level": 6,
 		"statOrderKey": 7,
 		"statOrder": [
@@ -1818,6 +1843,11 @@
 	"10_0": {
 		"affix": "of Purity",
 		"1": "+(5-9)% Necrotic Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(8-14)% Necrotic Resistance"
+			}
+		},
 		"level": 19,
 		"statOrderKey": 10,
 		"statOrder": [
@@ -1843,6 +1873,11 @@
 	"10_1": {
 		"affix": "of Purity",
 		"1": "+(10-14)% Necrotic Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(15-21)% Necrotic Resistance"
+			}
+		},
 		"level": 19,
 		"statOrderKey": 10,
 		"statOrder": [
@@ -1868,6 +1903,11 @@
 	"10_2": {
 		"affix": "of Purity",
 		"1": "+(15-21)% Necrotic Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(22-32)% Necrotic Resistance"
+			}
+		},
 		"level": 19,
 		"statOrderKey": 10,
 		"statOrder": [
@@ -1893,6 +1933,11 @@
 	"10_3": {
 		"affix": "of Purity",
 		"1": "+(22-29)% Necrotic Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(33-43)% Necrotic Resistance"
+			}
+		},
 		"level": 19,
 		"statOrderKey": 10,
 		"statOrder": [
@@ -1918,6 +1963,11 @@
 	"10_4": {
 		"affix": "of Purity",
 		"1": "+(30-45)% Necrotic Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(45-68)% Necrotic Resistance"
+			}
+		},
 		"level": 19,
 		"statOrderKey": 10,
 		"statOrder": [
@@ -2434,6 +2484,11 @@
 	"13_0": {
 		"affix": "of Embers",
 		"1": "+(5-9)% Fire Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(8-14)% Fire Resistance"
+			}
+		},
 		"level": 0,
 		"statOrderKey": 13,
 		"statOrder": [
@@ -2459,6 +2514,11 @@
 	"13_1": {
 		"affix": "of Embers",
 		"1": "+(10-14)% Fire Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(15-21)% Fire Resistance"
+			}
+		},
 		"level": 0,
 		"statOrderKey": 13,
 		"statOrder": [
@@ -2484,6 +2544,11 @@
 	"13_2": {
 		"affix": "of Embers",
 		"1": "+(15-21)% Fire Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(22-32)% Fire Resistance"
+			}
+		},
 		"level": 0,
 		"statOrderKey": 13,
 		"statOrder": [
@@ -2509,6 +2574,11 @@
 	"13_3": {
 		"affix": "of Embers",
 		"1": "+(22-29)% Fire Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(33-43)% Fire Resistance"
+			}
+		},
 		"level": 0,
 		"statOrderKey": 13,
 		"statOrder": [
@@ -2534,6 +2604,11 @@
 	"13_4": {
 		"affix": "of Embers",
 		"1": "+(30-45)% Fire Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(45-68)% Fire Resistance"
+			}
+		},
 		"level": 0,
 		"statOrderKey": 13,
 		"statOrder": [
@@ -3290,6 +3365,11 @@
 	"17_0": {
 		"affix": "of Frost",
 		"1": "+(5-9)% Cold Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(8-14)% Cold Resistance"
+			}
+		},
 		"level": 8,
 		"statOrderKey": 17,
 		"statOrder": [
@@ -3315,6 +3395,11 @@
 	"17_1": {
 		"affix": "of Frost",
 		"1": "+(10-14)% Cold Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(15-21)% Cold Resistance"
+			}
+		},
 		"level": 8,
 		"statOrderKey": 17,
 		"statOrder": [
@@ -3340,6 +3425,11 @@
 	"17_2": {
 		"affix": "of Frost",
 		"1": "+(15-21)% Cold Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(22-32)% Cold Resistance"
+			}
+		},
 		"level": 8,
 		"statOrderKey": 17,
 		"statOrder": [
@@ -3365,6 +3455,11 @@
 	"17_3": {
 		"affix": "of Frost",
 		"1": "+(22-29)% Cold Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(33-43)% Cold Resistance"
+			}
+		},
 		"level": 8,
 		"statOrderKey": 17,
 		"statOrder": [
@@ -3390,6 +3485,11 @@
 	"17_4": {
 		"affix": "of Frost",
 		"1": "+(30-45)% Cold Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(45-68)% Cold Resistance"
+			}
+		},
 		"level": 8,
 		"statOrderKey": 17,
 		"statOrder": [
@@ -3746,6 +3846,11 @@
 	"19_0": {
 		"affix": "of Remedy",
 		"1": "+(5-9)% Poison Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(8-14)% Poison Resistance"
+			}
+		},
 		"level": 10,
 		"statOrderKey": 19,
 		"statOrder": [
@@ -3771,6 +3876,11 @@
 	"19_1": {
 		"affix": "of Remedy",
 		"1": "+(10-14)% Poison Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(15-21)% Poison Resistance"
+			}
+		},
 		"level": 10,
 		"statOrderKey": 19,
 		"statOrder": [
@@ -3796,6 +3906,11 @@
 	"19_2": {
 		"affix": "of Remedy",
 		"1": "+(15-21)% Poison Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(22-32)% Poison Resistance"
+			}
+		},
 		"level": 10,
 		"statOrderKey": 19,
 		"statOrder": [
@@ -3821,6 +3936,11 @@
 	"19_3": {
 		"affix": "of Remedy",
 		"1": "+(22-29)% Poison Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(33-43)% Poison Resistance"
+			}
+		},
 		"level": 10,
 		"statOrderKey": 19,
 		"statOrder": [
@@ -3846,6 +3966,11 @@
 	"19_4": {
 		"affix": "of Remedy",
 		"1": "+(30-45)% Poison Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(45-68)% Poison Resistance"
+			}
+		},
 		"level": 10,
 		"statOrderKey": 19,
 		"statOrder": [
@@ -4706,6 +4831,11 @@
 	"24_0": {
 		"affix": "of Sparks",
 		"1": "+(5-9)% Lightning Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(8-14)% Lightning Resistance"
+			}
+		},
 		"level": 0,
 		"statOrderKey": 24,
 		"statOrder": [
@@ -4731,6 +4861,11 @@
 	"24_1": {
 		"affix": "of Sparks",
 		"1": "+(10-14)% Lightning Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(15-21)% Lightning Resistance"
+			}
+		},
 		"level": 0,
 		"statOrderKey": 24,
 		"statOrder": [
@@ -4756,6 +4891,11 @@
 	"24_2": {
 		"affix": "of Sparks",
 		"1": "+(15-21)% Lightning Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(22-32)% Lightning Resistance"
+			}
+		},
 		"level": 0,
 		"statOrderKey": 24,
 		"statOrder": [
@@ -4781,6 +4921,11 @@
 	"24_3": {
 		"affix": "of Sparks",
 		"1": "+(22-29)% Lightning Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(33-43)% Lightning Resistance"
+			}
+		},
 		"level": 0,
 		"statOrderKey": 24,
 		"statOrder": [
@@ -4806,6 +4951,11 @@
 	"24_4": {
 		"affix": "of Sparks",
 		"1": "+(30-45)% Lightning Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(45-68)% Lightning Resistance"
+			}
+		},
 		"level": 0,
 		"statOrderKey": 24,
 		"statOrder": [
@@ -7907,6 +8057,11 @@
 	"45_0": {
 		"affix": "of Deflection",
 		"1": "+(5-9)% Physical Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(8-14)% Physical Resistance"
+			}
+		},
 		"level": 0,
 		"statOrderKey": 45,
 		"statOrder": [
@@ -7931,6 +8086,11 @@
 	"45_1": {
 		"affix": "of Deflection",
 		"1": "+(10-14)% Physical Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(15-21)% Physical Resistance"
+			}
+		},
 		"level": 0,
 		"statOrderKey": 45,
 		"statOrder": [
@@ -7955,6 +8115,11 @@
 	"45_2": {
 		"affix": "of Deflection",
 		"1": "+(15-21)% Physical Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(22-32)% Physical Resistance"
+			}
+		},
 		"level": 0,
 		"statOrderKey": 45,
 		"statOrder": [
@@ -7979,6 +8144,11 @@
 	"45_3": {
 		"affix": "of Deflection",
 		"1": "+(22-29)% Physical Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(33-43)% Physical Resistance"
+			}
+		},
 		"level": 0,
 		"statOrderKey": 45,
 		"statOrder": [
@@ -8003,6 +8173,11 @@
 	"45_4": {
 		"affix": "of Deflection",
 		"1": "+(30-45)% Physical Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(45-68)% Physical Resistance"
+			}
+		},
 		"level": 0,
 		"statOrderKey": 45,
 		"statOrder": [
