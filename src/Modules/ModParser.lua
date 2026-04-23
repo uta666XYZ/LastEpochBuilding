@@ -1154,11 +1154,11 @@ specialModList["^%+?([%d%.]+)%% less (.+) damage taken$"] = nsAny
 specialModList["^%+?([%d%.]+)%% increased (.+) damage taken$"] = nsAny
 specialModList["^%+?([%d%.]+)%% more (.+) damage taken$"] = nsAny
 
--- Compound "... this effect is doubled if ..." clauses (e.g. doubled-at-300-mana lightning damage)
-specialModList["^%+?([%d%.]+)%% increased (.+)%. this effect is doubled if (.+)$"] = nsAny
-specialModList["^%+?([%d%.]+)%% reduced (.+)%. this effect is doubled if (.+)$"] = nsAny
-specialModList["^%+?([%d%.]+)%% more (.+)%. this effect is doubled if (.+)$"] = nsAny
-specialModList["^%+?([%d%.]+)%% less (.+)%. this effect is doubled if (.+)$"] = nsAny
+-- Compound "... this effect is doubled if ..." clauses (e.g. doubled-at-300-mana).
+-- Intentionally NOT hooked as specialModList — the trailing clause is matched via
+-- modTagList ("this effect is doubled if you have N or more maximum mana") which
+-- emits a StatThreshold tag with mult=2, letting the generic parser handle the
+-- "X% increased <stat>" head. Hooking nsAny here would swallow the whole line.
 
 -- Modifiers that are recognised but unsupported
 local unsupportedModList = {
