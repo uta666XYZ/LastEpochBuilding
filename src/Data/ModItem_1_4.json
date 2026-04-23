@@ -130,6 +130,11 @@
 	"1_0": {
 		"affix": "of Defense",
 		"1": "{rounding:Integer}(10-12)% increased Armor",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}(15-18)% increased Armor"
+			}
+		},
 		"level": 14,
 		"statOrderKey": 1,
 		"statOrder": [
@@ -148,6 +153,11 @@
 	"1_1": {
 		"affix": "of Defense",
 		"1": "{rounding:Integer}(13-16)% increased Armor",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}(20-24)% increased Armor"
+			}
+		},
 		"level": 14,
 		"statOrderKey": 1,
 		"statOrder": [
@@ -166,6 +176,11 @@
 	"1_2": {
 		"affix": "of Defense",
 		"1": "{rounding:Integer}(17-21)% increased Armor",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}(26-32)% increased Armor"
+			}
+		},
 		"level": 14,
 		"statOrderKey": 1,
 		"statOrder": [
@@ -184,6 +199,11 @@
 	"1_3": {
 		"affix": "of Defense",
 		"1": "{rounding:Integer}(22-26)% increased Armor",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}(33-39)% increased Armor"
+			}
+		},
 		"level": 14,
 		"statOrderKey": 1,
 		"statOrder": [
@@ -202,6 +222,11 @@
 	"1_4": {
 		"affix": "of Defense",
 		"1": "{rounding:Integer}(27-32)% increased Armor",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}(41-48)% increased Armor"
+			}
+		},
 		"level": 14,
 		"statOrderKey": 1,
 		"statOrder": [
@@ -1282,6 +1307,17 @@
 	"7_0": {
 		"affix": "of Hope",
 		"1": "+(5-9)% Void Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(8-14)% Void Resistance"
+			},
+			"amulet": {
+				"1": "+(6-11)% Void Resistance"
+			},
+			"shield": {
+				"1": "+(6-11)% Void Resistance"
+			}
+		},
 		"level": 6,
 		"statOrderKey": 7,
 		"statOrder": [
@@ -1307,6 +1343,17 @@
 	"7_1": {
 		"affix": "of Hope",
 		"1": "+(10-14)% Void Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(15-21)% Void Resistance"
+			},
+			"amulet": {
+				"1": "+(12-16)% Void Resistance"
+			},
+			"shield": {
+				"1": "+(12-16)% Void Resistance"
+			}
+		},
 		"level": 6,
 		"statOrderKey": 7,
 		"statOrder": [
@@ -1332,6 +1379,17 @@
 	"7_2": {
 		"affix": "of Hope",
 		"1": "+(15-21)% Void Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(22-32)% Void Resistance"
+			},
+			"amulet": {
+				"1": "+(18-25)% Void Resistance"
+			},
+			"shield": {
+				"1": "+(18-25)% Void Resistance"
+			}
+		},
 		"level": 6,
 		"statOrderKey": 7,
 		"statOrder": [
@@ -1357,6 +1415,17 @@
 	"7_3": {
 		"affix": "of Hope",
 		"1": "+(22-29)% Void Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(33-43)% Void Resistance"
+			},
+			"amulet": {
+				"1": "+(26-34)% Void Resistance"
+			},
+			"shield": {
+				"1": "+(26-34)% Void Resistance"
+			}
+		},
 		"level": 6,
 		"statOrderKey": 7,
 		"statOrder": [
@@ -1382,6 +1451,17 @@
 	"7_4": {
 		"affix": "of Hope",
 		"1": "+(30-45)% Void Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(45-68)% Void Resistance"
+			},
+			"amulet": {
+				"1": "+(35-53)% Void Resistance"
+			},
+			"shield": {
+				"1": "+(35-53)% Void Resistance"
+			}
+		},
 		"level": 6,
 		"statOrderKey": 7,
 		"statOrder": [
@@ -1818,6 +1898,17 @@
 	"10_0": {
 		"affix": "of Purity",
 		"1": "+(5-9)% Necrotic Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(8-14)% Necrotic Resistance"
+			},
+			"amulet": {
+				"1": "+(6-11)% Necrotic Resistance"
+			},
+			"shield": {
+				"1": "+(6-11)% Necrotic Resistance"
+			}
+		},
 		"level": 19,
 		"statOrderKey": 10,
 		"statOrder": [
@@ -1843,6 +1934,17 @@
 	"10_1": {
 		"affix": "of Purity",
 		"1": "+(10-14)% Necrotic Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(15-21)% Necrotic Resistance"
+			},
+			"amulet": {
+				"1": "+(12-16)% Necrotic Resistance"
+			},
+			"shield": {
+				"1": "+(12-16)% Necrotic Resistance"
+			}
+		},
 		"level": 19,
 		"statOrderKey": 10,
 		"statOrder": [
@@ -1868,6 +1970,17 @@
 	"10_2": {
 		"affix": "of Purity",
 		"1": "+(15-21)% Necrotic Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(22-32)% Necrotic Resistance"
+			},
+			"amulet": {
+				"1": "+(18-25)% Necrotic Resistance"
+			},
+			"shield": {
+				"1": "+(18-25)% Necrotic Resistance"
+			}
+		},
 		"level": 19,
 		"statOrderKey": 10,
 		"statOrder": [
@@ -1893,6 +2006,17 @@
 	"10_3": {
 		"affix": "of Purity",
 		"1": "+(22-29)% Necrotic Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(33-43)% Necrotic Resistance"
+			},
+			"amulet": {
+				"1": "+(26-34)% Necrotic Resistance"
+			},
+			"shield": {
+				"1": "+(26-34)% Necrotic Resistance"
+			}
+		},
 		"level": 19,
 		"statOrderKey": 10,
 		"statOrder": [
@@ -1918,6 +2042,17 @@
 	"10_4": {
 		"affix": "of Purity",
 		"1": "+(30-45)% Necrotic Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(45-68)% Necrotic Resistance"
+			},
+			"amulet": {
+				"1": "+(35-53)% Necrotic Resistance"
+			},
+			"shield": {
+				"1": "+(35-53)% Necrotic Resistance"
+			}
+		},
 		"level": 19,
 		"statOrderKey": 10,
 		"statOrder": [
@@ -2434,6 +2569,17 @@
 	"13_0": {
 		"affix": "of Embers",
 		"1": "+(5-9)% Fire Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(8-14)% Fire Resistance"
+			},
+			"amulet": {
+				"1": "+(6-11)% Fire Resistance"
+			},
+			"shield": {
+				"1": "+(6-11)% Fire Resistance"
+			}
+		},
 		"level": 0,
 		"statOrderKey": 13,
 		"statOrder": [
@@ -2459,6 +2605,17 @@
 	"13_1": {
 		"affix": "of Embers",
 		"1": "+(10-14)% Fire Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(15-21)% Fire Resistance"
+			},
+			"amulet": {
+				"1": "+(12-16)% Fire Resistance"
+			},
+			"shield": {
+				"1": "+(12-16)% Fire Resistance"
+			}
+		},
 		"level": 0,
 		"statOrderKey": 13,
 		"statOrder": [
@@ -2484,6 +2641,17 @@
 	"13_2": {
 		"affix": "of Embers",
 		"1": "+(15-21)% Fire Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(22-32)% Fire Resistance"
+			},
+			"amulet": {
+				"1": "+(18-25)% Fire Resistance"
+			},
+			"shield": {
+				"1": "+(18-25)% Fire Resistance"
+			}
+		},
 		"level": 0,
 		"statOrderKey": 13,
 		"statOrder": [
@@ -2509,6 +2677,17 @@
 	"13_3": {
 		"affix": "of Embers",
 		"1": "+(22-29)% Fire Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(33-43)% Fire Resistance"
+			},
+			"amulet": {
+				"1": "+(26-34)% Fire Resistance"
+			},
+			"shield": {
+				"1": "+(26-34)% Fire Resistance"
+			}
+		},
 		"level": 0,
 		"statOrderKey": 13,
 		"statOrder": [
@@ -2534,6 +2713,17 @@
 	"13_4": {
 		"affix": "of Embers",
 		"1": "+(30-45)% Fire Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(45-68)% Fire Resistance"
+			},
+			"amulet": {
+				"1": "+(35-53)% Fire Resistance"
+			},
+			"shield": {
+				"1": "+(35-53)% Fire Resistance"
+			}
+		},
 		"level": 0,
 		"statOrderKey": 13,
 		"statOrder": [
@@ -3290,6 +3480,17 @@
 	"17_0": {
 		"affix": "of Frost",
 		"1": "+(5-9)% Cold Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(8-14)% Cold Resistance"
+			},
+			"amulet": {
+				"1": "+(6-11)% Cold Resistance"
+			},
+			"shield": {
+				"1": "+(6-11)% Cold Resistance"
+			}
+		},
 		"level": 8,
 		"statOrderKey": 17,
 		"statOrder": [
@@ -3315,6 +3516,17 @@
 	"17_1": {
 		"affix": "of Frost",
 		"1": "+(10-14)% Cold Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(15-21)% Cold Resistance"
+			},
+			"amulet": {
+				"1": "+(12-16)% Cold Resistance"
+			},
+			"shield": {
+				"1": "+(12-16)% Cold Resistance"
+			}
+		},
 		"level": 8,
 		"statOrderKey": 17,
 		"statOrder": [
@@ -3340,6 +3552,17 @@
 	"17_2": {
 		"affix": "of Frost",
 		"1": "+(15-21)% Cold Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(22-32)% Cold Resistance"
+			},
+			"amulet": {
+				"1": "+(18-25)% Cold Resistance"
+			},
+			"shield": {
+				"1": "+(18-25)% Cold Resistance"
+			}
+		},
 		"level": 8,
 		"statOrderKey": 17,
 		"statOrder": [
@@ -3365,6 +3588,17 @@
 	"17_3": {
 		"affix": "of Frost",
 		"1": "+(22-29)% Cold Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(33-43)% Cold Resistance"
+			},
+			"amulet": {
+				"1": "+(26-34)% Cold Resistance"
+			},
+			"shield": {
+				"1": "+(26-34)% Cold Resistance"
+			}
+		},
 		"level": 8,
 		"statOrderKey": 17,
 		"statOrder": [
@@ -3390,6 +3624,17 @@
 	"17_4": {
 		"affix": "of Frost",
 		"1": "+(30-45)% Cold Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(45-68)% Cold Resistance"
+			},
+			"amulet": {
+				"1": "+(35-53)% Cold Resistance"
+			},
+			"shield": {
+				"1": "+(35-53)% Cold Resistance"
+			}
+		},
 		"level": 8,
 		"statOrderKey": 17,
 		"statOrder": [
@@ -3746,6 +3991,17 @@
 	"19_0": {
 		"affix": "of Remedy",
 		"1": "+(5-9)% Poison Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(8-14)% Poison Resistance"
+			},
+			"amulet": {
+				"1": "+(6-11)% Poison Resistance"
+			},
+			"shield": {
+				"1": "+(6-11)% Poison Resistance"
+			}
+		},
 		"level": 10,
 		"statOrderKey": 19,
 		"statOrder": [
@@ -3771,6 +4027,17 @@
 	"19_1": {
 		"affix": "of Remedy",
 		"1": "+(10-14)% Poison Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(15-21)% Poison Resistance"
+			},
+			"amulet": {
+				"1": "+(12-16)% Poison Resistance"
+			},
+			"shield": {
+				"1": "+(12-16)% Poison Resistance"
+			}
+		},
 		"level": 10,
 		"statOrderKey": 19,
 		"statOrder": [
@@ -3796,6 +4063,17 @@
 	"19_2": {
 		"affix": "of Remedy",
 		"1": "+(15-21)% Poison Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(22-32)% Poison Resistance"
+			},
+			"amulet": {
+				"1": "+(18-25)% Poison Resistance"
+			},
+			"shield": {
+				"1": "+(18-25)% Poison Resistance"
+			}
+		},
 		"level": 10,
 		"statOrderKey": 19,
 		"statOrder": [
@@ -3821,6 +4099,17 @@
 	"19_3": {
 		"affix": "of Remedy",
 		"1": "+(22-29)% Poison Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(33-43)% Poison Resistance"
+			},
+			"amulet": {
+				"1": "+(26-34)% Poison Resistance"
+			},
+			"shield": {
+				"1": "+(26-34)% Poison Resistance"
+			}
+		},
 		"level": 10,
 		"statOrderKey": 19,
 		"statOrder": [
@@ -3846,6 +4135,17 @@
 	"19_4": {
 		"affix": "of Remedy",
 		"1": "+(30-45)% Poison Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(45-68)% Poison Resistance"
+			},
+			"amulet": {
+				"1": "+(35-53)% Poison Resistance"
+			},
+			"shield": {
+				"1": "+(35-53)% Poison Resistance"
+			}
+		},
 		"level": 10,
 		"statOrderKey": 19,
 		"statOrder": [
@@ -4706,6 +5006,17 @@
 	"24_0": {
 		"affix": "of Sparks",
 		"1": "+(5-9)% Lightning Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(8-14)% Lightning Resistance"
+			},
+			"amulet": {
+				"1": "+(6-11)% Lightning Resistance"
+			},
+			"shield": {
+				"1": "+(6-11)% Lightning Resistance"
+			}
+		},
 		"level": 0,
 		"statOrderKey": 24,
 		"statOrder": [
@@ -4731,6 +5042,17 @@
 	"24_1": {
 		"affix": "of Sparks",
 		"1": "+(10-14)% Lightning Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(15-21)% Lightning Resistance"
+			},
+			"amulet": {
+				"1": "+(12-16)% Lightning Resistance"
+			},
+			"shield": {
+				"1": "+(12-16)% Lightning Resistance"
+			}
+		},
 		"level": 0,
 		"statOrderKey": 24,
 		"statOrder": [
@@ -4756,6 +5078,17 @@
 	"24_2": {
 		"affix": "of Sparks",
 		"1": "+(15-21)% Lightning Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(22-32)% Lightning Resistance"
+			},
+			"amulet": {
+				"1": "+(18-25)% Lightning Resistance"
+			},
+			"shield": {
+				"1": "+(18-25)% Lightning Resistance"
+			}
+		},
 		"level": 0,
 		"statOrderKey": 24,
 		"statOrder": [
@@ -4781,6 +5114,17 @@
 	"24_3": {
 		"affix": "of Sparks",
 		"1": "+(22-29)% Lightning Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(33-43)% Lightning Resistance"
+			},
+			"amulet": {
+				"1": "+(26-34)% Lightning Resistance"
+			},
+			"shield": {
+				"1": "+(26-34)% Lightning Resistance"
+			}
+		},
 		"level": 0,
 		"statOrderKey": 24,
 		"statOrder": [
@@ -4806,6 +5150,17 @@
 	"24_4": {
 		"affix": "of Sparks",
 		"1": "+(30-45)% Lightning Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(45-68)% Lightning Resistance"
+			},
+			"amulet": {
+				"1": "+(35-53)% Lightning Resistance"
+			},
+			"shield": {
+				"1": "+(35-53)% Lightning Resistance"
+			}
+		},
 		"level": 0,
 		"statOrderKey": 24,
 		"statOrder": [
@@ -4906,6 +5261,11 @@
 	"25_0": {
 		"affix": "of Life",
 		"1": "{rounding:Integer}+(5-15) Health",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(8-23) Health"
+			}
+		},
 		"level": 0,
 		"statOrderKey": 25,
 		"statOrder": [
@@ -4929,6 +5289,11 @@
 	"25_1": {
 		"affix": "of Life",
 		"1": "{rounding:Integer}+(16-25) Health",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(24-38) Health"
+			}
+		},
 		"level": 0,
 		"statOrderKey": 25,
 		"statOrder": [
@@ -4952,6 +5317,11 @@
 	"25_2": {
 		"affix": "of Life",
 		"1": "{rounding:Integer}+(26-40) Health",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(39-60) Health"
+			}
+		},
 		"level": 0,
 		"statOrderKey": 25,
 		"statOrder": [
@@ -4975,6 +5345,11 @@
 	"25_3": {
 		"affix": "of Life",
 		"1": "{rounding:Integer}+(41-60) Health",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(62-90) Health"
+			}
+		},
 		"level": 0,
 		"statOrderKey": 25,
 		"statOrder": [
@@ -4998,6 +5373,11 @@
 	"25_4": {
 		"affix": "of Life",
 		"1": "{rounding:Integer}+(61-90) Health",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(92-135) Health"
+			}
+		},
 		"level": 0,
 		"statOrderKey": 25,
 		"statOrder": [
@@ -5507,6 +5887,12 @@
 		"affix": "of the Monolith",
 		"1": "{rounding:Integer}+(12-17) Health",
 		"2": "{rounding:Integer}+(40-65) Stun Avoidance",
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}+(14-20) Health",
+				"2": "{rounding:Integer}+(47-76) Stun Avoidance"
+			}
+		},
 		"level": 46,
 		"statOrderKey": 29,
 		"statOrder": [
@@ -5524,6 +5910,12 @@
 		"affix": "of the Monolith",
 		"1": "{rounding:Integer}+(18-26) Health",
 		"2": "{rounding:Integer}+(66-100) Stun Avoidance",
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}+(21-30) Health",
+				"2": "{rounding:Integer}+(77-117) Stun Avoidance"
+			}
+		},
 		"level": 46,
 		"statOrderKey": 29,
 		"statOrder": [
@@ -5541,6 +5933,12 @@
 		"affix": "of the Monolith",
 		"1": "{rounding:Integer}+(27-35) Health",
 		"2": "{rounding:Integer}+(101-180) Stun Avoidance",
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}+(32-41) Health",
+				"2": "{rounding:Integer}+(118-211) Stun Avoidance"
+			}
+		},
 		"level": 46,
 		"statOrderKey": 29,
 		"statOrder": [
@@ -5558,6 +5956,12 @@
 		"affix": "of the Monolith",
 		"1": "{rounding:Integer}+(36-44) Health",
 		"2": "{rounding:Integer}+(181-250) Stun Avoidance",
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}+(42-51) Health",
+				"2": "{rounding:Integer}+(212-293) Stun Avoidance"
+			}
+		},
 		"level": 46,
 		"statOrderKey": 29,
 		"statOrder": [
@@ -5575,6 +5979,12 @@
 		"affix": "of the Monolith",
 		"1": "{rounding:Integer}+(45-60) Health",
 		"2": "{rounding:Integer}+(251-350) Stun Avoidance",
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}+(53-70) Health",
+				"2": "{rounding:Integer}+(294-410) Stun Avoidance"
+			}
+		},
 		"level": 46,
 		"statOrderKey": 29,
 		"statOrder": [
@@ -5914,6 +6324,11 @@
 	"31_0": {
 		"affix": "of the Turtle",
 		"1": "{rounding:Integer}+(6-20) Armor",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(9-30) Armor"
+			}
+		},
 		"level": 0,
 		"statOrderKey": 31,
 		"statOrder": [
@@ -5933,6 +6348,11 @@
 	"31_1": {
 		"affix": "of the Turtle",
 		"1": "{rounding:Integer}+(21-35) Armor",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(32-53) Armor"
+			}
+		},
 		"level": 0,
 		"statOrderKey": 31,
 		"statOrder": [
@@ -5952,6 +6372,11 @@
 	"31_2": {
 		"affix": "of the Turtle",
 		"1": "{rounding:Integer}+(36-55) Armor",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(54-83) Armor"
+			}
+		},
 		"level": 0,
 		"statOrderKey": 31,
 		"statOrder": [
@@ -5971,6 +6396,11 @@
 	"31_3": {
 		"affix": "of the Turtle",
 		"1": "{rounding:Integer}+(56-80) Armor",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(84-120) Armor"
+			}
+		},
 		"level": 0,
 		"statOrderKey": 31,
 		"statOrder": [
@@ -5990,6 +6420,11 @@
 	"31_4": {
 		"affix": "of the Turtle",
 		"1": "{rounding:Integer}+(81-110) Armor",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(122-165) Armor"
+			}
+		},
 		"level": 0,
 		"statOrderKey": 31,
 		"statOrder": [
@@ -7882,6 +8317,17 @@
 	"45_0": {
 		"affix": "of Deflection",
 		"1": "+(5-9)% Physical Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(8-14)% Physical Resistance"
+			},
+			"amulet": {
+				"1": "+(6-11)% Physical Resistance"
+			},
+			"shield": {
+				"1": "+(6-11)% Physical Resistance"
+			}
+		},
 		"level": 0,
 		"statOrderKey": 45,
 		"statOrder": [
@@ -7906,6 +8352,17 @@
 	"45_1": {
 		"affix": "of Deflection",
 		"1": "+(10-14)% Physical Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(15-21)% Physical Resistance"
+			},
+			"amulet": {
+				"1": "+(12-16)% Physical Resistance"
+			},
+			"shield": {
+				"1": "+(12-16)% Physical Resistance"
+			}
+		},
 		"level": 0,
 		"statOrderKey": 45,
 		"statOrder": [
@@ -7930,6 +8387,17 @@
 	"45_2": {
 		"affix": "of Deflection",
 		"1": "+(15-21)% Physical Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(22-32)% Physical Resistance"
+			},
+			"amulet": {
+				"1": "+(18-25)% Physical Resistance"
+			},
+			"shield": {
+				"1": "+(18-25)% Physical Resistance"
+			}
+		},
 		"level": 0,
 		"statOrderKey": 45,
 		"statOrder": [
@@ -7954,6 +8422,17 @@
 	"45_3": {
 		"affix": "of Deflection",
 		"1": "+(22-29)% Physical Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(33-43)% Physical Resistance"
+			},
+			"amulet": {
+				"1": "+(26-34)% Physical Resistance"
+			},
+			"shield": {
+				"1": "+(26-34)% Physical Resistance"
+			}
+		},
 		"level": 0,
 		"statOrderKey": 45,
 		"statOrder": [
@@ -7978,6 +8457,17 @@
 	"45_4": {
 		"affix": "of Deflection",
 		"1": "+(30-45)% Physical Resistance",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(45-68)% Physical Resistance"
+			},
+			"amulet": {
+				"1": "+(35-53)% Physical Resistance"
+			},
+			"shield": {
+				"1": "+(35-53)% Physical Resistance"
+			}
+		},
 		"level": 0,
 		"statOrderKey": 45,
 		"statOrder": [
@@ -8874,6 +9364,11 @@
 	"52_0": {
 		"affix": "of the Ox",
 		"1": "3% increased Health",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "5% increased Health"
+			}
+		},
 		"level": 25,
 		"statOrderKey": 52,
 		"statOrder": [
@@ -8891,6 +9386,11 @@
 	"52_1": {
 		"affix": "of the Ox",
 		"1": "{rounding:Integer}(4-5)% increased Health",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}(6-8)% increased Health"
+			}
+		},
 		"level": 25,
 		"statOrderKey": 52,
 		"statOrder": [
@@ -8908,6 +9408,11 @@
 	"52_2": {
 		"affix": "of the Ox",
 		"1": "{rounding:Integer}(6-7)% increased Health",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}(9-11)% increased Health"
+			}
+		},
 		"level": 25,
 		"statOrderKey": 52,
 		"statOrder": [
@@ -8925,6 +9430,11 @@
 	"52_3": {
 		"affix": "of the Ox",
 		"1": "{rounding:Integer}(8-9)% increased Health",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}(12-14)% increased Health"
+			}
+		},
 		"level": 25,
 		"statOrderKey": 52,
 		"statOrder": [
@@ -8942,6 +9452,11 @@
 	"52_4": {
 		"affix": "of the Ox",
 		"1": "{rounding:Integer}(10-12)% increased Health",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}(15-18)% increased Health"
+			}
+		},
 		"level": 25,
 		"statOrderKey": 52,
 		"statOrder": [
@@ -102312,6 +102827,12 @@
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
 		"2": "+2% Increases your maximum health Health Regen also applies to Ward",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+9% Health",
+				"2": "+3% Increases your maximum health Health Regen also applies to Ward"
+			}
+		},
 		"canRollOn": [
 			1,
 			0
@@ -102330,6 +102851,12 @@
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
 		"2": "+2% Increases your maximum health Health Regen also applies to Ward",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+11% Health",
+				"2": "+3% Increases your maximum health Health Regen also applies to Ward"
+			}
+		},
 		"canRollOn": [
 			1,
 			0
@@ -102348,6 +102875,12 @@
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
 		"2": "+2% Increases your maximum health Health Regen also applies to Ward",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+12% Health",
+				"2": "+3% Increases your maximum health Health Regen also applies to Ward"
+			}
+		},
 		"canRollOn": [
 			1,
 			0
@@ -102366,6 +102899,12 @@
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
 		"2": "+(2-3)% Increases your maximum health Health Regen also applies to Ward",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+14% Health",
+				"2": "+(3-5)% Increases your maximum health Health Regen also applies to Ward"
+			}
+		},
 		"canRollOn": [
 			1,
 			0
@@ -102384,6 +102923,12 @@
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
 		"2": "+3% Increases your maximum health Health Regen also applies to Ward",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+15% Health",
+				"2": "+5% Increases your maximum health Health Regen also applies to Ward"
+			}
+		},
 		"canRollOn": [
 			1,
 			0
@@ -102402,6 +102947,12 @@
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
 		"2": "+4% Increases your maximum health Health Regen also applies to Ward",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+17% Health",
+				"2": "+6% Increases your maximum health Health Regen also applies to Ward"
+			}
+		},
 		"canRollOn": [
 			1,
 			0
@@ -102420,6 +102971,12 @@
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
 		"2": "+4% Increases your maximum health Health Regen also applies to Ward",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+18% Health",
+				"2": "+6% Increases your maximum health Health Regen also applies to Ward"
+			}
+		},
 		"canRollOn": [
 			1,
 			0
@@ -102438,6 +102995,12 @@
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
 		"2": "+6% Increases your maximum health Health Regen also applies to Ward",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+(21-24)% Health",
+				"2": "+9% Increases your maximum health Health Regen also applies to Ward"
+			}
+		},
 		"canRollOn": [
 			1,
 			0
