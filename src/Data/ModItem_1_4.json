@@ -5887,6 +5887,12 @@
 		"affix": "of the Monolith",
 		"1": "{rounding:Integer}+(12-17) Health",
 		"2": "{rounding:Integer}+(40-65) Stun Avoidance",
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}+(14-20) Health",
+				"2": "{rounding:Integer}+(47-76) Stun Avoidance"
+			}
+		},
 		"level": 46,
 		"statOrderKey": 29,
 		"statOrder": [
@@ -5904,6 +5910,12 @@
 		"affix": "of the Monolith",
 		"1": "{rounding:Integer}+(18-26) Health",
 		"2": "{rounding:Integer}+(66-100) Stun Avoidance",
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}+(21-30) Health",
+				"2": "{rounding:Integer}+(77-117) Stun Avoidance"
+			}
+		},
 		"level": 46,
 		"statOrderKey": 29,
 		"statOrder": [
@@ -5921,6 +5933,12 @@
 		"affix": "of the Monolith",
 		"1": "{rounding:Integer}+(27-35) Health",
 		"2": "{rounding:Integer}+(101-180) Stun Avoidance",
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}+(32-41) Health",
+				"2": "{rounding:Integer}+(118-211) Stun Avoidance"
+			}
+		},
 		"level": 46,
 		"statOrderKey": 29,
 		"statOrder": [
@@ -5938,6 +5956,12 @@
 		"affix": "of the Monolith",
 		"1": "{rounding:Integer}+(36-44) Health",
 		"2": "{rounding:Integer}+(181-250) Stun Avoidance",
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}+(42-51) Health",
+				"2": "{rounding:Integer}+(212-293) Stun Avoidance"
+			}
+		},
 		"level": 46,
 		"statOrderKey": 29,
 		"statOrder": [
@@ -5955,6 +5979,12 @@
 		"affix": "of the Monolith",
 		"1": "{rounding:Integer}+(45-60) Health",
 		"2": "{rounding:Integer}+(251-350) Stun Avoidance",
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}+(53-70) Health",
+				"2": "{rounding:Integer}+(294-410) Stun Avoidance"
+			}
+		},
 		"level": 46,
 		"statOrderKey": 29,
 		"statOrder": [
