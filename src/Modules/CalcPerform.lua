@@ -176,6 +176,16 @@ local function doActorAttribsConditions(env, actor)
 				condList["Channelling"] = true
 			end
 		end
+		-- Per-skill channelling flag (for "while channelling <skill>" affixes).
+		-- Set whenever Channelling is true, either from mainSkill type above or via the
+		-- Config tab "Are you Channelling?" toggle (which injects Condition:Channelling
+		-- as a FLAG mod). GetCondition() checks both paths.
+		if modDB:GetCondition("Channelling") then
+			local skillName = actor.mainSkill.activeEffect and actor.mainSkill.activeEffect.grantedEffect and actor.mainSkill.activeEffect.grantedEffect.name
+			if skillName then
+				condList["Channelling" .. skillName:gsub("%s+", "")] = true
+			end
+		end
 		if actor.mainSkill.skillFlags.hit and not actor.mainSkill.skillFlags.trap and not actor.mainSkill.skillFlags.mine and not actor.mainSkill.skillFlags.totem then
 			condList["HitRecently"] = true
 			if actor.mainSkill.skillFlags.spell then
@@ -1181,6 +1191,34 @@ function calcs.perform(env, fullDPSSkipEHP)
 	calcs.triggers(env, env.player)
 	if not calcs.mirages(env) then
 		calcs.offence(env, env.player, env.player.mainSkill)
+	end
+
+	-- "X% of Mana Spent Gained as Ward": integrate post-offence so we have
+	-- the main skill's ManaPerSecondCost. Recomputes Ward/WardDecay because
+	-- calcs.defence ran before offence and didn't see this contribution.
+	do
+		local manaSpentGainedAsWard = env.player.modDB:Sum("BASE", nil, "ManaSpentGainedAsWard")
+		local manaPerSecondCost = env.player.output.ManaPerSecondCost or 0
+		if manaSpentGainedAsWard > 0 and manaPerSecondCost > 0 then
+			local pOut = env.player.output
+			local bonusWardPerSec = manaPerSecondCost * manaSpentGainedAsWard / 100
+			pOut.WardPerSecond = (pOut.WardPerSecond or 0) + bonusWardPerSec
+			local wps = pOut.WardPerSecond
+			local wardDecayThreshold = pOut.WardDecayThreshold or 0
+			local wardRetention = pOut.WardRetention or 0
+			local ward = wardDecayThreshold + ((-0.2 + math.sqrt(0.04 + 0.0002 * wps * (1 + 0.5 * wardRetention / 100))) / 0.0001)
+			ward = ward * calcLib.mod(env.player.modDB, nil, "Ward", "Defences")
+			pOut.Ward = m_max(round(ward), 0)
+			if pOut.Ward > 0 then
+				local effectiveWard = m_max(pOut.Ward - wardDecayThreshold, 0)
+				local retentionDivisor = 1 + 0.5 * wardRetention / 100
+				local decayNumerator = 0.2 * effectiveWard + 0.00005 * effectiveWard ^ 2
+				pOut.WardDecayPerSecond = round(decayNumerator / retentionDivisor)
+			else
+				pOut.WardDecayPerSecond = 0
+			end
+			pOut.NetWardRegen = wps > 0 and (wps - pOut.WardDecayPerSecond) or 0
+		end
 	end
 
 	if env.minion then
