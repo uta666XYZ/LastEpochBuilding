@@ -16,6 +16,51 @@ local ipairs = ipairs
 
 local MAX_MOD_LINES = 3
 
+-- Item type -> 16x16 icon filename (in Assets/).
+-- Mirrors ItemListControl.TYPE_ICON so the craft-popup left menu shows the same icons
+-- used by the All Items list.
+local TYPE_ICON = {
+	["Amulet"]            = "Icon_Amulet.png",
+	["Belt"]              = "Icon_Belt.png",
+	["Body Armor"]        = "Icon_Armor.png",
+	["Boots"]             = "Icon_Boots.png",
+	["Bow"]               = "Icon_Bow.png",
+	["Dagger"]            = "Icon_Dagger.png",
+	["Gloves"]            = "Icon_Gloves.png",
+	["Helmet"]            = "Icon_Helmet.png",
+	["Off-Hand Catalyst"] = "Icon_Shield.png",
+	["One-Handed Axe"]    = "Icon_Axe.png",
+	["Two-Handed Axe"]    = "Icon_Axe.png",
+	["One-Handed Mace"]   = "Icon_Mace.png",
+	["Two-Handed Mace"]   = "Icon_Mace.png",
+	["One-Handed Sword"]  = "Icon_Sword.png",
+	["Two-Handed Sword"]  = "Icon_Sword.png",
+	["Two-Handed Spear"]  = "Icon_Polearm.png",
+	["Two-Handed Staff"]  = "Icon_Staff.png",
+	["Quiver"]            = "Icon_Quiver.png",
+	["Relic"]             = "Icon_Relic.png",
+	["Ring"]              = "Icon_Ring.png",
+	["Sceptre"]           = "Icon_Sceptre.png",
+	["Shield"]            = "Icon_Shield.png",
+	["Wand"]              = "Icon_Wand.png",
+	["Idol Altar"]        = "idol/Idol_Altar_Pyramidal_Altar.png",
+	["Blessing"]          = "blessings/body_of_obsidian.png",
+}
+
+local iconHandles = {}
+local function getTypeIcon(typeName)
+	if not typeName then return nil end
+	local f = TYPE_ICON[typeName]
+	if not f and typeName:find("Idol") then f = "Icon_Idol.png" end
+	if not f then return nil end
+	if not iconHandles[f] then
+		local h = NewImageHandle()
+		h:Load("Assets/" .. f, "ASYNC")
+		iconHandles[f] = h
+	end
+	return iconHandles[f]
+end
+
 -- Slot -> allowed item types (nil = show all)
 local SLOT_TYPE_FILTER = {
 	["Helmet"]     = { "Helmet" },
@@ -1821,6 +1866,11 @@ function CraftingPopupClass:RefreshAffixDropdowns()
 	self.affixLists.prefix2    = filterExclusions(prefixList, p1Key and {p1Key} or {})
 	self.affixLists.suffix1    = filterExclusions(suffixList, s2Key and {s2Key} or {})
 	self.affixLists.suffix2    = filterExclusions(suffixList, s1Key and {s1Key} or {})
+	-- Unfiltered pools for the consolidated Prefix/Suffix tabs in the right panel.
+	-- Using the p1-filtered list there would hide whichever affix is assigned to the
+	-- other slot (e.g. selecting prefix2 would make that card vanish from the tab).
+	self.affixLists.prefix     = prefixList
+	self.affixLists.suffix     = suffixList
 
 	local sealedExclude = {}
 	if p1Key then t_insert(sealedExclude, p1Key) end
@@ -1988,6 +2038,8 @@ function CraftingPopupClass:RefreshIdolAffixDropdowns()
 	self.affixLists.prefix2    = {}    -- idols have only 1 prefix/suffix
 	self.affixLists.suffix1    = suffixList
 	self.affixLists.suffix2    = {}
+	self.affixLists.prefix     = prefixList
+	self.affixLists.suffix     = suffixList
 	self.affixLists.sealed     = filterExclusions(enchantedList, self.affixState.primordial.modKey and {self.affixState.primordial.modKey} or {})
 	self.affixLists.primordial = filterExclusions(enchantedList, self.affixState.sealed.modKey and {self.affixState.sealed.modKey} or {})
 	self.affixLists.corrupted  = corruptedList
@@ -2573,21 +2625,28 @@ function CraftingPopupClass:Draw(viewPort)
 				SetDrawColor(0.55, 0.55, 0.55)
 				local headerText = entry.label:gsub("%^8", "")
 				DrawString(tlX + 4, cardY + 3, "LEFT", 12, "VAR", "^8" .. headerText)
-			elseif isSelected then
-				SetDrawColor(0.20, 0.18, 0.10)
-				DrawImage(nil, tlX, cardY, tlW, rowH)
-				SetDrawColor(0.8, 0.75, 0.4)
-				DrawImage(nil, tlX, cardY, 2, rowH)
-				SetDrawColor(1, 1, 1)
-				DrawString(tlX + 6, cardY + 3, "LEFT", 13, "VAR", "^7" .. (entry.typeName or entry.label))
-			elseif isHovered then
-				SetDrawColor(0.14, 0.14, 0.14)
-				DrawImage(nil, tlX, cardY, tlW, rowH)
-				SetDrawColor(1, 1, 1)
-				DrawString(tlX + 6, cardY + 3, "LEFT", 13, "VAR", "^8" .. (entry.typeName or entry.label))
 			else
+				-- Row background for selected/hovered state
+				if isSelected then
+					SetDrawColor(0.20, 0.18, 0.10)
+					DrawImage(nil, tlX, cardY, tlW, rowH)
+					SetDrawColor(0.8, 0.75, 0.4)
+					DrawImage(nil, tlX, cardY, 2, rowH)
+				elseif isHovered then
+					SetDrawColor(0.14, 0.14, 0.14)
+					DrawImage(nil, tlX, cardY, tlW, rowH)
+				end
+				-- 16x16 type icon (leaves room for text to the right)
+				local iconH = getTypeIcon(entry.typeName)
+				local textX = tlX + 6
+				if iconH then
+					SetDrawColor(1, 1, 1)
+					DrawImage(iconH, tlX + 6, cardY + 2, 16, 16)
+					textX = tlX + 6 + 16 + 4
+				end
 				SetDrawColor(1, 1, 1)
-				DrawString(tlX + 6, cardY + 3, "LEFT", 13, "VAR", "^8" .. (entry.typeName or entry.label))
+				local color = isSelected and "^7" or "^8"
+				DrawString(textX, cardY + 3, "LEFT", 13, "VAR", color .. (entry.typeName or entry.label))
 			end
 		end
 	end
@@ -2669,7 +2728,9 @@ function CraftingPopupClass:Draw(viewPort)
 				end
 				self.affixCardTooltip:Clear()
 				self:BuildAffixTooltip(self.affixCardTooltip, card.entry.statOrderKey)
-				self.affixCardTooltip:Draw(mx, my, nil, nil, viewPort)
+				-- Offset tooltip from cursor so the first character isn't covered by the pointer.
+				-- Passing a cursor "box" (w,h) engages Tooltip's edge-clamping path.
+				self.affixCardTooltip:Draw(mx, my, 12, 12, viewPort)
 				break
 			end
 		end
@@ -2999,11 +3060,12 @@ end
 -- Draw affix cards in the right panel (list or card view)
 function CraftingPopupClass:DrawAffixCards(areaX, areaY, areaW, areaH, mx, my)
 	local slotKey  = self.rightTab
-	-- Map consolidated tabs to their primary internal list
-	local listKey  = (slotKey == "prefix") and "prefix1"
-	              or (slotKey == "suffix") and "suffix1"
+	-- Consolidated Prefix/Suffix tabs use the unfiltered pool so an affix assigned
+	-- to P2/S2 doesn't vanish from the tab (prefix1/suffix1 filter it out).
+	local listKey  = (slotKey == "prefix") and "prefix"
+	              or (slotKey == "suffix") and "suffix"
 	              or slotKey
-	local list     = self.affixLists[listKey] or {}
+	local list     = self.affixLists[listKey] or self.affixLists[slotKey] or {}
 	local cardMode = (self.affixViewMode == "card")
 	local rowH     = cardMode and 72 or AC_H   -- taller card rows for larger text
 	local gap      = cardMode and 6  or AC_GAP
