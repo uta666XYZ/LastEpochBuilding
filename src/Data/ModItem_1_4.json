@@ -12813,6 +12813,11 @@
 		"tier": 0,
 		"type": "Prefix",
 		"classSpecificity": 19,
+		"slotOverrides": {
+			"body_armor": { "1": "{rounding:Integer}(22-52)% increased Minion Health" },
+			"amulet": { "1": "{rounding:Integer}(18-41)% increased Minion Health" },
+			"shield": { "1": "{rounding:Integer}(18-41)% increased Minion Health" }
+		},
 		"canRollOn": [
 			0,
 			1,
@@ -12837,6 +12842,11 @@
 		"tier": 1,
 		"type": "Prefix",
 		"classSpecificity": 19,
+		"slotOverrides": {
+			"body_armor": { "1": "{rounding:Integer}(54-83)% increased Minion Health" },
+			"amulet": { "1": "{rounding:Integer}(42-64)% increased Minion Health" },
+			"shield": { "1": "{rounding:Integer}(42-64)% increased Minion Health" }
+		},
 		"canRollOn": [
 			0,
 			1,
@@ -12861,6 +12871,11 @@
 		"tier": 2,
 		"type": "Prefix",
 		"classSpecificity": 19,
+		"slotOverrides": {
+			"body_armor": { "1": "{rounding:Integer}(84-113)% increased Minion Health" },
+			"amulet": { "1": "{rounding:Integer}(66-88)% increased Minion Health" },
+			"shield": { "1": "{rounding:Integer}(66-88)% increased Minion Health" }
+		},
 		"canRollOn": [
 			0,
 			1,
@@ -12885,6 +12900,11 @@
 		"tier": 3,
 		"type": "Prefix",
 		"classSpecificity": 19,
+		"slotOverrides": {
+			"body_armor": { "1": "{rounding:Integer}(114-150)% increased Minion Health" },
+			"amulet": { "1": "{rounding:Integer}(89-117)% increased Minion Health" },
+			"shield": { "1": "{rounding:Integer}(89-117)% increased Minion Health" }
+		},
 		"canRollOn": [
 			0,
 			1,
@@ -12909,6 +12929,11 @@
 		"tier": 4,
 		"type": "Prefix",
 		"classSpecificity": 19,
+		"slotOverrides": {
+			"body_armor": { "1": "{rounding:Integer}(152-225)% increased Minion Health" },
+			"amulet": { "1": "{rounding:Integer}(118-176)% increased Minion Health" },
+			"shield": { "1": "{rounding:Integer}(118-176)% increased Minion Health" }
+		},
 		"canRollOn": [
 			0,
 			1,
@@ -12933,6 +12958,11 @@
 		"tier": 5,
 		"type": "Prefix",
 		"classSpecificity": 19,
+		"slotOverrides": {
+			"body_armor": { "1": "{rounding:Integer}(285-345)% increased Minion Health" },
+			"amulet": { "1": "{rounding:Integer}(222-269)% increased Minion Health" },
+			"shield": { "1": "{rounding:Integer}(222-269)% increased Minion Health" }
+		},
 		"canRollOn": [
 			0,
 			1,
@@ -12957,6 +12987,11 @@
 		"tier": 6,
 		"type": "Prefix",
 		"classSpecificity": 19,
+		"slotOverrides": {
+			"body_armor": { "1": "{rounding:Integer}(347-450)% increased Minion Health" },
+			"amulet": { "1": "{rounding:Integer}(270-351)% increased Minion Health" },
+			"shield": { "1": "{rounding:Integer}(270-351)% increased Minion Health" }
+		},
 		"canRollOn": [
 			0,
 			1,
@@ -12981,6 +13016,11 @@
 		"tier": 7,
 		"type": "Prefix",
 		"classSpecificity": 19,
+		"slotOverrides": {
+			"body_armor": { "1": "{rounding:Integer}(750-900)% increased Minion Health" },
+			"amulet": { "1": "{rounding:Integer}(585-702)% increased Minion Health" },
+			"shield": { "1": "{rounding:Integer}(585-702)% increased Minion Health" }
+		},
 		"canRollOn": [
 			0,
 			1,
@@ -14660,6 +14700,11 @@
 		],
 		"tier": 0,
 		"type": "Suffix",
+		"slotOverrides": {
+			"body_armor": { "1": "+(6-8)% Elemental Resistance" },
+			"amulet": { "1": "+(5-6)% Elemental Resistance" },
+			"shield": { "1": "+(5-6)% Elemental Resistance" }
+		},
 		"canRollOn": [
 			0,
 			1,
@@ -14685,6 +14730,11 @@
 		],
 		"tier": 1,
 		"type": "Suffix",
+		"slotOverrides": {
+			"body_armor": { "1": "+(9-12)% Elemental Resistance" },
+			"amulet": { "1": "+(7-9)% Elemental Resistance" },
+			"shield": { "1": "+(7-9)% Elemental Resistance" }
+		},
 		"canRollOn": [
 			0,
 			1,
@@ -14710,6 +14760,11 @@
 		],
 		"tier": 2,
 		"type": "Suffix",
+		"slotOverrides": {
+			"body_armor": { "1": "+(14-17)% Elemental Resistance" },
+			"amulet": { "1": "+(11-13)% Elemental Resistance" },
+			"shield": { "1": "+(11-13)% Elemental Resistance" }
+		},
 		"canRollOn": [
 			0,
 			1,
@@ -14735,6 +14790,11 @@
 		],
 		"tier": 3,
 		"type": "Suffix",
+		"slotOverrides": {
+			"body_armor": { "1": "+(18-22)% Elemental Resistance" },
+			"amulet": { "1": "+(14-18)% Elemental Resistance" },
+			"shield": { "1": "+(14-18)% Elemental Resistance" }
+		},
 		"canRollOn": [
 			0,
 			1,
@@ -14760,6 +14820,11 @@
 		],
 		"tier": 4,
 		"type": "Suffix",
+		"slotOverrides": {
+			"body_armor": { "1": "+(24-30)% Elemental Resistance" },
+			"amulet": { "1": "+(19-23)% Elemental Resistance" },
+			"shield": { "1": "+(19-23)% Elemental Resistance" }
+		},
 		"canRollOn": [
 			0,
 			1,
@@ -14785,6 +14850,11 @@
 		],
 		"tier": 5,
 		"type": "Suffix",
+		"slotOverrides": {
+			"body_armor": { "1": "+(36-45)% Elemental Resistance" },
+			"amulet": { "1": "+(28-35)% Elemental Resistance" },
+			"shield": { "1": "+(28-35)% Elemental Resistance" }
+		},
 		"canRollOn": [
 			0,
 			1,
@@ -14810,6 +14880,11 @@
 		],
 		"tier": 6,
 		"type": "Suffix",
+		"slotOverrides": {
+			"body_armor": { "1": "+(47-60)% Elemental Resistance" },
+			"amulet": { "1": "+(36-47)% Elemental Resistance" },
+			"shield": { "1": "+(36-47)% Elemental Resistance" }
+		},
 		"canRollOn": [
 			0,
 			1,
@@ -14835,6 +14910,11 @@
 		],
 		"tier": 7,
 		"type": "Suffix",
+		"slotOverrides": {
+			"body_armor": { "1": "+(96-113)% Elemental Resistance" },
+			"amulet": { "1": "+(75-88)% Elemental Resistance" },
+			"shield": { "1": "+(75-88)% Elemental Resistance" }
+		},
 		"canRollOn": [
 			0,
 			1,
