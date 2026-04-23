@@ -325,7 +325,6 @@ function CraftingPopupClass:RestoreCraftState(existingItem)
 	end
 	self:RecalcEditLayout()
 	self:RefreshAffixDropdowns()
-	self.rightTab = "prefix"
 end
 
 function CraftingPopupClass:Close()
