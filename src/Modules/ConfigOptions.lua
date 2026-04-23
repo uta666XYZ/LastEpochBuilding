@@ -563,8 +563,9 @@ local options = {
 			enemyModList:NewMod("Condition:Boss", "FLAG", true, "BossConfig")
 		end
 	  end },
-	{ var = "enemyLevel", type = "count", label = "Enemy / Area Level:", defaultPlaceholderState = 1, tooltip = "This overrides the default enemy level used to estimate your armor reduction and ^x33FF77dodge ^7chance.\n\nThe default level is set to your character level and cannot exceeds 100", apply = function(val, modList, enemyModList, build)
+	{ var = "enemyLevel", type = "count", label = "Enemy / Area Level:", defaultPlaceholderState = 100, tooltip = "This overrides the default enemy / area level used to estimate your armor reduction, ^x33FF77dodge ^7chance, and scaling of 'depending on Area Level' modifiers.\n\nThe default level is 100 and cannot exceed 100.", apply = function(val, modList, enemyModList, build)
 		build.configTab.varControls['enemyLevel']:SetPlaceholder(build.configTab.enemyLevel, true)
+		modList:NewMod("Multiplier:AreaLevel", "BASE", build.configTab.enemyLevel, "Config")
 	end },
 	{ var = "corruption", type = "count", label = "Corruption:", tooltip = "Monolith Corruption level (0-10000).\nScales enemy HP and hit damage (More %):\n  C<=100: 0.6 * C%\n  C>100:  0.002 * C^1.52 + 1.055 * C - 47.69%\nMore Damage over Time = half of the above.",
 	  apply = function(val, modList, enemyModList)
