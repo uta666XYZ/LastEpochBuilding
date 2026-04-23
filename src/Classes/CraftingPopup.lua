@@ -60,6 +60,13 @@ local LP_TRUP_X          = H.LP_TRUP_X
 local LP_TRDN_X          = H.LP_TRDN_X
 local LP_REM_X           = H.LP_REM_X
 local LP_REM_W           = H.LP_REM_W
+local LP_SLOTLABEL_W     = H.LP_SLOTLABEL_W
+local LP_DD_X            = H.LP_DD_X
+local LP_DD_W            = H.LP_DD_W
+local LP_DD_H            = H.LP_DD_H
+local LP_SLIDER_W        = H.LP_SLIDER_W
+local SLOT_LABELS        = H.SLOT_LABELS
+local SLOT_LABELS_IDOL   = H.SLOT_LABELS_IDOL
 local NO_T8_SLOTS        = H.NO_T8_SLOTS
 local FIXED_TIER_SLOTS   = H.FIXED_TIER_SLOTS
 local TIER_COLORS        = H.TIER_COLORS
@@ -266,48 +273,31 @@ function CraftingPopupClass:RecalcEditLayout()
 		{ label = "corruptedLabel", slots = {"corrupted"} },
 	}
 
-	local AFFIX_LINE_W = LEFT_W - LP_LINE_X - 4
-	local CTRL_H = 20
+	-- PoB-style inline slot row: [Label] [DropDown] / [Slider per line]
+	local DD_ROW_H     = LP_DD_H + 4
+	local SLIDER_ROW_H = 14 + 4
 	local function layoutSlots(slots)
 		for _, slotKey in ipairs(slots) do
 			local st = self.affixState[slotKey]
 			self.editY[slotKey] = {}
 			self.editY[slotKey].ctrl = {}
+			self.editY[slotKey].dd = y
+			y = y + DD_ROW_H
 			if st.modKey then
 				local info = self.slotModInfo[slotKey]
 				local lc = info.count
 				if lc == 0 then lc = 1 end
-				-- Initialize fallbacks for all MAX_MOD_LINES
 				for i = 1, MAX_MOD_LINES do
-					self.editY[slotKey][i] = y
 					self.editY[slotKey].ctrl[i] = y
 				end
 				for i = 1, lc do
-					local line = info.lines[i]
-					local wrapN = 1
-					if line then
-						local range = (st.ranges and st.ranges[i]) or 128
-						local computed = itemLib.applyRange(line, range, nil, getRounding(line)) or line
-						computed = computed:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
-						local col = tierColor(st.tier)
-						local _, n = wrapForLabel(col .. computed, AFFIX_LINE_W, 13)
-						wrapN = n
-					end
-					self.editY[slotKey][i] = y
-					if wrapN > 1 then
-						-- Controls go below the wrapped text
-						self.editY[slotKey].ctrl[i] = y + wrapN * WRAP_H
-						y = y + wrapN * WRAP_H + CTRL_H + 2
-					else
-						self.editY[slotKey].ctrl[i] = y
-						y = y + LINE_H
+					self.editY[slotKey].ctrl[i] = y
+					if info.lines[i] and hasRange(info.lines[i]) then
+						y = y + SLIDER_ROW_H
 					end
 				end
-				y = y + GAP
-			else
-				self.editY[slotKey].add = y
-				y = y + LINE_H + GAP
 			end
+			y = y + GAP
 		end
 	end
 
@@ -720,201 +710,71 @@ function CraftingPopupClass:BuildControls()
 		end
 
 		for _, slotKey in ipairs(section.slots) do
+			local capturedSlotKey = slotKey
+			local slotLabelKey    = slotKey .. "Label"
+			local slotDDKey       = slotKey .. "DD"
+
+			-- Slot label
+			controls[slotLabelKey] = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, LP_LABEL_X,
+				function() local ey = self_ref.editY[capturedSlotKey]; return ey and ey.dd or 0 end,
+				LP_SLOTLABEL_W, 14,
+				function()
+					local base = self_ref:IsAnyIdol() and SLOT_LABELS_IDOL[capturedSlotKey] or SLOT_LABELS[capturedSlotKey]
+					return "^7" .. (base or "") .. ":"
+				end)
+			controls[slotLabelKey].shown = function()
+				if not self_ref.editItem then return false end
+				if capturedSlotKey == "corrupted" and not self_ref.corrupted then return false end
+				local ey = self_ref.editY[capturedSlotKey]
+				return ey ~= nil and ey.dd ~= nil
+			end
+
+			-- Affix DropDown (replaces line label + tier/+/-/× buttons + "+ Add" button)
+			controls[slotDDKey] = new("DropDownControl", {"TOPLEFT", self, "TOPLEFT"}, LP_DD_X,
+				function() local ey = self_ref.editY[capturedSlotKey]; return ey and ey.dd or 0 end,
+				LP_DD_W, LP_DD_H, {}, function(index, value)
+					self_ref:SelectSlotAffix(capturedSlotKey, value and value.entry or nil)
+				end)
+			controls[slotDDKey].enableDroppedWidth = true
+			controls[slotDDKey].maxDroppedWidth    = 520
+			controls[slotDDKey].shown = function()
+				if not self_ref.editItem then return false end
+				if capturedSlotKey == "corrupted" and not self_ref.corrupted then return false end
+				-- Unique/Set items and UniqueIdol are uncraftable except for corrupted
+				if self_ref:IsUniqueItem() or self_ref:IsSetItem() or self_ref:IsUniqueIdol() then
+					if capturedSlotKey ~= "corrupted" then return false end
+				end
+				local ey = self_ref.editY[capturedSlotKey]
+				return ey ~= nil and ey.dd ~= nil
+			end
+
+			-- Roll sliders per mod line
 			for li = 1, MAX_MOD_LINES do
-				local lineKey = slotKey .. "Line" .. li
-				local valKey  = slotKey .. "Val"  .. li
-
-				local AFFIX_LINE_W = LEFT_W - LP_LINE_X - 4
-				controls[lineKey] = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, LP_LINE_X,
+				local valKey = slotKey .. "Val" .. li
+				controls[valKey] = new("SliderControl", {"TOPLEFT", self, "TOPLEFT"}, LP_LINE_X,
 					function()
-						local ey = self_ref.editY[slotKey]
-						return ey and ey[li] or 0
-					end, AFFIX_LINE_W, 13, "")
-				controls[lineKey].shown = function()
-					if not self_ref.editItem then return false end
-					if not self_ref.affixState[slotKey].modKey then return false end
-					if slotKey == "corrupted" and not self_ref.corrupted then return false end
-					return li <= self_ref.slotModInfo[slotKey].count
-				end
-				controls[lineKey].label = function()
-					local info = self_ref.slotModInfo[slotKey]
-					if li > info.count then return "" end
-					local line  = info.lines[li]
-					local st    = self_ref.affixState[slotKey]
-					local range = st.ranges[li] or 128
-					local computed = itemLib.applyRange(line, range, nil, getRounding(line)) or line
-					computed = computed:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
-					local col = tierColor(st.tier)
-					return wrapForLabel(col .. computed, AFFIX_LINE_W, 13)
-				end
-
-				controls[valKey] = new("SliderControl", {"TOPLEFT", self, "TOPLEFT"}, LP_VAL_X,
-					function()
-						local ey = self_ref.editY[slotKey]
+						local ey = self_ref.editY[capturedSlotKey]
 						local cy = ey and ey.ctrl and ey.ctrl[li]
 						return cy and (cy + 3) or 0
-					end, LP_VAL_W, 12,
+					end, LP_SLIDER_W, 12,
 					function(val)
 						if self_ref.rebuilding then return end
-						local info = self_ref.slotModInfo[slotKey]
+						local info = self_ref.slotModInfo[capturedSlotKey]
 						if li > info.count then return end
 						local range = m_floor(val * 255 + 0.5)
-						self_ref.affixState[slotKey].ranges[li] = range
+						self_ref.affixState[capturedSlotKey].ranges[li] = range
 						self_ref:RebuildEditItem()
 					end)
 				controls[valKey].shown = function()
 					if not self_ref.editItem then return false end
-					if not self_ref.affixState[slotKey].modKey then return false end
-					if slotKey == "corrupted" and not self_ref.corrupted then return false end
-					local info = self_ref.slotModInfo[slotKey]
+					if not self_ref.affixState[capturedSlotKey].modKey then return false end
+					if capturedSlotKey == "corrupted" and not self_ref.corrupted then return false end
+					local info = self_ref.slotModInfo[capturedSlotKey]
 					return li <= info.count and hasRange(info.lines[li])
 				end
 				controls[valKey].tooltipFunc = function(tooltip, hoverVal)
 					tooltip:Clear()
-					local info = self_ref.slotModInfo[slotKey]
-					if li > info.count then return end
-					local line = info.lines[li]
-					local hoverRange = m_floor((hoverVal or 0) * 255 + 0.5)
-					local numeric = computeModValue(line, hoverRange)
-					if numeric then
-						tooltip:AddLine(14, "^7" .. formatModValue(line, numeric))
-					end
-					local min, max = extractMinMax(line)
-					if min and max then
-						tooltip:AddLine(12, "^xAAAAAA" .. "Range: " .. tostring(min) .. " - " .. tostring(max))
-					end
-				end
-			end
-
-			-- Tier label
-			local tierLabelKey = slotKey .. "TierLabel"
-			controls[tierLabelKey] = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, LP_TIER_X,
-				function()
-					local ey = self_ref.editY[slotKey]
-					return ey and ey.ctrl and ey.ctrl[1] or 0
-				end, 0, 14, "")
-			controls[tierLabelKey].shown = function()
-				if not self_ref.editItem then return false end
-				if slotKey == "corrupted" and not self_ref.corrupted then return false end
-				return self_ref.affixState[slotKey].modKey ~= nil
-			end
-			controls[tierLabelKey].label = function()
-				local st = self_ref.affixState[slotKey]
-				-- Abbreviate in the preview to save space; "Tier 5" -> "T5"
-				return tierColor(st.tier) .. "T" .. tostring(st.tier + 1)
-			end
-			controls[tierLabelKey].tooltipFunc = function(tooltip, mode)
-				if mode == "OUT" then return end
-				self_ref:BuildTierTooltip(tooltip, slotKey)
-			end
-
-			-- Tier up (+)
-			local tierUpKey = slotKey .. "TierUp"
-			controls[tierUpKey] = new("ButtonControl", {"TOPLEFT", self, "TOPLEFT"}, LP_TRUP_X,
-				function()
-					local ey = self_ref.editY[slotKey]
-					return ey and ey.ctrl and ey.ctrl[1] or 0
-				end, 18, 18, "+", function()
-					local st = self_ref.affixState[slotKey]
-					if not st.modKey then return end
-					local maxTier = self_ref:GetMaxTier(st.modKey)
-					if NO_T8_SLOTS[slotKey] then maxTier = m_min(maxTier, 6) end
-					st.tier = st.tier + 1
-					if st.tier > maxTier then st.tier = 0 end
-					self_ref:UpdateSlotModInfo(slotKey)
-					self_ref:UpdateSlotValueEdits(slotKey)
-					self_ref:RebuildEditItem()
-				end)
-			controls[tierUpKey].shown = function()
-				if not self_ref.editItem then return false end
-				if FIXED_TIER_SLOTS[slotKey] then return false end
-				if slotKey == "corrupted" and not self_ref.corrupted then return false end
-				return self_ref.affixState[slotKey].modKey ~= nil
-			end
-			controls[tierUpKey].tooltipFunc = function(tooltip, mode)
-				if mode == "OUT" then return end
-				self_ref:BuildTierTooltip(tooltip, slotKey)
-			end
-
-			-- Tier down (-)
-			local tierDownKey = slotKey .. "TierDown"
-			controls[tierDownKey] = new("ButtonControl", {"TOPLEFT", self, "TOPLEFT"}, LP_TRDN_X,
-				function()
-					local ey = self_ref.editY[slotKey]
-					return ey and ey.ctrl and ey.ctrl[1] or 0
-				end, 18, 18, "-", function()
-					local st = self_ref.affixState[slotKey]
-					if not st.modKey then return end
-					local maxTier = self_ref:GetMaxTier(st.modKey)
-					if NO_T8_SLOTS[slotKey] then maxTier = m_min(maxTier, 6) end
-					st.tier = st.tier - 1
-					if st.tier < 0 then st.tier = maxTier end
-					self_ref:UpdateSlotModInfo(slotKey)
-					self_ref:UpdateSlotValueEdits(slotKey)
-					self_ref:RebuildEditItem()
-				end)
-			controls[tierDownKey].shown = function()
-				if not self_ref.editItem then return false end
-				if FIXED_TIER_SLOTS[slotKey] then return false end
-				if slotKey == "corrupted" and not self_ref.corrupted then return false end
-				return self_ref.affixState[slotKey].modKey ~= nil
-			end
-			controls[tierDownKey].tooltipFunc = function(tooltip, mode)
-				if mode == "OUT" then return end
-				self_ref:BuildTierTooltip(tooltip, slotKey)
-			end
-
-			-- Remove (x)
-			local removeKey = slotKey .. "Remove"
-			controls[removeKey] = new("ButtonControl", {"TOPLEFT", self, "TOPLEFT"}, LP_REM_X,
-				function()
-					local ey = self_ref.editY[slotKey]
-					return ey and ey.ctrl and ey.ctrl[1] or 0
-				end, LP_REM_W, 18, "x", function()
-					self_ref.affixState[slotKey].modKey  = nil
-					self_ref.affixState[slotKey].tier    = (slotKey == "primordial") and 7 or 0
-					self_ref.affixState[slotKey].ranges  = {}
-					-- Keep lastAffixSlot in sync so SelectAffixEntry doesn't
-					-- try to replace a now-empty slot on the next click.
-					local tabKey = slotKey:match("^(prefix)") or slotKey:match("^(suffix)")
-					if tabKey and self_ref.lastAffixSlot and self_ref.lastAffixSlot[tabKey] == slotKey then
-						local otherSlot = (slotKey == tabKey .. "1") and (tabKey .. "2") or (tabKey .. "1")
-						local otherSt   = self_ref.affixState[otherSlot]
-						self_ref.lastAffixSlot[tabKey] = (otherSt and otherSt.modKey) and otherSlot or nil
-					end
-					self_ref:UpdateSlotModInfo(slotKey)
-					self_ref:RebuildEditItem()
-				end)
-			controls[removeKey].shown = function()
-				if not self_ref.editItem then return false end
-				if slotKey == "corrupted" and not self_ref.corrupted then return false end
-				return self_ref.affixState[slotKey].modKey ~= nil
-			end
-
-			-- [+ Add Prefix] / [+ Add Suffix] button (prefix and suffix sections only)
-			if capturedSectionKey == "prefix" or capturedSectionKey == "suffix" then
-				local addKey           = slotKey .. "AddBtn"
-				local capturedSlotKey  = slotKey
-				local addLabel         = capturedSectionKey == "prefix" and "+ Add Prefix" or "+ Add Suffix"
-				controls[addKey] = new("ButtonControl", {"TOPLEFT", self, "TOPLEFT"}, LP_LINE_X,
-					function()
-						local ey = self_ref.editY[capturedSlotKey]
-						return ey and (ey.add or 0) or 0
-					end, 220, 18, addLabel,
-					function()
-						-- Map internal slot keys to consolidated tab keys
-						local tabKey = (capturedSectionKey == "prefix") and "prefix"
-						           or (capturedSectionKey == "suffix") and "suffix"
-						           or capturedSlotKey
-						self_ref.rightTab      = tabKey
-						self_ref.rightScrollY  = 0
-					end)
-				controls[addKey].shown = function()
-					if not self_ref.editItem then return false end
-					if self_ref:IsUniqueItem() or self_ref:IsSetItem() or self_ref:IsUniqueIdol() then return false end
-					local ey = self_ref.editY[capturedSlotKey]
-					return ey ~= nil and ey.add ~= nil
-						and self_ref.affixState[capturedSlotKey].modKey == nil
+					self_ref:BuildSliderTooltip(tooltip, capturedSlotKey, li, hoverVal)
 				end
 			end
 		end
@@ -1296,6 +1156,143 @@ function CraftingPopupClass:SelectAffixEntry(entry)
 	self:RebuildEditItem()
 end
 
+-- Direct slot-specific affix selection (invoked by inline DropDown).
+-- entry: nil = clear, table = entry from affixLists.
+function CraftingPopupClass:SelectSlotAffix(slotKey, entry)
+	if not self.affixState[slotKey] then return end
+	local st = self.affixState[slotKey]
+	if not entry or not entry.statOrderKey then
+		-- Clear
+		st.modKey = nil
+		st.tier   = (slotKey == "primordial") and 7 or 0
+		st.ranges = {}
+		-- Keep lastAffixSlot in sync with the consolidated prefix/suffix tabs.
+		local tabKey = slotKey:match("^(prefix)") or slotKey:match("^(suffix)")
+		if tabKey and self.lastAffixSlot and self.lastAffixSlot[tabKey] == slotKey then
+			local otherSlot = (slotKey == tabKey .. "1") and (tabKey .. "2") or (tabKey .. "1")
+			local otherSt   = self.affixState[otherSlot]
+			self.lastAffixSlot[tabKey] = (otherSt and otherSt.modKey) and otherSlot or nil
+		end
+		self:UpdateSlotModInfo(slotKey)
+		self:UpdateSlotValueEdits(slotKey)
+		self:RebuildEditItem()
+		return
+	end
+	if st.modKey == entry.statOrderKey then return end
+	local maxT = entry.maxTier or 0
+	st.modKey = entry.statOrderKey
+	if slotKey == "primordial" then
+		st.tier = m_min(7, maxT)
+	else
+		st.tier = m_min(4, maxT)
+		if NO_T8_SLOTS[slotKey] and st.tier > 6 then st.tier = 6 end
+	end
+	st.ranges = {}
+	self:UpdateSlotModInfo(slotKey)
+	local info = self.slotModInfo[slotKey]
+	for i = 1, info.count do st.ranges[i] = 128 end
+	self:UpdateSlotValueEdits(slotKey)
+	local tabKey = slotKey:match("^(prefix)") or slotKey:match("^(suffix)")
+	if tabKey then
+		self.lastAffixSlot = self.lastAffixSlot or {}
+		self.lastAffixSlot[tabKey] = slotKey
+	end
+	self:RebuildEditItem()
+end
+
+-- Tier label helper: "T1 (Impenetrable)" style for slider tooltips.
+function CraftingPopupClass:GetAffixTierName(slotKey)
+	local st = self.affixState[slotKey]
+	if not st or not st.modKey then return nil end
+	local modKey = tostring(st.modKey) .. "_" .. tostring(st.tier)
+	local mod
+	if self:IsIdolAltar() then
+		local altarMods = data.itemMods["Idol Altar"]
+		mod = altarMods and altarMods[modKey]
+	else
+		mod = data.itemMods.Item and data.itemMods.Item[modKey]
+		if not mod and data.modIdol and data.modIdol.flat then
+			mod = data.modIdol.flat[modKey]
+		end
+	end
+	return mod and mod.affix or nil
+end
+
+-- Enhanced slider hover tooltip (PoB-style):
+--   <formatted value>
+--   Affix: Tier N (<name>)
+--   (<min>-<max>)<suffix>
+--   Level: <req>
+function CraftingPopupClass:BuildSliderTooltip(tooltip, slotKey, li, hoverVal)
+	local info = self.slotModInfo[slotKey]
+	if not info or li > info.count then return end
+	local line = info.lines[li]
+	if not line then return end
+	local st = self.affixState[slotKey]
+	local hoverRange = m_floor((hoverVal or 0) * 255 + 0.5)
+	local numeric = computeModValue(line, hoverRange)
+	if numeric then
+		tooltip:AddLine(16, "^7" .. formatModValue(line, numeric))
+		tooltip:AddSeparator(8)
+	end
+	local tierName = self:GetAffixTierName(slotKey) or ""
+	local tierStr  = tierColor(st.tier) .. "Affix: Tier " .. tostring(st.tier + 1)
+	if tierName ~= "" then
+		tierStr = tierStr .. " (" .. tierName .. ")"
+	end
+	tooltip:AddLine(14, tierStr)
+	local min, max = extractMinMax(line)
+	if min and max then
+		tooltip:AddLine(14, "^7(" .. tostring(min) .. "-" .. tostring(max) .. ")")
+	end
+	local modKey = tostring(st.modKey) .. "_" .. tostring(st.tier)
+	local mod = data.itemMods.Item and data.itemMods.Item[modKey]
+	if not mod and data.modIdol and data.modIdol.flat then mod = data.modIdol.flat[modKey] end
+	if self:IsIdolAltar() then
+		local altarMods = data.itemMods["Idol Altar"]
+		mod = (altarMods and altarMods[modKey]) or mod
+	end
+	if mod and mod.levelReq then
+		tooltip:AddLine(14, "^xAAAAAALevel: " .. tostring(mod.levelReq))
+	end
+end
+
+-- Sync inline slot DropDowns to the current affixLists + affixState.
+-- Each DD item is { label = <mod template>, entry = <list entry> }.
+-- The first item is always "None" (clear selection).
+function CraftingPopupClass:RefreshSlotDropdowns()
+	if not self.controls then return end
+	for _, slotKey in ipairs({"prefix1","prefix2","suffix1","suffix2","sealed","primordial","corrupted"}) do
+		local dd = self.controls[slotKey .. "DD"]
+		if dd then
+			local src = self.affixLists[slotKey] or {}
+			local ddList = { { label = "^8None", entry = nil } }
+			local curKey = self.affixState[slotKey] and self.affixState[slotKey].modKey
+			local selIdx = 1
+			local foundCurrent = false
+			for i, e in ipairs(src) do
+				t_insert(ddList, { label = (e.label or ""):gsub("{rounding:%w+}", ""):gsub("{[^}]+}", ""), entry = e })
+				if curKey and e.statOrderKey == curKey then
+					selIdx = i + 1
+					foundCurrent = true
+				end
+			end
+			-- Current affix might not appear in the filtered list (e.g. the other
+			-- prefix slot holds the exclusion). Keep it visible so the user can
+			-- read/clear it.
+			if curKey and not foundCurrent then
+				local info = self.slotModInfo[slotKey]
+				local firstLine = info and info.lines and info.lines[1]
+				local label = firstLine and firstLine:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "") or tostring(curKey)
+				t_insert(ddList, { label = "^3" .. label, entry = { statOrderKey = curKey } })
+				selIdx = #ddList
+			end
+			dd:SetList(ddList)
+			dd.selIndex = selIdx
+		end
+	end
+end
+
 -- =============================================================================
 -- Affix list refresh (populates self.affixLists instead of dropdown controls)
 -- =============================================================================
@@ -1586,6 +1583,7 @@ function CraftingPopupClass:RefreshAffixDropdowns()
 			self:UpdateSlotValueEdits(slotKey)
 		end
 	end
+	self:RefreshSlotDropdowns()
 end
 
 function CraftingPopupClass:RefreshIdolAffixDropdowns()
@@ -1713,6 +1711,7 @@ function CraftingPopupClass:RefreshIdolAffixDropdowns()
 			self:UpdateSlotValueEdits(slotKey)
 		end
 	end
+	self:RefreshSlotDropdowns()
 end
 
 -- =============================================================================
