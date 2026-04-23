@@ -856,10 +856,29 @@ local function nsAny(num)
 end
 
 -- Buff-conditional stat scaling (e.g. "+19% Increased Cast Speed while you have Lightning Aegis")
-specialModList["^%+?([%d%.]+)%% increased (.+) while you have (.+)$"] = nsAny
-specialModList["^%+?([%d%.]+)%% reduced (.+) while you have (.+)$"] = nsAny
-specialModList["^%+?([%d%.]+)%% more (.+) while you have (.+)$"] = nsAny
-specialModList["^%+?([%d%.]+)%% less (.+) while you have (.+)$"] = nsAny
+-- Known buff names round-trip through modTagList's "while you have <X>" keys below, so
+-- for those we return nil to let the generic parser apply the proper Condition tag.
+-- Unknown buff names still get nsAny for recognition-only fallback.
+local knownWhileYouHaveBuffs = {
+	["ward"] = true,
+	["lightning aegis"] = true,
+	["haste"] = true,
+	["frenzy"] = true,
+	["an ailment overload"] = true,
+	["a companion"] = true,
+	["a forged weapon"] = true,
+}
+-- Handler args: (num_as_number, cap1_as_string, stat, buff). We only care about the buff.
+local function whileYouHaveHandler(num, _, _, buff)
+	if buff and knownWhileYouHaveBuffs[buff:lower()] then
+		return nil  -- fall through to generic parser (modTagList carries the Condition tag)
+	end
+	return nsAny(num)
+end
+specialModList["^%+?([%d%.]+)%% increased (.+) while you have (.+)$"] = whileYouHaveHandler
+specialModList["^%+?([%d%.]+)%% reduced (.+) while you have (.+)$"] = whileYouHaveHandler
+specialModList["^%+?([%d%.]+)%% more (.+) while you have (.+)$"] = whileYouHaveHandler
+specialModList["^%+?([%d%.]+)%% less (.+) while you have (.+)$"] = whileYouHaveHandler
 
 -- Chance-to-gain <buff> on generic triggers (hit, crit, kill, dodge, block, potion use)
 -- Existing per-buff patterns for Echo/Totem still win via longest-match.

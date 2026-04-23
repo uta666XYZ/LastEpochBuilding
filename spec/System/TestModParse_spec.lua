@@ -301,4 +301,33 @@ describe("TestModParse", function()
             assert.are.equals(50, build.configTab.modList:Sum("BASE", cfg, "WardPerSecond"))
         end)
     end)
+
+    describe("buff-conditional stat scaling (while you have X)", function()
+        it("increased damage while you have Lightning Aegis — gated by HaveLightningAegis", function()
+            build.configTab.input.customMods = "19% Increased Damage while you have Lightning Aegis"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            assert.are.equals(0, build.configTab.modList:Sum("INC", nil, "Damage"))
+            local cfg = { skillCond = { HaveLightningAegis = true } }
+            assert.are.equals(19, build.configTab.modList:Sum("INC", cfg, "Damage"))
+        end)
+
+        it("increased damage while you have Frenzy — gated by Frenzy condition", function()
+            build.configTab.input.customMods = "30% Increased Damage while you have Frenzy"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            assert.are.equals(0, build.configTab.modList:Sum("INC", nil, "Damage"))
+            local cfg = { skillCond = { Frenzy = true } }
+            assert.are.equals(30, build.configTab.modList:Sum("INC", cfg, "Damage"))
+        end)
+
+        it("increased damage while you have Haste — gated by Haste condition", function()
+            build.configTab.input.customMods = "25% Increased Damage while you have Haste"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            assert.are.equals(0, build.configTab.modList:Sum("INC", nil, "Damage"))
+            local cfg = { skillCond = { Haste = true } }
+            assert.are.equals(25, build.configTab.modList:Sum("INC", cfg, "Damage"))
+        end)
+    end)
 end)
