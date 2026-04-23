@@ -1,15 +1,15 @@
 -- Last Epoch Building
 --
 -- Class: Crafting Popup
--- LETools-style left-right split crafting UI.
--- Left panel (320px): type list + item preview with inline affix controls.
--- Right panel (680px): item browser (item tab) or affix browser (prefix/suffix/etc tab).
+-- PoB-style single-panel crafting UI.
+-- Single ~320px panel: item preview with inline affix DropDown + roll sliders.
+-- Base selection lives in a separate Stage 1 modal (ItemsTab:OpenCraftItemSelector).
 --
 -- Split across multiple files:
 --   CraftingPopupHelpers.lua — pure helpers and layout constants
 --   CraftingPopup.lua        — constructor, BuildControls, affix/base selection, tooltips
 --   CraftingPopupItem.lua    — RebuildEditItem / SaveItem / type predicates
---   CraftingPopupDraw.lua    — Draw / DrawItemCards / DrawAffixCards / ProcessInput
+--   CraftingPopupDraw.lua    — Draw / ProcessInput
 --
 local t_insert = table.insert
 local t_remove = table.remove
@@ -23,33 +23,10 @@ local ipairs = ipairs
 local H = LoadModule("Classes/CraftingPopupHelpers")
 
 local MAX_MOD_LINES      = H.MAX_MOD_LINES
-local TYPE_ICON          = H.TYPE_ICON
-local getTypeIcon        = H.getTypeIcon
-local SLOT_TYPE_FILTER   = H.SLOT_TYPE_FILTER
 local filterTypeList     = H.filterTypeList
 local POPUP_W            = H.POPUP_W
 local LEFT_W             = H.LEFT_W
-local DIVIDER_X          = H.DIVIDER_X
-local TYPE_LIST_Y        = H.TYPE_LIST_Y
-local TYPE_LIST_H        = H.TYPE_LIST_H
-local TYPE_ROW_H         = H.TYPE_ROW_H
 local PREVIEW_Y          = H.PREVIEW_Y
-local RP_X               = H.RP_X
-local RP_W               = H.RP_W
-local RP_TAB_Y           = H.RP_TAB_Y
-local RP_TAB_H           = H.RP_TAB_H
-local RP_FILTER_Y        = H.RP_FILTER_Y
-local RP_FILTER_H        = H.RP_FILTER_H
-local RP_CATTAB_Y        = H.RP_CATTAB_Y
-local RP_CATTAB_H        = H.RP_CATTAB_H
-local RP_CARD_Y          = H.RP_CARD_Y
-local RP_CARD_PAD        = H.RP_CARD_PAD
-local IC_COLS            = H.IC_COLS
-local IC_GAP             = H.IC_GAP
-local IC_W               = H.IC_W
-local IC_H               = H.IC_H
-local AC_H               = H.AC_H
-local AC_GAP             = H.AC_GAP
 local LP_LABEL_X         = H.LP_LABEL_X
 local LP_LINE_X          = H.LP_LINE_X
 local LP_LINE_W          = H.LP_LINE_W
@@ -90,8 +67,8 @@ local buildOrderedTypeList = H.buildOrderedTypeList
 -- =============================================================================
 -- CraftingPopup class
 -- =============================================================================
-local CraftingPopupClass = newClass("CraftingPopup", "ControlHost", "Control", function(self, itemsTab, existingItem, slotName)
-	local popupMinH = 900
+local CraftingPopupClass = newClass("CraftingPopup", "ControlHost", "Control", function(self, itemsTab, existingItem, slotName, presetEntry)
+	local popupMinH = 680
 	self.ControlHost()
 	self.Control(nil, 0, 0, POPUP_W, popupMinH)
 	self.editContentH = popupMinH
@@ -111,29 +88,10 @@ local CraftingPopupClass = newClass("CraftingPopup", "ControlHost", "Control", f
 	-- Expose the currently-edited slot so ItemSlotControl can highlight it.
 	itemsTab.craftingSlotName = slotName
 
-	-- Right panel state
-	self.rightTab             = "item"   -- "item"|"prefix"|"suffix"|"sealed"|"primordial"|"corrupted"
 	self.selectedBaseCategory = "basic"
 	self.searchText           = ""
 	self.editItem             = nil
 	self.rebuilding           = false
-	self.affixViewMode        = (main.config and main.config.craftAffixView) or "list"  -- "list"|"card"
-
-	-- Scroll offsets (pixels)
-	self.typeScrollY  = 0   -- type list scroll
-	self.rightScrollY = 0   -- right panel card scroll
-
-	-- Hit-test arrays rebuilt in Draw()
-	self.typeCards  = {}
-	self.rightCards = {}
-
-	-- Phase 2: collapse state per slot -> per subcategory
-	-- slotKey "prefix"/"suffix"/"sealed"/"primordial"/"corrupted" -> { [subcat]=true }
-	-- Default: all expanded (nil means expanded)
-	self.collapsedSubcats = {}
-
-	-- Image handle cache for item cards
-	self.imageHandles = {}
 
 	-- Affix lists per slot (populated by RefreshAffixDropdowns)
 	self.affixLists = {
@@ -183,14 +141,22 @@ local CraftingPopupClass = newClass("CraftingPopup", "ControlHost", "Control", f
 
 	if existingItem and existingItem.craftState then
 		self:RestoreCraftState(existingItem)
+	elseif presetEntry then
+		-- Preselected base from Stage 1 modal (ItemsTab:OpenCraftItemSelector).
+		-- Mirror the type-list selection so data lookups and affix pools align.
+		for i, entry in ipairs(self.orderedTypeList) do
+			if not entry.isSeparator and entry.typeName == presetEntry.type then
+				self.selectedTypeIndex = i
+				break
+			end
+		end
+		self.selectedBaseCategory = presetEntry.category == "ww" and "unique" or (presetEntry.category or "basic")
+		self:SelectBase(presetEntry)
 	end
 end)
 
 function CraftingPopupClass:LoadSetData()
-	local ver = self.build.targetVersion or "1_4"
-	local setData = readJsonFile("Data/Set/set_" .. ver .. ".json")
-	if not setData then setData = readJsonFile("Data/Set/set_1_4.json") end
-	return setData or {}
+	return H.loadSetData(self.build)
 end
 
 function CraftingPopupClass:GetItemImage(name, rarity)
@@ -460,114 +426,8 @@ function CraftingPopupClass:BuildControls()
 	end)
 
 	-- =========================================================================
-	-- RIGHT PANEL: tab buttons
-	-- =========================================================================
-	local rightTabDefs = {
-		{ key = "item",       label = function()
-			local n = self_ref.currentItemList and #self_ref.currentItemList or 0
-			return (self_ref.rightTab == "item" and "^7" or "^8") .. "Item(" .. n .. ")"
-		end },
-		{ key = "prefix",    label = function()
-			local n = #(self_ref.affixLists.prefix1 or {})
-			return (self_ref.rightTab == "prefix" and "^7" or "^8") .. "Pre(" .. n .. ")"
-		end },
-		{ key = "suffix",    label = function()
-			local n = #(self_ref.affixLists.suffix1 or {})
-			return (self_ref.rightTab == "suffix" and "^7" or "^8") .. "Suf(" .. n .. ")"
-		end },
-		{ key = "sealed",    label = function()
-			local base = self_ref:IsAnyIdol() and "Enc1" or "Sealed"
-			local n = #(self_ref.affixLists.sealed or {})
-			return (self_ref.rightTab == "sealed" and "^7" or "^8") .. base .. "(" .. n .. ")"
-		end },
-		{ key = "primordial", label = function()
-			local base = self_ref:IsAnyIdol() and "Enc2" or "Primo"
-			local n = #(self_ref.affixLists.primordial or {})
-			return (self_ref.rightTab == "primordial" and "^7" or "^8") .. base .. "(" .. n .. ")"
-		end },
-		{ key = "corrupted", label = function()
-			local n = #(self_ref.affixLists.corrupted or {})
-			return (self_ref.rightTab == "corrupted" and "^7" or "^8") .. "Corrupt(" .. n .. ")"
-		end },
-	}
-	-- Spread 6 tabs across RP_W pixels
-	local tabW = m_floor((RP_W - 4) / #rightTabDefs)
-	for i, def in ipairs(rightTabDefs) do
-		local tabX = LEFT_W + 2 + (i - 1) * tabW
-		local capturedKey = def.key
-		local capturedLabel = def.label
-		controls["rtab_" .. def.key] = new("ButtonControl", {"TOPLEFT", self, "TOPLEFT"},
-			tabX, RP_TAB_Y, tabW - 2, RP_TAB_H,
-			capturedLabel,
-			function()
-				self_ref.rightTab = capturedKey
-				self_ref.rightScrollY = 0
-			end)
-		controls["rtab_" .. def.key].locked = function()
-			return self_ref.rightTab == capturedKey
-		end
-		-- Hide affix tabs when no item selected
-		if def.key ~= "item" then
-			controls["rtab_" .. def.key].shown = function()
-				return self_ref.editItem ~= nil
-			end
-		end
-	end
-
-	-- Right panel search bar
-	controls.rightSearch = new("EditControl", {"TOPLEFT", self, "TOPLEFT"},
-		LEFT_W + 2, RP_FILTER_Y, RP_W - 82, RP_FILTER_H, "", "^8Search", nil, nil,
-		function(buf)
-			self_ref.searchText = buf
-			self_ref.rightScrollY = 0
-			if self_ref.rightTab == "item" then
-				self_ref:RefreshBaseList()
-			end
-		end)
-
-	-- Card/List view toggle (affix tabs only)
-	controls.affixViewToggle = new("ButtonControl", {"TOPLEFT", self, "TOPLEFT"},
-		LEFT_W + 2 + (RP_W - 78), RP_FILTER_Y, 76, RP_FILTER_H,
-		function()
-			return self_ref.affixViewMode == "card" and "^7[Card]" or "^8[List]"
-		end,
-		function()
-			self_ref.affixViewMode = (self_ref.affixViewMode == "card") and "list" or "card"
-			if main.config then main.config.craftAffixView = self_ref.affixViewMode end
-		end)
-	controls.affixViewToggle.shown = function() return self_ref.rightTab ~= "item" end
-
-	-- Right panel category tabs (item mode only)
-	controls.catBasic = new("ButtonControl", {"TOPLEFT", self, "TOPLEFT"},
-		LEFT_W + 2, RP_CATTAB_Y, 70, RP_CATTAB_H,
-		function() return self_ref.selectedBaseCategory == "basic" and "^7Basic" or "^8Basic" end,
-		function()
-			self_ref.selectedBaseCategory = "basic"
-			self_ref:RefreshBaseList()
-		end)
-	controls.catBasic.locked = function() return self_ref.selectedBaseCategory == "basic" end
-	controls.catBasic.shown  = function() return self_ref.rightTab == "item" end
-
-	controls.catUnique = new("ButtonControl", {"LEFT", controls.catBasic, "RIGHT"}, 4, 0, 70, RP_CATTAB_H,
-		function() return colorCodes.UNIQUE .. "Unique" end,
-		function()
-			self_ref.selectedBaseCategory = "unique"
-			self_ref:RefreshBaseList()
-		end)
-	controls.catUnique.locked = function() return self_ref.selectedBaseCategory == "unique" end
-	controls.catUnique.shown  = function() return self_ref.rightTab == "item" end
-
-	controls.catSet = new("ButtonControl", {"LEFT", controls.catUnique, "RIGHT"}, 4, 0, 55, RP_CATTAB_H,
-		function() return colorCodes.SET .. "Set" end,
-		function()
-			self_ref.selectedBaseCategory = "set"
-			self_ref:RefreshBaseList()
-		end)
-	controls.catSet.locked = function() return self_ref.selectedBaseCategory == "set" end
-	controls.catSet.shown  = function() return self_ref.rightTab == "item" end
-
-	-- =========================================================================
 	-- LEFT PANEL: item preview controls
+	-- (Right panel removed: base selection handled by Stage 1 modal.)
 	-- =========================================================================
 	controls.editItemName = new("LabelControl", {"TOPLEFT", self, "TOPLEFT"}, LP_LABEL_X,
 		function() return PREVIEW_Y + 4 end, 0, 16, "")
@@ -780,6 +640,19 @@ function CraftingPopupClass:BuildControls()
 		end
 	end
 
+	-- Change Base button (reopens Stage 1 modal). Hidden when editing an existing
+	-- item so users don't accidentally discard crafted state by reselecting a base.
+	controls.changeBaseBtn = new("ButtonControl", {"TOPLEFT", self, "TOPLEFT"}, LP_LABEL_X, 8, 110, 20,
+		"Change Base...", function()
+			local itemsTab = self_ref.itemsTab
+			local slotName = self_ref.slotName
+			self_ref:Close()
+			if itemsTab then itemsTab:OpenCraftItemSelector(slotName) end
+		end)
+	controls.changeBaseBtn.shown = function()
+		return self_ref.editItem ~= nil and self_ref.existingItem == nil
+	end
+
 	-- Save / Cancel
 	controls.saveBtn = new("ButtonControl", {"BOTTOMLEFT", self, "BOTTOMLEFT"}, LP_LABEL_X, -15, 90, 28, "Save", function()
 		self_ref:SaveItem()
@@ -811,152 +684,10 @@ end
 function CraftingPopupClass:RefreshBaseList()
 	local typeName = self:GetSelectedTypeName()
 	if not typeName then self.currentItemList = {}; return end
-
-	local list = {}
-
-	if self.selectedBaseCategory == "basic" then
-		local bases = self.build.data.itemBaseLists[typeName]
-		if bases then
-			local myClassBit = self:GetCurrentClassReqBit()
-			for _, entry in ipairs(bases) do
-				if not entry.base.legacy then
-					local classReq = entry.base.classReq or 0
-					if classReq == 0 or myClassBit == 0 or bit.band(classReq, myClassBit) ~= 0 then
-						t_insert(list, {
-							label = entry.name, name = entry.name, base = entry.base,
-							type = typeName, displayType = entry.base.type or "",
-							rarity = "NORMAL", category = "basic",
-						})
-					end
-				end
-			end
-		end
-		table.sort(list, function(a, b)
-			local lvlA = a.base and a.base.req and a.base.req.level or 0
-			local lvlB = b.base and b.base.req and b.base.req.level or 0
-			if lvlA == lvlB then return a.name < b.name end
-			return lvlA < lvlB
-		end)
-	elseif self.selectedBaseCategory == "unique" then
-		local bases = self.build.data.itemBaseLists[typeName]
-		if bases then
-			local myClassBit = self:GetCurrentClassReqBit()
-			for uid, unique in pairs(self.build.data.uniques) do
-				if unique.name and unique.name:lower():sub(1, 9) == "cocooned " then goto continueUID end
-				local found = false
-				for _, baseEntry in ipairs(bases) do
-					if baseEntry.base.baseTypeID == unique.baseTypeID and
-					   baseEntry.base.subTypeID  == unique.subTypeID then
-						local classReq = baseEntry.base.classReq or 0
-						if classReq == 0 or myClassBit == 0 or bit.band(classReq, myClassBit) ~= 0 then
-							local isWW = unique.name and unique.name:find("an Erased ") and true or false
-							t_insert(list, {
-								label = unique.name, name = unique.name,
-								base = baseEntry.base, baseName = baseEntry.name,
-								type = typeName, displayType = baseEntry.base.type or "",
-								rarity = isWW and "WWUNIQUE" or "UNIQUE",
-								category = isWW and "ww" or "unique",
-								uniqueData = unique, uniqueID = uid,
-							})
-						end
-						found = true
-						break
-					end
-				end
-				if not found and self.build.data.itemBases then
-					for baseName, base in pairs(self.build.data.itemBases) do
-						if base.hidden and base.type == typeName and
-						   base.baseTypeID == unique.baseTypeID and
-						   base.subTypeID  == unique.subTypeID then
-							local classReq = base.classReq or 0
-							if classReq == 0 or myClassBit == 0 or bit.band(classReq, myClassBit) ~= 0 then
-								t_insert(list, {
-									label = unique.name, name = unique.name,
-									base = base, baseName = baseName,
-									type = typeName, displayType = base.type or "",
-									rarity = "UNIQUE", category = "unique",
-									uniqueData = unique, uniqueID = uid,
-								})
-							end
-							break
-						end
-					end
-				end
-				::continueUID::
-			end
-			table.sort(list, function(a, b) return a.label < b.label end)
-		end
-	elseif self.selectedBaseCategory == "set" then
-		local bases = self.build.data.itemBaseLists[typeName]
-		if bases then
-			local myClassBit = self:GetCurrentClassReqBit()
-			for sid, setItem in pairs(self.setItems) do
-				for _, baseEntry in ipairs(bases) do
-					if baseEntry.base.baseTypeID == setItem.baseTypeID and
-					   baseEntry.base.subTypeID  == setItem.subTypeID then
-						local classReq = baseEntry.base.classReq or 0
-						if classReq == 0 or myClassBit == 0 or bit.band(classReq, myClassBit) ~= 0 then
-							t_insert(list, {
-								label = setItem.name, name = setItem.name,
-								base = baseEntry.base, baseName = baseEntry.name,
-								type = typeName, displayType = baseEntry.base.type or "",
-								rarity = "SET", category = "set",
-								setData = setItem, setID = sid,
-							})
-						end
-						break
-					end
-				end
-			end
-			table.sort(list, function(a, b) return a.label < b.label end)
-		end
-	end
-
-	-- Search filter
-	local query = (self.searchText or ""):lower():gsub("^%s*(.-)%s*$", "%1")
-	if query ~= "" then
-		local filtered = {}
-		for _, entry in ipairs(list) do
-			local matched = false
-			if (entry.label or entry.name or ""):lower():find(query, 1, true) then matched = true end
-			if not matched and (entry.rarity == "WWUNIQUE" or entry.rarity == "WWLEGENDARY") then
-				if query == "ww" or ("weavers will"):find(query, 1, true) or ("weaver's will"):find(query, 1, true) then
-					matched = true
-				end
-			end
-			if not matched and entry.category == "basic" and entry.base and entry.base.implicits then
-				for _, implText in ipairs(entry.base.implicits) do
-					local cleaned = cleanImplicitText(implText)
-					if cleaned and cleaned:lower():find(query, 1, true) then matched = true; break end
-				end
-			end
-			if not matched then
-				local modData = (entry.category == "unique" or entry.category == "ww") and entry.uniqueData
-				             or (entry.category == "set" and entry.setData)
-				if modData then
-					if modData.mods then
-						for _, modText in ipairs(modData.mods) do
-							if modText:lower():find(query, 1, true) then matched = true; break end
-						end
-					end
-					if not matched and modData.set then
-						if modData.set.name and modData.set.name:lower():find(query, 1, true) then
-							matched = true
-						end
-						if not matched and modData.set.bonus then
-							for _, bonusText in pairs(modData.set.bonus) do
-								if tostring(bonusText):lower():find(query, 1, true) then matched = true; break end
-							end
-						end
-					end
-				end
-			end
-			if matched then t_insert(filtered, entry) end
-		end
-		list = filtered
-	end
-
-	self.currentItemList = list
+	self.currentItemList = H.buildBaseList(
+		self.build, self.setItems,
+		typeName, self.selectedBaseCategory,
+		self.searchText, self:GetCurrentClassReqBit())
 end
 
 function CraftingPopupClass:SelectBase(entry)
@@ -1047,19 +778,6 @@ function CraftingPopupClass:SelectBase(entry)
 
 	self.editItem      = item
 	self.editBaseEntry = entry
-	-- Stay on item tab if just selected; user can switch to affix tabs
-	local prevTab = self.rightTab
-	if self.rightTab == "item" then
-		-- auto-advance to prefix tab for basic items to help workflow
-		if entry.category == "basic" then
-			self.rightTab = "prefix"
-		end
-	end
-	-- Only reset scroll when tab actually changed; preserve scroll when the
-	-- user is just picking different items in the same list.
-	if self.rightTab ~= prevTab then
-		self.rightScrollY = 0
-	end
 
 	for _, k in ipairs({"prefix1","prefix2","suffix1","suffix2","sealed","primordial","corrupted"}) do
 		self:UpdateSlotModInfo(k)
