@@ -945,6 +945,26 @@ specialModList["^%+?([%d%.]+)%% (.+) chance per second with (.+)$"] = nsAny
 specialModList["^%+?([%d%.]+)%% (.+) chance per second$"] = nsAny
 
 -- 4. While-channelling modifier (e.g. "X% Endurance while channelling Warpath")
+-- DPS-integrated for the subset of stat+skill combos actually present in affix data
+-- (Endurance while channelling Warpath; Ward per Second while channelling Ghostflame).
+-- Other variants fall through to nsAny recognition.
+-- Mechanic: Condition:Channelling<Skill> is set by CalcPerform when the player is
+-- channelling AND their main skill matches. This double-gates by skill identity.
+for _lowerCh, _canonicalCh in pairs(skillNameByLower) do
+	if not skillNameBlacklist[_lowerCh] then
+		local _escCh = escPat(_lowerCh)
+		local _condVar = "Channelling" .. _canonicalCh:gsub("%s+", "")
+		-- Endurance while channelling <skill>
+		specialModList["^%+?([%d%.]+)%% endurance while channell?ing " .. _escCh .. "$"] = function(num)
+			return { mod("Endurance", "BASE", num, "", 0, 0, { type = "Condition", var = _condVar }) }
+		end
+		-- Ward per Second while channelling <skill>
+		specialModList["^%+?([%d%.]+) ward per second while channell?ing " .. _escCh .. "$"] = function(num)
+			return { mod("WardPerSecond", "BASE", num, "", 0, 0, { type = "Condition", var = _condVar }) }
+		end
+	end
+end
+-- Fallback: unknown stat/skill combos still get recognised (but flagged unsupported).
 specialModList["^%+?([%d%.]+)%% (.+) while channelling (.+)$"] = nsAny
 specialModList["^%+?([%d%.]+) (.+) while channelling (.+)$"] = nsAny
 

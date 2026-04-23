@@ -176,6 +176,16 @@ local function doActorAttribsConditions(env, actor)
 				condList["Channelling"] = true
 			end
 		end
+		-- Per-skill channelling flag (for "while channelling <skill>" affixes).
+		-- Set whenever Channelling is true, either from mainSkill type above or via the
+		-- Config tab "Are you Channelling?" toggle (which injects Condition:Channelling
+		-- as a FLAG mod). GetCondition() checks both paths.
+		if modDB:GetCondition("Channelling") then
+			local skillName = actor.mainSkill.activeEffect and actor.mainSkill.activeEffect.grantedEffect and actor.mainSkill.activeEffect.grantedEffect.name
+			if skillName then
+				condList["Channelling" .. skillName:gsub("%s+", "")] = true
+			end
+		end
 		if actor.mainSkill.skillFlags.hit and not actor.mainSkill.skillFlags.trap and not actor.mainSkill.skillFlags.mine and not actor.mainSkill.skillFlags.totem then
 			condList["HitRecently"] = true
 			if actor.mainSkill.skillFlags.spell then
