@@ -733,7 +733,6 @@ function ImportTabClass:DownloadMaxrollPlannerBuild(url)
                 for i, treeData in ipairs(profileData.skillTrees) do
                     local treeId = treeData.treeID or treeData.treeId
                     local slot = treeData.slot or treeData.slotIndex or (i - 1)
-                    ConPrintf("[MAXROLL-SKILL] array[%d] treeId=%s slot=%s", i, tostring(treeId), tostring(slot))
                     if treeId then
                         table.insert(skillTreeList, { treeId = tostring(treeId), treeData = treeData, slot = slot })
                     end
@@ -742,7 +741,6 @@ function ImportTabClass:DownloadMaxrollPlannerBuild(url)
                 -- Dict format: key is treeId string
                 for treeId, treeData in pairs(profileData.skillTrees) do
                     local slot = type(treeData) == "table" and (treeData.slot or treeData.slotIndex or 99) or 99
-                    ConPrintf("[MAXROLL-SKILL] dict key=%s slot=%s", tostring(treeId), tostring(slot))
                     table.insert(skillTreeList, { treeId = tostring(treeId), treeData = treeData, slot = slot })
                 end
             end
@@ -966,7 +964,6 @@ function ImportTabClass:ConvertLEToolsItem(letoolsItem, itemMap, affixMap)
     if type(letoolsItem) ~= "table" or not letoolsItem.id then return nil end
     local entry = itemMap[letoolsItem.id]
     if not entry then
-        ConPrintf("[LETOOLS-ITEM] Unknown id: %s", tostring(letoolsItem.id))
         return nil
     end
     local subType
@@ -995,8 +992,6 @@ function ImportTabClass:ConvertLEToolsItem(letoolsItem, itemMap, affixMap)
             local tier0 = (a.tier or 1) - 1
             if tier0 < 0 then tier0 = 0 end
             t_insert(mx.affixes, { id = affixInt, tier = tier0, roll = a.r or 0 })
-        else
-            ConPrintf("[LETOOLS-AFFIX] Unknown id: %s (tier=%s, kind=%s)", tostring(a.id), tostring(a.tier), kind)
         end
     end
     if type(letoolsItem.affixes) == "table" then
@@ -1038,7 +1033,6 @@ function ImportTabClass:BuildItemsFromLETools(data, char)
         for _, idol in ipairs(data.idols) do
             if type(idol) == "table" and idol.id and type(idol.x) == "number" and type(idol.y) == "number" then
                 local idx = (idol.y - 1) * 5 + idol.x
-                ConPrintf("[LETOOLS-IDOL] id=%s xy=(%d,%d) -> idx=%d", tostring(idol.id), idol.x, idol.y, idx)
                 if idx >= 1 and idx <= 25 then
                     local mx = self:ConvertLEToolsItem(idol, itemMap, affixMap)
                     if mx then profileData.idols[idx] = mx end
@@ -1071,13 +1065,8 @@ function ImportTabClass:ImportBlessingsFromLETools(data)
                         local ir = bl.ir or {}
                         local roll = ir[1] or 255
                         local rollFrac = roll / 255.0
-                        ConPrintf("[LETOOLS-BLESS] %s -> %s (roll=%.3f)", blessingName, info.tl, rollFrac)
                         self.build.itemsTab:UpdateBlessingSlot(info.tl, info.entry, rollFrac)
-                    else
-                        ConPrintf("[LETOOLS-BLESS] Not in blessingLookup: %s", blessingName)
                     end
-                else
-                    ConPrintf("[LETOOLS-BLESS] No base for subType=%s", tostring(subType))
                 end
             end
         end
@@ -1115,7 +1104,6 @@ function ImportTabClass:BuildItemsFromMaxroll(buildData, profileData, char)
             end
         end
         if not itemBase then
-            ConPrintf("[MAXROLL-ITEM] No base: itemType=%d subType=%d inv=%s", baseTypeID, subTypeID, tostring(inventoryId))
             char._parseErrors = char._parseErrors + 1
             return nil
         end
@@ -1142,7 +1130,6 @@ function ImportTabClass:BuildItemsFromMaxroll(buildData, profileData, char)
             -- Unique or Legendary
             local uniqueBase = self.build.data.uniques[uniqueID]
             if not uniqueBase then
-                ConPrintf("[MAXROLL-ITEM] Unknown uniqueID=%d inv=%s", uniqueID, tostring(inventoryId))
                 char._parseErrors = char._parseErrors + 1
                 return nil
             end
@@ -1193,7 +1180,6 @@ function ImportTabClass:BuildItemsFromMaxroll(buildData, profileData, char)
             for i, affix in ipairs(allAffixes) do
                 local modId   = affix.id .. "_" .. affix.tier
                 local modData = data.itemMods.Item[modId]
-                ConPrintf("[MAXROLL-AFFIX] base=%s slot=%d modId=%s tier=%d roll=%d valid=%s", itemBaseName, i, modId, affix.tier, affix.roll or 0, tostring(modData ~= nil))
                 if modData then
                     affixCount = affixCount + 1
                     if affix.tier > maxTier then maxTier = affix.tier end
@@ -1213,7 +1199,6 @@ function ImportTabClass:BuildItemsFromMaxroll(buildData, profileData, char)
             else
                 item.rarity = affixCount >= 3 and "RARE" or (affixCount >= 1 and "MAGIC" or "NORMAL")
             end
-            ConPrintf("[MAXROLL-RARITY] base=%s affixCount=%d maxTier=%d idol=%s -> %s", itemBaseName, affixCount, maxTier, tostring(isIdol ~= nil), item.rarity)
 
             local forename, surname = "", ""
             for _, p in ipairs(item.prefixes) do
@@ -1262,7 +1247,6 @@ function ImportTabClass:BuildItemsFromMaxroll(buildData, profileData, char)
                 if slotName then
                     local item = parseItem(mi, slotName)
                     if item then
-                        ConPrintf("[MAXROLL-IDOL] idx=%d slot=%s base=%s", i, slotName, item.baseName or "?")
                         table.insert(char.items, item)
                     end
                 end
@@ -1297,13 +1281,8 @@ function ImportTabClass:ImportBlessingsFromMaxroll(profileData)
                 if info then
                     local roll = (type(blessing.implicits) == "table" and blessing.implicits[1]) or 255
                     local rollFrac = roll / 255.0
-                    ConPrintf("[MAXROLL-BLESS] %s -> %s (roll=%.3f)", blessingName, info.tl, rollFrac)
                     self.build.itemsTab:UpdateBlessingSlot(info.tl, info.entry, rollFrac)
-                else
-                    ConPrintf("[MAXROLL-BLESS] Not in blessingLookup: %s", blessingName)
                 end
-            else
-                ConPrintf("[MAXROLL-BLESS] No base for itemType=34 subType=%s", tostring(blessing.subType))
             end
         end
     end
