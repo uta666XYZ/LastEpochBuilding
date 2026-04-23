@@ -258,10 +258,7 @@ c["+1 to Damage Over Time Minion Skills"]={{[1]={[1]={skillType=8192,type="Skill
 c["+1 to Damage Over Time Spells"]={{[1]={flags=4096,keywordFlags=256,name="Damage",type="BASE",value=1}},"  s "}
 c["+1 to Dexterity Skills"]={{[1]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=1}},"  Skills "}
 c["+1 to Fire Skills"]={{[1]={[1]={skillType=8,type="SkillType"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}},"  Skills "}
-c["+1 to Flame Ward"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=1}}," Flame  "}
 c["+1 to Lightning Skills"]={{[1]={[1]={skillType=2,type="SkillType"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}},"  Skills "}
-c["+1 to Mana Strike"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=1}},"  Strike "}
-c["+1 to Manifest Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=1}}," Manifest  "}
 c["+1% Ailment Damage Per 10% Increased Stun Chance"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=1}}," Ailment  Per 10% Increased Stun Chance "}
 c["+1% All Resistances"]={{[1]={flags=0,keywordFlags=0,name="FireResist",type="BASE",value=1},[2]={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=1},[3]={flags=0,keywordFlags=0,name="ColdResist",type="BASE",value=1},[4]={flags=0,keywordFlags=0,name="PhysicalResist",type="BASE",value=1},[5]={flags=0,keywordFlags=0,name="PoisonResist",type="BASE",value=1},[6]={flags=0,keywordFlags=0,name="NecroticResist",type="BASE",value=1},[7]={flags=0,keywordFlags=0,name="VoidResist",type="BASE",value=1}},nil}
 c["+1% Area per 10 Ward consumed"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="BASE",value=1}},"  per 10 Ward consumed "}
@@ -1857,10 +1854,7 @@ c["+2 to All Attributes"]={{[1]={flags=0,keywordFlags=0,name="Vit",type="BASE",v
 c["+2 to All Skills"]={{[1]={flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=2}},nil}
 c["+2 to Damage Over Time Skills"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="BASE",value=2}},"  Skills "}
 c["+2 to Dexterity Skills"]={{[1]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=2}},"  Skills "}
-c["+2 to Flame Ward"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=2}}," Flame  "}
 c["+2 to Intelligence Skills"]={{[1]={flags=0,keywordFlags=0,name="Int",type="BASE",value=2}},"  Skills "}
-c["+2 to Mana Strike"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=2}},"  Strike "}
-c["+2 to Manifest Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=2}}," Manifest  "}
 c["+2 to Strength Minion Skills"]={{[1]={[1]={skillType=8192,type="SkillType"},flags=0,keywordFlags=0,name="Str",type="BASE",value=2}},nil}
 c["+2% Added Bow Critical Strike Chance"]={{[1]={flags=0,keywordFlags=2048,name="CritChance",type="BASE",value=2}}," Added Bow  "}
 c["+2% Attack Speed"]={{[1]={flags=3584,keywordFlags=0,name="Speed",type="BASE",value=2}},nil}
@@ -2829,9 +2823,6 @@ c["+3 Ward Per Second"]={{[1]={flags=0,keywordFlags=0,name="WardPerSecond",type=
 c["+3 Ward Per Second Per 15 Intelligence"]={{[1]={[1]={div=15,stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="WardPerSecond",type="BASE",value=3}},nil}
 c["+3 Ward per second per Active Maelstrom"]={{[1]={[1]={skillName="Maelstrom",type="SkillName"},flags=0,keywordFlags=0,name="WardPerSecond",type="BASE",value=3}},"  per Active  "}
 c["+3 to All Attributes"]={{[1]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=3},[2]={flags=0,keywordFlags=0,name="Str",type="BASE",value=3},[3]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=3},[4]={flags=0,keywordFlags=0,name="Int",type="BASE",value=3},[5]={flags=0,keywordFlags=0,name="Att",type="BASE",value=3}},nil}
-c["+3 to Flame Ward"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=3}}," Flame  "}
-c["+3 to Mana Strike"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=3}},"  Strike "}
-c["+3 to Manifest Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=3}}," Manifest  "}
 c["+3% Additional Cooldown Recovery"]={{[1]={flags=0,keywordFlags=0,name="CooldownRecovery",type="BASE",value=3}},nil}
 c["+3% Area For Area Spells"]={{[1]={flags=0,keywordFlags=256,name="AreaOfEffect",type="BASE",value=3}},"  For Area s "}
 c["+3% Area per Skeleton Archer"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="BASE",value=3}},"  per Skeleton Archer "}
@@ -3403,10 +3394,7 @@ c["+4 to All Attributes"]={{[1]={flags=0,keywordFlags=0,name="Vit",type="BASE",v
 c["+4 to All Attributes per Complete Set"]={{[1]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=4},[2]={flags=0,keywordFlags=0,name="Str",type="BASE",value=4},[3]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=4},[4]={flags=0,keywordFlags=0,name="Int",type="BASE",value=4},[5]={flags=0,keywordFlags=0,name="Att",type="BASE",value=4}},"  per Complete Set "}
 c["+4 to Attunement Skills"]={{[1]={flags=0,keywordFlags=0,name="Att",type="BASE",value=4}},"  Skills "}
 c["+4 to Dexterity Skills"]={{[1]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=4}},"  Skills "}
-c["+4 to Flame Ward"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=4}}," Flame  "}
 c["+4 to Intelligence Skills"]={{[1]={flags=0,keywordFlags=0,name="Int",type="BASE",value=4}},"  Skills "}
-c["+4 to Mana Strike"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=4}},"  Strike "}
-c["+4 to Manifest Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=4}}," Manifest  "}
 c["+4 to Strength Skills"]={{[1]={flags=0,keywordFlags=0,name="Str",type="BASE",value=4}},"  Skills "}
 c["+4% Ancestral Sabertooth Duration per Attunement"]={{[1]={[1]={stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="Duration",type="MORE",value=4}}," Ancestral Sabertooth   "}
 c["+4% Armor Shred Chance Per Strength"]={{[1]={[1]={stat="Str",type="PerStat"},flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_ArmourShred",type="BASE",value=4}},nil}
@@ -4327,9 +4315,6 @@ c["+6 Ward gained each second per Active Wandering Spirit"]={{[1]={flags=0,keywo
 c["+6 Ward granted by Silver Shroud per stack"]={{[1]={[1]={skillName="Silver Shroud",type="SkillName"},flags=0,keywordFlags=0,name="Ward",type="BASE",value=6}},"  granted by  per stack "}
 c["+6 Ward per Second"]={{[1]={flags=0,keywordFlags=0,name="WardPerSecond",type="BASE",value=6}},nil}
 c["+6 to All Attributes"]={{[1]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=6},[2]={flags=0,keywordFlags=0,name="Str",type="BASE",value=6},[3]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=6},[4]={flags=0,keywordFlags=0,name="Int",type="BASE",value=6},[5]={flags=0,keywordFlags=0,name="Att",type="BASE",value=6}},nil}
-c["+6 to Flame Ward"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=6}}," Flame  "}
-c["+6 to Mana Strike"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=6}},"  Strike "}
-c["+6 to Manifest Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=6}}," Manifest  "}
 c["+6% Attack And Cast Speed"]={{[1]={flags=0,keywordFlags=0,name="Speed",type="BASE",value=6}},nil}
 c["+6% Attack Speed"]={{[1]={flags=3584,keywordFlags=0,name="Speed",type="BASE",value=6}},nil}
 c["+6% Axe Attack And Cast Speed"]={{[1]={flags=0,keywordFlags=0,name="Speed",type="BASE",value=6}}," Axe  "}
