@@ -317,6 +317,10 @@ function ModStoreClass:EvalMod(mod, cfg)
 					if limitNegTotal then
 						value.mod.value = m_max(value.mod.value, limitNegTotal)
 					end
+					if tag.valueCap then
+						-- Two-sided absolute cap: clamps to [-valueCap, +valueCap].
+						value.mod.value = m_max(-tag.valueCap, m_min(value.mod.value, tag.valueCap))
+					end
 				else
 					value.value = value.value * mult + (tag.base or 0)
 					if limitTotal then
@@ -324,6 +328,9 @@ function ModStoreClass:EvalMod(mod, cfg)
 					end
 					if limitNegTotal then
 						value.value = m_max(value.value, limitNegTotal)
+					end
+					if tag.valueCap then
+						value.value = m_max(-tag.valueCap, m_min(value.value, tag.valueCap))
 					end
 				end
 			else
@@ -333,6 +340,10 @@ function ModStoreClass:EvalMod(mod, cfg)
 				end
 				if limitNegTotal then
 					value = m_max(value, limitNegTotal)
+				end
+				if tag.valueCap then
+					-- Two-sided absolute cap: clamps to [-valueCap, +valueCap].
+					value = m_max(-tag.valueCap, m_min(value, tag.valueCap))
 				end
 			end
 		elseif tag.type == "MultiplierThreshold" then
