@@ -1200,16 +1200,62 @@ specialModList["^%+?(%d+) charges? for (.+)$"] = nsAny
 specialModList["^%+?(%d+) additional charges? for (.+)$"] = nsAny
 
 -- Damage-taken reductions with qualifier / source
--- (e.g. "3% reduced Bonus Damage Taken from Critical Strikes",
---       "5% less Damage Taken from Bosses", "4% reduced Physical Damage Taken")
+-- DPS-integrated where possible via:
+--   * "bonus damage taken from critical strikes" → ReduceCritExtraDamage stat
+--     (consumed in CalcDefence.lua as a flat reduction to enemy crit extra damage)
+--   * "from <ailment> enemies" → ActorCondition tag in modTagList combined with
+--     "DamageTaken" from modNameList via the generic parse chain
+--   * "<type> damage taken" → auto-generated "<Type>DamageTaken" modNameList entry
+-- Known qualifiers fall through to the generic chain; unknown still get nsAny
+-- recognition so the mod is at least flagged rather than silently broken.
+specialModList["^%+?([%d%.]+)%% reduced bonus damage taken from critical strikes$"] = function(num)
+	return { mod("ReduceCritExtraDamage", "BASE", num) }
+end
+specialModList["^%+?([%d%.]+)%% less bonus damage taken from critical strikes$"] = function(num)
+	return { mod("ReduceCritExtraDamage", "BASE", num) }
+end
+-- "bonus damage taken from X" for other X values is not yet modeled.
 specialModList["^%+?([%d%.]+)%% reduced bonus damage taken from (.+)$"] = nsAny
 specialModList["^%+?([%d%.]+)%% less bonus damage taken from (.+)$"] = nsAny
-specialModList["^%+?([%d%.]+)%% reduced damage taken from (.+)$"] = nsAny
-specialModList["^%+?([%d%.]+)%% less damage taken from (.+)$"] = nsAny
-specialModList["^%+?([%d%.]+)%% reduced (.+) damage taken$"] = nsAny
-specialModList["^%+?([%d%.]+)%% less (.+) damage taken$"] = nsAny
-specialModList["^%+?([%d%.]+)%% increased (.+) damage taken$"] = nsAny
-specialModList["^%+?([%d%.]+)%% more (.+) damage taken$"] = nsAny
+
+-- Enemy-condition sources (chilled/ignited/shocked/slowed/bleeding/poisoned/
+-- frozen/time rotting/frail enemies, critical strikes) already have modTagList
+-- entries, so we fall through for known sources and only nsAny unknown ones.
+local knownDamageTakenSources = {
+	["critical strikes"] = true, ["crits"] = true,
+	["chilled enemies"] = true, ["ignited enemies"] = true, ["shocked enemies"] = true,
+	["slowed enemies"] = true, ["frozen enemies"] = true, ["bleeding enemies"] = true,
+	["poisoned enemies"] = true, ["time rotting enemies"] = true, ["frail enemies"] = true,
+}
+local function damageTakenFromHandler(num, _, source)
+	if source and knownDamageTakenSources[source:lower()] then
+		return nil
+	end
+	return nsAny(num)
+end
+specialModList["^%+?([%d%.]+)%% reduced damage taken from (.+)$"] = damageTakenFromHandler
+specialModList["^%+?([%d%.]+)%% less damage taken from (.+)$"] = damageTakenFromHandler
+
+-- "<type> damage taken" — auto-generated modNameList entries cover standard damage
+-- types (Physical/Fire/Cold/Lightning/Poison/Necrotic/Void) plus "Elemental" and
+-- bare "Damage Taken". Fall through to let the generic chain produce the flat mod.
+-- Unknown prefixes still hit nsAny to stay recognised.
+local knownDamageTakenTypes = {
+	["physical"] = true, ["fire"] = true, ["cold"] = true, ["lightning"] = true,
+	["poison"] = true, ["necrotic"] = true, ["void"] = true, ["elemental"] = true,
+	["hit"] = true, ["melee"] = true, ["spell"] = true, ["minion"] = true,
+	["damage over time"] = true, ["dot"] = true,
+}
+local function damageTakenTypeHandler(num, _, dtype)
+	if dtype and knownDamageTakenTypes[dtype:lower()] then
+		return nil
+	end
+	return nsAny(num)
+end
+specialModList["^%+?([%d%.]+)%% reduced (.+) damage taken$"] = damageTakenTypeHandler
+specialModList["^%+?([%d%.]+)%% less (.+) damage taken$"] = damageTakenTypeHandler
+specialModList["^%+?([%d%.]+)%% increased (.+) damage taken$"] = damageTakenTypeHandler
+specialModList["^%+?([%d%.]+)%% more (.+) damage taken$"] = damageTakenTypeHandler
 
 -- Compound "... this effect is doubled if ..." clauses (e.g. doubled-at-300-mana).
 -- Intentionally NOT hooked as specialModList — the trailing clause is matched via

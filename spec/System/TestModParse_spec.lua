@@ -439,4 +439,38 @@ describe("TestModParse", function()
             assert.are.equals(25, build.configTab.modList:Sum("BASE", { flags = ModFlag.Hit }, "PoisonChance"))
         end)
     end)
+
+    describe("damage-taken reductions with source", function()
+        it("reduced Bonus Damage Taken from Critical Strikes feeds ReduceCritExtraDamage", function()
+            build.configTab.input.customMods = "3% reduced Bonus Damage Taken from Critical Strikes"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            assert.are.equals(3, build.configTab.modList:Sum("BASE", nil, "ReduceCritExtraDamage"))
+        end)
+
+        it("less Physical Damage Taken reduces PhysicalDamageTaken", function()
+            build.configTab.input.customMods = "5% less Physical Damage Taken"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            -- "less" applies as MORE with negative sign
+            assert.are.equals(-5, build.configTab.modList:Sum("MORE", nil, "PhysicalDamageTaken"))
+        end)
+
+        it("less Damage Taken from Chilled Enemies gates via ActorCondition", function()
+            build.configTab.input.customMods = "8% less Damage Taken from Chilled Enemies"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            -- Without enemy-chilled condition: no reduction
+            assert.are.equals(0, build.configTab.modList:Sum("MORE", nil, "DamageTaken"))
+            -- Mod exists in modList (recognised + not nsAny-swallowed)
+            local found = false
+            for _, m in ipairs(build.configTab.modList) do
+                if m.name == "DamageTaken" and m.value == -8 then
+                    found = true
+                    break
+                end
+            end
+            assert.is_true(found)
+        end)
+    end)
 end)
