@@ -415,4 +415,28 @@ describe("TestModParse", function()
             build.configTab.modList.multipliers["AdditionalTotem"] = nil
         end)
     end)
+
+    describe("ailment/charge application on hit", function()
+        it("Chance to apply Frailty on Hit feeds FrailtyChance with Hit flag", function()
+            build.configTab.input.customMods = "+12% Chance to apply Frailty on Hit"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            -- Hit-flagged context sums the chance
+            assert.are.equals(12, build.configTab.modList:Sum("BASE", { flags = ModFlag.Hit }, "FrailtyChance"))
+        end)
+
+        it("Chance to inflict Plague on Hit feeds PlagueChance with Hit flag", function()
+            build.configTab.input.customMods = "+8% Chance to inflict Plague on Hit"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            assert.are.equals(8, build.configTab.modList:Sum("BASE", { flags = ModFlag.Hit }, "PlagueChance"))
+        end)
+
+        it("Chance to apply Poison on Hit feeds PoisonChance with Hit flag", function()
+            build.configTab.input.customMods = "+25% Chance to apply Poison on Hit"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            assert.are.equals(25, build.configTab.modList:Sum("BASE", { flags = ModFlag.Hit }, "PoisonChance"))
+        end)
+    end)
 end)
