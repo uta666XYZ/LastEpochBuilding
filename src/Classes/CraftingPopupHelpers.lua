@@ -135,36 +135,10 @@ function H.filterTypeList(orderedList, slotName)
 	return filtered
 end
 
--- Layout constants
-H.POPUP_W       = 1200
+-- Layout constants (single-panel Stage 2 popup)
 H.LEFT_W        = 320
-H.DIVIDER_X     = H.LEFT_W
-H.TYPE_LIST_Y   = 34
-H.TYPE_LIST_H   = 190
-H.TYPE_ROW_H    = 20
-H.PREVIEW_Y     = H.TYPE_LIST_Y + H.TYPE_LIST_H + 6   -- ~230
-
--- Right panel layout
-H.RP_X          = H.LEFT_W + 1
-H.RP_W          = H.POPUP_W - H.LEFT_W - 1
-H.RP_TAB_Y      = 34
-H.RP_TAB_H      = 24
-H.RP_FILTER_Y   = H.RP_TAB_Y + H.RP_TAB_H + 3
-H.RP_FILTER_H   = 20
-H.RP_CATTAB_Y   = H.RP_FILTER_Y + H.RP_FILTER_H + 3
-H.RP_CATTAB_H   = 20
-H.RP_CARD_Y     = H.RP_CATTAB_Y + H.RP_CATTAB_H + 4
-H.RP_CARD_PAD   = 8
-
--- Item cards (item tab, right panel)
-H.IC_COLS       = 2
-H.IC_GAP        = 6
-H.IC_W          = m_floor((H.RP_W - 2 * H.RP_CARD_PAD - (H.IC_COLS - 1) * H.IC_GAP) / H.IC_COLS)
-H.IC_H          = 80
-
--- Affix cards (affix tabs, right panel) -- compact single-row cards
-H.AC_H          = 24
-H.AC_GAP        = 2
+H.POPUP_W       = H.LEFT_W
+H.PREVIEW_Y     = 38
 
 -- Left panel control positions
 H.LP_LABEL_X    = 15
@@ -374,6 +348,171 @@ function H.formatModValue(line, value)
 	elseif precision <= 10 then return string.format("%.1f", value)
 	elseif precision <= 100 then return string.format("%.2f", value)
 	else return string.format("%.3f", value) end
+end
+
+-- Class requirement bits (player class -> bit index used by base.classReq)
+H.CLASS_REQ_BITS = { Primalist = 1, Mage = 2, Sentinel = 4, Acolyte = 8, Rogue = 16 }
+
+function H.getClassReqBit(build)
+	local spec = build and build.spec
+	local name = spec and spec.curClassName
+	return H.CLASS_REQ_BITS[name] or 0
+end
+
+-- Load set item data for the build's target version. Static (no self).
+function H.loadSetData(build)
+	local ver = (build and build.targetVersion) or "1_4"
+	local setData = readJsonFile("Data/Set/set_" .. ver .. ".json")
+	if not setData then setData = readJsonFile("Data/Set/set_1_4.json") end
+	return setData or {}
+end
+
+-- Build a filtered list of base entries (same shape as CraftingPopup.currentItemList).
+-- category: "basic" | "unique" | "set"
+-- setItems: table returned by H.loadSetData
+-- searchText/classReqBit optional.
+function H.buildBaseList(build, setItems, typeName, category, searchText, classReqBit)
+	local list = {}
+	if not typeName or not build or not build.data then return list end
+	local bases = build.data.itemBaseLists and build.data.itemBaseLists[typeName]
+	classReqBit = classReqBit or 0
+
+	if category == "basic" then
+		if bases then
+			for _, entry in ipairs(bases) do
+				if not entry.base.legacy then
+					local classReq = entry.base.classReq or 0
+					if classReq == 0 or classReqBit == 0 or bit.band(classReq, classReqBit) ~= 0 then
+						t_insert(list, {
+							label = entry.name, name = entry.name, base = entry.base,
+							type = typeName, displayType = entry.base.type or "",
+							rarity = "NORMAL", category = "basic",
+						})
+					end
+				end
+			end
+		end
+		table.sort(list, function(a, b)
+			local lvlA = a.base and a.base.req and a.base.req.level or 0
+			local lvlB = b.base and b.base.req and b.base.req.level or 0
+			if lvlA == lvlB then return a.name < b.name end
+			return lvlA < lvlB
+		end)
+	elseif category == "unique" then
+		if bases and build.data.uniques then
+			for uid, unique in pairs(build.data.uniques) do
+				if unique.name and unique.name:lower():sub(1, 9) == "cocooned " then goto continueUID end
+				local found = false
+				for _, baseEntry in ipairs(bases) do
+					if baseEntry.base.baseTypeID == unique.baseTypeID and
+					   baseEntry.base.subTypeID  == unique.subTypeID then
+						local classReq = baseEntry.base.classReq or 0
+						if classReq == 0 or classReqBit == 0 or bit.band(classReq, classReqBit) ~= 0 then
+							local isWW = unique.name and unique.name:find("an Erased ") and true or false
+							t_insert(list, {
+								label = unique.name, name = unique.name,
+								base = baseEntry.base, baseName = baseEntry.name,
+								type = typeName, displayType = baseEntry.base.type or "",
+								rarity = isWW and "WWUNIQUE" or "UNIQUE",
+								category = isWW and "ww" or "unique",
+								uniqueData = unique, uniqueID = uid,
+							})
+						end
+						found = true
+						break
+					end
+				end
+				if not found and build.data.itemBases then
+					for baseName, base in pairs(build.data.itemBases) do
+						if base.hidden and base.type == typeName and
+						   base.baseTypeID == unique.baseTypeID and
+						   base.subTypeID  == unique.subTypeID then
+							local classReq = base.classReq or 0
+							if classReq == 0 or classReqBit == 0 or bit.band(classReq, classReqBit) ~= 0 then
+								t_insert(list, {
+									label = unique.name, name = unique.name,
+									base = base, baseName = baseName,
+									type = typeName, displayType = base.type or "",
+									rarity = "UNIQUE", category = "unique",
+									uniqueData = unique, uniqueID = uid,
+								})
+							end
+							break
+						end
+					end
+				end
+				::continueUID::
+			end
+			table.sort(list, function(a, b) return a.label < b.label end)
+		end
+	elseif category == "set" then
+		if bases and setItems then
+			for sid, setItem in pairs(setItems) do
+				for _, baseEntry in ipairs(bases) do
+					if baseEntry.base.baseTypeID == setItem.baseTypeID and
+					   baseEntry.base.subTypeID  == setItem.subTypeID then
+						local classReq = baseEntry.base.classReq or 0
+						if classReq == 0 or classReqBit == 0 or bit.band(classReq, classReqBit) ~= 0 then
+							t_insert(list, {
+								label = setItem.name, name = setItem.name,
+								base = baseEntry.base, baseName = baseEntry.name,
+								type = typeName, displayType = baseEntry.base.type or "",
+								rarity = "SET", category = "set",
+								setData = setItem, setID = sid,
+							})
+						end
+						break
+					end
+				end
+			end
+			table.sort(list, function(a, b) return a.label < b.label end)
+		end
+	end
+
+	local query = (searchText or ""):lower():gsub("^%s*(.-)%s*$", "%1")
+	if query ~= "" then
+		local filtered = {}
+		for _, entry in ipairs(list) do
+			local matched = false
+			if (entry.label or entry.name or ""):lower():find(query, 1, true) then matched = true end
+			if not matched and (entry.rarity == "WWUNIQUE" or entry.rarity == "WWLEGENDARY") then
+				if query == "ww" or ("weavers will"):find(query, 1, true) or ("weaver's will"):find(query, 1, true) then
+					matched = true
+				end
+			end
+			if not matched and entry.category == "basic" and entry.base and entry.base.implicits then
+				for _, implText in ipairs(entry.base.implicits) do
+					local cleaned = H.cleanImplicitText(implText)
+					if cleaned and cleaned:lower():find(query, 1, true) then matched = true; break end
+				end
+			end
+			if not matched then
+				local modData = (entry.category == "unique" or entry.category == "ww") and entry.uniqueData
+				             or (entry.category == "set" and entry.setData)
+				if modData then
+					if modData.mods then
+						for _, modText in ipairs(modData.mods) do
+							if modText:lower():find(query, 1, true) then matched = true; break end
+						end
+					end
+					if not matched and modData.set then
+						if modData.set.name and modData.set.name:lower():find(query, 1, true) then
+							matched = true
+						end
+						if not matched and modData.set.bonus then
+							for _, bonusText in pairs(modData.set.bonus) do
+								if tostring(bonusText):lower():find(query, 1, true) then matched = true; break end
+							end
+						end
+					end
+				end
+			end
+			if matched then t_insert(filtered, entry) end
+		end
+		list = filtered
+	end
+
+	return list
 end
 
 function H.buildOrderedTypeList(dataTypeList)
