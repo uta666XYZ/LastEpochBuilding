@@ -22,7 +22,7 @@ local ConfigTabClass = newClass("ConfigTab", "UndoHandler", "ControlHost", "Cont
 	self.placeholder = { }
 	self.defaultState = { }
 	
-	self.enemyLevel = 1
+	self.enemyLevel = 100
 
 	self.sectionList = { }
 	self.varControls = { }
@@ -851,7 +851,7 @@ function ConfigTabClass:UpdateLevel()
 	if input.enemyLevel and input.enemyLevel > 0 then
 		self.enemyLevel = input.enemyLevel
 	else
-		self.enemyLevel = self.build.characterLevel
+		self.enemyLevel = 100
 	end
 	self.enemyLevel = m_max(m_min(self.enemyLevel, 100), 1)
 end

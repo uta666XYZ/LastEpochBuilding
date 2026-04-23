@@ -191,4 +191,76 @@ describe("TestModParse", function()
 
         assert.are.equals(17, build.configTab.modList:Sum("BASE", {flags = ModFlag.Hit}, "ChanceToTriggerOnHit_Ailment_Bleed"))
     end)
+
+    -- "Depending on Area Level" scaling
+    -- Formula: effective = min(rolled * min(areaLevel, 75) / 75, cap)
+    -- where cap = rolled for single-value form, or explicit Z for "to Z%" form.
+    local function approxEq(actual, expected, tol)
+        tol = tol or 0.01
+        assert.is_true(math.abs(actual - expected) < tol,
+            "expected ~" .. tostring(expected) .. " got " .. tostring(actual))
+    end
+
+    describe("depending on area level", function()
+        it("less damage single-value at area level 75 reaches rolled value", function()
+            build.configTab.input.enemyLevel = 75
+            build.configTab.input.customMods = "50% less Damage depending on Area Level for You and your Minions"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            approxEq(build.configTab.modList:Sum("MORE", nil, "Damage"), -50)
+        end)
+
+        it("less damage single-value at partial area level scales linearly", function()
+            build.configTab.input.enemyLevel = 37
+            build.configTab.input.customMods = "50% less Damage depending on Area Level for You and your Minions"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            -- effective = 50/75 * 37 ≈ 24.6667
+            approxEq(build.configTab.modList:Sum("MORE", nil, "Damage"), -50 * 37 / 75)
+        end)
+
+        it("less damage area level clamps at 75", function()
+            build.configTab.input.enemyLevel = 100
+            build.configTab.input.customMods = "50% less Damage depending on Area Level for You and your Minions"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            -- Mult clamped at 75, so effective = 50 even at area level 100.
+            approxEq(build.configTab.modList:Sum("MORE", nil, "Damage"), -50)
+        end)
+
+        it("more damage taken single-value at area level 75", function()
+            build.configTab.input.enemyLevel = 75
+            build.configTab.input.customMods = "100% more Damage Taken depending on Area Level for You and your Minions"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            approxEq(build.configTab.modList:Sum("MORE", nil, "DamageTaken"), 100)
+        end)
+
+        it("'X to Y' ranged form caps at Y at high area level (Tier 8)", function()
+            build.configTab.input.enemyLevel = 75
+            build.configTab.input.customMods = "120% to 75% less Damage depending on Area Level for You and your Minions"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            -- rolled=120, cap=75, areaLevel=75 -> min(120/75 * 75, 75) = min(120, 75) = 75
+            approxEq(build.configTab.modList:Sum("MORE", nil, "Damage"), -75)
+        end)
+
+        it("'X to Y' ranged form caps at Y at mid area level (Tier 8)", function()
+            build.configTab.input.enemyLevel = 50
+            build.configTab.input.customMods = "120% to 75% less Damage depending on Area Level for You and your Minions"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            -- rolled=120, cap=75, areaLevel=50 -> min(120/75 * 50, 75) = min(80, 75) = 75
+            approxEq(build.configTab.modList:Sum("MORE", nil, "Damage"), -75)
+        end)
+
+        it("'X to Y' ranged form below cap at low area level", function()
+            build.configTab.input.enemyLevel = 30
+            build.configTab.input.customMods = "120% to 75% less Damage depending on Area Level for You and your Minions"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            -- rolled=120, cap=75, areaLevel=30 -> min(120/75 * 30, 75) = min(48, 75) = 48
+            approxEq(build.configTab.modList:Sum("MORE", nil, "Damage"), -48)
+        end)
+    end)
 end)
