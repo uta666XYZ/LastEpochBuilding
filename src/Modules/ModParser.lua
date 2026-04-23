@@ -975,8 +975,21 @@ specialModList["^%+?([%d%.]+)%% chance to inflict (.+) on kill$"] = ailmentApply
 specialModList["^%+?([%d%.]+)%% chance to inflict (.+) on crit$"] = ailmentApplyHandler
 specialModList["^%+?([%d%.]+)%% chance to inflict (.+) on (.+) hit$"] = ailmentApplyHandler2
 
--- Resource conversion / spend-gained (e.g. "40% of Mana Spent Gained as Ward")
-specialModList["^%+?([%d%.]+)%% of (.+) spent gained as (.+)$"] = nsAny
+-- Resource conversion / spend-gained
+-- DPS-integrated: "X% of Mana Spent Gained as Ward" emits ManaSpentGainedAsWard,
+-- which CalcPerform consumes after offence computes ManaPerSecondCost to add to
+-- WardPerSecond. Unknown resource/target combos fall through to nsAny for
+-- recognition-only (keeps existing Obsidian notes / tests green).
+local function spendGainedHandler(num, _, resource, target)
+	if resource and target then
+		local r, t = resource:lower(), target:lower()
+		if r == "mana" and t == "ward" then
+			return { mod("ManaSpentGainedAsWard", "BASE", num) }
+		end
+	end
+	return nsAny(num)
+end
+specialModList["^%+?([%d%.]+)%% of (.+) spent gained as (.+)$"] = spendGainedHandler
 specialModList["^%+?([%d%.]+)%% of (.+) gained as (.+)$"] = nsAny
 specialModList["^%+?([%d%.]+)%% of (.+) converted to (.+)$"] = nsAny
 
