@@ -380,4 +380,39 @@ describe("TestModParse", function()
             build.configTab.modList.multipliers["EquippedWeaverItem"] = nil
         end)
     end)
+
+    describe("per arrow/projectile scaling", function()
+        it("increased damage per arrow with Multishot — skill-gated + multiplier", function()
+            build.configTab.input.customMods = "11% Increased Damage per arrow with Multishot"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            -- No multiplier, no skill cfg: zero
+            assert.are.equals(0, build.configTab.modList:Sum("INC", nil, "Damage"))
+            -- Multiplier set but skill mismatch: still zero (SkillName gate)
+            build.configTab.modList.multipliers["ArrowsWithMultishot"] = 5
+            assert.are.equals(0, build.configTab.modList:Sum("INC", { skillName = "Volley" }, "Damage"))
+            -- Multishot context: 11 * 5 = 55
+            assert.are.equals(55, build.configTab.modList:Sum("INC", { skillName = "Multishot" }, "Damage"))
+            build.configTab.modList.multipliers["ArrowsWithMultishot"] = nil
+        end)
+
+        it("increased area per Projectile scales with ProjectileCountConfig multiplier", function()
+            build.configTab.input.customMods = "35% Increased Area per Projectile"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            assert.are.equals(0, build.configTab.modList:Sum("INC", nil, "AreaOfEffect"))
+            build.configTab.modList.multipliers["ProjectileCountConfig"] = 3
+            assert.are.equals(105, build.configTab.modList:Sum("INC", nil, "AreaOfEffect"))
+            build.configTab.modList.multipliers["ProjectileCountConfig"] = nil
+        end)
+
+        it("mana cost per Additional Totem Summoned scales with AdditionalTotem multiplier", function()
+            build.configTab.input.customMods = "+15 Mana Cost per Additional Totem Summoned"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            build.configTab.modList.multipliers["AdditionalTotem"] = 2
+            assert.are.equals(30, build.configTab.modList:Sum("BASE", nil, "ManaCost"))
+            build.configTab.modList.multipliers["AdditionalTotem"] = nil
+        end)
+    end)
 end)

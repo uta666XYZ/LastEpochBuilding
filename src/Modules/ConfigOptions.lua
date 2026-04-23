@@ -216,6 +216,15 @@ local options = {
 	{ var = "multiplierEquippedWeaverItem", type = "count", label = "# of Equipped Weaver Items:", ifMult = "EquippedWeaverItem", tooltip = "Number of equipped Weaver items. Used for 'per equipped Weaver Item' modifiers.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Multiplier:EquippedWeaverItem", "BASE", val, "Config")
 	end },
+	{ var = "multiplierArrowsWithMultishot", type = "count", label = "# of Arrows with Multishot:", ifMult = "ArrowsWithMultishot", tooltip = "Number of arrows fired by Multishot (base 5 + passives/items). Used for 'per arrow with Multishot' modifiers.", apply = function(val, modList, enemyModList)
+		modList:NewMod("Multiplier:ArrowsWithMultishot", "BASE", val, "Config", { type = "Condition", var = "Combat" })
+	end },
+	{ var = "multiplierProjectileCountConfig", type = "count", label = "# of Projectiles (generic):", ifMult = "ProjectileCountConfig", tooltip = "Generic projectile count for 'per Projectile' modifiers on your main skill.\nSet to your main skill's typical projectile count.", apply = function(val, modList, enemyModList)
+		modList:NewMod("Multiplier:ProjectileCountConfig", "BASE", val, "Config", { type = "Condition", var = "Combat" })
+	end },
+	{ var = "multiplierAdditionalTotem", type = "count", label = "# of Additional Totems:", ifMult = "AdditionalTotem", tooltip = "Number of Totems beyond the baseline for 'per Additional Totem Summoned' cost modifiers.", apply = function(val, modList, enemyModList)
+		modList:NewMod("Multiplier:AdditionalTotem", "BASE", val, "Config", { type = "Condition", var = "Combat" })
+	end },
 	{ var = "multiplierContemptStacks", type = "count", label = "Contempt Stacks:", tooltip = "+10% All Resistances and 10% more Armor per stack. Max 5.", apply = function(val, modList, enemyModList)
 		val = math.min(val, 5)
 		for _, res in ipairs({"FireResist", "LightningResist", "ColdResist", "PhysicalResist", "PoisonResist", "NecroticResist", "VoidResist"}) do
