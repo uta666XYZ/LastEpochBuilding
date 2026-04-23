@@ -447,21 +447,13 @@ function CraftingPopupClass:UpdateSlotValueEdits(slotKey)
 	local st = self.affixState[slotKey]
 	for i = 1, MAX_MOD_LINES do
 		local valCtrl = self.controls[slotKey .. "Val" .. i]
-		if valCtrl and valCtrl.SetText then
+		if valCtrl then
 			if i <= info.count and hasRange(info.lines[i]) then
 				local range = st.ranges[i] or 128
-				local val = computeModValue(info.lines[i], range)
-				if val then
-					valCtrl:SetText(formatModValue(info.lines[i], val))
-				else
-					valCtrl:SetText("")
-				end
-				local precision = getModPrecision(info.lines[i])
-				if precision <= 1 then valCtrl.numberInc = 1
-				elseif precision <= 10 then valCtrl.numberInc = 0.1
-				else valCtrl.numberInc = 0.01 end
+				-- Write slider val directly (bypasses changeFunc; no rebuild triggered).
+				valCtrl.val = m_max(0, m_min(1, range / 255))
 			else
-				valCtrl:SetText("")
+				valCtrl.val = 0.5
 			end
 		end
 	end
@@ -756,28 +748,18 @@ function CraftingPopupClass:BuildControls()
 					return wrapForLabel(col .. computed, AFFIX_LINE_W, 13)
 				end
 
-				controls[valKey] = new("EditControl", {"TOPLEFT", self, "TOPLEFT"}, LP_VAL_X,
+				controls[valKey] = new("SliderControl", {"TOPLEFT", self, "TOPLEFT"}, LP_VAL_X,
 					function()
 						local ey = self_ref.editY[slotKey]
 						local cy = ey and ey.ctrl and ey.ctrl[li]
-						return cy and (cy - 1) or 0
-					end, LP_VAL_W, 18, "", nil, "^%-%d%.", nil,
-					function(buf)
+						return cy and (cy + 3) or 0
+					end, LP_VAL_W, 12,
+					function(val)
 						if self_ref.rebuilding then return end
-						local val = tonumber(buf)
-						if not val then return end
 						local info = self_ref.slotModInfo[slotKey]
 						if li > info.count then return end
-						local line = info.lines[li]
-						val = clampModValue(line, val)
-						local range = reverseModRange(line, val)
+						local range = m_floor(val * 255 + 0.5)
 						self_ref.affixState[slotKey].ranges[li] = range
-						local actual = computeModValue(line, range)
-						if actual then
-							self_ref.rebuilding = true
-							controls[valKey]:SetText(formatModValue(line, actual))
-							self_ref.rebuilding = false
-						end
 						self_ref:RebuildEditItem()
 					end)
 				controls[valKey].shown = function()
@@ -787,19 +769,21 @@ function CraftingPopupClass:BuildControls()
 					local info = self_ref.slotModInfo[slotKey]
 					return li <= info.count and hasRange(info.lines[li])
 				end
-				controls[valKey].numberInc = 1
-				controls[valKey].tooltipFunc = function(tooltip, mode)
-					if mode == "OUT" then return end
+				controls[valKey].tooltipFunc = function(tooltip, hoverVal)
 					tooltip:Clear()
 					local info = self_ref.slotModInfo[slotKey]
 					if li > info.count then return end
 					local line = info.lines[li]
+					local hoverRange = m_floor((hoverVal or 0) * 255 + 0.5)
+					local numeric = computeModValue(line, hoverRange)
+					if numeric then
+						tooltip:AddLine(14, "^7" .. formatModValue(line, numeric))
+					end
 					local min, max = extractMinMax(line)
 					if min and max then
-						tooltip:AddLine(14, "^7Range: " .. tostring(min) .. " - " .. tostring(max))
+						tooltip:AddLine(12, "^xAAAAAA" .. "Range: " .. tostring(min) .. " - " .. tostring(max))
 					end
 				end
-				controls[valKey].tooltipPropagated = true
 			end
 
 			-- Tier label
