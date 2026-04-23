@@ -100,6 +100,32 @@ function itemLib.hasRange(line)
     return line:find("%(%-?%d+%.?%d*%-%-?%d+%.?%d*%)");
 end
 
+-- Map ItemClass.type -> slotOverrides key (tunklab-style slug). Returns nil
+-- for types without a distinct slot-variant table (e.g. Weapon, Idol).
+local typeToSlotKey = {
+    ["Helmet"]      = "helmet",
+    ["Body Armor"]  = "body_armor",
+    ["Belt"]        = "belt",
+    ["Boots"]       = "boots",
+    ["Gloves"]      = "gloves",
+    ["Amulet"]      = "amulet",
+    ["Ring"]        = "ring",
+    ["Relic"]       = "relic",
+    ["Shield"]      = "shield",
+}
+function itemLib.slotKeyForType(itemType)
+    return typeToSlotKey[itemType]
+end
+
+-- Pick the mod-line array that matches the item's slot. Falls back to the
+-- default mod table when no override is defined.
+function itemLib.modLinesForSlot(mod, slotKey)
+    if slotKey and mod.slotOverrides and mod.slotOverrides[slotKey] then
+        return mod.slotOverrides[slotKey]
+    end
+    return mod
+end
+
 function itemLib.formatModLine(modLine, dbMode, altarBoost)
     local displayScalar = modLine.displayValueScalar or modLine.valueScalar
     local line = (not dbMode and modLine.range and itemLib.applyRange(modLine.line, modLine.range, displayScalar, modLine.rounding)) or modLine.line
