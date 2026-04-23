@@ -499,4 +499,30 @@ describe("TestModParse", function()
             assert.is_true(found)
         end)
     end)
+
+    describe("+N to <skill> skill level", function()
+        it("+N to <skill> emits SkillLevel tagged with SkillName", function()
+            build.configTab.input.customMods = "+3 to Flame Ward"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            -- Untagged sum (global) is 0: mod is gated by SkillName tag
+            assert.are.equals(0, build.configTab.modList:Sum("BASE", nil, "SkillLevel"))
+            -- With matching skill cfg: value applies
+            local cfg = { skillName = "Flame Ward" }
+            assert.are.equals(3, build.configTab.modList:Sum("BASE", cfg, "SkillLevel"))
+            -- With non-matching skill cfg: no bonus
+            local cfg2 = { skillName = "Fireball" }
+            assert.are.equals(0, build.configTab.modList:Sum("BASE", cfg2, "SkillLevel"))
+        end)
+
+        it("+N to non-skill name (e.g. Strength) falls through to generic stat mod", function()
+            build.configTab.input.customMods = "+5 to Strength"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            -- Should NOT emit SkillLevel
+            assert.are.equals(0, build.configTab.modList:Sum("BASE", nil, "SkillLevel"))
+            -- Should apply as Str (generic parse chain)
+            assert.are.equals(5, build.configTab.modList:Sum("BASE", nil, "Str"))
+        end)
+    end)
 end)
