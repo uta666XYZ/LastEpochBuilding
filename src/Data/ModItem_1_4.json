@@ -4684,7 +4684,12 @@
 			21,
 			22
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}(9-26)% increased Health Regen"
+			}
+		}
 	},
 	"22_1": {
 		"affix": "of Regrowth",
@@ -4703,7 +4708,12 @@
 			21,
 			22
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}(27-43)% increased Health Regen"
+			}
+		}
 	},
 	"22_2": {
 		"affix": "of Regrowth",
@@ -4722,7 +4732,12 @@
 			21,
 			22
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}(45-62)% increased Health Regen"
+			}
+		}
 	},
 	"22_3": {
 		"affix": "of Regrowth",
@@ -4741,7 +4756,12 @@
 			21,
 			22
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}(63-80)% increased Health Regen"
+			}
+		}
 	},
 	"22_4": {
 		"affix": "of Regrowth",
@@ -4760,7 +4780,12 @@
 			21,
 			22
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}(81-123)% increased Health Regen"
+			}
+		}
 	},
 	"22_5": {
 		"affix": "of Regrowth",
@@ -4779,7 +4804,12 @@
 			21,
 			22
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}(150-194)% increased Health Regen"
+			}
+		}
 	},
 	"22_6": {
 		"affix": "of Regrowth",
@@ -4798,7 +4828,12 @@
 			21,
 			22
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}(195-243)% increased Health Regen"
+			}
+		}
 	},
 	"22_7": {
 		"affix": "of Regrowth",
@@ -4817,7 +4852,12 @@
 			21,
 			22
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}(390-488)% increased Health Regen"
+			}
+		}
 	},
 	"23_0": {
 		"affix": "Conduit's",
@@ -5574,7 +5614,15 @@
 			4,
 			2
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}(7-14)% increased Minion Damage"
+			},
+			"catalyst": {
+				"1": "{rounding:Integer}(7-14)% increased Minion Damage"
+			}
+		}
 	},
 	"26_1": {
 		"affix": "Commander's",
@@ -5595,7 +5643,15 @@
 			4,
 			2
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}(15-25)% increased Minion Damage"
+			},
+			"catalyst": {
+				"1": "{rounding:Integer}(15-25)% increased Minion Damage"
+			}
+		}
 	},
 	"26_2": {
 		"affix": "Commander's",
@@ -5616,7 +5672,15 @@
 			4,
 			2
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}(26-35)% increased Minion Damage"
+			},
+			"catalyst": {
+				"1": "{rounding:Integer}(26-35)% increased Minion Damage"
+			}
+		}
 	},
 	"26_3": {
 		"affix": "Commander's",
@@ -5637,7 +5701,15 @@
 			4,
 			2
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}(36-46)% increased Minion Damage"
+			},
+			"catalyst": {
+				"1": "{rounding:Integer}(36-46)% increased Minion Damage"
+			}
+		}
 	},
 	"26_4": {
 		"affix": "Commander's",
@@ -5658,7 +5730,15 @@
 			4,
 			2
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}(47-70)% increased Minion Damage"
+			},
+			"catalyst": {
+				"1": "{rounding:Integer}(47-70)% increased Minion Damage"
+			}
+		}
 	},
 	"26_5": {
 		"affix": "Commander's",
@@ -5679,7 +5759,15 @@
 			4,
 			2
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}(88-111)% increased Minion Damage"
+			},
+			"catalyst": {
+				"1": "{rounding:Integer}(88-111)% increased Minion Damage"
+			}
+		}
 	},
 	"26_6": {
 		"affix": "Commander's",
@@ -5700,7 +5788,15 @@
 			4,
 			2
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}(112-140)% increased Minion Damage"
+			},
+			"catalyst": {
+				"1": "{rounding:Integer}(112-140)% increased Minion Damage"
+			}
+		}
 	},
 	"26_7": {
 		"affix": "Commander's",
@@ -5721,7 +5817,15 @@
 			4,
 			2
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}(225-281)% increased Minion Damage"
+			},
+			"catalyst": {
+				"1": "{rounding:Integer}(225-281)% increased Minion Damage"
+			}
+		}
 	},
 	"27_0": {
 		"affix": "of Lucidity",
@@ -6169,7 +6273,15 @@
 			24,
 			18
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}(7-14)% increased Physical Damage"
+			},
+			"shield": {
+				"1": "{rounding:Integer}(7-14)% increased Physical Damage"
+			}
+		}
 	},
 	"30_1": {
 		"affix": "Warrior's",
@@ -6203,7 +6315,15 @@
 			24,
 			18
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}(15-25)% increased Physical Damage"
+			},
+			"shield": {
+				"1": "{rounding:Integer}(15-25)% increased Physical Damage"
+			}
+		}
 	},
 	"30_2": {
 		"affix": "Warrior's",
@@ -6237,7 +6357,15 @@
 			24,
 			18
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}(26-35)% increased Physical Damage"
+			},
+			"shield": {
+				"1": "{rounding:Integer}(26-35)% increased Physical Damage"
+			}
+		}
 	},
 	"30_3": {
 		"affix": "Warrior's",
@@ -6271,7 +6399,15 @@
 			24,
 			18
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}(36-46)% increased Physical Damage"
+			},
+			"shield": {
+				"1": "{rounding:Integer}(36-46)% increased Physical Damage"
+			}
+		}
 	},
 	"30_4": {
 		"affix": "Warrior's",
@@ -6305,7 +6441,15 @@
 			24,
 			18
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}(47-70)% increased Physical Damage"
+			},
+			"shield": {
+				"1": "{rounding:Integer}(47-70)% increased Physical Damage"
+			}
+		}
 	},
 	"30_5": {
 		"affix": "Warrior's",
@@ -6339,7 +6483,15 @@
 			24,
 			18
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}(88-111)% increased Physical Damage"
+			},
+			"shield": {
+				"1": "{rounding:Integer}(88-111)% increased Physical Damage"
+			}
+		}
 	},
 	"30_6": {
 		"affix": "Warrior's",
@@ -6373,7 +6525,15 @@
 			24,
 			18
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}(112-140)% increased Physical Damage"
+			},
+			"shield": {
+				"1": "{rounding:Integer}(112-140)% increased Physical Damage"
+			}
+		}
 	},
 	"30_7": {
 		"affix": "Warrior's",
@@ -6407,7 +6567,15 @@
 			24,
 			18
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}(225-281)% increased Physical Damage"
+			},
+			"shield": {
+				"1": "{rounding:Integer}(225-281)% increased Physical Damage"
+			}
+		}
 	},
 	"31_0": {
 		"affix": "of the Turtle",
@@ -6860,7 +7028,18 @@
 			0,
 			1
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}+(7-12) Mana"
+			},
+			"catalyst": {
+				"1": "{rounding:Integer}+(7-12) Mana"
+			},
+			"body_armor": {
+				"1": "{rounding:Integer}+(9-15) Mana"
+			}
+		}
 	},
 	"34_1": {
 		"affix": "Manafused",
@@ -6880,7 +7059,18 @@
 			0,
 			1
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}+(13-20) Mana"
+			},
+			"catalyst": {
+				"1": "{rounding:Integer}+(13-20) Mana"
+			},
+			"body_armor": {
+				"1": "{rounding:Integer}+(17-26) Mana"
+			}
+		}
 	},
 	"34_2": {
 		"affix": "Manafused",
@@ -6900,7 +7090,18 @@
 			0,
 			1
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}+(21-29) Mana"
+			},
+			"catalyst": {
+				"1": "{rounding:Integer}+(21-29) Mana"
+			},
+			"body_armor": {
+				"1": "{rounding:Integer}+(27-38) Mana"
+			}
+		}
 	},
 	"34_3": {
 		"affix": "Manafused",
@@ -6920,7 +7121,18 @@
 			0,
 			1
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}+(30-41) Mana"
+			},
+			"catalyst": {
+				"1": "{rounding:Integer}+(30-41) Mana"
+			},
+			"body_armor": {
+				"1": "{rounding:Integer}+(39-53) Mana"
+			}
+		}
 	},
 	"34_4": {
 		"affix": "Manafused",
@@ -6940,7 +7152,18 @@
 			0,
 			1
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}+(42-59) Mana"
+			},
+			"catalyst": {
+				"1": "{rounding:Integer}+(42-59) Mana"
+			},
+			"body_armor": {
+				"1": "{rounding:Integer}+(54-75) Mana"
+			}
+		}
 	},
 	"34_5": {
 		"affix": "Manafused",
@@ -6960,7 +7183,18 @@
 			0,
 			1
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}+(82-105) Mana"
+			},
+			"catalyst": {
+				"1": "{rounding:Integer}+(82-105) Mana"
+			},
+			"body_armor": {
+				"1": "{rounding:Integer}+(105-135) Mana"
+			}
+		}
 	},
 	"34_6": {
 		"affix": "Manafused",
@@ -6980,7 +7214,18 @@
 			0,
 			1
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}+(106-140) Mana"
+			},
+			"catalyst": {
+				"1": "{rounding:Integer}+(106-140) Mana"
+			},
+			"body_armor": {
+				"1": "{rounding:Integer}+(137-180) Mana"
+			}
+		}
 	},
 	"34_7": {
 		"affix": "Manafused",
@@ -7000,7 +7245,18 @@
 			0,
 			1
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}+(222-281) Mana"
+			},
+			"catalyst": {
+				"1": "{rounding:Integer}+(222-281) Mana"
+			},
+			"body_armor": {
+				"1": "{rounding:Integer}+(285-360) Mana"
+			}
+		}
 	},
 	"35_0": {
 		"affix": "Icebound",
