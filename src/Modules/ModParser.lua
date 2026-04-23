@@ -433,6 +433,9 @@ local modTagList = {
 	["per active shadow"] = { tag = { type = "Multiplier", var = "ActiveShadow" } },
 	["per equipped omen idol"] = { tag = { type = "Multiplier", var = "EquippedOmenIdol" } },
 	["per equipped weaver item"] = { tag = { type = "Multiplier", var = "EquippedWeaverItem" } },
+	-- Per-projectile / per-additional-totem global multipliers (fed by Config tab)
+	["per projectile"] = { tag = { type = "Multiplier", var = "ProjectileCountConfig" } },
+	["per additional totem summoned"] = { tag = { type = "Multiplier", var = "AdditionalTotem" } },
 	["if you[' ]h?a?ve dealt a critical strike recently"] = { tag = { type = "Condition", var = "CritRecently" } },
 	["on kill"] = { tag = { type = "Condition", var = "KilledRecently" } },
 	["on melee kill"] = { flags = ModFlag.WeaponMelee, tag = { type = "Condition", var = "KilledRecently" } },
@@ -1048,12 +1051,32 @@ specialModList["^%+?([%d%.]+)%% less (.+) for (.+) per active (.+)$"] = nsAny
 -- handlers ("while wielding a <weapon>") already cover the DPS-integrated case. The
 -- "if wielding" phrasing in data generally normalises to the same condition.
 
--- 11. Per-projectile scaling ("per arrow with Multishot") — anchored on concrete
--- per-noun tokens to avoid shadowing generic per-tag handlers.
+-- 11. Per-projectile scaling ("per arrow with Multishot") — DPS-integrated for the
+-- Multishot subset found in affix data (every cached instance is Multishot-only).
+-- Mechanic: Multiplier:ArrowsWithMultishot is fed by the Config tab ("# of Arrows
+-- with Multishot"), and the mod is also skill-gated so it only scales Multishot
+-- damage. Unknown skill/stat combos still fall through to nsAny for recognition.
+for _lowerAr, _canonicalAr in pairs(skillNameByLower) do
+	if not skillNameBlacklist[_lowerAr] then
+		local _escAr = escPat(_lowerAr)
+		local _multVar = "ArrowsWith" .. _canonicalAr:gsub("%s+", "")
+		specialModList["^%+?([%d%.]+)%% increased damage per arrow with " .. _escAr .. "$"] = function(num)
+			return { mod("Damage", "INC", num, "", 0, 0, { type = "SkillName", skillName = _canonicalAr }, { type = "Multiplier", var = _multVar }) }
+		end
+		specialModList["^%+?([%d%.]+)%% increased damage per projectile with " .. _escAr .. "$"] = function(num)
+			return { mod("Damage", "INC", num, "", 0, 0, { type = "SkillName", skillName = _canonicalAr }, { type = "Multiplier", var = _multVar }) }
+		end
+	end
+end
+-- Fallback: unknown stat/skill combos still get recognised.
 specialModList["^%+?([%d%.]+)%% increased (.+) per arrow with (.+)$"] = nsAny
 specialModList["^%+?([%d%.]+)%% increased (.+) per projectile with (.+)$"] = nsAny
 specialModList["^%+?([%d%.]+)%% reduced (.+) per arrow with (.+)$"] = nsAny
 specialModList["^%+?([%d%.]+)%% reduced (.+) per projectile with (.+)$"] = nsAny
+
+-- 11b. "Per Arrow Before Limit" — recognition only (capped multiplier, depends on
+-- skill-specific arrow-limit mechanics not yet modelled).
+specialModList["^%+?([%d%.]+)%% (.+) per arrow before limit$"] = nsAny
 
 -- 12. Per forged weapon (Forge Weapon summon count)
 specialModList["^%+?([%d%.]+)%% (.+) per forged weapon$"] = nsAny

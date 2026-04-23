@@ -469,7 +469,6 @@ c["+10% Area With Two Handed Weapon"]={{[1]={flags=0,keywordFlags=0,name="AreaOf
 c["+10% Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=10}},nil}
 c["+10% Armor On Heal"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=10}},"  On Heal "}
 c["+10% Armor Shred Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_ArmourShred",type="BASE",value=10}},nil}
-c["+10% Armor Shred Chance Per Arrow Before Limit"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_ArmourShred",type="BASE",value=10}},"  Per Arrow Before Limit "}
 c["+10% Armor Shred Duration"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=10}},"  Shred Duration "}
 c["+10% Armor Shred Effect"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=10}},"  Shred Effect "}
 c["+10% Armour Shred Chance"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=10}},"  Shred Chance "}
@@ -3200,7 +3199,6 @@ c["+35 Melee Physical Damage"]={{[1]={flags=0,keywordFlags=512,name="PhysicalDam
 c["+35 Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=35}},nil}
 c["+35 Ward gained when you cast Flame Ward"]={{[1]={[1]={skillName="Flame Ward",type="SkillName"},flags=0,keywordFlags=0,name="Ward",type="BASE",value=35}},"  gained when you cast  "}
 c["+35% Aftershock Area"]={{[1]={[1]={skillName="Shock",type="SkillName"},flags=0,keywordFlags=0,name="AreaOfEffect",type="BASE",value=35}}," After  "}
-c["+35% Area per Projectile"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="BASE",value=35}},"  per Projectile "}
 c["+35% Attached Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=35}}," Attached  "}
 c["+35% Block Chance"]={{[1]={flags=0,keywordFlags=0,name="BlockChance",type="BASE",value=35}},nil}
 c["+35% Chance to Ignite on Hit"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Ignite",type="BASE",value=35}},nil}
@@ -4072,7 +4070,6 @@ c["+50% Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=5
 c["+50% Damage At Full Charge"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=50}},"  At Full Charge "}
 c["+50% Damage Per Second Charged"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=50}},"  Per Second Charged "}
 c["+50% Damage With Tri-Elemental"]={{[1]={flags=0,keywordFlags=14,name="Damage",type="MORE",value=50}},"  With Tri- "}
-c["+50% Damage per Projectile"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=50}},"  per Projectile "}
 c["+50% Damage to Marked Targets"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=50}},"  to Marked Targets "}
 c["+50% Damage with Three Minions"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="MORE",value=50}}}},"  with Three s "}
 c["+50% Detonations Area"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="BASE",value=50}}," Detonations  "}
@@ -6119,7 +6116,6 @@ c["14% Increased Bow Attack Speed for 3 seconds when you use a Bow Attack (10 se
 c["14% Increased Cooldown Recovery Speed"]={{[1]={flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=14}},nil}
 c["14% Increased Cooldown Recovery Speed for Summon Storm Totem"]={{[1]={[1]={skillName="Summon Storm Totem",type="SkillName"},flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=14}},"  for  "}
 c["14% Increased Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=14}},nil}
-c["14% Increased Damage per arrow with Multishot"]={{[1]={[1]={skillName="Multishot",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="INC",value=14}},"  per arrow with  "}
 c["14% Increased Damage while wielding a Bow"]={{[1]={[1]={type="Condition",var="UsingBow"},flags=0,keywordFlags=0,name="Damage",type="INC",value=14}},nil}
 c["14% Increased Electrify Duration "]={{[1]={[1]={skillName="Electrify",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=14}},nil}
 c["14% Increased Mana regeneration while you control a minion"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=14}}}}," eration while you control a  "}
@@ -6473,7 +6469,6 @@ c["18% Increased Cooldown Recovery Speed for Lunge"]={{[1]={[1]={skillName="Lung
 c["18% Increased Cooldown Recovery Speed for Shift"]={{[1]={[1]={skillName="Shift",type="SkillName"},flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=18}},"  for  "}
 c["18% Increased Cooldown Recovery Speed for Teleport"]={{[1]={[1]={skillName="Teleport",type="SkillName"},flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=18}},"  for  "}
 c["18% Increased Cooldown Recovery Speed for Transplant"]={{[1]={[1]={skillName="Transplant",type="SkillName"},flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=18}},"  for  "}
-c["18% Increased Damage per arrow with Multishot"]={{[1]={[1]={skillName="Multishot",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="INC",value=18}},"  per arrow with  "}
 c["18% Increased Electrify Duration "]={{[1]={[1]={skillName="Electrify",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=18}},nil}
 c["18% Increased Ignite Duration "]={{[1]={[1]={skillName="Ignite",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=18}},nil}
 c["18% Increased Mana regeneration while you control a minion"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=18}}}}," eration while you control a  "}
@@ -7660,7 +7655,6 @@ c["36% Chance to Slow Attackers"]={{[1]={flags=8388608,keywordFlags=0,name="Chan
 c["36% Increased Area for Infernal Shade per Active Dread Shade"]={{[1]={[1]={skillName="Infernal Shade",type="SkillName"},flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=36}},"  for  per Active Dread Shade "}
 c["36% Increased Attack and Cast Speed for Summoned Vines"]={{[1]={flags=0,keywordFlags=0,name="Speed",type="INC",value=36}},"  for Summoned Vines "}
 c["36% Increased Body Armor Drop Rate"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=36}}," Body  Drop Rate "}
-c["36% Increased Damage per arrow with Multishot"]={{[1]={[1]={skillName="Multishot",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="INC",value=36}},"  per arrow with  "}
 c["36% Increased Damage with Hammer Throw"]={{[1]={[1]={skillName="Hammer Throw",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="INC",value=36}},"  with  "}
 c["36% Increased Stun Duration"]={{[1]={flags=0,keywordFlags=0,name="EnemyStunDuration",type="INC",value=36}},nil}
 c["36% Increased damage with Smelter's Wrath"]={{[1]={[1]={skillName="Smelter's Wrath",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="INC",value=36}},"  with  "}
@@ -7826,7 +7820,6 @@ c["4% Increased Cooldown Recovery Speed"]={{[1]={flags=0,keywordFlags=0,name="Co
 c["4% Increased Crimson Shroud Duration "]={{[1]={[1]={skillName="Crimson Shroud",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=4}},nil}
 c["4% Increased Crit Chance Per Symbol"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=4}},"  Per Symbol "}
 c["4% Increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=4}},nil}
-c["4% Increased Damage per arrow with Multishot"]={{[1]={[1]={skillName="Multishot",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="INC",value=4}},"  per arrow with  "}
 c["4% Increased Damage while Dual Wielding"]={{[1]={[1]={type="Condition",var="DualWielding"},flags=0,keywordFlags=0,name="Damage",type="INC",value=4}},nil}
 c["4% Increased Damage while wielding a Bow"]={{[1]={[1]={type="Condition",var="UsingBow"},flags=0,keywordFlags=0,name="Damage",type="INC",value=4}},nil}
 c["4% Increased Dodge Rating while Dual Wielding"]={{[1]={[1]={type="Condition",var="DualWielding"},flags=0,keywordFlags=0,name="Evasion",type="INC",value=4}},nil}
@@ -8239,7 +8232,6 @@ c["5% Increased Crit Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",ty
 c["5% Increased Critical Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=5}},nil}
 c["5% Increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=5}},nil}
 c["5% Increased Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=5}},nil}
-c["5% Increased Damage per arrow with Multishot"]={{[1]={[1]={skillName="Multishot",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="INC",value=5}},"  per arrow with  "}
 c["5% Increased Damage while Dual Wielding"]={{[1]={[1]={type="Condition",var="DualWielding"},flags=0,keywordFlags=0,name="Damage",type="INC",value=5}},nil}
 c["5% Increased Damned Duration"]={{[1]={[1]={skillName="Damned",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=5}},nil}
 c["5% Increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=5}},nil}
@@ -8575,7 +8567,6 @@ c["6% Increased Damage While Transformed"]={{[1]={[1]={type="Condition",var="Tra
 c["6% Increased Damage With 1h Weapon "]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=6}},"  With 1h Weapon  "}
 c["6% Increased Damage With Bow"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="INC",value=6}},"  With  "}
 c["6% Increased Damage With Spear"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=6}},"  With Spear "}
-c["6% Increased Damage per arrow with Multishot"]={{[1]={[1]={skillName="Multishot",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="INC",value=6}},"  per arrow with  "}
 c["6% Increased Damage while Dual Wielding"]={{[1]={[1]={type="Condition",var="DualWielding"},flags=0,keywordFlags=0,name="Damage",type="INC",value=6}},nil}
 c["6% Increased Damage with Umbral Blades per stack of Dusk Shroud"]={{[1]={[1]={skillName="Umbral Blades",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="INC",value=6}},"  with  per stack of Dusk Shroud "}
 c["6% Increased Electrify Duration "]={{[1]={[1]={skillName="Electrify",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=6}},nil}
@@ -8804,7 +8795,6 @@ c["7% Increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="Cri
 c["7% Increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=7}},nil}
 c["7% Increased Damage Over Time Granted"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=7}},"  Granted "}
 c["7% Increased Damage Over Time While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=4096,keywordFlags=0,name="Damage",type="INC",value=7}},nil}
-c["7% Increased Damage per arrow with Multishot"]={{[1]={[1]={skillName="Multishot",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="INC",value=7}},"  per arrow with  "}
 c["7% Increased Damage while Dual Wielding"]={{[1]={[1]={type="Condition",var="DualWielding"},flags=0,keywordFlags=0,name="Damage",type="INC",value=7}},nil}
 c["7% Increased Damage while wielding a Bow"]={{[1]={[1]={type="Condition",var="UsingBow"},flags=0,keywordFlags=0,name="Damage",type="INC",value=7}},nil}
 c["7% Increased Elemental Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=7},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=7},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=7}},nil}
@@ -9218,7 +9208,6 @@ c["9% Increased Cooldown Recovery Speed"]={{[1]={flags=0,keywordFlags=0,name="Co
 c["9% Increased Cooldown Recovery Speed for Snap Freeze"]={{[1]={[1]={skillName="Snap Freeze",type="SkillName"},flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=9}},"  for  "}
 c["9% Increased Cooldown Recovery Speed for Teleport"]={{[1]={[1]={skillName="Teleport",type="SkillName"},flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=9}},"  for  "}
 c["9% Increased Crimson Shroud Duration "]={{[1]={[1]={skillName="Crimson Shroud",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=9}},nil}
-c["9% Increased Damage per arrow with Multishot"]={{[1]={[1]={skillName="Multishot",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="INC",value=9}},"  per arrow with  "}
 c["9% Increased Fire Aura Area"]={{[1]={[1]={skillName="Fire Aura",type="SkillName"},flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=9}},nil}
 c["9% Increased Ignite Duration"]={{[1]={[1]={skillName="Ignite",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=9}},nil}
 c["9% Increased Ignite Duration "]={{[1]={[1]={skillName="Ignite",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=9}},nil}
