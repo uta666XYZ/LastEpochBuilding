@@ -130,6 +130,11 @@
 	"1_0": {
 		"affix": "of Defense",
 		"1": "{rounding:Integer}(10-12)% increased Armor",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}(15-18)% increased Armor"
+			}
+		},
 		"level": 14,
 		"statOrderKey": 1,
 		"statOrder": [
@@ -148,6 +153,11 @@
 	"1_1": {
 		"affix": "of Defense",
 		"1": "{rounding:Integer}(13-16)% increased Armor",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}(20-24)% increased Armor"
+			}
+		},
 		"level": 14,
 		"statOrderKey": 1,
 		"statOrder": [
@@ -166,6 +176,11 @@
 	"1_2": {
 		"affix": "of Defense",
 		"1": "{rounding:Integer}(17-21)% increased Armor",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}(26-32)% increased Armor"
+			}
+		},
 		"level": 14,
 		"statOrderKey": 1,
 		"statOrder": [
@@ -184,6 +199,11 @@
 	"1_3": {
 		"affix": "of Defense",
 		"1": "{rounding:Integer}(22-26)% increased Armor",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}(33-39)% increased Armor"
+			}
+		},
 		"level": 14,
 		"statOrderKey": 1,
 		"statOrder": [
@@ -202,6 +222,11 @@
 	"1_4": {
 		"affix": "of Defense",
 		"1": "{rounding:Integer}(27-32)% increased Armor",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}(41-48)% increased Armor"
+			}
+		},
 		"level": 14,
 		"statOrderKey": 1,
 		"statOrder": [
@@ -6269,6 +6294,11 @@
 	"31_0": {
 		"affix": "of the Turtle",
 		"1": "{rounding:Integer}+(6-20) Armor",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(9-30) Armor"
+			}
+		},
 		"level": 0,
 		"statOrderKey": 31,
 		"statOrder": [
@@ -6288,6 +6318,11 @@
 	"31_1": {
 		"affix": "of the Turtle",
 		"1": "{rounding:Integer}+(21-35) Armor",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(32-53) Armor"
+			}
+		},
 		"level": 0,
 		"statOrderKey": 31,
 		"statOrder": [
@@ -6307,6 +6342,11 @@
 	"31_2": {
 		"affix": "of the Turtle",
 		"1": "{rounding:Integer}+(36-55) Armor",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(54-83) Armor"
+			}
+		},
 		"level": 0,
 		"statOrderKey": 31,
 		"statOrder": [
@@ -6326,6 +6366,11 @@
 	"31_3": {
 		"affix": "of the Turtle",
 		"1": "{rounding:Integer}+(56-80) Armor",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(84-120) Armor"
+			}
+		},
 		"level": 0,
 		"statOrderKey": 31,
 		"statOrder": [
@@ -6345,6 +6390,11 @@
 	"31_4": {
 		"affix": "of the Turtle",
 		"1": "{rounding:Integer}+(81-110) Armor",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(122-165) Armor"
+			}
+		},
 		"level": 0,
 		"statOrderKey": 31,
 		"statOrder": [
