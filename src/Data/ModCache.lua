@@ -2713,7 +2713,6 @@ c["+28% Chance to Poison on Spell Hit"]={{[1]={flags=8388608,keywordFlags=256,na
 c["+28% Chance to Shred Armor on Hit"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_ArmourShred",type="BASE",value=28}},nil}
 c["+28% Chance to Shred Armor on Spell Hit"]={{[1]={flags=8388608,keywordFlags=256,name="ChanceToTriggerOnHit_Ailment_ArmourShred",type="BASE",value=28}},"  on   "}
 c["+28% Chance to Slow on Spell Hit"]={{[1]={flags=8388608,keywordFlags=256,name="ChanceToTriggerOnHit_Ailment_Slow",type="BASE",value=28}},"  on   "}
-c["+28% Chance to inflict Bleed on Hit while at High Health"]={{[1]={[1]={skillName="Bleed",type="SkillName"},flags=8388608,keywordFlags=0,name="Life",type="BASE",value=28}}," to inflict   while at High  "}
 c["+28% Critical Strike Multiplier against Frozen Enemies"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="Frozen"},flags=0,keywordFlags=0,name="CritMultiplier",type="BASE",value=28}},nil}
 c["+28% Damage Over Time Penetration"]={{[1]={[1]={skillName="Net",type="SkillName"},flags=4096,keywordFlags=0,name="Damage",type="MORE",value=28}},"  Peration "}
 c["+28% Elemental Resistance for Totems"]={{[1]={flags=0,keywordFlags=0,name="FireResist",type="BASE",value=28},[2]={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=28},[3]={flags=0,keywordFlags=0,name="ColdResist",type="BASE",value=28}},"  for Totems "}
