@@ -192,6 +192,30 @@ local options = {
 	{ var = "multiplierActiveSymbols", type = "count", label = "# of Active Symbols:", tooltip = "Override for active Symbols of Hope (Paladin). Leave blank for auto (3 baseline + 'Maximum Symbols' passives).", apply = function(val, modList, enemyModList)
 		modList:NewMod("Multiplier:ActiveSymbol", "BASE", val, "Config")
 	end },
+	{ var = "multiplierActiveDreadShade", type = "count", label = "# of Active Dread Shades:", ifMult = "ActiveDreadShade", tooltip = "Number of active Dread Shades (Acolyte/Warlock). Used for 'per active Dread Shade' modifiers.", apply = function(val, modList, enemyModList)
+		modList:NewMod("Multiplier:ActiveDreadShade", "BASE", val, "Config", { type = "Condition", var = "Combat" })
+	end },
+	{ var = "multiplierActiveMaelstrom", type = "count", label = "# of Active Maelstrom Stacks:", ifMult = "ActiveMaelstrom", tooltip = "Number of active Maelstrom stacks (Shaman/Druid). Used for 'per active Maelstrom' modifiers.", apply = function(val, modList, enemyModList)
+		modList:NewMod("Multiplier:ActiveMaelstrom", "BASE", val, "Config", { type = "Condition", var = "Combat" })
+	end },
+	{ var = "multiplierActiveRune", type = "count", label = "# of Active Runes:", ifMult = "ActiveRune", tooltip = "Number of active Runes (Runemaster). Used for 'per active Rune' modifiers.", apply = function(val, modList, enemyModList)
+		modList:NewMod("Multiplier:ActiveRune", "BASE", val, "Config", { type = "Condition", var = "Combat" })
+	end },
+	{ var = "multiplierActiveWanderingSpirit", type = "count", label = "# of Active Wandering Spirits:", ifMult = "ActiveWanderingSpirit", tooltip = "Number of active Wandering Spirits (Warlock). Used for 'per active Wandering Spirit' modifiers.", apply = function(val, modList, enemyModList)
+		modList:NewMod("Multiplier:ActiveWanderingSpirit", "BASE", val, "Config", { type = "Condition", var = "Combat" })
+	end },
+	{ var = "multiplierActiveCrimsonShroud", type = "count", label = "# of Active Crimson Shrouds:", ifMult = "ActiveCrimsonShroud", tooltip = "Number of active Crimson Shrouds (Blademaster). Used for 'per active Crimson Shroud' modifiers.", apply = function(val, modList, enemyModList)
+		modList:NewMod("Multiplier:ActiveCrimsonShroud", "BASE", val, "Config", { type = "Condition", var = "Combat" })
+	end },
+	{ var = "multiplierActiveShadow", type = "count", label = "# of Active Shadows:", ifMult = "ActiveShadow", tooltip = "Number of active Shadows (Bladedancer). Used for 'per active Shadow' modifiers.", apply = function(val, modList, enemyModList)
+		modList:NewMod("Multiplier:ActiveShadow", "BASE", val, "Config", { type = "Condition", var = "Combat" })
+	end },
+	{ var = "multiplierEquippedOmenIdol", type = "count", label = "# of Equipped Omen Idols:", ifMult = "EquippedOmenIdol", tooltip = "Number of equipped Omen Idols. Used for 'per equipped Omen Idol' modifiers.", apply = function(val, modList, enemyModList)
+		modList:NewMod("Multiplier:EquippedOmenIdol", "BASE", val, "Config")
+	end },
+	{ var = "multiplierEquippedWeaverItem", type = "count", label = "# of Equipped Weaver Items:", ifMult = "EquippedWeaverItem", tooltip = "Number of equipped Weaver items. Used for 'per equipped Weaver Item' modifiers.", apply = function(val, modList, enemyModList)
+		modList:NewMod("Multiplier:EquippedWeaverItem", "BASE", val, "Config")
+	end },
 	{ var = "multiplierContemptStacks", type = "count", label = "Contempt Stacks:", tooltip = "+10% All Resistances and 10% more Armor per stack. Max 5.", apply = function(val, modList, enemyModList)
 		val = math.min(val, 5)
 		for _, res in ipairs({"FireResist", "LightningResist", "ColdResist", "PhysicalResist", "PoisonResist", "NecroticResist", "VoidResist"}) do
