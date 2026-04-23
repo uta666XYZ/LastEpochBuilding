@@ -144,9 +144,27 @@ local modNameList = {
 	["chance to find potions"] = "ChanceToFindPotions",
 	-- Ailment application chances (from item affixes)
 	["to slow"] = "SlowChance",
+	["to apply slow"] = "SlowChance",
 	["to apply frailty"] = "FrailtyChance",
 	["to blind"] = "BlindChance",
+	["to apply blind"] = "BlindChance",
 	["to electrify"] = "ElectrifyChance",
+	["to apply electrify"] = "ElectrifyChance",
+	-- "to apply/inflict <basic ailment>" alt forms (complement the "<ailment> chance" set)
+	["to apply bleed"] = "BleedChance",
+	["to apply a bleed"] = "BleedChance",
+	["to inflict bleed"] = "BleedChance",
+	["to inflict a bleed"] = "BleedChance",
+	["to apply ignite"] = "IgniteChance",
+	["to inflict ignite"] = "IgniteChance",
+	["to apply poison"] = "PoisonChance",
+	["to inflict poison"] = "PoisonChance",
+	["to apply shock"] = "ShockChance",
+	["to inflict shock"] = "ShockChance",
+	["to apply chill"] = "ChillChance",
+	["to inflict chill"] = "ChillChance",
+	["to apply frostbite"] = "FrostbiteChance",
+	["to inflict frostbite"] = "FrostbiteChance",
 	["to inflict time rot"] = "TimeRotChance",
 	["to inflict doom"] = "DoomChance",
 	["doom chance"] = "DoomChance",
@@ -912,11 +930,50 @@ specialModList["^%+?([%d%.]+)%% chance to gain (.+) for (%d+) seconds? when you 
 
 -- Ailment / charge application (e.g. "+3% Chance to apply Frailty on Minion Hit",
 --                                     "+1% Chance to apply a Spark Charge on Lightning Melee Hit")
-specialModList["^%+?([%d%.]+)%% chance to apply (.+) on hit$"] = nsAny
-specialModList["^%+?([%d%.]+)%% chance to apply (.+) on kill$"] = nsAny
-specialModList["^%+?([%d%.]+)%% chance to apply (.+) on crit$"] = nsAny
-specialModList["^%+?([%d%.]+)%% chance to apply (.+) on (.+) hit$"] = nsAny
-specialModList["^%+?([%d%.]+)%% chance to apply (.+) when you (.+)$"] = nsAny
+-- DPS-integrated via the generic parse chain: modNameList has per-ailment
+-- "<ailment> chance" / "to apply <ailment>" → <Ailment>Chance stats, and
+-- modTagList handles "on hit" (ModFlag.Hit), "on melee hit", "on kill", etc.
+-- A smart handler falls through for recognized ailments so the mod actually
+-- applies; unknown names still get caught by nsAny for recognition-only.
+local knownAilmentChances = {
+	["bleed"] = true, ["a bleed"] = true,
+	["ignite"] = true, ["poison"] = true, ["shock"] = true, ["chill"] = true,
+	["frostbite"] = true, ["frailty"] = true, ["electrify"] = true,
+	["time rot"] = true, ["slow"] = true, ["blind"] = true,
+	["plague"] = true, ["witchfire"] = true, ["spreading flames"] = true,
+	["future strike"] = true, ["abyssal decay"] = true, ["spirit plague"] = true,
+	["bone curse"] = true, ["torment"] = true, ["decrepify"] = true,
+	["anguish"] = true, ["penance"] = true, ["acid skin"] = true,
+	["exposed flesh"] = true, ["serpent venom"] = true, ["hemorrhage"] = true,
+	["ravage"] = true, ["critical vulnerability"] = true,
+	["marked for death"] = true, ["mark for death"] = true,
+	["damned"] = true, ["doom"] = true,
+	["armor shred"] = true, ["armour shred"] = true,
+}
+-- Handler args: (num, cap1_str, ailmentName). Return nil on known → generic chain fires.
+local function ailmentApplyHandler(num, _, ailmentName)
+	if ailmentName and knownAilmentChances[ailmentName:lower()] then
+		return nil
+	end
+	return nsAny(num)
+end
+local function ailmentApplyHandler2(num, _, ailmentName)
+	-- For "on <X> hit" and "when you <X>" forms where cap[3] is the trigger qualifier.
+	if ailmentName and knownAilmentChances[ailmentName:lower()] then
+		return nil
+	end
+	return nsAny(num)
+end
+specialModList["^%+?([%d%.]+)%% chance to apply (.+) on hit$"] = ailmentApplyHandler
+specialModList["^%+?([%d%.]+)%% chance to apply (.+) on kill$"] = ailmentApplyHandler
+specialModList["^%+?([%d%.]+)%% chance to apply (.+) on crit$"] = ailmentApplyHandler
+specialModList["^%+?([%d%.]+)%% chance to apply (.+) on (.+) hit$"] = ailmentApplyHandler2
+specialModList["^%+?([%d%.]+)%% chance to apply (.+) when you (.+)$"] = ailmentApplyHandler2
+-- Also cover "chance to inflict" phrasing symmetrically.
+specialModList["^%+?([%d%.]+)%% chance to inflict (.+) on hit$"] = ailmentApplyHandler
+specialModList["^%+?([%d%.]+)%% chance to inflict (.+) on kill$"] = ailmentApplyHandler
+specialModList["^%+?([%d%.]+)%% chance to inflict (.+) on crit$"] = ailmentApplyHandler
+specialModList["^%+?([%d%.]+)%% chance to inflict (.+) on (.+) hit$"] = ailmentApplyHandler2
 
 -- Resource conversion / spend-gained (e.g. "40% of Mana Spent Gained as Ward")
 specialModList["^%+?([%d%.]+)%% of (.+) spent gained as (.+)$"] = nsAny
