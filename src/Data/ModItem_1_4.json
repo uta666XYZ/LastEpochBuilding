@@ -1579,7 +1579,18 @@
 			21,
 			19
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(30-44) Dodge Rating"
+			},
+			"amulet": {
+				"1": "{rounding:Integer}+(23-34) Dodge Rating"
+			},
+			"catalyst": {
+				"1": "{rounding:Integer}+(23-34) Dodge Rating"
+			}
+		}
 	},
 	"8_1": {
 		"affix": "of Evasion",
@@ -1601,7 +1612,18 @@
 			21,
 			19
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(45-59) Dodge Rating"
+			},
+			"amulet": {
+				"1": "{rounding:Integer}+(35-46) Dodge Rating"
+			},
+			"catalyst": {
+				"1": "{rounding:Integer}+(35-46) Dodge Rating"
+			}
+		}
 	},
 	"8_2": {
 		"affix": "of Evasion",
@@ -1623,7 +1645,18 @@
 			21,
 			19
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(60-74) Dodge Rating"
+			},
+			"amulet": {
+				"1": "{rounding:Integer}+(47-57) Dodge Rating"
+			},
+			"catalyst": {
+				"1": "{rounding:Integer}+(47-57) Dodge Rating"
+			}
+		}
 	},
 	"8_3": {
 		"affix": "of Evasion",
@@ -1645,7 +1678,18 @@
 			21,
 			19
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(75-98) Dodge Rating"
+			},
+			"amulet": {
+				"1": "{rounding:Integer}+(59-76) Dodge Rating"
+			},
+			"catalyst": {
+				"1": "{rounding:Integer}+(59-76) Dodge Rating"
+			}
+		}
 	},
 	"8_4": {
 		"affix": "of Evasion",
@@ -1667,7 +1711,18 @@
 			21,
 			19
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(99-128) Dodge Rating"
+			},
+			"amulet": {
+				"1": "{rounding:Integer}+(77-99) Dodge Rating"
+			},
+			"catalyst": {
+				"1": "{rounding:Integer}+(77-99) Dodge Rating"
+			}
+		}
 	},
 	"8_5": {
 		"affix": "of Evasion",
@@ -1689,7 +1744,18 @@
 			21,
 			19
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(165-225) Dodge Rating"
+			},
+			"amulet": {
+				"1": "{rounding:Integer}+(129-176) Dodge Rating"
+			},
+			"catalyst": {
+				"1": "{rounding:Integer}+(129-176) Dodge Rating"
+			}
+		}
 	},
 	"8_6": {
 		"affix": "of Evasion",
@@ -1711,7 +1777,18 @@
 			21,
 			19
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(227-300) Dodge Rating"
+			},
+			"amulet": {
+				"1": "{rounding:Integer}+(177-234) Dodge Rating"
+			},
+			"catalyst": {
+				"1": "{rounding:Integer}+(177-234) Dodge Rating"
+			}
+		}
 	},
 	"8_7": {
 		"affix": "of Evasion",
@@ -1733,7 +1810,18 @@
 			21,
 			19
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(480-600) Dodge Rating"
+			},
+			"amulet": {
+				"1": "{rounding:Integer}+(374-468) Dodge Rating"
+			},
+			"catalyst": {
+				"1": "{rounding:Integer}+(374-468) Dodge Rating"
+			}
+		}
 	},
 	"9_0": {
 		"affix": "Shimmering",

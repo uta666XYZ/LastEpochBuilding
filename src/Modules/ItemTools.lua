@@ -103,15 +103,16 @@ end
 -- Map ItemClass.type -> slotOverrides key (tunklab-style slug). Returns nil
 -- for types without a distinct slot-variant table (e.g. Weapon, Idol).
 local typeToSlotKey = {
-    ["Helmet"]      = "helmet",
-    ["Body Armor"]  = "body_armor",
-    ["Belt"]        = "belt",
-    ["Boots"]       = "boots",
-    ["Gloves"]      = "gloves",
-    ["Amulet"]      = "amulet",
-    ["Ring"]        = "ring",
-    ["Relic"]       = "relic",
-    ["Shield"]      = "shield",
+    ["Helmet"]             = "helmet",
+    ["Body Armor"]         = "body_armor",
+    ["Belt"]               = "belt",
+    ["Boots"]              = "boots",
+    ["Gloves"]             = "gloves",
+    ["Amulet"]             = "amulet",
+    ["Ring"]               = "ring",
+    ["Relic"]              = "relic",
+    ["Shield"]             = "shield",
+    ["Off-Hand Catalyst"]  = "catalyst",
 }
 function itemLib.slotKeyForType(itemType)
     return typeToSlotKey[itemType]
