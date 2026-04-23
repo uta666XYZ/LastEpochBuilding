@@ -473,4 +473,30 @@ describe("TestModParse", function()
             assert.is_true(found)
         end)
     end)
+
+    describe("resource conversion (Mana to Ward)", function()
+        it("X% of Mana Spent Gained as Ward emits ManaSpentGainedAsWard", function()
+            build.configTab.input.customMods = "40% of Mana Spent Gained as Ward"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            assert.are.equals(40, build.configTab.modList:Sum("BASE", nil, "ManaSpentGainedAsWard"))
+        end)
+
+        it("unknown spent-gained combo still recognised (nsAny fallback, no ManaSpentGainedAsWard)", function()
+            build.configTab.input.customMods = "10% of Rage Spent Gained as Frenzy"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            -- Not the known Mana->Ward path
+            assert.are.equals(0, build.configTab.modList:Sum("BASE", nil, "ManaSpentGainedAsWard"))
+            -- But the mod is recognised (not an error)
+            local found = false
+            for _, m in ipairs(build.configTab.modList) do
+                if m.name == "LEB_NotSupported" then
+                    found = true
+                    break
+                end
+            end
+            assert.is_true(found)
+        end)
+    end)
 end)
