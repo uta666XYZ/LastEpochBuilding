@@ -209,6 +209,13 @@ function main:Init()
 			for _, line in ipairs(mod) do
                 parseRangedMod(line)
 			end
+			if mod.slotOverrides then
+				for _, overrideLines in pairs(mod.slotOverrides) do
+					for _, line in ipairs(overrideLines) do
+						parseRangedMod(line)
+					end
+				end
+			end
 		end
 
 		-- Load all bases

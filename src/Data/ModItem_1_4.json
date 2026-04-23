@@ -4906,6 +4906,11 @@
 	"25_0": {
 		"affix": "of Life",
 		"1": "{rounding:Integer}+(5-15) Health",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(8-23) Health"
+			}
+		},
 		"level": 0,
 		"statOrderKey": 25,
 		"statOrder": [
@@ -4929,6 +4934,11 @@
 	"25_1": {
 		"affix": "of Life",
 		"1": "{rounding:Integer}+(16-25) Health",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(24-38) Health"
+			}
+		},
 		"level": 0,
 		"statOrderKey": 25,
 		"statOrder": [
@@ -4952,6 +4962,11 @@
 	"25_2": {
 		"affix": "of Life",
 		"1": "{rounding:Integer}+(26-40) Health",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(39-60) Health"
+			}
+		},
 		"level": 0,
 		"statOrderKey": 25,
 		"statOrder": [
@@ -4975,6 +4990,11 @@
 	"25_3": {
 		"affix": "of Life",
 		"1": "{rounding:Integer}+(41-60) Health",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(62-90) Health"
+			}
+		},
 		"level": 0,
 		"statOrderKey": 25,
 		"statOrder": [
@@ -4998,6 +5018,11 @@
 	"25_4": {
 		"affix": "of Life",
 		"1": "{rounding:Integer}+(61-90) Health",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(92-135) Health"
+			}
+		},
 		"level": 0,
 		"statOrderKey": 25,
 		"statOrder": [
@@ -8874,6 +8899,11 @@
 	"52_0": {
 		"affix": "of the Ox",
 		"1": "3% increased Health",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "5% increased Health"
+			}
+		},
 		"level": 25,
 		"statOrderKey": 52,
 		"statOrder": [
@@ -8891,6 +8921,11 @@
 	"52_1": {
 		"affix": "of the Ox",
 		"1": "{rounding:Integer}(4-5)% increased Health",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}(6-8)% increased Health"
+			}
+		},
 		"level": 25,
 		"statOrderKey": 52,
 		"statOrder": [
@@ -8908,6 +8943,11 @@
 	"52_2": {
 		"affix": "of the Ox",
 		"1": "{rounding:Integer}(6-7)% increased Health",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}(9-11)% increased Health"
+			}
+		},
 		"level": 25,
 		"statOrderKey": 52,
 		"statOrder": [
@@ -8925,6 +8965,11 @@
 	"52_3": {
 		"affix": "of the Ox",
 		"1": "{rounding:Integer}(8-9)% increased Health",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}(12-14)% increased Health"
+			}
+		},
 		"level": 25,
 		"statOrderKey": 52,
 		"statOrder": [
@@ -8942,6 +8987,11 @@
 	"52_4": {
 		"affix": "of the Ox",
 		"1": "{rounding:Integer}(10-12)% increased Health",
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}(15-18)% increased Health"
+			}
+		},
 		"level": 25,
 		"statOrderKey": 52,
 		"statOrder": [

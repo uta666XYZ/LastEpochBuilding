@@ -829,6 +829,7 @@ function ItemClass:Craft()
 	self.namePrefix = ""
 	self.nameSuffix = ""
 	self.requirements.level = self.base.req.level
+	local slotKey = itemLib.slotKeyForType(self.type)
 	for _, list in ipairs({self.prefixes,self.suffixes}) do
 		for i = 1, self.affixLimit / 2 do
 			local affix = list[i]
@@ -843,7 +844,7 @@ function ItemClass:Craft()
 				elseif mod.type == "Suffix" then
 					self.nameSuffix = " " .. mod.affix
 				end
-				for _, line in ipairs(mod) do
+				for _, line in ipairs(itemLib.modLinesForSlot(mod, slotKey)) do
 					local modScalar = 1 + self.base.affixEffectModifier
 					if mod.standardAffixEffectModifier then
 						modScalar = modScalar - mod.standardAffixEffectModifier
