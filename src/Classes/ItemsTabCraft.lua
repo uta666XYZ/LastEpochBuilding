@@ -312,6 +312,10 @@ function ItemsTabClass:CraftRecalcLayout()
 			skip = true
 		end
 		if isAnyIdol and sec.label == "primordialLabel" then skip = true end
+		if self:CraftIsIdolAltar()
+			and (sec.label == "sealedLabel" or sec.label == "primordialLabel") then
+			skip = true
+		end
 		if skip then
 			for _, slotKey in ipairs(sec.slots) do self.craftEditY[slotKey] = {} end
 			self.craftEditY[sec.label] = 0
@@ -1053,15 +1057,18 @@ function ItemsTabClass:CraftRefreshAffixDropdowns()
 	if self:CraftIsIdolAltar() then
 		local corruptedGroups = {}
 		for modId, mod in pairs(itemMods) do
-			if mod.statOrderKey and mod.specialAffixType == 6 then
+			if mod.statOrderKey then
+				local sat = mod.specialAffixType or 0
+				local subcat = (sat == 6) and "corrupted" or "general"
 				if not corruptedGroups[mod.statOrderKey] then
+					local t0 = itemMods[tostring(mod.statOrderKey) .. "_0"] or mod
 					local labelParts = {}
-					for k = 1, 10 do if mod[k] then t_insert(labelParts, mod[k]) end end
+					for k = 1, 10 do if t0[k] then t_insert(labelParts, t0[k]) end end
 					local label = table.concat(labelParts, " / "):gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
 					corruptedGroups[mod.statOrderKey] = {
 						label = label, statOrderKey = mod.statOrderKey,
 						affix = mod.affix, type = mod.type, maxTier = mod.tier or 0,
-						subcategory = "corrupted",
+						subcategory = subcat,
 					}
 				else
 					local g = corruptedGroups[mod.statOrderKey]
@@ -1523,6 +1530,8 @@ function ItemsTabClass:BuildCraftControls()
 			if (capturedSectionKey == "sealed" or capturedSectionKey == "primordial")
 				and self_ref:CraftIsAnyIdol() and not self_ref:CraftIsEnchantableIdol() then return false end
 			if capturedSectionKey == "primordial" and self_ref:CraftIsAnyIdol() then return false end
+			if (capturedSectionKey == "sealed" or capturedSectionKey == "primordial")
+				and self_ref:CraftIsIdolAltar() then return false end
 			return true
 		end
 
