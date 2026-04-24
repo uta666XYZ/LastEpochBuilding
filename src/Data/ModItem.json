@@ -63244,7 +63244,7 @@
 		"specialAffixType": 6
 	},
 	"980_0": {
-		"affix": "Chance for non-Crticail Strikes to inflict Critical Vulnerability for 4 seconds",
+		"affix": "Chance for non-critical Strikes to inflict Critical Vulnerability for 4 seconds",
 		"1": "+(50-56)% Chance for non-Critical Strikes to inflict Critical Vulnerability",
 		"level": 0,
 		"statOrderKey": 980,
@@ -63257,7 +63257,7 @@
 		"specialAffixType": 6
 	},
 	"980_1": {
-		"affix": "Chance for non-Crticail Strikes to inflict Critical Vulnerability for 4 seconds",
+		"affix": "Chance for non-critical Strikes to inflict Critical Vulnerability for 4 seconds",
 		"1": "+(57-63)% Chance for non-Critical Strikes to inflict Critical Vulnerability",
 		"level": 0,
 		"statOrderKey": 980,
@@ -63270,7 +63270,7 @@
 		"specialAffixType": 6
 	},
 	"980_2": {
-		"affix": "Chance for non-Crticail Strikes to inflict Critical Vulnerability for 4 seconds",
+		"affix": "Chance for non-critical Strikes to inflict Critical Vulnerability for 4 seconds",
 		"1": "+(64-70)% Chance for non-Critical Strikes to inflict Critical Vulnerability",
 		"level": 0,
 		"statOrderKey": 980,
@@ -63283,7 +63283,7 @@
 		"specialAffixType": 6
 	},
 	"980_3": {
-		"affix": "Chance for non-Crticail Strikes to inflict Critical Vulnerability for 4 seconds",
+		"affix": "Chance for non-critical Strikes to inflict Critical Vulnerability for 4 seconds",
 		"1": "+(71-77)% Chance for non-Critical Strikes to inflict Critical Vulnerability",
 		"level": 0,
 		"statOrderKey": 980,
@@ -63296,7 +63296,7 @@
 		"specialAffixType": 6
 	},
 	"980_4": {
-		"affix": "Chance for non-Crticail Strikes to inflict Critical Vulnerability for 4 seconds",
+		"affix": "Chance for non-critical Strikes to inflict Critical Vulnerability for 4 seconds",
 		"1": "+(78-84)% Chance for non-Critical Strikes to inflict Critical Vulnerability",
 		"level": 0,
 		"statOrderKey": 980,
@@ -63309,7 +63309,7 @@
 		"specialAffixType": 6
 	},
 	"980_5": {
-		"affix": "Chance for non-Crticail Strikes to inflict Critical Vulnerability for 4 seconds",
+		"affix": "Chance for non-critical Strikes to inflict Critical Vulnerability for 4 seconds",
 		"1": "+(85-91)% Chance for non-Critical Strikes to inflict Critical Vulnerability",
 		"level": 0,
 		"statOrderKey": 980,
@@ -63322,7 +63322,7 @@
 		"specialAffixType": 6
 	},
 	"980_6": {
-		"affix": "Chance for non-Crticail Strikes to inflict Critical Vulnerability for 4 seconds",
+		"affix": "Chance for non-critical Strikes to inflict Critical Vulnerability for 4 seconds",
 		"1": "+(92-100)% Chance for non-Critical Strikes to inflict Critical Vulnerability",
 		"level": 0,
 		"statOrderKey": 980,
@@ -63335,7 +63335,7 @@
 		"specialAffixType": 6
 	},
 	"980_7": {
-		"affix": "Chance for non-Crticail Strikes to inflict Critical Vulnerability for 4 seconds",
+		"affix": "Chance for non-critical Strikes to inflict Critical Vulnerability for 4 seconds",
 		"1": "{rounding:Integer}+(1.7-2) Chance for non-Critical Strikes to inflict Critical Vulnerability",
 		"level": 0,
 		"statOrderKey": 980,
@@ -70347,7 +70347,7 @@
 		"specialAffixType": 6
 	},
 	"989_0": {
-		"affix": "Increased Melee Attack Speed and Frezy after using Evade",
+		"affix": "Increased Melee Attack Speed and Frenzy after using Evade",
 		"1": "+(15-16)% Melee Attack Speed",
 		"level": 0,
 		"statOrderKey": 989,
@@ -70361,7 +70361,7 @@
 		"specialAffixType": 6
 	},
 	"989_1": {
-		"affix": "Increased Melee Attack Speed and Frezy after using Evade",
+		"affix": "Increased Melee Attack Speed and Frenzy after using Evade",
 		"1": "+(17-18)% Melee Attack Speed",
 		"level": 0,
 		"statOrderKey": 989,
@@ -70375,7 +70375,7 @@
 		"specialAffixType": 6
 	},
 	"989_2": {
-		"affix": "Increased Melee Attack Speed and Frezy after using Evade",
+		"affix": "Increased Melee Attack Speed and Frenzy after using Evade",
 		"1": "+(19-20)% Melee Attack Speed",
 		"level": 0,
 		"statOrderKey": 989,
@@ -70389,7 +70389,7 @@
 		"specialAffixType": 6
 	},
 	"989_3": {
-		"affix": "Increased Melee Attack Speed and Frezy after using Evade",
+		"affix": "Increased Melee Attack Speed and Frenzy after using Evade",
 		"1": "+(21-22)% Melee Attack Speed",
 		"level": 0,
 		"statOrderKey": 989,
@@ -70403,7 +70403,7 @@
 		"specialAffixType": 6
 	},
 	"989_4": {
-		"affix": "Increased Melee Attack Speed and Frezy after using Evade",
+		"affix": "Increased Melee Attack Speed and Frenzy after using Evade",
 		"1": "+(23-24)% Melee Attack Speed",
 		"level": 0,
 		"statOrderKey": 989,
@@ -70417,7 +70417,7 @@
 		"specialAffixType": 6
 	},
 	"989_5": {
-		"affix": "Increased Melee Attack Speed and Frezy after using Evade",
+		"affix": "Increased Melee Attack Speed and Frenzy after using Evade",
 		"1": "+(25-26)% Melee Attack Speed",
 		"level": 0,
 		"statOrderKey": 989,
@@ -70431,7 +70431,7 @@
 		"specialAffixType": 6
 	},
 	"989_6": {
-		"affix": "Increased Melee Attack Speed and Frezy after using Evade",
+		"affix": "Increased Melee Attack Speed and Frenzy after using Evade",
 		"1": "+(27-28)% Melee Attack Speed",
 		"level": 0,
 		"statOrderKey": 989,
@@ -70445,7 +70445,7 @@
 		"specialAffixType": 6
 	},
 	"989_7": {
-		"affix": "Increased Melee Attack Speed and Frezy after using Evade",
+		"affix": "Increased Melee Attack Speed and Frenzy after using Evade",
 		"1": "+(38-42)% Melee Attack Speed",
 		"level": 0,
 		"statOrderKey": 989,
