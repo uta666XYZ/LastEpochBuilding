@@ -234,6 +234,18 @@ function BlessingsPopupClass:BuildControls()
 		"Close", function() self:Close() end
 	))
 
+	-- Add to All items button (mirrors craft -> All items for other item classes)
+	local addBtn = new("ButtonControl",
+		{"TOPRIGHT", self, "TOPRIGHT"}, -70, 6, 120, 22,
+		"Add to All items",
+		function() self:AddSelectedToAllItems() end
+	)
+	addBtn.shown = function()
+		local st = self.blessingState[self.selectedTL]
+		return st ~= nil and st.entry ~= nil
+	end
+	t_insert(self.controls, addBtn)
+
 	-- Timeline list buttons (left panel, below slot grid)
 	for i, tl in ipairs(TIMELINE_ORDER) do
 		local tlRef = tl
@@ -370,6 +382,43 @@ function BlessingsPopupClass:GetCardRows()
 		t_insert(rows, {normal = normal[i], grand = grand[i]})
 	end
 	return rows
+end
+
+function BlessingsPopupClass:AddSelectedToAllItems()
+	local tl = self.selectedTL
+	local st = self.blessingState[tl]
+	if not st or not st.entry then return end
+	local b    = st.entry
+	local minV = m_floor(b.minVal + 0.5)
+	local maxV = m_ceil(b.maxVal)
+	local rollVal = st.rollVal or maxV
+	rollVal = m_max(minV, m_min(maxV, rollVal))
+	local frac = self:GetRollFrac(b, rollVal)
+	local function resolveImpl(impl)
+		return impl:gsub("%([0-9.]+%-[0-9.]+%)", function(range)
+			local lo, hi = range:match("%(([0-9.]+)%-([0-9.]+)%)")
+			local v = tonumber(lo) + frac * (tonumber(hi) - tonumber(lo))
+			return string.format("%d", m_floor(v + 0.5))
+		end)
+	end
+	local implCount = b.implCount or 1
+	local raw = "Rarity: NORMAL\n" .. b.name .. "\n" .. b.name
+		.. "\nImplicits: " .. implCount .. "\n" .. resolveImpl(b.impl1 or "")
+	if b.impl2 then raw = raw .. "\n" .. resolveImpl(b.impl2) end
+	local item = new("Item", raw)
+	if not item or not item.base then return end
+	item.id = nil
+	-- Persistent: no "blessing:<tl>" uniqueID so UpdateBlessingSlot won't remove it.
+	self.itemsTab:AddItem(item, true)
+	local slot = self.itemsTab.slots[tl]
+	if slot and (not slot.selItemId or slot.selItemId == 0) then
+		self.itemsTab.blessingFracs = self.itemsTab.blessingFracs or {}
+		self.itemsTab.blessingFracs[tl] = frac
+		slot:SetSelItemId(item.id)
+	end
+	self.itemsTab:PopulateSlots()
+	self.itemsTab:AddUndoState()
+	self.itemsTab.build.buildFlag = true
 end
 
 function BlessingsPopupClass:Close()

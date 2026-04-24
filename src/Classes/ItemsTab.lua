@@ -599,9 +599,14 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 		if not slot then return end
 		local oldId = slot.selItemId
 		if oldId and oldId ~= 0 then
-			self.items[oldId] = nil
-			for i, id in ipairs(self.itemOrderList) do
-				if id == oldId then t_remove(self.itemOrderList, i); break end
+			local oldItem = self.items[oldId]
+			-- Only remove ephemeral blessings (tagged with blessing:<tl>).
+			-- Persistent items added to All items must survive re-equip.
+			if oldItem and oldItem.uniqueID == "blessing:" .. tl then
+				self.items[oldId] = nil
+				for i, id in ipairs(self.itemOrderList) do
+					if id == oldId then t_remove(self.itemOrderList, i); break end
+				end
 			end
 			slot:SetSelItemId(0)
 		end
