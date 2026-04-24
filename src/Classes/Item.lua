@@ -663,6 +663,13 @@ function ItemClass:ParseRaw(raw, rarity, highQuality)
 						needsRecraft = true
 						break
 					end
+					-- Idol Altar sealed-corrupted (specialAffixType == 6) affixes keep
+					-- their Line 2 extension active on uncorrupted altars. Older XMLs
+					-- only emitted Line 1; re-run Craft to materialise Line 2.
+					if self.base.type == "Idol Altar" and mod.specialAffixType == 6 and mod[2] then
+						needsRecraft = true
+						break
+					end
 					-- Omen Idol affixEffectModifier bypass (2026-04-25): older
 					-- XMLs bake {scalar:0.67} into every affix mod line on Omen
 					-- Idol bases. Re-run Craft so Craft()'s bypass logic strips
@@ -896,7 +903,13 @@ function ItemClass:Craft()
 					-- Line [2+] of an affix is a corruption-only extension (e.g. "Heretical
 					-- Idol Limit" 1109_* gains "+N Health per Idol in a Refracted Slot" when
 					-- the item is corrupted). Skip unless the item carries the Corrupted flag.
-					if lineIdx >= 2 and not self.corrupted then
+					-- EXCEPTION: Idol Altar sealed-corrupted affixes (specialAffixType == 6)
+					-- always materialise their extension line regardless of corruption, because
+					-- the "corrupted" subcategory on altars is permanent / base-level (not tied
+					-- to the user literally corrupting the item).
+					local isAltarSealedCorrupted = self.base.type == "Idol Altar"
+						and mod.specialAffixType == 6
+					if lineIdx >= 2 and not self.corrupted and not isAltarSealedCorrupted then
 						goto nextCraftLine
 					end
 					local modScalar = 1 + self.base.affixEffectModifier
