@@ -1587,9 +1587,9 @@ end
 function ItemsTabClass:OpenCraftItemSelector(slotName)
 	local controls = { }
 	local rarityDDList = {
-		{ label = "Basic",  category = "basic"  },
-		{ label = "Unique", category = "unique" },
-		{ label = "Set",    category = "set"    },
+		{ label = colorCodes.NORMAL .. "Basic",  category = "basic"  },
+		{ label = colorCodes.UNIQUE .. "Unique", category = "unique" },
+		{ label = colorCodes.SET    .. "Set",    category = "set"    },
 	}
 	local orderedTypeList = CraftPopupH.filterTypeList(
 		CraftPopupH.buildOrderedTypeList(self.build.data.itemBaseTypeList), slotName)
@@ -1630,7 +1630,9 @@ function ItemsTabClass:OpenCraftItemSelector(slotName)
 			self.build, setItems, typeName, state.category, state.searchText, classReqBit)
 		local labels = { }
 		for _, entry in ipairs(state.baseList) do
-			t_insert(labels, entry.label or entry.name or "?")
+			local raw = entry.label or entry.name or "?"
+			local color = entry.rarity and colorCodes[entry.rarity] or ""
+			t_insert(labels, color .. raw)
 		end
 		if #labels == 0 then t_insert(labels, "(no match)") end
 		controls.base:SetList(labels)
