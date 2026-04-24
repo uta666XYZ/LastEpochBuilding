@@ -17974,7 +17974,7 @@
 	},
 	"95_0": {
 		"affix": "Thorny",
-		"1": "{rounding:Integer}(10-15) Damage Reflected to Attackers",
+		"1": "{rounding:Integer}(12-18) Damage Reflected to Attackers",
 		"level": 4,
 		"statOrderKey": 95,
 		"statOrder": [
@@ -17986,11 +17986,16 @@
 			1,
 			18
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}(15-22) Damage Reflected to Attackers"
+			}
+		}
 	},
 	"95_1": {
 		"affix": "Thorny",
-		"1": "{rounding:Integer}(20-30) Damage Reflected to Attackers",
+		"1": "{rounding:Integer}(23-35) Damage Reflected to Attackers",
 		"level": 4,
 		"statOrderKey": 95,
 		"statOrder": [
@@ -18002,11 +18007,16 @@
 			1,
 			18
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}(30-45) Damage Reflected to Attackers"
+			}
+		}
 	},
 	"95_2": {
 		"affix": "Thorny",
-		"1": "{rounding:Integer}(40-55) Damage Reflected to Attackers",
+		"1": "{rounding:Integer}(47-64) Damage Reflected to Attackers",
 		"level": 4,
 		"statOrderKey": 95,
 		"statOrder": [
@@ -18018,11 +18028,16 @@
 			1,
 			18
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}(60-82) Damage Reflected to Attackers"
+			}
+		}
 	},
 	"95_3": {
 		"affix": "Thorny",
-		"1": "{rounding:Integer}(60-80) Damage Reflected to Attackers",
+		"1": "{rounding:Integer}(70-94) Damage Reflected to Attackers",
 		"level": 4,
 		"statOrderKey": 95,
 		"statOrder": [
@@ -18034,11 +18049,16 @@
 			1,
 			18
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}(90-120) Damage Reflected to Attackers"
+			}
+		}
 	},
 	"95_4": {
 		"affix": "Thorny",
-		"1": "{rounding:Integer}(90-150) Damage Reflected to Attackers",
+		"1": "{rounding:Integer}(105-176) Damage Reflected to Attackers",
 		"level": 4,
 		"statOrderKey": 95,
 		"statOrder": [
@@ -18050,11 +18070,16 @@
 			1,
 			18
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}(135-225) Damage Reflected to Attackers"
+			}
+		}
 	},
 	"95_5": {
 		"affix": "Thorny",
-		"1": "{rounding:Integer}(250-300) Damage Reflected to Attackers",
+		"1": "{rounding:Integer}(292-351) Damage Reflected to Attackers",
 		"level": 4,
 		"statOrderKey": 95,
 		"statOrder": [
@@ -18066,11 +18091,16 @@
 			1,
 			18
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}(375-450) Damage Reflected to Attackers"
+			}
+		}
 	},
 	"95_6": {
 		"affix": "Thorny",
-		"1": "{rounding:Integer}(301-400) Damage Reflected to Attackers",
+		"1": "{rounding:Integer}(352-468) Damage Reflected to Attackers",
 		"level": 4,
 		"statOrderKey": 95,
 		"statOrder": [
@@ -18082,11 +18112,16 @@
 			1,
 			18
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}(452-600) Damage Reflected to Attackers"
+			}
+		}
 	},
 	"95_7": {
 		"affix": "Thorny",
-		"1": "{rounding:Integer}(640-800) Damage Reflected to Attackers",
+		"1": "{rounding:Integer}(749-936) Damage Reflected to Attackers",
 		"level": 4,
 		"statOrderKey": 95,
 		"statOrder": [
@@ -18098,11 +18133,16 @@
 			1,
 			18
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}(960-1200) Damage Reflected to Attackers"
+			}
+		}
 	},
 	"96_0": {
 		"affix": "Reflective",
-		"1": "(5-10)% of Damage Reflected",
+		"1": "(6-12)% of Damage Reflected",
 		"level": 23,
 		"statOrderKey": 96,
 		"statOrder": [
@@ -18114,11 +18154,16 @@
 			1,
 			18
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "(8-15)% of Damage Reflected"
+			}
+		}
 	},
 	"96_1": {
 		"affix": "Reflective",
-		"1": "(11-19)% of Damage Reflected",
+		"1": "(13-22)% of Damage Reflected",
 		"level": 23,
 		"statOrderKey": 96,
 		"statOrder": [
@@ -18130,11 +18175,16 @@
 			1,
 			18
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "(16-29)% of Damage Reflected"
+			}
+		}
 	},
 	"96_2": {
 		"affix": "Reflective",
-		"1": "(20-28)% of Damage Reflected",
+		"1": "(23-33)% of Damage Reflected",
 		"level": 23,
 		"statOrderKey": 96,
 		"statOrder": [
@@ -18146,11 +18196,16 @@
 			1,
 			18
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "(30-42)% of Damage Reflected"
+			}
+		}
 	},
 	"96_3": {
 		"affix": "Reflective",
-		"1": "(29-38)% of Damage Reflected",
+		"1": "(34-44)% of Damage Reflected",
 		"level": 23,
 		"statOrderKey": 96,
 		"statOrder": [
@@ -18162,11 +18217,16 @@
 			1,
 			18
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "(43-57)% of Damage Reflected"
+			}
+		}
 	},
 	"96_4": {
 		"affix": "Reflective",
-		"1": "(39-50)% of Damage Reflected",
+		"1": "(46-58)% of Damage Reflected",
 		"level": 23,
 		"statOrderKey": 96,
 		"statOrder": [
@@ -18178,11 +18238,16 @@
 			1,
 			18
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "(58-75)% of Damage Reflected"
+			}
+		}
 	},
 	"96_5": {
 		"affix": "Reflective",
-		"1": "(70-80)% of Damage Reflected",
+		"1": "(82-94)% of Damage Reflected",
 		"level": 23,
 		"statOrderKey": 96,
 		"statOrder": [
@@ -18194,11 +18259,16 @@
 			1,
 			18
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "(105-120)% of Damage Reflected"
+			}
+		}
 	},
 	"96_6": {
 		"affix": "Reflective",
-		"1": "(81-100)% of Damage Reflected",
+		"1": "(95-117)% of Damage Reflected",
 		"level": 23,
 		"statOrderKey": 96,
 		"statOrder": [
@@ -18210,11 +18280,16 @@
 			1,
 			18
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "(122-150)% of Damage Reflected"
+			}
+		}
 	},
 	"96_7": {
 		"affix": "Reflective",
-		"1": "(160-200)% of Damage Reflected",
+		"1": "(187-234)% of Damage Reflected",
 		"level": 23,
 		"statOrderKey": 96,
 		"statOrder": [
@@ -18226,7 +18301,12 @@
 			1,
 			18
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "(240-300)% of Damage Reflected"
+			}
+		}
 	},
 	"97_0": {
 		"affix": "of Sanctuary",
