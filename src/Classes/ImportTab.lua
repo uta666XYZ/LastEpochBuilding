@@ -1100,6 +1100,18 @@ function ImportTabClass:ImportBlessingsFromLETools(data)
     end
 end
 
+-- Lazy-load Data/Set/set_<ver>.json for Reforged affix resolution during
+-- LEtools/Maxroll import. Falls back to 1.4 set data if the build's target
+-- version file is missing.
+function ImportTabClass:LoadSetDataForImport()
+    if self._importSetData ~= nil then return self._importSetData end
+    local ver = (self.build and self.build.targetVersion) or "1_4"
+    local setData = readJsonFile("Data/Set/set_" .. ver .. ".json")
+    if not setData then setData = readJsonFile("Data/Set/set_1_4.json") end
+    self._importSetData = setData or false
+    return self._importSetData or nil
+end
+
 function ImportTabClass:BuildItemsFromMaxroll(buildData, profileData, char)
     -- buildData.items is the shared item dictionary keyed by numeric string ("20", "21", ...)
     -- profileData.items slots may contain inline item objects OR numeric references into this dict
@@ -1204,12 +1216,44 @@ function ImportTabClass:BuildItemsFromMaxroll(buildData, profileData, char)
             end
 
             local affixCount, maxTier = 0, 0
+            local reforgedSetInfo, reforgedTitle
             for i, affix in ipairs(allAffixes) do
                 local modId   = affix.id .. "_" .. affix.tier
                 local modData = data.itemMods.Item[modId]
                 if modData then
                     affixCount = affixCount + 1
                     if affix.tier > maxTier then maxTier = affix.tier end
+                    -- Reforged Set affix: affix name ends with " Reforged".
+                    -- Resolve the stripped member name against set_<ver>.json to
+                    -- capture setId/name/bonus so the item imports as a SET piece
+                    -- (same effect as CraftingPopup's Reforged path).
+                    ConPrintf("[REFORGED-SCAN] base=%s modId=%s affixName=%q", itemBaseName, modId, tostring(modData.affix))
+                    if modData.affix and modData.affix:sub(-9) == " Reforged" then
+                        local bareName = modData.affix:sub(1, -10)
+                        local setData = self:LoadSetDataForImport()
+                        ConPrintf("[REFORGED-MATCH] bareName=%q setDataLoaded=%s", bareName, tostring(setData ~= nil))
+                        if setData then
+                            local candidates = 0
+                            for _, si in pairs(setData) do
+                                if si and si.set and si.name then
+                                    candidates = candidates + 1
+                                    if si.name == bareName then
+                                        reforgedSetInfo = {
+                                            setId = si.set.setId,
+                                            name  = si.set.name,
+                                            bonus = si.set.bonus,
+                                        }
+                                        reforgedTitle = modData.affix
+                                        ConPrintf("[REFORGED-HIT] bare=%q -> setId=%s setName=%q", bareName, tostring(si.set.setId), tostring(si.set.name))
+                                        break
+                                    end
+                                end
+                            end
+                            if not reforgedSetInfo then
+                                ConPrintf("[REFORGED-MISS] bare=%q (scanned %d set members, no match)", bareName, candidates)
+                            end
+                        end
+                    end
                     if modData.type == "Prefix" then
                         table.insert(item.prefixes, { range = affix.roll, modId = modId })
                     else
@@ -1219,30 +1263,44 @@ function ImportTabClass:BuildItemsFromMaxroll(buildData, profileData, char)
             end
 
             local isIdol = itemBaseName:find("Idol") or itemBaseName:find("Altar")
-            if maxTier >= 5 then
+            if reforgedSetInfo then
+                item.rarity  = "SET"
+                item.title   = reforgedTitle
+                item.name    = reforgedTitle
+                item.setInfo = reforgedSetInfo
+            elseif maxTier >= 5 then
                 item.rarity = "EXALTED"
             elseif isIdol then
                 item.rarity = affixCount >= 2 and "RARE" or (affixCount >= 1 and "MAGIC" or "NORMAL")
             else
                 item.rarity = affixCount >= 3 and "RARE" or (affixCount >= 1 and "MAGIC" or "NORMAL")
             end
+            ConPrintf("[MAXROLL-RARITY] base=%s affixCount=%d maxTier=%d idol=%s -> %s", itemBaseName, affixCount, maxTier, tostring(isIdol ~= nil), item.rarity)
+            if reforgedSetInfo then
+                ConPrintf("[REFORGED-PARSED] base=%s title=%q rarity=%s setId=%s bonusKeys=%s",
+                    itemBaseName, tostring(item.title), tostring(item.rarity),
+                    tostring(reforgedSetInfo.setId),
+                    (function() local ks = {} for k,_ in pairs(reforgedSetInfo.bonus or {}) do ks[#ks+1] = tostring(k) end return table.concat(ks, ",") end)())
+            end
 
-            local forename, surname = "", ""
-            for _, p in ipairs(item.prefixes) do
-                local md = data.itemMods.Item[p.modId]
-                if md and md.affix and md.affix ~= "" then
-                    if md.affix:sub(1,3) == "of " then surname = surname ~= "" and surname or md.affix
-                    else forename = forename ~= "" and forename or md.affix end
+            if not reforgedSetInfo then
+                local forename, surname = "", ""
+                for _, p in ipairs(item.prefixes) do
+                    local md = data.itemMods.Item[p.modId]
+                    if md and md.affix and md.affix ~= "" then
+                        if md.affix:sub(1,3) == "of " then surname = surname ~= "" and surname or md.affix
+                        else forename = forename ~= "" and forename or md.affix end
+                    end
                 end
-            end
-            for _, s in ipairs(item.suffixes) do
-                local md = data.itemMods.Item[s.modId]
-                if md and md.affix and md.affix ~= "" then
-                    if md.affix:sub(1,3) == "of " then surname = surname ~= "" and surname or md.affix
-                    else forename = forename ~= "" and forename or md.affix end
+                for _, s in ipairs(item.suffixes) do
+                    local md = data.itemMods.Item[s.modId]
+                    if md and md.affix and md.affix ~= "" then
+                        if md.affix:sub(1,3) == "of " then surname = surname ~= "" and surname or md.affix
+                        else forename = forename ~= "" and forename or md.affix end
+                    end
                 end
+                item.name = (forename ~= "" and forename .. " " or "") .. itemBaseName .. (surname ~= "" and " " .. surname or "")
             end
-            item.name = (forename ~= "" and forename .. " " or "") .. itemBaseName .. (surname ~= "" and " " .. surname or "")
         end
 
         return item
@@ -2019,6 +2077,21 @@ function ImportTabClass:BuildItem(itemData)
     item:BuildAndParseRaw()
     -- Craft the item since we only added the prefixes and suffixes and not their mod lines
     item:Craft()
+    -- Reforged items: restore SET rarity + setInfo (both get stripped by
+    -- BuildAndParseRaw/Craft since the base item is classed as "basic").
+    if itemData.setInfo and itemData.setInfo.setId ~= nil then
+        ConPrintf("[REFORGED-RESTORE] base=%s titleBefore=%q rarityBefore=%s setIdIn=%s",
+            tostring(item.baseName), tostring(item.title), tostring(item.rarity),
+            tostring(itemData.setInfo.setId))
+        item.rarity  = "SET"
+        item.setInfo = itemData.setInfo
+        if itemData.title then item.title = itemData.title end
+        ConPrintf("[REFORGED-RESTORE] after: title=%q rarity=%s setInfo.setId=%s",
+            tostring(item.title), tostring(item.rarity), tostring(item.setInfo.setId))
+    elseif itemData.rarity == "SET" then
+        ConPrintf("[REFORGED-WARN] itemData.rarity=SET but no setInfo carried (base=%s title=%q)",
+            tostring(item.baseName), tostring(itemData.title))
+    end
     ConPrintf("[BUILDITEM] name=%s rarity: %s -> %s (after BuildAndParseRaw+Craft)", tostring(item.title or item.baseName), tostring(rarityBefore), tostring(item.rarity))
 
     return item

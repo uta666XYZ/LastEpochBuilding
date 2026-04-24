@@ -62,21 +62,29 @@ function itemLib.applyRange(line, range, valueScalar, rounding)
     end
     line = line:gsub("(%+?)%((%-?%d+%.?%d*)%-(%-?%d+%.?%d*)%)",
             function(plus, min, max)
-                min = roundHalfDownOnHalf(min * valueScalar)
-                max = roundHalfDownOnHalf(max * valueScalar)
                 numbers = numbers + 1
-                -- Span uses (max-min+1/precision) for all cases so the top byte
-                -- (255) reaches max. LETools/game displays match this for both
-                -- flat values and percentage-with-word affixes.
-                local span = tonumber(max) - tonumber(min) + 1 / precision
-                local numVal = tonumber(min) + range * span
+                local minN = tonumber(min)
+                local maxN = tonumber(max)
+                -- Flat values (useRound=false) use (max-min+1/precision) span so the
+                -- top byte (255) reaches max; percentage-with-word affixes (useRound=true)
+                -- use the plain (max-min) span, matching LETools/Maxroll displays.
+                local span = maxN - minN
+                if not useRound then
+                    span = span + 1 / precision
+                end
+                -- Interpolate first, THEN apply valueScalar, to match LE/LETools.
+                -- Applying scalar to min/max before interpolation shifts the integer
+                -- grid (e.g. Apiarist's Suit Str +(11-13)×1.5 at roll 57/255 should
+                -- give round(11.447×1.5)=17, not interpolate within [16,19]→16).
+                local numVal = (minN + range * span) * valueScalar
                 if useRound then
                     numVal = m_floor(numVal * precision + 0.5) / precision
                 else
                     numVal = m_floor(numVal * precision) / precision
                 end
-                if numVal > max then
-                    numVal = max
+                local maxScaled = roundHalfDownOnHalf(maxN * valueScalar)
+                if numVal > maxScaled then
+                    numVal = maxScaled
                 end
                 return (numVal < 0 and "" or plus) .. tostring(numVal)
             end)
