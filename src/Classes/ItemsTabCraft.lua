@@ -1289,11 +1289,12 @@ function ItemsTabClass:BuildCraftControls()
 	local self_ref = self
 	local controls = self.controls
 
-	-- Anchor: to the right of the displayItem tooltip. The tooltip has
-	-- maxWidth=458 but usually renders far narrower, so a 300px offset keeps
-	-- the editor on-screen while leaving room past typical tooltip content.
+	-- Anchor: to the right of the itemList. Anchored to itemList (not
+	-- addDisplayItem) to avoid circular dependency, since addDisplayItem
+	-- repositions itself relative to craftAnchor when craft is active.
+	-- Offset 320 = original addDisplayItem (+20) + original craftAnchor (+300).
 	controls.craftAnchor = new("Control",
-		{ "TOPLEFT", controls.addDisplayItem, "BOTTOMLEFT" }, 300, 8, LEFT_W, 0)
+		{ "TOPLEFT", self_ref.controls.itemList, "TOPRIGHT" }, 320, 8, LEFT_W, 0)
 	controls.craftAnchor.shown = function() return self_ref.craftActive == true end
 
 	-- Panel title
