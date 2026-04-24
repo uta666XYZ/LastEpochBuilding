@@ -957,9 +957,9 @@ Implicits: 1
 			<BlessingFrac timeline="The Stolen Lance" frac="0.89411764705882"/>
 			<BlessingFrac timeline="Blood, Frost, and Death" frac="0.9921568627451"/>
 			<BlessingFrac timeline="The Last Ruin" frac="0.88235294117647"/>
-			<BlessingFrac timeline="Fall of the Empire" frac="0.74901960784314"/>
-			<BlessingFrac timeline="The Black Sun" frac="0.50588235294118"/>
 			<BlessingFrac timeline="Spirits of Fire" frac="0.87843137254902"/>
+			<BlessingFrac timeline="The Black Sun" frac="0.50588235294118"/>
+			<BlessingFrac timeline="Fall of the Empire" frac="0.74901960784314"/>
 		</BlessingFracs>
 	</Items>
 	<Notes>
@@ -974,10 +974,10 @@ Implicits: 1
 			<Skill skillId="SummonFrenzyTotem" slot="Skill 4" mainActiveSkill="1" includeInFullDPS="false" index="4" enabled="true" mainActiveSkillCalcs="nil"/>
 			<Skill skillId="SummonSpriggan" slot="Skill 5" mainActiveSkill="1" includeInFullDPS="false" index="5" enabled="true" mainActiveSkillCalcs="nil"/>
 			<Skill skillId="Ailment_AspectOfTheBoarVisuals" mainActiveSkill="1" includeInFullDPS="false" label="Aspect of the Boar (from Tempest Strike)" index="6" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:TempestStrike"/>
-			<Skill skillId="Ailment_Chill" mainActiveSkill="nil" includeInFullDPS="false" label="Chill (from Tempest Strike)" index="7" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:TempestStrike"/>
-			<Skill skillId="Ailment_AspectOfTheBoarVisuals" mainActiveSkill="nil" includeInFullDPS="false" label="Aspect of the Boar (from Swipe)" index="8" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:Swipe"/>
-			<Skill skillId="Ailment_Chill" mainActiveSkill="nil" includeInFullDPS="false" label="Chill (from Swipe)" index="9" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:Swipe"/>
-			<Skill skillId="Ailment_Slow" mainActiveSkill="nil" includeInFullDPS="false" label="Slow (from Swipe)" index="10" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:Swipe"/>
+			<Skill skillId="Ailment_Chill" mainActiveSkill="1" includeInFullDPS="false" label="Chill (from Tempest Strike)" index="7" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:TempestStrike"/>
+			<Skill skillId="Ailment_AspectOfTheBoarVisuals" mainActiveSkill="1" includeInFullDPS="false" label="Aspect of the Boar (from Swipe)" index="8" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:Swipe"/>
+			<Skill skillId="Ailment_Chill" mainActiveSkill="1" includeInFullDPS="false" label="Chill (from Swipe)" index="9" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:Swipe"/>
+			<Skill skillId="Ailment_Slow" mainActiveSkill="1" includeInFullDPS="false" label="Slow (from Swipe)" index="10" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:Swipe"/>
 		</SkillSet>
 	</Skills>
 	<Tree activeSpec="1">
