@@ -17049,7 +17049,12 @@
 			20,
 			4
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}+(2-4) Health Regen"
+			}
+		}
 	},
 	"90_1": {
 		"affix": "of Renewal",
@@ -17066,7 +17071,12 @@
 			20,
 			4
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}+(5-6) Health Regen"
+			}
+		}
 	},
 	"90_2": {
 		"affix": "of Renewal",
@@ -17083,7 +17093,12 @@
 			20,
 			4
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}+(7-8) Health Regen"
+			}
+		}
 	},
 	"90_3": {
 		"affix": "of Renewal",
@@ -17100,7 +17115,12 @@
 			20,
 			4
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}+(9-12) Health Regen"
+			}
+		}
 	},
 	"90_4": {
 		"affix": "of Renewal",
@@ -17117,7 +17137,12 @@
 			20,
 			4
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}+(13-16) Health Regen"
+			}
+		}
 	},
 	"90_5": {
 		"affix": "of Renewal",
@@ -17134,7 +17159,12 @@
 			20,
 			4
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}+(23-29) Health Regen"
+			}
+		}
 	},
 	"90_6": {
 		"affix": "of Renewal",
@@ -17151,7 +17181,12 @@
 			20,
 			4
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}+(30-41) Health Regen"
+			}
+		}
 	},
 	"90_7": {
 		"affix": "of Renewal",
@@ -17168,7 +17203,12 @@
 			20,
 			4
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}+(66-82) Health Regen"
+			}
+		}
 	},
 	"91_0": {
 		"affix": "of Stone",
@@ -19001,7 +19041,12 @@
 			22,
 			15
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}(7-14)% increased Damage While Channelling"
+			}
+		}
 	},
 	"103_1": {
 		"affix": "Channeller's",
@@ -19018,7 +19063,12 @@
 			22,
 			15
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}(15-25)% increased Damage While Channelling"
+			}
+		}
 	},
 	"103_2": {
 		"affix": "Channeller's",
@@ -19035,7 +19085,12 @@
 			22,
 			15
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}(26-35)% increased Damage While Channelling"
+			}
+		}
 	},
 	"103_3": {
 		"affix": "Channeller's",
@@ -19052,7 +19107,12 @@
 			22,
 			15
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}(36-46)% increased Damage While Channelling"
+			}
+		}
 	},
 	"103_4": {
 		"affix": "Channeller's",
@@ -19069,7 +19129,12 @@
 			22,
 			15
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}(47-70)% increased Damage While Channelling"
+			}
+		}
 	},
 	"103_5": {
 		"affix": "Channeller's",
@@ -19086,7 +19151,12 @@
 			22,
 			15
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}(88-111)% increased Damage While Channelling"
+			}
+		}
 	},
 	"103_6": {
 		"affix": "Channeller's",
@@ -19103,7 +19173,12 @@
 			22,
 			15
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}(112-140)% increased Damage While Channelling"
+			}
+		}
 	},
 	"103_7": {
 		"affix": "Channeller's",
@@ -19120,7 +19195,12 @@
 			22,
 			15
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}(225-281)% increased Damage While Channelling"
+			}
+		}
 	},
 	"104_0": {
 		"affix": "of Meditation",
@@ -30342,7 +30422,15 @@
 			1,
 			19
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(12-14) Ward per Second"
+			},
+			"catalyst": {
+				"1": "{rounding:Integer}+(9-11) Ward per Second"
+			}
+		}
 	},
 	"382_1": {
 		"affix": "of Warding",
@@ -30360,7 +30448,15 @@
 			1,
 			19
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(15-18) Ward per Second"
+			},
+			"catalyst": {
+				"1": "{rounding:Integer}+(12-14) Ward per Second"
+			}
+		}
 	},
 	"382_2": {
 		"affix": "of Warding",
@@ -30378,7 +30474,15 @@
 			1,
 			19
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(20-24) Ward per Second"
+			},
+			"catalyst": {
+				"1": "{rounding:Integer}+(15-19) Ward per Second"
+			}
+		}
 	},
 	"382_3": {
 		"affix": "of Warding",
@@ -30396,7 +30500,15 @@
 			1,
 			19
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(26-32) Ward per Second"
+			},
+			"catalyst": {
+				"1": "{rounding:Integer}+(20-25) Ward per Second"
+			}
+		}
 	},
 	"382_4": {
 		"affix": "of Warding",
@@ -30414,7 +30526,15 @@
 			1,
 			19
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(33-42) Ward per Second"
+			},
+			"catalyst": {
+				"1": "{rounding:Integer}+(26-33) Ward per Second"
+			}
+		}
 	},
 	"382_5": {
 		"affix": "of Warding",
@@ -30432,7 +30552,15 @@
 			1,
 			19
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(50-63) Ward per Second"
+			},
+			"catalyst": {
+				"1": "{rounding:Integer}+(39-49) Ward per Second"
+			}
+		}
 	},
 	"382_6": {
 		"affix": "of Warding",
@@ -30450,7 +30578,15 @@
 			1,
 			19
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(65-84) Ward per Second"
+			},
+			"catalyst": {
+				"1": "{rounding:Integer}+(50-66) Ward per Second"
+			}
+		}
 	},
 	"382_7": {
 		"affix": "of Warding",
@@ -30468,7 +30604,15 @@
 			1,
 			19
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(135-168) Ward per Second"
+			},
+			"catalyst": {
+				"1": "{rounding:Integer}+(105-131) Ward per Second"
+			}
+		}
 	},
 	"383_0": {
 		"affix": "Spell Damage while Channelling",
@@ -36743,7 +36887,12 @@
 			22,
 			4
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "+(14-18)% Chance to apply Frailty on Hit"
+			}
+		}
 	},
 	"429_1": {
 		"affix": "of Frailty",
@@ -36760,7 +36909,12 @@
 			22,
 			4
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "+(19-22)% Chance to apply Frailty on Hit"
+			}
+		}
 	},
 	"429_2": {
 		"affix": "of Frailty",
@@ -36777,7 +36931,12 @@
 			22,
 			4
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "+(23-27)% Chance to apply Frailty on Hit"
+			}
+		}
 	},
 	"429_3": {
 		"affix": "of Frailty",
@@ -36794,7 +36953,12 @@
 			22,
 			4
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "+(28-32)% Chance to apply Frailty on Hit"
+			}
+		}
 	},
 	"429_4": {
 		"affix": "of Frailty",
@@ -36811,7 +36975,12 @@
 			22,
 			4
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "+(33-41)% Chance to apply Frailty on Hit"
+			}
+		}
 	},
 	"429_5": {
 		"affix": "of Frailty",
@@ -36828,7 +36997,12 @@
 			22,
 			4
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "+(51-64)% Chance to apply Frailty on Hit"
+			}
+		}
 	},
 	"429_6": {
 		"affix": "of Frailty",
@@ -36845,7 +37019,12 @@
 			22,
 			4
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "+(66-82)% Chance to apply Frailty on Hit"
+			}
+		}
 	},
 	"429_7": {
 		"affix": "of Frailty",
@@ -36862,7 +37041,12 @@
 			22,
 			4
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "+(131-164)% Chance to apply Frailty on Hit"
+			}
+		}
 	},
 	"430_0": {
 		"affix": "of Deflection",
@@ -43081,7 +43265,12 @@
 			1,
 			3
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+2 Vitality"
+			}
+		}
 	},
 	"505_1": {
 		"affix": "Vital",
@@ -43098,7 +43287,12 @@
 			1,
 			3
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "+3 Vitality"
+			}
+		}
 	},
 	"505_2": {
 		"affix": "Vital",
@@ -43115,7 +43309,12 @@
 			1,
 			3
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(5-6) Vitality"
+			}
+		}
 	},
 	"505_3": {
 		"affix": "Vital",
@@ -43132,7 +43331,12 @@
 			1,
 			3
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(8-9) Vitality"
+			}
+		}
 	},
 	"505_4": {
 		"affix": "Vital",
@@ -43149,7 +43353,12 @@
 			1,
 			3
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(11-12) Vitality"
+			}
+		}
 	},
 	"505_5": {
 		"affix": "Vital",
@@ -43166,7 +43375,12 @@
 			1,
 			3
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(17-20) Vitality"
+			}
+		}
 	},
 	"505_6": {
 		"affix": "Vital",
@@ -43183,7 +43397,12 @@
 			1,
 			3
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(21-24) Vitality"
+			}
+		}
 	},
 	"505_7": {
 		"affix": "Vital",
@@ -43200,7 +43419,12 @@
 			1,
 			3
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"body_armor": {
+				"1": "{rounding:Integer}+(36-42) Vitality"
+			}
+		}
 	},
 	"506_0": {
 		"affix": "Spellslinger's",
