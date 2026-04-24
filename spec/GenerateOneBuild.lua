@@ -117,6 +117,43 @@ if modDB then
 end
 outHnd:write("    },\n")
 
+outHnd:write("    vitBreakdown = {\n")
+if modDB then
+    dumpModList(outHnd, "Vit", modDB.mods["Vit"])
+    outHnd:write(string.format("        [\"_summary\"] = { final=%d },\n", modDB:Sum("BASE", nil, "Vit") or 0))
+end
+outHnd:write("    },\n")
+
+-- Idol per-stat breakdown: dump mods whose source starts with "Item:" so we can
+-- verify per-idol contributions against in-game tooltips.
+outHnd:write("    idolStatBreakdown = {\n")
+if modDB then
+    local stats = {
+        "StunAvoidance", "FireResist", "WardRetention", "ColdDamageBase",
+        "SpellDamageLeechWhileChannelling", "SpellDamageLeech",
+        "StaticChargesGenerationRate", "ManaEfficiency",
+        "WardOnMeleeHit", "WardGainedPerRuneConsumed",
+        "FrenzyEffect", "MaxOmenIdols", "HealthPerEquippedHereticalIdol",
+        "ArmorPerRefractedIdol", "HealthPerEquippedOmenIdol",
+    }
+    for _, stat in ipairs(stats) do
+        local mods = modDB.mods[stat]
+        if mods and #mods > 0 then
+            outHnd:write("        [\"" .. stat .. "\"] = {\n")
+            for i = 1, #mods do
+                local m = mods[i]
+                local src = tostring(m.source or "")
+                if src:find("^Item:") then
+                    outHnd:write(string.format("            { source=%q, type=%q, value=%s },\n",
+                        src, tostring(m.type or ""), tostring(m.value)))
+                end
+            end
+            outHnd:write("        },\n")
+        end
+    end
+end
+outHnd:write("    },\n")
+
 outHnd:write("}\n")
 outHnd:close()
 print("Wrote " .. luaPath)

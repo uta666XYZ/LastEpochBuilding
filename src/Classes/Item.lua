@@ -663,6 +663,15 @@ function ItemClass:ParseRaw(raw, rarity, highQuality)
 						needsRecraft = true
 						break
 					end
+					-- Omen Idol affixEffectModifier bypass (2026-04-25): older
+					-- XMLs bake {scalar:0.67} into every affix mod line on Omen
+					-- Idol bases. Re-run Craft so Craft()'s bypass logic strips
+					-- the scalar and matches in-game tooltip Range exactly.
+					if self.base.affixEffectModifier
+					   and self.base.affixEffectModifier ~= 0 then
+						needsRecraft = true
+						break
+					end
 				end
 			end
 			if needsRecraft then break end
@@ -894,13 +903,34 @@ function ItemClass:Craft()
 					if mod.standardAffixEffectModifier then
 						modScalar = modScalar - mod.standardAffixEffectModifier
 					end
-					-- Universal affixes (no classSpecificity) are unaffected by the base's affixEffectModifier
-					-- (e.g., "of Insulation" on Omen Idols should not get the -33% penalty)
-					if self.base.affixEffectModifier and self.base.affixEffectModifier ~= 0
-					   and (not mod.classSpecificity or mod.classSpecificity == 0) then
+					-- Omen Idol affixEffectModifier bypass (DO NOT REMOVE).
+					-- Omen Idol bases carry affixEffectModifier = -0.33, but
+					-- ModItem_*.json authors every Omen-rollable affix with its
+					-- FINAL displayed range already baked in — not the pre-penalty
+					-- range. Applying 0.67 on top double-penalises.
+					--
+					-- Ground truth verification (2026-04-25, ShutFackUp Mage,
+					-- Large/Grand Arcane Omen Idol, see IdolTest XML):
+					--   Tenacious +445 Stun Avoidance (cs=0, JSON 200-450, in-game Range 200-450)
+					--   Ice Drake +38% Fire Resistance (cs=13, JSON 20-45, in-game Range 20-45)
+					--   Both in-game tooltips show the JSON range verbatim — scalar
+					--   applied gives wrong values (298 and 26 respectively).
+					--
+					-- Therefore bypass the penalty for ALL affixes on Omen Idol
+					-- bases regardless of classSpecificity. `standardAffixEffectModifier`
+					-- on sealed/special affixes is preserved below.
+					--
+					-- History: originally added 2026-04-23 (e304138e49) as cs==0
+					-- only, removed 2026-04-24 (0a5e303e7) under mistaken-lost-
+					-- rationale assumption, restored and widened 2026-04-25 after
+					-- in-game tooltip verification.
+					if self.base.affixEffectModifier and self.base.affixEffectModifier ~= 0 then
 						modScalar = 1
+						if mod.standardAffixEffectModifier then
+							modScalar = modScalar - mod.standardAffixEffectModifier
+						end
 					end
-					-- Enchanted affix for Class-Specific Idols: specialAffixType=4 with
+-- Enchanted affix for Class-Specific Idols: specialAffixType=4 with
 					-- standardAffixEffectModifier=-0.33 rolls ~1.5x on neutral bases
 					-- (not 1.33x). +0.17 matches Maxroll parity on Solar Idol (affix 892).
 					if mod.specialAffixType == 4 and mod.standardAffixEffectModifier == -0.33

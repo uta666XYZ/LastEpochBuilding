@@ -849,12 +849,13 @@ function ImportTabClass:DownloadLEToolsPlannerBuild(url)
             self:ImportPassiveTreeAndJewels(char)
             self:ImportItemsAndSkills(char)
             self:ImportBlessingsFromLETools(data)
-            -- LETools' planner UI always displays stats with both quest
-            -- rewards included (confirmed via "Quest Reward: +2 Dexterity"
-            -- breakdown label on 2026-04-22). The API JSON itself carries
-            -- no quest flag, so auto-enable both to match LETools numbers.
+            -- LETools and Maxroll planners both show a single "Quest Reward:
+            -- +1 <attr>" line per attribute (verified via Dexterity hover on
+            -- 2026-04-24). The API JSON carries no quest flag, so default to
+            -- Apophis/Majasa only. Temple of Eterra may grant a different
+            -- reward (or none at level cap); leave it user-controlled.
             self.build.configTab.input.questApophisMajasa = true
-            self.build.configTab.input.questTempleOfEterra = true
+            self.build.configTab.input.questTempleOfEterra = false
             self.build.configTab:BuildModList()
             self.build.configTab:UpdateControls()
             self.build.buildFlag = true
@@ -998,6 +999,13 @@ function ImportTabClass:ConvertLEToolsItem(letoolsItem, itemMap, affixMap)
     local function pushAffix(a, kind)
         if type(a) ~= "table" or a.id == nil then return end
         local affixInt = affixMap[a.id]
+        if affixInt == nil then
+            ConPrintf("[LETOOLS-AFFIX-MISS] base=" .. tostring(entry.b)
+                .. " kind=" .. tostring(kind)
+                .. " extId=" .. tostring(a.id)
+                .. " (not in letools_affix_map.json; dropped)")
+            letoolsItem._affixMapMiss = (letoolsItem._affixMapMiss or 0) + 1
+        end
         if affixInt ~= nil then
             -- LETools tiers are user-facing 1-indexed (T1..T7); LEB
             -- ModItem keys and save-format tiers are 0-indexed.
@@ -1785,61 +1793,10 @@ function ImportTabClass:ImportItemsAndSkills(charData)
                 end
             end
 
-            -- Apply Idol Altar "increased Effect of [Prefixes/Suffixes] for Idols
-            -- in Refracted Slots" to idols on fractured cells by scaling the
-            -- affix valueScalar. Applied once on the idol itself (which is
-            -- counted once in the regular idol slot; Omen Idol slots are
-            -- skipped in CalcSetup to avoid double-counting).
-            local altarSlot = itemsTab.slots["Idol Altar"]
-            if altarSlot and altarSlot.selItemId and altarSlot.selItemId ~= 0 and #fracturedIdols > 0 then
-                local altar = itemsTab.items[altarSlot.selItemId]
-                if altar and altar.explicitModLines then
-                    local prefixPct, suffixPct = 0, 0
-                    for _, modLine in ipairs(altar.explicitModLines) do
-                        local line = (modLine.range and itemLib.applyRange(modLine.line, modLine.range, modLine.valueScalar, modLine.rounding)) or modLine.line
-                        local v = line:match("(%d+)%% increased Effect of Prefixes and Suffixes for Idols in Refracted Slots")
-                        if v then
-                            prefixPct = prefixPct + tonumber(v)
-                            suffixPct = suffixPct + tonumber(v)
-                        else
-                            v = line:match("(%d+)%% increased Effect of Suffixes for Idols in Refracted Slots")
-                            if v then
-                                suffixPct = suffixPct + tonumber(v)
-                            else
-                                v = line:match("(%d+)%% increased Effect of Prefixes for Idols in Refracted Slots")
-                                if v then prefixPct = prefixPct + tonumber(v) end
-                            end
-                        end
-                    end
-                    if prefixPct > 0 or suffixPct > 0 then
-                        local prefixScalar = 1 + prefixPct / 100
-                        local suffixScalar = 1 + suffixPct / 100
-                        for _, fi in ipairs(fracturedIdols) do
-                            local idol = itemsTab.items[fi.itemId]
-                            if idol then
-                                if prefixPct > 0 and idol.prefixes then
-                                    for _, pfx in ipairs(idol.prefixes) do
-                                        if pfx.modId and pfx.modId ~= "None" then
-                                            pfx.valueScalar = prefixScalar
-                                        end
-                                    end
-                                end
-                                if suffixPct > 0 and idol.suffixes then
-                                    for _, sfx in ipairs(idol.suffixes) do
-                                        if sfx.modId and sfx.modId ~= "None" then
-                                            sfx.valueScalar = suffixScalar
-                                        end
-                                    end
-                                end
-                                if idol.Craft then
-                                    idol:Craft()
-                                    idol:BuildAndParseRaw()
-                                end
-                            end
-                        end
-                    end
-                end
-            end
+            -- Idol Altar "increased Effect of [Prefixes/Suffixes] for Idols in
+            -- Refracted Slots" is applied at calc time by CalcSetup.cloneWithAltarBoost.
+            -- Do NOT bake the boost into the imported idol here, or it would be
+            -- applied twice (once in XML-baked valueScalar, once in the clone).
         end
     end
 
