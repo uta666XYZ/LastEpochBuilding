@@ -44,57 +44,66 @@ local DropDownClass = newClass("DropDownControl", "Control", "ControlHost", "Too
 	-- self.tag = "-"
 end)
 
--- maps the actual dropdown row index (after eventual filtering) to the original (unfiltered) list index
-function DropDownClass:DropIndexToListIndex(dropIndex)
-	-- 1:1
-	if not self:IsSearchActive() then
-		return dropIndex
-	end
-	-- out of bounds
-	if not dropIndex or dropIndex <= 0 or dropIndex > self:GetDropCount() then
-		return nil
-	end
-	-- actual mapping
-	for listIndex, info in ipairs(self.searchInfos) do
-		if info and info.matches then
-			dropIndex = dropIndex - 1
-			if (dropIndex <= 0) then
-				return listIndex
-			end
+-- Collapsible group headers: a list entry with `isHeader = true` is rendered
+-- distinctly and is not selectable; clicking it toggles `collapsed`, which
+-- hides subsequent non-header entries until the next header.
+function DropDownClass:IsListItemVisible(index)
+	local item = self.list[index]
+	if not item then return false end
+	if type(item) == "table" and item.isHeader then return true end
+	-- Scan back for the most recent header
+	for i = index - 1, 1, -1 do
+		local prev = self.list[i]
+		if type(prev) == "table" and prev.isHeader then
+			return not prev.collapsed
 		end
 	end
+	return true
+end
+
+function DropDownClass:IsListItemDropped(index)
+	if not self:IsListItemVisible(index) then return false end
+	if self:IsSearchActive() then
+		local item = self.list[index]
+		if type(item) == "table" and item.isHeader then return true end
+		local info = self.searchInfos[index]
+		return info and info.matches
+	end
+	return true
+end
+
+-- maps the actual dropdown row index (after eventual filtering) to the original (unfiltered) list index
+function DropDownClass:DropIndexToListIndex(dropIndex)
+	if not dropIndex or dropIndex <= 0 then return nil end
+	local n = 0
+	for i = 1, #self.list do
+		if self:IsListItemDropped(i) then
+			n = n + 1
+			if n == dropIndex then return i end
+		end
+	end
+	return nil
 end
 
 -- maps the original (unfiltered) list index to the actual dropdown row index (after eventual filtering)
 function DropDownClass:ListIndexToDropIndex(listIndex, default)
-	-- 1:1
-	if not self:IsSearchActive() then
-		return listIndex
-	end
-	-- out of bounds
-	if not listIndex or listIndex <= 0 or listIndex > #self.list then
-		return nil
-	end
-	-- actual mapping
-	local dropIndex = 0
-	for listIndexLoop, info in ipairs(self.searchInfos) do
-		if info and info.matches then
-			dropIndex = dropIndex + 1
-			if (listIndex == listIndexLoop) then
-				return dropIndex
-			end
+	if not listIndex or listIndex <= 0 or listIndex > #self.list then return nil end
+	local n = 0
+	for i = 1, #self.list do
+		if self:IsListItemDropped(i) then
+			n = n + 1
+			if i == listIndex then return n end
 		end
 	end
-	-- given listIndex is currently filtered out
 	return default
 end
 
 function DropDownClass:GetDropCount()
-	if self:IsSearchActive() then
-		return self:GetMatchCount()
-	else
-		return #self.list
+	local n = 0
+	for i = 1, #self.list do
+		if self:IsListItemDropped(i) then n = n + 1 end
 	end
+	return n
 end
 
 function DropDownClass:DrawSearchHighlights(label, searchInfo, x, y, width, height)
@@ -140,13 +149,27 @@ function DropDownClass:GetSelValue(key)
 end
 
 function DropDownClass:SetSel(newSel, noCallSelFunc)
-	newSel = m_max(1, m_min(self:GetDropCount(), newSel))
-	newSel = self:DropIndexToListIndex(newSel)
-	if newSel and newSel ~= self.selIndex then
-		self.selIndex = newSel
-		if not noCallSelFunc and self.selFunc then
-			self.selFunc(newSel, self.list[newSel])
+	local count = self:GetDropCount()
+	if count == 0 then return end
+	newSel = m_max(1, m_min(count, newSel))
+	-- If target is a header, advance past it in the direction of motion so
+	-- keyboard nav never stalls on a group divider.
+	local curDrop = self:ListIndexToDropIndex(self.selIndex, 0) or 0
+	local dir = (newSel >= curDrop) and 1 or -1
+	for _ = 1, count do
+		local listIdx = self:DropIndexToListIndex(newSel)
+		local item = listIdx and self.list[listIdx]
+		if not (type(item) == "table" and item.isHeader) then
+			if listIdx and listIdx ~= self.selIndex then
+				self.selIndex = listIdx
+				if not noCallSelFunc and self.selFunc then
+					self.selFunc(listIdx, self.list[listIdx])
+				end
+			end
+			return
 		end
+		newSel = newSel + dir
+		if newSel < 1 or newSel > count then return end
 	end
 end
 
@@ -380,25 +403,39 @@ function DropDownClass:Draw(viewPort, noTooltip)
 		local dropIndex = 0
 		for index, listVal in ipairs(self.list) do
 			local searchInfo = self.searchInfos[index]
-			-- skip filtered out items if search is active
-			if not self:IsSearchActive() or searchInfo and searchInfo.matches then
+			if self:IsListItemDropped(index) then
 				dropIndex = dropIndex + 1
 				local y = (dropIndex - 1) * itemLineH - scrollBar.offset
-				-- highlight background if hovered
-				if index == self.hoverSel then
-					SetDrawColor(0.33, 0.33, 0.33)
+				local isHeader = type(listVal) == "table" and listVal.isHeader
+				if isHeader then
+					-- Distinct tinted band for group headers.
+					SetDrawColor(0.2, 0.2, 0.28)
 					DrawImage(nil, 0, y, width - 4, itemLineH)
-				end
-				-- highlight font color if hovered or selected
-				if index == self.hoverSel or index == self.selIndex then
+					if index == self.hoverSel then
+						SetDrawColor(0.33, 0.33, 0.40)
+						DrawImage(nil, 0, y, width - 4, itemLineH)
+					end
 					SetDrawColor(1, 1, 1)
+					local marker = listVal.collapsed and "[+] " or "[-] "
+					local label = marker .. (listVal.label or "")
+					DrawString(0, y, "LEFT", itemFontSize, "VAR", label)
 				else
-					SetDrawColor(0.66, 0.66, 0.66)
+					-- highlight background if hovered
+					if index == self.hoverSel then
+						SetDrawColor(0.33, 0.33, 0.33)
+						DrawImage(nil, 0, y, width - 4, itemLineH)
+					end
+					-- highlight font color if hovered or selected
+					if index == self.hoverSel or index == self.selIndex then
+						SetDrawColor(1, 1, 1)
+					else
+						SetDrawColor(0.66, 0.66, 0.66)
+					end
+					-- draw actual item label with search match highlight if available
+					local label = type(listVal) == "table" and listVal.label or listVal
+					DrawString(0, y, "LEFT", itemFontSize, "VAR", label)
+					self:DrawSearchHighlights(label, searchInfo, 0, y, width - 4, itemFontSize)
 				end
-				-- draw actual item label with search match highlight if available
-				local label = type(listVal) == "table" and listVal.label or listVal
-				DrawString(0, y, "LEFT", itemFontSize, "VAR", label)
-				self:DrawSearchHighlights(label, searchInfo, 0, y, width - 4, itemFontSize)
 			end
 		end
 		SetDrawColor(1, 1, 1)
@@ -472,8 +509,17 @@ function DropDownClass:OnKeyUp(key)
 			local cursorX, cursorY = GetCursorPos()
 			local dropExtra = self.dropHeight + 4
 			local dropY = self.dropUp and y - dropExtra or y + height
-			self:SetSel(math.floor((cursorY - dropY + self.controls.scrollBar.offset) / 20) + 1)
-			self.dropped = false
+			local dropIdx = math.floor((cursorY - dropY + self.controls.scrollBar.offset) / 20) + 1
+			local listIdx = self:DropIndexToListIndex(dropIdx)
+			local item = listIdx and self.list[listIdx]
+			if type(item) == "table" and item.isHeader then
+				-- Toggle group collapse; keep dropdown open.
+				item.collapsed = not item.collapsed
+				self.controls.scrollBar:SetContentDimension(20 * self:GetDropCount(), self.dropHeight)
+			else
+				self:SetSel(dropIdx)
+				self.dropped = false
+			end
 		end
 	elseif self.controls.scrollBar:IsScrollDownKey(key) then
 		if self.dropped and self.controls.scrollBar.enabled then
