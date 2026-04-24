@@ -150,6 +150,14 @@ function ItemsTabClass:CraftGetMaxTier(statOrderKey)
 	return 0
 end
 
+-- Slot-aware tier count (1..N) used by cross-tier sliders. Only the
+-- primordial slot may hold tier 8 (index 7); all other slots cap at tier 7.
+function ItemsTabClass:CraftGetSlotTierCount(slotKey, statOrderKey)
+	local maxT = self:CraftGetMaxTier(statOrderKey) or 0
+	if slotKey ~= "primordial" and maxT > 6 then maxT = 6 end
+	return maxT + 1
+end
+
 function ItemsTabClass:CraftGetAffixTierName(slotKey)
 	local st = self.craftAffixState[slotKey]
 	if not st or not st.modKey then return nil end
@@ -204,7 +212,7 @@ function ItemsTabClass:CraftUpdateSlotValueEdits(slotKey)
 	local st   = self.craftAffixState[slotKey]
 	local tierCount = 1
 	if st and st.modKey then
-		tierCount = (self:CraftGetMaxTier(st.modKey) or 0) + 1
+		tierCount = self:CraftGetSlotTierCount(slotKey, st.modKey)
 	end
 	for i = 1, MAX_MOD_LINES do
 		local valCtrl = self.controls["craft_" .. slotKey .. "Val" .. i]
@@ -639,7 +647,12 @@ function ItemsTabClass:CraftRebuildItem()
 
 	item.corrupted = self.craftCorrupted
 	item:BuildAndParseRaw()
-	if reforgedSetInfo then
+	-- For basic items the set state is driven purely by whether a Reforged
+	-- set affix is currently picked. Always overwrite (with nil or table) so
+	-- deselecting/replacing a set affix clears the stale preview.
+	if self.craftEditBaseEntry and self.craftEditBaseEntry.category == "basic" then
+		item.setInfo = reforgedSetInfo
+	elseif reforgedSetInfo then
 		item.setInfo = reforgedSetInfo
 	end
 
@@ -664,7 +677,7 @@ function ItemsTabClass:CraftBuildSliderTooltip(tooltip, slotKey, li, hoverVal)
 	if not st or not st.modKey then return end
 
 	-- Map hoverVal (0..1, full slider) -> (hoverTier, hoverRange 0..255)
-	local tierCount = (self:CraftGetMaxTier(st.modKey) or 0) + 1
+	local tierCount = self:CraftGetSlotTierCount(slotKey, st.modKey)
 	local hoverTier, hoverRange = valToTierRange(hoverVal, tierCount)
 
 	-- Resolve the mod entry for the *hovered* tier (cross-tier preview).
@@ -1551,6 +1564,18 @@ function ItemsTabClass:BuildCraftControls()
 				end)
 			controls[slotDDKey].enableDroppedWidth = true
 			controls[slotDDKey].maxDroppedWidth    = 520
+			-- Show a tooltip with the full label on hover so long affix
+			-- names clipped by the drop panel are still readable.
+			controls[slotDDKey].tooltipFunc = function(tooltip, mode, index, value)
+				tooltip:Clear()
+				if mode ~= "HOVER" then return end
+				if type(value) ~= "table" or value.isHeader then return end
+				local label = value.label or ""
+				label = label:gsub("^%s+", "")
+				if label ~= "" then
+					tooltip:AddLine(14, "^7" .. label)
+				end
+			end
 			controls[slotDDKey].shown = function()
 				if not self_ref.craftActive or not self_ref.craftEditItem then return false end
 				if capturedSlotKey == "corrupted" and not self_ref.craftCorrupted then return false end
@@ -1576,7 +1601,7 @@ function ItemsTabClass:BuildCraftControls()
 						local info = self_ref.craftSlotModInfo[capturedSlotKey]
 						if li > info.count then return end
 						local st = self_ref.craftAffixState[capturedSlotKey]
-						local tierCount = (self_ref:CraftGetMaxTier(st.modKey) or 0) + 1
+						local tierCount = self_ref:CraftGetSlotTierCount(capturedSlotKey, st.modKey)
 						local newTier, newRange = valToTierRange(val, tierCount)
 						st.tier = newTier
 						-- Single shared slider per affix: write the same range
