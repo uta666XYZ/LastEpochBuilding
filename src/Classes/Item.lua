@@ -920,11 +920,27 @@ function ItemClass:Craft()
 					-- bases regardless of classSpecificity. `standardAffixEffectModifier`
 					-- on sealed/special affixes is preserved below.
 					--
+					-- SCOPE FIX (2026-04-25, BOwJZeWW VK lv100 follow-up): the
+					-- bypass must be gated to Omen Idol bases only. Non-Omen
+					-- bases (Minor/Humble/Small/Ornate/Grand/Huge/etc.) also
+					-- carry negative affixEffectModifier but their ModItem
+					-- ranges are pre-penalty and LE displays the post-penalty
+					-- value in-game. Applying the bypass to them caused gross
+					-- over-calculation (e.g. Minor Lagonian Idol "of Embers"
+					-- +30% in LEB vs +6% in LETools/LE).
+					--
+					-- Detection: try ModItem-side marker first (mod.omenOnly,
+					-- currently not authored anywhere — future hook), then
+					-- fall back to base name substring "Omen Idol".
+					--
 					-- History: originally added 2026-04-23 (e304138e49) as cs==0
 					-- only, removed 2026-04-24 (0a5e303e7) under mistaken-lost-
 					-- rationale assumption, restored and widened 2026-04-25 after
-					-- in-game tooltip verification.
-					if self.base.affixEffectModifier and self.base.affixEffectModifier ~= 0 then
+					-- in-game tooltip verification, then re-scoped to Omen-only
+					-- after idol suffix resist parity check.
+					local isOmenIdol = (mod.omenOnly == true)
+						or (self.baseName and self.baseName:find("Omen Idol", 1, true) ~= nil)
+					if self.base.affixEffectModifier and self.base.affixEffectModifier ~= 0 and isOmenIdol then
 						modScalar = 1
 						if mod.standardAffixEffectModifier then
 							modScalar = modScalar - mod.standardAffixEffectModifier
