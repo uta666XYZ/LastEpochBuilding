@@ -821,6 +821,18 @@ function ImportTabClass:DownloadLEToolsPlannerBuild(url)
                 self.importCodeDetail = colorCodes.NEGATIVE .. "API fetch failed: " .. apiErr:gsub("\n", " ")
                 return
             end
+            -- DEBUG: dump raw LETools API response for affix tier inspection.
+            -- Use same path-resolution as debug.log (worktree/repo root if manifest.xml
+            -- is one level up, otherwise current directory).
+            local _dumpPath = (io.open("../manifest.xml", "r") and "../letools_raw.json") or "letools_raw.json"
+            local _dumpF = io.open(_dumpPath, "w")
+            if _dumpF then
+                _dumpF:write(apiResponse.body)
+                _dumpF:close()
+                ConPrintf("[LETOOLS-DUMP] wrote %d bytes to %s", #apiResponse.body, _dumpPath)
+            else
+                ConPrintf("[LETOOLS-DUMP] failed to open %s", _dumpPath)
+            end
             local jsonData, _, parseErr = dkjson.decode(apiResponse.body, 1, false)
             if parseErr or type(jsonData) ~= "table" then
                 self.importCodeDetail = colorCodes.NEGATIVE .. "Failed to parse LETools response"
@@ -991,6 +1003,13 @@ function ImportTabClass:ConvertLEToolsItem(letoolsItem, itemMap, affixMap)
             -- ModItem keys and save-format tiers are 0-indexed.
             local tier0 = (a.tier or 1) - 1
             if tier0 < 0 then tier0 = 0 end
+            ConPrintf("[LETOOLS-AFFIX] base=" .. tostring(entry.b)
+                .. " kind=" .. tostring(kind)
+                .. " extId=" .. tostring(a.id)
+                .. " affixInt=" .. tostring(affixInt)
+                .. " rawTier=" .. tostring(a.tier)
+                .. " tier0=" .. tostring(tier0)
+                .. " roll=" .. tostring(a.r))
             t_insert(mx.affixes, { id = affixInt, tier = tier0, roll = a.r or 0 })
         end
     end
