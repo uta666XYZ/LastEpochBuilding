@@ -357,6 +357,10 @@ function ItemClass:ParseRaw(raw, rarity, highQuality)
 			self.checkSection = true
 		elseif line == "Mirrored" then
 			self.mirrored = true
+		elseif line == "Corrupted" then
+			self.corrupted = true
+		elseif line == "Split" then
+			self.split = true
 		else
 			if self.checkSection then
 				if gameModeStage == "IMPLICIT" then
@@ -636,6 +640,40 @@ function ItemClass:ParseRaw(raw, rarity, highQuality)
 			end
 		end
 	end
+	-- When loading a crafted item from XML, stored mod-line text reflects the
+	-- affix's default range, not any slotOverrides entry. Re-run Craft so that
+	-- slot-specific ranges (e.g. Body Armor "of the Ox") materialise correctly.
+	-- Guarded with _craftingInternal to avoid recursion via BuildAndParseRaw.
+	if self.crafted and self.base and self.affixes and not self._craftingInternal then
+		local slotKey = itemLib.slotKeyForType(self.type)
+		local needsRecraft = false
+		for _, list in ipairs({self.prefixes, self.suffixes}) do
+			for _, affix in ipairs(list) do
+				local mod = affix and affix.modId and self.affixes[affix.modId]
+				if mod then
+					if slotKey and mod.slotOverrides and mod.slotOverrides[slotKey] then
+						needsRecraft = true
+						break
+					end
+					-- Corrupted items: if any affix has a line [2] (corruption-only
+					-- extension), re-run Craft so the extra line materialises into
+					-- explicitModLines. Safe for non-corrupted items because Craft
+					-- itself now gates line [2+] behind self.corrupted.
+					if self.corrupted and mod[2] then
+						needsRecraft = true
+						break
+					end
+				end
+			end
+			if needsRecraft then break end
+		end
+		if needsRecraft then
+			self._craftingInternal = true
+			self:Craft()
+			self._craftingInternal = nil
+			return
+		end
+	end
 	self:BuildModList()
 end
 
@@ -844,7 +882,14 @@ function ItemClass:Craft()
 				elseif mod.type == "Suffix" then
 					self.nameSuffix = " " .. mod.affix
 				end
-				for _, line in ipairs(itemLib.modLinesForSlot(mod, slotKey)) do
+				local modLinesList = itemLib.modLinesForSlot(mod, slotKey)
+				for lineIdx, line in ipairs(modLinesList) do
+					-- Line [2+] of an affix is a corruption-only extension (e.g. "Heretical
+					-- Idol Limit" 1109_* gains "+N Health per Idol in a Refracted Slot" when
+					-- the item is corrupted). Skip unless the item carries the Corrupted flag.
+					if lineIdx >= 2 and not self.corrupted then
+						goto nextCraftLine
+					end
 					local modScalar = 1 + self.base.affixEffectModifier
 					if mod.standardAffixEffectModifier then
 						modScalar = modScalar - mod.standardAffixEffectModifier
@@ -871,6 +916,7 @@ function ItemClass:Craft()
 						modLine.displayValueScalar = displayScalar
 					end
 					t_insert(self.explicitModLines, modLine)
+					::nextCraftLine::
 				end
 			end
 		end

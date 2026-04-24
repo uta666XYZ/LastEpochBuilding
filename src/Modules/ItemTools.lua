@@ -65,13 +65,10 @@ function itemLib.applyRange(line, range, valueScalar, rounding)
                 min = roundHalfDownOnHalf(min * valueScalar)
                 max = roundHalfDownOnHalf(max * valueScalar)
                 numbers = numbers + 1
-                -- Flat values (useRound=false) use (max-min+1/precision) span so the
-                -- top byte (255) reaches max; percentage-with-word affixes (useRound=true)
-                -- use the plain (max-min) span, matching LETools/Maxroll displays.
-                local span = tonumber(max) - tonumber(min)
-                if not useRound then
-                    span = span + 1 / precision
-                end
+                -- Span uses (max-min+1/precision) for all cases so the top byte
+                -- (255) reaches max. LETools/game displays match this for both
+                -- flat values and percentage-with-word affixes.
+                local span = tonumber(max) - tonumber(min) + 1 / precision
                 local numVal = tonumber(min) + range * span
                 if useRound then
                     numVal = m_floor(numVal * precision + 0.5) / precision
