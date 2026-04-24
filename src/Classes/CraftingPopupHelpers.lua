@@ -400,8 +400,19 @@ function H.buildBaseList(build, setItems, typeName, category, searchText, classR
 		end)
 	elseif category == "unique" then
 		if bases and build.data.uniques then
+			-- Some set items are duplicated in data.uniques (save-file import
+			-- resolves SET rarity via uniqueID lookup, so the entry exists in
+			-- both tables). Exclude them from the Unique category so the
+			-- Craft dropdown shows each item exactly once.
+			local setItemNames = {}
+			if setItems then
+				for _, si in pairs(setItems) do
+					if si and si.name then setItemNames[si.name] = true end
+				end
+			end
 			for uid, unique in pairs(build.data.uniques) do
 				if unique.name and unique.name:lower():sub(1, 9) == "cocooned " then goto continueUID end
+				if unique.name and setItemNames[unique.name] then goto continueUID end
 				local found = false
 				for _, baseEntry in ipairs(bases) do
 					if baseEntry.base.baseTypeID == unique.baseTypeID and
