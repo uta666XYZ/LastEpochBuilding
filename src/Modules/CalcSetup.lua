@@ -28,19 +28,85 @@ local function loadSetData(ver)
 	return setDataCache[ver] or nil
 end
 
+-- Marker text for the wildcard set membership mod (Legends Entwined).
+-- Items carrying this line count as a piece of every set already represented
+-- in the equipment, and also unlock the "+X per Complete Set" scaling.
+local WILDCARD_SET_MOD = "Counts as a part of every equipped item set"
+
+-- Returns true if any modLine on the item contains the wildcard marker.
+local function itemHasWildcardSetMod(item)
+	if not item then return false end
+	local function scan(modLines)
+		if not modLines then return false end
+		for _, ml in ipairs(modLines) do
+			if ml.line and ml.line:find(WILDCARD_SET_MOD, 1, true) then
+				return true
+			end
+		end
+		return false
+	end
+	return scan(item.explicitModLines)
+		or scan(item.implicitModLines)
+		or scan(item.enchantModLines)
+end
+
+-- Re-applies "+X ... per Complete Set" mods on a wildcard item, multiplied by
+-- (completeSetCount - 1) so that the total contribution becomes value × N.
+-- The base mod has already been added once during normal item processing.
+local function applyPerCompleteSetScaling(env, item, completeSetCount)
+	if not item or completeSetCount <= 1 then return end
+	local extraMul = completeSetCount - 1
+	local function scan(modLines)
+		if not modLines then return end
+		for _, ml in ipairs(modLines) do
+			if ml.line and ml.line:find("per Complete Set", 1, true)
+			   and ml.modList and #ml.modList > 0 then
+				local source = "Item: " .. (item.title or item.name or "Wildcard Set Item")
+					.. " (per Complete Set ×" .. completeSetCount .. ")"
+				for _, mod in ipairs(ml.modList) do
+					for _ = 1, extraMul do
+						local copy = copyTable(mod)
+						modLib.setSource(copy, source)
+						env.itemModDB:AddMod(copy)
+					end
+				end
+			end
+		end
+	end
+	scan(item.explicitModLines)
+	scan(item.implicitModLines)
+	scan(item.enchantModLines)
+end
+
 -- Apply N-piece set bonuses: count equipped SET pieces per setId, then parse
 -- and add every bonus tier 2..N (so 3 pieces = 2-piece AND 3-piece bonus).
 -- Also matches "Reforged Set" items (basic items with item.setInfo.setId set by
--- the crafting popup).
+-- the crafting popup). Items with the WILDCARD_SET_MOD (e.g. Legends Entwined)
+-- count as a piece of every already-present set, and gate "per Complete Set"
+-- scaling based on how many sets are fully equipped (with the wildcard).
 local function applySetBonuses(env, items, ver)
 	local setData = loadSetData(ver)
 	if not setData then return end
 
+	-- Build setSize map: setId -> total number of pieces in that set.
+	-- Used later to decide which sets are "Complete".
+	local setSize = {}
+	for _, e in pairs(setData) do
+		if e.set and e.set.setId ~= nil then
+			setSize[e.set.setId] = (setSize[e.set.setId] or 0) + 1
+		end
+	end
+
 	-- First pass: resolve each equipped SET / Reforged piece to its setId.
-	local pieceCount = {} -- setId -> count
-	local setEntry   = {} -- setId -> a sample set entry (for bonus lookup)
+	-- Also collect any wildcard items for later passes.
+	local pieceCount    = {} -- setId -> count
+	local setEntry      = {} -- setId -> a sample set entry (for bonus lookup)
+	local wildcardItems = {} -- list of items with WILDCARD_SET_MOD
 	for _, item in pairs(items) do
 		if item then
+			if itemHasWildcardSetMod(item) then
+				t_insert(wildcardItems, item)
+			end
 			local isSet      = (item.rarity == "SET")
 			local hasSetInfo = (item.setInfo and item.setInfo.setId ~= nil)
 			if isSet or hasSetInfo then
@@ -84,13 +150,30 @@ local function applySetBonuses(env, items, ver)
 		end
 	end
 
+	-- Wildcard pass: each wildcard item adds +1 to every already-present setId.
+	-- Per LE rule: wildcard ring + 1 piece of any set completes the 2-pc bonus.
+	-- Sets with zero actual pieces are NOT created from a wildcard alone.
+	if #wildcardItems > 0 and next(pieceCount) ~= nil then
+		local existingSetIds = {}
+		for setId in pairs(pieceCount) do t_insert(existingSetIds, setId) end
+		for _ = 1, #wildcardItems do
+			for _, setId in ipairs(existingSetIds) do
+				pieceCount[setId] = pieceCount[setId] + 1
+			end
+		end
+	end
+
 	-- Second pass: for each setId with >= 2 pieces, parse bonus tiers 2..count.
+	-- Cap effective tier at the set's total piece count (a wildcard cannot
+	-- push beyond the set's defined max bonus tier).
 	-- Note: JSON loader converts numeric-string keys ("2"/"3") to numbers, so
 	-- look up by both string and number form.
 	for setId, count in pairs(pieceCount) do
 		local info = setEntry[setId]
 		if info and info.bonus then
-			for tier = 2, count do
+			local maxTier = setSize[setId] or count
+			local effective = m_min(count, maxTier)
+			for tier = 2, effective do
 				local rawLine = info.bonus[tostring(tier)] or info.bonus[tier]
 				if rawLine then
 					-- Strip formatting tags ({rounding:Integer} etc.) before parse.
@@ -104,6 +187,24 @@ local function applySetBonuses(env, items, ver)
 						end
 					end
 				end
+			end
+		end
+	end
+
+	-- Compute "Complete Sets" count: setIds whose pieceCount (incl. wildcard)
+	-- meets or exceeds the set's total piece count. Used to scale
+	-- "+X per Complete Set" mods on wildcard items.
+	if #wildcardItems > 0 then
+		local completeSetCount = 0
+		for setId, count in pairs(pieceCount) do
+			local maxSize = setSize[setId]
+			if maxSize and count >= maxSize then
+				completeSetCount = completeSetCount + 1
+			end
+		end
+		if completeSetCount > 0 then
+			for _, wc in ipairs(wildcardItems) do
+				applyPerCompleteSetScaling(env, wc, completeSetCount)
 			end
 		end
 	end
