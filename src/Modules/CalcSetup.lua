@@ -173,24 +173,26 @@ function calcs.buildModListForNode(env, node)
 end
 
 -- Build list of modifiers from the listed tree nodes
-function calcs.buildModListForNodeList(env, nodeList, stripSkillId)
+function calcs.buildModListForNodeList(env, nodeList, stripSkillId, gateByChannelling)
 	-- Add node modifiers
 	local modList = new("ModList")
 	for _, node in pairs(nodeList) do
 		local nodeModList = calcs.buildModListForNode(env, node)
-		if stripSkillId then
-			-- Remove SkillId tags so buff skill tree mods apply globally
-			local strippedList = new("ModList")
+		if stripSkillId or gateByChannelling then
+			local transformedList = new("ModList")
 			for _, mod in ipairs(nodeModList) do
 				local hasSkillId = false
-				for _, tag in ipairs(mod) do
-					if tag.type == "SkillId" then
-						hasSkillId = true
-						break
+				if stripSkillId then
+					for _, tag in ipairs(mod) do
+						if tag.type == "SkillId" then
+							hasSkillId = true
+							break
+						end
 					end
 				end
+				local needsCopy = hasSkillId or gateByChannelling
+				local newMod = needsCopy and copyTable(mod, true) or mod
 				if hasSkillId then
-					local newMod = copyTable(mod, true)
 					local j = 1
 					while newMod[j] do
 						if newMod[j].type == "SkillId" then
@@ -199,12 +201,13 @@ function calcs.buildModListForNodeList(env, nodeList, stripSkillId)
 							j = j + 1
 						end
 					end
-					strippedList:AddMod(newMod)
-				else
-					strippedList:AddMod(mod)
 				end
+				if gateByChannelling then
+					t_insert(newMod, { type = "Condition", var = "Channelling" })
+				end
+				transformedList:AddMod(newMod)
 			end
-			nodeModList = strippedList
+			nodeModList = transformedList
 		end
 		modList:AddList(nodeModList)
 		if env.mode == "MAIN" then
@@ -1127,25 +1130,40 @@ function calcs.initEnv(build, mode, override, specEnv)
 	-- Merge modifiers for allocated passives
 	-- Buff skill tree nodes are conditional: only apply when mode_buffs is true AND the skill is enabled
 	-- Their mods also have SkillId tags stripped so they apply globally (as buff effects should)
+	-- Channelled-buff skills (e.g. Focus) additionally gate their node mods behind Condition:Channelling,
+	-- so tooltip-text like Everward "+50% Ward Retention" (description clarifies "while channeled") only
+	-- applies when the main skill is channelled or the Config "Are you Channelling?" toggle is on.
 	local buffSkillTreePrefixes = {}
 	for _, group in pairs(build.skillsTab.socketGroupList) do
 		local ge = group.grantedEffect
 		if ge and ge.treeId and ge.skillTypes and ge.skillTypes[SkillType.Buff] then
-			buffSkillTreePrefixes[ge.treeId .. "-"] = buffSkillTreePrefixes[ge.treeId .. "-"] or group.enabled
+			local prefix = ge.treeId .. "-"
+			local existing = buffSkillTreePrefixes[prefix]
+			if not existing then
+				buffSkillTreePrefixes[prefix] = {
+					enabled = group.enabled,
+					isChannel = ge.skillTypes[SkillType.Channelling] or false,
+				}
+			end
 		end
 	end
 
 	if next(buffSkillTreePrefixes) then
 		local normalNodes = {}
 		local activeBuffNodes = {}
+		local activeChannelNodes = {}
 		local inactiveBuffNodes = {}
 		for nodeId, node in pairs(env.allocNodes) do
 			local isBuffNode = false
-			for prefix, enabled in pairs(buffSkillTreePrefixes) do
+			for prefix, info in pairs(buffSkillTreePrefixes) do
 				if nodeId:sub(1, #prefix) == prefix then
 					isBuffNode = true
-					if env.mode_buffs and enabled then
-						activeBuffNodes[nodeId] = node
+					if env.mode_buffs and info.enabled then
+						if info.isChannel then
+							activeChannelNodes[nodeId] = node
+						else
+							activeBuffNodes[nodeId] = node
+						end
 					else
 						inactiveBuffNodes[nodeId] = node
 					end
@@ -1161,6 +1179,10 @@ function calcs.initEnv(build, mode, override, specEnv)
 		-- Active buff nodes: strip SkillId tags so mods apply globally
 		if next(activeBuffNodes) then
 			env.modDB:AddList(calcs.buildModListForNodeList(env, activeBuffNodes, true))
+		end
+		-- Active channelled-buff nodes: strip SkillId and gate by Condition:Channelling
+		if next(activeChannelNodes) then
+			env.modDB:AddList(calcs.buildModListForNodeList(env, activeChannelNodes, true, true))
 		end
 		-- Process inactive buff nodes for side effects (grantedSkills, finalModList) without adding mods
 		if next(inactiveBuffNodes) then
