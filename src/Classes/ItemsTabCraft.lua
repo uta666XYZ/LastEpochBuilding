@@ -42,6 +42,29 @@ local ipairs = ipairs
 local SLOT_ORDER = { "prefix1", "prefix2", "suffix1", "suffix2", "sealed", "primordial" }
 local ALL_SLOTS  = { "prefix1", "prefix2", "suffix1", "suffix2", "sealed", "primordial", "corrupted" }
 
+-- Cross-tier slider helpers: a slider's value (0..1) spans ALL tiers (1..N) of
+-- the current affix, with each tier occupying an equal sub-range. Vertical
+-- divider lines on the slider mark tier boundaries (PoB-style).
+local function valToTierRange(val, tierCount)
+	val = m_max(0, m_min(1, val or 0))
+	if (tierCount or 1) <= 1 then
+		return 0, m_floor(val * 255 + 0.5)
+	end
+	local f = val * tierCount
+	local tier = m_floor(f)
+	if tier >= tierCount then tier = tierCount - 1 end
+	local inTier = (f - tier) * 255
+	return tier, m_floor(inTier + 0.5)
+end
+
+local function tierRangeToVal(tier, range, tierCount)
+	if (tierCount or 1) <= 1 then
+		return m_max(0, m_min(1, (range or 128) / 255))
+	end
+	local v = ((tier or 0) + (range or 128) / 255) / tierCount
+	return m_max(0, m_min(1, v))
+end
+
 -- =============================================================================
 -- Type predicates
 -- =============================================================================
@@ -179,14 +202,20 @@ end
 function ItemsTabClass:CraftUpdateSlotValueEdits(slotKey)
 	local info = self.craftSlotModInfo[slotKey]
 	local st   = self.craftAffixState[slotKey]
+	local tierCount = 1
+	if st and st.modKey then
+		tierCount = (self:CraftGetMaxTier(st.modKey) or 0) + 1
+	end
 	for i = 1, MAX_MOD_LINES do
 		local valCtrl = self.controls["craft_" .. slotKey .. "Val" .. i]
 		if valCtrl then
+			-- Show tier boundary marks only when more than 1 tier exists.
+			valCtrl.divCount = tierCount > 1 and tierCount or nil
 			if info and i <= info.count and hasRange(info.lines[i]) then
 				local range = st.ranges[i] or 128
-				valCtrl.val = m_max(0, m_min(1, range / 255))
+				valCtrl.val = tierRangeToVal(st.tier or 0, range, tierCount)
 			else
-				valCtrl.val = 0.5
+				valCtrl.val = tierRangeToVal(st.tier or 0, 128, tierCount)
 			end
 		end
 	end
@@ -630,39 +659,59 @@ end
 function ItemsTabClass:CraftBuildSliderTooltip(tooltip, slotKey, li, hoverVal)
 	local info = self.craftSlotModInfo[slotKey]
 	if not info or li > info.count then return end
-	local line = info.lines[li]
-	if not line then return end
 	local st = self.craftAffixState[slotKey]
-	local hoverRange = m_floor((hoverVal or 0) * 255 + 0.5)
-	-- Show the full substituted mod text ("30% Increased Bleed Duration")
-	-- instead of just the numeric value, so multi-mod affixes make clear
-	-- which mod each slider drives.
-	local rounding = H.getRounding and H.getRounding(line) or nil
-	local computed = itemLib.applyRange(line, hoverRange, nil, rounding)
+	if not st or not st.modKey then return end
+
+	-- Map hoverVal (0..1, full slider) -> (hoverTier, hoverRange 0..255)
+	local tierCount = (self:CraftGetMaxTier(st.modKey) or 0) + 1
+	local hoverTier, hoverRange = valToTierRange(hoverVal, tierCount)
+
+	-- Resolve the mod entry for the *hovered* tier (cross-tier preview).
+	local function lookupMod(tier)
+		local key = tostring(st.modKey) .. "_" .. tostring(tier)
+		local m
+		if self:CraftIsIdolAltar() then
+			local altarMods = data.itemMods["Idol Altar"]
+			m = altarMods and altarMods[key]
+		else
+			m = data.itemMods.Item and data.itemMods.Item[key]
+			if not m and data.modIdol and data.modIdol.flat then
+				m = data.modIdol.flat[key]
+			end
+		end
+		return m
+	end
+
+	local hoverMod = lookupMod(hoverTier)
+	local hoverLine = hoverMod and hoverMod[li]
+	if type(hoverLine) ~= "string" then
+		-- Hovered tier doesn't have this mod line; fall back to current tier line.
+		hoverLine = info.lines[li]
+	end
+	if not hoverLine then return end
+
+	local rounding = H.getRounding and H.getRounding(hoverLine) or nil
+	local computed = itemLib.applyRange(hoverLine, hoverRange, nil, rounding)
 	if computed then
 		computed = computed:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
 		tooltip:AddLine(16, "^7" .. computed)
 		tooltip:AddSeparator(8)
 	end
-	local tierName = self:CraftGetAffixTierName(slotKey) or ""
-	local tierStr  = tierColor(st.tier) .. "Affix: Tier " .. tostring(st.tier + 1)
-	if tierName ~= "" then
-		tierStr = tierStr .. " (" .. tierName .. ")"
+
+	local hoverTierName = (hoverMod and hoverMod.affix) or ""
+	local tierStr = tierColor(hoverTier) .. "Affix: Tier " .. tostring(hoverTier + 1)
+	if hoverTierName ~= "" then
+		tierStr = tierStr .. " (" .. hoverTierName .. ")"
 	end
 	tooltip:AddLine(14, tierStr)
-	local min, max = extractMinMax(line)
+
+	local min, max = extractMinMax(hoverLine)
 	if min and max then
 		tooltip:AddLine(14, "^7(" .. tostring(min) .. "-" .. tostring(max) .. ")")
 	end
-	local modKey = tostring(st.modKey) .. "_" .. tostring(st.tier)
-	local mod = data.itemMods.Item and data.itemMods.Item[modKey]
-	if not mod and data.modIdol and data.modIdol.flat then mod = data.modIdol.flat[modKey] end
-	if self:CraftIsIdolAltar() then
-		local altarMods = data.itemMods["Idol Altar"]
-		mod = (altarMods and altarMods[modKey]) or mod
-	end
-	if mod and mod.levelReq then
-		tooltip:AddLine(14, "^xAAAAAALevel: " .. tostring(mod.levelReq))
+
+	if hoverMod and hoverMod.levelReq then
+		tooltip:AddLine(14, "^xAAAAAALevel: " .. tostring(hoverMod.levelReq))
 	end
 end
 
@@ -1455,8 +1504,11 @@ function ItemsTabClass:BuildCraftControls()
 						if self_ref.craftRebuilding then return end
 						local info = self_ref.craftSlotModInfo[capturedSlotKey]
 						if li > info.count then return end
-						local range = m_floor(val * 255 + 0.5)
-						self_ref.craftAffixState[capturedSlotKey].ranges[li] = range
+						local st = self_ref.craftAffixState[capturedSlotKey]
+						local tierCount = (self_ref:CraftGetMaxTier(st.modKey) or 0) + 1
+						local newTier, newRange = valToTierRange(val, tierCount)
+						st.tier = newTier
+						st.ranges[li] = newRange
 						self_ref:CraftRebuildItem()
 					end)
 				controls[valKey].shown = function()
