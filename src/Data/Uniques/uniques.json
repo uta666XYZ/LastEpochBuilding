@@ -9083,13 +9083,15 @@
       "(5-12)% increased Cast Speed",
       "{rounding:Integer}+(2-5) to All Attributes per Complete Set",
       "+(2-5)% to All Resistances per Complete Set",
-      "+1 to All Skills per Complete Set"
+      "+1 to All Skills per Complete Set",
+      "Counts as a part of every equipped item set"
     ],
     "rollIds": [
       0,
       0,
       1,
       2,
+      null,
       null
     ]
   },
