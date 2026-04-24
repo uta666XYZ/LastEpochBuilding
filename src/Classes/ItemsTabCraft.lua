@@ -179,20 +179,19 @@ end
 -- Per-slot info helpers
 -- =============================================================================
 function ItemsTabClass:CraftUpdateSlotModInfo(slotKey)
-	local info = { count = 0, lines = {} }
+	local info = { count = 0, lines = {}, hasAnyRange = false }
 	local st = self.craftAffixState[slotKey]
 	if st and st.modKey then
-		local modKey = tostring(st.modKey) .. "_" .. tostring(st.tier)
-		local mod
-		if self:CraftIsIdolAltar() then
-			local altarMods = data.itemMods["Idol Altar"]
-			mod = altarMods and altarMods[modKey]
-		else
-			mod = data.itemMods.Item and data.itemMods.Item[modKey]
-			if not mod and data.modIdol and data.modIdol.flat then
-				mod = data.modIdol.flat[modKey]
-			end
+		local isAltar = self:CraftIsIdolAltar()
+		local pool = isAltar and (data.itemMods["Idol Altar"] or {}) or (data.itemMods.Item or {})
+		local idolPool = (not isAltar) and data.modIdol and data.modIdol.flat or nil
+		local function lookup(tier)
+			local k = tostring(st.modKey) .. "_" .. tostring(tier)
+			local m = pool[k]
+			if not m and idolPool then m = idolPool[k] end
+			return m
 		end
+		local mod = lookup(st.tier)
 		if mod then
 			for k = 1, 10 do
 				local line = mod[k]
@@ -201,6 +200,21 @@ function ItemsTabClass:CraftUpdateSlotModInfo(slotKey)
 					info.lines[info.count] = line
 					if info.count >= MAX_MOD_LINES then break end
 				end
+			end
+		end
+		-- Scan all tiers so the slider stays visible even when the current
+		-- tier has no mod entry (sparse tier coverage) or value-less lines.
+		for tier = 0, 7 do
+			local m = lookup(tier)
+			if m then
+				for k = 1, 10 do
+					local line = m[k]
+					if line and type(line) == "string" and hasRange(line) then
+						info.hasAnyRange = true
+						break
+					end
+				end
+				if info.hasAnyRange then break end
 			end
 		end
 	end
@@ -267,11 +281,16 @@ function ItemsTabClass:CraftRecalcLayout()
 					self.craftEditY[slotKey].ctrl[i] = y
 				end
 				-- Single shared slider per affix: any mod line with a range
-				-- contributes one SLIDER_ROW_H regardless of mod-line count.
+				-- (in any tier) contributes one SLIDER_ROW_H regardless of
+				-- mod-line count.
 				local hasAnyRange = false
 				if info then
-					for i = 1, info.count do
-						if info.lines[i] and hasRange(info.lines[i]) then hasAnyRange = true; break end
+					if info.hasAnyRange then
+						hasAnyRange = true
+					else
+						for i = 1, info.count do
+							if info.lines[i] and hasRange(info.lines[i]) then hasAnyRange = true; break end
+						end
 					end
 				end
 				if hasAnyRange then y = y + SLIDER_ROW_H end
@@ -1522,7 +1541,10 @@ function ItemsTabClass:BuildCraftControls()
 					self_ref:CraftRebuildItem()
 				end)
 			controls.craftCorruptedCheck.shown = function()
-				return self_ref.craftActive == true and self_ref.craftEditItem ~= nil
+				if not (self_ref.craftActive and self_ref.craftEditItem) then return false end
+				-- Set items cannot be corrupted in LE; hide the toggle.
+				if self_ref:CraftIsSetItem() then return false end
+				return true
 			end
 		end
 
@@ -1579,7 +1601,9 @@ function ItemsTabClass:BuildCraftControls()
 			controls[slotDDKey].shown = function()
 				if not self_ref.craftActive or not self_ref.craftEditItem then return false end
 				if capturedSlotKey == "corrupted" and not self_ref.craftCorrupted then return false end
-				if self_ref:CraftIsUniqueItem() or self_ref:CraftIsSetItem() or self_ref:CraftIsUniqueIdol() then
+				-- UniqueItem: allow prefix/suffix/corrupted dropdowns (LP-style
+				-- craft). Sealed/primordial are already filtered by layout.
+				if self_ref:CraftIsSetItem() or self_ref:CraftIsUniqueIdol() then
 					if capturedSlotKey ~= "corrupted" then return false end
 				end
 				local ey = self_ref.craftEditY[capturedSlotKey]
@@ -1617,6 +1641,9 @@ function ItemsTabClass:BuildCraftControls()
 					if capturedSlotKey == "corrupted" and not self_ref.craftCorrupted then return false end
 					local info = self_ref.craftSlotModInfo[capturedSlotKey]
 					if not info then return false end
+					-- hasAnyRange scans all tiers so dragging across sparse
+					-- tier coverage doesn't flicker the slider off.
+					if info.hasAnyRange then return true end
 					for i = 1, info.count do
 						if info.lines[i] and hasRange(info.lines[i]) then return true end
 					end
