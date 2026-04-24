@@ -33,9 +33,37 @@ local hasRange            = H.hasRange
 local extractMinMax       = H.extractMinMax
 local computeModValue     = H.computeModValue
 local formatModValue      = H.formatModValue
+local wrapForLabel        = H.wrapForLabel
+
+local t_insert = table.insert
+local pairs = pairs
+local ipairs = ipairs
 
 local SLOT_ORDER = { "prefix1", "prefix2", "suffix1", "suffix2", "sealed", "primordial" }
 local ALL_SLOTS  = { "prefix1", "prefix2", "suffix1", "suffix2", "sealed", "primordial", "corrupted" }
+
+-- Cross-tier slider helpers: a slider's value (0..1) spans ALL tiers (1..N) of
+-- the current affix, with each tier occupying an equal sub-range. Vertical
+-- divider lines on the slider mark tier boundaries (PoB-style).
+local function valToTierRange(val, tierCount)
+	val = m_max(0, m_min(1, val or 0))
+	if (tierCount or 1) <= 1 then
+		return 0, m_floor(val * 255 + 0.5)
+	end
+	local f = val * tierCount
+	local tier = m_floor(f)
+	if tier >= tierCount then tier = tierCount - 1 end
+	local inTier = (f - tier) * 255
+	return tier, m_floor(inTier + 0.5)
+end
+
+local function tierRangeToVal(tier, range, tierCount)
+	if (tierCount or 1) <= 1 then
+		return m_max(0, m_min(1, (range or 128) / 255))
+	end
+	local v = ((tier or 0) + (range or 128) / 255) / tierCount
+	return m_max(0, m_min(1, v))
+end
 
 -- =============================================================================
 -- Type predicates
@@ -122,6 +150,14 @@ function ItemsTabClass:CraftGetMaxTier(statOrderKey)
 	return 0
 end
 
+-- Slot-aware tier count (1..N) used by cross-tier sliders. Only the
+-- primordial slot may hold tier 8 (index 7); all other slots cap at tier 7.
+function ItemsTabClass:CraftGetSlotTierCount(slotKey, statOrderKey)
+	local maxT = self:CraftGetMaxTier(statOrderKey) or 0
+	if slotKey ~= "primordial" and maxT > 6 then maxT = 6 end
+	return maxT + 1
+end
+
 function ItemsTabClass:CraftGetAffixTierName(slotKey)
 	local st = self.craftAffixState[slotKey]
 	if not st or not st.modKey then return nil end
@@ -174,14 +210,20 @@ end
 function ItemsTabClass:CraftUpdateSlotValueEdits(slotKey)
 	local info = self.craftSlotModInfo[slotKey]
 	local st   = self.craftAffixState[slotKey]
+	local tierCount = 1
+	if st and st.modKey then
+		tierCount = self:CraftGetSlotTierCount(slotKey, st.modKey)
+	end
 	for i = 1, MAX_MOD_LINES do
 		local valCtrl = self.controls["craft_" .. slotKey .. "Val" .. i]
 		if valCtrl then
+			-- Show tier boundary marks only when more than 1 tier exists.
+			valCtrl.divCount = tierCount > 1 and tierCount or nil
 			if info and i <= info.count and hasRange(info.lines[i]) then
 				local range = st.ranges[i] or 128
-				valCtrl.val = m_max(0, m_min(1, range / 255))
+				valCtrl.val = tierRangeToVal(st.tier or 0, range, tierCount)
 			else
-				valCtrl.val = 0.5
+				valCtrl.val = tierRangeToVal(st.tier or 0, 128, tierCount)
 			end
 		end
 	end
@@ -194,7 +236,7 @@ function ItemsTabClass:CraftRecalcLayout()
 	local LINE_H = 18
 	local GAP    = 4
 	local DD_ROW_H     = LP_DD_H + 4
-	local SLIDER_ROW_H = 14 + 4
+	local SLIDER_ROW_H = 24 + 4
 
 	self.craftEditY = {}
 	local y = 0
@@ -221,17 +263,18 @@ function ItemsTabClass:CraftRecalcLayout()
 			y = y + DD_ROW_H
 			if st.modKey then
 				local info = self.craftSlotModInfo[slotKey]
-				local lc = (info and info.count) or 0
-				if lc == 0 then lc = 1 end
 				for i = 1, MAX_MOD_LINES do
 					self.craftEditY[slotKey].ctrl[i] = y
 				end
-				for i = 1, lc do
-					self.craftEditY[slotKey].ctrl[i] = y
-					if info and info.lines[i] and hasRange(info.lines[i]) then
-						y = y + SLIDER_ROW_H
+				-- Single shared slider per affix: any mod line with a range
+				-- contributes one SLIDER_ROW_H regardless of mod-line count.
+				local hasAnyRange = false
+				if info then
+					for i = 1, info.count do
+						if info.lines[i] and hasRange(info.lines[i]) then hasAnyRange = true; break end
 					end
 				end
+				if hasAnyRange then y = y + SLIDER_ROW_H end
 			end
 			y = y + GAP
 		end
@@ -270,6 +313,39 @@ function ItemsTabClass:CraftRecalcLayout()
 				end
 			end
 			y = y + GAP
+		end
+	end
+
+	-- Set info block (members + bonuses) for set items OR for Reforged crafted
+	-- basic items whose craftEditItem.setInfo has been populated.
+	self.craftEditY.setInfoY = 0
+	local layoutSetId, layoutBonus
+	if isSetItem then
+		local sd = self.craftEditBaseEntry and self.craftEditBaseEntry.setData
+		layoutSetId = sd and sd.set and sd.set.setId
+		layoutBonus = sd and sd.set and sd.set.bonus
+	elseif self.craftEditItem and self.craftEditItem.setInfo and self.craftEditItem.setInfo.setId ~= nil then
+		layoutSetId = self.craftEditItem.setInfo.setId
+		layoutBonus = self.craftEditItem.setInfo.bonus
+	end
+	if layoutSetId ~= nil then
+		self.craftEditY.setInfoY = y
+		y = y + LINE_H + GAP  -- "ITEM SET" header
+		y = y + LINE_H        -- set name line
+		local memberCount = 0
+		for _, si in pairs(self.craftSetItems or {}) do
+			if si.set and si.set.setId == layoutSetId then memberCount = memberCount + 1 end
+		end
+		y = y + memberCount * LINE_H + GAP
+		if layoutBonus and next(layoutBonus) then
+			y = y + LINE_H + GAP  -- "SET BONUSES" header
+			local bonusW = LEFT_W - LP_LINE_X - 4
+			local WRAP_H = 15
+			for k, v in pairs(layoutBonus) do
+				local full = "^8" .. k .. " set: ^7" .. tostring(v)
+				local _, n = H.wrapForLabel(full, bonusW, 13)
+				y = y + (n > 0 and n or 1) * WRAP_H + 2
+			end
 		end
 	end
 
@@ -571,7 +647,12 @@ function ItemsTabClass:CraftRebuildItem()
 
 	item.corrupted = self.craftCorrupted
 	item:BuildAndParseRaw()
-	if reforgedSetInfo then
+	-- For basic items the set state is driven purely by whether a Reforged
+	-- set affix is currently picked. Always overwrite (with nil or table) so
+	-- deselecting/replacing a set affix clears the stale preview.
+	if self.craftEditBaseEntry and self.craftEditBaseEntry.category == "basic" then
+		item.setInfo = reforgedSetInfo
+	elseif reforgedSetInfo then
 		item.setInfo = reforgedSetInfo
 	end
 
@@ -592,40 +673,88 @@ end
 function ItemsTabClass:CraftBuildSliderTooltip(tooltip, slotKey, li, hoverVal)
 	local info = self.craftSlotModInfo[slotKey]
 	if not info or li > info.count then return end
-	local line = info.lines[li]
-	if not line then return end
 	local st = self.craftAffixState[slotKey]
-	local hoverRange = m_floor((hoverVal or 0) * 255 + 0.5)
-	local numeric = computeModValue(line, hoverRange)
-	if numeric then
-		tooltip:AddLine(16, "^7" .. formatModValue(line, numeric))
-		tooltip:AddSeparator(8)
+	if not st or not st.modKey then return end
+
+	-- Map hoverVal (0..1, full slider) -> (hoverTier, hoverRange 0..255)
+	local tierCount = self:CraftGetSlotTierCount(slotKey, st.modKey)
+	local hoverTier, hoverRange = valToTierRange(hoverVal, tierCount)
+
+	-- Resolve the mod entry for the *hovered* tier (cross-tier preview).
+	local function lookupMod(tier)
+		local key = tostring(st.modKey) .. "_" .. tostring(tier)
+		local m
+		if self:CraftIsIdolAltar() then
+			local altarMods = data.itemMods["Idol Altar"]
+			m = altarMods and altarMods[key]
+		else
+			m = data.itemMods.Item and data.itemMods.Item[key]
+			if not m and data.modIdol and data.modIdol.flat then
+				m = data.modIdol.flat[key]
+			end
+		end
+		return m
 	end
-	local tierName = self:CraftGetAffixTierName(slotKey) or ""
-	local tierStr  = tierColor(st.tier) .. "Affix: Tier " .. tostring(st.tier + 1)
-	if tierName ~= "" then
-		tierStr = tierStr .. " (" .. tierName .. ")"
+
+	local hoverMod = lookupMod(hoverTier)
+
+	-- Collect all mod lines for the hovered tier (single-slider drives them all).
+	local lines = {}
+	if hoverMod then
+		for k = 1, 10 do
+			local ln = hoverMod[k]
+			if type(ln) == "string" then t_insert(lines, ln) end
+		end
 	end
-	tooltip:AddLine(14, tierStr)
-	local min, max = extractMinMax(line)
-	if min and max then
-		tooltip:AddLine(14, "^7(" .. tostring(min) .. "-" .. tostring(max) .. ")")
+	if #lines == 0 then
+		for k = 1, info.count do
+			local ln = info.lines[k]
+			if type(ln) == "string" then t_insert(lines, ln) end
+		end
 	end
-	local modKey = tostring(st.modKey) .. "_" .. tostring(st.tier)
-	local mod = data.itemMods.Item and data.itemMods.Item[modKey]
-	if not mod and data.modIdol and data.modIdol.flat then mod = data.modIdol.flat[modKey] end
-	if self:CraftIsIdolAltar() then
-		local altarMods = data.itemMods["Idol Altar"]
-		mod = (altarMods and altarMods[modKey]) or mod
+	if #lines == 0 then return end
+
+	-- Top: substituted text for each mod line at hoverRange.
+	for _, ln in ipairs(lines) do
+		local rounding = H.getRounding and H.getRounding(ln) or nil
+		local computed = itemLib.applyRange(ln, hoverRange, nil, rounding) or ln
+		computed = computed:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
+		tooltip:AddLine(16, "^7" .. computed)
 	end
-	if mod and mod.levelReq then
-		tooltip:AddLine(14, "^xAAAAAALevel: " .. tostring(mod.levelReq))
+	tooltip:AddSeparator(8)
+
+	-- Tier line (no affix name here).
+	tooltip:AddLine(14, tierColor(hoverTier) .. "Affix: Tier " .. tostring(hoverTier + 1))
+
+	-- Range lines: "(min-max) <affix name>" for each mod line.
+	local hoverTierName = (hoverMod and hoverMod.affix) or ""
+	for _, ln in ipairs(lines) do
+		local min, max = extractMinMax(ln)
+		if min and max then
+			local txt = "^7(" .. tostring(min) .. "-" .. tostring(max) .. ")"
+			if hoverTierName ~= "" then txt = txt .. " " .. hoverTierName end
+			tooltip:AddLine(14, txt)
+		end
+	end
+
+	if hoverMod and hoverMod.levelReq then
+		tooltip:AddLine(14, "^xAAAAAALevel: " .. tostring(hoverMod.levelReq))
 	end
 end
 
 -- =============================================================================
 -- Affix list refresh (populates self.craftAffixLists)
 -- =============================================================================
+local SUBCAT_ORDER = { "general", "class_only", "set_only", "champion", "personal", "corrupted" }
+local SUBCAT_LABEL = {
+	general    = "General",
+	class_only = "Class Only",
+	set_only   = "Set Only",
+	champion   = "Champion",
+	personal   = "Personal",
+	corrupted  = "Corrupted",
+}
+
 function ItemsTabClass:CraftRefreshSlotDropdowns()
 	if not self.controls then return end
 	for _, slotKey in ipairs(ALL_SLOTS) do
@@ -636,17 +765,64 @@ function ItemsTabClass:CraftRefreshSlotDropdowns()
 			local curKey = self.craftAffixState[slotKey] and self.craftAffixState[slotKey].modKey
 			local selIdx = 1
 			local foundCurrent = false
-			for i, e in ipairs(src) do
-				t_insert(ddList, { label = (e.label or ""):gsub("{rounding:%w+}", ""):gsub("{[^}]+}", ""), entry = e })
-				if curKey and e.statOrderKey == curKey then
-					selIdx = i + 1
-					foundCurrent = true
+
+			-- Preserve existing collapse state across refreshes so dragging a
+			-- slider or picking an affix doesn't reopen all groups.
+			local prevCollapsed = {}
+			if dd.list then
+				for _, li in ipairs(dd.list) do
+					if type(li) == "table" and li.isHeader then
+						prevCollapsed[li.subcat] = li.collapsed
+					end
 				end
 			end
+
+			-- Partition affixes by subcategory (general/class_only/...).
+			local bySubcat = {}
+			local hasAnySubcat = false
+			for _, e in ipairs(src) do
+				local sc = e.subcategory or "general"
+				bySubcat[sc] = bySubcat[sc] or {}
+				t_insert(bySubcat[sc], e)
+				hasAnySubcat = true
+			end
+
+			local function cleanLabel(s) return (s or ""):gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "") end
+
+			if hasAnySubcat then
+				for _, sc in ipairs(SUBCAT_ORDER) do
+					local group = bySubcat[sc]
+					if group and #group > 0 then
+						table.sort(group, function(a, b) return (a.label or "") < (b.label or "") end)
+						local collapsed = prevCollapsed[sc] or false
+						t_insert(ddList, {
+							label = "^7" .. SUBCAT_LABEL[sc] .. "  (" .. tostring(#group) .. ")",
+							isHeader = true, collapsed = collapsed, subcat = sc,
+						})
+						for _, e in ipairs(group) do
+							t_insert(ddList, { label = "  " .. cleanLabel(e.label), entry = e })
+							if curKey and e.statOrderKey == curKey then
+								selIdx = #ddList
+								foundCurrent = true
+							end
+						end
+					end
+				end
+			else
+				-- No subcategory info (e.g. idol / altar); flat list.
+				for _, e in ipairs(src) do
+					t_insert(ddList, { label = cleanLabel(e.label), entry = e })
+					if curKey and e.statOrderKey == curKey then
+						selIdx = #ddList
+						foundCurrent = true
+					end
+				end
+			end
+
 			if curKey and not foundCurrent then
 				local info = self.craftSlotModInfo[slotKey]
 				local firstLine = info and info.lines and info.lines[1]
-				local label = firstLine and firstLine:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "") or tostring(curKey)
+				local label = firstLine and cleanLabel(firstLine) or tostring(curKey)
 				t_insert(ddList, { label = "^3" .. label, entry = { statOrderKey = curKey } })
 				selIdx = #ddList
 			end
@@ -1140,15 +1316,121 @@ end
 -- =============================================================================
 -- Inline UI: build the craft editor controls (call once from BuildItemsControls)
 -- =============================================================================
+-- =============================================================================
+-- Set info panel (item set members + bonuses) — drawn under the inline editor
+-- when editing a Set base or a Reforged crafted item with setInfo populated.
+-- =============================================================================
+function ItemsTabClass:CraftDrawSetInfo(viewPort)
+	if not self.craftActive or not self.craftEditItem then return end
+	local entry = self.craftEditBaseEntry
+	local set
+	if entry and entry.category == "set" and entry.setData and entry.setData.set then
+		set = entry.setData.set
+	elseif self.craftEditItem.setInfo and self.craftEditItem.setInfo.setId ~= nil then
+		set = {
+			setId = self.craftEditItem.setInfo.setId,
+			name  = self.craftEditItem.setInfo.name,
+			bonus = self.craftEditItem.setInfo.bonus,
+		}
+	end
+	if not set then return end
+
+	local anchor = self.controls.craftAnchor
+	if not anchor then return end
+	local px, py = anchor:GetPos()
+	px = m_floor(px); py = m_floor(py)
+	-- BuildCraftControls uses EDIT_BASE_Y = 24 baseline below the title
+	local baseY = 24
+	local y = self.craftEditY and self.craftEditY.setInfoY
+	if not y or y <= 0 then return end
+	y = baseY + y
+
+	local setId  = set.setId
+	local LINE_H = 18
+	local GAP    = 4
+
+	-- Build set of member names that are currently equipped (by slot selItemId)
+	-- or currently being edited. Strip trailing " Reforged" so Reforged crafted
+	-- items match the bare member name in the member list.
+	local equippedNames = {}
+	local function markName(s)
+		if not s or s == "" then return end
+		equippedNames[s] = true
+		local stripped = s:gsub(" Reforged$", "")
+		if stripped ~= s then equippedNames[stripped] = true end
+	end
+	for _, slot in pairs(self.slots or {}) do
+		local eqItem = slot.selItemId and self.items and self.items[slot.selItemId]
+		if eqItem and eqItem.setInfo and eqItem.setInfo.setId == setId then
+			markName(eqItem.setInfo.name)
+			markName(eqItem.title)
+		elseif eqItem and eqItem.rarity == "SET" and eqItem.title then
+			markName(eqItem.title)
+		end
+	end
+	markName(self.craftEditItem.title)
+
+	SetDrawColor(1, 1, 1)
+	DrawString(px + LP_LABEL_X, py + y, "LEFT", 14, "VAR", colorCodes.SET .. "ITEM SET")
+	y = y + LINE_H + GAP
+	DrawString(px + LP_LINE_X, py + y, "LEFT", 13, "VAR", "^7" .. (set.name or ""))
+	y = y + LINE_H
+
+	local members = {}
+	for _, si in pairs(self.craftSetItems or {}) do
+		if si.set and si.set.setId == setId then
+			local typeName = ""
+			for tname, bases in pairs(self.build.data.itemBaseLists or {}) do
+				for _, bEntry in ipairs(bases) do
+					if bEntry.base.baseTypeID == si.baseTypeID and bEntry.base.subTypeID == si.subTypeID then
+						typeName = bEntry.base.type or tname
+						break
+					end
+				end
+				if typeName ~= "" then break end
+			end
+			t_insert(members, { name = si.name, typeName = typeName })
+		end
+	end
+	table.sort(members, function(a, b) return a.name < b.name end)
+	local ORANGE = "^xFF9933"
+	for _, m in ipairs(members) do
+		local col = equippedNames[m.name] and ORANGE or "^8"
+		DrawString(px + LP_LINE_X + 8, py + y, "LEFT", 12, "VAR",
+			col .. m.name .. (m.typeName ~= "" and ("  " .. m.typeName) or ""))
+		y = y + LINE_H
+	end
+	y = y + GAP
+
+	local bonus = set.bonus
+	if bonus and next(bonus) then
+		DrawString(px + LP_LABEL_X, py + y, "LEFT", 14, "VAR", colorCodes.SET .. "SET BONUSES")
+		y = y + LINE_H + GAP
+		local bonusKeys = {}
+		for k in pairs(bonus) do t_insert(bonusKeys, k) end
+		table.sort(bonusKeys, function(a, b) return tonumber(a) < tonumber(b) end)
+		local bonusW = LEFT_W - LP_LINE_X - 4
+		local WRAP_H = 15
+		for _, k in ipairs(bonusKeys) do
+			local full = "^8" .. k .. " set: ^7" .. tostring(bonus[k])
+			local wrapped = wrapForLabel(full, bonusW, 13)
+			for line in (wrapped .. "\n"):gmatch("([^\n]*)\n") do
+				DrawString(px + LP_LINE_X, py + y, "LEFT", 13, "VAR", line)
+				y = y + WRAP_H
+			end
+			y = y + 2
+		end
+	end
+end
+
 function ItemsTabClass:BuildCraftControls()
 	local self_ref = self
 	local controls = self.controls
 
-	-- Anchor: to the right of the displayItem tooltip. The tooltip has
-	-- maxWidth=458 but usually renders far narrower, so a 300px offset keeps
-	-- the editor on-screen while leaving room past typical tooltip content.
+	-- Anchor: directly below the Add to build / Edit / Cancel button row,
+	-- so the right column reads top-down: action buttons → craft editor → preview.
 	controls.craftAnchor = new("Control",
-		{ "TOPLEFT", controls.addDisplayItem, "BOTTOMLEFT" }, 300, 8, LEFT_W, 0)
+		{ "TOPLEFT", controls.addDisplayItem, "BOTTOMLEFT" }, 0, 12, LEFT_W, 0)
 	controls.craftAnchor.shown = function() return self_ref.craftActive == true end
 
 	-- Panel title
@@ -1222,7 +1504,7 @@ function ItemsTabClass:BuildCraftControls()
 			if (capturedSectionKey == "sealed" or capturedSectionKey == "primordial")
 				and self_ref:CraftIsAnyIdol() and not self_ref:CraftIsEnchantableIdol() then return false end
 			if capturedSectionKey == "primordial" and self_ref:CraftIsAnyIdol() then return false end
-			return (self_ref.craftEditY[labelKey] or 0) > 0 or labelKey == "prefixLabel"
+			return true
 		end
 
 		if section.key == "corrupted" then
@@ -1246,7 +1528,11 @@ function ItemsTabClass:BuildCraftControls()
 
 		for _, slotKey in ipairs(section.slots) do
 			local capturedSlotKey = slotKey
-			local slotLabelKey    = "craft_" .. slotKey .. "Label"
+			-- Use "Slot" suffix to avoid colliding with section header keys
+			-- (e.g. slotKey "sealed" + "Label" would overwrite section header
+			-- key "sealedLabel"). Section headers were silently disappearing
+			-- for single-slot sections (sealed/primordial/corrupted).
+			local slotLabelKey    = "craft_" .. slotKey .. "SlotLabel"
 			local slotDDKey       = "craft_" .. slotKey .. "DD"
 
 			controls[slotLabelKey] = new("LabelControl",
@@ -1278,6 +1564,18 @@ function ItemsTabClass:BuildCraftControls()
 				end)
 			controls[slotDDKey].enableDroppedWidth = true
 			controls[slotDDKey].maxDroppedWidth    = 520
+			-- Show a tooltip with the full label on hover so long affix
+			-- names clipped by the drop panel are still readable.
+			controls[slotDDKey].tooltipFunc = function(tooltip, mode, index, value)
+				tooltip:Clear()
+				if mode ~= "HOVER" then return end
+				if type(value) ~= "table" or value.isHeader then return end
+				local label = value.label or ""
+				label = label:gsub("^%s+", "")
+				if label ~= "" then
+					tooltip:AddLine(14, "^7" .. label)
+				end
+			end
 			controls[slotDDKey].shown = function()
 				if not self_ref.craftActive or not self_ref.craftEditItem then return false end
 				if capturedSlotKey == "corrupted" and not self_ref.craftCorrupted then return false end
@@ -1297,21 +1595,32 @@ function ItemsTabClass:BuildCraftControls()
 						local cy = ey and ey.ctrl and ey.ctrl[li]
 						return cy and (EDIT_BASE_Y + cy + 3) or 0
 					end,
-					LP_SLIDER_W, 12,
+					LP_SLIDER_W, 24,
 					function(val)
 						if self_ref.craftRebuilding then return end
 						local info = self_ref.craftSlotModInfo[capturedSlotKey]
 						if li > info.count then return end
-						local range = m_floor(val * 255 + 0.5)
-						self_ref.craftAffixState[capturedSlotKey].ranges[li] = range
+						local st = self_ref.craftAffixState[capturedSlotKey]
+						local tierCount = self_ref:CraftGetSlotTierCount(capturedSlotKey, st.modKey)
+						local newTier, newRange = valToTierRange(val, tierCount)
+						st.tier = newTier
+						-- Single shared slider per affix: write the same range
+						-- to all mod-line indices so multi-mod affixes stay
+						-- locked to one position.
+						for i = 1, info.count do st.ranges[i] = newRange end
 						self_ref:CraftRebuildItem()
 					end)
 				controls[valKey].shown = function()
+					if li ~= 1 then return false end
 					if not self_ref.craftActive or not self_ref.craftEditItem then return false end
 					if not self_ref.craftAffixState[capturedSlotKey].modKey then return false end
 					if capturedSlotKey == "corrupted" and not self_ref.craftCorrupted then return false end
 					local info = self_ref.craftSlotModInfo[capturedSlotKey]
-					return li <= info.count and hasRange(info.lines[li])
+					if not info then return false end
+					for i = 1, info.count do
+						if info.lines[i] and hasRange(info.lines[i]) then return true end
+					end
+					return false
 				end
 				controls[valKey].tooltipFunc = function(tooltip, hoverVal)
 					tooltip:Clear()
@@ -1321,20 +1630,6 @@ function ItemsTabClass:BuildCraftControls()
 		end
 	end
 
-	-- Save / Cancel at bottom: position just below dynamic content
-	controls.craftSaveBtn = new("ButtonControl",
-		{ "TOPLEFT", controls.craftAnchor, "TOPLEFT" }, LP_LABEL_X,
-		function() return EDIT_BASE_Y + (self_ref.craftEditContentH or 0) + 8 end,
-		90, 28, "Save", function()
-			self_ref:CraftSaveItem()
-		end)
-	controls.craftSaveBtn.shown = function()
-		return self_ref.craftActive == true and self_ref.craftEditItem ~= nil
-	end
-
-	controls.craftCancelBtn = new("ButtonControl",
-		{ "LEFT", controls.craftSaveBtn, "RIGHT" }, 8, 0, 90, 28, "Cancel", function()
-			self_ref:CloseCraftEditor()
-		end)
-	controls.craftCancelBtn.shown = function() return self_ref.craftActive == true end
+	-- Save / Cancel are handled by the outer Add to build / Cancel buttons
+	-- (ItemsTab.lua) when craft is active, so no inline Save/Cancel here.
 end
