@@ -670,6 +670,15 @@ function ItemClass:ParseRaw(raw, rarity, highQuality)
 						needsRecraft = true
 						break
 					end
+					-- Standard multi-stat affixes (specialAffixType ~= 6, e.g. "of the
+					-- Giant" 36_* giving +Health AND %Health, or 14_* giving Freeze
+					-- Rate AND Cold Res) have Line 2 as a non-corruption-gated stat.
+					-- Older XMLs saved under the over-broad cf2011d21 gate dropped
+					-- Line 2 entirely — re-run Craft to pick up the relaxed gate.
+					if mod[2] and (mod.specialAffixType or 0) ~= 6 then
+						needsRecraft = true
+						break
+					end
 					-- Omen Idol affixEffectModifier bypass (2026-04-25): older
 					-- XMLs bake {scalar:0.67} into every affix mod line on Omen
 					-- Idol bases. Re-run Craft so Craft()'s bypass logic strips
@@ -900,17 +909,24 @@ function ItemClass:Craft()
 				end
 				local modLinesList = itemLib.modLinesForSlot(mod, slotKey)
 				for lineIdx, line in ipairs(modLinesList) do
-					-- Line [2+] of an affix is a corruption-only extension (e.g. "Heretical
-					-- Idol Limit" 1109_* gains "+N Health per Idol in a Refracted Slot" when
-					-- the item is corrupted). Skip unless the item carries the Corrupted flag.
-					-- EXCEPTION: Idol Altar sealed-corrupted affixes (specialAffixType == 6)
-					-- always materialise their extension line regardless of corruption, because
-					-- the "corrupted" subcategory on altars is permanent / base-level (not tied
-					-- to the user literally corrupting the item).
-					local isAltarSealedCorrupted = self.base.type == "Idol Altar"
-						and mod.specialAffixType == 6
-					if lineIdx >= 2 and not self.corrupted and not isAltarSealedCorrupted then
-						goto nextCraftLine
+					-- Line [2+] handling (2026-04-25 SCOPE FIX — see cf2011d21 for
+					-- the original over-broad gate). Only sealed-corrupted affixes
+					-- (specialAffixType == 6) have Line 2 as a corruption-gated
+					-- extension (e.g. "Heretical Idol Limit" 1109_* adds
+					-- "+N Health per Idol in a Refracted Slot"). All other affixes
+					-- with a Line 2 ("of the Giant" 36_* +Health/+%Health,
+					-- "Freeze Rate / Cold Res" 14_*, etc.) are standard multi-stat
+					-- affixes whose Line 2 must always materialise.
+					--
+					-- For specialAffixType == 6, the extension is active when:
+					--   (a) self.corrupted is true, OR
+					--   (b) the item is an Idol Altar (subcategory is base-level /
+					--       permanent on altars regardless of literal corruption).
+					if lineIdx >= 2 and mod.specialAffixType == 6 then
+						local isAltarSealedCorrupted = self.base.type == "Idol Altar"
+						if not self.corrupted and not isAltarSealedCorrupted then
+							goto nextCraftLine
+						end
 					end
 					local modScalar = 1 + self.base.affixEffectModifier
 					if mod.standardAffixEffectModifier then
