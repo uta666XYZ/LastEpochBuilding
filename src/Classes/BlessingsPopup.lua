@@ -418,6 +418,7 @@ function BlessingsPopupClass:AddSelectedToAllItems()
 	self.itemsTab:PopulateSlots()
 	self.itemsTab:AddUndoState()
 	self.itemsTab.build.buildFlag = true
+	self:Close()
 end
 
 function BlessingsPopupClass:Close()
