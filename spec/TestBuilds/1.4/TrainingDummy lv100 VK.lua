@@ -9232,4 +9232,17 @@ return {
         },
         ["_summary"] = { base=1946, inc=108, more=1.000, final=4048 },
     },
+    vitBreakdown = {
+        ["Vit"] = {
+            { source="Base", type="BASE", value=1, tags="" },
+            { source="Quest", type="BASE", value=1, tags="" },
+            { source="Item:3:Vital Leonine Greathelm of Defense", type="BASE", value=4, tags="" },
+            { source="Item:7:Carcinization of Momentum", type="BASE", value=5, tags="" },
+            { source="Item:7:Carcinization of Momentum", type="BASE", value=4, tags="" },
+            { source="Item:-1:Vital Grand Iron Omen Idol of Dismantling", type="BASE", value=5, tags="" },
+            { source="Tree:Sentinel-49", type="BASE", value=8, tags="" },
+            { source="Tree:Sentinel-22", type="BASE", value=5, tags="" },
+        },
+        ["_summary"] = { final=33 },
+    },
 }
