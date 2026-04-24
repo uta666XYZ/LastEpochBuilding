@@ -1390,7 +1390,11 @@ function ItemsTabClass:BuildCraftControls()
 
 		for _, slotKey in ipairs(section.slots) do
 			local capturedSlotKey = slotKey
-			local slotLabelKey    = "craft_" .. slotKey .. "Label"
+			-- Use "Slot" suffix to avoid colliding with section header keys
+			-- (e.g. slotKey "sealed" + "Label" would overwrite section header
+			-- key "sealedLabel"). Section headers were silently disappearing
+			-- for single-slot sections (sealed/primordial/corrupted).
+			local slotLabelKey    = "craft_" .. slotKey .. "SlotLabel"
 			local slotDDKey       = "craft_" .. slotKey .. "DD"
 
 			controls[slotLabelKey] = new("LabelControl",
