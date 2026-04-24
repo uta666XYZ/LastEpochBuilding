@@ -1004,6 +1004,9 @@ function ItemsTabClass:Draw(viewPort, inputEvents)
 	end
 
 	self:DrawControls(viewPort)
+	if self.CraftDrawSetInfo then
+		self:CraftDrawSetInfo(viewPort)
+	end
 	if self.controls.scrollBarV:IsShown() then
 		self.controls.scrollBarV:Draw(viewPort)
 	end
