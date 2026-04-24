@@ -255,17 +255,18 @@ function ItemsTabClass:CraftRecalcLayout()
 			y = y + DD_ROW_H
 			if st.modKey then
 				local info = self.craftSlotModInfo[slotKey]
-				local lc = (info and info.count) or 0
-				if lc == 0 then lc = 1 end
 				for i = 1, MAX_MOD_LINES do
 					self.craftEditY[slotKey].ctrl[i] = y
 				end
-				for i = 1, lc do
-					self.craftEditY[slotKey].ctrl[i] = y
-					if info and info.lines[i] and hasRange(info.lines[i]) then
-						y = y + SLIDER_ROW_H
+				-- Single shared slider per affix: any mod line with a range
+				-- contributes one SLIDER_ROW_H regardless of mod-line count.
+				local hasAnyRange = false
+				if info then
+					for i = 1, info.count do
+						if info.lines[i] and hasRange(info.lines[i]) then hasAnyRange = true; break end
 					end
 				end
+				if hasAnyRange then y = y + SLIDER_ROW_H end
 			end
 			y = y + GAP
 		end
@@ -683,31 +684,44 @@ function ItemsTabClass:CraftBuildSliderTooltip(tooltip, slotKey, li, hoverVal)
 	end
 
 	local hoverMod = lookupMod(hoverTier)
-	local hoverLine = hoverMod and hoverMod[li]
-	if type(hoverLine) ~= "string" then
-		-- Hovered tier doesn't have this mod line; fall back to current tier line.
-		hoverLine = info.lines[li]
-	end
-	if not hoverLine then return end
 
-	local rounding = H.getRounding and H.getRounding(hoverLine) or nil
-	local computed = itemLib.applyRange(hoverLine, hoverRange, nil, rounding)
-	if computed then
+	-- Collect all mod lines for the hovered tier (single-slider drives them all).
+	local lines = {}
+	if hoverMod then
+		for k = 1, 10 do
+			local ln = hoverMod[k]
+			if type(ln) == "string" then t_insert(lines, ln) end
+		end
+	end
+	if #lines == 0 then
+		for k = 1, info.count do
+			local ln = info.lines[k]
+			if type(ln) == "string" then t_insert(lines, ln) end
+		end
+	end
+	if #lines == 0 then return end
+
+	-- Top: substituted text for each mod line at hoverRange.
+	for _, ln in ipairs(lines) do
+		local rounding = H.getRounding and H.getRounding(ln) or nil
+		local computed = itemLib.applyRange(ln, hoverRange, nil, rounding) or ln
 		computed = computed:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
 		tooltip:AddLine(16, "^7" .. computed)
-		tooltip:AddSeparator(8)
 	end
+	tooltip:AddSeparator(8)
 
+	-- Tier line (no affix name here).
+	tooltip:AddLine(14, tierColor(hoverTier) .. "Affix: Tier " .. tostring(hoverTier + 1))
+
+	-- Range lines: "(min-max) <affix name>" for each mod line.
 	local hoverTierName = (hoverMod and hoverMod.affix) or ""
-	local tierStr = tierColor(hoverTier) .. "Affix: Tier " .. tostring(hoverTier + 1)
-	if hoverTierName ~= "" then
-		tierStr = tierStr .. " (" .. hoverTierName .. ")"
-	end
-	tooltip:AddLine(14, tierStr)
-
-	local min, max = extractMinMax(hoverLine)
-	if min and max then
-		tooltip:AddLine(14, "^7(" .. tostring(min) .. "-" .. tostring(max) .. ")")
+	for _, ln in ipairs(lines) do
+		local min, max = extractMinMax(ln)
+		if min and max then
+			local txt = "^7(" .. tostring(min) .. "-" .. tostring(max) .. ")"
+			if hoverTierName ~= "" then txt = txt .. " " .. hoverTierName end
+			tooltip:AddLine(14, txt)
+		end
 	end
 
 	if hoverMod and hoverMod.levelReq then
@@ -1508,15 +1522,23 @@ function ItemsTabClass:BuildCraftControls()
 						local tierCount = (self_ref:CraftGetMaxTier(st.modKey) or 0) + 1
 						local newTier, newRange = valToTierRange(val, tierCount)
 						st.tier = newTier
-						st.ranges[li] = newRange
+						-- Single shared slider per affix: write the same range
+						-- to all mod-line indices so multi-mod affixes stay
+						-- locked to one position.
+						for i = 1, info.count do st.ranges[i] = newRange end
 						self_ref:CraftRebuildItem()
 					end)
 				controls[valKey].shown = function()
+					if li ~= 1 then return false end
 					if not self_ref.craftActive or not self_ref.craftEditItem then return false end
 					if not self_ref.craftAffixState[capturedSlotKey].modKey then return false end
 					if capturedSlotKey == "corrupted" and not self_ref.craftCorrupted then return false end
 					local info = self_ref.craftSlotModInfo[capturedSlotKey]
-					return li <= info.count and hasRange(info.lines[li])
+					if not info then return false end
+					for i = 1, info.count do
+						if info.lines[i] and hasRange(info.lines[i]) then return true end
+					end
+					return false
 				end
 				controls[valKey].tooltipFunc = function(tooltip, hoverVal)
 					tooltip:Clear()
