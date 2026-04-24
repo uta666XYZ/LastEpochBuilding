@@ -963,10 +963,12 @@ function ItemsTabClass:Draw(viewPort, inputEvents)
 			local ttW, ttH = self.displayItemTooltip:GetDynamicSize(viewPort)
 			local tx, ty
 			if self.craftActive and self.controls.craftAnchor then
-				-- Preview sits below the craft editor's Save/Cancel row
+				-- Preview sits to the RIGHT of the craft editor panel so the
+				-- craft area can grow vertically (implicit / unique sliders)
+				-- without pushing the preview off-screen.
 				local ax, ay = self.controls.craftAnchor:GetPos()
-				tx = ax
-				ty = ay + 24 + (self.craftEditContentH or 0) + 12
+				tx = ax + 320 + 12
+				ty = ay
 			else
 				tx, ty = self.controls.displayItemTooltipAnchor:GetPos()
 			end
@@ -1041,8 +1043,8 @@ function ItemsTabClass:Draw(viewPort, inputEvents)
 		local x, y
 		if self.craftActive and self.controls.craftAnchor then
 			local ax, ay = self.controls.craftAnchor:GetPos()
-			x = ax
-			y = ay + 24 + (self.craftEditContentH or 0) + 12
+			x = ax + 320 + 12
+			y = ay
 		else
 			x, y = self.controls.displayItemTooltipAnchor:GetPos()
 		end
