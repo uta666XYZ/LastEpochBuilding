@@ -894,13 +894,7 @@ function ItemClass:Craft()
 					if mod.standardAffixEffectModifier then
 						modScalar = modScalar - mod.standardAffixEffectModifier
 					end
-					-- Universal affixes (no classSpecificity) are unaffected by the base's affixEffectModifier
-					-- (e.g., "of Insulation" on Omen Idols should not get the -33% penalty)
-					if self.base.affixEffectModifier and self.base.affixEffectModifier ~= 0
-					   and (not mod.classSpecificity or mod.classSpecificity == 0) then
-						modScalar = 1
-					end
-					-- Enchanted affix for Class-Specific Idols: specialAffixType=4 with
+-- Enchanted affix for Class-Specific Idols: specialAffixType=4 with
 					-- standardAffixEffectModifier=-0.33 rolls ~1.5x on neutral bases
 					-- (not 1.33x). +0.17 matches Maxroll parity on Solar Idol (affix 892).
 					if mod.specialAffixType == 4 and mod.standardAffixEffectModifier == -0.33
