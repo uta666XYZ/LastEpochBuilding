@@ -109,12 +109,28 @@ local function applySetBonuses(env, items, ver)
 			end
 			local isSet      = (item.rarity == "SET")
 			local hasSetInfo = (item.setInfo and item.setInfo.setId ~= nil)
-			if isSet or hasSetInfo then
+			-- Some unique-rarity items (e.g. Weaver Set amulet/ring) are
+			-- listed in set_<ver>.json. Detect by name lookup as a third path.
+			local matchedByName = nil
+			if not isSet and not hasSetInfo and item.title then
+				local titleKey = item.title:gsub(" Reforged$", "")
+				for _, e in pairs(setData) do
+					if e.set and (e.name == item.title or e.name == titleKey) then
+						matchedByName = e
+						break
+					end
+				end
+			end
+			if isSet or hasSetInfo or matchedByName then
 				local setId, bonusTable, setName
 				if hasSetInfo then
 					setId      = item.setInfo.setId
 					bonusTable = item.setInfo.bonus
 					setName    = item.setInfo.name
+				elseif matchedByName then
+					setId      = matchedByName.set.setId
+					bonusTable = matchedByName.set.bonus
+					setName    = matchedByName.set.name
 				end
 				if not bonusTable then
 					-- Fallback: match by item.title against set_<ver>.json.
