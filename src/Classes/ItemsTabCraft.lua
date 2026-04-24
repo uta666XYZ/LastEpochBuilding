@@ -299,6 +299,34 @@ function ItemsTabClass:CraftRecalcLayout()
 		end
 	end
 
+	-- Implicit / unique-mod slider sections (only shown for unique items).
+	-- Implicits render ABOVE prefix; unique mods render BELOW corrupted.
+	local IMPL_ROW_H = LINE_H + SLIDER_ROW_H
+	self.craftEditY.implicitLabel = 0
+	self.craftEditY.implicitRows  = {}
+	self.craftEditY.uniqueLabel   = 0
+	self.craftEditY.uniqueRows    = {}
+
+	local implicitCount = 0
+	if isUniqueItem and self.craftEditItem then
+		for i, _ in ipairs(self.craftEditItem.implicitModLines or {}) do
+			if self.craftImplicitRanges[i] then implicitCount = implicitCount + 1 end
+		end
+	end
+	if implicitCount > 0 then
+		self.craftEditY.implicitLabel = y
+		y = y + LINE_H + GAP
+		local rowIdx = 0
+		for i, _ in ipairs(self.craftEditItem.implicitModLines or {}) do
+			if self.craftImplicitRanges[i] then
+				rowIdx = rowIdx + 1
+				self.craftEditY.implicitRows[i] = { textY = y, sliderY = y + LINE_H }
+				y = y + IMPL_ROW_H + GAP
+			end
+		end
+		y = y + GAP
+	end
+
 	for _, sec in ipairs(sectionOrder) do
 		local skip = false
 		if isUniqueIdol and sec.label ~= "corruptedLabel" then skip = true end
@@ -333,6 +361,25 @@ function ItemsTabClass:CraftRecalcLayout()
 					layoutSlots({ sec.slots[1] })
 				else
 					layoutSlots(sec.slots)
+				end
+			end
+			y = y + GAP
+		end
+	end
+
+	-- Unique-mod sliders below the corrupted section (for unique items only).
+	if isUniqueItem and self.craftEditBaseEntry and self.craftEditBaseEntry.uniqueData then
+		local uniqueCount = 0
+		for i, _ in ipairs(self.craftEditBaseEntry.uniqueData.mods or {}) do
+			if self.craftUniqueRanges[i] then uniqueCount = uniqueCount + 1 end
+		end
+		if uniqueCount > 0 then
+			self.craftEditY.uniqueLabel = y
+			y = y + LINE_H + GAP
+			for i, _ in ipairs(self.craftEditBaseEntry.uniqueData.mods) do
+				if self.craftUniqueRanges[i] then
+					self.craftEditY.uniqueRows[i] = { textY = y, sliderY = y + LINE_H }
+					y = y + IMPL_ROW_H + GAP
 				end
 			end
 			y = y + GAP
@@ -387,6 +434,8 @@ function ItemsTabClass:CraftSelectBase(entry)
 		st.ranges = {}
 	end
 	self.craftLastAffixSlot = {}
+	self.craftImplicitRanges = {}
+	self.craftUniqueRanges   = {}
 	self.craftCorrupted = false
 	if self.controls.craftCorruptedCheck then
 		self.controls.craftCorruptedCheck.state = false
@@ -460,6 +509,21 @@ function ItemsTabClass:CraftSelectBase(entry)
 		end
 	end
 
+	-- Initialise per-line ranges for the implicit/unique slider UI. Any line
+	-- with a (X-Y) pattern is eligible; unique/set mods are marked already.
+	for i, ml in ipairs(item.implicitModLines) do
+		if hasRange(ml.line) then
+			self.craftImplicitRanges[i] = 128
+			ml.range = 128
+		end
+	end
+	for i, ml in ipairs(item.explicitModLines) do
+		if ml.range or hasRange(ml.line) then
+			self.craftUniqueRanges[i] = ml.range or 128
+			ml.range = self.craftUniqueRanges[i]
+		end
+	end
+
 	item:NormaliseQuality()
 	item:BuildAndParseRaw()
 
@@ -470,6 +534,7 @@ function ItemsTabClass:CraftSelectBase(entry)
 	if entry.category == "basic" then self:CraftRebuildItem() end
 	self:CraftRecalcLayout()
 	self:CraftRefreshAffixDropdowns()
+	self:CraftUpdateRollSliderVals()
 	self:SetDisplayItem(self.craftEditItem)
 end
 
@@ -540,15 +605,27 @@ function ItemsTabClass:CraftRebuildItem()
 		for i, modText in ipairs(self.craftEditBaseEntry.uniqueData.mods) do
 			local rollId  = self.craftEditBaseEntry.uniqueData.rollIds and self.craftEditBaseEntry.uniqueData.rollIds[i]
 			local modLine = { line = modText }
-			if rollId then modLine.range = 128 end
+			if rollId or hasRange(modText) then
+				modLine.range = self.craftUniqueRanges[i] or 128
+			end
 			t_insert(uniqueModLines, modLine)
 		end
 	elseif self.craftEditBaseEntry and self.craftEditBaseEntry.category == "set" and self.craftEditBaseEntry.setData then
 		for i, modText in ipairs(self.craftEditBaseEntry.setData.mods) do
 			local rollId  = self.craftEditBaseEntry.setData.rollIds and self.craftEditBaseEntry.setData.rollIds[i]
 			local modLine = { line = modText }
-			if rollId then modLine.range = 128 end
+			if rollId or hasRange(modText) then
+				modLine.range = self.craftUniqueRanges[i] or 128
+			end
 			t_insert(item.explicitModLines, modLine)
+		end
+	end
+
+	-- Re-apply implicit line ranges (implicitModLines are persistent across
+	-- rebuilds; only their .range may have changed via slider).
+	for i, ml in ipairs(item.implicitModLines) do
+		if self.craftImplicitRanges[i] then
+			ml.range = self.craftImplicitRanges[i]
 		end
 	end
 
@@ -692,6 +769,7 @@ function ItemsTabClass:CraftRebuildItem()
 	self:CraftUpdateSlotModInfo("corrupted")
 	self:CraftRecalcLayout()
 	self:CraftRefreshAffixDropdowns()
+	self:CraftUpdateRollSliderVals()
 
 	-- Drive real-time DPS diff via the displayItem tooltip infrastructure.
 	self:SetDisplayItem(item)
@@ -1263,6 +1341,9 @@ function ItemsTabClass:CraftResetState()
 	self.craftEditItem      = nil
 	self.craftEditBaseEntry = nil
 	self.craftRebuilding    = false
+	-- Per-line ranges for implicit and unique/set mods (0-255, nil = no slider).
+	self.craftImplicitRanges = {}
+	self.craftUniqueRanges   = {}
 end
 
 function ItemsTabClass:OpenCraftEditor(existingItem, slotName, presetEntry)
@@ -1315,12 +1396,21 @@ function ItemsTabClass:CraftRestoreState(existingItem)
 			for i, r in ipairs(saved.ranges) do st.ranges[i] = r end
 		end
 	end
+	self.craftImplicitRanges = {}
+	if cs.implicitRanges then
+		for i, r in pairs(cs.implicitRanges) do self.craftImplicitRanges[i] = r end
+	end
+	self.craftUniqueRanges = {}
+	if cs.uniqueRanges then
+		for i, r in pairs(cs.uniqueRanges) do self.craftUniqueRanges[i] = r end
+	end
 	for _, k in ipairs(ALL_SLOTS) do
 		self:CraftUpdateSlotModInfo(k)
 		self:CraftUpdateSlotValueEdits(k)
 	end
 	self:CraftRecalcLayout()
 	self:CraftRefreshAffixDropdowns()
+	self:CraftUpdateRollSliderVals()
 	self:SetDisplayItem(self.craftEditItem)
 end
 
@@ -1332,10 +1422,16 @@ function ItemsTabClass:CraftSaveItem()
 		savedState[key] = { modKey = st.modKey, tier = st.tier, ranges = {} }
 		for i, r in ipairs(st.ranges) do savedState[key].ranges[i] = r end
 	end
+	local savedImpl = {}
+	for i, r in pairs(self.craftImplicitRanges) do savedImpl[i] = r end
+	local savedUniq = {}
+	for i, r in pairs(self.craftUniqueRanges) do savedUniq[i] = r end
 	self.craftEditItem.craftState = {
-		affixState = savedState,
-		corrupted  = self.craftCorrupted,
-		baseEntry  = self.craftEditBaseEntry,
+		affixState     = savedState,
+		corrupted      = self.craftCorrupted,
+		baseEntry      = self.craftEditBaseEntry,
+		implicitRanges = savedImpl,
+		uniqueRanges   = savedUniq,
 	}
 	local finalItem = self.craftEditItem
 	-- Preserve the crafted item for addDisplayItem (Add to build / Save).
@@ -1675,6 +1771,119 @@ function ItemsTabClass:BuildCraftControls()
 		end
 	end
 
+	-- Implicit / unique-mod roll sliders (unique items only). Fixed pool of
+	-- label+slider pairs shown based on craftImplicitRanges / craftUniqueRanges.
+	local MAX_IMPL_SLIDERS   = 5
+	local MAX_UNIQUE_SLIDERS = 12
+
+	controls.craftImplicitLabel = new("LabelControl",
+		{ "TOPLEFT", controls.craftAnchor, "TOPLEFT" }, LP_LABEL_X,
+		function() return EDIT_BASE_Y + (self_ref.craftEditY.implicitLabel or 0) end,
+		0, 14, "")
+	controls.craftImplicitLabel.label = function()
+		return colorCodes.UNIQUE .. "IMPLICITS"
+	end
+	controls.craftImplicitLabel.shown = function()
+		return self_ref.craftActive
+			and self_ref.craftEditItem
+			and (self_ref.craftEditY.implicitLabel or 0) > 0
+	end
+
+	controls.craftUniqueLabel = new("LabelControl",
+		{ "TOPLEFT", controls.craftAnchor, "TOPLEFT" }, LP_LABEL_X,
+		function() return EDIT_BASE_Y + (self_ref.craftEditY.uniqueLabel or 0) end,
+		0, 14, "")
+	controls.craftUniqueLabel.label = function()
+		return colorCodes.UNIQUE .. "UNIQUE MODS"
+	end
+	controls.craftUniqueLabel.shown = function()
+		return self_ref.craftActive
+			and self_ref.craftEditItem
+			and (self_ref.craftEditY.uniqueLabel or 0) > 0
+	end
+
+	-- Helper: build a mod-text + slider pair for either implicit or unique lines.
+	-- `kind` = "impl" or "uniq". `modLinesGetter()` returns the source modLines.
+	local function buildRollRow(kind, lineIdx, rangesKey, rowsKey, modLinesGetter)
+		local labelCtrl = "craft_" .. kind .. "Text" .. lineIdx
+		local sliderCtrl = "craft_" .. kind .. "Slider" .. lineIdx
+
+		controls[labelCtrl] = new("LabelControl",
+			{ "TOPLEFT", controls.craftAnchor, "TOPLEFT" }, LP_LINE_X,
+			function()
+				local row = self_ref.craftEditY[rowsKey] and self_ref.craftEditY[rowsKey][lineIdx]
+				return row and (EDIT_BASE_Y + row.textY) or 0
+			end,
+			0, 13, "")
+		labelCtrl = controls[labelCtrl]
+		labelCtrl.label = function()
+			local ml = modLinesGetter() and modLinesGetter()[lineIdx]
+			if not ml then return "" end
+			local rangedLine = itemLib.applyRange(ml.line, ml.range or 128, ml.valueScalar, ml.rounding)
+			return "^7" .. rangedLine
+		end
+		labelCtrl.shown = function()
+			if not self_ref.craftActive or not self_ref.craftEditItem then return false end
+			local rows = self_ref.craftEditY[rowsKey]
+			return rows ~= nil and rows[lineIdx] ~= nil
+		end
+
+		controls[sliderCtrl] = new("SliderControl",
+			{ "TOPLEFT", controls.craftAnchor, "TOPLEFT" }, LP_LINE_X,
+			function()
+				local row = self_ref.craftEditY[rowsKey] and self_ref.craftEditY[rowsKey][lineIdx]
+				return row and (EDIT_BASE_Y + row.sliderY + 3) or 0
+			end,
+			LP_SLIDER_W, 24,
+			function(val)
+				if self_ref.craftRebuilding then return end
+				local newRange = m_floor(val * 255 + 0.5)
+				if newRange < 0 then newRange = 0 end
+				if newRange > 255 then newRange = 255 end
+				self_ref[rangesKey][lineIdx] = newRange
+				self_ref:CraftRebuildItem()
+			end)
+		controls[sliderCtrl].shown = function()
+			if not self_ref.craftActive or not self_ref.craftEditItem then return false end
+			local rows = self_ref.craftEditY[rowsKey]
+			return rows ~= nil and rows[lineIdx] ~= nil
+		end
+	end
+
+	for i = 1, MAX_IMPL_SLIDERS do
+		buildRollRow("impl", i, "craftImplicitRanges", "implicitRows", function()
+			return self_ref.craftEditItem and self_ref.craftEditItem.implicitModLines
+		end)
+	end
+	for i = 1, MAX_UNIQUE_SLIDERS do
+		buildRollRow("uniq", i, "craftUniqueRanges", "uniqueRows", function()
+			-- Unique modLines aren't in craftEditItem.explicitModLines during
+			-- rebuild (they're prepended to the buffer); pull from baseEntry.
+			local be = self_ref.craftEditBaseEntry
+			if not be then return nil end
+			local src = (be.uniqueData and be.uniqueData.mods) or (be.setData and be.setData.mods)
+			if not src then return nil end
+			local out = {}
+			for idx, text in ipairs(src) do
+				out[idx] = { line = text, range = self_ref.craftUniqueRanges[idx] }
+			end
+			return out
+		end)
+	end
+
 	-- Save / Cancel are handled by the outer Add to build / Cancel buttons
 	-- (ItemsTab.lua) when craft is active, so no inline Save/Cancel here.
+end
+
+function ItemsTabClass:CraftUpdateRollSliderVals()
+	-- Push craftImplicitRanges / craftUniqueRanges into the corresponding
+	-- slider controls' .val so the UI reflects the stored state.
+	for i, r in pairs(self.craftImplicitRanges) do
+		local ctrl = self.controls["craft_implSlider" .. i]
+		if ctrl then ctrl.val = (r or 128) / 255 end
+	end
+	for i, r in pairs(self.craftUniqueRanges) do
+		local ctrl = self.controls["craft_uniqSlider" .. i]
+		if ctrl then ctrl.val = (r or 128) / 255 end
+	end
 end
