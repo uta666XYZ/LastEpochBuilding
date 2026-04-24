@@ -881,11 +881,6 @@ function calcs.initEnv(build, mode, override, specEnv)
 
 		for _, slot in pairs(build.itemsTab.orderedSlots) do
 			local slotName = slot.slotName
-			-- Omen Idol (Fractured) slots mirror an idol already placed in a regular
-			-- Idol slot. Skip them here to avoid double-counting the same item.
-			if slotName:find("^Omen Idol ") then
-				goto continue_orderedSlot
-			end
 			local item = items[slotName]
 			if slotName:sub(1, 10) == "Omen Idol " then
 				-- Idol is merged via the Omen Idol (Refracted) slot path so the

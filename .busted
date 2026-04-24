@@ -22,4 +22,10 @@ return {
         helper = "HeadlessWrapper.lua",
         ROOT = { "../spec/GenerateBuilds14.lua" },
     },
+    generateOne = {
+        directory = "src",
+        lpath = "../runtime/lua/?.lua;../runtime/lua/?/init.lua",
+        helper = "HeadlessWrapper.lua",
+        ROOT = { "../spec/GenerateOneBuild.lua" },
+    },
 }
