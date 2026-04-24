@@ -117,6 +117,13 @@ if modDB then
 end
 outHnd:write("    },\n")
 
+outHnd:write("    vitBreakdown = {\n")
+if modDB then
+    dumpModList(outHnd, "Vit", modDB.mods["Vit"])
+    outHnd:write(string.format("        [\"_summary\"] = { final=%d },\n", modDB:Sum("BASE", nil, "Vit") or 0))
+end
+outHnd:write("    },\n")
+
 outHnd:write("}\n")
 outHnd:close()
 print("Wrote " .. luaPath)
