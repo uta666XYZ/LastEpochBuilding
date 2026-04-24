@@ -5304,7 +5304,7 @@
       1
     ],
     "sat": 0,
-    "name": "Increased Damage of Skills use by Shadows",
+    "name": "Increased Damage of Skills used by Shadows",
     "title": "Rogue''s"
   },
   "440": {
@@ -11028,7 +11028,7 @@
       6
     ],
     "sat": 6,
-    "name": "Chance for non-Crticail Strikes to inflict Critical Vulnerability for 4 seconds",
+    "name": "Chance for non-critical Strikes to inflict Critical Vulnerability for 4 seconds",
     "title": null
   },
   "981": {
@@ -11152,7 +11152,7 @@
       15
     ],
     "sat": 6,
-    "name": "Increased Melee Attack Speed and Frezy after using Evade",
+    "name": "Increased Melee Attack Speed and Frenzy after using Evade",
     "title": null
   },
   "990": {
