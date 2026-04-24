@@ -199,7 +199,7 @@ function ItemsTabClass:CraftRecalcLayout()
 	local LINE_H = 18
 	local GAP    = 4
 	local DD_ROW_H     = LP_DD_H + 4
-	local SLIDER_ROW_H = 14 + 4
+	local SLIDER_ROW_H = 24 + 4
 
 	self.craftEditY = {}
 	local y = 0
@@ -634,9 +634,14 @@ function ItemsTabClass:CraftBuildSliderTooltip(tooltip, slotKey, li, hoverVal)
 	if not line then return end
 	local st = self.craftAffixState[slotKey]
 	local hoverRange = m_floor((hoverVal or 0) * 255 + 0.5)
-	local numeric = computeModValue(line, hoverRange)
-	if numeric then
-		tooltip:AddLine(16, "^7" .. formatModValue(line, numeric))
+	-- Show the full substituted mod text ("30% Increased Bleed Duration")
+	-- instead of just the numeric value, so multi-mod affixes make clear
+	-- which mod each slider drives.
+	local rounding = H.getRounding and H.getRounding(line) or nil
+	local computed = itemLib.applyRange(line, hoverRange, nil, rounding)
+	if computed then
+		computed = computed:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
+		tooltip:AddLine(16, "^7" .. computed)
 		tooltip:AddSeparator(8)
 	end
 	local tierName = self:CraftGetAffixTierName(slotKey) or ""
@@ -1445,7 +1450,7 @@ function ItemsTabClass:BuildCraftControls()
 						local cy = ey and ey.ctrl and ey.ctrl[li]
 						return cy and (EDIT_BASE_Y + cy + 3) or 0
 					end,
-					LP_SLIDER_W, 12,
+					LP_SLIDER_W, 24,
 					function(val)
 						if self_ref.craftRebuilding then return end
 						local info = self_ref.craftSlotModInfo[capturedSlotKey]
