@@ -661,12 +661,10 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 		return self.displayItem == nil
 	end
 
-	-- Paperdoll frame (shown only when no display item; anchor updated below)
+	-- Paperdoll frame (always shown — "Crafting Items..." panel remains visible
+	-- even while editing/crafting an item so the user can see all crafted gear)
 	self.controls.paperdoll = new("PaperdollControl",
 		{"TOPLEFT", self.controls.craftDisplayItem, "BOTTOMLEFT"}, 0, 50, self)
-	self.controls.paperdoll.shown = function()
-		return self.displayItem == nil
-	end
 
 	-- Display item
 	self.displayItemTooltip = new("Tooltip")
@@ -700,6 +698,7 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 
 	-- Scroll bars
 	self.controls.scrollBarV = new("ScrollBarControl", nil, 0, 0, 18, 0, 100, "VERTICAL", true)
+	self.controls.scrollBarH = new("ScrollBarControl", nil, 0, 0, 0, 18, 100, "HORIZONTAL", true)
 
 	-- Initialise drag target lists
 	t_insert(self.controls.itemList.dragTargetList, build.controls.mainSkillMinion)
@@ -938,20 +937,43 @@ function ItemsTabClass:Draw(viewPort, inputEvents)
 	self.controls.scrollBarV.height = viewPort.height
 	self.controls.scrollBarV.x = viewPort.x + viewPort.width - 18
 	self.controls.scrollBarV.y = viewPort.y
+	self.controls.scrollBarH.width = viewPort.width
+	self.controls.scrollBarH.x = viewPort.x
+	self.controls.scrollBarH.y = viewPort.y + viewPort.height - 18
 	do
 		local blessGridY = select(2, self.controls.blessingGrid:GetPos())
 		local _, blessGridH = self.controls.blessingGrid:GetSize()
 		local maxY = m_max(select(2, self.controls.idolGridPanelEnd:GetPos()) + 24, blessGridY + blessGridH + 8)
+		-- Track rightmost content edge for horizontal scrollbar
+		local itemListX, _ = self.controls.itemList:GetPos()
+		local itemListW, _ = self.controls.itemList:GetSize()
+		local maxX = itemListX + itemListW
 		if self.displayItem then
-			local x, y = self.controls.displayItemTooltipAnchor:GetPos()
 			local ttW, ttH = self.displayItemTooltip:GetDynamicSize(viewPort)
-			maxY = m_max(maxY, y + ttH + 4)
+			local tx, ty
+			if self.craftActive and self.controls.craftAnchor then
+				local ax, ay = self.controls.craftAnchor:GetPos()
+				ty = ay + 24 + (self.craftEditContentH or 0) + 8 + 28 + 12
+				tx = ax
+			else
+				tx, ty = self.controls.displayItemTooltipAnchor:GetPos()
+			end
+			maxY = m_max(maxY, ty + ttH + 4)
+			maxX = m_max(maxX, tx + ttW + 4)
+		end
+		if self.craftActive and self.controls.craftAnchor then
+			local ax, _ = self.controls.craftAnchor:GetPos()
+			-- LEFT_W (320) is the inline editor panel width
+			maxX = m_max(maxX, ax + 320 + 4)
 		end
 		local contentHeight = maxY - self.y
 		self.controls.scrollBarV:SetContentDimension(contentHeight, viewPort.height)
+		local contentWidth = maxX - self.x
+		self.controls.scrollBarH:SetContentDimension(contentWidth, viewPort.width - 18)
 		self.maxY = viewPort.y + viewPort.height
 	end
 	self.y = self.y - self.controls.scrollBarV.offset
+	self.x = self.x - self.controls.scrollBarH.offset
 
 	for _, event in ipairs(inputEvents) do
 		if event.type == "KeyDown" then
@@ -998,17 +1020,31 @@ function ItemsTabClass:Draw(viewPort, inputEvents)
 	end
 	self.controls.setSelect:SetList(newItemList)
 
-	if self.displayItem then
-		local x, y = self.controls.displayItemTooltipAnchor:GetPos()
-		self.displayItemTooltip:Draw(x, y, nil, nil, viewPort)
-	end
-
 	self:DrawControls(viewPort)
 	if self.CraftDrawSetInfo then
 		self:CraftDrawSetInfo(viewPort)
 	end
+
+	if self.displayItem then
+		local x, y
+		if self.craftActive and self.controls.craftAnchor then
+			-- Place preview below the inline craft editor (under Save/Cancel)
+			local ax, ay = self.controls.craftAnchor:GetPos()
+			local EDIT_BASE_Y = 24
+			local saveBtnH    = 28
+			local gapAfter    = 12
+			y = ay + EDIT_BASE_Y + (self.craftEditContentH or 0) + 8 + saveBtnH + gapAfter
+			x = ax
+		else
+			x, y = self.controls.displayItemTooltipAnchor:GetPos()
+		end
+		self.displayItemTooltip:Draw(x, y, nil, nil, viewPort)
+	end
 	if self.controls.scrollBarV:IsShown() then
 		self.controls.scrollBarV:Draw(viewPort)
+	end
+	if self.controls.scrollBarH:IsShown() then
+		self.controls.scrollBarH:Draw(viewPort)
 	end
 
 	self.controls.specSelect:SetList(self.build.treeTab:GetSpecList())
