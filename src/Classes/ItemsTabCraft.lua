@@ -732,6 +732,16 @@ end
 -- =============================================================================
 -- Affix list refresh (populates self.craftAffixLists)
 -- =============================================================================
+local SUBCAT_ORDER = { "general", "class_only", "set_only", "champion", "personal", "corrupted" }
+local SUBCAT_LABEL = {
+	general    = "General",
+	class_only = "Class Only",
+	set_only   = "Set Only",
+	champion   = "Champion",
+	personal   = "Personal",
+	corrupted  = "Corrupted",
+}
+
 function ItemsTabClass:CraftRefreshSlotDropdowns()
 	if not self.controls then return end
 	for _, slotKey in ipairs(ALL_SLOTS) do
@@ -742,17 +752,64 @@ function ItemsTabClass:CraftRefreshSlotDropdowns()
 			local curKey = self.craftAffixState[slotKey] and self.craftAffixState[slotKey].modKey
 			local selIdx = 1
 			local foundCurrent = false
-			for i, e in ipairs(src) do
-				t_insert(ddList, { label = (e.label or ""):gsub("{rounding:%w+}", ""):gsub("{[^}]+}", ""), entry = e })
-				if curKey and e.statOrderKey == curKey then
-					selIdx = i + 1
-					foundCurrent = true
+
+			-- Preserve existing collapse state across refreshes so dragging a
+			-- slider or picking an affix doesn't reopen all groups.
+			local prevCollapsed = {}
+			if dd.list then
+				for _, li in ipairs(dd.list) do
+					if type(li) == "table" and li.isHeader then
+						prevCollapsed[li.subcat] = li.collapsed
+					end
 				end
 			end
+
+			-- Partition affixes by subcategory (general/class_only/...).
+			local bySubcat = {}
+			local hasAnySubcat = false
+			for _, e in ipairs(src) do
+				local sc = e.subcategory or "general"
+				bySubcat[sc] = bySubcat[sc] or {}
+				t_insert(bySubcat[sc], e)
+				hasAnySubcat = true
+			end
+
+			local function cleanLabel(s) return (s or ""):gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "") end
+
+			if hasAnySubcat then
+				for _, sc in ipairs(SUBCAT_ORDER) do
+					local group = bySubcat[sc]
+					if group and #group > 0 then
+						table.sort(group, function(a, b) return (a.label or "") < (b.label or "") end)
+						local collapsed = prevCollapsed[sc] or false
+						t_insert(ddList, {
+							label = "^7" .. SUBCAT_LABEL[sc] .. "  (" .. tostring(#group) .. ")",
+							isHeader = true, collapsed = collapsed, subcat = sc,
+						})
+						for _, e in ipairs(group) do
+							t_insert(ddList, { label = "  " .. cleanLabel(e.label), entry = e })
+							if curKey and e.statOrderKey == curKey then
+								selIdx = #ddList
+								foundCurrent = true
+							end
+						end
+					end
+				end
+			else
+				-- No subcategory info (e.g. idol / altar); flat list.
+				for _, e in ipairs(src) do
+					t_insert(ddList, { label = cleanLabel(e.label), entry = e })
+					if curKey and e.statOrderKey == curKey then
+						selIdx = #ddList
+						foundCurrent = true
+					end
+				end
+			end
+
 			if curKey and not foundCurrent then
 				local info = self.craftSlotModInfo[slotKey]
 				local firstLine = info and info.lines and info.lines[1]
-				local label = firstLine and firstLine:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "") or tostring(curKey)
+				local label = firstLine and cleanLabel(firstLine) or tostring(curKey)
 				t_insert(ddList, { label = "^3" .. label, entry = { statOrderKey = curKey } })
 				selIdx = #ddList
 			end
