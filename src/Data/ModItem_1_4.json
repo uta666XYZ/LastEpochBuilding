@@ -8346,7 +8346,15 @@
 			22,
 			18
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "(12-21)% Increased Healing Effectiveness"
+			},
+			"shield": {
+				"1": "(12-21)% Increased Healing Effectiveness"
+			}
+		}
 	},
 	"43_1": {
 		"affix": "Cleric's",
@@ -8364,7 +8372,15 @@
 			22,
 			18
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "(22-32)% Increased Healing Effectiveness"
+			},
+			"shield": {
+				"1": "(22-32)% Increased Healing Effectiveness"
+			}
+		}
 	},
 	"43_2": {
 		"affix": "Cleric's",
@@ -8382,7 +8398,15 @@
 			22,
 			18
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "(33-43)% Increased Healing Effectiveness"
+			},
+			"shield": {
+				"1": "(33-43)% Increased Healing Effectiveness"
+			}
+		}
 	},
 	"43_3": {
 		"affix": "Cleric's",
@@ -8400,7 +8424,15 @@
 			22,
 			18
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "(44-55)% Increased Healing Effectiveness"
+			},
+			"shield": {
+				"1": "(44-55)% Increased Healing Effectiveness"
+			}
+		}
 	},
 	"43_4": {
 		"affix": "Cleric's",
@@ -8418,7 +8450,15 @@
 			22,
 			18
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "(56-70)% Increased Healing Effectiveness"
+			},
+			"shield": {
+				"1": "(56-70)% Increased Healing Effectiveness"
+			}
+		}
 	},
 	"43_5": {
 		"affix": "Cleric's",
@@ -8436,7 +8476,15 @@
 			22,
 			18
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "(88-111)% Increased Healing Effectiveness"
+			},
+			"shield": {
+				"1": "(88-111)% Increased Healing Effectiveness"
+			}
+		}
 	},
 	"43_6": {
 		"affix": "Cleric's",
@@ -8454,7 +8502,15 @@
 			22,
 			18
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "(112-140)% Increased Healing Effectiveness"
+			},
+			"shield": {
+				"1": "(112-140)% Increased Healing Effectiveness"
+			}
+		}
 	},
 	"43_7": {
 		"affix": "Cleric's",
@@ -8472,7 +8528,15 @@
 			22,
 			18
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "(234-281)% Increased Healing Effectiveness"
+			},
+			"shield": {
+				"1": "(234-281)% Increased Healing Effectiveness"
+			}
+		}
 	},
 	"44_0": {
 		"affix": "of Hunger",
@@ -11146,7 +11210,15 @@
 			9,
 			20
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}(12-16)% increased Dodge Rating"
+			},
+			"body_armor": {
+				"1": "{rounding:Integer}(15-21)% increased Dodge Rating"
+			}
+		}
 	},
 	"59_1": {
 		"affix": "of the Fox",
@@ -11164,7 +11236,15 @@
 			9,
 			20
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}(18-22)% increased Dodge Rating"
+			},
+			"body_armor": {
+				"1": "{rounding:Integer}(22-29)% increased Dodge Rating"
+			}
+		}
 	},
 	"59_2": {
 		"affix": "of the Fox",
@@ -11182,7 +11262,15 @@
 			9,
 			20
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}(23-28)% increased Dodge Rating"
+			},
+			"body_armor": {
+				"1": "{rounding:Integer}(30-36)% increased Dodge Rating"
+			}
+		}
 	},
 	"59_3": {
 		"affix": "of the Fox",
@@ -11200,7 +11288,15 @@
 			9,
 			20
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}(29-34)% increased Dodge Rating"
+			},
+			"body_armor": {
+				"1": "{rounding:Integer}(38-43)% increased Dodge Rating"
+			}
+		}
 	},
 	"59_4": {
 		"affix": "of the Fox",
@@ -11218,7 +11314,15 @@
 			9,
 			20
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}(35-44)% increased Dodge Rating"
+			},
+			"body_armor": {
+				"1": "{rounding:Integer}(45-57)% increased Dodge Rating"
+			}
+		}
 	},
 	"59_5": {
 		"affix": "of the Fox",
@@ -11236,7 +11340,15 @@
 			9,
 			20
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}(64-76)% increased Dodge Rating"
+			},
+			"body_armor": {
+				"1": "{rounding:Integer}(83-98)% increased Dodge Rating"
+			}
+		}
 	},
 	"59_6": {
 		"affix": "of the Fox",
@@ -11254,7 +11366,15 @@
 			9,
 			20
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}(77-94)% increased Dodge Rating"
+			},
+			"body_armor": {
+				"1": "{rounding:Integer}(99-120)% increased Dodge Rating"
+			}
+		}
 	},
 	"59_7": {
 		"affix": "of the Fox",
@@ -11272,7 +11392,15 @@
 			9,
 			20
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}(152-187)% increased Dodge Rating"
+			},
+			"body_armor": {
+				"1": "{rounding:Integer}(195-240)% increased Dodge Rating"
+			}
+		}
 	},
 	"60_0": {
 		"affix": "of Blinding",
@@ -16523,7 +16651,12 @@
 			22,
 			20
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}+(2-5) Throwing Damage"
+			}
+		}
 	},
 	"88_1": {
 		"affix": "Catapult's",
@@ -16542,7 +16675,12 @@
 			22,
 			20
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}+(6-8) Throwing Damage"
+			}
+		}
 	},
 	"88_2": {
 		"affix": "Catapult's",
@@ -16561,7 +16699,12 @@
 			22,
 			20
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}+(9-12) Throwing Damage"
+			}
+		}
 	},
 	"88_3": {
 		"affix": "Catapult's",
@@ -16580,7 +16723,12 @@
 			22,
 			20
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}+(13-16) Throwing Damage"
+			}
+		}
 	},
 	"88_4": {
 		"affix": "Catapult's",
@@ -16599,7 +16747,12 @@
 			22,
 			20
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}+(18-23) Throwing Damage"
+			}
+		}
 	},
 	"88_5": {
 		"affix": "Catapult's",
@@ -16618,7 +16771,12 @@
 			22,
 			20
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}+(29-35) Throwing Damage"
+			}
+		}
 	},
 	"88_6": {
 		"affix": "Catapult's",
@@ -16637,7 +16795,12 @@
 			22,
 			20
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}+(36-43) Throwing Damage"
+			}
+		}
 	},
 	"88_7": {
 		"affix": "Catapult's",
@@ -16656,7 +16819,12 @@
 			22,
 			20
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}+(59-76) Throwing Damage"
+			}
+		}
 	},
 	"89_0": {
 		"affix": "Rending",
@@ -23014,7 +23182,12 @@
 			2,
 			20
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}(12-16)% increased Mana Regen"
+			}
+		}
 	},
 	"330_1": {
 		"affix": "Rejuvenating",
@@ -23032,7 +23205,12 @@
 			2,
 			20
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}(18-22)% increased Mana Regen"
+			}
+		}
 	},
 	"330_2": {
 		"affix": "Rejuvenating",
@@ -23050,7 +23228,12 @@
 			2,
 			20
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}(23-28)% increased Mana Regen"
+			}
+		}
 	},
 	"330_3": {
 		"affix": "Rejuvenating",
@@ -23068,7 +23251,12 @@
 			2,
 			20
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}(29-34)% increased Mana Regen"
+			}
+		}
 	},
 	"330_4": {
 		"affix": "Rejuvenating",
@@ -23086,7 +23274,12 @@
 			2,
 			20
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}(35-44)% increased Mana Regen"
+			}
+		}
 	},
 	"330_5": {
 		"affix": "Rejuvenating",
@@ -23104,7 +23297,12 @@
 			2,
 			20
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}(47-57)% increased Mana Regen"
+			}
+		}
 	},
 	"330_6": {
 		"affix": "Rejuvenating",
@@ -23122,7 +23320,12 @@
 			2,
 			20
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}(59-70)% increased Mana Regen"
+			}
+		}
 	},
 	"330_7": {
 		"affix": "Rejuvenating",
@@ -23140,7 +23343,12 @@
 			2,
 			20
 		],
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"slotOverrides": {
+			"amulet": {
+				"1": "{rounding:Integer}(110-129)% increased Mana Regen"
+			}
+		}
 	},
 	"331_0": {
 		"affix": "Azure",
