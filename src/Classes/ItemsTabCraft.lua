@@ -533,12 +533,15 @@ function ItemsTabClass:CraftRebuildItem()
 	item.namePrefix = ""
 	item.nameSuffix = ""
 
+	-- Unique mods are held aside so craft prefix/suffix lines can be inserted
+	-- ABOVE them and the corrupted line below them (matches LETools layout).
+	local uniqueModLines = {}
 	if self.craftEditBaseEntry and self.craftEditBaseEntry.category == "unique" and self.craftEditBaseEntry.uniqueData then
 		for i, modText in ipairs(self.craftEditBaseEntry.uniqueData.mods) do
 			local rollId  = self.craftEditBaseEntry.uniqueData.rollIds and self.craftEditBaseEntry.uniqueData.rollIds[i]
 			local modLine = { line = modText }
 			if rollId then modLine.range = 128 end
-			t_insert(item.explicitModLines, modLine)
+			t_insert(uniqueModLines, modLine)
 		end
 	elseif self.craftEditBaseEntry and self.craftEditBaseEntry.category == "set" and self.craftEditBaseEntry.setData then
 		for i, modText in ipairs(self.craftEditBaseEntry.setData.mods) do
@@ -622,6 +625,12 @@ function ItemsTabClass:CraftRebuildItem()
 				end
 			end
 		end
+	end
+
+	-- Append unique mods AFTER craft prefix/suffix lines so unique mods appear
+	-- below the craft-added affixes in the tooltip.
+	for _, modLine in ipairs(uniqueModLines) do
+		t_insert(item.explicitModLines, modLine)
 	end
 
 	if self.craftEditBaseEntry and self.craftEditBaseEntry.category == "basic" then
