@@ -267,10 +267,14 @@
       "level": 0
     },
     "mods": [
-      "{rounding:Integer}+(65-145) Health"
+      "{rounding:Integer}+(65-145) Health",
+      "+30 Melee Cold Damage when above 65% Health",
+      "3% of Melee Damage Leeched as Health when below 65% Health"
     ],
     "rollIds": [
-      0
+      0,
+      null,
+      null
     ]
   },
   "13": {

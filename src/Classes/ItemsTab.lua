@@ -599,9 +599,14 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 		if not slot then return end
 		local oldId = slot.selItemId
 		if oldId and oldId ~= 0 then
-			self.items[oldId] = nil
-			for i, id in ipairs(self.itemOrderList) do
-				if id == oldId then t_remove(self.itemOrderList, i); break end
+			local oldItem = self.items[oldId]
+			-- Only remove ephemeral blessings (tagged with blessing:<tl>).
+			-- Persistent items added to All items must survive re-equip.
+			if oldItem and oldItem.uniqueID == "blessing:" .. tl then
+				self.items[oldId] = nil
+				for i, id in ipairs(self.itemOrderList) do
+					if id == oldId then t_remove(self.itemOrderList, i); break end
+				end
 			end
 			slot:SetSelItemId(0)
 		end
@@ -630,8 +635,15 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 			return
 		end
 		item.uniqueID = "blessing:" .. tl  -- prevent nil==nil match with regular items in ImportItem
-		item.id = nil  -- let AddItem assign a positive ID so blessing appears in All Items
-		self:AddItem(item, true)  -- noAutoEquip=true, also calls BuildModList
+		-- Assign a unique positive ID but DO NOT add to itemOrderList.
+		-- Ephemeral blessings must not appear in the All items list; only
+		-- BlessingsPopup:AddSelectedToAllItems promotes them there.
+		item.id = 1
+		while self.items[item.id] do
+			item.id = item.id + 1
+		end
+		self.items[item.id] = item
+		item:BuildModList()
 		slot:SetSelItemId(item.id)
 		self.build.buildFlag = true
 	end
@@ -951,10 +963,12 @@ function ItemsTabClass:Draw(viewPort, inputEvents)
 			local ttW, ttH = self.displayItemTooltip:GetDynamicSize(viewPort)
 			local tx, ty
 			if self.craftActive and self.controls.craftAnchor then
-				-- Preview sits below the craft editor's Save/Cancel row
+				-- Preview sits to the RIGHT of the craft editor panel so the
+				-- craft area can grow vertically (implicit / unique sliders)
+				-- without pushing the preview off-screen.
 				local ax, ay = self.controls.craftAnchor:GetPos()
-				tx = ax
-				ty = ay + 24 + (self.craftEditContentH or 0) + 12
+				tx = ax + 320 + 12
+				ty = ay
 			else
 				tx, ty = self.controls.displayItemTooltipAnchor:GetPos()
 			end
@@ -1029,8 +1043,8 @@ function ItemsTabClass:Draw(viewPort, inputEvents)
 		local x, y
 		if self.craftActive and self.controls.craftAnchor then
 			local ax, ay = self.controls.craftAnchor:GetPos()
-			x = ax
-			y = ay + 24 + (self.craftEditContentH or 0) + 12
+			x = ax + 320 + 12
+			y = ay
 		else
 			x, y = self.controls.displayItemTooltipAnchor:GetPos()
 		end
@@ -1587,9 +1601,9 @@ end
 function ItemsTabClass:OpenCraftItemSelector(slotName)
 	local controls = { }
 	local rarityDDList = {
-		{ label = "Basic",  category = "basic"  },
-		{ label = "Unique", category = "unique" },
-		{ label = "Set",    category = "set"    },
+		{ label = colorCodes.NORMAL .. "Basic",  category = "basic"  },
+		{ label = colorCodes.UNIQUE .. "Unique", category = "unique" },
+		{ label = colorCodes.SET    .. "Set",    category = "set"    },
 	}
 	local orderedTypeList = CraftPopupH.filterTypeList(
 		CraftPopupH.buildOrderedTypeList(self.build.data.itemBaseTypeList), slotName)
@@ -1630,7 +1644,9 @@ function ItemsTabClass:OpenCraftItemSelector(slotName)
 			self.build, setItems, typeName, state.category, state.searchText, classReqBit)
 		local labels = { }
 		for _, entry in ipairs(state.baseList) do
-			t_insert(labels, entry.label or entry.name or "?")
+			local raw = entry.label or entry.name or "?"
+			local color = entry.rarity and colorCodes[entry.rarity] or ""
+			t_insert(labels, color .. raw)
 		end
 		if #labels == 0 then t_insert(labels, "(no match)") end
 		controls.base:SetList(labels)

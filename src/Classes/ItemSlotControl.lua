@@ -71,7 +71,9 @@ function ItemSlotClass:Populate()
 		if self.itemsTab:IsItemValidForSlot(item, self.slotName) then
 			t_insert(self.items, item.id)
 			local itemColor
-			if item.type and item.type:find("Idol") and item.rarity ~= "UNIQUE" then
+			if item.type == "Idol Altar" then
+				itemColor = colorCodes.EXALTED
+			elseif item.type and item.type:find("Idol") and item.rarity ~= "UNIQUE" then
 				itemColor = colorCodes.IDOL
 			else
 				itemColor = colorCodes[item.rarity]
