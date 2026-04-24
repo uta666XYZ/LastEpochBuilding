@@ -251,7 +251,17 @@ function DropDownClass:Draw(viewPort, noTooltip)
 
 	-- fit dropHeight to filtered content but keep initial orientation
 	self.dropHeight = m_max(m_min(self.dropHeight, self:GetDropCount() * itemLineH), itemLineH)
-	
+
+	-- Clamp droppedWidth so the drop panel never extends past the viewport's
+	-- right edge (prevents clipping on narrow windows). Long labels that no
+	-- longer fit are shown via hover tooltip.
+	local viewRight = viewPort.x + viewPort.width
+	local availW = m_max(self.width, viewRight - x - 2)
+	if self.droppedWidth > availW then
+		self.droppedWidth = availW
+		self.controls.scrollBar.x = self.droppedWidth - self.width - 1
+	end
+
 	local mOver, mOverComp = self:IsMouseOver()
 	local dropExtra = self.dropHeight + 4
 	scrollBar:SetContentDimension(itemLineH * self:GetDropCount(), self.dropHeight)
