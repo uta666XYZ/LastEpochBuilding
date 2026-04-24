@@ -998,6 +998,13 @@ function ImportTabClass:ConvertLEToolsItem(letoolsItem, itemMap, affixMap)
     local function pushAffix(a, kind)
         if type(a) ~= "table" or a.id == nil then return end
         local affixInt = affixMap[a.id]
+        if affixInt == nil then
+            ConPrintf("[LETOOLS-AFFIX-MISS] base=" .. tostring(entry.b)
+                .. " kind=" .. tostring(kind)
+                .. " extId=" .. tostring(a.id)
+                .. " (not in letools_affix_map.json; dropped)")
+            letoolsItem._affixMapMiss = (letoolsItem._affixMapMiss or 0) + 1
+        end
         if affixInt ~= nil then
             -- LETools tiers are user-facing 1-indexed (T1..T7); LEB
             -- ModItem keys and save-format tiers are 0-indexed.
