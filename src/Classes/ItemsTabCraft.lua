@@ -1366,7 +1366,7 @@ function ItemsTabClass:BuildCraftControls()
 			if (capturedSectionKey == "sealed" or capturedSectionKey == "primordial")
 				and self_ref:CraftIsAnyIdol() and not self_ref:CraftIsEnchantableIdol() then return false end
 			if capturedSectionKey == "primordial" and self_ref:CraftIsAnyIdol() then return false end
-			return (self_ref.craftEditY[labelKey] or 0) > 0 or labelKey == "prefixLabel"
+			return true
 		end
 
 		if section.key == "corrupted" then
@@ -1465,20 +1465,6 @@ function ItemsTabClass:BuildCraftControls()
 		end
 	end
 
-	-- Save / Cancel at bottom: position just below dynamic content
-	controls.craftSaveBtn = new("ButtonControl",
-		{ "TOPLEFT", controls.craftAnchor, "TOPLEFT" }, LP_LABEL_X,
-		function() return EDIT_BASE_Y + (self_ref.craftEditContentH or 0) + 8 end,
-		90, 28, "Save", function()
-			self_ref:CraftSaveItem()
-		end)
-	controls.craftSaveBtn.shown = function()
-		return self_ref.craftActive == true and self_ref.craftEditItem ~= nil
-	end
-
-	controls.craftCancelBtn = new("ButtonControl",
-		{ "LEFT", controls.craftSaveBtn, "RIGHT" }, 8, 0, 90, 28, "Cancel", function()
-			self_ref:CloseCraftEditor()
-		end)
-	controls.craftCancelBtn.shown = function() return self_ref.craftActive == true end
+	-- Save / Cancel are handled by the outer Add to build / Cancel buttons
+	-- (ItemsTab.lua) when craft is active, so no inline Save/Cancel here.
 end

@@ -669,7 +669,11 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 	-- Display item
 	self.displayItemTooltip = new("Tooltip")
 	self.displayItemTooltip.maxWidth = 458
-	self.anchorDisplayItem = new("Control", {"TOPLEFT",self.controls.itemList,"TOPRIGHT"}, 20, 0, 0, 0)
+	-- Anchor buttons at the same vertical level as the itemList's Sort /
+	-- Delete Unused / Delete All / Delete row (drawn at itemList TOPRIGHT
+	-- offset (0, -2) with height 18). Placing at (20, -22) aligns the action
+	-- button row with those utility buttons.
+	self.anchorDisplayItem = new("Control", {"TOPLEFT",self.controls.itemList,"TOPRIGHT"}, 20, -22, 0, 0)
 	self.anchorDisplayItem.shown = function()
 		return self.displayItem ~= nil
 	end
@@ -687,7 +691,11 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 		end
 	end)
 	self.controls.removeDisplayItem = new("ButtonControl", {"LEFT",self.controls.editDisplayItem,"RIGHT"}, 8, 0, 60, 20, "Cancel", function()
-		self:SetDisplayItem()
+		if self.craftActive then
+			self:CloseCraftEditor()
+		else
+			self:SetDisplayItem()
+		end
 	end)
 
 	-- Tooltip anchor (directly after action buttons; old affix/custom/range UI removed)
@@ -745,25 +753,16 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 	end)
 	self.controls.craftIdolBtn:SetImage("Assets/idol/smallEterranIdol.png")
 	self.controls.craftIdolBtn.tooltipText = "Craft Idol..."
-	self.controls.craftIdolBtn.shown = function()
-		return self.displayItem == nil
-	end
 	self.controls.craftIdolAltarBtn = new("ButtonControl", {"LEFT", self.controls.craftIdolBtn, "RIGHT"}, 4, 0, 48, 48, "", function()
 		self:CraftItem(nil, "Idol Altar")
 	end)
 	self.controls.craftIdolAltarBtn:SetImage("Assets/idol/Idol_Altar_Pyramidal_Altar.png")
 	self.controls.craftIdolAltarBtn.tooltipText = "Craft Idol Altar..."
-	self.controls.craftIdolAltarBtn.shown = function()
-		return self.displayItem == nil
-	end
 	self.controls.craftBlessingBtn = new("ButtonControl", {"LEFT", self.controls.craftIdolAltarBtn, "RIGHT"}, 4, 0, 48, 48, "", function()
 		self:EditBlessings(nil)
 	end)
 	self.controls.craftBlessingBtn:SetImage("Assets/blessings/memory_of_light.png")
 	self.controls.craftBlessingBtn.tooltipText = "Craft Blessing..."
-	self.controls.craftBlessingBtn.shown = function()
-		return self.displayItem == nil
-	end
 
 	self:PopulateSlots()
 	self.lastSlot = lastVisibleSlot
@@ -955,7 +954,7 @@ function ItemsTabClass:Draw(viewPort, inputEvents)
 				-- Preview sits below the craft editor's Save/Cancel row
 				local ax, ay = self.controls.craftAnchor:GetPos()
 				tx = ax
-				ty = ay + 24 + (self.craftEditContentH or 0) + 8 + 28 + 12
+				ty = ay + 24 + (self.craftEditContentH or 0) + 12
 			else
 				tx, ty = self.controls.displayItemTooltipAnchor:GetPos()
 			end
@@ -1031,7 +1030,7 @@ function ItemsTabClass:Draw(viewPort, inputEvents)
 		if self.craftActive and self.controls.craftAnchor then
 			local ax, ay = self.controls.craftAnchor:GetPos()
 			x = ax
-			y = ay + 24 + (self.craftEditContentH or 0) + 8 + 28 + 12
+			y = ay + 24 + (self.craftEditContentH or 0) + 12
 		else
 			x, y = self.controls.displayItemTooltipAnchor:GetPos()
 		end
@@ -1207,6 +1206,12 @@ end
 
 -- Adds the current display item to the build's item list
 function ItemsTabClass:AddDisplayItem(noAutoEquip)
+	-- If the inline craft editor is active, commit craftState to the item
+	-- first. CraftSaveItem sets displayItem to the finalized item and clears
+	-- craftActive, so the rest of this function operates on the saved item.
+	if self.craftActive then
+		self:CraftSaveItem()
+	end
 	-- Idols are placed manually in the grid; skip auto-equip
 	if self.displayItem and self.displayItem.type and self.displayItem.type:find("Idol$") then
 		noAutoEquip = true
