@@ -607,6 +607,21 @@ for _, ver in ipairs(treeVersionList) do
 	if not verMods    then verMods    = readJsonFile("Data/ModItem.json")         end
 	if not verBases   then verBases   = readJsonFile("Data/Bases/bases.json")     end
 	if not verUniques then verUniques = readJsonFile("Data/Uniques/uniques.json") end
+	-- Merge set_<ver>.json entries (set-rarity items) into verUniques by uniqueID,
+	-- so import paths that look up data.uniques[uniqueID] still find them after
+	-- the unique-side duplicates are removed.
+	local verSets = readJsonFile("Data/Set/set_" .. ver .. ".json")
+		or readJsonFile("Data/Set/set_1_4.json")
+	if verSets and verUniques then
+		for _, s in pairs(verSets) do
+			if type(s) == "table" and s.uniqueID then
+				local idStr = tostring(s.uniqueID)
+				if not verUniques[idStr] and not verUniques[s.uniqueID] then
+					verUniques[idStr] = s
+				end
+			end
+		end
+	end
 	-- Ensure all affix entries have an affix name
 	if verMods then
 		for _, mod in pairs(verMods) do
