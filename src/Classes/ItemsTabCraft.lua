@@ -1289,12 +1289,10 @@ function ItemsTabClass:BuildCraftControls()
 	local self_ref = self
 	local controls = self.controls
 
-	-- Anchor: to the right of the itemList. Anchored to itemList (not
-	-- addDisplayItem) to avoid circular dependency, since addDisplayItem
-	-- repositions itself relative to craftAnchor when craft is active.
-	-- Offset 320 = original addDisplayItem (+20) + original craftAnchor (+300).
+	-- Anchor: directly below the Add to build / Edit / Cancel button row,
+	-- so the right column reads top-down: action buttons → craft editor → preview.
 	controls.craftAnchor = new("Control",
-		{ "TOPLEFT", self_ref.controls.itemList, "TOPRIGHT" }, 320, 8, LEFT_W, 0)
+		{ "TOPLEFT", controls.addDisplayItem, "BOTTOMLEFT" }, 0, 12, LEFT_W, 0)
 	controls.craftAnchor.shown = function() return self_ref.craftActive == true end
 
 	-- Panel title
