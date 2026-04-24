@@ -340,11 +340,12 @@ function BlessingsPopupClass:AdjustValue(delta)
 	local minV = m_floor(b.minVal + 0.5)
 	local maxV = m_ceil(b.maxVal)
 	st.rollVal = m_max(minV, m_min(maxV, (st.rollVal or maxV) + delta))
-	local frac = self:GetRollFrac(b, st.rollVal)
-	self.itemsTab:UpdateBlessingSlot(tl, b, frac)
+	-- Popup-local preview only; slot is committed via Add to All items.
 end
 
 function BlessingsPopupClass:EquipBlessing(tl, blessEntry, isGrand)
+	-- Popup-local selection only. The currently equipped slot item is not
+	-- modified until the user explicitly presses "Add to All items".
 	local st   = self.blessingState[tl]
 	local minV = m_floor(blessEntry.minVal + 0.5)
 	local maxV = m_ceil(blessEntry.maxVal)
@@ -355,8 +356,6 @@ function BlessingsPopupClass:EquipBlessing(tl, blessEntry, isGrand)
 	st.entry   = blessEntry
 	st.isGrand = isGrand
 	st.rollVal = rollVal
-	local frac = self:GetRollFrac(blessEntry, rollVal)
-	self.itemsTab:UpdateBlessingSlot(tl, blessEntry, frac)
 end
 
 function BlessingsPopupClass:GetFilteredCards()
