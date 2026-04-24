@@ -664,7 +664,7 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 	-- Paperdoll frame (always shown — "Crafting Items..." panel remains visible
 	-- even while editing/crafting an item so the user can see all crafted gear)
 	self.controls.paperdoll = new("PaperdollControl",
-		{"TOPLEFT", self.controls.craftDisplayItem, "BOTTOMLEFT"}, 0, 50, self)
+		{"TOPLEFT", self.controls.itemList, "BOTTOMLEFT"}, 0, 78, self)
 
 	-- Display item
 	self.displayItemTooltip = new("Tooltip")
@@ -948,16 +948,24 @@ function ItemsTabClass:Draw(viewPort, inputEvents)
 		local itemListX, _ = self.controls.itemList:GetPos()
 		local itemListW, _ = self.controls.itemList:GetSize()
 		local maxX = itemListX + itemListW
+		-- When craft active, move action buttons (Add to build / Edit / Cancel)
+		-- below the inline craft editor so the right-side preview stack reads
+		-- top-down: editor → action buttons → preview tooltip.
+		if self.craftActive and self.controls.craftAnchor and self.anchorDisplayItem then
+			local ax, ay = self.controls.craftAnchor:GetPos()
+			local ilX, ilY = self.controls.itemList:GetPos()
+			local ilW, _   = self.controls.itemList:GetSize()
+			local targetX = ax
+			local targetY = ay + 24 + (self.craftEditContentH or 0) + 8 + 28 + 8
+			self.anchorDisplayItem.x = targetX - (ilX + ilW)
+			self.anchorDisplayItem.y = targetY - ilY
+		elseif self.anchorDisplayItem then
+			self.anchorDisplayItem.x = 20
+			self.anchorDisplayItem.y = 0
+		end
 		if self.displayItem then
 			local ttW, ttH = self.displayItemTooltip:GetDynamicSize(viewPort)
-			local tx, ty
-			if self.craftActive and self.controls.craftAnchor then
-				local ax, ay = self.controls.craftAnchor:GetPos()
-				ty = ay + 24 + (self.craftEditContentH or 0) + 8 + 28 + 12
-				tx = ax
-			else
-				tx, ty = self.controls.displayItemTooltipAnchor:GetPos()
-			end
+			local tx, ty = self.controls.displayItemTooltipAnchor:GetPos()
 			maxY = m_max(maxY, ty + ttH + 4)
 			maxX = m_max(maxX, tx + ttW + 4)
 		end
@@ -1026,18 +1034,7 @@ function ItemsTabClass:Draw(viewPort, inputEvents)
 	end
 
 	if self.displayItem then
-		local x, y
-		if self.craftActive and self.controls.craftAnchor then
-			-- Place preview below the inline craft editor (under Save/Cancel)
-			local ax, ay = self.controls.craftAnchor:GetPos()
-			local EDIT_BASE_Y = 24
-			local saveBtnH    = 28
-			local gapAfter    = 12
-			y = ay + EDIT_BASE_Y + (self.craftEditContentH or 0) + 8 + saveBtnH + gapAfter
-			x = ax
-		else
-			x, y = self.controls.displayItemTooltipAnchor:GetPos()
-		end
+		local x, y = self.controls.displayItemTooltipAnchor:GetPos()
 		self.displayItemTooltip:Draw(x, y, nil, nil, viewPort)
 	end
 	if self.controls.scrollBarV:IsShown() then
