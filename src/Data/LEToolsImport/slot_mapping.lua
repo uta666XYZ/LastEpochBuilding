@@ -1,6 +1,6 @@
 -- LETools canRollOn slot code -> LEB base type name mapping
 -- Source: src/Data/LEToolsImport/slot_mapping.json (38 confirmed codes; 11, 24 reserved)
--- Used by CraftingPopup.lua to filter sat=2 (Champion/Personal) affixes by equipped slot.
+-- Used by ItemsTabCraft.lua to filter sat=2 (Champion/Personal) affixes by equipped slot.
 
 return {
 	codeToType = {
