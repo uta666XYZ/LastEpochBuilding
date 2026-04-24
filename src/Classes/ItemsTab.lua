@@ -2348,15 +2348,52 @@ function ItemsTabClass:AddItemTooltip(tooltip, item, slot, dbMode)
 				local col = equippedNames[name] and ORANGE or "^8"
 				tooltip:AddLine(13, col .. name)
 			end
+			-- Effective piece count for active-tier highlighting. Mirrors
+			-- CalcSetup.applySetBonuses: real equipped members of this set,
+			-- bumped to max tier when any equipped item has
+			-- "CountsAsEveryItemSet" (Legends Entwined) AND >=1 real piece.
+			-- Derive from equippedNames (already populated above with only
+			-- members of *this* setId that are equipped), so the count is
+			-- always consistent with the orange-highlighted member names.
+			local realCount = 0
+			for _, name in ipairs(members) do
+				if equippedNames[name] then realCount = realCount + 1 end
+			end
+			local countsAsEvery = false
+			for _, sl in pairs(self.slots or {}) do
+				local eq = sl.selItemId and self.items and self.items[sl.selItemId]
+				if eq and eq.modLines then
+					for _, ml in ipairs(eq.modLines) do
+						if ml.line and ml.line:find("every equipped item set") then
+							countsAsEvery = true
+							break
+						end
+					end
+				end
+				if countsAsEvery then break end
+			end
+			local effectiveCount = realCount
 			-- Bonuses
 			if bonus and next(bonus) then
 				tooltip:AddSeparator(6)
 				tooltip:AddLine(16, colorCodes.SET .. "SET BONUSES")
 				local keys = {}
-				for k in pairs(bonus) do t_insert(keys, k) end
+				local maxTier = 0
+				for k in pairs(bonus) do
+					t_insert(keys, k)
+					local n = tonumber(k)
+					if n and n > maxTier then maxTier = n end
+				end
+				if countsAsEvery and realCount >= 1 and maxTier > effectiveCount then
+					effectiveCount = maxTier
+				end
 				table.sort(keys, function(a, b) return tonumber(a) < tonumber(b) end)
 				for _, k in ipairs(keys) do
-					tooltip:AddLine(13, "^8" .. k .. " set: ^7" .. tostring(bonus[k]))
+					local tier = tonumber(k) or 0
+					local active = tier <= effectiveCount
+					local tierCol = active and ORANGE or "^8"
+					local textCol = active and ORANGE or "^7"
+					tooltip:AddLine(13, tierCol .. k .. " set: " .. textCol .. tostring(bonus[k]))
 				end
 			end
 			tooltip:AddSeparator(10)

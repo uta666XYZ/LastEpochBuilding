@@ -84,12 +84,42 @@ local function applySetBonuses(env, items, ver)
 		end
 	end
 
+	-- Legends Entwined "Counts as a part of every equipped item set":
+	-- interpretation B — for each set that has >= 1 real equipped piece, bump
+	-- piece count to the maximum tier so ALL tier bonuses (2-Set, 3-Set, ...)
+	-- fire. Sets with 0 real pieces are left alone (Legends is "a part of"
+	-- every set, but cannot single-handedly activate sets the player does not
+	-- otherwise carry).
+	local countsAsEvery = env.itemModDB:Flag(nil, "CountsAsEveryItemSet")
+	ConPrintf("[SET-BONUS] countsAsEvery=%s", tostring(countsAsEvery))
+	for setId, count in pairs(pieceCount) do
+		local info = setEntry[setId]
+		ConPrintf("[SET-BONUS] pre  setId=%s name=%q realCount=%d", tostring(setId), tostring(info and info.name), count)
+	end
+	if countsAsEvery then
+		for setId, _ in pairs(pieceCount) do
+			local info = setEntry[setId]
+			if info and info.bonus then
+				local maxTier = 0
+				for k, _ in pairs(info.bonus) do
+					local n = tonumber(k)
+					if n and n > maxTier then maxTier = n end
+				end
+				if maxTier > pieceCount[setId] then
+					pieceCount[setId] = maxTier
+				end
+			end
+		end
+	end
+
 	-- Second pass: for each setId with >= 2 pieces, parse bonus tiers 2..count.
 	-- Note: JSON loader converts numeric-string keys ("2"/"3") to numbers, so
 	-- look up by both string and number form.
+	local completeSetCount = 0
 	for setId, count in pairs(pieceCount) do
 		local info = setEntry[setId]
 		if info and info.bonus then
+			local fired = false
 			for tier = 2, count do
 				local rawLine = info.bonus[tostring(tier)] or info.bonus[tier]
 				if rawLine then
@@ -102,11 +132,20 @@ local function applySetBonuses(env, items, ver)
 							modLib.setSource(mod, source)
 							env.itemModDB:AddMod(mod)
 						end
+						fired = true
 					end
 				end
 			end
+			if fired then completeSetCount = completeSetCount + 1 end
+			ConPrintf("[SET-BONUS] fire setId=%s name=%q tiersApplied=2..%d fired=%s",
+				tostring(setId), tostring(info.name), count, tostring(fired))
 		end
 	end
+
+	-- Publish CompleteSetCount multiplier so "per Complete Set" mods scale at
+	-- ModDB query time (e.g., Legends Entwined's +N to All Attributes).
+	env.itemModDB.multipliers["CompleteSetCount"] = completeSetCount
+	ConPrintf("[SET-BONUS] CompleteSetCount=%d", completeSetCount)
 end
 
 -- Initialise modifier database with stats and conditions common to all actors
