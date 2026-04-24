@@ -908,6 +908,11 @@ function ItemClass:Craft()
 					self.nameSuffix = " " .. mod.affix
 				end
 				local modLinesList = itemLib.modLinesForSlot(mod, slotKey)
+				-- slotOverrides store LETools display values already post-affixEffectModifier
+				-- (e.g. body_armor (15-18)% = default (10-12)% × 1.5 for Body Armor aem+0.5,
+				-- shield (6-11)% = default (5-9)% × 1.17 for Shield aem+0.17). When the
+				-- override is used, skip aem scaling in modScalar to avoid double-applying.
+				local usingSlotOverride = slotKey and mod.slotOverrides and mod.slotOverrides[slotKey] ~= nil
 				for lineIdx, line in ipairs(modLinesList) do
 					-- Line [2+] handling (2026-04-25 SCOPE FIX — see cf2011d21 for
 					-- the original over-broad gate). Only sealed-corrupted affixes
@@ -931,6 +936,13 @@ function ItemClass:Craft()
 					local modScalar = 1 + self.base.affixEffectModifier
 					if mod.standardAffixEffectModifier then
 						modScalar = modScalar - mod.standardAffixEffectModifier
+					end
+					if usingSlotOverride then
+						-- override values are already post-aem; don't re-scale
+						modScalar = 1
+						if mod.standardAffixEffectModifier then
+							modScalar = modScalar - mod.standardAffixEffectModifier
+						end
 					end
 					-- Omen Idol affixEffectModifier bypass (DO NOT REMOVE).
 					-- Omen Idol bases carry affixEffectModifier = -0.33, but
