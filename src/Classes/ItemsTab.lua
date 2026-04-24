@@ -635,8 +635,15 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 			return
 		end
 		item.uniqueID = "blessing:" .. tl  -- prevent nil==nil match with regular items in ImportItem
-		item.id = nil  -- let AddItem assign a positive ID so blessing appears in All Items
-		self:AddItem(item, true)  -- noAutoEquip=true, also calls BuildModList
+		-- Assign a unique positive ID but DO NOT add to itemOrderList.
+		-- Ephemeral blessings must not appear in the All items list; only
+		-- BlessingsPopup:AddSelectedToAllItems promotes them there.
+		item.id = 1
+		while self.items[item.id] do
+			item.id = item.id + 1
+		end
+		self.items[item.id] = item
+		item:BuildModList()
 		slot:SetSelItemId(item.id)
 		self.build.buildFlag = true
 	end
