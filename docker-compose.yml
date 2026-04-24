@@ -12,4 +12,4 @@ services:
       - "9966:9966"
     working_dir: /workdir
     volumes:
-      - ./:/workdir:ro
+      - ./:/workdir:rw

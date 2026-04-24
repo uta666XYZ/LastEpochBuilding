@@ -672,6 +672,7 @@ Implicits: 2
 {affixType:Prefix}+(3) Heretical Idol Limit
 {affixType:Suffix}(3)% Increased Health per Equipped Huge Idol
 {range:134}{affixType:Suffix}{rounding:Integer}+(9-10) Mana per Idol in a Refracted Slot
+Corrupted
 			<ModRange range="127.5" id="1"/>
 			<ModRange range="127.5" id="2"/>
 			<ModRange range="186" id="3"/>
