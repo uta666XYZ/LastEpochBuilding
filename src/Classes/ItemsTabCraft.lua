@@ -33,6 +33,11 @@ local hasRange            = H.hasRange
 local extractMinMax       = H.extractMinMax
 local computeModValue     = H.computeModValue
 local formatModValue      = H.formatModValue
+local wrapForLabel        = H.wrapForLabel
+
+local t_insert = table.insert
+local pairs = pairs
+local ipairs = ipairs
 
 local SLOT_ORDER = { "prefix1", "prefix2", "suffix1", "suffix2", "sealed", "primordial" }
 local ALL_SLOTS  = { "prefix1", "prefix2", "suffix1", "suffix2", "sealed", "primordial", "corrupted" }
@@ -270,6 +275,39 @@ function ItemsTabClass:CraftRecalcLayout()
 				end
 			end
 			y = y + GAP
+		end
+	end
+
+	-- Set info block (members + bonuses) for set items OR for Reforged crafted
+	-- basic items whose craftEditItem.setInfo has been populated.
+	self.craftEditY.setInfoY = 0
+	local layoutSetId, layoutBonus
+	if isSetItem then
+		local sd = self.craftEditBaseEntry and self.craftEditBaseEntry.setData
+		layoutSetId = sd and sd.set and sd.set.setId
+		layoutBonus = sd and sd.set and sd.set.bonus
+	elseif self.craftEditItem and self.craftEditItem.setInfo and self.craftEditItem.setInfo.setId ~= nil then
+		layoutSetId = self.craftEditItem.setInfo.setId
+		layoutBonus = self.craftEditItem.setInfo.bonus
+	end
+	if layoutSetId ~= nil then
+		self.craftEditY.setInfoY = y
+		y = y + LINE_H + GAP  -- "ITEM SET" header
+		y = y + LINE_H        -- set name line
+		local memberCount = 0
+		for _, si in pairs(self.craftSetItems or {}) do
+			if si.set and si.set.setId == layoutSetId then memberCount = memberCount + 1 end
+		end
+		y = y + memberCount * LINE_H + GAP
+		if layoutBonus and next(layoutBonus) then
+			y = y + LINE_H + GAP  -- "SET BONUSES" header
+			local bonusW = LEFT_W - LP_LINE_X - 4
+			local WRAP_H = 15
+			for k, v in pairs(layoutBonus) do
+				local full = "^8" .. k .. " set: ^7" .. tostring(v)
+				local _, n = H.wrapForLabel(full, bonusW, 13)
+				y = y + (n > 0 and n or 1) * WRAP_H + 2
+			end
 		end
 	end
 
@@ -1140,6 +1178,113 @@ end
 -- =============================================================================
 -- Inline UI: build the craft editor controls (call once from BuildItemsControls)
 -- =============================================================================
+-- =============================================================================
+-- Set info panel (item set members + bonuses) — drawn under the inline editor
+-- when editing a Set base or a Reforged crafted item with setInfo populated.
+-- =============================================================================
+function ItemsTabClass:CraftDrawSetInfo(viewPort)
+	if not self.craftActive or not self.craftEditItem then return end
+	local entry = self.craftEditBaseEntry
+	local set
+	if entry and entry.category == "set" and entry.setData and entry.setData.set then
+		set = entry.setData.set
+	elseif self.craftEditItem.setInfo and self.craftEditItem.setInfo.setId ~= nil then
+		set = {
+			setId = self.craftEditItem.setInfo.setId,
+			name  = self.craftEditItem.setInfo.name,
+			bonus = self.craftEditItem.setInfo.bonus,
+		}
+	end
+	if not set then return end
+
+	local anchor = self.controls.craftAnchor
+	if not anchor then return end
+	local px, py = anchor:GetPos()
+	px = m_floor(px); py = m_floor(py)
+	-- BuildCraftControls uses EDIT_BASE_Y = 24 baseline below the title
+	local baseY = 24
+	local y = self.craftEditY and self.craftEditY.setInfoY
+	if not y or y <= 0 then return end
+	y = baseY + y
+
+	local setId  = set.setId
+	local LINE_H = 18
+	local GAP    = 4
+
+	-- Build set of member names that are currently equipped (by slot selItemId)
+	-- or currently being edited. Strip trailing " Reforged" so Reforged crafted
+	-- items match the bare member name in the member list.
+	local equippedNames = {}
+	local function markName(s)
+		if not s or s == "" then return end
+		equippedNames[s] = true
+		local stripped = s:gsub(" Reforged$", "")
+		if stripped ~= s then equippedNames[stripped] = true end
+	end
+	for _, slot in pairs(self.slots or {}) do
+		local eqItem = slot.selItemId and self.items and self.items[slot.selItemId]
+		if eqItem and eqItem.setInfo and eqItem.setInfo.setId == setId then
+			markName(eqItem.setInfo.name)
+			markName(eqItem.title)
+		elseif eqItem and eqItem.rarity == "SET" and eqItem.title then
+			markName(eqItem.title)
+		end
+	end
+	markName(self.craftEditItem.title)
+
+	SetDrawColor(1, 1, 1)
+	DrawString(px + LP_LABEL_X, py + y, "LEFT", 14, "VAR", colorCodes.SET .. "ITEM SET")
+	y = y + LINE_H + GAP
+	DrawString(px + LP_LINE_X, py + y, "LEFT", 13, "VAR", "^7" .. (set.name or ""))
+	y = y + LINE_H
+
+	local members = {}
+	for _, si in pairs(self.craftSetItems or {}) do
+		if si.set and si.set.setId == setId then
+			local typeName = ""
+			for tname, bases in pairs(self.build.data.itemBaseLists or {}) do
+				for _, bEntry in ipairs(bases) do
+					if bEntry.base.baseTypeID == si.baseTypeID and bEntry.base.subTypeID == si.subTypeID then
+						typeName = bEntry.base.type or tname
+						break
+					end
+				end
+				if typeName ~= "" then break end
+			end
+			t_insert(members, { name = si.name, typeName = typeName })
+		end
+	end
+	table.sort(members, function(a, b) return a.name < b.name end)
+	local ORANGE = "^xFF9933"
+	for _, m in ipairs(members) do
+		local col = equippedNames[m.name] and ORANGE or "^8"
+		DrawString(px + LP_LINE_X + 8, py + y, "LEFT", 12, "VAR",
+			col .. m.name .. (m.typeName ~= "" and ("  " .. m.typeName) or ""))
+		y = y + LINE_H
+	end
+	y = y + GAP
+
+	local bonus = set.bonus
+	if bonus and next(bonus) then
+		DrawString(px + LP_LABEL_X, py + y, "LEFT", 14, "VAR", colorCodes.SET .. "SET BONUSES")
+		y = y + LINE_H + GAP
+		local bonusKeys = {}
+		for k in pairs(bonus) do t_insert(bonusKeys, k) end
+		table.sort(bonusKeys, function(a, b) return tonumber(a) < tonumber(b) end)
+		local bonusW = LEFT_W - LP_LINE_X - 4
+		local WRAP_H = 15
+		for _, k in ipairs(bonusKeys) do
+			local full = "^8" .. k .. " set: ^7" .. tostring(bonus[k])
+			local wrapped = wrapForLabel(full, bonusW, 13)
+			for line in (wrapped .. "\n"):gmatch("([^\n]*)\n") do
+				DrawString(px + LP_LINE_X, py + y, "LEFT", 13, "VAR", line)
+				y = y + WRAP_H
+			end
+			y = y + 2
+		end
+	end
+end
+
 function ItemsTabClass:BuildCraftControls()
 	local self_ref = self
 	local controls = self.controls
