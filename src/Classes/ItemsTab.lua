@@ -661,17 +661,19 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 		return self.displayItem == nil
 	end
 
-	-- Paperdoll frame (shown only when no display item; anchor updated below)
+	-- Paperdoll frame (always shown — "Crafting Items..." panel remains visible
+	-- even while editing/crafting an item so the user can see all crafted gear)
 	self.controls.paperdoll = new("PaperdollControl",
-		{"TOPLEFT", self.controls.craftDisplayItem, "BOTTOMLEFT"}, 0, 50, self)
-	self.controls.paperdoll.shown = function()
-		return self.displayItem == nil
-	end
+		{"TOPLEFT", self.controls.itemList, "BOTTOMLEFT"}, 0, 78, self)
 
 	-- Display item
 	self.displayItemTooltip = new("Tooltip")
 	self.displayItemTooltip.maxWidth = 458
-	self.anchorDisplayItem = new("Control", {"TOPLEFT",self.controls.itemList,"TOPRIGHT"}, 20, 0, 0, 0)
+	-- Anchor buttons at the same vertical level as the itemList's Sort /
+	-- Delete Unused / Delete All / Delete row (drawn at itemList TOPRIGHT
+	-- offset (0, -2) with height 18). Placing at (20, -22) aligns the action
+	-- button row with those utility buttons.
+	self.anchorDisplayItem = new("Control", {"TOPLEFT",self.controls.itemList,"TOPRIGHT"}, 20, -22, 0, 0)
 	self.anchorDisplayItem.shown = function()
 		return self.displayItem ~= nil
 	end
@@ -689,7 +691,11 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 		end
 	end)
 	self.controls.removeDisplayItem = new("ButtonControl", {"LEFT",self.controls.editDisplayItem,"RIGHT"}, 8, 0, 60, 20, "Cancel", function()
-		self:SetDisplayItem()
+		if self.craftActive then
+			self:CloseCraftEditor()
+		else
+			self:SetDisplayItem()
+		end
 	end)
 
 	-- Tooltip anchor (directly after action buttons; old affix/custom/range UI removed)
@@ -700,6 +706,7 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 
 	-- Scroll bars
 	self.controls.scrollBarV = new("ScrollBarControl", nil, 0, 0, 18, 0, 100, "VERTICAL", true)
+	self.controls.scrollBarH = new("ScrollBarControl", nil, 0, 0, 0, 18, 100, "HORIZONTAL", true)
 
 	-- Initialise drag target lists
 	t_insert(self.controls.itemList.dragTargetList, build.controls.mainSkillMinion)
@@ -746,25 +753,16 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 	end)
 	self.controls.craftIdolBtn:SetImage("Assets/idol/smallEterranIdol.png")
 	self.controls.craftIdolBtn.tooltipText = "Craft Idol..."
-	self.controls.craftIdolBtn.shown = function()
-		return self.displayItem == nil
-	end
 	self.controls.craftIdolAltarBtn = new("ButtonControl", {"LEFT", self.controls.craftIdolBtn, "RIGHT"}, 4, 0, 48, 48, "", function()
 		self:CraftItem(nil, "Idol Altar")
 	end)
 	self.controls.craftIdolAltarBtn:SetImage("Assets/idol/Idol_Altar_Pyramidal_Altar.png")
 	self.controls.craftIdolAltarBtn.tooltipText = "Craft Idol Altar..."
-	self.controls.craftIdolAltarBtn.shown = function()
-		return self.displayItem == nil
-	end
 	self.controls.craftBlessingBtn = new("ButtonControl", {"LEFT", self.controls.craftIdolAltarBtn, "RIGHT"}, 4, 0, 48, 48, "", function()
 		self:EditBlessings(nil)
 	end)
 	self.controls.craftBlessingBtn:SetImage("Assets/blessings/memory_of_light.png")
 	self.controls.craftBlessingBtn.tooltipText = "Craft Blessing..."
-	self.controls.craftBlessingBtn.shown = function()
-		return self.displayItem == nil
-	end
 
 	self:PopulateSlots()
 	self.lastSlot = lastVisibleSlot
@@ -938,20 +936,44 @@ function ItemsTabClass:Draw(viewPort, inputEvents)
 	self.controls.scrollBarV.height = viewPort.height
 	self.controls.scrollBarV.x = viewPort.x + viewPort.width - 18
 	self.controls.scrollBarV.y = viewPort.y
+	self.controls.scrollBarH.width = viewPort.width
+	self.controls.scrollBarH.x = viewPort.x
+	self.controls.scrollBarH.y = viewPort.y + viewPort.height - 18
 	do
 		local blessGridY = select(2, self.controls.blessingGrid:GetPos())
 		local _, blessGridH = self.controls.blessingGrid:GetSize()
 		local maxY = m_max(select(2, self.controls.idolGridPanelEnd:GetPos()) + 24, blessGridY + blessGridH + 8)
+		-- Track rightmost content edge for horizontal scrollbar
+		local itemListX, _ = self.controls.itemList:GetPos()
+		local itemListW, _ = self.controls.itemList:GetSize()
+		local maxX = itemListX + itemListW
 		if self.displayItem then
-			local x, y = self.controls.displayItemTooltipAnchor:GetPos()
 			local ttW, ttH = self.displayItemTooltip:GetDynamicSize(viewPort)
-			maxY = m_max(maxY, y + ttH + 4)
+			local tx, ty
+			if self.craftActive and self.controls.craftAnchor then
+				-- Preview sits below the craft editor's Save/Cancel row
+				local ax, ay = self.controls.craftAnchor:GetPos()
+				tx = ax
+				ty = ay + 24 + (self.craftEditContentH or 0) + 12
+			else
+				tx, ty = self.controls.displayItemTooltipAnchor:GetPos()
+			end
+			maxY = m_max(maxY, ty + ttH + 4)
+			maxX = m_max(maxX, tx + ttW + 4)
+		end
+		if self.craftActive and self.controls.craftAnchor then
+			local ax, _ = self.controls.craftAnchor:GetPos()
+			-- LEFT_W (320) is the inline editor panel width
+			maxX = m_max(maxX, ax + 320 + 4)
 		end
 		local contentHeight = maxY - self.y
 		self.controls.scrollBarV:SetContentDimension(contentHeight, viewPort.height)
+		local contentWidth = maxX - self.x
+		self.controls.scrollBarH:SetContentDimension(contentWidth, viewPort.width - 18)
 		self.maxY = viewPort.y + viewPort.height
 	end
 	self.y = self.y - self.controls.scrollBarV.offset
+	self.x = self.x - self.controls.scrollBarH.offset
 
 	for _, event in ipairs(inputEvents) do
 		if event.type == "KeyDown" then
@@ -998,14 +1020,27 @@ function ItemsTabClass:Draw(viewPort, inputEvents)
 	end
 	self.controls.setSelect:SetList(newItemList)
 
-	if self.displayItem then
-		local x, y = self.controls.displayItemTooltipAnchor:GetPos()
-		self.displayItemTooltip:Draw(x, y, nil, nil, viewPort)
+	self:DrawControls(viewPort)
+	if self.CraftDrawSetInfo then
+		self:CraftDrawSetInfo(viewPort)
 	end
 
-	self:DrawControls(viewPort)
+	if self.displayItem then
+		local x, y
+		if self.craftActive and self.controls.craftAnchor then
+			local ax, ay = self.controls.craftAnchor:GetPos()
+			x = ax
+			y = ay + 24 + (self.craftEditContentH or 0) + 12
+		else
+			x, y = self.controls.displayItemTooltipAnchor:GetPos()
+		end
+		self.displayItemTooltip:Draw(x, y, nil, nil, viewPort)
+	end
 	if self.controls.scrollBarV:IsShown() then
 		self.controls.scrollBarV:Draw(viewPort)
+	end
+	if self.controls.scrollBarH:IsShown() then
+		self.controls.scrollBarH:Draw(viewPort)
 	end
 
 	self.controls.specSelect:SetList(self.build.treeTab:GetSpecList())
@@ -1171,6 +1206,12 @@ end
 
 -- Adds the current display item to the build's item list
 function ItemsTabClass:AddDisplayItem(noAutoEquip)
+	-- If the inline craft editor is active, commit craftState to the item
+	-- first. CraftSaveItem sets displayItem to the finalized item and clears
+	-- craftActive, so the rest of this function operates on the saved item.
+	if self.craftActive then
+		self:CraftSaveItem()
+	end
 	-- Idols are placed manually in the grid; skip auto-equip
 	if self.displayItem and self.displayItem.type and self.displayItem.type:find("Idol$") then
 		noAutoEquip = true
@@ -1350,7 +1391,7 @@ function ItemsTabClass:SetDisplayItem(item)
 		self:UpdateDisplayItemTooltip()
 		self.snapHScroll = "RIGHT"
 
-		-- Old affix/custom/range UI removed; crafting is handled by CraftingPopup
+		-- Old affix/custom/range UI removed; crafting handled by inline craft editor
 	else
 		self.snapHScroll = "LEFT"
 	end
@@ -1362,7 +1403,7 @@ function ItemsTabClass:UpdateDisplayItemTooltip()
 	self.displayItemTooltip.center = false
 end
 
--- Old affix/custom/range UI removed; crafting handled by CraftingPopup
+-- Old affix/custom/range UI removed; crafting handled by inline craft editor
 function ItemsTabClass:UpdateAffixControls() end
 function ItemsTabClass:UpdateAffixControl() end
 function ItemsTabClass:UpdateCustomControls() end
@@ -1541,8 +1582,8 @@ function ItemsTabClass:CraftItem(existingItem, slotName)
 end
 
 -- Stage 1 modal: Rarity + Search + Type + Base selectors. On Create, closes
--- this popup and opens the CraftingPopup (Stage 2) with the chosen base
--- pre-applied via its 4th constructor argument (presetEntry).
+-- this modal and opens the inline craft editor (Stage 2) with the chosen
+-- base pre-applied via OpenCraftEditor's presetEntry argument.
 function ItemsTabClass:OpenCraftItemSelector(slotName)
 	local controls = { }
 	local rarityDDList = {
@@ -2246,7 +2287,7 @@ function ItemsTabClass:AddItemTooltip(tooltip, item, slot, dbMode)
 		end
 	end
 
-	-- Item Set / Set Bonuses panel (mirrors CraftingPopup DrawSetInfo).
+	-- Item Set / Set Bonuses panel (mirrors ItemsTabCraft CraftDrawSetInfo).
 	-- Trigger when the item is a real SET, or when setInfo is attached
 	-- (e.g. a freshly crafted Reforged basic item), or when the title matches
 	-- a known set member (covers saved-and-reloaded items where setInfo was
