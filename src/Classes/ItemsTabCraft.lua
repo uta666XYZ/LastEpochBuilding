@@ -308,7 +308,7 @@ function ItemsTabClass:CraftRecalcLayout()
 	self.craftEditY.uniqueRows    = {}
 
 	local implicitCount = 0
-	if isUniqueItem and self.craftEditItem then
+	if self.craftEditItem then
 		for i, _ in ipairs(self.craftEditItem.implicitModLines or {}) do
 			if self.craftImplicitRanges[i] then implicitCount = implicitCount + 1 end
 		end
@@ -367,16 +367,24 @@ function ItemsTabClass:CraftRecalcLayout()
 		end
 	end
 
-	-- Unique-mod sliders below the corrupted section (for unique items only).
-	if isUniqueItem and self.craftEditBaseEntry and self.craftEditBaseEntry.uniqueData then
+	-- Unique / set mod sliders below the corrupted section.
+	local modSrc
+	if self.craftEditBaseEntry then
+		if self.craftEditBaseEntry.uniqueData then
+			modSrc = self.craftEditBaseEntry.uniqueData.mods
+		elseif self.craftEditBaseEntry.setData then
+			modSrc = self.craftEditBaseEntry.setData.mods
+		end
+	end
+	if modSrc then
 		local uniqueCount = 0
-		for i, _ in ipairs(self.craftEditBaseEntry.uniqueData.mods or {}) do
+		for i, _ in ipairs(modSrc) do
 			if self.craftUniqueRanges[i] then uniqueCount = uniqueCount + 1 end
 		end
 		if uniqueCount > 0 then
 			self.craftEditY.uniqueLabel = y
 			y = y + LINE_H + GAP
-			for i, _ in ipairs(self.craftEditBaseEntry.uniqueData.mods) do
+			for i, _ in ipairs(modSrc) do
 				if self.craftUniqueRanges[i] then
 					self.craftEditY.uniqueRows[i] = { textY = y, sliderY = y + LINE_H }
 					y = y + IMPL_ROW_H + GAP
@@ -1794,6 +1802,10 @@ function ItemsTabClass:BuildCraftControls()
 		function() return EDIT_BASE_Y + (self_ref.craftEditY.uniqueLabel or 0) end,
 		0, 14, "")
 	controls.craftUniqueLabel.label = function()
+		local be = self_ref.craftEditBaseEntry
+		if be and be.category == "set" then
+			return colorCodes.SET .. "SET MODS"
+		end
 		return colorCodes.UNIQUE .. "UNIQUE MODS"
 	end
 	controls.craftUniqueLabel.shown = function()
