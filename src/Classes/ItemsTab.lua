@@ -1353,7 +1353,7 @@ function ItemsTabClass:SetDisplayItem(item)
 		self:UpdateDisplayItemTooltip()
 		self.snapHScroll = "RIGHT"
 
-		-- Old affix/custom/range UI removed; crafting is handled by CraftingPopup
+		-- Old affix/custom/range UI removed; crafting handled by inline craft editor
 	else
 		self.snapHScroll = "LEFT"
 	end
@@ -1365,7 +1365,7 @@ function ItemsTabClass:UpdateDisplayItemTooltip()
 	self.displayItemTooltip.center = false
 end
 
--- Old affix/custom/range UI removed; crafting handled by CraftingPopup
+-- Old affix/custom/range UI removed; crafting handled by inline craft editor
 function ItemsTabClass:UpdateAffixControls() end
 function ItemsTabClass:UpdateAffixControl() end
 function ItemsTabClass:UpdateCustomControls() end
@@ -1544,8 +1544,8 @@ function ItemsTabClass:CraftItem(existingItem, slotName)
 end
 
 -- Stage 1 modal: Rarity + Search + Type + Base selectors. On Create, closes
--- this popup and opens the CraftingPopup (Stage 2) with the chosen base
--- pre-applied via its 4th constructor argument (presetEntry).
+-- this modal and opens the inline craft editor (Stage 2) with the chosen
+-- base pre-applied via OpenCraftEditor's presetEntry argument.
 function ItemsTabClass:OpenCraftItemSelector(slotName)
 	local controls = { }
 	local rarityDDList = {
@@ -2249,7 +2249,7 @@ function ItemsTabClass:AddItemTooltip(tooltip, item, slot, dbMode)
 		end
 	end
 
-	-- Item Set / Set Bonuses panel (mirrors CraftingPopup DrawSetInfo).
+	-- Item Set / Set Bonuses panel (mirrors ItemsTabCraft CraftDrawSetInfo).
 	-- Trigger when the item is a real SET, or when setInfo is attached
 	-- (e.g. a freshly crafted Reforged basic item), or when the title matches
 	-- a known set member (covers saved-and-reloaded items where setInfo was

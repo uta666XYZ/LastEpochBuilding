@@ -1,8 +1,8 @@
 -- Last Epoch Building
 --
 -- Module: CraftingPopup Helpers
--- Pure constants and helper functions used by CraftingPopup.lua and its
--- companion modules (CraftingPopupDraw / CraftingPopupItem).
+-- Pure constants and helper functions used by ItemsTab.lua (Stage 1 craft
+-- modal) and ItemsTabCraft.lua (Stage 2 inline editor).
 -- No class state. Loaded via LoadModule and returned as a table.
 --
 local t_insert = table.insert
