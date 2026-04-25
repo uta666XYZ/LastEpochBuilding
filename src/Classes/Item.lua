@@ -50,6 +50,21 @@ end
 
 local influenceInfo = itemLib.influenceInfo
 
+-- Cache of set data, keyed by version. Used by ParseRaw's Reforged Set Item
+-- detection so saved/imported items recognise their set membership without
+-- needing setInfo to round-trip through raw text. Mirrors the cache pattern
+-- used in CalcSetup.lua / ItemsTab.lua.
+local itemSetDataCache = {}
+local function loadItemSetData(ver)
+	ver = ver or "1_4"
+	if itemSetDataCache[ver] == nil then
+		itemSetDataCache[ver] = readJsonFile("Data/Set/set_" .. ver .. ".json")
+			or readJsonFile("Data/Set/set_1_4.json")
+			or false
+	end
+	return itemSetDataCache[ver] or nil
+end
+
 local ItemClass = newClass("Item", function(self, raw, rarity, highQuality)
 	if raw then
 		self:ParseRaw(sanitiseText(raw), rarity, highQuality)
@@ -635,6 +650,47 @@ function ItemClass:ParseRaw(raw, rarity, highQuality)
 						if not self.affixes[list[i].modId] then
 							list[i].modId = "None"
 						end
+					end
+				end
+			end
+		end
+	end
+	-- Reforged Set Item detection (specialAffixType == 3). When a basic / rare /
+	-- exalted item carries a Reforged Set Affix, treat it as a Set piece so
+	-- CalcSetup applies the set bonus and tooltips render the set linkage.
+	-- Required because setInfo doesn't round-trip through raw text (XML
+	-- save/load, LETools/Maxroll import) — the Reforged identity must be
+	-- re-derived from the affix data each time ParseRaw runs.
+	if self.crafted and self.base and self.affixes then
+		local reforgedMod
+		for _, list in ipairs({ self.prefixes or {}, self.suffixes or {} }) do
+			for _, affix in ipairs(list) do
+				local mod = affix and affix.modId and self.affixes[affix.modId]
+				if mod and mod.specialAffixType == 3 and mod.affix
+				   and #mod.affix > 9 and mod.affix:sub(-9) == " Reforged" then
+					reforgedMod = mod
+					break
+				end
+			end
+			if reforgedMod then break end
+		end
+		if reforgedMod then
+			local bareName = reforgedMod.affix:sub(1, -10)
+			local setData = loadItemSetData()
+			if setData then
+				for _, e in pairs(setData) do
+					if type(e) == "table" and e.set and e.name == bareName then
+						self.rarity = "SET"
+						self.title  = reforgedMod.affix
+						self.name   = reforgedMod.affix
+						self.namePrefix = ""
+						self.nameSuffix = ""
+						self.setInfo = {
+							setId = e.set.setId,
+							name  = e.set.name,
+							bonus = e.set.bonus,
+						}
+						break
 					end
 				end
 			end
