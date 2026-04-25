@@ -7052,7 +7052,6 @@ c["25% less Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="
 c["25% more your maximum mana restored when Great Harvest hits a rare or boss enemy"]={{[1]={[1]={skillName="Harvest",type="SkillName"},flags=8388608,keywordFlags=0,name="Mana",type="MORE",value=25}}," your  restored when Great  s a rare or boss enemy "}
 c["25% of Armor Mitigation also applies to Damage over Time"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=25}},"  Mitigation also applies to Damage over Time "}
 c["25% of Critical Strike Multiplier applies to Potions"]={{[1]={flags=0,keywordFlags=0,name="CritMultiplier",type="BASE",value=25}},"  applies to Potions "}
-c["25% of Health Regen also applies to Ward"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="BASE",value=25}},"  also applies to Ward "}
 c["25% of Necrotic Damage Taken as Physical"]={{[1]={flags=0,keywordFlags=1,name="NecroticDamageTaken",type="BASE",value=25}},"  as  "}
 c["25% of Poison Damage Taken as Physical"]={{[1]={flags=0,keywordFlags=1,name="PoisonDamageTaken",type="BASE",value=25}},"  as  "}
 c["25% of Void Damage Taken as Physical"]={{[1]={flags=0,keywordFlags=1,name="VoidDamageTaken",type="BASE",value=25}},"  as  "}
