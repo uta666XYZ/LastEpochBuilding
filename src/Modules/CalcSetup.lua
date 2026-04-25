@@ -28,27 +28,81 @@ local function loadSetData(ver)
 	return setDataCache[ver] or nil
 end
 
+-- Marker text for the wildcard set membership mod (Legends Entwined).
+-- Items carrying this line count as a piece of every set already represented
+-- in the equipment, and also unlock the "+X per Complete Set" scaling.
+local WILDCARD_SET_MOD = "Counts as a part of every equipped item set"
+
+-- Returns true if any modLine on the item contains the wildcard marker.
+local function itemHasWildcardSetMod(item)
+	if not item then return false end
+	local function scan(modLines)
+		if not modLines then return false end
+		for _, ml in ipairs(modLines) do
+			if ml.line and ml.line:find(WILDCARD_SET_MOD, 1, true) then
+				return true
+			end
+		end
+		return false
+	end
+	return scan(item.explicitModLines)
+		or scan(item.implicitModLines)
+		or scan(item.enchantModLines)
+end
+
 -- Apply N-piece set bonuses: count equipped SET pieces per setId, then parse
 -- and add every bonus tier 2..N (so 3 pieces = 2-piece AND 3-piece bonus).
 -- Also matches "Reforged Set" items (basic items with item.setInfo.setId set by
--- the crafting popup).
+-- the crafting popup). Items with the WILDCARD_SET_MOD (e.g. Legends Entwined)
+-- count as a piece of every already-present set, and gate "per Complete Set"
+-- scaling based on how many sets are fully equipped (with the wildcard).
 local function applySetBonuses(env, items, ver)
 	local setData = loadSetData(ver)
 	if not setData then return end
 
+	-- Build setSize map: setId -> total number of pieces in that set.
+	-- Used later to decide which sets are "Complete".
+	local setSize = {}
+	for _, e in pairs(setData) do
+		if e.set and e.set.setId ~= nil then
+			setSize[e.set.setId] = (setSize[e.set.setId] or 0) + 1
+		end
+	end
+
 	-- First pass: resolve each equipped SET / Reforged piece to its setId.
-	local pieceCount = {} -- setId -> count
-	local setEntry   = {} -- setId -> a sample set entry (for bonus lookup)
+	-- Also collect any wildcard items for later passes.
+	local pieceCount    = {} -- setId -> count
+	local setEntry      = {} -- setId -> a sample set entry (for bonus lookup)
+	local wildcardItems = {} -- list of items with WILDCARD_SET_MOD
 	for _, item in pairs(items) do
 		if item then
+			if itemHasWildcardSetMod(item) then
+				t_insert(wildcardItems, item)
+			end
 			local isSet      = (item.rarity == "SET")
 			local hasSetInfo = (item.setInfo and item.setInfo.setId ~= nil)
-			if isSet or hasSetInfo then
+			-- Some unique-rarity items (e.g. Weaver Set amulet/ring) are
+			-- listed in set_<ver>.json. Detect by name lookup as a third path.
+			local matchedByName = nil
+			if not isSet and not hasSetInfo and item.title then
+				local titleKey = item.title:gsub(" Reforged$", "")
+				for _, e in pairs(setData) do
+					if e.set and (e.name == item.title or e.name == titleKey) then
+						matchedByName = e
+						break
+					end
+				end
+			end
+			if isSet or hasSetInfo or matchedByName then
 				local setId, bonusTable, setName
 				if hasSetInfo then
 					setId      = item.setInfo.setId
 					bonusTable = item.setInfo.bonus
 					setName    = item.setInfo.name
+				elseif matchedByName then
+					setId      = matchedByName.set.setId
+					bonusTable = matchedByName.set.bonus
+					setName    = matchedByName.set.name
 				end
 				if not bonusTable then
 					-- Fallback: match by item.title against set_<ver>.json.
@@ -84,43 +138,30 @@ local function applySetBonuses(env, items, ver)
 		end
 	end
 
-	-- Legends Entwined "Counts as a part of every equipped item set":
-	-- interpretation B — for each set that has >= 1 real equipped piece, bump
-	-- piece count to the maximum tier so ALL tier bonuses (2-Set, 3-Set, ...)
-	-- fire. Sets with 0 real pieces are left alone (Legends is "a part of"
-	-- every set, but cannot single-handedly activate sets the player does not
-	-- otherwise carry).
-	local countsAsEvery = env.itemModDB:Flag(nil, "CountsAsEveryItemSet")
-	ConPrintf("[SET-BONUS] countsAsEvery=%s", tostring(countsAsEvery))
-	for setId, count in pairs(pieceCount) do
-		local info = setEntry[setId]
-		ConPrintf("[SET-BONUS] pre  setId=%s name=%q realCount=%d", tostring(setId), tostring(info and info.name), count)
-	end
-	if countsAsEvery then
-		for setId, _ in pairs(pieceCount) do
-			local info = setEntry[setId]
-			if info and info.bonus then
-				local maxTier = 0
-				for k, _ in pairs(info.bonus) do
-					local n = tonumber(k)
-					if n and n > maxTier then maxTier = n end
-				end
-				if maxTier > pieceCount[setId] then
-					pieceCount[setId] = maxTier
-				end
+	-- Wildcard pass: each wildcard item adds +1 to every already-present setId.
+	-- Per LE rule: wildcard ring + 1 piece of any set completes the 2-pc bonus.
+	-- Sets with zero actual pieces are NOT created from a wildcard alone.
+	if #wildcardItems > 0 and next(pieceCount) ~= nil then
+		local existingSetIds = {}
+		for setId in pairs(pieceCount) do t_insert(existingSetIds, setId) end
+		for _ = 1, #wildcardItems do
+			for _, setId in ipairs(existingSetIds) do
+				pieceCount[setId] = pieceCount[setId] + 1
 			end
 		end
 	end
 
 	-- Second pass: for each setId with >= 2 pieces, parse bonus tiers 2..count.
+	-- Cap effective tier at the set's total piece count (a wildcard cannot
+	-- push beyond the set's defined max bonus tier).
 	-- Note: JSON loader converts numeric-string keys ("2"/"3") to numbers, so
 	-- look up by both string and number form.
-	local completeSetCount = 0
 	for setId, count in pairs(pieceCount) do
 		local info = setEntry[setId]
 		if info and info.bonus then
-			local fired = false
-			for tier = 2, count do
+			local maxTier = setSize[setId] or count
+			local effective = m_min(count, maxTier)
+			for tier = 2, effective do
 				local rawLine = info.bonus[tostring(tier)] or info.bonus[tier]
 				if rawLine then
 					-- Strip formatting tags ({rounding:Integer} etc.) before parse.
@@ -132,20 +173,25 @@ local function applySetBonuses(env, items, ver)
 							modLib.setSource(mod, source)
 							env.itemModDB:AddMod(mod)
 						end
-						fired = true
 					end
 				end
 			end
-			if fired then completeSetCount = completeSetCount + 1 end
-			ConPrintf("[SET-BONUS] fire setId=%s name=%q tiersApplied=2..%d fired=%s",
-				tostring(setId), tostring(info.name), count, tostring(fired))
 		end
 	end
 
-	-- Publish CompleteSetCount multiplier so "per Complete Set" mods scale at
-	-- ModDB query time (e.g., Legends Entwined's +N to All Attributes).
+	-- Compute "Complete Sets" count: setIds whose pieceCount (incl. wildcard)
+	-- meets or exceeds the set's total piece count. Published as a Multiplier
+	-- on env.itemModDB so that "+X per Complete Set" mods (which the cache
+	-- tags with type=Multiplier var=CompleteSetCount in ModCache.lua) scale
+	-- correctly at query time.
+	local completeSetCount = 0
+	for setId, count in pairs(pieceCount) do
+		local maxSize = setSize[setId]
+		if maxSize and count >= maxSize then
+			completeSetCount = completeSetCount + 1
+		end
+	end
 	env.itemModDB.multipliers["CompleteSetCount"] = completeSetCount
-	ConPrintf("[SET-BONUS] CompleteSetCount=%d", completeSetCount)
 end
 
 -- Initialise modifier database with stats and conditions common to all actors
@@ -212,24 +258,26 @@ function calcs.buildModListForNode(env, node)
 end
 
 -- Build list of modifiers from the listed tree nodes
-function calcs.buildModListForNodeList(env, nodeList, stripSkillId)
+function calcs.buildModListForNodeList(env, nodeList, stripSkillId, gateByChannelling)
 	-- Add node modifiers
 	local modList = new("ModList")
 	for _, node in pairs(nodeList) do
 		local nodeModList = calcs.buildModListForNode(env, node)
-		if stripSkillId then
-			-- Remove SkillId tags so buff skill tree mods apply globally
-			local strippedList = new("ModList")
+		if stripSkillId or gateByChannelling then
+			local transformedList = new("ModList")
 			for _, mod in ipairs(nodeModList) do
 				local hasSkillId = false
-				for _, tag in ipairs(mod) do
-					if tag.type == "SkillId" then
-						hasSkillId = true
-						break
+				if stripSkillId then
+					for _, tag in ipairs(mod) do
+						if tag.type == "SkillId" then
+							hasSkillId = true
+							break
+						end
 					end
 				end
+				local needsCopy = hasSkillId or gateByChannelling
+				local newMod = needsCopy and copyTable(mod, true) or mod
 				if hasSkillId then
-					local newMod = copyTable(mod, true)
 					local j = 1
 					while newMod[j] do
 						if newMod[j].type == "SkillId" then
@@ -238,12 +286,13 @@ function calcs.buildModListForNodeList(env, nodeList, stripSkillId)
 							j = j + 1
 						end
 					end
-					strippedList:AddMod(newMod)
-				else
-					strippedList:AddMod(mod)
 				end
+				if gateByChannelling then
+					t_insert(newMod, { type = "Condition", var = "Channelling" })
+				end
+				transformedList:AddMod(newMod)
 			end
-			nodeModList = strippedList
+			nodeModList = transformedList
 		end
 		modList:AddList(nodeModList)
 		if env.mode == "MAIN" then
@@ -1166,25 +1215,40 @@ function calcs.initEnv(build, mode, override, specEnv)
 	-- Merge modifiers for allocated passives
 	-- Buff skill tree nodes are conditional: only apply when mode_buffs is true AND the skill is enabled
 	-- Their mods also have SkillId tags stripped so they apply globally (as buff effects should)
+	-- Channelled-buff skills (e.g. Focus) additionally gate their node mods behind Condition:Channelling,
+	-- so tooltip-text like Everward "+50% Ward Retention" (description clarifies "while channeled") only
+	-- applies when the main skill is channelled or the Config "Are you Channelling?" toggle is on.
 	local buffSkillTreePrefixes = {}
 	for _, group in pairs(build.skillsTab.socketGroupList) do
 		local ge = group.grantedEffect
 		if ge and ge.treeId and ge.skillTypes and ge.skillTypes[SkillType.Buff] then
-			buffSkillTreePrefixes[ge.treeId .. "-"] = buffSkillTreePrefixes[ge.treeId .. "-"] or group.enabled
+			local prefix = ge.treeId .. "-"
+			local existing = buffSkillTreePrefixes[prefix]
+			if not existing then
+				buffSkillTreePrefixes[prefix] = {
+					enabled = group.enabled,
+					isChannel = ge.skillTypes[SkillType.Channelling] or false,
+				}
+			end
 		end
 	end
 
 	if next(buffSkillTreePrefixes) then
 		local normalNodes = {}
 		local activeBuffNodes = {}
+		local activeChannelNodes = {}
 		local inactiveBuffNodes = {}
 		for nodeId, node in pairs(env.allocNodes) do
 			local isBuffNode = false
-			for prefix, enabled in pairs(buffSkillTreePrefixes) do
+			for prefix, info in pairs(buffSkillTreePrefixes) do
 				if nodeId:sub(1, #prefix) == prefix then
 					isBuffNode = true
-					if env.mode_buffs and enabled then
-						activeBuffNodes[nodeId] = node
+					if env.mode_buffs and info.enabled then
+						if info.isChannel then
+							activeChannelNodes[nodeId] = node
+						else
+							activeBuffNodes[nodeId] = node
+						end
 					else
 						inactiveBuffNodes[nodeId] = node
 					end
@@ -1200,6 +1264,10 @@ function calcs.initEnv(build, mode, override, specEnv)
 		-- Active buff nodes: strip SkillId tags so mods apply globally
 		if next(activeBuffNodes) then
 			env.modDB:AddList(calcs.buildModListForNodeList(env, activeBuffNodes, true))
+		end
+		-- Active channelled-buff nodes: strip SkillId and gate by Condition:Channelling
+		if next(activeChannelNodes) then
+			env.modDB:AddList(calcs.buildModListForNodeList(env, activeChannelNodes, true, true))
 		end
 		-- Process inactive buff nodes for side effects (grantedSkills, finalModList) without adding mods
 		if next(inactiveBuffNodes) then

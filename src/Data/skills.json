@@ -3332,10 +3332,11 @@
   },
   "Focus": {
     "name": "Focus",
-    "skillTypeTags": 131328,
+    "skillTypeTags": 393472,
     "castTime": 2.7272727,
     "baseFlags": {
-      "spell": true
+      "spell": true,
+      "channelling": true
     },
     "stats": {},
     "treeId": "vm53dx"
