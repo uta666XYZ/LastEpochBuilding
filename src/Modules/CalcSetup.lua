@@ -50,37 +50,6 @@ local function itemHasWildcardSetMod(item)
 		or scan(item.enchantModLines)
 end
 
--- Adds "+X ... per Complete Set" mods on a wildcard item, multiplied by
--- completeSetCount so the total contribution becomes value × N.
--- Note: the base mod is NOT added during normal item processing because
--- ModParser flags lines containing the unrecognised "per Complete Set"
--- suffix as `extra`, and Item.lua skips `extra` modLines when building
--- baseModList. So we must add the full N copies here, not (N-1).
-local function applyPerCompleteSetScaling(env, item, completeSetCount)
-	if not item or completeSetCount <= 0 then return end
-	local extraMul = completeSetCount
-	local function scan(modLines)
-		if not modLines then return end
-		for _, ml in ipairs(modLines) do
-			if ml.line and ml.line:find("per Complete Set", 1, true)
-			   and ml.modList and #ml.modList > 0 then
-				local source = "Item: " .. (item.title or item.name or "Wildcard Set Item")
-					.. " (per Complete Set ×" .. completeSetCount .. ")"
-				for _, mod in ipairs(ml.modList) do
-					for _ = 1, extraMul do
-						local copy = copyTable(mod)
-						modLib.setSource(copy, source)
-						env.itemModDB:AddMod(copy)
-					end
-				end
-			end
-		end
-	end
-	scan(item.explicitModLines)
-	scan(item.implicitModLines)
-	scan(item.enchantModLines)
-end
-
 -- Apply N-piece set bonuses: count equipped SET pieces per setId, then parse
 -- and add every bonus tier 2..N (so 3 pieces = 2-piece AND 3-piece bonus).
 -- Also matches "Reforged Set" items (basic items with item.setInfo.setId set by
@@ -211,22 +180,18 @@ local function applySetBonuses(env, items, ver)
 	end
 
 	-- Compute "Complete Sets" count: setIds whose pieceCount (incl. wildcard)
-	-- meets or exceeds the set's total piece count. Used to scale
-	-- "+X per Complete Set" mods on wildcard items.
-	if #wildcardItems > 0 then
-		local completeSetCount = 0
-		for setId, count in pairs(pieceCount) do
-			local maxSize = setSize[setId]
-			if maxSize and count >= maxSize then
-				completeSetCount = completeSetCount + 1
-			end
-		end
-		if completeSetCount > 0 then
-			for _, wc in ipairs(wildcardItems) do
-				applyPerCompleteSetScaling(env, wc, completeSetCount)
-			end
+	-- meets or exceeds the set's total piece count. Published as a Multiplier
+	-- on env.itemModDB so that "+X per Complete Set" mods (which the cache
+	-- tags with type=Multiplier var=CompleteSetCount in ModCache.lua) scale
+	-- correctly at query time.
+	local completeSetCount = 0
+	for setId, count in pairs(pieceCount) do
+		local maxSize = setSize[setId]
+		if maxSize and count >= maxSize then
+			completeSetCount = completeSetCount + 1
 		end
 	end
+	env.itemModDB.multipliers["CompleteSetCount"] = completeSetCount
 end
 
 -- Initialise modifier database with stats and conditions common to all actors
