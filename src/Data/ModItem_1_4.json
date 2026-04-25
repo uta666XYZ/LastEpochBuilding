@@ -84181,8 +84181,8 @@
 	},
 	"802_4": {
 		"affix": "The Last Bear's Lament Reforged",
-		"1": "{rounding:Integer}+(9-10) Health Regen",
-		"2": "{rounding:Integer}+(60-75) Endurance Threshold",
+		"1": "{rounding:Integer}+(11-15) Health Regen",
+		"2": "{rounding:Integer}+(126-150) Endurance Threshold",
 		"level": 0,
 		"statOrderKey": 802,
 		"statOrder": [
