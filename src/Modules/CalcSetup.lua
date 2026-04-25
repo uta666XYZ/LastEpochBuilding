@@ -576,7 +576,10 @@ function calcs.initEnv(build, mode, override, specEnv)
 		modDB:NewMod("LifeRegen", "BASE", classStats["healthRegenPerLevel"], "Base", { type = "Multiplier", var = "Level", base = classStats["healthRegen"] })
 		modDB:NewMod("Mana", "BASE", classStats["manaPerLevel"], "Base", { type = "Multiplier", var = "Level", base = classStats["baseMana"] })
 		modDB:NewMod("ManaRegen", "BASE", classStats["manaRegen"], "Base")
-		modDB:NewMod("StunAvoidance", "BASE", classStats["stunAvoidancePerLevel"], "Base", { type = "Multiplier", var = "Level", base = classStats["baseStunAvoidance"] })
+		-- StunAvoidance: only base value applies. JSON has stunAvoidancePerLevel=5
+		-- but LE does not scale this stat with level (verified against LETools
+		-- planner across 13 builds — LEB previously over by 5*Level).
+		modDB:NewMod("StunAvoidance", "BASE", classStats["baseStunAvoidance"], "Base")
 		modDB:NewMod("Endurance", "BASE", classStats["baseEndurance"] * 100, "Base")
 		modDB:NewMod("EnduranceThreshold", "BASE", classStats["enduranceThresholdPerHealth"], "Base", { type = "PerStat", stat = "Life"})
 
