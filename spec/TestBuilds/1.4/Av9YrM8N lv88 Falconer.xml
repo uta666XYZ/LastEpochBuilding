@@ -1,73 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LastEpochBuilding>
-	<Build level="88" targetVersion="1_4" pantheonMajorGod="None" bandit="None" className="Rogue" ascendClassName="Falconer" characterLevelAutoMode="false" mainSocketGroup="5" viewMode="ITEMS" pantheonMinorGod="None">
-		<PlayerStat stat="AverageHit" value="13802.65858918"/>
-		<PlayerStat stat="AverageDamage" value="13802.65858918"/>
-		<PlayerStat stat="AverageBurstDamage" value="13802.65858918"/>
+	<Build level="88" targetVersion="1_4" pantheonMajorGod="None" bandit="None" className="Rogue" ascendClassName="Falconer" characterLevelAutoMode="false" mainSocketGroup="5" viewMode="IMPORT" pantheonMinorGod="None">
+		<PlayerStat stat="AverageHit" value="13688.77994009"/>
+		<PlayerStat stat="AverageDamage" value="13688.77994009"/>
+		<PlayerStat stat="AverageBurstDamage" value="13688.77994009"/>
 		<PlayerStat stat="Speed" value="0.35"/>
 		<PlayerStat stat="PreEffectiveCritChance" value="42.93"/>
 		<PlayerStat stat="CritChance" value="42.93"/>
 		<PlayerStat stat="CritMultiplier" value="3.01"/>
 		<PlayerStat stat="HitChance" value="100"/>
-		<PlayerStat stat="TotalDPS" value="4830.930506213"/>
-		<PlayerStat stat="CombinedDPS" value="4830.930506213"/>
+		<PlayerStat stat="TotalDPS" value="4791.0729790315"/>
+		<PlayerStat stat="CombinedDPS" value="4791.0729790315"/>
 		<PlayerStat stat="Cooldown" value="2.8571428571429"/>
 		<PlayerStat stat="ManaCost" value="0"/>
 		<PlayerStat stat="ManaPercentCost" value="0"/>
 		<PlayerStat stat="ManaPerSecondCost" value="0"/>
 		<PlayerStat stat="ManaPercentPerSecondCost" value="0"/>
-		<PlayerStat stat="Vit" value="28"/>
-		<PlayerStat stat="Str" value="9"/>
-		<PlayerStat stat="Dex" value="54"/>
-		<PlayerStat stat="Int" value="9"/>
-		<PlayerStat stat="Att" value="9"/>
-		<PlayerStat stat="TotalEHP" value="30579.888847083"/>
-		<PlayerStat stat="FireMaximumHitTaken" value="11676.154788177"/>
-		<PlayerStat stat="LightningMaximumHitTaken" value="11676.154788177"/>
-		<PlayerStat stat="ColdMaximumHitTaken" value="11676.154788177"/>
-		<PlayerStat stat="PhysicalMaximumHitTaken" value="13781.885638598"/>
-		<PlayerStat stat="PoisonMaximumHitTaken" value="11676.154788177"/>
-		<PlayerStat stat="NecroticMaximumHitTaken" value="11676.154788177"/>
-		<PlayerStat stat="VoidMaximumHitTaken" value="11676.154788177"/>
-		<PlayerStat stat="Life" value="3443"/>
+		<PlayerStat stat="Vit" value="27"/>
+		<PlayerStat stat="Str" value="8"/>
+		<PlayerStat stat="Dex" value="53"/>
+		<PlayerStat stat="Int" value="8"/>
+		<PlayerStat stat="Att" value="8"/>
+		<PlayerStat stat="TotalEHP" value="20349.396262036"/>
+		<PlayerStat stat="FireMaximumHitTaken" value="10968.079642877"/>
+		<PlayerStat stat="LightningMaximumHitTaken" value="10968.079642877"/>
+		<PlayerStat stat="ColdMaximumHitTaken" value="10968.079642877"/>
+		<PlayerStat stat="PhysicalMaximumHitTaken" value="12916.631941956"/>
+		<PlayerStat stat="PoisonMaximumHitTaken" value="10546.230425843"/>
+		<PlayerStat stat="NecroticMaximumHitTaken" value="10968.079642877"/>
+		<PlayerStat stat="VoidMaximumHitTaken" value="10968.079642877"/>
+		<PlayerStat stat="Life" value="3245"/>
 		<PlayerStat stat="Spec:LifeInc" value="0"/>
 		<PlayerStat stat="LifeRegenRecovery" value="0"/>
 		<PlayerStat stat="LifeLeechGainRate" value="0"/>
-		<PlayerStat stat="Mana" value="279"/>
+		<PlayerStat stat="Mana" value="203"/>
 		<PlayerStat stat="Spec:ManaInc" value="0"/>
 		<PlayerStat stat="ManaRegenRecovery" value="13.8"/>
 		<PlayerStat stat="ManaLeechGainRate" value="0"/>
 		<PlayerStat stat="Ward" value="0"/>
-		<PlayerStat stat="WardRetention" value="18"/>
+		<PlayerStat stat="WardRetention" value="16"/>
 		<PlayerStat stat="NetWardRegen" value="0"/>
-		<PlayerStat stat="Evasion" value="1062"/>
+		<PlayerStat stat="Evasion" value="863"/>
 		<PlayerStat stat="Spec:EvasionInc" value="49"/>
 		<PlayerStat stat="MeleeEvadeChance" value="0"/>
 		<PlayerStat stat="ProjectileEvadeChance" value="0"/>
-		<PlayerStat stat="Armour" value="1870"/>
+		<PlayerStat stat="Armour" value="2015"/>
 		<PlayerStat stat="Spec:ArmourInc" value="6"/>
-		<PlayerStat stat="PhysicalDamageReduction" value="37.54483076036"/>
+		<PlayerStat stat="PhysicalDamageReduction" value="37.193379539995"/>
 		<PlayerStat stat="BlockChance" value="0"/>
 		<PlayerStat stat="SpellBlockChance" value="0"/>
-		<PlayerStat stat="AttackDodgeChance" value="33.352605699922"/>
+		<PlayerStat stat="AttackDodgeChance" value="25.325077412467"/>
 		<PlayerStat stat="SpellDodgeChance" value="0"/>
 		<PlayerStat stat="FireResist" value="75"/>
-		<PlayerStat stat="FireResistOverCap" value="18"/>
+		<PlayerStat stat="FireResistOverCap" value="9"/>
 		<PlayerStat stat="LightningResist" value="75"/>
-		<PlayerStat stat="LightningResistOverCap" value="9"/>
+		<PlayerStat stat="LightningResistOverCap" value="0"/>
 		<PlayerStat stat="ColdResist" value="75"/>
-		<PlayerStat stat="ColdResistOverCap" value="9"/>
+		<PlayerStat stat="ColdResistOverCap" value="0"/>
 		<PlayerStat stat="PhysicalResist" value="75"/>
-		<PlayerStat stat="PhysicalResistOverCap" value="75"/>
-		<PlayerStat stat="PoisonResist" value="75"/>
-		<PlayerStat stat="PoisonResistOverCap" value="6"/>
+		<PlayerStat stat="PhysicalResistOverCap" value="20"/>
+		<PlayerStat stat="PoisonResist" value="74"/>
+		<PlayerStat stat="PoisonResistOverCap" value="0"/>
 		<PlayerStat stat="NecroticResist" value="75"/>
 		<PlayerStat stat="NecroticResistOverCap" value="20"/>
 		<PlayerStat stat="VoidResist" value="75"/>
-		<PlayerStat stat="VoidResistOverCap" value="67"/>
-		<PlayerStat stat="EffectiveMovementSpeedMod" value="1.72"/>
-		<PlayerStat stat="FullDPS" value="4853.993294213"/>
-		<FullDPSSkill skillPart="" source="" stat="Dive Bomb" value="4830.930506213"/>
+		<PlayerStat stat="VoidResistOverCap" value="12"/>
+		<PlayerStat stat="EffectiveMovementSpeedMod" value="1.7"/>
+		<PlayerStat stat="FullDPS" value="4814.1357670315"/>
+		<FullDPSSkill skillPart="" source="" stat="Dive Bomb" value="4791.0729790315"/>
 		<FullDPSSkill skillPart="" source="Falconer 03 Dive Bomb" stat="Poison" value="23.062788"/>
 	</Build>
 	<Calcs>
@@ -102,13 +102,12 @@
 		<Input name="pantheonMajorGod" string="None"/>
 		<Input name="pantheonMinorGod" string="None"/>
 		<Input name="questApophisMajasa" boolean="true"/>
-		<Input name="questTempleOfEterra" boolean="true"/>
 		<Placeholder name="enemyColdDamage" number="1000"/>
 		<Placeholder name="enemyCritChance" number="5"/>
 		<Placeholder name="enemyCritDamage" number="30"/>
 		<Placeholder name="enemyDamageRollRange" number="70"/>
 		<Placeholder name="enemyFireDamage" number="1000"/>
-		<Placeholder name="enemyLevel" number="88"/>
+		<Placeholder name="enemyLevel" number="100"/>
 		<Placeholder name="enemyLightningDamage" number="1000"/>
 		<Placeholder name="enemyNecroticDamage" number="1000"/>
 		<Placeholder name="enemyPhysicalDamage" number="1000"/>
@@ -117,7 +116,7 @@
 		<Placeholder name="enemyVoidDamage" number="1000"/>
 	</Config>
 	<Import exportParty="false"/>
-	<Items activeItemSet="1" useSecondWeaponSet="nil">
+	<Items activeItemSet="1" useSecondWeaponSet="false">
 		<Item id="1">
 			Rarity: LEGENDARY
 Artifice of Devastation
@@ -134,8 +133,8 @@ LevelReq: 35
 Implicits: 2
 {range:75}{rounding:Integer}+(15-30) Mana
 {range:238}{rounding:Integer}(15-30)% increased Mana Regen
-{range:116}{rounding:Integer}+(31-37) Throwing Damage
-{range:151}{rounding:Integer}+(61-90) Health
+{range:116}{affixType:Prefix}{rounding:Integer}+(31-37) Throwing Damage
+{range:151}{affixType:Suffix}{rounding:Integer}+(61-90) Health
 {crafted}{range:172}+(1-2) to Throwing Skills
 {crafted}{range:129}(24-48)% Increased Bladestorm duration
 {crafted}{range:140}(20-40)% Increased Area for Throwing Area Skills
@@ -167,9 +166,9 @@ LevelReq: 48
 Implicits: 2
 {range:148}{rounding:Integer}+(3-6) Vitality
 {range:48}{rounding:Integer}+(3-6) Health Regen
-{range:133}{rounding:Integer}+(22-26) Throwing Damage
--5 Throwing Attack Mana Cost
-{range:25}{rounding:Integer}(30-38)% increased Mana Regen
+{range:133}{affixType:Prefix}{rounding:Integer}+(22-26) Throwing Damage
+{affixType:Prefix}-5 Throwing Attack Mana Cost
+{range:25}{affixType:Prefix}{rounding:Integer}(30-38)% increased Mana Regen
 {crafted}100% Evade is turned into a Crab
 {crafted}{range:19}{rounding:Integer}(20-30)% increased Armor
 {crafted}100% Swiftness
@@ -203,7 +202,7 @@ LevelReq: 27
 Implicits: 2
 +25 Melee Damage
 {range:155}+(35-65)% Critical Strike Multiplier
-{range:226}{scalar:1.75}{rounding:Integer}(96-120)% increased Physical Damage
+{range:226}{scalar:1.75}{affixType:Prefix}{rounding:Integer}(96-120)% increased Physical Damage
 {crafted}{range:226}+(10-13)% Parry Chance with Traitor&apos;s Tongue equipped in the mainhand
 {crafted}{range:239}+(10-13)% Critical Strike Chance with Traitor&apos;s Tongue equipped in the offhand
 {crafted}{range:165}{rounding:Integer}+(1-2) to Dexterity Skills
@@ -233,8 +232,8 @@ Suffix: None
 LevelReq: 10
 Implicits: 1
 +40 Armor
-{range:81}{rounding:Integer}+(27-34) Physical Throwing Damage while Dual Wielding
-{range:152}+(3-4)% Endurance
+{range:81}{affixType:Prefix}{rounding:Integer}+(27-34) Physical Throwing Damage while Dual Wielding
+{range:152}{affixType:Suffix}+(3-4)% Endurance
 {crafted}{range:234}(240-290)% increased Critical Strike Chance
 {crafted}-100% less Damage Leeched as Health on Crit
 {crafted}{range:160}{rounding:Integer}+(2-5) to All Attributes
@@ -260,8 +259,8 @@ Suffix: None
 LevelReq: 0
 Implicits: 1
 {range:119}{rounding:Integer}+(5-25) Health
-{range:253}{scalar:1.17}{rounding:Integer}(81-110) Ward Gained on Potion Use
-{range:239}{scalar:1.17}{rounding:Integer}+(131-180) Health
+{range:253}{scalar:1.17}{affixType:Prefix}{rounding:Integer}(81-110) Ward Gained on Potion Use
+{range:239}{scalar:1.17}{affixType:Suffix}{rounding:Integer}+(131-180) Health
 {crafted}100% of Potion Health Converted to Ward
 {crafted}-100% less Damage Leeched as Health
 {crafted}100% less Health Regen
@@ -290,8 +289,8 @@ LevelReq: 45
 Implicits: 2
 +75 Armor
 {range:90}+(5-15)% Endurance
-{range:175}{rounding:Integer}+(106-135) Health
-{range:175}{rounding:Integer}(8-10)% increased Health
+{range:175}{affixType:Suffix}{rounding:Integer}+(106-135) Health
+{range:175}{affixType:Suffix}{rounding:Integer}(8-10)% increased Health
 {crafted}{range:100}+(60-130)% Chance to Poison on Throwing Hit
 {crafted}{range:188}+(60-130)% Throwing Critical Strike Multiplier
 {crafted}+2 Projectiles with Shurikens
@@ -319,9 +318,9 @@ LevelReq: 52
 Implicits: 2
 {range:155}{rounding:Integer}+(120-180) Armor
 +4 Potion Slots
-{range:0}{rounding:Integer}(101-150)% increased Minion Health
-{range:139}{rounding:Integer}(20-21)% increased Movement Speed for 4 seconds when you use a Potion
-{range:217}(28-32)% Increased Cooldown Recovery Speed
+{range:0}{affixType:Prefix}{rounding:Integer}(101-150)% increased Minion Health
+{range:139}{affixType:Prefix}{rounding:Integer}(20-21)% increased Movement Speed for 4 seconds when you use a Potion
+{range:217}{affixType:Suffix}(28-32)% Increased Cooldown Recovery Speed
 {crafted}{range:165}{rounding:Integer}+(6-10) Vitality
 {crafted}{range:165}+(12-20)% Endurance
 {crafted}{range:165}{rounding:Integer}+(3-4) Potion Slots
@@ -354,9 +353,9 @@ LevelReq: 62
 Implicits: 2
 {range:197}+(28-45)% Fire Resistance
 {range:144}{rounding:Integer}(28-45)% increased Fire Damage
-{range:164}{rounding:Integer}+(22-26) Throwing Damage
--5 Throwing Attack Mana Cost
-{range:86}+(30-45)% Lightning Resistance
+{range:164}{affixType:Prefix}{rounding:Integer}+(22-26) Throwing Damage
+{affixType:Prefix}-5 Throwing Attack Mana Cost
+{range:86}{affixType:Suffix}+(30-45)% Lightning Resistance
 {crafted}{range:115}{rounding:Integer}+(100-140) Health
 {crafted}{range:221}+(14-40)% Cold Resistance
 {crafted}{range:22}+(14-40)% Void Resistance
@@ -392,8 +391,8 @@ Implicits: 3
 +168 Armor
 {range:129}{rounding:Integer}(25-50)% increased Dodge Rating
 {range:185}{rounding:Integer}(25-50)% increased Damage Over Time
-{range:172}{scalar:1.5}{rounding:Integer}(21-26)% increased Health
-{range:132}{scalar:1.5}{rounding:Integer}+(61-90) Health
+{range:172}{scalar:1.5}{affixType:Suffix}{rounding:Integer}(21-26)% increased Health
+{range:132}{affixType:Suffix}{rounding:Integer}+(92-135) Health
 {crafted}+1 Throwing an Acid Flask consumes a potion in order to throw an additional flask that deals more damage
 {crafted}{range:59}(125-180)% more Damage with an Acid Flask thrown by consuming a potion
 {crafted}{range:204}{rounding:Integer}+(1-2) to Throwing Attacks
@@ -431,7 +430,7 @@ Implicits: 3
 +72 Armor
 {range:139}(15-18)% increased Movement Speed
 {range:151}(24-50)% increased Effect of Haste on You
-{range:197}(28-32)% Increased Cooldown Recovery Speed
+{range:197}{affixType:Suffix}(28-32)% Increased Cooldown Recovery Speed
 {crafted}{range:187}(13-20)% increased Movement Speed
 {crafted}{range:199}{rounding:Integer}+(1-2) to Throwing Attacks
 {crafted}+1 Umbral Blades per 20 Dexterity thrown with Aerial Assault&apos;s Burst of Feathers
@@ -469,7 +468,7 @@ Implicits: 3
 +41 Melee Damage
 +4% Critical Strike Chance
 {range:255}+(40-80)% Chance to Poison on Hit
-{range:28}{scalar:1.75}(31-35)% increased Critical Strike Chance
+{range:28}{scalar:1.75}{affixType:Prefix}(31-35)% increased Critical Strike Chance
 {crafted}{range:255}{rounding:Integer}+(3-4) to Dexterity Skills
 {crafted}{range:255}{rounding:Integer}+(10-16) Dexterity
 {crafted}{range:255}(10-20)% Chance to gain Haste for 1 second on Hit
@@ -494,21 +493,23 @@ Stout Weaver Idol
 Unique ID: Idol 21
 Crafted: true
 Prefix: {range:105}880_0
-Prefix: None
+Prefix: {range:216}1058_0
 Prefix: None
 Suffix: {range:99}887_0
 Suffix: None
 Suffix: None
 LevelReq: 0
 Implicits: 0
-{range:105}{rounding:Integer}(9-20) Health Gain on Kill
-{range:105}{rounding:Integer}(5-6)% increased Health
-{range:99}+(18-23)% Fire Resistance
-{range:99}+(18-23)% Minion Fire Resistance
+{range:105}{affixType:Prefix}{rounding:Integer}(9-20) Health Gain on Kill
+{range:105}{affixType:Prefix}{rounding:Integer}(5-6)% increased Health
+{range:216}{affixType:Prefix}{rounding:Integer}+(2-4) Health Regen
+{range:99}{affixType:Suffix}+(18-24)% Fire Resistance
+{range:99}{affixType:Suffix}+(18-24)% Minion Fire Resistance
 			<ModRange range="105" id="1"/>
 			<ModRange range="105" id="2"/>
-			<ModRange range="99" id="3"/>
+			<ModRange range="216" id="3"/>
 			<ModRange range="99" id="4"/>
+			<ModRange range="99" id="5"/>
 		</Item>
 		<Item id="13">
 			Rarity: RARE
@@ -517,19 +518,21 @@ Small Weaver Idol
 Unique ID: Idol 1
 Crafted: true
 Prefix: {range:195}827_0
-Prefix: None
+Prefix: {range:141}1064_0
 Prefix: None
 Suffix: {range:168}116_0
 Suffix: None
 Suffix: None
 LevelReq: 0
 Implicits: 0
-{range:195}{rounding:Integer}+(13-25) Dodge Rating
-{range:195}{rounding:Integer}(2-5)% increased Dodge Rating
-{range:168}{scalar:0.17}+(20-45)% Poison Resistance
+{range:195}{affixType:Prefix}{rounding:Integer}+(13-25) Dodge Rating
+{range:195}{affixType:Prefix}{rounding:Integer}(2-5)% increased Dodge Rating
+{range:141}{affixType:Prefix}+(2-5)% Minion Poison Resistance
+{range:168}{scalar:0.17}{affixType:Suffix}+(20-45)% Poison Resistance
 			<ModRange range="195" id="1"/>
 			<ModRange range="195" id="2"/>
-			<ModRange range="168" id="3"/>
+			<ModRange range="141" id="3"/>
+			<ModRange range="168" id="4"/>
 		</Item>
 		<Item id="14">
 			Rarity: RARE
@@ -545,10 +548,10 @@ Suffix: None
 Suffix: None
 LevelReq: 0
 Implicits: 0
-{range:4}+(3-4)% Necrotic Penetration
-{range:4}+(3-4)% Minion Necrotic Penetration
-{range:238}+(18-23)% Necrotic Resistance
-{range:238}+(18-23)% Minion Necrotic Resistance
+{range:4}{affixType:Prefix}+(3-4)% Necrotic Penetration
+{range:4}{affixType:Prefix}+(3-4)% Minion Necrotic Penetration
+{range:238}{affixType:Suffix}+(18-24)% Necrotic Resistance
+{range:238}{affixType:Suffix}+(18-24)% Minion Necrotic Resistance
 			<ModRange range="4" id="1"/>
 			<ModRange range="4" id="2"/>
 			<ModRange range="238" id="3"/>
@@ -568,9 +571,9 @@ Suffix: None
 Suffix: None
 LevelReq: 0
 Implicits: 0
-{range:60}{rounding:Integer}(9-20) Health Gain on Kill
-{range:60}{rounding:Integer}(5-6)% increased Health
-{range:201}{scalar:0.38}+(20-45)% Cold Resistance
+{range:60}{affixType:Prefix}{rounding:Integer}(9-20) Health Gain on Kill
+{range:60}{affixType:Prefix}{rounding:Integer}(5-6)% increased Health
+{range:201}{scalar:0.38}{affixType:Suffix}+(20-45)% Cold Resistance
 			<ModRange range="60" id="1"/>
 			<ModRange range="60" id="2"/>
 			<ModRange range="201" id="3"/>
@@ -582,19 +585,21 @@ Small Weaver Idol
 Unique ID: Idol 9
 Crafted: true
 Prefix: {range:48}119_0
-Prefix: None
+Prefix: {range:86}1068_0
 Prefix: None
 Suffix: {range:164}838_0
 Suffix: None
 Suffix: None
 LevelReq: 0
 Implicits: 0
-{range:48}{scalar:0.17}{rounding:Integer}(22-60)% increased Damage Over Time
-{range:164}+(9-12)% Necrotic Resistance
-{range:164}+(9-12)% Minion Necrotic Resistance
+{range:48}{scalar:0.17}{affixType:Prefix}{rounding:Integer}(22-60)% increased Damage Over Time
+{range:86}{affixType:Prefix}+(2-4)% Chance to apply Frailty on Minion Hit
+{range:164}{affixType:Suffix}+(9-12)% Necrotic Resistance
+{range:164}{affixType:Suffix}+(9-12)% Minion Necrotic Resistance
 			<ModRange range="48" id="1"/>
-			<ModRange range="164" id="2"/>
+			<ModRange range="86" id="2"/>
 			<ModRange range="164" id="3"/>
+			<ModRange range="164" id="4"/>
 		</Item>
 		<Item id="17">
 			Rarity: RARE
@@ -610,8 +615,8 @@ Suffix: None
 Suffix: None
 LevelReq: 0
 Implicits: 0
-{range:113}{scalar:0.38}{rounding:Integer}(5-11)% increased Health
-{range:250}{scalar:0.38}+(8-20)% Elemental Resistance
+{range:113}{scalar:0.38}{affixType:Prefix}{rounding:Integer}(5-11)% increased Health
+{range:250}{scalar:0.38}{affixType:Suffix}+(8-20)% Elemental Resistance
 			<ModRange range="113" id="1"/>
 			<ModRange range="250" id="2"/>
 		</Item>
@@ -629,9 +634,9 @@ Suffix: None
 Suffix: None
 LevelReq: 0
 Implicits: 0
-{range:255}{rounding:Integer}(9-20) Health Gain on Kill
-{range:255}{rounding:Integer}(5-6)% increased Health
-{range:255}{scalar:0.38}+(20-45)% Lightning Resistance
+{range:255}{affixType:Prefix}{rounding:Integer}(9-20) Health Gain on Kill
+{range:255}{affixType:Prefix}{rounding:Integer}(5-6)% increased Health
+{range:255}{scalar:0.38}{affixType:Suffix}+(20-45)% Lightning Resistance
 			<ModRange range="255" id="1"/>
 			<ModRange range="255" id="2"/>
 			<ModRange range="255" id="3"/>
@@ -643,19 +648,21 @@ Large Umbral Omen Idol
 Unique ID: Idol 11
 Crafted: true
 Prefix: {range:151}942_0
-Prefix: None
+Prefix: {range:93}1042_0
 Prefix: None
 Suffix: {range:5}116_0
 Suffix: None
 Suffix: None
 LevelReq: 0
 Implicits: 0
-{range:151}{rounding:Integer}+(8-18) Dodge Rating
-{range:151}{rounding:Integer}(3-9)% increased Health
-{range:5}{scalar:0.67}+(20-45)% Poison Resistance
+{range:151}{scalar:1.33}{affixType:Prefix}{rounding:Integer}+(8-18) Dodge Rating
+{range:151}{scalar:1.33}{affixType:Prefix}{rounding:Integer}(3-9)% increased Health
+{range:93}{affixType:Prefix}+(5-15)% Minion Critical Strike Multiplier
+{range:5}{affixType:Suffix}+(20-45)% Poison Resistance
 			<ModRange range="151" id="1"/>
 			<ModRange range="151" id="2"/>
-			<ModRange range="5" id="3"/>
+			<ModRange range="93" id="3"/>
+			<ModRange range="5" id="4"/>
 		</Item>
 		<Item id="20">
 			Rarity: RARE
@@ -664,19 +671,21 @@ Minor Weaver Idol
 Unique ID: Idol 24
 Crafted: true
 Prefix: {range:28}110_0
-Prefix: None
+Prefix: {range:52}1069_0
 Prefix: None
 Suffix: {range:188}853_0
 Suffix: None
 Suffix: None
 LevelReq: 0
 Implicits: 0
-{range:28}{scalar:0.17}{rounding:Integer}+(58-156) Armor
-{range:188}{rounding:Integer}+(14-18) Health
-{range:188}{rounding:Integer}+(1-2) Health Regen
+{range:28}{scalar:0.17}{affixType:Prefix}{rounding:Integer}+(58-156) Armor
+{range:52}{affixType:Prefix}+(3-5)% Chance to apply Frailty on Hit
+{range:188}{affixType:Suffix}{rounding:Integer}+(14-18) Health
+{range:188}{affixType:Suffix}{rounding:Integer}+(1-2) Health Regen
 			<ModRange range="28" id="1"/>
-			<ModRange range="188" id="2"/>
+			<ModRange range="52" id="2"/>
 			<ModRange range="188" id="3"/>
+			<ModRange range="188" id="4"/>
 		</Item>
 		<Item id="21">
 			Rarity: RARE
@@ -692,9 +701,9 @@ Suffix: None
 Suffix: None
 LevelReq: 0
 Implicits: 0
-{range:255}{rounding:Integer}+(4-5) Vitality
-{range:255}{rounding:Integer}+(2-4) Health Regen
-{range:255}{scalar:0.38}+(20-45)% Necrotic Resistance
+{range:255}{affixType:Prefix}{rounding:Integer}+(4-5) Vitality
+{range:255}{affixType:Prefix}{rounding:Integer}+(2-4) Health Regen
+{range:255}{scalar:0.38}{affixType:Suffix}+(20-45)% Necrotic Resistance
 			<ModRange range="255" id="1"/>
 			<ModRange range="255" id="2"/>
 			<ModRange range="255" id="3"/>
@@ -706,21 +715,23 @@ Small Weaver Idol
 Unique ID: Idol 25
 Crafted: true
 Prefix: {range:131}828_0
-Prefix: None
+Prefix: {range:111}1066_0
 Prefix: None
 Suffix: {range:52}837_0
 Suffix: None
 Suffix: None
 LevelReq: 0
 Implicits: 0
-{range:131}{rounding:Integer}(5-8)% increased Health Regen
-{range:131}{rounding:Integer}+(14-18) Health
-{range:52}+(9-12)% Physical Resistance
-{range:52}+(9-12)% Minion Physical Resistance
+{range:131}{affixType:Prefix}{rounding:Integer}(5-8)% increased Health Regen
+{range:131}{affixType:Prefix}{rounding:Integer}+(14-18) Health
+{range:111}{affixType:Prefix}+(1-2)% reduced Bonus Damage Taken from Critical Strikes
+{range:52}{affixType:Suffix}+(9-12)% Physical Resistance
+{range:52}{affixType:Suffix}+(9-12)% Minion Physical Resistance
 			<ModRange range="131" id="1"/>
 			<ModRange range="131" id="2"/>
-			<ModRange range="52" id="3"/>
+			<ModRange range="111" id="3"/>
 			<ModRange range="52" id="4"/>
+			<ModRange range="52" id="5"/>
 		</Item>
 		<Item id="23">
 			Rarity: RARE
@@ -729,7 +740,7 @@ Carcinised Altar
 Unique ID: 123
 Crafted: true
 Prefix: {range:53}1089_2
-Prefix: None
+Prefix: {range:41}1104_1
 Prefix: None
 Suffix: {range:203}1100_1
 Suffix: None
@@ -737,11 +748,13 @@ Suffix: None
 LevelReq: 32
 Implicits: 1
 {range:194}+(64-256) Armor per Idol in a Refracted Slot
-{range:53}{rounding:Integer}(12-14)% increased Effect of Prefixes and Suffixes for Idols in Refracted Slots
-+(3) Health per Idol in a Refracted Slot
+{range:53}{affixType:Prefix}{rounding:Integer}(12-14)% increased Effect of Prefixes and Suffixes for Idols in Refracted Slots
+{affixType:Prefix}+(3) Dodge Rating per Equipped Corrupted Idol
+{affixType:Suffix}+(3) Health per Idol in a Refracted Slot
 			<ModRange range="194" id="1"/>
 			<ModRange range="53" id="2"/>
 			<ModRange range="127.5" id="3"/>
+			<ModRange range="127.5" id="4"/>
 		</Item>
 		<Item id="24">
 			Rarity: NORMAL
@@ -805,7 +818,7 @@ Implicits: 1
 18% Increased Unique Drop Rate
 			<ModRange range="127.5" id="1"/>
 		</Item>
-		<ItemSet useSecondWeaponSet="nil" id="1">
+		<ItemSet useSecondWeaponSet="false" id="1">
 			<Slot itemPbURL="" name="Amulet" itemId="5"/>
 			<Slot itemPbURL="" name="Belt" itemId="7"/>
 			<Slot itemPbURL="" name="Blood, Frost, and Death" itemId="0"/>
