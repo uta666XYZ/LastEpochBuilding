@@ -1762,7 +1762,13 @@ function ImportTabClass:ImportItemsAndSkills(charData)
     if self.controls.charImportItemsClearItems.state then
         for _, slot in pairs(self.build.itemsTab.slots) do
             if slot.selItemId ~= 0 and not slot.nodeId then
-                self.build.itemsTab:DeleteItem(self.build.itemsTab.items[slot.selItemId])
+                local existingItem = self.build.itemsTab.items[slot.selItemId]
+                if existingItem then
+                    self.build.itemsTab:DeleteItem(existingItem)
+                else
+                    -- Orphan reference (item lost via prior failed import); just clear the slot
+                    slot:SetSelItemId(0)
+                end
             end
         end
     end
