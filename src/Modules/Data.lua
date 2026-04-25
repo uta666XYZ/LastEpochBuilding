@@ -615,8 +615,17 @@ for _, ver in ipairs(treeVersionList) do
 	if verSets and verUniques then
 		for _, s in pairs(verSets) do
 			if type(s) == "table" and s.uniqueID then
+				-- readJsonFile/jsonToLua converts numeric JSON string keys to
+				-- Lua integer keys, so verUniques is INT-keyed and parseItem
+				-- looks up via the INT form (data.uniques[uniqueID]).
+				-- Store under both forms to be safe across call sites that
+				-- pass either a number or a string for uniqueID.
+				local idInt = tonumber(s.uniqueID)
 				local idStr = tostring(s.uniqueID)
-				if not verUniques[idStr] and not verUniques[s.uniqueID] then
+				if idInt and not verUniques[idInt] then
+					verUniques[idInt] = s
+				end
+				if not verUniques[idStr] then
 					verUniques[idStr] = s
 				end
 			end
