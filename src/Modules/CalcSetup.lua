@@ -50,12 +50,15 @@ local function itemHasWildcardSetMod(item)
 		or scan(item.enchantModLines)
 end
 
--- Re-applies "+X ... per Complete Set" mods on a wildcard item, multiplied by
--- (completeSetCount - 1) so that the total contribution becomes value × N.
--- The base mod has already been added once during normal item processing.
+-- Adds "+X ... per Complete Set" mods on a wildcard item, multiplied by
+-- completeSetCount so the total contribution becomes value × N.
+-- Note: the base mod is NOT added during normal item processing because
+-- ModParser flags lines containing the unrecognised "per Complete Set"
+-- suffix as `extra`, and Item.lua skips `extra` modLines when building
+-- baseModList. So we must add the full N copies here, not (N-1).
 local function applyPerCompleteSetScaling(env, item, completeSetCount)
-	if not item or completeSetCount <= 1 then return end
-	local extraMul = completeSetCount - 1
+	if not item or completeSetCount <= 0 then return end
+	local extraMul = completeSetCount
 	local function scan(modLines)
 		if not modLines then return end
 		for _, ml in ipairs(modLines) do
