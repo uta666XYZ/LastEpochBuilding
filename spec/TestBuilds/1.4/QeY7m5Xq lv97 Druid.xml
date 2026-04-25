@@ -1,74 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LastEpochBuilding>
-	<Build level="97" targetVersion="1_4" pantheonMajorGod="None" bandit="None" className="Primalist" ascendClassName="Druid" characterLevelAutoMode="false" mainSocketGroup="1" viewMode="ITEMS" pantheonMinorGod="None">
-		<Source url="https://www.lastepochtools.com/planner/QeY7m5Xq" plannerCode="QeY7m5Xq" importedAt="unknown" lebVersion="v0.13.0"/>
-		<PlayerStat stat="AverageHit" value="39.7213376"/>
-		<PlayerStat stat="AverageDamage" value="39.7213376"/>
-		<PlayerStat stat="AverageBurstDamage" value="39.7213376"/>
+	<Build level="97" targetVersion="1_4" pantheonMajorGod="None" bandit="None" className="Primalist" ascendClassName="Druid" characterLevelAutoMode="false" mainSocketGroup="1" viewMode="IMPORT" pantheonMinorGod="None">
+		<Source url="https://www.lastepochtools.com/planner/QeY7m5Xq" plannerCode="QeY7m5Xq" importedAt="2026-04-25T16:59:18Z" lebVersion="v0.13.0"/>
+		<PlayerStat stat="AverageHit" value="40.8957134"/>
+		<PlayerStat stat="AverageDamage" value="40.8957134"/>
+		<PlayerStat stat="AverageBurstDamage" value="40.8957134"/>
 		<PlayerStat stat="Speed" value="0.19666666666667"/>
-		<PlayerStat stat="PreEffectiveCritChance" value="18.72"/>
-		<PlayerStat stat="CritChance" value="18.72"/>
+		<PlayerStat stat="PreEffectiveCritChance" value="22.23"/>
+		<PlayerStat stat="CritChance" value="22.23"/>
 		<PlayerStat stat="CritMultiplier" value="2"/>
 		<PlayerStat stat="HitChance" value="100"/>
-		<PlayerStat stat="TotalDPS" value="234590.48232232"/>
-		<PlayerStat stat="CombinedDPS" value="234590.48232232"/>
+		<PlayerStat stat="TotalDPS" value="241526.2352953"/>
+		<PlayerStat stat="CombinedDPS" value="241526.2352953"/>
 		<PlayerStat stat="Cooldown" value="5.0847457627119"/>
 		<PlayerStat stat="ManaCost" value="0"/>
 		<PlayerStat stat="ManaPercentCost" value="0"/>
 		<PlayerStat stat="ManaPerSecondCost" value="0"/>
 		<PlayerStat stat="ManaPercentPerSecondCost" value="0"/>
-		<PlayerStat stat="Vit" value="31"/>
-		<PlayerStat stat="Str" value="172"/>
-		<PlayerStat stat="Dex" value="41"/>
-		<PlayerStat stat="Int" value="172"/>
-		<PlayerStat stat="Att" value="63"/>
-		<PlayerStat stat="TotalEHP" value="7154.6430892583"/>
-		<PlayerStat stat="FireMaximumHitTaken" value="3278.4114506046"/>
-		<PlayerStat stat="LightningMaximumHitTaken" value="6163.4135271366"/>
-		<PlayerStat stat="ColdMaximumHitTaken" value="6163.4135271366"/>
-		<PlayerStat stat="PhysicalMaximumHitTaken" value="7920.8388929761"/>
-		<PlayerStat stat="PoisonMaximumHitTaken" value="6163.4135271366"/>
-		<PlayerStat stat="NecroticMaximumHitTaken" value="3424.118626187"/>
-		<PlayerStat stat="VoidMaximumHitTaken" value="6163.4135271366"/>
-		<PlayerStat stat="Life" value="1319"/>
-		<PlayerStat stat="Spec:LifeInc" value="0"/>
-		<PlayerStat stat="LifeRegenRecovery" value="1103.5"/>
+		<PlayerStat stat="Vit" value="43"/>
+		<PlayerStat stat="Str" value="214"/>
+		<PlayerStat stat="Dex" value="53"/>
+		<PlayerStat stat="Int" value="214"/>
+		<PlayerStat stat="Att" value="75"/>
+		<PlayerStat stat="TotalEHP" value="26774.083411554"/>
+		<PlayerStat stat="FireMaximumHitTaken" value="25852.300523913"/>
+		<PlayerStat stat="LightningMaximumHitTaken" value="25852.300523913"/>
+		<PlayerStat stat="ColdMaximumHitTaken" value="25852.300523913"/>
+		<PlayerStat stat="PhysicalMaximumHitTaken" value="44707.049852094"/>
+		<PlayerStat stat="PoisonMaximumHitTaken" value="25852.300523913"/>
+		<PlayerStat stat="NecroticMaximumHitTaken" value="25852.300523913"/>
+		<PlayerStat stat="VoidMaximumHitTaken" value="25852.300523913"/>
+		<PlayerStat stat="Life" value="1660"/>
+		<PlayerStat stat="Spec:LifeInc" value="20"/>
+		<PlayerStat stat="LifeRegenRecovery" value="1217.3"/>
 		<PlayerStat stat="LifeLeechGainRate" value="0"/>
-		<PlayerStat stat="Mana" value="283"/>
-		<PlayerStat stat="Spec:ManaInc" value="0"/>
+		<PlayerStat stat="Mana" value="368"/>
+		<PlayerStat stat="Spec:ManaInc" value="20"/>
 		<PlayerStat stat="ManaRegenRecovery" value="9.8"/>
 		<PlayerStat stat="ManaLeechGainRate" value="0"/>
-		<PlayerStat stat="Ward" value="0"/>
-		<PlayerStat stat="WardRetention" value="384"/>
-		<PlayerStat stat="NetWardRegen" value="0"/>
-		<PlayerStat stat="Evasion" value="164"/>
+		<PlayerStat stat="Ward" value="3552"/>
+		<PlayerStat stat="WardRetention" value="468"/>
+		<PlayerStat stat="NetWardRegen" value="0.016999999999996"/>
+		<PlayerStat stat="Evasion" value="212"/>
 		<PlayerStat stat="Spec:EvasionInc" value="0"/>
 		<PlayerStat stat="MeleeEvadeChance" value="0"/>
 		<PlayerStat stat="ProjectileEvadeChance" value="0"/>
-		<PlayerStat stat="Armour" value="5548"/>
+		<PlayerStat stat="Armour" value="6730"/>
 		<PlayerStat stat="Spec:ArmourInc" value="0"/>
-		<PlayerStat stat="PhysicalDamageReduction" value="66.426861731697"/>
+		<PlayerStat stat="PhysicalDamageReduction" value="70.854708500991"/>
 		<PlayerStat stat="BlockChance" value="0"/>
 		<PlayerStat stat="SpellBlockChance" value="0"/>
-		<PlayerStat stat="AttackDodgeChance" value="5.6320831149395"/>
+		<PlayerStat stat="AttackDodgeChance" value="7.077183830923"/>
 		<PlayerStat stat="SpellDodgeChance" value="0"/>
-		<PlayerStat stat="FireResist" value="53"/>
-		<PlayerStat stat="FireResistOverCap" value="0"/>
+		<PlayerStat stat="FireResist" value="75"/>
+		<PlayerStat stat="FireResistOverCap" value="22"/>
 		<PlayerStat stat="LightningResist" value="75"/>
-		<PlayerStat stat="LightningResistOverCap" value="32"/>
+		<PlayerStat stat="LightningResistOverCap" value="47"/>
 		<PlayerStat stat="ColdResist" value="75"/>
-		<PlayerStat stat="ColdResistOverCap" value="7"/>
-		<PlayerStat stat="PhysicalResist" value="69"/>
-		<PlayerStat stat="PhysicalResistOverCap" value="0"/>
+		<PlayerStat stat="ColdResistOverCap" value="22"/>
+		<PlayerStat stat="PhysicalResist" value="75"/>
+		<PlayerStat stat="PhysicalResistOverCap" value="9"/>
 		<PlayerStat stat="PoisonResist" value="75"/>
-		<PlayerStat stat="PoisonResistOverCap" value="10"/>
-		<PlayerStat stat="NecroticResist" value="55"/>
-		<PlayerStat stat="NecroticResistOverCap" value="0"/>
+		<PlayerStat stat="PoisonResistOverCap" value="37"/>
+		<PlayerStat stat="NecroticResist" value="75"/>
+		<PlayerStat stat="NecroticResistOverCap" value="7"/>
 		<PlayerStat stat="VoidResist" value="75"/>
-		<PlayerStat stat="VoidResistOverCap" value="4"/>
+		<PlayerStat stat="VoidResistOverCap" value="19"/>
 		<PlayerStat stat="EffectiveMovementSpeedMod" value="1.56"/>
-		<PlayerStat stat="FullDPS" value="234591.93145672"/>
-		<FullDPSSkill skillPart="" source="" stat="Swarmblade Form" value="234590.48232232"/>
+		<PlayerStat stat="FullDPS" value="241527.6844297"/>
+		<FullDPSSkill skillPart="" source="" stat="Swarmblade Form" value="241526.2352953"/>
 		<FullDPSSkill skillPart="" source="Swarmblade Form" stat="Poison" value="1.4491344"/>
 	</Build>
 	<Calcs>
@@ -117,7 +117,7 @@
 		<Placeholder name="enemyVoidDamage" number="1000"/>
 	</Config>
 	<Import exportParty="false"/>
-	<Items activeItemSet="1" useSecondWeaponSet="false">
+	<Items activeItemSet="1" useSecondWeaponSet="nil">
 		<Item id="1">
 			Rarity: LEGENDARY
 Vessel of Strife
@@ -127,7 +127,11 @@ Crafted: true
 Prefix: {range:213}501_6
 Prefix: None
 Prefix: None
+Prefix: None
+Prefix: None
 Suffix: {range:155}92_1
+Suffix: None
+Suffix: None
 Suffix: None
 Suffix: None
 LevelReq: 15
@@ -158,7 +162,11 @@ Crafted: true
 Prefix: {range:106}501_6
 Prefix: {range:236}70_0
 Prefix: None
+Prefix: None
+Prefix: None
 Suffix: {range:223}22_4
+Suffix: None
+Suffix: None
 Suffix: None
 Suffix: None
 LevelReq: 52
@@ -195,7 +203,11 @@ Crafted: true
 Prefix: {range:162}78_6
 Prefix: {range:168}72_4
 Prefix: None
+Prefix: None
+Prefix: None
 Suffix: {range:154}428_3
+Suffix: None
+Suffix: None
 Suffix: None
 Suffix: None
 Quality: 0
@@ -221,17 +233,21 @@ Implicits: 2
 			<ModRange range="127.5" id="9"/>
 		</Item>
 		<Item id="4">
-			Rarity: EXALTED
-Mighty Darkwolf Pelt of Regrowth
+			Rarity: SET
+The Last Bear&apos;s Lament Reforged
 Darkwolf Pelt
 Unique ID: 2
 Crafted: true
 Prefix: {range:95}501_5
 Prefix: {range:98}347_3
 Prefix: {range:171}1024_3
+Prefix: None
+Prefix: None
 Suffix: {range:143}22_4
 Suffix: {range:40}802_4
 Suffix: {range:136}90_6
+Suffix: None
+Suffix: None
 LevelReq: 58
 Implicits: 3
 +84 Armor
@@ -241,8 +257,8 @@ Implicits: 3
 {range:98}{affixType:Prefix}+(45-51)% Chance to inflict Bleed on Minion Hit
 {affixType:Prefix}+6% Elemental Resistance
 {range:143}{affixType:Suffix}{rounding:Integer}(54-82)% increased Health Regen
-{range:40}{affixType:Suffix}{rounding:Integer}+(9-10) Health Regen
-{range:40}{affixType:Suffix}{rounding:Integer}+(60-75) Endurance Threshold
+{range:40}{affixType:Suffix}{rounding:Integer}+(11-15) Health Regen
+{range:40}{affixType:Suffix}{rounding:Integer}+(126-150) Endurance Threshold
 {range:136}{affixType:Suffix}{rounding:Integer}+(26-35) Health Regen
 			<ModRange range="127.5" id="1"/>
 			<ModRange range="228" id="2"/>
@@ -264,6 +280,10 @@ Crafted: true
 Prefix: None
 Prefix: None
 Prefix: None
+Prefix: None
+Prefix: None
+Suffix: None
+Suffix: None
 Suffix: None
 Suffix: None
 Suffix: None
@@ -285,8 +305,8 @@ Implicits: 2
 			<ModRange range="255" id="7"/>
 		</Item>
 		<Item id="6">
-			Rarity: EXALTED
-Glacial Solarum Bracers of Acid
+			Rarity: SET
+The Last Bear&apos;s Fury Reforged
 Solarum Bracers
 Unique ID: 6
 Crafted: true
@@ -294,8 +314,11 @@ Prefix: {range:28}14_0
 Prefix: {range:200}501_5
 Prefix: {range:59}69_2
 Prefix: {range:215}1004_5
+Prefix: None
 Suffix: {range:50}86_5
 Suffix: {range:218}804_5
+Suffix: None
+Suffix: None
 Suffix: None
 LevelReq: 62
 Implicits: 2
@@ -305,6 +328,7 @@ Implicits: 2
 {affixType:Prefix}+5% Cold Resistance
 {range:200}{affixType:Prefix}{rounding:Integer}+(11-13) Strength
 {range:59}{affixType:Prefix}(3.7-4.3)% of Melee Damage Leeched as Health
+{affixType:Prefix}+13% Attack Speed
 {range:50}{affixType:Suffix}+(125-150)% Chance to Shred Armor on Hit
 {affixType:Suffix}2% Increased Health Regen per point of Strength
 {range:218}{affixType:Suffix}{rounding:Integer}(40-55)% increased Melee Physical Damage
@@ -314,21 +338,26 @@ Implicits: 2
 			<ModRange range="127.5" id="4"/>
 			<ModRange range="200" id="5"/>
 			<ModRange range="59" id="6"/>
-			<ModRange range="50" id="7"/>
-			<ModRange range="127.5" id="8"/>
-			<ModRange range="218" id="9"/>
+			<ModRange range="127.5" id="7"/>
+			<ModRange range="50" id="8"/>
+			<ModRange range="127.5" id="9"/>
+			<ModRange range="218" id="10"/>
 		</Item>
 		<Item id="7">
-			Rarity: EXALTED
-Ursine Leather Belt of Regrowth
+			Rarity: SET
+Jormun&apos;s Thirst Reforged
 Leather Belt
 Unique ID: 7
 Crafted: true
 Prefix: {range:255}70_6
 Prefix: {range:255}958_4
 Prefix: {range:255}65_2
+Prefix: None
+Prefix: None
 Suffix: {range:255}22_4
 Suffix: {range:255}45_4
+Suffix: None
+Suffix: None
 Suffix: None
 LevelReq: 9
 Implicits: 1
@@ -348,16 +377,20 @@ Implicits: 1
 			<ModRange range="255" id="7"/>
 		</Item>
 		<Item id="8">
-			Rarity: EXALTED
-Mighty Opal Eye Ring of Insulation
+			Rarity: SET
+Keplahan&apos;s Cryolith Reforged
 Opal Eye Ring
 Unique ID: 10
 Crafted: true
 Prefix: {range:243}501_6
 Prefix: {range:106}959_0
 Prefix: {range:179}26_3
+Prefix: None
+Prefix: None
 Suffix: {range:51}80_4
 Suffix: {range:71}22_4
+Suffix: None
+Suffix: None
 Suffix: None
 LevelReq: 0
 Implicits: 3
@@ -381,8 +414,8 @@ Implicits: 3
 			<ModRange range="71" id="9"/>
 		</Item>
 		<Item id="9">
-			Rarity: EXALTED
-Mighty Greatwood Coat of the Ox
+			Rarity: SET
+Apiarist&apos;s Suit Reforged
 Greatwood Coat
 Unique ID: 3
 Crafted: true
@@ -390,8 +423,11 @@ Prefix: {range:57}501_5
 Prefix: {range:25}955_6
 Prefix: {range:7}503_2
 Prefix: {range:155}1028_5
+Prefix: None
 Suffix: {range:0}52_0
 Suffix: {range:8}80_0
+Suffix: None
+Suffix: None
 Suffix: None
 LevelReq: 63
 Implicits: 3
@@ -402,6 +438,7 @@ Implicits: 3
 {affixType:Prefix}{rounding:Integer}+6 Health Regeneration per Summoned Bee
 {range:25}{affixType:Prefix}{rounding:Integer}+(14-16) Attunement
 {range:7}{affixType:Prefix}{rounding:Integer}+(5-6) Dexterity
+{affixType:Prefix}+29% Fire Resistance
 {affixType:Suffix}5% increased Health
 {range:8}{affixType:Suffix}+(6-8)% Elemental Resistance
 			<ModRange range="127.5" id="1"/>
@@ -412,7 +449,8 @@ Implicits: 3
 			<ModRange range="25" id="6"/>
 			<ModRange range="7" id="7"/>
 			<ModRange range="127.5" id="8"/>
-			<ModRange range="8" id="9"/>
+			<ModRange range="127.5" id="9"/>
+			<ModRange range="8" id="10"/>
 		</Item>
 		<Item id="10">
 			Rarity: LEGENDARY
@@ -423,6 +461,10 @@ Crafted: true
 Prefix: {range:251}28_6
 Prefix: {range:228}501_4
 Prefix: {range:48}993_0
+Prefix: None
+Prefix: None
+Suffix: None
+Suffix: None
 Suffix: None
 Suffix: None
 Suffix: None
@@ -448,8 +490,8 @@ Implicits: 2
 			<ModRange range="133" id="9"/>
 		</Item>
 		<Item id="11">
-			Rarity: EXALTED
-Shattering Dawn Blade of Glory
+			Rarity: SET
+Shard of the Shattered Lance Reforged
 Dawn Blade
 Unique ID: 4
 Crafted: true
@@ -457,8 +499,11 @@ Prefix: {range:253}78_6
 Prefix: {range:229}812_4
 Prefix: {range:12}69_2
 Prefix: {range:85}989_2
+Prefix: None
 Suffix: {range:63}20_4
 Suffix: {range:161}428_1
+Suffix: None
+Suffix: None
 Suffix: None
 Quality: 0
 LevelReq: 75
@@ -468,6 +513,7 @@ Implicits: 1
 {affixType:Prefix}+5 Health Regen
 {range:229}{affixType:Prefix}{rounding:Integer}+(13-15) Melee Cold Damage
 {range:12}{scalar:1.75}{affixType:Prefix}(3.7-4.3)% of Melee Damage Leeched as Health
+{range:85}{affixType:Prefix}+(19-20)% Melee Attack Speed
 {range:63}{scalar:1.75}{affixType:Suffix}{rounding:Integer}(9-12) Health Gain on Kill
 {range:161}{affixType:Suffix}+(41-50)% Chance to apply Frailty on Melee Hit
 			<ModRange range="127.5" id="1"/>
@@ -475,8 +521,9 @@ Implicits: 1
 			<ModRange range="127.5" id="3"/>
 			<ModRange range="229" id="4"/>
 			<ModRange range="12" id="5"/>
-			<ModRange range="63" id="6"/>
-			<ModRange range="161" id="7"/>
+			<ModRange range="85" id="6"/>
+			<ModRange range="63" id="7"/>
+			<ModRange range="161" id="8"/>
 		</Item>
 		<Item id="12">
 			Rarity: RARE
@@ -487,9 +534,13 @@ Crafted: true
 Prefix: {range:233}216_0
 Prefix: {range:102}1037_0
 Prefix: None
+Prefix: None
+Prefix: None
 Suffix: {range:42}132_0
 Suffix: {range:98}925_1
 Suffix: {range:34}926_2
+Suffix: None
+Suffix: None
 LevelReq: 0
 Implicits: 0
 {range:233}{affixType:Prefix}{rounding:Integer}+(3-7) Bees Per 10 Seconds
@@ -516,8 +567,12 @@ Crafted: true
 Prefix: {range:89}216_0
 Prefix: {range:79}1071_0
 Prefix: None
+Prefix: None
+Prefix: None
 Suffix: {range:227}152_0
 Suffix: {range:145}899_4
+Suffix: None
+Suffix: None
 Suffix: None
 LevelReq: 0
 Implicits: 0
@@ -541,7 +596,11 @@ Crafted: true
 Prefix: {range:210}158_0
 Prefix: {range:187}1072_0
 Prefix: None
+Prefix: None
+Prefix: None
 Suffix: {range:246}147_0
+Suffix: None
+Suffix: None
 Suffix: None
 Suffix: None
 LevelReq: 0
@@ -562,9 +621,13 @@ Crafted: true
 Prefix: {range:103}216_0
 Prefix: {range:186}1072_0
 Prefix: None
+Prefix: None
+Prefix: None
 Suffix: {range:18}132_0
 Suffix: {range:66}914_3
 Suffix: {range:29}926_1
+Suffix: None
+Suffix: None
 LevelReq: 0
 Implicits: 0
 {range:103}{affixType:Prefix}{rounding:Integer}+(3-7) Bees Per 10 Seconds
@@ -591,9 +654,13 @@ Crafted: true
 Prefix: {range:250}216_0
 Prefix: {range:232}1036_0
 Prefix: None
+Prefix: None
+Prefix: None
 Suffix: {range:53}132_0
 Suffix: {range:46}893_4
 Suffix: {range:153}894_1
+Suffix: None
+Suffix: None
 LevelReq: 0
 Implicits: 0
 {range:250}{affixType:Prefix}{rounding:Integer}+(3-7) Bees Per 10 Seconds
@@ -620,8 +687,12 @@ Crafted: true
 Prefix: {range:144}1093_2
 Prefix: {range:112}1089_6
 Prefix: {range:4}1104_6
+Prefix: None
+Prefix: None
 Suffix: {range:153}1102_0
 Suffix: {range:38}1098_3
+Suffix: None
+Suffix: None
 Suffix: None
 LevelReq: 0
 Implicits: 0
@@ -708,7 +779,7 @@ Implicits: 1
 9% Increased Experience
 			<ModRange range="127.5" id="1"/>
 		</Item>
-		<ItemSet useSecondWeaponSet="false" id="1">
+		<ItemSet useSecondWeaponSet="nil" id="1">
 			<Slot itemPbURL="" name="Amulet" itemId="5"/>
 			<Slot itemPbURL="" name="Belt" itemId="7"/>
 			<Slot itemPbURL="" name="Blood, Frost, and Death" itemId="0"/>
@@ -785,10 +856,10 @@ Implicits: 1
 			<Skill skillId="Swipe" slot="Skill 4" mainActiveSkill="1" includeInFullDPS="false" index="4" enabled="true" mainActiveSkillCalcs="nil"/>
 			<Skill skillId="WerebearForm" slot="Skill 5" mainActiveSkill="1" includeInFullDPS="false" index="5" enabled="true" mainActiveSkillCalcs="nil"/>
 			<Skill skillId="Ailment_ArmourShred" mainActiveSkill="1" includeInFullDPS="true" label="Shred Armor (from Swarmblade Form)" index="6" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:Swarmblade Form"/>
-			<Skill skillId="Ailment_ColdResistanceShred" mainActiveSkill="1" includeInFullDPS="true" label="Shred Cold Resistance (from Swarmblade Form)" index="7" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:Swarmblade Form"/>
-			<Skill skillId="Ailment_Poison" mainActiveSkill="1" includeInFullDPS="true" label="Poison (from Swarmblade Form)" index="8" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:Swarmblade Form"/>
-			<Skill skillId="Ailment_ArmourShred" mainActiveSkill="1" includeInFullDPS="false" label="Shred Armor (from Swipe)" index="9" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:Swipe"/>
-			<Skill skillId="Ailment_ColdResistanceShred" mainActiveSkill="1" includeInFullDPS="false" label="Shred Cold Resistance (from Swipe)" index="10" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:Swipe"/>
+			<Skill skillId="Ailment_ColdResistanceShred" mainActiveSkill="nil" includeInFullDPS="true" label="Shred Cold Resistance (from Swarmblade Form)" index="7" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:Swarmblade Form"/>
+			<Skill skillId="Ailment_Poison" mainActiveSkill="nil" includeInFullDPS="true" label="Poison (from Swarmblade Form)" index="8" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:Swarmblade Form"/>
+			<Skill skillId="Ailment_ArmourShred" mainActiveSkill="nil" includeInFullDPS="false" label="Shred Armor (from Swipe)" index="9" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:Swipe"/>
+			<Skill skillId="Ailment_ColdResistanceShred" mainActiveSkill="nil" includeInFullDPS="false" label="Shred Cold Resistance (from Swipe)" index="10" enabled="true" mainActiveSkillCalcs="nil" source="SkillId:Swipe"/>
 		</SkillSet>
 	</Skills>
 	<Tree activeSpec="1">
