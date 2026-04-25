@@ -633,8 +633,11 @@ function ItemClass:ParseRaw(raw, rarity, highQuality)
 	end
 	self.affixLimit = 0
 	if self.crafted then
-	    -- The affix limit is set to 6 instead of 4 to support sealed affixes
-		self.affixLimit = 6
+	    -- 4 base affixes (2 prefix + 2 suffix) + Sealed + Primordial + Corrupted.
+	    -- Each special slot can land on either side, so allow 5 per side (=10).
+	    -- Older code used 6 (=3/side) which silently dropped a 4th-slot affix
+	    -- (commonly the Corrupted-sealed prefix on Body Armors).
+		self.affixLimit = 10
 		if self.crafted then
 			for _, list in ipairs({self.prefixes,self.suffixes}) do
 				for i = 1, self.affixLimit/2 do
