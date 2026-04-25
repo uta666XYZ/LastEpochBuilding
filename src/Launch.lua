@@ -538,9 +538,9 @@ function launch:ShowRichReportCopiedDialog(statusLine)
 	local lines = {
 		statusLine or "^2Error report has been copied to clipboard.",
 		"",
-		"^0Please paste it as a comment on the latest Reddit post:",
+		"^7Please paste it as a comment on the latest Reddit post:",
 		"  ^x4080FFhttps://reddit.com/user/ukunZ626",
-		"^0Or open a GitHub issue at:",
+		"^7Or open a GitHub issue at:",
 		"  ^x4080FFhttps://github.com/uta666XYZ/LastEpochBuilding/issues",
 	}
 	for _, line in ipairs(lines) do
@@ -578,8 +578,8 @@ function launch:ShowRichErrorDialog(errText)
 	y = y + 24
 	-- Reporting instructions
 	local intro = {
-		"^0If this keeps happening, please help us fix it by reporting:",
-		"  Reddit: ^x4080FFhttps://reddit.com/user/ukunZ626 ^0(comment on the latest post)",
+		"^7If this keeps happening, please help us fix it by reporting:",
+		"  Reddit: ^x4080FFhttps://reddit.com/user/ukunZ626 ^7(comment on the latest post)",
 		"  GitHub: ^x4080FFhttps://github.com/uta666XYZ/LastEpochBuilding/issues",
 	}
 	for _, line in ipairs(intro) do
@@ -587,10 +587,15 @@ function launch:ShowRichErrorDialog(errText)
 		y = y + 18
 	end
 	y = y + 8
-	-- Checkbox: include build
+	-- Checkbox: include build (center the label+checkbox group within the popup)
 	local includeBuildState = false
-	controls.includeBuild = new("CheckBoxControl", { "TOPLEFT", nil, "TOPLEFT" }, 18, y, 18,
-		"^7I agree to include my build in the report (helps us improve LEB)",
+	local cbLabel = "^7I agree to include my build in the report (helps us improve LEB)"
+	local popupW = 620
+	local cbSize = 18
+	local stringW = DrawStringWidth(cbSize - 4, "VAR", cbLabel)
+	local cbX = math.floor((popupW + stringW - cbSize + 5) / 2)
+	controls.includeBuild = new("CheckBoxControl", { "TOPLEFT", nil, "TOPLEFT" }, cbX, y, cbSize,
+		cbLabel,
 		function(state) includeBuildState = state end)
 	controls.includeBuild.state = false
 	y = y + 28
