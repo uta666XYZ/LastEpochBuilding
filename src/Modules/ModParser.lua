@@ -762,6 +762,9 @@ local specialModList = {
 		return { mod("MaximumSymbols", "BASE", tonumber(num)) }
 	end,
 	-- Runemaster: Sanguine Runestones 6-point bonus
+	["^(%d+)%% of health regen also applies to ward$"] = function(num)
+		return { mod("LifeRegenAppliesToWard", "BASE", tonumber(num)) }
+	end,
 	["^(%d+)%% health regen also applies to ward$"] = function(num)
 		return { mod("LifeRegenAppliesToWard", "BASE", tonumber(num)) }
 	end,
