@@ -1435,6 +1435,14 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
         ["_parseErrors"] = 0,
     }
     char.cycle = saveContent["cycle"] or 0
+    -- Quest reward flags from savedQuests (questID 124 = Apophis and Majasa,
+    -- 151 = Temple of Eterra; both grant +1 to all attributes). A questID
+    -- present in savedQuests means the player has progressed/completed it.
+    char.questFlags = { apophisMajasa = false, templeOfEterra = false }
+    for _, q in pairs(saveContent["savedQuests"] or {}) do
+        if q.questID == 124 then char.questFlags.apophisMajasa = true
+        elseif q.questID == 151 then char.questFlags.templeOfEterra = true end
+    end
     for passiveIdx, passive in pairs(saveContent["savedCharacterTree"]["nodeIDs"]) do
         local nbPoints = saveContent["savedCharacterTree"]["nodePoints"][passiveIdx]
         table.insert(char["hashes"], className .. "-" .. passive .. "#" .. nbPoints)
@@ -1720,6 +1728,10 @@ function ImportTabClass:ImportPassiveTreeAndJewels(charData)
     self.build.configTab:UpdateLevel()
     self.build.controls.characterLevel:SetText(charData.level)
     self.build:EstimatePlayerProgress()
+    if charData.questFlags then
+        self.build.configTab.input.questApophisMajasa = charData.questFlags.apophisMajasa
+        self.build.configTab.input.questTempleOfEterra = charData.questFlags.templeOfEterra
+    end
     self.build.configTab:BuildModList()
     self.build.configTab:UpdateControls()
     self.build.buildFlag = true
