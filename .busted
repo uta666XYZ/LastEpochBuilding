@@ -28,4 +28,10 @@ return {
         helper = "HeadlessWrapper.lua",
         ROOT = { "../spec/GenerateOneBuild.lua" },
     },
+    importOne = {
+        directory = "src",
+        lpath = "../runtime/lua/?.lua;../runtime/lua/?/init.lua",
+        helper = "HeadlessWrapper.lua",
+        ROOT = { "../spec/ImportLEToolsBuild.lua" },
+    },
 }
