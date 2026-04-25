@@ -117,6 +117,18 @@ if modDB then
 end
 outHnd:write("    },\n")
 
+outHnd:write("    etBreakdown = {\n")
+if modDB then
+    dumpModList(outHnd, "EnduranceThreshold", modDB.mods["EnduranceThreshold"])
+    dumpModList(outHnd, "LifeAsEnduranceThreshold", modDB.mods["LifeAsEnduranceThreshold"])
+    outHnd:write(string.format("        [\"_summary\"] = { etBase=%d, lifeAsET=%d, life=%d, final=%d },\n",
+        modDB:Sum("BASE", nil, "EnduranceThreshold"),
+        modDB:Sum("BASE", nil, "LifeAsEnduranceThreshold"),
+        build.calcsTab.mainOutput.Life or 0,
+        build.calcsTab.mainOutput.EnduranceThreshold or 0))
+end
+outHnd:write("    },\n")
+
 outHnd:write("    vitBreakdown = {\n")
 if modDB then
     dumpModList(outHnd, "Vit", modDB.mods["Vit"])
