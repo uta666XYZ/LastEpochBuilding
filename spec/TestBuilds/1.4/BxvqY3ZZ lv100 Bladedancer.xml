@@ -1,72 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LastEpochBuilding>
 	<Build level="100" targetVersion="1_4" pantheonMajorGod="None" bandit="None" className="Rogue" ascendClassName="Bladedancer" characterLevelAutoMode="false" mainSocketGroup="4" viewMode="IMPORT" pantheonMinorGod="None">
-		<PlayerStat stat="AverageHit" value="30908.398583"/>
-		<PlayerStat stat="AverageDamage" value="30908.398583"/>
-		<PlayerStat stat="AverageBurstDamage" value="30908.398583"/>
+		<PlayerStat stat="AverageHit" value="29774.456608"/>
+		<PlayerStat stat="AverageDamage" value="29774.456608"/>
+		<PlayerStat stat="AverageBurstDamage" value="29774.456608"/>
 		<PlayerStat stat="Speed" value="2.2758561729651"/>
 		<PlayerStat stat="PreEffectiveCritChance" value="17.9"/>
 		<PlayerStat stat="CritChance" value="17.9"/>
-		<PlayerStat stat="CritMultiplier" value="4.3"/>
+		<PlayerStat stat="CritMultiplier" value="4.2"/>
 		<PlayerStat stat="HitChance" value="100"/>
-		<PlayerStat stat="TotalDPS" value="70343.069711585"/>
-		<PlayerStat stat="CombinedDPS" value="70343.069711585"/>
+		<PlayerStat stat="TotalDPS" value="67762.380867997"/>
+		<PlayerStat stat="CombinedDPS" value="67762.380867997"/>
 		<PlayerStat stat="ManaCost" value="0"/>
 		<PlayerStat stat="ManaPercentCost" value="0"/>
 		<PlayerStat stat="ManaPerSecondCost" value="0"/>
 		<PlayerStat stat="ManaPercentPerSecondCost" value="0"/>
-		<PlayerStat stat="Vit" value="5"/>
-		<PlayerStat stat="Str" value="13"/>
-		<PlayerStat stat="Dex" value="26"/>
-		<PlayerStat stat="Int" value="5"/>
-		<PlayerStat stat="Att" value="5"/>
-		<PlayerStat stat="TotalEHP" value="10580.359371004"/>
-		<PlayerStat stat="FireMaximumHitTaken" value="11035.478863706"/>
-		<PlayerStat stat="LightningMaximumHitTaken" value="9853.1061283091"/>
-		<PlayerStat stat="ColdMaximumHitTaken" value="11035.478863706"/>
-		<PlayerStat stat="PhysicalMaximumHitTaken" value="8278.8055394442"/>
-		<PlayerStat stat="PoisonMaximumHitTaken" value="3941.2424513236"/>
-		<PlayerStat stat="NecroticMaximumHitTaken" value="11035.478863706"/>
-		<PlayerStat stat="VoidMaximumHitTaken" value="5205.414558352"/>
-		<PlayerStat stat="Life" value="1635"/>
+		<PlayerStat stat="Vit" value="3"/>
+		<PlayerStat stat="Str" value="11"/>
+		<PlayerStat stat="Dex" value="24"/>
+		<PlayerStat stat="Int" value="3"/>
+		<PlayerStat stat="Att" value="3"/>
+		<PlayerStat stat="TotalEHP" value="7471.6386999401"/>
+		<PlayerStat stat="FireMaximumHitTaken" value="9462.915697816"/>
+		<PlayerStat stat="LightningMaximumHitTaken" value="7885.7630815133"/>
+		<PlayerStat stat="ColdMaximumHitTaken" value="8761.9589794592"/>
+		<PlayerStat stat="PhysicalMaximumHitTaken" value="6640.2494341676"/>
+		<PlayerStat stat="PoisonMaximumHitTaken" value="3196.9309789919"/>
+		<PlayerStat stat="NecroticMaximumHitTaken" value="9462.915697816"/>
+		<PlayerStat stat="VoidMaximumHitTaken" value="4301.3253171891"/>
+		<PlayerStat stat="Life" value="1437"/>
 		<PlayerStat stat="Spec:LifeInc" value="0"/>
 		<PlayerStat stat="LifeRegenRecovery" value="0"/>
 		<PlayerStat stat="LifeLeechGainRate" value="13.65513703779"/>
-		<PlayerStat stat="Mana" value="190"/>
+		<PlayerStat stat="Mana" value="186"/>
 		<PlayerStat stat="Spec:ManaInc" value="0"/>
 		<PlayerStat stat="ManaRegenRecovery" value="9"/>
 		<PlayerStat stat="ManaLeechGainRate" value="0"/>
 		<PlayerStat stat="Ward" value="0"/>
-		<PlayerStat stat="WardRetention" value="10"/>
+		<PlayerStat stat="WardRetention" value="6"/>
 		<PlayerStat stat="NetWardRegen" value="0"/>
-		<PlayerStat stat="Evasion" value="1055"/>
+		<PlayerStat stat="Evasion" value="941"/>
 		<PlayerStat stat="Spec:EvasionInc" value="34"/>
 		<PlayerStat stat="MeleeEvadeChance" value="0"/>
 		<PlayerStat stat="ProjectileEvadeChance" value="0"/>
-		<PlayerStat stat="Armour" value="1228"/>
+		<PlayerStat stat="Armour" value="1020"/>
 		<PlayerStat stat="Spec:ArmourInc" value="0"/>
-		<PlayerStat stat="PhysicalDamageReduction" value="26.881800052927"/>
+		<PlayerStat stat="PhysicalDamageReduction" value="23.987519066409"/>
 		<PlayerStat stat="BlockChance" value="0"/>
 		<PlayerStat stat="SpellBlockChance" value="0"/>
-		<PlayerStat stat="AttackDodgeChance" value="30.571045081378"/>
+		<PlayerStat stat="AttackDodgeChance" value="27.476847695012"/>
 		<PlayerStat stat="SpellDodgeChance" value="0"/>
 		<PlayerStat stat="FireResist" value="75"/>
-		<PlayerStat stat="FireResistOverCap" value="5"/>
-		<PlayerStat stat="LightningResist" value="72"/>
+		<PlayerStat stat="FireResistOverCap" value="3"/>
+		<PlayerStat stat="LightningResist" value="70"/>
 		<PlayerStat stat="LightningResistOverCap" value="0"/>
-		<PlayerStat stat="ColdResist" value="75"/>
+		<PlayerStat stat="ColdResist" value="73"/>
 		<PlayerStat stat="ColdResistOverCap" value="0"/>
-		<PlayerStat stat="PhysicalResist" value="63"/>
+		<PlayerStat stat="PhysicalResist" value="61"/>
 		<PlayerStat stat="PhysicalResistOverCap" value="0"/>
-		<PlayerStat stat="PoisonResist" value="30"/>
+		<PlayerStat stat="PoisonResist" value="26"/>
 		<PlayerStat stat="PoisonResistOverCap" value="0"/>
 		<PlayerStat stat="NecroticResist" value="75"/>
-		<PlayerStat stat="NecroticResistOverCap" value="31"/>
-		<PlayerStat stat="VoidResist" value="47"/>
+		<PlayerStat stat="NecroticResistOverCap" value="27"/>
+		<PlayerStat stat="VoidResist" value="45"/>
 		<PlayerStat stat="VoidResistOverCap" value="0"/>
 		<PlayerStat stat="EffectiveMovementSpeedMod" value="1.55"/>
-		<PlayerStat stat="FullDPS" value="70413.632632228"/>
-		<FullDPSSkill skillPart="" source="" stat="Shadow Cascade" value="70343.069711585"/>
+		<PlayerStat stat="FullDPS" value="67832.94378864"/>
+		<FullDPSSkill skillPart="" source="" stat="Shadow Cascade" value="67762.380867997"/>
 		<FullDPSSkill skillPart="" source="ShadowCascade" stat="Bleed" value="70.562920642782"/>
 	</Build>
 	<Calcs>
@@ -221,35 +221,6 @@ Implicits: 2
 			<ModRange range="231" id="10"/>
 		</Item>
 		<Item id="4">
-			Rarity: UNIQUE
-Doppelganger&apos;s Facade
-Umbral Hood
-Unique ID: 2
-Crafted: true
-Prefix: None
-Prefix: None
-Prefix: None
-Suffix: None
-Suffix: None
-Suffix: None
-LevelReq: 37
-Implicits: 2
-+81 Armor
-{range:60}{rounding:Integer}+(54-81) Stun Avoidance
-{crafted}{range:223}(70-120) Health Gained on Shadow Creation
-{crafted}Consuming a Shadow grants a stack of Dusk Shroud
-{crafted}{range:218}(10-24)% Chance to receive a Glancing Blow when hit
-{crafted}{range:255}+(8-14)% increased Health
-{crafted}{range:49}+(70-110) Dodge Rating
-			<ModRange range="127.5" id="1"/>
-			<ModRange range="60" id="2"/>
-			<ModRange range="223" id="3"/>
-			<ModRange range="127.5" id="4"/>
-			<ModRange range="218" id="5"/>
-			<ModRange range="255" id="6"/>
-			<ModRange range="49" id="7"/>
-		</Item>
-		<Item id="5">
 			Rarity: LEGENDARY
 Xithara&apos;s Conundrum
 Ruby Amulet
@@ -280,7 +251,7 @@ Implicits: 1
 			<ModRange range="127.5" id="7"/>
 			<ModRange range="105" id="8"/>
 		</Item>
-		<Item id="6">
+		<Item id="5">
 			Rarity: EXALTED
 Mighty Outcast Gloves of Purity
 Outcast Gloves
@@ -313,7 +284,7 @@ Implicits: 2
 			<ModRange range="104" id="8"/>
 			<ModRange range="104" id="9"/>
 		</Item>
-		<Item id="7">
+		<Item id="6">
 			Rarity: SET
 Jormun&apos;s Thirst Reforged
 Divine Girdle
@@ -344,7 +315,7 @@ Implicits: 2
 			<ModRange range="76" id="7"/>
 			<ModRange range="17" id="8"/>
 		</Item>
-		<Item id="8">
+		<Item id="7">
 			Rarity: LEGENDARY
 Legends Entwined
 Opal Ring
@@ -368,6 +339,7 @@ Implicits: 2
 {crafted}{range:34}{rounding:Integer}+(2-5) to All Attributes per Complete Set
 {crafted}{range:8}+(2-5)% to All Resistances per Complete Set
 {crafted}+1 to All Skills per Complete Set
+{crafted}Counts as a part of every equipped item set
 			<ModRange range="215" id="1"/>
 			<ModRange range="148" id="2"/>
 			<ModRange range="95" id="3"/>
@@ -378,8 +350,9 @@ Implicits: 2
 			<ModRange range="34" id="8"/>
 			<ModRange range="8" id="9"/>
 			<ModRange range="127.5" id="10"/>
+			<ModRange range="127.5" id="11"/>
 		</Item>
-		<Item id="9">
+		<Item id="8">
 			Rarity: SET
 Doppelganger&apos;s Deception Reforged
 Falconry Armor
@@ -412,7 +385,7 @@ Implicits: 3
 			<ModRange range="94" id="8"/>
 			<ModRange range="45" id="9"/>
 		</Item>
-		<Item id="10">
+		<Item id="9">
 			Rarity: LEGENDARY
 Tabi of Dusk and Dawn
 Outcast Boots
@@ -451,7 +424,7 @@ Implicits: 3
 			<ModRange range="185" id="11"/>
 			<ModRange range="127.5" id="12"/>
 		</Item>
-		<Item id="11">
+		<Item id="10">
 			Rarity: EXALTED
 Deft Katana of Legions
 Katana
@@ -481,7 +454,7 @@ Implicits: 2
 			<ModRange range="51" id="6"/>
 			<ModRange range="251" id="7"/>
 		</Item>
-		<Item id="12">
+		<Item id="11">
 			Rarity: RARE
 Fanged Small Weaver Idol of the Trapdoor
 Small Weaver Idol
@@ -504,7 +477,7 @@ Implicits: 0
 			<ModRange range="105" id="3"/>
 			<ModRange range="105" id="4"/>
 		</Item>
-		<Item id="13">
+		<Item id="12">
 			Rarity: RARE
 Duskblade&apos;s Grand Umbral Omen Idol of Corrosion
 Grand Umbral Omen Idol
@@ -525,7 +498,7 @@ Implicits: 0
 			<ModRange range="170" id="2"/>
 			<ModRange range="162" id="3"/>
 		</Item>
-		<Item id="14">
+		<Item id="13">
 			Rarity: RARE
 Cascading Large Umbral Omen Idol of the Swallow
 Large Umbral Omen Idol
@@ -546,7 +519,7 @@ Implicits: 0
 			<ModRange range="178" id="2"/>
 			<ModRange range="236" id="3"/>
 		</Item>
-		<Item id="15">
+		<Item id="14">
 			Rarity: RARE
 Duskblade&apos;s Ornate Majasan Idol of Corrosion
 Ornate Majasan Idol
@@ -565,7 +538,7 @@ Implicits: 0
 			<ModRange range="242" id="1"/>
 			<ModRange range="81" id="2"/>
 		</Item>
-		<Item id="16">
+		<Item id="15">
 			Rarity: RARE
 Duskblade&apos;s Ornate Majasan Idol of Corrosion
 Ornate Majasan Idol
@@ -584,7 +557,7 @@ Implicits: 0
 			<ModRange range="207" id="1"/>
 			<ModRange range="213" id="2"/>
 		</Item>
-		<Item id="17">
+		<Item id="16">
 			Rarity: RARE
 Duskblade&apos;s Ornate Majasan Idol of Corrosion
 Ornate Majasan Idol
@@ -603,7 +576,7 @@ Implicits: 0
 			<ModRange range="209" id="1"/>
 			<ModRange range="208" id="2"/>
 		</Item>
-		<Item id="18">
+		<Item id="17">
 			Rarity: RARE
 Prodigious Pyramidal Altar of the Sea Giant
 Pyramidal Altar
@@ -628,129 +601,29 @@ Implicits: 2
 			<ModRange range="42" id="4"/>
 			<ModRange range="127.5" id="5"/>
 		</Item>
-		<Item id="19">
-			Rarity: NORMAL
-Scars of Blood
-Scars of Blood
-Unique ID: blessing:Blood, Frost, and Death
-LevelReq: 0
-Implicits: 1
-31% Increased One-Handed Axe Drop Rate
-			<ModRange range="127.5" id="1"/>
-		</Item>
-		<Item id="20">
-			Rarity: NORMAL
-Grand Grasp of Hope
-Grand Grasp of Hope
-Unique ID: blessing:The Last Ruin
-LevelReq: 0
-Implicits: 1
-47% Increased Gloves Shard Drop Rate
-			<ModRange range="127.5" id="1"/>
-		</Item>
-		<Item id="21">
-			Rarity: NORMAL
-Grand Scales of Greed
-Grand Scales of Greed
-Unique ID: blessing:Fall of the Outcasts
-LevelReq: 0
-Implicits: 1
-51% Increased Gold Drop Rate
-			<ModRange range="127.5" id="1"/>
-		</Item>
-		<Item id="22">
-			Rarity: NORMAL
-Grand Light of the Moon
-Grand Light of the Moon
-Unique ID: blessing:Ending the Storm
-LevelReq: 0
-Implicits: 1
-+79 Mana
-			<ModRange range="127.5" id="1"/>
-		</Item>
-		<Item id="23">
-			Rarity: NORMAL
-Grand Bulwark of the Tundra
-Grand Bulwark of the Tundra
-Unique ID: blessing:The Age of Winter
-LevelReq: 0
-Implicits: 1
-54% increased Armor
-			<ModRange range="127.5" id="1"/>
-		</Item>
-		<Item id="24">
-			Rarity: NORMAL
-Grand Hope of the Beginning
-Grand Hope of the Beginning
-Unique ID: blessing:Fall of the Empire
-LevelReq: 0
-Implicits: 1
-24% Increased Prefix Shard Drop Rate
-			<ModRange range="127.5" id="1"/>
-		</Item>
-		<Item id="25">
-			Rarity: NORMAL
-Grand Emptiness of Ash
-Grand Emptiness of Ash
-Unique ID: blessing:The Black Sun
-LevelReq: 0
-Implicits: 1
-+40% Critical Strike Multiplier
-			<ModRange range="127.5" id="1"/>
-		</Item>
-		<Item id="26">
-			Rarity: NORMAL
-Grand Resolve of Humanity
-Grand Resolve of Humanity
-Unique ID: blessing:Reign of Dragons
-LevelReq: 0
-Implicits: 1
-+18% to All Resistances
-			<ModRange range="127.5" id="1"/>
-		</Item>
-		<Item id="27">
-			Rarity: NORMAL
-Talon of Grandeur
-Talon of Grandeur
-Unique ID: blessing:The Stolen Lance
-LevelReq: 0
-Implicits: 1
-29% Increased Ring Drop Rate
-			<ModRange range="127.5" id="1"/>
-		</Item>
-		<Item id="28">
-			Rarity: NORMAL
-Grand Body of Obsidian
-Grand Body of Obsidian
-Unique ID: blessing:Spirits of Fire
-LevelReq: 0
-Implicits: 1
-+272 Armor
-			<ModRange range="127.5" id="1"/>
-		</Item>
 		<ItemSet useSecondWeaponSet="false" id="1">
-			<Slot itemPbURL="" name="Amulet" itemId="5"/>
-			<Slot itemPbURL="" name="Belt" itemId="7"/>
-			<Slot itemPbURL="" name="Blood, Frost, and Death" itemId="19"/>
-			<Slot itemPbURL="" name="Body Armor" itemId="9"/>
-			<Slot itemPbURL="" name="Boots" itemId="10"/>
-			<Slot itemPbURL="" name="Ending the Storm" itemId="22"/>
-			<Slot itemPbURL="" name="Fall of the Empire" itemId="24"/>
-			<Slot itemPbURL="" name="Fall of the Outcasts" itemId="21"/>
-			<Slot itemPbURL="" name="Gloves" itemId="6"/>
-			<Slot itemPbURL="" name="Helmet" itemId="4"/>
+			<Slot itemPbURL="" name="Amulet" itemId="4"/>
+			<Slot itemPbURL="" name="Belt" itemId="6"/>
+			<Slot itemPbURL="" name="Blood, Frost, and Death" itemId="18"/>
+			<Slot itemPbURL="" name="Body Armor" itemId="8"/>
+			<Slot itemPbURL="" name="Boots" itemId="9"/>
+			<Slot itemPbURL="" name="Ending the Storm" itemId="21"/>
+			<Slot itemPbURL="" name="Fall of the Empire" itemId="23"/>
+			<Slot itemPbURL="" name="Fall of the Outcasts" itemId="20"/>
+			<Slot itemPbURL="" name="Gloves" itemId="5"/>
+			<Slot itemPbURL="" name="Helmet" itemId="0"/>
 			<Slot itemPbURL="" name="Idol 1" itemId="0"/>
-			<Slot itemPbURL="" name="Idol 10" itemId="15"/>
+			<Slot itemPbURL="" name="Idol 10" itemId="14"/>
 			<Slot itemPbURL="" name="Idol 11" itemId="0"/>
 			<Slot itemPbURL="" name="Idol 12" itemId="0"/>
 			<Slot itemPbURL="" name="Idol 13" itemId="0"/>
-			<Slot itemPbURL="" name="Idol 14" itemId="16"/>
+			<Slot itemPbURL="" name="Idol 14" itemId="15"/>
 			<Slot itemPbURL="" name="Idol 15" itemId="0"/>
 			<Slot itemPbURL="" name="Idol 16" itemId="0"/>
 			<Slot itemPbURL="" name="Idol 17" itemId="0"/>
-			<Slot itemPbURL="" name="Idol 18" itemId="17"/>
+			<Slot itemPbURL="" name="Idol 18" itemId="16"/>
 			<Slot itemPbURL="" name="Idol 19" itemId="0"/>
-			<Slot itemPbURL="" name="Idol 2" itemId="12"/>
+			<Slot itemPbURL="" name="Idol 2" itemId="11"/>
 			<Slot itemPbURL="" name="Idol 20" itemId="0"/>
 			<Slot itemPbURL="" name="Idol 21" itemId="0"/>
 			<Slot itemPbURL="" name="Idol 22" itemId="0"/>
@@ -759,28 +632,28 @@ Implicits: 1
 			<Slot itemPbURL="" name="Idol 25" itemId="0"/>
 			<Slot itemPbURL="" name="Idol 3" itemId="0"/>
 			<Slot itemPbURL="" name="Idol 4" itemId="0"/>
-			<Slot itemPbURL="" name="Idol 5" itemId="13"/>
+			<Slot itemPbURL="" name="Idol 5" itemId="12"/>
 			<Slot itemPbURL="" name="Idol 6" itemId="0"/>
 			<Slot itemPbURL="" name="Idol 7" itemId="0"/>
 			<Slot itemPbURL="" name="Idol 8" itemId="0"/>
-			<Slot itemPbURL="" name="Idol 9" itemId="14"/>
-			<Slot itemPbURL="" name="Idol Altar" itemId="18"/>
-			<Slot itemPbURL="" name="Omen Idol 1" itemId="13"/>
-			<Slot itemPbURL="" name="Omen Idol 2" itemId="14"/>
-			<Slot itemPbURL="" name="Omen Idol 3" itemId="15"/>
-			<Slot itemPbURL="" name="Omen Idol 4" itemId="16"/>
-			<Slot itemPbURL="" name="Omen Idol 5" itemId="17"/>
+			<Slot itemPbURL="" name="Idol 9" itemId="13"/>
+			<Slot itemPbURL="" name="Idol Altar" itemId="17"/>
+			<Slot itemPbURL="" name="Omen Idol 1" itemId="12"/>
+			<Slot itemPbURL="" name="Omen Idol 2" itemId="13"/>
+			<Slot itemPbURL="" name="Omen Idol 3" itemId="14"/>
+			<Slot itemPbURL="" name="Omen Idol 4" itemId="15"/>
+			<Slot itemPbURL="" name="Omen Idol 5" itemId="16"/>
 			<Slot itemPbURL="" name="Omen Idol 6" itemId="0"/>
-			<Slot itemPbURL="" name="Reign of Dragons" itemId="26"/>
+			<Slot itemPbURL="" name="Reign of Dragons" itemId="25"/>
 			<Slot itemPbURL="" name="Relic" itemId="1"/>
 			<Slot itemPbURL="" name="Ring 1" itemId="2"/>
-			<Slot itemPbURL="" name="Ring 2" itemId="8"/>
-			<Slot itemPbURL="" name="Spirits of Fire" itemId="28"/>
-			<Slot itemPbURL="" name="The Age of Winter" itemId="23"/>
-			<Slot itemPbURL="" name="The Black Sun" itemId="25"/>
-			<Slot itemPbURL="" name="The Last Ruin" itemId="20"/>
-			<Slot itemPbURL="" name="The Stolen Lance" itemId="27"/>
-			<Slot itemPbURL="" name="Weapon 1" itemId="11"/>
+			<Slot itemPbURL="" name="Ring 2" itemId="7"/>
+			<Slot itemPbURL="" name="Spirits of Fire" itemId="27"/>
+			<Slot itemPbURL="" name="The Age of Winter" itemId="22"/>
+			<Slot itemPbURL="" name="The Black Sun" itemId="24"/>
+			<Slot itemPbURL="" name="The Last Ruin" itemId="19"/>
+			<Slot itemPbURL="" name="The Stolen Lance" itemId="26"/>
+			<Slot itemPbURL="" name="Weapon 1" itemId="10"/>
 			<Slot itemPbURL="" name="Weapon 2" itemId="3"/>
 		</ItemSet>
 		<BlessingFracs>
@@ -791,9 +664,9 @@ Implicits: 1
 			<BlessingFrac timeline="The Stolen Lance" frac="0.93333333333333"/>
 			<BlessingFrac timeline="Blood, Frost, and Death" frac="0.047058823529412"/>
 			<BlessingFrac timeline="The Last Ruin" frac="0.83921568627451"/>
-			<BlessingFrac timeline="Fall of the Empire" frac="0.89803921568627"/>
-			<BlessingFrac timeline="The Black Sun" frac="1"/>
 			<BlessingFrac timeline="Spirits of Fire" frac="0.6"/>
+			<BlessingFrac timeline="The Black Sun" frac="1"/>
+			<BlessingFrac timeline="Fall of the Empire" frac="0.89803921568627"/>
 		</BlessingFracs>
 	</Items>
 	<Notes>
