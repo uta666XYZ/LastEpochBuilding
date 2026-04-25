@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LastEpochBuilding>
 	<Build level="98" targetVersion="1_4" pantheonMajorGod="None" bandit="None" className="Sentinel" ascendClassName="Paladin" characterLevelAutoMode="false" mainSocketGroup="5" viewMode="IMPORT" pantheonMinorGod="None">
+		<Source url="https://www.lastepochtools.com/planner/AVaPRddR" plannerCode="AVaPRddR" importedAt="unknown" lebVersion="v0.13.0"/>
 		<PlayerStat stat="AverageHit" value="389.025"/>
 		<PlayerStat stat="AverageBurstDamage" value="389.025"/>
 		<PlayerStat stat="Speed" value="0.68749997851563"/>

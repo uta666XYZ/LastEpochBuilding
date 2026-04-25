@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LastEpochBuilding>
 	<Build level="96" targetVersion="1_4" pantheonMajorGod="None" bandit="None" className="Mage" ascendClassName="Sorcerer" characterLevelAutoMode="false" mainSocketGroup="1" viewMode="SKILLS" pantheonMinorGod="None">
+		<Source url="https://www.lastepochtools.com/planner/BjqdaPzE" plannerCode="BjqdaPzE" importedAt="unknown" lebVersion="v0.13.0"/>
 		<PlayerStat stat="AverageHit" value="26258.550239576"/>
 		<PlayerStat stat="AverageBurstDamage" value="26258.550239576"/>
 		<PlayerStat stat="Speed" value="1.4960000854857"/>

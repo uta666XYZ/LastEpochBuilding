@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LastEpochBuilding>
 	<Build level="97" targetVersion="1_4" pantheonMajorGod="None" bandit="None" className="Primalist" ascendClassName="Druid" characterLevelAutoMode="false" mainSocketGroup="1" viewMode="ITEMS" pantheonMinorGod="None">
+		<Source url="https://www.lastepochtools.com/planner/QeY7m5Xq" plannerCode="QeY7m5Xq" importedAt="unknown" lebVersion="v0.13.0"/>
 		<PlayerStat stat="AverageHit" value="39.7213376"/>
 		<PlayerStat stat="AverageDamage" value="39.7213376"/>
 		<PlayerStat stat="AverageBurstDamage" value="39.7213376"/>
