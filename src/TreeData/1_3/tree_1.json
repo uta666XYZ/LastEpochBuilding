@@ -2148,7 +2148,7 @@
       "masteryRequirement": 40,
       "stats": [
         "1 Ward on Potion Use per Intelligence",
-        "5% Mana Regen"
+        "5% increased Mana Regen"
       ],
       "notScalingStats": [],
       "noScalingPointThreshold": 0,
