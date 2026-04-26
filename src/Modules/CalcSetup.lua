@@ -600,16 +600,6 @@ function calcs.initEnv(build, mode, override, specEnv)
 		modDB:NewMod("PoisonResist", "BASE", 1, "Rampancy", {type = "PerStat", stat = "Rampancy"})
 		modDB:NewMod("NecroticResist", "BASE", 1, "Rampancy", {type = "PerStat", stat = "Rampancy"})
 
-		-- Season 4 (1.4): Acolyte converts all base attributes into their mastery variants
-		-- (Str→Brutality, Dex→Guile, Int→Madness, Att→Apathy, Vit→Rampancy). classId 3 = Acolyte.
-		if env.spec.treeVersion == "1_4" and env.classId == 3 then
-			modDB:NewMod("StrengthConvertedToBrutality", "BASE", 100, "Acolyte")
-			modDB:NewMod("DexterityConvertedToGuile", "BASE", 100, "Acolyte")
-			modDB:NewMod("IntelligenceConvertedToMadness", "BASE", 100, "Acolyte")
-			modDB:NewMod("AttunementConvertedToApathy", "BASE", 100, "Acolyte")
-			modDB:NewMod("VitalityConvertedToRampancy", "BASE", 100, "Acolyte")
-		end
-
 		-- Initialise enemy modifier database
 		calcs.initModDB(env, enemyDB)
 		enemyDB:NewMod("Condition:AgainstDamageOverTime", "FLAG", true, "Base", ModFlag.Dot, { type = "ActorCondition", actor = "player", var = "Combat" })
