@@ -86,11 +86,11 @@ end
 
 DamageTypes = {
 	"Fire",
-	"Lightning",
 	"Cold",
+	"Lightning",
 	"Physical",
-	"Poison",
 	"Necrotic",
+	"Poison",
 	"Void"
 }
 
@@ -106,11 +106,11 @@ AttributesColored = {
 
 DamageTypesColored = {
 	colorCodes.FIRE.."Fire",
-	colorCodes.LIGHTNING .. "Lightning",
 	colorCodes.COLD .. "Cold",
+	colorCodes.LIGHTNING .. "Lightning",
 	colorCodes.PHYSICAL.."Physical",
-	colorCodes.POISON.."Poison",
 	colorCodes.NECROTIC.."Necrotic",
+	colorCodes.POISON.."Poison",
 	colorCodes.VOID.."Void"
 }
 
