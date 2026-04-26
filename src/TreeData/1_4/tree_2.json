@@ -1867,6 +1867,7 @@
       "masteryRequirement": 30,
       "stats": [
         "+2% Block Chance",
+        "4 Health Gained on Block",
         "5% Less Stun Duration On You"
       ],
       "notScalingStats": ["30% Less Dodge Chance"],
