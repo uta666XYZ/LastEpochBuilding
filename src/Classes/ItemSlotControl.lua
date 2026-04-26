@@ -7,10 +7,60 @@ local pairs = pairs
 local t_insert = table.insert
 local m_min = math.min
 
+-- Whether an item has a Primordial affix (sat=7). Items crafted in LEB store
+-- this in craftState.affixState.primordial.modKey; items imported from save
+-- files expose it through explicitModLines[*].primordial.
+local function itemHasPrimordial(item)
+	if not item then return false end
+	if item.craftState and item.craftState.affixState
+		and item.craftState.affixState.primordial
+		and item.craftState.affixState.primordial.modKey ~= nil then
+		return true
+	end
+	if item.explicitModLines then
+		for _, line in ipairs(item.explicitModLines) do
+			if line.primordial then return true end
+		end
+	end
+	return false
+end
+
 local ItemSlotClass = newClass("ItemSlotControl", "DropDownControl", function(self, anchor, x, y, itemsTab, slotName, slotLabel, nodeId, w, h)
 	self.DropDownControl(anchor, x, y, w or 310, h or 20, { }, function(index, value)
 		if self.items[index] ~= self.selItemId then
-			self:SetSelItemId(self.items[index])
+			local newItemId = self.items[index]
+			local newItem = newItemId and newItemId ~= 0 and itemsTab.items[newItemId]
+			-- Block equipping a second Primordial item: only one Primordial
+			-- item may be equipped across the entire character at once.
+			if newItem and itemHasPrimordial(newItem) then
+				local conflict
+				for _, otherSlot in pairs(itemsTab.slots or {}) do
+					if otherSlot ~= self and otherSlot.selItemId and otherSlot.selItemId ~= 0 then
+						local other = itemsTab.items[otherSlot.selItemId]
+						if other and itemHasPrimordial(other) then
+							conflict = { slot = otherSlot, item = other }
+							break
+						end
+					end
+				end
+				if conflict then
+					local msg = "Only one Primordial item can be equipped at a time."
+					local cur = "^7Currently equipped in " .. (conflict.slot.label or conflict.slot.slotName)
+						.. ": " .. (conflict.item.title or conflict.item.name or "")
+					local popup = {}
+					popup.label = new("LabelControl", nil, 0, 20, 0, 16, "^1"..msg)
+					popup.label2 = new("LabelControl", nil, 0, 45, 0, 14, cur)
+					popup.ok = new("ButtonControl", nil, 0, 80, 80, 20, "OK", function()
+						main:ClosePopup()
+					end)
+					main:OpenPopup(460, 110, "Primordial Limit", popup, "ok")
+					for i, id in ipairs(self.items) do
+						if id == self.selItemId then self.selIndex = i; break end
+					end
+					return
+				end
+			end
+			self:SetSelItemId(newItemId)
 			itemsTab:PopulateSlots()
 			itemsTab:AddUndoState()
 			itemsTab.build.buildFlag = true
