@@ -234,24 +234,26 @@ function buildMode:Init(dbFileName, buildName, buildXML, convertBuild)
 		{ },
 	}
 
+	-- Season 4 (1.4) converted attribute paired with each base attribute. The pair is
+	-- rendered together so the converted stat takes the slot of the base attribute it
+	-- replaced (e.g. Str -> Brutality, Vit -> Rampancy) instead of moving to the end.
+	local s4AttrPair = {
+		Str = { stat = "Brutality", color = colorCodes.BRUTALITY },
+		Dex = { stat = "Guile",     color = colorCodes.GUILE },
+		Int = { stat = "Madness",   color = colorCodes.MADNESS },
+		Att = { stat = "Apathy",    color = colorCodes.APATHY },
+		Vit = { stat = "Rampancy",  color = colorCodes.RAMPANCY },
+	}
 	for i,stat in ipairs(Attributes) do
 		local statLabel = AttributesColored[i]
 		-- Hide a base attribute row from the sidebar when its value is 0 (e.g. fully
-		-- converted to a Season 4 attribute via Str->Brutality, Vit->Rampancy, etc.).
+		-- converted to a Season 4 attribute).
 		t_insert(self.displayStats, { stat = stat, label = statLabel, fmt = "d", condFunc = function(v,o) return v ~= 0 end })
+		local conv = s4AttrPair[stat]
+		if conv then
+			t_insert(self.displayStats, { stat = conv.stat, label = conv.color .. conv.stat, fmt = "d", condFunc = function(v,o) return v ~= 0 end })
+		end
 		t_insert(self.displayStats, { stat = "Req" .. stat, label = statLabel .. " Required", fmt = "d", lowerIsBetter = true, condFunc = function(v,o) return v > o[stat] end, warnFunc = function(v) return "You do not meet the " .. statLabel .. " requirement" end })
-	end
-
-	-- Season 4 (1.4) converted attributes — only shown when the build has any.
-	local s4Attrs = {
-		{ stat = "Brutality", color = colorCodes.BRUTALITY },
-		{ stat = "Guile",     color = colorCodes.GUILE },
-		{ stat = "Madness",   color = colorCodes.MADNESS },
-		{ stat = "Apathy",    color = colorCodes.APATHY },
-		{ stat = "Rampancy",  color = colorCodes.RAMPANCY },
-	}
-	for _, conv in ipairs(s4Attrs) do
-		t_insert(self.displayStats, { stat = conv.stat, label = conv.color .. conv.stat, fmt = "d", condFunc = function(v,o) return v ~= 0 end })
 	end
 
 	tableInsertAll(self.displayStats, {
