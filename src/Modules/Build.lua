@@ -236,11 +236,13 @@ function buildMode:Init(dbFileName, buildName, buildXML, convertBuild)
 
 	for i,stat in ipairs(Attributes) do
 		local statLabel = AttributesColored[i]
-		t_insert(self.displayStats, { stat = stat, label = statLabel, fmt = "d" })
+		-- Hide a base attribute row from the sidebar when its value is 0 (e.g. fully
+		-- converted to a Season 4 attribute via Str->Brutality, Vit->Rampancy, etc.).
+		t_insert(self.displayStats, { stat = stat, label = statLabel, fmt = "d", condFunc = function(v,o) return v ~= 0 end })
 		t_insert(self.displayStats, { stat = "Req" .. stat, label = statLabel .. " Required", fmt = "d", lowerIsBetter = true, condFunc = function(v,o) return v > o[stat] end, warnFunc = function(v) return "You do not meet the " .. statLabel .. " requirement" end })
 	end
 
-	-- Season 4 (1.4) converted attributes — shown only when the build has any (haveOutput hides rows with 0).
+	-- Season 4 (1.4) converted attributes — only shown when the build has any.
 	local s4Attrs = {
 		{ stat = "Brutality", color = colorCodes.BRUTALITY },
 		{ stat = "Guile",     color = colorCodes.GUILE },
@@ -249,7 +251,7 @@ function buildMode:Init(dbFileName, buildName, buildXML, convertBuild)
 		{ stat = "Rampancy",  color = colorCodes.RAMPANCY },
 	}
 	for _, conv in ipairs(s4Attrs) do
-		t_insert(self.displayStats, { stat = conv.stat, label = conv.color .. conv.stat, fmt = "d" })
+		t_insert(self.displayStats, { stat = conv.stat, label = conv.color .. conv.stat, fmt = "d", condFunc = function(v,o) return v ~= 0 end })
 	end
 
 	tableInsertAll(self.displayStats, {
