@@ -558,6 +558,7 @@ local modTagList = {
 
 for i,stat in ipairs(LongAttributes) do
 	modTagList["per " .. stat:lower()] = { tag = { type = "PerStat", stat = Attributes[i] } }
+	modTagList["per point of " .. stat:lower()] = { tag = { type = "PerStat", stat = Attributes[i] } }
 	modTagList["per player " .. stat:lower()] = { tag = { type = "PerStat", stat = Attributes[i], actor = "parent" } }
 	modTagList["per (%d+) " .. stat:lower()] = function(num) return { tag = { type = "PerStat", stat = Attributes[i], div = num } } end
 	modTagList["w?h?i[lf]e? you have at least (%d+) " .. stat:lower()] = function(num) return { tag = { type = "StatThreshold", stat = Attributes[i], threshold = num } } end
@@ -566,6 +567,7 @@ end
 for i,stat in ipairs(Attributes) do
 	local abbr = stat:lower()
 	modTagList["per " .. abbr] = { tag = { type = "PerStat", stat = Attributes[i] } }
+	modTagList["per point of " .. abbr] = { tag = { type = "PerStat", stat = Attributes[i] } }
 	modTagList["per player " .. abbr] = { tag = { type = "PerStat", stat = Attributes[i], actor = "parent" } }
 	modTagList["per (%d+) " .. abbr] = function(num) return { tag = { type = "PerStat", stat = Attributes[i], div = num } } end
 end
