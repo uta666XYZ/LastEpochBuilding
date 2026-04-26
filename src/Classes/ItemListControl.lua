@@ -6,90 +6,10 @@
 local pairs = pairs
 local t_insert = table.insert
 
--- Item type -> 16x16 icon filename (in Assets/).
--- Weapon/shield subtypes map to generic weapon icons.
-local TYPE_ICON = {
-	["Amulet"]            = "Icon_Amulet.png",
-	["Belt"]              = "Icon_Belt.png",
-	["Body Armor"]        = "Icon_Armor.png",
-	["Boots"]             = "Icon_Boots.png",
-	["Bow"]               = "Icon_Bow.png",
-	["Dagger"]            = "Icon_Dagger.png",
-	["Gloves"]            = "Icon_Gloves.png",
-	["Helmet"]            = "Icon_Helmet.png",
-	["Off-Hand Catalyst"] = "Icon_Shield.png",
-	["One-Handed Axe"]    = "Icon_Axe.png",
-	["Two-Handed Axe"]    = "Icon_Axe.png",
-	["One-Handed Mace"]   = "Icon_Mace.png",
-	["Two-Handed Mace"]   = "Icon_Mace.png",
-	["One-Handed Sword"]  = "Icon_Sword.png",
-	["Two-Handed Sword"]  = "Icon_Sword.png",
-	["Two-Handed Spear"]  = "Icon_Polearm.png",
-	["Two-Handed Staff"]  = "Icon_Staff.png",
-	["Quiver"]            = "Icon_Quiver.png",
-	["Relic"]             = "Icon_Relic.png",
-	["Ring"]              = "Icon_Ring.png",
-	["Sceptre"]           = "Icon_Sceptre.png",
-	["Shield"]            = "Icon_Shield.png",
-	["Wand"]              = "Icon_Wand.png",
-	["Idol Altar"]        = "idol/Idol_Altar_Pyramidal_Altar.png",
-	-- Blessings reuse an existing blessing sprite as a generic icon
-	["Blessing"]          = "blessings/body_of_obsidian.png",
-}
-
-local function iconFileForItem(item)
-	if not item or not item.type then return nil end
-	local t = item.type
-	local f = TYPE_ICON[t]
-	if f then return f end
-	-- All Idol size variants (Minor/Small/Humble/Stout/Grand/Large/Ornate/Huge/Adorned)
-	if t:find("Idol") then return "Icon_Idol.png" end
-	return nil
-end
-
-local iconHandles = {}
-local function getIconHandle(filename)
-	if not filename then return nil end
-	if not iconHandles[filename] then
-		local h = NewImageHandle()
-		h:Load("Assets/" .. filename, "ASYNC")
-		iconHandles[filename] = h
-	end
-	return iconHandles[filename]
-end
-
--- Primordial detection: covers (a) currently-active craft editor state,
--- (b) explicitModLines flagged by CraftRebuildItem, and (c) any prefix/suffix
--- mod whose specialAffixType == 7 (covers imported items too).
-local function itemHasPrimordial(item)
-	if not item then return false end
-	if item.primordial then return true end
-	if item.craftState and item.craftState.affixState
-		and item.craftState.affixState.primordial
-		and item.craftState.affixState.primordial.modKey ~= nil then
-		return true
-	end
-	if item.explicitModLines then
-		for i, line in ipairs(item.explicitModLines) do
-			if line.primordial then return true end
-		end
-	end
-	if item.affixes then
-		local lists = { item.prefixes, item.suffixes }
-		for li = 1, 2 do
-			local list = lists[li]
-			if list then
-				for si, slot in ipairs(list) do
-					if slot.modId and slot.modId ~= "None" then
-						local mod = item.affixes[slot.modId]
-						if mod and mod.specialAffixType == 7 then return true end
-					end
-				end
-			end
-		end
-	end
-	return false
-end
+-- Icon resolution and shared NewImageHandle cache live in itemLib
+-- (see Modules/ItemTools.lua). Sharing the cache between ItemListControl
+-- and ItemSlotControl avoids duplicate texture handles for the same Asset
+-- which previously caused a non-deterministic C++ renderer crash.
 
 local ItemListClass = newClass("ItemListControl", "ListControl", function(self, anchor, x, y, width, height, itemsTab, forceTooltip)
 	self.ListControl(anchor, x, y, width, height, 16, "VERTICAL", true, itemsTab.itemOrderList, forceTooltip)
@@ -166,20 +86,8 @@ end
 function ItemListClass:GetRowIcon(column, index, itemId)
 	if column ~= 1 then return nil end
 	local item = self.itemsTab.items[itemId]
-	if not item then return nil end
-	local list = {}
-	local fname = iconFileForItem(item)
-	local h = getIconHandle(fname)
-	if h and h:IsValid() then t_insert(list, h) end
-	if itemHasPrimordial(item) then
-		local p = getIconHandle("Icon_Primordial.png")
-		if p and p:IsValid() then t_insert(list, p) end
-	end
-	if item.corrupted then
-		local c = getIconHandle("Icon_Corrupted.png")
-		if c and c:IsValid() then t_insert(list, c) end
-	end
-	if #list == 0 then return nil end
+	local list = itemLib.getItemIcons(item)
+	if not list then return nil end
 	if #list == 1 then return list[1] end
 	return list
 end
