@@ -146,11 +146,25 @@ local ItemSlotClass = newClass("ItemSlotControl", "DropDownControl", function(se
 	self.slotName = slotName
 	-- Leading 16x16 icon strip drawn by DropDownControl: type, primordial,
 	-- corrupted (only the markers that apply for the equipped item).
-	-- preLabelIcons disabled: returning a non-nil list from this callback
-	-- caused a non-deterministic C++ renderer crash inside DropDownControl's
-	-- icon-strip loop (frame swap / GPU submit). Primordial/corrupted markers
-	-- are still shown in the All Items list (ItemListControl:GetRowIcon).
-	self.preLabelIcons = nil
+	-- Uses itemLib.getItemIcons (shared NewImageHandle cache) so the same
+	-- Asset filename always resolves to a single GPU handle across both
+	-- ItemListControl and ItemSlotControl. Per-control caches previously
+	-- caused non-deterministic C++ renderer crashes when two distinct
+	-- handles for the same texture were drawn in the same frame.
+	self.preLabelIcons = function()
+		local item = self.itemsTab.items[self.selItemId]
+		if not item then return nil end
+		return itemLib.getItemIcons(item)
+	end
+	-- Same icons rendered next to each row when the dropdown is open.
+	-- Index maps to self.items (parallel array; items[1]==0 for "None").
+	self.dropRowIcons = function(index, listVal)
+		local itemId = self.items[index]
+		if not itemId or itemId == 0 then return nil end
+		local item = self.itemsTab.items[itemId]
+		if not item then return nil end
+		return itemLib.getItemIcons(item)
+	end
 	self.slotNum = tonumber(slotName:match("%d+$") or slotName:match("%d+"))
 	if slotName:match("Flask") then
 		self.controls.activate = new("CheckBoxControl", {"RIGHT",self,"LEFT"}, -2, 0, 20, nil, function(state)
