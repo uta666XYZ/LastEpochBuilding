@@ -240,6 +240,18 @@ function buildMode:Init(dbFileName, buildName, buildXML, convertBuild)
 		t_insert(self.displayStats, { stat = "Req" .. stat, label = statLabel .. " Required", fmt = "d", lowerIsBetter = true, condFunc = function(v,o) return v > o[stat] end, warnFunc = function(v) return "You do not meet the " .. statLabel .. " requirement" end })
 	end
 
+	-- Season 4 (1.4) converted attributes — shown only when the build has any (haveOutput hides rows with 0).
+	local s4Attrs = {
+		{ stat = "Brutality", color = colorCodes.BRUTALITY },
+		{ stat = "Guile",     color = colorCodes.GUILE },
+		{ stat = "Madness",   color = colorCodes.MADNESS },
+		{ stat = "Apathy",    color = colorCodes.APATHY },
+		{ stat = "Rampancy",  color = colorCodes.RAMPANCY },
+	}
+	for _, conv in ipairs(s4Attrs) do
+		t_insert(self.displayStats, { stat = conv.stat, label = conv.color .. conv.stat, fmt = "d" })
+	end
+
 	tableInsertAll(self.displayStats, {
 		{ },
 		{ stat = "TotalEHP", label = "Effective Hit Pool", fmt = ".0f", compPercent = true },
