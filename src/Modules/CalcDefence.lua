@@ -252,6 +252,12 @@ function calcs.defence(env, actor)
 		end
 	end
 
+	-- Endurance% (compute early so PerStat:EnduranceOverCap works for Block etc.)
+	local endTotalEarly = modDB:Sum("BASE", nil, "Endurance")
+	output.EnduranceTotal = endTotalEarly
+	output.Endurance = m_min(endTotalEarly, data.misc.EnduranceCap)
+	output.EnduranceOverCap = m_max(endTotalEarly - data.misc.EnduranceCap, 0)
+
 	-- Block
 	output.BlockChanceMax = modDB:Sum("BASE", nil, "BlockChanceMax")
 	if modDB:Flag(nil, "MaximumBlockAttackChanceIsEqualToParent") then
@@ -277,6 +283,7 @@ function calcs.defence(env, actor)
 		output.BlockChance = output.BlockChanceMax
 	else
 		local totalBlockChance = (baseBlockChance + modDB:Sum("BASE", nil, "BlockChance")) * calcLib.mod(modDB, nil, "BlockChance")
+		output.BlockChanceTotal = totalBlockChance
 		output.BlockChance = m_min(totalBlockChance, output.BlockChanceMax)
 		output.BlockChanceOverCap = m_max(0, totalBlockChance - output.BlockChanceMax)
 	end
@@ -1231,6 +1238,8 @@ function calcs.buildDefenceEstimations(env, actor)
 	-- Endurance%: damage reduction that applies when HP is at or below EnduranceThreshold (cap 60%)
 	-- EnduranceThreshold: flat HP value below which Endurance damage reduction kicks in (no cap)
 	-- Baseline 20% of max Life is already injected in CalcSetup via PerStat Life multiplier.
+	-- (EnduranceTotal/Endurance/EnduranceOverCap are pre-computed earlier so PerStat:EnduranceOverCap
+	-- references resolve for Block/etc. Recompute here in case mods changed during the pass.)
 	local endTotal = modDB:Sum("BASE", nil, "Endurance")
 	output.EnduranceTotal = endTotal
 	output.Endurance = m_min(endTotal, data.misc.EnduranceCap)
