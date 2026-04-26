@@ -136,6 +136,54 @@ if modDB then
 end
 outHnd:write("    },\n")
 
+outHnd:write("    lifeOnBlockBreakdown = {\n")
+if modDB then
+    dumpModList(outHnd, "LifeOnBlock", modDB.mods["LifeOnBlock"])
+    outHnd:write(string.format("        [\"_summary\"] = { final=%d },\n", modDB:Sum("BASE", nil, "LifeOnBlock") or 0))
+end
+outHnd:write("    },\n")
+
+-- Dump all mods on shield (item id 11)
+outHnd:write("    shieldMods = {\n")
+local items = build.itemsTab and build.itemsTab.items
+if items and items[11] and items[11].modList then
+    for i, m in ipairs(items[11].modList) do
+        outHnd:write(string.format("        [%d] = { name=%q, type=%q, value=%s },\n",
+            i, tostring(m.name or ""), tostring(m.type or ""), tostring(m.value)))
+    end
+end
+outHnd:write("    },\n")
+outHnd:write("    shieldRawLines = {\n")
+if items and items[11] and items[11].rawLines then
+    for i, l in ipairs(items[11].rawLines) do
+        outHnd:write(string.format("        [%d] = %q,\n", i, tostring(l)))
+    end
+end
+outHnd:write("    },\n")
+
+outHnd:write("    parseTest = {\n")
+do
+    local testLines = { "62 Health Gain on Block", "+62 Health Gain on Block", "62 health gain on block" }
+    for ti, tl in ipairs(testLines) do
+        local mods, extra = modLib.parseMod(tl)
+        local n = mods and #mods or 0
+        local first = ""
+        if n > 0 then first = string.format("name=%s type=%s value=%s", tostring(mods[1].name), tostring(mods[1].type), tostring(mods[1].value)) end
+        outHnd:write(string.format("        [%d] = { line=%q, n=%d, extra=%q, first=%q },\n", ti, tl, n, tostring(extra or ""), first))
+    end
+end
+outHnd:write("    },\n")
+
+outHnd:write("    shieldExplicitLines = {\n")
+if items and items[11] and items[11].explicitModLines then
+    for i, ml in ipairs(items[11].explicitModLines) do
+        local nMods = ml.modList and #ml.modList or 0
+        outHnd:write(string.format("        [%d] = { line=%q, range=%s, rounding=%q, scalar=%s, crafted=%s, extra=%q, nMods=%d },\n",
+            i, tostring(ml.line or ""), tostring(ml.range), tostring(ml.rounding or ""), tostring(ml.valueScalar), tostring(ml.crafted), tostring(ml.extra or ""), nMods))
+    end
+end
+outHnd:write("    },\n")
+
 -- Idol per-stat breakdown: dump mods whose source starts with "Item:" so we can
 -- verify per-idol contributions against in-game tooltips.
 outHnd:write("    idolStatBreakdown = {\n")
