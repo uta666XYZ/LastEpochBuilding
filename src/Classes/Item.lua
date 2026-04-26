@@ -699,6 +699,33 @@ function ItemClass:ParseRaw(raw, rarity, highQuality)
 			end
 		end
 	end
+	-- Auto-derive corrupted from affixes BEFORE the recraft path: any active
+	-- prefix/suffix mod with specialAffixType == 6 (corruption-exclusive)
+	-- implies the item is corrupted, even if the raw text lacks a "Corrupted"
+	-- marker. Must run before recraft so Craft() materialises Line 2 affixes
+	-- (gated on self.corrupted) on the first pass — otherwise Legendary uniques
+	-- with S4 conversion affixes (e.g. Exulis Oracle 1083_2 / 1084_2) lose
+	-- their conversion entirely on imports lacking an explicit Corrupted line.
+	local okCpre, errCpre = pcall(function()
+		if not self.corrupted and self.affixes and self.base and self.base.type ~= "Idol Altar" then
+			local lists = { self.prefixes, self.suffixes }
+			for li = 1, 2 do
+				local list = lists[li]
+				if list then
+					for _, slot in ipairs(list) do
+						if slot.modId and slot.modId ~= "None" then
+							local mod = self.affixes[slot.modId]
+							if mod and mod.specialAffixType == 6 then
+								self.corrupted = true
+								return
+							end
+						end
+					end
+				end
+			end
+		end
+	end)
+	if not okCpre then end
 	-- When loading a crafted item from XML, stored mod-line text reflects the
 	-- affix's default range, not any slotOverrides entry. Re-run Craft so that
 	-- slot-specific ranges (e.g. Body Armor "of the Ox") materialise correctly.
