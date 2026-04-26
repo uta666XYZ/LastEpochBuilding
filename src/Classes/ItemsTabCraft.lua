@@ -552,6 +552,46 @@ end
 function ItemsTabClass:CraftSelectSlotAffix(slotKey, entry)
 	if not self.craftAffixState[slotKey] then return end
 	local st = self.craftAffixState[slotKey]
+
+	-- Per-item exclusivity: a Reforged Set affix (sat=3) and a Champion/
+	-- Personal affix (sat=2) are each capped at 1 per item. Before applying
+	-- the new selection, clear any existing prefix/suffix slot whose affix is
+	-- in the same exclusivity group as the new one.
+	if entry and entry.statOrderKey then
+		local function exGroup(subcat)
+			if subcat == "set_only" then return "set" end
+			if subcat == "champion" or subcat == "personal" then return "champ" end
+			return nil
+		end
+		local newGroup = exGroup(entry.subcategory)
+		if newGroup then
+			local itemMods = self:CraftIsIdolAltar() and (data.itemMods["Idol Altar"] or {}) or (data.itemMods.Item or {})
+			for _, k in ipairs({"prefix1","prefix2","suffix1","suffix2"}) do
+				if k ~= slotKey then
+					local os = self.craftAffixState[k]
+					if os and os.modKey and os.modKey ~= entry.statOrderKey then
+						local mod = itemMods[tostring(os.modKey) .. "_" .. tostring(os.tier)]
+							or itemMods[tostring(os.modKey) .. "_1"]
+						if mod then
+							local sat = mod.specialAffixType or 0
+							local otherSubcat
+							if sat == 2 then
+								otherSubcat = mod.subcategory == "champion" and "champion" or "personal"
+							elseif sat == 3 then
+								otherSubcat = "set_only"
+							end
+							if exGroup(otherSubcat) == newGroup then
+								os.modKey = nil; os.tier = 0; os.ranges = {}
+								self:CraftUpdateSlotModInfo(k)
+								self:CraftUpdateSlotValueEdits(k)
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+
 	if not entry or not entry.statOrderKey then
 		st.modKey = nil
 		st.tier   = (slotKey == "primordial") and 7 or 0
@@ -705,6 +745,7 @@ function ItemsTabClass:CraftRebuildItem()
 						t_insert(item.explicitModLines, {
 							line = line, range = st.ranges[lineIdx] or 128,
 							valueScalar = modScalar,
+							primordial = slotKey == "primordial" or nil,
 						})
 					end
 				end
