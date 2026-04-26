@@ -1398,6 +1398,133 @@ function ItemsTabClass:CraftResetState()
 	self.craftUniqueRanges   = {}
 end
 
+-- Opens the inline craft editor for an existing non-crafted item (e.g. a Save-imported
+-- unique). Builds a presetEntry matching the item's base/uniqueID/setID, opens the
+-- editor with that preset, then overlays the original item's id, corrupted state,
+-- and unique/implicit roll positions onto the freshly built craftEditItem so Save
+-- overwrites the original entry. Returns true on success, false if no matching entry
+-- was found (caller should fall back to the raw-text editor).
+function ItemsTabClass:OpenCraftEditorForItem(item)
+	if not item or not item.base then return false end
+	local typeName = item.base.type
+	if not typeName then return false end
+	local category
+	if item.rarity == "UNIQUE" then
+		category = "unique"
+	elseif item.rarity == "WWUNIQUE" or item.rarity == "WWLEGENDARY" then
+		category = "ww"
+	elseif item.rarity == "SET" then
+		category = "set"
+	elseif item.rarity == "NORMAL" or item.rarity == "MAGIC" or item.rarity == "RARE"
+		or item.rarity == "EXALTED" or item.rarity == "LEGENDARY" then
+		category = "basic"
+	else
+		return false
+	end
+
+	local setItems = self.craftSetItems or H.loadSetData(self.build)
+	local classReqBit = H.getClassReqBit(self.build)
+	local entries = H.buildBaseList(self.build, setItems, typeName, category, nil, classReqBit)
+	local entry
+	for _, e in ipairs(entries) do
+		if category == "unique" or category == "ww" then
+			if e.uniqueID == item.uniqueID then entry = e; break end
+		elseif category == "set" then
+			if (e.setID and item.setID and e.setID == item.setID)
+				or (e.setData and item.setInfo and e.setData.set and e.setData.set.setId == item.setInfo.setId) then
+				entry = e; break
+			end
+		else
+			if e.baseName == item.baseName or e.name == item.baseName or e.base == item.base then
+				entry = e; break
+			end
+		end
+	end
+	if not entry then return false end
+
+	local slotName = nil
+	local equipSlot = self:GetEquippedSlotForItem(item)
+	if equipSlot then slotName = equipSlot.slotName end
+
+	-- Open editor with the preset; CraftSelectBase builds a fresh craftEditItem.
+	self:OpenCraftEditor(nil, slotName, entry)
+	if not self.craftEditItem then return false end
+
+	-- Preserve the original item's identity so Save overwrites it.
+	self.craftEditItem.id = item.id
+	if item.title then self.craftEditItem.title = item.title end
+
+	-- Carry over corruption state.
+	if item.corrupted then
+		self.craftCorrupted = true
+		if self.controls.craftCorruptedCheck then
+			self.controls.craftCorruptedCheck.state = true
+		end
+	end
+
+	-- Overlay rare-item prefix/suffix affixes (modId = "modKey_tier") onto
+	-- craftAffixState so the editor shows the item's actual affixes. Maps the
+	-- first two prefix/suffix entries to prefix1/prefix2/suffix1/suffix2 slots.
+	local function overlayAffix(slotKey, src)
+		if not src or not src.modId or src.modId == "None" then return end
+		local modKey, tier = src.modId:match("^(%d+)_(%d+)$")
+		if not modKey then return end
+		local st = self.craftAffixState[slotKey]
+		if not st then return end
+		st.modKey = tonumber(modKey)
+		st.tier   = tonumber(tier) or 0
+		st.ranges = { src.range or 128 }
+	end
+	if item.prefixes then
+		overlayAffix("prefix1", item.prefixes[1])
+		overlayAffix("prefix2", item.prefixes[2])
+	end
+	if item.suffixes then
+		overlayAffix("suffix1", item.suffixes[1])
+		overlayAffix("suffix2", item.suffixes[2])
+	end
+	for _, k in ipairs({ "prefix1", "prefix2", "suffix1", "suffix2" }) do
+		self:CraftUpdateSlotModInfo(k)
+		self:CraftUpdateSlotValueEdits(k)
+	end
+
+	-- Overlay roll positions from the original item onto the fresh implicits/explicits
+	-- so the editor shows the item's actual rolls rather than the base's defaults.
+	if item.implicitModLines then
+		for i, ml in ipairs(self.craftEditItem.implicitModLines or {}) do
+			local src = item.implicitModLines[i]
+			if src and src.range and ml.range then
+				ml.range = src.range
+				self.craftImplicitRanges[i] = src.range
+			end
+		end
+	end
+	if item.explicitModLines then
+		for i, ml in ipairs(self.craftEditItem.explicitModLines or {}) do
+			local src = item.explicitModLines[i]
+			if src and src.range and ml.range then
+				ml.range = src.range
+				self.craftUniqueRanges[i] = src.range
+			end
+		end
+	end
+
+	-- For basic-category items, rebuild from the overlaid affixState so the
+	-- displayItem reflects the actual prefixes/suffixes. For unique/set items,
+	-- CraftSelectBase already populated explicitModLines.
+	if entry.category == "basic" then
+		self:CraftRebuildItem()
+		self.craftEditItem.id = item.id
+	else
+		self.craftEditItem:BuildAndParseRaw()
+	end
+	self:CraftRecalcLayout()
+	self:CraftRefreshAffixDropdowns()
+	self:CraftUpdateRollSliderVals()
+	self:SetDisplayItem(self.craftEditItem)
+	return true
+end
+
 function ItemsTabClass:OpenCraftEditor(existingItem, slotName, presetEntry)
 	self:CraftResetState()
 	self.craftPrevDisplayItem = self.displayItem
