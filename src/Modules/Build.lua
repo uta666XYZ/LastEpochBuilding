@@ -234,9 +234,25 @@ function buildMode:Init(dbFileName, buildName, buildXML, convertBuild)
 		{ },
 	}
 
+	-- Season 4 (1.4) converted attribute paired with each base attribute. The pair is
+	-- rendered together so the converted stat takes the slot of the base attribute it
+	-- replaced (e.g. Str -> Brutality, Vit -> Rampancy) instead of moving to the end.
+	local s4AttrPair = {
+		Str = { stat = "Brutality", color = colorCodes.BRUTALITY },
+		Dex = { stat = "Guile",     color = colorCodes.GUILE },
+		Int = { stat = "Madness",   color = colorCodes.MADNESS },
+		Att = { stat = "Apathy",    color = colorCodes.APATHY },
+		Vit = { stat = "Rampancy",  color = colorCodes.RAMPANCY },
+	}
 	for i,stat in ipairs(Attributes) do
 		local statLabel = AttributesColored[i]
-		t_insert(self.displayStats, { stat = stat, label = statLabel, fmt = "d" })
+		-- Hide a base attribute row from the sidebar when its value is 0 (e.g. fully
+		-- converted to a Season 4 attribute).
+		t_insert(self.displayStats, { stat = stat, label = statLabel, fmt = "d", condFunc = function(v,o) return v ~= 0 end })
+		local conv = s4AttrPair[stat]
+		if conv then
+			t_insert(self.displayStats, { stat = conv.stat, label = conv.color .. conv.stat, fmt = "d", condFunc = function(v,o) return v ~= 0 end })
+		end
 		t_insert(self.displayStats, { stat = "Req" .. stat, label = statLabel .. " Required", fmt = "d", lowerIsBetter = true, condFunc = function(v,o) return v > o[stat] end, warnFunc = function(v) return "You do not meet the " .. statLabel .. " requirement" end })
 	end
 
