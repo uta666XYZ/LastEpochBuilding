@@ -26653,7 +26653,7 @@ return {
     },
     shieldMods = {
         [1] = { name="Damage", type="BASE", value=51 },
-        [2] = { name="MinionModifier", type="LIST", value=table: 0x40f05df0 },
+        [2] = { name="MinionModifier", type="LIST", value=table: 0x40ec1738 },
         [3] = { name="BleedChance", type="BASE", value=81 },
         [4] = { name="Speed", type="INC", value=43 },
         [5] = { name="CriticalVulnerabilityChance", type="BASE", value=5 },
