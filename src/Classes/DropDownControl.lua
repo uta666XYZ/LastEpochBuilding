@@ -351,6 +351,17 @@ function DropDownClass:Draw(viewPort, noTooltip)
 		selLabel = nil
 	end
 	local drawWidth = width - height/2 - arrowH  -- expands when arrowH < height/2 (e.g. idol grid cells)
+	-- Optional leading 16x16 icon strip (e.g. ItemSlotControl uses this to show
+	-- type / primordial / corrupted markers next to the equipped item name).
+	local preIcons = self.preLabelIcons and self.preLabelIcons() or nil
+	local iconStripW = 0
+	if preIcons and #preIcons > 0 then
+		SetDrawColor(1, 1, 1)
+		for i, h in ipairs(preIcons) do
+			DrawImage(h, x + 2 + (i - 1) * 18, y + (height - 16) / 2, 16, 16)
+		end
+		iconStripW = #preIcons * 18
+	end
 	local fontSize = 16
 	if height >= 32 and selLabel and DrawStringWidth(fontSize, "VAR", selLabel) > drawWidth then
 		-- Tall dropdown: word-wrap into 2 lines with fixed font size 16, top-aligned
@@ -367,12 +378,12 @@ function DropDownClass:Draw(viewPort, noTooltip)
 		if wrapAt <= 0 then wrapAt = cutoff end  -- no space found, hard cut
 		local line1 = selLabel:sub(1, wrapAt)
 		local line2 = selLabel:sub(wrapAt + 2)  -- skip the space
-		SetViewport(x + 2, y + 2, drawWidth, height - 2)
+		SetViewport(x + 2 + iconStripW, y + 2, drawWidth - iconStripW, height - 2)
 		DrawString(0, 0, "LEFT", fontSize, "VAR", line1)
 		DrawString(0, fontSize + 2, "LEFT", fontSize, "VAR", line2 or "")
 	else
 		-- Normal single-line: always use font size 16 regardless of control height
-		SetViewport(x + 2, y + 2, drawWidth, height - 2)
+		SetViewport(x + 2 + iconStripW, y + 2, drawWidth - iconStripW, height - 2)
 		if not selLabel and self.placeholder then
 			SetDrawColor(0.5, 0.5, 0.5)
 			DrawString(0, (height - 4 - fontSize) / 2, "LEFT", fontSize, "VAR", self.placeholder)
