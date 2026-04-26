@@ -86,31 +86,31 @@ end
 
 DamageTypes = {
 	"Fire",
-	"Lightning",
 	"Cold",
+	"Lightning",
 	"Physical",
-	"Poison",
 	"Necrotic",
+	"Poison",
 	"Void"
 }
 
-Attributes = {"Vit","Str","Dex","Int","Att"}
-LongAttributes = {"Vitality","Strength","Dexterity","Intelligence","Attunement"}
+Attributes = {"Str","Dex","Int","Att","Vit"}
+LongAttributes = {"Strength","Dexterity","Intelligence","Attunement","Vitality"}
 AttributesColored = {
-    colorCodes.VITALITY.."Vitality",
     colorCodes.STRENGTH.."Strength",
     colorCodes.DEXTERITY.."Dexterity",
     colorCodes.INTELLIGENCE.."Intelligence",
-    colorCodes.ATTUNEMENT.."Attunement"
+    colorCodes.ATTUNEMENT.."Attunement",
+    colorCodes.VITALITY.."Vitality"
 }
 
 DamageTypesColored = {
 	colorCodes.FIRE.."Fire",
-	colorCodes.LIGHTNING .. "Lightning",
 	colorCodes.COLD .. "Cold",
+	colorCodes.LIGHTNING .. "Lightning",
 	colorCodes.PHYSICAL.."Physical",
-	colorCodes.POISON.."Poison",
 	colorCodes.NECROTIC.."Necrotic",
+	colorCodes.POISON.."Poison",
 	colorCodes.VOID.."Void"
 }
 
