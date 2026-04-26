@@ -1461,6 +1461,32 @@ function ItemsTabClass:OpenCraftEditorForItem(item)
 		end
 	end
 
+	-- Overlay rare-item prefix/suffix affixes (modId = "modKey_tier") onto
+	-- craftAffixState so the editor shows the item's actual affixes. Maps the
+	-- first two prefix/suffix entries to prefix1/prefix2/suffix1/suffix2 slots.
+	local function overlayAffix(slotKey, src)
+		if not src or not src.modId or src.modId == "None" then return end
+		local modKey, tier = src.modId:match("^(%d+)_(%d+)$")
+		if not modKey then return end
+		local st = self.craftAffixState[slotKey]
+		if not st then return end
+		st.modKey = tonumber(modKey)
+		st.tier   = tonumber(tier) or 0
+		st.ranges = { src.range or 128 }
+	end
+	if item.prefixes then
+		overlayAffix("prefix1", item.prefixes[1])
+		overlayAffix("prefix2", item.prefixes[2])
+	end
+	if item.suffixes then
+		overlayAffix("suffix1", item.suffixes[1])
+		overlayAffix("suffix2", item.suffixes[2])
+	end
+	for _, k in ipairs({ "prefix1", "prefix2", "suffix1", "suffix2" }) do
+		self:CraftUpdateSlotModInfo(k)
+		self:CraftUpdateSlotValueEdits(k)
+	end
+
 	-- Overlay roll positions from the original item onto the fresh implicits/explicits
 	-- so the editor shows the item's actual rolls rather than the base's defaults.
 	if item.implicitModLines then
@@ -1482,7 +1508,15 @@ function ItemsTabClass:OpenCraftEditorForItem(item)
 		end
 	end
 
-	self.craftEditItem:BuildAndParseRaw()
+	-- For basic-category items, rebuild from the overlaid affixState so the
+	-- displayItem reflects the actual prefixes/suffixes. For unique/set items,
+	-- CraftSelectBase already populated explicitModLines.
+	if entry.category == "basic" then
+		self:CraftRebuildItem()
+		self.craftEditItem.id = item.id
+	else
+		self.craftEditItem:BuildAndParseRaw()
+	end
 	self:CraftRecalcLayout()
 	self:CraftRefreshAffixDropdowns()
 	self:CraftUpdateRollSliderVals()
