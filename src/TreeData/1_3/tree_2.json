@@ -4030,7 +4030,11 @@
       "maxPoints": 0,
       "mastery": 0,
       "masteryRequirement": 0,
-      "stats": [],
+      "stats": [
+        "+15% Fire Resistance",
+        "+15% Cold Resistance",
+        "+15% Lightning Resistance"
+      ],
       "notScalingStats": [],
       "noScalingPointThreshold": 0,
       "in": [
