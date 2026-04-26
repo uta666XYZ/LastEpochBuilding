@@ -1231,7 +1231,10 @@ function calcs.buildDefenceEstimations(env, actor)
 	-- Endurance%: damage reduction that applies when HP is at or below EnduranceThreshold (cap 60%)
 	-- EnduranceThreshold: flat HP value below which Endurance damage reduction kicks in (no cap)
 	-- Baseline 20% of max Life is already injected in CalcSetup via PerStat Life multiplier.
-	output.Endurance = m_min(modDB:Sum("BASE", nil, "Endurance"), data.misc.EnduranceCap)
+	local endTotal = modDB:Sum("BASE", nil, "Endurance")
+	output.EnduranceTotal = endTotal
+	output.Endurance = m_min(endTotal, data.misc.EnduranceCap)
+	output.EnduranceOverCap = m_max(endTotal - data.misc.EnduranceCap, 0)
 	-- Sentinel Defiance: "+N Endurance Threshold Per 2% Uncapped Elemental Resistance"
 	-- Injected as its own modDB entry so it shows as a distinct breakdown row
 	-- (modDB is rebuilt in CalcSetup each recalc, so this does not accumulate).
