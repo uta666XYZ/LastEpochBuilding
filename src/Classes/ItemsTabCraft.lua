@@ -1415,7 +1415,8 @@ function ItemsTabClass:OpenCraftEditorForItem(item)
 		category = "ww"
 	elseif item.rarity == "SET" then
 		category = "set"
-	elseif item.rarity == "NORMAL" or item.rarity == "MAGIC" or item.rarity == "RARE" then
+	elseif item.rarity == "NORMAL" or item.rarity == "MAGIC" or item.rarity == "RARE"
+		or item.rarity == "EXALTED" or item.rarity == "LEGENDARY" then
 		category = "basic"
 	else
 		return false
