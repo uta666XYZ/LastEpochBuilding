@@ -103,6 +103,7 @@
 		<Input name="pantheonMajorGod" string="None"/>
 		<Input name="pantheonMinorGod" string="None"/>
 		<Input name="questApophisMajasa" boolean="true"/>
+		<Input name="questTempleOfEterra" boolean="true"/>
 		<Placeholder name="enemyColdDamage" number="1000"/>
 		<Placeholder name="enemyCritChance" number="5"/>
 		<Placeholder name="enemyCritDamage" number="30"/>
