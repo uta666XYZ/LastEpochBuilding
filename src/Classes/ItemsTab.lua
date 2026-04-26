@@ -838,7 +838,15 @@ function ItemsTabClass:Load(xml, dbFileName)
 			if item.base then
 				item:BuildModList()
 				self.items[item.id] = item
-				t_insert(self.itemOrderList, item.id)
+				if node.attrib.blessingTimeline then
+					-- Ephemeral blessing: equipped to a timeline slot but not promoted
+					-- to All items. Restore uniqueID so updateBlessingSlot recognises
+					-- it as ephemeral (and re-equipping replaces it cleanly), but do
+					-- NOT add to itemOrderList — it must stay out of the All items UI.
+					item.uniqueID = "blessing:" .. node.attrib.blessingTimeline
+				else
+					t_insert(self.itemOrderList, item.id)
+				end
 			end
 		-- Below is OBE and left for legacy compatibility (all Slots are part of ItemSets now)
 		elseif node.elem == "Slot" then
@@ -919,6 +927,46 @@ function ItemsTabClass:Save(xml)
 				t_insert(child, { elem = "ModRange", attrib = { id = tostring(id), range = tostring(modLine.range) } })
 			end
 			id = id + 1
+		end
+		t_insert(xml, child)
+	end
+	-- Persist ephemeral blessings (equipped to a timeline slot but not promoted
+	-- to the All items list). Identified by uniqueID="blessing:<tl>" and absence
+	-- from itemOrderList. We tag the <Item> element with blessingTimeline so the
+	-- loader knows to skip itemOrderList and restore uniqueID.
+	local inOrderList = {}
+	for _, id in ipairs(self.itemOrderList) do inOrderList[id] = true end
+	local ephemeralIds = {}
+	for id, item in pairs(self.items) do
+		if not inOrderList[id] and type(item.uniqueID) == "string" and item.uniqueID:sub(1, 9) == "blessing:" then
+			t_insert(ephemeralIds, id)
+		end
+	end
+	table.sort(ephemeralIds)
+	for _, id in ipairs(ephemeralIds) do
+		local item = self.items[id]
+		local tl = item.uniqueID:sub(10)
+		local child = {
+			elem = "Item",
+			attrib = {
+				id = tostring(id),
+				blessingTimeline = tl,
+			}
+		}
+		item:BuildAndParseRaw()
+		t_insert(child, item.raw)
+		local modId = #item.buffModLines + 1
+		for _, modLine in ipairs(item.implicitModLines) do
+			if modLine.range ~= nil then
+				t_insert(child, { elem = "ModRange", attrib = { id = tostring(modId), range = tostring(modLine.range) } })
+			end
+			modId = modId + 1
+		end
+		for _, modLine in ipairs(item.explicitModLines) do
+			if modLine.range ~= nil then
+				t_insert(child, { elem = "ModRange", attrib = { id = tostring(modId), range = tostring(modLine.range) } })
+			end
+			modId = modId + 1
 		end
 		t_insert(xml, child)
 	end
