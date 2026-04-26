@@ -697,7 +697,11 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 	end
 	self.controls.editDisplayItem = new("ButtonControl", {"LEFT",self.controls.addDisplayItem,"RIGHT"}, 8, 0, 60, 20, "Edit...", function()
 		if not self.displayItem then return end
-		if self.displayItem.crafted then
+		-- Crafted items with persisted craftState resume directly via CraftItem.
+		-- Everything else (uniques, Save-imported rares without craftState, etc.)
+		-- routes through OpenCraftEditorForItem which builds a preset from the
+		-- item's base/uniqueID/setID so the editor is populated.
+		if self.displayItem.crafted and self.displayItem.craftState then
 			self:CraftItem(self.displayItem)
 		elseif not self:OpenCraftEditorForItem(self.displayItem) then
 			-- Fallback: raw-text editor when craft entry can't be resolved.
