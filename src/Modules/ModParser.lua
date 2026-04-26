@@ -1010,7 +1010,25 @@ local function spendGainedHandler(num, _, resource, target)
 end
 specialModList["^%+?([%d%.]+)%% of (.+) spent gained as (.+)$"] = spendGainedHandler
 specialModList["^%+?([%d%.]+)%% of (.+) gained as (.+)$"] = nsAny
-specialModList["^%+?([%d%.]+)%% of (.+) converted to (.+)$"] = nsAny
+-- Season 4 (1.4) attribute → mastery conversion. e.g. "100% of Strength Converted
+-- to Brutality" on corrupted-affix unique amulets (1083_*..1087_*). Emits the
+-- *ConvertedTo* mod that CalcPerform reads to move points from base attribute
+-- to its S4 variant. Falls back to nsAny for non-attribute "X converted to Y".
+local s4AttrConversion = {
+	["strength"]     = { dst = "Brutality", mod = "StrengthConvertedToBrutality" },
+	["intelligence"] = { dst = "Madness",   mod = "IntelligenceConvertedToMadness" },
+	["dexterity"]    = { dst = "Guile",     mod = "DexterityConvertedToGuile" },
+	["attunement"]   = { dst = "Apathy",    mod = "AttunementConvertedToApathy" },
+	["vitality"]     = { dst = "Rampancy",  mod = "VitalityConvertedToRampancy" },
+}
+local function attrConvertedHandler(num, _, src, dst)
+	local entry = s4AttrConversion[(src or ""):lower()]
+	if entry and (dst or ""):lower() == entry.dst:lower() then
+		return { mod(entry.mod, "BASE", num) }
+	end
+	return nsAny(num)
+end
+specialModList["^%+?([%d%.]+)%% of (.+) converted to (.+)$"] = attrConvertedHandler
 
 -- "N <resource> gained when you use <skill>" variants (already covered per-skill above,
 -- but catch unknown-skill phrasing as recognition-only)
