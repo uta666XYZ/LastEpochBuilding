@@ -637,7 +637,10 @@ return {
 	-- Season 4 (1.4): append converted attribute rows after base attributes
 	generateTableByValues(
 		generateTableByValues({}, Attributes, function(i, stat)
-			return { label = AttributesColored[i], { format = "{0:output:" .. stat .. "}", { breakdown = stat }, { modName = stat }, }, }
+			-- haveOutput hides the row when the base attribute is 0 (e.g. fully converted
+			-- to a Season 4 attribute via Str→Brutality, Vit→Rampancy, etc.), matching
+			-- the LETools display behaviour.
+			return { label = AttributesColored[i], haveOutput = stat, { format = "{0:output:" .. stat .. "}", { breakdown = stat }, { modName = stat }, }, }
 		end),
 		{
 			{ stat = "Brutality", color = colorCodes.BRUTALITY },
