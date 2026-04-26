@@ -452,10 +452,32 @@ function DropDownClass:Draw(viewPort, noTooltip)
 					else
 						SetDrawColor(0.66, 0.66, 0.66)
 					end
+					-- Optional leading 16x16 icon strip per row (e.g. ItemSlotControl
+					-- shows type / primordial / corrupted markers next to each item
+					-- name). The callback is invoked with the visible row index so
+					-- callers can map back to their parallel data array.
+					local rowIconOffset = 0
+					if self.dropRowIcons then
+						local icons = self.dropRowIcons(index, listVal)
+						if icons and #icons > 0 then
+							SetDrawColor(1, 1, 1)
+							for i, h in ipairs(icons) do
+								DrawImage(h, (i - 1) * 18, y + (itemLineH - 16) / 2, 16, 16)
+							end
+							rowIconOffset = #icons * 18
+							-- restore label color (DrawImage doesn't change it but
+							-- be defensive in case a future change does)
+							if index == self.hoverSel or index == self.selIndex then
+								SetDrawColor(1, 1, 1)
+							else
+								SetDrawColor(0.66, 0.66, 0.66)
+							end
+						end
+					end
 					-- draw actual item label with search match highlight if available
 					local label = type(listVal) == "table" and listVal.label or listVal
-					DrawString(0, y, "LEFT", itemFontSize, "VAR", label)
-					self:DrawSearchHighlights(label, searchInfo, 0, y, width - 4, itemFontSize)
+					DrawString(rowIconOffset, y, "LEFT", itemFontSize, "VAR", label)
+					self:DrawSearchHighlights(label, searchInfo, rowIconOffset, y, width - 4 - rowIconOffset, itemFontSize)
 				end
 			end
 		end

@@ -42,4 +42,29 @@ describe("TestItemParse #itemParse", function()
         -- {range:0} = minimum roll: (5-6)% increased Health -> 5%
         assert.are.equals(5, lifeInc)
     end)
+
+    it("Auto-detects corrupted from specialAffixType==6 affix (no 'Corrupted' marker)", function()
+        newBuild()
+        -- Refuge Armor (Body Armor base) with sat==6 prefix 1002_0 (Missing Health
+        -- gained as Ward per Second and Ward Decay Threshold). Raw text intentionally
+        -- omits a "Corrupted" line — auto-detection in Item.lua ParseRaw should set
+        -- self.corrupted = true purely from the affix's specialAffixType.
+        build.itemsTab:CreateDisplayItemFromRaw([[Rarity: RARE
+        Test Corrupted Body
+        Refuge Armor
+        Unique ID: TestCorrupted 1
+        Crafted: true
+        Prefix: {range:0}1002_0
+        Prefix: None
+        Suffix: None
+        Suffix: None
+        LevelReq: 0
+        Implicits: 0
+        {range:0}+4% Missing Health gained as Ward per second
+        {range:0}{rounding:Integer}+(30-32) Ward Decay Threshold]])
+
+        local item = build.itemsTab.displayItem
+        assert.is_not_nil(item, "displayItem should exist")
+        assert.is_true(item.corrupted, "item.corrupted should auto-derive from sat==6 affix")
+    end)
 end)
