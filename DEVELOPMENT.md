@@ -88,8 +88,9 @@ help is build sharing and calculation verification.
 LEB is free and open source. If it helped plan your build and you want to
 support continued development:
 
-- ☕ [Buy Me a Coffee](https://buymeacoffee.com/yobk0831a)
-- 🍵 [Ko-fi](https://ko-fi.com/lastepochbuilding)
+- 💖 [GitHub Sponsors](https://github.com/sponsors/uta666XYZ) — monthly support
+- ☕ [Buy Me a Coffee](https://buymeacoffee.com/yobk0831a) — one-time tip
+- 🍵 [Ko-fi](https://ko-fi.com/lastepochbuilding) — one-time tip
 
 Goal: cover dev subscription costs so weekly releases keep coming.
 No pressure — LEB stays free either way.
