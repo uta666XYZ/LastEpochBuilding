@@ -768,6 +768,10 @@ local specialModList = {
 	["^%+?(%d+) endurance threshold per 2%% uncapped elemental resistance$"] = function(num)
 		return { mod("EnduranceThresholdPerUncappedEleRes", "BASE", tonumber(num)) }
 	end,
+	-- Stone Shield (unique): "+1% Block Chance per 2% Endurance above the Cap"
+	["^%+?(%d+)%% block chance per (%d+)%% endurance above the cap$"] = function(_, num, div)
+		return { mod("BlockChance", "BASE", tonumber(num), { type = "PerStat", stat = "EnduranceOverCap", div = tonumber(div) }) }
+	end,
 	-- Paladin: "+N Maximum Symbols" (Polygram, Tetragram etc.)
 	["^%+?(%d+) maximum symbols?$"] = function(num)
 		return { mod("MaximumSymbols", "BASE", tonumber(num)) }

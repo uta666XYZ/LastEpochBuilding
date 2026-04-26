@@ -1849,7 +1849,7 @@ c["+1% Bleed Duration Per 20 Endurance Threshold"]={{[1]={[1]={skillName="Bleed"
 c["+1% Bleed chance per active Crimson Shroud"]={{[1]={[1]={type="Multiplier",var="ActiveCrimsonShroud"},flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Bleed",type="BASE",value=1}},nil}
 c["+1% Block Chance"]={{[1]={flags=0,keywordFlags=0,name="BlockChance",type="BASE",value=1}},nil}
 c["+1% Block Chance Per Active Symbol"]={{[1]={[1]={type="Multiplier",var="ActiveSymbol"},flags=0,keywordFlags=0,name="BlockChance",type="BASE",value=1}},nil}
-c["+1% Block Chance per 2% Endurance above the Cap"]={{[1]={flags=0,keywordFlags=0,name="BlockChance",type="BASE",value=1}},"  per 2% Endurance above the Cap "}
+c["+1% Block Chance per 2% Endurance above the Cap"]={{[1]={[1]={div=2,stat="EnduranceOverCap",type="PerStat"},flags=0,keywordFlags=0,name="BlockChance",type="BASE",value=1}},nil}
 c["+1% Block Chance per Shock on the Attacker"]={{[1]={[1]={skillName="Shock",type="SkillName"},flags=0,keywordFlags=0,name="BlockChance",type="BASE",value=1}},"  per  on the Attacker "}
 c["+1% Block Chance per Strength against enemies within 4 metres"]={{[1]={[1]={stat="Str",type="PerStat"},flags=0,keywordFlags=0,name="BlockChance",type="BASE",value=1}},"   against enemies within 4 metres "}
 c["+1% Block Effectiveness reduces damage taken for hits you block. Block Chance"]={{[1]={flags=8388608,keywordFlags=0,name="BlockEffectiveness",type="BASE",value=1}},"  reduces damage taken for s you block. Block Chance "}
