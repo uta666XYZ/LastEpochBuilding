@@ -634,25 +634,28 @@ return {
 } },
 -- attributes/resists
 { 1, "Attributes", 2, colorCodes.NORMAL, {{ defaultCollapsed = false, label = "Attributes", data =
-	-- Season 4 (1.4): append converted attribute rows after base attributes
-	generateTableByValues(
-		generateTableByValues({}, Attributes, function(i, stat)
-			-- haveOutput hides the row when the base attribute is 0 (e.g. fully converted
-			-- to a Season 4 attribute via Str→Brutality, Vit→Rampancy, etc.), matching
-			-- the LETools display behaviour.
-			return { label = AttributesColored[i], haveOutput = stat, { format = "{0:output:" .. stat .. "}", { breakdown = stat }, { modName = stat }, }, }
-		end),
-		{
-			{ stat = "Brutality", color = colorCodes.BRUTALITY },
-			{ stat = "Guile",     color = colorCodes.GUILE },
-			{ stat = "Madness",   color = colorCodes.MADNESS },
-			{ stat = "Apathy",    color = colorCodes.APATHY },
-			{ stat = "Rampancy",  color = colorCodes.RAMPANCY },
-		},
-		function(_, conv)
-			return { label = conv.color .. "  " .. conv.stat, haveOutput = conv.stat, { format = "{0:output:" .. conv.stat .. "}", }, }
+	-- Season 4 (1.4): each Season 4 attribute (Brutality/Guile/Madness/Apathy/Rampancy)
+	-- is rendered immediately after the base attribute it replaced so converted stats
+	-- keep the original slot instead of moving to the end. haveOutput hides whichever
+	-- row is at 0, matching the LETools display behaviour.
+	(function()
+		local s4Pair = {
+			Str = { stat = "Brutality", color = colorCodes.BRUTALITY },
+			Dex = { stat = "Guile",     color = colorCodes.GUILE },
+			Int = { stat = "Madness",   color = colorCodes.MADNESS },
+			Att = { stat = "Apathy",    color = colorCodes.APATHY },
+			Vit = { stat = "Rampancy",  color = colorCodes.RAMPANCY },
+		}
+		local rows = {}
+		for i, stat in ipairs(Attributes) do
+			table.insert(rows, { label = AttributesColored[i], haveOutput = stat, { format = "{0:output:" .. stat .. "}", { breakdown = stat }, { modName = stat }, }, })
+			local conv = s4Pair[stat]
+			if conv then
+				table.insert(rows, { label = conv.color .. "  " .. conv.stat, haveOutput = conv.stat, { format = "{0:output:" .. conv.stat .. "}", }, })
+			end
 		end
-	),
+		return rows
+	end)(),
 }
 } },
 -- primary defenses
