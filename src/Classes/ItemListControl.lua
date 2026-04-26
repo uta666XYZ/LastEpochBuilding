@@ -58,6 +58,39 @@ local function getIconHandle(filename)
 	return iconHandles[filename]
 end
 
+-- Primordial detection: covers (a) currently-active craft editor state,
+-- (b) explicitModLines flagged by CraftRebuildItem, and (c) any prefix/suffix
+-- mod whose specialAffixType == 7 (covers imported items too).
+local function itemHasPrimordial(item)
+	if not item then return false end
+	if item.primordial then return true end
+	if item.craftState and item.craftState.affixState
+		and item.craftState.affixState.primordial
+		and item.craftState.affixState.primordial.modKey ~= nil then
+		return true
+	end
+	if item.explicitModLines then
+		for i, line in ipairs(item.explicitModLines) do
+			if line.primordial then return true end
+		end
+	end
+	if item.affixes then
+		local lists = { item.prefixes, item.suffixes }
+		for li = 1, 2 do
+			local list = lists[li]
+			if list then
+				for si, slot in ipairs(list) do
+					if slot.modId and slot.modId ~= "None" then
+						local mod = item.affixes[slot.modId]
+						if mod and mod.specialAffixType == 7 then return true end
+					end
+				end
+			end
+		end
+	end
+	return false
+end
+
 local ItemListClass = newClass("ItemListControl", "ListControl", function(self, anchor, x, y, width, height, itemsTab, forceTooltip)
 	self.ListControl(anchor, x, y, width, height, 16, "VERTICAL", true, itemsTab.itemOrderList, forceTooltip)
 	self.itemsTab = itemsTab
@@ -133,9 +166,22 @@ end
 function ItemListClass:GetRowIcon(column, index, itemId)
 	if column ~= 1 then return nil end
 	local item = self.itemsTab.items[itemId]
-	local h = getIconHandle(iconFileForItem(item))
-	if h and h:IsValid() then return h end
-	return nil
+	if not item then return nil end
+	local list = {}
+	local fname = iconFileForItem(item)
+	local h = getIconHandle(fname)
+	if h and h:IsValid() then t_insert(list, h) end
+	if itemHasPrimordial(item) then
+		local p = getIconHandle("Icon_Primordial.png")
+		if p and p:IsValid() then t_insert(list, p) end
+	end
+	if item.corrupted then
+		local c = getIconHandle("Icon_Corrupted.png")
+		if c and c:IsValid() then t_insert(list, c) end
+	end
+	if #list == 0 then return nil end
+	if #list == 1 then return list[1] end
+	return list
 end
 
 function ItemListClass:AddValueTooltip(tooltip, index, itemId)
