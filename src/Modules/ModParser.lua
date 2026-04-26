@@ -118,6 +118,9 @@ local modNameList = {
 	["knockback distance"] = "EnemyKnockbackDistance",
 	-- Auras/curses/buffs
 	["buff effect"] = "BuffEffect",
+	["holy aura effect"] = "HolyAuraEffect",
+	["symbols of hope effect"] = "SymbolsOfHopeEffect",
+	["holy aura and symbols of hope effect"] = { "HolyAuraEffect", "SymbolsOfHopeEffect" },
 	-- On hit/kill/leech effects
 	["health gain on kill"] = "LifeOnKill",
 	["health gain on hit"] = { "LifeOnHit", flags = ModFlag.Hit },
@@ -556,6 +559,7 @@ local modTagList = {
 
 for i,stat in ipairs(LongAttributes) do
 	modTagList["per " .. stat:lower()] = { tag = { type = "PerStat", stat = Attributes[i] } }
+	modTagList["per point of " .. stat:lower()] = { tag = { type = "PerStat", stat = Attributes[i] } }
 	modTagList["per player " .. stat:lower()] = { tag = { type = "PerStat", stat = Attributes[i], actor = "parent" } }
 	modTagList["per (%d+) " .. stat:lower()] = function(num) return { tag = { type = "PerStat", stat = Attributes[i], div = num } } end
 	modTagList["w?h?i[lf]e? you have at least (%d+) " .. stat:lower()] = function(num) return { tag = { type = "StatThreshold", stat = Attributes[i], threshold = num } } end
@@ -564,6 +568,7 @@ end
 for i,stat in ipairs(Attributes) do
 	local abbr = stat:lower()
 	modTagList["per " .. abbr] = { tag = { type = "PerStat", stat = Attributes[i] } }
+	modTagList["per point of " .. abbr] = { tag = { type = "PerStat", stat = Attributes[i] } }
 	modTagList["per player " .. abbr] = { tag = { type = "PerStat", stat = Attributes[i], actor = "parent" } }
 	modTagList["per (%d+) " .. abbr] = function(num) return { tag = { type = "PerStat", stat = Attributes[i], div = num } } end
 end
@@ -754,9 +759,19 @@ local specialModList = {
 	["^%+?(%d+)%% maximum health gained as endurance threshold$"] = function(num)
 		return { mod("LifeAsEnduranceThreshold", "BASE", tonumber(num)) }
 	end,
+	["^%+?(%d+)%% of max health gained as endurance threshold$"] = function(num)
+		return { mod("LifeAsEnduranceThreshold", "BASE", tonumber(num)) }
+	end,
+	["^%+?(%d+)%% of maximum health gained as endurance threshold$"] = function(num)
+		return { mod("LifeAsEnduranceThreshold", "BASE", tonumber(num)) }
+	end,
 	-- Sentinel Defiance: "+1 Endurance Threshold Per 2% Uncapped Elemental Resistance"
 	["^%+?(%d+) endurance threshold per 2%% uncapped elemental resistance$"] = function(num)
 		return { mod("EnduranceThresholdPerUncappedEleRes", "BASE", tonumber(num)) }
+	end,
+	-- Stone Shield (unique): "+1% Block Chance per 2% Endurance above the Cap"
+	["^%+?(%d+)%% block chance per (%d+)%% endurance above the cap$"] = function(_, num, div)
+		return { mod("BlockChance", "BASE", tonumber(num), { type = "PerStat", stat = "EnduranceOverCap", div = tonumber(div) }) }
 	end,
 	-- Paladin: "+N Maximum Symbols" (Polygram, Tetragram etc.)
 	["^%+?(%d+) maximum symbols?$"] = function(num)
@@ -1325,13 +1340,19 @@ local preSkillNameList = { }
 
 -- Scan a line for the earliest and longest match from the pattern list
 -- If a match is found, returns the corresponding value from the pattern list, plus the remainder of the line and a table of captures
-local function scan(line, patternList, plain, matchAll)
+local function scan(line, patternList, plain, matchAll, excludeStart, excludeEnd)
 	local bestIndex, bestEndIndex
 	local bestPattern = ""
 	local bestVal, bestStart, bestEnd, bestCaps
 	local lineLower = line:lower()
 	for pattern, patternVal in pairs(patternList) do
 		local index, endIndex, cap1, cap2, cap3, cap4, cap5 = lineLower:find(pattern, 1, plain)
+		-- Skip matches that overlap an excluded range (used to protect multi-word
+		-- modName matches like "health gain on block" from being broken up by
+		-- shorter modTag patterns like "on block").
+		if index and excludeStart and endIndex >= excludeStart and index <= excludeEnd then
+			index = nil
+		end
 		if index and (not bestIndex or index < bestIndex or (index == bestIndex and (endIndex > bestEndIndex or (endIndex == bestEndIndex and #pattern > #bestPattern)))) then
 			bestIndex = index
 			bestEndIndex = endIndex
@@ -1414,9 +1435,25 @@ local function parseMod(line, order)
 		return { }, line
 	end
 
+	-- Peek modNameList for the longest match span on the current line so we can
+	-- protect it from shorter modTag patterns (e.g. "on block") that would
+	-- otherwise consume part of a longer name like "health gain on block".
+	local nameStart, nameEnd
+	do
+		local lineLower = line:lower()
+		local bestLen = 0
+		for pattern in pairs(modNameList) do
+			local i, j = lineLower:find(pattern, 1, false)
+			if i and (j - i + 1) > bestLen then
+				bestLen = j - i + 1
+				nameStart, nameEnd = i, j
+			end
+		end
+	end
+
 	-- Check for tags (per-charge, conditionals)
 	local modTag, modTag2, tagCap
-	modTag, line, tagCap = scan(line, modTagList)
+	modTag, line, tagCap = scan(line, modTagList, false, false, nameStart, nameEnd)
 	if type(modTag) == "function" then
 		if tagCap[1]:match("%d+") then
 			modTag = modTag(tonumber(tagCap[1]), unpack(tagCap))
@@ -1425,7 +1462,7 @@ local function parseMod(line, order)
 		end
 	end
 	if modTag then
-		modTag2, line, tagCap = scan(line, modTagList)
+		modTag2, line, tagCap = scan(line, modTagList, false, false, nameStart, nameEnd)
 		if type(modTag2) == "function" then
 			if tagCap[1]:match("%d+") then
 				modTag2 = modTag2(tonumber(tagCap[1]), unpack(tagCap))
