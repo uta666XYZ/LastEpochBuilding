@@ -271,6 +271,14 @@ function ListClass:Draw(viewPort, noTooltip)
 			-- TODO: handle icon size properly, for now assume they are 16x16
 			if icon == nil then
 				DrawString(colOffset, lineY + textOffsetY, "LEFT", textHeight, colFont, text)
+			elseif type(icon) == "table" then
+				-- GetRowIcon may return a list of 16x16 icons (type / primordial /
+				-- corrupted markers). Draw each in sequence and shift the text.
+				local n = #icon
+				for i = 1, n do
+					DrawImage(icon[i], colOffset + (i - 1) * 18, lineY, 16, 16)
+				end
+				DrawString(colOffset + n * 18, lineY + textOffsetY, "LEFT", textHeight, colFont, text)
 			else
 				DrawImage(icon, colOffset, lineY, 16, 16)
 				DrawString(colOffset + 16 + 2, lineY + textOffsetY, "LEFT", textHeight, colFont, text)
