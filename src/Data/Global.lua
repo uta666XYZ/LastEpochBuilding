@@ -94,14 +94,14 @@ DamageTypes = {
 	"Void"
 }
 
-Attributes = {"Vit","Str","Dex","Int","Att"}
-LongAttributes = {"Vitality","Strength","Dexterity","Intelligence","Attunement"}
+Attributes = {"Str","Dex","Int","Att","Vit"}
+LongAttributes = {"Strength","Dexterity","Intelligence","Attunement","Vitality"}
 AttributesColored = {
-    colorCodes.VITALITY.."Vitality",
     colorCodes.STRENGTH.."Strength",
     colorCodes.DEXTERITY.."Dexterity",
     colorCodes.INTELLIGENCE.."Intelligence",
-    colorCodes.ATTUNEMENT.."Attunement"
+    colorCodes.ATTUNEMENT.."Attunement",
+    colorCodes.VITALITY.."Vitality"
 }
 
 DamageTypesColored = {
