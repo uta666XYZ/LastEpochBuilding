@@ -758,6 +758,44 @@ function ItemClass:ParseRaw(raw, rarity, highQuality)
 			return
 		end
 	end
+	-- Primordial unique flag: derived from uniques data (set on the 25 primordial uniques).
+	-- Allows GetRowIcon to display the primordial badge for unique items whose
+	-- base/title is a primordial unique, even though they have no per-mod sat==7 flag.
+	self.primordial = false
+	local okP, errP = pcall(function()
+		if (self.rarity == "UNIQUE" or self.rarity == "LEGENDARY" or self.rarity == "SET") and data.uniques and self.title then
+			for _, u in pairs(data.uniques) do
+				if type(u) == "table" and u.primordial and u.name == self.title then
+					self.primordial = true
+					return
+				end
+			end
+		end
+	end)
+	if not okP then end
+	-- Auto-derive corrupted from affixes: any active prefix/suffix mod whose
+	-- specialAffixType == 6 (corruption-exclusive) implies the item is corrupted,
+	-- even if the raw text lacks a "Corrupted" marker (LETools / save-file imports).
+	local okC, errC = pcall(function()
+		if not self.corrupted and self.affixes and self.base and self.base.type ~= "Idol Altar" then
+			local lists = { self.prefixes, self.suffixes }
+			for li = 1, 2 do
+				local list = lists[li]
+				if list then
+					for _, slot in ipairs(list) do
+						if slot.modId and slot.modId ~= "None" then
+							local mod = self.affixes[slot.modId]
+							if mod and mod.specialAffixType == 6 then
+								self.corrupted = true
+								return
+							end
+						end
+					end
+				end
+			end
+		end
+	end)
+	if not okC then end
 	self:BuildModList()
 end
 
