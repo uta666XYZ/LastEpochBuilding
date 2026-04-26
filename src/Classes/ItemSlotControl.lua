@@ -4,12 +4,64 @@
 -- Item Slot control, extends the basic dropdown control.
 --
 local pairs = pairs
+local ipairs = ipairs
 local t_insert = table.insert
 local m_min = math.min
 
--- Whether an item has a Primordial affix (sat=7). Items crafted in LEB store
--- this in craftState.affixState.primordial.modKey; items imported from save
--- files expose it through explicitModLines[*].primordial.
+-- 16x16 type-icon mapping mirrored from ItemListControl so equipped slots can
+-- show the same icon strip (type + primordial + corrupted) as the All items
+-- list. Kept duplicated locally to avoid a cross-Class dependency.
+local TYPE_ICON = {
+	["Amulet"]            = "Icon_Amulet.png",
+	["Belt"]              = "Icon_Belt.png",
+	["Body Armor"]        = "Icon_Armor.png",
+	["Boots"]             = "Icon_Boots.png",
+	["Bow"]               = "Icon_Bow.png",
+	["Dagger"]            = "Icon_Dagger.png",
+	["Gloves"]            = "Icon_Gloves.png",
+	["Helmet"]            = "Icon_Helmet.png",
+	["Off-Hand Catalyst"] = "Icon_Shield.png",
+	["One-Handed Axe"]    = "Icon_Axe.png",
+	["Two-Handed Axe"]    = "Icon_Axe.png",
+	["One-Handed Mace"]   = "Icon_Mace.png",
+	["Two-Handed Mace"]   = "Icon_Mace.png",
+	["One-Handed Sword"]  = "Icon_Sword.png",
+	["Two-Handed Sword"]  = "Icon_Sword.png",
+	["Two-Handed Spear"]  = "Icon_Polearm.png",
+	["Two-Handed Staff"]  = "Icon_Staff.png",
+	["Quiver"]            = "Icon_Quiver.png",
+	["Relic"]             = "Icon_Relic.png",
+	["Ring"]              = "Icon_Ring.png",
+	["Sceptre"]           = "Icon_Sceptre.png",
+	["Shield"]            = "Icon_Shield.png",
+	["Wand"]              = "Icon_Wand.png",
+	["Idol Altar"]        = "idol/Idol_Altar_Pyramidal_Altar.png",
+	["Blessing"]          = "blessings/body_of_obsidian.png",
+}
+
+local function iconFileForItem(item)
+	if not item or not item.type then return nil end
+	local f = TYPE_ICON[item.type]
+	if f then return f end
+	if item.type:find("Idol") then return "Icon_Idol.png" end
+	return nil
+end
+
+local iconHandles = {}
+local function getIconHandle(filename)
+	if not filename then return nil end
+	if not iconHandles[filename] then
+		local h = NewImageHandle()
+		h:Load("Assets/" .. filename, "ASYNC")
+		iconHandles[filename] = h
+	end
+	return iconHandles[filename]
+end
+
+-- Whether an item has a Primordial affix (sat=7). Detection covers (a) the
+-- live craft editor state, (b) explicitModLines flagged by CraftRebuildItem,
+-- and (c) any prefix/suffix mod entry with specialAffixType == 7 (this
+-- catches imported items whose craftState was rebuilt without the flag).
 local function itemHasPrimordial(item)
 	if not item then return false end
 	if item.craftState and item.craftState.affixState
@@ -20,6 +72,20 @@ local function itemHasPrimordial(item)
 	if item.explicitModLines then
 		for _, line in ipairs(item.explicitModLines) do
 			if line.primordial then return true end
+		end
+	end
+	if item.affixes then
+		local lists = { item.prefixes, item.suffixes }
+		for li = 1, 2 do
+			local list = lists[li]
+			if list then
+				for _, slot in ipairs(list) do
+					if slot.modId and slot.modId ~= "None" then
+						local mod = item.affixes[slot.modId]
+						if mod and mod.specialAffixType == 7 then return true end
+					end
+				end
+			end
 		end
 	end
 	return false
@@ -77,6 +143,25 @@ local ItemSlotClass = newClass("ItemSlotControl", "DropDownControl", function(se
 	self.items = { }
 	self.selItemId = 0
 	self.slotName = slotName
+	-- Leading 16x16 icon strip drawn by DropDownControl: type, primordial,
+	-- corrupted (only the markers that apply for the equipped item).
+	self.preLabelIcons = function()
+		if not self.selItemId or self.selItemId == 0 then return nil end
+		local item = itemsTab.items and itemsTab.items[self.selItemId]
+		if not item then return nil end
+		local list = {}
+		local th = getIconHandle(iconFileForItem(item))
+		if th and th:IsValid() then t_insert(list, th) end
+		if itemHasPrimordial(item) then
+			local p = getIconHandle("Icon_Primordial.png")
+			if p and p:IsValid() then t_insert(list, p) end
+		end
+		if item.corrupted then
+			local c = getIconHandle("Icon_Corrupted.png")
+			if c and c:IsValid() then t_insert(list, c) end
+		end
+		return (#list > 0) and list or nil
+	end
 	self.slotNum = tonumber(slotName:match("%d+$") or slotName:match("%d+"))
 	if slotName:match("Flask") then
 		self.controls.activate = new("CheckBoxControl", {"RIGHT",self,"LEFT"}, -2, 0, 20, nil, function(state)
