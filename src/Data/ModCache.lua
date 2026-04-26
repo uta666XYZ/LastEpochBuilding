@@ -15355,7 +15355,7 @@ c["5% of Current Health converted to Ward when you directly cast a Necrotic Spel
 c["5% of Damage Dealt to Mana Before Health"]={{[1]={flags=0,keywordFlags=0,name="DamageToManaBeforeHealth",type="BASE",value=5}},nil}
 c["5% of Damage Leeched as Health While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=5}},nil}
 c["5% of Damage dealt by Harvest Leeched as Health"]={{[1]={[1]={skillName="Harvest",type="SkillName"},flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=5}},"  dealt by   "}
-c["5% of Maximum Health gained as Endurance Threshold"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=5},notSupported=true},nil}
+c["5% of Maximum Health gained as Endurance Threshold"]={{[1]={flags=0,keywordFlags=0,name="LifeAsEnduranceThreshold",type="BASE",value=5}},nil}
 c["5% of Melee Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=512,name="DamageLifeLeech",type="BASE",value=5}},nil}
 c["5% of Minion Damage Leeched as Health on Melee Hit"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=8389120,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=5}}}},nil}
 c["5% of Minion Damage Reflected"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="BASE",value=5}}}},"   Reflected "}
@@ -15850,7 +15850,7 @@ c["6% of Damage Leeched as Health While Transformed"]={{[1]={[1]={type="Conditio
 c["6% of Damage dealt by Harvest Leeched as Health"]={{[1]={[1]={skillName="Harvest",type="SkillName"},flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=6}},"  dealt by   "}
 c["6% of Elemental Damage Leeched as Health on Crit"]={{[1]={flags=0,keywordFlags=0,name="FireDamageLifeLeech",type="BASE",value=6},[2]={flags=0,keywordFlags=0,name="ColdDamageLifeLeech",type="BASE",value=6},[3]={flags=0,keywordFlags=0,name="LightningDamageLifeLeech",type="BASE",value=6}},"   on Crit "}
 c["6% of Lightning Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=0,name="LightningDamageLifeLeech",type="BASE",value=6}},nil}
-c["6% of Maximum Health gained as Endurance Threshold"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=6},notSupported=true},nil}
+c["6% of Maximum Health gained as Endurance Threshold"]={{[1]={flags=0,keywordFlags=0,name="LifeAsEnduranceThreshold",type="BASE",value=6}},nil}
 c["6% of Melee Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=512,name="DamageLifeLeech",type="BASE",value=6}},nil}
 c["6% of Minion Current Health Drained per Second"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="BASE",value=6}}}},"  Current  Drained per Second "}
 c["6% of Minion Damage Leeched as Health on Melee Hit"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=8389120,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=6}}}},nil}
@@ -16583,7 +16583,7 @@ c["8% more Damage with Vengeance per 10% Block Chance"]={{[1]={[1]={div=10,stat=
 c["8% of Damage Dealt to Mana Before Health"]={{[1]={flags=0,keywordFlags=0,name="DamageToManaBeforeHealth",type="BASE",value=8}},nil}
 c["8% of Damage Leeched as Health While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=8}},nil}
 c["8% of Damage dealt by Harvest Leeched as Health"]={{[1]={[1]={skillName="Harvest",type="SkillName"},flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=8}},"  dealt by   "}
-c["8% of Maximum Health gained as Endurance Threshold"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=8},notSupported=true},nil}
+c["8% of Maximum Health gained as Endurance Threshold"]={{[1]={flags=0,keywordFlags=0,name="LifeAsEnduranceThreshold",type="BASE",value=8}},nil}
 c["8% of Melee Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=512,name="DamageLifeLeech",type="BASE",value=8}},nil}
 c["8% of Minion Damage Leeched as Health on Melee Hit"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=8389120,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=8}}}},nil}
 c["8% of Minion Damage Reflected"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="BASE",value=8}}}},"   Reflected "}
