@@ -1308,7 +1308,7 @@ c["+1 Aerial Prowess Stacks on dodge"]={{}," Aerial Prowess Stacks on dodge "}
 c["+1 All Attributes"]={{[1]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=1},[2]={flags=0,keywordFlags=0,name="Str",type="BASE",value=1},[3]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=1},[4]={flags=0,keywordFlags=0,name="Int",type="BASE",value=1},[5]={flags=0,keywordFlags=0,name="Att",type="BASE",value=1}},nil}
 c["+1 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=1}},nil}
 c["+1 Armor Per 2 Dex"]={{[1]={[1]={div=2,stat="Dex",type="PerStat"},flags=0,keywordFlags=0,name="Armour",type="BASE",value=1}},nil}
-c["+1 Armor Per Point Of Intelligence"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=1}},"  Per Point Of Intelligence "}
+c["+1 Armor Per Point Of Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="Armour",type="BASE",value=1}},nil}
 c["+1 Armor Shred Stacks"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=1}},"  Shred Stacks "}
 c["+1 Armor Shred Stacks Applied"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=1}},"  Shred Stacks Applied "}
 c["+1 Armour Shred Stacks"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=1}},"  Shred Stacks "}
@@ -1358,7 +1358,7 @@ c["+1 Crossbow Mercenaries"]={{}," Cross Mercenaries "}
 c["+1 Cursed Ground Duration (seconds)"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="BASE",value=1}}," Cursed Ground  (seconds) "}
 c["+1 Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="BASE",value=1}},nil}
 c["+1 Damage Per Dusk Shroud"]={{[1]={[1]={skillName="Dusk Shroud",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="BASE",value=1}},"  Per  "}
-c["+1 Damage Reflected Per Point Of Attunement"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=1}},"  Reflected Per Point Of Attunement "}
+c["+1 Damage Reflected Per Point Of Attunement"]={{[1]={[1]={stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="Damage",type="BASE",value=1}},"  Reflected  "}
 c["+1 Damage dealt to enemies facing you every 0.5 seconds per 1 Damage Reflected to Attackers"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=1}},"  dealt to enemies facing you every 0.5 seconds per 1 Damage Reflected to Attackers "}
 c["+1 Damage per 40 Block Effectiveness"]={{[1]={[1]={div=40,stat="BlockEffect",type="PerStat"},flags=0,keywordFlags=0,name="Damage",type="BASE",value=1}},nil}
 c["+1 Damned Stacks"]={{[1]={[1]={skillName="Damned",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}},"  Stacks "}
@@ -1964,7 +1964,7 @@ c["+1% Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type=
 c["+1% Movespeed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=1}},nil}
 c["+1% Movespeed per 5% Ignite chance"]={{[1]={[1]={skillName="Ignite",type="SkillName"},flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=1}},"  per 5%  chance "}
 c["+1% Necrotic Damage per 1% Added Crit Multi"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="MORE",value=1}},"  per 1% Added Crit Multi "}
-c["+1% Necrotic Resistance Per Point Of Intelligence"]={{[1]={flags=0,keywordFlags=0,name="NecroticResist",type="BASE",value=1}},"  Per Point Of Intelligence "}
+c["+1% Necrotic Resistance Per Point Of Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="NecroticResist",type="BASE",value=1}},nil}
 c["+1% Orb Hit Damage Per 1 Mana Cost"]={{[1]={flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=1}}," Orb   Per 1 Mana Cost "}
 c["+1% Parry Chance"]={{[1]={flags=0,keywordFlags=0,name="ParryChance",type="BASE",value=1}},nil}
 c["+1% Parry Chance Per Forged Weapon"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=1},notSupported=true},nil}
@@ -1979,7 +1979,7 @@ c["+1% Physical Res Shred Chance Per Dex"]={{[1]={[1]={stat="Dex",type="PerStat"
 c["+1% Physical Resistance"]={{[1]={flags=0,keywordFlags=0,name="PhysicalResist",type="BASE",value=1}},nil}
 c["+1% Placement Speed per Dexterity"]={{}," Placement Speed  "}
 c["+1% Poison Chance Per Second Per 2 Maximum Mana"]={{[1]={[1]={div=2,stat="Mana",type="PerStat"},flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Poison",type="BASE",value=1}},"  Per Second  "}
-c["+1% Poison Resistance Per Point Of Intelligence"]={{[1]={flags=0,keywordFlags=0,name="PoisonResist",type="BASE",value=1}},"  Per Point Of Intelligence "}
+c["+1% Poison Resistance Per Point Of Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="PoisonResist",type="BASE",value=1}},nil}
 c["+1% Profane Orb Frequency per 1% Cast Speed"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="BASE",value=1}}," Profane Orb Frequency per 1%  "}
 c["+1% Reap Damage Per Missing Health Percent"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=1}}," Reap  Per Missing Health Percent "}
 c["+1% Runic Invocation Crit Chance per stack"]={{[1]={[1]={skillName="Runic Invocation",type="SkillName"},flags=0,keywordFlags=0,name="CritChance",type="BASE",value=1}},"   per stack "}
@@ -4623,7 +4623,7 @@ c["+2% Increased Area Per Minion"]={{[1]={flags=0,keywordFlags=0,name="MinionMod
 c["+2% Increased Cooldown Recovery Speed of Reap"]={{[1]={flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=2}},"  of Reap "}
 c["+2% Increased Damage Per Attunement"]={{[1]={[1]={stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="Damage",type="INC",value=2}},nil}
 c["+2% Increases the damage dealt by your critical strikes Increased Critical Strike Chance per Dexterity"]={{[1]={[1]={stat="Dex",type="PerStat"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=2}}," Increases the  dealt by your critical strikes Increased Critical Strike Chance  "}
-c["+2% Increases the rate at which your health regenerates over time Increased Health Regen per point of Strength"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="BASE",value=2}}," Increases the rate at which your erates over time Increased Health Regen per point of Strength "}
+c["+2% Increases the rate at which your health regenerates over time Increased Health Regen per point of Strength"]={{[1]={[1]={stat="Str",type="PerStat"},flags=0,keywordFlags=0,name="LifeRegen",type="BASE",value=2}}," Increases the rate at which your erates over time Increased Health Regen  "}
 c["+2% Increases your maximum health Health Regen also applies to Ward"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=2}}," Increases your  Health Regen also applies to Ward "}
 c["+2% Kill Threshold Against Frozen Enemies"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="Frozen"},flags=0,keywordFlags=0,name="KillThreshold",type="BASE",value=2}},nil}
 c["+2% Less Damage Over Time taken while using a Shield"]={{[1]={[1]={type="Condition",var="UsingShield"},flags=0,keywordFlags=0,name="DamageTakenOverTime",type="MORE",value=-2}},nil}
@@ -7353,7 +7353,7 @@ c["+4% Increased Healing Per Symbol"]={{},"   "}
 c["+4% Increased Minion Attack Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=3584,keywordFlags=0,name="Speed",type="INC",value=4}}}},nil}
 c["+4% Increased Minion Cast Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=256,keywordFlags=0,name="Speed",type="INC",value=4}}}},nil}
 c["+4% Increases the number of attacks you can use per second Chance to cast Icicle on Bow Hit"]={{}," Increases the number of attacks you can use per second Chance to cast  on   "}
-c["+4% Increases the rate at which your health regenerates over time Increased Health Regen per point of Strength"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="BASE",value=4}}," Increases the rate at which your erates over time Increased Health Regen per point of Strength "}
+c["+4% Increases the rate at which your health regenerates over time Increased Health Regen per point of Strength"]={{[1]={[1]={stat="Str",type="PerStat"},flags=0,keywordFlags=0,name="LifeRegen",type="BASE",value=4}}," Increases the rate at which your erates over time Increased Health Regen  "}
 c["+4% Increases your maximum health Health Regen also applies to Ward"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=4}}," Increases your  Health Regen also applies to Ward "}
 c["+4% Increases your maximum health Missing Health regained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=4}}," Increases your  Missing Health regained on Potion Use "}
 c["+4% Increases your maximum mana increased Mana Regen per 100 Maximum Mana"]={{[1]={[1]={div=100,stat="Mana",type="PerStat"},flags=0,keywordFlags=0,name="Mana",type="BASE",value=4}}," Increases your  increased Mana Regen  "}
@@ -8108,7 +8108,7 @@ c["+5% Fire Rate"]={{},"  Rate "}
 c["+5% Fire Resistance"]={{[1]={flags=0,keywordFlags=0,name="FireResist",type="BASE",value=5}},nil}
 c["+5% Fire Skill Ignite Chance"]={{[1]={flags=8388608,keywordFlags=8,name="ChanceToTriggerOnHit_Ailment_Ignite",type="BASE",value=5}},"  Skill  "}
 c["+5% Forged Weapon Attack Speed"]={{[1]={flags=3584,keywordFlags=0,name="Speed",type="BASE",value=5}}," Forged Weapon  "}
-c["+5% Freeze Rate Multiplier Per Point Of Attunement"]={{[1]={flags=0,keywordFlags=0,name="FreezeRateMultiplier",type="BASE",value=5}},"  Per Point Of Attunement "}
+c["+5% Freeze Rate Multiplier Per Point Of Attunement"]={{[1]={[1]={stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="FreezeRateMultiplier",type="BASE",value=5}},nil}
 c["+5% Freeze Rate Multiplier per 1% Crit Chance"]={{[1]={flags=0,keywordFlags=0,name="FreezeRateMultiplier",type="BASE",value=5}},"  per 1% Crit Chance "}
 c["+5% Frenzy Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Frenzy",type="BASE",value=5}},nil}
 c["+5% Gathering Fury increased attack speed"]={{[1]={flags=3584,keywordFlags=0,name="Speed",type="BASE",value=5}}," Gathering Fury increased  "}
@@ -10521,12 +10521,12 @@ c["1 Haste Duration (Double For Companions)"]={{[1]={[1]={skillName="Haste",type
 c["1 Haste Duration (Seconds)"]={{[1]={[1]={skillName="Haste",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="BASE",value=1}},"   (Seconds) "}
 c["1 Haste Duration (seconds)"]={{[1]={[1]={skillName="Haste",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="BASE",value=1}},"   (seconds) "}
 c["1 Haste duration after Channeling (seconds)"]={{[1]={[1]={skillName="Haste",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="BASE",value=1}},"   after Channeling (seconds) "}
-c["1 Healing Per Point of Dexterity"]={{[1]={[1]={skillName="Healing",type="SkillName"},flags=0,keywordFlags=0,name="Dex",type="BASE",value=1}},"  Per Point of  "}
+c["1 Healing Per Point of Dexterity"]={{[1]={[1]={stat="Dex",type="PerStat"},[2]={skillName="Healing",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}},nil}
 c["1 Health Gain Per 2 Dex"]={{[1]={[1]={div=2,stat="Dex",type="PerStat"},flags=0,keywordFlags=0,name="Life",type="BASE",value=1}},"  Gain  "}
 c["1 Health Gain on Falcon Hit Per 3 Dex"]={{[1]={[1]={div=3,stat="Dex",type="PerStat"},flags=8388608,keywordFlags=0,name="Life",type="BASE",value=1}},"  Gain on Falc  "}
 c["1 Health Gain per 2 Dexterity"]={{[1]={[1]={div=2,stat="Dex",type="PerStat"},flags=0,keywordFlags=0,name="Life",type="BASE",value=1}},"  Gain  "}
 c["1 Health Gain per 2 total attributes"]={{[1]={[1]={div=2,statList={[1]="Vit",[2]="Str",[3]="Dex",[4]="Int",[5]="Att"},type="PerStat"},flags=0,keywordFlags=0,name="Life",type="BASE",value=1}},"  Gain  "}
-c["1 Health Gained Per Point Of Intelligence"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=1}},"  Gained Per Point Of Intelligence "}
+c["1 Health Gained Per Point Of Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="Life",type="BASE",value=1}},"  Gained  "}
 c["1 Health Gained per Stack of Shroud"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=1}},"  Gained per Stack of Shroud "}
 c["1 Health gained per Dexterity when your Falcon hits an enemy"]={{[1]={[1]={stat="Dex",type="PerStat"},flags=8388608,keywordFlags=0,name="Life",type="BASE",value=1}},"  gained  when your Falcs an enemy "}
 c["1 Hungering Souls Interval (Seconds)"]={{[1]={[1]={skillName="Hungering Souls",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}},"  Interval (Seconds) "}
@@ -10640,7 +10640,7 @@ c["1 Vale Spirit Every 5 Spirit Thorn Casts"]={{[1]={[1]={skillName="Vale Spirit
 c["1 Viscera gained per 2 seconds"]={{}," Viscera gained per 2 seconds "}
 c["1 Ward Gain per 15% Uncapped Necrotic Res"]={{[1]={flags=0,keywordFlags=32,name="Ward",type="BASE",value=1}},"  Gain per 15% Uncapped  Res "}
 c["1 Ward Gained Per Mana Spent"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=1}},"  Gained Per Mana Spent "}
-c["1 Ward Gained Per Point Of Intelligence"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=1}},"  Gained Per Point Of Intelligence "}
+c["1 Ward Gained Per Point Of Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="Ward",type="BASE",value=1}},"  Gained  "}
 c["1 Ward Gained per 1% Uncapped Poison Resistance"]={{[1]={[1]={skillName="Poison",type="SkillName"},flags=0,keywordFlags=0,name="Ward",type="BASE",value=1}},"  Gained per 1% Uncapped  Resistance "}
 c["1 Ward Gained per 10 Health"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=1}},"  Gained per 10 Health "}
 c["1 Ward Gained per 10 Max Mana"]={{[1]={[1]={div=10,stat="Mana",type="PerStat"},flags=0,keywordFlags=0,name="Ward",type="BASE",value=1}},"  Gained  "}
@@ -10702,7 +10702,7 @@ c["1% Increased Frenzy Effect "]={{},"  Effect "}
 c["1% Increased Frenzy Effect for Minions  per player Attunement"]={{},"  Effect    "}
 c["1% Increased Frostbite Duration "]={{[1]={[1]={skillName="Frostbite",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=1}},nil}
 c["1% Increased Health Regen per 1% Uncapped Endurance"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=1}},"  per 1% Uncapped Endurance "}
-c["1% Increased Health Regen per point of Strength"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=1}},"  per point of Strength "}
+c["1% Increased Health Regen per point of Strength"]={{[1]={[1]={stat="Str",type="PerStat"},flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=1}},nil}
 c["1% Increased Ignite Duration "]={{[1]={[1]={skillName="Ignite",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=1}},nil}
 c["1% Increased Ignite Frequency Per Ignite Chance"]={{[1]={[1]={skillName="Ignite",type="SkillName"},flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Ignite",type="INC",value=1}},"  Frequency Per  "}
 c["1% Increased Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="INC",value=1}},nil}
@@ -10768,7 +10768,7 @@ c["1% increased Movement Speed per 10 Dexterity"]={{[1]={[1]={div=10,stat="Dex",
 c["1% increased Movement Speed per 4 Character Levels"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=1}},"  per 4 Character Levels "}
 c["1% increased Shock Duration per Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},[2]={skillName="Shock",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=1}},nil}
 c["1% increased Stygian Beam frequency per Intelligence"]={{},"  frequency  "}
-c["1% increased healing effectiveness per point of attunement"]={{[1]={flags=0,keywordFlags=0,name="HealingEffectiveness",type="INC",value=1}},"  per point of attunement "}
+c["1% increased healing effectiveness per point of attunement"]={{[1]={[1]={stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="HealingEffectiveness",type="INC",value=1}},nil}
 c["1% less Bow Bow Global Conditional Damage - more Multiplicative with other modifiers"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=2048,name="Damage",type="MORE",value=-1}},"    Conditional  - more Multiplicative with other modifiers "}
 c["1% less Damage Over Time Taken"]={{[1]={flags=0,keywordFlags=0,name="DamageTakenOverTime",type="MORE",value=-1}},nil}
 c["1% less Damage Taken for each Meteor you have cast recently (up to 18)"]={{[1]={[1]={type="Multiplier",var="MeteorCastRecently"},flags=0,keywordFlags=0,name="DamageTaken",type="MORE",value=-1}},nil}
@@ -12703,7 +12703,7 @@ c["2% Increased Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="INC",va
 c["2% Increased Health Regen Per Attunement"]={{[1]={[1]={stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=2}},nil}
 c["2% Increased Health Regen Per Strength"]={{[1]={[1]={stat="Str",type="PerStat"},flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=2}},nil}
 c["2% Increased Health Regen per Vitality"]={{[1]={[1]={stat="Vit",type="PerStat"},flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=2}},nil}
-c["2% Increased Health Regen per point of Strength"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=2}},"  per point of Strength "}
+c["2% Increased Health Regen per point of Strength"]={{[1]={[1]={stat="Str",type="PerStat"},flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=2}},nil}
 c["2% Increased Health per 10 Brutality"]={{[1]={[1]={div=10,stat="Brutality",type="PerStat"},flags=0,keywordFlags=0,name="Life",type="INC",value=2}},nil}
 c["2% Increased Ignite Duration "]={{[1]={[1]={skillName="Ignite",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=2}},nil}
 c["2% Increased Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="INC",value=2}},nil}
@@ -13831,7 +13831,7 @@ c["3% Increased Frostbite Duration "]={{[1]={[1]={skillName="Frostbite",type="Sk
 c["3% Increased Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="INC",value=3}},nil}
 c["3% Increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=3}},nil}
 c["3% Increased Health Regen per Stack"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=3}},"  per Stack "}
-c["3% Increased Health Regen per point of Strength"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=3}},"  per point of Strength "}
+c["3% Increased Health Regen per point of Strength"]={{[1]={[1]={stat="Str",type="PerStat"},flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=3}},nil}
 c["3% Increased Ignite Duration "]={{[1]={[1]={skillName="Ignite",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=3}},nil}
 c["3% Increased Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="INC",value=3}},nil}
 c["3% Increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=3}},nil}
@@ -14567,7 +14567,7 @@ c["4% Blade Conduit Mana Regen Per Stack"]={{[1]={flags=0,keywordFlags=0,name="M
 c["4% Bleed Chance per Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Bleed",type="BASE",value=4}},nil}
 c["4% Chance to not consume Silver Shrouds when hit"]={{}," to not consume s when  "}
 c["4% Chance to receive a Glancing Blow when hit"]={{}," to receive a Glancing Blow when  "}
-c["4% Damage Per Point Of Attunement"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=4}},"  Per Point Of Attunement "}
+c["4% Damage Per Point Of Attunement"]={{[1]={[1]={stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=4}},nil}
 c["4% Delayed Damage Cleared on Kill"]={{[1]={[1]={type="Condition",var="KilledRecently"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=4}}," Delayed  Cleared  "}
 c["4% Dodge Rating Debuff"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="BASE",value=4}},"  Debuff "}
 c["4% Doublecast Chance"]={{}," Doublecast Chance "}
@@ -14578,7 +14578,7 @@ c["4% Frostbite Chance per Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"}
 c["4% Global Reduced Mana Cost"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=0,name="ManaCost",type="BASE",value=4}},"  Reduced  "}
 c["4% Global Spell Damage Per Enemy Hit"]={{[1]={[1]={type="Global"},flags=8388608,keywordFlags=256,name="Damage",type="MORE",value=4}},"    Per Enemy  "}
 c["4% Healing Per Dexterity"]={{},"   "}
-c["4% Health Per Point Of Attunement"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=4}},"  Per Point Of Attunement "}
+c["4% Health Per Point Of Attunement"]={{[1]={[1]={stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="Life",type="BASE",value=4}},nil}
 c["4% Increased Area For Area Skills"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=4}},"  For Area Skills "}
 c["4% Increased Area for Area Skills"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=4}},"  for Area Skills "}
 c["4% Increased Area for Area Spells per 10 Madness"]={{[1]={[1]={div=10,stat="Madness",type="PerStat"},flags=0,keywordFlags=256,name="AreaOfEffect",type="INC",value=4}},"  for Area s  "}
@@ -14609,7 +14609,7 @@ c["4% Increased Haste Effect"]={{},"  Effect "}
 c["4% Increased Healing Effectiveness per player Attunement"]={{[1]={[1]={actor="parent",stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="HealingEffectiveness",type="INC",value=4}},nil}
 c["4% Increased Healing Effectiveness per player Intelligence"]={{[1]={[1]={actor="parent",stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="HealingEffectiveness",type="INC",value=4}},nil}
 c["4% Increased Healing Per Attunement"]={{},"   "}
-c["4% Increased Healing Per Point Of Attunement"]={{[1]={[1]={skillName="Healing",type="SkillName"},flags=0,keywordFlags=0,name="Att",type="INC",value=4}},"  Per Point Of  "}
+c["4% Increased Healing Per Point Of Attunement"]={{},"   "}
 c["4% Increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=4}},nil}
 c["4% Increased Health Regeneration"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=4}},nil}
 c["4% Increased Holy Aura And Symbols Of Hope Effect"]={{[1]={flags=0,keywordFlags=0,name="HolyAuraEffect",type="INC",value=4},[2]={flags=0,keywordFlags=0,name="SymbolsOfHopeEffect",type="INC",value=4}},nil}
@@ -15268,7 +15268,7 @@ c["5% Increased Healing Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="Heal
 c["5% Increased Healing Effectiveness per player Attunement"]={{[1]={[1]={actor="parent",stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="HealingEffectiveness",type="INC",value=5}},nil}
 c["5% Increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=5}},nil}
 c["5% Increased Health Regen Per Minion"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=5}}}},"  Per  "}
-c["5% Increased Health Regen per point of Strength"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=5}},"  per point of Strength "}
+c["5% Increased Health Regen per point of Strength"]={{[1]={[1]={stat="Str",type="PerStat"},flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=5}},nil}
 c["5% Increased Ignite Duration "]={{[1]={[1]={skillName="Ignite",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=5}},nil}
 c["5% Increased Mana Regen per 100 Max Mana"]={{[1]={[1]={div=100,stat="Mana",type="PerStat"},flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=5}},nil}
 c["5% Increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=5}},nil}
