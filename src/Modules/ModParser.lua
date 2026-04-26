@@ -758,6 +758,12 @@ local specialModList = {
 	["^%+?(%d+)%% maximum health gained as endurance threshold$"] = function(num)
 		return { mod("LifeAsEnduranceThreshold", "BASE", tonumber(num)) }
 	end,
+	["^%+?(%d+)%% of max health gained as endurance threshold$"] = function(num)
+		return { mod("LifeAsEnduranceThreshold", "BASE", tonumber(num)) }
+	end,
+	["^%+?(%d+)%% of maximum health gained as endurance threshold$"] = function(num)
+		return { mod("LifeAsEnduranceThreshold", "BASE", tonumber(num)) }
+	end,
 	-- Sentinel Defiance: "+1 Endurance Threshold Per 2% Uncapped Elemental Resistance"
 	["^%+?(%d+) endurance threshold per 2%% uncapped elemental resistance$"] = function(num)
 		return { mod("EnduranceThresholdPerUncappedEleRes", "BASE", tonumber(num)) }
