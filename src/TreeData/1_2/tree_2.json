@@ -3740,7 +3740,11 @@
       "x": 6427,
       "y": 0,
       "maxPoints": 0,
-      "stats": [],
+      "stats": [
+        "+15% Fire Resistance",
+        "+15% Cold Resistance",
+        "+15% Lightning Resistance"
+      ],
       "notScalingStats": [],
       "noScalingPointThreshold": 0,
       "in": [

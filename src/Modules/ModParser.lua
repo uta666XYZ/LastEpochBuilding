@@ -118,6 +118,9 @@ local modNameList = {
 	["knockback distance"] = "EnemyKnockbackDistance",
 	-- Auras/curses/buffs
 	["buff effect"] = "BuffEffect",
+	["holy aura effect"] = "HolyAuraEffect",
+	["symbols of hope effect"] = "SymbolsOfHopeEffect",
+	["holy aura and symbols of hope effect"] = { "HolyAuraEffect", "SymbolsOfHopeEffect" },
 	-- On hit/kill/leech effects
 	["health gain on kill"] = "LifeOnKill",
 	["health gain on hit"] = { "LifeOnHit", flags = ModFlag.Hit },
