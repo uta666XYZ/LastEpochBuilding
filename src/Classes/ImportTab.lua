@@ -985,10 +985,14 @@ function ImportTabClass:ConvertLEToolsItem(letoolsItem, itemMap, affixMap)
     else
         subType = entry.s
     end
+    -- LETools doesn't expose a top-level 'corrupted' flag, but the presence of a
+    -- corruptedAffix entry implies the item is corrupted. This matters because
+    -- specialAffixType==6 affix Line 2 (e.g. 1083_* "Strength Converted to
+    -- Brutality" extension) is gated behind self.corrupted in Item:Craft.
     local mx = {
         itemType = entry.b,
         subType  = subType,
-        corrupted = false,
+        corrupted = (type(letoolsItem.corruptedAffix) == "table" and letoolsItem.corruptedAffix.id ~= nil) or false,
         implicits = letoolsItem.ir or {},
         affixes = {},
     }
