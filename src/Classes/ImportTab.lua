@@ -849,13 +849,15 @@ function ImportTabClass:DownloadLEToolsPlannerBuild(url)
             self:ImportPassiveTreeAndJewels(char)
             self:ImportItemsAndSkills(char)
             self:ImportBlessingsFromLETools(data)
-            -- LETools and Maxroll planners both show a single "Quest Reward:
-            -- +1 <attr>" line per attribute (verified via Dexterity hover on
-            -- 2026-04-24). The API JSON carries no quest flag, so default to
-            -- Apophis/Majasa only. Temple of Eterra may grant a different
-            -- reward (or none at level cap); leave it user-controlled.
+            -- LETools/Maxroll planner values match LEB only when both quest
+            -- rewards (Apophis/Majasa AND Temple of Eterra, +1 to all
+            -- attributes each) are applied. Verified via Necromancer build
+            -- o3Zlpkxd: Str/Dex/Int/Att/Vit each off by exactly -1 with only
+            -- Apophis enabled, exact match with both enabled. The API JSON
+            -- carries no quest flag, so assume both completed (planners
+            -- typically depict end-game characters).
             self.build.configTab.input.questApophisMajasa = true
-            self.build.configTab.input.questTempleOfEterra = false
+            self.build.configTab.input.questTempleOfEterra = true
             self.build.configTab:BuildModList()
             self.build.configTab:UpdateControls()
             self.build.buildFlag = true
