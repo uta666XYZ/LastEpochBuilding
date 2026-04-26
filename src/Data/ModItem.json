@@ -75747,7 +75747,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+1 Each point of strength increases armor by 4% and improves skills that rely the raw strength of you and your companions Strength Converted to Brutality",
+		"2": "100% of Strength Converted to Brutality",
 		"specialAffixType": 6
 	},
 	"1083_1": {
@@ -75761,7 +75761,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+1 Each point of strength increases armor by 4% and improves skills that rely the raw strength of you and your companions Strength Converted to Brutality",
+		"2": "100% of Strength Converted to Brutality",
 		"specialAffixType": 6
 	},
 	"1083_2": {
@@ -75775,7 +75775,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+1 Each point of strength increases armor by 4% and improves skills that rely the raw strength of you and your companions Strength Converted to Brutality",
+		"2": "100% of Strength Converted to Brutality",
 		"specialAffixType": 6
 	},
 	"1083_3": {
@@ -75789,7 +75789,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+1 Each point of strength increases armor by 4% and improves skills that rely the raw strength of you and your companions Strength Converted to Brutality",
+		"2": "100% of Strength Converted to Brutality",
 		"specialAffixType": 6
 	},
 	"1083_4": {
@@ -75803,7 +75803,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+1 Each point of strength increases armor by 4% and improves skills that rely the raw strength of you and your companions Strength Converted to Brutality",
+		"2": "100% of Strength Converted to Brutality",
 		"specialAffixType": 6
 	},
 	"1083_5": {
@@ -75817,7 +75817,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+1 Each point of strength increases armor by 4% and improves skills that rely the raw strength of you and your companions Strength Converted to Brutality",
+		"2": "100% of Strength Converted to Brutality",
 		"specialAffixType": 6
 	},
 	"1083_6": {
@@ -75831,7 +75831,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+1 Each point of strength increases armor by 4% and improves skills that rely the raw strength of you and your companions Strength Converted to Brutality",
+		"2": "100% of Strength Converted to Brutality",
 		"specialAffixType": 6
 	},
 	"1083_7": {
@@ -75845,7 +75845,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+1 Each point of strength increases armor by 4% and improves skills that rely the raw strength of you and your companions Strength Converted to Brutality",
+		"2": "100% of Strength Converted to Brutality",
 		"specialAffixType": 6
 	},
 	"1084_0": {
@@ -75859,7 +75859,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+1 Each point of intelligence grants 2% ward retention and improves skills that rely on carefully studied magic Intelligence Converted to Madness",
+		"2": "100% of Intelligence Converted to Madness",
 		"specialAffixType": 6
 	},
 	"1084_1": {
@@ -75873,7 +75873,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+1 Each point of intelligence grants 2% ward retention and improves skills that rely on carefully studied magic Intelligence Converted to Madness",
+		"2": "100% of Intelligence Converted to Madness",
 		"specialAffixType": 6
 	},
 	"1084_2": {
@@ -75887,7 +75887,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+1 Each point of intelligence grants 2% ward retention and improves skills that rely on carefully studied magic Intelligence Converted to Madness",
+		"2": "100% of Intelligence Converted to Madness",
 		"specialAffixType": 6
 	},
 	"1084_3": {
@@ -75901,7 +75901,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+1 Each point of intelligence grants 2% ward retention and improves skills that rely on carefully studied magic Intelligence Converted to Madness",
+		"2": "100% of Intelligence Converted to Madness",
 		"specialAffixType": 6
 	},
 	"1084_4": {
@@ -75915,7 +75915,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+1 Each point of intelligence grants 2% ward retention and improves skills that rely on carefully studied magic Intelligence Converted to Madness",
+		"2": "100% of Intelligence Converted to Madness",
 		"specialAffixType": 6
 	},
 	"1084_5": {
@@ -75929,7 +75929,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+1 Each point of intelligence grants 2% ward retention and improves skills that rely on carefully studied magic Intelligence Converted to Madness",
+		"2": "100% of Intelligence Converted to Madness",
 		"specialAffixType": 6
 	},
 	"1084_6": {
@@ -75943,7 +75943,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+1 Each point of intelligence grants 2% ward retention and improves skills that rely on carefully studied magic Intelligence Converted to Madness",
+		"2": "100% of Intelligence Converted to Madness",
 		"specialAffixType": 6
 	},
 	"1084_7": {
@@ -75957,7 +75957,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+1 Each point of intelligence grants 2% ward retention and improves skills that rely on carefully studied magic Intelligence Converted to Madness",
+		"2": "100% of Intelligence Converted to Madness",
 		"specialAffixType": 6
 	},
 	"1085_0": {
@@ -75971,7 +75971,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+1 Each point of dexterity adds 4 dodge rating and improves skills that rely on the skillful handling of weapons Dexterity Converted to Guile",
+		"2": "100% of Dexterity Converted to Guile",
 		"specialAffixType": 6
 	},
 	"1085_1": {
@@ -75985,7 +75985,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+1 Each point of dexterity adds 4 dodge rating and improves skills that rely on the skillful handling of weapons Dexterity Converted to Guile",
+		"2": "100% of Dexterity Converted to Guile",
 		"specialAffixType": 6
 	},
 	"1085_2": {
@@ -75999,7 +75999,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+1 Each point of dexterity adds 4 dodge rating and improves skills that rely on the skillful handling of weapons Dexterity Converted to Guile",
+		"2": "100% of Dexterity Converted to Guile",
 		"specialAffixType": 6
 	},
 	"1085_3": {
@@ -76013,7 +76013,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+1 Each point of dexterity adds 4 dodge rating and improves skills that rely on the skillful handling of weapons Dexterity Converted to Guile",
+		"2": "100% of Dexterity Converted to Guile",
 		"specialAffixType": 6
 	},
 	"1085_4": {
@@ -76027,7 +76027,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+1 Each point of dexterity adds 4 dodge rating and improves skills that rely on the skillful handling of weapons Dexterity Converted to Guile",
+		"2": "100% of Dexterity Converted to Guile",
 		"specialAffixType": 6
 	},
 	"1085_5": {
@@ -76041,7 +76041,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+1 Each point of dexterity adds 4 dodge rating and improves skills that rely on the skillful handling of weapons Dexterity Converted to Guile",
+		"2": "100% of Dexterity Converted to Guile",
 		"specialAffixType": 6
 	},
 	"1085_6": {
@@ -76055,7 +76055,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+1 Each point of dexterity adds 4 dodge rating and improves skills that rely on the skillful handling of weapons Dexterity Converted to Guile",
+		"2": "100% of Dexterity Converted to Guile",
 		"specialAffixType": 6
 	},
 	"1085_7": {
@@ -76069,7 +76069,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+1 Each point of dexterity adds 4 dodge rating and improves skills that rely on the skillful handling of weapons Dexterity Converted to Guile",
+		"2": "100% of Dexterity Converted to Guile",
 		"specialAffixType": 6
 	},
 	"1086_0": {
@@ -76083,7 +76083,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+1 Each point of attunement grants 2 mana and improves skills that rely on the innate magic inside you and your surroundings Attunement Converted to Apathy",
+		"2": "100% of Attunement Converted to Apathy",
 		"specialAffixType": 6
 	},
 	"1086_1": {
@@ -76097,7 +76097,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+1 Each point of attunement grants 2 mana and improves skills that rely on the innate magic inside you and your surroundings Attunement Converted to Apathy",
+		"2": "100% of Attunement Converted to Apathy",
 		"specialAffixType": 6
 	},
 	"1086_2": {
@@ -76111,7 +76111,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+1 Each point of attunement grants 2 mana and improves skills that rely on the innate magic inside you and your surroundings Attunement Converted to Apathy",
+		"2": "100% of Attunement Converted to Apathy",
 		"specialAffixType": 6
 	},
 	"1086_3": {
@@ -76125,7 +76125,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+1 Each point of attunement grants 2 mana and improves skills that rely on the innate magic inside you and your surroundings Attunement Converted to Apathy",
+		"2": "100% of Attunement Converted to Apathy",
 		"specialAffixType": 6
 	},
 	"1086_4": {
@@ -76139,7 +76139,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+1 Each point of attunement grants 2 mana and improves skills that rely on the innate magic inside you and your surroundings Attunement Converted to Apathy",
+		"2": "100% of Attunement Converted to Apathy",
 		"specialAffixType": 6
 	},
 	"1086_5": {
@@ -76153,7 +76153,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+1 Each point of attunement grants 2 mana and improves skills that rely on the innate magic inside you and your surroundings Attunement Converted to Apathy",
+		"2": "100% of Attunement Converted to Apathy",
 		"specialAffixType": 6
 	},
 	"1086_6": {
@@ -76167,7 +76167,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+1 Each point of attunement grants 2 mana and improves skills that rely on the innate magic inside you and your surroundings Attunement Converted to Apathy",
+		"2": "100% of Attunement Converted to Apathy",
 		"specialAffixType": 6
 	},
 	"1086_7": {
@@ -76181,7 +76181,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+1 Each point of attunement grants 2 mana and improves skills that rely on the innate magic inside you and your surroundings Attunement Converted to Apathy",
+		"2": "100% of Attunement Converted to Apathy",
 		"specialAffixType": 6
 	},
 	"1087_0": {
@@ -76195,7 +76195,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+1 Each point of vitality grants 6 health and 1% poison and necrotic resistance. Vitality Converted to Rampancy",
+		"2": "100% of Vitality Converted to Rampancy",
 		"specialAffixType": 6
 	},
 	"1087_1": {
@@ -76209,7 +76209,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+1 Each point of vitality grants 6 health and 1% poison and necrotic resistance. Vitality Converted to Rampancy",
+		"2": "100% of Vitality Converted to Rampancy",
 		"specialAffixType": 6
 	},
 	"1087_2": {
@@ -76223,7 +76223,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+1 Each point of vitality grants 6 health and 1% poison and necrotic resistance. Vitality Converted to Rampancy",
+		"2": "100% of Vitality Converted to Rampancy",
 		"specialAffixType": 6
 	},
 	"1087_3": {
@@ -76237,7 +76237,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+1 Each point of vitality grants 6 health and 1% poison and necrotic resistance. Vitality Converted to Rampancy",
+		"2": "100% of Vitality Converted to Rampancy",
 		"specialAffixType": 6
 	},
 	"1087_4": {
@@ -76251,7 +76251,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+1 Each point of vitality grants 6 health and 1% poison and necrotic resistance. Vitality Converted to Rampancy",
+		"2": "100% of Vitality Converted to Rampancy",
 		"specialAffixType": 6
 	},
 	"1087_5": {
@@ -76265,7 +76265,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+1 Each point of vitality grants 6 health and 1% poison and necrotic resistance. Vitality Converted to Rampancy",
+		"2": "100% of Vitality Converted to Rampancy",
 		"specialAffixType": 6
 	},
 	"1087_6": {
@@ -76279,7 +76279,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+1 Each point of vitality grants 6 health and 1% poison and necrotic resistance. Vitality Converted to Rampancy",
+		"2": "100% of Vitality Converted to Rampancy",
 		"specialAffixType": 6
 	},
 	"1087_7": {
@@ -76293,7 +76293,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+1 Each point of vitality grants 6 health and 1% poison and necrotic resistance. Vitality Converted to Rampancy",
+		"2": "100% of Vitality Converted to Rampancy",
 		"specialAffixType": 6
 	},
 	"1090_0": {
