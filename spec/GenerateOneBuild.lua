@@ -136,6 +136,23 @@ if modDB then
 end
 outHnd:write("    },\n")
 
+outHnd:write("    manaRegenBreakdown = {\n")
+if modDB then
+    dumpModList(outHnd, "ManaRegen", modDB.mods["ManaRegen"])
+    dumpModList(outHnd, "ManaRegenPercent", modDB.mods["ManaRegenPercent"])
+    dumpModList(outHnd, "Mana", modDB.mods["Mana"])
+    outHnd:write(string.format("        [\"_summary\"] = { regenBase=%.2f, regenInc=%d, regenMore=%.3f, regenPercentBase=%.2f, manaBase=%d, manaInc=%d, pool=%d, output=%.2f },\n",
+        modDB:Sum("BASE", nil, "ManaRegen"),
+        modDB:Sum("INC", nil, "ManaRegen"),
+        modDB:More(nil, "ManaRegen"),
+        modDB:Sum("BASE", nil, "ManaRegenPercent"),
+        modDB:Sum("BASE", nil, "Mana"),
+        modDB:Sum("INC", nil, "Mana"),
+        build.calcsTab.mainOutput.Mana or 0,
+        build.calcsTab.mainOutput.ManaRegen or 0))
+end
+outHnd:write("    },\n")
+
 outHnd:write("    lifeOnBlockBreakdown = {\n")
 if modDB then
     dumpModList(outHnd, "LifeOnBlock", modDB.mods["LifeOnBlock"])
