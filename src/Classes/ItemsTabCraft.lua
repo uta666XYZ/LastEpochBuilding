@@ -150,11 +150,13 @@ function ItemsTabClass:CraftGetMaxTier(statOrderKey)
 	return 0
 end
 
--- Slot-aware tier count (1..N) used by cross-tier sliders. Only the
--- primordial slot may hold tier 8 (index 7); all other slots cap at tier 7.
+-- Slot-aware tier count (1..N) used by cross-tier sliders. Other slots cap at
+-- tier 7 (index 6). The primordial slot is locked to tier 8 (index 7) only —
+-- it returns 1 so the slider becomes a single-segment range editor.
 function ItemsTabClass:CraftGetSlotTierCount(slotKey, statOrderKey)
+	if slotKey == "primordial" then return 1 end
 	local maxT = self:CraftGetMaxTier(statOrderKey) or 0
-	if slotKey ~= "primordial" and maxT > 6 then maxT = 6 end
+	if maxT > 6 then maxT = 6 end
 	return maxT + 1
 end
 
@@ -838,6 +840,7 @@ function ItemsTabClass:CraftBuildSliderTooltip(tooltip, slotKey, li, hoverVal)
 	-- Map hoverVal (0..1, full slider) -> (hoverTier, hoverRange 0..255)
 	local tierCount = self:CraftGetSlotTierCount(slotKey, st.modKey)
 	local hoverTier, hoverRange = valToTierRange(hoverVal, tierCount)
+	if slotKey == "primordial" then hoverTier = 7 end
 
 	-- Resolve the mod entry for the *hovered* tier (cross-tier preview).
 	local function lookupMod(tier)
@@ -1790,7 +1793,7 @@ function ItemsTabClass:BuildCraftControls()
 						local st = self_ref.craftAffixState[capturedSlotKey]
 						local tierCount = self_ref:CraftGetSlotTierCount(capturedSlotKey, st.modKey)
 						local newTier, newRange = valToTierRange(val, tierCount)
-						st.tier = newTier
+						st.tier = (capturedSlotKey == "primordial") and 7 or newTier
 						-- Single shared slider per affix: write the same range
 						-- to all mod-line indices so multi-mod affixes stay
 						-- locked to one position.
