@@ -14,6 +14,117 @@ itemLib = { }
 -- Influence info (unused in Last Epoch, kept as empty table for compatibility)
 itemLib.influenceInfo = { }
 
+-- ============================================================================
+-- Shared icon cache (used by ItemListControl and ItemSlotControl).
+-- Single NewImageHandle per Asset filename, shared across all controls.
+-- Per-control caches were causing duplicate texture handles for the same file
+-- and a non-deterministic C++ renderer crash when both controls rendered
+-- simultaneously (see Bug Tracker: primordial-add crash, 2026-04-26).
+-- ============================================================================
+local sharedIconHandles = {}
+itemLib._sharedIconHandles = sharedIconHandles
+
+-- Item type -> 16x16 icon filename (in Assets/).
+local TYPE_ICON = {
+	["Amulet"]            = "Icon_Amulet.png",
+	["Belt"]              = "Icon_Belt.png",
+	["Body Armor"]        = "Icon_Armor.png",
+	["Boots"]             = "Icon_Boots.png",
+	["Bow"]               = "Icon_Bow.png",
+	["Dagger"]            = "Icon_Dagger.png",
+	["Gloves"]            = "Icon_Gloves.png",
+	["Helmet"]            = "Icon_Helmet.png",
+	["Off-Hand Catalyst"] = "Icon_Shield.png",
+	["One-Handed Axe"]    = "Icon_Axe.png",
+	["Two-Handed Axe"]    = "Icon_Axe.png",
+	["One-Handed Mace"]   = "Icon_Mace.png",
+	["Two-Handed Mace"]   = "Icon_Mace.png",
+	["One-Handed Sword"]  = "Icon_Sword.png",
+	["Two-Handed Sword"]  = "Icon_Sword.png",
+	["Two-Handed Spear"]  = "Icon_Polearm.png",
+	["Two-Handed Staff"]  = "Icon_Staff.png",
+	["Quiver"]            = "Icon_Quiver.png",
+	["Relic"]             = "Icon_Relic.png",
+	["Ring"]              = "Icon_Ring.png",
+	["Sceptre"]           = "Icon_Sceptre.png",
+	["Shield"]            = "Icon_Shield.png",
+	["Wand"]              = "Icon_Wand.png",
+	["Idol Altar"]        = "idol/Idol_Altar_Pyramidal_Altar.png",
+	["Blessing"]          = "blessings/body_of_obsidian.png",
+}
+
+function itemLib.iconFileForItem(item)
+	if not item or not item.type then return nil end
+	local t = item.type
+	local f = TYPE_ICON[t]
+	if f then return f end
+	if t:find("Idol") then return "Icon_Idol.png" end
+	return nil
+end
+
+function itemLib.getIconHandle(filename)
+	if not filename then return nil end
+	if not sharedIconHandles[filename] then
+		local h = NewImageHandle()
+		h:Load("Assets/" .. filename, "ASYNC")
+		sharedIconHandles[filename] = h
+	end
+	return sharedIconHandles[filename]
+end
+
+-- Primordial detection: covers (a) currently-active craft editor state,
+-- (b) explicitModLines flagged by CraftRebuildItem, and (c) any prefix/suffix
+-- mod whose specialAffixType == 7 (covers imported items too).
+function itemLib.itemHasPrimordial(item)
+	if not item then return false end
+	if item.primordial then return true end
+	if item.craftState and item.craftState.affixState
+		and item.craftState.affixState.primordial
+		and item.craftState.affixState.primordial.modKey ~= nil then
+		return true
+	end
+	if item.explicitModLines then
+		for i, line in ipairs(item.explicitModLines) do
+			if line.primordial then return true end
+		end
+	end
+	if item.affixes then
+		local lists = { item.prefixes, item.suffixes }
+		for li = 1, 2 do
+			local list = lists[li]
+			if list then
+				for si, slot in ipairs(list) do
+					if slot.modId and slot.modId ~= "None" then
+						local mod = item.affixes[slot.modId]
+						if mod and mod.specialAffixType == 7 then return true end
+					end
+				end
+			end
+		end
+	end
+	return false
+end
+
+-- Returns a list (table) of icon handles for this item, in display order:
+-- [type, primordial?, corrupted?]. Returns nil if no icons resolvable.
+function itemLib.getItemIcons(item)
+	if not item then return nil end
+	local list = {}
+	local fname = itemLib.iconFileForItem(item)
+	local h = itemLib.getIconHandle(fname)
+	if h and h:IsValid() then t_insert(list, h) end
+	if itemLib.itemHasPrimordial(item) then
+		local p = itemLib.getIconHandle("Icon_Primordial.png")
+		if p and p:IsValid() then t_insert(list, p) end
+	end
+	if item.corrupted then
+		local c = itemLib.getIconHandle("Icon_Corrupted.png")
+		if c and c:IsValid() then t_insert(list, c) end
+	end
+	if #list == 0 then return nil end
+	return list
+end
+
 local antonyms = {
     ["increased"] = "reduced",
     ["reduced"] = "increased",
