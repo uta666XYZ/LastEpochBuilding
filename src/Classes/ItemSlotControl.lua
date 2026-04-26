@@ -64,6 +64,7 @@ end
 -- catches imported items whose craftState was rebuilt without the flag).
 local function itemHasPrimordial(item)
 	if not item then return false end
+	if item.primordial then return true end
 	if item.craftState and item.craftState.affixState
 		and item.craftState.affixState.primordial
 		and item.craftState.affixState.primordial.modKey ~= nil then
@@ -145,23 +146,11 @@ local ItemSlotClass = newClass("ItemSlotControl", "DropDownControl", function(se
 	self.slotName = slotName
 	-- Leading 16x16 icon strip drawn by DropDownControl: type, primordial,
 	-- corrupted (only the markers that apply for the equipped item).
-	self.preLabelIcons = function()
-		if not self.selItemId or self.selItemId == 0 then return nil end
-		local item = itemsTab.items and itemsTab.items[self.selItemId]
-		if not item then return nil end
-		local list = {}
-		local th = getIconHandle(iconFileForItem(item))
-		if th and th:IsValid() then t_insert(list, th) end
-		if itemHasPrimordial(item) then
-			local p = getIconHandle("Icon_Primordial.png")
-			if p and p:IsValid() then t_insert(list, p) end
-		end
-		if item.corrupted then
-			local c = getIconHandle("Icon_Corrupted.png")
-			if c and c:IsValid() then t_insert(list, c) end
-		end
-		return (#list > 0) and list or nil
-	end
+	-- preLabelIcons disabled: returning a non-nil list from this callback
+	-- caused a non-deterministic C++ renderer crash inside DropDownControl's
+	-- icon-strip loop (frame swap / GPU submit). Primordial/corrupted markers
+	-- are still shown in the All Items list (ItemListControl:GetRowIcon).
+	self.preLabelIcons = nil
 	self.slotNum = tonumber(slotName:match("%d+$") or slotName:match("%d+"))
 	if slotName:match("Flask") then
 		self.controls.activate = new("CheckBoxControl", {"RIGHT",self,"LEFT"}, -2, 0, 20, nil, function(state)

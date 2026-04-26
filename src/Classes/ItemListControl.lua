@@ -63,13 +63,14 @@ end
 -- mod whose specialAffixType == 7 (covers imported items too).
 local function itemHasPrimordial(item)
 	if not item then return false end
+	if item.primordial then return true end
 	if item.craftState and item.craftState.affixState
 		and item.craftState.affixState.primordial
 		and item.craftState.affixState.primordial.modKey ~= nil then
 		return true
 	end
 	if item.explicitModLines then
-		for _, line in ipairs(item.explicitModLines) do
+		for i, line in ipairs(item.explicitModLines) do
 			if line.primordial then return true end
 		end
 	end
@@ -78,7 +79,7 @@ local function itemHasPrimordial(item)
 		for li = 1, 2 do
 			local list = lists[li]
 			if list then
-				for _, slot in ipairs(list) do
+				for si, slot in ipairs(list) do
 					if slot.modId and slot.modId ~= "None" then
 						local mod = item.affixes[slot.modId]
 						if mod and mod.specialAffixType == 7 then return true end
@@ -167,7 +168,8 @@ function ItemListClass:GetRowIcon(column, index, itemId)
 	local item = self.itemsTab.items[itemId]
 	if not item then return nil end
 	local list = {}
-	local h = getIconHandle(iconFileForItem(item))
+	local fname = iconFileForItem(item)
+	local h = getIconHandle(fname)
 	if h and h:IsValid() then t_insert(list, h) end
 	if itemHasPrimordial(item) then
 		local p = getIconHandle("Icon_Primordial.png")
