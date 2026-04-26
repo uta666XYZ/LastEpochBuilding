@@ -1221,6 +1221,14 @@ function calcs.initEnv(build, mode, override, specEnv)
 	-- Channelled-buff skills (e.g. Focus) additionally gate their node mods behind Condition:Channelling,
 	-- so tooltip-text like Everward "+50% Ward Retention" (description clarifies "while channeled") only
 	-- applies when the main skill is channelled or the Config "Are you Channelling?" toggle is on.
+	-- Map skill treeId -> "<Skill>Effect" mod name for "Increased X Effect" scaling.
+	-- Sentinel-119 "4% Increased Holy Aura And Symbols Of Hope Effect" parses to
+	-- INC HolyAuraEffect/SymbolsOfHopeEffect; this lookup tells the buff-tree
+	-- processor which effect mod to scale by per skill.
+	local treeIdEffectMod = {
+		["ah443"]  = "HolyAuraEffect",
+		["si4lgl"] = "SymbolsOfHopeEffect",
+	}
 	local buffSkillTreePrefixes = {}
 	for _, group in pairs(build.skillsTab.socketGroupList) do
 		local ge = group.grantedEffect
@@ -1231,6 +1239,7 @@ function calcs.initEnv(build, mode, override, specEnv)
 				buffSkillTreePrefixes[prefix] = {
 					enabled = group.enabled,
 					isChannel = ge.skillTypes[SkillType.Channelling] or false,
+					effectMod = treeIdEffectMod[ge.treeId],
 				}
 			end
 		end
@@ -1238,8 +1247,11 @@ function calcs.initEnv(build, mode, override, specEnv)
 
 	if next(buffSkillTreePrefixes) then
 		local normalNodes = {}
-		local activeBuffNodes = {}
-		local activeChannelNodes = {}
+		-- Bucket active buff nodes per-prefix so each skill's "Increased X Effect"
+		-- multiplier (e.g. Sentinel-119 Covenant of Light → HolyAuraEffect) scales
+		-- only that skill's own tree contributions.
+		local activeBuffNodesByPrefix = {}
+		local activeChannelNodesByPrefix = {}
 		local inactiveBuffNodes = {}
 		for nodeId, node in pairs(env.allocNodes) do
 			local isBuffNode = false
@@ -1248,9 +1260,11 @@ function calcs.initEnv(build, mode, override, specEnv)
 					isBuffNode = true
 					if env.mode_buffs and info.enabled then
 						if info.isChannel then
-							activeChannelNodes[nodeId] = node
+							activeChannelNodesByPrefix[prefix] = activeChannelNodesByPrefix[prefix] or {}
+							activeChannelNodesByPrefix[prefix][nodeId] = node
 						else
-							activeBuffNodes[nodeId] = node
+							activeBuffNodesByPrefix[prefix] = activeBuffNodesByPrefix[prefix] or {}
+							activeBuffNodesByPrefix[prefix][nodeId] = node
 						end
 					else
 						inactiveBuffNodes[nodeId] = node
@@ -1262,15 +1276,31 @@ function calcs.initEnv(build, mode, override, specEnv)
 				normalNodes[nodeId] = node
 			end
 		end
-		-- Normal (non-buff) nodes: apply with SkillId tags intact
+		-- Normal (non-buff) nodes: apply with SkillId tags intact.
+		-- Must be added BEFORE buff-tree nodes so HolyAuraEffect / SymbolsOfHopeEffect
+		-- INC mods (from Sentinel base passives) are visible when scaling buff nodes.
 		env.modDB:AddList(calcs.buildModListForNodeList(env, normalNodes))
+		-- Helper: build, optionally scale by "<Skill>Effect", and AddList
+		local function applyBuffPrefix(prefix, nodes, isChannel)
+			local nodeMods = calcs.buildModListForNodeList(env, nodes, true, isChannel)
+			local effectMod = buffSkillTreePrefixes[prefix].effectMod
+			if effectMod then
+				local inc = env.modDB:Sum("INC", nil, effectMod)
+				if inc ~= 0 then
+					local scaled = new("ModList")
+					scaled:ScaleAddList(nodeMods, 1 + inc / 100)
+					nodeMods = scaled
+				end
+			end
+			env.modDB:AddList(nodeMods)
+		end
 		-- Active buff nodes: strip SkillId tags so mods apply globally
-		if next(activeBuffNodes) then
-			env.modDB:AddList(calcs.buildModListForNodeList(env, activeBuffNodes, true))
+		for prefix, nodes in pairs(activeBuffNodesByPrefix) do
+			applyBuffPrefix(prefix, nodes, false)
 		end
 		-- Active channelled-buff nodes: strip SkillId and gate by Condition:Channelling
-		if next(activeChannelNodes) then
-			env.modDB:AddList(calcs.buildModListForNodeList(env, activeChannelNodes, true, true))
+		for prefix, nodes in pairs(activeChannelNodesByPrefix) do
+			applyBuffPrefix(prefix, nodes, true)
 		end
 		-- Process inactive buff nodes for side effects (grantedSkills, finalModList) without adding mods
 		if next(inactiveBuffNodes) then
