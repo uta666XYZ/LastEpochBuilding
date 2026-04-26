@@ -8165,6 +8165,7 @@
   },
   "423": {
     "name": "Legends Entwined",
+    "primordial": true,
     "baseTypeID": 21,
     "subTypeID": 10,
     "req": {
@@ -8191,6 +8192,7 @@
   },
   "424": {
     "name": "Tyrant's Skull",
+    "primordial": true,
     "baseTypeID": 22,
     "subTypeID": 63,
     "req": {
@@ -8207,6 +8209,7 @@
   },
   "425": {
     "name": "Wildfire Embers",
+    "primordial": true,
     "baseTypeID": 20,
     "subTypeID": 13,
     "req": {
@@ -8233,6 +8236,7 @@
   },
   "426": {
     "name": "Thicket of Blinding Light",
+    "primordial": true,
     "baseTypeID": 1,
     "subTypeID": 7,
     "req": {
@@ -8259,6 +8263,7 @@
   },
   "427": {
     "name": "Harmony of the First",
+    "primordial": true,
     "baseTypeID": 14,
     "subTypeID": 3,
     "req": {
@@ -8279,6 +8284,7 @@
   },
   "428": {
     "name": "Onslaught of Cerata",
+    "primordial": true,
     "baseTypeID": 18,
     "subTypeID": 11,
     "req": {
@@ -8305,6 +8311,7 @@
   },
   "429": {
     "name": "Blossom of Immortal Stone",
+    "primordial": true,
     "baseTypeID": 20,
     "subTypeID": 14,
     "req": {
@@ -8329,6 +8336,7 @@
   },
   "430": {
     "name": "Chorus of the Anurok",
+    "primordial": true,
     "baseTypeID": 0,
     "subTypeID": 56,
     "req": {
@@ -8357,6 +8365,7 @@
   },
   "431": {
     "name": "Carrion of Creation",
+    "primordial": true,
     "baseTypeID": 4,
     "subTypeID": 12,
     "req": {
@@ -8387,6 +8396,7 @@
   },
   "432": {
     "name": "Horn of the Bone Wisp",
+    "primordial": true,
     "baseTypeID": 10,
     "subTypeID": 6,
     "req": {
@@ -8413,6 +8423,7 @@
   },
   "433": {
     "name": "Reliquary Nest",
+    "primordial": true,
     "baseTypeID": 22,
     "subTypeID": 63,
     "req": {
@@ -8435,6 +8446,7 @@
   },
   "434": {
     "name": "Mask of Indifference",
+    "primordial": true,
     "baseTypeID": 0,
     "subTypeID": 7,
     "req": {
@@ -8465,6 +8477,7 @@
   },
   "435": {
     "name": "Permanence of Primal Knowledge",
+    "primordial": true,
     "baseTypeID": 4,
     "subTypeID": 11,
     "req": {
@@ -8489,6 +8502,7 @@
   },
   "436": {
     "name": "Wings of Discord",
+    "primordial": true,
     "baseTypeID": 1,
     "subTypeID": 4,
     "req": {
@@ -8515,6 +8529,7 @@
   },
   "437": {
     "name": "Primal Cadence",
+    "primordial": true,
     "baseTypeID": 12,
     "subTypeID": 8,
     "req": {
@@ -8543,6 +8558,7 @@
   },
   "438": {
     "name": "Whetstone Gavel",
+    "primordial": true,
     "baseTypeID": 7,
     "subTypeID": 10,
     "req": {
@@ -8567,6 +8583,7 @@
   },
   "439": {
     "name": "Truesight Glass",
+    "primordial": true,
     "baseTypeID": 20,
     "subTypeID": 8,
     "req": {
@@ -8587,6 +8604,7 @@
   },
   "440": {
     "name": "Bluefeather Band",
+    "primordial": true,
     "baseTypeID": 21,
     "subTypeID": 11,
     "req": {
@@ -8613,6 +8631,7 @@
   },
   "441": {
     "name": "Hydra Arc",
+    "primordial": true,
     "baseTypeID": 23,
     "subTypeID": 8,
     "req": {
@@ -8637,6 +8656,7 @@
   },
   "442": {
     "name": "Velocyn's Jaw",
+    "primordial": true,
     "baseTypeID": 6,
     "subTypeID": 9,
     "req": {
@@ -8701,6 +8721,7 @@
   },
   "445": {
     "name": "Spirit Xylem",
+    "primordial": true,
     "baseTypeID": 15,
     "subTypeID": 8,
     "req": {
@@ -8729,6 +8750,7 @@
   },
   "446": {
     "name": "Fangs of the Berserker",
+    "primordial": true,
     "baseTypeID": 2,
     "subTypeID": 5,
     "req": {
@@ -8757,6 +8779,7 @@
   },
   "447": {
     "name": "Bones of the Ancestral Pack",
+    "primordial": true,
     "baseTypeID": 19,
     "subTypeID": 13,
     "req": {
@@ -8779,6 +8802,7 @@
   },
   "448": {
     "name": "Architects of Astral Blood",
+    "primordial": true,
     "baseTypeID": 1,
     "subTypeID": 4,
     "req": {
@@ -8805,6 +8829,7 @@
   },
   "449": {
     "name": "The Butcher's Crown",
+    "primordial": true,
     "baseTypeID": 0,
     "subTypeID": 6,
     "req": {
