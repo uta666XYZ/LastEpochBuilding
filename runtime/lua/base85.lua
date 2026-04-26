@@ -63,12 +63,12 @@ function base85.decode(data)
             rem >= 5 and (b85dec[data:sub(i + 4, i + 4)] or 84) or 84,
         }
         local n = ((((c[1] * 85 + c[2]) * 85 + c[3]) * 85 + c[4]) * 85 + c[5])
-        -- A group of m chars decodes to m-1 bytes
+        -- A group of m chars decodes to m-1 bytes (big-endian: emit highest byte first)
         local need = math.min(rem, 5) - 1
-        if need >= 4 then out[#out + 1] = string.char(floor(n / 16777216) % 256) end
-        if need >= 3 then out[#out + 1] = string.char(floor(n / 65536) % 256) end
-        if need >= 2 then out[#out + 1] = string.char(floor(n / 256) % 256) end
-        if need >= 1 then out[#out + 1] = string.char(n % 256) end
+        if need >= 1 then out[#out + 1] = string.char(floor(n / 16777216) % 256) end
+        if need >= 2 then out[#out + 1] = string.char(floor(n / 65536) % 256) end
+        if need >= 3 then out[#out + 1] = string.char(floor(n / 256) % 256) end
+        if need >= 4 then out[#out + 1] = string.char(n % 256) end
         i = i + 5
     end
     return table.concat(out)
