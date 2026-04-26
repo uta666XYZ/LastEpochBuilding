@@ -30,10 +30,11 @@
 
 ## 🤝 Support Development
 
-If you'd like to support LEB's development, consider buying me a coffee!
+If you'd like to support LEB's development:
 
-☕ [Buy Me a Coffee](https://buymeacoffee.com/yobk0831a)
-🍵 [Ko-fi](https://ko-fi.com/lastepochbuilding)
+💖 [GitHub Sponsors](https://github.com/sponsors/uta666XYZ) — monthly support
+☕ [Buy Me a Coffee](https://buymeacoffee.com/yobk0831a) — one-time tip
+🍵 [Ko-fi](https://ko-fi.com/lastepochbuilding) — one-time tip
 
 The first few supporters will have their names hidden somewhere in LEB as easter eggs.
 Since I have a limited number of good hiding spots in mind, I'll add names in supporter order as new spots come to me.
