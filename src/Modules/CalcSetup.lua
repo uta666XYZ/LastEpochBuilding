@@ -1582,8 +1582,14 @@ function calcs.initEnv(build, mode, override, specEnv)
 		for index, group in pairs(build.skillsTab.socketGroupList) do
 			if group.grantedEffect and group.grantedEffect.treeId then
 				local allocatedPoints = build.skillsTab:GetUsedSkillPoints(index)
-				-- Sum all SkillLevel mods matching this skill (includes global + skill-specific)
-				local skillCfg = { skillName = group.grantedEffect.name, skillTypes = group.grantedEffect.skillTypes }
+				-- Sum all SkillLevel mods matching this skill (includes global + skill-specific).
+				-- keywordFlags lets keyword-tagged SkillLevel mods ("+N to Cold Melee Skills",
+				-- "+N to Fire Minion Skills" etc.) match this skill's categories.
+				local skillCfg = {
+					skillName = group.grantedEffect.name,
+					skillTypes = group.grantedEffect.skillTypes,
+					keywordFlags = group.grantedEffect.keywordFlags or 0,
+				}
 				local totalSkillLevel = env.modDB:Sum("BASE", skillCfg, "SkillLevel")
 				-- Per-skill bonus = total - global (avoid double-counting global)
 				local perSkillBonus = totalSkillLevel - (env.skillLevelBonus or 0)
