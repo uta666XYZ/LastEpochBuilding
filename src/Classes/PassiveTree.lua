@@ -437,7 +437,18 @@ function PassiveTreeClass:ProcessStats(node, startIndex)
         if mod.list and not mod.extra then
             for i, mod in ipairs(mod.list) do
                 mod = modLib.setSource(mod, "Tree:" .. node.id)
-                if node.skillId then
+                -- Skill-tree mods normally get a SkillId tag so they only apply
+                -- to the skill they're allocated under. "Global X" mods (e.g.
+                -- Dancing Strikes "+10% Global Critical Multiplier") opt out of
+                -- this scoping and contribute to the player pool instead.
+                local isGlobal = false
+                for ti = #mod, 1, -1 do
+                    if mod[ti].type == "Global" then
+                        isGlobal = true
+                        table.remove(mod, ti)
+                    end
+                end
+                if node.skillId and not isGlobal then
                     table.insert(mod, {type = "SkillId", skillId = node.skillId})
                 end
                 if node.descConditionVar then
