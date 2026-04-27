@@ -2,6 +2,7 @@ VERSION[0.13.1][2026/04/28]
 
 --- Bug Fixes ---
 - Fixed: dual-resistance corrupted affixes (e.g., Cold + Void Resistance) imported with garbled text on the second resistance line. The affix data stored the second resistance line with the first resistance's flavor text ("Reduces all <element> damage you take. Capped at 75%.") concatenated in front of the actual stat, so the second resistance was silently dropped. Affected LETools URL imports and Save-import flows.
+- Fixed: "+X to <Category> Skills" affixes (damage type / skill type / attribute / DoT / "all") were not applying to many parent skills due to missing skill metadata and a missing generic mod handler. Skill-level bonuses now apply correctly across categories.
 
 VERSION[0.13.0][2026/04/27]
 
