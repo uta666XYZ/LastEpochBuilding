@@ -470,7 +470,6 @@ Implicits: 2
 {crafted}+35% Poison Resistance
 {crafted}+35% Necrotic Resistance
 {crafted}{range:237}(10-18)% increased Movement Speed
-{crafted}+56 Armor
 			<ModRange range="127.5" id="1"/>
 			<ModRange range="172" id="2"/>
 			<ModRange range="132" id="3"/>

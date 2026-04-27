@@ -1913,7 +1913,7 @@ function calcs.offence(env, actor, activeSkill)
 			else
 				local skillBase = skillModList:Sum("BASE", cfg, "SkillBaseCritMultiplier")
 				local playerExtra = skillModList:Sum("BASE", cfg, "CritMultiplier")
-				local extraDamage = m_max(skillBase, playerExtra) / 100
+				local extraDamage = (skillBase + playerExtra) / 100
 				local multiOverride = skillModList:Override(skillCfg, "CritMultiplier")
 				if multiOverride then
 					extraDamage = (multiOverride - 100) / 100
