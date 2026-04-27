@@ -1180,8 +1180,19 @@ function ImportTabClass:BuildItemsFromMaxroll(buildData, profileData, char)
             end
             item.name = uniqueBase.name
             local uniqueRolls = type(maxrollItem.uniqueRolls) == "table" and maxrollItem.uniqueRolls or {}
+            -- Some uniques' mod list duplicates lines already present as base implicits
+            -- (e.g. Foot of the Mountain "(8-10)% Movement Speed" matches Iron Greaves implicit).
+            -- These represent a single in-game effect; importing both double-counts the stat.
+            -- Skip unique-mod entries whose text exactly matches a base implicit so the
+            -- effect is applied once via the implicit section.
+            local implicitDup = {}
+            for _, imp in ipairs(itemBase.implicits or {}) do
+                implicitDup[imp] = true
+            end
             for i, modLine in ipairs(uniqueBase.mods) do
-                if itemLib.hasRange(modLine) then
+                if implicitDup[modLine] then
+                    -- duplicate of base implicit; already applied above
+                elseif itemLib.hasRange(modLine) then
                     local rollId = uniqueBase.rollIds[i]
                     if rollId then
                         local range = uniqueRolls[rollId + 1] or 0
@@ -1586,8 +1597,17 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
                             break
                         end
                         item["name"] = uniqueBase.name
+                        -- Skip unique-mod entries that duplicate a base implicit; the effect
+                        -- is already applied via implicitMods above. See ImportTab parseItem
+                        -- comment for the full rationale.
+                        local implicitDup = {}
+                        for _, imp in ipairs(itemBase.implicits or {}) do
+                            implicitDup[imp] = true
+                        end
                         for i, modLine in ipairs(uniqueBase.mods) do
-                            if itemLib.hasRange(modLine) then
+                            if implicitDup[modLine] then
+                                -- duplicate of base implicit; already applied above
+                            elseif itemLib.hasRange(modLine) then
                                 local rollId = uniqueBase.rollIds[i]
                                 if rollId then
                                     local range = d[uniqueIDIndex + 2 + rollId]
