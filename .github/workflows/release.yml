@@ -26,7 +26,7 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v4
               with:
-                ref: 'dev'
+                ref: 'main'
             - name: Calculate the next version
               run: |
                 MANIFEST_VERSION=$(grep -o '<Version number="[^"]*' manifest.xml | sed 's/<Version number="//')
@@ -43,20 +43,20 @@ jobs:
                 awk "/^## \[v${NEXT_VERSION}\]/{found=1; next} /^## \[v/{if(found) exit} found{print}" CHANGELOG.md | sed '/^[[:space:]]*$/d;/^---$/d' > temp_notes.md
                 # Delete existing draft release if present (from a failed previous run)
                 gh release delete "v$NEXT_VERSION" --yes 2>/dev/null || true
-                gh release create --target dev "v$NEXT_VERSION" --title "Release $NEXT_VERSION" --draft --notes-file temp_notes.md
+                gh release create --target main "v$NEXT_VERSION" --title "Release $NEXT_VERSION" --draft --notes-file temp_notes.md
             - name: Update manifest.xml SHA1s
               run: python3 update_manifest.py --quiet --in-place
             - name: Update manifest version and branch
               run: |
                 sed -ri "s/<Version number=\"([^\"]*)\"/<Version number=\"$NEXT_VERSION\"/g" manifest.xml
-                sed -i 's/<Version number="\([^"]*\)"/<Version number="\1" branch="dev" platform="win32"/' manifest.xml
-            - name: Push updated manifest to dev
+                sed -i 's/<Version number="\([^"]*\)"/<Version number="\1" branch="main" platform="win32"/' manifest.xml
+            - name: Push updated manifest to main
               run: |
                 git config user.email "github-actions[bot]@users.noreply.github.com"
                 git config user.name "github-actions[bot]"
                 git add manifest.xml
                 git commit -m "chore: update manifest.xml for v$NEXT_VERSION"
-                git push origin dev
+                git push origin main
             - name: Build portable zip
               run: |
                 mkdir -p dist/LastEpochBuilding
