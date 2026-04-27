@@ -1668,7 +1668,6 @@ c["+1 to Acid Flask"]={{[1]={[1]={skillName="Acid Flask",type="SkillName"},flags
 c["+1 to Acolyte Skills"]={{[1]={flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}}," Acolyte  "}
 c["+1 to Aerial Assault"]={{[1]={[1]={skillName="Aerial Assault",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=1}},nil}
 c["+1 to All Attributes"]={{[1]={flags=0,keywordFlags=0,name="Str",type="BASE",value=1},[2]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=1},[3]={flags=0,keywordFlags=0,name="Int",type="BASE",value=1},[4]={flags=0,keywordFlags=0,name="Att",type="BASE",value=1},[5]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=1}},nil}
-c["+1 to All Minion Skills"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}}}}," All   "}
 c["+1 to All Skills"]={{[1]={flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}}," All  "}
 c["+1 to All Skills per Complete Set"]={{[1]={[1]={type="Multiplier",var="CompleteSetCount"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}}," All   "}
 c["+1 to All Totem Skills"]={{[1]={flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}}," All Totem  "}
@@ -1692,7 +1691,6 @@ c["+1 to Death Seal"]={{[1]={[1]={skillName="Death Seal",type="SkillName"},flags
 c["+1 to Decoy"]={{[1]={[1]={skillName="Decoy",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=1}},nil}
 c["+1 to Detonating Arrow"]={{[1]={[1]={skillName="Detonating Arrow",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=1}},nil}
 c["+1 to Devouring Orb"]={{[1]={[1]={skillName="Devouring Orb",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=1}},nil}
-c["+1 to Dexterity Skills"]={{[1]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=1}},"  Skills "}
 c["+1 to Disintegrate"]={{[1]={[1]={skillName="Disintegrate",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=1}},nil}
 c["+1 to Dive Bomb"]={{[1]={[1]={skillName="Dive Bomb",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=1}},nil}
 c["+1 to Drain Life"]={{[1]={[1]={skillName="Drain Life",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=1}},nil}
@@ -4370,7 +4368,6 @@ c["+2 to Acolyte Skills"]={{[1]={flags=0,keywordFlags=0,name="SkillLevel",type="
 c["+2 to Acolyte Spells"]={{}," Acolyte s "}
 c["+2 to Aerial Assault"]={{[1]={[1]={skillName="Aerial Assault",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
 c["+2 to All Attributes"]={{[1]={flags=0,keywordFlags=0,name="Str",type="BASE",value=2},[2]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=2},[3]={flags=0,keywordFlags=0,name="Int",type="BASE",value=2},[4]={flags=0,keywordFlags=0,name="Att",type="BASE",value=2},[5]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=2}},nil}
-c["+2 to All Minion Skills"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=2}}}}," All   "}
 c["+2 to All Skills"]={{[1]={flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=2}}," All  "}
 c["+2 to Anomaly"]={{[1]={[1]={skillName="Anomaly",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
 c["+2 to Arcane Ascendance"]={{[1]={[1]={skillName="Arcane Ascendance",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
@@ -4380,21 +4377,17 @@ c["+2 to Avalanche"]={{[1]={[1]={skillName="Avalanche",type="SkillName"},flags=0
 c["+2 to Ballista"]={{[1]={[1]={skillName="Ballista",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
 c["+2 to Black Hole"]={{[1]={[1]={skillName="Black Hole",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
 c["+2 to Bone Curse"]={{[1]={[1]={skillName="Bone Curse",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
-c["+2 to Buff Skills"]={{[1]={flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=2}}," Buff  "}
 c["+2 to Chaos Bolts"]={{[1]={[1]={skillName="Chaos Bolts",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
 c["+2 to Chthonic Fissure"]={{[1]={[1]={skillName="Chthonic Fissure",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
 c["+2 to Cinder Strike"]={{[1]={[1]={skillName="Cinder Strike",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
 c["+2 to Cold Melee Attacks"]={{[1]={[1]={skillName="Melee Attack",type="SkillName"},flags=0,keywordFlags=4,name="SkillLevel",type="BASE",value=2}},"  s "}
-c["+2 to Cold Minion Skills"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=4,name="SkillLevel",type="BASE",value=2}}}},nil}
 c["+2 to Cold Skills"]={{[1]={flags=0,keywordFlags=4,name="SkillLevel",type="BASE",value=2}},nil}
-c["+2 to Damage Over Time Skills"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="BASE",value=2}},"  Skills "}
 c["+2 to Dancing Strikes"]={{[1]={[1]={skillName="Dancing Strikes",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
 c["+2 to Dark Quiver"]={{[1]={[1]={skillName="Dark Quiver",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
 c["+2 to Death Seal"]={{[1]={[1]={skillName="Death Seal",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
 c["+2 to Decoy"]={{[1]={[1]={skillName="Decoy",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
 c["+2 to Detonating Arrow"]={{[1]={[1]={skillName="Detonating Arrow",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
 c["+2 to Devouring Orb"]={{[1]={[1]={skillName="Devouring Orb",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
-c["+2 to Dexterity Skills"]={{[1]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=2}},"  Skills "}
 c["+2 to Disintegrate"]={{[1]={[1]={skillName="Disintegrate",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
 c["+2 to Dive Bomb"]={{[1]={[1]={skillName="Dive Bomb",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
 c["+2 to Drain Life"]={{[1]={[1]={skillName="Drain Life",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
@@ -4408,7 +4401,6 @@ c["+2 to Eterra's Blessing"]={{[1]={[1]={skillName="Eterra's Blessing",type="Ski
 c["+2 to Explosive Trap"]={{[1]={[1]={skillName="Explosive Trap",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
 c["+2 to Falconry"]={{[1]={[1]={skillName="Falconry",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
 c["+2 to Fire Melee Attacks"]={{[1]={[1]={skillName="Melee Attack",type="SkillName"},flags=0,keywordFlags=8,name="SkillLevel",type="BASE",value=2}},"  s "}
-c["+2 to Fire Minion Skills"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=8,name="SkillLevel",type="BASE",value=2}}}},nil}
 c["+2 to Fire Skills"]={{[1]={flags=0,keywordFlags=8,name="SkillLevel",type="BASE",value=2}},nil}
 c["+2 to Fireball"]={{[1]={[1]={skillName="Fireball",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
 c["+2 to Firebrand"]={{[1]={[1]={skillName="Firebrand",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
@@ -4435,7 +4427,6 @@ c["+2 to Holy Aura"]={{[1]={[1]={skillName="Holy Aura",type="SkillName"},flags=0
 c["+2 to Hungering Souls"]={{[1]={[1]={skillName="Hungering Souls",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
 c["+2 to Ice Barrage"]={{[1]={[1]={skillName="Ice Barrage",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
 c["+2 to Infernal Shade"]={{[1]={[1]={skillName="Infernal Shade",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
-c["+2 to Intelligence Skills"]={{[1]={flags=0,keywordFlags=0,name="Int",type="BASE",value=2}},"  Skills "}
 c["+2 to Javelin"]={{[1]={[1]={skillName="Javelin",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
 c["+2 to Judgement"]={{[1]={[1]={skillName="Judgement",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
 c["+2 to Lethal Mirage"]={{[1]={[1]={skillName="Lethal Mirage",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
@@ -4445,18 +4436,15 @@ c["+2 to Level of Minion Throwing Skills"]={{[1]={flags=0,keywordFlags=0,name="M
 c["+2 to Level of Spriggan Form"]={{[1]={[1]={skillName="Spriggan Form",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=2}},nil}
 c["+2 to Level of Warcry"]={{[1]={[1]={skillName="Warcry",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=2}},nil}
 c["+2 to Lightning Blast"]={{[1]={[1]={skillName="Lightning Blast",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
-c["+2 to Lightning Minion Skills"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=2,name="SkillLevel",type="BASE",value=2}}}},nil}
 c["+2 to Lunge"]={{[1]={[1]={skillName="Lunge",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
 c["+2 to Maelstrom"]={{[1]={[1]={skillName="Maelstrom",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
 c["+2 to Mana Strike"]={{[1]={[1]={skillName="Mana Strike",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
 c["+2 to Manifest Armor"]={{[1]={[1]={skillName="Manifest Armor",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
 c["+2 to Marrow Shards"]={{[1]={[1]={skillName="Marrow Shards",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
 c["+2 to Melee Attacks"]={{[1]={[1]={skillName="Melee Attack",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=2}}," s "}
-c["+2 to Melee Minion Skills"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="SkillLevel",type="BASE",value=2}}}},nil}
 c["+2 to Meteor"]={{[1]={[1]={skillName="Meteor",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
 c["+2 to Multishot"]={{[1]={[1]={skillName="Multishot",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
 c["+2 to Multistrike"]={{[1]={[1]={skillName="Multistrike",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
-c["+2 to Necrotic Minion Skills"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=32,name="SkillLevel",type="BASE",value=2}}}},nil}
 c["+2 to Net"]={{[1]={[1]={skillName="Net",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
 c["+2 to Physical Skills"]={{[1]={flags=0,keywordFlags=1,name="SkillLevel",type="BASE",value=2}},nil}
 c["+2 to Primalist Melee Attacks"]={{[1]={[1]={skillName="Melee Attack",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=2}}," Primalist s "}
@@ -4483,12 +4471,10 @@ c["+2 to Smite"]={{[1]={[1]={skillName="Smite",type="SkillName"},flags=0,keyword
 c["+2 to Smoke Bomb"]={{[1]={[1]={skillName="Smoke Bomb",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
 c["+2 to Snap Freeze"]={{[1]={[1]={skillName="Snap Freeze",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
 c["+2 to Soul Feast"]={{[1]={[1]={skillName="Soul Feast",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
-c["+2 to Spell Minion Skills"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="SkillLevel",type="BASE",value=2}}}},nil}
 c["+2 to Spirit Plague"]={{[1]={[1]={skillName="Spirit Plague",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
 c["+2 to Spriggan Form"]={{[1]={[1]={skillName="Spriggan Form",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
 c["+2 to Static"]={{[1]={[1]={skillName="Static",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
 c["+2 to Static Orb"]={{[1]={[1]={skillName="Static Orb",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
-c["+2 to Strength Minion Skills"]={{[1]={[1]={skillType=8192,type="SkillType"},flags=0,keywordFlags=0,name="Str",type="BASE",value=2}},nil}
 c["+2 to Summon Bear"]={{[1]={[1]={skillName="Summon Bear",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
 c["+2 to Summon Bone Golem"]={{[1]={[1]={skillName="Summon Bone Golem",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
 c["+2 to Summon Frenzy Totem"]={{[1]={[1]={skillName="Summon Frenzy Totem",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
@@ -6057,7 +6043,6 @@ c["+3 to Bone Curse"]={{[1]={[1]={skillName="Bone Curse",type="SkillName"},flags
 c["+3 to Chaos Bolts"]={{[1]={[1]={skillName="Chaos Bolts",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=3}},nil}
 c["+3 to Chthonic Fissure"]={{[1]={[1]={skillName="Chthonic Fissure",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=3}},nil}
 c["+3 to Cinder Strike"]={{[1]={[1]={skillName="Cinder Strike",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=3}},nil}
-c["+3 to Cold Minion Skills"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=4,name="SkillLevel",type="BASE",value=3}}}},nil}
 c["+3 to Dancing Strikes"]={{[1]={[1]={skillName="Dancing Strikes",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=3}},nil}
 c["+3 to Dark Quiver"]={{[1]={[1]={skillName="Dark Quiver",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=3}},nil}
 c["+3 to Death Seal"]={{[1]={[1]={skillName="Death Seal",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=3}},nil}
@@ -6115,7 +6100,6 @@ c["+3 to Marrow Shards"]={{[1]={[1]={skillName="Marrow Shards",type="SkillName"}
 c["+3 to Meteor"]={{[1]={[1]={skillName="Meteor",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=3}},nil}
 c["+3 to Multishot"]={{[1]={[1]={skillName="Multishot",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=3}},nil}
 c["+3 to Multistrike"]={{[1]={[1]={skillName="Multistrike",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=3}},nil}
-c["+3 to Necrotic Minion Skills"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=32,name="SkillLevel",type="BASE",value=3}}}},nil}
 c["+3 to Net"]={{[1]={[1]={skillName="Net",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=3}},nil}
 c["+3 to Poison Skills"]={{[1]={[1]={skillName="Poison",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=3}},nil}
 c["+3 to Profane Veil"]={{[1]={[1]={skillName="Profane Veil",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=3}},nil}
@@ -7125,7 +7109,6 @@ c["+4 to All Attributes per Complete Set"]={{[1]={[1]={type="Multiplier",var="Co
 c["+4 to Anomaly"]={{[1]={[1]={skillName="Anomaly",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=4}},nil}
 c["+4 to Arcane Ascendance"]={{[1]={[1]={skillName="Arcane Ascendance",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=4}},nil}
 c["+4 to Assemble Abomination"]={{[1]={[1]={skillName="Assemble Abomination",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=4}},nil}
-c["+4 to Attunement Skills"]={{[1]={flags=0,keywordFlags=0,name="Att",type="BASE",value=4}},"  Skills "}
 c["+4 to Aura Of Decay"]={{[1]={[1]={skillName="Aura Of Decay",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=4}},nil}
 c["+4 to Avalanche"]={{[1]={[1]={skillName="Avalanche",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=4}},nil}
 c["+4 to Ballista"]={{[1]={[1]={skillName="Ballista",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=4}},nil}
@@ -7140,7 +7123,6 @@ c["+4 to Death Seal"]={{[1]={[1]={skillName="Death Seal",type="SkillName"},flags
 c["+4 to Decoy"]={{[1]={[1]={skillName="Decoy",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=4}},nil}
 c["+4 to Detonating Arrow"]={{[1]={[1]={skillName="Detonating Arrow",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=4}},nil}
 c["+4 to Devouring Orb"]={{[1]={[1]={skillName="Devouring Orb",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=4}},nil}
-c["+4 to Dexterity Skills"]={{[1]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=4}},"  Skills "}
 c["+4 to Disintegrate"]={{[1]={[1]={skillName="Disintegrate",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=4}},nil}
 c["+4 to Dive Bomb"]={{[1]={[1]={skillName="Dive Bomb",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=4}},nil}
 c["+4 to Drain Life"]={{[1]={[1]={skillName="Drain Life",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=4}},nil}
@@ -7178,7 +7160,6 @@ c["+4 to Holy Aura"]={{[1]={[1]={skillName="Holy Aura",type="SkillName"},flags=0
 c["+4 to Hungering Souls"]={{[1]={[1]={skillName="Hungering Souls",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=4}},nil}
 c["+4 to Ice Barrage"]={{[1]={[1]={skillName="Ice Barrage",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=4}},nil}
 c["+4 to Infernal Shade"]={{[1]={[1]={skillName="Infernal Shade",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=4}},nil}
-c["+4 to Intelligence Skills"]={{[1]={flags=0,keywordFlags=0,name="Int",type="BASE",value=4}},"  Skills "}
 c["+4 to Javelin"]={{[1]={[1]={skillName="Javelin",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=4}},nil}
 c["+4 to Judgement"]={{[1]={[1]={skillName="Judgement",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=4}},nil}
 c["+4 to Lethal Mirage"]={{[1]={[1]={skillName="Lethal Mirage",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=4}},nil}
@@ -7220,7 +7201,6 @@ c["+4 to Spirit Plague"]={{[1]={[1]={skillName="Spirit Plague",type="SkillName"}
 c["+4 to Spriggan Form"]={{[1]={[1]={skillName="Spriggan Form",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=4}},nil}
 c["+4 to Static"]={{[1]={[1]={skillName="Static",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=4}},nil}
 c["+4 to Static Orb"]={{[1]={[1]={skillName="Static Orb",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=4}},nil}
-c["+4 to Strength Skills"]={{[1]={flags=0,keywordFlags=0,name="Str",type="BASE",value=4}},"  Skills "}
 c["+4 to Summon Bear"]={{[1]={[1]={skillName="Summon Bear",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=4}},nil}
 c["+4 to Summon Bone Golem"]={{[1]={[1]={skillName="Summon Bone Golem",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=4}},nil}
 c["+4 to Summon Frenzy Totem"]={{[1]={[1]={skillName="Summon Frenzy Totem",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=4}},nil}
