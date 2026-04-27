@@ -389,7 +389,7 @@
       "level": 24
     },
     "mods": [
-      "(8-10)% increased Movement Speed",
+      "25% increased Movement Speed",
       "+(115-185)% Chance to Shock on Lightning Hit",
       "(10-15)% Increased Shock Duration "
     ],
@@ -407,24 +407,20 @@
       "level": 0
     },
     "mods": [
-      "(11-14)% increased Movement Speed",
       "20% increased Minion Movement Speed",
       "(20-28)% Increased Healing Effectiveness",
       "(20-28)% Minion Increased Healing Effectiveness",
       "{rounding:Integer}+(80-120) Health",
       "+1 to Entangling Roots",
-      "(20-28)% Chance each second to cast Summon Vines if you are Moving",
-      "+56 Armor"
+      "(20-28)% Chance each second to cast Summon Vines if you are Moving"
     ],
     "rollIds": [
-      null,
       null,
       1,
       1,
       0,
       null,
-      2,
-      null
+      2
     ]
   },
   "22": {
@@ -1665,13 +1661,11 @@
     "mods": [
       "+(70-105)% Melee Critical Strike Multiplier",
       "(17-22)% increased Movement Speed",
-      "-75% Physical Resistance",
-      "+56 Armor"
+      "-75% Physical Resistance"
     ],
     "rollIds": [
       0,
       1,
-      null,
       null
     ]
   },
@@ -2163,16 +2157,14 @@
       "+35% Physical Resistance",
       "+35% Poison Resistance",
       "+35% Necrotic Resistance",
-      "(10-18)% increased Movement Speed",
-      "+56 Armor"
+      "(10-18)% increased Movement Speed"
     ],
     "rollIds": [
       0,
       null,
       null,
       null,
-      0,
-      null
+      0
     ]
   },
   "133": {
@@ -2419,7 +2411,6 @@
       "+4 to All Attributes",
       "(10-13)% increased Movement Speed",
       "(50-25)% reduced Duration of Stuns Received",
-      "(16-32)% increased Cooldown Recovery Speed for Evade",
       "(10-13)% increased Movement Speed"
     ],
     "rollIds": [
@@ -2429,7 +2420,6 @@
       null,
       3,
       0,
-      4,
       5
     ]
   },
@@ -4112,25 +4102,21 @@
     },
     "mods": [
       "1% Cold Penetration with Frostbite per 10% Freeze Rate Multiplier",
-      "(8-10)% increased Movement Speed",
       "{rounding:Integer}+(160-320) Dodge Rating while using Evade",
       "{rounding:Integer}+(5-10) Melee Cold Damage",
       "{rounding:Integer}+(5-10) Spell Cold Damage",
       "{rounding:Integer}+(5-10) Throwing Cold Damage",
       "{rounding:Integer}+(5-10) Bow Cold Damage",
-      "+(16-32)% Chance to apply Frostbite on Hit",
-      "+1 Evade Charge"
+      "+(16-32)% Chance to apply Frostbite on Hit"
     ],
     "rollIds": [
-      null,
       null,
       3,
       1,
       1,
       1,
       1,
-      2,
-      null
+      2
     ]
   },
   "234": {
@@ -6908,9 +6894,7 @@
       "{rounding:Integer}+(128-256) Dodge Rating",
       "{rounding:Integer}+(2-4) to Smoke Bomb",
       "-30% Threat Generated",
-      "{rounding:Integer}(16-32)% increased Dodge Rating",
-      "+56 Armor",
-      "(11-14)% increased Movement Speed"
+      "{rounding:Integer}(16-32)% increased Dodge Rating"
     ],
     "rollIds": [
       null,
@@ -6918,9 +6902,7 @@
       0,
       2,
       null,
-      0,
-      null,
-      3
+      0
     ]
   },
   "357": {
@@ -8031,8 +8013,7 @@
       "20% Increased range with Firebrand",
       "20% Increased range with Puncture",
       "+(15-22)% Melee Critical Strike Multiplier per meter from the target (up to 5 meters)",
-      "+1 Block Chance converted to Parry Chance while not wielding a shield",
-      "+80 Melee Damage"
+      "+1 Block Chance converted to Parry Chance while not wielding a shield"
     ],
     "rollIds": [
       3,
@@ -8041,7 +8022,6 @@
       null,
       null,
       2,
-      null,
       null
     ]
   },
@@ -8688,15 +8668,13 @@
       "100% chance to gain a stack of Excoriation when Flay kills an enemy or hits a boss or rare enemy",
       "(6-13)% increased Melee Attack Speed",
       "(13-26)% increased Movement Speed",
-      "(26-52)% more Melee Damage to High Health Enemies",
-      "(16-32)% increased Cooldown Recovery Speed for Evade"
+      "(26-52)% more Melee Damage to High Health Enemies"
     ],
     "rollIds": [
       null,
       1,
       2,
-      3,
-      4
+      3
     ]
   },
   "444": {
@@ -8885,8 +8863,7 @@
       "(14-18)% increased Movement Speed",
       "(30-60)% Increased Damage for skills used by Shadows",
       "(14-8)% less Damage Over Time Taken",
-      "+(30-50) Health",
-      "+1 Evade Charge"
+      "+(30-50) Health"
     ],
     "rollIds": [
       null,
@@ -8894,8 +8871,7 @@
       0,
       1,
       2,
-      3,
-      null
+      3
     ]
   },
   "459": {
@@ -8957,8 +8933,7 @@
       "(14-20)% increased Movement Speed",
       "(20-25)% Increased effect of Haste on you while Aura of Decay is active",
       "+(50-90)% Chance to Ignite on Hit for You and your Minions",
-      "+(5-9)% of Fire Damage Over Time Damage Leeched as Health",
-      "+1 Evade Charge"
+      "+(5-9)% of Fire Damage Over Time Damage Leeched as Health"
     ],
     "rollIds": [
       null,
@@ -8966,8 +8941,7 @@
       0,
       1,
       null,
-      2,
-      null
+      2
     ]
   },
   "462": {
