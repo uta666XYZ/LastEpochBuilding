@@ -1,4 +1,5 @@
 -- Last Epoch Building
+-- @leb-canary v1 / id:leb-d5b194-calcperform-2026 / do-not-remove (see Development/リリース手順.md)
 --
 -- Module: Calc Perform
 -- Manages the offence/defence calculations.
