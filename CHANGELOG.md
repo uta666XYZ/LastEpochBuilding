@@ -1,5 +1,14 @@
 # Changelog
 
+## [v0.13.1](https://github.com/uta666XYZ/LastEpochBuilding/tree/v0.13.1) (2026/04/28)
+
+[Full Changelog](https://github.com/uta666XYZ/LastEpochBuilding/compare/v0.13.0...v0.13.1)
+
+### Bug Fixes
+- **Dual-resistance corrupted affixes garbled on import** — affixes that grant two resistances on a single corrupted T-tier line (e.g., Cold + Void Resistance) imported with the second line mangled into flavor text such as `+27% Reduces all cold damage you take. Capped at 75%. Void Resistance` instead of `+27% Void Resistance`. Affected LETools URL imports and Save-import flows. Fixed for all 40 affected entries (Phys/Cold/Lightning/Fire × Void/Poison/Necrotic, 8 tiers each). Reported by a community user.
+
+---
+
 ## [v0.13.0](https://github.com/uta666XYZ/LastEpochBuilding/tree/v0.13.0) (2026/04/27)
 
 [Full Changelog](https://github.com/uta666XYZ/LastEpochBuilding/compare/v0.12.1...v0.13.0)
