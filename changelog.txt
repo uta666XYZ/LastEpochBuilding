@@ -1,7 +1,7 @@
 VERSION[0.13.1][2026/04/28]
 
 --- Bug Fixes ---
-- Fixed: dual-resistance corrupted affixes (e.g., Cold + Void Resistance) imported with garbled text on the second resistance line; affected LETools URL imports and Save-import flows
+- Fixed: dual-resistance corrupted affixes (e.g., Cold + Void Resistance) imported with garbled text on the second resistance line. The affix data stored the second resistance line with the first resistance's flavor text ("Reduces all <element> damage you take. Capped at 75%.") concatenated in front of the actual stat, so the second resistance was silently dropped. Affected LETools URL imports and Save-import flows.
 
 VERSION[0.13.0][2026/04/27]
 
