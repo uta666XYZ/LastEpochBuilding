@@ -73941,7 +73941,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+14% Reduces all physical damage you take. Capped at 75%. Void Resistance",
+		"2": "+14% Void Resistance",
 		"specialAffixType": 6
 	},
 	"1023_1": {
@@ -73955,7 +73955,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+15% Reduces all physical damage you take. Capped at 75%. Void Resistance",
+		"2": "+15% Void Resistance",
 		"specialAffixType": 6
 	},
 	"1023_2": {
@@ -73969,7 +73969,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+16% Reduces all physical damage you take. Capped at 75%. Void Resistance",
+		"2": "+16% Void Resistance",
 		"specialAffixType": 6
 	},
 	"1023_3": {
@@ -73983,7 +73983,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+17% Reduces all physical damage you take. Capped at 75%. Void Resistance",
+		"2": "+17% Void Resistance",
 		"specialAffixType": 6
 	},
 	"1023_4": {
@@ -73997,7 +73997,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+18% Reduces all physical damage you take. Capped at 75%. Void Resistance",
+		"2": "+18% Void Resistance",
 		"specialAffixType": 6
 	},
 	"1023_5": {
@@ -74011,7 +74011,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+19% Reduces all physical damage you take. Capped at 75%. Void Resistance",
+		"2": "+19% Void Resistance",
 		"specialAffixType": 6
 	},
 	"1023_6": {
@@ -74025,7 +74025,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(20-21)% Reduces all physical damage you take. Capped at 75%. Void Resistance",
+		"2": "+(20-21)% Void Resistance",
 		"specialAffixType": 6
 	},
 	"1023_7": {
@@ -74039,7 +74039,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(30-35)% Reduces all physical damage you take. Capped at 75%. Void Resistance",
+		"2": "+(30-35)% Void Resistance",
 		"specialAffixType": 6
 	},
 	"1024_0": {
@@ -74165,7 +74165,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+14% Reduces all physical damage you take. Capped at 75%. Poison Resistance",
+		"2": "+14% Poison Resistance",
 		"specialAffixType": 6
 	},
 	"1025_1": {
@@ -74179,7 +74179,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+15% Reduces all physical damage you take. Capped at 75%. Poison Resistance",
+		"2": "+15% Poison Resistance",
 		"specialAffixType": 6
 	},
 	"1025_2": {
@@ -74193,7 +74193,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+16% Reduces all physical damage you take. Capped at 75%. Poison Resistance",
+		"2": "+16% Poison Resistance",
 		"specialAffixType": 6
 	},
 	"1025_3": {
@@ -74207,7 +74207,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+17% Reduces all physical damage you take. Capped at 75%. Poison Resistance",
+		"2": "+17% Poison Resistance",
 		"specialAffixType": 6
 	},
 	"1025_4": {
@@ -74221,7 +74221,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+18% Reduces all physical damage you take. Capped at 75%. Poison Resistance",
+		"2": "+18% Poison Resistance",
 		"specialAffixType": 6
 	},
 	"1025_5": {
@@ -74235,7 +74235,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+19% Reduces all physical damage you take. Capped at 75%. Poison Resistance",
+		"2": "+19% Poison Resistance",
 		"specialAffixType": 6
 	},
 	"1025_6": {
@@ -74249,7 +74249,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(20-21)% Reduces all physical damage you take. Capped at 75%. Poison Resistance",
+		"2": "+(20-21)% Poison Resistance",
 		"specialAffixType": 6
 	},
 	"1025_7": {
@@ -74263,7 +74263,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(30-35)% Reduces all physical damage you take. Capped at 75%. Poison Resistance",
+		"2": "+(30-35)% Poison Resistance",
 		"specialAffixType": 6
 	},
 	"1026_0": {
@@ -74277,7 +74277,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+14% Reduces all lightning damage you take. Capped at 75%. Poison Resistance",
+		"2": "+14% Poison Resistance",
 		"specialAffixType": 6
 	},
 	"1026_1": {
@@ -74291,7 +74291,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+15% Reduces all lightning damage you take. Capped at 75%. Poison Resistance",
+		"2": "+15% Poison Resistance",
 		"specialAffixType": 6
 	},
 	"1026_2": {
@@ -74305,7 +74305,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+16% Reduces all lightning damage you take. Capped at 75%. Poison Resistance",
+		"2": "+16% Poison Resistance",
 		"specialAffixType": 6
 	},
 	"1026_3": {
@@ -74319,7 +74319,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+17% Reduces all lightning damage you take. Capped at 75%. Poison Resistance",
+		"2": "+17% Poison Resistance",
 		"specialAffixType": 6
 	},
 	"1026_4": {
@@ -74333,7 +74333,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+18% Reduces all lightning damage you take. Capped at 75%. Poison Resistance",
+		"2": "+18% Poison Resistance",
 		"specialAffixType": 6
 	},
 	"1026_5": {
@@ -74347,7 +74347,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+19% Reduces all lightning damage you take. Capped at 75%. Poison Resistance",
+		"2": "+19% Poison Resistance",
 		"specialAffixType": 6
 	},
 	"1026_6": {
@@ -74361,7 +74361,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(20-21)% Reduces all lightning damage you take. Capped at 75%. Poison Resistance",
+		"2": "+(20-21)% Poison Resistance",
 		"specialAffixType": 6
 	},
 	"1026_7": {
@@ -74375,7 +74375,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(30-35)% Reduces all lightning damage you take. Capped at 75%. Poison Resistance",
+		"2": "+(30-35)% Poison Resistance",
 		"specialAffixType": 6
 	},
 	"1027_0": {
@@ -74389,7 +74389,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+14% Reduces all cold damage you take. Capped at 75%. Void Resistance",
+		"2": "+14% Void Resistance",
 		"specialAffixType": 6
 	},
 	"1027_1": {
@@ -74403,7 +74403,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+15% Reduces all cold damage you take. Capped at 75%. Void Resistance",
+		"2": "+15% Void Resistance",
 		"specialAffixType": 6
 	},
 	"1027_2": {
@@ -74417,7 +74417,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+16% Reduces all cold damage you take. Capped at 75%. Void Resistance",
+		"2": "+16% Void Resistance",
 		"specialAffixType": 6
 	},
 	"1027_3": {
@@ -74431,7 +74431,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+17% Reduces all cold damage you take. Capped at 75%. Void Resistance",
+		"2": "+17% Void Resistance",
 		"specialAffixType": 6
 	},
 	"1027_4": {
@@ -74445,7 +74445,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+18% Reduces all cold damage you take. Capped at 75%. Void Resistance",
+		"2": "+18% Void Resistance",
 		"specialAffixType": 6
 	},
 	"1027_5": {
@@ -74459,7 +74459,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+19% Reduces all cold damage you take. Capped at 75%. Void Resistance",
+		"2": "+19% Void Resistance",
 		"specialAffixType": 6
 	},
 	"1027_6": {
@@ -74473,7 +74473,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(20-21)% Reduces all cold damage you take. Capped at 75%. Void Resistance",
+		"2": "+(20-21)% Void Resistance",
 		"specialAffixType": 6
 	},
 	"1027_7": {
@@ -74487,7 +74487,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(30-35)% Reduces all cold damage you take. Capped at 75%. Void Resistance",
+		"2": "+(30-35)% Void Resistance",
 		"specialAffixType": 6
 	},
 	"1028_0": {
@@ -74501,7 +74501,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+14% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance",
+		"2": "+14% Necrotic Resistance",
 		"specialAffixType": 6
 	},
 	"1028_1": {
@@ -74515,7 +74515,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+15% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance",
+		"2": "+15% Necrotic Resistance",
 		"specialAffixType": 6
 	},
 	"1028_2": {
@@ -74529,7 +74529,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+16% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance",
+		"2": "+16% Necrotic Resistance",
 		"specialAffixType": 6
 	},
 	"1028_3": {
@@ -74543,7 +74543,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+17% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance",
+		"2": "+17% Necrotic Resistance",
 		"specialAffixType": 6
 	},
 	"1028_4": {
@@ -74557,7 +74557,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+18% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance",
+		"2": "+18% Necrotic Resistance",
 		"specialAffixType": 6
 	},
 	"1028_5": {
@@ -74571,7 +74571,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+19% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance",
+		"2": "+19% Necrotic Resistance",
 		"specialAffixType": 6
 	},
 	"1028_6": {
@@ -74585,7 +74585,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(20-21)% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance",
+		"2": "+(20-21)% Necrotic Resistance",
 		"specialAffixType": 6
 	},
 	"1028_7": {
@@ -74599,7 +74599,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(30-35)% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance",
+		"2": "+(30-35)% Necrotic Resistance",
 		"specialAffixType": 6
 	},
 	"1070_0": {
