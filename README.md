@@ -58,10 +58,13 @@ Feedback and bug reports are always welcome — see [Contributing](#contributing
 - **Build sharing** — generate a short link or offline code to share your build
 - **Node search** — Ctrl+F in passive tree, skill tree, and skill selection
 - **Config tab** — smart buff suggestions when your build can grant Haste, Frenzy, etc.
+- **Steps (Leveling Order)** — record the order in which you allocate passive and skill tree nodes, then toggle **All / Min** display to read back the leveling path (LEB-only feature; useful for build creators sharing leveling guides without writing them out in Notes)
 - **Season 4: Shattered Omens** support
 
 > **Note:** Mod recognition rate is 100% as of LEB v0.12.0. Recognized mods
 > are not always calculated with full accuracy — calculator improvements are ongoing.
+> See [docs/SKILL_STATUS.md](docs/SKILL_STATUS.md) for which skills have been
+> verified against community reference builds and which still need validation.
 > Development is focused on Last Epoch Season 4 (LE 1.4).
 > Limited support exists for 1.2 and 1.3 builds.
 
@@ -118,16 +121,17 @@ Development assisted by [Claude Code](https://claude.ai/code) (Anthropic).
 
 ### ☕ Supporters (Buy Me a Coffee)
 
-| Supporter     | Note                                                     |
-| ------------- | -------------------------------------------------------- |
-| WarMachine237 | First ever supporter — a permanent mark in LEB's history |
+| Supporter        | Note                                                     |
+| ---------------- | -------------------------------------------------------- |
+| 👑 WarMachine237 | First ever supporter — a permanent mark in LEB's history |
 
 ### 💬 Community Feedback
 
 **v0.13**
 
-- u/ratonbox, u/SottoSopra666, u/Bassndy, and u/Mr-Nabokov (thanks for sharing your builds)
-- u/pro185, and u/MRosvall (thanks for contributing ideas for the Step feature)
+- 🏆 **Test Build MVP — u/SottoSopra666** — one person, five builds; single-handedly broke the Blessing system, the Crit calc, and made me question every Resist value (see CHANGELOG for the full story)
+- u/ratonbox, u/Bassndy, and u/Mr-Nabokov (thanks for sharing your builds)
+- u/pro185, and u/MRosvall (thanks for contributing ideas for the Steps feature)
 - u/berethon (thanks for contributing ideas for idol/blessing comparison feature)
 
 ---

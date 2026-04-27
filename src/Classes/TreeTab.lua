@@ -545,14 +545,14 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 	}
 	self.viewer:DrawHistoryBar(self.build, histBarVP, inputEvents)
 
-	-- Step Number cycle button (raw-drawn next to Reset dropdown)
+	-- Steps cycle button (raw-drawn next to Reset dropdown)
 	do
-		local STEP_MODES   = { "none", "all", "min" }
-		local STEP_LABELS  = { "Steps", "Steps: All", "Steps: Min" }
-		local STEP_TOOLTIP = "Show allocating order numbers on allocated nodes.\nAll: every step the node was allocated (e.g. 3,7,12)\nMin: only the first allocation step (e.g. 3)"
-		local cur    = self.viewer.stepMode or "none"
+		local STEPS_MODES   = { "none", "all", "min" }
+		local STEPS_LABELS  = { "Steps", "Steps: All", "Steps: Min" }
+		local STEPS_TOOLTIP = "Show allocating order numbers on allocated nodes.\nAll: every step the node was allocated (e.g. 3,7,12)\nMin: only the first allocation step (e.g. 3)"
+		local cur    = self.viewer.stepsMode or "none"
 		local curIdx = 1
-		for i, m in ipairs(STEP_MODES) do if m == cur then curIdx = i end end
+		for i, m in ipairs(STEPS_MODES) do if m == cur then curIdx = i end end
 
 		-- Position: right of Reset dropdown
 		-- Reset control top = headerAnchor.y - resetH/2 = (viewPort.y+HEADER_HEIGHT-28) - 10
@@ -578,14 +578,14 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 		DrawImage(nil, btnX,          btnY,         1,    btnH)
 		DrawImage(nil, btnX + btnW,   btnY,         1,    btnH)
 		local labelColor = curIdx == 1 and "^8" or "^2"
-		DrawString(btnX + m_floor(btnW / 2), btnY + 4, "CENTER_X", 14, "VAR", labelColor .. STEP_LABELS[curIdx])
+		DrawString(btnX + m_floor(btnW / 2), btnY + 4, "CENTER_X", 14, "VAR", labelColor .. STEPS_LABELS[curIdx])
 
 		-- Tooltip on hover (drawn at layer 2 to appear above controls at layer 1)
 		if overBtn then
 			SetDrawLayer(2)
 			local tooltip = new("Tooltip")
 			tooltip:Clear()
-			for line in STEP_TOOLTIP:gmatch("[^\n]+") do
+			for line in STEPS_TOOLTIP:gmatch("[^\n]+") do
 				tooltip:AddLine(14, line)
 			end
 			tooltip:Draw(btnX, btnY, btnW, btnH, viewPort)
@@ -595,7 +595,7 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 		-- Click to cycle mode
 		for id, event in ipairs(inputEvents) do
 			if event.type == "KeyUp" and event.key == "LEFTBUTTON" and overBtn then
-				self.viewer.stepMode = STEP_MODES[(curIdx % #STEP_MODES) + 1]
+				self.viewer.stepsMode = STEPS_MODES[(curIdx % #STEPS_MODES) + 1]
 				inputEvents[id] = nil
 			end
 		end

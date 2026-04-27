@@ -79,3 +79,5 @@ src/Assets/items/
 # LETools import debug dumps
 letools_raw.json
 src/letools_raw.json
+# Internal skill verification data (contains test build filenames)
+docs/skill_usage_raw.csv

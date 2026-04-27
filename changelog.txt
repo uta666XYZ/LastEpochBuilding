@@ -1,5 +1,12 @@
 VERSION[0.13.0][2026/04/27]
 
+--- Notable Changes ---
+- Steps: leveling order numbers on tree nodes (LEB-only)
+- Base class 20-point gate before subclass allocation
+- F5 restart opened to all users (planned for removal once errors are rare)
+- LETools URL direct import deprecated; use build code paste or Maxroll
+- Maxroll URL direct import is still in beta; please report issues
+
 --- Craft UI Redesign ---
 - New 2-stage flow: Stage1 modal picker + Stage2 inline editor on ItemsTab
 - All Items list: category sort, single-click edit, type/primordial/corrupted icons
@@ -60,7 +67,6 @@ VERSION[0.13.0][2026/04/27]
 - Sidebar stat labels aligned with in-game terms
 - Config tab: tooltips for all options + Reset to Defaults
 - F5 restart for all users
-- WarMachine237 Easter egg
 
 --- Calculations ---
 - DPS integration series (#1-#10): area-level, while-channelling, while-buff,
@@ -109,7 +115,7 @@ VERSION[0.13.0][2026/04/27]
 - Tyrant Crown / Abyssal Echoes / Devouring Orb icons fixed
 - Bladedancer badge upgraded to 256x256
 - Primordial / Corrupted icons updated
-- 5 skills' base damage corrected via LETools verification
+- 5 skills' base damage corrected via reference data
 - Cinder Strike critChance and base CritMult added
 - Skill tree node positions / typo fixes
 - Idol affix filter for universal idols
@@ -129,7 +135,7 @@ VERSION[0.13.0][2026/04/27]
 - Imported items routed through preset path
 - Edit button opens craft editor for non-crafted/imported items
 - EXALTED/LEGENDARY rarities supported
-- Idol affix value parity with LETools
+- Idol affix value parity with reference data
 - Crafted affixLimit raised 6 -> 10 (Corrupted/Primordial slots)
 - Stale ModCache entries purged (Lightning Aegis, Leeched as Health, channelling)
 - Skill icon hex-mask; level badge hidden when skill unlocked
@@ -139,6 +145,16 @@ VERSION[0.13.0][2026/04/27]
 - Cerulean / Sanguine Runestones 6-point bonuses apply
 - Dev mode detection by .git/HEAD; works from git worktree
 - Numerous Craft UI crash / nil-guard fixes
+
+--- v0.13 Test Build MVP ---
+u/SottoSopra666 — one person, five builds.
+Single-handedly broke the Blessing system, the Crit calc,
+and made me question every Resist value.
+KoraWasteTime lv91 Spellblade was pure PAIN to implement —
+but hey, you cooked such a complex build. Congrats.
+
+Thank you for making LEB stronger.
+                                            — the Creator
 
 VERSION[0.12.1][2026/04/15]
 

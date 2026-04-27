@@ -1690,48 +1690,48 @@ function SkillsTabClass:DrawSkillTree(viewPort, inputEvents, startY)
 
 	-- Steps mode button (below Back button, cycles none→all→min→none)
 	do
-		local STEP_MODES   = { "none", "all", "min" }
-		local STEP_LABELS  = { "Steps", "Steps: All", "Steps: Min" }
-		local STEP_TOOLTIP = "Show allocating order numbers on allocated nodes.\nAll: every step the node was allocated (e.g. 3,7,12)\nMin: only the first allocation step (e.g. 3)"
-		local cur    = self.skillTreeViewer.stepMode or "none"
+		local STEPS_MODES   = { "none", "all", "min" }
+		local STEPS_LABELS  = { "Steps", "Steps: All", "Steps: Min" }
+		local STEPS_TOOLTIP = "Show allocating order numbers on allocated nodes.\nAll: every step the node was allocated (e.g. 3,7,12)\nMin: only the first allocation step (e.g. 3)"
+		local cur    = self.skillTreeViewer.stepsMode or "none"
 		local curIdx = 1
-		for i, m in ipairs(STEP_MODES) do if m == cur then curIdx = i end end
+		for i, m in ipairs(STEPS_MODES) do if m == cur then curIdx = i end end
 
 		-- Width wide enough for "Steps: Min" at font 13
-		local stepBtnW = 82
+		local stepsBtnW = 82
 		local stepX = backX
 		local stepY = backY + backH + 4
-		local overStep = cursorX >= stepX and cursorX < stepX + stepBtnW
+		local overSteps = cursorX >= stepX and cursorX < stepX + stepsBtnW
 		              and cursorY >= stepY and cursorY < stepY + backH
-		if overStep then
+		if overSteps then
 			SetDrawColor(0.3, 0.3, 0.35)
 		else
 			SetDrawColor(0.15, 0.15, 0.2)
 		end
-		DrawImage(nil, stepX, stepY, stepBtnW, backH)
+		DrawImage(nil, stepX, stepY, stepsBtnW, backH)
 		SetDrawColor(0.5, 0.5, 0.55)
-		DrawImage(nil, stepX,            stepY,          stepBtnW, 1)
-		DrawImage(nil, stepX,            stepY + backH,  stepBtnW, 1)
+		DrawImage(nil, stepX,            stepY,          stepsBtnW, 1)
+		DrawImage(nil, stepX,            stepY + backH,  stepsBtnW, 1)
 		DrawImage(nil, stepX,            stepY,          1,        backH)
-		DrawImage(nil, stepX + stepBtnW, stepY,          1,        backH)
-		local stepColor = curIdx == 1 and "^8" or "^2"
-		DrawString(stepX + m_floor(stepBtnW / 2), stepY + 4, "CENTER_X", 13, "VAR", stepColor .. STEP_LABELS[curIdx])
+		DrawImage(nil, stepX + stepsBtnW, stepY,          1,        backH)
+		local stepsColor = curIdx == 1 and "^8" or "^2"
+		DrawString(stepX + m_floor(stepsBtnW / 2), stepY + 4, "CENTER_X", 13, "VAR", stepsColor .. STEPS_LABELS[curIdx])
 
 		-- Tooltip on hover (drawn at high layer to appear in front)
-		if overStep then
+		if overSteps then
 			SetDrawLayer(nil, 200)
 			local tooltip = new("Tooltip")
 			tooltip:Clear()
-			for line in STEP_TOOLTIP:gmatch("[^\n]+") do
+			for line in STEPS_TOOLTIP:gmatch("[^\n]+") do
 				tooltip:AddLine(14, line)
 			end
-			tooltip:Draw(stepX, stepY, stepBtnW, backH, viewPort)
+			tooltip:Draw(stepX, stepY, stepsBtnW, backH, viewPort)
 			SetDrawLayer(nil, 0)
 		end
 
 		for id, event in ipairs(inputEvents) do
-			if event.type == "KeyUp" and event.key == "LEFTBUTTON" and overStep then
-				self.skillTreeViewer.stepMode = STEP_MODES[(curIdx % #STEP_MODES) + 1]
+			if event.type == "KeyUp" and event.key == "LEFTBUTTON" and overSteps then
+				self.skillTreeViewer.stepsMode = STEPS_MODES[(curIdx % #STEPS_MODES) + 1]
 				inputEvents[id] = nil
 			end
 		end
