@@ -1,4 +1,5 @@
 -- Last Epoch Building
+-- @leb-canary v1 / id:leb-2e7a08-itemtools-2026 / do-not-remove (see Development/リリース手順.md)
 --
 -- Module: Item Tools
 -- Various functions for dealing with items.
