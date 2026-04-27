@@ -82,4 +82,50 @@ for skillId, grantedEffect in pairs(data.skills) do
             grantedEffect.skillTypes[type] = true
         end
     end
+    -- skills.json's skillTypeTags often omits category bits (e.g. summon skills with
+    -- baseFlags.minion=true but skillTypeTags=0). Mirror baseFlags into skillTypes so
+    -- mods tagged with SkillType=Minion/Spell/Melee/etc. apply when summing for cap
+    -- calculations and skillCfg-tagged mods.
+    if grantedEffect.baseFlags then
+        local flagToType = {
+            minion = SkillType.Minion,
+            spell = SkillType.Spell,
+            melee = SkillType.Melee,
+            throwing = SkillType.Throwing,
+            bow = SkillType.Bow,
+            totem = SkillType.Totem,
+            channelling = SkillType.Channelling,
+            buff = SkillType.Buff,
+            transform = SkillType.Transform,
+            curse = SkillType.Curse,
+            ailment = SkillType.Ailment,
+        }
+        for flag, skillType in pairs(flagToType) do
+            if grantedEffect.baseFlags[flag] and skillType ~= SkillType.Unsupported then
+                grantedEffect.skillTypes[skillType] = true
+            end
+        end
+        -- Most summon skills cast as spells (Summon Skeleton/Skeletal Mage/Volatile
+        -- Zombie etc.) but skills.json only carries baseFlags.minion. Without a Spell
+        -- bit, mods like "+N to Spell Minion Skills" cannot match the parent summon
+        -- skill. If a minion skill has a cast time and isn't a melee/ranged/totem/
+        -- transform skill, treat it as a spell as well.
+        if grantedEffect.baseFlags.minion and grantedEffect.castTime
+           and not grantedEffect.baseFlags.melee
+           and not grantedEffect.baseFlags.bow
+           and not grantedEffect.baseFlags.throwing
+           and not grantedEffect.baseFlags.totem
+           and not grantedEffect.baseFlags.transform then
+            grantedEffect.skillTypes[SkillType.Spell] = true
+        end
+    end
+    -- Also expose a keywordFlags bitmap for skillCfg consumers that filter mods by
+    -- the skill's category (Spell/Melee/Minion/elemental). Built from skillTypes so
+    -- baseFlags-derived bits are included.
+    grantedEffect.keywordFlags = grantedEffect.skillTypeTags or 0
+    for skillType in pairs(grantedEffect.skillTypes) do
+        if type(skillType) == "number" then
+            grantedEffect.keywordFlags = bit.bor(grantedEffect.keywordFlags, skillType)
+        end
+    end
 end
