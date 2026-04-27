@@ -2082,7 +2082,11 @@ end
 -- In Last Epoch, each skill has a base cap of 20 points.
 -- Equipment "+X Skills" increases the effective max.
 function SkillsTabClass:GetMaxSkillPoints(index)
-	return 20 + self:GetTotalSkillLevelBonus(index)
+	-- Range affixes (e.g. "+(3-4) to Intelligence Skills") roll at the midpoint
+	-- (3.5) in LEB's display, which would yield a fractional cap. In-game caps
+	-- are always integers; round half-up so e.g. 8.5 bonus → +9 cap (matches
+	-- the upper end of the tier, which is what users expect when allocating).
+	return 20 + m_floor(self:GetTotalSkillLevelBonus(index) + 0.5)
 end
 
 -- Get the number of skill points used in a skill tree
