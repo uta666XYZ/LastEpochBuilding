@@ -74,6 +74,7 @@ tests/
 # Unused asset archives (kept locally, not for public repo)
 src/Assets/bin/
 src/TreeData/bin/
+src/Assets/items/
 
 # LETools import debug dumps
 letools_raw.json
