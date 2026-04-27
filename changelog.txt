@@ -1,3 +1,8 @@
+VERSION[0.13.1][2026/04/28]
+
+--- Bug Fixes ---
+- Fixed: dual-resistance corrupted affixes (e.g., Cold + Void Resistance) imported with garbled text on the second resistance line; affected LETools URL imports and Save-import flows
+
 VERSION[0.13.0][2026/04/27]
 
 --- Notable Changes ---
