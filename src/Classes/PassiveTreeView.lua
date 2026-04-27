@@ -52,8 +52,8 @@ local PassiveTreeViewClass = newClass("PassiveTreeView", function(self)
 	-- Anchor position: "center" (default), "left", "top-left"
 	self.anchorPosition = "center"
 
-	-- Step Number display mode: "none" | "all" | "min"
-	self.stepMode = "none"
+	-- Steps display mode: "none" | "all" | "min"
+	self.stepsMode = "none"
 	-- Phase 2: history bar expand mode (false = 32px compact, true = 48px + node name)
 	self.historyExpanded = false
 	-- Phase 3: hover interaction state
@@ -1142,10 +1142,10 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 		end
 	end
 
-	-- Build node order map from spec history for step number display
+	-- Build node order map from spec history for Steps display
 	-- Use relative step numbers within the current filter mode (passive/skill), not absolute indices
 	local nodeOrderMap = { }
-	if self.stepMode ~= "none" and spec.history then
+	if self.stepsMode ~= "none" and spec.history then
 		-- Determine skill tree prefix filter for "skill" mode
 		local skillPrefix = nil
 		if self.filterMode == "skill" and self.selectedSkillIndex and build.skillsTab then
@@ -1373,11 +1373,11 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 				DrawString(scrX, scrY + 48 * scale, "CENTER_X", round(50 * scale), "VAR", "^7" .. node.alloc .. "/" .. node.maxPoints)
 			end
 
-			-- Draw step number (top-right corner of node)
-			if self.stepMode ~= "none" and displayAlloc and nodeOrderMap[nodeId] then
+			-- Draw steps badge (top-right corner of node)
+			if self.stepsMode ~= "none" and displayAlloc and nodeOrderMap[nodeId] then
 				local orders = nodeOrderMap[nodeId]
 				local badgeText
-				if self.stepMode == "min" then
+				if self.stepsMode == "min" then
 					-- Min: show only the first (initial allocation) step
 					badgeText = tostring(orders[1])
 				else
