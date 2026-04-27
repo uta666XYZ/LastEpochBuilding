@@ -291,7 +291,6 @@ local modNameList = {
 	["critical strike chance"] = "CritChance",
 	["critical strike multiplier"] = "CritMultiplier",
 	["critical multiplier"] = "CritMultiplier",
-	["shared critical multiplier"] = "CritMultiplier",
 	["attack speed"] = { "Speed", flags = ModFlag.Attack },
 	["cast speed"] = { "Speed", flags = ModFlag.Cast },
 	["attack and cast speed"] = "Speed",
@@ -1685,9 +1684,39 @@ local unsupported = { }
 local count = 0
 --local foo = io.open("../unsupported.txt", "w")
 --foo:close()
+-- "Shared X" mods in Last Epoch apply to BOTH the player and their minions.
+-- We expand these into two parses: one for the player (with "Shared" stripped)
+-- and one for minions (with the "minion" modFlag appended so addToMinion fires).
+local function parseSharedExpanded(line)
+	local lower = line:lower()
+	local sharedStart, sharedEnd = lower:find(" shared ", 1, true)
+	if not sharedStart then
+		sharedStart, sharedEnd = lower:find("^shared ")
+	end
+	if not sharedStart then
+		return parseMod(line, 1)
+	end
+	-- Player line: drop the "shared" word, keep the rest as-is
+	local strippedLine = line:sub(1, sharedStart - 1) .. " " .. line:sub(sharedEnd + 1)
+	strippedLine = strippedLine:gsub("^%s+", ""):gsub("%s+", " ")
+	local pList, pExtra = parseMod(strippedLine, 1)
+	-- Minion line: same stripped text but with " minion" appended so the
+	-- modFlag scan sets addToMinion=true on every produced mod.
+	local mList = parseMod(strippedLine .. " minion", 1)
+	local combined = {}
+	if pList then
+		for i = 1, #pList do t_insert(combined, pList[i]) end
+	end
+	if mList then
+		for i = 1, #mList do t_insert(combined, mList[i]) end
+	end
+	if #combined == 0 then return nil, pExtra end
+	return combined, pExtra
+end
+
 return function(line, isComb)
 	if not cache[line] then
-		local modList, extra = parseMod(line, 1)
+		local modList, extra = parseSharedExpanded(line)
 		if modList and extra then
 			-- TODO: No need currently, to be removed?
 			-- modList, extra = parseMod(line, 2)
