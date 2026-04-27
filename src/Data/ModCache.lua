@@ -1926,7 +1926,7 @@ c["+1% Frailty reduces damage dealt by 6% (multiplicative with other modifiers),
 c["+1% Freeze Rate Multiplier Per 2 Attunement"]={{[1]={[1]={div=2,stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="FreezeRateMultiplier",type="BASE",value=1}},nil}
 c["+1% Frostbite Cold Penetration Per 2 Attunement"]={{[1]={[1]={div=2,stat="Att",type="PerStat"},[2]={skillName="Frostbite",type="SkillName"},flags=0,keywordFlags=0,name="ColdPenetration",type="BASE",value=1}},nil}
 c["+1% Glancing Blow Chance"]={{[1]={flags=0,keywordFlags=0,name="GlancingBlowChance",type="BASE",value=1}},nil}
-c["+1% Global More Physical Damage Per Maelstrom Stack"]={{[1]={[1]={type="Global"},[2]={skillName="Maelstrom",type="SkillName"},flags=0,keywordFlags=0,name="PhysicalDamage",type="MORE",value=1}},"  More  Per  Stack "}
+c["+1% Global More Physical Damage Per Maelstrom Stack"]={{[1]={[1]={type="Global"},[2]={skillName="Maelstrom",type="SkillName"},flags=0,keywordFlags=0,name="PhysicalDamage",type="MORE",value=1}},"   Per  Stack "}
 c["+1% Health Leech"]={{[1]={flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=1}},nil}
 c["+1% Health Regen for You with Active Bear"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="BASE",value=1}},"  for You with Active Bear "}
 c["+1% Hit Damage Per Bleed"]={{[1]={[1]={skillName="Bleed",type="SkillName"},flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=1}},"   Per  "}
@@ -4845,7 +4845,7 @@ c["+20% Frostbite Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTri
 c["+20% Frostbite Duration"]={{[1]={[1]={skillName="Frostbite",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="MORE",value=20}},nil}
 c["+20% Global Damage Over Time"]={{[1]={[1]={type="Global"},flags=4096,keywordFlags=0,name="Damage",type="MORE",value=20}},nil}
 c["+20% Global Freeze Rate Multiplier"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=0,name="FreezeRateMultiplier",type="BASE",value=20}},nil}
-c["+20% Global Increased Mana Efficiency"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=0,name="Mana",type="BASE",value=20}},"  Increased  Efficiency "}
+c["+20% Global Increased Mana Efficiency"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=0,name="Mana",type="INC",value=20}},"   Efficiency "}
 c["+20% Global Poison Chance In Pool"]={{[1]={[1]={type="Global"},flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Poison",type="BASE",value=20}},"   In Pool "}
 c["+20% Great Axe Damage"]={{[1]={[1]={type="Condition",var="UsingAxe"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=20}}," Great   "}
 c["+20% Greater Ice Vortex Chance"]={{}," Greater Ice Vortex Chance "}
@@ -5509,8 +5509,8 @@ c["+25% Freeze Rate Multiplier"]={{[1]={flags=0,keywordFlags=0,name="FreezeRateM
 c["+25% Frostbite Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Frostbite",type="BASE",value=25}},nil}
 c["+25% Frozen Ground Area"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="BASE",value=25}}," Frozen Ground  "}
 c["+25% Global Freeze Rate Multiplier"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=0,name="FreezeRateMultiplier",type="BASE",value=25}},nil}
-c["+25% Global Increased Physical Damage"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=0,name="PhysicalDamage",type="MORE",value=25}},"  Increased  "}
-c["+25% Global Increased Spell Damage"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=256,name="Damage",type="MORE",value=25}},"  Increased   "}
+c["+25% Global Increased Physical Damage"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=25}},nil}
+c["+25% Global Increased Spell Damage"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=256,name="Damage",type="INC",value=25}},nil}
 c["+25% Haste Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Haste",type="BASE",value=25}},nil}
 c["+25% Haste Chance on Crit"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Haste",type="BASE",value=25}},"  on Crit "}
 c["+25% Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=25}},nil}
@@ -6293,7 +6293,7 @@ c["+3% More Hit Damage Per Slow"]={{[1]={[1]={skillName="Slow",type="SkillName"}
 c["+3% Necrotic Damage Taken as Physical"]={{[1]={flags=0,keywordFlags=1,name="NecroticDamageTaken",type="INC",value=3}},"  as  "}
 c["+3% Necrotic Penetration"]={{[1]={flags=0,keywordFlags=0,name="NecroticPenetration",type="BASE",value=3}},nil}
 c["+3% Parry Chance"]={{[1]={flags=0,keywordFlags=0,name="ParryChance",type="BASE",value=3}},nil}
-c["+3% Physical Leech"]={{},"  Leech "}
+c["+3% Physical Leech"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamageLifeLeech",type="BASE",value=3}},nil}
 c["+3% Physical Penetration"]={{[1]={flags=0,keywordFlags=0,name="PhysicalPenetration",type="BASE",value=3}},nil}
 c["+3% Physical Penetration per Unique Negative Ailment"]={{[1]={flags=0,keywordFlags=0,name="PhysicalPenetration",type="BASE",value=3}},"  per Unique Negative Ailment "}
 c["+3% Physical Resistance Per Active Totem"]={{[1]={[1]={stat="TotemsSummoned",type="PerStat"},flags=0,keywordFlags=0,name="PhysicalResist",type="BASE",value=3}},nil}
@@ -6429,7 +6429,7 @@ c["+30% Fissure Area"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="B
 c["+30% Freeze Rate Multiplier"]={{[1]={flags=0,keywordFlags=0,name="FreezeRateMultiplier",type="BASE",value=30}},nil}
 c["+30% Furnace Ignite Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Ignite",type="BASE",value=30}}," Furnace  "}
 c["+30% Furnace Slow Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Slow",type="BASE",value=30}}," Furnace  "}
-c["+30% Global Increased Crit Chance"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=0,name="CritChance",type="BASE",value=30}},"  Increased  "}
+c["+30% Global Increased Crit Chance"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=0,name="CritChance",type="INC",value=30}},nil}
 c["+30% Haste Duration"]={{[1]={[1]={skillName="Haste",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="MORE",value=30}},nil}
 c["+30% Healing Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="HealingEffectiveness",type="BASE",value=30}},nil}
 c["+30% Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=30}},nil}
@@ -7328,8 +7328,8 @@ c["+4% Freeze Rate Multiplier per player Attunement"]={{[1]={[1]={actor="parent"
 c["+4% Freeze Rate Multiplier per player Intelligence"]={{[1]={[1]={actor="parent",stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="FreezeRateMultiplier",type="BASE",value=4}},nil}
 c["+4% Global Critical Multiplier per Stack"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=0,name="CritMultiplier",type="BASE",value=4}},"   per Stack "}
 c["+4% Global Damage to Ignited or Shocked Enemies"]={{[1]={[1]={type="Global"},[2]={skillName="Ignite",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=4}},"   to d or Shocked Enemies "}
-c["+4% Global More Damage"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=4}},"  More  "}
-c["+4% Global Physical Leech"]={{},"   Leech "}
+c["+4% Global More Damage"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=4}},nil}
+c["+4% Global Physical Leech"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=0,name="PhysicalDamageLifeLeech",type="BASE",value=4}},nil}
 c["+4% Haste Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Haste",type="BASE",value=4}},nil}
 c["+4% Health Leech"]={{[1]={flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=4}},nil}
 c["+4% Health Leech On Crit"]={{[1]={flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=4}},"  On Crit "}
@@ -8113,7 +8113,7 @@ c["+5% Glancing Blow Chance with 2 Swords"]={{[1]={[1]={type="Condition",var="Us
 c["+5% Global Bleed Chance Per Stack"]={{[1]={[1]={type="Global"},flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Bleed",type="BASE",value=5}},"   Per Stack "}
 c["+5% Global Cooldown Recovery Speed"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=0,name="CooldownRecovery",type="BASE",value=5}},nil}
 c["+5% Global Damage Per Stack"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=5}},"   Per Stack "}
-c["+5% Global More Cold Damage"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=0,name="ColdDamage",type="MORE",value=5}},"  More  "}
+c["+5% Global More Cold Damage"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=0,name="ColdDamage",type="MORE",value=5}},nil}
 c["+5% Haste Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Haste",type="BASE",value=5}},nil}
 c["+5% Haste Chance on Kill"]={{[1]={[1]={type="Condition",var="KilledRecently"},flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Haste",type="BASE",value=5}},nil}
 c["+5% Haste Chance when Hitting Boss or Rare"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Haste",type="BASE",value=5}},"  when ting Boss or Rare "}
@@ -8865,7 +8865,7 @@ c["+6% Fire Resistance"]={{[1]={flags=0,keywordFlags=0,name="FireResist",type="B
 c["+6% Frailty Chance With Shield"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Frailty",type="BASE",value=6}},"  With Shield "}
 c["+6% Freeze Rate Multiplier Per Attunement"]={{[1]={[1]={stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="FreezeRateMultiplier",type="BASE",value=6}},nil}
 c["+6% Freeze Rate Multiplier per 1% Cold Res"]={{[1]={flags=0,keywordFlags=4,name="FreezeRateMultiplier",type="BASE",value=6}},"  per 1%  Res "}
-c["+6% Global Increased Damage Over Time"]={{[1]={[1]={type="Global"},flags=4096,keywordFlags=0,name="Damage",type="MORE",value=6}},"  Increased  "}
+c["+6% Global Increased Damage Over Time"]={{[1]={[1]={type="Global"},flags=4096,keywordFlags=0,name="Damage",type="INC",value=6}},nil}
 c["+6% Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=6}},nil}
 c["+6% Hit Rate while Dual Wielding"]={{},"  Rate  "}
 c["+6% Ignite Chance Per Symbol"]={{[1]={[1]={type="Multiplier",var="ActiveSymbol"},flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Ignite",type="BASE",value=6}},nil}
@@ -9669,7 +9669,7 @@ c["+8% Freeze Rate Multiplier per Heo Rune"]={{[1]={flags=0,keywordFlags=0,name=
 c["+8% Gain a portion of your maximum health as endurance threshold. Damage taken your health below your endurance threshold is reduced by your endurance. Endurance"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=8}}," Gain a portion of your  as endurance threshold. Damage taken your health below your endurance threshold is reduced by your endurance. Endurance "}
 c["+8% Glacier Area per Ice Spiral"]={{[1]={[1]={skillName="Glacier",type="SkillName"},flags=0,keywordFlags=0,name="AreaOfEffect",type="BASE",value=8}},"   per Ice Spiral "}
 c["+8% Global Critical Multiplier"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=0,name="CritMultiplier",type="BASE",value=8}},nil}
-c["+8% Global Increased Stun Chance Per Stack"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=0,name="StunChance",type="BASE",value=8}},"  Increased  Per Stack "}
+c["+8% Global Increased Stun Chance Per Stack"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=0,name="StunChance",type="INC",value=8}},"   Per Stack "}
 c["+8% Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=8}},nil}
 c["+8% Health Cost"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=8}},"  Cost "}
 c["+8% Health Decay"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=8}},"  Decay "}
@@ -10912,9 +10912,9 @@ c["10% Falcon Chance to inflict Falconer's Mark"]={{}," Falcon Chance to inflict
 c["10% Fire Aura Chance Per Second"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=10},notSupported=true},nil}
 c["10% Frenzy Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Frenzy",type="BASE",value=10}},nil}
 c["10% Frigid Tempest Chance"]={{}," Frigid Tempest Chance "}
-c["10% Global Increased Cooldown Recovery Speed"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=0,name="CooldownRecovery",type="BASE",value=10}},"  Increased  "}
-c["10% Global Increased Crit Chance Per Zeal Stack"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=0,name="CritChance",type="BASE",value=10}},"  Increased  Per Zeal Stack "}
-c["10% Global Increased Damage Per Zeal Stack"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=10}},"  Increased  Per Zeal Stack "}
+c["10% Global Increased Cooldown Recovery Speed"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=10}},nil}
+c["10% Global Increased Crit Chance Per Zeal Stack"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=0,name="CritChance",type="INC",value=10}},"   Per Zeal Stack "}
+c["10% Global Increased Damage Per Zeal Stack"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=0,name="Damage",type="INC",value=10}},"   Per Zeal Stack "}
 c["10% Haste Chance On Hit"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Haste",type="BASE",value=10}},nil}
 c["10% Howl On Kill Chance"]={{}," Howl  Chance "}
 c["10% Increased Area Per Stalwart Stack Consumed"]={{[1]={[1]={skillName="Stalwart",type="SkillName"},flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=10}},"  Per  Stack Consumed "}
@@ -12659,7 +12659,7 @@ c["2% Damage Redirected To Lowest Health Minion"]={{[1]={flags=0,keywordFlags=0,
 c["2% Delayed Hit Damage From Bosses And Rares"]={{[1]={flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=2}}," Delayed   From Bosses And Rares "}
 c["2% Endurance"]={{[1]={flags=0,keywordFlags=0,name="Endurance",type="BASE",value=2}},nil}
 c["2% Glancing Blow Chance"]={{[1]={flags=0,keywordFlags=0,name="GlancingBlowChance",type="BASE",value=2}},nil}
-c["2% Global More Void Damage"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=0,name="VoidDamage",type="MORE",value=2}},"  More  "}
+c["2% Global More Void Damage"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=0,name="VoidDamage",type="MORE",value=2}},nil}
 c["2% Health Gain"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=2}},"  Gain "}
 c["2% Howl On Boss Hit Chance"]={{}," Howl On Boss  Chance "}
 c["2% Howl On Your Kill Chance"]={{}," Howl On Your Kill Chance "}
@@ -12836,7 +12836,7 @@ c["20% Explosion Increased Stun Chance"]={{[1]={flags=0,keywordFlags=0,name="Stu
 c["20% Explosion Increased Stun Duration"]={{[1]={flags=0,keywordFlags=0,name="EnemyStunDuration",type="BASE",value=20}}," Explosion Increased  "}
 c["20% Fire Aura Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_FireAura",type="BASE",value=20}},nil}
 c["20% Frostbite Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Frostbite",type="BASE",value=20}},nil}
-c["20% Global Increased Damage Over Time"]={{[1]={[1]={type="Global"},flags=4096,keywordFlags=0,name="Damage",type="MORE",value=20}},"  Increased  "}
+c["20% Global Increased Damage Over Time"]={{[1]={[1]={type="Global"},flags=4096,keywordFlags=0,name="Damage",type="INC",value=20}},nil}
 c["20% Healing Conversion"]={{},"  Conversion "}
 c["20% Healing Increase Per Second"]={{},"  Increase Per Second "}
 c["20% Increased Area with Dive Bomb"]={{[1]={[1]={skillName="Dive Bomb",type="SkillName"},flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=20}},"  with  "}
@@ -13315,7 +13315,7 @@ c["25% Extra Projectiles Chance"]={{[1]={flags=0,keywordFlags=0,name="Projectile
 c["25% Falcon Ability Remaining Cooldown Recovery on Crit (1 second cooldown)"]={{[1]={flags=0,keywordFlags=0,name="CooldownRecovery",type="BASE",value=25}}," Falcon Ability Remaining  on Crit (1 second cooldown) "}
 c["25% Fire Aura Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_FireAura",type="BASE",value=25}},nil}
 c["25% Fire Resistance Shred Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_FireResistanceShred",type="BASE",value=25}},nil}
-c["25% Global Increased Crit Chance"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=0,name="CritChance",type="BASE",value=25}},"  Increased  "}
+c["25% Global Increased Crit Chance"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=0,name="CritChance",type="INC",value=25}},nil}
 c["25% Healing Hands Chance on Melee Hit"]={{[1]={flags=8389120,keywordFlags=0,name="ChanceToTriggerOnHit_HealingHands",type="BASE",value=25}},nil}
 c["25% Healing Hands Chance on Smite Cast"]={{[1]={[1]={skillName="Smite",type="SkillName"},flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_HealingHands",type="BASE",value=25}},"  on  Cast "}
 c["25% Health Globe Chance"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=25}},"  Globe Chance "}
@@ -13784,7 +13784,7 @@ c["3% Elemental Resistance"]={{[1]={flags=0,keywordFlags=0,name="FireResist",typ
 c["3% Falcon Skills Cooldown Recovered"]={{[1]={flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=3}}," Falcon  Cooldown Recovered "}
 c["3% Fissure Kill Threshold"]={{[1]={flags=0,keywordFlags=0,name="KillThreshold",type="BASE",value=3}}," Fissure  "}
 c["3% Glancing Blow Chance"]={{[1]={flags=0,keywordFlags=0,name="GlancingBlowChance",type="BASE",value=3}},nil}
-c["3% Global More Damage"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=3}},"  More  "}
+c["3% Global More Damage"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=3}},nil}
 c["3% Health -> Ward Gain"]={{},"3% Health -> Ward Gain"}
 c["3% Health Consumed (of current health)"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=3}},"  Consumed (of current health) "}
 c["3% Health Leech"]={{[1]={flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=3}},nil}
@@ -14571,7 +14571,7 @@ c["4% Fire Resistance"]={{[1]={flags=0,keywordFlags=0,name="FireResist",type="BA
 c["4% Forged Weapon chance on Hit vs Boss or Rare"]={{}," Forged Weapon chance  vs Boss or Rare "}
 c["4% Frost Claw Chance On Hit"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Frost Claw",type="BASE",value=4}},nil}
 c["4% Frostbite Chance per Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Frostbite",type="BASE",value=4}},nil}
-c["4% Global Reduced Mana Cost"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=0,name="ManaCost",type="BASE",value=4}},"  Reduced  "}
+c["4% Global Reduced Mana Cost"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=0,name="ManaCost",type="INC",value=-4}},nil}
 c["4% Global Spell Damage Per Enemy Hit"]={{[1]={[1]={type="Global"},flags=8388608,keywordFlags=256,name="Damage",type="MORE",value=4}},"    Per Enemy  "}
 c["4% Healing Per Dexterity"]={{[1]={[1]={skillName="Healing",type="SkillName"},flags=0,keywordFlags=0,name="Dex",type="BASE",value=4}},"  Per  "}
 c["4% Health Per Point Of Attunement"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=4}},"  Per Point Of Attunement "}
@@ -15368,8 +15368,8 @@ c["50% Chance to gain Crimson Shroud when you use a Melee Attack that hits"]={{}
 c["50% Crit Chance Stat Ratio"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="BASE",value=50}},"  Stat Ratio "}
 c["50% Damage Over Time Taken As Poison"]={{[1]={[1]={skillName="Poison",type="SkillName"},flags=0,keywordFlags=0,name="DamageTakenOverTime",type="INC",value=50}},"  As  "}
 c["50% Dusk Shroud Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_DuskShroud",type="BASE",value=50}},nil}
-c["50% Global Increased Crit Chance"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=0,name="CritChance",type="BASE",value=50}},"  Increased  "}
-c["50% Global Increased Void Damage"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=0,name="VoidDamage",type="MORE",value=50}},"  Increased  "}
+c["50% Global Increased Crit Chance"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=0,name="CritChance",type="INC",value=50}},nil}
+c["50% Global Increased Void Damage"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=50}},nil}
 c["50% Heal to Full Threshold"]={{}," Heal to Full Threshold "}
 c["50% Health And Ward Cannot Exceed Max Health Percentage"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=50}},"  And Ward Cannot Exceed Max Health Percentage "}
 c["50% Highest Increased Damage -> Falcon Damage"]={{},"50% Highest Increased Damage -> Falcon Damage"}
@@ -16443,7 +16443,7 @@ c["8% Doublecast Chance"]={{}," Doublecast Chance "}
 c["8% Falcon Strikes Kill Threshold"]={{[1]={flags=0,keywordFlags=0,name="KillThreshold",type="BASE",value=8}}," Falcon Strikes  "}
 c["8% Fire Aura Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_FireAura",type="BASE",value=8}},nil}
 c["8% Fire Resistance Per Stack"]={{[1]={flags=0,keywordFlags=0,name="FireResist",type="BASE",value=8}},"  Per Stack "}
-c["8% Global Increased Lightning Damage"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=0,name="LightningDamage",type="MORE",value=8}},"  Increased  "}
+c["8% Global Increased Lightning Damage"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=8}},nil}
 c["8% Health Gain Of Missing Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=8}},"  Gain Of Missing Health "}
 c["8% Increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=8}},nil}
 c["8% Increased Attack Speed"]={{[1]={flags=3584,keywordFlags=0,name="Speed",type="INC",value=8}},nil}
