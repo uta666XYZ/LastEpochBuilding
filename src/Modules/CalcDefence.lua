@@ -467,6 +467,14 @@ function calcs.defence(env, actor)
 	output.LifeOnBlock = modDB:Sum("BASE", nil, "LifeOnBlock")
 	output.ManaOnBlock = modDB:Sum("BASE", nil, "ManaOnBlock")
 
+	-- Gain on Kill — defensive aggregate (per-skill version is set in CalcOffence).
+	-- Items/passives provide flat "Health Gain on Kill" mods; the build defence
+	-- panel needs to surface the total so it appears in stat snapshots and matches
+	-- LETools "Health Gain on Kill" display.
+	output.LifeOnKill = modDB:Sum("BASE", nil, "LifeOnKill")
+	output.ManaOnKill = modDB:Sum("BASE", nil, "ManaOnKill")
+	output.WardOnKill = modDB:Sum("BASE", nil, "WardOnKill")
+
 	-- Gain on Potion Use / Skill Use
 	output.WardOnPotionUse = modDB:Sum("BASE", nil, "WardOnPotionUse")
 	output.ManaOnPotionUse = modDB:Sum("BASE", nil, "ManaOnPotionUse")
@@ -624,6 +632,11 @@ function calcs.defence(env, actor)
 	-- recovery on block, needs to be after primary defences
 	output.LifeOnBlock = modDB:Sum("BASE", nil, "LifeOnBlock")
 	output.ManaOnBlock = modDB:Sum("BASE", nil, "ManaOnBlock")
+
+	-- gain on kill — defensive aggregate (mirrored from primary defences pass)
+	output.LifeOnKill = modDB:Sum("BASE", nil, "LifeOnKill")
+	output.ManaOnKill = modDB:Sum("BASE", nil, "ManaOnKill")
+	output.WardOnKill = modDB:Sum("BASE", nil, "WardOnKill")
 
 	-- gain on potion use / skill use
 	output.WardOnPotionUse = modDB:Sum("BASE", nil, "WardOnPotionUse")
