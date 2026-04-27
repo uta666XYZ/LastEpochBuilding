@@ -364,6 +364,21 @@ function calcs.buildOutput(build, mode)
 		output["Spec:EvasionInc"] = env.modDB:Sum("INC", specCfg, "Evasion", "ArmourAndEvasion")
 		output["Spec:WardInc"] = env.modDB:Sum("INC", specCfg, "Ward")
 
+		-- Per-damage-type Crit Multiplier overview (player-level, no skill-specific scoping).
+		-- Sums BASE CritMultiplier mods that match each damage-type's hit flags so users
+		-- can sanity-check against LETools' per-type crit multi columns. Default base 100
+		-- mirrors LE's baseCritMulti = 2.0 (i.e. +100% bonus on crit) before player extras.
+		local critTypeFlags = {
+			Melee = ModFlag.Melee + ModFlag.Hit,
+			Spell = ModFlag.Spell + ModFlag.Hit,
+			Bow = ModFlag.Bow + ModFlag.Hit,
+			Throwing = ModFlag.Throwing + ModFlag.Hit,
+		}
+		for typeName, typeFlags in pairs(critTypeFlags) do
+			local extra = env.modDB:Sum("BASE", { flags = typeFlags }, "CritMultiplier")
+			output[typeName .. "CritMultiplier"] = round(1 + (100 + extra) / 100, 2)
+		end
+
 		env.skillsUsed = { }
 		for _, activeSkill in ipairs(env.player.activeSkillList) do
 			for _, skillEffect in ipairs(activeSkill.effectList) do
