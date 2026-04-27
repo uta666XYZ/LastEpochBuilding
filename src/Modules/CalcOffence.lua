@@ -1912,6 +1912,11 @@ function calcs.offence(env, actor, activeSkill)
 				output.CritMultiplier = 1
 			else
 				local skillBase = skillModList:Sum("BASE", cfg, "SkillBaseCritMultiplier")
+				-- LE default: every crit deals +100% extra damage. Many skills.json
+				-- entries omit base_critical_strike_multiplier_+ (e.g. Smoke Bomb,
+				-- Explosive Trap); fall back to 100 so gear/passive bonuses stack
+				-- additively on top of the default rather than replacing it.
+				if skillBase == 0 then skillBase = 100 end
 				local playerExtra = skillModList:Sum("BASE", cfg, "CritMultiplier")
 				local extraDamage = (skillBase + playerExtra) / 100
 				local multiOverride = skillModList:Override(skillCfg, "CritMultiplier")
