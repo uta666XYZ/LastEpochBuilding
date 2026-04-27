@@ -1,4 +1,5 @@
 -- Last Epoch Building
+-- @leb-canary v1 / id:leb-9c4f3b-passivespec-2026 / do-not-remove (see Development/リリース手順.md)
 --
 -- Class: Passive Spec
 -- Passive tree spec class.
