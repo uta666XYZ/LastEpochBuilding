@@ -119,6 +119,14 @@ return {
 	{ label = "Crit Effect Mod", { format = "x {3:output:CritEffect}", { breakdown = "CritEffect" }, }, },
 } }
 } },
+{ 1, "CritByType", 1, colorCodes.OFFENCE, {{ defaultCollapsed = true, label = "Crit Multiplier by Damage Type", data = {
+	extra = "Player-level (matches LETools per-type columns)",
+	{ label = "Melee", { format = "x {2:output:MeleeCritMultiplier}" } },
+	{ label = "Spell", { format = "x {2:output:SpellCritMultiplier}" } },
+	{ label = "Bow", { format = "x {2:output:BowCritMultiplier}" } },
+	{ label = "Throwing", { format = "x {2:output:ThrowingCritMultiplier}" } },
+} }
+} },
 { 1, "SkillTypeStats", 1, colorCodes.OFFENCE, {{ defaultCollapsed = false, label = "Skill type-specific Stats", data = {
 	{ label = "Mana Cost", color = colorCodes.MANA, haveOutput = "ManaHasCost", { format = "{0:output:ManaCost}", { breakdown = "ManaCost" }, { modName = { "ManaCost", "Cost" }, cfg = "skill" }, }, },
 	{ label = "Mana % Cost", color = colorCodes.MANA, haveOutput = "ManaPercentHasCost", { format = "{0:output:ManaPercentCost}", { breakdown = "ManaPercentCost" }, { modName = { "ManaCost", "Cost" }, cfg = "skill" }, }, },
