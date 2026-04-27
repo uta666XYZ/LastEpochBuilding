@@ -160,6 +160,19 @@ if modDB then
 end
 outHnd:write("    },\n")
 
+-- MovementSpeed breakdown: dump every INC/MORE mod feeding output.MovementSpeedMod
+-- so per-build LE-vs-LEB diff can attribute the gap to a specific source
+-- (item / passive / skill tree / mastery / buff).
+outHnd:write("    movementSpeedBreakdown = {\n")
+if modDB then
+    dumpModList(outHnd, "MovementSpeed", modDB.mods["MovementSpeed"])
+    local incSum = modDB:Sum("INC", nil, "MovementSpeed") or 0
+    local moreMul = modDB:More(nil, "MovementSpeed") or 1
+    outHnd:write(string.format("        [\"_summary\"] = { inc=%d, more=%.3f, final=%.3f },\n",
+        incSum, moreMul, build.calcsTab.mainOutput.MovementSpeedMod or 0))
+end
+outHnd:write("    },\n")
+
 -- Dump all mods on shield (item id 11)
 outHnd:write("    shieldMods = {\n")
 local items = build.itemsTab and build.itemsTab.items
