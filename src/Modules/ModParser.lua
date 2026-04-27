@@ -291,6 +291,7 @@ local modNameList = {
 	["critical strike chance"] = "CritChance",
 	["critical strike multiplier"] = "CritMultiplier",
 	["critical multiplier"] = "CritMultiplier",
+	["shared critical multiplier"] = "CritMultiplier",
 	["attack speed"] = { "Speed", flags = ModFlag.Attack },
 	["cast speed"] = { "Speed", flags = ModFlag.Cast },
 	["attack and cast speed"] = "Speed",
