@@ -136,6 +136,23 @@ if modDB then
 end
 outHnd:write("    },\n")
 
+outHnd:write("    lifeRegenBreakdown = {\n")
+if modDB then
+    dumpModList(outHnd, "LifeRegen", modDB.mods["LifeRegen"])
+    dumpModList(outHnd, "LifeRegenPercent", modDB.mods["LifeRegenPercent"])
+    dumpModList(outHnd, "Life", modDB.mods["Life"])
+    outHnd:write(string.format("        [\"_summary\"] = { regenBase=%.2f, regenInc=%d, regenMore=%.3f, regenPercentBase=%.2f, lifeBase=%d, lifeInc=%d, pool=%d, output=%.2f },\n",
+        modDB:Sum("BASE", nil, "LifeRegen"),
+        modDB:Sum("INC", nil, "LifeRegen"),
+        modDB:More(nil, "LifeRegen"),
+        modDB:Sum("BASE", nil, "LifeRegenPercent"),
+        modDB:Sum("BASE", nil, "Life"),
+        modDB:Sum("INC", nil, "Life"),
+        build.calcsTab.mainOutput.Life or 0,
+        build.calcsTab.mainOutput.LifeRegen or 0))
+end
+outHnd:write("    },\n")
+
 outHnd:write("    manaRegenBreakdown = {\n")
 if modDB then
     dumpModList(outHnd, "ManaRegen", modDB.mods["ManaRegen"])
@@ -150,6 +167,18 @@ if modDB then
         modDB:Sum("INC", nil, "Mana"),
         build.calcsTab.mainOutput.Mana or 0,
         build.calcsTab.mainOutput.ManaRegen or 0))
+end
+outHnd:write("    },\n")
+
+outHnd:write("    critMultBreakdown = {\n")
+if modDB then
+    dumpModList(outHnd, "CritMultiplier", modDB.mods["CritMultiplier"])
+    dumpModList(outHnd, "SkillBaseCritMultiplier", modDB.mods["SkillBaseCritMultiplier"])
+    outHnd:write(string.format("        [\"_summary\"] = { critMultBase=%d, critMultInc=%d, skillBase=%d, output=%.2f },\n",
+        modDB:Sum("BASE", nil, "CritMultiplier"),
+        modDB:Sum("INC", nil, "CritMultiplier"),
+        modDB:Sum("BASE", nil, "SkillBaseCritMultiplier"),
+        build.calcsTab.mainOutput.CritMultiplier or 0))
 end
 outHnd:write("    },\n")
 
