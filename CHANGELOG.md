@@ -4,7 +4,12 @@
 
 [Full Changelog](https://github.com/uta666XYZ/LastEpochBuilding/compare/v0.12.1...v0.13.0)
 
-### New Features
+### Notable Changes
+- **Steps (Leveling Order)** — leveling order numbers on passive and skill tree nodes, with All / Min display modes (LEB-only feature)
+- **Base class 20-point gate** — 20 points must be allocated in the base class before any subclass node can be allocated (matches in-game rule)
+- **F5 restart** — opened to all users (was previously dev-only); planned to be removed once errors become rare
+- **LETools URL direct import — deprecated**; please use build code paste or Maxroll import instead
+- **Maxroll URL direct import** — still in beta; please report issues so hotfixes can be issued promptly
 
 #### Craft UI Redesign
 - New 2-stage flow: Stage1 modal base/unique/set picker → Stage2 inline editor on ItemsTab
@@ -74,7 +79,6 @@
 - Equipped slot rows show type / primordial / corrupted icons
 - Sidebar stat labels aligned with in-game terminology
 - Config tab: tooltips for all options + Reset to Defaults button
-- WarMachine237 Easter egg
 
 ### Calculations
 - DPS integration series (#1–#10): area-level scaling, while-channelling, while-buff, +N to skill,
@@ -130,7 +134,7 @@
 - Tyrant Crown / Abyssal Echoes / Devouring Orb icons fixed
 - Bladedancer badge upgraded to 256x256
 - Primordial / Corrupted icons updated to in-game tooltip bullet sprites
-- 5 skills' base damage corrected via LETools verification
+- 5 skills' base damage corrected via reference data
 - Cinder Strike critChance and base CritMult added
 - Skill tree node positions corrected, typo fixes
 - Idol affix filter for universal idols
@@ -152,7 +156,7 @@
 - Imported items (crafted=true, no craftState) routed through preset path
 - Edit button opens craft editor for non-crafted / imported items
 - EXALTED / LEGENDARY rarities supported in OpenCraftEditorForItem
-- Idol affix value parity with LETools (applyRange round + class-specific scalar)
+- Idol affix value parity with reference data (applyRange round + class-specific scalar)
 - Crafted affixLimit raised 6 → 10 so Corrupted/Primordial slots land
 - Stale ModCache entries purged (Lightning Aegis, Leeched as Health, channelling)
 - Skill icon hex-mask in skill bar / skill grid; level badge hidden when skill unlocked
@@ -165,6 +169,19 @@
 
 ### Special Thanks
 - WarMachine237 — LEB's very first supporter
+
+#### 🏆 v0.13 Test Build MVP — u/SottoSopra666
+
+Dear u/SottoSopra666,
+
+Your build *KoraWasteTime lv91 Spellblade* almost broke my heart.
+It was pure PAIN to implement — but hey, you cooked such a complex build. Congrats.
+
+*One person, five builds — single-handedly broke the Blessing system, broke the Crit calc, and made me question every Resist value.*
+
+Thank you for making LEB stronger. 💛
+
+— the Creator
 
 ---
 
