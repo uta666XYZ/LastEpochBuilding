@@ -1258,6 +1258,114 @@ specialModList["^%+?(%d+) to (.+)$"] = function(num, _, name)
 	return { mod("SkillLevel", "BASE", num, "", 0, 0, { type = "SkillName", skillName = canonical }) }
 end
 
+-- 21b. "+N to <Cat> Minion Skills" — emits a SkillType=Minion-tagged SkillLevel BASE
+-- on the PLAYER side (not wrapped as MinionModifier) so the per-skill-point cap in
+-- CalcSetup.lua (Sum("BASE", skillCfg, "SkillLevel")) recognises the bonus for
+-- minion skills like Summon Skeleton/Skeletal Mage/Volatile Zombie. <Cat> can be
+-- "all", a damage type, a delivery type (spell/melee/throwing/bow), or an
+-- attribute (strength/dexterity/intelligence/attunement/vitality). Unknown
+-- prefixes return nil to fall through.
+local minionSkillCatFlags = {
+	["all"] = 0,
+	["spell"] = KeywordFlag.Spell,
+	["melee"] = KeywordFlag.Melee,
+	["throwing"] = KeywordFlag.Throwing,
+	["bow"] = KeywordFlag.Bow,
+	["fire"] = KeywordFlag.Fire,
+	["cold"] = KeywordFlag.Cold,
+	["lightning"] = KeywordFlag.Lightning,
+	["physical"] = KeywordFlag.Physical,
+	["necrotic"] = KeywordFlag.Necrotic,
+	["poison"] = KeywordFlag.Poison,
+	["void"] = KeywordFlag.Void,
+	["elemental"] = bor(KeywordFlag.Fire, KeywordFlag.Cold, KeywordFlag.Lightning),
+	["damage over time"] = KeywordFlag.Dot,
+	["dot"] = KeywordFlag.Dot,
+}
+local minionSkillCatAttrs = {
+	["strength"] = "Str", ["dexterity"] = "Dex", ["intelligence"] = "Int",
+	["attunement"] = "Attunement", ["vitality"] = "Vitality",
+}
+specialModList["^%+?(%d+) to (.+) minion skills$"] = function(num, _, cat)
+	cat = cat:lower()
+	local mods = {}
+	local kf = minionSkillCatFlags[cat]
+	if kf ~= nil then
+		t_insert(mods, mod("SkillLevel", "BASE", num, "", 0, kf, { type = "SkillType", skillType = SkillType.Minion }))
+	elseif minionSkillCatAttrs[cat] then
+		-- "+N to <Attribute> Minion Skills" — attribute-gated minion skill bonus.
+		-- Without a clean attribute-conditional SkillLevel tag we fall back to
+		-- the same Minion-tagged SkillLevel so the cap still tracks; refine later
+		-- if we need attribute-conditional gating.
+		t_insert(mods, mod("SkillLevel", "BASE", num, "", 0, 0, { type = "SkillType", skillType = SkillType.Minion }))
+	else
+		return nil
+	end
+	return mods
+end
+
+-- 21c. "+N to Skills" / "+N to All Skills" — global SkillLevel BASE that lifts
+-- every skill's cap. Consumed via env.modDB:Sum("BASE", skillCfg, "SkillLevel").
+specialModList["^%+?(%d+) to skills$"] = function(num)
+	return { mod("SkillLevel", "BASE", num) }
+end
+
+-- 21d. "+N to <Category> Skills" — generic dispatcher for damage-type / skill-type /
+-- attribute / DOT prefixes. Routes via a category table:
+--   * KeywordFlag set → emits SkillLevel BASE with keywordFlags filter
+--   * SkillType tag   → emits SkillLevel BASE with SkillType filter tag
+--   * attribute       → treated as global (LE scopes attribute-skills by
+--                       per-skill attribute tag, not via a player-side flag, so
+--                       cap-wise we apply it globally)
+--   * "all"           → global, no filter
+-- Unknown categories return nil so the generic chain still produces a stat mod.
+local skillCatFlags = {
+	["spell"] = KeywordFlag.Spell,
+	["melee"] = KeywordFlag.Melee,
+	["throwing"] = KeywordFlag.Throwing,
+	["bow"] = KeywordFlag.Bow,
+	["fire"] = KeywordFlag.Fire,
+	["cold"] = KeywordFlag.Cold,
+	["lightning"] = KeywordFlag.Lightning,
+	["physical"] = KeywordFlag.Physical,
+	["necrotic"] = KeywordFlag.Necrotic,
+	["poison"] = KeywordFlag.Poison,
+	["void"] = KeywordFlag.Void,
+	["elemental"] = bor(KeywordFlag.Fire, KeywordFlag.Cold, KeywordFlag.Lightning),
+	["damage over time"] = KeywordFlag.Dot,
+	["dot"] = KeywordFlag.Dot,
+}
+local skillCatTypes = {
+	["totem"] = SkillType.Totem,
+	["buff"] = SkillType.Buff,
+	["curse"] = SkillType.Curse,
+	["channelling"] = SkillType.Channelling,
+	["transform"] = SkillType.Transform,
+	["ailment"] = SkillType.Ailment,
+}
+local skillCatAttrs = {
+	["strength"] = true, ["dexterity"] = true, ["intelligence"] = true,
+	["attunement"] = true, ["vitality"] = true,
+}
+specialModList["^%+?(%d+) to (.+) skills$"] = function(num, _, cat)
+	cat = cat:lower()
+	if cat == "all" then
+		return { mod("SkillLevel", "BASE", num) }
+	end
+	local kf = skillCatFlags[cat]
+	if kf then
+		return { mod("SkillLevel", "BASE", num, "", 0, kf) }
+	end
+	local st = skillCatTypes[cat]
+	if st then
+		return { mod("SkillLevel", "BASE", num, "", 0, 0, { type = "SkillType", skillType = st }) }
+	end
+	if skillCatAttrs[cat] then
+		return { mod("SkillLevel", "BASE", num) }
+	end
+	return nil
+end
+
 -- 22. Flat charge count for a skill ("+1 Charge for Flame Ward")
 specialModList["^%+?(%d+) charges? for (.+)$"] = nsAny
 specialModList["^%+?(%d+) additional charges? for (.+)$"] = nsAny
