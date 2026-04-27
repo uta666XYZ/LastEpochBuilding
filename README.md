@@ -9,11 +9,11 @@
   </tr>
   <tr>
     <td><img src="./docs/skillTree.png" width="400"/></td>
-    <td><img src="./docs/itemWindow_v0.11.0.png" width="400"/></td>
+    <td><img src="./docs/itemsWindow_v0.13.0.png" width="400"/></td>
   </tr>
   <tr>
-    <td><img src="./docs/craftUI_Select.png" width="400"/></td>
-    <td><img src="./docs/craftUI_Edit.png" width="400"/></td>
+    <td><img src="./docs/craftUI_first_v0.13.0.png" width="400"/></td>
+    <td><img src="./docs/craftUI_second_v.0.13.0.png" width="400"/></td>
   </tr>
   <tr>
     <td><img src="./docs/importScreen_v0.11.0.png" width="400"/></td>
