@@ -1,35 +1,144 @@
-VERSION[0.13.0][2026/04/18]
+VERSION[0.13.0][2026/04/27]
 
---- New Features ---
-- Craft UI: left-right split layout with item image card browser
-- Craft UI: Card/List toggle, Add Prefix/Suffix buttons, affix count display
-- Craft UI: class/type filtering, Weaver's Will support, legacy item filter
-- Config tab: tooltips, Reset to Defaults button, new condition toggles
-- Sidebar stat labels aligned with in-game terminology
-- Runebolt Tri-Elemental average DPS display
-- Ailment Overload / Haste / Frenzy conditions linked to Config
-- Calcs tab search bar, Ward Decay breakdown
+--- Craft UI Redesign ---
+- New 2-stage flow: Stage1 modal picker + Stage2 inline editor on ItemsTab
+- All Items list: category sort, single-click edit, type/primordial/corrupted icons
+- Edit existing items (non-crafted, imported, EXALTED, LEGENDARY)
+- Cross-tier slider with tier markers, rich tooltip
+- Implicit / unique mod / set roll sliders for all rarities
+- Multi-mod affix unified to single slider + tooltip
+- Collapsible group headers in affix dropdown
+- Set info panel inline; equipped set members highlighted
+- Per-item limit for set/champion + global primordial; primordial slot locked to T8
+- Idol Altar: corrupted expands to full 20 affixes
+- Class/type filtering, Weaver's Will support, legacy item filter, Off-Hand filter
+- DPS/stat diff hover tooltip on item preview
+
+--- S4 Attributes ---
+- S4 attributes shown in sidebar
+- Attribute order Str/Dex/Int/Att/Vit; damage Fire/Cold/Lightning/Phys/Necro/Poison/Void
+- Base attribute row hidden when fully converted
+- S4 converted attribute placed in slot of replaced base attribute
+
+--- Idol Altar ---
+- Per-type multipliers, omen capacity, grid condition recognition
+- Refracted slot effect recognition; altar boost reflected in Omen DPS
+- Idol Altar support in Craft UI
+- Defiance ET per uncapped elemental resistance
+
+--- Set / Reforged ---
+- Reforged Set crafting and item set tooltip
+- Themed set bonuses + Legends Entwined wildcard set membership
+- Per-Complete-Set scaling
+- Maximum Symbols auto-detect from Paladin passives, Active Symbols multiplier
+
+--- Import ---
+- Maxroll planner: items, idols, blessings
+- Sealed/primordial/corrupted affix import
+- Quest reward auto-apply from savedQuests
+- In-app error reporting with action log and copy-to-clipboard
+
+--- Steps (Leveling Order) ---
+- Steps: leveling order numbers on passive and skill tree nodes
+- All / Min display modes
+- History bar with mastery colors, hover, expand mode
+- Auto-switch passive mastery on hover
+- Per-mastery reset dropdown
+- Isolated passive/skill history and step numbering
+
+--- Other ---
+- Calcs tab search bar
+- Ward Decay Per Second breakdown
+- Runebolt Cold/Lightning variants + Tri-Elemental average DPS
+- Holy Aura base buff + per-prefix effect scaling
+- New conditions: NearEnemy, Blocking, Channelling, Standing on Glyph,
+  Arcane Momentum, Arcane Shield, Time Rotting, StunnedEnemyRecently, Concentration
+- Corruption config option (scales enemy HP and damage)
+- Ailment Overload / Haste / Frenzy / Lightning Aegis wired to Config
+- Weapon ghost sprite by equipped item type
+- Equipped slot rows: type/primordial/corrupted icons
+- Sidebar stat labels aligned with in-game terms
+- Config tab: tooltips for all options + Reset to Defaults
+- F5 restart for all users
+- WarMachine237 Easter egg
 
 --- Calculations ---
+- DPS integration series (#1-#10): area-level, while-channelling, while-buff,
+  +N to skill, per-active/per-equipped, per-arrow/per-projectile, ailment on hit,
+  damage-taken with source, mana-spent-as-ward, compound conditionals
 - Base skill damage fixed (was 0 for all skills)
 - Corruption scaling formula implemented
 - S4 attribute PerStat bonuses fixed
-- Recently/Transformation/Conditional DamageTaken mods fixed
-- Shock stack enemy damage bonus fixed (5%/stack)
-- PoE legacy code removed
+- Recently / Transformation / Conditional DamageTaken mods fixed
+- Shock stack enemy damage bonus (5%/stack)
+- Ailment stack caps corrected (Shock=10, Doom=4, Time Rot=12)
+- Endurance Threshold systematic underestimation fixed
+- Blessing double-apply removed
+- Rusted Cleaver "Intelligence Equals Strength" implemented
+- Complete Set mechanic implemented
+- Ward Retention: S4 corruption-only conversion affixes materialise
+- Mage-76 Elixir of Knowledge interpreted as INC
+- Damage Taken From Mana Before Health
+- Stun Chance / Freeze Chance proper formulas
+- Bladedancer Evasion overcounting + CritMultiplier base fix
+- Block Chance handles +X% per Y% Endurance above Cap
+- Uncapped Endurance percent (EnduranceTotal)
+- Ward equilibrium formula corrected
+- Cooldown cap for skills with NoCooldown tree nodes
+- Capped PerStat Dodge Rating for Spellblade Illusory Combatant
+- Forge Guard / Falconer passive bonuses corrected
+- World Splitter CritMult restricted to Melee Attack
+- Average Full DPS for cycling skill groups (Runebolt Tri-Elemental)
+- 20 base class passive point requirement enforced
+- PoE legacy code removed (Impale, Spell Suppression, Guard, PvP)
+
+--- Mod Recognition ---
+- Idol altar mod recognition (skill damage, cooldown, damage-taken, refracted)
+- Catch-all recognition for remaining red-text idol mods
+- Item affix gap recognition with shadowing guards
+- "(NOT SUPPORTED IN LEB YET)" annotation
+- New patterns: "+N to <skill>", per-attribute, per N max mana, abbreviated names
 
 --- Data ---
+- 16 unique items audited and corrected (phantom mods removed)
+- Yrun's Wisdom missing mods added
+- The Last Bear's Lament Reforged T5 values corrected
+- Sentinel-89 stats; Druid mastery start stat split
+- Falconer ascendancy +12 Dexterity restored
+- Anomaly Exacerbate node gate / Heat Flux text corrected
+- Tyrant Crown / Abyssal Echoes / Devouring Orb icons fixed
+- Bladedancer badge upgraded to 256x256
+- Primordial / Corrupted icons updated
+- 5 skills' base damage corrected via LETools verification
+- Cinder Strike critChance and base CritMult added
+- Skill tree node positions / typo fixes
+- Idol affix filter for universal idols
+- Slot-dependent range overrides for ~150 affixes
 - 63 missing item images added
 - Ascendancy passive texts synced (v1.4.3)
 - Large Idol [1x3] Jagged prefix added
+- Legacy base items flagged
 
 --- Fixed ---
-- maxroll URL fragment suffix import fix
-- Mastery skills central icon hidden after allocation
-- Craft UI %mod decimal precision fix
-- Cerulean/Sanguine Runestones 6-point bonuses
-- Ward equilibrium formula corrected
-- Ailment stack caps corrected
+- base85 partial-group decode (offline code / URL import)
+- Ephemeral blessings persisted through XML save/reload
+- Auto-derive corrupted before recraft (S4 conversion affixes)
+- Apophis + Temple of Eterra quest rewards applied on import
+- Maxroll URL fragment suffix; numeric item references; 1-indexed idol coords
+- Reforged Set items recognised on import
+- Imported items routed through preset path
+- Edit button opens craft editor for non-crafted/imported items
+- EXALTED/LEGENDARY rarities supported
+- Idol affix value parity with LETools
+- Crafted affixLimit raised 6 -> 10 (Corrupted/Primordial slots)
+- Stale ModCache entries purged (Lightning Aegis, Leeched as Health, channelling)
+- Skill icon hex-mask; level badge hidden when skill unlocked
+- Channelling-skill tree node mods gated
+- Mastery skill central icon hidden after allocation
+- Craft UI %mod decimal precision auto-detected
+- Cerulean / Sanguine Runestones 6-point bonuses apply
+- Dev mode detection by .git/HEAD; works from git worktree
+- Numerous Craft UI crash / nil-guard fixes
 
 VERSION[0.12.1][2026/04/15]
 
