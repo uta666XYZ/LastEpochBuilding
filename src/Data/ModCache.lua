@@ -312,7 +312,7 @@ c[" Converts To Sword"]={{},"Converts To Sword "}
 c[" Cooldown Refreshes on Runic Invocation"]={{},"Cooldown Refreshes on Runic Invocation "}
 c[" Cooldown Reset at Maximum Charges"]={{},"Cooldown Reset at Maximum Charges "}
 c[" Cooldown Resets"]={{},"Cooldown Resets "}
-c[" Cooldown Shared with Flameward"]={{},"Cooldown Shared with Flameward "}
+c[" Cooldown Shared with Flameward"]={nil,"Cooldown with Flameward "}
 c[" Cooldown recovers on Mark consumption"]={{},"Cooldown recovers on Mark consumption "}
 c[" Counts as Traversal Skill"]={{},"Counts as Traversal Skill "}
 c[" Create Coagulated Blood Orbs"]={{},"Create Coagulated Blood Orbs "}
@@ -903,7 +903,7 @@ c[" Raptor Reduces Other Companion Cooldowns Every 8 Seconds"]={{},"Raptor Reduc
 c[" Reap Base Damage -> Cold Damage"]={{},"Reap Base Damage -> Cold Damage"}
 c[" Reap Heals Minions"]={{},"Reap Heals Minions "}
 c[" Reap Necrotic Damage per Intelligence -> Cold"]={{},"Reap Necrotic Damage per Intelligence -> Cold"}
-c[" Reap No Shared Cooldown"]={{},"Reap No Shared Cooldown "}
+c[" Reap No Shared Cooldown"]={nil,"Reap No Cooldown "}
 c[" Reaper's Blessing For Human Form"]={{},"Reaper's Blessing For Human Form "}
 c[" Recalled Blades Don't Pierce"]={{},"Recalled Blades Don't Pierce "}
 c[" Refresh Infernal Shade Duration On Cast"]={{},"Refresh Infernal Shade Duration On Cast "}
@@ -1215,19 +1215,19 @@ c["+0 Fire Resistance"]={{[1]={flags=0,keywordFlags=0,name="FireResist",type="BA
 c["+0% Critical Strike Chance for Melee Attacks per 1 Mana Cost"]={{[1]={[1]={skillName="Melee Attack",type="SkillName"},flags=0,keywordFlags=0,name="CritChance",type="BASE",value=0}},"  for s per 1 Mana Cost "}
 c["+0.1% Armor Mitigation also applies to damage over time per 10 Total Attributes"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=0.1},notSupported=true},nil}
 c["+0.1% Critical Strike Chance for Totems per Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="CritChance",type="BASE",value=0.1}},"  for Totems  "}
-c["+0.1% Critical Strike Chance per 40 Total Attributes"]={{[1]={[1]={div=40,statList={[1]="Vit",[2]="Str",[3]="Dex",[4]="Int",[5]="Att"},type="PerStat"},flags=0,keywordFlags=0,name="CritChance",type="BASE",value=0.1}},nil}
+c["+0.1% Critical Strike Chance per 40 Total Attributes"]={{[1]={[1]={div=40,statList={[1]="Str",[2]="Dex",[3]="Int",[4]="Att",[5]="Vit"},type="PerStat"},flags=0,keywordFlags=0,name="CritChance",type="BASE",value=0.1}},nil}
 c["+0.1% Health Leech"]={{[1]={flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=0.1}},nil}
-c["+0.1% Shock Chance per Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Shock",type="BASE",value=0.1}},nil}
+c["+0.1% Shock Chance per Intelligence"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Shock",type="BASE",value=0.1}},"  per Intelligence "}
 c["+0.2 Duration Extension (seconds)"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="BASE",value=0.2}},"  Extension (seconds) "}
 c["+0.2 Hail of Arrows Duration On Recurve"]={{[1]={[1]={skillName="Hail of Arrows",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="BASE",value=0.2}},"   On Recurve "}
 c["+0.2% Armor Mitigation also applies to damage over time per 10 Total Attributes"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=0.2},notSupported=true},nil}
 c["+0.2% Critical Strike Chance for Totems per Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="CritChance",type="BASE",value=0.2}},"  for Totems  "}
-c["+0.2% Critical Strike Chance per 40 Total Attributes"]={{[1]={[1]={div=40,statList={[1]="Vit",[2]="Str",[3]="Dex",[4]="Int",[5]="Att"},type="PerStat"},flags=0,keywordFlags=0,name="CritChance",type="BASE",value=0.2}},nil}
+c["+0.2% Critical Strike Chance per 40 Total Attributes"]={{[1]={[1]={div=40,statList={[1]="Str",[2]="Dex",[3]="Int",[4]="Att",[5]="Vit"},type="PerStat"},flags=0,keywordFlags=0,name="CritChance",type="BASE",value=0.2}},nil}
 c["+0.2% Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=0.2}},nil}
 c["+0.2% Double Damage Chance per Curse"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=0.2}}," Double  Chance per Curse "}
 c["+0.2% Health Leech"]={{[1]={flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=0.2}},nil}
 c["+0.2% Increases the damage you deal with melee attacks Damage for Melee Attacks per 1 Mana Cost (up to 20) - more Multiplicative with other modifiers. Also affects ailments applied by the melee attack and sub skills cast from it."]={{[1]={[1]={skillName="Melee Attack",type="SkillName"},flags=0,keywordFlags=512,name="Damage",type="MORE",value=0.2}}," Increases the  you deal with s Damage for  Attacks per 1 Mana Cost (up to 20) - more Multiplicative with other modifiers. Also affects ailments applied by the  attack and sub skills cast from it. "}
-c["+0.2% Shock Chance per Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Shock",type="BASE",value=0.2}},nil}
+c["+0.2% Shock Chance per Intelligence"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Shock",type="BASE",value=0.2}},"  per Intelligence "}
 c["+0.2% Time Rot Damage Per 1% Attack Or Cast Speed"]={{[1]={flags=0,keywordFlags=0,name="TimeRotDamage",type="MORE",value=0.2}},"  Per 1% Attack Or Cast Speed "}
 c["+0.2% Time Rot Damage Per 1% Slow Chance With Void Skills"]={{[1]={[1]={skillName="Slow",type="SkillName"},flags=0,keywordFlags=16,name="TimeRotDamage",type="MORE",value=0.2}},"  Per 1%  Chance  "}
 c["+0.25 Ward Gained Per Charge"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=0.25}},"  Gained Per Charge "}
@@ -1239,22 +1239,22 @@ c["+0.3 Arming Time (seconds)"]={{}," Arming Time (seconds) "}
 c["+0.3% Armor Mitigation also applies to damage over time per 10 Total Attributes"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=0.3},notSupported=true},nil}
 c["+0.3% Cold Damage Leech"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="MORE",value=0.3}},"  Leech "}
 c["+0.3% Critical Strike Chance for Totems per Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="CritChance",type="BASE",value=0.3}},"  for Totems  "}
-c["+0.3% Critical Strike Chance per 40 Total Attributes"]={{[1]={[1]={div=40,statList={[1]="Vit",[2]="Str",[3]="Dex",[4]="Int",[5]="Att"},type="PerStat"},flags=0,keywordFlags=0,name="CritChance",type="BASE",value=0.3}},nil}
+c["+0.3% Critical Strike Chance per 40 Total Attributes"]={{[1]={[1]={div=40,statList={[1]="Str",[2]="Dex",[3]="Int",[4]="Att",[5]="Vit"},type="PerStat"},flags=0,keywordFlags=0,name="CritChance",type="BASE",value=0.3}},nil}
 c["+0.3% Fire Damage Leech"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="MORE",value=0.3}},"  Leech "}
 c["+0.3% Increases the damage you deal with melee attacks Damage for Melee Attacks per 1 Mana Cost (up to 20) - more Multiplicative with other modifiers. Also affects ailments applied by the melee attack and sub skills cast from it."]={{[1]={[1]={skillName="Melee Attack",type="SkillName"},flags=0,keywordFlags=512,name="Damage",type="MORE",value=0.3}}," Increases the  you deal with s Damage for  Attacks per 1 Mana Cost (up to 20) - more Multiplicative with other modifiers. Also affects ailments applied by the  attack and sub skills cast from it. "}
 c["+0.3% Lightning Damage Leech"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="MORE",value=0.3}},"  Leech "}
-c["+0.3% Shock Chance per Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Shock",type="BASE",value=0.3}},nil}
+c["+0.3% Shock Chance per Intelligence"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Shock",type="BASE",value=0.3}},"  per Intelligence "}
 c["+0.4% Armor Mitigation also applies to damage over time per 10 Total Attributes"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=0.4},notSupported=true},nil}
 c["+0.4% Critical Strike Chance for Totems per Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="CritChance",type="BASE",value=0.4}},"  for Totems  "}
-c["+0.4% Critical Strike Chance per 40 Total Attributes"]={{[1]={[1]={div=40,statList={[1]="Vit",[2]="Str",[3]="Dex",[4]="Int",[5]="Att"},type="PerStat"},flags=0,keywordFlags=0,name="CritChance",type="BASE",value=0.4}},nil}
+c["+0.4% Critical Strike Chance per 40 Total Attributes"]={{[1]={[1]={div=40,statList={[1]="Str",[2]="Dex",[3]="Int",[4]="Att",[5]="Vit"},type="PerStat"},flags=0,keywordFlags=0,name="CritChance",type="BASE",value=0.4}},nil}
 c["+0.4% Frailty reduces damage dealt by 6% (multiplicative with other modifiers), lasts 4 seconds, and stacks up to 3 times. More Damage Per Stack of Frailty - more Counts stacks on the Target. Multiplicative with other modifiers."]={{[1]={[1]={skillName="Frailty",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=0.4}},"  reduces  dealt by 6% (multiplicative with other modifiers), lasts 4 seconds, and stacks up to 3 times. More Damage Per Stack of Frailty - more Counts stacks on the Target. Multiplicative with other modifiers. "}
-c["+0.4% Shock Chance per Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Shock",type="BASE",value=0.4}},nil}
+c["+0.4% Shock Chance per Intelligence"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Shock",type="BASE",value=0.4}},"  per Intelligence "}
 c["+0.4% Time Rot Damage Per 1% Time Rot Chance With Void Skills"]={{[1]={[1]={skillName="Time Rot",type="SkillName"},flags=0,keywordFlags=16,name="TimeRotDamage",type="MORE",value=0.4}},"  Per 1%  Chance  "}
 c["+0.5% Armor Mitigation also applies to damage over time per 10 Total Attributes"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=0.5},notSupported=true},nil}
 c["+0.5% Attack Speed Per 1% Block Chance"]={{[1]={[1]={div=1,stat="BlockChance",type="PerStat"},flags=3584,keywordFlags=0,name="Speed",type="BASE",value=0.5}},nil}
 c["+0.5% Critical Strike Chance for Totems per Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="CritChance",type="BASE",value=0.5}},"  for Totems  "}
-c["+0.5% Critical Strike Chance per 40 Total Attributes"]={{[1]={[1]={div=40,statList={[1]="Vit",[2]="Str",[3]="Dex",[4]="Int",[5]="Att"},type="PerStat"},flags=0,keywordFlags=0,name="CritChance",type="BASE",value=0.5}},nil}
-c["+0.5% Damage per Level of Specialised Buff Skills"]={{[1]={[1]={type="Multiplier",var="Level"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=0.5}},"   of Specialised Buff Skills "}
+c["+0.5% Critical Strike Chance per 40 Total Attributes"]={{[1]={[1]={div=40,statList={[1]="Str",[2]="Dex",[3]="Int",[4]="Att",[5]="Vit"},type="PerStat"},flags=0,keywordFlags=0,name="CritChance",type="BASE",value=0.5}},nil}
+c["+0.5% Damage per Level of Specialised Buff Skills"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=0.5}},"  per Level of Specialised Buff Skills "}
 c["+0.5% Elemental Damage per stack of Armor Shred"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="MORE",value=0.5},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="MORE",value=0.5},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="MORE",value=0.5}},"  per stack of Armor Shred "}
 c["+0.5% Fissure Health Leech"]={{[1]={flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=0.5}}," Fissure  "}
 c["+0.5% Frailty reduces damage dealt by 6% (multiplicative with other modifiers), lasts 4 seconds, and stacks up to 3 times. More Damage Per Stack of Frailty - more Counts stacks on the Target. Multiplicative with other modifiers."]={{[1]={[1]={skillName="Frailty",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=0.5}},"  reduces  dealt by 6% (multiplicative with other modifiers), lasts 4 seconds, and stacks up to 3 times. More Damage Per Stack of Frailty - more Counts stacks on the Target. Multiplicative with other modifiers. "}
@@ -1265,18 +1265,18 @@ c["+0.5% Melee Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=512,name="
 c["+0.5% Melee Fire Leech"]={{},"   Leech "}
 c["+0.5% Melee Lightning Leech"]={{},"   Leech "}
 c["+0.5% Recurve Chance Per Dex"]={{}," Recurve Chance  "}
-c["+0.5% Shock Chance per Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Shock",type="BASE",value=0.5}},nil}
+c["+0.5% Shock Chance per Intelligence"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Shock",type="BASE",value=0.5}},"  per Intelligence "}
 c["+0.5% Void Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=0,name="VoidDamageLifeLeech",type="BASE",value=0.5}},nil}
 c["+0.6% Frailty reduces damage dealt by 6% (multiplicative with other modifiers), lasts 4 seconds, and stacks up to 3 times. More Damage Per Stack of Frailty - more Counts stacks on the Target. Multiplicative with other modifiers."]={{[1]={[1]={skillName="Frailty",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=0.6}},"  reduces  dealt by 6% (multiplicative with other modifiers), lasts 4 seconds, and stacks up to 3 times. More Damage Per Stack of Frailty - more Counts stacks on the Target. Multiplicative with other modifiers. "}
 c["+0.7% Frailty reduces damage dealt by 6% (multiplicative with other modifiers), lasts 4 seconds, and stacks up to 3 times. More Damage Per Stack of Frailty - more Counts stacks on the Target. Multiplicative with other modifiers."]={{[1]={[1]={skillName="Frailty",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=0.7}},"  reduces  dealt by 6% (multiplicative with other modifiers), lasts 4 seconds, and stacks up to 3 times. More Damage Per Stack of Frailty - more Counts stacks on the Target. Multiplicative with other modifiers. "}
-c["+0.7% Shock Chance per Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Shock",type="BASE",value=0.7}},nil}
+c["+0.7% Shock Chance per Intelligence"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Shock",type="BASE",value=0.7}},"  per Intelligence "}
 c["+0.8% Adds damage to all spells. The type of damage added matches the base damage of the spell. increased Spell Damage per 1% increased Movement Speed"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="MORE",value=0.8}}," Adds  to all s. The type of damage added matches the base damage of the . increased  Damage per 1% increased Movement Speed "}
 c["+0.8% Adds to your physical, fire, cold, lightning, necrotic, void, and poison resistances. Minion All Resistances"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=63,name="PoisonResist",type="BASE",value=0.8}}}}," Adds to your , , , , , , and s.  All Resistances "}
 c["+0.8% All Resistances"]={{[1]={flags=0,keywordFlags=0,name="FireResist",type="BASE",value=0.8},[2]={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=0.8},[3]={flags=0,keywordFlags=0,name="ColdResist",type="BASE",value=0.8},[4]={flags=0,keywordFlags=0,name="PhysicalResist",type="BASE",value=0.8},[5]={flags=0,keywordFlags=0,name="PoisonResist",type="BASE",value=0.8},[6]={flags=0,keywordFlags=0,name="NecroticResist",type="BASE",value=0.8},[7]={flags=0,keywordFlags=0,name="VoidResist",type="BASE",value=0.8}},nil}
 c["+0.8% Critical Strike Chance for Totems per Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="CritChance",type="BASE",value=0.8}},"  for Totems  "}
 c["+0.8% Frailty reduces damage dealt by 6% (multiplicative with other modifiers), lasts 4 seconds, and stacks up to 3 times. More Damage Per Stack of Frailty - more Counts stacks on the Target. Multiplicative with other modifiers."]={{[1]={[1]={skillName="Frailty",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=0.8}},"  reduces  dealt by 6% (multiplicative with other modifiers), lasts 4 seconds, and stacks up to 3 times. More Damage Per Stack of Frailty - more Counts stacks on the Target. Multiplicative with other modifiers. "}
 c["+0.9% Frailty reduces damage dealt by 6% (multiplicative with other modifiers), lasts 4 seconds, and stacks up to 3 times. More Damage Per Stack of Frailty - more Counts stacks on the Target. Multiplicative with other modifiers."]={{[1]={[1]={skillName="Frailty",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=0.9}},"  reduces  dealt by 6% (multiplicative with other modifiers), lasts 4 seconds, and stacks up to 3 times. More Damage Per Stack of Frailty - more Counts stacks on the Target. Multiplicative with other modifiers. "}
-c["+0.9% Shock Chance per Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Shock",type="BASE",value=0.9}},nil}
+c["+0.9% Shock Chance per Intelligence"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Shock",type="BASE",value=0.9}},"  per Intelligence "}
 c["+1 10% chance for Additional hits on Boss or Rares"]={{}," 10% chance for Additional s on Boss or Rares "}
 c["+1 Active Duration"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="BASE",value=1}}," Active  "}
 c["+1 Additional Abyssal Echoes Casts"]={{[1]={[1]={skillName="Abyssal Echoes",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}},"  Casts "}
@@ -1286,7 +1286,7 @@ c["+1 Additional Charges"]={{}," Charges "}
 c["+1 Additional Divine Bolts"]={{}," Divine Bolts "}
 c["+1 Additional Falcon Strikes hits"]={{}," Falcon Strikes s "}
 c["+1 Additional Falcon Strikes hits on kill"]={{}," Falcon Strikes s  "}
-c["+1 Additional Health Per 2 Vitality"]={{[1]={[1]={div=2,stat="Vit",type="PerStat"},flags=0,keywordFlags=0,name="Life",type="BASE",value=1}},nil}
+c["+1 Additional Health Per 2 Vitality"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=1}},"  Per 2 Vitality "}
 c["+1 Additional Ignite Stacks Applied"]={{[1]={[1]={skillName="Ignite",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}},"  Stacks Applied "}
 c["+1 Additional Javelins"]={{[1]={[1]={skillName="Javelin",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}}," s "}
 c["+1 Additional Limit per 3 Seconds"]={{}," Limit per 3 Seconds "}
@@ -1305,10 +1305,10 @@ c["+1 Additional Targets"]={{}," Targets "}
 c["+1 Additional Targets On Spread"]={{}," Targets On Spread "}
 c["+1 Additional Traps Thrown"]={{}," Traps Thrown "}
 c["+1 Aerial Prowess Stacks on dodge"]={{}," Aerial Prowess Stacks on dodge "}
-c["+1 All Attributes"]={{[1]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=1},[2]={flags=0,keywordFlags=0,name="Str",type="BASE",value=1},[3]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=1},[4]={flags=0,keywordFlags=0,name="Int",type="BASE",value=1},[5]={flags=0,keywordFlags=0,name="Att",type="BASE",value=1}},nil}
+c["+1 All Attributes"]={{[1]={flags=0,keywordFlags=0,name="Str",type="BASE",value=1},[2]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=1},[3]={flags=0,keywordFlags=0,name="Int",type="BASE",value=1},[4]={flags=0,keywordFlags=0,name="Att",type="BASE",value=1},[5]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=1}},nil}
 c["+1 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=1}},nil}
 c["+1 Armor Per 2 Dex"]={{[1]={[1]={div=2,stat="Dex",type="PerStat"},flags=0,keywordFlags=0,name="Armour",type="BASE",value=1}},nil}
-c["+1 Armor Per Point Of Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="Armour",type="BASE",value=1}},nil}
+c["+1 Armor Per Point Of Intelligence"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=1}},"  Per Point Of Intelligence "}
 c["+1 Armor Shred Stacks"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=1}},"  Shred Stacks "}
 c["+1 Armor Shred Stacks Applied"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=1}},"  Shred Stacks Applied "}
 c["+1 Armour Shred Stacks"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=1}},"  Shred Stacks "}
@@ -1326,7 +1326,7 @@ c["+1 Block Effectiveness per 1% Total Uncapped Resistance"]={{[1]={flags=0,keyw
 c["+1 Bone Armor Duration (seconds)"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=1}}," Bone  Duration (seconds) "}
 c["+1 Bow Damage"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="BASE",value=1}},nil}
 c["+1 Bow Damage Per 3 Dex"]={{[1]={[1]={div=3,stat="Dex",type="PerStat"},flags=0,keywordFlags=2048,name="Damage",type="BASE",value=1}},nil}
-c["+1 Bow Damage per Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},flags=0,keywordFlags=2048,name="Damage",type="BASE",value=1}},nil}
+c["+1 Bow Damage per Intelligence"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="BASE",value=1}},"   per Intelligence "}
 c["+1 Bow Fire Damage Per Stack"]={{[1]={flags=0,keywordFlags=2048,name="FireDamage",type="BASE",value=1}},"   Per Stack "}
 c["+1 Bow Void Damage per Dusk Shroud when using a Black Arrow"]={{[1]={[1]={skillName="Dusk Shroud",type="SkillName"},flags=0,keywordFlags=2048,name="VoidDamage",type="BASE",value=1}},"   per  when using a Black Arrow "}
 c["+1 Cannot be Stunned by Blocked Hits"]={{}," Cannot be Stunned by Blocked s "}
@@ -1348,7 +1348,7 @@ c["+1 Chill stacks on Cursed Rares and Bosses"]={{[1]={[1]={skillName="Chill",ty
 c["+1 Chthonic Fissure Tree applies to Flame Whip"]={{[1]={[1]={skillName="Chthonic Fissure",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}},"  Tree applies to Flame Whip "}
 c["+1 Cold Melee Damage per 2 Dexterity"]={{[1]={[1]={div=2,stat="Dex",type="PerStat"},flags=0,keywordFlags=256,name="ColdDamage",type="BASE",value=1}},nil}
 c["+1 Colossus Stacks Per Hit"]={{}," Colossus Stacks Per  "}
-c["+1 Companion Spell Damage per 3 Strength"]={{[1]={[1]={div=3,stat="Str",type="PerStat"},flags=0,keywordFlags=256,name="Damage",type="BASE",value=1}}," Companion    "}
+c["+1 Companion Spell Damage per 3 Strength"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=1}}," Companion   per 3 Strength "}
 c["+1 Companion Summon Limit"]={{}," Companion Summon Limit "}
 c["+1 Cooldown (seconds)"]={{}," Cooldown (seconds) "}
 c["+1 Cooldown Duration"]={{[1]={flags=0,keywordFlags=0,name="CooldownRecovery",type="BASE",value=1}},nil}
@@ -1358,9 +1358,9 @@ c["+1 Crossbow Mercenaries"]={{}," Cross Mercenaries "}
 c["+1 Cursed Ground Duration (seconds)"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="BASE",value=1}}," Cursed Ground  (seconds) "}
 c["+1 Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="BASE",value=1}},nil}
 c["+1 Damage Per Dusk Shroud"]={{[1]={[1]={skillName="Dusk Shroud",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="BASE",value=1}},"  Per  "}
-c["+1 Damage Reflected Per Point Of Attunement"]={{[1]={[1]={stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="Damage",type="BASE",value=1}},"  Reflected  "}
+c["+1 Damage Reflected Per Point Of Attunement"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=1}},"  Reflected Per Point Of Attunement "}
 c["+1 Damage dealt to enemies facing you every 0.5 seconds per 1 Damage Reflected to Attackers"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=1}},"  dealt to enemies facing you every 0.5 seconds per 1 Damage Reflected to Attackers "}
-c["+1 Damage per 40 Block Effectiveness"]={{[1]={[1]={div=40,stat="BlockEffect",type="PerStat"},flags=0,keywordFlags=0,name="Damage",type="BASE",value=1}},nil}
+c["+1 Damage per 40 Block Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=1}},"  per 40 Block Effectiveness "}
 c["+1 Damned Stacks"]={{[1]={[1]={skillName="Damned",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}},"  Stacks "}
 c["+1 Damned Stacks Per Second"]={{[1]={[1]={skillName="Damned",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}},"  Stacks Per Second "}
 c["+1 Dark Shackle Duration (Seconds)"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="BASE",value=1}}," Dark Shackle  (Seconds) "}
@@ -1374,11 +1374,6 @@ c["+1 Drain Life casts Stygian Beams instead"]={{[1]={[1]={skillName="Drain Life
 c["+1 Duration (Seconds)"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="BASE",value=1}},"  (Seconds) "}
 c["+1 Duration (seconds)"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="BASE",value=1}},"  (seconds) "}
 c["+1 Dusk Shroud Stacks"]={{[1]={[1]={skillName="Dusk Shroud",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}},"  Stacks "}
-c["+1 Each point of attunement grants 2 mana and improves skills that rely on the innate magic inside you and your surroundings Attunement Converted to Apathy"]={{[1]={flags=0,keywordFlags=0,name="Att",type="BASE",value=1}}," Each point of  grants 2 mana and improves skills that rely on the innate magic inside you and your surroundings Attunement Converted to Apathy "}
-c["+1 Each point of dexterity adds 4 dodge rating and improves skills that rely on the skillful handling of weapons Dexterity Converted to Guile"]={{[1]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=1}}," Each point of  adds 4 dodge rating and improves skills that rely on the skillful handling of weapons Dexterity Converted to Guile "}
-c["+1 Each point of intelligence grants 2% ward retention and improves skills that rely on carefully studied magic Intelligence Converted to Madness"]={{[1]={flags=0,keywordFlags=0,name="Int",type="BASE",value=1}}," Each point of  grants 2% ward retention and improves skills that rely on carefully studied magic Intelligence Converted to Madness "}
-c["+1 Each point of strength increases armor by 4% and improves skills that rely the raw strength of you and your companions Strength Converted to Brutality"]={{[1]={flags=0,keywordFlags=0,name="Str",type="BASE",value=1}}," Each point of  increases armor by 4% and improves skills that rely the raw strength of you and your companions Strength Converted to Brutality "}
-c["+1 Each point of vitality grants 6 health and 1% poison and necrotic resistance. Vitality Converted to Rampancy"]={{[1]={[1]={skillName="Poison",type="SkillName"},flags=0,keywordFlags=32,name="Vit",type="BASE",value=1}}," Each point of  grants 6 health and 1%  and  resistance. Vitality Converted to Rampancy "}
 c["+1 Earthquake Converted To Fire"]={{[1]={[1]={skillName="Earthquake",type="SkillName"},flags=0,keywordFlags=8,name="SkillLevel",type="BASE",value=1}},"  Converted To  "}
 c["+1 Elemental Arrow consumed per bow attack"]={{},"  Arrow consumed  attack "}
 c["+1 Elemental Nova is always Tri-Elemental"]={{[1]={[1]={skillName="Elemental Nova",type="SkillName"},flags=0,keywordFlags=14,name="SkillLevel",type="BASE",value=1}},"  is always Tri- "}
@@ -1394,7 +1389,7 @@ c["+1 Extra Blades On Throw 3"]={{}," Extra Blades On Throw 3 "}
 c["+1 Extra Decoys Thrown"]={{[1]={[1]={skillName="Decoy",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}}," Extra s Thrown "}
 c["+1 Extra Projectiles"]={{[1]={flags=0,keywordFlags=0,name="ProjectileCount",type="BASE",value=1}},nil}
 c["+1 Falcon Melee Damage Buff"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="BASE",value=1}}," Falcon   Buff "}
-c["+1 Falcon Melee Damage per 4 Dexterity"]={{[1]={[1]={div=4,stat="Dex",type="PerStat"},flags=0,keywordFlags=512,name="Damage",type="BASE",value=1}}," Falcon    "}
+c["+1 Falcon Melee Damage per 4 Dexterity"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="BASE",value=1}}," Falcon   per 4 Dexterity "}
 c["+1 Falcon Throwing Damage Per 4 Dex"]={{[1]={[1]={div=4,stat="Dex",type="PerStat"},flags=0,keywordFlags=1024,name="Damage",type="BASE",value=1}}," Falcon    "}
 c["+1 Fault Lines"]={{}," Fault Lines "}
 c["+1 Fear Duration (seconds)"]={{[1]={[1]={skillName="Fear",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="BASE",value=1}},"   (seconds) "}
@@ -1414,7 +1409,7 @@ c["+1 Freeze Rate Per Int"]={{[1]={[1]={stat="Int",type="PerStat"},flags=0,keywo
 c["+1 Freeze Rate Per Level"]={{[1]={[1]={type="Multiplier",var="Level"},flags=0,keywordFlags=0,name="FreezeRate",type="BASE",value=1}},nil}
 c["+1 Freeze Rate per 1% Cold Res"]={{[1]={flags=0,keywordFlags=4,name="FreezeRate",type="BASE",value=1}},"  per 1%  Res "}
 c["+1 Freeze Rate per 10% Chill Chance"]={{[1]={[1]={skillName="Chill",type="SkillName"},flags=0,keywordFlags=0,name="FreezeRate",type="BASE",value=1}},"  per 10%  Chance "}
-c["+1 Freezing Grasp Damage per Vitality"]={{[1]={[1]={stat="Vit",type="PerStat"},flags=0,keywordFlags=0,name="Damage",type="BASE",value=1}}," Freezing Grasp   "}
+c["+1 Freezing Grasp Damage per Vitality"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=1}}," Freezing Grasp  per Vitality "}
 c["+1 Freezing Grasp Freeze Rate per Vitality"]={{[1]={[1]={stat="Vit",type="PerStat"},flags=0,keywordFlags=0,name="FreezeRate",type="BASE",value=1}}," Freezing Grasp   "}
 c["+1 Frenzy Duration (seconds)"]={{[1]={[1]={skillName="Frenzy",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="BASE",value=1}},"   (seconds) "}
 c["+1 Gain Cold Infusion when you cast a cold spell"]={{}," Gain  Infusion when you cast a   "}
@@ -1430,7 +1425,7 @@ c["+1 Global Melee Damage per Stack"]={{[1]={[1]={type="Global"},flags=0,keyword
 c["+1 Global Spell Damage on Hit"]={{[1]={[1]={type="Global"},flags=8388608,keywordFlags=256,name="Damage",type="BASE",value=1}},nil}
 c["+1 Haste Duration (seconds)"]={{[1]={[1]={skillName="Haste",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="BASE",value=1}},"   (seconds) "}
 c["+1 Heal all totems and give them 2 seconds of Damage Immunity when you use a Potion"]={{[1]={[1]={type="Condition",var="UsedPotionRecently"},flags=0,keywordFlags=0,name="Damage",type="BASE",value=1}}," Heal all totems and give them 2 seconds of  Immunity  "}
-c["+1 Health Gain On Stun Per Strength"]={{[1]={[1]={stat="Str",type="PerStat"},flags=0,keywordFlags=0,name="Life",type="BASE",value=1}},"  Gain On Stun  "}
+c["+1 Health Gain On Stun Per Strength"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=1}},"  Gain On Stun Per Strength "}
 c["+1 Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="BASE",value=1}},nil}
 c["+1 Health Regen Per 3 Attunement"]={{[1]={[1]={div=3,stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="LifeRegen",type="BASE",value=1}},nil}
 c["+1 Health Regen per Forged Weapon"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=1},notSupported=true},nil}
@@ -1442,13 +1437,13 @@ c["+1 Ignite Stacks Applied"]={{[1]={[1]={skillName="Ignite",type="SkillName"},f
 c["+1 Ignite Stacks Every 0.5 Seconds"]={{[1]={[1]={skillName="Ignite",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}},"  Stacks Every 0.5 Seconds "}
 c["+1 Increased Damage for skills used by Shadows"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=1}}," Increased  for skills used by Shadows "}
 c["+1 Increases the area of effect of skills with the Area tag and the Spell tag. Additive with other sources of increased area. Spell Mana Cost"]={{[1]={flags=0,keywordFlags=256,name="AreaOfEffect",type="BASE",value=1}}," Increases the  of skills with the Area tag and the  tag. Additive with other sources of increased area.  Mana Cost "}
-c["+1 Increases the health restored by healing skills Health per Attunement"]={{[1]={[1]={stat="Att",type="PerStat"},[2]={skillName="Healing",type="SkillName"},flags=0,keywordFlags=0,name="Life",type="BASE",value=1}}," Increases the  restored by  skills Health  "}
+c["+1 Increases the health restored by healing skills Health per Attunement"]={{[1]={[1]={skillName="Healing",type="SkillName"},flags=0,keywordFlags=0,name="Life",type="BASE",value=1}}," Increases the  restored by  skills Health per Attunement "}
 c["+1 Increases to Fire Aura Area also apply to Glyph of Dominion"]={{[1]={[1]={skillName="Glyph of Dominion",type="SkillName"},flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_FireAura",type="BASE",value=1}}," Increases  Area also apply to  "}
 c["+1 Increases your maximum mana Mana per Attunement"]={{[1]={[1]={stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="Mana",type="BASE",value=1}}," Increases your  Mana  "}
 c["+1 Intelligence"]={{[1]={flags=0,keywordFlags=0,name="Int",type="BASE",value=1}},nil}
 c["+1 Intelligence Equals Strength"]={{[1]={flags=0,keywordFlags=0,name="IntEqualsStr",type="FLAG",value=true}},nil}
 c["+1 Intelligence with a Catalyst"]={{[1]={flags=0,keywordFlags=0,name="Int",type="BASE",value=1}},"  with a Catalyst "}
-c["+1 Javelin splits on hit into 2 piercing spears plus 1 additional spear per 12 dexterity"]={{[1]={[1]={div=12,stat="Dex",type="PerStat"},[2]={skillName="Javelin",type="SkillName"},flags=8388608,keywordFlags=0,name="SkillLevel",type="BASE",value=1}},"  splits  into 2 piercing spears plus 1 additional spear  "}
+c["+1 Javelin splits on hit into 2 piercing spears plus 1 additional spear per 12 dexterity"]={{[1]={[1]={skillName="Javelin",type="SkillName"},flags=8388608,keywordFlags=0,name="Dex",type="BASE",value=1}},"  splits  into 2 piercing spears plus 1 additional spear per 12  "}
 c["+1 Lethal Mirage is a quick attack with no invulnerability"]={{[1]={[1]={skillName="Lethal Mirage",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}},"  is a quick attack with no invulnerability "}
 c["+1 Level of Minion Skills"]={{[1]={[1]={skillType=8192,type="SkillType"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}},nil}
 c["+1 Lightning Blast Additional Chains on Glyph"]={{[1]={[1]={skillName="Lightning Blast",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}},"  Additional Chains on Glyph "}
@@ -1465,13 +1460,14 @@ c["+1 Mana Cost"]={{[1]={flags=0,keywordFlags=0,name="ManaCost",type="BASE",valu
 c["+1 Mana Cost Per Charge"]={{[1]={flags=0,keywordFlags=0,name="ManaCost",type="BASE",value=1}},"  Per Charge "}
 c["+1 Mana Gain"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=1}},"  Gain "}
 c["+1 Mana Gain On Crit"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=1}},"  Gain On Crit "}
-c["+1 Mana Per Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="Mana",type="BASE",value=1}},nil}
+c["+1 Mana Gain on Kill"]={{[1]={[1]={type="Condition",var="KilledRecently"},flags=0,keywordFlags=0,name="Mana",type="BASE",value=1}},"  Gain  "}
+c["+1 Mana Per Intelligence"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=1}},"  Per Intelligence "}
 c["+1 Mana per Equipped Corrupted Idol"]={{[1]={[1]={type="Multiplier",var="EquippedCorruptedIdol"},flags=0,keywordFlags=0,name="Mana",type="BASE",value=1}},nil}
 c["+1 Max Companions at 100+ Combined Strength and Dexterity"]={{[1]={flags=0,keywordFlags=0,name="Str",type="BASE",value=1}}," Max Companions at 100+ Combined  and Dexterity "}
 c["+1 Max Fissure Triggers per Second"]={{}," Max Fissure Triggers per Second "}
 c["+1 Max Stacks"]={{}," Max Stacks "}
 c["+1 Max Traps with Explosive Trap"]={{[1]={[1]={skillName="Explosive Trap",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}}," Max Traps with  "}
-c["+1 Max Vale Spirits per 15 Attunement"]={{[1]={[1]={div=15,stat="Att",type="PerStat"},[2]={skillName="Vale Spirit",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}}," Max s  "}
+c["+1 Max Vale Spirits per 15 Attunement"]={{[1]={[1]={skillName="Vale Spirit",type="SkillName"},flags=0,keywordFlags=0,name="Att",type="BASE",value=1}}," Max s per 15  "}
 c["+1 Maximum Additional Chains"]={{}," Maximum Additional Chains "}
 c["+1 Maximum Additional Echoes"]={{}," Maximum Additional Echoes "}
 c["+1 Maximum Aspect of the Panther Stacks"]={{}," Maximum Aspect of the Panther Stacks "}
@@ -1505,9 +1501,9 @@ c["+1 Melee Cold Damage Per 5 Melee Damage"]={{[1]={flags=0,keywordFlags=512,nam
 c["+1 Melee Cold Damage per player Dexterity"]={{[1]={[1]={actor="parent",stat="Dex",type="PerStat"},flags=0,keywordFlags=512,name="ColdDamage",type="BASE",value=1}},nil}
 c["+1 Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="BASE",value=1}},nil}
 c["+1 Melee Damage Per 10 Dex With Spear"]={{[1]={[1]={div=10,stat="Dex",type="PerStat"},[2]={type="Condition",var="UsingSpear"},flags=0,keywordFlags=512,name="Damage",type="BASE",value=1}},nil}
-c["+1 Melee Damage Per 2 Attunement"]={{[1]={[1]={div=2,stat="Att",type="PerStat"},flags=0,keywordFlags=512,name="Damage",type="BASE",value=1}},nil}
-c["+1 Melee Damage Per Strength"]={{[1]={[1]={stat="Str",type="PerStat"},flags=0,keywordFlags=512,name="Damage",type="BASE",value=1}},nil}
-c["+1 Melee Damage per 2 Attunement"]={{[1]={[1]={div=2,stat="Att",type="PerStat"},flags=0,keywordFlags=512,name="Damage",type="BASE",value=1}},nil}
+c["+1 Melee Damage Per 2 Attunement"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="BASE",value=1}},"   Per 2 Attunement "}
+c["+1 Melee Damage Per Strength"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="BASE",value=1}},"   Per Strength "}
+c["+1 Melee Damage per 2 Attunement"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="BASE",value=1}},"   per 2 Attunement "}
 c["+1 Melee Damage per 30 Health Consumed"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="BASE",value=1}},"   per 30 Health Consumed "}
 c["+1 Melee Damage per 4 Spell Damage"]={{[1]={flags=0,keywordFlags=768,name="Damage",type="BASE",value=1}},"   per 4  Damage "}
 c["+1 Melee Fire Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="BASE",value=1}},nil}
@@ -1563,7 +1559,7 @@ c["+1 Sacrifice Chain Targets"]={{[1]={[1]={skillName="Sacrifice",type="SkillNam
 c["+1 Seconds of Haste when you proc both of Zeurial's Hunt's effects within 2 seconds"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=1},notSupported=true},nil}
 c["+1 Shadow Dagger Stacks"]={{}," Shadow  Stacks "}
 c["+1 Shadow Rend"]={{[1]={[1]={skillName="Shadow Rend",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}},nil}
-c["+1 Shared Spell Damage Buff"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=1}}," Shared   Buff "}
+c["+1 Shared Spell Damage Buff"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=1},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="Damage",type="BASE",value=1}}}},"   Buff "}
 c["+1 Shield Throw Base Damage Converted to Void"]={{[1]={[1]={skillName="Shield Throw",type="SkillName"},flags=0,keywordFlags=16,name="Damage",type="BASE",value=1}},"  Base  Converted to  "}
 c["+1 Shields"]={{}," Shields "}
 c["+1 Shurikens Thrown"]={{[1]={[1]={skillName="Shurikens",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}},"  Thrown "}
@@ -1580,19 +1576,19 @@ c["+1 Smite Void Spell Damage per Vitality"]={{[1]={[1]={stat="Vit",type="PerSta
 c["+1 Spark Charge to all targets around the destination when you Teleport"]={{[1]={[1]={skillName="Spark Charge",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}},"  to all targets around the destination when you Teleport "}
 c["+1 Spell Cold Damage"]={{[1]={flags=0,keywordFlags=256,name="ColdDamage",type="BASE",value=1}},nil}
 c["+1 Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=1}},nil}
-c["+1 Spell Damage Per 2 Attunement While Leaping"]={{[1]={[1]={div=2,stat="Att",type="PerStat"},flags=0,keywordFlags=256,name="Damage",type="BASE",value=1}},"    While Leaping "}
+c["+1 Spell Damage Per 2 Attunement While Leaping"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=1}},"   Per 2 Attunement While Leaping "}
 c["+1 Spell Damage Per 20% Freeze Rate Multiplier"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=1}},"   Per 20% Freeze Rate Multiplier "}
 c["+1 Spell Damage Per 3 Melee Damage"]={{[1]={flags=0,keywordFlags=768,name="Damage",type="BASE",value=1}},"   Per 3  Damage "}
 c["+1 Spell Damage per 10 Max Mana for Doom Pulse"]={{[1]={[1]={div=10,stat="Mana",type="PerStat"},[2]={skillName="Doom Pulse",type="SkillName"},flags=0,keywordFlags=256,name="Damage",type="BASE",value=1}},"    for  "}
-c["+1 Spell Damage per 2 Strength"]={{[1]={[1]={div=2,stat="Str",type="PerStat"},flags=0,keywordFlags=256,name="Damage",type="BASE",value=1}},nil}
+c["+1 Spell Damage per 2 Strength"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=1}},"   per 2 Strength "}
 c["+1 Spell Damage per 20 Max Mana"]={{[1]={[1]={div=20,stat="Mana",type="PerStat"},flags=0,keywordFlags=256,name="Damage",type="BASE",value=1}},nil}
 c["+1 Spell Damage per 20 max mana"]={{[1]={[1]={div=20,stat="Mana",type="PerStat"},flags=0,keywordFlags=256,name="Damage",type="BASE",value=1}},nil}
 c["+1 Spell Damage per 20% increased Healing Effectiveness"]={{[1]={[1]={skillName="Healing",type="SkillName"},flags=0,keywordFlags=256,name="Damage",type="BASE",value=1}},"   per 20% increased  Effectiveness "}
 c["+1 Spell Damage per 3 Melee Damage"]={{[1]={flags=0,keywordFlags=768,name="Damage",type="BASE",value=1}},"   per 3  Damage "}
 c["+1 Spell Damage per 30 Ward Consumed"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=1}},"   per 30 Ward Consumed "}
 c["+1 Spell Damage per 5% Increased Healing Effectivenes"]={{[1]={[1]={skillName="Healing",type="SkillName"},flags=0,keywordFlags=256,name="Damage",type="BASE",value=1}},"   per 5% Increased  Effectivenes "}
-c["+1 Spell Damage per Strength"]={{[1]={[1]={stat="Str",type="PerStat"},flags=0,keywordFlags=256,name="Damage",type="BASE",value=1}},nil}
-c["+1 Spell Damage per player Attunement"]={{[1]={[1]={actor="parent",stat="Att",type="PerStat"},flags=0,keywordFlags=256,name="Damage",type="BASE",value=1}},nil}
+c["+1 Spell Damage per Strength"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=1}},"   per Strength "}
+c["+1 Spell Damage per player Attunement"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=1}},"   per player Attunement "}
 c["+1 Spell Damage while using a Shield"]={{[1]={[1]={type="Condition",var="UsingShield"},flags=0,keywordFlags=256,name="Damage",type="BASE",value=1}},nil}
 c["+1 Spell Damage while weilding a Staff"]={{[1]={[1]={type="Condition",var="UsingStaff"},flags=0,keywordFlags=256,name="Damage",type="BASE",value=1}},"   while weilding a  "}
 c["+1 Spell Damage while wielding a 2 Handed Axe"]={{[1]={[1]={type="Condition",var="UsingAxe"},flags=0,keywordFlags=256,name="Damage",type="BASE",value=1}},"   while wielding a 2 Handed  "}
@@ -1628,7 +1624,7 @@ c["+1 Tolmat's Historic Minions"]={{},"lmat's Historic s "}
 c["+1 Totem Melee Damage on Hit"]={{[1]={flags=8388608,keywordFlags=512,name="Damage",type="BASE",value=1}},"tem    "}
 c["+1 Totem Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=1}},"tem   "}
 c["+1 Totem Spell Damage on Hit"]={{[1]={flags=8388608,keywordFlags=256,name="Damage",type="BASE",value=1}},"tem    "}
-c["+1 Umbral Blades per 20 Dexterity thrown with Aerial Assault's Burst of Feathers"]={{[1]={[1]={div=20,stat="Dex",type="PerStat"},[2]={skillName="Umbral Blades",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}},"   thrown with Aerial Assault's Burst of Feathers "}
+c["+1 Umbral Blades per 20 Dexterity thrown with Aerial Assault's Burst of Feathers"]={{[1]={[1]={skillName="Umbral Blades",type="SkillName"},flags=0,keywordFlags=0,name="Dex",type="BASE",value=1}},"  per 20  thrown with Aerial Assault's Burst of Feathers "}
 c["+1 Usable Duration (seconds)"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="BASE",value=1}}," Usable  (seconds) "}
 c["+1 Using a potion grants you Falsewater Fury until you run out of mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=1}}," Using a potion grants you Falsewater Fury until you run out of  "}
 c["+1 Vitality"]={{[1]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=1}},nil}
@@ -1640,7 +1636,7 @@ c["+1 Ward Decay Threshold Per 10 Max Health"]={{[1]={flags=0,keywordFlags=0,nam
 c["+1 Ward Decay Threshold Per 2% Necro Res"]={{[1]={flags=0,keywordFlags=0,name="WardDecayThreshold",type="BASE",value=1}},"  Per 2% Necro Res "}
 c["+1 Ward Gained Per 3 Int Per Second"]={{[1]={[1]={div=3,stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="Ward",type="BASE",value=1}},"  Gained  Per Second "}
 c["+1 Ward Granted"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=1}},"  Granted "}
-c["+1 Ward Granted per 25 Intelligence"]={{[1]={[1]={div=25,stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="Ward",type="BASE",value=1}},"  Granted  "}
+c["+1 Ward Granted per 25 Intelligence"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=1}},"  Granted per 25 Intelligence "}
 c["+1 Ward Per Second Per 10 Max Mana"]={{[1]={[1]={div=10,stat="Mana",type="PerStat"},flags=0,keywordFlags=0,name="WardPerSecond",type="BASE",value=1}},nil}
 c["+1 Ward Per Second Per 3 Intelligence While Channeling"]={{[1]={[1]={div=3,stat="Int",type="PerStat"},[2]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="WardPerSecond",type="BASE",value=1}},nil}
 c["+1 Ward Per Second Per 5% Uncapped Resistances"]={{[1]={flags=0,keywordFlags=0,name="WardPerSecond",type="BASE",value=1}},"  Per 5% Uncapped Resistances "}
@@ -1671,10 +1667,10 @@ c["+1 to Abyssal Echoes"]={{[1]={[1]={skillName="Abyssal Echoes",type="SkillName
 c["+1 to Acid Flask"]={{[1]={[1]={skillName="Acid Flask",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=1}},nil}
 c["+1 to Acolyte Skills"]={{[1]={flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}}," Acolyte  "}
 c["+1 to Aerial Assault"]={{[1]={[1]={skillName="Aerial Assault",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=1}},nil}
-c["+1 to All Attributes"]={{[1]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=1},[2]={flags=0,keywordFlags=0,name="Str",type="BASE",value=1},[3]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=1},[4]={flags=0,keywordFlags=0,name="Int",type="BASE",value=1},[5]={flags=0,keywordFlags=0,name="Att",type="BASE",value=1}},nil}
+c["+1 to All Attributes"]={{[1]={flags=0,keywordFlags=0,name="Str",type="BASE",value=1},[2]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=1},[3]={flags=0,keywordFlags=0,name="Int",type="BASE",value=1},[4]={flags=0,keywordFlags=0,name="Att",type="BASE",value=1},[5]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=1}},nil}
 c["+1 to All Minion Skills"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}}}}," All   "}
 c["+1 to All Skills"]={{[1]={flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}}," All  "}
-c["+1 to All Skills per Complete Set"]={{[1]={flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}}," All  per Complete Set "}
+c["+1 to All Skills per Complete Set"]={{[1]={[1]={type="Multiplier",var="CompleteSetCount"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}}," All   "}
 c["+1 to All Totem Skills"]={{[1]={flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}}," All Totem  "}
 c["+1 to Anomaly"]={{[1]={[1]={skillName="Anomaly",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=1}},nil}
 c["+1 to Arcane Ascendance"]={{[1]={[1]={skillName="Arcane Ascendance",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=1}},nil}
@@ -1742,7 +1738,7 @@ c["+1 to Javelin"]={{[1]={[1]={skillName="Javelin",type="SkillName"},flags=0,key
 c["+1 to Judgement"]={{[1]={[1]={skillName="Judgement",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=1}},nil}
 c["+1 to Lethal Mirage"]={{[1]={[1]={skillName="Lethal Mirage",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=1}},nil}
 c["+1 to Level of All Skills"]={{[1]={flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}},"  All Skills "}
-c["+1 to Level of All Skills per 120 Total Attributes"]={{[1]={[1]={div=120,statList={[1]="Vit",[2]="Str",[3]="Dex",[4]="Int",[5]="Att"},type="PerStat"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}},"  All Skills  "}
+c["+1 to Level of All Skills per 120 Total Attributes"]={{[1]={[1]={div=120,statList={[1]="Str",[2]="Dex",[3]="Int",[4]="Att",[5]="Vit"},type="PerStat"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}},"  All Skills  "}
 c["+1 to Level of Cold Melee Skills"]={{[1]={flags=0,keywordFlags=516,name="SkillLevel",type="BASE",value=1}},"    Skills "}
 c["+1 to Level of Lightning Melee Skills"]={{[1]={flags=0,keywordFlags=514,name="SkillLevel",type="BASE",value=1}},"    Skills "}
 c["+1 to Level of Minion Skills"]={{[1]={[1]={skillType=8192,type="SkillType"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}},nil}
@@ -1832,7 +1828,7 @@ c["+1 to Wandering Spirits"]={{[1]={[1]={skillName="Wandering Spirits",type="Ski
 c["+1 to Warcry"]={{[1]={[1]={skillName="Warcry",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=1}},nil}
 c["+1 to Warpath"]={{[1]={[1]={skillName="Warpath",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=1}},nil}
 c["+1 to Werebear Form"]={{[1]={[1]={skillName="Werebear Form",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=1}},nil}
-c["+1% Adds damage to all melee attacks. The type of damage added matches the base damage of the attack. Increased Melee Damage per Strength"]={{[1]={[1]={stat="Str",type="PerStat"},[2]={skillName="Melee Attack",type="SkillName"},flags=0,keywordFlags=512,name="Damage",type="MORE",value=1}}," Adds  to all s. The type of damage added matches the base damage of the attack. Increased  Damage  "}
+c["+1% Adds damage to all melee attacks. The type of damage added matches the base damage of the attack. Increased Melee Damage per Strength"]={{[1]={[1]={skillName="Melee Attack",type="SkillName"},flags=0,keywordFlags=512,name="Damage",type="MORE",value=1}}," Adds  to all s. The type of damage added matches the base damage of the attack. Increased  Damage per Strength "}
 c["+1% Ailment Damage Per 10% Increased Stun Chance"]={{[1]={flags=0,keywordFlags=0,name="AilmentDamage",type="MORE",value=1}},"  Per 10% Increased Stun Chance "}
 c["+1% Ailment Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="AilmentDamage",type="MORE",value=1}},"  Taken "}
 c["+1% All Resistances"]={{[1]={flags=0,keywordFlags=0,name="FireResist",type="BASE",value=1},[2]={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=1},[3]={flags=0,keywordFlags=0,name="ColdResist",type="BASE",value=1},[4]={flags=0,keywordFlags=0,name="PhysicalResist",type="BASE",value=1},[5]={flags=0,keywordFlags=0,name="PoisonResist",type="BASE",value=1},[6]={flags=0,keywordFlags=0,name="NecroticResist",type="BASE",value=1},[7]={flags=0,keywordFlags=0,name="VoidResist",type="BASE",value=1}},nil}
@@ -1865,18 +1861,19 @@ c["+1% Cold Penetration Per 10% Overcapped Cold Res"]={{[1]={flags=0,keywordFlag
 c["+1% Cold Penetration for Minions affected by Dread Shade per Intelligence"]={{[1]={[1]={scope="minion",type="Scope"},[2]={stat="Int",type="PerStat"},[3]={skillName="Dread Shade",type="SkillName"},flags=0,keywordFlags=0,name="ColdPenetration",type="BASE",value=1}},"   affected by   "}
 c["+1% Cooldown Recovery Speed per 6 Intelligence"]={{[1]={[1]={div=6,stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=1}},nil}
 c["+1% Crit Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="BASE",value=1}},nil}
-c["+1% Crit Chance Per 15 Intelligence"]={{[1]={[1]={div=15,stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="CritChance",type="BASE",value=1}},nil}
+c["+1% Crit Chance Per 15 Intelligence"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="BASE",value=1}},"  Per 15 Intelligence "}
 c["+1% Crit Chance Per Maelstrom"]={{[1]={[1]={skillName="Maelstrom",type="SkillName"},flags=0,keywordFlags=0,name="CritChance",type="BASE",value=1}},"  Per  "}
 c["+1% Crit Chance per 100 missing Health"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="BASE",value=1}},"  per 100 missing Health "}
 c["+1% Crit Chance per stack"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="BASE",value=1}},"  per stack "}
 c["+1% Critical Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="BASE",value=1}},nil}
 c["+1% Critical Multiplier Per 2 Strength With 2h"]={{[1]={[1]={div=2,stat="Str",type="PerStat"},flags=0,keywordFlags=0,name="CritMultiplier",type="BASE",value=1}},"   With 2h "}
-c["+1% Critical Multiplier per 40 Block Effectiveness"]={{[1]={[1]={div=40,stat="BlockEffect",type="PerStat"},flags=0,keywordFlags=0,name="CritMultiplier",type="BASE",value=1}},nil}
+c["+1% Critical Multiplier per 40 Block Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="CritMultiplier",type="BASE",value=1}},"  per 40 Block Effectiveness "}
 c["+1% Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="BASE",value=1}},nil}
 c["+1% Critical Strike Chance for Skeletal Mages"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="BASE",value=1}},"  for Skeletal Mages "}
 c["+1% Critical Strike Chance for Skeletons"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="BASE",value=1}},"  for Skeletons "}
 c["+1% Critical Strike Chance for Totems per Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="CritChance",type="BASE",value=1}},"  for Totems  "}
-c["+1% Critical Strike Chance per 40 Total Attributes"]={{[1]={[1]={div=40,statList={[1]="Vit",[2]="Str",[3]="Dex",[4]="Int",[5]="Att"},type="PerStat"},flags=0,keywordFlags=0,name="CritChance",type="BASE",value=1}},nil}
+c["+1% Critical Strike Chance for skills used by Shadows"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="BASE",value=1}},"  for skills used by Shadows "}
+c["+1% Critical Strike Chance per 40 Total Attributes"]={{[1]={[1]={div=40,statList={[1]="Str",[2]="Dex",[3]="Int",[4]="Att",[5]="Vit"},type="PerStat"},flags=0,keywordFlags=0,name="CritChance",type="BASE",value=1}},nil}
 c["+1% Critical Strike Multiplier"]={{[1]={flags=0,keywordFlags=0,name="CritMultiplier",type="BASE",value=1}},nil}
 c["+1% Critical Strike Multiplier per 1% increased Mana Regen for Doom Pulse"]={{[1]={[1]={skillName="Doom Pulse",type="SkillName"},flags=0,keywordFlags=0,name="CritMultiplier",type="BASE",value=1}},"  per 1% increased Mana Regen for  "}
 c["+1% Critical Strike Multiplier per 10 Bleeds on the target, up to 200 Bleeds"]={{[1]={[1]={skillName="Bleed",type="SkillName"},flags=0,keywordFlags=0,name="CritMultiplier",type="BASE",value=1}},"  per 10 s on the target, up to 200 Bleeds "}
@@ -1906,7 +1903,7 @@ c["+1% DoT per 20 Missing Health"]={{[1]={flags=0,keywordFlags=4096,name="Life",
 c["+1% Double Damage Chance"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=1}}," Double  Chance "}
 c["+1% Each stack of Slow reduces movement speed by 20% (10% against players) and is multiplicative with other modifiers, including other stacks of slow. Slow stacks up to 3 times and lasts 4 seconds by default. Damage to Slowed Enemies - more Multiplicative with other modifiers"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="Slowed"},[2]={skillName="Slow",type="SkillName"},flags=0,keywordFlags=0,name="MovementSpeed",type="BASE",value=1}}," Each stack of  reduces  by 20% (10% against players) and is multiplicative with other modifiers, including other stacks of slow. Slow stacks up to 3 times and lasts 4 seconds by default. Damage  - more Multiplicative with other modifiers "}
 c["+1% Echo Chance"]={{}," Echo Chance "}
-c["+1% Elemental Penetration Per 3 Intelligence"]={{[1]={[1]={div=3,stat="Int",type="PerStat"},flags=0,keywordFlags=14,name="Penetration",type="BASE",value=1}},nil}
+c["+1% Elemental Penetration Per 3 Intelligence"]={{[1]={flags=0,keywordFlags=14,name="Penetration",type="BASE",value=1}},"   Per 3 Intelligence "}
 c["+1% Elemental Penetration with Elemental Nova per 10% uncapped Total Elemental Resistance"]={{[1]={[1]={skillName="Elemental Nova",type="SkillName"},flags=0,keywordFlags=14,name="Penetration",type="BASE",value=1}},"   with  per 10% uncapped Total  Resistance "}
 c["+1% Endurance"]={{[1]={flags=0,keywordFlags=0,name="Endurance",type="BASE",value=1}},nil}
 c["+1% Explosion Hit Damage per 5% Missing Health"]={{[1]={flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=1}}," Explosi  per 5% Missing Health "}
@@ -1915,7 +1912,7 @@ c["+1% Falcon Damage per Dex"]={{[1]={[1]={stat="Dex",type="PerStat"},flags=0,ke
 c["+1% Falcon Damage per Level"]={{[1]={[1]={type="Multiplier",var="Level"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=1}}," Falcon   "}
 c["+1% Fire Aura Damage Per 1% Uncapped Fire Resistance"]={{[1]={[1]={skillName="Fire Aura",type="SkillName"},flags=0,keywordFlags=8,name="Damage",type="MORE",value=1}},"   Per 1% Uncapped  Resistance "}
 c["+1% Fire Damage Per 2 Int"]={{[1]={[1]={div=2,stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="FireDamage",type="MORE",value=1}},nil}
-c["+1% Fire Damage Per 2 Intelligence"]={{[1]={[1]={div=2,stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="FireDamage",type="MORE",value=1}},nil}
+c["+1% Fire Damage Per 2 Intelligence"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="MORE",value=1}},"  Per 2 Intelligence "}
 c["+1% Fire Damage per 10% Increased Healing Effectiveness"]={{[1]={[1]={skillName="Healing",type="SkillName"},flags=0,keywordFlags=0,name="FireDamage",type="MORE",value=1}},"  per 10% Increased  Effectiveness "}
 c["+1% Fire Hit Damage Per Ignite"]={{[1]={[1]={skillName="Ignite",type="SkillName"},flags=8388608,keywordFlags=8,name="Damage",type="MORE",value=1}},"    Per  "}
 c["+1% Fire Penetration Per 100% Increased Healing Effectiveness"]={{[1]={[1]={skillName="Healing",type="SkillName"},flags=0,keywordFlags=0,name="FirePenetration",type="BASE",value=1}},"  Per 100% Increased  Effectiveness "}
@@ -1935,10 +1932,10 @@ c["+1% Health Regen for You with Active Bear"]={{[1]={flags=0,keywordFlags=0,nam
 c["+1% Hit Damage Per Bleed"]={{[1]={[1]={skillName="Bleed",type="SkillName"},flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=1}},"   Per  "}
 c["+1% Hit Damage per Poison"]={{[1]={[1]={skillName="Poison",type="SkillName"},flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=1}},"   per  "}
 c["+1% Hit Damage per Poison, up to 30"]={{[1]={[1]={skillName="Poison",type="SkillName"},flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=1}},"   per , up to 30 "}
-c["+1% Increased Area per Dexterity"]={{[1]={[1]={stat="Dex",type="PerStat"},flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=1}},nil}
+c["+1% Increased Area per Dexterity"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=1}},"  per Dexterity "}
 c["+1% Increased Cooldown Recovery Speed of Reap"]={{[1]={flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=1}},"  of Reap "}
 c["+1% Increases the damage dealt by your critical strikes Increased Critical Strike Chance per Dexterity"]={{[1]={[1]={stat="Dex",type="PerStat"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=1}}," Increases the  dealt by your critical strikes Increased Critical Strike Chance  "}
-c["+1% Iron Blade Chance Per Attunement"]={{}," Iron Blade Chance  "}
+c["+1% Iron Blade Chance Per Attunement"]={{[1]={flags=0,keywordFlags=0,name="Att",type="BASE",value=1}}," Iron Blade Chance Per  "}
 c["+1% Leech While Not Full Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=1}}," Leech While Not Full  "}
 c["+1% Less Damage Over Time taken while using a Shield"]={{[1]={[1]={type="Condition",var="UsingShield"},flags=0,keywordFlags=0,name="DamageTakenOverTime",type="MORE",value=-1}},nil}
 c["+1% Lighting Pen Per 5% Uncapped Lighting Res"]={{}," Lighting Pen Per 5% Uncapped Lighting Res "}
@@ -1947,7 +1944,7 @@ c["+1% Lightning Damage Per 8 Max Mana"]={{[1]={[1]={div=8,stat="Mana",type="Per
 c["+1% Lightning Damage To Shocked Enemies"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="Shocked"},flags=0,keywordFlags=0,name="LightningDamage",type="MORE",value=1}},nil}
 c["+1% Lightning Damage per Shock"]={{[1]={[1]={skillName="Shock",type="SkillName"},flags=0,keywordFlags=0,name="LightningDamage",type="MORE",value=1}},"  per  "}
 c["+1% Lightning Penetration with Electrify "]={{[1]={[1]={skillName="Electrify",type="SkillName"},flags=0,keywordFlags=0,name="LightningPenetration",type="BASE",value=1}},"  with  "}
-c["+1% Mana Efficiency per player Intelligence"]={{[1]={[1]={actor="parent",stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="Mana",type="BASE",value=1}},"  Efficiency  "}
+c["+1% Mana Efficiency per player Intelligence"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=1}},"  Efficiency per player Intelligence "}
 c["+1% Maximum Health Gained As Endurance Threshold"]={{[1]={flags=0,keywordFlags=0,name="LifeAsEnduranceThreshold",type="BASE",value=1}},nil}
 c["+1% Melee Cold Penetration Per 3 Strength"]={{[1]={[1]={div=3,stat="Str",type="PerStat"},flags=0,keywordFlags=512,name="ColdPenetration",type="BASE",value=1}},nil}
 c["+1% Melee Critical Strike Chance"]={{[1]={flags=0,keywordFlags=512,name="CritChance",type="BASE",value=1}},nil}
@@ -1958,7 +1955,7 @@ c["+1% Melee Health Leech"]={{[1]={flags=0,keywordFlags=512,name="DamageLifeLeec
 c["+1% Minion Critical Multiplier per 3% Crit Avoidance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=16,name="CritMultiplier",type="BASE",value=1}}}},"   per 3% Crit Aance "}
 c["+1% Minion Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="CritChance",type="BASE",value=1}}}},nil}
 c["+1% Minion Critical Strike Chance per player Attunement"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={actor="parent",stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="CritChance",type="BASE",value=1}}}},nil}
-c["+1% More Damage per Dexterity"]={{[1]={[1]={stat="Dex",type="PerStat"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=1}},nil}
+c["+1% More Damage per Dexterity"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=1}},"  per Dexterity "}
 c["+1% Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="BASE",value=1}},nil}
 c["+1% Movespeed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=1}},nil}
 c["+1% Movespeed per 5% Ignite chance"]={{[1]={[1]={skillName="Ignite",type="SkillName"},flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=1}},"  per 5%  chance "}
@@ -1976,7 +1973,7 @@ c["+1% Physical Penetration Per 5 Strength"]={{[1]={[1]={div=5,stat="Str",type="
 c["+1% Physical Penetration With Bleed"]={{[1]={[1]={skillName="Bleed",type="SkillName"},flags=0,keywordFlags=0,name="PhysicalPenetration",type="BASE",value=1}},"  With  "}
 c["+1% Physical Res Shred Chance Per Dex"]={{[1]={[1]={stat="Dex",type="PerStat"},flags=0,keywordFlags=0,name="PhysicalResShredChance",type="BASE",value=1}},nil}
 c["+1% Physical Resistance"]={{[1]={flags=0,keywordFlags=0,name="PhysicalResist",type="BASE",value=1}},nil}
-c["+1% Placement Speed per Dexterity"]={{}," Placement Speed  "}
+c["+1% Placement Speed per Dexterity"]={{[1]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=1}}," Placement Speed per  "}
 c["+1% Poison Chance Per Second Per 2 Maximum Mana"]={{[1]={[1]={div=2,stat="Mana",type="PerStat"},flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Poison",type="BASE",value=1}},"  Per Second  "}
 c["+1% Poison Resistance Per Point Of Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="PoisonResist",type="BASE",value=1}},nil}
 c["+1% Profane Orb Frequency per 1% Cast Speed"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="BASE",value=1}}," Profane Orb Frequency per 1%  "}
@@ -1985,18 +1982,18 @@ c["+1% Runic Invocation Crit Chance per stack"]={{[1]={[1]={skillName="Runic Inv
 c["+1% Serpent Venom Damage Per Frostbite Stack"]={{[1]={[1]={skillName="Frostbite",type="SkillName"},flags=0,keywordFlags=0,name="SerpentVenomDamage",type="MORE",value=1}},"  Per  Stack "}
 c["+1% Serpent Venom Damage Per Poison"]={{[1]={[1]={skillName="Poison",type="SkillName"},flags=0,keywordFlags=0,name="SerpentVenomDamage",type="MORE",value=1}},"  Per  "}
 c["+1% Shadow Falcon Damage Per Umbral Blade"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=1}}," Shadow Falcon  Per Umbral Blade "}
-c["+1% Shared Critical Multiplier per 2 Dexterity"]={{[1]={[1]={div=2,stat="Dex",type="PerStat"},flags=0,keywordFlags=0,name="CritMultiplier",type="BASE",value=1}}," Shared   "}
-c["+1% Shock Chance per Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Shock",type="BASE",value=1}},nil}
+c["+1% Shared Critical Multiplier per 2 Dexterity"]={{[1]={[1]={div=2,stat="Dex",type="PerStat"},flags=0,keywordFlags=0,name="CritMultiplier",type="BASE",value=1},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={div=2,stat="Dex",type="PerStat"},flags=0,keywordFlags=0,name="CritMultiplier",type="BASE",value=1}}}},nil}
+c["+1% Shock Chance per Intelligence"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Shock",type="BASE",value=1}},"  per Intelligence "}
 c["+1% Throwing Crit Chance Per 5 Dexterity"]={{[1]={[1]={div=5,stat="Dex",type="PerStat"},flags=0,keywordFlags=1024,name="CritChance",type="BASE",value=1}},nil}
 c["+1% Ward Retention per 1% Increased Area"]={{[1]={flags=0,keywordFlags=0,name="WardRetention",type="BASE",value=1}},"  per 1% Increased Area "}
 c["+1% Wave of Death Leech"]={{}," Wave of Death Leech "}
 c["+1% Zombie Area per Int"]={{[1]={[1]={stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="AreaOfEffect",type="BASE",value=1}}," Zombie   "}
 c["+1% chance to gain Frenzy for 3 seconds when you Echo an ability"]={{[1]={flags=0,keywordFlags=0,name="ChanceToGainFrenzyOnEcho",type="BASE",value=1},[2]={flags=0,keywordFlags=0,name="FrenzyDuration",type="BASE",value=3},notSupported=true},nil}
-c["+1% increased Cast Speed per 2 Intelligence"]={{[1]={[1]={div=2,stat="Int",type="PerStat"},flags=256,keywordFlags=0,name="Speed",type="INC",value=1}},nil}
+c["+1% increased Cast Speed per 2 Intelligence"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",value=1}},"  per 2 Intelligence "}
 c["+1% increased Health per Equipped Huge Idol"]={{[1]={[1]={type="Multiplier",var="EquippedHugeIdol"},flags=0,keywordFlags=0,name="Life",type="INC",value=1}},nil}
-c["+1% increased Mana Regen per 100 Maximum Mana"]={{[1]={[1]={div=100,stat="Mana",type="PerStat"},flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=1}},nil}
+c["+1% increased Mana Regen per 100 Maximum Mana"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=1}},"  per 100 Maximum Mana "}
 c["+1% of Armor Mitigation also applies to damage over time per 10 Total Attributes"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=1},notSupported=true},nil}
-c["+1.4% Shock Chance per Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Shock",type="BASE",value=1.4}},nil}
+c["+1.4% Shock Chance per Intelligence"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Shock",type="BASE",value=1.4}},"  per Intelligence "}
 c["+1.5 Potion Slots"]={{}," Potion Slots "}
 c["+1.5 to Skills"]={{[1]={flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1.5}},nil}
 c["+1.5 to Summon Thorn Totem"]={{[1]={[1]={skillName="Summon Thorn Totem",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1.5}},nil}
@@ -2008,12 +2005,12 @@ c["+1.5% Health Leech"]={{[1]={flags=0,keywordFlags=0,name="DamageLifeLeech",typ
 c["+1.6% Adds damage to all spells. The type of damage added matches the base damage of the spell. increased Spell Damage per 1% increased Movement Speed"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="MORE",value=1.6}}," Adds  to all s. The type of damage added matches the base damage of the . increased  Damage per 1% increased Movement Speed "}
 c["+10 Added Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="BASE",value=10}},nil}
 c["+10 Additional Targets"]={{}," Targets "}
-c["+10 All Attributes with at least 7 Corrupted non-Idol Items equipped"]={{[1]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=10},[2]={flags=0,keywordFlags=0,name="Str",type="BASE",value=10},[3]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=10},[4]={flags=0,keywordFlags=0,name="Int",type="BASE",value=10},[5]={flags=0,keywordFlags=0,name="Att",type="BASE",value=10}},"  with at least 7 Corrupted non-Idol Items equipped "}
+c["+10 All Attributes with at least 7 Corrupted non-Idol Items equipped"]={{[1]={flags=0,keywordFlags=0,name="Str",type="BASE",value=10},[2]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=10},[3]={flags=0,keywordFlags=0,name="Int",type="BASE",value=10},[4]={flags=0,keywordFlags=0,name="Att",type="BASE",value=10},[5]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=10}},"  with at least 7 Corrupted non-Idol Items equipped "}
 c["+10 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=10}},nil}
 c["+10 Armor per Equipped Corrupted Idol"]={{[1]={[1]={type="Multiplier",var="EquippedCorruptedIdol"},flags=0,keywordFlags=0,name="Armour",type="BASE",value=10}},nil}
 c["+10 Armor per Idol in a Refracted Slot"]={{[1]={[1]={type="Multiplier",var="IdolInRefractedSlot"},flags=0,keywordFlags=0,name="Armour",type="BASE",value=10}},nil}
 c["+10 Armor per Stack of Perfection"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=10}},"  per Stack of Perfection "}
-c["+10 Armor per Strength"]={{[1]={[1]={stat="Str",type="PerStat"},flags=0,keywordFlags=0,name="Armour",type="BASE",value=10}},nil}
+c["+10 Armor per Strength"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=10}},"  per Strength "}
 c["+10 Attunement"]={{[1]={flags=0,keywordFlags=0,name="Att",type="BASE",value=10}},nil}
 c["+10 Blinded enemies cannot critically strike. Throwing Fire Damage"]={{[1]={[1]={skillName="Blind",type="SkillName"},flags=0,keywordFlags=1024,name="FireDamage",type="BASE",value=10}}," ed enemies cannot critically strike.   "}
 c["+10 Blood Spectre Mana Consumed"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=10}}," Blood Spectre  Consumed "}
@@ -2056,16 +2053,16 @@ c["+10 Melee Void Damage"]={{[1]={flags=0,keywordFlags=512,name="VoidDamage",typ
 c["+10 Minion Armor"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Armour",type="BASE",value=10}}}},nil}
 c["+10 Minion Damage Reflected"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="BASE",value=10}}}},"   Reflected "}
 c["+10 Minion Health Regen"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="LifeRegen",type="BASE",value=10}}}},nil}
-c["+10 Minion Health per player Attunement"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={actor="parent",stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="Life",type="BASE",value=10}}}},nil}
-c["+10 Minion Health per player Intelligence"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={actor="parent",stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="Life",type="BASE",value=10}}}},nil}
-c["+10 Minion Health per player Strength"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={actor="parent",stat="Str",type="PerStat"},flags=0,keywordFlags=0,name="Life",type="BASE",value=10}}}},nil}
+c["+10 Minion Health per player Attunement"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="BASE",value=10}}}},"   per player Attunement "}
+c["+10 Minion Health per player Intelligence"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="BASE",value=10}}}},"   per player Intelligence "}
+c["+10 Minion Health per player Strength"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="BASE",value=10}}}},"   per player Strength "}
 c["+10 Minion Melee Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="Damage",type="BASE",value=10}}}},nil}
 c["+10 Minion Spell Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="Damage",type="BASE",value=10}}}},nil}
 c["+10 Missing Mana Restored"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=10}}," Missing  Restored "}
 c["+10 Physical Throwing Damage while Dual Wielding"]={{[1]={[1]={type="Condition",var="DualWielding"},flags=0,keywordFlags=256,name="PhysicalDamage",type="BASE",value=10}},nil}
 c["+10 Ravaging Aura Spell Void Damage"]={{[1]={flags=0,keywordFlags=256,name="VoidDamage",type="BASE",value=10}}," Ravaging Aura   "}
 c["+10 Seconds of Frenzy granted to you and your Minions when Enemy damage leaves you at Low Health"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=10},notSupported=true},nil}
-c["+10 Shared Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=10}}," Shared  "}
+c["+10 Shared Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=10},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="BASE",value=10}}}},nil}
 c["+10 Spell Cold Damage with Runeword: Avalanche"]={{[1]={[1]={skillName="Avalanche",type="SkillName"},flags=0,keywordFlags=256,name="ColdDamage",type="BASE",value=10}},"   with Runeword:  "}
 c["+10 Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=10}},nil}
 c["+10 Spell Damage While Channelling"]={{[1]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=256,name="Damage",type="BASE",value=10}},nil}
@@ -2084,7 +2081,7 @@ c["+10 Ward Gain"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=1
 c["+10 Ward Per 2 Seconds"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=10}},"  Per 2 Seconds "}
 c["+10 Ward granted by Silver Shroud per stack"]={{[1]={[1]={skillName="Silver Shroud",type="SkillName"},flags=0,keywordFlags=0,name="Ward",type="BASE",value=10}},"  granted by  per stack "}
 c["+10 Ward per Second"]={{[1]={flags=0,keywordFlags=0,name="WardPerSecond",type="BASE",value=10}},nil}
-c["+10 to All Attributes"]={{[1]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=10},[2]={flags=0,keywordFlags=0,name="Str",type="BASE",value=10},[3]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=10},[4]={flags=0,keywordFlags=0,name="Int",type="BASE",value=10},[5]={flags=0,keywordFlags=0,name="Att",type="BASE",value=10}},nil}
+c["+10 to All Attributes"]={{[1]={flags=0,keywordFlags=0,name="Str",type="BASE",value=10},[2]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=10},[3]={flags=0,keywordFlags=0,name="Int",type="BASE",value=10},[4]={flags=0,keywordFlags=0,name="Att",type="BASE",value=10},[5]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=10}},nil}
 c["+10% Acid Flask Damage"]={{[1]={[1]={skillName="Acid Flask",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=10}},nil}
 c["+10% Active Effect Duration"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="MORE",value=10}}," Active Effect  "}
 c["+10% Adds to your base crit chance chance to cast Shurikens on Bow Crit"]={{[1]={[1]={skillName="Shurikens",type="SkillName"},flags=0,keywordFlags=2048,name="CritChance",type="BASE",value=10}}," Adds to your base  chance to cast  on  Crit "}
@@ -2162,7 +2159,7 @@ c["+10% Companion Critical Multiplier"]={{[1]={flags=0,keywordFlags=0,name="Crit
 c["+10% Cooldown"]={{}," Cooldown "}
 c["+10% Cooldown Duration"]={{[1]={flags=0,keywordFlags=0,name="CooldownRecovery",type="BASE",value=10}},nil}
 c["+10% Cooldown Recovery Speed"]={{[1]={flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=10}},nil}
-c["+10% Crit Multi While At Low Health"]={{}," Crit Multi  "}
+c["+10% Crit Multi While At Low Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=10}}," Crit Multi While At Low  "}
 c["+10% Critical Multiplier"]={{[1]={flags=0,keywordFlags=0,name="CritMultiplier",type="BASE",value=10}},nil}
 c["+10% Critical Multiplier Over 100 Charges"]={{[1]={flags=0,keywordFlags=0,name="CritMultiplier",type="BASE",value=10}},"  Over 100 Charges "}
 c["+10% Critical Multiplier With Buff"]={{[1]={flags=0,keywordFlags=0,name="CritMultiplier",type="BASE",value=10}},"  With Buff "}
@@ -2356,9 +2353,9 @@ c["+10% Roar Grants Less Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="Dama
 c["+10% Rune Ember On Kill"]={{}," Rune Ember  "}
 c["+10% Second Glyph Damage Per 1 Meter Distance"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=10}}," Second Glyph  Per 1 Meter Distance "}
 c["+10% Shadow Daggers Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_ShadowDaggers",type="BASE",value=10}},nil}
-c["+10% Shared Chill Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Chill",type="BASE",value=10}}," Shared  "}
-c["+10% Shared Cold Resistance"]={{[1]={flags=0,keywordFlags=0,name="ColdResist",type="BASE",value=10}}," Shared  "}
-c["+10% Shared Freeze Rate Multiplier"]={{[1]={flags=0,keywordFlags=0,name="FreezeRateMultiplier",type="BASE",value=10}}," Shared  "}
+c["+10% Shared Chill Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Chill",type="BASE",value=10},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Chill",type="BASE",value=10}}}},nil}
+c["+10% Shared Cold Resistance"]={{[1]={flags=0,keywordFlags=0,name="ColdResist",type="BASE",value=10},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="ColdResist",type="BASE",value=10}}}},nil}
+c["+10% Shared Freeze Rate Multiplier"]={{[1]={flags=0,keywordFlags=0,name="FreezeRateMultiplier",type="BASE",value=10},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="FreezeRateMultiplier",type="BASE",value=10}}}},nil}
 c["+10% Shock Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Shock",type="BASE",value=10}},nil}
 c["+10% Shock Chance For Lightning Melee Attacks"]={{[1]={[1]={skillName="Melee Attack",type="SkillName"},flags=8388608,keywordFlags=2,name="ChanceToTriggerOnHit_Ailment_Shock",type="BASE",value=10}},"  For  s "}
 c["+10% Shock Chance with Lightning Skills"]={{[1]={flags=8388608,keywordFlags=2,name="ChanceToTriggerOnHit_Ailment_Shock",type="BASE",value=10}},nil}
@@ -2621,7 +2618,7 @@ c["+108% Recurve Chance with Heartseeker"]={{}," Recurve Chance with  "}
 c["+1080 Block Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="BlockEffectiveness",type="BASE",value=1080}},nil}
 c["+109 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=109}},nil}
 c["+109 Ward gained when you use Shift"]={{[1]={[1]={skillName="Shift",type="SkillName"},flags=0,keywordFlags=0,name="WardGainOnUse_Shift",source="",type="BASE",value=109},notSupported=true},nil}
-c["+11 All Attributes with at least 7 Corrupted non-Idol Items equipped"]={{[1]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=11},[2]={flags=0,keywordFlags=0,name="Str",type="BASE",value=11},[3]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=11},[4]={flags=0,keywordFlags=0,name="Int",type="BASE",value=11},[5]={flags=0,keywordFlags=0,name="Att",type="BASE",value=11}},"  with at least 7 Corrupted non-Idol Items equipped "}
+c["+11 All Attributes with at least 7 Corrupted non-Idol Items equipped"]={{[1]={flags=0,keywordFlags=0,name="Str",type="BASE",value=11},[2]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=11},[3]={flags=0,keywordFlags=0,name="Int",type="BASE",value=11},[4]={flags=0,keywordFlags=0,name="Att",type="BASE",value=11},[5]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=11}},"  with at least 7 Corrupted non-Idol Items equipped "}
 c["+11 Attunement"]={{[1]={flags=0,keywordFlags=0,name="Att",type="BASE",value=11}},nil}
 c["+11 Bow Cold Damage"]={{[1]={flags=0,keywordFlags=2048,name="ColdDamage",type="BASE",value=11}},nil}
 c["+11 Cold Damage with Spells and Attacks per Attached Infernal Shade for Minions affected by Dread Shade"]={{[1]={[1]={stat="Att",type="PerStat"},[2]={scope="minion",type="Scope"},[3]={skillName="Infernal Shade",type="SkillName"},flags=0,keywordFlags=256,name="ColdDamage",type="BASE",value=11}},"  with s and Attacks ached   affected by Dread Shade "}
@@ -2643,7 +2640,7 @@ c["+11 Melee Fire Damage per Forged Weapon"]={{[1]={flags=0,keywordFlags=0,name=
 c["+11 Melee Physical Damage"]={{[1]={flags=0,keywordFlags=512,name="PhysicalDamage",type="BASE",value=11}},nil}
 c["+11 Melee Physical Damage if wielding a Mace"]={{[1]={flags=0,keywordFlags=512,name="PhysicalDamage",type="BASE",value=11}},"   if wielding a Mace "}
 c["+11 Minion Bow Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=2048,name="Damage",type="BASE",value=11}}}},nil}
-c["+11 Minion Health per player Attunement"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={actor="parent",stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="Life",type="BASE",value=11}}}},nil}
+c["+11 Minion Health per player Attunement"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="BASE",value=11}}}},"   per player Attunement "}
 c["+11 Minion Melee Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="Damage",type="BASE",value=11}}}},nil}
 c["+11 Minion Spell Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="Damage",type="BASE",value=11}}}},nil}
 c["+11 Seconds of Frenzy granted to you and your Minions when Enemy damage leaves you at Low Health"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=11},notSupported=true},nil}
@@ -2658,7 +2655,7 @@ c["+11 Vitality"]={{[1]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=11}
 c["+11 Ward Decay Threshold per Idol in a Refracted Slot"]={{[1]={[1]={type="Multiplier",var="IdolInRefractedSlot"},flags=0,keywordFlags=0,name="WardDecayThreshold",type="BASE",value=11}},nil}
 c["+11 Ward granted by Silver Shroud per stack"]={{[1]={[1]={skillName="Silver Shroud",type="SkillName"},flags=0,keywordFlags=0,name="Ward",type="BASE",value=11}},"  granted by  per stack "}
 c["+11 Ward per Second"]={{[1]={flags=0,keywordFlags=0,name="WardPerSecond",type="BASE",value=11}},nil}
-c["+11 to All Attributes"]={{[1]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=11},[2]={flags=0,keywordFlags=0,name="Str",type="BASE",value=11},[3]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=11},[4]={flags=0,keywordFlags=0,name="Int",type="BASE",value=11},[5]={flags=0,keywordFlags=0,name="Att",type="BASE",value=11}},nil}
+c["+11 to All Attributes"]={{[1]={flags=0,keywordFlags=0,name="Str",type="BASE",value=11},[2]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=11},[3]={flags=0,keywordFlags=0,name="Int",type="BASE",value=11},[4]={flags=0,keywordFlags=0,name="Att",type="BASE",value=11},[5]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=11}},nil}
 c["+11% A percentage of your damage is returned to you as health over three seconds. Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=11}}," A percentage of your  is returned to you as health over three seconds. Damage  "}
 c["+11% Added Melee Damage gained as Added Spell Damage"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=11},notSupported=true},nil}
 c["+11% All your hits have a chance to stun if they deal enough damage. Increased stun chance increases that chance. Damage to Stunned Enemies - more Multiplicative with other modifiers"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="Stunned"},flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=11}}," All your s have a chance to stun if they deal enough . Increased stun chance increases that chance. Damage  - more Multiplicative with other modifiers "}
@@ -2808,7 +2805,7 @@ c["+118 Ward per Second"]={{[1]={flags=0,keywordFlags=0,name="WardPerSecond",typ
 c["+118 Ward per Second for you or your allies while standing on your Glyph of Dominion"]={{[1]={[1]={type="Condition",var="StandingOnGlyphOfDominion"},flags=0,keywordFlags=0,name="WardPerSecond",type="BASE",value=118}},"  for you or your allies  "}
 c["+118% Chance to apply Frailty on Melee Hit"]={{[1]={flags=8389120,keywordFlags=0,name="FrailtyChance",type="BASE",value=118}},nil}
 c["+119 Dodge Rating if you have been hit recently"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=119},notSupported=true},nil}
-c["+12 All Attributes with at least 7 Corrupted non-Idol Items equipped"]={{[1]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=12},[2]={flags=0,keywordFlags=0,name="Str",type="BASE",value=12},[3]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=12},[4]={flags=0,keywordFlags=0,name="Int",type="BASE",value=12},[5]={flags=0,keywordFlags=0,name="Att",type="BASE",value=12}},"  with at least 7 Corrupted non-Idol Items equipped "}
+c["+12 All Attributes with at least 7 Corrupted non-Idol Items equipped"]={{[1]={flags=0,keywordFlags=0,name="Str",type="BASE",value=12},[2]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=12},[3]={flags=0,keywordFlags=0,name="Int",type="BASE",value=12},[4]={flags=0,keywordFlags=0,name="Att",type="BASE",value=12},[5]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=12}},"  with at least 7 Corrupted non-Idol Items equipped "}
 c["+12 Armor per Equipped Corrupted Idol"]={{[1]={[1]={type="Multiplier",var="EquippedCorruptedIdol"},flags=0,keywordFlags=0,name="Armour",type="BASE",value=12}},nil}
 c["+12 Armor per Idol in a Refracted Slot"]={{[1]={[1]={type="Multiplier",var="IdolInRefractedSlot"},flags=0,keywordFlags=0,name="Armour",type="BASE",value=12}},nil}
 c["+12 Attunement"]={{[1]={flags=0,keywordFlags=0,name="Att",type="BASE",value=12}},nil}
@@ -2841,8 +2838,8 @@ c["+12 Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="BASE",
 c["+12 Melee Necrotic Damage"]={{[1]={flags=0,keywordFlags=512,name="NecroticDamage",type="BASE",value=12}},nil}
 c["+12 Melee Physical Damage if wielding a Mace"]={{[1]={flags=0,keywordFlags=512,name="PhysicalDamage",type="BASE",value=12}},"   if wielding a Mace "}
 c["+12 Melee Physical Damage if wielding a Sword"]={{[1]={[1]={type="Condition",var="UsingSword"},flags=0,keywordFlags=512,name="PhysicalDamage",type="BASE",value=12}},"   if wielding a  "}
-c["+12 Minion Health per player Dexterity"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={actor="parent",stat="Dex",type="PerStat"},flags=0,keywordFlags=0,name="Life",type="BASE",value=12}}}},nil}
-c["+12 Minion Health per player Strength"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={actor="parent",stat="Str",type="PerStat"},flags=0,keywordFlags=0,name="Life",type="BASE",value=12}}}},nil}
+c["+12 Minion Health per player Dexterity"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="BASE",value=12}}}},"   per player Dexterity "}
+c["+12 Minion Health per player Strength"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="BASE",value=12}}}},"   per player Strength "}
 c["+12 Minion Melee Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="Damage",type="BASE",value=12}}}},nil}
 c["+12 Minion Spell Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="Damage",type="BASE",value=12}}}},nil}
 c["+12 Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="BASE",value=12}},nil}
@@ -2898,7 +2895,7 @@ c["+12% Damage Per Shuriken"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="
 c["+12% Damage Per Stack"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=12}},"  Per Stack "}
 c["+12% Damage To Cursed Enemies"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="Cursed"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=12}},nil}
 c["+12% Damage To Damned Enemies"]={{[1]={[1]={skillName="Damned",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=12}},"  To  Enemies "}
-c["+12% Damage To Poisoned Enemies"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="Poisoned"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=12}},nil}
+c["+12% Damage To Poisoned Enemies"]={{[1]={[1]={skillName="Poison",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=12}},"  To ed Enemies "}
 c["+12% Damage With Dive"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=12}},"  With Dive "}
 c["+12% Damage With Swarm Strike"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=12}},"  With Swarm Strike "}
 c["+12% Damage dealt to your health below your Endurance Threshold is reduced by your Endurance Endurance Threshold added as Ward Decay Threshold"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=12}},"  dealt to your health below your Endurance Threshold is reduced by your Endurance Endurance Threshold added as Ward Decay Threshold "}
@@ -2970,7 +2967,7 @@ c["+12% Second Combo Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="
 c["+12% Shock Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Shock",type="BASE",value=12}},nil}
 c["+12% Shurikens Frequency"]={{},"  Frequency "}
 c["+12% Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="MORE",value=12}},nil}
-c["+12% Spell Damage To Shocked Enemies"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="Shocked"},flags=0,keywordFlags=256,name="Damage",type="MORE",value=12}},nil}
+c["+12% Spell Damage To Shocked Enemies"]={{[1]={[1]={skillName="Shock",type="SkillName"},flags=0,keywordFlags=256,name="Damage",type="MORE",value=12}},"   To ed Enemies "}
 c["+12% Third Strike Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=12}}," Third Strike  "}
 c["+12% Thorn Burst Area"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="BASE",value=12}}," Thorn Burst  "}
 c["+12% Thorn Burst Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=12}}," Thorn Burst  "}
@@ -2984,7 +2981,6 @@ c["+12% Voidwinter Bolt Critical Strike Multiplier per 10% uncapped Chill Chance
 c["+12% Ward Retention with a Sceptre"]={{[1]={[1]={type="Condition",var="UsingSceptre"},flags=0,keywordFlags=0,name="WardRetention",type="BASE",value=12}},nil}
 c["+12% Width"]={{}," Width "}
 c["+12% chance to Block hits taken while Moving"]={{}," to Block s taken  "}
-c["+12% increased Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="INC",value=12}},nil}
 c["+12% increased Health per Equipped Huge Idol"]={{[1]={[1]={type="Multiplier",var="EquippedHugeIdol"},flags=0,keywordFlags=0,name="Life",type="INC",value=12}},nil}
 c["+12% increased Mana Regen per Equipped Ornate Idol"]={{[1]={[1]={type="Multiplier",var="EquippedOrnateIdol"},flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=12}},nil}
 c["+12% to All Resistances"]={{[1]={flags=0,keywordFlags=0,name="FireResist",type="BASE",value=12},[2]={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=12},[3]={flags=0,keywordFlags=0,name="ColdResist",type="BASE",value=12},[4]={flags=0,keywordFlags=0,name="PhysicalResist",type="BASE",value=12},[5]={flags=0,keywordFlags=0,name="PoisonResist",type="BASE",value=12},[6]={flags=0,keywordFlags=0,name="NecroticResist",type="BASE",value=12},[7]={flags=0,keywordFlags=0,name="VoidResist",type="BASE",value=12}},nil}
@@ -3050,7 +3046,7 @@ c["+128% Chance to apply Frostbite on Cold Hit"]={{[1]={flags=8388608,keywordFla
 c["+129 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=129}},nil}
 c["+129 Ward Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="WardOnPotionUse",type="BASE",value=129}},nil}
 c["+129% Chance to inflict Bleed on Hit"]={{[1]={flags=8388608,keywordFlags=0,name="BleedChance",type="BASE",value=129}},nil}
-c["+13 All Attributes with at least 7 Corrupted non-Idol Items equipped"]={{[1]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=13},[2]={flags=0,keywordFlags=0,name="Str",type="BASE",value=13},[3]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=13},[4]={flags=0,keywordFlags=0,name="Int",type="BASE",value=13},[5]={flags=0,keywordFlags=0,name="Att",type="BASE",value=13}},"  with at least 7 Corrupted non-Idol Items equipped "}
+c["+13 All Attributes with at least 7 Corrupted non-Idol Items equipped"]={{[1]={flags=0,keywordFlags=0,name="Str",type="BASE",value=13},[2]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=13},[3]={flags=0,keywordFlags=0,name="Int",type="BASE",value=13},[4]={flags=0,keywordFlags=0,name="Att",type="BASE",value=13},[5]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=13}},"  with at least 7 Corrupted non-Idol Items equipped "}
 c["+13 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=13}},nil}
 c["+13 Armor While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="Armour",type="BASE",value=13}},nil}
 c["+13 Attunement"]={{[1]={flags=0,keywordFlags=0,name="Att",type="BASE",value=13}},nil}
@@ -3089,7 +3085,7 @@ c["+13 Spell Void Damage"]={{[1]={flags=0,keywordFlags=256,name="VoidDamage",typ
 c["+13 Strength"]={{[1]={flags=0,keywordFlags=0,name="Str",type="BASE",value=13}},nil}
 c["+13 Throwing Damage"]={{[1]={flags=0,keywordFlags=1024,name="Damage",type="BASE",value=13}},nil}
 c["+13 Ward per Second"]={{[1]={flags=0,keywordFlags=0,name="WardPerSecond",type="BASE",value=13}},nil}
-c["+13 to All Attributes"]={{[1]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=13},[2]={flags=0,keywordFlags=0,name="Str",type="BASE",value=13},[3]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=13},[4]={flags=0,keywordFlags=0,name="Int",type="BASE",value=13},[5]={flags=0,keywordFlags=0,name="Att",type="BASE",value=13}},nil}
+c["+13 to All Attributes"]={{[1]={flags=0,keywordFlags=0,name="Str",type="BASE",value=13},[2]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=13},[3]={flags=0,keywordFlags=0,name="Int",type="BASE",value=13},[4]={flags=0,keywordFlags=0,name="Att",type="BASE",value=13},[5]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=13}},nil}
 c["+13% A percentage of your damage is returned to you as health over three seconds. Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=13}}," A percentage of your  is returned to you as health over three seconds. Damage  "}
 c["+13% Added Melee Damage gained as Added Spell Damage"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=13},notSupported=true},nil}
 c["+13% Adds damage to all throwing attacks. The type of damage added matches the base damage of the attack. Chance to Shred Armor on Throwing Hit"]={{[1]={[1]={skillName="Shred Armor",type="SkillName"},flags=8388608,keywordFlags=1024,name="Damage",type="MORE",value=13}}," Adds  to all  attacks. The type of damage added matches the base damage of the attack. Chance to  on   "}
@@ -3192,11 +3188,11 @@ c["+135% Necrotic Resistance"]={{[1]={flags=0,keywordFlags=0,name="NecroticResis
 c["+135% Physical Resistance"]={{[1]={flags=0,keywordFlags=0,name="PhysicalResist",type="BASE",value=135}},nil}
 c["+135% Poison Resistance"]={{[1]={flags=0,keywordFlags=0,name="PoisonResist",type="BASE",value=135}},nil}
 c["+135% Void Resistance"]={{[1]={flags=0,keywordFlags=0,name="VoidResist",type="BASE",value=135}},nil}
+c["+135% increased Minion Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=135}}}},nil}
 c["+1350 Stun Avoidance"]={{[1]={flags=0,keywordFlags=0,name="StunAvoidance",type="BASE",value=1350}},nil}
 c["+136 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=136}},nil}
 c["+136 Armor per Rah Rune"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=136}},"  per Rah Rune "}
 c["+136 Ward gained when you use Shift"]={{[1]={[1]={skillName="Shift",type="SkillName"},flags=0,keywordFlags=0,name="WardGainOnUse_Shift",source="",type="BASE",value=136},notSupported=true},nil}
-c["+136% increased Minion Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=136}}}},nil}
 c["+137 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=137}},nil}
 c["+137 Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=137}},nil}
 c["+137 Ward Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="WardOnPotionUse",type="BASE",value=137}},nil}
@@ -3204,13 +3200,13 @@ c["+138 Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="BASE",
 c["+138 Dodge Rating while using Evade"]={{[1]={[1]={type="Condition",var="UsingEvade"},flags=0,keywordFlags=0,name="Evasion",type="BASE",value=138}},nil}
 c["+138 Endurance Threshold"]={{[1]={flags=0,keywordFlags=0,name="EnduranceThreshold",type="BASE",value=138}},nil}
 c["+138% Chance to Shred Armor on Hit"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_ArmourShred",type="BASE",value=138}},nil}
-c["+14 Added Health for Bees per Attunement"]={{[1]={[1]={stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="Life",type="BASE",value=14}},"  for Bees  "}
-c["+14 All Attributes with at least 7 Corrupted non-Idol Items equipped"]={{[1]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=14},[2]={flags=0,keywordFlags=0,name="Str",type="BASE",value=14},[3]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=14},[4]={flags=0,keywordFlags=0,name="Int",type="BASE",value=14},[5]={flags=0,keywordFlags=0,name="Att",type="BASE",value=14}},"  with at least 7 Corrupted non-Idol Items equipped "}
+c["+14 Added Health for Bees per Attunement"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=14}},"  for Bees per Attunement "}
+c["+14 All Attributes with at least 7 Corrupted non-Idol Items equipped"]={{[1]={flags=0,keywordFlags=0,name="Str",type="BASE",value=14},[2]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=14},[3]={flags=0,keywordFlags=0,name="Int",type="BASE",value=14},[4]={flags=0,keywordFlags=0,name="Att",type="BASE",value=14},[5]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=14}},"  with at least 7 Corrupted non-Idol Items equipped "}
 c["+14 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=14}},nil}
 c["+14 Attunement"]={{[1]={flags=0,keywordFlags=0,name="Att",type="BASE",value=14}},nil}
 c["+14 Bow Cold Damage"]={{[1]={flags=0,keywordFlags=2048,name="ColdDamage",type="BASE",value=14}},nil}
 c["+14 Channel Cost"]={{[1]={flags=0,keywordFlags=0,name="ChannelCost",type="BASE",value=14}},nil}
-c["+14 Cinder Strike Melee Damage per Level of Falconry While Unarmed"]={{[1]={[1]={type="Multiplier",var="Level"},[2]={type="Condition",var="Unarmed"},[3]={skillName="Cinder Strike",type="SkillName"},flags=0,keywordFlags=512,name="Damage",type="BASE",value=14}},"     of Falconry  "}
+c["+14 Cinder Strike Melee Damage per Level of Falconry While Unarmed"]={{[1]={[1]={type="Condition",var="Unarmed"},[2]={skillName="Cinder Strike",type="SkillName"},flags=0,keywordFlags=512,name="Damage",type="BASE",value=14}},"    per Level of Falconry  "}
 c["+14 Cold Damage with Spells and Attacks per Attached Infernal Shade for Minions affected by Dread Shade"]={{[1]={[1]={stat="Att",type="PerStat"},[2]={scope="minion",type="Scope"},[3]={skillName="Infernal Shade",type="SkillName"},flags=0,keywordFlags=256,name="ColdDamage",type="BASE",value=14}},"  with s and Attacks ached   affected by Dread Shade "}
 c["+14 Dexterity"]={{[1]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=14}},nil}
 c["+14 Each point of intelligence grants 2% ward retention and improves skills that rely on carefully studied magic Ward per Second"]={{[1]={flags=0,keywordFlags=0,name="Int",type="BASE",value=14}}," Each point of  grants 2% ward retention and improves skills that rely on carefully studied magic Ward per Second "}
@@ -3262,8 +3258,8 @@ c["+14% Cold Penetration"]={{[1]={flags=0,keywordFlags=0,name="ColdPenetration",
 c["+14% Cold Penetration with Cold Invocations"]={{[1]={flags=0,keywordFlags=4,name="ColdPenetration",type="BASE",value=14}},"  with  Invocations "}
 c["+14% Cold Resistance"]={{[1]={flags=0,keywordFlags=0,name="ColdResist",type="BASE",value=14}},nil}
 c["+14% Cold Spell Cast Speed"]={{[1]={flags=256,keywordFlags=260,name="Speed",type="BASE",value=14}},nil}
-c["+14% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cooldown is shared with sources of the exact same effect. Cold Damage"]={{[1]={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=4,name="Mana",type="BASE",value=14}}," Consumes  equal to 80% of 's mana cost. Cooldown is shared with sources of the exact same effect.  Damage "}
-c["+14% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cooldown is shared with sources of the exact same effect. Fire Damage"]={{[1]={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=8,name="Mana",type="BASE",value=14}}," Consumes  equal to 80% of 's mana cost. Cooldown is shared with sources of the exact same effect.  Damage "}
+c["+14% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cooldown is shared with sources of the exact same effect. Cold Damage"]={{[1]={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=4,name="Mana",type="BASE",value=14},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=4,name="Mana",type="BASE",value=14}}}}," Consumes  equal to 80% of 's mana cost. Cooldown is with sources of the exact same effect.  Damage "}
+c["+14% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cooldown is shared with sources of the exact same effect. Fire Damage"]={{[1]={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=8,name="Mana",type="BASE",value=14},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=8,name="Mana",type="BASE",value=14}}}}," Consumes  equal to 80% of 's mana cost. Cooldown is with sources of the exact same effect.  Damage "}
 c["+14% Critical Strike Avoidance"]={{[1]={flags=0,keywordFlags=0,name="CritAvoidance",type="BASE",value=14}},nil}
 c["+14% Critical Strike Chance for skills used by Shadows"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="BASE",value=14}},"  for skills used by Shadows "}
 c["+14% Critical Strike Chance with Rampage"]={{[1]={[1]={skillName="Rampage",type="SkillName"},flags=0,keywordFlags=0,name="CritChance",type="BASE",value=14}},"  with  "}
@@ -3312,6 +3308,7 @@ c["+14% Throwing Attack Speed"]={{[1]={flags=3584,keywordFlags=1024,name="Speed"
 c["+14% Void Penetration"]={{[1]={flags=0,keywordFlags=0,name="VoidPenetration",type="BASE",value=14}},nil}
 c["+14% Void Resistance"]={{[1]={flags=0,keywordFlags=0,name="VoidResist",type="BASE",value=14}},nil}
 c["+14% Ward Retention"]={{[1]={flags=0,keywordFlags=0,name="WardRetention",type="BASE",value=14}},nil}
+c["+14% increased Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=512,name="Speed",type="INC",value=14}},nil}
 c["+140 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=140}},nil}
 c["+140 Dodge Rating if you have been hit recently"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=140},notSupported=true},nil}
 c["+140 Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="BASE",value=140}},nil}
@@ -3379,8 +3376,8 @@ c["+15 Melee Fire Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",typ
 c["+15 Melee Physical Damage if wielding a Mace"]={{[1]={flags=0,keywordFlags=512,name="PhysicalDamage",type="BASE",value=15}},"   if wielding a Mace "}
 c["+15 Melee Physical Damage if wielding a Sword"]={{[1]={[1]={type="Condition",var="UsingSword"},flags=0,keywordFlags=512,name="PhysicalDamage",type="BASE",value=15}},"   if wielding a  "}
 c["+15 Minion Bow Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=2048,name="Damage",type="BASE",value=15}}}},nil}
-c["+15 Minion Health per player Intelligence"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={actor="parent",stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="Life",type="BASE",value=15}}}},nil}
-c["+15 Minion Health per player Strength"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={actor="parent",stat="Str",type="PerStat"},flags=0,keywordFlags=0,name="Life",type="BASE",value=15}}}},nil}
+c["+15 Minion Health per player Intelligence"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="BASE",value=15}}}},"   per player Intelligence "}
+c["+15 Minion Health per player Strength"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="BASE",value=15}}}},"   per player Strength "}
 c["+15 Minion Melee Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="Damage",type="BASE",value=15}}}},nil}
 c["+15 Minion Spell Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="Damage",type="BASE",value=15}}}},nil}
 c["+15 Spell Damage While Channelling"]={{[1]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=256,name="Damage",type="BASE",value=15}},nil}
@@ -3403,7 +3400,7 @@ c["+15 Ward gained when you use Evade"]={{[1]={flags=0,keywordFlags=0,name="LEB_
 c["+15 Ward per Second"]={{[1]={flags=0,keywordFlags=0,name="WardPerSecond",type="BASE",value=15}},nil}
 c["+15 Ward per Second per Gon Rune"]={{[1]={flags=0,keywordFlags=0,name="WardPerSecond",type="BASE",value=15}},"  per Gon Rune "}
 c["+15 melee physical damage"]={{[1]={flags=0,keywordFlags=512,name="PhysicalDamage",type="BASE",value=15}},nil}
-c["+15 to All Attributes"]={{[1]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=15},[2]={flags=0,keywordFlags=0,name="Str",type="BASE",value=15},[3]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=15},[4]={flags=0,keywordFlags=0,name="Int",type="BASE",value=15},[5]={flags=0,keywordFlags=0,name="Att",type="BASE",value=15}},nil}
+c["+15 to All Attributes"]={{[1]={flags=0,keywordFlags=0,name="Str",type="BASE",value=15},[2]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=15},[3]={flags=0,keywordFlags=0,name="Int",type="BASE",value=15},[4]={flags=0,keywordFlags=0,name="Att",type="BASE",value=15},[5]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=15}},nil}
 c["+15% A percentage of your damage is returned to you as health over three seconds. Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=15}}," A percentage of your  is returned to you as health over three seconds. Damage  "}
 c["+15% Added Melee Damage gained as Added Spell Damage"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=15},notSupported=true},nil}
 c["+15% Adds to your fire, cold, and lightning resistances. Necrotic Resistance"]={{[1]={flags=0,keywordFlags=44,name="LightningResist",type="BASE",value=15}}," Adds to your , , and s.  Resistance "}
@@ -3664,7 +3661,6 @@ c["+15% Warrior Maximum Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type=
 c["+15% Wave Range"]={{}," Wave Range "}
 c["+15% Width"]={{}," Width "}
 c["+15% chance to throw a Burning Dagger when you use a melee fire attack and hit at least one enemy, doubled for Dancing Strikes (up to 4 times per second)"]={{}," to throw a  when you use a   attack and  at least one enemy, doubled for Dancing Strikes (up to 4 times per second) "}
-c["+15% increased Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=512,name="Speed",type="INC",value=15}},nil}
 c["+15% to All Resistances While Channelling"]={{[1]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="FireResist",type="BASE",value=15},[2]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=15},[3]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="ColdResist",type="BASE",value=15},[4]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="PhysicalResist",type="BASE",value=15},[5]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="PoisonResist",type="BASE",value=15},[6]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="NecroticResist",type="BASE",value=15},[7]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="VoidResist",type="BASE",value=15}},nil}
 c["+15.5 Mana per Idol in a Refracted Slot"]={{[1]={[1]={type="Multiplier",var="IdolInRefractedSlot"},flags=0,keywordFlags=0,name="Mana",type="BASE",value=15.5}},nil}
 c["+150 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=150}},nil}
@@ -3807,6 +3803,7 @@ c["+16% Reduces all physical damage you take. Capped at 75%. Void Resistance"]={
 c["+16% Shockwave Chance"]={{}," wave Chance "}
 c["+16% Snap Freeze Area per Ice Spiral"]={{[1]={[1]={skillName="Snap Freeze",type="SkillName"},flags=0,keywordFlags=0,name="AreaOfEffect",type="BASE",value=16}},"   per Ice Spiral "}
 c["+16% Throwing Damage"]={{[1]={flags=0,keywordFlags=1024,name="Damage",type="MORE",value=16}},nil}
+c["+16% increased Mana Regen per Equipped Ornate Idol"]={{[1]={[1]={type="Multiplier",var="EquippedOrnateIdol"},flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=16}},nil}
 c["+160 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=160}},nil}
 c["+160 Armor per Idol in a Refracted Slot"]={{[1]={[1]={type="Multiplier",var="IdolInRefractedSlot"},flags=0,keywordFlags=0,name="Armour",type="BASE",value=160}},nil}
 c["+160 Block Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="BlockEffectiveness",type="BASE",value=160}},nil}
@@ -3928,7 +3925,6 @@ c["+17% Runeword Buff Duration"]={{[1]={flags=0,keywordFlags=0,name="Duration",t
 c["+17% Speed and Range"]={{}," Speed and Range "}
 c["+17% Void Penetration"]={{[1]={flags=0,keywordFlags=0,name="VoidPenetration",type="BASE",value=17}},nil}
 c["+17% Void Spell Mana Efficiency"]={{[1]={flags=0,keywordFlags=272,name="Mana",type="BASE",value=17}},"    Efficiency "}
-c["+17% increased Mana Regen per Equipped Ornate Idol"]={{[1]={[1]={type="Multiplier",var="EquippedOrnateIdol"},flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=17}},nil}
 c["+17% to All Resistances"]={{[1]={flags=0,keywordFlags=0,name="FireResist",type="BASE",value=17},[2]={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=17},[3]={flags=0,keywordFlags=0,name="ColdResist",type="BASE",value=17},[4]={flags=0,keywordFlags=0,name="PhysicalResist",type="BASE",value=17},[5]={flags=0,keywordFlags=0,name="PoisonResist",type="BASE",value=17},[6]={flags=0,keywordFlags=0,name="NecroticResist",type="BASE",value=17},[7]={flags=0,keywordFlags=0,name="VoidResist",type="BASE",value=17}},nil}
 c["+170 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=170}},nil}
 c["+170 Dodge Rating per Heo Rune"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="BASE",value=170}},"  per Heo Rune "}
@@ -3993,7 +3989,7 @@ c["+18 Ward Decay Threshold per Idol in a Refracted Slot"]={{[1]={[1]={type="Mul
 c["+18 Ward gained when you use Shift"]={{[1]={[1]={skillName="Shift",type="SkillName"},flags=0,keywordFlags=0,name="WardGainOnUse_Shift",source="",type="BASE",value=18},notSupported=true},nil}
 c["+18 Ward granted by Silver Shroud per stack"]={{[1]={[1]={skillName="Silver Shroud",type="SkillName"},flags=0,keywordFlags=0,name="Ward",type="BASE",value=18}},"  granted by  per stack "}
 c["+18 Ward per Second"]={{[1]={flags=0,keywordFlags=0,name="WardPerSecond",type="BASE",value=18}},nil}
-c["+18 to All Attributes"]={{[1]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=18},[2]={flags=0,keywordFlags=0,name="Str",type="BASE",value=18},[3]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=18},[4]={flags=0,keywordFlags=0,name="Int",type="BASE",value=18},[5]={flags=0,keywordFlags=0,name="Att",type="BASE",value=18}},nil}
+c["+18 to All Attributes"]={{[1]={flags=0,keywordFlags=0,name="Str",type="BASE",value=18},[2]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=18},[3]={flags=0,keywordFlags=0,name="Int",type="BASE",value=18},[4]={flags=0,keywordFlags=0,name="Att",type="BASE",value=18},[5]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=18}},nil}
 c["+18% A chance greater than 100% can result in multiple daggers being thrown Fire Damage"]={{[1]={[1]={type="Condition",var="UsingDagger"},flags=0,keywordFlags=0,name="FireDamage",type="MORE",value=18}}," A chance greater than 100% can result in multiple s being thrown  "}
 c["+18% Adds to your fire, cold, and lightning resistances. Necrotic Resistance"]={{[1]={flags=0,keywordFlags=44,name="LightningResist",type="BASE",value=18}}," Adds to your , , and s.  Resistance "}
 c["+18% Adds to your maximum number of potions. Potions are displayed next to your health globe, and can be consumed to gain health (by using the 1 key by default). Missing Health gained as Ward on Potion Use"]={{[1]={[1]={skillName="Default",type="SkillName"},flags=0,keywordFlags=0,name="Life",type="BASE",value=18}}," Adds to your maximum number of potions. Potions are displayed next to your  globe, and can be consumed to gain health (by using the 1 key by ). Missing Health gained as Ward on Potion Use "}
@@ -4060,6 +4056,7 @@ c["+18% Reduces all physical damage you take. Capped at 75%. Void Resistance"]={
 c["+18% Stun Duration"]={{[1]={flags=0,keywordFlags=0,name="EnemyStunDuration",type="BASE",value=18}},nil}
 c["+18% Void Eruption Damage"]={{[1]={flags=0,keywordFlags=16,name="Damage",type="MORE",value=18}},"  Eruption  "}
 c["+18% Void Resistance"]={{[1]={flags=0,keywordFlags=0,name="VoidResist",type="BASE",value=18}},nil}
+c["+18% increased Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=512,name="Speed",type="INC",value=18}},nil}
 c["+18% to All Resistances"]={{[1]={flags=0,keywordFlags=0,name="FireResist",type="BASE",value=18},[2]={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=18},[3]={flags=0,keywordFlags=0,name="ColdResist",type="BASE",value=18},[4]={flags=0,keywordFlags=0,name="PhysicalResist",type="BASE",value=18},[5]={flags=0,keywordFlags=0,name="PoisonResist",type="BASE",value=18},[6]={flags=0,keywordFlags=0,name="NecroticResist",type="BASE",value=18},[7]={flags=0,keywordFlags=0,name="VoidResist",type="BASE",value=18}},nil}
 c["+180 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=180}},nil}
 c["+180 Spell Damage with Tempest Strike"]={{[1]={[1]={skillName="Tempest Strike",type="SkillName"},flags=0,keywordFlags=256,name="Damage",type="BASE",value=180}},"   with  "}
@@ -4181,7 +4178,6 @@ c["+19% Reduces all lightning damage you take. Capped at 75%. Poison Resistance"
 c["+19% Reduces all physical damage you take. Capped at 75%. Poison Resistance"]={{[1]={[1]={skillName="Poison",type="SkillName"},flags=0,keywordFlags=0,name="PhysicalDamage",type="MORE",value=19}}," Reduces all  you take. Capped at 75%.  Resistance "}
 c["+19% Reduces all physical damage you take. Capped at 75%. Void Resistance"]={{[1]={flags=0,keywordFlags=16,name="PhysicalDamage",type="MORE",value=19}}," Reduces all  you take. Capped at 75%.  Resistance "}
 c["+19% Ward Retention"]={{[1]={flags=0,keywordFlags=0,name="WardRetention",type="BASE",value=19}},nil}
-c["+19% increased Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=512,name="Speed",type="INC",value=19}},nil}
 c["+190 Ward Decay Threshold"]={{[1]={flags=0,keywordFlags=0,name="WardDecayThreshold",type="BASE",value=190}},nil}
 c["+190% Chance to Ignite on Void Spell Hit"]={{[1]={flags=8388608,keywordFlags=272,name="ChanceToTriggerOnHit_Ailment_Ignite",type="BASE",value=190}},"  on    "}
 c["+191 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=191}},nil}
@@ -4208,8 +4204,8 @@ c["+2 Additonal Shurikens"]={{[1]={[1]={skillName="Shurikens",type="SkillName"},
 c["+2 Armor Per 10 Missing Health"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=2}},"  Per 10 Missing Health "}
 c["+2 Armor While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="Armour",type="BASE",value=2}},nil}
 c["+2 Armor per Equipped Corrupted Idol"]={{[1]={[1]={type="Multiplier",var="EquippedCorruptedIdol"},flags=0,keywordFlags=0,name="Armour",type="BASE",value=2}},nil}
-c["+2 Armour Per Attunement Per Stack"]={{[1]={[1]={stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="Armour",type="BASE",value=2}},"   Per Stack "}
-c["+2 Armour per Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="Armour",type="BASE",value=2}},nil}
+c["+2 Armour Per Attunement Per Stack"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=2}},"  Per Attunement Per Stack "}
+c["+2 Armour per Intelligence"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=2}},"  per Intelligence "}
 c["+2 Attunement"]={{[1]={flags=0,keywordFlags=0,name="Att",type="BASE",value=2}},nil}
 c["+2 Bees Per 10 Seconds"]={{}," Bees Per 10 Seconds "}
 c["+2 Black Arrows Dropped by Dark Quiver"]={{[1]={[1]={skillName="Dark Quiver",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=2}}," Black Arrows Dropped by  "}
@@ -4221,8 +4217,8 @@ c["+2 Chance for non-Critical Strikes to inflict Critical Vulnerability"]={{[1]=
 c["+2 Charge On Melee Hit"]={{}," Charge  "}
 c["+2 Charge for Void Cleave"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=2},notSupported=true},nil}
 c["+2 Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="BASE",value=2}},nil}
-c["+2 Consumes mana equal to 80% of Volcanic Orb's mana cost. Cooldown is shared with sources of the exact same effect. Cold Damage"]={{[1]={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=4,name="Mana",type="BASE",value=2}}," Consumes  equal to 80% of 's mana cost. Cooldown is shared with sources of the exact same effect.  Damage "}
-c["+2 Consumes mana equal to 80% of Volcanic Orb's mana cost. Cooldown is shared with sources of the exact same effect. Fire Damage"]={{[1]={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=8,name="Mana",type="BASE",value=2}}," Consumes  equal to 80% of 's mana cost. Cooldown is shared with sources of the exact same effect.  Damage "}
+c["+2 Consumes mana equal to 80% of Volcanic Orb's mana cost. Cooldown is shared with sources of the exact same effect. Cold Damage"]={{[1]={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=4,name="Mana",type="BASE",value=2},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=4,name="Mana",type="BASE",value=2}}}}," Consumes  equal to 80% of 's mana cost. Cooldown is with sources of the exact same effect.  Damage "}
+c["+2 Consumes mana equal to 80% of Volcanic Orb's mana cost. Cooldown is shared with sources of the exact same effect. Fire Damage"]={{[1]={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=8,name="Mana",type="BASE",value=2},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=8,name="Mana",type="BASE",value=2}}}}," Consumes  equal to 80% of 's mana cost. Cooldown is with sources of the exact same effect.  Damage "}
 c["+2 Cooldown"]={{}," Cooldown "}
 c["+2 Cooldown (seconds)"]={{}," Cooldown (seconds) "}
 c["+2 Cooldown Duration (Seconds)"]={{[1]={flags=0,keywordFlags=0,name="CooldownRecovery",type="BASE",value=2}},"  (Seconds) "}
@@ -4252,16 +4248,16 @@ c["+2 Frostbite Stacks"]={{[1]={[1]={skillName="Frostbite",type="SkillName"},fla
 c["+2 Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=2}},nil}
 c["+2 Health And Rage Gain On Boss or Rare Hit"]={{[1]={flags=8388608,keywordFlags=0,name="Life",type="BASE",value=2}},"  And Rage Gain On Boss or Rare  "}
 c["+2 Health And Rage Gain On Kill"]={{[1]={[1]={type="Condition",var="KilledRecently"},flags=0,keywordFlags=0,name="Life",type="BASE",value=2}},"  And Rage Gain  "}
-c["+2 Health Gain Per Attunement"]={{[1]={[1]={stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="Life",type="BASE",value=2}},"  Gain  "}
+c["+2 Health Gain Per Attunement"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=2}},"  Gain Per Attunement "}
 c["+2 Health Granted"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=2}},"  Granted "}
-c["+2 Health Per Vitality"]={{[1]={[1]={stat="Vit",type="PerStat"},flags=0,keywordFlags=0,name="Life",type="BASE",value=2}},nil}
+c["+2 Health Per Vitality"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=2}},"  Per Vitality "}
 c["+2 Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="BASE",value=2}},nil}
 c["+2 Health Regen per Forged Weapon"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=2},notSupported=true},nil}
 c["+2 Health Regeneration per Summoned Bee"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="BASE",value=2}},"  per Summoned Bee "}
 c["+2 Health per Equipped Heretical Idol"]={{[1]={[1]={type="Multiplier",var="EquippedHereticalIdol"},flags=0,keywordFlags=0,name="Life",type="BASE",value=2}},nil}
 c["+2 Health per Equipped Omen Idol"]={{[1]={[1]={type="Multiplier",var="EquippedOmenIdol"},flags=0,keywordFlags=0,name="Life",type="BASE",value=2}},nil}
 c["+2 Health per Idol in a Refracted Slot"]={{[1]={[1]={type="Multiplier",var="IdolInRefractedSlot"},flags=0,keywordFlags=0,name="Life",type="BASE",value=2}},nil}
-c["+2 Health per Vitality"]={{[1]={[1]={stat="Vit",type="PerStat"},flags=0,keywordFlags=0,name="Life",type="BASE",value=2}},nil}
+c["+2 Health per Vitality"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=2}},"  per Vitality "}
 c["+2 Huge Idols equipped at Maximum"]={{}," Huge Idols equipped at Maximum "}
 c["+2 Ice Barrage Cooldown (seconds)"]={{[1]={[1]={skillName="Ice Barrage",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=2}},"  Cooldown (seconds) "}
 c["+2 Ice Shards Projectiles"]={{[1]={flags=0,keywordFlags=0,name="ProjectileCount",type="BASE",value=2}}," Ice Shards  "}
@@ -4269,7 +4265,7 @@ c["+2 Ice Shield Duration (seconds)"]={{[1]={flags=0,keywordFlags=0,name="Durati
 c["+2 Increased Damage for skills used by Shadows"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=2}}," Increased  for skills used by Shadows "}
 c["+2 Increased Stun Chance"]={{[1]={flags=0,keywordFlags=0,name="StunChance",type="BASE",value=2}}," Increased  "}
 c["+2 Increases the area of effect of skills with the Area tag and the Spell tag. Additive with other sources of increased area. Spell Mana Cost"]={{[1]={flags=0,keywordFlags=256,name="AreaOfEffect",type="BASE",value=2}}," Increases the  of skills with the Area tag and the  tag. Additive with other sources of increased area.  Mana Cost "}
-c["+2 Increases the health restored by healing skills Health per Attunement"]={{[1]={[1]={stat="Att",type="PerStat"},[2]={skillName="Healing",type="SkillName"},flags=0,keywordFlags=0,name="Life",type="BASE",value=2}}," Increases the  restored by  skills Health  "}
+c["+2 Increases the health restored by healing skills Health per Attunement"]={{[1]={[1]={skillName="Healing",type="SkillName"},flags=0,keywordFlags=0,name="Life",type="BASE",value=2}}," Increases the  restored by  skills Health per Attunement "}
 c["+2 Increases the number of melee attacks you can use per second Seconds of Frenzy after you use Evade"]={{[1]={[1]={skillName="Melee Attack",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=2}}," Increases the number of s you can use per second Seconds of Frenzy after you use Evade "}
 c["+2 Increases your maximum mana Mana per Attunement"]={{[1]={[1]={stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="Mana",type="BASE",value=2}}," Increases your  Mana  "}
 c["+2 Intelligence"]={{[1]={flags=0,keywordFlags=0,name="Int",type="BASE",value=2}},nil}
@@ -4330,10 +4326,10 @@ c["+2 Seconds Younger"]={{}," Seconds Younger "}
 c["+2 Shadow Rend"]={{[1]={[1]={skillName="Shadow Rend",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=2}},nil}
 c["+2 Shadows"]={{}," Shadows "}
 c["+2 Shapeshifter Duration On Transform (seconds)"]={{[1]={[1]={skillName="Shapeshifter",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="BASE",value=2}},"   On Transform (seconds) "}
-c["+2 Shared Melee Necrotic Damage"]={{[1]={flags=0,keywordFlags=512,name="NecroticDamage",type="BASE",value=2}}," Shared   "}
-c["+2 Shared Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=2}}," Shared   "}
-c["+2 Shared Spell Lightning Damage"]={{[1]={flags=0,keywordFlags=256,name="LightningDamage",type="BASE",value=2}}," Shared   "}
-c["+2 Shared Spell Necrotic Damage"]={{[1]={flags=0,keywordFlags=256,name="NecroticDamage",type="BASE",value=2}}," Shared   "}
+c["+2 Shared Melee Necrotic Damage"]={{[1]={flags=0,keywordFlags=512,name="NecroticDamage",type="BASE",value=2},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="NecroticDamage",type="BASE",value=2}}}},nil}
+c["+2 Shared Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=2},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="Damage",type="BASE",value=2}}}},nil}
+c["+2 Shared Spell Lightning Damage"]={{[1]={flags=0,keywordFlags=256,name="LightningDamage",type="BASE",value=2},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="LightningDamage",type="BASE",value=2}}}},nil}
+c["+2 Shared Spell Necrotic Damage"]={{[1]={flags=0,keywordFlags=256,name="NecroticDamage",type="BASE",value=2},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="NecroticDamage",type="BASE",value=2}}}},nil}
 c["+2 Skill Duration Extension (seconds)"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="BASE",value=2}}," Skill  Extension (seconds) "}
 c["+2 Spell Cold Damage"]={{[1]={flags=0,keywordFlags=256,name="ColdDamage",type="BASE",value=2}},nil}
 c["+2 Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=2}},nil}
@@ -4373,7 +4369,7 @@ c["+2 to Acolyte Minion Skills"]={{[1]={flags=0,keywordFlags=0,name="MinionModif
 c["+2 to Acolyte Skills"]={{[1]={flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=2}}," Acolyte  "}
 c["+2 to Acolyte Spells"]={{}," Acolyte s "}
 c["+2 to Aerial Assault"]={{[1]={[1]={skillName="Aerial Assault",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
-c["+2 to All Attributes"]={{[1]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=2},[2]={flags=0,keywordFlags=0,name="Str",type="BASE",value=2},[3]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=2},[4]={flags=0,keywordFlags=0,name="Int",type="BASE",value=2},[5]={flags=0,keywordFlags=0,name="Att",type="BASE",value=2}},nil}
+c["+2 to All Attributes"]={{[1]={flags=0,keywordFlags=0,name="Str",type="BASE",value=2},[2]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=2},[3]={flags=0,keywordFlags=0,name="Int",type="BASE",value=2},[4]={flags=0,keywordFlags=0,name="Att",type="BASE",value=2},[5]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=2}},nil}
 c["+2 to All Minion Skills"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=2}}}}," All   "}
 c["+2 to All Skills"]={{[1]={flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=2}}," All  "}
 c["+2 to Anomaly"]={{[1]={[1]={skillName="Anomaly",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
@@ -4530,7 +4526,7 @@ c["+2 to Warcry"]={{[1]={[1]={skillName="Warcry",type="SkillName"},flags=0,keywo
 c["+2 to Warpath"]={{[1]={[1]={skillName="Warpath",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
 c["+2 to Werebear Form"]={{[1]={[1]={skillName="Werebear Form",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
 c["+2% Added Bow Critical Strike Chance"]={{[1]={flags=0,keywordFlags=2048,name="CritChance",type="BASE",value=2}},nil}
-c["+2% Adds damage to all melee attacks. The type of damage added matches the base damage of the attack. Increased Melee Damage per Strength"]={{[1]={[1]={stat="Str",type="PerStat"},[2]={skillName="Melee Attack",type="SkillName"},flags=0,keywordFlags=512,name="Damage",type="MORE",value=2}}," Adds  to all s. The type of damage added matches the base damage of the attack. Increased  Damage  "}
+c["+2% Adds damage to all melee attacks. The type of damage added matches the base damage of the attack. Increased Melee Damage per Strength"]={{[1]={[1]={skillName="Melee Attack",type="SkillName"},flags=0,keywordFlags=512,name="Damage",type="MORE",value=2}}," Adds  to all s. The type of damage added matches the base damage of the attack. Increased  Damage per Strength "}
 c["+2% Adds to your chance to block. Blocked hits deal less damage depending on your block effectiveness. Current Mana gained as Ward on Block"]={{[1]={[1]={type="Condition",var="Blocking"},flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=2}}," Adds to your chance to block. Blocked s deal less  depending on your block effectiveness. Current Mana gained as Ward  "}
 c["+2% Ailment Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="AilmentDamage",type="MORE",value=2}},"  Taken "}
 c["+2% All Resistances"]={{[1]={flags=0,keywordFlags=0,name="FireResist",type="BASE",value=2},[2]={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=2},[3]={flags=0,keywordFlags=0,name="ColdResist",type="BASE",value=2},[4]={flags=0,keywordFlags=0,name="PhysicalResist",type="BASE",value=2},[5]={flags=0,keywordFlags=0,name="PoisonResist",type="BASE",value=2},[6]={flags=0,keywordFlags=0,name="NecroticResist",type="BASE",value=2},[7]={flags=0,keywordFlags=0,name="VoidResist",type="BASE",value=2}},nil}
@@ -4538,12 +4534,12 @@ c["+2% Attack Speed"]={{[1]={flags=3584,keywordFlags=0,name="Speed",type="BASE",
 c["+2% Attack Speed Per Hit"]={{[1]={flags=8392192,keywordFlags=0,name="Speed",type="BASE",value=2}},"  Per  "}
 c["+2% Attack Speed While Dual Wielding"]={{[1]={[1]={type="Condition",var="DualWielding"},flags=3584,keywordFlags=0,name="Speed",type="BASE",value=2}},nil}
 c["+2% Attack Speed per Hit"]={{[1]={flags=8392192,keywordFlags=0,name="Speed",type="BASE",value=2}},"  per  "}
-c["+2% Axe Volley Hit Damage per Dexterity"]={{[1]={[1]={stat="Dex",type="PerStat"},[2]={type="Condition",var="UsingAxe"},flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=2}},"  Volley    "}
+c["+2% Axe Volley Hit Damage per Dexterity"]={{[1]={[1]={type="Condition",var="UsingAxe"},flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=2}},"  Volley   per Dexterity "}
 c["+2% Base Crit Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="BASE",value=2}},nil}
 c["+2% Base Crit Chance For Maul And Rampage"]={{[1]={[1]={skillName="Maul",type="SkillName"},flags=0,keywordFlags=0,name="CritChance",type="BASE",value=2}},"  For  And Rampage "}
 c["+2% Base Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="BASE",value=2}},nil}
 c["+2% Bleed Chance per Maelstrom"]={{[1]={[1]={skillName="Maelstrom",type="SkillName"},flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Bleed",type="BASE",value=2}},"  per  "}
-c["+2% Bleed Duration Per Dexterity"]={{[1]={[1]={stat="Dex",type="PerStat"},[2]={skillName="Bleed",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="MORE",value=2}},nil}
+c["+2% Bleed Duration Per Dexterity"]={{[1]={[1]={skillName="Bleed",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="MORE",value=2}},"   Per Dexterity "}
 c["+2% Bleed chance per active Crimson Shroud"]={{[1]={[1]={type="Multiplier",var="ActiveCrimsonShroud"},flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Bleed",type="BASE",value=2}},nil}
 c["+2% Bleed deals physical damage over time, lasts 3 seconds, and can stack an unlimited number of times. Damage to Bleeding Enemies - more Multiplicative with other modifiers"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="Bleeding"},[2]={skillName="Bleed",type="SkillName"},flags=4097,keywordFlags=0,name="PhysicalDamage",type="MORE",value=2}},"  deals , lasts 3 seconds, and can stack an unlimited number of times. Damage  - more Multiplicative with other modifiers "}
 c["+2% Block Chance"]={{[1]={flags=0,keywordFlags=0,name="BlockChance",type="BASE",value=2}},nil}
@@ -4591,7 +4587,7 @@ c["+2% Damage per Dusk Shroud, up to 20"]={{[1]={[1]={skillName="Dusk Shroud",ty
 c["+2% Damage per Slow"]={{[1]={[1]={skillName="Slow",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=2}},"  per  "}
 c["+2% Damage to Branded Enemies"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=2}},"  to Branded Enemies "}
 c["+2% Damage to Feared per Berserk Stack"]={{[1]={[1]={skillName="Fear",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=2}},"  to ed per Berserk Stack "}
-c["+2% Damned Duration per Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},[2]={skillName="Damned",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="MORE",value=2}},nil}
+c["+2% Damned Duration per Intelligence"]={{[1]={[1]={skillName="Damned",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="MORE",value=2}},"   per Intelligence "}
 c["+2% Death Wave Hit Damage Per Poison"]={{[1]={[1]={skillName="Poison",type="SkillName"},flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=2}}," Death Wave   Per  "}
 c["+2% Direct Damage per Shock"]={{[1]={[1]={skillName="Shock",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=2}}," Direct  per  "}
 c["+2% Each stack of Critical Vulnerability adds an additional 2% chance to be crit, reduces critical strike avoidance by 10%, and lasts 4 seconds. Stacks up to 10 times. Melee Attack Speed"]={{[1]={[1]={skillName="Critical Vulnerability",type="SkillName"},flags=0,keywordFlags=512,name="CritAvoidance",type="BASE",value=2}}," Each stack of  adds an additional 2% chance to be crit, reduces  by 10%, and lasts 4 seconds. Stacks up to 10 times.  Attack Speed "}
@@ -4617,10 +4613,10 @@ c["+2% Health Leech"]={{[1]={flags=0,keywordFlags=0,name="DamageLifeLeech",type=
 c["+2% Hit Damage Per Ailment Stack"]={{[1]={flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=2}},"   Per Ailment Stack "}
 c["+2% Hit Damage Per Bleed Stack"]={{[1]={[1]={actor="enemy",type="Multiplier",var="BleedStack"},flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=2}},nil}
 c["+2% Ignite Chance Per Second Per 1% Uncapped Fire Res"]={{[1]={flags=8388608,keywordFlags=8,name="ChanceToTriggerOnHit_Ailment_Ignite",type="BASE",value=2}},"  Per Second Per 1% Uncapped  Res "}
-c["+2% Ignite Duration per Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},[2]={skillName="Ignite",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="MORE",value=2}},nil}
+c["+2% Ignite Duration per Intelligence"]={{[1]={[1]={skillName="Ignite",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="MORE",value=2}},"   per Intelligence "}
 c["+2% Increased Area Per Minion"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=2}}}},"  Per  "}
 c["+2% Increased Cooldown Recovery Speed of Reap"]={{[1]={flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=2}},"  of Reap "}
-c["+2% Increased Damage Per Attunement"]={{[1]={[1]={stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="Damage",type="INC",value=2}},nil}
+c["+2% Increased Damage Per Attunement"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=2}},"  Per Attunement "}
 c["+2% Increases the damage dealt by your critical strikes Increased Critical Strike Chance per Dexterity"]={{[1]={[1]={stat="Dex",type="PerStat"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=2}}," Increases the  dealt by your critical strikes Increased Critical Strike Chance  "}
 c["+2% Increases the rate at which your health regenerates over time Increased Health Regen per point of Strength"]={{[1]={[1]={stat="Str",type="PerStat"},flags=0,keywordFlags=0,name="LifeRegen",type="BASE",value=2}}," Increases the rate at which your erates over time Increased Health Regen  "}
 c["+2% Increases your maximum health Health Regen also applies to Ward"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=2}}," Increases your  Health Regen also applies to Ward "}
@@ -4632,9 +4628,9 @@ c["+2% Lightning Penetration per Attunement"]={{[1]={[1]={stat="Att",type="PerSt
 c["+2% Lightning Penetration with Electrify "]={{[1]={[1]={skillName="Electrify",type="SkillName"},flags=0,keywordFlags=0,name="LightningPenetration",type="BASE",value=2}},"  with  "}
 c["+2% Locust Base Crit Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="BASE",value=2}}," Locust Base  "}
 c["+2% Locust Swarm Damage Per Locust"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=2}}," Locust Swarm  Per Locust "}
-c["+2% Mana Efficiency per player Attunement"]={{[1]={[1]={actor="parent",stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="Mana",type="BASE",value=2}},"  Efficiency  "}
-c["+2% Mana Efficiency per player Dexterity"]={{[1]={[1]={actor="parent",stat="Dex",type="PerStat"},flags=0,keywordFlags=0,name="Mana",type="BASE",value=2}},"  Efficiency  "}
-c["+2% Mana Efficiency per player Intelligence"]={{[1]={[1]={actor="parent",stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="Mana",type="BASE",value=2}},"  Efficiency  "}
+c["+2% Mana Efficiency per player Attunement"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=2}},"  Efficiency per player Attunement "}
+c["+2% Mana Efficiency per player Dexterity"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=2}},"  Efficiency per player Dexterity "}
+c["+2% Mana Efficiency per player Intelligence"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=2}},"  Efficiency per player Intelligence "}
 c["+2% Maximum Health Gained As Endurance Threshold"]={{[1]={flags=0,keywordFlags=0,name="LifeAsEnduranceThreshold",type="BASE",value=2}},nil}
 c["+2% Maximum Mana -> Mana Cost"]={{},"+2% Maximum Mana -> Mana Cost"}
 c["+2% Melee Critical Strike Chance"]={{[1]={flags=0,keywordFlags=512,name="CritChance",type="BASE",value=2}},nil}
@@ -4673,8 +4669,8 @@ c["+2% Roots Health Leech"]={{[1]={[1]={skillName="Root",type="SkillName"},flags
 c["+2% Second Strike Leech"]={{}," Second Strike Leech "}
 c["+2% Serpent Venom Damage per Melee Crit Chance"]={{[1]={flags=0,keywordFlags=512,name="SerpentVenomDamage",type="MORE",value=2}},"  per  Crit Chance "}
 c["+2% Serpent Venom Damage per Vitality"]={{[1]={[1]={stat="Vit",type="PerStat"},flags=0,keywordFlags=0,name="SerpentVenomDamage",type="MORE",value=2}},nil}
-c["+2% Shared Spell Lightning Penetration Per 5 Attunement"]={{[1]={[1]={div=5,stat="Att",type="PerStat"},flags=0,keywordFlags=256,name="LightningPenetration",type="BASE",value=2}}," Shared    "}
-c["+2% Slow Duration Per Dexterity"]={{[1]={[1]={stat="Dex",type="PerStat"},[2]={skillName="Slow",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="MORE",value=2}},nil}
+c["+2% Shared Spell Lightning Penetration Per 5 Attunement"]={{[1]={[1]={div=5,stat="Att",type="PerStat"},flags=0,keywordFlags=256,name="LightningPenetration",type="BASE",value=2},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={div=5,stat="Att",type="PerStat"},flags=0,keywordFlags=256,name="LightningPenetration",type="BASE",value=2}}}},nil}
+c["+2% Slow Duration Per Dexterity"]={{[1]={[1]={skillName="Slow",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="MORE",value=2}},"   Per Dexterity "}
 c["+2% Smite Base Crit Chance"]={{[1]={[1]={skillName="Smite",type="SkillName"},flags=0,keywordFlags=0,name="CritChance",type="BASE",value=2}},"  Base  "}
 c["+2% Spell Health Leech"]={{[1]={flags=0,keywordFlags=256,name="DamageLifeLeech",type="BASE",value=2}},nil}
 c["+2% Third Strike Base Crit Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="BASE",value=2}}," Third Strike Base  "}
@@ -4693,7 +4689,7 @@ c["+2.5 Bees Per 10 Seconds"]={{}," Bees Per 10 Seconds "}
 c["+2.5% Poison deals poison damage over time and lasts 3 seconds. The first 30 stacks each reduce poison resistance by 5% (2% against bosses and players). Global Conditional Damage - more Multiplicative with other modifiers"]={{[1]={[1]={type="Global"},[2]={skillName="Poison",type="SkillName"},flags=4160,keywordFlags=64,name="PoisonDamage",type="MORE",value=2.5}},"  deals  and lasts 3 seconds. The first 30 stacks each reduce  resistance by 5% (2% against bosses and players).  Conditional Damage - more Multiplicative with other modifiers "}
 c["+20 Additional Healing Per Second"]={{[1]={[1]={skillName="Healing",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=20}},"  Per Second "}
 c["+20 Aftershock Spell Damage"]={{[1]={[1]={skillName="Shock",type="SkillName"},flags=0,keywordFlags=256,name="Damage",type="BASE",value=20}}," After   "}
-c["+20 All Attributes with at least 7 Corrupted non-Idol Items equipped"]={{[1]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=20},[2]={flags=0,keywordFlags=0,name="Str",type="BASE",value=20},[3]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=20},[4]={flags=0,keywordFlags=0,name="Int",type="BASE",value=20},[5]={flags=0,keywordFlags=0,name="Att",type="BASE",value=20}},"  with at least 7 Corrupted non-Idol Items equipped "}
+c["+20 All Attributes with at least 7 Corrupted non-Idol Items equipped"]={{[1]={flags=0,keywordFlags=0,name="Str",type="BASE",value=20},[2]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=20},[3]={flags=0,keywordFlags=0,name="Int",type="BASE",value=20},[4]={flags=0,keywordFlags=0,name="Att",type="BASE",value=20},[5]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=20}},"  with at least 7 Corrupted non-Idol Items equipped "}
 c["+20 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=20}},nil}
 c["+20 Armour With Shield"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=20}},"  With Shield "}
 c["+20 Block Effectiveness Per Shield"]={{[1]={flags=0,keywordFlags=0,name="BlockEffectiveness",type="BASE",value=20}},"  Per Shield "}
@@ -4719,9 +4715,9 @@ c["+20 Melee Lightning Damage"]={{[1]={flags=0,keywordFlags=512,name="LightningD
 c["+20 Melee Physical Damage if wielding a Mace"]={{[1]={flags=0,keywordFlags=512,name="PhysicalDamage",type="BASE",value=20}},"   if wielding a Mace "}
 c["+20 Minion Armor"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Armour",type="BASE",value=20}}}},nil}
 c["+20 Minion Bow Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=2048,name="PhysicalDamage",type="BASE",value=20}}}},nil}
-c["+20 Minion Health per player Dexterity"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={actor="parent",stat="Dex",type="PerStat"},flags=0,keywordFlags=0,name="Life",type="BASE",value=20}}}},nil}
-c["+20 Minion Health per player Intelligence"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={actor="parent",stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="Life",type="BASE",value=20}}}},nil}
-c["+20 Minion Health per player Strength"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={actor="parent",stat="Str",type="PerStat"},flags=0,keywordFlags=0,name="Life",type="BASE",value=20}}}},nil}
+c["+20 Minion Health per player Dexterity"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="BASE",value=20}}}},"   per player Dexterity "}
+c["+20 Minion Health per player Intelligence"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="BASE",value=20}}}},"   per player Intelligence "}
+c["+20 Minion Health per player Strength"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="BASE",value=20}}}},"   per player Strength "}
 c["+20 Minion Melee Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="FireDamage",type="BASE",value=20}}}},nil}
 c["+20 Seconds of Frenzy granted to you and your Minions when Enemy damage leaves you at Low Health"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=20},notSupported=true},nil}
 c["+20 Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=20}},nil}
@@ -4808,7 +4804,7 @@ c["+20% Damage to Rares and Bosses"]={{[1]={flags=0,keywordFlags=0,name="Damage"
 c["+20% Damned Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Damned",type="BASE",value=20}},nil}
 c["+20% Damned Duration"]={{[1]={[1]={skillName="Damned",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="MORE",value=20}},nil}
 c["+20% Death Wave Damage Per Damned Stack"]={{[1]={[1]={skillName="Damned",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=20}}," Death Wave  Per  Stack "}
-c["+20% Death Wave Hit Damage To Poisoned Enemies"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="Poisoned"},flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=20}}," Death Wave    "}
+c["+20% Death Wave Hit Damage To Poisoned Enemies"]={{[1]={[1]={skillName="Poison",type="SkillName"},flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=20}}," Death Wave   To ed Enemies "}
 c["+20% Delay Between Impacts"]={{}," Delay Between Impacts "}
 c["+20% Detonation Area"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="BASE",value=20}}," Detonation  "}
 c["+20% Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="BASE",value=20}},nil}
@@ -4860,7 +4856,7 @@ c["+20% Hit Damage Against Bleeding"]={{[1]={[1]={skillName="Bleed",type="SkillN
 c["+20% Hit Damage Against High Health"]={{[1]={flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=20}},"   Against High Health "}
 c["+20% Hit Damage Against Rares And Bosses"]={{[1]={flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=20}},"   Against Rares And Bosses "}
 c["+20% Hit Damage To Slowed Target"]={{[1]={[1]={skillName="Slow",type="SkillName"},flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=20}},"   To ed Target "}
-c["+20% Hit Damage To Time Rotting Enemies"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="TimeRotted"},flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=20}},nil}
+c["+20% Hit Damage To Time Rotting Enemies"]={{[1]={[1]={skillName="Time Rot",type="SkillName"},flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=20}},"   To ting Enemies "}
 c["+20% Hit Damage Vs Ignited Enemies"]={{[1]={[1]={skillName="Ignite",type="SkillName"},flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=20}},"   Vs d Enemies "}
 c["+20% Hit Damage vs Slowed"]={{[1]={[1]={skillName="Slow",type="SkillName"},flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=20}},"   vs ed "}
 c["+20% Ignite Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Ignite",type="BASE",value=20}},nil}
@@ -4972,7 +4968,7 @@ c["+20% Swarm Strike Area"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",ty
 c["+20% Third Strike Physical Res Shred Chance"]={{[1]={flags=0,keywordFlags=0,name="PhysicalResShredChance",type="BASE",value=20}}," Third Strike  "}
 c["+20% Third Strike Poison Res Shred Chance"]={{[1]={flags=0,keywordFlags=0,name="PoisonResShredChance",type="BASE",value=20}}," Third Strike  "}
 c["+20% Thorn Burst Bleed Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Bleed",type="BASE",value=20}}," Thorn Burst  "}
-c["+20% Thorn Hit Damage To Poisoned Enemies"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="Poisoned"},flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=20}}," Thorn    "}
+c["+20% Thorn Hit Damage To Poisoned Enemies"]={{[1]={[1]={skillName="Poison",type="SkillName"},flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=20}}," Thorn   To ed Enemies "}
 c["+20% Throwing Armor Shred Chance"]={{[1]={flags=8388608,keywordFlags=1024,name="ChanceToTriggerOnHit_Ailment_ArmourShred",type="BASE",value=20}},nil}
 c["+20% Throwing Attack Speed"]={{[1]={flags=3584,keywordFlags=1024,name="Speed",type="BASE",value=20}},nil}
 c["+20% Thunder Totem Damage, Health, Duration And Size Per Totem"]={{[1]={[1]={stat="TotemsSummoned",type="PerStat"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=20}}," Thunder Totem , Health, Duration And Size  "}
@@ -5177,8 +5173,8 @@ c["+22% Chance to inflict Bleed on Hit"]={{[1]={flags=8388608,keywordFlags=0,nam
 c["+22% Chance to inflict Bleed on Minion Hit"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=8388608,keywordFlags=0,name="BleedChance",type="BASE",value=22}}}},"  on   "}
 c["+22% Cold Penetration"]={{[1]={flags=0,keywordFlags=0,name="ColdPenetration",type="BASE",value=22}},nil}
 c["+22% Cold Resistance"]={{[1]={flags=0,keywordFlags=0,name="ColdResist",type="BASE",value=22}},nil}
-c["+22% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cooldown is shared with sources of the exact same effect. Cold Damage"]={{[1]={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=4,name="Mana",type="BASE",value=22}}," Consumes  equal to 80% of 's mana cost. Cooldown is shared with sources of the exact same effect.  Damage "}
-c["+22% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cooldown is shared with sources of the exact same effect. Fire Damage"]={{[1]={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=8,name="Mana",type="BASE",value=22}}," Consumes  equal to 80% of 's mana cost. Cooldown is shared with sources of the exact same effect.  Damage "}
+c["+22% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cooldown is shared with sources of the exact same effect. Cold Damage"]={{[1]={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=4,name="Mana",type="BASE",value=22},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=4,name="Mana",type="BASE",value=22}}}}," Consumes  equal to 80% of 's mana cost. Cooldown is with sources of the exact same effect.  Damage "}
+c["+22% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cooldown is shared with sources of the exact same effect. Fire Damage"]={{[1]={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=8,name="Mana",type="BASE",value=22},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=8,name="Mana",type="BASE",value=22}}}}," Consumes  equal to 80% of 's mana cost. Cooldown is with sources of the exact same effect.  Damage "}
 c["+22% Critical Strike Avoidance"]={{[1]={flags=0,keywordFlags=0,name="CritAvoidance",type="BASE",value=22}},nil}
 c["+22% Critical Strike Multiplier"]={{[1]={flags=0,keywordFlags=0,name="CritMultiplier",type="BASE",value=22}},nil}
 c["+22% Critical Strike Multiplier While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="CritMultiplier",type="BASE",value=22}},nil}
@@ -5206,6 +5202,7 @@ c["+22% Reduces all physical damage you take. Capped at 75%. Void Resistance"]={
 c["+22% Void Resistance"]={{[1]={flags=0,keywordFlags=0,name="VoidResist",type="BASE",value=22}},nil}
 c["+22% Ward Retention"]={{[1]={flags=0,keywordFlags=0,name="WardRetention",type="BASE",value=22}},nil}
 c["+22% chance to throw a Burning Dagger when you use a melee fire attack and hit at least one enemy, doubled for Dancing Strikes (up to 4 times per second)"]={{}," to throw a  when you use a   attack and  at least one enemy, doubled for Dancing Strikes (up to 4 times per second) "}
+c["+22% increased Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=512,name="Speed",type="INC",value=22}},nil}
 c["+220 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=220}},nil}
 c["+220 Melee fire damage with next void melee attack every 2 seconds"]={{[1]={[1]={skillName="Melee Attack",type="SkillName"},flags=0,keywordFlags=528,name="FireDamage",type="BASE",value=220}},"   with next   every 2 seconds "}
 c["+220 Melee void damage with next fire melee attack every 2 seconds"]={{[1]={[1]={skillName="Melee Attack",type="SkillName"},flags=0,keywordFlags=520,name="VoidDamage",type="BASE",value=220}},"   with next   every 2 seconds "}
@@ -5288,7 +5285,6 @@ c["+23% Physical Penetration with Shadow Daggers "]={{[1]={[1]={skillName="Shado
 c["+23% Physical Resistance"]={{[1]={flags=0,keywordFlags=0,name="PhysicalResist",type="BASE",value=23}},nil}
 c["+23% Poison Resistance"]={{[1]={flags=0,keywordFlags=0,name="PoisonResist",type="BASE",value=23}},nil}
 c["+23% Void Resistance"]={{[1]={flags=0,keywordFlags=0,name="VoidResist",type="BASE",value=23}},nil}
-c["+23% increased Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=512,name="Speed",type="INC",value=23}},nil}
 c["+230 Ward Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="WardOnPotionUse",type="BASE",value=230}},nil}
 c["+230% Chance to inflict Bleed on Hit"]={{[1]={flags=8388608,keywordFlags=0,name="BleedChance",type="BASE",value=230}},nil}
 c["+230% Chance to inflict Bleed on Minion Hit"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=8388608,keywordFlags=0,name="BleedChance",type="BASE",value=230}}}},"  on   "}
@@ -5385,8 +5381,8 @@ c["+25 Melee Cold Damage"]={{[1]={flags=0,keywordFlags=512,name="ColdDamage",typ
 c["+25 Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="BASE",value=25}},nil}
 c["+25 Melee Damage while you have Frenzy"]={{[1]={[1]={type="Condition",var="Frenzy"},flags=0,keywordFlags=512,name="Damage",type="BASE",value=25}},nil}
 c["+25 Melee Physical Damage"]={{[1]={flags=0,keywordFlags=512,name="PhysicalDamage",type="BASE",value=25}},nil}
-c["+25 Minion Health per player Dexterity"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={actor="parent",stat="Dex",type="PerStat"},flags=0,keywordFlags=0,name="Life",type="BASE",value=25}}}},nil}
-c["+25 Minion Health per player Strength"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={actor="parent",stat="Str",type="PerStat"},flags=0,keywordFlags=0,name="Life",type="BASE",value=25}}}},nil}
+c["+25 Minion Health per player Dexterity"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="BASE",value=25}}}},"   per player Dexterity "}
+c["+25 Minion Health per player Strength"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="BASE",value=25}}}},"   per player Strength "}
 c["+25 Minion Melee Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="ColdDamage",type="BASE",value=25}}}},nil}
 c["+25 Spell Void Damage"]={{[1]={flags=0,keywordFlags=256,name="VoidDamage",type="BASE",value=25}},nil}
 c["+25 Totem Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=25}},"tem  "}
@@ -5529,7 +5525,7 @@ c["+25% Howl Buff Duration"]={{[1]={flags=0,keywordFlags=0,name="Duration",type=
 c["+25% Ignite Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Ignite",type="BASE",value=25}},nil}
 c["+25% Increased Area for Melee Area Skills"]={{[1]={flags=0,keywordFlags=512,name="AreaOfEffect",type="INC",value=25}},"  for  Area Skills "}
 c["+25% Increased Area with 2h Axe"]={{[1]={[1]={type="Condition",var="UsingAxe"},flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=25}},"  with 2h  "}
-c["+25% Increased Damage At Low Health"]={{[1]={[1]={type="Condition",var="LowLife"},flags=0,keywordFlags=0,name="Damage",type="INC",value=25}},nil}
+c["+25% Increased Damage At Low Health"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=25}},"  At Low Health "}
 c["+25% Increased Damage for skills used by Shadows"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=25}},"  for skills used by Shadows "}
 c["+25% Increased Stun Chance"]={{[1]={flags=0,keywordFlags=0,name="StunChance",type="INC",value=25}},nil}
 c["+25% Increased Stun Chance Per Second"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=25},notSupported=true},nil}
@@ -5797,7 +5793,7 @@ c["+270% Ignite Chance for skills cast from Wildfire Wisps"]={{[1]={flags=838860
 c["+270% Minion Freeze Rate Multiplier"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="FreezeRateMultiplier",type="BASE",value=270}}}},nil}
 c["+270% Physical Penetration with Shadow Daggers "]={{[1]={[1]={skillName="Shadow Daggers",type="SkillName"},flags=0,keywordFlags=0,name="PhysicalPenetration",type="BASE",value=270}},"  with  "}
 c["+273 Dodge Rating while using Evade"]={{[1]={[1]={type="Condition",var="UsingEvade"},flags=0,keywordFlags=0,name="Evasion",type="BASE",value=273}},nil}
-c["+275 Armor While Channelling"]={{[1]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="Armour",type="BASE",value=275}},nil}
+c["+275 Armor While Channelling"]={{[1]={flags=0,keywordFlags=0,name="ArmourWhileChannelling",type="BASE",value=275}},nil}
 c["+275 Ward gained when you cast Flame Ward"]={{[1]={[1]={skillName="Flame Ward",type="SkillName"},flags=0,keywordFlags=0,name="Ward",type="BASE",value=275}},"  gained when you cast  "}
 c["+275% Max Distance"]={{}," Max Distance "}
 c["+278 Ward Decay Threshold"]={{[1]={flags=0,keywordFlags=0,name="WardDecayThreshold",type="BASE",value=278}},nil}
@@ -5984,7 +5980,7 @@ c["+3 Maximum Stacks"]={{}," Maximum Stacks "}
 c["+3 Melee Cold Damage"]={{[1]={flags=0,keywordFlags=512,name="ColdDamage",type="BASE",value=3}},nil}
 c["+3 Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="BASE",value=3}},nil}
 c["+3 Melee Damage For Falcon"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="BASE",value=3}},"   For Falcon "}
-c["+3 Melee Damage per Attunement for Judgement while Unarmed"]={{[1]={[1]={stat="Att",type="PerStat"},[2]={type="Condition",var="Unarmed"},[3]={skillName="Judgement",type="SkillName"},flags=0,keywordFlags=512,name="Damage",type="BASE",value=3}},"    for   "}
+c["+3 Melee Damage per Attunement for Judgement while Unarmed"]={{[1]={[1]={type="Condition",var="Unarmed"},[2]={skillName="Judgement",type="SkillName"},flags=0,keywordFlags=512,name="Damage",type="BASE",value=3}},"   per Attunement for   "}
 c["+3 Melee Fire Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="BASE",value=3}},nil}
 c["+3 Melee Fire Damage per Forged Weapon"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=3},notSupported=true},nil}
 c["+3 Melee Lightning Damage"]={{[1]={flags=0,keywordFlags=512,name="LightningDamage",type="BASE",value=3}},nil}
@@ -5995,8 +5991,8 @@ c["+3 Melee Physical Damage"]={{[1]={flags=0,keywordFlags=512,name="PhysicalDama
 c["+3 Melee Physical Damage for Locusts"]={{[1]={flags=0,keywordFlags=512,name="PhysicalDamage",type="BASE",value=3}},"   for Locusts "}
 c["+3 Melee Void Damage"]={{[1]={flags=0,keywordFlags=512,name="VoidDamage",type="BASE",value=3}},nil}
 c["+3 Minion Bow Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=2048,name="Damage",type="BASE",value=3}}}},nil}
-c["+3 Minion Health per player Attunement"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={actor="parent",stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="Life",type="BASE",value=3}}}},nil}
-c["+3 Minion Health per player Intelligence"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={actor="parent",stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="Life",type="BASE",value=3}}}},nil}
+c["+3 Minion Health per player Attunement"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="BASE",value=3}}}},"   per player Attunement "}
+c["+3 Minion Health per player Intelligence"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="BASE",value=3}}}},"   per player Intelligence "}
 c["+3 Minion Melee Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="ColdDamage",type="BASE",value=3}}}},nil}
 c["+3 Minion Melee Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="Damage",type="BASE",value=3}}}},nil}
 c["+3 Minion Melee Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="FireDamage",type="BASE",value=3}}}},nil}
@@ -6034,7 +6030,7 @@ c["+3 Throwing Attack Damage"]={{[1]={flags=0,keywordFlags=1024,name="Damage",ty
 c["+3 Throwing Attack Mana Cost"]={{[1]={flags=0,keywordFlags=1024,name="ManaCost",type="BASE",value=3}},"  Attack  "}
 c["+3 Throwing Damage"]={{[1]={flags=0,keywordFlags=1024,name="Damage",type="BASE",value=3}},nil}
 c["+3 Throwing Damage For Falcon"]={{[1]={flags=0,keywordFlags=1024,name="Damage",type="BASE",value=3}},"   For Falcon "}
-c["+3 Throwing Damage with Heartseeker Per 5 Dexterity"]={{[1]={[1]={div=5,stat="Dex",type="PerStat"},[2]={skillName="Heartseeker",type="SkillName"},flags=0,keywordFlags=1024,name="Damage",type="BASE",value=3}},"   with   "}
+c["+3 Throwing Damage with Heartseeker Per 5 Dexterity"]={{[1]={[1]={skillName="Heartseeker",type="SkillName"},flags=0,keywordFlags=1024,name="Damage",type="BASE",value=3}},"   with  Per 5 Dexterity "}
 c["+3 Throwing Void Damage"]={{[1]={flags=0,keywordFlags=1024,name="VoidDamage",type="BASE",value=3}},nil}
 c["+3 Vitality"]={{[1]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=3}},nil}
 c["+3 Ward Decay Threshold per Equipped Corrupted Idol"]={{[1]={[1]={type="Multiplier",var="EquippedCorruptedIdol"},flags=0,keywordFlags=0,name="WardDecayThreshold",type="BASE",value=3}},nil}
@@ -6049,7 +6045,7 @@ c["+3 random Totems teleported to your location after you use a traversal skill"
 c["+3 to Abyssal Echoes"]={{[1]={[1]={skillName="Abyssal Echoes",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=3}},nil}
 c["+3 to Acid Flask"]={{[1]={[1]={skillName="Acid Flask",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=3}},nil}
 c["+3 to Aerial Assault"]={{[1]={[1]={skillName="Aerial Assault",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=3}},nil}
-c["+3 to All Attributes"]={{[1]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=3},[2]={flags=0,keywordFlags=0,name="Str",type="BASE",value=3},[3]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=3},[4]={flags=0,keywordFlags=0,name="Int",type="BASE",value=3},[5]={flags=0,keywordFlags=0,name="Att",type="BASE",value=3}},nil}
+c["+3 to All Attributes"]={{[1]={flags=0,keywordFlags=0,name="Str",type="BASE",value=3},[2]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=3},[3]={flags=0,keywordFlags=0,name="Int",type="BASE",value=3},[4]={flags=0,keywordFlags=0,name="Att",type="BASE",value=3},[5]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=3}},nil}
 c["+3 to Anomaly"]={{[1]={[1]={skillName="Anomaly",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=3}},nil}
 c["+3 to Arcane Ascendance"]={{[1]={[1]={skillName="Arcane Ascendance",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=3}},nil}
 c["+3 to Assemble Abomination"]={{[1]={[1]={skillName="Assemble Abomination",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=3}},nil}
@@ -6277,7 +6273,7 @@ c["+3% Lightning Penetration per 5 Dexterity"]={{[1]={[1]={div=5,stat="Dex",type
 c["+3% Lightning Penetration with Electrify "]={{[1]={[1]={skillName="Electrify",type="SkillName"},flags=0,keywordFlags=0,name="LightningPenetration",type="BASE",value=3}},"  with  "}
 c["+3% Lightning Resistance"]={{[1]={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=3}},nil}
 c["+3% Locust Swarm Health Leech"]={{[1]={flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=3}}," Locust Swarm  "}
-c["+3% Mana Efficiency per player Attunement"]={{[1]={[1]={actor="parent",stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="Mana",type="BASE",value=3}},"  Efficiency  "}
+c["+3% Mana Efficiency per player Attunement"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=3}},"  Efficiency per player Attunement "}
 c["+3% Maximum Health Gained As Endurance Threshold with Bear"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=3}},"  Gained As Endurance Threshold with Bear "}
 c["+3% Melee Critical Strike Chance"]={{[1]={flags=0,keywordFlags=512,name="CritChance",type="BASE",value=3}},nil}
 c["+3% Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="MORE",value=3}},nil}
@@ -6309,9 +6305,9 @@ c["+3% Radius per Umbral Blade"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffec
 c["+3% Recalled Blades Hit Damage Per Bleed"]={{[1]={[1]={skillName="Bleed",type="SkillName"},flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=3}}," Recalled Blades   Per  "}
 c["+3% Reduced Bonus Damage Taken from Critical Strikes per Equipped Heretical Idol"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=3},notSupported=true},nil}
 c["+3% Rive Damage per Scrap Metal"]={{[1]={[1]={skillName="Rive",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=3}},"   per Scrap Metal "}
-c["+3% Shared Critical Strike Damage Leeched As Health"]={{[1]={flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=3}}," Shared Critical Strike   "}
-c["+3% Shared Elemental Resistance with a Shield"]={{[1]={flags=0,keywordFlags=0,name="FireResist",type="BASE",value=3},[2]={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=3},[3]={flags=0,keywordFlags=0,name="ColdResist",type="BASE",value=3}}," Shared  with a Shield "}
-c["+3% Shared Reduced Bonus Damage Taken From Crits"]={{[1]={flags=0,keywordFlags=0,name="DamageTaken",type="BASE",value=3}}," Shared Reduced Bonus  From Crits "}
+c["+3% Shared Critical Strike Damage Leeched As Health"]={{[1]={flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=3},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=3}}}}," Critical Strike   "}
+c["+3% Shared Elemental Resistance with a Shield"]={{[1]={flags=0,keywordFlags=0,name="FireResist",type="BASE",value=3},[2]={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=3},[3]={flags=0,keywordFlags=0,name="ColdResist",type="BASE",value=3},[4]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="FireResist",type="BASE",value=3}}},[5]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=3}}},[6]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="ColdResist",type="BASE",value=3}}}},"  with a Shield "}
+c["+3% Shared Reduced Bonus Damage Taken From Crits"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=3},[2]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=3}},nil}
 c["+3% Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=256,name="CritChance",type="BASE",value=3}},nil}
 c["+3% Third Strike Leech"]={{}," Third Strike Leech "}
 c["+3% Thorn Totem Cast Speed"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="BASE",value=3}}," Thorn Totem  "}
@@ -6336,14 +6332,15 @@ c["+30 Cone Width (Degrees)"]={{}," Cone Width (Degrees) "}
 c["+30 Damage Reflected to Attackers"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=30}},"  Reflected to Attackers "}
 c["+30 Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="BASE",value=30}},nil}
 c["+30 Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=30}},nil}
-c["+30 Health per player Strength"]={{[1]={[1]={actor="parent",stat="Str",type="PerStat"},flags=0,keywordFlags=0,name="Life",type="BASE",value=30}},nil}
+c["+30 Health per player Strength"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=30}},"  per player Strength "}
 c["+30 Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=30}},nil}
+c["+30 Melee Cold Damage when above 65% Health"]={{[1]={flags=0,keywordFlags=512,name="ColdDamage",type="BASE",value=30}},"   when above 65% Health "}
 c["+30 Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="BASE",value=30}},nil}
 c["+30 Melee Physical Damage"]={{[1]={flags=0,keywordFlags=512,name="PhysicalDamage",type="BASE",value=30}},nil}
 c["+30 Melee Physical Damage if wielding a Mace"]={{[1]={flags=0,keywordFlags=512,name="PhysicalDamage",type="BASE",value=30}},"   if wielding a Mace "}
 c["+30 Melee Void Damage"]={{[1]={flags=0,keywordFlags=512,name="VoidDamage",type="BASE",value=30}},nil}
-c["+30 Minion Health per player Attunement"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={actor="parent",stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="Life",type="BASE",value=30}}}},nil}
-c["+30 Minion Health per player Intelligence"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={actor="parent",stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="Life",type="BASE",value=30}}}},nil}
+c["+30 Minion Health per player Attunement"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="BASE",value=30}}}},"   per player Attunement "}
+c["+30 Minion Health per player Intelligence"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="BASE",value=30}}}},"   per player Intelligence "}
 c["+30 Overhealing from potions does not count towards triggering this effect Health Gained on Potion Use"]={{[1]={[1]={skillName="Healing",type="SkillName"},flags=0,keywordFlags=0,name="Ward",type="BASE",value=30}}," Over from potions does not count tos triggering this effect Health Gained on Potion Use "}
 c["+30 Spell Damage for Totems"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=30}},"   for Totems "}
 c["+30 Spell Physical Damage"]={{[1]={flags=0,keywordFlags=256,name="PhysicalDamage",type="BASE",value=30}},nil}
@@ -6390,8 +6387,8 @@ c["+30% Cold Penetration with Cold Invocations"]={{[1]={flags=0,keywordFlags=4,n
 c["+30% Cold Resistance"]={{[1]={flags=0,keywordFlags=0,name="ColdResist",type="BASE",value=30}},nil}
 c["+30% Companion Revival Speed"]={{}," Companion Revival Speed "}
 c["+30% Conscrated Ground Damage Against Ignited Enemies"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="Ignited"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=30}}," Conscrated Ground   "}
-c["+30% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cooldown is shared with sources of the exact same effect. Cold Damage"]={{[1]={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=4,name="Mana",type="BASE",value=30}}," Consumes  equal to 80% of 's mana cost. Cooldown is shared with sources of the exact same effect.  Damage "}
-c["+30% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cooldown is shared with sources of the exact same effect. Fire Damage"]={{[1]={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=8,name="Mana",type="BASE",value=30}}," Consumes  equal to 80% of 's mana cost. Cooldown is shared with sources of the exact same effect.  Damage "}
+c["+30% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cooldown is shared with sources of the exact same effect. Cold Damage"]={{[1]={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=4,name="Mana",type="BASE",value=30},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=4,name="Mana",type="BASE",value=30}}}}," Consumes  equal to 80% of 's mana cost. Cooldown is with sources of the exact same effect.  Damage "}
+c["+30% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cooldown is shared with sources of the exact same effect. Fire Damage"]={{[1]={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=8,name="Mana",type="BASE",value=30},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=8,name="Mana",type="BASE",value=30}}}}," Consumes  equal to 80% of 's mana cost. Cooldown is with sources of the exact same effect.  Damage "}
 c["+30% Crit Avoidance"]={{[1]={flags=0,keywordFlags=0,name="CritAvoidance",type="BASE",value=30}},nil}
 c["+30% Critical Multiplier"]={{[1]={flags=0,keywordFlags=0,name="CritMultiplier",type="BASE",value=30}},nil}
 c["+30% Critical Multiplier With Spear"]={{[1]={[1]={type="Condition",var="UsingSpear"},flags=0,keywordFlags=0,name="CritMultiplier",type="BASE",value=30}},nil}
@@ -6486,7 +6483,7 @@ c["+30% Recalled Blades Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",typ
 c["+30% Recalled Blades Slow Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Slow",type="BASE",value=30}}," Recalled Blades  "}
 c["+30% Scorpion Venom Nova Area"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="BASE",value=30}}," Scorpion Venom Nova  "}
 c["+30% Screech Area"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="BASE",value=30}}," Screech  "}
-c["+30% Shared Freeze Rate Multiplier"]={{[1]={flags=0,keywordFlags=0,name="FreezeRateMultiplier",type="BASE",value=30}}," Shared  "}
+c["+30% Shared Freeze Rate Multiplier"]={{[1]={flags=0,keywordFlags=0,name="FreezeRateMultiplier",type="BASE",value=30},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="FreezeRateMultiplier",type="BASE",value=30}}}},nil}
 c["+30% Shields Width"]={{}," Shields Width "}
 c["+30% Shock Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Shock",type="BASE",value=30}},nil}
 c["+30% Size"]={{}," Size "}
@@ -6877,6 +6874,7 @@ c["+36% Mana efficiency for Synchronized Strike"]={{[1]={[1]={skillName="Synchro
 c["+36% Necrotic Resistance"]={{[1]={flags=0,keywordFlags=0,name="NecroticResist",type="BASE",value=36}},nil}
 c["+36% Throwing Damage"]={{[1]={flags=0,keywordFlags=1024,name="Damage",type="MORE",value=36}},nil}
 c["+36% Ward Retention"]={{[1]={flags=0,keywordFlags=0,name="WardRetention",type="BASE",value=36}},nil}
+c["+36% increased Throwing Damage"]={{[1]={flags=0,keywordFlags=1024,name="Damage",type="INC",value=36}},nil}
 c["+360 Block Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="BlockEffectiveness",type="BASE",value=360}},nil}
 c["+360 Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="BASE",value=360}},nil}
 c["+360 Dodge Rating if you have been hit recently"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=360},notSupported=true},nil}
@@ -6920,7 +6918,6 @@ c["+37% Poison Resistance"]={{[1]={flags=0,keywordFlags=0,name="PoisonResist",ty
 c["+37% Recurve Chance with Heartseeker"]={{}," Recurve Chance with  "}
 c["+37% Void Resistance"]={{[1]={flags=0,keywordFlags=0,name="VoidResist",type="BASE",value=37}},nil}
 c["+37% chance to throw a Burning Dagger when you use a melee fire attack and hit at least one enemy, doubled for Dancing Strikes (up to 4 times per second)"]={{}," to throw a  when you use a   attack and  at least one enemy, doubled for Dancing Strikes (up to 4 times per second) "}
-c["+37% increased Throwing Damage"]={{[1]={flags=0,keywordFlags=1024,name="Damage",type="INC",value=37}},nil}
 c["+372 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=372}},nil}
 c["+375 Block Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="BlockEffectiveness",type="BASE",value=375}},nil}
 c["+376 Dodge Rating while using Evade"]={{[1]={[1]={type="Condition",var="UsingEvade"},flags=0,keywordFlags=0,name="Evasion",type="BASE",value=376}},nil}
@@ -6964,8 +6961,8 @@ c["+38% Chance to cast Fire Aura on Kill with Fire Skills (1 second cooldown)"]=
 c["+38% Chance to inflict Bleed on Hit"]={{[1]={flags=8388608,keywordFlags=0,name="BleedChance",type="BASE",value=38}},nil}
 c["+38% Chance to inflict Bleed on Minion Hit"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=8388608,keywordFlags=0,name="BleedChance",type="BASE",value=38}}}},"  on   "}
 c["+38% Cold Resistance"]={{[1]={flags=0,keywordFlags=0,name="ColdResist",type="BASE",value=38}},nil}
-c["+38% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cooldown is shared with sources of the exact same effect. Cold Damage"]={{[1]={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=4,name="Mana",type="BASE",value=38}}," Consumes  equal to 80% of 's mana cost. Cooldown is shared with sources of the exact same effect.  Damage "}
-c["+38% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cooldown is shared with sources of the exact same effect. Fire Damage"]={{[1]={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=8,name="Mana",type="BASE",value=38}}," Consumes  equal to 80% of 's mana cost. Cooldown is shared with sources of the exact same effect.  Damage "}
+c["+38% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cooldown is shared with sources of the exact same effect. Cold Damage"]={{[1]={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=4,name="Mana",type="BASE",value=38},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=4,name="Mana",type="BASE",value=38}}}}," Consumes  equal to 80% of 's mana cost. Cooldown is with sources of the exact same effect.  Damage "}
+c["+38% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cooldown is shared with sources of the exact same effect. Fire Damage"]={{[1]={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=8,name="Mana",type="BASE",value=38},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=8,name="Mana",type="BASE",value=38}}}}," Consumes  equal to 80% of 's mana cost. Cooldown is with sources of the exact same effect.  Damage "}
 c["+38% Critical Strike Avoidance"]={{[1]={flags=0,keywordFlags=0,name="CritAvoidance",type="BASE",value=38}},nil}
 c["+38% Effect of Weaver Enchantment Affixes for Idols in Refracted Slots"]={{}," Effect of Weaver Enchantment Affixes for Idols in Refracted Slots "}
 c["+38% Elemental Resistance"]={{[1]={flags=0,keywordFlags=0,name="FireResist",type="BASE",value=38},[2]={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=38},[3]={flags=0,keywordFlags=0,name="ColdResist",type="BASE",value=38}},nil}
@@ -7123,10 +7120,8 @@ c["+4 Ward per second per Active Maelstrom"]={{[1]={[1]={type="Multiplier",var="
 c["+4 to Abyssal Echoes"]={{[1]={[1]={skillName="Abyssal Echoes",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=4}},nil}
 c["+4 to Acid Flask"]={{[1]={[1]={skillName="Acid Flask",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=4}},nil}
 c["+4 to Aerial Assault"]={{[1]={[1]={skillName="Aerial Assault",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=4}},nil}
-c["+4 to All Attributes"]={{[1]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=4},[2]={flags=0,keywordFlags=0,name="Str",type="BASE",value=4},[3]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=4},[4]={flags=0,keywordFlags=0,name="Int",type="BASE",value=4},[5]={flags=0,keywordFlags=0,name="Att",type="BASE",value=4}},nil}
-c["+4 to All Attributes per Complete Set"]={{[1]={[1]={type="Multiplier",var="CompleteSetCount"},flags=0,keywordFlags=0,name="Vit",type="BASE",value=4},[2]={[1]={type="Multiplier",var="CompleteSetCount"},flags=0,keywordFlags=0,name="Str",type="BASE",value=4},[3]={[1]={type="Multiplier",var="CompleteSetCount"},flags=0,keywordFlags=0,name="Dex",type="BASE",value=4},[4]={[1]={type="Multiplier",var="CompleteSetCount"},flags=0,keywordFlags=0,name="Int",type="BASE",value=4},[5]={[1]={type="Multiplier",var="CompleteSetCount"},flags=0,keywordFlags=0,name="Att",type="BASE",value=4}},nil}
-c["+1 to All Skills per Complete Set"]={{[1]={[1]={type="Multiplier",var="CompleteSetCount"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}},nil}
-c["Counts as a part of every equipped item set"]={{[1]={flags=0,keywordFlags=0,name="CountsAsEveryItemSet",type="FLAG",value=true}},nil}
+c["+4 to All Attributes"]={{[1]={flags=0,keywordFlags=0,name="Str",type="BASE",value=4},[2]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=4},[3]={flags=0,keywordFlags=0,name="Int",type="BASE",value=4},[4]={flags=0,keywordFlags=0,name="Att",type="BASE",value=4},[5]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=4}},nil}
+c["+4 to All Attributes per Complete Set"]={{[1]={[1]={type="Multiplier",var="CompleteSetCount"},flags=0,keywordFlags=0,name="Str",type="BASE",value=4},[2]={[1]={type="Multiplier",var="CompleteSetCount"},flags=0,keywordFlags=0,name="Dex",type="BASE",value=4},[3]={[1]={type="Multiplier",var="CompleteSetCount"},flags=0,keywordFlags=0,name="Int",type="BASE",value=4},[4]={[1]={type="Multiplier",var="CompleteSetCount"},flags=0,keywordFlags=0,name="Att",type="BASE",value=4},[5]={[1]={type="Multiplier",var="CompleteSetCount"},flags=0,keywordFlags=0,name="Vit",type="BASE",value=4}},nil}
 c["+4 to Anomaly"]={{[1]={[1]={skillName="Anomaly",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=4}},nil}
 c["+4 to Arcane Ascendance"]={{[1]={[1]={skillName="Arcane Ascendance",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=4}},nil}
 c["+4 to Assemble Abomination"]={{[1]={[1]={skillName="Assemble Abomination",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=4}},nil}
@@ -7265,7 +7260,7 @@ c["+4% Adds to your chance to block. Blocked hits deal less damage depending on 
 c["+4% Adds to your maximum number of potions. Potions are displayed next to your health globe, and can be consumed to gain health (by using the 1 key by default). Missing Health gained as Ward on Potion Use"]={{[1]={[1]={skillName="Default",type="SkillName"},flags=0,keywordFlags=0,name="Life",type="BASE",value=4}}," Adds to your maximum number of potions. Potions are displayed next to your  globe, and can be consumed to gain health (by using the 1 key by ). Missing Health gained as Ward on Potion Use "}
 c["+4% All your hits have a chance to stun if they deal enough damage. Increased stun chance increases that chance. Damage to Stunned Enemies - more Multiplicative with other modifiers"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="Stunned"},flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=4}}," All your s have a chance to stun if they deal enough . Increased stun chance increases that chance. Damage  - more Multiplicative with other modifiers "}
 c["+4% Ancestral Sabertooth Chance"]={{}," Ancestral Sabertooth Chance "}
-c["+4% Ancestral Sabertooth Duration per Attunement"]={{[1]={[1]={stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="Duration",type="MORE",value=4}}," Ancestral Sabertooth   "}
+c["+4% Ancestral Sabertooth Duration per Attunement"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="MORE",value=4}}," Ancestral Sabertooth  per Attunement "}
 c["+4% Armor Shred Chance Per Strength"]={{[1]={[1]={stat="Str",type="PerStat"},flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_ArmourShred",type="BASE",value=4}},nil}
 c["+4% Armor Shred Effect Per Strength"]={{[1]={[1]={stat="Str",type="PerStat"},flags=0,keywordFlags=0,name="ArmorShredEffect",type="BASE",value=4}},nil}
 c["+4% Armour Shred Effect per Dexterity"]={{[1]={[1]={stat="Dex",type="PerStat"},flags=0,keywordFlags=0,name="ArmorShredEffect",type="BASE",value=4}},nil}
@@ -7404,12 +7399,12 @@ c["+4% Void Penetration"]={{[1]={flags=0,keywordFlags=0,name="VoidPenetration",t
 c["+4% Void Resistance"]={{[1]={flags=0,keywordFlags=0,name="VoidResist",type="BASE",value=4}},nil}
 c["+4% Wave of Death Critical Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="BASE",value=4}}," Wave of Death  "}
 c["+4% Wolves And Bear Base Crit Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="BASE",value=4}}," Wolves And Bear Base  "}
-c["+4% chance to gain Frenzy for 3 seconds when you Echo an ability"]={{[1]={flags=0,keywordFlags=0,name="Condition:Frenzy",type="FLAG",value=true}},"  when you Echo an ability "}
-c["+4% to All Resistances per Complete Set"]={{[1]={[1]={type="Multiplier",var="CompleteSetCount"},flags=0,keywordFlags=0,name="FireResist",type="BASE",value=4},[2]={[1]={type="Multiplier",var="CompleteSetCount"},flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=4},[3]={[1]={type="Multiplier",var="CompleteSetCount"},flags=0,keywordFlags=0,name="ColdResist",type="BASE",value=4},[4]={[1]={type="Multiplier",var="CompleteSetCount"},flags=0,keywordFlags=0,name="PhysicalResist",type="BASE",value=4},[5]={[1]={type="Multiplier",var="CompleteSetCount"},flags=0,keywordFlags=0,name="PoisonResist",type="BASE",value=4},[6]={[1]={type="Multiplier",var="CompleteSetCount"},flags=0,keywordFlags=0,name="NecroticResist",type="BASE",value=4},[7]={[1]={type="Multiplier",var="CompleteSetCount"},flags=0,keywordFlags=0,name="VoidResist",type="BASE",value=4}},nil}
+c["+4% chance to gain Frenzy for 3 seconds when you Echo an ability"]={{[1]={flags=0,keywordFlags=0,name="ChanceToGainFrenzyOnEcho",type="BASE",value=4},[2]={flags=0,keywordFlags=0,name="FrenzyDuration",type="BASE",value=3},notSupported=true},nil}
 c["+4% increased Cooldown Recovery Speed for Evade"]={{[1]={flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=4}},"  for Evade "}
 c["+4% increased Health per Equipped Huge Idol"]={{[1]={[1]={type="Multiplier",var="EquippedHugeIdol"},flags=0,keywordFlags=0,name="Life",type="INC",value=4}},nil}
 c["+4% increased Mana Regen per Equipped Ornate Idol"]={{[1]={[1]={type="Multiplier",var="EquippedOrnateIdol"},flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=4}},nil}
-c["+4.5 to All Attributes"]={{[1]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=4.5},[2]={flags=0,keywordFlags=0,name="Str",type="BASE",value=4.5},[3]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=4.5},[4]={flags=0,keywordFlags=0,name="Int",type="BASE",value=4.5},[5]={flags=0,keywordFlags=0,name="Att",type="BASE",value=4.5}},nil}
+c["+4% to All Resistances per Complete Set"]={{[1]={[1]={type="Multiplier",var="CompleteSetCount"},flags=0,keywordFlags=0,name="FireResist",type="BASE",value=4},[2]={[1]={type="Multiplier",var="CompleteSetCount"},flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=4},[3]={[1]={type="Multiplier",var="CompleteSetCount"},flags=0,keywordFlags=0,name="ColdResist",type="BASE",value=4},[4]={[1]={type="Multiplier",var="CompleteSetCount"},flags=0,keywordFlags=0,name="PhysicalResist",type="BASE",value=4},[5]={[1]={type="Multiplier",var="CompleteSetCount"},flags=0,keywordFlags=0,name="PoisonResist",type="BASE",value=4},[6]={[1]={type="Multiplier",var="CompleteSetCount"},flags=0,keywordFlags=0,name="NecroticResist",type="BASE",value=4},[7]={[1]={type="Multiplier",var="CompleteSetCount"},flags=0,keywordFlags=0,name="VoidResist",type="BASE",value=4}},nil}
+c["+4.5 to All Attributes"]={{[1]={flags=0,keywordFlags=0,name="Str",type="BASE",value=4.5},[2]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=4.5},[3]={flags=0,keywordFlags=0,name="Int",type="BASE",value=4.5},[4]={flags=0,keywordFlags=0,name="Att",type="BASE",value=4.5},[5]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=4.5}},nil}
 c["+40 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=40}},nil}
 c["+40 Block Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="BlockEffectiveness",type="BASE",value=40}},nil}
 c["+40 Bow Cold Damage"]={{[1]={flags=0,keywordFlags=2048,name="ColdDamage",type="BASE",value=40}},nil}
@@ -7763,6 +7758,8 @@ c["+45% Physical Penetration with Shadow Daggers "]={{[1]={[1]={skillName="Shado
 c["+45% Poison Resistance"]={{[1]={flags=0,keywordFlags=0,name="PoisonResist",type="BASE",value=45}},nil}
 c["+45% Ward Retention"]={{[1]={flags=0,keywordFlags=0,name="WardRetention",type="BASE",value=45}},nil}
 c["+45% chance to gain Haste for 5 seconds after you Block"]={{},"Haste  after you Block "}
+c["+45% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=45}},nil}
+c["+45% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=45}},nil}
 c["+450 Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="BASE",value=450}},nil}
 c["+46 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=46}},nil}
 c["+46 Armor per Rah Rune"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=46}},"  per Rah Rune "}
@@ -7791,16 +7788,14 @@ c["+46% Chance to apply Frailty on Melee Hit"]={{[1]={flags=8389120,keywordFlags
 c["+46% Chance to cast Fire Aura on Crit (1 second cooldown)"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=46},notSupported=true},nil}
 c["+46% Chance to cast Fire Aura when Hit (1 second cooldown)"]={{}," to cast  when  (1 second cooldown) "}
 c["+46% Chance to gain a stack of Dusk Shroud when you consume a Shadow"]={{},"a stack of Dusk Shroud when you consume a Shadow "}
-c["+46% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cooldown is shared with sources of the exact same effect. Cold Damage"]={{[1]={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=4,name="Mana",type="BASE",value=46}}," Consumes  equal to 80% of 's mana cost. Cooldown is shared with sources of the exact same effect.  Damage "}
-c["+46% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cooldown is shared with sources of the exact same effect. Fire Damage"]={{[1]={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=8,name="Mana",type="BASE",value=46}}," Consumes  equal to 80% of 's mana cost. Cooldown is shared with sources of the exact same effect.  Damage "}
+c["+46% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cooldown is shared with sources of the exact same effect. Cold Damage"]={{[1]={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=4,name="Mana",type="BASE",value=46},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=4,name="Mana",type="BASE",value=46}}}}," Consumes  equal to 80% of 's mana cost. Cooldown is with sources of the exact same effect.  Damage "}
+c["+46% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cooldown is shared with sources of the exact same effect. Fire Damage"]={{[1]={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=8,name="Mana",type="BASE",value=46},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=8,name="Mana",type="BASE",value=46}}}}," Consumes  equal to 80% of 's mana cost. Cooldown is with sources of the exact same effect.  Damage "}
 c["+46% Critical Strike Multiplier"]={{[1]={flags=0,keywordFlags=0,name="CritMultiplier",type="BASE",value=46}},nil}
 c["+46% Lightning Critical Strike Multiplier"]={{[1]={flags=0,keywordFlags=2,name="CritMultiplier",type="BASE",value=46}},nil}
 c["+46% Mana Spent Gained as Ward"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=46}},"  Spent Gained as Ward "}
 c["+46% Minion Physical Resistance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="PhysicalResist",type="BASE",value=46}}}},nil}
 c["+46% Physical Resistance"]={{[1]={flags=0,keywordFlags=0,name="PhysicalResist",type="BASE",value=46}},nil}
 c["+46% Recurve Chance with Heartseeker"]={{}," Recurve Chance with  "}
-c["+46% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=46}},nil}
-c["+46% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=46}},nil}
 c["+460 Block Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="BlockEffectiveness",type="BASE",value=460}},nil}
 c["+463 Block Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="BlockEffectiveness",type="BASE",value=463}},nil}
 c["+464 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=464}},nil}
@@ -7931,7 +7926,7 @@ c["+5 Health Regen From Symbols Of Hope"]={{[1]={[1]={skillName="Symbols of Hope
 c["+5 Health Regen per Forged Weapon"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=5},notSupported=true},nil}
 c["+5 Health Regenerated Per Second"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="BASE",value=5}}," erated Per Second "}
 c["+5 Health Regeneration per Summoned Bee"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="BASE",value=5}},"  per Summoned Bee "}
-c["+5 Health per Attunement"]={{[1]={[1]={stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="Life",type="BASE",value=5}},nil}
+c["+5 Health per Attunement"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=5}},"  per Attunement "}
 c["+5 Health per Equipped Heretical Idol"]={{[1]={[1]={type="Multiplier",var="EquippedHereticalIdol"},flags=0,keywordFlags=0,name="Life",type="BASE",value=5}},nil}
 c["+5 Health per Equipped Omen Idol"]={{[1]={[1]={type="Multiplier",var="EquippedOmenIdol"},flags=0,keywordFlags=0,name="Life",type="BASE",value=5}},nil}
 c["+5 Health per Idol in a Refracted Slot"]={{[1]={[1]={type="Multiplier",var="IdolInRefractedSlot"},flags=0,keywordFlags=0,name="Life",type="BASE",value=5}},nil}
@@ -7949,7 +7944,7 @@ c["+5 Mana Gain"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=5}
 c["+5 Mana Gained When you directly cast Smite"]={{[1]={[1]={skillName="Smite",type="SkillName"},flags=0,keywordFlags=0,name="ManaGainOnCast_Smite",source="",type="BASE",value=5},notSupported=true},nil}
 c["+5 Mana Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="ManaOnPotionUse",type="BASE",value=5}},nil}
 c["+5 Mana from Mana Orbs while Out Of Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=5}},"  from Mana Orbs while Out Of Mana "}
-c["+5 Mana per Attunement"]={{[1]={[1]={stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="Mana",type="BASE",value=5}},nil}
+c["+5 Mana per Attunement"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=5}},"  per Attunement "}
 c["+5 Mana per Equipped Corrupted Idol"]={{[1]={[1]={type="Multiplier",var="EquippedCorruptedIdol"},flags=0,keywordFlags=0,name="Mana",type="BASE",value=5}},nil}
 c["+5 Mana per Idol in a Refracted Slot"]={{[1]={[1]={type="Multiplier",var="IdolInRefractedSlot"},flags=0,keywordFlags=0,name="Mana",type="BASE",value=5}},nil}
 c["+5 Maximum Locusts"]={{}," Maximum Locusts "}
@@ -7966,8 +7961,8 @@ c["+5 Melee Physical Damage"]={{[1]={flags=0,keywordFlags=512,name="PhysicalDama
 c["+5 Melee Void Damage"]={{[1]={flags=0,keywordFlags=512,name="VoidDamage",type="BASE",value=5}},nil}
 c["+5 Minion Bow Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=2048,name="Damage",type="BASE",value=5}}}},nil}
 c["+5 Minion Health Regen"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="LifeRegen",type="BASE",value=5}}}},nil}
-c["+5 Minion Health per player Attunement"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={actor="parent",stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="Life",type="BASE",value=5}}}},nil}
-c["+5 Minion Health per player Strength"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={actor="parent",stat="Str",type="PerStat"},flags=0,keywordFlags=0,name="Life",type="BASE",value=5}}}},nil}
+c["+5 Minion Health per player Attunement"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="BASE",value=5}}}},"   per player Attunement "}
+c["+5 Minion Health per player Strength"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="BASE",value=5}}}},"   per player Strength "}
 c["+5 Minion Melee Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="ColdDamage",type="BASE",value=5}}}},nil}
 c["+5 Minion Melee Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="Damage",type="BASE",value=5}}}},nil}
 c["+5 Minion Melee Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="FireDamage",type="BASE",value=5}}}},nil}
@@ -7979,7 +7974,7 @@ c["+5 Potion Slots"]={{}," Potion Slots "}
 c["+5 Rage Gain On Heal"]={{}," Rage Gain On Heal "}
 c["+5 Seconds of Frenzy granted to you and your Minions when Enemy damage leaves you at Low Health"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=5},notSupported=true},nil}
 c["+5 Seconds of Haste Duration and Full Recovery when damage leaves you below 30% health (20 second cooldown)"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=5},notSupported=true},nil}
-c["+5 Shared Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="BASE",value=5}}," Shared  "}
+c["+5 Shared Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="BASE",value=5},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Evasion",type="BASE",value=5}}}},nil}
 c["+5 Spell Cold Damage"]={{[1]={flags=0,keywordFlags=256,name="ColdDamage",type="BASE",value=5}},nil}
 c["+5 Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=5}},nil}
 c["+5 Spell Damage for Storm Crows"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=5}},"   for Storm Crows "}
@@ -7998,14 +7993,14 @@ c["+5 Vitality"]={{[1]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=5}},
 c["+5 Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="BASE",value=5}},nil}
 c["+5 Ward Decay Threshold Per Int"]={{[1]={[1]={stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="WardDecayThreshold",type="BASE",value=5}},nil}
 c["+5 Ward Decay Threshold per Equipped Corrupted Idol"]={{[1]={[1]={type="Multiplier",var="EquippedCorruptedIdol"},flags=0,keywordFlags=0,name="WardDecayThreshold",type="BASE",value=5}},nil}
-c["+5 Ward Gained On Block"]={{[1]={[1]={type="Condition",var="Blocking"},flags=0,keywordFlags=0,name="Ward",type="BASE",value=5}},"  Gained  "}
+c["+5 Ward Gained On Block"]={{[1]={flags=0,keywordFlags=0,name="WardOnBlock",type="BASE",value=5}},nil}
 c["+5 Ward On Crit"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=5}},"  On Crit "}
 c["+5 Ward On Spirit Thorns Cast"]={{[1]={[1]={skillName="Spirit Thorns",type="SkillName"},flags=0,keywordFlags=0,name="Ward",type="BASE",value=5}},"  On  Cast "}
 c["+5 Ward Per Second"]={{[1]={flags=0,keywordFlags=0,name="WardPerSecond",type="BASE",value=5}},nil}
 c["+5 Ward gained when you use Evade"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=5},notSupported=true},nil}
 c["+5 Ward per Second"]={{[1]={flags=0,keywordFlags=0,name="WardPerSecond",type="BASE",value=5}},nil}
 c["+5 Ward per Second per Equipped Heretical Idol"]={{[1]={[1]={type="Multiplier",var="EquippedHereticalIdol"},flags=0,keywordFlags=0,name="WardPerSecond",type="BASE",value=5}},nil}
-c["+5 to All Attributes"]={{[1]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=5},[2]={flags=0,keywordFlags=0,name="Str",type="BASE",value=5},[3]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=5},[4]={flags=0,keywordFlags=0,name="Int",type="BASE",value=5},[5]={flags=0,keywordFlags=0,name="Att",type="BASE",value=5}},nil}
+c["+5 to All Attributes"]={{[1]={flags=0,keywordFlags=0,name="Str",type="BASE",value=5},[2]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=5},[3]={flags=0,keywordFlags=0,name="Int",type="BASE",value=5},[4]={flags=0,keywordFlags=0,name="Att",type="BASE",value=5},[5]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=5}},nil}
 c["+5 to Elemental Nova"]={{[1]={[1]={skillName="Elemental Nova",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=5}},nil}
 c["+5% Added Critical Multiplier Per Second"]={{[1]={flags=0,keywordFlags=0,name="CritMultiplier",type="BASE",value=5}},"  Per Second "}
 c["+5% Added Critical Strike Chance Per Second"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=5},notSupported=true},nil}
@@ -8123,7 +8118,7 @@ c["+5% Haste Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerO
 c["+5% Haste Chance on Kill"]={{[1]={[1]={type="Condition",var="KilledRecently"},flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Haste",type="BASE",value=5}},nil}
 c["+5% Haste Chance when Hitting Boss or Rare"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Haste",type="BASE",value=5}},"  when ting Boss or Rare "}
 c["+5% Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=5}},nil}
-c["+5% Health Restored Per Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="Life",type="BASE",value=5}},"  Restored  "}
+c["+5% Health Restored Per Intelligence"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=5}},"  Restored Per Intelligence "}
 c["+5% Hit Damage"]={{[1]={flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=5}},nil}
 c["+5% Hit Damage Per Time Rot"]={{[1]={[1]={skillName="Time Rot",type="SkillName"},flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=5}},"   Per  "}
 c["+5% Hit Damage To High Health Enemies"]={{[1]={flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=5}},"   To High Health Enemies "}
@@ -8187,9 +8182,9 @@ c["+5% Reduced Bonus Damage Taken from Critical Strikes per Equipped Heretical I
 c["+5% Roar Grants Damage Taken Redirected to Highest Health Minion"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="DamageTaken",type="BASE",value=5}}}}," Roar Grants  Redirected to Highest Health  "}
 c["+5% Roots Damage Every 0.25 Seconds"]={{[1]={[1]={skillName="Root",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=5}}," s  Every 0.25 Seconds "}
 c["+5% Shadow Chance"]={{}," Shadow Chance "}
-c["+5% Shared Chill Chance On Hit"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Chill",type="BASE",value=5}}," Shared   "}
-c["+5% Shared Lightning Resistance"]={{[1]={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=5}}," Shared  "}
-c["+5% Shared Shock Chance On Hit"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Shock",type="BASE",value=5}}," Shared   "}
+c["+5% Shared Chill Chance On Hit"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Chill",type="BASE",value=5},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Chill",type="BASE",value=5}}}},nil}
+c["+5% Shared Lightning Resistance"]={{[1]={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=5},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=5}}}},nil}
+c["+5% Shared Shock Chance On Hit"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Shock",type="BASE",value=5},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Shock",type="BASE",value=5}}}},nil}
 c["+5% Shock Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Shock",type="BASE",value=5}},nil}
 c["+5% Shock Chance With Lightning Skills"]={{[1]={flags=8388608,keywordFlags=2,name="ChanceToTriggerOnHit_Ailment_Shock",type="BASE",value=5}},nil}
 c["+5% Shock Duration"]={{[1]={[1]={skillName="Shock",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="MORE",value=5}},nil}
@@ -8197,7 +8192,7 @@ c["+5% Shrapnel Frequency"]={{}," Shrapnel Frequency "}
 c["+5% Shrapnel Speed and Range"]={{}," Shrapnel Speed and Range "}
 c["+5% Spell Critical Multiplier"]={{[1]={flags=0,keywordFlags=256,name="CritMultiplier",type="BASE",value=5}},nil}
 c["+5% Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=256,name="CritChance",type="BASE",value=5}},nil}
-c["+5% Spell Damage per 100 Maximum Mana"]={{[1]={[1]={div=100,stat="Mana",type="PerStat"},flags=0,keywordFlags=256,name="Damage",type="MORE",value=5}},nil}
+c["+5% Spell Damage per 100 Maximum Mana"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="MORE",value=5}},"   per 100 Maximum Mana "}
 c["+5% Throwing Attack Bleed Chance"]={{[1]={flags=8388608,keywordFlags=1024,name="ChanceToTriggerOnHit_Ailment_Bleed",type="BASE",value=5}},"  Attack  "}
 c["+5% Unknown Stat 1"]={{}," Unknown Stat 1 "}
 c["+5% Upheaval Chance on Attack"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Upheaval",type="BASE",value=5}},"  on Attack "}
@@ -8414,7 +8409,7 @@ c["+52% Increased Healing Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="He
 c["+52% Increased damage with Blood Splatter"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=52}},"  with Blood Splatter "}
 c["+52% Increased damage with Rip Blood"]={{[1]={[1]={skillName="Rip Blood",type="SkillName"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=52}},nil}
 c["+52% Increases the damage dealt by your critical strikes Critical Strike Multiplier against Frozen Enemies"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="Frozen"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=52}}," Increases the  dealt by your critical strikes Critical Strike Multiplier  "}
-c["+525 Armor While Channelling"]={{[1]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="Armour",type="BASE",value=525}},nil}
+c["+525 Armor While Channelling"]={{[1]={flags=0,keywordFlags=0,name="ArmourWhileChannelling",type="BASE",value=525}},nil}
 c["+525 Block Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="BlockEffectiveness",type="BASE",value=525}},nil}
 c["+53 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=53}},nil}
 c["+53 Each point of strength increases armor by 4% and improves skills that rely the raw strength of you and your companions Armor"]={{[1]={flags=0,keywordFlags=0,name="Str",type="BASE",value=53}}," Each point of  increases armor by 4% and improves skills that rely the raw strength of you and your companions Armor "}
@@ -8624,7 +8619,7 @@ c["+6 Bzzzz Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="B
 c["+6 Cold Damage with Spells and Attacks per Attached Infernal Shade for Minions affected by Dread Shade"]={{[1]={[1]={stat="Att",type="PerStat"},[2]={scope="minion",type="Scope"},[3]={skillName="Infernal Shade",type="SkillName"},flags=0,keywordFlags=256,name="ColdDamage",type="BASE",value=6}},"  with s and Attacks ached   affected by Dread Shade "}
 c["+6 Cooldown"]={{}," Cooldown "}
 c["+6 Cooldown (seconds)"]={{}," Cooldown (seconds) "}
-c["+6 Damage Reflected Per Vitality"]={{[1]={[1]={stat="Vit",type="PerStat"},flags=0,keywordFlags=0,name="Damage",type="BASE",value=6}},"  Reflected  "}
+c["+6 Damage Reflected Per Vitality"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=6}},"  Reflected Per Vitality "}
 c["+6 Dexterity"]={{[1]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=6}},nil}
 c["+6 Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="BASE",value=6}},nil}
 c["+6 Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="BASE",value=6}},nil}
@@ -8652,7 +8647,7 @@ c["+6 Melee Physical Damage with Swarm Strike"]={{[1]={flags=0,keywordFlags=512,
 c["+6 Melee Void Damage"]={{[1]={flags=0,keywordFlags=512,name="VoidDamage",type="BASE",value=6}},nil}
 c["+6 Minion Bow Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=2048,name="Damage",type="BASE",value=6}}}},nil}
 c["+6 Minion Health Regen Per Second"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="LifeRegen",type="BASE",value=6}}}},"   Per Second "}
-c["+6 Minion Health per player Attunement"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={actor="parent",stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="Life",type="BASE",value=6}}}},nil}
+c["+6 Minion Health per player Attunement"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="BASE",value=6}}}},"   per player Attunement "}
 c["+6 Minion Melee Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="Damage",type="BASE",value=6}}}},nil}
 c["+6 Minion Melee Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="PhysicalDamage",type="BASE",value=6}}}},nil}
 c["+6 Minion Spell Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="Damage",type="BASE",value=6}}}},nil}
@@ -8686,7 +8681,7 @@ c["+6 Ward per Second"]={{[1]={flags=0,keywordFlags=0,name="WardPerSecond",type=
 c["+6 to Abyssal Echoes"]={{[1]={[1]={skillName="Abyssal Echoes",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=6}},nil}
 c["+6 to Acid Flask"]={{[1]={[1]={skillName="Acid Flask",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=6}},nil}
 c["+6 to Aerial Assault"]={{[1]={[1]={skillName="Aerial Assault",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=6}},nil}
-c["+6 to All Attributes"]={{[1]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=6},[2]={flags=0,keywordFlags=0,name="Str",type="BASE",value=6},[3]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=6},[4]={flags=0,keywordFlags=0,name="Int",type="BASE",value=6},[5]={flags=0,keywordFlags=0,name="Att",type="BASE",value=6}},nil}
+c["+6 to All Attributes"]={{[1]={flags=0,keywordFlags=0,name="Str",type="BASE",value=6},[2]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=6},[3]={flags=0,keywordFlags=0,name="Int",type="BASE",value=6},[4]={flags=0,keywordFlags=0,name="Att",type="BASE",value=6},[5]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=6}},nil}
 c["+6 to Anomaly"]={{[1]={[1]={skillName="Anomaly",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=6}},nil}
 c["+6 to Arcane Ascendance"]={{[1]={[1]={skillName="Arcane Ascendance",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=6}},nil}
 c["+6 to Assemble Abomination"]={{[1]={[1]={skillName="Assemble Abomination",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=6}},nil}
@@ -9168,7 +9163,7 @@ c["+7 Effective Endurance Threshold per 10 Missing Mana"]={{[1]={flags=0,keyword
 c["+7 Endurance Threshold Per 2 Attunement"]={{[1]={[1]={div=2,stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="EnduranceThreshold",type="BASE",value=7}},nil}
 c["+7 Flame Reave Mana Cost"]={{[1]={[1]={skillName="Flame Reave",type="SkillName"},flags=0,keywordFlags=0,name="ManaCost",type="BASE",value=7}},nil}
 c["+7 Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=7}},nil}
-c["+7 Health Gain On Kill"]={{[1]={[1]={type="Condition",var="KilledRecently"},flags=0,keywordFlags=0,name="Life",type="BASE",value=7}},"  Gain  "}
+c["+7 Health Gain On Kill"]={{[1]={flags=0,keywordFlags=0,name="LifeOnKill",type="BASE",value=7}},nil}
 c["+7 Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="BASE",value=7}},nil}
 c["+7 Health per Equipped Heretical Idol"]={{[1]={[1]={type="Multiplier",var="EquippedHereticalIdol"},flags=0,keywordFlags=0,name="Life",type="BASE",value=7}},nil}
 c["+7 Health per Equipped Omen Idol"]={{[1]={[1]={type="Multiplier",var="EquippedOmenIdol"},flags=0,keywordFlags=0,name="Life",type="BASE",value=7}},nil}
@@ -9219,7 +9214,7 @@ c["+7 Ward Gained"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=
 c["+7 Ward per Second"]={{[1]={flags=0,keywordFlags=0,name="WardPerSecond",type="BASE",value=7}},nil}
 c["+7 Ward per Second per Equipped Heretical Idol"]={{[1]={[1]={type="Multiplier",var="EquippedHereticalIdol"},flags=0,keywordFlags=0,name="WardPerSecond",type="BASE",value=7}},nil}
 c["+7 Ward per second per Active Maelstrom"]={{[1]={[1]={type="Multiplier",var="ActiveMaelstrom"},flags=0,keywordFlags=0,name="WardPerSecond",type="BASE",value=7}},nil}
-c["+7 to All Attributes"]={{[1]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=7},[2]={flags=0,keywordFlags=0,name="Str",type="BASE",value=7},[3]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=7},[4]={flags=0,keywordFlags=0,name="Int",type="BASE",value=7},[5]={flags=0,keywordFlags=0,name="Att",type="BASE",value=7}},nil}
+c["+7 to All Attributes"]={{[1]={flags=0,keywordFlags=0,name="Str",type="BASE",value=7},[2]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=7},[3]={flags=0,keywordFlags=0,name="Int",type="BASE",value=7},[4]={flags=0,keywordFlags=0,name="Att",type="BASE",value=7},[5]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=7}},nil}
 c["+7% Adds to your base crit chance chance to cast Shurikens on Bow Crit"]={{[1]={[1]={skillName="Shurikens",type="SkillName"},flags=0,keywordFlags=2048,name="CritChance",type="BASE",value=7}}," Adds to your base  chance to cast  on  Crit "}
 c["+7% Adds to your maximum number of potions. Potions are displayed next to your health globe, and can be consumed to gain health (by using the 1 key by default). Missing Health gained as Ward on Potion Use"]={{[1]={[1]={skillName="Default",type="SkillName"},flags=0,keywordFlags=0,name="Life",type="BASE",value=7}}," Adds to your maximum number of potions. Potions are displayed next to your  globe, and can be consumed to gain health (by using the 1 key by ). Missing Health gained as Ward on Potion Use "}
 c["+7% All Resistances"]={{[1]={flags=0,keywordFlags=0,name="FireResist",type="BASE",value=7},[2]={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=7},[3]={flags=0,keywordFlags=0,name="ColdResist",type="BASE",value=7},[4]={flags=0,keywordFlags=0,name="PhysicalResist",type="BASE",value=7},[5]={flags=0,keywordFlags=0,name="PoisonResist",type="BASE",value=7},[6]={flags=0,keywordFlags=0,name="NecroticResist",type="BASE",value=7},[7]={flags=0,keywordFlags=0,name="VoidResist",type="BASE",value=7}},nil}
@@ -9268,7 +9263,7 @@ c["+7% Critical Strike Multiplier per 10 Bleeds on the target, up to 200 Bleeds"
 c["+7% Critical Strike Multiplier while using a Catalyst"]={{[1]={[1]={type="Condition",var="UsingCatalyst"},flags=0,keywordFlags=0,name="CritMultiplier",type="BASE",value=7}},nil}
 c["+7% Current Health Drained per Second"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=7}}," Current  Drained per Second "}
 c["+7% Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=7}},nil}
-c["+7% Damage Buff To Chilled Enemies"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="Chilled"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=7}},"  Buff  "}
+c["+7% Damage Buff To Chilled Enemies"]={{[1]={[1]={skillName="Chill",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=7}},"  Buff To ed Enemies "}
 c["+7% Damage Over Time while wielding a Bow"]={{[1]={[1]={type="Condition",var="UsingBow"},flags=4096,keywordFlags=0,name="Damage",type="MORE",value=7}},nil}
 c["+7% Damage vs Low Health"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=7}},"  vs Low Health "}
 c["+7% Duration"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="INC",value=7}},nil}
@@ -9324,8 +9319,8 @@ c["+7% Poison Resistance"]={{[1]={flags=0,keywordFlags=0,name="PoisonResist",typ
 c["+7% Projectile Speed"]={{[1]={flags=0,keywordFlags=0,name="ProjectileSpeed",type="BASE",value=7}},nil}
 c["+7% Reduced Bonus Damage Taken from Critical Strikes per Equipped Heretical Idol"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=7},notSupported=true},nil}
 c["+7% Reveal Rate"]={{}," Reveal Rate "}
-c["+7% Shared Bleed Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Bleed",type="BASE",value=7}}," Shared  "}
-c["+7% Shared Frostbite Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Frostbite",type="BASE",value=7}}," Shared  "}
+c["+7% Shared Bleed Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Bleed",type="BASE",value=7},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Bleed",type="BASE",value=7}}}},nil}
+c["+7% Shared Frostbite Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Frostbite",type="BASE",value=7},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Frostbite",type="BASE",value=7}}}},nil}
 c["+7% Small Boulder Frequency If Channeled"]={{}," Small Boulder Frequency If Channeled "}
 c["+7% Speed And Range"]={{}," Speed And Range "}
 c["+7% Speed and Range"]={{}," Speed and Range "}
@@ -9337,6 +9332,7 @@ c["+7% Ward Retention"]={{[1]={flags=0,keywordFlags=0,name="WardRetention",type=
 c["+7% increased Damage Taken while you have Frenzy"]={{[1]={[1]={type="Condition",var="Frenzy"},flags=0,keywordFlags=0,name="DamageTaken",type="INC",value=7}},nil}
 c["+7% increased Health per Equipped Huge Idol"]={{[1]={[1]={type="Multiplier",var="EquippedHugeIdol"},flags=0,keywordFlags=0,name="Life",type="INC",value=7}},nil}
 c["+7% increased Mana Regen per Equipped Ornate Idol"]={{[1]={[1]={type="Multiplier",var="EquippedOrnateIdol"},flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=7}},nil}
+c["+7% increased Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=7}},nil}
 c["+7% of Fire Damage Over Time Damage Leeched as Health"]={{[1]={flags=4104,keywordFlags=0,name="FireDamageLifeLeech",type="BASE",value=7}},"  Damage  "}
 c["+7% to All Resistances"]={{[1]={flags=0,keywordFlags=0,name="FireResist",type="BASE",value=7},[2]={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=7},[3]={flags=0,keywordFlags=0,name="ColdResist",type="BASE",value=7},[4]={flags=0,keywordFlags=0,name="PhysicalResist",type="BASE",value=7},[5]={flags=0,keywordFlags=0,name="PoisonResist",type="BASE",value=7},[6]={flags=0,keywordFlags=0,name="NecroticResist",type="BASE",value=7},[7]={flags=0,keywordFlags=0,name="VoidResist",type="BASE",value=7}},nil}
 c["+70 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=70}},nil}
@@ -9496,8 +9492,8 @@ c["+77% Chance to Shred Armor on Spell Hit"]={{[1]={flags=8388608,keywordFlags=2
 c["+77% Chance to cast cold Volcanic Orb when you directly use a cold melee attack or cold traversal skill (3 second cooldown)"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=77},notSupported=true},nil}
 c["+77% Chance to cast fire Volcanic Orb when you directly use a fire melee attack or fire traversal skill (3 second cooldown)"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=77},notSupported=true},nil}
 c["+77% Chance to gain a stack of Dusk Shroud when you consume a Shadow"]={{},"a stack of Dusk Shroud when you consume a Shadow "}
-c["+77% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cooldown is shared with sources of the exact same effect. Cold Damage"]={{[1]={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=4,name="Mana",type="BASE",value=77}}," Consumes  equal to 80% of 's mana cost. Cooldown is shared with sources of the exact same effect.  Damage "}
-c["+77% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cooldown is shared with sources of the exact same effect. Fire Damage"]={{[1]={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=8,name="Mana",type="BASE",value=77}}," Consumes  equal to 80% of 's mana cost. Cooldown is shared with sources of the exact same effect.  Damage "}
+c["+77% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cooldown is shared with sources of the exact same effect. Cold Damage"]={{[1]={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=4,name="Mana",type="BASE",value=77},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=4,name="Mana",type="BASE",value=77}}}}," Consumes  equal to 80% of 's mana cost. Cooldown is with sources of the exact same effect.  Damage "}
+c["+77% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cooldown is shared with sources of the exact same effect. Fire Damage"]={{[1]={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=8,name="Mana",type="BASE",value=77},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=8,name="Mana",type="BASE",value=77}}}}," Consumes  equal to 80% of 's mana cost. Cooldown is with sources of the exact same effect.  Damage "}
 c["+77% Lightning Penetration with your next Throwing Attack within two seconds when you directly use a Lightning Bow Attack"]={{[1]={[1]={skillName="Bow Attack",type="SkillName"},flags=0,keywordFlags=1026,name="LightningPenetration",type="BASE",value=77}},"  with your next  Attack within two seconds when you directly use a   "}
 c["+78 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=78}},nil}
 c["+78 Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="BASE",value=78}},nil}
@@ -9525,7 +9521,7 @@ c["+79 Lightning Throwing Damage with Javelin"]={{[1]={[1]={skillName="Javelin",
 c["+79 Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="BASE",value=79}},nil}
 c["+79 Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=79}},nil}
 c["+79 Ward Decay Threshold"]={{[1]={flags=0,keywordFlags=0,name="WardDecayThreshold",type="BASE",value=79}},nil}
-c["+8 All Attributes with at least 7 Corrupted non-Idol Items equipped"]={{[1]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=8},[2]={flags=0,keywordFlags=0,name="Str",type="BASE",value=8},[3]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=8},[4]={flags=0,keywordFlags=0,name="Int",type="BASE",value=8},[5]={flags=0,keywordFlags=0,name="Att",type="BASE",value=8}},"  with at least 7 Corrupted non-Idol Items equipped "}
+c["+8 All Attributes with at least 7 Corrupted non-Idol Items equipped"]={{[1]={flags=0,keywordFlags=0,name="Str",type="BASE",value=8},[2]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=8},[3]={flags=0,keywordFlags=0,name="Int",type="BASE",value=8},[4]={flags=0,keywordFlags=0,name="Att",type="BASE",value=8},[5]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=8}},"  with at least 7 Corrupted non-Idol Items equipped "}
 c["+8 Ally Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=8}}," Ally   "}
 c["+8 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=8}},nil}
 c["+8 Armor per Idol in a Refracted Slot"]={{[1]={[1]={type="Multiplier",var="IdolInRefractedSlot"},flags=0,keywordFlags=0,name="Armour",type="BASE",value=8}},nil}
@@ -9564,8 +9560,8 @@ c["+8 Melee Physical Damage if wielding a Sword"]={{[1]={[1]={type="Condition",v
 c["+8 Melee Void Damage"]={{[1]={flags=0,keywordFlags=512,name="VoidDamage",type="BASE",value=8}},nil}
 c["+8 Minion Bow Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=2048,name="Damage",type="BASE",value=8}}}},nil}
 c["+8 Minion Health Regen"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="LifeRegen",type="BASE",value=8}}}},nil}
-c["+8 Minion Health per player Attunement"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={actor="parent",stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="Life",type="BASE",value=8}}}},nil}
-c["+8 Minion Health per player Intelligence"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={actor="parent",stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="Life",type="BASE",value=8}}}},nil}
+c["+8 Minion Health per player Attunement"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="BASE",value=8}}}},"   per player Attunement "}
+c["+8 Minion Health per player Intelligence"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="BASE",value=8}}}},"   per player Intelligence "}
 c["+8 Minion Melee Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="Damage",type="BASE",value=8}}}},nil}
 c["+8 Minion Spell Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="Damage",type="BASE",value=8}}}},nil}
 c["+8 Physical Throwing Damage while Dual Wielding"]={{[1]={[1]={type="Condition",var="DualWielding"},flags=0,keywordFlags=256,name="PhysicalDamage",type="BASE",value=8}},nil}
@@ -9598,7 +9594,7 @@ c["+8 Ward granted by Silver Shroud per stack"]={{[1]={[1]={skillName="Silver Sh
 c["+8 Ward per Second"]={{[1]={flags=0,keywordFlags=0,name="WardPerSecond",type="BASE",value=8}},nil}
 c["+8 Ward per Second per 1% uncapped Physical Resistance while channelling Rebuke"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=8},notSupported=true},nil}
 c["+8 Ward per Second per Equipped Heretical Idol"]={{[1]={[1]={type="Multiplier",var="EquippedHereticalIdol"},flags=0,keywordFlags=0,name="WardPerSecond",type="BASE",value=8}},nil}
-c["+8 to All Attributes"]={{[1]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=8},[2]={flags=0,keywordFlags=0,name="Str",type="BASE",value=8},[3]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=8},[4]={flags=0,keywordFlags=0,name="Int",type="BASE",value=8},[5]={flags=0,keywordFlags=0,name="Att",type="BASE",value=8}},nil}
+c["+8 to All Attributes"]={{[1]={flags=0,keywordFlags=0,name="Str",type="BASE",value=8},[2]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=8},[3]={flags=0,keywordFlags=0,name="Int",type="BASE",value=8},[4]={flags=0,keywordFlags=0,name="Att",type="BASE",value=8},[5]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=8}},nil}
 c["+8% Adds to your maximum number of potions. Potions are displayed next to your health globe, and can be consumed to gain health (by using the 1 key by default). Missing Health gained as Ward on Potion Use"]={{[1]={[1]={skillName="Default",type="SkillName"},flags=0,keywordFlags=0,name="Life",type="BASE",value=8}}," Adds to your maximum number of potions. Potions are displayed next to your  globe, and can be consumed to gain health (by using the 1 key by ). Missing Health gained as Ward on Potion Use "}
 c["+8% Ailment Duration"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="MORE",value=8}}," Ailment  "}
 c["+8% Ailment Frequency"]={{}," Ailment Frequency "}
@@ -9736,7 +9732,6 @@ c["+8% Void Penetration"]={{[1]={flags=0,keywordFlags=0,name="VoidPenetration",t
 c["+8% Ward Retention"]={{[1]={flags=0,keywordFlags=0,name="WardRetention",type="BASE",value=8}},nil}
 c["+8% chance to throw a Burning Dagger when you use a melee fire attack and hit at least one enemy, doubled for Dancing Strikes (up to 4 times per second)"]={{}," to throw a  when you use a   attack and  at least one enemy, doubled for Dancing Strikes (up to 4 times per second) "}
 c["+8% increased Health per Equipped Huge Idol"]={{[1]={[1]={type="Multiplier",var="EquippedHugeIdol"},flags=0,keywordFlags=0,name="Life",type="INC",value=8}},nil}
-c["+8% increased Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=8}},nil}
 c["+8% to All Resistances"]={{[1]={flags=0,keywordFlags=0,name="FireResist",type="BASE",value=8},[2]={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=8},[3]={flags=0,keywordFlags=0,name="ColdResist",type="BASE",value=8},[4]={flags=0,keywordFlags=0,name="PhysicalResist",type="BASE",value=8},[5]={flags=0,keywordFlags=0,name="PoisonResist",type="BASE",value=8},[6]={flags=0,keywordFlags=0,name="NecroticResist",type="BASE",value=8},[7]={flags=0,keywordFlags=0,name="VoidResist",type="BASE",value=8}},nil}
 c["+8% to All Resistances While Channelling"]={{[1]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="FireResist",type="BASE",value=8},[2]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=8},[3]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="ColdResist",type="BASE",value=8},[4]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="PhysicalResist",type="BASE",value=8},[5]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="PoisonResist",type="BASE",value=8},[6]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="NecroticResist",type="BASE",value=8},[7]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="VoidResist",type="BASE",value=8}},nil}
 c["+80 Added Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="BASE",value=80}},nil}
@@ -9872,7 +9867,7 @@ c["+89 Each point of strength increases armor by 4% and improves skills that rel
 c["+89 Stun Avoidance"]={{[1]={flags=0,keywordFlags=0,name="StunAvoidance",type="BASE",value=89}},nil}
 c["+89% Minion Freeze Rate Multiplier"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="FreezeRateMultiplier",type="BASE",value=89}}}},nil}
 c["+89% Physical Penetration with Shadow Daggers "]={{[1]={[1]={skillName="Shadow Daggers",type="SkillName"},flags=0,keywordFlags=0,name="PhysicalPenetration",type="BASE",value=89}},"  with  "}
-c["+9 All Attributes with at least 7 Corrupted non-Idol Items equipped"]={{[1]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=9},[2]={flags=0,keywordFlags=0,name="Str",type="BASE",value=9},[3]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=9},[4]={flags=0,keywordFlags=0,name="Int",type="BASE",value=9},[5]={flags=0,keywordFlags=0,name="Att",type="BASE",value=9}},"  with at least 7 Corrupted non-Idol Items equipped "}
+c["+9 All Attributes with at least 7 Corrupted non-Idol Items equipped"]={{[1]={flags=0,keywordFlags=0,name="Str",type="BASE",value=9},[2]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=9},[3]={flags=0,keywordFlags=0,name="Int",type="BASE",value=9},[4]={flags=0,keywordFlags=0,name="Att",type="BASE",value=9},[5]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=9}},"  with at least 7 Corrupted non-Idol Items equipped "}
 c["+9 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=9}},nil}
 c["+9 Armor While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="Armour",type="BASE",value=9}},nil}
 c["+9 Attunement"]={{[1]={flags=0,keywordFlags=0,name="Att",type="BASE",value=9}},nil}
@@ -9931,7 +9926,7 @@ c["+9 Ward Decay Threshold per Idol in a Refracted Slot"]={{[1]={[1]={type="Mult
 c["+9 Ward gained each second per Active Wandering Spirit"]={{[1]={[1]={type="Multiplier",var="ActiveWanderingSpirit"},flags=0,keywordFlags=0,name="Ward",type="BASE",value=9}},"  gained each second  "}
 c["+9 Ward gained when you use Evade"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=9},notSupported=true},nil}
 c["+9 Ward per Second"]={{[1]={flags=0,keywordFlags=0,name="WardPerSecond",type="BASE",value=9}},nil}
-c["+9 to All Attributes"]={{[1]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=9},[2]={flags=0,keywordFlags=0,name="Str",type="BASE",value=9},[3]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=9},[4]={flags=0,keywordFlags=0,name="Int",type="BASE",value=9},[5]={flags=0,keywordFlags=0,name="Att",type="BASE",value=9}},nil}
+c["+9 to All Attributes"]={{[1]={flags=0,keywordFlags=0,name="Str",type="BASE",value=9},[2]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=9},[3]={flags=0,keywordFlags=0,name="Int",type="BASE",value=9},[4]={flags=0,keywordFlags=0,name="Att",type="BASE",value=9},[5]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=9}},nil}
 c["+9% A chance greater than 100% can result in multiple daggers being thrown Fire Damage"]={{[1]={[1]={type="Condition",var="UsingDagger"},flags=0,keywordFlags=0,name="FireDamage",type="MORE",value=9}}," A chance greater than 100% can result in multiple s being thrown  "}
 c["+9% Adds to your maximum number of potions. Potions are displayed next to your health globe, and can be consumed to gain health (by using the 1 key by default). Missing Health gained as Ward on Potion Use"]={{[1]={[1]={skillName="Default",type="SkillName"},flags=0,keywordFlags=0,name="Life",type="BASE",value=9}}," Adds to your maximum number of potions. Potions are displayed next to your  globe, and can be consumed to gain health (by using the 1 key by ). Missing Health gained as Ward on Potion Use "}
 c["+9% Attack Speed"]={{[1]={flags=3584,keywordFlags=0,name="Speed",type="BASE",value=9}},nil}
@@ -10052,8 +10047,8 @@ c["+93% Chance to cast Smite on hit with throwing attacks (up to 10 times per 2 
 c["+93% Chance to cast cold Volcanic Orb when you directly use a cold melee attack or cold traversal skill (3 second cooldown)"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=93},notSupported=true},nil}
 c["+93% Chance to cast fire Volcanic Orb when you directly use a fire melee attack or fire traversal skill (3 second cooldown)"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=93},notSupported=true},nil}
 c["+93% Chance to gain a stack of Dusk Shroud when you consume a Shadow"]={{},"a stack of Dusk Shroud when you consume a Shadow "}
-c["+93% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cooldown is shared with sources of the exact same effect. Cold Damage"]={{[1]={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=4,name="Mana",type="BASE",value=93}}," Consumes  equal to 80% of 's mana cost. Cooldown is shared with sources of the exact same effect.  Damage "}
-c["+93% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cooldown is shared with sources of the exact same effect. Fire Damage"]={{[1]={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=8,name="Mana",type="BASE",value=93}}," Consumes  equal to 80% of 's mana cost. Cooldown is shared with sources of the exact same effect.  Damage "}
+c["+93% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cooldown is shared with sources of the exact same effect. Cold Damage"]={{[1]={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=4,name="Mana",type="BASE",value=93},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=4,name="Mana",type="BASE",value=93}}}}," Consumes  equal to 80% of 's mana cost. Cooldown is with sources of the exact same effect.  Damage "}
+c["+93% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cooldown is shared with sources of the exact same effect. Fire Damage"]={{[1]={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=8,name="Mana",type="BASE",value=93},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=8,name="Mana",type="BASE",value=93}}}}," Consumes  equal to 80% of 's mana cost. Cooldown is with sources of the exact same effect.  Damage "}
 c["+93% Freeze Rate Multiplier"]={{[1]={flags=0,keywordFlags=0,name="FreezeRateMultiplier",type="BASE",value=93}},nil}
 c["+94 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=94}},nil}
 c["+94 Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=94}},nil}
@@ -10071,12 +10066,12 @@ c["+95% Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="
 c["+95% Effect of Weaver Enchantment Affixes for Idols in Refracted Slots"]={{}," Effect of Weaver Enchantment Affixes for Idols in Refracted Slots "}
 c["+95% Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="MORE",value=95}},nil}
 c["+95% Throwing Critical Strike Multiplier"]={{[1]={flags=0,keywordFlags=1024,name="CritMultiplier",type="BASE",value=95}},nil}
+c["+95% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=95}},nil}
 c["+9500 Starting Armour Near Dead Golem"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=9500}}," Starting  Near Dead Golem "}
 c["+96 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=96}},nil}
 c["+96 Block Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="BlockEffectiveness",type="BASE",value=96}},nil}
 c["+96 Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="BASE",value=96}},nil}
 c["+96% Chance for non-Critical Strikes to inflict Critical Vulnerability"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=96},notSupported=true},nil}
-c["+96% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=96}},nil}
 c["+97 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=97}},nil}
 c["+97 Each point of strength increases armor by 4% and improves skills that rely the raw strength of you and your companions Armor"]={{[1]={flags=0,keywordFlags=0,name="Str",type="BASE",value=97}}," Each point of  increases armor by 4% and improves skills that rely the raw strength of you and your companions Armor "}
 c["+97 Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="BASE",value=97}},nil}
@@ -10400,7 +10395,7 @@ c["0.04% More Damage per Negative Ailment on You"]={{[1]={flags=0,keywordFlags=0
 c["0.1 Frenzy Duration per stack (seconds)"]={{[1]={[1]={skillName="Frenzy",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="BASE",value=0.1}},"   per stack (seconds) "}
 c["0.1 Haste Duration per stack (seconds)"]={{[1]={[1]={skillName="Haste",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="BASE",value=0.1}},"   per stack (seconds) "}
 c["0.1% More Damage Per 1 Mana Cost For Throwing Or Melee Attacks"]={{[1]={[1]={skillName="Melee Attack",type="SkillName"},flags=0,keywordFlags=1024,name="Damage",type="MORE",value=0.1}},"  Per 1 Mana Cost For  Or s "}
-c["0.1% increased Shock Duration per Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},[2]={skillName="Shock",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=0.1}},nil}
+c["0.1% increased Shock Duration per Intelligence"]={{[1]={[1]={skillName="Shock",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=0.1}},"   per Intelligence "}
 c["0.1% of Damage Leeched as Health on Crit"]={{[1]={flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=0.1}},"   on Crit "}
 c["0.1% of Elemental Damage Over Time Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=0,name="FireDamageLifeLeech",type="BASE",value=0.1},[2]={flags=0,keywordFlags=0,name="ColdDamageLifeLeech",type="BASE",value=0.1},[3]={flags=0,keywordFlags=0,name="LightningDamageLifeLeech",type="BASE",value=0.1}},"  Over Time Damage  "}
 c["0.1% of Minion Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=0.1}}}},nil}
@@ -10408,17 +10403,17 @@ c["0.2 Duration Before Effect (seconds)"]={{[1]={flags=0,keywordFlags=0,name="Du
 c["0.2% Increased Damage per 1% Increased Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=0.2}},"  per 1% Increased Movement Speed "}
 c["0.2% Increased Movement Speed per Added Melee Void Damage"]={{[1]={flags=0,keywordFlags=528,name="MovementSpeed",type="INC",value=0.2}},"  per Added   Damage "}
 c["0.2% Physical Health Leech"]={{[1]={flags=0,keywordFlags=1,name="DamageLifeLeech",type="BASE",value=0.2}},nil}
-c["0.2% increased Shock Duration per Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},[2]={skillName="Shock",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=0.2}},nil}
+c["0.2% increased Shock Duration per Intelligence"]={{[1]={[1]={skillName="Shock",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=0.2}},"   per Intelligence "}
 c["0.2% of Damage Leeched as Health on Crit"]={{[1]={flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=0.2}},"   on Crit "}
 c["0.2% of Elemental Damage Over Time Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=0,name="FireDamageLifeLeech",type="BASE",value=0.2},[2]={flags=0,keywordFlags=0,name="ColdDamageLifeLeech",type="BASE",value=0.2},[3]={flags=0,keywordFlags=0,name="LightningDamageLifeLeech",type="BASE",value=0.2}},"  Over Time Damage  "}
 c["0.2% of Minion Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=0.2}}}},nil}
 c["0.25 Eternal Arrow Cooldown Reduction (seconds)"]={{}," Eternal Arrow Cooldown Reduction (seconds) "}
-c["0.3% increased Shock Duration per Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},[2]={skillName="Shock",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=0.3}},nil}
+c["0.3% increased Shock Duration per Intelligence"]={{[1]={[1]={skillName="Shock",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=0.3}},"   per Intelligence "}
 c["0.3% of Damage Leeched as Health on Crit"]={{[1]={flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=0.3}},"   on Crit "}
 c["0.3% of Elemental Damage Over Time Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=0,name="FireDamageLifeLeech",type="BASE",value=0.3},[2]={flags=0,keywordFlags=0,name="ColdDamageLifeLeech",type="BASE",value=0.3},[3]={flags=0,keywordFlags=0,name="LightningDamageLifeLeech",type="BASE",value=0.3}},"  Over Time Damage  "}
 c["0.3% of Minion Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=0.3}}}},nil}
 c["0.4% Healing From Zombie Max Health"]={{[1]={[1]={skillName="Healing",type="SkillName"},flags=0,keywordFlags=0,name="Life",type="BASE",value=0.4}},"  From Zombie Max  "}
-c["0.4% increased Shock Duration per Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},[2]={skillName="Shock",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=0.4}},nil}
+c["0.4% increased Shock Duration per Intelligence"]={{[1]={[1]={skillName="Shock",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=0.4}},"   per Intelligence "}
 c["0.4% of Damage Leeched as Health on Crit"]={{[1]={flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=0.4}},"   on Crit "}
 c["0.5 Arming Time (seconds)"]={{}," Arming Time (seconds) "}
 c["0.5 Buff Duration (seconds)"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="BASE",value=0.5}}," Buff  (seconds) "}
@@ -10429,7 +10424,7 @@ c["0.5 Haste Duration On Cast (seconds)"]={{[1]={[1]={skillName="Haste",type="Sk
 c["0.5 Seconds of Traversal Skill Cooldowns Recovered on Potion Use"]={{}," Seconds of Traversal Skill Cooldowns Recovered on Potion Use "}
 c["0.5 Stomp Cooldown Reduction"]={{}," Stomp Cooldown Reduction "}
 c["0.5% Bow Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=2048,name="DamageLifeLeech",type="BASE",value=0.5}},nil}
-c["0.5% Chaos Bolt Chance per 1 Maximum Mana"]={{}," Chaos Bolt Chance  "}
+c["0.5% Chaos Bolt Chance per 1 Maximum Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=0.5}}," Chaos Bolt Chance per 1  "}
 c["0.5% Current Health Lost on Hit"]={{[1]={flags=8388608,keywordFlags=0,name="Life",type="BASE",value=0.5}}," Current  Lost  "}
 c["0.5% Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=0.5}},nil}
 c["0.5% Damage Leeched as Health from Damage Over Time"]={{[1]={flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=0.5}},"   from Damage Over Time "}
@@ -10439,16 +10434,17 @@ c["0.5% Melee Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=512,name="D
 c["0.5% Minion Melee Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="DamageLifeLeech",type="BASE",value=0.5}}}},nil}
 c["0.5% Spell Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=256,name="DamageLifeLeech",type="BASE",value=0.5}},nil}
 c["0.5% Ward Lost on Hit"]={{[1]={flags=8388608,keywordFlags=0,name="Ward",type="BASE",value=0.5}},"  Lost  "}
-c["0.5% increased Effect of Frenzy per Strength"]={{}," Effect of   "}
-c["0.5% increased Shock Duration per Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},[2]={skillName="Shock",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=0.5}},nil}
+c["0.5% increased Effect of Frenzy per Strength"]={{[1]={[1]={skillName="Frenzy",type="SkillName"},flags=0,keywordFlags=0,name="Str",type="INC",value=0.5}}," Effect of  per  "}
+c["0.5% increased Shock Duration per Intelligence"]={{[1]={[1]={skillName="Shock",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=0.5}},"   per Intelligence "}
 c["0.5% less Bow Bow Global Conditional Damage - more Multiplicative with other modifiers"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=2048,name="Damage",type="MORE",value=-0.5}},"    Conditional  - more Multiplicative with other modifiers "}
 c["0.6 Seconds of Traversal Skill Cooldowns Recovered on Potion Use"]={{}," Seconds of Traversal Skill Cooldowns Recovered on Potion Use "}
+c["0.6% increased Shock Duration per Intelligence"]={{[1]={[1]={skillName="Shock",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=0.6}},"   per Intelligence "}
 c["0.6% less Bow Bow Global Conditional Damage - more Multiplicative with other modifiers"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=2048,name="Damage",type="MORE",value=-0.6}},"    Conditional  - more Multiplicative with other modifiers "}
 c["0.7 Seconds of Traversal Skill Cooldowns Recovered on Potion Use"]={{}," Seconds of Traversal Skill Cooldowns Recovered on Potion Use "}
-c["0.7% increased Shock Duration per Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},[2]={skillName="Shock",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=0.7}},nil}
 c["0.7% less Bow Bow Global Conditional Damage - more Multiplicative with other modifiers"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=2048,name="Damage",type="MORE",value=-0.7}},"    Conditional  - more Multiplicative with other modifiers "}
 c["0.8% less Bow Bow Global Conditional Damage - more Multiplicative with other modifiers"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=2048,name="Damage",type="MORE",value=-0.8}},"    Conditional  - more Multiplicative with other modifiers "}
 c["0.9 Seconds of Traversal Skill Cooldowns Recovered on Potion Use"]={{}," Seconds of Traversal Skill Cooldowns Recovered on Potion Use "}
+c["0.9% increased Shock Duration per Intelligence"]={{[1]={[1]={skillName="Shock",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=0.9}},"   per Intelligence "}
 c["0.9% less Bow Bow Global Conditional Damage - more Multiplicative with other modifiers"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=2048,name="Damage",type="MORE",value=-0.9}},"    Conditional  - more Multiplicative with other modifiers "}
 c["1 Ability (left to right)"]={{}," Ability (left to right) "}
 c["1 Additional Chains Per Recent Direct Cast"]={{}," Chains Per Recent Direct Cast "}
@@ -10499,7 +10495,7 @@ c["1 Duration Per Crit Strike"]={{[1]={flags=0,keywordFlags=0,name="Duration",ty
 c["1 Elemental Arrows Per Second"]={{},"  Arrows Per Second "}
 c["1 Enemies Anguished on Curse Cast"]={{[1]={[1]={skillName="Anguish",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}}," Enemies ed on Curse Cast "}
 c["1 Enemies Pierced Per 0.5 Seconds"]={{}," Enemies Pierced Per 0.5 Seconds "}
-c["1 Enemies per 10 Intelligence to Torment when you directly cast Soul Feast"]={{[1]={[1]={div=10,stat="Int",type="PerStat"},[2]={skillName="Soul Feast",type="SkillName"},flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Torment",type="BASE",value=1}}," Enemies   when you directly cast  "}
+c["1 Enemies per 10 Intelligence to Torment when you directly cast Soul Feast"]={{[1]={[1]={skillName="Torment",type="SkillName"},flags=0,keywordFlags=0,name="Int",type="BASE",value=1}}," Enemies per 10  to  when you directly cast Soul Feast "}
 c["1 Enemy Targets"]={{}," Enemy Targets "}
 c["1 Evade Charges gained on Potion Use"]={{}," Evade Charges gained on Potion Use "}
 c["1 Expends Storm Stacks On Companion Use"]={{}," Expends Storm Stacks On Companion Use "}
@@ -10522,14 +10518,14 @@ c["1 Haste Duration (Double For Companions)"]={{[1]={[1]={skillName="Haste",type
 c["1 Haste Duration (Seconds)"]={{[1]={[1]={skillName="Haste",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="BASE",value=1}},"   (Seconds) "}
 c["1 Haste Duration (seconds)"]={{[1]={[1]={skillName="Haste",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="BASE",value=1}},"   (seconds) "}
 c["1 Haste duration after Channeling (seconds)"]={{[1]={[1]={skillName="Haste",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="BASE",value=1}},"   after Channeling (seconds) "}
-c["1 Healing Per Point of Dexterity"]={{[1]={[1]={stat="Dex",type="PerStat"},[2]={skillName="Healing",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}},nil}
+c["1 Healing Per Point of Dexterity"]={{[1]={[1]={skillName="Healing",type="SkillName"},flags=0,keywordFlags=0,name="Dex",type="BASE",value=1}},"  Per Point of  "}
 c["1 Health Gain Per 2 Dex"]={{[1]={[1]={div=2,stat="Dex",type="PerStat"},flags=0,keywordFlags=0,name="Life",type="BASE",value=1}},"  Gain  "}
 c["1 Health Gain on Falcon Hit Per 3 Dex"]={{[1]={[1]={div=3,stat="Dex",type="PerStat"},flags=8388608,keywordFlags=0,name="Life",type="BASE",value=1}},"  Gain on Falc  "}
-c["1 Health Gain per 2 Dexterity"]={{[1]={[1]={div=2,stat="Dex",type="PerStat"},flags=0,keywordFlags=0,name="Life",type="BASE",value=1}},"  Gain  "}
-c["1 Health Gain per 2 total attributes"]={{[1]={[1]={div=2,statList={[1]="Vit",[2]="Str",[3]="Dex",[4]="Int",[5]="Att"},type="PerStat"},flags=0,keywordFlags=0,name="Life",type="BASE",value=1}},"  Gain  "}
-c["1 Health Gained Per Point Of Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="Life",type="BASE",value=1}},"  Gained  "}
+c["1 Health Gain per 2 Dexterity"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=1}},"  Gain per 2 Dexterity "}
+c["1 Health Gain per 2 total attributes"]={{[1]={[1]={div=2,statList={[1]="Str",[2]="Dex",[3]="Int",[4]="Att",[5]="Vit"},type="PerStat"},flags=0,keywordFlags=0,name="Life",type="BASE",value=1}},"  Gain  "}
+c["1 Health Gained Per Point Of Intelligence"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=1}},"  Gained Per Point Of Intelligence "}
 c["1 Health Gained per Stack of Shroud"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=1}},"  Gained per Stack of Shroud "}
-c["1 Health gained per Dexterity when your Falcon hits an enemy"]={{[1]={[1]={stat="Dex",type="PerStat"},flags=8388608,keywordFlags=0,name="Life",type="BASE",value=1}},"  gained  when your Falcs an enemy "}
+c["1 Health gained per Dexterity when your Falcon hits an enemy"]={{[1]={flags=8388608,keywordFlags=0,name="Life",type="BASE",value=1}},"  gained per Dexterity when your Falcs an enemy "}
 c["1 Hungering Souls Interval (Seconds)"]={{[1]={[1]={skillName="Hungering Souls",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}},"  Interval (Seconds) "}
 c["1 Ice Spirals on Cast per Stack"]={{}," Ice Spirals on Cast per Stack "}
 c["1 Ignite Stacks In Trail Each Second"]={{[1]={[1]={skillName="Ignite",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}},"  Stacks In Trail Each Second "}
@@ -10554,7 +10550,7 @@ c["1 Mana Gain"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=1}}
 c["1 Mana Gain Per Storm Stack On Use"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=1}},"  Gain Per Storm Stack On Use "}
 c["1 Mana Gain against Cursed"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=1}},"  Gain against Cursed "}
 c["1 Mana Gain on Hit"]={{[1]={flags=8388608,keywordFlags=0,name="Mana",type="BASE",value=1}},"  Gain  "}
-c["1 Mana Gain per 40 total attributes"]={{[1]={[1]={div=40,statList={[1]="Vit",[2]="Str",[3]="Dex",[4]="Int",[5]="Att"},type="PerStat"},flags=0,keywordFlags=0,name="Mana",type="BASE",value=1}},"  Gain  "}
+c["1 Mana Gain per 40 total attributes"]={{[1]={[1]={div=40,statList={[1]="Str",[2]="Dex",[3]="Int",[4]="Att",[5]="Vit"},type="PerStat"},flags=0,keywordFlags=0,name="Mana",type="BASE",value=1}},"  Gain  "}
 c["1 Mana Gain with at least 50 Vitality"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=1}},"  Gain with at least 50 Vitality "}
 c["1 Mana Gained When Hit"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=1},notSupported=true},nil}
 c["1 Mana Gained on Potion Use per 4 Intelligence"]={{[1]={[1]={div=4,stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="ManaOnPotionUse",type="BASE",value=1}},nil}
@@ -10641,15 +10637,15 @@ c["1 Vale Spirit Every 5 Spirit Thorn Casts"]={{[1]={[1]={skillName="Vale Spirit
 c["1 Viscera gained per 2 seconds"]={{}," Viscera gained per 2 seconds "}
 c["1 Ward Gain per 15% Uncapped Necrotic Res"]={{[1]={flags=0,keywordFlags=32,name="Ward",type="BASE",value=1}},"  Gain per 15% Uncapped  Res "}
 c["1 Ward Gained Per Mana Spent"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=1}},"  Gained Per Mana Spent "}
-c["1 Ward Gained Per Point Of Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="Ward",type="BASE",value=1}},"  Gained  "}
+c["1 Ward Gained Per Point Of Intelligence"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=1}},"  Gained Per Point Of Intelligence "}
 c["1 Ward Gained per 1% Uncapped Poison Resistance"]={{[1]={[1]={skillName="Poison",type="SkillName"},flags=0,keywordFlags=0,name="Ward",type="BASE",value=1}},"  Gained per 1% Uncapped  Resistance "}
 c["1 Ward Gained per 10 Health"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=1}},"  Gained per 10 Health "}
 c["1 Ward Gained per 10 Max Mana"]={{[1]={[1]={div=10,stat="Mana",type="PerStat"},flags=0,keywordFlags=0,name="Ward",type="BASE",value=1}},"  Gained  "}
 c["1 Ward Gained per 30 Current Mana"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=1}},"  Gained per 30 Current Mana "}
 c["1 Ward gained on hit per 10 missing mana if your current ward is lower than your missing health"]={{[1]={flags=8388608,keywordFlags=0,name="Ward",type="BASE",value=1}},"  gained  per 10 missing mana if your current ward is lower than your missing health "}
-c["1 Ward on Potion Use per Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="Ward",type="BASE",value=1}},"  on Potion Use  "}
+c["1 Ward on Potion Use per Intelligence"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=1}},"  on Potion Use per Intelligence "}
 c["1 Ward per 10% increased Healing Effectiveness"]={{[1]={[1]={skillName="Healing",type="SkillName"},flags=0,keywordFlags=0,name="Ward",type="BASE",value=1}},"  per 10% increased  Effectiveness "}
-c["1 Ward per 2 Attunement"]={{[1]={[1]={div=2,stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="Ward",type="BASE",value=1}},nil}
+c["1 Ward per 2 Attunement"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=1}},"  per 2 Attunement "}
 c["1 Ward per 60% Freeze Rate Multiplier"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=1}},"  per 60% Freeze Rate Multiplier "}
 c["1 Ward per Second per 3% uncapped Necrotic Resistance"]={{[1]={flags=0,keywordFlags=32,name="WardPerSecond",type="BASE",value=1}},"  per 3% uncapped  Resistance "}
 c["1 While you have both Ignite Overload and Damned Overload, enemies within 10 meters are inflicted with Witchfire every second"]={{[1]={[1]={skillName="Ignite",type="SkillName"},flags=0,keywordFlags=8,name="SkillLevel",type="BASE",value=1}}," While you have both  Overload and Damned Overload, enemies within 10 meters are inflicted with Witch every second "}
@@ -10688,7 +10684,7 @@ c["1% Health Gained On Kill"]={{[1]={[1]={type="Condition",var="KilledRecently"}
 c["1% Health Gained On Rare or Boss Hit"]={{[1]={flags=8388608,keywordFlags=0,name="Life",type="BASE",value=1}},"  Gained On Rare or Boss  "}
 c["1% Health Lost On Crit"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=1}},"  Lost On Crit "}
 c["1% Increased Area per Uncapped Resistance"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=1}},"  per Uncapped Resistance "}
-c["1% Increased Armor Per Strength In Human Or Spriggan"]={{[1]={[1]={stat="Str",type="PerStat"},flags=0,keywordFlags=0,name="Armour",type="INC",value=1}},"   In Human Or Spriggan "}
+c["1% Increased Armor Per Strength In Human Or Spriggan"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=1}},"  Per Strength In Human Or Spriggan "}
 c["1% Increased Attack Speed"]={{[1]={flags=3584,keywordFlags=0,name="Speed",type="INC",value=1}},nil}
 c["1% Increased Bleed Duration "]={{[1]={[1]={skillName="Bleed",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=1}},nil}
 c["1% Increased Buff Effect Per 3% Missing Health"]={{[1]={flags=0,keywordFlags=0,name="BuffEffect",type="INC",value=1}},"  Per 3% Missing Health "}
@@ -10708,9 +10704,9 @@ c["1% Increased Ignite Duration "]={{[1]={[1]={skillName="Ignite",type="SkillNam
 c["1% Increased Ignite Frequency Per Ignite Chance"]={{[1]={[1]={skillName="Ignite",type="SkillName"},flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Ignite",type="INC",value=1}},"  Frequency Per  "}
 c["1% Increased Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="INC",value=1}},nil}
 c["1% Increased Mana Regen Per 1 Attunement"]={{[1]={[1]={div=1,stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=1}},nil}
-c["1% Increased Mana Regen Per 1% Block Chance Above 50%"]={{[1]={[1]={div=1,stat="BlockChance",type="PerStat"},flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=1}},"   Above 50% "}
+c["1% Increased Mana Regen Per 1% Block Chance Above 50%"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=1}},"  Per 1% Block Chance Above 50% "}
 c["1% Increased Mana Regen Per Missing Mana"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=1}},"  Per Missing Mana "}
-c["1% Increased Melee Damage Per Strength In Bear Or Swarmblade"]={{[1]={[1]={stat="Str",type="PerStat"},flags=0,keywordFlags=512,name="Damage",type="INC",value=1}},"    In Bear Or Swarmblade "}
+c["1% Increased Melee Damage Per Strength In Bear Or Swarmblade"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=1}},"   Per Strength In Bear Or Swarmblade "}
 c["1% Increased Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=1}},nil}
 c["1% Increased Movespeed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=1}},nil}
 c["1% Increased Poison Duration "]={{[1]={[1]={skillName="Poison",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=1}},nil}
@@ -10725,7 +10721,7 @@ c["1% Melee Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=512,name="Dam
 c["1% Melee Damage per Bleed"]={{[1]={[1]={skillName="Bleed",type="SkillName"},flags=0,keywordFlags=512,name="Damage",type="MORE",value=1}},"   per  "}
 c["1% Melee Elemental Damage Per 2% Missing Mana"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="MORE",value=1},[2]={flags=0,keywordFlags=512,name="ColdDamage",type="MORE",value=1},[3]={flags=0,keywordFlags=512,name="LightningDamage",type="MORE",value=1}},"   Per 2% Missing Mana "}
 c["1% Minion Damage Leeched As Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=1}}}},nil}
-c["1% Minion Increased Crit Chance Per Intelligence"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="CritChance",type="BASE",value=1}}}},"  Increased   "}
+c["1% Minion Increased Crit Chance Per Intelligence"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="CritChance",type="BASE",value=1}}}},"  Increased  Per Intelligence "}
 c["1% Minion More Damage Over Time Per Vitality"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={stat="Vit",type="PerStat"},flags=4096,keywordFlags=0,name="Damage",type="MORE",value=1}}}},"  More   "}
 c["1% Minion Penetration Per 5% Overcapped Resistance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Penetration",type="BASE",value=1}}}},"   Per 5% Overcapped Resistance "}
 c["1% Missing Health Gained As Ward Per Second"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=1}}," Missing  Gained As Ward Per Second "}
@@ -10751,7 +10747,7 @@ c["1% Poison Penetration per 5% Uncapped Poison Resistance"]={{[1]={[1]={skillNa
 c["1% Remaining Cooldown Recovered"]={{}," Remaining Cooldown Recovered "}
 c["1% Rip Blood chance per 2 Intelligence"]={{[1]={[1]={div=2,stat="Int",type="PerStat"},flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_RipBlood",type="BASE",value=1}},nil}
 c["1% chance to throw Acid Flask on Bow Hit"]={{}," to throw  on   "}
-c["1% increased Area for Area Skills per 3 Dexterity"]={{[1]={[1]={div=3,stat="Dex",type="PerStat"},flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=1}},"  for Area Skills  "}
+c["1% increased Area for Area Skills per 3 Dexterity"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=1}},"  for Area Skills per 3 Dexterity "}
 c["1% increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=1}},nil}
 c["1% increased Cinder Strike Area per Falcon Hit in the past 6 seconds if you are unarmed"]={{[1]={[1]={skillName="Cinder Strike",type="SkillName"},flags=8388608,keywordFlags=0,name="AreaOfEffect",type="INC",value=1}},"   per Falc in the past 6 seconds if you are unarmed "}
 c["1% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=1}},nil}
@@ -10767,8 +10763,8 @@ c["1% increased Minion Throwing Attack Speed"]={{[1]={flags=0,keywordFlags=0,nam
 c["1% increased Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=1}},nil}
 c["1% increased Movement Speed per 10 Dexterity"]={{[1]={[1]={div=10,stat="Dex",type="PerStat"},flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=1}},nil}
 c["1% increased Movement Speed per 4 Character Levels"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=1}},"  per 4 Character Levels "}
-c["1% increased Shock Duration per Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},[2]={skillName="Shock",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=1}},nil}
-c["1% increased Stygian Beam frequency per Intelligence"]={{},"  frequency  "}
+c["1% increased Shock Duration per Intelligence"]={{[1]={[1]={skillName="Shock",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=1}},"   per Intelligence "}
+c["1% increased Stygian Beam frequency per Intelligence"]={{[1]={[1]={skillName="Stygian Beam",type="SkillName"},flags=0,keywordFlags=0,name="Int",type="INC",value=1}},"  frequency per  "}
 c["1% increased healing effectiveness per point of attunement"]={{[1]={[1]={stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="HealingEffectiveness",type="INC",value=1}},nil}
 c["1% less Bow Bow Global Conditional Damage - more Multiplicative with other modifiers"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=2048,name="Damage",type="MORE",value=-1}},"    Conditional  - more Multiplicative with other modifiers "}
 c["1% less Damage Over Time Taken"]={{[1]={flags=0,keywordFlags=0,name="DamageTakenOverTime",type="MORE",value=-1}},nil}
@@ -10780,7 +10776,9 @@ c["1% of Armor Mitigation also applies to Damage over Time"]={{[1]={flags=0,keyw
 c["1% of Cold Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=0,name="ColdDamageLifeLeech",type="BASE",value=1}},nil}
 c["1% of Current Health converted to Ward when you directly cast a Necrotic Spell"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=1},notSupported=true},nil}
 c["1% of Damage Dealt to Mana Before Health"]={{[1]={flags=0,keywordFlags=0,name="DamageToManaBeforeHealth",type="BASE",value=1}},nil}
+c["1% of Damage Leeched as Health While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=1}},nil}
 c["1% of Damage Leeched as Health on Crit"]={{[1]={flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=1}},"   on Crit "}
+c["1% of Damage dealt by Harvest Leeched as Health"]={{[1]={[1]={skillName="Harvest",type="SkillName"},flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=1}},"  dealt by   "}
 c["1% of Lightning Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=0,name="LightningDamageLifeLeech",type="BASE",value=1}},nil}
 c["1% of Minion Physical Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="PhysicalDamageLifeLeech",type="BASE",value=1}}}},nil}
 c["1% of Necrotic Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamageLifeLeech",type="BASE",value=1}},nil}
@@ -10812,10 +10810,10 @@ c["1.7 Seconds of Frenzy after you use a Traversal Skill"]={{[1]={[1]={skillName
 c["1.7 Seconds of Haste after you use Evade"]={{[1]={[1]={skillName="Haste",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1.7}}," Seconds of  after you use Evade "}
 c["1.7 Seconds of Haste after you use a Traversal Skill"]={{[1]={[1]={skillName="Haste",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1.7}}," Seconds of  after you use a Traversal Skill "}
 c["1.7 Seconds of Traversal Skill Cooldowns Recovered on Potion Use"]={{}," Seconds of Traversal Skill Cooldowns Recovered on Potion Use "}
+c["1.8% increased Shock Duration per Intelligence"]={{[1]={[1]={skillName="Shock",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=1.8}},"   per Intelligence "}
 c["1.9 Seconds of Frenzy after you use a Traversal Skill"]={{[1]={[1]={skillName="Frenzy",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1.9}}," Seconds of  after you use a Traversal Skill "}
 c["1.9 Seconds of Haste after you use Evade"]={{[1]={[1]={skillName="Haste",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1.9}}," Seconds of  after you use Evade "}
 c["1.9 Seconds of Haste after you use a Traversal Skill"]={{[1]={[1]={skillName="Haste",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1.9}}," Seconds of  after you use a Traversal Skill "}
-c["1.9% increased Shock Duration per Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},[2]={skillName="Shock",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=1.9}},nil}
 c["10 Armor Stolen"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=10}},"  Stolen "}
 c["10 Arrow Storm Cooldown"]={{}," Arrow Storm Cooldown "}
 c["10 Buff Duration (seconds)"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="BASE",value=10}}," Buff  (seconds) "}
@@ -10832,9 +10830,10 @@ c["10 Heal Amount Per Shield"]={{}," Heal Amount Per Shield "}
 c["10 Healing per Melee Hit"]={{[1]={[1]={skillName="Healing",type="SkillName"},flags=8388608,keywordFlags=512,name="SkillLevel",type="BASE",value=10}},"  per   "}
 c["10 Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=10}},nil}
 c["10 Health Gain"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=10}},"  Gain "}
+c["10 Health Gain on Kill"]={{[1]={flags=0,keywordFlags=0,name="LifeOnKill",type="BASE",value=10}},nil}
 c["10 Health Gain on Locust Release"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=10}},"  Gain on Locust Release "}
 c["10 Health Gain on Stun"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=10}},"  Gain on Stun "}
-c["10 Health Gained On Block"]={{[1]={[1]={type="Condition",var="Blocking"},flags=0,keywordFlags=0,name="Life",type="BASE",value=10}},"  Gained  "}
+c["10 Health Gained On Block"]={{[1]={flags=0,keywordFlags=0,name="LifeOnBlock",type="BASE",value=10}},nil}
 c["10 Hit Effect Limit per 3 Seconds"]={{},"  Effect Limit per 3 Seconds "}
 c["10 Limit Per 10 Seconds"]={{}," Limit Per 10 Seconds "}
 c["10 Limit Per 10 seconds"]={{}," Limit Per 10 seconds "}
@@ -10862,6 +10861,7 @@ c["10 Times Per Second"]={{}," Times Per Second "}
 c["10 Ward Gain"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=10}},"  Gain "}
 c["10 Ward Gain Limit per 5 Seconds"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=10}},"  Gain Limit per 5 Seconds "}
 c["10 Ward Gain Per Stack"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=10}},"  Gain Per Stack "}
+c["10 Ward Gain on Kill"]={{[1]={flags=0,keywordFlags=0,name="WardOnKill",type="BASE",value=10}},nil}
 c["10 Ward Gained"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=10}},"  Gained "}
 c["10 Ward Gained on Shadow Creation"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=10}},"  Gained on Shadow Creation "}
 c["10 Ward gained per second while wielding a Staff"]={{[1]={[1]={type="Condition",var="UsingStaff"},flags=0,keywordFlags=0,name="Ward",type="BASE",value=10}},"  gained per second  "}
@@ -10939,7 +10939,7 @@ c["10% Increased Critical Chance With 2h"]={{[1]={flags=0,keywordFlags=0,name="C
 c["10% Increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=10}},nil}
 c["10% Increased Critical Strike Chance while using a Catalyst"]={{[1]={[1]={type="Condition",var="UsingCatalyst"},flags=0,keywordFlags=0,name="CritChance",type="INC",value=10}},nil}
 c["10% Increased Damage at Full Health"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=10}},"  at Full Health "}
-c["10% Increased Damage for Bees per Attunement"]={{[1]={[1]={stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="Damage",type="INC",value=10}},"  for Bees  "}
+c["10% Increased Damage for Bees per Attunement"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=10}},"  for Bees per Attunement "}
 c["10% Increased Damage per Stack of Perfection"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=10}},"  per Stack of Perfection "}
 c["10% Increased Damage when generating or consuming Flow"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=10}},"  when generating or consuming Flow "}
 c["10% Increased Damage while wielding a Bow"]={{[1]={[1]={type="Condition",var="UsingBow"},flags=0,keywordFlags=0,name="Damage",type="INC",value=10}},nil}
@@ -11012,7 +11012,7 @@ c["10% Reduced Attack Speed"]={{[1]={flags=3584,keywordFlags=0,name="Speed",type
 c["10% Reduced Duration"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="INC",value=-10}},nil}
 c["10% Remaining Cooldown Recovered On Freeze"]={{}," Remaining Cooldown Recovered On Freeze "}
 c["10% Retribution Increased Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=10}}," Retribution Increased  "}
-c["10% Shared Increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="BASE",value=10}}," Shared Increased  "}
+c["10% Shared Increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=10},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Evasion",type="INC",value=10}}}},nil}
 c["10% Skeletal Vanguard on Kill Chance"]={{}," Skeletal Vanguard  Chance "}
 c["10% Skeleton Resummon Chance"]={{}," Skeleton Resummon Chance "}
 c["10% Skeleton Vanguard On Kill Chance"]={{}," Skeleton Vanguard  Chance "}
@@ -11029,49 +11029,34 @@ c["10% Upfront Ward gained as Ward per Second"]={{[1]={flags=0,keywordFlags=0,na
 c["10% Ward Retention From Increased Armor"]={{[1]={flags=0,keywordFlags=0,name="WardRetention",type="BASE",value=10}},"  From Increased Armor "}
 c["10% Wind Tempest Chance"]={{}," Wind Tempest Chance "}
 c["10% chance when one of your Skeletons dies to resummon a new one after 3 seconds"]={{}," when one of your Skeletons dies to resummon a new one after 3 seconds "}
-c["10% increased Attack Speed"]={{[1]={flags=3584,keywordFlags=0,name="Speed",type="INC",value=10}},nil}
+c["10% increased Area for Area Skills"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=10}},"  for Area Skills "}
 c["10% increased Bow Attack Speed"]={{[1]={flags=3584,keywordFlags=2048,name="Speed",type="INC",value=10}},nil}
 c["10% increased Bow Damage"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="INC",value=10}},nil}
 c["10% increased Cast Speed"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",value=10}},nil}
 c["10% increased Cast Speed with Elemental Spells"]={{[1]={flags=256,keywordFlags=14,name="Speed",type="INC",value=10}},nil}
-c["10% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=10}},nil}
 c["10% increased Cold Spell Cast Speed"]={{[1]={flags=256,keywordFlags=260,name="Speed",type="INC",value=10}},nil}
 c["10% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=10}},nil}
 c["10% increased Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=10}},nil}
-c["10% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=10}},nil}
-c["10% increased Damage While Channelling"]={{[1]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="Damage",type="INC",value=10}},nil}
 c["10% increased Damage for Totems"]={{[1]={[1]={scope="totem",type="Scope"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=10}},nil}
 c["10% increased Echo Damage when a skill is Echoed"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=10}}," Echo  when a skill is Echoed "}
-c["10% increased Effect of Haste on You "]={{[1]={flags=0,keywordFlags=0,name="HasteEffect",type="INC",value=10},notSupported=true},nil}
+c["10% increased Effect of Prefixes and Suffixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedAffixEffect",type="INC",value=10}},nil}
 c["10% increased Elemental Damage Over Time"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=10},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=10},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=10}},"  Over Time "}
-c["10% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=10}},nil}
 c["10% increased Fire Spell Cast Speed"]={{[1]={flags=256,keywordFlags=264,name="Speed",type="INC",value=10}},nil}
-c["10% increased Frost Wall Duration"]={{[1]={[1]={skillName="Frost Wall",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=10}},nil}
 c["10% increased Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="INC",value=10}},nil}
 c["10% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=10}},nil}
-c["10% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=10}},nil}
 c["10% increased Lightning Spell Cast Speed"]={{[1]={flags=256,keywordFlags=258,name="Speed",type="INC",value=10}},nil}
-c["10% increased Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="INC",value=10}},nil}
 c["10% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=10}},nil}
 c["10% increased Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=512,name="Speed",type="INC",value=10}},nil}
 c["10% increased Melee Damage while you have Frenzy"]={{[1]={[1]={type="Condition",var="Frenzy"},flags=0,keywordFlags=512,name="Damage",type="INC",value=10}},nil}
 c["10% increased Melee Elemental Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="INC",value=10},[2]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=10},[3]={flags=0,keywordFlags=512,name="LightningDamage",type="INC",value=10}},nil}
 c["10% increased Minion Bow Attack Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=3584,keywordFlags=2048,name="Speed",type="INC",value=10}}}},nil}
 c["10% increased Minion Cast Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=256,keywordFlags=0,name="Speed",type="INC",value=10}}}},nil}
-c["10% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=10}}}},nil}
 c["10% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=10}}}},nil}
-c["10% increased Minion Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=10}}}},nil}
 c["10% increased Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=10}},nil}
-c["10% increased Movement Speed While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=10}},nil}
-c["10% increased Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=10}},nil}
-c["10% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=10}},nil}
-c["10% increased Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=10}},nil}
-c["10% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=10}},nil}
 c["10% increased Throwing Attack Speed"]={{[1]={flags=3584,keywordFlags=1024,name="Speed",type="INC",value=10}},nil}
 c["10% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=10}},nil}
 c["10% increased area for Lightning Area Skills"]={{[1]={flags=0,keywordFlags=2,name="AreaOfEffect",type="INC",value=10}},"  for  Area Skills "}
-c["10% increased area for Melee Area Skills"]={{[1]={flags=0,keywordFlags=512,name="AreaOfEffect",type="INC",value=10}},"  for  Area Skills "}
-c["10% less Damage Over Time Taken"]={{[1]={flags=0,keywordFlags=0,name="DamageTakenOverTime",type="MORE",value=-10}},nil}
+c["10% increased area for Minion Area Skills"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=10}}}},"  for  Area Skills "}
 c["10% less Damage Taken for Totems"]={{[1]={flags=0,keywordFlags=0,name="DamageTaken",type="MORE",value=-10}},"  for Totems "}
 c["10% less Damage Taken from Bosses and Rare Enemies while below half mana"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=10},notSupported=true},nil}
 c["10% less Damage Taken if you have at least 1000 Ward"]={{[1]={[1]={stat="Ward",threshold=1000,type="StatThreshold"},flags=0,keywordFlags=0,name="DamageTaken",type="MORE",value=-10}},nil}
@@ -11082,6 +11067,8 @@ c["10% less Necrotic Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="Necrotic
 c["10% less Poison Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamageTaken",type="MORE",value=-10}},nil}
 c["10% less Void Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="VoidDamageTaken",type="MORE",value=-10}},nil}
 c["10% more Cold Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="ColdDamageTaken",type="MORE",value=10}},nil}
+c["10% more Damage to Bosses and Rare Enemies"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=10}},"  to Bosses and Rare Enemies "}
+c["10% more Damage to Stunned Enemies"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="Stunned"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=10}},nil}
 c["10% of Damage Leeched as Health While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=10}},nil}
 c["10% of Damage Reflected"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=10}},"  Reflected "}
 c["10% of Damage dealt by Harvest Leeched as Health"]={{[1]={[1]={skillName="Harvest",type="SkillName"},flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=10}},"  dealt by   "}
@@ -11094,7 +11081,6 @@ c["10% of Minion Physical Damage Leeched as Health"]={{[1]={flags=0,keywordFlags
 c["10% of Minion Spell Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="DamageLifeLeech",type="BASE",value=10}}}},nil}
 c["10% of Physical Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamageLifeLeech",type="BASE",value=10}},nil}
 c["10% of Spell Damage Leeched as Health While Channelling"]={{[1]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=256,name="DamageLifeLeech",type="BASE",value=10}},nil}
-c["10% reduced Bonus Damage Taken from Critical Strikes"]={{[1]={flags=0,keywordFlags=0,name="ReduceCritExtraDamage",type="BASE",value=10}},nil}
 c["10% reduced Damage Taken on Block"]={{[1]={[1]={type="Condition",var="Blocking"},flags=0,keywordFlags=0,name="DamageTaken",type="INC",value=-10}},nil}
 c["10% reduced Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="INC",value=-10}},nil}
 c["10% reduced Spell Mana Cost"]={{[1]={flags=0,keywordFlags=256,name="ManaCost",type="INC",value=-10}},nil}
@@ -11241,11 +11227,19 @@ c["100% chance to gain Dilation when you use a Melee Attack and hit at least one
 c["100% chance to gain Frozen Vengeance on Minion Death"]={{},"Frozen Vengeance on Minion Death "}
 c["100% chance to gain a stack of Excoriation when Flay kills an enemy or hits a boss or rare enemy"]={{},"a stack of Excoriation when Flay kills an enemy or hits a boss or rare enemy "}
 c["100% chance to transfer all stacks of Shock on you to nearby enemies when you use Evade"]={{}," to transfer all stacks of  on you to nearby enemies when you use Evade "}
+c["100% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=100}},nil}
+c["100% increased Cold Damage Over Time"]={{[1]={flags=4100,keywordFlags=0,name="ColdDamage",type="INC",value=100}},nil}
 c["100% increased Damage While Channelling"]={{[1]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="Damage",type="INC",value=100}},nil}
-c["100% increased Echo Damage when a skill is Echoed"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=100}}," Echo  when a skill is Echoed "}
+c["100% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=100}},nil}
+c["100% increased Melee Cold Damage"]={{[1]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=100}},nil}
+c["100% increased Melee Fire Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="INC",value=100}},nil}
 c["100% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=100}}}},nil}
+c["100% increased Minion Damage Over Time"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=4096,keywordFlags=0,name="Damage",type="INC",value=100}}}},nil}
+c["100% increased Minion Melee Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="Damage",type="INC",value=100}}}},nil}
 c["100% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=100}},nil}
-c["100% increased area for Melee Area Skills"]={{[1]={flags=0,keywordFlags=512,name="AreaOfEffect",type="INC",value=100}},"  for  Area Skills "}
+c["100% increased Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=100}},nil}
+c["100% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=100}},nil}
+c["100% increased Void Damage Over Time"]={{[1]={flags=4112,keywordFlags=0,name="VoidDamage",type="INC",value=100}},nil}
 c["100% increased effect of stats on your Non-Unique Idols that are a different shape to all other equipped Non-Unique Idols"]={{}," effect of stats on your Non-Unique Idols that are a different shape to all other equipped Non-Unique Idols "}
 c["100% less Critical Strike Avoidance"]={{[1]={flags=0,keywordFlags=0,name="CritAvoidance",type="MORE",value=-100}},nil}
 c["100% less Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="MORE",value=-100}},nil}
@@ -11256,6 +11250,7 @@ c["100% less Minion Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name=
 c["100% more Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=0,name="DamageLifeLeech",type="MORE",value=100}},nil}
 c["100% more Damage Leeched as Health on Crit"]={{[1]={flags=0,keywordFlags=0,name="DamageLifeLeech",type="MORE",value=100}},"   on Crit "}
 c["100% of Acid Flask Base Damage converted to Cold"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=100},notSupported=true},nil}
+c["100% of Attunement Converted to Apathy"]={{[1]={flags=0,keywordFlags=0,name="AttunementConvertedToApathy",type="BASE",value=100}},nil}
 c["100% of Base Damage converted to Lightning for Swipe (3 second cooldown)"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=100},notSupported=true},nil}
 c["100% of Bleed Chance Converted to Ignite Chance"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=100},notSupported=true},nil}
 c["100% of Bleed and Poison Chance converted to Frostbite Chance with Puncture"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=100},notSupported=true},nil}
@@ -11263,6 +11258,7 @@ c["100% of Cold Damage Taken as Physical"]={{[1]={flags=0,keywordFlags=1,name="C
 c["100% of Critical Strike Chance applies to Potion Use Crit Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="BASE",value=100}},"  applies to Potion Use Crit Chance "}
 c["100% of Damage Reflected"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=100}},"  Reflected "}
 c["100% of Damned Chance Converted to Bleed Chance"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=100},notSupported=true},nil}
+c["100% of Dexterity Converted to Guile"]={{[1]={flags=0,keywordFlags=0,name="DexterityConvertedToGuile",type="BASE",value=100}},nil}
 c["100% of Dread Shade Damage and Effects Converted to Cold"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=100},notSupported=true},nil}
 c["100% of Endurance Threshold gained as Ward when you gain a stack of Ancestral Pack"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=100},notSupported=true},nil}
 c["100% of Frost Wall Damage converted to Fire"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=100},notSupported=true},nil}
@@ -11274,6 +11270,7 @@ c["100% of Hungering Souls Base Damage Converted to Fire"]={{[1]={flags=0,keywor
 c["100% of Ignite Chance Converted to Bleed Chance"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=100},notSupported=true},nil}
 c["100% of Ignite Chance Converted to Shock Chance for Fireball"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=100},notSupported=true},nil}
 c["100% of Ignite Shock and Chill Chance converted to Fire Lightning and Cold Resistance Shred Chance while standing on your Glyph of Dominion"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=100},notSupported=true},nil}
+c["100% of Intelligence Converted to Madness"]={{[1]={flags=0,keywordFlags=0,name="IntelligenceConvertedToMadness",type="BASE",value=100}},nil}
 c["100% of Javelin Damage Converted To Lightning"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=100},notSupported=true},nil}
 c["100% of Maelstrom base damage converted to Necrotic"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=100},notSupported=true},nil}
 c["100% of Mana Strike Base Damage Converted to Cold"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=100},notSupported=true},nil}
@@ -11284,7 +11281,9 @@ c["100% of Poison Damage Taken as Physical"]={{[1]={flags=0,keywordFlags=1,name=
 c["100% of Potion Health Converted to Ward"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=100},notSupported=true},nil}
 c["100% of Shield Throw Base Damage Converted to Void"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=100},notSupported=true},nil}
 c["100% of Shock Chance Converted to Bleed Chance"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=100},notSupported=true},nil}
+c["100% of Strength Converted to Brutality"]={{[1]={flags=0,keywordFlags=0,name="StrengthConvertedToBrutality",type="BASE",value=100}},nil}
 c["100% of Time Rot Chance Converted to Bleed Chance"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=100},notSupported=true},nil}
+c["100% of Vitality Converted to Rampancy"]={{[1]={flags=0,keywordFlags=0,name="VitalityConvertedToRampancy",type="BASE",value=100}},nil}
 c["100% of Void Damage Taken as Fire"]={{[1]={flags=0,keywordFlags=8,name="VoidDamageTaken",type="BASE",value=100}},"  as  "}
 c["100% of Void Damage Taken as Physical"]={{[1]={flags=0,keywordFlags=1,name="VoidDamageTaken",type="BASE",value=100}},"  as  "}
 c["100% of Volatile Reversal cooldown reset on potion use"]={{[1]={[1]={skillName="Volatile Reversal",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=100}},"  cooldown reset on potion use "}
@@ -11294,57 +11293,46 @@ c["100% reduced Bonus Damage Taken from Critical Strikes"]={{[1]={flags=0,keywor
 c["1000 Maximum Ward Consumption"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=1000}}," Maximum  Consumption "}
 c["101% Increased Stun Chance"]={{[1]={flags=0,keywordFlags=0,name="StunChance",type="INC",value=101}},nil}
 c["101% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=101}},nil}
-c["101% increased Cold Damage Over Time"]={{[1]={flags=4100,keywordFlags=0,name="ColdDamage",type="INC",value=101}},nil}
-c["101% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=101}},nil}
-c["101% increased Melee Cold Damage"]={{[1]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=101}},nil}
-c["101% increased Melee Fire Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="INC",value=101}},nil}
-c["101% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=101}}}},nil}
-c["101% increased Minion Damage Over Time"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=4096,keywordFlags=0,name="Damage",type="INC",value=101}}}},nil}
+c["101% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=101}},nil}
+c["101% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=101}},nil}
+c["101% increased Minion Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=101}}}},nil}
 c["101% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=101}}}},nil}
+c["101% increased Minion Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=101}}}},nil}
 c["101% increased Minion Melee Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="Damage",type="INC",value=101}}}},nil}
+c["101% increased Minion Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=101}}}},nil}
+c["101% increased Minion Spell Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="Damage",type="INC",value=101}}}},nil}
+c["101% increased Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=101}},nil}
 c["101% increased Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=101}},nil}
 c["101% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=101}},nil}
-c["101% increased Void Damage Over Time"]={{[1]={flags=4112,keywordFlags=0,name="VoidDamage",type="INC",value=101}},nil}
 c["101% of Mana Spent Gained as Ward"]={{[1]={flags=0,keywordFlags=0,name="ManaSpentGainedAsWard",type="BASE",value=101}},nil}
 c["102% Increased Chance To Find Potions"]={{[1]={flags=0,keywordFlags=0,name="ChanceToFindPotions",type="INC",value=102}},nil}
-c["102% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=102}},nil}
-c["102% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=102}},nil}
-c["102% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=102}},nil}
-c["102% increased Minion Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=102}}}},nil}
-c["102% increased Minion Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=102}}}},nil}
-c["102% increased Minion Melee Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="Damage",type="INC",value=102}}}},nil}
-c["102% increased Minion Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=102}}}},nil}
-c["102% increased Minion Spell Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="Damage",type="INC",value=102}}}},nil}
-c["102% increased Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=102}},nil}
-c["102% increased Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=102}},nil}
-c["102% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=102}},nil}
+c["102% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=102}},nil}
+c["102% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=102}},nil}
 c["103% Increased Throwing Stun Chance"]={{[1]={flags=0,keywordFlags=1024,name="StunChance",type="INC",value=103}},nil}
-c["103% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=103}},nil}
-c["103% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=103}},nil}
+c["103% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=103}}}},nil}
 c["104% Increased Armor Shred Effect "]={{[1]={flags=0,keywordFlags=0,name="ArmorShredEffect",type="INC",value=104}},nil}
 c["104% Increased Stun Chance"]={{[1]={flags=0,keywordFlags=0,name="StunChance",type="INC",value=104}},nil}
 c["104% Increased critical strike chance with Shield Throw"]={{[1]={[1]={skillName="Shield Throw",type="SkillName"},flags=0,keywordFlags=0,name="CritChance",type="INC",value=104}},"  with  "}
+c["104% increased Cold Damage Over Time"]={{[1]={flags=4100,keywordFlags=0,name="ColdDamage",type="INC",value=104}},nil}
 c["104% increased Critical Strike Chance for Totems"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=104}},"  for Totems "}
-c["104% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=104}}}},nil}
+c["104% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=104}},nil}
 c["104% increased Necrotic Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=104}},nil}
 c["104% increased Physical Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=104}},nil}
 c["104% increased Physical Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=257,name="CritChance",type="INC",value=104}},nil}
 c["104% increased Throwing Critical Strike Chance"]={{[1]={flags=0,keywordFlags=1024,name="CritChance",type="INC",value=104}},nil}
+c["104% increased Void Damage Over Time"]={{[1]={flags=4112,keywordFlags=0,name="VoidDamage",type="INC",value=104}},nil}
 c["105 Damage Reflected to Attackers"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=105}},"  Reflected to Attackers "}
 c["105 Ward Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="WardOnPotionUse",type="BASE",value=105}},nil}
 c["105% Increased Armor Shred Effect"]={{[1]={flags=0,keywordFlags=0,name="ArmorShredEffect",type="INC",value=105}},nil}
 c["105% Increased Fire Aura Damage"]={{[1]={[1]={skillName="Fire Aura",type="SkillName"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=105}},nil}
 c["105% Lightning Penetration with Electrify"]={{[1]={[1]={skillName="Electrify",type="SkillName"},flags=0,keywordFlags=0,name="LightningPenetration",type="BASE",value=105}},"  with  "}
-c["105% increased Cold Damage Over Time"]={{[1]={flags=4100,keywordFlags=0,name="ColdDamage",type="INC",value=105}},nil}
 c["105% increased Echo Damage when a skill is Echoed"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=105}}," Echo  when a skill is Echoed "}
-c["105% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=105}},nil}
-c["105% increased Void Damage Over Time"]={{[1]={flags=4112,keywordFlags=0,name="VoidDamage",type="INC",value=105}},nil}
+c["105% increased Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=105}},nil}
+c["105% increased Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=256,name="CritChance",type="INC",value=105}},nil}
 c["105% more cost (multiplicative with other modifiers) of all Prophecies but they offer twice as many uses before expiring"]={{}," cost (multiplicative with other modifiers) of all Prophecies but they offer twice as many uses before expiring "}
 c["106% Increased Area with Detonating Arrow"]={{[1]={[1]={skillName="Detonating Arrow",type="SkillName"},flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=106}},"  with  "}
 c["106% Increased Melee Stun Chance"]={{[1]={flags=0,keywordFlags=512,name="StunChance",type="INC",value=106}},nil}
 c["106% Increased Skeleton Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=106}}," Skeleton  "}
-c["106% increased Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=106}},nil}
-c["106% increased Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=256,name="CritChance",type="INC",value=106}},nil}
 c["106% of Damage Reflected"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=106}},"  Reflected "}
 c["108% Increased Crit Chance per Equipped Dagger"]={{[1]={[1]={type="Multiplier",var="DaggerItem"},flags=0,keywordFlags=0,name="CritChance",type="INC",value=108}},nil}
 c["108% Increased Crit Chance per Equipped Sword"]={{[1]={[1]={type="Multiplier",var="SwordItem"},flags=0,keywordFlags=0,name="CritChance",type="INC",value=108}},nil}
@@ -11354,33 +11342,37 @@ c["108% Increased Damage while wielding a Sword"]={{[1]={[1]={type="Condition",v
 c["108% Increased Damage with Shadow Cascade per Active Shadow"]={{[1]={[1]={skillName="Shadow Cascade",type="SkillName"},[2]={type="Multiplier",var="ActiveShadow"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=108}},nil}
 c["108% Increased Healing Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="HealingEffectiveness",type="INC",value=108}},nil}
 c["108% Increased area of effect with Acid Flask"]={{[1]={[1]={skillName="Acid Flask",type="SkillName"},flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=108}},"  with  "}
+c["108% increased Bow Damage"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="INC",value=108}},nil}
+c["108% increased Bow Elemental Damage"]={{[1]={flags=0,keywordFlags=2048,name="FireDamage",type="INC",value=108},[2]={flags=0,keywordFlags=2048,name="ColdDamage",type="INC",value=108},[3]={flags=0,keywordFlags=2048,name="LightningDamage",type="INC",value=108}},nil}
+c["108% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=108}},nil}
+c["108% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=108}},nil}
 c["108% increased Curse Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=108}}," Curse  "}
+c["108% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=108}},nil}
+c["108% increased Damage While Channelling"]={{[1]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="Damage",type="INC",value=108}},nil}
+c["108% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=108}},nil}
+c["108% increased Hail of Arrows Duration"]={{[1]={[1]={skillName="Hail of Arrows",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=108}},nil}
+c["108% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=108}},nil}
+c["108% increased Minion Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="CritChance",type="INC",value=108}}}},nil}
+c["108% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=108}}}},nil}
+c["108% increased Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=108}},nil}
+c["108% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=108}},nil}
+c["108% increased Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=108}},nil}
+c["108% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=108}},nil}
+c["108% increased Throwing Physical Damage"]={{[1]={flags=0,keywordFlags=1024,name="PhysicalDamage",type="INC",value=108}},nil}
+c["108% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=108}},nil}
+c["108% to 75% less Damage depending on Area Level for You and your Minions"]={{[1]={[1]={limit=75,type="Multiplier",valueCap=75,var="AreaLevel"},flags=0,keywordFlags=0,name="Damage",source="",type="MORE",value=-1.44}},nil}
 c["1080 Damage Reflected to Attackers"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=1080}},"  Reflected to Attackers "}
 c["109% Frostbite Chance per Second with Frost Wall"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=109},notSupported=true},nil}
 c["109% Increased Melee Stun Chance"]={{[1]={flags=0,keywordFlags=512,name="StunChance",type="INC",value=109}},nil}
-c["109% increased Bow Damage"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="INC",value=109}},nil}
-c["109% increased Bow Elemental Damage"]={{[1]={flags=0,keywordFlags=2048,name="FireDamage",type="INC",value=109},[2]={flags=0,keywordFlags=2048,name="ColdDamage",type="INC",value=109},[3]={flags=0,keywordFlags=2048,name="LightningDamage",type="INC",value=109}},nil}
-c["109% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=109}},nil}
-c["109% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=109}},nil}
-c["109% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=109}},nil}
-c["109% increased Damage While Channelling"]={{[1]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="Damage",type="INC",value=109}},nil}
-c["109% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=109}},nil}
-c["109% increased Hail of Arrows Duration"]={{[1]={[1]={skillName="Hail of Arrows",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=109}},nil}
-c["109% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=109}},nil}
-c["109% increased Minion Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="CritChance",type="INC",value=109}}}},nil}
 c["109% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=109}}}},nil}
-c["109% increased Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=109}},nil}
-c["109% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=109}},nil}
-c["109% increased Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=109}},nil}
-c["109% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=109}},nil}
-c["109% increased Throwing Physical Damage"]={{[1]={flags=0,keywordFlags=1024,name="PhysicalDamage",type="INC",value=109}},nil}
-c["109% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=109}},nil}
-c["109% to 75% less Damage depending on Area Level for You and your Minions"]={{[1]={[1]={limit=75,type="Multiplier",valueCap=75,var="AreaLevel"},flags=0,keywordFlags=0,name="Damage",source="",type="MORE",value=-1.4533333333333}},nil}
+c["11 Health Gain on Block"]={{[1]={flags=0,keywordFlags=0,name="LifeOnBlock",type="BASE",value=11}},nil}
+c["11 Health Gain on Kill"]={{[1]={flags=0,keywordFlags=0,name="LifeOnKill",type="BASE",value=11}},nil}
 c["11 Health Gain on Melee Hit"]={{[1]={flags=8389120,keywordFlags=0,name="Life",type="BASE",value=11}},"  Gain  "}
 c["11 Health Gained when you receive a Glancing Blow"]={{[1]={flags=0,keywordFlags=0,name="LifeOnGlancingBlow",type="BASE",value=11}},nil}
 c["11 Mana Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="ManaOnPotionUse",type="BASE",value=11}},nil}
 c["11 Mana gained on Potion Use for each Meteor you have cast recently"]={{[1]={[1]={type="Multiplier",var="MeteorCastRecently"},flags=0,keywordFlags=0,name="ManaOnPotionUse",type="BASE",value=11}},nil}
 c["11 Minions teleported around you after you use a Traversal Skill"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={skillName="Teleport",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=11}}}}," s ed around you after you use a Traversal Skill "}
+c["11 Ward Gain on Kill"]={{[1]={flags=0,keywordFlags=0,name="WardOnKill",type="BASE",value=11}},nil}
 c["11% Chance for Wildfire Wisps within 12 metres to repeat Fire Skills"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=11},notSupported=true},nil}
 c["11% Chance on Melee Kill to heal a Random Minion to Full Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={type="Condition",var="KilledRecently"},flags=67108864,keywordFlags=0,name="Life",type="BASE",value=11}}}},"  to heal a Random  to Full  "}
 c["11% Chance to cast Static when Hit"]={{}," to cast  when  "}
@@ -11407,30 +11399,36 @@ c["11% Reduced Health Cost of Spells"]={{[1]={flags=0,keywordFlags=256,name="Lif
 c["11% chance to gain 20 mana when you directly cast Runebolt or Fireball"]={{},"20 mana when you directly cast Runebolt or Fireball "}
 c["11% increased Area for Area Skills"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=11}},"  for Area Skills "}
 c["11% increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=11}},nil}
+c["11% increased Block Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="BlockEffectiveness",type="INC",value=11}},nil}
 c["11% increased Bow Attack Speed"]={{[1]={flags=3584,keywordFlags=2048,name="Speed",type="INC",value=11}},nil}
 c["11% increased Cast Speed"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",value=11}},nil}
 c["11% increased Cast Speed for Totems"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",value=11}},"  for Totems "}
 c["11% increased Cooldown Recovery Speed While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=11}},nil}
-c["11% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=11}},nil}
 c["11% increased Damage While Channelling"]={{[1]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="Damage",type="INC",value=11}},nil}
 c["11% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=11}},nil}
-c["11% increased Effect of Prefixes and Suffixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedAffixEffect",type="INC",value=11}},nil}
+c["11% increased Effect of Prefixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedPrefixEffect",type="INC",value=11}},nil}
+c["11% increased Effect of Suffixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedSuffixEffect",type="INC",value=11}},nil}
+c["11% increased Effect of Weaver Enchantment Affixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedWeaverEffect",type="INC",value=11}},nil}
+c["11% increased Elemental Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=526,name="Speed",type="INC",value=11}},nil}
 c["11% increased Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="INC",value=11}},nil}
-c["11% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=11}},nil}
 c["11% increased Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="INC",value=11}},nil}
 c["11% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=11}},nil}
 c["11% increased Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=512,name="Speed",type="INC",value=11}},nil}
 c["11% increased Melee Attack Speed for 4 seconds when you use a Potion"]={{[1]={[1]={type="Condition",var="UsedPotionRecently"},flags=3584,keywordFlags=512,name="Speed",type="INC",value=11}},nil}
+c["11% increased Melee Cold Damage"]={{[1]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=11}},nil}
 c["11% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=11}}}},nil}
 c["11% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=11}}}},nil}
+c["11% increased Minion Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=11}}}},nil}
 c["11% increased Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=11}},nil}
 c["11% increased Movement Speed for 4 seconds when you use a Potion"]={{[1]={[1]={type="Condition",var="UsedPotionRecently"},flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=11}},nil}
 c["11% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=11}},nil}
+c["11% increased Speed and Distance with Flame Rush"]={{}," Speed and Distance with  "}
 c["11% increased Throwing Attack Speed"]={{[1]={flags=3584,keywordFlags=1024,name="Speed",type="INC",value=11}},nil}
 c["11% increased Throwing Attack Speed for 4 seconds when you use a Potion"]={{[1]={[1]={type="Condition",var="UsedPotionRecently"},flags=3584,keywordFlags=1024,name="Speed",type="INC",value=11}},nil}
+c["11% increased Throwing Damage"]={{[1]={flags=0,keywordFlags=1024,name="Damage",type="INC",value=11}},nil}
 c["11% increased area for Minion Area Skills"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=11}}}},"  for  Area Skills "}
-c["11% more Damage to Bosses and Rare Enemies"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=11}},"  to Bosses and Rare Enemies "}
-c["11% more Damage to Stunned Enemies"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="Stunned"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=11}},nil}
+c["11% less Damage Over Time Taken While Channelling"]={{[1]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="DamageTakenOverTime",type="MORE",value=-11}},nil}
+c["11% more Lightning Damage to Shocked Enemies"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="Shocked"},flags=0,keywordFlags=0,name="LightningDamage",type="MORE",value=11}},nil}
 c["11% of Armor Mitigation also applies to Damage over Time"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=11},notSupported=true},nil}
 c["11% of Current Health Lost per second"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=11}}," Current  Lost per second "}
 c["11% of Current Health converted to Ward when you directly cast a Necrotic Spell"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=11},notSupported=true},nil}
@@ -11447,59 +11445,59 @@ c["110% Increased Chance To Find Potions"]={{[1]={flags=0,keywordFlags=0,name="C
 c["110% Increased Critical Strike chance with Flurry"]={{[1]={[1]={skillName="Flurry",type="SkillName"},flags=0,keywordFlags=0,name="CritChance",type="INC",value=110}},"  with  "}
 c["110% Tornado Mana Consumption"]={{[1]={[1]={skillName="Tornado",type="SkillName"},flags=0,keywordFlags=0,name="Mana",type="BASE",value=110}},"   Consumption "}
 c["110% Volcanic Orb Mana Consumption"]={{[1]={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=0,name="Mana",type="BASE",value=110}},"   Consumption "}
+c["110% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=110}},nil}
 c["110% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=110}},nil}
-c["110% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=110}}}},nil}
+c["110% increased Minion Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=110}}}},nil}
+c["110% increased Minion Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="CritChance",type="INC",value=110}}}},nil}
+c["110% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=110}},nil}
 c["110% more cost (multiplicative with other modifiers) of all Prophecies but they offer double the rewards on completion"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="MORE",value=110}}," cost (multiplicative with other modifiers) of all Prophecies but they offer double the res on completion "}
 c["111% Increased Armor Shred Duration "]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=111}},"  Shred Duration "}
 c["111% Increased Skeletal Mage Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=111}}," Skeletal Mage  "}
-c["111% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=111}},nil}
-c["111% increased Minion Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=111}}}},nil}
-c["111% increased Minion Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="CritChance",type="INC",value=111}}}},nil}
-c["111% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=111}},nil}
 c["113 Ward Gained on Shadow Creation"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=113}},"  Gained on Shadow Creation "}
 c["113% Increased Abyssal Decay Duration "]={{[1]={flags=0,keywordFlags=0,name="EnemyAbyssalDecayDuration",type="INC",value=113}},nil}
 c["113% Increased Aspect of the Boar Duration"]={{[1]={[1]={skillName="Aspect of the Boar",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=113}},nil}
 c["113% Increased Critical Strike chance with Flurry"]={{[1]={[1]={skillName="Flurry",type="SkillName"},flags=0,keywordFlags=0,name="CritChance",type="INC",value=113}},"  with  "}
 c["113% Increased Damage for skills used by Shadows"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=113}},"  for skills used by Shadows "}
 c["113% Increased Stun Immunity Duration"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="INC",value=113}}," Stun Immunity  "}
+c["113% increased Bow Damage"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="INC",value=113}},nil}
+c["113% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=113}},nil}
+c["113% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=113}},nil}
+c["113% increased Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="Damage",type="INC",value=113}},nil}
+c["113% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=113}},nil}
+c["113% increased Health for Totems"]={{[1]={flags=0,keywordFlags=0,name="Life",type="INC",value=113}},"  for Totems "}
+c["113% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=113}},nil}
+c["113% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=113}},nil}
+c["113% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=113}}}},nil}
+c["113% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=113}},nil}
+c["113% increased Throwing Damage"]={{[1]={flags=0,keywordFlags=1024,name="Damage",type="INC",value=113}},nil}
+c["113% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=113}},nil}
 c["113% of Chance to Inflict Bleed on Hit gained as Bleed Chance per second with Hail of Arrows"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=113},notSupported=true},nil}
 c["113% of Damage Reflected"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=113}},"  Reflected "}
 c["113% reduced Bonus Damage Taken from Critical Strikes"]={{[1]={flags=0,keywordFlags=0,name="ReduceCritExtraDamage",type="BASE",value=113}},nil}
 c["114% Increased Bleed Duration "]={{[1]={[1]={skillName="Bleed",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=114}},nil}
 c["114% Increased Ignite Duration "]={{[1]={[1]={skillName="Ignite",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=114}},nil}
-c["114% increased Bow Damage"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="INC",value=114}},nil}
-c["114% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=114}},nil}
-c["114% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=114}},nil}
-c["114% increased Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="Damage",type="INC",value=114}},nil}
-c["114% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=114}},nil}
 c["114% increased Frost Wall Duration"]={{[1]={[1]={skillName="Frost Wall",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=114}},nil}
-c["114% increased Health for Totems"]={{[1]={flags=0,keywordFlags=0,name="Life",type="INC",value=114}},"  for Totems "}
-c["114% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=114}},nil}
-c["114% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=114}},nil}
-c["114% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=114}}}},nil}
-c["114% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=114}},nil}
-c["114% increased Throwing Damage"]={{[1]={flags=0,keywordFlags=1024,name="Damage",type="INC",value=114}},nil}
 c["114% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=114}},nil}
 c["115% Increased Stun Chance"]={{[1]={flags=0,keywordFlags=0,name="StunChance",type="INC",value=115}},nil}
 c["115% Puncture Mana Consumption"]={{[1]={[1]={skillName="Puncture",type="SkillName"},flags=0,keywordFlags=0,name="Mana",type="BASE",value=115}},"   Consumption "}
+c["115% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=115}},nil}
 c["115% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=115}},nil}
-c["115% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=115}},nil}
 c["116% Increased Damage with Hammer Throw"]={{[1]={[1]={skillName="Hammer Throw",type="SkillName"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=116}},nil}
 c["116% Increased damage with Smelter's Wrath"]={{[1]={[1]={skillName="Smelter's Wrath",type="SkillName"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=116}},nil}
 c["116% Increased spell critical strike chance. This effect is doubled if you have 300 or more maximum mana."]={{[1]={[1]={mult=2,stat="Mana",threshold=300,type="StatThreshold"},flags=0,keywordFlags=256,name="CritChance",type="INC",value=116}},nil}
-c["116% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=116}},nil}
+c["116% increased Damage Over Time While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=4096,keywordFlags=0,name="Damage",type="INC",value=116}},nil}
+c["116% increased Damage for Totems"]={{[1]={[1]={scope="totem",type="Scope"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=116}},nil}
+c["116% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=116}},nil}
+c["116% increased Melee Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=512,name="Damage",type="INC",value=116}},nil}
+c["116% increased Melee Elemental Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="INC",value=116},[2]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=116},[3]={flags=0,keywordFlags=512,name="LightningDamage",type="INC",value=116}},nil}
+c["116% increased Minion Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=116}}}},nil}
+c["116% increased Minion Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="CritChance",type="INC",value=116}}}},nil}
+c["116% increased Spell Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=256,name="Damage",type="INC",value=116}},nil}
+c["116% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=116}},nil}
 c["117% Increased Spell Damage per Skeletal Mage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=117}},"   per Skeletal Mage "}
 c["117% increased Bow Damage"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="INC",value=117}},nil}
-c["117% increased Damage Over Time While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=4096,keywordFlags=0,name="Damage",type="INC",value=117}},nil}
-c["117% increased Damage for Totems"]={{[1]={[1]={scope="totem",type="Scope"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=117}},nil}
-c["117% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=117}},nil}
-c["117% increased Melee Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=512,name="Damage",type="INC",value=117}},nil}
-c["117% increased Melee Elemental Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="INC",value=117},[2]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=117},[3]={flags=0,keywordFlags=512,name="LightningDamage",type="INC",value=117}},nil}
-c["117% increased Minion Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=117}}}},nil}
-c["117% increased Minion Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="CritChance",type="INC",value=117}}}},nil}
-c["117% increased Spell Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=256,name="Damage",type="INC",value=117}},nil}
-c["117% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=117}},nil}
-c["118% increased Volatile Zombie Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=118}}," Volatile Zombie  "}
+c["117% increased Volatile Zombie Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=117}}," Volatile Zombie  "}
+c["118% increased Echo Damage when a skill is Echoed"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=118}}," Echo  when a skill is Echoed "}
 c["119% Increased Fire Aura Damage"]={{[1]={[1]={skillName="Fire Aura",type="SkillName"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=119}},nil}
 c["119% increased Echo Damage when a skill is Echoed"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=119}}," Echo  when a skill is Echoed "}
 c["12 Cooldown (seconds)"]={{}," Cooldown (seconds) "}
@@ -11507,6 +11505,7 @@ c["12 Cooldown Duration (Seconds)"]={{[1]={flags=0,keywordFlags=0,name="Cooldown
 c["12 Damned Overload Duration (seconds)"]={{[1]={[1]={skillName="Damned",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="BASE",value=12}},"  Overload  (seconds) "}
 c["12 Duration (seconds)"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="BASE",value=12}},"  (seconds) "}
 c["12 Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=12}},nil}
+c["12 Health Gain on Block"]={{[1]={flags=0,keywordFlags=0,name="LifeOnBlock",type="BASE",value=12}},nil}
 c["12 Mana Gain"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=12}},"  Gain "}
 c["12 Mana Gain Below Half Health"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=12}},"  Gain Below Half Health "}
 c["12 Mana Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="ManaOnPotionUse",type="BASE",value=12}},nil}
@@ -11517,6 +11516,7 @@ c["12 Max Damage Bonus Stacks"]={{[1]={flags=0,keywordFlags=0,name="Damage",type
 c["12 Maximum Spirit Step Distance (meters)"]={{[1]={[1]={skillName="Spirit Step",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=12}}," Maximum  Distance (meters) "}
 c["12 Trap Drop Distance (meters)"]={{}," Trap Drop Distance (meters) "}
 c["12 Trap Throw Distance (meters)"]={{}," Trap Throw Distance (meters) "}
+c["12 Ward Gain on Kill"]={{[1]={flags=0,keywordFlags=0,name="WardOnKill",type="BASE",value=12}},nil}
 c["12 Ward Gained"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=12}},"  Gained "}
 c["12 Ward Gained on Crit with Frost Claw"]={{[1]={[1]={skillName="Frost Claw",type="SkillName"},flags=0,keywordFlags=0,name="Ward",type="BASE",value=12}},"  Gained on Crit with  "}
 c["12 Ward Gained on Potion Use per 10 Intelligence"]={{[1]={[1]={div=10,stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="WardOnPotionUse",type="BASE",value=12}},nil}
@@ -11559,13 +11559,12 @@ c["12% Reduced Arming Time"]={{}," Arming Time "}
 c["12% Reduced Radius"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=-12}},nil}
 c["12% Remaining Cooldown Recovered"]={{}," Remaining Cooldown Recovered "}
 c["12% Sceptre Increased Damage"]={{[1]={[1]={type="Condition",var="UsingSceptre"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=12}},"  Increased  "}
-c["12% Shared Increased Fire Damage over Time with a Shield"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="MORE",value=12}}," Shared Increased  with a Shield "}
+c["12% Shared Increased Fire Damage over Time with a Shield"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=12},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=12}}}},"  with a Shield "}
 c["12% Skeletal Vanguard On Kill Chance"]={{}," Skeletal Vanguard  Chance "}
 c["12% Summon Chance on Kill"]={{}," Summon Chance  "}
-c["12% increased Area for Area Skills"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=12}},"  for Area Skills "}
-c["12% increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=12}},nil}
-c["12% increased Block Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="BlockEffectiveness",type="INC",value=12}},nil}
+c["12% increased Attack Speed"]={{[1]={flags=3584,keywordFlags=0,name="Speed",type="INC",value=12}},nil}
 c["12% increased Bow Attack Speed"]={{[1]={flags=3584,keywordFlags=2048,name="Speed",type="INC",value=12}},nil}
+c["12% increased Bow Attack Speed while at Low Health"]={{[1]={[1]={type="Condition",var="LowLife"},flags=3584,keywordFlags=2048,name="Speed",type="INC",value=12}},nil}
 c["12% increased Bow Damage"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="INC",value=12}},nil}
 c["12% increased Cast Speed"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",value=12}},nil}
 c["12% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=12}},nil}
@@ -11573,36 +11572,29 @@ c["12% increased Cooldown Recovery Speed for Evade"]={{[1]={flags=0,keywordFlags
 c["12% increased Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=12}},nil}
 c["12% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=12}},nil}
 c["12% increased Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="Damage",type="INC",value=12}},nil}
-c["12% increased Effect of Prefixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedPrefixEffect",type="INC",value=12}},nil}
-c["12% increased Effect of Suffixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedSuffixEffect",type="INC",value=12}},nil}
-c["12% increased Effect of Weaver Enchantment Affixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedWeaverEffect",type="INC",value=12}},nil}
-c["12% increased Elemental Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=526,name="Speed",type="INC",value=12}},nil}
+c["12% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=12}},nil}
+c["12% increased Elemental Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=12},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=12},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=12}},nil}
 c["12% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=12}},nil}
 c["12% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=12}},nil}
 c["12% increased Fire Spell Cast Speed"]={{[1]={flags=256,keywordFlags=264,name="Speed",type="INC",value=12}},nil}
-c["12% increased Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="INC",value=12}},nil}
+c["12% increased Frost Wall Duration"]={{[1]={[1]={skillName="Frost Wall",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=12}},nil}
+c["12% increased Hail of Arrows Duration"]={{[1]={[1]={skillName="Hail of Arrows",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=12}},nil}
 c["12% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=12}},nil}
 c["12% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=12}},nil}
-c["12% increased Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="INC",value=12}},nil}
 c["12% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=12}},nil}
-c["12% increased Melee Cold Damage"]={{[1]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=12}},nil}
 c["12% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=12}},nil}
 c["12% increased Melee Physical Damage"]={{[1]={flags=0,keywordFlags=512,name="PhysicalDamage",type="INC",value=12}},nil}
 c["12% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=12}}}},nil}
-c["12% increased Minion Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=12}}}},nil}
 c["12% increased Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=12}},nil}
-c["12% increased Speed and Distance with Flame Rush"]={{}," Speed and Distance with  "}
+c["12% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=12}},nil}
 c["12% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=12}},nil}
-c["12% increased Throwing Attack Speed"]={{[1]={flags=3584,keywordFlags=1024,name="Speed",type="INC",value=12}},nil}
 c["12% increased Throwing Damage"]={{[1]={flags=0,keywordFlags=1024,name="Damage",type="INC",value=12}},nil}
 c["12% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=12}},nil}
-c["12% increased area for Minion Area Skills"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=12}}}},"  for  Area Skills "}
-c["12% less Damage Over Time Taken While Channelling"]={{[1]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="DamageTakenOverTime",type="MORE",value=-12}},nil}
 c["12% less Necrotic Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamageTaken",type="MORE",value=-12}},nil}
 c["12% less Void Damage Taken on Block"]={{[1]={[1]={type="Condition",var="Blocking"},flags=0,keywordFlags=0,name="VoidDamageTaken",type="MORE",value=-12}},nil}
 c["12% more Cold Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="ColdDamageTaken",type="MORE",value=12}},nil}
 c["12% more Damage per stack of Crystalwind consumed"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=12}},"  per stack of Crystalwind consumed "}
-c["12% more Lightning Damage to Shocked Enemies"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="Shocked"},flags=0,keywordFlags=0,name="LightningDamage",type="MORE",value=12}},nil}
+c["12% more Melee Damage while you have Frenzy"]={{[1]={[1]={type="Condition",var="Frenzy"},flags=0,keywordFlags=512,name="Damage",type="MORE",value=12}},nil}
 c["12% of Damage Dealt to Mana Before Health"]={{[1]={flags=0,keywordFlags=0,name="DamageToManaBeforeHealth",type="BASE",value=12}},nil}
 c["12% of Damage Reflected"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=12}},"  Reflected "}
 c["12% of Health Leech also drains the health of the nearest enemy within 6 meters"]={{[1]={flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=12}},"  also drains the health of the nearest enemy within 6 meters "}
@@ -11614,19 +11606,20 @@ c["12% of Spell Damage Leeched as Health While Channelling"]={{[1]={[1]={type="C
 c["120% Sacrifice Percent Mana Cost Consumed"]={{[1]={[1]={skillName="Sacrifice",type="SkillName"},flags=0,keywordFlags=0,name="ManaCost",type="BASE",value=120}},"  Percent  Consumed "}
 c["120% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=120}},nil}
 c["120% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=120}},nil}
+c["120% increased Necrotic Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=120}},nil}
+c["120% increased Physical Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=120}},nil}
 c["121% Increased Stun Chance"]={{[1]={flags=0,keywordFlags=0,name="StunChance",type="INC",value=121}},nil}
 c["121% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=121}},nil}
-c["121% increased Necrotic Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=121}},nil}
 c["121% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=121}},nil}
-c["121% increased Physical Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=121}},nil}
+c["123% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=123}}}},nil}
 c["123% increased Necrotic Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=123}},nil}
 c["123% increased Physical Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=123}},nil}
-c["124% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=124}}}},nil}
 c["125% Detonating Arrow Mana Consumption"]={{[1]={[1]={skillName="Detonating Arrow",type="SkillName"},flags=0,keywordFlags=0,name="Mana",type="BASE",value=125}},"   Consumption "}
 c["125% Increased Aspect of the Lynx Effect"]={{},"  Effect "}
 c["125% Increased Aspect of the Shark Effect"]={{},"  Effect "}
 c["125% Increased Healing Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="HealingEffectiveness",type="INC",value=125}},nil}
 c["125% Runic Invocation Mana Consumption"]={{[1]={[1]={skillName="Runic Invocation",type="SkillName"},flags=0,keywordFlags=0,name="Mana",type="BASE",value=125}},"   Consumption "}
+c["125% increased Minion Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="CritChance",type="INC",value=125}}}},nil}
 c["125% of Mana Spent Gained as Ward"]={{[1]={flags=0,keywordFlags=0,name="ManaSpentGainedAsWard",type="BASE",value=125}},nil}
 c["126% Increased Area with Dancing Strikes"]={{[1]={[1]={skillName="Dancing Strikes",type="SkillName"},flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=126}},"  with  "}
 c["126% Increased Armor Shred Effect "]={{[1]={flags=0,keywordFlags=0,name="ArmorShredEffect",type="INC",value=126}},nil}
@@ -11637,25 +11630,25 @@ c["126% Increased Healing Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="He
 c["126% Increased cold spell damage if you have directly cast a physical spell recently"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=126},notSupported=true},nil}
 c["126% Increased critical strike chance with Shield Throw"]={{[1]={[1]={skillName="Shield Throw",type="SkillName"},flags=0,keywordFlags=0,name="CritChance",type="INC",value=126}},"  with  "}
 c["126% Increased physical spell damage if you have directly cast a cold spell recently"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=126},notSupported=true},nil}
+c["126% increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=126}},nil}
 c["126% increased Cold Damage Over Time"]={{[1]={flags=4100,keywordFlags=0,name="ColdDamage",type="INC",value=126}},nil}
+c["126% increased Critical Strike Chance for Totems"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=126}},"  for Totems "}
+c["126% increased Damage While Channelling"]={{[1]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="Damage",type="INC",value=126}},nil}
+c["126% increased Elemental Critical Strike Chance"]={{[1]={flags=0,keywordFlags=14,name="CritChance",type="INC",value=126}},nil}
 c["126% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=126}},nil}
-c["126% increased Minion Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="CritChance",type="INC",value=126}}}},nil}
+c["126% increased Melee Cold Damage"]={{[1]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=126}},nil}
+c["126% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=126}}}},nil}
 c["126% increased Minion Damage Over Time"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=4096,keywordFlags=0,name="Damage",type="INC",value=126}}}},nil}
 c["126% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=126}}}},nil}
+c["126% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=126}},nil}
+c["126% increased Physical Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=257,name="CritChance",type="INC",value=126}},nil}
+c["126% increased Throwing Critical Strike Chance"]={{[1]={flags=0,keywordFlags=1024,name="CritChance",type="INC",value=126}},nil}
 c["126% increased Void Damage Over Time"]={{[1]={flags=4112,keywordFlags=0,name="VoidDamage",type="INC",value=126}},nil}
 c["127% Increased Blind Duration"]={{[1]={[1]={skillName="Blind",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=127}},nil}
 c["127% Increased Damage while wielding a Bow"]={{[1]={[1]={type="Condition",var="UsingBow"},flags=0,keywordFlags=0,name="Damage",type="INC",value=127}},nil}
 c["127% Increased Damage while wielding a Dagger"]={{[1]={[1]={type="Condition",var="UsingDagger"},flags=0,keywordFlags=0,name="Damage",type="INC",value=127}},nil}
 c["127% Increased Damage while wielding a Sword"]={{[1]={[1]={type="Condition",var="UsingSword"},flags=0,keywordFlags=0,name="Damage",type="INC",value=127}},nil}
-c["127% increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=127}},nil}
-c["127% increased Critical Strike Chance for Totems"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=127}},"  for Totems "}
-c["127% increased Damage While Channelling"]={{[1]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="Damage",type="INC",value=127}},nil}
-c["127% increased Elemental Critical Strike Chance"]={{[1]={flags=0,keywordFlags=14,name="CritChance",type="INC",value=127}},nil}
-c["127% increased Melee Cold Damage"]={{[1]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=127}},nil}
-c["127% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=127}}}},nil}
-c["127% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=127}},nil}
-c["127% increased Physical Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=257,name="CritChance",type="INC",value=127}},nil}
-c["127% increased Throwing Critical Strike Chance"]={{[1]={flags=0,keywordFlags=1024,name="CritChance",type="INC",value=127}},nil}
+c["127% increased Throwing Physical Damage"]={{[1]={flags=0,keywordFlags=1024,name="PhysicalDamage",type="INC",value=127}},nil}
 c["128 Health Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="LifeOnPotionUse",type="BASE",value=128}},nil}
 c["128 Ward gained when you use Smoke Bomb"]={{[1]={[1]={skillName="Smoke Bomb",type="SkillName"},flags=0,keywordFlags=0,name="WardGainOnUse_SmokeBomb",source="",type="BASE",value=128},notSupported=true},nil}
 c["128% Frostbite Chance per Second with Frost Wall"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=128},notSupported=true},nil}
@@ -11663,13 +11656,12 @@ c["128% Increased Melee Stun Chance"]={{[1]={flags=0,keywordFlags=512,name="Stun
 c["128% Increased Skeletal Mage Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=128}}," Skeletal Mage  "}
 c["128% Increased critical strike chance with Shield Throw"]={{[1]={[1]={skillName="Shield Throw",type="SkillName"},flags=0,keywordFlags=0,name="CritChance",type="INC",value=128}},"  with  "}
 c["128% increased Critical Strike Chance for Totems"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=128}},"  for Totems "}
+c["128% increased Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=128}},nil}
+c["128% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=128}},nil}
 c["128% increased Physical Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=257,name="CritChance",type="INC",value=128}},nil}
 c["128% increased Throwing Critical Strike Chance"]={{[1]={flags=0,keywordFlags=1024,name="CritChance",type="INC",value=128}},nil}
-c["128% increased Throwing Physical Damage"]={{[1]={flags=0,keywordFlags=1024,name="PhysicalDamage",type="INC",value=128}},nil}
 c["129% Increased Chance To Find Potions"]={{[1]={flags=0,keywordFlags=0,name="ChanceToFindPotions",type="INC",value=129}},nil}
 c["129% increased Curse Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=129}}," Curse  "}
-c["129% increased Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=129}},nil}
-c["129% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=129}},nil}
 c["12s Bleed Overload duration"]={{[1]={[1]={skillName="Bleed",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="BASE",value=12}},"s  Overload  "}
 c["12s Ignite Overload Duration"]={{[1]={[1]={skillName="Ignite",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="BASE",value=12}},"s  Overload  "}
 c["12s Poison Overload Duration"]={{[1]={[1]={skillName="Poison",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="BASE",value=12}},"s  Overload  "}
@@ -11683,6 +11675,7 @@ c["13 Mana Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="ManaOnPoti
 c["13 Maximum Stacks"]={{}," Maximum Stacks "}
 c["13 Ward Gain on Crit"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=13}},"  Gain on Crit "}
 c["13 Ward Gain on Direct Cast"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=13}},"  Gain on Direct Cast "}
+c["13 Ward Gain on Kill"]={{[1]={flags=0,keywordFlags=0,name="WardOnKill",type="BASE",value=13}},nil}
 c["13 Ward Gained On Nearby Death"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=13}},"  Gained On Nearby Death "}
 c["13 Ward Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="WardOnPotionUse",type="BASE",value=13}},nil}
 c["13% Chance Per Curse to gain Mana on hit"]={{[1]={flags=8388608,keywordFlags=0,name="Mana",type="BASE",value=13}}," Per Curse to gain   "}
@@ -11712,39 +11705,41 @@ c["13% Minion Frenzy Chance On Damned Kills"]={{[1]={flags=0,keywordFlags=0,name
 c["13% Reduced Health Cost of Spells"]={{[1]={flags=0,keywordFlags=256,name="Life",type="INC",value=-13}},"  Cost of s "}
 c["13% Spirit Plague Spread Chance"]={{},"  Spread Chance "}
 c["13% chance to take 0 Damage when Hit"]={{[1]={flags=8388608,keywordFlags=0,name="Damage",type="BASE",value=13}}," to take 0  when  "}
+c["13% increased Area for Area Skills"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=13}},"  for Area Skills "}
 c["13% increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=13}},nil}
 c["13% increased Attack Speed"]={{[1]={flags=3584,keywordFlags=0,name="Speed",type="INC",value=13}},nil}
-c["13% increased Bow Attack Speed while at Low Health"]={{[1]={[1]={type="Condition",var="LowLife"},flags=3584,keywordFlags=2048,name="Speed",type="INC",value=13}},nil}
 c["13% increased Cast Speed"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",value=13}},nil}
 c["13% increased Cast Speed for Totems"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",value=13}},"  for Totems "}
 c["13% increased Cooldown Recovery Speed While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=13}},nil}
-c["13% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=13}},nil}
+c["13% increased Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=13}},nil}
+c["13% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=13}},nil}
+c["13% increased Effect of Prefixes and Suffixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedAffixEffect",type="INC",value=13}},nil}
 c["13% increased Elemental Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=13},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=13},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=13}},nil}
 c["13% increased Fire Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="FireDamageTaken",type="INC",value=13}},nil}
 c["13% increased Fire Spell Cast Speed"]={{[1]={flags=256,keywordFlags=264,name="Speed",type="INC",value=13}},nil}
-c["13% increased Frost Wall Duration"]={{[1]={[1]={skillName="Frost Wall",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=13}},nil}
-c["13% increased Hail of Arrows Duration"]={{[1]={[1]={skillName="Hail of Arrows",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=13}},nil}
+c["13% increased Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="INC",value=13}},nil}
 c["13% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=13}},nil}
 c["13% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=13}},nil}
 c["13% increased Mana Regen for 4 seconds when you use a Potion"]={{[1]={[1]={type="Condition",var="UsedPotionRecently"},flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=13}},nil}
 c["13% increased Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=512,name="Speed",type="INC",value=13}},nil}
 c["13% increased Melee Attack Speed for 4 seconds when you use a Potion"]={{[1]={[1]={type="Condition",var="UsedPotionRecently"},flags=3584,keywordFlags=512,name="Speed",type="INC",value=13}},nil}
+c["13% increased Minion Attack Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=3584,keywordFlags=0,name="Speed",type="INC",value=13}}}},nil}
 c["13% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=13}}}},nil}
 c["13% increased Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=13}},nil}
 c["13% increased Movement Speed for 4 seconds when you use a Potion"]={{[1]={[1]={type="Condition",var="UsedPotionRecently"},flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=13}},nil}
-c["13% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=13}},nil}
 c["13% increased Physical Spell Cast Speed"]={{[1]={flags=256,keywordFlags=257,name="Speed",type="INC",value=13}},nil}
 c["13% increased Throwing Attack Speed"]={{[1]={flags=3584,keywordFlags=1024,name="Speed",type="INC",value=13}},nil}
 c["13% increased Throwing Attack Speed for 4 seconds when you use a Potion"]={{[1]={[1]={type="Condition",var="UsedPotionRecently"},flags=3584,keywordFlags=1024,name="Speed",type="INC",value=13}},nil}
 c["13% increased area for Melee Area Skills"]={{[1]={flags=0,keywordFlags=512,name="AreaOfEffect",type="INC",value=13}},"  for  Area Skills "}
+c["13% increased area for Minion Area Skills"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=13}}}},"  for  Area Skills "}
 c["13% increased area for Void Area Spells"]={{[1]={flags=0,keywordFlags=272,name="AreaOfEffect",type="INC",value=13}},"  for  Area s "}
+c["13% less Damage Over Time Taken"]={{[1]={flags=0,keywordFlags=0,name="DamageTakenOverTime",type="MORE",value=-13}},nil}
 c["13% less Fire Damage Over Time Taken"]={{[1]={flags=0,keywordFlags=0,name="FireDamageTakenOverTime",type="MORE",value=-13}},nil}
 c["13% less Necrotic Damage Over Time Taken"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamageTakenOverTime",type="MORE",value=-13}},nil}
 c["13% less Physical Damage Over Time Taken"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamageTakenOverTime",type="MORE",value=-13}},nil}
 c["13% less Physical Damage Taken on Block"]={{[1]={[1]={type="Condition",var="Blocking"},flags=0,keywordFlags=0,name="PhysicalDamageTaken",type="MORE",value=-13}},nil}
 c["13% more Damage to Feared Enemies"]={{[1]={[1]={skillName="Fear",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=13}},"  to ed Enemies "}
-c["13% more Damage to Slowed Enemies"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="Slowed"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=13}},nil}
-c["13% more Melee Damage while you have Frenzy"]={{[1]={[1]={type="Condition",var="Frenzy"},flags=0,keywordFlags=512,name="Damage",type="MORE",value=13}},nil}
+c["13% more Damage to Slowed Enemies"]={{[1]={[1]={skillName="Slow",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=13}},"  to ed Enemies "}
 c["13% of Armor Mitigation also applies to Damage over Time"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=13},notSupported=true},nil}
 c["13% of Current Health Lost per second"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=13}}," Current  Lost per second "}
 c["13% of Current Mana gained as Ward on Block"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=13},notSupported=true},nil}
@@ -11760,46 +11755,47 @@ c["130 Ward Gained when you use Enchant Weapon "]={{[1]={[1]={skillName="Enchant
 c["130% Increased Cooldown Recovery Speed for Decoy"]={{[1]={[1]={skillName="Decoy",type="SkillName"},flags=0,keywordFlags=0,name="CooldownRecovery",source="",type="INC",value=130}},nil}
 c["130% Increased Stun Chance"]={{[1]={flags=0,keywordFlags=0,name="StunChance",type="INC",value=130}},nil}
 c["130% Increased damage while in Spriggan Form"]={{[1]={[1]={type="Condition",var="InSprigganForm"},flags=0,keywordFlags=0,name="Damage",type="INC",value=130}},nil}
+c["130% increased Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="Damage",type="INC",value=130}},nil}
 c["130% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=130}},nil}
+c["130% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=130}}}},nil}
+c["130% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=130}},nil}
 c["130% of Max Health gained as Ward Decay Threshold"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=130},notSupported=true},nil}
-c["131% increased Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="Damage",type="INC",value=131}},nil}
-c["131% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=131}}}},nil}
-c["131% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=131}},nil}
 c["132% Chance to cast Marrow Shards when you cast Transplant"]={{[1]={[1]={skillName="Marrow Shards",type="SkillName"},[2]={type="Condition",var="OnCast_Transplant"},flags=0,keywordFlags=0,name="ChanceToCast_MarrowShards",source="",type="BASE",value=132},notSupported=true},nil}
 c["132% Increased Skeletal Mage Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=132}}," Skeletal Mage  "}
+c["132% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=132}},nil}
+c["132% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=132}},nil}
+c["132% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=132}},nil}
+c["132% increased Minion Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=132}}}},nil}
+c["132% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=132}}}},nil}
+c["132% increased Minion Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=132}}}},nil}
+c["132% increased Minion Melee Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="Damage",type="INC",value=132}}}},nil}
+c["132% increased Minion Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=132}}}},nil}
+c["132% increased Minion Spell Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="Damage",type="INC",value=132}}}},nil}
+c["132% increased Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=132}},nil}
+c["132% increased Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=132}},nil}
+c["132% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=132}},nil}
 c["132% of Mana Spent Gained as Ward"]={{[1]={flags=0,keywordFlags=0,name="ManaSpentGainedAsWard",type="BASE",value=132}},nil}
-c["133% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=133}},nil}
-c["133% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=133}},nil}
-c["133% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=133}},nil}
-c["133% increased Minion Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=133}}}},nil}
+c["133% increased Melee Necrotic Damage"]={{[1]={flags=0,keywordFlags=512,name="NecroticDamage",type="INC",value=133}},nil}
 c["133% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=133}}}},nil}
-c["133% increased Minion Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=133}}}},nil}
-c["133% increased Minion Melee Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="Damage",type="INC",value=133}}}},nil}
 c["133% increased Minion Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=133}}}},nil}
-c["133% increased Minion Spell Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="Damage",type="INC",value=133}}}},nil}
-c["133% increased Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=133}},nil}
-c["133% increased Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=133}},nil}
-c["133% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=133}},nil}
-c["134% increased Melee Necrotic Damage"]={{[1]={flags=0,keywordFlags=512,name="NecroticDamage",type="INC",value=134}},nil}
-c["134% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=134}}}},nil}
-c["134% increased Minion Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=134}}}},nil}
-c["134% increased Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=256,name="CritChance",type="INC",value=134}},nil}
+c["133% increased Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=256,name="CritChance",type="INC",value=133}},nil}
+c["135 Health Gain on Block"]={{[1]={flags=0,keywordFlags=0,name="LifeOnBlock",type="BASE",value=135}},nil}
 c["135% Increased Armor Shred Effect "]={{[1]={flags=0,keywordFlags=0,name="ArmorShredEffect",type="INC",value=135}},nil}
 c["135% Increased Bleed Duration "]={{[1]={[1]={skillName="Bleed",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=135}},nil}
 c["135% Increased Bleed Duration for Minions "]={{[1]={[1]={scope="minion",type="Scope"},[2]={skillName="Bleed",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=135}},nil}
+c["135% increased Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=135}},nil}
+c["135% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=135}},nil}
+c["135% increased Melee Physical Damage"]={{[1]={flags=0,keywordFlags=512,name="PhysicalDamage",type="INC",value=135}},nil}
 c["136% Increased Damage for skills used by Shadows"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=136}},"  for skills used by Shadows "}
 c["136% Increased Melee Stun Chance"]={{[1]={flags=0,keywordFlags=512,name="StunChance",type="INC",value=136}},nil}
 c["136% increased Bow Damage"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="INC",value=136}},nil}
 c["136% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=136}},nil}
 c["136% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=136}},nil}
-c["136% increased Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=136}},nil}
 c["136% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=136}},nil}
 c["136% increased Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="Damage",type="INC",value=136}},nil}
 c["136% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=136}},nil}
-c["136% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=136}},nil}
 c["136% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=136}},nil}
 c["136% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=136}},nil}
-c["136% increased Melee Physical Damage"]={{[1]={flags=0,keywordFlags=512,name="PhysicalDamage",type="INC",value=136}},nil}
 c["136% increased Minion Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="CritChance",type="INC",value=136}}}},nil}
 c["136% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=136}}}},nil}
 c["136% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=136}},nil}
@@ -11807,13 +11803,14 @@ c["136% increased Throwing Damage"]={{[1]={flags=0,keywordFlags=1024,name="Damag
 c["136% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=136}},nil}
 c["136% of Damage Reflected"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=136}},"  Reflected "}
 c["138% Increased Fire Aura Damage"]={{[1]={[1]={skillName="Fire Aura",type="SkillName"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=138}},nil}
-c["139% increased Echo Damage when a skill is Echoed"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=139}}," Echo  when a skill is Echoed "}
+c["138% increased Echo Damage when a skill is Echoed"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=138}}," Echo  when a skill is Echoed "}
 c["14 Damage Reflected to Attackers per 10% uncapped Physical Resistance"]={{[1]={flags=0,keywordFlags=1,name="Damage",type="BASE",value=14}},"  Reflected to Attackers per 10% uncapped  Resistance "}
 c["14 Health Gain on Freeze"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=14}},"  Gain on Freeze "}
 c["14 Mana Gain When Skill Echoes"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=14}},"  Gain When Skill Echoes "}
 c["14 Mana Gained when you use Harvest"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=14},notSupported=true},nil}
 c["14 Mana Gained when you use Rive and hit at least one enemy"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=14},notSupported=true},nil}
 c["14 Mana Gained when you use Vengeance and hit at least one enemy"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=14},notSupported=true},nil}
+c["14 Ward Gain on Kill"]={{[1]={flags=0,keywordFlags=0,name="WardOnKill",type="BASE",value=14}},nil}
 c["14 Ward gained per second while wielding a Staff"]={{[1]={[1]={type="Condition",var="UsingStaff"},flags=0,keywordFlags=0,name="Ward",type="BASE",value=14}},"  gained per second  "}
 c["14 seconds of Enrage granted to companions hit by your Storm Totem"]={{[1]={[1]={skillName="Enrage",type="SkillName"},flags=8388608,keywordFlags=0,name="SkillLevel",type="BASE",value=14}}," seconds of  granted to companions  by your Storm Totem "}
 c["14% Chance on hit to summon a Thorn Totem (up to 3 times per 5 seconds)"]={{},"  to summon a Thorn Totem (up to 3 times per 5 seconds) "}
@@ -11857,39 +11854,44 @@ c["14% chance to Invoke Hydrahedron on kill with fire skills (9 second cooldown)
 c["14% chance to gain 20 mana when you directly cast Runebolt or Fireball"]={{},"20 mana when you directly cast Runebolt or Fireball "}
 c["14% chance when one of your Skeletons dies to resummon a new one after 3 seconds"]={{}," when one of your Skeletons dies to resummon a new one after 3 seconds "}
 c["14% increased Area for Area Skills"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=14}},"  for Area Skills "}
-c["14% increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=14}},nil}
+c["14% increased Attack Speed"]={{[1]={flags=3584,keywordFlags=0,name="Speed",type="INC",value=14}},nil}
+c["14% increased Block Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="BlockEffectiveness",type="INC",value=14}},nil}
 c["14% increased Bow Attack Speed"]={{[1]={flags=3584,keywordFlags=2048,name="Speed",type="INC",value=14}},nil}
 c["14% increased Cast Speed"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",value=14}},nil}
-c["14% increased Cast Speed for Totems"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",value=14}},"  for Totems "}
-c["14% increased Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=14}},nil}
-c["14% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=14}},nil}
+c["14% increased Cold Spell Cast Speed"]={{[1]={flags=256,keywordFlags=260,name="Speed",type="INC",value=14}},nil}
+c["14% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=14}},nil}
 c["14% increased Damage for Totems"]={{[1]={[1]={scope="totem",type="Scope"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=14}},nil}
+c["14% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=14}},nil}
 c["14% increased Echo Damage when a skill is Echoed"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=14}}," Echo  when a skill is Echoed "}
-c["14% increased Effect of Prefixes and Suffixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedAffixEffect",type="INC",value=14}},nil}
-c["14% increased Elemental Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=14},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=14},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=14}},nil}
+c["14% increased Effect of Frenzy on You "]={{[1]={flags=0,keywordFlags=0,name="FrenzyEffect",type="INC",value=14},notSupported=true},nil}
+c["14% increased Effect of Haste on You "]={{[1]={flags=0,keywordFlags=0,name="HasteEffect",type="INC",value=14},notSupported=true},nil}
+c["14% increased Effect of Prefixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedPrefixEffect",type="INC",value=14}},nil}
+c["14% increased Effect of Suffixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedSuffixEffect",type="INC",value=14}},nil}
+c["14% increased Effect of Weaver Enchantment Affixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedWeaverEffect",type="INC",value=14}},nil}
 c["14% increased Elemental Damage Over Time"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=14},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=14},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=14}},"  Over Time "}
 c["14% increased Fire Spell Cast Speed"]={{[1]={flags=256,keywordFlags=264,name="Speed",type="INC",value=14}},nil}
 c["14% increased Frost Wall Duration"]={{[1]={[1]={skillName="Frost Wall",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=14}},nil}
-c["14% increased Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="INC",value=14}},nil}
-c["14% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=14}},nil}
+c["14% increased Lightning Spell Cast Speed"]={{[1]={flags=256,keywordFlags=258,name="Speed",type="INC",value=14}},nil}
 c["14% increased Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="INC",value=14}},nil}
 c["14% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=14}},nil}
 c["14% increased Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=512,name="Speed",type="INC",value=14}},nil}
 c["14% increased Melee Damage while you have Frenzy"]={{[1]={[1]={type="Condition",var="Frenzy"},flags=0,keywordFlags=512,name="Damage",type="INC",value=14}},nil}
 c["14% increased Melee Elemental Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="INC",value=14},[2]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=14},[3]={flags=0,keywordFlags=512,name="LightningDamage",type="INC",value=14}},nil}
-c["14% increased Minion Attack Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=3584,keywordFlags=0,name="Speed",type="INC",value=14}}}},nil}
 c["14% increased Minion Cooldown Recovery Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=14}}}},nil}
 c["14% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=14}}}},nil}
 c["14% increased Minion Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=14}}}},nil}
 c["14% increased Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=14}},nil}
 c["14% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=14}},nil}
+c["14% increased Speed and Distance with Flame Rush"]={{}," Speed and Distance with  "}
+c["14% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=14}},nil}
+c["14% increased Spell Fire Damage"]={{[1]={flags=0,keywordFlags=256,name="FireDamage",type="INC",value=14}},nil}
 c["14% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=14}},nil}
 c["14% increased area for Damage Over Time Area Spells"]={{[1]={flags=0,keywordFlags=256,name="AreaOfEffect",type="INC",value=14}},"  for Damage Over Time Area s "}
 c["14% increased area for Lightning Area Skills"]={{[1]={flags=0,keywordFlags=2,name="AreaOfEffect",type="INC",value=14}},"  for  Area Skills "}
 c["14% increased area for Minion Area Skills"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=14}}}},"  for  Area Skills "}
-c["14% less Damage Over Time Taken"]={{[1]={flags=0,keywordFlags=0,name="DamageTakenOverTime",type="MORE",value=-14}},nil}
 c["14% less Damage Taken for Totems"]={{[1]={flags=0,keywordFlags=0,name="DamageTaken",type="MORE",value=-14}},"  for Totems "}
 c["14% less Fire Damage Taken on Block"]={{[1]={[1]={type="Condition",var="Blocking"},flags=0,keywordFlags=0,name="FireDamageTaken",type="MORE",value=-14}},nil}
+c["14% more hit damage to Blinded Enemies with Multishot"]={{[1]={[1]={skillName="Blind",type="SkillName"},flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=14}},"   to ed Enemies with Multishot "}
 c["14% of Armor Mitigation also applies to Damage over Time"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=14},notSupported=true},nil}
 c["14% of Cold Damage Taken as Physical"]={{[1]={flags=0,keywordFlags=1,name="ColdDamageTaken",type="BASE",value=14}},"  as  "}
 c["14% of Damage Dealt to Mana Before Health"]={{[1]={flags=0,keywordFlags=0,name="DamageToManaBeforeHealth",type="BASE",value=14}},nil}
@@ -11898,19 +11900,20 @@ c["14% of Damage dealt by Harvest Leeched as Health"]={{[1]={[1]={skillName="Har
 c["14% of Fire Damage Taken as Physical"]={{[1]={flags=0,keywordFlags=1,name="FireDamageTaken",type="BASE",value=14}},"  as  "}
 c["14% of Lightning Damage Taken as Physical"]={{[1]={flags=0,keywordFlags=1,name="LightningDamageTaken",type="BASE",value=14}},"  as  "}
 c["14% of Minion Damage Leeched as Health on Melee Hit"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=8389120,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=14}}}},nil}
+c["14% of Spell Damage Leeched as Health While Channelling"]={{[1]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=256,name="DamageLifeLeech",type="BASE",value=14}},nil}
 c["14% reduced Bonus Damage Taken from Critical Strikes"]={{[1]={flags=0,keywordFlags=0,name="ReduceCritExtraDamage",type="BASE",value=14}},nil}
 c["14% reduced Channel Cost"]={{[1]={flags=0,keywordFlags=0,name="ChannelCost",type="INC",value=-14}},nil}
 c["14% reduced Damage Taken on Block"]={{[1]={[1]={type="Condition",var="Blocking"},flags=0,keywordFlags=0,name="DamageTaken",type="INC",value=-14}},nil}
 c["14% reduced Raptor Size"]={{}," Raptor Size "}
 c["140 Ward per Second for each Curse affecting you"]={{[1]={flags=0,keywordFlags=0,name="WardPerSecond",type="BASE",value=140}},"  for each Curse affecting you "}
 c["140% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=140}}}},nil}
+c["140% more Armor against Shocked Enemies"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="Shocked"},flags=0,keywordFlags=0,name="Armour",type="MORE",value=140}},nil}
 c["141 Damage Reflected to Attackers"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=141}},"  Reflected to Attackers "}
-c["141% more Armor against Shocked Enemies"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="Shocked"},flags=0,keywordFlags=0,name="Armour",type="MORE",value=141}},nil}
 c["141% of Necrotic Damage Taken as Physical"]={{[1]={flags=0,keywordFlags=1,name="NecroticDamageTaken",type="BASE",value=141}},"  as  "}
 c["141% of Poison Damage Taken as Physical"]={{[1]={flags=0,keywordFlags=1,name="PoisonDamageTaken",type="BASE",value=141}},"  as  "}
 c["141% of Void Damage Taken as Physical"]={{[1]={flags=0,keywordFlags=1,name="VoidDamageTaken",type="BASE",value=141}},"  as  "}
+c["142% increased Dodge Rating While Channelling"]={{[1]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="Evasion",type="INC",value=142}},nil}
 c["143% Increased Critical Strike chance with Flurry"]={{[1]={[1]={skillName="Flurry",type="SkillName"},flags=0,keywordFlags=0,name="CritChance",type="INC",value=143}},"  with  "}
-c["143% increased Dodge Rating While Channelling"]={{[1]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="Evasion",type="INC",value=143}},nil}
 c["143% of Shurikens Base Damage converted to Lightning"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=143},notSupported=true},nil}
 c["144% Increased Area with Detonating Arrow"]={{[1]={[1]={skillName="Detonating Arrow",type="SkillName"},flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=144}},"  with  "}
 c["144% Increased Damage with Hammer Throw"]={{[1]={[1]={skillName="Hammer Throw",type="SkillName"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=144}},nil}
@@ -11921,22 +11924,22 @@ c["144% Increased spell critical strike chance. This effect is doubled if you ha
 c["144% increased Damage Over Time While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=4096,keywordFlags=0,name="Damage",type="INC",value=144}},nil}
 c["144% increased Damage for Totems"]={{[1]={[1]={scope="totem",type="Scope"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=144}},nil}
 c["144% increased Melee Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=512,name="Damage",type="INC",value=144}},nil}
+c["144% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=144}}}},nil}
 c["144% increased Minion Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="CritChance",type="INC",value=144}}}},nil}
 c["144% increased Spell Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=256,name="Damage",type="INC",value=144}},nil}
-c["145% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=145}}}},nil}
-c["146% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=146}},nil}
-c["146% increased Elemental Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=146},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=146},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=146}},nil}
-c["146% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=146}},nil}
+c["145% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=145}},nil}
+c["145% increased Elemental Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=145},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=145},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=145}},nil}
+c["145% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=145}},nil}
+c["146% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=146}},nil}
 c["146% increased Necrotic Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=146}},nil}
 c["146% increased Physical Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=146}},nil}
 c["146% increased Volatile Zombie Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=146}}," Volatile Zombie  "}
 c["147 Ward Gained on Shadow Creation"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=147}},"  Gained on Shadow Creation "}
-c["147% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=147}},nil}
-c["148% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=148}},nil}
-c["148% increased Melee Elemental Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="INC",value=148},[2]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=148},[3]={flags=0,keywordFlags=512,name="LightningDamage",type="INC",value=148}},nil}
-c["148% increased Minion Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=148}}}},nil}
-c["148% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=148}}}},nil}
-c["148% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=148}},nil}
+c["147% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=147}},nil}
+c["147% increased Melee Elemental Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="INC",value=147},[2]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=147},[3]={flags=0,keywordFlags=512,name="LightningDamage",type="INC",value=147}},nil}
+c["147% increased Minion Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=147}}}},nil}
+c["147% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=147}}}},nil}
+c["147% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=147}},nil}
 c["15 Blood Spectre Mana Cost"]={{[1]={flags=0,keywordFlags=0,name="ManaCost",type="BASE",value=15}}," Blood Spectre  "}
 c["15 Cooldown (seconds)"]={{}," Cooldown (seconds) "}
 c["15 Damage Reflected"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=15}},"  Reflected "}
@@ -11945,6 +11948,7 @@ c["15 Doubled with a Bleeding Enemy Within Distance (meters)"]={{[1]={[1]={skill
 c["15 Forged Weapon Ward Per Second"]={{[1]={flags=0,keywordFlags=0,name="WardPerSecond",type="BASE",value=15}}," Forged Weapon  "}
 c["15 Healing"]={{[1]={[1]={skillName="Healing",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=15}},nil}
 c["15 Healing Amount"]={{[1]={[1]={skillName="Healing",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=15}},"  Amount "}
+c["15 Health Gain on Kill"]={{[1]={flags=0,keywordFlags=0,name="LifeOnKill",type="BASE",value=15}},nil}
 c["15 Health Gain on Melee Hit"]={{[1]={flags=8389120,keywordFlags=0,name="Life",type="BASE",value=15}},"  Gain  "}
 c["15 Health Gain on Shadow Creation"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=15}},"  Gain on Shadow Creation "}
 c["15 Mana Burst"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=15}},"  Burst "}
@@ -11954,6 +11958,7 @@ c["15 Maximum Rune Embers"]={{}," Maximum Rune Embers "}
 c["15 Minions teleported around you after you use a Traversal Skill"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={skillName="Teleport",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=15}}}}," s ed around you after you use a Traversal Skill "}
 c["15 Ward Gain Per Elemental Arrow"]={{[1]={flags=0,keywordFlags=14,name="Ward",type="BASE",value=15}},"  Gain Per  Arrow "}
 c["15 Ward Gain With Tri-Elemental"]={{[1]={flags=0,keywordFlags=14,name="Ward",type="BASE",value=15}},"  Gain With Tri- "}
+c["15 Ward Gain on Kill"]={{[1]={flags=0,keywordFlags=0,name="WardOnKill",type="BASE",value=15}},nil}
 c["15 Ward Gain per Cursed enemy after Channeling"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=15}},"  Gain per Cursed enemy after Channeling "}
 c["15 Ward Gain with Lightning Bolt"]={{[1]={flags=0,keywordFlags=2,name="Ward",type="BASE",value=15}},"  Gain with  Bolt "}
 c["15 Ward Gained"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=15}},"  Gained "}
@@ -12055,49 +12060,47 @@ c["15% Stats From Weapons Effectiveness"]={{}," Stats From Weapons Effectiveness
 c["15% Storm Stack Chance"]={{}," Storm Stack Chance "}
 c["15% Strike Three Kill Threshold"]={{[1]={flags=0,keywordFlags=0,name="KillThreshold",type="BASE",value=15}}," Strike Three  "}
 c["15% Ward On Kill Chance"]={{[1]={[1]={type="Condition",var="KilledRecently"},flags=0,keywordFlags=0,name="Ward",type="BASE",value=15}},"   Chance "}
-c["15% increased Area for Area Skills"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=15}},"  for Area Skills "}
 c["15% increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=15}},nil}
 c["15% increased Attack Speed"]={{[1]={flags=3584,keywordFlags=0,name="Speed",type="INC",value=15}},nil}
-c["15% increased Block Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="BlockEffectiveness",type="INC",value=15}},nil}
 c["15% increased Bow Damage"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="INC",value=15}},nil}
 c["15% increased Cast Speed"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",value=15}},nil}
 c["15% increased Cast Speed for Totems"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",value=15}},"  for Totems "}
-c["15% increased Cold Spell Cast Speed"]={{[1]={flags=256,keywordFlags=260,name="Speed",type="INC",value=15}},nil}
+c["15% increased Cooldown Recovery Speed While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=15}},nil}
 c["15% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=15}},nil}
+c["15% increased Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=0,name="DamageLifeLeech",type="INC",value=15}},nil}
 c["15% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=15}},nil}
 c["15% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=15}},nil}
-c["15% increased Effect of Frenzy on You "]={{[1]={flags=0,keywordFlags=0,name="FrenzyEffect",type="INC",value=15},notSupported=true},nil}
-c["15% increased Effect of Haste on You "]={{[1]={flags=0,keywordFlags=0,name="HasteEffect",type="INC",value=15},notSupported=true},nil}
-c["15% increased Effect of Prefixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedPrefixEffect",type="INC",value=15}},nil}
-c["15% increased Effect of Suffixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedSuffixEffect",type="INC",value=15}},nil}
-c["15% increased Effect of Weaver Enchantment Affixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedWeaverEffect",type="INC",value=15}},nil}
+c["15% increased Effect of Frenzy on You"]={{[1]={flags=0,keywordFlags=0,name="FrenzyEffect",type="INC",value=15},notSupported=true},nil}
+c["15% increased Effect of Haste on You"]={{[1]={flags=0,keywordFlags=0,name="HasteEffect",type="INC",value=15},notSupported=true},nil}
+c["15% increased Elemental Damage Over Time"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=15},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=15},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=15}},"  Over Time "}
+c["15% increased Endurance Threshold"]={{[1]={flags=0,keywordFlags=0,name="EnduranceThreshold",type="INC",value=15}},nil}
 c["15% increased Fire Attack Speed"]={{[1]={flags=3584,keywordFlags=8,name="Speed",type="INC",value=15}},nil}
 c["15% increased Fire Spell Cast Speed"]={{[1]={flags=256,keywordFlags=264,name="Speed",type="INC",value=15}},nil}
-c["15% increased Lightning Spell Cast Speed"]={{[1]={flags=256,keywordFlags=258,name="Speed",type="INC",value=15}},nil}
+c["15% increased Hail of Arrows Duration"]={{[1]={[1]={skillName="Hail of Arrows",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=15}},nil}
 c["15% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=15}},nil}
 c["15% increased Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=512,name="Speed",type="INC",value=15}},nil}
 c["15% increased Melee Attack Speed for 4 seconds when you use a Potion"]={{[1]={[1]={type="Condition",var="UsedPotionRecently"},flags=3584,keywordFlags=512,name="Speed",type="INC",value=15}},nil}
 c["15% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=15}},nil}
 c["15% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=15}}}},nil}
+c["15% increased Minion Damage Over Time"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=4096,keywordFlags=0,name="Damage",type="INC",value=15}}}},nil}
+c["15% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=15}}}},nil}
 c["15% increased Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=15}},nil}
 c["15% increased Movement Speed for 4 seconds when you use a Potion"]={{[1]={[1]={type="Condition",var="UsedPotionRecently"},flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=15}},nil}
-c["15% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=15}},nil}
-c["15% increased Speed and Distance with Flame Rush"]={{}," Speed and Distance with  "}
 c["15% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=15}},nil}
-c["15% increased Spell Fire Damage"]={{[1]={flags=0,keywordFlags=256,name="FireDamage",type="INC",value=15}},nil}
 c["15% increased Throwing Attack Speed"]={{[1]={flags=3584,keywordFlags=1024,name="Speed",type="INC",value=15}},nil}
 c["15% increased Throwing Attack Speed for 4 seconds when you use a Potion"]={{[1]={[1]={type="Condition",var="UsedPotionRecently"},flags=3584,keywordFlags=1024,name="Speed",type="INC",value=15}},nil}
 c["15% increased Throwing Damage"]={{[1]={flags=0,keywordFlags=1024,name="Damage",type="INC",value=15}},nil}
 c["15% increased Volatile Zombie Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=15}}," Volatile Zombie  "}
-c["15% increased area for Minion Area Skills"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=15}}}},"  for  Area Skills "}
 c["15% less Cold Damage Taken on Block"]={{[1]={[1]={type="Condition",var="Blocking"},flags=0,keywordFlags=0,name="ColdDamageTaken",type="MORE",value=-15}},nil}
 c["15% less Damage Taken per Active Shadow (1 in 6 chance)"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=15},notSupported=true},nil}
 c["15% less Damage over Time taken while you have Haste"]={{[1]={[1]={type="Condition",var="Haste"},flags=0,keywordFlags=0,name="DamageTakenOverTime",type="MORE",value=-15}},nil}
 c["15% less Necrotic Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamageTaken",type="MORE",value=-15}},nil}
+c["15% more Damage to Bosses and Rare Enemies while above half mana"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=15}},"  to Bosses and Rare Enemies while above half mana "}
 c["15% more Melee Damage to High Health Enemies"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="MORE",value=15}},"   to High Health Enemies "}
 c["15% more Spell Damage to Low Health Enemies"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="MORE",value=15}},"   to Low Health Enemies "}
+c["15% more Throwing Damage to Bosses and Rare Enemies"]={{[1]={flags=0,keywordFlags=1024,name="Damage",type="MORE",value=15}},"   to Bosses and Rare Enemies "}
 c["15% more dodge rating (multiplicative with other modifiers)"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="MORE",value=15}},"  (multiplicative with other modifiers) "}
-c["15% more hit damage to Blinded Enemies with Multishot"]={{[1]={[1]={skillName="Blind",type="SkillName"},flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=15}},"   to ed Enemies with Multishot "}
+c["15% more more Damage Over Time per stack of A Plague"]={{[1]={[1]={skillName="Plague",type="SkillName"},flags=4096,keywordFlags=0,name="Damage",type="MORE",value=15}}," more  per stack of A  "}
 c["15% of Armor Mitigation also applies to Damage over Time"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=15},notSupported=true},nil}
 c["15% of Current Health Lost per second"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=15}}," Current  Lost per second "}
 c["15% of Current Health and Ward lost when you use Evade"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=15}}," Current  and Ward lost when you use Evade "}
@@ -12108,7 +12111,6 @@ c["15% of Lightning Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=0,nam
 c["15% of Minion Damage Leeched as Health on Melee Hit"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=8389120,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=15}}}},nil}
 c["15% of Minion Damage Reflected"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="BASE",value=15}}}},"   Reflected "}
 c["15% of Missing Health gained as Ward per second"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=15},notSupported=true},nil}
-c["15% of Spell Damage Leeched as Health While Channelling"]={{[1]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=256,name="DamageLifeLeech",type="BASE",value=15}},nil}
 c["15% reduced Bonus Damage Taken from Critical Strikes"]={{[1]={flags=0,keywordFlags=0,name="ReduceCritExtraDamage",type="BASE",value=15}},nil}
 c["150 Ward Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="WardOnPotionUse",type="BASE",value=150}},nil}
 c["150 Ward gained when you use Smoke Bomb"]={{[1]={[1]={skillName="Smoke Bomb",type="SkillName"},flags=0,keywordFlags=0,name="WardGainOnUse_SmokeBomb",source="",type="BASE",value=150},notSupported=true},nil}
@@ -12123,26 +12125,26 @@ c["150% Increased Damage for skills used by Shadows"]={{[1]={flags=0,keywordFlag
 c["150% Increased Slow Duration"]={{[1]={[1]={skillName="Slow",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=150}},nil}
 c["150% More Blaze Shade Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=150}}," Blaze Shade  "}
 c["150% Tier 2 Increased Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=150}}," Tier 2 Increased  "}
+c["150% increased Cold Damage Over Time"]={{[1]={flags=4100,keywordFlags=0,name="ColdDamage",type="INC",value=150}},nil}
+c["150% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=150}},nil}
+c["150% increased Minion Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=150}}}},nil}
+c["150% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=150}}}},nil}
+c["150% increased Spark Charge Explosion Area"]={{[1]={[1]={skillName="Spark Charge",type="SkillName"},flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=150}},"  Explosion  "}
+c["150% increased Void Damage Over Time"]={{[1]={flags=4112,keywordFlags=0,name="VoidDamage",type="INC",value=150}},nil}
+c["150% more Damage Taken depending on Area Level for You and your Minions"]={{[1]={[1]={limit=75,type="Multiplier",valueCap=150,var="AreaLevel"},flags=0,keywordFlags=0,name="DamageTaken",source="",type="MORE",value=2}},nil}
 c["151% Increased Stun Chance"]={{[1]={flags=0,keywordFlags=0,name="StunChance",type="INC",value=151}},nil}
-c["151% increased Cold Damage Over Time"]={{[1]={flags=4100,keywordFlags=0,name="ColdDamage",type="INC",value=151}},nil}
-c["151% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=151}},nil}
-c["151% increased Minion Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=151}}}},nil}
 c["151% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=151}}}},nil}
-c["151% increased Spark Charge Explosion Area"]={{[1]={[1]={skillName="Spark Charge",type="SkillName"},flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=151}},"  Explosion  "}
-c["151% increased Void Damage Over Time"]={{[1]={flags=4112,keywordFlags=0,name="VoidDamage",type="INC",value=151}},nil}
-c["151% more Damage Taken depending on Area Level for You and your Minions"]={{[1]={[1]={limit=75,type="Multiplier",valueCap=151,var="AreaLevel"},flags=0,keywordFlags=0,name="DamageTaken",source="",type="MORE",value=2.0133333333333}},nil}
-c["152% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=152}}}},nil}
 c["153% Increased Abyssal Decay Duration "]={{[1]={flags=0,keywordFlags=0,name="EnemyAbyssalDecayDuration",type="INC",value=153}},nil}
 c["153% Increased Aspect of the Boar Duration"]={{[1]={[1]={skillName="Aspect of the Boar",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=153}},nil}
 c["153% more Damage Taken depending on Area Level for You and your Minions"]={{[1]={[1]={limit=75,type="Multiplier",valueCap=153,var="AreaLevel"},flags=0,keywordFlags=0,name="DamageTaken",source="",type="MORE",value=2.04}},nil}
 c["153% more Damage with an Acid Flask thrown by consuming a potion"]={{[1]={[1]={skillName="Acid Flask",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=153}},"  with an  thrown by consuming a potion "}
-c["156% increased Curse Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=156}}," Curse  "}
-c["156% increased Elemental Damage Over Time"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=156},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=156},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=156}},"  Over Time "}
-c["156% more Damage Taken depending on Area Level for You and your Minions"]={{[1]={[1]={limit=75,type="Multiplier",valueCap=156,var="AreaLevel"},flags=0,keywordFlags=0,name="DamageTaken",source="",type="MORE",value=2.08}},nil}
+c["155% increased Curse Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=155}}," Curse  "}
+c["155% increased Elemental Damage Over Time"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=155},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=155},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=155}},"  Over Time "}
+c["155% more Damage Taken depending on Area Level for You and your Minions"]={{[1]={[1]={limit=75,type="Multiplier",valueCap=155,var="AreaLevel"},flags=0,keywordFlags=0,name="DamageTaken",source="",type="MORE",value=2.0666666666667}},nil}
 c["157% Increased Fire Aura Damage"]={{[1]={[1]={skillName="Fire Aura",type="SkillName"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=157}},nil}
 c["157% increased Echo Damage when a skill is Echoed"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=157}}," Echo  when a skill is Echoed "}
+c["157% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=157}}}},nil}
 c["158% Increased Damage for skills used by Shadows"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=158}},"  for skills used by Shadows "}
-c["158% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=158}}}},nil}
 c["158% more Damage Taken depending on Area Level for You and your Minions"]={{[1]={[1]={limit=75,type="Multiplier",valueCap=158,var="AreaLevel"},flags=0,keywordFlags=0,name="DamageTaken",source="",type="MORE",value=2.1066666666667}},nil}
 c["16 Health Gained when you receive a Glancing Blow"]={{[1]={flags=0,keywordFlags=0,name="LifeOnGlancingBlow",type="BASE",value=16}},nil}
 c["16 Mana Consumed Per Additional Slam"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=16}},"  Consumed Per Additional Slam "}
@@ -12175,24 +12177,23 @@ c["16% Increased aura area of Storm Totem"]={{[1]={flags=0,keywordFlags=0,name="
 c["16% Increased cold spell damage if you have directly cast a physical spell recently"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=16},notSupported=true},nil}
 c["16% Increased physical spell damage if you have directly cast a cold spell recently"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=16},notSupported=true},nil}
 c["16% Maximum Damage Bonus"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=16}}," Maximum  Bonus "}
+c["16% increased Area for Area Skills"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=16}},"  for Area Skills "}
 c["16% increased Bow Damage"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="INC",value=16}},nil}
+c["16% increased Cast Speed"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",value=16}},nil}
 c["16% increased Cast Speed for Totems"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",value=16}},"  for Totems "}
-c["16% increased Cooldown Recovery Speed While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=16}},nil}
-c["16% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=16}},nil}
-c["16% increased Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=0,name="DamageLifeLeech",type="INC",value=16}},nil}
+c["16% increased Cooldown Recovery Speed for Evade"]={{[1]={flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=16}},"  for Evade "}
 c["16% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=16}},nil}
 c["16% increased Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="Damage",type="INC",value=16}},nil}
 c["16% increased Damage for Totems"]={{[1]={[1]={scope="totem",type="Scope"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=16}},nil}
-c["16% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=16}},nil}
-c["16% increased Effect of Frenzy on You"]={{[1]={flags=0,keywordFlags=0,name="FrenzyEffect",type="INC",value=16},notSupported=true},nil}
-c["16% increased Effect of Haste on You"]={{[1]={flags=0,keywordFlags=0,name="HasteEffect",type="INC",value=16},notSupported=true},nil}
+c["16% increased Effect of Frenzy while Dual Wielding"]={{}," Effect of   "}
+c["16% increased Effect of Prefixes and Suffixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedAffixEffect",type="INC",value=16}},nil}
+c["16% increased Elemental Critical Strike Chance"]={{[1]={flags=0,keywordFlags=14,name="CritChance",type="INC",value=16}},nil}
 c["16% increased Elemental Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=16},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=16},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=16}},nil}
-c["16% increased Elemental Damage Over Time"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=16},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=16},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=16}},"  Over Time "}
-c["16% increased Endurance Threshold"]={{[1]={flags=0,keywordFlags=0,name="EnduranceThreshold",type="INC",value=16}},nil}
 c["16% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=16}},nil}
 c["16% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=16}},nil}
 c["16% increased Frost Wall Duration"]={{[1]={[1]={skillName="Frost Wall",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=16}},nil}
 c["16% increased Hail of Arrows Duration"]={{[1]={[1]={skillName="Hail of Arrows",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=16}},nil}
+c["16% increased Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="INC",value=16}},nil}
 c["16% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=16}},nil}
 c["16% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=16}},nil}
 c["16% increased Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=512,name="Speed",type="INC",value=16}},nil}
@@ -12200,51 +12201,52 @@ c["16% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",ty
 c["16% increased Melee Elemental Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="INC",value=16},[2]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=16},[3]={flags=0,keywordFlags=512,name="LightningDamage",type="INC",value=16}},nil}
 c["16% increased Melee Physical Damage"]={{[1]={flags=0,keywordFlags=512,name="PhysicalDamage",type="INC",value=16}},nil}
 c["16% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=16}}}},nil}
-c["16% increased Minion Damage Over Time"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=4096,keywordFlags=0,name="Damage",type="INC",value=16}}}},nil}
-c["16% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=16}}}},nil}
 c["16% increased Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=16}},nil}
 c["16% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=16}},nil}
 c["16% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=16}},nil}
 c["16% increased Throwing Damage"]={{[1]={flags=0,keywordFlags=1024,name="Damage",type="INC",value=16}},nil}
 c["16% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=16}},nil}
+c["16% increased area for Minion Area Skills"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=16}}}},"  for  Area Skills "}
 c["16% less Damage Taken from the First Hit Received from each enemy"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=16},notSupported=true},nil}
 c["16% less Damage Taken while using Erasing Strike"]={{[1]={[1]={skillName="Erasing Strike",type="SkillName"},flags=0,keywordFlags=0,name="DamageTaken",type="MORE",value=-16}},"  while using  "}
 c["16% less Fire Damage Taken on Block"]={{[1]={[1]={type="Condition",var="Blocking"},flags=0,keywordFlags=0,name="FireDamageTaken",type="MORE",value=-16}},nil}
-c["16% more Damage to Bosses and Rare Enemies while above half mana"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=16}},"  to Bosses and Rare Enemies while above half mana "}
+c["16% less Void Damage Taken on Block"]={{[1]={[1]={type="Condition",var="Blocking"},flags=0,keywordFlags=0,name="VoidDamageTaken",type="MORE",value=-16}},nil}
+c["16% more Cold Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="ColdDamageTaken",type="MORE",value=16}},nil}
 c["16% more Damage to Frozen Enemies"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="Frozen"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=16}},nil}
-c["16% more Throwing Damage to Bosses and Rare Enemies"]={{[1]={flags=0,keywordFlags=1024,name="Damage",type="MORE",value=16}},"   to Bosses and Rare Enemies "}
-c["16% more more Damage Over Time per stack of A Plague"]={{[1]={[1]={skillName="Plague",type="SkillName"},flags=4096,keywordFlags=0,name="Damage",type="MORE",value=16}}," more  per stack of A  "}
 c["16% of Minion Damage Reflected"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="BASE",value=16}}}},"   Reflected "}
+c["16% reduced Damage Taken on Block"]={{[1]={[1]={type="Condition",var="Blocking"},flags=0,keywordFlags=0,name="DamageTaken",type="INC",value=-16}},nil}
+c["160% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=160}},nil}
+c["160% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=160}},nil}
+c["160% more Damage Taken depending on Area Level for You and your Minions"]={{[1]={[1]={limit=75,type="Multiplier",valueCap=160,var="AreaLevel"},flags=0,keywordFlags=0,name="DamageTaken",source="",type="MORE",value=2.1333333333333}},nil}
 c["161% Increased Skeletal Mage Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=161}}," Skeletal Mage  "}
 c["161% Increased critical strike chance with Shield Throw"]={{[1]={[1]={skillName="Shield Throw",type="SkillName"},flags=0,keywordFlags=0,name="CritChance",type="INC",value=161}},"  with  "}
+c["161% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=161}},nil}
 c["161% increased Critical Strike Chance for Totems"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=161}},"  for Totems "}
-c["161% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=161}},nil}
-c["161% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=161}},nil}
 c["161% increased Physical Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=257,name="CritChance",type="INC",value=161}},nil}
 c["161% increased Throwing Critical Strike Chance"]={{[1]={flags=0,keywordFlags=1024,name="CritChance",type="INC",value=161}},nil}
-c["161% more Damage Taken depending on Area Level for You and your Minions"]={{[1]={[1]={limit=75,type="Multiplier",valueCap=161,var="AreaLevel"},flags=0,keywordFlags=0,name="DamageTaken",source="",type="MORE",value=2.1466666666667}},nil}
-c["162 Ward gained when damage leaves you at low health"]={{[1]={[1]={type="Condition",var="LowLife"},flags=0,keywordFlags=0,name="Ward",type="BASE",value=162}},"  gained when damage leaves you  "}
+c["162 Ward gained when damage leaves you at low health"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=162}},"  gained when damage leaves you at low health "}
 c["162% Increased Damage while wielding a Bow"]={{[1]={[1]={type="Condition",var="UsingBow"},flags=0,keywordFlags=0,name="Damage",type="INC",value=162}},nil}
 c["162% Increased Damage while wielding a Dagger"]={{[1]={[1]={type="Condition",var="UsingDagger"},flags=0,keywordFlags=0,name="Damage",type="INC",value=162}},nil}
 c["162% Increased Damage while wielding a Sword"]={{[1]={[1]={type="Condition",var="UsingSword"},flags=0,keywordFlags=0,name="Damage",type="INC",value=162}},nil}
 c["162% Increased Damage with Shadow Cascade per Active Shadow"]={{[1]={[1]={skillName="Shadow Cascade",type="SkillName"},[2]={type="Multiplier",var="ActiveShadow"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=162}},nil}
 c["162% Increased area of effect with Acid Flask"]={{[1]={[1]={skillName="Acid Flask",type="SkillName"},flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=162}},"  with  "}
-c["162% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=162}},nil}
+c["162% increased Bow Damage"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="INC",value=162}},nil}
+c["162% increased Elemental Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=162},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=162},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=162}},nil}
+c["162% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=162}},nil}
+c["162% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=162}},nil}
+c["162% increased Throwing Physical Damage"]={{[1]={flags=0,keywordFlags=1024,name="PhysicalDamage",type="INC",value=162}},nil}
 c["163% Increased Spark Charge Effect with Melee Attacks"]={{},"  Effect with  Attacks "}
-c["163% increased Bow Damage"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="INC",value=163}},nil}
-c["163% increased Elemental Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=163},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=163},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=163}},nil}
-c["163% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=163}},nil}
-c["163% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=163}},nil}
-c["163% increased Throwing Physical Damage"]={{[1]={flags=0,keywordFlags=1024,name="PhysicalDamage",type="INC",value=163}},nil}
 c["165 Damage Reflected to Attackers"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=165}},"  Reflected to Attackers "}
 c["165 Ward Gained on Shadow Creation"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=165}},"  Gained on Shadow Creation "}
 c["165% Increased Fire Aura Damage"]={{[1]={[1]={skillName="Fire Aura",type="SkillName"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=165}},nil}
-c["166% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=166}},nil}
-c["166% increased Echo Damage when a skill is Echoed"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=166}}," Echo  when a skill is Echoed "}
-c["166% increased Minion Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="CritChance",type="INC",value=166}}}},nil}
+c["165% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=165}},nil}
+c["165% increased Echo Damage when a skill is Echoed"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=165}}," Echo  when a skill is Echoed "}
+c["165% increased Minion Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="CritChance",type="INC",value=165}}}},nil}
 c["168 Ward Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="WardOnPotionUse",type="BASE",value=168}},nil}
 c["169% Increased Critical Strike chance with Flurry"]={{[1]={[1]={skillName="Flurry",type="SkillName"},flags=0,keywordFlags=0,name="CritChance",type="INC",value=169}},"  with  "}
+c["17 Health Gain on Block"]={{[1]={flags=0,keywordFlags=0,name="LifeOnBlock",type="BASE",value=17}},nil}
 c["17 Health Gained when you receive a Glancing Blow"]={{[1]={flags=0,keywordFlags=0,name="LifeOnGlancingBlow",type="BASE",value=17}},nil}
+c["17 Ward Gain on Kill"]={{[1]={flags=0,keywordFlags=0,name="WardOnKill",type="BASE",value=17}},nil}
 c["17 Ward Gained On 30% of Crits"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=17}},"  Gained On 30% of Crits "}
 c["17 Ward gained per 10 Missing Mana when you use a Traversal Skill"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=17}},"  gained per 10 Missing Mana when you use a Traversal Skill "}
 c["17# Time Rot Spread On Kill Chance"]={{[1]={[1]={type="Condition",var="KilledRecently"},[2]={skillName="Time Rot",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=17}},"#  Spread  Chance "}
@@ -12269,51 +12271,62 @@ c["17% Reduced Health Cost of Spells"]={{[1]={flags=0,keywordFlags=256,name="Lif
 c["17% chance to recover 8% of Aerial Assault's remaining cooldown on Throwing Hit (up to 3 times)"]={{}," to recover 8% of 's remaining cooldown on   (up to 3 times) "}
 c["17% increased Area for Area Skills"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=17}},"  for Area Skills "}
 c["17% increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=17}},nil}
+c["17% increased Block Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="BlockEffectiveness",type="INC",value=17}},nil}
+c["17% increased Bow Attack Speed"]={{[1]={flags=3584,keywordFlags=2048,name="Speed",type="INC",value=17}},nil}
+c["17% increased Bow Damage"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="INC",value=17}},nil}
 c["17% increased Cast Speed"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",value=17}},nil}
-c["17% increased Cooldown Recovery Speed for Evade"]={{[1]={flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=17}},"  for Evade "}
+c["17% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=17}},nil}
+c["17% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=17}},nil}
 c["17% increased Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=17}},nil}
 c["17% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=17}},nil}
-c["17% increased Effect of Frenzy while Dual Wielding"]={{}," Effect of   "}
-c["17% increased Effect of Prefixes and Suffixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedAffixEffect",type="INC",value=17}},nil}
-c["17% increased Elemental Critical Strike Chance"]={{[1]={flags=0,keywordFlags=14,name="CritChance",type="INC",value=17}},nil}
+c["17% increased Damage While Channelling"]={{[1]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="Damage",type="INC",value=17}},nil}
+c["17% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=17}},nil}
+c["17% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=17}},nil}
 c["17% increased Forged Weapon Duration"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="INC",value=17}}," Forged Weapon  "}
-c["17% increased Hail of Arrows Duration"]={{[1]={[1]={skillName="Hail of Arrows",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=17}},nil}
 c["17% increased Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="INC",value=17}},nil}
+c["17% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=17}},nil}
 c["17% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=17}},nil}
 c["17% increased Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=512,name="Speed",type="INC",value=17}},nil}
 c["17% increased Melee Cold Damage"]={{[1]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=17}},nil}
+c["17% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=17}}}},nil}
 c["17% increased Minion Melee Attack Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=3584,keywordFlags=512,name="Speed",type="INC",value=17}}}},nil}
+c["17% increased Minion Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=17}}}},nil}
 c["17% increased Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=17}},nil}
 c["17% increased Movement Speed for 4 seconds when you use a Potion"]={{[1]={[1]={type="Condition",var="UsedPotionRecently"},flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=17}},nil}
+c["17% increased Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=17}},nil}
+c["17% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=17}},nil}
+c["17% increased Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=17}},nil}
 c["17% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=17}},nil}
 c["17% increased Throwing Attack Speed"]={{[1]={flags=3584,keywordFlags=1024,name="Speed",type="INC",value=17}},nil}
+c["17% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=17}},nil}
+c["17% increased area for Melee Area Skills"]={{[1]={flags=0,keywordFlags=512,name="AreaOfEffect",type="INC",value=17}},"  for  Area Skills "}
 c["17% increased area for Minion Area Skills"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=17}}}},"  for  Area Skills "}
 c["17% less Damage Over Time Taken"]={{[1]={flags=0,keywordFlags=0,name="DamageTakenOverTime",type="MORE",value=-17}},nil}
-c["17% less Void Damage Taken on Block"]={{[1]={[1]={type="Condition",var="Blocking"},flags=0,keywordFlags=0,name="VoidDamageTaken",type="MORE",value=-17}},nil}
-c["17% more Cold Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="ColdDamageTaken",type="MORE",value=17}},nil}
 c["17% of Armor Mitigation also applies to Damage over Time"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=17},notSupported=true},nil}
 c["17% of Damage Dealt to Mana Before Health"]={{[1]={flags=0,keywordFlags=0,name="DamageToManaBeforeHealth",type="BASE",value=17}},nil}
 c["17% of Potion Health Converted to Ward"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=17},notSupported=true},nil}
-c["17% reduced Damage Taken on Block"]={{[1]={[1]={type="Condition",var="Blocking"},flags=0,keywordFlags=0,name="DamageTaken",type="INC",value=-17}},nil}
+c["17% reduced Bonus Damage Taken from Critical Strikes"]={{[1]={flags=0,keywordFlags=0,name="ReduceCritExtraDamage",type="BASE",value=17}},nil}
 c["170% Increased Armor Shred Duration "]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=170}},"  Shred Duration "}
 c["170% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=170}},nil}
+c["170% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=170}}}},nil}
 c["171% Increased Armor Shred Effect "]={{[1]={flags=0,keywordFlags=0,name="ArmorShredEffect",type="INC",value=171}},nil}
-c["171% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=171}}}},nil}
-c["173% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=173}},nil}
+c["172% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=172}},nil}
+c["175% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=175}}}},nil}
 c["175% increased Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=175}},nil}
+c["175% more Damage Taken depending on Area Level for You and your Minions"]={{[1]={[1]={limit=75,type="Multiplier",valueCap=175,var="AreaLevel"},flags=0,keywordFlags=0,name="DamageTaken",source="",type="MORE",value=2.3333333333333}},nil}
 c["176 Ward Gained when you use Enchant Weapon "]={{[1]={[1]={skillName="Enchant Weapon",type="SkillName"},flags=0,keywordFlags=0,name="WardGainOnUse_EnchantWeapon",source="",type="BASE",value=176},notSupported=true},nil}
 c["176% Increased Spell Damage per Skeletal Mage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=176}},"   per Skeletal Mage "}
-c["176% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=176}}}},nil}
-c["176% more Damage Taken depending on Area Level for You and your Minions"]={{[1]={[1]={limit=75,type="Multiplier",valueCap=176,var="AreaLevel"},flags=0,keywordFlags=0,name="DamageTaken",source="",type="MORE",value=2.3466666666667}},nil}
+c["177% increased Echo Damage when a skill is Echoed"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=177}}," Echo  when a skill is Echoed "}
 c["178% Increased Fire Aura Damage"]={{[1]={[1]={skillName="Fire Aura",type="SkillName"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=178}},nil}
-c["178% increased Echo Damage when a skill is Echoed"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=178}}," Echo  when a skill is Echoed "}
+c["18 Health Gain on Block"]={{[1]={flags=0,keywordFlags=0,name="LifeOnBlock",type="BASE",value=18}},nil}
 c["18 Health Gain on Freeze"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=18}},"  Gain on Freeze "}
 c["18 Health Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="LifeOnPotionUse",type="BASE",value=18}},nil}
 c["18 Mana consumed by Grim Harvest"]={{[1]={[1]={skillName="Harvest",type="SkillName"},flags=0,keywordFlags=0,name="Mana",type="BASE",value=18}},"  consumed by Grim  "}
 c["18 Mana gained when you use 3 zero mana cost skills in a row (3 second cooldown)"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=18},notSupported=true},nil}
 c["18 Talon Blades Duration (seconds)"]={{[1]={[1]={skillName="Talon Blades",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="BASE",value=18}},"   (seconds) "}
-c["18 Ward Gain On Kill"]={{[1]={[1]={type="Condition",var="KilledRecently"},flags=0,keywordFlags=0,name="Ward",type="BASE",value=18}},"  Gain  "}
+c["18 Ward Gain On Kill"]={{[1]={flags=0,keywordFlags=0,name="WardOnKill",type="BASE",value=18}},nil}
 c["18 Ward Gain on Freeze"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=18}},"  Gain on Freeze "}
+c["18 Ward Gain on Kill"]={{[1]={flags=0,keywordFlags=0,name="WardOnKill",type="BASE",value=18}},nil}
 c["18 Ward Gained Per Second"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=18}},"  Gained Per Second "}
 c["18 Ward Gained on Potion Use per 10 Intelligence"]={{[1]={[1]={div=10,stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="WardOnPotionUse",type="BASE",value=18}},nil}
 c["18 Ward Gained on Shadow Creation"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=18}},"  Gained on Shadow Creation "}
@@ -12357,45 +12370,45 @@ c["18% Kill Threshold"]={{[1]={flags=0,keywordFlags=0,name="KillThreshold",type=
 c["18% More Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=18}},nil}
 c["18% Reduced Delay"]={{}," Delay "}
 c["18% Reduced Health Cost of Spells"]={{[1]={flags=0,keywordFlags=256,name="Life",type="INC",value=-18}},"  Cost of s "}
-c["18% Shared Increased Stun Chance"]={{[1]={flags=0,keywordFlags=0,name="StunChance",type="BASE",value=18}}," Shared Increased  "}
+c["18% Shared Increased Stun Chance"]={{[1]={flags=0,keywordFlags=0,name="StunChance",type="INC",value=18},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="StunChance",type="INC",value=18}}}},nil}
 c["18% chance to gain 20 mana when you directly cast Runebolt or Fireball"]={{},"20 mana when you directly cast Runebolt or Fireball "}
 c["18% chance when one of your Skeletons dies to resummon a new one after 3 seconds"]={{}," when one of your Skeletons dies to resummon a new one after 3 seconds "}
+c["18% increased Area for Area Skills"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=18}},"  for Area Skills "}
+c["18% increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=18}},nil}
 c["18% increased Block Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="BlockEffectiveness",type="INC",value=18}},nil}
-c["18% increased Bow Attack Speed"]={{[1]={flags=3584,keywordFlags=2048,name="Speed",type="INC",value=18}},nil}
-c["18% increased Bow Damage"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="INC",value=18}},nil}
-c["18% increased Cast Speed"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",value=18}},nil}
 c["18% increased Cast Speed for Totems"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",value=18}},"  for Totems "}
-c["18% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=18}},nil}
 c["18% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=18}},nil}
-c["18% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=18}},nil}
-c["18% increased Damage While Channelling"]={{[1]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="Damage",type="INC",value=18}},nil}
 c["18% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=18}},nil}
-c["18% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=18}},nil}
+c["18% increased Echo Damage when a skill is Echoed"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=18}}," Echo  when a skill is Echoed "}
+c["18% increased Effect of Prefixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedPrefixEffect",type="INC",value=18}},nil}
+c["18% increased Effect of Suffixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedSuffixEffect",type="INC",value=18}},nil}
+c["18% increased Effect of Weaver Enchantment Affixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedWeaverEffect",type="INC",value=18}},nil}
+c["18% increased Frost Wall Duration"]={{[1]={[1]={skillName="Frost Wall",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=18}},nil}
+c["18% increased Hail of Arrows Duration"]={{[1]={[1]={skillName="Hail of Arrows",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=18}},nil}
 c["18% increased Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="INC",value=18}},nil}
 c["18% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=18}},nil}
-c["18% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=18}},nil}
+c["18% increased Increased Abyssal Decay Duration "]={{[1]={flags=0,keywordFlags=0,name="EnemyAbyssalDecayDuration",type="INC",value=18}}," Increased  "}
+c["18% increased Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="INC",value=18}},nil}
 c["18% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=18}},nil}
+c["18% increased Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=512,name="Speed",type="INC",value=18}},nil}
 c["18% increased Melee Attack Speed for 4 seconds when you use a Potion"]={{[1]={[1]={type="Condition",var="UsedPotionRecently"},flags=3584,keywordFlags=512,name="Speed",type="INC",value=18}},nil}
-c["18% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=18}}}},nil}
+c["18% increased Melee Elemental Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="INC",value=18},[2]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=18},[3]={flags=0,keywordFlags=512,name="LightningDamage",type="INC",value=18}},nil}
+c["18% increased Minion Cooldown Recovery Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=18}}}},nil}
 c["18% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=18}}}},nil}
-c["18% increased Minion Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=18}}}},nil}
 c["18% increased Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=18}},nil}
-c["18% increased Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=18}},nil}
-c["18% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=18}},nil}
-c["18% increased Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=18}},nil}
-c["18% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=18}},nil}
+c["18% increased Speed and Distance with Flame Rush"]={{}," Speed and Distance with  "}
 c["18% increased Throwing Attack Speed for 4 seconds when you use a Potion"]={{[1]={[1]={type="Condition",var="UsedPotionRecently"},flags=3584,keywordFlags=1024,name="Speed",type="INC",value=18}},nil}
 c["18% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=18}},nil}
 c["18% increased Void Spell Cast Speed"]={{[1]={flags=256,keywordFlags=272,name="Speed",type="INC",value=18}},nil}
-c["18% increased area for Melee Area Skills"]={{[1]={flags=0,keywordFlags=512,name="AreaOfEffect",type="INC",value=18}},"  for  Area Skills "}
-c["18% increased area for Minion Area Skills"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=18}}}},"  for  Area Skills "}
+c["18% increased area for Elemental Area Skills"]={{[1]={flags=0,keywordFlags=14,name="AreaOfEffect",type="INC",value=18}},"  for  Area Skills "}
+c["18% increased area for Lightning Area Skills"]={{[1]={flags=0,keywordFlags=2,name="AreaOfEffect",type="INC",value=18}},"  for  Area Skills "}
+c["18% less Damage Over Time Taken"]={{[1]={flags=0,keywordFlags=0,name="DamageTakenOverTime",type="MORE",value=-18}},nil}
 c["18% less Fire Damage Taken on Block"]={{[1]={[1]={type="Condition",var="Blocking"},flags=0,keywordFlags=0,name="FireDamageTaken",type="MORE",value=-18}},nil}
 c["18% less Necrotic Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamageTaken",type="MORE",value=-18}},nil}
 c["18% of Armor Mitigation also applies to Damage over Time"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=18},notSupported=true},nil}
 c["18% of Damage Dealt to Mana Before Health"]={{[1]={flags=0,keywordFlags=0,name="DamageToManaBeforeHealth",type="BASE",value=18}},nil}
 c["18% of Damage Reflected"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=18}},"  Reflected "}
 c["18% of Mana Spent Gained as Ward"]={{[1]={flags=0,keywordFlags=0,name="ManaSpentGainedAsWard",type="BASE",value=18}},nil}
-c["18% reduced Bonus Damage Taken from Critical Strikes"]={{[1]={flags=0,keywordFlags=0,name="ReduceCritExtraDamage",type="BASE",value=18}},nil}
 c["18% reduced Channel Cost"]={{[1]={flags=0,keywordFlags=0,name="ChannelCost",type="INC",value=-18}},nil}
 c["18% reduced Movement Speed While Channelling"]={{[1]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=-18}},nil}
 c["180 Damage Reflected to Attackers"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=180}},"  Reflected to Attackers "}
@@ -12406,54 +12419,60 @@ c["180% Increased Damage with Dive Bomb"]={{[1]={[1]={skillName="Dive Bomb",type
 c["180% Increased Leech Rate"]={{[1]={flags=0,keywordFlags=0,name="LeechRate",type="INC",value=180}},nil}
 c["180% Maximum Damage gained"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=180}}," Maximum  gained "}
 c["180% chance to cast Freezing Concoction on Potion Use"]={{}," to cast Freezing Concoction on Potion Use "}
+c["180% increased Bow Damage"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="INC",value=180}},nil}
+c["180% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=180}},nil}
+c["180% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=180}},nil}
+c["180% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=180}},nil}
+c["180% increased Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="Damage",type="INC",value=180}},nil}
+c["180% increased Damage for Totems"]={{[1]={[1]={scope="totem",type="Scope"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=180}},nil}
+c["180% increased Elemental Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=180},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=180},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=180}},nil}
+c["180% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=180}},nil}
+c["180% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=180}},nil}
+c["180% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=180}},nil}
+c["180% increased Mana Regen for 4 seconds when you use a Potion"]={{[1]={[1]={type="Condition",var="UsedPotionRecently"},flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=180}},nil}
+c["180% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=180}},nil}
+c["180% increased Melee Elemental Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="INC",value=180},[2]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=180},[3]={flags=0,keywordFlags=512,name="LightningDamage",type="INC",value=180}},nil}
+c["180% increased Minion Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=180}}}},nil}
+c["180% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=180}}}},nil}
+c["180% increased Minion Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=180}}}},nil}
+c["180% increased Minion Melee Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="Damage",type="INC",value=180}}}},nil}
+c["180% increased Minion Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=180}}}},nil}
+c["180% increased Minion Spell Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="Damage",type="INC",value=180}}}},nil}
+c["180% increased Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=180}},nil}
+c["180% increased Necrotic Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=180}},nil}
+c["180% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=180}},nil}
+c["180% increased Physical Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=180}},nil}
+c["180% increased Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=180}},nil}
+c["180% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=180}},nil}
+c["180% increased Throwing Damage"]={{[1]={flags=0,keywordFlags=1024,name="Damage",type="INC",value=180}},nil}
+c["180% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=180}},nil}
+c["180% more Damage Taken depending on Area Level for You and your Minions"]={{[1]={[1]={limit=75,type="Multiplier",valueCap=180,var="AreaLevel"},flags=0,keywordFlags=0,name="DamageTaken",source="",type="MORE",value=2.4}},nil}
 c["180% of Mana Spent Gained as Ward"]={{[1]={flags=0,keywordFlags=0,name="ManaSpentGainedAsWard",type="BASE",value=180}},nil}
 c["180% of Player Poison Damage Applies to Skeleton Rogues"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="BASE",value=180}}," Player  Applies to Skeleton Rogues "}
 c["180% of Player Poison Damage Applies to your Falcon"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="BASE",value=180}}," Player  Applies to your Falcon "}
 c["180% of Potion Health Converted to Ward"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=180},notSupported=true},nil}
-c["181% increased Bow Damage"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="INC",value=181}},nil}
-c["181% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=181}},nil}
-c["181% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=181}},nil}
-c["181% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=181}},nil}
-c["181% increased Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="Damage",type="INC",value=181}},nil}
-c["181% increased Damage for Totems"]={{[1]={[1]={scope="totem",type="Scope"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=181}},nil}
-c["181% increased Elemental Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=181},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=181},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=181}},nil}
-c["181% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=181}},nil}
-c["181% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=181}},nil}
-c["181% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=181}},nil}
-c["181% increased Mana Regen for 4 seconds when you use a Potion"]={{[1]={[1]={type="Condition",var="UsedPotionRecently"},flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=181}},nil}
-c["181% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=181}},nil}
-c["181% increased Melee Elemental Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="INC",value=181},[2]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=181},[3]={flags=0,keywordFlags=512,name="LightningDamage",type="INC",value=181}},nil}
-c["181% increased Minion Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=181}}}},nil}
-c["181% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=181}}}},nil}
 c["181% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=181}}}},nil}
-c["181% increased Minion Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=181}}}},nil}
-c["181% increased Minion Melee Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="Damage",type="INC",value=181}}}},nil}
-c["181% increased Minion Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=181}}}},nil}
-c["181% increased Minion Spell Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="Damage",type="INC",value=181}}}},nil}
-c["181% increased Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=181}},nil}
-c["181% increased Necrotic Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=181}},nil}
-c["181% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=181}},nil}
-c["181% increased Physical Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=181}},nil}
-c["181% increased Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=181}},nil}
-c["181% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=181}},nil}
-c["181% increased Throwing Damage"]={{[1]={flags=0,keywordFlags=1024,name="Damage",type="INC",value=181}},nil}
-c["181% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=181}},nil}
 c["181% increased Volatile Zombie Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=181}}," Volatile Zombie  "}
-c["181% more Damage Taken depending on Area Level for You and your Minions"]={{[1]={[1]={limit=75,type="Multiplier",valueCap=181,var="AreaLevel"},flags=0,keywordFlags=0,name="DamageTaken",source="",type="MORE",value=2.4133333333333}},nil}
 c["185% Frostbite Chance per Second with Frost Wall"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=185},notSupported=true},nil}
 c["185% Increased Healing Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="HealingEffectiveness",type="INC",value=185}},nil}
-c["186% increased Spell Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=256,name="Damage",type="INC",value=186}},nil}
+c["185% increased Spell Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=256,name="Damage",type="INC",value=185}},nil}
+c["188% increased Cold Damage Over Time"]={{[1]={flags=4100,keywordFlags=0,name="ColdDamage",type="INC",value=188}},nil}
+c["188% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=188}},nil}
+c["188% increased Void Damage Over Time"]={{[1]={flags=4112,keywordFlags=0,name="VoidDamage",type="INC",value=188}},nil}
 c["189% Increased Aspect of the Viper Effect"]={{},"  Effect "}
 c["189% Increased Bleed Duration "]={{[1]={[1]={skillName="Bleed",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=189}},nil}
 c["189% Increased Bleed Duration for Minions "]={{[1]={[1]={scope="minion",type="Scope"},[2]={skillName="Bleed",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=189}},nil}
 c["189% Increased Damage with Hammer Throw"]={{[1]={[1]={skillName="Hammer Throw",type="SkillName"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=189}},nil}
 c["189% Increased damage with Smelter's Wrath"]={{[1]={[1]={skillName="Smelter's Wrath",type="SkillName"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=189}},nil}
 c["189% Increased spell critical strike chance. This effect is doubled if you have 300 or more maximum mana."]={{[1]={[1]={mult=2,stat="Mana",threshold=300,type="StatThreshold"},flags=0,keywordFlags=256,name="CritChance",type="INC",value=189}},nil}
-c["189% increased Cold Damage Over Time"]={{[1]={flags=4100,keywordFlags=0,name="ColdDamage",type="INC",value=189}},nil}
-c["189% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=189}},nil}
+c["189% increased Damage Over Time While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=4096,keywordFlags=0,name="Damage",type="INC",value=189}},nil}
+c["189% increased Damage for Totems"]={{[1]={[1]={scope="totem",type="Scope"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=189}},nil}
+c["189% increased Melee Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=512,name="Damage",type="INC",value=189}},nil}
 c["189% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=189}}}},nil}
-c["189% increased Void Damage Over Time"]={{[1]={flags=4112,keywordFlags=0,name="VoidDamage",type="INC",value=189}},nil}
+c["189% increased Minion Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="CritChance",type="INC",value=189}}}},nil}
+c["189% increased Spell Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=256,name="Damage",type="INC",value=189}},nil}
 c["19 Damage Reflected to Attackers"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=19}},"  Reflected to Attackers "}
+c["19 Health Gain on Block"]={{[1]={flags=0,keywordFlags=0,name="LifeOnBlock",type="BASE",value=19}},nil}
 c["19 Mana Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="ManaOnPotionUse",type="BASE",value=19}},nil}
 c["19 Ward Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="WardOnPotionUse",type="BASE",value=19}},nil}
 c["19 seconds of Enrage granted to companions hit by your Storm Totem"]={{[1]={[1]={skillName="Enrage",type="SkillName"},flags=8388608,keywordFlags=0,name="SkillLevel",type="BASE",value=19}}," seconds of  granted to companions  by your Storm Totem "}
@@ -12476,35 +12495,23 @@ c["19% Increased Symbol Gain Rate"]={{}," Symbol Gain Rate "}
 c["19% Increased Unique Drop Rate"]={{}," Unique Drop Rate "}
 c["19% Increased area of effect with Acid Flask"]={{[1]={[1]={skillName="Acid Flask",type="SkillName"},flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=19}},"  with  "}
 c["19% chance to gain Haste for 5 seconds after you Block"]={{},"Haste  after you Block "}
-c["19% increased Area for Area Skills"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=19}},"  for Area Skills "}
 c["19% increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=19}},nil}
 c["19% increased Attack Speed"]={{[1]={flags=3584,keywordFlags=0,name="Speed",type="INC",value=19}},nil}
 c["19% increased Cast Speed"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",value=19}},nil}
-c["19% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=19}},nil}
-c["19% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=19}},nil}
-c["19% increased Echo Damage when a skill is Echoed"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=19}}," Echo  when a skill is Echoed "}
-c["19% increased Effect of Prefixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedPrefixEffect",type="INC",value=19}},nil}
-c["19% increased Effect of Suffixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedSuffixEffect",type="INC",value=19}},nil}
-c["19% increased Effect of Weaver Enchantment Affixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedWeaverEffect",type="INC",value=19}},nil}
-c["19% increased Frost Wall Duration"]={{[1]={[1]={skillName="Frost Wall",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=19}},nil}
-c["19% increased Hail of Arrows Duration"]={{[1]={[1]={skillName="Hail of Arrows",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=19}},nil}
-c["19% increased Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="INC",value=19}},nil}
-c["19% increased Increased Abyssal Decay Duration "]={{[1]={flags=0,keywordFlags=0,name="EnemyAbyssalDecayDuration",type="INC",value=19}}," Increased  "}
-c["19% increased Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="INC",value=19}},nil}
+c["19% increased Cast Speed for Totems"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",value=19}},"  for Totems "}
+c["19% increased Effect of Prefixes and Suffixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedAffixEffect",type="INC",value=19}},nil}
+c["19% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=19}},nil}
 c["19% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=19}},nil}
-c["19% increased Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=512,name="Speed",type="INC",value=19}},nil}
-c["19% increased Melee Elemental Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="INC",value=19},[2]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=19},[3]={flags=0,keywordFlags=512,name="LightningDamage",type="INC",value=19}},nil}
-c["19% increased Minion Cooldown Recovery Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=19}}}},nil}
+c["19% increased Mana Regen for 4 seconds when you use a Potion"]={{[1]={[1]={type="Condition",var="UsedPotionRecently"},flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=19}},nil}
 c["19% increased Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=19}},nil}
 c["19% increased Movement Speed for 4 seconds when you use a Potion"]={{[1]={[1]={type="Condition",var="UsedPotionRecently"},flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=19}},nil}
-c["19% increased Speed and Distance with Flame Rush"]={{}," Speed and Distance with  "}
-c["19% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=19}},nil}
 c["19% increased Volatile Zombie Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=19}}," Volatile Zombie  "}
-c["19% increased area for Elemental Area Skills"]={{[1]={flags=0,keywordFlags=14,name="AreaOfEffect",type="INC",value=19}},"  for  Area Skills "}
-c["19% increased area for Lightning Area Skills"]={{[1]={flags=0,keywordFlags=2,name="AreaOfEffect",type="INC",value=19}},"  for  Area Skills "}
 c["19% increased area for Throwing Area Skills"]={{[1]={flags=0,keywordFlags=1024,name="AreaOfEffect",type="INC",value=19}},"  for  Area Skills "}
-c["19% less Damage Over Time Taken"]={{[1]={flags=0,keywordFlags=0,name="DamageTakenOverTime",type="MORE",value=-19}},nil}
 c["19% less Damage Taken for Totems"]={{[1]={flags=0,keywordFlags=0,name="DamageTaken",type="MORE",value=-19}},"  for Totems "}
+c["19% more Cold Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="ColdDamageTaken",type="MORE",value=19}},nil}
+c["19% more Melee Damage to Stunned Enemies"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="Stunned"},flags=0,keywordFlags=512,name="Damage",type="MORE",value=19}},nil}
+c["19% more Minion Cold Damage to Chilled Enemies"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={actor="enemy",type="ActorCondition",var="Chilled"},flags=0,keywordFlags=0,name="ColdDamage",type="MORE",value=19}}}},nil}
+c["19% more Minion Necrotic Damage to Chilled Enemies"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={actor="enemy",type="ActorCondition",var="Chilled"},flags=0,keywordFlags=0,name="NecroticDamage",type="MORE",value=19}}}},nil}
 c["19% of Current Health Lost per second"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=19}}," Current  Lost per second "}
 c["19% of Minion Damage Leeched as Health on Melee Hit"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=8389120,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=19}}}},nil}
 c["19% of Missing Health gained as Ward per second"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=19},notSupported=true},nil}
@@ -12512,32 +12519,28 @@ c["19% of Necrotic Damage Taken as Physical"]={{[1]={flags=0,keywordFlags=1,name
 c["19% of Poison Damage Taken as Physical"]={{[1]={flags=0,keywordFlags=1,name="PoisonDamageTaken",type="BASE",value=19}},"  as  "}
 c["19% of Spell Damage Leeched as Health While Channelling"]={{[1]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=256,name="DamageLifeLeech",type="BASE",value=19}},nil}
 c["19% of Void Damage Taken as Physical"]={{[1]={flags=0,keywordFlags=1,name="VoidDamageTaken",type="BASE",value=19}},"  as  "}
+c["19% reduced Bonus Damage Taken from Critical Strikes"]={{[1]={flags=0,keywordFlags=0,name="ReduceCritExtraDamage",type="BASE",value=19}},nil}
 c["190% Increased Melee Stun Chance"]={{[1]={flags=0,keywordFlags=512,name="StunChance",type="INC",value=190}},nil}
-c["190% increased Damage Over Time While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=4096,keywordFlags=0,name="Damage",type="INC",value=190}},nil}
-c["190% increased Damage for Totems"]={{[1]={[1]={scope="totem",type="Scope"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=190}},nil}
-c["190% increased Melee Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=512,name="Damage",type="INC",value=190}},nil}
-c["190% increased Minion Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="CritChance",type="INC",value=190}}}},nil}
-c["190% increased Spell Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=256,name="Damage",type="INC",value=190}},nil}
 c["191% Increased Skeletal Mage Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=191}}," Skeletal Mage  "}
 c["191% Increased critical strike chance with Shield Throw"]={{[1]={[1]={skillName="Shield Throw",type="SkillName"},flags=0,keywordFlags=0,name="CritChance",type="INC",value=191}},"  with  "}
+c["191% increased Critical Strike Chance for Totems"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=191}},"  for Totems "}
+c["191% increased Physical Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=257,name="CritChance",type="INC",value=191}},nil}
+c["191% increased Throwing Critical Strike Chance"]={{[1]={flags=0,keywordFlags=1024,name="CritChance",type="INC",value=191}},nil}
 c["192 Ward gained when you use Smoke Bomb"]={{[1]={[1]={skillName="Smoke Bomb",type="SkillName"},flags=0,keywordFlags=0,name="WardGainOnUse_SmokeBomb",source="",type="BASE",value=192},notSupported=true},nil}
 c["192% Frostbite Chance per Second with Frost Wall"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=192},notSupported=true},nil}
-c["192% increased Critical Strike Chance for Totems"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=192}},"  for Totems "}
 c["192% increased Curse Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=192}}," Curse  "}
-c["192% increased Physical Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=257,name="CritChance",type="INC",value=192}},nil}
-c["192% increased Throwing Critical Strike Chance"]={{[1]={flags=0,keywordFlags=1024,name="CritChance",type="INC",value=192}},nil}
 c["193% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=193}}}},nil}
 c["196 Ward Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="WardOnPotionUse",type="BASE",value=196}},nil}
 c["196% Chance to Chill Attackers"]={{[1]={flags=0,keywordFlags=0,name="ChanceToChillAttackers",type="BASE",value=196}},nil}
 c["196% Chance to Shock Attackers"]={{[1]={flags=0,keywordFlags=0,name="ChanceToShockAttackers",type="BASE",value=196}},nil}
 c["196% Chance to Slow Attackers"]={{[1]={flags=0,keywordFlags=0,name="ChanceToSlowAttackers",type="BASE",value=196}},nil}
 c["196% increased Elemental Damage Over Time"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=196},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=196},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=196}},"  Over Time "}
-c["199% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=199}},nil}
-c["199% increased Melee Elemental Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="INC",value=199},[2]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=199},[3]={flags=0,keywordFlags=512,name="LightningDamage",type="INC",value=199}},nil}
-c["199% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=199}}}},nil}
-c["199% increased Minion Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=199}}}},nil}
-c["199% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=199}},nil}
-c["199% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=199}},nil}
+c["198% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=198}},nil}
+c["198% increased Melee Elemental Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="INC",value=198},[2]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=198},[3]={flags=0,keywordFlags=512,name="LightningDamage",type="INC",value=198}},nil}
+c["198% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=198}}}},nil}
+c["198% increased Minion Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=198}}}},nil}
+c["198% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=198}},nil}
+c["198% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=198}},nil}
 c["2 Additional Chains"]={{}," Chains "}
 c["2 Adorned Idols equipped at Maximum"]={{}," Adorned Idols equipped at Maximum "}
 c["2 Bees Summoned on Potion Use"]={{}," Bees Summoned on Potion Use "}
@@ -12562,8 +12565,10 @@ c["2 Frenzy Duration After Flurry Swipes (seconds)"]={{[1]={[1]={skillName="Fren
 c["2 Haste Duration"]={{[1]={[1]={skillName="Haste",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="BASE",value=2}},nil}
 c["2 Haste Duration (seconds)"]={{[1]={[1]={skillName="Haste",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="BASE",value=2}},"   (seconds) "}
 c["2 Healing Per Second"]={{[1]={[1]={skillName="Healing",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=2}},"  Per Second "}
+c["2 Health Gain on Block"]={{[1]={flags=0,keywordFlags=0,name="LifeOnBlock",type="BASE",value=2}},nil}
 c["2 Health Gain on Hit"]={{[1]={flags=8388608,keywordFlags=0,name="LifeOnHit",type="BASE",value=2}},nil}
-c["2 Health Gained On Block"]={{[1]={[1]={type="Condition",var="Blocking"},flags=0,keywordFlags=0,name="Life",type="BASE",value=2}},"  Gained  "}
+c["2 Health Gain on Kill"]={{[1]={flags=0,keywordFlags=0,name="LifeOnKill",type="BASE",value=2}},nil}
+c["2 Health Gained On Block"]={{[1]={flags=0,keywordFlags=0,name="LifeOnBlock",type="BASE",value=2}},nil}
 c["2 Hives -> Healing Totems"]={{},"2 Hives -> Healing Totems"}
 c["2 Huntress Advantage Duration (seconds)"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="BASE",value=2}}," Huntress Advantage  (seconds) "}
 c["2 Infernal Shade Remaining Duration (Seconds)"]={{[1]={[1]={skillName="Infernal Shade",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="BASE",value=2}},"  Remaining  (Seconds) "}
@@ -12581,6 +12586,7 @@ c["2 Mana Drain"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=2}
 c["2 Mana Gain"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=2}},"  Gain "}
 c["2 Mana Gain When Hit By Blade Shatter"]={{[1]={flags=8388608,keywordFlags=0,name="Mana",type="BASE",value=2}},"  Gain When  By Blade Shatter "}
 c["2 Mana Gain With Tri-Elemental"]={{[1]={flags=0,keywordFlags=14,name="Mana",type="BASE",value=2}},"  Gain With Tri- "}
+c["2 Mana Gain on Block"]={{[1]={flags=0,keywordFlags=0,name="ManaOnBlock",type="BASE",value=2}},nil}
 c["2 Mana Gain on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="ManaOnPotionUse",type="BASE",value=2}},nil}
 c["2 Mana Gain with Cold Bolt"]={{[1]={flags=0,keywordFlags=4,name="Mana",type="BASE",value=2}},"  Gain with  Bolt "}
 c["2 Mana Gained"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=2}},"  Gained "}
@@ -12643,7 +12649,7 @@ c["2% Armor Mitigation Applies To Damage Over Time"]={{[1]={flags=0,keywordFlags
 c["2% Aura of Decay Increased Radius"]={{[1]={[1]={skillName="Aura Of Decay",type="SkillName"},flags=0,keywordFlags=0,name="AreaOfEffect",type="BASE",value=2}},"  Increased  "}
 c["2% Aura of Decay More Ailment Frequency"]={{},"  More Ailment Frequency "}
 c["2% Chance To Gain Haste"]={{},"Haste "}
-c["2% Chance per Intelligence for +22% Elemental Penetration with Two Rune Invocations"]={{[1]={[1]={stat="Int",type="PerStat"},flags=0,keywordFlags=14,name="Penetration",type="BASE",value=2}},"  for +22%   with Two Rune Invocations "}
+c["2% Chance per Intelligence for +22% Elemental Penetration with Two Rune Invocations"]={{[1]={[1]={skillName="Net",type="SkillName"},flags=0,keywordFlags=14,name="Int",type="BASE",value=2}}," per  for +22%  Peration with Two Rune Invocations "}
 c["2% Chance to not consume Silver Shrouds when hit"]={{}," to not consume s when  "}
 c["2% Chance to receive a Glancing Blow when hit"]={{}," to receive a Glancing Blow when  "}
 c["2% Crit Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=2}}," Crit   "}
@@ -12693,7 +12699,7 @@ c["2% Increased Mana Regen Per Symbol"]={{[1]={[1]={type="Multiplier",var="Activ
 c["2% Increased Mana Regen per Rah Rune"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=2}},"  per Rah Rune "}
 c["2% Increased Mana regeneration while you control a minion"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=2}}}}," eration while you control a  "}
 c["2% Increased Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=512,name="Speed",type="INC",value=2}},nil}
-c["2% Increased Minion Armor Per Intelligence"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="Armour",type="INC",value=2}}}},nil}
+c["2% Increased Minion Armor Per Intelligence"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Armour",type="INC",value=2}}}},"   Per Intelligence "}
 c["2% Increased Minion Attack Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=3584,keywordFlags=0,name="Speed",type="INC",value=2}}}},nil}
 c["2% Increased Minion Cast Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=256,keywordFlags=0,name="Speed",type="INC",value=2}}}},nil}
 c["2% Increased Movement Speed With A Dagger"]={{[1]={[1]={type="Condition",var="UsingDagger"},flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=2}},nil}
@@ -12723,11 +12729,11 @@ c["2% Percent Of Damage Taken Stored"]={{[1]={flags=0,keywordFlags=0,name="Damag
 c["2% Physical Damage Leeched as Health with an Axe and Dagger"]={{[1]={[1]={type="Condition",var="UsingAxe"},[2]={type="Condition",var="UsingDagger"},flags=0,keywordFlags=0,name="PhysicalDamageLifeLeech",type="BASE",value=2}},"    and  "}
 c["2% Portion Of Health To Ward Per Symbol"]={{[1]={[1]={type="Multiplier",var="ActiveSymbol"},flags=0,keywordFlags=0,name="Life",type="BASE",value=2}}," Portion Of  To Ward  "}
 c["2% Reduced Bonus Damage Taken From Crits"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=2},notSupported=true},nil}
-c["2% Shared Elemental Resistance"]={{[1]={flags=0,keywordFlags=0,name="FireResist",type="BASE",value=2},[2]={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=2},[3]={flags=0,keywordFlags=0,name="ColdResist",type="BASE",value=2}}," Shared  "}
+c["2% Shared Elemental Resistance"]={{[1]={flags=0,keywordFlags=0,name="FireResist",type="BASE",value=2},[2]={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=2},[3]={flags=0,keywordFlags=0,name="ColdResist",type="BASE",value=2},[4]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="FireResist",type="BASE",value=2}}},[5]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=2}}},[6]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="ColdResist",type="BASE",value=2}}}},nil}
 c["2% Storm Bolt On Hit"]={{},"   "}
 c["2% Summon Chance on Rare or Boss Hit"]={{}," Summon Chance on Rare or Boss  "}
 c["2% chance to throw Acid Flask on Bow Hit"]={{}," to throw  on   "}
-c["2% increased Area per Attunement for Judgement while Unarmed"]={{[1]={[1]={stat="Att",type="PerStat"},[2]={type="Condition",var="Unarmed"},[3]={skillName="Judgement",type="SkillName"},flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=2}},"   for   "}
+c["2% increased Area per Attunement for Judgement while Unarmed"]={{[1]={[1]={type="Condition",var="Unarmed"},[2]={skillName="Judgement",type="SkillName"},flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=2}},"  per Attunement for   "}
 c["2% increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=2}},nil}
 c["2% increased Axe Throw Frequency per 10% increased physical damage"]={{[1]={[1]={skillName="Axe Throw",type="SkillName"},flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=2}},"  Frequency per 10% increased  "}
 c["2% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=2}},nil}
@@ -12791,6 +12797,7 @@ c["20 Explosion Mana Consumption"]={{[1]={flags=0,keywordFlags=0,name="Mana",typ
 c["20 Freeze Rate"]={{[1]={flags=0,keywordFlags=0,name="FreezeRate",type="BASE",value=20}},nil}
 c["20 Heal Amount On Companion Ability Use"]={{}," Heal Amount On Companion Ability Use "}
 c["20 Health Gain"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=20}},"  Gain "}
+c["20 Health Gain on Kill"]={{[1]={flags=0,keywordFlags=0,name="LifeOnKill",type="BASE",value=20}},nil}
 c["20 Health Gained "]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=20}},"  Gained "}
 c["20 Health Restored when You Crit"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=20}},"  Restored when You Crit "}
 c["20 Health gained on Kill per stack of Bleed on the Target"]={{[1]={[1]={type="Condition",var="KilledRecently"},[2]={skillName="Bleed",type="SkillName"},flags=0,keywordFlags=0,name="Life",type="BASE",value=20}},"  gained  per stack of  on the Target "}
@@ -12908,9 +12915,9 @@ c["20% Runeword: Avalanche chance on Cold Skill use"]={{[1]={flags=8388608,keywo
 c["20% Runeword: Hurricane chance on Lightning Skill use"]={{}," Runeword: Hurricane chance on  Skill use "}
 c["20% Runeword: Inferno chance on Fire Skill use"]={{}," Runeword: Inferno chance on  Skill use "}
 c["20% Shadow Dagger Chance from Shadow Casts"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_ShadowDaggers",type="BASE",value=20}},"  from Shadow Casts "}
-c["20% Shared Increased Armor On Potion Use"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=20}}," Shared Increased  On Potion Use "}
-c["20% Shared Increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="BASE",value=20}}," Shared Increased  "}
-c["20% Shared Increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="BASE",value=20}}," Shared Increased  "}
+c["20% Shared Increased Armor On Potion Use"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=20},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Armour",type="INC",value=20}}}},"  On Potion Use "}
+c["20% Shared Increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=20},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="CritChance",type="INC",value=20}}}},nil}
+c["20% Shared Increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=20},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Evasion",type="INC",value=20}}}},nil}
 c["20% Shock Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Shock",type="BASE",value=20}},nil}
 c["20% Shock Nova Damage per Stack"]={{[1]={[1]={skillName="Shock",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=20}},"  Nova  per Stack "}
 c["20% Slow Amount On Hit"]={{},"  Amount  "}
@@ -12918,26 +12925,37 @@ c["20% Slow Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOn
 c["20% Small Orb Chance with Scatter Blast"]={{}," Small Orb Chance with Scatter Blast "}
 c["20% Storm Bolt Repeat Chance"]={{},"  Repeat Chance "}
 c["20% increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=20}},nil}
-c["20% increased Cast Speed for Totems"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",value=20}},"  for Totems "}
+c["20% increased Bow Attack Speed"]={{[1]={flags=3584,keywordFlags=2048,name="Speed",type="INC",value=20}},nil}
+c["20% increased Bow Damage"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="INC",value=20}},nil}
+c["20% increased Cooldown Recovery Speed While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=20}},nil}
+c["20% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=20}},nil}
 c["20% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=20}},nil}
-c["20% increased Effect of Prefixes and Suffixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedAffixEffect",type="INC",value=20}},nil}
+c["20% increased Damage While Channelling"]={{[1]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="Damage",type="INC",value=20}},nil}
+c["20% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=20}},nil}
+c["20% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=20}},nil}
+c["20% increased Fire Spell Cast Speed"]={{[1]={flags=256,keywordFlags=264,name="Speed",type="INC",value=20}},nil}
 c["20% increased Frost Wall Duration"]={{[1]={[1]={skillName="Frost Wall",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=20}},nil}
 c["20% increased Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="INC",value=20}},nil}
-c["20% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=20}},nil}
 c["20% increased Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="INC",value=20}},nil}
-c["20% increased Mana Regen for 4 seconds when you use a Potion"]={{[1]={[1]={type="Condition",var="UsedPotionRecently"},flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=20}},nil}
+c["20% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=20}},nil}
 c["20% increased Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=512,name="Speed",type="INC",value=20}},nil}
+c["20% increased Melee Physical Damage"]={{[1]={flags=0,keywordFlags=512,name="PhysicalDamage",type="INC",value=20}},nil}
+c["20% increased Minion Attack Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=3584,keywordFlags=0,name="Speed",type="INC",value=20}}}},nil}
+c["20% increased Minion Cast Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=256,keywordFlags=0,name="Speed",type="INC",value=20}}}},nil}
+c["20% increased Minion Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="CritChance",type="INC",value=20}}}},nil}
 c["20% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=20}}}},nil}
+c["20% increased Minion Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="DamageTaken",type="INC",value=20}}}},nil}
+c["20% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=20}}}},nil}
 c["20% increased Minion Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=20}}}},nil}
 c["20% increased Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=20}},nil}
 c["20% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=20}},nil}
+c["20% increased area for Minion Area Skills"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=20}}}},"  for  Area Skills "}
 c["20% less Damage Taken While Moving"]={{[1]={[1]={type="Condition",var="Moving"},flags=0,keywordFlags=0,name="DamageTaken",type="MORE",value=-20}},nil}
 c["20% less Fire Damage Taken on Block"]={{[1]={[1]={type="Condition",var="Blocking"},flags=0,keywordFlags=0,name="FireDamageTaken",type="MORE",value=-20}},nil}
 c["20% less Minion Damage Taken While Moving"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={type="Condition",var="Moving"},flags=0,keywordFlags=0,name="DamageTaken",type="MORE",value=-20}}}},nil}
-c["20% more Cold Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="ColdDamageTaken",type="MORE",value=20}},nil}
-c["20% more Melee Damage to Stunned Enemies"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="Stunned"},flags=0,keywordFlags=512,name="Damage",type="MORE",value=20}},nil}
-c["20% more Minion Cold Damage to Chilled Enemies"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={actor="enemy",type="ActorCondition",var="Chilled"},flags=0,keywordFlags=0,name="ColdDamage",type="MORE",value=20}}}},nil}
-c["20% more Minion Necrotic Damage to Chilled Enemies"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={actor="enemy",type="ActorCondition",var="Chilled"},flags=0,keywordFlags=0,name="NecroticDamage",type="MORE",value=20}}}},nil}
+c["20% more Armor against Blinded Enemies"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="Blinded"},flags=0,keywordFlags=0,name="Armour",type="MORE",value=20}},nil}
+c["20% more Armor against Chilled Enemies"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="Chilled"},flags=0,keywordFlags=0,name="Armour",type="MORE",value=20}},nil}
+c["20% more Cold Damage Over Time to Frozen Enemies"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="Frozen"},flags=4100,keywordFlags=0,name="ColdDamage",type="MORE",value=20}},nil}
 c["20% of Current Health Lost per second"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=20}}," Current  Lost per second "}
 c["20% of Damage Dealt to Mana Before Health"]={{[1]={flags=0,keywordFlags=0,name="DamageToManaBeforeHealth",type="BASE",value=20}},nil}
 c["20% of Damage Leeched as Health While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=20}},nil}
@@ -12991,46 +13009,35 @@ c["21% Increased area of effect with Acid Flask"]={{[1]={[1]={skillName="Acid Fl
 c["21% Increased area with the first attack of Cinder Strike"]={{[1]={[1]={skillName="Cinder Strike",type="SkillName"},flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=21}},"  with the first attack of  "}
 c["21% Less Frequency of expending Storm Stacks"]={{}," Frequency of expending Storm Stacks "}
 c["21% Reduced Health Cost of Spells"]={{[1]={flags=0,keywordFlags=256,name="Life",type="INC",value=-21}},"  Cost of s "}
+c["21% increased Area for Area Skills"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=21}},"  for Area Skills "}
 c["21% increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=21}},nil}
 c["21% increased Bow Attack Speed"]={{[1]={flags=3584,keywordFlags=2048,name="Speed",type="INC",value=21}},nil}
 c["21% increased Bow Damage"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="INC",value=21}},nil}
 c["21% increased Cast Speed"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",value=21}},nil}
 c["21% increased Cast Speed for Totems"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",value=21}},"  for Totems "}
 c["21% increased Cold Cast Speed"]={{[1]={flags=256,keywordFlags=4,name="Speed",type="INC",value=21}},nil}
-c["21% increased Cooldown Recovery Speed While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=21}},nil}
-c["21% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=21}},nil}
-c["21% increased Damage While Channelling"]={{[1]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="Damage",type="INC",value=21}},nil}
-c["21% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=21}},nil}
+c["21% increased Elemental Critical Strike Chance"]={{[1]={flags=0,keywordFlags=14,name="CritChance",type="INC",value=21}},nil}
 c["21% increased Elemental Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=21},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=21},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=21}},nil}
 c["21% increased Fire Cast Speed"]={{[1]={flags=256,keywordFlags=8,name="Speed",type="INC",value=21}},nil}
-c["21% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=21}},nil}
 c["21% increased Fire Spell Cast Speed"]={{[1]={flags=256,keywordFlags=264,name="Speed",type="INC",value=21}},nil}
 c["21% increased Fire Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=264,name="CritChance",type="INC",value=21}},nil}
 c["21% increased Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="INC",value=21}},nil}
-c["21% increased Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="INC",value=21}},nil}
-c["21% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=21}},nil}
 c["21% increased Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=512,name="Speed",type="INC",value=21}},nil}
-c["21% increased Melee Physical Damage"]={{[1]={flags=0,keywordFlags=512,name="PhysicalDamage",type="INC",value=21}},nil}
 c["21% increased Minion Attack Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=3584,keywordFlags=0,name="Speed",type="INC",value=21}}}},nil}
 c["21% increased Minion Cast Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=256,keywordFlags=0,name="Speed",type="INC",value=21}}}},nil}
-c["21% increased Minion Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="CritChance",type="INC",value=21}}}},nil}
 c["21% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=21}}}},nil}
-c["21% increased Minion Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="DamageTaken",type="INC",value=21}}}},nil}
-c["21% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=21}}}},nil}
 c["21% increased Movement Speed for 4 seconds when you use a Potion"]={{[1]={[1]={type="Condition",var="UsedPotionRecently"},flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=21}},nil}
-c["21% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=21}},nil}
 c["21% increased Physical Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=257,name="CritChance",type="INC",value=21}},nil}
-c["21% increased area for Minion Area Skills"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=21}}}},"  for  Area Skills "}
+c["21% increased Throwing Attack Speed"]={{[1]={flags=3584,keywordFlags=1024,name="Speed",type="INC",value=21}},nil}
+c["21% increased Throwing Attack Speed for 2 seconds after using Aerial Assault"]={{[1]={[1]={skillName="Aerial Assault",type="SkillName"},flags=3584,keywordFlags=1024,name="Speed",type="INC",value=21}},"    after using  "}
+c["21% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=21}},nil}
 c["21% less Damage Taken for Totems"]={{[1]={flags=0,keywordFlags=0,name="DamageTaken",type="MORE",value=-21}},"  for Totems "}
 c["21% more Armor against Blinded Enemies"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="Blinded"},flags=0,keywordFlags=0,name="Armour",type="MORE",value=21}},nil}
-c["21% more Armor against Chilled Enemies"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="Chilled"},flags=0,keywordFlags=0,name="Armour",type="MORE",value=21}},nil}
-c["21% more Cold Damage Over Time to Frozen Enemies"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="Frozen"},flags=4100,keywordFlags=0,name="ColdDamage",type="MORE",value=21}},nil}
 c["21% of Necrotic Damage Taken as Physical"]={{[1]={flags=0,keywordFlags=1,name="NecroticDamageTaken",type="BASE",value=21}},"  as  "}
 c["21% of Poison Damage Taken as Physical"]={{[1]={flags=0,keywordFlags=1,name="PoisonDamageTaken",type="BASE",value=21}},"  as  "}
 c["21% of Void Damage Taken as Physical"]={{[1]={flags=0,keywordFlags=1,name="VoidDamageTaken",type="BASE",value=21}},"  as  "}
-c["21% reduced Bonus Damage Taken from Critical Strikes"]={{[1]={flags=0,keywordFlags=0,name="ReduceCritExtraDamage",type="BASE",value=21}},nil}
+c["210% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=210}}}},nil}
 c["211% Increased Damage for skills used by Shadows"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=211}},"  for skills used by Shadows "}
-c["211% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=211}}}},nil}
 c["211% of Damage Reflected"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=211}},"  Reflected "}
 c["213% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=213}},nil}
 c["215 Health Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="LifeOnPotionUse",type="BASE",value=215}},nil}
@@ -13044,24 +13051,27 @@ c["216% Increased Damage while wielding a Bow"]={{[1]={[1]={type="Condition",var
 c["216% Increased Damage while wielding a Dagger"]={{[1]={[1]={type="Condition",var="UsingDagger"},flags=0,keywordFlags=0,name="Damage",type="INC",value=216}},nil}
 c["216% Increased Damage while wielding a Sword"]={{[1]={[1]={type="Condition",var="UsingSword"},flags=0,keywordFlags=0,name="Damage",type="INC",value=216}},nil}
 c["216% Increased Skeleton Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=216}}," Skeleton  "}
-c["217% increased Bow Damage"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="INC",value=217}},nil}
-c["217% increased Bow Elemental Damage"]={{[1]={flags=0,keywordFlags=2048,name="FireDamage",type="INC",value=217},[2]={flags=0,keywordFlags=2048,name="ColdDamage",type="INC",value=217},[3]={flags=0,keywordFlags=2048,name="LightningDamage",type="INC",value=217}},nil}
-c["217% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=217}},nil}
-c["217% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=217}},nil}
-c["217% increased Damage While Channelling"]={{[1]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="Damage",type="INC",value=217}},nil}
-c["217% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=217}},nil}
-c["217% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=217}},nil}
-c["217% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=217}}}},nil}
-c["217% increased Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=217}},nil}
-c["217% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=217}},nil}
-c["217% increased Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=217}},nil}
-c["217% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=217}},nil}
-c["217% increased Throwing Physical Damage"]={{[1]={flags=0,keywordFlags=1024,name="PhysicalDamage",type="INC",value=217}},nil}
-c["217% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=217}},nil}
+c["216% increased Bow Damage"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="INC",value=216}},nil}
+c["216% increased Bow Elemental Damage"]={{[1]={flags=0,keywordFlags=2048,name="FireDamage",type="INC",value=216},[2]={flags=0,keywordFlags=2048,name="ColdDamage",type="INC",value=216},[3]={flags=0,keywordFlags=2048,name="LightningDamage",type="INC",value=216}},nil}
+c["216% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=216}},nil}
+c["216% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=216}},nil}
+c["216% increased Damage While Channelling"]={{[1]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="Damage",type="INC",value=216}},nil}
+c["216% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=216}},nil}
+c["216% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=216}},nil}
+c["216% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=216}}}},nil}
+c["216% increased Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=216}},nil}
+c["216% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=216}},nil}
+c["216% increased Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=216}},nil}
+c["216% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=216}},nil}
+c["216% increased Throwing Physical Damage"]={{[1]={flags=0,keywordFlags=1024,name="PhysicalDamage",type="INC",value=216}},nil}
+c["216% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=216}},nil}
 c["218 Ward Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="WardOnPotionUse",type="BASE",value=218}},nil}
 c["218% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=218}},nil}
-c["219% increased Necrotic Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=219}},nil}
-c["219% increased Physical Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=219}},nil}
+c["218% increased Necrotic Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=218}},nil}
+c["218% increased Physical Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=218}},nil}
+c["219% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=219}},nil}
+c["22 Health Gain on Block"]={{[1]={flags=0,keywordFlags=0,name="LifeOnBlock",type="BASE",value=22}},nil}
+c["22 Health Gain on Kill"]={{[1]={flags=0,keywordFlags=0,name="LifeOnKill",type="BASE",value=22}},nil}
 c["22 Health Gained when you receive a Glancing Blow"]={{[1]={flags=0,keywordFlags=0,name="LifeOnGlancingBlow",type="BASE",value=22}},nil}
 c["22 Minions teleported around you after you use a Traversal Skill"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={skillName="Teleport",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=22}}}}," s ed around you after you use a Traversal Skill "}
 c["22% Chance for 3 additional projectiles when you directly cast Chaos Bolts"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=22},notSupported=true},nil}
@@ -13085,30 +13095,37 @@ c["22% Increased Stun Chance"]={{[1]={flags=0,keywordFlags=0,name="StunChance",t
 c["22% Increased cold spell damage if you have directly cast a physical spell recently"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=22},notSupported=true},nil}
 c["22% Increased physical spell damage if you have directly cast a cold spell recently"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=22},notSupported=true},nil}
 c["22% Reduced Health Cost of Spells"]={{[1]={flags=0,keywordFlags=256,name="Life",type="INC",value=-22}},"  Cost of s "}
-c["22% increased Area for Area Skills"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=22}},"  for Area Skills "}
 c["22% increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=22}},nil}
 c["22% increased Cast Speed for Totems"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",value=22}},"  for Totems "}
+c["22% increased Cooldown Recovery Speed for Evade"]={{[1]={flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=22}},"  for Evade "}
+c["22% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=22}},nil}
+c["22% increased Damage for Totems"]={{[1]={[1]={scope="totem",type="Scope"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=22}},nil}
+c["22% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=22}},nil}
 c["22% increased Effect of Frenzy on You "]={{[1]={flags=0,keywordFlags=0,name="FrenzyEffect",type="INC",value=22},notSupported=true},nil}
 c["22% increased Effect of Haste on You"]={{[1]={flags=0,keywordFlags=0,name="HasteEffect",type="INC",value=22},notSupported=true},nil}
 c["22% increased Effect of Haste on You "]={{[1]={flags=0,keywordFlags=0,name="HasteEffect",type="INC",value=22},notSupported=true},nil}
-c["22% increased Elemental Critical Strike Chance"]={{[1]={flags=0,keywordFlags=14,name="CritChance",type="INC",value=22}},nil}
-c["22% increased Fire Spell Cast Speed"]={{[1]={flags=256,keywordFlags=264,name="Speed",type="INC",value=22}},nil}
+c["22% increased Elemental Damage Over Time"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=22},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=22},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=22}},"  Over Time "}
+c["22% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=22}},nil}
 c["22% increased Hail of Arrows Duration"]={{[1]={[1]={skillName="Hail of Arrows",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=22}},nil}
-c["22% increased Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="INC",value=22}},nil}
-c["22% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=22}}}},nil}
+c["22% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=22}},nil}
+c["22% increased Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=512,name="Speed",type="INC",value=22}},nil}
+c["22% increased Melee Attack Speed for 4 seconds when you use a Potion"]={{[1]={[1]={type="Condition",var="UsedPotionRecently"},flags=3584,keywordFlags=512,name="Speed",type="INC",value=22}},nil}
+c["22% increased Melee Damage while you have Frenzy"]={{[1]={[1]={type="Condition",var="Frenzy"},flags=0,keywordFlags=512,name="Damage",type="INC",value=22}},nil}
 c["22% increased Throwing Attack Speed"]={{[1]={flags=3584,keywordFlags=1024,name="Speed",type="INC",value=22}},nil}
-c["22% increased Throwing Attack Speed for 2 seconds after using Aerial Assault"]={{[1]={[1]={skillName="Aerial Assault",type="SkillName"},flags=3584,keywordFlags=1024,name="Speed",type="INC",value=22}},"    after using  "}
-c["22% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=22}},nil}
-c["22% more Armor against Blinded Enemies"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="Blinded"},flags=0,keywordFlags=0,name="Armour",type="MORE",value=22}},nil}
+c["22% increased Throwing Attack Speed for 4 seconds when you use a Potion"]={{[1]={[1]={type="Condition",var="UsedPotionRecently"},flags=3584,keywordFlags=1024,name="Speed",type="INC",value=22}},nil}
+c["22% increased area for Melee Area Skills"]={{[1]={flags=0,keywordFlags=512,name="AreaOfEffect",type="INC",value=22}},"  for  Area Skills "}
+c["22% less Damage Over Time Taken"]={{[1]={flags=0,keywordFlags=0,name="DamageTakenOverTime",type="MORE",value=-22}},nil}
+c["22% less Fire Damage Taken on Block"]={{[1]={[1]={type="Condition",var="Blocking"},flags=0,keywordFlags=0,name="FireDamageTaken",type="MORE",value=-22}},nil}
+c["22% less Void Damage Taken on Block"]={{[1]={[1]={type="Condition",var="Blocking"},flags=0,keywordFlags=0,name="VoidDamageTaken",type="MORE",value=-22}},nil}
 c["22% of Mana Spent Gained as Ward"]={{[1]={flags=0,keywordFlags=0,name="ManaSpentGainedAsWard",type="BASE",value=22}},nil}
 c["22% of Minion Damage Leeched as Health on Melee Hit"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=8389120,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=22}}}},nil}
 c["22% of Potion Health Converted to Ward"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=22},notSupported=true},nil}
+c["22% reduced Bonus Damage Taken from Critical Strikes"]={{[1]={flags=0,keywordFlags=0,name="ReduceCritExtraDamage",type="BASE",value=22}},nil}
 c["22% reduced Channel Cost"]={{[1]={flags=0,keywordFlags=0,name="ChannelCost",type="INC",value=-22}},nil}
 c["220% Increased Healing Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="HealingEffectiveness",type="INC",value=220}},nil}
-c["220% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=220}},nil}
+c["220% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=220}},nil}
+c["220% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=220}},nil}
 c["220% of Maximum Health applied as a Ward Limit"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=220}},"  applied as a Ward Limit "}
-c["221% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=221}},nil}
-c["221% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=221}},nil}
 c["223 Health Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="LifeOnPotionUse",type="BASE",value=223}},nil}
 c["226% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=226}}}},nil}
 c["228% Chance to Upgrade when you slay a Harbinger"]={{}," to Upgrade when you slay a Harbinger "}
@@ -13155,40 +13172,34 @@ c["23% Increased effect of Haste on you while Aura of Decay is active"]={{}," ef
 c["23% Reduced Shift Distance"]={{},"  Distance "}
 c["23% chance to cast Smite at a nearby enemy on Kill"]={{}," to cast  at a nearby enemy  "}
 c["23% increased Area for Area Skills"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=23}},"  for Area Skills "}
-c["23% increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=23}},nil}
 c["23% increased Attack Speed for 4 seconds when you use a Potion"]={{[1]={[1]={type="Condition",var="UsedPotionRecently"},flags=3584,keywordFlags=0,name="Speed",type="INC",value=23}},nil}
 c["23% increased Bow Attack Speed"]={{[1]={flags=3584,keywordFlags=2048,name="Speed",type="INC",value=23}},nil}
 c["23% increased Bow Damage"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="INC",value=23}},nil}
-c["23% increased Cooldown Recovery Speed for Evade"]={{[1]={flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=23}},"  for Evade "}
+c["23% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=23}},nil}
 c["23% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=23}},nil}
 c["23% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=23}},nil}
-c["23% increased Damage for Totems"]={{[1]={[1]={scope="totem",type="Scope"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=23}},nil}
+c["23% increased Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="Damage",type="INC",value=23}},nil}
 c["23% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=23}},nil}
 c["23% increased Effect of Haste on You"]={{[1]={flags=0,keywordFlags=0,name="HasteEffect",type="INC",value=23},notSupported=true},nil}
 c["23% increased Effect of Prefixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedPrefixEffect",type="INC",value=23}},nil}
 c["23% increased Effect of Suffixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedSuffixEffect",type="INC",value=23}},nil}
 c["23% increased Effect of Weaver Enchantment Affixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedWeaverEffect",type="INC",value=23}},nil}
-c["23% increased Elemental Damage Over Time"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=23},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=23},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=23}},"  Over Time "}
-c["23% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=23}},nil}
+c["23% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=23}},nil}
 c["23% increased Hydrahedron Cast Rate"]={{},"  Cast Rate "}
+c["23% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=23}},nil}
 c["23% increased Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="INC",value=23}},nil}
 c["23% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=23}},nil}
 c["23% increased Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=512,name="Speed",type="INC",value=23}},nil}
-c["23% increased Melee Attack Speed for 4 seconds when you use a Potion"]={{[1]={[1]={type="Condition",var="UsedPotionRecently"},flags=3584,keywordFlags=512,name="Speed",type="INC",value=23}},nil}
-c["23% increased Melee Damage while you have Frenzy"]={{[1]={[1]={type="Condition",var="Frenzy"},flags=0,keywordFlags=512,name="Damage",type="INC",value=23}},nil}
+c["23% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=23}},nil}
 c["23% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=23}}}},nil}
 c["23% increased Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=23}},nil}
 c["23% increased Movement Speed for 4 seconds when you use a Potion"]={{[1]={[1]={type="Condition",var="UsedPotionRecently"},flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=23}},nil}
 c["23% increased Spell Cast Speed for 4 seconds when you use a Potion"]={{[1]={[1]={type="Condition",var="UsedPotionRecently"},flags=256,keywordFlags=256,name="Speed",type="INC",value=23}},nil}
 c["23% increased Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=256,name="CritChance",type="INC",value=23}},nil}
 c["23% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=23}},nil}
-c["23% increased Throwing Attack Speed"]={{[1]={flags=3584,keywordFlags=1024,name="Speed",type="INC",value=23}},nil}
-c["23% increased Throwing Attack Speed for 4 seconds when you use a Potion"]={{[1]={[1]={type="Condition",var="UsedPotionRecently"},flags=3584,keywordFlags=1024,name="Speed",type="INC",value=23}},nil}
+c["23% increased Throwing Damage"]={{[1]={flags=0,keywordFlags=1024,name="Damage",type="INC",value=23}},nil}
+c["23% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=23}},nil}
 c["23% increased Volatile Zombie Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=23}}," Volatile Zombie  "}
-c["23% increased area for Melee Area Skills"]={{[1]={flags=0,keywordFlags=512,name="AreaOfEffect",type="INC",value=23}},"  for  Area Skills "}
-c["23% less Damage Over Time Taken"]={{[1]={flags=0,keywordFlags=0,name="DamageTakenOverTime",type="MORE",value=-23}},nil}
-c["23% less Fire Damage Taken on Block"]={{[1]={[1]={type="Condition",var="Blocking"},flags=0,keywordFlags=0,name="FireDamageTaken",type="MORE",value=-23}},nil}
-c["23% less Void Damage Taken on Block"]={{[1]={[1]={type="Condition",var="Blocking"},flags=0,keywordFlags=0,name="VoidDamageTaken",type="MORE",value=-23}},nil}
 c["23% of Armor Mitigation also applies to Damage over Time"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=23},notSupported=true},nil}
 c["23% of Damage Reflected"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=23}},"  Reflected "}
 c["23% of Hit Damage Taken from Bosses and Rare enemies is dealt over 4 seconds instead"]={{[1]={flags=8388608,keywordFlags=0,name="DamageTaken",type="BASE",value=23}},"   from Bosses and Rare enemies is dealt over 4 seconds instead "}
@@ -13197,15 +13208,15 @@ c["23% of Minion Damage Reflected"]={{[1]={flags=0,keywordFlags=0,name="MinionMo
 c["23% of Necrotic Damage Taken as Physical"]={{[1]={flags=0,keywordFlags=1,name="NecroticDamageTaken",type="BASE",value=23}},"  as  "}
 c["23% of Poison Damage Taken as Physical"]={{[1]={flags=0,keywordFlags=1,name="PoisonDamageTaken",type="BASE",value=23}},"  as  "}
 c["23% of Void Damage Taken as Physical"]={{[1]={flags=0,keywordFlags=1,name="VoidDamageTaken",type="BASE",value=23}},"  as  "}
-c["23% reduced Bonus Damage Taken from Critical Strikes"]={{[1]={flags=0,keywordFlags=0,name="ReduceCritExtraDamage",type="BASE",value=23}},nil}
 c["230% Increased Abyssal Decay Duration "]={{[1]={flags=0,keywordFlags=0,name="EnemyAbyssalDecayDuration",type="INC",value=230}},nil}
 c["230% Increased Aspect of the Boar Duration"]={{[1]={[1]={skillName="Aspect of the Boar",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=230}},nil}
-c["231% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=231}},nil}
+c["230% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=230}},nil}
 c["233% increased Hit Damage"]={{[1]={flags=8388608,keywordFlags=0,name="Damage",type="INC",value=233}},nil}
-c["235% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=235}},nil}
+c["234% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=234}},nil}
 c["237% Increased Damage for skills used by Shadows"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=237}},"  for skills used by Shadows "}
 c["24 Channel Cost"]={{[1]={flags=0,keywordFlags=0,name="ChannelCost",type="BASE",value=24}},nil}
 c["24 Freeze Rate"]={{[1]={flags=0,keywordFlags=0,name="FreezeRate",type="BASE",value=24}},nil}
+c["24 Ward Gain on Kill"]={{[1]={flags=0,keywordFlags=0,name="WardOnKill",type="BASE",value=24}},nil}
 c["24 Ward Gained when you use a Traversal Skill"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=24},notSupported=true},nil}
 c["24% Chance each second to cast Summon Vines if you are Moving"]={{}," each second to cast Summon Vines if you are Moving "}
 c["24% Chance for Lightning Blast to Chain 4 Additional Times"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=24},notSupported=true},nil}
@@ -13223,44 +13234,41 @@ c["24% Increased Ignite Duration "]={{[1]={[1]={skillName="Ignite",type="SkillNa
 c["24% Increased Spell Damage per Skeletal Mage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=24}},"   per Skeletal Mage "}
 c["24% Minion Increased Healing Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="HealingEffectiveness",type="BASE",value=24}}}},"  Increased  "}
 c["24% Reduced Duration"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="INC",value=-24}},nil}
+c["24% increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=24}},nil}
+c["24% increased Armor While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="Armour",type="INC",value=24}},nil}
 c["24% increased Bow Attack Speed"]={{[1]={flags=3584,keywordFlags=2048,name="Speed",type="INC",value=24}},nil}
-c["24% increased Bow Damage"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="INC",value=24}},nil}
-c["24% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=24}},nil}
 c["24% increased Cooldown Recovery Speed While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=24}},nil}
+c["24% increased Cooldown Recovery Speed for Evade"]={{[1]={flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=24}},"  for Evade "}
 c["24% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=24}},nil}
-c["24% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=24}},nil}
-c["24% increased Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="Damage",type="INC",value=24}},nil}
 c["24% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=24}},nil}
-c["24% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=24}},nil}
 c["24% increased Frost Wall Duration"]={{[1]={[1]={skillName="Frost Wall",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=24}},nil}
 c["24% increased Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="INC",value=24}},nil}
 c["24% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=24}},nil}
-c["24% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=24}},nil}
 c["24% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=24}},nil}
 c["24% increased Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=512,name="Speed",type="INC",value=24}},nil}
 c["24% increased Melee Cold Damage"]={{[1]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=24}},nil}
-c["24% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=24}},nil}
+c["24% increased Minion Cast Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=256,keywordFlags=0,name="Speed",type="INC",value=24}}}},nil}
 c["24% increased Minion Cooldown Recovery Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=24}}}},nil}
 c["24% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=24}}}},nil}
+c["24% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=24}}}},nil}
+c["24% increased Minion Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=24}}}},nil}
 c["24% increased Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=24}},nil}
 c["24% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=24}},nil}
-c["24% increased Throwing Damage"]={{[1]={flags=0,keywordFlags=1024,name="Damage",type="INC",value=24}},nil}
-c["24% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=24}},nil}
 c["24% of Damage Dealt to Mana Before Health"]={{[1]={flags=0,keywordFlags=0,name="DamageToManaBeforeHealth",type="BASE",value=24}},nil}
 c["24% of Mana Spent Gained as Ward"]={{[1]={flags=0,keywordFlags=0,name="ManaSpentGainedAsWard",type="BASE",value=24}},nil}
 c["24% of Minion Damage Reflected"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="BASE",value=24}}}},"   Reflected "}
 c["24% of Potion Health Converted to Ward"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=24},notSupported=true},nil}
 c["24% of Remaining Volcanic Orb Cooldown Recovered when you use a Melee Attack and hit at least one Enemy"]={{[1]={[1]={skillName="Volcanic Orb",type="SkillName"},flags=8388608,keywordFlags=512,name="SkillLevel",type="BASE",value=24}}," Remaining  Cooldown Recovered when you use a  Attack and  at least one Enemy "}
 c["24% reduced Duration of Stuns Received"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="INC",value=-24}},"  of Stuns Received "}
+c["240% increased Melee Physical Damage"]={{[1]={flags=0,keywordFlags=512,name="PhysicalDamage",type="INC",value=240}},nil}
 c["241% Increased Skeletal Mage Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=241}}," Skeletal Mage  "}
 c["241% Increased critical strike chance with Shield Throw"]={{[1]={[1]={skillName="Shield Throw",type="SkillName"},flags=0,keywordFlags=0,name="CritChance",type="INC",value=241}},"  with  "}
 c["241% increased Critical Strike Chance for Totems"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=241}},"  for Totems "}
-c["241% increased Melee Physical Damage"]={{[1]={flags=0,keywordFlags=512,name="PhysicalDamage",type="INC",value=241}},nil}
 c["241% increased Physical Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=257,name="CritChance",type="INC",value=241}},nil}
 c["241% increased Throwing Critical Strike Chance"]={{[1]={flags=0,keywordFlags=1024,name="CritChance",type="INC",value=241}},nil}
 c["243% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=243}},nil}
-c["244% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=244}},nil}
-c["244% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=244}},nil}
+c["243% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=243}},nil}
+c["243% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=243}},nil}
 c["246% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=246}}}},nil}
 c["248 Ward Gained on Shadow Creation"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=248}},"  Gained on Shadow Creation "}
 c["248% Increased Fire Aura Damage"]={{[1]={[1]={skillName="Fire Aura",type="SkillName"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=248}},nil}
@@ -13269,6 +13277,7 @@ c["25 Armor while Channeling per Rune"]={{[1]={[1]={type="Condition",var="Channe
 c["25 Healing Per Second"]={{[1]={[1]={skillName="Healing",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=25}},"  Per Second "}
 c["25 Health Gain"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=25}},"  Gain "}
 c["25 Health Gain With Tri-Elemental"]={{[1]={flags=0,keywordFlags=14,name="Life",type="BASE",value=25}},"  Gain With Tri- "}
+c["25 Health Gain on Block"]={{[1]={flags=0,keywordFlags=0,name="LifeOnBlock",type="BASE",value=25}},nil}
 c["25 Health Gain on Melee Hit"]={{[1]={flags=8389120,keywordFlags=0,name="Life",type="BASE",value=25}},"  Gain  "}
 c["25 Health Gain with Fire Bolt"]={{[1]={flags=0,keywordFlags=8,name="Life",type="BASE",value=25}},"  Gain with  Bolt "}
 c["25 Health Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="LifeOnPotionUse",type="BASE",value=25}},nil}
@@ -13374,24 +13383,29 @@ c["25% Volatile Flask Chance"]={{}," Volatile Flask Chance "}
 c["25% Volatile Zombie Chance"]={{}," Volatile Zombie Chance "}
 c["25% Ward Consumption of current ward"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=25}},"  Consumption of current ward "}
 c["25% increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=25}},nil}
-c["25% increased Armor While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="Armour",type="INC",value=25}},nil}
 c["25% increased Bow Attack Speed"]={{[1]={flags=3584,keywordFlags=2048,name="Speed",type="INC",value=25}},nil}
-c["25% increased Cooldown Recovery Speed for Evade"]={{[1]={flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=25}},"  for Evade "}
-c["25% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=25}},nil}
 c["25% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=25}},nil}
 c["25% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=25}},nil}
+c["25% increased Effect of Haste on You"]={{[1]={flags=0,keywordFlags=0,name="HasteEffect",type="INC",value=25},notSupported=true},nil}
+c["25% increased Effect of Suffixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedSuffixEffect",type="INC",value=25}},nil}
 c["25% increased Evade distance"]={{}," Evade distance "}
 c["25% increased Frost Wall Duration"]={{[1]={[1]={skillName="Frost Wall",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=25}},nil}
+c["25% increased Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="INC",value=25}},nil}
 c["25% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=25}},nil}
-c["25% increased Minion Cast Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=256,keywordFlags=0,name="Speed",type="INC",value=25}}}},nil}
+c["25% increased Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=512,name="Speed",type="INC",value=25}},nil}
+c["25% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=25}},nil}
+c["25% increased Minion Armor"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Armour",type="INC",value=25}}}},nil}
 c["25% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=25}}}},nil}
 c["25% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=25}}}},nil}
-c["25% increased Minion Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=25}}}},nil}
 c["25% increased Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=25}},nil}
-c["25% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=25}},nil}
+c["25% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=25}},nil}
 c["25% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=25}},nil}
+c["25% increased Volatile Zombie Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=25}}," Volatile Zombie  "}
+c["25% increased Volatile Zombie Explosion Area"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=25}}," Volatile Zombie Explosion  "}
 c["25% increased Ward Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="WardOnPotionUse",type="INC",value=25}},nil}
+c["25% increased area for Minion Area Skills"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=25}}}},"  for  Area Skills "}
 c["25% less Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="MORE",value=-25}},nil}
+c["25% more your maximum mana restored when Great Harvest hits a rare or boss enemy"]={{[1]={[1]={skillName="Harvest",type="SkillName"},flags=8388608,keywordFlags=0,name="Mana",type="MORE",value=25}}," your  restored when Great  s a rare or boss enemy "}
 c["25% of Armor Mitigation also applies to Damage over Time"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=25},notSupported=true},nil}
 c["25% of Critical Strike Multiplier applies to Potions"]={{[1]={flags=0,keywordFlags=0,name="CritMultiplier",type="BASE",value=25}},"  applies to Potions "}
 c["25% of Health Regen also applies to Ward"]={{[1]={flags=0,keywordFlags=0,name="LifeRegenAppliesToWard",type="BASE",value=25}},nil}
@@ -13401,20 +13415,20 @@ c["25% of Void Damage Taken as Physical"]={{[1]={flags=0,keywordFlags=1,name="Vo
 c["25% reduced Duration of Stuns Received"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="INC",value=-25}},"  of Stuns Received "}
 c["250 Ward Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="WardOnPotionUse",type="BASE",value=250}},nil}
 c["250 Ward Gained when you use a Traversal Skill"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=250},notSupported=true},nil}
+c["250% increased Spell Void Damage"]={{[1]={flags=0,keywordFlags=256,name="VoidDamage",type="INC",value=250}},nil}
 c["250% of Mana Spent Reflected to you as Damage"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=250}},"  Spent Reflected to you as Damage "}
 c["251% Frostbite Chance per Second with Frost Wall"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=251},notSupported=true},nil}
 c["251% Increased Melee Stun Chance"]={{[1]={flags=0,keywordFlags=512,name="StunChance",type="INC",value=251}},nil}
-c["251% increased Spell Void Damage"]={{[1]={flags=0,keywordFlags=256,name="VoidDamage",type="INC",value=251}},nil}
+c["252% increased Cold Damage Over Time"]={{[1]={flags=4100,keywordFlags=0,name="ColdDamage",type="INC",value=252}},nil}
+c["252% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=252}},nil}
+c["252% increased Minion Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="CritChance",type="INC",value=252}}}},nil}
+c["252% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=252}}}},nil}
+c["252% increased Minion Damage Over Time"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=4096,keywordFlags=0,name="Damage",type="INC",value=252}}}},nil}
+c["252% increased Void Damage Over Time"]={{[1]={flags=4112,keywordFlags=0,name="VoidDamage",type="INC",value=252}},nil}
 c["253% Increased Chance To Find Potions"]={{[1]={flags=0,keywordFlags=0,name="ChanceToFindPotions",type="INC",value=253}},nil}
-c["253% increased Cold Damage Over Time"]={{[1]={flags=4100,keywordFlags=0,name="ColdDamage",type="INC",value=253}},nil}
-c["253% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=253}},nil}
-c["253% increased Minion Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="CritChance",type="INC",value=253}}}},nil}
+c["253% increased Damage While Channelling"]={{[1]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="Damage",type="INC",value=253}},nil}
 c["253% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=253}}}},nil}
-c["253% increased Minion Damage Over Time"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=4096,keywordFlags=0,name="Damage",type="INC",value=253}}}},nil}
-c["253% increased Void Damage Over Time"]={{[1]={flags=4112,keywordFlags=0,name="VoidDamage",type="INC",value=253}},nil}
-c["254% increased Damage While Channelling"]={{[1]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="Damage",type="INC",value=254}},nil}
-c["254% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=254}}}},nil}
-c["254% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=254}},nil}
+c["253% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=253}},nil}
 c["255 Ward gained when you use 3 zero mana cost skills in a row (3 second cooldown)"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=255},notSupported=true},nil}
 c["256% Increased Armor Shred Effect "]={{[1]={flags=0,keywordFlags=0,name="ArmorShredEffect",type="INC",value=256}},nil}
 c["258% Increased Healing Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="HealingEffectiveness",type="INC",value=258}},nil}
@@ -13441,45 +13455,51 @@ c["26% Increased Volcanic Orb Shrapnel Speed"]={{},"  Shrapnel Speed "}
 c["26% Increased cold spell damage if you have directly cast a physical spell recently"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=26},notSupported=true},nil}
 c["26% Increased physical spell damage if you have directly cast a cold spell recently"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=26},notSupported=true},nil}
 c["26% Reduced Health Cost of Spells"]={{[1]={flags=0,keywordFlags=256,name="Life",type="INC",value=-26}},"  Cost of s "}
-c["26% increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=26}},nil}
+c["26% increased Block Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="BlockEffectiveness",type="INC",value=26}},nil}
 c["26% increased Bow Damage"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="INC",value=26}},nil}
+c["26% increased Cast Speed for Totems"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",value=26}},"  for Totems "}
+c["26% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=26}},nil}
+c["26% increased Cold Spell Cast Speed"]={{[1]={flags=256,keywordFlags=260,name="Speed",type="INC",value=26}},nil}
+c["26% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=26}},nil}
 c["26% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=26}},nil}
+c["26% increased Damage While Channelling"]={{[1]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="Damage",type="INC",value=26}},nil}
 c["26% increased Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="Damage",type="INC",value=26}},nil}
 c["26% increased Damage for Totems"]={{[1]={[1]={scope="totem",type="Scope"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=26}},nil}
 c["26% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=26}},nil}
-c["26% increased Effect of Haste on You"]={{[1]={flags=0,keywordFlags=0,name="HasteEffect",type="INC",value=26},notSupported=true},nil}
 c["26% increased Effect of Prefixes and Suffixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedAffixEffect",type="INC",value=26}},nil}
-c["26% increased Effect of Suffixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedSuffixEffect",type="INC",value=26}},nil}
+c["26% increased Elemental Critical Strike Chance"]={{[1]={flags=0,keywordFlags=14,name="CritChance",type="INC",value=26}},nil}
 c["26% increased Elemental Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=26},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=26},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=26}},nil}
 c["26% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=26}},nil}
 c["26% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=26}},nil}
 c["26% increased Fire Spell Cast Speed"]={{[1]={flags=256,keywordFlags=264,name="Speed",type="INC",value=26}},nil}
 c["26% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=26}},nil}
-c["26% increased Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="INC",value=26}},nil}
+c["26% increased Lightning Spell Cast Speed"]={{[1]={flags=256,keywordFlags=258,name="Speed",type="INC",value=26}},nil}
 c["26% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=26}},nil}
-c["26% increased Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=512,name="Speed",type="INC",value=26}},nil}
 c["26% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=26}},nil}
 c["26% increased Melee Elemental Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="INC",value=26},[2]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=26},[3]={flags=0,keywordFlags=512,name="LightningDamage",type="INC",value=26}},nil}
 c["26% increased Melee Physical Damage"]={{[1]={flags=0,keywordFlags=512,name="PhysicalDamage",type="INC",value=26}},nil}
-c["26% increased Minion Armor"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Armour",type="INC",value=26}}}},nil}
+c["26% increased Minion Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=26}}}},nil}
 c["26% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=26}}}},nil}
 c["26% increased Minion Damage Over Time"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=4096,keywordFlags=0,name="Damage",type="INC",value=26}}}},nil}
-c["26% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=26}}}},nil}
+c["26% increased Minion Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=26}}}},nil}
+c["26% increased Minion Melee Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="Damage",type="INC",value=26}}}},nil}
+c["26% increased Minion Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=26}}}},nil}
+c["26% increased Minion Spell Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="Damage",type="INC",value=26}}}},nil}
+c["26% increased Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=26}},nil}
 c["26% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=26}},nil}
+c["26% increased Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=26}},nil}
 c["26% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=26}},nil}
 c["26% increased Throwing Damage"]={{[1]={flags=0,keywordFlags=1024,name="Damage",type="INC",value=26}},nil}
 c["26% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=26}},nil}
-c["26% increased Volatile Zombie Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=26}}," Volatile Zombie  "}
-c["26% increased Volatile Zombie Explosion Area"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=26}}," Volatile Zombie Explosion  "}
-c["26% increased area for Minion Area Skills"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=26}}}},"  for  Area Skills "}
-c["26% more your maximum mana restored when Great Harvest hits a rare or boss enemy"]={{[1]={[1]={skillName="Harvest",type="SkillName"},flags=8388608,keywordFlags=0,name="Mana",type="MORE",value=26}}," your  restored when Great  s a rare or boss enemy "}
 c["26% of Mana Spent Gained as Ward"]={{[1]={flags=0,keywordFlags=0,name="ManaSpentGainedAsWard",type="BASE",value=26}},nil}
 c["26% reduced Bonus Damage Taken from Critical Strikes"]={{[1]={flags=0,keywordFlags=0,name="ReduceCritExtraDamage",type="BASE",value=26}},nil}
 c["26% reduced Channel Cost"]={{[1]={flags=0,keywordFlags=0,name="ChannelCost",type="INC",value=-26}},nil}
 c["261 Ward gained when you use Smoke Bomb"]={{[1]={[1]={skillName="Smoke Bomb",type="SkillName"},flags=0,keywordFlags=0,name="WardGainOnUse_SmokeBomb",source="",type="BASE",value=261},notSupported=true},nil}
-c["266% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=266}},nil}
+c["265% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=265}},nil}
 c["266% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=266}}}},nil}
 c["27 Mana Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="ManaOnPotionUse",type="BASE",value=27}},nil}
+c["27 Ward Gain on Block"]={{[1]={flags=0,keywordFlags=0,name="WardOnBlock",type="BASE",value=27}},nil}
+c["27 Ward Gain on Kill"]={{[1]={flags=0,keywordFlags=0,name="WardOnKill",type="BASE",value=27}},nil}
 c["27 Ward Gained on Shadow Creation"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=27}},"  Gained on Shadow Creation "}
 c["27 Ward gained when you Dodge While Channelling"]={{[1]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="Ward",type="BASE",value=27}},"  gained when you Dodge  "}
 c["27 Ward gained when you use Smoke Bomb"]={{[1]={[1]={skillName="Smoke Bomb",type="SkillName"},flags=0,keywordFlags=0,name="WardGainOnUse_SmokeBomb",source="",type="BASE",value=27},notSupported=true},nil}
@@ -13497,68 +13517,60 @@ c["27% Increased Leech Rate"]={{[1]={flags=0,keywordFlags=0,name="LeechRate",typ
 c["27% Increased Skeleton Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=27}}," Skeleton  "}
 c["27% Increased Stun Duration"]={{[1]={flags=0,keywordFlags=0,name="EnemyStunDuration",type="INC",value=27}},nil}
 c["27% Increased area of effect with Acid Flask"]={{[1]={[1]={skillName="Acid Flask",type="SkillName"},flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=27}},"  with  "}
+c["27% increased Area for Area Skills"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=27}},"  for Area Skills "}
 c["27% increased Block Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="BlockEffectiveness",type="INC",value=27}},nil}
+c["27% increased Bow Attack Speed"]={{[1]={flags=3584,keywordFlags=2048,name="Speed",type="INC",value=27}},nil}
 c["27% increased Bow Damage"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="INC",value=27}},nil}
+c["27% increased Cast Speed"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",value=27}},nil}
 c["27% increased Cast Speed for Totems"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",value=27}},"  for Totems "}
-c["27% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=27}},nil}
-c["27% increased Cold Spell Cast Speed"]={{[1]={flags=256,keywordFlags=260,name="Speed",type="INC",value=27}},nil}
-c["27% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=27}},nil}
-c["27% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=27}},nil}
-c["27% increased Damage While Channelling"]={{[1]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="Damage",type="INC",value=27}},nil}
-c["27% increased Elemental Critical Strike Chance"]={{[1]={flags=0,keywordFlags=14,name="CritChance",type="INC",value=27}},nil}
+c["27% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=27}},nil}
 c["27% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=27}},nil}
+c["27% increased Hail of Arrows Duration"]={{[1]={[1]={skillName="Hail of Arrows",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=27}},nil}
 c["27% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=27}},nil}
-c["27% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=27}},nil}
-c["27% increased Lightning Spell Cast Speed"]={{[1]={flags=256,keywordFlags=258,name="Speed",type="INC",value=27}},nil}
+c["27% increased Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="INC",value=27}},nil}
 c["27% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=27}},nil}
 c["27% increased Mana Regen for 4 seconds when you use a Potion"]={{[1]={[1]={type="Condition",var="UsedPotionRecently"},flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=27}},nil}
-c["27% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=27}},nil}
-c["27% increased Minion Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=27}}}},nil}
+c["27% increased Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=512,name="Speed",type="INC",value=27}},nil}
 c["27% increased Minion Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="CritChance",type="INC",value=27}}}},nil}
-c["27% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=27}}}},nil}
-c["27% increased Minion Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=27}}}},nil}
-c["27% increased Minion Melee Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="Damage",type="INC",value=27}}}},nil}
-c["27% increased Minion Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=27}}}},nil}
-c["27% increased Minion Spell Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="Damage",type="INC",value=27}}}},nil}
-c["27% increased Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=27}},nil}
 c["27% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=27}},nil}
-c["27% increased Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=27}},nil}
-c["27% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=27}},nil}
-c["27% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=27}},nil}
+c["27% more Damage while using a Sceptre for Invocations with Rah as their first Rune"]={{[1]={[1]={type="Condition",var="UsingSceptre"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=27}},"  while using a  for Invocations with Rah as their first Rune "}
+c["27% more Damage while using a Staff for Invocations with Gon as their first Rune"]={{[1]={[1]={type="Condition",var="UsingStaff"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=27}},"  while using a  for Invocations with Gon as their first Rune "}
+c["27% more Damage while using a Wand for Invocations with Heo as their first Rune"]={{[1]={[1]={type="Condition",var="UsingWand"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=27}},"  while using a  for Invocations with Heo as their first Rune "}
 c["27% of Current Health consumed by Grim Harvest"]={{[1]={[1]={skillName="Harvest",type="SkillName"},flags=0,keywordFlags=0,name="Life",type="BASE",value=27}}," Current  consumed by Grim  "}
 c["27% of Damage Dealt to Mana Before Health"]={{[1]={flags=0,keywordFlags=0,name="DamageToManaBeforeHealth",type="BASE",value=27}},nil}
 c["27% of Mana Spent Gained as Ward"]={{[1]={flags=0,keywordFlags=0,name="ManaSpentGainedAsWard",type="BASE",value=27}},nil}
 c["27% of Missing Health regained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=27}}," Missing  regained on Potion Use "}
 c["27% of Potion Health Converted to Ward"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=27},notSupported=true},nil}
+c["270% increased Bow Damage"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="INC",value=270}},nil}
+c["270% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=270}},nil}
+c["270% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=270}},nil}
+c["270% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=270}},nil}
+c["270% increased Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="Damage",type="INC",value=270}},nil}
+c["270% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=270}},nil}
+c["270% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=270}},nil}
+c["270% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=270}},nil}
+c["270% increased Minion Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=270}}}},nil}
+c["270% increased Minion Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="CritChance",type="INC",value=270}}}},nil}
+c["270% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=270}}}},nil}
+c["270% increased Minion Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=270}}}},nil}
+c["270% increased Minion Melee Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="Damage",type="INC",value=270}}}},nil}
+c["270% increased Minion Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=270}}}},nil}
+c["270% increased Minion Spell Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="Damage",type="INC",value=270}}}},nil}
+c["270% increased Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=270}},nil}
+c["270% increased Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=270}},nil}
+c["270% increased Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=256,name="CritChance",type="INC",value=270}},nil}
+c["270% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=270}},nil}
+c["270% increased Throwing Damage"]={{[1]={flags=0,keywordFlags=1024,name="Damage",type="INC",value=270}},nil}
+c["270% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=270}},nil}
 c["270% of Damage Reflected"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=270}},"  Reflected "}
 c["270% of Mana Spent Gained as Ward"]={{[1]={flags=0,keywordFlags=0,name="ManaSpentGainedAsWard",type="BASE",value=270}},nil}
 c["271 Health Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="LifeOnPotionUse",type="BASE",value=271}},nil}
-c["271% increased Bow Damage"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="INC",value=271}},nil}
-c["271% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=271}},nil}
-c["271% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=271}},nil}
-c["271% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=271}},nil}
-c["271% increased Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="Damage",type="INC",value=271}},nil}
-c["271% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=271}},nil}
-c["271% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=271}},nil}
-c["271% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=271}},nil}
-c["271% increased Minion Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=271}}}},nil}
-c["271% increased Minion Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="CritChance",type="INC",value=271}}}},nil}
-c["271% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=271}}}},nil}
-c["271% increased Minion Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=271}}}},nil}
-c["271% increased Minion Melee Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="Damage",type="INC",value=271}}}},nil}
-c["271% increased Minion Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=271}}}},nil}
-c["271% increased Minion Spell Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="Damage",type="INC",value=271}}}},nil}
-c["271% increased Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=271}},nil}
-c["271% increased Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=271}},nil}
-c["271% increased Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=256,name="CritChance",type="INC",value=271}},nil}
-c["271% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=271}},nil}
-c["271% increased Throwing Damage"]={{[1]={flags=0,keywordFlags=1024,name="Damage",type="INC",value=271}},nil}
-c["271% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=271}},nil}
-c["272% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=272}}}},nil}
-c["272% increased Minion Health Regen"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=272}}}},nil}
+c["271% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=271}}}},nil}
+c["271% increased Minion Health Regen"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=271}}}},nil}
 c["275% Increased Area With Supernova"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=275}},"  With Supernova "}
 c["278% Frostbite Chance per Second with Frost Wall"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=278},notSupported=true},nil}
 c["278% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=278}}}},nil}
+c["28 Ward Gain on Kill"]={{[1]={flags=0,keywordFlags=0,name="WardOnKill",type="BASE",value=28}},nil}
 c["28 Ward Gained on Shadow Creation"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=28}},"  Gained on Shadow Creation "}
 c["28% Chance to Gain 30 Ward when Hit"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=28},notSupported=true},nil}
 c["28% Chance to cast Marrow Shards when you cast Transplant"]={{[1]={[1]={skillName="Marrow Shards",type="SkillName"},[2]={type="Condition",var="OnCast_Transplant"},flags=0,keywordFlags=0,name="ChanceToCast_MarrowShards",source="",type="BASE",value=28},notSupported=true},nil}
@@ -13581,40 +13593,33 @@ c["28% Increased Spell Damage per Skeletal Mage"]={{[1]={flags=0,keywordFlags=25
 c["28% Increased Stun Duration"]={{[1]={flags=0,keywordFlags=0,name="EnemyStunDuration",type="INC",value=28}},nil}
 c["28% Increased Time Rot Duration "]={{[1]={[1]={skillName="Time Rot",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=28}},nil}
 c["28% Increased area of effect with Acid Flask"]={{[1]={[1]={skillName="Acid Flask",type="SkillName"},flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=28}},"  with  "}
-c["28% Increased cold damage. This effect is doubled if you have 300 or more maximum mana."]={{[1]={[1]={mult=2,stat="Mana",threshold=300,type="StatThreshold"},flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=28}},nil}
-c["28% Increased fire damage. This effect is doubled if you have 300 or more maximum mana."]={{[1]={[1]={mult=2,stat="Mana",threshold=300,type="StatThreshold"},flags=0,keywordFlags=0,name="FireDamage",type="INC",value=28}},nil}
+c["28% Increased cold damage. This effect is doubled if you have 300 or more maximum mana."]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=28}}," . This effect is doubled if you have 300 or more maximum mana. "}
+c["28% Increased fire damage. This effect is doubled if you have 300 or more maximum mana."]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=28}}," . This effect is doubled if you have 300 or more maximum mana. "}
 c["28% Increased lightning damage. This effect is doubled if you have 300 or more maximum mana."]={{[1]={[1]={mult=2,stat="Mana",threshold=300,type="StatThreshold"},flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=28}},nil}
 c["28% chance to gain 20 mana when you directly cast Runebolt or Fireball"]={{},"20 mana when you directly cast Runebolt or Fireball "}
-c["28% increased Area for Area Skills"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=28}},"  for Area Skills "}
 c["28% increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=28}},nil}
-c["28% increased Block Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="BlockEffectiveness",type="INC",value=28}},nil}
-c["28% increased Bow Attack Speed"]={{[1]={flags=3584,keywordFlags=2048,name="Speed",type="INC",value=28}},nil}
-c["28% increased Bow Damage"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="INC",value=28}},nil}
-c["28% increased Cast Speed"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",value=28}},nil}
+c["28% increased Bow Elemental Damage"]={{[1]={flags=0,keywordFlags=2048,name="FireDamage",type="INC",value=28},[2]={flags=0,keywordFlags=2048,name="ColdDamage",type="INC",value=28},[3]={flags=0,keywordFlags=2048,name="LightningDamage",type="INC",value=28}},nil}
 c["28% increased Cooldown Recovery Speed for Evade"]={{[1]={flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=28}},"  for Evade "}
 c["28% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=28}},nil}
 c["28% increased Damage for Totems"]={{[1]={[1]={scope="totem",type="Scope"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=28}},nil}
-c["28% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=28}},nil}
 c["28% increased Effect of Prefixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedPrefixEffect",type="INC",value=28}},nil}
 c["28% increased Effect of Suffixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedSuffixEffect",type="INC",value=28}},nil}
 c["28% increased Effect of Weaver Enchantment Affixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedWeaverEffect",type="INC",value=28}},nil}
 c["28% increased Elemental Damage Over Time"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=28},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=28},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=28}},"  Over Time "}
-c["28% increased Hail of Arrows Duration"]={{[1]={[1]={skillName="Hail of Arrows",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=28}},nil}
-c["28% increased Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="INC",value=28}},nil}
-c["28% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=28}},nil}
-c["28% increased Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=512,name="Speed",type="INC",value=28}},nil}
+c["28% increased Frost Wall Duration"]={{[1]={[1]={skillName="Frost Wall",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=28}},nil}
 c["28% increased Melee Attack Speed for 4 seconds when you use a Potion"]={{[1]={[1]={type="Condition",var="UsedPotionRecently"},flags=3584,keywordFlags=512,name="Speed",type="INC",value=28}},nil}
 c["28% increased Melee Damage while you have Frenzy"]={{[1]={[1]={type="Condition",var="Frenzy"},flags=0,keywordFlags=512,name="Damage",type="INC",value=28}},nil}
 c["28% increased Minion Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="CritChance",type="INC",value=28}}}},nil}
 c["28% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=28}}}},nil}
+c["28% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=28}}}},nil}
 c["28% increased Minion Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=28}}}},nil}
+c["28% increased Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=28}},nil}
+c["28% increased Speed and Distance with Flame Rush"]={{}," Speed and Distance with  "}
 c["28% increased Throwing Attack Speed"]={{[1]={flags=3584,keywordFlags=1024,name="Speed",type="INC",value=28}},nil}
 c["28% increased Throwing Attack Speed for 4 seconds when you use a Potion"]={{[1]={[1]={type="Condition",var="UsedPotionRecently"},flags=3584,keywordFlags=1024,name="Speed",type="INC",value=28}},nil}
+c["28% increased Throwing Physical Damage"]={{[1]={flags=0,keywordFlags=1024,name="PhysicalDamage",type="INC",value=28}},nil}
 c["28% increased Volatile Zombie Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=28}}," Volatile Zombie  "}
 c["28% less Fire Damage Taken on Block"]={{[1]={[1]={type="Condition",var="Blocking"},flags=0,keywordFlags=0,name="FireDamageTaken",type="MORE",value=-28}},nil}
-c["28% more Damage while using a Sceptre for Invocations with Rah as their first Rune"]={{[1]={[1]={type="Condition",var="UsingSceptre"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=28}},"  while using a  for Invocations with Rah as their first Rune "}
-c["28% more Damage while using a Staff for Invocations with Gon as their first Rune"]={{[1]={[1]={type="Condition",var="UsingStaff"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=28}},"  while using a  for Invocations with Gon as their first Rune "}
-c["28% more Damage while using a Wand for Invocations with Heo as their first Rune"]={{[1]={[1]={type="Condition",var="UsingWand"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=28}},"  while using a  for Invocations with Heo as their first Rune "}
 c["28% more Physical Damage while at Full Health"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="MORE",value=28}},"  while at Full Health "}
 c["28% of Armor Mitigation also applies to Damage over Time"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=28},notSupported=true},nil}
 c["28% of Block Effectiveness applies to Damage over Time as if it had been Blocked"]={{[1]={flags=0,keywordFlags=0,name="BlockEffectiveness",type="BASE",value=28}},"  applies to Damage over Time as if it had been Blocked "}
@@ -13639,9 +13644,9 @@ c["284% increased Melee Damage While Transformed"]={{[1]={[1]={type="Condition",
 c["284% increased Minion Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="CritChance",type="INC",value=284}}}},nil}
 c["284% increased Spell Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=256,name="Damage",type="INC",value=284}},nil}
 c["288% Increased Critical Strike chance with Flurry"]={{[1]={[1]={skillName="Flurry",type="SkillName"},flags=0,keywordFlags=0,name="CritChance",type="INC",value=288}},"  with  "}
-c["289% increased Necrotic Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=289}},nil}
-c["289% increased Physical Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=289}},nil}
-c["289% to 200% more Damage Taken depending on Area Level for You and your Minions"]={{[1]={[1]={limit=75,type="Multiplier",valueCap=200,var="AreaLevel"},flags=0,keywordFlags=0,name="DamageTaken",source="",type="MORE",value=3.8533333333333}},nil}
+c["288% increased Necrotic Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=288}},nil}
+c["288% increased Physical Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=288}},nil}
+c["288% to 200% more Damage Taken depending on Area Level for You and your Minions"]={{[1]={[1]={limit=75,type="Multiplier",valueCap=200,var="AreaLevel"},flags=0,keywordFlags=0,name="DamageTaken",source="",type="MORE",value=3.84}},nil}
 c["29 Damage Reflected to Attackers"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=29}},"  Reflected to Attackers "}
 c["29% Chance for Lightning Blast to Chain 4 Additional Times"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=29},notSupported=true},nil}
 c["29% Chance to Cast Dragon Fire on Crit"]={{}," to Cast Dragon  on Crit "}
@@ -13663,24 +13668,27 @@ c["29% Increased Skill Shard Drop Rate"]={{}," Skill Shard Drop Rate "}
 c["29% Increased Suffix Shard Drop Rate"]={{}," Suffix Shard Drop Rate "}
 c["29% Increased area with Void Cleave"]={{[1]={[1]={skillName="Void Cleave",type="SkillName"},flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=29}},"  with  "}
 c["29% Reduced Health Cost of Spells"]={{[1]={flags=0,keywordFlags=256,name="Life",type="INC",value=-29}},"  Cost of s "}
-c["29% increased Bow Elemental Damage"]={{[1]={flags=0,keywordFlags=2048,name="FireDamage",type="INC",value=29},[2]={flags=0,keywordFlags=2048,name="ColdDamage",type="INC",value=29},[3]={flags=0,keywordFlags=2048,name="LightningDamage",type="INC",value=29}},nil}
-c["29% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=29}},nil}
+c["29% increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=29}},nil}
+c["29% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=29}},nil}
 c["29% increased Elemental Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=29},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=29},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=29}},nil}
-c["29% increased Elemental Damage Over Time"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=29},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=29},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=29}},"  Over Time "}
-c["29% increased Frost Wall Duration"]={{[1]={[1]={skillName="Frost Wall",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=29}},nil}
-c["29% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=29}}}},nil}
-c["29% increased Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=29}},nil}
-c["29% increased Speed and Distance with Flame Rush"]={{}," Speed and Distance with  "}
-c["29% increased Throwing Attack Speed"]={{[1]={flags=3584,keywordFlags=1024,name="Speed",type="INC",value=29}},nil}
-c["29% increased Throwing Physical Damage"]={{[1]={flags=0,keywordFlags=1024,name="PhysicalDamage",type="INC",value=29}},nil}
+c["29% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=29}},nil}
+c["29% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=29}},nil}
+c["29% increased Minion Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=29}}}},nil}
+c["29% increased Minion Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=29}}}},nil}
+c["29% increased Minion Melee Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="Damage",type="INC",value=29}}}},nil}
+c["29% increased Minion Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=29}}}},nil}
+c["29% increased Minion Spell Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="Damage",type="INC",value=29}}}},nil}
+c["29% increased Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=29}},nil}
+c["29% increased Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=29}},nil}
+c["29% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=29}},nil}
 c["29% increased area for Melee Area Skills"]={{[1]={flags=0,keywordFlags=512,name="AreaOfEffect",type="INC",value=29}},"  for  Area Skills "}
 c["29% increased area for Throwing Area Skills"]={{[1]={flags=0,keywordFlags=1024,name="AreaOfEffect",type="INC",value=29}},"  for  Area Skills "}
 c["293% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=293}},nil}
+c["297% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=297}},nil}
+c["297% increased Melee Elemental Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="INC",value=297},[2]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=297},[3]={flags=0,keywordFlags=512,name="LightningDamage",type="INC",value=297}},nil}
+c["297% increased Minion Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=297}}}},nil}
+c["297% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=297}},nil}
 c["298 Health Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="LifeOnPotionUse",type="BASE",value=298}},nil}
-c["298% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=298}},nil}
-c["298% increased Melee Elemental Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="INC",value=298},[2]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=298},[3]={flags=0,keywordFlags=512,name="LightningDamage",type="INC",value=298}},nil}
-c["298% increased Minion Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=298}}}},nil}
-c["298% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=298}},nil}
 c["3 Abyssal Echoes Casts From Location"]={{[1]={[1]={skillName="Abyssal Echoes",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=3}},"  Casts From Location "}
 c["3 Arrow Limit"]={{}," Arrow Limit "}
 c["3 Arrow Storm Duration"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="BASE",value=3}}," Arrow Storm  "}
@@ -13753,7 +13761,7 @@ c["3 Totem Frenzy Duration (seconds)"]={{[1]={[1]={skillName="Frenzy",type="Skil
 c["3 Vanguard Limit"]={{}," Vanguard Limit "}
 c["3 Void Bolts At Arrival"]={{},"  Bolts At Arrival "}
 c["3 Void Bolts At Starting Position"]={{},"  Bolts At Starting Position "}
-c["3 Ward Gain Per Intelligence With Different Runes"]={{[1]={[1]={stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="Ward",type="BASE",value=3}},"  Gain  With Different Runes "}
+c["3 Ward Gain Per Intelligence With Different Runes"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=3}},"  Gain Per Intelligence With Different Runes "}
 c["3 Ward Gain on Freeze"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=3}},"  Gain on Freeze "}
 c["3 Ward Gained"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=3}},"  Gained "}
 c["3 Ward Gained on Cast"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=3}},"  Gained on Cast "}
@@ -13851,15 +13859,18 @@ c["3% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type
 c["3% increased Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=512,name="Speed",type="INC",value=3}},nil}
 c["3% increased Minion Bow Attack Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=3584,keywordFlags=2048,name="Speed",type="INC",value=3}}}},nil}
 c["3% increased Minion Cast Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=256,keywordFlags=0,name="Speed",type="INC",value=3}}}},nil}
+c["3% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=3}}}},nil}
 c["3% increased Minion Melee Attack Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=3584,keywordFlags=512,name="Speed",type="INC",value=3}}}},nil}
 c["3% increased Minion Throwing Attack Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=3584,keywordFlags=1024,name="Speed",type="INC",value=3}}}},nil}
 c["3% increased Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=3}},nil}
 c["3% increased Movement Speed While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=3}},nil}
-c["3% more Damage per Attunement for Invocations with Rah as their second Rune"]={{[1]={[1]={stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=3}},"   for Invocations with Rah as their second Rune "}
-c["3% more Damage per Dexterity for Invocations with Gon as their second Rune"]={{[1]={[1]={stat="Dex",type="PerStat"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=3}},"   for Invocations with Gon as their second Rune "}
-c["3% more Damage per Strength for Invocations with Heo as their second Rune"]={{[1]={[1]={stat="Str",type="PerStat"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=3}},"   for Invocations with Heo as their second Rune "}
+c["3% more Damage per Attunement for Invocations with Rah as their second Rune"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=3}},"  per Attunement for Invocations with Rah as their second Rune "}
+c["3% more Damage per Dexterity for Invocations with Gon as their second Rune"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=3}},"  per Dexterity for Invocations with Gon as their second Rune "}
+c["3% more Damage per Strength for Invocations with Heo as their second Rune"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=3}},"  per Strength for Invocations with Heo as their second Rune "}
+c["3% more Increased Mana per stack of Spirit Battery"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="MORE",value=3}}," Increased  per stack of Spirit Battery "}
 c["3% more Stygian Beam Damage per 10 Current Mana"]={{[1]={[1]={skillName="Stygian Beam",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=3}},"   per 10 Current Mana "}
 c["3% more Voidwinter Bolt Damage per 10% uncapped Time Rot Chance with Melee Attacks"]={{[1]={[1]={skillName="Voidwinter Bolt",type="SkillName"},flags=0,keywordFlags=512,name="Damage",type="MORE",value=3}},"   per 10% uncapped Time Rot Chance with  Attacks "}
+c["3% more your maximum mana restored when Great Harvest kills an enemy"]={{[1]={[1]={skillName="Harvest",type="SkillName"},flags=0,keywordFlags=0,name="Mana",type="MORE",value=3}}," your  restored when Great  kills an enemy "}
 c["3% of Armor Mitigation also applies to Damage over Time"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=3},notSupported=true},nil}
 c["3% of Bone Golems have 6% chance on hit to grant you a percentage of their missing health as ward."]={{[1]={flags=8388608,keywordFlags=0,name="Life",type="BASE",value=3}}," Bone Golems have 6% chance  to grant you a percentage of their missing  as ward. "}
 c["3% of Cold Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=0,name="ColdDamageLifeLeech",type="BASE",value=3}},nil}
@@ -13871,6 +13882,7 @@ c["3% of Damage dealt by Harvest Leeched as Health"]={{[1]={[1]={skillName="Harv
 c["3% of Elemental Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=0,name="FireDamageLifeLeech",type="BASE",value=3},[2]={flags=0,keywordFlags=0,name="ColdDamageLifeLeech",type="BASE",value=3},[3]={flags=0,keywordFlags=0,name="LightningDamageLifeLeech",type="BASE",value=3}},nil}
 c["3% of Lightning Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=0,name="LightningDamageLifeLeech",type="BASE",value=3}},nil}
 c["3% of Melee Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=512,name="DamageLifeLeech",type="BASE",value=3}},nil}
+c["3% of Melee Damage Leeched as Health when below 65% Health"]={{[1]={flags=0,keywordFlags=512,name="DamageLifeLeech",type="BASE",value=3}},"    when below 65% Health "}
 c["3% of Minion Melee Damage Leeched as Health on Hit"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=8388608,keywordFlags=512,name="DamageLifeLeech",type="BASE",value=3}}}},nil}
 c["3% of Minion Physical Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="PhysicalDamageLifeLeech",type="BASE",value=3}}}},nil}
 c["3% of Necrotic Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamageLifeLeech",type="BASE",value=3}},nil}
@@ -13885,10 +13897,11 @@ c["3.2 Seconds of Haste after you use a Traversal Skill"]={{[1]={[1]={skillName=
 c["3.5 Seconds of Frenzy after you use Evade"]={{[1]={[1]={skillName="Frenzy",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=3.5}}," Seconds of  after you use Evade "}
 c["3.8 Seconds of Frenzy after you use a Traversal Skill"]={{[1]={[1]={skillName="Frenzy",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=3.8}}," Seconds of  after you use a Traversal Skill "}
 c["3.8 Seconds of Haste after you use a Traversal Skill"]={{[1]={[1]={skillName="Haste",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=3.8}}," Seconds of  after you use a Traversal Skill "}
-c["30 Armour Per Vitality"]={{[1]={[1]={stat="Vit",type="PerStat"},flags=0,keywordFlags=0,name="Armour",type="BASE",value=30}},nil}
+c["30 Armour Per Vitality"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=30}},"  Per Vitality "}
 c["30 Damage Taken by Attackers when Hit"]={{[1]={flags=8388608,keywordFlags=0,name="DamageTaken",type="BASE",value=30}},"  by Attackers when  "}
 c["30 Freeze Rate"]={{[1]={flags=0,keywordFlags=0,name="FreezeRate",type="BASE",value=30}},nil}
 c["30 Healing To Allies"]={{[1]={[1]={skillName="Healing",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=30}},"  To Allies "}
+c["30 Health Gain on Block"]={{[1]={flags=0,keywordFlags=0,name="LifeOnBlock",type="BASE",value=30}},nil}
 c["30 Health Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="LifeOnPotionUse",type="BASE",value=30}},nil}
 c["30 Mana Consumed per Recent Swap"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=30}},"  Consumed per Recent Swap "}
 c["30 Mana Cost Per Second"]={{[1]={flags=0,keywordFlags=0,name="ManaCost",type="BASE",value=30}},"  Per Second "}
@@ -13961,29 +13974,28 @@ c["30% Portion of your Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRe
 c["30% Quadruple Cast Chance"]={{}," Quadruple Cast Chance "}
 c["30% Reduced Bonus Damage Taken From Crits"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=30},notSupported=true},nil}
 c["30% Reduced Movespeed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=-30}},nil}
-c["30% Shared Reduced Bonus Damage Taken From Crits"]={{[1]={flags=0,keywordFlags=0,name="DamageTaken",type="BASE",value=30}}," Shared Reduced Bonus  From Crits "}
+c["30% Shared Reduced Bonus Damage Taken From Crits"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=30},[2]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=30}},nil}
 c["30% Spectral Putrescence Chance"]={{}," Spectral Putrescence Chance "}
 c["30% Tornado Chance On Wind Tempest"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Tornado",type="BASE",value=30}},"  On Wind Tempest "}
 c["30% Totem Increased Healing"]={{}," Totem Increased  "}
 c["30% chance for Wolves to Retaliate with Lightning Strike when hit"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=30},notSupported=true},nil}
 c["30% chance to gain Corrupted Heraldry when hit by Shrapnel from Volcanic Orb"]={{},"Corrupted Heraldry when hit by Shrapnel from Volcanic Orb "}
 c["30% increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=30}},nil}
+c["30% increased Cast Speed"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",value=30}},nil}
 c["30% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=30}},nil}
 c["30% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=30}},nil}
+c["30% increased Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=0,name="DamageLifeLeech",type="INC",value=30}},nil}
+c["30% increased Effect of Frenzy on You"]={{[1]={flags=0,keywordFlags=0,name="FrenzyEffect",type="INC",value=30},notSupported=true},nil}
+c["30% increased Effect of Prefixes and Suffixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedAffixEffect",type="INC",value=30}},nil}
 c["30% increased Elemental Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=30},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=30},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=30}},nil}
+c["30% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=30}},nil}
 c["30% increased Frost Wall Duration"]={{[1]={[1]={skillName="Frost Wall",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=30}},nil}
 c["30% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=30}},nil}
 c["30% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=30}},nil}
-c["30% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=30}},nil}
-c["30% increased Minion Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=30}}}},nil}
+c["30% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=30}}}},nil}
 c["30% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=30}}}},nil}
-c["30% increased Minion Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=30}}}},nil}
-c["30% increased Minion Melee Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="Damage",type="INC",value=30}}}},nil}
-c["30% increased Minion Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=30}}}},nil}
-c["30% increased Minion Spell Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="Damage",type="INC",value=30}}}},nil}
-c["30% increased Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=30}},nil}
-c["30% increased Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=30}},nil}
-c["30% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=30}},nil}
+c["30% increased Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=30}},nil}
+c["30% increased Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=256,name="CritChance",type="INC",value=30}},nil}
 c["30% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=30}},nil}
 c["30% increased area for Minion Area Skills"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=30}}}},"  for  Area Skills "}
 c["30% less Elemental Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="ElementalDamageTaken",type="MORE",value=-30}},nil}
@@ -13994,6 +14006,7 @@ c["30% less Void Damage Taken for 4 seconds when you use a Potion"]={{[1]={[1]={
 c["30% of Damage Dealt to Mana Before Health"]={{[1]={flags=0,keywordFlags=0,name="DamageToManaBeforeHealth",type="BASE",value=30}},nil}
 c["30% of Mana Spent Gained as Ward"]={{[1]={flags=0,keywordFlags=0,name="ManaSpentGainedAsWard",type="BASE",value=30}},nil}
 c["30% of Minion Damage Reflected"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="BASE",value=30}}}},"   Reflected "}
+c["30% reduced Channel Cost"]={{[1]={flags=0,keywordFlags=0,name="ChannelCost",type="INC",value=-30}},nil}
 c["300 Shields Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=300}}," Shields  "}
 c["300% Chance to Chill Attackers"]={{[1]={flags=0,keywordFlags=0,name="ChanceToChillAttackers",type="BASE",value=300}},nil}
 c["300% Chance to Slow Attackers"]={{[1]={flags=0,keywordFlags=0,name="ChanceToSlowAttackers",type="BASE",value=300}},nil}
@@ -14001,10 +14014,10 @@ c["300% Detonating Ground Ignite Chance"]={{[1]={flags=8388608,keywordFlags=0,na
 c["300% Max Damage Bonus"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=300}}," Max  Bonus "}
 c["300% Seconds of Frenzy when you gain Poison Overload"]={{}," Seconds of  when you gain  Overload "}
 c["300% Tier 3 Increased Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=300}}," Tier 3 Increased  "}
+c["300% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=300}},nil}
+c["300% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=300}}}},nil}
 c["301% Increased Fire Aura Damage"]={{[1]={[1]={skillName="Fire Aura",type="SkillName"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=301}},nil}
-c["301% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=301}},nil}
-c["301% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=301}}}},nil}
-c["302% increased Echo Damage when a skill is Echoed"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=302}}," Echo  when a skill is Echoed "}
+c["301% increased Echo Damage when a skill is Echoed"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=301}}," Echo  when a skill is Echoed "}
 c["306% Increased Stun Chance"]={{[1]={flags=0,keywordFlags=0,name="StunChance",type="INC",value=306}},nil}
 c["306% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=306}},nil}
 c["31 Ward Gained on Potion Use per 10 Intelligence"]={{[1]={[1]={div=10,stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="WardOnPotionUse",type="BASE",value=31}},nil}
@@ -14022,35 +14035,43 @@ c["31% Increased Stun Chance"]={{[1]={flags=0,keywordFlags=0,name="StunChance",t
 c["31% Minion Chance to Chill Attackers"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Chill",type="BASE",value=31}}}},"   Attackers "}
 c["31% Reduced Health Cost of Spells"]={{[1]={flags=0,keywordFlags=256,name="Life",type="INC",value=-31}},"  Cost of s "}
 c["31% chance to gain Dusk Shroud on Dodge"]={{},"Dusk Shroud on Dodge "}
-c["31% increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=31}},nil}
-c["31% increased Cast Speed"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",value=31}},nil}
+c["31% increased Bow Damage"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="INC",value=31}},nil}
 c["31% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=31}},nil}
-c["31% increased Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=0,name="DamageLifeLeech",type="INC",value=31}},nil}
 c["31% increased Damage While Channelling"]={{[1]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="Damage",type="INC",value=31}},nil}
-c["31% increased Effect of Frenzy on You"]={{[1]={flags=0,keywordFlags=0,name="FrenzyEffect",type="INC",value=31},notSupported=true},nil}
 c["31% increased Effect of Frenzy on You "]={{[1]={flags=0,keywordFlags=0,name="FrenzyEffect",type="INC",value=31},notSupported=true},nil}
 c["31% increased Effect of Haste on You "]={{[1]={flags=0,keywordFlags=0,name="HasteEffect",type="INC",value=31},notSupported=true},nil}
-c["31% increased Effect of Prefixes and Suffixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedAffixEffect",type="INC",value=31}},nil}
+c["31% increased Elemental Critical Strike Chance"]={{[1]={flags=0,keywordFlags=14,name="CritChance",type="INC",value=31}},nil}
 c["31% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=31}},nil}
 c["31% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=31}},nil}
 c["31% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=31}},nil}
-c["31% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=31}},nil}
+c["31% increased Minion Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=31}}}},nil}
 c["31% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=31}}}},nil}
+c["31% increased Minion Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=31}}}},nil}
 c["31% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=31}}}},nil}
+c["31% increased Minion Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=31}}}},nil}
+c["31% increased Minion Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=31}}}},nil}
+c["31% increased Minion Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=31}}}},nil}
+c["31% increased Minion Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=31}}}},nil}
+c["31% increased Minion Void Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=31}}}},nil}
 c["31% increased Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=31}},nil}
+c["31% increased Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=31}},nil}
 c["31% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=31}},nil}
-c["31% increased Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=256,name="CritChance",type="INC",value=31}},nil}
+c["31% increased Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=31}},nil}
+c["31% increased Throwing Damage"]={{[1]={flags=0,keywordFlags=1024,name="Damage",type="INC",value=31}},nil}
 c["31% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=31}},nil}
+c["31% increased area for Cold Area Skills"]={{[1]={flags=0,keywordFlags=4,name="AreaOfEffect",type="INC",value=31}},"  for  Area Skills "}
+c["31% increased area for Melee Area Skills"]={{[1]={flags=0,keywordFlags=512,name="AreaOfEffect",type="INC",value=31}},"  for  Area Skills "}
 c["31% increased area for Minion Area Skills"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=31}}}},"  for  Area Skills "}
+c["31% increased area for Minion Melee Area Skills"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="AreaOfEffect",type="INC",value=31}}}},"  for   Area Skills "}
 c["31% of Necrotic Damage Taken as Physical"]={{[1]={flags=0,keywordFlags=1,name="NecroticDamageTaken",type="BASE",value=31}},"  as  "}
 c["31% of Poison Damage Taken as Physical"]={{[1]={flags=0,keywordFlags=1,name="PoisonDamageTaken",type="BASE",value=31}},"  as  "}
 c["31% of Void Damage Taken as Physical"]={{[1]={flags=0,keywordFlags=1,name="VoidDamageTaken",type="BASE",value=31}},"  as  "}
-c["31% reduced Channel Cost"]={{[1]={flags=0,keywordFlags=0,name="ChannelCost",type="INC",value=-31}},nil}
 c["31% reduced Health Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="LifeOnPotionUse",type="INC",value=-31}},nil}
 c["311% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=311}}}},nil}
 c["315 Health Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="LifeOnPotionUse",type="BASE",value=315}},nil}
+c["315% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=315}}}},nil}
 c["316% Increased Damage for skills used by Shadows"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=316}},"  for skills used by Shadows "}
-c["316% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=316}}}},nil}
+c["32 Health Gain on Kill"]={{[1]={flags=0,keywordFlags=0,name="LifeOnKill",type="BASE",value=32}},nil}
 c["32 Ward Gained when you use a Traversal Skill"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=32},notSupported=true},nil}
 c["32% Chance to gain Crimson Shroud when you use a Melee Attack that hits"]={{},"Crimson Shroud when you use a Melee Attack that hits "}
 c["32% Frostbite Chance per Second with Frost Wall"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=32},notSupported=true},nil}
@@ -14070,48 +14091,48 @@ c["32% Increased physical spell damage if you have directly cast a cold spell re
 c["32% Increased spell critical strike chance. This effect is doubled if you have 300 or more maximum mana."]={{[1]={[1]={mult=2,stat="Mana",threshold=300,type="StatThreshold"},flags=0,keywordFlags=256,name="CritChance",type="INC",value=32}},nil}
 c["32% More Damage with your next Movement Skill Every 3 Seconds"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=32}},"  with your next Movement Skill Every 3 Seconds "}
 c["32% increased Area for Area Skills"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=32}},"  for Area Skills "}
-c["32% increased Bow Damage"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="INC",value=32}},nil}
+c["32% increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=32}},nil}
 c["32% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=32}},nil}
 c["32% increased Damage Over Time While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=4096,keywordFlags=0,name="Damage",type="INC",value=32}},nil}
 c["32% increased Damage for Totems"]={{[1]={[1]={scope="totem",type="Scope"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=32}},nil}
 c["32% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=32}},nil}
-c["32% increased Elemental Critical Strike Chance"]={{[1]={flags=0,keywordFlags=14,name="CritChance",type="INC",value=32}},nil}
 c["32% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=32}},nil}
+c["32% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=32}},nil}
 c["32% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=32}},nil}
 c["32% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=32}},nil}
 c["32% increased Melee Cold Damage"]={{[1]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=32}},nil}
+c["32% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=32}},nil}
 c["32% increased Melee Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=512,name="Damage",type="INC",value=32}},nil}
 c["32% increased Melee Elemental Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="INC",value=32},[2]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=32},[3]={flags=0,keywordFlags=512,name="LightningDamage",type="INC",value=32}},nil}
+c["32% increased Melee Physical Damage"]={{[1]={flags=0,keywordFlags=512,name="PhysicalDamage",type="INC",value=32}},nil}
 c["32% increased Minion Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=32}}}},nil}
 c["32% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=32}}}},nil}
 c["32% increased Minion Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=32}}}},nil}
 c["32% increased Minion Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=32}}}},nil}
+c["32% increased Minion Melee Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="Damage",type="INC",value=32}}}},nil}
 c["32% increased Minion Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=32}}}},nil}
-c["32% increased Minion Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=32}}}},nil}
-c["32% increased Minion Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=32}}}},nil}
 c["32% increased Minion Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="CritChance",type="INC",value=32}}}},nil}
-c["32% increased Minion Void Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=32}}}},nil}
+c["32% increased Minion Spell Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="Damage",type="INC",value=32}}}},nil}
 c["32% increased Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=32}},nil}
 c["32% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=32}},nil}
 c["32% increased Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=32}},nil}
+c["32% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=32}},nil}
 c["32% increased Spell Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=256,name="Damage",type="INC",value=32}},nil}
-c["32% increased Throwing Damage"]={{[1]={flags=0,keywordFlags=1024,name="Damage",type="INC",value=32}},nil}
 c["32% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=32}},nil}
-c["32% increased area for Cold Area Skills"]={{[1]={flags=0,keywordFlags=4,name="AreaOfEffect",type="INC",value=32}},"  for  Area Skills "}
-c["32% increased area for Melee Area Skills"]={{[1]={flags=0,keywordFlags=512,name="AreaOfEffect",type="INC",value=32}},"  for  Area Skills "}
-c["32% increased area for Minion Melee Area Skills"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="AreaOfEffect",type="INC",value=32}}}},"  for   Area Skills "}
 c["32% of Mana Spent Gained as Ward"]={{[1]={flags=0,keywordFlags=0,name="ManaSpentGainedAsWard",type="BASE",value=32}},nil}
+c["32% reduced Bonus Damage Taken from Critical Strikes"]={{[1]={flags=0,keywordFlags=0,name="ReduceCritExtraDamage",type="BASE",value=32}},nil}
 c["322 Damage Reflected to Attackers"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=322}},"  Reflected to Attackers "}
 c["324% Increased Damage while wielding a Bow"]={{[1]={[1]={type="Condition",var="UsingBow"},flags=0,keywordFlags=0,name="Damage",type="INC",value=324}},nil}
 c["324% Increased Damage while wielding a Dagger"]={{[1]={[1]={type="Condition",var="UsingDagger"},flags=0,keywordFlags=0,name="Damage",type="INC",value=324}},nil}
 c["324% Increased Damage while wielding a Sword"]={{[1]={[1]={type="Condition",var="UsingSword"},flags=0,keywordFlags=0,name="Damage",type="INC",value=324}},nil}
 c["324% Increased Skeletal Mage Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=324}}," Skeletal Mage  "}
 c["324% Increased critical strike chance with Shield Throw"]={{[1]={[1]={skillName="Shield Throw",type="SkillName"},flags=0,keywordFlags=0,name="CritChance",type="INC",value=324}},"  with  "}
-c["325% increased Critical Strike Chance for Totems"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=325}},"  for Totems "}
-c["325% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=325}},nil}
-c["325% increased Physical Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=257,name="CritChance",type="INC",value=325}},nil}
-c["325% increased Throwing Critical Strike Chance"]={{[1]={flags=0,keywordFlags=1024,name="CritChance",type="INC",value=325}},nil}
-c["325% increased Throwing Physical Damage"]={{[1]={flags=0,keywordFlags=1024,name="PhysicalDamage",type="INC",value=325}},nil}
+c["324% increased Critical Strike Chance for Totems"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=324}},"  for Totems "}
+c["324% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=324}},nil}
+c["324% increased Physical Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=257,name="CritChance",type="INC",value=324}},nil}
+c["324% increased Throwing Critical Strike Chance"]={{[1]={flags=0,keywordFlags=1024,name="CritChance",type="INC",value=324}},nil}
+c["324% increased Throwing Physical Damage"]={{[1]={flags=0,keywordFlags=1024,name="PhysicalDamage",type="INC",value=324}},nil}
+c["33 Health Gain on Kill"]={{[1]={flags=0,keywordFlags=0,name="LifeOnKill",type="BASE",value=33}},nil}
 c["33 Health Gained when you receive a Glancing Blow"]={{[1]={flags=0,keywordFlags=0,name="LifeOnGlancingBlow",type="BASE",value=33}},nil}
 c["33 Mana Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="ManaOnPotionUse",type="BASE",value=33}},nil}
 c["33 Ward gained when you use Smoke Bomb"]={{[1]={[1]={skillName="Smoke Bomb",type="SkillName"},flags=0,keywordFlags=0,name="WardGainOnUse_SmokeBomb",source="",type="BASE",value=33},notSupported=true},nil}
@@ -14138,29 +14159,28 @@ c["33% Increased Leech Rate"]={{[1]={flags=0,keywordFlags=0,name="LeechRate",typ
 c["33% Max Health Lost Per Second"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=33}}," Max  Lost Per Second "}
 c["33% Reduced Health Cost of Spells"]={{[1]={flags=0,keywordFlags=256,name="Life",type="INC",value=-33}},"  Cost of s "}
 c["33% chance when one of your Skeletons dies to resummon a new one after 3 seconds"]={{}," when one of your Skeletons dies to resummon a new one after 3 seconds "}
-c["33% increased Area for Area Skills"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=33}},"  for Area Skills "}
-c["33% increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=33}},nil}
 c["33% increased Block Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="BlockEffectiveness",type="INC",value=33}},nil}
+c["33% increased Bow Elemental Damage"]={{[1]={flags=0,keywordFlags=2048,name="FireDamage",type="INC",value=33},[2]={flags=0,keywordFlags=2048,name="ColdDamage",type="INC",value=33},[3]={flags=0,keywordFlags=2048,name="LightningDamage",type="INC",value=33}},nil}
 c["33% increased Cast Speed for Totems"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",value=33}},"  for Totems "}
 c["33% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=33}},nil}
+c["33% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=33}},nil}
+c["33% increased Curse Spell Cast Speed"]={{[1]={flags=256,keywordFlags=256,name="Speed",type="INC",value=33}}," Curse   "}
 c["33% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=33}},nil}
 c["33% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=33}},nil}
-c["33% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=33}},nil}
 c["33% increased Frost Wall Duration"]={{[1]={[1]={skillName="Frost Wall",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=33}},nil}
 c["33% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=33}},nil}
 c["33% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=33}},nil}
 c["33% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=33}},nil}
-c["33% increased Melee Physical Damage"]={{[1]={flags=0,keywordFlags=512,name="PhysicalDamage",type="INC",value=33}},nil}
-c["33% increased Minion Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=33}}}},nil}
-c["33% increased Minion Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=33}}}},nil}
+c["33% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=33}}}},nil}
+c["33% increased Minion Damage Over Time"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=4096,keywordFlags=0,name="Damage",type="INC",value=33}}}},nil}
 c["33% increased Minion Melee Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="Damage",type="INC",value=33}}}},nil}
-c["33% increased Minion Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=33}}}},nil}
 c["33% increased Minion Spell Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="Damage",type="INC",value=33}}}},nil}
+c["33% increased Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=33}},nil}
 c["33% increased Movement Speed for 4 seconds when you use a Potion"]={{[1]={[1]={type="Condition",var="UsedPotionRecently"},flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=33}},nil}
-c["33% increased Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=33}},nil}
 c["33% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=33}},nil}
 c["33% increased Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=33}},nil}
 c["33% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=33}},nil}
+c["33% increased Throwing Physical Damage"]={{[1]={flags=0,keywordFlags=1024,name="PhysicalDamage",type="INC",value=33}},nil}
 c["33% increased Volatile Zombie Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=33}}," Volatile Zombie  "}
 c["33% less Fire Damage Taken on Block"]={{[1]={[1]={type="Condition",var="Blocking"},flags=0,keywordFlags=0,name="FireDamageTaken",type="MORE",value=-33}},nil}
 c["33% less Necrotic Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamageTaken",type="MORE",value=-33}},nil}
@@ -14198,36 +14218,25 @@ c["34% Increased Healing Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="Hea
 c["34% Increased Ignite Duration "]={{[1]={[1]={skillName="Ignite",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=34}},nil}
 c["34% Increased Physical Spell Stun Chance"]={{[1]={flags=0,keywordFlags=257,name="StunChance",type="INC",value=34}},nil}
 c["34% Increased Stun Duration"]={{[1]={flags=0,keywordFlags=0,name="EnemyStunDuration",type="INC",value=34}},nil}
-c["34% increased Bow Elemental Damage"]={{[1]={flags=0,keywordFlags=2048,name="FireDamage",type="INC",value=34},[2]={flags=0,keywordFlags=2048,name="ColdDamage",type="INC",value=34},[3]={flags=0,keywordFlags=2048,name="LightningDamage",type="INC",value=34}},nil}
-c["34% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=34}},nil}
-c["34% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=34}},nil}
-c["34% increased Curse Spell Cast Speed"]={{[1]={flags=256,keywordFlags=256,name="Speed",type="INC",value=34}}," Curse   "}
-c["34% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=34}},nil}
+c["34% increased Curse Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=34}}," Curse  "}
 c["34% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=34}},nil}
-c["34% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=34}},nil}
-c["34% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=34}},nil}
+c["34% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=34}},nil}
 c["34% increased Minion Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="CritChance",type="INC",value=34}}}},nil}
 c["34% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=34}}}},nil}
-c["34% increased Minion Damage Over Time"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=4096,keywordFlags=0,name="Damage",type="INC",value=34}}}},nil}
-c["34% increased Minion Melee Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="Damage",type="INC",value=34}}}},nil}
 c["34% increased Minion Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=34}}}},nil}
-c["34% increased Minion Spell Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="Damage",type="INC",value=34}}}},nil}
-c["34% increased Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=34}},nil}
-c["34% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=34}},nil}
-c["34% increased Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=34}},nil}
 c["34% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=34}},nil}
 c["34% increased Throwing Attack Speed"]={{[1]={flags=3584,keywordFlags=1024,name="Speed",type="INC",value=34}},nil}
-c["34% increased Throwing Physical Damage"]={{[1]={flags=0,keywordFlags=1024,name="PhysicalDamage",type="INC",value=34}},nil}
+c["34% more more Fire Damage per stack of Spreading Flames"]={{[1]={[1]={skillName="Spreading Flames",type="SkillName"},flags=0,keywordFlags=0,name="FireDamage",type="MORE",value=34}}," more  per stack of  "}
 c["34% of Added Melee Damage applied as Added Spell Damage to Cold and Void Spells"]={{[1]={flags=0,keywordFlags=788,name="Damage",type="BASE",value=34}}," Added   applied as Added  Damage to  and  s "}
 c["34% of Mana Spent Gained as Ward"]={{[1]={flags=0,keywordFlags=0,name="ManaSpentGainedAsWard",type="BASE",value=34}},nil}
 c["34% of Necrotic Damage Taken as Physical"]={{[1]={flags=0,keywordFlags=1,name="NecroticDamageTaken",type="BASE",value=34}},"  as  "}
 c["34% of Poison Damage Taken as Physical"]={{[1]={flags=0,keywordFlags=1,name="PoisonDamageTaken",type="BASE",value=34}},"  as  "}
 c["34% of Void Damage Taken as Physical"]={{[1]={flags=0,keywordFlags=1,name="VoidDamageTaken",type="BASE",value=34}},"  as  "}
-c["34% reduced Bonus Damage Taken from Critical Strikes"]={{[1]={flags=0,keywordFlags=0,name="ReduceCritExtraDamage",type="BASE",value=34}},nil}
 c["342% Increased Armor Shred Effect "]={{[1]={flags=0,keywordFlags=0,name="ArmorShredEffect",type="INC",value=342}},nil}
-c["343 Ward gained when damage leaves you at low health"]={{[1]={[1]={type="Condition",var="LowLife"},flags=0,keywordFlags=0,name="Ward",type="BASE",value=343}},"  gained when damage leaves you  "}
+c["343 Ward gained when damage leaves you at low health"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=343}},"  gained when damage leaves you at low health "}
 c["35 Health Gain on Melee Hit"]={{[1]={flags=8389120,keywordFlags=0,name="Life",type="BASE",value=35}},"  Gain  "}
 c["35 Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="BASE",value=35}},nil}
+c["35 Ward Gain on Kill"]={{[1]={flags=0,keywordFlags=0,name="WardOnKill",type="BASE",value=35}},nil}
 c["35 Ward Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="WardOnPotionUse",type="BASE",value=35}},nil}
 c["35 Ward Gained on Shadow Creation"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=35}},"  Gained on Shadow Creation "}
 c["35% Chance To Deal Double Damage"]={{[1]={flags=0,keywordFlags=0,name="DoubleDamageChance",type="BASE",value=35}},nil}
@@ -14252,19 +14261,39 @@ c["35% More Attack Speed"]={{[1]={flags=3584,keywordFlags=0,name="Speed",type="M
 c["35% Reduced Cooldown Duration"]={{[1]={flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=-35}},nil}
 c["35% Shadow Dagger Chance On Slow"]={{[1]={[1]={skillName="Slow",type="SkillName"},flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_ShadowDaggers",type="BASE",value=35}},"  On  "}
 c["35% chance to gain 20 mana when you directly cast Runebolt or Fireball"]={{},"20 mana when you directly cast Runebolt or Fireball "}
-c["35% increased Curse Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=35}}," Curse  "}
+c["35% increased Block Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="BlockEffectiveness",type="INC",value=35}},nil}
+c["35% increased Bow Damage"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="INC",value=35}},nil}
+c["35% increased Bow Elemental Damage"]={{[1]={flags=0,keywordFlags=2048,name="FireDamage",type="INC",value=35},[2]={flags=0,keywordFlags=2048,name="ColdDamage",type="INC",value=35},[3]={flags=0,keywordFlags=2048,name="LightningDamage",type="INC",value=35}},nil}
+c["35% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=35}},nil}
 c["35% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=35}},nil}
+c["35% increased Damage While Channelling"]={{[1]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="Damage",type="INC",value=35}},nil}
 c["35% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=35}},nil}
 c["35% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=35}},nil}
+c["35% increased Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="INC",value=35}},nil}
 c["35% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=35}},nil}
 c["35% increased Lightning Critical Strike Chance"]={{[1]={flags=0,keywordFlags=2,name="CritChance",type="INC",value=35}},nil}
-c["35% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=35}},nil}
+c["35% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=35}},nil}
+c["35% increased Mana Regen for 4 seconds when you use a Potion"]={{[1]={[1]={type="Condition",var="UsedPotionRecently"},flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=35}},nil}
+c["35% increased Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=512,name="Speed",type="INC",value=35}},nil}
+c["35% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=35}},nil}
+c["35% increased Minion Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=35}}}},nil}
+c["35% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=35}}}},nil}
+c["35% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=35}}}},nil}
 c["35% increased Minion Lightning Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=2,name="CritChance",type="INC",value=35}}}},nil}
+c["35% increased Minion Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=35}}}},nil}
+c["35% increased Minion Melee Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="Damage",type="INC",value=35}}}},nil}
+c["35% increased Minion Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=35}}}},nil}
+c["35% increased Minion Spell Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="Damage",type="INC",value=35}}}},nil}
+c["35% increased Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=35}},nil}
 c["35% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=35}},nil}
+c["35% increased Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=35}},nil}
 c["35% increased Speed and Distance with Flame Rush"]={{}," Speed and Distance with  "}
+c["35% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=35}},nil}
+c["35% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=35}},nil}
 c["35% increased Volatile Zombie Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=35}}," Volatile Zombie  "}
+c["35% increased area for Minion Area Skills"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=35}}}},"  for  Area Skills "}
 c["35% less Void Damage Taken on Block"]={{[1]={[1]={type="Condition",var="Blocking"},flags=0,keywordFlags=0,name="VoidDamageTaken",type="MORE",value=-35}},nil}
-c["35% more more Fire Damage per stack of Spreading Flames"]={{[1]={[1]={skillName="Spreading Flames",type="SkillName"},flags=0,keywordFlags=0,name="FireDamage",type="MORE",value=35}}," more  per stack of  "}
+c["35% more Physical Ailment Damage to Moving Enemies"]={{[1]={flags=0,keywordFlags=1,name="AilmentDamage",type="MORE",value=35}},"   to Moving Enemies "}
 c["35% of Damage Dealt to Mana Before Health"]={{[1]={flags=0,keywordFlags=0,name="DamageToManaBeforeHealth",type="BASE",value=35}},nil}
 c["35% of Damage Reflected"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=35}},"  Reflected "}
 c["350 Health Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="LifeOnPotionUse",type="BASE",value=350}},nil}
@@ -14292,50 +14321,44 @@ c["36% Increased Spell Damage per Skeletal Mage"]={{[1]={flags=0,keywordFlags=25
 c["36% Increased Stun Duration"]={{[1]={flags=0,keywordFlags=0,name="EnemyStunDuration",type="INC",value=36}},nil}
 c["36% Increased damage with Smelter's Wrath"]={{[1]={[1]={skillName="Smelter's Wrath",type="SkillName"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=36}},nil}
 c["36% Increased spell critical strike chance. This effect is doubled if you have 300 or more maximum mana."]={{[1]={[1]={mult=2,stat="Mana",threshold=300,type="StatThreshold"},flags=0,keywordFlags=256,name="CritChance",type="INC",value=36}},nil}
-c["36% increased Block Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="BlockEffectiveness",type="INC",value=36}},nil}
+c["36% increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=36}},nil}
 c["36% increased Bow Damage"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="INC",value=36}},nil}
-c["36% increased Bow Elemental Damage"]={{[1]={flags=0,keywordFlags=2048,name="FireDamage",type="INC",value=36},[2]={flags=0,keywordFlags=2048,name="ColdDamage",type="INC",value=36},[3]={flags=0,keywordFlags=2048,name="LightningDamage",type="INC",value=36}},nil}
 c["36% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=36}},nil}
 c["36% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=36}},nil}
 c["36% increased Damage Over Time While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=4096,keywordFlags=0,name="Damage",type="INC",value=36}},nil}
-c["36% increased Damage While Channelling"]={{[1]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="Damage",type="INC",value=36}},nil}
 c["36% increased Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="Damage",type="INC",value=36}},nil}
 c["36% increased Damage for Totems"]={{[1]={[1]={scope="totem",type="Scope"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=36}},nil}
-c["36% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=36}},nil}
+c["36% increased Effect of Prefixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedPrefixEffect",type="INC",value=36}},nil}
+c["36% increased Effect of Suffixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedSuffixEffect",type="INC",value=36}},nil}
+c["36% increased Effect of Weaver Enchantment Affixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedWeaverEffect",type="INC",value=36}},nil}
 c["36% increased Elemental Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=36},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=36},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=36}},nil}
 c["36% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=36}},nil}
-c["36% increased Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="INC",value=36}},nil}
 c["36% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=36}},nil}
+c["36% increased Hydrahedron Area"]={{[1]={[1]={skillName="Hydrahedron",type="SkillName"},flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=36}},nil}
 c["36% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=36}},nil}
-c["36% increased Mana Regen for 4 seconds when you use a Potion"]={{[1]={[1]={type="Condition",var="UsedPotionRecently"},flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=36}},nil}
+c["36% increased Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="INC",value=36}},nil}
 c["36% increased Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=512,name="Speed",type="INC",value=36}},nil}
 c["36% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=36}},nil}
 c["36% increased Melee Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=512,name="Damage",type="INC",value=36}},nil}
 c["36% increased Melee Elemental Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="INC",value=36},[2]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=36},[3]={flags=0,keywordFlags=512,name="LightningDamage",type="INC",value=36}},nil}
-c["36% increased Minion Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=36}}}},nil}
 c["36% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=36}}}},nil}
 c["36% increased Minion Damage Over Time"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=4096,keywordFlags=0,name="Damage",type="INC",value=36}}}},nil}
 c["36% increased Minion Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=36}}}},nil}
 c["36% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=36}}}},nil}
-c["36% increased Minion Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=36}}}},nil}
-c["36% increased Minion Melee Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="Damage",type="INC",value=36}}}},nil}
-c["36% increased Minion Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=36}}}},nil}
 c["36% increased Minion Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="CritChance",type="INC",value=36}}}},nil}
-c["36% increased Minion Spell Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="Damage",type="INC",value=36}}}},nil}
-c["36% increased Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=36}},nil}
 c["36% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=36}},nil}
-c["36% increased Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=36}},nil}
 c["36% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=36}},nil}
 c["36% increased Spell Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=256,name="Damage",type="INC",value=36}},nil}
+c["36% increased Spell Mana Cost"]={{[1]={flags=0,keywordFlags=256,name="ManaCost",type="INC",value=36}},nil}
 c["36% increased Throwing Damage"]={{[1]={flags=0,keywordFlags=1024,name="Damage",type="INC",value=36}},nil}
 c["36% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=36}},nil}
 c["36% increased area for Minion Area Skills"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=36}}}},"  for  Area Skills "}
-c["36% more Physical Ailment Damage to Moving Enemies"]={{[1]={flags=0,keywordFlags=1,name="AilmentDamage",type="MORE",value=36}},"   to Moving Enemies "}
+c["36% more Cold Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="ColdDamageTaken",type="MORE",value=36}},nil}
 c["36% of Damage Dealt to Mana Before Health"]={{[1]={flags=0,keywordFlags=0,name="DamageToManaBeforeHealth",type="BASE",value=36}},nil}
 c["36% of Damage Reflected"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=36}},"  Reflected "}
-c["361% increased Volatile Zombie Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=361}}," Volatile Zombie  "}
+c["360% increased Volatile Zombie Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=360}}," Volatile Zombie  "}
 c["365% Chance to Shock Attackers"]={{[1]={flags=0,keywordFlags=0,name="ChanceToShockAttackers",type="BASE",value=365}},nil}
-c["366% more Damage Reflected to Bosses and Rare Enemies"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=366}},"  Reflected to Bosses and Rare Enemies "}
+c["365% more Damage Reflected to Bosses and Rare Enemies"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=365}},"  Reflected to Bosses and Rare Enemies "}
 c["37% Chance to gain Dusk Shroud when Hit"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=37},notSupported=true},nil}
 c["37% Increased Area with Detonating Arrow"]={{[1]={[1]={skillName="Detonating Arrow",type="SkillName"},flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=37}},"  with  "}
 c["37% Increased Bleed Duration "]={{[1]={[1]={skillName="Bleed",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=37}},nil}
@@ -14345,29 +14368,22 @@ c["37% Increased Necrotic Damage if you have been Hit Recently"]={{[1]={flags=0,
 c["37% Increased Volcanic Orb Speed"]={{},"  Speed "}
 c["37% Increased area with the first attack of Cinder Strike"]={{[1]={[1]={skillName="Cinder Strike",type="SkillName"},flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=37}},"  with the first attack of  "}
 c["37% chance to cast Flame Ward after using a movement skill within 16 metres of a boss or rare enemy (max 2 per 16 seconds)"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=37}}," to cast Flame  after using a movement skill within 16 metres of a boss or rare enemy (max 2 per 16 seconds) "}
-c["37% increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=37}},nil}
-c["37% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=37}},nil}
-c["37% increased Effect of Prefixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedPrefixEffect",type="INC",value=37}},nil}
-c["37% increased Effect of Suffixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedSuffixEffect",type="INC",value=37}},nil}
-c["37% increased Effect of Weaver Enchantment Affixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedWeaverEffect",type="INC",value=37}},nil}
+c["37% increased Effect of Haste on You"]={{[1]={flags=0,keywordFlags=0,name="HasteEffect",type="INC",value=37},notSupported=true},nil}
+c["37% increased Elemental Critical Strike Chance"]={{[1]={flags=0,keywordFlags=14,name="CritChance",type="INC",value=37}},nil}
 c["37% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=37}},nil}
 c["37% increased Frost Wall Duration"]={{[1]={[1]={skillName="Frost Wall",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=37}},nil}
-c["37% increased Hydrahedron Area"]={{[1]={[1]={skillName="Hydrahedron",type="SkillName"},flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=37}},nil}
-c["37% increased Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="INC",value=37}},nil}
-c["37% increased Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=512,name="Speed",type="INC",value=37}},nil}
+c["37% increased Health for you and your Minions"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=37}}}},"  for you and your s "}
+c["37% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=37}},nil}
+c["37% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=37}}}},nil}
 c["37% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=37}}}},nil}
-c["37% increased Spell Mana Cost"]={{[1]={flags=0,keywordFlags=256,name="ManaCost",type="INC",value=37}},nil}
-c["37% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=37}},nil}
-c["37% increased area for Minion Area Skills"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=37}}}},"  for  Area Skills "}
-c["37% more Cold Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="ColdDamageTaken",type="MORE",value=37}},nil}
 c["37% of Necrotic Damage Taken as Physical"]={{[1]={flags=0,keywordFlags=1,name="NecroticDamageTaken",type="BASE",value=37}},"  as  "}
 c["37% of Poison Damage Taken as Physical"]={{[1]={flags=0,keywordFlags=1,name="PoisonDamageTaken",type="BASE",value=37}},"  as  "}
 c["37% of Void Damage Taken as Physical"]={{[1]={flags=0,keywordFlags=1,name="VoidDamageTaken",type="BASE",value=37}},"  as  "}
+c["375% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=375}}}},nil}
 c["376% Frostbite Chance per Second with Frost Wall"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=376},notSupported=true},nil}
-c["376% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=376}}}},nil}
-c["379% increased Cold Damage Over Time"]={{[1]={flags=4100,keywordFlags=0,name="ColdDamage",type="INC",value=379}},nil}
-c["379% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=379}},nil}
-c["379% increased Void Damage Over Time"]={{[1]={flags=4112,keywordFlags=0,name="VoidDamage",type="INC",value=379}},nil}
+c["378% increased Cold Damage Over Time"]={{[1]={flags=4100,keywordFlags=0,name="ColdDamage",type="INC",value=378}},nil}
+c["378% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=378}},nil}
+c["378% increased Void Damage Over Time"]={{[1]={flags=4112,keywordFlags=0,name="VoidDamage",type="INC",value=378}},nil}
 c["38 Damage Reflected to Attackers"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=38}},"  Reflected to Attackers "}
 c["38 Health Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="LifeOnPotionUse",type="BASE",value=38}},nil}
 c["38 Ward Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="WardOnPotionUse",type="BASE",value=38}},nil}
@@ -14402,23 +14418,34 @@ c["38% Reduced Volcanic Orb Speed"]={{},"  Speed "}
 c["38% chance on Hit to grant one of your minions Aspect of the Spider (2 second cooldown)"]={{},"  to grant one of your s  (2 second cooldown) "}
 c["38% increased Area for Area Skills"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=38}},"  for Area Skills "}
 c["38% increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=38}},nil}
+c["38% increased Bow Damage"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="INC",value=38}},nil}
+c["38% increased Bow Elemental Damage"]={{[1]={flags=0,keywordFlags=2048,name="FireDamage",type="INC",value=38},[2]={flags=0,keywordFlags=2048,name="ColdDamage",type="INC",value=38},[3]={flags=0,keywordFlags=2048,name="LightningDamage",type="INC",value=38}},nil}
 c["38% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=38}},nil}
+c["38% increased Cooldown Recovery Speed While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=38}},nil}
 c["38% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=38}},nil}
+c["38% increased Curse Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=38}}," Curse  "}
 c["38% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=38}},nil}
+c["38% increased Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="Damage",type="INC",value=38}},nil}
 c["38% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=38}},nil}
 c["38% increased Dodge Rating for 4 seconds when you use a Potion"]={{[1]={[1]={type="Condition",var="UsedPotionRecently"},flags=0,keywordFlags=0,name="Evasion",type="INC",value=38}},nil}
 c["38% increased Effect of Haste on You"]={{[1]={flags=0,keywordFlags=0,name="HasteEffect",type="INC",value=38},notSupported=true},nil}
-c["38% increased Elemental Critical Strike Chance"]={{[1]={flags=0,keywordFlags=14,name="CritChance",type="INC",value=38}},nil}
-c["38% increased Health for you and your Minions"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=38}}}},"  for you and your s "}
+c["38% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=38}},nil}
 c["38% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=38}},nil}
 c["38% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=38}},nil}
 c["38% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=38}}}},nil}
-c["38% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=38}}}},nil}
+c["38% increased Minion Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=38}}}},nil}
 c["38% increased Minion Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=38}}}},nil}
+c["38% increased Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=38}},nil}
 c["38% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=38}},nil}
+c["38% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=38}},nil}
+c["38% increased Throwing Damage"]={{[1]={flags=0,keywordFlags=1024,name="Damage",type="INC",value=38}},nil}
+c["38% increased Throwing Physical Damage"]={{[1]={flags=0,keywordFlags=1024,name="PhysicalDamage",type="INC",value=38}},nil}
+c["38% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=38}},nil}
+c["38% less Damage Taken for Totems"]={{[1]={flags=0,keywordFlags=0,name="DamageTaken",type="MORE",value=-38}},"  for Totems "}
 c["38% of Mana Spent Gained as Ward"]={{[1]={flags=0,keywordFlags=0,name="ManaSpentGainedAsWard",type="BASE",value=38}},nil}
 c["38% of Minion Damage Leeched as Health on Melee Hit"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=8389120,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=38}}}},nil}
 c["38% of Potion Health Converted to Ward"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=38},notSupported=true},nil}
+c["38% reduced Channel Cost"]={{[1]={flags=0,keywordFlags=0,name="ChannelCost",type="INC",value=-38}},nil}
 c["384% increased Curse Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=384}}," Curse  "}
 c["39 Mana Gained when you use Harvest"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=39},notSupported=true},nil}
 c["39% Chance to throw Shurikens on Block"]={{}," to throw   "}
@@ -14432,36 +14459,36 @@ c["39% chance for Shurikens to Ricochet 3 additional times"]={{[1]={flags=0,keyw
 c["39% chance on hit with Lightning Skills to grant your Wolves additional Melee Lightning Damage equal to your Melee Lightning Damage"]={{[1]={flags=8388608,keywordFlags=514,name="SkillLevel",type="BASE",value=39}},"  with   to grant your Wolves additional   Damage equal to your   Damage "}
 c["39% chance to cast Smite at two additional targets when you cast it directly"]={{}," to cast  at two additional targets when you cast it directly "}
 c["39% chance when one of your Skeletons dies to resummon a new one after 3 seconds"]={{}," when one of your Skeletons dies to resummon a new one after 3 seconds "}
-c["39% increased Bow Damage"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="INC",value=39}},nil}
-c["39% increased Bow Elemental Damage"]={{[1]={flags=0,keywordFlags=2048,name="FireDamage",type="INC",value=39},[2]={flags=0,keywordFlags=2048,name="ColdDamage",type="INC",value=39},[3]={flags=0,keywordFlags=2048,name="LightningDamage",type="INC",value=39}},nil}
+c["39% increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=39}},nil}
+c["39% increased Cast Speed for Totems"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",value=39}},"  for Totems "}
 c["39% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=39}},nil}
-c["39% increased Cooldown Recovery Speed While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=39}},nil}
-c["39% increased Curse Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=39}}," Curse  "}
-c["39% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=39}},nil}
-c["39% increased Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="Damage",type="INC",value=39}},nil}
-c["39% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=39}},nil}
+c["39% increased Elemental Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=39},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=39},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=39}},nil}
 c["39% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=39}},nil}
+c["39% increased Frost Wall Duration"]={{[1]={[1]={skillName="Frost Wall",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=39}},nil}
 c["39% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=39}},nil}
+c["39% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=39}},nil}
 c["39% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=39}},nil}
-c["39% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=39}}}},nil}
-c["39% increased Minion Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=39}}}},nil}
+c["39% increased Minion Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=39}}}},nil}
+c["39% increased Minion Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=39}}}},nil}
+c["39% increased Minion Melee Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="Damage",type="INC",value=39}}}},nil}
+c["39% increased Minion Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=39}}}},nil}
+c["39% increased Minion Spell Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="Damage",type="INC",value=39}}}},nil}
 c["39% increased Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=39}},nil}
 c["39% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=39}},nil}
+c["39% increased Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=39}},nil}
+c["39% increased Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=256,name="CritChance",type="INC",value=39}},nil}
 c["39% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=39}},nil}
-c["39% increased Throwing Damage"]={{[1]={flags=0,keywordFlags=1024,name="Damage",type="INC",value=39}},nil}
-c["39% increased Throwing Physical Damage"]={{[1]={flags=0,keywordFlags=1024,name="PhysicalDamage",type="INC",value=39}},nil}
-c["39% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=39}},nil}
-c["39% less Damage Taken for Totems"]={{[1]={flags=0,keywordFlags=0,name="DamageTaken",type="MORE",value=-39}},"  for Totems "}
+c["39% more Melee Damage to High Health Enemies"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="MORE",value=39}},"   to High Health Enemies "}
 c["39% of Damage Reflected"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=39}},"  Reflected "}
 c["39% of Mana Spent Gained as Ward"]={{[1]={flags=0,keywordFlags=0,name="ManaSpentGainedAsWard",type="BASE",value=39}},nil}
 c["39% of Maximum Health gained as Ward Decay Threshold"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=39},notSupported=true},nil}
 c["39% of Missing Health gained as Ward per second"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=39},notSupported=true},nil}
-c["39% reduced Channel Cost"]={{[1]={flags=0,keywordFlags=0,name="ChannelCost",type="INC",value=-39}},nil}
+c["39% reduced Bonus Damage Taken from Critical Strikes"]={{[1]={flags=0,keywordFlags=0,name="ReduceCritExtraDamage",type="BASE",value=39}},nil}
 c["392 Ward gained when you use Smoke Bomb"]={{[1]={[1]={skillName="Smoke Bomb",type="SkillName"},flags=0,keywordFlags=0,name="WardGainOnUse_SmokeBomb",source="",type="BASE",value=392},notSupported=true},nil}
 c["396% Chance to Shock Attackers"]={{[1]={flags=0,keywordFlags=0,name="ChanceToShockAttackers",type="BASE",value=396}},nil}
 c["396% Increased Fire Aura Damage"]={{[1]={[1]={skillName="Fire Aura",type="SkillName"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=396}},nil}
-c["397% increased Echo Damage when a skill is Echoed"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=397}}," Echo  when a skill is Echoed "}
-c["397% increased Elemental Damage Over Time"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=397},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=397},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=397}},"  Over Time "}
+c["396% increased Echo Damage when a skill is Echoed"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=396}}," Echo  when a skill is Echoed "}
+c["396% increased Elemental Damage Over Time"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=396},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=396},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=396}},"  Over Time "}
 c["399% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=399}}}},nil}
 c["4 Adrenaline Rush Duration (seconds)"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="BASE",value=4}}," Adrenaline Rush  (seconds) "}
 c["4 Adrenaline Rush Max Stacks"]={{}," Adrenaline Rush Max Stacks "}
@@ -14488,9 +14515,11 @@ c["4 Extra Projectiles"]={{[1]={flags=0,keywordFlags=0,name="ProjectileCount",ty
 c["4 Falcon Bleed Chance Buff duration (seconds)"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Bleed",type="BASE",value=4}}," Falcon  Buff duration (seconds) "}
 c["4 Haste Duration On Release (seconds)"]={{[1]={[1]={skillName="Haste",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="BASE",value=4}},"   On Release (seconds) "}
 c["4 Health Gain"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=4}},"  Gain "}
+c["4 Health Gain on Block"]={{[1]={flags=0,keywordFlags=0,name="LifeOnBlock",type="BASE",value=4}},nil}
 c["4 Health Gain on Glancing Blow"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=4}},"  Gain on Glancing Blow "}
+c["4 Health Gain on Kill"]={{[1]={flags=0,keywordFlags=0,name="LifeOnKill",type="BASE",value=4}},nil}
 c["4 Health Gain on Melee Hit"]={{[1]={flags=8389120,keywordFlags=0,name="Life",type="BASE",value=4}},"  Gain  "}
-c["4 Health Gained on Block"]={{[1]={[1]={type="Condition",var="Blocking"},flags=0,keywordFlags=0,name="Life",type="BASE",value=4}},"  Gained  "}
+c["4 Health Gained on Block"]={{[1]={flags=0,keywordFlags=0,name="LifeOnBlock",type="BASE",value=4}},nil}
 c["4 Health Gained when you receive a Glancing Blow"]={{[1]={flags=0,keywordFlags=0,name="LifeOnGlancingBlow",type="BASE",value=4}},nil}
 c["4 Hits Before Fall-off"]={{}," s Before Fall-off "}
 c["4 Lightning Damage Per Second Of Freeze"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="BASE",value=4}},"  Per Second Of Freeze "}
@@ -14511,7 +14540,7 @@ c["4 Minimum Mana Consumed"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BAS
 c["4 Minion Armor Per Level"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={type="Multiplier",var="Level"},flags=0,keywordFlags=0,name="Armour",type="BASE",value=4}}}},nil}
 c["4 Minions teleported around you after you use a Traversal Skill"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={skillName="Teleport",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=4}}}}," s ed around you after you use a Traversal Skill "}
 c["4 Number Of Enemies Spread To"]={{}," Number Of Enemies Spread To "}
-c["4 Reap Freeze Rate per Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="FreezeRate",type="BASE",value=4}}," Reap   "}
+c["4 Reap Freeze Rate per Intelligence"]={{[1]={flags=0,keywordFlags=0,name="FreezeRate",type="BASE",value=4}}," Reap  per Intelligence "}
 c["4 Rime Duration (seconds)"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="BASE",value=4}}," Rime  (seconds) "}
 c["4 Seconds of Disabled Health Leech after you directy cast a Spell"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=4},notSupported=true},nil}
 c["4 Seconds of Haste after you use Evade"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=4},notSupported=true},nil}
@@ -14520,6 +14549,7 @@ c["4 Stacks on use"]={{}," Stacks on use "}
 c["4 Taunt Duration (seconds)"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="BASE",value=4}}," Taunt  (seconds) "}
 c["4 Unique Skills Required"]={{[1]={flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=4}}," Unique  Required "}
 c["4 Void Beams Summoned"]={{},"  Beams Summoned "}
+c["4 Ward Gain on Kill"]={{[1]={flags=0,keywordFlags=0,name="WardOnKill",type="BASE",value=4}},nil}
 c["4 Ward Gained On Dodge"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=4}},"  Gained On Dodge "}
 c["4 Ward gained per second while wielding a Staff"]={{[1]={[1]={type="Condition",var="UsingStaff"},flags=0,keywordFlags=0,name="Ward",type="BASE",value=4}},"  gained per second  "}
 c["4 seconds of Enrage granted to companions hit by your Storm Totem"]={{[1]={[1]={skillName="Enrage",type="SkillName"},flags=8388608,keywordFlags=0,name="SkillLevel",type="BASE",value=4}}," seconds of  granted to companions  by your Storm Totem "}
@@ -14533,7 +14563,7 @@ c["4% Blade Conduit Mana Regen Per Stack"]={{[1]={flags=0,keywordFlags=0,name="M
 c["4% Bleed Chance per Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Bleed",type="BASE",value=4}},nil}
 c["4% Chance to not consume Silver Shrouds when hit"]={{}," to not consume s when  "}
 c["4% Chance to receive a Glancing Blow when hit"]={{}," to receive a Glancing Blow when  "}
-c["4% Damage Per Point Of Attunement"]={{[1]={[1]={stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=4}},nil}
+c["4% Damage Per Point Of Attunement"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=4}},"  Per Point Of Attunement "}
 c["4% Delayed Damage Cleared on Kill"]={{[1]={[1]={type="Condition",var="KilledRecently"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=4}}," Delayed  Cleared  "}
 c["4% Dodge Rating Debuff"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="BASE",value=4}},"  Debuff "}
 c["4% Doublecast Chance"]={{}," Doublecast Chance "}
@@ -14543,8 +14573,8 @@ c["4% Frost Claw Chance On Hit"]={{[1]={flags=8388608,keywordFlags=0,name="Chanc
 c["4% Frostbite Chance per Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Frostbite",type="BASE",value=4}},nil}
 c["4% Global Reduced Mana Cost"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=0,name="ManaCost",type="BASE",value=4}},"  Reduced  "}
 c["4% Global Spell Damage Per Enemy Hit"]={{[1]={[1]={type="Global"},flags=8388608,keywordFlags=256,name="Damage",type="MORE",value=4}},"    Per Enemy  "}
-c["4% Healing Per Dexterity"]={{},"   "}
-c["4% Health Per Point Of Attunement"]={{[1]={[1]={stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="Life",type="BASE",value=4}},nil}
+c["4% Healing Per Dexterity"]={{[1]={[1]={skillName="Healing",type="SkillName"},flags=0,keywordFlags=0,name="Dex",type="BASE",value=4}},"  Per  "}
+c["4% Health Per Point Of Attunement"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=4}},"  Per Point Of Attunement "}
 c["4% Increased Area For Area Skills"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=4}},"  For Area Skills "}
 c["4% Increased Area for Area Skills"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=4}},"  for Area Skills "}
 c["4% Increased Area for Area Spells per 10 Madness"]={{[1]={[1]={div=10,stat="Madness",type="PerStat"},flags=0,keywordFlags=256,name="AreaOfEffect",type="INC",value=4}},"  for Area s  "}
@@ -14574,8 +14604,8 @@ c["4% Increased Frostbite Duration "]={{[1]={[1]={skillName="Frostbite",type="Sk
 c["4% Increased Haste Effect"]={{},"  Effect "}
 c["4% Increased Healing Effectiveness per player Attunement"]={{[1]={[1]={actor="parent",stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="HealingEffectiveness",type="INC",value=4}},nil}
 c["4% Increased Healing Effectiveness per player Intelligence"]={{[1]={[1]={actor="parent",stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="HealingEffectiveness",type="INC",value=4}},nil}
-c["4% Increased Healing Per Attunement"]={{},"   "}
-c["4% Increased Healing Per Point Of Attunement"]={{},"   "}
+c["4% Increased Healing Per Attunement"]={{[1]={[1]={skillName="Healing",type="SkillName"},flags=0,keywordFlags=0,name="Att",type="INC",value=4}},"  Per  "}
+c["4% Increased Healing Per Point Of Attunement"]={{[1]={[1]={skillName="Healing",type="SkillName"},flags=0,keywordFlags=0,name="Att",type="INC",value=4}},"  Per Point Of  "}
 c["4% Increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=4}},nil}
 c["4% Increased Health Regeneration"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=4}},nil}
 c["4% Increased Holy Aura And Symbols Of Hope Effect"]={{[1]={flags=0,keywordFlags=0,name="HolyAuraEffect",type="INC",value=4},[2]={flags=0,keywordFlags=0,name="SymbolsOfHopeEffect",type="INC",value=4}},nil}
@@ -14588,7 +14618,7 @@ c["4% Increased Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=512,name="Sp
 c["4% Increased Minion Attack Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=3584,keywordFlags=0,name="Speed",type="INC",value=4}}}},nil}
 c["4% Increased Minion Cast Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=256,keywordFlags=0,name="Speed",type="INC",value=4}}}},nil}
 c["4% Increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=4}}}},nil}
-c["4% Increased Minion Health Per Vitality"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={stat="Vit",type="PerStat"},flags=0,keywordFlags=0,name="Life",type="INC",value=4}}}},nil}
+c["4% Increased Minion Health Per Vitality"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=4}}}},"   Per Vitality "}
 c["4% Increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=4}},nil}
 c["4% Increased Poison Duration "]={{[1]={[1]={skillName="Poison",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=4}},nil}
 c["4% Increased Shock Duration "]={{[1]={[1]={skillName="Shock",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=4}},nil}
@@ -14605,27 +14635,28 @@ c["4% More Damage in Arena"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="M
 c["4% More Damage over Time to Cursed"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="MORE",value=4}},"  to Cursed "}
 c["4% More Witchfire Damage per Damned chance"]={{[1]={[1]={skillName="Damned",type="SkillName"},flags=0,keywordFlags=0,name="WitchfireDamage",type="MORE",value=4}},"  per  chance "}
 c["4% Physical Resistance"]={{[1]={flags=0,keywordFlags=0,name="PhysicalResist",type="BASE",value=4}},nil}
-c["4% Shared Increased Attack Speed"]={{[1]={flags=3584,keywordFlags=0,name="Speed",type="BASE",value=4}}," Shared Increased  "}
-c["4% Shared Increased Cast Speed"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="BASE",value=4}}," Shared Increased  "}
-c["4% Shared Increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="BASE",value=4}}," Shared Increased  "}
+c["4% Shared Increased Attack Speed"]={{[1]={flags=3584,keywordFlags=0,name="Speed",type="INC",value=4},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=3584,keywordFlags=0,name="Speed",type="INC",value=4}}}},nil}
+c["4% Shared Increased Cast Speed"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",value=4},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=256,keywordFlags=0,name="Speed",type="INC",value=4}}}},nil}
+c["4% Shared Increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=4},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=4}}}},nil}
 c["4% Void Resistance"]={{[1]={flags=0,keywordFlags=0,name="VoidResist",type="BASE",value=4}},nil}
 c["4% chance to throw Acid Flask on Bow Hit"]={{}," to throw  on   "}
 c["4% increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=4}},nil}
 c["4% increased Bow Attack Speed"]={{[1]={flags=3584,keywordFlags=2048,name="Speed",type="INC",value=4}},nil}
-c["4% increased Cinder Strike Area per Level of Falconry While Unarmed"]={{[1]={[1]={type="Multiplier",var="Level"},[2]={type="Condition",var="Unarmed"},[3]={skillName="Cinder Strike",type="SkillName"},flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=4}},"    of Falconry  "}
-c["4% increased Cold Damage per player Intelligence"]={{[1]={[1]={actor="parent",stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=4}},nil}
+c["4% increased Cinder Strike Area per Level of Falconry While Unarmed"]={{[1]={[1]={type="Condition",var="Unarmed"},[2]={skillName="Cinder Strike",type="SkillName"},flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=4}},"   per Level of Falconry  "}
+c["4% increased Cold Damage per player Intelligence"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=4}},"  per player Intelligence "}
 c["4% increased Cold Spell Cast Speed"]={{[1]={flags=256,keywordFlags=260,name="Speed",type="INC",value=4}},nil}
 c["4% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=4}},nil}
 c["4% increased Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=4}},nil}
 c["4% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=4}},nil}
 c["4% increased Damage for Totems"]={{[1]={[1]={scope="totem",type="Scope"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=4}},nil}
-c["4% increased Damage per player Attunement"]={{[1]={[1]={actor="parent",stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="Damage",type="INC",value=4}},nil}
-c["4% increased Damage per player Dexterity"]={{[1]={[1]={actor="parent",stat="Dex",type="PerStat"},flags=0,keywordFlags=0,name="Damage",type="INC",value=4}},nil}
-c["4% increased Damage per player Intelligence"]={{[1]={[1]={actor="parent",stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="Damage",type="INC",value=4}},nil}
-c["4% increased Damage per player Strength"]={{[1]={[1]={actor="parent",stat="Str",type="PerStat"},flags=0,keywordFlags=0,name="Damage",type="INC",value=4}},nil}
-c["4% increased Damage per player Vitality"]={{[1]={[1]={actor="parent",stat="Vit",type="PerStat"},flags=0,keywordFlags=0,name="Damage",type="INC",value=4}},nil}
+c["4% increased Damage per player Attunement"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=4}},"  per player Attunement "}
+c["4% increased Damage per player Dexterity"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=4}},"  per player Dexterity "}
+c["4% increased Damage per player Intelligence"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=4}},"  per player Intelligence "}
+c["4% increased Damage per player Strength"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=4}},"  per player Strength "}
+c["4% increased Damage per player Vitality"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=4}},"  per player Vitality "}
 c["4% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=4}},nil}
 c["4% increased Echo Damage when a skill is Echoed"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=4}}," Echo  when a skill is Echoed "}
+c["4% increased Effect of Frenzy on You "]={{[1]={flags=0,keywordFlags=0,name="FrenzyEffect",type="INC",value=4},notSupported=true},nil}
 c["4% increased Effect of Haste on You "]={{[1]={flags=0,keywordFlags=0,name="HasteEffect",type="INC",value=4},notSupported=true},nil}
 c["4% increased Elemental Damage Over Time"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=4},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=4},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=4}},"  Over Time "}
 c["4% increased Freeze Rate Multiplier per player Intelligence"]={{[1]={[1]={actor="parent",stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="FreezeRateMultiplier",type="INC",value=4}},nil}
@@ -14635,17 +14666,16 @@ c["4% increased Lightning Spell Cast Speed"]={{[1]={flags=256,keywordFlags=258,n
 c["4% increased Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="INC",value=4}},nil}
 c["4% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=4}},nil}
 c["4% increased Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=512,name="Speed",type="INC",value=4}},nil}
-c["4% increased Melee Damage per player Dexterity"]={{[1]={[1]={actor="parent",stat="Dex",type="PerStat"},flags=0,keywordFlags=512,name="Damage",type="INC",value=4}},nil}
-c["4% increased Melee Damage per player Strength"]={{[1]={[1]={actor="parent",stat="Str",type="PerStat"},flags=0,keywordFlags=512,name="Damage",type="INC",value=4}},nil}
+c["4% increased Melee Damage per player Dexterity"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=4}},"   per player Dexterity "}
+c["4% increased Melee Damage per player Strength"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=4}},"   per player Strength "}
 c["4% increased Melee Damage while you have Frenzy"]={{[1]={[1]={type="Condition",var="Frenzy"},flags=0,keywordFlags=512,name="Damage",type="INC",value=4}},nil}
 c["4% increased Melee Elemental Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="INC",value=4},[2]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=4},[3]={flags=0,keywordFlags=512,name="LightningDamage",type="INC",value=4}},nil}
 c["4% increased Minion Bow Attack Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=3584,keywordFlags=2048,name="Speed",type="INC",value=4}}}},nil}
 c["4% increased Minion Cast Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=256,keywordFlags=0,name="Speed",type="INC",value=4}}}},nil}
-c["4% increased Minion Damage per player Attunement"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={actor="parent",stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="Damage",type="INC",value=4}}}},nil}
-c["4% increased Minion Damage per player Dexterity"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={actor="parent",stat="Dex",type="PerStat"},flags=0,keywordFlags=0,name="Damage",type="INC",value=4}}}},nil}
-c["4% increased Minion Damage per player Intelligence"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={actor="parent",stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="Damage",type="INC",value=4}}}},nil}
-c["4% increased Minion Damage per player Strength"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={actor="parent",stat="Str",type="PerStat"},flags=0,keywordFlags=0,name="Damage",type="INC",value=4}}}},nil}
-c["4% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=4}}}},nil}
+c["4% increased Minion Damage per player Attunement"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=4}}}},"   per player Attunement "}
+c["4% increased Minion Damage per player Dexterity"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=4}}}},"   per player Dexterity "}
+c["4% increased Minion Damage per player Intelligence"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=4}}}},"   per player Intelligence "}
+c["4% increased Minion Damage per player Strength"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=4}}}},"   per player Strength "}
 c["4% increased Minion Melee Attack Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=3584,keywordFlags=512,name="Speed",type="INC",value=4}}}},nil}
 c["4% increased Minion Throwing Attack Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=3584,keywordFlags=1024,name="Speed",type="INC",value=4}}}},nil}
 c["4% increased Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=4}},nil}
@@ -14655,8 +14685,6 @@ c["4% increased Throwing Damage"]={{[1]={flags=0,keywordFlags=1024,name="Damage"
 c["4% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=4}},nil}
 c["4% increased area for Lightning Area Skills"]={{[1]={flags=0,keywordFlags=2,name="AreaOfEffect",type="INC",value=4}},"  for  Area Skills "}
 c["4% less Damage Taken for Totems"]={{[1]={flags=0,keywordFlags=0,name="DamageTaken",type="MORE",value=-4}},"  for Totems "}
-c["4% more Increased Mana per stack of Spirit Battery"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="MORE",value=4}}," Increased  per stack of Spirit Battery "}
-c["4% more your maximum mana restored when Great Harvest kills an enemy"]={{[1]={[1]={skillName="Harvest",type="SkillName"},flags=0,keywordFlags=0,name="Mana",type="MORE",value=4}}," your  restored when Great  kills an enemy "}
 c["4% of Armor Mitigation also applies to Damage over Time"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=4},notSupported=true},nil}
 c["4% of Current Health Lost per second"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=4}}," Current  Lost per second "}
 c["4% of Current Health converted to Ward when you directly cast a Necrotic Spell"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=4},notSupported=true},nil}
@@ -14681,6 +14709,7 @@ c["40 Detonation Mana Cost"]={{[1]={flags=0,keywordFlags=0,name="ManaCost",type=
 c["40 Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="BASE",value=40}},nil}
 c["40 Freeze Rate"]={{[1]={flags=0,keywordFlags=0,name="FreezeRate",type="BASE",value=40}},nil}
 c["40 Health Gain"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=40}},"  Gain "}
+c["40 Health Gain on Block"]={{[1]={flags=0,keywordFlags=0,name="LifeOnBlock",type="BASE",value=40}},nil}
 c["40 Limit Per 4 Seconds"]={{}," Limit Per 4 Seconds "}
 c["40 Mana Cost Per Second"]={{[1]={flags=0,keywordFlags=0,name="ManaCost",type="BASE",value=40}},"  Per Second "}
 c["40 Maximum Stacks"]={{}," Maximum Stacks "}
@@ -14744,40 +14773,34 @@ c["40% More Hit Damage to Distant Enemies with Puncture"]={{[1]={[1]={skillName=
 c["40% Shrapnel Increased Stun Chance"]={{[1]={flags=0,keywordFlags=0,name="StunChance",type="BASE",value=40}}," Shrapnel Increased  "}
 c["40% Smallest Hit Ice Vortex Chance"]={{}," Smallest  Ice Vortex Chance "}
 c["40% increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=40}},nil}
-c["40% increased Cast Speed for Totems"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",value=40}},"  for Totems "}
-c["40% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=40}},nil}
 c["40% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=40}},nil}
+c["40% increased Curse Spell Cast Speed"]={{[1]={flags=256,keywordFlags=256,name="Speed",type="INC",value=40}}," Curse   "}
+c["40% increased Damage Over Time While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=4096,keywordFlags=0,name="Damage",type="INC",value=40}},nil}
+c["40% increased Damage for Totems"]={{[1]={[1]={scope="totem",type="Scope"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=40}},nil}
 c["40% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=40}},nil}
-c["40% increased Elemental Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=40},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=40},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=40}},nil}
+c["40% increased Effect of Haste on You"]={{[1]={flags=0,keywordFlags=0,name="HasteEffect",type="INC",value=40},notSupported=true},nil}
 c["40% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=40}},nil}
-c["40% increased Frost Wall Duration"]={{[1]={[1]={skillName="Frost Wall",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=40}},nil}
-c["40% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=40}},nil}
+c["40% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=40}},nil}
 c["40% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=40}},nil}
-c["40% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=40}},nil}
-c["40% increased Minion Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=40}}}},nil}
+c["40% increased Melee Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=512,name="Damage",type="INC",value=40}},nil}
 c["40% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=40}}}},nil}
+c["40% increased Minion Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Evasion",type="INC",value=40}}}},nil}
 c["40% increased Minion Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=40}}}},nil}
-c["40% increased Minion Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=40}}}},nil}
-c["40% increased Minion Melee Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="Damage",type="INC",value=40}}}},nil}
-c["40% increased Minion Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=40}}}},nil}
-c["40% increased Minion Spell Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="Damage",type="INC",value=40}}}},nil}
-c["40% increased Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=40}},nil}
-c["40% increased Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=40}},nil}
-c["40% increased Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=256,name="CritChance",type="INC",value=40}},nil}
-c["40% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=40}},nil}
+c["40% increased Minion Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=40}}}},nil}
+c["40% increased Minion Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="CritChance",type="INC",value=40}}}},nil}
+c["40% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=40}},nil}
+c["40% increased Spell Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=256,name="Damage",type="INC",value=40}},nil}
 c["40% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=40}},nil}
-c["40% more Melee Damage to High Health Enemies"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="MORE",value=40}},"   to High Health Enemies "}
 c["40% of Minion Damage Reflected"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="BASE",value=40}}}},"   Reflected "}
 c["40% of Necrotic Damage Taken as Physical"]={{[1]={flags=0,keywordFlags=1,name="NecroticDamageTaken",type="BASE",value=40}},"  as  "}
 c["40% of Poison Damage Taken as Physical"]={{[1]={flags=0,keywordFlags=1,name="PoisonDamageTaken",type="BASE",value=40}},"  as  "}
 c["40% of Void Damage Taken as Physical"]={{[1]={flags=0,keywordFlags=1,name="VoidDamageTaken",type="BASE",value=40}},"  as  "}
 c["40% of added melee damage on weapons is also gained as added spell damage"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=40},notSupported=true},nil}
-c["40% reduced Bonus Damage Taken from Critical Strikes"]={{[1]={flags=0,keywordFlags=0,name="ReduceCritExtraDamage",type="BASE",value=40}},nil}
 c["400 Ward Granted On Activation"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=400}},"  Granted On Activation "}
 c["400% Maximum Damage Benefit"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=400}}," Maximum  Benefit "}
 c["400% Seconds of Frenzy when you gain Poison Overload"]={{}," Seconds of  when you gain  Overload "}
-c["406% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=406}},nil}
-c["406% increased Minion Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="CritChance",type="INC",value=406}}}},nil}
+c["405% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=405}},nil}
+c["405% increased Minion Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="CritChance",type="INC",value=405}}}},nil}
 c["41 Ward gained when you use Smoke Bomb"]={{[1]={[1]={skillName="Smoke Bomb",type="SkillName"},flags=0,keywordFlags=0,name="WardGainOnUse_SmokeBomb",source="",type="BASE",value=41},notSupported=true},nil}
 c["41% Chance to gain a Black Arrow on Dodge"]={{},"a Black Arrow on Dodge "}
 c["41% Increased Aspect of the Boar Duration"]={{[1]={[1]={skillName="Aspect of the Boar",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=41}},nil}
@@ -14792,28 +14815,28 @@ c["41% Increased Stun Chance"]={{[1]={flags=0,keywordFlags=0,name="StunChance",t
 c["41% Increased Stun Duration"]={{[1]={flags=0,keywordFlags=0,name="EnemyStunDuration",type="INC",value=41}},nil}
 c["41% Increased damage if you have cast Devouring Orb recently"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=41},notSupported=true},nil}
 c["41% increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=41}},nil}
-c["41% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=41}},nil}
-c["41% increased Curse Spell Cast Speed"]={{[1]={flags=256,keywordFlags=256,name="Speed",type="INC",value=41}}," Curse   "}
+c["41% increased Bow Attack Speed"]={{[1]={flags=3584,keywordFlags=2048,name="Speed",type="INC",value=41}},nil}
+c["41% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=41}},nil}
 c["41% increased Damage Over Time While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=4096,keywordFlags=0,name="Damage",type="INC",value=41}},nil}
-c["41% increased Damage for Totems"]={{[1]={[1]={scope="totem",type="Scope"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=41}},nil}
+c["41% increased Damage While Channelling"]={{[1]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="Damage",type="INC",value=41}},nil}
 c["41% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=41}},nil}
-c["41% increased Effect of Haste on You"]={{[1]={flags=0,keywordFlags=0,name="HasteEffect",type="INC",value=41},notSupported=true},nil}
-c["41% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=41}},nil}
 c["41% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=41}},nil}
+c["41% increased Lightning Critical Strike Chance"]={{[1]={flags=0,keywordFlags=2,name="CritChance",type="INC",value=41}},nil}
+c["41% increased Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="INC",value=41}},nil}
 c["41% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=41}},nil}
 c["41% increased Melee Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=512,name="Damage",type="INC",value=41}},nil}
 c["41% increased Melee Elemental Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="INC",value=41},[2]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=41},[3]={flags=0,keywordFlags=512,name="LightningDamage",type="INC",value=41}},nil}
+c["41% increased Minion Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="CritChance",type="INC",value=41}}}},nil}
 c["41% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=41}}}},nil}
-c["41% increased Minion Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Evasion",type="INC",value=41}}}},nil}
-c["41% increased Minion Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=41}}}},nil}
-c["41% increased Minion Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="CritChance",type="INC",value=41}}}},nil}
 c["41% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=41}},nil}
 c["41% increased Spell Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=256,name="Damage",type="INC",value=41}},nil}
+c["41% increased Throwing Physical Damage"]={{[1]={flags=0,keywordFlags=1024,name="PhysicalDamage",type="INC",value=41}},nil}
 c["410 Damage Reflected to Attackers"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=410}},"  Reflected to Attackers "}
 c["413 Damage Reflected to Attackers"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=413}},"  Reflected to Attackers "}
+c["42 Health Gain on Block"]={{[1]={flags=0,keywordFlags=0,name="LifeOnBlock",type="BASE",value=42}},nil}
 c["42 Health Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="LifeOnPotionUse",type="BASE",value=42}},nil}
 c["42 Ward Gained on Shadow Creation"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=42}},"  Gained on Shadow Creation "}
-c["42 Ward gained when damage leaves you at low health"]={{[1]={[1]={type="Condition",var="LowLife"},flags=0,keywordFlags=0,name="Ward",type="BASE",value=42}},"  gained when damage leaves you  "}
+c["42 Ward gained when damage leaves you at low health"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=42}},"  gained when damage leaves you at low health "}
 c["42% Chance to Cast Lightning Blast on Crit with Frost Claw (up to 3 casts per second)"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=42},notSupported=true},nil}
 c["42% Chance to cast Marrow Shards when you cast Transplant"]={{[1]={[1]={skillName="Marrow Shards",type="SkillName"},[2]={type="Condition",var="OnCast_Transplant"},flags=0,keywordFlags=0,name="ChanceToCast_MarrowShards",source="",type="BASE",value=42},notSupported=true},nil}
 c["42% Increased Aspect of the Lynx Effect"]={{},"  Effect "}
@@ -14828,20 +14851,10 @@ c["42% Increased Ring Shard Drop Rate"]={{}," Ring Shard Drop Rate "}
 c["42% Increased area of effect with Acid Flask"]={{[1]={[1]={skillName="Acid Flask",type="SkillName"},flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=42}},"  with  "}
 c["42% Reduced Health Cost of Spells"]={{[1]={flags=0,keywordFlags=256,name="Life",type="INC",value=-42}},"  Cost of s "}
 c["42% chance when one of your Skeletons dies to resummon a new one after 3 seconds"]={{}," when one of your Skeletons dies to resummon a new one after 3 seconds "}
-c["42% increased Bow Attack Speed"]={{[1]={flags=3584,keywordFlags=2048,name="Speed",type="INC",value=42}},nil}
-c["42% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=42}},nil}
-c["42% increased Damage Over Time While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=4096,keywordFlags=0,name="Damage",type="INC",value=42}},nil}
-c["42% increased Damage While Channelling"]={{[1]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="Damage",type="INC",value=42}},nil}
-c["42% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=42}},nil}
-c["42% increased Lightning Critical Strike Chance"]={{[1]={flags=0,keywordFlags=2,name="CritChance",type="INC",value=42}},nil}
-c["42% increased Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="INC",value=42}},nil}
-c["42% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=42}},nil}
-c["42% increased Melee Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=512,name="Damage",type="INC",value=42}},nil}
+c["42% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=42}},nil}
+c["42% increased Hail of Arrows Duration"]={{[1]={[1]={skillName="Hail of Arrows",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=42}},nil}
 c["42% increased Minion Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="CritChance",type="INC",value=42}}}},nil}
-c["42% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=42}}}},nil}
-c["42% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=42}},nil}
 c["42% increased Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=42}},nil}
-c["42% increased Spell Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=256,name="Damage",type="INC",value=42}},nil}
 c["42% increased Throwing Physical Damage"]={{[1]={flags=0,keywordFlags=1024,name="PhysicalDamage",type="INC",value=42}},nil}
 c["42% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=42}},nil}
 c["42% increased area for Melee Area Skills"]={{[1]={flags=0,keywordFlags=512,name="AreaOfEffect",type="INC",value=42}},"  for  Area Skills "}
@@ -14851,6 +14864,7 @@ c["42% of Necrotic Damage Taken as Physical"]={{[1]={flags=0,keywordFlags=1,name
 c["42% of Poison Damage Taken as Physical"]={{[1]={flags=0,keywordFlags=1,name="PoisonDamageTaken",type="BASE",value=42}},"  as  "}
 c["42% of Void Damage Taken as Physical"]={{[1]={flags=0,keywordFlags=1,name="VoidDamageTaken",type="BASE",value=42}},"  as  "}
 c["42% reduced Bonus Damage Taken from Critical Strikes"]={{[1]={flags=0,keywordFlags=0,name="ReduceCritExtraDamage",type="BASE",value=42}},nil}
+c["43 Health Gain on Kill"]={{[1]={flags=0,keywordFlags=0,name="LifeOnKill",type="BASE",value=43}},nil}
 c["43 Ward Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="WardOnPotionUse",type="BASE",value=43}},nil}
 c["43% Chance to cast Sacrifice on your lowest health minion on minion death (1 second cooldown)"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=43},notSupported=true},nil}
 c["43% Chance to gain a Storm Stack when you use Gathering Storm and hit an enemy"]={{},"a Storm Stack when you use Gathering Storm and hit an enemy "}
@@ -14862,25 +14876,29 @@ c["43% Increased Healing Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="Hea
 c["43% Increased Leech Rate"]={{[1]={flags=0,keywordFlags=0,name="LeechRate",type="INC",value=43}},nil}
 c["43% Increased Spell Damage if you have an active Totem"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=43}},"   if you have an active Totem "}
 c["43% chance to throw a Burning Dagger on hit (1 second cooldown)"]={{}," to throw a   (1 second cooldown) "}
-c["43% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=43}},nil}
 c["43% increased Cold Damage Over Time"]={{[1]={flags=4100,keywordFlags=0,name="ColdDamage",type="INC",value=43}},nil}
 c["43% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=43}},nil}
 c["43% increased Elemental Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=43},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=43},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=43}},nil}
+c["43% increased Elemental Damage Over Time"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=43},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=43},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=43}},"  Over Time "}
 c["43% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=43}},nil}
 c["43% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=43}},nil}
-c["43% increased Hail of Arrows Duration"]={{[1]={[1]={skillName="Hail of Arrows",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=43}},nil}
+c["43% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=43}},nil}
 c["43% increased Minion Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="CritChance",type="INC",value=43}}}},nil}
+c["43% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=43}}}},nil}
 c["43% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=43}},nil}
-c["43% increased Throwing Physical Damage"]={{[1]={flags=0,keywordFlags=1024,name="PhysicalDamage",type="INC",value=43}},nil}
+c["43% increased Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=43}},nil}
 c["43% increased Void Damage Over Time"]={{[1]={flags=4112,keywordFlags=0,name="VoidDamage",type="INC",value=43}},nil}
 c["43% of Mana Spent Gained as Ward"]={{[1]={flags=0,keywordFlags=0,name="ManaSpentGainedAsWard",type="BASE",value=43}},nil}
 c["43% reduced Bonus Damage Taken from Critical Strikes"]={{[1]={flags=0,keywordFlags=0,name="ReduceCritExtraDamage",type="BASE",value=43}},nil}
+c["43% reduced Channel Cost"]={{[1]={flags=0,keywordFlags=0,name="ChannelCost",type="INC",value=-43}},nil}
 c["432% Increased Armor Shred Duration "]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=432}},"  Shred Duration "}
 c["432% Increased Critical Strike chance with Flurry"]={{[1]={[1]={skillName="Flurry",type="SkillName"},flags=0,keywordFlags=0,name="CritChance",type="INC",value=432}},"  with  "}
 c["432% Increased Damage for skills used by Shadows"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=432}},"  for skills used by Shadows "}
-c["433% increased Necrotic Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=433}},nil}
-c["433% increased Physical Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=433}},nil}
+c["432% increased Necrotic Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=432}},nil}
+c["432% increased Physical Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=432}},nil}
+c["439% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=439}},nil}
 c["44 Health Gained when you receive a Glancing Blow"]={{[1]={flags=0,keywordFlags=0,name="LifeOnGlancingBlow",type="BASE",value=44}},nil}
+c["44 Ward Gain on Block"]={{[1]={flags=0,keywordFlags=0,name="WardOnBlock",type="BASE",value=44}},nil}
 c["44 Ward Gained on Shadow Creation"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=44}},"  Gained on Shadow Creation "}
 c["44% Chance for 3 additional projectiles when you directly cast Chaos Bolts"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=44},notSupported=true},nil}
 c["44% Increased Area for Infernal Shade per Active Dread Shade"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=44},notSupported=true},nil}
@@ -14893,27 +14911,27 @@ c["44% Increased Damage while wielding a Sword"]={{[1]={[1]={type="Condition",va
 c["44% Increased Damage with Dive Bomb"]={{[1]={[1]={skillName="Dive Bomb",type="SkillName"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=44}},nil}
 c["44% Increased Healing Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="HealingEffectiveness",type="INC",value=44}},nil}
 c["44% Increased Melee Stun Chance"]={{[1]={flags=0,keywordFlags=512,name="StunChance",type="INC",value=44}},nil}
+c["44% increased Bow Elemental Damage"]={{[1]={flags=0,keywordFlags=2048,name="FireDamage",type="INC",value=44},[2]={flags=0,keywordFlags=2048,name="ColdDamage",type="INC",value=44},[3]={flags=0,keywordFlags=2048,name="LightningDamage",type="INC",value=44}},nil}
 c["44% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=44}},nil}
-c["44% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=44}},nil}
-c["44% increased Elemental Damage Over Time"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=44},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=44},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=44}},"  Over Time "}
 c["44% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=44}},nil}
 c["44% increased Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="INC",value=44}},nil}
 c["44% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=44}},nil}
-c["44% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=44}},nil}
+c["44% increased Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=512,name="Speed",type="INC",value=44}},nil}
 c["44% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=44}},nil}
 c["44% increased Minion Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=44}}}},nil}
-c["44% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=44}}}},nil}
+c["44% increased Minion Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=44}}}},nil}
 c["44% increased Minion Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=44}}}},nil}
 c["44% increased Minion Melee Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="Damage",type="INC",value=44}}}},nil}
 c["44% increased Minion Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=44}}}},nil}
 c["44% increased Minion Spell Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="Damage",type="INC",value=44}}}},nil}
 c["44% increased Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=44}},nil}
-c["44% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=44}},nil}
 c["44% increased Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=44}},nil}
 c["44% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=44}},nil}
+c["44% increased Throwing Physical Damage"]={{[1]={flags=0,keywordFlags=1024,name="PhysicalDamage",type="INC",value=44}},nil}
+c["44% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=44}},nil}
+c["44% more hit damage with Vengeance against bosses and rare enemies (multiplicative with other modifiers)"]={{[1]={[1]={skillName="Vengeance",type="SkillName"},flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=44}},"   with  against bosses and rare enemies (multiplicative with other modifiers) "}
 c["44% of Mana Spent Gained as Ward"]={{[1]={flags=0,keywordFlags=0,name="ManaSpentGainedAsWard",type="BASE",value=44}},nil}
-c["44% reduced Channel Cost"]={{[1]={flags=0,keywordFlags=0,name="ChannelCost",type="INC",value=-44}},nil}
-c["440% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=440}},nil}
+c["45 Health Gain on Block"]={{[1]={flags=0,keywordFlags=0,name="LifeOnBlock",type="BASE",value=45}},nil}
 c["45 Ward Burst"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=45}},"  Burst "}
 c["45 Ward gained when you gain Haste or refresh its duration"]={{[1]={[1]={skillName="Haste",type="SkillName"},flags=0,keywordFlags=0,name="Ward",type="BASE",value=45}},"  gained when you gain  or refresh its duration "}
 c["45% Chance to cast Void Rift on Kill"]={{[1]={[1]={skillName="Void Rift",type="SkillName"},[2]={type="Condition",var="OnKill"},flags=0,keywordFlags=0,name="ChanceToCast_VoidRift",source="",type="BASE",value=45},notSupported=true},nil}
@@ -14942,27 +14960,38 @@ c["45% Increased spell critical strike chance. This effect is doubled if you hav
 c["45% Reduced Health Cost of Spells"]={{[1]={flags=0,keywordFlags=256,name="Life",type="INC",value=-45}},"  Cost of s "}
 c["45% increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=45}},nil}
 c["45% increased Bow Critical Strike Chance"]={{[1]={flags=0,keywordFlags=2048,name="CritChance",type="INC",value=45}},nil}
-c["45% increased Bow Elemental Damage"]={{[1]={flags=0,keywordFlags=2048,name="FireDamage",type="INC",value=45},[2]={flags=0,keywordFlags=2048,name="ColdDamage",type="INC",value=45},[3]={flags=0,keywordFlags=2048,name="LightningDamage",type="INC",value=45}},nil}
 c["45% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=45}},nil}
+c["45% increased Damage Over Time While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=4096,keywordFlags=0,name="Damage",type="INC",value=45}},nil}
+c["45% increased Damage for Totems"]={{[1]={[1]={scope="totem",type="Scope"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=45}},nil}
+c["45% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=45}},nil}
 c["45% increased Effect of Frenzy on You "]={{[1]={flags=0,keywordFlags=0,name="FrenzyEffect",type="INC",value=45},notSupported=true},nil}
 c["45% increased Effect of Haste on You "]={{[1]={flags=0,keywordFlags=0,name="HasteEffect",type="INC",value=45},notSupported=true},nil}
+c["45% increased Effect of Prefixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedPrefixEffect",type="INC",value=45}},nil}
+c["45% increased Effect of Suffixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedSuffixEffect",type="INC",value=45}},nil}
+c["45% increased Effect of Weaver Enchantment Affixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedWeaverEffect",type="INC",value=45}},nil}
 c["45% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=45}},nil}
 c["45% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=45}},nil}
+c["45% increased Hail of Arrows Duration"]={{[1]={[1]={skillName="Hail of Arrows",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=45}},nil}
 c["45% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=45}},nil}
 c["45% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=45}},nil}
-c["45% increased Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=512,name="Speed",type="INC",value=45}},nil}
+c["45% increased Mana Regen for 4 seconds when you use a Potion"]={{[1]={[1]={type="Condition",var="UsedPotionRecently"},flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=45}},nil}
+c["45% increased Melee Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=512,name="Damage",type="INC",value=45}},nil}
+c["45% increased Meteor Fall Speed"]={{},"  Fall Speed "}
 c["45% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=45}}}},nil}
-c["45% increased Minion Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=45}}}},nil}
+c["45% increased Minion Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="CritChance",type="INC",value=45}}}},nil}
 c["45% increased Physical Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=257,name="CritChance",type="INC",value=45}},nil}
-c["45% increased Throwing Physical Damage"]={{[1]={flags=0,keywordFlags=1024,name="PhysicalDamage",type="INC",value=45}},nil}
+c["45% increased Spell Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=256,name="Damage",type="INC",value=45}},nil}
 c["45% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=45}},nil}
-c["45% more hit damage with Vengeance against bosses and rare enemies (multiplicative with other modifiers)"]={{[1]={[1]={skillName="Vengeance",type="SkillName"},flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=45}},"   with  against bosses and rare enemies (multiplicative with other modifiers) "}
+c["45% increased Volatile Zombie Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=45}}," Volatile Zombie  "}
+c["45% increased Volatile Zombie Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=45}}," Volatile Zombie  "}
+c["45% less Void Damage Taken on Block"]={{[1]={[1]={type="Condition",var="Blocking"},flags=0,keywordFlags=0,name="VoidDamageTaken",type="MORE",value=-45}},nil}
 c["45% of Max Health gained as Ward per Second"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=45},notSupported=true},nil}
 c["45% of added Critical Strike Multiplier Converted to Physical Penetration with Bleed"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=45},notSupported=true},nil}
 c["45% of added Critical Strike Multiplier Converted to Poison Penetration with Poison"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=45},notSupported=true},nil}
+c["45% reduced Bonus Damage Taken from Critical Strikes"]={{[1]={flags=0,keywordFlags=0,name="ReduceCritExtraDamage",type="BASE",value=45}},nil}
 c["450 Ward Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="WardOnPotionUse",type="BASE",value=450}},nil}
 c["46 Freeze Rate"]={{[1]={flags=0,keywordFlags=0,name="FreezeRate",type="BASE",value=46}},nil}
-c["46 Ward gained when damage leaves you at low health"]={{[1]={[1]={type="Condition",var="LowLife"},flags=0,keywordFlags=0,name="Ward",type="BASE",value=46}},"  gained when damage leaves you  "}
+c["46 Ward gained when damage leaves you at low health"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=46}},"  gained when damage leaves you at low health "}
 c["46% Increased Area with Dive Bomb"]={{[1]={[1]={skillName="Dive Bomb",type="SkillName"},flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=46}},"  with  "}
 c["46% Increased Bleed Duration "]={{[1]={[1]={skillName="Bleed",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=46}},nil}
 c["46% Increased Bleed Duration for Minions "]={{[1]={[1]={scope="minion",type="Scope"},[2]={skillName="Bleed",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=46}},nil}
@@ -14975,41 +15004,23 @@ c["46% Increased Shred Cold Resistance Duration"]={{[1]={flags=0,keywordFlags=0,
 c["46% Increased Shred Fire Resistance Duration"]={{[1]={flags=0,keywordFlags=0,name="FireResist",type="INC",value=46}}," Shred  Duration "}
 c["46% Increased Shred Lightning Resistance Duration"]={{[1]={flags=0,keywordFlags=0,name="LightningResist",type="INC",value=46}}," Shred  Duration "}
 c["46% Increased Skeletal Mage Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=46}}," Skeletal Mage  "}
-c["46% increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=46}},nil}
 c["46% increased Curse Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=46}}," Curse  "}
-c["46% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=46}},nil}
-c["46% increased Damage Over Time While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=4096,keywordFlags=0,name="Damage",type="INC",value=46}},nil}
-c["46% increased Damage for Totems"]={{[1]={[1]={scope="totem",type="Scope"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=46}},nil}
-c["46% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=46}},nil}
-c["46% increased Effect of Prefixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedPrefixEffect",type="INC",value=46}},nil}
-c["46% increased Effect of Suffixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedSuffixEffect",type="INC",value=46}},nil}
-c["46% increased Effect of Weaver Enchantment Affixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedWeaverEffect",type="INC",value=46}},nil}
 c["46% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=46}},nil}
-c["46% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=46}},nil}
-c["46% increased Hail of Arrows Duration"]={{[1]={[1]={skillName="Hail of Arrows",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=46}},nil}
-c["46% increased Mana Regen for 4 seconds when you use a Potion"]={{[1]={[1]={type="Condition",var="UsedPotionRecently"},flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=46}},nil}
-c["46% increased Melee Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=512,name="Damage",type="INC",value=46}},nil}
+c["46% increased Fire Spell Cast Speed"]={{[1]={flags=256,keywordFlags=264,name="Speed",type="INC",value=46}},nil}
 c["46% increased Melee Elemental Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="INC",value=46},[2]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=46},[3]={flags=0,keywordFlags=512,name="LightningDamage",type="INC",value=46}},nil}
-c["46% increased Meteor Fall Speed"]={{},"  Fall Speed "}
 c["46% increased Minion Damage Over Time"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=4096,keywordFlags=0,name="Damage",type="INC",value=46}}}},nil}
 c["46% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=46}}}},nil}
-c["46% increased Minion Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="CritChance",type="INC",value=46}}}},nil}
+c["46% increased Minion Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=46}}}},nil}
 c["46% increased Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=46}},nil}
+c["46% increased Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=46}},nil}
 c["46% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=46}},nil}
 c["46% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=46}},nil}
-c["46% increased Spell Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=256,name="Damage",type="INC",value=46}},nil}
-c["46% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=46}},nil}
-c["46% increased Volatile Zombie Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=46}}," Volatile Zombie  "}
-c["46% increased Volatile Zombie Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=46}}," Volatile Zombie  "}
-c["46% less Void Damage Taken on Block"]={{[1]={[1]={type="Condition",var="Blocking"},flags=0,keywordFlags=0,name="VoidDamageTaken",type="MORE",value=-46}},nil}
-c["46% reduced Bonus Damage Taken from Critical Strikes"]={{[1]={flags=0,keywordFlags=0,name="ReduceCritExtraDamage",type="BASE",value=46}},nil}
 c["47% Increased Bleed Duration "]={{[1]={[1]={skillName="Bleed",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=47}},nil}
 c["47% Increased Ignite Duration "]={{[1]={[1]={skillName="Ignite",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=47}},nil}
-c["47% increased Fire Spell Cast Speed"]={{[1]={flags=256,keywordFlags=264,name="Speed",type="INC",value=47}},nil}
+c["47% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=47}},nil}
 c["47% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=47}},nil}
+c["47% increased Melee Cold Damage"]={{[1]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=47}},nil}
 c["47% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=47}}}},nil}
-c["47% increased Minion Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=47}}}},nil}
-c["47% increased Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=47}},nil}
 c["470 Ward Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="WardOnPotionUse",type="BASE",value=470}},nil}
 c["48 Fire Aura Freeze Rate Per Second"]={{[1]={[1]={skillName="Fire Aura",type="SkillName"},flags=0,keywordFlags=0,name="FreezeRate",type="BASE",value=48}},"   Per Second "}
 c["48 Mana Cost Per Second"]={{[1]={flags=0,keywordFlags=0,name="ManaCost",type="BASE",value=48}},"  Per Second "}
@@ -15030,21 +15041,40 @@ c["48% Increased Skeletal Mage Damage"]={{[1]={flags=0,keywordFlags=0,name="Dama
 c["48% Increased critical strike chance with Shield Throw"]={{[1]={[1]={skillName="Shield Throw",type="SkillName"},flags=0,keywordFlags=0,name="CritChance",type="INC",value=48}},"  with  "}
 c["48% Increased damage with Smelter's Wrath"]={{[1]={[1]={skillName="Smelter's Wrath",type="SkillName"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=48}},nil}
 c["48% Increased spell critical strike chance. This effect is doubled if you have 300 or more maximum mana."]={{[1]={[1]={mult=2,stat="Mana",threshold=300,type="StatThreshold"},flags=0,keywordFlags=256,name="CritChance",type="INC",value=48}},nil}
+c["48% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=48}},nil}
+c["48% increased Critical Strike Chance for Totems"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=48}},"  for Totems "}
 c["48% increased Damage Over Time While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=4096,keywordFlags=0,name="Damage",type="INC",value=48}},nil}
+c["48% increased Damage Over Time while at Low Health"]={{[1]={[1]={type="Condition",var="LowLife"},flags=4096,keywordFlags=0,name="Damage",type="INC",value=48}},nil}
+c["48% increased Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="Damage",type="INC",value=48}},nil}
 c["48% increased Damage for Totems"]={{[1]={[1]={scope="totem",type="Scope"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=48}},nil}
 c["48% increased Elemental Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=48},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=48},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=48}},nil}
 c["48% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=48}},nil}
 c["48% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=48}},nil}
-c["48% increased Melee Cold Damage"]={{[1]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=48}},nil}
+c["48% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=48}},nil}
+c["48% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=48}},nil}
 c["48% increased Melee Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=512,name="Damage",type="INC",value=48}},nil}
 c["48% increased Melee Elemental Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="INC",value=48},[2]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=48},[3]={flags=0,keywordFlags=512,name="LightningDamage",type="INC",value=48}},nil}
 c["48% increased Melee Physical Damage"]={{[1]={flags=0,keywordFlags=512,name="PhysicalDamage",type="INC",value=48}},nil}
+c["48% increased Minion Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=48}}}},nil}
 c["48% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=48}}}},nil}
 c["48% increased Minion Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=48}}}},nil}
+c["48% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=48}}}},nil}
+c["48% increased Minion Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=48}}}},nil}
+c["48% increased Minion Melee Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="Damage",type="INC",value=48}}}},nil}
+c["48% increased Minion Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=48}}}},nil}
+c["48% increased Minion Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=48}}}},nil}
 c["48% increased Minion Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="CritChance",type="INC",value=48}}}},nil}
+c["48% increased Minion Spell Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="Damage",type="INC",value=48}}}},nil}
+c["48% increased Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=48}},nil}
+c["48% increased Necrotic Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=48}},nil}
+c["48% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=48}},nil}
+c["48% increased Physical Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=48}},nil}
+c["48% increased Physical Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=257,name="CritChance",type="INC",value=48}},nil}
+c["48% increased Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=48}},nil}
 c["48% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=48}},nil}
 c["48% increased Spell Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=256,name="Damage",type="INC",value=48}},nil}
-c["48% increased Spell Damage while at Low Health"]={{[1]={[1]={type="Condition",var="LowLife"},flags=0,keywordFlags=256,name="Damage",type="INC",value=48}},nil}
+c["48% increased Spell Damage while at Low Health"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=48}},"   while at Low Health "}
+c["48% increased Throwing Critical Strike Chance"]={{[1]={flags=0,keywordFlags=1024,name="CritChance",type="INC",value=48}},nil}
 c["48% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=48}},nil}
 c["48% less Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="MORE",value=-48}},nil}
 c["48% less Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="MORE",value=-48}},nil}
@@ -15054,9 +15084,9 @@ c["48% of Endurance applies to all damage dealt to mana"]={{[1]={flags=0,keyword
 c["48% of Mana Spent Gained as Ward"]={{[1]={flags=0,keywordFlags=0,name="ManaSpentGainedAsWard",type="BASE",value=48}},nil}
 c["486% Increased Skeletal Mage Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=486}}," Skeletal Mage  "}
 c["486% Increased critical strike chance with Shield Throw"]={{[1]={[1]={skillName="Shield Throw",type="SkillName"},flags=0,keywordFlags=0,name="CritChance",type="INC",value=486}},"  with  "}
-c["487% increased Critical Strike Chance for Totems"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=487}},"  for Totems "}
-c["487% increased Physical Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=257,name="CritChance",type="INC",value=487}},nil}
-c["487% increased Throwing Critical Strike Chance"]={{[1]={flags=0,keywordFlags=1024,name="CritChance",type="INC",value=487}},nil}
+c["486% increased Critical Strike Chance for Totems"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=486}},"  for Totems "}
+c["486% increased Physical Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=257,name="CritChance",type="INC",value=486}},nil}
+c["486% increased Throwing Critical Strike Chance"]={{[1]={flags=0,keywordFlags=1024,name="CritChance",type="INC",value=486}},nil}
 c["49 Ward gained when you use Smoke Bomb"]={{[1]={[1]={skillName="Smoke Bomb",type="SkillName"},flags=0,keywordFlags=0,name="WardGainOnUse_SmokeBomb",source="",type="BASE",value=49},notSupported=true},nil}
 c["49% Increased Area for Infernal Shade"]={{[1]={[1]={skillName="Infernal Shade",type="SkillName"},flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=49}},"  for  "}
 c["49% Increased Bleed Duration"]={{[1]={[1]={skillName="Bleed",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=49}},nil}
@@ -15067,34 +15097,15 @@ c["49% Increased Melee Attack Area for Summoned Wraiths"]={{[1]={[1]={skillName=
 c["49% Lightning Penetration with Electrify"]={{[1]={[1]={skillName="Electrify",type="SkillName"},flags=0,keywordFlags=0,name="LightningPenetration",type="BASE",value=49}},"  with  "}
 c["49% increased Block Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="BlockEffectiveness",type="INC",value=49}},nil}
 c["49% increased Cast Speed for Totems"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",value=49}},"  for Totems "}
-c["49% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=49}},nil}
 c["49% increased Cold Damage Over Time"]={{[1]={flags=4100,keywordFlags=0,name="ColdDamage",type="INC",value=49}},nil}
 c["49% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=49}},nil}
-c["49% increased Critical Strike Chance for Totems"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=49}},"  for Totems "}
-c["49% increased Damage Over Time while at Low Health"]={{[1]={[1]={type="Condition",var="LowLife"},flags=4096,keywordFlags=0,name="Damage",type="INC",value=49}},nil}
-c["49% increased Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="Damage",type="INC",value=49}},nil}
 c["49% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=49}},nil}
 c["49% increased Frost Wall Duration"]={{[1]={[1]={skillName="Frost Wall",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=49}},nil}
-c["49% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=49}},nil}
-c["49% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=49}},nil}
-c["49% increased Minion Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=49}}}},nil}
+c["49% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=49}},nil}
+c["49% increased Melee Elemental Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="INC",value=49},[2]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=49},[3]={flags=0,keywordFlags=512,name="LightningDamage",type="INC",value=49}},nil}
 c["49% increased Minion Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="CritChance",type="INC",value=49}}}},nil}
-c["49% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=49}}}},nil}
-c["49% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=49}}}},nil}
-c["49% increased Minion Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=49}}}},nil}
-c["49% increased Minion Melee Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="Damage",type="INC",value=49}}}},nil}
-c["49% increased Minion Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=49}}}},nil}
-c["49% increased Minion Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=49}}}},nil}
-c["49% increased Minion Spell Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="Damage",type="INC",value=49}}}},nil}
-c["49% increased Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=49}},nil}
-c["49% increased Necrotic Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=49}},nil}
-c["49% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=49}},nil}
-c["49% increased Physical Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=49}},nil}
-c["49% increased Physical Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=257,name="CritChance",type="INC",value=49}},nil}
-c["49% increased Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=49}},nil}
-c["49% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=49}},nil}
-c["49% increased Throwing Critical Strike Chance"]={{[1]={flags=0,keywordFlags=1024,name="CritChance",type="INC",value=49}},nil}
-c["49% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=49}},nil}
+c["49% increased Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=256,name="CritChance",type="INC",value=49}},nil}
+c["49% increased Throwing Physical Damage"]={{[1]={flags=0,keywordFlags=1024,name="PhysicalDamage",type="INC",value=49}},nil}
 c["49% increased Void Damage Over Time"]={{[1]={flags=4112,keywordFlags=0,name="VoidDamage",type="INC",value=49}},nil}
 c["49% of Mana Spent Gained as Ward"]={{[1]={flags=0,keywordFlags=0,name="ManaSpentGainedAsWard",type="BASE",value=49}},nil}
 c["49% reduced Bonus Damage Taken from Critical Strikes"]={{[1]={flags=0,keywordFlags=0,name="ReduceCritExtraDamage",type="BASE",value=49}},nil}
@@ -15152,6 +15163,7 @@ c["5 Storm Stacks Expended"]={{}," Storm Stacks Expended "}
 c["5 Unique Skills Required to Consume Flow"]={{[1]={flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=5}}," Unique  Required to Consume Flow "}
 c["5 Ward Gain"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=5}},"  Gain "}
 c["5 Ward Gain On Enemy Pass Through"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=5}},"  Gain On Enemy Pass Through "}
+c["5 Ward Gain on Kill"]={{[1]={flags=0,keywordFlags=0,name="WardOnKill",type="BASE",value=5}},nil}
 c["5 Ward Gain on Melee Hit"]={{[1]={flags=8389120,keywordFlags=0,name="Ward",type="BASE",value=5}},"  Gain  "}
 c["5 Ward Per Second"]={{[1]={flags=0,keywordFlags=0,name="WardPerSecond",type="BASE",value=5}},nil}
 c["5 Ward gained per 10 Missing Mana when you use a Traversal Skill"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=5}},"  gained per 10 Missing Mana when you use a Traversal Skill "}
@@ -15221,7 +15233,7 @@ c["5% Increased Elemental Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamag
 c["5% Increased Experience"]={{}," Experience "}
 c["5% Increased Fire Aura Area"]={{[1]={[1]={skillName="Fire Aura",type="SkillName"},flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=5}},nil}
 c["5% Increased Fire Damage per Forged Weapon"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=5},notSupported=true},nil}
-c["5% Increased Flat Damage Reflected to Attackers per Attunement"]={{[1]={[1]={stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="Damage",type="INC",value=5}}," Flat  Reflected to Attackers  "}
+c["5% Increased Flat Damage Reflected to Attackers per Attunement"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=5}}," Flat  Reflected to Attackers per Attunement "}
 c["5% Increased Frenzy Effect "]={{},"  Effect "}
 c["5% Increased Global Damage Over Time"]={{[1]={[1]={type="Global"},flags=4096,keywordFlags=0,name="Damage",type="INC",value=5}},nil}
 c["5% Increased Healing Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="HealingEffectiveness",type="INC",value=5}},nil}
@@ -15249,7 +15261,6 @@ c["5% Less Stun Duration On You"]={{[1]={flags=0,keywordFlags=0,name="StunDurati
 c["5% Lightning Aegis Chance On Cast"]={{},"  Aegis Chance On Cast "}
 c["5% Locust Swarm Increased Damage Per Bleed"]={{[1]={[1]={skillName="Bleed",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=5}}," Locust Swarm Increased  Per  "}
 c["5% Maelstrom Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Maelstrom",type="BASE",value=5}},nil}
-c["5% Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="BASE",value=5}},nil}
 c["5% Maximum Health Gained On Crit"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=5}},"  Gained On Crit "}
 c["5% Maximum Kill Threshold"]={{[1]={flags=0,keywordFlags=0,name="KillThreshold",type="BASE",value=5}}," Maximum  "}
 c["5% Maximum percentage of health to gain when a nearby enemy or ally dies (2 second cooldown)"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=5}}," Maximum percentage of  to gain when a nearby enemy or ally dies (2 second cooldown) "}
@@ -15272,10 +15283,10 @@ c["5% Poison Wisp Chance"]={{},"  Wisp Chance "}
 c["5% Reduced Bonus Damage Taken From Crits"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=5},notSupported=true},nil}
 c["5% Reduced Cast Speed"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",value=-5}},nil}
 c["5% Riposte Kill Threshold With Axe"]={{[1]={[1]={type="Condition",var="UsingAxe"},flags=0,keywordFlags=0,name="KillThreshold",type="BASE",value=5}}," Riposte   "}
-c["5% Shared Increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="MORE",value=5}}," Shared Increased  "}
-c["5% Shared Increased Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=5}}," Shared Increased  "}
-c["5% Shared Increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="MORE",value=5}}," Shared Increased  "}
-c["5% Shared Increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="MORE",value=5}}," Shared Increased  "}
+c["5% Shared Increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=5},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=5}}}},nil}
+c["5% Shared Increased Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=5},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=5}}}},nil}
+c["5% Shared Increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=5},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=5}}}},nil}
+c["5% Shared Increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=5},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=5}}}},nil}
 c["5% Spark Charge Chance with Lightning Melee Attacks"]={{[1]={[1]={skillName="Melee Attack",type="SkillName"},flags=8388608,keywordFlags=2,name="ChanceToTriggerOnHit_Ailment_SparkCharge",type="BASE",value=5}},"  with  s "}
 c["5% Storm Bolt Retaliation Chance"]={{},"  Retaliation Chance "}
 c["5% Summoned Skeleton Physical Penetration"]={{[1]={flags=0,keywordFlags=0,name="PhysicalPenetration",type="BASE",value=5}}," Summoned Skeleton  "}
@@ -15285,13 +15296,11 @@ c["5% Third Strike Health Leech"]={{[1]={flags=0,keywordFlags=0,name="DamageLife
 c["5% Throwing Attack Speed Buff"]={{[1]={flags=3584,keywordFlags=1024,name="Speed",type="BASE",value=5}},"   Buff "}
 c["5% Warcry Chance On Crit"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Warcry",type="BASE",value=5}},"  On Crit "}
 c["5% chance to throw Acid Flask on Bow Hit"]={{}," to throw  on   "}
-c["5% increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=5}},nil}
 c["5% increased Attack Speed per player Dexterity"]={{[1]={[1]={actor="parent",stat="Dex",type="PerStat"},flags=3584,keywordFlags=0,name="Speed",type="INC",value=5}},nil}
 c["5% increased Bow Attack Speed"]={{[1]={flags=3584,keywordFlags=2048,name="Speed",type="INC",value=5}},nil}
 c["5% increased Cast Speed"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",value=5}},nil}
 c["5% increased Cold Spell Cast Speed"]={{[1]={flags=256,keywordFlags=260,name="Speed",type="INC",value=5}},nil}
 c["5% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=5}},nil}
-c["5% increased Effect of Frenzy on You "]={{[1]={flags=0,keywordFlags=0,name="FrenzyEffect",type="INC",value=5},notSupported=true},nil}
 c["5% increased Effect of Haste on You "]={{[1]={flags=0,keywordFlags=0,name="HasteEffect",type="INC",value=5},notSupported=true},nil}
 c["5% increased Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="INC",value=5}},nil}
 c["5% increased Lightning Spell Cast Speed"]={{[1]={flags=256,keywordFlags=258,name="Speed",type="INC",value=5}},nil}
@@ -15306,6 +15315,7 @@ c["5% less Damage Taken While Moving"]={{[1]={[1]={type="Condition",var="Moving"
 c["5% less Elemental Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="ElementalDamageTaken",type="MORE",value=-5}},nil}
 c["5% less Fire Damage Taken on Block"]={{[1]={[1]={type="Condition",var="Blocking"},flags=0,keywordFlags=0,name="FireDamageTaken",type="MORE",value=-5}},nil}
 c["5% less Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=512,name="Speed",type="MORE",value=-5}},nil}
+c["5% more Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="MORE",value=5}},nil}
 c["5% more Void Melee Damage per stack of Doom"]={{[1]={[1]={skillName="Doom",type="SkillName"},flags=0,keywordFlags=256,name="VoidDamage",type="MORE",value=5}},"  per stack of  "}
 c["5% more damage per curse on the target"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=5}},"  per curse on the target "}
 c["5% of Current Health Drained per Second"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=5}}," Current  Drained per Second "}
@@ -15315,6 +15325,7 @@ c["5% of Current Health converted to Ward when you directly cast a Necrotic Spel
 c["5% of Damage Dealt to Mana Before Health"]={{[1]={flags=0,keywordFlags=0,name="DamageToManaBeforeHealth",type="BASE",value=5}},nil}
 c["5% of Damage Leeched as Health While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=5}},nil}
 c["5% of Damage dealt by Harvest Leeched as Health"]={{[1]={[1]={skillName="Harvest",type="SkillName"},flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=5}},"  dealt by   "}
+c["5% of Lightning Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=0,name="LightningDamageLifeLeech",type="BASE",value=5}},nil}
 c["5% of Maximum Health gained as Endurance Threshold"]={{[1]={flags=0,keywordFlags=0,name="LifeAsEnduranceThreshold",type="BASE",value=5}},nil}
 c["5% of Melee Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=512,name="DamageLifeLeech",type="BASE",value=5}},nil}
 c["5% of Minion Damage Leeched as Health on Melee Hit"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=8389120,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=5}}}},nil}
@@ -15333,10 +15344,11 @@ c["50 Freeze Rate"]={{[1]={flags=0,keywordFlags=0,name="FreezeRate",type="BASE",
 c["50 Heal Amount"]={{}," Heal Amount "}
 c["50 Heal Amount On Shield Death"]={{}," Heal Amount On Shield Death "}
 c["50 Healing Amount"]={{[1]={[1]={skillName="Healing",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=50}},"  Amount "}
+c["50 Health Gain on Kill"]={{[1]={flags=0,keywordFlags=0,name="LifeOnKill",type="BASE",value=50}},nil}
 c["50 Health Restored on Landing"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=50}},"  Restored on Landing "}
 c["50 Stun Avoidance"]={{[1]={flags=0,keywordFlags=0,name="StunAvoidance",type="BASE",value=50}},nil}
 c["50 Ward Gained when you use Enchant Weapon "]={{[1]={[1]={skillName="Enchant Weapon",type="SkillName"},flags=0,keywordFlags=0,name="WardGainOnUse_EnchantWeapon",source="",type="BASE",value=50},notSupported=true},nil}
-c["50 Ward gained when damage leaves you at low health"]={{[1]={[1]={type="Condition",var="LowLife"},flags=0,keywordFlags=0,name="Ward",type="BASE",value=50}},"  gained when damage leaves you  "}
+c["50 Ward gained when damage leaves you at low health"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=50}},"  gained when damage leaves you at low health "}
 c["50% 50% Base Damage -> Lightning"]={{},"50% 50% Base Damage -> Lightning"}
 c["50% Added Throwing Damage Conversion To Falcon"]={{[1]={flags=0,keywordFlags=1024,name="Damage",type="MORE",value=50}},"   Conversion To Falcon "}
 c["50% Additional Shurikens Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Shurikens",type="BASE",value=50}},nil}
@@ -15419,19 +15431,27 @@ c["50% Slow Chance When Active"]={{[1]={flags=8388608,keywordFlags=0,name="Chanc
 c["50% Upheaval Chance From Large Boulder"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Upheaval",type="BASE",value=50}},"  From Large Boulder "}
 c["50% Zap Cooldown Reduction while Active"]={{}," Zap Cooldown Reduction while Active "}
 c["50% increased Bow Attack Speed"]={{[1]={flags=3584,keywordFlags=2048,name="Speed",type="INC",value=50}},nil}
+c["50% increased Bow Damage"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="INC",value=50}},nil}
 c["50% increased Cast Speed"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",value=50}},nil}
-c["50% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=50}},nil}
+c["50% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=50}},nil}
+c["50% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=50}},nil}
+c["50% increased Damage While Channelling"]={{[1]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="Damage",type="INC",value=50}},nil}
+c["50% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=50}},nil}
 c["50% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=50}},nil}
+c["50% increased Increased Melee Stun Chance"]={{[1]={flags=0,keywordFlags=512,name="StunChance",type="INC",value=50}}," Increased   "}
+c["50% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=50}},nil}
 c["50% increased Mana Cost"]={{[1]={flags=0,keywordFlags=0,name="ManaCost",type="INC",value=50}},nil}
-c["50% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=50}},nil}
 c["50% increased Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=512,name="Speed",type="INC",value=50}},nil}
 c["50% increased Melee Attack Speed for 4 seconds when you use a Potion"]={{[1]={[1]={type="Condition",var="UsedPotionRecently"},flags=3584,keywordFlags=512,name="Speed",type="INC",value=50}},nil}
-c["50% increased Melee Elemental Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="INC",value=50},[2]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=50},[3]={flags=0,keywordFlags=512,name="LightningDamage",type="INC",value=50}},nil}
-c["50% increased Minion Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="CritChance",type="INC",value=50}}}},nil}
-c["50% increased Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=256,name="CritChance",type="INC",value=50}},nil}
+c["50% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=50}},nil}
+c["50% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=50}}}},nil}
+c["50% increased Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=50}},nil}
+c["50% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=50}},nil}
+c["50% increased Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=50}},nil}
+c["50% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=50}},nil}
 c["50% increased Throwing Attack Speed"]={{[1]={flags=3584,keywordFlags=1024,name="Speed",type="INC",value=50}},nil}
 c["50% increased Throwing Attack Speed for 4 seconds when you use a Potion"]={{[1]={[1]={type="Condition",var="UsedPotionRecently"},flags=3584,keywordFlags=1024,name="Speed",type="INC",value=50}},nil}
-c["50% increased Throwing Physical Damage"]={{[1]={flags=0,keywordFlags=1024,name="PhysicalDamage",type="INC",value=50}},nil}
+c["50% increased Throwing Damage"]={{[1]={flags=0,keywordFlags=1024,name="Damage",type="INC",value=50}},nil}
 c["50% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=50}},nil}
 c["50% less Block Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="BlockEffectiveness",type="MORE",value=-50}},nil}
 c["50% less Critical Strike Chance if you have dealt a Critical Strike Recently"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=50},notSupported=true},nil}
@@ -15453,23 +15473,19 @@ c["51% Increased Aspect of the Viper Effect"]={{},"  Effect "}
 c["51% Increased Critical Strike chance with Flurry"]={{[1]={[1]={skillName="Flurry",type="SkillName"},flags=0,keywordFlags=0,name="CritChance",type="INC",value=51}},"  with  "}
 c["51% Increased Quiver Drop Rate"]={{}," Quiver Drop Rate "}
 c["51% increased Bow Damage"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="INC",value=51}},nil}
-c["51% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=51}},nil}
 c["51% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=51}},nil}
-c["51% increased Damage While Channelling"]={{[1]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="Damage",type="INC",value=51}},nil}
 c["51% increased Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="Damage",type="INC",value=51}},nil}
 c["51% increased Damage for Totems"]={{[1]={[1]={scope="totem",type="Scope"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=51}},nil}
+c["51% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=51}},nil}
 c["51% increased Elemental Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=51},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=51},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=51}},nil}
 c["51% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=51}},nil}
-c["51% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=51}},nil}
-c["51% increased Increased Melee Stun Chance"]={{[1]={flags=0,keywordFlags=512,name="StunChance",type="INC",value=51}}," Increased   "}
 c["51% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=51}},nil}
 c["51% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=51}},nil}
 c["51% increased Melee Elemental Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="INC",value=51},[2]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=51},[3]={flags=0,keywordFlags=512,name="LightningDamage",type="INC",value=51}},nil}
+c["51% increased Minion Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="CritChance",type="INC",value=51}}}},nil}
 c["51% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=51}}}},nil}
 c["51% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=51}}}},nil}
-c["51% increased Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=51}},nil}
 c["51% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=51}},nil}
-c["51% increased Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=51}},nil}
 c["51% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=51}},nil}
 c["51% increased Throwing Damage"]={{[1]={flags=0,keywordFlags=1024,name="Damage",type="INC",value=51}},nil}
 c["51% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=51}},nil}
@@ -15477,14 +15493,14 @@ c["51% increased area for Melee Area Skills"]={{[1]={flags=0,keywordFlags=512,na
 c["51% of Shurikens Base Damage converted to Lightning"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=51},notSupported=true},nil}
 c["513% Increased Armor Shred Effect "]={{[1]={flags=0,keywordFlags=0,name="ArmorShredEffect",type="INC",value=513}},nil}
 c["52 Ice Arrow Freeze Rate"]={{[1]={flags=0,keywordFlags=0,name="FreezeRate",type="BASE",value=52}}," Ice Arrow  "}
-c["52% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=52}},nil}
-c["52% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=52}},nil}
 c["52% increased Effect of Skill Level modifiers on Legendary Affixes"]={{}," Effect of Skill Level modifiers on Legendary Affixes "}
-c["52% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=52}},nil}
+c["52% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=52}},nil}
+c["52% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=52}},nil}
+c["52% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=52}},nil}
 c["52% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=52}},nil}
-c["52% increased Minion Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="CritChance",type="INC",value=52}}}},nil}
-c["52% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=52}}}},nil}
-c["52% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=52}}}},nil}
+c["52% increased Minion Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=52}}}},nil}
+c["52% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=52}},nil}
+c["52% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=52}},nil}
 c["52% of Damage Reflected"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=52}},"  Reflected "}
 c["52% of Mana spent gained as Maximum Mana for 5 seconds (up to 500)"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=52},notSupported=true},nil}
 c["526 Damage Reflected to Attackers"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=526}},"  Reflected to Attackers "}
@@ -15499,36 +15515,40 @@ c["53% Increased cold spell damage if you have directly cast a physical spell re
 c["53% Increased damage with Smelter's Wrath"]={{[1]={[1]={skillName="Smelter's Wrath",type="SkillName"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=53}},nil}
 c["53% Increased physical spell damage if you have directly cast a cold spell recently"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=53},notSupported=true},nil}
 c["53% Increased spell critical strike chance. This effect is doubled if you have 300 or more maximum mana."]={{[1]={[1]={mult=2,stat="Mana",threshold=300,type="StatThreshold"},flags=0,keywordFlags=256,name="CritChance",type="INC",value=53}},nil}
+c["53% increased Bow Damage"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="INC",value=53}},nil}
 c["53% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=53}},nil}
 c["53% increased Cold Damage Over Time"]={{[1]={flags=4100,keywordFlags=0,name="ColdDamage",type="INC",value=53}},nil}
+c["53% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=53}},nil}
 c["53% increased Damage Over Time While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=4096,keywordFlags=0,name="Damage",type="INC",value=53}},nil}
+c["53% increased Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="Damage",type="INC",value=53}},nil}
 c["53% increased Damage for Totems"]={{[1]={[1]={scope="totem",type="Scope"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=53}},nil}
 c["53% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=53}},nil}
 c["53% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=53}},nil}
 c["53% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=53}},nil}
-c["53% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=53}},nil}
 c["53% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=53}},nil}
-c["53% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=53}},nil}
 c["53% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=53}},nil}
 c["53% increased Melee Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=512,name="Damage",type="INC",value=53}},nil}
 c["53% increased Melee Elemental Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="INC",value=53},[2]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=53},[3]={flags=0,keywordFlags=512,name="LightningDamage",type="INC",value=53}},nil}
 c["53% increased Melee Physical Damage"]={{[1]={flags=0,keywordFlags=512,name="PhysicalDamage",type="INC",value=53}},nil}
 c["53% increased Minion Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=53}}}},nil}
+c["53% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=53}}}},nil}
 c["53% increased Minion Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=53}}}},nil}
+c["53% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=53}}}},nil}
 c["53% increased Minion Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=53}}}},nil}
 c["53% increased Minion Melee Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="Damage",type="INC",value=53}}}},nil}
 c["53% increased Minion Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=53}}}},nil}
 c["53% increased Minion Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="CritChance",type="INC",value=53}}}},nil}
 c["53% increased Minion Spell Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="Damage",type="INC",value=53}}}},nil}
 c["53% increased Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=53}},nil}
-c["53% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=53}},nil}
 c["53% increased Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=53}},nil}
 c["53% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=53}},nil}
 c["53% increased Spell Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=256,name="Damage",type="INC",value=53}},nil}
+c["53% increased Throwing Damage"]={{[1]={flags=0,keywordFlags=1024,name="Damage",type="INC",value=53}},nil}
 c["53% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=53}},nil}
 c["53% of Shurikens Base Damage converted to Lightning"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=53},notSupported=true},nil}
+c["53% reduced Bonus Damage Taken from Critical Strikes"]={{[1]={flags=0,keywordFlags=0,name="ReduceCritExtraDamage",type="BASE",value=53}},nil}
 c["54 Ward Gained when you use a Traversal Skill"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=54},notSupported=true},nil}
-c["54 Ward gained when damage leaves you at low health"]={{[1]={[1]={type="Condition",var="LowLife"},flags=0,keywordFlags=0,name="Ward",type="BASE",value=54}},"  gained when damage leaves you  "}
+c["54 Ward gained when damage leaves you at low health"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=54}},"  gained when damage leaves you at low health "}
 c["54% Increased Damage per arrow with Multishot"]={{[1]={[1]={skillName="Multishot",type="SkillName"},[2]={type="Multiplier",var="ArrowsWithMultishot"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=54}},nil}
 c["54% Increased Damage while wielding a Bow"]={{[1]={[1]={type="Condition",var="UsingBow"},flags=0,keywordFlags=0,name="Damage",type="INC",value=54}},nil}
 c["54% Increased Damage while wielding a Dagger"]={{[1]={[1]={type="Condition",var="UsingDagger"},flags=0,keywordFlags=0,name="Damage",type="INC",value=54}},nil}
@@ -15539,31 +15559,18 @@ c["54% Increased Poison Duration "]={{[1]={[1]={skillName="Poison",type="SkillNa
 c["54% Increased area of effect with Acid Flask"]={{[1]={[1]={skillName="Acid Flask",type="SkillName"},flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=54}},"  with  "}
 c["54% Max Speed Increase"]={{}," Max Speed Increase "}
 c["54% Reduced Health Cost of Spells"]={{[1]={flags=0,keywordFlags=256,name="Life",type="INC",value=-54}},"  Cost of s "}
-c["54% increased Bow Damage"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="INC",value=54}},nil}
-c["54% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=54}},nil}
-c["54% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=54}},nil}
-c["54% increased Damage Over Time While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=4096,keywordFlags=0,name="Damage",type="INC",value=54}},nil}
-c["54% increased Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="Damage",type="INC",value=54}},nil}
-c["54% increased Damage for Totems"]={{[1]={[1]={scope="totem",type="Scope"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=54}},nil}
+c["54% increased Bow Elemental Damage"]={{[1]={flags=0,keywordFlags=2048,name="FireDamage",type="INC",value=54},[2]={flags=0,keywordFlags=2048,name="ColdDamage",type="INC",value=54},[3]={flags=0,keywordFlags=2048,name="LightningDamage",type="INC",value=54}},nil}
+c["54% increased Effect of Haste on You"]={{[1]={flags=0,keywordFlags=0,name="HasteEffect",type="INC",value=54},notSupported=true},nil}
 c["54% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=54}},nil}
 c["54% increased Hail of Arrows Duration"]={{[1]={[1]={skillName="Hail of Arrows",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=54}},nil}
 c["54% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=54}},nil}
-c["54% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=54}},nil}
-c["54% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=54}},nil}
-c["54% increased Melee Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=512,name="Damage",type="INC",value=54}},nil}
-c["54% increased Melee Elemental Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="INC",value=54},[2]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=54},[3]={flags=0,keywordFlags=512,name="LightningDamage",type="INC",value=54}},nil}
-c["54% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=54}}}},nil}
+c["54% increased Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="INC",value=54}},nil}
 c["54% increased Minion Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=54}}}},nil}
-c["54% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=54}}}},nil}
-c["54% increased Minion Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="CritChance",type="INC",value=54}}}},nil}
-c["54% increased Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=54}},nil}
 c["54% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=54}},nil}
-c["54% increased Spell Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=256,name="Damage",type="INC",value=54}},nil}
-c["54% increased Throwing Damage"]={{[1]={flags=0,keywordFlags=1024,name="Damage",type="INC",value=54}},nil}
+c["54% increased Throwing Physical Damage"]={{[1]={flags=0,keywordFlags=1024,name="PhysicalDamage",type="INC",value=54}},nil}
 c["54% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=54}},nil}
 c["54% of Damage Dealt to Mana Before Health"]={{[1]={flags=0,keywordFlags=0,name="DamageToManaBeforeHealth",type="BASE",value=54}},nil}
 c["54% of Mana Spent Gained as Ward"]={{[1]={flags=0,keywordFlags=0,name="ManaSpentGainedAsWard",type="BASE",value=54}},nil}
-c["54% reduced Bonus Damage Taken from Critical Strikes"]={{[1]={flags=0,keywordFlags=0,name="ReduceCritExtraDamage",type="BASE",value=54}},nil}
 c["540 Health Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="LifeOnPotionUse",type="BASE",value=540}},nil}
 c["540% Frostbite Chance per Second with Frost Wall"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=540},notSupported=true},nil}
 c["55 Ward Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="WardOnPotionUse",type="BASE",value=55}},nil}
@@ -15591,21 +15598,31 @@ c["55% Increased critical strike chance with Shield Throw"]={{[1]={[1]={skillNam
 c["55% Increased damage with Vengeance"]={{[1]={[1]={skillName="Vengeance",type="SkillName"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=55}},nil}
 c["55% Increased physical spell damage if you have directly cast a cold spell recently"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=55},notSupported=true},nil}
 c["55% Increased void damage if Echoed recently"]={{[1]={[1]={type="Condition",var="EchoedRecently"},flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=55}},nil}
-c["55% increased Bow Elemental Damage"]={{[1]={flags=0,keywordFlags=2048,name="FireDamage",type="INC",value=55},[2]={flags=0,keywordFlags=2048,name="ColdDamage",type="INC",value=55},[3]={flags=0,keywordFlags=2048,name="LightningDamage",type="INC",value=55}},nil}
 c["55% increased Cold Damage Over Time"]={{[1]={flags=4100,keywordFlags=0,name="ColdDamage",type="INC",value=55}},nil}
 c["55% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=55}},nil}
-c["55% increased Effect of Haste on You"]={{[1]={flags=0,keywordFlags=0,name="HasteEffect",type="INC",value=55},notSupported=true},nil}
+c["55% increased Critical Strike Chance for Totems"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=55}},"  for Totems "}
+c["55% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=55}},nil}
+c["55% increased Damage for Totems"]={{[1]={[1]={scope="totem",type="Scope"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=55}},nil}
+c["55% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=55}},nil}
+c["55% increased Effect of Frenzy on You"]={{[1]={flags=0,keywordFlags=0,name="FrenzyEffect",type="INC",value=55},notSupported=true},nil}
+c["55% increased Effect of Frenzy on You "]={{[1]={flags=0,keywordFlags=0,name="FrenzyEffect",type="INC",value=55},notSupported=true},nil}
+c["55% increased Effect of Haste on You "]={{[1]={flags=0,keywordFlags=0,name="HasteEffect",type="INC",value=55},notSupported=true},nil}
+c["55% increased Effect of Prefixes and Suffixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedAffixEffect",type="INC",value=55}},nil}
 c["55% increased Elemental Critical Strike Chance"]={{[1]={flags=0,keywordFlags=14,name="CritChance",type="INC",value=55}},nil}
 c["55% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=55}},nil}
 c["55% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=55}},nil}
-c["55% increased Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="INC",value=55}},nil}
+c["55% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=55}},nil}
 c["55% increased Minion Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="CritChance",type="INC",value=55}}}},nil}
-c["55% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=55}},nil}
-c["55% increased Throwing Physical Damage"]={{[1]={flags=0,keywordFlags=1024,name="PhysicalDamage",type="INC",value=55}},nil}
+c["55% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=55}}}},nil}
+c["55% increased Necrotic Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=55}},nil}
+c["55% increased Physical Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=55}},nil}
+c["55% increased Physical Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=257,name="CritChance",type="INC",value=55}},nil}
+c["55% increased Throwing Critical Strike Chance"]={{[1]={flags=0,keywordFlags=1024,name="CritChance",type="INC",value=55}},nil}
 c["55% increased Void Damage Over Time"]={{[1]={flags=4112,keywordFlags=0,name="VoidDamage",type="INC",value=55}},nil}
 c["55% of Damage Reflected"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=55}},"  Reflected "}
 c["55% of Shurikens Base Damage converted to Lightning"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=55},notSupported=true},nil}
-c["551% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=551}}}},nil}
+c["55% reduced Bonus Damage Taken from Critical Strikes"]={{[1]={flags=0,keywordFlags=0,name="ReduceCritExtraDamage",type="BASE",value=55}},nil}
+c["550% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=550}}}},nil}
 c["56 Damage Reflected to Attackers"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=56}},"  Reflected to Attackers "}
 c["56 Health Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="LifeOnPotionUse",type="BASE",value=56}},nil}
 c["56 Ward Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="WardOnPotionUse",type="BASE",value=56}},nil}
@@ -15615,60 +15632,47 @@ c["56% Increased Crit Chance per Equipped Dagger"]={{[1]={[1]={type="Multiplier"
 c["56% Increased Crit Chance per Equipped Sword"]={{[1]={[1]={type="Multiplier",var="SwordItem"},flags=0,keywordFlags=0,name="CritChance",type="INC",value=56}},nil}
 c["56% Increased Damage for skills used by Shadows"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=56}},"  for skills used by Shadows "}
 c["56% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=56}},nil}
-c["56% increased Critical Strike Chance for Totems"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=56}},"  for Totems "}
-c["56% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=56}},nil}
-c["56% increased Damage for Totems"]={{[1]={[1]={scope="totem",type="Scope"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=56}},nil}
-c["56% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=56}},nil}
-c["56% increased Effect of Frenzy on You"]={{[1]={flags=0,keywordFlags=0,name="FrenzyEffect",type="INC",value=56},notSupported=true},nil}
-c["56% increased Effect of Frenzy on You "]={{[1]={flags=0,keywordFlags=0,name="FrenzyEffect",type="INC",value=56},notSupported=true},nil}
-c["56% increased Effect of Haste on You "]={{[1]={flags=0,keywordFlags=0,name="HasteEffect",type="INC",value=56},notSupported=true},nil}
-c["56% increased Effect of Prefixes and Suffixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedAffixEffect",type="INC",value=56}},nil}
-c["56% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=56}},nil}
-c["56% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=56}}}},nil}
-c["56% increased Necrotic Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=56}},nil}
-c["56% increased Physical Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=56}},nil}
-c["56% increased Physical Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=257,name="CritChance",type="INC",value=56}},nil}
-c["56% increased Throwing Critical Strike Chance"]={{[1]={flags=0,keywordFlags=1024,name="CritChance",type="INC",value=56}},nil}
+c["56% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=56}},nil}
 c["56% reduced Block Chance"]={{[1]={flags=0,keywordFlags=0,name="BlockChance",type="INC",value=-56}},nil}
-c["56% reduced Bonus Damage Taken from Critical Strikes"]={{[1]={flags=0,keywordFlags=0,name="ReduceCritExtraDamage",type="BASE",value=56}},nil}
 c["57% Increased Cooldown Recovery Speed for Volcanic Orb"]={{[1]={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=0,name="CooldownRecovery",source="",type="INC",value=57}},nil}
 c["57% Increased Critical Strike chance with Flurry"]={{[1]={[1]={skillName="Flurry",type="SkillName"},flags=0,keywordFlags=0,name="CritChance",type="INC",value=57}},"  with  "}
 c["57% Increased Damage while wielding a Bow"]={{[1]={[1]={type="Condition",var="UsingBow"},flags=0,keywordFlags=0,name="Damage",type="INC",value=57}},nil}
 c["57% Increased Damage while wielding a Dagger"]={{[1]={[1]={type="Condition",var="UsingDagger"},flags=0,keywordFlags=0,name="Damage",type="INC",value=57}},nil}
 c["57% Increased Damage while wielding a Sword"]={{[1]={[1]={type="Condition",var="UsingSword"},flags=0,keywordFlags=0,name="Damage",type="INC",value=57}},nil}
 c["57% Increased Necrotic Damage if you have been Hit Recently"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=57},notSupported=true},nil}
-c["57% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=57}},nil}
-c["57% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=57}},nil}
+c["57% increased Area for Area Skills"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=57}},"  for Area Skills "}
+c["57% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=57}},nil}
+c["57% increased Throwing Physical Damage"]={{[1]={flags=0,keywordFlags=1024,name="PhysicalDamage",type="INC",value=57}},nil}
 c["57% of Minion Damage Leeched as Health on Melee Hit"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=8389120,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=57}}}},nil}
 c["57% of Shurikens Base Damage converted to Lightning"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=57},notSupported=true},nil}
-c["58 Ward gained when damage leaves you at low health"]={{[1]={[1]={type="Condition",var="LowLife"},flags=0,keywordFlags=0,name="Ward",type="BASE",value=58}},"  gained when damage leaves you  "}
+c["58 Ward gained when damage leaves you at low health"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=58}},"  gained when damage leaves you at low health "}
 c["58% Increased Ailment Shard Drop Rate"]={{}," Ailment Shard Drop Rate "}
 c["58% Increased Bleed Duration "]={{[1]={[1]={skillName="Bleed",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=58}},nil}
 c["58% Increased Gold Drop Rate"]={{}," Gold Drop Rate "}
 c["58% Increased Ignite Duration "]={{[1]={[1]={skillName="Ignite",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=58}},nil}
 c["58% Increased Spell Damage per Skeletal Mage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=58}},"   per Skeletal Mage "}
 c["58% Reduced Health Cost of Spells"]={{[1]={flags=0,keywordFlags=256,name="Life",type="INC",value=-58}},"  Cost of s "}
-c["58% increased Area for Area Skills"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=58}},"  for Area Skills "}
 c["58% increased Bow Damage"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="INC",value=58}},nil}
 c["58% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=58}},nil}
-c["58% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=58}},nil}
 c["58% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=58}},nil}
 c["58% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=58}},nil}
-c["58% increased Throwing Physical Damage"]={{[1]={flags=0,keywordFlags=1024,name="PhysicalDamage",type="INC",value=58}},nil}
+c["58% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=58}},nil}
 c["58% increased Volatile Zombie Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=58}}," Volatile Zombie  "}
+c["58% increased Volatile Zombie Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=58}}," Volatile Zombie  "}
 c["58% of Damage Dealt to Mana Before Health"]={{[1]={flags=0,keywordFlags=0,name="DamageToManaBeforeHealth",type="BASE",value=58}},nil}
+c["59% increased Cast Speed for Totems"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",value=59}},"  for Totems "}
 c["59% increased Curse Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=59}}," Curse  "}
 c["59% increased Damage While Channelling"]={{[1]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="Damage",type="INC",value=59}},nil}
 c["59% increased Frost Wall Duration"]={{[1]={[1]={skillName="Frost Wall",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=59}},nil}
 c["59% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=59}}}},nil}
+c["59% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=59}}}},nil}
 c["59% increased Minion Spell Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="Damage",type="INC",value=59}}}},nil}
 c["59% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=59}},nil}
-c["59% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=59}},nil}
-c["59% increased Volatile Zombie Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=59}}," Volatile Zombie  "}
+c["59% increased Throwing Attack Speed"]={{[1]={flags=3584,keywordFlags=1024,name="Speed",type="INC",value=59}},nil}
 c["59% of Minion Damage Reflected"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="BASE",value=59}}}},"   Reflected "}
 c["59% of Shurikens Base Damage converted to Lightning"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=59},notSupported=true},nil}
 c["594% Increased Fire Aura Damage"]={{[1]={[1]={skillName="Fire Aura",type="SkillName"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=594}},nil}
-c["595% increased Echo Damage when a skill is Echoed"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=595}}," Echo  when a skill is Echoed "}
+c["594% increased Echo Damage when a skill is Echoed"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=594}}," Echo  when a skill is Echoed "}
 c["6 Acid Flask Cooldown (seconds)"]={{[1]={[1]={skillName="Acid Flask",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=6}},"  Cooldown (seconds) "}
 c["6 Bees Summoned on Potion Use"]={{}," Bees Summoned on Potion Use "}
 c["6 Buff Duration (Seconds)"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="BASE",value=6}}," Buff  (Seconds) "}
@@ -15680,6 +15684,8 @@ c["6 Distance For Max Chance (meters)"]={{}," Distance For Max Chance (meters) "
 c["6 Extra Projectiles"]={{[1]={flags=0,keywordFlags=0,name="ProjectileCount",type="BASE",value=6}},nil}
 c["6 Great Vine Limit"]={{}," Great Vine Limit "}
 c["6 Healing Inside Area"]={{[1]={[1]={skillName="Healing",type="SkillName"},flags=0,keywordFlags=0,name="AreaOfEffect",type="BASE",value=6}},"  Inside  "}
+c["6 Health Gain on Block"]={{[1]={flags=0,keywordFlags=0,name="LifeOnBlock",type="BASE",value=6}},nil}
+c["6 Health Gain on Kill"]={{[1]={flags=0,keywordFlags=0,name="LifeOnKill",type="BASE",value=6}},nil}
 c["6 Health Gain on Stun"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=6}},"  Gain on Stun "}
 c["6 Health Gain per Curse"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=6}},"  Gain per Curse "}
 c["6 Health Gain per stack"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=6}},"  Gain per stack "}
@@ -15721,7 +15727,7 @@ c["6% Flurry Swipes Chance on Attack"]={{},"  Swipes Chance on Attack "}
 c["6% Forged Weapon chance on Kill"]={{}," Forged Weapon chance  "}
 c["6% Glancing Blow Chance with 50 Dexterity"]={{[1]={flags=0,keywordFlags=0,name="GlancingBlowChance",type="BASE",value=6}},"  with 50 Dexterity "}
 c["6% Healing Effectiveness Per Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="HealingEffectiveness",type="BASE",value=6}},nil}
-c["6% Increased Aegis Effect Per Attunement"]={{}," Aegis Effect  "}
+c["6% Increased Aegis Effect Per Attunement"]={{[1]={flags=0,keywordFlags=0,name="Att",type="INC",value=6}}," Aegis Effect Per  "}
 c["6% Increased Area for Infernal Shade per Active Dread Shade"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=6},notSupported=true},nil}
 c["6% Increased Armor When Hit"]={{[1]={flags=8388608,keywordFlags=0,name="Armour",type="INC",value=6}},"  When  "}
 c["6% Increased Armor per Forged Weapon"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=6},notSupported=true},nil}
@@ -15766,8 +15772,8 @@ c["6% Reduced Rage Decay"]={{}," Rage Decay "}
 c["6% Remaining Cooldown Recovered"]={{}," Remaining Cooldown Recovered "}
 c["6% Remaining Cooldown Recovered On Falcon Hit"]={{}," Remaining Cooldown Recovered On Falc "}
 c["6% Retribution Chance When Hit"]={{}," Retribution Chance When  "}
-c["6% Shared Increased Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="MORE",value=6}}," Shared Increased  "}
-c["6% Shared Increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="MORE",value=6}}," Shared Increased  "}
+c["6% Shared Increased Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=6},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=6}}}},nil}
+c["6% Shared Increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=6},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=6}}}},nil}
 c["6% Soul Wisp Chance On Kill"]={{}," Soul Wisp Chance  "}
 c["6% Throwing Attack Damage"]={{[1]={flags=0,keywordFlags=1024,name="Damage",type="MORE",value=6}},"  Attack  "}
 c["6% chance to gain 20 mana when you directly cast Runebolt or Fireball"]={{},"20 mana when you directly cast Runebolt or Fireball "}
@@ -15778,35 +15784,40 @@ c["6% increased Bow Attack Speed"]={{[1]={flags=3584,keywordFlags=2048,name="Spe
 c["6% increased Cold Spell Cast Speed"]={{[1]={flags=256,keywordFlags=260,name="Speed",type="INC",value=6}},nil}
 c["6% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=6}},nil}
 c["6% increased Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=6}},nil}
+c["6% increased Damage for Totems"]={{[1]={[1]={scope="totem",type="Scope"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=6}},nil}
 c["6% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=6}},nil}
 c["6% increased Echo Damage when a skill is Echoed"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=6}}," Echo  when a skill is Echoed "}
+c["6% increased Elemental Damage Over Time"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=6},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=6},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=6}},"  Over Time "}
+c["6% increased Fire Damage Taken on Hit"]={{[1]={flags=8388608,keywordFlags=0,name="FireDamageTaken",type="INC",value=6}},nil}
 c["6% increased Fire Spell Cast Speed"]={{[1]={flags=256,keywordFlags=264,name="Speed",type="INC",value=6}},nil}
 c["6% increased Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="INC",value=6}},nil}
 c["6% increased Lightning Spell Cast Speed"]={{[1]={flags=256,keywordFlags=258,name="Speed",type="INC",value=6}},nil}
 c["6% increased Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="INC",value=6}},nil}
 c["6% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=6}},nil}
+c["6% increased Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=512,name="Speed",type="INC",value=6}},nil}
+c["6% increased Melee Damage while you have Frenzy"]={{[1]={[1]={type="Condition",var="Frenzy"},flags=0,keywordFlags=512,name="Damage",type="INC",value=6}},nil}
 c["6% increased Melee Elemental Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="INC",value=6},[2]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=6},[3]={flags=0,keywordFlags=512,name="LightningDamage",type="INC",value=6}},nil}
 c["6% increased Minion Bow Attack Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=3584,keywordFlags=2048,name="Speed",type="INC",value=6}}}},nil}
 c["6% increased Minion Cast Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=256,keywordFlags=0,name="Speed",type="INC",value=6}}}},nil}
+c["6% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=6}}}},nil}
 c["6% increased Minion Melee Attack Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=3584,keywordFlags=512,name="Speed",type="INC",value=6}}}},nil}
 c["6% increased Minion Throwing Attack Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=3584,keywordFlags=1024,name="Speed",type="INC",value=6}}}},nil}
 c["6% increased Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=6}},nil}
+c["6% increased Movement Speed While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=6}},nil}
+c["6% increased Necrotic Damage Taken on Hit"]={{[1]={flags=8388608,keywordFlags=0,name="NecroticDamageTaken",type="INC",value=6}},nil}
 c["6% increased Speed and Distance with Flame Rush"]={{}," Speed and Distance with  "}
 c["6% increased Throwing Attack Speed"]={{[1]={flags=3584,keywordFlags=1024,name="Speed",type="INC",value=6}},nil}
 c["6% increased Throwing Damage"]={{[1]={flags=0,keywordFlags=1024,name="Damage",type="INC",value=6}},nil}
 c["6% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=6}},nil}
+c["6% increased Void Damage Taken on Hit"]={{[1]={flags=8388608,keywordFlags=0,name="VoidDamageTaken",type="INC",value=6}},nil}
 c["6% increased area for Lightning Area Skills"]={{[1]={flags=0,keywordFlags=2,name="AreaOfEffect",type="INC",value=6}},"  for  Area Skills "}
 c["6% less Damage Taken for Totems"]={{[1]={flags=0,keywordFlags=0,name="DamageTaken",type="MORE",value=-6}},"  for Totems "}
 c["6% less Physical Damage Taken on Block"]={{[1]={[1]={type="Condition",var="Blocking"},flags=0,keywordFlags=0,name="PhysicalDamageTaken",type="MORE",value=-6}},nil}
 c["6% less Void Damage Taken on Block"]={{[1]={[1]={type="Condition",var="Blocking"},flags=0,keywordFlags=0,name="VoidDamageTaken",type="MORE",value=-6}},nil}
-c["6% more Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="MORE",value=6}},nil}
 c["6% more Spell Damage per Negative Ailment on the Target (up to 8)"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="MORE",value=6}},"   per Negative Ailment on the Target  "}
 c["6% of Current Health converted to Ward when you directly cast a Necrotic Spell"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=6},notSupported=true},nil}
 c["6% of Damage Dealt to Mana Before Health"]={{[1]={flags=0,keywordFlags=0,name="DamageToManaBeforeHealth",type="BASE",value=6}},nil}
-c["6% of Damage Leeched as Health While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=6}},nil}
-c["6% of Damage dealt by Harvest Leeched as Health"]={{[1]={[1]={skillName="Harvest",type="SkillName"},flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=6}},"  dealt by   "}
 c["6% of Elemental Damage Leeched as Health on Crit"]={{[1]={flags=0,keywordFlags=0,name="FireDamageLifeLeech",type="BASE",value=6},[2]={flags=0,keywordFlags=0,name="ColdDamageLifeLeech",type="BASE",value=6},[3]={flags=0,keywordFlags=0,name="LightningDamageLifeLeech",type="BASE",value=6}},"   on Crit "}
-c["6% of Lightning Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=0,name="LightningDamageLifeLeech",type="BASE",value=6}},nil}
 c["6% of Maximum Health gained as Endurance Threshold"]={{[1]={flags=0,keywordFlags=0,name="LifeAsEnduranceThreshold",type="BASE",value=6}},nil}
 c["6% of Melee Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=512,name="DamageLifeLeech",type="BASE",value=6}},nil}
 c["6% of Minion Current Health Drained per Second"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="BASE",value=6}}}},"  Current  Drained per Second "}
@@ -15818,6 +15829,7 @@ c["6% reduced Damage Taken on Block"]={{[1]={[1]={type="Condition",var="Blocking
 c["60 Buff Limit"]={{}," Buff Limit "}
 c["60 Freeze Rate"]={{[1]={flags=0,keywordFlags=0,name="FreezeRate",type="BASE",value=60}},nil}
 c["60 Healing"]={{[1]={[1]={skillName="Healing",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=60}},nil}
+c["60 Health Gain on Kill"]={{[1]={flags=0,keywordFlags=0,name="LifeOnKill",type="BASE",value=60}},nil}
 c["60 Mana Consumed Per Echo"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=60}},"  Consumed Per Echo "}
 c["60 Spell Void Damage On Hit"]={{[1]={flags=8388608,keywordFlags=256,name="VoidDamage",type="BASE",value=60}},nil}
 c["60 Ward Gain On Start"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=60}},"  Gain On Start "}
@@ -15846,12 +15858,27 @@ c["60% Maximum Rate of Fire Increase"]={{}," Maximum Rate of  Increase "}
 c["60% Maximum Spirit Frequency Bonus"]={{}," Maximum Spirit Frequency Bonus "}
 c["60% Maximum Target Area Reduction"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="BASE",value=60}}," Maximum Target  Reduction "}
 c["60% More Damage Cap"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=60}},"  Cap "}
-c["60% increased Cast Speed for Totems"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",value=60}},"  for Totems "}
+c["60% increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=60}},nil}
+c["60% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=60}},nil}
+c["60% increased Damage Over Time While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=4096,keywordFlags=0,name="Damage",type="INC",value=60}},nil}
+c["60% increased Damage for Totems"]={{[1]={[1]={scope="totem",type="Scope"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=60}},nil}
+c["60% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=60}},nil}
 c["60% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=60}},nil}
+c["60% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=60}},nil}
+c["60% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=60}},nil}
+c["60% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=60}},nil}
+c["60% increased Melee Cold Damage"]={{[1]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=60}},nil}
+c["60% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=60}},nil}
+c["60% increased Melee Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=512,name="Damage",type="INC",value=60}},nil}
+c["60% increased Melee Physical Damage"]={{[1]={flags=0,keywordFlags=512,name="PhysicalDamage",type="INC",value=60}},nil}
+c["60% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=60}}}},nil}
 c["60% increased Minion Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=60}}}},nil}
-c["60% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=60}}}},nil}
-c["60% increased Throwing Attack Speed"]={{[1]={flags=3584,keywordFlags=1024,name="Speed",type="INC",value=60}},nil}
+c["60% increased Minion Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="CritChance",type="INC",value=60}}}},nil}
+c["60% increased Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=60}},nil}
+c["60% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=60}},nil}
+c["60% increased Spell Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=256,name="Damage",type="INC",value=60}},nil}
 c["60% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=60}},nil}
+c["60% increased area for Minion Area Skills"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=60}}}},"  for  Area Skills "}
 c["60% of Necrotic Damage Taken as Physical"]={{[1]={flags=0,keywordFlags=1,name="NecroticDamageTaken",type="BASE",value=60}},"  as  "}
 c["60% of Physical Damage Taken as Fire"]={{[1]={flags=0,keywordFlags=8,name="PhysicalDamageTaken",type="BASE",value=60}},"  as  "}
 c["60% of Poison Damage Taken as Physical"]={{[1]={flags=0,keywordFlags=1,name="PoisonDamageTaken",type="BASE",value=60}},"  as  "}
@@ -15859,36 +15886,22 @@ c["60% of Potion Health Converted to Ward"]={{[1]={flags=0,keywordFlags=0,name="
 c["60% of Shuriken Base Damage converted to Lightning"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=60},notSupported=true},nil}
 c["60% of Shurikens Base Damage converted to Lightning"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=60},notSupported=true},nil}
 c["60% of Void Damage Taken as Physical"]={{[1]={flags=0,keywordFlags=1,name="VoidDamageTaken",type="BASE",value=60}},"  as  "}
+c["60% reduced Bonus Damage Taken from Critical Strikes"]={{[1]={flags=0,keywordFlags=0,name="ReduceCritExtraDamage",type="BASE",value=60}},nil}
 c["600 Armour Required For Maximum Damage"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=600}},"  Required For Maximum Damage "}
 c["61 Ward gained when you use Smoke Bomb"]={{[1]={[1]={skillName="Smoke Bomb",type="SkillName"},flags=0,keywordFlags=0,name="WardGainOnUse_SmokeBomb",source="",type="BASE",value=61},notSupported=true},nil}
 c["61% Chance to gain a Storm Stack when you use Gathering Storm and hit an enemy"]={{},"a Storm Stack when you use Gathering Storm and hit an enemy "}
 c["61% Increased Critical Strike chance with Flurry"]={{[1]={[1]={skillName="Flurry",type="SkillName"},flags=0,keywordFlags=0,name="CritChance",type="INC",value=61}},"  with  "}
+c["61% increased Area for Area Skills"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=61}},"  for Area Skills "}
 c["61% increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=61}},nil}
 c["61% increased Cold Damage Over Time"]={{[1]={flags=4100,keywordFlags=0,name="ColdDamage",type="INC",value=61}},nil}
 c["61% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=61}},nil}
-c["61% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=61}},nil}
-c["61% increased Damage Over Time While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=4096,keywordFlags=0,name="Damage",type="INC",value=61}},nil}
-c["61% increased Damage for Totems"]={{[1]={[1]={scope="totem",type="Scope"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=61}},nil}
-c["61% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=61}},nil}
+c["61% increased Curse Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=61}}," Curse  "}
 c["61% increased Elemental Damage Over Time"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=61},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=61},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=61}},"  Over Time "}
 c["61% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=61}},nil}
-c["61% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=61}},nil}
-c["61% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=61}},nil}
-c["61% increased Melee Cold Damage"]={{[1]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=61}},nil}
-c["61% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=61}},nil}
-c["61% increased Melee Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=512,name="Damage",type="INC",value=61}},nil}
 c["61% increased Melee Elemental Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="INC",value=61},[2]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=61},[3]={flags=0,keywordFlags=512,name="LightningDamage",type="INC",value=61}},nil}
-c["61% increased Melee Physical Damage"]={{[1]={flags=0,keywordFlags=512,name="PhysicalDamage",type="INC",value=61}},nil}
 c["61% increased Minion Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="CritChance",type="INC",value=61}}}},nil}
-c["61% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=61}}}},nil}
 c["61% increased Minion Damage Over Time"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=4096,keywordFlags=0,name="Damage",type="INC",value=61}}}},nil}
-c["61% increased Minion Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="CritChance",type="INC",value=61}}}},nil}
-c["61% increased Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=61}},nil}
-c["61% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=61}},nil}
-c["61% increased Spell Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=256,name="Damage",type="INC",value=61}},nil}
 c["61% increased Void Damage Over Time"]={{[1]={flags=4112,keywordFlags=0,name="VoidDamage",type="INC",value=61}},nil}
-c["61% increased area for Minion Area Skills"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=61}}}},"  for  Area Skills "}
-c["61% reduced Bonus Damage Taken from Critical Strikes"]={{[1]={flags=0,keywordFlags=0,name="ReduceCritExtraDamage",type="BASE",value=61}},nil}
 c["62 Ward Gained on Potion Use per 10 Intelligence"]={{[1]={[1]={div=10,stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="WardOnPotionUse",type="BASE",value=62}},nil}
 c["62% Chance for 3 additional projectiles when you directly cast Chaos Bolts"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=62},notSupported=true},nil}
 c["62% Increased Armor Shred Effect "]={{[1]={flags=0,keywordFlags=0,name="ArmorShredEffect",type="INC",value=62}},nil}
@@ -15897,14 +15910,21 @@ c["62% Increased Aspect of the Lynx Effect"]={{},"  Effect "}
 c["62% Increased Aspect of the Shark Effect"]={{},"  Effect "}
 c["62% Increased Damage Over Time while you have an Ailment Overload"]={{[1]={[1]={type="Condition",var="HaveAilmentOverload"},flags=4096,keywordFlags=0,name="Damage",type="INC",value=62}},nil}
 c["62% Increased critical strike chance with Shield Throw"]={{[1]={[1]={skillName="Shield Throw",type="SkillName"},flags=0,keywordFlags=0,name="CritChance",type="INC",value=62}},"  with  "}
-c["62% increased Area for Area Skills"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=62}},"  for Area Skills "}
-c["62% increased Curse Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=62}}," Curse  "}
+c["62% increased Critical Strike Chance for Totems"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=62}},"  for Totems "}
+c["62% increased Elemental Damage Over Time"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=62},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=62},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=62}},"  Over Time "}
 c["62% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=62}},nil}
+c["62% increased Melee Elemental Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="INC",value=62},[2]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=62},[3]={flags=0,keywordFlags=512,name="LightningDamage",type="INC",value=62}},nil}
 c["62% increased Melee Void Damage"]={{[1]={flags=0,keywordFlags=512,name="VoidDamage",type="INC",value=62}},nil}
+c["62% increased Necrotic Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=62}},nil}
 c["62% increased Physical Damage Over Time"]={{[1]={flags=4097,keywordFlags=0,name="PhysicalDamage",type="INC",value=62}},nil}
+c["62% increased Physical Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=62}},nil}
+c["62% increased Physical Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=257,name="CritChance",type="INC",value=62}},nil}
+c["62% increased Throwing Critical Strike Chance"]={{[1]={flags=0,keywordFlags=1024,name="CritChance",type="INC",value=62}},nil}
 c["62% increased Void Damage Over Time"]={{[1]={flags=4112,keywordFlags=0,name="VoidDamage",type="INC",value=62}},nil}
 c["62% of Shurikens Base Damage converted to Lightning"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=62},notSupported=true},nil}
 c["62% of Volcanic Orb speed modifiers also apply to Flame Rush speed and distance"]={{[1]={[1]={skillName="Volcanic Orb",type="SkillName"},flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Runemaster 06 Flame Rush",type="BASE",value=62}},"  speed modifiers also apply  speed and distance "}
+c["62% reduced Bonus Damage Taken from Critical Strikes"]={{[1]={flags=0,keywordFlags=0,name="ReduceCritExtraDamage",type="BASE",value=62}},nil}
+c["63 Health Gain on Block"]={{[1]={flags=0,keywordFlags=0,name="LifeOnBlock",type="BASE",value=63}},nil}
 c["63 Mana Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="ManaOnPotionUse",type="BASE",value=63}},nil}
 c["63 Ward gained when you use Smoke Bomb"]={{[1]={[1]={skillName="Smoke Bomb",type="SkillName"},flags=0,keywordFlags=0,name="WardGainOnUse_SmokeBomb",source="",type="BASE",value=63},notSupported=true},nil}
 c["63% Chance for Lightning Blast to Chain 4 Additional Times"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=63},notSupported=true},nil}
@@ -15919,36 +15939,36 @@ c["63% Increased Damage with Shadow Cascade per Active Shadow"]={{[1]={[1]={skil
 c["63% Increased Healing Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="HealingEffectiveness",type="INC",value=63}},nil}
 c["63% Increased Leech Rate"]={{[1]={flags=0,keywordFlags=0,name="LeechRate",type="INC",value=63}},nil}
 c["63% Increased area of effect with Acid Flask"]={{[1]={[1]={skillName="Acid Flask",type="SkillName"},flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=63}},"  with  "}
-c["63% increased Critical Strike Chance for Totems"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=63}},"  for Totems "}
+c["63% increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=63}},nil}
 c["63% increased Curse Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=63}}," Curse  "}
 c["63% increased Elemental Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=63},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=63},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=63}},nil}
-c["63% increased Elemental Damage Over Time"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=63},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=63},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=63}},"  Over Time "}
 c["63% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=63}},nil}
 c["63% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=63}},nil}
 c["63% increased Melee Cold Damage"]={{[1]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=63}},nil}
-c["63% increased Melee Elemental Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="INC",value=63},[2]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=63},[3]={flags=0,keywordFlags=512,name="LightningDamage",type="INC",value=63}},nil}
+c["63% increased Minion Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="CritChance",type="INC",value=63}}}},nil}
 c["63% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=63}}}},nil}
-c["63% increased Necrotic Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=63}},nil}
-c["63% increased Physical Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=63}},nil}
 c["63% increased Physical Resistance"]={{[1]={flags=0,keywordFlags=0,name="PhysicalResist",type="INC",value=63}},nil}
-c["63% increased Physical Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=257,name="CritChance",type="INC",value=63}},nil}
 c["63% increased Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=63}},nil}
-c["63% increased Throwing Critical Strike Chance"]={{[1]={flags=0,keywordFlags=1024,name="CritChance",type="INC",value=63}},nil}
 c["63% less Damage depending on Area Level for You and your Minions"]={{[1]={[1]={limit=75,type="Multiplier",valueCap=63,var="AreaLevel"},flags=0,keywordFlags=0,name="Damage",source="",type="MORE",value=-0.84}},nil}
+c["63% less Fire Damage Taken on Block"]={{[1]={[1]={type="Condition",var="Blocking"},flags=0,keywordFlags=0,name="FireDamageTaken",type="MORE",value=-63}},nil}
 c["63% less Hungering Souls Damage"]={{[1]={[1]={skillName="Hungering Souls",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=-63}},nil}
 c["63% of Overkill damage from your hits and your minion hits dealt as direct damage to surrounding enemies"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=8388608,keywordFlags=0,name="Damage",type="BASE",value=63}}}}," Overkill  from your s and your  s dealt as direct damage to surrounding enemies "}
 c["63% reduced Bonus Damage Taken from Critical Strikes"]={{[1]={flags=0,keywordFlags=0,name="ReduceCritExtraDamage",type="BASE",value=63}},nil}
 c["630 Health Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="LifeOnPotionUse",type="BASE",value=630}},nil}
-c["631% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=631}},nil}
+c["630% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=630}},nil}
 c["64 Health Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="LifeOnPotionUse",type="BASE",value=64}},nil}
+c["64 Ward Gain on Kill"]={{[1]={flags=0,keywordFlags=0,name="WardOnKill",type="BASE",value=64}},nil}
 c["64% Increased Chance To Find Potions"]={{[1]={flags=0,keywordFlags=0,name="ChanceToFindPotions",type="INC",value=64}},nil}
 c["64% Increased Stun Chance"]={{[1]={flags=0,keywordFlags=0,name="StunChance",type="INC",value=64}},nil}
 c["64% More Infernal Shade Damage per active Wraith against Bosses and Rare Enemies"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=64},notSupported=true},nil}
-c["64% increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=64}},nil}
+c["64% increased Cold Damage Over Time"]={{[1]={flags=4100,keywordFlags=0,name="ColdDamage",type="INC",value=64}},nil}
+c["64% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=64}},nil}
+c["64% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=64}},nil}
 c["64% increased Minion Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="CritChance",type="INC",value=64}}}},nil}
+c["64% increased Void Damage Over Time"]={{[1]={flags=4112,keywordFlags=0,name="VoidDamage",type="INC",value=64}},nil}
 c["64% less Damage depending on Area Level for You and your Minions"]={{[1]={[1]={limit=75,type="Multiplier",valueCap=64,var="AreaLevel"},flags=0,keywordFlags=0,name="Damage",source="",type="MORE",value=-0.85333333333333}},nil}
-c["64% less Fire Damage Taken on Block"]={{[1]={[1]={type="Condition",var="Blocking"},flags=0,keywordFlags=0,name="FireDamageTaken",type="MORE",value=-64}},nil}
 c["64% of Shurikens Base Damage converted to Lightning"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=64},notSupported=true},nil}
+c["64% reduced Channel Cost"]={{[1]={flags=0,keywordFlags=0,name="ChannelCost",type="INC",value=-64}},nil}
 c["644% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=644}}}},nil}
 c["648% Increased Damage for skills used by Shadows"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=648}},"  for skills used by Shadows "}
 c["65 Health Gained when you receive a Glancing Blow"]={{[1]={flags=0,keywordFlags=0,name="LifeOnGlancingBlow",type="BASE",value=65}},nil}
@@ -15968,17 +15988,30 @@ c["65% Increased Stun Duration"]={{[1]={flags=0,keywordFlags=0,name="EnemyStunDu
 c["65% Increased cold spell damage if you have directly cast a physical spell recently"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=65},notSupported=true},nil}
 c["65% Increased physical spell damage if you have directly cast a cold spell recently"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=65},notSupported=true},nil}
 c["65% Serpent Damage Buff on Heal"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=65}}," Serpent  Buff on Heal "}
-c["65% increased Cold Damage Over Time"]={{[1]={flags=4100,keywordFlags=0,name="ColdDamage",type="INC",value=65}},nil}
-c["65% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=65}},nil}
-c["65% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=65}},nil}
+c["65% increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=65}},nil}
+c["65% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=65}},nil}
+c["65% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=65}},nil}
+c["65% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=65}},nil}
+c["65% increased Elemental Critical Strike Chance"]={{[1]={flags=0,keywordFlags=14,name="CritChance",type="INC",value=65}},nil}
+c["65% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=65}},nil}
+c["65% increased Freeze Rate Multiplier"]={{[1]={flags=0,keywordFlags=0,name="FreezeRateMultiplier",type="INC",value=65}},nil}
+c["65% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=65}},nil}
 c["65% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=65}},nil}
-c["65% increased Minion Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="CritChance",type="INC",value=65}}}},nil}
-c["65% increased Void Damage Over Time"]={{[1]={flags=4112,keywordFlags=0,name="VoidDamage",type="INC",value=65}},nil}
+c["65% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=65}},nil}
+c["65% increased Minion Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=65}}}},nil}
+c["65% increased Minion Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=65}}}},nil}
+c["65% increased Minion Melee Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="Damage",type="INC",value=65}}}},nil}
+c["65% increased Minion Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=65}}}},nil}
+c["65% increased Minion Spell Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="Damage",type="INC",value=65}}}},nil}
+c["65% increased Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=65}},nil}
+c["65% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=65}},nil}
+c["65% increased Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=65}},nil}
+c["65% increased Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=256,name="CritChance",type="INC",value=65}},nil}
+c["65% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=65}},nil}
 c["65% less Damage depending on Area Level for You and your Minions"]={{[1]={[1]={limit=75,type="Multiplier",valueCap=65,var="AreaLevel"},flags=0,keywordFlags=0,name="Damage",source="",type="MORE",value=-0.86666666666667}},nil}
 c["65% of Damage Reflected while you have Lightning Aegis"]={{[1]={[1]={type="Condition",var="HaveLightningAegis"},flags=0,keywordFlags=0,name="Damage",type="BASE",value=65}},"  Reflected  "}
 c["65% of Mana Spent Gained as Ward"]={{[1]={flags=0,keywordFlags=0,name="ManaSpentGainedAsWard",type="BASE",value=65}},nil}
 c["65% of Shurikens Base Damage converted to Lightning"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=65},notSupported=true},nil}
-c["65% reduced Channel Cost"]={{[1]={flags=0,keywordFlags=0,name="ChannelCost",type="INC",value=-65}},nil}
 c["66 Ward Gained on Shadow Creation"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=66}},"  Gained on Shadow Creation "}
 c["66% Chance to Chill Attackers"]={{[1]={flags=0,keywordFlags=0,name="ChanceToChillAttackers",type="BASE",value=66}},nil}
 c["66% Chance to Shock Attackers"]={{[1]={flags=0,keywordFlags=0,name="ChanceToShockAttackers",type="BASE",value=66}},nil}
@@ -15991,69 +16024,56 @@ c["66% Increased Fire Aura Damage"]={{[1]={[1]={skillName="Fire Aura",type="Skil
 c["66% Increased Health Leech"]={{[1]={flags=0,keywordFlags=0,name="DamageLifeLeech",type="INC",value=66}},nil}
 c["66% Increased Leech Rate"]={{[1]={flags=0,keywordFlags=0,name="LeechRate",type="INC",value=66}},nil}
 c["66% Increased Melee Stun Chance"]={{[1]={flags=0,keywordFlags=512,name="StunChance",type="INC",value=66}},nil}
-c["66% increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=66}},nil}
-c["66% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=66}},nil}
 c["66% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=66}},nil}
 c["66% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=66}},nil}
-c["66% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=66}},nil}
-c["66% increased Elemental Critical Strike Chance"]={{[1]={flags=0,keywordFlags=14,name="CritChance",type="INC",value=66}},nil}
+c["66% increased Damage for Totems"]={{[1]={[1]={scope="totem",type="Scope"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=66}},nil}
+c["66% increased Echo Damage when a skill is Echoed"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=66}}," Echo  when a skill is Echoed "}
 c["66% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=66}},nil}
-c["66% increased Freeze Rate Multiplier"]={{[1]={flags=0,keywordFlags=0,name="FreezeRateMultiplier",type="INC",value=66}},nil}
-c["66% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=66}},nil}
-c["66% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=66}},nil}
 c["66% increased Melee Physical Damage"]={{[1]={flags=0,keywordFlags=512,name="PhysicalDamage",type="INC",value=66}},nil}
-c["66% increased Minion Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=66}}}},nil}
+c["66% increased Minion Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=66}}}},nil}
 c["66% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=66}}}},nil}
-c["66% increased Minion Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=66}}}},nil}
-c["66% increased Minion Melee Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="Damage",type="INC",value=66}}}},nil}
-c["66% increased Minion Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=66}}}},nil}
-c["66% increased Minion Spell Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="Damage",type="INC",value=66}}}},nil}
-c["66% increased Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=66}},nil}
-c["66% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=66}},nil}
-c["66% increased Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=66}},nil}
-c["66% increased Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=256,name="CritChance",type="INC",value=66}},nil}
-c["66% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=66}},nil}
+c["66% increased Throwing Physical Damage"]={{[1]={flags=0,keywordFlags=1024,name="PhysicalDamage",type="INC",value=66}},nil}
+c["66% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=66}},nil}
 c["67% Increased Armor Shred Duration "]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=67}},"  Shred Duration "}
 c["67% Increased Damage with Hammer Throw"]={{[1]={[1]={skillName="Hammer Throw",type="SkillName"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=67}},nil}
 c["67% Increased damage with Smelter's Wrath"]={{[1]={[1]={skillName="Smelter's Wrath",type="SkillName"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=67}},nil}
 c["67% Increased spell critical strike chance. This effect is doubled if you have 300 or more maximum mana."]={{[1]={[1]={mult=2,stat="Mana",threshold=300,type="StatThreshold"},flags=0,keywordFlags=256,name="CritChance",type="INC",value=67}},nil}
 c["67% increased Area for Area Skills"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=67}},"  for Area Skills "}
-c["67% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=67}},nil}
+c["67% increased Damage Over Time While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=4096,keywordFlags=0,name="Damage",type="INC",value=67}},nil}
 c["67% increased Damage for Totems"]={{[1]={[1]={scope="totem",type="Scope"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=67}},nil}
-c["67% increased Echo Damage when a skill is Echoed"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=67}}," Echo  when a skill is Echoed "}
-c["67% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=67}},nil}
-c["67% increased Minion Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=67}}}},nil}
-c["67% increased Throwing Physical Damage"]={{[1]={flags=0,keywordFlags=1024,name="PhysicalDamage",type="INC",value=67}},nil}
-c["67% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=67}},nil}
+c["67% increased Melee Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=512,name="Damage",type="INC",value=67}},nil}
+c["67% increased Minion Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="CritChance",type="INC",value=67}}}},nil}
+c["67% increased Spell Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=256,name="Damage",type="INC",value=67}},nil}
+c["67% less Damage depending on Area Level for You and your Minions"]={{[1]={[1]={limit=75,type="Multiplier",valueCap=67,var="AreaLevel"},flags=0,keywordFlags=0,name="Damage",source="",type="MORE",value=-0.89333333333333}},nil}
 c["67% of Damage Reflected"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=67}},"  Reflected "}
+c["68 Health Gain on Kill"]={{[1]={flags=0,keywordFlags=0,name="LifeOnKill",type="BASE",value=68}},nil}
 c["68 Ward Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="WardOnPotionUse",type="BASE",value=68}},nil}
-c["68 Ward gained when damage leaves you at low health"]={{[1]={[1]={type="Condition",var="LowLife"},flags=0,keywordFlags=0,name="Ward",type="BASE",value=68}},"  gained when damage leaves you  "}
+c["68 Ward gained when damage leaves you at low health"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=68}},"  gained when damage leaves you at low health "}
 c["68% Increased Damage with Dive Bomb"]={{[1]={[1]={skillName="Dive Bomb",type="SkillName"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=68}},nil}
 c["68% Increased Leech Rate"]={{[1]={flags=0,keywordFlags=0,name="LeechRate",type="INC",value=68}},nil}
 c["68% Increased Skeletal Mage Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=68}}," Skeletal Mage  "}
 c["68% Increased Spell Damage per Skeletal Mage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=68}},"   per Skeletal Mage "}
 c["68% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=68}},nil}
 c["68% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=68}},nil}
-c["68% increased Damage Over Time While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=4096,keywordFlags=0,name="Damage",type="INC",value=68}},nil}
-c["68% increased Damage for Totems"]={{[1]={[1]={scope="totem",type="Scope"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=68}},nil}
+c["68% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=68}},nil}
 c["68% increased Health Regen While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=68}},nil}
 c["68% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=68}},nil}
 c["68% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=68}},nil}
-c["68% increased Melee Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=512,name="Damage",type="INC",value=68}},nil}
+c["68% increased Melee Elemental Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="INC",value=68},[2]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=68},[3]={flags=0,keywordFlags=512,name="LightningDamage",type="INC",value=68}},nil}
 c["68% increased Minion Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=68}}}},nil}
 c["68% increased Minion Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=68}}}},nil}
 c["68% increased Minion Melee Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="Damage",type="INC",value=68}}}},nil}
 c["68% increased Minion Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=68}}}},nil}
-c["68% increased Minion Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="CritChance",type="INC",value=68}}}},nil}
 c["68% increased Minion Spell Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="Damage",type="INC",value=68}}}},nil}
 c["68% increased Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=68}},nil}
 c["68% increased Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=68}},nil}
 c["68% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=68}},nil}
-c["68% increased Spell Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=256,name="Damage",type="INC",value=68}},nil}
 c["68% less Damage depending on Area Level for You and your Minions"]={{[1]={[1]={limit=75,type="Multiplier",valueCap=68,var="AreaLevel"},flags=0,keywordFlags=0,name="Damage",source="",type="MORE",value=-0.90666666666667}},nil}
 c["68% less Void Damage Taken on Block"]={{[1]={[1]={type="Condition",var="Blocking"},flags=0,keywordFlags=0,name="VoidDamageTaken",type="MORE",value=-68}},nil}
 c["68% of Mana Spent Gained as Ward"]={{[1]={flags=0,keywordFlags=0,name="ManaSpentGainedAsWard",type="BASE",value=68}},nil}
 c["68% reduced Bonus Damage Taken from Critical Strikes"]={{[1]={flags=0,keywordFlags=0,name="ReduceCritExtraDamage",type="BASE",value=68}},nil}
+c["69 Health Gain on Block"]={{[1]={flags=0,keywordFlags=0,name="LifeOnBlock",type="BASE",value=69}},nil}
+c["69 Ward Gain on Kill"]={{[1]={flags=0,keywordFlags=0,name="WardOnKill",type="BASE",value=69}},nil}
 c["69% Increased Armor Shred Effect "]={{[1]={flags=0,keywordFlags=0,name="ArmorShredEffect",type="INC",value=69}},nil}
 c["69% Increased Bleed Duration "]={{[1]={[1]={skillName="Bleed",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=69}},nil}
 c["69% Increased Bleed Duration for Minions "]={{[1]={[1]={scope="minion",type="Scope"},[2]={skillName="Bleed",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=69}},nil}
@@ -16061,12 +16081,16 @@ c["69% Increased Damage for skills used by Shadows"]={{[1]={flags=0,keywordFlags
 c["69% Increased Stun Chance"]={{[1]={flags=0,keywordFlags=0,name="StunChance",type="INC",value=69}},nil}
 c["69% Increased critical strike chance with Shield Throw"]={{[1]={[1]={skillName="Shield Throw",type="SkillName"},flags=0,keywordFlags=0,name="CritChance",type="INC",value=69}},"  with  "}
 c["69% chance to gain 20 mana when you directly cast Runebolt or Fireball"]={{},"20 mana when you directly cast Runebolt or Fireball "}
+c["69% increased Critical Strike Chance for Totems"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=69}},"  for Totems "}
 c["69% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=69}},nil}
-c["69% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=69}},nil}
-c["69% increased Melee Elemental Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="INC",value=69},[2]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=69},[3]={flags=0,keywordFlags=512,name="LightningDamage",type="INC",value=69}},nil}
 c["69% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=69}}}},nil}
+c["69% increased Necrotic Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=69}},nil}
 c["69% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=69}},nil}
+c["69% increased Physical Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=69}},nil}
+c["69% increased Physical Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=257,name="CritChance",type="INC",value=69}},nil}
 c["69% increased Speed and Distance with Flame Rush"]={{}," Speed and Distance with  "}
+c["69% increased Throwing Critical Strike Chance"]={{[1]={flags=0,keywordFlags=1024,name="CritChance",type="INC",value=69}},nil}
+c["69% reduced Bonus Damage Taken from Critical Strikes"]={{[1]={flags=0,keywordFlags=0,name="ReduceCritExtraDamage",type="BASE",value=69}},nil}
 c["7 Cooldown for Ward Gain (seconds)"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=7}}," Cooldown for  Gain (seconds) "}
 c["7 Fireballs Per Second"]={{[1]={[1]={skillName="Fireball",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=7}}," s Per Second "}
 c["7 Health Gain"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=7}},"  Gain "}
@@ -16075,8 +16099,9 @@ c["7 Mana Gain Per Stack"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE"
 c["7 Mana Per Three Seconds (2h weapon)"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=7}},"  Per Three Seconds (2h weapon) "}
 c["7 Minions teleported around you after you use a Traversal Skill"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={skillName="Teleport",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=7}}}}," s ed around you after you use a Traversal Skill "}
 c["7 Ward Gain"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=7}},"  Gain "}
+c["7 Ward Gain on Kill"]={{[1]={flags=0,keywordFlags=0,name="WardOnKill",type="BASE",value=7}},nil}
 c["7 Ward Gained"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=7}},"  Gained "}
-c["7 Ward Gained On Block"]={{[1]={[1]={type="Condition",var="Blocking"},flags=0,keywordFlags=0,name="Ward",type="BASE",value=7}},"  Gained  "}
+c["7 Ward Gained On Block"]={{[1]={flags=0,keywordFlags=0,name="WardOnBlock",type="BASE",value=7}},nil}
 c["7 Ward Granted On Minion Death"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Ward",type="BASE",value=7}}}},"  Granted On  Death "}
 c["7 Ward gained per 10 Missing Mana when you use a Traversal Skill"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=7}},"  gained per 10 Missing Mana when you use a Traversal Skill "}
 c["7% Blood Tether Chance"]={{}," Blood Tether Chance "}
@@ -16138,7 +16163,7 @@ c["7% Minion Increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionM
 c["7% Minion Increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="LightningDamage",type="MORE",value=7}}}},"  Increased  "}
 c["7% More Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="MORE",value=7}},nil}
 c["7% Physical Penetration while wielding a Dagger"]={{[1]={[1]={type="Condition",var="UsingDagger"},flags=0,keywordFlags=0,name="PhysicalPenetration",type="BASE",value=7}},nil}
-c["7% Shared Increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="MORE",value=7}}," Shared Increased  "}
+c["7% Shared Increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=7},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=4096,keywordFlags=0,name="Damage",type="INC",value=7}}}},nil}
 c["7% Ward Chance"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=7}},"  Chance "}
 c["7% chance to throw Acid Flask on Bow Hit"]={{}," to throw  on   "}
 c["7% increased Area for Area Skills"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=7}},"  for Area Skills "}
@@ -16149,12 +16174,10 @@ c["7% increased Bow Attack Speed"]={{[1]={flags=3584,keywordFlags=2048,name="Spe
 c["7% increased Cast Speed"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",value=7}},nil}
 c["7% increased Cold Spell Cast Speed"]={{[1]={flags=256,keywordFlags=260,name="Speed",type="INC",value=7}},nil}
 c["7% increased Cooldown Recovery Speed While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=7}},nil}
-c["7% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=7}},nil}
+c["7% increased Cooldown Recovery Speed for Evade"]={{[1]={flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=7}},"  for Evade "}
 c["7% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=7}},nil}
-c["7% increased Damage for Totems"]={{[1]={[1]={scope="totem",type="Scope"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=7}},nil}
 c["7% increased Effect of Haste on You "]={{[1]={flags=0,keywordFlags=0,name="HasteEffect",type="INC",value=7},notSupported=true},nil}
-c["7% increased Elemental Damage Over Time"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=7},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=7},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=7}},"  Over Time "}
-c["7% increased Fire Damage Taken on Hit"]={{[1]={flags=8388608,keywordFlags=0,name="FireDamageTaken",type="INC",value=7}},nil}
+c["7% increased Elemental Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=7},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=7},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=7}},nil}
 c["7% increased Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="INC",value=7}},nil}
 c["7% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=7}},nil}
 c["7% increased Lightning Spell Cast Speed"]={{[1]={flags=256,keywordFlags=258,name="Speed",type="INC",value=7}},nil}
@@ -16163,22 +16186,20 @@ c["7% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type
 c["7% increased Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=512,name="Speed",type="INC",value=7}},nil}
 c["7% increased Melee Attack Speed for 4 seconds when you use a Potion"]={{[1]={[1]={type="Condition",var="UsedPotionRecently"},flags=3584,keywordFlags=512,name="Speed",type="INC",value=7}},nil}
 c["7% increased Melee Cold Damage"]={{[1]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=7}},nil}
-c["7% increased Melee Damage while you have Frenzy"]={{[1]={[1]={type="Condition",var="Frenzy"},flags=0,keywordFlags=512,name="Damage",type="INC",value=7}},nil}
-c["7% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=7}}}},nil}
+c["7% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=7}}}},nil}
 c["7% increased Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=7}},nil}
 c["7% increased Movement Speed While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=7}},nil}
-c["7% increased Necrotic Damage Taken on Hit"]={{[1]={flags=8388608,keywordFlags=0,name="NecroticDamageTaken",type="INC",value=7}},nil}
-c["7% increased Throwing Attack Speed"]={{[1]={flags=3584,keywordFlags=1024,name="Speed",type="INC",value=7}},nil}
 c["7% increased Throwing Attack Speed for 4 seconds when you use a Potion"]={{[1]={[1]={type="Condition",var="UsedPotionRecently"},flags=3584,keywordFlags=1024,name="Speed",type="INC",value=7}},nil}
 c["7% increased Throwing Damage"]={{[1]={flags=0,keywordFlags=1024,name="Damage",type="INC",value=7}},nil}
-c["7% increased Void Damage Taken on Hit"]={{[1]={flags=8388608,keywordFlags=0,name="VoidDamageTaken",type="INC",value=7}},nil}
 c["7% increased area for Minion Area Skills"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=7}}}},"  for  Area Skills "}
 c["7% less Damage Over Time Taken"]={{[1]={flags=0,keywordFlags=0,name="DamageTakenOverTime",type="MORE",value=-7}},nil}
 c["7% less Damage Taken While Moving"]={{[1]={[1]={type="Condition",var="Moving"},flags=0,keywordFlags=0,name="DamageTaken",type="MORE",value=-7}},nil}
+c["7% less Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="MORE",value=-7}},nil}
 c["7% less Necrotic Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamageTaken",type="MORE",value=-7}},nil}
 c["7% more Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="MORE",value=7}},nil}
 c["7% more Cold Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="ColdDamageTaken",type="MORE",value=7}},nil}
-c["7% more Damage to Ignited Enemies"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="Ignited"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=7}},nil}
+c["7% more Damage to Ignited Enemies"]={{[1]={[1]={skillName="Ignite",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=7}},"  to d Enemies "}
+c["7% more Damage with Vengeance per 10% Block Chance"]={{[1]={[1]={skillName="Vengeance",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=7}},"  with  per 10% Block Chance "}
 c["7% of Current Health Lost per second"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=7}}," Current  Lost per second "}
 c["7% of Current Health converted to Ward when you directly cast a Necrotic Spell"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=7},notSupported=true},nil}
 c["7% of Current Health converted to Ward when you directly cast an Elemental Spell"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=7},notSupported=true},nil}
@@ -16197,6 +16218,7 @@ c["7% of Physical Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=0,name=
 c["7% of Spell Damage Leeched as Health While Channelling"]={{[1]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=256,name="DamageLifeLeech",type="BASE",value=7}},nil}
 c["7% reduced Bonus Damage Taken from Critical Strikes"]={{[1]={flags=0,keywordFlags=0,name="ReduceCritExtraDamage",type="BASE",value=7}},nil}
 c["7% reduced Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="INC",value=-7}},nil}
+c["7% reduced Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=-7}},nil}
 c["70 Damage Reflected to Attackers"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=70}},"  Reflected to Attackers "}
 c["70% Acid Flask Mana Consumption"]={{[1]={[1]={skillName="Acid Flask",type="SkillName"},flags=0,keywordFlags=0,name="Mana",type="BASE",value=70}},"   Consumption "}
 c["70% Chance for Single Projectile When Hit"]={{}," for Single Projectile When  "}
@@ -16220,15 +16242,14 @@ c["70% Reduced Max Distance"]={{}," Max Distance "}
 c["70% Single Projectile Chance"]={{}," Single Projectile Chance "}
 c["70% Volatile Zombies Mana Consuption"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=70}}," Volatile Zombies  Consuption "}
 c["70% increased Cold Damage Over Time"]={{[1]={flags=4100,keywordFlags=0,name="ColdDamage",type="INC",value=70}},nil}
-c["70% increased Critical Strike Chance for Totems"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=70}},"  for Totems "}
+c["70% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=70}},nil}
 c["70% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=70}},nil}
 c["70% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=70}},nil}
-c["70% increased Necrotic Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=70}},nil}
-c["70% increased Physical Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=70}},nil}
-c["70% increased Physical Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=257,name="CritChance",type="INC",value=70}},nil}
-c["70% increased Throwing Critical Strike Chance"]={{[1]={flags=0,keywordFlags=1024,name="CritChance",type="INC",value=70}},nil}
+c["70% increased Melee Elemental Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="INC",value=70},[2]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=70},[3]={flags=0,keywordFlags=512,name="LightningDamage",type="INC",value=70}},nil}
+c["70% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=70}},nil}
 c["70% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=70}},nil}
 c["70% increased Void Damage Over Time"]={{[1]={flags=4112,keywordFlags=0,name="VoidDamage",type="INC",value=70}},nil}
+c["70% increased area for Minion Area Skills"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=70}}}},"  for  Area Skills "}
 c["70% reduced Bonus Damage Taken from Critical Strikes"]={{[1]={flags=0,keywordFlags=0,name="ReduceCritExtraDamage",type="BASE",value=70}},nil}
 c["7000% Added Spell Damage With Supernova"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="MORE",value=7000}},"   With Supernova "}
 c["71 Damage Reflected to Attackers"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=71}},"  Reflected to Attackers "}
@@ -16236,12 +16257,7 @@ c["71% Chance to gain Dusk Shroud when Hit"]={{[1]={flags=0,keywordFlags=0,name=
 c["71% Increased Area with Detonating Arrow"]={{[1]={[1]={skillName="Detonating Arrow",type="SkillName"},flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=71}},"  with  "}
 c["71% Increased Stun Chance"]={{[1]={flags=0,keywordFlags=0,name="StunChance",type="INC",value=71}},nil}
 c["71% Increased area with the first attack of Cinder Strike"]={{[1]={[1]={skillName="Cinder Strike",type="SkillName"},flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=71}},"  with the first attack of  "}
-c["71% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=71}},nil}
-c["71% increased Melee Elemental Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="INC",value=71},[2]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=71},[3]={flags=0,keywordFlags=512,name="LightningDamage",type="INC",value=71}},nil}
 c["71% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=71}}}},nil}
-c["71% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=71}},nil}
-c["71% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=71}},nil}
-c["71% increased area for Minion Area Skills"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=71}}}},"  for  Area Skills "}
 c["71% of Sacrifice Mana Cost consumed to automatically Sacrifice Minions after 2 seconds"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={skillName="Sacrifice",type="SkillName"},flags=0,keywordFlags=0,name="ManaCost",type="BASE",value=71}}}},"   consumed to automatically Sacrifice s after 2 seconds "}
 c["72 Health Gain on Melee Hit"]={{[1]={flags=8389120,keywordFlags=0,name="Life",type="BASE",value=72}},"  Gain  "}
 c["72% Increased Armor Shred Effect "]={{[1]={flags=0,keywordFlags=0,name="ArmorShredEffect",type="INC",value=72}},nil}
@@ -16249,28 +16265,33 @@ c["72% Increased Necrotic Damage if you have been Hit Recently"]={{[1]={flags=0,
 c["72% Increased Stun Duration"]={{[1]={flags=0,keywordFlags=0,name="EnemyStunDuration",type="INC",value=72}},nil}
 c["72% Increased critical strike chance with Shield Throw"]={{[1]={[1]={skillName="Shield Throw",type="SkillName"},flags=0,keywordFlags=0,name="CritChance",type="INC",value=72}},"  with  "}
 c["72% Minion Increased Healing Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="HealingEffectiveness",type="BASE",value=72}}}},"  Increased  "}
+c["72% increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=72}},nil}
+c["72% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=72}},nil}
+c["72% increased Critical Strike Chance for Totems"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=72}},"  for Totems "}
 c["72% increased Echo Damage when a skill is Echoed"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=72}}," Echo  when a skill is Echoed "}
 c["72% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=72}},nil}
+c["72% increased Minion Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="CritChance",type="INC",value=72}}}},nil}
+c["72% increased Necrotic Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=72}},nil}
+c["72% increased Physical Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=72}},nil}
+c["72% increased Physical Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=257,name="CritChance",type="INC",value=72}},nil}
+c["72% increased Throwing Critical Strike Chance"]={{[1]={flags=0,keywordFlags=1024,name="CritChance",type="INC",value=72}},nil}
 c["73 Ward Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="WardOnPotionUse",type="BASE",value=73}},nil}
 c["73% Chance to Ignite yourself when you use a Fire or Necrotic Skill"]={{[1]={flags=8388608,keywordFlags=40,name="ChanceToTriggerOnHit_Ailment_Ignite",type="BASE",value=73}},"  yourself when you use a  or  Skill "}
 c["73% Endurance while channelling Warpath"]={{[1]={[1]={type="Condition",var="ChannellingWarpath"},flags=0,keywordFlags=0,name="Endurance",source="",type="BASE",value=73}},nil}
 c["73% Frostbite Chance per Second with Frost Wall"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=73},notSupported=true},nil}
 c["73% Increased Critical Strike chance with Flurry"]={{[1]={[1]={skillName="Flurry",type="SkillName"},flags=0,keywordFlags=0,name="CritChance",type="INC",value=73}},"  with  "}
-c["73% increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=73}},nil}
 c["73% increased Cold Damage Over Time"]={{[1]={flags=4100,keywordFlags=0,name="ColdDamage",type="INC",value=73}},nil}
 c["73% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=73}},nil}
-c["73% increased Critical Strike Chance for Totems"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=73}},"  for Totems "}
+c["73% increased Curse Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=73}}," Curse  "}
 c["73% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=73}},nil}
+c["73% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=73}},nil}
 c["73% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=73}},nil}
 c["73% increased Mana Regen for 4 seconds when you use a Potion"]={{[1]={[1]={type="Condition",var="UsedPotionRecently"},flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=73}},nil}
 c["73% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=73}},nil}
 c["73% increased Minion Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="CritChance",type="INC",value=73}}}},nil}
 c["73% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=73}}}},nil}
 c["73% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=73}}}},nil}
-c["73% increased Necrotic Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=73}},nil}
-c["73% increased Physical Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=73}},nil}
-c["73% increased Physical Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=257,name="CritChance",type="INC",value=73}},nil}
-c["73% increased Throwing Critical Strike Chance"]={{[1]={flags=0,keywordFlags=1024,name="CritChance",type="INC",value=73}},nil}
+c["73% increased Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=73}},nil}
 c["73% increased Void Damage Over Time"]={{[1]={flags=4112,keywordFlags=0,name="VoidDamage",type="INC",value=73}},nil}
 c["73% increased Volatile Zombie Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=73}}," Volatile Zombie  "}
 c["73% of Endurance Threshold added as Ward Decay Threshold"]={{[1]={flags=0,keywordFlags=0,name="EnduranceThreshold",type="BASE",value=73}},"  added as Ward Decay Threshold "}
@@ -16279,19 +16300,15 @@ c["74% Increased Bleed Duration "]={{[1]={[1]={skillName="Bleed",type="SkillName
 c["74% Increased Bleed Duration for Minions "]={{[1]={[1]={scope="minion",type="Scope"},[2]={skillName="Bleed",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=74}},nil}
 c["74% Increased Physical Damage while Dual Wielding"]={{[1]={[1]={type="Condition",var="DualWielding"},flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=74}},nil}
 c["74% Increased Skeletal Mage Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=74}}," Skeletal Mage  "}
-c["74% increased Curse Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=74}}," Curse  "}
-c["74% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=74}},nil}
 c["74% increased Minion Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=74}}}},nil}
-c["74% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=74}}}},nil}
 c["74% increased Minion Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=74}}}},nil}
-c["74% increased Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=74}},nil}
 c["74% reduced Bonus Damage Taken from Critical Strikes"]={{[1]={flags=0,keywordFlags=0,name="ReduceCritExtraDamage",type="BASE",value=74}},nil}
 c["75 Armour With An Active Companion"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=75}},"  With An Active Companion "}
 c["75 Damage Reflected to Attackers"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=75}},"  Reflected to Attackers "}
 c["75 Healing Amount"]={{[1]={[1]={skillName="Healing",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=75}},"  Amount "}
 c["75 Ward Gain"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=75}},"  Gain "}
 c["75 Ward Gained on Shadow Creation"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=75}},"  Gained on Shadow Creation "}
-c["75 Ward gained when damage leaves you at low health"]={{[1]={[1]={type="Condition",var="LowLife"},flags=0,keywordFlags=0,name="Ward",type="BASE",value=75}},"  gained when damage leaves you  "}
+c["75 Ward gained when damage leaves you at low health"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=75}},"  gained when damage leaves you at low health "}
 c["75% Acid Flask Mana Consumption"]={{[1]={[1]={skillName="Acid Flask",type="SkillName"},flags=0,keywordFlags=0,name="Mana",type="BASE",value=75}},"   Consumption "}
 c["75% Bleed Chance Effectiveness"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Bleed",type="BASE",value=75}},"  Effectiveness "}
 c["75% Chance to cast Decimate when you directly use a Cold Spell (4 second cooldown)"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=75},notSupported=true},nil}
@@ -16311,13 +16328,21 @@ c["75% More Companion Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="M
 c["75% More Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=75}},nil}
 c["75% Tempest Strike Mana Consumption"]={{[1]={[1]={skillName="Tempest Strike",type="SkillName"},flags=0,keywordFlags=0,name="Mana",type="BASE",value=75}},"   Consumption "}
 c["75% Throwing Attack Speed -> Increased Cooldown Recovery Speed"]={{},"75% Throwing Attack Speed -> Increased Cooldown Recovery Speed"}
+c["75% increased Bow Elemental Damage"]={{[1]={flags=0,keywordFlags=2048,name="FireDamage",type="INC",value=75},[2]={flags=0,keywordFlags=2048,name="ColdDamage",type="INC",value=75},[3]={flags=0,keywordFlags=2048,name="LightningDamage",type="INC",value=75}},nil}
+c["75% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=75}},nil}
 c["75% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=75}},nil}
+c["75% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=75}},nil}
+c["75% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=75}},nil}
+c["75% increased Minion Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=75}}}},nil}
+c["75% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=75}},nil}
+c["75% increased Throwing Damage"]={{[1]={flags=0,keywordFlags=1024,name="Damage",type="INC",value=75}},nil}
 c["75% of Damage Reflected"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=75}},"  Reflected "}
 c["75% of Necrotic Damage Taken as Physical"]={{[1]={flags=0,keywordFlags=1,name="NecroticDamageTaken",type="BASE",value=75}},"  as  "}
 c["75% of Poison Damage Taken as Physical"]={{[1]={flags=0,keywordFlags=1,name="PoisonDamageTaken",type="BASE",value=75}},"  as  "}
 c["75% of Sigils of Hope Mana Cost consumed to cast it every 6 seconds while above half mana"]={{[1]={flags=0,keywordFlags=0,name="ManaCost",type="BASE",value=75}}," Sigils of Hope  consumed to cast it every 6 seconds while above half mana "}
 c["75% of Void Damage Taken as Physical"]={{[1]={flags=0,keywordFlags=1,name="VoidDamageTaken",type="BASE",value=75}},"  as  "}
 c["75% of your Bleed Chance granted to your Falcon"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Bleed",type="BASE",value=75}}," your  granted to your Falcon "}
+c["75% reduced Bonus Damage Taken from Critical Strikes"]={{[1]={flags=0,keywordFlags=0,name="ReduceCritExtraDamage",type="BASE",value=75}},nil}
 c["76 Ward gained when you use Smoke Bomb"]={{[1]={[1]={skillName="Smoke Bomb",type="SkillName"},flags=0,keywordFlags=0,name="WardGainOnUse_SmokeBomb",source="",type="BASE",value=76},notSupported=true},nil}
 c["76% Frostbite Chance per Second with Frost Wall"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=76},notSupported=true},nil}
 c["76% Increased Abyssal Decay Duration "]={{[1]={flags=0,keywordFlags=0,name="EnemyAbyssalDecayDuration",type="INC",value=76}},nil}
@@ -16333,7 +16358,6 @@ c["76% Increased Ignite Duration "]={{[1]={[1]={skillName="Ignite",type="SkillNa
 c["76% Increased Large Idol Drop Rate"]={{}," Large Idol Drop Rate "}
 c["76% Increased Ornate Idol Drop Rate"]={{}," Ornate Idol Drop Rate "}
 c["76% increased Bow Damage"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="INC",value=76}},nil}
-c["76% increased Bow Elemental Damage"]={{[1]={flags=0,keywordFlags=2048,name="FireDamage",type="INC",value=76},[2]={flags=0,keywordFlags=2048,name="ColdDamage",type="INC",value=76},[3]={flags=0,keywordFlags=2048,name="LightningDamage",type="INC",value=76}},nil}
 c["76% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=76}},nil}
 c["76% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=76}},nil}
 c["76% increased Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="Damage",type="INC",value=76}},nil}
@@ -16341,19 +16365,17 @@ c["76% increased Damage for Totems"]={{[1]={[1]={scope="totem",type="Scope"},fla
 c["76% increased Elemental Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=76},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=76},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=76}},nil}
 c["76% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=76}},nil}
 c["76% increased Frost Wall Duration"]={{[1]={[1]={skillName="Frost Wall",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=76}},nil}
-c["76% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=76}},nil}
 c["76% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=76}},nil}
 c["76% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=76}},nil}
 c["76% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=76}},nil}
 c["76% increased Melee Elemental Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="INC",value=76},[2]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=76},[3]={flags=0,keywordFlags=512,name="LightningDamage",type="INC",value=76}},nil}
 c["76% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=76}}}},nil}
-c["76% increased Minion Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=76}}}},nil}
 c["76% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=76}},nil}
 c["76% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=76}},nil}
 c["76% increased Throwing Damage"]={{[1]={flags=0,keywordFlags=1024,name="Damage",type="INC",value=76}},nil}
 c["76% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=76}},nil}
 c["76% of Shurikens Base Damage converted to Lightning"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=76},notSupported=true},nil}
-c["76% reduced Bonus Damage Taken from Critical Strikes"]={{[1]={flags=0,keywordFlags=0,name="ReduceCritExtraDamage",type="BASE",value=76}},nil}
+c["77% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=77}}}},nil}
 c["78 Ward Gained when you use a Traversal Skill"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=78},notSupported=true},nil}
 c["78% Increased Damage with Hammer Throw"]={{[1]={[1]={skillName="Hammer Throw",type="SkillName"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=78}},nil}
 c["78% Increased Fire Aura Area"]={{[1]={[1]={skillName="Fire Aura",type="SkillName"},flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=78}},nil}
@@ -16361,27 +16383,35 @@ c["78% Increased Healing Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="Hea
 c["78% Increased damage with Smelter's Wrath"]={{[1]={[1]={skillName="Smelter's Wrath",type="SkillName"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=78}},nil}
 c["78% Increased spell critical strike chance. This effect is doubled if you have 300 or more maximum mana."]={{[1]={[1]={mult=2,stat="Mana",threshold=300,type="StatThreshold"},flags=0,keywordFlags=256,name="CritChance",type="INC",value=78}},nil}
 c["78% Reduced Health Cost of Spells"]={{[1]={flags=0,keywordFlags=256,name="Life",type="INC",value=-78}},"  Cost of s "}
+c["78% increased Bow Damage"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="INC",value=78}},nil}
+c["78% increased Cold Damage Over Time"]={{[1]={flags=4100,keywordFlags=0,name="ColdDamage",type="INC",value=78}},nil}
 c["78% increased Damage Over Time While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=4096,keywordFlags=0,name="Damage",type="INC",value=78}},nil}
 c["78% increased Damage for Totems"]={{[1]={[1]={scope="totem",type="Scope"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=78}},nil}
 c["78% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=78}},nil}
 c["78% increased Melee Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=512,name="Damage",type="INC",value=78}},nil}
 c["78% increased Melee Elemental Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="INC",value=78},[2]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=78},[3]={flags=0,keywordFlags=512,name="LightningDamage",type="INC",value=78}},nil}
 c["78% increased Minion Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=78}}}},nil}
-c["78% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=78}}}},nil}
 c["78% increased Minion Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="CritChance",type="INC",value=78}}}},nil}
 c["78% increased Spell Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=256,name="Damage",type="INC",value=78}},nil}
 c["78% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=78}},nil}
 c["79% Increased Armor Shred Duration "]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=79}},"  Shred Duration "}
 c["79% Increased Fire Aura Damage"]={{[1]={[1]={skillName="Fire Aura",type="SkillName"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=79}},nil}
-c["79% increased Bow Damage"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="INC",value=79}},nil}
-c["79% increased Cold Damage Over Time"]={{[1]={flags=4100,keywordFlags=0,name="ColdDamage",type="INC",value=79}},nil}
+c["79% increased Damage Over Time While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=4096,keywordFlags=0,name="Damage",type="INC",value=79}},nil}
+c["79% increased Damage for Totems"]={{[1]={[1]={scope="totem",type="Scope"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=79}},nil}
+c["79% increased Echo Damage when a skill is Echoed"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=79}}," Echo  when a skill is Echoed "}
+c["79% increased Melee Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=512,name="Damage",type="INC",value=79}},nil}
+c["79% increased Melee Elemental Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="INC",value=79},[2]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=79},[3]={flags=0,keywordFlags=512,name="LightningDamage",type="INC",value=79}},nil}
+c["79% increased Minion Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="CritChance",type="INC",value=79}}}},nil}
+c["79% increased Spell Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=256,name="Damage",type="INC",value=79}},nil}
 c["79% of Shurikens Base Damage converted to Lightning"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=79},notSupported=true},nil}
 c["8 Bone Prison Duration (seconds)"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="BASE",value=8}}," Bone Prison  (seconds) "}
 c["8 Buff Duration (Seconds)"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="BASE",value=8}}," Buff  (Seconds) "}
 c["8 Buff Duration (seconds)"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="BASE",value=8}}," Buff  (seconds) "}
 c["8 Cooldown (Seconds)"]={{}," Cooldown (Seconds) "}
 c["8 Gladiator of Lagon Duration (seconds)"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="BASE",value=8}}," Gladiator of Lagon  (seconds) "}
+c["8 Health Gain on Block"]={{[1]={flags=0,keywordFlags=0,name="LifeOnBlock",type="BASE",value=8}},nil}
 c["8 Health Gain on Crit"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=8}},"  Gain on Crit "}
+c["8 Health Gain on Kill"]={{[1]={flags=0,keywordFlags=0,name="LifeOnKill",type="BASE",value=8}},nil}
 c["8 Health Gain on Melee Hit"]={{[1]={flags=8389120,keywordFlags=0,name="Life",type="BASE",value=8}},"  Gain  "}
 c["8 Health Gain vs Bone Cursed"]={{[1]={[1]={skillName="Bone Curse",type="SkillName"},flags=0,keywordFlags=0,name="Life",type="BASE",value=8}},"  Gain vs d "}
 c["8 Health Restored"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=8}},"  Restored "}
@@ -16395,6 +16425,7 @@ c["8 Minions teleported around you after you use a Traversal Skill"]={{[1]={flag
 c["8 Perfection Duration"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="BASE",value=8}}," Perfection  "}
 c["8 Runestone Duration (seconds)"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="BASE",value=8}}," Runestone  (seconds) "}
 c["8 Ward Gain"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=8}},"  Gain "}
+c["8 Ward Gain on Kill"]={{[1]={flags=0,keywordFlags=0,name="WardOnKill",type="BASE",value=8}},nil}
 c["8 Ward Gain vs Spirit Plagued"]={{[1]={[1]={skillName="Spirit Plague",type="SkillName"},flags=0,keywordFlags=0,name="Ward",type="BASE",value=8}},"  Gain vs d "}
 c["8 Ward On Potion Use"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=8}},"  On Potion Use "}
 c["8 Ward gained per second while wielding a Staff"]={{[1]={[1]={type="Condition",var="UsingStaff"},flags=0,keywordFlags=0,name="Ward",type="BASE",value=8}},"  gained per second  "}
@@ -16471,9 +16502,9 @@ c["8% More Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",valu
 c["8% Overcharge Chance"]={{}," Overcharge Chance "}
 c["8% Reduced Health Decay"]={{[1]={flags=0,keywordFlags=0,name="Life",type="INC",value=-8}},"  Decay "}
 c["8% Remaining Cooldown Recovered"]={{}," Remaining Cooldown Recovered "}
-c["8% Shared Increased Bleed Duration"]={{[1]={[1]={skillName="Bleed",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="MORE",value=8}}," Shared Increased   "}
-c["8% Shared Increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="MORE",value=8}}," Shared Increased  "}
-c["8% Shared Increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="MORE",value=8}}," Shared Increased  "}
+c["8% Shared Increased Bleed Duration"]={{[1]={[1]={skillName="Bleed",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=8},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={skillName="Bleed",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=8}}}},nil}
+c["8% Shared Increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=8},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=8}}}},nil}
+c["8% Shared Increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=8},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=8}}}},nil}
 c["8% Summoned Skeleton Resummon Chance"]={{}," Summoned Skeleton Resummon Chance "}
 c["8% Traversal Skills Cooldown Recovered"]={{[1]={flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=8}}," Traversal  Cooldown Recovered "}
 c["8% chance to gain 20 mana when you directly cast Runebolt or Fireball"]={{},"20 mana when you directly cast Runebolt or Fireball "}
@@ -16484,17 +16515,18 @@ c["8% increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",v
 c["8% increased Bow Attack Speed"]={{[1]={flags=3584,keywordFlags=2048,name="Speed",type="INC",value=8}},nil}
 c["8% increased Bow Damage"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="INC",value=8}},nil}
 c["8% increased Cast Speed"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",value=8}},nil}
-c["8% increased Cooldown Recovery Speed for Evade"]={{[1]={flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=8}},"  for Evade "}
 c["8% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=8}},nil}
 c["8% increased Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=8}},nil}
 c["8% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=8}},nil}
 c["8% increased Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="DamageTaken",type="INC",value=8}},nil}
 c["8% increased Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="Damage",type="INC",value=8}},nil}
 c["8% increased Damage for Totems"]={{[1]={[1]={scope="totem",type="Scope"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=8}},nil}
-c["8% increased Damage per player Attunement"]={{[1]={[1]={actor="parent",stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="Damage",type="INC",value=8}},nil}
-c["8% increased Damage per player Intelligence"]={{[1]={[1]={actor="parent",stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="Damage",type="INC",value=8}},nil}
+c["8% increased Damage per player Attunement"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=8}},"  per player Attunement "}
+c["8% increased Damage per player Intelligence"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=8}},"  per player Intelligence "}
 c["8% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=8}},nil}
 c["8% increased Echo Damage when a skill is Echoed"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=8}}," Echo  when a skill is Echoed "}
+c["8% increased Effect of Frenzy on You "]={{[1]={flags=0,keywordFlags=0,name="FrenzyEffect",type="INC",value=8},notSupported=true},nil}
+c["8% increased Effect of Haste on You "]={{[1]={flags=0,keywordFlags=0,name="HasteEffect",type="INC",value=8},notSupported=true},nil}
 c["8% increased Effect of Prefixes and Suffixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedAffixEffect",type="INC",value=8}},nil}
 c["8% increased Elemental Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=8},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=8},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=8}},nil}
 c["8% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=8}},nil}
@@ -16514,7 +16546,9 @@ c["8% increased Minion Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="Mini
 c["8% increased Minion Throwing Attack Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=3584,keywordFlags=1024,name="Speed",type="INC",value=8}}}},nil}
 c["8% increased Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=8}},nil}
 c["8% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=8}},nil}
+c["8% increased Speed and Distance with Flame Rush"]={{}," Speed and Distance with  "}
 c["8% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=8}},nil}
+c["8% increased Throwing Attack Speed"]={{[1]={flags=3584,keywordFlags=1024,name="Speed",type="INC",value=8}},nil}
 c["8% increased Throwing Damage"]={{[1]={flags=0,keywordFlags=1024,name="Damage",type="INC",value=8}},nil}
 c["8% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=8}},nil}
 c["8% increased area for Lightning Area Skills"]={{[1]={flags=0,keywordFlags=2,name="AreaOfEffect",type="INC",value=8}},"  for  Area Skills "}
@@ -16523,15 +16557,15 @@ c["8% less Damage Over Time Taken"]={{[1]={flags=0,keywordFlags=0,name="DamageTa
 c["8% less Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="DamageTaken",type="MORE",value=-8}},nil}
 c["8% less Damage Taken for Totems"]={{[1]={flags=0,keywordFlags=0,name="DamageTaken",type="MORE",value=-8}},"  for Totems "}
 c["8% less Damage over Time Taken from Slowed Enemies"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="Slowed"},flags=0,keywordFlags=0,name="DamageTakenOverTime",type="MORE",value=-8}},nil}
-c["8% less Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="MORE",value=-8}},nil}
 c["8% less Necrotic Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamageTaken",type="MORE",value=-8}},nil}
+c["8% less Void Damage Taken on Block"]={{[1]={[1]={type="Condition",var="Blocking"},flags=0,keywordFlags=0,name="VoidDamageTaken",type="MORE",value=-8}},nil}
 c["8% more Cold Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="ColdDamageTaken",type="MORE",value=8}},nil}
-c["8% more Damage with Vengeance per 10% Block Chance"]={{[1]={[1]={div=10,stat="BlockChance",type="PerStat"},[2]={skillName="Vengeance",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=8}},"  with   "}
+c["8% more Damage to Slowed Enemies"]={{[1]={[1]={skillName="Slow",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=8}},"  to ed Enemies "}
+c["8% more Spell Damage to Ignited Enemies"]={{[1]={[1]={skillName="Ignite",type="SkillName"},flags=0,keywordFlags=256,name="Damage",type="MORE",value=8}},"   to d Enemies "}
 c["8% of Damage Dealt to Mana Before Health"]={{[1]={flags=0,keywordFlags=0,name="DamageToManaBeforeHealth",type="BASE",value=8}},nil}
 c["8% of Damage Leeched as Health While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=8}},nil}
 c["8% of Damage dealt by Harvest Leeched as Health"]={{[1]={[1]={skillName="Harvest",type="SkillName"},flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=8}},"  dealt by   "}
 c["8% of Maximum Health gained as Endurance Threshold"]={{[1]={flags=0,keywordFlags=0,name="LifeAsEnduranceThreshold",type="BASE",value=8}},nil}
-c["8% of Melee Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=512,name="DamageLifeLeech",type="BASE",value=8}},nil}
 c["8% of Minion Damage Leeched as Health on Melee Hit"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=8389120,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=8}}}},nil}
 c["8% of Minion Damage Reflected"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="BASE",value=8}}}},"   Reflected "}
 c["8% of Minion Poison Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="PoisonDamageLifeLeech",type="BASE",value=8}}}},nil}
@@ -16563,16 +16597,13 @@ c["80% More Area"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="MORE"
 c["80% Reduced Cooldown"]={{}," Cooldown "}
 c["80% Reduced Effect Without Cooldown"]={{}," Effect Without Cooldown "}
 c["80% Static Orb Mana Consumption"]={{[1]={[1]={skillName="Static Orb",type="SkillName"},flags=0,keywordFlags=0,name="Mana",type="BASE",value=80}},"   Consumption "}
-c["80% increased Damage Over Time While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=4096,keywordFlags=0,name="Damage",type="INC",value=80}},nil}
-c["80% increased Damage for Totems"]={{[1]={[1]={scope="totem",type="Scope"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=80}},nil}
-c["80% increased Echo Damage when a skill is Echoed"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=80}}," Echo  when a skill is Echoed "}
-c["80% increased Melee Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=512,name="Damage",type="INC",value=80}},nil}
-c["80% increased Melee Elemental Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="INC",value=80},[2]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=80},[3]={flags=0,keywordFlags=512,name="LightningDamage",type="INC",value=80}},nil}
+c["80% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=80}},nil}
+c["80% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=80}},nil}
+c["80% increased Minion Bow Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=2048,name="Damage",type="INC",value=80}}}},nil}
 c["80% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=80}}}},nil}
-c["80% increased Minion Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="CritChance",type="INC",value=80}}}},nil}
+c["80% increased Minion Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=80}}}},nil}
 c["80% increased Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=80}},nil}
 c["80% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=80}},nil}
-c["80% increased Spell Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=256,name="Damage",type="INC",value=80}},nil}
 c["80% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=80}},nil}
 c["80% reduced Bonus Damage Taken from Critical Strikes"]={{[1]={flags=0,keywordFlags=0,name="ReduceCritExtraDamage",type="BASE",value=80}},nil}
 c["81% Increased Damage while wielding a Bow"]={{[1]={[1]={type="Condition",var="UsingBow"},flags=0,keywordFlags=0,name="Damage",type="INC",value=81}},nil}
@@ -16580,22 +16611,22 @@ c["81% Increased Damage while wielding a Dagger"]={{[1]={[1]={type="Condition",v
 c["81% Increased Damage while wielding a Sword"]={{[1]={[1]={type="Condition",var="UsingSword"},flags=0,keywordFlags=0,name="Damage",type="INC",value=81}},nil}
 c["81% increased Elemental Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=81},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=81},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=81}},nil}
 c["81% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=81}},nil}
-c["81% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=81}},nil}
-c["81% increased Minion Bow Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=2048,name="Damage",type="INC",value=81}}}},nil}
-c["81% increased Minion Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=81}}}},nil}
 c["81% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=81}},nil}
-c["81% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=81}},nil}
-c["81% reduced Bonus Damage Taken from Critical Strikes"]={{[1]={flags=0,keywordFlags=0,name="ReduceCritExtraDamage",type="BASE",value=81}},nil}
+c["81% increased Throwing Physical Damage"]={{[1]={flags=0,keywordFlags=1024,name="PhysicalDamage",type="INC",value=81}},nil}
 c["810% Frostbite Chance per Second with Frost Wall"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=810},notSupported=true},nil}
 c["82 Damage Reflected to Attackers"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=82}},"  Reflected to Attackers "}
 c["82% Chance to create a Shockwave on hit with Upheaval"]={{}," to create a wave  with Upheaval "}
 c["82% Increased Stun Chance"]={{[1]={flags=0,keywordFlags=0,name="StunChance",type="INC",value=82}},nil}
+c["82% increased Cold Damage Over Time"]={{[1]={flags=4100,keywordFlags=0,name="ColdDamage",type="INC",value=82}},nil}
+c["82% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=82}},nil}
+c["82% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=82}},nil}
+c["82% increased Minion Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="CritChance",type="INC",value=82}}}},nil}
 c["82% increased Necrotic Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=82}},nil}
 c["82% increased Physical Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=82}},nil}
-c["82% increased Throwing Physical Damage"]={{[1]={flags=0,keywordFlags=1024,name="PhysicalDamage",type="INC",value=82}},nil}
+c["82% increased Void Damage Over Time"]={{[1]={flags=4112,keywordFlags=0,name="VoidDamage",type="INC",value=82}},nil}
 c["82% of Glove Stats apply to Forged Weapons"]={{}," Glove Stats apply to Forged Weapons "}
 c["82% of Shurikens Base Damage converted to Lightning"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=82},notSupported=true},nil}
-c["826% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=826}}}},nil}
+c["825% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=825}}}},nil}
 c["83 Health Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="LifeOnPotionUse",type="BASE",value=83}},nil}
 c["83% Increased Area with Detonating Arrow"]={{[1]={[1]={skillName="Detonating Arrow",type="SkillName"},flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=83}},"  with  "}
 c["83% Increased Armor Shred Effect "]={{[1]={flags=0,keywordFlags=0,name="ArmorShredEffect",type="INC",value=83}},nil}
@@ -16607,13 +16638,9 @@ c["83% Increased Skeleton Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",t
 c["83% Increased critical strike chance with Shield Throw"]={{[1]={[1]={skillName="Shield Throw",type="SkillName"},flags=0,keywordFlags=0,name="CritChance",type="INC",value=83}},"  with  "}
 c["83% Reduced Health Cost of Spells"]={{[1]={flags=0,keywordFlags=256,name="Life",type="INC",value=-83}},"  Cost of s "}
 c["83% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=83}},nil}
-c["83% increased Cold Damage Over Time"]={{[1]={flags=4100,keywordFlags=0,name="ColdDamage",type="INC",value=83}},nil}
-c["83% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=83}},nil}
 c["83% increased Critical Strike Chance for Totems"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=83}},"  for Totems "}
 c["83% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=83}},nil}
-c["83% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=83}},nil}
 c["83% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=83}},nil}
-c["83% increased Minion Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="CritChance",type="INC",value=83}}}},nil}
 c["83% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=83}}}},nil}
 c["83% increased Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=83}},nil}
 c["83% increased Necrotic Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=83}},nil}
@@ -16623,13 +16650,15 @@ c["83% increased Physical Spell Critical Strike Chance"]={{[1]={flags=0,keywordF
 c["83% increased Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=83}},nil}
 c["83% increased Throwing Critical Strike Chance"]={{[1]={flags=0,keywordFlags=1024,name="CritChance",type="INC",value=83}},nil}
 c["83% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=83}},nil}
-c["83% increased Void Damage Over Time"]={{[1]={flags=4112,keywordFlags=0,name="VoidDamage",type="INC",value=83}},nil}
 c["84 Ward Gained when you use Enchant Weapon "]={{[1]={[1]={skillName="Enchant Weapon",type="SkillName"},flags=0,keywordFlags=0,name="WardGainOnUse_EnchantWeapon",source="",type="BASE",value=84},notSupported=true},nil}
 c["84% Increased Armor Shred Effect "]={{[1]={flags=0,keywordFlags=0,name="ArmorShredEffect",type="INC",value=84}},nil}
 c["84% Increased Attack and Cast Speed for Summoned Vines"]={{[1]={flags=0,keywordFlags=0,name="Speed",type="INC",value=84}},"  for Summoned Vines "}
 c["84% Increased critical strike chance with Shield Throw"]={{[1]={[1]={skillName="Shield Throw",type="SkillName"},flags=0,keywordFlags=0,name="CritChance",type="INC",value=84}},"  with  "}
+c["84% increased Critical Strike Chance for Totems"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=84}},"  for Totems "}
+c["84% increased Physical Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=257,name="CritChance",type="INC",value=84}},nil}
+c["84% increased Throwing Critical Strike Chance"]={{[1]={flags=0,keywordFlags=1024,name="CritChance",type="INC",value=84}},nil}
 c["843 Damage Reflected to Attackers"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=843}},"  Reflected to Attackers "}
-c["85 Ward gained when damage leaves you at low health"]={{[1]={[1]={type="Condition",var="LowLife"},flags=0,keywordFlags=0,name="Ward",type="BASE",value=85}},"  gained when damage leaves you  "}
+c["85 Ward gained when damage leaves you at low health"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=85}},"  gained when damage leaves you at low health "}
 c["85% Chance to cast Decimate when you directly use a Cold Spell (4 second cooldown)"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=85},notSupported=true},nil}
 c["85% Chance to cast Decimate when you directly use a Fire Spell (4 second cooldown)"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=85},notSupported=true},nil}
 c["85% Chance to cast Decimate when you directly use a Lightning Spell (4 second cooldown)"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=85},notSupported=true},nil}
@@ -16642,41 +16671,38 @@ c["85% Increased Healing Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="Hea
 c["85% Increased Mana Cost"]={{[1]={flags=0,keywordFlags=0,name="ManaCost",type="INC",value=85}},nil}
 c["85% More Companion Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=85}}," Companion  "}
 c["85% chance when one of your Skeletons dies to resummon a new one after 3 seconds"]={{}," when one of your Skeletons dies to resummon a new one after 3 seconds "}
-c["85% increased Critical Strike Chance for Totems"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=85}},"  for Totems "}
-c["85% increased Physical Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=257,name="CritChance",type="INC",value=85}},nil}
-c["85% increased Throwing Critical Strike Chance"]={{[1]={flags=0,keywordFlags=1024,name="CritChance",type="INC",value=85}},nil}
+c["85% increased Bow Damage"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="INC",value=85}},nil}
+c["85% increased Bow Elemental Damage"]={{[1]={flags=0,keywordFlags=2048,name="FireDamage",type="INC",value=85},[2]={flags=0,keywordFlags=2048,name="ColdDamage",type="INC",value=85},[3]={flags=0,keywordFlags=2048,name="LightningDamage",type="INC",value=85}},nil}
+c["85% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=85}},nil}
+c["85% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=85}},nil}
+c["85% increased Damage While Channelling"]={{[1]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="Damage",type="INC",value=85}},nil}
+c["85% increased Duration of Stuns Received"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="INC",value=85}},"  of Stuns Received "}
+c["85% increased Effect of Prefixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedPrefixEffect",type="INC",value=85}},nil}
+c["85% increased Effect of Suffixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedSuffixEffect",type="INC",value=85}},nil}
+c["85% increased Effect of Weaver Enchantment Affixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedWeaverEffect",type="INC",value=85}},nil}
+c["85% increased Elemental Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=85},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=85},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=85}},nil}
+c["85% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=85}},nil}
+c["85% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=85}},nil}
+c["85% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=85}},nil}
+c["85% increased Melee Cold Damage"]={{[1]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=85}},nil}
+c["85% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=85}}}},nil}
+c["85% increased Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=85}},nil}
+c["85% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=85}},nil}
+c["85% increased Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=85}},nil}
+c["85% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=85}},nil}
+c["85% increased Throwing Physical Damage"]={{[1]={flags=0,keywordFlags=1024,name="PhysicalDamage",type="INC",value=85}},nil}
+c["85% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=85}},nil}
 c["85% of Shurikens Base Damage converted to Lightning"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=85},notSupported=true},nil}
 c["86% Increased Leech Rate"]={{[1]={flags=0,keywordFlags=0,name="LeechRate",type="INC",value=86}},nil}
 c["86% Increased Melee Stun Chance"]={{[1]={flags=0,keywordFlags=512,name="StunChance",type="INC",value=86}},nil}
 c["86% Increased Minion Melee Stun Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="StunChance",type="INC",value=86}}}},nil}
-c["86% increased Bow Damage"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="INC",value=86}},nil}
-c["86% increased Bow Elemental Damage"]={{[1]={flags=0,keywordFlags=2048,name="FireDamage",type="INC",value=86},[2]={flags=0,keywordFlags=2048,name="ColdDamage",type="INC",value=86},[3]={flags=0,keywordFlags=2048,name="LightningDamage",type="INC",value=86}},nil}
 c["86% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=86}},nil}
-c["86% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=86}},nil}
-c["86% increased Damage While Channelling"]={{[1]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="Damage",type="INC",value=86}},nil}
 c["86% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=86}},nil}
-c["86% increased Duration of Stuns Received"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="INC",value=86}},"  of Stuns Received "}
-c["86% increased Effect of Prefixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedPrefixEffect",type="INC",value=86}},nil}
-c["86% increased Effect of Suffixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedSuffixEffect",type="INC",value=86}},nil}
-c["86% increased Effect of Weaver Enchantment Affixes for Idols in Refracted Slots"]={{[1]={flags=0,keywordFlags=0,name="IdolRefractedWeaverEffect",type="INC",value=86}},nil}
-c["86% increased Elemental Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=86},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=86},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=86}},nil}
-c["86% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=86}},nil}
-c["86% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=86}},nil}
-c["86% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=86}},nil}
-c["86% increased Melee Cold Damage"]={{[1]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=86}},nil}
-c["86% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=86}}}},nil}
-c["86% increased Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=86}},nil}
-c["86% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=86}},nil}
-c["86% increased Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=86}},nil}
-c["86% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=86}},nil}
-c["86% increased Throwing Physical Damage"]={{[1]={flags=0,keywordFlags=1024,name="PhysicalDamage",type="INC",value=86}},nil}
-c["86% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=86}},nil}
+c["86% increased Effect of Frenzy on You"]={{[1]={flags=0,keywordFlags=0,name="FrenzyEffect",type="INC",value=86},notSupported=true},nil}
 c["86% of Potion Health Converted to Ward"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=86},notSupported=true},nil}
 c["87% Increased Area for Infernal Shade per Active Dread Shade"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=87},notSupported=true},nil}
 c["87% Increased Chance To Find Potions"]={{[1]={flags=0,keywordFlags=0,name="ChanceToFindPotions",type="INC",value=87}},nil}
 c["87% Increased Spell Damage per Skeletal Mage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=87}},"   per Skeletal Mage "}
-c["87% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=87}},nil}
-c["87% increased Effect of Frenzy on You"]={{[1]={flags=0,keywordFlags=0,name="FrenzyEffect",type="INC",value=87},notSupported=true},nil}
 c["88 Ward Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="WardOnPotionUse",type="BASE",value=88}},nil}
 c["88% Chance to Chill Attackers"]={{[1]={flags=0,keywordFlags=0,name="ChanceToChillAttackers",type="BASE",value=88}},nil}
 c["88% Chance to Shock Attackers"]={{[1]={flags=0,keywordFlags=0,name="ChanceToShockAttackers",type="BASE",value=88}},nil}
@@ -16687,33 +16713,35 @@ c["88% Increased Damage with Dive Bomb"]={{[1]={[1]={skillName="Dive Bomb",type=
 c["88% Increased Healing Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="HealingEffectiveness",type="INC",value=88}},nil}
 c["88% Increased Skeletal Mage Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=88}}," Skeletal Mage  "}
 c["88% Reduced Health Cost of Spells"]={{[1]={flags=0,keywordFlags=256,name="Life",type="INC",value=-88}},"  Cost of s "}
+c["88% increased Cast Speed for Totems"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",value=88}},"  for Totems "}
+c["88% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=88}},nil}
+c["88% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=88}},nil}
+c["88% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=88}},nil}
+c["88% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=88}},nil}
+c["88% increased Minion Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=88}}}},nil}
+c["88% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=88}}}},nil}
+c["88% increased Minion Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=88}}}},nil}
+c["88% increased Minion Melee Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="Damage",type="INC",value=88}}}},nil}
+c["88% increased Minion Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=88}}}},nil}
+c["88% increased Minion Spell Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="Damage",type="INC",value=88}}}},nil}
+c["88% increased Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=88}},nil}
+c["88% increased Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=88}},nil}
+c["88% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=88}},nil}
 c["88% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=88}},nil}
 c["88% of Damage Reflected"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=88}},"  Reflected "}
 c["88% of Mana Spent Gained as Ward"]={{[1]={flags=0,keywordFlags=0,name="ManaSpentGainedAsWard",type="BASE",value=88}},nil}
 c["88% reduced Bonus Damage Taken from Critical Strikes"]={{[1]={flags=0,keywordFlags=0,name="ReduceCritExtraDamage",type="BASE",value=88}},nil}
-c["89% increased Cast Speed for Totems"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",value=89}},"  for Totems "}
-c["89% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=89}},nil}
-c["89% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=89}},nil}
 c["89% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=89}},nil}
-c["89% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=89}},nil}
-c["89% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=89}},nil}
-c["89% increased Minion Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=89}}}},nil}
-c["89% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=89}}}},nil}
-c["89% increased Minion Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=89}}}},nil}
-c["89% increased Minion Melee Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="Damage",type="INC",value=89}}}},nil}
-c["89% increased Minion Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=89}}}},nil}
-c["89% increased Minion Spell Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="Damage",type="INC",value=89}}}},nil}
-c["89% increased Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=89}},nil}
 c["89% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=89}},nil}
-c["89% increased Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=89}},nil}
-c["89% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=89}},nil}
 c["89% increased Spell Physical Damage"]={{[1]={flags=0,keywordFlags=256,name="PhysicalDamage",type="INC",value=89}},nil}
 c["89% of Shurikens Base Damage converted to Lightning"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=89},notSupported=true},nil}
+c["9 Health Gain on Block"]={{[1]={flags=0,keywordFlags=0,name="LifeOnBlock",type="BASE",value=9}},nil}
 c["9 Health Gained when you receive a Glancing Blow"]={{[1]={flags=0,keywordFlags=0,name="LifeOnGlancingBlow",type="BASE",value=9}},nil}
 c["9 Mana Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="ManaOnPotionUse",type="BASE",value=9}},nil}
 c["9 Max Ghost Blades Stacks"]={{}," Max Ghost Blades Stacks "}
 c["9 Maximum Bonus Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="BASE",value=9}}," Maximum Bonus  "}
 c["9 Minions teleported around you after you use a Traversal Skill"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={skillName="Teleport",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=9}}}}," s ed around you after you use a Traversal Skill "}
+c["9 Ward Gain on Kill"]={{[1]={flags=0,keywordFlags=0,name="WardOnKill",type="BASE",value=9}},nil}
 c["9 Ward Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="WardOnPotionUse",type="BASE",value=9}},nil}
 c["9 Ward Gained on Potion Use per 10 Intelligence"]={{[1]={[1]={div=10,stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="WardOnPotionUse",type="BASE",value=9}},nil}
 c["9 Ward gained per 10 Missing Mana when you use a Traversal Skill"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=9}},"  gained per 10 Missing Mana when you use a Traversal Skill "}
@@ -16749,34 +16777,50 @@ c["9% increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",v
 c["9% increased Attack Speed"]={{[1]={flags=3584,keywordFlags=0,name="Speed",type="INC",value=9}},nil}
 c["9% increased Block Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="BlockEffectiveness",type="INC",value=9}},nil}
 c["9% increased Bow Attack Speed"]={{[1]={flags=3584,keywordFlags=2048,name="Speed",type="INC",value=9}},nil}
+c["9% increased Bow Damage"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="INC",value=9}},nil}
 c["9% increased Cast Speed"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",value=9}},nil}
 c["9% increased Cast Speed for Totems"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",value=9}},"  for Totems "}
+c["9% increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=9}},nil}
 c["9% increased Cooldown Recovery Speed While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=9}},nil}
-c["9% increased Effect of Frenzy on You "]={{[1]={flags=0,keywordFlags=0,name="FrenzyEffect",type="INC",value=9},notSupported=true},nil}
+c["9% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=9}},nil}
+c["9% increased Damage While Channelling"]={{[1]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=0,name="Damage",type="INC",value=9}},nil}
 c["9% increased Effect of Haste on You "]={{[1]={flags=0,keywordFlags=0,name="HasteEffect",type="INC",value=9},notSupported=true},nil}
 c["9% increased Elemental Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=526,name="Speed",type="INC",value=9}},nil}
+c["9% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=9}},nil}
+c["9% increased Frost Wall Duration"]={{[1]={[1]={skillName="Frost Wall",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=9}},nil}
 c["9% increased Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="INC",value=9}},nil}
+c["9% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=9}},nil}
 c["9% increased Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="INC",value=9}},nil}
+c["9% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=9}},nil}
 c["9% increased Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=512,name="Speed",type="INC",value=9}},nil}
 c["9% increased Melee Attack Speed for 4 seconds when you use a Potion"]={{[1]={[1]={type="Condition",var="UsedPotionRecently"},flags=3584,keywordFlags=512,name="Speed",type="INC",value=9}},nil}
+c["9% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=9}}}},nil}
+c["9% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=9}}}},nil}
+c["9% increased Minion Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=9}}}},nil}
 c["9% increased Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=9}},nil}
-c["9% increased Speed and Distance with Flame Rush"]={{}," Speed and Distance with  "}
+c["9% increased Movement Speed While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=9}},nil}
+c["9% increased Necrotic Damage"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=9}},nil}
+c["9% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=9}},nil}
+c["9% increased Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="INC",value=9}},nil}
+c["9% increased Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=9}},nil}
 c["9% increased Throwing Attack Speed"]={{[1]={flags=3584,keywordFlags=1024,name="Speed",type="INC",value=9}},nil}
 c["9% increased Throwing Attack Speed for 4 seconds when you use a Potion"]={{[1]={[1]={type="Condition",var="UsedPotionRecently"},flags=3584,keywordFlags=1024,name="Speed",type="INC",value=9}},nil}
+c["9% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=9}},nil}
+c["9% increased area for Melee Area Skills"]={{[1]={flags=0,keywordFlags=512,name="AreaOfEffect",type="INC",value=9}},"  for  Area Skills "}
 c["9% increased area for Minion Area Skills"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=9}}}},"  for  Area Skills "}
+c["9% less Damage Over Time Taken"]={{[1]={flags=0,keywordFlags=0,name="DamageTakenOverTime",type="MORE",value=-9}},nil}
 c["9% less Damage Over Time Taken While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="DamageTakenOverTime",type="MORE",value=-9}},nil}
 c["9% less Damage Taken from Ignited Shocked or Chilled Enemies"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=9},notSupported=true},nil}
 c["9% less Necrotic Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamageTaken",type="MORE",value=-9}},nil}
-c["9% less Void Damage Taken on Block"]={{[1]={[1]={type="Condition",var="Blocking"},flags=0,keywordFlags=0,name="VoidDamageTaken",type="MORE",value=-9}},nil}
 c["9% more Cold Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="ColdDamageTaken",type="MORE",value=9}},nil}
-c["9% more Damage to Slowed Enemies"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="Slowed"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=9}},nil}
-c["9% more Spell Damage to Ignited Enemies"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="Ignited"},flags=0,keywordFlags=256,name="Damage",type="MORE",value=9}},nil}
 c["9% of Armor Mitigation also applies to Damage over Time"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=9},notSupported=true},nil}
 c["9% of Current Health Lost per second"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=9}}," Current  Lost per second "}
 c["9% of Damage Dealt to Mana Before Health"]={{[1]={flags=0,keywordFlags=0,name="DamageToManaBeforeHealth",type="BASE",value=9}},nil}
 c["9% of Damage Reflected"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=9}},"  Reflected "}
+c["9% of Melee Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=512,name="DamageLifeLeech",type="BASE",value=9}},nil}
 c["9% of Minion Damage Reflected"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="BASE",value=9}}}},"   Reflected "}
 c["9% of Missing Health gained as Ward per second"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=9},notSupported=true},nil}
+c["9% reduced Bonus Damage Taken from Critical Strikes"]={{[1]={flags=0,keywordFlags=0,name="ReduceCritExtraDamage",type="BASE",value=9}},nil}
 c["90 Health Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="LifeOnPotionUse",type="BASE",value=90}},nil}
 c["90% Chance To Not Explode"]={{}," To Not Explode "}
 c["90% Chance to summon a Storm Totem on hit with Tempest Strike"]={{}," to summon a Storm Totem  with  "}
@@ -16792,7 +16836,11 @@ c["90% Increased Skeletal Mage Damage"]={{[1]={flags=0,keywordFlags=0,name="Dama
 c["90% Mana Consumption"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=90}},"  Consumption "}
 c["90% Maximum Damage From Minion Count"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="MORE",value=90}}}}," Maximum  From  Count "}
 c["90% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=90}},nil}
+c["90% increased Elemental Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=90},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=90},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=90}},nil}
+c["90% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=90}},nil}
+c["90% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=90}},nil}
 c["90% increased Lightning Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=258,name="CritChance",type="INC",value=90}},nil}
+c["90% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=90}},nil}
 c["90% increased Spell Lightning Damage"]={{[1]={flags=0,keywordFlags=256,name="LightningDamage",type="INC",value=90}},nil}
 c["90% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=90}},nil}
 c["90% less Minion Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="PoisonDamage",type="MORE",value=-90}}}},nil}
@@ -16810,7 +16858,6 @@ c["91% increased Elemental Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDama
 c["91% increased Elemental Damage Over Time"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=91},[2]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=91},[3]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=91}},"  Over Time "}
 c["91% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=91}},nil}
 c["91% increased Fire Damage Over Time"]={{[1]={flags=4104,keywordFlags=0,name="FireDamage",type="INC",value=91}},nil}
-c["91% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=91}},nil}
 c["91% increased Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="INC",value=91}},nil}
 c["91% increased Mana Regen for 4 seconds when you use a Potion"]={{[1]={[1]={type="Condition",var="UsedPotionRecently"},flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=91}},nil}
 c["91% increased Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=91}},nil}
@@ -16826,24 +16873,23 @@ c["91% increased Volatile Zombie Damage"]={{[1]={flags=0,keywordFlags=0,name="Da
 c["91% of Mana Spent Gained as Ward"]={{[1]={flags=0,keywordFlags=0,name="ManaSpentGainedAsWard",type="BASE",value=91}},nil}
 c["91% reduced Bonus Damage Taken from Critical Strikes"]={{[1]={flags=0,keywordFlags=0,name="ReduceCritExtraDamage",type="BASE",value=91}},nil}
 c["92% Increased Fire Aura Damage"]={{[1]={[1]={skillName="Fire Aura",type="SkillName"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=92}},nil}
+c["92% increased Echo Damage when a skill is Echoed"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=92}}," Echo  when a skill is Echoed "}
 c["93% Increased Armor Shred Duration "]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=93}},"  Shred Duration "}
 c["93% Increased Armor Shred Effect "]={{[1]={flags=0,keywordFlags=0,name="ArmorShredEffect",type="INC",value=93}},nil}
 c["93% Increased Melee Stun Chance"]={{[1]={flags=0,keywordFlags=512,name="StunChance",type="INC",value=93}},nil}
 c["93% Increased critical strike chance with Shield Throw"]={{[1]={[1]={skillName="Shield Throw",type="SkillName"},flags=0,keywordFlags=0,name="CritChance",type="INC",value=93}},"  with  "}
-c["93% increased Echo Damage when a skill is Echoed"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=93}}," Echo  when a skill is Echoed "}
+c["93% increased Critical Strike Chance for Totems"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=93}},"  for Totems "}
 c["93% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=93}}}},nil}
 c["93% increased Minion Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=93}}}},nil}
+c["93% increased Necrotic Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=93}},nil}
 c["93% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=93}},nil}
+c["93% increased Physical Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=93}},nil}
+c["93% increased Physical Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=257,name="CritChance",type="INC",value=93}},nil}
+c["93% increased Throwing Critical Strike Chance"]={{[1]={flags=0,keywordFlags=1024,name="CritChance",type="INC",value=93}},nil}
 c["93% of Shurikens Base Damage converted to Lightning"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=93},notSupported=true},nil}
 c["94% Chance to create a Shockwave on hit with Upheaval"]={{}," to create a wave  with Upheaval "}
 c["94% Increased Area with Dive Bomb"]={{[1]={[1]={skillName="Dive Bomb",type="SkillName"},flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=94}},"  with  "}
-c["94% increased Critical Strike Chance for Totems"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=94}},"  for Totems "}
 c["94% increased Curse Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=94}}," Curse  "}
-c["94% increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=94}}}},nil}
-c["94% increased Necrotic Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="NecroticDamage",type="INC",value=94}},nil}
-c["94% increased Physical Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=94}},nil}
-c["94% increased Physical Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=257,name="CritChance",type="INC",value=94}},nil}
-c["94% increased Throwing Critical Strike Chance"]={{[1]={flags=0,keywordFlags=1024,name="CritChance",type="INC",value=94}},nil}
 c["94% of Necrotic Damage Taken as Physical"]={{[1]={flags=0,keywordFlags=1,name="NecroticDamageTaken",type="BASE",value=94}},"  as  "}
 c["94% of Poison Damage Taken as Physical"]={{[1]={flags=0,keywordFlags=1,name="PoisonDamageTaken",type="BASE",value=94}},"  as  "}
 c["94% of Void Damage Taken as Physical"]={{[1]={flags=0,keywordFlags=1,name="VoidDamageTaken",type="BASE",value=94}},"  as  "}
@@ -16856,37 +16902,38 @@ c["95% Increased Aspect of the Viper Effect"]={{},"  Effect "}
 c["95% Increased Bleed Duration "]={{[1]={[1]={skillName="Bleed",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=95}},nil}
 c["95% Increased Bleed Duration for Minions "]={{[1]={[1]={scope="minion",type="Scope"},[2]={skillName="Bleed",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=95}},nil}
 c["95% Increased Volcanic Orb Damage"]={{[1]={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=95}},nil}
+c["95% increased Echo Damage when a skill is Echoed"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=95}}," Echo  when a skill is Echoed "}
+c["95% increased Effect of Frenzy on You "]={{[1]={flags=0,keywordFlags=0,name="FrenzyEffect",type="INC",value=95},notSupported=true},nil}
+c["95% increased Effect of Haste on You "]={{[1]={flags=0,keywordFlags=0,name="HasteEffect",type="INC",value=95},notSupported=true},nil}
+c["95% increased Minion Bow Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=2048,name="Damage",type="INC",value=95}}}},nil}
 c["95% increased Minion Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="CritChance",type="INC",value=95}}}},nil}
 c["95% increased Minion Melee Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="Damage",type="INC",value=95}}}},nil}
+c["95% increased Minion Spell Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="Damage",type="INC",value=95}}}},nil}
+c["95% increased effectiveness of Stats on an offhand Exalted Weapon"]={{}," effectiveness of Stats on an offhand Exalted Weapon "}
 c["95% of Shurikens Base Damage converted to Lightning"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=95},notSupported=true},nil}
 c["96 Ward Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="WardOnPotionUse",type="BASE",value=96}},nil}
 c["96% Increased Damage with Hammer Throw"]={{[1]={[1]={skillName="Hammer Throw",type="SkillName"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=96}},nil}
 c["96% Increased damage with Smelter's Wrath"]={{[1]={[1]={skillName="Smelter's Wrath",type="SkillName"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=96}},nil}
 c["96% Increased spell critical strike chance. This effect is doubled if you have 300 or more maximum mana."]={{[1]={[1]={mult=2,stat="Mana",threshold=300,type="StatThreshold"},flags=0,keywordFlags=256,name="CritChance",type="INC",value=96}},nil}
+c["96% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=96}},nil}
 c["96% increased Damage Over Time While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=4096,keywordFlags=0,name="Damage",type="INC",value=96}},nil}
 c["96% increased Damage for Totems"]={{[1]={[1]={scope="totem",type="Scope"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=96}},nil}
-c["96% increased Echo Damage when a skill is Echoed"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=96}}," Echo  when a skill is Echoed "}
-c["96% increased Effect of Frenzy on You "]={{[1]={flags=0,keywordFlags=0,name="FrenzyEffect",type="INC",value=96},notSupported=true},nil}
-c["96% increased Effect of Haste on You "]={{[1]={flags=0,keywordFlags=0,name="HasteEffect",type="INC",value=96},notSupported=true},nil}
 c["96% increased Melee Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=512,name="Damage",type="INC",value=96}},nil}
-c["96% increased Minion Bow Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=2048,name="Damage",type="INC",value=96}}}},nil}
 c["96% increased Minion Spell Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="CritChance",type="INC",value=96}}}},nil}
-c["96% increased Minion Spell Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="Damage",type="INC",value=96}}}},nil}
 c["96% increased Spell Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=256,name="Damage",type="INC",value=96}},nil}
-c["96% increased effectiveness of Stats on an offhand Exalted Weapon"]={{}," effectiveness of Stats on an offhand Exalted Weapon "}
 c["97% Chance to cast Marrow Shards when you cast Transplant"]={{[1]={[1]={skillName="Marrow Shards",type="SkillName"},[2]={type="Condition",var="OnCast_Transplant"},flags=0,keywordFlags=0,name="ChanceToCast_MarrowShards",source="",type="BASE",value=97},notSupported=true},nil}
-c["97% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=97}},nil}
 c["98 Ward Gained on Shadow Creation"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=98}},"  Gained on Shadow Creation "}
 c["98 Ward Gained when you use a Traversal Skill"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=98},notSupported=true},nil}
 c["98% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=98}},nil}
+c["98% increased Melee Elemental Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="INC",value=98},[2]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=98},[3]={flags=0,keywordFlags=512,name="LightningDamage",type="INC",value=98}},nil}
+c["98% increased Minion Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=98}}}},nil}
 c["98% increased Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="INC",value=98}},nil}
+c["98% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=98}},nil}
 c["99% Increased Damage for skills used by Shadows"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=99}},"  for skills used by Shadows "}
 c["99% Increased Fire Aura Damage"]={{[1]={[1]={skillName="Fire Aura",type="SkillName"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=99}},nil}
-c["99% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=99}},nil}
-c["99% increased Melee Elemental Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="INC",value=99},[2]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=99},[3]={flags=0,keywordFlags=512,name="LightningDamage",type="INC",value=99}},nil}
-c["99% increased Minion Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=99}}}},nil}
+c["99% increased Echo Damage when a skill is Echoed"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=99}}," Echo  when a skill is Echoed "}
 c["99% increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=99}}}},nil}
-c["99% increased Void Damage"]={{[1]={flags=0,keywordFlags=0,name="VoidDamage",type="INC",value=99}},nil}
+c["99% increased area for Melee Area Skills"]={{[1]={flags=0,keywordFlags=512,name="AreaOfEffect",type="INC",value=99}},"  for  Area Skills "}
 c["Aura of Decay is converted to fire, inflicting ignite instead of poison"]={{},"Aura of Decay is converted to fire, inflicting ignite instead of poison "}
 c["Bladestorms throw an Explosive Trap at an enemy within 6 meters every second, consuming 120% of its mana cost"]={{},"Bladestorms throw an Explosive Trap at an enemy within 6 meters every second, consuming 120% of its mana cost "}
 c["Bow Mastery: 50% increased damage while using a bow."]={{},"Bow Mastery: 50% increased damage while using a bow. "}
