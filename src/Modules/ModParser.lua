@@ -652,6 +652,17 @@ end
 local specialQuickFixModList = {
 	-- "Added" after a number is LE terminology for flat/base; strip it so parsers don't choke on it
 	["^([%+%-]?[%d%.]+%%?) Added "] = "%1 ",
+	-- "X% Global Increased/More/Reduced/Less Y" — reorder so the form-detection regex (which
+	-- requires "increased"/"more"/etc. directly after "%") still classifies the form correctly.
+	-- The "global" word is preserved later via modFlagList scanning, which adds the Global tag.
+	["^([%+%-]?[%d%.]+%%) Global Increased"] = "%1 increased Global",
+	["^([%+%-]?[%d%.]+%%) Global More"] = "%1 more Global",
+	["^([%+%-]?[%d%.]+%%) Global Reduced"] = "%1 reduced Global",
+	["^([%+%-]?[%d%.]+%%) Global Less"] = "%1 less Global",
+	-- "Physical Leech" is LE shorthand for "Physical Damage Leeched as Health".
+	-- Lua patterns don't support optional groups, so we list both shapes.
+	["^([%+%-]?[%d%.]+%%) Global Physical Leech"] = "%1 Global Physical Damage Leeched as Health",
+	["^([%+%-]?[%d%.]+%%) Physical Leech"] = "%1 Physical Damage Leeched as Health",
 	["^([%+%-]?[%d%.]+%%) Cast Speed"] = "%1 increased Cast Speed",
 	["^([%+%-]?[%d%.]+%%) Cooldown Recovery Speed"] = "%1 increased Cooldown Recovery Speed",
 	["^([%+%-]?[%d%.]+%%) Duration"] = "%1 increased Duration",
