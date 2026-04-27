@@ -4565,14 +4565,12 @@
     "mods": [
       "+(14-28)% Endurance",
       "{rounding:Integer}+(6-12) to All Attributes",
-      "+1 Stacks of Mountains Endurance for each second you have not moved (Maximum of 3)",
-      "(8-10)% increased Movement Speed"
+      "+1 Stacks of Mountains Endurance for each second you have not moved (Maximum of 3)"
     ],
     "rollIds": [
       0,
       2,
-      null,
-      3
+      null
     ]
   },
   "254": {
@@ -5741,7 +5739,7 @@
       "level": 48
     },
     "mods": [
-      "(8-10)% increased Movement Speed",
+      "30% increased Movement Speed",
       "(30-67)% Increased Bleed Duration ",
       "(30-40)% more Physical Ailment Damage to Moving Enemies",
       "{rounding:Integer}+(5-8) Strength",
