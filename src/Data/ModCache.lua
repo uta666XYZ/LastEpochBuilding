@@ -1588,7 +1588,6 @@ c["+1 Spell Damage per 3 Melee Damage"]={{[1]={flags=0,keywordFlags=768,name="Da
 c["+1 Spell Damage per 30 Ward Consumed"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=1}},"   per 30 Ward Consumed "}
 c["+1 Spell Damage per 5% Increased Healing Effectivenes"]={{[1]={[1]={skillName="Healing",type="SkillName"},flags=0,keywordFlags=256,name="Damage",type="BASE",value=1}},"   per 5% Increased  Effectivenes "}
 c["+1 Spell Damage per Strength"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=1}},"   per Strength "}
-c["+1 Spell Damage per player Attunement"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=1}},"   per player Attunement "}
 c["+1 Spell Damage while using a Shield"]={{[1]={[1]={type="Condition",var="UsingShield"},flags=0,keywordFlags=256,name="Damage",type="BASE",value=1}},nil}
 c["+1 Spell Damage while weilding a Staff"]={{[1]={[1]={type="Condition",var="UsingStaff"},flags=0,keywordFlags=256,name="Damage",type="BASE",value=1}},"   while weilding a  "}
 c["+1 Spell Damage while wielding a 2 Handed Axe"]={{[1]={[1]={type="Condition",var="UsingAxe"},flags=0,keywordFlags=256,name="Damage",type="BASE",value=1}},"   while wielding a 2 Handed  "}
@@ -1920,7 +1919,6 @@ c["+1% Lightning Damage Per 8 Max Mana"]={{[1]={[1]={div=8,stat="Mana",type="Per
 c["+1% Lightning Damage To Shocked Enemies"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="Shocked"},flags=0,keywordFlags=0,name="LightningDamage",type="MORE",value=1}},nil}
 c["+1% Lightning Damage per Shock"]={{[1]={[1]={skillName="Shock",type="SkillName"},flags=0,keywordFlags=0,name="LightningDamage",type="MORE",value=1}},"  per  "}
 c["+1% Lightning Penetration with Electrify "]={{[1]={[1]={skillName="Electrify",type="SkillName"},flags=0,keywordFlags=0,name="LightningPenetration",type="BASE",value=1}},"  with  "}
-c["+1% Mana Efficiency per player Intelligence"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=1}},"  Efficiency per player Intelligence "}
 c["+1% Maximum Health Gained As Endurance Threshold"]={{[1]={flags=0,keywordFlags=0,name="LifeAsEnduranceThreshold",type="BASE",value=1}},nil}
 c["+1% Melee Cold Penetration Per 3 Strength"]={{[1]={[1]={div=3,stat="Str",type="PerStat"},flags=0,keywordFlags=512,name="ColdPenetration",type="BASE",value=1}},nil}
 c["+1% Melee Critical Strike Chance"]={{[1]={flags=0,keywordFlags=512,name="CritChance",type="BASE",value=1}},nil}
@@ -2029,9 +2027,6 @@ c["+10 Melee Void Damage"]={{[1]={flags=0,keywordFlags=512,name="VoidDamage",typ
 c["+10 Minion Armor"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Armour",type="BASE",value=10}}}},nil}
 c["+10 Minion Damage Reflected"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="BASE",value=10}}}},"   Reflected "}
 c["+10 Minion Health Regen"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="LifeRegen",type="BASE",value=10}}}},nil}
-c["+10 Minion Health per player Attunement"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="BASE",value=10}}}},"   per player Attunement "}
-c["+10 Minion Health per player Intelligence"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="BASE",value=10}}}},"   per player Intelligence "}
-c["+10 Minion Health per player Strength"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="BASE",value=10}}}},"   per player Strength "}
 c["+10 Minion Melee Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="Damage",type="BASE",value=10}}}},nil}
 c["+10 Minion Spell Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="Damage",type="BASE",value=10}}}},nil}
 c["+10 Missing Mana Restored"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=10}}," Missing  Restored "}
@@ -2616,7 +2611,6 @@ c["+11 Melee Fire Damage per Forged Weapon"]={{[1]={flags=0,keywordFlags=0,name=
 c["+11 Melee Physical Damage"]={{[1]={flags=0,keywordFlags=512,name="PhysicalDamage",type="BASE",value=11}},nil}
 c["+11 Melee Physical Damage if wielding a Mace"]={{[1]={flags=0,keywordFlags=512,name="PhysicalDamage",type="BASE",value=11}},"   if wielding a Mace "}
 c["+11 Minion Bow Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=2048,name="Damage",type="BASE",value=11}}}},nil}
-c["+11 Minion Health per player Attunement"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="BASE",value=11}}}},"   per player Attunement "}
 c["+11 Minion Melee Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="Damage",type="BASE",value=11}}}},nil}
 c["+11 Minion Spell Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="Damage",type="BASE",value=11}}}},nil}
 c["+11 Seconds of Frenzy granted to you and your Minions when Enemy damage leaves you at Low Health"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=11},notSupported=true},nil}
@@ -2814,8 +2808,6 @@ c["+12 Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="BASE",
 c["+12 Melee Necrotic Damage"]={{[1]={flags=0,keywordFlags=512,name="NecroticDamage",type="BASE",value=12}},nil}
 c["+12 Melee Physical Damage if wielding a Mace"]={{[1]={flags=0,keywordFlags=512,name="PhysicalDamage",type="BASE",value=12}},"   if wielding a Mace "}
 c["+12 Melee Physical Damage if wielding a Sword"]={{[1]={[1]={type="Condition",var="UsingSword"},flags=0,keywordFlags=512,name="PhysicalDamage",type="BASE",value=12}},"   if wielding a  "}
-c["+12 Minion Health per player Dexterity"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="BASE",value=12}}}},"   per player Dexterity "}
-c["+12 Minion Health per player Strength"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="BASE",value=12}}}},"   per player Strength "}
 c["+12 Minion Melee Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="Damage",type="BASE",value=12}}}},nil}
 c["+12 Minion Spell Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="Damage",type="BASE",value=12}}}},nil}
 c["+12 Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="BASE",value=12}},nil}
@@ -3352,8 +3344,6 @@ c["+15 Melee Fire Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",typ
 c["+15 Melee Physical Damage if wielding a Mace"]={{[1]={flags=0,keywordFlags=512,name="PhysicalDamage",type="BASE",value=15}},"   if wielding a Mace "}
 c["+15 Melee Physical Damage if wielding a Sword"]={{[1]={[1]={type="Condition",var="UsingSword"},flags=0,keywordFlags=512,name="PhysicalDamage",type="BASE",value=15}},"   if wielding a  "}
 c["+15 Minion Bow Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=2048,name="Damage",type="BASE",value=15}}}},nil}
-c["+15 Minion Health per player Intelligence"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="BASE",value=15}}}},"   per player Intelligence "}
-c["+15 Minion Health per player Strength"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="BASE",value=15}}}},"   per player Strength "}
 c["+15 Minion Melee Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="Damage",type="BASE",value=15}}}},nil}
 c["+15 Minion Spell Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="Damage",type="BASE",value=15}}}},nil}
 c["+15 Spell Damage While Channelling"]={{[1]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=256,name="Damage",type="BASE",value=15}},nil}
@@ -4583,9 +4573,6 @@ c["+2% Lightning Penetration per Attunement"]={{[1]={[1]={stat="Att",type="PerSt
 c["+2% Lightning Penetration with Electrify "]={{[1]={[1]={skillName="Electrify",type="SkillName"},flags=0,keywordFlags=0,name="LightningPenetration",type="BASE",value=2}},"  with  "}
 c["+2% Locust Base Crit Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="BASE",value=2}}," Locust Base  "}
 c["+2% Locust Swarm Damage Per Locust"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=2}}," Locust Swarm  Per Locust "}
-c["+2% Mana Efficiency per player Attunement"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=2}},"  Efficiency per player Attunement "}
-c["+2% Mana Efficiency per player Dexterity"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=2}},"  Efficiency per player Dexterity "}
-c["+2% Mana Efficiency per player Intelligence"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=2}},"  Efficiency per player Intelligence "}
 c["+2% Maximum Health Gained As Endurance Threshold"]={{[1]={flags=0,keywordFlags=0,name="LifeAsEnduranceThreshold",type="BASE",value=2}},nil}
 c["+2% Maximum Mana -> Mana Cost"]={{},"+2% Maximum Mana -> Mana Cost"}
 c["+2% Melee Critical Strike Chance"]={{[1]={flags=0,keywordFlags=512,name="CritChance",type="BASE",value=2}},nil}
@@ -4670,9 +4657,6 @@ c["+20 Melee Lightning Damage"]={{[1]={flags=0,keywordFlags=512,name="LightningD
 c["+20 Melee Physical Damage if wielding a Mace"]={{[1]={flags=0,keywordFlags=512,name="PhysicalDamage",type="BASE",value=20}},"   if wielding a Mace "}
 c["+20 Minion Armor"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Armour",type="BASE",value=20}}}},nil}
 c["+20 Minion Bow Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=2048,name="PhysicalDamage",type="BASE",value=20}}}},nil}
-c["+20 Minion Health per player Dexterity"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="BASE",value=20}}}},"   per player Dexterity "}
-c["+20 Minion Health per player Intelligence"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="BASE",value=20}}}},"   per player Intelligence "}
-c["+20 Minion Health per player Strength"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="BASE",value=20}}}},"   per player Strength "}
 c["+20 Minion Melee Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="FireDamage",type="BASE",value=20}}}},nil}
 c["+20 Seconds of Frenzy granted to you and your Minions when Enemy damage leaves you at Low Health"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=20},notSupported=true},nil}
 c["+20 Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=20}},nil}
@@ -5336,8 +5320,6 @@ c["+25 Melee Cold Damage"]={{[1]={flags=0,keywordFlags=512,name="ColdDamage",typ
 c["+25 Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="BASE",value=25}},nil}
 c["+25 Melee Damage while you have Frenzy"]={{[1]={[1]={type="Condition",var="Frenzy"},flags=0,keywordFlags=512,name="Damage",type="BASE",value=25}},nil}
 c["+25 Melee Physical Damage"]={{[1]={flags=0,keywordFlags=512,name="PhysicalDamage",type="BASE",value=25}},nil}
-c["+25 Minion Health per player Dexterity"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="BASE",value=25}}}},"   per player Dexterity "}
-c["+25 Minion Health per player Strength"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="BASE",value=25}}}},"   per player Strength "}
 c["+25 Minion Melee Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="ColdDamage",type="BASE",value=25}}}},nil}
 c["+25 Spell Void Damage"]={{[1]={flags=0,keywordFlags=256,name="VoidDamage",type="BASE",value=25}},nil}
 c["+25 Totem Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=25}},"tem  "}
@@ -5946,8 +5928,6 @@ c["+3 Melee Physical Damage"]={{[1]={flags=0,keywordFlags=512,name="PhysicalDama
 c["+3 Melee Physical Damage for Locusts"]={{[1]={flags=0,keywordFlags=512,name="PhysicalDamage",type="BASE",value=3}},"   for Locusts "}
 c["+3 Melee Void Damage"]={{[1]={flags=0,keywordFlags=512,name="VoidDamage",type="BASE",value=3}},nil}
 c["+3 Minion Bow Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=2048,name="Damage",type="BASE",value=3}}}},nil}
-c["+3 Minion Health per player Attunement"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="BASE",value=3}}}},"   per player Attunement "}
-c["+3 Minion Health per player Intelligence"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="BASE",value=3}}}},"   per player Intelligence "}
 c["+3 Minion Melee Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="ColdDamage",type="BASE",value=3}}}},nil}
 c["+3 Minion Melee Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="Damage",type="BASE",value=3}}}},nil}
 c["+3 Minion Melee Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="FireDamage",type="BASE",value=3}}}},nil}
@@ -6224,7 +6204,6 @@ c["+3% Lightning Penetration per 5 Dexterity"]={{[1]={[1]={div=5,stat="Dex",type
 c["+3% Lightning Penetration with Electrify "]={{[1]={[1]={skillName="Electrify",type="SkillName"},flags=0,keywordFlags=0,name="LightningPenetration",type="BASE",value=3}},"  with  "}
 c["+3% Lightning Resistance"]={{[1]={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=3}},nil}
 c["+3% Locust Swarm Health Leech"]={{[1]={flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=3}}," Locust Swarm  "}
-c["+3% Mana Efficiency per player Attunement"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=3}},"  Efficiency per player Attunement "}
 c["+3% Maximum Health Gained As Endurance Threshold with Bear"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=3}},"  Gained As Endurance Threshold with Bear "}
 c["+3% Melee Critical Strike Chance"]={{[1]={flags=0,keywordFlags=512,name="CritChance",type="BASE",value=3}},nil}
 c["+3% Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="MORE",value=3}},nil}
@@ -6283,15 +6262,12 @@ c["+30 Cone Width (Degrees)"]={{}," Cone Width (Degrees) "}
 c["+30 Damage Reflected to Attackers"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=30}},"  Reflected to Attackers "}
 c["+30 Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="BASE",value=30}},nil}
 c["+30 Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=30}},nil}
-c["+30 Health per player Strength"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=30}},"  per player Strength "}
 c["+30 Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=30}},nil}
 c["+30 Melee Cold Damage when above 65% Health"]={{[1]={flags=0,keywordFlags=512,name="ColdDamage",type="BASE",value=30}},"   when above 65% Health "}
 c["+30 Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="BASE",value=30}},nil}
 c["+30 Melee Physical Damage"]={{[1]={flags=0,keywordFlags=512,name="PhysicalDamage",type="BASE",value=30}},nil}
 c["+30 Melee Physical Damage if wielding a Mace"]={{[1]={flags=0,keywordFlags=512,name="PhysicalDamage",type="BASE",value=30}},"   if wielding a Mace "}
 c["+30 Melee Void Damage"]={{[1]={flags=0,keywordFlags=512,name="VoidDamage",type="BASE",value=30}},nil}
-c["+30 Minion Health per player Attunement"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="BASE",value=30}}}},"   per player Attunement "}
-c["+30 Minion Health per player Intelligence"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="BASE",value=30}}}},"   per player Intelligence "}
 c["+30 Overhealing from potions does not count towards triggering this effect Health Gained on Potion Use"]={{[1]={[1]={skillName="Healing",type="SkillName"},flags=0,keywordFlags=0,name="Ward",type="BASE",value=30}}," Over from potions does not count tos triggering this effect Health Gained on Potion Use "}
 c["+30 Spell Damage for Totems"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=30}},"   for Totems "}
 c["+30 Spell Physical Damage"]={{[1]={flags=0,keywordFlags=256,name="PhysicalDamage",type="BASE",value=30}},nil}
@@ -7907,8 +7883,6 @@ c["+5 Melee Physical Damage"]={{[1]={flags=0,keywordFlags=512,name="PhysicalDama
 c["+5 Melee Void Damage"]={{[1]={flags=0,keywordFlags=512,name="VoidDamage",type="BASE",value=5}},nil}
 c["+5 Minion Bow Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=2048,name="Damage",type="BASE",value=5}}}},nil}
 c["+5 Minion Health Regen"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="LifeRegen",type="BASE",value=5}}}},nil}
-c["+5 Minion Health per player Attunement"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="BASE",value=5}}}},"   per player Attunement "}
-c["+5 Minion Health per player Strength"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="BASE",value=5}}}},"   per player Strength "}
 c["+5 Minion Melee Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="ColdDamage",type="BASE",value=5}}}},nil}
 c["+5 Minion Melee Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="Damage",type="BASE",value=5}}}},nil}
 c["+5 Minion Melee Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="FireDamage",type="BASE",value=5}}}},nil}
@@ -8593,7 +8567,6 @@ c["+6 Melee Physical Damage with Swarm Strike"]={{[1]={flags=0,keywordFlags=512,
 c["+6 Melee Void Damage"]={{[1]={flags=0,keywordFlags=512,name="VoidDamage",type="BASE",value=6}},nil}
 c["+6 Minion Bow Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=2048,name="Damage",type="BASE",value=6}}}},nil}
 c["+6 Minion Health Regen Per Second"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="LifeRegen",type="BASE",value=6}}}},"   Per Second "}
-c["+6 Minion Health per player Attunement"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="BASE",value=6}}}},"   per player Attunement "}
 c["+6 Minion Melee Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="Damage",type="BASE",value=6}}}},nil}
 c["+6 Minion Melee Physical Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="PhysicalDamage",type="BASE",value=6}}}},nil}
 c["+6 Minion Spell Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="Damage",type="BASE",value=6}}}},nil}
@@ -9506,8 +9479,6 @@ c["+8 Melee Physical Damage if wielding a Sword"]={{[1]={[1]={type="Condition",v
 c["+8 Melee Void Damage"]={{[1]={flags=0,keywordFlags=512,name="VoidDamage",type="BASE",value=8}},nil}
 c["+8 Minion Bow Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=2048,name="Damage",type="BASE",value=8}}}},nil}
 c["+8 Minion Health Regen"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="LifeRegen",type="BASE",value=8}}}},nil}
-c["+8 Minion Health per player Attunement"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="BASE",value=8}}}},"   per player Attunement "}
-c["+8 Minion Health per player Intelligence"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="BASE",value=8}}}},"   per player Intelligence "}
 c["+8 Minion Melee Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="Damage",type="BASE",value=8}}}},nil}
 c["+8 Minion Spell Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=256,name="Damage",type="BASE",value=8}}}},nil}
 c["+8 Physical Throwing Damage while Dual Wielding"]={{[1]={[1]={type="Condition",var="DualWielding"},flags=0,keywordFlags=256,name="PhysicalDamage",type="BASE",value=8}},nil}
@@ -14589,17 +14560,11 @@ c["4% chance to throw Acid Flask on Bow Hit"]={{}," to throw  on   "}
 c["4% increased Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=4}},nil}
 c["4% increased Bow Attack Speed"]={{[1]={flags=3584,keywordFlags=2048,name="Speed",type="INC",value=4}},nil}
 c["4% increased Cinder Strike Area per Level of Falconry While Unarmed"]={{[1]={[1]={type="Condition",var="Unarmed"},[2]={skillName="Cinder Strike",type="SkillName"},flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=4}},"   per Level of Falconry  "}
-c["4% increased Cold Damage per player Intelligence"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=4}},"  per player Intelligence "}
 c["4% increased Cold Spell Cast Speed"]={{[1]={flags=256,keywordFlags=260,name="Speed",type="INC",value=4}},nil}
 c["4% increased Critical Strike Chance"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="INC",value=4}},nil}
 c["4% increased Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=4}},nil}
 c["4% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage",type="INC",value=4}},nil}
 c["4% increased Damage for Totems"]={{[1]={[1]={scope="totem",type="Scope"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=4}},nil}
-c["4% increased Damage per player Attunement"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=4}},"  per player Attunement "}
-c["4% increased Damage per player Dexterity"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=4}},"  per player Dexterity "}
-c["4% increased Damage per player Intelligence"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=4}},"  per player Intelligence "}
-c["4% increased Damage per player Strength"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=4}},"  per player Strength "}
-c["4% increased Damage per player Vitality"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=4}},"  per player Vitality "}
 c["4% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=4}},nil}
 c["4% increased Echo Damage when a skill is Echoed"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=4}}," Echo  when a skill is Echoed "}
 c["4% increased Effect of Frenzy on You "]={{[1]={flags=0,keywordFlags=0,name="FrenzyEffect",type="INC",value=4},notSupported=true},nil}
@@ -14612,16 +14577,10 @@ c["4% increased Lightning Spell Cast Speed"]={{[1]={flags=256,keywordFlags=258,n
 c["4% increased Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="INC",value=4}},nil}
 c["4% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=4}},nil}
 c["4% increased Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=512,name="Speed",type="INC",value=4}},nil}
-c["4% increased Melee Damage per player Dexterity"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=4}},"   per player Dexterity "}
-c["4% increased Melee Damage per player Strength"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="INC",value=4}},"   per player Strength "}
 c["4% increased Melee Damage while you have Frenzy"]={{[1]={[1]={type="Condition",var="Frenzy"},flags=0,keywordFlags=512,name="Damage",type="INC",value=4}},nil}
 c["4% increased Melee Elemental Damage"]={{[1]={flags=0,keywordFlags=512,name="FireDamage",type="INC",value=4},[2]={flags=0,keywordFlags=512,name="ColdDamage",type="INC",value=4},[3]={flags=0,keywordFlags=512,name="LightningDamage",type="INC",value=4}},nil}
 c["4% increased Minion Bow Attack Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=3584,keywordFlags=2048,name="Speed",type="INC",value=4}}}},nil}
 c["4% increased Minion Cast Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=256,keywordFlags=0,name="Speed",type="INC",value=4}}}},nil}
-c["4% increased Minion Damage per player Attunement"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=4}}}},"   per player Attunement "}
-c["4% increased Minion Damage per player Dexterity"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=4}}}},"   per player Dexterity "}
-c["4% increased Minion Damage per player Intelligence"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=4}}}},"   per player Intelligence "}
-c["4% increased Minion Damage per player Strength"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=4}}}},"   per player Strength "}
 c["4% increased Minion Melee Attack Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=3584,keywordFlags=512,name="Speed",type="INC",value=4}}}},nil}
 c["4% increased Minion Throwing Attack Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=3584,keywordFlags=1024,name="Speed",type="INC",value=4}}}},nil}
 c["4% increased Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=4}},nil}
@@ -16467,8 +16426,6 @@ c["8% increased Damage Over Time"]={{[1]={flags=4096,keywordFlags=0,name="Damage
 c["8% increased Damage Taken"]={{[1]={flags=0,keywordFlags=0,name="DamageTaken",type="INC",value=8}},nil}
 c["8% increased Damage While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="Damage",type="INC",value=8}},nil}
 c["8% increased Damage for Totems"]={{[1]={[1]={scope="totem",type="Scope"},flags=0,keywordFlags=0,name="Damage",source="",type="INC",value=8}},nil}
-c["8% increased Damage per player Attunement"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=8}},"  per player Attunement "}
-c["8% increased Damage per player Intelligence"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=8}},"  per player Intelligence "}
 c["8% increased Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="INC",value=8}},nil}
 c["8% increased Echo Damage when a skill is Echoed"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=8}}," Echo  when a skill is Echoed "}
 c["8% increased Effect of Frenzy on You "]={{[1]={flags=0,keywordFlags=0,name="FrenzyEffect",type="INC",value=8},notSupported=true},nil}
