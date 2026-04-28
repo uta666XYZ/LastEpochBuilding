@@ -1405,6 +1405,52 @@ specialModList["^%+?(%d+) to (.+) skills$"] = function(num, _, cat)
 	return nil
 end
 
+-- 21e. "+N to <Cat> Skills per Complete Set" — same dispatch as 21d but the
+-- emitted SkillLevel BASE mod carries a Multiplier tag on CompleteSetCount so
+-- the cap only scales when matching set rings/items are equipped (the same
+-- counter env.itemModDB.multipliers["CompleteSetCount"] populated in CalcSetup).
+specialModList["^%+?(%d+) to (.+) skills per complete set$"] = function(num, _, cat)
+	cat = cat:lower()
+	cat = cat:gsub("^level of ", "")
+	local setTag = { type = "Multiplier", var = "CompleteSetCount" }
+	if cat == "all" then
+		return { mod("SkillLevel", "BASE", num, "", 0, 0, setTag) }
+	end
+	local kf = skillCatFlags[cat]
+	if kf then
+		return { mod("SkillLevel", "BASE", num, "", 0, kf, setTag) }
+	end
+	local st = skillCatTypes[cat]
+	if st then
+		return { mod("SkillLevel", "BASE", num, "", 0, 0, setTag, { type = "SkillType", skillType = st }) }
+	end
+	if skillCatAttrs[cat] or skillCatClasses[cat] then
+		return { mod("SkillLevel", "BASE", num, "", 0, 0, setTag) }
+	end
+	return nil
+end
+
+-- 21f. "+N to <Cat> Spells" — emits a Spell-keyword-tagged SkillLevel BASE,
+-- ORed with a damage-type flag when <Cat> is a damage type (e.g. "Necrotic
+-- Spells" → Spell+Necrotic). Without a damage type ("All Spells" / bare
+-- "Spells") it's just the Spell flag.
+specialModList["^%+?(%d+) to (.+) spells$"] = function(num, _, cat)
+	cat = cat:lower()
+	cat = cat:gsub("^level of ", "")
+	local kf = KeywordFlag.Spell
+	if cat == "all" or cat == "" then
+		return { mod("SkillLevel", "BASE", num, "", 0, kf) }
+	end
+	local dmgKf = skillCatFlags[cat]
+	if dmgKf then
+		return { mod("SkillLevel", "BASE", num, "", 0, bor(kf, dmgKf)) }
+	end
+	if skillCatClasses[cat] or skillCatAttrs[cat] then
+		return { mod("SkillLevel", "BASE", num, "", 0, kf) }
+	end
+	return nil
+end
+
 
 -- 22. Flat charge count for a skill ("+1 Charge for Flame Ward")
 specialModList["^%+?(%d+) charges? for (.+)$"] = nsAny
