@@ -470,6 +470,8 @@ function CalcBreakdownClass:AddModSection(sectionData, modList)
 					if not desc then
 						desc = "Skill type: "..(tag.neg and "Not " or "").."?"
 					end
+				elseif tag.type == "SkillAttribute" then
+					desc = "Attribute: "..(tag.neg and "Not " or "")..tag.attribute
 				elseif tag.type == "SlotNumber" then
 					desc = "When in slot #"..tag.num
 				elseif tag.type == "GlobalEffect" then
