@@ -1191,6 +1191,33 @@ function SkillsTabClass:DrawSpecSlots(viewPort, inputEvents, startY)
 			DrawImage(nil, sx, sy, SLOT_SIZE, SLOT_SIZE)
 		end
 
+		-- Skill cap breakdown tooltip on hover (mirrors LETools layout):
+		-- "Level of <Skill>: <cap>" header, "Base: 20" (LE base cap), then
+		-- one line per +SkillLevel source. Total = 20 + sum(bonuses), rounded
+		-- half-up to match GetMaxSkillPoints.
+		if isHover and sg and sg.grantedEffect and sg.grantedEffect.treeId then
+			local maxPts    = self:GetMaxSkillPoints(i)
+			local skillName = sg.grantedEffect.name or "Skill"
+			local breakdown = self.build.perSkillLevelBreakdown and self.build.perSkillLevelBreakdown[i]
+			SetDrawLayer(nil, 200)
+			local tooltip = new("Tooltip")
+			tooltip:Clear()
+			tooltip:AddLine(16, "^7Level of " .. skillName .. ": ^x60FF60" .. maxPts)
+			tooltip:AddSeparator(8)
+			tooltip:AddLine(14, "^7Base: ^x60A0FF20")
+			if breakdown and #breakdown > 0 then
+				for _, entry in ipairs(breakdown) do
+					local v = entry.value
+					local sign = v >= 0 and "+" or ""
+					-- Show 1 decimal only if non-integer (Permanence may yield fractional)
+					local valStr = (v == m_floor(v)) and tostring(m_floor(v)) or string.format("%.1f", v)
+					tooltip:AddLine(14, "^7" .. (entry.source or "Unknown") .. ": ^x60A0FF" .. sign .. valStr)
+				end
+			end
+			tooltip:Draw(sx, sy, SLOT_SIZE, SLOT_SIZE, viewPort)
+			SetDrawLayer(nil, 0)
+		end
+
 		-- Click handling
 		if isHover then
 			for id, event in ipairs(inputEvents) do

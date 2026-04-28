@@ -207,12 +207,77 @@ local function getWeaponFlags(env, weaponData, weaponTypes)
 end
 
 -- Build list of modifiers for given active skill
+-- Compute tree-injected damage-type tag swaps (LE's `fakeTags` mechanism)
+-- for a given treeId. Returns a {[srcBit]=dstBit} table or nil. Examples:
+--   Spark Artillery: " Cold -> Lightning Damage" -> {Cold=Lightning}
+--   Electrify: "Fire Damage -> Lightning Damage"
+--   Crackling Barrier: "Cold -> Lightning Conversion"
+-- Confirmed via descriptions like "Swaps Frost Claw's {Cold} tag for a {Lightning} tag.".
+local damageTypeBitsByName = {
+	Physical = SkillType.Physical, Lightning = SkillType.Lightning,
+	Cold = SkillType.Cold, Fire = SkillType.Fire, Void = SkillType.Void,
+	Necrotic = SkillType.Necrotic, Poison = SkillType.Poison,
+}
+function calcs.getTreeTagSwaps(env, treeId)
+	if not (treeId and env and env.allocNodes) then return nil end
+	local prefix = treeId .. "-"
+	local swaps
+	for nodeId, node in pairs(env.allocNodes) do
+		if nodeId:sub(1, #prefix) == prefix and node.stats then
+			for _, stat in ipairs(node.stats) do
+				local src, dst = stat:match("^%s*(%w+)%s*%->%s*(%w+)%s+Damage%s*$")
+				if not src then
+					src, dst = stat:match("^%s*(%w+)%s+Damage%s*%->%s*(%w+)%s+Damage%s*$")
+				end
+				if not src then
+					src, dst = stat:match("^%s*(%w+)%s*%->%s*(%w+)%s+Conversion%s*$")
+				end
+				if src and dst and damageTypeBitsByName[src] and damageTypeBitsByName[dst]
+				   and damageTypeBitsByName[src] ~= damageTypeBitsByName[dst] then
+					swaps = swaps or {}
+					swaps[damageTypeBitsByName[src]] = damageTypeBitsByName[dst]
+				end
+			end
+		end
+	end
+	return swaps
+end
+
+-- Apply tree tag swaps to a skillTypes set + keywordFlags integer; returns
+-- (newSkillTypes, newKeywordFlags). Pass mutable=true to mutate skillTypes
+-- in place (used at ActiveSkill build time).
+function calcs.applyTreeTagSwaps(swaps, skillTypes, keywordFlags, mutable)
+	if not swaps then return skillTypes, keywordFlags end
+	local out = mutable and skillTypes or copyTable(skillTypes)
+	local kw = keywordFlags or 0
+	for srcBit, dstBit in pairs(swaps) do
+		if out[srcBit] then
+			out[srcBit] = nil
+			out[dstBit] = true
+			kw = bor(band(kw, bnot(srcBit)), dstBit)
+		end
+	end
+	return out, kw
+end
+
 function calcs.buildActiveSkillModList(env, activeSkill)
 	local skillTypes = activeSkill.skillTypes
 	local skillFlags = activeSkill.skillFlags
 	local activeEffect = activeSkill.activeEffect
 	local activeGrantedEffect = activeEffect.grantedEffect
 	local effectiveRange = 0
+
+	-- Apply tree-injected damage-type tag swaps so affixes like
+	-- "+N to Lightning Spells" match a Cold->Lightning-swapped Frost Claw.
+	local treeSwaps = calcs.getTreeTagSwaps(env, activeGrantedEffect.treeId)
+	if treeSwaps then
+		local _, newKw = calcs.applyTreeTagSwaps(treeSwaps, skillTypes, activeSkill.skillCfg and activeSkill.skillCfg.keywordFlags or 0, true)
+		for _, cfg in ipairs({ activeSkill.skillCfg, activeSkill.weapon1Cfg, activeSkill.weapon2Cfg }) do
+			if cfg and cfg.keywordFlags then
+				cfg.keywordFlags = newKw
+			end
+		end
+	end
 
 	-- Set mode flags
 	if env.mode_buffs then
@@ -414,6 +479,7 @@ function calcs.buildActiveSkillModList(env, activeSkill)
 		skillGrantedEffect = activeGrantedEffect,
 		skillPart = activeSkill.skillPart,
 		skillTypes = activeSkill.skillTypes,
+		skillAttributes = activeGrantedEffect.skillAttributes,
 		skillCond = { },
 		skillDist = env.mode_effective and effectiveRange,
 		slotName = activeSkill.slotName
