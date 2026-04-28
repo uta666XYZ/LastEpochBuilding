@@ -1323,6 +1323,9 @@ end
 specialModList["^%+?(%d+) to skills$"] = function(num)
 	return { mod("SkillLevel", "BASE", num) }
 end
+specialModList["^%+?(%d+) skills$"] = function(num)
+	return { mod("SkillLevel", "BASE", num) }
+end
 
 -- 21d. "+N to <Category> Skills" — generic dispatcher for damage-type / skill-type /
 -- attribute / DOT prefixes. Routes via a category table:
@@ -1338,6 +1341,7 @@ local skillCatFlags = {
 	["melee"] = KeywordFlag.Melee,
 	["throwing"] = KeywordFlag.Throwing,
 	["bow"] = KeywordFlag.Bow,
+	["minion"] = KeywordFlag.Minion,
 	["fire"] = KeywordFlag.Fire,
 	["cold"] = KeywordFlag.Cold,
 	["lightning"] = KeywordFlag.Lightning,
@@ -1358,9 +1362,15 @@ local skillCatTypes = {
 	["transform"] = SkillType.Transform,
 	["ailment"] = SkillType.Ailment,
 }
+-- Lowercase affix word → canonical attribute name stored in
+-- grantedEffect.skillAttributes. "vitality" has no LE skill-scaling counterpart
+-- (no specialTag for "Vitality Skills"), but LEB has historically accepted the
+-- string; route it through the same tag mechanism for consistency — it will
+-- simply never match because no skill carries Vitality in its scalings.
 local skillCatAttrs = {
-	["strength"] = true, ["dexterity"] = true, ["intelligence"] = true,
-	["attunement"] = true, ["vitality"] = true,
+	["strength"] = "Strength", ["dexterity"] = "Dexterity",
+	["intelligence"] = "Intelligence", ["attunement"] = "Attunement",
+	["vitality"] = "Vitality",
 }
 -- Class names: a single character is one class, so a class-skills bonus is
 -- effectively a global SkillLevel BASE for the player.
@@ -1368,7 +1378,7 @@ local skillCatClasses = {
 	["mage"] = true, ["sentinel"] = true, ["acolyte"] = true,
 	["primalist"] = true, ["rogue"] = true,
 }
-specialModList["^%+?(%d+) to (.+) skills$"] = function(num, _, cat)
+local function dispatchCatSkills(num, cat)
 	cat = cat:lower()
 	-- "+N to Level of <Cat> Skills" — equivalent to "+N to <Cat> Skills".
 	cat = cat:gsub("^level of ", "")
@@ -1383,7 +1393,13 @@ specialModList["^%+?(%d+) to (.+) skills$"] = function(num, _, cat)
 	if st then
 		return { mod("SkillLevel", "BASE", num, "", 0, 0, { type = "SkillType", skillType = st }) }
 	end
-	if skillCatAttrs[cat] or skillCatClasses[cat] then
+	local attrName = skillCatAttrs[cat]
+	if attrName then
+		-- "+N to <Attribute> Skills" — filter via SkillAttribute tag
+		-- (matches LE's ScalesWithAttribute via DataProcess.skillAttributes).
+		return { mod("SkillLevel", "BASE", num, "", 0, 0, { type = "SkillAttribute", attribute = attrName }) }
+	end
+	if skillCatClasses[cat] then
 		return { mod("SkillLevel", "BASE", num) }
 	end
 	-- Multi-keyword combos like "cold melee" / "lightning melee" — try ORing
@@ -1401,6 +1417,51 @@ specialModList["^%+?(%d+) to (.+) skills$"] = function(num, _, cat)
 	end
 	if matchedAll and combinedKf ~= 0 then
 		return { mod("SkillLevel", "BASE", num, "", 0, combinedKf) }
+	end
+	return nil
+end
+specialModList["^%+?(%d+) to (.+) skills$"] = function(num, _, cat)
+	return dispatchCatSkills(num, cat)
+end
+-- Alias: in-game text uses "+N to <Cat> Attacks" / "Abilities" interchangeably
+-- with "<Cat> Skills" for non-spell skill categories (e.g. "Throwing Attacks",
+-- "Fire Melee Attacks"). Without this, the generic "+N to <name>" handler
+-- (pattern 21) strips the trailing "s" and resolves "Melee Attack" / "Bow
+-- Attack" to the canonical basic auto-attack skill, binding the bonus to that
+-- single skill instead of the whole category. scan() picks the longest match,
+-- so this dispatcher wins over the generic canonical-skill fallback.
+specialModList["^%+?(%d+) to (.+) attacks$"] = function(num, _, cat)
+	return dispatchCatSkills(num, cat)
+end
+specialModList["^%+?(%d+) to (.+) abilities$"] = function(num, _, cat)
+	return dispatchCatSkills(num, cat)
+end
+-- 21d-attr. "+N to (Level of) <Cat> Skills per <D> Total Attributes" —
+-- conditional scaling: emits SkillLevel BASE with a PerStat tag over
+-- (Str+Dex+Int+Att+Vit) divided by D. Pre-empts the generic
+-- "per N total attributes" tag pipeline because longer patterns win in scan().
+specialModList["^%+?(%d+) to (.+) skills per (%d+) total attributes$"] = function(num, _, cat, div)
+	cat = cat:lower()
+	cat = cat:gsub("^level of ", "")
+	div = tonumber(div)
+	local perStatTag = { type = "PerStat", statList = { "Str", "Dex", "Int", "Att", "Vit" }, div = div }
+	if cat == "all" then
+		return { mod("SkillLevel", "BASE", num, "", 0, 0, perStatTag) }
+	end
+	local kf = skillCatFlags[cat]
+	if kf then
+		return { mod("SkillLevel", "BASE", num, "", 0, kf, perStatTag) }
+	end
+	local st = skillCatTypes[cat]
+	if st then
+		return { mod("SkillLevel", "BASE", num, "", 0, 0, perStatTag, { type = "SkillType", skillType = st }) }
+	end
+	local attrName = skillCatAttrs[cat]
+	if attrName then
+		return { mod("SkillLevel", "BASE", num, "", 0, 0, perStatTag, { type = "SkillAttribute", attribute = attrName }) }
+	end
+	if skillCatClasses[cat] then
+		return { mod("SkillLevel", "BASE", num, "", 0, 0, perStatTag) }
 	end
 	return nil
 end
@@ -1424,7 +1485,11 @@ specialModList["^%+?(%d+) to (.+) skills per complete set$"] = function(num, _, 
 	if st then
 		return { mod("SkillLevel", "BASE", num, "", 0, 0, setTag, { type = "SkillType", skillType = st }) }
 	end
-	if skillCatAttrs[cat] or skillCatClasses[cat] then
+	local attrName = skillCatAttrs[cat]
+	if attrName then
+		return { mod("SkillLevel", "BASE", num, "", 0, 0, setTag, { type = "SkillAttribute", attribute = attrName }) }
+	end
+	if skillCatClasses[cat] then
 		return { mod("SkillLevel", "BASE", num, "", 0, 0, setTag) }
 	end
 	return nil
@@ -1443,12 +1508,28 @@ specialModList["^%+?(%d+) to (.+) spells$"] = function(num, _, cat)
 	end
 	local dmgKf = skillCatFlags[cat]
 	if dmgKf then
-		return { mod("SkillLevel", "BASE", num, "", 0, bor(kf, dmgKf)) }
+		-- AND-match Spell+<damage type> so "+2 to Fire Spells" only applies to
+		-- skills tagged with both Spell and Fire (not every Spell or every Fire).
+		return { mod("SkillLevel", "BASE", num, "", 0, bor(kf, dmgKf, KeywordFlag.MatchAll)) }
 	end
-	if skillCatClasses[cat] or skillCatAttrs[cat] then
+	local attrName = skillCatAttrs[cat]
+	if attrName then
+		-- "+N to <Attribute> Spells" — combine Spell keyword with attribute filter.
+		return { mod("SkillLevel", "BASE", num, "", 0, kf, { type = "SkillAttribute", attribute = attrName }) }
+	end
+	if skillCatClasses[cat] then
 		return { mod("SkillLevel", "BASE", num, "", 0, kf) }
 	end
 	return nil
+end
+
+
+-- 21g. "% increased Effect of Skill Level modifiers on Legendary Affixes"
+-- (Permanence of Primal Knowledge): emits a global INC stat that CalcSetup
+-- uses to multiply the BASE SkillLevel mods tagged mod.legendaryAffix=true
+-- (set by Item.lua for sealed Prefix/Suffix on Reforged Legendary items).
+specialModList["^%+?([%d%.]+)%% increased effect of skill level modifiers on legendary affixes$"] = function(num)
+	return { mod("LegendaryAffixSkillLevelEffect", "INC", num) }
 end
 
 
