@@ -1651,10 +1651,13 @@ local function scan(line, patternList, plain, matchAll, excludeStart, excludeEnd
 	local lineLower = line:lower()
 	for pattern, patternVal in pairs(patternList) do
 		local index, endIndex, cap1, cap2, cap3, cap4, cap5 = lineLower:find(pattern, 1, plain)
-		-- Skip matches that overlap an excluded range (used to protect multi-word
-		-- modName matches like "health gain on block" from being broken up by
-		-- shorter modTag patterns like "on block").
-		if index and excludeStart and endIndex >= excludeStart and index <= excludeEnd then
+		-- Skip matches fully contained within an excluded range (used to protect
+		-- multi-word modName matches like "health gain on block" from being
+		-- broken up by shorter modTag patterns like "on block"). Patterns that
+		-- merely overlap the name region (e.g. a long ". this effect is doubled
+		-- if you have N or more maximum mana." tag whose tail covers "maximum
+		-- mana") must still be allowed.
+		if index and excludeStart and index >= excludeStart and endIndex <= excludeEnd then
 			index = nil
 		end
 		if index and (not bestIndex or index < bestIndex or (index == bestIndex and (endIndex > bestEndIndex or (endIndex == bestEndIndex and #pattern > #bestPattern)))) then
