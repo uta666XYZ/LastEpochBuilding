@@ -214,6 +214,54 @@ function calcs.buildActiveSkillModList(env, activeSkill)
 	local activeGrantedEffect = activeEffect.grantedEffect
 	local effectiveRange = 0
 
+	-- Apply tree-injected damage-type tag swaps (LE's `fakeTags` mechanism).
+	-- Some allocated skill-tree nodes swap one damage-type tag for another,
+	-- e.g. Spark Artillery: " Cold -> Lightning Damage" with description
+	-- "Swaps Frost Claw's {Cold} tag for a {Lightning} tag.". Mutating
+	-- skillTypes / keywordFlags lets affixes like "+N to Lightning Spells"
+	-- match the swapped skill.
+	if activeGrantedEffect.treeId and env.allocNodes then
+		local prefix = activeGrantedEffect.treeId .. "-"
+		local damageTypeBits = {
+			Physical = SkillType.Physical, Lightning = SkillType.Lightning,
+			Cold = SkillType.Cold, Fire = SkillType.Fire, Void = SkillType.Void,
+			Necrotic = SkillType.Necrotic, Poison = SkillType.Poison,
+		}
+		local swaps
+		for nodeId, node in pairs(env.allocNodes) do
+			if nodeId:sub(1, #prefix) == prefix and node.stats then
+				for _, stat in ipairs(node.stats) do
+					local src, dst = stat:match("^%s*(%w+)%s*%->%s*(%w+)%s+Damage%s*$")
+					if not src then
+						src, dst = stat:match("^%s*(%w+)%s+Damage%s*%->%s*(%w+)%s+Damage%s*$")
+					end
+					if not src then
+						src, dst = stat:match("^%s*(%w+)%s*%->%s*(%w+)%s+Conversion%s*$")
+					end
+					if src and dst and damageTypeBits[src] and damageTypeBits[dst]
+					   and damageTypeBits[src] ~= damageTypeBits[dst] then
+						swaps = swaps or {}
+						swaps[damageTypeBits[src]] = damageTypeBits[dst]
+					end
+				end
+			end
+		end
+		if swaps then
+			local cfgs = { activeSkill.skillCfg, activeSkill.weapon1Cfg, activeSkill.weapon2Cfg }
+			for srcBit, dstBit in pairs(swaps) do
+				if skillTypes[srcBit] then
+					skillTypes[srcBit] = nil
+					skillTypes[dstBit] = true
+					for _, cfg in ipairs(cfgs) do
+						if cfg and cfg.keywordFlags then
+							cfg.keywordFlags = bor(band(cfg.keywordFlags, bnot(srcBit)), dstBit)
+						end
+					end
+				end
+			end
+		end
+	end
+
 	-- Set mode flags
 	if env.mode_buffs then
 		skillFlags.buffs = true
@@ -414,6 +462,7 @@ function calcs.buildActiveSkillModList(env, activeSkill)
 		skillGrantedEffect = activeGrantedEffect,
 		skillPart = activeSkill.skillPart,
 		skillTypes = activeSkill.skillTypes,
+		skillAttributes = activeGrantedEffect.skillAttributes,
 		skillCond = { },
 		skillDist = env.mode_effective and effectiveRange,
 		slotName = activeSkill.slotName

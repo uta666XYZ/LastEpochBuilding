@@ -1728,6 +1728,7 @@ c["+1 to Infernal Shade"]={{[1]={[1]={skillName="Infernal Shade",type="SkillName
 c["+1 to Javelin"]={{[1]={[1]={skillName="Javelin",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=1}},nil}
 c["+1 to Judgement"]={{[1]={[1]={skillName="Judgement",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=1}},nil}
 c["+1 to Lethal Mirage"]={{[1]={[1]={skillName="Lethal Mirage",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=1}},nil}
+c["+1 to Level of All Skills per 120 Total Attributes"]={{[1]={[1]={div=120,statList={"Str","Dex","Int","Att","Vit"},type="PerStat"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}},nil}
 c["+1 to Level of Minion Skills"]={{[1]={[1]={skillType=8192,type="SkillType"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}},nil}
 c["+1 to Level of Swipe"]={{[1]={[1]={skillName="Swipe",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}},nil}
 c["+1 to Lightning Blast"]={{[1]={[1]={skillName="Lightning Blast",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=1}},nil}
@@ -15438,7 +15439,7 @@ c["51% increased area for Melee Area Skills"]={{[1]={flags=0,keywordFlags=512,na
 c["51% of Shurikens Base Damage converted to Lightning"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=51},notSupported=true},nil}
 c["513% Increased Armor Shred Effect "]={{[1]={flags=0,keywordFlags=0,name="ArmorShredEffect",type="INC",value=513}},nil}
 c["52 Ice Arrow Freeze Rate"]={{[1]={flags=0,keywordFlags=0,name="FreezeRate",type="BASE",value=52}}," Ice Arrow  "}
-c["52% increased Effect of Skill Level modifiers on Legendary Affixes"]={{}," Effect of Skill Level modifiers on Legendary Affixes "}
+c["52% increased Effect of Skill Level modifiers on Legendary Affixes"]={{[1]={flags=0,keywordFlags=0,name="LegendaryAffixSkillLevelEffect",type="INC",value=52}},nil}
 c["52% increased Fire Damage"]={{[1]={flags=0,keywordFlags=0,name="FireDamage",type="INC",value=52}},nil}
 c["52% increased Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=52}},nil}
 c["52% increased Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=52}},nil}
