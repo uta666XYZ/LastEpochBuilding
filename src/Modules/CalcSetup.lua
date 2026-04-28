@@ -1651,11 +1651,21 @@ function calcs.initEnv(build, mode, override, specEnv)
 				-- Sum all SkillLevel mods matching this skill (includes global + skill-specific).
 				-- keywordFlags lets keyword-tagged SkillLevel mods ("+N to Cold Melee Skills",
 				-- "+N to Fire Minion Skills" etc.) match this skill's categories.
+				-- Apply tree-injected damage-type tag swaps (e.g. Spark Artillery
+				-- swapping Frost Claw Cold->Lightning) so "+N to Lightning Spells"
+				-- etc. matches the swapped skill in this cap-summing pass too.
+				local treeSwaps = calcs.getTreeTagSwaps(env, group.grantedEffect.treeId)
+				local skillTypes, keywordFlags = calcs.applyTreeTagSwaps(
+					treeSwaps,
+					group.grantedEffect.skillTypes,
+					group.grantedEffect.keywordFlags or 0,
+					false
+				)
 				local skillCfg = {
 					skillName = group.grantedEffect.name,
-					skillTypes = group.grantedEffect.skillTypes,
+					skillTypes = skillTypes,
 					skillAttributes = group.grantedEffect.skillAttributes,
-					keywordFlags = group.grantedEffect.keywordFlags or 0,
+					keywordFlags = keywordFlags,
 				}
 				local totalSkillLevel, breakdown = (env.sumSkillLevelWithLegendaryEffect or function(cfg) return env.modDB:Sum("BASE", cfg, "SkillLevel"), {} end)(skillCfg)
 				-- Per-skill bonus = total - global (avoid double-counting global)
