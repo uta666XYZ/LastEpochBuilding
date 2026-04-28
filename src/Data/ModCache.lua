@@ -1693,7 +1693,6 @@ c["+1 to Dread Shade"]={{[1]={[1]={skillName="Dread Shade",type="SkillName"},fla
 c["+1 to Earthquake"]={{[1]={[1]={skillName="Earthquake",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=1}},nil}
 c["+1 to Elemental Nova"]={{[1]={[1]={skillName="Elemental Nova",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=1}},nil}
 c["+1 to Elemental Skills"]={{[1]={flags=0,keywordFlags=14,name="SkillLevel",type="BASE",value=1}},nil}
-c["+1 to Elemental Spells"]={{},"  s "}
 c["+1 to Enchant Weapon"]={{[1]={[1]={skillName="Enchant Weapon",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=1}},nil}
 c["+1 to Entangling Roots"]={{[1]={[1]={skillName="Entangling Roots",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=1}},nil}
 c["+1 to Erasing Strike"]={{[1]={[1]={skillName="Erasing Strike",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=1}},nil}
