@@ -1253,7 +1253,18 @@ specialModList["^%+?([%d%.]+)%% of added (.+) gained as added (.+)$"] = nsAny
 -- canonical skill (e.g. "+1 to Strength", "+1 to All Attributes"), return nil so
 -- parseMod falls through to the generic chain and the stat mod still applies.
 specialModList["^%+?(%d+) to (.+)$"] = function(num, _, name)
+	-- "+N to Level of <Skill>" — equivalent to "+N to <Skill>".
+	name = name:gsub("^[Ll]evel [Oo]f ", "")
 	local canonical = canonicalSkillName(name)
+	if not canonical then
+		-- Plural fallback: "+N to Melee Attacks" / "Bow Attacks" describe the
+		-- basic auto-attack skill ("Melee Attack" / "Bow Attack"), so try the
+		-- singular form when the plural doesn't resolve.
+		local singular = name:gsub("s$", "")
+		if singular ~= name then
+			canonical = canonicalSkillName(singular)
+		end
+	end
 	if not canonical then return nil end
 	return { mod("SkillLevel", "BASE", num, "", 0, 0, { type = "SkillName", skillName = canonical }) }
 end
@@ -1288,6 +1299,9 @@ local minionSkillCatAttrs = {
 }
 specialModList["^%+?(%d+) to (.+) minion skills$"] = function(num, _, cat)
 	cat = cat:lower()
+	cat = cat:gsub("^level of ", "")
+	-- "+N to Level of Minion Skills" reduces to empty cat (treat as "all").
+	if cat == "" then cat = "all" end
 	local mods = {}
 	local kf = minionSkillCatFlags[cat]
 	if kf ~= nil then
@@ -1337,6 +1351,7 @@ local skillCatFlags = {
 }
 local skillCatTypes = {
 	["totem"] = SkillType.Totem,
+	["all totem"] = SkillType.Totem,
 	["buff"] = SkillType.Buff,
 	["curse"] = SkillType.Curse,
 	["channelling"] = SkillType.Channelling,
@@ -1347,8 +1362,16 @@ local skillCatAttrs = {
 	["strength"] = true, ["dexterity"] = true, ["intelligence"] = true,
 	["attunement"] = true, ["vitality"] = true,
 }
+-- Class names: a single character is one class, so a class-skills bonus is
+-- effectively a global SkillLevel BASE for the player.
+local skillCatClasses = {
+	["mage"] = true, ["sentinel"] = true, ["acolyte"] = true,
+	["primalist"] = true, ["rogue"] = true,
+}
 specialModList["^%+?(%d+) to (.+) skills$"] = function(num, _, cat)
 	cat = cat:lower()
+	-- "+N to Level of <Cat> Skills" — equivalent to "+N to <Cat> Skills".
+	cat = cat:gsub("^level of ", "")
 	if cat == "all" then
 		return { mod("SkillLevel", "BASE", num) }
 	end
@@ -1360,11 +1383,28 @@ specialModList["^%+?(%d+) to (.+) skills$"] = function(num, _, cat)
 	if st then
 		return { mod("SkillLevel", "BASE", num, "", 0, 0, { type = "SkillType", skillType = st }) }
 	end
-	if skillCatAttrs[cat] then
+	if skillCatAttrs[cat] or skillCatClasses[cat] then
 		return { mod("SkillLevel", "BASE", num) }
+	end
+	-- Multi-keyword combos like "cold melee" / "lightning melee" — try ORing
+	-- each whitespace-separated term that resolves to a flag.
+	local combinedKf = 0
+	local matchedAll = true
+	for term in cat:gmatch("%S+") do
+		local termKf = skillCatFlags[term]
+		if termKf then
+			combinedKf = bor(combinedKf, termKf)
+		else
+			matchedAll = false
+			break
+		end
+	end
+	if matchedAll and combinedKf ~= 0 then
+		return { mod("SkillLevel", "BASE", num, "", 0, combinedKf) }
 	end
 	return nil
 end
+
 
 -- 22. Flat charge count for a skill ("+1 Charge for Flame Ward")
 specialModList["^%+?(%d+) charges? for (.+)$"] = nsAny
