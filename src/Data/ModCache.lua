@@ -1701,7 +1701,6 @@ c["+1 to Eterra's Blessing"]={{[1]={[1]={skillName="Eterra's Blessing",type="Ski
 c["+1 to Explosive Trap"]={{[1]={[1]={skillName="Explosive Trap",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=1}},nil}
 c["+1 to Falconry"]={{[1]={[1]={skillName="Falconry",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=1}},nil}
 c["+1 to Fire Skills"]={{[1]={flags=0,keywordFlags=8,name="SkillLevel",type="BASE",value=1}},nil}
-c["+1 to Fire Spells"]={{},"  s "}
 c["+1 to Fireball"]={{[1]={[1]={skillName="Fireball",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=1}},nil}
 c["+1 to Firebrand"]={{[1]={[1]={skillName="Firebrand",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=1}},nil}
 c["+1 to Flame Reave"]={{[1]={[1]={skillName="Flame Reave",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=1}},nil}
@@ -1734,7 +1733,6 @@ c["+1 to Level of Minion Skills"]={{[1]={[1]={skillType=8192,type="SkillType"},f
 c["+1 to Level of Swipe"]={{[1]={[1]={skillName="Swipe",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=1}},nil}
 c["+1 to Lightning Blast"]={{[1]={[1]={skillName="Lightning Blast",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=1}},nil}
 c["+1 to Lightning Skills"]={{[1]={flags=0,keywordFlags=2,name="SkillLevel",type="BASE",value=1}},nil}
-c["+1 to Lightning Spells"]={{},"  s "}
 c["+1 to Lunge"]={{[1]={[1]={skillName="Lunge",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=1}},nil}
 c["+1 to Maelstrom"]={{[1]={[1]={skillName="Maelstrom",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=1}},nil}
 c["+1 to Mana Strike"]={{[1]={[1]={skillName="Mana Strike",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=1}},nil}
@@ -1743,11 +1741,8 @@ c["+1 to Marrow Shards"]={{[1]={[1]={skillName="Marrow Shards",type="SkillName"}
 c["+1 to Meteor"]={{[1]={[1]={skillName="Meteor",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=1}},nil}
 c["+1 to Multishot"]={{[1]={[1]={skillName="Multishot",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=1}},nil}
 c["+1 to Multistrike"]={{[1]={[1]={skillName="Multistrike",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=1}},nil}
-c["+1 to Necrotic Spells"]={{},"  s "}
 c["+1 to Net"]={{[1]={[1]={skillName="Net",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=1}},nil}
 c["+1 to Physical Skills"]={{[1]={flags=0,keywordFlags=1,name="SkillLevel",type="BASE",value=1}},nil}
-c["+1 to Poison Melee Attacks"]={{[1]={[1]={skillName="Poison",type="SkillName"},flags=0,keywordFlags=512,name="SkillLevel",type="BASE",value=1}},"   Attacks "}
-c["+1 to Poison Spells"]={{[1]={[1]={skillName="Poison",type="SkillName"},flags=0,keywordFlags=256,name="SkillLevel",type="BASE",value=1}},"  s "}
 c["+1 to Profane Veil"]={{[1]={[1]={skillName="Profane Veil",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=1}},nil}
 c["+1 to Puncture"]={{[1]={[1]={skillName="Puncture",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=1}},nil}
 c["+1 to Reaper Form"]={{[1]={[1]={skillName="Reaper Form",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=1}},nil}
@@ -1803,7 +1798,6 @@ c["+1 to Umbral Blades"]={{[1]={[1]={skillName="Umbral Blades",type="SkillName"}
 c["+1 to Upheaval"]={{[1]={[1]={skillName="Upheaval",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=1}},nil}
 c["+1 to Vengeance"]={{[1]={[1]={skillName="Vengeance",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=1}},nil}
 c["+1 to Void Cleave"]={{[1]={[1]={skillName="Void Cleave",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=1}},nil}
-c["+1 to Void Spells"]={{},"  s "}
 c["+1 to Volatile Reversal"]={{[1]={[1]={skillName="Volatile Reversal",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=1}},nil}
 c["+1 to Volcanic Orb"]={{[1]={[1]={skillName="Volcanic Orb",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=1}},nil}
 c["+1 to Wandering Spirits"]={{[1]={[1]={skillName="Wandering Spirits",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=1}},nil}
@@ -4347,7 +4341,6 @@ c["+2 Zombies Per Cast"]={{}," Zombies Per Cast "}
 c["+2 random Totems teleported to your location after you use a traversal skill"]={{[1]={[1]={skillName="Teleport",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=2}}," random Totems ed to your location after you use a traversal skill "}
 c["+2 to Abyssal Echoes"]={{[1]={[1]={skillName="Abyssal Echoes",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
 c["+2 to Acid Flask"]={{[1]={[1]={skillName="Acid Flask",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
-c["+2 to Acolyte Spells"]={{}," Acolyte s "}
 c["+2 to Aerial Assault"]={{[1]={[1]={skillName="Aerial Assault",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
 c["+2 to All Attributes"]={{[1]={flags=0,keywordFlags=0,name="Str",type="BASE",value=2},[2]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=2},[3]={flags=0,keywordFlags=0,name="Int",type="BASE",value=2},[4]={flags=0,keywordFlags=0,name="Att",type="BASE",value=2},[5]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=2}},nil}
 c["+2 to Anomaly"]={{[1]={[1]={skillName="Anomaly",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
@@ -4425,7 +4418,6 @@ c["+2 to Multishot"]={{[1]={[1]={skillName="Multishot",type="SkillName"},flags=0
 c["+2 to Multistrike"]={{[1]={[1]={skillName="Multistrike",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
 c["+2 to Net"]={{[1]={[1]={skillName="Net",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
 c["+2 to Physical Skills"]={{[1]={flags=0,keywordFlags=1,name="SkillLevel",type="BASE",value=2}},nil}
-c["+2 to Primalist Melee Attacks"]={{[1]={[1]={skillName="Melee Attack",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=2}}," Primalist s "}
 c["+2 to Profane Veil"]={{[1]={[1]={skillName="Profane Veil",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
 c["+2 to Puncture"]={{[1]={[1]={skillName="Puncture",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
 c["+2 to Reaper Form"]={{[1]={[1]={skillName="Reaper Form",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=2}},nil}
@@ -6068,7 +6060,6 @@ c["+3 to Judgement"]={{[1]={[1]={skillName="Judgement",type="SkillName"},flags=0
 c["+3 to Lethal Mirage"]={{[1]={[1]={skillName="Lethal Mirage",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=3}},nil}
 c["+3 to Level of Werebear Form"]={{[1]={[1]={skillName="Werebear Form",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=3}},nil}
 c["+3 to Lightning Blast"]={{[1]={[1]={skillName="Lightning Blast",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=3}},nil}
-c["+3 to Lightning Spells"]={{},"  s "}
 c["+3 to Lunge"]={{[1]={[1]={skillName="Lunge",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=3}},nil}
 c["+3 to Maelstrom"]={{[1]={[1]={skillName="Maelstrom",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=3}},nil}
 c["+3 to Mana Strike"]={{[1]={[1]={skillName="Mana Strike",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",source="",type="BASE",value=3}},nil}
