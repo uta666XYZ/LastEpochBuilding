@@ -64,7 +64,11 @@ end
 -- damage-type portion is taken from that array so tree node conversions
 -- (e.g. Flame Ward -> Cold, Surge -> Fire) are reflected. Otherwise damage
 -- bits are read straight from grantedEffect.skillTypeTags (base only).
-function getScalingTagsList(grantedEffect, dynamicDamageTypes, extraFlags, areaOverride)
+-- DELIVERY_BIT_MASK: Spell(256) | Melee(512) | Throwing(1024) | Bow(2048).
+-- deliverySwapBit, if set, replaces the existing delivery bit so the tooltip's
+-- Scaling Tags row reflects item conversions (Ravager's Dart Heartseeker:
+-- Bow -> Throwing).
+function getScalingTagsList(grantedEffect, dynamicDamageTypes, extraFlags, areaOverride, deliverySwapBit)
     if not grantedEffect then return nil end
     local tags = {}
     -- Use the precomputed displayTags bitmap (built by DataProcess) which
@@ -84,6 +88,12 @@ function getScalingTagsList(grantedEffect, dynamicDamageTypes, extraFlags, areaO
         grantedEffect.displayTags or bit.bor(grantedEffect.skillTypeTags or 0, grantedEffect.fakeTags or 0),
         extraFlags or 0
     )
+    -- Apply item-scoped delivery-type swap: strip Spell/Melee/Throwing/Bow then
+    -- OR in the destination so the tooltip matches LE's in-game tag display.
+    if deliverySwapBit then
+        flags = bit.band(flags, bit.bnot(256 + 512 + 1024 + 2048))
+        flags = bit.bor(flags, deliverySwapBit)
+    end
     if dynamicDamageTypes and #dynamicDamageTypes > 0 then
         for _, dt in ipairs(dynamicDamageTypes) do
             if dt.isBase then t_insert(tags, { name = capitalizeDamageType(dt.type) }) end
@@ -1467,7 +1477,10 @@ function SkillsTabClass:DrawSpecSlots(viewPort, inputEvents, startY)
 			local dynDt = self:GetDynamicDamageTypes(i)
 			local extraFlags = sg.grantedEffect.treeId and self:GetTreeTagAdditionsByTreeId(sg.grantedEffect.treeId) or 0
 			local areaOverride = sg.grantedEffect.treeId and self:IsTotemConvertedByTreeId(sg.grantedEffect.treeId) and 2 or nil
-			local tagsLine = formatScalingTagsLine(getScalingTagsList(sg.grantedEffect, dynDt, extraFlags, areaOverride))
+			-- Item-scoped delivery-type swap (Heartseeker Bow -> Throwing via
+			-- Ravager's Dart). Computed in CalcSetup's cap-summing pass.
+			local deliverySwapBit = self.build.perSkillDeliverySwap and self.build.perSkillDeliverySwap[i] or nil
+			local tagsLine = formatScalingTagsLine(getScalingTagsList(sg.grantedEffect, dynDt, extraFlags, areaOverride, deliverySwapBit))
 			local minionLine = formatMinionTagsLine(getMinionTagsList(sg.grantedEffect, nil, areaOverride))
 			if tagsLine or minionLine then
 				tooltip:AddSeparator(8)

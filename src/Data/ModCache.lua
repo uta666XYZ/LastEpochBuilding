@@ -11182,7 +11182,6 @@ c["100% of Frost Wall Damage converted to Fire"]={{[1]={flags=0,keywordFlags=0,n
 c["100% of Frostbite Chance Converted to Bleed Chance"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=100},notSupported=true},nil}
 c["100% of Fury Leap Base Damage Converted to Cold"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=100},notSupported=true},nil}
 c["100% of Hail of Arrows Damage converted to Poison"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=100},notSupported=true},nil}
-c["100% of Heartseeker converted to Throwing"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=100},notSupported=true},nil}
 c["100% of Hungering Souls Base Damage Converted to Fire"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=100},notSupported=true},nil}
 c["100% of Ignite Chance Converted to Bleed Chance"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=100},notSupported=true},nil}
 c["100% of Ignite Chance Converted to Shock Chance for Fireball"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=100},notSupported=true},nil}
