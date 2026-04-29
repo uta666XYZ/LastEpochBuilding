@@ -127,13 +127,8 @@ DamageTypeColors = {
 DamageSourceTypes = { "Spell", "Melee", "Throwing", "Bow", "Dot"}
 DamageSourceWeapons = { "Wand", "Bow", "Axe", "Sceptre", "Staff", "Dagger", "Sword" }
 
--- Active skill types — bits 1..16384 mirror Last Epoch's internal AT enum
--- (Game.dll Ability.Tags). Higher bits are LEB-specific tags that LE doesn't
--- expose but ModParser/Calc* depend on (Buff/Curse/Ailment/etc.). Do NOT
--- reuse bits 1..16384 for LEB-only flags — `skills.json` skillTypeTags are
--- imported verbatim from datamining and rely on LE's bit layout.
+-- Active skill types
 SkillType = {
-	-- LE-aligned bits (must not change)
 	Physical = 1,
 	Lightning = 2,
 	Cold = 4,
@@ -141,32 +136,25 @@ SkillType = {
 	Void = 16,
 	Necrotic = 32,
 	Poison = 64,
-	Bow = 128,
+	Elemental = 128,
 	Spell = 256,
 	Melee = 512,
 	Throwing = 1024,
-	Dot = 2048,
-	Minion = 4096,
-	Movement = 8192,
-	Channelling = 16384,
-	-- bit 15 (32768) and bit 16 (65536) — LE AT enum likely uses these but
-	-- their identity isn't dumped yet (datamining Phase 8 stopped at bit 14).
-	-- bit 17 (131072) is in use by LE: Focus carries it and Focus is a buff
-	-- skill, so we provisionally name it Buff. To be confirmed when datamining
-	-- dumps the full Tag enum.
+	Bow = 2048,
+	Dot = 4096,
+	Minion = 8192,
+	Totem = 16384,
+	PetResisted = 32768,
+	Potion = 65536,
 	Buff = 131072,
-	-- LEB-specific bits — placed at bit 18+ to leave LE bits 15..17 free.
-	-- Renumber freely if LE turns out to use bit 18+.
-	Totem = 262144,
-	PetResisted = 524288,
-	Potion = 1048576,
-	Transform = 2097152,
-	LowLife = 4194304,
-	HighLife = 8388608,
-	FullLife = 16777216,
-	Hit = 33554432,
-	Curse = 67108864,
-	Ailment = 134217728,
+	Channelling = 262144,
+	Transform = 524288,
+	LowLife = 1048576,
+	HighLife = 2097152,
+	FullLife = 4194304,
+	Hit = 8388608,
+	Curse = 16777216,
+	Ailment = 33554432,
 }
 
 SkillType.Attack = SkillType.Melee + SkillType.Throwing + SkillType.Bow
