@@ -124,6 +124,7 @@ local modNameList = {
 	-- On hit/kill/leech effects
 	["health gain on kill"] = "LifeOnKill",
 	["health gain on hit"] = { "LifeOnHit", flags = ModFlag.Hit },
+	["health lost on kill"] = "LifeLossOnKillPercent",
 	-- Projectile modifiers
 	["extra projectiles"] = "ProjectileCount",
 	["projectiles"] = "ProjectileCount",
@@ -486,6 +487,8 @@ local modTagList = {
 	["to bleeding enemies"] = { tag = { type = "ActorCondition", actor = "enemy", var = "Bleeding" } },
 	["against cursed enemies"] = { tag = { type = "ActorCondition", actor = "enemy", var = "Cursed" } },
 	["to cursed enemies"] = { tag = { type = "ActorCondition", actor = "enemy", var = "Cursed" } },
+	["to cursed"] = { tag = { type = "ActorCondition", actor = "enemy", var = "Cursed" } },
+	["against cursed"] = { tag = { type = "ActorCondition", actor = "enemy", var = "Cursed" } },
 	["against slowed enemies"] = { tag = { type = "ActorCondition", actor = "enemy", var = "Slowed" } },
 	["to slowed enemies"] = { tag = { type = "ActorCondition", actor = "enemy", var = "Slowed" } },
 	-- "from X enemies" — damage taken conditional tags
@@ -524,6 +527,8 @@ local modTagList = {
 	["in spriggan form"] = { tag = { type = "Condition", var = "InSprigganForm" } },
 	["while in swarmblade form"] = { tag = { type = "Condition", var = "InSwarmbladeForm" } },
 	["in swarmblade form"] = { tag = { type = "Condition", var = "InSwarmbladeForm" } },
+	["while in reaper form"] = { tag = { type = "Condition", var = "InReaperForm" } },
+	["in reaper form"] = { tag = { type = "Condition", var = "InReaperForm" } },
 	-- "recently" conditions not yet handled
 	["if echoed recently"] = { tag = { type = "Condition", var = "EchoedRecently" } },
 	["if you have directly cast a cold spell recently"] = { tag = { type = "Condition", var = "DirectlyCastColdSpellRecently" } },
@@ -907,6 +912,46 @@ specialModList["^%+?([%d%.]+)%% chance to cast (.+) when you use (.+)$"] = funct
 	local cast = canonicalSkillName(castName)
 	if not trig or not cast then return nil end
 	return nsList(mod("ChanceToCast_" .. trig:gsub("%s+",""), "BASE", num, "", 0, 0, { type = "SkillName", skillName = trig }, { type = "Condition", var = "OnUse_" .. cast:gsub("%s+","") }))
+end
+
+-- Reap-prefixed tree mods (Reap is granted by Reaper Form; scope to Reaper Form active skill).
+-- Roadmap: Tier 3 — strict Reap subskill split (treeId share check required).
+local reaperFormTag = { type = "SkillName", skillName = "Reaper Form" }
+specialModList["^%+?([%d%.]+)%% reap area$"] = function(num)
+	return { mod("AreaOfEffect", "INC", num, "", 0, 0, reaperFormTag) }
+end
+specialModList["^%+?([%d%.]+)%% reap health leech$"] = function(num)
+	return { mod("DamageLifeLeech", "BASE", num, "", 0, 0, reaperFormTag) }
+end
+specialModList["^%+?([%d%.]+)%% reap damage per missing health percent$"] = function(num)
+	return { mod("Damage", "MORE", num, "", 0, 0, reaperFormTag, { type = "Multiplier", var = "MissingHealthPercent" }) }
+end
+specialModList["^%+?([%d%.]+)%% reap cooldown duration$"] = function(num)
+	return { mod("CooldownRecovery", "INC", -num, "", 0, 0, reaperFormTag) }
+end
+specialModList["^%+?([%d%.]+)%% reap cooldown recovery speed$"] = function(num)
+	return { mod("CooldownRecovery", "INC", num, "", 0, 0, reaperFormTag) }
+end
+specialModList["^%+?([%d%.]+) reap health gained$"] = function(num)
+	return { mod("LifeOnHit", "BASE", num, "", 0, 0, reaperFormTag) }
+end
+specialModList["^%+?([%d%.]+)%% increased cooldown recovery speed of reap$"] = function(num)
+	return { mod("CooldownRecovery", "INC", num, "", 0, 0, reaperFormTag) }
+end
+specialModList["^%+?([%d%.]+)%% increased cooldown recovery speed for reap$"] = function(num)
+	return { mod("CooldownRecovery", "INC", num, "", 0, 0, reaperFormTag) }
+end
+specialModList["^%+?([%d%.]+)%% reap range$"] = function(num)
+	return { mod("MeleeWeaponRange", "BASE", num, "", 0, 0, reaperFormTag) }
+end
+specialModList["^%+?([%d%.]+) reap freeze rate per intelligence$"] = function(num)
+	return { mod("FreezeRate", "BASE", num, "", 0, 0, reaperFormTag, { type = "PerStat", stat = "Int" }) }
+end
+specialModList["^%+?([%d%.]+)%% reap kill threshold$"] = function(num)
+	return { mod("KillThreshold", "BASE", num, "", 0, 0, reaperFormTag) }
+end
+specialModList["^%+?([%d%.]+)%% reap poison chance$"] = function(num)
+	return { mod("ChanceToTriggerOnHit_Ailment_Poison", "BASE", num, "", 0, 0, reaperFormTag) }
 end
 
 -- Recognition-only catch-alls for remaining red-text idol patterns.
