@@ -124,10 +124,23 @@ for skillId, grantedEffect in pairs(data.skills) do
             grantedEffect.skillTypes[SkillType.Spell] = true
         end
     end
+    -- LE's `fakeTags` field tags a skill with categories it doesn't carry in its
+    -- raw skillTypeTags (e.g. Judgement is mechanically Melee but is also tagged
+    -- as a Spell for affix matching and tooltip display). Merge these into
+    -- skillTypes so both Scaling Tags display and SkillLevel cap-summing pick
+    -- them up (e.g. "+1 to Elemental Spell Skills" on Judgement).
+    if grantedEffect.fakeTags and grantedEffect.fakeTags ~= 0 then
+        for name, skillType in pairs(SkillType) do
+            if skillType ~= 0 and skillType ~= SkillType.Unsupported
+               and bit.band(grantedEffect.fakeTags, skillType) == skillType then
+                grantedEffect.skillTypes[skillType] = true
+            end
+        end
+    end
     -- Also expose a keywordFlags bitmap for skillCfg consumers that filter mods by
     -- the skill's category (Spell/Melee/Minion/elemental). Built from skillTypes so
-    -- baseFlags-derived bits are included.
-    grantedEffect.keywordFlags = grantedEffect.skillTypeTags or 0
+    -- baseFlags-derived and fakeTags-derived bits are included.
+    grantedEffect.keywordFlags = bit.bor(grantedEffect.skillTypeTags or 0, grantedEffect.fakeTags or 0)
     for skillType in pairs(grantedEffect.skillTypes) do
         if type(skillType) == "number" then
             grantedEffect.keywordFlags = bit.bor(grantedEffect.keywordFlags, skillType)

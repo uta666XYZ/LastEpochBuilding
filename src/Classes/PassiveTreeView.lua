@@ -1607,9 +1607,9 @@ function PassiveTreeViewClass:AddNodeTooltip(tooltip, node, build)
 					local dynDt = build.skillsTab.GetDynamicDamageTypesByTreeId
 						and build.skillsTab:GetDynamicDamageTypesByTreeId(treeId)
 					local tagsLine = formatScalingTagsLine and formatScalingTagsLine(getScalingTagsList(sg.grantedEffect, dynDt))
-					if tagsLine then
-						tooltip:AddLine(14, tagsLine)
-					end
+					local minionLine = formatMinionTagsLine and formatMinionTagsLine(getMinionTagsList(sg.grantedEffect))
+					if tagsLine then tooltip:AddLine(14, tagsLine) end
+					if minionLine then tooltip:AddLine(14, minionLine) end
 					break
 				end
 			end
