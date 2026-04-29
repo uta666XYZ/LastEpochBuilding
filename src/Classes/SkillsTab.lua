@@ -1175,6 +1175,14 @@ function SkillsTabClass:GetDynamicDamageTypesByTreeId(treeId)
 	local isMultiConv = MULTI_CONV_TREES[treeId]
 	local convMap   = {}   -- fromType -> toType  (single, last wins)
 	local multiList = {}   -- {fromType, toType} pairs (multi-conv skills)
+	-- addSet: types forced into baseSet *after* conversions resolve. Captures
+	-- "split-effect" nodes like Black Hole's Binary System ("One deals fire
+	-- damage and the other deals cold damage") that simultaneously surface
+	-- multiple damage types as base, without converting away from the original.
+	-- Per LE_datamining findings, per-node mutator state isn't serialized; we
+	-- pattern-match the description as a fallback until a Ghidra-decomp
+	-- node->mutator table is available.
+	local addSet = {}
 
 	for nodeId, node in pairs(self.build.spec.allocNodes) do
 		if nodeId:match("^" .. treeId) and (node.maxPoints or 0) > 0 and node.description then
@@ -1189,6 +1197,15 @@ function SkillsTabClass:GetDynamicDamageTypesByTreeId(treeId)
 						else
 							convMap[fromType] = toType  -- overwrite: last allocation wins
 						end
+					end
+				end
+				-- Split-effect detector: "one deals X damage and the other deals Y damage".
+				-- Both X and Y are surfaced as base (added, not converted).
+				do
+					local oneType, otherType = lo:match("one deals (%a+) damage and the other deals (%a+) damage")
+					if oneType and otherType and TYPE_SET[oneType] and TYPE_SET[otherType] then
+						addSet[oneType] = true
+						addSet[otherType] = true
 					end
 				end
 				-- Whole-skill conversion phrasing used by some trees, e.g.
@@ -1236,6 +1253,12 @@ function SkillsTabClass:GetDynamicDamageTypesByTreeId(treeId)
 		for _, pair in ipairs(multiList) do applyConv(pair[1], pair[2]) end
 	else
 		for fromType, toType in pairs(convMap) do applyConv(fromType, toType) end
+	end
+	-- Apply split-effect additions last: force each addSet entry into baseSet
+	-- (re-promote from convSet if a prior conversion demoted it).
+	for t in pairs(addSet) do
+		if convSet[t] then convSet[t] = nil end
+		baseSet[t] = true
 	end
 
 	-- Build sorted result
