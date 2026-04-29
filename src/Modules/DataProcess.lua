@@ -152,6 +152,22 @@ for skillId, grantedEffect in pairs(data.skills) do
             end
         end
     end
+    -- LE's `skillTreeConversionDamageTags` (Ability offset 0x310) advertises
+    -- damage types reachable via spec-tree allocation (e.g. Focus/Arcane
+    -- Ascendance/Flame Ward all have `tags = Spell` only but advertise
+    -- Lightning here). In-game, "+to <DamageType> Skills" affixes match these
+    -- skills even at base — confirmed by Off-Hand Catalyst "+1 Lightning
+    -- Skills" raising Focus's level cap. Mirror these bits into skillTypes so
+    -- cap-summing's SkillType predicate accepts the affix, and so the Scaling
+    -- Tags row picks them up via displayTags below.
+    if grantedEffect.skillTreeConversionDamageTags and grantedEffect.skillTreeConversionDamageTags ~= 0 then
+        for name, skillType in pairs(SkillType) do
+            if skillType ~= 0 and skillType ~= SkillType.Unsupported
+               and bit.band(grantedEffect.skillTreeConversionDamageTags, skillType) == skillType then
+                grantedEffect.skillTypes[skillType] = true
+            end
+        end
+    end
     -- Also expose a keywordFlags bitmap for skillCfg consumers that filter mods by
     -- the skill's category (Spell/Melee/Minion/elemental). Built from skillTypes so
     -- baseFlags-derived and fakeTags-derived bits are included.
@@ -161,6 +177,22 @@ for skillId, grantedEffect in pairs(data.skills) do
             grantedEffect.keywordFlags = bit.bor(grantedEffect.keywordFlags, skillType)
         end
     end
+    -- displayTags: bitmap consumed by the Scaling Tags tooltip row. Mirrors LE's
+    -- in-game ability tooltip, which combines:
+    --   * Ability.tags          (skillTypeTags)
+    --   * Ability.fakeTags      (fakeTags)
+    --   * Ability.skillTreeConversionDamageTags  (advertised tree-reachable damage
+    --       types — e.g. Focus/Arcane Ascendance/Flame Ward show "Lightning" /
+    --       "Cold" tags purely from this field; their tags bitmap doesn't carry
+    --       the damage type bit. Per LE_datamining 2026-04-30.)
+    --   * baseFlag-derived bits (channelling/spell/melee/etc. — Focus is tagged
+    --       "Channeled" via baseFlags.channelling, never via the AT bitmap)
+    -- Lifted into a single field so SkillsTab tooltip code can read it directly
+    -- without reproducing the merge logic.
+    grantedEffect.displayTags = bit.bor(
+        grantedEffect.keywordFlags,
+        grantedEffect.skillTreeConversionDamageTags or 0
+    )
     -- Attribute scalings used by the "+N to <Attribute> Skills" SkillAttribute
     -- mod tag. Mirrors LE's ScalesWithAttribute() which returns true iff the
     -- requested attribute is in `Ability.getAttributeScaling()`. Empirically
