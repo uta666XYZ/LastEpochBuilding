@@ -1655,19 +1655,19 @@ function calcs.initEnv(build, mode, override, specEnv)
 				-- Sum all SkillLevel mods matching this skill (includes global + skill-specific).
 				-- keywordFlags lets keyword-tagged SkillLevel mods ("+N to Cold Melee Skills",
 				-- "+N to Fire Minion Skills" etc.) match this skill's categories.
-				-- Apply tree-injected damage-type tag swaps (e.g. Spark Artillery
-				-- swapping Frost Claw Cold->Lightning) so "+N to Lightning Spells"
-				-- etc. matches the swapped skill in this cap-summing pass too.
-				local treeSwaps = calcs.getTreeTagSwaps(env, group.grantedEffect.treeId)
-				local skillTypes, keywordFlags = calcs.applyTreeTagSwaps(
-					treeSwaps,
-					group.grantedEffect.skillTypes,
-					group.grantedEffect.keywordFlags or 0,
-					false
-				)
-				-- Tree-injected tag additions (e.g. Warcry's Totemic Heart node
-				-- adds Minion+Totem because it converts the skill into a totem).
-				-- Apply *after* swaps so additions ride on the post-swap bitmap.
+				-- LE's GetTagsForLevelOfSkillsStats() reads ONLY the static
+				-- `tags | fakeTags` for "+to <Cat> Skills" affix gating —
+				-- tree-allocated damage-type swaps do NOT mutate that field at
+				-- runtime. Confirmed in-game: Gathering Storm with Earth Smasher
+				-- (Lightning -> Physical conversion node) is still gated by its
+				-- base Lightning tag, so a belt's "+1 to Physical Skills" does
+				-- NOT raise its level. Therefore we skip applyTreeTagSwaps here
+				-- and use grantedEffect.keywordFlags (= tags|fakeTags) directly.
+				-- Tree-injected tag *additions* (Totemic Heart promoting Warcry
+				-- to a Totem skill) are still applied — those represent skill
+				-- category promotions LE recognises for affix gating.
+				local skillTypes = group.grantedEffect.skillTypes
+				local keywordFlags = group.grantedEffect.keywordFlags or 0
 				local treeAdds = calcs.getTreeTagAdditions(env, group.grantedEffect.treeId)
 				skillTypes, keywordFlags = calcs.applyTreeTagAdditions(
 					treeAdds, skillTypes, keywordFlags, false
