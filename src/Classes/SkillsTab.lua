@@ -64,13 +64,15 @@ end
 -- damage-type portion is taken from that array so tree node conversions
 -- (e.g. Flame Ward -> Cold, Surge -> Fire) are reflected. Otherwise damage
 -- bits are read straight from grantedEffect.skillTypeTags (base only).
-function getScalingTagsList(grantedEffect, dynamicDamageTypes)
+function getScalingTagsList(grantedEffect, dynamicDamageTypes, extraFlags)
     if not grantedEffect then return nil end
     local tags = {}
     -- Include fakeTags so categories LE adds at runtime (e.g. Judgement is
     -- Spell-tagged via fakeTags=256 despite being mechanically Melee) appear
-    -- in the Scaling Tags row exactly like the in-game tooltip.
-    local flags = bit.bor(grantedEffect.skillTypeTags or 0, grantedEffect.fakeTags or 0)
+    -- in the Scaling Tags row exactly like the in-game tooltip. extraFlags
+    -- carries tree-node-injected bits (e.g. Totemic Heart adds Minion+Totem
+    -- when Warcry is converted into a Warcry Totem).
+    local flags = bit.bor(grantedEffect.skillTypeTags or 0, grantedEffect.fakeTags or 0, extraFlags or 0)
     if dynamicDamageTypes and #dynamicDamageTypes > 0 then
         for _, dt in ipairs(dynamicDamageTypes) do
             if dt.isBase then t_insert(tags, { name = capitalizeDamageType(dt.type) }) end
@@ -1112,6 +1114,26 @@ end
 -- Same as GetDynamicDamageTypes but keyed by treeId directly. Lets callers
 -- (e.g. PassiveTreeView root-node tooltip) compute the conversion-aware
 -- damage type list without needing a slot index.
+-- Compute tree-node-injected SkillType bit additions for a given treeId.
+-- Mirrors calcs.getTreeTagAdditions but uses self.build.spec.allocNodes so
+-- tooltip rendering (Scaling Tags row) can include these bits without an env.
+-- See CalcActiveSkill.lua for the canonical pattern detection logic.
+function SkillsTabClass:GetTreeTagAdditionsByTreeId(treeId)
+	if not (treeId and self.build and self.build.spec and self.build.spec.allocNodes) then return 0 end
+	local prefix = treeId .. "-"
+	local adds = 0
+	for nodeId, node in pairs(self.build.spec.allocNodes) do
+		if nodeId:sub(1, #prefix) == prefix and node.stats then
+			for _, stat in ipairs(node.stats) do
+				if stat:lower():match("^%s*creates?%s+.+%s+totem%s*$") then
+					adds = bit.bor(adds, 8192, 16384) -- Minion | Totem
+				end
+			end
+		end
+	end
+	return adds
+end
+
 function SkillsTabClass:GetDynamicDamageTypesByTreeId(treeId)
 	if not treeId then return {} end
 
@@ -1382,7 +1404,8 @@ function SkillsTabClass:DrawSpecSlots(viewPort, inputEvents, startY)
 			-- swap a skill's damage type (Surge -> Fire, Flame Ward -> Cold)
 			-- are reflected in the tag display.
 			local dynDt = self:GetDynamicDamageTypes(i)
-			local tagsLine = formatScalingTagsLine(getScalingTagsList(sg.grantedEffect, dynDt))
+			local extraFlags = sg.grantedEffect.treeId and self:GetTreeTagAdditionsByTreeId(sg.grantedEffect.treeId) or 0
+			local tagsLine = formatScalingTagsLine(getScalingTagsList(sg.grantedEffect, dynDt, extraFlags))
 			local minionLine = formatMinionTagsLine(getMinionTagsList(sg.grantedEffect))
 			if tagsLine or minionLine then
 				tooltip:AddSeparator(8)
