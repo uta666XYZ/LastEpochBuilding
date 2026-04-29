@@ -5161,7 +5161,8 @@
       "melee": true,
       "attack": true,
       "hit": true,
-      "duration": true
+      "duration": true,
+      "transform": true
     },
     "stats": {
       "damageEffectiveness": 1,
@@ -6243,7 +6244,8 @@
     "baseFlags": {
       "spell": true,
       "hit": true,
-      "duration": true
+      "duration": true,
+      "transform": true
     },
     "stats": {
       "damageEffectiveness": 1,
@@ -7312,7 +7314,8 @@
       "attack": true,
       "hit": true,
       "dot": true,
-      "duration": true
+      "duration": true,
+      "transform": true
     },
     "stats": {
       "damageEffectiveness": 1,
@@ -8194,7 +8197,8 @@
     "areaTagDisplay": 1,
     "minionTagsDisplay": 0,
     "baseFlags": {
-      "duration": true
+      "duration": true,
+      "transform": true
     },
     "stats": {
       "base_skill_effect_duration": 10000000,
