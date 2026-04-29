@@ -261,11 +261,37 @@ function calcs.getTreeTagAdditions(env, treeId)
 	local prefix = treeId .. "-"
 	local adds = 0
 	for nodeId, node in pairs(env.allocNodes) do
-		if nodeId:sub(1, #prefix) == prefix and node.stats then
-			for _, stat in ipairs(node.stats) do
-				-- "Create Warcry Totem" / "Creates Upheaval Totem"
-				if stat:lower():match("^%s*creates?%s+.+%s+totem%s*$") then
-					adds = bor(adds, SkillType.Minion, SkillType.Totem)
+		if nodeId:sub(1, #prefix) == prefix then
+			if node.stats then
+				for _, stat in ipairs(node.stats) do
+					-- "Create Warcry Totem" / "Creates Upheaval Totem"
+					if stat:lower():match("^%s*creates?%s+.+%s+totem%s*$") then
+						adds = bor(adds, SkillType.Minion, SkillType.Totem)
+					end
+				end
+			end
+			-- Split-effect damage-type additions parsed from node descriptions.
+			-- Per LE_datamining findings: per-node mutator state (e.g. Black Hole's
+			-- BinaryStar bool) isn't serialized — only `<Skill>Tree.updateMutator()`
+			-- C# bytecode knows the exact mapping. As a fallback we pattern-match
+			-- description text for split-effect phrasing like Binary System
+			-- ("One deals fire damage and the other deals cold damage"), which
+			-- introduces both damage types as base. Cap-summing needs these
+			-- bits so e.g. "+to Fire Spell Skills" matches a Black Hole that
+			-- has Binary System allocated.
+			if node.description then
+				for _, line in ipairs(node.description) do
+					local lo = line:lower()
+					local oneType, otherType = lo:match("one deals (%a+) damage and the other deals (%a+) damage")
+					if oneType and otherType then
+						local DT_BITS = {
+							physical = SkillType.Physical, lightning = SkillType.Lightning,
+							cold = SkillType.Cold, fire = SkillType.Fire, void = SkillType.Void,
+							necrotic = SkillType.Necrotic, poison = SkillType.Poison,
+						}
+						if DT_BITS[oneType] then adds = bor(adds, DT_BITS[oneType]) end
+						if DT_BITS[otherType] then adds = bor(adds, DT_BITS[otherType]) end
+					end
 				end
 			end
 		end
