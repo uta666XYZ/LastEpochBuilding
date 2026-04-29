@@ -2256,11 +2256,11 @@ function ItemsTabClass:AddItemTooltip(tooltip, item, slot, dbMode)
 		tooltip:AddLine(20, rarityCode..item.namePrefix..item.baseName:gsub(" %(.+%)","")..item.nameSuffix)
 	end
 	if item.rarity == "EXALTED" then
-		tooltip:AddLine(16, colorCodes.EXALTED.."Exalted Item")
+		tooltip:AddLine(16, colorCodes.EXALTED.."Exalted Item", "FONTIN SC")
 	elseif item.rarity == "LEGENDARY" then
-		tooltip:AddLine(16, colorCodes.LEGENDARY.."Legendary Item")
+		tooltip:AddLine(16, colorCodes.LEGENDARY.."Legendary Item", "FONTIN SC")
 	elseif item.rarity == "SET" then
-		tooltip:AddLine(16, colorCodes.SET.."Set Item")
+		tooltip:AddLine(16, colorCodes.SET.."Set Item", "FONTIN SC")
 	end
 	tooltip:AddSeparator(10)
 
