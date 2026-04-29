@@ -1361,7 +1361,7 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 
 			-- Draw alloc/max text below node (both passive and skill tree)
 			if node.maxPoints > 0 then
-				DrawString(scrX, scrY + 48 * scale, "CENTER_X", round(50 * scale), "VAR", "^7" .. node.alloc .. "/" .. node.maxPoints)
+				DrawString(scrX, scrY + 48 * scale, "CENTER_X", round(50 * scale), "FONTIN", "^7" .. node.alloc .. "/" .. node.maxPoints)
 			end
 
 			-- Draw steps badge (top-right corner of node)
