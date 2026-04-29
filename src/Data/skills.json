@@ -3,6 +3,7 @@
     "name": "Devour",
     "skillTypeTags": 0,
     "castTime": 1.3636364,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "hit": true,
       "spell": true,
@@ -27,6 +28,7 @@
     "name": "Melee Attack",
     "skillTypeTags": 513,
     "castTime": 0.9090909,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -48,6 +50,7 @@
     "name": "Abyssal Echoes",
     "skillTypeTags": 4368,
     "castTime": 0.6363636,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -72,6 +75,7 @@
     "name": "Acid Flask",
     "skillTypeTags": 1089,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -2298,6 +2302,7 @@
     "name": "Alluvion Wave",
     "skillTypeTags": 260,
     "castTime": 1.8181818,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -2325,6 +2330,7 @@
     "name": "Oblivion Wave",
     "skillTypeTags": 272,
     "castTime": 0.9090909,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -2347,6 +2353,7 @@
     "name": "Anomaly",
     "skillTypeTags": 272,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -2365,6 +2372,7 @@
     "name": "Arcane Ascendance",
     "skillTypeTags": 131328,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 1,
     "baseFlags": {
       "spell": true,
       "dot": true
@@ -2385,6 +2393,7 @@
     "name": "Assemble Abomination",
     "skillTypeTags": 1,
     "castTime": 2.0454545,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "minion": true
     },
@@ -2407,6 +2416,7 @@
     "name": "Aura Of Decay",
     "skillTypeTags": 4160,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 1,
     "baseFlags": {},
     "stats": {
       "chance_to_cast_Ailment_Poison_on_hit_%": 100,
@@ -2427,6 +2437,7 @@
     "name": "Avalanche",
     "skillTypeTags": 261,
     "castTime": 0.72727275,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -2456,6 +2467,7 @@
     "name": "Axe Throw",
     "skillTypeTags": 1025,
     "castTime": 0.64935064,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -2483,6 +2495,7 @@
     "name": "Ballista Bolt",
     "skillTypeTags": 2049,
     "castTime": 1.3939393,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -2509,6 +2522,7 @@
     "name": "Melee Attack",
     "skillTypeTags": 513,
     "castTime": 1.0909091,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -2530,6 +2544,7 @@
     "name": "Black Hole",
     "skillTypeTags": 4356,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "dot": true,
@@ -2558,6 +2573,7 @@
     "name": "Maul",
     "skillTypeTags": 513,
     "castTime": 1.3636363,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -2586,6 +2602,7 @@
     "name": "Maul",
     "skillTypeTags": 513,
     "castTime": 0.45454544,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -2615,6 +2632,7 @@
     "name": "Rampage",
     "skillTypeTags": 513,
     "castTime": 0.9090909,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -2645,6 +2663,7 @@
     "name": "Bone Curse",
     "skillTypeTags": 16777473,
     "castTime": 0.45454544,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -2667,6 +2686,7 @@
     "name": "Burning Dagger",
     "skillTypeTags": 1032,
     "castTime": 0.64935064,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -2693,6 +2713,7 @@
     "name": "Cinder Strike",
     "skillTypeTags": 520,
     "castTime": 0.75757575,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -2717,6 +2738,7 @@
     "name": "Dancing Strikes",
     "skillTypeTags": 513,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -2746,6 +2768,7 @@
     "name": "Dark Quiver",
     "skillTypeTags": 131072,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -2770,6 +2793,7 @@
     "name": "Death Seal",
     "skillTypeTags": 131360,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 1,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -2798,6 +2822,7 @@
     "name": "Death Slash",
     "skillTypeTags": 545,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -2820,6 +2845,7 @@
     "name": "Decoy",
     "skillTypeTags": 1032,
     "castTime": 0.2121212,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -2847,6 +2873,7 @@
     "name": "Detonating Arrow",
     "skillTypeTags": 2050,
     "castTime": 0.81818175,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -2875,6 +2902,7 @@
     "name": "Devouring Orb",
     "skillTypeTags": 4368,
     "castTime": 0.59090906,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -2904,6 +2932,7 @@
     "name": "Disintegrate",
     "skillTypeTags": 4362,
     "castTime": 0.048484847,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "dot": true,
@@ -2931,6 +2960,7 @@
     "name": "Doom Pulse",
     "skillTypeTags": 272,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -2955,6 +2985,7 @@
     "name": "Dragonflame Nova",
     "skillTypeTags": 264,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -2974,6 +3005,7 @@
     "name": "Dragonfire",
     "skillTypeTags": 264,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -2997,6 +3029,7 @@
     "name": "Stygian Beam",
     "skillTypeTags": 288,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -3016,6 +3049,7 @@
     "name": "Drain Life",
     "skillTypeTags": 4384,
     "castTime": 0.048484847,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "dot": true,
@@ -3041,6 +3075,7 @@
     "name": "Dread Shade",
     "skillTypeTags": 131360,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -3063,6 +3098,7 @@
     "name": "Earthquake",
     "skillTypeTags": 513,
     "castTime": 0.75757575,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -3093,6 +3129,7 @@
     "name": "Elemental Nova",
     "skillTypeTags": 270,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -3121,6 +3158,7 @@
     "name": "Enchant Weapon",
     "skillTypeTags": 131200,
     "castTime": 0.3409091,
+    "instantCastForPlayer": 1,
     "baseFlags": {
       "duration": true
     },
@@ -3138,6 +3176,7 @@
     "name": "Entangling Roots",
     "skillTypeTags": 4353,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -3165,6 +3204,7 @@
     "name": "Erasing Strike",
     "skillTypeTags": 528,
     "castTime": 0.8522727,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -3196,6 +3236,7 @@
     "name": "Eterra's Blessing",
     "skillTypeTags": 131328,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -3218,6 +3259,7 @@
     "name": "Falconry",
     "skillTypeTags": 0,
     "castTime": 1.3636364,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -3243,6 +3285,7 @@
     "name": "Aerial Assault",
     "skillTypeTags": 0,
     "castTime": 0.7954545,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -3272,6 +3315,7 @@
     "name": "Dive Bomb",
     "skillTypeTags": 8705,
     "castTime": 0.7954545,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -3301,6 +3345,7 @@
     "name": "Explosive Trap",
     "skillTypeTags": 1032,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -3325,6 +3370,7 @@
     "name": "Net",
     "skillTypeTags": 1025,
     "castTime": 0.58441556,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -3354,6 +3400,7 @@
     "name": "Terrify",
     "skillTypeTags": 0,
     "castTime": 0.45454544,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "duration": true
     },
@@ -3368,6 +3415,7 @@
     "name": "Melee Attack",
     "skillTypeTags": 513,
     "castTime": 1.2727273,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -3390,6 +3438,7 @@
     "name": "Fire Aura",
     "skillTypeTags": 4360,
     "castTime": 0.36363637,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "dot": true,
@@ -3414,6 +3463,7 @@
     "name": "Fireball",
     "skillTypeTags": 264,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -3441,6 +3491,7 @@
     "name": "Firebrand",
     "skillTypeTags": 520,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -3471,6 +3522,7 @@
     "name": "Magma Shards",
     "skillTypeTags": 264,
     "castTime": 0.6636364,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -3496,6 +3548,7 @@
     "name": "Fire Trail",
     "skillTypeTags": 135432,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 1,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -3519,6 +3572,7 @@
     "name": "Flame Reave",
     "skillTypeTags": 520,
     "castTime": 0.72727275,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -3549,6 +3603,7 @@
     "name": "Flame Ward",
     "skillTypeTags": 131336,
     "castTime": 0.3409091,
+    "instantCastForPlayer": 1,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -3572,6 +3627,7 @@
     "name": "Flay",
     "skillTypeTags": 513,
     "castTime": 0.9090909,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -3602,6 +3658,7 @@
     "name": "Flurry",
     "skillTypeTags": 513,
     "castTime": 0.78398657,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -3629,6 +3686,7 @@
     "name": "Focus",
     "skillTypeTags": 131328,
     "castTime": 2.7272727,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "channelling": true
@@ -3643,6 +3701,7 @@
     "name": "Forge Strike",
     "skillTypeTags": 513,
     "castTime": 0.7177034,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -3675,6 +3734,7 @@
     "name": "Frenzy Aura",
     "skillTypeTags": 131328,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -3691,6 +3751,7 @@
     "name": "Frost Claw",
     "skillTypeTags": 260,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -3717,6 +3778,7 @@
     "name": "Fury Leap",
     "skillTypeTags": 513,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -3745,6 +3807,7 @@
     "name": "Decimate",
     "skillTypeTags": 272,
     "castTime": 1.6363635,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -3772,6 +3835,7 @@
     "name": "Gathering Storm",
     "skillTypeTags": 514,
     "castTime": 0.72727275,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -3801,6 +3865,7 @@
     "name": "Glacier",
     "skillTypeTags": 260,
     "castTime": 0.76923084,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -3828,6 +3893,7 @@
     "name": "Hail of Arrows",
     "skillTypeTags": 6145,
     "castTime": 0.9090909,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -3858,6 +3924,7 @@
     "name": "Phoenix Flames",
     "skillTypeTags": 264,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -3877,6 +3944,7 @@
     "name": "Hammer Throw",
     "skillTypeTags": 1025,
     "castTime": 0.64935064,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -3906,6 +3974,7 @@
     "name": "Harvest",
     "skillTypeTags": 544,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -3935,6 +4004,7 @@
     "name": "Healing Hands",
     "skillTypeTags": 131328,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -3958,6 +4028,7 @@
     "name": "Heartseeker",
     "skillTypeTags": 2049,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -3986,6 +4057,7 @@
     "name": "Icicle",
     "skillTypeTags": 260,
     "castTime": 0.6363636,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -4012,6 +4084,7 @@
     "name": "Holy Aura",
     "skillTypeTags": 131328,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 1,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -4030,6 +4103,7 @@
     "name": "Hungering Souls",
     "skillTypeTags": 4384,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -4057,6 +4131,7 @@
     "name": "Ice Barrage",
     "skillTypeTags": 260,
     "castTime": 0.76555026,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -4086,6 +4161,7 @@
     "name": "Ice Thorns",
     "skillTypeTags": 261,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -4113,6 +4189,7 @@
     "name": "Ice Ward",
     "skillTypeTags": 131332,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 1,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -4130,6 +4207,7 @@
     "name": "Infernal Shade",
     "skillTypeTags": 4360,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "dot": true,
@@ -4157,6 +4235,7 @@
     "name": "Javelin",
     "skillTypeTags": 1025,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -4186,6 +4265,7 @@
     "name": "Judgement",
     "skillTypeTags": 4616,
     "castTime": 0.8556149,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -4218,6 +4298,7 @@
     "name": "Lethal Mirage",
     "skillTypeTags": 513,
     "castTime": 1.3636364,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -4247,6 +4328,7 @@
     "name": "Lightning Blast",
     "skillTypeTags": 258,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -4273,6 +4355,7 @@
     "name": "Lightning Storm",
     "skillTypeTags": 258,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -4293,6 +4376,7 @@
     "name": "Lunge",
     "skillTypeTags": 513,
     "castTime": 0.45454544,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -4323,6 +4407,7 @@
     "name": "Maelstrom",
     "skillTypeTags": 4356,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "dot": true,
@@ -4350,6 +4435,7 @@
     "name": "Mana Strike",
     "skillTypeTags": 514,
     "castTime": 0.59090906,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -4379,6 +4465,7 @@
     "name": "Melee Attack",
     "skillTypeTags": 513,
     "castTime": 1,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -4400,6 +4487,7 @@
     "name": "Manifest Armor",
     "skillTypeTags": 0,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -4429,6 +4517,7 @@
     "name": "Mark For Death",
     "skillTypeTags": 256,
     "castTime": 0.45454544,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -4450,6 +4539,7 @@
     "name": "Marrow Shards",
     "skillTypeTags": 257,
     "castTime": 0.65604496,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -4476,6 +4566,7 @@
     "name": "Meteor",
     "skillTypeTags": 264,
     "castTime": 0.7954545,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -4503,6 +4594,7 @@
     "name": "Multistrike",
     "skillTypeTags": 513,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -4530,6 +4622,7 @@
     "name": "Cremate",
     "skillTypeTags": 4360,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "dot": true,
@@ -4561,6 +4654,7 @@
     "name": "Melee Attack",
     "skillTypeTags": 513,
     "castTime": 0.6818181,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -4582,6 +4676,7 @@
     "name": "Storm Bolt",
     "skillTypeTags": 258,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -4606,6 +4701,7 @@
     "name": "Melee Attack",
     "skillTypeTags": 513,
     "castTime": 1.0031347,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -4627,6 +4723,7 @@
     "name": "Melee Attack",
     "skillTypeTags": 513,
     "castTime": 1.0909091,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -4648,6 +4745,7 @@
     "name": "Primordial Blood",
     "skillTypeTags": 257,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -4667,6 +4765,7 @@
     "name": "Prism Shard",
     "skillTypeTags": 384,
     "castTime": 0.64935064,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -4698,6 +4797,7 @@
     "name": "Puncture",
     "skillTypeTags": 513,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -4726,6 +4826,7 @@
     "name": "Infernal Aura",
     "skillTypeTags": 131336,
     "castTime": 1.0909091,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "dot": true,
@@ -4749,6 +4850,7 @@
     "name": "Reaper Form",
     "skillTypeTags": 0,
     "castTime": 0.5,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -4772,6 +4874,7 @@
     "name": "Rebuke",
     "skillTypeTags": 257,
     "castTime": 1.4545455,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -4798,6 +4901,7 @@
     "name": "Ring Of Shields",
     "skillTypeTags": 0,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 1,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -4827,6 +4931,7 @@
     "name": "Rip Blood",
     "skillTypeTags": 257,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -4854,6 +4959,7 @@
     "name": "Rive",
     "skillTypeTags": 513,
     "castTime": 0.54545456,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -4881,6 +4987,7 @@
     "name": "Surge",
     "skillTypeTags": 513,
     "castTime": 0.12121212,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -4909,6 +5016,7 @@
     "name": "Rogue Falcon Melee",
     "skillTypeTags": 513,
     "castTime": 0.7954545,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -4930,6 +5038,7 @@
     "name": "Multishot",
     "skillTypeTags": 2049,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -4958,6 +5067,7 @@
     "name": "Frost Wall",
     "skillTypeTags": 4356,
     "castTime": 0.5594406,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -4983,6 +5093,7 @@
     "name": "Glyph of Dominion",
     "skillTypeTags": 4354,
     "castTime": 0.5594406,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "dot": true,
@@ -5012,6 +5123,7 @@
     "name": "Runic Invocation",
     "skillTypeTags": 270,
     "castTime": 0.81818175,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -5034,6 +5146,7 @@
     "name": "Runebolt",
     "skillTypeTags": 264,
     "castTime": 0.6818181,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -5061,6 +5174,7 @@
     "name": "Runebolt",
     "skillTypeTags": 264,
     "castTime": 0.6818181,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -5088,6 +5202,7 @@
     "name": "Runebolt",
     "skillTypeTags": 264,
     "castTime": 0.6818181,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -5116,6 +5231,7 @@
     "name": "Flame Rush",
     "skillTypeTags": 264,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -5145,6 +5261,7 @@
     "name": "Grand Prism Nova",
     "skillTypeTags": 270,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -5170,6 +5287,7 @@
     "name": "Hydrahedron",
     "skillTypeTags": 264,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -5193,6 +5311,7 @@
     "name": "Sacrifice",
     "skillTypeTags": 257,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -5220,6 +5339,7 @@
     "name": "Melee Attack",
     "skillTypeTags": 513,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -5241,6 +5361,7 @@
     "name": "Scorpion Tail Melee",
     "skillTypeTags": 513,
     "castTime": 0.81818175,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -5263,6 +5384,7 @@
     "name": "Serpent Strike",
     "skillTypeTags": 577,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -5294,6 +5416,7 @@
     "name": "Shadow Cascade",
     "skillTypeTags": 513,
     "castTime": 1.017639,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -5322,6 +5445,7 @@
     "name": "Shatter Strike",
     "skillTypeTags": 516,
     "castTime": 0.59090906,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -5349,6 +5473,7 @@
     "name": "Shield Bash",
     "skillTypeTags": 513,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -5377,6 +5502,7 @@
     "name": "Shield Rush",
     "skillTypeTags": 513,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -5405,6 +5531,7 @@
     "name": "Shield Throw",
     "skillTypeTags": 1025,
     "castTime": 0.6293706,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -5435,6 +5562,7 @@
     "name": "Shift",
     "skillTypeTags": 0,
     "castTime": 0.18181819,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "duration": true
     },
@@ -5456,6 +5584,7 @@
     "name": "Shurikens",
     "skillTypeTags": 1025,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -5483,6 +5612,7 @@
     "name": "Symbols of Hope",
     "skillTypeTags": 131328,
     "castTime": 0.487013,
+    "instantCastForPlayer": 1,
     "baseFlags": {
       "spell": true
     },
@@ -5499,6 +5629,7 @@
     "name": "Dread Bolt",
     "skillTypeTags": 4384,
     "castTime": 0.90909094,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -5524,6 +5655,7 @@
     "name": "Smelter's Wrath",
     "skillTypeTags": 521,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -5553,6 +5685,7 @@
     "name": "Smite",
     "skillTypeTags": 264,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -5580,6 +5713,7 @@
     "name": "Smoke Bomb",
     "skillTypeTags": 1024,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -5600,6 +5734,7 @@
     "name": "Snap Freeze",
     "skillTypeTags": 260,
     "castTime": 0.54545456,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -5622,6 +5757,7 @@
     "name": "Soul Eruption",
     "skillTypeTags": 256,
     "castTime": 0.7177034,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -5637,6 +5773,7 @@
     "name": "Spirit Plague",
     "skillTypeTags": 16781600,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -5659,6 +5796,7 @@
     "name": "Spirit Thorns",
     "skillTypeTags": 257,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -5684,6 +5822,7 @@
     "name": "Spriggan Form",
     "skillTypeTags": 0,
     "castTime": 0.6363636,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -5709,6 +5848,7 @@
     "name": "Static",
     "skillTypeTags": 258,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 1,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -5736,6 +5876,7 @@
     "name": "Static Orb",
     "skillTypeTags": 258,
     "castTime": 0.76555026,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -5763,6 +5904,7 @@
     "name": "Lightning Blast",
     "skillTypeTags": 258,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -5787,6 +5929,7 @@
     "name": "Suicide Explosion",
     "skillTypeTags": 257,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -5801,6 +5944,7 @@
     "name": "Summon Anurok",
     "skillTypeTags": 0,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -5827,6 +5971,7 @@
     "name": "Summon Primal Tyrannosaur",
     "skillTypeTags": 0,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -5853,6 +5998,7 @@
     "name": "Bow Attack",
     "skillTypeTags": 2049,
     "castTime": 1.2727273,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -5874,6 +6020,7 @@
     "name": "Summon Historic Minion",
     "skillTypeTags": 0,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -5892,6 +6039,7 @@
     "name": "Summon Arek's Flesh",
     "skillTypeTags": 0,
     "castTime": 0.61983466,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -5915,6 +6063,7 @@
     "name": "Ballista",
     "skillTypeTags": 0,
     "castTime": 0.54545456,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -5940,6 +6089,7 @@
     "name": "Summon Bear",
     "skillTypeTags": 0,
     "castTime": 1.3636364,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -5967,6 +6117,7 @@
     "name": "Summon Bee",
     "skillTypeTags": 0,
     "castTime": 0.9090909,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -5989,6 +6140,7 @@
     "name": "Summon Bone Golem",
     "skillTypeTags": 0,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -6015,6 +6167,7 @@
     "name": "Summon Crab",
     "skillTypeTags": 0,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -6042,6 +6195,7 @@
     "name": "Summon Falcon",
     "skillTypeTags": 0,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -6060,6 +6214,7 @@
     "name": "Summon Frenzy Totem",
     "skillTypeTags": 0,
     "castTime": 0.54545456,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -6089,6 +6244,7 @@
     "name": "Summon Illusory Tree",
     "skillTypeTags": 8192,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -6111,6 +6267,7 @@
     "name": "Summon Skeletal Mage",
     "skillTypeTags": 0,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -6137,6 +6294,7 @@
     "name": "Recruit Mercenary",
     "skillTypeTags": 0,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -6161,6 +6319,7 @@
     "name": "Summon Raptor",
     "skillTypeTags": 0,
     "castTime": 1.3636364,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -6191,6 +6350,7 @@
     "name": "Summon Sabertooth",
     "skillTypeTags": 0,
     "castTime": 1.3636364,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -6221,6 +6381,7 @@
     "name": "Summon Scorpion",
     "skillTypeTags": 0,
     "castTime": 1.3636364,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -6251,6 +6412,7 @@
     "name": "Summon Primal Serpent",
     "skillTypeTags": 0,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -6277,6 +6439,7 @@
     "name": "Summon Skeleton",
     "skillTypeTags": 0,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -6303,6 +6466,7 @@
     "name": "Summon Skeleton Harvester",
     "skillTypeTags": 0,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -6326,6 +6490,7 @@
     "name": "Summon Spriggan",
     "skillTypeTags": 0,
     "castTime": 1.3636364,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -6354,6 +6519,7 @@
     "name": "Summon Storm Crows",
     "skillTypeTags": 0,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -6383,6 +6549,7 @@
     "name": "Summon Storm Sprite",
     "skillTypeTags": 0,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -6406,6 +6573,7 @@
     "name": "Summon Storm Totem",
     "skillTypeTags": 0,
     "castTime": 0.54545456,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -6433,6 +6601,7 @@
     "name": "Summon Thorn Totem",
     "skillTypeTags": 0,
     "castTime": 0.54545456,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -6458,6 +6627,7 @@
     "name": "Vale Spirit",
     "skillTypeTags": 257,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "minion": true,
@@ -6481,6 +6651,7 @@
     "name": "Summon Volatile Zombie",
     "skillTypeTags": 0,
     "castTime": 0.72727275,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -6506,6 +6677,7 @@
     "name": "Summon Wolf",
     "skillTypeTags": 0,
     "castTime": 1.3636364,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -6532,6 +6704,7 @@
     "name": "Summon Wraith",
     "skillTypeTags": 0,
     "castTime": 0.61983466,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -6558,6 +6731,7 @@
     "name": "Surge",
     "skillTypeTags": 514,
     "castTime": 0.12121212,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -6589,6 +6763,7 @@
     "name": "Spirit Step",
     "skillTypeTags": 0,
     "castTime": 0.3409091,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "duration": true
     },
@@ -6603,6 +6778,7 @@
     "name": "Swarmblade Form",
     "skillTypeTags": 0,
     "castTime": 0.72727275,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -6633,6 +6809,7 @@
     "name": "Swarm of Bees",
     "skillTypeTags": 0,
     "castTime": 0.9090909,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -6655,6 +6832,7 @@
     "name": "Swipe",
     "skillTypeTags": 513,
     "castTime": 0.6363636,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -6682,6 +6860,7 @@
     "name": "Synchronized Strike",
     "skillTypeTags": 513,
     "castTime": 1.8181818,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -6711,6 +6890,7 @@
     "name": "Teleport",
     "skillTypeTags": 256,
     "castTime": 0.3409091,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -6733,6 +6913,7 @@
     "name": "Tempest Strike",
     "skillTypeTags": 519,
     "castTime": 0.54545456,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -6762,6 +6943,7 @@
     "name": "Thorn Shield",
     "skillTypeTags": 131329,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -6786,6 +6968,7 @@
     "name": "Mystic Thorns",
     "skillTypeTags": 257,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -6806,6 +6989,7 @@
     "name": "Thorn Volley",
     "skillTypeTags": 257,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -6832,6 +7016,7 @@
     "name": "Tornado",
     "skillTypeTags": 4353,
     "castTime": 0.530303,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "dot": true,
@@ -6859,6 +7044,7 @@
     "name": "Transplant",
     "skillTypeTags": 257,
     "castTime": 0.40909088,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -6886,6 +7072,7 @@
     "name": "Tundra Nova",
     "skillTypeTags": 260,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -6911,6 +7098,7 @@
     "name": "Umbral Blades",
     "skillTypeTags": 1025,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -6938,6 +7126,7 @@
     "name": "Upheaval",
     "skillTypeTags": 513,
     "castTime": 0.72727275,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -6967,6 +7156,7 @@
     "name": "Vengeance",
     "skillTypeTags": 513,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -6994,6 +7184,7 @@
     "name": "Void Cleave",
     "skillTypeTags": 528,
     "castTime": 2.272727,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -7024,6 +7215,7 @@
     "name": "Void Rift",
     "skillTypeTags": 272,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -7047,6 +7239,7 @@
     "name": "Voidwinter Bolt",
     "skillTypeTags": 276,
     "castTime": 0.6363636,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -7074,6 +7267,7 @@
     "name": "Volatile Reversal",
     "skillTypeTags": 528,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -7105,6 +7299,7 @@
     "name": "Volcanic Orb",
     "skillTypeTags": 264,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -7132,6 +7327,7 @@
     "name": "Wandering Spirits",
     "skillTypeTags": 4384,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "dot": true,
@@ -7159,6 +7355,7 @@
     "name": "Warcry",
     "skillTypeTags": 0,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "duration": true
     },
@@ -7180,6 +7377,7 @@
     "name": "Chaos Bolts",
     "skillTypeTags": 296,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -7208,6 +7406,7 @@
     "name": "Ghostflame",
     "skillTypeTags": 4392,
     "castTime": 0.048484847,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "dot": true,
@@ -7236,6 +7435,7 @@
     "name": "Soul Feast",
     "skillTypeTags": 288,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -7263,6 +7463,7 @@
     "name": "Chthonic Fissure",
     "skillTypeTags": 16781608,
     "castTime": 0.68181825,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -7292,6 +7493,7 @@
     "name": "Profane Veil",
     "skillTypeTags": 4384,
     "castTime": 0.12121212,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -7318,6 +7520,7 @@
     "name": "Warpath",
     "skillTypeTags": 513,
     "castTime": 0.3409091,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -7345,6 +7548,7 @@
     "name": "Water Orb",
     "skillTypeTags": 260,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -7373,6 +7577,7 @@
     "name": "Werebear Form",
     "skillTypeTags": 0,
     "castTime": 0.54545456,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "duration": true
     },
@@ -7393,6 +7598,7 @@
     "name": "Melee Attack",
     "skillTypeTags": 513,
     "castTime": 1.0909091,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -7414,6 +7620,7 @@
     "name": "Necrotic Beams",
     "skillTypeTags": 288,
     "castTime": 0.90909094,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -7433,6 +7640,7 @@
     "name": "Melee Attack",
     "skillTypeTags": 513,
     "castTime": 1.0909091,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -7454,6 +7662,7 @@
     "name": "Bladestorm",
     "skillTypeTags": 1025,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "attack": true,
       "hit": true
@@ -7475,6 +7684,7 @@
     "name": "Bladestorm Throw",
     "skillTypeTags": 1025,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "attack": true,
       "hit": true
@@ -7496,6 +7706,7 @@
     "name": "Shadow Rend",
     "skillTypeTags": 513,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
     "baseFlags": {
       "attack": true,
       "hit": true
