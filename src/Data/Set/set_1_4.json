@@ -196,6 +196,7 @@
     "uniqueID": 16,
     "baseTypeID": 2,
     "subTypeID": 2,
+    "native": true,
     "req": {
       "level": 0
     },
@@ -225,6 +226,7 @@
     "uniqueID": 26,
     "baseTypeID": 4,
     "subTypeID": 4,
+    "native": true,
     "req": {
       "level": 0
     },
@@ -250,6 +252,7 @@
     "uniqueID": 5,
     "baseTypeID": 0,
     "subTypeID": 5,
+    "native": true,
     "req": {
       "level": 0
     },
@@ -1268,6 +1271,7 @@
     "uniqueID": 455,
     "baseTypeID": 21,
     "subTypeID": 11,
+    "native": true,
     "req": {
       "level": 54
     },
@@ -1298,6 +1302,7 @@
     "uniqueID": 454,
     "baseTypeID": 20,
     "subTypeID": 18,
+    "native": true,
     "req": {
       "level": 54
     },
@@ -1651,6 +1656,7 @@
     "uniqueID": 170,
     "baseTypeID": 7,
     "subTypeID": 3,
+    "native": true,
     "req": {
       "level": 60
     },
@@ -1681,6 +1687,7 @@
     "uniqueID": 171,
     "baseTypeID": 18,
     "subTypeID": 11,
+    "native": true,
     "req": {
       "level": 60
     },

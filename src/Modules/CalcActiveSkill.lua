@@ -207,12 +207,160 @@ local function getWeaponFlags(env, weaponData, weaponTypes)
 end
 
 -- Build list of modifiers for given active skill
+-- Compute tree-injected damage-type tag swaps (LE's `fakeTags` mechanism)
+-- for a given treeId. Returns a {[srcBit]=dstBit} table or nil. Examples:
+--   Spark Artillery: " Cold -> Lightning Damage" -> {Cold=Lightning}
+--   Electrify: "Fire Damage -> Lightning Damage"
+--   Crackling Barrier: "Cold -> Lightning Conversion"
+-- Confirmed via descriptions like "Swaps Frost Claw's {Cold} tag for a {Lightning} tag.".
+local damageTypeBitsByName = {
+	Physical = SkillType.Physical, Lightning = SkillType.Lightning,
+	Cold = SkillType.Cold, Fire = SkillType.Fire, Void = SkillType.Void,
+	Necrotic = SkillType.Necrotic, Poison = SkillType.Poison,
+}
+function calcs.getTreeTagSwaps(env, treeId)
+	if not (treeId and env and env.allocNodes) then return nil end
+	local prefix = treeId .. "-"
+	local swaps
+	for nodeId, node in pairs(env.allocNodes) do
+		if nodeId:sub(1, #prefix) == prefix and node.stats then
+			for _, stat in ipairs(node.stats) do
+				local src, dst = stat:match("^%s*(%w+)%s*%->%s*(%w+)%s+Damage%s*$")
+				if not src then
+					src, dst = stat:match("^%s*(%w+)%s+Damage%s*%->%s*(%w+)%s+Damage%s*$")
+				end
+				if not src then
+					src, dst = stat:match("^%s*(%w+)%s*%->%s*(%w+)%s+Conversion%s*$")
+				end
+				if src and dst and damageTypeBitsByName[src] and damageTypeBitsByName[dst]
+				   and damageTypeBitsByName[src] ~= damageTypeBitsByName[dst] then
+					swaps = swaps or {}
+					swaps[damageTypeBitsByName[src]] = damageTypeBitsByName[dst]
+				end
+			end
+		end
+	end
+	return swaps
+end
+
+-- Compute tree-injected tag *additions* for a given treeId. Returns a bitmap
+-- of SkillType bits to OR into the skill's effective tags, or 0. This is for
+-- specialization nodes that convert/extend a skill into something with extra
+-- intrinsic tags — e.g. Warcry's "Totemic Heart" node ("Create Warcry Totem")
+-- turns the skill into Summon Warcry Totem, which is a Minion+Totem ability.
+-- Without this, affixes like "+1 to Minion Skills" from Beastmaster Ancient
+-- Might wouldn't apply to a totem-converted Warcry, and the Scaling Tags row
+-- would miss the Minion/Totem markers the in-game tooltip shows.
+--
+-- Pattern detected: stat lines matching "Creates? <name> Totem" — used by
+-- Warcry/Totemic Heart, Upheaval/Upheaval Totems, etc. The encoding has no
+-- explicit ability reference; LEB recognises the phrase and adds Minion+Totem
+-- bits since every "Create X Totem" node turns the skill into a totem-minion.
+function calcs.getTreeTagAdditions(env, treeId)
+	if not (treeId and env and env.allocNodes) then return 0 end
+	local prefix = treeId .. "-"
+	local adds = 0
+	for nodeId, node in pairs(env.allocNodes) do
+		if nodeId:sub(1, #prefix) == prefix then
+			if node.stats then
+				for _, stat in ipairs(node.stats) do
+					-- "Create Warcry Totem" / "Creates Upheaval Totem"
+					if stat:lower():match("^%s*creates?%s+.+%s+totem%s*$") then
+						adds = bor(adds, SkillType.Minion, SkillType.Totem)
+					end
+				end
+			end
+			-- Split-effect damage-type additions parsed from node descriptions.
+			-- Per LE_datamining findings: per-node mutator state (e.g. Black Hole's
+			-- BinaryStar bool) isn't serialized — only `<Skill>Tree.updateMutator()`
+			-- C# bytecode knows the exact mapping. As a fallback we pattern-match
+			-- description text for split-effect phrasing like Binary System
+			-- ("One deals fire damage and the other deals cold damage"), which
+			-- introduces both damage types as base. Cap-summing needs these
+			-- bits so e.g. "+to Fire Spell Skills" matches a Black Hole that
+			-- has Binary System allocated.
+			if node.description then
+				for _, line in ipairs(node.description) do
+					local lo = line:lower()
+					local oneType, otherType = lo:match("one deals (%a+) damage and the other deals (%a+) damage")
+					if oneType and otherType then
+						local DT_BITS = {
+							physical = SkillType.Physical, lightning = SkillType.Lightning,
+							cold = SkillType.Cold, fire = SkillType.Fire, void = SkillType.Void,
+							necrotic = SkillType.Necrotic, poison = SkillType.Poison,
+						}
+						if DT_BITS[oneType] then adds = bor(adds, DT_BITS[oneType]) end
+						if DT_BITS[otherType] then adds = bor(adds, DT_BITS[otherType]) end
+					end
+				end
+			end
+		end
+	end
+	return adds
+end
+
+-- Apply tree tag swaps to a skillTypes set + keywordFlags integer; returns
+-- (newSkillTypes, newKeywordFlags). Pass mutable=true to mutate skillTypes
+-- in place (used at ActiveSkill build time).
+function calcs.applyTreeTagSwaps(swaps, skillTypes, keywordFlags, mutable)
+	if not swaps then return skillTypes, keywordFlags end
+	local out = mutable and skillTypes or copyTable(skillTypes)
+	local kw = keywordFlags or 0
+	for srcBit, dstBit in pairs(swaps) do
+		if out[srcBit] then
+			out[srcBit] = nil
+			out[dstBit] = true
+			kw = bor(band(kw, bnot(srcBit)), dstBit)
+		end
+	end
+	return out, kw
+end
+
+-- OR an additions bitmap into a skillTypes set + keywordFlags integer.
+local TAG_ADDITION_BITS = {
+	SkillType.Minion, SkillType.Totem, SkillType.Spell, SkillType.Buff,
+	SkillType.Melee, SkillType.Bow, SkillType.Throwing, SkillType.DoT,
+}
+function calcs.applyTreeTagAdditions(adds, skillTypes, keywordFlags, mutable)
+	if not adds or adds == 0 then return skillTypes, keywordFlags end
+	local out = mutable and skillTypes or copyTable(skillTypes)
+	local kw = bor(keywordFlags or 0, adds)
+	for _, typeBit in ipairs(TAG_ADDITION_BITS) do
+		if band(adds, typeBit) ~= 0 then out[typeBit] = true end
+	end
+	return out, kw
+end
+
 function calcs.buildActiveSkillModList(env, activeSkill)
 	local skillTypes = activeSkill.skillTypes
 	local skillFlags = activeSkill.skillFlags
 	local activeEffect = activeSkill.activeEffect
 	local activeGrantedEffect = activeEffect.grantedEffect
 	local effectiveRange = 0
+
+	-- Apply tree-injected damage-type tag swaps so affixes like
+	-- "+N to Lightning Spells" match a Cold->Lightning-swapped Frost Claw.
+	local treeSwaps = calcs.getTreeTagSwaps(env, activeGrantedEffect.treeId)
+	if treeSwaps then
+		local _, newKw = calcs.applyTreeTagSwaps(treeSwaps, skillTypes, activeSkill.skillCfg and activeSkill.skillCfg.keywordFlags or 0, true)
+		for _, cfg in ipairs({ activeSkill.skillCfg, activeSkill.weapon1Cfg, activeSkill.weapon2Cfg }) do
+			if cfg and cfg.keywordFlags then
+				cfg.keywordFlags = newKw
+			end
+		end
+	end
+	-- Tree-injected tag *additions* (e.g. Totemic Heart adds Minion+Totem to
+	-- Warcry). Mutate skillTypes in place and propagate to skillCfg/weaponCfg
+	-- keywordFlags so affix matching at this active skill's runtime sees them.
+	local treeAdds = calcs.getTreeTagAdditions(env, activeGrantedEffect.treeId)
+	if treeAdds ~= 0 then
+		local _, newKw2 = calcs.applyTreeTagAdditions(treeAdds, skillTypes, activeSkill.skillCfg and activeSkill.skillCfg.keywordFlags or 0, true)
+		for _, cfg in ipairs({ activeSkill.skillCfg, activeSkill.weapon1Cfg, activeSkill.weapon2Cfg }) do
+			if cfg and cfg.keywordFlags then
+				cfg.keywordFlags = newKw2
+			end
+		end
+	end
 
 	-- Set mode flags
 	if env.mode_buffs then
@@ -414,6 +562,7 @@ function calcs.buildActiveSkillModList(env, activeSkill)
 		skillGrantedEffect = activeGrantedEffect,
 		skillPart = activeSkill.skillPart,
 		skillTypes = activeSkill.skillTypes,
+		skillAttributes = activeGrantedEffect.skillAttributes,
 		skillCond = { },
 		skillDist = env.mode_effective and effectiveRange,
 		slotName = activeSkill.slotName

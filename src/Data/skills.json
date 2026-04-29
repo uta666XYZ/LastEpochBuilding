@@ -3,6 +3,10 @@
     "name": "Devour",
     "skillTypeTags": 0,
     "castTime": 1.3636364,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "hit": true,
       "spell": true,
@@ -18,12 +22,19 @@
     "baseMods": [
       "+2% Mana Efficiency per player Attunement"
     ],
-    "fromMinion": true
+    "fromMinion": true,
+    "attributeScalings": [
+      "Attunement"
+    ]
   },
   "Abomination Melee": {
     "name": "Melee Attack",
     "skillTypeTags": 513,
     "castTime": 0.9090909,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -37,12 +48,18 @@
       "critChance": 5,
       "base_skill_effect_duration": 10
     },
-    "fromMinion": true
+    "fromMinion": true,
+    "playerAbilityID": "fm8",
+    "attributeScalings": []
   },
   "AbyssalEchoes": {
     "name": "Abyssal Echoes",
     "skillTypeTags": 4368,
     "castTime": 0.6363636,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -55,12 +72,22 @@
     "baseMods": [
       "+2 Spell Void Damage per player Vitality"
     ],
-    "treeId": "ab0lh"
+    "treeId": "ab0lh",
+    "playerAbilityID": "ab0lh",
+    "attributeScalings": [
+      "Vitality"
+    ],
+    "class": "Sentinel",
+    "mastery": "Void Knight"
   },
   "AcidFlask": {
     "name": "Acid Flask",
     "skillTypeTags": 1089,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -79,7 +106,12 @@
     "baseMods": [
       "4% increased Damage per player Dexterity"
     ],
-    "treeId": "aacfl"
+    "treeId": "aacfl",
+    "playerAbilityID": "aacfl",
+    "attributeScalings": [
+      "Dexterity"
+    ],
+    "class": "Rogue"
   },
   "Ailment_AbyssalDecay": {
     "name": "Abyssal Decay",
@@ -191,7 +223,7 @@
   },
   "Ailment_ArcaneAscendance": {
     "name": "Arcane Ascendance",
-    "skillTypeTags": 0,
+    "skillTypeTags": 131328,
     "baseFlags": {
       "duration": true,
       "ailment": true
@@ -200,7 +232,11 @@
       "base_skill_effect_duration": 1000,
       "maximum_stacks": 1,
       "damageEffectiveness": 1
-    }
+    },
+    "playerAbilityID": "arcas",
+    "attributeScalings": [],
+    "class": "Mage",
+    "mastery": "Sorcerer"
   },
   "Ailment_ArcaneMark": {
     "name": "Arcane Mark",
@@ -458,7 +494,7 @@
   },
   "Ailment_BoneCurse": {
     "name": "Bone Curse",
-    "skillTypeTags": 16777472,
+    "skillTypeTags": 16777473,
     "baseFlags": {
       "duration": true,
       "ailment": true,
@@ -472,7 +508,12 @@
       "spell_base_physical_damage": 4,
       "base_critical_strike_multiplier_+": 100,
       "critChance": 5
-    }
+    },
+    "playerAbilityID": "bc53",
+    "attributeScalings": [
+      "Intelligence"
+    ],
+    "class": "Acolyte"
   },
   "Ailment_Brand of Deception": {
     "name": "Brand of Deception",
@@ -1323,7 +1364,7 @@
   },
   "Ailment_NecroticBoneCurse": {
     "name": "Bone Curse",
-    "skillTypeTags": 16777472,
+    "skillTypeTags": 16777473,
     "baseFlags": {
       "duration": true,
       "ailment": true,
@@ -1337,7 +1378,12 @@
       "spell_base_necrotic_damage": 4,
       "base_critical_strike_multiplier_+": 100,
       "critChance": 5
-    }
+    },
+    "playerAbilityID": "bc53",
+    "attributeScalings": [
+      "Intelligence"
+    ],
+    "class": "Acolyte"
   },
   "Ailment_NecroticResistanceShred": {
     "name": "Shred Necrotic Resistance",
@@ -1935,7 +1981,7 @@
   },
   "Ailment_SpiritPlague": {
     "name": "Spirit Plague",
-    "skillTypeTags": 16781568,
+    "skillTypeTags": 16781600,
     "baseFlags": {
       "duration": true,
       "ailment": true,
@@ -1947,7 +1993,12 @@
       "maximum_stacks": 1,
       "damageEffectiveness": 4.5,
       "spell_base_necrotic_damage": 90
-    }
+    },
+    "playerAbilityID": "sp5g2",
+    "attributeScalings": [
+      "Intelligence"
+    ],
+    "class": "Acolyte"
   },
   "Ailment_SpreadingFlames": {
     "name": "Spreading Flames",
@@ -2263,6 +2314,10 @@
     "name": "Alluvion Wave",
     "skillTypeTags": 260,
     "castTime": 1.8181818,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -2279,12 +2334,21 @@
     "baseMods": [
       "4% increased Damage per player Intelligence",
       "4% increased Damage per player Attunement"
+    ],
+    "playerAbilityID": "aw3v",
+    "attributeScalings": [
+      "Intelligence",
+      "Attunement"
     ]
   },
   "Anchor of Oblivion Wave": {
     "name": "Oblivion Wave",
     "skillTypeTags": 272,
     "castTime": 0.9090909,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -2298,12 +2362,19 @@
     },
     "baseMods": [
       "+2 Spell Void Damage per player Vitality"
+    ],
+    "attributeScalings": [
+      "Vitality"
     ]
   },
   "Anomaly": {
     "name": "Anomaly",
     "skillTypeTags": 272,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -2312,12 +2383,20 @@
       "base_skill_effect_duration": 10,
       "cooldown": 11.990407
     },
-    "treeId": "an0my"
+    "treeId": "an0my",
+    "playerAbilityID": "an0my",
+    "attributeScalings": [],
+    "class": "Sentinel",
+    "mastery": "Void Knight"
   },
   "ArcaneAscendance": {
     "name": "Arcane Ascendance",
     "skillTypeTags": 131328,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 1,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "dot": true
@@ -2328,12 +2407,20 @@
       "damage_interval": 450,
       "cooldown": 5
     },
-    "treeId": "arcas"
+    "treeId": "arcas",
+    "playerAbilityID": "arcas",
+    "attributeScalings": [],
+    "class": "Mage",
+    "mastery": "Sorcerer"
   },
   "AssembleAbomination": {
     "name": "Assemble Abomination",
     "skillTypeTags": 1,
     "castTime": 2.0454545,
+    "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 2,
+    "minionTagsDisplay": 513,
     "baseFlags": {
       "minion": true
     },
@@ -2344,12 +2431,22 @@
     "minionList": [
       "SummonedAbomination"
     ],
-    "treeId": "aa710"
+    "treeId": "aa710",
+    "playerAbilityID": "aa710",
+    "attributeScalings": [
+      "Intelligence"
+    ],
+    "class": "Acolyte",
+    "mastery": "Necromancer"
   },
   "AuraOfDecay": {
     "name": "Aura Of Decay",
     "skillTypeTags": 4160,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 1,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {},
     "stats": {
       "chance_to_cast_Ailment_Poison_on_hit_%": 100,
@@ -2358,12 +2455,22 @@
     "baseMods": [
       "4% increased Damage per player Intelligence"
     ],
-    "treeId": "ad0ry"
+    "treeId": "ad0ry",
+    "playerAbilityID": "ad0ry",
+    "attributeScalings": [
+      "Intelligence"
+    ],
+    "class": "Acolyte",
+    "mastery": "Lich"
   },
   "Avalanche": {
     "name": "Avalanche",
     "skillTypeTags": 261,
     "castTime": 0.72727275,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -2381,12 +2488,22 @@
       "4% increased Damage per player Attunement",
       "+4% Freeze Rate Multiplier per player Attunement"
     ],
-    "treeId": "av75ch"
+    "treeId": "av75ch",
+    "playerAbilityID": "av75ch",
+    "attributeScalings": [
+      "Attunement"
+    ],
+    "class": "Primalist",
+    "mastery": "Shaman"
   },
   "AxeThrow": {
     "name": "Axe Throw",
     "skillTypeTags": 1025,
     "castTime": 0.64935064,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -2403,12 +2520,21 @@
     "baseMods": [
       "4% increased Damage per player Strength",
       "4% increased Damage per player Dexterity"
+    ],
+    "playerAbilityID": "ht16aw",
+    "attributeScalings": [
+      "Strength",
+      "Dexterity"
     ]
   },
   "BallistaBolt": {
     "name": "Ballista Bolt",
     "skillTypeTags": 2049,
     "castTime": 1.3939393,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -2425,12 +2551,20 @@
     "baseMods": [
       "5% increased Attack Speed per player Dexterity"
     ],
-    "fromMinion": true
+    "fromMinion": true,
+    "playerAbilityID": "bbl7",
+    "attributeScalings": [
+      "Dexterity"
+    ]
   },
   "BasicEnemyMelee": {
     "name": "Melee Attack",
     "skillTypeTags": 513,
     "castTime": 1.0909091,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -2444,12 +2578,18 @@
       "critChance": 5,
       "base_skill_effect_duration": 10
     },
-    "fromMinion": true
+    "fromMinion": true,
+    "playerAbilityID": "fm8",
+    "attributeScalings": []
   },
   "BlackHole": {
     "name": "Black Hole",
     "skillTypeTags": 4356,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "dot": true,
@@ -2466,12 +2606,22 @@
     "baseMods": [
       "4% increased Damage per player Intelligence"
     ],
-    "treeId": "bh2"
+    "treeId": "bh2",
+    "playerAbilityID": "bh2",
+    "attributeScalings": [
+      "Intelligence"
+    ],
+    "class": "Mage",
+    "mastery": "Sorcerer"
   },
   "Bone Golem 02 Big Slam": {
     "name": "Maul",
     "skillTypeTags": 513,
     "castTime": 1.3636363,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -2490,12 +2640,20 @@
       "4% increased Damage per player Strength",
       "4% increased Damage per player Attunement"
     ],
-    "fromMinion": true
+    "fromMinion": true,
+    "attributeScalings": [
+      "Strength",
+      "Attunement"
+    ]
   },
   "Bone Golem 03 Leap Slam": {
     "name": "Maul",
     "skillTypeTags": 513,
     "castTime": 0.45454544,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -2514,12 +2672,21 @@
       "4% increased Damage per player Strength",
       "4% increased Damage per player Attunement"
     ],
-    "fromMinion": true
+    "fromMinion": true,
+    "playerAbilityID": "wbra",
+    "attributeScalings": [
+      "Strength",
+      "Attunement"
+    ]
   },
   "Bone Golem Rampage": {
     "name": "Rampage",
     "skillTypeTags": 513,
     "castTime": 0.9090909,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -2539,12 +2706,21 @@
       "4% increased Damage per player Attunement",
       "+2% Mana Efficiency per player Attunement"
     ],
-    "fromMinion": true
+    "fromMinion": true,
+    "playerAbilityID": "ch2ge",
+    "attributeScalings": [
+      "Strength",
+      "Attunement"
+    ]
   },
   "BoneCurse": {
     "name": "Bone Curse",
     "skillTypeTags": 16777473,
     "castTime": 0.45454544,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -2556,12 +2732,21 @@
     "baseMods": [
       "4% increased Damage per player Intelligence"
     ],
-    "treeId": "bc53"
+    "treeId": "bc53",
+    "playerAbilityID": "bc53",
+    "attributeScalings": [
+      "Intelligence"
+    ],
+    "class": "Acolyte"
   },
   "Burning Dagger Throw": {
     "name": "Burning Dagger",
     "skillTypeTags": 1032,
     "castTime": 0.64935064,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -2578,12 +2763,20 @@
     },
     "baseMods": [
       "4% increased Damage per player Dexterity"
+    ],
+    "playerAbilityID": "dt0w",
+    "attributeScalings": [
+      "Dexterity"
     ]
   },
   "CinderStrike": {
     "name": "Cinder Strike",
     "skillTypeTags": 520,
     "castTime": 0.75757575,
+    "instantCastForPlayer": 0,
+    "fakeTags": 2048,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -2597,12 +2790,21 @@
     "baseMods": [
       "4% increased Damage per player Dexterity"
     ],
-    "treeId": "cstri"
+    "treeId": "cstri",
+    "playerAbilityID": "cstri",
+    "attributeScalings": [
+      "Dexterity"
+    ],
+    "class": "Rogue"
   },
   "DancingStrike1": {
     "name": "Dancing Strikes",
     "skillTypeTags": 513,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -2620,12 +2822,22 @@
     "baseMods": [
       "4% increased Damage per player Dexterity"
     ],
-    "treeId": "dacn33"
+    "treeId": "dacn33",
+    "playerAbilityID": "dacn33",
+    "attributeScalings": [
+      "Dexterity"
+    ],
+    "class": "Rogue",
+    "mastery": "Bladedancer"
   },
   "DarkQuiver": {
     "name": "Dark Quiver",
     "skillTypeTags": 131072,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -2638,12 +2850,22 @@
     "baseMods": [
       "+2% Mana Efficiency per player Dexterity"
     ],
-    "treeId": "dqv5"
+    "treeId": "dqv5",
+    "playerAbilityID": "dqv5",
+    "attributeScalings": [
+      "Dexterity"
+    ],
+    "class": "Rogue",
+    "mastery": "Marksman"
   },
   "DeathSeal": {
     "name": "Death Seal",
     "skillTypeTags": 131360,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 1,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -2660,12 +2882,22 @@
     "baseMods": [
       "4% increased Damage per player Intelligence"
     ],
-    "treeId": "ds34l"
+    "treeId": "ds34l",
+    "playerAbilityID": "ds34l",
+    "attributeScalings": [
+      "Intelligence"
+    ],
+    "class": "Acolyte",
+    "mastery": "Lich"
   },
   "DeathSlash": {
     "name": "Death Slash",
     "skillTypeTags": 545,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -2680,12 +2912,18 @@
       "critChance": 5,
       "base_skill_effect_duration": 10
     },
-    "fromMinion": true
+    "fromMinion": true,
+    "playerAbilityID": "sw43",
+    "attributeScalings": []
   },
   "Decoy": {
     "name": "Decoy",
     "skillTypeTags": 1032,
     "castTime": 0.2121212,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -2702,12 +2940,21 @@
     "minionList": [
       "RogueDecoy"
     ],
-    "treeId": "deeco"
+    "treeId": "deeco",
+    "playerAbilityID": "deeco",
+    "attributeScalings": [
+      "Dexterity"
+    ],
+    "class": "Rogue"
   },
   "DetonatingArrow": {
     "name": "Detonating Arrow",
     "skillTypeTags": 2050,
     "castTime": 0.81818175,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -2724,12 +2971,22 @@
     "baseMods": [
       "4% increased Damage per player Dexterity"
     ],
-    "treeId": "detar"
+    "treeId": "detar",
+    "playerAbilityID": "detar",
+    "attributeScalings": [
+      "Dexterity"
+    ],
+    "class": "Rogue",
+    "mastery": "Marksman"
   },
   "DevouringOrb": {
     "name": "Devouring Orb",
     "skillTypeTags": 4368,
     "castTime": 0.59090906,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -2747,12 +3004,22 @@
     "baseMods": [
       "+2 Spell Void Damage per player Vitality"
     ],
-    "treeId": "do5vr"
+    "treeId": "do5vr",
+    "playerAbilityID": "do5vr",
+    "attributeScalings": [
+      "Vitality"
+    ],
+    "class": "Sentinel",
+    "mastery": "Void Knight"
   },
   "Disintegrate": {
     "name": "Disintegrate",
     "skillTypeTags": 4362,
     "castTime": 0.048484847,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "dot": true,
@@ -2769,12 +3036,21 @@
     "baseMods": [
       "4% increased Damage per player Intelligence"
     ],
-    "treeId": "dig5"
+    "treeId": "dig5",
+    "playerAbilityID": "dig5",
+    "attributeScalings": [
+      "Intelligence"
+    ],
+    "class": "Mage"
   },
   "Doom Pulse": {
     "name": "Doom Pulse",
     "skillTypeTags": 272,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -2789,12 +3065,20 @@
     },
     "baseMods": [
       "4% increased Damage per player Intelligence"
+    ],
+    "playerAbilityID": "fi9",
+    "attributeScalings": [
+      "Intelligence"
     ]
   },
   "DragonfireNova": {
     "name": "Dragonflame Nova",
     "skillTypeTags": 264,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -2806,12 +3090,18 @@
       "base_critical_strike_multiplier_+": 100,
       "critChance": 5,
       "base_skill_effect_duration": 10
-    }
+    },
+    "playerAbilityID": "dfn4",
+    "attributeScalings": []
   },
   "DragonSongExplosion": {
     "name": "Dragonfire",
     "skillTypeTags": 264,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -2826,12 +3116,19 @@
     },
     "baseMods": [
       "4% increased Damage per player Dexterity"
+    ],
+    "attributeScalings": [
+      "Dexterity"
     ]
   },
   "Drain Life Stygian Beam": {
     "name": "Stygian Beam",
     "skillTypeTags": 288,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -2843,12 +3140,18 @@
       "base_critical_strike_multiplier_+": 100,
       "critChance": 5,
       "base_skill_effect_duration": 5000
-    }
+    },
+    "playerAbilityID": "lb23il",
+    "attributeScalings": []
   },
   "DrainLife": {
     "name": "Drain Life",
     "skillTypeTags": 4384,
     "castTime": 0.048484847,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "dot": true,
@@ -2862,12 +3165,22 @@
     "baseMods": [
       "4% increased Damage per player Intelligence"
     ],
-    "treeId": "dl73"
+    "treeId": "dl73",
+    "playerAbilityID": "dl73",
+    "attributeScalings": [
+      "Intelligence"
+    ],
+    "class": "Acolyte",
+    "mastery": "Lich"
   },
   "DreadShade": {
     "name": "Dread Shade",
     "skillTypeTags": 131360,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -2878,12 +3191,22 @@
     "baseMods": [
       "+2% Mana Efficiency per player Intelligence"
     ],
-    "treeId": "ds4d3"
+    "treeId": "ds4d3",
+    "playerAbilityID": "ds4d3",
+    "attributeScalings": [
+      "Intelligence"
+    ],
+    "class": "Acolyte",
+    "mastery": "Necromancer"
   },
   "EarthquakeSlam": {
     "name": "Earthquake",
     "skillTypeTags": 513,
     "castTime": 0.75757575,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -2901,12 +3224,23 @@
       "4% increased Damage per player Strength",
       "4% increased Damage per player Attunement"
     ],
-    "treeId": "eq5s"
+    "treeId": "eq5s",
+    "playerAbilityID": "eq5s",
+    "attributeScalings": [
+      "Strength",
+      "Attunement"
+    ],
+    "class": "Primalist",
+    "mastery": "Shaman"
   },
   "ElementalNova": {
     "name": "Elemental Nova",
     "skillTypeTags": 270,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -2924,12 +3258,21 @@
     "baseMods": [
       "4% increased Damage per player Intelligence"
     ],
-    "treeId": "en6"
+    "treeId": "en6",
+    "playerAbilityID": "en6",
+    "attributeScalings": [
+      "Intelligence"
+    ],
+    "class": "Mage"
   },
   "EnchantWeapon": {
     "name": "Enchant Weapon",
     "skillTypeTags": 131200,
     "castTime": 0.3409091,
+    "instantCastForPlayer": 1,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "duration": true
     },
@@ -2937,12 +3280,20 @@
       "base_skill_effect_duration": 5000,
       "cooldown": 14.999249
     },
-    "treeId": "sb44eQ"
+    "treeId": "sb44eQ",
+    "playerAbilityID": "sb44eQ",
+    "attributeScalings": [],
+    "class": "Mage",
+    "mastery": "Spellblade"
   },
   "EntanglingRoots": {
     "name": "Entangling Roots",
     "skillTypeTags": 4353,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -2958,12 +3309,22 @@
     "baseMods": [
       "4% increased Damage per player Attunement"
     ],
-    "treeId": "er6no"
+    "treeId": "er6no",
+    "playerAbilityID": "er6no",
+    "attributeScalings": [
+      "Attunement"
+    ],
+    "class": "Primalist",
+    "mastery": "Druid"
   },
   "ErasingStrike": {
     "name": "Erasing Strike",
     "skillTypeTags": 528,
     "castTime": 0.8522727,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -2982,12 +3343,23 @@
       "4% increased Damage per player Strength",
       "+2 Spell Void Damage per player Vitality"
     ],
-    "treeId": "es6ai"
+    "treeId": "es6ai",
+    "playerAbilityID": "es6ai",
+    "attributeScalings": [
+      "Strength",
+      "Vitality"
+    ],
+    "class": "Sentinel",
+    "mastery": "Void Knight"
   },
   "Eterras Blessing": {
     "name": "Eterra's Blessing",
     "skillTypeTags": 131328,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -2999,12 +3371,21 @@
       "5% Increased Healing Effectiveness per player Attunement",
       "+3% Mana Efficiency per player Attunement"
     ],
-    "treeId": "eb5656"
+    "treeId": "eb5656",
+    "playerAbilityID": "eb5656",
+    "attributeScalings": [
+      "Attunement"
+    ],
+    "class": "Primalist"
   },
   "Falconer 00 Falconry": {
     "name": "Falconry",
     "skillTypeTags": 0,
     "castTime": 1.3636364,
+    "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 1537,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -3018,12 +3399,22 @@
     "minionList": [
       "RogueFalcon"
     ],
-    "treeId": "falc0"
+    "treeId": "falc0",
+    "playerAbilityID": "falc0",
+    "attributeScalings": [
+      "Dexterity"
+    ],
+    "class": "Rogue",
+    "mastery": "Falconer"
   },
   "Falconer 02 Aerial Assault": {
     "name": "Aerial Assault",
     "skillTypeTags": 0,
     "castTime": 0.7954545,
+    "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 1025,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -3041,12 +3432,22 @@
     "baseMods": [
       "4% increased Damage per player Dexterity"
     ],
-    "treeId": "aa989"
+    "treeId": "aa989",
+    "playerAbilityID": "aa989",
+    "attributeScalings": [
+      "Dexterity"
+    ],
+    "class": "Rogue",
+    "mastery": "Falconer"
   },
   "Falconer 03 Dive Bomb": {
     "name": "Dive Bomb",
     "skillTypeTags": 8705,
     "castTime": 0.7954545,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -3064,12 +3465,22 @@
     "baseMods": [
       "4% increased Damage per player Dexterity"
     ],
-    "treeId": "db992"
+    "treeId": "db992",
+    "playerAbilityID": "db992",
+    "attributeScalings": [
+      "Dexterity"
+    ],
+    "class": "Rogue",
+    "mastery": "Falconer"
   },
   "Falconer 04 Explosive Trap": {
     "name": "Explosive Trap",
     "skillTypeTags": 1032,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -3082,12 +3493,22 @@
     "baseMods": [
       "4% increased Damage per player Dexterity"
     ],
-    "treeId": "ex4tp"
+    "treeId": "ex4tp",
+    "playerAbilityID": "ex4tp",
+    "attributeScalings": [
+      "Dexterity"
+    ],
+    "class": "Rogue",
+    "mastery": "Falconer"
   },
   "Falconer 05 Net": {
     "name": "Net",
     "skillTypeTags": 1025,
     "castTime": 0.58441556,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -3105,24 +3526,40 @@
     "baseMods": [
       "4% increased Damage per player Dexterity"
     ],
-    "treeId": "ne01t"
+    "treeId": "ne01t",
+    "playerAbilityID": "ne01t",
+    "attributeScalings": [
+      "Dexterity"
+    ],
+    "class": "Rogue",
+    "mastery": "Falconer"
   },
   "FearCircleCurse": {
     "name": "Terrify",
     "skillTypeTags": 0,
     "castTime": 0.45454544,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "duration": true
     },
     "stats": {
       "base_skill_effect_duration": 10,
       "cooldown": 4
-    }
+    },
+    "playerAbilityID": "md26kh",
+    "attributeScalings": []
   },
   "FeatheredRaptorJumpSlash": {
     "name": "Melee Attack",
     "skillTypeTags": 513,
     "castTime": 1.2727273,
+    "instantCastForPlayer": 0,
+    "fakeTags": 513,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -3137,12 +3574,18 @@
       "base_skill_effect_duration": 10,
       "cooldown": 4
     },
-    "fromMinion": true
+    "fromMinion": true,
+    "playerAbilityID": "fm8",
+    "attributeScalings": []
   },
   "FireAura": {
     "name": "Fire Aura",
     "skillTypeTags": 4360,
     "castTime": 0.36363637,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "dot": true,
@@ -3158,12 +3601,19 @@
     "baseMods": [
       "4% increased Damage per player Intelligence",
       "4% increased Freeze Rate Multiplier per player Intelligence"
+    ],
+    "attributeScalings": [
+      "Intelligence"
     ]
   },
   "Fireball": {
     "name": "Fireball",
     "skillTypeTags": 264,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -3180,12 +3630,21 @@
     "baseMods": [
       "4% increased Damage per player Intelligence"
     ],
-    "treeId": "fi9"
+    "treeId": "fi9",
+    "playerAbilityID": "fi9",
+    "attributeScalings": [
+      "Intelligence"
+    ],
+    "class": "Mage"
   },
   "Firebrand": {
     "name": "Firebrand",
     "skillTypeTags": 520,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -3203,12 +3662,23 @@
       "4% increased Damage per player Intelligence",
       "4% increased Damage per player Dexterity"
     ],
-    "treeId": "f1b4d"
+    "treeId": "f1b4d",
+    "playerAbilityID": "f1b4d",
+    "attributeScalings": [
+      "Intelligence",
+      "Dexterity"
+    ],
+    "class": "Mage",
+    "mastery": "Spellblade"
   },
   "FireShardNova": {
     "name": "Magma Shards",
     "skillTypeTags": 264,
     "castTime": 0.6636364,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -3224,12 +3694,20 @@
     "baseMods": [
       "8% increased Damage per player Intelligence",
       "8% increased Damage per player Attunement"
+    ],
+    "attributeScalings": [
+      "Intelligence",
+      "Attunement"
     ]
   },
   "FireTrail": {
     "name": "Fire Trail",
     "skillTypeTags": 135432,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 1,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -3242,12 +3720,21 @@
     "baseMods": [
       "4% increased Damage per player Intelligence",
       "4% increased Damage per player Attunement"
+    ],
+    "playerAbilityID": "ft5l",
+    "attributeScalings": [
+      "Intelligence",
+      "Attunement"
     ]
   },
   "FlameReave": {
     "name": "Flame Reave",
     "skillTypeTags": 520,
     "castTime": 0.72727275,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -3265,12 +3752,23 @@
       "4% increased Damage per player Intelligence",
       "4% increased Damage per player Dexterity"
     ],
-    "treeId": "fr11mv"
+    "treeId": "fr11mv",
+    "playerAbilityID": "fr11mv",
+    "attributeScalings": [
+      "Intelligence",
+      "Dexterity"
+    ],
+    "class": "Mage",
+    "mastery": "Spellblade"
   },
   "FlameWard": {
     "name": "Flame Ward",
     "skillTypeTags": 131336,
     "castTime": 0.3409091,
+    "instantCastForPlayer": 1,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -3283,12 +3781,21 @@
       "4% increased Damage per player Intelligence",
       "+1% Mana Efficiency per player Intelligence"
     ],
-    "treeId": "fw3d"
+    "treeId": "fw3d",
+    "playerAbilityID": "fw3d",
+    "attributeScalings": [
+      "Intelligence"
+    ],
+    "class": "Mage"
   },
   "Flay 1": {
     "name": "Flay",
     "skillTypeTags": 513,
     "castTime": 0.9090909,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -3306,12 +3813,23 @@
       "4% increased Damage per player Intelligence",
       "+2 Melee Physical Damage per player Dexterity"
     ],
-    "treeId": "fl44"
+    "treeId": "fl44",
+    "playerAbilityID": "fl44",
+    "attributeScalings": [
+      "Intelligence",
+      "Dexterity"
+    ],
+    "class": "Acolyte",
+    "mastery": "Lich"
   },
   "Flurry": {
     "name": "Flurry",
     "skillTypeTags": 513,
     "castTime": 0.78398657,
+    "instantCastForPlayer": 0,
+    "fakeTags": 2048,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -3328,23 +3846,39 @@
     "baseMods": [
       "4% increased Damage per player Dexterity"
     ],
-    "treeId": "flur3"
+    "treeId": "flur3",
+    "playerAbilityID": "flur3",
+    "attributeScalings": [
+      "Dexterity"
+    ],
+    "class": "Rogue"
   },
   "Focus": {
     "name": "Focus",
-    "skillTypeTags": 393472,
+    "skillTypeTags": 131328,
     "castTime": 2.7272727,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "channelling": true
     },
     "stats": {},
-    "treeId": "vm53dx"
+    "treeId": "vm53dx",
+    "playerAbilityID": "vm53dx",
+    "attributeScalings": [],
+    "class": "Mage"
   },
   "ForgeStrike": {
     "name": "Forge Strike",
     "skillTypeTags": 513,
     "castTime": 0.7177034,
+    "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 3,
+    "minionTagsDisplay": 513,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -3364,12 +3898,23 @@
       "4% increased Damage per player Attunement",
       "+11 Minion Health per player Attunement"
     ],
-    "treeId": "fs3e3"
+    "treeId": "fs3e3",
+    "playerAbilityID": "fs3e3",
+    "attributeScalings": [
+      "Strength",
+      "Attunement"
+    ],
+    "class": "Sentinel",
+    "mastery": "Forge Guard"
   },
   "FrenzyAura": {
     "name": "Frenzy Aura",
     "skillTypeTags": 131328,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -3378,12 +3923,18 @@
       "chance_to_cast_Ailment_Frenzy_on_hit_%": 100,
       "base_skill_effect_duration": 2000
     },
-    "fromMinion": true
+    "fromMinion": true,
+    "playerAbilityID": "fr12",
+    "attributeScalings": []
   },
   "Frost Claw": {
     "name": "Frost Claw",
     "skillTypeTags": 260,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -3399,12 +3950,21 @@
     "baseMods": [
       "4% increased Damage per player Intelligence"
     ],
-    "treeId": "frc87w"
+    "treeId": "frc87w",
+    "playerAbilityID": "frc87w",
+    "attributeScalings": [
+      "Intelligence"
+    ],
+    "class": "Mage"
   },
   "FuryLeap": {
     "name": "Fury Leap",
     "skillTypeTags": 513,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -3422,12 +3982,21 @@
     "baseMods": [
       "4% increased Damage per player Strength"
     ],
-    "treeId": "fl13"
+    "treeId": "fl13",
+    "playerAbilityID": "fl13",
+    "attributeScalings": [
+      "Strength"
+    ],
+    "class": "Primalist"
   },
   "GasparSetSwipe": {
     "name": "Decimate",
     "skillTypeTags": 272,
     "castTime": 1.6363635,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -3444,12 +4013,21 @@
     "baseMods": [
       "4% increased Damage per player Attunement",
       "4% increased Damage per player Intelligence"
+    ],
+    "playerAbilityID": "fm8",
+    "attributeScalings": [
+      "Attunement",
+      "Intelligence"
     ]
   },
   "GatheringStormMelee": {
     "name": "Gathering Storm",
     "skillTypeTags": 514,
     "castTime": 0.72727275,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -3467,12 +4045,22 @@
       "4% increased Melee Damage per player Strength",
       "+1 Spell Damage per player Attunement"
     ],
-    "treeId": "ga2st"
+    "treeId": "ga2st",
+    "playerAbilityID": "ga2st",
+    "attributeScalings": [
+      "Strength",
+      "Attunement"
+    ],
+    "class": "Primalist"
   },
   "Glacier": {
     "name": "Glacier",
     "skillTypeTags": 260,
     "castTime": 0.76923084,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -3489,12 +4077,21 @@
       "4% increased Damage per player Intelligence",
       "+4% Freeze Rate Multiplier per player Intelligence"
     ],
-    "treeId": "gl14"
+    "treeId": "gl14",
+    "playerAbilityID": "gl14",
+    "attributeScalings": [
+      "Intelligence"
+    ],
+    "class": "Mage"
   },
   "HailOfArrows": {
     "name": "Hail of Arrows",
     "skillTypeTags": 6145,
     "castTime": 0.9090909,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -3513,12 +4110,22 @@
     "baseMods": [
       "4% increased Damage per player Dexterity"
     ],
-    "treeId": "exvol8"
+    "treeId": "exvol8",
+    "playerAbilityID": "exvol8",
+    "attributeScalings": [
+      "Dexterity"
+    ],
+    "class": "Rogue",
+    "mastery": "Marksman"
   },
   "HakarsPhoenixFlameBurst": {
     "name": "Phoenix Flames",
     "skillTypeTags": 264,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -3530,12 +4137,18 @@
       "base_critical_strike_multiplier_+": 100,
       "critChance": 5,
       "base_skill_effect_duration": 10
-    }
+    },
+    "playerAbilityID": "phfl8",
+    "attributeScalings": []
   },
   "HammerThrow": {
     "name": "Hammer Throw",
     "skillTypeTags": 1025,
     "castTime": 0.64935064,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -3553,12 +4166,22 @@
       "4% increased Damage per player Strength",
       "4% increased Damage per player Dexterity"
     ],
-    "treeId": "ht16aw"
+    "treeId": "ht16aw",
+    "playerAbilityID": "ht16aw",
+    "attributeScalings": [
+      "Strength",
+      "Dexterity"
+    ],
+    "class": "Sentinel"
   },
   "Harvest": {
     "name": "Harvest",
     "skillTypeTags": 544,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -3576,12 +4199,22 @@
       "+2 Melee Necrotic Damage per player Dexterity",
       "4% increased Damage per player Intelligence"
     ],
-    "treeId": "ha84"
+    "treeId": "ha84",
+    "playerAbilityID": "ha84",
+    "attributeScalings": [
+      "Dexterity",
+      "Intelligence"
+    ],
+    "class": "Acolyte"
   },
   "HealingHands": {
     "name": "Healing Hands",
     "skillTypeTags": 131328,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -3593,12 +4226,22 @@
     "baseMods": [
       "5% Increased Healing Effectiveness per player Attunement"
     ],
-    "treeId": "hh7pa3"
+    "treeId": "hh7pa3",
+    "playerAbilityID": "hh7pa3",
+    "attributeScalings": [
+      "Attunement"
+    ],
+    "class": "Sentinel",
+    "mastery": "Paladin"
   },
   "Heartseeker": {
     "name": "Heartseeker",
     "skillTypeTags": 2049,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -3615,12 +4258,22 @@
     "baseMods": [
       "4% increased Damage per player Dexterity"
     ],
-    "treeId": "htsk5"
+    "treeId": "htsk5",
+    "playerAbilityID": "htsk5",
+    "attributeScalings": [
+      "Dexterity"
+    ],
+    "class": "Rogue",
+    "mastery": "Marksman"
   },
   "HeorotUniqueBowIcicle": {
     "name": "Icicle",
     "skillTypeTags": 260,
     "castTime": 0.6363636,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -3636,12 +4289,21 @@
     "baseMods": [
       "4% increased Damage per player Attunement",
       "4% increased Damage per player Dexterity"
+    ],
+    "playerAbilityID": "ht16aw",
+    "attributeScalings": [
+      "Attunement",
+      "Dexterity"
     ]
   },
   "HolyAura": {
     "name": "Holy Aura",
     "skillTypeTags": 131328,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 1,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -3650,12 +4312,20 @@
       "base_skill_effect_duration": 1000,
       "cooldown": 10
     },
-    "treeId": "ah443"
+    "treeId": "ah443",
+    "playerAbilityID": "ah443",
+    "attributeScalings": [],
+    "class": "Sentinel",
+    "mastery": "Paladin"
   },
   "HungeringSouls": {
     "name": "Hungering Souls",
     "skillTypeTags": 4384,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -3672,12 +4342,21 @@
     "baseMods": [
       "4% increased Damage per player Intelligence"
     ],
-    "treeId": "hs18gu"
+    "treeId": "hs18gu",
+    "playerAbilityID": "hs18gu",
+    "attributeScalings": [
+      "Intelligence"
+    ],
+    "class": "Acolyte"
   },
   "IceBarrage": {
     "name": "Ice Barrage",
     "skillTypeTags": 260,
     "castTime": 0.76555026,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -3695,12 +4374,22 @@
       "4% increased Damage per player Intelligence",
       "+4% Freeze Rate Multiplier per player Intelligence"
     ],
-    "treeId": "ib5g3"
+    "treeId": "ib5g3",
+    "playerAbilityID": "ib5g3",
+    "attributeScalings": [
+      "Intelligence"
+    ],
+    "class": "Mage",
+    "mastery": "Sorcerer"
   },
   "IceThorns": {
     "name": "Ice Thorns",
     "skillTypeTags": 261,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -3718,12 +4407,20 @@
       "4% increased Damage per player Attunement",
       "+4% Freeze Rate Multiplier per player Attunement"
     ],
-    "treeId": "tb47"
+    "treeId": "tb47",
+    "playerAbilityID": "tb47",
+    "attributeScalings": [
+      "Attunement"
+    ]
   },
   "IceWard": {
     "name": "Ice Ward",
     "skillTypeTags": 131332,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 1,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -3733,12 +4430,18 @@
       "base_skill_effect_duration": 10000000,
       "cooldown": 1
     },
-    "treeId": "is58"
+    "treeId": "is58",
+    "playerAbilityID": "is58",
+    "attributeScalings": []
   },
   "InfernalShade": {
     "name": "Infernal Shade",
     "skillTypeTags": 4360,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "dot": true,
@@ -3755,12 +4458,21 @@
     "baseMods": [
       "4% increased Damage per player Intelligence"
     ],
-    "treeId": "is40"
+    "treeId": "is40",
+    "playerAbilityID": "is40",
+    "attributeScalings": [
+      "Intelligence"
+    ],
+    "class": "Acolyte"
   },
   "Javelin": {
     "name": "Javelin",
     "skillTypeTags": 1025,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -3778,12 +4490,22 @@
       "4% increased Damage per player Strength",
       "4% increased Damage per player Dexterity"
     ],
-    "treeId": "javeli"
+    "treeId": "javeli",
+    "playerAbilityID": "javeli",
+    "attributeScalings": [
+      "Strength",
+      "Dexterity"
+    ],
+    "class": "Sentinel"
   },
   "Judgement": {
     "name": "Judgement",
     "skillTypeTags": 4616,
     "castTime": 0.8556149,
+    "instantCastForPlayer": 0,
+    "fakeTags": 256,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -3803,12 +4525,23 @@
       "4% increased Damage per player Attunement",
       "4% Increased Healing Effectiveness per player Attunement"
     ],
-    "treeId": "pa67ju"
+    "treeId": "pa67ju",
+    "playerAbilityID": "pa67ju",
+    "attributeScalings": [
+      "Strength",
+      "Attunement"
+    ],
+    "class": "Sentinel",
+    "mastery": "Paladin"
   },
   "Lethal Mirage": {
     "name": "Lethal Mirage",
     "skillTypeTags": 513,
     "castTime": 1.3636364,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -3826,12 +4559,22 @@
     "baseMods": [
       "4% increased Damage per player Dexterity"
     ],
-    "treeId": "mira59"
+    "treeId": "mira59",
+    "playerAbilityID": "mira59",
+    "attributeScalings": [
+      "Dexterity"
+    ],
+    "class": "Rogue",
+    "mastery": "Bladedancer"
   },
   "LightningBlast": {
     "name": "Lightning Blast",
     "skillTypeTags": 258,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -3847,12 +4590,21 @@
     "baseMods": [
       "4% increased Damage per player Intelligence"
     ],
-    "treeId": "lb23il"
+    "treeId": "lb23il",
+    "playerAbilityID": "lb23il",
+    "attributeScalings": [
+      "Intelligence"
+    ],
+    "class": "Mage"
   },
   "LightningStorm": {
     "name": "Lightning Storm",
     "skillTypeTags": 258,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -3865,12 +4617,18 @@
       "critChance": 5,
       "base_skill_effect_duration": 2000
     },
-    "fromMinion": true
+    "fromMinion": true,
+    "playerAbilityID": "ls25",
+    "attributeScalings": []
   },
   "Lunge": {
     "name": "Lunge",
     "skillTypeTags": 513,
     "castTime": 0.45454544,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -3889,12 +4647,22 @@
       "4% increased Damage per player Strength",
       "4% increased Damage per player Dexterity"
     ],
-    "treeId": "lu25ng"
+    "treeId": "lu25ng",
+    "playerAbilityID": "lu25ng",
+    "attributeScalings": [
+      "Strength",
+      "Dexterity"
+    ],
+    "class": "Sentinel"
   },
   "Maelstrom": {
     "name": "Maelstrom",
     "skillTypeTags": 4356,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "dot": true,
@@ -3911,12 +4679,21 @@
       "4% increased Damage per player Attunement",
       "+4% Freeze Rate Multiplier per player Attunement"
     ],
-    "treeId": "mas54"
+    "treeId": "mas54",
+    "playerAbilityID": "mas54",
+    "attributeScalings": [
+      "Attunement"
+    ],
+    "class": "Primalist"
   },
   "ManaStrike": {
     "name": "Mana Strike",
     "skillTypeTags": 514,
     "castTime": 0.59090906,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -3934,12 +4711,22 @@
       "4% increased Damage per player Intelligence",
       "4% increased Damage per player Dexterity"
     ],
-    "treeId": "ms26"
+    "treeId": "ms26",
+    "playerAbilityID": "ms26",
+    "attributeScalings": [
+      "Intelligence",
+      "Dexterity"
+    ],
+    "class": "Mage"
   },
   "Manifest Armor 01 Melee": {
     "name": "Melee Attack",
     "skillTypeTags": 513,
     "castTime": 1,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -3953,12 +4740,18 @@
       "critChance": 5,
       "base_skill_effect_duration": 10
     },
-    "fromMinion": true
+    "fromMinion": true,
+    "playerAbilityID": "fm8",
+    "attributeScalings": []
   },
   "ManifestArmor": {
     "name": "Manifest Armor",
     "skillTypeTags": 0,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 513,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -3975,12 +4768,23 @@
     "minionList": [
       "ManifestedArmor"
     ],
-    "treeId": "ma6hdr"
+    "treeId": "ma6hdr",
+    "playerAbilityID": "ma6hdr",
+    "attributeScalings": [
+      "Strength",
+      "Attunement"
+    ],
+    "class": "Sentinel",
+    "mastery": "Forge Guard"
   },
   "MarkForDeath": {
     "name": "Mark For Death",
     "skillTypeTags": 256,
     "castTime": 0.45454544,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -3992,12 +4796,20 @@
     "baseMods": [
       "+2% Mana Efficiency per player Intelligence"
     ],
-    "treeId": "md26kh"
+    "treeId": "md26kh",
+    "playerAbilityID": "md26kh",
+    "attributeScalings": [
+      "Intelligence"
+    ]
   },
   "MarrowShards": {
     "name": "Marrow Shards",
     "skillTypeTags": 257,
     "castTime": 0.65604496,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -4013,12 +4825,21 @@
     "baseMods": [
       "4% increased Damage per player Intelligence"
     ],
-    "treeId": "bp2nk"
+    "treeId": "bp2nk",
+    "playerAbilityID": "bp2nk",
+    "attributeScalings": [
+      "Intelligence"
+    ],
+    "class": "Acolyte"
   },
   "Meteor": {
     "name": "Meteor",
     "skillTypeTags": 264,
     "castTime": 0.7954545,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -4034,12 +4855,22 @@
     "baseMods": [
       "4% increased Damage per player Intelligence"
     ],
-    "treeId": "me27"
+    "treeId": "me27",
+    "playerAbilityID": "me27",
+    "attributeScalings": [
+      "Intelligence"
+    ],
+    "class": "Mage",
+    "mastery": "Sorcerer"
   },
   "Multistrike": {
     "name": "Multistrike",
     "skillTypeTags": 513,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -4056,12 +4887,21 @@
     "baseMods": [
       "4% increased Damage per player Strength"
     ],
-    "treeId": "multis"
+    "treeId": "multis",
+    "playerAbilityID": "multis",
+    "attributeScalings": [
+      "Strength"
+    ],
+    "class": "Sentinel"
   },
   "PontifexCremate": {
     "name": "Cremate",
     "skillTypeTags": 4360,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 264,
     "baseFlags": {
       "spell": true,
       "dot": true,
@@ -4083,12 +4923,20 @@
     ],
     "minionList": [
       "SummonedBurningSkeleton"
+    ],
+    "playerAbilityID": "ct5rm",
+    "attributeScalings": [
+      "Intelligence"
     ]
   },
   "PrimalBear 01 melee attack": {
     "name": "Melee Attack",
     "skillTypeTags": 513,
     "castTime": 0.6818181,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -4102,12 +4950,18 @@
       "critChance": 5,
       "base_skill_effect_duration": 10
     },
-    "fromMinion": true
+    "fromMinion": true,
+    "playerAbilityID": "fm8",
+    "attributeScalings": []
   },
   "PrimalLightning": {
     "name": "Storm Bolt",
     "skillTypeTags": 258,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -4122,12 +4976,20 @@
     },
     "baseMods": [
       "+1 Spell Damage per player Attunement"
+    ],
+    "playerAbilityID": "li23",
+    "attributeScalings": [
+      "Attunement"
     ]
   },
   "PrimalSabertooth 01 Melee": {
     "name": "Melee Attack",
     "skillTypeTags": 513,
     "castTime": 1.0031347,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -4141,12 +5003,18 @@
       "critChance": 5,
       "base_skill_effect_duration": 10
     },
-    "fromMinion": true
+    "fromMinion": true,
+    "playerAbilityID": "fm8",
+    "attributeScalings": []
   },
   "PrimalWolf 01 melee": {
     "name": "Melee Attack",
     "skillTypeTags": 513,
     "castTime": 1.0909091,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -4160,12 +5028,18 @@
       "critChance": 5,
       "base_skill_effect_duration": 10
     },
-    "fromMinion": true
+    "fromMinion": true,
+    "playerAbilityID": "fm8",
+    "attributeScalings": []
   },
   "PrimordialBloodSplatter": {
     "name": "Primordial Blood",
     "skillTypeTags": 257,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -4177,12 +5051,18 @@
       "base_critical_strike_multiplier_+": 100,
       "critChance": 5,
       "base_skill_effect_duration": 10
-    }
+    },
+    "playerAbilityID": "fn10",
+    "attributeScalings": []
   },
   "PrismShardRelease": {
     "name": "Prism Shard",
     "skillTypeTags": 384,
     "castTime": 0.64935064,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -4203,12 +5083,21 @@
     "baseMods": [
       "4% increased Damage per player Intelligence",
       "4% increased Damage per player Attunement"
+    ],
+    "playerAbilityID": "dt0w",
+    "attributeScalings": [
+      "Intelligence",
+      "Attunement"
     ]
   },
   "Puncture": {
     "name": "Puncture",
     "skillTypeTags": 513,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 2048,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -4226,12 +5115,21 @@
     "baseMods": [
       "4% increased Damage per player Dexterity"
     ],
-    "treeId": "pun22"
+    "treeId": "pun22",
+    "playerAbilityID": "pun22",
+    "attributeScalings": [
+      "Dexterity"
+    ],
+    "class": "Rogue"
   },
   "Pyre Golem InfernalAura": {
     "name": "Infernal Aura",
     "skillTypeTags": 131336,
     "castTime": 1.0909091,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "dot": true,
@@ -4247,12 +5145,18 @@
       "damage_interval": 330,
       "cooldown": 1
     },
-    "treeId": "fs11"
+    "treeId": "fs11",
+    "playerAbilityID": "fs11",
+    "attributeScalings": []
   },
   "ReaperForm": {
     "name": "Reaper Form",
     "skillTypeTags": 0,
     "castTime": 0.5,
+    "instantCastForPlayer": 0,
+    "fakeTags": 512,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -4267,12 +5171,20 @@
       "base_skill_effect_duration": 10000000,
       "cooldown": 20
     },
-    "treeId": "rf1azz"
+    "treeId": "rf1azz",
+    "playerAbilityID": "rf1azz",
+    "attributeScalings": [],
+    "class": "Acolyte",
+    "mastery": "Lich"
   },
   "Rebuke": {
     "name": "Rebuke",
     "skillTypeTags": 257,
     "castTime": 1.4545455,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -4288,12 +5200,21 @@
     "baseMods": [
       "4% increased Damage per player Attunement"
     ],
-    "treeId": "re82ke"
+    "treeId": "re82ke",
+    "playerAbilityID": "re82ke",
+    "attributeScalings": [
+      "Attunement"
+    ],
+    "class": "Sentinel"
   },
   "Ring Of Shields": {
     "name": "Ring Of Shields",
     "skillTypeTags": 0,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 1,
+    "fakeTags": 8192,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 131072,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -4310,12 +5231,23 @@
     "minionList": [
       "Manifest Shield"
     ],
-    "treeId": "rs31hi"
+    "treeId": "rs31hi",
+    "playerAbilityID": "rs31hi",
+    "attributeScalings": [
+      "Strength",
+      "Attunement"
+    ],
+    "class": "Sentinel",
+    "mastery": "Forge Guard"
   },
   "RipBlood": {
     "name": "Rip Blood",
     "skillTypeTags": 257,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -4332,12 +5264,21 @@
       "4% increased Damage per player Intelligence",
       "4% Increased Healing Effectiveness per player Intelligence"
     ],
-    "treeId": "rb31pl"
+    "treeId": "rb31pl",
+    "playerAbilityID": "rb31pl",
+    "attributeScalings": [
+      "Intelligence"
+    ],
+    "class": "Acolyte"
   },
   "Rive1": {
     "name": "Rive",
     "skillTypeTags": 513,
     "castTime": 0.54545456,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -4354,12 +5295,21 @@
     "baseMods": [
       "4% increased Damage per player Strength"
     ],
-    "treeId": "sndr1"
+    "treeId": "sndr1",
+    "playerAbilityID": "sndr1",
+    "attributeScalings": [
+      "Strength"
+    ],
+    "class": "Sentinel"
   },
   "RogueFalcon Diving Attack": {
     "name": "Surge",
     "skillTypeTags": 513,
     "castTime": 0.12121212,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -4377,12 +5327,21 @@
       "4% increased Damage per player Intelligence",
       "4% increased Damage per player Dexterity"
     ],
-    "fromMinion": true
+    "fromMinion": true,
+    "playerAbilityID": "su5g3",
+    "attributeScalings": [
+      "Intelligence",
+      "Dexterity"
+    ]
   },
   "RogueFalcon Melee": {
     "name": "Rogue Falcon Melee",
     "skillTypeTags": 513,
     "castTime": 0.7954545,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -4396,12 +5355,18 @@
       "critChance": 5,
       "base_skill_effect_duration": 10
     },
-    "fromMinion": true
+    "fromMinion": true,
+    "playerAbilityID": "fm8",
+    "attributeScalings": []
   },
   "RogueMultishot": {
     "name": "Multishot",
     "skillTypeTags": 2049,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -4418,12 +5383,22 @@
     "baseMods": [
       "4% increased Damage per player Dexterity"
     ],
-    "treeId": "mush9"
+    "treeId": "mush9",
+    "playerAbilityID": "mush9",
+    "attributeScalings": [
+      "Dexterity"
+    ],
+    "class": "Rogue",
+    "mastery": "Marksman"
   },
   "Runemaster 01 Frost Wall": {
     "name": "Frost Wall",
     "skillTypeTags": 4356,
     "castTime": 0.5594406,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -4437,12 +5412,22 @@
     "baseMods": [
       "4% increased Damage per player Intelligence"
     ],
-    "treeId": "fr4wl"
+    "treeId": "fr4wl",
+    "playerAbilityID": "fr4wl",
+    "attributeScalings": [
+      "Intelligence"
+    ],
+    "class": "Mage",
+    "mastery": "Runemaster"
   },
   "Runemaster 02 Glyph of Dominion": {
     "name": "Glyph of Dominion",
     "skillTypeTags": 4354,
     "castTime": 0.5594406,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "dot": true,
@@ -4460,12 +5445,22 @@
     "baseMods": [
       "4% increased Damage per player Intelligence"
     ],
-    "treeId": "gy2dm"
+    "treeId": "gy2dm",
+    "playerAbilityID": "gy2dm",
+    "attributeScalings": [
+      "Intelligence"
+    ],
+    "class": "Mage",
+    "mastery": "Runemaster"
   },
   "Runemaster 04 Runic Invocation": {
     "name": "Runic Invocation",
     "skillTypeTags": 270,
     "castTime": 0.81818175,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -4476,12 +5471,22 @@
     "baseMods": [
       "4% increased Damage per player Intelligence"
     ],
-    "treeId": "rn7iv"
+    "treeId": "rn7iv",
+    "playerAbilityID": "rn7iv",
+    "attributeScalings": [
+      "Intelligence"
+    ],
+    "class": "Mage",
+    "mastery": "Runemaster"
   },
   "Runemaster 05c1 Runebolt Fire": {
     "name": "Runebolt",
     "skillTypeTags": 264,
     "castTime": 0.6818181,
+    "instantCastForPlayer": 0,
+    "fakeTags": 14,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -4497,12 +5502,22 @@
     "baseMods": [
       "4% increased Damage per player Intelligence"
     ],
-    "treeId": "fb8fe"
+    "treeId": "fb8fe",
+    "playerAbilityID": "fb8fe",
+    "attributeScalings": [
+      "Intelligence"
+    ],
+    "class": "Mage",
+    "mastery": "Runemaster"
   },
   "Runemaster 05c2 Runebolt Lightning": {
     "name": "Runebolt",
     "skillTypeTags": 264,
     "castTime": 0.6818181,
+    "instantCastForPlayer": 0,
+    "fakeTags": 14,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -4518,12 +5533,22 @@
     "baseMods": [
       "4% increased Damage per player Intelligence"
     ],
-    "treeId": "fb8fe"
+    "treeId": "fb8fe",
+    "playerAbilityID": "fb8fe",
+    "attributeScalings": [
+      "Intelligence"
+    ],
+    "class": "Mage",
+    "mastery": "Runemaster"
   },
   "Runemaster 05c3 Runebolt Cold": {
     "name": "Runebolt",
     "skillTypeTags": 264,
     "castTime": 0.6818181,
+    "instantCastForPlayer": 0,
+    "fakeTags": 14,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -4540,12 +5565,22 @@
       "4% increased Damage per player Intelligence",
       "+40 Freeze Rate"
     ],
-    "treeId": "fb8fe"
+    "treeId": "fb8fe",
+    "playerAbilityID": "fb8fe",
+    "attributeScalings": [
+      "Intelligence"
+    ],
+    "class": "Mage",
+    "mastery": "Runemaster"
   },
   "Runemaster 06 Flame Rush": {
     "name": "Flame Rush",
     "skillTypeTags": 264,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -4563,12 +5598,22 @@
     "baseMods": [
       "4% increased Damage per player Intelligence"
     ],
-    "treeId": "fl71ds"
+    "treeId": "fl71ds",
+    "playerAbilityID": "fl71ds",
+    "attributeScalings": [
+      "Intelligence"
+    ],
+    "class": "Mage",
+    "mastery": "Runemaster"
   },
   "Runemaster 19 Mega Elemental Nova": {
     "name": "Grand Prism Nova",
     "skillTypeTags": 270,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -4585,12 +5630,19 @@
     },
     "baseMods": [
       "4% increased Damage per player Intelligence"
+    ],
+    "attributeScalings": [
+      "Intelligence"
     ]
   },
   "Runemaster 27 Repeating Fire Mortars": {
     "name": "Hydrahedron",
     "skillTypeTags": 264,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -4605,12 +5657,19 @@
     },
     "baseMods": [
       "4% increased Damage per player Intelligence"
+    ],
+    "attributeScalings": [
+      "Intelligence"
     ]
   },
   "Sacrifice": {
     "name": "Sacrifice",
     "skillTypeTags": 257,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -4626,12 +5685,22 @@
     "baseMods": [
       "4% increased Damage per player Intelligence"
     ],
-    "treeId": "sf31rc"
+    "treeId": "sf31rc",
+    "playerAbilityID": "sf31rc",
+    "attributeScalings": [
+      "Intelligence"
+    ],
+    "class": "Acolyte",
+    "mastery": "Necromancer"
   },
   "ScorpionMeleeComboStart": {
     "name": "Melee Attack",
     "skillTypeTags": 513,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -4645,12 +5714,18 @@
       "critChance": 5,
       "base_skill_effect_duration": 10
     },
-    "fromMinion": true
+    "fromMinion": true,
+    "playerAbilityID": "fm8",
+    "attributeScalings": []
   },
   "ScorpionTailMelee": {
     "name": "Scorpion Tail Melee",
     "skillTypeTags": 513,
     "castTime": 0.81818175,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -4665,12 +5740,18 @@
       "chance_to_cast_Ailment_Poison_on_hit_%": 200,
       "base_skill_effect_duration": 10
     },
-    "fromMinion": true
+    "fromMinion": true,
+    "playerAbilityID": "fm8",
+    "attributeScalings": []
   },
   "SerpentStrike": {
     "name": "Serpent Strike",
     "skillTypeTags": 577,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -4690,12 +5771,22 @@
       "4% increased Damage per player Dexterity",
       "+4% Chance to Poison on Melee Hit per player Dexterity"
     ],
-    "treeId": "st31et"
+    "treeId": "st31et",
+    "playerAbilityID": "st31et",
+    "attributeScalings": [
+      "Strength",
+      "Dexterity"
+    ],
+    "class": "Primalist"
   },
   "ShadowCascade": {
     "name": "Shadow Cascade",
     "skillTypeTags": 513,
     "castTime": 1.017639,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -4712,12 +5803,22 @@
     "baseMods": [
       "4% increased Damage per player Dexterity"
     ],
-    "treeId": "dagg3"
+    "treeId": "dagg3",
+    "playerAbilityID": "dagg3",
+    "attributeScalings": [
+      "Dexterity"
+    ],
+    "class": "Rogue",
+    "mastery": "Bladedancer"
   },
   "ShatterStrike": {
     "name": "Shatter Strike",
     "skillTypeTags": 516,
     "castTime": 0.59090906,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -4732,12 +5833,23 @@
       "4% increased Cold Damage per player Intelligence",
       "+4% Freeze Rate Multiplier per player Intelligence"
     ],
-    "treeId": "ss3tre"
+    "treeId": "ss3tre",
+    "playerAbilityID": "ss3tre",
+    "attributeScalings": [
+      "Dexterity",
+      "Intelligence"
+    ],
+    "class": "Mage",
+    "mastery": "Spellblade"
   },
   "ShieldBash": {
     "name": "Shield Bash",
     "skillTypeTags": 513,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -4755,12 +5867,21 @@
     "baseMods": [
       "4% increased Damage per player Strength"
     ],
-    "treeId": "sb4h"
+    "treeId": "sb4h",
+    "playerAbilityID": "sb4h",
+    "attributeScalings": [
+      "Strength"
+    ],
+    "class": "Sentinel"
   },
   "ShieldRush": {
     "name": "Shield Rush",
     "skillTypeTags": 513,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -4778,12 +5899,21 @@
     "baseMods": [
       "4% increased Damage per player Strength"
     ],
-    "treeId": "sr31hu"
+    "treeId": "sr31hu",
+    "playerAbilityID": "sr31hu",
+    "attributeScalings": [
+      "Strength"
+    ],
+    "class": "Sentinel"
   },
   "ShieldThrow": {
     "name": "Shield Throw",
     "skillTypeTags": 1025,
     "castTime": 0.6293706,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -4801,12 +5931,23 @@
       "4% increased Damage per player Strength",
       "4% increased Damage per player Dexterity"
     ],
-    "treeId": "st31io"
+    "treeId": "st31io",
+    "playerAbilityID": "st31io",
+    "attributeScalings": [
+      "Strength",
+      "Dexterity"
+    ],
+    "class": "Sentinel",
+    "mastery": "Forge Guard"
   },
   "Shift": {
     "name": "Shift",
     "skillTypeTags": 0,
     "castTime": 0.18181819,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "duration": true
     },
@@ -4817,12 +5958,21 @@
     "baseMods": [
       "+2% Mana Efficiency per player Dexterity"
     ],
-    "treeId": "shiif"
+    "treeId": "shiif",
+    "playerAbilityID": "shiif",
+    "attributeScalings": [
+      "Dexterity"
+    ],
+    "class": "Rogue"
   },
   "Shurikens": {
     "name": "Shurikens",
     "skillTypeTags": 1025,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -4839,24 +5989,41 @@
     "baseMods": [
       "4% increased Damage per player Dexterity"
     ],
-    "treeId": "srk21"
+    "treeId": "srk21",
+    "playerAbilityID": "srk21",
+    "attributeScalings": [
+      "Dexterity"
+    ],
+    "class": "Rogue"
   },
   "SigilsOfHope": {
     "name": "Symbols of Hope",
     "skillTypeTags": 131328,
     "castTime": 0.487013,
+    "instantCastForPlayer": 1,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true
     },
     "stats": {
       "cooldown": 18
     },
-    "treeId": "si4lgl"
+    "treeId": "si4lgl",
+    "playerAbilityID": "si4lgl",
+    "attributeScalings": [],
+    "class": "Sentinel",
+    "mastery": "Paladin"
   },
   "Skeletal Mages Necrotic Projectile": {
     "name": "Dread Bolt",
     "skillTypeTags": 4384,
     "castTime": 0.90909094,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -4873,12 +6040,19 @@
     "baseMods": [
       "4% increased Damage per player Intelligence"
     ],
-    "fromMinion": true
+    "fromMinion": true,
+    "attributeScalings": [
+      "Intelligence"
+    ]
   },
   "SmeltersWrath": {
     "name": "Smelter's Wrath",
     "skillTypeTags": 521,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -4896,12 +6070,22 @@
     "baseMods": [
       "4% increased Damage per player Strength"
     ],
-    "treeId": "st4th"
+    "treeId": "st4th",
+    "playerAbilityID": "st4th",
+    "attributeScalings": [
+      "Strength"
+    ],
+    "class": "Sentinel",
+    "mastery": "Forge Guard"
   },
   "Smite": {
     "name": "Smite",
     "skillTypeTags": 264,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -4918,12 +6102,21 @@
       "4% increased Damage per player Attunement",
       "4% increased Increased Healing Effectiveness per player Attunement"
     ],
-    "treeId": "sm87r4"
+    "treeId": "sm87r4",
+    "playerAbilityID": "sm87r4",
+    "attributeScalings": [
+      "Attunement"
+    ],
+    "class": "Sentinel"
   },
   "Smoke Bomb": {
     "name": "Smoke Bomb",
     "skillTypeTags": 1024,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -4935,12 +6128,19 @@
       "base_skill_effect_duration": 4000,
       "cooldown": 10
     },
-    "treeId": "smbmb"
+    "treeId": "smbmb",
+    "playerAbilityID": "smbmb",
+    "attributeScalings": [],
+    "class": "Rogue"
   },
   "SnapFreeze": {
     "name": "Snap Freeze",
     "skillTypeTags": 260,
     "castTime": 0.54545456,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -4952,12 +6152,21 @@
     "baseMods": [
       "+2% Mana Efficiency per player Intelligence"
     ],
-    "treeId": "sw31a"
+    "treeId": "sw31a",
+    "playerAbilityID": "sw31a",
+    "attributeScalings": [
+      "Intelligence"
+    ],
+    "class": "Mage"
   },
   "SoulEruption": {
     "name": "Soul Eruption",
     "skillTypeTags": 256,
     "castTime": 0.7177034,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -4965,12 +6174,18 @@
     "stats": {
       "chance_to_cast_Ailment_MarkedForDeath_on_hit_%": 100,
       "base_skill_effect_duration": 2500
-    }
+    },
+    "playerAbilityID": "se67h",
+    "attributeScalings": []
   },
   "SpiritPlague": {
     "name": "Spirit Plague",
     "skillTypeTags": 16781600,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -4982,12 +6197,21 @@
     "baseMods": [
       "4% increased Damage per player Intelligence"
     ],
-    "treeId": "sp5g2"
+    "treeId": "sp5g2",
+    "playerAbilityID": "sp5g2",
+    "attributeScalings": [
+      "Intelligence"
+    ],
+    "class": "Acolyte"
   },
   "SpiritThorns": {
     "name": "Spirit Thorns",
     "skillTypeTags": 257,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -5003,12 +6227,20 @@
     "baseMods": [
       "4% increased Damage per player Attunement",
       "+4% Freeze Rate Multiplier per player Attunement"
+    ],
+    "playerAbilityID": "tb47",
+    "attributeScalings": [
+      "Attunement"
     ]
   },
   "SprigganForm": {
     "name": "Spriggan Form",
     "skillTypeTags": 0,
     "castTime": 0.6363636,
+    "instantCastForPlayer": 0,
+    "fakeTags": 155905,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -5023,12 +6255,22 @@
       "base_skill_effect_duration": 10000000,
       "cooldown": 6
     },
-    "treeId": "sf5rd"
+    "treeId": "sf5rd",
+    "playerAbilityID": "sf5rd",
+    "attributeScalings": [
+      "Attunement"
+    ],
+    "class": "Primalist",
+    "mastery": "Druid"
   },
   "Static": {
     "name": "Static",
     "skillTypeTags": 258,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 1,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -5045,12 +6287,21 @@
     "baseMods": [
       "4% increased Damage per player Intelligence"
     ],
-    "treeId": "st47ic"
+    "treeId": "st47ic",
+    "playerAbilityID": "st47ic",
+    "attributeScalings": [
+      "Intelligence"
+    ],
+    "class": "Mage"
   },
   "StaticOrb": {
     "name": "Static Orb",
     "skillTypeTags": 258,
     "castTime": 0.76555026,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -5066,12 +6317,22 @@
     "baseMods": [
       "4% increased Damage per player Intelligence"
     ],
-    "treeId": "so35a"
+    "treeId": "so35a",
+    "playerAbilityID": "so35a",
+    "attributeScalings": [
+      "Intelligence"
+    ],
+    "class": "Mage",
+    "mastery": "Sorcerer"
   },
   "StormCrowLightningBlast": {
     "name": "Lightning Blast",
     "skillTypeTags": 258,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 258,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -5087,12 +6348,19 @@
     "baseMods": [
       "4% increased Damage per player Intelligence"
     ],
-    "fromMinion": true
+    "fromMinion": true,
+    "attributeScalings": [
+      "Intelligence"
+    ]
   },
   "Suicide": {
     "name": "Suicide Explosion",
     "skillTypeTags": 257,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -5100,12 +6368,17 @@
     "stats": {
       "base_skill_effect_duration": 10
     },
-    "fromMinion": true
+    "fromMinion": true,
+    "attributeScalings": []
   },
   "Summon AncientOasis01 Primordial Minion": {
     "name": "Summon Anurok",
     "skillTypeTags": 0,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 513,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -5120,12 +6393,22 @@
     ],
     "minionList": [
       "AncientOasis01 Primordial Minion"
+    ],
+    "playerAbilityID": "sf96g",
+    "attributeScalings": [
+      "Strength",
+      "Attunement",
+      "Dexterity"
     ]
   },
   "Summon Giant T_Rex Minion": {
     "name": "Summon Primal Tyrannosaur",
     "skillTypeTags": 0,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 513,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -5140,12 +6423,22 @@
     ],
     "minionList": [
       "Giant T_Rex Minion"
+    ],
+    "playerAbilityID": "ty21r",
+    "attributeScalings": [
+      "Strength",
+      "Attunement",
+      "Intelligence"
     ]
   },
   "Summon Skeleton Archer Bow Attack": {
     "name": "Bow Attack",
     "skillTypeTags": 2049,
     "castTime": 1.2727273,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -5159,12 +6452,18 @@
       "critChance": 5,
       "base_skill_effect_duration": 600
     },
-    "fromMinion": true
+    "fromMinion": true,
+    "playerAbilityID": "ba2wk",
+    "attributeScalings": []
   },
   "Summon Tolmat Minion": {
     "name": "Summon Historic Minion",
     "skillTypeTags": 0,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 825,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -5175,12 +6474,18 @@
     },
     "minionList": [
       "Tolmat Minion 02 RahyehFactionSwarmer"
-    ]
+    ],
+    "playerAbilityID": "bg36nl",
+    "attributeScalings": []
   },
   "SummonAreksFlesh": {
     "name": "Summon Arek's Flesh",
     "skillTypeTags": 0,
     "castTime": 0.61983466,
+    "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 513,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -5194,12 +6499,20 @@
     ],
     "minionList": [
       "AreksFlesh"
+    ],
+    "playerAbilityID": "sw42ih",
+    "attributeScalings": [
+      "Intelligence"
     ]
   },
   "SummonBallista": {
     "name": "Ballista",
     "skillTypeTags": 0,
     "castTime": 0.54545456,
+    "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 2049,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -5214,12 +6527,21 @@
     "minionList": [
       "RogueBallista"
     ],
-    "treeId": "ba1574"
+    "treeId": "ba1574",
+    "playerAbilityID": "ba1574",
+    "attributeScalings": [
+      "Dexterity"
+    ],
+    "class": "Rogue"
   },
   "SummonBear": {
     "name": "Summon Bear",
     "skillTypeTags": 0,
     "castTime": 1.3636364,
+    "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 2,
+    "minionTagsDisplay": 513,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -5235,12 +6557,22 @@
     "minionList": [
       "PrimalBear"
     ],
-    "treeId": "be36ar"
+    "treeId": "be36ar",
+    "playerAbilityID": "be36ar",
+    "attributeScalings": [
+      "Strength"
+    ],
+    "class": "Primalist",
+    "mastery": "Beastmaster"
   },
   "SummonBee": {
     "name": "Summon Bee",
     "skillTypeTags": 0,
     "castTime": 0.9090909,
+    "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 513,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -5254,12 +6586,19 @@
     ],
     "minionList": [
       "SummonedBee"
+    ],
+    "attributeScalings": [
+      "Attunement"
     ]
   },
   "SummonBoneGolem": {
     "name": "Summon Bone Golem",
     "skillTypeTags": 0,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 2,
+    "minionTagsDisplay": 769,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -5275,12 +6614,21 @@
     "minionList": [
       "SummonedBoneGolem"
     ],
-    "treeId": "bg36nl"
+    "treeId": "bg36nl",
+    "playerAbilityID": "bg36nl",
+    "attributeScalings": [
+      "Intelligence"
+    ],
+    "class": "Acolyte"
   },
   "SummonCrab": {
     "name": "Summon Crab",
     "skillTypeTags": 0,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 2,
+    "minionTagsDisplay": 513,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -5296,12 +6644,22 @@
     ],
     "minionList": [
       "SummonedCrab"
+    ],
+    "playerAbilityID": "sc36pi",
+    "attributeScalings": [
+      "Strength",
+      "Intelligence",
+      "Attunement"
     ]
   },
   "SummonFalcon": {
     "name": "Summon Falcon",
     "skillTypeTags": 0,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 513,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -5312,12 +6670,18 @@
     },
     "minionList": [
       "StormCrow"
-    ]
+    ],
+    "playerAbilityID": "fa88",
+    "attributeScalings": []
   },
   "SummonFrenzyTotem": {
     "name": "Summon Frenzy Totem",
     "skillTypeTags": 0,
     "castTime": 0.54545456,
+    "instantCastForPlayer": 0,
+    "fakeTags": 24576,
+    "areaTagDisplay": 2,
+    "minionTagsDisplay": 131072,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -5334,12 +6698,23 @@
     "minionList": [
       "Frenzy Totem"
     ],
-    "treeId": "sf37"
+    "treeId": "sf37",
+    "playerAbilityID": "sf37",
+    "attributeScalings": [
+      "Strength",
+      "Attunement"
+    ],
+    "class": "Primalist",
+    "mastery": "Beastmaster"
   },
   "SummonIllusoryTree": {
     "name": "Summon Illusory Tree",
     "skillTypeTags": 8192,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -5353,12 +6728,19 @@
     ],
     "minionList": [
       "Illusory Tree"
+    ],
+    "attributeScalings": [
+      "Attunement"
     ]
   },
   "SummonMage": {
     "name": "Summon Skeletal Mage",
     "skillTypeTags": 0,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 288,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -5373,12 +6755,22 @@
     "minionList": [
       "SummonedSkeletonMage"
     ],
-    "treeId": "sm4g"
+    "treeId": "sm4g",
+    "playerAbilityID": "sm4g",
+    "attributeScalings": [
+      "Intelligence"
+    ],
+    "class": "Acolyte",
+    "mastery": "Necromancer"
   },
   "SummonMercenary": {
     "name": "Recruit Mercenary",
     "skillTypeTags": 0,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 2049,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -5393,12 +6785,20 @@
     ],
     "minionList": [
       "Summoned Mercenary"
+    ],
+    "playerAbilityID": "bg36nl",
+    "attributeScalings": [
+      "Dexterity"
     ]
   },
   "SummonRaptor": {
     "name": "Summon Raptor",
     "skillTypeTags": 0,
     "castTime": 1.3636364,
+    "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 2,
+    "minionTagsDisplay": 513,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -5416,12 +6816,23 @@
     "minionList": [
       "Summon_Raptor"
     ],
-    "treeId": "srtor"
+    "treeId": "srtor",
+    "playerAbilityID": "srtor",
+    "attributeScalings": [
+      "Strength",
+      "Dexterity"
+    ],
+    "class": "Primalist",
+    "mastery": "Beastmaster"
   },
   "SummonSabertooth": {
     "name": "Summon Sabertooth",
     "skillTypeTags": 0,
     "castTime": 1.3636364,
+    "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 2,
+    "minionTagsDisplay": 513,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -5439,12 +6850,23 @@
     "minionList": [
       "PrimalSabertooth"
     ],
-    "treeId": "sa36oh"
+    "treeId": "sa36oh",
+    "playerAbilityID": "sa36oh",
+    "attributeScalings": [
+      "Strength",
+      "Dexterity"
+    ],
+    "class": "Primalist",
+    "mastery": "Beastmaster"
   },
   "SummonScorpion": {
     "name": "Summon Scorpion",
     "skillTypeTags": 0,
     "castTime": 1.3636364,
+    "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 2,
+    "minionTagsDisplay": 577,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -5462,12 +6884,23 @@
     "minionList": [
       "PrimalScorpion"
     ],
-    "treeId": "sc36pi"
+    "treeId": "sc36pi",
+    "playerAbilityID": "sc36pi",
+    "attributeScalings": [
+      "Strength",
+      "Dexterity"
+    ],
+    "class": "Primalist",
+    "mastery": "Beastmaster"
   },
   "SummonSerpent": {
     "name": "Summon Primal Serpent",
     "skillTypeTags": 0,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 2,
+    "minionTagsDisplay": 577,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -5484,12 +6917,20 @@
     ],
     "minionList": [
       "PrimalSerpent"
+    ],
+    "attributeScalings": [
+      "Strength",
+      "Dexterity"
     ]
   },
   "SummonSkeleton": {
     "name": "Summon Skeleton",
     "skillTypeTags": 0,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 2,
+    "minionTagsDisplay": 2561,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -5505,12 +6946,21 @@
       "SummonedSkeleton",
       "SummonedSkeletonArcher"
     ],
-    "treeId": "ss37kl"
+    "treeId": "ss37kl",
+    "playerAbilityID": "ss37kl",
+    "attributeScalings": [
+      "Intelligence"
+    ],
+    "class": "Acolyte"
   },
   "SummonSkeletonHarvester": {
     "name": "Summon Skeleton Harvester",
     "skillTypeTags": 0,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 513,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -5525,12 +6975,19 @@
     ],
     "minionList": [
       "SummonedSkeletonHarvester"
+    ],
+    "attributeScalings": [
+      "Intelligence"
     ]
   },
   "SummonSpriggan": {
     "name": "Summon Spriggan",
     "skillTypeTags": 0,
     "castTime": 1.3636364,
+    "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 131329,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -5547,12 +7004,22 @@
     "minionList": [
       "Spriggan"
     ],
-    "treeId": "sp38"
+    "treeId": "sp38",
+    "playerAbilityID": "sp38",
+    "attributeScalings": [
+      "Attunement"
+    ],
+    "class": "Primalist",
+    "mastery": "Druid"
   },
   "SummonStormCrow": {
     "name": "Summon Storm Crows",
     "skillTypeTags": 0,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 258,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -5570,12 +7037,22 @@
     "minionList": [
       "StormCrow"
     ],
-    "treeId": "ssc50"
+    "treeId": "ssc50",
+    "playerAbilityID": "ssc50",
+    "attributeScalings": [
+      "Attunement",
+      "Strength"
+    ],
+    "class": "Primalist"
   },
   "SummonStormSprite": {
     "name": "Summon Storm Sprite",
     "skillTypeTags": 0,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 258,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -5589,12 +7066,20 @@
     ],
     "minionList": [
       "StormSprite"
+    ],
+    "attributeScalings": [
+      "Attunement",
+      "Strength"
     ]
   },
   "SummonStormTotem": {
     "name": "Summon Storm Totem",
     "skillTypeTags": 0,
     "castTime": 0.54545456,
+    "instantCastForPlayer": 0,
+    "fakeTags": 24576,
+    "areaTagDisplay": 2,
+    "minionTagsDisplay": 258,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -5610,12 +7095,22 @@
     "minionList": [
       "StormTotem"
     ],
-    "treeId": "st38ml"
+    "treeId": "st38ml",
+    "playerAbilityID": "st38ml",
+    "attributeScalings": [
+      "Attunement"
+    ],
+    "class": "Primalist",
+    "mastery": "Shaman"
   },
   "SummonThornTotem": {
     "name": "Summon Thorn Totem",
     "skillTypeTags": 0,
     "castTime": 0.54545456,
+    "instantCastForPlayer": 0,
+    "fakeTags": 24576,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 257,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -5630,12 +7125,21 @@
     "minionList": [
       "Thorn Totem"
     ],
-    "treeId": "th39"
+    "treeId": "th39",
+    "playerAbilityID": "th39",
+    "attributeScalings": [
+      "Attunement"
+    ],
+    "class": "Primalist"
   },
   "SummonValeSpirit": {
     "name": "Vale Spirit",
     "skillTypeTags": 257,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "minion": true,
@@ -5649,12 +7153,20 @@
     ],
     "minionList": [
       "ValeSpirit"
+    ],
+    "playerAbilityID": "va40",
+    "attributeScalings": [
+      "Attunement"
     ]
   },
   "SummonVolatileZombie": {
     "name": "Summon Volatile Zombie",
     "skillTypeTags": 0,
     "castTime": 0.72727275,
+    "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 2,
+    "minionTagsDisplay": 265,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -5669,12 +7181,21 @@
     "minionList": [
       "SummonedVolatileZombie"
     ],
-    "treeId": "svz81"
+    "treeId": "svz81",
+    "playerAbilityID": "svz81",
+    "attributeScalings": [
+      "Intelligence"
+    ],
+    "class": "Acolyte"
   },
   "SummonWolf": {
     "name": "Summon Wolf",
     "skillTypeTags": 0,
     "castTime": 1.3636364,
+    "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 2,
+    "minionTagsDisplay": 513,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -5690,12 +7211,21 @@
     "minionList": [
       "PrimalWolf"
     ],
-    "treeId": "wo42"
+    "treeId": "wo42",
+    "playerAbilityID": "wo42",
+    "attributeScalings": [
+      "Strength"
+    ],
+    "class": "Primalist"
   },
   "SummonWraith": {
     "name": "Summon Wraith",
     "skillTypeTags": 0,
     "castTime": 0.61983466,
+    "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 2,
+    "minionTagsDisplay": 513,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -5710,12 +7240,22 @@
     "minionList": [
       "SummonedWraith"
     ],
-    "treeId": "sw42ih"
+    "treeId": "sw42ih",
+    "playerAbilityID": "sw42ih",
+    "attributeScalings": [
+      "Intelligence"
+    ],
+    "class": "Acolyte",
+    "mastery": "Necromancer"
   },
   "Surge": {
     "name": "Surge",
     "skillTypeTags": 514,
     "castTime": 0.12121212,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -5734,24 +7274,41 @@
       "4% increased Damage per player Intelligence",
       "4% increased Damage per player Dexterity"
     ],
-    "treeId": "su5g3"
+    "treeId": "su5g3",
+    "playerAbilityID": "su5g3",
+    "attributeScalings": [
+      "Intelligence",
+      "Dexterity"
+    ],
+    "class": "Mage",
+    "mastery": "Spellblade"
   },
   "Swap With Wandering Spirit": {
     "name": "Spirit Step",
     "skillTypeTags": 0,
     "castTime": 0.3409091,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "duration": true
     },
     "stats": {
       "base_skill_effect_duration": 50,
       "cooldown": 4
-    }
+    },
+    "playerAbilityID": "te44",
+    "attributeScalings": []
   },
   "Swarmblade Form": {
     "name": "Swarmblade Form",
     "skillTypeTags": 0,
     "castTime": 0.72727275,
+    "instantCastForPlayer": 0,
+    "fakeTags": 12801,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -5770,12 +7327,23 @@
       "damage_interval": 333,
       "cooldown": 6
     },
-    "treeId": "sbf4m"
+    "treeId": "sbf4m",
+    "playerAbilityID": "sbf4m",
+    "attributeScalings": [
+      "Attunement",
+      "Strength"
+    ],
+    "class": "Primalist",
+    "mastery": "Druid"
   },
   "SwarmOfBees": {
     "name": "Swarm of Bees",
     "skillTypeTags": 0,
     "castTime": 0.9090909,
+    "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -5789,12 +7357,19 @@
     ],
     "minionList": [
       "SummonedBee"
+    ],
+    "attributeScalings": [
+      "Attunement"
     ]
   },
   "Swipe": {
     "name": "Swipe",
     "skillTypeTags": 513,
     "castTime": 0.6363636,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -5811,12 +7386,21 @@
     "baseMods": [
       "4% increased Damage per player Strength"
     ],
-    "treeId": "sw43"
+    "treeId": "sw43",
+    "playerAbilityID": "sw43",
+    "attributeScalings": [
+      "Strength"
+    ],
+    "class": "Primalist"
   },
   "SynchronizedStrike": {
     "name": "Synchronized Strike",
     "skillTypeTags": 513,
     "castTime": 1.8181818,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -5834,12 +7418,22 @@
     "baseMods": [
       "4% increased Damage per player Dexterity"
     ],
-    "treeId": "sync5"
+    "treeId": "sync5",
+    "playerAbilityID": "sync5",
+    "attributeScalings": [
+      "Dexterity"
+    ],
+    "class": "Rogue",
+    "mastery": "Bladedancer"
   },
   "Teleport": {
     "name": "Teleport",
     "skillTypeTags": 256,
     "castTime": 0.3409091,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -5851,12 +7445,21 @@
     "baseMods": [
       "+2% Mana Efficiency per player Intelligence"
     ],
-    "treeId": "te44"
+    "treeId": "te44",
+    "playerAbilityID": "te44",
+    "attributeScalings": [
+      "Intelligence"
+    ],
+    "class": "Mage"
   },
   "TempestStrike": {
     "name": "Tempest Strike",
     "skillTypeTags": 519,
     "castTime": 0.54545456,
+    "instantCastForPlayer": 0,
+    "fakeTags": 256,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -5874,12 +7477,22 @@
       "4% increased Damage per player Strength",
       "4% increased Damage per player Attunement"
     ],
-    "treeId": "ts85i"
+    "treeId": "ts85i",
+    "playerAbilityID": "ts85i",
+    "attributeScalings": [
+      "Strength",
+      "Attunement"
+    ],
+    "class": "Primalist"
   },
   "ThornShield": {
     "name": "Thorn Shield",
     "skillTypeTags": 131329,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -5894,12 +7507,20 @@
     },
     "baseMods": [
       "4% increased Damage per player Attunement"
+    ],
+    "playerAbilityID": "ts48",
+    "attributeScalings": [
+      "Attunement"
     ]
   },
   "ThornTotemAttack": {
     "name": "Mystic Thorns",
     "skillTypeTags": 257,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -5912,12 +7533,18 @@
       "critChance": 5,
       "base_skill_effect_duration": 600
     },
-    "fromMinion": true
+    "fromMinion": true,
+    "playerAbilityID": "ta49",
+    "attributeScalings": []
   },
   "ThornVolley": {
     "name": "Thorn Volley",
     "skillTypeTags": 257,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -5934,12 +7561,20 @@
       "4% increased Damage per player Attunement",
       "+4% Freeze Rate Multiplier per player Attunement"
     ],
-    "fromMinion": true
+    "fromMinion": true,
+    "playerAbilityID": "tb47",
+    "attributeScalings": [
+      "Attunement"
+    ]
   },
   "Tornado": {
     "name": "Tornado",
     "skillTypeTags": 4353,
     "castTime": 0.530303,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "dot": true,
@@ -5955,12 +7590,22 @@
     "baseMods": [
       "4% increased Damage per player Attunement"
     ],
-    "treeId": "to50"
+    "treeId": "to50",
+    "playerAbilityID": "to50",
+    "attributeScalings": [
+      "Attunement"
+    ],
+    "class": "Primalist",
+    "mastery": "Shaman"
   },
   "Transplant": {
     "name": "Transplant",
     "skillTypeTags": 257,
     "castTime": 0.40909088,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -5977,12 +7622,21 @@
     "baseMods": [
       "4% increased Damage per player Intelligence"
     ],
-    "treeId": "ts50pl"
+    "treeId": "ts50pl",
+    "playerAbilityID": "ts50pl",
+    "attributeScalings": [
+      "Intelligence"
+    ],
+    "class": "Acolyte"
   },
   "TundraNova": {
     "name": "Tundra Nova",
     "skillTypeTags": 260,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -5998,12 +7652,20 @@
     "baseMods": [
       "4% increased Damage per player Intelligence",
       "4% increased Damage per player Attunement"
+    ],
+    "attributeScalings": [
+      "Intelligence",
+      "Attunement"
     ]
   },
   "Umbral Blades 1": {
     "name": "Umbral Blades",
     "skillTypeTags": 1025,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -6020,12 +7682,21 @@
     "baseMods": [
       "4% increased Damage per player Dexterity"
     ],
-    "treeId": "ub5d9"
+    "treeId": "ub5d9",
+    "playerAbilityID": "ub5d9",
+    "attributeScalings": [
+      "Dexterity"
+    ],
+    "class": "Rogue"
   },
   "Upheaval": {
     "name": "Upheaval",
     "skillTypeTags": 513,
     "castTime": 0.72727275,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -6043,12 +7714,22 @@
       "4% increased Damage per player Strength",
       "4% increased Damage per player Attunement"
     ],
-    "treeId": "uph41"
+    "treeId": "uph41",
+    "playerAbilityID": "uph41",
+    "attributeScalings": [
+      "Strength",
+      "Attunement"
+    ],
+    "class": "Primalist"
   },
   "Vengeance": {
     "name": "Vengeance",
     "skillTypeTags": 513,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -6065,12 +7746,21 @@
     "baseMods": [
       "4% increased Damage per player Strength"
     ],
-    "treeId": "gs15de"
+    "treeId": "gs15de",
+    "playerAbilityID": "gs15de",
+    "attributeScalings": [
+      "Strength"
+    ],
+    "class": "Sentinel"
   },
   "VoidCleave": {
     "name": "Void Cleave",
     "skillTypeTags": 528,
     "castTime": 2.272727,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -6089,12 +7779,22 @@
       "4% increased Damage per player Strength",
       "4% increased Damage per player Vitality"
     ],
-    "treeId": "v01cv"
+    "treeId": "v01cv",
+    "playerAbilityID": "v01cv",
+    "attributeScalings": [
+      "Strength",
+      "Vitality"
+    ],
+    "class": "Sentinel"
   },
   "VoidRift": {
     "name": "Void Rift",
     "skillTypeTags": 272,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -6109,12 +7809,19 @@
     },
     "baseMods": [
       "+2 Spell Void Damage per player Vitality"
+    ],
+    "attributeScalings": [
+      "Vitality"
     ]
   },
   "VoidwinterBolt": {
     "name": "Voidwinter Bolt",
     "skillTypeTags": 276,
     "castTime": 0.6363636,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -6131,12 +7838,21 @@
     "baseMods": [
       "4% increased Damage per player Attunement",
       "4% increased Damage per player Dexterity"
+    ],
+    "playerAbilityID": "ht16aw",
+    "attributeScalings": [
+      "Attunement",
+      "Dexterity"
     ]
   },
   "VolatileReversal": {
     "name": "Volatile Reversal",
     "skillTypeTags": 528,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -6155,12 +7871,23 @@
       "4% increased Melee Damage per player Strength",
       "+2 Spell Void Damage per player Vitality"
     ],
-    "treeId": "vr53sl"
+    "treeId": "vr53sl",
+    "playerAbilityID": "vr53sl",
+    "attributeScalings": [
+      "Strength",
+      "Vitality"
+    ],
+    "class": "Sentinel",
+    "mastery": "Void Knight"
   },
   "VolcanicOrb": {
     "name": "Volcanic Orb",
     "skillTypeTags": 264,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -6177,12 +7904,21 @@
     "baseMods": [
       "4% increased Damage per player Intelligence"
     ],
-    "treeId": "vo54"
+    "treeId": "vo54",
+    "playerAbilityID": "vo54",
+    "attributeScalings": [
+      "Intelligence"
+    ],
+    "class": "Mage"
   },
   "WanderingSpirits": {
     "name": "Wandering Spirits",
     "skillTypeTags": 4384,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "dot": true,
@@ -6199,12 +7935,21 @@
     "baseMods": [
       "4% increased Damage per player Intelligence"
     ],
-    "treeId": "ws54hm"
+    "treeId": "ws54hm",
+    "playerAbilityID": "ws54hm",
+    "attributeScalings": [
+      "Intelligence"
+    ],
+    "class": "Acolyte"
   },
   "Warcry": {
     "name": "Warcry",
     "skillTypeTags": 0,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "duration": true
     },
@@ -6215,12 +7960,21 @@
     "baseMods": [
       "+2% Mana Efficiency per player Attunement"
     ],
-    "treeId": "wc57"
+    "treeId": "wc57",
+    "playerAbilityID": "wc57",
+    "attributeScalings": [
+      "Attunement"
+    ],
+    "class": "Primalist"
   },
   "Warlock 01 Chaos Bolts": {
     "name": "Chaos Bolts",
     "skillTypeTags": 296,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -6237,12 +7991,22 @@
     "baseMods": [
       "4% increased Damage per player Intelligence"
     ],
-    "treeId": "ch4bo"
+    "treeId": "ch4bo",
+    "playerAbilityID": "ch4bo",
+    "attributeScalings": [
+      "Intelligence"
+    ],
+    "class": "Acolyte",
+    "mastery": "Warlock"
   },
   "Warlock 02 Ghostflame": {
     "name": "Ghostflame",
     "skillTypeTags": 4392,
     "castTime": 0.048484847,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "dot": true,
@@ -6259,12 +8023,22 @@
     "baseMods": [
       "4% increased Damage per player Intelligence"
     ],
-    "treeId": "gh0fl"
+    "treeId": "gh0fl",
+    "playerAbilityID": "gh0fl",
+    "attributeScalings": [
+      "Intelligence"
+    ],
+    "class": "Acolyte",
+    "mastery": "Warlock"
   },
   "Warlock 03 SoulFeast": {
     "name": "Soul Feast",
     "skillTypeTags": 288,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -6280,12 +8054,22 @@
     "baseMods": [
       "4% increased Damage per player Intelligence"
     ],
-    "treeId": "fe8at"
+    "treeId": "fe8at",
+    "playerAbilityID": "fe8at",
+    "attributeScalings": [
+      "Intelligence"
+    ],
+    "class": "Acolyte",
+    "mastery": "Warlock"
   },
   "Warlock 04 Chthonic Fissure": {
     "name": "Chthonic Fissure",
     "skillTypeTags": 16781608,
     "castTime": 0.68181825,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -6303,12 +8087,22 @@
     "baseMods": [
       "4% increased Damage per player Intelligence"
     ],
-    "treeId": "ch0fs"
+    "treeId": "ch0fs",
+    "playerAbilityID": "ch0fs",
+    "attributeScalings": [
+      "Intelligence"
+    ],
+    "class": "Acolyte",
+    "mastery": "Warlock"
   },
   "Warlock 05 Profane Veil": {
     "name": "Profane Veil",
     "skillTypeTags": 4384,
     "castTime": 0.12121212,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -6323,12 +8117,22 @@
     "baseMods": [
       "4% increased Damage per player Intelligence"
     ],
-    "treeId": "pr5fm"
+    "treeId": "pr5fm",
+    "playerAbilityID": "pr5fm",
+    "attributeScalings": [
+      "Intelligence"
+    ],
+    "class": "Acolyte",
+    "mastery": "Warlock"
   },
   "Warpath": {
     "name": "Warpath",
     "skillTypeTags": 513,
     "castTime": 0.3409091,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -6345,12 +8149,21 @@
     "baseMods": [
       "4% increased Damage per player Strength"
     ],
-    "treeId": "va53st"
+    "treeId": "va53st",
+    "playerAbilityID": "va53st",
+    "attributeScalings": [
+      "Strength"
+    ],
+    "class": "Sentinel"
   },
   "WaterOrb": {
     "name": "Water Orb",
     "skillTypeTags": 260,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -6368,12 +8181,21 @@
       "+4% Freeze Rate Multiplier per player Intelligence",
       "4% increased Damage per player Attunement",
       "+4% Freeze Rate Multiplier per player Attunement"
+    ],
+    "playerAbilityID": "fi9",
+    "attributeScalings": [
+      "Intelligence",
+      "Attunement"
     ]
   },
   "WerebearForm": {
     "name": "Werebear Form",
     "skillTypeTags": 0,
     "castTime": 0.54545456,
+    "instantCastForPlayer": 0,
+    "fakeTags": 513,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "duration": true,
       "transform": true
@@ -6382,12 +8204,23 @@
       "base_skill_effect_duration": 10000000,
       "cooldown": 6
     },
-    "treeId": "wb8fo"
+    "treeId": "wb8fo",
+    "playerAbilityID": "wb8fo",
+    "attributeScalings": [
+      "Strength",
+      "Attunement"
+    ],
+    "class": "Primalist",
+    "mastery": "Druid"
   },
   "Wraith 01 Melee": {
     "name": "Melee Attack",
     "skillTypeTags": 513,
     "castTime": 1.0909091,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -6401,12 +8234,18 @@
       "critChance": 5,
       "base_skill_effect_duration": 10
     },
-    "fromMinion": true
+    "fromMinion": true,
+    "playerAbilityID": "fm8",
+    "attributeScalings": []
   },
   "Wraithlord 01 Stygian Beams": {
     "name": "Necrotic Beams",
     "skillTypeTags": 288,
     "castTime": 0.90909094,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -6418,12 +8257,18 @@
       "base_critical_strike_multiplier_+": 100,
       "critChance": 5,
       "base_skill_effect_duration": 2000
-    }
+    },
+    "playerAbilityID": "lb23il",
+    "attributeScalings": []
   },
   "golemMelee": {
     "name": "Melee Attack",
     "skillTypeTags": 513,
     "castTime": 1.0909091,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -6437,12 +8282,18 @@
       "critChance": 5,
       "base_skill_effect_duration": 10
     },
-    "fromMinion": true
+    "fromMinion": true,
+    "playerAbilityID": "fm8",
+    "attributeScalings": []
   },
   "Bladestorm": {
     "name": "Bladestorm",
-    "skillTypeTags": 2561,
+    "skillTypeTags": 1025,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "attack": true,
       "hit": true
@@ -6453,12 +8304,21 @@
     "baseMods": [
       "4% increased Damage per player Dexterity"
     ],
-    "treeId": "bl5st"
+    "treeId": "bl5st",
+    "playerAbilityID": "bl5st",
+    "attributeScalings": [
+      "Dexterity"
+    ],
+    "class": "Rogue"
   },
   "Bladestorm Throw": {
     "name": "Bladestorm Throw",
-    "skillTypeTags": 2561,
+    "skillTypeTags": 1025,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "attack": true,
       "hit": true
@@ -6469,12 +8329,21 @@
     "baseMods": [
       "4% increased Damage per player Dexterity"
     ],
-    "treeId": "bl5st"
+    "treeId": "bl5st",
+    "playerAbilityID": "bl5st",
+    "attributeScalings": [
+      "Dexterity"
+    ],
+    "class": "Rogue"
   },
   "ShadowRend": {
     "name": "Shadow Rend",
-    "skillTypeTags": 2561,
+    "skillTypeTags": 513,
     "castTime": 0.6818182,
+    "instantCastForPlayer": 0,
+    "fakeTags": 2048,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "attack": true,
       "hit": true
@@ -6485,6 +8354,11 @@
     "baseMods": [
       "4% increased Damage per player Dexterity"
     ],
-    "treeId": "sh4re"
+    "treeId": "sh4re",
+    "playerAbilityID": "sh4re",
+    "attributeScalings": [
+      "Dexterity"
+    ],
+    "class": "Rogue"
   }
 }

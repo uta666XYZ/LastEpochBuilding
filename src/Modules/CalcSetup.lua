@@ -165,13 +165,21 @@ local function applySetBonuses(env, items, ver)
 				local rawLine = info.bonus[tostring(tier)] or info.bonus[tier]
 				if rawLine then
 					-- Strip formatting tags ({rounding:Integer} etc.) before parse.
-					local line = rawLine:gsub("{rounding:[^}]+}", ""):gsub("{[^}]+}", "")
-					local mods = modLib.parseMod(line)
-					if mods and #mods > 0 then
-						local source = "Set: " .. (info.name or ("Set " .. tostring(setId))) .. " (" .. tier .. "pc)"
-						for _, mod in ipairs(mods) do
-							modLib.setSource(mod, source)
-							env.itemModDB:AddMod(mod)
+					local cleaned = rawLine:gsub("{rounding:[^}]+}", ""):gsub("{[^}]+}", "")
+					-- Split comma-separated bonuses (e.g. Invoker's Set 3-pc:
+					-- "+2 to Fire Spells, +2 to Lightning Spells, +2 to Cold Spells")
+					-- so each clause is parsed independently.
+					local source = "Set: " .. (info.name or ("Set " .. tostring(setId))) .. " (" .. tier .. "pc)"
+					for clause in (cleaned .. ","):gmatch("([^,]+),") do
+						local line = clause:match("^%s*(.-)%s*$")
+						if line ~= "" then
+							local mods = modLib.parseMod(line)
+							if mods and #mods > 0 then
+								for _, mod in ipairs(mods) do
+									modLib.setSource(mod, source)
+									env.itemModDB:AddMod(mod)
+								end
+							end
 						end
 					end
 				end
@@ -1461,8 +1469,56 @@ function calcs.initEnv(build, mode, override, specEnv)
 			end
 		end
 
-		-- Compute +skill level bonus from equipment/modDB
-		env.skillLevelBonus = env.modDB:Sum("BASE", nil, "SkillLevel")
+		-- Compute +skill level bonus from equipment/modDB.
+		-- Permanence of Primal Knowledge: "% increased Effect of Skill Level
+		-- modifiers on Legendary Affixes" multiplies BASE SkillLevel mods
+		-- whose source mod has legendaryAffix=true (set in Item.lua for sealed
+		-- Prefix/Suffix on Reforged Legendary items).
+		local function sumSkillLevelWithLegendaryEffect(cfg)
+			local total = 0
+			local legendarySum = 0
+			local entries = env.modDB:Tabulate("BASE", cfg, "SkillLevel")
+			for _, entry in ipairs(entries) do
+				total = total + entry.value
+				if entry.mod and entry.mod.legendaryAffix then
+					legendarySum = legendarySum + entry.value
+				end
+			end
+			local incPct = env.modDB:Sum("INC", nil, "LegendaryAffixSkillLevelEffect")
+			if incPct ~= 0 and legendarySum ~= 0 then
+				total = total + legendarySum * incPct / 100
+			end
+			-- Build human-readable breakdown grouped by source.
+			-- Item rows show the unscaled affix value; the Permanence multiplier
+			-- contribution (legendarySum * incPct%) is rolled into a single
+			-- trailing row so users can see exactly where the fractional part
+			-- of the cap comes from.
+			local grouped, order = {}, {}
+			for _, entry in ipairs(entries) do
+				local m = entry.mod
+				local src = (m and m.source) or "Unknown"
+				if not grouped[src] then
+					grouped[src] = { source = src, value = 0 }
+					t_insert(order, src)
+				end
+				grouped[src].value = grouped[src].value + entry.value
+			end
+			local breakdown = {}
+			for _, src in ipairs(order) do
+				if grouped[src].value ~= 0 then
+					t_insert(breakdown, grouped[src])
+				end
+			end
+			if incPct ~= 0 and legendarySum ~= 0 then
+				t_insert(breakdown, {
+					source = "Permanence of Primal Knowledge (" .. incPct .. "%)",
+					value = legendarySum * incPct / 100,
+				})
+			end
+			return total, breakdown
+		end
+		env.sumSkillLevelWithLegendaryEffect = sumSkillLevelWithLegendaryEffect
+		env.skillLevelBonus = sumSkillLevelWithLegendaryEffect(nil)
 		build.skillLevelBonus = env.skillLevelBonus
 
 		-- Determine main skill group
@@ -1579,21 +1635,54 @@ function calcs.initEnv(build, mode, override, specEnv)
 		-- Note: modDB:Sum with a skillCfg also includes untagged (global) mods, so we subtract
 		-- the global bonus to get only the skill-specific portion.
 		build.perSkillLevelBonus = build.perSkillLevelBonus or {}
+		build.perSkillLevelBreakdown = build.perSkillLevelBreakdown or {}
+		-- Pre-populate attribute output values so PerStat tags on SkillLevel
+		-- mods (e.g. "+1 to All Skills per 120 Total Attributes") evaluate
+		-- correctly here. CalcPerform recomputes these later, but it runs
+		-- after this block, so we'd otherwise see 0 for any attribute-scaled
+		-- skill level mod.
+		env.player.output = env.player.output or {}
+		for _, stat in pairs(Attributes) do
+			env.player.output[stat] = round(calcLib.val(env.modDB, stat))
+		end
 		for index, group in pairs(build.skillsTab.socketGroupList) do
 			if group.grantedEffect and group.grantedEffect.treeId then
 				local allocatedPoints = build.skillsTab:GetUsedSkillPoints(index)
 				-- Sum all SkillLevel mods matching this skill (includes global + skill-specific).
 				-- keywordFlags lets keyword-tagged SkillLevel mods ("+N to Cold Melee Skills",
 				-- "+N to Fire Minion Skills" etc.) match this skill's categories.
+				-- Apply tree-injected damage-type tag swaps (e.g. Spark Artillery
+				-- swapping Frost Claw Cold->Lightning) so "+N to Lightning Spells"
+				-- etc. matches the swapped skill in this cap-summing pass too.
+				local treeSwaps = calcs.getTreeTagSwaps(env, group.grantedEffect.treeId)
+				local skillTypes, keywordFlags = calcs.applyTreeTagSwaps(
+					treeSwaps,
+					group.grantedEffect.skillTypes,
+					group.grantedEffect.keywordFlags or 0,
+					false
+				)
+				-- Tree-injected tag additions (e.g. Warcry's Totemic Heart node
+				-- adds Minion+Totem because it converts the skill into a totem).
+				-- Apply *after* swaps so additions ride on the post-swap bitmap.
+				local treeAdds = calcs.getTreeTagAdditions(env, group.grantedEffect.treeId)
+				skillTypes, keywordFlags = calcs.applyTreeTagAdditions(
+					treeAdds, skillTypes, keywordFlags, false
+				)
 				local skillCfg = {
 					skillName = group.grantedEffect.name,
-					skillTypes = group.grantedEffect.skillTypes,
-					keywordFlags = group.grantedEffect.keywordFlags or 0,
+					skillTypes = skillTypes,
+					skillAttributes = group.grantedEffect.skillAttributes,
+					keywordFlags = keywordFlags,
+					-- For "+N to <Cat> Minion Skills" affixes: scope is the
+					-- spawned minion's tags (e.g. Summon Bear's bear is Melee
+					-- even though Summon Bear's host flags are Physical only).
+					minionKeywordFlags = group.grantedEffect.minionTagsDisplay or 0,
 				}
-				local totalSkillLevel = env.modDB:Sum("BASE", skillCfg, "SkillLevel")
+				local totalSkillLevel, breakdown = (env.sumSkillLevelWithLegendaryEffect or function(cfg) return env.modDB:Sum("BASE", cfg, "SkillLevel"), {} end)(skillCfg)
 				-- Per-skill bonus = total - global (avoid double-counting global)
 				local perSkillBonus = totalSkillLevel - (env.skillLevelBonus or 0)
 				build.perSkillLevelBonus[index] = perSkillBonus
+				build.perSkillLevelBreakdown[index] = breakdown
 				local effectiveLevel = allocatedPoints + (env.skillLevelBonus or 0) + perSkillBonus
 				env.modDB.multipliers["SkillLevel_" .. group.grantedEffect.name] = effectiveLevel
 			end

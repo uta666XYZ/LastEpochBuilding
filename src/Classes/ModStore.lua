@@ -734,6 +734,19 @@ function ModStoreClass:EvalMod(mod, cfg)
 			if not match then
 				return
 			end
+		elseif tag.type == "SkillAttribute" then
+			-- Filter for "+N to <Attribute> Skills" affixes. Mirrors LE's
+			-- ScalesWithAttribute(): the affix applies iff the active skill's
+			-- effective attribute scalings (static ∪ class primary) contain the
+			-- requested attribute. Granted-effect-side attributes are populated
+			-- by DataProcess into skillAttributes.
+			local match = cfg and cfg.skillAttributes and cfg.skillAttributes[tag.attribute] or false
+			if tag.neg then
+				match = not match
+			end
+			if not match then
+				return
+			end
 		elseif tag.type == "SlotName" then
 			if not cfg then
 				return
@@ -767,6 +780,19 @@ function ModStoreClass:EvalMod(mod, cfg)
 				return
 			end
 			if band(cfg.keywordFlags, tag.keywordFlags) ~= tag.keywordFlags then
+				return
+			end
+		elseif tag.type == "MinionTagFlag" then
+			-- "+N to <Cat> Minion Skills": match against the host skill's minion
+			-- tags, not the host's own keywordFlags. E.g. Naal's Tooth "+1-2 to
+			-- Melee Minion Skills" applies to Summon Bear because the spawned
+			-- bear is Melee-tagged, even though Summon Bear (the cast) is
+			-- Physical/Strength-tagged. cfg.minionKeywordFlags is sourced from
+			-- grantedEffect.minionTagsDisplay in CalcSetup.lua's cap-summing.
+			if not cfg or not cfg.minionKeywordFlags then
+				return
+			end
+			if band(cfg.minionKeywordFlags, tag.keywordFlags) ~= tag.keywordFlags then
 				return
 			end
 		elseif tag.type == "MonsterTag" then
