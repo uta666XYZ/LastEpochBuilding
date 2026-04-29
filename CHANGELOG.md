@@ -4,6 +4,9 @@
 
 [Full Changelog](https://github.com/uta666XYZ/LastEpochBuilding/compare/v0.13.0...v0.13.1)
 
+### Compatibility
+- Verified compatible with game v1.4.6 — bug-fix-only patch (no balance, item, affix, or skill data changes per official notes); no LEB data updates required.
+
 ### Bug Fixes
 - **Dual-resistance corrupted affixes garbled on import** — affixes that grant two resistances on a single corrupted T-tier line (e.g., Cold + Void Resistance) imported with the second line mangled into flavor text such as `+27% Reduces all cold damage you take. Capped at 75%. Void Resistance` instead of `+27% Void Resistance`. Root cause: in the affix data, the second resistance line had been stored with the first resistance's flavor text (`Reduces all <element> damage you take. Capped at 75%.`) concatenated in front of the actual stat string. As a result, the second resistance was never recognized and silently dropped. Affected LETools URL imports and Save-import flows. Fixed for all 40 affected entries (Phys/Cold/Lightning/Fire × Void/Poison/Necrotic, 8 tiers each). Reported by a community user.
 - **`+X to <Category> Skills` affixes not applying correctly** — affixes that grant additional skill levels filtered by category (damage type, skill type, attribute, DoT, or "all") were not being recognized for many parent skills, so the level bonus was silently dropped or under-applied. Fix touches the skill metadata pipeline (`DataProcess.lua` mirrors `baseFlags` into `skillTypes` and exposes `keywordFlags`), the calc context (`CalcSetup.lua` includes `skillTypes`/`keywordFlags` in `skillCfg`), the mod parser (`ModParser.lua` adds a generic `+N to <Cat> Skills` handler covering damage types, skill types, attributes, DoT, and `all`, plus a minion DoT variant), the SkillsTab rounding (half-up on range-affix midpoints so e.g. `+3.5` yields an integer cap), and removes 9 stale `ModCache.lua` entries whose semantics changed.
