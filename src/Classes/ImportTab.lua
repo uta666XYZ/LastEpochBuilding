@@ -198,6 +198,7 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
             code = "!" .. common.base85.encode(Deflate(self.build:SaveDB("code")))
             self.controls.generateCodeOut:SetText(code)
         end
+        self.controls.generateCodeOut.prompt = nil
         self.controls.generateCodeByLink.label = "Uploading..."
         local response = buildSites.UploadToBytebin(code)
         if response then
@@ -207,6 +208,7 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
                     main:OpenMessagePopup("bytebin", "Error uploading to bytebin:\n" .. errMsg)
                 else
                     self.controls.generateURLOut:SetText(url)
+                    self.controls.generateURLOut.prompt = nil
                 end
             end)
         end
@@ -231,6 +233,7 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
     -- Code sharing (secondary)
     self.controls.generateCode = new("ButtonControl", { "TOPLEFT", self.controls.generateCodeByLink, "BOTTOMLEFT" }, 0, 8, 150, 20, "Generate Offline Code", function()
         self.controls.generateCodeOut:SetText("!" .. common.base85.encode(Deflate(self.build:SaveDB("code"))))
+        self.controls.generateCodeOut.prompt = nil
     end)
     self.controls.enablePartyExportBuffs = new("CheckBoxControl", { "LEFT", self.controls.generateCode, "RIGHT" }, 8, 0, 18, "Export Support", function(state)
         self.build.partyTab.enableExportBuffs = state
@@ -253,7 +256,7 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
     self.controls.importCodeHeader.shown = function()
         return self.charImportMode == "GETACCOUNTNAME" and self.activeImportSection ~= 1 and self.activeImportSection ~= 2
     end
-    self.controls.importCodeNoteLabel = new("LabelControl", { "TOPLEFT", self.controls.importCodeHeader, "BOTTOMLEFT" }, 0, 4, 720, 14, "^7Note: e.g. ^x4080FFhttps://bytebin.lucko.me/XXXXXX^7,\n^x4080FFhttps://www.maxroll.gg/last-epoch/planner/XXXXX^7, or ^x4080FF!XXXXX...^7 (offline code)")
+    self.controls.importCodeNoteLabel = new("LabelControl", { "TOPLEFT", self.controls.importCodeHeader, "BOTTOMLEFT" }, 0, 4, 720, 14, "^7Note: e.g. ^x4080FFhttps://bytebin.lucko.me/XXXXXXX^7, ^x4080FFhttps://www.lastepochtools.com/planner/XXXXXXX^7,\n^x4080FFhttps://www.maxroll.gg/last-epoch/planner/XXXXXXX^7, or ^x4080FF!XXXXXXX^7 (offline code)")
     self.controls.importCodeNoteLabel.shown = function()
         return self.charImportMode == "GETACCOUNTNAME" and self.activeImportSection ~= 1 and self.activeImportSection ~= 2
     end

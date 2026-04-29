@@ -1,5 +1,12 @@
 # Changelog
 
+## [Unreleased]
+
+### Notable Changes
+- **LETools URL direct import — supported** (revert of the v0.13.0 deprecation note). The Creator was mistaken: planner URL import has been working all along and is not affected by Cloudflare encryption rotations. The earlier deprecation notice referred to the (now-retired) LETools account-scraping path, which has since been replaced by the Maxroll account API. Feel free to paste `https://www.lastepochtools.com/planner/XXXXX` URLs directly into the Import dialog.
+
+---
+
 ## [v0.13.1](https://github.com/uta666XYZ/LastEpochBuilding/tree/v0.13.1) (2026/04/28)
 
 [Full Changelog](https://github.com/uta666XYZ/LastEpochBuilding/compare/v0.13.0...v0.13.1)
