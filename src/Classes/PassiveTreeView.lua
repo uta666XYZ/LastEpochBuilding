@@ -1606,7 +1606,9 @@ function PassiveTreeViewClass:AddNodeTooltip(tooltip, node, build)
 					-- (Cold/Lightning conversions) appear in the tag list.
 					local dynDt = build.skillsTab.GetDynamicDamageTypesByTreeId
 						and build.skillsTab:GetDynamicDamageTypesByTreeId(treeId)
-					local tagsLine = formatScalingTagsLine and formatScalingTagsLine(getScalingTagsList(sg.grantedEffect, dynDt))
+					local extraFlags = build.skillsTab.GetTreeTagAdditionsByTreeId
+						and build.skillsTab:GetTreeTagAdditionsByTreeId(treeId) or 0
+					local tagsLine = formatScalingTagsLine and formatScalingTagsLine(getScalingTagsList(sg.grantedEffect, dynDt, extraFlags))
 					local minionLine = formatMinionTagsLine and formatMinionTagsLine(getMinionTagsList(sg.grantedEffect))
 					if tagsLine then tooltip:AddLine(14, tagsLine) end
 					if minionLine then tooltip:AddLine(14, minionLine) end
