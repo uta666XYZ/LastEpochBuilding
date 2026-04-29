@@ -1584,6 +1584,33 @@ function PassiveTreeViewClass:AddNodeTooltip(tooltip, node, build)
 	-- Node name
 	self:AddNodeName(tooltip, node, build)
 
+	-- Scaling Tags for skill-spec tree root nodes (icon ends in "-root").
+	-- The root node's id is "<treeId>-0"; look up the matching socket group's
+	-- grantedEffect, then format with the same helper used for slot tooltips.
+	if self.filterMode == "skill" and node.icon and node.icon:match("%-root$")
+		and node.id and build and build.skillsTab then
+		local treeId = node.id:match("^(.+)%-0$")
+		if treeId then
+			for _, sg in ipairs(build.skillsTab.socketGroupList) do
+				if sg.grantedEffect and sg.grantedEffect.treeId == treeId then
+					-- Use conversion-aware damage types so tree-node swaps
+					-- (Cold/Lightning conversions) appear in the tag list.
+					local dynDt = build.skillsTab.GetDynamicDamageTypesByTreeId
+						and build.skillsTab:GetDynamicDamageTypesByTreeId(treeId)
+					local extraFlags = build.skillsTab.GetTreeTagAdditionsByTreeId
+						and build.skillsTab:GetTreeTagAdditionsByTreeId(treeId) or 0
+					local areaOverride = build.skillsTab.IsTotemConvertedByTreeId
+						and build.skillsTab:IsTotemConvertedByTreeId(treeId) and 2 or nil
+					local tagsLine = formatScalingTagsLine and formatScalingTagsLine(getScalingTagsList(sg.grantedEffect, dynDt, extraFlags, areaOverride))
+					local minionLine = formatMinionTagsLine and formatMinionTagsLine(getMinionTagsList(sg.grantedEffect, nil, areaOverride))
+					if tagsLine then tooltip:AddLine(14, tagsLine) end
+					if minionLine then tooltip:AddLine(14, minionLine) end
+					break
+				end
+			end
+		end
+	end
+
 	-- Show unmet masteryRequirement
 	if node.masteryRequirement and node.masteryRequirement > 0 then
 		local spec = build.spec

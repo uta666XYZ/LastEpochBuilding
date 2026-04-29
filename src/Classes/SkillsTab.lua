@@ -24,6 +24,140 @@ local sortGemTypeList = {
 	{ label = "Effective Hit Pool", type = "TotalEHP" },
 }
 
+-- Scaling Tags display: maps skillTypes bits and attribute scalings into a
+-- short label list (Fire, Cold, Melee, Spell, Intelligence, ...) shown in
+-- skill slot and skill-spec tree root tooltips. Mirrors LE's ability tooltip.
+-- Order: damage types (LE display order) -> combat class -> attributes.
+-- AT enum bit -> display label, sourced from il2cpp_dump_v142/dump.cs:240086.
+-- Bit values match Global.lua's SkillType enum (canonical AT enum layout).
+local SCALING_TAG_DAMAGE = {
+    { bit = 1,   name = "Physical"  },
+    { bit = 8,   name = "Fire"      },
+    { bit = 4,   name = "Cold"      },
+    { bit = 2,   name = "Lightning" },
+    { bit = 32,  name = "Necrotic"  },
+    { bit = 64,  name = "Poison"    },
+    { bit = 16,  name = "Void"      },
+    { bit = 128, name = "Elemental" },
+}
+local SCALING_TAG_COMBAT = {
+    { bit = 512,  name = "Melee"    },
+    { bit = 256,  name = "Spell"    },
+    { bit = 1024, name = "Throwing" },
+    { bit = 2048, name = "Bow"      },
+}
+-- Meta tags after combat class. DoT/Minion/Channelling/Buff per canonical AT enum.
+local SCALING_TAG_META = {
+    { bit = 4096,   name = "DoT"         },
+    { bit = 8192,   name = "Minion"      },
+    { bit = 16384,  name = "Totem"       },
+    { bit = 262144, name = "Channelling" },
+    { bit = 524288, name = "Transform"   },
+    { bit = 131072, name = "Buff"        },
+}
+-- Capitalize a lowercase damage type name ("cold" -> "Cold").
+local function capitalizeDamageType(s)
+    return s:sub(1, 1):upper() .. s:sub(2)
+end
+-- Build the Scaling Tags list. If `dynamicDamageTypes` is provided (the array
+-- form returned by SkillsTabClass:GetDynamicDamageTypes / ByTreeId), the
+-- damage-type portion is taken from that array so tree node conversions
+-- (e.g. Flame Ward -> Cold, Surge -> Fire) are reflected. Otherwise damage
+-- bits are read straight from grantedEffect.skillTypeTags (base only).
+function getScalingTagsList(grantedEffect, dynamicDamageTypes, extraFlags, areaOverride)
+    if not grantedEffect then return nil end
+    local tags = {}
+    -- Include fakeTags so categories LE adds at runtime (e.g. Judgement is
+    -- Spell-tagged via fakeTags=256 despite being mechanically Melee) appear
+    -- in the Scaling Tags row exactly like the in-game tooltip. extraFlags
+    -- carries tree-node-injected bits (e.g. Totemic Heart adds Minion+Totem
+    -- when Warcry is converted into a Warcry Totem). areaOverride lets a
+    -- caller substitute the effective areaTagDisplay value (used when a
+    -- "Create X Totem" node moves the cast's Area onto the minion side).
+    local flags = bit.bor(grantedEffect.skillTypeTags or 0, grantedEffect.fakeTags or 0, extraFlags or 0)
+    if dynamicDamageTypes and #dynamicDamageTypes > 0 then
+        for _, dt in ipairs(dynamicDamageTypes) do
+            if dt.isBase then t_insert(tags, { name = capitalizeDamageType(dt.type) }) end
+        end
+        -- Preserve the "Elemental" meta marker when the static skillTypeTags
+        -- carry bit128 (tri-elemental skills); dynamicDamageTypes only knows
+        -- individual damage types and would otherwise drop it.
+        if bit.band(flags, 128) ~= 0 then
+            t_insert(tags, { name = "Elemental" })
+        end
+    else
+        for _, t in ipairs(SCALING_TAG_DAMAGE) do
+            if bit.band(flags, t.bit) ~= 0 then t_insert(tags, { name = t.name }) end
+        end
+    end
+    for _, t in ipairs(SCALING_TAG_COMBAT) do
+        if bit.band(flags, t.bit) ~= 0 then t_insert(tags, { name = t.name, color = t.color }) end
+    end
+    for _, t in ipairs(SCALING_TAG_META) do
+        if bit.band(flags, t.bit) ~= 0 then t_insert(tags, { name = t.name, color = t.color }) end
+    end
+    -- Area tag: Ability.areaTagDisplay {None=0, Tag=1, MinionTagOnly=2, TagAndMinionTag=3}.
+    -- Scaling Tags row gets Area only when value is Tag(1) or TagAndMinionTag(3).
+    -- MinionTagOnly(2) is surfaced separately on the Minion Tags row.
+    local atd = areaOverride or grantedEffect.areaTagDisplay or 0
+    if atd == 1 or atd == 3 then
+        t_insert(tags, { name = "Area" })
+    end
+    -- Instant Cast comes from the LE ability field `instantCastForPlayer` (1/0),
+    -- not from the skillTypeTags bitmap. Datamined into skills.json separately.
+    if grantedEffect.instantCastForPlayer == 1 then
+        t_insert(tags, { name = "Instant Cast" })
+    end
+    if grantedEffect.attributeScalings then
+        for _, attr in ipairs(grantedEffect.attributeScalings) do
+            t_insert(tags, { name = attr })
+        end
+    end
+    return tags
+end
+function formatScalingTagsLine(tags)
+    if not tags or #tags == 0 then return nil end
+    local parts = {}
+    for _, tag in ipairs(tags) do
+        t_insert(parts, "^7" .. tag.name)
+    end
+    return "^7Scaling Tags: " .. table.concat(parts, ", ")
+end
+-- Minion Tags row: tags of the minion ability spawned by this skill.
+-- Source: Ability.minionTagsDisplay (datamined into skills.json) — same bitmap
+-- layout as skillTypeTags. Plus Area when areaTagDisplay is MinionTagOnly(2)
+-- or TagAndMinionTag(3). Returns nil when the skill spawns no minion (i.e.
+-- minionTagsDisplay == 0 and areaTagDisplay does not include MinionTag).
+function getMinionTagsList(grantedEffect, extraMinionFlags, areaOverride)
+    if not grantedEffect then return nil end
+    local mtd = bit.bor(grantedEffect.minionTagsDisplay or 0, extraMinionFlags or 0)
+    local atd = areaOverride or grantedEffect.areaTagDisplay or 0
+    local hasMinionArea = (atd == 2 or atd == 3)
+    if mtd == 0 and not hasMinionArea then return nil end
+    local tags = {}
+    for _, t in ipairs(SCALING_TAG_DAMAGE) do
+        if bit.band(mtd, t.bit) ~= 0 then t_insert(tags, { name = t.name }) end
+    end
+    for _, t in ipairs(SCALING_TAG_COMBAT) do
+        if bit.band(mtd, t.bit) ~= 0 then t_insert(tags, { name = t.name, color = t.color }) end
+    end
+    for _, t in ipairs(SCALING_TAG_META) do
+        if bit.band(mtd, t.bit) ~= 0 then t_insert(tags, { name = t.name, color = t.color }) end
+    end
+    if hasMinionArea then
+        t_insert(tags, { name = "Area" })
+    end
+    return tags
+end
+function formatMinionTagsLine(tags)
+    if not tags or #tags == 0 then return nil end
+    local parts = {}
+    for _, tag in ipairs(tags) do
+        t_insert(parts, "^7" .. tag.name)
+    end
+    return "^7Minion Tags: " .. table.concat(parts, ", ")
+end
+
 -- Layout constants for visual skill panel
 local SLOT_SIZE = 76
 local SLOT_GAP = 12
@@ -976,7 +1110,53 @@ local MULTI_CONV_TREES = {
 function SkillsTabClass:GetDynamicDamageTypes(slotIndex)
 	local sg = self.socketGroupList[slotIndex]
 	if not sg or not sg.grantedEffect or not sg.grantedEffect.treeId then return {} end
-	local treeId = sg.grantedEffect.treeId
+	return self:GetDynamicDamageTypesByTreeId(sg.grantedEffect.treeId)
+end
+
+-- Same as GetDynamicDamageTypes but keyed by treeId directly. Lets callers
+-- (e.g. PassiveTreeView root-node tooltip) compute the conversion-aware
+-- damage type list without needing a slot index.
+-- Compute tree-node-injected SkillType bit additions for a given treeId.
+-- Mirrors calcs.getTreeTagAdditions but uses self.build.spec.allocNodes so
+-- tooltip rendering (Scaling Tags row) can include these bits without an env.
+-- See CalcActiveSkill.lua for the canonical pattern detection logic.
+function SkillsTabClass:GetTreeTagAdditionsByTreeId(treeId)
+	if not (treeId and self.build and self.build.spec and self.build.spec.allocNodes) then return 0 end
+	local prefix = treeId .. "-"
+	local adds = 0
+	for nodeId, node in pairs(self.build.spec.allocNodes) do
+		if nodeId:sub(1, #prefix) == prefix and node.stats then
+			for _, stat in ipairs(node.stats) do
+				if stat:lower():match("^%s*creates?%s+.+%s+totem%s*$") then
+					adds = bit.bor(adds, 8192, 16384) -- Minion | Totem
+				end
+			end
+		end
+	end
+	return adds
+end
+
+-- Returns true if a "Create X Totem" specialisation node is allocated for this
+-- treeId. Callers use this to remap areaTagDisplay (Area moves from the cast's
+-- Scaling Tags row onto the spawned totem's Minion Tags row, since the cast
+-- itself no longer has range — the totem does).
+function SkillsTabClass:IsTotemConvertedByTreeId(treeId)
+	if not (treeId and self.build and self.build.spec and self.build.spec.allocNodes) then return false end
+	local prefix = treeId .. "-"
+	for nodeId, node in pairs(self.build.spec.allocNodes) do
+		if nodeId:sub(1, #prefix) == prefix and node.stats then
+			for _, stat in ipairs(node.stats) do
+				if stat:lower():match("^%s*creates?%s+.+%s+totem%s*$") then
+					return true
+				end
+			end
+		end
+	end
+	return false
+end
+
+function SkillsTabClass:GetDynamicDamageTypesByTreeId(treeId)
+	if not treeId then return {} end
 
 	-- Build base/conv sets from static table
 	local baseSet, convSet = {}, {}
@@ -995,6 +1175,14 @@ function SkillsTabClass:GetDynamicDamageTypes(slotIndex)
 	local isMultiConv = MULTI_CONV_TREES[treeId]
 	local convMap   = {}   -- fromType -> toType  (single, last wins)
 	local multiList = {}   -- {fromType, toType} pairs (multi-conv skills)
+	-- addSet: types forced into baseSet *after* conversions resolve. Captures
+	-- "split-effect" nodes like Black Hole's Binary System ("One deals fire
+	-- damage and the other deals cold damage") that simultaneously surface
+	-- multiple damage types as base, without converting away from the original.
+	-- Per LE_datamining findings, per-node mutator state isn't serialized; we
+	-- pattern-match the description as a fallback until a Ghidra-decomp
+	-- node->mutator table is available.
+	local addSet = {}
 
 	for nodeId, node in pairs(self.build.spec.allocNodes) do
 		if nodeId:match("^" .. treeId) and (node.maxPoints or 0) > 0 and node.description then
@@ -1008,6 +1196,41 @@ function SkillsTabClass:GetDynamicDamageTypes(slotIndex)
 							t_insert(multiList, { fromType, toType })
 						else
 							convMap[fromType] = toType  -- overwrite: last allocation wins
+						end
+					end
+				end
+				-- Split-effect detector: "one deals X damage and the other deals Y damage".
+				-- Both X and Y are surfaced as base (added, not converted).
+				do
+					local oneType, otherType = lo:match("one deals (%a+) damage and the other deals (%a+) damage")
+					if oneType and otherType and TYPE_SET[oneType] and TYPE_SET[otherType] then
+						addSet[oneType] = true
+						addSet[otherType] = true
+					end
+				end
+				-- Whole-skill conversion phrasing used by some trees, e.g.
+				-- Flame Ward fw3d-6: "Flame Ward is converted to Cold". This
+				-- doesn't name the source damage type, so apply it to every
+				-- type currently in baseSet (the skill's pre-conversion base).
+				-- Filters:
+				--  * skip lines that start with "if " — these are conditional
+				--    references like fw3d-2 "If Flame Ward is converted to
+				--    cold or lightning, then this damage increase is also
+				--    converted." which describe downstream behaviour rather
+				--    than performing a conversion.
+				--  * skip lines that already matched the per-type pattern
+				--    above (they contain " damage is converted to ").
+				local wholeTo = lo:match("is converted to%s+(%a+)")
+				if wholeTo and TYPE_SET[wholeTo]
+				   and not lo:match("^%s*if%s")
+				   and not lo:find(" damage is converted to ", 1, true) then
+					for fromType in pairs(baseSet) do
+						if fromType ~= wholeTo then
+							if isMultiConv then
+								t_insert(multiList, { fromType, wholeTo })
+							else
+								convMap[fromType] = wholeTo
+							end
 						end
 					end
 				end
@@ -1030,6 +1253,12 @@ function SkillsTabClass:GetDynamicDamageTypes(slotIndex)
 		for _, pair in ipairs(multiList) do applyConv(pair[1], pair[2]) end
 	else
 		for fromType, toType in pairs(convMap) do applyConv(fromType, toType) end
+	end
+	-- Apply split-effect additions last: force each addSet entry into baseSet
+	-- (re-promote from convSet if a prior conversion demoted it).
+	for t in pairs(addSet) do
+		if convSet[t] then convSet[t] = nil end
+		baseSet[t] = true
 	end
 
 	-- Build sorted result
@@ -1111,7 +1340,11 @@ function SkillsTabClass:DrawSpecSlots(viewPort, inputEvents, startY)
 			local lvlY = sy + SLOT_SIZE - 30
 			SetDrawColor(1, 1, 1)
 			DrawImage(lvlHandle, lvlX, lvlY, lvlW, lvlH)
-			DrawString(lvlX + lvlW / 2, lvlY + 11, "CENTER_X", 12, "VAR", "^7" .. used)
+			-- Show effective skill level cap (Base 20 + all "+SkillLevel" bonuses),
+			-- matching the in-game "Level of <Skill>" display rather than just the
+			-- allocated tree points. The "remaining points" badge below still
+			-- reflects unspent allocation, not unused cap.
+			DrawString(lvlX + lvlW / 2, lvlY + 11, "CENTER_X", 12, "VAR", "^7" .. maxPts)
 
 			-- Remaining points badge (blue square, top-right corner of slot)
 			if rem > 0 then
@@ -1189,6 +1422,47 @@ function SkillsTabClass:DrawSpecSlots(viewPort, inputEvents, startY)
 		if isHover then
 			SetDrawColor(1, 1, 1, 0.15)
 			DrawImage(nil, sx, sy, SLOT_SIZE, SLOT_SIZE)
+		end
+
+		-- Skill cap breakdown tooltip on hover (mirrors LETools layout):
+		-- "Level of <Skill>: <cap>" header, "Base: 20" (LE base cap), then
+		-- one line per +SkillLevel source. Total = 20 + sum(bonuses), rounded
+		-- half-up to match GetMaxSkillPoints.
+		if isHover and sg and sg.grantedEffect and sg.grantedEffect.treeId then
+			local maxPts    = self:GetMaxSkillPoints(i)
+			local skillName = sg.grantedEffect.name or "Skill"
+			local breakdown = self.build.perSkillLevelBreakdown and self.build.perSkillLevelBreakdown[i]
+			SetDrawLayer(nil, 200)
+			local tooltip = new("Tooltip")
+			tooltip:Clear()
+			tooltip:AddLine(16, "^7Level of " .. skillName .. ": ^x60FF60" .. maxPts)
+			tooltip:AddSeparator(8)
+			tooltip:AddLine(14, "^7Base: ^x60A0FF20")
+			if breakdown and #breakdown > 0 then
+				for _, entry in ipairs(breakdown) do
+					local v = entry.value
+					local sign = v >= 0 and "+" or ""
+					-- Show 1 decimal only if non-integer (Permanence may yield fractional)
+					local valStr = (v == m_floor(v)) and tostring(m_floor(v)) or string.format("%.1f", v)
+					tooltip:AddLine(14, "^7" .. (entry.source or "Unknown") .. ": ^x60A0FF" .. sign .. valStr)
+				end
+			end
+			-- Scaling Tags row (damage types + combat class + attribute scalings).
+			-- Use the conversion-aware damage type list so tree nodes that
+			-- swap a skill's damage type (Surge -> Fire, Flame Ward -> Cold)
+			-- are reflected in the tag display.
+			local dynDt = self:GetDynamicDamageTypes(i)
+			local extraFlags = sg.grantedEffect.treeId and self:GetTreeTagAdditionsByTreeId(sg.grantedEffect.treeId) or 0
+			local areaOverride = sg.grantedEffect.treeId and self:IsTotemConvertedByTreeId(sg.grantedEffect.treeId) and 2 or nil
+			local tagsLine = formatScalingTagsLine(getScalingTagsList(sg.grantedEffect, dynDt, extraFlags, areaOverride))
+			local minionLine = formatMinionTagsLine(getMinionTagsList(sg.grantedEffect, nil, areaOverride))
+			if tagsLine or minionLine then
+				tooltip:AddSeparator(8)
+				if tagsLine then tooltip:AddLine(14, tagsLine) end
+				if minionLine then tooltip:AddLine(14, minionLine) end
+			end
+			tooltip:Draw(sx, sy, SLOT_SIZE, SLOT_SIZE, viewPort)
+			SetDrawLayer(nil, 0)
 		end
 
 		-- Click handling

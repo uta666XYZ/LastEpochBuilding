@@ -313,6 +313,15 @@ function ItemClass:ParseRaw(raw, rarity, highQuality)
 	for line in raw:gmatch("%s*([^\n]*%S)") do
 	 	t_insert(self.rawLines, line)
 	end
+	-- Migrate legacy unique-mod text: "+N to Melee Skills" was previously stored
+	-- as "+N to Melee Attacks", which the parser misreads as a SkillName mod
+	-- ("Melee Attack") instead of a Melee skill-level bonus. Cached build XMLs
+	-- still carry the old text on Naal's Tooth / Sword Catcher / Scissor of
+	-- Atropos, so rewrite it here on load. Scoped to a leading "+N to" so we
+	-- don't touch unrelated lines like "Damage for Melee Attacks per 1 Mana Cost".
+	for i, line in ipairs(self.rawLines) do
+		self.rawLines[i] = line:gsub("(%+%d+[%-%d]* )to Melee Attacks", "%1to Melee Skills")
+	end
 	local mode = rarity and "GAME" or "WIKI"
 	local l = 1
 	local itemClass
@@ -695,6 +704,28 @@ function ItemClass:ParseRaw(raw, rarity, highQuality)
 						}
 						break
 					end
+				end
+			end
+		end
+	end
+	-- Native Set Item detection. Some items (e.g. Weaver Set: Abandoned Eyes /
+	-- Abandoned Chitin of the Weaver) are inherently Set rarity in-game without
+	-- requiring a Reforged affix. Their set_<ver>.json entries are flagged with
+	-- native=true; the unflagged entries are reforged-base uniques whose SET
+	-- promotion only happens via the Reforged affix path above. Promote rarity
+	-- so the tooltip header and set bonus apply on imports/loads.
+	if (self.rarity == "UNIQUE" or self.rarity == "LEGENDARY") and self.title and not self.setInfo then
+		local setData = loadItemSetData()
+		if setData then
+			for _, e in pairs(setData) do
+				if type(e) == "table" and e.native and e.set and e.name == self.title then
+					self.rarity = "SET"
+					self.setInfo = {
+						setId = e.set.setId,
+						name  = e.set.name,
+						bonus = e.set.bonus,
+					}
+					break
 				end
 			end
 		end
@@ -1394,8 +1425,20 @@ function ItemClass:BuildModList()
 				t_insert(self.rangeLineList, modLine)
 			end
 			if not modLine.extra then
+				-- "Legendary Affix" = sealed Prefix/Suffix on a Reforged Legendary
+				-- (i.e. NOT crafted and NOT implicit, and the host item rarity is
+				-- LEGENDARY). Permanence's "% increased Effect of Skill Level
+				-- modifiers on Legendary Affixes" multiplies these but not crafted
+				-- or implicit/unique-inherent mods.
+				local isLegendaryAffix = self.rarity == "LEGENDARY"
+					and modLine.affixType
+					and not modLine.crafted
+					and not modLine.implicit
 				for _, mod in ipairs(modLine.modList) do
 					mod = modLib.setSource(mod, self.modSource)
+					if isLegendaryAffix then
+						mod.legendaryAffix = true
+					end
 					baseList:AddMod(mod)
 				end
 				if modLine.modTags and #modLine.modTags > 0 then
