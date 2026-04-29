@@ -137,9 +137,13 @@ end
 -- layout as skillTypeTags. Plus Area when areaTagDisplay is MinionTagOnly(2)
 -- or TagAndMinionTag(3). Returns nil when the skill spawns no minion (i.e.
 -- minionTagsDisplay == 0 and areaTagDisplay does not include MinionTag).
+-- Prefer DataProcess's `displayMinionTags` which folds skillTreeConversionDamageTags
+-- into the minion tags row for minion-summon parents (Summon Thorn Totem's Cold
+-- bit etc.) so the row matches LE's in-game tooltip routing.
 function getMinionTagsList(grantedEffect, extraMinionFlags, areaOverride)
     if not grantedEffect then return nil end
-    local mtd = bit.bor(grantedEffect.minionTagsDisplay or 0, extraMinionFlags or 0)
+    local baseMtd = grantedEffect.displayMinionTags or grantedEffect.minionTagsDisplay or 0
+    local mtd = bit.bor(baseMtd, extraMinionFlags or 0)
     local atd = areaOverride or grantedEffect.areaTagDisplay or 0
     local hasMinionArea = (atd == 2 or atd == 3)
     if mtd == 0 and not hasMinionArea then return nil end

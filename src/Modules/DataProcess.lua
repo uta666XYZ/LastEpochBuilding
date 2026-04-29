@@ -160,7 +160,22 @@ for skillId, grantedEffect in pairs(data.skills) do
     -- Skills" raising Focus's level cap. Mirror these bits into skillTypes so
     -- cap-summing's SkillType predicate accepts the affix, and so the Scaling
     -- Tags row picks them up via displayTags below.
-    if grantedEffect.skillTreeConversionDamageTags and grantedEffect.skillTreeConversionDamageTags ~= 0 then
+    --
+    -- BUT: skip the mirror when the cast is a wrapper that doesn't directly
+    -- deliver damage — minion-summon parents and Transform skills. Their stcdt
+    -- describes the spawned minion's / transformed entity's damage, not the
+    -- cast's. Confirmed against in-game tooltips:
+    --   * Summon Thorn Totem: "+3 Cold Skills" does NOT raise its level
+    --     (only "+3 Minion Cold Skills" does — handled via minionKeywordFlags
+    --     in CalcSetup).
+    --   * Spriggan Form: Apogee of Frozen Light "+3 Cold Skills" and
+    --     Death Rattle "+1 Necrotic Skills" do NOT apply, even though
+    --     stcdt advertises Cold/Necrotic for spec-tree branches.
+    -- Detection mirrors the displayTags split logic below.
+    local _isMinionSummonParent = (grantedEffect.minionTagsDisplay or 0) ~= 0
+    local _isTransform = grantedEffect.baseFlags and grantedEffect.baseFlags.transform
+    if grantedEffect.skillTreeConversionDamageTags and grantedEffect.skillTreeConversionDamageTags ~= 0
+       and not _isMinionSummonParent and not _isTransform then
         for name, skillType in pairs(SkillType) do
             if skillType ~= 0 and skillType ~= SkillType.Unsupported
                and bit.band(grantedEffect.skillTreeConversionDamageTags, skillType) == skillType then
@@ -177,6 +192,13 @@ for skillId, grantedEffect in pairs(data.skills) do
             grantedEffect.keywordFlags = bit.bor(grantedEffect.keywordFlags, skillType)
         end
     end
+    -- For minion-summon parents (skills whose minion is the actual damage
+    -- carrier — Summon Thorn Totem, Summon Storm Totem, Summon Skeleton, etc.),
+    -- LE's tooltip routes skillTreeConversionDamageTags onto the Minion Tags
+    -- row, NOT the Scaling Tags row. The cast itself has no damage delivery;
+    -- only the spawned minion does. Detect via minionTagsDisplay != 0 (any skill
+    -- that summons something has a non-empty minion tag bitmap).
+    local isMinionSummonParent = (grantedEffect.minionTagsDisplay or 0) ~= 0
     -- displayTags: bitmap consumed by the Scaling Tags tooltip row. Mirrors LE's
     -- in-game ability tooltip, which combines:
     --   * Ability.tags          (skillTypeTags)
@@ -187,11 +209,19 @@ for skillId, grantedEffect in pairs(data.skills) do
     --       the damage type bit. Per LE_datamining 2026-04-30.)
     --   * baseFlag-derived bits (channelling/spell/melee/etc. — Focus is tagged
     --       "Channeled" via baseFlags.channelling, never via the AT bitmap)
-    -- Lifted into a single field so SkillsTab tooltip code can read it directly
-    -- without reproducing the merge logic.
+    -- For minion-summon parents, stcdt belongs on the Minion Tags row instead
+    -- (see displayMinionTags below), so suppress it here.
     grantedEffect.displayTags = bit.bor(
         grantedEffect.keywordFlags,
-        grantedEffect.skillTreeConversionDamageTags or 0
+        isMinionSummonParent and 0 or (grantedEffect.skillTreeConversionDamageTags or 0)
+    )
+    -- displayMinionTags: bitmap consumed by the Minion Tags tooltip row. Folds
+    -- skillTreeConversionDamageTags into the minion side for minion-summon
+    -- parents so e.g. Summon Thorn Totem shows "Cold" / Summon Storm Totem shows
+    -- additional damage types under Minion Tags exactly like the in-game tooltip.
+    grantedEffect.displayMinionTags = bit.bor(
+        grantedEffect.minionTagsDisplay or 0,
+        isMinionSummonParent and (grantedEffect.skillTreeConversionDamageTags or 0) or 0
     )
     -- Attribute scalings used by the "+N to <Attribute> Skills" SkillAttribute
     -- mod tag. Mirrors LE's ScalesWithAttribute() which returns true iff the
