@@ -64,14 +64,16 @@ end
 -- damage-type portion is taken from that array so tree node conversions
 -- (e.g. Flame Ward -> Cold, Surge -> Fire) are reflected. Otherwise damage
 -- bits are read straight from grantedEffect.skillTypeTags (base only).
-function getScalingTagsList(grantedEffect, dynamicDamageTypes, extraFlags)
+function getScalingTagsList(grantedEffect, dynamicDamageTypes, extraFlags, areaOverride)
     if not grantedEffect then return nil end
     local tags = {}
     -- Include fakeTags so categories LE adds at runtime (e.g. Judgement is
     -- Spell-tagged via fakeTags=256 despite being mechanically Melee) appear
     -- in the Scaling Tags row exactly like the in-game tooltip. extraFlags
     -- carries tree-node-injected bits (e.g. Totemic Heart adds Minion+Totem
-    -- when Warcry is converted into a Warcry Totem).
+    -- when Warcry is converted into a Warcry Totem). areaOverride lets a
+    -- caller substitute the effective areaTagDisplay value (used when a
+    -- "Create X Totem" node moves the cast's Area onto the minion side).
     local flags = bit.bor(grantedEffect.skillTypeTags or 0, grantedEffect.fakeTags or 0, extraFlags or 0)
     if dynamicDamageTypes and #dynamicDamageTypes > 0 then
         for _, dt in ipairs(dynamicDamageTypes) do
@@ -97,7 +99,7 @@ function getScalingTagsList(grantedEffect, dynamicDamageTypes, extraFlags)
     -- Area tag: Ability.areaTagDisplay {None=0, Tag=1, MinionTagOnly=2, TagAndMinionTag=3}.
     -- Scaling Tags row gets Area only when value is Tag(1) or TagAndMinionTag(3).
     -- MinionTagOnly(2) is surfaced separately on the Minion Tags row.
-    local atd = grantedEffect.areaTagDisplay or 0
+    local atd = areaOverride or grantedEffect.areaTagDisplay or 0
     if atd == 1 or atd == 3 then
         t_insert(tags, { name = "Area" })
     end
@@ -126,10 +128,10 @@ end
 -- layout as skillTypeTags. Plus Area when areaTagDisplay is MinionTagOnly(2)
 -- or TagAndMinionTag(3). Returns nil when the skill spawns no minion (i.e.
 -- minionTagsDisplay == 0 and areaTagDisplay does not include MinionTag).
-function getMinionTagsList(grantedEffect)
+function getMinionTagsList(grantedEffect, extraMinionFlags, areaOverride)
     if not grantedEffect then return nil end
-    local mtd = grantedEffect.minionTagsDisplay or 0
-    local atd = grantedEffect.areaTagDisplay or 0
+    local mtd = bit.bor(grantedEffect.minionTagsDisplay or 0, extraMinionFlags or 0)
+    local atd = areaOverride or grantedEffect.areaTagDisplay or 0
     local hasMinionArea = (atd == 2 or atd == 3)
     if mtd == 0 and not hasMinionArea then return nil end
     local tags = {}
@@ -1134,6 +1136,25 @@ function SkillsTabClass:GetTreeTagAdditionsByTreeId(treeId)
 	return adds
 end
 
+-- Returns true if a "Create X Totem" specialisation node is allocated for this
+-- treeId. Callers use this to remap areaTagDisplay (Area moves from the cast's
+-- Scaling Tags row onto the spawned totem's Minion Tags row, since the cast
+-- itself no longer has range — the totem does).
+function SkillsTabClass:IsTotemConvertedByTreeId(treeId)
+	if not (treeId and self.build and self.build.spec and self.build.spec.allocNodes) then return false end
+	local prefix = treeId .. "-"
+	for nodeId, node in pairs(self.build.spec.allocNodes) do
+		if nodeId:sub(1, #prefix) == prefix and node.stats then
+			for _, stat in ipairs(node.stats) do
+				if stat:lower():match("^%s*creates?%s+.+%s+totem%s*$") then
+					return true
+				end
+			end
+		end
+	end
+	return false
+end
+
 function SkillsTabClass:GetDynamicDamageTypesByTreeId(treeId)
 	if not treeId then return {} end
 
@@ -1405,8 +1426,9 @@ function SkillsTabClass:DrawSpecSlots(viewPort, inputEvents, startY)
 			-- are reflected in the tag display.
 			local dynDt = self:GetDynamicDamageTypes(i)
 			local extraFlags = sg.grantedEffect.treeId and self:GetTreeTagAdditionsByTreeId(sg.grantedEffect.treeId) or 0
-			local tagsLine = formatScalingTagsLine(getScalingTagsList(sg.grantedEffect, dynDt, extraFlags))
-			local minionLine = formatMinionTagsLine(getMinionTagsList(sg.grantedEffect))
+			local areaOverride = sg.grantedEffect.treeId and self:IsTotemConvertedByTreeId(sg.grantedEffect.treeId) and 2 or nil
+			local tagsLine = formatScalingTagsLine(getScalingTagsList(sg.grantedEffect, dynDt, extraFlags, areaOverride))
+			local minionLine = formatMinionTagsLine(getMinionTagsList(sg.grantedEffect, nil, areaOverride))
 			if tagsLine or minionLine then
 				tooltip:AddSeparator(8)
 				if tagsLine then tooltip:AddLine(14, tagsLine) end
