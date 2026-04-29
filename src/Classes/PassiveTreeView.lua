@@ -694,21 +694,12 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 	elseif treeClick == "RIGHT" then
 		if hoverNode and hoverNode.maxPoints > 0 then
 			-- User right-clicked on a node
-			-- Check if any allocated linked node requires more points from hoverNode than (alloc - 1)
-			local newAlloc = hoverNode.alloc - 1
+			-- Orphaned dependents (e.g. nodes whose reqPoints gate is no longer satisfied)
+			-- are cascade-deallocated by BuildAllDependsAndPaths after reduction. Undo is
+			-- available via AddUndoState, so no pre-block is needed for reqPoints.
 			local blockedByReq = false
-			if newAlloc >= 0 then
-				for _, linkedNode in ipairs(hoverNode.linked) do
-					if linkedNode.alloc > 0 and linkedNode.reqPointsMap and linkedNode.reqPointsMap[hoverNode.id] then
-						if newAlloc < linkedNode.reqPointsMap[hoverNode.id] then
-							blockedByReq = true
-							break
-						end
-					end
-				end
-			end
 			-- Check if reducing this node would drop total mastery points below any allocated node's masteryRequirement
-			if not blockedByReq and hoverNode.mastery ~= nil then
+			if hoverNode.mastery ~= nil then
 				local curMasteryTotal = spec.masteryAllocedPoints and (spec.masteryAllocedPoints[hoverNode.mastery] or 0) or 0
 				local newMasteryTotal = curMasteryTotal - 1
 				for id, allocNode in pairs(spec.allocNodes) do
@@ -1631,14 +1622,24 @@ function PassiveTreeViewClass:AddNodeTooltip(tooltip, node, build)
 		end
 	end
 
-	-- Show unmet reqPoints requirements
-	if node.reqPointsMap then
+	-- Show unmet reqPoints requirements (OR semantics: only warn if no parent path is satisfied)
+	if node.reqPointsMap and node.alloc == 0 then
+		local anyParentSatisfied = false
 		for parentId, req in pairs(node.reqPointsMap) do
 			local parentNode = build.spec.nodes[parentId]
-			if parentNode then
-				local cur = parentNode.alloc or 0
-				if cur < req then
-					tooltip:AddLine(16, colorCodes.WARNING .. "Requires " .. req .. " points in " .. parentNode.dn .. " (" .. cur .. "/" .. req .. " allocated)")
+			if parentNode and (parentNode.alloc or 0) >= req then
+				anyParentSatisfied = true
+				break
+			end
+		end
+		if not anyParentSatisfied then
+			for parentId, req in pairs(node.reqPointsMap) do
+				local parentNode = build.spec.nodes[parentId]
+				if parentNode then
+					local cur = parentNode.alloc or 0
+					if cur < req then
+						tooltip:AddLine(16, colorCodes.WARNING .. "Requires " .. req .. " points in " .. parentNode.dn .. " (" .. cur .. "/" .. req .. " allocated)")
+					end
 				end
 			end
 		end

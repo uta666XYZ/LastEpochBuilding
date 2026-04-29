@@ -1908,7 +1908,6 @@ c["+1% Hit Damage Per Bleed"]={{[1]={[1]={skillName="Bleed",type="SkillName"},fl
 c["+1% Hit Damage per Poison"]={{[1]={[1]={skillName="Poison",type="SkillName"},flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=1}},"   per  "}
 c["+1% Hit Damage per Poison, up to 30"]={{[1]={[1]={skillName="Poison",type="SkillName"},flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=1}},"   per , up to 30 "}
 c["+1% Increased Area per Dexterity"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=1}},"  per Dexterity "}
-c["+1% Increased Cooldown Recovery Speed of Reap"]={{[1]={flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=1}},"  of Reap "}
 c["+1% Increases the damage dealt by your critical strikes Increased Critical Strike Chance per Dexterity"]={{[1]={[1]={stat="Dex",type="PerStat"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=1}}," Increases the  dealt by your critical strikes Increased Critical Strike Chance  "}
 c["+1% Iron Blade Chance Per Attunement"]={{[1]={flags=0,keywordFlags=0,name="Att",type="BASE",value=1}}," Iron Blade Chance Per  "}
 c["+1% Leech While Not Full Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=1}}," Leech While Not Full  "}
@@ -1951,7 +1950,6 @@ c["+1% Placement Speed per Dexterity"]={{[1]={flags=0,keywordFlags=0,name="Dex",
 c["+1% Poison Chance Per Second Per 2 Maximum Mana"]={{[1]={[1]={div=2,stat="Mana",type="PerStat"},flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Poison",type="BASE",value=1}},"  Per Second  "}
 c["+1% Poison Resistance Per Point Of Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},flags=0,keywordFlags=0,name="PoisonResist",type="BASE",value=1}},nil}
 c["+1% Profane Orb Frequency per 1% Cast Speed"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="BASE",value=1}}," Profane Orb Frequency per 1%  "}
-c["+1% Reap Damage Per Missing Health Percent"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=1}}," Reap  Per Missing Health Percent "}
 c["+1% Runic Invocation Crit Chance per stack"]={{[1]={[1]={skillName="Runic Invocation",type="SkillName"},flags=0,keywordFlags=0,name="CritChance",type="BASE",value=1}},"   per stack "}
 c["+1% Serpent Venom Damage Per Frostbite Stack"]={{[1]={[1]={skillName="Frostbite",type="SkillName"},flags=0,keywordFlags=0,name="SerpentVenomDamage",type="MORE",value=1}},"  Per  Stack "}
 c["+1% Serpent Venom Damage Per Poison"]={{[1]={[1]={skillName="Poison",type="SkillName"},flags=0,keywordFlags=0,name="SerpentVenomDamage",type="MORE",value=1}},"  Per  "}
@@ -3577,7 +3575,6 @@ c["+15% Profane Orb Damage per Curse"]={{[1]={flags=0,keywordFlags=0,name="Damag
 c["+15% Pull Area"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="BASE",value=15}}," Pull  "}
 c["+15% Pull Strength"]={{[1]={flags=0,keywordFlags=0,name="Str",type="BASE",value=15}}," Pull  "}
 c["+15% Range"]={{}," Range "}
-c["+15% Reap Range"]={{}," Reap Range "}
 c["+15% Recurve Chance with Heartseeker"]={{}," Recurve Chance with  "}
 c["+15% Reduces all cold damage you take. Capped at 75%. Void Resistance"]={{[1]={flags=0,keywordFlags=16,name="ColdDamage",type="MORE",value=15}}," Reduces all  you take. Capped at 75%.  Resistance "}
 c["+15% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance"]={{[1]={flags=0,keywordFlags=32,name="FireDamage",type="MORE",value=15}}," Reduces all  you take. Capped at 75%.  Resistance "}
@@ -4012,7 +4009,6 @@ c["+18% Necrotic Resistance"]={{[1]={flags=0,keywordFlags=0,name="NecroticResist
 c["+18% Parry Chance"]={{[1]={flags=0,keywordFlags=0,name="ParryChance",type="BASE",value=18}},nil}
 c["+18% Physical Resistance"]={{[1]={flags=0,keywordFlags=0,name="PhysicalResist",type="BASE",value=18}},nil}
 c["+18% Poison Resistance"]={{[1]={flags=0,keywordFlags=0,name="PoisonResist",type="BASE",value=18}},nil}
-c["+18% Reap Area"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="BASE",value=18}}," Reap  "}
 c["+18% Recurve Chance with Heartseeker"]={{}," Recurve Chance with  "}
 c["+18% Reduces all cold damage you take. Capped at 75%. Void Resistance"]={{[1]={flags=0,keywordFlags=16,name="ColdDamage",type="MORE",value=18}}," Reduces all  you take. Capped at 75%.  Resistance "}
 c["+18% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance"]={{[1]={flags=0,keywordFlags=32,name="FireDamage",type="MORE",value=18}}," Reduces all  you take. Capped at 75%.  Resistance "}
@@ -4285,7 +4281,6 @@ c["+2 Rage Gain On Roar Per Enemy"]={{}," Rage Gain On Roar Per Enemy "}
 c["+2 Rage Gained With Maul To Stunned"]={{[1]={[1]={skillName="Maul",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=2}}," Rage Gained With  To Stunned "}
 c["+2 Rage On Hit With Swarm Strike And Dive"]={{}," Rage  With Swarm Strike And Dive "}
 c["+2 Rage On Spirit Thorns Cast"]={{[1]={[1]={skillName="Spirit Thorns",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=2}}," Rage On  Cast "}
-c["+2 Reap Health Gained"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=2}}," Reap  Gained "}
 c["+2 Reap Ward Gained"]={{[1]={flags=0,keywordFlags=0,name="Ward",type="BASE",value=2}}," Reap  Gained "}
 c["+2 Rhythm Maximum Stacks"]={{}," Rhythm Maximum Stacks "}
 c["+2 Seconds Younger"]={{}," Seconds Younger "}
@@ -4560,7 +4555,6 @@ c["+2% Hit Damage Per Bleed Stack"]={{[1]={[1]={actor="enemy",type="Multiplier",
 c["+2% Ignite Chance Per Second Per 1% Uncapped Fire Res"]={{[1]={flags=8388608,keywordFlags=8,name="ChanceToTriggerOnHit_Ailment_Ignite",type="BASE",value=2}},"  Per Second Per 1% Uncapped  Res "}
 c["+2% Ignite Duration per Intelligence"]={{[1]={[1]={skillName="Ignite",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="MORE",value=2}},"   per Intelligence "}
 c["+2% Increased Area Per Minion"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=2}}}},"  Per  "}
-c["+2% Increased Cooldown Recovery Speed of Reap"]={{[1]={flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=2}},"  of Reap "}
 c["+2% Increased Damage Per Attunement"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=2}},"  Per Attunement "}
 c["+2% Increases the damage dealt by your critical strikes Increased Critical Strike Chance per Dexterity"]={{[1]={[1]={stat="Dex",type="PerStat"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=2}}," Increases the  dealt by your critical strikes Increased Critical Strike Chance  "}
 c["+2% Increases the rate at which your health regenerates over time Increased Health Regen per point of Strength"]={{[1]={[1]={stat="Str",type="PerStat"},flags=0,keywordFlags=0,name="LifeRegen",type="BASE",value=2}}," Increases the rate at which your erates over time Increased Health Regen  "}
@@ -4605,7 +4599,6 @@ c["+2% Physical Resistance"]={{[1]={flags=0,keywordFlags=0,name="PhysicalResist"
 c["+2% Poison Penetration"]={{[1]={flags=0,keywordFlags=0,name="PoisonPenetration",type="BASE",value=2}},nil}
 c["+2% Poison Penetration with Poison "]={{[1]={[1]={skillName="Poison",type="SkillName"},flags=0,keywordFlags=0,name="PoisonPenetration",type="BASE",value=2}},"  with  "}
 c["+2% Poison deals poison damage over time and lasts 3 seconds. The first 30 stacks each reduce poison resistance by 5% (2% against bosses and players). Global Conditional Damage - more Multiplicative with other modifiers"]={{[1]={[1]={type="Global"},[2]={skillName="Poison",type="SkillName"},flags=4160,keywordFlags=64,name="PoisonDamage",type="MORE",value=2}},"  deals  and lasts 3 seconds. The first 30 stacks each reduce  resistance by 5% (2% against bosses and players).  Conditional Damage - more Multiplicative with other modifiers "}
-c["+2% Reap Health Leech"]={{[1]={flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=2}}," Reap  "}
 c["+2% Reduced Bonus Damage Taken from Critical Strikes per Equipped Heretical Idol"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=2},notSupported=true},nil}
 c["+2% Roots Health Leech"]={{[1]={[1]={skillName="Root",type="SkillName"},flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=2}}," s  "}
 c["+2% Second Strike Leech"]={{}," Second Strike Leech "}
@@ -4939,7 +4932,6 @@ c["+200% Ignite Chance Per Second"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotS
 c["+200% Increased Healing"]={{},"  "}
 c["+200% Mana Cost"]={{[1]={flags=0,keywordFlags=0,name="ManaCost",type="BASE",value=200}},nil}
 c["+200% Overcharge Shock Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Shock",type="BASE",value=200}}," Overcharge  "}
-c["+200% Reap Cooldown Duration"]={{[1]={flags=0,keywordFlags=0,name="CooldownRecovery",type="BASE",value=200}}," Reap  "}
 c["+200% Size"]={{}," Size "}
 c["+200% Vine Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=200}}," Vine  "}
 c["+200% Vine Melee Area"]={{[1]={flags=0,keywordFlags=512,name="AreaOfEffect",type="BASE",value=200}}," Vine   "}
@@ -6189,7 +6181,6 @@ c["+3% Haste Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerO
 c["+3% Health Leech"]={{[1]={flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=3}},nil}
 c["+3% Health Regen also applies to Ward"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="BASE",value=3}},"  also applies to Ward "}
 c["+3% Hit Damage per Curse"]={{[1]={flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=3}},"   per Curse "}
-c["+3% Increased Cooldown Recovery Speed of Reap"]={{[1]={flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=3}},"  of Reap "}
 c["+3% Increased Evade cooldown Duration"]={{[1]={flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=3}}," Evade  "}
 c["+3% Increased Movespeed Per 1% Missing Health"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=3}},"  Per 1% Missing Health "}
 c["+3% Increases how quickly you can run"]={{}," Increases how quickly you can run "}
@@ -6404,7 +6395,6 @@ c["+30% Poison Damage"]={{[1]={flags=0,keywordFlags=0,name="PoisonDamage",type="
 c["+30% Poison Resistance"]={{[1]={flags=0,keywordFlags=0,name="PoisonResist",type="BASE",value=30}},nil}
 c["+30% Projectile Speed through Frost Wall"]={{[1]={[1]={skillName="Frost Wall",type="SkillName"},flags=0,keywordFlags=0,name="ProjectileSpeed",type="BASE",value=30}},"  through  "}
 c["+30% Range"]={{}," Range "}
-c["+30% Reap Cooldown Recovery Speed"]={{[1]={flags=0,keywordFlags=0,name="CooldownRecovery",type="BASE",value=30}}," Reap  "}
 c["+30% Recalled Blades Bleed Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Bleed",type="BASE",value=30}}," Recalled Blades  "}
 c["+30% Recalled Blades Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=30}}," Recalled Blades  "}
 c["+30% Recalled Blades Slow Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Slow",type="BASE",value=30}}," Recalled Blades  "}
@@ -6743,7 +6733,6 @@ c["+35% Physical Resistance"]={{[1]={flags=0,keywordFlags=0,name="PhysicalResist
 c["+35% Poison Resistance"]={{[1]={flags=0,keywordFlags=0,name="PoisonResist",type="BASE",value=35}},nil}
 c["+35% Primal Serpent Frailty Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Frailty",type="BASE",value=35}}," Primal Serpent  "}
 c["+35% Primal Serpent Poison Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Poison",type="BASE",value=35}}," Primal Serpent  "}
-c["+35% Reap Poison Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Poison",type="BASE",value=35}}," Reap  "}
 c["+35% Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="MORE",value=35}},nil}
 c["+35% Storm Bolt Retaliation Chance"]={{},"  Retaliation Chance "}
 c["+35% Void Penetration with Doom"]={{[1]={[1]={skillName="Doom",type="SkillName"},flags=0,keywordFlags=0,name="VoidPenetration",type="BASE",value=35}},"  with  "}
@@ -7266,7 +7255,6 @@ c["+4% Hit Damage to Frostbitten"]={{[1]={flags=8388608,keywordFlags=0,name="Dam
 c["+4% Hit Damage to Ignited"]={{[1]={[1]={skillName="Ignite",type="SkillName"},flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=4}},"   to d "}
 c["+4% Ice Barrage Rate of Fire on Hit"]={{},"  Rate of   "}
 c["+4% Ignite Chance per Fire Aura"]={{[1]={[1]={skillName="Fire Aura",type="SkillName"},flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Ignite",type="BASE",value=4}},"  per  "}
-c["+4% Increased Cooldown Recovery Speed of Reap"]={{[1]={flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=4}},"  of Reap "}
 c["+4% Increased Healing Per Symbol"]={{},"   "}
 c["+4% Increased Minion Attack Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=3584,keywordFlags=0,name="Speed",type="INC",value=4}}}},nil}
 c["+4% Increased Minion Cast Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=256,keywordFlags=0,name="Speed",type="INC",value=4}}}},nil}
@@ -8050,7 +8038,6 @@ c["+5% Ignite Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTrigger
 c["+5% Ignite Duration"]={{[1]={[1]={skillName="Ignite",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="MORE",value=5}},nil}
 c["+5% Increased Armor Per Stack"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="INC",value=5}},"  Per Stack "}
 c["+5% Increased Cooldown Recovery Speed"]={{[1]={flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=5}},nil}
-c["+5% Increased Cooldown Recovery Speed of Reap"]={{[1]={flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=5}},"  of Reap "}
 c["+5% Increased Evade cooldown Duration"]={{[1]={flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=5}}," Evade  "}
 c["+5% Increased Minion Damage"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Damage",type="INC",value=5}}}},nil}
 c["+5% Increases the number of attacks you can use per second Chance to cast Icicle on Bow Hit"]={{}," Increases the number of attacks you can use per second Chance to cast  on   "}
@@ -9202,7 +9189,6 @@ c["+7% Hit Damage"]={{[1]={flags=8388608,keywordFlags=0,name="Damage",type="MORE
 c["+7% Hit Damage Per Negative Ailment"]={{[1]={flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=7}},"   Per Negative Ailment "}
 c["+7% Ignite Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Ignite",type="BASE",value=7}},nil}
 c["+7% Ignite Chance with Fire Skills"]={{[1]={flags=8388608,keywordFlags=8,name="ChanceToTriggerOnHit_Ailment_Ignite",type="BASE",value=7}},nil}
-c["+7% Increased Cooldown Recovery Speed of Reap"]={{[1]={flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=7}},"  of Reap "}
 c["+7% Increases the number of attacks you can use per second Chance to cast Icicle on Bow Hit"]={{}," Increases the number of attacks you can use per second Chance to cast  on   "}
 c["+7% Increases your maximum health Missing Health regained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=7}}," Increases your  Missing Health regained on Potion Use "}
 c["+7% Increases your maximum mana Current mana gained as ward per second"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=7}}," Increases your  Current mana gained as ward per second "}
@@ -9885,7 +9871,6 @@ c["+9% Fire Resistance"]={{[1]={flags=0,keywordFlags=0,name="FireResist",type="B
 c["+9% Gain a portion of your maximum health as endurance threshold. Damage taken your health below your endurance threshold is reduced by your endurance. Endurance"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=9}}," Gain a portion of your  as endurance threshold. Damage taken your health below your endurance threshold is reduced by your endurance. Endurance "}
 c["+9% Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=9}},nil}
 c["+9% Ignite Chance per Forged Weapon"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=9},notSupported=true},nil}
-c["+9% Increased Cooldown Recovery Speed of Reap"]={{[1]={flags=0,keywordFlags=0,name="CooldownRecovery",type="INC",value=9}},"  of Reap "}
 c["+9% Increased Minion Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="Life",type="INC",value=9}}}},nil}
 c["+9% Increased Spirit Frequency with Chthonic Fissure"]={{}," Spirit Frequency with  "}
 c["+9% Increases how quickly you can run"]={{}," Increases how quickly you can run "}
@@ -10346,7 +10331,6 @@ c["0.5% Current Health Lost on Hit"]={{[1]={flags=8388608,keywordFlags=0,name="L
 c["0.5% Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=0.5}},nil}
 c["0.5% Damage Leeched as Health from Damage Over Time"]={{[1]={flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=0.5}},"   from Damage Over Time "}
 c["0.5% Health Leech in Form"]={{[1]={flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=0.5}},"  in Form "}
-c["0.5% Health Lost On Kill"]={{[1]={[1]={type="Condition",var="KilledRecently"},flags=0,keywordFlags=0,name="Life",type="BASE",value=0.5}},"  Lost  "}
 c["0.5% Melee Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=512,name="DamageLifeLeech",type="BASE",value=0.5}},nil}
 c["0.5% Minion Melee Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=512,name="DamageLifeLeech",type="BASE",value=0.5}}}},nil}
 c["0.5% Spell Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=256,name="DamageLifeLeech",type="BASE",value=0.5}},nil}
@@ -14457,7 +14441,6 @@ c["4 Minimum Mana Consumed"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BAS
 c["4 Minion Armor Per Level"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={type="Multiplier",var="Level"},flags=0,keywordFlags=0,name="Armour",type="BASE",value=4}}}},nil}
 c["4 Minions teleported around you after you use a Traversal Skill"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={skillName="Teleport",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=4}}}}," s ed around you after you use a Traversal Skill "}
 c["4 Number Of Enemies Spread To"]={{}," Number Of Enemies Spread To "}
-c["4 Reap Freeze Rate per Intelligence"]={{[1]={flags=0,keywordFlags=0,name="FreezeRate",type="BASE",value=4}}," Reap  per Intelligence "}
 c["4 Rime Duration (seconds)"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="BASE",value=4}}," Rime  (seconds) "}
 c["4 Seconds of Disabled Health Leech after you directy cast a Spell"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=4},notSupported=true},nil}
 c["4 Seconds of Haste after you use Evade"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=4},notSupported=true},nil}
@@ -15672,7 +15655,6 @@ c["6% Kill Threshold"]={{[1]={flags=0,keywordFlags=0,name="KillThreshold",type="
 c["6% Kill Threshold with Axe"]={{[1]={[1]={type="Condition",var="UsingAxe"},flags=0,keywordFlags=0,name="KillThreshold",type="BASE",value=6}},nil}
 c["6% Mana Refunded"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=6}},"  Refunded "}
 c["6% More Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="MORE",value=6}},nil}
-c["6% Reap Kill Threshold"]={{[1]={flags=0,keywordFlags=0,name="KillThreshold",type="BASE",value=6}}," Reap  "}
 c["6% Reduced Rage Decay"]={{}," Rage Decay "}
 c["6% Remaining Cooldown Recovered"]={{}," Remaining Cooldown Recovered "}
 c["6% Remaining Cooldown Recovered On Falcon Hit"]={{}," Remaining Cooldown Recovered On Falc "}
