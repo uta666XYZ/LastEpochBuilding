@@ -7393,7 +7393,7 @@
     "mods": [
       "{rounding:Integer}+(10-17) Melee Damage",
       "{rounding:Integer}+(10-17) Minion Melee Damage",
-      "{rounding:Integer}+(1-2) to Melee Attacks",
+      "{rounding:Integer}+(1-2) to Melee Skills",
       "{rounding:Integer}+(1-2) to Melee Minion Skills",
       "(5-10)% increased Movement Speed",
       "(5-10)% increased Minion Movement Speed",
@@ -7450,7 +7450,7 @@
       "+(10-13)% Parry Chance",
       "{rounding:Integer}+(28-39) Melee Damage",
       "{rounding:Integer}+(28-39) Minion Melee Damage",
-      "{rounding:Integer}+(1-6) to Melee Attacks",
+      "{rounding:Integer}+(1-6) to Melee Skills",
       "100% chance on Parry to restore you and a random minion to full health and grant Frenzy for 5 seconds",
       "{rounding:Integer}+(39-60) Melee Damage while you have Frenzy",
       "(39-60)% increased Effect of Frenzy on You "
@@ -9013,7 +9013,7 @@
     "mods": [
       "+46 Melee Damage",
       "(12-16)% increased Attack Speed",
-      "{rounding:Integer}+(1-2) to Melee Attacks",
+      "{rounding:Integer}+(1-2) to Melee Skills",
       "{rounding:Integer}+(4-9) Vitality",
       "1 Kismet Stacks gained when you directly use a Melee Attack and hit at least one enemy"
     ],

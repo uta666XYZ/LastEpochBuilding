@@ -128,4 +128,16 @@ for skillId, grantedEffect in pairs(data.skills) do
             grantedEffect.keywordFlags = bit.bor(grantedEffect.keywordFlags, skillType)
         end
     end
+    -- Attribute scalings used by the "+N to <Attribute> Skills" SkillAttribute
+    -- mod tag. Mirrors LE's ScalesWithAttribute() which returns true iff the
+    -- requested attribute is in `Ability.getAttributeScaling()`. Empirically
+    -- confirmed via Smoke Bomb (class=Rogue, attributeScalings=[]): Traitor's
+    -- Tongue "+1 to Dex Skills" does NOT apply in LETools — i.e. there is no
+    -- class-primary fallback at runtime. Use the static field verbatim.
+    grantedEffect.skillAttributes = {}
+    if grantedEffect.attributeScalings then
+        for _, attr in ipairs(grantedEffect.attributeScalings) do
+            grantedEffect.skillAttributes[attr] = true
+        end
+    end
 end
