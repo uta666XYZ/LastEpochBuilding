@@ -28,36 +28,34 @@ local sortGemTypeList = {
 -- short label list (Fire, Cold, Melee, Spell, Intelligence, ...) shown in
 -- skill slot and skill-spec tree root tooltips. Mirrors LE's ability tooltip.
 -- Order: damage types (LE display order) -> combat class -> attributes.
--- NOTE: Global.lua names bit128 as "Bow" but in-game ability tooltips display
--- "Elemental" for skills that carry bit128 (e.g. Enchant Weapon, skillTypeTags=131200).
--- The AT enum dump is incomplete; tag display labels here mirror what LE shows
--- in the Scaling Tags row, not Global.lua's internal SkillType names.
+-- AT enum bit -> display label, sourced from il2cpp_dump_v142/dump.cs:240086.
+-- Display values shown unchanged regardless of Global.lua's SkillType naming
+-- (which is currently shifted from canonical for bit128/2048+; full Global.lua
+-- realignment is tracked separately).
 local SCALING_TAG_DAMAGE = {
-    { bit = 1,   name = "Physical",  color = colorCodes.PHYSICAL  },
-    { bit = 8,   name = "Fire",      color = colorCodes.FIRE      },
-    { bit = 4,   name = "Cold",      color = colorCodes.COLD      },
-    { bit = 2,   name = "Lightning", color = colorCodes.LIGHTNING },
-    { bit = 32,  name = "Necrotic",  color = colorCodes.NECROTIC  },
-    { bit = 64,  name = "Poison",    color = colorCodes.POISON    },
-    { bit = 16,  name = "Void",      color = colorCodes.VOID      },
-    { bit = 128, name = "Elemental", color = colorCodes.OFFENCE   },
+    { bit = 1,   name = "Physical"  },
+    { bit = 8,   name = "Fire"      },
+    { bit = 4,   name = "Cold"      },
+    { bit = 2,   name = "Lightning" },
+    { bit = 32,  name = "Necrotic"  },
+    { bit = 64,  name = "Poison"    },
+    { bit = 16,  name = "Void"      },
+    { bit = 128, name = "Elemental" },
 }
--- Bit values per Global.lua SkillType enum: Spell=256, Melee=512, Throwing=1024
 local SCALING_TAG_COMBAT = {
-    { bit = 512,  name = "Melee",    color = colorCodes.OFFENCE },
-    { bit = 256,  name = "Spell",    color = colorCodes.OFFENCE },
-    { bit = 1024, name = "Throwing", color = colorCodes.OFFENCE },
+    { bit = 512,  name = "Melee"    },
+    { bit = 256,  name = "Spell"    },
+    { bit = 1024, name = "Throwing" },
+    { bit = 2048, name = "Bow"      },
 }
--- Buff bit + (provisional) Instant Cast: shown as plain meta tags after combat class
+-- Meta tags after combat class. DoT/Minion/Channelling/Buff per canonical AT enum.
 local SCALING_TAG_META = {
-    { bit = 131072, name = "Buff",   color = colorCodes.OFFENCE },
-}
-local SCALING_TAG_ATTR_COLOR = {
-    Strength     = colorCodes.STRENGTH,
-    Dexterity    = colorCodes.DEXTERITY,
-    Intelligence = colorCodes.INTELLIGENCE,
-    Attunement   = colorCodes.ATTUNEMENT,
-    Vitality     = colorCodes.VITALITY,
+    { bit = 4096,   name = "DoT"         },
+    { bit = 8192,   name = "Minion"      },
+    { bit = 16384,  name = "Totem"       },
+    { bit = 262144, name = "Channelling" },
+    { bit = 524288, name = "Transform"   },
+    { bit = 131072, name = "Buff"        },
 }
 function getScalingTagsList(grantedEffect)
     if not grantedEffect then return nil end
@@ -72,14 +70,21 @@ function getScalingTagsList(grantedEffect)
     for _, t in ipairs(SCALING_TAG_META) do
         if bit.band(flags, t.bit) ~= 0 then t_insert(tags, { name = t.name, color = t.color }) end
     end
+    -- Area tag: Ability.areaTagDisplay {None=0, Tag=1, MinionTagOnly=2, TagAndMinionTag=3}.
+    -- LE shows "Area" in the Scaling Tags row when this is non-zero (Tag or TagAndMinionTag);
+    -- the MinionTagOnly variant tags only the minion ability, not the parent. We surface
+    -- it for any non-zero value here to mirror the in-game tooltip.
+    if grantedEffect.areaTagDisplay and grantedEffect.areaTagDisplay ~= 0 then
+        t_insert(tags, { name = "Area" })
+    end
     -- Instant Cast comes from the LE ability field `instantCastForPlayer` (1/0),
     -- not from the skillTypeTags bitmap. Datamined into skills.json separately.
     if grantedEffect.instantCastForPlayer == 1 then
-        t_insert(tags, { name = "Instant Cast", color = colorCodes.OFFENCE })
+        t_insert(tags, { name = "Instant Cast" })
     end
     if grantedEffect.attributeScalings then
         for _, attr in ipairs(grantedEffect.attributeScalings) do
-            t_insert(tags, { name = attr, color = SCALING_TAG_ATTR_COLOR[attr] or colorCodes.NORMAL })
+            t_insert(tags, { name = attr })
         end
     end
     return tags
@@ -88,9 +93,9 @@ function formatScalingTagsLine(tags)
     if not tags or #tags == 0 then return nil end
     local parts = {}
     for _, tag in ipairs(tags) do
-        t_insert(parts, (tag.color or "^7") .. tag.name)
+        t_insert(parts, "^7" .. tag.name)
     end
-    return "^7Scaling Tags: " .. table.concat(parts, "^7, ")
+    return "^7Scaling Tags: " .. table.concat(parts, ", ")
 end
 
 -- Layout constants for visual skill panel
