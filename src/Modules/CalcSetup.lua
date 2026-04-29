@@ -1661,11 +1661,22 @@ function calcs.initEnv(build, mode, override, specEnv)
 					group.grantedEffect.keywordFlags or 0,
 					false
 				)
+				-- Tree-injected tag additions (e.g. Warcry's Totemic Heart node
+				-- adds Minion+Totem because it converts the skill into a totem).
+				-- Apply *after* swaps so additions ride on the post-swap bitmap.
+				local treeAdds = calcs.getTreeTagAdditions(env, group.grantedEffect.treeId)
+				skillTypes, keywordFlags = calcs.applyTreeTagAdditions(
+					treeAdds, skillTypes, keywordFlags, false
+				)
 				local skillCfg = {
 					skillName = group.grantedEffect.name,
 					skillTypes = skillTypes,
 					skillAttributes = group.grantedEffect.skillAttributes,
 					keywordFlags = keywordFlags,
+					-- For "+N to <Cat> Minion Skills" affixes: scope is the
+					-- spawned minion's tags (e.g. Summon Bear's bear is Melee
+					-- even though Summon Bear's host flags are Physical only).
+					minionKeywordFlags = group.grantedEffect.minionTagsDisplay or 0,
 				}
 				local totalSkillLevel, breakdown = (env.sumSkillLevelWithLegendaryEffect or function(cfg) return env.modDB:Sum("BASE", cfg, "SkillLevel"), {} end)(skillCfg)
 				-- Per-skill bonus = total - global (avoid double-counting global)

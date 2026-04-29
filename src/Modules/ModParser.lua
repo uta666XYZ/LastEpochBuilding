@@ -1305,13 +1305,31 @@ specialModList["^%+?(%d+) to (.+) minion skills$"] = function(num, _, cat)
 	local mods = {}
 	local kf = minionSkillCatFlags[cat]
 	if kf ~= nil then
-		t_insert(mods, mod("SkillLevel", "BASE", num, "", 0, kf, { type = "SkillType", skillType = SkillType.Minion }))
+		-- Match against the host's minionTagsDisplay (via MinionTagFlag), not
+		-- the host's own keywordFlags. The host is rarely tagged with the
+		-- minion's delivery/damage type itself (e.g. Summon Bear is Physical
+		-- but its bear is Melee+Physical). cat="all" emits no extra filter.
+		if kf == 0 then
+			t_insert(mods, mod("SkillLevel", "BASE", num, "", 0, 0, { type = "SkillType", skillType = SkillType.Minion }))
+		else
+			t_insert(mods, mod("SkillLevel", "BASE", num, "", 0, 0,
+				{ type = "SkillType", skillType = SkillType.Minion },
+				{ type = "MinionTagFlag", keywordFlags = kf }))
+		end
 	elseif minionSkillCatAttrs[cat] then
-		-- "+N to <Attribute> Minion Skills" — attribute-gated minion skill bonus.
-		-- Without a clean attribute-conditional SkillLevel tag we fall back to
-		-- the same Minion-tagged SkillLevel so the cap still tracks; refine later
-		-- if we need attribute-conditional gating.
-		t_insert(mods, mod("SkillLevel", "BASE", num, "", 0, 0, { type = "SkillType", skillType = SkillType.Minion }))
+		-- "+N to <Attribute> Minion Skills" — gate on both Minion type AND the
+		-- skill carrying the attribute (via SkillAttribute predicate). Without
+		-- the attribute gate, e.g. Mantle of the Pale Ox's "+1-2 to Strength
+		-- Minion Skills" would lift Warcry's cap once it picks up Minion via
+		-- Totemic Heart, even though Warcry only scales with Attunement.
+		local attr = ({
+			["strength"] = "Strength", ["dexterity"] = "Dexterity",
+			["intelligence"] = "Intelligence", ["attunement"] = "Attunement",
+			["vitality"] = "Vitality",
+		})[cat]
+		t_insert(mods, mod("SkillLevel", "BASE", num, "", 0, 0,
+			{ type = "SkillType", skillType = SkillType.Minion },
+			{ type = "SkillAttribute", attribute = attr }))
 	else
 		return nil
 	end

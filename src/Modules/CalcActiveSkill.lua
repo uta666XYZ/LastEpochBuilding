@@ -243,6 +243,36 @@ function calcs.getTreeTagSwaps(env, treeId)
 	return swaps
 end
 
+-- Compute tree-injected tag *additions* for a given treeId. Returns a bitmap
+-- of SkillType bits to OR into the skill's effective tags, or 0. This is for
+-- specialization nodes that convert/extend a skill into something with extra
+-- intrinsic tags — e.g. Warcry's "Totemic Heart" node ("Create Warcry Totem")
+-- turns the skill into Summon Warcry Totem, which is a Minion+Totem ability.
+-- Without this, affixes like "+1 to Minion Skills" from Beastmaster Ancient
+-- Might wouldn't apply to a totem-converted Warcry, and the Scaling Tags row
+-- would miss the Minion/Totem markers the in-game tooltip shows.
+--
+-- Pattern detected: stat lines matching "Creates? <name> Totem" — used by
+-- Warcry/Totemic Heart, Upheaval/Upheaval Totems, etc. The encoding has no
+-- explicit ability reference; LEB recognises the phrase and adds Minion+Totem
+-- bits since every "Create X Totem" node turns the skill into a totem-minion.
+function calcs.getTreeTagAdditions(env, treeId)
+	if not (treeId and env and env.allocNodes) then return 0 end
+	local prefix = treeId .. "-"
+	local adds = 0
+	for nodeId, node in pairs(env.allocNodes) do
+		if nodeId:sub(1, #prefix) == prefix and node.stats then
+			for _, stat in ipairs(node.stats) do
+				-- "Create Warcry Totem" / "Creates Upheaval Totem"
+				if stat:lower():match("^%s*creates?%s+.+%s+totem%s*$") then
+					adds = bor(adds, SkillType.Minion, SkillType.Totem)
+				end
+			end
+		end
+	end
+	return adds
+end
+
 -- Apply tree tag swaps to a skillTypes set + keywordFlags integer; returns
 -- (newSkillTypes, newKeywordFlags). Pass mutable=true to mutate skillTypes
 -- in place (used at ActiveSkill build time).
@@ -256,6 +286,21 @@ function calcs.applyTreeTagSwaps(swaps, skillTypes, keywordFlags, mutable)
 			out[dstBit] = true
 			kw = bor(band(kw, bnot(srcBit)), dstBit)
 		end
+	end
+	return out, kw
+end
+
+-- OR an additions bitmap into a skillTypes set + keywordFlags integer.
+local TAG_ADDITION_BITS = {
+	SkillType.Minion, SkillType.Totem, SkillType.Spell, SkillType.Buff,
+	SkillType.Melee, SkillType.Bow, SkillType.Throwing, SkillType.DoT,
+}
+function calcs.applyTreeTagAdditions(adds, skillTypes, keywordFlags, mutable)
+	if not adds or adds == 0 then return skillTypes, keywordFlags end
+	local out = mutable and skillTypes or copyTable(skillTypes)
+	local kw = bor(keywordFlags or 0, adds)
+	for _, typeBit in ipairs(TAG_ADDITION_BITS) do
+		if band(adds, typeBit) ~= 0 then out[typeBit] = true end
 	end
 	return out, kw
 end
@@ -275,6 +320,18 @@ function calcs.buildActiveSkillModList(env, activeSkill)
 		for _, cfg in ipairs({ activeSkill.skillCfg, activeSkill.weapon1Cfg, activeSkill.weapon2Cfg }) do
 			if cfg and cfg.keywordFlags then
 				cfg.keywordFlags = newKw
+			end
+		end
+	end
+	-- Tree-injected tag *additions* (e.g. Totemic Heart adds Minion+Totem to
+	-- Warcry). Mutate skillTypes in place and propagate to skillCfg/weaponCfg
+	-- keywordFlags so affix matching at this active skill's runtime sees them.
+	local treeAdds = calcs.getTreeTagAdditions(env, activeGrantedEffect.treeId)
+	if treeAdds ~= 0 then
+		local _, newKw2 = calcs.applyTreeTagAdditions(treeAdds, skillTypes, activeSkill.skillCfg and activeSkill.skillCfg.keywordFlags or 0, true)
+		for _, cfg in ipairs({ activeSkill.skillCfg, activeSkill.weapon1Cfg, activeSkill.weapon2Cfg }) do
+			if cfg and cfg.keywordFlags then
+				cfg.keywordFlags = newKw2
 			end
 		end
 	end
