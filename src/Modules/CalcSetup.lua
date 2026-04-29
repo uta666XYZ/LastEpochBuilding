@@ -1636,6 +1636,10 @@ function calcs.initEnv(build, mode, override, specEnv)
 		-- the global bonus to get only the skill-specific portion.
 		build.perSkillLevelBonus = build.perSkillLevelBonus or {}
 		build.perSkillLevelBreakdown = build.perSkillLevelBreakdown or {}
+		-- Per-skill item-derived delivery-tag swap (e.g. Heartseeker Bow->Throwing
+		-- via Ravager's Dart). Consumed by SkillsTab so the Scaling Tags tooltip
+		-- row matches in-game routing.
+		build.perSkillDeliverySwap = build.perSkillDeliverySwap or {}
 		-- Pre-populate attribute output values so PerStat tags on SkillLevel
 		-- mods (e.g. "+1 to All Skills per 120 Total Attributes") evaluate
 		-- correctly here. CalcPerform recomputes these later, but it runs
@@ -1668,6 +1672,34 @@ function calcs.initEnv(build, mode, override, specEnv)
 				skillTypes, keywordFlags = calcs.applyTreeTagAdditions(
 					treeAdds, skillTypes, keywordFlags, false
 				)
+				-- Item-scoped delivery-type conversions ("100% of Heartseeker
+				-- converted to Throwing" on Ravager's Dart). Replace the skill's
+				-- existing delivery bit (Bow/Melee/Throwing/Spell) with the
+				-- destination so "+to <newType> Skills" affixes match — confirmed
+				-- in-game: Heartseeker tagged Bow base, becomes Throwing under
+				-- this conversion, and Relic "+1 Throwing Skills" applies.
+				local DELIVERY_BITS = bit.bor(SkillType.Melee, SkillType.Throwing, SkillType.Bow, SkillType.Spell)
+				local skillSwaps = env.modDB:List(nil, "SkillTagSwap_" .. group.grantedEffect.name:gsub("%s+", ""))
+				local deliverySwapBit = nil
+				if skillSwaps and #skillSwaps > 0 then
+					skillTypes = copyTable(skillTypes)
+					for _, swap in ipairs(skillSwaps) do
+						if swap.deliveryBit then
+							-- Strip existing delivery bits, then OR in destination.
+							for typeBit in pairs(skillTypes) do
+								if type(typeBit) == "number" and bit.band(typeBit, DELIVERY_BITS) ~= 0
+								   and bit.band(typeBit, DELIVERY_BITS) == typeBit then
+									skillTypes[typeBit] = nil
+								end
+							end
+							keywordFlags = bit.band(keywordFlags, bit.bnot(DELIVERY_BITS))
+							skillTypes[swap.deliveryBit] = true
+							keywordFlags = bit.bor(keywordFlags, swap.deliveryBit)
+							deliverySwapBit = swap.deliveryBit
+						end
+					end
+				end
+				build.perSkillDeliverySwap[index] = deliverySwapBit
 				-- "+to <DamageType> Minion Skills" affix scope:
 				-- A two-tag mod of {SkillType=Minion, MinionTagFlag=<dmgType>} only
 				-- applies if BOTH gates pass. The SkillType=Minion gate is

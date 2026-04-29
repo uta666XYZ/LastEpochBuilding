@@ -1032,10 +1032,29 @@ local s4AttrConversion = {
 	["attunement"]   = { dst = "Apathy",    mod = "AttunementConvertedToApathy" },
 	["vitality"]     = { dst = "Rampancy",  mod = "VitalityConvertedToRampancy" },
 }
+-- Per-skill delivery-type conversion ("100% of Heartseeker converted to
+-- Throwing" on Ravager's Dart helmet). Emits a SkillTagSwap_<Canonical>
+-- LIST mod that CalcSetup's cap-summing path reads to remap the skill's
+-- delivery tag bit (Bow/Melee/Throwing/Spell) before evaluating
+-- "+to <Cat> Skills" affixes. SkillsTab consumes the same list for the
+-- Scaling Tags tooltip row so display matches in-game.
+local deliverySwapTypes = {
+	melee = SkillType.Melee, throwing = SkillType.Throwing,
+	bow = SkillType.Bow, spell = SkillType.Spell,
+}
 local function attrConvertedHandler(num, _, src, dst)
 	local entry = s4AttrConversion[(src or ""):lower()]
 	if entry and (dst or ""):lower() == entry.dst:lower() then
 		return { mod(entry.mod, "BASE", num) }
+	end
+	-- Skill-scoped delivery conversion: 100% of <Skill> converted to <Type>
+	if num and tonumber(num) and tonumber(num) >= 100 then
+		local canonical = canonicalSkillName(src)
+		local dstBit = deliverySwapTypes[(dst or ""):lower()]
+		if canonical and dstBit then
+			return { mod("SkillTagSwap_" .. canonical:gsub("%s+", ""), "LIST",
+				{ skillName = canonical, deliveryBit = dstBit }) }
+		end
 	end
 	return nsAny(num)
 end
