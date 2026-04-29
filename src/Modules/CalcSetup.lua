@@ -1668,15 +1668,53 @@ function calcs.initEnv(build, mode, override, specEnv)
 				skillTypes, keywordFlags = calcs.applyTreeTagAdditions(
 					treeAdds, skillTypes, keywordFlags, false
 				)
+				-- "+to <DamageType> Minion Skills" affix scope:
+				-- A two-tag mod of {SkillType=Minion, MinionTagFlag=<dmgType>} only
+				-- applies if BOTH gates pass. The SkillType=Minion gate is
+				-- satisfied by any skill carrying the Minion bit (fakeTags or
+				-- baseFlags), which correctly lets "+to Minion Skills" (cat=all,
+				-- no MinionTagFlag) raise Spriggan Form / Werebear Form levels
+				-- (confirmed in-game: Phantom Grip "+2 Minion Skills" applies).
+				--
+				-- The MinionTagFlag gate filters by the spawned minion's damage/
+				-- delivery tags. For form/buff skills that aren't minion-summon
+				-- parents (minionTagsDisplay=0 and no tree promotion to minion/
+				-- totem), the spawned-minion-tag scope is empty — confirmed
+				-- in-game: Apogee of Frozen Light "+3 Cold Minion Skills" does
+				-- NOT raise Spriggan Form's level even though it has Cold via
+				-- skillTreeConversionDamageTags. So only build minionKeywordFlags
+				-- when the skill is a "true" minion parent.
+				local hasNativeMinion = (group.grantedEffect.minionTagsDisplay or 0) ~= 0
+				local treeAddsMinion = bit.band(treeAdds, bit.bor(SkillType.Minion, SkillType.Totem)) ~= 0
+				local minionKW = 0
+				if hasNativeMinion or treeAddsMinion then
+					-- minionTagsDisplay  — the minion's intrinsic tooltip tags
+					-- skillTreeConversionDamageTags — tree-reachable damage types
+					-- LE displays in the Minion Tags row for native minion summons
+					-- (Summon Thorn Totem's Cold from th39 tree; "+3 Minion Cold
+					-- Skills" applies even at base in-game).
+					minionKW = bit.bor(
+						group.grantedEffect.minionTagsDisplay or 0,
+						group.grantedEffect.skillTreeConversionDamageTags or 0
+					)
+					if treeAddsMinion then
+						-- Tree-promoted totem/minion: spawned entity inherits
+						-- the parent's post-swap delivery + damage tags. Mirror
+						-- skillTypes so e.g. Glacial Cascade Upheaval-totem
+						-- matches "+3 Minion Cold Skills" via the parent's Cold.
+						for typeBit in pairs(skillTypes) do
+							if type(typeBit) == "number" then
+								minionKW = bit.bor(minionKW, typeBit)
+							end
+						end
+					end
+				end
 				local skillCfg = {
 					skillName = group.grantedEffect.name,
 					skillTypes = skillTypes,
 					skillAttributes = group.grantedEffect.skillAttributes,
 					keywordFlags = keywordFlags,
-					-- For "+N to <Cat> Minion Skills" affixes: scope is the
-					-- spawned minion's tags (e.g. Summon Bear's bear is Melee
-					-- even though Summon Bear's host flags are Physical only).
-					minionKeywordFlags = group.grantedEffect.minionTagsDisplay or 0,
+					minionKeywordFlags = minionKW,
 				}
 				local totalSkillLevel, breakdown = (env.sumSkillLevelWithLegendaryEffect or function(cfg) return env.modDB:Sum("BASE", cfg, "SkillLevel"), {} end)(skillCfg)
 				-- Per-skill bonus = total - global (avoid double-counting global)
