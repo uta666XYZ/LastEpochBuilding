@@ -1317,7 +1317,11 @@ function SkillsTabClass:DrawSpecSlots(viewPort, inputEvents, startY)
 			local lvlY = sy + SLOT_SIZE - 30
 			SetDrawColor(1, 1, 1)
 			DrawImage(lvlHandle, lvlX, lvlY, lvlW, lvlH)
-			DrawString(lvlX + lvlW / 2, lvlY + 11, "CENTER_X", 12, "VAR", "^7" .. used)
+			-- Show effective skill level cap (Base 20 + all "+SkillLevel" bonuses),
+			-- matching the in-game "Level of <Skill>" display rather than just the
+			-- allocated tree points. The "remaining points" badge below still
+			-- reflects unspent allocation, not unused cap.
+			DrawString(lvlX + lvlW / 2, lvlY + 11, "CENTER_X", 12, "VAR", "^7" .. maxPts)
 
 			-- Remaining points badge (blue square, top-right corner of slot)
 			if rem > 0 then
