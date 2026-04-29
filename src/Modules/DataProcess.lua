@@ -76,9 +76,14 @@ for skillId, grantedEffect in pairs(data.skills) do
         end
     end
     --- Compute skill types
+    -- Use full-mask match (band == type) so composite SkillType values like
+    -- Attack (= Melee|Throwing|Bow = 1664) only flag when ALL their bits are
+    -- present. Without this, a skill carrying only one of the bits (e.g.
+    -- Enchant Weapon with bit128 = Elemental) gets falsely tagged as Attack
+    -- and downstream mod matching adds bogus "+1 to Melee Skills" hits.
     grantedEffect.skillTypes = {}
     for name, type in pairs(SkillType) do
-        if bit.band(grantedEffect.skillTypeTags, type) > 0 then
+        if type ~= 0 and bit.band(grantedEffect.skillTypeTags, type) == type then
             grantedEffect.skillTypes[type] = true
         end
     end
