@@ -58,6 +58,7 @@
     "castTime": 0.6363636,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 24,
     "areaTagDisplay": 1,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -86,6 +87,7 @@
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 72,
     "areaTagDisplay": 1,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -236,7 +238,8 @@
     "playerAbilityID": "arcas",
     "attributeScalings": [],
     "class": "Mage",
-    "mastery": "Sorcerer"
+    "mastery": "Sorcerer",
+    "skillTreeConversionDamageTags": 2
   },
   "Ailment_ArcaneMark": {
     "name": "Arcane Mark",
@@ -513,7 +516,8 @@
     "attributeScalings": [
       "Intelligence"
     ],
-    "class": "Acolyte"
+    "class": "Acolyte",
+    "skillTreeConversionDamageTags": 33
   },
   "Ailment_Brand of Deception": {
     "name": "Brand of Deception",
@@ -1383,7 +1387,8 @@
     "attributeScalings": [
       "Intelligence"
     ],
-    "class": "Acolyte"
+    "class": "Acolyte",
+    "skillTreeConversionDamageTags": 33
   },
   "Ailment_NecroticResistanceShred": {
     "name": "Shred Necrotic Resistance",
@@ -2395,6 +2400,7 @@
     "castTime": 0.6818182,
     "instantCastForPlayer": 1,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 2,
     "areaTagDisplay": 0,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -2445,6 +2451,7 @@
     "castTime": 0.6818182,
     "instantCastForPlayer": 1,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 69,
     "areaTagDisplay": 1,
     "minionTagsDisplay": 0,
     "baseFlags": {},
@@ -2469,6 +2476,7 @@
     "castTime": 0.72727275,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 5,
     "areaTagDisplay": 1,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -2588,6 +2596,7 @@
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 12,
     "areaTagDisplay": 1,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -2652,6 +2661,7 @@
     "castTime": 0.45454544,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 11,
     "areaTagDisplay": 0,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -2719,6 +2729,7 @@
     "castTime": 0.45454544,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 33,
     "areaTagDisplay": 1,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -2803,6 +2814,7 @@
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 64,
     "areaTagDisplay": 1,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -2864,6 +2876,7 @@
     "castTime": 0.6818182,
     "instantCastForPlayer": 1,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 37,
     "areaTagDisplay": 1,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -2922,6 +2935,7 @@
     "castTime": 0.2121212,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 12,
     "areaTagDisplay": 1,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -2953,6 +2967,7 @@
     "castTime": 0.81818175,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 78,
     "areaTagDisplay": 1,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -3018,6 +3033,7 @@
     "castTime": 0.048484847,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 10,
     "areaTagDisplay": 0,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -3150,6 +3166,7 @@
     "castTime": 0.048484847,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 96,
     "areaTagDisplay": 1,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -3205,6 +3222,7 @@
     "castTime": 0.75757575,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 11,
     "areaTagDisplay": 1,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -3239,6 +3257,7 @@
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 14,
     "areaTagDisplay": 1,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -3292,6 +3311,7 @@
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 69,
     "areaTagDisplay": 1,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -3384,6 +3404,7 @@
     "castTime": 1.3636364,
     "instantCastForPlayer": 0,
     "fakeTags": 8192,
+    "skillTreeConversionDamageTags": 6,
     "areaTagDisplay": 0,
     "minionTagsDisplay": 1537,
     "baseFlags": {
@@ -3479,6 +3500,7 @@
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 14,
     "areaTagDisplay": 1,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -3507,6 +3529,7 @@
     "castTime": 0.58441556,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 67,
     "areaTagDisplay": 1,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -3612,6 +3635,7 @@
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 2,
     "areaTagDisplay": 0,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -3643,6 +3667,7 @@
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 2,
     "areaTagDisplay": 0,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -3733,6 +3758,7 @@
     "castTime": 0.72727275,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 2,
     "areaTagDisplay": 1,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -3767,6 +3793,7 @@
     "castTime": 0.3409091,
     "instantCastForPlayer": 1,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 14,
     "areaTagDisplay": 1,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -3794,6 +3821,7 @@
     "castTime": 0.9090909,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 37,
     "areaTagDisplay": 1,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -3859,6 +3887,7 @@
     "castTime": 2.7272727,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 2,
     "areaTagDisplay": 0,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -3877,6 +3906,7 @@
     "castTime": 0.7177034,
     "instantCastForPlayer": 0,
     "fakeTags": 8192,
+    "skillTreeConversionDamageTags": 8,
     "areaTagDisplay": 3,
     "minionTagsDisplay": 513,
     "baseFlags": {
@@ -3933,6 +3963,7 @@
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 10,
     "areaTagDisplay": 1,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -3963,6 +3994,7 @@
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 2,
     "areaTagDisplay": 1,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -4026,6 +4058,7 @@
     "castTime": 0.72727275,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 7,
     "areaTagDisplay": 0,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -4090,6 +4123,7 @@
     "castTime": 0.9090909,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 77,
     "areaTagDisplay": 1,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -4147,6 +4181,7 @@
     "castTime": 0.64935064,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 16,
     "areaTagDisplay": 0,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -4180,6 +4215,7 @@
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 37,
     "areaTagDisplay": 1,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -4240,6 +4276,7 @@
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 13,
     "areaTagDisplay": 0,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -4324,6 +4361,7 @@
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 40,
     "areaTagDisplay": 0,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -4440,6 +4478,7 @@
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 9,
     "areaTagDisplay": 1,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -4471,6 +4510,7 @@
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 2,
     "areaTagDisplay": 0,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -4540,6 +4580,7 @@
     "castTime": 1.3636364,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 3,
     "areaTagDisplay": 1,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -4573,6 +4614,7 @@
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 6,
     "areaTagDisplay": 0,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -4661,6 +4703,7 @@
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 5,
     "areaTagDisplay": 1,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -4750,6 +4793,7 @@
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
     "fakeTags": 8192,
+    "skillTreeConversionDamageTags": 9,
     "areaTagDisplay": 0,
     "minionTagsDisplay": 513,
     "baseFlags": {
@@ -4808,6 +4852,7 @@
     "castTime": 0.65604496,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 5,
     "areaTagDisplay": 0,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -5213,6 +5258,7 @@
     "castTime": 0.6818182,
     "instantCastForPlayer": 1,
     "fakeTags": 8192,
+    "skillTreeConversionDamageTags": 8,
     "areaTagDisplay": 0,
     "minionTagsDisplay": 131072,
     "baseFlags": {
@@ -5246,6 +5292,7 @@
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 33,
     "areaTagDisplay": 1,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -5277,6 +5324,7 @@
     "castTime": 0.54545456,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 17,
     "areaTagDisplay": 1,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -5426,6 +5474,7 @@
     "castTime": 0.5594406,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 10,
     "areaTagDisplay": 1,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -5485,6 +5534,7 @@
     "castTime": 0.6818181,
     "instantCastForPlayer": 0,
     "fakeTags": 14,
+    "skillTreeConversionDamageTags": 14,
     "areaTagDisplay": 0,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -5516,6 +5566,7 @@
     "castTime": 0.6818181,
     "instantCastForPlayer": 0,
     "fakeTags": 14,
+    "skillTreeConversionDamageTags": 14,
     "areaTagDisplay": 0,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -5547,6 +5598,7 @@
     "castTime": 0.6818181,
     "instantCastForPlayer": 0,
     "fakeTags": 14,
+    "skillTreeConversionDamageTags": 14,
     "areaTagDisplay": 0,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -5579,6 +5631,7 @@
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 14,
     "areaTagDisplay": 1,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -5668,6 +5721,7 @@
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 9,
     "areaTagDisplay": 1,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -5750,6 +5804,7 @@
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 69,
     "areaTagDisplay": 0,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -5848,6 +5903,7 @@
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 8,
     "areaTagDisplay": 1,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -5880,6 +5936,7 @@
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 17,
     "areaTagDisplay": 0,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -5912,6 +5969,7 @@
     "castTime": 0.6293706,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 9,
     "areaTagDisplay": 0,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -5971,6 +6029,7 @@
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 3,
     "areaTagDisplay": 0,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -6139,6 +6198,7 @@
     "castTime": 0.54545456,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 6,
     "areaTagDisplay": 1,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -6239,6 +6299,7 @@
     "castTime": 0.6363636,
     "instantCastForPlayer": 0,
     "fakeTags": 155905,
+    "skillTreeConversionDamageTags": 5,
     "areaTagDisplay": 1,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -6300,6 +6361,7 @@
     "castTime": 0.76555026,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 6,
     "areaTagDisplay": 1,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -6540,6 +6602,7 @@
     "castTime": 1.3636364,
     "instantCastForPlayer": 0,
     "fakeTags": 8192,
+    "skillTreeConversionDamageTags": 3,
     "areaTagDisplay": 2,
     "minionTagsDisplay": 513,
     "baseFlags": {
@@ -6597,6 +6660,7 @@
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
     "fakeTags": 8192,
+    "skillTreeConversionDamageTags": 13,
     "areaTagDisplay": 2,
     "minionTagsDisplay": 769,
     "baseFlags": {
@@ -6797,6 +6861,7 @@
     "castTime": 1.3636364,
     "instantCastForPlayer": 0,
     "fakeTags": 8192,
+    "skillTreeConversionDamageTags": 9,
     "areaTagDisplay": 2,
     "minionTagsDisplay": 513,
     "baseFlags": {
@@ -6831,6 +6896,7 @@
     "castTime": 1.3636364,
     "instantCastForPlayer": 0,
     "fakeTags": 8192,
+    "skillTreeConversionDamageTags": 4,
     "areaTagDisplay": 2,
     "minionTagsDisplay": 513,
     "baseFlags": {
@@ -6865,6 +6931,7 @@
     "castTime": 1.3636364,
     "instantCastForPlayer": 0,
     "fakeTags": 8192,
+    "skillTreeConversionDamageTags": 6,
     "areaTagDisplay": 2,
     "minionTagsDisplay": 577,
     "baseFlags": {
@@ -6929,6 +6996,7 @@
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
     "fakeTags": 8192,
+    "skillTreeConversionDamageTags": 13,
     "areaTagDisplay": 2,
     "minionTagsDisplay": 2561,
     "baseFlags": {
@@ -6986,6 +7054,7 @@
     "castTime": 1.3636364,
     "instantCastForPlayer": 0,
     "fakeTags": 8192,
+    "skillTreeConversionDamageTags": 5,
     "areaTagDisplay": 0,
     "minionTagsDisplay": 131329,
     "baseFlags": {
@@ -7018,6 +7087,7 @@
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
     "fakeTags": 8192,
+    "skillTreeConversionDamageTags": 6,
     "areaTagDisplay": 0,
     "minionTagsDisplay": 258,
     "baseFlags": {
@@ -7078,6 +7148,7 @@
     "castTime": 0.54545456,
     "instantCastForPlayer": 0,
     "fakeTags": 24576,
+    "skillTreeConversionDamageTags": 4,
     "areaTagDisplay": 2,
     "minionTagsDisplay": 258,
     "baseFlags": {
@@ -7109,6 +7180,7 @@
     "castTime": 0.54545456,
     "instantCastForPlayer": 0,
     "fakeTags": 24576,
+    "skillTreeConversionDamageTags": 4,
     "areaTagDisplay": 0,
     "minionTagsDisplay": 257,
     "baseFlags": {
@@ -7165,6 +7237,7 @@
     "castTime": 0.72727275,
     "instantCastForPlayer": 0,
     "fakeTags": 8192,
+    "skillTreeConversionDamageTags": 41,
     "areaTagDisplay": 2,
     "minionTagsDisplay": 265,
     "baseFlags": {
@@ -7194,6 +7267,7 @@
     "castTime": 1.3636364,
     "instantCastForPlayer": 0,
     "fakeTags": 8192,
+    "skillTreeConversionDamageTags": 6,
     "areaTagDisplay": 2,
     "minionTagsDisplay": 513,
     "baseFlags": {
@@ -7224,6 +7298,7 @@
     "castTime": 0.61983466,
     "instantCastForPlayer": 0,
     "fakeTags": 8192,
+    "skillTreeConversionDamageTags": 105,
     "areaTagDisplay": 2,
     "minionTagsDisplay": 513,
     "baseFlags": {
@@ -7307,6 +7382,7 @@
     "castTime": 0.72727275,
     "instantCastForPlayer": 0,
     "fakeTags": 12801,
+    "skillTreeConversionDamageTags": 5,
     "areaTagDisplay": 1,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -7368,6 +7444,7 @@
     "castTime": 0.6363636,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 2,
     "areaTagDisplay": 1,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -7573,6 +7650,7 @@
     "castTime": 0.530303,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 11,
     "areaTagDisplay": 1,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -7664,6 +7742,7 @@
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 77,
     "areaTagDisplay": 0,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -7695,6 +7774,7 @@
     "castTime": 0.72727275,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 15,
     "areaTagDisplay": 1,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -7728,6 +7808,7 @@
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 24,
     "areaTagDisplay": 1,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -7759,6 +7840,7 @@
     "castTime": 2.272727,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 25,
     "areaTagDisplay": 1,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -7851,6 +7933,7 @@
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 24,
     "areaTagDisplay": 1,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -7886,6 +7969,7 @@
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 12,
     "areaTagDisplay": 0,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -7917,6 +8001,7 @@
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 96,
     "areaTagDisplay": 1,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -7948,6 +8033,7 @@
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 5,
     "areaTagDisplay": 1,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -7973,6 +8059,7 @@
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 45,
     "areaTagDisplay": 1,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -8005,6 +8092,7 @@
     "castTime": 0.048484847,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 41,
     "areaTagDisplay": 0,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -8037,6 +8125,7 @@
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 33,
     "areaTagDisplay": 0,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -8068,6 +8157,7 @@
     "castTime": 0.68181825,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 105,
     "areaTagDisplay": 0,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -8101,6 +8191,7 @@
     "castTime": 0.12121212,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 41,
     "areaTagDisplay": 1,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -8131,6 +8222,7 @@
     "castTime": 0.3409091,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 24,
     "areaTagDisplay": 1,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -8194,6 +8286,7 @@
     "castTime": 0.54545456,
     "instantCastForPlayer": 0,
     "fakeTags": 513,
+    "skillTreeConversionDamageTags": 3,
     "areaTagDisplay": 1,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -8292,6 +8385,7 @@
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
     "fakeTags": 0,
+    "skillTreeConversionDamageTags": 69,
     "areaTagDisplay": 0,
     "minionTagsDisplay": 0,
     "baseFlags": {
@@ -8342,6 +8436,7 @@
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
     "fakeTags": 2048,
+    "skillTreeConversionDamageTags": 3,
     "areaTagDisplay": 0,
     "minionTagsDisplay": 0,
     "baseFlags": {
