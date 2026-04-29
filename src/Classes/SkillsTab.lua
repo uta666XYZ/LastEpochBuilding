@@ -64,17 +64,36 @@ end
 -- damage-type portion is taken from that array so tree node conversions
 -- (e.g. Flame Ward -> Cold, Surge -> Fire) are reflected. Otherwise damage
 -- bits are read straight from grantedEffect.skillTypeTags (base only).
-function getScalingTagsList(grantedEffect, dynamicDamageTypes, extraFlags, areaOverride)
+-- DELIVERY_BIT_MASK: Spell(256) | Melee(512) | Throwing(1024) | Bow(2048).
+-- deliverySwapBit, if set, replaces the existing delivery bit so the tooltip's
+-- Scaling Tags row reflects item conversions (Ravager's Dart Heartseeker:
+-- Bow -> Throwing).
+function getScalingTagsList(grantedEffect, dynamicDamageTypes, extraFlags, areaOverride, deliverySwapBit)
     if not grantedEffect then return nil end
     local tags = {}
-    -- Include fakeTags so categories LE adds at runtime (e.g. Judgement is
-    -- Spell-tagged via fakeTags=256 despite being mechanically Melee) appear
-    -- in the Scaling Tags row exactly like the in-game tooltip. extraFlags
-    -- carries tree-node-injected bits (e.g. Totemic Heart adds Minion+Totem
-    -- when Warcry is converted into a Warcry Totem). areaOverride lets a
-    -- caller substitute the effective areaTagDisplay value (used when a
-    -- "Create X Totem" node moves the cast's Area onto the minion side).
-    local flags = bit.bor(grantedEffect.skillTypeTags or 0, grantedEffect.fakeTags or 0, extraFlags or 0)
+    -- Use the precomputed displayTags bitmap (built by DataProcess) which
+    -- merges skillTypeTags + fakeTags + skillTreeConversionDamageTags +
+    -- baseFlag-derived bits. This mirrors how LE's in-game tooltip composes
+    -- Scaling Tags — e.g. Focus / Arcane Ascendance show "Lightning" via
+    -- skillTreeConversionDamageTags and Focus shows "Channeled" via
+    -- baseFlags.channelling, neither of which lives in skillTypeTags.
+    -- Falls back to the raw bitmap union if displayTags isn't populated yet
+    -- (preserves prior behaviour for any granted-effect that bypasses
+    -- DataProcess). extraFlags carries tree-node-injected bits (e.g. Totemic
+    -- Heart adds Minion+Totem when Warcry is converted into a Warcry Totem).
+    -- areaOverride lets a caller substitute the effective areaTagDisplay
+    -- value (used when a "Create X Totem" node moves the cast's Area onto
+    -- the minion side).
+    local flags = bit.bor(
+        grantedEffect.displayTags or bit.bor(grantedEffect.skillTypeTags or 0, grantedEffect.fakeTags or 0),
+        extraFlags or 0
+    )
+    -- Apply item-scoped delivery-type swap: strip Spell/Melee/Throwing/Bow then
+    -- OR in the destination so the tooltip matches LE's in-game tag display.
+    if deliverySwapBit then
+        flags = bit.band(flags, bit.bnot(256 + 512 + 1024 + 2048))
+        flags = bit.bor(flags, deliverySwapBit)
+    end
     if dynamicDamageTypes and #dynamicDamageTypes > 0 then
         for _, dt in ipairs(dynamicDamageTypes) do
             if dt.isBase then t_insert(tags, { name = capitalizeDamageType(dt.type) }) end
@@ -128,9 +147,13 @@ end
 -- layout as skillTypeTags. Plus Area when areaTagDisplay is MinionTagOnly(2)
 -- or TagAndMinionTag(3). Returns nil when the skill spawns no minion (i.e.
 -- minionTagsDisplay == 0 and areaTagDisplay does not include MinionTag).
+-- Prefer DataProcess's `displayMinionTags` which folds skillTreeConversionDamageTags
+-- into the minion tags row for minion-summon parents (Summon Thorn Totem's Cold
+-- bit etc.) so the row matches LE's in-game tooltip routing.
 function getMinionTagsList(grantedEffect, extraMinionFlags, areaOverride)
     if not grantedEffect then return nil end
-    local mtd = bit.bor(grantedEffect.minionTagsDisplay or 0, extraMinionFlags or 0)
+    local baseMtd = grantedEffect.displayMinionTags or grantedEffect.minionTagsDisplay or 0
+    local mtd = bit.bor(baseMtd, extraMinionFlags or 0)
     local atd = areaOverride or grantedEffect.areaTagDisplay or 0
     local hasMinionArea = (atd == 2 or atd == 3)
     if mtd == 0 and not hasMinionArea then return nil end
@@ -1454,7 +1477,10 @@ function SkillsTabClass:DrawSpecSlots(viewPort, inputEvents, startY)
 			local dynDt = self:GetDynamicDamageTypes(i)
 			local extraFlags = sg.grantedEffect.treeId and self:GetTreeTagAdditionsByTreeId(sg.grantedEffect.treeId) or 0
 			local areaOverride = sg.grantedEffect.treeId and self:IsTotemConvertedByTreeId(sg.grantedEffect.treeId) and 2 or nil
-			local tagsLine = formatScalingTagsLine(getScalingTagsList(sg.grantedEffect, dynDt, extraFlags, areaOverride))
+			-- Item-scoped delivery-type swap (Heartseeker Bow -> Throwing via
+			-- Ravager's Dart). Computed in CalcSetup's cap-summing pass.
+			local deliverySwapBit = self.build.perSkillDeliverySwap and self.build.perSkillDeliverySwap[i] or nil
+			local tagsLine = formatScalingTagsLine(getScalingTagsList(sg.grantedEffect, dynDt, extraFlags, areaOverride, deliverySwapBit))
 			local minionLine = formatMinionTagsLine(getMinionTagsList(sg.grantedEffect, nil, areaOverride))
 			if tagsLine or minionLine then
 				tooltip:AddSeparator(8)
