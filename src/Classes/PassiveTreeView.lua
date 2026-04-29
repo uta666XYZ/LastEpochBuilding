@@ -1602,7 +1602,11 @@ function PassiveTreeViewClass:AddNodeTooltip(tooltip, node, build)
 		if treeId then
 			for _, sg in ipairs(build.skillsTab.socketGroupList) do
 				if sg.grantedEffect and sg.grantedEffect.treeId == treeId then
-					local tagsLine = formatScalingTagsLine and formatScalingTagsLine(getScalingTagsList(sg.grantedEffect))
+					-- Use conversion-aware damage types so tree-node swaps
+					-- (Cold/Lightning conversions) appear in the tag list.
+					local dynDt = build.skillsTab.GetDynamicDamageTypesByTreeId
+						and build.skillsTab:GetDynamicDamageTypesByTreeId(treeId)
+					local tagsLine = formatScalingTagsLine and formatScalingTagsLine(getScalingTagsList(sg.grantedEffect, dynDt))
 					if tagsLine then
 						tooltip:AddLine(14, tagsLine)
 					end
