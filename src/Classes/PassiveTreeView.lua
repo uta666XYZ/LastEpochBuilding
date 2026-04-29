@@ -1593,6 +1593,25 @@ function PassiveTreeViewClass:AddNodeTooltip(tooltip, node, build)
 	-- Node name
 	self:AddNodeName(tooltip, node, build)
 
+	-- Scaling Tags for skill-spec tree root nodes (icon ends in "-root").
+	-- The root node's id is "<treeId>-0"; look up the matching socket group's
+	-- grantedEffect, then format with the same helper used for slot tooltips.
+	if self.filterMode == "skill" and node.icon and node.icon:match("%-root$")
+		and node.id and build and build.skillsTab then
+		local treeId = node.id:match("^(.+)%-0$")
+		if treeId then
+			for _, sg in ipairs(build.skillsTab.socketGroupList) do
+				if sg.grantedEffect and sg.grantedEffect.treeId == treeId then
+					local tagsLine = formatScalingTagsLine and formatScalingTagsLine(getScalingTagsList(sg.grantedEffect))
+					if tagsLine then
+						tooltip:AddLine(14, tagsLine)
+					end
+					break
+				end
+			end
+		end
+	end
+
 	-- Show unmet masteryRequirement
 	if node.masteryRequirement and node.masteryRequirement > 0 then
 		local spec = build.spec

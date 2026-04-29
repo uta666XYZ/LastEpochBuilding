@@ -24,6 +24,75 @@ local sortGemTypeList = {
 	{ label = "Effective Hit Pool", type = "TotalEHP" },
 }
 
+-- Scaling Tags display: maps skillTypes bits and attribute scalings into a
+-- short label list (Fire, Cold, Melee, Spell, Intelligence, ...) shown in
+-- skill slot and skill-spec tree root tooltips. Mirrors LE's ability tooltip.
+-- Order: damage types (LE display order) -> combat class -> attributes.
+-- NOTE: Global.lua names bit128 as "Bow" but in-game ability tooltips display
+-- "Elemental" for skills that carry bit128 (e.g. Enchant Weapon, skillTypeTags=131200).
+-- The AT enum dump is incomplete; tag display labels here mirror what LE shows
+-- in the Scaling Tags row, not Global.lua's internal SkillType names.
+local SCALING_TAG_DAMAGE = {
+    { bit = 1,   name = "Physical",  color = colorCodes.PHYSICAL  },
+    { bit = 8,   name = "Fire",      color = colorCodes.FIRE      },
+    { bit = 4,   name = "Cold",      color = colorCodes.COLD      },
+    { bit = 2,   name = "Lightning", color = colorCodes.LIGHTNING },
+    { bit = 32,  name = "Necrotic",  color = colorCodes.NECROTIC  },
+    { bit = 64,  name = "Poison",    color = colorCodes.POISON    },
+    { bit = 16,  name = "Void",      color = colorCodes.VOID      },
+    { bit = 128, name = "Elemental", color = colorCodes.OFFENCE   },
+}
+-- Bit values per Global.lua SkillType enum: Spell=256, Melee=512, Throwing=1024
+local SCALING_TAG_COMBAT = {
+    { bit = 512,  name = "Melee",    color = colorCodes.OFFENCE },
+    { bit = 256,  name = "Spell",    color = colorCodes.OFFENCE },
+    { bit = 1024, name = "Throwing", color = colorCodes.OFFENCE },
+}
+-- Buff bit + (provisional) Instant Cast: shown as plain meta tags after combat class
+local SCALING_TAG_META = {
+    { bit = 131072, name = "Buff",   color = colorCodes.OFFENCE },
+}
+local SCALING_TAG_ATTR_COLOR = {
+    Strength     = colorCodes.STRENGTH,
+    Dexterity    = colorCodes.DEXTERITY,
+    Intelligence = colorCodes.INTELLIGENCE,
+    Attunement   = colorCodes.ATTUNEMENT,
+    Vitality     = colorCodes.VITALITY,
+}
+function getScalingTagsList(grantedEffect)
+    if not grantedEffect then return nil end
+    local tags = {}
+    local flags = grantedEffect.skillTypeTags or 0
+    for _, t in ipairs(SCALING_TAG_DAMAGE) do
+        if bit.band(flags, t.bit) ~= 0 then t_insert(tags, { name = t.name, color = t.color }) end
+    end
+    for _, t in ipairs(SCALING_TAG_COMBAT) do
+        if bit.band(flags, t.bit) ~= 0 then t_insert(tags, { name = t.name, color = t.color }) end
+    end
+    for _, t in ipairs(SCALING_TAG_META) do
+        if bit.band(flags, t.bit) ~= 0 then t_insert(tags, { name = t.name, color = t.color }) end
+    end
+    -- Instant Cast comes from the LE ability field `instantCastForPlayer` (1/0),
+    -- not from the skillTypeTags bitmap. Datamined into skills.json separately.
+    if grantedEffect.instantCastForPlayer == 1 then
+        t_insert(tags, { name = "Instant Cast", color = colorCodes.OFFENCE })
+    end
+    if grantedEffect.attributeScalings then
+        for _, attr in ipairs(grantedEffect.attributeScalings) do
+            t_insert(tags, { name = attr, color = SCALING_TAG_ATTR_COLOR[attr] or colorCodes.NORMAL })
+        end
+    end
+    return tags
+end
+function formatScalingTagsLine(tags)
+    if not tags or #tags == 0 then return nil end
+    local parts = {}
+    for _, tag in ipairs(tags) do
+        t_insert(parts, (tag.color or "^7") .. tag.name)
+    end
+    return "^7Scaling Tags: " .. table.concat(parts, "^7, ")
+end
+
 -- Layout constants for visual skill panel
 local SLOT_SIZE = 76
 local SLOT_GAP = 12
@@ -1213,6 +1282,12 @@ function SkillsTabClass:DrawSpecSlots(viewPort, inputEvents, startY)
 					local valStr = (v == m_floor(v)) and tostring(m_floor(v)) or string.format("%.1f", v)
 					tooltip:AddLine(14, "^7" .. (entry.source or "Unknown") .. ": ^x60A0FF" .. sign .. valStr)
 				end
+			end
+			-- Scaling Tags row (damage types + combat class + attribute scalings)
+			local tagsLine = formatScalingTagsLine(getScalingTagsList(sg.grantedEffect))
+			if tagsLine then
+				tooltip:AddSeparator(8)
+				tooltip:AddLine(14, tagsLine)
 			end
 			tooltip:Draw(sx, sy, SLOT_SIZE, SLOT_SIZE, viewPort)
 			SetDrawLayer(nil, 0)
