@@ -67,7 +67,10 @@ end
 function getScalingTagsList(grantedEffect, dynamicDamageTypes)
     if not grantedEffect then return nil end
     local tags = {}
-    local flags = grantedEffect.skillTypeTags or 0
+    -- Include fakeTags so categories LE adds at runtime (e.g. Judgement is
+    -- Spell-tagged via fakeTags=256 despite being mechanically Melee) appear
+    -- in the Scaling Tags row exactly like the in-game tooltip.
+    local flags = bit.bor(grantedEffect.skillTypeTags or 0, grantedEffect.fakeTags or 0)
     if dynamicDamageTypes and #dynamicDamageTypes > 0 then
         for _, dt in ipairs(dynamicDamageTypes) do
             if dt.isBase then t_insert(tags, { name = capitalizeDamageType(dt.type) }) end
@@ -90,10 +93,10 @@ function getScalingTagsList(grantedEffect, dynamicDamageTypes)
         if bit.band(flags, t.bit) ~= 0 then t_insert(tags, { name = t.name, color = t.color }) end
     end
     -- Area tag: Ability.areaTagDisplay {None=0, Tag=1, MinionTagOnly=2, TagAndMinionTag=3}.
-    -- LE shows "Area" in the Scaling Tags row when this is non-zero (Tag or TagAndMinionTag);
-    -- the MinionTagOnly variant tags only the minion ability, not the parent. We surface
-    -- it for any non-zero value here to mirror the in-game tooltip.
-    if grantedEffect.areaTagDisplay and grantedEffect.areaTagDisplay ~= 0 then
+    -- Scaling Tags row gets Area only when value is Tag(1) or TagAndMinionTag(3).
+    -- MinionTagOnly(2) is surfaced separately on the Minion Tags row.
+    local atd = grantedEffect.areaTagDisplay or 0
+    if atd == 1 or atd == 3 then
         t_insert(tags, { name = "Area" })
     end
     -- Instant Cast comes from the LE ability field `instantCastForPlayer` (1/0),
@@ -115,6 +118,40 @@ function formatScalingTagsLine(tags)
         t_insert(parts, "^7" .. tag.name)
     end
     return "^7Scaling Tags: " .. table.concat(parts, ", ")
+end
+-- Minion Tags row: tags of the minion ability spawned by this skill.
+-- Source: Ability.minionTagsDisplay (datamined into skills.json) — same bitmap
+-- layout as skillTypeTags. Plus Area when areaTagDisplay is MinionTagOnly(2)
+-- or TagAndMinionTag(3). Returns nil when the skill spawns no minion (i.e.
+-- minionTagsDisplay == 0 and areaTagDisplay does not include MinionTag).
+function getMinionTagsList(grantedEffect)
+    if not grantedEffect then return nil end
+    local mtd = grantedEffect.minionTagsDisplay or 0
+    local atd = grantedEffect.areaTagDisplay or 0
+    local hasMinionArea = (atd == 2 or atd == 3)
+    if mtd == 0 and not hasMinionArea then return nil end
+    local tags = {}
+    for _, t in ipairs(SCALING_TAG_DAMAGE) do
+        if bit.band(mtd, t.bit) ~= 0 then t_insert(tags, { name = t.name }) end
+    end
+    for _, t in ipairs(SCALING_TAG_COMBAT) do
+        if bit.band(mtd, t.bit) ~= 0 then t_insert(tags, { name = t.name, color = t.color }) end
+    end
+    for _, t in ipairs(SCALING_TAG_META) do
+        if bit.band(mtd, t.bit) ~= 0 then t_insert(tags, { name = t.name, color = t.color }) end
+    end
+    if hasMinionArea then
+        t_insert(tags, { name = "Area" })
+    end
+    return tags
+end
+function formatMinionTagsLine(tags)
+    if not tags or #tags == 0 then return nil end
+    local parts = {}
+    for _, tag in ipairs(tags) do
+        t_insert(parts, "^7" .. tag.name)
+    end
+    return "^7Minion Tags: " .. table.concat(parts, ", ")
 end
 
 -- Layout constants for visual skill panel
@@ -1346,9 +1383,11 @@ function SkillsTabClass:DrawSpecSlots(viewPort, inputEvents, startY)
 			-- are reflected in the tag display.
 			local dynDt = self:GetDynamicDamageTypes(i)
 			local tagsLine = formatScalingTagsLine(getScalingTagsList(sg.grantedEffect, dynDt))
-			if tagsLine then
+			local minionLine = formatMinionTagsLine(getMinionTagsList(sg.grantedEffect))
+			if tagsLine or minionLine then
 				tooltip:AddSeparator(8)
-				tooltip:AddLine(14, tagsLine)
+				if tagsLine then tooltip:AddLine(14, tagsLine) end
+				if minionLine then tooltip:AddLine(14, minionLine) end
 			end
 			tooltip:Draw(sx, sy, SLOT_SIZE, SLOT_SIZE, viewPort)
 			SetDrawLayer(nil, 0)

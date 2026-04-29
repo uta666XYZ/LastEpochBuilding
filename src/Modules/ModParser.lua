@@ -1436,6 +1436,14 @@ end
 specialModList["^%+?(%d+) to (.+) abilities$"] = function(num, _, cat)
 	return dispatchCatSkills(num, cat)
 end
+-- Alias: "+N to <Cat> Minions" — game writes some +Skills affixes without the
+-- trailing "Skills" word. Re-route to dispatchCatSkills with " minion"
+-- appended. The Spells variant has its own dedicated handler below (21f) that
+-- combines Spell with damage-type filters; defining it here would be shadowed
+-- by Lua's last-write-wins on duplicate table keys.
+specialModList["^%+?(%d+) to (.+) minions$"] = function(num, _, cat)
+	return dispatchCatSkills(num, cat .. " minion")
+end
 -- 21d-attr. "+N to (Level of) <Cat> Skills per <D> Total Attributes" —
 -- conditional scaling: emits SkillLevel BASE with a PerStat tag over
 -- (Str+Dex+Int+Att+Vit) divided by D. Pre-empts the generic
@@ -1508,9 +1516,24 @@ specialModList["^%+?(%d+) to (.+) spells$"] = function(num, _, cat)
 	end
 	local dmgKf = skillCatFlags[cat]
 	if dmgKf then
-		-- AND-match Spell+<damage type> so "+2 to Fire Spells" only applies to
-		-- skills tagged with both Spell and Fire (not every Spell or every Fire).
-		return { mod("SkillLevel", "BASE", num, "", 0, bor(kf, dmgKf, KeywordFlag.MatchAll)) }
+		-- Spell AND (damage types). For single-type categories (e.g. "Fire") we
+		-- want both bits present, so MatchAll is correct. For multi-type
+		-- categories like "Elemental" (Fire|Cold|Lightning) we want Spell AND
+		-- *any* of the elemental bits — MatchAll would force the skill to carry
+		-- all three damage types simultaneously, which never happens (Judgement
+		-- is Fire+Spell, so "+1 to Elemental Spells" would never apply).
+		-- Detect multi-bit dmgKf by counting set bits and switch matching mode:
+		--   single-bit → keywordFlags = Spell|Damage with MatchAll (both required)
+		--   multi-bit  → SkillType=Spell tag (Spell required) + damage keywordFlags (any-of)
+		local bits, tmp = 0, dmgKf
+		while tmp ~= 0 do
+			bits = bits + (band(tmp, 1) ~= 0 and 1 or 0)
+			tmp = bit.rshift(tmp, 1)
+		end
+		if bits <= 1 then
+			return { mod("SkillLevel", "BASE", num, "", 0, bor(kf, dmgKf, KeywordFlag.MatchAll)) }
+		end
+		return { mod("SkillLevel", "BASE", num, "", 0, dmgKf, { type = "SkillType", skillType = SkillType.Spell }) }
 	end
 	local attrName = skillCatAttrs[cat]
 	if attrName then
