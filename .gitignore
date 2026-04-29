@@ -1,5 +1,4 @@
-# Claude Code
-CLAUDE.md
+# Build scripts (internal)
 scripts/
 
 # Development tools
@@ -34,9 +33,6 @@ runtime/imgui.ini
 runtime/*.exe
 runtime/*.dll
 
-# Hook logs
-.claude/command-log.txt
-
 # Logs
 debug.log
 src/*.log
@@ -45,23 +41,23 @@ src/Settings.xml
 # Distribution archives
 runtime-win32.zip
 
-# AI assistant context files (internal use only)
+# AI assistant context files (internal use only - never commit to public repo)
+CLAUDE.md
 QWEN.md
+GEMINI.md
+AGENTS.md
+.claude/
+.claudeignore
 .opencode/
+.cursor/
+.aider*
+.windsurf/
+.continue/
 claude-project/
+.mcp.json
 
 # Local memo files
 *.txt
-
-# Claude Code internal files
-.claudeignore
-.claude/settings.local.json
-.claude/skills/
-.claude/worktrees/
-.claude/active_session.md
-.claude/session-hook.log
-.claude/command-log.txt
-.claude/session_notes.md
 
 
 # IDE run configurations

@@ -734,6 +734,19 @@ function ModStoreClass:EvalMod(mod, cfg)
 			if not match then
 				return
 			end
+		elseif tag.type == "SkillAttribute" then
+			-- Filter for "+N to <Attribute> Skills" affixes. Mirrors LE's
+			-- ScalesWithAttribute(): the affix applies iff the active skill's
+			-- effective attribute scalings (static ∪ class primary) contain the
+			-- requested attribute. Granted-effect-side attributes are populated
+			-- by DataProcess into skillAttributes.
+			local match = cfg and cfg.skillAttributes and cfg.skillAttributes[tag.attribute] or false
+			if tag.neg then
+				match = not match
+			end
+			if not match then
+				return
+			end
 		elseif tag.type == "SlotName" then
 			if not cfg then
 				return
