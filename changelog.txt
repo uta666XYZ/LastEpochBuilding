@@ -1,3 +1,8 @@
+VERSION[Unreleased]
+
+--- Notable Changes ---
+- LETools URL direct import is supported after all (the Creator was mistaken in v0.13.0). Paste https://www.lastepochtools.com/planner/XXXXX directly into the Import dialog. The deprecated note referred to the old LETools account-scraping path, which is now replaced by the Maxroll account API.
+
 VERSION[0.13.1][2026/04/28]
 
 --- Bug Fixes ---
