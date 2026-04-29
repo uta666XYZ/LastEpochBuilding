@@ -2873,7 +2873,6 @@
       "level": 76
     },
     "mods": [
-      "+1 to All Skills",
       "+(1-45)% Physical Resistance",
       "+(1-45)% Fire Resistance",
       "+(1-45)% Cold Resistance",
@@ -2884,7 +2883,6 @@
       "{rounding:Integer}+(1-2) to Level of All Skills"
     ],
     "rollIds": [
-      null,
       0,
       1,
       2,

@@ -152,37 +152,16 @@ for skillId, grantedEffect in pairs(data.skills) do
             end
         end
     end
-    -- LE's `skillTreeConversionDamageTags` (Ability offset 0x310) advertises
-    -- damage types reachable via spec-tree allocation (e.g. Focus/Arcane
-    -- Ascendance/Flame Ward all have `tags = Spell` only but advertise
-    -- Lightning here). In-game, "+to <DamageType> Skills" affixes match these
-    -- skills even at base — confirmed by Off-Hand Catalyst "+1 Lightning
-    -- Skills" raising Focus's level cap. Mirror these bits into skillTypes so
-    -- cap-summing's SkillType predicate accepts the affix, and so the Scaling
-    -- Tags row picks them up via displayTags below.
-    --
-    -- BUT: skip the mirror when the cast is a wrapper that doesn't directly
-    -- deliver damage — minion-summon parents and Transform skills. Their stcdt
-    -- describes the spawned minion's / transformed entity's damage, not the
-    -- cast's. Confirmed against in-game tooltips:
-    --   * Summon Thorn Totem: "+3 Cold Skills" does NOT raise its level
-    --     (only "+3 Minion Cold Skills" does — handled via minionKeywordFlags
-    --     in CalcSetup).
-    --   * Spriggan Form: Apogee of Frozen Light "+3 Cold Skills" and
-    --     Death Rattle "+1 Necrotic Skills" do NOT apply, even though
-    --     stcdt advertises Cold/Necrotic for spec-tree branches.
-    -- Detection mirrors the displayTags split logic below.
-    local _isMinionSummonParent = (grantedEffect.minionTagsDisplay or 0) ~= 0
-    local _isTransform = grantedEffect.baseFlags and grantedEffect.baseFlags.transform
-    if grantedEffect.skillTreeConversionDamageTags and grantedEffect.skillTreeConversionDamageTags ~= 0
-       and not _isMinionSummonParent and not _isTransform then
-        for name, skillType in pairs(SkillType) do
-            if skillType ~= 0 and skillType ~= SkillType.Unsupported
-               and bit.band(grantedEffect.skillTreeConversionDamageTags, skillType) == skillType then
-                grantedEffect.skillTypes[skillType] = true
-            end
-        end
-    end
+    -- NOTE: skillTreeConversionDamageTags (stcdt) is intentionally NOT mirrored
+    -- into skillTypes/keywordFlags here. LE's GetTagsForLevelOfSkillsStats() —
+    -- which gates "+to <Cat> Skills" affixes — uses ONLY `tags | fakeTags`
+    -- (confirmed via decompile, 2026-04). stcdt advertises tree-reachable
+    -- damage types for the Scaling Tags tooltip row only; folding it into the
+    -- cap-summing keywordFlags would falsely match affixes like Whetstone
+    -- Gavel "+1 Fire Skills" against any skill whose spec tree merely has a
+    -- Fire branch (e.g. Umbral Blades carrying Cold/Fire/Poison in stcdt).
+    -- The Scaling Tags tooltip is unaffected: displayTags below explicitly
+    -- ORs stcdt for non-minion-parent skills.
     -- Also expose a keywordFlags bitmap for skillCfg consumers that filter mods by
     -- the skill's category (Spell/Melee/Minion/elemental). Built from skillTypes so
     -- baseFlags-derived and fakeTags-derived bits are included.
