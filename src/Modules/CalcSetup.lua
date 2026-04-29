@@ -1658,7 +1658,7 @@ function calcs.initEnv(build, mode, override, specEnv)
 				-- Apply tree-injected damage-type tag swaps (e.g. Spark Artillery
 				-- swapping Frost Claw Cold->Lightning) so "+N to Lightning Spells"
 				-- etc. matches the swapped skill in this cap-summing pass too.
-				local treeSwaps = calcs.getTreeTagSwaps(env, group.grantedEffect.treeId)
+				local treeSwaps = calcs.getTreeTagSwaps(env, group.grantedEffect.treeId, group.grantedEffect)
 				local skillTypes, keywordFlags = calcs.applyTreeTagSwaps(
 					treeSwaps,
 					group.grantedEffect.skillTypes,

@@ -218,10 +218,28 @@ local damageTypeBitsByName = {
 	Cold = SkillType.Cold, Fire = SkillType.Fire, Void = SkillType.Void,
 	Necrotic = SkillType.Necrotic, Poison = SkillType.Poison,
 }
-function calcs.getTreeTagSwaps(env, treeId)
+function calcs.getTreeTagSwaps(env, treeId, grantedEffect)
 	if not (treeId and env and env.allocNodes) then return nil end
 	local prefix = treeId .. "-"
 	local swaps
+	-- For source-less "<X> Conversion" stats (e.g. Earth Smasher's
+	-- "Physical Conversion" on Gathering Storm), infer the source bit from
+	-- the skill's intrinsic damage tags. Earth Smasher's tooltip explicitly
+	-- says "Swaps Gathering Storm's Lightning tag for a Physical tag" — i.e.
+	-- the skill's existing damage-type bit becomes the destination.
+	local DAMAGE_TYPE_BITS = bit.bor(SkillType.Physical, SkillType.Lightning,
+		SkillType.Cold, SkillType.Fire, SkillType.Void, SkillType.Necrotic,
+		SkillType.Poison)
+	local intrinsicDmgBits = {}
+	if grantedEffect then
+		local tags = bit.bor(grantedEffect.skillTypeTags or 0, grantedEffect.fakeTags or 0)
+		local dmgMask = bit.band(tags, DAMAGE_TYPE_BITS)
+		for _, b in pairs(damageTypeBitsByName) do
+			if bit.band(dmgMask, b) == b then
+				t_insert(intrinsicDmgBits, b)
+			end
+		end
+	end
 	for nodeId, node in pairs(env.allocNodes) do
 		if nodeId:sub(1, #prefix) == prefix and node.stats then
 			for _, stat in ipairs(node.stats) do
@@ -236,6 +254,21 @@ function calcs.getTreeTagSwaps(env, treeId)
 				   and damageTypeBitsByName[src] ~= damageTypeBitsByName[dst] then
 					swaps = swaps or {}
 					swaps[damageTypeBitsByName[src]] = damageTypeBitsByName[dst]
+				else
+					-- Source-less "<X> Conversion" — infer source from skill's
+					-- intrinsic damage type. Matches LE's per-skill tooltip
+					-- behaviour ("Swaps <Skill>'s <SrcType> tag for a <DstType>
+					-- tag.") for nodes like Earth Smasher.
+					local soloDst = stat:match("^%s*(%w+)%s+Conversion%s*$")
+					if soloDst and damageTypeBitsByName[soloDst] then
+						local dstBit = damageTypeBitsByName[soloDst]
+						for _, srcBit in ipairs(intrinsicDmgBits) do
+							if srcBit ~= dstBit then
+								swaps = swaps or {}
+								swaps[srcBit] = dstBit
+							end
+						end
+					end
 				end
 			end
 		end
@@ -340,7 +373,7 @@ function calcs.buildActiveSkillModList(env, activeSkill)
 
 	-- Apply tree-injected damage-type tag swaps so affixes like
 	-- "+N to Lightning Spells" match a Cold->Lightning-swapped Frost Claw.
-	local treeSwaps = calcs.getTreeTagSwaps(env, activeGrantedEffect.treeId)
+	local treeSwaps = calcs.getTreeTagSwaps(env, activeGrantedEffect.treeId, activeGrantedEffect)
 	if treeSwaps then
 		local _, newKw = calcs.applyTreeTagSwaps(treeSwaps, skillTypes, activeSkill.skillCfg and activeSkill.skillCfg.keywordFlags or 0, true)
 		for _, cfg in ipairs({ activeSkill.skillCfg, activeSkill.weapon1Cfg, activeSkill.weapon2Cfg }) do
