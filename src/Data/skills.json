@@ -4257,7 +4257,8 @@
       "melee": true,
       "attack": true,
       "hit": true,
-      "duration": true
+      "duration": true,
+      "transform": true
     },
     "stats": {
       "damageEffectiveness": 1,
@@ -5011,7 +5012,8 @@
     "baseFlags": {
       "spell": true,
       "hit": true,
-      "duration": true
+      "duration": true,
+      "transform": true
     },
     "stats": {
       "damageEffectiveness": 1,
@@ -5755,7 +5757,8 @@
       "attack": true,
       "hit": true,
       "dot": true,
-      "duration": true
+      "duration": true,
+      "transform": true
     },
     "stats": {
       "damageEffectiveness": 1,
@@ -6372,7 +6375,8 @@
     "skillTypeTags": 0,
     "castTime": 0.54545456,
     "baseFlags": {
-      "duration": true
+      "duration": true,
+      "transform": true
     },
     "stats": {
       "base_skill_effect_duration": 10000000,
