@@ -4,6 +4,9 @@
     "skillTypeTags": 0,
     "castTime": 1.3636364,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "hit": true,
       "spell": true,
@@ -29,6 +32,9 @@
     "skillTypeTags": 513,
     "castTime": 0.9090909,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -51,6 +57,9 @@
     "skillTypeTags": 4368,
     "castTime": 0.6363636,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -76,6 +85,9 @@
     "skillTypeTags": 1089,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -2303,6 +2315,9 @@
     "skillTypeTags": 260,
     "castTime": 1.8181818,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -2331,6 +2346,9 @@
     "skillTypeTags": 272,
     "castTime": 0.9090909,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -2354,6 +2372,9 @@
     "skillTypeTags": 272,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -2373,6 +2394,9 @@
     "skillTypeTags": 131328,
     "castTime": 0.6818182,
     "instantCastForPlayer": 1,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "dot": true
@@ -2394,6 +2418,9 @@
     "skillTypeTags": 1,
     "castTime": 2.0454545,
     "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 2,
+    "minionTagsDisplay": 513,
     "baseFlags": {
       "minion": true
     },
@@ -2417,6 +2444,9 @@
     "skillTypeTags": 4160,
     "castTime": 0.6818182,
     "instantCastForPlayer": 1,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {},
     "stats": {
       "chance_to_cast_Ailment_Poison_on_hit_%": 100,
@@ -2438,6 +2468,9 @@
     "skillTypeTags": 261,
     "castTime": 0.72727275,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -2468,6 +2501,9 @@
     "skillTypeTags": 1025,
     "castTime": 0.64935064,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -2496,6 +2532,9 @@
     "skillTypeTags": 2049,
     "castTime": 1.3939393,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -2523,6 +2562,9 @@
     "skillTypeTags": 513,
     "castTime": 1.0909091,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -2545,6 +2587,9 @@
     "skillTypeTags": 4356,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "dot": true,
@@ -2574,6 +2619,9 @@
     "skillTypeTags": 513,
     "castTime": 1.3636363,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -2603,6 +2651,9 @@
     "skillTypeTags": 513,
     "castTime": 0.45454544,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -2633,6 +2684,9 @@
     "skillTypeTags": 513,
     "castTime": 0.9090909,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -2664,6 +2718,9 @@
     "skillTypeTags": 16777473,
     "castTime": 0.45454544,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -2687,6 +2744,9 @@
     "skillTypeTags": 1032,
     "castTime": 0.64935064,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -2714,6 +2774,9 @@
     "skillTypeTags": 520,
     "castTime": 0.75757575,
     "instantCastForPlayer": 0,
+    "fakeTags": 2048,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -2739,6 +2802,9 @@
     "skillTypeTags": 513,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -2769,6 +2835,9 @@
     "skillTypeTags": 131072,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -2794,6 +2863,9 @@
     "skillTypeTags": 131360,
     "castTime": 0.6818182,
     "instantCastForPlayer": 1,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -2823,6 +2895,9 @@
     "skillTypeTags": 545,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -2846,6 +2921,9 @@
     "skillTypeTags": 1032,
     "castTime": 0.2121212,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -2874,6 +2952,9 @@
     "skillTypeTags": 2050,
     "castTime": 0.81818175,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -2903,6 +2984,9 @@
     "skillTypeTags": 4368,
     "castTime": 0.59090906,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -2933,6 +3017,9 @@
     "skillTypeTags": 4362,
     "castTime": 0.048484847,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "dot": true,
@@ -2961,6 +3048,9 @@
     "skillTypeTags": 272,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -2986,6 +3076,9 @@
     "skillTypeTags": 264,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -3006,6 +3099,9 @@
     "skillTypeTags": 264,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -3030,6 +3126,9 @@
     "skillTypeTags": 288,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -3050,6 +3149,9 @@
     "skillTypeTags": 4384,
     "castTime": 0.048484847,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "dot": true,
@@ -3076,6 +3178,9 @@
     "skillTypeTags": 131360,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -3099,6 +3204,9 @@
     "skillTypeTags": 513,
     "castTime": 0.75757575,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -3130,6 +3238,9 @@
     "skillTypeTags": 270,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -3159,6 +3270,9 @@
     "skillTypeTags": 131200,
     "castTime": 0.3409091,
     "instantCastForPlayer": 1,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "duration": true
     },
@@ -3177,6 +3291,9 @@
     "skillTypeTags": 4353,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -3205,6 +3322,9 @@
     "skillTypeTags": 528,
     "castTime": 0.8522727,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -3237,6 +3357,9 @@
     "skillTypeTags": 131328,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -3260,6 +3383,9 @@
     "skillTypeTags": 0,
     "castTime": 1.3636364,
     "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 1537,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -3286,6 +3412,9 @@
     "skillTypeTags": 0,
     "castTime": 0.7954545,
     "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 1025,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -3316,6 +3445,9 @@
     "skillTypeTags": 8705,
     "castTime": 0.7954545,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -3346,6 +3478,9 @@
     "skillTypeTags": 1032,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -3371,6 +3506,9 @@
     "skillTypeTags": 1025,
     "castTime": 0.58441556,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -3401,6 +3539,9 @@
     "skillTypeTags": 0,
     "castTime": 0.45454544,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "duration": true
     },
@@ -3416,6 +3557,9 @@
     "skillTypeTags": 513,
     "castTime": 1.2727273,
     "instantCastForPlayer": 0,
+    "fakeTags": 513,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -3439,6 +3583,9 @@
     "skillTypeTags": 4360,
     "castTime": 0.36363637,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "dot": true,
@@ -3464,6 +3611,9 @@
     "skillTypeTags": 264,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -3492,6 +3642,9 @@
     "skillTypeTags": 520,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -3523,6 +3676,9 @@
     "skillTypeTags": 264,
     "castTime": 0.6636364,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -3549,6 +3705,9 @@
     "skillTypeTags": 135432,
     "castTime": 0.6818182,
     "instantCastForPlayer": 1,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -3573,6 +3732,9 @@
     "skillTypeTags": 520,
     "castTime": 0.72727275,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -3604,6 +3766,9 @@
     "skillTypeTags": 131336,
     "castTime": 0.3409091,
     "instantCastForPlayer": 1,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -3628,6 +3793,9 @@
     "skillTypeTags": 513,
     "castTime": 0.9090909,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -3659,6 +3827,9 @@
     "skillTypeTags": 513,
     "castTime": 0.78398657,
     "instantCastForPlayer": 0,
+    "fakeTags": 2048,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -3687,6 +3858,9 @@
     "skillTypeTags": 131328,
     "castTime": 2.7272727,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "channelling": true
@@ -3702,6 +3876,9 @@
     "skillTypeTags": 513,
     "castTime": 0.7177034,
     "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 3,
+    "minionTagsDisplay": 513,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -3735,6 +3912,9 @@
     "skillTypeTags": 131328,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -3752,6 +3932,9 @@
     "skillTypeTags": 260,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -3779,6 +3962,9 @@
     "skillTypeTags": 513,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -3808,6 +3994,9 @@
     "skillTypeTags": 272,
     "castTime": 1.6363635,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -3836,6 +4025,9 @@
     "skillTypeTags": 514,
     "castTime": 0.72727275,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -3866,6 +4058,9 @@
     "skillTypeTags": 260,
     "castTime": 0.76923084,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -3894,6 +4089,9 @@
     "skillTypeTags": 6145,
     "castTime": 0.9090909,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -3925,6 +4123,9 @@
     "skillTypeTags": 264,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -3945,6 +4146,9 @@
     "skillTypeTags": 1025,
     "castTime": 0.64935064,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -3975,6 +4179,9 @@
     "skillTypeTags": 544,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -4005,6 +4212,9 @@
     "skillTypeTags": 131328,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -4029,6 +4239,9 @@
     "skillTypeTags": 2049,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -4058,6 +4271,9 @@
     "skillTypeTags": 260,
     "castTime": 0.6363636,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -4085,6 +4301,9 @@
     "skillTypeTags": 131328,
     "castTime": 0.6818182,
     "instantCastForPlayer": 1,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -4104,6 +4323,9 @@
     "skillTypeTags": 4384,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -4132,6 +4354,9 @@
     "skillTypeTags": 260,
     "castTime": 0.76555026,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -4162,6 +4387,9 @@
     "skillTypeTags": 261,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -4190,6 +4418,9 @@
     "skillTypeTags": 131332,
     "castTime": 0.6818182,
     "instantCastForPlayer": 1,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -4208,6 +4439,9 @@
     "skillTypeTags": 4360,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "dot": true,
@@ -4236,6 +4470,9 @@
     "skillTypeTags": 1025,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -4266,6 +4503,9 @@
     "skillTypeTags": 4616,
     "castTime": 0.8556149,
     "instantCastForPlayer": 0,
+    "fakeTags": 256,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -4299,6 +4539,9 @@
     "skillTypeTags": 513,
     "castTime": 1.3636364,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -4329,6 +4572,9 @@
     "skillTypeTags": 258,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -4356,6 +4602,9 @@
     "skillTypeTags": 258,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -4377,6 +4626,9 @@
     "skillTypeTags": 513,
     "castTime": 0.45454544,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -4408,6 +4660,9 @@
     "skillTypeTags": 4356,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "dot": true,
@@ -4436,6 +4691,9 @@
     "skillTypeTags": 514,
     "castTime": 0.59090906,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -4466,6 +4724,9 @@
     "skillTypeTags": 513,
     "castTime": 1,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -4488,6 +4749,9 @@
     "skillTypeTags": 0,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 513,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -4518,6 +4782,9 @@
     "skillTypeTags": 256,
     "castTime": 0.45454544,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -4540,6 +4807,9 @@
     "skillTypeTags": 257,
     "castTime": 0.65604496,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -4567,6 +4837,9 @@
     "skillTypeTags": 264,
     "castTime": 0.7954545,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -4595,6 +4868,9 @@
     "skillTypeTags": 513,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -4623,6 +4899,9 @@
     "skillTypeTags": 4360,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 264,
     "baseFlags": {
       "spell": true,
       "dot": true,
@@ -4655,6 +4934,9 @@
     "skillTypeTags": 513,
     "castTime": 0.6818181,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -4677,6 +4959,9 @@
     "skillTypeTags": 258,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -4702,6 +4987,9 @@
     "skillTypeTags": 513,
     "castTime": 1.0031347,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -4724,6 +5012,9 @@
     "skillTypeTags": 513,
     "castTime": 1.0909091,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -4746,6 +5037,9 @@
     "skillTypeTags": 257,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -4766,6 +5060,9 @@
     "skillTypeTags": 384,
     "castTime": 0.64935064,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -4798,6 +5095,9 @@
     "skillTypeTags": 513,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 2048,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -4827,6 +5127,9 @@
     "skillTypeTags": 131336,
     "castTime": 1.0909091,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "dot": true,
@@ -4851,6 +5154,9 @@
     "skillTypeTags": 0,
     "castTime": 0.5,
     "instantCastForPlayer": 0,
+    "fakeTags": 512,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -4875,6 +5181,9 @@
     "skillTypeTags": 257,
     "castTime": 1.4545455,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -4902,6 +5211,9 @@
     "skillTypeTags": 0,
     "castTime": 0.6818182,
     "instantCastForPlayer": 1,
+    "fakeTags": 8192,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 131072,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -4932,6 +5244,9 @@
     "skillTypeTags": 257,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -4960,6 +5275,9 @@
     "skillTypeTags": 513,
     "castTime": 0.54545456,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -4988,6 +5306,9 @@
     "skillTypeTags": 513,
     "castTime": 0.12121212,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -5017,6 +5338,9 @@
     "skillTypeTags": 513,
     "castTime": 0.7954545,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -5039,6 +5363,9 @@
     "skillTypeTags": 2049,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -5068,6 +5395,9 @@
     "skillTypeTags": 4356,
     "castTime": 0.5594406,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -5094,6 +5424,9 @@
     "skillTypeTags": 4354,
     "castTime": 0.5594406,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "dot": true,
@@ -5124,6 +5457,9 @@
     "skillTypeTags": 270,
     "castTime": 0.81818175,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -5147,6 +5483,9 @@
     "skillTypeTags": 264,
     "castTime": 0.6818181,
     "instantCastForPlayer": 0,
+    "fakeTags": 14,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -5175,6 +5514,9 @@
     "skillTypeTags": 264,
     "castTime": 0.6818181,
     "instantCastForPlayer": 0,
+    "fakeTags": 14,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -5203,6 +5545,9 @@
     "skillTypeTags": 264,
     "castTime": 0.6818181,
     "instantCastForPlayer": 0,
+    "fakeTags": 14,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -5232,6 +5577,9 @@
     "skillTypeTags": 264,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -5262,6 +5610,9 @@
     "skillTypeTags": 270,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -5288,6 +5639,9 @@
     "skillTypeTags": 264,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -5312,6 +5666,9 @@
     "skillTypeTags": 257,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -5340,6 +5697,9 @@
     "skillTypeTags": 513,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -5362,6 +5722,9 @@
     "skillTypeTags": 513,
     "castTime": 0.81818175,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -5385,6 +5748,9 @@
     "skillTypeTags": 577,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -5417,6 +5783,9 @@
     "skillTypeTags": 513,
     "castTime": 1.017639,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -5446,6 +5815,9 @@
     "skillTypeTags": 516,
     "castTime": 0.59090906,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -5474,6 +5846,9 @@
     "skillTypeTags": 513,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -5503,6 +5878,9 @@
     "skillTypeTags": 513,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -5532,6 +5910,9 @@
     "skillTypeTags": 1025,
     "castTime": 0.6293706,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -5563,6 +5944,9 @@
     "skillTypeTags": 0,
     "castTime": 0.18181819,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "duration": true
     },
@@ -5585,6 +5969,9 @@
     "skillTypeTags": 1025,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -5613,6 +6000,9 @@
     "skillTypeTags": 131328,
     "castTime": 0.487013,
     "instantCastForPlayer": 1,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true
     },
@@ -5630,6 +6020,9 @@
     "skillTypeTags": 4384,
     "castTime": 0.90909094,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -5656,6 +6049,9 @@
     "skillTypeTags": 521,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -5686,6 +6082,9 @@
     "skillTypeTags": 264,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -5714,6 +6113,9 @@
     "skillTypeTags": 1024,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -5735,6 +6137,9 @@
     "skillTypeTags": 260,
     "castTime": 0.54545456,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -5758,6 +6163,9 @@
     "skillTypeTags": 256,
     "castTime": 0.7177034,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -5774,6 +6182,9 @@
     "skillTypeTags": 16781600,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -5797,6 +6208,9 @@
     "skillTypeTags": 257,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -5823,6 +6237,9 @@
     "skillTypeTags": 0,
     "castTime": 0.6363636,
     "instantCastForPlayer": 0,
+    "fakeTags": 155905,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -5849,6 +6266,9 @@
     "skillTypeTags": 258,
     "castTime": 0.6818182,
     "instantCastForPlayer": 1,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -5877,6 +6297,9 @@
     "skillTypeTags": 258,
     "castTime": 0.76555026,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -5905,6 +6328,9 @@
     "skillTypeTags": 258,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 258,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -5930,6 +6356,9 @@
     "skillTypeTags": 257,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -5945,6 +6374,9 @@
     "skillTypeTags": 0,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 513,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -5972,6 +6404,9 @@
     "skillTypeTags": 0,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 513,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -5999,6 +6434,9 @@
     "skillTypeTags": 2049,
     "castTime": 1.2727273,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -6021,6 +6459,9 @@
     "skillTypeTags": 0,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 825,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -6040,6 +6481,9 @@
     "skillTypeTags": 0,
     "castTime": 0.61983466,
     "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 513,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -6064,6 +6508,9 @@
     "skillTypeTags": 0,
     "castTime": 0.54545456,
     "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 2049,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -6090,6 +6537,9 @@
     "skillTypeTags": 0,
     "castTime": 1.3636364,
     "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 2,
+    "minionTagsDisplay": 513,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -6118,6 +6568,9 @@
     "skillTypeTags": 0,
     "castTime": 0.9090909,
     "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 513,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -6141,6 +6594,9 @@
     "skillTypeTags": 0,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 2,
+    "minionTagsDisplay": 769,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -6168,6 +6624,9 @@
     "skillTypeTags": 0,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 2,
+    "minionTagsDisplay": 513,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -6196,6 +6655,9 @@
     "skillTypeTags": 0,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 513,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -6215,6 +6677,9 @@
     "skillTypeTags": 0,
     "castTime": 0.54545456,
     "instantCastForPlayer": 0,
+    "fakeTags": 24576,
+    "areaTagDisplay": 2,
+    "minionTagsDisplay": 131072,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -6245,6 +6710,9 @@
     "skillTypeTags": 8192,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -6268,6 +6736,9 @@
     "skillTypeTags": 0,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 288,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -6295,6 +6766,9 @@
     "skillTypeTags": 0,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 2049,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -6320,6 +6794,9 @@
     "skillTypeTags": 0,
     "castTime": 1.3636364,
     "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 2,
+    "minionTagsDisplay": 513,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -6351,6 +6828,9 @@
     "skillTypeTags": 0,
     "castTime": 1.3636364,
     "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 2,
+    "minionTagsDisplay": 513,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -6382,6 +6862,9 @@
     "skillTypeTags": 0,
     "castTime": 1.3636364,
     "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 2,
+    "minionTagsDisplay": 577,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -6413,6 +6896,9 @@
     "skillTypeTags": 0,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 2,
+    "minionTagsDisplay": 577,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -6440,6 +6926,9 @@
     "skillTypeTags": 0,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 2,
+    "minionTagsDisplay": 2561,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -6467,6 +6956,9 @@
     "skillTypeTags": 0,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 513,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -6491,6 +6983,9 @@
     "skillTypeTags": 0,
     "castTime": 1.3636364,
     "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 131329,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -6520,6 +7015,9 @@
     "skillTypeTags": 0,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 258,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -6550,6 +7048,9 @@
     "skillTypeTags": 0,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 258,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -6574,6 +7075,9 @@
     "skillTypeTags": 0,
     "castTime": 0.54545456,
     "instantCastForPlayer": 0,
+    "fakeTags": 24576,
+    "areaTagDisplay": 2,
+    "minionTagsDisplay": 258,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -6602,6 +7106,9 @@
     "skillTypeTags": 0,
     "castTime": 0.54545456,
     "instantCastForPlayer": 0,
+    "fakeTags": 24576,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 257,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -6628,6 +7135,9 @@
     "skillTypeTags": 257,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "minion": true,
@@ -6652,6 +7162,9 @@
     "skillTypeTags": 0,
     "castTime": 0.72727275,
     "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 2,
+    "minionTagsDisplay": 265,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -6678,6 +7191,9 @@
     "skillTypeTags": 0,
     "castTime": 1.3636364,
     "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 2,
+    "minionTagsDisplay": 513,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -6705,6 +7221,9 @@
     "skillTypeTags": 0,
     "castTime": 0.61983466,
     "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 2,
+    "minionTagsDisplay": 513,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -6732,6 +7251,9 @@
     "skillTypeTags": 514,
     "castTime": 0.12121212,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -6764,6 +7286,9 @@
     "skillTypeTags": 0,
     "castTime": 0.3409091,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "duration": true
     },
@@ -6779,6 +7304,9 @@
     "skillTypeTags": 0,
     "castTime": 0.72727275,
     "instantCastForPlayer": 0,
+    "fakeTags": 12801,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -6810,6 +7338,9 @@
     "skillTypeTags": 0,
     "castTime": 0.9090909,
     "instantCastForPlayer": 0,
+    "fakeTags": 8192,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "minion": true,
       "duration": true
@@ -6833,6 +7364,9 @@
     "skillTypeTags": 513,
     "castTime": 0.6363636,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -6861,6 +7395,9 @@
     "skillTypeTags": 513,
     "castTime": 1.8181818,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -6891,6 +7428,9 @@
     "skillTypeTags": 256,
     "castTime": 0.3409091,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -6914,6 +7454,9 @@
     "skillTypeTags": 519,
     "castTime": 0.54545456,
     "instantCastForPlayer": 0,
+    "fakeTags": 256,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -6944,6 +7487,9 @@
     "skillTypeTags": 131329,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -6969,6 +7515,9 @@
     "skillTypeTags": 257,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -6990,6 +7539,9 @@
     "skillTypeTags": 257,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -7017,6 +7569,9 @@
     "skillTypeTags": 4353,
     "castTime": 0.530303,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "dot": true,
@@ -7045,6 +7600,9 @@
     "skillTypeTags": 257,
     "castTime": 0.40909088,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -7073,6 +7631,9 @@
     "skillTypeTags": 260,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -7099,6 +7660,9 @@
     "skillTypeTags": 1025,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "projectile": true,
       "attack": true,
@@ -7127,6 +7691,9 @@
     "skillTypeTags": 513,
     "castTime": 0.72727275,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -7157,6 +7724,9 @@
     "skillTypeTags": 513,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -7185,6 +7755,9 @@
     "skillTypeTags": 528,
     "castTime": 2.272727,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -7216,6 +7789,9 @@
     "skillTypeTags": 272,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -7240,6 +7816,9 @@
     "skillTypeTags": 276,
     "castTime": 0.6363636,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -7268,6 +7847,9 @@
     "skillTypeTags": 528,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -7300,6 +7882,9 @@
     "skillTypeTags": 264,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -7328,6 +7913,9 @@
     "skillTypeTags": 4384,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "dot": true,
@@ -7356,6 +7944,9 @@
     "skillTypeTags": 0,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "duration": true
     },
@@ -7378,6 +7969,9 @@
     "skillTypeTags": 296,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -7407,6 +8001,9 @@
     "skillTypeTags": 4392,
     "castTime": 0.048484847,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "dot": true,
@@ -7436,6 +8033,9 @@
     "skillTypeTags": 288,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -7464,6 +8064,9 @@
     "skillTypeTags": 16781608,
     "castTime": 0.68181825,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -7494,6 +8097,9 @@
     "skillTypeTags": 4384,
     "castTime": 0.12121212,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "duration": true
@@ -7521,6 +8127,9 @@
     "skillTypeTags": 513,
     "castTime": 0.3409091,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -7549,6 +8158,9 @@
     "skillTypeTags": 260,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -7578,6 +8190,9 @@
     "skillTypeTags": 0,
     "castTime": 0.54545456,
     "instantCastForPlayer": 0,
+    "fakeTags": 513,
+    "areaTagDisplay": 1,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "duration": true
     },
@@ -7599,6 +8214,9 @@
     "skillTypeTags": 513,
     "castTime": 1.0909091,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -7621,6 +8239,9 @@
     "skillTypeTags": 288,
     "castTime": 0.90909094,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "spell": true,
       "hit": true,
@@ -7641,6 +8262,9 @@
     "skillTypeTags": 513,
     "castTime": 1.0909091,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "melee": true,
       "attack": true,
@@ -7663,6 +8287,9 @@
     "skillTypeTags": 1025,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "attack": true,
       "hit": true
@@ -7685,6 +8312,9 @@
     "skillTypeTags": 1025,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 0,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "attack": true,
       "hit": true
@@ -7707,6 +8337,9 @@
     "skillTypeTags": 513,
     "castTime": 0.6818182,
     "instantCastForPlayer": 0,
+    "fakeTags": 2048,
+    "areaTagDisplay": 0,
+    "minionTagsDisplay": 0,
     "baseFlags": {
       "attack": true,
       "hit": true
