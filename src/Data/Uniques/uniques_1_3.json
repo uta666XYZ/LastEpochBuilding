@@ -9641,12 +9641,10 @@
       "level": 0
     },
     "mods": [
-      "{rounding:Integer}+(1-2) to All Skills",
       "100% chance to Summon a Rift Beast when a hit leaves a Boss or Champion below 40% health (40 second cooldown)",
       "40% increased Minion Damage"
     ],
     "rollIds": [
-      0,
       null,
       null
     ]
