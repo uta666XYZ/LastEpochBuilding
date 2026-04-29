@@ -1636,6 +1636,10 @@ function calcs.initEnv(build, mode, override, specEnv)
 		-- the global bonus to get only the skill-specific portion.
 		build.perSkillLevelBonus = build.perSkillLevelBonus or {}
 		build.perSkillLevelBreakdown = build.perSkillLevelBreakdown or {}
+		-- Per-skill item-derived delivery-tag swap (e.g. Heartseeker Bow->Throwing
+		-- via Ravager's Dart). Consumed by SkillsTab so the Scaling Tags tooltip
+		-- row matches in-game routing.
+		build.perSkillDeliverySwap = build.perSkillDeliverySwap or {}
 		-- Pre-populate attribute output values so PerStat tags on SkillLevel
 		-- mods (e.g. "+1 to All Skills per 120 Total Attributes") evaluate
 		-- correctly here. CalcPerform recomputes these later, but it runs
@@ -1654,7 +1658,7 @@ function calcs.initEnv(build, mode, override, specEnv)
 				-- Apply tree-injected damage-type tag swaps (e.g. Spark Artillery
 				-- swapping Frost Claw Cold->Lightning) so "+N to Lightning Spells"
 				-- etc. matches the swapped skill in this cap-summing pass too.
-				local treeSwaps = calcs.getTreeTagSwaps(env, group.grantedEffect.treeId)
+				local treeSwaps = calcs.getTreeTagSwaps(env, group.grantedEffect.treeId, group.grantedEffect)
 				local skillTypes, keywordFlags = calcs.applyTreeTagSwaps(
 					treeSwaps,
 					group.grantedEffect.skillTypes,
@@ -1668,15 +1672,81 @@ function calcs.initEnv(build, mode, override, specEnv)
 				skillTypes, keywordFlags = calcs.applyTreeTagAdditions(
 					treeAdds, skillTypes, keywordFlags, false
 				)
+				-- Item-scoped delivery-type conversions ("100% of Heartseeker
+				-- converted to Throwing" on Ravager's Dart). Replace the skill's
+				-- existing delivery bit (Bow/Melee/Throwing/Spell) with the
+				-- destination so "+to <newType> Skills" affixes match — confirmed
+				-- in-game: Heartseeker tagged Bow base, becomes Throwing under
+				-- this conversion, and Relic "+1 Throwing Skills" applies.
+				local DELIVERY_BITS = bit.bor(SkillType.Melee, SkillType.Throwing, SkillType.Bow, SkillType.Spell)
+				local skillSwaps = env.modDB:List(nil, "SkillTagSwap_" .. group.grantedEffect.name:gsub("%s+", ""))
+				local deliverySwapBit = nil
+				if skillSwaps and #skillSwaps > 0 then
+					skillTypes = copyTable(skillTypes)
+					for _, swap in ipairs(skillSwaps) do
+						if swap.deliveryBit then
+							-- Strip existing delivery bits, then OR in destination.
+							for typeBit in pairs(skillTypes) do
+								if type(typeBit) == "number" and bit.band(typeBit, DELIVERY_BITS) ~= 0
+								   and bit.band(typeBit, DELIVERY_BITS) == typeBit then
+									skillTypes[typeBit] = nil
+								end
+							end
+							keywordFlags = bit.band(keywordFlags, bit.bnot(DELIVERY_BITS))
+							skillTypes[swap.deliveryBit] = true
+							keywordFlags = bit.bor(keywordFlags, swap.deliveryBit)
+							deliverySwapBit = swap.deliveryBit
+						end
+					end
+				end
+				build.perSkillDeliverySwap[index] = deliverySwapBit
+				-- "+to <DamageType> Minion Skills" affix scope:
+				-- A two-tag mod of {SkillType=Minion, MinionTagFlag=<dmgType>} only
+				-- applies if BOTH gates pass. The SkillType=Minion gate is
+				-- satisfied by any skill carrying the Minion bit (fakeTags or
+				-- baseFlags), which correctly lets "+to Minion Skills" (cat=all,
+				-- no MinionTagFlag) raise Spriggan Form / Werebear Form levels
+				-- (confirmed in-game: Phantom Grip "+2 Minion Skills" applies).
+				--
+				-- The MinionTagFlag gate filters by the spawned minion's damage/
+				-- delivery tags. For form/buff skills that aren't minion-summon
+				-- parents (minionTagsDisplay=0 and no tree promotion to minion/
+				-- totem), the spawned-minion-tag scope is empty — confirmed
+				-- in-game: Apogee of Frozen Light "+3 Cold Minion Skills" does
+				-- NOT raise Spriggan Form's level even though it has Cold via
+				-- skillTreeConversionDamageTags. So only build minionKeywordFlags
+				-- when the skill is a "true" minion parent.
+				local hasNativeMinion = (group.grantedEffect.minionTagsDisplay or 0) ~= 0
+				local treeAddsMinion = bit.band(treeAdds, bit.bor(SkillType.Minion, SkillType.Totem)) ~= 0
+				local minionKW = 0
+				if hasNativeMinion or treeAddsMinion then
+					-- minionTagsDisplay  — the minion's intrinsic tooltip tags
+					-- skillTreeConversionDamageTags — tree-reachable damage types
+					-- LE displays in the Minion Tags row for native minion summons
+					-- (Summon Thorn Totem's Cold from th39 tree; "+3 Minion Cold
+					-- Skills" applies even at base in-game).
+					minionKW = bit.bor(
+						group.grantedEffect.minionTagsDisplay or 0,
+						group.grantedEffect.skillTreeConversionDamageTags or 0
+					)
+					if treeAddsMinion then
+						-- Tree-promoted totem/minion: spawned entity inherits
+						-- the parent's post-swap delivery + damage tags. Mirror
+						-- skillTypes so e.g. Glacial Cascade Upheaval-totem
+						-- matches "+3 Minion Cold Skills" via the parent's Cold.
+						for typeBit in pairs(skillTypes) do
+							if type(typeBit) == "number" then
+								minionKW = bit.bor(minionKW, typeBit)
+							end
+						end
+					end
+				end
 				local skillCfg = {
 					skillName = group.grantedEffect.name,
 					skillTypes = skillTypes,
 					skillAttributes = group.grantedEffect.skillAttributes,
 					keywordFlags = keywordFlags,
-					-- For "+N to <Cat> Minion Skills" affixes: scope is the
-					-- spawned minion's tags (e.g. Summon Bear's bear is Melee
-					-- even though Summon Bear's host flags are Physical only).
-					minionKeywordFlags = group.grantedEffect.minionTagsDisplay or 0,
+					minionKeywordFlags = minionKW,
 				}
 				local totalSkillLevel, breakdown = (env.sumSkillLevelWithLegendaryEffect or function(cfg) return env.modDB:Sum("BASE", cfg, "SkillLevel"), {} end)(skillCfg)
 				-- Per-skill bonus = total - global (avoid double-counting global)
