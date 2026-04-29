@@ -29,9 +29,7 @@ local sortGemTypeList = {
 -- skill slot and skill-spec tree root tooltips. Mirrors LE's ability tooltip.
 -- Order: damage types (LE display order) -> combat class -> attributes.
 -- AT enum bit -> display label, sourced from il2cpp_dump_v142/dump.cs:240086.
--- Display values shown unchanged regardless of Global.lua's SkillType naming
--- (which is currently shifted from canonical for bit128/2048+; full Global.lua
--- realignment is tracked separately).
+-- Bit values match Global.lua's SkillType enum (canonical AT enum layout).
 local SCALING_TAG_DAMAGE = {
     { bit = 1,   name = "Physical"  },
     { bit = 8,   name = "Fire"      },
