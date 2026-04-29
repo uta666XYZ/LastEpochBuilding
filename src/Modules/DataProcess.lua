@@ -92,8 +92,14 @@ for skillId, grantedEffect in pairs(data.skills) do
     -- mods tagged with SkillType=Minion/Spell/Melee/etc. apply when summing for cap
     -- calculations and skillCfg-tagged mods.
     if grantedEffect.baseFlags then
+        -- NOTE: baseFlags.minion is intentionally NOT mirrored. baseFlags.minion
+        -- means "this skill summons a minion" (mechanics), which is broader than
+        -- "this skill is a Minion Skill" (affix matching). Skills like Decoy and
+        -- Vale Spirit have baseFlags.minion=true but the cast itself is not a
+        -- Minion Skill — in-game, "+to Minion Skills" affixes do NOT apply to
+        -- their level. Genuine Minion Skills (Summon X, Falconry, etc.) carry
+        -- the Minion bit in fakeTags, which is mirrored below.
         local flagToType = {
-            minion = SkillType.Minion,
             spell = SkillType.Spell,
             melee = SkillType.Melee,
             throwing = SkillType.Throwing,
@@ -115,12 +121,21 @@ for skillId, grantedEffect in pairs(data.skills) do
         -- bit, mods like "+N to Spell Minion Skills" cannot match the parent summon
         -- skill. If a minion skill has a cast time and isn't a melee/ranged/totem/
         -- transform skill, treat it as a spell as well.
+        -- Also check skillTypeTags|fakeTags for delivery-type bits (Decoy has
+        -- baseFlags.projectile+attack with skillTypeTags Throwing bit but no
+        -- baseFlags.throwing — without this check it would be wrongly tagged
+        -- Spell despite being a Throwing skill).
+        local existingTags = bit.bor(grantedEffect.skillTypeTags or 0, grantedEffect.fakeTags or 0)
+        local hasDeliveryTag = bit.band(existingTags,
+            bit.bor(SkillType.Spell, SkillType.Melee, SkillType.Bow, SkillType.Throwing,
+                    SkillType.Totem, SkillType.Transform)) ~= 0
         if grantedEffect.baseFlags.minion and grantedEffect.castTime
            and not grantedEffect.baseFlags.melee
            and not grantedEffect.baseFlags.bow
            and not grantedEffect.baseFlags.throwing
            and not grantedEffect.baseFlags.totem
-           and not grantedEffect.baseFlags.transform then
+           and not grantedEffect.baseFlags.transform
+           and not hasDeliveryTag then
             grantedEffect.skillTypes[SkillType.Spell] = true
         end
     end
