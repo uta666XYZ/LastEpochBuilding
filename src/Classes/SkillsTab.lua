@@ -67,14 +67,23 @@ end
 function getScalingTagsList(grantedEffect, dynamicDamageTypes, extraFlags, areaOverride)
     if not grantedEffect then return nil end
     local tags = {}
-    -- Include fakeTags so categories LE adds at runtime (e.g. Judgement is
-    -- Spell-tagged via fakeTags=256 despite being mechanically Melee) appear
-    -- in the Scaling Tags row exactly like the in-game tooltip. extraFlags
-    -- carries tree-node-injected bits (e.g. Totemic Heart adds Minion+Totem
-    -- when Warcry is converted into a Warcry Totem). areaOverride lets a
-    -- caller substitute the effective areaTagDisplay value (used when a
-    -- "Create X Totem" node moves the cast's Area onto the minion side).
-    local flags = bit.bor(grantedEffect.skillTypeTags or 0, grantedEffect.fakeTags or 0, extraFlags or 0)
+    -- Use the precomputed displayTags bitmap (built by DataProcess) which
+    -- merges skillTypeTags + fakeTags + skillTreeConversionDamageTags +
+    -- baseFlag-derived bits. This mirrors how LE's in-game tooltip composes
+    -- Scaling Tags — e.g. Focus / Arcane Ascendance show "Lightning" via
+    -- skillTreeConversionDamageTags and Focus shows "Channeled" via
+    -- baseFlags.channelling, neither of which lives in skillTypeTags.
+    -- Falls back to the raw bitmap union if displayTags isn't populated yet
+    -- (preserves prior behaviour for any granted-effect that bypasses
+    -- DataProcess). extraFlags carries tree-node-injected bits (e.g. Totemic
+    -- Heart adds Minion+Totem when Warcry is converted into a Warcry Totem).
+    -- areaOverride lets a caller substitute the effective areaTagDisplay
+    -- value (used when a "Create X Totem" node moves the cast's Area onto
+    -- the minion side).
+    local flags = bit.bor(
+        grantedEffect.displayTags or bit.bor(grantedEffect.skillTypeTags or 0, grantedEffect.fakeTags or 0),
+        extraFlags or 0
+    )
     if dynamicDamageTypes and #dynamicDamageTypes > 0 then
         for _, dt in ipairs(dynamicDamageTypes) do
             if dt.isBase then t_insert(tags, { name = capitalizeDamageType(dt.type) }) end
