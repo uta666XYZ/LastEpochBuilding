@@ -55,12 +55,33 @@ local SCALING_TAG_META = {
     { bit = 524288, name = "Transform"   },
     { bit = 131072, name = "Buff"        },
 }
-function getScalingTagsList(grantedEffect)
+-- Capitalize a lowercase damage type name ("cold" -> "Cold").
+local function capitalizeDamageType(s)
+    return s:sub(1, 1):upper() .. s:sub(2)
+end
+-- Build the Scaling Tags list. If `dynamicDamageTypes` is provided (the array
+-- form returned by SkillsTabClass:GetDynamicDamageTypes / ByTreeId), the
+-- damage-type portion is taken from that array so tree node conversions
+-- (e.g. Flame Ward -> Cold, Surge -> Fire) are reflected. Otherwise damage
+-- bits are read straight from grantedEffect.skillTypeTags (base only).
+function getScalingTagsList(grantedEffect, dynamicDamageTypes)
     if not grantedEffect then return nil end
     local tags = {}
     local flags = grantedEffect.skillTypeTags or 0
-    for _, t in ipairs(SCALING_TAG_DAMAGE) do
-        if bit.band(flags, t.bit) ~= 0 then t_insert(tags, { name = t.name, color = t.color }) end
+    if dynamicDamageTypes and #dynamicDamageTypes > 0 then
+        for _, dt in ipairs(dynamicDamageTypes) do
+            if dt.isBase then t_insert(tags, { name = capitalizeDamageType(dt.type) }) end
+        end
+        -- Preserve the "Elemental" meta marker when the static skillTypeTags
+        -- carry bit128 (tri-elemental skills); dynamicDamageTypes only knows
+        -- individual damage types and would otherwise drop it.
+        if bit.band(flags, 128) ~= 0 then
+            t_insert(tags, { name = "Elemental" })
+        end
+    else
+        for _, t in ipairs(SCALING_TAG_DAMAGE) do
+            if bit.band(flags, t.bit) ~= 0 then t_insert(tags, { name = t.name }) end
+        end
     end
     for _, t in ipairs(SCALING_TAG_COMBAT) do
         if bit.band(flags, t.bit) ~= 0 then t_insert(tags, { name = t.name, color = t.color }) end
@@ -1048,7 +1069,14 @@ local MULTI_CONV_TREES = {
 function SkillsTabClass:GetDynamicDamageTypes(slotIndex)
 	local sg = self.socketGroupList[slotIndex]
 	if not sg or not sg.grantedEffect or not sg.grantedEffect.treeId then return {} end
-	local treeId = sg.grantedEffect.treeId
+	return self:GetDynamicDamageTypesByTreeId(sg.grantedEffect.treeId)
+end
+
+-- Same as GetDynamicDamageTypes but keyed by treeId directly. Lets callers
+-- (e.g. PassiveTreeView root-node tooltip) compute the conversion-aware
+-- damage type list without needing a slot index.
+function SkillsTabClass:GetDynamicDamageTypesByTreeId(treeId)
+	if not treeId then return {} end
 
 	-- Build base/conv sets from static table
 	local baseSet, convSet = {}, {}
@@ -1080,6 +1108,32 @@ function SkillsTabClass:GetDynamicDamageTypes(slotIndex)
 							t_insert(multiList, { fromType, toType })
 						else
 							convMap[fromType] = toType  -- overwrite: last allocation wins
+						end
+					end
+				end
+				-- Whole-skill conversion phrasing used by some trees, e.g.
+				-- Flame Ward fw3d-6: "Flame Ward is converted to Cold". This
+				-- doesn't name the source damage type, so apply it to every
+				-- type currently in baseSet (the skill's pre-conversion base).
+				-- Filters:
+				--  * skip lines that start with "if " — these are conditional
+				--    references like fw3d-2 "If Flame Ward is converted to
+				--    cold or lightning, then this damage increase is also
+				--    converted." which describe downstream behaviour rather
+				--    than performing a conversion.
+				--  * skip lines that already matched the per-type pattern
+				--    above (they contain " damage is converted to ").
+				local wholeTo = lo:match("is converted to%s+(%a+)")
+				if wholeTo and TYPE_SET[wholeTo]
+				   and not lo:match("^%s*if%s")
+				   and not lo:find(" damage is converted to ", 1, true) then
+					for fromType in pairs(baseSet) do
+						if fromType ~= wholeTo then
+							if isMultiConv then
+								t_insert(multiList, { fromType, wholeTo })
+							else
+								convMap[fromType] = wholeTo
+							end
 						end
 					end
 				end
@@ -1286,8 +1340,12 @@ function SkillsTabClass:DrawSpecSlots(viewPort, inputEvents, startY)
 					tooltip:AddLine(14, "^7" .. (entry.source or "Unknown") .. ": ^x60A0FF" .. sign .. valStr)
 				end
 			end
-			-- Scaling Tags row (damage types + combat class + attribute scalings)
-			local tagsLine = formatScalingTagsLine(getScalingTagsList(sg.grantedEffect))
+			-- Scaling Tags row (damage types + combat class + attribute scalings).
+			-- Use the conversion-aware damage type list so tree nodes that
+			-- swap a skill's damage type (Surge -> Fire, Flame Ward -> Cold)
+			-- are reflected in the tag display.
+			local dynDt = self:GetDynamicDamageTypes(i)
+			local tagsLine = formatScalingTagsLine(getScalingTagsList(sg.grantedEffect, dynDt))
 			if tagsLine then
 				tooltip:AddSeparator(8)
 				tooltip:AddLine(14, tagsLine)
