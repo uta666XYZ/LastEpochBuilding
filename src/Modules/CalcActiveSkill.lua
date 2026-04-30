@@ -250,6 +250,15 @@ function calcs.getTreeTagSwaps(env, treeId, grantedEffect)
 				if not src then
 					src, dst = stat:match("^%s*(%w+)%s*%->%s*(%w+)%s+Conversion%s*$")
 				end
+				if not src then
+					-- Bare "<Src> -> <Dst>" form (no Damage / Conversion suffix).
+					-- Used by Flame Ward's Lightning Ward (fw3d-10: " Fire -> Lightning")
+					-- and Cold Ward (fw3d-?: " Fire -> Cold"). The damageTypeBitsByName
+					-- filter below rejects ailment swaps like " Chill -> Ignite",
+					-- " Frostbite -> Shock", " Ignite -> Frostbite" since Chill/
+					-- Frostbite/Ignite/Shock aren't in the damage-type bit table.
+					src, dst = stat:match("^%s*(%w+)%s*%->%s*(%w+)%s*$")
+				end
 				if src and dst and damageTypeBitsByName[src] and damageTypeBitsByName[dst]
 				   and damageTypeBitsByName[src] ~= damageTypeBitsByName[dst] then
 					swaps = swaps or {}
@@ -301,6 +310,14 @@ function calcs.getTreeTagAdditions(env, treeId)
 					if stat:lower():match("^%s*creates?%s+.+%s+totem%s*$") then
 						adds = bor(adds, SkillType.Minion, SkillType.Totem)
 					end
+					-- Plain damage producer: stats ending in "<DmgType> Damage"
+					-- (e.g. wc57-30 Kinetic Scream "40 Spell Physical Damage" gives
+					-- Warcry the Physical bit so "+to Physical Skills" applies).
+					-- damageTypeBitsByName lookup filters spurious matches.
+					local plainType = stat:match("(%w+)%s+[Dd]amage%s*$")
+					if plainType and damageTypeBitsByName[plainType] then
+						adds = bor(adds, damageTypeBitsByName[plainType])
+					end
 				end
 			end
 			-- Split-effect damage-type additions parsed from node descriptions.
@@ -314,16 +331,56 @@ function calcs.getTreeTagAdditions(env, treeId)
 			-- has Binary System allocated.
 			if node.description then
 				for _, line in ipairs(node.description) do
-					local lo = line:lower()
-					local oneType, otherType = lo:match("one deals (%a+) damage and the other deals (%a+) damage")
-					if oneType and otherType then
-						local DT_BITS = {
-							physical = SkillType.Physical, lightning = SkillType.Lightning,
-							cold = SkillType.Cold, fire = SkillType.Fire, void = SkillType.Void,
-							necrotic = SkillType.Necrotic, poison = SkillType.Poison,
-						}
-						if DT_BITS[oneType] then adds = bor(adds, DT_BITS[oneType]) end
-						if DT_BITS[otherType] then adds = bor(adds, DT_BITS[otherType]) end
+					-- Per-sub-line gating: descriptions can pack multiple
+					-- sentences with `\n\n` separators; conditional ("if ...")
+					-- sub-lines must not promote unconditional tag additions.
+					for sub in (line .. "\n"):gmatch("([^\n]*)\n") do
+						local lo = sub:lower()
+						if lo ~= "" and not lo:match("^%s*if%s") then
+							local oneType, otherType = lo:match("one deals (%a+) damage and the other deals (%a+) damage")
+							if oneType and otherType then
+								local DT_BITS = {
+									physical = SkillType.Physical, lightning = SkillType.Lightning,
+									cold = SkillType.Cold, fire = SkillType.Fire, void = SkillType.Void,
+									necrotic = SkillType.Necrotic, poison = SkillType.Poison,
+								}
+								if DT_BITS[oneType] then adds = bor(adds, DT_BITS[oneType]) end
+								if DT_BITS[otherType] then adds = bor(adds, DT_BITS[otherType]) end
+							end
+							-- Delivery-class promotion: nodes that convert a spell
+							-- into a melee/throwing/bow attack add the new delivery
+							-- bit so "+to <Delivery> Skills" affixes match.
+							-- Healing Hands' Seraph Blade (hh7pa3-8): "Healing Hands
+							-- is converted into a melee attack..." — confirmed via
+							-- LETools applying "+6 to Level of Melee Skills" from
+							-- Two-Handed Axe to a build with Seraph Blade allocated.
+							-- Note: we ADD the delivery bit rather than swap-out
+							-- Spell so DoT/Buff-related Spell-tagged behaviour is
+							-- preserved (the in-game tooltip drops Spell, but
+							-- LEB's downstream code assumes Spell tag elsewhere).
+							if lo:match("is converted into a melee attack") then
+								adds = bor(adds, SkillType.Melee)
+							elseif lo:match("is converted into a throwing attack") then
+								adds = bor(adds, SkillType.Throwing)
+							elseif lo:match("is converted into a bow attack") then
+								adds = bor(adds, SkillType.Bow)
+							end
+							-- Damage-type addition phrase: "deal[s]?[ing]? [<adj>]
+							-- <type> damage". Examples:
+							--   hh7pa3-1 Searing Light: "dealing spell fire damage"
+							--   wo42-14 Tundra Stalkers: "deal additional cold damage"
+							--   wc57-30 Kinetic Scream: "deals spell physical damage"
+							-- Filtered through damageTypeBitsByName so spurious matches
+							-- like "deals more damage" / "deals increased damage" miss.
+							if lo:find("deal", 1, true) then
+								for typeName, b in pairs(damageTypeBitsByName) do
+									local needle = " " .. typeName:lower() .. " damage"
+									if lo:find(needle, 1, true) then
+										adds = bor(adds, b)
+									end
+								end
+							end
+						end
 					end
 				end
 			end
@@ -429,6 +486,14 @@ function calcs.getActiveStcdtBits(env, treeId, stcdt)
 					-- " <Type> Base Damage -> <DmgType>" (e.g. bg36nl-7 Pyre Golem: " Melee Base Damage -> Fire")
 					_, dst = stat:match("^%s*(%w+)%s+Base%s+Damage%s*%->%s*(%w+)%s*$")
 				end
+				if not dst then
+					-- Bare "<Src> -> <Dst>" form (no suffix). Same fallback as
+					-- getTreeTagSwaps; see comment there. Filtered safely via
+					-- damageTypeBitsByName lookup (rejects ailment swaps).
+					local _src
+					_src, dst = stat:match("^%s*(%w+)%s*%->%s*(%w+)%s*$")
+					if dst and not damageTypeBitsByName[dst] then dst = nil end
+				end
 				if dst and damageTypeBitsByName[dst] then
 					active = bor(active, damageTypeBitsByName[dst])
 				end
@@ -436,6 +501,58 @@ function calcs.getActiveStcdtBits(env, treeId, stcdt)
 				local addV = stat:match("^%s*Adds%s+(.+)%s*$")
 				if addV and minionVariantBits[addV] then
 					active = bor(active, minionVariantBits[addV])
+				end
+				-- Plain damage producer: stats ending in "<DmgType> Damage"
+				-- (e.g. wo42-14 Tundra Stalkers "+2 Cold Damage", wc57-30
+				-- Kinetic Scream "40 Spell Physical Damage", wc57-6 Frost Claw
+				-- "50% Increased Cold Damage"). The damageTypeBitsByName lookup
+				-- filters out matches like "Increased Damage" / "More Damage".
+				local plainType = stat:match("(%w+)%s+[Dd]amage%s*$")
+				if plainType and damageTypeBitsByName[plainType] then
+					active = bor(active, damageTypeBitsByName[plainType])
+				end
+			end
+		end
+		-- Description-driven explicit tag promotion: "<Minion> gain the {<type>}
+		-- tag" / "gain the <type> tag" (e.g. fs3e3-21 "Forged by Fire" promotes
+		-- Forged Weapons to Fire). Backs the Minion Tags row's Fire entry on
+		-- Forge Strike with Forged by Fire allocated, matching LETools.
+		-- Defensive: node.description may be a string or table per
+		-- PassiveTree:ProcessStats's handling pattern.
+		if nodeId:sub(1, #prefix) == prefix and node.description then
+			local descList = type(node.description) == "table" and node.description or { node.description }
+			-- LEB's tooltip preprocessing rewrites JSON `{fire}` into runtime
+			-- form like `{[0]=fire}` (Lua table-literal-ish), so the captured
+			-- token between braces may include `[0]=` etc. Scan known damage
+			-- type names directly within the "gain the ... tag" phrase rather
+			-- than trying to parse the brace syntax.
+			for _, line in ipairs(descList) do
+				for sub in (line .. "\n"):gmatch("([^\n]*)\n") do
+					local lo = sub:lower()
+					if lo ~= "" and not lo:match("^%s*if%s") then
+						-- Capture the inner phrase between "gain the" and "tag"
+						-- (single word, allowing `\n`/`\r` since `.` excludes them).
+						for inner in lo:gmatch("gain the[%s%S]-tag") do
+							for typeName, b in pairs(damageTypeBitsByName) do
+								if inner:find(typeName:lower(), 1, true) then
+									active = bor(active, b)
+								end
+							end
+						end
+						-- "deal[s]?[ing]? [<adj>] [<adj>] <type> damage"
+						-- Matches: "deals spell physical damage" (wc57-30),
+						-- "deal additional cold damage" (wo42-14 Tundra Stalkers),
+						-- "dealing spell fire damage" (hh7pa3-1 Searing Light).
+						local verbStart, verbEnd = lo:find("deal[s]?[ing]*%s")
+						if verbStart then
+							for typeName, b in pairs(damageTypeBitsByName) do
+								local needle = " " .. typeName:lower() .. " damage"
+								if lo:find(needle, verbEnd, true) then
+									active = bor(active, b)
+								end
+							end
+						end
+					end
 				end
 			end
 		end

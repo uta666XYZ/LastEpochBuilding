@@ -185,45 +185,37 @@ function itemLib.applyRange(line, range, valueScalar, rounding)
         end
         return m_floor(v * precision + 0.5) / precision
     end
-    -- "+(N-N) to <Skill or Cat>" affixes (SP=88 LevelOfSkills) are ceiling-
-    -- rolled in LE: any nonzero roll byte tier-promotes to the next integer.
-    -- Confirmed via Omnis +(1-2) at byte=17 → in-game tooltip shows +2
-    -- (linear interp would give 1.067 → +1). Apiarist's Suit Str +(11-13)
-    -- and similar plain attribute affixes are NOT SP=88 — they keep the
-    -- linear-floor path. Same matcher as the precision=1 auto-force above.
-    local isSkillLevelInt = precision == 1 and not line:find("%%")
-        and line:find("^%+?%([%-%d%.]+%-[%-%d%.]+%) to %a")
     line = line:gsub("(%+?)%((%-?%d+%.?%d*)%-(%-?%d+%.?%d*)%)",
             function(plus, min, max)
                 numbers = numbers + 1
                 local minN = tonumber(min)
                 local maxN = tonumber(max)
-                local numVal
-                if isSkillLevelInt then
-                    -- LE formula: value = min + ceil((max-min) * roll/255).
-                    -- roll=0 stays at min; roll=1..ceiling-tier promotes to
-                    -- next integer; roll=255 reaches max exactly.
-                    local intStep = (range == 0) and 0 or m_ceil((maxN - minN) * range)
-                    numVal = (minN + intStep) * valueScalar
-                    -- Skip the trailing floor/round step — already integer.
+                -- Flat values (useRound=false) use (max-min+1/precision) span so the
+                -- top byte (255) reaches max; percentage-with-word affixes (useRound=true)
+                -- use the plain (max-min) span, matching LETools/Maxroll displays.
+                --
+                -- Applies to SP=88 LevelOfSkills "+(N-N) to <Skill/Cat>" too —
+                -- a previous attempt (f925695c5) special-cased these to ceil
+                -- based on a single Omnis byte=17→+2 datapoint, but a direct
+                -- in-game verification on Phantom Grip "+(1-2) to All Minion
+                -- Skills" at range:90 showed +1 each (not +2). ceil is not
+                -- monotonically consistent with byte=17→+2 + byte=90→+1, so
+                -- the Omnis observation was likely misread. Reverting to the
+                -- shared linear-interp + floor path: byte=90 → 1+floor(0.706)
+                -- = 1, byte=255 → 1+floor(2)=3 capped to 2.
+                local span = maxN - minN
+                if not useRound then
+                    span = span + 1 / precision
+                end
+                -- Interpolate first, THEN apply valueScalar, to match LE/LETools.
+                -- Applying scalar to min/max before interpolation shifts the integer
+                -- grid (e.g. Apiarist's Suit Str +(11-13)×1.5 at roll 57/255 should
+                -- give round(11.447×1.5)=17, not interpolate within [16,19]→16).
+                local numVal = (minN + range * span) * valueScalar
+                if useRound then
+                    numVal = m_floor(numVal * precision + 0.5) / precision
                 else
-                    -- Flat values (useRound=false) use (max-min+1/precision) span so the
-                    -- top byte (255) reaches max; percentage-with-word affixes (useRound=true)
-                    -- use the plain (max-min) span, matching LETools/Maxroll displays.
-                    local span = maxN - minN
-                    if not useRound then
-                        span = span + 1 / precision
-                    end
-                    -- Interpolate first, THEN apply valueScalar, to match LE/LETools.
-                    -- Applying scalar to min/max before interpolation shifts the integer
-                    -- grid (e.g. Apiarist's Suit Str +(11-13)×1.5 at roll 57/255 should
-                    -- give round(11.447×1.5)=17, not interpolate within [16,19]→16).
-                    numVal = (minN + range * span) * valueScalar
-                    if useRound then
-                        numVal = m_floor(numVal * precision + 0.5) / precision
-                    else
-                        numVal = m_floor(numVal * precision) / precision
-                    end
+                    numVal = m_floor(numVal * precision) / precision
                 end
                 local maxScaled = roundHalfDownOnHalf(maxN * valueScalar)
                 if numVal > maxScaled then
