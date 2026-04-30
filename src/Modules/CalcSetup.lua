@@ -1663,6 +1663,16 @@ function calcs.initEnv(build, mode, override, specEnv)
 		-- via Ravager's Dart). Consumed by SkillsTab so the Scaling Tags tooltip
 		-- row matches in-game routing.
 		build.perSkillDeliverySwap = build.perSkillDeliverySwap or {}
+		-- Per-skill item-mod runtime tag conversions (Ash Wake's "Aura of Decay
+		-- is converted to fire", Dancing Strikes is converted to Fire, ...).
+		-- Consumed by SkillsTab so the Scaling Tags tooltip row reflects the
+		-- post-conversion damage type.
+		build.perSkillTagAdd = build.perSkillTagAdd or {}
+		build.perSkillTagRemove = build.perSkillTagRemove or {}
+		-- Per-skill effective Minion Tags bitmap — already-filtered stcdt +
+		-- variant mutations. SkillsTab uses this as a full replacement for the
+		-- static displayMinionTags so the row matches in-game routing.
+		build.perSkillDisplayMinionTags = build.perSkillDisplayMinionTags or {}
 		-- Pre-populate attribute output values so PerStat tags on SkillLevel
 		-- mods (e.g. "+1 to All Skills per 120 Total Attributes") evaluate
 		-- correctly here. CalcPerform recomputes these later, but it runs
@@ -1695,6 +1705,33 @@ function calcs.initEnv(build, mode, override, specEnv)
 				skillTypes, keywordFlags = calcs.applyTreeTagAdditions(
 					treeAdds, skillTypes, keywordFlags, false
 				)
+				-- Item-mod runtime tag conversions (Ash Wake "Aura of Decay is
+				-- converted to fire" -> Fire+, Poison-; Elemental(128) auto-
+				-- handled). Applied AFTER tree adds so item conversions ride on
+				-- the post-tree-mutation bitmap.
+				local itemAddTags, itemRemoveTags = calcs.getItemSkillTagConversions(env, group.grantedEffect)
+				if itemRemoveTags ~= 0 then
+					skillTypes = copyTable(skillTypes)
+					for typeBit in pairs(skillTypes) do
+						if type(typeBit) == "number" and bit.band(typeBit, itemRemoveTags) ~= 0 then
+							skillTypes[typeBit] = nil
+						end
+					end
+					keywordFlags = bit.band(keywordFlags, bit.bnot(itemRemoveTags))
+				end
+				if itemAddTags ~= 0 then
+					if itemRemoveTags == 0 then skillTypes = copyTable(skillTypes) end
+					for _, typeBit in ipairs({ SkillType.Physical, SkillType.Lightning,
+						SkillType.Cold, SkillType.Fire, SkillType.Void, SkillType.Necrotic,
+						SkillType.Poison, SkillType.Elemental }) do
+						if bit.band(itemAddTags, typeBit) ~= 0 then
+							skillTypes[typeBit] = true
+						end
+					end
+					keywordFlags = bit.bor(keywordFlags, itemAddTags)
+				end
+				build.perSkillTagAdd[index] = itemAddTags
+				build.perSkillTagRemove[index] = itemRemoveTags
 				-- Item-scoped delivery-type conversions ("100% of Heartseeker
 				-- converted to Throwing" on Ravager's Dart). Replace the skill's
 				-- existing delivery bit (Bow/Melee/Throwing/Spell) with the
@@ -1723,6 +1760,8 @@ function calcs.initEnv(build, mode, override, specEnv)
 					end
 				end
 				build.perSkillDeliverySwap[index] = deliverySwapBit
+				-- Stash per-skill display Minion Tags after minionKW is built
+				-- below; deferred via closure-style write at end of this loop.
 				-- "+to <DamageType> Minion Skills" affix scope:
 				-- A two-tag mod of {SkillType=Minion, MinionTagFlag=<dmgType>} only
 				-- applies if BOTH gates pass. The SkillType=Minion gate is
@@ -1744,14 +1783,29 @@ function calcs.initEnv(build, mode, override, specEnv)
 				local minionKW = 0
 				if hasNativeMinion or treeAddsMinion then
 					-- minionTagsDisplay  — the minion's intrinsic tooltip tags
-					-- skillTreeConversionDamageTags — tree-reachable damage types
-					-- LE displays in the Minion Tags row for native minion summons
-					-- (Summon Thorn Totem's Cold from th39 tree; "+3 Minion Cold
-					-- Skills" applies even at base in-game).
+					-- skillTreeConversionDamageTags (stcdt) — tree-reachable
+					-- damage types. We only include stcdt bits backed by an
+					-- allocated tree node that actually produces that damage
+					-- type (conversion stat or variant-addition stat). This
+					-- prevents false matches like Logi's Hunger "+Fire Minion
+					-- Skills" against a Summon Skeleton without Fire Arrow.
+					local stcdt = group.grantedEffect.skillTreeConversionDamageTags or 0
+					local activeStcdt = calcs.getActiveStcdtBits(env, group.grantedEffect.treeId, stcdt)
 					minionKW = bit.bor(
 						group.grantedEffect.minionTagsDisplay or 0,
-						group.grantedEffect.skillTreeConversionDamageTags or 0
+						activeStcdt
 					)
+					-- Apply tree-driven minion variant pool mutations:
+					--   sm4g "Adds Pyromancers" + "Removes Mages" promotes the
+					--   minion-tag bitmap from Necrotic to Fire so amulets like
+					--   "+2 Minion Fire Skills" raise Skeletal Mage's level.
+					local minionAdd, minionRemove = calcs.getMinionVariantMutations(env, group.grantedEffect.treeId)
+					if minionRemove ~= 0 then
+						minionKW = bit.band(minionKW, bit.bnot(minionRemove))
+					end
+					if minionAdd ~= 0 then
+						minionKW = bit.bor(minionKW, minionAdd)
+					end
 					if treeAddsMinion then
 						-- Tree-promoted totem/minion: spawned entity inherits
 						-- the parent's post-swap delivery + damage tags. Mirror
@@ -1763,6 +1817,14 @@ function calcs.initEnv(build, mode, override, specEnv)
 							end
 						end
 					end
+				end
+				-- Surface the runtime-corrected Minion Tags bitmap to SkillsTab.
+				-- minionKW already encodes (minionTagsDisplay | filtered stcdt)
+				-- with variant mutations + tree-promoted minion bits applied.
+				if hasNativeMinion or treeAddsMinion then
+					build.perSkillDisplayMinionTags[index] = minionKW
+				else
+					build.perSkillDisplayMinionTags[index] = nil
 				end
 				local skillCfg = {
 					skillName = group.grantedEffect.name,
