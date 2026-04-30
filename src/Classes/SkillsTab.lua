@@ -912,8 +912,8 @@ local TREE_ID_DAMAGE_TYPES = {
 	["rs31hi"] = { base = {},                          conv = { "fire" } },                -- Ring of Shields
 	["st4th"]  = { base = { "physical", "fire" },      conv = {} },                        -- Smelter's Wrath
 	-- Paladin
-	["hh7pa3"] = { base = {},                          conv = {} },                        -- Healing Hands
-	["si4lgl"] = { base = {},                          conv = {} },                        -- Sigils of Hope
+	["hh7pa3"] = { base = {},                          conv = { "fire" } },                -- Healing Hands (Searing Light adds Fire)
+	["si4lgl"] = { base = { "fire" },                  conv = { "void" } },                -- Sigils of Hope (Symbols of Despair node converts to Void)
 	["pa67ju"] = { base = { "fire" },                  conv = {} },                        -- Judgement
 	["ah443"]  = { base = {},                          conv = {} },                        -- Holy Aura
 	-- Acolyte base
@@ -1174,11 +1174,55 @@ function SkillsTabClass:GetTreeTagAdditionsByTreeId(treeId)
 	if not (treeId and self.build and self.build.spec and self.build.spec.allocNodes) then return 0 end
 	local prefix = treeId .. "-"
 	local adds = 0
+	-- Bit values mirror Global.lua SkillType (canonical AT enum).
+	local DT_BITS = {
+		physical = 1, lightning = 2, cold = 4, fire = 8, void = 16,
+		necrotic = 32, poison = 64,
+	}
 	for nodeId, node in pairs(self.build.spec.allocNodes) do
-		if nodeId:sub(1, #prefix) == prefix and node.stats then
-			for _, stat in ipairs(node.stats) do
-				if stat:lower():match("^%s*creates?%s+.+%s+totem%s*$") then
-					adds = bit.bor(adds, 8192, 16384) -- Minion | Totem
+		if nodeId:sub(1, #prefix) == prefix then
+			if node.stats then
+				for _, stat in ipairs(node.stats) do
+					if stat:lower():match("^%s*creates?%s+.+%s+totem%s*$") then
+						adds = bit.bor(adds, 8192, 16384) -- Minion | Totem
+					end
+				end
+			end
+			-- Description-driven tag promotions (mirrors CalcActiveSkill.getTreeTagAdditions).
+			-- Per-sub-line gated on `\n` so multi-paragraph descriptions don't
+			-- leak conditional ("If …") phrasing into unconditional adds.
+			if node.description then
+				for _, line in ipairs(node.description) do
+					for sub in (line .. "\n"):gmatch("([^\n]*)\n") do
+						local lo = sub:lower()
+						if lo ~= "" and not lo:match("^%s*if%s") then
+							-- Delivery-class promotion (Seraph Blade etc.)
+							if lo:match("is converted into a melee attack") then
+								adds = bit.bor(adds, 512) -- Melee
+							elseif lo:match("is converted into a throwing attack") then
+								adds = bit.bor(adds, 1024) -- Throwing
+							elseif lo:match("is converted into a bow attack") then
+								adds = bit.bor(adds, 2048) -- Bow
+							end
+							-- Damage-type addition: "dealing [spell] <type> damage"
+							-- (Searing Light: "dealing spell fire damage").
+							local addedType = lo:match("dealing %w+ (%a+) damage")
+							if not addedType then
+								addedType = lo:match("dealing (%a+) damage")
+							end
+							if addedType and DT_BITS[addedType] then
+								adds = bit.bor(adds, DT_BITS[addedType])
+							end
+							-- Split-effect: "one deals X damage and the other deals Y damage"
+							local oneType, otherType = lo:match("one deals (%a+) damage and the other deals (%a+) damage")
+							if oneType and DT_BITS[oneType] then
+								adds = bit.bor(adds, DT_BITS[oneType])
+							end
+							if otherType and DT_BITS[otherType] then
+								adds = bit.bor(adds, DT_BITS[otherType])
+							end
+						end
+					end
 				end
 			end
 		end
@@ -1303,6 +1347,23 @@ function SkillsTabClass:GetDynamicDamageTypesByTreeId(treeId, skillName)
 							if oneType and otherType and TYPE_SET[oneType] and TYPE_SET[otherType] then
 								addSet[oneType] = true
 								addSet[otherType] = true
+							end
+						end
+						-- Damage-type addition detector: "dealing [<delivery>] <type> damage".
+						-- Used by nodes that grant a previously-non-damaging skill a
+						-- new damage type — e.g. Healing Hands' Searing Light (hh7pa3-1):
+						-- "Healing Hands now hits enemies within its area of effect,
+						-- dealing spell fire damage." Surfaces Fire as a base type so
+						-- the Scaling Tags row matches LE's in-game tooltip.
+						-- Only fires when the sub-line is unconditional (no "if " prefix
+						-- via the outer guard) and is not a "X damage is converted to Y"
+						-- phrase (those are handled per-type above).
+						if not lo:match("^%s*if%s")
+						   and not lo:find(" damage is converted to ", 1, true) then
+							local addedType = lo:match("dealing %w+ (%a+) damage")
+							             or lo:match("dealing (%a+) damage")
+							if addedType and TYPE_SET[addedType] then
+								addSet[addedType] = true
 							end
 						end
 						-- Whole-skill conversion phrasing used by some trees, e.g.
