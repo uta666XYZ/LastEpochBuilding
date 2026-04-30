@@ -612,6 +612,14 @@
     "name": "ForgedWeapon",
     "life": "350"
   },
+  "ForgedAxe": {
+    "skillList": [
+      "BasicEnemyMelee"
+    ],
+    "modList": [],
+    "name": "ForgedAxe",
+    "life": "100"
+  },
   "BallistaShield": {
     "skillList": [
       "NullAbility"
