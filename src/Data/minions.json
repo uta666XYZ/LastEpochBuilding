@@ -182,5 +182,335 @@
     "modList": [],
     "name": "Thorn Totem",
     "life": "120"
+  },
+  "Mercenary": {
+    "skillList": [],
+    "modList": [],
+    "name": "Mercenary",
+    "life": "400"
+  },
+  "PrimalAnurok": {
+    "skillList": [],
+    "modList": [],
+    "name": "PrimalAnurok",
+    "life": "300"
+  },
+  "PrimalSquirrel": {
+    "skillList": [],
+    "modList": [],
+    "name": "PrimalSquirrel",
+    "life": "160"
+  },
+  "PrimalTyrannosaur": {
+    "skillList": [],
+    "modList": [],
+    "name": "PrimalTyrannosaur",
+    "life": "540"
+  },
+  "QueenBee": {
+    "skillList": [],
+    "modList": [],
+    "name": "QueenBee",
+    "life": "50"
+  },
+  "RiftBeast": {
+    "skillList": [],
+    "modList": [],
+    "name": "RiftBeast",
+    "life": "800"
+  },
+  "SummonedSkeletonHarvester": {
+    "skillList": [],
+    "modList": [],
+    "name": "SkeletonHarvester",
+    "life": "200"
+  },
+  "StormSprite": {
+    "skillList": [],
+    "modList": [],
+    "name": "StormSprite",
+    "life": "200"
+  },
+  "SummonedCrab": {
+    "skillList": [],
+    "modList": [],
+    "name": "SummonedCrab",
+    "life": "400"
+  },
+  "TolmatMinionAncient": {
+    "skillList": [],
+    "modList": [],
+    "name": "Tolmat Minion (Ancient Era)",
+    "life": "300"
+  },
+  "TolmatMinionDivine": {
+    "skillList": [],
+    "modList": [],
+    "name": "Tolmat Minion (Divine Era)",
+    "life": "225"
+  },
+  "TolmatMinionImperial": {
+    "skillList": [],
+    "modList": [],
+    "name": "Tolmat Minion (Imperial Era)",
+    "life": "500"
+  },
+  "TolmatMinionRuined": {
+    "skillList": [],
+    "modList": [],
+    "name": "Tolmat Minion (Ruined Era)",
+    "life": "275"
+  },
+  "SummonedWraithlord": {
+    "skillList": [],
+    "modList": [],
+    "name": "Wraithlord",
+    "life": "350"
+  },
+  "SummonedSkeletonVanguard": {
+    "skillList": [],
+    "modList": [],
+    "name": "SkeletonVanguard",
+    "life": "180"
+  },
+  "SummonedSkeletonRogue": {
+    "skillList": [],
+    "modList": [],
+    "name": "SkeletonRogue",
+    "life": "100"
+  },
+  "SummonedBloodWraith": {
+    "skillList": [],
+    "modList": [],
+    "name": "BloodWraith",
+    "life": "100"
+  },
+  "SummonedFlameWraith": {
+    "skillList": [],
+    "modList": [],
+    "name": "FlameWraith",
+    "life": "60"
+  },
+  "SummonedPutridWraith": {
+    "skillList": [],
+    "modList": [],
+    "name": "PutridWraith",
+    "life": "60"
+  },
+  "SummonedRevenant": {
+    "skillList": [],
+    "modList": [],
+    "name": "Revenant",
+    "life": "140"
+  },
+  "SummonedPyreGolem": {
+    "skillList": [],
+    "modList": [],
+    "name": "PyreGolem",
+    "life": "400"
+  },
+  "SummonedSpectralGolem": {
+    "skillList": [],
+    "modList": [],
+    "name": "SpectralGolem",
+    "life": "400"
+  },
+  "SummonedBloodGolem": {
+    "skillList": [],
+    "modList": [],
+    "name": "BloodGolem",
+    "life": "400"
+  },
+  "SummonedBoneMinion": {
+    "skillList": [],
+    "modList": [],
+    "name": "BoneMinion",
+    "life": "100"
+  },
+  "PoisonWispMinion": {
+    "skillList": [],
+    "modList": [],
+    "name": "PoisonWisp",
+    "life": "150"
+  },
+  "BonePillar": {
+    "skillList": [],
+    "modList": [],
+    "name": "BonePillar",
+    "life": "300"
+  },
+  "SummonedCorpseParasite": {
+    "skillList": [],
+    "modList": [],
+    "name": "CorpseParasite",
+    "life": "60"
+  },
+  "SummonedPyromancer": {
+    "skillList": [],
+    "modList": [],
+    "name": "Pyromancer",
+    "life": "100"
+  },
+  "SummonedDeathKnight": {
+    "skillList": [],
+    "modList": [],
+    "name": "DeathKnight",
+    "life": "200"
+  },
+  "SummonedCryomancer": {
+    "skillList": [],
+    "modList": [],
+    "name": "Cryomancer",
+    "life": "100"
+  },
+  "SummonedSoulWisp": {
+    "skillList": [],
+    "modList": [],
+    "name": "SoulWisp",
+    "life": "150"
+  },
+  "PoisonousVine": {
+    "skillList": [],
+    "modList": [],
+    "name": "PoisonousVine",
+    "life": "50"
+  },
+  "PrimalSerpent": {
+    "skillList": [],
+    "modList": [],
+    "name": "PrimalSerpent",
+    "life": "500"
+  },
+  "SummonedLocust": {
+    "skillList": [],
+    "modList": [],
+    "name": "Locust",
+    "life": "100"
+  },
+  "HealingTotem": {
+    "skillList": [],
+    "modList": [],
+    "name": "HealingTotem",
+    "life": "100"
+  },
+  "ClawTotem": {
+    "skillList": [],
+    "modList": [],
+    "name": "ClawTotem",
+    "life": "120"
+  },
+  "TempestTotem": {
+    "skillList": [],
+    "modList": [],
+    "name": "TempestTotem",
+    "life": "100"
+  },
+  "WarcryTotem": {
+    "skillList": [],
+    "modList": [],
+    "name": "WarcryTotem",
+    "life": "100"
+  },
+  "UpheavalTotem": {
+    "skillList": [],
+    "modList": [],
+    "name": "UpheavalTotem",
+    "life": "100"
+  },
+  "SpiritSabertooth": {
+    "skillList": [],
+    "modList": [],
+    "name": "SpiritSabertooth",
+    "life": "240"
+  },
+  "BabyScorpion": {
+    "skillList": [],
+    "modList": [],
+    "name": "BabyScorpion",
+    "life": "150"
+  },
+  "SummonedRockElemental": {
+    "skillList": [],
+    "modList": [],
+    "name": "RockElemental",
+    "life": "250"
+  },
+  "SummonedHive": {
+    "skillList": [],
+    "modList": [],
+    "name": "Hive",
+    "life": "120"
+  },
+  "ValeSpirit": {
+    "skillList": [],
+    "modList": [],
+    "name": "ValeSpirit",
+    "life": "1000"
+  },
+  "MirrorImage": {
+    "skillList": [],
+    "modList": [],
+    "name": "MirrorImage",
+    "life": "200"
+  },
+  "IceShield": {
+    "skillList": [],
+    "modList": [],
+    "name": "IceShield",
+    "life": "300"
+  },
+  "ForgedWeapon": {
+    "skillList": [],
+    "modList": [],
+    "name": "ForgedWeapon",
+    "life": "350"
+  },
+  "BallistaShield": {
+    "skillList": [],
+    "modList": [],
+    "name": "BallistaShield",
+    "life": "300"
+  },
+  "AreksFlesh": {
+    "skillList": [],
+    "modList": [],
+    "name": "AreksFlesh",
+    "life": "300"
+  },
+  "Bee": {
+    "skillList": [],
+    "modList": [],
+    "name": "Bee",
+    "life": "60"
+  },
+  "ChillyBee": {
+    "skillList": [],
+    "modList": [],
+    "name": "ChillyBee",
+    "life": "60"
+  },
+  "FireBee": {
+    "skillList": [],
+    "modList": [],
+    "name": "FireBee",
+    "life": "60"
+  },
+  "LightningBee": {
+    "skillList": [],
+    "modList": [],
+    "name": "LightningBee",
+    "life": "60"
+  },
+  "BurningSkeleton": {
+    "skillList": [],
+    "modList": [],
+    "name": "BurningSkeleton",
+    "life": "200"
+  },
+  "IllusoryTree": {
+    "skillList": [],
+    "modList": [],
+    "name": "IllusoryTree",
+    "life": "100"
   }
 }
