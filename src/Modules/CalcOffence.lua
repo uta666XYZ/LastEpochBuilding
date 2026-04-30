@@ -1284,7 +1284,7 @@ function calcs.offence(env, actor, activeSkill)
 		["ESPercentPerMinute"] = { type = "ES", upfront = false, percent = true, text = "ES/s", baseCost = 0, totalCost = 0, baseCostNoMult = 0, finalBaseCost = 0 },
 	}
 
-	if not skillModList:Flag(skillCfg, "HasNoCost") then
+	if not skillModList:Flag(skillCfg, "HasNoCost") and not activeSkill.skillTypes[SkillType.Transform] then
 		--Support cost multipliers are calculated first and rounded down after 4 digits
 		local mult = floor(skillModList:More(skillCfg, "SupportManaMultiplier"), 4)
 		for resource, val in pairs(costs) do

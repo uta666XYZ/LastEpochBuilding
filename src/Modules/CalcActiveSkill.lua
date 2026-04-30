@@ -207,12 +207,463 @@ local function getWeaponFlags(env, weaponData, weaponTypes)
 end
 
 -- Build list of modifiers for given active skill
+-- Compute tree-injected damage-type tag swaps (LE's `fakeTags` mechanism)
+-- for a given treeId. Returns a {[srcBit]=dstBit} table or nil. Examples:
+--   Spark Artillery: " Cold -> Lightning Damage" -> {Cold=Lightning}
+--   Electrify: "Fire Damage -> Lightning Damage"
+--   Crackling Barrier: "Cold -> Lightning Conversion"
+-- Confirmed via descriptions like "Swaps Frost Claw's {Cold} tag for a {Lightning} tag.".
+local damageTypeBitsByName = {
+	Physical = SkillType.Physical, Lightning = SkillType.Lightning,
+	Cold = SkillType.Cold, Fire = SkillType.Fire, Void = SkillType.Void,
+	Necrotic = SkillType.Necrotic, Poison = SkillType.Poison,
+}
+function calcs.getTreeTagSwaps(env, treeId, grantedEffect)
+	if not (treeId and env and env.allocNodes) then return nil end
+	local prefix = treeId .. "-"
+	local swaps
+	-- For source-less "<X> Conversion" stats (e.g. Earth Smasher's
+	-- "Physical Conversion" on Gathering Storm), infer the source bit from
+	-- the skill's intrinsic damage tags. Earth Smasher's tooltip explicitly
+	-- says "Swaps Gathering Storm's Lightning tag for a Physical tag" — i.e.
+	-- the skill's existing damage-type bit becomes the destination.
+	local DAMAGE_TYPE_BITS = bit.bor(SkillType.Physical, SkillType.Lightning,
+		SkillType.Cold, SkillType.Fire, SkillType.Void, SkillType.Necrotic,
+		SkillType.Poison)
+	local intrinsicDmgBits = {}
+	if grantedEffect then
+		local tags = bit.bor(grantedEffect.skillTypeTags or 0, grantedEffect.fakeTags or 0)
+		local dmgMask = bit.band(tags, DAMAGE_TYPE_BITS)
+		for _, b in pairs(damageTypeBitsByName) do
+			if bit.band(dmgMask, b) == b then
+				t_insert(intrinsicDmgBits, b)
+			end
+		end
+	end
+	for nodeId, node in pairs(env.allocNodes) do
+		if nodeId:sub(1, #prefix) == prefix and node.stats then
+			for _, stat in ipairs(node.stats) do
+				local src, dst = stat:match("^%s*(%w+)%s*%->%s*(%w+)%s+Damage%s*$")
+				if not src then
+					src, dst = stat:match("^%s*(%w+)%s+Damage%s*%->%s*(%w+)%s+Damage%s*$")
+				end
+				if not src then
+					src, dst = stat:match("^%s*(%w+)%s*%->%s*(%w+)%s+Conversion%s*$")
+				end
+				if not src then
+					-- Bare "<Src> -> <Dst>" form (no Damage / Conversion suffix).
+					-- Used by Flame Ward's Lightning Ward (fw3d-10: " Fire -> Lightning")
+					-- and Cold Ward (fw3d-?: " Fire -> Cold"). The damageTypeBitsByName
+					-- filter below rejects ailment swaps like " Chill -> Ignite",
+					-- " Frostbite -> Shock", " Ignite -> Frostbite" since Chill/
+					-- Frostbite/Ignite/Shock aren't in the damage-type bit table.
+					src, dst = stat:match("^%s*(%w+)%s*%->%s*(%w+)%s*$")
+				end
+				if src and dst and damageTypeBitsByName[src] and damageTypeBitsByName[dst]
+				   and damageTypeBitsByName[src] ~= damageTypeBitsByName[dst] then
+					swaps = swaps or {}
+					swaps[damageTypeBitsByName[src]] = damageTypeBitsByName[dst]
+				else
+					-- Source-less "<X> Conversion" — infer source from skill's
+					-- intrinsic damage type. Matches LE's per-skill tooltip
+					-- behaviour ("Swaps <Skill>'s <SrcType> tag for a <DstType>
+					-- tag.") for nodes like Earth Smasher.
+					local soloDst = stat:match("^%s*(%w+)%s+Conversion%s*$")
+					if soloDst and damageTypeBitsByName[soloDst] then
+						local dstBit = damageTypeBitsByName[soloDst]
+						for _, srcBit in ipairs(intrinsicDmgBits) do
+							if srcBit ~= dstBit then
+								swaps = swaps or {}
+								swaps[srcBit] = dstBit
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+	return swaps
+end
+
+-- Compute tree-injected tag *additions* for a given treeId. Returns a bitmap
+-- of SkillType bits to OR into the skill's effective tags, or 0. This is for
+-- specialization nodes that convert/extend a skill into something with extra
+-- intrinsic tags — e.g. Warcry's "Totemic Heart" node ("Create Warcry Totem")
+-- turns the skill into Summon Warcry Totem, which is a Minion+Totem ability.
+-- Without this, affixes like "+1 to Minion Skills" from Beastmaster Ancient
+-- Might wouldn't apply to a totem-converted Warcry, and the Scaling Tags row
+-- would miss the Minion/Totem markers the in-game tooltip shows.
+--
+-- Pattern detected: stat lines matching "Creates? <name> Totem" — used by
+-- Warcry/Totemic Heart, Upheaval/Upheaval Totems, etc. The encoding has no
+-- explicit ability reference; LEB recognises the phrase and adds Minion+Totem
+-- bits since every "Create X Totem" node turns the skill into a totem-minion.
+function calcs.getTreeTagAdditions(env, treeId)
+	if not (treeId and env and env.allocNodes) then return 0 end
+	local prefix = treeId .. "-"
+	local adds = 0
+	for nodeId, node in pairs(env.allocNodes) do
+		if nodeId:sub(1, #prefix) == prefix then
+			if node.stats then
+				for _, stat in ipairs(node.stats) do
+					-- "Create Warcry Totem" / "Creates Upheaval Totem"
+					if stat:lower():match("^%s*creates?%s+.+%s+totem%s*$") then
+						adds = bor(adds, SkillType.Minion, SkillType.Totem)
+					end
+					-- Plain damage producer: stats ending in "<DmgType> Damage"
+					-- (e.g. wc57-30 Kinetic Scream "40 Spell Physical Damage" gives
+					-- Warcry the Physical bit so "+to Physical Skills" applies).
+					-- damageTypeBitsByName lookup filters spurious matches.
+					local plainType = stat:match("(%w+)%s+[Dd]amage%s*$")
+					if plainType and damageTypeBitsByName[plainType] then
+						adds = bor(adds, damageTypeBitsByName[plainType])
+					end
+				end
+			end
+			-- Split-effect damage-type additions parsed from node descriptions.
+			-- Per LE_datamining findings: per-node mutator state (e.g. Black Hole's
+			-- BinaryStar bool) isn't serialized — only `<Skill>Tree.updateMutator()`
+			-- C# bytecode knows the exact mapping. As a fallback we pattern-match
+			-- description text for split-effect phrasing like Binary System
+			-- ("One deals fire damage and the other deals cold damage"), which
+			-- introduces both damage types as base. Cap-summing needs these
+			-- bits so e.g. "+to Fire Spell Skills" matches a Black Hole that
+			-- has Binary System allocated.
+			if node.description then
+				for _, line in ipairs(node.description) do
+					-- Per-sub-line gating: descriptions can pack multiple
+					-- sentences with `\n\n` separators; conditional ("if ...")
+					-- sub-lines must not promote unconditional tag additions.
+					for sub in (line .. "\n"):gmatch("([^\n]*)\n") do
+						local lo = sub:lower()
+						if lo ~= "" and not lo:match("^%s*if%s") then
+							local oneType, otherType = lo:match("one deals (%a+) damage and the other deals (%a+) damage")
+							if oneType and otherType then
+								local DT_BITS = {
+									physical = SkillType.Physical, lightning = SkillType.Lightning,
+									cold = SkillType.Cold, fire = SkillType.Fire, void = SkillType.Void,
+									necrotic = SkillType.Necrotic, poison = SkillType.Poison,
+								}
+								if DT_BITS[oneType] then adds = bor(adds, DT_BITS[oneType]) end
+								if DT_BITS[otherType] then adds = bor(adds, DT_BITS[otherType]) end
+							end
+							-- Delivery-class promotion: nodes that convert a spell
+							-- into a melee/throwing/bow attack add the new delivery
+							-- bit so "+to <Delivery> Skills" affixes match.
+							-- Healing Hands' Seraph Blade (hh7pa3-8): "Healing Hands
+							-- is converted into a melee attack..." — confirmed via
+							-- LETools applying "+6 to Level of Melee Skills" from
+							-- Two-Handed Axe to a build with Seraph Blade allocated.
+							-- Note: we ADD the delivery bit rather than swap-out
+							-- Spell so DoT/Buff-related Spell-tagged behaviour is
+							-- preserved (the in-game tooltip drops Spell, but
+							-- LEB's downstream code assumes Spell tag elsewhere).
+							if lo:match("is converted into a melee attack") then
+								adds = bor(adds, SkillType.Melee)
+							elseif lo:match("is converted into a throwing attack") then
+								adds = bor(adds, SkillType.Throwing)
+							elseif lo:match("is converted into a bow attack") then
+								adds = bor(adds, SkillType.Bow)
+							end
+							-- Damage-type addition phrase: "deal[s]?[ing]? [<adj>]
+							-- <type> damage". Examples:
+							--   hh7pa3-1 Searing Light: "dealing spell fire damage"
+							--   wo42-14 Tundra Stalkers: "deal additional cold damage"
+							--   wc57-30 Kinetic Scream: "deals spell physical damage"
+							-- Filtered through damageTypeBitsByName so spurious matches
+							-- like "deals more damage" / "deals increased damage" miss.
+							if lo:find("deal", 1, true) then
+								for typeName, b in pairs(damageTypeBitsByName) do
+									local needle = " " .. typeName:lower() .. " damage"
+									if lo:find(needle, 1, true) then
+										adds = bor(adds, b)
+									end
+								end
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+	return adds
+end
+
+-- Apply tree tag swaps to a skillTypes set + keywordFlags integer; returns
+-- (newSkillTypes, newKeywordFlags). Pass mutable=true to mutate skillTypes
+-- in place (used at ActiveSkill build time).
+function calcs.applyTreeTagSwaps(swaps, skillTypes, keywordFlags, mutable)
+	if not swaps then return skillTypes, keywordFlags end
+	local out = mutable and skillTypes or copyTable(skillTypes)
+	local kw = keywordFlags or 0
+	for srcBit, dstBit in pairs(swaps) do
+		if out[srcBit] then
+			out[srcBit] = nil
+			out[dstBit] = true
+			kw = bor(band(kw, bnot(srcBit)), dstBit)
+		end
+	end
+	return out, kw
+end
+
+-- Variant-name -> AT bit mapping for tree-driven minion-pool mutations.
+-- Stat lines like " Adds Pyromancers" / " Removes Mages" appear on summon
+-- skill trees (Skeletal Mage, Summon Skeleton, etc.) and modify which minion
+-- variants get summoned. Each variant has an associated damage/delivery type.
+-- LE confirms via tooltips like "Adds Pyromancers ... Pyromancers deal fire
+-- damage" — so the variant's bits should be added/removed from the minion-tag
+-- bitmap used for "+X <DmgType> Minion Skills" affix matching.
+local minionVariantBits = {
+	-- Skeletal Mage (sm4g) variants
+	Mages              = SkillType.Necrotic,
+	Pyromancers        = SkillType.Fire,
+	Cryomancers        = SkillType.Cold,
+	["Death Knights"]  = SkillType.Necrotic,
+	-- Summon Skeleton (ss37kl) variants
+	Warriors           = bor(SkillType.Melee, SkillType.Physical),
+	Archers            = bor(SkillType.Bow, SkillType.Physical),
+	Rogues             = bor(SkillType.Melee, SkillType.Physical),
+	Vanguards          = bor(SkillType.Melee, SkillType.Physical),
+}
+
+-- Returns (addBits, removeBits) for tree-driven minion-pool variant mutations
+-- on the given treeId. Walks allocated nodes for stats matching:
+--   " Adds <Variant>"     -> OR variant's bits into add mask
+--   " Removes <Variant>"  -> OR variant's bits into remove mask
+-- Caller applies as: minionKW = (minionKW & ~remove) | add
+function calcs.getMinionVariantMutations(env, treeId)
+	if not (treeId and env and env.allocNodes) then return 0, 0 end
+	local prefix = treeId .. "-"
+	local addBits, removeBits = 0, 0
+	for nodeId, node in pairs(env.allocNodes) do
+		if nodeId:sub(1, #prefix) == prefix and node.stats then
+			for _, stat in ipairs(node.stats) do
+				local addV = stat:match("^%s*Adds%s+(.+)%s*$")
+				if addV and minionVariantBits[addV] then
+					addBits = bor(addBits, minionVariantBits[addV])
+				end
+				local remV = stat:match("^%s*Removes%s+(.+)%s*$")
+				if remV and minionVariantBits[remV] then
+					removeBits = bor(removeBits, minionVariantBits[remV])
+				end
+			end
+		end
+	end
+	return addBits, removeBits
+end
+
+-- Returns the subset of `stcdt` (skillTreeConversionDamageTags) that should
+-- contribute to minionKW. A bit is kept only if the build has at least one
+-- allocated tree node that explicitly produces that damage type — either via
+-- damage-conversion stats (" X -> Y", " Y Conversion") or variant additions
+-- (" Adds <Pyromancers/Cryomancers/...>").
+--
+-- Rationale: stcdt enumerates damage types REACHABLE via the tree. For skills
+-- like Summon Skeleton with stcdt=Phys+Cold+Fire (Cold via Cryomancers,
+-- Fire via Fire Arrow), unioning stcdt unconditionally falsely matches gear
+-- like Logi's Hunger ("+X Fire Minion Skills") even when no Fire-producing
+-- node is allocated. LETools / in-game match only the actually-active types.
+function calcs.getActiveStcdtBits(env, treeId, stcdt)
+	if not stcdt or stcdt == 0 then return 0 end
+	if not (treeId and env and env.allocNodes) then return 0 end
+	local prefix = treeId .. "-"
+	local active = 0
+	for nodeId, node in pairs(env.allocNodes) do
+		if nodeId:sub(1, #prefix) == prefix and node.stats then
+			for _, stat in ipairs(node.stats) do
+				-- damage conversion: produces dst type
+				local _, dst = stat:match("^%s*(%w+)%s*%->%s*(%w+)%s+Damage%s*$")
+				if not dst then
+					_, dst = stat:match("^%s*(%w+)%s+Damage%s*%->%s*(%w+)%s+Damage%s*$")
+				end
+				if not dst then
+					_, dst = stat:match("^%s*(%w+)%s*%->%s*(%w+)%s+Conversion%s*$")
+				end
+				if not dst then
+					dst = stat:match("^%s*(%w+)%s+Conversion%s*$")
+				end
+				if not dst then
+					-- " <Type> Base Damage -> <DmgType>" (e.g. bg36nl-7 Pyre Golem: " Melee Base Damage -> Fire")
+					_, dst = stat:match("^%s*(%w+)%s+Base%s+Damage%s*%->%s*(%w+)%s*$")
+				end
+				if not dst then
+					-- Bare "<Src> -> <Dst>" form (no suffix). Same fallback as
+					-- getTreeTagSwaps; see comment there. Filtered safely via
+					-- damageTypeBitsByName lookup (rejects ailment swaps).
+					local _src
+					_src, dst = stat:match("^%s*(%w+)%s*%->%s*(%w+)%s*$")
+					if dst and not damageTypeBitsByName[dst] then dst = nil end
+				end
+				if dst and damageTypeBitsByName[dst] then
+					active = bor(active, damageTypeBitsByName[dst])
+				end
+				-- variant addition: produces variant's damage bits
+				local addV = stat:match("^%s*Adds%s+(.+)%s*$")
+				if addV and minionVariantBits[addV] then
+					active = bor(active, minionVariantBits[addV])
+				end
+				-- Plain damage producer: stats ending in "<DmgType> Damage"
+				-- (e.g. wo42-14 Tundra Stalkers "+2 Cold Damage", wc57-30
+				-- Kinetic Scream "40 Spell Physical Damage", wc57-6 Frost Claw
+				-- "50% Increased Cold Damage"). The damageTypeBitsByName lookup
+				-- filters out matches like "Increased Damage" / "More Damage".
+				local plainType = stat:match("(%w+)%s+[Dd]amage%s*$")
+				if plainType and damageTypeBitsByName[plainType] then
+					active = bor(active, damageTypeBitsByName[plainType])
+				end
+			end
+		end
+		-- Description-driven explicit tag promotion: "<Minion> gain the {<type>}
+		-- tag" / "gain the <type> tag" (e.g. fs3e3-21 "Forged by Fire" promotes
+		-- Forged Weapons to Fire). Backs the Minion Tags row's Fire entry on
+		-- Forge Strike with Forged by Fire allocated, matching LETools.
+		-- Defensive: node.description may be a string or table per
+		-- PassiveTree:ProcessStats's handling pattern.
+		if nodeId:sub(1, #prefix) == prefix and node.description then
+			local descList = type(node.description) == "table" and node.description or { node.description }
+			-- LEB's tooltip preprocessing rewrites JSON `{fire}` into runtime
+			-- form like `{[0]=fire}` (Lua table-literal-ish), so the captured
+			-- token between braces may include `[0]=` etc. Scan known damage
+			-- type names directly within the "gain the ... tag" phrase rather
+			-- than trying to parse the brace syntax.
+			for _, line in ipairs(descList) do
+				for sub in (line .. "\n"):gmatch("([^\n]*)\n") do
+					local lo = sub:lower()
+					if lo ~= "" and not lo:match("^%s*if%s") then
+						-- Capture the inner phrase between "gain the" and "tag"
+						-- (single word, allowing `\n`/`\r` since `.` excludes them).
+						for inner in lo:gmatch("gain the[%s%S]-tag") do
+							for typeName, b in pairs(damageTypeBitsByName) do
+								if inner:find(typeName:lower(), 1, true) then
+									active = bor(active, b)
+								end
+							end
+						end
+						-- "deal[s]?[ing]? [<adj>] [<adj>] <type> damage"
+						-- Matches: "deals spell physical damage" (wc57-30),
+						-- "deal additional cold damage" (wo42-14 Tundra Stalkers),
+						-- "dealing spell fire damage" (hh7pa3-1 Searing Light).
+						local verbStart, verbEnd = lo:find("deal[s]?[ing]*%s")
+						if verbStart then
+							for typeName, b in pairs(damageTypeBitsByName) do
+								local needle = " " .. typeName:lower() .. " damage"
+								if lo:find(needle, verbEnd, true) then
+									active = bor(active, b)
+								end
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+	return band(stcdt, active)
+end
+
+-- Item-mod driven runtime tag conversions (e.g. Ash Wake's
+-- "Aura of Decay is converted to fire, inflicting ignite instead of poison",
+-- Dancing Strikes is converted to Fire). Returns (addBits, removeBits) to be
+-- applied to the skill's effective tag bitmap so:
+--   * "+to <NewType> Skills" / "+to Elemental Skills" affixes match.
+--   * Scaling Tags tooltip row shows the post-conversion damage type.
+-- removeBits = skill's intrinsic damage-type bits (Phys/Light/Cold/Fire/Void/
+-- Necrotic/Poison) that the conversion supplants. Don't remove what we add.
+-- addBits auto-includes Elemental(128) when adding Fire/Cold/Lightning;
+-- removeBits auto-includes Elemental when removing the only ele source.
+function calcs.getItemSkillTagConversions(env, grantedEffect)
+	if not (env and env.player and env.player.itemList and grantedEffect and grantedEffect.name) then
+		return 0, 0
+	end
+	local DAMAGE_TYPE_BITS = bor(SkillType.Physical, SkillType.Lightning,
+		SkillType.Cold, SkillType.Fire, SkillType.Void, SkillType.Necrotic,
+		SkillType.Poison)
+	-- Build case-insensitive prefix match: skill names in skills.json use Title
+	-- Case ("Aura Of Decay") but in-game mod text uses "Aura of Decay" (lower
+	-- "of"). Compare lowercased.
+	local nameLower = grantedEffect.name:lower()
+	local addBits = 0
+	local found = false
+	local function scan(modLines)
+		if not modLines then return end
+		for _, line in ipairs(modLines) do
+			local text = (line.line or ""):lower()
+			local dst = text:match("^" .. nameLower:gsub("(%W)", "%%%1") .. " is converted to (%w+)")
+			if dst then
+				local dstCap = dst:sub(1, 1):upper() .. dst:sub(2):lower()
+				if damageTypeBitsByName[dstCap] then
+					addBits = bor(addBits, damageTypeBitsByName[dstCap])
+					found = true
+				end
+			end
+		end
+	end
+	for _, item in pairs(env.player.itemList) do
+		if item then
+			scan(item.explicitModLines)
+			scan(item.implicitModLines)
+			scan(item.enchantModLines)
+		end
+	end
+	if not found then return 0, 0 end
+	local intrinsic = bor(grantedEffect.skillTypeTags or 0, grantedEffect.fakeTags or 0)
+	local removeBits = band(intrinsic, DAMAGE_TYPE_BITS)
+	removeBits = band(removeBits, bnot(addBits))
+	local ELE_BITS = bor(SkillType.Fire, SkillType.Cold, SkillType.Lightning)
+	if band(addBits, ELE_BITS) ~= 0 then
+		addBits = bor(addBits, SkillType.Elemental)
+	end
+	if band(removeBits, ELE_BITS) ~= 0 and band(addBits, SkillType.Elemental) == 0
+	   and band(intrinsic, SkillType.Elemental) ~= 0 then
+		removeBits = bor(removeBits, SkillType.Elemental)
+	end
+	return addBits, removeBits
+end
+
+-- OR an additions bitmap into a skillTypes set + keywordFlags integer.
+local TAG_ADDITION_BITS = {
+	SkillType.Minion, SkillType.Totem, SkillType.Spell, SkillType.Buff,
+	SkillType.Melee, SkillType.Bow, SkillType.Throwing, SkillType.DoT,
+}
+function calcs.applyTreeTagAdditions(adds, skillTypes, keywordFlags, mutable)
+	if not adds or adds == 0 then return skillTypes, keywordFlags end
+	local out = mutable and skillTypes or copyTable(skillTypes)
+	local kw = bor(keywordFlags or 0, adds)
+	for _, typeBit in ipairs(TAG_ADDITION_BITS) do
+		if band(adds, typeBit) ~= 0 then out[typeBit] = true end
+	end
+	return out, kw
+end
+
 function calcs.buildActiveSkillModList(env, activeSkill)
 	local skillTypes = activeSkill.skillTypes
 	local skillFlags = activeSkill.skillFlags
 	local activeEffect = activeSkill.activeEffect
 	local activeGrantedEffect = activeEffect.grantedEffect
 	local effectiveRange = 0
+
+	-- Apply tree-injected damage-type tag swaps so affixes like
+	-- "+N to Lightning Spells" match a Cold->Lightning-swapped Frost Claw.
+	local treeSwaps = calcs.getTreeTagSwaps(env, activeGrantedEffect.treeId, activeGrantedEffect)
+	if treeSwaps then
+		local _, newKw = calcs.applyTreeTagSwaps(treeSwaps, skillTypes, activeSkill.skillCfg and activeSkill.skillCfg.keywordFlags or 0, true)
+		for _, cfg in ipairs({ activeSkill.skillCfg, activeSkill.weapon1Cfg, activeSkill.weapon2Cfg }) do
+			if cfg and cfg.keywordFlags then
+				cfg.keywordFlags = newKw
+			end
+		end
+	end
+	-- Tree-injected tag *additions* (e.g. Totemic Heart adds Minion+Totem to
+	-- Warcry). Mutate skillTypes in place and propagate to skillCfg/weaponCfg
+	-- keywordFlags so affix matching at this active skill's runtime sees them.
+	local treeAdds = calcs.getTreeTagAdditions(env, activeGrantedEffect.treeId)
+	if treeAdds ~= 0 then
+		local _, newKw2 = calcs.applyTreeTagAdditions(treeAdds, skillTypes, activeSkill.skillCfg and activeSkill.skillCfg.keywordFlags or 0, true)
+		for _, cfg in ipairs({ activeSkill.skillCfg, activeSkill.weapon1Cfg, activeSkill.weapon2Cfg }) do
+			if cfg and cfg.keywordFlags then
+				cfg.keywordFlags = newKw2
+			end
+		end
+	end
 
 	-- Set mode flags
 	if env.mode_buffs then
@@ -414,6 +865,7 @@ function calcs.buildActiveSkillModList(env, activeSkill)
 		skillGrantedEffect = activeGrantedEffect,
 		skillPart = activeSkill.skillPart,
 		skillTypes = activeSkill.skillTypes,
+		skillAttributes = activeGrantedEffect.skillAttributes,
 		skillCond = { },
 		skillDist = env.mode_effective and effectiveRange,
 		slotName = activeSkill.slotName

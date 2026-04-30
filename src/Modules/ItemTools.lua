@@ -9,6 +9,7 @@ local t_remove = table.remove
 local m_min = math.min
 local m_max = math.max
 local m_floor = math.floor
+local m_ceil = math.ceil
 
 itemLib = { }
 
@@ -153,6 +154,18 @@ function itemLib.applyRange(line, range, valueScalar, rounding)
     if line:find("%%") and precision >= 100 then
         precision = precision / 100
     end
+    -- "+(N-N) to <name>" style affixes (e.g. "+(2-4) to Cinder Strike",
+    -- "+(1-3) to Strength Skills", "+(2-6) to All Attributes") always roll
+    -- discrete integers in LE — the rolled byte 0..255 maps to {min,...,max}
+    -- with no fractional positions. When the unique data omits the explicit
+    -- {rounding:Integer} directive we used to interpolate at precision=100,
+    -- producing fractional skill-level contributions like +2.46 that drift
+    -- the cap (Kuzon's Fury "+(2-4) to Cinder Strike" → LEB 30 vs game 29).
+    -- Auto-force integer precision when the line has "+(range) to <alpha>"
+    -- with no explicit rounding directive or %.
+    if not rounding and not line:find("%%") and line:find("^%+?%([%-%d%.]+%-[%-%d%.]+%) to %a") then
+        precision = 1
+    end
 
     -- range is actually given as a roll (TODO:rename)
     range = range / 255.0
@@ -180,6 +193,16 @@ function itemLib.applyRange(line, range, valueScalar, rounding)
                 -- Flat values (useRound=false) use (max-min+1/precision) span so the
                 -- top byte (255) reaches max; percentage-with-word affixes (useRound=true)
                 -- use the plain (max-min) span, matching LETools/Maxroll displays.
+                --
+                -- Applies to SP=88 LevelOfSkills "+(N-N) to <Skill/Cat>" too —
+                -- a previous attempt (f925695c5) special-cased these to ceil
+                -- based on a single Omnis byte=17→+2 datapoint, but a direct
+                -- in-game verification on Phantom Grip "+(1-2) to All Minion
+                -- Skills" at range:90 showed +1 each (not +2). ceil is not
+                -- monotonically consistent with byte=17→+2 + byte=90→+1, so
+                -- the Omnis observation was likely misread. Reverting to the
+                -- shared linear-interp + floor path: byte=90 → 1+floor(0.706)
+                -- = 1, byte=255 → 1+floor(2)=3 capped to 2.
                 local span = maxN - minN
                 if not useRound then
                     span = span + 1 / precision

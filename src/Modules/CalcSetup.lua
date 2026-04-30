@@ -165,13 +165,21 @@ local function applySetBonuses(env, items, ver)
 				local rawLine = info.bonus[tostring(tier)] or info.bonus[tier]
 				if rawLine then
 					-- Strip formatting tags ({rounding:Integer} etc.) before parse.
-					local line = rawLine:gsub("{rounding:[^}]+}", ""):gsub("{[^}]+}", "")
-					local mods = modLib.parseMod(line)
-					if mods and #mods > 0 then
-						local source = "Set: " .. (info.name or ("Set " .. tostring(setId))) .. " (" .. tier .. "pc)"
-						for _, mod in ipairs(mods) do
-							modLib.setSource(mod, source)
-							env.itemModDB:AddMod(mod)
+					local cleaned = rawLine:gsub("{rounding:[^}]+}", ""):gsub("{[^}]+}", "")
+					-- Split comma-separated bonuses (e.g. Invoker's Set 3-pc:
+					-- "+2 to Fire Spells, +2 to Lightning Spells, +2 to Cold Spells")
+					-- so each clause is parsed independently.
+					local source = "Set: " .. (info.name or ("Set " .. tostring(setId))) .. " (" .. tier .. "pc)"
+					for clause in (cleaned .. ","):gmatch("([^,]+),") do
+						local line = clause:match("^%s*(.-)%s*$")
+						if line ~= "" then
+							local mods = modLib.parseMod(line)
+							if mods and #mods > 0 then
+								for _, mod in ipairs(mods) do
+									modLib.setSource(mod, source)
+									env.itemModDB:AddMod(mod)
+								end
+							end
 						end
 					end
 				end
@@ -1143,6 +1151,29 @@ function calcs.initEnv(build, mode, override, specEnv)
 				env.itemModDB.multipliers[key] = (env.itemModDB.multipliers[key] or 0) + 1
 				env.itemModDB.conditions[key .. "In" .. slotName] = true
 				env.itemModDB.multipliers[item.type:gsub(" ", ""):gsub(".+Handed", "").."Item"] = (env.itemModDB.multipliers[item.type:gsub(" ", ""):gsub(".+Handed", "").."Item"] or 0) + 1
+				-- Julra's Obsession: "+X% Stats on your gloves also apply to your minions".
+				-- Wrap each non-attribute, non-minion glove mod as a MinionModifier so
+				-- the existing minion-modDB merge picks it up. Tooltip excludes Str/Dex/
+				-- Int/Vit/Att since "Attributes on minions have no effect".
+				if slotName == "Gloves" then
+					local applyPercent = 0
+					for _, m in ipairs(srcList) do
+						if m.name == "StatsApplyToMinions_Gloves" and m.type == "BASE" then
+							applyPercent = applyPercent + (m.value or 0)
+						end
+					end
+					if applyPercent > 0 then
+						local minionScale = scale * applyPercent / 100
+						local skipName = { Str = true, Dex = true, Int = true, Vit = true, Att = true,
+							MinionModifier = true, StatsApplyToMinions_Gloves = true }
+						for _, srcMod in ipairs(srcList) do
+							if not skipName[srcMod.name] then
+								local wrapped = modLib.createMod("MinionModifier", "LIST", { mod = copyTable(srcMod) })
+								env.itemModDB:ScaleAddMod(wrapped, minionScale)
+							end
+						end
+					end
+				end
 			end
 			::continue_orderedSlot::
 		end
@@ -1461,8 +1492,56 @@ function calcs.initEnv(build, mode, override, specEnv)
 			end
 		end
 
-		-- Compute +skill level bonus from equipment/modDB
-		env.skillLevelBonus = env.modDB:Sum("BASE", nil, "SkillLevel")
+		-- Compute +skill level bonus from equipment/modDB.
+		-- Permanence of Primal Knowledge: "% increased Effect of Skill Level
+		-- modifiers on Legendary Affixes" multiplies BASE SkillLevel mods
+		-- whose source mod has legendaryAffix=true (set in Item.lua for sealed
+		-- Prefix/Suffix on Reforged Legendary items).
+		local function sumSkillLevelWithLegendaryEffect(cfg)
+			local total = 0
+			local legendarySum = 0
+			local entries = env.modDB:Tabulate("BASE", cfg, "SkillLevel")
+			for _, entry in ipairs(entries) do
+				total = total + entry.value
+				if entry.mod and entry.mod.legendaryAffix then
+					legendarySum = legendarySum + entry.value
+				end
+			end
+			local incPct = env.modDB:Sum("INC", nil, "LegendaryAffixSkillLevelEffect")
+			if incPct ~= 0 and legendarySum ~= 0 then
+				total = total + legendarySum * incPct / 100
+			end
+			-- Build human-readable breakdown grouped by source.
+			-- Item rows show the unscaled affix value; the Permanence multiplier
+			-- contribution (legendarySum * incPct%) is rolled into a single
+			-- trailing row so users can see exactly where the fractional part
+			-- of the cap comes from.
+			local grouped, order = {}, {}
+			for _, entry in ipairs(entries) do
+				local m = entry.mod
+				local src = (m and m.source) or "Unknown"
+				if not grouped[src] then
+					grouped[src] = { source = src, value = 0 }
+					t_insert(order, src)
+				end
+				grouped[src].value = grouped[src].value + entry.value
+			end
+			local breakdown = {}
+			for _, src in ipairs(order) do
+				if grouped[src].value ~= 0 then
+					t_insert(breakdown, grouped[src])
+				end
+			end
+			if incPct ~= 0 and legendarySum ~= 0 then
+				t_insert(breakdown, {
+					source = "Permanence of Primal Knowledge (" .. incPct .. "%)",
+					value = legendarySum * incPct / 100,
+				})
+			end
+			return total, breakdown
+		end
+		env.sumSkillLevelWithLegendaryEffect = sumSkillLevelWithLegendaryEffect
+		env.skillLevelBonus = sumSkillLevelWithLegendaryEffect(nil)
 		build.skillLevelBonus = env.skillLevelBonus
 
 		-- Determine main skill group
@@ -1579,21 +1658,186 @@ function calcs.initEnv(build, mode, override, specEnv)
 		-- Note: modDB:Sum with a skillCfg also includes untagged (global) mods, so we subtract
 		-- the global bonus to get only the skill-specific portion.
 		build.perSkillLevelBonus = build.perSkillLevelBonus or {}
+		build.perSkillLevelBreakdown = build.perSkillLevelBreakdown or {}
+		-- Per-skill item-derived delivery-tag swap (e.g. Heartseeker Bow->Throwing
+		-- via Ravager's Dart). Consumed by SkillsTab so the Scaling Tags tooltip
+		-- row matches in-game routing.
+		build.perSkillDeliverySwap = build.perSkillDeliverySwap or {}
+		-- Per-skill item-mod runtime tag conversions (Ash Wake's "Aura of Decay
+		-- is converted to fire", Dancing Strikes is converted to Fire, ...).
+		-- Consumed by SkillsTab so the Scaling Tags tooltip row reflects the
+		-- post-conversion damage type.
+		build.perSkillTagAdd = build.perSkillTagAdd or {}
+		build.perSkillTagRemove = build.perSkillTagRemove or {}
+		-- Per-skill effective Minion Tags bitmap — already-filtered stcdt +
+		-- variant mutations. SkillsTab uses this as a full replacement for the
+		-- static displayMinionTags so the row matches in-game routing.
+		build.perSkillDisplayMinionTags = build.perSkillDisplayMinionTags or {}
+		-- Pre-populate attribute output values so PerStat tags on SkillLevel
+		-- mods (e.g. "+1 to All Skills per 120 Total Attributes") evaluate
+		-- correctly here. CalcPerform recomputes these later, but it runs
+		-- after this block, so we'd otherwise see 0 for any attribute-scaled
+		-- skill level mod.
+		env.player.output = env.player.output or {}
+		for _, stat in pairs(Attributes) do
+			env.player.output[stat] = round(calcLib.val(env.modDB, stat))
+		end
 		for index, group in pairs(build.skillsTab.socketGroupList) do
 			if group.grantedEffect and group.grantedEffect.treeId then
 				local allocatedPoints = build.skillsTab:GetUsedSkillPoints(index)
 				-- Sum all SkillLevel mods matching this skill (includes global + skill-specific).
 				-- keywordFlags lets keyword-tagged SkillLevel mods ("+N to Cold Melee Skills",
 				-- "+N to Fire Minion Skills" etc.) match this skill's categories.
+				-- Apply tree-injected damage-type tag swaps (e.g. Spark Artillery
+				-- swapping Frost Claw Cold->Lightning) so "+N to Lightning Spells"
+				-- etc. matches the swapped skill in this cap-summing pass too.
+				local treeSwaps = calcs.getTreeTagSwaps(env, group.grantedEffect.treeId, group.grantedEffect)
+				local skillTypes, keywordFlags = calcs.applyTreeTagSwaps(
+					treeSwaps,
+					group.grantedEffect.skillTypes,
+					group.grantedEffect.keywordFlags or 0,
+					false
+				)
+				-- Tree-injected tag additions (e.g. Warcry's Totemic Heart node
+				-- adds Minion+Totem because it converts the skill into a totem).
+				-- Apply *after* swaps so additions ride on the post-swap bitmap.
+				local treeAdds = calcs.getTreeTagAdditions(env, group.grantedEffect.treeId)
+				skillTypes, keywordFlags = calcs.applyTreeTagAdditions(
+					treeAdds, skillTypes, keywordFlags, false
+				)
+				-- Item-mod runtime tag conversions (Ash Wake "Aura of Decay is
+				-- converted to fire" -> Fire+, Poison-; Elemental(128) auto-
+				-- handled). Applied AFTER tree adds so item conversions ride on
+				-- the post-tree-mutation bitmap.
+				local itemAddTags, itemRemoveTags = calcs.getItemSkillTagConversions(env, group.grantedEffect)
+				if itemRemoveTags ~= 0 then
+					skillTypes = copyTable(skillTypes)
+					for typeBit in pairs(skillTypes) do
+						if type(typeBit) == "number" and bit.band(typeBit, itemRemoveTags) ~= 0 then
+							skillTypes[typeBit] = nil
+						end
+					end
+					keywordFlags = bit.band(keywordFlags, bit.bnot(itemRemoveTags))
+				end
+				if itemAddTags ~= 0 then
+					if itemRemoveTags == 0 then skillTypes = copyTable(skillTypes) end
+					for _, typeBit in ipairs({ SkillType.Physical, SkillType.Lightning,
+						SkillType.Cold, SkillType.Fire, SkillType.Void, SkillType.Necrotic,
+						SkillType.Poison, SkillType.Elemental }) do
+						if bit.band(itemAddTags, typeBit) ~= 0 then
+							skillTypes[typeBit] = true
+						end
+					end
+					keywordFlags = bit.bor(keywordFlags, itemAddTags)
+				end
+				build.perSkillTagAdd[index] = itemAddTags
+				build.perSkillTagRemove[index] = itemRemoveTags
+				-- Item-scoped delivery-type conversions ("100% of Heartseeker
+				-- converted to Throwing" on Ravager's Dart). Replace the skill's
+				-- existing delivery bit (Bow/Melee/Throwing/Spell) with the
+				-- destination so "+to <newType> Skills" affixes match — confirmed
+				-- in-game: Heartseeker tagged Bow base, becomes Throwing under
+				-- this conversion, and Relic "+1 Throwing Skills" applies.
+				local DELIVERY_BITS = bit.bor(SkillType.Melee, SkillType.Throwing, SkillType.Bow, SkillType.Spell)
+				local skillSwaps = env.modDB:List(nil, "SkillTagSwap_" .. group.grantedEffect.name:gsub("%s+", ""))
+				local deliverySwapBit = nil
+				if skillSwaps and #skillSwaps > 0 then
+					skillTypes = copyTable(skillTypes)
+					for _, swap in ipairs(skillSwaps) do
+						if swap.deliveryBit then
+							-- Strip existing delivery bits, then OR in destination.
+							for typeBit in pairs(skillTypes) do
+								if type(typeBit) == "number" and bit.band(typeBit, DELIVERY_BITS) ~= 0
+								   and bit.band(typeBit, DELIVERY_BITS) == typeBit then
+									skillTypes[typeBit] = nil
+								end
+							end
+							keywordFlags = bit.band(keywordFlags, bit.bnot(DELIVERY_BITS))
+							skillTypes[swap.deliveryBit] = true
+							keywordFlags = bit.bor(keywordFlags, swap.deliveryBit)
+							deliverySwapBit = swap.deliveryBit
+						end
+					end
+				end
+				build.perSkillDeliverySwap[index] = deliverySwapBit
+				-- Stash per-skill display Minion Tags after minionKW is built
+				-- below; deferred via closure-style write at end of this loop.
+				-- "+to <DamageType> Minion Skills" affix scope:
+				-- A two-tag mod of {SkillType=Minion, MinionTagFlag=<dmgType>} only
+				-- applies if BOTH gates pass. The SkillType=Minion gate is
+				-- satisfied by any skill carrying the Minion bit (fakeTags or
+				-- baseFlags), which correctly lets "+to Minion Skills" (cat=all,
+				-- no MinionTagFlag) raise Spriggan Form / Werebear Form levels
+				-- (confirmed in-game: Phantom Grip "+2 Minion Skills" applies).
+				--
+				-- The MinionTagFlag gate filters by the spawned minion's damage/
+				-- delivery tags. For form/buff skills that aren't minion-summon
+				-- parents (minionTagsDisplay=0 and no tree promotion to minion/
+				-- totem), the spawned-minion-tag scope is empty — confirmed
+				-- in-game: Apogee of Frozen Light "+3 Cold Minion Skills" does
+				-- NOT raise Spriggan Form's level even though it has Cold via
+				-- skillTreeConversionDamageTags. So only build minionKeywordFlags
+				-- when the skill is a "true" minion parent.
+				local hasNativeMinion = (group.grantedEffect.minionTagsDisplay or 0) ~= 0
+				local treeAddsMinion = bit.band(treeAdds, bit.bor(SkillType.Minion, SkillType.Totem)) ~= 0
+				local minionKW = 0
+				if hasNativeMinion or treeAddsMinion then
+					-- minionTagsDisplay  — the minion's intrinsic tooltip tags
+					-- skillTreeConversionDamageTags (stcdt) — tree-reachable
+					-- damage types. We only include stcdt bits backed by an
+					-- allocated tree node that actually produces that damage
+					-- type (conversion stat or variant-addition stat). This
+					-- prevents false matches like Logi's Hunger "+Fire Minion
+					-- Skills" against a Summon Skeleton without Fire Arrow.
+					local stcdt = group.grantedEffect.skillTreeConversionDamageTags or 0
+					local activeStcdt = calcs.getActiveStcdtBits(env, group.grantedEffect.treeId, stcdt)
+					minionKW = bit.bor(
+						group.grantedEffect.minionTagsDisplay or 0,
+						activeStcdt
+					)
+					-- Apply tree-driven minion variant pool mutations:
+					--   sm4g "Adds Pyromancers" + "Removes Mages" promotes the
+					--   minion-tag bitmap from Necrotic to Fire so amulets like
+					--   "+2 Minion Fire Skills" raise Skeletal Mage's level.
+					local minionAdd, minionRemove = calcs.getMinionVariantMutations(env, group.grantedEffect.treeId)
+					if minionRemove ~= 0 then
+						minionKW = bit.band(minionKW, bit.bnot(minionRemove))
+					end
+					if minionAdd ~= 0 then
+						minionKW = bit.bor(minionKW, minionAdd)
+					end
+					if treeAddsMinion then
+						-- Tree-promoted totem/minion: spawned entity inherits
+						-- the parent's post-swap delivery + damage tags. Mirror
+						-- skillTypes so e.g. Glacial Cascade Upheaval-totem
+						-- matches "+3 Minion Cold Skills" via the parent's Cold.
+						for typeBit in pairs(skillTypes) do
+							if type(typeBit) == "number" then
+								minionKW = bit.bor(minionKW, typeBit)
+							end
+						end
+					end
+				end
+				-- Surface the runtime-corrected Minion Tags bitmap to SkillsTab.
+				-- minionKW already encodes (minionTagsDisplay | filtered stcdt)
+				-- with variant mutations + tree-promoted minion bits applied.
+				if hasNativeMinion or treeAddsMinion then
+					build.perSkillDisplayMinionTags[index] = minionKW
+				else
+					build.perSkillDisplayMinionTags[index] = nil
+				end
 				local skillCfg = {
 					skillName = group.grantedEffect.name,
-					skillTypes = group.grantedEffect.skillTypes,
-					keywordFlags = group.grantedEffect.keywordFlags or 0,
+					skillTypes = skillTypes,
+					skillAttributes = group.grantedEffect.skillAttributes,
+					keywordFlags = keywordFlags,
+					minionKeywordFlags = minionKW,
 				}
-				local totalSkillLevel = env.modDB:Sum("BASE", skillCfg, "SkillLevel")
+				local totalSkillLevel, breakdown = (env.sumSkillLevelWithLegendaryEffect or function(cfg) return env.modDB:Sum("BASE", cfg, "SkillLevel"), {} end)(skillCfg)
 				-- Per-skill bonus = total - global (avoid double-counting global)
 				local perSkillBonus = totalSkillLevel - (env.skillLevelBonus or 0)
 				build.perSkillLevelBonus[index] = perSkillBonus
+				build.perSkillLevelBreakdown[index] = breakdown
 				local effectiveLevel = allocatedPoints + (env.skillLevelBonus or 0) + perSkillBonus
 				env.modDB.multipliers["SkillLevel_" .. group.grantedEffect.name] = effectiveLevel
 			end
