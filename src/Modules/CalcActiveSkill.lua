@@ -310,6 +310,14 @@ function calcs.getTreeTagAdditions(env, treeId)
 					if stat:lower():match("^%s*creates?%s+.+%s+totem%s*$") then
 						adds = bor(adds, SkillType.Minion, SkillType.Totem)
 					end
+					-- Plain damage producer: stats ending in "<DmgType> Damage"
+					-- (e.g. wc57-30 Kinetic Scream "40 Spell Physical Damage" gives
+					-- Warcry the Physical bit so "+to Physical Skills" applies).
+					-- damageTypeBitsByName lookup filters spurious matches.
+					local plainType = stat:match("(%w+)%s+[Dd]amage%s*$")
+					if plainType and damageTypeBitsByName[plainType] then
+						adds = bor(adds, damageTypeBitsByName[plainType])
+					end
 				end
 			end
 			-- Split-effect damage-type additions parsed from node descriptions.
@@ -357,21 +365,20 @@ function calcs.getTreeTagAdditions(env, treeId)
 							elseif lo:match("is converted into a bow attack") then
 								adds = bor(adds, SkillType.Bow)
 							end
-							-- Damage-type addition phrase: "Healing Hands now hits …
-							-- dealing spell fire damage" (hh7pa3-1 Searing Light).
-							-- This makes a previously-non-damaging skill deal fire
-							-- damage, so + to Fire Skills affixes apply.
-							local addedType = lo:match("dealing %w+ (%a+) damage")
-							if not addedType then
-								addedType = lo:match("dealing (%a+) damage")
-							end
-							if addedType then
-								local DT_BITS2 = {
-									physical = SkillType.Physical, lightning = SkillType.Lightning,
-									cold = SkillType.Cold, fire = SkillType.Fire, void = SkillType.Void,
-									necrotic = SkillType.Necrotic, poison = SkillType.Poison,
-								}
-								if DT_BITS2[addedType] then adds = bor(adds, DT_BITS2[addedType]) end
+							-- Damage-type addition phrase: "deal[s]?[ing]? [<adj>]
+							-- <type> damage". Examples:
+							--   hh7pa3-1 Searing Light: "dealing spell fire damage"
+							--   wo42-14 Tundra Stalkers: "deal additional cold damage"
+							--   wc57-30 Kinetic Scream: "deals spell physical damage"
+							-- Filtered through damageTypeBitsByName so spurious matches
+							-- like "deals more damage" / "deals increased damage" miss.
+							if lo:find("deal", 1, true) then
+								for typeName, b in pairs(damageTypeBitsByName) do
+									local needle = " " .. typeName:lower() .. " damage"
+									if lo:find(needle, 1, true) then
+										adds = bor(adds, b)
+									end
+								end
 							end
 						end
 					end
@@ -495,6 +502,15 @@ function calcs.getActiveStcdtBits(env, treeId, stcdt)
 				if addV and minionVariantBits[addV] then
 					active = bor(active, minionVariantBits[addV])
 				end
+				-- Plain damage producer: stats ending in "<DmgType> Damage"
+				-- (e.g. wo42-14 Tundra Stalkers "+2 Cold Damage", wc57-30
+				-- Kinetic Scream "40 Spell Physical Damage", wc57-6 Frost Claw
+				-- "50% Increased Cold Damage"). The damageTypeBitsByName lookup
+				-- filters out matches like "Increased Damage" / "More Damage".
+				local plainType = stat:match("(%w+)%s+[Dd]amage%s*$")
+				if plainType and damageTypeBitsByName[plainType] then
+					active = bor(active, damageTypeBitsByName[plainType])
+				end
 			end
 		end
 		-- Description-driven explicit tag promotion: "<Minion> gain the {<type>}
@@ -511,13 +527,30 @@ function calcs.getActiveStcdtBits(env, treeId, stcdt)
 			-- type names directly within the "gain the ... tag" phrase rather
 			-- than trying to parse the brace syntax.
 			for _, line in ipairs(descList) do
-				local lo = line:lower()
-				-- Capture the inner phrase between "gain the" and "tag"
-				-- (single word, allowing `\n`/`\r` since `.` excludes them).
-				for inner in lo:gmatch("gain the[%s%S]-tag") do
-					for typeName, bit in pairs(damageTypeBitsByName) do
-						if inner:find(typeName:lower(), 1, true) then
-							active = bor(active, bit)
+				for sub in (line .. "\n"):gmatch("([^\n]*)\n") do
+					local lo = sub:lower()
+					if lo ~= "" and not lo:match("^%s*if%s") then
+						-- Capture the inner phrase between "gain the" and "tag"
+						-- (single word, allowing `\n`/`\r` since `.` excludes them).
+						for inner in lo:gmatch("gain the[%s%S]-tag") do
+							for typeName, b in pairs(damageTypeBitsByName) do
+								if inner:find(typeName:lower(), 1, true) then
+									active = bor(active, b)
+								end
+							end
+						end
+						-- "deal[s]?[ing]? [<adj>] [<adj>] <type> damage"
+						-- Matches: "deals spell physical damage" (wc57-30),
+						-- "deal additional cold damage" (wo42-14 Tundra Stalkers),
+						-- "dealing spell fire damage" (hh7pa3-1 Searing Light).
+						local verbStart, verbEnd = lo:find("deal[s]?[ing]*%s")
+						if verbStart then
+							for typeName, b in pairs(damageTypeBitsByName) do
+								local needle = " " .. typeName:lower() .. " damage"
+								if lo:find(needle, verbEnd, true) then
+									active = bor(active, b)
+								end
+							end
 						end
 					end
 				end
