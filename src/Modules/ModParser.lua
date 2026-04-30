@@ -738,6 +738,12 @@ local specialModList = {
 	["^you and your minions deal (%d+)%% increased melee damage$"] = function(num)
 		return { mod("Damage", "INC", num, "", ModFlag.Melee), mod("MinionModifier", "LIST", { mod = mod("Damage", "INC", num, "", ModFlag.Melee) }) }
 	end,
+	-- Julra's Obsession: stats on gloves also apply to minions.
+	-- Recognition only: marker mod consumed by CalcSetup to replicate
+	-- non-attribute glove mods onto the minion modDB.
+	["^%+?(%d+)%% stats on your gloves also apply to your minions$"] = function(num)
+		return { mod("StatsApplyToMinions_Gloves", "BASE", num) }
+	end,
 	-- Bow Mastery unique item mod
 	["^bow mastery: (%d+)%% increased damage while using a bow$"] = function(num)
 		return { mod("Damage", "INC", num, "", 0, 0, { type = "Condition", var = "UsingBow" }) }
