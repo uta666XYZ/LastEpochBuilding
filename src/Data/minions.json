@@ -605,15 +605,12 @@
   },
   "ForgedWeapon": {
     "skillList": [
-      "Forged Soldier 04 FlameDash",
-      "Forged Soldier 03 Spinning Flamethrower",
-      "Forged Soldier 02 Flamethrower",
-      "Forged Soldier 05 Starter",
-      "Forged Soldier 01 Melee"
+      "ForgedWeapon 02 slice",
+      "ForgedWeapon 01 melee"
     ],
     "modList": [],
     "name": "ForgedWeapon",
-    "life": "50"
+    "life": "350"
   },
   "BallistaShield": {
     "skillList": [
