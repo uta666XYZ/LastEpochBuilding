@@ -323,16 +323,57 @@ function calcs.getTreeTagAdditions(env, treeId)
 			-- has Binary System allocated.
 			if node.description then
 				for _, line in ipairs(node.description) do
-					local lo = line:lower()
-					local oneType, otherType = lo:match("one deals (%a+) damage and the other deals (%a+) damage")
-					if oneType and otherType then
-						local DT_BITS = {
-							physical = SkillType.Physical, lightning = SkillType.Lightning,
-							cold = SkillType.Cold, fire = SkillType.Fire, void = SkillType.Void,
-							necrotic = SkillType.Necrotic, poison = SkillType.Poison,
-						}
-						if DT_BITS[oneType] then adds = bor(adds, DT_BITS[oneType]) end
-						if DT_BITS[otherType] then adds = bor(adds, DT_BITS[otherType]) end
+					-- Per-sub-line gating: descriptions can pack multiple
+					-- sentences with `\n\n` separators; conditional ("if ...")
+					-- sub-lines must not promote unconditional tag additions.
+					for sub in (line .. "\n"):gmatch("([^\n]*)\n") do
+						local lo = sub:lower()
+						if lo ~= "" and not lo:match("^%s*if%s") then
+							local oneType, otherType = lo:match("one deals (%a+) damage and the other deals (%a+) damage")
+							if oneType and otherType then
+								local DT_BITS = {
+									physical = SkillType.Physical, lightning = SkillType.Lightning,
+									cold = SkillType.Cold, fire = SkillType.Fire, void = SkillType.Void,
+									necrotic = SkillType.Necrotic, poison = SkillType.Poison,
+								}
+								if DT_BITS[oneType] then adds = bor(adds, DT_BITS[oneType]) end
+								if DT_BITS[otherType] then adds = bor(adds, DT_BITS[otherType]) end
+							end
+							-- Delivery-class promotion: nodes that convert a spell
+							-- into a melee/throwing/bow attack add the new delivery
+							-- bit so "+to <Delivery> Skills" affixes match.
+							-- Healing Hands' Seraph Blade (hh7pa3-8): "Healing Hands
+							-- is converted into a melee attack..." — confirmed via
+							-- LETools applying "+6 to Level of Melee Skills" from
+							-- Two-Handed Axe to a build with Seraph Blade allocated.
+							-- Note: we ADD the delivery bit rather than swap-out
+							-- Spell so DoT/Buff-related Spell-tagged behaviour is
+							-- preserved (the in-game tooltip drops Spell, but
+							-- LEB's downstream code assumes Spell tag elsewhere).
+							if lo:match("is converted into a melee attack") then
+								adds = bor(adds, SkillType.Melee)
+							elseif lo:match("is converted into a throwing attack") then
+								adds = bor(adds, SkillType.Throwing)
+							elseif lo:match("is converted into a bow attack") then
+								adds = bor(adds, SkillType.Bow)
+							end
+							-- Damage-type addition phrase: "Healing Hands now hits …
+							-- dealing spell fire damage" (hh7pa3-1 Searing Light).
+							-- This makes a previously-non-damaging skill deal fire
+							-- damage, so + to Fire Skills affixes apply.
+							local addedType = lo:match("dealing %w+ (%a+) damage")
+							if not addedType then
+								addedType = lo:match("dealing (%a+) damage")
+							end
+							if addedType then
+								local DT_BITS2 = {
+									physical = SkillType.Physical, lightning = SkillType.Lightning,
+									cold = SkillType.Cold, fire = SkillType.Fire, void = SkillType.Void,
+									necrotic = SkillType.Necrotic, poison = SkillType.Poison,
+								}
+								if DT_BITS2[addedType] then adds = bor(adds, DT_BITS2[addedType]) end
+							end
+						end
 					end
 				end
 			end
