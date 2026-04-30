@@ -2497,7 +2497,7 @@ c["+100% Slow Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTrigger
 c["+100% Spark Charge Chance With Static Orb"]={{[1]={[1]={skillName="Static Orb",type="SkillName"},flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_SparkCharge",type="BASE",value=100}},"  With  "}
 c["+100% Spell Critical Strike Multiplier"]={{[1]={flags=0,keywordFlags=256,name="CritMultiplier",type="BASE",value=100}},nil}
 c["+100% Stats on this item are doubled for 3 seconds after hitting a boss or rare enemy that is low life"]={{}," Stats on this item are doubled  after ting a boss or rare enemy that is low life "}
-c["+100% Stats on your gloves also apply to your minions"]={{}," Stats on your gloves also apply to your s "}
+c["+100% Stats on your gloves also apply to your minions"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=100},notSupported=true},nil}
 c["+100% Stun Immunity"]={{}," Stun Immunity "}
 c["+100% Stun Immunity for 4 seconds when you use a Potion"]={{}," Stun Immunity   "}
 c["+100% Summons Tyrannosaur Minion"]={{}," Summons Tyrannosaur  "}
