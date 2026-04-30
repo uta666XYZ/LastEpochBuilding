@@ -397,6 +397,13 @@ return {
 	{ label = "Time Rot Duration Mod", haveOutputNotOne = "EnemyTimeRotDuration", { format = "x {2:output:EnemyTimeRotDuration}",
 		{ modName = { "EnemyTimeRotDuration", "Duration" }, cfg = "skill" },
 	}, },
+	-- Doom
+	{ label = "Doom Chance", haveOutput = "DoomChance", { format = "{0:output:DoomChance}%",
+		{ modName = "DoomChance", cfg = "skill" },
+	}, },
+	{ label = "Doom Duration Mod", haveOutput = "EnemyDoomDuration", { format = "x {2:output:EnemyDoomDuration}",
+		{ modName = { "EnemyDoomDuration", "Duration" }, cfg = "skill" },
+	}, },
 	-- Blind
 	{ label = "Blind Chance", haveOutput = "BlindChance", { format = "{0:output:BlindChance}%",
 		{ modName = "BlindChance", cfg = "skill" },
@@ -596,6 +603,9 @@ return {
 	{ label = "Time Rot DPS per Stack", haveOutput = "TimeRotDPSPerStack", { format = "{0:output:TimeRotDPSPerStack}",
 		{ modName = { "TimeRotDamage", "AilmentDamage", "VoidDamage", "Damage" }, cfg = "skill" },
 	}, },
+	{ label = "Doom DPS per Stack", haveOutput = "DoomDPSPerStack", { format = "{0:output:DoomDPSPerStack}",
+		{ modName = { "DoomDamage", "AilmentDamage", "VoidDamage", "Damage" }, cfg = "skill" },
+	}, },
 	-- Total ailment DPS (steady-state on a single target: stacks * DPSPerStack)
 	{ label = "Bleed Stacks", haveOutput = "BleedStacks", { format = "{2:output:BleedStacks}", { modName = { }, cfg = "skill" }, }, },
 	{ label = "Bleed DPS", haveOutput = "BleedDPS", { format = "{0:output:BleedDPS}",
@@ -620,6 +630,10 @@ return {
 	{ label = "Time Rot Stacks", haveOutput = "TimeRotStacks", { format = "{2:output:TimeRotStacks}", { modName = { }, cfg = "skill" }, }, },
 	{ label = "Time Rot DPS", haveOutput = "TimeRotDPS", { format = "{0:output:TimeRotDPS}",
 		{ modName = { "TimeRotChance", "TimeRotDamage", "AilmentDamage", "VoidDamage", "Damage" }, cfg = "skill" },
+	}, },
+	{ label = "Doom Stacks", haveOutput = "DoomStacks", { format = "{2:output:DoomStacks}", { modName = { }, cfg = "skill" }, }, },
+	{ label = "Doom DPS", haveOutput = "DoomDPS", { format = "{0:output:DoomDPS}",
+		{ modName = { "DoomChance", "DoomDamage", "AilmentDamage", "VoidDamage", "Damage" }, cfg = "skill" },
 	}, },
 	{ label = "Total Ailment DPS", haveOutput = "TotalAilmentDPS", { format = "{0:output:TotalAilmentDPS}", { modName = { }, cfg = "skill" }, }, },
 	-- Resistance Shreds
