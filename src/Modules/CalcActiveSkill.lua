@@ -250,6 +250,15 @@ function calcs.getTreeTagSwaps(env, treeId, grantedEffect)
 				if not src then
 					src, dst = stat:match("^%s*(%w+)%s*%->%s*(%w+)%s+Conversion%s*$")
 				end
+				if not src then
+					-- Bare "<Src> -> <Dst>" form (no Damage / Conversion suffix).
+					-- Used by Flame Ward's Lightning Ward (fw3d-10: " Fire -> Lightning")
+					-- and Cold Ward (fw3d-?: " Fire -> Cold"). The damageTypeBitsByName
+					-- filter below rejects ailment swaps like " Chill -> Ignite",
+					-- " Frostbite -> Shock", " Ignite -> Frostbite" since Chill/
+					-- Frostbite/Ignite/Shock aren't in the damage-type bit table.
+					src, dst = stat:match("^%s*(%w+)%s*%->%s*(%w+)%s*$")
+				end
 				if src and dst and damageTypeBitsByName[src] and damageTypeBitsByName[dst]
 				   and damageTypeBitsByName[src] ~= damageTypeBitsByName[dst] then
 					swaps = swaps or {}
@@ -428,6 +437,14 @@ function calcs.getActiveStcdtBits(env, treeId, stcdt)
 				if not dst then
 					-- " <Type> Base Damage -> <DmgType>" (e.g. bg36nl-7 Pyre Golem: " Melee Base Damage -> Fire")
 					_, dst = stat:match("^%s*(%w+)%s+Base%s+Damage%s*%->%s*(%w+)%s*$")
+				end
+				if not dst then
+					-- Bare "<Src> -> <Dst>" form (no suffix). Same fallback as
+					-- getTreeTagSwaps; see comment there. Filtered safely via
+					-- damageTypeBitsByName lookup (rejects ailment swaps).
+					local _src
+					_src, dst = stat:match("^%s*(%w+)%s*%->%s*(%w+)%s*$")
+					if dst and not damageTypeBitsByName[dst] then dst = nil end
 				end
 				if dst and damageTypeBitsByName[dst] then
 					active = bor(active, damageTypeBitsByName[dst])
