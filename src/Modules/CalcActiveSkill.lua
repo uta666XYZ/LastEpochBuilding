@@ -439,6 +439,32 @@ function calcs.getActiveStcdtBits(env, treeId, stcdt)
 				end
 			end
 		end
+		-- Description-driven explicit tag promotion: "<Minion> gain the {<type>}
+		-- tag" / "gain the <type> tag" (e.g. fs3e3-21 "Forged by Fire" promotes
+		-- Forged Weapons to Fire). Backs the Minion Tags row's Fire entry on
+		-- Forge Strike with Forged by Fire allocated, matching LETools.
+		-- Defensive: node.description may be a string or table per
+		-- PassiveTree:ProcessStats's handling pattern.
+		if nodeId:sub(1, #prefix) == prefix and node.description then
+			local descList = type(node.description) == "table" and node.description or { node.description }
+			-- LEB's tooltip preprocessing rewrites JSON `{fire}` into runtime
+			-- form like `{[0]=fire}` (Lua table-literal-ish), so the captured
+			-- token between braces may include `[0]=` etc. Scan known damage
+			-- type names directly within the "gain the ... tag" phrase rather
+			-- than trying to parse the brace syntax.
+			for _, line in ipairs(descList) do
+				local lo = line:lower()
+				-- Capture the inner phrase between "gain the" and "tag"
+				-- (single word, allowing `\n`/`\r` since `.` excludes them).
+				for inner in lo:gmatch("gain the[%s%S]-tag") do
+					for typeName, bit in pairs(damageTypeBitsByName) do
+						if inner:find(typeName:lower(), 1, true) then
+							active = bor(active, bit)
+						end
+					end
+				end
+			end
+		end
 	end
 	return band(stcdt, active)
 end
