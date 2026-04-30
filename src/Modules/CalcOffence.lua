@@ -1717,6 +1717,7 @@ function calcs.offence(env, actor, activeSkill)
 	output.SpiritPlagueChance     = m_min(modDB:Sum("BASE", skillCfg, "SpiritPlagueChance"), 100)
 	-- Curse chances
 	output.BoneCurseChance        = m_min(modDB:Sum("BASE", skillCfg, "BoneCurseChance"), 100)
+	output.NecroticBoneCurseChance = m_min(modDB:Sum("BASE", skillCfg, "NecroticBoneCurseChance"), 100)
 	output.TormentChance          = m_min(modDB:Sum("BASE", skillCfg, "TormentChance"), 100)
 	output.DecrepifyChance        = m_min(modDB:Sum("BASE", skillCfg, "DecrepifyChance"), 100)
 	output.AnguishChance          = m_min(modDB:Sum("BASE", skillCfg, "AnguishChance"), 100)

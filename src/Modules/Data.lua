@@ -180,10 +180,10 @@ data.misc = { -- magic numbers
 data.skillColorMap = { colorCodes.STRENGTH, colorCodes.DEXTERITY, colorCodes.INTELLIGENCE, colorCodes.NORMAL }
 
 -- LE damaging ailments (from support.lastepoch.com)
-data.ailmentTypeList = { "Ignite", "Bleed", "Poison", "Frostbite", "Electrify", "Damned", "TimeRot" }
+data.ailmentTypeList = { "Ignite", "Bleed", "Poison", "Frostbite", "Electrify", "Damned", "TimeRot", "Doom" }
 data.elementalAilmentTypeList = { "Ignite", "Frostbite", "Electrify" }
 data.nonDamagingAilmentTypeList = { "Chill", "Shock", "Slow", "Blind", "Frailty" }
-data.nonElementalAilmentTypeList = { "Bleed", "Poison", "Damned", "TimeRot" }
+data.nonElementalAilmentTypeList = { "Bleed", "Poison", "Damned", "TimeRot", "Doom" }
 
 -- LE damaging ailment definitions
 data.damagingAilment = {
@@ -198,6 +198,8 @@ data.damagingAilment = {
 		reducedHealthRegen = 20 },
 	["TimeRot"]   = { associatedType = "Void",     baseDamage = 60,  duration = 3,   maxStacks = 12,  penType = "Void",
 		incStunDuration = 5 },
+	["Doom"]      = { associatedType = "Void",     baseDamage = 400, duration = 4,   maxStacks = 4,   penType = "Void",
+		incMeleeDamageTaken = 4 },
 	["Plague"]    = { associatedType = "Poison",  baseDamage = 150, duration = 4,   maxStacks = 1,   penType = "Poison",
 		spreads = { range = 6, delay = 0.6, maxTargets = nil, spreadsOnDeath = true } },
 	["Witchfire"] = { associatedType = { "Fire", "Necrotic" }, baseDamage = { Fire = 600, Necrotic = 600 },
@@ -214,6 +216,8 @@ data.damagingAilment = {
 		isCurse = true, spreads = { range = 9, maxTargets = 1, spreadsOnDeath = true } },
 	-- Curses (player-applied)
 	["BoneCurse"]  = { associatedType = "Physical", baseDamage = 4, duration = 8, maxStacks = 1, penType = "Physical",
+		isCurse = true, takesSpellPhysDmgWhenHit = true },
+	["NecroticBoneCurse"] = { associatedType = "Necrotic", baseDamage = 4, duration = 8, maxStacks = 1, penType = "Necrotic",
 		isCurse = true, takesSpellPhysDmgWhenHit = true },
 	["Torment"]    = { associatedType = "Necrotic", baseDamage = 120, duration = 3, maxStacks = 1, penType = "Necrotic",
 		isCurse = true, lessMoveSpeed = 18 },

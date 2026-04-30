@@ -182,5 +182,505 @@
     "modList": [],
     "name": "Thorn Totem",
     "life": "120"
+  },
+  "Mercenary": {
+    "skillList": [
+      "Crossbow Bolt"
+    ],
+    "modList": [],
+    "name": "Mercenary",
+    "life": "400"
+  },
+  "PrimalAnurok": {
+    "skillList": [
+      "AncientOasis01 01 Melee",
+      "AncientOasis01 02 TongueSlam",
+      "AncientOasis01 04 TongueSlap",
+      "AncientOasis01 03 v2 JumpStomp"
+    ],
+    "modList": [],
+    "name": "PrimalAnurok",
+    "life": "300"
+  },
+  "PrimalSquirrel": {
+    "skillList": [
+      "BasicEnemyMelee"
+    ],
+    "modList": [],
+    "name": "PrimalSquirrel",
+    "life": "160"
+  },
+  "PrimalTyrannosaur": {
+    "skillList": [
+      "Giant T_Rex 05 Minion Roar",
+      "Giant T_Rex 04 Tail Slash",
+      "Giant T_Rex 01 Bite"
+    ],
+    "modList": [],
+    "name": "PrimalTyrannosaur",
+    "life": "540"
+  },
+  "QueenBee": {
+    "skillList": [
+      "Queen Bee 05 Bee Explosion",
+      "Queen Bee 02 Quadruple ScratchR",
+      "Queen Bee 01 Scratch"
+    ],
+    "modList": [],
+    "name": "QueenBee",
+    "life": "50"
+  },
+  "RiftBeast": {
+    "skillList": [
+      "Time Beast Fire Head 01.1 Fireball Mortar Projectile",
+      "Time Beast Fangs 01 Super Fang",
+      "Time Beast Cold Head 02 Ice Bite",
+      "Time Beast Cold Head 01 Ice Storm",
+      "Time Beast Armor 02 Scale Shot",
+      "Time Beast Lightning Horns 01 Charge",
+      "Time Beast LIghtning Horns 02 Discharge",
+      "Time Beast Tentacles 01 Flower Spit",
+      "Time Beast Tentacles 02 Poison Burst",
+      "Time Beast Wings 01 Cyclone",
+      "Time Beast Wings 02 Dive Bomb",
+      "Time Beast Fangs 02 Roar of Time",
+      "Time Beast Fire Head 02 Incinerate",
+      "Time Beast Armor 01 Defense Curl",
+      "Time Beast Tail Spikes 02 Slam",
+      "Time Beast Tail Spikes 01 Tail Swipe",
+      "Time Beast 03 Pounce Dash",
+      "Time Beast 02 Stomp",
+      "Time Beast 01 Melee Attack"
+    ],
+    "modList": [],
+    "name": "RiftBeast",
+    "life": "800"
+  },
+  "SummonedSkeletonHarvester": {
+    "skillList": [
+      "BasicEnemyMelee"
+    ],
+    "modList": [],
+    "name": "SkeletonHarvester",
+    "life": "200"
+  },
+  "StormSprite": {
+    "skillList": [
+      "stormSpriteDash"
+    ],
+    "modList": [],
+    "name": "StormSprite",
+    "life": "200"
+  },
+  "SummonedCrab": {
+    "skillList": [
+      "Giant Crab 2.0 Melee"
+    ],
+    "modList": [],
+    "name": "SummonedCrab",
+    "life": "400"
+  },
+  "TolmatMinionAncient": {
+    "skillList": [
+      "AncientOasis02 02 Dash",
+      "AncientOasis02 05 TailSwirl",
+      "AncientOasis02 03 TailAttackR",
+      "AncientOasis02 01 MeleeBite"
+    ],
+    "modList": [],
+    "name": "Tolmat Minion (Ancient Era)",
+    "life": "300"
+  },
+  "TolmatMinionDivine": {
+    "skillList": [
+      "RahyehFactionSwarmer 03 Flamethrower",
+      "RahyehFactionSwarmer 02 Fireball",
+      "RahyehFactionSwarmer 01 Melee"
+    ],
+    "modList": [],
+    "name": "Tolmat Minion (Divine Era)",
+    "life": "225"
+  },
+  "TolmatMinionImperial": {
+    "skillList": [
+      "Immortal Eye 02 Death Cone",
+      "Immortal Eye 01 Lazer"
+    ],
+    "modList": [],
+    "name": "Tolmat Minion (Imperial Era)",
+    "life": "500"
+  },
+  "TolmatMinionRuined": {
+    "skillList": [
+      "VoidDespair 03 Leap",
+      "VoidDespair 02 StabLunge",
+      "VoidDespair 01 Melee"
+    ],
+    "modList": [],
+    "name": "Tolmat Minion (Ruined Era)",
+    "life": "275"
+  },
+  "SummonedWraithlord": {
+    "skillList": [
+      "Wraithlord 02 Summon Wraith",
+      "Wraithlord 03 Consume Minions",
+      "Wraithlord 01 Stygian Beams"
+    ],
+    "modList": [],
+    "name": "Wraithlord",
+    "life": "350"
+  },
+  "SummonedSkeletonVanguard": {
+    "skillList": [
+      "SkeletonVanguard 01 Melee"
+    ],
+    "modList": [],
+    "name": "SkeletonVanguard",
+    "life": "180"
+  },
+  "SummonedSkeletonRogue": {
+    "skillList": [
+      "Skeleton Rogue Shift",
+      "Skeleton Rogue Shurikens",
+      "Skeleton Rogue Melee"
+    ],
+    "modList": [],
+    "name": "SkeletonRogue",
+    "life": "100"
+  },
+  "SummonedBloodWraith": {
+    "skillList": [
+      "BasicEnemyMelee"
+    ],
+    "modList": [],
+    "name": "BloodWraith",
+    "life": "100"
+  },
+  "SummonedFlameWraith": {
+    "skillList": [
+      "FireWraith_Fireball"
+    ],
+    "modList": [],
+    "name": "FlameWraith",
+    "life": "60"
+  },
+  "SummonedPutridWraith": {
+    "skillList": [
+      "PoisonBoltAoD"
+    ],
+    "modList": [],
+    "name": "PutridWraith",
+    "life": "60"
+  },
+  "SummonedRevenant": {
+    "skillList": [
+      "SummonedRevenant 02 WeaponThrow",
+      "SummonedRevenant 01 Melee"
+    ],
+    "modList": [],
+    "name": "Revenant",
+    "life": "140"
+  },
+  "SummonedPyreGolem": {
+    "skillList": [
+      "Bone Golem 02 Big Slam",
+      "Bone Golem 03 Leap Slam",
+      "golemMelee",
+      "Bone Golem Rampage"
+    ],
+    "modList": [],
+    "name": "PyreGolem",
+    "life": "400"
+  },
+  "SummonedSpectralGolem": {
+    "skillList": [
+      "Bone Golem 10 Freezing Grasp",
+      "Bone Golem 02 Big Slam",
+      "Bone Golem 03 Leap Slam",
+      "golemMelee",
+      "Bone Golem Rampage"
+    ],
+    "modList": [],
+    "name": "SpectralGolem",
+    "life": "400"
+  },
+  "SummonedBloodGolem": {
+    "skillList": [
+      "Bone Golem 09 Blood Orb",
+      "Bone Golem 02 Big Slam",
+      "Bone Golem 03 Leap Slam",
+      "golemMelee",
+      "Bone Golem Rampage"
+    ],
+    "modList": [],
+    "name": "BloodGolem",
+    "life": "400"
+  },
+  "SummonedBoneMinion": {
+    "skillList": [
+      "BasicEnemyMelee"
+    ],
+    "modList": [],
+    "name": "BoneMinion",
+    "life": "100"
+  },
+  "PoisonWispMinion": {
+    "skillList": [
+      "PoisonNova"
+    ],
+    "modList": [],
+    "name": "PoisonWisp",
+    "life": "150"
+  },
+  "BonePillar": {
+    "skillList": [],
+    "modList": [],
+    "name": "BonePillar",
+    "life": "300"
+  },
+  "SummonedCorpseParasite": {
+    "skillList": [
+      "BasicEnemyMelee"
+    ],
+    "modList": [],
+    "name": "CorpseParasite",
+    "life": "60"
+  },
+  "SummonedPyromancer": {
+    "skillList": [
+      "Skeletal Mages Fire Projectile"
+    ],
+    "modList": [],
+    "name": "Pyromancer",
+    "life": "100"
+  },
+  "SummonedDeathKnight": {
+    "skillList": [
+      "DeathKnightHarvest",
+      "Basic Death Knight Melee"
+    ],
+    "modList": [],
+    "name": "DeathKnight",
+    "life": "200"
+  },
+  "SummonedCryomancer": {
+    "skillList": [
+      "Skeletal Mages Cold Projectile"
+    ],
+    "modList": [],
+    "name": "Cryomancer",
+    "life": "100"
+  },
+  "SummonedSoulWisp": {
+    "skillList": [
+      "WispNecroticNova",
+      "WispNecroticBeam"
+    ],
+    "modList": [],
+    "name": "SoulWisp",
+    "life": "150"
+  },
+  "PoisonousVine": {
+    "skillList": [
+      "SprigganVineMelee"
+    ],
+    "modList": [],
+    "name": "PoisonousVine",
+    "life": "50"
+  },
+  "PrimalSerpent": {
+    "skillList": [
+      "SummonSerpentMelee 01"
+    ],
+    "modList": [],
+    "name": "PrimalSerpent",
+    "life": "500"
+  },
+  "SummonedLocust": {
+    "skillList": [
+      "LocustAttack"
+    ],
+    "modList": [],
+    "name": "Locust",
+    "life": "100"
+  },
+  "HealingTotem": {
+    "skillList": [
+      "ButterflyHeal"
+    ],
+    "modList": [],
+    "name": "HealingTotem",
+    "life": "100"
+  },
+  "ClawTotem": {
+    "skillList": [
+      "Swipe",
+      "BasicPlayerAttack"
+    ],
+    "modList": [],
+    "name": "ClawTotem",
+    "life": "120"
+  },
+  "TempestTotem": {
+    "skillList": [],
+    "modList": [],
+    "name": "TempestTotem",
+    "life": "100"
+  },
+  "WarcryTotem": {
+    "skillList": [
+      "Warcry"
+    ],
+    "modList": [],
+    "name": "WarcryTotem",
+    "life": "100"
+  },
+  "UpheavalTotem": {
+    "skillList": [
+      "Upheaval"
+    ],
+    "modList": [],
+    "name": "UpheavalTotem",
+    "life": "100"
+  },
+  "SpiritSabertooth": {
+    "skillList": [
+      "PrimalSabertooth 01 Melee"
+    ],
+    "modList": [],
+    "name": "SpiritSabertooth",
+    "life": "240"
+  },
+  "BabyScorpion": {
+    "skillList": [
+      "ScorpionTailMelee",
+      "ScorpionMeleeComboStart"
+    ],
+    "modList": [],
+    "name": "BabyScorpion",
+    "life": "150"
+  },
+  "SummonedRockElemental": {
+    "skillList": [
+      "Rock Elemental Melee"
+    ],
+    "modList": [],
+    "name": "RockElemental",
+    "life": "250"
+  },
+  "SummonedHive": {
+    "skillList": [
+      "HiveLocustSpawn",
+      "NullAbility"
+    ],
+    "modList": [],
+    "name": "Hive",
+    "life": "120"
+  },
+  "ValeSpirit": {
+    "skillList": [
+      "SpiritThorns"
+    ],
+    "modList": [],
+    "name": "ValeSpirit",
+    "life": "1000"
+  },
+  "MirrorImage": {
+    "skillList": [
+      "IceBolt",
+      "LightningBlast",
+      "Fireball"
+    ],
+    "modList": [],
+    "name": "MirrorImage",
+    "life": "200"
+  },
+  "IceShield": {
+    "skillList": [
+      "NullAbility"
+    ],
+    "modList": [],
+    "name": "IceShield",
+    "life": "300"
+  },
+  "ForgedWeapon": {
+    "skillList": [
+      "ForgedWeapon 02 slice",
+      "ForgedWeapon 01 melee"
+    ],
+    "modList": [],
+    "name": "ForgedWeapon",
+    "life": "350"
+  },
+  "ForgedAxe": {
+    "skillList": [
+      "BasicEnemyMelee"
+    ],
+    "modList": [],
+    "name": "ForgedAxe",
+    "life": "100"
+  },
+  "BallistaShield": {
+    "skillList": [
+      "NullAbility"
+    ],
+    "modList": [],
+    "name": "BallistaShield",
+    "life": "300"
+  },
+  "AreksFlesh": {
+    "skillList": [
+      "AreksFleshSlam",
+      "BasicEnemyMelee"
+    ],
+    "modList": [],
+    "name": "AreksFlesh",
+    "life": "300"
+  },
+  "Bee": {
+    "skillList": [
+      "BasicEnemyMelee"
+    ],
+    "modList": [],
+    "name": "Bee",
+    "life": "60"
+  },
+  "ChillyBee": {
+    "skillList": [
+      "BasicEnemyMelee"
+    ],
+    "modList": [],
+    "name": "ChillyBee",
+    "life": "60"
+  },
+  "FireBee": {
+    "skillList": [
+      "BasicEnemyMelee"
+    ],
+    "modList": [],
+    "name": "FireBee",
+    "life": "60"
+  },
+  "LightningBee": {
+    "skillList": [
+      "BasicEnemyMelee"
+    ],
+    "modList": [],
+    "name": "LightningBee",
+    "life": "60"
+  },
+  "BurningSkeleton": {
+    "skillList": [
+      "Fireball"
+    ],
+    "modList": [],
+    "name": "BurningSkeleton",
+    "life": "200"
+  },
+  "IllusoryTree": {
+    "skillList": [],
+    "modList": [],
+    "name": "IllusoryTree",
+    "life": "100"
   }
 }
