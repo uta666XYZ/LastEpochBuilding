@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <LEPVersion>
-	<Version number="0.13.1" branch="dev" platform="win32" />
+	<Version number="0.13.2" branch="dev" platform="win32" />
 	<Source part="default" url="https://raw.githubusercontent.com/uta666XYZ/LastEpochBuilding/{branch}/" />
 	<Source part="runtime" platform="win32" url="https://raw.githubusercontent.com/uta666XYZ/LastEpochBuilding/{branch}/runtime/" />
 	<Source part="program" url="https://raw.githubusercontent.com/uta666XYZ/LastEpochBuilding/{branch}/src/" />
