@@ -458,13 +458,18 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 	local cursorX, cursorY = GetCursorPos()
 	local badgeSize = 80
 	local badgeGap = 6
-	local badgeStartX = viewPort.x + 10
+	local nAscendancies = (spec.curClass and #spec.curClass.classes) or 3
+	local nBadges = 1 + nAscendancies
+	local badgeGroupWidth = nBadges * badgeSize + (nBadges - 1) * badgeGap
+	-- Anchor so the gap between the last badge and the name text sits at viewport horizontal center
+	local nameGap = 16
+	local badgeStartX = viewPort.x + m_floor(viewPort.width / 2) - badgeGroupWidth - m_floor(nameGap / 2)
 	local badgeY = viewPort.y + 6
 	local isMouseDown = IsKeyDown("LEFTBUTTON")
 	if not self.badgeMouseWasDown then self.badgeMouseWasDown = false end
 	local badgeClicked = self.badgeMouseWasDown and not isMouseDown
 	local inBadgeArea = cursorY >= badgeY and cursorY <= badgeY + badgeSize
-		and cursorX >= badgeStartX and cursorX <= badgeStartX + 4 * (badgeSize + badgeGap)
+		and cursorX >= badgeStartX and cursorX <= badgeStartX + badgeGroupWidth
 	if isMouseDown and inBadgeArea then
 		self.badgeMouseWasDown = true
 	elseif not isMouseDown then
@@ -738,7 +743,7 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 	end
 
 	-- Class/mastery name display
-	local nameX = badgeStartX + 4 * (badgeSize + badgeGap) + 16
+	local nameX = badgeStartX + badgeGroupWidth + 16
 	SetDrawColor(1, 1, 1)
 	local selMastery = self.viewer.selectedMastery or 0
 	if selMastery > 0 and spec.curClass then
@@ -750,11 +755,35 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 			local startNode = spec.nodes[ascClass.startNodeId]
 			if startNode and startNode.sd then
 				local bonusY = viewPort.y + 48
+				local bonusFontSize = 14
+				local bonusFont = "FONTIN"
+				local bonusX = nameX + 8
+				local maxBonusWidth = (viewPort.x + viewPort.width) - bonusX - 8
+				local maxLines = 3
+				local linesDrawn = 0
 				for idx, line in ipairs(startNode.sd) do
-					if idx <= 3 then
-						DrawString(nameX + 8, bonusY, "LEFT", 12, "VAR", "^x8888FF" .. "* " .. line)
-						bonusY = bonusY + 16
+					if linesDrawn >= maxLines then break end
+					local fullText = "* " .. line
+					local current = ""
+					local function flush()
+						if current ~= "" then
+							DrawString(bonusX, bonusY, "LEFT", bonusFontSize, bonusFont, "^x8888FF" .. current)
+							bonusY = bonusY + 18
+							linesDrawn = linesDrawn + 1
+							current = ""
+						end
 					end
+					for word in fullText:gmatch("%S+") do
+						if linesDrawn >= maxLines then break end
+						local trial = current == "" and word or (current .. " " .. word)
+						if DrawStringWidth(bonusFontSize, bonusFont, trial) <= maxBonusWidth then
+							current = trial
+						else
+							flush()
+							current = word
+						end
+					end
+					if linesDrawn < maxLines then flush() end
 				end
 			end
 		end
