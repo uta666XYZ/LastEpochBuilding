@@ -287,7 +287,9 @@ function CalcsTabClass:Draw(viewPort, inputEvents)
 		end
 	end
 	self.controls.scrollBar.height = viewPort.height
-	self.controls.scrollBar:SetContentDimension(maxY - baseY, viewPort.height)
+	-- Sections start at baseY (viewPort.y + 30), so the visible content area
+	-- is shorter than viewPort.height by that 30px header offset.
+	self.controls.scrollBar:SetContentDimension(maxY - baseY, viewPort.height - 30)
 	for _, section in ipairs(self.sectionList) do
 		-- Give sections their actual Y position and let them update
 		section.y = section.y - self.controls.scrollBar.offset
@@ -388,6 +390,31 @@ function CalcsTabClass:CheckFlag(obj)
 				return
 			end
 		elseif not actor.output[obj.haveOutput] or actor.output[obj.haveOutput] == 0 then
+			return
+		end
+	end
+	if obj.haveOutputNotOne then
+		local v = actor.output[obj.haveOutputNotOne]
+		if not v or v == 1 then
+			return
+		end
+	end
+	if obj.classRestriction then
+		local spec = self.build.spec
+		local names = {}
+		if spec then
+			if spec.curClassName then names[spec.curClassName] = true end
+			if spec.curAscendClassName then names[spec.curAscendClassName] = true end
+		end
+		local match = false
+		if type(obj.classRestriction) == "table" then
+			for _, c in ipairs(obj.classRestriction) do
+				if names[c] then match = true break end
+			end
+		else
+			match = names[obj.classRestriction] or false
+		end
+		if not match then
 			return
 		end
 	end
