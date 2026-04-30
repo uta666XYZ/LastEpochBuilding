@@ -1143,6 +1143,29 @@ function calcs.initEnv(build, mode, override, specEnv)
 				env.itemModDB.multipliers[key] = (env.itemModDB.multipliers[key] or 0) + 1
 				env.itemModDB.conditions[key .. "In" .. slotName] = true
 				env.itemModDB.multipliers[item.type:gsub(" ", ""):gsub(".+Handed", "").."Item"] = (env.itemModDB.multipliers[item.type:gsub(" ", ""):gsub(".+Handed", "").."Item"] or 0) + 1
+				-- Julra's Obsession: "+X% Stats on your gloves also apply to your minions".
+				-- Wrap each non-attribute, non-minion glove mod as a MinionModifier so
+				-- the existing minion-modDB merge picks it up. Tooltip excludes Str/Dex/
+				-- Int/Vit/Att since "Attributes on minions have no effect".
+				if slotName == "Gloves" then
+					local applyPercent = 0
+					for _, m in ipairs(srcList) do
+						if m.name == "StatsApplyToMinions_Gloves" and m.type == "BASE" then
+							applyPercent = applyPercent + (m.value or 0)
+						end
+					end
+					if applyPercent > 0 then
+						local minionScale = scale * applyPercent / 100
+						local skipName = { Str = true, Dex = true, Int = true, Vit = true, Att = true,
+							MinionModifier = true, StatsApplyToMinions_Gloves = true }
+						for _, srcMod in ipairs(srcList) do
+							if not skipName[srcMod.name] then
+								local wrapped = modLib.createMod("MinionModifier", "LIST", { mod = copyTable(srcMod) })
+								env.itemModDB:ScaleAddMod(wrapped, minionScale)
+							end
+						end
+					end
+				end
 			end
 			::continue_orderedSlot::
 		end
