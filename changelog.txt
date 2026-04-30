@@ -1,7 +1,47 @@
-VERSION[Unreleased]
+VERSION[0.13.2][2026/04/30]
 
 --- Notable Changes ---
-- LETools URL direct import is supported after all (the Creator was mistaken in v0.13.0). Paste https://www.lastepochtools.com/planner/XXXXX directly into the Import dialog. The deprecated note referred to the old LETools account-scraping path, which is now replaced by the Maxroll account API.
+- LETools URL direct import is supported after all (the Creator was mistaken in v0.13.0). Paste https://www.lastepochtools.com/planner/XXXXX directly into the Import dialog. The deprecated note referred to the old LETools account-scraping path, which is now replaced by the Maxroll account API. Share-box prompts tidied as part of the same change.
+- Tooltips now use Fontin / Fontin SC fonts to match Last Epoch's in-game look. The runtime SimpleGraphic.dll has been updated from upstream PathOfBuilding-SimpleGraphic to support these fonts.
+
+--- Skill / Damage Type / Tag Fixes ---
+- Flame Ward: Lightning conversion (Static Aegis tree) now applies correctly; multi-paragraph descriptions are gated so unrelated paragraphs no longer leak into tag detection. Skill icon also corrected.
+- Healing Hands: Melee/Fire tag promotion through tree producers; Symbols of Hope default tagging fixed.
+- Warcry: Cold scaling propagates from tree damage producers; Wolf companion picks up the Cold minion tag in matching builds.
+- Forge Strike: Minion Tags now include Fire when expected. Reverted the prior SP=88 ceil rule that caused incorrect rounding.
+- Item-mod conversions: the destination damage type now surfaces as the base damage type for tag/affix matching.
+- Lich / Reaper Form: comprehensive support and tooltip/order fixes (Reap parent skill, Form skill, +Minion Skills routing across summon/form parents, level-cap display).
+- Skill-tag parser: source-less "<X> Conversion" tree-swap stats are now parsed.
+- DataProcess: composite SkillType bits require a full-mask match (prevents bogus tag matches).
+- Global: canonical AT enum SkillType bit layout restored (e.g. Disintegrate=DoT, Detonating Arrow=Bow).
+
+--- Skill Level / Affix Matching ---
+- "+N to <Skill>" / "+N to <Category> Skills" affix matching now mirrors LE in-game logic, including:
+  - per-skill delivery conversion applied to the level cap and tooltip
+  - stcdt (skill-tree conversion damage tag) excluded from level-of-skills affix gating, but consumed for tag/affix matching
+  - tree damage-type swaps excluded from cap matching, while still applying tag swaps in the cap-summing pass
+  - split-effect damage type additions on spec trees detected
+  - Minion Skill affix matching corrected, with the level cap now displayed on the skill slot
+  - tree-injected tag additions surfaced for minion-side affix matching
+- "+N to <Skill/Cat>" SP affixes ceil-round their (N–N) midpoints to integers (matches the SP=88 contract for affix integers).
+
+--- SkillsTab UI ---
+- New Scaling Tags display on skill slot and tree root hover (conversion-aware, plain white text, canonical AT enum tags including Area).
+- New Minion Tags row, with the Area tag moved to it when a skill is totem-converted.
+- fakeTags merging into the displayed tag set; +Spells affix matching surfaces correctly.
+
+--- Data ---
+- skills.json: added fakeTags, areaTagDisplay, minionTagsDisplay, instantCastForPlayer fields.
+- ModCache: 43 poisoned "per player <Attr>" entries busted; stale "+1 to Elemental Spells" and "+X to <Cat> Skills" caches purged.
+- ModParser: long modTags whose tail overlaps a protected modName are now allowed.
+- ModParser dispatcher: extended with Spells / per-Complete-Set handlers.
+- Uniques: removed bogus Evolution's End "+(1-2) to All Skills" entry.
+
+--- Uniques / Items ---
+- Julra's Obsession: implemented "+100% Stats on your gloves also apply to your minions" (gloves → minion stat propagation). The companion "stats also apply to minions" line is currently tagged not-supported where the calc path is incomplete.
+
+--- Chore ---
+- AI assistant files (CLAUDE.md, .claude/, QWEN.md, etc.) consolidated in .gitignore.
 
 VERSION[0.13.1][2026/04/28]
 
