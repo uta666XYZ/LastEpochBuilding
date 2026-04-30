@@ -1596,13 +1596,23 @@ function PassiveTreeViewClass:AddNodeTooltip(tooltip, node, build)
 					-- Use conversion-aware damage types so tree-node swaps
 					-- (Cold/Lightning conversions) appear in the tag list.
 					local dynDt = build.skillsTab.GetDynamicDamageTypesByTreeId
-						and build.skillsTab:GetDynamicDamageTypesByTreeId(treeId)
+						and build.skillsTab:GetDynamicDamageTypesByTreeId(treeId, sg.grantedEffect.name)
 					local extraFlags = build.skillsTab.GetTreeTagAdditionsByTreeId
 						and build.skillsTab:GetTreeTagAdditionsByTreeId(treeId) or 0
 					local areaOverride = build.skillsTab.IsTotemConvertedByTreeId
 						and build.skillsTab:IsTotemConvertedByTreeId(treeId) and 2 or nil
-					local tagsLine = formatScalingTagsLine and formatScalingTagsLine(getScalingTagsList(sg.grantedEffect, dynDt, extraFlags, areaOverride))
-					local minionLine = formatMinionTagsLine and formatMinionTagsLine(getMinionTagsList(sg.grantedEffect, nil, areaOverride))
+					-- Locate this socket group's index for per-skill bitmaps
+					-- (item-mod tag conversions, runtime-corrected Minion Tags).
+					local sgIndex
+					for idx, g in ipairs(build.skillsTab.socketGroupList) do
+						if g == sg then sgIndex = idx; break end
+					end
+					local itemTagAdd = sgIndex and build.perSkillTagAdd and build.perSkillTagAdd[sgIndex] or 0
+					local itemTagRemove = sgIndex and build.perSkillTagRemove and build.perSkillTagRemove[sgIndex] or 0
+					local minionTagsOverride = sgIndex and build.perSkillDisplayMinionTags and build.perSkillDisplayMinionTags[sgIndex] or nil
+					local mergedExtra = bit.bor(extraFlags or 0, itemTagAdd or 0)
+					local tagsLine = formatScalingTagsLine and formatScalingTagsLine(getScalingTagsList(sg.grantedEffect, dynDt, mergedExtra, areaOverride, nil, itemTagRemove))
+					local minionLine = formatMinionTagsLine and formatMinionTagsLine(getMinionTagsList(sg.grantedEffect, nil, areaOverride, minionTagsOverride))
 					if tagsLine then tooltip:AddLine(14, tagsLine) end
 					if minionLine then tooltip:AddLine(14, minionLine) end
 					break
