@@ -680,7 +680,7 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 	-- Paperdoll frame (always shown — "Crafting Items..." panel remains visible
 	-- even while editing/crafting an item so the user can see all crafted gear)
 	self.controls.paperdoll = new("PaperdollControl",
-		{"TOPLEFT", self.controls.itemList, "BOTTOMLEFT"}, 0, 78, self)
+		{"TOPLEFT", self.controls.itemList, "BOTTOMLEFT"}, 0, 34, self)
 
 	-- Display item
 	self.displayItemTooltip = new("Tooltip")
@@ -751,9 +751,8 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 	-- above the grid so the circle does not overlap the Fractured 1..4 dropdowns.
 	-- Visual centering on the Equipped items dropdown column. Tuned by eye.
 	self.controls.idolGrid = new("IdolGridControl",
-		-- Y offset raised from 90 to 112 to leave room for the 22px title bar
-		-- drawn above the container frame ("Equipped Idols / Idol Altar").
-		{"TOPLEFT", self.controls.idolAltarEnd, "BOTTOMLEFT"}, 0, 112,
+		-- Y offset 90 (no title bar above the container frame anymore).
+		{"TOPLEFT", self.controls.idolAltarEnd, "BOTTOMLEFT"}, 0, 90,
 		self, self.idolGridLayout, 48, 46)
 	-- Padding below the grid clears the frame's bottom border (~18px) before
 	-- the blessing grid is placed, so Blessing sits fully under the new frame.
@@ -761,10 +760,11 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 	t_insert(self.controls, self.controls.idolGridPanelEnd)
 	-- ===== END IDOL GRID =====
 
-	-- Blessing slot grid: width 292, anchored to idolGrid x with -22 offset to
-	-- share the same horizontal center as the idol frame.
+	-- Blessing slot grid: shifted +4px so the top-row middle slot's center
+	-- (blessingGrid_x + 120 with SLOT_SIZE=52, w=240) lines up with the idol
+	-- altar icon's center (idolGrid_x + gridW/2 = idolGrid_x + 124, gridW=248).
 	local blessGrid = new("BlessingGridControl",
-		{"TOPLEFT", self.controls.idolGridPanelEnd, "TOPLEFT"}, -22, 0, self)
+		{"TOPLEFT", self.controls.idolGridPanelEnd, "TOPLEFT"}, 4, 0, self)
 	t_insert(self.controls, blessGrid)
 	self.controls.blessingGrid = blessGrid
 

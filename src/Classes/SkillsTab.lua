@@ -1117,8 +1117,11 @@ function SkillsTabClass:Draw(viewPort, inputEvents)
 		self:DrawSkillOverview(viewPort, inputEvents, contentY)
 	end
 
-	-- Draw spec slots on top of everything (high draw layer)
-	SetDrawLayer(nil, 150)
+	-- Draw spec slots on top of everything (high draw layer).
+	-- Sits one layer below the history-bar "No allocating order…" text (200)
+	-- so the text reads cleanly while the chain pendant remains in front of
+	-- the rest of the tab content.
+	SetDrawLayer(nil, 199)
 	self:DrawSpecSlots(viewPort, inputEvents, slotBarY)
 	SetDrawLayer(nil, 0)
 
