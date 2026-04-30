@@ -1,8 +1,63 @@
 # Changelog
 
+## [Unreleased]
+
+---
+
+## [v0.13.2](https://github.com/uta666XYZ/LastEpochBuilding/tree/v0.13.2) (2026/04/30)
+
+[Full Changelog](https://github.com/uta666XYZ/LastEpochBuilding/compare/v0.13.1...v0.13.2)
+
+### Notable Changes
+- **LETools URL direct import — supported** (revert of the v0.13.0 deprecation note). The Creator was mistaken: planner URL import has been working all along and is not affected by Cloudflare encryption rotations. The earlier deprecation notice referred to the (now-retired) LETools account-scraping path, which has since been replaced by the Maxroll account API. Paste `https://www.lastepochtools.com/planner/XXXXX` URLs directly into the Import dialog. Share-box prompts have also been tidied.
+- **Fontin tooltip fonts** — tooltips now use Fontin / Fontin SC to match the in-game Last Epoch look. The bundled `runtime/SimpleGraphic.dll` has been updated from upstream PathOfBuilding-SimpleGraphic to add the required font support.
+
+### Skill / Damage Type / Tag Fixes
+- **Flame Ward** — Lightning conversion (Static Aegis tree) now applies correctly; multi-paragraph descriptions are gated so unrelated paragraphs no longer leak into tag detection. Skill icon also corrected.
+- **Healing Hands** — Melee/Fire tag promotion through tree damage producers; Symbols of Hope default tagging fixed.
+- **Warcry** — Cold scaling now propagates from tree damage producers; the Wolf companion picks up the Cold minion tag in matching builds.
+- **Forge Strike** — Minion Tags now include Fire when expected. Reverted the prior `SP=88` ceil rule that caused incorrect rounding for some affixes.
+- **Item-mod conversions** — the destination damage type now surfaces as the base damage type for downstream tag and affix matching.
+- **Lich / Reaper Form** — comprehensive support and tooltip/order fixes: Reap parent skill, Form parent routing, `+Minion Skills` across summon/form parents, level-cap display on the slot.
+- **Skill-tag parser** — source-less `<X> Conversion` tree-swap stats are now parsed.
+- **DataProcess** — composite `SkillType` bits require a full-mask match (prevents spurious tag hits).
+- **Global** — canonical AT enum `SkillType` bit layout restored (e.g. Disintegrate=DoT, Detonating Arrow=Bow). Bitmaps unchanged; only labels were corrected.
+
+### Skill Level / Affix Matching
+- `+N to <Skill>` / `+N to <Category> Skills` matching now mirrors LE in-game logic across the board:
+  - per-skill delivery conversion applied to the level cap and tooltip
+  - `stcdt` (skill-tree conversion damage tag) excluded from level-of-skills affix gating, but consumed for tag and affix matching
+  - tree damage-type swaps excluded from cap matching, while tree tag swaps still apply in the cap-summing `SkillLevel` pass
+  - split-effect damage type additions on specialization trees detected
+  - Minion Skill affix matching corrected, with the level cap now displayed on the skill slot
+  - tree-injected tag additions surfaced for minion-side affix matching
+- `+N to <Skill/Cat>` SP affixes ceil-round their `(N–N)` midpoints to integers (matches the `SP=88` contract for affix integers).
+
+### SkillsTab UI
+- **Scaling Tags** displayed on the skill slot and on tree root hover, conversion-aware, in plain white text, using the canonical AT enum tag set (now including Area).
+- **Minion Tags** row added; the Area tag is moved into it when a skill is totem-converted.
+- `fakeTags` merged into the displayed tag set; `+Spells` affix matching now surfaces correctly.
+
+### Data
+- `skills.json` — added `fakeTags`, `areaTagDisplay`, `minionTagsDisplay`, and `instantCastForPlayer` fields.
+- `ModCache.lua` — 43 poisoned `per player <Attr>` entries busted; stale `+1 to Elemental Spells` and `+X to <Cat> Skills` caches purged.
+- `ModParser.lua` — long `modTags` whose tail overlaps a protected `modName` are now allowed; dispatcher extended with `Spells` / per-Complete-Set handlers.
+- Uniques — removed the bogus `Evolution's End +(1-2) to All Skills` entry.
+
+### Uniques / Items
+- **Julra's Obsession** — implemented `+100% Stats on your gloves also apply to your minions` (glove → minion stat propagation). The companion "stats also apply to minions" line is tagged **not supported** where the calc path is incomplete, so users see the limitation explicitly rather than receiving a silently-wrong number.
+
+### Chore
+- AI assistant files (`CLAUDE.md`, `.claude/`, `QWEN.md`, etc.) consolidated in `.gitignore`.
+
+---
+
 ## [v0.13.1](https://github.com/uta666XYZ/LastEpochBuilding/tree/v0.13.1) (2026/04/28)
 
 [Full Changelog](https://github.com/uta666XYZ/LastEpochBuilding/compare/v0.13.0...v0.13.1)
+
+### Compatibility
+- Verified compatible with game v1.4.6 — bug-fix-only patch (no balance, item, affix, or skill data changes per official notes); no LEB data updates required.
 
 ### Bug Fixes
 - **Dual-resistance corrupted affixes garbled on import** — affixes that grant two resistances on a single corrupted T-tier line (e.g., Cold + Void Resistance) imported with the second line mangled into flavor text such as `+27% Reduces all cold damage you take. Capped at 75%. Void Resistance` instead of `+27% Void Resistance`. Root cause: in the affix data, the second resistance line had been stored with the first resistance's flavor text (`Reduces all <element> damage you take. Capped at 75%.`) concatenated in front of the actual stat string. As a result, the second resistance was never recognized and silently dropped. Affected LETools URL imports and Save-import flows. Fixed for all 40 affected entries (Phys/Cold/Lightning/Fire × Void/Poison/Necrotic, 8 tiers each). Reported by a community user.

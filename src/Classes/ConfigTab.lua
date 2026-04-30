@@ -50,6 +50,7 @@ local ConfigTabClass = newClass("ConfigTab", "UndoHandler", "ControlHost", "Cont
 		self.build.buildFlag = true
 	end)
 	self.controls.resetDefaults.tooltipFunc = function(tooltip)
+		tooltip:Clear()
 		tooltip:AddLine(14, "Clear all configuration options back to their default values.")
 		tooltip:AddLine(14, "Useful when you want a clean baseline for DPS comparison.")
 	end

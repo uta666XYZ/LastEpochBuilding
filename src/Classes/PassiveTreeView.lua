@@ -694,21 +694,12 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 	elseif treeClick == "RIGHT" then
 		if hoverNode and hoverNode.maxPoints > 0 then
 			-- User right-clicked on a node
-			-- Check if any allocated linked node requires more points from hoverNode than (alloc - 1)
-			local newAlloc = hoverNode.alloc - 1
+			-- Orphaned dependents (e.g. nodes whose reqPoints gate is no longer satisfied)
+			-- are cascade-deallocated by BuildAllDependsAndPaths after reduction. Undo is
+			-- available via AddUndoState, so no pre-block is needed for reqPoints.
 			local blockedByReq = false
-			if newAlloc >= 0 then
-				for _, linkedNode in ipairs(hoverNode.linked) do
-					if linkedNode.alloc > 0 and linkedNode.reqPointsMap and linkedNode.reqPointsMap[hoverNode.id] then
-						if newAlloc < linkedNode.reqPointsMap[hoverNode.id] then
-							blockedByReq = true
-							break
-						end
-					end
-				end
-			end
 			-- Check if reducing this node would drop total mastery points below any allocated node's masteryRequirement
-			if not blockedByReq and hoverNode.mastery ~= nil then
+			if hoverNode.mastery ~= nil then
 				local curMasteryTotal = spec.masteryAllocedPoints and (spec.masteryAllocedPoints[hoverNode.mastery] or 0) or 0
 				local newMasteryTotal = curMasteryTotal - 1
 				for id, allocNode in pairs(spec.allocNodes) do
@@ -1370,7 +1361,7 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 
 			-- Draw alloc/max text below node (both passive and skill tree)
 			if node.maxPoints > 0 then
-				DrawString(scrX, scrY + 48 * scale, "CENTER_X", round(50 * scale), "VAR", "^7" .. node.alloc .. "/" .. node.maxPoints)
+				DrawString(scrX, scrY + 48 * scale, "CENTER_X", round(50 * scale), "FONTIN", "^7" .. node.alloc .. "/" .. node.maxPoints)
 			end
 
 			-- Draw steps badge (top-right corner of node)
@@ -1593,6 +1584,43 @@ function PassiveTreeViewClass:AddNodeTooltip(tooltip, node, build)
 	-- Node name
 	self:AddNodeName(tooltip, node, build)
 
+	-- Scaling Tags for skill-spec tree root nodes (icon ends in "-root").
+	-- The root node's id is "<treeId>-0"; look up the matching socket group's
+	-- grantedEffect, then format with the same helper used for slot tooltips.
+	if self.filterMode == "skill" and node.icon and node.icon:match("%-root$")
+		and node.id and build and build.skillsTab then
+		local treeId = node.id:match("^(.+)%-0$")
+		if treeId then
+			for _, sg in ipairs(build.skillsTab.socketGroupList) do
+				if sg.grantedEffect and sg.grantedEffect.treeId == treeId then
+					-- Use conversion-aware damage types so tree-node swaps
+					-- (Cold/Lightning conversions) appear in the tag list.
+					local dynDt = build.skillsTab.GetDynamicDamageTypesByTreeId
+						and build.skillsTab:GetDynamicDamageTypesByTreeId(treeId, sg.grantedEffect.name)
+					local extraFlags = build.skillsTab.GetTreeTagAdditionsByTreeId
+						and build.skillsTab:GetTreeTagAdditionsByTreeId(treeId) or 0
+					local areaOverride = build.skillsTab.IsTotemConvertedByTreeId
+						and build.skillsTab:IsTotemConvertedByTreeId(treeId) and 2 or nil
+					-- Locate this socket group's index for per-skill bitmaps
+					-- (item-mod tag conversions, runtime-corrected Minion Tags).
+					local sgIndex
+					for idx, g in ipairs(build.skillsTab.socketGroupList) do
+						if g == sg then sgIndex = idx; break end
+					end
+					local itemTagAdd = sgIndex and build.perSkillTagAdd and build.perSkillTagAdd[sgIndex] or 0
+					local itemTagRemove = sgIndex and build.perSkillTagRemove and build.perSkillTagRemove[sgIndex] or 0
+					local minionTagsOverride = sgIndex and build.perSkillDisplayMinionTags and build.perSkillDisplayMinionTags[sgIndex] or nil
+					local mergedExtra = bit.bor(extraFlags or 0, itemTagAdd or 0)
+					local tagsLine = formatScalingTagsLine and formatScalingTagsLine(getScalingTagsList(sg.grantedEffect, dynDt, mergedExtra, areaOverride, nil, itemTagRemove))
+					local minionLine = formatMinionTagsLine and formatMinionTagsLine(getMinionTagsList(sg.grantedEffect, nil, areaOverride, minionTagsOverride))
+					if tagsLine then tooltip:AddLine(14, tagsLine) end
+					if minionLine then tooltip:AddLine(14, minionLine) end
+					break
+				end
+			end
+		end
+	end
+
 	-- Show unmet masteryRequirement
 	if node.masteryRequirement and node.masteryRequirement > 0 then
 		local spec = build.spec
@@ -1604,14 +1632,24 @@ function PassiveTreeViewClass:AddNodeTooltip(tooltip, node, build)
 		end
 	end
 
-	-- Show unmet reqPoints requirements
-	if node.reqPointsMap then
+	-- Show unmet reqPoints requirements (OR semantics: only warn if no parent path is satisfied)
+	if node.reqPointsMap and node.alloc == 0 then
+		local anyParentSatisfied = false
 		for parentId, req in pairs(node.reqPointsMap) do
 			local parentNode = build.spec.nodes[parentId]
-			if parentNode then
-				local cur = parentNode.alloc or 0
-				if cur < req then
-					tooltip:AddLine(16, colorCodes.WARNING .. "Requires " .. req .. " points in " .. parentNode.dn .. " (" .. cur .. "/" .. req .. " allocated)")
+			if parentNode and (parentNode.alloc or 0) >= req then
+				anyParentSatisfied = true
+				break
+			end
+		end
+		if not anyParentSatisfied then
+			for parentId, req in pairs(node.reqPointsMap) do
+				local parentNode = build.spec.nodes[parentId]
+				if parentNode then
+					local cur = parentNode.alloc or 0
+					if cur < req then
+						tooltip:AddLine(16, colorCodes.WARNING .. "Requires " .. req .. " points in " .. parentNode.dn .. " (" .. cur .. "/" .. req .. " allocated)")
+					end
 				end
 			end
 		end

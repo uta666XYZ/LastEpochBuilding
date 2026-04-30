@@ -76,9 +76,14 @@ for skillId, grantedEffect in pairs(data.skills) do
         end
     end
     --- Compute skill types
+    -- Use full-mask match (band == type) so composite SkillType values like
+    -- Attack (= Melee|Throwing|Bow = 1664) only flag when ALL their bits are
+    -- present. Without this, a skill carrying only one of the bits (e.g.
+    -- Enchant Weapon with bit128 = Elemental) gets falsely tagged as Attack
+    -- and downstream mod matching adds bogus "+1 to Melee Skills" hits.
     grantedEffect.skillTypes = {}
     for name, type in pairs(SkillType) do
-        if bit.band(grantedEffect.skillTypeTags, type) > 0 then
+        if type ~= 0 and bit.band(grantedEffect.skillTypeTags, type) == type then
             grantedEffect.skillTypes[type] = true
         end
     end
@@ -87,8 +92,14 @@ for skillId, grantedEffect in pairs(data.skills) do
     -- mods tagged with SkillType=Minion/Spell/Melee/etc. apply when summing for cap
     -- calculations and skillCfg-tagged mods.
     if grantedEffect.baseFlags then
+        -- NOTE: baseFlags.minion is intentionally NOT mirrored. baseFlags.minion
+        -- means "this skill summons a minion" (mechanics), which is broader than
+        -- "this skill is a Minion Skill" (affix matching). Skills like Decoy and
+        -- Vale Spirit have baseFlags.minion=true but the cast itself is not a
+        -- Minion Skill — in-game, "+to Minion Skills" affixes do NOT apply to
+        -- their level. Genuine Minion Skills (Summon X, Falconry, etc.) carry
+        -- the Minion bit in fakeTags, which is mirrored below.
         local flagToType = {
-            minion = SkillType.Minion,
             spell = SkillType.Spell,
             melee = SkillType.Melee,
             throwing = SkillType.Throwing,
@@ -110,22 +121,97 @@ for skillId, grantedEffect in pairs(data.skills) do
         -- bit, mods like "+N to Spell Minion Skills" cannot match the parent summon
         -- skill. If a minion skill has a cast time and isn't a melee/ranged/totem/
         -- transform skill, treat it as a spell as well.
+        -- Also check skillTypeTags|fakeTags for delivery-type bits (Decoy has
+        -- baseFlags.projectile+attack with skillTypeTags Throwing bit but no
+        -- baseFlags.throwing — without this check it would be wrongly tagged
+        -- Spell despite being a Throwing skill).
+        local existingTags = bit.bor(grantedEffect.skillTypeTags or 0, grantedEffect.fakeTags or 0)
+        local hasDeliveryTag = bit.band(existingTags,
+            bit.bor(SkillType.Spell, SkillType.Melee, SkillType.Bow, SkillType.Throwing,
+                    SkillType.Totem, SkillType.Transform)) ~= 0
         if grantedEffect.baseFlags.minion and grantedEffect.castTime
            and not grantedEffect.baseFlags.melee
            and not grantedEffect.baseFlags.bow
            and not grantedEffect.baseFlags.throwing
            and not grantedEffect.baseFlags.totem
-           and not grantedEffect.baseFlags.transform then
+           and not grantedEffect.baseFlags.transform
+           and not hasDeliveryTag then
             grantedEffect.skillTypes[SkillType.Spell] = true
         end
     end
+    -- LE's `fakeTags` field tags a skill with categories it doesn't carry in its
+    -- raw skillTypeTags (e.g. Judgement is mechanically Melee but is also tagged
+    -- as a Spell for affix matching and tooltip display). Merge these into
+    -- skillTypes so both Scaling Tags display and SkillLevel cap-summing pick
+    -- them up (e.g. "+1 to Elemental Spell Skills" on Judgement).
+    if grantedEffect.fakeTags and grantedEffect.fakeTags ~= 0 then
+        for name, skillType in pairs(SkillType) do
+            if skillType ~= 0 and skillType ~= SkillType.Unsupported
+               and bit.band(grantedEffect.fakeTags, skillType) == skillType then
+                grantedEffect.skillTypes[skillType] = true
+            end
+        end
+    end
+    -- NOTE: skillTreeConversionDamageTags (stcdt) is intentionally NOT mirrored
+    -- into skillTypes/keywordFlags here. LE's GetTagsForLevelOfSkillsStats() —
+    -- which gates "+to <Cat> Skills" affixes — uses ONLY `tags | fakeTags`
+    -- (confirmed via decompile, 2026-04). stcdt advertises tree-reachable
+    -- damage types for the Scaling Tags tooltip row only; folding it into the
+    -- cap-summing keywordFlags would falsely match affixes like Whetstone
+    -- Gavel "+1 Fire Skills" against any skill whose spec tree merely has a
+    -- Fire branch (e.g. Umbral Blades carrying Cold/Fire/Poison in stcdt).
+    -- The Scaling Tags tooltip is unaffected: displayTags below explicitly
+    -- ORs stcdt for non-minion-parent skills.
     -- Also expose a keywordFlags bitmap for skillCfg consumers that filter mods by
     -- the skill's category (Spell/Melee/Minion/elemental). Built from skillTypes so
-    -- baseFlags-derived bits are included.
-    grantedEffect.keywordFlags = grantedEffect.skillTypeTags or 0
+    -- baseFlags-derived and fakeTags-derived bits are included.
+    grantedEffect.keywordFlags = bit.bor(grantedEffect.skillTypeTags or 0, grantedEffect.fakeTags or 0)
     for skillType in pairs(grantedEffect.skillTypes) do
         if type(skillType) == "number" then
             grantedEffect.keywordFlags = bit.bor(grantedEffect.keywordFlags, skillType)
+        end
+    end
+    -- For minion-summon parents (skills whose minion is the actual damage
+    -- carrier — Summon Thorn Totem, Summon Storm Totem, Summon Skeleton, etc.),
+    -- LE's tooltip routes skillTreeConversionDamageTags onto the Minion Tags
+    -- row, NOT the Scaling Tags row. The cast itself has no damage delivery;
+    -- only the spawned minion does. Detect via minionTagsDisplay != 0 (any skill
+    -- that summons something has a non-empty minion tag bitmap).
+    local isMinionSummonParent = (grantedEffect.minionTagsDisplay or 0) ~= 0
+    -- displayTags: bitmap consumed by the Scaling Tags tooltip row. Mirrors LE's
+    -- in-game ability tooltip, which combines:
+    --   * Ability.tags          (skillTypeTags)
+    --   * Ability.fakeTags      (fakeTags)
+    --   * Ability.skillTreeConversionDamageTags  (advertised tree-reachable damage
+    --       types — e.g. Focus/Arcane Ascendance/Flame Ward show "Lightning" /
+    --       "Cold" tags purely from this field; their tags bitmap doesn't carry
+    --       the damage type bit. Per LE_datamining 2026-04-30.)
+    --   * baseFlag-derived bits (channelling/spell/melee/etc. — Focus is tagged
+    --       "Channeled" via baseFlags.channelling, never via the AT bitmap)
+    -- For minion-summon parents, stcdt belongs on the Minion Tags row instead
+    -- (see displayMinionTags below), so suppress it here.
+    grantedEffect.displayTags = bit.bor(
+        grantedEffect.keywordFlags,
+        isMinionSummonParent and 0 or (grantedEffect.skillTreeConversionDamageTags or 0)
+    )
+    -- displayMinionTags: bitmap consumed by the Minion Tags tooltip row. Folds
+    -- skillTreeConversionDamageTags into the minion side for minion-summon
+    -- parents so e.g. Summon Thorn Totem shows "Cold" / Summon Storm Totem shows
+    -- additional damage types under Minion Tags exactly like the in-game tooltip.
+    grantedEffect.displayMinionTags = bit.bor(
+        grantedEffect.minionTagsDisplay or 0,
+        isMinionSummonParent and (grantedEffect.skillTreeConversionDamageTags or 0) or 0
+    )
+    -- Attribute scalings used by the "+N to <Attribute> Skills" SkillAttribute
+    -- mod tag. Mirrors LE's ScalesWithAttribute() which returns true iff the
+    -- requested attribute is in `Ability.getAttributeScaling()`. Empirically
+    -- confirmed via Smoke Bomb (class=Rogue, attributeScalings=[]): Traitor's
+    -- Tongue "+1 to Dex Skills" does NOT apply in LETools — i.e. there is no
+    -- class-primary fallback at runtime. Use the static field verbatim.
+    grantedEffect.skillAttributes = {}
+    if grantedEffect.attributeScalings then
+        for _, attr in ipairs(grantedEffect.attributeScalings) do
+            grantedEffect.skillAttributes[attr] = true
         end
     end
 end
