@@ -1117,8 +1117,11 @@ function SkillsTabClass:Draw(viewPort, inputEvents)
 		self:DrawSkillOverview(viewPort, inputEvents, contentY)
 	end
 
-	-- Draw spec slots on top of everything (high draw layer)
-	SetDrawLayer(nil, 150)
+	-- Draw spec slots on top of everything (high draw layer).
+	-- Sits one layer below the history-bar "No allocating order…" text (200)
+	-- so the text reads cleanly while the chain pendant remains in front of
+	-- the rest of the tab content.
+	SetDrawLayer(nil, 199)
 	self:DrawSpecSlots(viewPort, inputEvents, slotBarY)
 	SetDrawLayer(nil, 0)
 
@@ -1713,13 +1716,40 @@ function SkillsTabClass:DrawSpecSlots(viewPort, inputEvents, startY)
 			tooltip:AddLine(16, "^7Level of " .. skillName .. ": ^x60FF60" .. maxPts)
 			tooltip:AddSeparator(8)
 			tooltip:AddLine(14, "^7Base: ^x60A0FF20")
+			-- Map "Item:<id>:<name>" sources to "<SlotLabel>: <name>" so the
+			-- breakdown reads naturally (e.g. "Amulet: Omnis" instead of
+			-- "Item:4:Omnis").
+			local function prettifySource(src)
+				if not src then return "Unknown" end
+				local idStr, itemName = src:match("^Item:(%d+):(.+)$")
+				if not idStr then return src end
+				local itemId = tonumber(idStr)
+				local slotLabel
+				if self.build.itemsTab and self.build.itemsTab.slots then
+					for _, slot in pairs(self.build.itemsTab.slots) do
+						if slot.selItemId == itemId then
+							slotLabel = slot.label or slot.slotName
+							break
+						end
+					end
+				end
+				-- Idols live in IdolGridControl, not ItemSlotControl — fall back
+				-- to the item's base type so it doesn't read as plain "Item".
+				if not slotLabel and self.build.itemsTab and self.build.itemsTab.items then
+					local item = self.build.itemsTab.items[itemId]
+					if item and item.type and item.type:match("Idol") then
+						slotLabel = item.type
+					end
+				end
+				return (slotLabel or "Item") .. ": " .. itemName
+			end
 			if breakdown and #breakdown > 0 then
 				for _, entry in ipairs(breakdown) do
 					local v = entry.value
 					local sign = v >= 0 and "+" or ""
 					-- Show 1 decimal only if non-integer (Permanence may yield fractional)
 					local valStr = (v == m_floor(v)) and tostring(m_floor(v)) or string.format("%.1f", v)
-					tooltip:AddLine(14, "^7" .. (entry.source or "Unknown") .. ": ^x60A0FF" .. sign .. valStr)
+					tooltip:AddLine(14, "^7" .. prettifySource(entry.source) .. ": ^x60A0FF" .. sign .. valStr)
 				end
 			end
 			-- Scaling Tags row (damage types + combat class + attribute scalings).

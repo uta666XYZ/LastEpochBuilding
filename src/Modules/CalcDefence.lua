@@ -1293,6 +1293,10 @@ function calcs.buildDefenceEstimations(env, actor)
 	output.GlancingBlowChance = m_min(modDB:Sum("BASE", nil, "GlancingBlowChance"), 100)
 	output.CritAvoidance = m_min(modDB:Sum("BASE", nil, "CritAvoidance"), 100)
 
+	-- Damage Reflected to Attackers (LE thorns)
+	output.DamageReflectedToAttackers = modDB:Sum("BASE", nil, "DamageReflectedToAttackers")
+	output.DamageReflectedPercent = modDB:Sum("BASE", nil, "DamageReflectedPercent")
+
 	-- Attacker debuffs (reactive)
 	output.ChanceToSlowAttackers  = modDB:Sum("BASE", nil, "ChanceToSlowAttackers")
 	output.ChanceToChillAttackers = modDB:Sum("BASE", nil, "ChanceToChillAttackers")

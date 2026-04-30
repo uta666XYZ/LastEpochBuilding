@@ -1359,9 +1359,21 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 				self:DrawAsset(tree.treeUI[frameName], scrX, scrY, scale, nil, frameSize)
 			end
 
-			-- Draw alloc/max text below node (both passive and skill tree)
+			-- Draw alloc/max text below node (both passive and skill tree).
+			-- Background plate (ButtonLarge_Default_Black) sits behind the text
+			-- so the counter is readable over tree connections / artwork.
 			if node.maxPoints > 0 then
-				DrawString(scrX, scrY + 48 * scale, "CENTER_X", round(50 * scale), "FONTIN", "^7" .. node.alloc .. "/" .. node.maxPoints)
+				local textSize  = round(40 * scale)
+				local centerY   = scrY + (frameSize or 48) * 0.85 * scale + textSize * 0.25
+				local label     = "^7" .. node.alloc .. "/" .. node.maxPoints
+				local plateW    = round(80 * scale)
+				local plateH    = round(40 * scale)
+				local plate     = tree.treeUI["node-count-bg"]
+				if plate and plate.handle and plate.handle:IsValid() then
+					SetDrawColor(1, 1, 1)
+					DrawImage(plate.handle, scrX - plateW / 2, centerY - plateH / 2, plateW, plateH)
+				end
+				DrawString(scrX, centerY - textSize / 2, "CENTER_X", textSize, "FONTIN", label)
 			end
 
 			-- Draw steps badge (top-right corner of node)
@@ -1896,9 +1908,10 @@ function PassiveTreeViewClass:DrawHistoryBar(build, barVP, inputEvents)
 	local contentW = barVP.width - (iconStartX - barVP.x) - 4
 
 	if #grouped == 0 then
-		SetDrawLayer(nil, 2)
+		SetDrawLayer(nil, 200)
 		SetDrawColor(0.35, 0.35, 0.42)
 		DrawString(iconStartX + m_floor(contentW / 2), barVP.y + m_floor(barVP.height / 2) - 7, "CENTER_X", 12, "VAR", "No allocating order recorded yet")
+		SetDrawLayer(nil, 0)
 		return
 	end
 

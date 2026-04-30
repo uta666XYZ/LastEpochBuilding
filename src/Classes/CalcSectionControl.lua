@@ -103,17 +103,23 @@ function CalcSectionClass:UpdateSize()
 			rowData.enabled = self.calcsTab:CheckFlag(rowData) and (self.id == "SkillSelect" or self.calcsTab:SearchMatch(rowData))
 			if rowData.enabled then
 				self.enabled = true
+				-- Wrap long labels that don't fit the 128px label area onto a 2nd line.
+				local rowHeight = 18
+				if rowData.label and DrawStringWidth(16, "VAR", rowData.label..":") > 128 then
+					rowHeight = 32
+				end
+				rowData._rowHeight = rowHeight
 				local xOffset = 134
 				for colour, colData in ipairs(rowData) do
 					colData.xOffset = xOffset
 					colData.yOffset = yOffset
 					colData.width = subSec.data.colWidth or width - 136
-					colData.height = 18
+					colData.height = rowHeight
 					xOffset = xOffset + colData.width
 				end
-				yOffset = yOffset + 18
-				self.height = self.height + 18
-				tempHeight = tempHeight + 18
+				yOffset = yOffset + rowHeight
+				self.height = self.height + rowHeight
+				tempHeight = tempHeight + rowHeight
 			end
 			if subSec.collapsed then
 				rowData.enabled = false
@@ -267,10 +273,29 @@ function CalcSectionClass:Draw(viewPort, noTooltip)
 						textColor = rowData.color
 					end
 					if rowData.label then
+						local rowHeight = rowData._rowHeight or 18
 						-- Draw row label with background
 						SetDrawColor(rowData.bgCol or "^0")
-						DrawImage(nil, x + 2, lineY, 130, 18)
-						DrawString(x + 132, lineY + 1, "RIGHT_X", 16, "VAR", textColor..rowData.label.."^7:")
+						DrawImage(nil, x + 2, lineY, 130, rowHeight)
+						if rowHeight > 18 then
+							-- Wrap onto two lines, splitting at last word that fits.
+							local words = { }
+							for w in rowData.label:gmatch("%S+") do t_insert(words, w) end
+							local line1, line2 = "", ""
+							for i, w in ipairs(words) do
+								local trial = (line1 == "") and w or (line1 .. " " .. w)
+								if DrawStringWidth(16, "VAR", trial..":") <= 128 and line2 == "" then
+									line1 = trial
+								else
+									line2 = (line2 == "") and w or (line2 .. " " .. w)
+								end
+							end
+							if line2 == "" then line2 = line1; line1 = "" end
+							DrawString(x + 132, lineY + 1,  "RIGHT_X", 14, "VAR", textColor..line1)
+							DrawString(x + 132, lineY + 16, "RIGHT_X", 14, "VAR", textColor..line2.."^7:")
+						else
+							DrawString(x + 132, lineY + 1, "RIGHT_X", 16, "VAR", textColor..rowData.label.."^7:")
+						end
 					end
 					for colour, colData in ipairs(rowData) do
 						-- Draw column separator at the left end of the cell
@@ -292,11 +317,11 @@ function CalcSectionClass:Draw(viewPort, noTooltip)
 					end
 					local textSize = rowData.textSize or 14
 					SetViewport(colData.x + 3, colData.y, colData.width - 4, colData.height)
-					DrawString(1, 9 - textSize/2, "LEFT", textSize, "VAR", "^7"..self:FormatStr(colData.format, actor, colData))
+					DrawString(1, colData.height / 2 - textSize / 2, "LEFT", textSize, "VAR", "^7"..self:FormatStr(colData.format, actor, colData))
 					SetViewport()
 				end
 			end
-			lineY = lineY + 18
+			lineY = lineY + (rowData._rowHeight or 18)
 				end
 			end
 		end

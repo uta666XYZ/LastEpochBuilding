@@ -25,10 +25,10 @@ local SLOT_GRID = {
 	{tl="Spirits of Fire",         row=3},
 }
 
-local SLOT_SIZE = 65
+local SLOT_SIZE = 52  -- 20% reduction from 65 to fit 1080p with titles removed
 local SLOT_GAP  = 8
-local TITLE_H   = 22  -- panel title bar height (matches PaperdollControl)
-local PANEL_PAD_TOP = 6  -- gap between title bar and first slot row
+local TITLE_H   = 0   -- title bar removed; tab/header role handled elsewhere
+local PANEL_PAD_TOP = 6  -- gap between panel top and first slot row
 
 -- Compute slot positions relative to this control's top-left
 local function computeSlotPositions(controlW)
@@ -196,14 +196,6 @@ function BlessingGridControlClass:Draw(viewPort)
 	-- Panel background (full control area, matches Equipment paperdoll panel)
 	SetDrawColor(PANEL_BG_R, PANEL_BG_G, PANEL_BG_B)
 	DrawImage(nil, cx, cy, cw, ch)
-	-- Title bar
-	SetDrawColor(TITLE_BG_R, TITLE_BG_G, TITLE_BG_B)
-	DrawImage(nil, cx, cy, cw, TITLE_H)
-	SetDrawColor(TITLE_BORDER_R, TITLE_BORDER_G, TITLE_BORDER_B)
-	DrawImage(nil, cx, cy + TITLE_H - 1, cw, 2)
-	SetDrawColor(1, 1, 1)
-	DrawString(cx + m_floor(cw / 2), cy + m_floor((TITLE_H - 12) / 2),
-		"CENTER_X", 12, "VAR", "^xD4BB88Equipped Blessings")
 
 	for _, sg in ipairs(SLOT_GRID) do
 		local tl  = sg.tl
