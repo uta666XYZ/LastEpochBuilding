@@ -1186,6 +1186,12 @@ function SkillsTabClass:GetTreeTagAdditionsByTreeId(treeId)
 					if stat:lower():match("^%s*creates?%s+.+%s+totem%s*$") then
 						adds = bit.bor(adds, 8192, 16384) -- Minion | Totem
 					end
+					-- Plain damage producer: "<DmgType> Damage" suffix
+					-- (e.g. wc57-30 Kinetic Scream "40 Spell Physical Damage" -> Physical).
+					local plainType = stat:match("(%w+)%s+[Dd]amage%s*$")
+					if plainType and DT_BITS[plainType:lower()] then
+						adds = bit.bor(adds, DT_BITS[plainType:lower()])
+					end
 				end
 			end
 			-- Description-driven tag promotions (mirrors CalcActiveSkill.getTreeTagAdditions).
@@ -1204,14 +1210,17 @@ function SkillsTabClass:GetTreeTagAdditionsByTreeId(treeId)
 							elseif lo:match("is converted into a bow attack") then
 								adds = bit.bor(adds, 2048) -- Bow
 							end
-							-- Damage-type addition: "dealing [spell] <type> damage"
-							-- (Searing Light: "dealing spell fire damage").
-							local addedType = lo:match("dealing %w+ (%a+) damage")
-							if not addedType then
-								addedType = lo:match("dealing (%a+) damage")
-							end
-							if addedType and DT_BITS[addedType] then
-								adds = bit.bor(adds, DT_BITS[addedType])
+							-- Damage-type addition phrase: "deal[s]?[ing]? [<adj>]
+							-- <type> damage". Examples:
+							--   hh7pa3-1 Searing Light: "dealing spell fire damage"
+							--   wo42-14 Tundra Stalkers: "deal additional cold damage"
+							--   wc57-30 Kinetic Scream: "deals spell physical damage"
+							if lo:find("deal", 1, true) then
+								for typeName, b in pairs(DT_BITS) do
+									if lo:find(" " .. typeName .. " damage", 1, true) then
+										adds = bit.bor(adds, b)
+									end
+								end
 							end
 							-- Split-effect: "one deals X damage and the other deals Y damage"
 							local oneType, otherType = lo:match("one deals (%a+) damage and the other deals (%a+) damage")
@@ -1307,6 +1316,38 @@ function SkillsTabClass:GetDynamicDamageTypesByTreeId(treeId, skillName)
 					local lo = baseDst:lower()
 					if TYPE_SET[lo] then statForcedBase[lo] = true end
 				end
+				-- Stat-driven damage-type swap: " <Src> -> <Dst> Damage" or
+				-- " <Src> -> <Dst>" (no Damage suffix). Mirrors getTreeTagSwaps.
+				-- Used by:
+				--   wc57-5 Jormun's Wrath: " Physical -> Cold Damage"
+				--   fw3d-10 Lightning Ward: " Fire -> Lightning"
+				--   fw3d-? Cold Ward: " Fire -> Cold"
+				-- TYPE_SET filter rejects ailment swaps like " Chill -> Ignite".
+				local convSrc, convDst = stat:match("^%s*(%w+)%s*%->%s*(%w+)%s+[Dd]amage%s*$")
+				if not convSrc then
+					convSrc, convDst = stat:match("^%s*(%w+)%s*%->%s*(%w+)%s*$")
+				end
+				if convSrc and convDst then
+					local sLo, dLo = convSrc:lower(), convDst:lower()
+					if TYPE_SET[sLo] and TYPE_SET[dLo] then
+						if isMultiConv then
+							t_insert(multiList, { sLo, dLo })
+						else
+							convMap[sLo] = dLo
+						end
+					end
+				end
+				-- Plain damage producer: stats ending in "<DmgType> Damage"
+				-- (e.g. wc57-30 Kinetic Scream "40 Spell Physical Damage" gives
+				-- Warcry the Physical bit; wo42-14 Tundra Stalkers "+2 Cold
+				-- Damage" gives Wolf Cold; wc57-6 Frost Claw "50% Increased
+				-- Cold Damage"). TYPE_SET filter rejects "Increased Damage" /
+				-- "More Damage" etc. Surfaced as addSet (added, not converted).
+				local plainType = stat:match("(%w+)%s+[Dd]amage%s*$")
+				if plainType then
+					local pLo = plainType:lower()
+					if TYPE_SET[pLo] then addSet[pLo] = true end
+				end
 			end
 		end
 	end
@@ -1360,10 +1401,18 @@ function SkillsTabClass:GetDynamicDamageTypesByTreeId(treeId, skillName)
 						-- phrase (those are handled per-type above).
 						if not lo:match("^%s*if%s")
 						   and not lo:find(" damage is converted to ", 1, true) then
-							local addedType = lo:match("dealing %w+ (%a+) damage")
-							             or lo:match("dealing (%a+) damage")
-							if addedType and TYPE_SET[addedType] then
-								addSet[addedType] = true
+							-- Match "deal", "deals", "dealing" verb forms paired
+							-- with " <type> damage" anywhere later in the line.
+							-- Examples:
+							--   hh7pa3-1: "dealing spell fire damage"
+							--   wo42-14: "deal additional cold damage"
+							--   wc57-30: "deals spell physical damage"
+							if lo:find("deal", 1, true) then
+								for _, dt in ipairs(TYPE_NAMES) do
+									if lo:find(" " .. dt .. " damage", 1, true) then
+										addSet[dt] = true
+									end
+								end
 							end
 						end
 						-- Whole-skill conversion phrasing used by some trees, e.g.
@@ -1454,9 +1503,14 @@ function SkillsTabClass:GetDynamicDamageTypesByTreeId(treeId, skillName)
 	end
 	-- Apply split-effect additions last: force each addSet entry into baseSet
 	-- (re-promote from convSet if a prior conversion demoted it).
+	-- Route through convMap so an addition of a converted source type (e.g.
+	-- Kinetic Scream "+40 Spell Physical Damage" + Jormun's Wrath Physical->Cold)
+	-- surfaces as the destination type instead of re-introducing the now-converted
+	-- source.
 	for t in pairs(addSet) do
-		if convSet[t] then convSet[t] = nil end
-		baseSet[t] = true
+		local effective = (not isMultiConv) and (convMap[t] or t) or t
+		if convSet[effective] then convSet[effective] = nil end
+		baseSet[effective] = true
 	end
 	-- Stat-driven Base-Damage conversions (e.g. bg36nl-7 " Melee Base Damage
 	-- -> Fire"): destination becomes base, demoted from conv if present.
