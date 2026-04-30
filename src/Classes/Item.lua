@@ -1414,6 +1414,26 @@ function ItemClass:BuildModList()
 			end
 		end
 	end
+	-- "+N% Chance to inflict Bleed on Minion Hit" parses correctly to a
+	-- MinionModifier{BleedChance@N, Hit} mod, but the LE-flavoured ModParser
+	-- generic chain leaves connector words ("on", "with", "for", "by",
+	-- "inflicted", trailing plural "s") in modLine.extra. The legacy gate
+	-- below dropped those mods entirely — silently breaking minion-bleed,
+	-- minion-poison, and "Phys Pen with Bleed" rolls. Treat extras that
+	-- contain ONLY recognised connector words as fully consumed.
+	local function isConnectorOnlyExtra(extra)
+		if not extra or extra == "" then return true end
+		local trimmed = extra:lower():gsub("^%s+", ""):gsub("%s+$", "")
+		if trimmed == "" then return true end
+		for word in trimmed:gmatch("%S+") do
+			if not (word == "on" or word == "with" or word == "for"
+				or word == "by" or word == "inflicted" or word == "s"
+				or word == "and" or word == "the" or word == "a") then
+				return false
+			end
+		end
+		return true
+	end
 	local function processModLine(modLine)
 		if self:CheckModLineVariant(modLine) then
 			-- special section for variant over-ride of pre-modifier item parameters
@@ -1424,7 +1444,7 @@ function ItemClass:BuildModList()
 			if modLine.range ~= nil and itemLib.hasRange(modLine.line) then
 				t_insert(self.rangeLineList, modLine)
 			end
-			if not modLine.extra then
+			if isConnectorOnlyExtra(modLine.extra) and modLine.modList then
 				-- "Legendary Affix" = sealed Prefix/Suffix on a Reforged Legendary
 				-- (i.e. NOT crafted and NOT implicit, and the host item rarity is
 				-- LEGENDARY). Permanence's "% increased Effect of Skill Level
