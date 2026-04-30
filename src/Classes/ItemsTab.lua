@@ -179,7 +179,7 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 	self.slots = { }
 	self.orderedSlots = { }
 	self.slotOrder = { }
-	self.slotAnchor = new("Control", {"TOPLEFT",self,"TOPLEFT"}, 96, 76, 310, 0)
+	self.slotAnchor = new("Control", {"TOPLEFT",self,"TOPLEFT"}, 96, 52, 310, 0)
 	local prevSlot = self.slotAnchor
 	local function addSlot(slot)
 		prevSlot = slot
@@ -192,8 +192,12 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 		["Fall of the Outcasts"]=true, ["The Stolen Lance"]=true, ["The Black Sun"]=true, ["Blood, Frost, and Death"]=true, ["Ending the Storm"]=true, ["Fall of the Empire"]=true, ["Reign of Dragons"]=true, ["The Age of Winter"]=true, ["Spirits of Fire"]=true, ["The Last Ruin"]=true
 	}
 	local lastVisibleSlot = self.slotAnchor
+	local slotLabelOverrides = {
+		["Weapon 1"] = "Weapon",
+		["Weapon 2"] = "Off-hand",
+	}
 	for index, slotName in ipairs(baseSlots) do
-		local slot = new("ItemSlotControl", {"TOPLEFT",prevSlot,"BOTTOMLEFT"}, 0, 2, self, slotName)
+		local slot = new("ItemSlotControl", {"TOPLEFT",prevSlot,"BOTTOMLEFT"}, 0, 2, self, slotName, slotLabelOverrides[slotName])
 		addSlot(slot)
 		if blessingSlotNames[slotName] then
 			slot.shown = function() return false end
