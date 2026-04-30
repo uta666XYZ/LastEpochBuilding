@@ -59,6 +59,114 @@ for i = 1, #socketGroupList do
     else
         outHnd:write("{}\n")
     end
+    -- ALSO dump minion output for this socket if present
+    local mEnv = build.calcsTab.mainEnv
+    if mEnv and mEnv.minion and mEnv.minion.output then
+        outHnd:write("        [\"" .. slotName .. "_minion\"] = ")
+        outHnd:write(buildTable("minion", mEnv.minion.output))
+        outHnd:write(",\n")
+        -- Dump BleedChance mods on minion modDB and skillCfg flags
+        local mModDB = mEnv.minion.modDB
+        local mSkill = mEnv.minion.mainSkill
+        outHnd:write("        [\"" .. slotName .. "_minion_diag\"] = {\n")
+        if mModDB then
+            local mods = mModDB.mods["BleedChance"] or {}
+            outHnd:write("            bleedChanceModCount = " .. tostring(#mods) .. ",\n")
+            for i = 1, #mods do
+                local mm = mods[i]
+                local tagInfo = ""
+                for ti = 1, #mm do
+                    local t = mm[ti]
+                    if type(t) == "table" then
+                        tagInfo = tagInfo .. "[" .. tostring(t.type or "?")
+                        for k, v in pairs(t) do if k ~= "type" then tagInfo = tagInfo .. " "..k.."="..tostring(v) end end
+                        tagInfo = tagInfo .. "]"
+                    end
+                end
+                outHnd:write(string.format("            [%d] = { source=%q, type=%q, value=%s, flags=%s, kw=%s, tags=%q },\n",
+                    i, tostring(mm.source or ""), tostring(mm.type or ""), tostring(mm.value),
+                    tostring(mm.flags or 0), tostring(mm.keywordFlags or 0), tagInfo))
+            end
+            local sumNoCfg = mModDB:Sum("BASE", nil, "BleedChance") or 0
+            outHnd:write("            sumNoCfg = " .. tostring(sumNoCfg) .. ",\n")
+            if mSkill and mSkill.skillCfg then
+                local sumWithCfg = mModDB:Sum("BASE", mSkill.skillCfg, "BleedChance") or 0
+                outHnd:write("            sumWithCfg = " .. tostring(sumWithCfg) .. ",\n")
+                outHnd:write("            skillCfgFlags = " .. tostring(mSkill.skillCfg.flags or 0) .. ",\n")
+                outHnd:write("            skillCfgKw = " .. tostring(mSkill.skillCfg.keywordFlags or 0) .. ",\n")
+            else
+                outHnd:write("            skillCfg = nil,\n")
+            end
+        end
+        outHnd:write("        },\n")
+    end
+    -- Also dump player MinionModifier list and player skillModList MinionModifier list
+    outHnd:write("        [\"" .. slotName .. "_player_minionMods\"] = {\n")
+    local pModDB = mEnv and mEnv.player and mEnv.player.modDB
+    if pModDB then
+        local mm = pModDB.mods["MinionModifier"] or {}
+        outHnd:write("            playerMinionModifierCount = " .. tostring(#mm) .. ",\n")
+        for i = 1, #mm do
+            local m = mm[i]
+            local innerName = "?"
+            if type(m.value) == "table" and m.value.mod then
+                innerName = tostring(m.value.mod.name) .. "[" .. tostring(m.value.mod.value) .. " " .. tostring(m.value.mod.type) .. " flags=" .. tostring(m.value.mod.flags or 0) .. "]"
+            end
+            outHnd:write(string.format("            [%d] = { source=%q, type=%q, inner=%q },\n",
+                i, tostring(m.source or ""), tostring(m.type or ""), innerName))
+        end
+    end
+    local pSkill = mEnv and mEnv.player and mEnv.player.mainSkill
+    -- Dump player BleedChance mods (raw)
+    if pModDB and pModDB.mods["BleedChance"] then
+        outHnd:write("            playerBleedChanceCount = " .. tostring(#pModDB.mods["BleedChance"]) .. ",\n")
+        for i, m in ipairs(pModDB.mods["BleedChance"]) do
+            outHnd:write(string.format("            pbc[%d] = { source=%q, type=%q, value=%s, flags=%s },\n",
+                i, tostring(m.source or ""), tostring(m.type or ""), tostring(m.value), tostring(m.flags or 0)))
+        end
+    else
+        outHnd:write("            playerBleedChanceCount = 0,\n")
+    end
+    -- Dump helmet (itemId via slot "Helmet") raw mod lines + parsed mods
+    local items = build.itemsTab and build.itemsTab.items
+    local helmetSlot = build.itemsTab and build.itemsTab.slots and build.itemsTab.slots["Helmet"]
+    local helmetItemId = helmetSlot and helmetSlot.selItemId
+    if items and helmetItemId and items[helmetItemId] then
+        local h = items[helmetItemId]
+        outHnd:write("            helmetItemId = " .. tostring(helmetItemId) .. ",\n")
+        outHnd:write("            helmetName = " .. string.format("%q", tostring(h.name or "")) .. ",\n")
+        if h.modList then
+            outHnd:write("            helmetModListCount = " .. tostring(#h.modList) .. ",\n")
+            for i, m in ipairs(h.modList) do
+                local innerName = ""
+                if m.name == "MinionModifier" and type(m.value) == "table" and m.value.mod then
+                    innerName = " inner=" .. string.format("%q", tostring(m.value.mod.name) .. "[" .. tostring(m.value.mod.value) .. "]")
+                end
+                outHnd:write(string.format("            hml[%d] = { name=%q, type=%q, value=%s%s },\n",
+                    i, tostring(m.name or ""), tostring(m.type or ""), tostring(m.value), innerName))
+            end
+        end
+        if h.explicitModLines then
+            outHnd:write("            helmetExplicitLineCount = " .. tostring(#h.explicitModLines) .. ",\n")
+            for i, ml in ipairs(h.explicitModLines) do
+                outHnd:write(string.format("            hel[%d] = { line=%q, range=%s, nMods=%d, extra=%q },\n",
+                    i, tostring(ml.line or ""), tostring(ml.range), ml.modList and #ml.modList or 0, tostring(ml.extra or "")))
+            end
+        end
+    end
+    if pSkill and pSkill.skillModList then
+        local list = pSkill.skillModList:List(pSkill.skillCfg, "MinionModifier") or {}
+        outHnd:write("            skillModListMinionModifierCount = " .. tostring(#list) .. ",\n")
+        for i = 1, #list do
+            local v = list[i]
+            local innerName = "?"
+            if type(v) == "table" and v.mod then
+                innerName = tostring(v.mod.name) .. "[" .. tostring(v.mod.value) .. " " .. tostring(v.mod.type) .. "]"
+            end
+            outHnd:write(string.format("            sml[%d] = { type=%q, inner=%q },\n", i, tostring(v.type or ""), innerName))
+        end
+    end
+    outHnd:write("        },\n")
     outHnd:write(",\n")
 end
 outHnd:write("    },\n")
@@ -222,13 +330,31 @@ outHnd:write("    },\n")
 
 outHnd:write("    parseTest = {\n")
 do
-    local testLines = { "62 Health Gain on Block", "+62 Health Gain on Block", "62 health gain on block" }
+    local testLines = {
+        "62 Health Gain on Block",
+        "+43% Chance to inflict Bleed on Hit",
+        "+43% Chance to inflict Bleed on Minion Hit",
+        "+112% Chance to inflict Bleed on Minion Hit",
+        "+(36-45)% Chance to inflict Bleed on Minion Hit",
+    }
+    local function dumpModRec(prefix, m)
+        if type(m) ~= "table" then return tostring(m) end
+        local s = string.format("name=%s type=%s value=%s flags=%s", tostring(m.name), tostring(m.type), tostring(m.value), tostring(m.flags or 0))
+        if m.name == "MinionModifier" and type(m.value) == "table" and m.value.mod then
+            s = s .. " inner={" .. dumpModRec("", m.value.mod) .. "}"
+        end
+        return s
+    end
     for ti, tl in ipairs(testLines) do
         local mods, extra = modLib.parseMod(tl)
         local n = mods and #mods or 0
-        local first = ""
-        if n > 0 then first = string.format("name=%s type=%s value=%s", tostring(mods[1].name), tostring(mods[1].type), tostring(mods[1].value)) end
-        outHnd:write(string.format("        [%d] = { line=%q, n=%d, extra=%q, first=%q },\n", ti, tl, n, tostring(extra or ""), first))
+        local desc = ""
+        if n > 0 then
+            for i = 1, n do
+                desc = desc .. "[" .. i .. ":" .. dumpModRec("", mods[i]) .. "]"
+            end
+        end
+        outHnd:write(string.format("        [%d] = { line=%q, n=%d, extra=%q, mods=%q },\n", ti, tl, n, tostring(extra or ""), desc))
     end
 end
 outHnd:write("    },\n")
