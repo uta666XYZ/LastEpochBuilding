@@ -474,6 +474,7 @@ function calcs.defence(env, actor)
 	output.LifeOnKill = modDB:Sum("BASE", nil, "LifeOnKill")
 	output.ManaOnKill = modDB:Sum("BASE", nil, "ManaOnKill")
 	output.WardOnKill = modDB:Sum("BASE", nil, "WardOnKill")
+	output.LifeLossOnKillPercent = modDB:Sum("BASE", nil, "LifeLossOnKillPercent")
 
 	-- Gain on Potion Use / Skill Use
 	output.WardOnPotionUse = modDB:Sum("BASE", nil, "WardOnPotionUse")
@@ -637,6 +638,7 @@ function calcs.defence(env, actor)
 	output.LifeOnKill = modDB:Sum("BASE", nil, "LifeOnKill")
 	output.ManaOnKill = modDB:Sum("BASE", nil, "ManaOnKill")
 	output.WardOnKill = modDB:Sum("BASE", nil, "WardOnKill")
+	output.LifeLossOnKillPercent = modDB:Sum("BASE", nil, "LifeLossOnKillPercent")
 
 	-- gain on potion use / skill use
 	output.WardOnPotionUse = modDB:Sum("BASE", nil, "WardOnPotionUse")

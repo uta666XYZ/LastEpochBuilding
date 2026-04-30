@@ -52,9 +52,9 @@ function TooltipClass:CheckForUpdate(...)
 	end
 end
 
-function TooltipClass:AddLine(size, text)
+function TooltipClass:AddLine(size, text, font)
 	if text then
-		for line in s_gmatch(text .. "\n", "([^\n]*)\n") do	
+		for line in s_gmatch(text .. "\n", "([^\n]*)\n") do
 			if line:match("^.*(Equipping)") == "Equipping" or line:match("^.*(Removing)") == "Removing" then
 				t_insert(self.blocks, { height = size + 2})
 			else
@@ -62,10 +62,10 @@ function TooltipClass:AddLine(size, text)
 			end
 			if self.maxWidth then
 				for _, line in ipairs(main:WrapString(line, size, self.maxWidth - H_PAD)) do
-					t_insert(self.lines, { size = size, text = line, block = #self.blocks })
+					t_insert(self.lines, { size = size, text = line, block = #self.blocks, font = font })
 				end
 			else
-				t_insert(self.lines, { size = size, text = line, block = #self.blocks })
+				t_insert(self.lines, { size = size, text = line, block = #self.blocks, font = font })
 			end
 		end
 	end
@@ -82,14 +82,16 @@ function TooltipClass:GetSize()
 			ttH = ttH + data.size + 2
 		end
 		if data.text then
-			ttW = m_max(ttW, DrawStringWidth(data.size, "VAR", data.text))
+			local lineFont = data.font or (data.size >= 18 and "FONTIN SC" or "FONTIN")
+			ttW = m_max(ttW, DrawStringWidth(data.size, lineFont, data.text))
 		end
 	end
 
 	-- Account for recipe display
 	if self.recipe and self.lines[1] then
 		local title = self.lines[1]
-		local imageX = DrawStringWidth(title.size, "VAR", title.text) + title.size
+		local titleFont = title.font or (title.size >= 18 and "FONTIN SC" or "FONTIN")
+		local imageX = DrawStringWidth(title.size, titleFont, title.text) + title.size
 		local recipeTextSize = (title.size * 3) / 4
 		for _, recipeName in ipairs(self.recipe) do
 			-- Trim "Oil" from the recipe name, which normally looks like "GoldenOil"
@@ -97,7 +99,7 @@ function TooltipClass:GetSize()
 			if #recipeNameShort > 3 and recipeNameShort:sub(-3) == "Oil" then
 				recipeNameShort = recipeNameShort:sub(1, #recipeNameShort - 3)
 			end
-			imageX = imageX + DrawStringWidth(recipeTextSize, "VAR", recipeNameShort) + title.size * 1.25
+			imageX = imageX + DrawStringWidth(recipeTextSize, "FONTIN", recipeNameShort) + title.size * 1.25
 		end
 		ttW = m_max(ttW, imageX)
 	end
@@ -124,7 +126,8 @@ function TooltipClass:CalculateColumns(ttY, ttX, ttH, ttW, viewPort)
 	for i, data in ipairs(self.lines) do
 		if self.recipe and i == 1 then
 			local title = self.lines[1]
-			local imageX = DrawStringWidth(title.size, "VAR", title.text) + title.size
+			local titleFont = title.font or (title.size >= 18 and "FONTIN SC" or "FONTIN")
+			local imageX = DrawStringWidth(title.size, titleFont, title.text) + title.size
 			local recipeTextSize = (title.size * 3) / 4
 			for _, recipeName in ipairs(self.recipe) do
 				-- Trim "Oil" from the recipe name, which normally looks like "GoldenOil"
@@ -133,8 +136,8 @@ function TooltipClass:CalculateColumns(ttY, ttX, ttH, ttW, viewPort)
 					recipeNameShort = recipeNameShort:sub(1, #recipeNameShort - 3)
 				end
 				-- Draw the name of the recipe component (oil)
-				t_insert(drawStack, {ttX + imageX, y + (title.size - recipeTextSize)/2, "LEFT", recipeTextSize, "VAR", recipeNameShort})
-				imageX = imageX + DrawStringWidth(recipeTextSize, "VAR", recipeNameShort)
+				t_insert(drawStack, {ttX + imageX, y + (title.size - recipeTextSize)/2, "LEFT", recipeTextSize, "FONTIN", recipeNameShort})
+				imageX = imageX + DrawStringWidth(recipeTextSize, "FONTIN", recipeNameShort)
 				-- Draw the image of the recipe component (oil)
 				t_insert(drawStack, {recipeImages[recipeName], ttX + imageX, y, title.size, title.size})
 				imageX = imageX + title.size * 1.25
@@ -148,10 +151,11 @@ function TooltipClass:CalculateColumns(ttY, ttX, ttH, ttW, viewPort)
 				columns = columns + 1
 			end
 			currentBlock = data.block
+			local lineFont = data.font or (data.size >= 18 and "FONTIN SC" or "FONTIN")
 			if self.center then
-				t_insert(drawStack, {x + ttW/2, y, "CENTER_X", data.size, "VAR", data.text})
+				t_insert(drawStack, {x + ttW/2, y, "CENTER_X", data.size, lineFont, data.text})
 			else
-				t_insert(drawStack, {x + 6, y, "LEFT", data.size, "VAR", data.text})
+				t_insert(drawStack, {x + 6, y, "LEFT", data.size, lineFont, data.text})
 			end
 			y = y + data.size + 2
 		elseif self.lines[i + 1] and self.lines[i - 1] and self.lines[i + 1].text then
