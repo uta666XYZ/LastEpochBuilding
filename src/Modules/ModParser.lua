@@ -1311,6 +1311,11 @@ specialModList["^%+?([%d%.]+)%% of (.+) base damage converted to (.+)$"] = nsAny
 specialModList["^%+?([%d%.]+)%% added (.+) gained as added (.+)$"] = nsAny
 specialModList["^%+?([%d%.]+)%% of added (.+) gained as added (.+)$"] = nsAny
 
+-- 20. "Stats on your <slot> also apply to your minions" (Julra's Obsession unique gloves).
+-- Recognition-only: would require slot-scoped mod re-routing onto MinionModifier with
+-- a percent multiplier, which the parsing pipeline doesn't yet support.
+specialModList["^%+?([%d%.]+)%% stats on your (.+) also apply to your minions?$"] = nsAny
+
 -- 21. "+N to <skill>" — DPS-integrated: emits a SkillName-tagged SkillLevel BASE
 -- that CalcSetup consumes via env.modDB:Sum("BASE", skillCfg, "SkillLevel") to
 -- raise the specialized skill's effective level. If the captured name isn't a
