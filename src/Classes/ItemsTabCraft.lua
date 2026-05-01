@@ -949,7 +949,10 @@ function ItemsTabClass:CraftRefreshSlotDropdowns()
 				hasAnySubcat = true
 			end
 
-			local function cleanLabel(s) return (s or ""):gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "") end
+			local function cleanLabel(s)
+				local out = (s or ""):gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
+				return out
+			end
 			local function displayLabel(e)
 				local name = e.affixName
 				if name and name ~= "" then return name end
@@ -1905,7 +1908,8 @@ function ItemsTabClass:BuildCraftControls()
 				end
 
 				local function cleanLabel(s)
-					return (s or ""):gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
+					local out = (s or ""):gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
+					return out
 				end
 
 				local affixName = entry.affixName
