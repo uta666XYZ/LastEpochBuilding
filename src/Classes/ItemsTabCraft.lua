@@ -955,7 +955,9 @@ function ItemsTabClass:CraftRefreshSlotDropdowns()
 			end
 			local function displayLabel(e)
 				local name = e.affixName
-				if name and name ~= "" then return name end
+				if name and name ~= "" then
+					return name:sub(1, 1):upper() .. name:sub(2)
+				end
 				return cleanLabel(e.label)
 			end
 
@@ -1086,7 +1088,7 @@ function ItemsTabClass:CraftRefreshAffixDropdowns()
 					label = label:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
 					groups[mod.statOrderKey] = {
 						label = label, statOrderKey = mod.statOrderKey,
-						affix = mod.affix, affixName = mod.affixName or "",
+						affix = mod.affix, affixName = mod.affixName or "", modName = mod.modName or "",
 						type = mod.type, maxTier = mod.tier or 0,
 						subcategory = subcat,
 					}
@@ -1141,7 +1143,7 @@ function ItemsTabClass:CraftRefreshAffixDropdowns()
 	local function pushSealedAndPrimordial(g)
 		t_insert(sealedList, {
 			label = g.label, statOrderKey = g.statOrderKey,
-			affix = g.affix, affixName = g.affixName,
+			affix = g.affix, affixName = g.affixName, modName = g.modName,
 			type = g.type, maxTier = m_min(g.maxTier, 6), subcategory = g.subcategory,
 		})
 		if g.maxTier >= 7 then
@@ -1153,7 +1155,7 @@ function ItemsTabClass:CraftRefreshAffixDropdowns()
 				local t8Label = table.concat(t8Parts, " / "):gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
 				t_insert(primordialList, {
 					label = t8Label, statOrderKey = g.statOrderKey,
-					affix = g.affix, affixName = g.affixName,
+					affix = g.affix, affixName = g.affixName, modName = g.modName,
 					type = g.type, maxTier = 7, subcategory = g.subcategory,
 				})
 			end
@@ -1163,7 +1165,7 @@ function ItemsTabClass:CraftRefreshAffixDropdowns()
 	local function copyCapped(g)
 		return {
 			label = g.label, statOrderKey = g.statOrderKey,
-			affix = g.affix, affixName = g.affixName,
+			affix = g.affix, affixName = g.affixName, modName = g.modName,
 			type = g.type, maxTier = m_min(g.maxTier, 6), subcategory = g.subcategory,
 		}
 	end
@@ -1221,7 +1223,7 @@ function ItemsTabClass:CraftRefreshAffixDropdowns()
 					local label = table.concat(labelParts, " / "):gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
 					corruptedGroups[mod.statOrderKey] = {
 						label = label, statOrderKey = mod.statOrderKey,
-						affix = mod.affix, affixName = mod.affixName or "",
+						affix = mod.affix, affixName = mod.affixName or "", modName = mod.modName or "",
 						type = mod.type, maxTier = mod.tier or 0,
 						subcategory = subcat,
 					}
@@ -1232,14 +1234,14 @@ function ItemsTabClass:CraftRefreshAffixDropdowns()
 			end
 		end
 		for _, g in pairs(corruptedGroups) do
-			t_insert(corruptedList, { label = g.label, statOrderKey = g.statOrderKey, affix = g.affix, affixName = g.affixName, type = g.type, maxTier = m_min(g.maxTier, 6), subcategory = g.subcategory })
+			t_insert(corruptedList, { label = g.label, statOrderKey = g.statOrderKey, affix = g.affix, affixName = g.affixName, modName = g.modName, type = g.type, maxTier = m_min(g.maxTier, 6), subcategory = g.subcategory })
 		end
 	else
 		for _, g in ipairs(corruptedPrefixIter) do
-			t_insert(corruptedList, { label = g.label, statOrderKey = g.statOrderKey, affix = g.affix, affixName = g.affixName, type = g.type, maxTier = m_min(g.maxTier, 6), subcategory = g.subcategory })
+			t_insert(corruptedList, { label = g.label, statOrderKey = g.statOrderKey, affix = g.affix, affixName = g.affixName, modName = g.modName, type = g.type, maxTier = m_min(g.maxTier, 6), subcategory = g.subcategory })
 		end
 		for _, g in ipairs(corruptedSuffixIter) do
-			t_insert(corruptedList, { label = g.label, statOrderKey = g.statOrderKey, affix = g.affix, affixName = g.affixName, type = g.type, maxTier = m_min(g.maxTier, 6), subcategory = g.subcategory })
+			t_insert(corruptedList, { label = g.label, statOrderKey = g.statOrderKey, affix = g.affix, affixName = g.affixName, modName = g.modName, type = g.type, maxTier = m_min(g.maxTier, 6), subcategory = g.subcategory })
 		end
 	end
 	table.sort(corruptedList, sortByLabel)
@@ -1311,7 +1313,7 @@ function ItemsTabClass:CraftRefreshIdolAffixDropdowns()
 	for _, pool in ipairs({ general, weaver }) do
 		for _, mod in pairs(pool) do
 			if mod.statOrderKey and canRollOnIdol(mod) then
-				local entry = { label = buildLabel(mod), statOrderKey = mod.statOrderKey, affix = mod.affix, affixName = mod.affixName or "", type = mod.type, maxTier = 0 }
+				local entry = { label = buildLabel(mod), statOrderKey = mod.statOrderKey, affix = mod.affix, affixName = mod.affixName or "", modName = mod.modName or "", type = mod.type, maxTier = 0 }
 				if mod.type == "Prefix" then t_insert(prefixList, entry)
 				elseif mod.type == "Suffix" then t_insert(suffixList, entry) end
 			end
@@ -1320,7 +1322,7 @@ function ItemsTabClass:CraftRefreshIdolAffixDropdowns()
 
 	for _, mod in pairs(enchanted) do
 		if mod.statOrderKey and canRollOnIdol(mod) then
-			t_insert(enchantedList, { label = buildLabel(mod), statOrderKey = mod.statOrderKey, affix = mod.affix, affixName = mod.affixName or "", type = mod.type, maxTier = 0 })
+			t_insert(enchantedList, { label = buildLabel(mod), statOrderKey = mod.statOrderKey, affix = mod.affix, affixName = mod.affixName or "", modName = mod.modName or "", type = mod.type, maxTier = 0 })
 		end
 	end
 
@@ -1337,7 +1339,7 @@ function ItemsTabClass:CraftRefreshIdolAffixDropdowns()
 			show = mod.statOrderKey and canRollOnIdol(mod)
 		end
 		if show and mod.statOrderKey then
-			t_insert(corruptedList, { label = buildLabel(mod), statOrderKey = mod.statOrderKey, affix = mod.affix, affixName = mod.affixName or "", type = mod.type, maxTier = 0 })
+			t_insert(corruptedList, { label = buildLabel(mod), statOrderKey = mod.statOrderKey, affix = mod.affix, affixName = mod.affixName or "", modName = mod.modName or "", type = mod.type, maxTier = 0 })
 		end
 	end
 
@@ -1916,11 +1918,14 @@ function ItemsTabClass:BuildCraftControls()
 				if not affixName or affixName == "" then
 					affixName = cleanLabel(value.label or "")
 				end
+				-- Source DisplayName starts lowercase; LE renders with leading cap.
 				if affixName ~= "" then
+					affixName = affixName:sub(1, 1):upper() .. affixName:sub(2)
 					tooltip:AddLine(16, "^7" .. affixName)
 				end
 
-				local modName = entry.affix
+				local modName = entry.modName
+				if not modName or modName == "" then modName = entry.affix end
 				if modName and modName ~= "" then
 					tooltip:AddLine(14, "^xAAAAAA" .. modName)
 				end
