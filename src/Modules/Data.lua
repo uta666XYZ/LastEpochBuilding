@@ -410,6 +410,9 @@ for _,mod in pairs(data.itemMods.Item) do
 	if not mod.affixName then
 		mod.affixName = ""
 	end
+	if not mod.modName then
+		mod.modName = ""
+	end
 end
 
 data.costs = LoadModule("Data/Costs")
@@ -639,6 +642,7 @@ for _, ver in ipairs(treeVersionList) do
 		for _, mod in pairs(verMods) do
 			if not mod.affix then mod.affix = "" end
 			if not mod.affixName then mod.affixName = "" end
+			if not mod.modName then mod.modName = "" end
 		end
 	end
 	-- Build flat lookup for idol affixes (merged general/enchanted/corrupted/weaver)
