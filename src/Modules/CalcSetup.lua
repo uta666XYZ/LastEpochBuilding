@@ -1684,7 +1684,6 @@ function calcs.initEnv(build, mode, override, specEnv)
 		end
 		for index, group in pairs(build.skillsTab.socketGroupList) do
 			if group.grantedEffect and group.grantedEffect.treeId then
-				local allocatedPoints = build.skillsTab:GetUsedSkillPoints(index)
 				-- Sum all SkillLevel mods matching this skill (includes global + skill-specific).
 				-- keywordFlags lets keyword-tagged SkillLevel mods ("+N to Cold Melee Skills",
 				-- "+N to Fire Minion Skills" etc.) match this skill's categories.
@@ -1838,7 +1837,14 @@ function calcs.initEnv(build, mode, override, specEnv)
 				local perSkillBonus = totalSkillLevel - (env.skillLevelBonus or 0)
 				build.perSkillLevelBonus[index] = perSkillBonus
 				build.perSkillLevelBreakdown[index] = breakdown
-				local effectiveLevel = allocatedPoints + (env.skillLevelBonus or 0) + perSkillBonus
+				-- Base skill level in Last Epoch is character-level-derived, not the
+				-- count of allocated tree points. LETools planner displays Base=20
+				-- regardless of character level (max-specialisation assumption), so
+				-- hardcode 20 here for parity with the LETools-derived test snapshots.
+				-- Real game uses SpecialisedAbilityManager.normalSpeedSkillLevelMinimum
+				-- curve (lv50->14, lv80+->20); roadmap Tier 3 covers the eventual swap.
+				local baseSkillLevel = 20
+				local effectiveLevel = baseSkillLevel + (env.skillLevelBonus or 0) + perSkillBonus
 				env.modDB.multipliers["SkillLevel_" .. group.grantedEffect.name] = effectiveLevel
 			end
 		end
