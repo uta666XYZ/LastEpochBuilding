@@ -1353,28 +1353,34 @@ function ItemsTabClass:CraftRefreshIdolAffixDropdowns()
 		end
 	end
 
+	-- Idol mod statOrderKey doesn't equal the entry-key prefix (unlike
+	-- ModItem), so we carry srcKey (the idol entry key prefix, e.g. "228")
+	-- through for tooltip's per-tier lookup against idolFlat.
 	local prefixList    = {}
 	local suffixList    = {}
 	local enchantedList = {}
 
 	for _, pool in ipairs({ general, weaver }) do
-		for _, mod in pairs(pool) do
-			if mod.statOrderKey and canRollOnIdol(mod) then
-				local entry = { label = buildLabel(mod), statOrderKey = mod.statOrderKey, affix = mod.affix, affixName = mod.affixName or "", modName = mod.modName or "", type = mod.type, maxTier = 0 }
+		for k, mod in pairs(pool) do
+			if type(mod) == "table" and mod.statOrderKey and canRollOnIdol(mod) then
+				local srcKey = tostring(k):match("^(%d+)")
+				local entry = { label = buildLabel(mod), statOrderKey = mod.statOrderKey, srcKey = srcKey, affixName = mod.affixName or "", modName = mod.modName or "", type = mod.type, maxTier = 0 }
 				if mod.type == "Prefix" then t_insert(prefixList, entry)
 				elseif mod.type == "Suffix" then t_insert(suffixList, entry) end
 			end
 		end
 	end
 
-	for _, mod in pairs(enchanted) do
-		if mod.statOrderKey and canRollOnIdol(mod) then
-			t_insert(enchantedList, { label = buildLabel(mod), statOrderKey = mod.statOrderKey, affix = mod.affix, affixName = mod.affixName or "", modName = mod.modName or "", type = mod.type, maxTier = 0 })
+	for k, mod in pairs(enchanted) do
+		if type(mod) == "table" and mod.statOrderKey and canRollOnIdol(mod) then
+			local srcKey = tostring(k):match("^(%d+)")
+			t_insert(enchantedList, { label = buildLabel(mod), statOrderKey = mod.statOrderKey, srcKey = srcKey, affixName = mod.affixName or "", modName = mod.modName or "", type = mod.type, maxTier = 0 })
 		end
 	end
 
 	local corruptedList = {}
-	for _, mod in pairs(corrupted) do
+	for k, mod in pairs(corrupted) do
+		if type(mod) ~= "table" then goto continue end
 		local show = false
 		if isOmen then
 			if mod.canRollOn then
@@ -1386,8 +1392,10 @@ function ItemsTabClass:CraftRefreshIdolAffixDropdowns()
 			show = mod.statOrderKey and canRollOnIdol(mod)
 		end
 		if show and mod.statOrderKey then
-			t_insert(corruptedList, { label = buildLabel(mod), statOrderKey = mod.statOrderKey, affix = mod.affix, affixName = mod.affixName or "", modName = mod.modName or "", type = mod.type, maxTier = 0 })
+			local srcKey = tostring(k):match("^(%d+)")
+			t_insert(corruptedList, { label = buildLabel(mod), statOrderKey = mod.statOrderKey, srcKey = srcKey, affixName = mod.affixName or "", modName = mod.modName or "", type = mod.type, maxTier = 0 })
 		end
+		::continue::
 	end
 
 	local function sortByLabel(a, b)
@@ -1972,7 +1980,6 @@ function ItemsTabClass:BuildCraftControls()
 				end
 
 				local modName = entry.modName
-				if not modName or modName == "" then modName = entry.affix end
 				if modName and modName ~= "" then
 					tooltip:AddLine(14, "^xAAAAAA" .. modName)
 				end
@@ -1983,6 +1990,10 @@ function ItemsTabClass:BuildCraftControls()
 				local altarMods = data.itemMods["Idol Altar"] or {}
 				local idolFlat = data.modIdol and data.modIdol.flat or {}
 				local function lookupTier(tier)
+					if entry.srcKey then
+						local idolKey = entry.srcKey .. "_" .. tostring(tier)
+						if idolFlat[idolKey] then return idolFlat[idolKey] end
+					end
 					local key = tostring(entry.statOrderKey) .. "_" .. tostring(tier)
 					return itemMods[key] or altarMods[key] or idolFlat[key]
 				end
