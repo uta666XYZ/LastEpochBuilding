@@ -176,15 +176,27 @@ function TooltipClass:Draw(x, y, w, h, viewPort)
 	local ttX = x
 	local ttY = y
 	if w and h then
-		ttX = ttX + w + 5
-		if ttX + ttW > viewPort.x + viewPort.width then
-			ttX = m_max(viewPort.x, x - 5 - ttW)
-			if ttX + ttW > x then
-				ttY = ttY + h
+		if self.placeBelow then
+			ttX = m_floor(x + w/2 - ttW/2)
+			ttY = y + h + 2
+			if ttX < viewPort.x then ttX = viewPort.x end
+			if ttX + ttW > viewPort.x + viewPort.width then
+				ttX = viewPort.x + viewPort.width - ttW
 			end
-		end
-		if ttY + ttH > viewPort.y + viewPort.height then
-			ttY = m_max(viewPort.y, y + h - ttH)
+			if ttY + ttH > viewPort.y + viewPort.height then
+				ttY = m_max(viewPort.y, y - ttH - 2)
+			end
+		else
+			ttX = ttX + w + 5
+			if ttX + ttW > viewPort.x + viewPort.width then
+				ttX = m_max(viewPort.x, x - 5 - ttW)
+				if ttX + ttW > x then
+					ttY = ttY + h
+				end
+			end
+			if ttY + ttH > viewPort.y + viewPort.height then
+				ttY = m_max(viewPort.y, y + h - ttH)
+			end
 		end
 	elseif self.center then
 		ttX = m_floor(x - ttW/2)
