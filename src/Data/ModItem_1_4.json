@@ -114054,7 +114054,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+0.4% More Damage Per Stack of Frailty - more Counts stacks on the Target.",
+		"2": "+0.4% Damage Per Stack of Frailty",
 		"canRollOn": [
 			7,
 			13
@@ -114073,7 +114073,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+0.5% More Damage Per Stack of Frailty - more Counts stacks on the Target.",
+		"2": "+0.5% Damage Per Stack of Frailty",
 		"canRollOn": [
 			7,
 			13
@@ -114092,7 +114092,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+0.6% More Damage Per Stack of Frailty - more Counts stacks on the Target.",
+		"2": "+0.6% Damage Per Stack of Frailty",
 		"canRollOn": [
 			7,
 			13
@@ -114111,7 +114111,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+0.7% More Damage Per Stack of Frailty - more Counts stacks on the Target.",
+		"2": "+0.7% Damage Per Stack of Frailty",
 		"canRollOn": [
 			7,
 			13
@@ -114130,7 +114130,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+0.8% More Damage Per Stack of Frailty - more Counts stacks on the Target.",
+		"2": "+0.8% Damage Per Stack of Frailty",
 		"canRollOn": [
 			7,
 			13
@@ -114149,7 +114149,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+0.9% More Damage Per Stack of Frailty - more Counts stacks on the Target.",
+		"2": "+0.9% Damage Per Stack of Frailty",
 		"canRollOn": [
 			7,
 			13
@@ -114168,7 +114168,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+1% More Damage Per Stack of Frailty - more Counts stacks on the Target.",
+		"2": "+1% Damage Per Stack of Frailty",
 		"canRollOn": [
 			7,
 			13
@@ -114187,7 +114187,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(1.3-1.5)% More Damage Per Stack of Frailty - more Counts stacks on the Target.",
+		"2": "+(1.3-1.5)% Damage Per Stack of Frailty",
 		"canRollOn": [
 			7,
 			13
@@ -122983,7 +122983,7 @@
 	"1079_0": {
 		"affixName": "Less Damage Taken on Block and Block Effectiveness applies to Damage over Time",
 		"affix": "Less Damage Taken on Block and Block Effectiveness applies to Damage over Time",
-		"1": "+(1-1.2)% Damage Taken on Block - more Block Effectiveness applies to Damage over Time as if it had been Blocked",
+		"1": "+(1-1.2)% Damage Taken on Block",
 		"level": 0,
 		"statOrderKey": 1079,
 		"statOrder": [
@@ -122992,7 +122992,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+4% Unknown Stat 1",
+		"2": "+4% Block Effectiveness applies to Damage over Time as if it had been Blocked",
 		"canRollOn": [
 			18
 		],
@@ -123001,7 +123001,7 @@
 	"1079_1": {
 		"affixName": "Less Damage Taken on Block and Block Effectiveness applies to Damage over Time",
 		"affix": "Less Damage Taken on Block and Block Effectiveness applies to Damage over Time",
-		"1": "+(1.3-1.5)% Damage Taken on Block - more Block Effectiveness applies to Damage over Time as if it had been Blocked",
+		"1": "+(1.3-1.5)% Damage Taken on Block",
 		"level": 0,
 		"statOrderKey": 1079,
 		"statOrder": [
@@ -123010,7 +123010,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+5% Unknown Stat 1",
+		"2": "+5% Block Effectiveness applies to Damage over Time as if it had been Blocked",
 		"canRollOn": [
 			18
 		],
@@ -123019,7 +123019,7 @@
 	"1079_2": {
 		"affixName": "Less Damage Taken on Block and Block Effectiveness applies to Damage over Time",
 		"affix": "Less Damage Taken on Block and Block Effectiveness applies to Damage over Time",
-		"1": "+(1.6-1.8)% Damage Taken on Block - more Block Effectiveness applies to Damage over Time as if it had been Blocked",
+		"1": "+(1.6-1.8)% Damage Taken on Block",
 		"level": 0,
 		"statOrderKey": 1079,
 		"statOrder": [
@@ -123028,7 +123028,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+5% Unknown Stat 1",
+		"2": "+5% Block Effectiveness applies to Damage over Time as if it had been Blocked",
 		"canRollOn": [
 			18
 		],
@@ -123037,7 +123037,7 @@
 	"1079_3": {
 		"affixName": "Less Damage Taken on Block and Block Effectiveness applies to Damage over Time",
 		"affix": "Less Damage Taken on Block and Block Effectiveness applies to Damage over Time",
-		"1": "+(1.9-2.1)% Damage Taken on Block - more Block Effectiveness applies to Damage over Time as if it had been Blocked",
+		"1": "+(1.9-2.1)% Damage Taken on Block",
 		"level": 0,
 		"statOrderKey": 1079,
 		"statOrder": [
@@ -123046,7 +123046,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+6% Unknown Stat 1",
+		"2": "+6% Block Effectiveness applies to Damage over Time as if it had been Blocked",
 		"canRollOn": [
 			18
 		],
@@ -123055,7 +123055,7 @@
 	"1079_4": {
 		"affixName": "Less Damage Taken on Block and Block Effectiveness applies to Damage over Time",
 		"affix": "Less Damage Taken on Block and Block Effectiveness applies to Damage over Time",
-		"1": "+(2.2-2.4)% Damage Taken on Block - more Block Effectiveness applies to Damage over Time as if it had been Blocked",
+		"1": "+(2.2-2.4)% Damage Taken on Block",
 		"level": 0,
 		"statOrderKey": 1079,
 		"statOrder": [
@@ -123064,7 +123064,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+6% Unknown Stat 1",
+		"2": "+6% Block Effectiveness applies to Damage over Time as if it had been Blocked",
 		"canRollOn": [
 			18
 		],
@@ -123073,7 +123073,7 @@
 	"1079_5": {
 		"affixName": "Less Damage Taken on Block and Block Effectiveness applies to Damage over Time",
 		"affix": "Less Damage Taken on Block and Block Effectiveness applies to Damage over Time",
-		"1": "+(2.5-2.7)% Damage Taken on Block - more Block Effectiveness applies to Damage over Time as if it had been Blocked",
+		"1": "+(2.5-2.7)% Damage Taken on Block",
 		"level": 0,
 		"statOrderKey": 1079,
 		"statOrder": [
@@ -123082,7 +123082,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+7% Unknown Stat 1",
+		"2": "+7% Block Effectiveness applies to Damage over Time as if it had been Blocked",
 		"canRollOn": [
 			18
 		],
@@ -123091,7 +123091,7 @@
 	"1079_6": {
 		"affixName": "Less Damage Taken on Block and Block Effectiveness applies to Damage over Time",
 		"affix": "Less Damage Taken on Block and Block Effectiveness applies to Damage over Time",
-		"1": "+(2.8-3)% Damage Taken on Block - more Block Effectiveness applies to Damage over Time as if it had been Blocked",
+		"1": "+(2.8-3)% Damage Taken on Block",
 		"level": 0,
 		"statOrderKey": 1079,
 		"statOrder": [
@@ -123100,7 +123100,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+7% Unknown Stat 1",
+		"2": "+7% Block Effectiveness applies to Damage over Time as if it had been Blocked",
 		"canRollOn": [
 			18
 		],
@@ -123109,7 +123109,7 @@
 	"1079_7": {
 		"affixName": "Less Damage Taken on Block and Block Effectiveness applies to Damage over Time",
 		"affix": "Less Damage Taken on Block and Block Effectiveness applies to Damage over Time",
-		"1": "+5% Damage Taken on Block - more Block Effectiveness applies to Damage over Time as if it had been Blocked",
+		"1": "+5% Damage Taken on Block",
 		"level": 0,
 		"statOrderKey": 1079,
 		"statOrder": [
@@ -123118,7 +123118,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+(10-12)% Unknown Stat 1",
+		"2": "+(10-12)% Block Effectiveness applies to Damage over Time as if it had been Blocked",
 		"canRollOn": [
 			18
 		],
