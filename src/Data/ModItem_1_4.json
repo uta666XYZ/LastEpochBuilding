@@ -100180,7 +100180,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+2% Increases the rate at which your health regenerates over time Increased Health Regen per point of Strength",
+		"2": "+2% Increased Health Regen per point of Strength",
 		"canRollOn": [
 			22
 		],
@@ -100197,7 +100197,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+2% Increases the rate at which your health regenerates over time Increased Health Regen per point of Strength",
+		"2": "+2% Increased Health Regen per point of Strength",
 		"canRollOn": [
 			22
 		],
@@ -100214,7 +100214,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+2% Increases the rate at which your health regenerates over time Increased Health Regen per point of Strength",
+		"2": "+2% Increased Health Regen per point of Strength",
 		"canRollOn": [
 			22
 		],
@@ -100231,7 +100231,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+2% Increases the rate at which your health regenerates over time Increased Health Regen per point of Strength",
+		"2": "+2% Increased Health Regen per point of Strength",
 		"canRollOn": [
 			22
 		],
@@ -100248,7 +100248,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+2% Increases the rate at which your health regenerates over time Increased Health Regen per point of Strength",
+		"2": "+2% Increased Health Regen per point of Strength",
 		"canRollOn": [
 			22
 		],
@@ -100265,7 +100265,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+2% Increases the rate at which your health regenerates over time Increased Health Regen per point of Strength",
+		"2": "+2% Increased Health Regen per point of Strength",
 		"canRollOn": [
 			22
 		],
@@ -100282,7 +100282,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+2% Increases the rate at which your health regenerates over time Increased Health Regen per point of Strength",
+		"2": "+2% Increased Health Regen per point of Strength",
 		"canRollOn": [
 			22
 		],
@@ -100299,7 +100299,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+4% Increases the rate at which your health regenerates over time Increased Health Regen per point of Strength",
+		"2": "+4% Increased Health Regen per point of Strength",
 		"canRollOn": [
 			22
 		],
@@ -101676,7 +101676,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+2% Adds to your chance to block. Blocked hits deal less damage depending on your block effectiveness. Current Mana gained as Ward on Block",
+		"2": "+2% Current Mana gained as Ward on Block",
 		"canRollOn": [
 			18
 		],
@@ -101693,7 +101693,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+2% Adds to your chance to block. Blocked hits deal less damage depending on your block effectiveness. Current Mana gained as Ward on Block",
+		"2": "+2% Current Mana gained as Ward on Block",
 		"canRollOn": [
 			18
 		],
@@ -101710,7 +101710,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+2% Adds to your chance to block. Blocked hits deal less damage depending on your block effectiveness. Current Mana gained as Ward on Block",
+		"2": "+2% Current Mana gained as Ward on Block",
 		"canRollOn": [
 			18
 		],
@@ -101727,7 +101727,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+2% Adds to your chance to block. Blocked hits deal less damage depending on your block effectiveness. Current Mana gained as Ward on Block",
+		"2": "+2% Current Mana gained as Ward on Block",
 		"canRollOn": [
 			18
 		],
@@ -101744,7 +101744,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+2% Adds to your chance to block. Blocked hits deal less damage depending on your block effectiveness. Current Mana gained as Ward on Block",
+		"2": "+2% Current Mana gained as Ward on Block",
 		"canRollOn": [
 			18
 		],
@@ -101761,7 +101761,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+2% Adds to your chance to block. Blocked hits deal less damage depending on your block effectiveness. Current Mana gained as Ward on Block",
+		"2": "+2% Current Mana gained as Ward on Block",
 		"canRollOn": [
 			18
 		],
@@ -101778,7 +101778,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+2% Adds to your chance to block. Blocked hits deal less damage depending on your block effectiveness. Current Mana gained as Ward on Block",
+		"2": "+2% Current Mana gained as Ward on Block",
 		"canRollOn": [
 			18
 		],
@@ -101795,7 +101795,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+4% Adds to your chance to block. Blocked hits deal less damage depending on your block effectiveness. Current Mana gained as Ward on Block",
+		"2": "+4% Current Mana gained as Ward on Block",
 		"canRollOn": [
 			18
 		],
@@ -101812,7 +101812,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+4% Adds to your base crit chance chance to cast Shurikens on Bow Crit",
+		"2": "+4% chance to cast Shurikens on Bow Crit",
 		"canRollOn": [
 			23,
 			17
@@ -101830,7 +101830,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+5% Adds to your base crit chance chance to cast Shurikens on Bow Crit",
+		"2": "+5% chance to cast Shurikens on Bow Crit",
 		"canRollOn": [
 			23,
 			17
@@ -101848,7 +101848,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+6% Adds to your base crit chance chance to cast Shurikens on Bow Crit",
+		"2": "+6% chance to cast Shurikens on Bow Crit",
 		"canRollOn": [
 			23,
 			17
@@ -101866,7 +101866,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+6% Adds to your base crit chance chance to cast Shurikens on Bow Crit",
+		"2": "+6% chance to cast Shurikens on Bow Crit",
 		"canRollOn": [
 			23,
 			17
@@ -101884,7 +101884,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+6% Adds to your base crit chance chance to cast Shurikens on Bow Crit",
+		"2": "+6% chance to cast Shurikens on Bow Crit",
 		"canRollOn": [
 			23,
 			17
@@ -101902,7 +101902,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+7% Adds to your base crit chance chance to cast Shurikens on Bow Crit",
+		"2": "+7% chance to cast Shurikens on Bow Crit",
 		"canRollOn": [
 			23,
 			17
@@ -101920,7 +101920,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+7% Adds to your base crit chance chance to cast Shurikens on Bow Crit",
+		"2": "+7% chance to cast Shurikens on Bow Crit",
 		"canRollOn": [
 			23,
 			17
@@ -101938,7 +101938,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+10% Adds to your base crit chance chance to cast Shurikens on Bow Crit",
+		"2": "+10% chance to cast Shurikens on Bow Crit",
 		"canRollOn": [
 			23,
 			17
@@ -101956,7 +101956,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(20-23)% Increases the damage over time you deal Chance to apply a Bleed on Bow Hit",
+		"2": "+(20-23)% Chance to apply a Bleed on Bow Hit",
 		"canRollOn": [
 			23,
 			17
@@ -101974,7 +101974,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(24-27)% Increases the damage over time you deal Chance to apply a Bleed on Bow Hit",
+		"2": "+(24-27)% Chance to apply a Bleed on Bow Hit",
 		"canRollOn": [
 			23,
 			17
@@ -101992,7 +101992,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(28-31)% Increases the damage over time you deal Chance to apply a Bleed on Bow Hit",
+		"2": "+(28-31)% Chance to apply a Bleed on Bow Hit",
 		"canRollOn": [
 			23,
 			17
@@ -102010,7 +102010,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(32-35)% Increases the damage over time you deal Chance to apply a Bleed on Bow Hit",
+		"2": "+(32-35)% Chance to apply a Bleed on Bow Hit",
 		"canRollOn": [
 			23,
 			17
@@ -102028,7 +102028,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(36-39)% Increases the damage over time you deal Chance to apply a Bleed on Bow Hit",
+		"2": "+(36-39)% Chance to apply a Bleed on Bow Hit",
 		"canRollOn": [
 			23,
 			17
@@ -102046,7 +102046,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(40-43)% Increases the damage over time you deal Chance to apply a Bleed on Bow Hit",
+		"2": "+(40-43)% Chance to apply a Bleed on Bow Hit",
 		"canRollOn": [
 			23,
 			17
@@ -102064,7 +102064,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(44-50)% Increases the damage over time you deal Chance to apply a Bleed on Bow Hit",
+		"2": "+(44-50)% Chance to apply a Bleed on Bow Hit",
 		"canRollOn": [
 			23,
 			17
@@ -102082,7 +102082,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(70-75)% Increases the damage over time you deal Chance to apply a Bleed on Bow Hit",
+		"2": "+(70-75)% Chance to apply a Bleed on Bow Hit",
 		"canRollOn": [
 			23,
 			17
@@ -102100,7 +102100,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+4% Each stack of Slow reduces movement speed by 20% (10% against players) and is multiplicative with other modifiers, including other stacks of slow. Slow stacks up to 3 times and lasts 4 seconds by default. Bow Damage to Slowed Enemies - more Multiplicative with other modifiers",
+		"2": "+4% Bow Damage to Slowed Enemies - more Multiplicative with other modifiers",
 		"canRollOn": [
 			23,
 			17
@@ -102118,7 +102118,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+5% Each stack of Slow reduces movement speed by 20% (10% against players) and is multiplicative with other modifiers, including other stacks of slow. Slow stacks up to 3 times and lasts 4 seconds by default. Bow Damage to Slowed Enemies - more Multiplicative with other modifiers",
+		"2": "+5% Bow Damage to Slowed Enemies - more Multiplicative with other modifiers",
 		"canRollOn": [
 			23,
 			17
@@ -102136,7 +102136,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+5% Each stack of Slow reduces movement speed by 20% (10% against players) and is multiplicative with other modifiers, including other stacks of slow. Slow stacks up to 3 times and lasts 4 seconds by default. Bow Damage to Slowed Enemies - more Multiplicative with other modifiers",
+		"2": "+5% Bow Damage to Slowed Enemies - more Multiplicative with other modifiers",
 		"canRollOn": [
 			23,
 			17
@@ -102154,7 +102154,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+6% Each stack of Slow reduces movement speed by 20% (10% against players) and is multiplicative with other modifiers, including other stacks of slow. Slow stacks up to 3 times and lasts 4 seconds by default. Bow Damage to Slowed Enemies - more Multiplicative with other modifiers",
+		"2": "+6% Bow Damage to Slowed Enemies - more Multiplicative with other modifiers",
 		"canRollOn": [
 			23,
 			17
@@ -102172,7 +102172,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+6% Each stack of Slow reduces movement speed by 20% (10% against players) and is multiplicative with other modifiers, including other stacks of slow. Slow stacks up to 3 times and lasts 4 seconds by default. Bow Damage to Slowed Enemies - more Multiplicative with other modifiers",
+		"2": "+6% Bow Damage to Slowed Enemies - more Multiplicative with other modifiers",
 		"canRollOn": [
 			23,
 			17
@@ -102190,7 +102190,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+7% Each stack of Slow reduces movement speed by 20% (10% against players) and is multiplicative with other modifiers, including other stacks of slow. Slow stacks up to 3 times and lasts 4 seconds by default. Bow Damage to Slowed Enemies - more Multiplicative with other modifiers",
+		"2": "+7% Bow Damage to Slowed Enemies - more Multiplicative with other modifiers",
 		"canRollOn": [
 			23,
 			17
@@ -102208,7 +102208,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+7% Each stack of Slow reduces movement speed by 20% (10% against players) and is multiplicative with other modifiers, including other stacks of slow. Slow stacks up to 3 times and lasts 4 seconds by default. Bow Damage to Slowed Enemies - more Multiplicative with other modifiers",
+		"2": "+7% Bow Damage to Slowed Enemies - more Multiplicative with other modifiers",
 		"canRollOn": [
 			23,
 			17
@@ -102226,7 +102226,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+10% Each stack of Slow reduces movement speed by 20% (10% against players) and is multiplicative with other modifiers, including other stacks of slow. Slow stacks up to 3 times and lasts 4 seconds by default. Bow Damage to Slowed Enemies - more Multiplicative with other modifiers",
+		"2": "+10% Bow Damage to Slowed Enemies - more Multiplicative with other modifiers",
 		"canRollOn": [
 			23,
 			17
@@ -102244,7 +102244,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+4% Increases the number of attacks you can use per second Chance to cast Icicle on Bow Hit",
+		"2": "+4% Chance to cast Icicle on Bow Hit",
 		"canRollOn": [
 			23,
 			17
@@ -102262,7 +102262,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+5% Increases the number of attacks you can use per second Chance to cast Icicle on Bow Hit",
+		"2": "+5% Chance to cast Icicle on Bow Hit",
 		"canRollOn": [
 			23,
 			17
@@ -102280,7 +102280,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+5% Increases the number of attacks you can use per second Chance to cast Icicle on Bow Hit",
+		"2": "+5% Chance to cast Icicle on Bow Hit",
 		"canRollOn": [
 			23,
 			17
@@ -102298,7 +102298,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+6% Increases the number of attacks you can use per second Chance to cast Icicle on Bow Hit",
+		"2": "+6% Chance to cast Icicle on Bow Hit",
 		"canRollOn": [
 			23,
 			17
@@ -102316,7 +102316,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+6% Increases the number of attacks you can use per second Chance to cast Icicle on Bow Hit",
+		"2": "+6% Chance to cast Icicle on Bow Hit",
 		"canRollOn": [
 			23,
 			17
@@ -102334,7 +102334,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+7% Increases the number of attacks you can use per second Chance to cast Icicle on Bow Hit",
+		"2": "+7% Chance to cast Icicle on Bow Hit",
 		"canRollOn": [
 			23,
 			17
@@ -102352,7 +102352,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+7% Increases the number of attacks you can use per second Chance to cast Icicle on Bow Hit",
+		"2": "+7% Chance to cast Icicle on Bow Hit",
 		"canRollOn": [
 			23,
 			17
@@ -102370,7 +102370,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+10% Increases the number of attacks you can use per second Chance to cast Icicle on Bow Hit",
+		"2": "+10% Chance to cast Icicle on Bow Hit",
 		"canRollOn": [
 			23,
 			17
@@ -102388,7 +102388,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(20-23)% Adds damage to all bow attacks. The type of damage added matches the base damage of the attack. Increased Bow Attack Speed for 3 seconds when you use a Bow Attack (10 second cooldown)",
+		"2": "+(20-23)% Increased Bow Attack Speed for 3 seconds when you use a Bow Attack (10 second cooldown)",
 		"canRollOn": [
 			23,
 			17
@@ -102406,7 +102406,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(24-27)% Adds damage to all bow attacks. The type of damage added matches the base damage of the attack. Increased Bow Attack Speed for 3 seconds when you use a Bow Attack (10 second cooldown)",
+		"2": "+(24-27)% Increased Bow Attack Speed for 3 seconds when you use a Bow Attack (10 second cooldown)",
 		"canRollOn": [
 			23,
 			17
@@ -102424,7 +102424,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(28-31)% Adds damage to all bow attacks. The type of damage added matches the base damage of the attack. Increased Bow Attack Speed for 3 seconds when you use a Bow Attack (10 second cooldown)",
+		"2": "+(28-31)% Increased Bow Attack Speed for 3 seconds when you use a Bow Attack (10 second cooldown)",
 		"canRollOn": [
 			23,
 			17
@@ -102442,7 +102442,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(32-35)% Adds damage to all bow attacks. The type of damage added matches the base damage of the attack. Increased Bow Attack Speed for 3 seconds when you use a Bow Attack (10 second cooldown)",
+		"2": "+(32-35)% Increased Bow Attack Speed for 3 seconds when you use a Bow Attack (10 second cooldown)",
 		"canRollOn": [
 			23,
 			17
@@ -102460,7 +102460,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(36-39)% Adds damage to all bow attacks. The type of damage added matches the base damage of the attack. Increased Bow Attack Speed for 3 seconds when you use a Bow Attack (10 second cooldown)",
+		"2": "+(36-39)% Increased Bow Attack Speed for 3 seconds when you use a Bow Attack (10 second cooldown)",
 		"canRollOn": [
 			23,
 			17
@@ -102478,7 +102478,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(40-43)% Adds damage to all bow attacks. The type of damage added matches the base damage of the attack. Increased Bow Attack Speed for 3 seconds when you use a Bow Attack (10 second cooldown)",
+		"2": "+(40-43)% Increased Bow Attack Speed for 3 seconds when you use a Bow Attack (10 second cooldown)",
 		"canRollOn": [
 			23,
 			17
@@ -102496,7 +102496,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(44-45)% Adds damage to all bow attacks. The type of damage added matches the base damage of the attack. Increased Bow Attack Speed for 3 seconds when you use a Bow Attack (10 second cooldown)",
+		"2": "+(44-45)% Increased Bow Attack Speed for 3 seconds when you use a Bow Attack (10 second cooldown)",
 		"canRollOn": [
 			23,
 			17
@@ -102514,7 +102514,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(60-65)% Adds damage to all bow attacks. The type of damage added matches the base damage of the attack. Increased Bow Attack Speed for 3 seconds when you use a Bow Attack (10 second cooldown)",
+		"2": "+(60-65)% Increased Bow Attack Speed for 3 seconds when you use a Bow Attack (10 second cooldown)",
 		"canRollOn": [
 			23,
 			17
@@ -102532,7 +102532,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 2.2,
-		"2": "+4% All your hits have a chance to stun if they deal enough damage. Increased stun chance increases that chance. Damage to Stunned Enemies - more Multiplicative with other modifiers",
+		"2": "+4% Damage to Stunned Enemies - more Multiplicative with other modifiers",
 		"canRollOn": [
 			13
 		],
@@ -102549,7 +102549,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 2.2,
-		"2": "+4% All your hits have a chance to stun if they deal enough damage. Increased stun chance increases that chance. Damage to Stunned Enemies - more Multiplicative with other modifiers",
+		"2": "+4% Damage to Stunned Enemies - more Multiplicative with other modifiers",
 		"canRollOn": [
 			13
 		],
@@ -102566,7 +102566,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 2.2,
-		"2": "+4% All your hits have a chance to stun if they deal enough damage. Increased stun chance increases that chance. Damage to Stunned Enemies - more Multiplicative with other modifiers",
+		"2": "+4% Damage to Stunned Enemies - more Multiplicative with other modifiers",
 		"canRollOn": [
 			13
 		],
@@ -102583,7 +102583,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 2.2,
-		"2": "+4% All your hits have a chance to stun if they deal enough damage. Increased stun chance increases that chance. Damage to Stunned Enemies - more Multiplicative with other modifiers",
+		"2": "+4% Damage to Stunned Enemies - more Multiplicative with other modifiers",
 		"canRollOn": [
 			13
 		],
@@ -102600,7 +102600,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 2.2,
-		"2": "+4% All your hits have a chance to stun if they deal enough damage. Increased stun chance increases that chance. Damage to Stunned Enemies - more Multiplicative with other modifiers",
+		"2": "+4% Damage to Stunned Enemies - more Multiplicative with other modifiers",
 		"canRollOn": [
 			13
 		],
@@ -102617,7 +102617,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 2.2,
-		"2": "+4% All your hits have a chance to stun if they deal enough damage. Increased stun chance increases that chance. Damage to Stunned Enemies - more Multiplicative with other modifiers",
+		"2": "+4% Damage to Stunned Enemies - more Multiplicative with other modifiers",
 		"canRollOn": [
 			13
 		],
@@ -102634,7 +102634,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 2.2,
-		"2": "+(4-7)% All your hits have a chance to stun if they deal enough damage. Increased stun chance increases that chance. Damage to Stunned Enemies - more Multiplicative with other modifiers",
+		"2": "+(4-7)% Damage to Stunned Enemies - more Multiplicative with other modifiers",
 		"canRollOn": [
 			13
 		],
@@ -102651,7 +102651,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 2.2,
-		"2": "+11% All your hits have a chance to stun if they deal enough damage. Increased stun chance increases that chance. Damage to Stunned Enemies - more Multiplicative with other modifiers",
+		"2": "+11% Damage to Stunned Enemies - more Multiplicative with other modifiers",
 		"canRollOn": [
 			13
 		],
@@ -102668,7 +102668,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 2.2,
-		"2": "+(30-31)% Increases the area of effect of skills with the Area tag. Additive with other sources of increased area. chance to cast Summon Forged Weapon on Melee Hit",
+		"2": "+(30-31)% chance to cast Summon Forged Weapon on Melee Hit",
 		"canRollOn": [
 			13,
 			12,
@@ -102688,7 +102688,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 2.2,
-		"2": "+(32-33)% Increases the area of effect of skills with the Area tag. Additive with other sources of increased area. chance to cast Summon Forged Weapon on Melee Hit",
+		"2": "+(32-33)% chance to cast Summon Forged Weapon on Melee Hit",
 		"canRollOn": [
 			13,
 			12,
@@ -102708,7 +102708,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 2.2,
-		"2": "+(34-35)% Increases the area of effect of skills with the Area tag. Additive with other sources of increased area. chance to cast Summon Forged Weapon on Melee Hit",
+		"2": "+(34-35)% chance to cast Summon Forged Weapon on Melee Hit",
 		"canRollOn": [
 			13,
 			12,
@@ -102728,7 +102728,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 2.2,
-		"2": "+(36-37)% Increases the area of effect of skills with the Area tag. Additive with other sources of increased area. chance to cast Summon Forged Weapon on Melee Hit",
+		"2": "+(36-37)% chance to cast Summon Forged Weapon on Melee Hit",
 		"canRollOn": [
 			13,
 			12,
@@ -102748,7 +102748,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 2.2,
-		"2": "+(38-39)% Increases the area of effect of skills with the Area tag. Additive with other sources of increased area. chance to cast Summon Forged Weapon on Melee Hit",
+		"2": "+(38-39)% chance to cast Summon Forged Weapon on Melee Hit",
 		"canRollOn": [
 			13,
 			12,
@@ -102768,7 +102768,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 2.2,
-		"2": "+(40-41)% Increases the area of effect of skills with the Area tag. Additive with other sources of increased area. chance to cast Summon Forged Weapon on Melee Hit",
+		"2": "+(40-41)% chance to cast Summon Forged Weapon on Melee Hit",
 		"canRollOn": [
 			13,
 			12,
@@ -102788,7 +102788,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 2.2,
-		"2": "+(42-46)% Increases the area of effect of skills with the Area tag. Additive with other sources of increased area. chance to cast Summon Forged Weapon on Melee Hit",
+		"2": "+(42-46)% chance to cast Summon Forged Weapon on Melee Hit",
 		"canRollOn": [
 			13,
 			12,
@@ -102808,7 +102808,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 2.2,
-		"2": "+(65-75)% Increases the area of effect of skills with the Area tag. Additive with other sources of increased area. chance to cast Summon Forged Weapon on Melee Hit",
+		"2": "+(65-75)% chance to cast Summon Forged Weapon on Melee Hit",
 		"canRollOn": [
 			13,
 			12,
@@ -102828,7 +102828,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "{rounding:Integer}+(30-32) Ward is a decaying overshield that protect your health. Only affects mana spent, not mana drained. Ward Decay Threshold",
+		"2": "{rounding:Integer}+(30-32) Ward Decay Threshold",
 		"canRollOn": [
 			10,
 			8,
@@ -102847,7 +102847,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "{rounding:Integer}+(33-35) Ward is a decaying overshield that protect your health. Only affects mana spent, not mana drained. Ward Decay Threshold",
+		"2": "{rounding:Integer}+(33-35) Ward Decay Threshold",
 		"canRollOn": [
 			10,
 			8,
@@ -102866,7 +102866,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "{rounding:Integer}+(36-38) Ward is a decaying overshield that protect your health. Only affects mana spent, not mana drained. Ward Decay Threshold",
+		"2": "{rounding:Integer}+(36-38) Ward Decay Threshold",
 		"canRollOn": [
 			10,
 			8,
@@ -102885,7 +102885,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "{rounding:Integer}+(39-41) Ward is a decaying overshield that protect your health. Only affects mana spent, not mana drained. Ward Decay Threshold",
+		"2": "{rounding:Integer}+(39-41) Ward Decay Threshold",
 		"canRollOn": [
 			10,
 			8,
@@ -102904,7 +102904,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "{rounding:Integer}+(42-44) Ward is a decaying overshield that protect your health. Only affects mana spent, not mana drained. Ward Decay Threshold",
+		"2": "{rounding:Integer}+(42-44) Ward Decay Threshold",
 		"canRollOn": [
 			10,
 			8,
@@ -102923,7 +102923,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "{rounding:Integer}+(45-47) Ward is a decaying overshield that protect your health. Only affects mana spent, not mana drained. Ward Decay Threshold",
+		"2": "{rounding:Integer}+(45-47) Ward Decay Threshold",
 		"canRollOn": [
 			10,
 			8,
@@ -102942,7 +102942,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "{rounding:Integer}+(48-53) Ward is a decaying overshield that protect your health. Only affects mana spent, not mana drained. Ward Decay Threshold",
+		"2": "{rounding:Integer}+(48-53) Ward Decay Threshold",
 		"canRollOn": [
 			10,
 			8,
@@ -102961,7 +102961,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "{rounding:Integer}+(70-75) Ward is a decaying overshield that protect your health. Only affects mana spent, not mana drained. Ward Decay Threshold",
+		"2": "{rounding:Integer}+(70-75) Ward Decay Threshold",
 		"canRollOn": [
 			10,
 			8,
@@ -102980,7 +102980,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+1 Increases the area of effect of skills with the Area tag and the Spell tag. Additive with other sources of increased area. Spell Mana Cost",
+		"2": "{rounding:Integer}+1 Spell Mana Cost",
 		"canRollOn": [
 			10,
 			19,
@@ -102999,7 +102999,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+1 Increases the area of effect of skills with the Area tag and the Spell tag. Additive with other sources of increased area. Spell Mana Cost",
+		"2": "{rounding:Integer}+1 Spell Mana Cost",
 		"canRollOn": [
 			10,
 			19,
@@ -103018,7 +103018,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+2 Increases the area of effect of skills with the Area tag and the Spell tag. Additive with other sources of increased area. Spell Mana Cost",
+		"2": "{rounding:Integer}+2 Spell Mana Cost",
 		"canRollOn": [
 			10,
 			19,
@@ -103037,7 +103037,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+2 Increases the area of effect of skills with the Area tag and the Spell tag. Additive with other sources of increased area. Spell Mana Cost",
+		"2": "{rounding:Integer}+2 Spell Mana Cost",
 		"canRollOn": [
 			10,
 			19,
@@ -103056,7 +103056,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+2 Increases the area of effect of skills with the Area tag and the Spell tag. Additive with other sources of increased area. Spell Mana Cost",
+		"2": "{rounding:Integer}+2 Spell Mana Cost",
 		"canRollOn": [
 			10,
 			19,
@@ -103075,7 +103075,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+3 Increases the area of effect of skills with the Area tag and the Spell tag. Additive with other sources of increased area. Spell Mana Cost",
+		"2": "{rounding:Integer}+3 Spell Mana Cost",
 		"canRollOn": [
 			10,
 			19,
@@ -103094,7 +103094,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+3 Increases the area of effect of skills with the Area tag and the Spell tag. Additive with other sources of increased area. Spell Mana Cost",
+		"2": "{rounding:Integer}+3 Spell Mana Cost",
 		"canRollOn": [
 			10,
 			19,
@@ -103113,7 +103113,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+6 Increases the area of effect of skills with the Area tag and the Spell tag. Additive with other sources of increased area. Spell Mana Cost",
+		"2": "{rounding:Integer}+6 Spell Mana Cost",
 		"canRollOn": [
 			10,
 			19,
@@ -103132,7 +103132,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+0.8% Adds damage to all spells. The type of damage added matches the base damage of the spell. increased Spell Damage per 1% increased Movement Speed",
+		"2": "+0.8% increased Spell Damage per 1% increased Movement Speed",
 		"canRollOn": [
 			10,
 			19,
@@ -103152,7 +103152,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+0.8% Adds damage to all spells. The type of damage added matches the base damage of the spell. increased Spell Damage per 1% increased Movement Speed",
+		"2": "+0.8% increased Spell Damage per 1% increased Movement Speed",
 		"canRollOn": [
 			10,
 			19,
@@ -103172,7 +103172,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+0.8% Adds damage to all spells. The type of damage added matches the base damage of the spell. increased Spell Damage per 1% increased Movement Speed",
+		"2": "+0.8% increased Spell Damage per 1% increased Movement Speed",
 		"canRollOn": [
 			10,
 			19,
@@ -103192,7 +103192,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+0.8% Adds damage to all spells. The type of damage added matches the base damage of the spell. increased Spell Damage per 1% increased Movement Speed",
+		"2": "+0.8% increased Spell Damage per 1% increased Movement Speed",
 		"canRollOn": [
 			10,
 			19,
@@ -103212,7 +103212,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+0.8% Adds damage to all spells. The type of damage added matches the base damage of the spell. increased Spell Damage per 1% increased Movement Speed",
+		"2": "+0.8% increased Spell Damage per 1% increased Movement Speed",
 		"canRollOn": [
 			10,
 			19,
@@ -103232,7 +103232,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+0.8% Adds damage to all spells. The type of damage added matches the base damage of the spell. increased Spell Damage per 1% increased Movement Speed",
+		"2": "+0.8% increased Spell Damage per 1% increased Movement Speed",
 		"canRollOn": [
 			10,
 			19,
@@ -103252,7 +103252,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+0.8% Adds damage to all spells. The type of damage added matches the base damage of the spell. increased Spell Damage per 1% increased Movement Speed",
+		"2": "+0.8% increased Spell Damage per 1% increased Movement Speed",
 		"canRollOn": [
 			10,
 			19,
@@ -103272,7 +103272,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+1.6% Adds damage to all spells. The type of damage added matches the base damage of the spell. increased Spell Damage per 1% increased Movement Speed",
+		"2": "+1.6% increased Spell Damage per 1% increased Movement Speed",
 		"canRollOn": [
 			10,
 			19,
@@ -103292,7 +103292,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+(10-11) Increases the number of spells you can cast per second Ward gained when you directly Cast a Spell",
+		"2": "{rounding:Integer}+(10-11) Ward gained when you directly Cast a Spell",
 		"canRollOn": [
 			10,
 			19,
@@ -103312,7 +103312,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+(12-13) Increases the number of spells you can cast per second Ward gained when you directly Cast a Spell",
+		"2": "{rounding:Integer}+(12-13) Ward gained when you directly Cast a Spell",
 		"canRollOn": [
 			10,
 			19,
@@ -103332,7 +103332,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+(14-15) Increases the number of spells you can cast per second Ward gained when you directly Cast a Spell",
+		"2": "{rounding:Integer}+(14-15) Ward gained when you directly Cast a Spell",
 		"canRollOn": [
 			10,
 			19,
@@ -103352,7 +103352,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+(16-17) Increases the number of spells you can cast per second Ward gained when you directly Cast a Spell",
+		"2": "{rounding:Integer}+(16-17) Ward gained when you directly Cast a Spell",
 		"canRollOn": [
 			10,
 			19,
@@ -103372,7 +103372,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+(18-19) Increases the number of spells you can cast per second Ward gained when you directly Cast a Spell",
+		"2": "{rounding:Integer}+(18-19) Ward gained when you directly Cast a Spell",
 		"canRollOn": [
 			10,
 			19,
@@ -103392,7 +103392,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+(20-21) Increases the number of spells you can cast per second Ward gained when you directly Cast a Spell",
+		"2": "{rounding:Integer}+(20-21) Ward gained when you directly Cast a Spell",
 		"canRollOn": [
 			10,
 			19,
@@ -103412,7 +103412,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+(22-23) Increases the number of spells you can cast per second Ward gained when you directly Cast a Spell",
+		"2": "{rounding:Integer}+(22-23) Ward gained when you directly Cast a Spell",
 		"canRollOn": [
 			10,
 			19,
@@ -103432,7 +103432,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+(25-30) Increases the number of spells you can cast per second Ward gained when you directly Cast a Spell",
+		"2": "{rounding:Integer}+(25-30) Ward gained when you directly Cast a Spell",
 		"canRollOn": [
 			10,
 			19,
@@ -103452,7 +103452,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "{rounding:Integer}+1 Increases your maximum mana Mana per Attunement",
+		"2": "{rounding:Integer}+1 Mana per Attunement",
 		"canRollOn": [
 			10,
 			15,
@@ -103471,7 +103471,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "{rounding:Integer}+1 Increases your maximum mana Mana per Attunement",
+		"2": "{rounding:Integer}+1 Mana per Attunement",
 		"canRollOn": [
 			10,
 			15,
@@ -103490,7 +103490,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "{rounding:Integer}+1 Increases your maximum mana Mana per Attunement",
+		"2": "{rounding:Integer}+1 Mana per Attunement",
 		"canRollOn": [
 			10,
 			15,
@@ -103509,7 +103509,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "{rounding:Integer}+1 Increases your maximum mana Mana per Attunement",
+		"2": "{rounding:Integer}+1 Mana per Attunement",
 		"canRollOn": [
 			10,
 			15,
@@ -103528,7 +103528,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "{rounding:Integer}+1 Increases your maximum mana Mana per Attunement",
+		"2": "{rounding:Integer}+1 Mana per Attunement",
 		"canRollOn": [
 			10,
 			15,
@@ -103547,7 +103547,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "{rounding:Integer}+1 Increases your maximum mana Mana per Attunement",
+		"2": "{rounding:Integer}+1 Mana per Attunement",
 		"canRollOn": [
 			10,
 			15,
@@ -103566,7 +103566,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "{rounding:Integer}+1 Increases your maximum mana Mana per Attunement",
+		"2": "{rounding:Integer}+1 Mana per Attunement",
 		"canRollOn": [
 			10,
 			15,
@@ -103585,7 +103585,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "{rounding:Integer}+2 Increases your maximum mana Mana per Attunement",
+		"2": "{rounding:Integer}+2 Mana per Attunement",
 		"canRollOn": [
 			10,
 			15,
@@ -103604,7 +103604,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(8-9)% Increases the number of spells you can cast per second Minion Cast Speed",
+		"2": "+(8-9)% Minion Cast Speed",
 		"canRollOn": [
 			10,
 			15,
@@ -103623,7 +103623,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(10-11)% Increases the number of spells you can cast per second Minion Cast Speed",
+		"2": "+(10-11)% Minion Cast Speed",
 		"canRollOn": [
 			10,
 			15,
@@ -103642,7 +103642,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(12-13)% Increases the number of spells you can cast per second Minion Cast Speed",
+		"2": "+(12-13)% Minion Cast Speed",
 		"canRollOn": [
 			10,
 			15,
@@ -103661,7 +103661,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(14-15)% Increases the number of spells you can cast per second Minion Cast Speed",
+		"2": "+(14-15)% Minion Cast Speed",
 		"canRollOn": [
 			10,
 			15,
@@ -103680,7 +103680,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(16-17)% Increases the number of spells you can cast per second Minion Cast Speed",
+		"2": "+(16-17)% Minion Cast Speed",
 		"canRollOn": [
 			10,
 			15,
@@ -103699,7 +103699,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(18-19)% Increases the number of spells you can cast per second Minion Cast Speed",
+		"2": "+(18-19)% Minion Cast Speed",
 		"canRollOn": [
 			10,
 			15,
@@ -103718,7 +103718,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(20-21)% Increases the number of spells you can cast per second Minion Cast Speed",
+		"2": "+(20-21)% Minion Cast Speed",
 		"canRollOn": [
 			10,
 			15,
@@ -103737,7 +103737,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(26-30)% Increases the number of spells you can cast per second Minion Cast Speed",
+		"2": "+(26-30)% Minion Cast Speed",
 		"canRollOn": [
 			10,
 			15,
@@ -103756,7 +103756,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+2% Poison deals poison damage over time and lasts 3 seconds. The first 30 stacks each reduce poison resistance by 5% (2% against bosses and players). Global Conditional Damage - more Multiplicative with other modifiers",
+		"2": "+2% Global Conditional Damage - more Multiplicative with other modifiers",
 		"canRollOn": [
 			6,
 			14,
@@ -103775,7 +103775,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+2.1% Poison deals poison damage over time and lasts 3 seconds. The first 30 stacks each reduce poison resistance by 5% (2% against bosses and players). Global Conditional Damage - more Multiplicative with other modifiers",
+		"2": "+2.1% Global Conditional Damage - more Multiplicative with other modifiers",
 		"canRollOn": [
 			6,
 			14,
@@ -103794,7 +103794,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+2.2% Poison deals poison damage over time and lasts 3 seconds. The first 30 stacks each reduce poison resistance by 5% (2% against bosses and players). Global Conditional Damage - more Multiplicative with other modifiers",
+		"2": "+2.2% Global Conditional Damage - more Multiplicative with other modifiers",
 		"canRollOn": [
 			6,
 			14,
@@ -103813,7 +103813,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+2.3% Poison deals poison damage over time and lasts 3 seconds. The first 30 stacks each reduce poison resistance by 5% (2% against bosses and players). Global Conditional Damage - more Multiplicative with other modifiers",
+		"2": "+2.3% Global Conditional Damage - more Multiplicative with other modifiers",
 		"canRollOn": [
 			6,
 			14,
@@ -103832,7 +103832,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+2.4% Poison deals poison damage over time and lasts 3 seconds. The first 30 stacks each reduce poison resistance by 5% (2% against bosses and players). Global Conditional Damage - more Multiplicative with other modifiers",
+		"2": "+2.4% Global Conditional Damage - more Multiplicative with other modifiers",
 		"canRollOn": [
 			6,
 			14,
@@ -103851,7 +103851,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+2.5% Poison deals poison damage over time and lasts 3 seconds. The first 30 stacks each reduce poison resistance by 5% (2% against bosses and players). Global Conditional Damage - more Multiplicative with other modifiers",
+		"2": "+2.5% Global Conditional Damage - more Multiplicative with other modifiers",
 		"canRollOn": [
 			6,
 			14,
@@ -103870,7 +103870,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(2.6-3)% Poison deals poison damage over time and lasts 3 seconds. The first 30 stacks each reduce poison resistance by 5% (2% against bosses and players). Global Conditional Damage - more Multiplicative with other modifiers",
+		"2": "+(2.6-3)% Global Conditional Damage - more Multiplicative with other modifiers",
 		"canRollOn": [
 			6,
 			14,
@@ -103889,7 +103889,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(5-6)% Poison deals poison damage over time and lasts 3 seconds. The first 30 stacks each reduce poison resistance by 5% (2% against bosses and players). Global Conditional Damage - more Multiplicative with other modifiers",
+		"2": "+(5-6)% Global Conditional Damage - more Multiplicative with other modifiers",
 		"canRollOn": [
 			6,
 			14,
@@ -103908,7 +103908,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+0.4% Frailty reduces damage dealt by 6% (multiplicative with other modifiers), lasts 4 seconds, and stacks up to 3 times. More Damage Per Stack of Frailty - more Counts stacks on the Target. Multiplicative with other modifiers.",
+		"2": "+0.4% More Damage Per Stack of Frailty - more Counts stacks on the Target. Multiplicative with other modifiers.",
 		"canRollOn": [
 			7,
 			13
@@ -103926,7 +103926,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+0.5% Frailty reduces damage dealt by 6% (multiplicative with other modifiers), lasts 4 seconds, and stacks up to 3 times. More Damage Per Stack of Frailty - more Counts stacks on the Target. Multiplicative with other modifiers.",
+		"2": "+0.5% More Damage Per Stack of Frailty - more Counts stacks on the Target. Multiplicative with other modifiers.",
 		"canRollOn": [
 			7,
 			13
@@ -103944,7 +103944,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+0.6% Frailty reduces damage dealt by 6% (multiplicative with other modifiers), lasts 4 seconds, and stacks up to 3 times. More Damage Per Stack of Frailty - more Counts stacks on the Target. Multiplicative with other modifiers.",
+		"2": "+0.6% More Damage Per Stack of Frailty - more Counts stacks on the Target. Multiplicative with other modifiers.",
 		"canRollOn": [
 			7,
 			13
@@ -103962,7 +103962,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+0.7% Frailty reduces damage dealt by 6% (multiplicative with other modifiers), lasts 4 seconds, and stacks up to 3 times. More Damage Per Stack of Frailty - more Counts stacks on the Target. Multiplicative with other modifiers.",
+		"2": "+0.7% More Damage Per Stack of Frailty - more Counts stacks on the Target. Multiplicative with other modifiers.",
 		"canRollOn": [
 			7,
 			13
@@ -103980,7 +103980,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+0.8% Frailty reduces damage dealt by 6% (multiplicative with other modifiers), lasts 4 seconds, and stacks up to 3 times. More Damage Per Stack of Frailty - more Counts stacks on the Target. Multiplicative with other modifiers.",
+		"2": "+0.8% More Damage Per Stack of Frailty - more Counts stacks on the Target. Multiplicative with other modifiers.",
 		"canRollOn": [
 			7,
 			13
@@ -103998,7 +103998,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+0.9% Frailty reduces damage dealt by 6% (multiplicative with other modifiers), lasts 4 seconds, and stacks up to 3 times. More Damage Per Stack of Frailty - more Counts stacks on the Target. Multiplicative with other modifiers.",
+		"2": "+0.9% More Damage Per Stack of Frailty - more Counts stacks on the Target. Multiplicative with other modifiers.",
 		"canRollOn": [
 			7,
 			13
@@ -104016,7 +104016,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+1% Frailty reduces damage dealt by 6% (multiplicative with other modifiers), lasts 4 seconds, and stacks up to 3 times. More Damage Per Stack of Frailty - more Counts stacks on the Target. Multiplicative with other modifiers.",
+		"2": "+1% More Damage Per Stack of Frailty - more Counts stacks on the Target. Multiplicative with other modifiers.",
 		"canRollOn": [
 			7,
 			13
@@ -104034,7 +104034,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(1.3-1.5)% Frailty reduces damage dealt by 6% (multiplicative with other modifiers), lasts 4 seconds, and stacks up to 3 times. More Damage Per Stack of Frailty - more Counts stacks on the Target. Multiplicative with other modifiers.",
+		"2": "+(1.3-1.5)% More Damage Per Stack of Frailty - more Counts stacks on the Target. Multiplicative with other modifiers.",
 		"canRollOn": [
 			7,
 			13
@@ -104052,7 +104052,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+1% Each stack of Slow reduces movement speed by 20% (10% against players) and is multiplicative with other modifiers, including other stacks of slow. Slow stacks up to 3 times and lasts 4 seconds by default. Damage to Slowed Enemies - more Multiplicative with other modifiers",
+		"2": "+1% Damage to Slowed Enemies - more Multiplicative with other modifiers",
 		"canRollOn": [
 			7,
 			13
@@ -104070,7 +104070,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+2% Each stack of Slow reduces movement speed by 20% (10% against players) and is multiplicative with other modifiers, including other stacks of slow. Slow stacks up to 3 times and lasts 4 seconds by default. Damage to Slowed Enemies - more Multiplicative with other modifiers",
+		"2": "+2% Damage to Slowed Enemies - more Multiplicative with other modifiers",
 		"canRollOn": [
 			7,
 			13
@@ -104088,7 +104088,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+2% Each stack of Slow reduces movement speed by 20% (10% against players) and is multiplicative with other modifiers, including other stacks of slow. Slow stacks up to 3 times and lasts 4 seconds by default. Damage to Slowed Enemies - more Multiplicative with other modifiers",
+		"2": "+2% Damage to Slowed Enemies - more Multiplicative with other modifiers",
 		"canRollOn": [
 			7,
 			13
@@ -104106,7 +104106,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+3% Each stack of Slow reduces movement speed by 20% (10% against players) and is multiplicative with other modifiers, including other stacks of slow. Slow stacks up to 3 times and lasts 4 seconds by default. Damage to Slowed Enemies - more Multiplicative with other modifiers",
+		"2": "+3% Damage to Slowed Enemies - more Multiplicative with other modifiers",
 		"canRollOn": [
 			7,
 			13
@@ -104124,7 +104124,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+3% Each stack of Slow reduces movement speed by 20% (10% against players) and is multiplicative with other modifiers, including other stacks of slow. Slow stacks up to 3 times and lasts 4 seconds by default. Damage to Slowed Enemies - more Multiplicative with other modifiers",
+		"2": "+3% Damage to Slowed Enemies - more Multiplicative with other modifiers",
 		"canRollOn": [
 			7,
 			13
@@ -104142,7 +104142,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+4% Each stack of Slow reduces movement speed by 20% (10% against players) and is multiplicative with other modifiers, including other stacks of slow. Slow stacks up to 3 times and lasts 4 seconds by default. Damage to Slowed Enemies - more Multiplicative with other modifiers",
+		"2": "+4% Damage to Slowed Enemies - more Multiplicative with other modifiers",
 		"canRollOn": [
 			7,
 			13
@@ -104160,7 +104160,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+4% Each stack of Slow reduces movement speed by 20% (10% against players) and is multiplicative with other modifiers, including other stacks of slow. Slow stacks up to 3 times and lasts 4 seconds by default. Damage to Slowed Enemies - more Multiplicative with other modifiers",
+		"2": "+4% Damage to Slowed Enemies - more Multiplicative with other modifiers",
 		"canRollOn": [
 			7,
 			13
@@ -104178,7 +104178,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+7% Each stack of Slow reduces movement speed by 20% (10% against players) and is multiplicative with other modifiers, including other stacks of slow. Slow stacks up to 3 times and lasts 4 seconds by default. Damage to Slowed Enemies - more Multiplicative with other modifiers",
+		"2": "+7% Damage to Slowed Enemies - more Multiplicative with other modifiers",
 		"canRollOn": [
 			7,
 			13
@@ -104196,7 +104196,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+2% Bleed deals physical damage over time, lasts 3 seconds, and can stack an unlimited number of times. Damage to Bleeding Enemies - more Multiplicative with other modifiers",
+		"2": "+2% Damage to Bleeding Enemies - more Multiplicative with other modifiers",
 		"canRollOn": [
 			5,
 			16,
@@ -104217,7 +104217,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+3% Bleed deals physical damage over time, lasts 3 seconds, and can stack an unlimited number of times. Damage to Bleeding Enemies - more Multiplicative with other modifiers",
+		"2": "+3% Damage to Bleeding Enemies - more Multiplicative with other modifiers",
 		"canRollOn": [
 			5,
 			16,
@@ -104238,7 +104238,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+3% Bleed deals physical damage over time, lasts 3 seconds, and can stack an unlimited number of times. Damage to Bleeding Enemies - more Multiplicative with other modifiers",
+		"2": "+3% Damage to Bleeding Enemies - more Multiplicative with other modifiers",
 		"canRollOn": [
 			5,
 			16,
@@ -104259,7 +104259,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+4% Bleed deals physical damage over time, lasts 3 seconds, and can stack an unlimited number of times. Damage to Bleeding Enemies - more Multiplicative with other modifiers",
+		"2": "+4% Damage to Bleeding Enemies - more Multiplicative with other modifiers",
 		"canRollOn": [
 			5,
 			16,
@@ -104280,7 +104280,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+4% Bleed deals physical damage over time, lasts 3 seconds, and can stack an unlimited number of times. Damage to Bleeding Enemies - more Multiplicative with other modifiers",
+		"2": "+4% Damage to Bleeding Enemies - more Multiplicative with other modifiers",
 		"canRollOn": [
 			5,
 			16,
@@ -104301,7 +104301,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+5% Bleed deals physical damage over time, lasts 3 seconds, and can stack an unlimited number of times. Damage to Bleeding Enemies - more Multiplicative with other modifiers",
+		"2": "+5% Damage to Bleeding Enemies - more Multiplicative with other modifiers",
 		"canRollOn": [
 			5,
 			16,
@@ -104322,7 +104322,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+5% Bleed deals physical damage over time, lasts 3 seconds, and can stack an unlimited number of times. Damage to Bleeding Enemies - more Multiplicative with other modifiers",
+		"2": "+5% Damage to Bleeding Enemies - more Multiplicative with other modifiers",
 		"canRollOn": [
 			5,
 			16,
@@ -104343,7 +104343,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+7% Bleed deals physical damage over time, lasts 3 seconds, and can stack an unlimited number of times. Damage to Bleeding Enemies - more Multiplicative with other modifiers",
+		"2": "+7% Damage to Bleeding Enemies - more Multiplicative with other modifiers",
 		"canRollOn": [
 			5,
 			16,
@@ -104364,7 +104364,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(25-28)% Increases the damage over time you deal Increased Area for Area Skills",
+		"2": "+(25-28)% Increased Area for Area Skills",
 		"canRollOn": [
 			9,
 			5,
@@ -104390,7 +104390,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(29-32)% Increases the damage over time you deal Increased Area for Area Skills",
+		"2": "+(29-32)% Increased Area for Area Skills",
 		"canRollOn": [
 			9,
 			5,
@@ -104416,7 +104416,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(33-36)% Increases the damage over time you deal Increased Area for Area Skills",
+		"2": "+(33-36)% Increased Area for Area Skills",
 		"canRollOn": [
 			9,
 			5,
@@ -104442,7 +104442,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(37-40)% Increases the damage over time you deal Increased Area for Area Skills",
+		"2": "+(37-40)% Increased Area for Area Skills",
 		"canRollOn": [
 			9,
 			5,
@@ -104468,7 +104468,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(41-44)% Increases the damage over time you deal Increased Area for Area Skills",
+		"2": "+(41-44)% Increased Area for Area Skills",
 		"canRollOn": [
 			9,
 			5,
@@ -104494,7 +104494,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(45-48)% Increases the damage over time you deal Increased Area for Area Skills",
+		"2": "+(45-48)% Increased Area for Area Skills",
 		"canRollOn": [
 			9,
 			5,
@@ -104520,7 +104520,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(49-50)% Increases the damage over time you deal Increased Area for Area Skills",
+		"2": "+(49-50)% Increased Area for Area Skills",
 		"canRollOn": [
 			9,
 			5,
@@ -104546,7 +104546,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(65-75)% Increases the damage over time you deal Increased Area for Area Skills",
+		"2": "+(65-75)% Increased Area for Area Skills",
 		"canRollOn": [
 			9,
 			5,
@@ -104572,7 +104572,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+0.2% Increases the damage you deal with melee attacks Damage for Melee Attacks per 1 Mana Cost (up to 20) - more Multiplicative with other modifiers. Also affects ailments applied by the melee attack and sub skills cast from it.",
+		"2": "+0.2% Damage for Melee Attacks per 1 Mana Cost (up to 20) - more Multiplicative with other modifiers. Also affects ailments applied by the melee attack and sub skills cast from it.",
 		"canRollOn": [
 			9,
 			5,
@@ -104598,7 +104598,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+0.2% Increases the damage you deal with melee attacks Damage for Melee Attacks per 1 Mana Cost (up to 20) - more Multiplicative with other modifiers. Also affects ailments applied by the melee attack and sub skills cast from it.",
+		"2": "+0.2% Damage for Melee Attacks per 1 Mana Cost (up to 20) - more Multiplicative with other modifiers. Also affects ailments applied by the melee attack and sub skills cast from it.",
 		"canRollOn": [
 			9,
 			5,
@@ -104624,7 +104624,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+0.2% Increases the damage you deal with melee attacks Damage for Melee Attacks per 1 Mana Cost (up to 20) - more Multiplicative with other modifiers. Also affects ailments applied by the melee attack and sub skills cast from it.",
+		"2": "+0.2% Damage for Melee Attacks per 1 Mana Cost (up to 20) - more Multiplicative with other modifiers. Also affects ailments applied by the melee attack and sub skills cast from it.",
 		"canRollOn": [
 			9,
 			5,
@@ -104650,7 +104650,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+0.3% Increases the damage you deal with melee attacks Damage for Melee Attacks per 1 Mana Cost (up to 20) - more Multiplicative with other modifiers. Also affects ailments applied by the melee attack and sub skills cast from it.",
+		"2": "+0.3% Damage for Melee Attacks per 1 Mana Cost (up to 20) - more Multiplicative with other modifiers. Also affects ailments applied by the melee attack and sub skills cast from it.",
 		"canRollOn": [
 			9,
 			5,
@@ -104676,7 +104676,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+0.3% Increases the damage you deal with melee attacks Damage for Melee Attacks per 1 Mana Cost (up to 20) - more Multiplicative with other modifiers. Also affects ailments applied by the melee attack and sub skills cast from it.",
+		"2": "+0.3% Damage for Melee Attacks per 1 Mana Cost (up to 20) - more Multiplicative with other modifiers. Also affects ailments applied by the melee attack and sub skills cast from it.",
 		"canRollOn": [
 			9,
 			5,
@@ -104702,7 +104702,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+0.3% Increases the damage you deal with melee attacks Damage for Melee Attacks per 1 Mana Cost (up to 20) - more Multiplicative with other modifiers. Also affects ailments applied by the melee attack and sub skills cast from it.",
+		"2": "+0.3% Damage for Melee Attacks per 1 Mana Cost (up to 20) - more Multiplicative with other modifiers. Also affects ailments applied by the melee attack and sub skills cast from it.",
 		"canRollOn": [
 			9,
 			5,
@@ -104728,7 +104728,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+0.3% Increases the damage you deal with melee attacks Damage for Melee Attacks per 1 Mana Cost (up to 20) - more Multiplicative with other modifiers. Also affects ailments applied by the melee attack and sub skills cast from it.",
+		"2": "+0.3% Damage for Melee Attacks per 1 Mana Cost (up to 20) - more Multiplicative with other modifiers. Also affects ailments applied by the melee attack and sub skills cast from it.",
 		"canRollOn": [
 			9,
 			5,
@@ -104754,7 +104754,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+0.5% Increases the damage you deal with melee attacks Damage for Melee Attacks per 1 Mana Cost (up to 20) - more Multiplicative with other modifiers. Also affects ailments applied by the melee attack and sub skills cast from it.",
+		"2": "+0.5% Damage for Melee Attacks per 1 Mana Cost (up to 20) - more Multiplicative with other modifiers. Also affects ailments applied by the melee attack and sub skills cast from it.",
 		"canRollOn": [
 			9,
 			5,
@@ -104916,7 +104916,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "{rounding:Integer}+(2-2.3) Increases the number of melee attacks you can use per second Seconds of Frenzy after you use Evade",
+		"2": "{rounding:Integer}+(2-2.3) Seconds of Frenzy after you use Evade",
 		"canRollOn": [
 			9,
 			5,
@@ -104942,7 +104942,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "{rounding:Integer}+(2.4-2.7) Increases the number of melee attacks you can use per second Seconds of Frenzy after you use Evade",
+		"2": "{rounding:Integer}+(2.4-2.7) Seconds of Frenzy after you use Evade",
 		"canRollOn": [
 			9,
 			5,
@@ -104968,7 +104968,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "{rounding:Integer}+(2.8-3.1) Increases the number of melee attacks you can use per second Seconds of Frenzy after you use Evade",
+		"2": "{rounding:Integer}+(2.8-3.1) Seconds of Frenzy after you use Evade",
 		"canRollOn": [
 			9,
 			5,
@@ -104994,7 +104994,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "{rounding:Integer}+(3.2-3.5) Increases the number of melee attacks you can use per second Seconds of Frenzy after you use Evade",
+		"2": "{rounding:Integer}+(3.2-3.5) Seconds of Frenzy after you use Evade",
 		"canRollOn": [
 			9,
 			5,
@@ -105020,7 +105020,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "{rounding:Integer}+(3.6-3.9) Increases the number of melee attacks you can use per second Seconds of Frenzy after you use Evade",
+		"2": "{rounding:Integer}+(3.6-3.9) Seconds of Frenzy after you use Evade",
 		"canRollOn": [
 			9,
 			5,
@@ -105046,7 +105046,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "{rounding:Integer}+(4-4.3) Increases the number of melee attacks you can use per second Seconds of Frenzy after you use Evade",
+		"2": "{rounding:Integer}+(4-4.3) Seconds of Frenzy after you use Evade",
 		"canRollOn": [
 			9,
 			5,
@@ -105072,7 +105072,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "{rounding:Integer}+(4.4-5) Increases the number of melee attacks you can use per second Seconds of Frenzy after you use Evade",
+		"2": "{rounding:Integer}+(4.4-5) Seconds of Frenzy after you use Evade",
 		"canRollOn": [
 			9,
 			5,
@@ -105098,7 +105098,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "{rounding:Integer}+(7-8) Increases the number of melee attacks you can use per second Seconds of Frenzy after you use Evade",
+		"2": "{rounding:Integer}+(7-8) Seconds of Frenzy after you use Evade",
 		"canRollOn": [
 			9,
 			5,
@@ -105124,7 +105124,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+1% Adds damage to all melee attacks. The type of damage added matches the base damage of the attack. Increased Melee Damage per Strength",
+		"2": "+1% Increased Melee Damage per Strength",
 		"canRollOn": [
 			9,
 			5,
@@ -105150,7 +105150,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+1% Adds damage to all melee attacks. The type of damage added matches the base damage of the attack. Increased Melee Damage per Strength",
+		"2": "+1% Increased Melee Damage per Strength",
 		"canRollOn": [
 			9,
 			5,
@@ -105176,7 +105176,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+1% Adds damage to all melee attacks. The type of damage added matches the base damage of the attack. Increased Melee Damage per Strength",
+		"2": "+1% Increased Melee Damage per Strength",
 		"canRollOn": [
 			9,
 			5,
@@ -105202,7 +105202,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+1% Adds damage to all melee attacks. The type of damage added matches the base damage of the attack. Increased Melee Damage per Strength",
+		"2": "+1% Increased Melee Damage per Strength",
 		"canRollOn": [
 			9,
 			5,
@@ -105228,7 +105228,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+1% Adds damage to all melee attacks. The type of damage added matches the base damage of the attack. Increased Melee Damage per Strength",
+		"2": "+1% Increased Melee Damage per Strength",
 		"canRollOn": [
 			9,
 			5,
@@ -105254,7 +105254,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+1% Adds damage to all melee attacks. The type of damage added matches the base damage of the attack. Increased Melee Damage per Strength",
+		"2": "+1% Increased Melee Damage per Strength",
 		"canRollOn": [
 			9,
 			5,
@@ -105280,7 +105280,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+1% Adds damage to all melee attacks. The type of damage added matches the base damage of the attack. Increased Melee Damage per Strength",
+		"2": "+1% Increased Melee Damage per Strength",
 		"canRollOn": [
 			9,
 			5,
@@ -105306,7 +105306,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+2% Adds damage to all melee attacks. The type of damage added matches the base damage of the attack. Increased Melee Damage per Strength",
+		"2": "+2% Increased Melee Damage per Strength",
 		"canRollOn": [
 			9,
 			5,
@@ -105740,7 +105740,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(10-12)% Increases the number of attacks you can use per second Chance to apply Frailty on Throwing Hit",
+		"2": "+(10-12)% Chance to apply Frailty on Throwing Hit",
 		"canRollOn": [
 			2,
 			21
@@ -105758,7 +105758,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(13-15)% Increases the number of attacks you can use per second Chance to apply Frailty on Throwing Hit",
+		"2": "+(13-15)% Chance to apply Frailty on Throwing Hit",
 		"canRollOn": [
 			2,
 			21
@@ -105776,7 +105776,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(16-18)% Increases the number of attacks you can use per second Chance to apply Frailty on Throwing Hit",
+		"2": "+(16-18)% Chance to apply Frailty on Throwing Hit",
 		"canRollOn": [
 			2,
 			21
@@ -105794,7 +105794,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(19-21)% Increases the number of attacks you can use per second Chance to apply Frailty on Throwing Hit",
+		"2": "+(19-21)% Chance to apply Frailty on Throwing Hit",
 		"canRollOn": [
 			2,
 			21
@@ -105812,7 +105812,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(22-24)% Increases the number of attacks you can use per second Chance to apply Frailty on Throwing Hit",
+		"2": "+(22-24)% Chance to apply Frailty on Throwing Hit",
 		"canRollOn": [
 			2,
 			21
@@ -105830,7 +105830,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(25-27)% Increases the number of attacks you can use per second Chance to apply Frailty on Throwing Hit",
+		"2": "+(25-27)% Chance to apply Frailty on Throwing Hit",
 		"canRollOn": [
 			2,
 			21
@@ -105848,7 +105848,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(28-30)% Increases the number of attacks you can use per second Chance to apply Frailty on Throwing Hit",
+		"2": "+(28-30)% Chance to apply Frailty on Throwing Hit",
 		"canRollOn": [
 			2,
 			21
@@ -105866,7 +105866,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(40-45)% Increases the number of attacks you can use per second Chance to apply Frailty on Throwing Hit",
+		"2": "+(40-45)% Chance to apply Frailty on Throwing Hit",
 		"canRollOn": [
 			2,
 			21
@@ -105884,7 +105884,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(10-15)% Adds damage to all throwing attacks. The type of damage added matches the base damage of the attack. Chance to Shred Armor on Throwing Hit",
+		"2": "+(10-15)% Chance to Shred Armor on Throwing Hit",
 		"canRollOn": [
 			2,
 			21
@@ -105902,7 +105902,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(16-21)% Adds damage to all throwing attacks. The type of damage added matches the base damage of the attack. Chance to Shred Armor on Throwing Hit",
+		"2": "+(16-21)% Chance to Shred Armor on Throwing Hit",
 		"canRollOn": [
 			2,
 			21
@@ -105920,7 +105920,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(22-27)% Adds damage to all throwing attacks. The type of damage added matches the base damage of the attack. Chance to Shred Armor on Throwing Hit",
+		"2": "+(22-27)% Chance to Shred Armor on Throwing Hit",
 		"canRollOn": [
 			2,
 			21
@@ -105938,7 +105938,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(28-33)% Adds damage to all throwing attacks. The type of damage added matches the base damage of the attack. Chance to Shred Armor on Throwing Hit",
+		"2": "+(28-33)% Chance to Shred Armor on Throwing Hit",
 		"canRollOn": [
 			2,
 			21
@@ -105956,7 +105956,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(34-39)% Adds damage to all throwing attacks. The type of damage added matches the base damage of the attack. Chance to Shred Armor on Throwing Hit",
+		"2": "+(34-39)% Chance to Shred Armor on Throwing Hit",
 		"canRollOn": [
 			2,
 			21
@@ -105974,7 +105974,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(40-45)% Adds damage to all throwing attacks. The type of damage added matches the base damage of the attack. Chance to Shred Armor on Throwing Hit",
+		"2": "+(40-45)% Chance to Shred Armor on Throwing Hit",
 		"canRollOn": [
 			2,
 			21
@@ -105992,7 +105992,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(46-51)% Adds damage to all throwing attacks. The type of damage added matches the base damage of the attack. Chance to Shred Armor on Throwing Hit",
+		"2": "+(46-51)% Chance to Shred Armor on Throwing Hit",
 		"canRollOn": [
 			2,
 			21
@@ -106010,7 +106010,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(70-80)% Adds damage to all throwing attacks. The type of damage added matches the base damage of the attack. Chance to Shred Armor on Throwing Hit",
+		"2": "+(70-80)% Chance to Shred Armor on Throwing Hit",
 		"canRollOn": [
 			2,
 			21
@@ -106028,7 +106028,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+4% Increases your maximum health Missing Health regained on Potion Use",
+		"2": "+4% Missing Health regained on Potion Use",
 		"canRollOn": [
 			2
 		],
@@ -106045,7 +106045,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+5% Increases your maximum health Missing Health regained on Potion Use",
+		"2": "+5% Missing Health regained on Potion Use",
 		"canRollOn": [
 			2
 		],
@@ -106062,7 +106062,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+6% Increases your maximum health Missing Health regained on Potion Use",
+		"2": "+6% Missing Health regained on Potion Use",
 		"canRollOn": [
 			2
 		],
@@ -106079,7 +106079,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+7% Increases your maximum health Missing Health regained on Potion Use",
+		"2": "+7% Missing Health regained on Potion Use",
 		"canRollOn": [
 			2
 		],
@@ -106096,7 +106096,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+8% Increases your maximum health Missing Health regained on Potion Use",
+		"2": "+8% Missing Health regained on Potion Use",
 		"canRollOn": [
 			2
 		],
@@ -106113,7 +106113,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+9% Increases your maximum health Missing Health regained on Potion Use",
+		"2": "+9% Missing Health regained on Potion Use",
 		"canRollOn": [
 			2
 		],
@@ -106130,7 +106130,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+10% Increases your maximum health Missing Health regained on Potion Use",
+		"2": "+10% Missing Health regained on Potion Use",
 		"canRollOn": [
 			2
 		],
@@ -106147,7 +106147,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(12-15)% Increases your maximum health Missing Health regained on Potion Use",
+		"2": "+(12-15)% Missing Health regained on Potion Use",
 		"canRollOn": [
 			2
 		],
@@ -106300,7 +106300,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+4% Increases your maximum mana increased Mana Regen per 100 Maximum Mana",
+		"2": "+4% increased Mana Regen per 100 Maximum Mana",
 		"canRollOn": [
 			8,
 			10,
@@ -106319,7 +106319,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+4% Increases your maximum mana increased Mana Regen per 100 Maximum Mana",
+		"2": "+4% increased Mana Regen per 100 Maximum Mana",
 		"canRollOn": [
 			8,
 			10,
@@ -106338,7 +106338,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+4% Increases your maximum mana increased Mana Regen per 100 Maximum Mana",
+		"2": "+4% increased Mana Regen per 100 Maximum Mana",
 		"canRollOn": [
 			8,
 			10,
@@ -106357,7 +106357,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+4% Increases your maximum mana increased Mana Regen per 100 Maximum Mana",
+		"2": "+4% increased Mana Regen per 100 Maximum Mana",
 		"canRollOn": [
 			8,
 			10,
@@ -106376,7 +106376,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+4% Increases your maximum mana increased Mana Regen per 100 Maximum Mana",
+		"2": "+4% increased Mana Regen per 100 Maximum Mana",
 		"canRollOn": [
 			8,
 			10,
@@ -106395,7 +106395,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+4% Increases your maximum mana increased Mana Regen per 100 Maximum Mana",
+		"2": "+4% increased Mana Regen per 100 Maximum Mana",
 		"canRollOn": [
 			8,
 			10,
@@ -106414,7 +106414,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+4% Increases your maximum mana increased Mana Regen per 100 Maximum Mana",
+		"2": "+4% increased Mana Regen per 100 Maximum Mana",
 		"canRollOn": [
 			8,
 			10,
@@ -106433,7 +106433,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(10-12)% Increases your maximum mana increased Mana Regen per 100 Maximum Mana",
+		"2": "+(10-12)% increased Mana Regen per 100 Maximum Mana",
 		"canRollOn": [
 			8,
 			10,
@@ -106452,7 +106452,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+4% Adds to your maximum number of potions. Potions are displayed next to your health globe, and can be consumed to gain health (by using the 1 key by default). Missing Health gained as Ward on Potion Use",
+		"2": "+4% Missing Health gained as Ward on Potion Use",
 		"canRollOn": [
 			2
 		],
@@ -106469,7 +106469,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+5% Adds to your maximum number of potions. Potions are displayed next to your health globe, and can be consumed to gain health (by using the 1 key by default). Missing Health gained as Ward on Potion Use",
+		"2": "+5% Missing Health gained as Ward on Potion Use",
 		"canRollOn": [
 			2
 		],
@@ -106486,7 +106486,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+6% Adds to your maximum number of potions. Potions are displayed next to your health globe, and can be consumed to gain health (by using the 1 key by default). Missing Health gained as Ward on Potion Use",
+		"2": "+6% Missing Health gained as Ward on Potion Use",
 		"canRollOn": [
 			2
 		],
@@ -106503,7 +106503,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+7% Adds to your maximum number of potions. Potions are displayed next to your health globe, and can be consumed to gain health (by using the 1 key by default). Missing Health gained as Ward on Potion Use",
+		"2": "+7% Missing Health gained as Ward on Potion Use",
 		"canRollOn": [
 			2
 		],
@@ -106520,7 +106520,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+8% Adds to your maximum number of potions. Potions are displayed next to your health globe, and can be consumed to gain health (by using the 1 key by default). Missing Health gained as Ward on Potion Use",
+		"2": "+8% Missing Health gained as Ward on Potion Use",
 		"canRollOn": [
 			2
 		],
@@ -106537,7 +106537,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+9% Adds to your maximum number of potions. Potions are displayed next to your health globe, and can be consumed to gain health (by using the 1 key by default). Missing Health gained as Ward on Potion Use",
+		"2": "+9% Missing Health gained as Ward on Potion Use",
 		"canRollOn": [
 			2
 		],
@@ -106554,7 +106554,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+10% Adds to your maximum number of potions. Potions are displayed next to your health globe, and can be consumed to gain health (by using the 1 key by default). Missing Health gained as Ward on Potion Use",
+		"2": "+10% Missing Health gained as Ward on Potion Use",
 		"canRollOn": [
 			2
 		],
@@ -106571,7 +106571,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(15-20)% Adds to your maximum number of potions. Potions are displayed next to your health globe, and can be consumed to gain health (by using the 1 key by default). Missing Health gained as Ward on Potion Use",
+		"2": "+(15-20)% Missing Health gained as Ward on Potion Use",
 		"canRollOn": [
 			2
 		],
@@ -106868,7 +106868,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(10-11)% A percentage of your damage is returned to you as health over three seconds. Damage Leeched as Health",
+		"2": "+(10-11)% Damage Leeched as Health",
 		"canRollOn": [
 			4
 		],
@@ -106885,7 +106885,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(12-13)% A percentage of your damage is returned to you as health over three seconds. Damage Leeched as Health",
+		"2": "+(12-13)% Damage Leeched as Health",
 		"canRollOn": [
 			4
 		],
@@ -106902,7 +106902,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(14-15)% A percentage of your damage is returned to you as health over three seconds. Damage Leeched as Health",
+		"2": "+(14-15)% Damage Leeched as Health",
 		"canRollOn": [
 			4
 		],
@@ -106919,7 +106919,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(16-17)% A percentage of your damage is returned to you as health over three seconds. Damage Leeched as Health",
+		"2": "+(16-17)% Damage Leeched as Health",
 		"canRollOn": [
 			4
 		],
@@ -106936,7 +106936,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(18-19)% A percentage of your damage is returned to you as health over three seconds. Damage Leeched as Health",
+		"2": "+(18-19)% Damage Leeched as Health",
 		"canRollOn": [
 			4
 		],
@@ -106953,7 +106953,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(20-21)% A percentage of your damage is returned to you as health over three seconds. Damage Leeched as Health",
+		"2": "+(20-21)% Damage Leeched as Health",
 		"canRollOn": [
 			4
 		],
@@ -106970,7 +106970,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(22-25)% A percentage of your damage is returned to you as health over three seconds. Damage Leeched as Health",
+		"2": "+(22-25)% Damage Leeched as Health",
 		"canRollOn": [
 			4
 		],
@@ -106987,7 +106987,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(30-35)% A percentage of your damage is returned to you as health over three seconds. Damage Leeched as Health",
+		"2": "+(30-35)% Damage Leeched as Health",
 		"canRollOn": [
 			4
 		],
@@ -107004,7 +107004,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+8% Increases the number of attacks you can use per second Cast Speed",
+		"2": "+8% Cast Speed",
 		"canRollOn": [
 			4
 		],
@@ -107021,7 +107021,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+9% Increases the number of attacks you can use per second Cast Speed",
+		"2": "+9% Cast Speed",
 		"canRollOn": [
 			4
 		],
@@ -107038,7 +107038,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+10% Increases the number of attacks you can use per second Cast Speed",
+		"2": "+10% Cast Speed",
 		"canRollOn": [
 			4
 		],
@@ -107055,7 +107055,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+11% Increases the number of attacks you can use per second Cast Speed",
+		"2": "+11% Cast Speed",
 		"canRollOn": [
 			4
 		],
@@ -107072,7 +107072,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+12% Increases the number of attacks you can use per second Cast Speed",
+		"2": "+12% Cast Speed",
 		"canRollOn": [
 			4
 		],
@@ -107089,7 +107089,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+13% Increases the number of attacks you can use per second Cast Speed",
+		"2": "+13% Cast Speed",
 		"canRollOn": [
 			4
 		],
@@ -107106,7 +107106,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+14% Increases the number of attacks you can use per second Cast Speed",
+		"2": "+14% Cast Speed",
 		"canRollOn": [
 			4
 		],
@@ -107123,7 +107123,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(18-21)% Increases the number of attacks you can use per second Cast Speed",
+		"2": "+(18-21)% Cast Speed",
 		"canRollOn": [
 			4
 		],
@@ -107140,7 +107140,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+13 Increases the number of spells you can cast per second Ward gained when you directly Cast a Spell",
+		"2": "{rounding:Integer}+13 Ward gained when you directly Cast a Spell",
 		"canRollOn": [
 			4
 		],
@@ -107157,7 +107157,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+14 Increases the number of spells you can cast per second Ward gained when you directly Cast a Spell",
+		"2": "{rounding:Integer}+14 Ward gained when you directly Cast a Spell",
 		"canRollOn": [
 			4
 		],
@@ -107174,7 +107174,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+15 Increases the number of spells you can cast per second Ward gained when you directly Cast a Spell",
+		"2": "{rounding:Integer}+15 Ward gained when you directly Cast a Spell",
 		"canRollOn": [
 			4
 		],
@@ -107191,7 +107191,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+16 Increases the number of spells you can cast per second Ward gained when you directly Cast a Spell",
+		"2": "{rounding:Integer}+16 Ward gained when you directly Cast a Spell",
 		"canRollOn": [
 			4
 		],
@@ -107208,7 +107208,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+17 Increases the number of spells you can cast per second Ward gained when you directly Cast a Spell",
+		"2": "{rounding:Integer}+17 Ward gained when you directly Cast a Spell",
 		"canRollOn": [
 			4
 		],
@@ -107225,7 +107225,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(18-19) Increases the number of spells you can cast per second Ward gained when you directly Cast a Spell",
+		"2": "{rounding:Integer}+(18-19) Ward gained when you directly Cast a Spell",
 		"canRollOn": [
 			4
 		],
@@ -107242,7 +107242,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(20-21) Increases the number of spells you can cast per second Ward gained when you directly Cast a Spell",
+		"2": "{rounding:Integer}+(20-21) Ward gained when you directly Cast a Spell",
 		"canRollOn": [
 			4
 		],
@@ -107259,7 +107259,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(25-30) Increases the number of spells you can cast per second Ward gained when you directly Cast a Spell",
+		"2": "{rounding:Integer}+(25-30) Ward gained when you directly Cast a Spell",
 		"canRollOn": [
 			4
 		],
@@ -107420,7 +107420,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+5 Increases your armor from all sources Thorns per 1% Armor Mitigation",
+		"2": "{rounding:Integer}+5 Thorns per 1% Armor Mitigation",
 		"canRollOn": [
 			1,
 			18
@@ -107429,7 +107429,7 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+(31-38)% Armor",
-				"2": "{rounding:Integer}+6 Increases your armor from all sources Thorns per 1% Armor Mitigation"
+				"2": "{rounding:Integer}+6 Thorns per 1% Armor Mitigation"
 			}
 		}
 	},
@@ -107444,7 +107444,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+5 Increases your armor from all sources Thorns per 1% Armor Mitigation",
+		"2": "{rounding:Integer}+5 Thorns per 1% Armor Mitigation",
 		"canRollOn": [
 			1,
 			18
@@ -107453,7 +107453,7 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+(40-47)% Armor",
-				"2": "{rounding:Integer}+6 Increases your armor from all sources Thorns per 1% Armor Mitigation"
+				"2": "{rounding:Integer}+6 Thorns per 1% Armor Mitigation"
 			}
 		}
 	},
@@ -107468,7 +107468,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+6 Increases your armor from all sources Thorns per 1% Armor Mitigation",
+		"2": "{rounding:Integer}+6 Thorns per 1% Armor Mitigation",
 		"canRollOn": [
 			1,
 			18
@@ -107477,7 +107477,7 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+(49-56)% Armor",
-				"2": "{rounding:Integer}+8 Increases your armor from all sources Thorns per 1% Armor Mitigation"
+				"2": "{rounding:Integer}+8 Thorns per 1% Armor Mitigation"
 			}
 		}
 	},
@@ -107492,7 +107492,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+6 Increases your armor from all sources Thorns per 1% Armor Mitigation",
+		"2": "{rounding:Integer}+6 Thorns per 1% Armor Mitigation",
 		"canRollOn": [
 			1,
 			18
@@ -107501,7 +107501,7 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+(58-65)% Armor",
-				"2": "{rounding:Integer}+8 Increases your armor from all sources Thorns per 1% Armor Mitigation"
+				"2": "{rounding:Integer}+8 Thorns per 1% Armor Mitigation"
 			}
 		}
 	},
@@ -107516,7 +107516,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+6 Increases your armor from all sources Thorns per 1% Armor Mitigation",
+		"2": "{rounding:Integer}+6 Thorns per 1% Armor Mitigation",
 		"canRollOn": [
 			1,
 			18
@@ -107525,7 +107525,7 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+(67-74)% Armor",
-				"2": "{rounding:Integer}+8 Increases your armor from all sources Thorns per 1% Armor Mitigation"
+				"2": "{rounding:Integer}+8 Thorns per 1% Armor Mitigation"
 			}
 		}
 	},
@@ -107540,7 +107540,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+7 Increases your armor from all sources Thorns per 1% Armor Mitigation",
+		"2": "{rounding:Integer}+7 Thorns per 1% Armor Mitigation",
 		"canRollOn": [
 			1,
 			18
@@ -107549,7 +107549,7 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+(76-83)% Armor",
-				"2": "{rounding:Integer}+9 Increases your armor from all sources Thorns per 1% Armor Mitigation"
+				"2": "{rounding:Integer}+9 Thorns per 1% Armor Mitigation"
 			}
 		}
 	},
@@ -107564,7 +107564,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+7 Increases your armor from all sources Thorns per 1% Armor Mitigation",
+		"2": "{rounding:Integer}+7 Thorns per 1% Armor Mitigation",
 		"canRollOn": [
 			1,
 			18
@@ -107573,7 +107573,7 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+(85-90)% Armor",
-				"2": "{rounding:Integer}+9 Increases your armor from all sources Thorns per 1% Armor Mitigation"
+				"2": "{rounding:Integer}+9 Thorns per 1% Armor Mitigation"
 			}
 		}
 	},
@@ -107588,7 +107588,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+(10-12) Increases your armor from all sources Thorns per 1% Armor Mitigation",
+		"2": "{rounding:Integer}+(10-12) Thorns per 1% Armor Mitigation",
 		"canRollOn": [
 			1,
 			18
@@ -107597,7 +107597,7 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "{rounding:Integer}+(141-154) Armor",
-				"2": "{rounding:Integer}+(13-15) Increases your armor from all sources Thorns per 1% Armor Mitigation"
+				"2": "{rounding:Integer}+(13-15) Thorns per 1% Armor Mitigation"
 			}
 		}
 	},
@@ -107612,7 +107612,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+8% Damage dealt to your health below your Endurance Threshold is reduced by your Endurance Endurance Threshold added as Ward Decay Threshold",
+		"2": "+8% Endurance Threshold added as Ward Decay Threshold",
 		"canRollOn": [
 			1,
 			2
@@ -107621,7 +107621,7 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "{rounding:Integer}+(105-118) Endurance Threshold",
-				"2": "+12% Damage dealt to your health below your Endurance Threshold is reduced by your Endurance Endurance Threshold added as Ward Decay Threshold"
+				"2": "+12% Endurance Threshold added as Ward Decay Threshold"
 			}
 		}
 	},
@@ -107636,7 +107636,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+9% Damage dealt to your health below your Endurance Threshold is reduced by your Endurance Endurance Threshold added as Ward Decay Threshold",
+		"2": "+9% Endurance Threshold added as Ward Decay Threshold",
 		"canRollOn": [
 			1,
 			2
@@ -107645,7 +107645,7 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "{rounding:Integer}+(120-134) Endurance Threshold",
-				"2": "+14% Damage dealt to your health below your Endurance Threshold is reduced by your Endurance Endurance Threshold added as Ward Decay Threshold"
+				"2": "+14% Endurance Threshold added as Ward Decay Threshold"
 			}
 		}
 	},
@@ -107660,7 +107660,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+10% Damage dealt to your health below your Endurance Threshold is reduced by your Endurance Endurance Threshold added as Ward Decay Threshold",
+		"2": "+10% Endurance Threshold added as Ward Decay Threshold",
 		"canRollOn": [
 			1,
 			2
@@ -107669,7 +107669,7 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "{rounding:Integer}+(135-148) Endurance Threshold",
-				"2": "+15% Damage dealt to your health below your Endurance Threshold is reduced by your Endurance Endurance Threshold added as Ward Decay Threshold"
+				"2": "+15% Endurance Threshold added as Ward Decay Threshold"
 			}
 		}
 	},
@@ -107684,7 +107684,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+11% Damage dealt to your health below your Endurance Threshold is reduced by your Endurance Endurance Threshold added as Ward Decay Threshold",
+		"2": "+11% Endurance Threshold added as Ward Decay Threshold",
 		"canRollOn": [
 			1,
 			2
@@ -107693,7 +107693,7 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "{rounding:Integer}+(150-164) Endurance Threshold",
-				"2": "+16% Damage dealt to your health below your Endurance Threshold is reduced by your Endurance Endurance Threshold added as Ward Decay Threshold"
+				"2": "+16% Endurance Threshold added as Ward Decay Threshold"
 			}
 		}
 	},
@@ -107708,7 +107708,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+12% Damage dealt to your health below your Endurance Threshold is reduced by your Endurance Endurance Threshold added as Ward Decay Threshold",
+		"2": "+12% Endurance Threshold added as Ward Decay Threshold",
 		"canRollOn": [
 			1,
 			2
@@ -107717,7 +107717,7 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "{rounding:Integer}+(165-178) Endurance Threshold",
-				"2": "+18% Damage dealt to your health below your Endurance Threshold is reduced by your Endurance Endurance Threshold added as Ward Decay Threshold"
+				"2": "+18% Endurance Threshold added as Ward Decay Threshold"
 			}
 		}
 	},
@@ -107732,7 +107732,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+13% Damage dealt to your health below your Endurance Threshold is reduced by your Endurance Endurance Threshold added as Ward Decay Threshold",
+		"2": "+13% Endurance Threshold added as Ward Decay Threshold",
 		"canRollOn": [
 			1,
 			2
@@ -107741,7 +107741,7 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "{rounding:Integer}+(180-194) Endurance Threshold",
-				"2": "+20% Damage dealt to your health below your Endurance Threshold is reduced by your Endurance Endurance Threshold added as Ward Decay Threshold"
+				"2": "+20% Endurance Threshold added as Ward Decay Threshold"
 			}
 		}
 	},
@@ -107756,7 +107756,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+14% Damage dealt to your health below your Endurance Threshold is reduced by your Endurance Endurance Threshold added as Ward Decay Threshold",
+		"2": "+14% Endurance Threshold added as Ward Decay Threshold",
 		"canRollOn": [
 			1,
 			2
@@ -107765,7 +107765,7 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "{rounding:Integer}+(195-210) Endurance Threshold",
-				"2": "+21% Damage dealt to your health below your Endurance Threshold is reduced by your Endurance Endurance Threshold added as Ward Decay Threshold"
+				"2": "+21% Endurance Threshold added as Ward Decay Threshold"
 			}
 		}
 	},
@@ -107780,7 +107780,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(18-20)% Damage dealt to your health below your Endurance Threshold is reduced by your Endurance Endurance Threshold added as Ward Decay Threshold",
+		"2": "+(18-20)% Endurance Threshold added as Ward Decay Threshold",
 		"canRollOn": [
 			1,
 			2
@@ -107789,7 +107789,7 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "{rounding:Integer}+(330-368) Endurance Threshold",
-				"2": "+(27-30)% Damage dealt to your health below your Endurance Threshold is reduced by your Endurance Endurance Threshold added as Ward Decay Threshold"
+				"2": "+(27-30)% Endurance Threshold added as Ward Decay Threshold"
 			}
 		}
 	},
@@ -107804,7 +107804,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.5,
-		"2": "+5% Increases your maximum mana Current mana gained as ward per second",
+		"2": "+5% Current mana gained as ward per second",
 		"canRollOn": [
 			1
 		],
@@ -107821,7 +107821,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.5,
-		"2": "+5% Increases your maximum mana Current mana gained as ward per second",
+		"2": "+5% Current mana gained as ward per second",
 		"canRollOn": [
 			1
 		],
@@ -107838,7 +107838,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.5,
-		"2": "+6% Increases your maximum mana Current mana gained as ward per second",
+		"2": "+6% Current mana gained as ward per second",
 		"canRollOn": [
 			1
 		],
@@ -107855,7 +107855,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.5,
-		"2": "+6% Increases your maximum mana Current mana gained as ward per second",
+		"2": "+6% Current mana gained as ward per second",
 		"canRollOn": [
 			1
 		],
@@ -107872,7 +107872,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.5,
-		"2": "+6% Increases your maximum mana Current mana gained as ward per second",
+		"2": "+6% Current mana gained as ward per second",
 		"canRollOn": [
 			1
 		],
@@ -107889,7 +107889,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.5,
-		"2": "+7% Increases your maximum mana Current mana gained as ward per second",
+		"2": "+7% Current mana gained as ward per second",
 		"canRollOn": [
 			1
 		],
@@ -107906,7 +107906,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.5,
-		"2": "+7% Increases your maximum mana Current mana gained as ward per second",
+		"2": "+7% Current mana gained as ward per second",
 		"canRollOn": [
 			1
 		],
@@ -107923,7 +107923,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.5,
-		"2": "+(9-11)% Increases your maximum mana Current mana gained as ward per second",
+		"2": "+(9-11)% Current mana gained as ward per second",
 		"canRollOn": [
 			1
 		],
@@ -107940,7 +107940,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.5,
-		"2": "{rounding:Integer}+(15-17) Increases your maximum health Ward per Second",
+		"2": "{rounding:Integer}+(15-17) Ward per Second",
 		"canRollOn": [
 			1
 		],
@@ -107957,7 +107957,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.5,
-		"2": "{rounding:Integer}+(18-20) Increases your maximum health Ward per Second",
+		"2": "{rounding:Integer}+(18-20) Ward per Second",
 		"canRollOn": [
 			1
 		],
@@ -107974,7 +107974,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.5,
-		"2": "{rounding:Integer}+(21-23) Increases your maximum health Ward per Second",
+		"2": "{rounding:Integer}+(21-23) Ward per Second",
 		"canRollOn": [
 			1
 		],
@@ -107991,7 +107991,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.5,
-		"2": "{rounding:Integer}+(24-26) Increases your maximum health Ward per Second",
+		"2": "{rounding:Integer}+(24-26) Ward per Second",
 		"canRollOn": [
 			1
 		],
@@ -108008,7 +108008,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.5,
-		"2": "{rounding:Integer}+(27-29) Increases your maximum health Ward per Second",
+		"2": "{rounding:Integer}+(27-29) Ward per Second",
 		"canRollOn": [
 			1
 		],
@@ -108025,7 +108025,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.5,
-		"2": "{rounding:Integer}+(30-32) Increases your maximum health Ward per Second",
+		"2": "{rounding:Integer}+(30-32) Ward per Second",
 		"canRollOn": [
 			1
 		],
@@ -108042,7 +108042,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.5,
-		"2": "{rounding:Integer}+(33-37) Increases your maximum health Ward per Second",
+		"2": "{rounding:Integer}+(33-37) Ward per Second",
 		"canRollOn": [
 			1
 		],
@@ -108059,7 +108059,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.5,
-		"2": "{rounding:Integer}+(45-50) Increases your maximum health Ward per Second",
+		"2": "{rounding:Integer}+(45-50) Ward per Second",
 		"canRollOn": [
 			1
 		],
@@ -108076,7 +108076,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.5,
-		"2": "+(20-19)% Prevents you from being stunned Increased Evade cooldown Duration",
+		"2": "+(20-19)% Increased Evade cooldown Duration",
 		"canRollOn": [
 			1
 		],
@@ -108093,7 +108093,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.5,
-		"2": "+(18-17)% Prevents you from being stunned Increased Evade cooldown Duration",
+		"2": "+(18-17)% Increased Evade cooldown Duration",
 		"canRollOn": [
 			1
 		],
@@ -108110,7 +108110,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.5,
-		"2": "+(16-15)% Prevents you from being stunned Increased Evade cooldown Duration",
+		"2": "+(16-15)% Increased Evade cooldown Duration",
 		"canRollOn": [
 			1
 		],
@@ -108127,7 +108127,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.5,
-		"2": "+(14-13)% Prevents you from being stunned Increased Evade cooldown Duration",
+		"2": "+(14-13)% Increased Evade cooldown Duration",
 		"canRollOn": [
 			1
 		],
@@ -108144,7 +108144,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.5,
-		"2": "+(12-10)% Prevents you from being stunned Increased Evade cooldown Duration",
+		"2": "+(12-10)% Increased Evade cooldown Duration",
 		"canRollOn": [
 			1
 		],
@@ -108161,7 +108161,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.5,
-		"2": "+(9-8)% Prevents you from being stunned Increased Evade cooldown Duration",
+		"2": "+(9-8)% Increased Evade cooldown Duration",
 		"canRollOn": [
 			1
 		],
@@ -108178,7 +108178,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.5,
-		"2": "+(7-6)% Prevents you from being stunned Increased Evade cooldown Duration",
+		"2": "+(7-6)% Increased Evade cooldown Duration",
 		"canRollOn": [
 			1
 		],
@@ -108195,7 +108195,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.5,
-		"2": "+5% Prevents you from being stunned Increased Evade cooldown Duration",
+		"2": "+5% Increased Evade cooldown Duration",
 		"canRollOn": [
 			1
 		],
@@ -108540,7 +108540,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(8-9)% Each point of attunement grants 2 mana and improves skills that rely on the innate magic inside you and your surroundings Mana Regen",
+		"2": "+(8-9)% Mana Regen",
 		"canRollOn": [
 			21,
 			22,
@@ -108559,7 +108559,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(10-11)% Each point of attunement grants 2 mana and improves skills that rely on the innate magic inside you and your surroundings Mana Regen",
+		"2": "+(10-11)% Mana Regen",
 		"canRollOn": [
 			21,
 			22,
@@ -108578,7 +108578,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(12-13)% Each point of attunement grants 2 mana and improves skills that rely on the innate magic inside you and your surroundings Mana Regen",
+		"2": "+(12-13)% Mana Regen",
 		"canRollOn": [
 			21,
 			22,
@@ -108597,7 +108597,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(14-15)% Each point of attunement grants 2 mana and improves skills that rely on the innate magic inside you and your surroundings Mana Regen",
+		"2": "+(14-15)% Mana Regen",
 		"canRollOn": [
 			21,
 			22,
@@ -108616,7 +108616,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(16-17)% Each point of attunement grants 2 mana and improves skills that rely on the innate magic inside you and your surroundings Mana Regen",
+		"2": "+(16-17)% Mana Regen",
 		"canRollOn": [
 			21,
 			22,
@@ -108635,7 +108635,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(18-19)% Each point of attunement grants 2 mana and improves skills that rely on the innate magic inside you and your surroundings Mana Regen",
+		"2": "+(18-19)% Mana Regen",
 		"canRollOn": [
 			21,
 			22,
@@ -108654,7 +108654,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(20-22)% Each point of attunement grants 2 mana and improves skills that rely on the innate magic inside you and your surroundings Mana Regen",
+		"2": "+(20-22)% Mana Regen",
 		"canRollOn": [
 			21,
 			22,
@@ -108673,7 +108673,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(28-32)% Each point of attunement grants 2 mana and improves skills that rely on the innate magic inside you and your surroundings Mana Regen",
+		"2": "+(28-32)% Mana Regen",
 		"canRollOn": [
 			21,
 			22,
@@ -108692,7 +108692,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(7-8) Each point of intelligence grants 2% ward retention and improves skills that rely on carefully studied magic Ward per Second",
+		"2": "{rounding:Integer}+(7-8) Ward per Second",
 		"canRollOn": [
 			21,
 			22,
@@ -108711,7 +108711,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(9-10) Each point of intelligence grants 2% ward retention and improves skills that rely on carefully studied magic Ward per Second",
+		"2": "{rounding:Integer}+(9-10) Ward per Second",
 		"canRollOn": [
 			21,
 			22,
@@ -108730,7 +108730,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(11-12) Each point of intelligence grants 2% ward retention and improves skills that rely on carefully studied magic Ward per Second",
+		"2": "{rounding:Integer}+(11-12) Ward per Second",
 		"canRollOn": [
 			21,
 			22,
@@ -108749,7 +108749,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(13-14) Each point of intelligence grants 2% ward retention and improves skills that rely on carefully studied magic Ward per Second",
+		"2": "{rounding:Integer}+(13-14) Ward per Second",
 		"canRollOn": [
 			21,
 			22,
@@ -108768,7 +108768,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(15-16) Each point of intelligence grants 2% ward retention and improves skills that rely on carefully studied magic Ward per Second",
+		"2": "{rounding:Integer}+(15-16) Ward per Second",
 		"canRollOn": [
 			21,
 			22,
@@ -108787,7 +108787,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(17-18) Each point of intelligence grants 2% ward retention and improves skills that rely on carefully studied magic Ward per Second",
+		"2": "{rounding:Integer}+(17-18) Ward per Second",
 		"canRollOn": [
 			21,
 			22,
@@ -108806,7 +108806,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(19-21) Each point of intelligence grants 2% ward retention and improves skills that rely on carefully studied magic Ward per Second",
+		"2": "{rounding:Integer}+(19-21) Ward per Second",
 		"canRollOn": [
 			21,
 			22,
@@ -108825,7 +108825,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(25-30) Each point of intelligence grants 2% ward retention and improves skills that rely on carefully studied magic Ward per Second",
+		"2": "{rounding:Integer}+(25-30) Ward per Second",
 		"canRollOn": [
 			21,
 			22,
@@ -108844,7 +108844,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+8% Each point of dexterity adds 4 dodge rating and improves skills that rely on the skillful handling of weapons Dodge Rating",
+		"2": "+8% Dodge Rating",
 		"canRollOn": [
 			21,
 			22,
@@ -108863,7 +108863,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+9% Each point of dexterity adds 4 dodge rating and improves skills that rely on the skillful handling of weapons Dodge Rating",
+		"2": "+9% Dodge Rating",
 		"canRollOn": [
 			21,
 			22,
@@ -108882,7 +108882,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+10% Each point of dexterity adds 4 dodge rating and improves skills that rely on the skillful handling of weapons Dodge Rating",
+		"2": "+10% Dodge Rating",
 		"canRollOn": [
 			21,
 			22,
@@ -108901,7 +108901,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+11% Each point of dexterity adds 4 dodge rating and improves skills that rely on the skillful handling of weapons Dodge Rating",
+		"2": "+11% Dodge Rating",
 		"canRollOn": [
 			21,
 			22,
@@ -108920,7 +108920,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+12% Each point of dexterity adds 4 dodge rating and improves skills that rely on the skillful handling of weapons Dodge Rating",
+		"2": "+12% Dodge Rating",
 		"canRollOn": [
 			21,
 			22,
@@ -108939,7 +108939,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+13% Each point of dexterity adds 4 dodge rating and improves skills that rely on the skillful handling of weapons Dodge Rating",
+		"2": "+13% Dodge Rating",
 		"canRollOn": [
 			21,
 			22,
@@ -108958,7 +108958,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+14% Each point of dexterity adds 4 dodge rating and improves skills that rely on the skillful handling of weapons Dodge Rating",
+		"2": "+14% Dodge Rating",
 		"canRollOn": [
 			21,
 			22,
@@ -108977,7 +108977,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(18-20)% Each point of dexterity adds 4 dodge rating and improves skills that rely on the skillful handling of weapons Dodge Rating",
+		"2": "+(18-20)% Dodge Rating",
 		"canRollOn": [
 			21,
 			22,
@@ -108996,7 +108996,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(40-48) Each point of strength increases armor by 4% and improves skills that rely the raw strength of you and your companions Armor",
+		"2": "{rounding:Integer}+(40-48) Armor",
 		"canRollOn": [
 			21,
 			22,
@@ -109015,7 +109015,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(49-57) Each point of strength increases armor by 4% and improves skills that rely the raw strength of you and your companions Armor",
+		"2": "{rounding:Integer}+(49-57) Armor",
 		"canRollOn": [
 			21,
 			22,
@@ -109034,7 +109034,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(58-66) Each point of strength increases armor by 4% and improves skills that rely the raw strength of you and your companions Armor",
+		"2": "{rounding:Integer}+(58-66) Armor",
 		"canRollOn": [
 			21,
 			22,
@@ -109053,7 +109053,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(67-75) Each point of strength increases armor by 4% and improves skills that rely the raw strength of you and your companions Armor",
+		"2": "{rounding:Integer}+(67-75) Armor",
 		"canRollOn": [
 			21,
 			22,
@@ -109072,7 +109072,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(76-84) Each point of strength increases armor by 4% and improves skills that rely the raw strength of you and your companions Armor",
+		"2": "{rounding:Integer}+(76-84) Armor",
 		"canRollOn": [
 			21,
 			22,
@@ -109091,7 +109091,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(85-93) Each point of strength increases armor by 4% and improves skills that rely the raw strength of you and your companions Armor",
+		"2": "{rounding:Integer}+(85-93) Armor",
 		"canRollOn": [
 			21,
 			22,
@@ -109110,7 +109110,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(94-100) Each point of strength increases armor by 4% and improves skills that rely the raw strength of you and your companions Armor",
+		"2": "{rounding:Integer}+(94-100) Armor",
 		"canRollOn": [
 			21,
 			22,
@@ -109129,7 +109129,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(120-150) Each point of strength increases armor by 4% and improves skills that rely the raw strength of you and your companions Armor",
+		"2": "{rounding:Integer}+(120-150) Armor",
 		"canRollOn": [
 			21,
 			22,
@@ -109148,11 +109148,11 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+2% Increases your maximum health Health Regen also applies to Ward",
+		"2": "+2% Health Regen also applies to Ward",
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+9% Health",
-				"2": "+3% Increases your maximum health Health Regen also applies to Ward"
+				"2": "+3% Health Regen also applies to Ward"
 			}
 		},
 		"canRollOn": [
@@ -109172,11 +109172,11 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+2% Increases your maximum health Health Regen also applies to Ward",
+		"2": "+2% Health Regen also applies to Ward",
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+11% Health",
-				"2": "+3% Increases your maximum health Health Regen also applies to Ward"
+				"2": "+3% Health Regen also applies to Ward"
 			}
 		},
 		"canRollOn": [
@@ -109196,11 +109196,11 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+2% Increases your maximum health Health Regen also applies to Ward",
+		"2": "+2% Health Regen also applies to Ward",
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+12% Health",
-				"2": "+3% Increases your maximum health Health Regen also applies to Ward"
+				"2": "+3% Health Regen also applies to Ward"
 			}
 		},
 		"canRollOn": [
@@ -109220,11 +109220,11 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(2-3)% Increases your maximum health Health Regen also applies to Ward",
+		"2": "+(2-3)% Health Regen also applies to Ward",
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+14% Health",
-				"2": "+(3-4)% Increases your maximum health Health Regen also applies to Ward"
+				"2": "+(3-4)% Health Regen also applies to Ward"
 			}
 		},
 		"canRollOn": [
@@ -109244,11 +109244,11 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+3% Increases your maximum health Health Regen also applies to Ward",
+		"2": "+3% Health Regen also applies to Ward",
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+15% Health",
-				"2": "+4% Increases your maximum health Health Regen also applies to Ward"
+				"2": "+4% Health Regen also applies to Ward"
 			}
 		},
 		"canRollOn": [
@@ -109268,11 +109268,11 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+4% Increases your maximum health Health Regen also applies to Ward",
+		"2": "+4% Health Regen also applies to Ward",
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+16% Health",
-				"2": "+6% Increases your maximum health Health Regen also applies to Ward"
+				"2": "+6% Health Regen also applies to Ward"
 			}
 		},
 		"canRollOn": [
@@ -109292,11 +109292,11 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+4% Increases your maximum health Health Regen also applies to Ward",
+		"2": "+4% Health Regen also applies to Ward",
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+18% Health",
-				"2": "+6% Increases your maximum health Health Regen also applies to Ward"
+				"2": "+6% Health Regen also applies to Ward"
 			}
 		},
 		"canRollOn": [
@@ -109316,11 +109316,11 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+6% Increases your maximum health Health Regen also applies to Ward",
+		"2": "+6% Health Regen also applies to Ward",
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+(21-24)% Health",
-				"2": "+9% Increases your maximum health Health Regen also applies to Ward"
+				"2": "+9% Health Regen also applies to Ward"
 			}
 		},
 		"canRollOn": [
@@ -109340,7 +109340,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+8% Gain a portion of your maximum health as endurance threshold. Damage taken your health below your endurance threshold is reduced by your endurance. Endurance",
+		"2": "+8% Endurance",
 		"canRollOn": [
 			0
 		],
@@ -109357,7 +109357,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+9% Gain a portion of your maximum health as endurance threshold. Damage taken your health below your endurance threshold is reduced by your endurance. Endurance",
+		"2": "+9% Endurance",
 		"canRollOn": [
 			0
 		],
@@ -109374,7 +109374,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+10% Gain a portion of your maximum health as endurance threshold. Damage taken your health below your endurance threshold is reduced by your endurance. Endurance",
+		"2": "+10% Endurance",
 		"canRollOn": [
 			0
 		],
@@ -109391,7 +109391,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+11% Gain a portion of your maximum health as endurance threshold. Damage taken your health below your endurance threshold is reduced by your endurance. Endurance",
+		"2": "+11% Endurance",
 		"canRollOn": [
 			0
 		],
@@ -109408,7 +109408,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+12% Gain a portion of your maximum health as endurance threshold. Damage taken your health below your endurance threshold is reduced by your endurance. Endurance",
+		"2": "+12% Endurance",
 		"canRollOn": [
 			0
 		],
@@ -109425,7 +109425,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+13% Gain a portion of your maximum health as endurance threshold. Damage taken your health below your endurance threshold is reduced by your endurance. Endurance",
+		"2": "+13% Endurance",
 		"canRollOn": [
 			0
 		],
@@ -109442,7 +109442,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+14% Gain a portion of your maximum health as endurance threshold. Damage taken your health below your endurance threshold is reduced by your endurance. Endurance",
+		"2": "+14% Endurance",
 		"canRollOn": [
 			0
 		],
@@ -109459,7 +109459,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(18-20)% Gain a portion of your maximum health as endurance threshold. Damage taken your health below your endurance threshold is reduced by your endurance. Endurance",
+		"2": "+(18-20)% Endurance",
 		"canRollOn": [
 			0
 		],
@@ -109476,7 +109476,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(25-28)% Increases your maximum mana Mana Spent Gained as Ward",
+		"2": "+(25-28)% Mana Spent Gained as Ward",
 		"canRollOn": [
 			0,
 			2
@@ -109494,7 +109494,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(29-32)% Increases your maximum mana Mana Spent Gained as Ward",
+		"2": "+(29-32)% Mana Spent Gained as Ward",
 		"canRollOn": [
 			0,
 			2
@@ -109512,7 +109512,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(33-36)% Increases your maximum mana Mana Spent Gained as Ward",
+		"2": "+(33-36)% Mana Spent Gained as Ward",
 		"canRollOn": [
 			0,
 			2
@@ -109530,7 +109530,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(37-40)% Increases your maximum mana Mana Spent Gained as Ward",
+		"2": "+(37-40)% Mana Spent Gained as Ward",
 		"canRollOn": [
 			0,
 			2
@@ -109548,7 +109548,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(41-44)% Increases your maximum mana Mana Spent Gained as Ward",
+		"2": "+(41-44)% Mana Spent Gained as Ward",
 		"canRollOn": [
 			0,
 			2
@@ -109566,7 +109566,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(45-48)% Increases your maximum mana Mana Spent Gained as Ward",
+		"2": "+(45-48)% Mana Spent Gained as Ward",
 		"canRollOn": [
 			0,
 			2
@@ -109584,7 +109584,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(49-50)% Increases your maximum mana Mana Spent Gained as Ward",
+		"2": "+(49-50)% Mana Spent Gained as Ward",
 		"canRollOn": [
 			0,
 			2
@@ -109602,7 +109602,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(65-75)% Increases your maximum mana Mana Spent Gained as Ward",
+		"2": "+(65-75)% Mana Spent Gained as Ward",
 		"canRollOn": [
 			0,
 			2
@@ -109620,7 +109620,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(20-23) A percentage of the damage you take is dealt to your mana instead of your health. Each point of mana shields 5 health. Mana",
+		"2": "{rounding:Integer}+(20-23) Mana",
 		"canRollOn": [
 			0
 		],
@@ -109637,7 +109637,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(24-27) A percentage of the damage you take is dealt to your mana instead of your health. Each point of mana shields 5 health. Mana",
+		"2": "{rounding:Integer}+(24-27) Mana",
 		"canRollOn": [
 			0
 		],
@@ -109654,7 +109654,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(28-31) A percentage of the damage you take is dealt to your mana instead of your health. Each point of mana shields 5 health. Mana",
+		"2": "{rounding:Integer}+(28-31) Mana",
 		"canRollOn": [
 			0
 		],
@@ -109671,7 +109671,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(32-35) A percentage of the damage you take is dealt to your mana instead of your health. Each point of mana shields 5 health. Mana",
+		"2": "{rounding:Integer}+(32-35) Mana",
 		"canRollOn": [
 			0
 		],
@@ -109688,7 +109688,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(36-39) A percentage of the damage you take is dealt to your mana instead of your health. Each point of mana shields 5 health. Mana",
+		"2": "{rounding:Integer}+(36-39) Mana",
 		"canRollOn": [
 			0
 		],
@@ -109705,7 +109705,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(40-43) A percentage of the damage you take is dealt to your mana instead of your health. Each point of mana shields 5 health. Mana",
+		"2": "{rounding:Integer}+(40-43) Mana",
 		"canRollOn": [
 			0
 		],
@@ -109722,7 +109722,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(44-50) A percentage of the damage you take is dealt to your mana instead of your health. Each point of mana shields 5 health. Mana",
+		"2": "{rounding:Integer}+(44-50) Mana",
 		"canRollOn": [
 			0
 		],
@@ -109739,7 +109739,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(70-75) A percentage of the damage you take is dealt to your mana instead of your health. Each point of mana shields 5 health. Mana",
+		"2": "{rounding:Integer}+(70-75) Mana",
 		"canRollOn": [
 			0
 		],
@@ -109756,7 +109756,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+14% Reduces all physical damage you take. Capped at 75%. Void Resistance",
+		"2": "+14% Void Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -109773,11 +109773,11 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+21% Physical Resistance",
-				"2": "+21% Reduces all physical damage you take. Capped at 75%. Void Resistance"
+				"2": "+21% Void Resistance"
 			},
 			"shield": {
 				"1": "+16% Physical Resistance",
-				"2": "+16% Reduces all physical damage you take. Capped at 75%. Void Resistance"
+				"2": "+16% Void Resistance"
 			}
 		}
 	},
@@ -109792,7 +109792,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+15% Reduces all physical damage you take. Capped at 75%. Void Resistance",
+		"2": "+15% Void Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -109809,11 +109809,11 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+22% Physical Resistance",
-				"2": "+22% Reduces all physical damage you take. Capped at 75%. Void Resistance"
+				"2": "+22% Void Resistance"
 			},
 			"shield": {
 				"1": "+18% Physical Resistance",
-				"2": "+18% Reduces all physical damage you take. Capped at 75%. Void Resistance"
+				"2": "+18% Void Resistance"
 			}
 		}
 	},
@@ -109828,7 +109828,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+16% Reduces all physical damage you take. Capped at 75%. Void Resistance",
+		"2": "+16% Void Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -109845,11 +109845,11 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+24% Physical Resistance",
-				"2": "+24% Reduces all physical damage you take. Capped at 75%. Void Resistance"
+				"2": "+24% Void Resistance"
 			},
 			"shield": {
 				"1": "+19% Physical Resistance",
-				"2": "+19% Reduces all physical damage you take. Capped at 75%. Void Resistance"
+				"2": "+19% Void Resistance"
 			}
 		}
 	},
@@ -109864,7 +109864,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+17% Reduces all physical damage you take. Capped at 75%. Void Resistance",
+		"2": "+17% Void Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -109881,11 +109881,11 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+26% Physical Resistance",
-				"2": "+26% Reduces all physical damage you take. Capped at 75%. Void Resistance"
+				"2": "+26% Void Resistance"
 			},
 			"shield": {
 				"1": "+20% Physical Resistance",
-				"2": "+20% Reduces all physical damage you take. Capped at 75%. Void Resistance"
+				"2": "+20% Void Resistance"
 			}
 		}
 	},
@@ -109900,7 +109900,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+18% Reduces all physical damage you take. Capped at 75%. Void Resistance",
+		"2": "+18% Void Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -109917,11 +109917,11 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+27% Physical Resistance",
-				"2": "+27% Reduces all physical damage you take. Capped at 75%. Void Resistance"
+				"2": "+27% Void Resistance"
 			},
 			"shield": {
 				"1": "+21% Physical Resistance",
-				"2": "+21% Reduces all physical damage you take. Capped at 75%. Void Resistance"
+				"2": "+21% Void Resistance"
 			}
 		}
 	},
@@ -109936,7 +109936,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+19% Reduces all physical damage you take. Capped at 75%. Void Resistance",
+		"2": "+19% Void Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -109953,11 +109953,11 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+29% Physical Resistance",
-				"2": "+29% Reduces all physical damage you take. Capped at 75%. Void Resistance"
+				"2": "+29% Void Resistance"
 			},
 			"shield": {
 				"1": "+22% Physical Resistance",
-				"2": "+22% Reduces all physical damage you take. Capped at 75%. Void Resistance"
+				"2": "+22% Void Resistance"
 			}
 		}
 	},
@@ -109972,7 +109972,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(20-21)% Reduces all physical damage you take. Capped at 75%. Void Resistance",
+		"2": "+(20-21)% Void Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -109989,11 +109989,11 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+(30-32)% Physical Resistance",
-				"2": "+(30-32)% Reduces all physical damage you take. Capped at 75%. Void Resistance"
+				"2": "+(30-32)% Void Resistance"
 			},
 			"shield": {
 				"1": "+(23-25)% Physical Resistance",
-				"2": "+(23-25)% Reduces all physical damage you take. Capped at 75%. Void Resistance"
+				"2": "+(23-25)% Void Resistance"
 			}
 		}
 	},
@@ -110008,7 +110008,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(30-35)% Reduces all physical damage you take. Capped at 75%. Void Resistance",
+		"2": "+(30-35)% Void Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -110025,11 +110025,11 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+(45-52)% Physical Resistance",
-				"2": "+(45-52)% Reduces all physical damage you take. Capped at 75%. Void Resistance"
+				"2": "+(45-52)% Void Resistance"
 			},
 			"shield": {
 				"1": "+(35-41)% Physical Resistance",
-				"2": "+(35-41)% Reduces all physical damage you take. Capped at 75%. Void Resistance"
+				"2": "+(35-41)% Void Resistance"
 			}
 		}
 	},
@@ -110044,7 +110044,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+14% Adds to your fire, cold, and lightning resistances. Necrotic Resistance",
+		"2": "+14% Necrotic Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -110061,11 +110061,11 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+6% Elemental Resistance",
-				"2": "+21% Adds to your fire, cold, and lightning resistances. Necrotic Resistance"
+				"2": "+21% Necrotic Resistance"
 			},
 			"shield": {
 				"1": "+5% Elemental Resistance",
-				"2": "+16% Adds to your fire, cold, and lightning resistances. Necrotic Resistance"
+				"2": "+16% Necrotic Resistance"
 			}
 		}
 	},
@@ -110080,7 +110080,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+15% Adds to your fire, cold, and lightning resistances. Necrotic Resistance",
+		"2": "+15% Necrotic Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -110097,11 +110097,11 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+8% Elemental Resistance",
-				"2": "+22% Adds to your fire, cold, and lightning resistances. Necrotic Resistance"
+				"2": "+22% Necrotic Resistance"
 			},
 			"shield": {
 				"1": "+6% Elemental Resistance",
-				"2": "+18% Adds to your fire, cold, and lightning resistances. Necrotic Resistance"
+				"2": "+18% Necrotic Resistance"
 			}
 		}
 	},
@@ -110116,7 +110116,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+16% Adds to your fire, cold, and lightning resistances. Necrotic Resistance",
+		"2": "+16% Necrotic Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -110133,11 +110133,11 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+8% Elemental Resistance",
-				"2": "+24% Adds to your fire, cold, and lightning resistances. Necrotic Resistance"
+				"2": "+24% Necrotic Resistance"
 			},
 			"shield": {
 				"1": "+6% Elemental Resistance",
-				"2": "+19% Adds to your fire, cold, and lightning resistances. Necrotic Resistance"
+				"2": "+19% Necrotic Resistance"
 			}
 		}
 	},
@@ -110152,7 +110152,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+17% Adds to your fire, cold, and lightning resistances. Necrotic Resistance",
+		"2": "+17% Necrotic Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -110169,11 +110169,11 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+9% Elemental Resistance",
-				"2": "+26% Adds to your fire, cold, and lightning resistances. Necrotic Resistance"
+				"2": "+26% Necrotic Resistance"
 			},
 			"shield": {
 				"1": "+7% Elemental Resistance",
-				"2": "+20% Adds to your fire, cold, and lightning resistances. Necrotic Resistance"
+				"2": "+20% Necrotic Resistance"
 			}
 		}
 	},
@@ -110188,7 +110188,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+18% Adds to your fire, cold, and lightning resistances. Necrotic Resistance",
+		"2": "+18% Necrotic Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -110205,11 +110205,11 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+9% Elemental Resistance",
-				"2": "+27% Adds to your fire, cold, and lightning resistances. Necrotic Resistance"
+				"2": "+27% Necrotic Resistance"
 			},
 			"shield": {
 				"1": "+7% Elemental Resistance",
-				"2": "+21% Adds to your fire, cold, and lightning resistances. Necrotic Resistance"
+				"2": "+21% Necrotic Resistance"
 			}
 		}
 	},
@@ -110224,7 +110224,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+19% Adds to your fire, cold, and lightning resistances. Necrotic Resistance",
+		"2": "+19% Necrotic Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -110241,11 +110241,11 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+11% Elemental Resistance",
-				"2": "+29% Adds to your fire, cold, and lightning resistances. Necrotic Resistance"
+				"2": "+29% Necrotic Resistance"
 			},
 			"shield": {
 				"1": "+8% Elemental Resistance",
-				"2": "+22% Adds to your fire, cold, and lightning resistances. Necrotic Resistance"
+				"2": "+22% Necrotic Resistance"
 			}
 		}
 	},
@@ -110260,7 +110260,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(20-21)% Adds to your fire, cold, and lightning resistances. Necrotic Resistance",
+		"2": "+(20-21)% Necrotic Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -110277,11 +110277,11 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+11% Elemental Resistance",
-				"2": "+(30-32)% Adds to your fire, cold, and lightning resistances. Necrotic Resistance"
+				"2": "+(30-32)% Necrotic Resistance"
 			},
 			"shield": {
 				"1": "+8% Elemental Resistance",
-				"2": "+(23-25)% Adds to your fire, cold, and lightning resistances. Necrotic Resistance"
+				"2": "+(23-25)% Necrotic Resistance"
 			}
 		}
 	},
@@ -110296,7 +110296,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(30-35)% Adds to your fire, cold, and lightning resistances. Necrotic Resistance",
+		"2": "+(30-35)% Necrotic Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -110313,11 +110313,11 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+(45-52)% Elemental Resistance",
-				"2": "+(45-52)% Adds to your fire, cold, and lightning resistances. Necrotic Resistance"
+				"2": "+(45-52)% Necrotic Resistance"
 			},
 			"shield": {
 				"1": "+(35-41)% Elemental Resistance",
-				"2": "+(35-41)% Adds to your fire, cold, and lightning resistances. Necrotic Resistance"
+				"2": "+(35-41)% Necrotic Resistance"
 			}
 		}
 	},
@@ -110332,7 +110332,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+14% Reduces all physical damage you take. Capped at 75%. Poison Resistance",
+		"2": "+14% Poison Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -110349,11 +110349,11 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+21% Physical Resistance",
-				"2": "+21% Reduces all physical damage you take. Capped at 75%. Poison Resistance"
+				"2": "+21% Poison Resistance"
 			},
 			"shield": {
 				"1": "+16% Physical Resistance",
-				"2": "+16% Reduces all physical damage you take. Capped at 75%. Poison Resistance"
+				"2": "+16% Poison Resistance"
 			}
 		}
 	},
@@ -110368,7 +110368,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+15% Reduces all physical damage you take. Capped at 75%. Poison Resistance",
+		"2": "+15% Poison Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -110385,11 +110385,11 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+22% Physical Resistance",
-				"2": "+22% Reduces all physical damage you take. Capped at 75%. Poison Resistance"
+				"2": "+22% Poison Resistance"
 			},
 			"shield": {
 				"1": "+18% Physical Resistance",
-				"2": "+18% Reduces all physical damage you take. Capped at 75%. Poison Resistance"
+				"2": "+18% Poison Resistance"
 			}
 		}
 	},
@@ -110404,7 +110404,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+16% Reduces all physical damage you take. Capped at 75%. Poison Resistance",
+		"2": "+16% Poison Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -110421,11 +110421,11 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+24% Physical Resistance",
-				"2": "+24% Reduces all physical damage you take. Capped at 75%. Poison Resistance"
+				"2": "+24% Poison Resistance"
 			},
 			"shield": {
 				"1": "+19% Physical Resistance",
-				"2": "+19% Reduces all physical damage you take. Capped at 75%. Poison Resistance"
+				"2": "+19% Poison Resistance"
 			}
 		}
 	},
@@ -110440,7 +110440,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+17% Reduces all physical damage you take. Capped at 75%. Poison Resistance",
+		"2": "+17% Poison Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -110457,11 +110457,11 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+26% Physical Resistance",
-				"2": "+26% Reduces all physical damage you take. Capped at 75%. Poison Resistance"
+				"2": "+26% Poison Resistance"
 			},
 			"shield": {
 				"1": "+20% Physical Resistance",
-				"2": "+20% Reduces all physical damage you take. Capped at 75%. Poison Resistance"
+				"2": "+20% Poison Resistance"
 			}
 		}
 	},
@@ -110476,7 +110476,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+18% Reduces all physical damage you take. Capped at 75%. Poison Resistance",
+		"2": "+18% Poison Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -110493,11 +110493,11 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+27% Physical Resistance",
-				"2": "+27% Reduces all physical damage you take. Capped at 75%. Poison Resistance"
+				"2": "+27% Poison Resistance"
 			},
 			"shield": {
 				"1": "+21% Physical Resistance",
-				"2": "+21% Reduces all physical damage you take. Capped at 75%. Poison Resistance"
+				"2": "+21% Poison Resistance"
 			}
 		}
 	},
@@ -110512,7 +110512,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+19% Reduces all physical damage you take. Capped at 75%. Poison Resistance",
+		"2": "+19% Poison Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -110529,11 +110529,11 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+29% Physical Resistance",
-				"2": "+29% Reduces all physical damage you take. Capped at 75%. Poison Resistance"
+				"2": "+29% Poison Resistance"
 			},
 			"shield": {
 				"1": "+22% Physical Resistance",
-				"2": "+22% Reduces all physical damage you take. Capped at 75%. Poison Resistance"
+				"2": "+22% Poison Resistance"
 			}
 		}
 	},
@@ -110548,7 +110548,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(20-21)% Reduces all physical damage you take. Capped at 75%. Poison Resistance",
+		"2": "+(20-21)% Poison Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -110565,11 +110565,11 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+(30-32)% Physical Resistance",
-				"2": "+(30-32)% Reduces all physical damage you take. Capped at 75%. Poison Resistance"
+				"2": "+(30-32)% Poison Resistance"
 			},
 			"shield": {
 				"1": "+(23-25)% Physical Resistance",
-				"2": "+(23-25)% Reduces all physical damage you take. Capped at 75%. Poison Resistance"
+				"2": "+(23-25)% Poison Resistance"
 			}
 		}
 	},
@@ -110584,7 +110584,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(30-35)% Reduces all physical damage you take. Capped at 75%. Poison Resistance",
+		"2": "+(30-35)% Poison Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -110601,11 +110601,11 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+(45-52)% Physical Resistance",
-				"2": "+(45-52)% Reduces all physical damage you take. Capped at 75%. Poison Resistance"
+				"2": "+(45-52)% Poison Resistance"
 			},
 			"shield": {
 				"1": "+(35-41)% Physical Resistance",
-				"2": "+(35-41)% Reduces all physical damage you take. Capped at 75%. Poison Resistance"
+				"2": "+(35-41)% Poison Resistance"
 			}
 		}
 	},
@@ -110620,7 +110620,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+14% Reduces all lightning damage you take. Capped at 75%. Poison Resistance",
+		"2": "+14% Poison Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -110637,11 +110637,11 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+21% Lightning Resistance",
-				"2": "+21% Reduces all lightning damage you take. Capped at 75%. Poison Resistance"
+				"2": "+21% Poison Resistance"
 			},
 			"shield": {
 				"1": "+16% Lightning Resistance",
-				"2": "+16% Reduces all lightning damage you take. Capped at 75%. Poison Resistance"
+				"2": "+16% Poison Resistance"
 			}
 		}
 	},
@@ -110656,7 +110656,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+15% Reduces all lightning damage you take. Capped at 75%. Poison Resistance",
+		"2": "+15% Poison Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -110673,11 +110673,11 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+22% Lightning Resistance",
-				"2": "+22% Reduces all lightning damage you take. Capped at 75%. Poison Resistance"
+				"2": "+22% Poison Resistance"
 			},
 			"shield": {
 				"1": "+18% Lightning Resistance",
-				"2": "+18% Reduces all lightning damage you take. Capped at 75%. Poison Resistance"
+				"2": "+18% Poison Resistance"
 			}
 		}
 	},
@@ -110692,7 +110692,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+16% Reduces all lightning damage you take. Capped at 75%. Poison Resistance",
+		"2": "+16% Poison Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -110709,11 +110709,11 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+24% Lightning Resistance",
-				"2": "+24% Reduces all lightning damage you take. Capped at 75%. Poison Resistance"
+				"2": "+24% Poison Resistance"
 			},
 			"shield": {
 				"1": "+19% Lightning Resistance",
-				"2": "+19% Reduces all lightning damage you take. Capped at 75%. Poison Resistance"
+				"2": "+19% Poison Resistance"
 			}
 		}
 	},
@@ -110728,7 +110728,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+17% Reduces all lightning damage you take. Capped at 75%. Poison Resistance",
+		"2": "+17% Poison Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -110745,11 +110745,11 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+26% Lightning Resistance",
-				"2": "+26% Reduces all lightning damage you take. Capped at 75%. Poison Resistance"
+				"2": "+26% Poison Resistance"
 			},
 			"shield": {
 				"1": "+20% Lightning Resistance",
-				"2": "+20% Reduces all lightning damage you take. Capped at 75%. Poison Resistance"
+				"2": "+20% Poison Resistance"
 			}
 		}
 	},
@@ -110764,7 +110764,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+18% Reduces all lightning damage you take. Capped at 75%. Poison Resistance",
+		"2": "+18% Poison Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -110781,11 +110781,11 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+27% Lightning Resistance",
-				"2": "+27% Reduces all lightning damage you take. Capped at 75%. Poison Resistance"
+				"2": "+27% Poison Resistance"
 			},
 			"shield": {
 				"1": "+21% Lightning Resistance",
-				"2": "+21% Reduces all lightning damage you take. Capped at 75%. Poison Resistance"
+				"2": "+21% Poison Resistance"
 			}
 		}
 	},
@@ -110800,7 +110800,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+19% Reduces all lightning damage you take. Capped at 75%. Poison Resistance",
+		"2": "+19% Poison Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -110817,11 +110817,11 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+29% Lightning Resistance",
-				"2": "+29% Reduces all lightning damage you take. Capped at 75%. Poison Resistance"
+				"2": "+29% Poison Resistance"
 			},
 			"shield": {
 				"1": "+22% Lightning Resistance",
-				"2": "+22% Reduces all lightning damage you take. Capped at 75%. Poison Resistance"
+				"2": "+22% Poison Resistance"
 			}
 		}
 	},
@@ -110836,7 +110836,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(20-21)% Reduces all lightning damage you take. Capped at 75%. Poison Resistance",
+		"2": "+(20-21)% Poison Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -110853,11 +110853,11 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+(30-32)% Lightning Resistance",
-				"2": "+(30-32)% Reduces all lightning damage you take. Capped at 75%. Poison Resistance"
+				"2": "+(30-32)% Poison Resistance"
 			},
 			"shield": {
 				"1": "+(23-25)% Lightning Resistance",
-				"2": "+(23-25)% Reduces all lightning damage you take. Capped at 75%. Poison Resistance"
+				"2": "+(23-25)% Poison Resistance"
 			}
 		}
 	},
@@ -110872,7 +110872,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(30-35)% Reduces all lightning damage you take. Capped at 75%. Poison Resistance",
+		"2": "+(30-35)% Poison Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -110889,11 +110889,11 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+(45-52)% Lightning Resistance",
-				"2": "+(45-52)% Reduces all lightning damage you take. Capped at 75%. Poison Resistance"
+				"2": "+(45-52)% Poison Resistance"
 			},
 			"shield": {
 				"1": "+(35-41)% Lightning Resistance",
-				"2": "+(35-41)% Reduces all lightning damage you take. Capped at 75%. Poison Resistance"
+				"2": "+(35-41)% Poison Resistance"
 			}
 		}
 	},
@@ -110908,7 +110908,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+14% Reduces all cold damage you take. Capped at 75%. Void Resistance",
+		"2": "+14% Void Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -110925,11 +110925,11 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+21% Cold Resistance",
-				"2": "+21% Reduces all cold damage you take. Capped at 75%. Void Resistance"
+				"2": "+21% Void Resistance"
 			},
 			"shield": {
 				"1": "+16% Cold Resistance",
-				"2": "+16% Reduces all cold damage you take. Capped at 75%. Void Resistance"
+				"2": "+16% Void Resistance"
 			}
 		}
 	},
@@ -110944,7 +110944,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+15% Reduces all cold damage you take. Capped at 75%. Void Resistance",
+		"2": "+15% Void Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -110961,11 +110961,11 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+22% Cold Resistance",
-				"2": "+22% Reduces all cold damage you take. Capped at 75%. Void Resistance"
+				"2": "+22% Void Resistance"
 			},
 			"shield": {
 				"1": "+18% Cold Resistance",
-				"2": "+18% Reduces all cold damage you take. Capped at 75%. Void Resistance"
+				"2": "+18% Void Resistance"
 			}
 		}
 	},
@@ -110980,7 +110980,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+16% Reduces all cold damage you take. Capped at 75%. Void Resistance",
+		"2": "+16% Void Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -110997,11 +110997,11 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+24% Cold Resistance",
-				"2": "+24% Reduces all cold damage you take. Capped at 75%. Void Resistance"
+				"2": "+24% Void Resistance"
 			},
 			"shield": {
 				"1": "+19% Cold Resistance",
-				"2": "+19% Reduces all cold damage you take. Capped at 75%. Void Resistance"
+				"2": "+19% Void Resistance"
 			}
 		}
 	},
@@ -111016,7 +111016,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+17% Reduces all cold damage you take. Capped at 75%. Void Resistance",
+		"2": "+17% Void Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -111033,11 +111033,11 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+26% Cold Resistance",
-				"2": "+26% Reduces all cold damage you take. Capped at 75%. Void Resistance"
+				"2": "+26% Void Resistance"
 			},
 			"shield": {
 				"1": "+20% Cold Resistance",
-				"2": "+20% Reduces all cold damage you take. Capped at 75%. Void Resistance"
+				"2": "+20% Void Resistance"
 			}
 		}
 	},
@@ -111052,7 +111052,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+18% Reduces all cold damage you take. Capped at 75%. Void Resistance",
+		"2": "+18% Void Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -111069,11 +111069,11 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+27% Cold Resistance",
-				"2": "+27% Reduces all cold damage you take. Capped at 75%. Void Resistance"
+				"2": "+27% Void Resistance"
 			},
 			"shield": {
 				"1": "+21% Cold Resistance",
-				"2": "+21% Reduces all cold damage you take. Capped at 75%. Void Resistance"
+				"2": "+21% Void Resistance"
 			}
 		}
 	},
@@ -111088,7 +111088,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+19% Reduces all cold damage you take. Capped at 75%. Void Resistance",
+		"2": "+19% Void Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -111105,11 +111105,11 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+29% Cold Resistance",
-				"2": "+29% Reduces all cold damage you take. Capped at 75%. Void Resistance"
+				"2": "+29% Void Resistance"
 			},
 			"shield": {
 				"1": "+22% Cold Resistance",
-				"2": "+22% Reduces all cold damage you take. Capped at 75%. Void Resistance"
+				"2": "+22% Void Resistance"
 			}
 		}
 	},
@@ -111124,7 +111124,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(20-21)% Reduces all cold damage you take. Capped at 75%. Void Resistance",
+		"2": "+(20-21)% Void Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -111141,11 +111141,11 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+(30-32)% Cold Resistance",
-				"2": "+(30-32)% Reduces all cold damage you take. Capped at 75%. Void Resistance"
+				"2": "+(30-32)% Void Resistance"
 			},
 			"shield": {
 				"1": "+(23-25)% Cold Resistance",
-				"2": "+(23-25)% Reduces all cold damage you take. Capped at 75%. Void Resistance"
+				"2": "+(23-25)% Void Resistance"
 			}
 		}
 	},
@@ -111160,7 +111160,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(30-35)% Reduces all cold damage you take. Capped at 75%. Void Resistance",
+		"2": "+(30-35)% Void Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -111177,11 +111177,11 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+(45-52)% Cold Resistance",
-				"2": "+(45-52)% Reduces all cold damage you take. Capped at 75%. Void Resistance"
+				"2": "+(45-52)% Void Resistance"
 			},
 			"shield": {
 				"1": "+(35-41)% Cold Resistance",
-				"2": "+(35-41)% Reduces all cold damage you take. Capped at 75%. Void Resistance"
+				"2": "+(35-41)% Void Resistance"
 			}
 		}
 	},
@@ -111196,7 +111196,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+14% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance",
+		"2": "+14% Necrotic Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -111213,11 +111213,11 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+21% Fire Resistance",
-				"2": "+21% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance"
+				"2": "+21% Necrotic Resistance"
 			},
 			"shield": {
 				"1": "+16% Fire Resistance",
-				"2": "+16% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance"
+				"2": "+16% Necrotic Resistance"
 			}
 		}
 	},
@@ -111232,7 +111232,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+15% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance",
+		"2": "+15% Necrotic Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -111249,11 +111249,11 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+22% Fire Resistance",
-				"2": "+22% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance"
+				"2": "+22% Necrotic Resistance"
 			},
 			"shield": {
 				"1": "+18% Fire Resistance",
-				"2": "+18% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance"
+				"2": "+18% Necrotic Resistance"
 			}
 		}
 	},
@@ -111268,7 +111268,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+16% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance",
+		"2": "+16% Necrotic Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -111285,11 +111285,11 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+24% Fire Resistance",
-				"2": "+24% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance"
+				"2": "+24% Necrotic Resistance"
 			},
 			"shield": {
 				"1": "+19% Fire Resistance",
-				"2": "+19% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance"
+				"2": "+19% Necrotic Resistance"
 			}
 		}
 	},
@@ -111304,7 +111304,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+17% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance",
+		"2": "+17% Necrotic Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -111321,11 +111321,11 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+26% Fire Resistance",
-				"2": "+26% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance"
+				"2": "+26% Necrotic Resistance"
 			},
 			"shield": {
 				"1": "+20% Fire Resistance",
-				"2": "+20% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance"
+				"2": "+20% Necrotic Resistance"
 			}
 		}
 	},
@@ -111340,7 +111340,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+18% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance",
+		"2": "+18% Necrotic Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -111357,11 +111357,11 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+27% Fire Resistance",
-				"2": "+27% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance"
+				"2": "+27% Necrotic Resistance"
 			},
 			"shield": {
 				"1": "+21% Fire Resistance",
-				"2": "+21% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance"
+				"2": "+21% Necrotic Resistance"
 			}
 		}
 	},
@@ -111376,7 +111376,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+19% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance",
+		"2": "+19% Necrotic Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -111393,11 +111393,11 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+29% Fire Resistance",
-				"2": "+29% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance"
+				"2": "+29% Necrotic Resistance"
 			},
 			"shield": {
 				"1": "+22% Fire Resistance",
-				"2": "+22% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance"
+				"2": "+22% Necrotic Resistance"
 			}
 		}
 	},
@@ -111412,7 +111412,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(20-21)% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance",
+		"2": "+(20-21)% Necrotic Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -111429,11 +111429,11 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+(30-32)% Fire Resistance",
-				"2": "+(30-32)% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance"
+				"2": "+(30-32)% Necrotic Resistance"
 			},
 			"shield": {
 				"1": "+(23-25)% Fire Resistance",
-				"2": "+(23-25)% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance"
+				"2": "+(23-25)% Necrotic Resistance"
 			}
 		}
 	},
@@ -111448,7 +111448,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(30-35)% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance",
+		"2": "+(30-35)% Necrotic Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -111465,11 +111465,11 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+(45-52)% Fire Resistance",
-				"2": "+(45-52)% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance"
+				"2": "+(45-52)% Necrotic Resistance"
 			},
 			"shield": {
 				"1": "+(35-41)% Fire Resistance",
-				"2": "+(35-41)% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance"
+				"2": "+(35-41)% Necrotic Resistance"
 			}
 		}
 	},
@@ -111484,7 +111484,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": -0.83,
-		"2": "+0.8% Adds to your physical, fire, cold, lightning, necrotic, void, and poison resistances. Minion All Resistances",
+		"2": "+0.8% Minion All Resistances",
 		"canRollOn": [
 			25,
 			26,
@@ -111509,7 +111509,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+1 Increases the health restored by healing skills Health per Attunement",
+		"2": "{rounding:Integer}+1 Health per Attunement",
 		"canRollOn": [
 			22
 		],
@@ -111526,7 +111526,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+1 Increases the health restored by healing skills Health per Attunement",
+		"2": "{rounding:Integer}+1 Health per Attunement",
 		"canRollOn": [
 			22
 		],
@@ -111543,7 +111543,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+1 Increases the health restored by healing skills Health per Attunement",
+		"2": "{rounding:Integer}+1 Health per Attunement",
 		"canRollOn": [
 			22
 		],
@@ -111560,7 +111560,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+1 Increases the health restored by healing skills Health per Attunement",
+		"2": "{rounding:Integer}+1 Health per Attunement",
 		"canRollOn": [
 			22
 		],
@@ -111577,7 +111577,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+1 Increases the health restored by healing skills Health per Attunement",
+		"2": "{rounding:Integer}+1 Health per Attunement",
 		"canRollOn": [
 			22
 		],
@@ -111594,7 +111594,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+1 Increases the health restored by healing skills Health per Attunement",
+		"2": "{rounding:Integer}+1 Health per Attunement",
 		"canRollOn": [
 			22
 		],
@@ -111611,7 +111611,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+1 Increases the health restored by healing skills Health per Attunement",
+		"2": "{rounding:Integer}+1 Health per Attunement",
 		"canRollOn": [
 			22
 		],
@@ -111628,7 +111628,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+2 Increases the health restored by healing skills Health per Attunement",
+		"2": "{rounding:Integer}+2 Health per Attunement",
 		"canRollOn": [
 			22
 		],
@@ -111645,7 +111645,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+8% Increases the damage over time you deal Damage Over Time Damage Leeched as Health",
+		"2": "+8% Damage Over Time Damage Leeched as Health",
 		"canRollOn": [
 			21,
 			22
@@ -111663,7 +111663,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+9% Increases the damage over time you deal Damage Over Time Damage Leeched as Health",
+		"2": "+9% Damage Over Time Damage Leeched as Health",
 		"canRollOn": [
 			21,
 			22
@@ -111681,7 +111681,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+10% Increases the damage over time you deal Damage Over Time Damage Leeched as Health",
+		"2": "+10% Damage Over Time Damage Leeched as Health",
 		"canRollOn": [
 			21,
 			22
@@ -111699,7 +111699,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+11% Increases the damage over time you deal Damage Over Time Damage Leeched as Health",
+		"2": "+11% Damage Over Time Damage Leeched as Health",
 		"canRollOn": [
 			21,
 			22
@@ -111717,7 +111717,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+12% Increases the damage over time you deal Damage Over Time Damage Leeched as Health",
+		"2": "+12% Damage Over Time Damage Leeched as Health",
 		"canRollOn": [
 			21,
 			22
@@ -111735,7 +111735,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+13% Increases the damage over time you deal Damage Over Time Damage Leeched as Health",
+		"2": "+13% Damage Over Time Damage Leeched as Health",
 		"canRollOn": [
 			21,
 			22
@@ -111753,7 +111753,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+14% Increases the damage over time you deal Damage Over Time Damage Leeched as Health",
+		"2": "+14% Damage Over Time Damage Leeched as Health",
 		"canRollOn": [
 			21,
 			22
@@ -111771,7 +111771,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(18-20)% Increases the damage over time you deal Damage Over Time Damage Leeched as Health",
+		"2": "+(18-20)% Damage Over Time Damage Leeched as Health",
 		"canRollOn": [
 			21,
 			22
@@ -111789,7 +111789,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+1% Increases the damage dealt by your critical strikes Increased Critical Strike Chance per Dexterity",
+		"2": "+1% Increased Critical Strike Chance per Dexterity",
 		"canRollOn": [
 			21,
 			22
@@ -111807,7 +111807,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+1% Increases the damage dealt by your critical strikes Increased Critical Strike Chance per Dexterity",
+		"2": "+1% Increased Critical Strike Chance per Dexterity",
 		"canRollOn": [
 			21,
 			22
@@ -111825,7 +111825,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+1% Increases the damage dealt by your critical strikes Increased Critical Strike Chance per Dexterity",
+		"2": "+1% Increased Critical Strike Chance per Dexterity",
 		"canRollOn": [
 			21,
 			22
@@ -111843,7 +111843,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+1% Increases the damage dealt by your critical strikes Increased Critical Strike Chance per Dexterity",
+		"2": "+1% Increased Critical Strike Chance per Dexterity",
 		"canRollOn": [
 			21,
 			22
@@ -111861,7 +111861,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+1% Increases the damage dealt by your critical strikes Increased Critical Strike Chance per Dexterity",
+		"2": "+1% Increased Critical Strike Chance per Dexterity",
 		"canRollOn": [
 			21,
 			22
@@ -111879,7 +111879,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+1% Increases the damage dealt by your critical strikes Increased Critical Strike Chance per Dexterity",
+		"2": "+1% Increased Critical Strike Chance per Dexterity",
 		"canRollOn": [
 			21,
 			22
@@ -111897,7 +111897,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+1% Increases the damage dealt by your critical strikes Increased Critical Strike Chance per Dexterity",
+		"2": "+1% Increased Critical Strike Chance per Dexterity",
 		"canRollOn": [
 			21,
 			22
@@ -111915,7 +111915,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+2% Increases the damage dealt by your critical strikes Increased Critical Strike Chance per Dexterity",
+		"2": "+2% Increased Critical Strike Chance per Dexterity",
 		"canRollOn": [
 			21,
 			22
@@ -111933,7 +111933,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(15-17)% Increases the damage dealt by your critical strikes Critical Strike Multiplier against Frozen Enemies",
+		"2": "+(15-17)% Critical Strike Multiplier against Frozen Enemies",
 		"canRollOn": [
 			9,
 			5,
@@ -111963,7 +111963,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(18-20)% Increases the damage dealt by your critical strikes Critical Strike Multiplier against Frozen Enemies",
+		"2": "+(18-20)% Critical Strike Multiplier against Frozen Enemies",
 		"canRollOn": [
 			9,
 			5,
@@ -111993,7 +111993,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(21-23)% Increases the damage dealt by your critical strikes Critical Strike Multiplier against Frozen Enemies",
+		"2": "+(21-23)% Critical Strike Multiplier against Frozen Enemies",
 		"canRollOn": [
 			9,
 			5,
@@ -112023,7 +112023,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(24-26)% Increases the damage dealt by your critical strikes Critical Strike Multiplier against Frozen Enemies",
+		"2": "+(24-26)% Critical Strike Multiplier against Frozen Enemies",
 		"canRollOn": [
 			9,
 			5,
@@ -112053,7 +112053,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(27-29)% Increases the damage dealt by your critical strikes Critical Strike Multiplier against Frozen Enemies",
+		"2": "+(27-29)% Critical Strike Multiplier against Frozen Enemies",
 		"canRollOn": [
 			9,
 			5,
@@ -112083,7 +112083,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(30-32)% Increases the damage dealt by your critical strikes Critical Strike Multiplier against Frozen Enemies",
+		"2": "+(30-32)% Critical Strike Multiplier against Frozen Enemies",
 		"canRollOn": [
 			9,
 			5,
@@ -112113,7 +112113,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(33-35)% Increases the damage dealt by your critical strikes Critical Strike Multiplier against Frozen Enemies",
+		"2": "+(33-35)% Critical Strike Multiplier against Frozen Enemies",
 		"canRollOn": [
 			9,
 			5,
@@ -112143,7 +112143,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(43-60)% Increases the damage dealt by your critical strikes Critical Strike Multiplier against Frozen Enemies",
+		"2": "+(43-60)% Critical Strike Multiplier against Frozen Enemies",
 		"canRollOn": [
 			9,
 			5,
@@ -112173,7 +112173,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+14% Increases your chance to freeze for each stack of chill on the target. Multiplicative with other modifiers. Increased Chill Duration",
+		"2": "+14% Increased Chill Duration",
 		"canRollOn": [
 			21
 		],
@@ -112190,7 +112190,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+15% Increases your chance to freeze for each stack of chill on the target. Multiplicative with other modifiers. Increased Chill Duration",
+		"2": "+15% Increased Chill Duration",
 		"canRollOn": [
 			21
 		],
@@ -112207,7 +112207,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+16% Increases your chance to freeze for each stack of chill on the target. Multiplicative with other modifiers. Increased Chill Duration",
+		"2": "+16% Increased Chill Duration",
 		"canRollOn": [
 			21
 		],
@@ -112224,7 +112224,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+17% Increases your chance to freeze for each stack of chill on the target. Multiplicative with other modifiers. Increased Chill Duration",
+		"2": "+17% Increased Chill Duration",
 		"canRollOn": [
 			21
 		],
@@ -112241,7 +112241,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+18% Increases your chance to freeze for each stack of chill on the target. Multiplicative with other modifiers. Increased Chill Duration",
+		"2": "+18% Increased Chill Duration",
 		"canRollOn": [
 			21
 		],
@@ -112258,7 +112258,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+19% Increases your chance to freeze for each stack of chill on the target. Multiplicative with other modifiers. Increased Chill Duration",
+		"2": "+19% Increased Chill Duration",
 		"canRollOn": [
 			21
 		],
@@ -112275,7 +112275,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(20-23)% Increases your chance to freeze for each stack of chill on the target. Multiplicative with other modifiers. Increased Chill Duration",
+		"2": "+(20-23)% Increased Chill Duration",
 		"canRollOn": [
 			21
 		],
@@ -112292,7 +112292,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(26-30)% Increases your chance to freeze for each stack of chill on the target. Multiplicative with other modifiers. Increased Chill Duration",
+		"2": "+(26-30)% Increased Chill Duration",
 		"canRollOn": [
 			21
 		],
@@ -112309,7 +112309,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+2 Each point of intelligence grants 2% ward retention and improves skills that rely on carefully studied magic Ward Decay Threshold per Intelligence",
+		"2": "{rounding:Integer}+2 Ward Decay Threshold per Intelligence",
 		"canRollOn": [
 			19
 		],
@@ -112326,7 +112326,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+2 Each point of intelligence grants 2% ward retention and improves skills that rely on carefully studied magic Ward Decay Threshold per Intelligence",
+		"2": "{rounding:Integer}+2 Ward Decay Threshold per Intelligence",
 		"canRollOn": [
 			19
 		],
@@ -112343,7 +112343,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+3 Each point of intelligence grants 2% ward retention and improves skills that rely on carefully studied magic Ward Decay Threshold per Intelligence",
+		"2": "{rounding:Integer}+3 Ward Decay Threshold per Intelligence",
 		"canRollOn": [
 			19
 		],
@@ -112360,7 +112360,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+3 Each point of intelligence grants 2% ward retention and improves skills that rely on carefully studied magic Ward Decay Threshold per Intelligence",
+		"2": "{rounding:Integer}+3 Ward Decay Threshold per Intelligence",
 		"canRollOn": [
 			19
 		],
@@ -112377,7 +112377,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+3 Each point of intelligence grants 2% ward retention and improves skills that rely on carefully studied magic Ward Decay Threshold per Intelligence",
+		"2": "{rounding:Integer}+3 Ward Decay Threshold per Intelligence",
 		"canRollOn": [
 			19
 		],
@@ -112394,7 +112394,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+4 Each point of intelligence grants 2% ward retention and improves skills that rely on carefully studied magic Ward Decay Threshold per Intelligence",
+		"2": "{rounding:Integer}+4 Ward Decay Threshold per Intelligence",
 		"canRollOn": [
 			19
 		],
@@ -112411,7 +112411,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+4 Each point of intelligence grants 2% ward retention and improves skills that rely on carefully studied magic Ward Decay Threshold per Intelligence",
+		"2": "{rounding:Integer}+4 Ward Decay Threshold per Intelligence",
 		"canRollOn": [
 			19
 		],
@@ -112428,7 +112428,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+(6-7) Each point of intelligence grants 2% ward retention and improves skills that rely on carefully studied magic Ward Decay Threshold per Intelligence",
+		"2": "{rounding:Integer}+(6-7) Ward Decay Threshold per Intelligence",
 		"canRollOn": [
 			19
 		],
@@ -112853,7 +112853,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+(2-2.3)% Block Effectiveness reduces damage taken for hits you block. Physical Damage Taken on Block - more Reduces the damage you take when you block a hit. Multiplicative with other modifiers.",
+		"2": "+(2-2.3)% Physical Damage Taken on Block - more Reduces the damage you take when you block a hit. Multiplicative with other modifiers.",
 		"canRollOn": [
 			18
 		],
@@ -112870,7 +112870,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+(2.4-2.7)% Block Effectiveness reduces damage taken for hits you block. Physical Damage Taken on Block - more Reduces the damage you take when you block a hit. Multiplicative with other modifiers.",
+		"2": "+(2.4-2.7)% Physical Damage Taken on Block - more Reduces the damage you take when you block a hit. Multiplicative with other modifiers.",
 		"canRollOn": [
 			18
 		],
@@ -112887,7 +112887,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+(2.8-3.1)% Block Effectiveness reduces damage taken for hits you block. Physical Damage Taken on Block - more Reduces the damage you take when you block a hit. Multiplicative with other modifiers.",
+		"2": "+(2.8-3.1)% Physical Damage Taken on Block - more Reduces the damage you take when you block a hit. Multiplicative with other modifiers.",
 		"canRollOn": [
 			18
 		],
@@ -112904,7 +112904,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+(3.2-3.7)% Block Effectiveness reduces damage taken for hits you block. Physical Damage Taken on Block - more Reduces the damage you take when you block a hit. Multiplicative with other modifiers.",
+		"2": "+(3.2-3.7)% Physical Damage Taken on Block - more Reduces the damage you take when you block a hit. Multiplicative with other modifiers.",
 		"canRollOn": [
 			18
 		],
@@ -112921,7 +112921,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+(3.8-4.1)% Block Effectiveness reduces damage taken for hits you block. Physical Damage Taken on Block - more Reduces the damage you take when you block a hit. Multiplicative with other modifiers.",
+		"2": "+(3.8-4.1)% Physical Damage Taken on Block - more Reduces the damage you take when you block a hit. Multiplicative with other modifiers.",
 		"canRollOn": [
 			18
 		],
@@ -112938,7 +112938,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+(4.2-4.5)% Block Effectiveness reduces damage taken for hits you block. Physical Damage Taken on Block - more Reduces the damage you take when you block a hit. Multiplicative with other modifiers.",
+		"2": "+(4.2-4.5)% Physical Damage Taken on Block - more Reduces the damage you take when you block a hit. Multiplicative with other modifiers.",
 		"canRollOn": [
 			18
 		],
@@ -112955,7 +112955,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+(4.6-5)% Block Effectiveness reduces damage taken for hits you block. Physical Damage Taken on Block - more Reduces the damage you take when you block a hit. Multiplicative with other modifiers.",
+		"2": "+(4.6-5)% Physical Damage Taken on Block - more Reduces the damage you take when you block a hit. Multiplicative with other modifiers.",
 		"canRollOn": [
 			18
 		],
@@ -112972,7 +112972,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+(8-10)% Block Effectiveness reduces damage taken for hits you block. Physical Damage Taken on Block - more Reduces the damage you take when you block a hit. Multiplicative with other modifiers.",
+		"2": "+(8-10)% Physical Damage Taken on Block - more Reduces the damage you take when you block a hit. Multiplicative with other modifiers.",
 		"canRollOn": [
 			18
 		],
@@ -114509,7 +114509,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+1% Block Effectiveness reduces damage taken for hits you block. Block Chance",
+		"2": "+1% Block Chance",
 		"canRollOn": [
 			31,
 			32
