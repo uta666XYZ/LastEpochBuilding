@@ -110326,7 +110326,7 @@
 		"affixName": "Apiarist's Smoker Reforged",
 		"modName": "Apiarist's Smoker Reforged",
 		"affix": "Apiarist's Smoker Reforged",
-		"1": "{rounding:Integer}+-1 Damage Over Time Taken - more Reduces the damage you take from damage over time (multiplicative with other modifiers) Movement Speed",
+		"1": "{rounding:Integer}+-1 Damage Over Time Taken - more",
 		"level": 0,
 		"statOrderKey": 954,
 		"statOrder": [
@@ -110335,7 +110335,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+(2-4)% Increases how quickly you can run",
+		"2": "+(2-4)% Movement Speed",
 		"canRollOn": [
 			19
 		],
@@ -110345,7 +110345,7 @@
 		"affixName": "Apiarist's Smoker Reforged",
 		"modName": "Apiarist's Smoker Reforged",
 		"affix": "Apiarist's Smoker Reforged",
-		"1": "{rounding:Integer}+-1 Damage Over Time Taken - more Reduces the damage you take from damage over time (multiplicative with other modifiers) Movement Speed",
+		"1": "{rounding:Integer}+-1 Damage Over Time Taken - more",
 		"level": 0,
 		"statOrderKey": 954,
 		"statOrder": [
@@ -110354,7 +110354,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+(5-7)% Increases how quickly you can run",
+		"2": "+(5-7)% Movement Speed",
 		"canRollOn": [
 			19
 		],
@@ -110364,7 +110364,7 @@
 		"affixName": "Apiarist's Smoker Reforged",
 		"modName": "Apiarist's Smoker Reforged",
 		"affix": "Apiarist's Smoker Reforged",
-		"1": "{rounding:Integer}+-1 Damage Over Time Taken - more Reduces the damage you take from damage over time (multiplicative with other modifiers) Movement Speed",
+		"1": "{rounding:Integer}+-1 Damage Over Time Taken - more",
 		"level": 0,
 		"statOrderKey": 954,
 		"statOrder": [
@@ -110373,7 +110373,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+(8-10)% Increases how quickly you can run",
+		"2": "+(8-10)% Movement Speed",
 		"canRollOn": [
 			19
 		],
@@ -110383,7 +110383,7 @@
 		"affixName": "Apiarist's Smoker Reforged",
 		"modName": "Apiarist's Smoker Reforged",
 		"affix": "Apiarist's Smoker Reforged",
-		"1": "{rounding:Integer}+-1 Damage Over Time Taken - more Reduces the damage you take from damage over time (multiplicative with other modifiers) Movement Speed",
+		"1": "{rounding:Integer}+-1 Damage Over Time Taken - more",
 		"level": 0,
 		"statOrderKey": 954,
 		"statOrder": [
@@ -110392,7 +110392,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+(11-14)% Increases how quickly you can run",
+		"2": "+(11-14)% Movement Speed",
 		"canRollOn": [
 			19
 		],
@@ -110402,7 +110402,7 @@
 		"affixName": "Apiarist's Smoker Reforged",
 		"modName": "Apiarist's Smoker Reforged",
 		"affix": "Apiarist's Smoker Reforged",
-		"1": "{rounding:Integer}+-1 Damage Over Time Taken - more Reduces the damage you take from damage over time (multiplicative with other modifiers) Movement Speed",
+		"1": "{rounding:Integer}+-1 Damage Over Time Taken - more",
 		"level": 0,
 		"statOrderKey": 954,
 		"statOrder": [
@@ -110411,7 +110411,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+(15-20)% Increases how quickly you can run",
+		"2": "+(15-20)% Movement Speed",
 		"canRollOn": [
 			19
 		],
@@ -110421,7 +110421,7 @@
 		"affixName": "Apiarist's Smoker Reforged",
 		"modName": "Apiarist's Smoker Reforged",
 		"affix": "Apiarist's Smoker Reforged",
-		"1": "{rounding:Integer}+-1 Damage Over Time Taken - more Reduces the damage you take from damage over time (multiplicative with other modifiers) Movement Speed",
+		"1": "{rounding:Integer}+-1 Damage Over Time Taken - more",
 		"level": 0,
 		"statOrderKey": 954,
 		"statOrder": [
@@ -110430,7 +110430,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+(28-33)% Increases how quickly you can run",
+		"2": "+(28-33)% Movement Speed",
 		"canRollOn": [
 			19
 		],
@@ -110440,7 +110440,7 @@
 		"affixName": "Apiarist's Smoker Reforged",
 		"modName": "Apiarist's Smoker Reforged",
 		"affix": "Apiarist's Smoker Reforged",
-		"1": "{rounding:Integer}+-1 Damage Over Time Taken - more Reduces the damage you take from damage over time (multiplicative with other modifiers) Movement Speed",
+		"1": "{rounding:Integer}+-1 Damage Over Time Taken - more",
 		"level": 0,
 		"statOrderKey": 954,
 		"statOrder": [
@@ -110449,7 +110449,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+(34-40)% Increases how quickly you can run",
+		"2": "+(34-40)% Movement Speed",
 		"canRollOn": [
 			19
 		],
@@ -110459,7 +110459,7 @@
 		"affixName": "Apiarist's Smoker Reforged",
 		"modName": "Apiarist's Smoker Reforged",
 		"affix": "Apiarist's Smoker Reforged",
-		"1": "{rounding:Integer}+-1 Damage Over Time Taken - more Reduces the damage you take from damage over time (multiplicative with other modifiers) Movement Speed",
+		"1": "{rounding:Integer}+-1 Damage Over Time Taken - more",
 		"level": 0,
 		"statOrderKey": 954,
 		"statOrder": [
@@ -110468,7 +110468,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+(50-60)% Increases how quickly you can run",
+		"2": "+(50-60)% Movement Speed",
 		"canRollOn": [
 			19
 		],
