@@ -21673,7 +21673,7 @@
 		"affixName": "Increased Bleed Duration ",
 		"modName": "Wounding",
 		"affix": "Wounding",
-		"1": "(10-40)% Increased Bleed Duration ",
+		"1": "(10-40)% Increased Bleed Duration",
 		"level": 0,
 		"statOrderKey": 128,
 		"statOrder": [
@@ -22292,8 +22292,8 @@
 		"affixName": "Bleed Duration For You And Your Minions",
 		"modName": "Gouging",
 		"affix": "Gouging",
-		"1": "(7-25)% Increased Bleed Duration ",
-		"2": "(7-20)% Increased Bleed Duration for Minions ",
+		"1": "(7-25)% Increased Bleed Duration",
+		"2": "(7-20)% Increased Bleed Duration for Minions",
 		"level": 0,
 		"statOrderKey": 161,
 		"statOrder": [
@@ -22404,8 +22404,8 @@
 		"affixName": "Ignite And Spreading Flames Duration",
 		"modName": "Wildfire",
 		"affix": "Wildfire",
-		"1": "(7-25)% Increased Ignite Duration ",
-		"2": "(7-25)% Increased Spreading Flames Duration ",
+		"1": "(7-25)% Increased Ignite Duration",
+		"2": "(7-25)% Increased Spreading Flames Duration",
 		"level": 0,
 		"statOrderKey": 167,
 		"statOrder": [
@@ -22544,7 +22544,7 @@
 		"affixName": "Frostbite Duration",
 		"modName": "Frigid",
 		"affix": "Frigid",
-		"1": "(15-36)% Increased Frostbite Duration ",
+		"1": "(15-36)% Increased Frostbite Duration",
 		"level": 0,
 		"statOrderKey": 174,
 		"statOrder": [
@@ -22692,7 +22692,7 @@
 		"affixName": "Fire Penetration with Ignite ",
 		"modName": "Searing",
 		"affix": "Searing",
-		"1": "+(9-16)% Fire Penetration with Ignite ",
+		"1": "+(9-16)% Fire Penetration with Ignite",
 		"level": 0,
 		"statOrderKey": 182,
 		"statOrder": [
@@ -22710,7 +22710,7 @@
 		"affixName": "Cold Penetration with Frostbite ",
 		"modName": "Bitter",
 		"affix": "Bitter",
-		"1": "+(13-35)% Cold Penetration with Frostbite ",
+		"1": "+(13-35)% Cold Penetration with Frostbite",
 		"level": 0,
 		"statOrderKey": 183,
 		"statOrder": [
@@ -22728,7 +22728,7 @@
 		"affixName": "Increased Shock Duration ",
 		"modName": "Electrifying",
 		"affix": "Electrifying",
-		"1": "(6-15)% Increased Shock Duration ",
+		"1": "(6-15)% Increased Shock Duration",
 		"level": 0,
 		"statOrderKey": 184,
 		"statOrder": [
@@ -23190,7 +23190,7 @@
 		"affixName": "Increased Time Rot Duration",
 		"modName": "Deteriorated",
 		"affix": "Deteriorated",
-		"1": "(15-40)% Increased Time Rot Duration ",
+		"1": "(15-40)% Increased Time Rot Duration",
 		"level": 0,
 		"statOrderKey": 201,
 		"statOrder": [
@@ -24704,7 +24704,7 @@
 		"affixName": "Abyssal Decay Duration",
 		"modName": "Deep",
 		"affix": "Deep",
-		"1": "(12-24)% increased Increased Abyssal Decay Duration ",
+		"1": "(12-24)% increased Increased Abyssal Decay Duration",
 		"level": 0,
 		"statOrderKey": 283,
 		"statOrder": [
@@ -24859,7 +24859,7 @@
 		"modName": "Scourging",
 		"affix": "Scourging",
 		"1": "+(9-25)% Chance to inflict Plague on Hit",
-		"2": "+(9-25)% Poison Penetration with Plague ",
+		"2": "+(9-25)% Poison Penetration with Plague",
 		"level": 0,
 		"statOrderKey": 291,
 		"statOrder": [
@@ -27332,7 +27332,7 @@
 		"affixName": "Cold Penetration with Frostbite ",
 		"modName": "Mage's",
 		"affix": "Cold Penetration with Frostbite ",
-		"1": "+(20-21)% Cold Penetration with Frostbite ",
+		"1": "+(20-21)% Cold Penetration with Frostbite",
 		"level": 34,
 		"statOrderKey": 339,
 		"statOrder": [
@@ -27356,7 +27356,7 @@
 		"affixName": "Cold Penetration with Frostbite ",
 		"modName": "Mage's",
 		"affix": "Cold Penetration with Frostbite ",
-		"1": "+(22-23)% Cold Penetration with Frostbite ",
+		"1": "+(22-23)% Cold Penetration with Frostbite",
 		"level": 34,
 		"statOrderKey": 339,
 		"statOrder": [
@@ -27380,7 +27380,7 @@
 		"affixName": "Cold Penetration with Frostbite ",
 		"modName": "Mage's",
 		"affix": "Cold Penetration with Frostbite ",
-		"1": "+(24-25)% Cold Penetration with Frostbite ",
+		"1": "+(24-25)% Cold Penetration with Frostbite",
 		"level": 34,
 		"statOrderKey": 339,
 		"statOrder": [
@@ -27404,7 +27404,7 @@
 		"affixName": "Cold Penetration with Frostbite ",
 		"modName": "Mage's",
 		"affix": "Cold Penetration with Frostbite ",
-		"1": "+(26-28)% Cold Penetration with Frostbite ",
+		"1": "+(26-28)% Cold Penetration with Frostbite",
 		"level": 34,
 		"statOrderKey": 339,
 		"statOrder": [
@@ -27428,7 +27428,7 @@
 		"affixName": "Cold Penetration with Frostbite ",
 		"modName": "Mage's",
 		"affix": "Cold Penetration with Frostbite ",
-		"1": "+(29-40)% Cold Penetration with Frostbite ",
+		"1": "+(29-40)% Cold Penetration with Frostbite",
 		"level": 34,
 		"statOrderKey": 339,
 		"statOrder": [
@@ -27452,7 +27452,7 @@
 		"affixName": "Cold Penetration with Frostbite ",
 		"modName": "Mage's",
 		"affix": "Cold Penetration with Frostbite ",
-		"1": "+(50-60)% Cold Penetration with Frostbite ",
+		"1": "+(50-60)% Cold Penetration with Frostbite",
 		"level": 34,
 		"statOrderKey": 339,
 		"statOrder": [
@@ -27476,7 +27476,7 @@
 		"affixName": "Cold Penetration with Frostbite ",
 		"modName": "Mage's",
 		"affix": "Cold Penetration with Frostbite ",
-		"1": "+(61-80)% Cold Penetration with Frostbite ",
+		"1": "+(61-80)% Cold Penetration with Frostbite",
 		"level": 34,
 		"statOrderKey": 339,
 		"statOrder": [
@@ -27500,7 +27500,7 @@
 		"affixName": "Cold Penetration with Frostbite ",
 		"modName": "Mage's",
 		"affix": "Cold Penetration with Frostbite ",
-		"1": "+(128-160)% Cold Penetration with Frostbite ",
+		"1": "+(128-160)% Cold Penetration with Frostbite",
 		"level": 34,
 		"statOrderKey": 339,
 		"statOrder": [
@@ -28116,8 +28116,8 @@
 		"affixName": "Shared Bleed Duration",
 		"modName": "Primalist's",
 		"affix": "Shared Bleed Duration",
-		"1": "(18-19)% Increased Bleed Duration ",
-		"2": "(18-19)% Increased Bleed Duration for Minions ",
+		"1": "(18-19)% Increased Bleed Duration",
+		"2": "(18-19)% Increased Bleed Duration for Minions",
 		"level": 34,
 		"statOrderKey": 343,
 		"statOrder": [
@@ -28142,8 +28142,8 @@
 		"affixName": "Shared Bleed Duration",
 		"modName": "Primalist's",
 		"affix": "Shared Bleed Duration",
-		"1": "(20-21)% Increased Bleed Duration ",
-		"2": "(20-21)% Increased Bleed Duration for Minions ",
+		"1": "(20-21)% Increased Bleed Duration",
+		"2": "(20-21)% Increased Bleed Duration for Minions",
 		"level": 34,
 		"statOrderKey": 343,
 		"statOrder": [
@@ -28168,8 +28168,8 @@
 		"affixName": "Shared Bleed Duration",
 		"modName": "Primalist's",
 		"affix": "Shared Bleed Duration",
-		"1": "(22-23)% Increased Bleed Duration ",
-		"2": "(22-23)% Increased Bleed Duration for Minions ",
+		"1": "(22-23)% Increased Bleed Duration",
+		"2": "(22-23)% Increased Bleed Duration for Minions",
 		"level": 34,
 		"statOrderKey": 343,
 		"statOrder": [
@@ -28194,8 +28194,8 @@
 		"affixName": "Shared Bleed Duration",
 		"modName": "Primalist's",
 		"affix": "Shared Bleed Duration",
-		"1": "(24-25)% Increased Bleed Duration ",
-		"2": "(24-25)% Increased Bleed Duration for Minions ",
+		"1": "(24-25)% Increased Bleed Duration",
+		"2": "(24-25)% Increased Bleed Duration for Minions",
 		"level": 34,
 		"statOrderKey": 343,
 		"statOrder": [
@@ -28220,8 +28220,8 @@
 		"affixName": "Shared Bleed Duration",
 		"modName": "Primalist's",
 		"affix": "Shared Bleed Duration",
-		"1": "(26-35)% Increased Bleed Duration ",
-		"2": "(26-35)% Increased Bleed Duration for Minions ",
+		"1": "(26-35)% Increased Bleed Duration",
+		"2": "(26-35)% Increased Bleed Duration for Minions",
 		"level": 34,
 		"statOrderKey": 343,
 		"statOrder": [
@@ -28246,8 +28246,8 @@
 		"affixName": "Shared Bleed Duration",
 		"modName": "Primalist's",
 		"affix": "Shared Bleed Duration",
-		"1": "(44-55)% Increased Bleed Duration ",
-		"2": "(44-55)% Increased Bleed Duration for Minions ",
+		"1": "(44-55)% Increased Bleed Duration",
+		"2": "(44-55)% Increased Bleed Duration for Minions",
 		"level": 34,
 		"statOrderKey": 343,
 		"statOrder": [
@@ -28272,8 +28272,8 @@
 		"affixName": "Shared Bleed Duration",
 		"modName": "Primalist's",
 		"affix": "Shared Bleed Duration",
-		"1": "(56-70)% Increased Bleed Duration ",
-		"2": "(56-70)% Increased Bleed Duration for Minions ",
+		"1": "(56-70)% Increased Bleed Duration",
+		"2": "(56-70)% Increased Bleed Duration for Minions",
 		"level": 34,
 		"statOrderKey": 343,
 		"statOrder": [
@@ -28298,8 +28298,8 @@
 		"affixName": "Shared Bleed Duration",
 		"modName": "Primalist's",
 		"affix": "Shared Bleed Duration",
-		"1": "(112-140)% Increased Bleed Duration ",
-		"2": "(112-140)% Increased Bleed Duration for Minions ",
+		"1": "(112-140)% Increased Bleed Duration",
+		"2": "(112-140)% Increased Bleed Duration for Minions",
 		"level": 34,
 		"statOrderKey": 343,
 		"statOrder": [
@@ -31004,7 +31004,7 @@
 		"affixName": "Physical Penetration with Bleed ",
 		"modName": "Sentinel's",
 		"affix": "Physical Penetration with Bleed ",
-		"1": "+(25-27)% Physical Penetration with Bleed ",
+		"1": "+(25-27)% Physical Penetration with Bleed",
 		"level": 50,
 		"statOrderKey": 358,
 		"statOrder": [
@@ -31028,7 +31028,7 @@
 		"affixName": "Physical Penetration with Bleed ",
 		"modName": "Sentinel's",
 		"affix": "Physical Penetration with Bleed ",
-		"1": "+(28-30)% Physical Penetration with Bleed ",
+		"1": "+(28-30)% Physical Penetration with Bleed",
 		"level": 50,
 		"statOrderKey": 358,
 		"statOrder": [
@@ -31052,7 +31052,7 @@
 		"affixName": "Physical Penetration with Bleed ",
 		"modName": "Sentinel's",
 		"affix": "Physical Penetration with Bleed ",
-		"1": "+(31-33)% Physical Penetration with Bleed ",
+		"1": "+(31-33)% Physical Penetration with Bleed",
 		"level": 50,
 		"statOrderKey": 358,
 		"statOrder": [
@@ -31076,7 +31076,7 @@
 		"affixName": "Physical Penetration with Bleed ",
 		"modName": "Sentinel's",
 		"affix": "Physical Penetration with Bleed ",
-		"1": "+(34-36)% Physical Penetration with Bleed ",
+		"1": "+(34-36)% Physical Penetration with Bleed",
 		"level": 50,
 		"statOrderKey": 358,
 		"statOrder": [
@@ -31100,7 +31100,7 @@
 		"affixName": "Physical Penetration with Bleed ",
 		"modName": "Sentinel's",
 		"affix": "Physical Penetration with Bleed ",
-		"1": "+(37-45)% Physical Penetration with Bleed ",
+		"1": "+(37-45)% Physical Penetration with Bleed",
 		"level": 50,
 		"statOrderKey": 358,
 		"statOrder": [
@@ -31124,7 +31124,7 @@
 		"affixName": "Physical Penetration with Bleed ",
 		"modName": "Sentinel's",
 		"affix": "Physical Penetration with Bleed ",
-		"1": "+(55-65)% Physical Penetration with Bleed ",
+		"1": "+(55-65)% Physical Penetration with Bleed",
 		"level": 50,
 		"statOrderKey": 358,
 		"statOrder": [
@@ -31148,7 +31148,7 @@
 		"affixName": "Physical Penetration with Bleed ",
 		"modName": "Sentinel's",
 		"affix": "Physical Penetration with Bleed ",
-		"1": "+(66-85)% Physical Penetration with Bleed ",
+		"1": "+(66-85)% Physical Penetration with Bleed",
 		"level": 50,
 		"statOrderKey": 358,
 		"statOrder": [
@@ -31172,7 +31172,7 @@
 		"affixName": "Physical Penetration with Bleed ",
 		"modName": "Sentinel's",
 		"affix": "Physical Penetration with Bleed ",
-		"1": "+(136-170)% Physical Penetration with Bleed ",
+		"1": "+(136-170)% Physical Penetration with Bleed",
 		"level": 50,
 		"statOrderKey": 358,
 		"statOrder": [
@@ -31389,7 +31389,7 @@
 		"modName": "Sentinel's",
 		"affix": "Increased Physical Damage And Bleed Duration",
 		"1": "{rounding:Integer}(25-28)% increased Physical Damage",
-		"2": "15% Increased Bleed Duration ",
+		"2": "15% Increased Bleed Duration",
 		"level": 60,
 		"statOrderKey": 360,
 		"statOrder": [
@@ -31415,7 +31415,7 @@
 		"modName": "Sentinel's",
 		"affix": "Increased Physical Damage And Bleed Duration",
 		"1": "{rounding:Integer}(29-32)% increased Physical Damage",
-		"2": "16% Increased Bleed Duration ",
+		"2": "16% Increased Bleed Duration",
 		"level": 60,
 		"statOrderKey": 360,
 		"statOrder": [
@@ -31441,7 +31441,7 @@
 		"modName": "Sentinel's",
 		"affix": "Increased Physical Damage And Bleed Duration",
 		"1": "{rounding:Integer}(33-36)% increased Physical Damage",
-		"2": "(17-18)% Increased Bleed Duration ",
+		"2": "(17-18)% Increased Bleed Duration",
 		"level": 60,
 		"statOrderKey": 360,
 		"statOrder": [
@@ -31467,7 +31467,7 @@
 		"modName": "Sentinel's",
 		"affix": "Increased Physical Damage And Bleed Duration",
 		"1": "{rounding:Integer}(37-40)% increased Physical Damage",
-		"2": "(19-20)% Increased Bleed Duration ",
+		"2": "(19-20)% Increased Bleed Duration",
 		"level": 60,
 		"statOrderKey": 360,
 		"statOrder": [
@@ -31493,7 +31493,7 @@
 		"modName": "Sentinel's",
 		"affix": "Increased Physical Damage And Bleed Duration",
 		"1": "{rounding:Integer}(41-50)% increased Physical Damage",
-		"2": "(21-24)% Increased Bleed Duration ",
+		"2": "(21-24)% Increased Bleed Duration",
 		"level": 60,
 		"statOrderKey": 360,
 		"statOrder": [
@@ -31519,7 +31519,7 @@
 		"modName": "Sentinel's",
 		"affix": "Increased Physical Damage And Bleed Duration",
 		"1": "{rounding:Integer}(60-70)% increased Physical Damage",
-		"2": "(28-34)% Increased Bleed Duration ",
+		"2": "(28-34)% Increased Bleed Duration",
 		"level": 60,
 		"statOrderKey": 360,
 		"statOrder": [
@@ -31545,7 +31545,7 @@
 		"modName": "Sentinel's",
 		"affix": "Increased Physical Damage And Bleed Duration",
 		"1": "{rounding:Integer}(71-90)% increased Physical Damage",
-		"2": "(35-42)% Increased Bleed Duration ",
+		"2": "(35-42)% Increased Bleed Duration",
 		"level": 60,
 		"statOrderKey": 360,
 		"statOrder": [
@@ -31571,7 +31571,7 @@
 		"modName": "Sentinel's",
 		"affix": "Increased Physical Damage And Bleed Duration",
 		"1": "{rounding:Integer}(144-180)% increased Physical Damage",
-		"2": "(67-84)% Increased Bleed Duration ",
+		"2": "(67-84)% Increased Bleed Duration",
 		"level": 60,
 		"statOrderKey": 360,
 		"statOrder": [
@@ -31597,7 +31597,7 @@
 		"modName": "Sentinel's",
 		"affix": "Increased Fire Damage And Ignite Duration",
 		"1": "{rounding:Integer}(25-28)% increased Fire Damage",
-		"2": "15% Increased Ignite Duration ",
+		"2": "15% Increased Ignite Duration",
 		"level": 55,
 		"statOrderKey": 361,
 		"statOrder": [
@@ -31623,7 +31623,7 @@
 		"modName": "Sentinel's",
 		"affix": "Increased Fire Damage And Ignite Duration",
 		"1": "{rounding:Integer}(29-32)% increased Fire Damage",
-		"2": "16% Increased Ignite Duration ",
+		"2": "16% Increased Ignite Duration",
 		"level": 55,
 		"statOrderKey": 361,
 		"statOrder": [
@@ -31649,7 +31649,7 @@
 		"modName": "Sentinel's",
 		"affix": "Increased Fire Damage And Ignite Duration",
 		"1": "{rounding:Integer}(33-36)% increased Fire Damage",
-		"2": "(17-18)% Increased Ignite Duration ",
+		"2": "(17-18)% Increased Ignite Duration",
 		"level": 55,
 		"statOrderKey": 361,
 		"statOrder": [
@@ -31675,7 +31675,7 @@
 		"modName": "Sentinel's",
 		"affix": "Increased Fire Damage And Ignite Duration",
 		"1": "{rounding:Integer}(37-40)% increased Fire Damage",
-		"2": "(19-20)% Increased Ignite Duration ",
+		"2": "(19-20)% Increased Ignite Duration",
 		"level": 55,
 		"statOrderKey": 361,
 		"statOrder": [
@@ -31701,7 +31701,7 @@
 		"modName": "Sentinel's",
 		"affix": "Increased Fire Damage And Ignite Duration",
 		"1": "{rounding:Integer}(41-50)% increased Fire Damage",
-		"2": "(21-24)% Increased Ignite Duration ",
+		"2": "(21-24)% Increased Ignite Duration",
 		"level": 55,
 		"statOrderKey": 361,
 		"statOrder": [
@@ -31727,7 +31727,7 @@
 		"modName": "Sentinel's",
 		"affix": "Increased Fire Damage And Ignite Duration",
 		"1": "{rounding:Integer}(60-70)% increased Fire Damage",
-		"2": "(28-34)% Increased Ignite Duration ",
+		"2": "(28-34)% Increased Ignite Duration",
 		"level": 55,
 		"statOrderKey": 361,
 		"statOrder": [
@@ -31753,7 +31753,7 @@
 		"modName": "Sentinel's",
 		"affix": "Increased Fire Damage And Ignite Duration",
 		"1": "{rounding:Integer}(71-90)% increased Fire Damage",
-		"2": "(35-42)% Increased Ignite Duration ",
+		"2": "(35-42)% Increased Ignite Duration",
 		"level": 55,
 		"statOrderKey": 361,
 		"statOrder": [
@@ -31779,7 +31779,7 @@
 		"modName": "Sentinel's",
 		"affix": "Increased Fire Damage And Ignite Duration",
 		"1": "{rounding:Integer}(144-180)% increased Fire Damage",
-		"2": "(67-84)% Increased Ignite Duration ",
+		"2": "(67-84)% Increased Ignite Duration",
 		"level": 55,
 		"statOrderKey": 361,
 		"statOrder": [
@@ -33308,7 +33308,7 @@
 		"affixName": "Increased Armor Shred Effect",
 		"modName": "Sentinel's",
 		"affix": "Increased Armor Shred Effect",
-		"1": "(45-51)% Increased Armor Shred Effect ",
+		"1": "(45-51)% Increased Armor Shred Effect",
 		"level": 55,
 		"statOrderKey": 370,
 		"statOrder": [
@@ -33332,7 +33332,7 @@
 		"affixName": "Increased Armor Shred Effect",
 		"modName": "Sentinel's",
 		"affix": "Increased Armor Shred Effect",
-		"1": "(52-58)% Increased Armor Shred Effect ",
+		"1": "(52-58)% Increased Armor Shred Effect",
 		"level": 55,
 		"statOrderKey": 370,
 		"statOrder": [
@@ -33356,7 +33356,7 @@
 		"affixName": "Increased Armor Shred Effect",
 		"modName": "Sentinel's",
 		"affix": "Increased Armor Shred Effect",
-		"1": "(59-65)% Increased Armor Shred Effect ",
+		"1": "(59-65)% Increased Armor Shred Effect",
 		"level": 55,
 		"statOrderKey": 370,
 		"statOrder": [
@@ -33380,7 +33380,7 @@
 		"affixName": "Increased Armor Shred Effect",
 		"modName": "Sentinel's",
 		"affix": "Increased Armor Shred Effect",
-		"1": "(66-72)% Increased Armor Shred Effect ",
+		"1": "(66-72)% Increased Armor Shred Effect",
 		"level": 55,
 		"statOrderKey": 370,
 		"statOrder": [
@@ -33404,7 +33404,7 @@
 		"affixName": "Increased Armor Shred Effect",
 		"modName": "Sentinel's",
 		"affix": "Increased Armor Shred Effect",
-		"1": "(73-95)% Increased Armor Shred Effect ",
+		"1": "(73-95)% Increased Armor Shred Effect",
 		"level": 55,
 		"statOrderKey": 370,
 		"statOrder": [
@@ -33428,7 +33428,7 @@
 		"affixName": "Increased Armor Shred Effect",
 		"modName": "Sentinel's",
 		"affix": "Increased Armor Shred Effect",
-		"1": "(120-150)% Increased Armor Shred Effect ",
+		"1": "(120-150)% Increased Armor Shred Effect",
 		"level": 55,
 		"statOrderKey": 370,
 		"statOrder": [
@@ -33452,7 +33452,7 @@
 		"affixName": "Increased Armor Shred Effect",
 		"modName": "Sentinel's",
 		"affix": "Increased Armor Shred Effect",
-		"1": "(151-190)% Increased Armor Shred Effect ",
+		"1": "(151-190)% Increased Armor Shred Effect",
 		"level": 55,
 		"statOrderKey": 370,
 		"statOrder": [
@@ -33476,7 +33476,7 @@
 		"affixName": "Increased Armor Shred Effect",
 		"modName": "Sentinel's",
 		"affix": "Increased Armor Shred Effect",
-		"1": "(304-380)% Increased Armor Shred Effect ",
+		"1": "(304-380)% Increased Armor Shred Effect",
 		"level": 55,
 		"statOrderKey": 370,
 		"statOrder": [
@@ -34076,7 +34076,7 @@
 		"affixName": "Increased Abyssal Decay Duration ",
 		"modName": "Sentinel's",
 		"affix": "Increased Abyssal Decay Duration ",
-		"1": "(12-17)% Increased Abyssal Decay Duration ",
+		"1": "(12-17)% Increased Abyssal Decay Duration",
 		"level": 43,
 		"statOrderKey": 374,
 		"statOrder": [
@@ -34100,7 +34100,7 @@
 		"affixName": "Increased Abyssal Decay Duration ",
 		"modName": "Sentinel's",
 		"affix": "Increased Abyssal Decay Duration ",
-		"1": "(18-23)% Increased Abyssal Decay Duration ",
+		"1": "(18-23)% Increased Abyssal Decay Duration",
 		"level": 43,
 		"statOrderKey": 374,
 		"statOrder": [
@@ -34124,7 +34124,7 @@
 		"affixName": "Increased Abyssal Decay Duration ",
 		"modName": "Sentinel's",
 		"affix": "Increased Abyssal Decay Duration ",
-		"1": "(24-29)% Increased Abyssal Decay Duration ",
+		"1": "(24-29)% Increased Abyssal Decay Duration",
 		"level": 43,
 		"statOrderKey": 374,
 		"statOrder": [
@@ -34148,7 +34148,7 @@
 		"affixName": "Increased Abyssal Decay Duration ",
 		"modName": "Sentinel's",
 		"affix": "Increased Abyssal Decay Duration ",
-		"1": "(30-34)% Increased Abyssal Decay Duration ",
+		"1": "(30-34)% Increased Abyssal Decay Duration",
 		"level": 43,
 		"statOrderKey": 374,
 		"statOrder": [
@@ -34172,7 +34172,7 @@
 		"affixName": "Increased Abyssal Decay Duration ",
 		"modName": "Sentinel's",
 		"affix": "Increased Abyssal Decay Duration ",
-		"1": "(35-45)% Increased Abyssal Decay Duration ",
+		"1": "(35-45)% Increased Abyssal Decay Duration",
 		"level": 43,
 		"statOrderKey": 374,
 		"statOrder": [
@@ -34196,7 +34196,7 @@
 		"affixName": "Increased Abyssal Decay Duration ",
 		"modName": "Sentinel's",
 		"affix": "Increased Abyssal Decay Duration ",
-		"1": "(55-65)% Increased Abyssal Decay Duration ",
+		"1": "(55-65)% Increased Abyssal Decay Duration",
 		"level": 43,
 		"statOrderKey": 374,
 		"statOrder": [
@@ -34220,7 +34220,7 @@
 		"affixName": "Increased Abyssal Decay Duration ",
 		"modName": "Sentinel's",
 		"affix": "Increased Abyssal Decay Duration ",
-		"1": "(66-85)% Increased Abyssal Decay Duration ",
+		"1": "(66-85)% Increased Abyssal Decay Duration",
 		"level": 43,
 		"statOrderKey": 374,
 		"statOrder": [
@@ -34244,7 +34244,7 @@
 		"affixName": "Increased Abyssal Decay Duration ",
 		"modName": "Sentinel's",
 		"affix": "Increased Abyssal Decay Duration ",
-		"1": "(136-170)% Increased Abyssal Decay Duration ",
+		"1": "(136-170)% Increased Abyssal Decay Duration",
 		"level": 43,
 		"statOrderKey": 374,
 		"statOrder": [
@@ -40064,8 +40064,8 @@
 		"affixName": "Shared Increased Bleed Duration",
 		"modName": "Acolyte's",
 		"affix": "Shared Increased Bleed Duration",
-		"1": "(16-17)% Increased Bleed Duration ",
-		"2": "(16-17)% Increased Bleed Duration for Minions ",
+		"1": "(16-17)% Increased Bleed Duration",
+		"2": "(16-17)% Increased Bleed Duration for Minions",
 		"level": 57,
 		"statOrderKey": 407,
 		"statOrder": [
@@ -40090,8 +40090,8 @@
 		"affixName": "Shared Increased Bleed Duration",
 		"modName": "Acolyte's",
 		"affix": "Shared Increased Bleed Duration",
-		"1": "(18-19)% Increased Bleed Duration ",
-		"2": "(18-19)% Increased Bleed Duration for Minions ",
+		"1": "(18-19)% Increased Bleed Duration",
+		"2": "(18-19)% Increased Bleed Duration for Minions",
 		"level": 57,
 		"statOrderKey": 407,
 		"statOrder": [
@@ -40116,8 +40116,8 @@
 		"affixName": "Shared Increased Bleed Duration",
 		"modName": "Acolyte's",
 		"affix": "Shared Increased Bleed Duration",
-		"1": "(20-21)% Increased Bleed Duration ",
-		"2": "(20-21)% Increased Bleed Duration for Minions ",
+		"1": "(20-21)% Increased Bleed Duration",
+		"2": "(20-21)% Increased Bleed Duration for Minions",
 		"level": 57,
 		"statOrderKey": 407,
 		"statOrder": [
@@ -40142,8 +40142,8 @@
 		"affixName": "Shared Increased Bleed Duration",
 		"modName": "Acolyte's",
 		"affix": "Shared Increased Bleed Duration",
-		"1": "(22-23)% Increased Bleed Duration ",
-		"2": "(22-23)% Increased Bleed Duration for Minions ",
+		"1": "(22-23)% Increased Bleed Duration",
+		"2": "(22-23)% Increased Bleed Duration for Minions",
 		"level": 57,
 		"statOrderKey": 407,
 		"statOrder": [
@@ -40168,8 +40168,8 @@
 		"affixName": "Shared Increased Bleed Duration",
 		"modName": "Acolyte's",
 		"affix": "Shared Increased Bleed Duration",
-		"1": "(24-28)% Increased Bleed Duration ",
-		"2": "(24-28)% Increased Bleed Duration for Minions ",
+		"1": "(24-28)% Increased Bleed Duration",
+		"2": "(24-28)% Increased Bleed Duration for Minions",
 		"level": 57,
 		"statOrderKey": 407,
 		"statOrder": [
@@ -40194,8 +40194,8 @@
 		"affixName": "Shared Increased Bleed Duration",
 		"modName": "Acolyte's",
 		"affix": "Shared Increased Bleed Duration",
-		"1": "(34-40)% Increased Bleed Duration ",
-		"2": "(34-40)% Increased Bleed Duration for Minions ",
+		"1": "(34-40)% Increased Bleed Duration",
+		"2": "(34-40)% Increased Bleed Duration for Minions",
 		"level": 57,
 		"statOrderKey": 407,
 		"statOrder": [
@@ -40220,8 +40220,8 @@
 		"affixName": "Shared Increased Bleed Duration",
 		"modName": "Acolyte's",
 		"affix": "Shared Increased Bleed Duration",
-		"1": "(41-50)% Increased Bleed Duration ",
-		"2": "(41-50)% Increased Bleed Duration for Minions ",
+		"1": "(41-50)% Increased Bleed Duration",
+		"2": "(41-50)% Increased Bleed Duration for Minions",
 		"level": 57,
 		"statOrderKey": 407,
 		"statOrder": [
@@ -40246,8 +40246,8 @@
 		"affixName": "Shared Increased Bleed Duration",
 		"modName": "Acolyte's",
 		"affix": "Shared Increased Bleed Duration",
-		"1": "(80-100)% Increased Bleed Duration ",
-		"2": "(80-100)% Increased Bleed Duration for Minions ",
+		"1": "(80-100)% Increased Bleed Duration",
+		"2": "(80-100)% Increased Bleed Duration for Minions",
 		"level": 57,
 		"statOrderKey": 407,
 		"statOrder": [
@@ -40272,8 +40272,8 @@
 		"affixName": "Shared Physical Penetration With Bleed",
 		"modName": "Acolyte's",
 		"affix": "Shared Physical Penetration With Bleed",
-		"1": "+(12-13)% Physical Penetration with Bleed ",
-		"2": "+(12-13)% Physical Penetration for Bleed inflicted by Minions ",
+		"1": "+(12-13)% Physical Penetration with Bleed",
+		"2": "+(12-13)% Physical Penetration for Bleed inflicted by Minions",
 		"level": 57,
 		"statOrderKey": 408,
 		"statOrder": [
@@ -40298,8 +40298,8 @@
 		"affixName": "Shared Physical Penetration With Bleed",
 		"modName": "Acolyte's",
 		"affix": "Shared Physical Penetration With Bleed",
-		"1": "+(14-15)% Physical Penetration with Bleed ",
-		"2": "+(14-15)% Physical Penetration for Bleed inflicted by Minions ",
+		"1": "+(14-15)% Physical Penetration with Bleed",
+		"2": "+(14-15)% Physical Penetration for Bleed inflicted by Minions",
 		"level": 57,
 		"statOrderKey": 408,
 		"statOrder": [
@@ -40324,8 +40324,8 @@
 		"affixName": "Shared Physical Penetration With Bleed",
 		"modName": "Acolyte's",
 		"affix": "Shared Physical Penetration With Bleed",
-		"1": "+(16-17)% Physical Penetration with Bleed ",
-		"2": "+(16-17)% Physical Penetration for Bleed inflicted by Minions ",
+		"1": "+(16-17)% Physical Penetration with Bleed",
+		"2": "+(16-17)% Physical Penetration for Bleed inflicted by Minions",
 		"level": 57,
 		"statOrderKey": 408,
 		"statOrder": [
@@ -40350,8 +40350,8 @@
 		"affixName": "Shared Physical Penetration With Bleed",
 		"modName": "Acolyte's",
 		"affix": "Shared Physical Penetration With Bleed",
-		"1": "+(18-19)% Physical Penetration with Bleed ",
-		"2": "+(18-19)% Physical Penetration for Bleed inflicted by Minions ",
+		"1": "+(18-19)% Physical Penetration with Bleed",
+		"2": "+(18-19)% Physical Penetration for Bleed inflicted by Minions",
 		"level": 57,
 		"statOrderKey": 408,
 		"statOrder": [
@@ -40376,8 +40376,8 @@
 		"affixName": "Shared Physical Penetration With Bleed",
 		"modName": "Acolyte's",
 		"affix": "Shared Physical Penetration With Bleed",
-		"1": "+(20-23)% Physical Penetration with Bleed ",
-		"2": "+(20-23)% Physical Penetration for Bleed inflicted by Minions ",
+		"1": "+(20-23)% Physical Penetration with Bleed",
+		"2": "+(20-23)% Physical Penetration for Bleed inflicted by Minions",
 		"level": 57,
 		"statOrderKey": 408,
 		"statOrder": [
@@ -40402,8 +40402,8 @@
 		"affixName": "Shared Physical Penetration With Bleed",
 		"modName": "Acolyte's",
 		"affix": "Shared Physical Penetration With Bleed",
-		"1": "+(28-34)% Physical Penetration with Bleed ",
-		"2": "+(28-34)% Physical Penetration for Bleed inflicted by Minions ",
+		"1": "+(28-34)% Physical Penetration with Bleed",
+		"2": "+(28-34)% Physical Penetration for Bleed inflicted by Minions",
 		"level": 57,
 		"statOrderKey": 408,
 		"statOrder": [
@@ -40428,8 +40428,8 @@
 		"affixName": "Shared Physical Penetration With Bleed",
 		"modName": "Acolyte's",
 		"affix": "Shared Physical Penetration With Bleed",
-		"1": "+(35-42)% Physical Penetration with Bleed ",
-		"2": "+(35-42)% Physical Penetration for Bleed inflicted by Minions ",
+		"1": "+(35-42)% Physical Penetration with Bleed",
+		"2": "+(35-42)% Physical Penetration for Bleed inflicted by Minions",
 		"level": 57,
 		"statOrderKey": 408,
 		"statOrder": [
@@ -40454,8 +40454,8 @@
 		"affixName": "Shared Physical Penetration With Bleed",
 		"modName": "Acolyte's",
 		"affix": "Shared Physical Penetration With Bleed",
-		"1": "+(67-84)% Physical Penetration with Bleed ",
-		"2": "+(67-84)% Physical Penetration for Bleed inflicted by Minions ",
+		"1": "+(67-84)% Physical Penetration with Bleed",
+		"2": "+(67-84)% Physical Penetration for Bleed inflicted by Minions",
 		"level": 57,
 		"statOrderKey": 408,
 		"statOrder": [
@@ -48008,7 +48008,7 @@
 		"affixName": "Fire Penetration with Ignite ",
 		"modName": "Searing",
 		"affix": "Searing",
-		"1": "+(9-16)% Fire Penetration with Ignite ",
+		"1": "+(9-16)% Fire Penetration with Ignite",
 		"level": 0,
 		"statOrderKey": 467,
 		"statOrder": [
@@ -48026,7 +48026,7 @@
 		"affixName": "Fire Penetration with Ignite ",
 		"modName": "Rogue's",
 		"affix": "Fire Penetration with Ignite ",
-		"1": "+7% Fire Penetration with Ignite ",
+		"1": "+7% Fire Penetration with Ignite",
 		"level": 55,
 		"statOrderKey": 468,
 		"statOrder": [
@@ -48050,7 +48050,7 @@
 		"affixName": "Fire Penetration with Ignite ",
 		"modName": "Rogue's",
 		"affix": "Fire Penetration with Ignite ",
-		"1": "+8% Fire Penetration with Ignite ",
+		"1": "+8% Fire Penetration with Ignite",
 		"level": 55,
 		"statOrderKey": 468,
 		"statOrder": [
@@ -48074,7 +48074,7 @@
 		"affixName": "Fire Penetration with Ignite ",
 		"modName": "Rogue's",
 		"affix": "Fire Penetration with Ignite ",
-		"1": "+(9-10)% Fire Penetration with Ignite ",
+		"1": "+(9-10)% Fire Penetration with Ignite",
 		"level": 55,
 		"statOrderKey": 468,
 		"statOrder": [
@@ -48098,7 +48098,7 @@
 		"affixName": "Fire Penetration with Ignite ",
 		"modName": "Rogue's",
 		"affix": "Fire Penetration with Ignite ",
-		"1": "+(11-12)% Fire Penetration with Ignite ",
+		"1": "+(11-12)% Fire Penetration with Ignite",
 		"level": 55,
 		"statOrderKey": 468,
 		"statOrder": [
@@ -48122,7 +48122,7 @@
 		"affixName": "Fire Penetration with Ignite ",
 		"modName": "Rogue's",
 		"affix": "Fire Penetration with Ignite ",
-		"1": "+(13-16)% Fire Penetration with Ignite ",
+		"1": "+(13-16)% Fire Penetration with Ignite",
 		"level": 55,
 		"statOrderKey": 468,
 		"statOrder": [
@@ -48146,7 +48146,7 @@
 		"affixName": "Fire Penetration with Ignite ",
 		"modName": "Rogue's",
 		"affix": "Fire Penetration with Ignite ",
-		"1": "+(20-24)% Fire Penetration with Ignite ",
+		"1": "+(20-24)% Fire Penetration with Ignite",
 		"level": 55,
 		"statOrderKey": 468,
 		"statOrder": [
@@ -48170,7 +48170,7 @@
 		"affixName": "Fire Penetration with Ignite ",
 		"modName": "Rogue's",
 		"affix": "Fire Penetration with Ignite ",
-		"1": "+(25-30)% Fire Penetration with Ignite ",
+		"1": "+(25-30)% Fire Penetration with Ignite",
 		"level": 55,
 		"statOrderKey": 468,
 		"statOrder": [
@@ -48194,7 +48194,7 @@
 		"affixName": "Fire Penetration with Ignite ",
 		"modName": "Rogue's",
 		"affix": "Fire Penetration with Ignite ",
-		"1": "+(48-60)% Fire Penetration with Ignite ",
+		"1": "+(48-60)% Fire Penetration with Ignite",
 		"level": 55,
 		"statOrderKey": 468,
 		"statOrder": [
@@ -48218,7 +48218,7 @@
 		"affixName": "Increased Poison Duration ",
 		"modName": "Rogue's",
 		"affix": "Increased Poison Duration ",
-		"1": "7% Increased Poison Duration ",
+		"1": "7% Increased Poison Duration",
 		"level": 55,
 		"statOrderKey": 469,
 		"statOrder": [
@@ -48236,7 +48236,7 @@
 		"affixName": "Increased Poison Duration ",
 		"modName": "Rogue's",
 		"affix": "Increased Poison Duration ",
-		"1": "8% Increased Poison Duration ",
+		"1": "8% Increased Poison Duration",
 		"level": 55,
 		"statOrderKey": 469,
 		"statOrder": [
@@ -48254,7 +48254,7 @@
 		"affixName": "Increased Poison Duration ",
 		"modName": "Rogue's",
 		"affix": "Increased Poison Duration ",
-		"1": "(9-10)% Increased Poison Duration ",
+		"1": "(9-10)% Increased Poison Duration",
 		"level": 55,
 		"statOrderKey": 469,
 		"statOrder": [
@@ -48272,7 +48272,7 @@
 		"affixName": "Increased Poison Duration ",
 		"modName": "Rogue's",
 		"affix": "Increased Poison Duration ",
-		"1": "(11-12)% Increased Poison Duration ",
+		"1": "(11-12)% Increased Poison Duration",
 		"level": 55,
 		"statOrderKey": 469,
 		"statOrder": [
@@ -48290,7 +48290,7 @@
 		"affixName": "Increased Poison Duration ",
 		"modName": "Rogue's",
 		"affix": "Increased Poison Duration ",
-		"1": "(13-16)% Increased Poison Duration ",
+		"1": "(13-16)% Increased Poison Duration",
 		"level": 55,
 		"statOrderKey": 469,
 		"statOrder": [
@@ -48308,7 +48308,7 @@
 		"affixName": "Increased Poison Duration ",
 		"modName": "Rogue's",
 		"affix": "Increased Poison Duration ",
-		"1": "(20-24)% Increased Poison Duration ",
+		"1": "(20-24)% Increased Poison Duration",
 		"level": 55,
 		"statOrderKey": 469,
 		"statOrder": [
@@ -48326,7 +48326,7 @@
 		"affixName": "Increased Poison Duration ",
 		"modName": "Rogue's",
 		"affix": "Increased Poison Duration ",
-		"1": "(25-30)% Increased Poison Duration ",
+		"1": "(25-30)% Increased Poison Duration",
 		"level": 55,
 		"statOrderKey": 469,
 		"statOrder": [
@@ -48344,7 +48344,7 @@
 		"affixName": "Increased Poison Duration ",
 		"modName": "Rogue's",
 		"affix": "Increased Poison Duration ",
-		"1": "(48-60)% Increased Poison Duration ",
+		"1": "(48-60)% Increased Poison Duration",
 		"level": 55,
 		"statOrderKey": 469,
 		"statOrder": [
@@ -49058,7 +49058,7 @@
 		"affixName": "Increased Armor Shred Effect",
 		"modName": "of Corrosion",
 		"affix": "of Corrosion",
-		"1": "(30-90)% Increased Armor Shred Effect ",
+		"1": "(30-90)% Increased Armor Shred Effect",
 		"level": 0,
 		"statOrderKey": 478,
 		"statOrder": [
@@ -49078,7 +49078,7 @@
 		"affixName": "Increased Armor Shred Effect",
 		"modName": "Rogue's",
 		"affix": "Increased Armor Shred Effect",
-		"1": "(45-51)% Increased Armor Shred Effect ",
+		"1": "(45-51)% Increased Armor Shred Effect",
 		"level": 27,
 		"statOrderKey": 479,
 		"statOrder": [
@@ -49096,7 +49096,7 @@
 		"affixName": "Increased Armor Shred Effect",
 		"modName": "Rogue's",
 		"affix": "Increased Armor Shred Effect",
-		"1": "(52-58)% Increased Armor Shred Effect ",
+		"1": "(52-58)% Increased Armor Shred Effect",
 		"level": 27,
 		"statOrderKey": 479,
 		"statOrder": [
@@ -49114,7 +49114,7 @@
 		"affixName": "Increased Armor Shred Effect",
 		"modName": "Rogue's",
 		"affix": "Increased Armor Shred Effect",
-		"1": "(59-65)% Increased Armor Shred Effect ",
+		"1": "(59-65)% Increased Armor Shred Effect",
 		"level": 27,
 		"statOrderKey": 479,
 		"statOrder": [
@@ -49132,7 +49132,7 @@
 		"affixName": "Increased Armor Shred Effect",
 		"modName": "Rogue's",
 		"affix": "Increased Armor Shred Effect",
-		"1": "(66-72)% Increased Armor Shred Effect ",
+		"1": "(66-72)% Increased Armor Shred Effect",
 		"level": 27,
 		"statOrderKey": 479,
 		"statOrder": [
@@ -49150,7 +49150,7 @@
 		"affixName": "Increased Armor Shred Effect",
 		"modName": "Rogue's",
 		"affix": "Increased Armor Shred Effect",
-		"1": "(73-95)% Increased Armor Shred Effect ",
+		"1": "(73-95)% Increased Armor Shred Effect",
 		"level": 27,
 		"statOrderKey": 479,
 		"statOrder": [
@@ -49168,7 +49168,7 @@
 		"affixName": "Increased Armor Shred Effect",
 		"modName": "Rogue's",
 		"affix": "Increased Armor Shred Effect",
-		"1": "(120-150)% Increased Armor Shred Effect ",
+		"1": "(120-150)% Increased Armor Shred Effect",
 		"level": 27,
 		"statOrderKey": 479,
 		"statOrder": [
@@ -49186,7 +49186,7 @@
 		"affixName": "Increased Armor Shred Effect",
 		"modName": "Rogue's",
 		"affix": "Increased Armor Shred Effect",
-		"1": "(151-190)% Increased Armor Shred Effect ",
+		"1": "(151-190)% Increased Armor Shred Effect",
 		"level": 27,
 		"statOrderKey": 479,
 		"statOrder": [
@@ -49204,7 +49204,7 @@
 		"affixName": "Increased Armor Shred Effect",
 		"modName": "Rogue's",
 		"affix": "Increased Armor Shred Effect",
-		"1": "(304-380)% Increased Armor Shred Effect ",
+		"1": "(304-380)% Increased Armor Shred Effect",
 		"level": 27,
 		"statOrderKey": 479,
 		"statOrder": [
@@ -49222,7 +49222,7 @@
 		"affixName": "Increased Armor Shred Duration",
 		"modName": "of Crumbling",
 		"affix": "of Crumbling",
-		"1": "(40-100)% Increased Armor Shred Duration ",
+		"1": "(40-100)% Increased Armor Shred Duration",
 		"level": 0,
 		"statOrderKey": 480,
 		"statOrder": [
@@ -49241,7 +49241,7 @@
 		"affixName": "Increased Armor Shred Duration",
 		"modName": "Rogue's",
 		"affix": "Increased Armor Shred Duration",
-		"1": "(50-60)% Increased Armor Shred Duration ",
+		"1": "(50-60)% Increased Armor Shred Duration",
 		"level": 27,
 		"statOrderKey": 481,
 		"statOrder": [
@@ -49259,7 +49259,7 @@
 		"affixName": "Increased Armor Shred Duration",
 		"modName": "Rogue's",
 		"affix": "Increased Armor Shred Duration",
-		"1": "(61-72)% Increased Armor Shred Duration ",
+		"1": "(61-72)% Increased Armor Shred Duration",
 		"level": 27,
 		"statOrderKey": 481,
 		"statOrder": [
@@ -49277,7 +49277,7 @@
 		"affixName": "Increased Armor Shred Duration",
 		"modName": "Rogue's",
 		"affix": "Increased Armor Shred Duration",
-		"1": "(73-85)% Increased Armor Shred Duration ",
+		"1": "(73-85)% Increased Armor Shred Duration",
 		"level": 27,
 		"statOrderKey": 481,
 		"statOrder": [
@@ -49295,7 +49295,7 @@
 		"affixName": "Increased Armor Shred Duration",
 		"modName": "Rogue's",
 		"affix": "Increased Armor Shred Duration",
-		"1": "(86-100)% Increased Armor Shred Duration ",
+		"1": "(86-100)% Increased Armor Shred Duration",
 		"level": 27,
 		"statOrderKey": 481,
 		"statOrder": [
@@ -49313,7 +49313,7 @@
 		"affixName": "Increased Armor Shred Duration",
 		"modName": "Rogue's",
 		"affix": "Increased Armor Shred Duration",
-		"1": "(101-120)% Increased Armor Shred Duration ",
+		"1": "(101-120)% Increased Armor Shred Duration",
 		"level": 27,
 		"statOrderKey": 481,
 		"statOrder": [
@@ -49331,7 +49331,7 @@
 		"affixName": "Increased Armor Shred Duration",
 		"modName": "Rogue's",
 		"affix": "Increased Armor Shred Duration",
-		"1": "(150-190)% Increased Armor Shred Duration ",
+		"1": "(150-190)% Increased Armor Shred Duration",
 		"level": 27,
 		"statOrderKey": 481,
 		"statOrder": [
@@ -49349,7 +49349,7 @@
 		"affixName": "Increased Armor Shred Duration",
 		"modName": "Rogue's",
 		"affix": "Increased Armor Shred Duration",
-		"1": "(191-240)% Increased Armor Shred Duration ",
+		"1": "(191-240)% Increased Armor Shred Duration",
 		"level": 27,
 		"statOrderKey": 481,
 		"statOrder": [
@@ -49367,7 +49367,7 @@
 		"affixName": "Increased Armor Shred Duration",
 		"modName": "Rogue's",
 		"affix": "Increased Armor Shred Duration",
-		"1": "(384-480)% Increased Armor Shred Duration ",
+		"1": "(384-480)% Increased Armor Shred Duration",
 		"level": 27,
 		"statOrderKey": 481,
 		"statOrder": [
@@ -49711,7 +49711,7 @@
 		"affixName": "Physical Penetration with Shadow Daggers ",
 		"modName": "Widowing",
 		"affix": "Widowing",
-		"1": "+(16-36)% Physical Penetration with Shadow Daggers ",
+		"1": "+(16-36)% Physical Penetration with Shadow Daggers",
 		"level": 0,
 		"statOrderKey": 486,
 		"statOrder": [
@@ -49729,7 +49729,7 @@
 		"affixName": "Physical Penetration with Shadow Daggers ",
 		"modName": "Rogue's",
 		"affix": "Physical Penetration with Shadow Daggers ",
-		"1": "+(13-17)% Physical Penetration with Shadow Daggers ",
+		"1": "+(13-17)% Physical Penetration with Shadow Daggers",
 		"level": 55,
 		"statOrderKey": 487,
 		"statOrder": [
@@ -49753,7 +49753,7 @@
 		"affixName": "Physical Penetration with Shadow Daggers ",
 		"modName": "Rogue's",
 		"affix": "Physical Penetration with Shadow Daggers ",
-		"1": "+(18-22)% Physical Penetration with Shadow Daggers ",
+		"1": "+(18-22)% Physical Penetration with Shadow Daggers",
 		"level": 55,
 		"statOrderKey": 487,
 		"statOrder": [
@@ -49777,7 +49777,7 @@
 		"affixName": "Physical Penetration with Shadow Daggers ",
 		"modName": "Rogue's",
 		"affix": "Physical Penetration with Shadow Daggers ",
-		"1": "+(23-27)% Physical Penetration with Shadow Daggers ",
+		"1": "+(23-27)% Physical Penetration with Shadow Daggers",
 		"level": 55,
 		"statOrderKey": 487,
 		"statOrder": [
@@ -49801,7 +49801,7 @@
 		"affixName": "Physical Penetration with Shadow Daggers ",
 		"modName": "Rogue's",
 		"affix": "Physical Penetration with Shadow Daggers ",
-		"1": "+(28-32)% Physical Penetration with Shadow Daggers ",
+		"1": "+(28-32)% Physical Penetration with Shadow Daggers",
 		"level": 55,
 		"statOrderKey": 487,
 		"statOrder": [
@@ -49825,7 +49825,7 @@
 		"affixName": "Physical Penetration with Shadow Daggers ",
 		"modName": "Rogue's",
 		"affix": "Physical Penetration with Shadow Daggers ",
-		"1": "+(33-45)% Physical Penetration with Shadow Daggers ",
+		"1": "+(33-45)% Physical Penetration with Shadow Daggers",
 		"level": 55,
 		"statOrderKey": 487,
 		"statOrder": [
@@ -49849,7 +49849,7 @@
 		"affixName": "Physical Penetration with Shadow Daggers ",
 		"modName": "Rogue's",
 		"affix": "Physical Penetration with Shadow Daggers ",
-		"1": "+(60-77)% Physical Penetration with Shadow Daggers ",
+		"1": "+(60-77)% Physical Penetration with Shadow Daggers",
 		"level": 55,
 		"statOrderKey": 487,
 		"statOrder": [
@@ -49873,7 +49873,7 @@
 		"affixName": "Physical Penetration with Shadow Daggers ",
 		"modName": "Rogue's",
 		"affix": "Physical Penetration with Shadow Daggers ",
-		"1": "+(78-100)% Physical Penetration with Shadow Daggers ",
+		"1": "+(78-100)% Physical Penetration with Shadow Daggers",
 		"level": 55,
 		"statOrderKey": 487,
 		"statOrder": [
@@ -49897,7 +49897,7 @@
 		"affixName": "Physical Penetration with Shadow Daggers ",
 		"modName": "Rogue's",
 		"affix": "Physical Penetration with Shadow Daggers ",
-		"1": "+(160-200)% Physical Penetration with Shadow Daggers ",
+		"1": "+(160-200)% Physical Penetration with Shadow Daggers",
 		"level": 55,
 		"statOrderKey": 487,
 		"statOrder": [
@@ -75505,7 +75505,7 @@
 		"modName": "Experimental",
 		"affix": "Experimental Haste Effect",
 		"1": "{rounding:Tenth}(1.2-1.3) Seconds of Haste after you use a Traversal Skill",
-		"2": "(3-5)% increased Effect of Haste on You ",
+		"2": "(3-5)% increased Effect of Haste on You",
 		"level": 0,
 		"statOrderKey": 676,
 		"statOrder": [
@@ -75523,7 +75523,7 @@
 		"modName": "Experimental",
 		"affix": "Experimental Haste Effect",
 		"1": "{rounding:Tenth}(1.4-1.5) Seconds of Haste after you use a Traversal Skill",
-		"2": "(6-10)% increased Effect of Haste on You ",
+		"2": "(6-10)% increased Effect of Haste on You",
 		"level": 0,
 		"statOrderKey": 676,
 		"statOrder": [
@@ -75541,7 +75541,7 @@
 		"modName": "Experimental",
 		"affix": "Experimental Haste Effect",
 		"1": "{rounding:Tenth}(1.6-1.7) Seconds of Haste after you use a Traversal Skill",
-		"2": "(11-17)% increased Effect of Haste on You ",
+		"2": "(11-17)% increased Effect of Haste on You",
 		"level": 0,
 		"statOrderKey": 676,
 		"statOrder": [
@@ -75559,7 +75559,7 @@
 		"modName": "Experimental",
 		"affix": "Experimental Haste Effect",
 		"1": "{rounding:Tenth}(1.8-2) Seconds of Haste after you use a Traversal Skill",
-		"2": "(18-25)% increased Effect of Haste on You ",
+		"2": "(18-25)% increased Effect of Haste on You",
 		"level": 0,
 		"statOrderKey": 676,
 		"statOrder": [
@@ -75577,7 +75577,7 @@
 		"modName": "Experimental",
 		"affix": "Experimental Haste Effect",
 		"1": "{rounding:Tenth}(2.1-2.5) Seconds of Haste after you use a Traversal Skill",
-		"2": "(26-35)% increased Effect of Haste on You ",
+		"2": "(26-35)% increased Effect of Haste on You",
 		"level": 0,
 		"statOrderKey": 676,
 		"statOrder": [
@@ -75595,7 +75595,7 @@
 		"modName": "Experimental",
 		"affix": "Experimental Haste Effect",
 		"1": "{rounding:Tenth}(3-3.4) Seconds of Haste after you use a Traversal Skill",
-		"2": "(40-49)% increased Effect of Haste on You ",
+		"2": "(40-49)% increased Effect of Haste on You",
 		"level": 0,
 		"statOrderKey": 676,
 		"statOrder": [
@@ -75613,7 +75613,7 @@
 		"modName": "Experimental",
 		"affix": "Experimental Haste Effect",
 		"1": "{rounding:Tenth}(3.5-4) Seconds of Haste after you use a Traversal Skill",
-		"2": "(50-60)% increased Effect of Haste on You ",
+		"2": "(50-60)% increased Effect of Haste on You",
 		"level": 0,
 		"statOrderKey": 676,
 		"statOrder": [
@@ -75631,7 +75631,7 @@
 		"modName": "Experimental",
 		"affix": "Experimental Haste Effect",
 		"1": "{rounding:Tenth}(5-6) Seconds of Haste after you use a Traversal Skill",
-		"2": "(90-100)% increased Effect of Haste on You ",
+		"2": "(90-100)% increased Effect of Haste on You",
 		"level": 0,
 		"statOrderKey": 676,
 		"statOrder": [
@@ -75649,7 +75649,7 @@
 		"modName": "Experimental",
 		"affix": "Experimental Frenzy Effect",
 		"1": "{rounding:Tenth}(1.2-1.3) Seconds of Frenzy after you use a Traversal Skill",
-		"2": "(3-5)% increased Effect of Frenzy on You ",
+		"2": "(3-5)% increased Effect of Frenzy on You",
 		"level": 0,
 		"statOrderKey": 677,
 		"statOrder": [
@@ -75667,7 +75667,7 @@
 		"modName": "Experimental",
 		"affix": "Experimental Frenzy Effect",
 		"1": "{rounding:Tenth}(1.4-1.5) Seconds of Frenzy after you use a Traversal Skill",
-		"2": "(6-10)% increased Effect of Frenzy on You ",
+		"2": "(6-10)% increased Effect of Frenzy on You",
 		"level": 0,
 		"statOrderKey": 677,
 		"statOrder": [
@@ -75685,7 +75685,7 @@
 		"modName": "Experimental",
 		"affix": "Experimental Frenzy Effect",
 		"1": "{rounding:Tenth}(1.6-1.7) Seconds of Frenzy after you use a Traversal Skill",
-		"2": "(11-17)% increased Effect of Frenzy on You ",
+		"2": "(11-17)% increased Effect of Frenzy on You",
 		"level": 0,
 		"statOrderKey": 677,
 		"statOrder": [
@@ -75703,7 +75703,7 @@
 		"modName": "Experimental",
 		"affix": "Experimental Frenzy Effect",
 		"1": "{rounding:Tenth}(1.8-2) Seconds of Frenzy after you use a Traversal Skill",
-		"2": "(18-25)% increased Effect of Frenzy on You ",
+		"2": "(18-25)% increased Effect of Frenzy on You",
 		"level": 0,
 		"statOrderKey": 677,
 		"statOrder": [
@@ -75721,7 +75721,7 @@
 		"modName": "Experimental",
 		"affix": "Experimental Frenzy Effect",
 		"1": "{rounding:Tenth}(2.1-2.5) Seconds of Frenzy after you use a Traversal Skill",
-		"2": "(26-35)% increased Effect of Frenzy on You ",
+		"2": "(26-35)% increased Effect of Frenzy on You",
 		"level": 0,
 		"statOrderKey": 677,
 		"statOrder": [
@@ -75739,7 +75739,7 @@
 		"modName": "Experimental",
 		"affix": "Experimental Frenzy Effect",
 		"1": "{rounding:Tenth}(3-3.4) Seconds of Frenzy after you use a Traversal Skill",
-		"2": "(40-49)% increased Effect of Frenzy on You ",
+		"2": "(40-49)% increased Effect of Frenzy on You",
 		"level": 0,
 		"statOrderKey": 677,
 		"statOrder": [
@@ -75757,7 +75757,7 @@
 		"modName": "Experimental",
 		"affix": "Experimental Frenzy Effect",
 		"1": "{rounding:Tenth}(3.5-4) Seconds of Frenzy after you use a Traversal Skill",
-		"2": "(50-60)% increased Effect of Frenzy on You ",
+		"2": "(50-60)% increased Effect of Frenzy on You",
 		"level": 0,
 		"statOrderKey": 677,
 		"statOrder": [
@@ -75775,7 +75775,7 @@
 		"modName": "Experimental",
 		"affix": "Experimental Frenzy Effect",
 		"1": "{rounding:Tenth}(5-6) Seconds of Frenzy after you use a Traversal Skill",
-		"2": "(90-100)% increased Effect of Frenzy on You ",
+		"2": "(90-100)% increased Effect of Frenzy on You",
 		"level": 0,
 		"statOrderKey": 677,
 		"statOrder": [
@@ -89837,7 +89837,7 @@
 		"affixName": "Corsair's Blood Cowl Reforged",
 		"modName": "Corsair's Blood Cowl Reforged",
 		"affix": "Corsair's Blood Cowl Reforged",
-		"1": "(6-7)% Increased Bleed Duration ",
+		"1": "(6-7)% Increased Bleed Duration",
 		"2": "{rounding:Integer}(6-7)% increased Block Effectiveness",
 		"level": 0,
 		"statOrderKey": 783,
@@ -89856,7 +89856,7 @@
 		"affixName": "Corsair's Blood Cowl Reforged",
 		"modName": "Corsair's Blood Cowl Reforged",
 		"affix": "Corsair's Blood Cowl Reforged",
-		"1": "(8-9)% Increased Bleed Duration ",
+		"1": "(8-9)% Increased Bleed Duration",
 		"2": "{rounding:Integer}(8-9)% increased Block Effectiveness",
 		"level": 0,
 		"statOrderKey": 783,
@@ -89875,7 +89875,7 @@
 		"affixName": "Corsair's Blood Cowl Reforged",
 		"modName": "Corsair's Blood Cowl Reforged",
 		"affix": "Corsair's Blood Cowl Reforged",
-		"1": "(10-12)% Increased Bleed Duration ",
+		"1": "(10-12)% Increased Bleed Duration",
 		"2": "{rounding:Integer}(10-12)% increased Block Effectiveness",
 		"level": 0,
 		"statOrderKey": 783,
@@ -89894,7 +89894,7 @@
 		"affixName": "Corsair's Blood Cowl Reforged",
 		"modName": "Corsair's Blood Cowl Reforged",
 		"affix": "Corsair's Blood Cowl Reforged",
-		"1": "(13-15)% Increased Bleed Duration ",
+		"1": "(13-15)% Increased Bleed Duration",
 		"2": "{rounding:Integer}(13-15)% increased Block Effectiveness",
 		"level": 0,
 		"statOrderKey": 783,
@@ -89913,7 +89913,7 @@
 		"affixName": "Corsair's Blood Cowl Reforged",
 		"modName": "Corsair's Blood Cowl Reforged",
 		"affix": "Corsair's Blood Cowl Reforged",
-		"1": "(16-18)% Increased Bleed Duration ",
+		"1": "(16-18)% Increased Bleed Duration",
 		"2": "{rounding:Integer}(16-18)% increased Block Effectiveness",
 		"level": 0,
 		"statOrderKey": 783,
@@ -89932,7 +89932,7 @@
 		"affixName": "Corsair's Blood Cowl Reforged",
 		"modName": "Corsair's Blood Cowl Reforged",
 		"affix": "Corsair's Blood Cowl Reforged",
-		"1": "(25-29)% Increased Bleed Duration ",
+		"1": "(25-29)% Increased Bleed Duration",
 		"2": "{rounding:Integer}(25-29)% increased Block Effectiveness",
 		"level": 0,
 		"statOrderKey": 783,
@@ -89951,7 +89951,7 @@
 		"affixName": "Corsair's Blood Cowl Reforged",
 		"modName": "Corsair's Blood Cowl Reforged",
 		"affix": "Corsair's Blood Cowl Reforged",
-		"1": "(30-35)% Increased Bleed Duration ",
+		"1": "(30-35)% Increased Bleed Duration",
 		"2": "{rounding:Integer}(30-35)% increased Block Effectiveness",
 		"level": 0,
 		"statOrderKey": 783,
@@ -89970,7 +89970,7 @@
 		"affixName": "Corsair's Blood Cowl Reforged",
 		"modName": "Corsair's Blood Cowl Reforged",
 		"affix": "Corsair's Blood Cowl Reforged",
-		"1": "(56-70)% Increased Bleed Duration ",
+		"1": "(56-70)% Increased Bleed Duration",
 		"2": "{rounding:Integer}(45-52)% increased Block Effectiveness",
 		"level": 0,
 		"statOrderKey": 783,
@@ -96910,7 +96910,7 @@
 		"modName": "Wolf Spider's",
 		"affix": "Wolf Spider's",
 		"1": "+(15-20)% Chance to inflict Bleed on Hit",
-		"2": "+(1-2)% Physical Penetration with Bleed ",
+		"2": "+(1-2)% Physical Penetration with Bleed",
 		"level": 0,
 		"statOrderKey": 858,
 		"statOrder": [
@@ -96930,7 +96930,7 @@
 		"modName": "Recluse's",
 		"affix": "Recluse's",
 		"1": "+(15-20)% Chance to Poison on Hit",
-		"2": "+(1-2)% Poison Penetration with Poison ",
+		"2": "+(1-2)% Poison Penetration with Poison",
 		"level": 0,
 		"statOrderKey": 859,
 		"statOrder": [
@@ -97270,7 +97270,7 @@
 		"modName": "Lava Gatherer's",
 		"affix": "Lava Gatherer's",
 		"1": "+(15-20)% Chance to Ignite on Hit",
-		"2": "+(1-2)% Fire Penetration with Ignite ",
+		"2": "+(1-2)% Fire Penetration with Ignite",
 		"level": 0,
 		"statOrderKey": 876,
 		"statOrder": [
@@ -97290,7 +97290,7 @@
 		"modName": "Apostle's",
 		"affix": "Apostle's",
 		"1": "+(20-30)% Chance to Shock on Hit",
-		"2": "(10-20)% Increased Shock Duration ",
+		"2": "(10-20)% Increased Shock Duration",
 		"level": 0,
 		"statOrderKey": 877,
 		"statOrder": [
@@ -98820,7 +98820,7 @@
 	"901_0": {
 		"affixName": "Frostbite Duration and Frostbite chance with Cold Skills",
 		"affix": "Frostbite Duration and Frostbite chance with Cold Skills",
-		"1": "1% Increased Frostbite Duration ",
+		"1": "1% Increased Frostbite Duration",
 		"2": "+(1-2)% Chance to apply Frostbite on Cold Hit",
 		"level": 0,
 		"statOrderKey": 901,
@@ -98843,7 +98843,7 @@
 	"901_1": {
 		"affixName": "Frostbite Duration and Frostbite chance with Cold Skills",
 		"affix": "Frostbite Duration and Frostbite chance with Cold Skills",
-		"1": "1% Increased Frostbite Duration ",
+		"1": "1% Increased Frostbite Duration",
 		"2": "+(3-4)% Chance to apply Frostbite on Cold Hit",
 		"level": 0,
 		"statOrderKey": 901,
@@ -98866,7 +98866,7 @@
 	"901_2": {
 		"affixName": "Frostbite Duration and Frostbite chance with Cold Skills",
 		"affix": "Frostbite Duration and Frostbite chance with Cold Skills",
-		"1": "2% Increased Frostbite Duration ",
+		"1": "2% Increased Frostbite Duration",
 		"2": "+(5-6)% Chance to apply Frostbite on Cold Hit",
 		"level": 0,
 		"statOrderKey": 901,
@@ -98889,7 +98889,7 @@
 	"901_3": {
 		"affixName": "Frostbite Duration and Frostbite chance with Cold Skills",
 		"affix": "Frostbite Duration and Frostbite chance with Cold Skills",
-		"1": "2% Increased Frostbite Duration ",
+		"1": "2% Increased Frostbite Duration",
 		"2": "+(7-8)% Chance to apply Frostbite on Cold Hit",
 		"level": 0,
 		"statOrderKey": 901,
@@ -98912,7 +98912,7 @@
 	"901_4": {
 		"affixName": "Frostbite Duration and Frostbite chance with Cold Skills",
 		"affix": "Frostbite Duration and Frostbite chance with Cold Skills",
-		"1": "3% Increased Frostbite Duration ",
+		"1": "3% Increased Frostbite Duration",
 		"2": "+(9-10)% Chance to apply Frostbite on Cold Hit",
 		"level": 0,
 		"statOrderKey": 901,
@@ -98935,7 +98935,7 @@
 	"901_5": {
 		"affixName": "Frostbite Duration and Frostbite chance with Cold Skills",
 		"affix": "Frostbite Duration and Frostbite chance with Cold Skills",
-		"1": "4% Increased Frostbite Duration ",
+		"1": "4% Increased Frostbite Duration",
 		"2": "+(13-15)% Chance to apply Frostbite on Cold Hit",
 		"level": 0,
 		"statOrderKey": 901,
@@ -98958,7 +98958,7 @@
 	"901_6": {
 		"affixName": "Frostbite Duration and Frostbite chance with Cold Skills",
 		"affix": "Frostbite Duration and Frostbite chance with Cold Skills",
-		"1": "(5-6)% Increased Frostbite Duration ",
+		"1": "(5-6)% Increased Frostbite Duration",
 		"2": "+(16-18)% Chance to apply Frostbite on Cold Hit",
 		"level": 0,
 		"statOrderKey": 901,
@@ -99254,7 +99254,7 @@
 	"904_0": {
 		"affixName": "Ward Gained when you use Enchant Weapon and Increased Melee Elemental Damage",
 		"affix": "Ward Gained when you use Enchant Weapon and Increased Melee Elemental Damage",
-		"1": "{rounding:Integer}(20-29) Ward Gained when you use Enchant Weapon ",
+		"1": "{rounding:Integer}(20-29) Ward Gained when you use Enchant Weapon",
 		"2": "{rounding:Integer}(1-2)% increased Melee Elemental Damage",
 		"level": 0,
 		"statOrderKey": 904,
@@ -99272,7 +99272,7 @@
 	"904_1": {
 		"affixName": "Ward Gained when you use Enchant Weapon and Increased Melee Elemental Damage",
 		"affix": "Ward Gained when you use Enchant Weapon and Increased Melee Elemental Damage",
-		"1": "{rounding:Integer}(30-42) Ward Gained when you use Enchant Weapon ",
+		"1": "{rounding:Integer}(30-42) Ward Gained when you use Enchant Weapon",
 		"2": "{rounding:Integer}(3-4)% increased Melee Elemental Damage",
 		"level": 0,
 		"statOrderKey": 904,
@@ -99290,7 +99290,7 @@
 	"904_2": {
 		"affixName": "Ward Gained when you use Enchant Weapon and Increased Melee Elemental Damage",
 		"affix": "Ward Gained when you use Enchant Weapon and Increased Melee Elemental Damage",
-		"1": "{rounding:Integer}(43-56) Ward Gained when you use Enchant Weapon ",
+		"1": "{rounding:Integer}(43-56) Ward Gained when you use Enchant Weapon",
 		"2": "{rounding:Integer}(5-6)% increased Melee Elemental Damage",
 		"level": 0,
 		"statOrderKey": 904,
@@ -99308,7 +99308,7 @@
 	"904_3": {
 		"affixName": "Ward Gained when you use Enchant Weapon and Increased Melee Elemental Damage",
 		"affix": "Ward Gained when you use Enchant Weapon and Increased Melee Elemental Damage",
-		"1": "{rounding:Integer}(57-72) Ward Gained when you use Enchant Weapon ",
+		"1": "{rounding:Integer}(57-72) Ward Gained when you use Enchant Weapon",
 		"2": "{rounding:Integer}(7-8)% increased Melee Elemental Damage",
 		"level": 0,
 		"statOrderKey": 904,
@@ -99326,7 +99326,7 @@
 	"904_4": {
 		"affixName": "Ward Gained when you use Enchant Weapon and Increased Melee Elemental Damage",
 		"affix": "Ward Gained when you use Enchant Weapon and Increased Melee Elemental Damage",
-		"1": "{rounding:Integer}(73-95) Ward Gained when you use Enchant Weapon ",
+		"1": "{rounding:Integer}(73-95) Ward Gained when you use Enchant Weapon",
 		"2": "{rounding:Integer}(9-10)% increased Melee Elemental Damage",
 		"level": 0,
 		"statOrderKey": 904,
@@ -99344,7 +99344,7 @@
 	"904_5": {
 		"affixName": "Ward Gained when you use Enchant Weapon and Increased Melee Elemental Damage",
 		"affix": "Ward Gained when you use Enchant Weapon and Increased Melee Elemental Damage",
-		"1": "{rounding:Integer}(110-150) Ward Gained when you use Enchant Weapon ",
+		"1": "{rounding:Integer}(110-150) Ward Gained when you use Enchant Weapon",
 		"2": "{rounding:Integer}(12-15)% increased Melee Elemental Damage",
 		"level": 0,
 		"statOrderKey": 904,
@@ -99362,7 +99362,7 @@
 	"904_6": {
 		"affixName": "Ward Gained when you use Enchant Weapon and Increased Melee Elemental Damage",
 		"affix": "Ward Gained when you use Enchant Weapon and Increased Melee Elemental Damage",
-		"1": "{rounding:Integer}(151-200) Ward Gained when you use Enchant Weapon ",
+		"1": "{rounding:Integer}(151-200) Ward Gained when you use Enchant Weapon",
 		"2": "{rounding:Integer}(16-20)% increased Melee Elemental Damage",
 		"level": 0,
 		"statOrderKey": 904,
@@ -99800,7 +99800,7 @@
 	"908_0": {
 		"affixName": "Frenzy Effect and Increased Melee damage while you have frenzy",
 		"affix": "Frenzy Effect and Increased Melee damage while you have frenzy",
-		"1": "1% Increased Frenzy Effect ",
+		"1": "1% Increased Frenzy Effect",
 		"2": "{rounding:Integer}(1-2)% increased Melee Damage while you have Frenzy",
 		"level": 0,
 		"statOrderKey": 908,
@@ -99820,7 +99820,7 @@
 	"908_1": {
 		"affixName": "Frenzy Effect and Increased Melee damage while you have frenzy",
 		"affix": "Frenzy Effect and Increased Melee damage while you have frenzy",
-		"1": "2% Increased Frenzy Effect ",
+		"1": "2% Increased Frenzy Effect",
 		"2": "{rounding:Integer}(3-4)% increased Melee Damage while you have Frenzy",
 		"level": 0,
 		"statOrderKey": 908,
@@ -99840,7 +99840,7 @@
 	"908_2": {
 		"affixName": "Frenzy Effect and Increased Melee damage while you have frenzy",
 		"affix": "Frenzy Effect and Increased Melee damage while you have frenzy",
-		"1": "3% Increased Frenzy Effect ",
+		"1": "3% Increased Frenzy Effect",
 		"2": "{rounding:Integer}(5-7)% increased Melee Damage while you have Frenzy",
 		"level": 0,
 		"statOrderKey": 908,
@@ -99860,7 +99860,7 @@
 	"908_3": {
 		"affixName": "Frenzy Effect and Increased Melee damage while you have frenzy",
 		"affix": "Frenzy Effect and Increased Melee damage while you have frenzy",
-		"1": "4% Increased Frenzy Effect ",
+		"1": "4% Increased Frenzy Effect",
 		"2": "{rounding:Integer}(8-11)% increased Melee Damage while you have Frenzy",
 		"level": 0,
 		"statOrderKey": 908,
@@ -99880,7 +99880,7 @@
 	"908_4": {
 		"affixName": "Frenzy Effect and Increased Melee damage while you have frenzy",
 		"affix": "Frenzy Effect and Increased Melee damage while you have frenzy",
-		"1": "5% Increased Frenzy Effect ",
+		"1": "5% Increased Frenzy Effect",
 		"2": "{rounding:Integer}(12-15)% increased Melee Damage while you have Frenzy",
 		"level": 0,
 		"statOrderKey": 908,
@@ -99900,7 +99900,7 @@
 	"908_5": {
 		"affixName": "Frenzy Effect and Increased Melee damage while you have frenzy",
 		"affix": "Frenzy Effect and Increased Melee damage while you have frenzy",
-		"1": "(6-7)% Increased Frenzy Effect ",
+		"1": "(6-7)% Increased Frenzy Effect",
 		"2": "{rounding:Integer}(20-24)% increased Melee Damage while you have Frenzy",
 		"level": 0,
 		"statOrderKey": 908,
@@ -99920,7 +99920,7 @@
 	"908_6": {
 		"affixName": "Frenzy Effect and Increased Melee damage while you have frenzy",
 		"affix": "Frenzy Effect and Increased Melee damage while you have frenzy",
-		"1": "(8-10)% Increased Frenzy Effect ",
+		"1": "(8-10)% Increased Frenzy Effect",
 		"2": "{rounding:Integer}(25-30)% increased Melee Damage while you have Frenzy",
 		"level": 0,
 		"statOrderKey": 908,
@@ -100493,7 +100493,7 @@
 	"913_0": {
 		"affixName": "Shock duration and Endurance threshold against shocked enemies",
 		"affix": "Shock duration and Endurance threshold against shocked enemies",
-		"1": "(1-2)% Increased Shock Duration ",
+		"1": "(1-2)% Increased Shock Duration",
 		"2": "{rounding:Integer}+(10-14) Endurance Threshold against Shocked enemies",
 		"level": 0,
 		"statOrderKey": 913,
@@ -100513,7 +100513,7 @@
 	"913_1": {
 		"affixName": "Shock duration and Endurance threshold against shocked enemies",
 		"affix": "Shock duration and Endurance threshold against shocked enemies",
-		"1": "(3-4)% Increased Shock Duration ",
+		"1": "(3-4)% Increased Shock Duration",
 		"2": "{rounding:Integer}+(15-19) Endurance Threshold against Shocked enemies",
 		"level": 0,
 		"statOrderKey": 913,
@@ -100533,7 +100533,7 @@
 	"913_2": {
 		"affixName": "Shock duration and Endurance threshold against shocked enemies",
 		"affix": "Shock duration and Endurance threshold against shocked enemies",
-		"1": "(5-6)% Increased Shock Duration ",
+		"1": "(5-6)% Increased Shock Duration",
 		"2": "{rounding:Integer}+(20-24) Endurance Threshold against Shocked enemies",
 		"level": 0,
 		"statOrderKey": 913,
@@ -100553,7 +100553,7 @@
 	"913_3": {
 		"affixName": "Shock duration and Endurance threshold against shocked enemies",
 		"affix": "Shock duration and Endurance threshold against shocked enemies",
-		"1": "(7-8)% Increased Shock Duration ",
+		"1": "(7-8)% Increased Shock Duration",
 		"2": "{rounding:Integer}+(25-30) Endurance Threshold against Shocked enemies",
 		"level": 0,
 		"statOrderKey": 913,
@@ -100573,7 +100573,7 @@
 	"913_4": {
 		"affixName": "Shock duration and Endurance threshold against shocked enemies",
 		"affix": "Shock duration and Endurance threshold against shocked enemies",
-		"1": "(9-10)% Increased Shock Duration ",
+		"1": "(9-10)% Increased Shock Duration",
 		"2": "{rounding:Integer}+(31-35) Endurance Threshold against Shocked enemies",
 		"level": 0,
 		"statOrderKey": 913,
@@ -100593,7 +100593,7 @@
 	"913_5": {
 		"affixName": "Shock duration and Endurance threshold against shocked enemies",
 		"affix": "Shock duration and Endurance threshold against shocked enemies",
-		"1": "(12-15)% Increased Shock Duration ",
+		"1": "(12-15)% Increased Shock Duration",
 		"2": "{rounding:Integer}+(45-55) Endurance Threshold against Shocked enemies",
 		"level": 0,
 		"statOrderKey": 913,
@@ -100613,7 +100613,7 @@
 	"913_6": {
 		"affixName": "Shock duration and Endurance threshold against shocked enemies",
 		"affix": "Shock duration and Endurance threshold against shocked enemies",
-		"1": "(16-20)% Increased Shock Duration ",
+		"1": "(16-20)% Increased Shock Duration",
 		"2": "{rounding:Integer}+(56-70) Endurance Threshold against Shocked enemies",
 		"level": 0,
 		"statOrderKey": 913,
@@ -101061,7 +101061,7 @@
 		"affixName": "Chance to apply Electrify on hit with Lightning Skills and Lightning Pen with Electrify",
 		"affix": "Chance to apply Electrify on hit with Lightning Skills and Lightning Pen with Electrify",
 		"1": "+(1-2)% Chance to Electrify on Lightning Hit",
-		"2": "+1% Lightning Penetration with Electrify ",
+		"2": "+1% Lightning Penetration with Electrify",
 		"level": 0,
 		"statOrderKey": 917,
 		"statOrder": [
@@ -101079,7 +101079,7 @@
 		"affixName": "Chance to apply Electrify on hit with Lightning Skills and Lightning Pen with Electrify",
 		"affix": "Chance to apply Electrify on hit with Lightning Skills and Lightning Pen with Electrify",
 		"1": "+(3-4)% Chance to Electrify on Lightning Hit",
-		"2": "+1% Lightning Penetration with Electrify ",
+		"2": "+1% Lightning Penetration with Electrify",
 		"level": 0,
 		"statOrderKey": 917,
 		"statOrder": [
@@ -101097,7 +101097,7 @@
 		"affixName": "Chance to apply Electrify on hit with Lightning Skills and Lightning Pen with Electrify",
 		"affix": "Chance to apply Electrify on hit with Lightning Skills and Lightning Pen with Electrify",
 		"1": "+(5-6)% Chance to Electrify on Lightning Hit",
-		"2": "+1% Lightning Penetration with Electrify ",
+		"2": "+1% Lightning Penetration with Electrify",
 		"level": 0,
 		"statOrderKey": 917,
 		"statOrder": [
@@ -101115,7 +101115,7 @@
 		"affixName": "Chance to apply Electrify on hit with Lightning Skills and Lightning Pen with Electrify",
 		"affix": "Chance to apply Electrify on hit with Lightning Skills and Lightning Pen with Electrify",
 		"1": "+(7-8)% Chance to Electrify on Lightning Hit",
-		"2": "+1% Lightning Penetration with Electrify ",
+		"2": "+1% Lightning Penetration with Electrify",
 		"level": 0,
 		"statOrderKey": 917,
 		"statOrder": [
@@ -101133,7 +101133,7 @@
 		"affixName": "Chance to apply Electrify on hit with Lightning Skills and Lightning Pen with Electrify",
 		"affix": "Chance to apply Electrify on hit with Lightning Skills and Lightning Pen with Electrify",
 		"1": "+(9-10)% Chance to Electrify on Lightning Hit",
-		"2": "+1% Lightning Penetration with Electrify ",
+		"2": "+1% Lightning Penetration with Electrify",
 		"level": 0,
 		"statOrderKey": 917,
 		"statOrder": [
@@ -101151,7 +101151,7 @@
 		"affixName": "Chance to apply Electrify on hit with Lightning Skills and Lightning Pen with Electrify",
 		"affix": "Chance to apply Electrify on hit with Lightning Skills and Lightning Pen with Electrify",
 		"1": "+(12-15)% Chance to Electrify on Lightning Hit",
-		"2": "+2% Lightning Penetration with Electrify ",
+		"2": "+2% Lightning Penetration with Electrify",
 		"level": 0,
 		"statOrderKey": 917,
 		"statOrder": [
@@ -101169,7 +101169,7 @@
 		"affixName": "Chance to apply Electrify on hit with Lightning Skills and Lightning Pen with Electrify",
 		"affix": "Chance to apply Electrify on hit with Lightning Skills and Lightning Pen with Electrify",
 		"1": "+(16-20)% Chance to Electrify on Lightning Hit",
-		"2": "+3% Lightning Penetration with Electrify ",
+		"2": "+3% Lightning Penetration with Electrify",
 		"level": 0,
 		"statOrderKey": 917,
 		"statOrder": [
@@ -101186,7 +101186,7 @@
 	"918_0": {
 		"affixName": "Electrify Duration and Leech with elemental damage over time",
 		"affix": "Electrify Duration and Leech with elemental damage over time",
-		"1": "(1-2)% Increased Electrify Duration ",
+		"1": "(1-2)% Increased Electrify Duration",
 		"2": "0.1% of Elemental Damage Over Time Damage Leeched as Health",
 		"level": 0,
 		"statOrderKey": 918,
@@ -101204,7 +101204,7 @@
 	"918_1": {
 		"affixName": "Electrify Duration and Leech with elemental damage over time",
 		"affix": "Electrify Duration and Leech with elemental damage over time",
-		"1": "3% Increased Electrify Duration ",
+		"1": "3% Increased Electrify Duration",
 		"2": "0.1% of Elemental Damage Over Time Damage Leeched as Health",
 		"level": 0,
 		"statOrderKey": 918,
@@ -101222,7 +101222,7 @@
 	"918_2": {
 		"affixName": "Electrify Duration and Leech with elemental damage over time",
 		"affix": "Electrify Duration and Leech with elemental damage over time",
-		"1": "(5-6)% Increased Electrify Duration ",
+		"1": "(5-6)% Increased Electrify Duration",
 		"2": "0.1% of Elemental Damage Over Time Damage Leeched as Health",
 		"level": 0,
 		"statOrderKey": 918,
@@ -101240,7 +101240,7 @@
 	"918_3": {
 		"affixName": "Electrify Duration and Leech with elemental damage over time",
 		"affix": "Electrify Duration and Leech with elemental damage over time",
-		"1": "(7-8)% Increased Electrify Duration ",
+		"1": "(7-8)% Increased Electrify Duration",
 		"2": "0.1% of Elemental Damage Over Time Damage Leeched as Health",
 		"level": 0,
 		"statOrderKey": 918,
@@ -101258,7 +101258,7 @@
 	"918_4": {
 		"affixName": "Electrify Duration and Leech with elemental damage over time",
 		"affix": "Electrify Duration and Leech with elemental damage over time",
-		"1": "(9-10)% Increased Electrify Duration ",
+		"1": "(9-10)% Increased Electrify Duration",
 		"2": "0.1% of Elemental Damage Over Time Damage Leeched as Health",
 		"level": 0,
 		"statOrderKey": 918,
@@ -101276,7 +101276,7 @@
 	"918_5": {
 		"affixName": "Electrify Duration and Leech with elemental damage over time",
 		"affix": "Electrify Duration and Leech with elemental damage over time",
-		"1": "(12-15)% Increased Electrify Duration ",
+		"1": "(12-15)% Increased Electrify Duration",
 		"2": "0.2% of Elemental Damage Over Time Damage Leeched as Health",
 		"level": 0,
 		"statOrderKey": 918,
@@ -101294,7 +101294,7 @@
 	"918_6": {
 		"affixName": "Electrify Duration and Leech with elemental damage over time",
 		"affix": "Electrify Duration and Leech with elemental damage over time",
-		"1": "(16-20)% Increased Electrify Duration ",
+		"1": "(16-20)% Increased Electrify Duration",
 		"2": "0.3% of Elemental Damage Over Time Damage Leeched as Health",
 		"level": 0,
 		"statOrderKey": 918,
@@ -102047,7 +102047,7 @@
 	"924_0": {
 		"affixName": "Increased Poison Duration and Seconds of Frenzy When you gain Poison Overload",
 		"affix": "Increased Poison Duration and Seconds of Frenzy When you gain Poison Overload",
-		"1": "1% Increased Poison Duration ",
+		"1": "1% Increased Poison Duration",
 		"2": "100% Seconds of Frenzy when you gain Poison Overload",
 		"level": 0,
 		"statOrderKey": 924,
@@ -102067,7 +102067,7 @@
 	"924_1": {
 		"affixName": "Increased Poison Duration and Seconds of Frenzy When you gain Poison Overload",
 		"affix": "Increased Poison Duration and Seconds of Frenzy When you gain Poison Overload",
-		"1": "2% Increased Poison Duration ",
+		"1": "2% Increased Poison Duration",
 		"2": "100% Seconds of Frenzy when you gain Poison Overload",
 		"level": 0,
 		"statOrderKey": 924,
@@ -102087,7 +102087,7 @@
 	"924_2": {
 		"affixName": "Increased Poison Duration and Seconds of Frenzy When you gain Poison Overload",
 		"affix": "Increased Poison Duration and Seconds of Frenzy When you gain Poison Overload",
-		"1": "3% Increased Poison Duration ",
+		"1": "3% Increased Poison Duration",
 		"2": "100% Seconds of Frenzy when you gain Poison Overload",
 		"level": 0,
 		"statOrderKey": 924,
@@ -102107,7 +102107,7 @@
 	"924_3": {
 		"affixName": "Increased Poison Duration and Seconds of Frenzy When you gain Poison Overload",
 		"affix": "Increased Poison Duration and Seconds of Frenzy When you gain Poison Overload",
-		"1": "4% Increased Poison Duration ",
+		"1": "4% Increased Poison Duration",
 		"2": "100% Seconds of Frenzy when you gain Poison Overload",
 		"level": 0,
 		"statOrderKey": 924,
@@ -102127,7 +102127,7 @@
 	"924_4": {
 		"affixName": "Increased Poison Duration and Seconds of Frenzy When you gain Poison Overload",
 		"affix": "Increased Poison Duration and Seconds of Frenzy When you gain Poison Overload",
-		"1": "5% Increased Poison Duration ",
+		"1": "5% Increased Poison Duration",
 		"2": "200% Seconds of Frenzy when you gain Poison Overload",
 		"level": 0,
 		"statOrderKey": 924,
@@ -102147,7 +102147,7 @@
 	"924_5": {
 		"affixName": "Increased Poison Duration and Seconds of Frenzy When you gain Poison Overload",
 		"affix": "Increased Poison Duration and Seconds of Frenzy When you gain Poison Overload",
-		"1": "(6-7)% Increased Poison Duration ",
+		"1": "(6-7)% Increased Poison Duration",
 		"2": "300% Seconds of Frenzy when you gain Poison Overload",
 		"level": 0,
 		"statOrderKey": 924,
@@ -102167,7 +102167,7 @@
 	"924_6": {
 		"affixName": "Increased Poison Duration and Seconds of Frenzy When you gain Poison Overload",
 		"affix": "Increased Poison Duration and Seconds of Frenzy When you gain Poison Overload",
-		"1": "(8-10)% Increased Poison Duration ",
+		"1": "(8-10)% Increased Poison Duration",
 		"2": "400% Seconds of Frenzy when you gain Poison Overload",
 		"level": 0,
 		"statOrderKey": 924,
@@ -102985,7 +102985,7 @@
 	"931_0": {
 		"affixName": "Crimson Shroud duration and additional bleed chance per crimson shroud",
 		"affix": "Crimson Shroud duration and additional bleed chance per crimson shroud",
-		"1": "1% Increased Crimson Shroud Duration ",
+		"1": "1% Increased Crimson Shroud Duration",
 		"2": "+1% Bleed chance per active Crimson Shroud",
 		"level": 0,
 		"statOrderKey": 931,
@@ -103005,7 +103005,7 @@
 	"931_1": {
 		"affixName": "Crimson Shroud duration and additional bleed chance per crimson shroud",
 		"affix": "Crimson Shroud duration and additional bleed chance per crimson shroud",
-		"1": "2% Increased Crimson Shroud Duration ",
+		"1": "2% Increased Crimson Shroud Duration",
 		"2": "+2% Bleed chance per active Crimson Shroud",
 		"level": 0,
 		"statOrderKey": 931,
@@ -103025,7 +103025,7 @@
 	"931_2": {
 		"affixName": "Crimson Shroud duration and additional bleed chance per crimson shroud",
 		"affix": "Crimson Shroud duration and additional bleed chance per crimson shroud",
-		"1": "3% Increased Crimson Shroud Duration ",
+		"1": "3% Increased Crimson Shroud Duration",
 		"2": "+3% Bleed chance per active Crimson Shroud",
 		"level": 0,
 		"statOrderKey": 931,
@@ -103045,7 +103045,7 @@
 	"931_3": {
 		"affixName": "Crimson Shroud duration and additional bleed chance per crimson shroud",
 		"affix": "Crimson Shroud duration and additional bleed chance per crimson shroud",
-		"1": "4% Increased Crimson Shroud Duration ",
+		"1": "4% Increased Crimson Shroud Duration",
 		"2": "+4% Bleed chance per active Crimson Shroud",
 		"level": 0,
 		"statOrderKey": 931,
@@ -103065,7 +103065,7 @@
 	"931_4": {
 		"affixName": "Crimson Shroud duration and additional bleed chance per crimson shroud",
 		"affix": "Crimson Shroud duration and additional bleed chance per crimson shroud",
-		"1": "5% Increased Crimson Shroud Duration ",
+		"1": "5% Increased Crimson Shroud Duration",
 		"2": "+5% Bleed chance per active Crimson Shroud",
 		"level": 0,
 		"statOrderKey": 931,
@@ -103085,7 +103085,7 @@
 	"931_5": {
 		"affixName": "Crimson Shroud duration and additional bleed chance per crimson shroud",
 		"affix": "Crimson Shroud duration and additional bleed chance per crimson shroud",
-		"1": "(6-7)% Increased Crimson Shroud Duration ",
+		"1": "(6-7)% Increased Crimson Shroud Duration",
 		"2": "+(6-7)% Bleed chance per active Crimson Shroud",
 		"level": 0,
 		"statOrderKey": 931,
@@ -103105,7 +103105,7 @@
 	"931_6": {
 		"affixName": "Crimson Shroud duration and additional bleed chance per crimson shroud",
 		"affix": "Crimson Shroud duration and additional bleed chance per crimson shroud",
-		"1": "(8-10)% Increased Crimson Shroud Duration ",
+		"1": "(8-10)% Increased Crimson Shroud Duration",
 		"2": "+(8-10)% Bleed chance per active Crimson Shroud",
 		"level": 0,
 		"statOrderKey": 931,
@@ -103125,7 +103125,7 @@
 	"932_0": {
 		"affixName": "Silver Shroud duration and Ward granted per silver shroud",
 		"affix": "Silver Shroud duration and Ward granted per silver shroud",
-		"1": "(1-2)% Increased Silver Shroud Duration ",
+		"1": "(1-2)% Increased Silver Shroud Duration",
 		"2": "{rounding:Integer}+(1-2) Ward granted by Silver Shroud per stack",
 		"level": 0,
 		"statOrderKey": 932,
@@ -103148,7 +103148,7 @@
 	"932_1": {
 		"affixName": "Silver Shroud duration and Ward granted per silver shroud",
 		"affix": "Silver Shroud duration and Ward granted per silver shroud",
-		"1": "(3-4)% Increased Silver Shroud Duration ",
+		"1": "(3-4)% Increased Silver Shroud Duration",
 		"2": "{rounding:Integer}+(3-4) Ward granted by Silver Shroud per stack",
 		"level": 0,
 		"statOrderKey": 932,
@@ -103171,7 +103171,7 @@
 	"932_2": {
 		"affixName": "Silver Shroud duration and Ward granted per silver shroud",
 		"affix": "Silver Shroud duration and Ward granted per silver shroud",
-		"1": "(5-6)% Increased Silver Shroud Duration ",
+		"1": "(5-6)% Increased Silver Shroud Duration",
 		"2": "{rounding:Integer}+(5-6) Ward granted by Silver Shroud per stack",
 		"level": 0,
 		"statOrderKey": 932,
@@ -103194,7 +103194,7 @@
 	"932_3": {
 		"affixName": "Silver Shroud duration and Ward granted per silver shroud",
 		"affix": "Silver Shroud duration and Ward granted per silver shroud",
-		"1": "(7-8)% Increased Silver Shroud Duration ",
+		"1": "(7-8)% Increased Silver Shroud Duration",
 		"2": "{rounding:Integer}+(7-8) Ward granted by Silver Shroud per stack",
 		"level": 0,
 		"statOrderKey": 932,
@@ -103217,7 +103217,7 @@
 	"932_4": {
 		"affixName": "Silver Shroud duration and Ward granted per silver shroud",
 		"affix": "Silver Shroud duration and Ward granted per silver shroud",
-		"1": "(9-10)% Increased Silver Shroud Duration ",
+		"1": "(9-10)% Increased Silver Shroud Duration",
 		"2": "{rounding:Integer}+(9-10) Ward granted by Silver Shroud per stack",
 		"level": 0,
 		"statOrderKey": 932,
@@ -103240,7 +103240,7 @@
 	"932_5": {
 		"affixName": "Silver Shroud duration and Ward granted per silver shroud",
 		"affix": "Silver Shroud duration and Ward granted per silver shroud",
-		"1": "(12-15)% Increased Silver Shroud Duration ",
+		"1": "(12-15)% Increased Silver Shroud Duration",
 		"2": "{rounding:Integer}+(12-15) Ward granted by Silver Shroud per stack",
 		"level": 0,
 		"statOrderKey": 932,
@@ -103263,7 +103263,7 @@
 	"932_6": {
 		"affixName": "Silver Shroud duration and Ward granted per silver shroud",
 		"affix": "Silver Shroud duration and Ward granted per silver shroud",
-		"1": "(16-20)% Increased Silver Shroud Duration ",
+		"1": "(16-20)% Increased Silver Shroud Duration",
 		"2": "{rounding:Integer}+(16-20) Ward granted by Silver Shroud per stack",
 		"level": 0,
 		"statOrderKey": 932,
@@ -103706,7 +103706,7 @@
 	"936_0": {
 		"affixName": "Haste Effect and Haste duration on Evade",
 		"affix": "Haste Effect and Haste duration on Evade",
-		"1": "1% increased Effect of Haste on You ",
+		"1": "1% increased Effect of Haste on You",
 		"2": "1 Seconds of Haste after you use Evade",
 		"level": 0,
 		"statOrderKey": 936,
@@ -103724,7 +103724,7 @@
 	"936_1": {
 		"affixName": "Haste Effect and Haste duration on Evade",
 		"affix": "Haste Effect and Haste duration on Evade",
-		"1": "2% increased Effect of Haste on You ",
+		"1": "2% increased Effect of Haste on You",
 		"2": "1 Seconds of Haste after you use Evade",
 		"level": 0,
 		"statOrderKey": 936,
@@ -103742,7 +103742,7 @@
 	"936_2": {
 		"affixName": "Haste Effect and Haste duration on Evade",
 		"affix": "Haste Effect and Haste duration on Evade",
-		"1": "3% increased Effect of Haste on You ",
+		"1": "3% increased Effect of Haste on You",
 		"2": "1 Seconds of Haste after you use Evade",
 		"level": 0,
 		"statOrderKey": 936,
@@ -103760,7 +103760,7 @@
 	"936_3": {
 		"affixName": "Haste Effect and Haste duration on Evade",
 		"affix": "Haste Effect and Haste duration on Evade",
-		"1": "4% increased Effect of Haste on You ",
+		"1": "4% increased Effect of Haste on You",
 		"2": "1 Seconds of Haste after you use Evade",
 		"level": 0,
 		"statOrderKey": 936,
@@ -103778,7 +103778,7 @@
 	"936_4": {
 		"affixName": "Haste Effect and Haste duration on Evade",
 		"affix": "Haste Effect and Haste duration on Evade",
-		"1": "5% increased Effect of Haste on You ",
+		"1": "5% increased Effect of Haste on You",
 		"2": "2 Seconds of Haste after you use Evade",
 		"level": 0,
 		"statOrderKey": 936,
@@ -103796,7 +103796,7 @@
 	"936_5": {
 		"affixName": "Haste Effect and Haste duration on Evade",
 		"affix": "Haste Effect and Haste duration on Evade",
-		"1": "(6-7)% increased Effect of Haste on You ",
+		"1": "(6-7)% increased Effect of Haste on You",
 		"2": "3 Seconds of Haste after you use Evade",
 		"level": 0,
 		"statOrderKey": 936,
@@ -103814,7 +103814,7 @@
 	"936_6": {
 		"affixName": "Haste Effect and Haste duration on Evade",
 		"affix": "Haste Effect and Haste duration on Evade",
-		"1": "(8-10)% increased Effect of Haste on You ",
+		"1": "(8-10)% increased Effect of Haste on You",
 		"2": "4 Seconds of Haste after you use Evade",
 		"level": 0,
 		"statOrderKey": 936,
@@ -103832,7 +103832,7 @@
 	"937_0": {
 		"affixName": "Poison Duration and Chance to throw Acid Flask on Bow Hit (3 second cooldown)",
 		"affix": "Poison Duration and Chance to throw Acid Flask on Bow Hit (3 second cooldown)",
-		"1": "1% Increased Poison Duration ",
+		"1": "1% Increased Poison Duration",
 		"2": "1% chance to throw Acid Flask on Bow Hit",
 		"level": 0,
 		"statOrderKey": 937,
@@ -103852,7 +103852,7 @@
 	"937_1": {
 		"affixName": "Poison Duration and Chance to throw Acid Flask on Bow Hit (3 second cooldown)",
 		"affix": "Poison Duration and Chance to throw Acid Flask on Bow Hit (3 second cooldown)",
-		"1": "2% Increased Poison Duration ",
+		"1": "2% Increased Poison Duration",
 		"2": "2% chance to throw Acid Flask on Bow Hit",
 		"level": 0,
 		"statOrderKey": 937,
@@ -103872,7 +103872,7 @@
 	"937_2": {
 		"affixName": "Poison Duration and Chance to throw Acid Flask on Bow Hit (3 second cooldown)",
 		"affix": "Poison Duration and Chance to throw Acid Flask on Bow Hit (3 second cooldown)",
-		"1": "3% Increased Poison Duration ",
+		"1": "3% Increased Poison Duration",
 		"2": "3% chance to throw Acid Flask on Bow Hit",
 		"level": 0,
 		"statOrderKey": 937,
@@ -103892,7 +103892,7 @@
 	"937_3": {
 		"affixName": "Poison Duration and Chance to throw Acid Flask on Bow Hit (3 second cooldown)",
 		"affix": "Poison Duration and Chance to throw Acid Flask on Bow Hit (3 second cooldown)",
-		"1": "4% Increased Poison Duration ",
+		"1": "4% Increased Poison Duration",
 		"2": "4% chance to throw Acid Flask on Bow Hit",
 		"level": 0,
 		"statOrderKey": 937,
@@ -103912,7 +103912,7 @@
 	"937_4": {
 		"affixName": "Poison Duration and Chance to throw Acid Flask on Bow Hit (3 second cooldown)",
 		"affix": "Poison Duration and Chance to throw Acid Flask on Bow Hit (3 second cooldown)",
-		"1": "5% Increased Poison Duration ",
+		"1": "5% Increased Poison Duration",
 		"2": "5% chance to throw Acid Flask on Bow Hit",
 		"level": 0,
 		"statOrderKey": 937,
@@ -103932,7 +103932,7 @@
 	"937_5": {
 		"affixName": "Poison Duration and Chance to throw Acid Flask on Bow Hit (3 second cooldown)",
 		"affix": "Poison Duration and Chance to throw Acid Flask on Bow Hit (3 second cooldown)",
-		"1": "(6-7)% Increased Poison Duration ",
+		"1": "(6-7)% Increased Poison Duration",
 		"2": "(6-7)% chance to throw Acid Flask on Bow Hit",
 		"level": 0,
 		"statOrderKey": 937,
@@ -103952,7 +103952,7 @@
 	"937_6": {
 		"affixName": "Poison Duration and Chance to throw Acid Flask on Bow Hit (3 second cooldown)",
 		"affix": "Poison Duration and Chance to throw Acid Flask on Bow Hit (3 second cooldown)",
-		"1": "(8-10)% Increased Poison Duration ",
+		"1": "(8-10)% Increased Poison Duration",
 		"2": "(8-10)% chance to throw Acid Flask on Bow Hit",
 		"level": 0,
 		"statOrderKey": 937,
@@ -103973,7 +103973,7 @@
 		"affixName": "Physical Resistance and Bleed Duration",
 		"affix": "Physical Resistance and Bleed Duration",
 		"1": "+1% Physical Resistance",
-		"2": "1% Increased Bleed Duration ",
+		"2": "1% Increased Bleed Duration",
 		"level": 0,
 		"statOrderKey": 938,
 		"statOrder": [
@@ -103991,7 +103991,7 @@
 		"affixName": "Physical Resistance and Bleed Duration",
 		"affix": "Physical Resistance and Bleed Duration",
 		"1": "+2% Physical Resistance",
-		"2": "2% Increased Bleed Duration ",
+		"2": "2% Increased Bleed Duration",
 		"level": 0,
 		"statOrderKey": 938,
 		"statOrder": [
@@ -104009,7 +104009,7 @@
 		"affixName": "Physical Resistance and Bleed Duration",
 		"affix": "Physical Resistance and Bleed Duration",
 		"1": "+(3-4)% Physical Resistance",
-		"2": "(3-4)% Increased Bleed Duration ",
+		"2": "(3-4)% Increased Bleed Duration",
 		"level": 0,
 		"statOrderKey": 938,
 		"statOrder": [
@@ -104027,7 +104027,7 @@
 		"affixName": "Physical Resistance and Bleed Duration",
 		"affix": "Physical Resistance and Bleed Duration",
 		"1": "+(5-6)% Physical Resistance",
-		"2": "(5-6)% Increased Bleed Duration ",
+		"2": "(5-6)% Increased Bleed Duration",
 		"level": 0,
 		"statOrderKey": 938,
 		"statOrder": [
@@ -104045,7 +104045,7 @@
 		"affixName": "Physical Resistance and Bleed Duration",
 		"affix": "Physical Resistance and Bleed Duration",
 		"1": "+(7-8)% Physical Resistance",
-		"2": "(7-8)% Increased Bleed Duration ",
+		"2": "(7-8)% Increased Bleed Duration",
 		"level": 0,
 		"statOrderKey": 938,
 		"statOrder": [
@@ -104063,7 +104063,7 @@
 		"affixName": "Physical Resistance and Bleed Duration",
 		"affix": "Physical Resistance and Bleed Duration",
 		"1": "+(10-12)% Physical Resistance",
-		"2": "(10-12)% Increased Bleed Duration ",
+		"2": "(10-12)% Increased Bleed Duration",
 		"level": 0,
 		"statOrderKey": 938,
 		"statOrder": [
@@ -104081,7 +104081,7 @@
 		"affixName": "Physical Resistance and Bleed Duration",
 		"affix": "Physical Resistance and Bleed Duration",
 		"1": "+(13-15)% Physical Resistance",
-		"2": "(13-15)% Increased Bleed Duration ",
+		"2": "(13-15)% Increased Bleed Duration",
 		"level": 0,
 		"statOrderKey": 938,
 		"statOrder": [
@@ -104099,7 +104099,7 @@
 		"affixName": "Fire Resistance and Ignite Duration",
 		"affix": "Fire Resistance and Ignite Duration",
 		"1": "+1% Fire Resistance",
-		"2": "1% Increased Ignite Duration ",
+		"2": "1% Increased Ignite Duration",
 		"level": 0,
 		"statOrderKey": 939,
 		"statOrder": [
@@ -104119,7 +104119,7 @@
 		"affixName": "Fire Resistance and Ignite Duration",
 		"affix": "Fire Resistance and Ignite Duration",
 		"1": "+2% Fire Resistance",
-		"2": "2% Increased Ignite Duration ",
+		"2": "2% Increased Ignite Duration",
 		"level": 0,
 		"statOrderKey": 939,
 		"statOrder": [
@@ -104139,7 +104139,7 @@
 		"affixName": "Fire Resistance and Ignite Duration",
 		"affix": "Fire Resistance and Ignite Duration",
 		"1": "+3% Fire Resistance",
-		"2": "3% Increased Ignite Duration ",
+		"2": "3% Increased Ignite Duration",
 		"level": 0,
 		"statOrderKey": 939,
 		"statOrder": [
@@ -104159,7 +104159,7 @@
 		"affixName": "Fire Resistance and Ignite Duration",
 		"affix": "Fire Resistance and Ignite Duration",
 		"1": "+4% Fire Resistance",
-		"2": "4% Increased Ignite Duration ",
+		"2": "4% Increased Ignite Duration",
 		"level": 0,
 		"statOrderKey": 939,
 		"statOrder": [
@@ -104179,7 +104179,7 @@
 		"affixName": "Fire Resistance and Ignite Duration",
 		"affix": "Fire Resistance and Ignite Duration",
 		"1": "+5% Fire Resistance",
-		"2": "5% Increased Ignite Duration ",
+		"2": "5% Increased Ignite Duration",
 		"level": 0,
 		"statOrderKey": 939,
 		"statOrder": [
@@ -104199,7 +104199,7 @@
 		"affixName": "Fire Resistance and Ignite Duration",
 		"affix": "Fire Resistance and Ignite Duration",
 		"1": "+(6-7)% Fire Resistance",
-		"2": "(6-7)% Increased Ignite Duration ",
+		"2": "(6-7)% Increased Ignite Duration",
 		"level": 0,
 		"statOrderKey": 939,
 		"statOrder": [
@@ -104219,7 +104219,7 @@
 		"affixName": "Fire Resistance and Ignite Duration",
 		"affix": "Fire Resistance and Ignite Duration",
 		"1": "+(8-10)% Fire Resistance",
-		"2": "(8-10)% Increased Ignite Duration ",
+		"2": "(8-10)% Increased Ignite Duration",
 		"level": 0,
 		"statOrderKey": 939,
 		"statOrder": [
@@ -105075,7 +105075,7 @@
 	"965_0": {
 		"affixName": "Bow Damage per meter from the Target (up to 10 metres)",
 		"affix": "More Bow Damage per meter to target",
-		"1": "{rounding:Integer}0.5% less Bow Bow Global Conditional Damage - more Multiplicative with other modifiers",
+		"1": "{rounding:Integer}0.5% less Bow Bow Global Conditional Damage - more",
 		"level": 0,
 		"statOrderKey": 965,
 		"statOrder": [
@@ -105093,7 +105093,7 @@
 	"965_1": {
 		"affixName": "Bow Damage per meter from the Target (up to 10 metres)",
 		"affix": "More Bow Damage per meter to target",
-		"1": "{rounding:Integer}0.6% less Bow Bow Global Conditional Damage - more Multiplicative with other modifiers",
+		"1": "{rounding:Integer}0.6% less Bow Bow Global Conditional Damage - more",
 		"level": 0,
 		"statOrderKey": 965,
 		"statOrder": [
@@ -105111,7 +105111,7 @@
 	"965_2": {
 		"affixName": "Bow Damage per meter from the Target (up to 10 metres)",
 		"affix": "More Bow Damage per meter to target",
-		"1": "{rounding:Integer}0.7% less Bow Bow Global Conditional Damage - more Multiplicative with other modifiers",
+		"1": "{rounding:Integer}0.7% less Bow Bow Global Conditional Damage - more",
 		"level": 0,
 		"statOrderKey": 965,
 		"statOrder": [
@@ -105129,7 +105129,7 @@
 	"965_3": {
 		"affixName": "Bow Damage per meter from the Target (up to 10 metres)",
 		"affix": "More Bow Damage per meter to target",
-		"1": "{rounding:Integer}0.8% less Bow Bow Global Conditional Damage - more Multiplicative with other modifiers",
+		"1": "{rounding:Integer}0.8% less Bow Bow Global Conditional Damage - more",
 		"level": 0,
 		"statOrderKey": 965,
 		"statOrder": [
@@ -105147,7 +105147,7 @@
 	"965_4": {
 		"affixName": "Bow Damage per meter from the Target (up to 10 metres)",
 		"affix": "More Bow Damage per meter to target",
-		"1": "{rounding:Integer}0.9% less Bow Bow Global Conditional Damage - more Multiplicative with other modifiers",
+		"1": "{rounding:Integer}0.9% less Bow Bow Global Conditional Damage - more",
 		"level": 0,
 		"statOrderKey": 965,
 		"statOrder": [
@@ -105165,7 +105165,7 @@
 	"965_5": {
 		"affixName": "Bow Damage per meter from the Target (up to 10 metres)",
 		"affix": "More Bow Damage per meter to target",
-		"1": "{rounding:Integer}1% less Bow Bow Global Conditional Damage - more Multiplicative with other modifiers",
+		"1": "{rounding:Integer}1% less Bow Bow Global Conditional Damage - more",
 		"level": 0,
 		"statOrderKey": 965,
 		"statOrder": [
@@ -105183,7 +105183,7 @@
 	"965_6": {
 		"affixName": "Bow Damage per meter from the Target (up to 10 metres)",
 		"affix": "More Bow Damage per meter to target",
-		"1": "{rounding:Integer}1.1% less Bow Bow Global Conditional Damage - more Multiplicative with other modifiers",
+		"1": "{rounding:Integer}1.1% less Bow Bow Global Conditional Damage - more",
 		"level": 0,
 		"statOrderKey": 965,
 		"statOrder": [
@@ -105201,7 +105201,7 @@
 	"965_7": {
 		"affixName": "Bow Damage per meter from the Target (up to 10 metres)",
 		"affix": "More Bow Damage per meter to target",
-		"1": "{rounding:Integer}(1.2-1.5)% less Bow Bow Global Conditional Damage - more Multiplicative with other modifiers",
+		"1": "{rounding:Integer}(1.2-1.5)% less Bow Bow Global Conditional Damage - more",
 		"level": 0,
 		"statOrderKey": 965,
 		"statOrder": [
@@ -110791,7 +110791,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(1-2)% Each stack of Critical Vulnerability adds an additional 2% chance to be crit, reduces critical strike avoidance by 10%, and lasts 4 seconds. Stacks up to 10 times. Melee Attack Speed",
+		"2": "+(1-2)% Each stack of Critical Vulnerability adds an additional 2% chance to be crit, reduces critical strike avoidance by 10%, and lasts 4 seconds. Melee Attack Speed",
 		"canRollOn": [
 			5
 		],
@@ -110810,7 +110810,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(3-4)% Each stack of Critical Vulnerability adds an additional 2% chance to be crit, reduces critical strike avoidance by 10%, and lasts 4 seconds. Stacks up to 10 times. Melee Attack Speed",
+		"2": "+(3-4)% Each stack of Critical Vulnerability adds an additional 2% chance to be crit, reduces critical strike avoidance by 10%, and lasts 4 seconds. Melee Attack Speed",
 		"canRollOn": [
 			5
 		],
@@ -110829,7 +110829,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(5-6)% Each stack of Critical Vulnerability adds an additional 2% chance to be crit, reduces critical strike avoidance by 10%, and lasts 4 seconds. Stacks up to 10 times. Melee Attack Speed",
+		"2": "+(5-6)% Each stack of Critical Vulnerability adds an additional 2% chance to be crit, reduces critical strike avoidance by 10%, and lasts 4 seconds. Melee Attack Speed",
 		"canRollOn": [
 			5
 		],
@@ -110848,7 +110848,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(7-8)% Each stack of Critical Vulnerability adds an additional 2% chance to be crit, reduces critical strike avoidance by 10%, and lasts 4 seconds. Stacks up to 10 times. Melee Attack Speed",
+		"2": "+(7-8)% Each stack of Critical Vulnerability adds an additional 2% chance to be crit, reduces critical strike avoidance by 10%, and lasts 4 seconds. Melee Attack Speed",
 		"canRollOn": [
 			5
 		],
@@ -110867,7 +110867,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(9-10)% Each stack of Critical Vulnerability adds an additional 2% chance to be crit, reduces critical strike avoidance by 10%, and lasts 4 seconds. Stacks up to 10 times. Melee Attack Speed",
+		"2": "+(9-10)% Each stack of Critical Vulnerability adds an additional 2% chance to be crit, reduces critical strike avoidance by 10%, and lasts 4 seconds. Melee Attack Speed",
 		"canRollOn": [
 			5
 		],
@@ -110886,7 +110886,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(12-15)% Each stack of Critical Vulnerability adds an additional 2% chance to be crit, reduces critical strike avoidance by 10%, and lasts 4 seconds. Stacks up to 10 times. Melee Attack Speed",
+		"2": "+(12-15)% Each stack of Critical Vulnerability adds an additional 2% chance to be crit, reduces critical strike avoidance by 10%, and lasts 4 seconds. Melee Attack Speed",
 		"canRollOn": [
 			5
 		],
@@ -110905,7 +110905,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(16-20)% Each stack of Critical Vulnerability adds an additional 2% chance to be crit, reduces critical strike avoidance by 10%, and lasts 4 seconds. Stacks up to 10 times. Melee Attack Speed",
+		"2": "+(16-20)% Each stack of Critical Vulnerability adds an additional 2% chance to be crit, reduces critical strike avoidance by 10%, and lasts 4 seconds. Melee Attack Speed",
 		"canRollOn": [
 			5
 		],
@@ -110924,7 +110924,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(25-30)% Each stack of Critical Vulnerability adds an additional 2% chance to be crit, reduces critical strike avoidance by 10%, and lasts 4 seconds. Stacks up to 10 times. Melee Attack Speed",
+		"2": "+(25-30)% Each stack of Critical Vulnerability adds an additional 2% chance to be crit, reduces critical strike avoidance by 10%, and lasts 4 seconds. Melee Attack Speed",
 		"canRollOn": [
 			5
 		],
@@ -111095,7 +111095,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(10-17)% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cooldown is shared with sources of the exact same effect. Cold Damage",
+		"2": "+(10-17)% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cold Damage",
 		"canRollOn": [
 			21
 		],
@@ -111114,7 +111114,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(18-25)% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cooldown is shared with sources of the exact same effect. Cold Damage",
+		"2": "+(18-25)% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cold Damage",
 		"canRollOn": [
 			21
 		],
@@ -111133,7 +111133,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(26-33)% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cooldown is shared with sources of the exact same effect. Cold Damage",
+		"2": "+(26-33)% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cold Damage",
 		"canRollOn": [
 			21
 		],
@@ -111152,7 +111152,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(34-41)% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cooldown is shared with sources of the exact same effect. Cold Damage",
+		"2": "+(34-41)% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cold Damage",
 		"canRollOn": [
 			21
 		],
@@ -111171,7 +111171,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(42-50)% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cooldown is shared with sources of the exact same effect. Cold Damage",
+		"2": "+(42-50)% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cold Damage",
 		"canRollOn": [
 			21
 		],
@@ -111190,7 +111190,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(70-84)% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cooldown is shared with sources of the exact same effect. Cold Damage",
+		"2": "+(70-84)% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cold Damage",
 		"canRollOn": [
 			21
 		],
@@ -111209,7 +111209,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(85-100)% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cooldown is shared with sources of the exact same effect. Cold Damage",
+		"2": "+(85-100)% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cold Damage",
 		"canRollOn": [
 			21
 		],
@@ -111228,7 +111228,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(1.6-2) Consumes mana equal to 80% of Volcanic Orb's mana cost. Cooldown is shared with sources of the exact same effect. Cold Damage",
+		"2": "{rounding:Integer}+(1.6-2) Consumes mana equal to 80% of Volcanic Orb's mana cost. Cold Damage",
 		"canRollOn": [
 			21
 		],
@@ -111247,7 +111247,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(10-17)% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cooldown is shared with sources of the exact same effect. Fire Damage",
+		"2": "+(10-17)% Consumes mana equal to 80% of Volcanic Orb's mana cost. Fire Damage",
 		"canRollOn": [
 			21
 		],
@@ -111266,7 +111266,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(18-25)% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cooldown is shared with sources of the exact same effect. Fire Damage",
+		"2": "+(18-25)% Consumes mana equal to 80% of Volcanic Orb's mana cost. Fire Damage",
 		"canRollOn": [
 			21
 		],
@@ -111285,7 +111285,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(26-33)% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cooldown is shared with sources of the exact same effect. Fire Damage",
+		"2": "+(26-33)% Consumes mana equal to 80% of Volcanic Orb's mana cost. Fire Damage",
 		"canRollOn": [
 			21
 		],
@@ -111304,7 +111304,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(34-41)% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cooldown is shared with sources of the exact same effect. Fire Damage",
+		"2": "+(34-41)% Consumes mana equal to 80% of Volcanic Orb's mana cost. Fire Damage",
 		"canRollOn": [
 			21
 		],
@@ -111323,7 +111323,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(42-50)% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cooldown is shared with sources of the exact same effect. Fire Damage",
+		"2": "+(42-50)% Consumes mana equal to 80% of Volcanic Orb's mana cost. Fire Damage",
 		"canRollOn": [
 			21
 		],
@@ -111342,7 +111342,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(70-84)% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cooldown is shared with sources of the exact same effect. Fire Damage",
+		"2": "+(70-84)% Consumes mana equal to 80% of Volcanic Orb's mana cost. Fire Damage",
 		"canRollOn": [
 			21
 		],
@@ -111361,7 +111361,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(85-100)% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cooldown is shared with sources of the exact same effect. Fire Damage",
+		"2": "+(85-100)% Consumes mana equal to 80% of Volcanic Orb's mana cost. Fire Damage",
 		"canRollOn": [
 			21
 		],
@@ -111380,7 +111380,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(1.6-2) Consumes mana equal to 80% of Volcanic Orb's mana cost. Cooldown is shared with sources of the exact same effect. Fire Damage",
+		"2": "{rounding:Integer}+(1.6-2) Consumes mana equal to 80% of Volcanic Orb's mana cost. Fire Damage",
 		"canRollOn": [
 			21
 		],
@@ -111702,7 +111702,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+2% Adds to your chance to block. Blocked hits deal less damage depending on your block effectiveness. Current Mana gained as Ward on Block",
+		"2": "+2% Adds to your chance to block. Current Mana gained as Ward on Block",
 		"canRollOn": [
 			18
 		],
@@ -111720,7 +111720,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+2% Adds to your chance to block. Blocked hits deal less damage depending on your block effectiveness. Current Mana gained as Ward on Block",
+		"2": "+2% Adds to your chance to block. Current Mana gained as Ward on Block",
 		"canRollOn": [
 			18
 		],
@@ -111738,7 +111738,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+2% Adds to your chance to block. Blocked hits deal less damage depending on your block effectiveness. Current Mana gained as Ward on Block",
+		"2": "+2% Adds to your chance to block. Current Mana gained as Ward on Block",
 		"canRollOn": [
 			18
 		],
@@ -111756,7 +111756,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+2% Adds to your chance to block. Blocked hits deal less damage depending on your block effectiveness. Current Mana gained as Ward on Block",
+		"2": "+2% Adds to your chance to block. Current Mana gained as Ward on Block",
 		"canRollOn": [
 			18
 		],
@@ -111774,7 +111774,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+2% Adds to your chance to block. Blocked hits deal less damage depending on your block effectiveness. Current Mana gained as Ward on Block",
+		"2": "+2% Adds to your chance to block. Current Mana gained as Ward on Block",
 		"canRollOn": [
 			18
 		],
@@ -111792,7 +111792,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+2% Adds to your chance to block. Blocked hits deal less damage depending on your block effectiveness. Current Mana gained as Ward on Block",
+		"2": "+2% Adds to your chance to block. Current Mana gained as Ward on Block",
 		"canRollOn": [
 			18
 		],
@@ -111810,7 +111810,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+2% Adds to your chance to block. Blocked hits deal less damage depending on your block effectiveness. Current Mana gained as Ward on Block",
+		"2": "+2% Adds to your chance to block. Current Mana gained as Ward on Block",
 		"canRollOn": [
 			18
 		],
@@ -111828,7 +111828,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+4% Adds to your chance to block. Blocked hits deal less damage depending on your block effectiveness. Current Mana gained as Ward on Block",
+		"2": "+4% Adds to your chance to block. Current Mana gained as Ward on Block",
 		"canRollOn": [
 			18
 		],
@@ -112150,7 +112150,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+4% Each stack of Slow reduces movement speed by 20% (10% against players) and is multiplicative with other modifiers, including other stacks of slow. Slow stacks up to 3 times and lasts 4 seconds by default. Bow Damage to Slowed Enemies - more Multiplicative with other modifiers",
+		"2": "+4% Each stack of Slow reduces movement speed by 20% (10% against players) and is multiplicative with other modifiers, including other stacks of slow. Bow Damage to Slowed Enemies - more",
 		"canRollOn": [
 			23,
 			17
@@ -112169,7 +112169,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+5% Each stack of Slow reduces movement speed by 20% (10% against players) and is multiplicative with other modifiers, including other stacks of slow. Slow stacks up to 3 times and lasts 4 seconds by default. Bow Damage to Slowed Enemies - more Multiplicative with other modifiers",
+		"2": "+5% Each stack of Slow reduces movement speed by 20% (10% against players) and is multiplicative with other modifiers, including other stacks of slow. Bow Damage to Slowed Enemies - more",
 		"canRollOn": [
 			23,
 			17
@@ -112188,7 +112188,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+5% Each stack of Slow reduces movement speed by 20% (10% against players) and is multiplicative with other modifiers, including other stacks of slow. Slow stacks up to 3 times and lasts 4 seconds by default. Bow Damage to Slowed Enemies - more Multiplicative with other modifiers",
+		"2": "+5% Each stack of Slow reduces movement speed by 20% (10% against players) and is multiplicative with other modifiers, including other stacks of slow. Bow Damage to Slowed Enemies - more",
 		"canRollOn": [
 			23,
 			17
@@ -112207,7 +112207,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+6% Each stack of Slow reduces movement speed by 20% (10% against players) and is multiplicative with other modifiers, including other stacks of slow. Slow stacks up to 3 times and lasts 4 seconds by default. Bow Damage to Slowed Enemies - more Multiplicative with other modifiers",
+		"2": "+6% Each stack of Slow reduces movement speed by 20% (10% against players) and is multiplicative with other modifiers, including other stacks of slow. Bow Damage to Slowed Enemies - more",
 		"canRollOn": [
 			23,
 			17
@@ -112226,7 +112226,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+6% Each stack of Slow reduces movement speed by 20% (10% against players) and is multiplicative with other modifiers, including other stacks of slow. Slow stacks up to 3 times and lasts 4 seconds by default. Bow Damage to Slowed Enemies - more Multiplicative with other modifiers",
+		"2": "+6% Each stack of Slow reduces movement speed by 20% (10% against players) and is multiplicative with other modifiers, including other stacks of slow. Bow Damage to Slowed Enemies - more",
 		"canRollOn": [
 			23,
 			17
@@ -112245,7 +112245,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+7% Each stack of Slow reduces movement speed by 20% (10% against players) and is multiplicative with other modifiers, including other stacks of slow. Slow stacks up to 3 times and lasts 4 seconds by default. Bow Damage to Slowed Enemies - more Multiplicative with other modifiers",
+		"2": "+7% Each stack of Slow reduces movement speed by 20% (10% against players) and is multiplicative with other modifiers, including other stacks of slow. Bow Damage to Slowed Enemies - more",
 		"canRollOn": [
 			23,
 			17
@@ -112264,7 +112264,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+7% Each stack of Slow reduces movement speed by 20% (10% against players) and is multiplicative with other modifiers, including other stacks of slow. Slow stacks up to 3 times and lasts 4 seconds by default. Bow Damage to Slowed Enemies - more Multiplicative with other modifiers",
+		"2": "+7% Each stack of Slow reduces movement speed by 20% (10% against players) and is multiplicative with other modifiers, including other stacks of slow. Bow Damage to Slowed Enemies - more",
 		"canRollOn": [
 			23,
 			17
@@ -112283,7 +112283,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+10% Each stack of Slow reduces movement speed by 20% (10% against players) and is multiplicative with other modifiers, including other stacks of slow. Slow stacks up to 3 times and lasts 4 seconds by default. Bow Damage to Slowed Enemies - more Multiplicative with other modifiers",
+		"2": "+10% Each stack of Slow reduces movement speed by 20% (10% against players) and is multiplicative with other modifiers, including other stacks of slow. Bow Damage to Slowed Enemies - more",
 		"canRollOn": [
 			23,
 			17
@@ -112454,7 +112454,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(20-23)% Adds damage to all bow attacks. The type of damage added matches the base damage of the attack. Increased Bow Attack Speed for 3 seconds when you use a Bow Attack (10 second cooldown)",
+		"2": "+(20-23)% Increased Bow Attack Speed for 3 seconds when you use a Bow Attack (10 second cooldown)",
 		"canRollOn": [
 			23,
 			17
@@ -112473,7 +112473,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(24-27)% Adds damage to all bow attacks. The type of damage added matches the base damage of the attack. Increased Bow Attack Speed for 3 seconds when you use a Bow Attack (10 second cooldown)",
+		"2": "+(24-27)% Increased Bow Attack Speed for 3 seconds when you use a Bow Attack (10 second cooldown)",
 		"canRollOn": [
 			23,
 			17
@@ -112492,7 +112492,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(28-31)% Adds damage to all bow attacks. The type of damage added matches the base damage of the attack. Increased Bow Attack Speed for 3 seconds when you use a Bow Attack (10 second cooldown)",
+		"2": "+(28-31)% Increased Bow Attack Speed for 3 seconds when you use a Bow Attack (10 second cooldown)",
 		"canRollOn": [
 			23,
 			17
@@ -112511,7 +112511,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(32-35)% Adds damage to all bow attacks. The type of damage added matches the base damage of the attack. Increased Bow Attack Speed for 3 seconds when you use a Bow Attack (10 second cooldown)",
+		"2": "+(32-35)% Increased Bow Attack Speed for 3 seconds when you use a Bow Attack (10 second cooldown)",
 		"canRollOn": [
 			23,
 			17
@@ -112530,7 +112530,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(36-39)% Adds damage to all bow attacks. The type of damage added matches the base damage of the attack. Increased Bow Attack Speed for 3 seconds when you use a Bow Attack (10 second cooldown)",
+		"2": "+(36-39)% Increased Bow Attack Speed for 3 seconds when you use a Bow Attack (10 second cooldown)",
 		"canRollOn": [
 			23,
 			17
@@ -112549,7 +112549,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(40-43)% Adds damage to all bow attacks. The type of damage added matches the base damage of the attack. Increased Bow Attack Speed for 3 seconds when you use a Bow Attack (10 second cooldown)",
+		"2": "+(40-43)% Increased Bow Attack Speed for 3 seconds when you use a Bow Attack (10 second cooldown)",
 		"canRollOn": [
 			23,
 			17
@@ -112568,7 +112568,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(44-45)% Adds damage to all bow attacks. The type of damage added matches the base damage of the attack. Increased Bow Attack Speed for 3 seconds when you use a Bow Attack (10 second cooldown)",
+		"2": "+(44-45)% Increased Bow Attack Speed for 3 seconds when you use a Bow Attack (10 second cooldown)",
 		"canRollOn": [
 			23,
 			17
@@ -112587,7 +112587,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(60-65)% Adds damage to all bow attacks. The type of damage added matches the base damage of the attack. Increased Bow Attack Speed for 3 seconds when you use a Bow Attack (10 second cooldown)",
+		"2": "+(60-65)% Increased Bow Attack Speed for 3 seconds when you use a Bow Attack (10 second cooldown)",
 		"canRollOn": [
 			23,
 			17
@@ -112606,7 +112606,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 2.2,
-		"2": "+4% All your hits have a chance to stun if they deal enough damage. Increased stun chance increases that chance. Damage to Stunned Enemies - more Multiplicative with other modifiers",
+		"2": "+4% All your hits have a chance to stun if they deal enough damage. Damage to Stunned Enemies - more",
 		"canRollOn": [
 			13
 		],
@@ -112624,7 +112624,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 2.2,
-		"2": "+4% All your hits have a chance to stun if they deal enough damage. Increased stun chance increases that chance. Damage to Stunned Enemies - more Multiplicative with other modifiers",
+		"2": "+4% All your hits have a chance to stun if they deal enough damage. Damage to Stunned Enemies - more",
 		"canRollOn": [
 			13
 		],
@@ -112642,7 +112642,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 2.2,
-		"2": "+4% All your hits have a chance to stun if they deal enough damage. Increased stun chance increases that chance. Damage to Stunned Enemies - more Multiplicative with other modifiers",
+		"2": "+4% All your hits have a chance to stun if they deal enough damage. Damage to Stunned Enemies - more",
 		"canRollOn": [
 			13
 		],
@@ -112660,7 +112660,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 2.2,
-		"2": "+4% All your hits have a chance to stun if they deal enough damage. Increased stun chance increases that chance. Damage to Stunned Enemies - more Multiplicative with other modifiers",
+		"2": "+4% All your hits have a chance to stun if they deal enough damage. Damage to Stunned Enemies - more",
 		"canRollOn": [
 			13
 		],
@@ -112678,7 +112678,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 2.2,
-		"2": "+4% All your hits have a chance to stun if they deal enough damage. Increased stun chance increases that chance. Damage to Stunned Enemies - more Multiplicative with other modifiers",
+		"2": "+4% All your hits have a chance to stun if they deal enough damage. Damage to Stunned Enemies - more",
 		"canRollOn": [
 			13
 		],
@@ -112696,7 +112696,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 2.2,
-		"2": "+4% All your hits have a chance to stun if they deal enough damage. Increased stun chance increases that chance. Damage to Stunned Enemies - more Multiplicative with other modifiers",
+		"2": "+4% All your hits have a chance to stun if they deal enough damage. Damage to Stunned Enemies - more",
 		"canRollOn": [
 			13
 		],
@@ -112714,7 +112714,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 2.2,
-		"2": "+(4-7)% All your hits have a chance to stun if they deal enough damage. Increased stun chance increases that chance. Damage to Stunned Enemies - more Multiplicative with other modifiers",
+		"2": "+(4-7)% All your hits have a chance to stun if they deal enough damage. Damage to Stunned Enemies - more",
 		"canRollOn": [
 			13
 		],
@@ -112732,7 +112732,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 2.2,
-		"2": "+11% All your hits have a chance to stun if they deal enough damage. Increased stun chance increases that chance. Damage to Stunned Enemies - more Multiplicative with other modifiers",
+		"2": "+11% All your hits have a chance to stun if they deal enough damage. Damage to Stunned Enemies - more",
 		"canRollOn": [
 			13
 		],
@@ -112750,7 +112750,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 2.2,
-		"2": "+(30-31)% Increases the area of effect of skills with the Area tag. Additive with other sources of increased area. chance to cast Summon Forged Weapon on Melee Hit",
+		"2": "+(30-31)% Increases the area of effect of skills with the Area tag. chance to cast Summon Forged Weapon on Melee Hit",
 		"canRollOn": [
 			13,
 			12,
@@ -112771,7 +112771,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 2.2,
-		"2": "+(32-33)% Increases the area of effect of skills with the Area tag. Additive with other sources of increased area. chance to cast Summon Forged Weapon on Melee Hit",
+		"2": "+(32-33)% Increases the area of effect of skills with the Area tag. chance to cast Summon Forged Weapon on Melee Hit",
 		"canRollOn": [
 			13,
 			12,
@@ -112792,7 +112792,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 2.2,
-		"2": "+(34-35)% Increases the area of effect of skills with the Area tag. Additive with other sources of increased area. chance to cast Summon Forged Weapon on Melee Hit",
+		"2": "+(34-35)% Increases the area of effect of skills with the Area tag. chance to cast Summon Forged Weapon on Melee Hit",
 		"canRollOn": [
 			13,
 			12,
@@ -112813,7 +112813,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 2.2,
-		"2": "+(36-37)% Increases the area of effect of skills with the Area tag. Additive with other sources of increased area. chance to cast Summon Forged Weapon on Melee Hit",
+		"2": "+(36-37)% Increases the area of effect of skills with the Area tag. chance to cast Summon Forged Weapon on Melee Hit",
 		"canRollOn": [
 			13,
 			12,
@@ -112834,7 +112834,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 2.2,
-		"2": "+(38-39)% Increases the area of effect of skills with the Area tag. Additive with other sources of increased area. chance to cast Summon Forged Weapon on Melee Hit",
+		"2": "+(38-39)% Increases the area of effect of skills with the Area tag. chance to cast Summon Forged Weapon on Melee Hit",
 		"canRollOn": [
 			13,
 			12,
@@ -112855,7 +112855,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 2.2,
-		"2": "+(40-41)% Increases the area of effect of skills with the Area tag. Additive with other sources of increased area. chance to cast Summon Forged Weapon on Melee Hit",
+		"2": "+(40-41)% Increases the area of effect of skills with the Area tag. chance to cast Summon Forged Weapon on Melee Hit",
 		"canRollOn": [
 			13,
 			12,
@@ -112876,7 +112876,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 2.2,
-		"2": "+(42-46)% Increases the area of effect of skills with the Area tag. Additive with other sources of increased area. chance to cast Summon Forged Weapon on Melee Hit",
+		"2": "+(42-46)% Increases the area of effect of skills with the Area tag. chance to cast Summon Forged Weapon on Melee Hit",
 		"canRollOn": [
 			13,
 			12,
@@ -112897,7 +112897,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 2.2,
-		"2": "+(65-75)% Increases the area of effect of skills with the Area tag. Additive with other sources of increased area. chance to cast Summon Forged Weapon on Melee Hit",
+		"2": "+(65-75)% Increases the area of effect of skills with the Area tag. chance to cast Summon Forged Weapon on Melee Hit",
 		"canRollOn": [
 			13,
 			12,
@@ -112918,7 +112918,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "{rounding:Integer}+(30-32) Ward is a decaying overshield that protect your health. Only affects mana spent, not mana drained. Ward Decay Threshold",
+		"2": "{rounding:Integer}+(30-32) Ward is a decaying overshield that protect your health. Ward Decay Threshold",
 		"canRollOn": [
 			10,
 			8,
@@ -112938,7 +112938,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "{rounding:Integer}+(33-35) Ward is a decaying overshield that protect your health. Only affects mana spent, not mana drained. Ward Decay Threshold",
+		"2": "{rounding:Integer}+(33-35) Ward is a decaying overshield that protect your health. Ward Decay Threshold",
 		"canRollOn": [
 			10,
 			8,
@@ -112958,7 +112958,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "{rounding:Integer}+(36-38) Ward is a decaying overshield that protect your health. Only affects mana spent, not mana drained. Ward Decay Threshold",
+		"2": "{rounding:Integer}+(36-38) Ward is a decaying overshield that protect your health. Ward Decay Threshold",
 		"canRollOn": [
 			10,
 			8,
@@ -112978,7 +112978,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "{rounding:Integer}+(39-41) Ward is a decaying overshield that protect your health. Only affects mana spent, not mana drained. Ward Decay Threshold",
+		"2": "{rounding:Integer}+(39-41) Ward is a decaying overshield that protect your health. Ward Decay Threshold",
 		"canRollOn": [
 			10,
 			8,
@@ -112998,7 +112998,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "{rounding:Integer}+(42-44) Ward is a decaying overshield that protect your health. Only affects mana spent, not mana drained. Ward Decay Threshold",
+		"2": "{rounding:Integer}+(42-44) Ward is a decaying overshield that protect your health. Ward Decay Threshold",
 		"canRollOn": [
 			10,
 			8,
@@ -113018,7 +113018,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "{rounding:Integer}+(45-47) Ward is a decaying overshield that protect your health. Only affects mana spent, not mana drained. Ward Decay Threshold",
+		"2": "{rounding:Integer}+(45-47) Ward is a decaying overshield that protect your health. Ward Decay Threshold",
 		"canRollOn": [
 			10,
 			8,
@@ -113038,7 +113038,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "{rounding:Integer}+(48-53) Ward is a decaying overshield that protect your health. Only affects mana spent, not mana drained. Ward Decay Threshold",
+		"2": "{rounding:Integer}+(48-53) Ward is a decaying overshield that protect your health. Ward Decay Threshold",
 		"canRollOn": [
 			10,
 			8,
@@ -113058,7 +113058,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "{rounding:Integer}+(70-75) Ward is a decaying overshield that protect your health. Only affects mana spent, not mana drained. Ward Decay Threshold",
+		"2": "{rounding:Integer}+(70-75) Ward is a decaying overshield that protect your health. Ward Decay Threshold",
 		"canRollOn": [
 			10,
 			8,
@@ -113078,7 +113078,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+1 Increases the area of effect of skills with the Area tag and the Spell tag. Additive with other sources of increased area. Spell Mana Cost",
+		"2": "{rounding:Integer}+1 Increases the area of effect of skills with the Area tag and the Spell tag. Spell Mana Cost",
 		"canRollOn": [
 			10,
 			19,
@@ -113098,7 +113098,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+1 Increases the area of effect of skills with the Area tag and the Spell tag. Additive with other sources of increased area. Spell Mana Cost",
+		"2": "{rounding:Integer}+1 Increases the area of effect of skills with the Area tag and the Spell tag. Spell Mana Cost",
 		"canRollOn": [
 			10,
 			19,
@@ -113118,7 +113118,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+2 Increases the area of effect of skills with the Area tag and the Spell tag. Additive with other sources of increased area. Spell Mana Cost",
+		"2": "{rounding:Integer}+2 Increases the area of effect of skills with the Area tag and the Spell tag. Spell Mana Cost",
 		"canRollOn": [
 			10,
 			19,
@@ -113138,7 +113138,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+2 Increases the area of effect of skills with the Area tag and the Spell tag. Additive with other sources of increased area. Spell Mana Cost",
+		"2": "{rounding:Integer}+2 Increases the area of effect of skills with the Area tag and the Spell tag. Spell Mana Cost",
 		"canRollOn": [
 			10,
 			19,
@@ -113158,7 +113158,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+2 Increases the area of effect of skills with the Area tag and the Spell tag. Additive with other sources of increased area. Spell Mana Cost",
+		"2": "{rounding:Integer}+2 Increases the area of effect of skills with the Area tag and the Spell tag. Spell Mana Cost",
 		"canRollOn": [
 			10,
 			19,
@@ -113178,7 +113178,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+3 Increases the area of effect of skills with the Area tag and the Spell tag. Additive with other sources of increased area. Spell Mana Cost",
+		"2": "{rounding:Integer}+3 Increases the area of effect of skills with the Area tag and the Spell tag. Spell Mana Cost",
 		"canRollOn": [
 			10,
 			19,
@@ -113198,7 +113198,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+3 Increases the area of effect of skills with the Area tag and the Spell tag. Additive with other sources of increased area. Spell Mana Cost",
+		"2": "{rounding:Integer}+3 Increases the area of effect of skills with the Area tag and the Spell tag. Spell Mana Cost",
 		"canRollOn": [
 			10,
 			19,
@@ -113218,7 +113218,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+6 Increases the area of effect of skills with the Area tag and the Spell tag. Additive with other sources of increased area. Spell Mana Cost",
+		"2": "{rounding:Integer}+6 Increases the area of effect of skills with the Area tag and the Spell tag. Spell Mana Cost",
 		"canRollOn": [
 			10,
 			19,
@@ -113238,7 +113238,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+0.8% Adds damage to all spells. The type of damage added matches the base damage of the spell. increased Spell Damage per 1% increased Movement Speed",
+		"2": "+0.8% increased Spell Damage per 1% increased Movement Speed",
 		"canRollOn": [
 			10,
 			19,
@@ -113259,7 +113259,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+0.8% Adds damage to all spells. The type of damage added matches the base damage of the spell. increased Spell Damage per 1% increased Movement Speed",
+		"2": "+0.8% increased Spell Damage per 1% increased Movement Speed",
 		"canRollOn": [
 			10,
 			19,
@@ -113280,7 +113280,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+0.8% Adds damage to all spells. The type of damage added matches the base damage of the spell. increased Spell Damage per 1% increased Movement Speed",
+		"2": "+0.8% increased Spell Damage per 1% increased Movement Speed",
 		"canRollOn": [
 			10,
 			19,
@@ -113301,7 +113301,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+0.8% Adds damage to all spells. The type of damage added matches the base damage of the spell. increased Spell Damage per 1% increased Movement Speed",
+		"2": "+0.8% increased Spell Damage per 1% increased Movement Speed",
 		"canRollOn": [
 			10,
 			19,
@@ -113322,7 +113322,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+0.8% Adds damage to all spells. The type of damage added matches the base damage of the spell. increased Spell Damage per 1% increased Movement Speed",
+		"2": "+0.8% increased Spell Damage per 1% increased Movement Speed",
 		"canRollOn": [
 			10,
 			19,
@@ -113343,7 +113343,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+0.8% Adds damage to all spells. The type of damage added matches the base damage of the spell. increased Spell Damage per 1% increased Movement Speed",
+		"2": "+0.8% increased Spell Damage per 1% increased Movement Speed",
 		"canRollOn": [
 			10,
 			19,
@@ -113364,7 +113364,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+0.8% Adds damage to all spells. The type of damage added matches the base damage of the spell. increased Spell Damage per 1% increased Movement Speed",
+		"2": "+0.8% increased Spell Damage per 1% increased Movement Speed",
 		"canRollOn": [
 			10,
 			19,
@@ -113385,7 +113385,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+1.6% Adds damage to all spells. The type of damage added matches the base damage of the spell. increased Spell Damage per 1% increased Movement Speed",
+		"2": "+1.6% increased Spell Damage per 1% increased Movement Speed",
 		"canRollOn": [
 			10,
 			19,
@@ -113894,7 +113894,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+2% Poison deals poison damage over time and lasts 3 seconds. The first 30 stacks each reduce poison resistance by 5% (2% against bosses and players). Global Conditional Damage - more Multiplicative with other modifiers",
+		"2": "+2% Poison deals poison damage over time and lasts 3 seconds. Global Conditional Damage - more",
 		"canRollOn": [
 			6,
 			14,
@@ -113914,7 +113914,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+2.1% Poison deals poison damage over time and lasts 3 seconds. The first 30 stacks each reduce poison resistance by 5% (2% against bosses and players). Global Conditional Damage - more Multiplicative with other modifiers",
+		"2": "+2.1% Poison deals poison damage over time and lasts 3 seconds. Global Conditional Damage - more",
 		"canRollOn": [
 			6,
 			14,
@@ -113934,7 +113934,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+2.2% Poison deals poison damage over time and lasts 3 seconds. The first 30 stacks each reduce poison resistance by 5% (2% against bosses and players). Global Conditional Damage - more Multiplicative with other modifiers",
+		"2": "+2.2% Poison deals poison damage over time and lasts 3 seconds. Global Conditional Damage - more",
 		"canRollOn": [
 			6,
 			14,
@@ -113954,7 +113954,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+2.3% Poison deals poison damage over time and lasts 3 seconds. The first 30 stacks each reduce poison resistance by 5% (2% against bosses and players). Global Conditional Damage - more Multiplicative with other modifiers",
+		"2": "+2.3% Poison deals poison damage over time and lasts 3 seconds. Global Conditional Damage - more",
 		"canRollOn": [
 			6,
 			14,
@@ -113974,7 +113974,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+2.4% Poison deals poison damage over time and lasts 3 seconds. The first 30 stacks each reduce poison resistance by 5% (2% against bosses and players). Global Conditional Damage - more Multiplicative with other modifiers",
+		"2": "+2.4% Poison deals poison damage over time and lasts 3 seconds. Global Conditional Damage - more",
 		"canRollOn": [
 			6,
 			14,
@@ -113994,7 +113994,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+2.5% Poison deals poison damage over time and lasts 3 seconds. The first 30 stacks each reduce poison resistance by 5% (2% against bosses and players). Global Conditional Damage - more Multiplicative with other modifiers",
+		"2": "+2.5% Poison deals poison damage over time and lasts 3 seconds. Global Conditional Damage - more",
 		"canRollOn": [
 			6,
 			14,
@@ -114014,7 +114014,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(2.6-3)% Poison deals poison damage over time and lasts 3 seconds. The first 30 stacks each reduce poison resistance by 5% (2% against bosses and players). Global Conditional Damage - more Multiplicative with other modifiers",
+		"2": "+(2.6-3)% Poison deals poison damage over time and lasts 3 seconds. Global Conditional Damage - more",
 		"canRollOn": [
 			6,
 			14,
@@ -114034,7 +114034,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(5-6)% Poison deals poison damage over time and lasts 3 seconds. The first 30 stacks each reduce poison resistance by 5% (2% against bosses and players). Global Conditional Damage - more Multiplicative with other modifiers",
+		"2": "+(5-6)% Poison deals poison damage over time and lasts 3 seconds. Global Conditional Damage - more",
 		"canRollOn": [
 			6,
 			14,
@@ -114054,7 +114054,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+0.4% Frailty reduces damage dealt by 6% (multiplicative with other modifiers), lasts 4 seconds, and stacks up to 3 times. More Damage Per Stack of Frailty - more Counts stacks on the Target. Multiplicative with other modifiers.",
+		"2": "+0.4% Frailty reduces damage dealt by 6% (multiplicative with other modifiers), lasts 4 seconds, and stacks up to 3 times. More Damage Per Stack of Frailty - more Counts stacks on the Target.",
 		"canRollOn": [
 			7,
 			13
@@ -114073,7 +114073,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+0.5% Frailty reduces damage dealt by 6% (multiplicative with other modifiers), lasts 4 seconds, and stacks up to 3 times. More Damage Per Stack of Frailty - more Counts stacks on the Target. Multiplicative with other modifiers.",
+		"2": "+0.5% Frailty reduces damage dealt by 6% (multiplicative with other modifiers), lasts 4 seconds, and stacks up to 3 times. More Damage Per Stack of Frailty - more Counts stacks on the Target.",
 		"canRollOn": [
 			7,
 			13
@@ -114092,7 +114092,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+0.6% Frailty reduces damage dealt by 6% (multiplicative with other modifiers), lasts 4 seconds, and stacks up to 3 times. More Damage Per Stack of Frailty - more Counts stacks on the Target. Multiplicative with other modifiers.",
+		"2": "+0.6% Frailty reduces damage dealt by 6% (multiplicative with other modifiers), lasts 4 seconds, and stacks up to 3 times. More Damage Per Stack of Frailty - more Counts stacks on the Target.",
 		"canRollOn": [
 			7,
 			13
@@ -114111,7 +114111,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+0.7% Frailty reduces damage dealt by 6% (multiplicative with other modifiers), lasts 4 seconds, and stacks up to 3 times. More Damage Per Stack of Frailty - more Counts stacks on the Target. Multiplicative with other modifiers.",
+		"2": "+0.7% Frailty reduces damage dealt by 6% (multiplicative with other modifiers), lasts 4 seconds, and stacks up to 3 times. More Damage Per Stack of Frailty - more Counts stacks on the Target.",
 		"canRollOn": [
 			7,
 			13
@@ -114130,7 +114130,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+0.8% Frailty reduces damage dealt by 6% (multiplicative with other modifiers), lasts 4 seconds, and stacks up to 3 times. More Damage Per Stack of Frailty - more Counts stacks on the Target. Multiplicative with other modifiers.",
+		"2": "+0.8% Frailty reduces damage dealt by 6% (multiplicative with other modifiers), lasts 4 seconds, and stacks up to 3 times. More Damage Per Stack of Frailty - more Counts stacks on the Target.",
 		"canRollOn": [
 			7,
 			13
@@ -114149,7 +114149,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+0.9% Frailty reduces damage dealt by 6% (multiplicative with other modifiers), lasts 4 seconds, and stacks up to 3 times. More Damage Per Stack of Frailty - more Counts stacks on the Target. Multiplicative with other modifiers.",
+		"2": "+0.9% Frailty reduces damage dealt by 6% (multiplicative with other modifiers), lasts 4 seconds, and stacks up to 3 times. More Damage Per Stack of Frailty - more Counts stacks on the Target.",
 		"canRollOn": [
 			7,
 			13
@@ -114168,7 +114168,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+1% Frailty reduces damage dealt by 6% (multiplicative with other modifiers), lasts 4 seconds, and stacks up to 3 times. More Damage Per Stack of Frailty - more Counts stacks on the Target. Multiplicative with other modifiers.",
+		"2": "+1% Frailty reduces damage dealt by 6% (multiplicative with other modifiers), lasts 4 seconds, and stacks up to 3 times. More Damage Per Stack of Frailty - more Counts stacks on the Target.",
 		"canRollOn": [
 			7,
 			13
@@ -114187,7 +114187,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(1.3-1.5)% Frailty reduces damage dealt by 6% (multiplicative with other modifiers), lasts 4 seconds, and stacks up to 3 times. More Damage Per Stack of Frailty - more Counts stacks on the Target. Multiplicative with other modifiers.",
+		"2": "+(1.3-1.5)% Frailty reduces damage dealt by 6% (multiplicative with other modifiers), lasts 4 seconds, and stacks up to 3 times. More Damage Per Stack of Frailty - more Counts stacks on the Target.",
 		"canRollOn": [
 			7,
 			13
@@ -114206,7 +114206,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+1% Each stack of Slow reduces movement speed by 20% (10% against players) and is multiplicative with other modifiers, including other stacks of slow. Slow stacks up to 3 times and lasts 4 seconds by default. Damage to Slowed Enemies - more Multiplicative with other modifiers",
+		"2": "+1% Each stack of Slow reduces movement speed by 20% (10% against players) and is multiplicative with other modifiers, including other stacks of slow. Damage to Slowed Enemies - more",
 		"canRollOn": [
 			7,
 			13
@@ -114225,7 +114225,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+2% Each stack of Slow reduces movement speed by 20% (10% against players) and is multiplicative with other modifiers, including other stacks of slow. Slow stacks up to 3 times and lasts 4 seconds by default. Damage to Slowed Enemies - more Multiplicative with other modifiers",
+		"2": "+2% Each stack of Slow reduces movement speed by 20% (10% against players) and is multiplicative with other modifiers, including other stacks of slow. Damage to Slowed Enemies - more",
 		"canRollOn": [
 			7,
 			13
@@ -114244,7 +114244,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+2% Each stack of Slow reduces movement speed by 20% (10% against players) and is multiplicative with other modifiers, including other stacks of slow. Slow stacks up to 3 times and lasts 4 seconds by default. Damage to Slowed Enemies - more Multiplicative with other modifiers",
+		"2": "+2% Each stack of Slow reduces movement speed by 20% (10% against players) and is multiplicative with other modifiers, including other stacks of slow. Damage to Slowed Enemies - more",
 		"canRollOn": [
 			7,
 			13
@@ -114263,7 +114263,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+3% Each stack of Slow reduces movement speed by 20% (10% against players) and is multiplicative with other modifiers, including other stacks of slow. Slow stacks up to 3 times and lasts 4 seconds by default. Damage to Slowed Enemies - more Multiplicative with other modifiers",
+		"2": "+3% Each stack of Slow reduces movement speed by 20% (10% against players) and is multiplicative with other modifiers, including other stacks of slow. Damage to Slowed Enemies - more",
 		"canRollOn": [
 			7,
 			13
@@ -114282,7 +114282,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+3% Each stack of Slow reduces movement speed by 20% (10% against players) and is multiplicative with other modifiers, including other stacks of slow. Slow stacks up to 3 times and lasts 4 seconds by default. Damage to Slowed Enemies - more Multiplicative with other modifiers",
+		"2": "+3% Each stack of Slow reduces movement speed by 20% (10% against players) and is multiplicative with other modifiers, including other stacks of slow. Damage to Slowed Enemies - more",
 		"canRollOn": [
 			7,
 			13
@@ -114301,7 +114301,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+4% Each stack of Slow reduces movement speed by 20% (10% against players) and is multiplicative with other modifiers, including other stacks of slow. Slow stacks up to 3 times and lasts 4 seconds by default. Damage to Slowed Enemies - more Multiplicative with other modifiers",
+		"2": "+4% Each stack of Slow reduces movement speed by 20% (10% against players) and is multiplicative with other modifiers, including other stacks of slow. Damage to Slowed Enemies - more",
 		"canRollOn": [
 			7,
 			13
@@ -114320,7 +114320,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+4% Each stack of Slow reduces movement speed by 20% (10% against players) and is multiplicative with other modifiers, including other stacks of slow. Slow stacks up to 3 times and lasts 4 seconds by default. Damage to Slowed Enemies - more Multiplicative with other modifiers",
+		"2": "+4% Each stack of Slow reduces movement speed by 20% (10% against players) and is multiplicative with other modifiers, including other stacks of slow. Damage to Slowed Enemies - more",
 		"canRollOn": [
 			7,
 			13
@@ -114339,7 +114339,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+7% Each stack of Slow reduces movement speed by 20% (10% against players) and is multiplicative with other modifiers, including other stacks of slow. Slow stacks up to 3 times and lasts 4 seconds by default. Damage to Slowed Enemies - more Multiplicative with other modifiers",
+		"2": "+7% Each stack of Slow reduces movement speed by 20% (10% against players) and is multiplicative with other modifiers, including other stacks of slow. Damage to Slowed Enemies - more",
 		"canRollOn": [
 			7,
 			13
@@ -114358,7 +114358,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+2% Bleed deals physical damage over time, lasts 3 seconds, and can stack an unlimited number of times. Damage to Bleeding Enemies - more Multiplicative with other modifiers",
+		"2": "+2% Bleed deals physical damage over time, lasts 3 seconds, and can stack an unlimited number of times. Damage to Bleeding Enemies - more",
 		"canRollOn": [
 			5,
 			16,
@@ -114380,7 +114380,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+3% Bleed deals physical damage over time, lasts 3 seconds, and can stack an unlimited number of times. Damage to Bleeding Enemies - more Multiplicative with other modifiers",
+		"2": "+3% Bleed deals physical damage over time, lasts 3 seconds, and can stack an unlimited number of times. Damage to Bleeding Enemies - more",
 		"canRollOn": [
 			5,
 			16,
@@ -114402,7 +114402,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+3% Bleed deals physical damage over time, lasts 3 seconds, and can stack an unlimited number of times. Damage to Bleeding Enemies - more Multiplicative with other modifiers",
+		"2": "+3% Bleed deals physical damage over time, lasts 3 seconds, and can stack an unlimited number of times. Damage to Bleeding Enemies - more",
 		"canRollOn": [
 			5,
 			16,
@@ -114424,7 +114424,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+4% Bleed deals physical damage over time, lasts 3 seconds, and can stack an unlimited number of times. Damage to Bleeding Enemies - more Multiplicative with other modifiers",
+		"2": "+4% Bleed deals physical damage over time, lasts 3 seconds, and can stack an unlimited number of times. Damage to Bleeding Enemies - more",
 		"canRollOn": [
 			5,
 			16,
@@ -114446,7 +114446,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+4% Bleed deals physical damage over time, lasts 3 seconds, and can stack an unlimited number of times. Damage to Bleeding Enemies - more Multiplicative with other modifiers",
+		"2": "+4% Bleed deals physical damage over time, lasts 3 seconds, and can stack an unlimited number of times. Damage to Bleeding Enemies - more",
 		"canRollOn": [
 			5,
 			16,
@@ -114468,7 +114468,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+5% Bleed deals physical damage over time, lasts 3 seconds, and can stack an unlimited number of times. Damage to Bleeding Enemies - more Multiplicative with other modifiers",
+		"2": "+5% Bleed deals physical damage over time, lasts 3 seconds, and can stack an unlimited number of times. Damage to Bleeding Enemies - more",
 		"canRollOn": [
 			5,
 			16,
@@ -114490,7 +114490,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+5% Bleed deals physical damage over time, lasts 3 seconds, and can stack an unlimited number of times. Damage to Bleeding Enemies - more Multiplicative with other modifiers",
+		"2": "+5% Bleed deals physical damage over time, lasts 3 seconds, and can stack an unlimited number of times. Damage to Bleeding Enemies - more",
 		"canRollOn": [
 			5,
 			16,
@@ -114512,7 +114512,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+7% Bleed deals physical damage over time, lasts 3 seconds, and can stack an unlimited number of times. Damage to Bleeding Enemies - more Multiplicative with other modifiers",
+		"2": "+7% Bleed deals physical damage over time, lasts 3 seconds, and can stack an unlimited number of times. Damage to Bleeding Enemies - more",
 		"canRollOn": [
 			5,
 			16,
@@ -114750,7 +114750,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+0.2% Increases the damage you deal with melee attacks Damage for Melee Attacks per 1 Mana Cost (up to 20) - more Multiplicative with other modifiers. Also affects ailments applied by the melee attack and sub skills cast from it.",
+		"2": "+0.2% Increases the damage you deal with melee attacks Damage for Melee Attacks per 1 Mana Cost (up to 20) - more Also affects ailments applied by the melee attack and sub skills cast from it.",
 		"canRollOn": [
 			9,
 			5,
@@ -114777,7 +114777,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+0.2% Increases the damage you deal with melee attacks Damage for Melee Attacks per 1 Mana Cost (up to 20) - more Multiplicative with other modifiers. Also affects ailments applied by the melee attack and sub skills cast from it.",
+		"2": "+0.2% Increases the damage you deal with melee attacks Damage for Melee Attacks per 1 Mana Cost (up to 20) - more Also affects ailments applied by the melee attack and sub skills cast from it.",
 		"canRollOn": [
 			9,
 			5,
@@ -114804,7 +114804,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+0.2% Increases the damage you deal with melee attacks Damage for Melee Attacks per 1 Mana Cost (up to 20) - more Multiplicative with other modifiers. Also affects ailments applied by the melee attack and sub skills cast from it.",
+		"2": "+0.2% Increases the damage you deal with melee attacks Damage for Melee Attacks per 1 Mana Cost (up to 20) - more Also affects ailments applied by the melee attack and sub skills cast from it.",
 		"canRollOn": [
 			9,
 			5,
@@ -114831,7 +114831,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+0.3% Increases the damage you deal with melee attacks Damage for Melee Attacks per 1 Mana Cost (up to 20) - more Multiplicative with other modifiers. Also affects ailments applied by the melee attack and sub skills cast from it.",
+		"2": "+0.3% Increases the damage you deal with melee attacks Damage for Melee Attacks per 1 Mana Cost (up to 20) - more Also affects ailments applied by the melee attack and sub skills cast from it.",
 		"canRollOn": [
 			9,
 			5,
@@ -114858,7 +114858,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+0.3% Increases the damage you deal with melee attacks Damage for Melee Attacks per 1 Mana Cost (up to 20) - more Multiplicative with other modifiers. Also affects ailments applied by the melee attack and sub skills cast from it.",
+		"2": "+0.3% Increases the damage you deal with melee attacks Damage for Melee Attacks per 1 Mana Cost (up to 20) - more Also affects ailments applied by the melee attack and sub skills cast from it.",
 		"canRollOn": [
 			9,
 			5,
@@ -114885,7 +114885,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+0.3% Increases the damage you deal with melee attacks Damage for Melee Attacks per 1 Mana Cost (up to 20) - more Multiplicative with other modifiers. Also affects ailments applied by the melee attack and sub skills cast from it.",
+		"2": "+0.3% Increases the damage you deal with melee attacks Damage for Melee Attacks per 1 Mana Cost (up to 20) - more Also affects ailments applied by the melee attack and sub skills cast from it.",
 		"canRollOn": [
 			9,
 			5,
@@ -114912,7 +114912,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+0.3% Increases the damage you deal with melee attacks Damage for Melee Attacks per 1 Mana Cost (up to 20) - more Multiplicative with other modifiers. Also affects ailments applied by the melee attack and sub skills cast from it.",
+		"2": "+0.3% Increases the damage you deal with melee attacks Damage for Melee Attacks per 1 Mana Cost (up to 20) - more Also affects ailments applied by the melee attack and sub skills cast from it.",
 		"canRollOn": [
 			9,
 			5,
@@ -114939,7 +114939,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+0.5% Increases the damage you deal with melee attacks Damage for Melee Attacks per 1 Mana Cost (up to 20) - more Multiplicative with other modifiers. Also affects ailments applied by the melee attack and sub skills cast from it.",
+		"2": "+0.5% Increases the damage you deal with melee attacks Damage for Melee Attacks per 1 Mana Cost (up to 20) - more Also affects ailments applied by the melee attack and sub skills cast from it.",
 		"canRollOn": [
 			9,
 			5,
@@ -115326,7 +115326,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+1% Adds damage to all melee attacks. The type of damage added matches the base damage of the attack. Increased Melee Damage per Strength",
+		"2": "+1% Increased Melee Damage per Strength",
 		"canRollOn": [
 			9,
 			5,
@@ -115353,7 +115353,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+1% Adds damage to all melee attacks. The type of damage added matches the base damage of the attack. Increased Melee Damage per Strength",
+		"2": "+1% Increased Melee Damage per Strength",
 		"canRollOn": [
 			9,
 			5,
@@ -115380,7 +115380,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+1% Adds damage to all melee attacks. The type of damage added matches the base damage of the attack. Increased Melee Damage per Strength",
+		"2": "+1% Increased Melee Damage per Strength",
 		"canRollOn": [
 			9,
 			5,
@@ -115407,7 +115407,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+1% Adds damage to all melee attacks. The type of damage added matches the base damage of the attack. Increased Melee Damage per Strength",
+		"2": "+1% Increased Melee Damage per Strength",
 		"canRollOn": [
 			9,
 			5,
@@ -115434,7 +115434,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+1% Adds damage to all melee attacks. The type of damage added matches the base damage of the attack. Increased Melee Damage per Strength",
+		"2": "+1% Increased Melee Damage per Strength",
 		"canRollOn": [
 			9,
 			5,
@@ -115461,7 +115461,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+1% Adds damage to all melee attacks. The type of damage added matches the base damage of the attack. Increased Melee Damage per Strength",
+		"2": "+1% Increased Melee Damage per Strength",
 		"canRollOn": [
 			9,
 			5,
@@ -115488,7 +115488,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+1% Adds damage to all melee attacks. The type of damage added matches the base damage of the attack. Increased Melee Damage per Strength",
+		"2": "+1% Increased Melee Damage per Strength",
 		"canRollOn": [
 			9,
 			5,
@@ -115515,7 +115515,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+2% Adds damage to all melee attacks. The type of damage added matches the base damage of the attack. Increased Melee Damage per Strength",
+		"2": "+2% Increased Melee Damage per Strength",
 		"canRollOn": [
 			9,
 			5,
@@ -115686,7 +115686,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+1% Damage over Time taken while you have Haste - more Multiplicative with other modifiers",
+		"2": "+1% Damage over Time taken while you have Haste - more",
 		"canRollOn": [
 			3
 		],
@@ -115704,7 +115704,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+1% Damage over Time taken while you have Haste - more Multiplicative with other modifiers",
+		"2": "+1% Damage over Time taken while you have Haste - more",
 		"canRollOn": [
 			3
 		],
@@ -115722,7 +115722,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+1% Damage over Time taken while you have Haste - more Multiplicative with other modifiers",
+		"2": "+1% Damage over Time taken while you have Haste - more",
 		"canRollOn": [
 			3
 		],
@@ -115740,7 +115740,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+2% Damage over Time taken while you have Haste - more Multiplicative with other modifiers",
+		"2": "+2% Damage over Time taken while you have Haste - more",
 		"canRollOn": [
 			3
 		],
@@ -115758,7 +115758,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+2% Damage over Time taken while you have Haste - more Multiplicative with other modifiers",
+		"2": "+2% Damage over Time taken while you have Haste - more",
 		"canRollOn": [
 			3
 		],
@@ -115776,7 +115776,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+2% Damage over Time taken while you have Haste - more Multiplicative with other modifiers",
+		"2": "+2% Damage over Time taken while you have Haste - more",
 		"canRollOn": [
 			3
 		],
@@ -115794,7 +115794,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+3% Damage over Time taken while you have Haste - more Multiplicative with other modifiers",
+		"2": "+3% Damage over Time taken while you have Haste - more",
 		"canRollOn": [
 			3
 		],
@@ -115812,7 +115812,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+5% Damage over Time taken while you have Haste - more Multiplicative with other modifiers",
+		"2": "+5% Damage over Time taken while you have Haste - more",
 		"canRollOn": [
 			3
 		],
@@ -116126,7 +116126,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(10-15)% Adds damage to all throwing attacks. The type of damage added matches the base damage of the attack. Chance to Shred Armor on Throwing Hit",
+		"2": "+(10-15)% Chance to Shred Armor on Throwing Hit",
 		"canRollOn": [
 			2,
 			21
@@ -116145,7 +116145,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(16-21)% Adds damage to all throwing attacks. The type of damage added matches the base damage of the attack. Chance to Shred Armor on Throwing Hit",
+		"2": "+(16-21)% Chance to Shred Armor on Throwing Hit",
 		"canRollOn": [
 			2,
 			21
@@ -116164,7 +116164,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(22-27)% Adds damage to all throwing attacks. The type of damage added matches the base damage of the attack. Chance to Shred Armor on Throwing Hit",
+		"2": "+(22-27)% Chance to Shred Armor on Throwing Hit",
 		"canRollOn": [
 			2,
 			21
@@ -116183,7 +116183,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(28-33)% Adds damage to all throwing attacks. The type of damage added matches the base damage of the attack. Chance to Shred Armor on Throwing Hit",
+		"2": "+(28-33)% Chance to Shred Armor on Throwing Hit",
 		"canRollOn": [
 			2,
 			21
@@ -116202,7 +116202,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(34-39)% Adds damage to all throwing attacks. The type of damage added matches the base damage of the attack. Chance to Shred Armor on Throwing Hit",
+		"2": "+(34-39)% Chance to Shred Armor on Throwing Hit",
 		"canRollOn": [
 			2,
 			21
@@ -116221,7 +116221,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(40-45)% Adds damage to all throwing attacks. The type of damage added matches the base damage of the attack. Chance to Shred Armor on Throwing Hit",
+		"2": "+(40-45)% Chance to Shred Armor on Throwing Hit",
 		"canRollOn": [
 			2,
 			21
@@ -116240,7 +116240,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(46-51)% Adds damage to all throwing attacks. The type of damage added matches the base damage of the attack. Chance to Shred Armor on Throwing Hit",
+		"2": "+(46-51)% Chance to Shred Armor on Throwing Hit",
 		"canRollOn": [
 			2,
 			21
@@ -116259,7 +116259,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(70-80)% Adds damage to all throwing attacks. The type of damage added matches the base damage of the attack. Chance to Shred Armor on Throwing Hit",
+		"2": "+(70-80)% Chance to Shred Armor on Throwing Hit",
 		"canRollOn": [
 			2,
 			21
@@ -116726,7 +116726,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+4% Adds to your maximum number of potions. Potions are displayed next to your health globe, and can be consumed to gain health (by using the 1 key by default). Missing Health gained as Ward on Potion Use",
+		"2": "+4% Adds to your maximum number of potions. Missing Health gained as Ward on Potion Use",
 		"canRollOn": [
 			2
 		],
@@ -116744,7 +116744,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+5% Adds to your maximum number of potions. Potions are displayed next to your health globe, and can be consumed to gain health (by using the 1 key by default). Missing Health gained as Ward on Potion Use",
+		"2": "+5% Adds to your maximum number of potions. Missing Health gained as Ward on Potion Use",
 		"canRollOn": [
 			2
 		],
@@ -116762,7 +116762,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+6% Adds to your maximum number of potions. Potions are displayed next to your health globe, and can be consumed to gain health (by using the 1 key by default). Missing Health gained as Ward on Potion Use",
+		"2": "+6% Adds to your maximum number of potions. Missing Health gained as Ward on Potion Use",
 		"canRollOn": [
 			2
 		],
@@ -116780,7 +116780,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+7% Adds to your maximum number of potions. Potions are displayed next to your health globe, and can be consumed to gain health (by using the 1 key by default). Missing Health gained as Ward on Potion Use",
+		"2": "+7% Adds to your maximum number of potions. Missing Health gained as Ward on Potion Use",
 		"canRollOn": [
 			2
 		],
@@ -116798,7 +116798,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+8% Adds to your maximum number of potions. Potions are displayed next to your health globe, and can be consumed to gain health (by using the 1 key by default). Missing Health gained as Ward on Potion Use",
+		"2": "+8% Adds to your maximum number of potions. Missing Health gained as Ward on Potion Use",
 		"canRollOn": [
 			2
 		],
@@ -116816,7 +116816,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+9% Adds to your maximum number of potions. Potions are displayed next to your health globe, and can be consumed to gain health (by using the 1 key by default). Missing Health gained as Ward on Potion Use",
+		"2": "+9% Adds to your maximum number of potions. Missing Health gained as Ward on Potion Use",
 		"canRollOn": [
 			2
 		],
@@ -116834,7 +116834,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+10% Adds to your maximum number of potions. Potions are displayed next to your health globe, and can be consumed to gain health (by using the 1 key by default). Missing Health gained as Ward on Potion Use",
+		"2": "+10% Adds to your maximum number of potions. Missing Health gained as Ward on Potion Use",
 		"canRollOn": [
 			2
 		],
@@ -116852,7 +116852,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(15-20)% Adds to your maximum number of potions. Potions are displayed next to your health globe, and can be consumed to gain health (by using the 1 key by default). Missing Health gained as Ward on Potion Use",
+		"2": "+(15-20)% Adds to your maximum number of potions. Missing Health gained as Ward on Potion Use",
 		"canRollOn": [
 			2
 		],
@@ -119766,7 +119766,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+8% Gain a portion of your maximum health as endurance threshold. Damage taken your health below your endurance threshold is reduced by your endurance. Endurance",
+		"2": "+8% Gain a portion of your maximum health as endurance threshold. Endurance",
 		"canRollOn": [
 			0
 		],
@@ -119784,7 +119784,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+9% Gain a portion of your maximum health as endurance threshold. Damage taken your health below your endurance threshold is reduced by your endurance. Endurance",
+		"2": "+9% Gain a portion of your maximum health as endurance threshold. Endurance",
 		"canRollOn": [
 			0
 		],
@@ -119802,7 +119802,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+10% Gain a portion of your maximum health as endurance threshold. Damage taken your health below your endurance threshold is reduced by your endurance. Endurance",
+		"2": "+10% Gain a portion of your maximum health as endurance threshold. Endurance",
 		"canRollOn": [
 			0
 		],
@@ -119820,7 +119820,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+11% Gain a portion of your maximum health as endurance threshold. Damage taken your health below your endurance threshold is reduced by your endurance. Endurance",
+		"2": "+11% Gain a portion of your maximum health as endurance threshold. Endurance",
 		"canRollOn": [
 			0
 		],
@@ -119838,7 +119838,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+12% Gain a portion of your maximum health as endurance threshold. Damage taken your health below your endurance threshold is reduced by your endurance. Endurance",
+		"2": "+12% Gain a portion of your maximum health as endurance threshold. Endurance",
 		"canRollOn": [
 			0
 		],
@@ -119856,7 +119856,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+13% Gain a portion of your maximum health as endurance threshold. Damage taken your health below your endurance threshold is reduced by your endurance. Endurance",
+		"2": "+13% Gain a portion of your maximum health as endurance threshold. Endurance",
 		"canRollOn": [
 			0
 		],
@@ -119874,7 +119874,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+14% Gain a portion of your maximum health as endurance threshold. Damage taken your health below your endurance threshold is reduced by your endurance. Endurance",
+		"2": "+14% Gain a portion of your maximum health as endurance threshold. Endurance",
 		"canRollOn": [
 			0
 		],
@@ -119892,7 +119892,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(18-20)% Gain a portion of your maximum health as endurance threshold. Damage taken your health below your endurance threshold is reduced by your endurance. Endurance",
+		"2": "+(18-20)% Gain a portion of your maximum health as endurance threshold. Endurance",
 		"canRollOn": [
 			0
 		],
@@ -120062,7 +120062,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(20-23) A percentage of the damage you take is dealt to your mana instead of your health. Each point of mana shields 5 health. Mana",
+		"2": "{rounding:Integer}+(20-23) A percentage of the damage you take is dealt to your mana instead of your health. Mana",
 		"canRollOn": [
 			0
 		],
@@ -120080,7 +120080,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(24-27) A percentage of the damage you take is dealt to your mana instead of your health. Each point of mana shields 5 health. Mana",
+		"2": "{rounding:Integer}+(24-27) A percentage of the damage you take is dealt to your mana instead of your health. Mana",
 		"canRollOn": [
 			0
 		],
@@ -120098,7 +120098,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(28-31) A percentage of the damage you take is dealt to your mana instead of your health. Each point of mana shields 5 health. Mana",
+		"2": "{rounding:Integer}+(28-31) A percentage of the damage you take is dealt to your mana instead of your health. Mana",
 		"canRollOn": [
 			0
 		],
@@ -120116,7 +120116,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(32-35) A percentage of the damage you take is dealt to your mana instead of your health. Each point of mana shields 5 health. Mana",
+		"2": "{rounding:Integer}+(32-35) A percentage of the damage you take is dealt to your mana instead of your health. Mana",
 		"canRollOn": [
 			0
 		],
@@ -120134,7 +120134,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(36-39) A percentage of the damage you take is dealt to your mana instead of your health. Each point of mana shields 5 health. Mana",
+		"2": "{rounding:Integer}+(36-39) A percentage of the damage you take is dealt to your mana instead of your health. Mana",
 		"canRollOn": [
 			0
 		],
@@ -120152,7 +120152,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(40-43) A percentage of the damage you take is dealt to your mana instead of your health. Each point of mana shields 5 health. Mana",
+		"2": "{rounding:Integer}+(40-43) A percentage of the damage you take is dealt to your mana instead of your health. Mana",
 		"canRollOn": [
 			0
 		],
@@ -120170,7 +120170,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(44-50) A percentage of the damage you take is dealt to your mana instead of your health. Each point of mana shields 5 health. Mana",
+		"2": "{rounding:Integer}+(44-50) A percentage of the damage you take is dealt to your mana instead of your health. Mana",
 		"canRollOn": [
 			0
 		],
@@ -120188,7 +120188,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(70-75) A percentage of the damage you take is dealt to your mana instead of your health. Each point of mana shields 5 health. Mana",
+		"2": "{rounding:Integer}+(70-75) A percentage of the damage you take is dealt to your mana instead of your health. Mana",
 		"canRollOn": [
 			0
 		],
@@ -120206,7 +120206,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+14% Reduces all physical damage you take. Capped at 75%. Void Resistance",
+		"2": "+14% Reduces all physical damage you take. Void Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -120243,7 +120243,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+15% Reduces all physical damage you take. Capped at 75%. Void Resistance",
+		"2": "+15% Reduces all physical damage you take. Void Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -120280,7 +120280,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+16% Reduces all physical damage you take. Capped at 75%. Void Resistance",
+		"2": "+16% Reduces all physical damage you take. Void Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -120317,7 +120317,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+17% Reduces all physical damage you take. Capped at 75%. Void Resistance",
+		"2": "+17% Reduces all physical damage you take. Void Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -120354,7 +120354,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+18% Reduces all physical damage you take. Capped at 75%. Void Resistance",
+		"2": "+18% Reduces all physical damage you take. Void Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -120391,7 +120391,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+19% Reduces all physical damage you take. Capped at 75%. Void Resistance",
+		"2": "+19% Reduces all physical damage you take. Void Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -120428,7 +120428,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(20-21)% Reduces all physical damage you take. Capped at 75%. Void Resistance",
+		"2": "+(20-21)% Reduces all physical damage you take. Void Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -120465,7 +120465,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(30-35)% Reduces all physical damage you take. Capped at 75%. Void Resistance",
+		"2": "+(30-35)% Reduces all physical damage you take. Void Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -120798,7 +120798,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+14% Reduces all physical damage you take. Capped at 75%. Poison Resistance",
+		"2": "+14% Reduces all physical damage you take. Poison Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -120835,7 +120835,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+15% Reduces all physical damage you take. Capped at 75%. Poison Resistance",
+		"2": "+15% Reduces all physical damage you take. Poison Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -120872,7 +120872,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+16% Reduces all physical damage you take. Capped at 75%. Poison Resistance",
+		"2": "+16% Reduces all physical damage you take. Poison Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -120909,7 +120909,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+17% Reduces all physical damage you take. Capped at 75%. Poison Resistance",
+		"2": "+17% Reduces all physical damage you take. Poison Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -120946,7 +120946,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+18% Reduces all physical damage you take. Capped at 75%. Poison Resistance",
+		"2": "+18% Reduces all physical damage you take. Poison Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -120983,7 +120983,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+19% Reduces all physical damage you take. Capped at 75%. Poison Resistance",
+		"2": "+19% Reduces all physical damage you take. Poison Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -121020,7 +121020,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(20-21)% Reduces all physical damage you take. Capped at 75%. Poison Resistance",
+		"2": "+(20-21)% Reduces all physical damage you take. Poison Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -121057,7 +121057,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(30-35)% Reduces all physical damage you take. Capped at 75%. Poison Resistance",
+		"2": "+(30-35)% Reduces all physical damage you take. Poison Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -121094,7 +121094,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+14% Reduces all lightning damage you take. Capped at 75%. Poison Resistance",
+		"2": "+14% Reduces all lightning damage you take. Poison Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -121131,7 +121131,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+15% Reduces all lightning damage you take. Capped at 75%. Poison Resistance",
+		"2": "+15% Reduces all lightning damage you take. Poison Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -121168,7 +121168,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+16% Reduces all lightning damage you take. Capped at 75%. Poison Resistance",
+		"2": "+16% Reduces all lightning damage you take. Poison Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -121205,7 +121205,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+17% Reduces all lightning damage you take. Capped at 75%. Poison Resistance",
+		"2": "+17% Reduces all lightning damage you take. Poison Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -121242,7 +121242,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+18% Reduces all lightning damage you take. Capped at 75%. Poison Resistance",
+		"2": "+18% Reduces all lightning damage you take. Poison Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -121279,7 +121279,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+19% Reduces all lightning damage you take. Capped at 75%. Poison Resistance",
+		"2": "+19% Reduces all lightning damage you take. Poison Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -121316,7 +121316,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(20-21)% Reduces all lightning damage you take. Capped at 75%. Poison Resistance",
+		"2": "+(20-21)% Reduces all lightning damage you take. Poison Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -121353,7 +121353,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(30-35)% Reduces all lightning damage you take. Capped at 75%. Poison Resistance",
+		"2": "+(30-35)% Reduces all lightning damage you take. Poison Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -121390,7 +121390,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+14% Reduces all cold damage you take. Capped at 75%. Void Resistance",
+		"2": "+14% Reduces all cold damage you take. Void Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -121427,7 +121427,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+15% Reduces all cold damage you take. Capped at 75%. Void Resistance",
+		"2": "+15% Reduces all cold damage you take. Void Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -121464,7 +121464,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+16% Reduces all cold damage you take. Capped at 75%. Void Resistance",
+		"2": "+16% Reduces all cold damage you take. Void Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -121501,7 +121501,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+17% Reduces all cold damage you take. Capped at 75%. Void Resistance",
+		"2": "+17% Reduces all cold damage you take. Void Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -121538,7 +121538,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+18% Reduces all cold damage you take. Capped at 75%. Void Resistance",
+		"2": "+18% Reduces all cold damage you take. Void Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -121575,7 +121575,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+19% Reduces all cold damage you take. Capped at 75%. Void Resistance",
+		"2": "+19% Reduces all cold damage you take. Void Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -121612,7 +121612,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(20-21)% Reduces all cold damage you take. Capped at 75%. Void Resistance",
+		"2": "+(20-21)% Reduces all cold damage you take. Void Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -121649,7 +121649,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(30-35)% Reduces all cold damage you take. Capped at 75%. Void Resistance",
+		"2": "+(30-35)% Reduces all cold damage you take. Void Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -121686,7 +121686,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+14% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance",
+		"2": "+14% Reduces all fire damage you take. Necrotic Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -121723,7 +121723,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+15% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance",
+		"2": "+15% Reduces all fire damage you take. Necrotic Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -121760,7 +121760,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+16% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance",
+		"2": "+16% Reduces all fire damage you take. Necrotic Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -121797,7 +121797,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+17% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance",
+		"2": "+17% Reduces all fire damage you take. Necrotic Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -121834,7 +121834,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+18% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance",
+		"2": "+18% Reduces all fire damage you take. Necrotic Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -121871,7 +121871,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+19% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance",
+		"2": "+19% Reduces all fire damage you take. Necrotic Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -121908,7 +121908,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(20-21)% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance",
+		"2": "+(20-21)% Reduces all fire damage you take. Necrotic Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -121945,7 +121945,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(30-35)% Reduces all fire damage you take. Capped at 75%. Necrotic Resistance",
+		"2": "+(30-35)% Reduces all fire damage you take. Necrotic Resistance",
 		"canRollOn": [
 			0,
 			1,
@@ -122704,7 +122704,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+14% Increases your chance to freeze for each stack of chill on the target. Multiplicative with other modifiers. Increased Chill Duration",
+		"2": "+14% Increases your chance to freeze for each stack of chill on the target. Increased Chill Duration",
 		"canRollOn": [
 			21
 		],
@@ -122722,7 +122722,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+15% Increases your chance to freeze for each stack of chill on the target. Multiplicative with other modifiers. Increased Chill Duration",
+		"2": "+15% Increases your chance to freeze for each stack of chill on the target. Increased Chill Duration",
 		"canRollOn": [
 			21
 		],
@@ -122740,7 +122740,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+16% Increases your chance to freeze for each stack of chill on the target. Multiplicative with other modifiers. Increased Chill Duration",
+		"2": "+16% Increases your chance to freeze for each stack of chill on the target. Increased Chill Duration",
 		"canRollOn": [
 			21
 		],
@@ -122758,7 +122758,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+17% Increases your chance to freeze for each stack of chill on the target. Multiplicative with other modifiers. Increased Chill Duration",
+		"2": "+17% Increases your chance to freeze for each stack of chill on the target. Increased Chill Duration",
 		"canRollOn": [
 			21
 		],
@@ -122776,7 +122776,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+18% Increases your chance to freeze for each stack of chill on the target. Multiplicative with other modifiers. Increased Chill Duration",
+		"2": "+18% Increases your chance to freeze for each stack of chill on the target. Increased Chill Duration",
 		"canRollOn": [
 			21
 		],
@@ -122794,7 +122794,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+19% Increases your chance to freeze for each stack of chill on the target. Multiplicative with other modifiers. Increased Chill Duration",
+		"2": "+19% Increases your chance to freeze for each stack of chill on the target. Increased Chill Duration",
 		"canRollOn": [
 			21
 		],
@@ -122812,7 +122812,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(20-23)% Increases your chance to freeze for each stack of chill on the target. Multiplicative with other modifiers. Increased Chill Duration",
+		"2": "+(20-23)% Increases your chance to freeze for each stack of chill on the target. Increased Chill Duration",
 		"canRollOn": [
 			21
 		],
@@ -122830,7 +122830,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(26-30)% Increases your chance to freeze for each stack of chill on the target. Multiplicative with other modifiers. Increased Chill Duration",
+		"2": "+(26-30)% Increases your chance to freeze for each stack of chill on the target. Increased Chill Duration",
 		"canRollOn": [
 			21
 		],
@@ -122983,7 +122983,7 @@
 	"1079_0": {
 		"affixName": "Less Damage Taken on Block and Block Effectiveness applies to Damage over Time",
 		"affix": "Less Damage Taken on Block and Block Effectiveness applies to Damage over Time",
-		"1": "+(1-1.2)% Damage Taken on Block - more Reduces the damage you take when you block a hit. Multiplicative with other modifiers. Block Effectiveness applies to Damage over Time as if it had been Blocked",
+		"1": "+(1-1.2)% Damage Taken on Block - more Reduces the damage you take when you block a hit. Block Effectiveness applies to Damage over Time as if it had been Blocked",
 		"level": 0,
 		"statOrderKey": 1079,
 		"statOrder": [
@@ -123001,7 +123001,7 @@
 	"1079_1": {
 		"affixName": "Less Damage Taken on Block and Block Effectiveness applies to Damage over Time",
 		"affix": "Less Damage Taken on Block and Block Effectiveness applies to Damage over Time",
-		"1": "+(1.3-1.5)% Damage Taken on Block - more Reduces the damage you take when you block a hit. Multiplicative with other modifiers. Block Effectiveness applies to Damage over Time as if it had been Blocked",
+		"1": "+(1.3-1.5)% Damage Taken on Block - more Reduces the damage you take when you block a hit. Block Effectiveness applies to Damage over Time as if it had been Blocked",
 		"level": 0,
 		"statOrderKey": 1079,
 		"statOrder": [
@@ -123019,7 +123019,7 @@
 	"1079_2": {
 		"affixName": "Less Damage Taken on Block and Block Effectiveness applies to Damage over Time",
 		"affix": "Less Damage Taken on Block and Block Effectiveness applies to Damage over Time",
-		"1": "+(1.6-1.8)% Damage Taken on Block - more Reduces the damage you take when you block a hit. Multiplicative with other modifiers. Block Effectiveness applies to Damage over Time as if it had been Blocked",
+		"1": "+(1.6-1.8)% Damage Taken on Block - more Reduces the damage you take when you block a hit. Block Effectiveness applies to Damage over Time as if it had been Blocked",
 		"level": 0,
 		"statOrderKey": 1079,
 		"statOrder": [
@@ -123037,7 +123037,7 @@
 	"1079_3": {
 		"affixName": "Less Damage Taken on Block and Block Effectiveness applies to Damage over Time",
 		"affix": "Less Damage Taken on Block and Block Effectiveness applies to Damage over Time",
-		"1": "+(1.9-2.1)% Damage Taken on Block - more Reduces the damage you take when you block a hit. Multiplicative with other modifiers. Block Effectiveness applies to Damage over Time as if it had been Blocked",
+		"1": "+(1.9-2.1)% Damage Taken on Block - more Reduces the damage you take when you block a hit. Block Effectiveness applies to Damage over Time as if it had been Blocked",
 		"level": 0,
 		"statOrderKey": 1079,
 		"statOrder": [
@@ -123055,7 +123055,7 @@
 	"1079_4": {
 		"affixName": "Less Damage Taken on Block and Block Effectiveness applies to Damage over Time",
 		"affix": "Less Damage Taken on Block and Block Effectiveness applies to Damage over Time",
-		"1": "+(2.2-2.4)% Damage Taken on Block - more Reduces the damage you take when you block a hit. Multiplicative with other modifiers. Block Effectiveness applies to Damage over Time as if it had been Blocked",
+		"1": "+(2.2-2.4)% Damage Taken on Block - more Reduces the damage you take when you block a hit. Block Effectiveness applies to Damage over Time as if it had been Blocked",
 		"level": 0,
 		"statOrderKey": 1079,
 		"statOrder": [
@@ -123073,7 +123073,7 @@
 	"1079_5": {
 		"affixName": "Less Damage Taken on Block and Block Effectiveness applies to Damage over Time",
 		"affix": "Less Damage Taken on Block and Block Effectiveness applies to Damage over Time",
-		"1": "+(2.5-2.7)% Damage Taken on Block - more Reduces the damage you take when you block a hit. Multiplicative with other modifiers. Block Effectiveness applies to Damage over Time as if it had been Blocked",
+		"1": "+(2.5-2.7)% Damage Taken on Block - more Reduces the damage you take when you block a hit. Block Effectiveness applies to Damage over Time as if it had been Blocked",
 		"level": 0,
 		"statOrderKey": 1079,
 		"statOrder": [
@@ -123091,7 +123091,7 @@
 	"1079_6": {
 		"affixName": "Less Damage Taken on Block and Block Effectiveness applies to Damage over Time",
 		"affix": "Less Damage Taken on Block and Block Effectiveness applies to Damage over Time",
-		"1": "+(2.8-3)% Damage Taken on Block - more Reduces the damage you take when you block a hit. Multiplicative with other modifiers. Block Effectiveness applies to Damage over Time as if it had been Blocked",
+		"1": "+(2.8-3)% Damage Taken on Block - more Reduces the damage you take when you block a hit. Block Effectiveness applies to Damage over Time as if it had been Blocked",
 		"level": 0,
 		"statOrderKey": 1079,
 		"statOrder": [
@@ -123109,7 +123109,7 @@
 	"1079_7": {
 		"affixName": "Less Damage Taken on Block and Block Effectiveness applies to Damage over Time",
 		"affix": "Less Damage Taken on Block and Block Effectiveness applies to Damage over Time",
-		"1": "+5% Damage Taken on Block - more Reduces the damage you take when you block a hit. Multiplicative with other modifiers. Block Effectiveness applies to Damage over Time as if it had been Blocked",
+		"1": "+5% Damage Taken on Block - more Reduces the damage you take when you block a hit. Block Effectiveness applies to Damage over Time as if it had been Blocked",
 		"level": 0,
 		"statOrderKey": 1079,
 		"statOrder": [
@@ -123424,7 +123424,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+(2-2.3)% Block Effectiveness reduces damage taken for hits you block. Physical Damage Taken on Block - more Reduces the damage you take when you block a hit. Multiplicative with other modifiers.",
+		"2": "+(2-2.3)% Block Effectiveness reduces damage taken for hits you block. Physical Damage Taken on Block - more Reduces the damage you take when you block a hit.",
 		"canRollOn": [
 			18
 		],
@@ -123442,7 +123442,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+(2.4-2.7)% Block Effectiveness reduces damage taken for hits you block. Physical Damage Taken on Block - more Reduces the damage you take when you block a hit. Multiplicative with other modifiers.",
+		"2": "+(2.4-2.7)% Block Effectiveness reduces damage taken for hits you block. Physical Damage Taken on Block - more Reduces the damage you take when you block a hit.",
 		"canRollOn": [
 			18
 		],
@@ -123460,7 +123460,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+(2.8-3.1)% Block Effectiveness reduces damage taken for hits you block. Physical Damage Taken on Block - more Reduces the damage you take when you block a hit. Multiplicative with other modifiers.",
+		"2": "+(2.8-3.1)% Block Effectiveness reduces damage taken for hits you block. Physical Damage Taken on Block - more Reduces the damage you take when you block a hit.",
 		"canRollOn": [
 			18
 		],
@@ -123478,7 +123478,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+(3.2-3.7)% Block Effectiveness reduces damage taken for hits you block. Physical Damage Taken on Block - more Reduces the damage you take when you block a hit. Multiplicative with other modifiers.",
+		"2": "+(3.2-3.7)% Block Effectiveness reduces damage taken for hits you block. Physical Damage Taken on Block - more Reduces the damage you take when you block a hit.",
 		"canRollOn": [
 			18
 		],
@@ -123496,7 +123496,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+(3.8-4.1)% Block Effectiveness reduces damage taken for hits you block. Physical Damage Taken on Block - more Reduces the damage you take when you block a hit. Multiplicative with other modifiers.",
+		"2": "+(3.8-4.1)% Block Effectiveness reduces damage taken for hits you block. Physical Damage Taken on Block - more Reduces the damage you take when you block a hit.",
 		"canRollOn": [
 			18
 		],
@@ -123514,7 +123514,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+(4.2-4.5)% Block Effectiveness reduces damage taken for hits you block. Physical Damage Taken on Block - more Reduces the damage you take when you block a hit. Multiplicative with other modifiers.",
+		"2": "+(4.2-4.5)% Block Effectiveness reduces damage taken for hits you block. Physical Damage Taken on Block - more Reduces the damage you take when you block a hit.",
 		"canRollOn": [
 			18
 		],
@@ -123532,7 +123532,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+(4.6-5)% Block Effectiveness reduces damage taken for hits you block. Physical Damage Taken on Block - more Reduces the damage you take when you block a hit. Multiplicative with other modifiers.",
+		"2": "+(4.6-5)% Block Effectiveness reduces damage taken for hits you block. Physical Damage Taken on Block - more Reduces the damage you take when you block a hit.",
 		"canRollOn": [
 			18
 		],
@@ -123550,7 +123550,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+(8-10)% Block Effectiveness reduces damage taken for hits you block. Physical Damage Taken on Block - more Reduces the damage you take when you block a hit. Multiplicative with other modifiers.",
+		"2": "+(8-10)% Block Effectiveness reduces damage taken for hits you block. Physical Damage Taken on Block - more Reduces the damage you take when you block a hit.",
 		"canRollOn": [
 			18
 		],

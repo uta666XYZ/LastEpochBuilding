@@ -953,12 +953,57 @@ function ItemsTabClass:CraftRefreshSlotDropdowns()
 				local out = (s or ""):gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
 				return out
 			end
-			local function displayLabel(e)
+			local function baseName(e)
 				local name = e.affixName
 				if name and name ~= "" then
 					return name:sub(1, 1):upper() .. name:sub(2)
 				end
 				return cleanLabel(e.label)
+			end
+			-- Detect mod type from tier text so we can disambiguate
+			-- entries that share the same affixName (e.g. "Health" can be
+			-- both a flat-added and a percent-increased affix).
+			local function modTypeTag(e)
+				local txt = e.label or ""
+				if type(txt) ~= "string" or txt == "" then return nil end
+				local low = txt:lower()
+				if low:find("increased") or txt:find("%%%s*increased") then
+					return "increased"
+				elseif low:find("reduced") then
+					return "reduced"
+				elseif low:find("more ") then
+					return "more"
+				elseif low:find("less ") then
+					return "less"
+				elseif txt:find("%+") then
+					return "added"
+				elseif txt:find("%%") then
+					return "%"
+				end
+				return nil
+			end
+			local function buildDisplayLabels(group)
+				-- Count base-name collisions within this group.
+				local counts = {}
+				for _, e in ipairs(group) do
+					local b = baseName(e)
+					counts[b] = (counts[b] or 0) + 1
+				end
+				local labels = {}
+				for i, e in ipairs(group) do
+					local b = baseName(e)
+					if counts[b] and counts[b] > 1 then
+						local tag = modTypeTag(e)
+						if tag then
+							labels[i] = b .. " ^8(" .. tag .. ")"
+						else
+							labels[i] = b
+						end
+					else
+						labels[i] = b
+					end
+				end
+				return labels
 			end
 
 			if hasAnySubcat then
@@ -974,8 +1019,9 @@ function ItemsTabClass:CraftRefreshSlotDropdowns()
 							label = "^7" .. SUBCAT_LABEL[sc] .. "  (" .. tostring(#group) .. ")",
 							isHeader = true, collapsed = collapsed, subcat = sc,
 						})
-						for _, e in ipairs(group) do
-							t_insert(ddList, { label = "  " .. displayLabel(e), entry = e })
+						local labels = buildDisplayLabels(group)
+						for i, e in ipairs(group) do
+							t_insert(ddList, { label = "  " .. labels[i], entry = e })
 							if curKey and e.statOrderKey == curKey then
 								selIdx = #ddList
 								foundCurrent = true
@@ -985,8 +1031,9 @@ function ItemsTabClass:CraftRefreshSlotDropdowns()
 				end
 			else
 				-- No subcategory info (e.g. idol / altar); flat list.
-				for _, e in ipairs(src) do
-					t_insert(ddList, { label = displayLabel(e), entry = e })
+				local labels = buildDisplayLabels(src)
+				for i, e in ipairs(src) do
+					t_insert(ddList, { label = labels[i], entry = e })
 					if curKey and e.statOrderKey == curKey then
 						selIdx = #ddList
 						foundCurrent = true
