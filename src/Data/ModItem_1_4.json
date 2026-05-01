@@ -105075,7 +105075,7 @@
 	"965_0": {
 		"affixName": "Bow Damage per meter from the Target (up to 10 metres)",
 		"affix": "More Bow Damage per meter to target",
-		"1": "{rounding:Integer}0.5% less Bow Bow Global Conditional Damage - more",
+		"1": "{rounding:Integer}0.5% less Bow Bow Global Conditional Damage",
 		"level": 0,
 		"statOrderKey": 965,
 		"statOrder": [
@@ -105093,7 +105093,7 @@
 	"965_1": {
 		"affixName": "Bow Damage per meter from the Target (up to 10 metres)",
 		"affix": "More Bow Damage per meter to target",
-		"1": "{rounding:Integer}0.6% less Bow Bow Global Conditional Damage - more",
+		"1": "{rounding:Integer}0.6% less Bow Bow Global Conditional Damage",
 		"level": 0,
 		"statOrderKey": 965,
 		"statOrder": [
@@ -105111,7 +105111,7 @@
 	"965_2": {
 		"affixName": "Bow Damage per meter from the Target (up to 10 metres)",
 		"affix": "More Bow Damage per meter to target",
-		"1": "{rounding:Integer}0.7% less Bow Bow Global Conditional Damage - more",
+		"1": "{rounding:Integer}0.7% less Bow Bow Global Conditional Damage",
 		"level": 0,
 		"statOrderKey": 965,
 		"statOrder": [
@@ -105129,7 +105129,7 @@
 	"965_3": {
 		"affixName": "Bow Damage per meter from the Target (up to 10 metres)",
 		"affix": "More Bow Damage per meter to target",
-		"1": "{rounding:Integer}0.8% less Bow Bow Global Conditional Damage - more",
+		"1": "{rounding:Integer}0.8% less Bow Bow Global Conditional Damage",
 		"level": 0,
 		"statOrderKey": 965,
 		"statOrder": [
@@ -105147,7 +105147,7 @@
 	"965_4": {
 		"affixName": "Bow Damage per meter from the Target (up to 10 metres)",
 		"affix": "More Bow Damage per meter to target",
-		"1": "{rounding:Integer}0.9% less Bow Bow Global Conditional Damage - more",
+		"1": "{rounding:Integer}0.9% less Bow Bow Global Conditional Damage",
 		"level": 0,
 		"statOrderKey": 965,
 		"statOrder": [
@@ -105165,7 +105165,7 @@
 	"965_5": {
 		"affixName": "Bow Damage per meter from the Target (up to 10 metres)",
 		"affix": "More Bow Damage per meter to target",
-		"1": "{rounding:Integer}1% less Bow Bow Global Conditional Damage - more",
+		"1": "{rounding:Integer}1% less Bow Bow Global Conditional Damage",
 		"level": 0,
 		"statOrderKey": 965,
 		"statOrder": [
@@ -105183,7 +105183,7 @@
 	"965_6": {
 		"affixName": "Bow Damage per meter from the Target (up to 10 metres)",
 		"affix": "More Bow Damage per meter to target",
-		"1": "{rounding:Integer}1.1% less Bow Bow Global Conditional Damage - more",
+		"1": "{rounding:Integer}1.1% less Bow Bow Global Conditional Damage",
 		"level": 0,
 		"statOrderKey": 965,
 		"statOrder": [
@@ -105201,7 +105201,7 @@
 	"965_7": {
 		"affixName": "Bow Damage per meter from the Target (up to 10 metres)",
 		"affix": "More Bow Damage per meter to target",
-		"1": "{rounding:Integer}(1.2-1.5)% less Bow Bow Global Conditional Damage - more",
+		"1": "{rounding:Integer}(1.2-1.5)% less Bow Bow Global Conditional Damage",
 		"level": 0,
 		"statOrderKey": 965,
 		"statOrder": [
@@ -110326,7 +110326,7 @@
 		"affixName": "Apiarist's Smoker Reforged",
 		"modName": "Apiarist's Smoker Reforged",
 		"affix": "Apiarist's Smoker Reforged",
-		"1": "{rounding:Integer}+-1 Damage Over Time Taken - more",
+		"1": "-100% Damage Over Time Taken",
 		"level": 0,
 		"statOrderKey": 954,
 		"statOrder": [
@@ -110345,7 +110345,7 @@
 		"affixName": "Apiarist's Smoker Reforged",
 		"modName": "Apiarist's Smoker Reforged",
 		"affix": "Apiarist's Smoker Reforged",
-		"1": "{rounding:Integer}+-1 Damage Over Time Taken - more",
+		"1": "-100% Damage Over Time Taken",
 		"level": 0,
 		"statOrderKey": 954,
 		"statOrder": [
@@ -110364,7 +110364,7 @@
 		"affixName": "Apiarist's Smoker Reforged",
 		"modName": "Apiarist's Smoker Reforged",
 		"affix": "Apiarist's Smoker Reforged",
-		"1": "{rounding:Integer}+-1 Damage Over Time Taken - more",
+		"1": "-100% Damage Over Time Taken",
 		"level": 0,
 		"statOrderKey": 954,
 		"statOrder": [
@@ -110383,7 +110383,7 @@
 		"affixName": "Apiarist's Smoker Reforged",
 		"modName": "Apiarist's Smoker Reforged",
 		"affix": "Apiarist's Smoker Reforged",
-		"1": "{rounding:Integer}+-1 Damage Over Time Taken - more",
+		"1": "-100% Damage Over Time Taken",
 		"level": 0,
 		"statOrderKey": 954,
 		"statOrder": [
@@ -110402,7 +110402,7 @@
 		"affixName": "Apiarist's Smoker Reforged",
 		"modName": "Apiarist's Smoker Reforged",
 		"affix": "Apiarist's Smoker Reforged",
-		"1": "{rounding:Integer}+-1 Damage Over Time Taken - more",
+		"1": "-100% Damage Over Time Taken",
 		"level": 0,
 		"statOrderKey": 954,
 		"statOrder": [
@@ -110421,7 +110421,7 @@
 		"affixName": "Apiarist's Smoker Reforged",
 		"modName": "Apiarist's Smoker Reforged",
 		"affix": "Apiarist's Smoker Reforged",
-		"1": "{rounding:Integer}+-1 Damage Over Time Taken - more",
+		"1": "-100% Damage Over Time Taken",
 		"level": 0,
 		"statOrderKey": 954,
 		"statOrder": [
@@ -110440,7 +110440,7 @@
 		"affixName": "Apiarist's Smoker Reforged",
 		"modName": "Apiarist's Smoker Reforged",
 		"affix": "Apiarist's Smoker Reforged",
-		"1": "{rounding:Integer}+-1 Damage Over Time Taken - more",
+		"1": "-100% Damage Over Time Taken",
 		"level": 0,
 		"statOrderKey": 954,
 		"statOrder": [
@@ -110459,7 +110459,7 @@
 		"affixName": "Apiarist's Smoker Reforged",
 		"modName": "Apiarist's Smoker Reforged",
 		"affix": "Apiarist's Smoker Reforged",
-		"1": "{rounding:Integer}+-1 Damage Over Time Taken - more",
+		"1": "-100% Damage Over Time Taken",
 		"level": 0,
 		"statOrderKey": 954,
 		"statOrder": [
@@ -112150,7 +112150,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+4% Bow Damage to Slowed Enemies - more",
+		"2": "+4% Bow Damage to Slowed Enemies",
 		"canRollOn": [
 			23,
 			17
@@ -112169,7 +112169,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+5% Bow Damage to Slowed Enemies - more",
+		"2": "+5% Bow Damage to Slowed Enemies",
 		"canRollOn": [
 			23,
 			17
@@ -112188,7 +112188,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+5% Bow Damage to Slowed Enemies - more",
+		"2": "+5% Bow Damage to Slowed Enemies",
 		"canRollOn": [
 			23,
 			17
@@ -112207,7 +112207,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+6% Bow Damage to Slowed Enemies - more",
+		"2": "+6% Bow Damage to Slowed Enemies",
 		"canRollOn": [
 			23,
 			17
@@ -112226,7 +112226,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+6% Bow Damage to Slowed Enemies - more",
+		"2": "+6% Bow Damage to Slowed Enemies",
 		"canRollOn": [
 			23,
 			17
@@ -112245,7 +112245,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+7% Bow Damage to Slowed Enemies - more",
+		"2": "+7% Bow Damage to Slowed Enemies",
 		"canRollOn": [
 			23,
 			17
@@ -112264,7 +112264,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+7% Bow Damage to Slowed Enemies - more",
+		"2": "+7% Bow Damage to Slowed Enemies",
 		"canRollOn": [
 			23,
 			17
@@ -112283,7 +112283,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+10% Bow Damage to Slowed Enemies - more",
+		"2": "+10% Bow Damage to Slowed Enemies",
 		"canRollOn": [
 			23,
 			17
@@ -112606,7 +112606,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 2.2,
-		"2": "+4% Damage to Stunned Enemies - more",
+		"2": "+4% Damage to Stunned Enemies",
 		"canRollOn": [
 			13
 		],
@@ -112624,7 +112624,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 2.2,
-		"2": "+4% Damage to Stunned Enemies - more",
+		"2": "+4% Damage to Stunned Enemies",
 		"canRollOn": [
 			13
 		],
@@ -112642,7 +112642,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 2.2,
-		"2": "+4% Damage to Stunned Enemies - more",
+		"2": "+4% Damage to Stunned Enemies",
 		"canRollOn": [
 			13
 		],
@@ -112660,7 +112660,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 2.2,
-		"2": "+4% Damage to Stunned Enemies - more",
+		"2": "+4% Damage to Stunned Enemies",
 		"canRollOn": [
 			13
 		],
@@ -112678,7 +112678,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 2.2,
-		"2": "+4% Damage to Stunned Enemies - more",
+		"2": "+4% Damage to Stunned Enemies",
 		"canRollOn": [
 			13
 		],
@@ -112696,7 +112696,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 2.2,
-		"2": "+4% Damage to Stunned Enemies - more",
+		"2": "+4% Damage to Stunned Enemies",
 		"canRollOn": [
 			13
 		],
@@ -112714,7 +112714,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 2.2,
-		"2": "+(4-7)% Damage to Stunned Enemies - more",
+		"2": "+(4-7)% Damage to Stunned Enemies",
 		"canRollOn": [
 			13
 		],
@@ -112732,7 +112732,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 2.2,
-		"2": "+11% Damage to Stunned Enemies - more",
+		"2": "+11% Damage to Stunned Enemies",
 		"canRollOn": [
 			13
 		],
@@ -113894,7 +113894,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+2% Global Conditional Damage - more",
+		"2": "+2% Global Conditional Damage",
 		"canRollOn": [
 			6,
 			14,
@@ -113914,7 +113914,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+2.1% Global Conditional Damage - more",
+		"2": "+2.1% Global Conditional Damage",
 		"canRollOn": [
 			6,
 			14,
@@ -113934,7 +113934,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+2.2% Global Conditional Damage - more",
+		"2": "+2.2% Global Conditional Damage",
 		"canRollOn": [
 			6,
 			14,
@@ -113954,7 +113954,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+2.3% Global Conditional Damage - more",
+		"2": "+2.3% Global Conditional Damage",
 		"canRollOn": [
 			6,
 			14,
@@ -113974,7 +113974,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+2.4% Global Conditional Damage - more",
+		"2": "+2.4% Global Conditional Damage",
 		"canRollOn": [
 			6,
 			14,
@@ -113994,7 +113994,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+2.5% Global Conditional Damage - more",
+		"2": "+2.5% Global Conditional Damage",
 		"canRollOn": [
 			6,
 			14,
@@ -114014,7 +114014,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(2.6-3)% Global Conditional Damage - more",
+		"2": "+(2.6-3)% Global Conditional Damage",
 		"canRollOn": [
 			6,
 			14,
@@ -114034,7 +114034,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(5-6)% Global Conditional Damage - more",
+		"2": "+(5-6)% Global Conditional Damage",
 		"canRollOn": [
 			6,
 			14,
@@ -114206,7 +114206,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+1% Damage to Slowed Enemies - more",
+		"2": "+1% Damage to Slowed Enemies",
 		"canRollOn": [
 			7,
 			13
@@ -114225,7 +114225,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+2% Damage to Slowed Enemies - more",
+		"2": "+2% Damage to Slowed Enemies",
 		"canRollOn": [
 			7,
 			13
@@ -114244,7 +114244,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+2% Damage to Slowed Enemies - more",
+		"2": "+2% Damage to Slowed Enemies",
 		"canRollOn": [
 			7,
 			13
@@ -114263,7 +114263,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+3% Damage to Slowed Enemies - more",
+		"2": "+3% Damage to Slowed Enemies",
 		"canRollOn": [
 			7,
 			13
@@ -114282,7 +114282,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+3% Damage to Slowed Enemies - more",
+		"2": "+3% Damage to Slowed Enemies",
 		"canRollOn": [
 			7,
 			13
@@ -114301,7 +114301,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+4% Damage to Slowed Enemies - more",
+		"2": "+4% Damage to Slowed Enemies",
 		"canRollOn": [
 			7,
 			13
@@ -114320,7 +114320,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+4% Damage to Slowed Enemies - more",
+		"2": "+4% Damage to Slowed Enemies",
 		"canRollOn": [
 			7,
 			13
@@ -114339,7 +114339,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+7% Damage to Slowed Enemies - more",
+		"2": "+7% Damage to Slowed Enemies",
 		"canRollOn": [
 			7,
 			13
@@ -114358,7 +114358,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+2% Damage to Bleeding Enemies - more",
+		"2": "+2% Damage to Bleeding Enemies",
 		"canRollOn": [
 			5,
 			16,
@@ -114380,7 +114380,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+3% Damage to Bleeding Enemies - more",
+		"2": "+3% Damage to Bleeding Enemies",
 		"canRollOn": [
 			5,
 			16,
@@ -114402,7 +114402,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+3% Damage to Bleeding Enemies - more",
+		"2": "+3% Damage to Bleeding Enemies",
 		"canRollOn": [
 			5,
 			16,
@@ -114424,7 +114424,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+4% Damage to Bleeding Enemies - more",
+		"2": "+4% Damage to Bleeding Enemies",
 		"canRollOn": [
 			5,
 			16,
@@ -114446,7 +114446,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+4% Damage to Bleeding Enemies - more",
+		"2": "+4% Damage to Bleeding Enemies",
 		"canRollOn": [
 			5,
 			16,
@@ -114468,7 +114468,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+5% Damage to Bleeding Enemies - more",
+		"2": "+5% Damage to Bleeding Enemies",
 		"canRollOn": [
 			5,
 			16,
@@ -114490,7 +114490,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+5% Damage to Bleeding Enemies - more",
+		"2": "+5% Damage to Bleeding Enemies",
 		"canRollOn": [
 			5,
 			16,
@@ -114512,7 +114512,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+7% Damage to Bleeding Enemies - more",
+		"2": "+7% Damage to Bleeding Enemies",
 		"canRollOn": [
 			5,
 			16,
@@ -114750,7 +114750,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+0.2% Damage for Melee Attacks per 1 Mana Cost (up to 20) - more Also affects ailments applied by the melee attack and sub skills cast from it.",
+		"2": "+0.2% Damage for Melee Attacks per 1 Mana Cost (up to 20)",
 		"canRollOn": [
 			9,
 			5,
@@ -114777,7 +114777,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+0.2% Damage for Melee Attacks per 1 Mana Cost (up to 20) - more Also affects ailments applied by the melee attack and sub skills cast from it.",
+		"2": "+0.2% Damage for Melee Attacks per 1 Mana Cost (up to 20)",
 		"canRollOn": [
 			9,
 			5,
@@ -114804,7 +114804,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+0.2% Damage for Melee Attacks per 1 Mana Cost (up to 20) - more Also affects ailments applied by the melee attack and sub skills cast from it.",
+		"2": "+0.2% Damage for Melee Attacks per 1 Mana Cost (up to 20)",
 		"canRollOn": [
 			9,
 			5,
@@ -114831,7 +114831,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+0.3% Damage for Melee Attacks per 1 Mana Cost (up to 20) - more Also affects ailments applied by the melee attack and sub skills cast from it.",
+		"2": "+0.3% Damage for Melee Attacks per 1 Mana Cost (up to 20)",
 		"canRollOn": [
 			9,
 			5,
@@ -114858,7 +114858,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+0.3% Damage for Melee Attacks per 1 Mana Cost (up to 20) - more Also affects ailments applied by the melee attack and sub skills cast from it.",
+		"2": "+0.3% Damage for Melee Attacks per 1 Mana Cost (up to 20)",
 		"canRollOn": [
 			9,
 			5,
@@ -114885,7 +114885,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+0.3% Damage for Melee Attacks per 1 Mana Cost (up to 20) - more Also affects ailments applied by the melee attack and sub skills cast from it.",
+		"2": "+0.3% Damage for Melee Attacks per 1 Mana Cost (up to 20)",
 		"canRollOn": [
 			9,
 			5,
@@ -114912,7 +114912,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+0.3% Damage for Melee Attacks per 1 Mana Cost (up to 20) - more Also affects ailments applied by the melee attack and sub skills cast from it.",
+		"2": "+0.3% Damage for Melee Attacks per 1 Mana Cost (up to 20)",
 		"canRollOn": [
 			9,
 			5,
@@ -114939,7 +114939,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+0.5% Damage for Melee Attacks per 1 Mana Cost (up to 20) - more Also affects ailments applied by the melee attack and sub skills cast from it.",
+		"2": "+0.5% Damage for Melee Attacks per 1 Mana Cost (up to 20)",
 		"canRollOn": [
 			9,
 			5,
@@ -115686,7 +115686,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+1% Damage over Time taken while you have Haste - more",
+		"2": "+1% Damage over Time taken while you have Haste",
 		"canRollOn": [
 			3
 		],
@@ -115704,7 +115704,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+1% Damage over Time taken while you have Haste - more",
+		"2": "+1% Damage over Time taken while you have Haste",
 		"canRollOn": [
 			3
 		],
@@ -115722,7 +115722,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+1% Damage over Time taken while you have Haste - more",
+		"2": "+1% Damage over Time taken while you have Haste",
 		"canRollOn": [
 			3
 		],
@@ -115740,7 +115740,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+2% Damage over Time taken while you have Haste - more",
+		"2": "+2% Damage over Time taken while you have Haste",
 		"canRollOn": [
 			3
 		],
@@ -115758,7 +115758,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+2% Damage over Time taken while you have Haste - more",
+		"2": "+2% Damage over Time taken while you have Haste",
 		"canRollOn": [
 			3
 		],
@@ -115776,7 +115776,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+2% Damage over Time taken while you have Haste - more",
+		"2": "+2% Damage over Time taken while you have Haste",
 		"canRollOn": [
 			3
 		],
@@ -115794,7 +115794,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+3% Damage over Time taken while you have Haste - more",
+		"2": "+3% Damage over Time taken while you have Haste",
 		"canRollOn": [
 			3
 		],
@@ -115812,7 +115812,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+5% Damage over Time taken while you have Haste - more",
+		"2": "+5% Damage over Time taken while you have Haste",
 		"canRollOn": [
 			3
 		],
@@ -123424,7 +123424,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+(2-2.3)% Physical Damage Taken on Block - more",
+		"2": "+(2-2.3)% Physical Damage Taken on Block",
 		"canRollOn": [
 			18
 		],
@@ -123442,7 +123442,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+(2.4-2.7)% Physical Damage Taken on Block - more",
+		"2": "+(2.4-2.7)% Physical Damage Taken on Block",
 		"canRollOn": [
 			18
 		],
@@ -123460,7 +123460,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+(2.8-3.1)% Physical Damage Taken on Block - more",
+		"2": "+(2.8-3.1)% Physical Damage Taken on Block",
 		"canRollOn": [
 			18
 		],
@@ -123478,7 +123478,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+(3.2-3.7)% Physical Damage Taken on Block - more",
+		"2": "+(3.2-3.7)% Physical Damage Taken on Block",
 		"canRollOn": [
 			18
 		],
@@ -123496,7 +123496,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+(3.8-4.1)% Physical Damage Taken on Block - more",
+		"2": "+(3.8-4.1)% Physical Damage Taken on Block",
 		"canRollOn": [
 			18
 		],
@@ -123514,7 +123514,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+(4.2-4.5)% Physical Damage Taken on Block - more",
+		"2": "+(4.2-4.5)% Physical Damage Taken on Block",
 		"canRollOn": [
 			18
 		],
@@ -123532,7 +123532,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+(4.6-5)% Physical Damage Taken on Block - more",
+		"2": "+(4.6-5)% Physical Damage Taken on Block",
 		"canRollOn": [
 			18
 		],
@@ -123550,7 +123550,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+(8-10)% Physical Damage Taken on Block - more",
+		"2": "+(8-10)% Physical Damage Taken on Block",
 		"canRollOn": [
 			18
 		],
