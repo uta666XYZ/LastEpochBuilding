@@ -109591,7 +109591,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(5-19) Your Total Attributes is the sum of your Strength, Dexterity, Intelligence, Attunement, and Vitality. Armor",
+		"2": "{rounding:Integer}+(5-19) Armor",
 		"canRollOn": [
 			21
 		],
@@ -109610,7 +109610,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(20-34) Your Total Attributes is the sum of your Strength, Dexterity, Intelligence, Attunement, and Vitality. Armor",
+		"2": "{rounding:Integer}+(20-34) Armor",
 		"canRollOn": [
 			21
 		],
@@ -109629,7 +109629,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(35-49) Your Total Attributes is the sum of your Strength, Dexterity, Intelligence, Attunement, and Vitality. Armor",
+		"2": "{rounding:Integer}+(35-49) Armor",
 		"canRollOn": [
 			21
 		],
@@ -109648,7 +109648,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(50-64) Your Total Attributes is the sum of your Strength, Dexterity, Intelligence, Attunement, and Vitality. Armor",
+		"2": "{rounding:Integer}+(50-64) Armor",
 		"canRollOn": [
 			21
 		],
@@ -109667,7 +109667,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(65-80) Your Total Attributes is the sum of your Strength, Dexterity, Intelligence, Attunement, and Vitality. Armor",
+		"2": "{rounding:Integer}+(65-80) Armor",
 		"canRollOn": [
 			21
 		],
@@ -109686,7 +109686,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(110-130) Your Total Attributes is the sum of your Strength, Dexterity, Intelligence, Attunement, and Vitality. Armor",
+		"2": "{rounding:Integer}+(110-130) Armor",
 		"canRollOn": [
 			21
 		],
@@ -109705,7 +109705,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(131-160) Your Total Attributes is the sum of your Strength, Dexterity, Intelligence, Attunement, and Vitality. Armor",
+		"2": "{rounding:Integer}+(131-160) Armor",
 		"canRollOn": [
 			21
 		],
@@ -109724,7 +109724,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(250-320) Your Total Attributes is the sum of your Strength, Dexterity, Intelligence, Attunement, and Vitality. Armor",
+		"2": "{rounding:Integer}+(250-320) Armor",
 		"canRollOn": [
 			21
 		],
@@ -109743,7 +109743,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+(20-51) Your Total Attributes is the sum of your Strength, Dexterity, Intelligence, Attunement, and Vitality. Ward Decay Threshold",
+		"2": "{rounding:Integer}+(20-51) Ward Decay Threshold",
 		"canRollOn": [
 			20
 		],
@@ -109762,7 +109762,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+(52-83) Your Total Attributes is the sum of your Strength, Dexterity, Intelligence, Attunement, and Vitality. Ward Decay Threshold",
+		"2": "{rounding:Integer}+(52-83) Ward Decay Threshold",
 		"canRollOn": [
 			20
 		],
@@ -109781,7 +109781,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+(84-115) Your Total Attributes is the sum of your Strength, Dexterity, Intelligence, Attunement, and Vitality. Ward Decay Threshold",
+		"2": "{rounding:Integer}+(84-115) Ward Decay Threshold",
 		"canRollOn": [
 			20
 		],
@@ -109800,7 +109800,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+(116-147) Your Total Attributes is the sum of your Strength, Dexterity, Intelligence, Attunement, and Vitality. Ward Decay Threshold",
+		"2": "{rounding:Integer}+(116-147) Ward Decay Threshold",
 		"canRollOn": [
 			20
 		],
@@ -109819,7 +109819,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+(148-180) Your Total Attributes is the sum of your Strength, Dexterity, Intelligence, Attunement, and Vitality. Ward Decay Threshold",
+		"2": "{rounding:Integer}+(148-180) Ward Decay Threshold",
 		"canRollOn": [
 			20
 		],
@@ -109838,7 +109838,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+(220-259) Your Total Attributes is the sum of your Strength, Dexterity, Intelligence, Attunement, and Vitality. Ward Decay Threshold",
+		"2": "{rounding:Integer}+(220-259) Ward Decay Threshold",
 		"canRollOn": [
 			20
 		],
@@ -109857,7 +109857,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+(260-300) Your Total Attributes is the sum of your Strength, Dexterity, Intelligence, Attunement, and Vitality. Ward Decay Threshold",
+		"2": "{rounding:Integer}+(260-300) Ward Decay Threshold",
 		"canRollOn": [
 			20
 		],
@@ -109876,7 +109876,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+(400-450) Your Total Attributes is the sum of your Strength, Dexterity, Intelligence, Attunement, and Vitality. Ward Decay Threshold",
+		"2": "{rounding:Integer}+(400-450) Ward Decay Threshold",
 		"canRollOn": [
 			20
 		],
@@ -110791,7 +110791,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(1-2)% Each stack of Critical Vulnerability adds an additional 2% chance to be crit, reduces critical strike avoidance by 10%, and lasts 4 seconds. Melee Attack Speed",
+		"2": "+(1-2)% Melee Attack Speed",
 		"canRollOn": [
 			5
 		],
@@ -110810,7 +110810,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(3-4)% Each stack of Critical Vulnerability adds an additional 2% chance to be crit, reduces critical strike avoidance by 10%, and lasts 4 seconds. Melee Attack Speed",
+		"2": "+(3-4)% Melee Attack Speed",
 		"canRollOn": [
 			5
 		],
@@ -110829,7 +110829,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(5-6)% Each stack of Critical Vulnerability adds an additional 2% chance to be crit, reduces critical strike avoidance by 10%, and lasts 4 seconds. Melee Attack Speed",
+		"2": "+(5-6)% Melee Attack Speed",
 		"canRollOn": [
 			5
 		],
@@ -110848,7 +110848,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(7-8)% Each stack of Critical Vulnerability adds an additional 2% chance to be crit, reduces critical strike avoidance by 10%, and lasts 4 seconds. Melee Attack Speed",
+		"2": "+(7-8)% Melee Attack Speed",
 		"canRollOn": [
 			5
 		],
@@ -110867,7 +110867,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(9-10)% Each stack of Critical Vulnerability adds an additional 2% chance to be crit, reduces critical strike avoidance by 10%, and lasts 4 seconds. Melee Attack Speed",
+		"2": "+(9-10)% Melee Attack Speed",
 		"canRollOn": [
 			5
 		],
@@ -110886,7 +110886,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(12-15)% Each stack of Critical Vulnerability adds an additional 2% chance to be crit, reduces critical strike avoidance by 10%, and lasts 4 seconds. Melee Attack Speed",
+		"2": "+(12-15)% Melee Attack Speed",
 		"canRollOn": [
 			5
 		],
@@ -110905,7 +110905,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(16-20)% Each stack of Critical Vulnerability adds an additional 2% chance to be crit, reduces critical strike avoidance by 10%, and lasts 4 seconds. Melee Attack Speed",
+		"2": "+(16-20)% Melee Attack Speed",
 		"canRollOn": [
 			5
 		],
@@ -110924,7 +110924,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(25-30)% Each stack of Critical Vulnerability adds an additional 2% chance to be crit, reduces critical strike avoidance by 10%, and lasts 4 seconds. Melee Attack Speed",
+		"2": "+(25-30)% Melee Attack Speed",
 		"canRollOn": [
 			5
 		],
@@ -111095,7 +111095,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(10-17)% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cold Damage",
+		"2": "+(10-17)% Cold Damage",
 		"canRollOn": [
 			21
 		],
@@ -111114,7 +111114,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(18-25)% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cold Damage",
+		"2": "+(18-25)% Cold Damage",
 		"canRollOn": [
 			21
 		],
@@ -111133,7 +111133,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(26-33)% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cold Damage",
+		"2": "+(26-33)% Cold Damage",
 		"canRollOn": [
 			21
 		],
@@ -111152,7 +111152,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(34-41)% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cold Damage",
+		"2": "+(34-41)% Cold Damage",
 		"canRollOn": [
 			21
 		],
@@ -111171,7 +111171,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(42-50)% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cold Damage",
+		"2": "+(42-50)% Cold Damage",
 		"canRollOn": [
 			21
 		],
@@ -111190,7 +111190,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(70-84)% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cold Damage",
+		"2": "+(70-84)% Cold Damage",
 		"canRollOn": [
 			21
 		],
@@ -111209,7 +111209,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(85-100)% Consumes mana equal to 80% of Volcanic Orb's mana cost. Cold Damage",
+		"2": "+(85-100)% Cold Damage",
 		"canRollOn": [
 			21
 		],
@@ -111228,7 +111228,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(1.6-2) Consumes mana equal to 80% of Volcanic Orb's mana cost. Cold Damage",
+		"2": "{rounding:Integer}+(1.6-2) Cold Damage",
 		"canRollOn": [
 			21
 		],
@@ -111247,7 +111247,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(10-17)% Consumes mana equal to 80% of Volcanic Orb's mana cost. Fire Damage",
+		"2": "+(10-17)% Fire Damage",
 		"canRollOn": [
 			21
 		],
@@ -111266,7 +111266,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(18-25)% Consumes mana equal to 80% of Volcanic Orb's mana cost. Fire Damage",
+		"2": "+(18-25)% Fire Damage",
 		"canRollOn": [
 			21
 		],
@@ -111285,7 +111285,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(26-33)% Consumes mana equal to 80% of Volcanic Orb's mana cost. Fire Damage",
+		"2": "+(26-33)% Fire Damage",
 		"canRollOn": [
 			21
 		],
@@ -111304,7 +111304,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(34-41)% Consumes mana equal to 80% of Volcanic Orb's mana cost. Fire Damage",
+		"2": "+(34-41)% Fire Damage",
 		"canRollOn": [
 			21
 		],
@@ -111323,7 +111323,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(42-50)% Consumes mana equal to 80% of Volcanic Orb's mana cost. Fire Damage",
+		"2": "+(42-50)% Fire Damage",
 		"canRollOn": [
 			21
 		],
@@ -111342,7 +111342,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(70-84)% Consumes mana equal to 80% of Volcanic Orb's mana cost. Fire Damage",
+		"2": "+(70-84)% Fire Damage",
 		"canRollOn": [
 			21
 		],
@@ -111361,7 +111361,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(85-100)% Consumes mana equal to 80% of Volcanic Orb's mana cost. Fire Damage",
+		"2": "+(85-100)% Fire Damage",
 		"canRollOn": [
 			21
 		],
@@ -111380,7 +111380,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(1.6-2) Consumes mana equal to 80% of Volcanic Orb's mana cost. Fire Damage",
+		"2": "{rounding:Integer}+(1.6-2) Fire Damage",
 		"canRollOn": [
 			21
 		],
@@ -111551,7 +111551,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(1-2) Blinded enemies cannot critically strike. Throwing Fire Damage",
+		"2": "{rounding:Integer}+(1-2) Throwing Fire Damage",
 		"canRollOn": [
 			0
 		],
@@ -111570,7 +111570,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(3-4) Blinded enemies cannot critically strike. Throwing Fire Damage",
+		"2": "{rounding:Integer}+(3-4) Throwing Fire Damage",
 		"canRollOn": [
 			0
 		],
@@ -111589,7 +111589,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(5-6) Blinded enemies cannot critically strike. Throwing Fire Damage",
+		"2": "{rounding:Integer}+(5-6) Throwing Fire Damage",
 		"canRollOn": [
 			0
 		],
@@ -111608,7 +111608,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(7-8) Blinded enemies cannot critically strike. Throwing Fire Damage",
+		"2": "{rounding:Integer}+(7-8) Throwing Fire Damage",
 		"canRollOn": [
 			0
 		],
@@ -111627,7 +111627,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(9-10) Blinded enemies cannot critically strike. Throwing Fire Damage",
+		"2": "{rounding:Integer}+(9-10) Throwing Fire Damage",
 		"canRollOn": [
 			0
 		],
@@ -111646,7 +111646,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(12-14) Blinded enemies cannot critically strike. Throwing Fire Damage",
+		"2": "{rounding:Integer}+(12-14) Throwing Fire Damage",
 		"canRollOn": [
 			0
 		],
@@ -111665,7 +111665,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(15-18) Blinded enemies cannot critically strike. Throwing Fire Damage",
+		"2": "{rounding:Integer}+(15-18) Throwing Fire Damage",
 		"canRollOn": [
 			0
 		],
@@ -111684,7 +111684,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(25-30) Blinded enemies cannot critically strike. Throwing Fire Damage",
+		"2": "{rounding:Integer}+(25-30) Throwing Fire Damage",
 		"canRollOn": [
 			0
 		],
@@ -122983,7 +122983,7 @@
 	"1079_0": {
 		"affixName": "Less Damage Taken on Block and Block Effectiveness applies to Damage over Time",
 		"affix": "Less Damage Taken on Block and Block Effectiveness applies to Damage over Time",
-		"1": "+(1-1.2)% Damage Taken on Block - more Reduces the damage you take when you block a hit. Block Effectiveness applies to Damage over Time as if it had been Blocked",
+		"1": "+(1-1.2)% Damage Taken on Block - more Block Effectiveness applies to Damage over Time as if it had been Blocked",
 		"level": 0,
 		"statOrderKey": 1079,
 		"statOrder": [
@@ -123001,7 +123001,7 @@
 	"1079_1": {
 		"affixName": "Less Damage Taken on Block and Block Effectiveness applies to Damage over Time",
 		"affix": "Less Damage Taken on Block and Block Effectiveness applies to Damage over Time",
-		"1": "+(1.3-1.5)% Damage Taken on Block - more Reduces the damage you take when you block a hit. Block Effectiveness applies to Damage over Time as if it had been Blocked",
+		"1": "+(1.3-1.5)% Damage Taken on Block - more Block Effectiveness applies to Damage over Time as if it had been Blocked",
 		"level": 0,
 		"statOrderKey": 1079,
 		"statOrder": [
@@ -123019,7 +123019,7 @@
 	"1079_2": {
 		"affixName": "Less Damage Taken on Block and Block Effectiveness applies to Damage over Time",
 		"affix": "Less Damage Taken on Block and Block Effectiveness applies to Damage over Time",
-		"1": "+(1.6-1.8)% Damage Taken on Block - more Reduces the damage you take when you block a hit. Block Effectiveness applies to Damage over Time as if it had been Blocked",
+		"1": "+(1.6-1.8)% Damage Taken on Block - more Block Effectiveness applies to Damage over Time as if it had been Blocked",
 		"level": 0,
 		"statOrderKey": 1079,
 		"statOrder": [
@@ -123037,7 +123037,7 @@
 	"1079_3": {
 		"affixName": "Less Damage Taken on Block and Block Effectiveness applies to Damage over Time",
 		"affix": "Less Damage Taken on Block and Block Effectiveness applies to Damage over Time",
-		"1": "+(1.9-2.1)% Damage Taken on Block - more Reduces the damage you take when you block a hit. Block Effectiveness applies to Damage over Time as if it had been Blocked",
+		"1": "+(1.9-2.1)% Damage Taken on Block - more Block Effectiveness applies to Damage over Time as if it had been Blocked",
 		"level": 0,
 		"statOrderKey": 1079,
 		"statOrder": [
@@ -123055,7 +123055,7 @@
 	"1079_4": {
 		"affixName": "Less Damage Taken on Block and Block Effectiveness applies to Damage over Time",
 		"affix": "Less Damage Taken on Block and Block Effectiveness applies to Damage over Time",
-		"1": "+(2.2-2.4)% Damage Taken on Block - more Reduces the damage you take when you block a hit. Block Effectiveness applies to Damage over Time as if it had been Blocked",
+		"1": "+(2.2-2.4)% Damage Taken on Block - more Block Effectiveness applies to Damage over Time as if it had been Blocked",
 		"level": 0,
 		"statOrderKey": 1079,
 		"statOrder": [
@@ -123073,7 +123073,7 @@
 	"1079_5": {
 		"affixName": "Less Damage Taken on Block and Block Effectiveness applies to Damage over Time",
 		"affix": "Less Damage Taken on Block and Block Effectiveness applies to Damage over Time",
-		"1": "+(2.5-2.7)% Damage Taken on Block - more Reduces the damage you take when you block a hit. Block Effectiveness applies to Damage over Time as if it had been Blocked",
+		"1": "+(2.5-2.7)% Damage Taken on Block - more Block Effectiveness applies to Damage over Time as if it had been Blocked",
 		"level": 0,
 		"statOrderKey": 1079,
 		"statOrder": [
@@ -123091,7 +123091,7 @@
 	"1079_6": {
 		"affixName": "Less Damage Taken on Block and Block Effectiveness applies to Damage over Time",
 		"affix": "Less Damage Taken on Block and Block Effectiveness applies to Damage over Time",
-		"1": "+(2.8-3)% Damage Taken on Block - more Reduces the damage you take when you block a hit. Block Effectiveness applies to Damage over Time as if it had been Blocked",
+		"1": "+(2.8-3)% Damage Taken on Block - more Block Effectiveness applies to Damage over Time as if it had been Blocked",
 		"level": 0,
 		"statOrderKey": 1079,
 		"statOrder": [
@@ -123109,7 +123109,7 @@
 	"1079_7": {
 		"affixName": "Less Damage Taken on Block and Block Effectiveness applies to Damage over Time",
 		"affix": "Less Damage Taken on Block and Block Effectiveness applies to Damage over Time",
-		"1": "+5% Damage Taken on Block - more Reduces the damage you take when you block a hit. Block Effectiveness applies to Damage over Time as if it had been Blocked",
+		"1": "+5% Damage Taken on Block - more Block Effectiveness applies to Damage over Time as if it had been Blocked",
 		"level": 0,
 		"statOrderKey": 1079,
 		"statOrder": [
@@ -123424,7 +123424,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+(2-2.3)% Physical Damage Taken on Block - more Reduces the damage you take when you block a hit.",
+		"2": "+(2-2.3)% Physical Damage Taken on Block - more",
 		"canRollOn": [
 			18
 		],
@@ -123442,7 +123442,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+(2.4-2.7)% Physical Damage Taken on Block - more Reduces the damage you take when you block a hit.",
+		"2": "+(2.4-2.7)% Physical Damage Taken on Block - more",
 		"canRollOn": [
 			18
 		],
@@ -123460,7 +123460,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+(2.8-3.1)% Physical Damage Taken on Block - more Reduces the damage you take when you block a hit.",
+		"2": "+(2.8-3.1)% Physical Damage Taken on Block - more",
 		"canRollOn": [
 			18
 		],
@@ -123478,7 +123478,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+(3.2-3.7)% Physical Damage Taken on Block - more Reduces the damage you take when you block a hit.",
+		"2": "+(3.2-3.7)% Physical Damage Taken on Block - more",
 		"canRollOn": [
 			18
 		],
@@ -123496,7 +123496,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+(3.8-4.1)% Physical Damage Taken on Block - more Reduces the damage you take when you block a hit.",
+		"2": "+(3.8-4.1)% Physical Damage Taken on Block - more",
 		"canRollOn": [
 			18
 		],
@@ -123514,7 +123514,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+(4.2-4.5)% Physical Damage Taken on Block - more Reduces the damage you take when you block a hit.",
+		"2": "+(4.2-4.5)% Physical Damage Taken on Block - more",
 		"canRollOn": [
 			18
 		],
@@ -123532,7 +123532,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+(4.6-5)% Physical Damage Taken on Block - more Reduces the damage you take when you block a hit.",
+		"2": "+(4.6-5)% Physical Damage Taken on Block - more",
 		"canRollOn": [
 			18
 		],
@@ -123550,7 +123550,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "+(8-10)% Physical Damage Taken on Block - more Reduces the damage you take when you block a hit.",
+		"2": "+(8-10)% Physical Damage Taken on Block - more",
 		"canRollOn": [
 			18
 		],
