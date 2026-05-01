@@ -1,113 +1,145 @@
 ---[Help File Introduction]
 
-This file contains a list of shortcuts and other misc information about Last Epoch Building functionality
-While holding shift scroll bars in the help section and version history will jump to the previous/next section while scrolling
+This file contains a list of shortcuts and other misc information about Last Epoch Building functionality.
+While holding shift, scrolling in the help section or version history will jump to the previous/next section.
+
+Press F1 anytime to open this help.
 
 ---[Contents]
 
----[FAQ]
-
 ---[Hotkeys]
 
-General Shortcuts:
+^xFFD700================================================
+^xFFD700  ESSENTIAL 5 - Learn these first.
+^xFFD700  These will skyrocket your QoL.
+^xFFD700================================================
 
-Ctrl + 1	Jump to tree tab
-Ctrl + 2	Jump to skills tab
-Ctrl + 3	Jump to items tab
-Ctrl + 4	Jump to calcs tab
-Ctrl + 5	Jump to config tab
-Ctrl + 6	Jump to notes tab
-Ctrl + 7	Jump to party tab
-Ctrl + I	Jump to import tab
-Ctrl + A	Select all
-Ctrl + C	Copy
-Ctrl + F	Show find / search box (e.g. unique item / tree)
-Ctrl + M	Manage Trees (Tree tab only)
-Ctrl + N	New build (in build selection menu)
-Ctrl + S	Save build to file
-Ctrl + U	Check for update
-Ctrl + V or RMB	Paste
-Ctrl + W or	
-Mouse 4	Close Build (gives save prompt if unsaved)
-Ctrl + X	Cut
+^xFFD700Ctrl + 1 ~ 6	^xFFD700Switch tabs (Tree / Skills / Items / Calcs / Config / Notes)
+^xFFD700Ctrl + S	^xFFD700Save the current build
+^xFFD700Ctrl + Z / Y	^xFFD700Undo / Redo
+^xFFD700Ctrl + N	^xFFD700New build (in build selection menu)
+^xFFD700F1	^xFFD700Open this help
+
+^xFFD700================================================
+
+
+Tab Navigation:
+
+Ctrl + 1	Tree tab
+Ctrl + 2	Skills tab
+Ctrl + 3	Items tab
+Ctrl + 4	Calcs tab
+Ctrl + 5	Config tab
+Ctrl + 6	Notes tab
+Ctrl + I	Import / Export tab
+
+
+Build Actions:
+
+Ctrl + S	Save the current build
+Ctrl + W	Close build (prompts to save if unsaved)
+Mouse 4	Close build (same as Ctrl + W)
+Ctrl + N	New build (in build selection menu, only)
+Mouse 4 / 5	Undo / Redo folder path (in build selection menu, only)
+F2	Rename selected build / item set / skill set / etc.
+F5	Restart Last Epoch Building (useful if you encounter an error)
+
+
+Editing:
+
+Ctrl + Z	Undo (works in Items / Skills / Config / Notes / Calcs tabs)
 Ctrl + Y	Redo
-Ctrl + Z	Undo
-Ctrl + BSP / DEL	Faster text delete
-Ctrl + + /-/0	Zoom in / Out / Reset
-F1	Open item/gem/etc in poewiki.net, or if nothing to open, opens help file
-F2	Rename item, set, etc.
-E	On an equipped item will open it on the edit menu on the right.
-Mouse 4/5	Undo / Redo path respectively (in build selection menu)
-Shift	While scrolling on a slider makes it faster
-Ctrl	While scrolling on a slider makes it slower
-* Some scroll bars have more or less extreme modifiers to scroll speed
-  and scroll bars in help section and version history will jump to the previous/next section
+Ctrl + V	Paste an item from clipboard (Items tab)
+E	Edit the item under the mouse cursor (Items tab)
 
-When creating an item either through item creator or adding an item pressing ctrl will add it to the first slot
-    and ctrl+shift will add it to the second slot e.g. offhand for a weapon.
 
-Passive Tree Shortcuts:
+Text Fields:
 
+Ctrl + A	Select all
+Ctrl + C / X	Copy / Cut
+Ctrl + V	Paste
+Right Click	Paste
+Ctrl + Z / Y	Undo / Redo
+Ctrl + BSP / DEL	Delete a whole word
+Ctrl + + / - / 0	Zoom in / out / reset (in resizable text areas)
+Home / End	Jump to start / end of line
+PgUp / PgDn	Scroll a page up / down
+
+
+Passive Tree:
+
+Mouse Wheel	Zoom in / out
+Ctrl + LMB	Zoom in on the cursor position
 Ctrl	Hide tooltips while held
-P	Toggle node power
-Ctrl + D	Toggle stat diff display
-PgUp/PgDn/MWheel	Zoom in / out (hold with shift to increase the amount of zoom x 3)
-Ctrl + LMB	Zoom in on mouse cursor position
-Hold Shift	Enable "path trace mode" 
-	(highlighted nodes will stay highlighted, and will be allocated when a node is clicked on the tree)
+Ctrl + D	Toggle stat difference display
+Hold Shift	Path trace mode (highlighted nodes stay highlighted, and will be allocated when you click on the tree)
 
-Developer Use
 
-General Shortcuts:
+Sliders & Scroll Bars:
 
-Ctrl + `	Toggle console (console supports most standard editing shortcuts)
-Pause	Toggle profiling
+Shift	While scrolling on a slider, makes it faster
+Ctrl	While scrolling on a slider, makes it slower
+Shift + Scroll	In help section / version history, jump between sections
+
+
+Item Crafting:
+
+Ctrl	When creating an item via the item creator, adds it directly to the first slot
+Ctrl + Shift	When creating an item, adds it to the second slot (e.g. offhand for a weapon)
+
+
+Developer (always available):
+
+Ctrl + `	Toggle console (the console supports most standard text editing shortcuts)
+
 DEV[ ]
 DEV[Developer Mode Shortcuts:]
 DEV[ ]
-DEV[Ctrl	Rebuild mod cache (hold key during reload / refresh)]
+DEV[Pause	Toggle profiling]
+DEV[F6	Run garbage collector]
+DEV[Ctrl	Rebuild mod cache (hold during reload / refresh)]
 DEV[Ctrl + Shift	Allow tree download]
 DEV[Alt	Show advanced mod breakdown / passing]
-DEV[F5	Restart]
-DEV[F6	Run garbage collector]
-DEV[Shift	Copy export xml to clipboard (hold key during export)]
+DEV[Shift	Copy export xml to clipboard (hold during export)]
+
+---[FAQ]
 
 ---[Other Notable Things]
 
-Adding ^ and then a number or hex code before text will change the colour of the text, eg ^^77 will make the following text white until the next colour marker is set.
+Adding ^ and then a number or hex code before text will change the colour of the text (e.g. ^^77 will make the following text white until the next colour marker is set).
 
 ---[Party Tab]
 
-The Party tab Allows you to import support characters and have their auras and curses apply
+The Party tab allows you to import support characters and have their auras and curses apply to your build.
 
-To import a build it must be exported with "Export support" enabled in the import/export tab and must be imported in the party tab
-You can import a specific type like aura or curse, or import to all
-You can also set it to append to a section rather than replace it (curses and links are always replaced if new one has a curse/link)
- 
-This does not add the auras, curses or links into the skills tab, but they do show up on calcs tab under "aura and buff skills" as well as "curses and debuffs" respectively
+To import a build, it must be exported with "Export support" enabled in the Import / Export tab, and must be imported in the Party tab.
+You can import a specific type like aura or curse, or import everything.
+You can also set it to append to a section rather than replace it (curses and links are always replaced if the new one has a curse / link).
+
+This does not add the auras, curses or links into the Skills tab, but they do show up on the Calcs tab under "aura and buff skills" as well as "curses and debuffs" respectively.
 They also show other effects they add.
- 
-Auras with the highest effect will take priority
-Your curses will take priority over a support's
+
+Auras with the highest effect will take priority.
+Your curses will take priority over a support's.
 
 ---[Skills Tab]
 
-The skills tab allows you to plan out the skills you will use for your character. To access this tab, click on "Skills" in the tab at the top left of the screen next to "Tree" and "Items".
+The Skills tab allows you to plan out the skills you will use for your character. To access this tab, click "Skills" in the tab row at the top left of the screen, between "Tree" and "Items".
 
 From here, you can view all of the skills in your build.
 
-Skill sets can be thought of as collections of skills. There is a select box above that will let you switch between them.
-A great way to use these is to create skill sets for different level gaps, allowing you to plan out which skills you can run at certain points in your levelling progression.
-They are also a nice way to showcase different skill options for your build. One set could show the skills you run to maximize DPS, while another could show a better setup for survivability or maybe mapping. Click Manage next to the select box to add, remove, rename, and copy skill sets.
+Skill sets can be thought of as collections of skills. There is a select box above that lets you switch between them.
+A great way to use them is to create skill sets for different level brackets, allowing you to plan out which skills you can run at certain points in your levelling progression.
+They are also a nice way to showcase different skill options for a build. One set could show the skills you run to maximize DPS, while another could show a better setup for survivability or mapping. Click Manage next to the select box to add, remove, rename, and copy skill sets.
 
 Toggling the "Enabled" checkbox will enable or disable that skill from your build. You can also use the "Include in Full DPS" checkbox to include or exclude that skill from the Full DPS calculation displayed on the left panel.
-This can be useful for seeing how much damage you are getting from specific skills as well as specific groups of skills in your gear.
+This can be useful for seeing how much damage you are getting from specific skills, as well as from specific groups of skills in your gear.
 
 ---[Items Tab]
 
-The Item Tab in Last Epoch Building allows you to plan out the gear you will use for your character. To access the Item Tab, click on the "Items" tab located at the top of the screen.
+The Items tab in Last Epoch Building allows you to plan out the gear you will use for your character. To access the Items tab, click on the "Items" tab located at the top of the screen.
 
-From here, you can view all of the gear slots for your character, such as your weapon, chest armour, and boots. To add an item to a slot, click on the arrow button on the right side of the slot. This will bring up a list of all the items available in your build, which are visible in the "All items" window.
-If you wish to add more items, you can copy and paste items using CTRL+C and CTRL+V into the "Shared items" window. Additionally, you can craft items using the "Craft item..." button on the top or create completely customizable items using the "Create custom..." option.
+From here, you can view all of the gear slots for your character, such as your weapon, chest armour, and boots. To add an item to a slot, click the arrow button on the right side of the slot. This will bring up a list of all the items available in your build, which are visible in the "All items" window.
+If you wish to add more items, you can copy and paste items using Ctrl + C and Ctrl + V into the "Shared items" window. Additionally, you can craft items using the "Craft item..." button on the top, or create completely custom items using the "Create custom..." option.
 
-The item sets section located at the top of the screen can be used to save multiple sets of items and easily switch between them. You can add, remove, rename, and copy new sets using the "Manage..." button.
+The item sets section located at the top of the screen can be used to save multiple sets of items and switch between them. You can add, remove, rename, and copy new sets using the "Manage..." button.

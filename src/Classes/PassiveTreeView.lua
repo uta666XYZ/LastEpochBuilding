@@ -214,16 +214,10 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 					-- Record starting coords of mouse drag (only if dragging is enabled)
 					self.dragX, self.dragY = cursorX, cursorY
 				end
-			elseif event.key == "p" then
-				self.showHeatMap = not self.showHeatMap
 			elseif event.key == "i" and launch.devMode then
 				self.showIconPreview = not self.showIconPreview
 			elseif event.key == "d" and IsKeyDown("CTRL") then
 				self.showStatDifferences = not self.showStatDifferences
-			elseif event.key == "PAGEUP" and not self.disableZooming then
-				self:Zoom(IsKeyDown("SHIFT") and 3 or 1, viewPort)
-			elseif event.key == "PAGEDOWN" and not self.disableZooming then
-				self:Zoom(IsKeyDown("SHIFT") and -3 or -1, viewPort)
 			elseif itemLib.wiki.matchesKey(event.key) and self.hoverNode then
 				itemLib.wiki.open(self.hoverNode.name or self.hoverNode.dn)
 			end
