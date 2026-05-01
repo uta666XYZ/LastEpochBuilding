@@ -1,181 +1,2362 @@
 {
-  "1089_0": {"affix": "Amplifying", "1": "{rounding:Integer}(7-8)% increased Effect of Prefixes and Suffixes for Idols in Refracted Slots", "level": 0, "statOrderKey": 1089, "statOrder": [1089], "tier": 0, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1089_1": {"affix": "Amplifying", "1": "{rounding:Integer}(9-11)% increased Effect of Prefixes and Suffixes for Idols in Refracted Slots", "level": 0, "statOrderKey": 1089, "statOrder": [1089], "tier": 1, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1089_2": {"affix": "Amplifying", "1": "{rounding:Integer}(12-14)% increased Effect of Prefixes and Suffixes for Idols in Refracted Slots", "level": 0, "statOrderKey": 1089, "statOrder": [1089], "tier": 2, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1089_3": {"affix": "Amplifying", "1": "{rounding:Integer}(15-17)% increased Effect of Prefixes and Suffixes for Idols in Refracted Slots", "level": 0, "statOrderKey": 1089, "statOrder": [1089], "tier": 3, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1089_4": {"affix": "Amplifying", "1": "{rounding:Integer}(18-20)% increased Effect of Prefixes and Suffixes for Idols in Refracted Slots", "level": 0, "statOrderKey": 1089, "statOrder": [1089], "tier": 4, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1089_5": {"affix": "Amplifying", "1": "{rounding:Integer}(24-27)% increased Effect of Prefixes and Suffixes for Idols in Refracted Slots", "level": 0, "statOrderKey": 1089, "statOrder": [1089], "tier": 5, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1089_6": {"affix": "Amplifying", "1": "{rounding:Integer}(28-32)% increased Effect of Prefixes and Suffixes for Idols in Refracted Slots", "level": 0, "statOrderKey": 1089, "statOrder": [1089], "tier": 6, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1089_7": {"affix": "Amplifying", "1": "{rounding:Integer}(50-60)% increased Effect of Prefixes and Suffixes for Idols in Refracted Slots", "level": 0, "statOrderKey": 1089, "statOrder": [1089], "tier": 7, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-
-  "1092_0": {"affix": "Entwined", "1": "{rounding:Integer}(10-12)% increased Effect of Weaver Enchantment Affixes for Idols in Refracted Slots", "level": 0, "statOrderKey": 1092, "statOrder": [1092], "tier": 0, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1092_1": {"affix": "Entwined", "1": "{rounding:Integer}(13-15)% increased Effect of Weaver Enchantment Affixes for Idols in Refracted Slots", "level": 0, "statOrderKey": 1092, "statOrder": [1092], "tier": 1, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1092_2": {"affix": "Entwined", "1": "{rounding:Integer}(16-20)% increased Effect of Weaver Enchantment Affixes for Idols in Refracted Slots", "level": 0, "statOrderKey": 1092, "statOrder": [1092], "tier": 2, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1092_3": {"affix": "Entwined", "1": "{rounding:Integer}(21-24)% increased Effect of Weaver Enchantment Affixes for Idols in Refracted Slots", "level": 0, "statOrderKey": 1092, "statOrder": [1092], "tier": 3, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1092_4": {"affix": "Entwined", "1": "{rounding:Integer}(25-30)% increased Effect of Weaver Enchantment Affixes for Idols in Refracted Slots", "level": 0, "statOrderKey": 1092, "statOrder": [1092], "tier": 4, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1092_5": {"affix": "Entwined", "1": "{rounding:Integer}(33-39)% increased Effect of Weaver Enchantment Affixes for Idols in Refracted Slots", "level": 0, "statOrderKey": 1092, "statOrder": [1092], "tier": 5, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1092_6": {"affix": "Entwined", "1": "{rounding:Integer}(40-50)% increased Effect of Weaver Enchantment Affixes for Idols in Refracted Slots", "level": 0, "statOrderKey": 1092, "statOrder": [1092], "tier": 6, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1092_7": {"affix": "Entwined", "1": "{rounding:Integer}(80-90)% increased Effect of Weaver Enchantment Affixes for Idols in Refracted Slots", "level": 0, "statOrderKey": 1092, "statOrder": [1092], "tier": 7, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-
-  "1093_0": {"affix": "Sunrise", "1": "{rounding:Integer}(10-12)% increased Effect of Prefixes for Idols in Refracted Slots", "level": 0, "statOrderKey": 1093, "statOrder": [1093], "tier": 0, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1093_1": {"affix": "Sunrise", "1": "{rounding:Integer}(13-15)% increased Effect of Prefixes for Idols in Refracted Slots", "level": 0, "statOrderKey": 1093, "statOrder": [1093], "tier": 1, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1093_2": {"affix": "Sunrise", "1": "{rounding:Integer}(16-20)% increased Effect of Prefixes for Idols in Refracted Slots", "level": 0, "statOrderKey": 1093, "statOrder": [1093], "tier": 2, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1093_3": {"affix": "Sunrise", "1": "{rounding:Integer}(21-24)% increased Effect of Prefixes for Idols in Refracted Slots", "level": 0, "statOrderKey": 1093, "statOrder": [1093], "tier": 3, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1093_4": {"affix": "Sunrise", "1": "{rounding:Integer}(25-30)% increased Effect of Prefixes for Idols in Refracted Slots", "level": 0, "statOrderKey": 1093, "statOrder": [1093], "tier": 4, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1093_5": {"affix": "Sunrise", "1": "{rounding:Integer}(33-39)% increased Effect of Prefixes for Idols in Refracted Slots", "level": 0, "statOrderKey": 1093, "statOrder": [1093], "tier": 5, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1093_6": {"affix": "Sunrise", "1": "{rounding:Integer}(40-50)% increased Effect of Prefixes for Idols in Refracted Slots", "level": 0, "statOrderKey": 1093, "statOrder": [1093], "tier": 6, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1093_7": {"affix": "Sunrise", "1": "{rounding:Integer}(80-90)% increased Effect of Prefixes for Idols in Refracted Slots", "level": 0, "statOrderKey": 1093, "statOrder": [1093], "tier": 7, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-
-  "1094_0": {"affix": "Sunset", "1": "{rounding:Integer}(10-12)% increased Effect of Suffixes for Idols in Refracted Slots", "level": 0, "statOrderKey": 1094, "statOrder": [1094], "tier": 0, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1094_1": {"affix": "Sunset", "1": "{rounding:Integer}(13-15)% increased Effect of Suffixes for Idols in Refracted Slots", "level": 0, "statOrderKey": 1094, "statOrder": [1094], "tier": 1, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1094_2": {"affix": "Sunset", "1": "{rounding:Integer}(16-20)% increased Effect of Suffixes for Idols in Refracted Slots", "level": 0, "statOrderKey": 1094, "statOrder": [1094], "tier": 2, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1094_3": {"affix": "Sunset", "1": "{rounding:Integer}(21-24)% increased Effect of Suffixes for Idols in Refracted Slots", "level": 0, "statOrderKey": 1094, "statOrder": [1094], "tier": 3, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1094_4": {"affix": "Sunset", "1": "{rounding:Integer}(25-30)% increased Effect of Suffixes for Idols in Refracted Slots", "level": 0, "statOrderKey": 1094, "statOrder": [1094], "tier": 4, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1094_5": {"affix": "Sunset", "1": "{rounding:Integer}(33-39)% increased Effect of Suffixes for Idols in Refracted Slots", "level": 0, "statOrderKey": 1094, "statOrder": [1094], "tier": 5, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1094_6": {"affix": "Sunset", "1": "{rounding:Integer}(40-50)% increased Effect of Suffixes for Idols in Refracted Slots", "level": 0, "statOrderKey": 1094, "statOrder": [1094], "tier": 6, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1094_7": {"affix": "Sunset", "1": "{rounding:Integer}(80-90)% increased Effect of Suffixes for Idols in Refracted Slots", "level": 0, "statOrderKey": 1094, "statOrder": [1094], "tier": 7, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-
-  "1095_0": {"affix": "Prodigious", "1": "{rounding:Integer}+(1) Maximum Omen Idols Equipped", "level": 0, "statOrderKey": 1095, "statOrder": [1095], "tier": 0, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1095_1": {"affix": "Prodigious", "1": "{rounding:Integer}+(1) Maximum Omen Idols Equipped", "level": 0, "statOrderKey": 1095, "statOrder": [1095], "tier": 1, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1095_2": {"affix": "Prodigious", "1": "{rounding:Integer}+(1) Maximum Omen Idols Equipped", "level": 0, "statOrderKey": 1095, "statOrder": [1095], "tier": 2, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1095_3": {"affix": "Prodigious", "1": "{rounding:Integer}+(2) Maximum Omen Idols Equipped", "level": 0, "statOrderKey": 1095, "statOrder": [1095], "tier": 3, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1095_4": {"affix": "Prodigious", "1": "{rounding:Integer}+(2) Maximum Omen Idols Equipped", "level": 0, "statOrderKey": 1095, "statOrder": [1095], "tier": 4, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1095_5": {"affix": "Prodigious", "1": "{rounding:Integer}+(3) Maximum Omen Idols Equipped", "level": 0, "statOrderKey": 1095, "statOrder": [1095], "tier": 5, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1095_6": {"affix": "Prodigious", "1": "{rounding:Integer}+(4) Maximum Omen Idols Equipped", "level": 0, "statOrderKey": 1095, "statOrder": [1095], "tier": 6, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1095_7": {"affix": "Prodigious", "1": "{rounding:Integer}+(5) Maximum Omen Idols Equipped", "level": 0, "statOrderKey": 1095, "statOrder": [1095], "tier": 7, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-
-  "1088_0": {"affix": "of Heresy", "1": "{rounding:Integer}+(2) Health per Equipped Heretical Idol", "level": 0, "statOrderKey": 1088, "statOrder": [1088], "tier": 0, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1088_1": {"affix": "of Heresy", "1": "{rounding:Integer}+(3) Health per Equipped Heretical Idol", "level": 0, "statOrderKey": 1088, "statOrder": [1088], "tier": 1, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1088_2": {"affix": "of Heresy", "1": "{rounding:Integer}+(4) Health per Equipped Heretical Idol", "level": 0, "statOrderKey": 1088, "statOrder": [1088], "tier": 2, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1088_3": {"affix": "of Heresy", "1": "{rounding:Integer}+(5) Health per Equipped Heretical Idol", "level": 0, "statOrderKey": 1088, "statOrder": [1088], "tier": 3, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1088_4": {"affix": "of Heresy", "1": "{rounding:Integer}+(6-7) Health per Equipped Heretical Idol", "level": 0, "statOrderKey": 1088, "statOrder": [1088], "tier": 4, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1088_5": {"affix": "of Heresy", "1": "{rounding:Integer}+(9-10) Health per Equipped Heretical Idol", "level": 0, "statOrderKey": 1088, "statOrder": [1088], "tier": 5, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1088_6": {"affix": "of Heresy", "1": "{rounding:Integer}+(11-12) Health per Equipped Heretical Idol", "level": 0, "statOrderKey": 1088, "statOrder": [1088], "tier": 6, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1088_7": {"affix": "of Heresy", "1": "{rounding:Integer}+(15-16) Health per Equipped Heretical Idol", "level": 0, "statOrderKey": 1088, "statOrder": [1088], "tier": 7, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-
-  "1096_0": {"affix": "of Depravity", "1": "{rounding:Integer}+(1) Ward per Second per Equipped Heretical Idol", "level": 0, "statOrderKey": 1096, "statOrder": [1096], "tier": 0, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1096_1": {"affix": "of Depravity", "1": "{rounding:Integer}+(2) Ward per Second per Equipped Heretical Idol", "level": 0, "statOrderKey": 1096, "statOrder": [1096], "tier": 1, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1096_2": {"affix": "of Depravity", "1": "{rounding:Integer}+(3) Ward per Second per Equipped Heretical Idol", "level": 0, "statOrderKey": 1096, "statOrder": [1096], "tier": 2, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1096_3": {"affix": "of Depravity", "1": "{rounding:Integer}+(4) Ward per Second per Equipped Heretical Idol", "level": 0, "statOrderKey": 1096, "statOrder": [1096], "tier": 3, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1096_4": {"affix": "of Depravity", "1": "{rounding:Integer}+(5) Ward per Second per Equipped Heretical Idol", "level": 0, "statOrderKey": 1096, "statOrder": [1096], "tier": 4, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1096_5": {"affix": "of Depravity", "1": "{rounding:Integer}+(7) Ward per Second per Equipped Heretical Idol", "level": 0, "statOrderKey": 1096, "statOrder": [1096], "tier": 5, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1096_6": {"affix": "of Depravity", "1": "{rounding:Integer}+(8) Ward per Second per Equipped Heretical Idol", "level": 0, "statOrderKey": 1096, "statOrder": [1096], "tier": 6, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1096_7": {"affix": "of Depravity", "1": "{rounding:Integer}+(12) Ward per Second per Equipped Heretical Idol", "level": 0, "statOrderKey": 1096, "statOrder": [1096], "tier": 7, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-
-  "1097_0": {"affix": "of the Woven Sun", "1": "{rounding:Integer}(2)% Reduced Bonus Damage Taken from Critical Strikes per Equipped Heretical Idol", "level": 0, "statOrderKey": 1097, "statOrder": [1097], "tier": 0, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1097_1": {"affix": "of the Woven Sun", "1": "{rounding:Integer}(3)% Reduced Bonus Damage Taken from Critical Strikes per Equipped Heretical Idol", "level": 0, "statOrderKey": 1097, "statOrder": [1097], "tier": 1, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1097_2": {"affix": "of the Woven Sun", "1": "{rounding:Integer}(4)% Reduced Bonus Damage Taken from Critical Strikes per Equipped Heretical Idol", "level": 0, "statOrderKey": 1097, "statOrder": [1097], "tier": 2, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1097_3": {"affix": "of the Woven Sun", "1": "{rounding:Integer}(5)% Reduced Bonus Damage Taken from Critical Strikes per Equipped Heretical Idol", "level": 0, "statOrderKey": 1097, "statOrder": [1097], "tier": 3, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1097_4": {"affix": "of the Woven Sun", "1": "{rounding:Integer}(6-7)% Reduced Bonus Damage Taken from Critical Strikes per Equipped Heretical Idol", "level": 0, "statOrderKey": 1097, "statOrder": [1097], "tier": 4, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1097_5": {"affix": "of the Woven Sun", "1": "{rounding:Integer}(9-10)% Reduced Bonus Damage Taken from Critical Strikes per Equipped Heretical Idol", "level": 0, "statOrderKey": 1097, "statOrder": [1097], "tier": 5, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1097_6": {"affix": "of the Woven Sun", "1": "{rounding:Integer}(11-12)% Reduced Bonus Damage Taken from Critical Strikes per Equipped Heretical Idol", "level": 0, "statOrderKey": 1097, "statOrder": [1097], "tier": 6, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1097_7": {"affix": "of the Woven Sun", "1": "{rounding:Integer}(15-17)% Reduced Bonus Damage Taken from Critical Strikes per Equipped Heretical Idol", "level": 0, "statOrderKey": 1097, "statOrder": [1097], "tier": 7, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-
-  "1098_0": {"affix": "of Azure Fountains", "1": "{rounding:Integer}(2)% Increased Mana Regen per Equipped Ornate Idol", "level": 0, "statOrderKey": 1098, "statOrder": [1098], "tier": 0, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1098_1": {"affix": "of Azure Fountains", "1": "{rounding:Integer}(3)% Increased Mana Regen per Equipped Ornate Idol", "level": 0, "statOrderKey": 1098, "statOrder": [1098], "tier": 1, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1098_2": {"affix": "of Azure Fountains", "1": "{rounding:Integer}(4)% Increased Mana Regen per Equipped Ornate Idol", "level": 0, "statOrderKey": 1098, "statOrder": [1098], "tier": 2, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1098_3": {"affix": "of Azure Fountains", "1": "{rounding:Integer}(5)% Increased Mana Regen per Equipped Ornate Idol", "level": 0, "statOrderKey": 1098, "statOrder": [1098], "tier": 3, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1098_4": {"affix": "of Azure Fountains", "1": "{rounding:Integer}(6-7)% Increased Mana Regen per Equipped Ornate Idol", "level": 0, "statOrderKey": 1098, "statOrder": [1098], "tier": 4, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1098_5": {"affix": "of Azure Fountains", "1": "{rounding:Integer}(9-10)% Increased Mana Regen per Equipped Ornate Idol", "level": 0, "statOrderKey": 1098, "statOrder": [1098], "tier": 5, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1098_6": {"affix": "of Azure Fountains", "1": "{rounding:Integer}(11-12)% Increased Mana Regen per Equipped Ornate Idol", "level": 0, "statOrderKey": 1098, "statOrder": [1098], "tier": 6, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1098_7": {"affix": "of Azure Fountains", "1": "{rounding:Integer}(15-17)% Increased Mana Regen per Equipped Ornate Idol", "level": 0, "statOrderKey": 1098, "statOrder": [1098], "tier": 7, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-
-  "1099_0": {"affix": "of the Sea Giant", "1": "{rounding:Integer}(1)% Increased Health per Equipped Huge Idol", "level": 0, "statOrderKey": 1099, "statOrder": [1099], "tier": 0, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1099_1": {"affix": "of the Sea Giant", "1": "{rounding:Integer}(2)% Increased Health per Equipped Huge Idol", "level": 0, "statOrderKey": 1099, "statOrder": [1099], "tier": 1, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1099_2": {"affix": "of the Sea Giant", "1": "{rounding:Integer}(3)% Increased Health per Equipped Huge Idol", "level": 0, "statOrderKey": 1099, "statOrder": [1099], "tier": 2, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1099_3": {"affix": "of the Sea Giant", "1": "{rounding:Integer}(4)% Increased Health per Equipped Huge Idol", "level": 0, "statOrderKey": 1099, "statOrder": [1099], "tier": 3, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1099_4": {"affix": "of the Sea Giant", "1": "{rounding:Integer}(5)% Increased Health per Equipped Huge Idol", "level": 0, "statOrderKey": 1099, "statOrder": [1099], "tier": 4, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1099_5": {"affix": "of the Sea Giant", "1": "{rounding:Integer}(7)% Increased Health per Equipped Huge Idol", "level": 0, "statOrderKey": 1099, "statOrder": [1099], "tier": 5, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1099_6": {"affix": "of the Sea Giant", "1": "{rounding:Integer}(8)% Increased Health per Equipped Huge Idol", "level": 0, "statOrderKey": 1099, "statOrder": [1099], "tier": 6, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1099_7": {"affix": "of the Sea Giant", "1": "{rounding:Integer}(12)% Increased Health per Equipped Huge Idol", "level": 0, "statOrderKey": 1099, "statOrder": [1099], "tier": 7, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-
-  "1100_0": {"affix": "of Mesembria", "1": "{rounding:Integer}+(2) Health per Idol in a Refracted Slot", "level": 0, "statOrderKey": 1100, "statOrder": [1100], "tier": 0, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1100_1": {"affix": "of Mesembria", "1": "{rounding:Integer}+(3) Health per Idol in a Refracted Slot", "level": 0, "statOrderKey": 1100, "statOrder": [1100], "tier": 1, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1100_2": {"affix": "of Mesembria", "1": "{rounding:Integer}+(4) Health per Idol in a Refracted Slot", "level": 0, "statOrderKey": 1100, "statOrder": [1100], "tier": 2, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1100_3": {"affix": "of Mesembria", "1": "{rounding:Integer}+(5) Health per Idol in a Refracted Slot", "level": 0, "statOrderKey": 1100, "statOrder": [1100], "tier": 3, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1100_4": {"affix": "of Mesembria", "1": "{rounding:Integer}+(6-7) Health per Idol in a Refracted Slot", "level": 0, "statOrderKey": 1100, "statOrder": [1100], "tier": 4, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1100_5": {"affix": "of Mesembria", "1": "{rounding:Integer}+(9-10) Health per Idol in a Refracted Slot", "level": 0, "statOrderKey": 1100, "statOrder": [1100], "tier": 5, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1100_6": {"affix": "of Mesembria", "1": "{rounding:Integer}+(11-12) Health per Idol in a Refracted Slot", "level": 0, "statOrderKey": 1100, "statOrder": [1100], "tier": 6, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1100_7": {"affix": "of Mesembria", "1": "{rounding:Integer}+(15-16) Health per Idol in a Refracted Slot", "level": 0, "statOrderKey": 1100, "statOrder": [1100], "tier": 7, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-
-  "1101_0": {"affix": "of Dysis", "1": "{rounding:Integer}+(2) Mana per Idol in a Refracted Slot", "level": 0, "statOrderKey": 1101, "statOrder": [1101], "tier": 0, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1101_1": {"affix": "of Dysis", "1": "{rounding:Integer}+(3) Mana per Idol in a Refracted Slot", "level": 0, "statOrderKey": 1101, "statOrder": [1101], "tier": 1, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1101_2": {"affix": "of Dysis", "1": "{rounding:Integer}+(4) Mana per Idol in a Refracted Slot", "level": 0, "statOrderKey": 1101, "statOrder": [1101], "tier": 2, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1101_3": {"affix": "of Dysis", "1": "{rounding:Integer}+(5) Mana per Idol in a Refracted Slot", "level": 0, "statOrderKey": 1101, "statOrder": [1101], "tier": 3, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1101_4": {"affix": "of Dysis", "1": "{rounding:Integer}+(6-7) Mana per Idol in a Refracted Slot", "level": 0, "statOrderKey": 1101, "statOrder": [1101], "tier": 4, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1101_5": {"affix": "of Dysis", "1": "{rounding:Integer}+(9-10) Mana per Idol in a Refracted Slot", "level": 0, "statOrderKey": 1101, "statOrder": [1101], "tier": 5, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1101_6": {"affix": "of Dysis", "1": "{rounding:Integer}+(11-12) Mana per Idol in a Refracted Slot", "level": 0, "statOrderKey": 1101, "statOrder": [1101], "tier": 6, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1101_7": {"affix": "of Dysis", "1": "{rounding:Integer}+(15-16) Mana per Idol in a Refracted Slot", "level": 0, "statOrderKey": 1101, "statOrder": [1101], "tier": 7, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-
-  "1102_0": {"affix": "of Eos", "1": "{rounding:Integer}+(4) Armor per Idol in a Refracted Slot", "level": 0, "statOrderKey": 1102, "statOrder": [1102], "tier": 0, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1102_1": {"affix": "of Eos", "1": "{rounding:Integer}+(5-6) Armor per Idol in a Refracted Slot", "level": 0, "statOrderKey": 1102, "statOrder": [1102], "tier": 1, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1102_2": {"affix": "of Eos", "1": "{rounding:Integer}+(7-8) Armor per Idol in a Refracted Slot", "level": 0, "statOrderKey": 1102, "statOrder": [1102], "tier": 2, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1102_3": {"affix": "of Eos", "1": "{rounding:Integer}+(9-10) Armor per Idol in a Refracted Slot", "level": 0, "statOrderKey": 1102, "statOrder": [1102], "tier": 3, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1102_4": {"affix": "of Eos", "1": "{rounding:Integer}+(11-12) Armor per Idol in a Refracted Slot", "level": 0, "statOrderKey": 1102, "statOrder": [1102], "tier": 4, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1102_5": {"affix": "of Eos", "1": "{rounding:Integer}+(16-19) Armor per Idol in a Refracted Slot", "level": 0, "statOrderKey": 1102, "statOrder": [1102], "tier": 5, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1102_6": {"affix": "of Eos", "1": "{rounding:Integer}+(20-24) Armor per Idol in a Refracted Slot", "level": 0, "statOrderKey": 1102, "statOrder": [1102], "tier": 6, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1102_7": {"affix": "of Eos", "1": "{rounding:Integer}+(30-35) Armor per Idol in a Refracted Slot", "level": 0, "statOrderKey": 1102, "statOrder": [1102], "tier": 7, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-
-  "1103_0": {"affix": "of Arctus", "1": "{rounding:Integer}+(6-7) Ward Decay Threshold per Idol in a Refracted Slot", "level": 0, "statOrderKey": 1103, "statOrder": [1103], "tier": 0, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1103_1": {"affix": "of Arctus", "1": "{rounding:Integer}+(8-9) Ward Decay Threshold per Idol in a Refracted Slot", "level": 0, "statOrderKey": 1103, "statOrder": [1103], "tier": 1, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1103_2": {"affix": "of Arctus", "1": "{rounding:Integer}+(10-12) Ward Decay Threshold per Idol in a Refracted Slot", "level": 0, "statOrderKey": 1103, "statOrder": [1103], "tier": 2, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1103_3": {"affix": "of Arctus", "1": "{rounding:Integer}+(13-15) Ward Decay Threshold per Idol in a Refracted Slot", "level": 0, "statOrderKey": 1103, "statOrder": [1103], "tier": 3, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1103_4": {"affix": "of Arctus", "1": "{rounding:Integer}+(16-20) Ward Decay Threshold per Idol in a Refracted Slot", "level": 0, "statOrderKey": 1103, "statOrder": [1103], "tier": 4, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1103_5": {"affix": "of Arctus", "1": "{rounding:Integer}+(24-27) Ward Decay Threshold per Idol in a Refracted Slot", "level": 0, "statOrderKey": 1103, "statOrder": [1103], "tier": 5, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1103_6": {"affix": "of Arctus", "1": "{rounding:Integer}+(28-33) Ward Decay Threshold per Idol in a Refracted Slot", "level": 0, "statOrderKey": 1103, "statOrder": [1103], "tier": 6, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-  "1103_7": {"affix": "of Arctus", "1": "{rounding:Integer}+(45-50) Ward Decay Threshold per Idol in a Refracted Slot", "level": 0, "statOrderKey": 1103, "statOrder": [1103], "tier": 7, "type": "Suffix", "standardAffixEffectModifier": 0, "specialAffixType": 0},
-
-  "1104_0": {"affix": "", "1": "{rounding:Integer}+(2) Dodge Rating per Equipped Corrupted Idol", "level": 0, "statOrderKey": 1104, "statOrder": [1104], "tier": 0, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 6},
-  "1104_1": {"affix": "", "1": "{rounding:Integer}+(3) Dodge Rating per Equipped Corrupted Idol", "level": 0, "statOrderKey": 1104, "statOrder": [1104], "tier": 1, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 6},
-  "1104_2": {"affix": "", "1": "{rounding:Integer}+(4) Dodge Rating per Equipped Corrupted Idol", "level": 0, "statOrderKey": 1104, "statOrder": [1104], "tier": 2, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 6},
-  "1104_3": {"affix": "", "1": "{rounding:Integer}+(5) Dodge Rating per Equipped Corrupted Idol", "level": 0, "statOrderKey": 1104, "statOrder": [1104], "tier": 3, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 6},
-  "1104_4": {"affix": "", "1": "{rounding:Integer}+(6-7) Dodge Rating per Equipped Corrupted Idol", "level": 0, "statOrderKey": 1104, "statOrder": [1104], "tier": 4, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 6},
-  "1104_5": {"affix": "", "1": "{rounding:Integer}+(9-10) Dodge Rating per Equipped Corrupted Idol", "level": 0, "statOrderKey": 1104, "statOrder": [1104], "tier": 5, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 6},
-  "1104_6": {"affix": "", "1": "{rounding:Integer}+(11-12) Dodge Rating per Equipped Corrupted Idol", "level": 0, "statOrderKey": 1104, "statOrder": [1104], "tier": 6, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 6},
-  "1104_7": {"affix": "", "1": "{rounding:Integer}+(15-16) Dodge Rating per Equipped Corrupted Idol", "level": 0, "statOrderKey": 1104, "statOrder": [1104], "tier": 7, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 6},
-
-  "1105_0": {"affix": "", "1": "{rounding:Integer}+(1) Mana per Equipped Corrupted Idol", "level": 0, "statOrderKey": 1105, "statOrder": [1105], "tier": 0, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 6},
-  "1105_1": {"affix": "", "1": "{rounding:Integer}+(2) Mana per Equipped Corrupted Idol", "level": 0, "statOrderKey": 1105, "statOrder": [1105], "tier": 1, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 6},
-  "1105_2": {"affix": "", "1": "{rounding:Integer}+(3) Mana per Equipped Corrupted Idol", "level": 0, "statOrderKey": 1105, "statOrder": [1105], "tier": 2, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 6},
-  "1105_3": {"affix": "", "1": "{rounding:Integer}+(4) Mana per Equipped Corrupted Idol", "level": 0, "statOrderKey": 1105, "statOrder": [1105], "tier": 3, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 6},
-  "1105_4": {"affix": "", "1": "{rounding:Integer}+(5) Mana per Equipped Corrupted Idol", "level": 0, "statOrderKey": 1105, "statOrder": [1105], "tier": 4, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 6},
-  "1105_5": {"affix": "", "1": "{rounding:Integer}+(7-8) Mana per Equipped Corrupted Idol", "level": 0, "statOrderKey": 1105, "statOrder": [1105], "tier": 5, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 6},
-  "1105_6": {"affix": "", "1": "{rounding:Integer}+(9-10) Mana per Equipped Corrupted Idol", "level": 0, "statOrderKey": 1105, "statOrder": [1105], "tier": 6, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 6},
-  "1105_7": {"affix": "", "1": "{rounding:Integer}+(14-15) Mana per Equipped Corrupted Idol", "level": 0, "statOrderKey": 1105, "statOrder": [1105], "tier": 7, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 6},
-
-  "1106_0": {"affix": "", "1": "{rounding:Integer}+(2) Armor per Equipped Corrupted Idol", "level": 0, "statOrderKey": 1106, "statOrder": [1106], "tier": 0, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 6},
-  "1106_1": {"affix": "", "1": "{rounding:Integer}+(3) Armor per Equipped Corrupted Idol", "level": 0, "statOrderKey": 1106, "statOrder": [1106], "tier": 1, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 6},
-  "1106_2": {"affix": "", "1": "{rounding:Integer}+(4) Armor per Equipped Corrupted Idol", "level": 0, "statOrderKey": 1106, "statOrder": [1106], "tier": 2, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 6},
-  "1106_3": {"affix": "", "1": "{rounding:Integer}+(5) Armor per Equipped Corrupted Idol", "level": 0, "statOrderKey": 1106, "statOrder": [1106], "tier": 3, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 6},
-  "1106_4": {"affix": "", "1": "{rounding:Integer}+(6-7) Armor per Equipped Corrupted Idol", "level": 0, "statOrderKey": 1106, "statOrder": [1106], "tier": 4, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 6},
-  "1106_5": {"affix": "", "1": "{rounding:Integer}+(9-10) Armor per Equipped Corrupted Idol", "level": 0, "statOrderKey": 1106, "statOrder": [1106], "tier": 5, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 6},
-  "1106_6": {"affix": "", "1": "{rounding:Integer}+(11-12) Armor per Equipped Corrupted Idol", "level": 0, "statOrderKey": 1106, "statOrder": [1106], "tier": 6, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 6},
-  "1106_7": {"affix": "", "1": "{rounding:Integer}+(15-16) Armor per Equipped Corrupted Idol", "level": 0, "statOrderKey": 1106, "statOrder": [1106], "tier": 7, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 6},
-
-  "1107_0": {"affix": "", "1": "{rounding:Integer}+(2) Ward Decay Threshold per Equipped Corrupted Idol", "level": 0, "statOrderKey": 1107, "statOrder": [1107], "tier": 0, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 6},
-  "1107_1": {"affix": "", "1": "{rounding:Integer}+(3) Ward Decay Threshold per Equipped Corrupted Idol", "level": 0, "statOrderKey": 1107, "statOrder": [1107], "tier": 1, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 6},
-  "1107_2": {"affix": "", "1": "{rounding:Integer}+(4) Ward Decay Threshold per Equipped Corrupted Idol", "level": 0, "statOrderKey": 1107, "statOrder": [1107], "tier": 2, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 6},
-  "1107_3": {"affix": "", "1": "{rounding:Integer}+(5) Ward Decay Threshold per Equipped Corrupted Idol", "level": 0, "statOrderKey": 1107, "statOrder": [1107], "tier": 3, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 6},
-  "1107_4": {"affix": "", "1": "{rounding:Integer}+(6-7) Ward Decay Threshold per Equipped Corrupted Idol", "level": 0, "statOrderKey": 1107, "statOrder": [1107], "tier": 4, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 6},
-  "1107_5": {"affix": "", "1": "{rounding:Integer}+(9-10) Ward Decay Threshold per Equipped Corrupted Idol", "level": 0, "statOrderKey": 1107, "statOrder": [1107], "tier": 5, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 6},
-  "1107_6": {"affix": "", "1": "{rounding:Integer}+(11-12) Ward Decay Threshold per Equipped Corrupted Idol", "level": 0, "statOrderKey": 1107, "statOrder": [1107], "tier": 6, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 6},
-  "1107_7": {"affix": "", "1": "{rounding:Integer}+(15-16) Ward Decay Threshold per Equipped Corrupted Idol", "level": 0, "statOrderKey": 1107, "statOrder": [1107], "tier": 7, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 6},
-
-  "1108_0": {"affix": "", "1": "{rounding:Integer}+(5) Corrupted Idol Limit", "level": 0, "statOrderKey": 1108, "statOrder": [1108], "tier": 0, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 6},
-  "1108_1": {"affix": "", "1": "{rounding:Integer}+(5) Corrupted Idol Limit", "level": 0, "statOrderKey": 1108, "statOrder": [1108], "tier": 1, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 6},
-  "1108_2": {"affix": "", "1": "{rounding:Integer}+(5) Corrupted Idol Limit", "level": 0, "statOrderKey": 1108, "statOrder": [1108], "tier": 2, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 6},
-  "1108_3": {"affix": "", "1": "{rounding:Integer}+(5) Corrupted Idol Limit", "level": 0, "statOrderKey": 1108, "statOrder": [1108], "tier": 3, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 6},
-  "1108_4": {"affix": "", "1": "{rounding:Integer}+(5) Corrupted Idol Limit", "level": 0, "statOrderKey": 1108, "statOrder": [1108], "tier": 4, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 6},
-  "1108_5": {"affix": "", "1": "{rounding:Integer}+(5) Corrupted Idol Limit", "level": 0, "statOrderKey": 1108, "statOrder": [1108], "tier": 5, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 6},
-  "1108_6": {"affix": "", "1": "{rounding:Integer}+(5) Corrupted Idol Limit", "level": 0, "statOrderKey": 1108, "statOrder": [1108], "tier": 6, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 6},
-  "1108_7": {"affix": "", "1": "{rounding:Integer}+(5) Corrupted Idol Limit", "level": 0, "statOrderKey": 1108, "statOrder": [1108], "tier": 7, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 6},
-
-  "1109_0": {"affix": "", "1": "{rounding:Integer}+(3) Heretical Idol Limit", "2": "{rounding:Integer}+5 Health per Idol in a Refracted Slot", "level": 0, "statOrderKey": 1109, "statOrder": [1109], "tier": 0, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 6},
-  "1109_1": {"affix": "", "1": "{rounding:Integer}+(3) Heretical Idol Limit", "2": "{rounding:Integer}+6 Health per Idol in a Refracted Slot", "level": 0, "statOrderKey": 1109, "statOrder": [1109], "tier": 1, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 6},
-  "1109_2": {"affix": "", "1": "{rounding:Integer}+(3) Heretical Idol Limit", "2": "{rounding:Integer}+7 Health per Idol in a Refracted Slot", "level": 0, "statOrderKey": 1109, "statOrder": [1109], "tier": 2, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 6},
-  "1109_3": {"affix": "", "1": "{rounding:Integer}+(3) Heretical Idol Limit", "2": "{rounding:Integer}+8 Health per Idol in a Refracted Slot", "level": 0, "statOrderKey": 1109, "statOrder": [1109], "tier": 3, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 6},
-  "1109_4": {"affix": "", "1": "{rounding:Integer}+(3) Heretical Idol Limit", "2": "{rounding:Integer}+(9-10) Health per Idol in a Refracted Slot", "level": 0, "statOrderKey": 1109, "statOrder": [1109], "tier": 4, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 6},
-  "1109_5": {"affix": "", "1": "{rounding:Integer}+(4) Heretical Idol Limit", "2": "{rounding:Integer}+(12-13) Health per Idol in a Refracted Slot", "level": 0, "statOrderKey": 1109, "statOrder": [1109], "tier": 5, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 6},
-  "1109_6": {"affix": "", "1": "{rounding:Integer}+(4) Heretical Idol Limit", "2": "{rounding:Integer}+(14-15) Health per Idol in a Refracted Slot", "level": 0, "statOrderKey": 1109, "statOrder": [1109], "tier": 6, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 6},
-  "1109_7": {"affix": "", "1": "{rounding:Integer}+(5) Heretical Idol Limit", "2": "{rounding:Integer}+(20-22) Health per Idol in a Refracted Slot", "level": 0, "statOrderKey": 1109, "statOrder": [1109], "tier": 7, "type": "Prefix", "standardAffixEffectModifier": 0, "specialAffixType": 6}
+	"1089_0": {
+		"affixName": "Effect of Prefixes and Suffixes for Idols in Refracted Slots",
+		"modName": "Amplifying",
+		"affix": "Amplifying",
+		"1": "{rounding:Integer}(7-8)% increased Effect of Prefixes and Suffixes for Idols in Refracted Slots",
+		"level": 0,
+		"statOrderKey": 1089,
+		"statOrder": [
+			1089
+		],
+		"tier": 0,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1089_1": {
+		"affixName": "Effect of Prefixes and Suffixes for Idols in Refracted Slots",
+		"modName": "Amplifying",
+		"affix": "Amplifying",
+		"1": "{rounding:Integer}(9-11)% increased Effect of Prefixes and Suffixes for Idols in Refracted Slots",
+		"level": 0,
+		"statOrderKey": 1089,
+		"statOrder": [
+			1089
+		],
+		"tier": 1,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1089_2": {
+		"affixName": "Effect of Prefixes and Suffixes for Idols in Refracted Slots",
+		"modName": "Amplifying",
+		"affix": "Amplifying",
+		"1": "{rounding:Integer}(12-14)% increased Effect of Prefixes and Suffixes for Idols in Refracted Slots",
+		"level": 0,
+		"statOrderKey": 1089,
+		"statOrder": [
+			1089
+		],
+		"tier": 2,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1089_3": {
+		"affixName": "Effect of Prefixes and Suffixes for Idols in Refracted Slots",
+		"modName": "Amplifying",
+		"affix": "Amplifying",
+		"1": "{rounding:Integer}(15-17)% increased Effect of Prefixes and Suffixes for Idols in Refracted Slots",
+		"level": 0,
+		"statOrderKey": 1089,
+		"statOrder": [
+			1089
+		],
+		"tier": 3,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1089_4": {
+		"affixName": "Effect of Prefixes and Suffixes for Idols in Refracted Slots",
+		"modName": "Amplifying",
+		"affix": "Amplifying",
+		"1": "{rounding:Integer}(18-20)% increased Effect of Prefixes and Suffixes for Idols in Refracted Slots",
+		"level": 0,
+		"statOrderKey": 1089,
+		"statOrder": [
+			1089
+		],
+		"tier": 4,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1089_5": {
+		"affixName": "Effect of Prefixes and Suffixes for Idols in Refracted Slots",
+		"modName": "Amplifying",
+		"affix": "Amplifying",
+		"1": "{rounding:Integer}(24-27)% increased Effect of Prefixes and Suffixes for Idols in Refracted Slots",
+		"level": 0,
+		"statOrderKey": 1089,
+		"statOrder": [
+			1089
+		],
+		"tier": 5,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1089_6": {
+		"affixName": "Effect of Prefixes and Suffixes for Idols in Refracted Slots",
+		"modName": "Amplifying",
+		"affix": "Amplifying",
+		"1": "{rounding:Integer}(28-32)% increased Effect of Prefixes and Suffixes for Idols in Refracted Slots",
+		"level": 0,
+		"statOrderKey": 1089,
+		"statOrder": [
+			1089
+		],
+		"tier": 6,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1089_7": {
+		"affixName": "Effect of Prefixes and Suffixes for Idols in Refracted Slots",
+		"modName": "Amplifying",
+		"affix": "Amplifying",
+		"1": "{rounding:Integer}(50-60)% increased Effect of Prefixes and Suffixes for Idols in Refracted Slots",
+		"level": 0,
+		"statOrderKey": 1089,
+		"statOrder": [
+			1089
+		],
+		"tier": 7,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1092_0": {
+		"affixName": "Effect of Weaver Enchantment Affixes for Idols in Refracted Slots",
+		"modName": "Entwined",
+		"affix": "Entwined",
+		"1": "{rounding:Integer}(10-12)% increased Effect of Weaver Enchantment Affixes for Idols in Refracted Slots",
+		"level": 0,
+		"statOrderKey": 1092,
+		"statOrder": [
+			1092
+		],
+		"tier": 0,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1092_1": {
+		"affixName": "Effect of Weaver Enchantment Affixes for Idols in Refracted Slots",
+		"modName": "Entwined",
+		"affix": "Entwined",
+		"1": "{rounding:Integer}(13-15)% increased Effect of Weaver Enchantment Affixes for Idols in Refracted Slots",
+		"level": 0,
+		"statOrderKey": 1092,
+		"statOrder": [
+			1092
+		],
+		"tier": 1,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1092_2": {
+		"affixName": "Effect of Weaver Enchantment Affixes for Idols in Refracted Slots",
+		"modName": "Entwined",
+		"affix": "Entwined",
+		"1": "{rounding:Integer}(16-20)% increased Effect of Weaver Enchantment Affixes for Idols in Refracted Slots",
+		"level": 0,
+		"statOrderKey": 1092,
+		"statOrder": [
+			1092
+		],
+		"tier": 2,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1092_3": {
+		"affixName": "Effect of Weaver Enchantment Affixes for Idols in Refracted Slots",
+		"modName": "Entwined",
+		"affix": "Entwined",
+		"1": "{rounding:Integer}(21-24)% increased Effect of Weaver Enchantment Affixes for Idols in Refracted Slots",
+		"level": 0,
+		"statOrderKey": 1092,
+		"statOrder": [
+			1092
+		],
+		"tier": 3,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1092_4": {
+		"affixName": "Effect of Weaver Enchantment Affixes for Idols in Refracted Slots",
+		"modName": "Entwined",
+		"affix": "Entwined",
+		"1": "{rounding:Integer}(25-30)% increased Effect of Weaver Enchantment Affixes for Idols in Refracted Slots",
+		"level": 0,
+		"statOrderKey": 1092,
+		"statOrder": [
+			1092
+		],
+		"tier": 4,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1092_5": {
+		"affixName": "Effect of Weaver Enchantment Affixes for Idols in Refracted Slots",
+		"modName": "Entwined",
+		"affix": "Entwined",
+		"1": "{rounding:Integer}(33-39)% increased Effect of Weaver Enchantment Affixes for Idols in Refracted Slots",
+		"level": 0,
+		"statOrderKey": 1092,
+		"statOrder": [
+			1092
+		],
+		"tier": 5,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1092_6": {
+		"affixName": "Effect of Weaver Enchantment Affixes for Idols in Refracted Slots",
+		"modName": "Entwined",
+		"affix": "Entwined",
+		"1": "{rounding:Integer}(40-50)% increased Effect of Weaver Enchantment Affixes for Idols in Refracted Slots",
+		"level": 0,
+		"statOrderKey": 1092,
+		"statOrder": [
+			1092
+		],
+		"tier": 6,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1092_7": {
+		"affixName": "Effect of Weaver Enchantment Affixes for Idols in Refracted Slots",
+		"modName": "Entwined",
+		"affix": "Entwined",
+		"1": "{rounding:Integer}(80-90)% increased Effect of Weaver Enchantment Affixes for Idols in Refracted Slots",
+		"level": 0,
+		"statOrderKey": 1092,
+		"statOrder": [
+			1092
+		],
+		"tier": 7,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1093_0": {
+		"affixName": "Effect of Prefixes for Idols in Refracted Slots",
+		"modName": "Sunrise",
+		"affix": "Sunrise",
+		"1": "{rounding:Integer}(10-12)% increased Effect of Prefixes for Idols in Refracted Slots",
+		"level": 0,
+		"statOrderKey": 1093,
+		"statOrder": [
+			1093
+		],
+		"tier": 0,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1093_1": {
+		"affixName": "Effect of Prefixes for Idols in Refracted Slots",
+		"modName": "Sunrise",
+		"affix": "Sunrise",
+		"1": "{rounding:Integer}(13-15)% increased Effect of Prefixes for Idols in Refracted Slots",
+		"level": 0,
+		"statOrderKey": 1093,
+		"statOrder": [
+			1093
+		],
+		"tier": 1,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1093_2": {
+		"affixName": "Effect of Prefixes for Idols in Refracted Slots",
+		"modName": "Sunrise",
+		"affix": "Sunrise",
+		"1": "{rounding:Integer}(16-20)% increased Effect of Prefixes for Idols in Refracted Slots",
+		"level": 0,
+		"statOrderKey": 1093,
+		"statOrder": [
+			1093
+		],
+		"tier": 2,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1093_3": {
+		"affixName": "Effect of Prefixes for Idols in Refracted Slots",
+		"modName": "Sunrise",
+		"affix": "Sunrise",
+		"1": "{rounding:Integer}(21-24)% increased Effect of Prefixes for Idols in Refracted Slots",
+		"level": 0,
+		"statOrderKey": 1093,
+		"statOrder": [
+			1093
+		],
+		"tier": 3,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1093_4": {
+		"affixName": "Effect of Prefixes for Idols in Refracted Slots",
+		"modName": "Sunrise",
+		"affix": "Sunrise",
+		"1": "{rounding:Integer}(25-30)% increased Effect of Prefixes for Idols in Refracted Slots",
+		"level": 0,
+		"statOrderKey": 1093,
+		"statOrder": [
+			1093
+		],
+		"tier": 4,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1093_5": {
+		"affixName": "Effect of Prefixes for Idols in Refracted Slots",
+		"modName": "Sunrise",
+		"affix": "Sunrise",
+		"1": "{rounding:Integer}(33-39)% increased Effect of Prefixes for Idols in Refracted Slots",
+		"level": 0,
+		"statOrderKey": 1093,
+		"statOrder": [
+			1093
+		],
+		"tier": 5,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1093_6": {
+		"affixName": "Effect of Prefixes for Idols in Refracted Slots",
+		"modName": "Sunrise",
+		"affix": "Sunrise",
+		"1": "{rounding:Integer}(40-50)% increased Effect of Prefixes for Idols in Refracted Slots",
+		"level": 0,
+		"statOrderKey": 1093,
+		"statOrder": [
+			1093
+		],
+		"tier": 6,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1093_7": {
+		"affixName": "Effect of Prefixes for Idols in Refracted Slots",
+		"modName": "Sunrise",
+		"affix": "Sunrise",
+		"1": "{rounding:Integer}(80-90)% increased Effect of Prefixes for Idols in Refracted Slots",
+		"level": 0,
+		"statOrderKey": 1093,
+		"statOrder": [
+			1093
+		],
+		"tier": 7,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1094_0": {
+		"affixName": "Effect of Suffixes for Idols in Refracted Slots",
+		"modName": "Sunset",
+		"affix": "Sunset",
+		"1": "{rounding:Integer}(10-12)% increased Effect of Suffixes for Idols in Refracted Slots",
+		"level": 0,
+		"statOrderKey": 1094,
+		"statOrder": [
+			1094
+		],
+		"tier": 0,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1094_1": {
+		"affixName": "Effect of Suffixes for Idols in Refracted Slots",
+		"modName": "Sunset",
+		"affix": "Sunset",
+		"1": "{rounding:Integer}(13-15)% increased Effect of Suffixes for Idols in Refracted Slots",
+		"level": 0,
+		"statOrderKey": 1094,
+		"statOrder": [
+			1094
+		],
+		"tier": 1,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1094_2": {
+		"affixName": "Effect of Suffixes for Idols in Refracted Slots",
+		"modName": "Sunset",
+		"affix": "Sunset",
+		"1": "{rounding:Integer}(16-20)% increased Effect of Suffixes for Idols in Refracted Slots",
+		"level": 0,
+		"statOrderKey": 1094,
+		"statOrder": [
+			1094
+		],
+		"tier": 2,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1094_3": {
+		"affixName": "Effect of Suffixes for Idols in Refracted Slots",
+		"modName": "Sunset",
+		"affix": "Sunset",
+		"1": "{rounding:Integer}(21-24)% increased Effect of Suffixes for Idols in Refracted Slots",
+		"level": 0,
+		"statOrderKey": 1094,
+		"statOrder": [
+			1094
+		],
+		"tier": 3,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1094_4": {
+		"affixName": "Effect of Suffixes for Idols in Refracted Slots",
+		"modName": "Sunset",
+		"affix": "Sunset",
+		"1": "{rounding:Integer}(25-30)% increased Effect of Suffixes for Idols in Refracted Slots",
+		"level": 0,
+		"statOrderKey": 1094,
+		"statOrder": [
+			1094
+		],
+		"tier": 4,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1094_5": {
+		"affixName": "Effect of Suffixes for Idols in Refracted Slots",
+		"modName": "Sunset",
+		"affix": "Sunset",
+		"1": "{rounding:Integer}(33-39)% increased Effect of Suffixes for Idols in Refracted Slots",
+		"level": 0,
+		"statOrderKey": 1094,
+		"statOrder": [
+			1094
+		],
+		"tier": 5,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1094_6": {
+		"affixName": "Effect of Suffixes for Idols in Refracted Slots",
+		"modName": "Sunset",
+		"affix": "Sunset",
+		"1": "{rounding:Integer}(40-50)% increased Effect of Suffixes for Idols in Refracted Slots",
+		"level": 0,
+		"statOrderKey": 1094,
+		"statOrder": [
+			1094
+		],
+		"tier": 6,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1094_7": {
+		"affixName": "Effect of Suffixes for Idols in Refracted Slots",
+		"modName": "Sunset",
+		"affix": "Sunset",
+		"1": "{rounding:Integer}(80-90)% increased Effect of Suffixes for Idols in Refracted Slots",
+		"level": 0,
+		"statOrderKey": 1094,
+		"statOrder": [
+			1094
+		],
+		"tier": 7,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1095_0": {
+		"affixName": "Maximum Omen Idols Equipped",
+		"modName": "Prodigious",
+		"affix": "Prodigious",
+		"1": "{rounding:Integer}+(1) Maximum Omen Idols Equipped",
+		"level": 0,
+		"statOrderKey": 1095,
+		"statOrder": [
+			1095
+		],
+		"tier": 0,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1095_1": {
+		"affixName": "Maximum Omen Idols Equipped",
+		"modName": "Prodigious",
+		"affix": "Prodigious",
+		"1": "{rounding:Integer}+(1) Maximum Omen Idols Equipped",
+		"level": 0,
+		"statOrderKey": 1095,
+		"statOrder": [
+			1095
+		],
+		"tier": 1,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1095_2": {
+		"affixName": "Maximum Omen Idols Equipped",
+		"modName": "Prodigious",
+		"affix": "Prodigious",
+		"1": "{rounding:Integer}+(1) Maximum Omen Idols Equipped",
+		"level": 0,
+		"statOrderKey": 1095,
+		"statOrder": [
+			1095
+		],
+		"tier": 2,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1095_3": {
+		"affixName": "Maximum Omen Idols Equipped",
+		"modName": "Prodigious",
+		"affix": "Prodigious",
+		"1": "{rounding:Integer}+(2) Maximum Omen Idols Equipped",
+		"level": 0,
+		"statOrderKey": 1095,
+		"statOrder": [
+			1095
+		],
+		"tier": 3,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1095_4": {
+		"affixName": "Maximum Omen Idols Equipped",
+		"modName": "Prodigious",
+		"affix": "Prodigious",
+		"1": "{rounding:Integer}+(2) Maximum Omen Idols Equipped",
+		"level": 0,
+		"statOrderKey": 1095,
+		"statOrder": [
+			1095
+		],
+		"tier": 4,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1095_5": {
+		"affixName": "Maximum Omen Idols Equipped",
+		"modName": "Prodigious",
+		"affix": "Prodigious",
+		"1": "{rounding:Integer}+(3) Maximum Omen Idols Equipped",
+		"level": 0,
+		"statOrderKey": 1095,
+		"statOrder": [
+			1095
+		],
+		"tier": 5,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1095_6": {
+		"affixName": "Maximum Omen Idols Equipped",
+		"modName": "Prodigious",
+		"affix": "Prodigious",
+		"1": "{rounding:Integer}+(4) Maximum Omen Idols Equipped",
+		"level": 0,
+		"statOrderKey": 1095,
+		"statOrder": [
+			1095
+		],
+		"tier": 6,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1095_7": {
+		"affixName": "Maximum Omen Idols Equipped",
+		"modName": "Prodigious",
+		"affix": "Prodigious",
+		"1": "{rounding:Integer}+(5) Maximum Omen Idols Equipped",
+		"level": 0,
+		"statOrderKey": 1095,
+		"statOrder": [
+			1095
+		],
+		"tier": 7,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1088_0": {
+		"affixName": "Health per Equipped Heretical Idol",
+		"modName": "of Heresy",
+		"affix": "of Heresy",
+		"1": "{rounding:Integer}+(2) Health per Equipped Heretical Idol",
+		"level": 0,
+		"statOrderKey": 1088,
+		"statOrder": [
+			1088
+		],
+		"tier": 0,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1088_1": {
+		"affixName": "Health per Equipped Heretical Idol",
+		"modName": "of Heresy",
+		"affix": "of Heresy",
+		"1": "{rounding:Integer}+(3) Health per Equipped Heretical Idol",
+		"level": 0,
+		"statOrderKey": 1088,
+		"statOrder": [
+			1088
+		],
+		"tier": 1,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1088_2": {
+		"affixName": "Health per Equipped Heretical Idol",
+		"modName": "of Heresy",
+		"affix": "of Heresy",
+		"1": "{rounding:Integer}+(4) Health per Equipped Heretical Idol",
+		"level": 0,
+		"statOrderKey": 1088,
+		"statOrder": [
+			1088
+		],
+		"tier": 2,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1088_3": {
+		"affixName": "Health per Equipped Heretical Idol",
+		"modName": "of Heresy",
+		"affix": "of Heresy",
+		"1": "{rounding:Integer}+(5) Health per Equipped Heretical Idol",
+		"level": 0,
+		"statOrderKey": 1088,
+		"statOrder": [
+			1088
+		],
+		"tier": 3,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1088_4": {
+		"affixName": "Health per Equipped Heretical Idol",
+		"modName": "of Heresy",
+		"affix": "of Heresy",
+		"1": "{rounding:Integer}+(6-7) Health per Equipped Heretical Idol",
+		"level": 0,
+		"statOrderKey": 1088,
+		"statOrder": [
+			1088
+		],
+		"tier": 4,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1088_5": {
+		"affixName": "Health per Equipped Heretical Idol",
+		"modName": "of Heresy",
+		"affix": "of Heresy",
+		"1": "{rounding:Integer}+(9-10) Health per Equipped Heretical Idol",
+		"level": 0,
+		"statOrderKey": 1088,
+		"statOrder": [
+			1088
+		],
+		"tier": 5,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1088_6": {
+		"affixName": "Health per Equipped Heretical Idol",
+		"modName": "of Heresy",
+		"affix": "of Heresy",
+		"1": "{rounding:Integer}+(11-12) Health per Equipped Heretical Idol",
+		"level": 0,
+		"statOrderKey": 1088,
+		"statOrder": [
+			1088
+		],
+		"tier": 6,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1088_7": {
+		"affixName": "Health per Equipped Heretical Idol",
+		"modName": "of Heresy",
+		"affix": "of Heresy",
+		"1": "{rounding:Integer}+(15-16) Health per Equipped Heretical Idol",
+		"level": 0,
+		"statOrderKey": 1088,
+		"statOrder": [
+			1088
+		],
+		"tier": 7,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1096_0": {
+		"affixName": "Ward per Second per Equipped Heretical Idol",
+		"modName": "of Depravity",
+		"affix": "of Depravity",
+		"1": "{rounding:Integer}+(1) Ward per Second per Equipped Heretical Idol",
+		"level": 0,
+		"statOrderKey": 1096,
+		"statOrder": [
+			1096
+		],
+		"tier": 0,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1096_1": {
+		"affixName": "Ward per Second per Equipped Heretical Idol",
+		"modName": "of Depravity",
+		"affix": "of Depravity",
+		"1": "{rounding:Integer}+(2) Ward per Second per Equipped Heretical Idol",
+		"level": 0,
+		"statOrderKey": 1096,
+		"statOrder": [
+			1096
+		],
+		"tier": 1,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1096_2": {
+		"affixName": "Ward per Second per Equipped Heretical Idol",
+		"modName": "of Depravity",
+		"affix": "of Depravity",
+		"1": "{rounding:Integer}+(3) Ward per Second per Equipped Heretical Idol",
+		"level": 0,
+		"statOrderKey": 1096,
+		"statOrder": [
+			1096
+		],
+		"tier": 2,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1096_3": {
+		"affixName": "Ward per Second per Equipped Heretical Idol",
+		"modName": "of Depravity",
+		"affix": "of Depravity",
+		"1": "{rounding:Integer}+(4) Ward per Second per Equipped Heretical Idol",
+		"level": 0,
+		"statOrderKey": 1096,
+		"statOrder": [
+			1096
+		],
+		"tier": 3,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1096_4": {
+		"affixName": "Ward per Second per Equipped Heretical Idol",
+		"modName": "of Depravity",
+		"affix": "of Depravity",
+		"1": "{rounding:Integer}+(5) Ward per Second per Equipped Heretical Idol",
+		"level": 0,
+		"statOrderKey": 1096,
+		"statOrder": [
+			1096
+		],
+		"tier": 4,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1096_5": {
+		"affixName": "Ward per Second per Equipped Heretical Idol",
+		"modName": "of Depravity",
+		"affix": "of Depravity",
+		"1": "{rounding:Integer}+(7) Ward per Second per Equipped Heretical Idol",
+		"level": 0,
+		"statOrderKey": 1096,
+		"statOrder": [
+			1096
+		],
+		"tier": 5,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1096_6": {
+		"affixName": "Ward per Second per Equipped Heretical Idol",
+		"modName": "of Depravity",
+		"affix": "of Depravity",
+		"1": "{rounding:Integer}+(8) Ward per Second per Equipped Heretical Idol",
+		"level": 0,
+		"statOrderKey": 1096,
+		"statOrder": [
+			1096
+		],
+		"tier": 6,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1096_7": {
+		"affixName": "Ward per Second per Equipped Heretical Idol",
+		"modName": "of Depravity",
+		"affix": "of Depravity",
+		"1": "{rounding:Integer}+(12) Ward per Second per Equipped Heretical Idol",
+		"level": 0,
+		"statOrderKey": 1096,
+		"statOrder": [
+			1096
+		],
+		"tier": 7,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1097_0": {
+		"affixName": "Reduced Bonus Damage Taken from Critical Strikes per Equipped Heretical Idol",
+		"modName": "of the Woven Sun",
+		"affix": "of the Woven Sun",
+		"1": "{rounding:Integer}(2)% Reduced Bonus Damage Taken from Critical Strikes per Equipped Heretical Idol",
+		"level": 0,
+		"statOrderKey": 1097,
+		"statOrder": [
+			1097
+		],
+		"tier": 0,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1097_1": {
+		"affixName": "Reduced Bonus Damage Taken from Critical Strikes per Equipped Heretical Idol",
+		"modName": "of the Woven Sun",
+		"affix": "of the Woven Sun",
+		"1": "{rounding:Integer}(3)% Reduced Bonus Damage Taken from Critical Strikes per Equipped Heretical Idol",
+		"level": 0,
+		"statOrderKey": 1097,
+		"statOrder": [
+			1097
+		],
+		"tier": 1,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1097_2": {
+		"affixName": "Reduced Bonus Damage Taken from Critical Strikes per Equipped Heretical Idol",
+		"modName": "of the Woven Sun",
+		"affix": "of the Woven Sun",
+		"1": "{rounding:Integer}(4)% Reduced Bonus Damage Taken from Critical Strikes per Equipped Heretical Idol",
+		"level": 0,
+		"statOrderKey": 1097,
+		"statOrder": [
+			1097
+		],
+		"tier": 2,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1097_3": {
+		"affixName": "Reduced Bonus Damage Taken from Critical Strikes per Equipped Heretical Idol",
+		"modName": "of the Woven Sun",
+		"affix": "of the Woven Sun",
+		"1": "{rounding:Integer}(5)% Reduced Bonus Damage Taken from Critical Strikes per Equipped Heretical Idol",
+		"level": 0,
+		"statOrderKey": 1097,
+		"statOrder": [
+			1097
+		],
+		"tier": 3,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1097_4": {
+		"affixName": "Reduced Bonus Damage Taken from Critical Strikes per Equipped Heretical Idol",
+		"modName": "of the Woven Sun",
+		"affix": "of the Woven Sun",
+		"1": "{rounding:Integer}(6-7)% Reduced Bonus Damage Taken from Critical Strikes per Equipped Heretical Idol",
+		"level": 0,
+		"statOrderKey": 1097,
+		"statOrder": [
+			1097
+		],
+		"tier": 4,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1097_5": {
+		"affixName": "Reduced Bonus Damage Taken from Critical Strikes per Equipped Heretical Idol",
+		"modName": "of the Woven Sun",
+		"affix": "of the Woven Sun",
+		"1": "{rounding:Integer}(9-10)% Reduced Bonus Damage Taken from Critical Strikes per Equipped Heretical Idol",
+		"level": 0,
+		"statOrderKey": 1097,
+		"statOrder": [
+			1097
+		],
+		"tier": 5,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1097_6": {
+		"affixName": "Reduced Bonus Damage Taken from Critical Strikes per Equipped Heretical Idol",
+		"modName": "of the Woven Sun",
+		"affix": "of the Woven Sun",
+		"1": "{rounding:Integer}(11-12)% Reduced Bonus Damage Taken from Critical Strikes per Equipped Heretical Idol",
+		"level": 0,
+		"statOrderKey": 1097,
+		"statOrder": [
+			1097
+		],
+		"tier": 6,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1097_7": {
+		"affixName": "Reduced Bonus Damage Taken from Critical Strikes per Equipped Heretical Idol",
+		"modName": "of the Woven Sun",
+		"affix": "of the Woven Sun",
+		"1": "{rounding:Integer}(15-17)% Reduced Bonus Damage Taken from Critical Strikes per Equipped Heretical Idol",
+		"level": 0,
+		"statOrderKey": 1097,
+		"statOrder": [
+			1097
+		],
+		"tier": 7,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1098_0": {
+		"affixName": "increased Mana Regen per Equipped Ornate Idol",
+		"modName": "of Azure Fountains",
+		"affix": "of Azure Fountains",
+		"1": "{rounding:Integer}(2)% Increased Mana Regen per Equipped Ornate Idol",
+		"level": 0,
+		"statOrderKey": 1098,
+		"statOrder": [
+			1098
+		],
+		"tier": 0,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1098_1": {
+		"affixName": "increased Mana Regen per Equipped Ornate Idol",
+		"modName": "of Azure Fountains",
+		"affix": "of Azure Fountains",
+		"1": "{rounding:Integer}(3)% Increased Mana Regen per Equipped Ornate Idol",
+		"level": 0,
+		"statOrderKey": 1098,
+		"statOrder": [
+			1098
+		],
+		"tier": 1,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1098_2": {
+		"affixName": "increased Mana Regen per Equipped Ornate Idol",
+		"modName": "of Azure Fountains",
+		"affix": "of Azure Fountains",
+		"1": "{rounding:Integer}(4)% Increased Mana Regen per Equipped Ornate Idol",
+		"level": 0,
+		"statOrderKey": 1098,
+		"statOrder": [
+			1098
+		],
+		"tier": 2,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1098_3": {
+		"affixName": "increased Mana Regen per Equipped Ornate Idol",
+		"modName": "of Azure Fountains",
+		"affix": "of Azure Fountains",
+		"1": "{rounding:Integer}(5)% Increased Mana Regen per Equipped Ornate Idol",
+		"level": 0,
+		"statOrderKey": 1098,
+		"statOrder": [
+			1098
+		],
+		"tier": 3,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1098_4": {
+		"affixName": "increased Mana Regen per Equipped Ornate Idol",
+		"modName": "of Azure Fountains",
+		"affix": "of Azure Fountains",
+		"1": "{rounding:Integer}(6-7)% Increased Mana Regen per Equipped Ornate Idol",
+		"level": 0,
+		"statOrderKey": 1098,
+		"statOrder": [
+			1098
+		],
+		"tier": 4,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1098_5": {
+		"affixName": "increased Mana Regen per Equipped Ornate Idol",
+		"modName": "of Azure Fountains",
+		"affix": "of Azure Fountains",
+		"1": "{rounding:Integer}(9-10)% Increased Mana Regen per Equipped Ornate Idol",
+		"level": 0,
+		"statOrderKey": 1098,
+		"statOrder": [
+			1098
+		],
+		"tier": 5,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1098_6": {
+		"affixName": "increased Mana Regen per Equipped Ornate Idol",
+		"modName": "of Azure Fountains",
+		"affix": "of Azure Fountains",
+		"1": "{rounding:Integer}(11-12)% Increased Mana Regen per Equipped Ornate Idol",
+		"level": 0,
+		"statOrderKey": 1098,
+		"statOrder": [
+			1098
+		],
+		"tier": 6,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1098_7": {
+		"affixName": "increased Mana Regen per Equipped Ornate Idol",
+		"modName": "of Azure Fountains",
+		"affix": "of Azure Fountains",
+		"1": "{rounding:Integer}(15-17)% Increased Mana Regen per Equipped Ornate Idol",
+		"level": 0,
+		"statOrderKey": 1098,
+		"statOrder": [
+			1098
+		],
+		"tier": 7,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1099_0": {
+		"affixName": "increased Health per Equipped Huge Idol",
+		"modName": "of the Sea Giant",
+		"affix": "of the Sea Giant",
+		"1": "{rounding:Integer}(1)% Increased Health per Equipped Huge Idol",
+		"level": 0,
+		"statOrderKey": 1099,
+		"statOrder": [
+			1099
+		],
+		"tier": 0,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1099_1": {
+		"affixName": "increased Health per Equipped Huge Idol",
+		"modName": "of the Sea Giant",
+		"affix": "of the Sea Giant",
+		"1": "{rounding:Integer}(2)% Increased Health per Equipped Huge Idol",
+		"level": 0,
+		"statOrderKey": 1099,
+		"statOrder": [
+			1099
+		],
+		"tier": 1,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1099_2": {
+		"affixName": "increased Health per Equipped Huge Idol",
+		"modName": "of the Sea Giant",
+		"affix": "of the Sea Giant",
+		"1": "{rounding:Integer}(3)% Increased Health per Equipped Huge Idol",
+		"level": 0,
+		"statOrderKey": 1099,
+		"statOrder": [
+			1099
+		],
+		"tier": 2,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1099_3": {
+		"affixName": "increased Health per Equipped Huge Idol",
+		"modName": "of the Sea Giant",
+		"affix": "of the Sea Giant",
+		"1": "{rounding:Integer}(4)% Increased Health per Equipped Huge Idol",
+		"level": 0,
+		"statOrderKey": 1099,
+		"statOrder": [
+			1099
+		],
+		"tier": 3,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1099_4": {
+		"affixName": "increased Health per Equipped Huge Idol",
+		"modName": "of the Sea Giant",
+		"affix": "of the Sea Giant",
+		"1": "{rounding:Integer}(5)% Increased Health per Equipped Huge Idol",
+		"level": 0,
+		"statOrderKey": 1099,
+		"statOrder": [
+			1099
+		],
+		"tier": 4,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1099_5": {
+		"affixName": "increased Health per Equipped Huge Idol",
+		"modName": "of the Sea Giant",
+		"affix": "of the Sea Giant",
+		"1": "{rounding:Integer}(7)% Increased Health per Equipped Huge Idol",
+		"level": 0,
+		"statOrderKey": 1099,
+		"statOrder": [
+			1099
+		],
+		"tier": 5,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1099_6": {
+		"affixName": "increased Health per Equipped Huge Idol",
+		"modName": "of the Sea Giant",
+		"affix": "of the Sea Giant",
+		"1": "{rounding:Integer}(8)% Increased Health per Equipped Huge Idol",
+		"level": 0,
+		"statOrderKey": 1099,
+		"statOrder": [
+			1099
+		],
+		"tier": 6,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1099_7": {
+		"affixName": "increased Health per Equipped Huge Idol",
+		"modName": "of the Sea Giant",
+		"affix": "of the Sea Giant",
+		"1": "{rounding:Integer}(12)% Increased Health per Equipped Huge Idol",
+		"level": 0,
+		"statOrderKey": 1099,
+		"statOrder": [
+			1099
+		],
+		"tier": 7,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1100_0": {
+		"affixName": "Health per Idol in a Refracted Slot",
+		"modName": "of Mesembria",
+		"affix": "of Mesembria",
+		"1": "{rounding:Integer}+(2) Health per Idol in a Refracted Slot",
+		"level": 0,
+		"statOrderKey": 1100,
+		"statOrder": [
+			1100
+		],
+		"tier": 0,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1100_1": {
+		"affixName": "Health per Idol in a Refracted Slot",
+		"modName": "of Mesembria",
+		"affix": "of Mesembria",
+		"1": "{rounding:Integer}+(3) Health per Idol in a Refracted Slot",
+		"level": 0,
+		"statOrderKey": 1100,
+		"statOrder": [
+			1100
+		],
+		"tier": 1,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1100_2": {
+		"affixName": "Health per Idol in a Refracted Slot",
+		"modName": "of Mesembria",
+		"affix": "of Mesembria",
+		"1": "{rounding:Integer}+(4) Health per Idol in a Refracted Slot",
+		"level": 0,
+		"statOrderKey": 1100,
+		"statOrder": [
+			1100
+		],
+		"tier": 2,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1100_3": {
+		"affixName": "Health per Idol in a Refracted Slot",
+		"modName": "of Mesembria",
+		"affix": "of Mesembria",
+		"1": "{rounding:Integer}+(5) Health per Idol in a Refracted Slot",
+		"level": 0,
+		"statOrderKey": 1100,
+		"statOrder": [
+			1100
+		],
+		"tier": 3,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1100_4": {
+		"affixName": "Health per Idol in a Refracted Slot",
+		"modName": "of Mesembria",
+		"affix": "of Mesembria",
+		"1": "{rounding:Integer}+(6-7) Health per Idol in a Refracted Slot",
+		"level": 0,
+		"statOrderKey": 1100,
+		"statOrder": [
+			1100
+		],
+		"tier": 4,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1100_5": {
+		"affixName": "Health per Idol in a Refracted Slot",
+		"modName": "of Mesembria",
+		"affix": "of Mesembria",
+		"1": "{rounding:Integer}+(9-10) Health per Idol in a Refracted Slot",
+		"level": 0,
+		"statOrderKey": 1100,
+		"statOrder": [
+			1100
+		],
+		"tier": 5,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1100_6": {
+		"affixName": "Health per Idol in a Refracted Slot",
+		"modName": "of Mesembria",
+		"affix": "of Mesembria",
+		"1": "{rounding:Integer}+(11-12) Health per Idol in a Refracted Slot",
+		"level": 0,
+		"statOrderKey": 1100,
+		"statOrder": [
+			1100
+		],
+		"tier": 6,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1100_7": {
+		"affixName": "Health per Idol in a Refracted Slot",
+		"modName": "of Mesembria",
+		"affix": "of Mesembria",
+		"1": "{rounding:Integer}+(15-16) Health per Idol in a Refracted Slot",
+		"level": 0,
+		"statOrderKey": 1100,
+		"statOrder": [
+			1100
+		],
+		"tier": 7,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1101_0": {
+		"affixName": "Mana per Idol in a Refracted Slot",
+		"modName": "of Dysis",
+		"affix": "of Dysis",
+		"1": "{rounding:Integer}+(2) Mana per Idol in a Refracted Slot",
+		"level": 0,
+		"statOrderKey": 1101,
+		"statOrder": [
+			1101
+		],
+		"tier": 0,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1101_1": {
+		"affixName": "Mana per Idol in a Refracted Slot",
+		"modName": "of Dysis",
+		"affix": "of Dysis",
+		"1": "{rounding:Integer}+(3) Mana per Idol in a Refracted Slot",
+		"level": 0,
+		"statOrderKey": 1101,
+		"statOrder": [
+			1101
+		],
+		"tier": 1,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1101_2": {
+		"affixName": "Mana per Idol in a Refracted Slot",
+		"modName": "of Dysis",
+		"affix": "of Dysis",
+		"1": "{rounding:Integer}+(4) Mana per Idol in a Refracted Slot",
+		"level": 0,
+		"statOrderKey": 1101,
+		"statOrder": [
+			1101
+		],
+		"tier": 2,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1101_3": {
+		"affixName": "Mana per Idol in a Refracted Slot",
+		"modName": "of Dysis",
+		"affix": "of Dysis",
+		"1": "{rounding:Integer}+(5) Mana per Idol in a Refracted Slot",
+		"level": 0,
+		"statOrderKey": 1101,
+		"statOrder": [
+			1101
+		],
+		"tier": 3,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1101_4": {
+		"affixName": "Mana per Idol in a Refracted Slot",
+		"modName": "of Dysis",
+		"affix": "of Dysis",
+		"1": "{rounding:Integer}+(6-7) Mana per Idol in a Refracted Slot",
+		"level": 0,
+		"statOrderKey": 1101,
+		"statOrder": [
+			1101
+		],
+		"tier": 4,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1101_5": {
+		"affixName": "Mana per Idol in a Refracted Slot",
+		"modName": "of Dysis",
+		"affix": "of Dysis",
+		"1": "{rounding:Integer}+(9-10) Mana per Idol in a Refracted Slot",
+		"level": 0,
+		"statOrderKey": 1101,
+		"statOrder": [
+			1101
+		],
+		"tier": 5,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1101_6": {
+		"affixName": "Mana per Idol in a Refracted Slot",
+		"modName": "of Dysis",
+		"affix": "of Dysis",
+		"1": "{rounding:Integer}+(11-12) Mana per Idol in a Refracted Slot",
+		"level": 0,
+		"statOrderKey": 1101,
+		"statOrder": [
+			1101
+		],
+		"tier": 6,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1101_7": {
+		"affixName": "Mana per Idol in a Refracted Slot",
+		"modName": "of Dysis",
+		"affix": "of Dysis",
+		"1": "{rounding:Integer}+(15-16) Mana per Idol in a Refracted Slot",
+		"level": 0,
+		"statOrderKey": 1101,
+		"statOrder": [
+			1101
+		],
+		"tier": 7,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1102_0": {
+		"affixName": "Armor per Idol in a Refracted Slot",
+		"modName": "of Eos",
+		"affix": "of Eos",
+		"1": "{rounding:Integer}+(4) Armor per Idol in a Refracted Slot",
+		"level": 0,
+		"statOrderKey": 1102,
+		"statOrder": [
+			1102
+		],
+		"tier": 0,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1102_1": {
+		"affixName": "Armor per Idol in a Refracted Slot",
+		"modName": "of Eos",
+		"affix": "of Eos",
+		"1": "{rounding:Integer}+(5-6) Armor per Idol in a Refracted Slot",
+		"level": 0,
+		"statOrderKey": 1102,
+		"statOrder": [
+			1102
+		],
+		"tier": 1,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1102_2": {
+		"affixName": "Armor per Idol in a Refracted Slot",
+		"modName": "of Eos",
+		"affix": "of Eos",
+		"1": "{rounding:Integer}+(7-8) Armor per Idol in a Refracted Slot",
+		"level": 0,
+		"statOrderKey": 1102,
+		"statOrder": [
+			1102
+		],
+		"tier": 2,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1102_3": {
+		"affixName": "Armor per Idol in a Refracted Slot",
+		"modName": "of Eos",
+		"affix": "of Eos",
+		"1": "{rounding:Integer}+(9-10) Armor per Idol in a Refracted Slot",
+		"level": 0,
+		"statOrderKey": 1102,
+		"statOrder": [
+			1102
+		],
+		"tier": 3,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1102_4": {
+		"affixName": "Armor per Idol in a Refracted Slot",
+		"modName": "of Eos",
+		"affix": "of Eos",
+		"1": "{rounding:Integer}+(11-12) Armor per Idol in a Refracted Slot",
+		"level": 0,
+		"statOrderKey": 1102,
+		"statOrder": [
+			1102
+		],
+		"tier": 4,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1102_5": {
+		"affixName": "Armor per Idol in a Refracted Slot",
+		"modName": "of Eos",
+		"affix": "of Eos",
+		"1": "{rounding:Integer}+(16-19) Armor per Idol in a Refracted Slot",
+		"level": 0,
+		"statOrderKey": 1102,
+		"statOrder": [
+			1102
+		],
+		"tier": 5,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1102_6": {
+		"affixName": "Armor per Idol in a Refracted Slot",
+		"modName": "of Eos",
+		"affix": "of Eos",
+		"1": "{rounding:Integer}+(20-24) Armor per Idol in a Refracted Slot",
+		"level": 0,
+		"statOrderKey": 1102,
+		"statOrder": [
+			1102
+		],
+		"tier": 6,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1102_7": {
+		"affixName": "Armor per Idol in a Refracted Slot",
+		"modName": "of Eos",
+		"affix": "of Eos",
+		"1": "{rounding:Integer}+(30-35) Armor per Idol in a Refracted Slot",
+		"level": 0,
+		"statOrderKey": 1102,
+		"statOrder": [
+			1102
+		],
+		"tier": 7,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1103_0": {
+		"affixName": "Ward Decay Threshold per Idol in a Refracted Slot",
+		"modName": "of Arctus",
+		"affix": "of Arctus",
+		"1": "{rounding:Integer}+(6-7) Ward Decay Threshold per Idol in a Refracted Slot",
+		"level": 0,
+		"statOrderKey": 1103,
+		"statOrder": [
+			1103
+		],
+		"tier": 0,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1103_1": {
+		"affixName": "Ward Decay Threshold per Idol in a Refracted Slot",
+		"modName": "of Arctus",
+		"affix": "of Arctus",
+		"1": "{rounding:Integer}+(8-9) Ward Decay Threshold per Idol in a Refracted Slot",
+		"level": 0,
+		"statOrderKey": 1103,
+		"statOrder": [
+			1103
+		],
+		"tier": 1,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1103_2": {
+		"affixName": "Ward Decay Threshold per Idol in a Refracted Slot",
+		"modName": "of Arctus",
+		"affix": "of Arctus",
+		"1": "{rounding:Integer}+(10-12) Ward Decay Threshold per Idol in a Refracted Slot",
+		"level": 0,
+		"statOrderKey": 1103,
+		"statOrder": [
+			1103
+		],
+		"tier": 2,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1103_3": {
+		"affixName": "Ward Decay Threshold per Idol in a Refracted Slot",
+		"modName": "of Arctus",
+		"affix": "of Arctus",
+		"1": "{rounding:Integer}+(13-15) Ward Decay Threshold per Idol in a Refracted Slot",
+		"level": 0,
+		"statOrderKey": 1103,
+		"statOrder": [
+			1103
+		],
+		"tier": 3,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1103_4": {
+		"affixName": "Ward Decay Threshold per Idol in a Refracted Slot",
+		"modName": "of Arctus",
+		"affix": "of Arctus",
+		"1": "{rounding:Integer}+(16-20) Ward Decay Threshold per Idol in a Refracted Slot",
+		"level": 0,
+		"statOrderKey": 1103,
+		"statOrder": [
+			1103
+		],
+		"tier": 4,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1103_5": {
+		"affixName": "Ward Decay Threshold per Idol in a Refracted Slot",
+		"modName": "of Arctus",
+		"affix": "of Arctus",
+		"1": "{rounding:Integer}+(24-27) Ward Decay Threshold per Idol in a Refracted Slot",
+		"level": 0,
+		"statOrderKey": 1103,
+		"statOrder": [
+			1103
+		],
+		"tier": 5,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1103_6": {
+		"affixName": "Ward Decay Threshold per Idol in a Refracted Slot",
+		"modName": "of Arctus",
+		"affix": "of Arctus",
+		"1": "{rounding:Integer}+(28-33) Ward Decay Threshold per Idol in a Refracted Slot",
+		"level": 0,
+		"statOrderKey": 1103,
+		"statOrder": [
+			1103
+		],
+		"tier": 6,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1103_7": {
+		"affixName": "Ward Decay Threshold per Idol in a Refracted Slot",
+		"modName": "of Arctus",
+		"affix": "of Arctus",
+		"1": "{rounding:Integer}+(45-50) Ward Decay Threshold per Idol in a Refracted Slot",
+		"level": 0,
+		"statOrderKey": 1103,
+		"statOrder": [
+			1103
+		],
+		"tier": 7,
+		"type": "Suffix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 0
+	},
+	"1104_0": {
+		"affixName": "Dodge Rating per Equipped Corrupted Idol",
+		"affix": "",
+		"1": "{rounding:Integer}+(2) Dodge Rating per Equipped Corrupted Idol",
+		"level": 0,
+		"statOrderKey": 1104,
+		"statOrder": [
+			1104
+		],
+		"tier": 0,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 6
+	},
+	"1104_1": {
+		"affixName": "Dodge Rating per Equipped Corrupted Idol",
+		"affix": "",
+		"1": "{rounding:Integer}+(3) Dodge Rating per Equipped Corrupted Idol",
+		"level": 0,
+		"statOrderKey": 1104,
+		"statOrder": [
+			1104
+		],
+		"tier": 1,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 6
+	},
+	"1104_2": {
+		"affixName": "Dodge Rating per Equipped Corrupted Idol",
+		"affix": "",
+		"1": "{rounding:Integer}+(4) Dodge Rating per Equipped Corrupted Idol",
+		"level": 0,
+		"statOrderKey": 1104,
+		"statOrder": [
+			1104
+		],
+		"tier": 2,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 6
+	},
+	"1104_3": {
+		"affixName": "Dodge Rating per Equipped Corrupted Idol",
+		"affix": "",
+		"1": "{rounding:Integer}+(5) Dodge Rating per Equipped Corrupted Idol",
+		"level": 0,
+		"statOrderKey": 1104,
+		"statOrder": [
+			1104
+		],
+		"tier": 3,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 6
+	},
+	"1104_4": {
+		"affixName": "Dodge Rating per Equipped Corrupted Idol",
+		"affix": "",
+		"1": "{rounding:Integer}+(6-7) Dodge Rating per Equipped Corrupted Idol",
+		"level": 0,
+		"statOrderKey": 1104,
+		"statOrder": [
+			1104
+		],
+		"tier": 4,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 6
+	},
+	"1104_5": {
+		"affixName": "Dodge Rating per Equipped Corrupted Idol",
+		"affix": "",
+		"1": "{rounding:Integer}+(9-10) Dodge Rating per Equipped Corrupted Idol",
+		"level": 0,
+		"statOrderKey": 1104,
+		"statOrder": [
+			1104
+		],
+		"tier": 5,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 6
+	},
+	"1104_6": {
+		"affixName": "Dodge Rating per Equipped Corrupted Idol",
+		"affix": "",
+		"1": "{rounding:Integer}+(11-12) Dodge Rating per Equipped Corrupted Idol",
+		"level": 0,
+		"statOrderKey": 1104,
+		"statOrder": [
+			1104
+		],
+		"tier": 6,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 6
+	},
+	"1104_7": {
+		"affixName": "Dodge Rating per Equipped Corrupted Idol",
+		"affix": "",
+		"1": "{rounding:Integer}+(15-16) Dodge Rating per Equipped Corrupted Idol",
+		"level": 0,
+		"statOrderKey": 1104,
+		"statOrder": [
+			1104
+		],
+		"tier": 7,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 6
+	},
+	"1105_0": {
+		"affixName": "Mana per Equipped Corrupted Idol",
+		"affix": "",
+		"1": "{rounding:Integer}+(1) Mana per Equipped Corrupted Idol",
+		"level": 0,
+		"statOrderKey": 1105,
+		"statOrder": [
+			1105
+		],
+		"tier": 0,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 6
+	},
+	"1105_1": {
+		"affixName": "Mana per Equipped Corrupted Idol",
+		"affix": "",
+		"1": "{rounding:Integer}+(2) Mana per Equipped Corrupted Idol",
+		"level": 0,
+		"statOrderKey": 1105,
+		"statOrder": [
+			1105
+		],
+		"tier": 1,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 6
+	},
+	"1105_2": {
+		"affixName": "Mana per Equipped Corrupted Idol",
+		"affix": "",
+		"1": "{rounding:Integer}+(3) Mana per Equipped Corrupted Idol",
+		"level": 0,
+		"statOrderKey": 1105,
+		"statOrder": [
+			1105
+		],
+		"tier": 2,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 6
+	},
+	"1105_3": {
+		"affixName": "Mana per Equipped Corrupted Idol",
+		"affix": "",
+		"1": "{rounding:Integer}+(4) Mana per Equipped Corrupted Idol",
+		"level": 0,
+		"statOrderKey": 1105,
+		"statOrder": [
+			1105
+		],
+		"tier": 3,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 6
+	},
+	"1105_4": {
+		"affixName": "Mana per Equipped Corrupted Idol",
+		"affix": "",
+		"1": "{rounding:Integer}+(5) Mana per Equipped Corrupted Idol",
+		"level": 0,
+		"statOrderKey": 1105,
+		"statOrder": [
+			1105
+		],
+		"tier": 4,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 6
+	},
+	"1105_5": {
+		"affixName": "Mana per Equipped Corrupted Idol",
+		"affix": "",
+		"1": "{rounding:Integer}+(7-8) Mana per Equipped Corrupted Idol",
+		"level": 0,
+		"statOrderKey": 1105,
+		"statOrder": [
+			1105
+		],
+		"tier": 5,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 6
+	},
+	"1105_6": {
+		"affixName": "Mana per Equipped Corrupted Idol",
+		"affix": "",
+		"1": "{rounding:Integer}+(9-10) Mana per Equipped Corrupted Idol",
+		"level": 0,
+		"statOrderKey": 1105,
+		"statOrder": [
+			1105
+		],
+		"tier": 6,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 6
+	},
+	"1105_7": {
+		"affixName": "Mana per Equipped Corrupted Idol",
+		"affix": "",
+		"1": "{rounding:Integer}+(14-15) Mana per Equipped Corrupted Idol",
+		"level": 0,
+		"statOrderKey": 1105,
+		"statOrder": [
+			1105
+		],
+		"tier": 7,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 6
+	},
+	"1106_0": {
+		"affixName": "Armor per Equipped Corrupted Idol",
+		"affix": "",
+		"1": "{rounding:Integer}+(2) Armor per Equipped Corrupted Idol",
+		"level": 0,
+		"statOrderKey": 1106,
+		"statOrder": [
+			1106
+		],
+		"tier": 0,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 6
+	},
+	"1106_1": {
+		"affixName": "Armor per Equipped Corrupted Idol",
+		"affix": "",
+		"1": "{rounding:Integer}+(3) Armor per Equipped Corrupted Idol",
+		"level": 0,
+		"statOrderKey": 1106,
+		"statOrder": [
+			1106
+		],
+		"tier": 1,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 6
+	},
+	"1106_2": {
+		"affixName": "Armor per Equipped Corrupted Idol",
+		"affix": "",
+		"1": "{rounding:Integer}+(4) Armor per Equipped Corrupted Idol",
+		"level": 0,
+		"statOrderKey": 1106,
+		"statOrder": [
+			1106
+		],
+		"tier": 2,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 6
+	},
+	"1106_3": {
+		"affixName": "Armor per Equipped Corrupted Idol",
+		"affix": "",
+		"1": "{rounding:Integer}+(5) Armor per Equipped Corrupted Idol",
+		"level": 0,
+		"statOrderKey": 1106,
+		"statOrder": [
+			1106
+		],
+		"tier": 3,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 6
+	},
+	"1106_4": {
+		"affixName": "Armor per Equipped Corrupted Idol",
+		"affix": "",
+		"1": "{rounding:Integer}+(6-7) Armor per Equipped Corrupted Idol",
+		"level": 0,
+		"statOrderKey": 1106,
+		"statOrder": [
+			1106
+		],
+		"tier": 4,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 6
+	},
+	"1106_5": {
+		"affixName": "Armor per Equipped Corrupted Idol",
+		"affix": "",
+		"1": "{rounding:Integer}+(9-10) Armor per Equipped Corrupted Idol",
+		"level": 0,
+		"statOrderKey": 1106,
+		"statOrder": [
+			1106
+		],
+		"tier": 5,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 6
+	},
+	"1106_6": {
+		"affixName": "Armor per Equipped Corrupted Idol",
+		"affix": "",
+		"1": "{rounding:Integer}+(11-12) Armor per Equipped Corrupted Idol",
+		"level": 0,
+		"statOrderKey": 1106,
+		"statOrder": [
+			1106
+		],
+		"tier": 6,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 6
+	},
+	"1106_7": {
+		"affixName": "Armor per Equipped Corrupted Idol",
+		"affix": "",
+		"1": "{rounding:Integer}+(15-16) Armor per Equipped Corrupted Idol",
+		"level": 0,
+		"statOrderKey": 1106,
+		"statOrder": [
+			1106
+		],
+		"tier": 7,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 6
+	},
+	"1107_0": {
+		"affixName": "Ward Decay Threshold per Equipped Corrupted Idol",
+		"affix": "",
+		"1": "{rounding:Integer}+(2) Ward Decay Threshold per Equipped Corrupted Idol",
+		"level": 0,
+		"statOrderKey": 1107,
+		"statOrder": [
+			1107
+		],
+		"tier": 0,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 6
+	},
+	"1107_1": {
+		"affixName": "Ward Decay Threshold per Equipped Corrupted Idol",
+		"affix": "",
+		"1": "{rounding:Integer}+(3) Ward Decay Threshold per Equipped Corrupted Idol",
+		"level": 0,
+		"statOrderKey": 1107,
+		"statOrder": [
+			1107
+		],
+		"tier": 1,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 6
+	},
+	"1107_2": {
+		"affixName": "Ward Decay Threshold per Equipped Corrupted Idol",
+		"affix": "",
+		"1": "{rounding:Integer}+(4) Ward Decay Threshold per Equipped Corrupted Idol",
+		"level": 0,
+		"statOrderKey": 1107,
+		"statOrder": [
+			1107
+		],
+		"tier": 2,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 6
+	},
+	"1107_3": {
+		"affixName": "Ward Decay Threshold per Equipped Corrupted Idol",
+		"affix": "",
+		"1": "{rounding:Integer}+(5) Ward Decay Threshold per Equipped Corrupted Idol",
+		"level": 0,
+		"statOrderKey": 1107,
+		"statOrder": [
+			1107
+		],
+		"tier": 3,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 6
+	},
+	"1107_4": {
+		"affixName": "Ward Decay Threshold per Equipped Corrupted Idol",
+		"affix": "",
+		"1": "{rounding:Integer}+(6-7) Ward Decay Threshold per Equipped Corrupted Idol",
+		"level": 0,
+		"statOrderKey": 1107,
+		"statOrder": [
+			1107
+		],
+		"tier": 4,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 6
+	},
+	"1107_5": {
+		"affixName": "Ward Decay Threshold per Equipped Corrupted Idol",
+		"affix": "",
+		"1": "{rounding:Integer}+(9-10) Ward Decay Threshold per Equipped Corrupted Idol",
+		"level": 0,
+		"statOrderKey": 1107,
+		"statOrder": [
+			1107
+		],
+		"tier": 5,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 6
+	},
+	"1107_6": {
+		"affixName": "Ward Decay Threshold per Equipped Corrupted Idol",
+		"affix": "",
+		"1": "{rounding:Integer}+(11-12) Ward Decay Threshold per Equipped Corrupted Idol",
+		"level": 0,
+		"statOrderKey": 1107,
+		"statOrder": [
+			1107
+		],
+		"tier": 6,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 6
+	},
+	"1107_7": {
+		"affixName": "Ward Decay Threshold per Equipped Corrupted Idol",
+		"affix": "",
+		"1": "{rounding:Integer}+(15-16) Ward Decay Threshold per Equipped Corrupted Idol",
+		"level": 0,
+		"statOrderKey": 1107,
+		"statOrder": [
+			1107
+		],
+		"tier": 7,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 6
+	},
+	"1108_0": {
+		"affixName": "Corrupted Idol Limit",
+		"affix": "",
+		"1": "{rounding:Integer}+(5) Corrupted Idol Limit",
+		"level": 0,
+		"statOrderKey": 1108,
+		"statOrder": [
+			1108
+		],
+		"tier": 0,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 6
+	},
+	"1108_1": {
+		"affixName": "Corrupted Idol Limit",
+		"affix": "",
+		"1": "{rounding:Integer}+(5) Corrupted Idol Limit",
+		"level": 0,
+		"statOrderKey": 1108,
+		"statOrder": [
+			1108
+		],
+		"tier": 1,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 6
+	},
+	"1108_2": {
+		"affixName": "Corrupted Idol Limit",
+		"affix": "",
+		"1": "{rounding:Integer}+(5) Corrupted Idol Limit",
+		"level": 0,
+		"statOrderKey": 1108,
+		"statOrder": [
+			1108
+		],
+		"tier": 2,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 6
+	},
+	"1108_3": {
+		"affixName": "Corrupted Idol Limit",
+		"affix": "",
+		"1": "{rounding:Integer}+(5) Corrupted Idol Limit",
+		"level": 0,
+		"statOrderKey": 1108,
+		"statOrder": [
+			1108
+		],
+		"tier": 3,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 6
+	},
+	"1108_4": {
+		"affixName": "Corrupted Idol Limit",
+		"affix": "",
+		"1": "{rounding:Integer}+(5) Corrupted Idol Limit",
+		"level": 0,
+		"statOrderKey": 1108,
+		"statOrder": [
+			1108
+		],
+		"tier": 4,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 6
+	},
+	"1108_5": {
+		"affixName": "Corrupted Idol Limit",
+		"affix": "",
+		"1": "{rounding:Integer}+(5) Corrupted Idol Limit",
+		"level": 0,
+		"statOrderKey": 1108,
+		"statOrder": [
+			1108
+		],
+		"tier": 5,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 6
+	},
+	"1108_6": {
+		"affixName": "Corrupted Idol Limit",
+		"affix": "",
+		"1": "{rounding:Integer}+(5) Corrupted Idol Limit",
+		"level": 0,
+		"statOrderKey": 1108,
+		"statOrder": [
+			1108
+		],
+		"tier": 6,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 6
+	},
+	"1108_7": {
+		"affixName": "Corrupted Idol Limit",
+		"affix": "",
+		"1": "{rounding:Integer}+(5) Corrupted Idol Limit",
+		"level": 0,
+		"statOrderKey": 1108,
+		"statOrder": [
+			1108
+		],
+		"tier": 7,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 6
+	},
+	"1109_0": {
+		"affixName": "Heretical Idol Limit",
+		"affix": "",
+		"1": "{rounding:Integer}+(3) Heretical Idol Limit",
+		"2": "{rounding:Integer}+5 Health per Idol in a Refracted Slot",
+		"level": 0,
+		"statOrderKey": 1109,
+		"statOrder": [
+			1109
+		],
+		"tier": 0,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 6
+	},
+	"1109_1": {
+		"affixName": "Heretical Idol Limit",
+		"affix": "",
+		"1": "{rounding:Integer}+(3) Heretical Idol Limit",
+		"2": "{rounding:Integer}+6 Health per Idol in a Refracted Slot",
+		"level": 0,
+		"statOrderKey": 1109,
+		"statOrder": [
+			1109
+		],
+		"tier": 1,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 6
+	},
+	"1109_2": {
+		"affixName": "Heretical Idol Limit",
+		"affix": "",
+		"1": "{rounding:Integer}+(3) Heretical Idol Limit",
+		"2": "{rounding:Integer}+7 Health per Idol in a Refracted Slot",
+		"level": 0,
+		"statOrderKey": 1109,
+		"statOrder": [
+			1109
+		],
+		"tier": 2,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 6
+	},
+	"1109_3": {
+		"affixName": "Heretical Idol Limit",
+		"affix": "",
+		"1": "{rounding:Integer}+(3) Heretical Idol Limit",
+		"2": "{rounding:Integer}+8 Health per Idol in a Refracted Slot",
+		"level": 0,
+		"statOrderKey": 1109,
+		"statOrder": [
+			1109
+		],
+		"tier": 3,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 6
+	},
+	"1109_4": {
+		"affixName": "Heretical Idol Limit",
+		"affix": "",
+		"1": "{rounding:Integer}+(3) Heretical Idol Limit",
+		"2": "{rounding:Integer}+(9-10) Health per Idol in a Refracted Slot",
+		"level": 0,
+		"statOrderKey": 1109,
+		"statOrder": [
+			1109
+		],
+		"tier": 4,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 6
+	},
+	"1109_5": {
+		"affixName": "Heretical Idol Limit",
+		"affix": "",
+		"1": "{rounding:Integer}+(4) Heretical Idol Limit",
+		"2": "{rounding:Integer}+(12-13) Health per Idol in a Refracted Slot",
+		"level": 0,
+		"statOrderKey": 1109,
+		"statOrder": [
+			1109
+		],
+		"tier": 5,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 6
+	},
+	"1109_6": {
+		"affixName": "Heretical Idol Limit",
+		"affix": "",
+		"1": "{rounding:Integer}+(4) Heretical Idol Limit",
+		"2": "{rounding:Integer}+(14-15) Health per Idol in a Refracted Slot",
+		"level": 0,
+		"statOrderKey": 1109,
+		"statOrder": [
+			1109
+		],
+		"tier": 6,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 6
+	},
+	"1109_7": {
+		"affixName": "Heretical Idol Limit",
+		"affix": "",
+		"1": "{rounding:Integer}+(5) Heretical Idol Limit",
+		"2": "{rounding:Integer}+(20-22) Health per Idol in a Refracted Slot",
+		"level": 0,
+		"statOrderKey": 1109,
+		"statOrder": [
+			1109
+		],
+		"tier": 7,
+		"type": "Prefix",
+		"standardAffixEffectModifier": 0,
+		"specialAffixType": 6
+	}
 }
