@@ -111399,7 +111399,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(5-13)% A chance greater than 100% can result in multiple daggers being thrown Fire Damage",
+		"2": "+(5-13)% Fire Damage",
 		"canRollOn": [
 			9
 		],
@@ -111418,7 +111418,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(14-21)% A chance greater than 100% can result in multiple daggers being thrown Fire Damage",
+		"2": "+(14-21)% Fire Damage",
 		"canRollOn": [
 			9
 		],
@@ -111437,7 +111437,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(22-30)% A chance greater than 100% can result in multiple daggers being thrown Fire Damage",
+		"2": "+(22-30)% Fire Damage",
 		"canRollOn": [
 			9
 		],
@@ -111456,7 +111456,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(31-39)% A chance greater than 100% can result in multiple daggers being thrown Fire Damage",
+		"2": "+(31-39)% Fire Damage",
 		"canRollOn": [
 			9
 		],
@@ -111475,7 +111475,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(40-50)% A chance greater than 100% can result in multiple daggers being thrown Fire Damage",
+		"2": "+(40-50)% Fire Damage",
 		"canRollOn": [
 			9
 		],
@@ -111494,7 +111494,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(70-84)% A chance greater than 100% can result in multiple daggers being thrown Fire Damage",
+		"2": "+(70-84)% Fire Damage",
 		"canRollOn": [
 			9
 		],
@@ -111513,7 +111513,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(85-100)% A chance greater than 100% can result in multiple daggers being thrown Fire Damage",
+		"2": "+(85-100)% Fire Damage",
 		"canRollOn": [
 			9
 		],
@@ -111532,7 +111532,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "{rounding:Integer}+(1.5-1.7) A chance greater than 100% can result in multiple daggers being thrown Fire Damage",
+		"2": "{rounding:Integer}+(1.5-1.7) Fire Damage",
 		"canRollOn": [
 			9
 		],
