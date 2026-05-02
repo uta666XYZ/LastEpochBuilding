@@ -273,6 +273,56 @@ if modDB then
 end
 outHnd:write("    },\n")
 
+-- Blessing probe: list all blessing items + dump their modLists, and dump
+-- modDB sources for each resistance stat. Only emitted when LEB_BLESSING_PROBE=1.
+if os.getenv("LEB_BLESSING_PROBE") == "1" then
+    outHnd:write("    blessingProbe = {\n")
+    outHnd:write("        items = {\n")
+    if build.itemsTab and build.itemsTab.items then
+        for id, it in pairs(build.itemsTab.items) do
+            if it.uniqueID and tostring(it.uniqueID):find("^blessing:") then
+                outHnd:write(string.format("            [%d] = { uniqueID=%q, name=%q, modListCount=%d },\n",
+                    id, tostring(it.uniqueID), tostring(it.title or it.name or ""), it.modList and #it.modList or 0))
+                if it.modList then
+                    for i, m in ipairs(it.modList) do
+                        outHnd:write(string.format("                mod[%d] = { name=%q, type=%q, value=%s, source=%q },\n",
+                            i, tostring(m.name or ""), tostring(m.type or ""), tostring(m.value), tostring(m.source or "")))
+                    end
+                end
+            end
+        end
+    end
+    outHnd:write("        },\n")
+    outHnd:write("        slots = {\n")
+    if build.itemsTab and build.itemsTab.orderedSlots then
+        for _, slot in ipairs(build.itemsTab.orderedSlots) do
+            local sn = tostring(slot.slotName or "")
+            if sn == "Reign of Dragons" or sn == "Spirits of Fire" or sn == "Fall of the Outcasts" or sn == "The Stolen Lance" or sn == "The Black Sun" or sn == "Blood, Frost, and Death" or sn == "Ending the Storm" or sn == "Fall of the Empire" or sn == "The Last Ruin" or sn == "The Age of Winter" then
+                outHnd:write(string.format("            [%q] = { selItemId=%s, isShown=%s },\n",
+                    sn, tostring(slot.selItemId), tostring(slot.IsShown and slot:IsShown())))
+            end
+        end
+    end
+    outHnd:write("        },\n")
+    outHnd:write("        resistSources = {\n")
+    local modDB = build.calcsTab and build.calcsTab.mainEnv and build.calcsTab.mainEnv.player and build.calcsTab.mainEnv.player.modDB
+    if modDB then
+        for _, stat in ipairs({"FireResist","ColdResist","LightningResist","PhysicalResist","NecroticResist","PoisonResist","VoidResist"}) do
+            outHnd:write(string.format("            [%q] = {\n", stat))
+            local mods = modDB.mods[stat]
+            if mods then
+                for i, m in ipairs(mods) do
+                    outHnd:write(string.format("                { source=%q, type=%q, value=%s },\n",
+                        tostring(m.source or ""), tostring(m.type or ""), tostring(m.value)))
+                end
+            end
+            outHnd:write("            },\n")
+        end
+    end
+    outHnd:write("        },\n")
+    outHnd:write("    },\n")
+end
+
 outHnd:write("}\n")
 outHnd:close()
 print("Wrote " .. luaPath)
