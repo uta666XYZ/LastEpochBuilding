@@ -266,7 +266,9 @@ function TreeTabClass:GetBadgeHandle(name)
 		self.badgeHandles[key] = NewImageHandle()
 		self.badgeHandles[key]:Load("TreeData/sprites/badge_" .. key .. ".png")
 	end
-	return self.badgeHandles[key]
+	local h = self.badgeHandles[key]
+	if h and h:IsValid() then return h end
+	return nil
 end
 
 -- Lazy-load a sprite from Assets/tree/ directory (extracted from panels_ui.webp)
@@ -276,7 +278,9 @@ function TreeTabClass:GetSpriteHandle(spriteName)
 		self.badgeHandles[key] = NewImageHandle()
 		self.badgeHandles[key]:Load("Assets/tree/" .. spriteName .. ".png")
 	end
-	return self.badgeHandles[key]
+	local h = self.badgeHandles[key]
+	if h and h:IsValid() then return h end
+	return nil
 end
 
 -- Skill unlock data per mastery: maps mastery index to the skills unlocked
@@ -662,8 +666,10 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 	local baseViewing = (selMastery == 0)
 	local baseSprName = baseViewing and "badges/class-base-selected" or "badges/class-base"
 	local baseBadgeSpr = self:GetSpriteHandle(baseSprName)
-	SetDrawColor(1, 1, 1)
-	DrawImage(baseBadgeSpr, badgeStartX, badgeY, badgeSize, badgeSize)
+	if baseBadgeSpr then
+		SetDrawColor(1, 1, 1)
+		DrawImage(baseBadgeSpr, badgeStartX, badgeY, badgeSize, badgeSize)
+	end
 
 	if spec.curClass then
 		for i, ascClass in ipairs(spec.curClass.classes) do
@@ -677,8 +683,10 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 				ascSprName = isViewing and "badges/class-mastery-selected" or "badges/class-mastery"
 			end
 			local ascBadgeSpr = self:GetSpriteHandle(ascSprName)
-			SetDrawColor(1, 1, 1)
-			DrawImage(ascBadgeSpr, bx, badgeY, badgeSize, badgeSize)
+			if ascBadgeSpr then
+				SetDrawColor(1, 1, 1)
+				DrawImage(ascBadgeSpr, bx, badgeY, badgeSize, badgeSize)
+			end
 		end
 	end
 
@@ -714,7 +722,7 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 			if ascClass.startNodeId and spec.allocNodes[ascClass.startNodeId] then
 				isAllocated = true
 			end
-			if not isAllocated then
+			if not isAllocated and lockSpr then
 				local bx = badgeStartX + i * (badgeSize + badgeGap)
 				SetDrawColor(1, 1, 1)
 				DrawImage(lockSpr, bx + m_floor((badgeSize - lockW) / 2), badgeY + badgeSize - lockH - 2, lockW, lockH)
@@ -729,7 +737,9 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 	-- Base class (mastery 0)
 	local basePts = (spec.masteryAllocedPoints and spec.masteryAllocedPoints[0]) or 0
 	SetDrawColor(1, 1, 1)
-	DrawImage(lvlHandle, badgeStartX + m_floor((badgeSize - lvlW) / 2), badgeY + badgeSize - 35, lvlW, lvlH)
+	if lvlHandle then
+		DrawImage(lvlHandle, badgeStartX + m_floor((badgeSize - lvlW) / 2), badgeY + badgeSize - 35, lvlW, lvlH)
+	end
 	DrawString(badgeStartX + m_floor(badgeSize / 2), badgeY + badgeSize - 24, "CENTER_X", 12, "VAR", "^7" .. basePts)
 	-- Ascendancy classes: only show counter after subclass is selected
 	if spec.curClass and spec.curAscendClassId ~= 0 then
@@ -737,7 +747,9 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 			local bx = badgeStartX + i * (badgeSize + badgeGap)
 			local mPts = (spec.masteryAllocedPoints and spec.masteryAllocedPoints[i]) or 0
 			SetDrawColor(1, 1, 1)
-			DrawImage(lvlHandle, bx + m_floor((badgeSize - lvlW) / 2), badgeY + badgeSize - 35, lvlW, lvlH)
+			if lvlHandle then
+				DrawImage(lvlHandle, bx + m_floor((badgeSize - lvlW) / 2), badgeY + badgeSize - 35, lvlW, lvlH)
+			end
 			DrawString(bx + m_floor(badgeSize / 2), badgeY + badgeSize - 24, "CENTER_X", 12, "VAR", "^7" .. mPts)
 		end
 	end
@@ -868,10 +880,12 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 
 	-- Draw full background track (includes ornate arrow endpoints)
 	SetDrawColor(1, 1, 1)
-	DrawImage(barBgHandle, lineLeft - 30, lineY - barBgH / 2, lineWidth + 60, barBgH)
+	if barBgHandle then
+		DrawImage(barBgHandle, lineLeft - 30, lineY - barBgH / 2, lineWidth + 60, barBgH)
+	end
 
 	-- Draw gold fill using progress-fill.png (horizontal bar asset)
-	if progressFrac > 0 then
+	if progressFrac > 0 and barHorizFillHandle then
 		SetDrawColor(1, 1, 1)
 		DrawImage(barHorizFillHandle, lineLeft, lineY - barFillH / 2, progressX - lineLeft, barFillH)
 	end
@@ -918,7 +932,9 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 		local lockH = lockBot - barTop
 		local lockW = lockH * barAspect
 		SetDrawColor(1, 1, 1)
-		DrawImage(lockBarHandle, lockX - lockW / 2, barTop, lockW, lockH)
+		if lockBarHandle then
+			DrawImage(lockBarHandle, lockX - lockW / 2, barTop, lockW, lockH)
+		end
 	end
 
 	-- Upward vertical indicator line from progress bar to tree bottom (Maxroll-style)
@@ -926,7 +942,9 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 	local sliderH = sliderBot - barTop
 	local sliderW = sliderH * barAspect
 	SetDrawColor(1, 0.85, 0.2)
-	DrawImage(sliderBarHandle, progressX - sliderW / 2, barTop, sliderW, sliderH)
+	if sliderBarHandle then
+		DrawImage(sliderBarHandle, progressX - sliderW / 2, barTop, sliderW, sliderH)
+	end
 
 	local frameHandle = self:GetSpriteHandle("skill-icon-frame")
 	local frameLockedHandle = self:GetSpriteHandle("skill-icon-frame-locked")
@@ -949,7 +967,9 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 			else
 				SetDrawColor(0.25, 0.22, 0.10)
 			end
-			DrawImage(sliderBarHandle, slotCenterX - dropW / 2, dropTop, dropW, dropBot - dropTop)
+			if sliderBarHandle then
+				DrawImage(sliderBarHandle, slotCenterX - dropW / 2, dropTop, dropW, dropBot - dropTop)
+			end
 
 			-- Skill icon (drawn first so frame overlays on top)
 			local rootNodeId = sk.treeId and (sk.treeId .. "-0") or nil
@@ -972,7 +992,7 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 					end
 				end
 				local iconHandle = self.badgeHandles[cacheKey]
-				if iconHandle then
+				if iconHandle and iconHandle:IsValid() then
 					if isUnlocked then
 						SetDrawColor(1, 1, 1)
 					else
@@ -986,10 +1006,14 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 			if isUnlocked then
 				local fh = frameSizeUnlocked / 2
 				SetDrawColor(1, 1, 1)
-				DrawImage(frameHandle, slotCenterX - fh, slotY - fh, frameSizeUnlocked, frameSizeUnlocked)
+				if frameHandle then
+					DrawImage(frameHandle, slotCenterX - fh, slotY - fh, frameSizeUnlocked, frameSizeUnlocked)
+				end
 			else
 				SetDrawColor(0.6, 0.6, 0.6)
-				DrawImage(frameLockedHandle, slotCenterX - fs2, slotY - fs2, frameSizeLocked, frameSizeLocked)
+				if frameLockedHandle then
+					DrawImage(frameLockedHandle, slotCenterX - fs2, slotY - fs2, frameSizeLocked, frameSizeLocked)
+				end
 			end
 
 			-- Level badge (centered on skill icon, hidden when unlocked)
@@ -999,7 +1023,9 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 				local lvBadgeX = slotCenterX - lvBadgeW / 2
 				local lvBadgeY = slotY - lvBadgeH / 2
 				SetDrawColor(0.6, 0.6, 0.6)
-				DrawImage(levelLockedHandle, lvBadgeX, lvBadgeY, lvBadgeW, lvBadgeH)
+				if levelLockedHandle then
+					DrawImage(levelLockedHandle, lvBadgeX, lvBadgeY, lvBadgeW, lvBadgeH)
+				end
 				SetDrawColor(1, 1, 1)
 				DrawString(lvBadgeX + lvBadgeW / 2, lvBadgeY + lvBadgeH / 2 - 5, "CENTER_X", 10, "VAR", "^7" .. tostring(sk.level))
 			end
