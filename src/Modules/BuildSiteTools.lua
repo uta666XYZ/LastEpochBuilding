@@ -12,11 +12,6 @@ buildSites.websiteList = {
 		label = "lastepochtools.com", id = "lastepochtools", matchURL = "lastepochtools.com/planner/.+", regexURL = "lastepochtools.com/planner/(.+)$", downloadURL = "lastepochtools.com/planner/%1"
 	},
 	{
-		-- Profile/character URLs (e.g. /profile/Skoopy/character/RambaZambaVK)
-		-- have no LETools planner JSON; resolve via Maxroll account API instead.
-		label = "lastepochtools.com", id = "lastepochtools", matchURL = "lastepochtools%.com/profile/[^/]+/character/[^/?#]+",
-	},
-	{
 		label = "Pastebin.com", id = "pastebin", matchURL = "pastebin%.com/%w+", regexURL = "pastebin%.com/(%w+)%s*$", downloadURL = "pastebin.com/raw/%1",
 	},
 	{ label = "PastebinP.com", id = "pastebinProxy", matchURL = "pastebinp%.com/%w+", regexURL = "pastebinp%.com/(%w+)%s*$", downloadURL = "pastebinp.com/raw/%1" },
