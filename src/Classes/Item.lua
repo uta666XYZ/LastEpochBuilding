@@ -581,6 +581,22 @@ function ItemClass:ParseRaw(raw, rarity, highQuality)
 				modLine.implicit = modLine.implicit or (not modLine.crafted and #self.implicitModLines < implicitLines)
 				modLine.range = modLine.range or main.defaultItemAffixQuality
 				local rangedLine = itemLib.applyRange(line, modLine.range, modLine.valueScalar, modLine.rounding)
+
+				-- Tooltip-glue split: LETools occasionally exports two adjacent legendary-slammed
+				-- prefixes concatenated with the first prefix's tooltip text, e.g.
+				--   "+18% Reduces all physical damage you take. Capped at 75%. Void Resistance"
+				-- which should be parsed as two mods: "+18% Physical Resistance" + "+18% Void Resistance".
+				local glueSecondLine
+				do
+					local gVal, gE1, gE2 = rangedLine:match("^([+%-]?%d+)%% Reduces all (%a+) damage you take%. Capped at 75%%%. (%a+) Resistance$")
+					if gVal and gE1 and gE2 then
+						local cap = function(s) return s:sub(1,1):upper()..s:sub(2):lower() end
+						rangedLine = string.format("+%d%% %s Resistance", tonumber(gVal), cap(gE1))
+						line = rangedLine
+						glueSecondLine = string.format("+%d%% %s Resistance", tonumber(gVal), cap(gE2))
+					end
+				end
+
 				local modList, extra = modLib.parseMod(rangedLine)
 
 				local modLines
@@ -599,6 +615,25 @@ function ItemClass:ParseRaw(raw, rarity, highQuality)
 						modLine.notSupported = true
 					end
 					t_insert(modLines, modLine)
+					if glueSecondLine then
+						local modList2, extra2 = modLib.parseMod(glueSecondLine)
+						if modList2 then
+							local modLine2 = { modTags = {} }
+							for k, v in pairs(modLine) do
+								if k ~= "modList" and k ~= "extra" and k ~= "line" and k ~= "modTags" then
+									modLine2[k] = v
+								end
+							end
+							for _, t in ipairs(modLine.modTags) do t_insert(modLine2.modTags, t) end
+							modLine2.line = glueSecondLine
+							modLine2.modList = modList2
+							modLine2.extra = extra2
+							if modList2.notSupported then
+								modLine2.notSupported = true
+							end
+							t_insert(modLines, modLine2)
+						end
+					end
 					if mode == "GAME" then
 						if gameModeStage == "FINDIMPLICIT" then
 							gameModeStage = "IMPLICIT"
