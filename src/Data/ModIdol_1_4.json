@@ -6523,7 +6523,7 @@
       ]
     },
     "1031_0": {
-      "1": "{rounding:Integer}+1 Chill Immunity",
+      "1": "+1 Chill Immunity",
       "affix": "Added Throwing Damage and reduced Melee Damage",
       "level": 1,
       "statOrderKey": 39,
@@ -6591,7 +6591,7 @@
       ]
     },
     "1035_0": {
-      "1": "{rounding:Integer}+1 Minion Poison Immunity",
+      "1": "+1 Minion Poison Immunity",
       "affix": "Added Bow Damage and reduced Throwing Damage",
       "level": 1,
       "statOrderKey": 35,
@@ -6608,7 +6608,7 @@
       ]
     },
     "1036_0": {
-      "1": "{rounding:Integer}+1 Minion Bleed Immunity",
+      "1": "+1 Minion Bleed Immunity",
       "affix": "Added Bow Damage and reduced Spell Damage",
       "level": 1,
       "statOrderKey": 34,
@@ -6727,7 +6727,7 @@
       ]
     },
     "1043_0": {
-      "1": "{rounding:Integer}+1 Slow Immunity",
+      "1": "+1 Slow Immunity",
       "affix": "Ward Retention and Reduced Health",
       "level": 1,
       "statOrderKey": 28,
@@ -6743,7 +6743,7 @@
       ]
     },
     "1044_0": {
-      "1": "{rounding:Integer}+1 Minion Chill Immunity",
+      "1": "+1 Minion Chill Immunity",
       "affix": "Increased Frenzy Effect and Reduced Haste Effect",
       "level": 1,
       "statOrderKey": 27,
@@ -7044,7 +7044,7 @@
       ]
     },
     "1063_0": {
-      "1": "{rounding:Integer}+1 Slow Chance Converted to Shred Armor Chance",
+      "1": "+1 Slow Chance Converted to Shred Armor Chance",
       "affix": "Slow chance converted to Armor Shred chance",
       "level": 1,
       "statOrderKey": 2,

@@ -41808,7 +41808,7 @@
 		"specialAffixType": 0,
 		"slotOverrides": {
 			"helmet": {
-				"1": "{rounding:Integer}7 Health Gained when you receive a Glancing Blow"
+				"1": "7 Health Gained when you receive a Glancing Blow"
 			}
 		}
 	},
@@ -95621,7 +95621,7 @@
 	},
 	"964_7": {
 		"affix": "Chance to apply Marked for Death on Block",
-		"1": "{rounding:Integer}+1 Chance on Block to apply Marked For Death to the Attacker",
+		"1": "+1 Chance on Block to apply Marked For Death to the Attacker",
 		"level": 0,
 		"statOrderKey": 964,
 		"statOrder": [
@@ -95637,7 +95637,7 @@
 	},
 	"965_0": {
 		"affix": "More Bow Damage per meter to target",
-		"1": "{rounding:Integer}0.5% less Bow Bow Global Conditional Damage - more Multiplicative with other modifiers",
+		"1": "0.5% less Bow Bow Global Conditional Damage - more Multiplicative with other modifiers",
 		"level": 0,
 		"statOrderKey": 965,
 		"statOrder": [
@@ -95654,7 +95654,7 @@
 	},
 	"965_1": {
 		"affix": "More Bow Damage per meter to target",
-		"1": "{rounding:Integer}0.6% less Bow Bow Global Conditional Damage - more Multiplicative with other modifiers",
+		"1": "0.6% less Bow Bow Global Conditional Damage - more Multiplicative with other modifiers",
 		"level": 0,
 		"statOrderKey": 965,
 		"statOrder": [
@@ -95671,7 +95671,7 @@
 	},
 	"965_2": {
 		"affix": "More Bow Damage per meter to target",
-		"1": "{rounding:Integer}0.7% less Bow Bow Global Conditional Damage - more Multiplicative with other modifiers",
+		"1": "0.7% less Bow Bow Global Conditional Damage - more Multiplicative with other modifiers",
 		"level": 0,
 		"statOrderKey": 965,
 		"statOrder": [
@@ -95688,7 +95688,7 @@
 	},
 	"965_3": {
 		"affix": "More Bow Damage per meter to target",
-		"1": "{rounding:Integer}0.8% less Bow Bow Global Conditional Damage - more Multiplicative with other modifiers",
+		"1": "0.8% less Bow Bow Global Conditional Damage - more Multiplicative with other modifiers",
 		"level": 0,
 		"statOrderKey": 965,
 		"statOrder": [
@@ -95705,7 +95705,7 @@
 	},
 	"965_4": {
 		"affix": "More Bow Damage per meter to target",
-		"1": "{rounding:Integer}0.9% less Bow Bow Global Conditional Damage - more Multiplicative with other modifiers",
+		"1": "0.9% less Bow Bow Global Conditional Damage - more Multiplicative with other modifiers",
 		"level": 0,
 		"statOrderKey": 965,
 		"statOrder": [
@@ -95722,7 +95722,7 @@
 	},
 	"965_5": {
 		"affix": "More Bow Damage per meter to target",
-		"1": "{rounding:Integer}1% less Bow Bow Global Conditional Damage - more Multiplicative with other modifiers",
+		"1": "1% less Bow Bow Global Conditional Damage - more Multiplicative with other modifiers",
 		"level": 0,
 		"statOrderKey": 965,
 		"statOrder": [
@@ -95739,7 +95739,7 @@
 	},
 	"965_6": {
 		"affix": "More Bow Damage per meter to target",
-		"1": "{rounding:Integer}1.1% less Bow Bow Global Conditional Damage - more Multiplicative with other modifiers",
+		"1": "1.1% less Bow Bow Global Conditional Damage - more Multiplicative with other modifiers",
 		"level": 0,
 		"statOrderKey": 965,
 		"statOrder": [
@@ -95901,7 +95901,7 @@
 	},
 	"984_0": {
 		"affix": "Seconds of Frenzy granted to you and your Minions when Enemy damage leaves you at Low Health",
-		"1": "{rounding:Integer}+5 Seconds of Frenzy granted to you and your Minions when Enemy damage leaves you at Low Health",
+		"1": "+5 Seconds of Frenzy granted to you and your Minions when Enemy damage leaves you at Low Health",
 		"level": 0,
 		"statOrderKey": 984,
 		"statOrder": [
@@ -95918,7 +95918,7 @@
 	},
 	"984_1": {
 		"affix": "Seconds of Frenzy granted to you and your Minions when Enemy damage leaves you at Low Health",
-		"1": "{rounding:Integer}+6 Seconds of Frenzy granted to you and your Minions when Enemy damage leaves you at Low Health",
+		"1": "+6 Seconds of Frenzy granted to you and your Minions when Enemy damage leaves you at Low Health",
 		"level": 0,
 		"statOrderKey": 984,
 		"statOrder": [
@@ -95935,7 +95935,7 @@
 	},
 	"984_2": {
 		"affix": "Seconds of Frenzy granted to you and your Minions when Enemy damage leaves you at Low Health",
-		"1": "{rounding:Integer}+7 Seconds of Frenzy granted to you and your Minions when Enemy damage leaves you at Low Health",
+		"1": "+7 Seconds of Frenzy granted to you and your Minions when Enemy damage leaves you at Low Health",
 		"level": 0,
 		"statOrderKey": 984,
 		"statOrder": [
@@ -95952,7 +95952,7 @@
 	},
 	"984_3": {
 		"affix": "Seconds of Frenzy granted to you and your Minions when Enemy damage leaves you at Low Health",
-		"1": "{rounding:Integer}+8 Seconds of Frenzy granted to you and your Minions when Enemy damage leaves you at Low Health",
+		"1": "+8 Seconds of Frenzy granted to you and your Minions when Enemy damage leaves you at Low Health",
 		"level": 0,
 		"statOrderKey": 984,
 		"statOrder": [
@@ -95969,7 +95969,7 @@
 	},
 	"984_4": {
 		"affix": "Seconds of Frenzy granted to you and your Minions when Enemy damage leaves you at Low Health",
-		"1": "{rounding:Integer}+9 Seconds of Frenzy granted to you and your Minions when Enemy damage leaves you at Low Health",
+		"1": "+9 Seconds of Frenzy granted to you and your Minions when Enemy damage leaves you at Low Health",
 		"level": 0,
 		"statOrderKey": 984,
 		"statOrder": [
@@ -95986,7 +95986,7 @@
 	},
 	"984_5": {
 		"affix": "Seconds of Frenzy granted to you and your Minions when Enemy damage leaves you at Low Health",
-		"1": "{rounding:Integer}+10 Seconds of Frenzy granted to you and your Minions when Enemy damage leaves you at Low Health",
+		"1": "+10 Seconds of Frenzy granted to you and your Minions when Enemy damage leaves you at Low Health",
 		"level": 0,
 		"statOrderKey": 984,
 		"statOrder": [
@@ -96003,7 +96003,7 @@
 	},
 	"984_6": {
 		"affix": "Seconds of Frenzy granted to you and your Minions when Enemy damage leaves you at Low Health",
-		"1": "{rounding:Integer}+11 Seconds of Frenzy granted to you and your Minions when Enemy damage leaves you at Low Health",
+		"1": "+11 Seconds of Frenzy granted to you and your Minions when Enemy damage leaves you at Low Health",
 		"level": 0,
 		"statOrderKey": 984,
 		"statOrder": [
@@ -96020,7 +96020,7 @@
 	},
 	"984_7": {
 		"affix": "Seconds of Frenzy granted to you and your Minions when Enemy damage leaves you at Low Health",
-		"1": "{rounding:Integer}+20 Seconds of Frenzy granted to you and your Minions when Enemy damage leaves you at Low Health",
+		"1": "+20 Seconds of Frenzy granted to you and your Minions when Enemy damage leaves you at Low Health",
 		"level": 0,
 		"statOrderKey": 984,
 		"statOrder": [
@@ -96293,7 +96293,7 @@
 	},
 	"1011_0": {
 		"affix": "All attributes if you have at least 7 corrupted non-idol items equipped",
-		"1": "{rounding:Integer}+8 All Attributes with at least 7 Corrupted non-Idol Items equipped",
+		"1": "+8 All Attributes with at least 7 Corrupted non-Idol Items equipped",
 		"level": 0,
 		"statOrderKey": 1011,
 		"statOrder": [
@@ -96309,7 +96309,7 @@
 	},
 	"1011_1": {
 		"affix": "All attributes if you have at least 7 corrupted non-idol items equipped",
-		"1": "{rounding:Integer}+9 All Attributes with at least 7 Corrupted non-Idol Items equipped",
+		"1": "+9 All Attributes with at least 7 Corrupted non-Idol Items equipped",
 		"level": 0,
 		"statOrderKey": 1011,
 		"statOrder": [
@@ -96325,7 +96325,7 @@
 	},
 	"1011_2": {
 		"affix": "All attributes if you have at least 7 corrupted non-idol items equipped",
-		"1": "{rounding:Integer}+10 All Attributes with at least 7 Corrupted non-Idol Items equipped",
+		"1": "+10 All Attributes with at least 7 Corrupted non-Idol Items equipped",
 		"level": 0,
 		"statOrderKey": 1011,
 		"statOrder": [
@@ -96341,7 +96341,7 @@
 	},
 	"1011_3": {
 		"affix": "All attributes if you have at least 7 corrupted non-idol items equipped",
-		"1": "{rounding:Integer}+11 All Attributes with at least 7 Corrupted non-Idol Items equipped",
+		"1": "+11 All Attributes with at least 7 Corrupted non-Idol Items equipped",
 		"level": 0,
 		"statOrderKey": 1011,
 		"statOrder": [
@@ -96357,7 +96357,7 @@
 	},
 	"1011_4": {
 		"affix": "All attributes if you have at least 7 corrupted non-idol items equipped",
-		"1": "{rounding:Integer}+12 All Attributes with at least 7 Corrupted non-Idol Items equipped",
+		"1": "+12 All Attributes with at least 7 Corrupted non-Idol Items equipped",
 		"level": 0,
 		"statOrderKey": 1011,
 		"statOrder": [
@@ -96373,7 +96373,7 @@
 	},
 	"1011_5": {
 		"affix": "All attributes if you have at least 7 corrupted non-idol items equipped",
-		"1": "{rounding:Integer}+13 All Attributes with at least 7 Corrupted non-Idol Items equipped",
+		"1": "+13 All Attributes with at least 7 Corrupted non-Idol Items equipped",
 		"level": 0,
 		"statOrderKey": 1011,
 		"statOrder": [
@@ -96389,7 +96389,7 @@
 	},
 	"1011_6": {
 		"affix": "All attributes if you have at least 7 corrupted non-idol items equipped",
-		"1": "{rounding:Integer}+14 All Attributes with at least 7 Corrupted non-Idol Items equipped",
+		"1": "+14 All Attributes with at least 7 Corrupted non-Idol Items equipped",
 		"level": 0,
 		"statOrderKey": 1011,
 		"statOrder": [
@@ -96453,7 +96453,7 @@
 	},
 	"1063_0": {
 		"affix": "Slow chance converted to Armor Shred chance",
-		"1": "{rounding:Integer}+1 Slow Chance Converted to Shred Armor Chance",
+		"1": "+1 Slow Chance Converted to Shred Armor Chance",
 		"level": 0,
 		"statOrderKey": 1063,
 		"statOrder": [
@@ -96518,7 +96518,7 @@
 	},
 	"1088_0": {
 		"affix": "of Heresy",
-		"1": "{rounding:Integer}+2 Health per Equipped Heretical Idol",
+		"1": "+2 Health per Equipped Heretical Idol",
 		"level": 0,
 		"statOrderKey": 1088,
 		"statOrder": [
@@ -96534,7 +96534,7 @@
 	},
 	"1088_1": {
 		"affix": "of Heresy",
-		"1": "{rounding:Integer}+3 Health per Equipped Heretical Idol",
+		"1": "+3 Health per Equipped Heretical Idol",
 		"level": 0,
 		"statOrderKey": 1088,
 		"statOrder": [
@@ -96550,7 +96550,7 @@
 	},
 	"1088_2": {
 		"affix": "of Heresy",
-		"1": "{rounding:Integer}+4 Health per Equipped Heretical Idol",
+		"1": "+4 Health per Equipped Heretical Idol",
 		"level": 0,
 		"statOrderKey": 1088,
 		"statOrder": [
@@ -96566,7 +96566,7 @@
 	},
 	"1088_3": {
 		"affix": "of Heresy",
-		"1": "{rounding:Integer}+5 Health per Equipped Heretical Idol",
+		"1": "+5 Health per Equipped Heretical Idol",
 		"level": 0,
 		"statOrderKey": 1088,
 		"statOrder": [
@@ -97158,7 +97158,7 @@
 	},
 	"1096_0": {
 		"affix": "of Depravity",
-		"1": "{rounding:Integer}+1 Ward per Second per Equipped Heretical Idol",
+		"1": "+1 Ward per Second per Equipped Heretical Idol",
 		"level": 0,
 		"statOrderKey": 1096,
 		"statOrder": [
@@ -97174,7 +97174,7 @@
 	},
 	"1096_1": {
 		"affix": "of Depravity",
-		"1": "{rounding:Integer}+2 Ward per Second per Equipped Heretical Idol",
+		"1": "+2 Ward per Second per Equipped Heretical Idol",
 		"level": 0,
 		"statOrderKey": 1096,
 		"statOrder": [
@@ -97190,7 +97190,7 @@
 	},
 	"1096_2": {
 		"affix": "of Depravity",
-		"1": "{rounding:Integer}+3 Ward per Second per Equipped Heretical Idol",
+		"1": "+3 Ward per Second per Equipped Heretical Idol",
 		"level": 0,
 		"statOrderKey": 1096,
 		"statOrder": [
@@ -97206,7 +97206,7 @@
 	},
 	"1096_3": {
 		"affix": "of Depravity",
-		"1": "{rounding:Integer}+4 Ward per Second per Equipped Heretical Idol",
+		"1": "+4 Ward per Second per Equipped Heretical Idol",
 		"level": 0,
 		"statOrderKey": 1096,
 		"statOrder": [
@@ -97222,7 +97222,7 @@
 	},
 	"1096_4": {
 		"affix": "of Depravity",
-		"1": "{rounding:Integer}+5 Ward per Second per Equipped Heretical Idol",
+		"1": "+5 Ward per Second per Equipped Heretical Idol",
 		"level": 0,
 		"statOrderKey": 1096,
 		"statOrder": [
@@ -97238,7 +97238,7 @@
 	},
 	"1096_5": {
 		"affix": "of Depravity",
-		"1": "{rounding:Integer}+7 Ward per Second per Equipped Heretical Idol",
+		"1": "+7 Ward per Second per Equipped Heretical Idol",
 		"level": 0,
 		"statOrderKey": 1096,
 		"statOrder": [
@@ -97254,7 +97254,7 @@
 	},
 	"1096_6": {
 		"affix": "of Depravity",
-		"1": "{rounding:Integer}+8 Ward per Second per Equipped Heretical Idol",
+		"1": "+8 Ward per Second per Equipped Heretical Idol",
 		"level": 0,
 		"statOrderKey": 1096,
 		"statOrder": [
@@ -97270,7 +97270,7 @@
 	},
 	"1096_7": {
 		"affix": "of Depravity",
-		"1": "{rounding:Integer}+12 Ward per Second per Equipped Heretical Idol",
+		"1": "+12 Ward per Second per Equipped Heretical Idol",
 		"level": 0,
 		"statOrderKey": 1096,
 		"statOrder": [
@@ -97670,7 +97670,7 @@
 	},
 	"1100_0": {
 		"affix": "of Mesembria",
-		"1": "{rounding:Integer}+2 Health per Idol in a Refracted Slot",
+		"1": "+2 Health per Idol in a Refracted Slot",
 		"level": 0,
 		"statOrderKey": 1100,
 		"statOrder": [
@@ -97686,7 +97686,7 @@
 	},
 	"1100_1": {
 		"affix": "of Mesembria",
-		"1": "{rounding:Integer}+3 Health per Idol in a Refracted Slot",
+		"1": "+3 Health per Idol in a Refracted Slot",
 		"level": 0,
 		"statOrderKey": 1100,
 		"statOrder": [
@@ -97702,7 +97702,7 @@
 	},
 	"1100_2": {
 		"affix": "of Mesembria",
-		"1": "{rounding:Integer}+4 Health per Idol in a Refracted Slot",
+		"1": "+4 Health per Idol in a Refracted Slot",
 		"level": 0,
 		"statOrderKey": 1100,
 		"statOrder": [
@@ -97718,7 +97718,7 @@
 	},
 	"1100_3": {
 		"affix": "of Mesembria",
-		"1": "{rounding:Integer}+5 Health per Idol in a Refracted Slot",
+		"1": "+5 Health per Idol in a Refracted Slot",
 		"level": 0,
 		"statOrderKey": 1100,
 		"statOrder": [
@@ -97798,7 +97798,7 @@
 	},
 	"1101_0": {
 		"affix": "of Dysis",
-		"1": "{rounding:Integer}+2 Mana per Idol in a Refracted Slot",
+		"1": "+2 Mana per Idol in a Refracted Slot",
 		"level": 0,
 		"statOrderKey": 1101,
 		"statOrder": [
@@ -97814,7 +97814,7 @@
 	},
 	"1101_1": {
 		"affix": "of Dysis",
-		"1": "{rounding:Integer}+3 Mana per Idol in a Refracted Slot",
+		"1": "+3 Mana per Idol in a Refracted Slot",
 		"level": 0,
 		"statOrderKey": 1101,
 		"statOrder": [
@@ -97830,7 +97830,7 @@
 	},
 	"1101_2": {
 		"affix": "of Dysis",
-		"1": "{rounding:Integer}+4 Mana per Idol in a Refracted Slot",
+		"1": "+4 Mana per Idol in a Refracted Slot",
 		"level": 0,
 		"statOrderKey": 1101,
 		"statOrder": [
@@ -97846,7 +97846,7 @@
 	},
 	"1101_3": {
 		"affix": "of Dysis",
-		"1": "{rounding:Integer}+5 Mana per Idol in a Refracted Slot",
+		"1": "+5 Mana per Idol in a Refracted Slot",
 		"level": 0,
 		"statOrderKey": 1101,
 		"statOrder": [
@@ -97926,7 +97926,7 @@
 	},
 	"1102_0": {
 		"affix": "of Eos",
-		"1": "{rounding:Integer}+4 Armor per Idol in a Refracted Slot",
+		"1": "+4 Armor per Idol in a Refracted Slot",
 		"level": 0,
 		"statOrderKey": 1102,
 		"statOrder": [
@@ -98182,7 +98182,7 @@
 	},
 	"1104_0": {
 		"affix": "Maximum Idols Equipped",
-		"1": "{rounding:Integer}+2 Dodge Rating per Equipped Corrupted Idol",
+		"1": "+2 Dodge Rating per Equipped Corrupted Idol",
 		"level": 0,
 		"statOrderKey": 1104,
 		"statOrder": [
@@ -98198,7 +98198,7 @@
 	},
 	"1104_1": {
 		"affix": "Maximum Idols Equipped",
-		"1": "{rounding:Integer}+3 Dodge Rating per Equipped Corrupted Idol",
+		"1": "+3 Dodge Rating per Equipped Corrupted Idol",
 		"level": 0,
 		"statOrderKey": 1104,
 		"statOrder": [
@@ -98214,7 +98214,7 @@
 	},
 	"1104_2": {
 		"affix": "Maximum Idols Equipped",
-		"1": "{rounding:Integer}+4 Dodge Rating per Equipped Corrupted Idol",
+		"1": "+4 Dodge Rating per Equipped Corrupted Idol",
 		"level": 0,
 		"statOrderKey": 1104,
 		"statOrder": [
@@ -98230,7 +98230,7 @@
 	},
 	"1104_3": {
 		"affix": "Maximum Idols Equipped",
-		"1": "{rounding:Integer}+5 Dodge Rating per Equipped Corrupted Idol",
+		"1": "+5 Dodge Rating per Equipped Corrupted Idol",
 		"level": 0,
 		"statOrderKey": 1104,
 		"statOrder": [
@@ -98310,7 +98310,7 @@
 	},
 	"1105_0": {
 		"affix": "Maximum Idols Equipped",
-		"1": "{rounding:Integer}+1 Mana per Equipped Corrupted Idol",
+		"1": "+1 Mana per Equipped Corrupted Idol",
 		"level": 0,
 		"statOrderKey": 1105,
 		"statOrder": [
@@ -98326,7 +98326,7 @@
 	},
 	"1105_1": {
 		"affix": "Maximum Idols Equipped",
-		"1": "{rounding:Integer}+2 Mana per Equipped Corrupted Idol",
+		"1": "+2 Mana per Equipped Corrupted Idol",
 		"level": 0,
 		"statOrderKey": 1105,
 		"statOrder": [
@@ -98342,7 +98342,7 @@
 	},
 	"1105_2": {
 		"affix": "Maximum Idols Equipped",
-		"1": "{rounding:Integer}+3 Mana per Equipped Corrupted Idol",
+		"1": "+3 Mana per Equipped Corrupted Idol",
 		"level": 0,
 		"statOrderKey": 1105,
 		"statOrder": [
@@ -98358,7 +98358,7 @@
 	},
 	"1105_3": {
 		"affix": "Maximum Idols Equipped",
-		"1": "{rounding:Integer}+4 Mana per Equipped Corrupted Idol",
+		"1": "+4 Mana per Equipped Corrupted Idol",
 		"level": 0,
 		"statOrderKey": 1105,
 		"statOrder": [
@@ -98374,7 +98374,7 @@
 	},
 	"1105_4": {
 		"affix": "Maximum Idols Equipped",
-		"1": "{rounding:Integer}+5 Mana per Equipped Corrupted Idol",
+		"1": "+5 Mana per Equipped Corrupted Idol",
 		"level": 0,
 		"statOrderKey": 1105,
 		"statOrder": [
@@ -98438,7 +98438,7 @@
 	},
 	"1106_0": {
 		"affix": "Maximum Idols Equipped",
-		"1": "{rounding:Integer}+2 Armor per Equipped Corrupted Idol",
+		"1": "+2 Armor per Equipped Corrupted Idol",
 		"level": 0,
 		"statOrderKey": 1106,
 		"statOrder": [
@@ -98454,7 +98454,7 @@
 	},
 	"1106_1": {
 		"affix": "Maximum Idols Equipped",
-		"1": "{rounding:Integer}+3 Armor per Equipped Corrupted Idol",
+		"1": "+3 Armor per Equipped Corrupted Idol",
 		"level": 0,
 		"statOrderKey": 1106,
 		"statOrder": [
@@ -98470,7 +98470,7 @@
 	},
 	"1106_2": {
 		"affix": "Maximum Idols Equipped",
-		"1": "{rounding:Integer}+4 Armor per Equipped Corrupted Idol",
+		"1": "+4 Armor per Equipped Corrupted Idol",
 		"level": 0,
 		"statOrderKey": 1106,
 		"statOrder": [
@@ -98486,7 +98486,7 @@
 	},
 	"1106_3": {
 		"affix": "Maximum Idols Equipped",
-		"1": "{rounding:Integer}+5 Armor per Equipped Corrupted Idol",
+		"1": "+5 Armor per Equipped Corrupted Idol",
 		"level": 0,
 		"statOrderKey": 1106,
 		"statOrder": [
@@ -98566,7 +98566,7 @@
 	},
 	"1107_0": {
 		"affix": "Maximum Idols Equipped",
-		"1": "{rounding:Integer}+2 Ward Decay Threshold per Equipped Corrupted Idol",
+		"1": "+2 Ward Decay Threshold per Equipped Corrupted Idol",
 		"level": 0,
 		"statOrderKey": 1107,
 		"statOrder": [
@@ -98582,7 +98582,7 @@
 	},
 	"1107_1": {
 		"affix": "Maximum Idols Equipped",
-		"1": "{rounding:Integer}+3 Ward Decay Threshold per Equipped Corrupted Idol",
+		"1": "+3 Ward Decay Threshold per Equipped Corrupted Idol",
 		"level": 0,
 		"statOrderKey": 1107,
 		"statOrder": [
@@ -98598,7 +98598,7 @@
 	},
 	"1107_2": {
 		"affix": "Maximum Idols Equipped",
-		"1": "{rounding:Integer}+4 Ward Decay Threshold per Equipped Corrupted Idol",
+		"1": "+4 Ward Decay Threshold per Equipped Corrupted Idol",
 		"level": 0,
 		"statOrderKey": 1107,
 		"statOrder": [
@@ -98614,7 +98614,7 @@
 	},
 	"1107_3": {
 		"affix": "Maximum Idols Equipped",
-		"1": "{rounding:Integer}+5 Ward Decay Threshold per Equipped Corrupted Idol",
+		"1": "+5 Ward Decay Threshold per Equipped Corrupted Idol",
 		"level": 0,
 		"statOrderKey": 1107,
 		"statOrder": [
@@ -99065,7 +99065,7 @@
 	},
 	"1044_0": {
 		"affix": "Increased Frenzy Effect and Reduced Haste Effect",
-		"1": "{rounding:Integer}+1 Minion Chill Immunity",
+		"1": "+1 Minion Chill Immunity",
 		"level": 0,
 		"statOrderKey": 1044,
 		"statOrder": [
@@ -99081,7 +99081,7 @@
 	},
 	"1043_0": {
 		"affix": "Ward Retention and Reduced Health",
-		"1": "{rounding:Integer}+1 Slow Immunity",
+		"1": "+1 Slow Immunity",
 		"level": 0,
 		"statOrderKey": 1043,
 		"statOrder": [
@@ -99182,7 +99182,7 @@
 	},
 	"1036_0": {
 		"affix": "Added Bow Damage and reduced Spell Damage",
-		"1": "{rounding:Integer}+1 Minion Bleed Immunity",
+		"1": "+1 Minion Bleed Immunity",
 		"level": 0,
 		"statOrderKey": 1036,
 		"statOrder": [
@@ -99199,7 +99199,7 @@
 	},
 	"1035_0": {
 		"affix": "Added Bow Damage and reduced Throwing Damage",
-		"1": "{rounding:Integer}+1 Minion Poison Immunity",
+		"1": "+1 Minion Poison Immunity",
 		"level": 0,
 		"statOrderKey": 1035,
 		"statOrder": [
@@ -99267,7 +99267,7 @@
 	},
 	"1031_0": {
 		"affix": "Added Throwing Damage and reduced Melee Damage",
-		"1": "{rounding:Integer}+1 Chill Immunity",
+		"1": "+1 Chill Immunity",
 		"level": 0,
 		"statOrderKey": 1031,
 		"statOrder": [
@@ -99484,7 +99484,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.5,
-		"2": "{rounding:Integer}+1 Maximum Shadows",
+		"2": "+1 Maximum Shadows",
 		"classSpecificity": 32,
 		"canRollOn": [
 			1
@@ -99502,7 +99502,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.5,
-		"2": "{rounding:Integer}+1 Maximum Shadows",
+		"2": "+1 Maximum Shadows",
 		"classSpecificity": 32,
 		"canRollOn": [
 			1
@@ -99520,7 +99520,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.5,
-		"2": "{rounding:Integer}+1 Maximum Shadows",
+		"2": "+1 Maximum Shadows",
 		"classSpecificity": 32,
 		"canRollOn": [
 			1
@@ -99538,7 +99538,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.5,
-		"2": "{rounding:Integer}+1 Maximum Shadows",
+		"2": "+1 Maximum Shadows",
 		"classSpecificity": 32,
 		"canRollOn": [
 			1
@@ -99556,7 +99556,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.5,
-		"2": "{rounding:Integer}+1 Maximum Shadows",
+		"2": "+1 Maximum Shadows",
 		"classSpecificity": 32,
 		"canRollOn": [
 			1
@@ -99574,7 +99574,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.5,
-		"2": "{rounding:Integer}+1 Maximum Shadows",
+		"2": "+1 Maximum Shadows",
 		"classSpecificity": 32,
 		"canRollOn": [
 			1
@@ -99592,7 +99592,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.5,
-		"2": "{rounding:Integer}+1 Maximum Shadows",
+		"2": "+1 Maximum Shadows",
 		"classSpecificity": 32,
 		"canRollOn": [
 			1
@@ -99610,7 +99610,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.5,
-		"2": "{rounding:Integer}+2 Maximum Shadows",
+		"2": "+2 Maximum Shadows",
 		"classSpecificity": 32,
 		"canRollOn": [
 			1
@@ -100035,7 +100035,7 @@
 	},
 	"951_0": {
 		"affix": "Frenzy and Reduced Frenzy Effect",
-		"1": "{rounding:Integer}+1 You have Frenzy",
+		"1": "+1 You have Frenzy",
 		"level": 0,
 		"statOrderKey": 951,
 		"statOrder": [
@@ -100052,7 +100052,7 @@
 	},
 	"951_1": {
 		"affix": "Frenzy and Reduced Frenzy Effect",
-		"1": "{rounding:Integer}+1 You have Frenzy",
+		"1": "+1 You have Frenzy",
 		"level": 0,
 		"statOrderKey": 951,
 		"statOrder": [
@@ -100069,7 +100069,7 @@
 	},
 	"951_2": {
 		"affix": "Frenzy and Reduced Frenzy Effect",
-		"1": "{rounding:Integer}+1 You have Frenzy",
+		"1": "+1 You have Frenzy",
 		"level": 0,
 		"statOrderKey": 951,
 		"statOrder": [
@@ -100086,7 +100086,7 @@
 	},
 	"951_3": {
 		"affix": "Frenzy and Reduced Frenzy Effect",
-		"1": "{rounding:Integer}+1 You have Frenzy",
+		"1": "+1 You have Frenzy",
 		"level": 0,
 		"statOrderKey": 951,
 		"statOrder": [
@@ -100103,7 +100103,7 @@
 	},
 	"951_4": {
 		"affix": "Frenzy and Reduced Frenzy Effect",
-		"1": "{rounding:Integer}+1 You have Frenzy",
+		"1": "+1 You have Frenzy",
 		"level": 0,
 		"statOrderKey": 951,
 		"statOrder": [
@@ -100120,7 +100120,7 @@
 	},
 	"951_5": {
 		"affix": "Frenzy and Reduced Frenzy Effect",
-		"1": "{rounding:Integer}+1 You have Frenzy",
+		"1": "+1 You have Frenzy",
 		"level": 0,
 		"statOrderKey": 951,
 		"statOrder": [
@@ -100137,7 +100137,7 @@
 	},
 	"951_6": {
 		"affix": "Frenzy and Reduced Frenzy Effect",
-		"1": "{rounding:Integer}+1 You have Frenzy",
+		"1": "+1 You have Frenzy",
 		"level": 0,
 		"statOrderKey": 951,
 		"statOrder": [
@@ -100154,7 +100154,7 @@
 	},
 	"951_7": {
 		"affix": "Frenzy and Reduced Frenzy Effect",
-		"1": "{rounding:Integer}+1 You have Frenzy",
+		"1": "+1 You have Frenzy",
 		"level": 0,
 		"statOrderKey": 951,
 		"statOrder": [
@@ -100171,7 +100171,7 @@
 	},
 	"952_0": {
 		"affix": "Added Health Regen and Increased Health Regen per Strength",
-		"1": "{rounding:Integer}+8 Health Regen",
+		"1": "+8 Health Regen",
 		"level": 0,
 		"statOrderKey": 952,
 		"statOrder": [
@@ -100188,7 +100188,7 @@
 	},
 	"952_1": {
 		"affix": "Added Health Regen and Increased Health Regen per Strength",
-		"1": "{rounding:Integer}+9 Health Regen",
+		"1": "+9 Health Regen",
 		"level": 0,
 		"statOrderKey": 952,
 		"statOrder": [
@@ -100205,7 +100205,7 @@
 	},
 	"952_2": {
 		"affix": "Added Health Regen and Increased Health Regen per Strength",
-		"1": "{rounding:Integer}+10 Health Regen",
+		"1": "+10 Health Regen",
 		"level": 0,
 		"statOrderKey": 952,
 		"statOrder": [
@@ -100222,7 +100222,7 @@
 	},
 	"952_3": {
 		"affix": "Added Health Regen and Increased Health Regen per Strength",
-		"1": "{rounding:Integer}+11 Health Regen",
+		"1": "+11 Health Regen",
 		"level": 0,
 		"statOrderKey": 952,
 		"statOrder": [
@@ -100239,7 +100239,7 @@
 	},
 	"952_4": {
 		"affix": "Added Health Regen and Increased Health Regen per Strength",
-		"1": "{rounding:Integer}+12 Health Regen",
+		"1": "+12 Health Regen",
 		"level": 0,
 		"statOrderKey": 952,
 		"statOrder": [
@@ -100256,7 +100256,7 @@
 	},
 	"952_5": {
 		"affix": "Added Health Regen and Increased Health Regen per Strength",
-		"1": "{rounding:Integer}+13 Health Regen",
+		"1": "+13 Health Regen",
 		"level": 0,
 		"statOrderKey": 952,
 		"statOrder": [
@@ -100273,7 +100273,7 @@
 	},
 	"952_6": {
 		"affix": "Added Health Regen and Increased Health Regen per Strength",
-		"1": "{rounding:Integer}+14 Health Regen",
+		"1": "+14 Health Regen",
 		"level": 0,
 		"statOrderKey": 952,
 		"statOrder": [
@@ -100307,7 +100307,7 @@
 	},
 	"953_0": {
 		"affix": "Apiarist's Comb Reforged",
-		"1": "{rounding:Integer}+1 Bees Per 10 Seconds",
+		"1": "+1 Bees Per 10 Seconds",
 		"level": 0,
 		"statOrderKey": 953,
 		"statOrder": [
@@ -100324,7 +100324,7 @@
 	},
 	"953_1": {
 		"affix": "Apiarist's Comb Reforged",
-		"1": "{rounding:Integer}+2 Bees Per 10 Seconds",
+		"1": "+2 Bees Per 10 Seconds",
 		"level": 0,
 		"statOrderKey": 953,
 		"statOrder": [
@@ -100341,7 +100341,7 @@
 	},
 	"953_2": {
 		"affix": "Apiarist's Comb Reforged",
-		"1": "{rounding:Integer}+3 Bees Per 10 Seconds",
+		"1": "+3 Bees Per 10 Seconds",
 		"level": 0,
 		"statOrderKey": 953,
 		"statOrder": [
@@ -100358,7 +100358,7 @@
 	},
 	"953_3": {
 		"affix": "Apiarist's Comb Reforged",
-		"1": "{rounding:Integer}+4 Bees Per 10 Seconds",
+		"1": "+4 Bees Per 10 Seconds",
 		"level": 0,
 		"statOrderKey": 953,
 		"statOrder": [
@@ -100375,7 +100375,7 @@
 	},
 	"953_4": {
 		"affix": "Apiarist's Comb Reforged",
-		"1": "{rounding:Integer}+5 Bees Per 10 Seconds",
+		"1": "+5 Bees Per 10 Seconds",
 		"level": 0,
 		"statOrderKey": 953,
 		"statOrder": [
@@ -100443,7 +100443,7 @@
 	},
 	"954_0": {
 		"affix": "Apiarist's Smoker Reforged",
-		"1": "{rounding:Integer}+-1 Damage Over Time Taken - more Reduces the damage you take from damage over time (multiplicative with other modifiers) Movement Speed",
+		"1": "+-1 Damage Over Time Taken - more Reduces the damage you take from damage over time (multiplicative with other modifiers) Movement Speed",
 		"level": 0,
 		"statOrderKey": 954,
 		"statOrder": [
@@ -100460,7 +100460,7 @@
 	},
 	"954_1": {
 		"affix": "Apiarist's Smoker Reforged",
-		"1": "{rounding:Integer}+-1 Damage Over Time Taken - more Reduces the damage you take from damage over time (multiplicative with other modifiers) Movement Speed",
+		"1": "+-1 Damage Over Time Taken - more Reduces the damage you take from damage over time (multiplicative with other modifiers) Movement Speed",
 		"level": 0,
 		"statOrderKey": 954,
 		"statOrder": [
@@ -100477,7 +100477,7 @@
 	},
 	"954_2": {
 		"affix": "Apiarist's Smoker Reforged",
-		"1": "{rounding:Integer}+-1 Damage Over Time Taken - more Reduces the damage you take from damage over time (multiplicative with other modifiers) Movement Speed",
+		"1": "+-1 Damage Over Time Taken - more Reduces the damage you take from damage over time (multiplicative with other modifiers) Movement Speed",
 		"level": 0,
 		"statOrderKey": 954,
 		"statOrder": [
@@ -100494,7 +100494,7 @@
 	},
 	"954_3": {
 		"affix": "Apiarist's Smoker Reforged",
-		"1": "{rounding:Integer}+-1 Damage Over Time Taken - more Reduces the damage you take from damage over time (multiplicative with other modifiers) Movement Speed",
+		"1": "+-1 Damage Over Time Taken - more Reduces the damage you take from damage over time (multiplicative with other modifiers) Movement Speed",
 		"level": 0,
 		"statOrderKey": 954,
 		"statOrder": [
@@ -100511,7 +100511,7 @@
 	},
 	"954_4": {
 		"affix": "Apiarist's Smoker Reforged",
-		"1": "{rounding:Integer}+-1 Damage Over Time Taken - more Reduces the damage you take from damage over time (multiplicative with other modifiers) Movement Speed",
+		"1": "+-1 Damage Over Time Taken - more Reduces the damage you take from damage over time (multiplicative with other modifiers) Movement Speed",
 		"level": 0,
 		"statOrderKey": 954,
 		"statOrder": [
@@ -100528,7 +100528,7 @@
 	},
 	"954_5": {
 		"affix": "Apiarist's Smoker Reforged",
-		"1": "{rounding:Integer}+-1 Damage Over Time Taken - more Reduces the damage you take from damage over time (multiplicative with other modifiers) Movement Speed",
+		"1": "+-1 Damage Over Time Taken - more Reduces the damage you take from damage over time (multiplicative with other modifiers) Movement Speed",
 		"level": 0,
 		"statOrderKey": 954,
 		"statOrder": [
@@ -100545,7 +100545,7 @@
 	},
 	"954_6": {
 		"affix": "Apiarist's Smoker Reforged",
-		"1": "{rounding:Integer}+-1 Damage Over Time Taken - more Reduces the damage you take from damage over time (multiplicative with other modifiers) Movement Speed",
+		"1": "+-1 Damage Over Time Taken - more Reduces the damage you take from damage over time (multiplicative with other modifiers) Movement Speed",
 		"level": 0,
 		"statOrderKey": 954,
 		"statOrder": [
@@ -100562,7 +100562,7 @@
 	},
 	"954_7": {
 		"affix": "Apiarist's Smoker Reforged",
-		"1": "{rounding:Integer}+-1 Damage Over Time Taken - more Reduces the damage you take from damage over time (multiplicative with other modifiers) Movement Speed",
+		"1": "+-1 Damage Over Time Taken - more Reduces the damage you take from damage over time (multiplicative with other modifiers) Movement Speed",
 		"level": 0,
 		"statOrderKey": 954,
 		"statOrder": [
@@ -100579,7 +100579,7 @@
 	},
 	"955_0": {
 		"affix": "Apiarist's Suit Reforged",
-		"1": "{rounding:Integer}+1 Health Regeneration per Summoned Bee",
+		"1": "+1 Health Regeneration per Summoned Bee",
 		"level": 0,
 		"statOrderKey": 955,
 		"statOrder": [
@@ -100596,7 +100596,7 @@
 	},
 	"955_1": {
 		"affix": "Apiarist's Suit Reforged",
-		"1": "{rounding:Integer}+1 Health Regeneration per Summoned Bee",
+		"1": "+1 Health Regeneration per Summoned Bee",
 		"level": 0,
 		"statOrderKey": 955,
 		"statOrder": [
@@ -100613,7 +100613,7 @@
 	},
 	"955_2": {
 		"affix": "Apiarist's Suit Reforged",
-		"1": "{rounding:Integer}+2 Health Regeneration per Summoned Bee",
+		"1": "+2 Health Regeneration per Summoned Bee",
 		"level": 0,
 		"statOrderKey": 955,
 		"statOrder": [
@@ -100630,7 +100630,7 @@
 	},
 	"955_3": {
 		"affix": "Apiarist's Suit Reforged",
-		"1": "{rounding:Integer}+3 Health Regeneration per Summoned Bee",
+		"1": "+3 Health Regeneration per Summoned Bee",
 		"level": 0,
 		"statOrderKey": 955,
 		"statOrder": [
@@ -100647,7 +100647,7 @@
 	},
 	"955_4": {
 		"affix": "Apiarist's Suit Reforged",
-		"1": "{rounding:Integer}+4 Health Regeneration per Summoned Bee",
+		"1": "+4 Health Regeneration per Summoned Bee",
 		"level": 0,
 		"statOrderKey": 955,
 		"statOrder": [
@@ -100664,7 +100664,7 @@
 	},
 	"955_5": {
 		"affix": "Apiarist's Suit Reforged",
-		"1": "{rounding:Integer}+5 Health Regeneration per Summoned Bee",
+		"1": "+5 Health Regeneration per Summoned Bee",
 		"level": 0,
 		"statOrderKey": 955,
 		"statOrder": [
@@ -100681,7 +100681,7 @@
 	},
 	"955_6": {
 		"affix": "Apiarist's Suit Reforged",
-		"1": "{rounding:Integer}+6 Health Regeneration per Summoned Bee",
+		"1": "+6 Health Regeneration per Summoned Bee",
 		"level": 0,
 		"statOrderKey": 955,
 		"statOrder": [
@@ -100698,7 +100698,7 @@
 	},
 	"955_7": {
 		"affix": "Apiarist's Suit Reforged",
-		"1": "{rounding:Integer}+9 Health Regeneration per Summoned Bee",
+		"1": "+9 Health Regeneration per Summoned Bee",
 		"level": 0,
 		"statOrderKey": 955,
 		"statOrder": [
@@ -101242,7 +101242,7 @@
 	},
 	"959_7": {
 		"affix": "Keplahan's Cryolith Reforged",
-		"1": "{rounding:Integer}+1 Chance to cast cold Volcanic Orb when you directly use a cold melee attack or cold traversal skill (3 second cooldown)",
+		"1": "+1 Chance to cast cold Volcanic Orb when you directly use a cold melee attack or cold traversal skill (3 second cooldown)",
 		"level": 0,
 		"statOrderKey": 959,
 		"statOrder": [
@@ -101378,7 +101378,7 @@
 	},
 	"960_7": {
 		"affix": "Keplahan's Pyrolith Reforged",
-		"1": "{rounding:Integer}+1 Chance to cast fire Volcanic Orb when you directly use a fire melee attack or fire traversal skill (3 second cooldown)",
+		"1": "+1 Chance to cast fire Volcanic Orb when you directly use a fire melee attack or fire traversal skill (3 second cooldown)",
 		"level": 0,
 		"statOrderKey": 960,
 		"statOrder": [
@@ -101650,7 +101650,7 @@
 	},
 	"962_7": {
 		"affix": "Kuzon's Guise Reforged",
-		"1": "{rounding:Integer}+1 Chance to Blind on Fire Hit",
+		"1": "+1 Chance to Blind on Fire Hit",
 		"level": 0,
 		"statOrderKey": 962,
 		"statOrder": [
@@ -102980,7 +102980,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+1 Increases the area of effect of skills with the Area tag and the Spell tag. Additive with other sources of increased area. Spell Mana Cost",
+		"2": "+1 Increases the area of effect of skills with the Area tag and the Spell tag. Additive with other sources of increased area. Spell Mana Cost",
 		"canRollOn": [
 			10,
 			19,
@@ -102999,7 +102999,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+1 Increases the area of effect of skills with the Area tag and the Spell tag. Additive with other sources of increased area. Spell Mana Cost",
+		"2": "+1 Increases the area of effect of skills with the Area tag and the Spell tag. Additive with other sources of increased area. Spell Mana Cost",
 		"canRollOn": [
 			10,
 			19,
@@ -103018,7 +103018,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+2 Increases the area of effect of skills with the Area tag and the Spell tag. Additive with other sources of increased area. Spell Mana Cost",
+		"2": "+2 Increases the area of effect of skills with the Area tag and the Spell tag. Additive with other sources of increased area. Spell Mana Cost",
 		"canRollOn": [
 			10,
 			19,
@@ -103037,7 +103037,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+2 Increases the area of effect of skills with the Area tag and the Spell tag. Additive with other sources of increased area. Spell Mana Cost",
+		"2": "+2 Increases the area of effect of skills with the Area tag and the Spell tag. Additive with other sources of increased area. Spell Mana Cost",
 		"canRollOn": [
 			10,
 			19,
@@ -103056,7 +103056,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+2 Increases the area of effect of skills with the Area tag and the Spell tag. Additive with other sources of increased area. Spell Mana Cost",
+		"2": "+2 Increases the area of effect of skills with the Area tag and the Spell tag. Additive with other sources of increased area. Spell Mana Cost",
 		"canRollOn": [
 			10,
 			19,
@@ -103075,7 +103075,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+3 Increases the area of effect of skills with the Area tag and the Spell tag. Additive with other sources of increased area. Spell Mana Cost",
+		"2": "+3 Increases the area of effect of skills with the Area tag and the Spell tag. Additive with other sources of increased area. Spell Mana Cost",
 		"canRollOn": [
 			10,
 			19,
@@ -103094,7 +103094,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+3 Increases the area of effect of skills with the Area tag and the Spell tag. Additive with other sources of increased area. Spell Mana Cost",
+		"2": "+3 Increases the area of effect of skills with the Area tag and the Spell tag. Additive with other sources of increased area. Spell Mana Cost",
 		"canRollOn": [
 			10,
 			19,
@@ -103113,7 +103113,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+6 Increases the area of effect of skills with the Area tag and the Spell tag. Additive with other sources of increased area. Spell Mana Cost",
+		"2": "+6 Increases the area of effect of skills with the Area tag and the Spell tag. Additive with other sources of increased area. Spell Mana Cost",
 		"canRollOn": [
 			10,
 			19,
@@ -103123,7 +103123,7 @@
 	},
 	"975_0": {
 		"affix": "Added Spell Damage and Increased Spell Damage per Increased Movement Speed",
-		"1": "{rounding:Integer}+8 Spell Damage",
+		"1": "+8 Spell Damage",
 		"level": 0,
 		"statOrderKey": 975,
 		"statOrder": [
@@ -103143,7 +103143,7 @@
 	},
 	"975_1": {
 		"affix": "Added Spell Damage and Increased Spell Damage per Increased Movement Speed",
-		"1": "{rounding:Integer}+9 Spell Damage",
+		"1": "+9 Spell Damage",
 		"level": 0,
 		"statOrderKey": 975,
 		"statOrder": [
@@ -103163,7 +103163,7 @@
 	},
 	"975_2": {
 		"affix": "Added Spell Damage and Increased Spell Damage per Increased Movement Speed",
-		"1": "{rounding:Integer}+10 Spell Damage",
+		"1": "+10 Spell Damage",
 		"level": 0,
 		"statOrderKey": 975,
 		"statOrder": [
@@ -103183,7 +103183,7 @@
 	},
 	"975_3": {
 		"affix": "Added Spell Damage and Increased Spell Damage per Increased Movement Speed",
-		"1": "{rounding:Integer}+11 Spell Damage",
+		"1": "+11 Spell Damage",
 		"level": 0,
 		"statOrderKey": 975,
 		"statOrder": [
@@ -103203,7 +103203,7 @@
 	},
 	"975_4": {
 		"affix": "Added Spell Damage and Increased Spell Damage per Increased Movement Speed",
-		"1": "{rounding:Integer}+12 Spell Damage",
+		"1": "+12 Spell Damage",
 		"level": 0,
 		"statOrderKey": 975,
 		"statOrder": [
@@ -103223,7 +103223,7 @@
 	},
 	"975_5": {
 		"affix": "Added Spell Damage and Increased Spell Damage per Increased Movement Speed",
-		"1": "{rounding:Integer}+13 Spell Damage",
+		"1": "+13 Spell Damage",
 		"level": 0,
 		"statOrderKey": 975,
 		"statOrder": [
@@ -103243,7 +103243,7 @@
 	},
 	"975_6": {
 		"affix": "Added Spell Damage and Increased Spell Damage per Increased Movement Speed",
-		"1": "{rounding:Integer}+14 Spell Damage",
+		"1": "+14 Spell Damage",
 		"level": 0,
 		"statOrderKey": 975,
 		"statOrder": [
@@ -103452,7 +103452,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "{rounding:Integer}+1 Increases your maximum mana Mana per Attunement",
+		"2": "+1 Increases your maximum mana Mana per Attunement",
 		"canRollOn": [
 			10,
 			15,
@@ -103471,7 +103471,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "{rounding:Integer}+1 Increases your maximum mana Mana per Attunement",
+		"2": "+1 Increases your maximum mana Mana per Attunement",
 		"canRollOn": [
 			10,
 			15,
@@ -103490,7 +103490,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "{rounding:Integer}+1 Increases your maximum mana Mana per Attunement",
+		"2": "+1 Increases your maximum mana Mana per Attunement",
 		"canRollOn": [
 			10,
 			15,
@@ -103509,7 +103509,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "{rounding:Integer}+1 Increases your maximum mana Mana per Attunement",
+		"2": "+1 Increases your maximum mana Mana per Attunement",
 		"canRollOn": [
 			10,
 			15,
@@ -103528,7 +103528,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "{rounding:Integer}+1 Increases your maximum mana Mana per Attunement",
+		"2": "+1 Increases your maximum mana Mana per Attunement",
 		"canRollOn": [
 			10,
 			15,
@@ -103547,7 +103547,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "{rounding:Integer}+1 Increases your maximum mana Mana per Attunement",
+		"2": "+1 Increases your maximum mana Mana per Attunement",
 		"canRollOn": [
 			10,
 			15,
@@ -103566,7 +103566,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "{rounding:Integer}+1 Increases your maximum mana Mana per Attunement",
+		"2": "+1 Increases your maximum mana Mana per Attunement",
 		"canRollOn": [
 			10,
 			15,
@@ -103585,7 +103585,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "{rounding:Integer}+2 Increases your maximum mana Mana per Attunement",
+		"2": "+2 Increases your maximum mana Mana per Attunement",
 		"canRollOn": [
 			10,
 			15,
@@ -104780,7 +104780,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "{rounding:Integer}+1 Parry Chance gained as Increased Melee Damage",
+		"2": "+1 Parry Chance gained as Increased Melee Damage",
 		"canRollOn": [
 			9
 		],
@@ -104797,7 +104797,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "{rounding:Integer}+1 Parry Chance gained as Increased Melee Damage",
+		"2": "+1 Parry Chance gained as Increased Melee Damage",
 		"canRollOn": [
 			9
 		],
@@ -104814,7 +104814,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "{rounding:Integer}+1 Parry Chance gained as Increased Melee Damage",
+		"2": "+1 Parry Chance gained as Increased Melee Damage",
 		"canRollOn": [
 			9
 		],
@@ -104831,7 +104831,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "{rounding:Integer}+1 Parry Chance gained as Increased Melee Damage",
+		"2": "+1 Parry Chance gained as Increased Melee Damage",
 		"canRollOn": [
 			9
 		],
@@ -104848,7 +104848,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "{rounding:Integer}+1 Parry Chance gained as Increased Melee Damage",
+		"2": "+1 Parry Chance gained as Increased Melee Damage",
 		"canRollOn": [
 			9
 		],
@@ -104865,7 +104865,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "{rounding:Integer}+1 Parry Chance gained as Increased Melee Damage",
+		"2": "+1 Parry Chance gained as Increased Melee Damage",
 		"canRollOn": [
 			9
 		],
@@ -104882,7 +104882,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "{rounding:Integer}+1 Parry Chance gained as Increased Melee Damage",
+		"2": "+1 Parry Chance gained as Increased Melee Damage",
 		"canRollOn": [
 			9
 		],
@@ -104899,7 +104899,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "{rounding:Integer}+1 Parry Chance gained as Increased Melee Damage",
+		"2": "+1 Parry Chance gained as Increased Melee Damage",
 		"canRollOn": [
 			9
 		],
@@ -105323,7 +105323,7 @@
 	},
 	"991_0": {
 		"affix": "Chance to Cleanse Ailments on Evade and Increased Ailment Damage Taken",
-		"1": "{rounding:Integer}+1 Chance to cleanse all ailments when you Evade",
+		"1": "+1 Chance to cleanse all ailments when you Evade",
 		"level": 0,
 		"statOrderKey": 991,
 		"statOrder": [
@@ -105340,7 +105340,7 @@
 	},
 	"991_1": {
 		"affix": "Chance to Cleanse Ailments on Evade and Increased Ailment Damage Taken",
-		"1": "{rounding:Integer}+1 Chance to cleanse all ailments when you Evade",
+		"1": "+1 Chance to cleanse all ailments when you Evade",
 		"level": 0,
 		"statOrderKey": 991,
 		"statOrder": [
@@ -105357,7 +105357,7 @@
 	},
 	"991_2": {
 		"affix": "Chance to Cleanse Ailments on Evade and Increased Ailment Damage Taken",
-		"1": "{rounding:Integer}+1 Chance to cleanse all ailments when you Evade",
+		"1": "+1 Chance to cleanse all ailments when you Evade",
 		"level": 0,
 		"statOrderKey": 991,
 		"statOrder": [
@@ -105374,7 +105374,7 @@
 	},
 	"991_3": {
 		"affix": "Chance to Cleanse Ailments on Evade and Increased Ailment Damage Taken",
-		"1": "{rounding:Integer}+1 Chance to cleanse all ailments when you Evade",
+		"1": "+1 Chance to cleanse all ailments when you Evade",
 		"level": 0,
 		"statOrderKey": 991,
 		"statOrder": [
@@ -105391,7 +105391,7 @@
 	},
 	"991_4": {
 		"affix": "Chance to Cleanse Ailments on Evade and Increased Ailment Damage Taken",
-		"1": "{rounding:Integer}+1 Chance to cleanse all ailments when you Evade",
+		"1": "+1 Chance to cleanse all ailments when you Evade",
 		"level": 0,
 		"statOrderKey": 991,
 		"statOrder": [
@@ -105408,7 +105408,7 @@
 	},
 	"991_5": {
 		"affix": "Chance to Cleanse Ailments on Evade and Increased Ailment Damage Taken",
-		"1": "{rounding:Integer}+1 Chance to cleanse all ailments when you Evade",
+		"1": "+1 Chance to cleanse all ailments when you Evade",
 		"level": 0,
 		"statOrderKey": 991,
 		"statOrder": [
@@ -105425,7 +105425,7 @@
 	},
 	"991_6": {
 		"affix": "Chance to Cleanse Ailments on Evade and Increased Ailment Damage Taken",
-		"1": "{rounding:Integer}+1 Chance to cleanse all ailments when you Evade",
+		"1": "+1 Chance to cleanse all ailments when you Evade",
 		"level": 0,
 		"statOrderKey": 991,
 		"statOrder": [
@@ -105442,7 +105442,7 @@
 	},
 	"991_7": {
 		"affix": "Chance to Cleanse Ailments on Evade and Increased Ailment Damage Taken",
-		"1": "{rounding:Integer}+1 Chance to cleanse all ailments when you Evade",
+		"1": "+1 Chance to cleanse all ailments when you Evade",
 		"level": 0,
 		"statOrderKey": 991,
 		"statOrder": [
@@ -105595,7 +105595,7 @@
 	},
 	"993_0": {
 		"affix": "Evade Charge and Increased Evade cooldown Duration",
-		"1": "{rounding:Integer}+1 Evade Charge",
+		"1": "+1 Evade Charge",
 		"level": 0,
 		"statOrderKey": 993,
 		"statOrder": [
@@ -105612,7 +105612,7 @@
 	},
 	"993_1": {
 		"affix": "Evade Charge and Increased Evade cooldown Duration",
-		"1": "{rounding:Integer}+1 Evade Charge",
+		"1": "+1 Evade Charge",
 		"level": 0,
 		"statOrderKey": 993,
 		"statOrder": [
@@ -105629,7 +105629,7 @@
 	},
 	"993_2": {
 		"affix": "Evade Charge and Increased Evade cooldown Duration",
-		"1": "{rounding:Integer}+1 Evade Charge",
+		"1": "+1 Evade Charge",
 		"level": 0,
 		"statOrderKey": 993,
 		"statOrder": [
@@ -105646,7 +105646,7 @@
 	},
 	"993_3": {
 		"affix": "Evade Charge and Increased Evade cooldown Duration",
-		"1": "{rounding:Integer}+1 Evade Charge",
+		"1": "+1 Evade Charge",
 		"level": 0,
 		"statOrderKey": 993,
 		"statOrder": [
@@ -105663,7 +105663,7 @@
 	},
 	"993_4": {
 		"affix": "Evade Charge and Increased Evade cooldown Duration",
-		"1": "{rounding:Integer}+1 Evade Charge",
+		"1": "+1 Evade Charge",
 		"level": 0,
 		"statOrderKey": 993,
 		"statOrder": [
@@ -105680,7 +105680,7 @@
 	},
 	"993_5": {
 		"affix": "Evade Charge and Increased Evade cooldown Duration",
-		"1": "{rounding:Integer}+1 Evade Charge",
+		"1": "+1 Evade Charge",
 		"level": 0,
 		"statOrderKey": 993,
 		"statOrder": [
@@ -105697,7 +105697,7 @@
 	},
 	"993_6": {
 		"affix": "Evade Charge and Increased Evade cooldown Duration",
-		"1": "{rounding:Integer}+1 Evade Charge",
+		"1": "+1 Evade Charge",
 		"level": 0,
 		"statOrderKey": 993,
 		"statOrder": [
@@ -105714,7 +105714,7 @@
 	},
 	"993_7": {
 		"affix": "Evade Charge and Increased Evade cooldown Duration",
-		"1": "{rounding:Integer}+2 Evade Charge",
+		"1": "+2 Evade Charge",
 		"level": 0,
 		"statOrderKey": 993,
 		"statOrder": [
@@ -105875,7 +105875,7 @@
 	},
 	"995_0": {
 		"affix": "Added Throwing Damage and Throwing Armor Shred Chance",
-		"1": "{rounding:Integer}+8 Throwing Damage",
+		"1": "+8 Throwing Damage",
 		"level": 0,
 		"statOrderKey": 995,
 		"statOrder": [
@@ -105893,7 +105893,7 @@
 	},
 	"995_1": {
 		"affix": "Added Throwing Damage and Throwing Armor Shred Chance",
-		"1": "{rounding:Integer}+9 Throwing Damage",
+		"1": "+9 Throwing Damage",
 		"level": 0,
 		"statOrderKey": 995,
 		"statOrder": [
@@ -105911,7 +105911,7 @@
 	},
 	"995_2": {
 		"affix": "Added Throwing Damage and Throwing Armor Shred Chance",
-		"1": "{rounding:Integer}+10 Throwing Damage",
+		"1": "+10 Throwing Damage",
 		"level": 0,
 		"statOrderKey": 995,
 		"statOrder": [
@@ -105929,7 +105929,7 @@
 	},
 	"995_3": {
 		"affix": "Added Throwing Damage and Throwing Armor Shred Chance",
-		"1": "{rounding:Integer}+11 Throwing Damage",
+		"1": "+11 Throwing Damage",
 		"level": 0,
 		"statOrderKey": 995,
 		"statOrder": [
@@ -105947,7 +105947,7 @@
 	},
 	"995_4": {
 		"affix": "Added Throwing Damage and Throwing Armor Shred Chance",
-		"1": "{rounding:Integer}+12 Throwing Damage",
+		"1": "+12 Throwing Damage",
 		"level": 0,
 		"statOrderKey": 995,
 		"statOrder": [
@@ -105965,7 +105965,7 @@
 	},
 	"995_5": {
 		"affix": "Added Throwing Damage and Throwing Armor Shred Chance",
-		"1": "{rounding:Integer}+13 Throwing Damage",
+		"1": "+13 Throwing Damage",
 		"level": 0,
 		"statOrderKey": 995,
 		"statOrder": [
@@ -105983,7 +105983,7 @@
 	},
 	"995_6": {
 		"affix": "Added Throwing Damage and Throwing Armor Shred Chance",
-		"1": "{rounding:Integer}+14 Throwing Damage",
+		"1": "+14 Throwing Damage",
 		"level": 0,
 		"statOrderKey": 995,
 		"statOrder": [
@@ -106155,7 +106155,7 @@
 	},
 	"997_0": {
 		"affix": "Mana gained on Potion Use and Ward Gained on Potion Use",
-		"1": "{rounding:Integer}+5 Mana Gained on Potion Use",
+		"1": "+5 Mana Gained on Potion Use",
 		"level": 0,
 		"statOrderKey": 997,
 		"statOrder": [
@@ -106172,7 +106172,7 @@
 	},
 	"997_1": {
 		"affix": "Mana gained on Potion Use and Ward Gained on Potion Use",
-		"1": "{rounding:Integer}+6 Mana Gained on Potion Use",
+		"1": "+6 Mana Gained on Potion Use",
 		"level": 0,
 		"statOrderKey": 997,
 		"statOrder": [
@@ -106189,7 +106189,7 @@
 	},
 	"997_2": {
 		"affix": "Mana gained on Potion Use and Ward Gained on Potion Use",
-		"1": "{rounding:Integer}+7 Mana Gained on Potion Use",
+		"1": "+7 Mana Gained on Potion Use",
 		"level": 0,
 		"statOrderKey": 997,
 		"statOrder": [
@@ -106443,7 +106443,7 @@
 	},
 	"1000_0": {
 		"affix": "Maximum Potion Slots and Missing Health gained as Ward on Potion Use",
-		"1": "{rounding:Integer}+1 Potion Slots",
+		"1": "+1 Potion Slots",
 		"level": 0,
 		"statOrderKey": 1000.0,
 		"statOrder": [
@@ -106460,7 +106460,7 @@
 	},
 	"1000_1": {
 		"affix": "Maximum Potion Slots and Missing Health gained as Ward on Potion Use",
-		"1": "{rounding:Integer}+1 Potion Slots",
+		"1": "+1 Potion Slots",
 		"level": 0,
 		"statOrderKey": 1000.0,
 		"statOrder": [
@@ -106477,7 +106477,7 @@
 	},
 	"1000_2": {
 		"affix": "Maximum Potion Slots and Missing Health gained as Ward on Potion Use",
-		"1": "{rounding:Integer}+1 Potion Slots",
+		"1": "+1 Potion Slots",
 		"level": 0,
 		"statOrderKey": 1000.0,
 		"statOrder": [
@@ -106494,7 +106494,7 @@
 	},
 	"1000_3": {
 		"affix": "Maximum Potion Slots and Missing Health gained as Ward on Potion Use",
-		"1": "{rounding:Integer}+1 Potion Slots",
+		"1": "+1 Potion Slots",
 		"level": 0,
 		"statOrderKey": 1000.0,
 		"statOrder": [
@@ -106511,7 +106511,7 @@
 	},
 	"1000_4": {
 		"affix": "Maximum Potion Slots and Missing Health gained as Ward on Potion Use",
-		"1": "{rounding:Integer}+1 Potion Slots",
+		"1": "+1 Potion Slots",
 		"level": 0,
 		"statOrderKey": 1000.0,
 		"statOrder": [
@@ -106528,7 +106528,7 @@
 	},
 	"1000_5": {
 		"affix": "Maximum Potion Slots and Missing Health gained as Ward on Potion Use",
-		"1": "{rounding:Integer}+1 Potion Slots",
+		"1": "+1 Potion Slots",
 		"level": 0,
 		"statOrderKey": 1000.0,
 		"statOrder": [
@@ -106545,7 +106545,7 @@
 	},
 	"1000_6": {
 		"affix": "Maximum Potion Slots and Missing Health gained as Ward on Potion Use",
-		"1": "{rounding:Integer}+1 Potion Slots",
+		"1": "+1 Potion Slots",
 		"level": 0,
 		"statOrderKey": 1000.0,
 		"statOrder": [
@@ -106562,7 +106562,7 @@
 	},
 	"1000_7": {
 		"affix": "Maximum Potion Slots and Missing Health gained as Ward on Potion Use",
-		"1": "{rounding:Integer}+1 Potion Slots",
+		"1": "+1 Potion Slots",
 		"level": 0,
 		"statOrderKey": 1000.0,
 		"statOrder": [
@@ -106579,7 +106579,7 @@
 	},
 	"1001_0": {
 		"affix": "Cannot be Slowed and Reduced Effect of Haste on you",
-		"1": "{rounding:Integer}+1 Slow Immunity",
+		"1": "+1 Slow Immunity",
 		"level": 0,
 		"statOrderKey": 1001,
 		"statOrder": [
@@ -106597,7 +106597,7 @@
 	},
 	"1001_1": {
 		"affix": "Cannot be Slowed and Reduced Effect of Haste on you",
-		"1": "{rounding:Integer}+1 Slow Immunity",
+		"1": "+1 Slow Immunity",
 		"level": 0,
 		"statOrderKey": 1001,
 		"statOrder": [
@@ -106615,7 +106615,7 @@
 	},
 	"1001_2": {
 		"affix": "Cannot be Slowed and Reduced Effect of Haste on you",
-		"1": "{rounding:Integer}+1 Slow Immunity",
+		"1": "+1 Slow Immunity",
 		"level": 0,
 		"statOrderKey": 1001,
 		"statOrder": [
@@ -106633,7 +106633,7 @@
 	},
 	"1001_3": {
 		"affix": "Cannot be Slowed and Reduced Effect of Haste on you",
-		"1": "{rounding:Integer}+1 Slow Immunity",
+		"1": "+1 Slow Immunity",
 		"level": 0,
 		"statOrderKey": 1001,
 		"statOrder": [
@@ -106651,7 +106651,7 @@
 	},
 	"1001_4": {
 		"affix": "Cannot be Slowed and Reduced Effect of Haste on you",
-		"1": "{rounding:Integer}+1 Slow Immunity",
+		"1": "+1 Slow Immunity",
 		"level": 0,
 		"statOrderKey": 1001,
 		"statOrder": [
@@ -106669,7 +106669,7 @@
 	},
 	"1001_5": {
 		"affix": "Cannot be Slowed and Reduced Effect of Haste on you",
-		"1": "{rounding:Integer}+1 Slow Immunity",
+		"1": "+1 Slow Immunity",
 		"level": 0,
 		"statOrderKey": 1001,
 		"statOrder": [
@@ -106687,7 +106687,7 @@
 	},
 	"1001_6": {
 		"affix": "Cannot be Slowed and Reduced Effect of Haste on you",
-		"1": "{rounding:Integer}+1 Slow Immunity",
+		"1": "+1 Slow Immunity",
 		"level": 0,
 		"statOrderKey": 1001,
 		"statOrder": [
@@ -106705,7 +106705,7 @@
 	},
 	"1001_7": {
 		"affix": "Cannot be Slowed and Reduced Effect of Haste on you",
-		"1": "{rounding:Integer}+1 Slow Immunity",
+		"1": "+1 Slow Immunity",
 		"level": 0,
 		"statOrderKey": 1001,
 		"statOrder": [
@@ -107140,7 +107140,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+13 Increases the number of spells you can cast per second Ward gained when you directly Cast a Spell",
+		"2": "+13 Increases the number of spells you can cast per second Ward gained when you directly Cast a Spell",
 		"canRollOn": [
 			4
 		],
@@ -107157,7 +107157,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+14 Increases the number of spells you can cast per second Ward gained when you directly Cast a Spell",
+		"2": "+14 Increases the number of spells you can cast per second Ward gained when you directly Cast a Spell",
 		"canRollOn": [
 			4
 		],
@@ -107174,7 +107174,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+15 Increases the number of spells you can cast per second Ward gained when you directly Cast a Spell",
+		"2": "+15 Increases the number of spells you can cast per second Ward gained when you directly Cast a Spell",
 		"canRollOn": [
 			4
 		],
@@ -107191,7 +107191,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+16 Increases the number of spells you can cast per second Ward gained when you directly Cast a Spell",
+		"2": "+16 Increases the number of spells you can cast per second Ward gained when you directly Cast a Spell",
 		"canRollOn": [
 			4
 		],
@@ -107208,7 +107208,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+17 Increases the number of spells you can cast per second Ward gained when you directly Cast a Spell",
+		"2": "+17 Increases the number of spells you can cast per second Ward gained when you directly Cast a Spell",
 		"canRollOn": [
 			4
 		],
@@ -107267,7 +107267,7 @@
 	},
 	"1006_0": {
 		"affix": "Cannot be Chilled and Reduced Fire Resistance",
-		"1": "{rounding:Integer}+1 Chill Immunity",
+		"1": "+1 Chill Immunity",
 		"level": 0,
 		"statOrderKey": 1006,
 		"statOrder": [
@@ -107285,7 +107285,7 @@
 	},
 	"1006_1": {
 		"affix": "Cannot be Chilled and Reduced Fire Resistance",
-		"1": "{rounding:Integer}+1 Chill Immunity",
+		"1": "+1 Chill Immunity",
 		"level": 0,
 		"statOrderKey": 1006,
 		"statOrder": [
@@ -107303,7 +107303,7 @@
 	},
 	"1006_2": {
 		"affix": "Cannot be Chilled and Reduced Fire Resistance",
-		"1": "{rounding:Integer}+1 Chill Immunity",
+		"1": "+1 Chill Immunity",
 		"level": 0,
 		"statOrderKey": 1006,
 		"statOrder": [
@@ -107321,7 +107321,7 @@
 	},
 	"1006_3": {
 		"affix": "Cannot be Chilled and Reduced Fire Resistance",
-		"1": "{rounding:Integer}+1 Chill Immunity",
+		"1": "+1 Chill Immunity",
 		"level": 0,
 		"statOrderKey": 1006,
 		"statOrder": [
@@ -107339,7 +107339,7 @@
 	},
 	"1006_4": {
 		"affix": "Cannot be Chilled and Reduced Fire Resistance",
-		"1": "{rounding:Integer}+1 Chill Immunity",
+		"1": "+1 Chill Immunity",
 		"level": 0,
 		"statOrderKey": 1006,
 		"statOrder": [
@@ -107357,7 +107357,7 @@
 	},
 	"1006_5": {
 		"affix": "Cannot be Chilled and Reduced Fire Resistance",
-		"1": "{rounding:Integer}+1 Chill Immunity",
+		"1": "+1 Chill Immunity",
 		"level": 0,
 		"statOrderKey": 1006,
 		"statOrder": [
@@ -107375,7 +107375,7 @@
 	},
 	"1006_6": {
 		"affix": "Cannot be Chilled and Reduced Fire Resistance",
-		"1": "{rounding:Integer}+1 Chill Immunity",
+		"1": "+1 Chill Immunity",
 		"level": 0,
 		"statOrderKey": 1006,
 		"statOrder": [
@@ -107393,7 +107393,7 @@
 	},
 	"1006_7": {
 		"affix": "Cannot be Chilled and Reduced Fire Resistance",
-		"1": "{rounding:Integer}+1 Chill Immunity",
+		"1": "+1 Chill Immunity",
 		"level": 0,
 		"statOrderKey": 1006,
 		"statOrder": [
@@ -107420,7 +107420,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+5 Increases your armor from all sources Thorns per 1% Armor Mitigation",
+		"2": "+5 Increases your armor from all sources Thorns per 1% Armor Mitigation",
 		"canRollOn": [
 			1,
 			18
@@ -107429,7 +107429,7 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+(31-38)% Armor",
-				"2": "{rounding:Integer}+6 Increases your armor from all sources Thorns per 1% Armor Mitigation"
+				"2": "+6 Increases your armor from all sources Thorns per 1% Armor Mitigation"
 			}
 		}
 	},
@@ -107444,7 +107444,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+5 Increases your armor from all sources Thorns per 1% Armor Mitigation",
+		"2": "+5 Increases your armor from all sources Thorns per 1% Armor Mitigation",
 		"canRollOn": [
 			1,
 			18
@@ -107453,7 +107453,7 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+(40-47)% Armor",
-				"2": "{rounding:Integer}+6 Increases your armor from all sources Thorns per 1% Armor Mitigation"
+				"2": "+6 Increases your armor from all sources Thorns per 1% Armor Mitigation"
 			}
 		}
 	},
@@ -107468,7 +107468,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+6 Increases your armor from all sources Thorns per 1% Armor Mitigation",
+		"2": "+6 Increases your armor from all sources Thorns per 1% Armor Mitigation",
 		"canRollOn": [
 			1,
 			18
@@ -107477,7 +107477,7 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+(49-56)% Armor",
-				"2": "{rounding:Integer}+8 Increases your armor from all sources Thorns per 1% Armor Mitigation"
+				"2": "+8 Increases your armor from all sources Thorns per 1% Armor Mitigation"
 			}
 		}
 	},
@@ -107492,7 +107492,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+6 Increases your armor from all sources Thorns per 1% Armor Mitigation",
+		"2": "+6 Increases your armor from all sources Thorns per 1% Armor Mitigation",
 		"canRollOn": [
 			1,
 			18
@@ -107501,7 +107501,7 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+(58-65)% Armor",
-				"2": "{rounding:Integer}+8 Increases your armor from all sources Thorns per 1% Armor Mitigation"
+				"2": "+8 Increases your armor from all sources Thorns per 1% Armor Mitigation"
 			}
 		}
 	},
@@ -107516,7 +107516,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+6 Increases your armor from all sources Thorns per 1% Armor Mitigation",
+		"2": "+6 Increases your armor from all sources Thorns per 1% Armor Mitigation",
 		"canRollOn": [
 			1,
 			18
@@ -107525,7 +107525,7 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+(67-74)% Armor",
-				"2": "{rounding:Integer}+8 Increases your armor from all sources Thorns per 1% Armor Mitigation"
+				"2": "+8 Increases your armor from all sources Thorns per 1% Armor Mitigation"
 			}
 		}
 	},
@@ -107540,7 +107540,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+7 Increases your armor from all sources Thorns per 1% Armor Mitigation",
+		"2": "+7 Increases your armor from all sources Thorns per 1% Armor Mitigation",
 		"canRollOn": [
 			1,
 			18
@@ -107549,7 +107549,7 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+(76-83)% Armor",
-				"2": "{rounding:Integer}+9 Increases your armor from all sources Thorns per 1% Armor Mitigation"
+				"2": "+9 Increases your armor from all sources Thorns per 1% Armor Mitigation"
 			}
 		}
 	},
@@ -107564,7 +107564,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+7 Increases your armor from all sources Thorns per 1% Armor Mitigation",
+		"2": "+7 Increases your armor from all sources Thorns per 1% Armor Mitigation",
 		"canRollOn": [
 			1,
 			18
@@ -107573,7 +107573,7 @@
 		"slotOverrides": {
 			"body_armor": {
 				"1": "+(85-90)% Armor",
-				"2": "{rounding:Integer}+9 Increases your armor from all sources Thorns per 1% Armor Mitigation"
+				"2": "+9 Increases your armor from all sources Thorns per 1% Armor Mitigation"
 			}
 		}
 	},
@@ -108067,7 +108067,7 @@
 	},
 	"1012_0": {
 		"affix": "Cannot be Stunned and Increased Evade Cooldown Duration",
-		"1": "{rounding:Integer}+1 Stun Immunity",
+		"1": "+1 Stun Immunity",
 		"level": 0,
 		"statOrderKey": 1012,
 		"statOrder": [
@@ -108084,7 +108084,7 @@
 	},
 	"1012_1": {
 		"affix": "Cannot be Stunned and Increased Evade Cooldown Duration",
-		"1": "{rounding:Integer}+1 Stun Immunity",
+		"1": "+1 Stun Immunity",
 		"level": 0,
 		"statOrderKey": 1012,
 		"statOrder": [
@@ -108101,7 +108101,7 @@
 	},
 	"1012_2": {
 		"affix": "Cannot be Stunned and Increased Evade Cooldown Duration",
-		"1": "{rounding:Integer}+1 Stun Immunity",
+		"1": "+1 Stun Immunity",
 		"level": 0,
 		"statOrderKey": 1012,
 		"statOrder": [
@@ -108118,7 +108118,7 @@
 	},
 	"1012_3": {
 		"affix": "Cannot be Stunned and Increased Evade Cooldown Duration",
-		"1": "{rounding:Integer}+1 Stun Immunity",
+		"1": "+1 Stun Immunity",
 		"level": 0,
 		"statOrderKey": 1012,
 		"statOrder": [
@@ -108135,7 +108135,7 @@
 	},
 	"1012_4": {
 		"affix": "Cannot be Stunned and Increased Evade Cooldown Duration",
-		"1": "{rounding:Integer}+1 Stun Immunity",
+		"1": "+1 Stun Immunity",
 		"level": 0,
 		"statOrderKey": 1012,
 		"statOrder": [
@@ -108152,7 +108152,7 @@
 	},
 	"1012_5": {
 		"affix": "Cannot be Stunned and Increased Evade Cooldown Duration",
-		"1": "{rounding:Integer}+1 Stun Immunity",
+		"1": "+1 Stun Immunity",
 		"level": 0,
 		"statOrderKey": 1012,
 		"statOrder": [
@@ -108169,7 +108169,7 @@
 	},
 	"1012_6": {
 		"affix": "Cannot be Stunned and Increased Evade Cooldown Duration",
-		"1": "{rounding:Integer}+1 Stun Immunity",
+		"1": "+1 Stun Immunity",
 		"level": 0,
 		"statOrderKey": 1012,
 		"statOrder": [
@@ -108186,7 +108186,7 @@
 	},
 	"1012_7": {
 		"affix": "Cannot be Stunned and Increased Evade Cooldown Duration",
-		"1": "{rounding:Integer}+1 Stun Immunity",
+		"1": "+1 Stun Immunity",
 		"level": 0,
 		"statOrderKey": 1012,
 		"statOrder": [
@@ -108339,7 +108339,7 @@
 	},
 	"1014_0": {
 		"affix": "Level of All Skills and Added Mana",
-		"1": "{rounding:Integer}+1 Skills",
+		"1": "+1 Skills",
 		"level": 0,
 		"statOrderKey": 1014,
 		"statOrder": [
@@ -108356,14 +108356,14 @@
 		"specialAffixType": 6,
 		"slotOverrides": {
 			"body_armor": {
-				"1": "{rounding:Integer}+1 Skills",
+				"1": "+1 Skills",
 				"2": "{rounding:Integer}+(26-29) Mana"
 			}
 		}
 	},
 	"1014_1": {
 		"affix": "Level of All Skills and Added Mana",
-		"1": "{rounding:Integer}+1 Skills",
+		"1": "+1 Skills",
 		"level": 0,
 		"statOrderKey": 1014,
 		"statOrder": [
@@ -108380,14 +108380,14 @@
 		"specialAffixType": 6,
 		"slotOverrides": {
 			"body_armor": {
-				"1": "{rounding:Integer}+1 Skills",
+				"1": "+1 Skills",
 				"2": "{rounding:Integer}+(31-35) Mana"
 			}
 		}
 	},
 	"1014_2": {
 		"affix": "Level of All Skills and Added Mana",
-		"1": "{rounding:Integer}+1 Skills",
+		"1": "+1 Skills",
 		"level": 0,
 		"statOrderKey": 1014,
 		"statOrder": [
@@ -108404,14 +108404,14 @@
 		"specialAffixType": 6,
 		"slotOverrides": {
 			"body_armor": {
-				"1": "{rounding:Integer}+1 Skills",
+				"1": "+1 Skills",
 				"2": "{rounding:Integer}+(36-40) Mana"
 			}
 		}
 	},
 	"1014_3": {
 		"affix": "Level of All Skills and Added Mana",
-		"1": "{rounding:Integer}+1 Skills",
+		"1": "+1 Skills",
 		"level": 0,
 		"statOrderKey": 1014,
 		"statOrder": [
@@ -108428,14 +108428,14 @@
 		"specialAffixType": 6,
 		"slotOverrides": {
 			"body_armor": {
-				"1": "{rounding:Integer}+1 Skills",
+				"1": "+1 Skills",
 				"2": "{rounding:Integer}+(41-45) Mana"
 			}
 		}
 	},
 	"1014_4": {
 		"affix": "Level of All Skills and Added Mana",
-		"1": "{rounding:Integer}+1 Skills",
+		"1": "+1 Skills",
 		"level": 0,
 		"statOrderKey": 1014,
 		"statOrder": [
@@ -108452,14 +108452,14 @@
 		"specialAffixType": 6,
 		"slotOverrides": {
 			"body_armor": {
-				"1": "{rounding:Integer}+1 Skills",
+				"1": "+1 Skills",
 				"2": "{rounding:Integer}+(46-50) Mana"
 			}
 		}
 	},
 	"1014_5": {
 		"affix": "Level of All Skills and Added Mana",
-		"1": "{rounding:Integer}+1 Skills",
+		"1": "+1 Skills",
 		"level": 0,
 		"statOrderKey": 1014,
 		"statOrder": [
@@ -108476,14 +108476,14 @@
 		"specialAffixType": 6,
 		"slotOverrides": {
 			"body_armor": {
-				"1": "{rounding:Integer}+1 Skills",
+				"1": "+1 Skills",
 				"2": "{rounding:Integer}+(51-55) Mana"
 			}
 		}
 	},
 	"1014_6": {
 		"affix": "Level of All Skills and Added Mana",
-		"1": "{rounding:Integer}+1 Skills",
+		"1": "+1 Skills",
 		"level": 0,
 		"statOrderKey": 1014,
 		"statOrder": [
@@ -108500,14 +108500,14 @@
 		"specialAffixType": 6,
 		"slotOverrides": {
 			"body_armor": {
-				"1": "{rounding:Integer}+1 Skills",
+				"1": "+1 Skills",
 				"2": "{rounding:Integer}+(56-64) Mana"
 			}
 		}
 	},
 	"1014_7": {
 		"affix": "Level of All Skills and Added Mana",
-		"1": "{rounding:Integer}+1 Skills",
+		"1": "+1 Skills",
 		"level": 0,
 		"statOrderKey": 1014,
 		"statOrder": [
@@ -108524,14 +108524,14 @@
 		"specialAffixType": 6,
 		"slotOverrides": {
 			"body_armor": {
-				"1": "{rounding:Integer}+1 Skills",
+				"1": "+1 Skills",
 				"2": "{rounding:Integer}+(103-128) Mana"
 			}
 		}
 	},
 	"1015_0": {
 		"affix": "Added Attunement and Increased Mana Regen",
-		"1": "{rounding:Integer}+4 Attunement",
+		"1": "+4 Attunement",
 		"level": 0,
 		"statOrderKey": 1015,
 		"statOrder": [
@@ -108550,7 +108550,7 @@
 	},
 	"1015_1": {
 		"affix": "Added Attunement and Increased Mana Regen",
-		"1": "{rounding:Integer}+5 Attunement",
+		"1": "+5 Attunement",
 		"level": 0,
 		"statOrderKey": 1015,
 		"statOrder": [
@@ -108569,7 +108569,7 @@
 	},
 	"1015_2": {
 		"affix": "Added Attunement and Increased Mana Regen",
-		"1": "{rounding:Integer}+5 Attunement",
+		"1": "+5 Attunement",
 		"level": 0,
 		"statOrderKey": 1015,
 		"statOrder": [
@@ -108588,7 +108588,7 @@
 	},
 	"1015_3": {
 		"affix": "Added Attunement and Increased Mana Regen",
-		"1": "{rounding:Integer}+6 Attunement",
+		"1": "+6 Attunement",
 		"level": 0,
 		"statOrderKey": 1015,
 		"statOrder": [
@@ -108607,7 +108607,7 @@
 	},
 	"1015_4": {
 		"affix": "Added Attunement and Increased Mana Regen",
-		"1": "{rounding:Integer}+6 Attunement",
+		"1": "+6 Attunement",
 		"level": 0,
 		"statOrderKey": 1015,
 		"statOrder": [
@@ -108626,7 +108626,7 @@
 	},
 	"1015_5": {
 		"affix": "Added Attunement and Increased Mana Regen",
-		"1": "{rounding:Integer}+7 Attunement",
+		"1": "+7 Attunement",
 		"level": 0,
 		"statOrderKey": 1015,
 		"statOrder": [
@@ -108645,7 +108645,7 @@
 	},
 	"1015_6": {
 		"affix": "Added Attunement and Increased Mana Regen",
-		"1": "{rounding:Integer}+7 Attunement",
+		"1": "+7 Attunement",
 		"level": 0,
 		"statOrderKey": 1015,
 		"statOrder": [
@@ -108664,7 +108664,7 @@
 	},
 	"1015_7": {
 		"affix": "Added Attunement and Increased Mana Regen",
-		"1": "{rounding:Integer}+10 Attunement",
+		"1": "+10 Attunement",
 		"level": 0,
 		"statOrderKey": 1015,
 		"statOrder": [
@@ -108683,7 +108683,7 @@
 	},
 	"1016_0": {
 		"affix": "Added Intelligence and Ward Per Second",
-		"1": "{rounding:Integer}+4 Intelligence",
+		"1": "+4 Intelligence",
 		"level": 0,
 		"statOrderKey": 1016,
 		"statOrder": [
@@ -108702,7 +108702,7 @@
 	},
 	"1016_1": {
 		"affix": "Added Intelligence and Ward Per Second",
-		"1": "{rounding:Integer}+5 Intelligence",
+		"1": "+5 Intelligence",
 		"level": 0,
 		"statOrderKey": 1016,
 		"statOrder": [
@@ -108721,7 +108721,7 @@
 	},
 	"1016_2": {
 		"affix": "Added Intelligence and Ward Per Second",
-		"1": "{rounding:Integer}+5 Intelligence",
+		"1": "+5 Intelligence",
 		"level": 0,
 		"statOrderKey": 1016,
 		"statOrder": [
@@ -108740,7 +108740,7 @@
 	},
 	"1016_3": {
 		"affix": "Added Intelligence and Ward Per Second",
-		"1": "{rounding:Integer}+6 Intelligence",
+		"1": "+6 Intelligence",
 		"level": 0,
 		"statOrderKey": 1016,
 		"statOrder": [
@@ -108759,7 +108759,7 @@
 	},
 	"1016_4": {
 		"affix": "Added Intelligence and Ward Per Second",
-		"1": "{rounding:Integer}+6 Intelligence",
+		"1": "+6 Intelligence",
 		"level": 0,
 		"statOrderKey": 1016,
 		"statOrder": [
@@ -108778,7 +108778,7 @@
 	},
 	"1016_5": {
 		"affix": "Added Intelligence and Ward Per Second",
-		"1": "{rounding:Integer}+7 Intelligence",
+		"1": "+7 Intelligence",
 		"level": 0,
 		"statOrderKey": 1016,
 		"statOrder": [
@@ -108797,7 +108797,7 @@
 	},
 	"1016_6": {
 		"affix": "Added Intelligence and Ward Per Second",
-		"1": "{rounding:Integer}+7 Intelligence",
+		"1": "+7 Intelligence",
 		"level": 0,
 		"statOrderKey": 1016,
 		"statOrder": [
@@ -108816,7 +108816,7 @@
 	},
 	"1016_7": {
 		"affix": "Added Intelligence and Ward Per Second",
-		"1": "{rounding:Integer}+10 Intelligence",
+		"1": "+10 Intelligence",
 		"level": 0,
 		"statOrderKey": 1016,
 		"statOrder": [
@@ -108835,7 +108835,7 @@
 	},
 	"1017_0": {
 		"affix": "Added Dexterity and Increased Dodge Rating",
-		"1": "{rounding:Integer}+4 Dexterity",
+		"1": "+4 Dexterity",
 		"level": 0,
 		"statOrderKey": 1017,
 		"statOrder": [
@@ -108854,7 +108854,7 @@
 	},
 	"1017_1": {
 		"affix": "Added Dexterity and Increased Dodge Rating",
-		"1": "{rounding:Integer}+5 Dexterity",
+		"1": "+5 Dexterity",
 		"level": 0,
 		"statOrderKey": 1017,
 		"statOrder": [
@@ -108873,7 +108873,7 @@
 	},
 	"1017_2": {
 		"affix": "Added Dexterity and Increased Dodge Rating",
-		"1": "{rounding:Integer}+5 Dexterity",
+		"1": "+5 Dexterity",
 		"level": 0,
 		"statOrderKey": 1017,
 		"statOrder": [
@@ -108892,7 +108892,7 @@
 	},
 	"1017_3": {
 		"affix": "Added Dexterity and Increased Dodge Rating",
-		"1": "{rounding:Integer}+6 Dexterity",
+		"1": "+6 Dexterity",
 		"level": 0,
 		"statOrderKey": 1017,
 		"statOrder": [
@@ -108911,7 +108911,7 @@
 	},
 	"1017_4": {
 		"affix": "Added Dexterity and Increased Dodge Rating",
-		"1": "{rounding:Integer}+6 Dexterity",
+		"1": "+6 Dexterity",
 		"level": 0,
 		"statOrderKey": 1017,
 		"statOrder": [
@@ -108930,7 +108930,7 @@
 	},
 	"1017_5": {
 		"affix": "Added Dexterity and Increased Dodge Rating",
-		"1": "{rounding:Integer}+7 Dexterity",
+		"1": "+7 Dexterity",
 		"level": 0,
 		"statOrderKey": 1017,
 		"statOrder": [
@@ -108949,7 +108949,7 @@
 	},
 	"1017_6": {
 		"affix": "Added Dexterity and Increased Dodge Rating",
-		"1": "{rounding:Integer}+7 Dexterity",
+		"1": "+7 Dexterity",
 		"level": 0,
 		"statOrderKey": 1017,
 		"statOrder": [
@@ -108968,7 +108968,7 @@
 	},
 	"1017_7": {
 		"affix": "Added Dexterity and Increased Dodge Rating",
-		"1": "{rounding:Integer}+10 Dexterity",
+		"1": "+10 Dexterity",
 		"level": 0,
 		"statOrderKey": 1017,
 		"statOrder": [
@@ -108987,7 +108987,7 @@
 	},
 	"1018_0": {
 		"affix": "Added Strength and Added Armor",
-		"1": "{rounding:Integer}+4 Strength",
+		"1": "+4 Strength",
 		"level": 0,
 		"statOrderKey": 1018,
 		"statOrder": [
@@ -109006,7 +109006,7 @@
 	},
 	"1018_1": {
 		"affix": "Added Strength and Added Armor",
-		"1": "{rounding:Integer}+5 Strength",
+		"1": "+5 Strength",
 		"level": 0,
 		"statOrderKey": 1018,
 		"statOrder": [
@@ -109025,7 +109025,7 @@
 	},
 	"1018_2": {
 		"affix": "Added Strength and Added Armor",
-		"1": "{rounding:Integer}+5 Strength",
+		"1": "+5 Strength",
 		"level": 0,
 		"statOrderKey": 1018,
 		"statOrder": [
@@ -109044,7 +109044,7 @@
 	},
 	"1018_3": {
 		"affix": "Added Strength and Added Armor",
-		"1": "{rounding:Integer}+6 Strength",
+		"1": "+6 Strength",
 		"level": 0,
 		"statOrderKey": 1018,
 		"statOrder": [
@@ -109063,7 +109063,7 @@
 	},
 	"1018_4": {
 		"affix": "Added Strength and Added Armor",
-		"1": "{rounding:Integer}+6 Strength",
+		"1": "+6 Strength",
 		"level": 0,
 		"statOrderKey": 1018,
 		"statOrder": [
@@ -109082,7 +109082,7 @@
 	},
 	"1018_5": {
 		"affix": "Added Strength and Added Armor",
-		"1": "{rounding:Integer}+7 Strength",
+		"1": "+7 Strength",
 		"level": 0,
 		"statOrderKey": 1018,
 		"statOrder": [
@@ -109101,7 +109101,7 @@
 	},
 	"1018_6": {
 		"affix": "Added Strength and Added Armor",
-		"1": "{rounding:Integer}+7 Strength",
+		"1": "+7 Strength",
 		"level": 0,
 		"statOrderKey": 1018,
 		"statOrder": [
@@ -109120,7 +109120,7 @@
 	},
 	"1018_7": {
 		"affix": "Added Strength and Added Armor",
-		"1": "{rounding:Integer}+10 Strength",
+		"1": "+10 Strength",
 		"level": 0,
 		"statOrderKey": 1018,
 		"statOrder": [
@@ -111509,7 +111509,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+1 Increases the health restored by healing skills Health per Attunement",
+		"2": "+1 Increases the health restored by healing skills Health per Attunement",
 		"canRollOn": [
 			22
 		],
@@ -111526,7 +111526,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+1 Increases the health restored by healing skills Health per Attunement",
+		"2": "+1 Increases the health restored by healing skills Health per Attunement",
 		"canRollOn": [
 			22
 		],
@@ -111543,7 +111543,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+1 Increases the health restored by healing skills Health per Attunement",
+		"2": "+1 Increases the health restored by healing skills Health per Attunement",
 		"canRollOn": [
 			22
 		],
@@ -111560,7 +111560,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+1 Increases the health restored by healing skills Health per Attunement",
+		"2": "+1 Increases the health restored by healing skills Health per Attunement",
 		"canRollOn": [
 			22
 		],
@@ -111577,7 +111577,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+1 Increases the health restored by healing skills Health per Attunement",
+		"2": "+1 Increases the health restored by healing skills Health per Attunement",
 		"canRollOn": [
 			22
 		],
@@ -111594,7 +111594,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+1 Increases the health restored by healing skills Health per Attunement",
+		"2": "+1 Increases the health restored by healing skills Health per Attunement",
 		"canRollOn": [
 			22
 		],
@@ -111611,7 +111611,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+1 Increases the health restored by healing skills Health per Attunement",
+		"2": "+1 Increases the health restored by healing skills Health per Attunement",
 		"canRollOn": [
 			22
 		],
@@ -111628,7 +111628,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+2 Increases the health restored by healing skills Health per Attunement",
+		"2": "+2 Increases the health restored by healing skills Health per Attunement",
 		"canRollOn": [
 			22
 		],
@@ -112300,7 +112300,7 @@
 	},
 	"1078_0": {
 		"affix": "Added Intelligence and Ward Decay Threshold per Intelligence",
-		"1": "{rounding:Integer}+4 Intelligence",
+		"1": "+4 Intelligence",
 		"level": 0,
 		"statOrderKey": 1078,
 		"statOrder": [
@@ -112309,7 +112309,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+2 Each point of intelligence grants 2% ward retention and improves skills that rely on carefully studied magic Ward Decay Threshold per Intelligence",
+		"2": "+2 Each point of intelligence grants 2% ward retention and improves skills that rely on carefully studied magic Ward Decay Threshold per Intelligence",
 		"canRollOn": [
 			19
 		],
@@ -112317,7 +112317,7 @@
 	},
 	"1078_1": {
 		"affix": "Added Intelligence and Ward Decay Threshold per Intelligence",
-		"1": "{rounding:Integer}+5 Intelligence",
+		"1": "+5 Intelligence",
 		"level": 0,
 		"statOrderKey": 1078,
 		"statOrder": [
@@ -112326,7 +112326,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+2 Each point of intelligence grants 2% ward retention and improves skills that rely on carefully studied magic Ward Decay Threshold per Intelligence",
+		"2": "+2 Each point of intelligence grants 2% ward retention and improves skills that rely on carefully studied magic Ward Decay Threshold per Intelligence",
 		"canRollOn": [
 			19
 		],
@@ -112334,7 +112334,7 @@
 	},
 	"1078_2": {
 		"affix": "Added Intelligence and Ward Decay Threshold per Intelligence",
-		"1": "{rounding:Integer}+5 Intelligence",
+		"1": "+5 Intelligence",
 		"level": 0,
 		"statOrderKey": 1078,
 		"statOrder": [
@@ -112343,7 +112343,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+3 Each point of intelligence grants 2% ward retention and improves skills that rely on carefully studied magic Ward Decay Threshold per Intelligence",
+		"2": "+3 Each point of intelligence grants 2% ward retention and improves skills that rely on carefully studied magic Ward Decay Threshold per Intelligence",
 		"canRollOn": [
 			19
 		],
@@ -112351,7 +112351,7 @@
 	},
 	"1078_3": {
 		"affix": "Added Intelligence and Ward Decay Threshold per Intelligence",
-		"1": "{rounding:Integer}+6 Intelligence",
+		"1": "+6 Intelligence",
 		"level": 0,
 		"statOrderKey": 1078,
 		"statOrder": [
@@ -112360,7 +112360,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+3 Each point of intelligence grants 2% ward retention and improves skills that rely on carefully studied magic Ward Decay Threshold per Intelligence",
+		"2": "+3 Each point of intelligence grants 2% ward retention and improves skills that rely on carefully studied magic Ward Decay Threshold per Intelligence",
 		"canRollOn": [
 			19
 		],
@@ -112368,7 +112368,7 @@
 	},
 	"1078_4": {
 		"affix": "Added Intelligence and Ward Decay Threshold per Intelligence",
-		"1": "{rounding:Integer}+6 Intelligence",
+		"1": "+6 Intelligence",
 		"level": 0,
 		"statOrderKey": 1078,
 		"statOrder": [
@@ -112377,7 +112377,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+3 Each point of intelligence grants 2% ward retention and improves skills that rely on carefully studied magic Ward Decay Threshold per Intelligence",
+		"2": "+3 Each point of intelligence grants 2% ward retention and improves skills that rely on carefully studied magic Ward Decay Threshold per Intelligence",
 		"canRollOn": [
 			19
 		],
@@ -112385,7 +112385,7 @@
 	},
 	"1078_5": {
 		"affix": "Added Intelligence and Ward Decay Threshold per Intelligence",
-		"1": "{rounding:Integer}+7 Intelligence",
+		"1": "+7 Intelligence",
 		"level": 0,
 		"statOrderKey": 1078,
 		"statOrder": [
@@ -112394,7 +112394,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+4 Each point of intelligence grants 2% ward retention and improves skills that rely on carefully studied magic Ward Decay Threshold per Intelligence",
+		"2": "+4 Each point of intelligence grants 2% ward retention and improves skills that rely on carefully studied magic Ward Decay Threshold per Intelligence",
 		"canRollOn": [
 			19
 		],
@@ -112402,7 +112402,7 @@
 	},
 	"1078_6": {
 		"affix": "Added Intelligence and Ward Decay Threshold per Intelligence",
-		"1": "{rounding:Integer}+7 Intelligence",
+		"1": "+7 Intelligence",
 		"level": 0,
 		"statOrderKey": 1078,
 		"statOrder": [
@@ -112411,7 +112411,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.17,
-		"2": "{rounding:Integer}+4 Each point of intelligence grants 2% ward retention and improves skills that rely on carefully studied magic Ward Decay Threshold per Intelligence",
+		"2": "+4 Each point of intelligence grants 2% ward retention and improves skills that rely on carefully studied magic Ward Decay Threshold per Intelligence",
 		"canRollOn": [
 			19
 		],
@@ -112572,7 +112572,7 @@
 	},
 	"1080_0": {
 		"affix": "Cannot be Stunned by hits you Block and Reduced Block Effectivness",
-		"1": "{rounding:Integer}+1 Cannot be Stunned by Blocked Hits",
+		"1": "+1 Cannot be Stunned by Blocked Hits",
 		"level": 0,
 		"statOrderKey": 1080,
 		"statOrder": [
@@ -112589,7 +112589,7 @@
 	},
 	"1080_1": {
 		"affix": "Cannot be Stunned by hits you Block and Reduced Block Effectivness",
-		"1": "{rounding:Integer}+1 Cannot be Stunned by Blocked Hits",
+		"1": "+1 Cannot be Stunned by Blocked Hits",
 		"level": 0,
 		"statOrderKey": 1080,
 		"statOrder": [
@@ -112606,7 +112606,7 @@
 	},
 	"1080_2": {
 		"affix": "Cannot be Stunned by hits you Block and Reduced Block Effectivness",
-		"1": "{rounding:Integer}+1 Cannot be Stunned by Blocked Hits",
+		"1": "+1 Cannot be Stunned by Blocked Hits",
 		"level": 0,
 		"statOrderKey": 1080,
 		"statOrder": [
@@ -112623,7 +112623,7 @@
 	},
 	"1080_3": {
 		"affix": "Cannot be Stunned by hits you Block and Reduced Block Effectivness",
-		"1": "{rounding:Integer}+1 Cannot be Stunned by Blocked Hits",
+		"1": "+1 Cannot be Stunned by Blocked Hits",
 		"level": 0,
 		"statOrderKey": 1080,
 		"statOrder": [
@@ -112640,7 +112640,7 @@
 	},
 	"1080_4": {
 		"affix": "Cannot be Stunned by hits you Block and Reduced Block Effectivness",
-		"1": "{rounding:Integer}+1 Cannot be Stunned by Blocked Hits",
+		"1": "+1 Cannot be Stunned by Blocked Hits",
 		"level": 0,
 		"statOrderKey": 1080,
 		"statOrder": [
@@ -112657,7 +112657,7 @@
 	},
 	"1080_5": {
 		"affix": "Cannot be Stunned by hits you Block and Reduced Block Effectivness",
-		"1": "{rounding:Integer}+1 Cannot be Stunned by Blocked Hits",
+		"1": "+1 Cannot be Stunned by Blocked Hits",
 		"level": 0,
 		"statOrderKey": 1080,
 		"statOrder": [
@@ -112674,7 +112674,7 @@
 	},
 	"1080_6": {
 		"affix": "Cannot be Stunned by hits you Block and Reduced Block Effectivness",
-		"1": "{rounding:Integer}+1 Cannot be Stunned by Blocked Hits",
+		"1": "+1 Cannot be Stunned by Blocked Hits",
 		"level": 0,
 		"statOrderKey": 1080,
 		"statOrder": [
@@ -112691,7 +112691,7 @@
 	},
 	"1080_7": {
 		"affix": "Cannot be Stunned by hits you Block and Reduced Block Effectivness",
-		"1": "{rounding:Integer}+1 Cannot be Stunned by Blocked Hits",
+		"1": "+1 Cannot be Stunned by Blocked Hits",
 		"level": 0,
 		"statOrderKey": 1080,
 		"statOrder": [
@@ -112827,7 +112827,7 @@
 	},
 	"1081_7": {
 		"affix": "Chance to gain Haste on Block and Haste Effect",
-		"1": "{rounding:Integer}+1 chance to gain Haste for 5 seconds after you Block",
+		"1": "+1 chance to gain Haste for 5 seconds after you Block",
 		"level": 0,
 		"statOrderKey": 1081,
 		"statOrder": [
@@ -112980,7 +112980,7 @@
 	},
 	"1083_0": {
 		"affix": "Strength converted to Brutality",
-		"1": "{rounding:Integer}+4 Strength",
+		"1": "+4 Strength",
 		"level": 0,
 		"statOrderKey": 1083,
 		"statOrder": [
@@ -112997,7 +112997,7 @@
 	},
 	"1083_1": {
 		"affix": "Strength converted to Brutality",
-		"1": "{rounding:Integer}+5 Strength",
+		"1": "+5 Strength",
 		"level": 0,
 		"statOrderKey": 1083,
 		"statOrder": [
@@ -113014,7 +113014,7 @@
 	},
 	"1083_2": {
 		"affix": "Strength converted to Brutality",
-		"1": "{rounding:Integer}+5 Strength",
+		"1": "+5 Strength",
 		"level": 0,
 		"statOrderKey": 1083,
 		"statOrder": [
@@ -113031,7 +113031,7 @@
 	},
 	"1083_3": {
 		"affix": "Strength converted to Brutality",
-		"1": "{rounding:Integer}+6 Strength",
+		"1": "+6 Strength",
 		"level": 0,
 		"statOrderKey": 1083,
 		"statOrder": [
@@ -113048,7 +113048,7 @@
 	},
 	"1083_4": {
 		"affix": "Strength converted to Brutality",
-		"1": "{rounding:Integer}+6 Strength",
+		"1": "+6 Strength",
 		"level": 0,
 		"statOrderKey": 1083,
 		"statOrder": [
@@ -113065,7 +113065,7 @@
 	},
 	"1083_5": {
 		"affix": "Strength converted to Brutality",
-		"1": "{rounding:Integer}+7 Strength",
+		"1": "+7 Strength",
 		"level": 0,
 		"statOrderKey": 1083,
 		"statOrder": [
@@ -113082,7 +113082,7 @@
 	},
 	"1083_6": {
 		"affix": "Strength converted to Brutality",
-		"1": "{rounding:Integer}+7 Strength",
+		"1": "+7 Strength",
 		"level": 0,
 		"statOrderKey": 1083,
 		"statOrder": [
@@ -113116,7 +113116,7 @@
 	},
 	"1084_0": {
 		"affix": "Intelligence converted to Madness",
-		"1": "{rounding:Integer}+4 Intelligence",
+		"1": "+4 Intelligence",
 		"level": 0,
 		"statOrderKey": 1084,
 		"statOrder": [
@@ -113133,7 +113133,7 @@
 	},
 	"1084_1": {
 		"affix": "Intelligence converted to Madness",
-		"1": "{rounding:Integer}+5 Intelligence",
+		"1": "+5 Intelligence",
 		"level": 0,
 		"statOrderKey": 1084,
 		"statOrder": [
@@ -113150,7 +113150,7 @@
 	},
 	"1084_2": {
 		"affix": "Intelligence converted to Madness",
-		"1": "{rounding:Integer}+5 Intelligence",
+		"1": "+5 Intelligence",
 		"level": 0,
 		"statOrderKey": 1084,
 		"statOrder": [
@@ -113167,7 +113167,7 @@
 	},
 	"1084_3": {
 		"affix": "Intelligence converted to Madness",
-		"1": "{rounding:Integer}+6 Intelligence",
+		"1": "+6 Intelligence",
 		"level": 0,
 		"statOrderKey": 1084,
 		"statOrder": [
@@ -113184,7 +113184,7 @@
 	},
 	"1084_4": {
 		"affix": "Intelligence converted to Madness",
-		"1": "{rounding:Integer}+6 Intelligence",
+		"1": "+6 Intelligence",
 		"level": 0,
 		"statOrderKey": 1084,
 		"statOrder": [
@@ -113201,7 +113201,7 @@
 	},
 	"1084_5": {
 		"affix": "Intelligence converted to Madness",
-		"1": "{rounding:Integer}+7 Intelligence",
+		"1": "+7 Intelligence",
 		"level": 0,
 		"statOrderKey": 1084,
 		"statOrder": [
@@ -113218,7 +113218,7 @@
 	},
 	"1084_6": {
 		"affix": "Intelligence converted to Madness",
-		"1": "{rounding:Integer}+7 Intelligence",
+		"1": "+7 Intelligence",
 		"level": 0,
 		"statOrderKey": 1084,
 		"statOrder": [
@@ -113252,7 +113252,7 @@
 	},
 	"1085_0": {
 		"affix": "Dexterity converted to Guile",
-		"1": "{rounding:Integer}+4 Dexterity",
+		"1": "+4 Dexterity",
 		"level": 0,
 		"statOrderKey": 1085,
 		"statOrder": [
@@ -113269,7 +113269,7 @@
 	},
 	"1085_1": {
 		"affix": "Dexterity converted to Guile",
-		"1": "{rounding:Integer}+5 Dexterity",
+		"1": "+5 Dexterity",
 		"level": 0,
 		"statOrderKey": 1085,
 		"statOrder": [
@@ -113286,7 +113286,7 @@
 	},
 	"1085_2": {
 		"affix": "Dexterity converted to Guile",
-		"1": "{rounding:Integer}+5 Dexterity",
+		"1": "+5 Dexterity",
 		"level": 0,
 		"statOrderKey": 1085,
 		"statOrder": [
@@ -113303,7 +113303,7 @@
 	},
 	"1085_3": {
 		"affix": "Dexterity converted to Guile",
-		"1": "{rounding:Integer}+6 Dexterity",
+		"1": "+6 Dexterity",
 		"level": 0,
 		"statOrderKey": 1085,
 		"statOrder": [
@@ -113320,7 +113320,7 @@
 	},
 	"1085_4": {
 		"affix": "Dexterity converted to Guile",
-		"1": "{rounding:Integer}+6 Dexterity",
+		"1": "+6 Dexterity",
 		"level": 0,
 		"statOrderKey": 1085,
 		"statOrder": [
@@ -113337,7 +113337,7 @@
 	},
 	"1085_5": {
 		"affix": "Dexterity converted to Guile",
-		"1": "{rounding:Integer}+7 Dexterity",
+		"1": "+7 Dexterity",
 		"level": 0,
 		"statOrderKey": 1085,
 		"statOrder": [
@@ -113354,7 +113354,7 @@
 	},
 	"1085_6": {
 		"affix": "Dexterity converted to Guile",
-		"1": "{rounding:Integer}+7 Dexterity",
+		"1": "+7 Dexterity",
 		"level": 0,
 		"statOrderKey": 1085,
 		"statOrder": [
@@ -113388,7 +113388,7 @@
 	},
 	"1086_0": {
 		"affix": "Attunement converted to Apathy",
-		"1": "{rounding:Integer}+4 Attunement",
+		"1": "+4 Attunement",
 		"level": 0,
 		"statOrderKey": 1086,
 		"statOrder": [
@@ -113405,7 +113405,7 @@
 	},
 	"1086_1": {
 		"affix": "Attunement converted to Apathy",
-		"1": "{rounding:Integer}+5 Attunement",
+		"1": "+5 Attunement",
 		"level": 0,
 		"statOrderKey": 1086,
 		"statOrder": [
@@ -113422,7 +113422,7 @@
 	},
 	"1086_2": {
 		"affix": "Attunement converted to Apathy",
-		"1": "{rounding:Integer}+5 Attunement",
+		"1": "+5 Attunement",
 		"level": 0,
 		"statOrderKey": 1086,
 		"statOrder": [
@@ -113439,7 +113439,7 @@
 	},
 	"1086_3": {
 		"affix": "Attunement converted to Apathy",
-		"1": "{rounding:Integer}+6 Attunement",
+		"1": "+6 Attunement",
 		"level": 0,
 		"statOrderKey": 1086,
 		"statOrder": [
@@ -113456,7 +113456,7 @@
 	},
 	"1086_4": {
 		"affix": "Attunement converted to Apathy",
-		"1": "{rounding:Integer}+6 Attunement",
+		"1": "+6 Attunement",
 		"level": 0,
 		"statOrderKey": 1086,
 		"statOrder": [
@@ -113473,7 +113473,7 @@
 	},
 	"1086_5": {
 		"affix": "Attunement converted to Apathy",
-		"1": "{rounding:Integer}+7 Attunement",
+		"1": "+7 Attunement",
 		"level": 0,
 		"statOrderKey": 1086,
 		"statOrder": [
@@ -113490,7 +113490,7 @@
 	},
 	"1086_6": {
 		"affix": "Attunement converted to Apathy",
-		"1": "{rounding:Integer}+7 Attunement",
+		"1": "+7 Attunement",
 		"level": 0,
 		"statOrderKey": 1086,
 		"statOrder": [
@@ -113524,7 +113524,7 @@
 	},
 	"1087_0": {
 		"affix": "Vitality converted to Rampancy",
-		"1": "{rounding:Integer}+4 Vitality",
+		"1": "+4 Vitality",
 		"level": 0,
 		"statOrderKey": 1087,
 		"statOrder": [
@@ -113541,7 +113541,7 @@
 	},
 	"1087_1": {
 		"affix": "Vitality converted to Rampancy",
-		"1": "{rounding:Integer}+5 Vitality",
+		"1": "+5 Vitality",
 		"level": 0,
 		"statOrderKey": 1087,
 		"statOrder": [
@@ -113558,7 +113558,7 @@
 	},
 	"1087_2": {
 		"affix": "Vitality converted to Rampancy",
-		"1": "{rounding:Integer}+5 Vitality",
+		"1": "+5 Vitality",
 		"level": 0,
 		"statOrderKey": 1087,
 		"statOrder": [
@@ -113575,7 +113575,7 @@
 	},
 	"1087_3": {
 		"affix": "Vitality converted to Rampancy",
-		"1": "{rounding:Integer}+6 Vitality",
+		"1": "+6 Vitality",
 		"level": 0,
 		"statOrderKey": 1087,
 		"statOrder": [
@@ -113592,7 +113592,7 @@
 	},
 	"1087_4": {
 		"affix": "Vitality converted to Rampancy",
-		"1": "{rounding:Integer}+6 Vitality",
+		"1": "+6 Vitality",
 		"level": 0,
 		"statOrderKey": 1087,
 		"statOrder": [
@@ -113609,7 +113609,7 @@
 	},
 	"1087_5": {
 		"affix": "Vitality converted to Rampancy",
-		"1": "{rounding:Integer}+7 Vitality",
+		"1": "+7 Vitality",
 		"level": 0,
 		"statOrderKey": 1087,
 		"statOrder": [
@@ -113626,7 +113626,7 @@
 	},
 	"1087_6": {
 		"affix": "Vitality converted to Rampancy",
-		"1": "{rounding:Integer}+7 Vitality",
+		"1": "+7 Vitality",
 		"level": 0,
 		"statOrderKey": 1087,
 		"statOrder": [
@@ -113660,7 +113660,7 @@
 	},
 	"1090_0": {
 		"affix": "Rogue's",
-		"1": "{rounding:Integer}+1 Bladestorm",
+		"1": "+1 Bladestorm",
 		"level": 5,
 		"statOrderKey": 1090,
 		"statOrder": [
@@ -113678,7 +113678,7 @@
 	},
 	"1090_1": {
 		"affix": "Rogue's",
-		"1": "{rounding:Integer}+1 Bladestorm",
+		"1": "+1 Bladestorm",
 		"level": 5,
 		"statOrderKey": 1090,
 		"statOrder": [
@@ -113696,7 +113696,7 @@
 	},
 	"1090_2": {
 		"affix": "Rogue's",
-		"1": "{rounding:Integer}+1 Bladestorm",
+		"1": "+1 Bladestorm",
 		"level": 5,
 		"statOrderKey": 1090,
 		"statOrder": [
@@ -113714,7 +113714,7 @@
 	},
 	"1090_3": {
 		"affix": "Rogue's",
-		"1": "{rounding:Integer}+1 Bladestorm",
+		"1": "+1 Bladestorm",
 		"level": 5,
 		"statOrderKey": 1090,
 		"statOrder": [
@@ -113732,7 +113732,7 @@
 	},
 	"1090_4": {
 		"affix": "Rogue's",
-		"1": "{rounding:Integer}+2 Bladestorm",
+		"1": "+2 Bladestorm",
 		"level": 5,
 		"statOrderKey": 1090,
 		"statOrder": [
@@ -113750,7 +113750,7 @@
 	},
 	"1090_5": {
 		"affix": "Rogue's",
-		"1": "{rounding:Integer}+3 Bladestorm",
+		"1": "+3 Bladestorm",
 		"level": 5,
 		"statOrderKey": 1090,
 		"statOrder": [
@@ -113768,7 +113768,7 @@
 	},
 	"1090_6": {
 		"affix": "Rogue's",
-		"1": "{rounding:Integer}+4 Bladestorm",
+		"1": "+4 Bladestorm",
 		"level": 5,
 		"statOrderKey": 1090,
 		"statOrder": [
@@ -113786,7 +113786,7 @@
 	},
 	"1090_7": {
 		"affix": "Rogue's",
-		"1": "{rounding:Integer}+6 Bladestorm",
+		"1": "+6 Bladestorm",
 		"level": 5,
 		"statOrderKey": 1090,
 		"statOrder": [
@@ -113804,7 +113804,7 @@
 	},
 	"1091_0": {
 		"affix": "Rogue's",
-		"1": "{rounding:Integer}+1 Shadow Rend",
+		"1": "+1 Shadow Rend",
 		"level": 5,
 		"statOrderKey": 1091,
 		"statOrder": [
@@ -113822,7 +113822,7 @@
 	},
 	"1091_1": {
 		"affix": "Rogue's",
-		"1": "{rounding:Integer}+1 Shadow Rend",
+		"1": "+1 Shadow Rend",
 		"level": 5,
 		"statOrderKey": 1091,
 		"statOrder": [
@@ -113840,7 +113840,7 @@
 	},
 	"1091_2": {
 		"affix": "Rogue's",
-		"1": "{rounding:Integer}+1 Shadow Rend",
+		"1": "+1 Shadow Rend",
 		"level": 5,
 		"statOrderKey": 1091,
 		"statOrder": [
@@ -113858,7 +113858,7 @@
 	},
 	"1091_3": {
 		"affix": "Rogue's",
-		"1": "{rounding:Integer}+1 Shadow Rend",
+		"1": "+1 Shadow Rend",
 		"level": 5,
 		"statOrderKey": 1091,
 		"statOrder": [
@@ -113876,7 +113876,7 @@
 	},
 	"1091_4": {
 		"affix": "Rogue's",
-		"1": "{rounding:Integer}+2 Shadow Rend",
+		"1": "+2 Shadow Rend",
 		"level": 5,
 		"statOrderKey": 1091,
 		"statOrder": [
@@ -113894,7 +113894,7 @@
 	},
 	"1091_5": {
 		"affix": "Rogue's",
-		"1": "{rounding:Integer}+3 Shadow Rend",
+		"1": "+3 Shadow Rend",
 		"level": 5,
 		"statOrderKey": 1091,
 		"statOrder": [
@@ -113912,7 +113912,7 @@
 	},
 	"1091_6": {
 		"affix": "Rogue's",
-		"1": "{rounding:Integer}+4 Shadow Rend",
+		"1": "+4 Shadow Rend",
 		"level": 5,
 		"statOrderKey": 1091,
 		"statOrder": [
@@ -113930,7 +113930,7 @@
 	},
 	"1091_7": {
 		"affix": "Rogue's",
-		"1": "{rounding:Integer}+6 Shadow Rend",
+		"1": "+6 Shadow Rend",
 		"level": 5,
 		"statOrderKey": 1091,
 		"statOrder": [
@@ -113948,7 +113948,7 @@
 	},
 	"1095_0": {
 		"affix": "Prodigious",
-		"1": "{rounding:Integer}+1 Maximum Omen Idols",
+		"1": "+1 Maximum Omen Idols",
 		"level": 0,
 		"statOrderKey": 1095,
 		"statOrder": [
@@ -113957,7 +113957,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+2 Health per Equipped Omen Idol",
+		"2": "+2 Health per Equipped Omen Idol",
 		"canRollOn": [
 			41
 		],
@@ -113965,7 +113965,7 @@
 	},
 	"1095_1": {
 		"affix": "Prodigious",
-		"1": "{rounding:Integer}+1 Maximum Omen Idols",
+		"1": "+1 Maximum Omen Idols",
 		"level": 0,
 		"statOrderKey": 1095,
 		"statOrder": [
@@ -113974,7 +113974,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+3 Health per Equipped Omen Idol",
+		"2": "+3 Health per Equipped Omen Idol",
 		"canRollOn": [
 			41
 		],
@@ -113982,7 +113982,7 @@
 	},
 	"1095_2": {
 		"affix": "Prodigious",
-		"1": "{rounding:Integer}+1 Maximum Omen Idols",
+		"1": "+1 Maximum Omen Idols",
 		"level": 0,
 		"statOrderKey": 1095,
 		"statOrder": [
@@ -113991,7 +113991,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+4 Health per Equipped Omen Idol",
+		"2": "+4 Health per Equipped Omen Idol",
 		"canRollOn": [
 			41
 		],
@@ -113999,7 +113999,7 @@
 	},
 	"1095_3": {
 		"affix": "Prodigious",
-		"1": "{rounding:Integer}+2 Maximum Omen Idols",
+		"1": "+2 Maximum Omen Idols",
 		"level": 0,
 		"statOrderKey": 1095,
 		"statOrder": [
@@ -114008,7 +114008,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+5 Health per Equipped Omen Idol",
+		"2": "+5 Health per Equipped Omen Idol",
 		"canRollOn": [
 			41
 		],
@@ -114016,7 +114016,7 @@
 	},
 	"1095_4": {
 		"affix": "Prodigious",
-		"1": "{rounding:Integer}+2 Maximum Omen Idols",
+		"1": "+2 Maximum Omen Idols",
 		"level": 0,
 		"statOrderKey": 1095,
 		"statOrder": [
@@ -114033,7 +114033,7 @@
 	},
 	"1095_5": {
 		"affix": "Prodigious",
-		"1": "{rounding:Integer}+3 Maximum Omen Idols",
+		"1": "+3 Maximum Omen Idols",
 		"level": 0,
 		"statOrderKey": 1095,
 		"statOrder": [
@@ -114050,7 +114050,7 @@
 	},
 	"1095_6": {
 		"affix": "Prodigious",
-		"1": "{rounding:Integer}+4 Maximum Omen Idols",
+		"1": "+4 Maximum Omen Idols",
 		"level": 0,
 		"statOrderKey": 1095,
 		"statOrder": [
@@ -114067,7 +114067,7 @@
 	},
 	"1095_7": {
 		"affix": "Prodigious",
-		"1": "{rounding:Integer}+5 Maximum Omen Idols",
+		"1": "+5 Maximum Omen Idols",
 		"level": 0,
 		"statOrderKey": 1095,
 		"statOrder": [
@@ -114084,7 +114084,7 @@
 	},
 	"1108_0": {
 		"affix": "Corrupted Idol Limit",
-		"1": "{rounding:Integer}+5 Corrupted Idols equipped at Maximum",
+		"1": "+5 Corrupted Idols equipped at Maximum",
 		"level": 0,
 		"statOrderKey": 1108,
 		"statOrder": [
@@ -114101,7 +114101,7 @@
 	},
 	"1108_1": {
 		"affix": "Corrupted Idol Limit",
-		"1": "{rounding:Integer}+5 Corrupted Idols equipped at Maximum",
+		"1": "+5 Corrupted Idols equipped at Maximum",
 		"level": 0,
 		"statOrderKey": 1108,
 		"statOrder": [
@@ -114118,7 +114118,7 @@
 	},
 	"1108_2": {
 		"affix": "Corrupted Idol Limit",
-		"1": "{rounding:Integer}+5 Corrupted Idols equipped at Maximum",
+		"1": "+5 Corrupted Idols equipped at Maximum",
 		"level": 0,
 		"statOrderKey": 1108,
 		"statOrder": [
@@ -114135,7 +114135,7 @@
 	},
 	"1108_3": {
 		"affix": "Corrupted Idol Limit",
-		"1": "{rounding:Integer}+5 Corrupted Idols equipped at Maximum",
+		"1": "+5 Corrupted Idols equipped at Maximum",
 		"level": 0,
 		"statOrderKey": 1108,
 		"statOrder": [
@@ -114152,7 +114152,7 @@
 	},
 	"1108_4": {
 		"affix": "Corrupted Idol Limit",
-		"1": "{rounding:Integer}+5 Corrupted Idols equipped at Maximum",
+		"1": "+5 Corrupted Idols equipped at Maximum",
 		"level": 0,
 		"statOrderKey": 1108,
 		"statOrder": [
@@ -114169,7 +114169,7 @@
 	},
 	"1108_5": {
 		"affix": "Corrupted Idol Limit",
-		"1": "{rounding:Integer}+5 Corrupted Idols equipped at Maximum",
+		"1": "+5 Corrupted Idols equipped at Maximum",
 		"level": 0,
 		"statOrderKey": 1108,
 		"statOrder": [
@@ -114186,7 +114186,7 @@
 	},
 	"1108_6": {
 		"affix": "Corrupted Idol Limit",
-		"1": "{rounding:Integer}+5 Corrupted Idols equipped at Maximum",
+		"1": "+5 Corrupted Idols equipped at Maximum",
 		"level": 0,
 		"statOrderKey": 1108,
 		"statOrder": [
@@ -114203,7 +114203,7 @@
 	},
 	"1108_7": {
 		"affix": "Corrupted Idol Limit",
-		"1": "{rounding:Integer}+5 Corrupted Idols equipped at Maximum",
+		"1": "+5 Corrupted Idols equipped at Maximum",
 		"level": 0,
 		"statOrderKey": 1108,
 		"statOrder": [
@@ -114220,7 +114220,7 @@
 	},
 	"1109_0": {
 		"affix": "Heretical Idol Limit",
-		"1": "{rounding:Integer}+3 Heretical Idols equipped at Maximum",
+		"1": "+3 Heretical Idols equipped at Maximum",
 		"level": 0,
 		"statOrderKey": 1109,
 		"statOrder": [
@@ -114229,7 +114229,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+5 Health per Idol in a Refracted Slot",
+		"2": "+5 Health per Idol in a Refracted Slot",
 		"canRollOn": [
 			41
 		],
@@ -114237,7 +114237,7 @@
 	},
 	"1109_1": {
 		"affix": "Heretical Idol Limit",
-		"1": "{rounding:Integer}+3 Heretical Idols equipped at Maximum",
+		"1": "+3 Heretical Idols equipped at Maximum",
 		"level": 0,
 		"statOrderKey": 1109,
 		"statOrder": [
@@ -114246,7 +114246,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+6 Health per Idol in a Refracted Slot",
+		"2": "+6 Health per Idol in a Refracted Slot",
 		"canRollOn": [
 			41
 		],
@@ -114254,7 +114254,7 @@
 	},
 	"1109_2": {
 		"affix": "Heretical Idol Limit",
-		"1": "{rounding:Integer}+3 Heretical Idols equipped at Maximum",
+		"1": "+3 Heretical Idols equipped at Maximum",
 		"level": 0,
 		"statOrderKey": 1109,
 		"statOrder": [
@@ -114263,7 +114263,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+7 Health per Idol in a Refracted Slot",
+		"2": "+7 Health per Idol in a Refracted Slot",
 		"canRollOn": [
 			41
 		],
@@ -114271,7 +114271,7 @@
 	},
 	"1109_3": {
 		"affix": "Heretical Idol Limit",
-		"1": "{rounding:Integer}+3 Heretical Idols equipped at Maximum",
+		"1": "+3 Heretical Idols equipped at Maximum",
 		"level": 0,
 		"statOrderKey": 1109,
 		"statOrder": [
@@ -114280,7 +114280,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+8 Health per Idol in a Refracted Slot",
+		"2": "+8 Health per Idol in a Refracted Slot",
 		"canRollOn": [
 			41
 		],
@@ -114288,7 +114288,7 @@
 	},
 	"1109_4": {
 		"affix": "Heretical Idol Limit",
-		"1": "{rounding:Integer}+3 Heretical Idols equipped at Maximum",
+		"1": "+3 Heretical Idols equipped at Maximum",
 		"level": 0,
 		"statOrderKey": 1109,
 		"statOrder": [
@@ -114305,7 +114305,7 @@
 	},
 	"1109_5": {
 		"affix": "Heretical Idol Limit",
-		"1": "{rounding:Integer}+4 Heretical Idols equipped at Maximum",
+		"1": "+4 Heretical Idols equipped at Maximum",
 		"level": 0,
 		"statOrderKey": 1109,
 		"statOrder": [
@@ -114322,7 +114322,7 @@
 	},
 	"1109_6": {
 		"affix": "Heretical Idol Limit",
-		"1": "{rounding:Integer}+4 Heretical Idols equipped at Maximum",
+		"1": "+4 Heretical Idols equipped at Maximum",
 		"level": 0,
 		"statOrderKey": 1109,
 		"statOrder": [
@@ -114339,7 +114339,7 @@
 	},
 	"1109_7": {
 		"affix": "Heretical Idol Limit",
-		"1": "{rounding:Integer}+5 Heretical Idols equipped at Maximum",
+		"1": "+5 Heretical Idols equipped at Maximum",
 		"level": 0,
 		"statOrderKey": 1109,
 		"statOrder": [
@@ -114356,7 +114356,7 @@
 	},
 	"1110_0": {
 		"affix": "Sentinel's",
-		"1": "{rounding:Integer}+1 Shield Throw Base Damage Converted to Void",
+		"1": "+1 Shield Throw Base Damage Converted to Void",
 		"level": 28,
 		"statOrderKey": 1110,
 		"statOrder": [
@@ -114374,7 +114374,7 @@
 	},
 	"1110_1": {
 		"affix": "Sentinel's",
-		"1": "{rounding:Integer}+1 Shield Throw Base Damage Converted to Void",
+		"1": "+1 Shield Throw Base Damage Converted to Void",
 		"level": 28,
 		"statOrderKey": 1110,
 		"statOrder": [
@@ -114392,7 +114392,7 @@
 	},
 	"1110_2": {
 		"affix": "Sentinel's",
-		"1": "{rounding:Integer}+1 Shield Throw Base Damage Converted to Void",
+		"1": "+1 Shield Throw Base Damage Converted to Void",
 		"level": 28,
 		"statOrderKey": 1110,
 		"statOrder": [
@@ -114410,7 +114410,7 @@
 	},
 	"1110_3": {
 		"affix": "Sentinel's",
-		"1": "{rounding:Integer}+1 Shield Throw Base Damage Converted to Void",
+		"1": "+1 Shield Throw Base Damage Converted to Void",
 		"level": 28,
 		"statOrderKey": 1110,
 		"statOrder": [
@@ -114428,7 +114428,7 @@
 	},
 	"1110_4": {
 		"affix": "Sentinel's",
-		"1": "{rounding:Integer}+1 Shield Throw Base Damage Converted to Void",
+		"1": "+1 Shield Throw Base Damage Converted to Void",
 		"level": 28,
 		"statOrderKey": 1110,
 		"statOrder": [
@@ -114446,7 +114446,7 @@
 	},
 	"1110_5": {
 		"affix": "Sentinel's",
-		"1": "{rounding:Integer}+1 Shield Throw Base Damage Converted to Void",
+		"1": "+1 Shield Throw Base Damage Converted to Void",
 		"level": 28,
 		"statOrderKey": 1110,
 		"statOrder": [
@@ -114464,7 +114464,7 @@
 	},
 	"1110_6": {
 		"affix": "Sentinel's",
-		"1": "{rounding:Integer}+1 Shield Throw Base Damage Converted to Void",
+		"1": "+1 Shield Throw Base Damage Converted to Void",
 		"level": 28,
 		"statOrderKey": 1110,
 		"statOrder": [
@@ -114482,7 +114482,7 @@
 	},
 	"1110_7": {
 		"affix": "Sentinel's",
-		"1": "{rounding:Integer}+1 Shield Throw Base Damage Converted to Void",
+		"1": "+1 Shield Throw Base Damage Converted to Void",
 		"level": 28,
 		"statOrderKey": 1110,
 		"statOrder": [
