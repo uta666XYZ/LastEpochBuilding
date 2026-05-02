@@ -443,9 +443,10 @@ function IdolGridControlClass:Draw(viewPort)
 		-- Panel background behind the frame + title bar (matches Blessings / Equipment).
 		-- Drawn BEFORE the container PNG so transparent regions of the PNG show the
 		-- dark panel colour, and the panel extends up to include the title bar.
+		-- Title bar removed; panel bg only covers the container area below.
 		local bx   = x - FRAME_DEST_SIDE_PAD
-		local byT  = y - FRAME_DEST_TOP_PAD - IDOL_TITLE_H   -- top of title bar
-		local totH = IDOL_TITLE_H + destH
+		local byT  = y - FRAME_DEST_TOP_PAD
+		local totH = destH
 		SetDrawColor(IDOL_PANEL_BG_R, IDOL_PANEL_BG_G, IDOL_PANEL_BG_B)
 		DrawImage(nil, bx, byT, destW, totH)
 
@@ -453,16 +454,6 @@ function IdolGridControlClass:Draw(viewPort)
 		if cimg and cimg:IsValid() then
 			SetDrawColor(1, 1, 1)
 			DrawImage(cimg, x - FRAME_DEST_SIDE_PAD, y - FRAME_DEST_TOP_PAD, destW, destH)
-		end
-		-- Title bar above the frame (matches Blessings / Equipment panel style)
-		do
-			SetDrawColor(IDOL_TITLE_BG_R, IDOL_TITLE_BG_G, IDOL_TITLE_BG_B)
-			DrawImage(nil, bx, byT, destW, IDOL_TITLE_H)
-			SetDrawColor(IDOL_TITLE_BORDER_R, IDOL_TITLE_BORDER_G, IDOL_TITLE_BORDER_B)
-			DrawImage(nil, bx, byT + IDOL_TITLE_H - 1, destW, 2)
-			SetDrawColor(1, 1, 1)
-			DrawString(bx + m_floor(destW / 2), byT + m_floor((IDOL_TITLE_H - 12) / 2),
-				"CENTER_X", 12, "VAR", "^xD4BB88Equipped Idols / Idol Altar")
 		end
 		-- Draw altar icon in circle center. When an altar is equipped, show the
 		-- matching Idol_Altar_<Name>.png; otherwise fall back to idol_altar_empty.
@@ -625,11 +616,16 @@ function IdolGridControlClass:Draw(viewPort)
 						DrawString(cx + pw - tw - 3, cy + ph - fs - 3, "LEFT", fs, "VAR", hint)
 					end
 				elseif not item then
-					-- Empty valid cell: border (purple for fractured, gray for normal)
-					if av == 2 then
-						drawBorder(cx, cy, cw, ch, 0.62, 0.22, 0.92)
-					else
-						drawBorder(cx, cy, cw, ch, 0.28, 0.28, 0.28)
+					-- Empty valid cell: border (purple for fractured, gray for normal).
+					-- Skip if this cell is a secondary cell of a multi-cell idol —
+					-- otherwise the gray border draws on top of the idol's icon.
+					local isSecondary = self.cellPrimary[row] and self.cellPrimary[row][col]
+					if not isSecondary then
+						if av == 2 then
+							drawBorder(cx, cy, cw, ch, 0.62, 0.22, 0.92)
+						else
+							drawBorder(cx, cy, cw, ch, 0.28, 0.28, 0.28)
+						end
 					end
 				end
 			end

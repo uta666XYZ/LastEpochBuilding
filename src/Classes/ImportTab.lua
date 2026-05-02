@@ -366,7 +366,11 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
                 return
             end
             if selectedWebsite.id == "lastepochtools" then
-                self:DownloadLEToolsPlannerBuild(self.controls.importCodeIn.buf)
+                if self.controls.importCodeIn.buf:match("lastepochtools%.com/profile/[^/]+/character/[^/?#]+") then
+                    self:DownloadLEToolsProfileBuild(self.controls.importCodeIn.buf)
+                else
+                    self:DownloadLEToolsPlannerBuild(self.controls.importCodeIn.buf)
+                end
                 return
             end
             self.importCodeFetching = true
@@ -787,6 +791,76 @@ function ImportTabClass:DownloadMaxrollPlannerBuild(url)
         self:ImportItemsAndSkills(char)
         self:ImportBlessingsFromMaxroll(profileData)
         self.importCodeDetail = colorCodes.POSITIVE .. "Maxroll build imported."
+    end)
+end
+
+-- LETools /profile/{account}/character/{name} URLs have no usable planner JSON
+-- (profile_data tokens rotate per page-load and are derived in obfuscated JS),
+-- so we resolve account+character via Maxroll's character API which returns
+-- the offline-save JSON format already handled by ReadJsonSaveData.
+function ImportTabClass:DownloadLEToolsProfileBuild(url)
+    self.importCodeFetching = true
+    self.importCodeDetail = colorCodes.NORMAL .. "Resolving via Maxroll account API..."
+
+    local accountName, charName = url:match("lastepochtools%.com/profile/([^/]+)/character/([^/?#]+)")
+    if not accountName or not charName then
+        self.importCodeFetching = false
+        self.importCodeDetail = colorCodes.NEGATIVE .. "Could not parse LETools profile URL"
+        return
+    end
+
+    local apiURL = "https://planners.maxroll.gg/lastepoch/characters/" .. accountName .. "/" .. charName
+    launch:DownloadPage(apiURL, function(response, errMsg)
+        self.importCodeFetching = false
+        if errMsg == "Response code: 404" then
+            self.importCodeDetail = colorCodes.NEGATIVE .. "Character not found on Maxroll. Make sure the Maxroll profile is public, or paste a /planner/ URL instead."
+            return
+        elseif errMsg then
+            self.importCodeDetail = colorCodes.NEGATIVE .. "Download failed: " .. errMsg:gsub("\n", " ")
+            return
+        end
+        local ok, charOrErr = pcall(function() return self:ReadJsonSaveData(response.body) end)
+        if not ok then
+            ConPrintf("[IMPORT-ERR] Failed to parse character data: %s", tostring(charOrErr))
+            self.importCodeDetail = colorCodes.NEGATIVE .. "Failed to parse character data."
+            return
+        end
+        -- Mirror the LETools-planner import shape: gear+idol+altar go through
+        -- the items pipeline (ImportItemsAndSkills); blessings are applied
+        -- separately via UpdateBlessingSlot. The offline-save JSON puts both
+        -- in `savedItems`, so we partition by containerID before importing.
+        -- Blessings going through the items pipeline interleaved with SET
+        -- items has been observed to crash the renderer.
+        local blessingItems = {}
+        local gearItems = {}
+        for _, item in ipairs(charOrErr.items or {}) do
+            local cid = item.inventoryId
+            if type(cid) == "number" and cid >= 33 and cid <= 45 then
+                table.insert(blessingItems, item)
+            else
+                table.insert(gearItems, item)
+            end
+        end
+        charOrErr.items = gearItems
+        self:ImportPassiveTreeAndJewels(charOrErr)
+        self:ImportItemsAndSkills(charOrErr)
+        -- Apply blessings post-items, using the blessingLookup populated by
+        -- ImportItemsAndSkills above. Same code path as ImportBlessingsFromLETools.
+        local appliedBlessings = 0
+        for _, b in ipairs(blessingItems) do
+            local blessingName = b.name or ""
+            local info = self.currentBlessingLookup and self.currentBlessingLookup[blessingName]
+            if info then
+                local rollFrac = b.blessingRollFrac or 1.0
+                ConPrintf("[BLESS-PROFILE] OK cid=%-3d tl=%-30s name=%s roll=%.3f", b.inventoryId, tostring(info.tl), blessingName, rollFrac)
+                self.build.itemsTab:UpdateBlessingSlot(info.tl, info.entry, rollFrac)
+                appliedBlessings = appliedBlessings + 1
+            else
+                ConPrintf("[BLESS-PROFILE] SKIP cid=%s name=%q (no lookup match)", tostring(b.inventoryId), tostring(blessingName))
+            end
+        end
+        ConPrintf("[IMPORT] Blessings applied (profile path): %d", appliedBlessings)
+        self.importCodeDetail = colorCodes.POSITIVE .. "Build imported via Maxroll (" .. accountName .. "/" .. charName .. ")."
     end)
 end
 
@@ -1658,6 +1732,38 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
                                 end
                             end
                         end
+                        -- Reforged-set scan: an affix whose name ends with " Reforged" indicates this
+                        -- item is a Reforged Set piece. We must populate setInfo so BuildItem's
+                        -- REFORGED-RESTORE path runs (otherwise calc dereferences a null setInfo).
+                        local reforgedSetInfo, reforgedTitle = nil, nil
+                        do
+                            local function scanForReforged(affixList)
+                                if reforgedSetInfo then return end
+                                for _, a in ipairs(affixList) do
+                                    local md = data.itemMods.Item[a.modId]
+                                    if md and md.affix and md.affix:sub(-9) == " Reforged" then
+                                        local bareName = md.affix:sub(1, -10)
+                                        local setData = self:LoadSetDataForImport()
+                                        if setData then
+                                            for _, si in pairs(setData) do
+                                                if si and si.set and si.name and si.name == bareName then
+                                                    reforgedSetInfo = {
+                                                        setId = si.set.setId,
+                                                        name  = si.set.name,
+                                                        bonus = si.set.bonus,
+                                                    }
+                                                    reforgedTitle = md.affix
+                                                    break
+                                                end
+                                            end
+                                        end
+                                        if reforgedSetInfo then return end
+                                    end
+                                end
+                            end
+                            scanForReforged(item.prefixes)
+                            scanForReforged(item.suffixes)
+                        end
                         -- Determine rarity: T6+ affix = Exalted, otherwise by affix count
                         -- Tiers are 0-indexed in save data: stored 5 = T6, stored 6 = T7
                         -- Idols max out at 2 affixes (1 prefix + 1 suffix), so 2 = fully affixed
@@ -1699,6 +1805,13 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
                             end
                         end
                         item["name"] = (forename ~= "" and forename .. " " or "") .. itemBaseName .. (surname ~= "" and " " .. surname or "")
+                        if reforgedSetInfo then
+                            item["rarity"] = "SET"
+                            item["title"] = reforgedTitle
+                            item["name"] = reforgedTitle
+                            item["setInfo"] = reforgedSetInfo
+                            ConPrintf("[REFORGED-RESTORE] base=%s setId=%s title=%s", itemBaseName, tostring(reforgedSetInfo.setId), tostring(reforgedTitle))
+                        end
                     end
                     table.insert(char["items"], item)
                 end

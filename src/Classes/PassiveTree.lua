@@ -212,6 +212,9 @@ local PassiveTreeClass = newClass("PassiveTree", function(self, treeVersion)
         loadTreeUIAsset(name, "Assets/tree/" .. name .. ".png")
     end
 
+    -- Background plate behind node alloc/max counter (matches in-game UI).
+    loadTreeUIAsset("node-count-bg", "Assets/tree/node-count-bg.png")
+
     -- Load sprite sheets and build sprite map
     self.spriteMap = { }
     self.nodeOverlay = {

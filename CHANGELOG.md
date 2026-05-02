@@ -47,9 +47,6 @@
 ### Uniques / Items
 - **Julra's Obsession** — implemented `+100% Stats on your gloves also apply to your minions` (glove → minion stat propagation). The companion "stats also apply to minions" line is tagged **not supported** where the calc path is incomplete, so users see the limitation explicitly rather than receiving a silently-wrong number.
 
-### Chore
-- AI assistant files (`CLAUDE.md`, `.claude/`, `QWEN.md`, etc.) consolidated in `.gitignore`.
-
 ---
 
 ## [v0.13.1](https://github.com/uta666XYZ/LastEpochBuilding/tree/v0.13.1) (2026/04/28)

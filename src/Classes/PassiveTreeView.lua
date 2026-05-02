@@ -214,16 +214,10 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 					-- Record starting coords of mouse drag (only if dragging is enabled)
 					self.dragX, self.dragY = cursorX, cursorY
 				end
-			elseif event.key == "p" then
-				self.showHeatMap = not self.showHeatMap
 			elseif event.key == "i" and launch.devMode then
 				self.showIconPreview = not self.showIconPreview
 			elseif event.key == "d" and IsKeyDown("CTRL") then
 				self.showStatDifferences = not self.showStatDifferences
-			elseif event.key == "PAGEUP" and not self.disableZooming then
-				self:Zoom(IsKeyDown("SHIFT") and 3 or 1, viewPort)
-			elseif event.key == "PAGEDOWN" and not self.disableZooming then
-				self:Zoom(IsKeyDown("SHIFT") and -3 or -1, viewPort)
 			elseif itemLib.wiki.matchesKey(event.key) and self.hoverNode then
 				itemLib.wiki.open(self.hoverNode.name or self.hoverNode.dn)
 			end
@@ -1359,9 +1353,21 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 				self:DrawAsset(tree.treeUI[frameName], scrX, scrY, scale, nil, frameSize)
 			end
 
-			-- Draw alloc/max text below node (both passive and skill tree)
+			-- Draw alloc/max text below node (both passive and skill tree).
+			-- Background plate (ButtonLarge_Default_Black) sits behind the text
+			-- so the counter is readable over tree connections / artwork.
 			if node.maxPoints > 0 then
-				DrawString(scrX, scrY + 48 * scale, "CENTER_X", round(50 * scale), "FONTIN", "^7" .. node.alloc .. "/" .. node.maxPoints)
+				local textSize  = round(40 * scale)
+				local centerY   = scrY + (frameSize or 48) * 0.85 * scale + textSize * 0.25
+				local label     = "^7" .. node.alloc .. "/" .. node.maxPoints
+				local plateW    = round(80 * scale)
+				local plateH    = round(40 * scale)
+				local plate     = tree.treeUI["node-count-bg"]
+				if plate and plate.handle and plate.handle:IsValid() then
+					SetDrawColor(1, 1, 1)
+					DrawImage(plate.handle, scrX - plateW / 2, centerY - plateH / 2, plateW, plateH)
+				end
+				DrawString(scrX, centerY - textSize / 2, "CENTER_X", textSize, "FONTIN", label)
 			end
 
 			-- Draw steps badge (top-right corner of node)
@@ -1420,7 +1426,9 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 			SetDrawLayer(nil, 30)
 			SetDrawColor(1, 0, 0)
 			local size = iconSize * scale * 1.33 * 2.5
-			DrawImage(self.searchHighlightRing, scrX - size, scrY - size, size * 2, size * 2)
+			if self.searchHighlightRing and self.searchHighlightRing:IsValid() then
+				DrawImage(self.searchHighlightRing, scrX - size, scrY - size, size * 2, size * 2)
+			end
 		elseif #self.searchParams > 0 then
 			-- Dim non-matching nodes
 			SetDrawLayer(nil, 26)
@@ -1433,7 +1441,9 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 			SetDrawLayer(nil, 30)
 			SetDrawColor(1, 0, 0)
 			local size = iconSize * scale * 1.33 * 2.5
-			DrawImage(self.searchHighlightRing, scrX - size, scrY - size, size * 2, size * 2)
+			if self.searchHighlightRing and self.searchHighlightRing:IsValid() then
+				DrawImage(self.searchHighlightRing, scrX - size, scrY - size, size * 2, size * 2)
+			end
 		end
 		if node == hoverNode and (node.type ~= "Socket" or not IsKeyDown("SHIFT")) and (node.type ~= "Mastery" or node.masteryEffects) and not IsKeyDown("CTRL") and not main.popups[1] then
 			-- Draw tooltip above skill bar (TreeTab draws skill bar at layer 1, so use layer 2)
@@ -1453,7 +1463,7 @@ end
 
 -- Draws the given asset at the given position
 function PassiveTreeViewClass:DrawAsset(data, x, y, scale, isHalf, fixedSize)
-	if not data then
+	if not data or not data.handle or not data.handle:IsValid() then
 		return
 	end
 	if data.width == 0 then
@@ -1896,9 +1906,10 @@ function PassiveTreeViewClass:DrawHistoryBar(build, barVP, inputEvents)
 	local contentW = barVP.width - (iconStartX - barVP.x) - 4
 
 	if #grouped == 0 then
-		SetDrawLayer(nil, 2)
+		SetDrawLayer(nil, 200)
 		SetDrawColor(0.35, 0.35, 0.42)
 		DrawString(iconStartX + m_floor(contentW / 2), barVP.y + m_floor(barVP.height / 2) - 7, "CENTER_X", 12, "VAR", "No allocating order recorded yet")
+		SetDrawLayer(nil, 0)
 		return
 	end
 
@@ -2016,7 +2027,7 @@ function PassiveTreeViewClass:DrawHistoryBar(build, barVP, inputEvents)
 			}
 		end
 		local spr = node.icon and tree.spriteMap[node.icon]
-		if spr then
+		if spr and spr.handle and spr.handle:IsValid() then
 			SetDrawColor(1, 1, 1)
 			DrawImage(spr.handle, ix, iconY, ICON_SIZE, ICON_SIZE, spr[1], spr[2], spr[3], spr[4])
 		else

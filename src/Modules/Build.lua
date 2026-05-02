@@ -369,26 +369,38 @@ function buildMode:Init(dbFileName, buildName, buildXML, convertBuild)
 		self.viewMode = "IMPORT"
 	end)
 	self.controls.modeImport.locked = function() return self.viewMode == "IMPORT" end
+	self.controls.modeImport.tooltipText = "Ctrl + I"
+	self.controls.modeImport.tooltip.placeBelow = true
 	self.controls.modeNotes = new("ButtonControl", {"LEFT",self.controls.modeImport,"RIGHT"}, 4, 0, 58, 20, "Notes", function()
 		self.viewMode = "NOTES"
 	end)
 	self.controls.modeNotes.locked = function() return self.viewMode == "NOTES" end
+	self.controls.modeNotes.tooltipText = "Ctrl + 6"
+	self.controls.modeNotes.tooltip.placeBelow = true
 	self.controls.modeConfig = new("ButtonControl", {"LEFT",self.controls.modeNotes,"RIGHT"}, 4, 0, 72, 20, "Config", function()
 		self.viewMode = "CONFIG"
 	end)
 	self.controls.modeConfig.locked = function() return self.viewMode == "CONFIG" end
+	self.controls.modeConfig.tooltipText = "Ctrl + 5"
+	self.controls.modeConfig.tooltip.placeBelow = true
 	self.controls.modeTree = new("ButtonControl", {"TOPLEFT",self.anchorSideBar,"TOPLEFT"}, 0, 26, 72, 20, "Tree", function()
 		self.viewMode = "TREE"
 	end)
 	self.controls.modeTree.locked = function() return self.viewMode == "TREE" end
+	self.controls.modeTree.tooltipText = "Ctrl + 1"
+	self.controls.modeTree.tooltip.placeBelow = true
 	self.controls.modeSkills = new("ButtonControl", {"LEFT",self.controls.modeTree,"RIGHT"}, 4, 0, 72, 20, "Skills", function()
 		self.viewMode = "SKILLS"
 	end)
 	self.controls.modeSkills.locked = function() return self.viewMode == "SKILLS" end
+	self.controls.modeSkills.tooltipText = "Ctrl + 2"
+	self.controls.modeSkills.tooltip.placeBelow = true
 	self.controls.modeItems = new("ButtonControl", {"LEFT",self.controls.modeSkills,"RIGHT"}, 4, 0, 72, 20, "Items", function()
 		self.viewMode = "ITEMS"
 	end)
 	self.controls.modeItems.locked = function() return self.viewMode == "ITEMS" end
+	self.controls.modeItems.tooltipText = "Ctrl + 3"
+	self.controls.modeItems.tooltip.placeBelow = true
 	self.controls.modeParty = new("ButtonControl", {"TOPLEFT",self.anchorSideBar,"TOPLEFT"}, 0, 52, 72, 20, "Party", function()
 		self.viewMode = "PARTY"
 	end)
@@ -398,6 +410,8 @@ function buildMode:Init(dbFileName, buildName, buildXML, convertBuild)
 		self.viewMode = "CALCS"
 	end)
 	self.controls.modeCalcs.locked = function() return self.viewMode == "CALCS" end
+	self.controls.modeCalcs.tooltipText = "Ctrl + 4"
+	self.controls.modeCalcs.tooltip.placeBelow = true
 	-- Skills
 	self.controls.mainSkillLabel = new("LabelControl", {"TOPLEFT",self.anchorSideBar,"TOPLEFT"}, 0, 52, 300, 16, "^7Main Skill:")
 	self.controls.mainSocketGroup = new("DropDownControl", {"TOPLEFT",self.controls.mainSkillLabel,"BOTTOMLEFT"}, 0, 2, 300, 18, nil, function(index, value)
@@ -1114,8 +1128,6 @@ function buildMode:OnFrame(inputEvents)
 					self.viewMode = "CONFIG"
 				elseif event.key == "6" then
 					self.viewMode = "NOTES"
-				elseif event.key == "7" then
-					self.viewMode = "PARTY"
 				end
 			end
 		end

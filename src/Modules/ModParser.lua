@@ -85,6 +85,10 @@ local modNameList = {
 	["stun avoidance"] = "StunAvoidance",
 	["crit avoidance"] = "CritAvoidance",
 	["critical strike avoidance"] = "CritAvoidance",
+	-- Damage Reflected (LE thorns)
+	["damage reflected to attackers"] = "DamageReflectedToAttackers",
+	["of damage reflected"] = "DamageReflectedPercent",
+	["of minion damage reflected"] = "MinionDamageReflectedPercent",
 	-- Resistances
 	["elemental resistance"] = { "FireResist", "LightningResist", "ColdResist" },
 	["elemental resistances"] = { "FireResist", "LightningResist", "ColdResist" },

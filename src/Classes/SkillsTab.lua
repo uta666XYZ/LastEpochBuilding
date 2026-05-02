@@ -718,7 +718,9 @@ function SkillsTabClass:GetSpriteHandle(spriteName)
 		self.spriteHandles[key] = NewImageHandle()
 		self.spriteHandles[key]:Load("Assets/tree/" .. spriteName .. ".png")
 	end
-	return self.spriteHandles[key]
+	local h = self.spriteHandles[key]
+	if h and h:IsValid() then return h end
+	return nil
 end
 
 -- Get skill icon handle using root node icon (same pattern as TreeTab)
@@ -774,8 +776,12 @@ function SkillsTabClass:GetSkillIconFromTree(treeId, useSpec)
 			handle:Load("TreeData/sprites/" .. iconName .. ".png")
 		end
 	end
-	self.spriteHandles[cacheKey] = handle
-	return handle
+	if handle and handle:IsValid() then
+		self.spriteHandles[cacheKey] = handle
+		return handle
+	end
+	self.spriteHandles[cacheKey] = false
+	return nil
 end
 
 -- Find which slot a skill is assigned to (nil if not assigned)
@@ -1117,8 +1123,11 @@ function SkillsTabClass:Draw(viewPort, inputEvents)
 		self:DrawSkillOverview(viewPort, inputEvents, contentY)
 	end
 
-	-- Draw spec slots on top of everything (high draw layer)
-	SetDrawLayer(nil, 150)
+	-- Draw spec slots on top of everything (high draw layer).
+	-- Sits one layer below the history-bar "No allocating order…" text (200)
+	-- so the text reads cleanly while the chain pendant remains in front of
+	-- the rest of the tab content.
+	SetDrawLayer(nil, 199)
 	self:DrawSpecSlots(viewPort, inputEvents, slotBarY)
 	SetDrawLayer(nil, 0)
 
@@ -1568,7 +1577,9 @@ function SkillsTabClass:DrawSpecSlots(viewPort, inputEvents, startY)
 		else
 			SetDrawColor(0.4, 0.4, 0.4)
 		end
-		DrawImage(emptyHandle, sx, sy, SLOT_SIZE, SLOT_SIZE)
+		if emptyHandle then
+			DrawImage(emptyHandle, sx, sy, SLOT_SIZE, SLOT_SIZE)
+		end
 
 		-- Skill icon if assigned (draw before border, use pointy-top hex)
 		local slotIconHandle, slotTreeId
@@ -1586,16 +1597,18 @@ function SkillsTabClass:DrawSpecSlots(viewPort, inputEvents, startY)
 		local borderSprite = isSelected and "spec-slot-selected" or "spec-slot-border"
 		local borderHandle = self:GetSpriteHandle(borderSprite)
 		SetDrawColor(1, 1, 1)
-		if isSelected then
-			-- spec-slot-selected.png is 126x80 (wider hex border)
-			-- Maintain aspect ratio (126:80 = 1.575:1), center over slot
-			local selW = SLOT_SIZE + 16
-			local selH = m_floor((SLOT_SIZE + 16) * 80 / 126)
-			local selX = sx - m_floor((selW - SLOT_SIZE) / 2)
-			local selY = sy + m_floor((SLOT_SIZE - selH) / 2) + 21
-			DrawImage(borderHandle, selX, selY, selW, selH)
-		else
-			DrawImage(borderHandle, sx, sy, SLOT_SIZE, SLOT_SIZE)
+		if borderHandle then
+			if isSelected then
+				-- spec-slot-selected.png is 126x80 (wider hex border)
+				-- Maintain aspect ratio (126:80 = 1.575:1), center over slot
+				local selW = SLOT_SIZE + 16
+				local selH = m_floor((SLOT_SIZE + 16) * 80 / 126)
+				local selX = sx - m_floor((selW - SLOT_SIZE) / 2)
+				local selY = sy + m_floor((SLOT_SIZE - selH) / 2) + 21
+				DrawImage(borderHandle, selX, selY, selW, selH)
+			else
+				DrawImage(borderHandle, sx, sy, SLOT_SIZE, SLOT_SIZE)
+			end
 		end
 
 		-- Level badge (drawn on top of border, in front)
@@ -1609,7 +1622,9 @@ function SkillsTabClass:DrawSpecSlots(viewPort, inputEvents, startY)
 			local lvlX = sx + m_floor((SLOT_SIZE - lvlW) / 2)
 			local lvlY = sy + SLOT_SIZE - 30
 			SetDrawColor(1, 1, 1)
-			DrawImage(lvlHandle, lvlX, lvlY, lvlW, lvlH)
+			if lvlHandle then
+				DrawImage(lvlHandle, lvlX, lvlY, lvlW, lvlH)
+			end
 			-- Show effective skill level cap (Base 20 + all "+SkillLevel" bonuses),
 			-- matching the in-game "Level of <Skill>" display rather than just the
 			-- allocated tree points. The "remaining points" badge below still
@@ -1675,7 +1690,9 @@ function SkillsTabClass:DrawSpecSlots(viewPort, inputEvents, startY)
 				local isEnabled = sg.enabled ~= false
 				local toggleSprite = self:GetSpriteHandle(isEnabled and "toggle_on" or "toggle_off")
 				SetDrawColor(1, 1, 1)
-				DrawImage(toggleSprite, toggleX, toggleY, TW, TH)
+				if toggleSprite then
+					DrawImage(toggleSprite, toggleX, toggleY, TW, TH)
+				end
 
 				-- Click detection
 				local toggleHover = cursorX >= toggleX and cursorX < toggleX + TW
@@ -1713,13 +1730,40 @@ function SkillsTabClass:DrawSpecSlots(viewPort, inputEvents, startY)
 			tooltip:AddLine(16, "^7Level of " .. skillName .. ": ^x60FF60" .. maxPts)
 			tooltip:AddSeparator(8)
 			tooltip:AddLine(14, "^7Base: ^x60A0FF20")
+			-- Map "Item:<id>:<name>" sources to "<SlotLabel>: <name>" so the
+			-- breakdown reads naturally (e.g. "Amulet: Omnis" instead of
+			-- "Item:4:Omnis").
+			local function prettifySource(src)
+				if not src then return "Unknown" end
+				local idStr, itemName = src:match("^Item:(%d+):(.+)$")
+				if not idStr then return src end
+				local itemId = tonumber(idStr)
+				local slotLabel
+				if self.build.itemsTab and self.build.itemsTab.slots then
+					for _, slot in pairs(self.build.itemsTab.slots) do
+						if slot.selItemId == itemId then
+							slotLabel = slot.label or slot.slotName
+							break
+						end
+					end
+				end
+				-- Idols live in IdolGridControl, not ItemSlotControl — fall back
+				-- to the item's base type so it doesn't read as plain "Item".
+				if not slotLabel and self.build.itemsTab and self.build.itemsTab.items then
+					local item = self.build.itemsTab.items[itemId]
+					if item and item.type and item.type:match("Idol") then
+						slotLabel = item.type
+					end
+				end
+				return (slotLabel or "Item") .. ": " .. itemName
+			end
 			if breakdown and #breakdown > 0 then
 				for _, entry in ipairs(breakdown) do
 					local v = entry.value
 					local sign = v >= 0 and "+" or ""
 					-- Show 1 decimal only if non-integer (Permanence may yield fractional)
 					local valStr = (v == m_floor(v)) and tostring(m_floor(v)) or string.format("%.1f", v)
-					tooltip:AddLine(14, "^7" .. (entry.source or "Unknown") .. ": ^x60A0FF" .. sign .. valStr)
+					tooltip:AddLine(14, "^7" .. prettifySource(entry.source) .. ": ^x60A0FF" .. sign .. valStr)
 				end
 			end
 			-- Scaling Tags row (damage types + combat class + attribute scalings).
@@ -2050,7 +2094,9 @@ function SkillsTabClass:DrawSkillGrid(x, y, w, skills, inputEvents, cursorX, cur
 		end
 
 		SetDrawColor(1, 1, 1)
-		DrawImage(frameHandle, iconX + frameOff, iconY + frameOff, FRAME_SIZE, FRAME_SIZE)
+		if frameHandle then
+			DrawImage(frameHandle, iconX + frameOff, iconY + frameOff, FRAME_SIZE, FRAME_SIZE)
+		end
 
 		-- Search match: red square outline
 		if hasSearch and isMatch then
@@ -2081,7 +2127,9 @@ function SkillsTabClass:DrawSkillGrid(x, y, w, skills, inputEvents, cursorX, cur
 				SetDrawColor(1, 1, 1)
 			end
 			local badgeHandle = self:GetSpriteHandle("skill-req-mastery-level")
-			DrawImage(badgeHandle, lvBadgeX, lvBadgeY, lvBadgeW, lvBadgeH)
+			if badgeHandle then
+				DrawImage(badgeHandle, lvBadgeX, lvBadgeY, lvBadgeW, lvBadgeH)
+			end
 			SetDrawColor(1, 1, 1)
 			DrawString(lvBadgeX + lvBadgeW / 2, lvBadgeY + lvBadgeH / 2 - 5, "CENTER_X", 10, "VAR", "^7" .. tostring(skill.level))
 		end
@@ -2099,12 +2147,16 @@ function SkillsTabClass:DrawSkillGrid(x, y, w, skills, inputEvents, cursorX, cur
 			end
 			-- Use level badge frame with mastered star inside
 			local badgeHandle = self:GetSpriteHandle("skill-req-mastery-level")
-			DrawImage(badgeHandle, lvBadgeX, lvBadgeY, lvBadgeW, lvBadgeH)
+			if badgeHandle then
+				DrawImage(badgeHandle, lvBadgeX, lvBadgeY, lvBadgeW, lvBadgeH)
+			end
 			-- Draw star icon inside (smaller)
 			local starHandle = self:GetSpriteHandle("skill-req-mastery-mastered")
 			local starSize = 24
 			SetDrawColor(1, 1, 1)
-			DrawImage(starHandle, iconX + GRID_ICON_SIZE / 2 - starSize / 2, iconY + GRID_ICON_SIZE / 2 - starSize / 2, starSize, starSize)
+			if starHandle then
+				DrawImage(starHandle, iconX + GRID_ICON_SIZE / 2 - starSize / 2, iconY + GRID_ICON_SIZE / 2 - starSize / 2, starSize, starSize)
+			end
 		end
 
 		-- Damage type icons (right side of icon, top-aligned)

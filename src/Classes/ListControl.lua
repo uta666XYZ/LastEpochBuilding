@@ -274,13 +274,21 @@ function ListClass:Draw(viewPort, noTooltip)
 			elseif type(icon) == "table" then
 				-- GetRowIcon may return a list of 16x16 icons (type / primordial /
 				-- corrupted markers). Draw each in sequence and shift the text.
-				local n = #icon
-				for i = 1, n do
-					DrawImage(icon[i], colOffset + (i - 1) * 18, lineY, 16, 16)
+				-- Defensive :IsValid() re-check guards against non-deterministic
+				-- C++ renderer crash post-import (commit a7607e878 history).
+				local drawn = 0
+				for i = 1, #icon do
+					local h = icon[i]
+					if h and h:IsValid() then
+						DrawImage(h, colOffset + drawn * 18, lineY, 16, 16)
+						drawn = drawn + 1
+					end
 				end
-				DrawString(colOffset + n * 18, lineY + textOffsetY, "LEFT", textHeight, colFont, text)
+				DrawString(colOffset + drawn * 18, lineY + textOffsetY, "LEFT", textHeight, colFont, text)
 			else
-				DrawImage(icon, colOffset, lineY, 16, 16)
+				if icon:IsValid() then
+					DrawImage(icon, colOffset, lineY, 16, 16)
+				end
 				DrawString(colOffset + 16 + 2, lineY + textOffsetY, "LEFT", textHeight, colFont, text)
 			end
 		end

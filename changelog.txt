@@ -40,9 +40,6 @@ VERSION[0.13.2][2026/04/30]
 --- Uniques / Items ---
 - Julra's Obsession: implemented "+100% Stats on your gloves also apply to your minions" (gloves → minion stat propagation). The companion "stats also apply to minions" line is currently tagged not-supported where the calc path is incomplete.
 
---- Chore ---
-- AI assistant files (CLAUDE.md, .claude/, QWEN.md, etc.) consolidated in .gitignore.
-
 VERSION[0.13.1][2026/04/28]
 
 --- Compatibility ---

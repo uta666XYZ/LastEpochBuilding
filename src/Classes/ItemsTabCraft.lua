@@ -949,20 +949,79 @@ function ItemsTabClass:CraftRefreshSlotDropdowns()
 				hasAnySubcat = true
 			end
 
-			local function cleanLabel(s) return (s or ""):gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "") end
+			local function cleanLabel(s)
+				local out = (s or ""):gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
+				return out
+			end
+			local function baseName(e)
+				local name = e.affixName
+				if name and name ~= "" then
+					return name:sub(1, 1):upper() .. name:sub(2)
+				end
+				return cleanLabel(e.label)
+			end
+			-- Detect mod type from tier text so we can disambiguate
+			-- entries that share the same affixName (e.g. "Health" can be
+			-- both a flat-added and a percent-increased affix).
+			local function modTypeTag(e)
+				local txt = e.label or ""
+				if type(txt) ~= "string" or txt == "" then return nil end
+				local low = txt:lower()
+				if low:find("increased") or txt:find("%%%s*increased") then
+					return "increased"
+				elseif low:find("reduced") then
+					return "reduced"
+				elseif low:find("more ") then
+					return "more"
+				elseif low:find("less ") then
+					return "less"
+				elseif txt:find("%+") then
+					return "added"
+				elseif txt:find("%%") then
+					return "%"
+				end
+				return nil
+			end
+			local function buildDisplayLabels(group)
+				-- Count base-name collisions within this group.
+				local counts = {}
+				for _, e in ipairs(group) do
+					local b = baseName(e)
+					counts[b] = (counts[b] or 0) + 1
+				end
+				local labels = {}
+				for i, e in ipairs(group) do
+					local b = baseName(e)
+					if counts[b] and counts[b] > 1 then
+						local tag = modTypeTag(e)
+						if tag then
+							labels[i] = b .. " ^8(" .. tag .. ")"
+						else
+							labels[i] = b
+						end
+					else
+						labels[i] = b
+					end
+				end
+				return labels
+			end
 
 			if hasAnySubcat then
 				for _, sc in ipairs(SUBCAT_ORDER) do
 					local group = bySubcat[sc]
 					if group and #group > 0 then
-						table.sort(group, function(a, b) return (a.label or "") < (b.label or "") end)
+						table.sort(group, function(a, b)
+							return (a.affixName ~= "" and a.affixName or a.label or "") <
+							       (b.affixName ~= "" and b.affixName or b.label or "")
+						end)
 						local collapsed = prevCollapsed[sc] or false
 						t_insert(ddList, {
 							label = "^7" .. SUBCAT_LABEL[sc] .. "  (" .. tostring(#group) .. ")",
 							isHeader = true, collapsed = collapsed, subcat = sc,
 						})
-						for _, e in ipairs(group) do
-							t_insert(ddList, { label = "  " .. cleanLabel(e.label), entry = e })
+						local labels = buildDisplayLabels(group)
+						for i, e in ipairs(group) do
+							t_insert(ddList, { label = "  " .. labels[i], entry = e })
 							if curKey and e.statOrderKey == curKey then
 								selIdx = #ddList
 								foundCurrent = true
@@ -972,8 +1031,9 @@ function ItemsTabClass:CraftRefreshSlotDropdowns()
 				end
 			else
 				-- No subcategory info (e.g. idol / altar); flat list.
-				for _, e in ipairs(src) do
-					t_insert(ddList, { label = cleanLabel(e.label), entry = e })
+				local labels = buildDisplayLabels(src)
+				for i, e in ipairs(src) do
+					t_insert(ddList, { label = labels[i], entry = e })
 					if curKey and e.statOrderKey == curKey then
 						selIdx = #ddList
 						foundCurrent = true
@@ -1075,7 +1135,8 @@ function ItemsTabClass:CraftRefreshAffixDropdowns()
 					label = label:gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
 					groups[mod.statOrderKey] = {
 						label = label, statOrderKey = mod.statOrderKey,
-						affix = mod.affix, type = mod.type, maxTier = mod.tier or 0,
+						affix = mod.affix, affixName = mod.affixName or "", modName = mod.modName or "",
+						type = mod.type, maxTier = mod.tier or 0,
 						subcategory = subcat,
 					}
 				else
@@ -1128,8 +1189,9 @@ function ItemsTabClass:CraftRefreshAffixDropdowns()
 
 	local function pushSealedAndPrimordial(g)
 		t_insert(sealedList, {
-			label = g.label, statOrderKey = g.statOrderKey, affix = g.affix, type = g.type,
-			maxTier = m_min(g.maxTier, 6), subcategory = g.subcategory,
+			label = g.label, statOrderKey = g.statOrderKey,
+			affix = g.affix, affixName = g.affixName, modName = g.modName,
+			type = g.type, maxTier = m_min(g.maxTier, 6), subcategory = g.subcategory,
 		})
 		if g.maxTier >= 7 then
 			local t8Key = tostring(g.statOrderKey) .. "_7"
@@ -1139,8 +1201,9 @@ function ItemsTabClass:CraftRefreshAffixDropdowns()
 				for k = 1, 10 do if t8Mod[k] then t_insert(t8Parts, t8Mod[k]) end end
 				local t8Label = table.concat(t8Parts, " / "):gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
 				t_insert(primordialList, {
-					label = t8Label, statOrderKey = g.statOrderKey, affix = g.affix, type = g.type,
-					maxTier = 7, subcategory = g.subcategory,
+					label = t8Label, statOrderKey = g.statOrderKey,
+					affix = g.affix, affixName = g.affixName, modName = g.modName,
+					type = g.type, maxTier = 7, subcategory = g.subcategory,
 				})
 			end
 		end
@@ -1148,7 +1211,8 @@ function ItemsTabClass:CraftRefreshAffixDropdowns()
 
 	local function copyCapped(g)
 		return {
-			label = g.label, statOrderKey = g.statOrderKey, affix = g.affix,
+			label = g.label, statOrderKey = g.statOrderKey,
+			affix = g.affix, affixName = g.affixName, modName = g.modName,
 			type = g.type, maxTier = m_min(g.maxTier, 6), subcategory = g.subcategory,
 		}
 	end
@@ -1206,7 +1270,8 @@ function ItemsTabClass:CraftRefreshAffixDropdowns()
 					local label = table.concat(labelParts, " / "):gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
 					corruptedGroups[mod.statOrderKey] = {
 						label = label, statOrderKey = mod.statOrderKey,
-						affix = mod.affix, type = mod.type, maxTier = mod.tier or 0,
+						affix = mod.affix, affixName = mod.affixName or "", modName = mod.modName or "",
+						type = mod.type, maxTier = mod.tier or 0,
 						subcategory = subcat,
 					}
 				else
@@ -1216,14 +1281,14 @@ function ItemsTabClass:CraftRefreshAffixDropdowns()
 			end
 		end
 		for _, g in pairs(corruptedGroups) do
-			t_insert(corruptedList, { label = g.label, statOrderKey = g.statOrderKey, affix = g.affix, type = g.type, maxTier = m_min(g.maxTier, 6), subcategory = g.subcategory })
+			t_insert(corruptedList, { label = g.label, statOrderKey = g.statOrderKey, affix = g.affix, affixName = g.affixName, modName = g.modName, type = g.type, maxTier = m_min(g.maxTier, 6), subcategory = g.subcategory })
 		end
 	else
 		for _, g in ipairs(corruptedPrefixIter) do
-			t_insert(corruptedList, { label = g.label, statOrderKey = g.statOrderKey, affix = g.affix, type = g.type, maxTier = m_min(g.maxTier, 6), subcategory = g.subcategory })
+			t_insert(corruptedList, { label = g.label, statOrderKey = g.statOrderKey, affix = g.affix, affixName = g.affixName, modName = g.modName, type = g.type, maxTier = m_min(g.maxTier, 6), subcategory = g.subcategory })
 		end
 		for _, g in ipairs(corruptedSuffixIter) do
-			t_insert(corruptedList, { label = g.label, statOrderKey = g.statOrderKey, affix = g.affix, type = g.type, maxTier = m_min(g.maxTier, 6), subcategory = g.subcategory })
+			t_insert(corruptedList, { label = g.label, statOrderKey = g.statOrderKey, affix = g.affix, affixName = g.affixName, modName = g.modName, type = g.type, maxTier = m_min(g.maxTier, 6), subcategory = g.subcategory })
 		end
 	end
 	table.sort(corruptedList, sortByLabel)
@@ -1288,28 +1353,34 @@ function ItemsTabClass:CraftRefreshIdolAffixDropdowns()
 		end
 	end
 
+	-- Idol mod statOrderKey doesn't equal the entry-key prefix (unlike
+	-- ModItem), so we carry srcKey (the idol entry key prefix, e.g. "228")
+	-- through for tooltip's per-tier lookup against idolFlat.
 	local prefixList    = {}
 	local suffixList    = {}
 	local enchantedList = {}
 
 	for _, pool in ipairs({ general, weaver }) do
-		for _, mod in pairs(pool) do
-			if mod.statOrderKey and canRollOnIdol(mod) then
-				local entry = { label = buildLabel(mod), statOrderKey = mod.statOrderKey, affix = mod.affix, type = mod.type, maxTier = 0 }
+		for k, mod in pairs(pool) do
+			if type(mod) == "table" and mod.statOrderKey and canRollOnIdol(mod) then
+				local srcKey = tostring(k):match("^(%d+)")
+				local entry = { label = buildLabel(mod), statOrderKey = mod.statOrderKey, srcKey = srcKey, affixName = mod.affixName or "", modName = mod.modName or "", type = mod.type, maxTier = 0 }
 				if mod.type == "Prefix" then t_insert(prefixList, entry)
 				elseif mod.type == "Suffix" then t_insert(suffixList, entry) end
 			end
 		end
 	end
 
-	for _, mod in pairs(enchanted) do
-		if mod.statOrderKey and canRollOnIdol(mod) then
-			t_insert(enchantedList, { label = buildLabel(mod), statOrderKey = mod.statOrderKey, affix = mod.affix, type = mod.type, maxTier = 0 })
+	for k, mod in pairs(enchanted) do
+		if type(mod) == "table" and mod.statOrderKey and canRollOnIdol(mod) then
+			local srcKey = tostring(k):match("^(%d+)")
+			t_insert(enchantedList, { label = buildLabel(mod), statOrderKey = mod.statOrderKey, srcKey = srcKey, affixName = mod.affixName or "", modName = mod.modName or "", type = mod.type, maxTier = 0 })
 		end
 	end
 
 	local corruptedList = {}
-	for _, mod in pairs(corrupted) do
+	for k, mod in pairs(corrupted) do
+		if type(mod) ~= "table" then goto continue end
 		local show = false
 		if isOmen then
 			if mod.canRollOn then
@@ -1321,8 +1392,10 @@ function ItemsTabClass:CraftRefreshIdolAffixDropdowns()
 			show = mod.statOrderKey and canRollOnIdol(mod)
 		end
 		if show and mod.statOrderKey then
-			t_insert(corruptedList, { label = buildLabel(mod), statOrderKey = mod.statOrderKey, affix = mod.affix, type = mod.type, maxTier = 0 })
+			local srcKey = tostring(k):match("^(%d+)")
+			t_insert(corruptedList, { label = buildLabel(mod), statOrderKey = mod.statOrderKey, srcKey = srcKey, affixName = mod.affixName or "", modName = mod.modName or "", type = mod.type, maxTier = 0 })
 		end
+		::continue::
 	end
 
 	local function sortByLabel(a, b)
@@ -1879,16 +1952,73 @@ function ItemsTabClass:BuildCraftControls()
 				end)
 			controls[slotDDKey].enableDroppedWidth = true
 			controls[slotDDKey].maxDroppedWidth    = 520
-			-- Show a tooltip with the full label on hover so long affix
-			-- names clipped by the drop panel are still readable.
+			-- Tooltip: <affix name> / <mod name> / per-tier ranged mod text.
 			controls[slotDDKey].tooltipFunc = function(tooltip, mode, index, value)
 				tooltip:Clear()
 				if mode ~= "HOVER" then return end
 				if type(value) ~= "table" or value.isHeader then return end
-				local label = value.label or ""
-				label = label:gsub("^%s+", "")
-				if label ~= "" then
-					tooltip:AddLine(14, "^7" .. label)
+				local entry = value.entry
+				if type(entry) ~= "table" or not entry.statOrderKey then
+					local label = (value.label or ""):gsub("^%s+", "")
+					if label ~= "" then tooltip:AddLine(14, "^7" .. label) end
+					return
+				end
+
+				local function cleanLabel(s)
+					local out = (s or ""):gsub("{rounding:%w+}", ""):gsub("{[^}]+}", "")
+					return out
+				end
+
+				local affixName = entry.affixName
+				if not affixName or affixName == "" then
+					affixName = cleanLabel(value.label or "")
+				end
+				-- Source DisplayName starts lowercase; LE renders with leading cap.
+				if affixName ~= "" then
+					affixName = affixName:sub(1, 1):upper() .. affixName:sub(2)
+					tooltip:AddLine(16, "^7" .. affixName)
+				end
+
+				local modName = entry.modName
+				if modName and modName ~= "" then
+					tooltip:AddLine(14, "^xAAAAAA" .. modName)
+				end
+
+				tooltip:AddSeparator(6)
+
+				local itemMods = data.itemMods.Item or {}
+				local altarMods = data.itemMods["Idol Altar"] or {}
+				local idolFlat = data.modIdol and data.modIdol.flat or {}
+				local function lookupTier(tier)
+					if entry.srcKey then
+						local idolKey = entry.srcKey .. "_" .. tostring(tier)
+						if idolFlat[idolKey] then return idolFlat[idolKey] end
+					end
+					local key = tostring(entry.statOrderKey) .. "_" .. tostring(tier)
+					return itemMods[key] or altarMods[key] or idolFlat[key]
+				end
+
+				local maxTier = entry.maxTier or 0
+				if maxTier > 7 then maxTier = 7 end
+				local anyTier = false
+				for tier = 0, maxTier do
+					local mod = lookupTier(tier)
+					if mod then
+						anyTier = true
+						local parts = {}
+						for k = 1, 10 do
+							local ln = mod[k]
+							if type(ln) == "string" then
+								t_insert(parts, cleanLabel(ln))
+							end
+						end
+						local body = table.concat(parts, " / ")
+						tooltip:AddLine(14, "^7T" .. tostring(tier + 1) .. ": ^xCCCCCC" .. body)
+					end
+				end
+				if not anyTier then
+					local label = cleanLabel(value.label or "")
+					if label ~= "" then tooltip:AddLine(14, "^7" .. label) end
 				end
 			end
 			controls[slotDDKey].shown = function()
