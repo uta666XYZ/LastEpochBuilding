@@ -651,7 +651,13 @@ end
 
 function CalcBreakdownClass:DrawRadiusVisual(x, y, width, height, radius)
 	SetDrawColor(0.75, 0.75, 0.75)
-	DrawImage(self.rangeGuide, x, y, width, height)
+	-- Defensive :IsValid() guard. game_ui_small.png is missing from src/Assets/
+	-- so self.uiOverlay is a broken handle; calling DrawImage on it causes a
+	-- C++ renderer +0x20 access violation. range_guide.png exists but guard
+	-- both for safety.
+	if self.rangeGuide and self.rangeGuide:IsValid() then
+		DrawImage(self.rangeGuide, x, y, width, height)
+	end
 	--SetDrawColor(0, 0, 0)
 	--DrawImage(nil, x, y, width, height)
 	--[[SetDrawColor(0.5, 0.5, 0.75)
@@ -681,7 +687,9 @@ function CalcBreakdownClass:DrawRadiusVisual(x, y, width, height, radius)
 	end
 	main:RenderCircle(x, y, width, height, self.foo1, self.foo2, 30)]]
 	SetDrawColor(1, 1, 1)
-	DrawImage(self.uiOverlay, x, y, width, height)
+	if self.uiOverlay and self.uiOverlay:IsValid() then
+		DrawImage(self.uiOverlay, x, y, width, height)
+	end
 end
 
 function CalcBreakdownClass:Draw(viewPort)

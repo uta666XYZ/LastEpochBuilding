@@ -357,10 +357,18 @@ function DropDownClass:Draw(viewPort, noTooltip)
 	local iconStripW = 0
 	if preIcons and #preIcons > 0 then
 		SetDrawColor(1, 1, 1)
+		local drawn = 0
 		for i, h in ipairs(preIcons) do
-			DrawImage(h, x + 2 + (i - 1) * 18, y + (height - 16) / 2, 16, 16)
+			-- Defensive re-check: between getItemIcons() validating the handle
+			-- and this DrawImage call the texture state can desync (commit
+			-- a7607e878 documented a non-deterministic C++ renderer crash in
+			-- this loop). Skip handles that became invalid mid-frame.
+			if h and h:IsValid() then
+				DrawImage(h, x + 2 + drawn * 18, y + (height - 16) / 2, 16, 16)
+				drawn = drawn + 1
+			end
 		end
-		iconStripW = #preIcons * 18
+		iconStripW = drawn * 18
 	end
 	local fontSize = 16
 	if height >= 32 and selLabel and DrawStringWidth(fontSize, "VAR", selLabel) > drawWidth then
@@ -461,10 +469,15 @@ function DropDownClass:Draw(viewPort, noTooltip)
 						local icons = self.dropRowIcons(index, listVal)
 						if icons and #icons > 0 then
 							SetDrawColor(1, 1, 1)
+							local drawn = 0
 							for i, h in ipairs(icons) do
-								DrawImage(h, (i - 1) * 18, y + (itemLineH - 16) / 2, 16, 16)
+								-- Defensive: same renderer crash window as preIcons above.
+								if h and h:IsValid() then
+									DrawImage(h, drawn * 18, y + (itemLineH - 16) / 2, 16, 16)
+									drawn = drawn + 1
+								end
 							end
-							rowIconOffset = #icons * 18
+							rowIconOffset = drawn * 18
 							-- restore label color (DrawImage doesn't change it but
 							-- be defensive in case a future change does)
 							if index == self.hoverSel or index == self.selIndex then
