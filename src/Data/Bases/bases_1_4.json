@@ -4061,7 +4061,7 @@
     "implicits": [
       "{rounding:Integer}+(56-66) Spell Necrotic Damage",
       "{rounding:Integer}(56-66)% increased Curse Damage",
-      "{rounding:Integer}-3 to -5 Spell Mana Cost"
+      "-3 to -5 Spell Mana Cost"
     ],
     "weapon": {
       "AttackRateBase": 1.02,
@@ -4079,7 +4079,7 @@
     "implicits": [
       "{rounding:Integer}+(50-60) Spell Damage",
       "{rounding:Integer}+(50-60) Mana",
-      "{rounding:Integer}-3 to -5 Spell Mana Cost"
+      "-3 to -5 Spell Mana Cost"
     ],
     "weapon": {
       "AttackRateBase": 1.02,
@@ -4097,7 +4097,7 @@
     "implicits": [
       "{rounding:Integer}+(54-60) Spell Damage",
       "(6-12)% increased Cast Speed",
-      "{rounding:Integer}-3 to -5 Spell Mana Cost"
+      "-3 to -5 Spell Mana Cost"
     ],
     "weapon": {
       "AttackRateBase": 1.02,
@@ -4115,7 +4115,7 @@
     "implicits": [
       "{rounding:Integer}+(52-56) Spell Damage",
       "(5-10)% increased Cast Speed",
-      "{rounding:Integer}-3 to -4 Spell Mana Cost"
+      "-3 to -4 Spell Mana Cost"
     ],
     "weapon": {
       "AttackRateBase": 1.02,
@@ -4133,7 +4133,7 @@
     "implicits": [
       "{rounding:Integer}+(52-58) Spell Damage",
       "{rounding:Integer}+(40-52) Mana",
-      "{rounding:Integer}-3 to -4 Spell Mana Cost"
+      "-3 to -4 Spell Mana Cost"
     ],
     "weapon": {
       "AttackRateBase": 1.02,
@@ -4150,7 +4150,7 @@
     "affixEffectModifier": 0.75,
     "implicits": [
       "{rounding:Integer}+(60-63) Spell Damage",
-      "{rounding:Integer}-3 to -5 Spell Mana Cost",
+      "-3 to -5 Spell Mana Cost",
       "(100-355)% Chance to Upgrade when you slay a Harbinger"
     ],
     "weapon": {
@@ -4168,7 +4168,7 @@
     "affixEffectModifier": 0.75,
     "implicits": [
       "{rounding:Integer}+(60-63) Spell Damage",
-      "{rounding:Integer}-3 to -5 Spell Mana Cost",
+      "-3 to -5 Spell Mana Cost",
       "(36-60)% of Mana Spent Gained as Ward"
     ],
     "weapon": {
@@ -5195,7 +5195,7 @@
     "implicits": [
       "+78 Melee Damage",
       "{rounding:Integer}+(60-68) Spell Damage",
-      "{rounding:Integer}-3 to -4 Spell Mana Cost"
+      "-3 to -4 Spell Mana Cost"
     ],
     "weapon": {
       "AttackRateBase": 0.98,
@@ -5249,7 +5249,7 @@
     "implicits": [
       "{rounding:Integer}+(90-100) Spell Damage",
       "{rounding:Integer}(20-30)% increased Mana Regen",
-      "{rounding:Integer}-3 to -5 Spell Mana Cost"
+      "-3 to -5 Spell Mana Cost"
     ],
     "weapon": {
       "AttackRateBase": 0.92,
@@ -5321,7 +5321,7 @@
     "implicits": [
       "+70 Melee Damage",
       "{rounding:Integer}+(63-80) Spell Damage",
-      "{rounding:Integer}-3 to -5 Spell Mana Cost"
+      "-3 to -5 Spell Mana Cost"
     ],
     "weapon": {
       "AttackRateBase": 0.92,

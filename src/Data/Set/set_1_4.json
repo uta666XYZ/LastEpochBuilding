@@ -1458,8 +1458,8 @@
       "{rounding:Integer}+(14-24) Spell Fire Damage for Infernal Shade per Active Dread Shade",
       "(28-48)% Increased Area for Infernal Shade per Active Dread Shade",
       "{rounding:Integer}+(14-24) Spell Fire Damage Over Time",
-      "{rounding:Integer}-14 to -8 Mana Cost for Infernal Shade",
-      "{rounding:Integer}-14 to -8 Mana Cost for Dread Shade"
+      "-14 to -8 Mana Cost for Infernal Shade",
+      "-14 to -8 Mana Cost for Dread Shade"
     ],
     "rollIds": [
       0,

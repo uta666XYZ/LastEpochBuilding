@@ -589,7 +589,7 @@
     "mods": [
       "{rounding:Integer}+(17-21) Melee Lightning Damage",
       "{rounding:Integer}+(17-21) Spell Lightning Damage",
-      "{rounding:Integer}-6 to -3 Totem Mana Cost",
+      "-6 to -3 Totem Mana Cost",
       "{rounding:Integer}+(3-6) Attunement",
       "{rounding:Integer}+(3-6) Strength"
     ],
@@ -3163,7 +3163,7 @@
     "mods": [
       "(100-125)% of Chance to Inflict Bleed on Hit gained as Bleed Chance per second with Hail of Arrows",
       "25% increased Bow Attack Speed",
-      "{rounding:Integer}-15 to -10 Hail of Arrows Mana Cost",
+      "-15 to -10 Hail of Arrows Mana Cost",
       "{rounding:Integer}+(25-45) Health",
       "{rounding:Integer}+(25-45) Mana",
       "2% of Damage Over Time Damage Leeched as Health"
@@ -4008,7 +4008,7 @@
     },
     "mods": [
       "(15-21)% increased Movement Speed",
-      "{rounding:Integer}+1 Projectiles with Spirit Thorns per stack of Germination",
+      "+1 Projectiles with Spirit Thorns per stack of Germination",
       "(100-160)% Increased damage while in Spriggan Form",
       "+1 You Cannot Move While in Spriggan Form",
       "{rounding:Integer}+(20-26) Health Regen per stack of Germination"
@@ -5119,7 +5119,7 @@
       "{rounding:Integer}+(50-105) Endurance Threshold",
       "(10-15)% increased area for Void Area Spells",
       "100% Chance to transport Devouring Orbs around the target location when you use Erasing Strike",
-      "{rounding:Integer}-10 to -5 Erasing Strike Mana Cost"
+      "-10 to -5 Erasing Strike Mana Cost"
     ],
     "rollIds": [
       0,
@@ -5265,7 +5265,7 @@
     "mods": [
       "{rounding:Integer}+(48-65) Melee Damage for directly used Detonating Arrow",
       "+3 to Detonating Arrow",
-      "{rounding:Integer}-6 to -3 Mana Cost for Detonating Arrow",
+      "-6 to -3 Mana Cost for Detonating Arrow",
       "1 Detonating Arrow Converted to a Melee Attack"
     ],
     "rollIds": [
@@ -5310,7 +5310,7 @@
       "(16-64)% Increased Cooldown Recovery Speed for Judgement",
       "+3 Melee Damage per Attunement for Judgement while Unarmed",
       "2% increased Area per Attunement for Judgement while Unarmed",
-      "{rounding:Integer}-12 to -8 Judgement Mana Cost while Unarmed",
+      "-12 to -8 Judgement Mana Cost while Unarmed",
       "+(8-24)% Fire Penetration",
       "{rounding:Integer}+(4-16) Attunement"
     ],
