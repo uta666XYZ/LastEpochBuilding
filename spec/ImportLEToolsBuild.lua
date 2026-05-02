@@ -87,7 +87,11 @@ importTab:ImportItemsAndSkills(char)
 importTab:ImportBlessingsFromLETools(data)
 
 -- Quest reward defaults match the in-app DownloadLEToolsPlannerBuild flow.
--- Both quests give +1 to all attributes; LETools planner values include both.
+-- LETools planner JSON has no quest flag; per-build truth is 0/2, 1/2, or 2/2
+-- (visible only via LETools hover tooltip / Quests window). 122-build audit
+-- (2026-05-02) shows both ON matches the majority (online-import fromSaveFile=2
+-- builds include quest reward in displayed values); some builds (e.g. oN2zRyWK
+-- 0/2) will show +2 offset until per-build detection is implemented.
 build.configTab.input.questApophisMajasa = true
 build.configTab.input.questTempleOfEterra = true
 build.configTab:BuildModList()

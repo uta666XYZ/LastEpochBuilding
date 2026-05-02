@@ -53,10 +53,35 @@ local function sanitizeLabel(s)
 end
 
 local buildList = fetchBuilds("../spec/TestBuilds/1.4")
-for filename, importCode in pairs(buildList) do
+
+-- Sharding & resume support via env vars:
+--   LEB_SHARD="i/N" -> process only files where sortedIndex % N == i (0-based)
+--   LEB_FORCE=1     -> regenerate even if .lua already exists
+local shardEnv = os.getenv("LEB_SHARD") or ""
+local shardI, shardN = shardEnv:match("^(%d+)/(%d+)$")
+shardI = tonumber(shardI) or 0
+shardN = tonumber(shardN) or 1
+local force = os.getenv("LEB_FORCE") == "1"
+
+local sortedNames = {}
+for filename in pairs(buildList) do table.insert(sortedNames, filename) end
+table.sort(sortedNames)
+
+for idx, filename in ipairs(sortedNames) do
+    local importCode = buildList[filename]
+    local luaPath = filename:gsub("%.xml$", ".lua")
+    local skip = false
+    if ((idx - 1) % shardN) ~= shardI then
+        skip = true
+    elseif not force then
+        local existing = io.open(luaPath, "r")
+        if existing then existing:close(); skip = true end
+    end
+    if skip then
+        -- silent skip
+    else
     print("Loading build " .. filename)
     loadBuildFromXML(importCode, filename)
-    local luaPath = filename:gsub("%.xml$", ".lua")
     local fileHnd, errMsg = io.open(luaPath, "w+")
     if not fileHnd then
         print("ERROR opening " .. luaPath .. ": " .. tostring(errMsg))
@@ -94,4 +119,5 @@ for filename, importCode in pairs(buildList) do
         end)
         fileHnd:close()
     end
+    end -- close skip-else
 end
