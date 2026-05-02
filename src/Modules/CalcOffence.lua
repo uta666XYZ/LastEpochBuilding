@@ -1717,6 +1717,7 @@ function calcs.offence(env, actor, activeSkill)
 	output.SpiritPlagueChance     = m_min(modDB:Sum("BASE", skillCfg, "SpiritPlagueChance"), 100)
 	-- Curse chances
 	output.BoneCurseChance        = m_min(modDB:Sum("BASE", skillCfg, "BoneCurseChance"), 100)
+	output.NecroticBoneCurseChance = m_min(modDB:Sum("BASE", skillCfg, "NecroticBoneCurseChance"), 100)
 	output.TormentChance          = m_min(modDB:Sum("BASE", skillCfg, "TormentChance"), 100)
 	output.DecrepifyChance        = m_min(modDB:Sum("BASE", skillCfg, "DecrepifyChance"), 100)
 	output.AnguishChance          = m_min(modDB:Sum("BASE", skillCfg, "AnguishChance"), 100)
@@ -1747,34 +1748,83 @@ function calcs.offence(env, actor, activeSkill)
 	-- LE Leech Rate --
 	output.LeechRate = calcLib.mod(skillModList, skillCfg, "LeechRate")
 
-	-- LE Damaging Ailment DPS (per stack) --
+	-- LE Damaging Ailment DPS --
+	-- Per LE engine: ailments are rolled per-hit. Steady-state stacks on a single target =
+	--   min( hits/sec × (chance/100) × effectiveDuration , maxStacks )
+	-- Total ailment DPS = stacks × DPSPerStack, capped at DotDpsCap.
+	-- Reference: LE_datamining/extracted/dot_channel_formulas.md, ailments_v3.json
+	local hitRate = output.HitSpeed or output.Speed or 0
+	local enemyDurationMap = {
+		Bleed = output.EnemyBleedDuration, Ignite = output.EnemyIgniteDuration,
+		Poison = output.EnemyPoisonDuration, Frostbite = output.EnemyFrostbiteDuration,
+		Electrify = output.EnemyElectrifyDuration, TimeRot = output.EnemyTimeRotDuration,
+		Damned = output.EnemyDamnedDuration, Plague = output.EnemyPlagueDuration,
+		Witchfire = output.EnemyWitchfireDuration, SpreadingFlames = output.EnemySpreadingFlamesDuration,
+		FutureStrike = output.EnemyFutureStrikeDuration, AbyssalDecay = output.EnemyAbyssalDecayDuration,
+		AbyssalDecayStacking = output.EnemyAbyssalDecayDuration, SpiritPlague = output.EnemySpiritPlagueDuration,
+		BoneCurse = output.EnemyBoneCurseDuration, Torment = output.EnemyTormentDuration,
+		Decrepify = output.EnemyDecrepifyDuration, Anguish = output.EnemyAnguishDuration,
+		Penance = output.EnemyPenanceDuration, AcidSkin = output.EnemyAcidSkinDuration,
+		SerpentVenom = output.EnemySerpentVenomDuration, Hemorrhage = output.EnemyHemorrhageDuration,
+		Ravage = output.EnemyRavageDuration,
+	}
+	output.TotalAilmentDPS = 0
 	for ailmentName, ailmentData in pairs(data.damagingAilment) do
 		local chance = output[ailmentName .. "Chance"] or 0
 		if chance > 0 then
-			local duration = ailmentData.duration
+			local baseDuration = ailmentData.duration
+			local durationMult = enemyDurationMap[ailmentName] or 1
+			local effDuration = baseDuration * durationMult
+			local totalDamagePerStack, dpsPerStack
 			if ailmentData.dualType then
-				-- Dual-type ailment (e.g. Witchfire: Fire + Necrotic)
 				local totalDmg = 0
 				for dmgType, baseDmg in pairs(ailmentData.baseDamage) do
 					local incDamage = calcLib.mod(skillModList, skillCfg, ailmentName .. "Damage", "AilmentDamage", dmgType .. "Damage", "Damage")
 					totalDmg = totalDmg + baseDmg * incDamage
 				end
 				local moreDamage = calcLib.mod(skillModList, skillCfg, ailmentName .. "DamageMore") or 1
-				local totalDamagePerStack = totalDmg * moreDamage
-				local dpsPerStack = totalDamagePerStack / duration
-				output[ailmentName .. "DamagePerStack"] = totalDamagePerStack
-				output[ailmentName .. "DPSPerStack"] = dpsPerStack
+				totalDamagePerStack = totalDmg * moreDamage
 			else
-				-- Single-type ailment
 				local baseDmg = ailmentData.baseDamage
 				local incDamage = calcLib.mod(skillModList, skillCfg, ailmentName .. "Damage", "AilmentDamage", ailmentData.associatedType .. "Damage", "Damage")
 				local moreDamage = calcLib.mod(skillModList, skillCfg, ailmentName .. "DamageMore") or 1
-				local totalDamagePerStack = baseDmg * incDamage * moreDamage
-				local dpsPerStack = totalDamagePerStack / duration
-				output[ailmentName .. "DamagePerStack"] = totalDamagePerStack
-				output[ailmentName .. "DPSPerStack"] = dpsPerStack
+				totalDamagePerStack = baseDmg * incDamage * moreDamage
 			end
+			-- Per-stack DPS uses the BASE duration (per-stack lifetime damage / per-stack duration).
+			-- Increased duration extends total damage via stack count, not per-stack rate.
+			dpsPerStack = totalDamagePerStack / baseDuration
+			output[ailmentName .. "DamagePerStack"] = totalDamagePerStack
+			output[ailmentName .. "DPSPerStack"] = dpsPerStack
+
+			-- Steady-state stacks on a single target
+			local applicationsPerSec = hitRate * (chance / 100)
+			local rawStacks = applicationsPerSec * effDuration
+			local stacks = rawStacks
+			if ailmentData.maxStacks then
+				stacks = m_min(rawStacks, ailmentData.maxStacks)
+			end
+			-- For maxStacks=1 ailments, uptime fraction caps total DPS contribution
+			local totalDPS = m_min(dpsPerStack * stacks, data.misc.DotDpsCap)
+			local totalDamage = totalDPS * effDuration
+			output[ailmentName .. "Stacks"] = stacks
+			output[ailmentName .. "DPS"] = totalDPS
+			output[ailmentName .. "Damage"] = totalDamage
+			output[ailmentName .. "EffectiveDuration"] = effDuration
+			output.TotalAilmentDPS = output.TotalAilmentDPS + totalDPS
 		end
+	end
+	-- Wire LE ailment totals into the legacy WithXxxDPS aggregator (CalcOffence.lua:2553-2582)
+	if (output.BleedDPS or 0) > 0 then
+		skillFlags.bleed = true
+	end
+	if (output.IgniteDPS or 0) > 0 then
+		skillFlags.ignite = true
+		skillFlags.igniteCanStack = true
+		output.TotalIgniteDPS = output.IgniteDPS
+	end
+	if (output.PoisonDPS or 0) > 0 then
+		output.TotalPoisonDPS = output.PoisonDPS
+		output.TotalPoisonAverageDamage = output.PoisonDamage
 	end
 
 	-- LE Overload Calculations (Warlock) --

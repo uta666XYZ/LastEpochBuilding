@@ -82,6 +82,19 @@ LEB is distributed as a **portable zip — no installation required**.
 
 User data (builds, settings) is stored alongside the executable, so keep all files in the same folder.
 
+### 🐧 Running on Linux (via Wine)
+
+LEB is currently distributed as a Windows build only. A native Linux build is **not** available, but LEB runs well on Linux through [Wine](https://www.winehq.org/) (community-tested; not officially supported).
+
+1. Install Wine (e.g. `sudo apt install wine` on Debian/Ubuntu, `sudo pacman -S wine` on Arch)
+2. Extract `LastEpochBuilding-vX.X.X-win.zip` to any folder
+3. From the extracted folder, run:
+   ```sh
+   wine "runtime/Last Epoch Building.exe"
+   ```
+
+Tested with recent Wine versions; if you hit issues, please open an issue with your distro and Wine version. A native Linux/Web build is on the [Roadmap](#-roadmap).
+
 ---
 
 ## 🛠️ Roadmap

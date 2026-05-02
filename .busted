@@ -28,10 +28,22 @@ return {
         helper = "HeadlessWrapper.lua",
         ROOT = { "../spec/GenerateOneBuild.lua" },
     },
+    debugAffix = {
+        directory = "src",
+        lpath = "../runtime/lua/?.lua;../runtime/lua/?/init.lua",
+        helper = "HeadlessWrapper.lua",
+        ROOT = { "../spec/DebugAffix.lua" },
+    },
     importOne = {
         directory = "src",
         lpath = "../runtime/lua/?.lua;../runtime/lua/?/init.lua",
         helper = "HeadlessWrapper.lua",
         ROOT = { "../spec/ImportLEToolsBuild.lua" },
+    },
+    dumpSkillCaps = {
+        directory = "src",
+        lpath = "../runtime/lua/?.lua;../runtime/lua/?/init.lua",
+        helper = "HeadlessWrapper.lua",
+        ROOT = { "../spec/DumpSkillCaps.lua" },
     },
 }
