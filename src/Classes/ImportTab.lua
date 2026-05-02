@@ -852,13 +852,14 @@ function ImportTabClass:DownloadLEToolsPlannerBuild(url)
             self:ImportPassiveTreeAndJewels(char)
             self:ImportItemsAndSkills(char)
             self:ImportBlessingsFromLETools(data)
-            -- LETools/Maxroll planner values match LEB only when both quest
-            -- rewards (Apophis/Majasa AND Temple of Eterra, +1 to all
-            -- attributes each) are applied. Verified via Necromancer build
-            -- o3Zlpkxd: Str/Dex/Int/Att/Vit each off by exactly -1 with only
-            -- Apophis enabled, exact match with both enabled. The API JSON
-            -- carries no quest flag, so assume both completed (planners
-            -- typically depict end-game characters).
+            -- Quest reward 状態は LETools planner JSON に含まれず、ビルドごとに
+            -- 0/2, 1/2, 2/2 のいずれかで真値が変わる (LETools の左パネル数値と
+            -- ホバー tooltip / Quests ウィンドウの "Attribute Points: N/2" を
+            -- 確認すれば判別可能)。122 ビルド audit (2026-05-02) では両方 ON が
+            -- 大半の build (online-import 由来 fromSaveFile=2) と一致する一方、
+            -- 0/2 の build (例 oN2zRyWK) では +2 ズレる。ヒットの多い両 ON を
+            -- 維持しつつ、TODO: LETools 側を tooltip スクレイプして per-build
+            -- 自動設定する。
             self.build.configTab.input.questApophisMajasa = true
             self.build.configTab.input.questTempleOfEterra = true
             self.build.configTab:BuildModList()
