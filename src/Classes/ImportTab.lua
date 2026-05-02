@@ -366,11 +366,7 @@ local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(
                 return
             end
             if selectedWebsite.id == "lastepochtools" then
-                if self.controls.importCodeIn.buf:match("lastepochtools%.com/profile/[^/]+/character/[^/?#]+") then
-                    self:DownloadLEToolsProfileBuild(self.controls.importCodeIn.buf)
-                else
-                    self:DownloadLEToolsPlannerBuild(self.controls.importCodeIn.buf)
-                end
+                self:DownloadLEToolsPlannerBuild(self.controls.importCodeIn.buf)
                 return
             end
             self.importCodeFetching = true
@@ -791,43 +787,6 @@ function ImportTabClass:DownloadMaxrollPlannerBuild(url)
         self:ImportItemsAndSkills(char)
         self:ImportBlessingsFromMaxroll(profileData)
         self.importCodeDetail = colorCodes.POSITIVE .. "Maxroll build imported."
-    end)
-end
-
--- LETools /profile/{account}/character/{name} URLs have no usable planner JSON
--- (profile_data tokens rotate per page-load and are derived in obfuscated JS),
--- so we resolve account+character via Maxroll's character API which returns
--- the offline-save JSON format already handled by ReadJsonSaveData.
-function ImportTabClass:DownloadLEToolsProfileBuild(url)
-    self.importCodeFetching = true
-    self.importCodeDetail = colorCodes.NORMAL .. "Resolving via Maxroll account API..."
-
-    local accountName, charName = url:match("lastepochtools%.com/profile/([^/]+)/character/([^/?#]+)")
-    if not accountName or not charName then
-        self.importCodeFetching = false
-        self.importCodeDetail = colorCodes.NEGATIVE .. "Could not parse LETools profile URL"
-        return
-    end
-
-    local apiURL = "https://planners.maxroll.gg/lastepoch/characters/" .. accountName .. "/" .. charName
-    launch:DownloadPage(apiURL, function(response, errMsg)
-        self.importCodeFetching = false
-        if errMsg == "Response code: 404" then
-            self.importCodeDetail = colorCodes.NEGATIVE .. "Character not found on Maxroll. Make sure the Maxroll profile is public, or paste a /planner/ URL instead."
-            return
-        elseif errMsg then
-            self.importCodeDetail = colorCodes.NEGATIVE .. "Download failed: " .. errMsg:gsub("\n", " ")
-            return
-        end
-        local ok, charOrErr = pcall(function() return self:ReadJsonSaveData(response.body) end)
-        if not ok then
-            ConPrintf("[IMPORT-ERR] Failed to parse character data: %s", tostring(charOrErr))
-            self.importCodeDetail = colorCodes.NEGATIVE .. "Failed to parse character data."
-            return
-        end
-        self:ImportPassiveTreeAndJewels(charOrErr)
-        self:ImportItemsAndSkills(charOrErr)
-        self.importCodeDetail = colorCodes.POSITIVE .. "Build imported via Maxroll (" .. accountName .. "/" .. charName .. ")."
     end)
 end
 
