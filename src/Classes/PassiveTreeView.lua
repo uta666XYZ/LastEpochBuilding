@@ -1426,7 +1426,9 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 			SetDrawLayer(nil, 30)
 			SetDrawColor(1, 0, 0)
 			local size = iconSize * scale * 1.33 * 2.5
-			DrawImage(self.searchHighlightRing, scrX - size, scrY - size, size * 2, size * 2)
+			if self.searchHighlightRing and self.searchHighlightRing:IsValid() then
+				DrawImage(self.searchHighlightRing, scrX - size, scrY - size, size * 2, size * 2)
+			end
 		elseif #self.searchParams > 0 then
 			-- Dim non-matching nodes
 			SetDrawLayer(nil, 26)
@@ -1439,7 +1441,9 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 			SetDrawLayer(nil, 30)
 			SetDrawColor(1, 0, 0)
 			local size = iconSize * scale * 1.33 * 2.5
-			DrawImage(self.searchHighlightRing, scrX - size, scrY - size, size * 2, size * 2)
+			if self.searchHighlightRing and self.searchHighlightRing:IsValid() then
+				DrawImage(self.searchHighlightRing, scrX - size, scrY - size, size * 2, size * 2)
+			end
 		end
 		if node == hoverNode and (node.type ~= "Socket" or not IsKeyDown("SHIFT")) and (node.type ~= "Mastery" or node.masteryEffects) and not IsKeyDown("CTRL") and not main.popups[1] then
 			-- Draw tooltip above skill bar (TreeTab draws skill bar at layer 1, so use layer 2)
@@ -1459,7 +1463,7 @@ end
 
 -- Draws the given asset at the given position
 function PassiveTreeViewClass:DrawAsset(data, x, y, scale, isHalf, fixedSize)
-	if not data then
+	if not data or not data.handle or not data.handle:IsValid() then
 		return
 	end
 	if data.width == 0 then
@@ -2023,7 +2027,7 @@ function PassiveTreeViewClass:DrawHistoryBar(build, barVP, inputEvents)
 			}
 		end
 		local spr = node.icon and tree.spriteMap[node.icon]
-		if spr then
+		if spr and spr.handle and spr.handle:IsValid() then
 			SetDrawColor(1, 1, 1)
 			DrawImage(spr.handle, ix, iconY, ICON_SIZE, ICON_SIZE, spr[1], spr[2], spr[3], spr[4])
 		else
