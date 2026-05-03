@@ -848,9 +848,16 @@ function ConfigTabClass:Draw(viewPort, inputEvents)
 end
 
 function ConfigTabClass:UpdateLevel()
+	-- enemyLevel default: in-game character sheet uses char level for
+	-- mitigation calcs (Armor/Block/Dodge), and LETools matches in-game.
+	-- Default to characterLevel so LEB matches both. Users can override
+	-- via the Config tab "Enemy / Area Level" field for boss/monolith sims.
+	-- See Obsidian "ShutFackUp lv85 Spellblade in-game stats.md" #3/#4/#9.
 	local input = self.input
 	if input.enemyLevel and input.enemyLevel > 0 then
 		self.enemyLevel = input.enemyLevel
+	elseif self.build and self.build.characterLevel then
+		self.enemyLevel = self.build.characterLevel
 	else
 		self.enemyLevel = 100
 	end
