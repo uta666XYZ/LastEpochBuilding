@@ -331,7 +331,8 @@ function calcs.buildOutput(build, mode)
 				calcs.buildActiveSkill(env, "CACHE", skill)
 			end
 			if GlobalCache.cachedData["CACHE"][uuid] then
-				for pool, costResource in pairs({["LifeUnreserved"] = "LifeCost", ["ManaUnreserved"] = "ManaCost", ["Rage"] = "RageCost"}) do
+				-- LE has no mana/life reservation: compare cost directly against the full pool.
+				for pool, costResource in pairs({["Life"] = "LifeCost", ["Mana"] = "ManaCost", ["Rage"] = "RageCost"}) do
 					local cachedCost = GlobalCache.cachedData["CACHE"][uuid].Env.player.output[costResource]
 					if cachedCost then
 						local totalPool = output[pool] or 0
@@ -341,13 +342,11 @@ function calcs.buildOutput(build, mode)
 						end
 					end
 				end
-				for pool, costResource in pairs({["LifeUnreservedPercent"] = "LifePercentCost", ["ManaUnreservedPercent"] = "ManaPercentCost"}) do
+				for _, costResource in pairs({"LifePercentCost", "ManaPercentCost"}) do
 					local cachedCost = GlobalCache.cachedData["CACHE"][uuid].Env.player.output[costResource]
-					if cachedCost then
-						if (output[pool] or 0) < cachedCost then
-							output[costResource.."PercentCostWarning"] = output[costResource.."PercentCostWarning"] or {}
-							t_insert(output[costResource.."PercentCostWarning"], skill.activeEffect.grantedEffect.name)
-						end
+					if cachedCost and cachedCost > 100 then
+						output[costResource.."PercentCostWarning"] = output[costResource.."PercentCostWarning"] or {}
+						t_insert(output[costResource.."PercentCostWarning"], skill.activeEffect.grantedEffect.name)
 					end
 				end
 			end

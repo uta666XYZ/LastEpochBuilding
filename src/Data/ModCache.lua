@@ -2245,8 +2245,6 @@ c["+10% Lightning Resistance"]={{[1]={flags=0,keywordFlags=0,name="LightningResi
 c["+10% Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=10}},nil}
 c["+10% Mana Arc Mana Consumption"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=10}},"  Arc Mana Consumption "}
 c["+10% Mana Cost"]={{[1]={flags=0,keywordFlags=0,name="ManaCost",type="BASE",value=10}},nil}
-c["+10% Mana Efficiency"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=10}},"  Efficiency "}
-c["+10% Mana Efficiency with Frost Claw"]={{[1]={[1]={skillName="Frost Claw",type="SkillName"},flags=0,keywordFlags=0,name="Mana",type="BASE",value=10}},"  Efficiency with  "}
 c["+10% Mana Regen On Heal"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="BASE",value=10}},"  On Heal "}
 c["+10% Mana efficiency for Decoy"]={{[1]={[1]={skillName="Decoy",type="SkillName"},flags=0,keywordFlags=0,name="Mana",type="BASE",value=10}},"  efficiency for  "}
 c["+10% Mana efficiency for Synchronized Strike"]={{[1]={[1]={skillName="Synchronized Strike",type="SkillName"},flags=0,keywordFlags=0,name="Mana",type="BASE",value=10}},"  efficiency for  "}
@@ -2342,7 +2340,6 @@ c["+10% Stack Duration"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="MOR
 c["+10% Summoned Spriggan Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="BASE",value=10}}," Summoned Spriggan  "}
 c["+10% Summoning Cast Speed"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="BASE",value=10}}," Summoning  "}
 c["+10% Summoning Mana Cost"]={{[1]={flags=0,keywordFlags=0,name="ManaCost",type="BASE",value=10}}," Summoning  "}
-c["+10% Summoning Mana Efficiency"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=10}}," Summoning  Efficiency "}
 c["+10% Summoning Speed"]={{}," Summoning Speed "}
 c["+10% Swipe Area"]={{[1]={[1]={skillName="Swipe",type="SkillName"},flags=0,keywordFlags=0,name="AreaOfEffect",type="BASE",value=10}},nil}
 c["+10% Swipe Damage"]={{[1]={[1]={skillName="Swipe",type="SkillName"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=10}},nil}
@@ -2579,7 +2576,6 @@ c["+108% Chance to Inflict Bleed on Hit per equipped Sword"]={{[1]={[1]={type="M
 c["+108% Chance to cast Fire Aura on Kill with Fire Skills (1 second cooldown)"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=108},notSupported=true},nil}
 c["+108% Chance to inflict Time Rot on Void Hit"]={{[1]={flags=8388608,keywordFlags=16,name="TimeRotChance",type="BASE",value=108}},nil}
 c["+108% Critical Strike Multiplier against Frozen Enemies"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="Frozen"},flags=0,keywordFlags=0,name="CritMultiplier",type="BASE",value=108}},nil}
-c["+108% Mana Efficiency with Lethal Mirage"]={{[1]={[1]={skillName="Lethal Mirage",type="SkillName"},flags=0,keywordFlags=0,name="Mana",type="BASE",value=108}},"  Efficiency with  "}
 c["+108% Mana efficiency for Decoy"]={{[1]={[1]={skillName="Decoy",type="SkillName"},flags=0,keywordFlags=0,name="Mana",type="BASE",value=108}},"  efficiency for  "}
 c["+108% Mana efficiency for Synchronized Strike"]={{[1]={[1]={skillName="Synchronized Strike",type="SkillName"},flags=0,keywordFlags=0,name="Mana",type="BASE",value=108}},"  efficiency for  "}
 c["+108% Poison Resistance"]={{[1]={flags=0,keywordFlags=0,name="PoisonResist",type="BASE",value=108}},nil}
@@ -2901,8 +2897,6 @@ c["+12% Lightning Resistance"]={{[1]={flags=0,keywordFlags=0,name="LightningResi
 c["+12% Locust Summoning Speed from Hives"]={{}," Locust Summoning Speed from Hives "}
 c["+12% Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=12}},nil}
 c["+12% Mana Cost Per Max Trap"]={{[1]={flags=0,keywordFlags=0,name="ManaCost",type="BASE",value=12}},"  Per Max Trap "}
-c["+12% Mana Efficiency"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=12}},"  Efficiency "}
-c["+12% Mana Efficiency with Lethal Mirage"]={{[1]={[1]={skillName="Lethal Mirage",type="SkillName"},flags=0,keywordFlags=0,name="Mana",type="BASE",value=12}},"  Efficiency with  "}
 c["+12% Mana Regen per Storm Crow"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="BASE",value=12}},"  per Storm Crow "}
 c["+12% Mana efficiency for Decoy"]={{[1]={[1]={skillName="Decoy",type="SkillName"},flags=0,keywordFlags=0,name="Mana",type="BASE",value=12}},"  efficiency for  "}
 c["+12% Mana efficiency for Synchronized Strike"]={{[1]={[1]={skillName="Synchronized Strike",type="SkillName"},flags=0,keywordFlags=0,name="Mana",type="BASE",value=12}},"  efficiency for  "}
@@ -3094,8 +3088,6 @@ c["+13% Increases the number of attacks you can use per second Cast Speed"]={{[1
 c["+13% Increases the number of spells you can cast per second Minion Cast Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=256,keywordFlags=256,name="Speed",type="BASE",value=13}}}}," Increases the number of s you can cast per second   "}
 c["+13% Lightning Resistance"]={{[1]={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=13}},nil}
 c["+13% Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=13}},nil}
-c["+13% Mana Efficiency"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=13}},"  Efficiency "}
-c["+13% Mana Efficiency with Soul Feast"]={{[1]={[1]={skillName="Soul Feast",type="SkillName"},flags=0,keywordFlags=0,name="Mana",type="BASE",value=13}},"  Efficiency with  "}
 c["+13% Melee Critical Strike Chance"]={{[1]={flags=0,keywordFlags=512,name="CritChance",type="BASE",value=13}},nil}
 c["+13% More Necrotic Damage Over Time from Gravestone Aura"]={{[1]={flags=4128,keywordFlags=0,name="NecroticDamage",type="MORE",value=13}},"  from Gravestone Aura "}
 c["+13% Necrotic Penetration with Damned per stack of Damned on you (up to 40) for Spells you cast while Damned"]={{[1]={[1]={skillName="Damned",type="SkillName"},flags=0,keywordFlags=256,name="NecroticPenetration",type="BASE",value=13}},"  with  per stack of Damned on you (up to 40) for s you cast while Damned "}
@@ -3538,8 +3530,6 @@ c["+15% Lightning Resistance"]={{[1]={flags=0,keywordFlags=0,name="LightningResi
 c["+15% Maelstrom Chance On Spirit Thorns"]={{[1]={[1]={skillName="Spirit Thorns",type="SkillName"},flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Maelstrom",type="BASE",value=15}},"  On  "}
 c["+15% Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=15}},nil}
 c["+15% Mana Cost"]={{[1]={flags=0,keywordFlags=0,name="ManaCost",type="BASE",value=15}},nil}
-c["+15% Mana Efficiency"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=15}},"  Efficiency "}
-c["+15% Mana Efficiency with Ghostflame"]={{[1]={[1]={skillName="Ghostflame",type="SkillName"},flags=0,keywordFlags=0,name="Mana",type="BASE",value=15}},"  Efficiency with  "}
 c["+15% Mana efficiency for Decoy"]={{[1]={[1]={skillName="Decoy",type="SkillName"},flags=0,keywordFlags=0,name="Mana",type="BASE",value=15}},"  efficiency for  "}
 c["+15% Mana efficiency for Synchronized Strike"]={{[1]={[1]={skillName="Synchronized Strike",type="SkillName"},flags=0,keywordFlags=0,name="Mana",type="BASE",value=15}},"  efficiency for  "}
 c["+15% Maul Melee Damage To Stunned"]={{[1]={[1]={skillName="Maul",type="SkillName"},flags=0,keywordFlags=512,name="Damage",type="MORE",value=15}},"    To Stunned "}
@@ -3747,8 +3737,6 @@ c["+16% Increases your chance to freeze for each stack of chill on the target. M
 c["+16% Lightning Penetration"]={{[1]={flags=0,keywordFlags=0,name="LightningPenetration",type="BASE",value=16}},nil}
 c["+16% Lightning Penetration with Lightning Invocations"]={{[1]={flags=0,keywordFlags=2,name="LightningPenetration",type="BASE",value=16}},"  with  Invocations "}
 c["+16% Lightning Resistance"]={{[1]={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=16}},nil}
-c["+16% Mana Efficiency"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=16}},"  Efficiency "}
-c["+16% Mana Efficiency with Lethal Mirage"]={{[1]={[1]={skillName="Lethal Mirage",type="SkillName"},flags=0,keywordFlags=0,name="Mana",type="BASE",value=16}},"  Efficiency with  "}
 c["+16% Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=512,name="Speed",type="BASE",value=16}},nil}
 c["+16% Melee Critical Strike Chance"]={{[1]={flags=0,keywordFlags=512,name="CritChance",type="BASE",value=16}},nil}
 c["+16% Melee Damage To Frozen"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="MORE",value=16}},"   To Frozen "}
@@ -3887,7 +3875,6 @@ c["+17% Reduces all physical damage you take. Capped at 75%. Void Resistance"]={
 c["+17% Runeword Buff Duration"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="MORE",value=17}}," Runeword Buff  "}
 c["+17% Speed and Range"]={{}," Speed and Range "}
 c["+17% Void Penetration"]={{[1]={flags=0,keywordFlags=0,name="VoidPenetration",type="BASE",value=17}},nil}
-c["+17% Void Spell Mana Efficiency"]={{[1]={flags=0,keywordFlags=272,name="Mana",type="BASE",value=17}},"    Efficiency "}
 c["+17% to All Resistances"]={{[1]={flags=0,keywordFlags=0,name="FireResist",type="BASE",value=17},[2]={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=17},[3]={flags=0,keywordFlags=0,name="ColdResist",type="BASE",value=17},[4]={flags=0,keywordFlags=0,name="PhysicalResist",type="BASE",value=17},[5]={flags=0,keywordFlags=0,name="PoisonResist",type="BASE",value=17},[6]={flags=0,keywordFlags=0,name="NecroticResist",type="BASE",value=17},[7]={flags=0,keywordFlags=0,name="VoidResist",type="BASE",value=17}},nil}
 c["+170 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=170}},nil}
 c["+170 Dodge Rating per Heo Rune"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="BASE",value=170}},"  per Heo Rune "}
@@ -4777,7 +4764,6 @@ c["+20% Frostbite Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTri
 c["+20% Frostbite Duration"]={{[1]={[1]={skillName="Frostbite",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="MORE",value=20}},nil}
 c["+20% Global Damage Over Time"]={{[1]={[1]={type="Global"},flags=4096,keywordFlags=0,name="Damage",type="MORE",value=20}},nil}
 c["+20% Global Freeze Rate Multiplier"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=0,name="FreezeRateMultiplier",type="BASE",value=20}},nil}
-c["+20% Global Increased Mana Efficiency"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=0,name="Mana",type="INC",value=20}},"   Efficiency "}
 c["+20% Global Poison Chance In Pool"]={{[1]={[1]={type="Global"},flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Poison",type="BASE",value=20}},"   In Pool "}
 c["+20% Great Axe Damage"]={{[1]={[1]={type="Condition",var="UsingAxe"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=20}}," Great   "}
 c["+20% Greater Ice Vortex Chance"]={{}," Greater Ice Vortex Chance "}
@@ -4824,8 +4810,6 @@ c["+20% Locust Poison Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceT
 c["+20% Locust Swarm Area"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="BASE",value=20}}," Locust Swarm  "}
 c["+20% Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=20}},nil}
 c["+20% Mana Cost"]={{[1]={flags=0,keywordFlags=0,name="ManaCost",type="BASE",value=20}},nil}
-c["+20% Mana Efficiency"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=20}},"  Efficiency "}
-c["+20% Mana Efficiency with Lethal Mirage"]={{[1]={[1]={skillName="Lethal Mirage",type="SkillName"},flags=0,keywordFlags=0,name="Mana",type="BASE",value=20}},"  Efficiency with  "}
 c["+20% Mana Gained"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=20}},"  Gained "}
 c["+20% Marrow Orb Chance"]={{}," Marrow Orb Chance "}
 c["+20% Marrow Shards frequency"]={{},"  frequency "}
@@ -5276,7 +5260,6 @@ c["+24% Fire Penetration with Fire Invocations"]={{[1]={flags=0,keywordFlags=8,n
 c["+24% Fire Resistance"]={{[1]={flags=0,keywordFlags=0,name="FireResist",type="BASE",value=24}},nil}
 c["+24% Lightning Penetration with Lightning Invocations"]={{[1]={flags=0,keywordFlags=2,name="LightningPenetration",type="BASE",value=24}},"  with  Invocations "}
 c["+24% Lightning Resistance"]={{[1]={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=24}},nil}
-c["+24% Mana Efficiency with Lethal Mirage"]={{[1]={[1]={skillName="Lethal Mirage",type="SkillName"},flags=0,keywordFlags=0,name="Mana",type="BASE",value=24}},"  Efficiency with  "}
 c["+24% Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=512,name="Speed",type="BASE",value=24}},nil}
 c["+24% Necrotic Resistance"]={{[1]={flags=0,keywordFlags=0,name="NecroticResist",type="BASE",value=24}},nil}
 c["+24% Physical Penetration"]={{[1]={flags=0,keywordFlags=0,name="PhysicalPenetration",type="BASE",value=24}},nil}
@@ -5790,7 +5773,6 @@ c["+28% Increases the damage dealt by your critical strikes Critical Strike Mult
 c["+28% Increases the number of spells you can cast per second Minion Cast Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=256,keywordFlags=256,name="Speed",type="BASE",value=28}}}}," Increases the number of s you can cast per second   "}
 c["+28% Increases your chance to freeze for each stack of chill on the target. Multiplicative with other modifiers. Increased Chill Duration"]={{[1]={[1]={skillName="Chill",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="MORE",value=28}}," Increases your chance to freeze for each stack of  on the target. Multiplicative with other modifiers. Increased Chill  "}
 c["+28% Lightning Critical Strike Multiplier"]={{[1]={flags=0,keywordFlags=2,name="CritMultiplier",type="BASE",value=28}},nil}
-c["+28% Mana Efficiency with Lethal Mirage"]={{[1]={[1]={skillName="Lethal Mirage",type="SkillName"},flags=0,keywordFlags=0,name="Mana",type="BASE",value=28}},"  Efficiency with  "}
 c["+28% Mana efficiency for Decoy"]={{[1]={[1]={skillName="Decoy",type="SkillName"},flags=0,keywordFlags=0,name="Mana",type="BASE",value=28}},"  efficiency for  "}
 c["+28% Melee Attack Speed"]={{[1]={flags=3584,keywordFlags=512,name="Speed",type="BASE",value=28}},nil}
 c["+28% Minion Critical Strike Avoidance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="CritAvoidance",type="BASE",value=28}}}},nil}
@@ -6374,7 +6356,6 @@ c["+30% Lightning Penetration with Lightning Invocations"]={{[1]={flags=0,keywor
 c["+30% Lightning Resistance"]={{[1]={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=30}},nil}
 c["+30% Lightning Wave Base Damage"]={{[1]={flags=0,keywordFlags=2,name="Damage",type="MORE",value=30}},"  Wave Base  "}
 c["+30% Mana Cost"]={{[1]={flags=0,keywordFlags=0,name="ManaCost",type="BASE",value=30}},nil}
-c["+30% Mana Efficiency"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=30}},"  Efficiency "}
 c["+30% Maximum Hit Damage"]={{[1]={flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=30}}," Maximum   "}
 c["+30% Maximum Lightning Penetration"]={{[1]={flags=0,keywordFlags=0,name="LightningPenetration",type="BASE",value=30}}," Maximum  "}
 c["+30% Maximum Physical Penetration"]={{[1]={flags=0,keywordFlags=0,name="PhysicalPenetration",type="BASE",value=30}}," Maximum  "}
@@ -6722,7 +6703,6 @@ c["+35% Lightning Frequency"]={{},"  Frequency "}
 c["+35% Lightning Range"]={{},"  Range "}
 c["+35% Lightning Resistance"]={{[1]={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=35}},nil}
 c["+35% Mana Cost"]={{[1]={flags=0,keywordFlags=0,name="ManaCost",type="BASE",value=35}},nil}
-c["+35% Mana Efficiency"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=35}},"  Efficiency "}
 c["+35% Maximum Abyssal Orb Frequency"]={{}," Maximum Abyssal Orb Frequency "}
 c["+35% Melee Critical Strike Multiplier"]={{[1]={flags=0,keywordFlags=512,name="CritMultiplier",type="BASE",value=35}},nil}
 c["+35% Middle Explosion Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="MORE",value=35}}," Middle Explosion  "}
@@ -7441,7 +7421,6 @@ c["+40% Physical Resistance"]={{[1]={flags=0,keywordFlags=0,name="PhysicalResist
 c["+40% Physical and Fire Penetration"]={{[1]={flags=0,keywordFlags=1,name="FirePenetration",type="BASE",value=40}},"  and  "}
 c["+40% Poison Penetration"]={{[1]={flags=0,keywordFlags=0,name="PoisonPenetration",type="BASE",value=40}},nil}
 c["+40% Poison Resistance"]={{[1]={flags=0,keywordFlags=0,name="PoisonResist",type="BASE",value=40}},nil}
-c["+40% Rampage Mana Efficiency"]={{[1]={[1]={skillName="Rampage",type="SkillName"},flags=0,keywordFlags=0,name="Mana",type="BASE",value=40}},"   Efficiency "}
 c["+40% Reaper's Ascendance Frequency"]={{}," Reaper's Ascendance Frequency "}
 c["+40% Rejuvenating Wind Healing"]={{}," Rejuvenating Wind  "}
 c["+40% Retaliation Area"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="BASE",value=40}}," Retaliation  "}
@@ -7538,7 +7517,6 @@ c["+42% Increased Healing Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="He
 c["+42% Increased Projectile Speed with Bone Nova"]={{[1]={flags=0,keywordFlags=0,name="ProjectileSpeed",type="INC",value=42}},"  with Bone Nova "}
 c["+42% Increased Projectile Speed with Marrow Shards"]={{[1]={[1]={skillName="Marrow Shards",type="SkillName"},flags=0,keywordFlags=0,name="ProjectileSpeed",type="INC",value=42}},"  with  "}
 c["+42% Increases the damage over time you deal Chance to apply a Bleed on Bow Hit"]={{[1]={[1]={skillName="Bleed",type="SkillName"},flags=8392704,keywordFlags=2048,name="Damage",type="MORE",value=42}}," Increases the  you deal Chance to apply a  on   "}
-c["+42% Mana Efficiency with Lethal Mirage"]={{[1]={[1]={skillName="Lethal Mirage",type="SkillName"},flags=0,keywordFlags=0,name="Mana",type="BASE",value=42}},"  Efficiency with  "}
 c["+42% Mana Spent Gained as Ward"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=42}},"  Spent Gained as Ward "}
 c["+42% Necrotic Resistance"]={{[1]={flags=0,keywordFlags=0,name="NecroticResist",type="BASE",value=42}},nil}
 c["+42% Spell Critical Strike Multiplier"]={{[1]={flags=0,keywordFlags=256,name="CritMultiplier",type="BASE",value=42}},nil}
@@ -8049,7 +8027,6 @@ c["+5% Lightning Resistance"]={{[1]={flags=0,keywordFlags=0,name="LightningResis
 c["+5% Locust Swarm Area Per Bleed"]={{[1]={[1]={skillName="Bleed",type="SkillName"},flags=0,keywordFlags=0,name="AreaOfEffect",type="BASE",value=5}}," Locust Swarm  Per  "}
 c["+5% Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=5}},nil}
 c["+5% Mana Cost"]={{[1]={flags=0,keywordFlags=0,name="ManaCost",type="BASE",value=5}},nil}
-c["+5% Mana Efficiency"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=5}},"  Efficiency "}
 c["+5% Mana Gained While Negative"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=5}},"  Gained While Negative "}
 c["+5% Marked For Death Chance"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_MarkedForDeath",type="BASE",value=5}},nil}
 c["+5% Maximum Health gained as Endurance Threshold"]={{[1]={flags=0,keywordFlags=0,name="LifeAsEnduranceThreshold",type="BASE",value=5}},nil}
@@ -8365,7 +8342,6 @@ c["+54% Chance to gain Haste when you kill an enemy with a spell"]={{},"Haste  w
 c["+54% Elemental Resistance"]={{[1]={flags=0,keywordFlags=0,name="FireResist",type="BASE",value=54},[2]={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=54},[3]={flags=0,keywordFlags=0,name="ColdResist",type="BASE",value=54}},nil}
 c["+54% Endurance"]={{[1]={flags=0,keywordFlags=0,name="Endurance",type="BASE",value=54}},nil}
 c["+54% Fire Penetration with Ignite "]={{[1]={[1]={skillName="Ignite",type="SkillName"},flags=0,keywordFlags=0,name="FirePenetration",type="BASE",value=54}},"  with  "}
-c["+54% Mana Efficiency with Lethal Mirage"]={{[1]={[1]={skillName="Lethal Mirage",type="SkillName"},flags=0,keywordFlags=0,name="Mana",type="BASE",value=54}},"  Efficiency with  "}
 c["+54% Mana Spent Gained as Ward"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=54}},"  Spent Gained as Ward "}
 c["+54% to All Resistances"]={{[1]={flags=0,keywordFlags=0,name="FireResist",type="BASE",value=54},[2]={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=54},[3]={flags=0,keywordFlags=0,name="ColdResist",type="BASE",value=54},[4]={flags=0,keywordFlags=0,name="PhysicalResist",type="BASE",value=54},[5]={flags=0,keywordFlags=0,name="PoisonResist",type="BASE",value=54},[6]={flags=0,keywordFlags=0,name="NecroticResist",type="BASE",value=54},[7]={flags=0,keywordFlags=0,name="VoidResist",type="BASE",value=54}},nil}
 c["+540 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=540}},nil}
@@ -8790,7 +8766,6 @@ c["+6% Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",t
 c["+6% Lightning Penetration"]={{[1]={flags=0,keywordFlags=0,name="LightningPenetration",type="BASE",value=6}},nil}
 c["+6% Lightning Resistance"]={{[1]={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=6}},nil}
 c["+6% Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=6}},nil}
-c["+6% Mana Efficiency"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=6}},"  Efficiency "}
 c["+6% Maximum Health gained as Endurance Threshold"]={{[1]={flags=0,keywordFlags=0,name="LifeAsEnduranceThreshold",type="BASE",value=6}},nil}
 c["+6% Melee Critical Strike Chance"]={{[1]={flags=0,keywordFlags=512,name="CritChance",type="BASE",value=6}},nil}
 c["+6% Minion All Resistances"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="FireResist",type="BASE",value=6}}},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=6}}},[3]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="ColdResist",type="BASE",value=6}}},[4]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="PhysicalResist",type="BASE",value=6}}},[5]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="PoisonResist",type="BASE",value=6}}},[6]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="NecroticResist",type="BASE",value=6}}},[7]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="VoidResist",type="BASE",value=6}}}},nil}
@@ -9195,7 +9170,6 @@ c["+7% Increases your maximum mana Current mana gained as ward per second"]={{[1
 c["+7% Lightning Penetration"]={{[1]={flags=0,keywordFlags=0,name="LightningPenetration",type="BASE",value=7}},nil}
 c["+7% Lightning Resistance"]={{[1]={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=7}},nil}
 c["+7% Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=7}},nil}
-c["+7% Mana Efficiency"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=7}},"  Efficiency "}
 c["+7% Maximum Health gained as Endurance Threshold"]={{[1]={flags=0,keywordFlags=0,name="LifeAsEnduranceThreshold",type="BASE",value=7}},nil}
 c["+7% Melee Critical Strike Chance"]={{[1]={flags=0,keywordFlags=512,name="CritChance",type="BASE",value=7}},nil}
 c["+7% Minion Chill Chance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Chill",type="BASE",value=7}}}},nil}
@@ -9589,7 +9563,6 @@ c["+8% Lightning Penetration"]={{[1]={flags=0,keywordFlags=0,name="LightningPene
 c["+8% Lightning Resistance"]={{[1]={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=8}},nil}
 c["+8% Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=8}},nil}
 c["+8% Mana Cost"]={{[1]={flags=0,keywordFlags=0,name="ManaCost",type="BASE",value=8}},nil}
-c["+8% Mana Efficiency"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=8}},"  Efficiency "}
 c["+8% Mana efficiency for Decoy"]={{[1]={[1]={skillName="Decoy",type="SkillName"},flags=0,keywordFlags=0,name="Mana",type="BASE",value=8}},"  efficiency for  "}
 c["+8% Mana efficiency for Synchronized Strike"]={{[1]={[1]={skillName="Synchronized Strike",type="SkillName"},flags=0,keywordFlags=0,name="Mana",type="BASE",value=8}},"  efficiency for  "}
 c["+8% Maximum Health gained as Endurance Threshold"]={{[1]={flags=0,keywordFlags=0,name="LifeAsEnduranceThreshold",type="BASE",value=8}},nil}
@@ -9883,7 +9856,6 @@ c["+9% Lightning Penetration"]={{[1]={flags=0,keywordFlags=0,name="LightningPene
 c["+9% Lightning Penetration with Lightning Invocations"]={{[1]={flags=0,keywordFlags=2,name="LightningPenetration",type="BASE",value=9}},"  with  Invocations "}
 c["+9% Lightning Resistance"]={{[1]={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=9}},nil}
 c["+9% Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=9}},nil}
-c["+9% Mana Efficiency"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=9}},"  Efficiency "}
 c["+9% Maximum Health gained as Endurance Threshold"]={{[1]={flags=0,keywordFlags=0,name="LifeAsEnduranceThreshold",type="BASE",value=9}},nil}
 c["+9% Melee Critical Strike Chance"]={{[1]={flags=0,keywordFlags=512,name="CritChance",type="BASE",value=9}},nil}
 c["+9% Missing Health gained as Ward per second"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=9}}," Missing  gained as Ward per second "}
