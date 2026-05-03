@@ -492,7 +492,11 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"2": "{rounding:Integer}+2 Health per Equipped Omen Idol",
+		"canRollOn": [
+			41
+		]
 	},
 	"1095_1": {
 		"affixName": "Maximum Omen Idols Equipped",
@@ -507,7 +511,11 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"2": "{rounding:Integer}+3 Health per Equipped Omen Idol",
+		"canRollOn": [
+			41
+		]
 	},
 	"1095_2": {
 		"affixName": "Maximum Omen Idols Equipped",
@@ -522,7 +530,11 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"2": "{rounding:Integer}+4 Health per Equipped Omen Idol",
+		"canRollOn": [
+			41
+		]
 	},
 	"1095_3": {
 		"affixName": "Maximum Omen Idols Equipped",
@@ -537,7 +549,11 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"2": "{rounding:Integer}+5 Health per Equipped Omen Idol",
+		"canRollOn": [
+			41
+		]
 	},
 	"1095_4": {
 		"affixName": "Maximum Omen Idols Equipped",
@@ -552,7 +568,11 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"2": "{rounding:Integer}+(6-7) Health per Equipped Omen Idol",
+		"canRollOn": [
+			41
+		]
 	},
 	"1095_5": {
 		"affixName": "Maximum Omen Idols Equipped",
@@ -567,7 +587,11 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"2": "{rounding:Integer}+(8-9) Health per Equipped Omen Idol",
+		"canRollOn": [
+			41
+		]
 	},
 	"1095_6": {
 		"affixName": "Maximum Omen Idols Equipped",
@@ -582,7 +606,11 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"2": "{rounding:Integer}+(10-12) Health per Equipped Omen Idol",
+		"canRollOn": [
+			41
+		]
 	},
 	"1095_7": {
 		"affixName": "Maximum Omen Idols Equipped",
@@ -597,7 +625,11 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"specialAffixType": 0
+		"specialAffixType": 0,
+		"2": "{rounding:Integer}+(18-20) Health per Equipped Omen Idol",
+		"canRollOn": [
+			41
+		]
 	},
 	"1088_0": {
 		"affixName": "Health per Equipped Heretical Idol",
@@ -2139,7 +2171,11 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"2": "+(25-27)% Effect of Weaver Enchantment Affixes for Idols in Refracted Slots",
+		"canRollOn": [
+			41
+		]
 	},
 	"1108_1": {
 		"affixName": "Corrupted Idol Limit",
@@ -2153,7 +2189,11 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"2": "+(28-29)% Effect of Weaver Enchantment Affixes for Idols in Refracted Slots",
+		"canRollOn": [
+			41
+		]
 	},
 	"1108_2": {
 		"affixName": "Corrupted Idol Limit",
@@ -2167,7 +2207,11 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"2": "+(30-32)% Effect of Weaver Enchantment Affixes for Idols in Refracted Slots",
+		"canRollOn": [
+			41
+		]
 	},
 	"1108_3": {
 		"affixName": "Corrupted Idol Limit",
@@ -2181,7 +2225,11 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"2": "+(33-35)% Effect of Weaver Enchantment Affixes for Idols in Refracted Slots",
+		"canRollOn": [
+			41
+		]
 	},
 	"1108_4": {
 		"affixName": "Corrupted Idol Limit",
@@ -2195,7 +2243,11 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"2": "+(36-40)% Effect of Weaver Enchantment Affixes for Idols in Refracted Slots",
+		"canRollOn": [
+			41
+		]
 	},
 	"1108_5": {
 		"affixName": "Corrupted Idol Limit",
@@ -2209,7 +2261,11 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"2": "+(46-52)% Effect of Weaver Enchantment Affixes for Idols in Refracted Slots",
+		"canRollOn": [
+			41
+		]
 	},
 	"1108_6": {
 		"affixName": "Corrupted Idol Limit",
@@ -2223,7 +2279,11 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"2": "+(53-60)% Effect of Weaver Enchantment Affixes for Idols in Refracted Slots",
+		"canRollOn": [
+			41
+		]
 	},
 	"1108_7": {
 		"affixName": "Corrupted Idol Limit",
@@ -2237,7 +2297,11 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"2": "+(90-100)% Effect of Weaver Enchantment Affixes for Idols in Refracted Slots",
+		"canRollOn": [
+			41
+		]
 	},
 	"1109_0": {
 		"affixName": "Heretical Idol Limit",
