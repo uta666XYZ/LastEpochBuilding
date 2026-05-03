@@ -997,6 +997,15 @@ function calcs.buildDefenceEstimations(env, actor)
 		local genericMore = modDB:More(nil, "DamageTaken")
 		output.DamageTakenIncrease = (1 + genericInc / 100) * genericMore - 1
 		output.DamageTakenIncrease = output.DamageTakenIncrease * 100
+		-- "Less Damage Taken" display: in-game shows the same magnitude as
+		-- DamageTakenIncrease but with inverted sign and a red color when the
+		-- value is negative (= player takes MORE damage). Pre-format with color
+		-- escapes so CalcSections can substitute as a single token.
+		do
+			local lessVal = -output.DamageTakenIncrease
+			local color = lessVal < 0 and colorCodes.NEGATIVE or "^xFFFFFF"
+			output.LessDamageTakenStr = string.format("%s%.2f%%^7", color, lessVal)
+		end
 
 		-- Conditional aggregates: while moving / near enemy. Display the delta
 		-- contributed *only* by the conditional mods, not the unconditional
@@ -1026,6 +1035,13 @@ function calcs.buildDefenceEstimations(env, actor)
 		local dotMore = modDB:More(nil, "DamageTaken", "DamageTakenOverTime")
 		output.DamageOverTimeTakenMultiplier = (1 + dotInc / 100) * dotMore
 		output.DamageOverTimeTakenIncrease = (output.DamageOverTimeTakenMultiplier - 1) * 100
+		-- "Less Damage Over Time Taken" display: same convention as
+		-- LessDamageTakenStr (negate sign, red when negative = more taken).
+		do
+			local lessVal = -output.DamageOverTimeTakenIncrease
+			local color = lessVal < 0 and colorCodes.NEGATIVE or "^xFFFFFF"
+			output.LessDamageOverTimeTakenStr = string.format("%s%.2f%%^7", color, lessVal)
+		end
 		-- LessDamageOverTimeTaken: matches in-game tooltip "Less Damage Over Time Taken"
 		-- which folds the inherent 15% baseline reduction into the displayed value
 		-- (per in-game tooltip: "Players inherently take 15% less damage over time
