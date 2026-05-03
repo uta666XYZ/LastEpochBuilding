@@ -790,7 +790,11 @@ function ImportTabClass:DownloadMaxrollPlannerBuild(url)
         self:ImportPassiveTreeAndJewels(char)
         self:ImportItemsAndSkills(char)
         self:ImportBlessingsFromMaxroll(profileData)
-        self.importCodeDetail = colorCodes.POSITIVE .. "Maxroll build imported."
+        local msg = "Maxroll build imported."
+        if (char._droppedAffixes or 0) > 0 then
+            msg = msg .. " (" .. char._droppedAffixes .. " affix(es) dropped — see [IMPORT-DROP] log)"
+        end
+        self.importCodeDetail = colorCodes.POSITIVE .. msg
     end)
 end
 
@@ -860,7 +864,11 @@ function ImportTabClass:DownloadLEToolsProfileBuild(url)
             end
         end
         ConPrintf("[IMPORT] Blessings applied (profile path): %d", appliedBlessings)
-        self.importCodeDetail = colorCodes.POSITIVE .. "Build imported via Maxroll (" .. accountName .. "/" .. charName .. ")."
+        local msg = "Build imported via Maxroll (" .. accountName .. "/" .. charName .. ")."
+        if (charOrErr._droppedAffixes or 0) > 0 then
+            msg = msg .. " (" .. charOrErr._droppedAffixes .. " affix(es) dropped — see [IMPORT-DROP] log)"
+        end
+        self.importCodeDetail = colorCodes.POSITIVE .. msg
     end)
 end
 
@@ -941,6 +949,9 @@ function ImportTabClass:DownloadLEToolsPlannerBuild(url)
             local msg = "LETools build imported."
             if char._parseErrors and char._parseErrors > 0 then
                 msg = msg .. " (" .. char._parseErrors .. " items skipped)"
+            end
+            if (char._droppedAffixes or 0) > 0 then
+                msg = msg .. " (" .. char._droppedAffixes .. " affix(es) dropped — see [IMPORT-DROP] log)"
             end
             self.importCodeDetail = colorCodes.POSITIVE .. msg
         end, { header = "User-Agent: " .. browserUA })
@@ -1299,10 +1310,16 @@ function ImportTabClass:BuildItemsFromMaxroll(buildData, profileData, char)
             end
 
             local affixCount, maxTier = 0, 0
+            local droppedAffixes = 0
             local reforgedSetInfo, reforgedTitle
             for i, affix in ipairs(allAffixes) do
                 local modId   = affix.id .. "_" .. affix.tier
                 local modData = data.itemMods.Item[modId]
+                if not modData then
+                    droppedAffixes = droppedAffixes + 1
+                    ConPrintf("[IMPORT-DROP] base=%s modId=%s (id=%s tier=%s roll=%s) not in itemMods.Item — silent drop",
+                        tostring(itemBaseName), modId, tostring(affix.id), tostring(affix.tier), tostring(affix.roll))
+                end
                 if modData then
                     affixCount = affixCount + 1
                     if affix.tier > maxTier then maxTier = affix.tier end
@@ -1343,6 +1360,9 @@ function ImportTabClass:BuildItemsFromMaxroll(buildData, profileData, char)
                         table.insert(item.suffixes, { range = affix.roll, modId = modId })
                     end
                 end
+            end
+            if droppedAffixes > 0 then
+                char._droppedAffixes = (char._droppedAffixes or 0) + droppedAffixes
             end
 
             local isIdol = itemBaseName:find("Idol") or itemBaseName:find("Altar")
@@ -1516,6 +1536,7 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
         ["items"] = {},
         ["hashes"] = { },
         ["_parseErrors"] = 0,
+        ["_droppedAffixes"] = 0,
     }
     char.cycle = saveContent["cycle"] or 0
     -- Quest reward flags from savedQuests (questID 124 = Apophis and Majasa,
@@ -1704,9 +1725,13 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
                     else
                         local maxTier = 0
                         local affixCount = 0
-                        -- Read up to 5 affix slots: 4 regular + 1 sealed affix slot
+                        local droppedAffixes = 0
+                        -- Read up to 6 affix slots: a fully-Slammed Exalted item can
+                        -- carry 5 regular affixes + 1 sealed slot. Previously this
+                        -- loop stopped at i=4 and silently dropped slot 5 (observed
+                        -- on ROGER_FDC's Astrolabe — Cold Damage T1 prefix lost).
                         -- Affixes start at BASE+9 (byte0/tierByte), BASE+10 (byte1/idByte)
-                        for i = 0, 4 do
+                        for i = 0, 5 do
                             local dataId = BASE + 10 + i * 3
                             if #d > dataId then
                                 local affixId = d[dataId] + (d[dataId - 1] % 16) * 256
@@ -1727,9 +1752,34 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
                                         else
                                             table.insert(item.suffixes, { ["range"] = range, ["modId"] = modId })
                                         end
+                                    else
+                                        droppedAffixes = droppedAffixes + 1
+                                        ConPrintf("[IMPORT-DROP] base=%s slot=%d modId=%s (id=%d tier=%d range=%s) not in itemMods.Item — silent drop",
+                                            itemBaseName, i, modId, affixId, affixTier, tostring(range))
                                     end
                                 end
                             end
+                        end
+                        -- Slot-overflow probe: if slot 6 has a real id+modData match,
+                        -- the loop just dropped a valid affix (catch a hypothetical
+                        -- 7-affix item the same way slot=5 caught the original bug).
+                        do
+                            local dataId = BASE + 10 + 6 * 3
+                            if #d > dataId then
+                                local affixId = d[dataId] + (d[dataId - 1] % 16) * 256
+                                if affixId and affixId > 0 then
+                                    local affixTier = math.floor(d[dataId - 1] / 16)
+                                    local modId = affixId .. "_" .. affixTier
+                                    if data.itemMods.Item[modId] then
+                                        droppedAffixes = droppedAffixes + 1
+                                        ConPrintf("[IMPORT-DROP] base=%s slot=6(overflow) modId=%s — 6-slot loop limit dropped a real affix",
+                                            itemBaseName, modId)
+                                    end
+                                end
+                            end
+                        end
+                        if droppedAffixes > 0 then
+                            char._droppedAffixes = (char._droppedAffixes or 0) + droppedAffixes
                         end
                         -- Reforged-set scan: an affix whose name ends with " Reforged" indicates this
                         -- item is a Reforged Set piece. We must populate setInfo so BuildItem's
@@ -2045,8 +2095,12 @@ function ImportTabClass:ImportItemsAndSkills(charData)
     ConPrintf("[IMPORT]   Items imported OK:  %d", importOk)
     ConPrintf("[IMPORT]   Items failed:       %d", importFail)
     ConPrintf("[IMPORT]   Items skipped:      %d", importSkip)
+    ConPrintf("[IMPORT]   Affixes dropped (not in itemMods.Item): %d", charData._droppedAffixes or 0)
     if (charData._parseErrors or 0) > 0 or importFail > 0 then
         ConPrintf("[IMPORT]   !! %d issue(s) detected - check [ITEM-ERR]/[BLESS ERR] lines above", (charData._parseErrors or 0) + importFail)
+    end
+    if (charData._droppedAffixes or 0) > 0 then
+        ConPrintf("[IMPORT]   !! %d affix(es) silently dropped - check [IMPORT-DROP] lines above", charData._droppedAffixes)
     end
     ConPrintf("[IMPORT] === Import End ===")
 

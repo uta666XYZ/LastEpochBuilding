@@ -40,6 +40,12 @@ return {
         helper = "HeadlessWrapper.lua",
         ROOT = { "../spec/ImportLEToolsBuild.lua" },
     },
+    importMaxroll = {
+        directory = "src",
+        lpath = "../runtime/lua/?.lua;../runtime/lua/?/init.lua",
+        helper = "HeadlessWrapper.lua",
+        ROOT = { "../spec/ImportMaxrollAccount.lua" },
+    },
     dumpSkillCaps = {
         directory = "src",
         lpath = "../runtime/lua/?.lua;../runtime/lua/?/init.lua",
