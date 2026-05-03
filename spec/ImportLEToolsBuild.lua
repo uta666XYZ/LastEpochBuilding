@@ -69,6 +69,7 @@ end
 -- Reset to a fresh build so import populates a clean state.
 newBuild()
 
+local dkjson = require "dkjson"
 local jsonData, _, parseErr = dkjson.decode(apiBody, 1, false)
 if parseErr or type(jsonData) ~= "table" then
     error("JSON decode failed: " .. tostring(parseErr))
