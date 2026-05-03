@@ -233,7 +233,10 @@
     "stats": {
       "base_skill_effect_duration": 1000,
       "maximum_stacks": 1,
-      "damageEffectiveness": 1
+      "damageEffectiveness": 1,
+      "cost": {
+        "Mana": 1
+      }
     },
     "playerAbilityID": "arcas",
     "attributeScalings": [],
@@ -2411,7 +2414,10 @@
       "damageEffectiveness": 0.45000002,
       "spell_base_lightning_damage": 9,
       "damage_interval": 450,
-      "cooldown": 5
+      "cooldown": 5,
+      "cost": {
+        "Mana": 1
+      }
     },
     "treeId": "arcas",
     "playerAbilityID": "arcas",
@@ -2610,7 +2616,10 @@
       "no_critical_strike_multiplier": 1,
       "base_skill_effect_duration": 2750,
       "damage_interval": 300,
-      "cooldown": 13.999721
+      "cooldown": 13.999721,
+      "cost": {
+        "Mana": 35
+      }
     },
     "baseMods": [
       "4% increased Damage per player Intelligence"
@@ -3047,7 +3056,10 @@
       "spell_base_lightning_damage": 12,
       "base_critical_strike_multiplier_+": 100,
       "critChance": 50,
-      "base_skill_effect_duration": 100000000
+      "base_skill_effect_duration": 100000000,
+      "cost": {
+        "Mana": 5
+      }
     },
     "baseMods": [
       "4% increased Damage per player Intelligence"
@@ -3077,7 +3089,10 @@
       "spell_base_void_damage": 100,
       "base_critical_strike_multiplier_+": 100,
       "critChance": 5,
-      "base_skill_effect_duration": 800
+      "base_skill_effect_duration": 800,
+      "cost": {
+        "Mana": 3
+      }
     },
     "baseMods": [
       "4% increased Damage per player Intelligence"
@@ -3155,7 +3170,10 @@
       "spell_base_necrotic_damage": 20,
       "base_critical_strike_multiplier_+": 100,
       "critChance": 5,
-      "base_skill_effect_duration": 5000
+      "base_skill_effect_duration": 5000,
+      "cost": {
+        "Mana": 3
+      }
     },
     "playerAbilityID": "lb23il",
     "attributeScalings": []
@@ -3272,7 +3290,10 @@
       "spell_base_lightning_damage": 8,
       "base_critical_strike_multiplier_+": 100,
       "critChance": 5,
-      "base_skill_effect_duration": 10
+      "base_skill_effect_duration": 10,
+      "cost": {
+        "Mana": 11
+      }
     },
     "baseMods": [
       "4% increased Damage per player Intelligence"
@@ -3297,7 +3318,10 @@
     },
     "stats": {
       "base_skill_effect_duration": 5000,
-      "cooldown": 14.999249
+      "cooldown": 14.999249,
+      "cost": {
+        "Mana": 20
+      }
     },
     "treeId": "sb44eQ",
     "playerAbilityID": "sb44eQ",
@@ -3649,7 +3673,10 @@
       "base_critical_strike_multiplier_+": 100,
       "critChance": 5,
       "chance_to_cast_Ailment_Ignite_on_hit_%": 40,
-      "base_skill_effect_duration": 875
+      "base_skill_effect_duration": 875,
+      "cost": {
+        "Mana": 3
+      }
     },
     "baseMods": [
       "4% increased Damage per player Intelligence"
@@ -3772,7 +3799,10 @@
       "melee_base_fire_damage": 16,
       "base_critical_strike_multiplier_+": 100,
       "critChance": 5,
-      "base_skill_effect_duration": 500
+      "base_skill_effect_duration": 500,
+      "cost": {
+        "Mana": 20
+      }
     },
     "baseMods": [
       "4% increased Damage per player Intelligence",
@@ -3802,7 +3832,10 @@
     },
     "stats": {
       "base_skill_effect_duration": 3000,
-      "cooldown": 14.999249
+      "cooldown": 14.999249,
+      "cost": {
+        "Mana": 25
+      }
     },
     "baseMods": [
       "4% increased Damage per player Intelligence",
@@ -3976,7 +4009,10 @@
       "spell_base_cold_damage": 20,
       "base_critical_strike_multiplier_+": 100,
       "critChance": 5,
-      "base_skill_effect_duration": 10
+      "base_skill_effect_duration": 10,
+      "cost": {
+        "Mana": 12
+      }
     },
     "baseMods": [
       "4% increased Damage per player Intelligence"
@@ -4104,7 +4140,10 @@
       "spell_base_cold_damage": 20,
       "base_critical_strike_multiplier_+": 100,
       "critChance": 5,
-      "base_skill_effect_duration": 3000
+      "base_skill_effect_duration": 3000,
+      "cost": {
+        "Mana": 65
+      }
     },
     "baseMods": [
       "4% increased Damage per player Intelligence",
@@ -4406,7 +4445,10 @@
       "base_critical_strike_multiplier_+": 100,
       "critChance": 5,
       "base_skill_effect_duration": 6000,
-      "cooldown": 3.0003002
+      "cooldown": 3.0003002,
+      "cost": {
+        "Mana": 50
+      }
     },
     "baseMods": [
       "4% increased Damage per player Intelligence",
@@ -4627,7 +4669,10 @@
       "spell_base_lightning_damage": 21,
       "base_critical_strike_multiplier_+": 100,
       "critChance": 5,
-      "base_skill_effect_duration": 5000
+      "base_skill_effect_duration": 5000,
+      "cost": {
+        "Mana": 3
+      }
     },
     "baseMods": [
       "4% increased Damage per player Intelligence"
@@ -4895,7 +4940,10 @@
       "spell_base_fire_damage": 190,
       "base_critical_strike_multiplier_+": 100,
       "critChance": 5,
-      "base_skill_effect_duration": 9000
+      "base_skill_effect_duration": 9000,
+      "cost": {
+        "Mana": 56
+      }
     },
     "baseMods": [
       "4% increased Damage per player Intelligence"
@@ -5369,7 +5417,10 @@
       "melee_base_physical_damage": 30,
       "base_critical_strike_multiplier_+": 100,
       "critChance": 5,
-      "base_skill_effect_duration": 2000
+      "base_skill_effect_duration": 2000,
+      "cost": {
+        "Mana": 25
+      }
     },
     "baseMods": [
       "4% increased Damage per player Intelligence",
@@ -5455,7 +5506,10 @@
       "damageEffectiveness": 1,
       "spell_base_cold_damage": 20,
       "chance_to_cast_Ailment_Chill_on_hit_%": 100,
-      "base_skill_effect_duration": 6000
+      "base_skill_effect_duration": 6000,
+      "cost": {
+        "Mana": 35
+      }
     },
     "baseMods": [
       "4% increased Damage per player Intelligence"
@@ -5489,7 +5543,10 @@
       "chance_to_cast_Ailment_Slow_on_hit_%": 100,
       "base_critical_strike_multiplier_+": 100,
       "critChance": 5,
-      "base_skill_effect_duration": 3000
+      "base_skill_effect_duration": 3000,
+      "cost": {
+        "Mana": 30
+      }
     },
     "baseMods": [
       "4% increased Damage per player Intelligence"
@@ -5515,7 +5572,10 @@
       "duration": true
     },
     "stats": {
-      "base_skill_effect_duration": 10
+      "base_skill_effect_duration": 10,
+      "cost": {
+        "Mana": 15
+      }
     },
     "baseMods": [
       "4% increased Damage per player Intelligence"
@@ -5547,7 +5607,10 @@
       "spell_base_fire_damage": 20,
       "base_critical_strike_multiplier_+": 100,
       "critChance": 5,
-      "base_skill_effect_duration": 400
+      "base_skill_effect_duration": 400,
+      "cost": {
+        "Mana": 3
+      }
     },
     "baseMods": [
       "4% increased Damage per player Intelligence"
@@ -5579,7 +5642,10 @@
       "spell_base_lightning_damage": 20,
       "base_critical_strike_multiplier_+": 100,
       "critChance": 5,
-      "base_skill_effect_duration": 400
+      "base_skill_effect_duration": 400,
+      "cost": {
+        "Mana": 3
+      }
     },
     "baseMods": [
       "4% increased Damage per player Intelligence"
@@ -5611,7 +5677,10 @@
       "spell_base_cold_damage": 20,
       "base_critical_strike_multiplier_+": 100,
       "critChance": 5,
-      "base_skill_effect_duration": 400
+      "base_skill_effect_duration": 400,
+      "cost": {
+        "Mana": 3
+      }
     },
     "baseMods": [
       "4% increased Damage per player Intelligence",
@@ -5646,7 +5715,10 @@
       "critChance": 5,
       "spell_base_fire_damage": 40,
       "base_skill_effect_duration": 3000,
-      "cooldown": 3.4999998
+      "cooldown": 3.4999998,
+      "cost": {
+        "Mana": 22
+      }
     },
     "baseMods": [
       "4% increased Damage per player Intelligence"
@@ -5880,7 +5952,10 @@
       "duration": true
     },
     "stats": {
-      "base_skill_effect_duration": 250
+      "base_skill_effect_duration": 250,
+      "cost": {
+        "Mana": 15
+      }
     },
     "baseMods": [
       "4% increased Melee Damage per player Dexterity",
@@ -6207,7 +6282,10 @@
     },
     "stats": {
       "base_skill_effect_duration": 20,
-      "cooldown": 18.00018
+      "cooldown": 18.00018,
+      "cost": {
+        "Mana": 30
+      }
     },
     "baseMods": [
       "+2% Mana Efficiency per player Intelligence"
@@ -6343,7 +6421,10 @@
       "base_critical_strike_multiplier_+": 100,
       "critChance": 5,
       "base_skill_effect_duration": 10,
-      "cooldown": 4
+      "cooldown": 4,
+      "cost": {
+        "Mana": 15
+      }
     },
     "baseMods": [
       "4% increased Damage per player Intelligence"
@@ -6374,7 +6455,10 @@
       "spell_base_lightning_damage": 40,
       "base_critical_strike_multiplier_+": 100,
       "critChance": 5,
-      "base_skill_effect_duration": 1000
+      "base_skill_effect_duration": 1000,
+      "cost": {
+        "Mana": 38
+      }
     },
     "baseMods": [
       "4% increased Damage per player Intelligence"
@@ -7343,7 +7427,10 @@
       "base_critical_strike_multiplier_+": 100,
       "critChance": 5,
       "base_skill_effect_duration": 2000,
-      "cooldown": 4
+      "cooldown": 4,
+      "cost": {
+        "Mana": 25
+      }
     },
     "baseMods": [
       "4% increased Damage per player Intelligence",
@@ -7371,7 +7458,10 @@
     },
     "stats": {
       "base_skill_effect_duration": 50,
-      "cooldown": 4
+      "cooldown": 4,
+      "cost": {
+        "Mana": 28
+      }
     },
     "playerAbilityID": "te44",
     "attributeScalings": []
@@ -7517,7 +7607,10 @@
     },
     "stats": {
       "base_skill_effect_duration": 50,
-      "cooldown": 5
+      "cooldown": 5,
+      "cost": {
+        "Mana": 28
+      }
     },
     "baseMods": [
       "+2% Mana Efficiency per player Intelligence"
@@ -7983,7 +8076,10 @@
       "base_critical_strike_multiplier_+": 100,
       "critChance": 5,
       "base_skill_effect_duration": 3300,
-      "cooldown": 3.030303
+      "cooldown": 3.030303,
+      "cost": {
+        "Mana": 50
+      }
     },
     "baseMods": [
       "4% increased Damage per player Intelligence"
@@ -8266,7 +8362,10 @@
       "spell_base_cold_damage": 80,
       "base_critical_strike_multiplier_+": 100,
       "critChance": 5,
-      "base_skill_effect_duration": 3000
+      "base_skill_effect_duration": 3000,
+      "cost": {
+        "Mana": 3
+      }
     },
     "baseMods": [
       "4% increased Damage per player Intelligence",
@@ -8349,7 +8448,10 @@
       "spell_base_necrotic_damage": 40,
       "base_critical_strike_multiplier_+": 100,
       "critChance": 5,
-      "base_skill_effect_duration": 2000
+      "base_skill_effect_duration": 2000,
+      "cost": {
+        "Mana": 3
+      }
     },
     "playerAbilityID": "lb23il",
     "attributeScalings": []
