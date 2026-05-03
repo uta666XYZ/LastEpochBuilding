@@ -68,7 +68,7 @@ function itemLib.getIconHandle(filename)
 	if not filename then return nil end
 	if not sharedIconHandles[filename] then
 		local h = NewImageHandle()
-		h:Load("Assets/" .. filename, "ASYNC")
+		h:Load("Assets/" .. filename)
 		sharedIconHandles[filename] = h
 	end
 	return sharedIconHandles[filename]
