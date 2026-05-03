@@ -95,7 +95,7 @@ function BlessingGridControlClass:GetBlessingImage(name)
 	local fname = blessingIconFile(name)
 	if not self.imageHandles[fname] then
 		local h = NewImageHandle()
-		h:Load("Assets/blessings/" .. fname, "ASYNC")
+		h:Load("Assets/blessings/" .. fname)
 		self.imageHandles[fname] = h
 	end
 	return self.imageHandles[fname]
@@ -104,7 +104,7 @@ end
 function BlessingGridControlClass:GetCircleMask()
 	if not self.imageHandles["__mask"] then
 		local h = NewImageHandle()
-		h:Load("Assets/blessings/circle_mask.png", "ASYNC")
+		h:Load("Assets/blessings/circle_mask.png")
 		self.imageHandles["__mask"] = h
 	end
 	return self.imageHandles["__mask"]
@@ -115,7 +115,7 @@ end
 function BlessingGridControlClass:GetCircleFill()
 	if not self.imageHandles["__fill"] then
 		local h = NewImageHandle()
-		h:Load("Assets/blessings/circle_fill.png", "ASYNC")
+		h:Load("Assets/blessings/circle_fill.png")
 		self.imageHandles["__fill"] = h
 	end
 	return self.imageHandles["__fill"]
