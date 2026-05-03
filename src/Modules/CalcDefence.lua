@@ -982,6 +982,94 @@ function calcs.buildDefenceEstimations(env, actor)
 		end
 	end
 
+	-- LETools-style aggregate stats for Defence-tab summary parity:
+	-- "Damage Taken" (generic), "Damage Taken While Moving", "Damage Taken From
+	-- Nearby Enemies", and "Leech Rate". These are summary fields shown on the
+	-- in-game character sheet / LETools side; LEB previously aggregated only on
+	-- a per-skill / per-hit basis, so the summary lines were missing. Map each
+	-- to the same modDB key the per-hit pipeline uses, so item/passive mods that
+	-- already feed those keys surface here without extra parser work.
+	-- Verified vs LETools labels: "Damage Taken" (12% Spellblade), "Damage Taken
+	-- While Moving" (0%), "Damage Taken From Nearby Enemies" (0%), "Increased
+	-- Leech Rate" (0%). See Obsidian "ShutFackUp lv85 Spellblade in-game stats.md".
+	do
+		local genericInc = modDB:Sum("INC", nil, "DamageTaken")
+		local genericMore = modDB:More(nil, "DamageTaken")
+		output.DamageTakenIncrease = (1 + genericInc / 100) * genericMore - 1
+		output.DamageTakenIncrease = output.DamageTakenIncrease * 100
+		-- "Less Damage Taken" display: in-game shows the same magnitude as
+		-- DamageTakenIncrease but with inverted sign and a red color when the
+		-- value is negative (= player takes MORE damage). Pre-format with color
+		-- escapes so CalcSections can substitute as a single token.
+		do
+			local lessVal = -output.DamageTakenIncrease
+			local color = lessVal < 0 and colorCodes.NEGATIVE or "^xFFFFFF"
+			output.LessDamageTakenStr = string.format("%s%.2f%%^7", color, lessVal)
+		end
+
+		-- Conditional aggregates: while moving / near enemy. Display the delta
+		-- contributed *only* by the conditional mods, not the unconditional
+		-- baseline DamageTaken. We compute (with-cond) - (without-cond) so the
+		-- LE summary line matches in-game (e.g. 0% when no Moving-tagged mods).
+		local cfgMoving = { skillCond = { Moving = true } }
+		local mvInc = modDB:Sum("INC", cfgMoving, "DamageTaken") - genericInc
+		local mvMore = modDB:More(cfgMoving, "DamageTaken") / (genericMore == 0 and 1 or genericMore)
+		output.DamageTakenWhileMoving = ((1 + mvInc / 100) * mvMore - 1) * 100
+
+		local cfgNear = { skillCond = { NearEnemy = true } }
+		local neInc = modDB:Sum("INC", cfgNear, "DamageTaken") - genericInc
+		local neMore = modDB:More(cfgNear, "DamageTaken") / (genericMore == 0 and 1 or genericMore)
+		output.DamageTakenFromNearbyEnemies = ((1 + neInc / 100) * neMore - 1) * 100
+
+		-- LeechRate: defence-side aggregate. Per-skill LeechRate already
+		-- exposed in CalcOffence; here we expose the global INC sum for the
+		-- character sheet "Increased Leech Rate" line.
+		output.LeechRateInc = modDB:Sum("INC", nil, "LeechRate")
+	end
+
+	-- LETools-style aggregate "Damage Over Time Taken %" — generic DoT taken
+	-- multiplier excluding per-element resist/reduction. Mirrors LETools'
+	-- summary stat to give users a single comparable number.
+	do
+		local dotInc = modDB:Sum("INC", nil, "DamageTaken", "DamageTakenOverTime")
+		local dotMore = modDB:More(nil, "DamageTaken", "DamageTakenOverTime")
+		output.DamageOverTimeTakenMultiplier = (1 + dotInc / 100) * dotMore
+		output.DamageOverTimeTakenIncrease = (output.DamageOverTimeTakenMultiplier - 1) * 100
+		-- "Less Damage Over Time Taken" display: same convention as
+		-- LessDamageTakenStr (negate sign, red when negative = more taken).
+		do
+			local lessVal = -output.DamageOverTimeTakenIncrease
+			local color = lessVal < 0 and colorCodes.NEGATIVE or "^xFFFFFF"
+			output.LessDamageOverTimeTakenStr = string.format("%s%.2f%%^7", color, lessVal)
+		end
+		-- LessDamageOverTimeTaken: matches in-game tooltip "Less Damage Over Time Taken"
+		-- which folds the inherent 15% baseline reduction into the displayed value
+		-- (per in-game tooltip: "Players inherently take 15% less damage over time
+		-- and that is reflected in this number").
+		--   net multiplier = (1+INC) * MORE * (1 - 0.15)
+		--   display = (1 - net multiplier) * 100
+		-- Verified vs ShutFackUp in-game: LETools INC*MORE = +12.32% taken,
+		-- 1 - 1.1232 * 0.85 = 0.04528 -> ~5% less taken, matches in-game "5%".
+		local dotInherentLess = 0.15
+		output.LessDamageOverTimeTaken = (1 - output.DamageOverTimeTakenMultiplier * (1 - dotInherentLess)) * 100
+		if breakdown then
+			breakdown.DamageOverTimeTakenIncrease = { }
+			breakdown.multiChain(breakdown.DamageOverTimeTakenIncrease, {
+				label = "DoT Taken multiplier:",
+				{ "%.2f ^8(increased/reduced damage taken)", (1 + dotInc / 100) },
+				{ "%.2f ^8(more/less damage taken)", dotMore },
+				total = s_format("= %.2f (%+.2f%%)", output.DamageOverTimeTakenMultiplier, output.DamageOverTimeTakenIncrease),
+			})
+			breakdown.LessDamageOverTimeTaken = { }
+			breakdown.multiChain(breakdown.LessDamageOverTimeTaken, {
+				label = "Less DoT Taken (in-game UI):",
+				{ "%.4f ^8((1+INC) * MORE)", output.DamageOverTimeTakenMultiplier },
+				{ "%.2f ^8(inherent 15%% less baseline)", 1 - dotInherentLess },
+				total = s_format("= %.4f net taken (%+.2f%% less)", output.DamageOverTimeTakenMultiplier * (1 - dotInherentLess), output.LessDamageOverTimeTaken),
+			})
+		end
+	end
+
 	-- Incoming hit damage multipliers
 	output["totalTakenHit"] = 0
 	if breakdown then
@@ -1285,9 +1373,52 @@ function calcs.buildDefenceEstimations(env, actor)
 	output.EnduranceThreshold = m_floor(etBase * etInc)
 	output.EnduranceThresholdValue = output.EnduranceThreshold
 
-	-- Parry and Mana-before-Health
+	-- Parry and Mana-before-Health / Mana-before-Ward
 	output.ParryChance = m_min(modDB:Sum("BASE", nil, "ParryChance"), data.misc.ParryCap)
 	output.DamageToManaBeforeHealth = m_min(modDB:Sum("BASE", nil, "DamageToManaBeforeHealth"), 100)
+	output.DamageToManaBeforeWard = m_min(modDB:Sum("BASE", nil, "DamageToManaBeforeWard"), 100)
+
+	-- LETools-parity summary lines (Health Gain on Stun/Freeze/Crit, Overkill
+	-- Leech, Maximum Companions, Potion Slots, Minion Power From Character
+	-- Level). Base values from dump.cs / in-game defaults:
+	--   - PotionSlots base = 3 (CharacterStats default before mods)
+	--   - MaxCompanions base = 0 (class-specific bonuses are added via mods;
+	--     however LE shows "2" for non-pet classes too, suggesting LE's
+	--     CharacterStats.getMaximumCompanions returns 2 by default; verified
+	--     against ShutFackUp Spellblade letools = 2). We default to 2 to
+	--     match in-game display; minion classes add their own bonuses on top.
+	--   - MinionPowerFromCharLevel = class.moreMinionDamagePerLevel * level.
+	--     Not yet wired (requires per-class table in src/Data/Classes.lua);
+	--     output 0 for now and surface via Calcs tab as "(not implemented)".
+	output.LifeOnStun = modDB:Sum("BASE", nil, "LifeOnStun")
+	output.LifeOnFreeze = modDB:Sum("BASE", nil, "LifeOnFreeze")
+	output.LifeOnCrit = modDB:Sum("BASE", nil, "LifeOnCrit")
+	output.OverkillLeech = modDB:Sum("BASE", nil, "OverkillLeech")
+	output.MaxCompanions = 2 + modDB:Sum("BASE", nil, "MaxCompanions")
+	output.PotionSlots = 3 + modDB:Sum("BASE", nil, "PotionSlots")
+	-- Minion Power From Character Level — class-agnostic: from lv26 onwards
+	-- gain 0.8% per character level (verified in-game tooltip; lv85=48%,
+	-- lv100=60%). Formula: max(0, level - 25) * 0.8.
+	do
+		local lvl = env.build and env.build.characterLevel or modDB.multipliers["Level"] or 1
+		local fromLevel = m_max(0, lvl - 25) * 0.8
+		output.MinionPowerFromCharLevel = fromLevel + modDB:Sum("BASE", nil, "MinionPowerFromCharLevel")
+	end
+	-- Minion-tab "Increased Health" — LETools shows this on every build's Minion
+	-- tab regardless of whether an active minion skill exists. Minion stat mods
+	-- in LEB are routed via MinionModifier LIST entries (consumed by env.minion
+	-- in CalcPerform when an active minion skill exists). To get the always-
+	-- displayed value we iterate the LIST and sum inner INC Life mods.
+	do
+		local minionLifeInc = 0
+		for _, value in ipairs(modDB:List(nil, "MinionModifier")) do
+			local m = value.mod
+			if m and m.name == "Life" and m.type == "INC" then
+				minionLifeInc = minionLifeInc + (m.value or 0)
+			end
+		end
+		output.MinionLifeInc = minionLifeInc
+	end
 
 	-- Glancing blow and crit avoidance
 	output.GlancingBlowChance = m_min(modDB:Sum("BASE", nil, "GlancingBlowChance"), 100)

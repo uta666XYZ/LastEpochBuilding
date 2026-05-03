@@ -261,6 +261,18 @@ if modDB then
 end
 outHnd:write("    },\n")
 
+outHnd:write("    armorBreakdown = {\n")
+if modDB then
+    dumpModList(outHnd, "Armour", modDB.mods["Armour"])
+    dumpModList(outHnd, "ArmourAndEvasion", modDB.mods["ArmourAndEvasion"])
+    outHnd:write(string.format("        [\"_summary\"] = { armBase=%d, armInc=%d, armMore=%.3f, output=%d },\n",
+        (modDB:Sum("BASE", nil, "Armour", "ArmourAndEvasion") or 0),
+        (modDB:Sum("INC", nil, "Armour", "ArmourAndEvasion", "Defences") or 0),
+        (modDB:More(nil, "Armour", "ArmourAndEvasion", "Defences") or 1),
+        build.calcsTab.mainOutput.Armour or 0))
+end
+outHnd:write("    },\n")
+
 outHnd:write("    manaRegenBreakdown = {\n")
 if modDB then
     dumpModList(outHnd, "ManaRegen", modDB.mods["ManaRegen"])
