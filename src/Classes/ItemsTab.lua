@@ -262,7 +262,7 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 			if self.activeAltarLayout == "Default" then return false end
 			local layout = IDOL_ALTAR_LAYOUTS[self.activeAltarLayout]
 			if not layout then return false end
-			local capacity = layout.baseCapacity + (self:GetOmenIdolCapacityBonus() or 0)
+			local capacity = (layout.omenIdolCapacity or 0) + (self:GetOmenIdolCapacityBonus() or 0)
 			if capacity > MAX_OMEN_IDOL_SLOTS then capacity = MAX_OMEN_IDOL_SLOTS end
 			return slotNum <= capacity
 		end
@@ -909,6 +909,7 @@ function ItemsTabClass:Load(xml, dbFileName)
 	-- different value (e.g. 70) for the same frac. Without re-running the
 	-- resolver here, headless XML loads are stuck with the stale text while
 	-- GUI sessions silently recompute via +/- button presses or imports.
+	-- See Obsidian "ShutFackUp lv85 Spellblade in-game stats.md" (#5 Health).
 	if self.blessingFracs and self.blessingData then
 		for tl, frac in pairs(self.blessingFracs) do
 			local slot = self.slots[tl]
@@ -1173,6 +1174,61 @@ function ItemsTabClass:GetOmenIdolCapacityBonus()
 		end
 	end
 	return bonus
+end
+
+-- Count Omen Idols whose footprint overlaps a Refracted (type-2) cell on the
+-- active Idol Altar grid. This is what the in-game
+-- "+N per Idol in a Refracted Slot" affix scales off.
+--
+-- Each Omen Idol N slot mirrors an idol from the regular Idol 1-25 grid (set
+-- by ImportTab and ItemsTab when the user moves idols on the grid). We resolve
+-- each Omen Idol back to its grid position, expand by the idol's footprint
+-- (idolSize), and count idols that occupy at least one refracted cell.
+--
+-- Returns 0 when no altar is active or its layout has no grid (i.e. Default).
+-- See Obsidian "ShutFackUp lv85 Spellblade in-game stats.md" #2.
+function ItemsTabClass:CountIdolsOnRefractedCells()
+	local altarName = self.activeAltarLayout
+	if not altarName or altarName == "Default" then return 0 end
+	local altar = self.altarLayouts and self.altarLayouts[altarName]
+	if not altar or not altar.grid then return 0 end
+
+	-- Build a quick map: itemId -> {row, col} from the regular Idol 1-25 grid.
+	local itemIdToPos = {}
+	for r, rowData in ipairs(IDOL_GRID_LAYOUT) do
+		for c, slotName in ipairs(rowData) do
+			local slot = self.slots[slotName]
+			if slot and slot.selItemId and slot.selItemId ~= 0 then
+				itemIdToPos[slot.selItemId] = itemIdToPos[slot.selItemId] or { r, c }
+			end
+		end
+	end
+
+	local count = 0
+	for i = 1, MAX_OMEN_IDOL_SLOTS do
+		local omenSlot = self.slots["Omen Idol " .. i]
+		if omenSlot and omenSlot.selItemId and omenSlot.selItemId ~= 0 then
+			local item = self.items[omenSlot.selItemId]
+			local pos = itemIdToPos[omenSlot.selItemId]
+			if item and pos then
+				local size = idolSize[item.type] or { 1, 1 }
+				local r0, c0 = pos[1], pos[2]
+				local hit = false
+				for dr = 0, size[2] - 1 do
+					for dc = 0, size[1] - 1 do
+						local row = altar.grid[r0 + dr]
+						if row and row[c0 + dc] == 2 then
+							hit = true
+							break
+						end
+					end
+					if hit then break end
+				end
+				if hit then count = count + 1 end
+			end
+		end
+	end
+	return count
 end
 
 function ItemsTabClass:RegisterLateSlot(slot)
