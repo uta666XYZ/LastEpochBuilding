@@ -1348,6 +1348,14 @@ function calcs.offence(env, actor, activeSkill)
 				output[costName] = m_max(0, moreType * output[costName])
 				output[costName] = m_max(0, output[costName] + val.totalCost)
 			end
+			-- LE Mana Efficiency: additively-summed % that divides Mana cost (cost / (1 + eff/100))
+			local manaEfficiency = 0
+			if val.type == "Mana" and val.upfront then
+				manaEfficiency = skillModList:Sum("INC", skillCfg, "ManaEfficiency")
+				if manaEfficiency ~= 0 then
+					output[costName] = m_max(0, m_floor(output[costName] / (1 + manaEfficiency / 100)))
+				end
+			end
 			if breakdown and hasCost then
 				breakdown[costName] = {
 					s_format("%.2f"..(val.percent and "%%" or "").." ^8(base "..val.text.." cost)", val.baseCost)
@@ -1369,6 +1377,9 @@ function calcs.offence(env, actor, activeSkill)
 				end
 				if val.totalCost ~= 0 then
 					t_insert(breakdown[costName], s_format("%+d ^8(total "..val.text.." cost)", val.totalCost))
+				end
+				if manaEfficiency ~= 0 then
+					t_insert(breakdown[costName], s_format("/ %.2f ^8(mana efficiency)", 1 + manaEfficiency/100))
 				end
 				t_insert(breakdown[costName], s_format("= %"..(val.upfront and "d" or ".2f")..(val.percent and "%%" or ""), output[costName]))
 			end

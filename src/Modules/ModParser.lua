@@ -63,6 +63,7 @@ local modNameList = {
 	["maximum mana"] = "Mana",
 	["mana regen"] = "ManaRegen",
 	["mana cost"] = "ManaCost",
+	["mana efficiency"] = "ManaEfficiency",
 	["channel cost"] = "ChannelCost",
 	-- Primary defences
 	["armour"] = "Armour",
@@ -676,6 +677,8 @@ local specialQuickFixModList = {
 	["^([%+%-]?[%d%.]+%%) Cooldown Recovery Speed"] = "%1 increased Cooldown Recovery Speed",
 	["^([%+%-]?[%d%.]+%%) Duration"] = "%1 increased Duration",
 	["^([%+%-]?[%d%.]+%%) Movespeed"] = "%1 increased Movespeed",
+	["^([%+%-]?[%d%.]+%%) Mana Cost"] = "%1 increased Mana Cost",
+	["^([%+%-]?[%d%.]+%%) Mana Efficiency"] = "%1 increased Mana Efficiency",
 	["%(up to %d+%)%s*$"] = "",
 	-- Normalize "X% [Type] Damage Taken" (without increased/reduced keyword) to INC type
 	["^([%+%-]?[%d%.]+%%) Damage Over Time Taken"] = "%1 increased Damage Over Time Taken",
