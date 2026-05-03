@@ -982,6 +982,42 @@ function calcs.buildDefenceEstimations(env, actor)
 		end
 	end
 
+	-- LETools-style aggregate stats for Defence-tab summary parity:
+	-- "Damage Taken" (generic), "Damage Taken While Moving", "Damage Taken From
+	-- Nearby Enemies", and "Leech Rate". These are summary fields shown on the
+	-- in-game character sheet / LETools side; LEB previously aggregated only on
+	-- a per-skill / per-hit basis, so the summary lines were missing. Map each
+	-- to the same modDB key the per-hit pipeline uses, so item/passive mods that
+	-- already feed those keys surface here without extra parser work.
+	-- Verified vs LETools labels: "Damage Taken" (12% Spellblade), "Damage Taken
+	-- While Moving" (0%), "Damage Taken From Nearby Enemies" (0%), "Increased
+	-- Leech Rate" (0%). See Obsidian "ShutFackUp lv85 Spellblade in-game stats.md".
+	do
+		local genericInc = modDB:Sum("INC", nil, "DamageTaken")
+		local genericMore = modDB:More(nil, "DamageTaken")
+		output.DamageTakenIncrease = (1 + genericInc / 100) * genericMore - 1
+		output.DamageTakenIncrease = output.DamageTakenIncrease * 100
+
+		-- Conditional aggregates: while moving / near enemy. Display the delta
+		-- contributed *only* by the conditional mods, not the unconditional
+		-- baseline DamageTaken. We compute (with-cond) - (without-cond) so the
+		-- LE summary line matches in-game (e.g. 0% when no Moving-tagged mods).
+		local cfgMoving = { skillCond = { Moving = true } }
+		local mvInc = modDB:Sum("INC", cfgMoving, "DamageTaken") - genericInc
+		local mvMore = modDB:More(cfgMoving, "DamageTaken") / (genericMore == 0 and 1 or genericMore)
+		output.DamageTakenWhileMoving = ((1 + mvInc / 100) * mvMore - 1) * 100
+
+		local cfgNear = { skillCond = { NearEnemy = true } }
+		local neInc = modDB:Sum("INC", cfgNear, "DamageTaken") - genericInc
+		local neMore = modDB:More(cfgNear, "DamageTaken") / (genericMore == 0 and 1 or genericMore)
+		output.DamageTakenFromNearbyEnemies = ((1 + neInc / 100) * neMore - 1) * 100
+
+		-- LeechRate: defence-side aggregate. Per-skill LeechRate already
+		-- exposed in CalcOffence; here we expose the global INC sum for the
+		-- character sheet "Increased Leech Rate" line.
+		output.LeechRateInc = modDB:Sum("INC", nil, "LeechRate")
+	end
+
 	-- LETools-style aggregate "Damage Over Time Taken %" — generic DoT taken
 	-- multiplier excluding per-element resist/reduction. Mirrors LETools'
 	-- summary stat to give users a single comparable number.
