@@ -625,8 +625,16 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 		local function resolveImpl(impl)
 			return impl:gsub("%([0-9.]+%-[0-9.]+%)", function(range)
 				local implMin, implMax = range:match("%(([0-9.]+)%-([0-9.]+)%)")
-				local implVal = tonumber(implMin) + frac * (tonumber(implMax) - tonumber(implMin))
-				return string.format("%d", math.floor(implVal + 0.5))
+				local lo, hi = tonumber(implMin), tonumber(implMax)
+				-- LE blessing rolls: ir[1] is a 0-255 byte that maps to one of
+				-- (max-min+1) discrete integer values evenly distributed across
+				-- the range. Use bucket index = floor(frac * (hi-lo+1)) clamped
+				-- to (hi-lo) so frac=1.0 lands on max. Matches LETools display
+				-- (e.g. ir=246, range 45-70 → bucket 25 → 70, not 69).
+				local span = hi - lo + 1
+				local idx = math.floor(frac * span)
+				if idx > span - 1 then idx = span - 1 end
+				return string.format("%d", lo + idx)
 			end)
 		end
 		local implCount = blessEntry.implCount or 1
@@ -895,6 +903,33 @@ function ItemsTabClass:Load(xml, dbFileName)
 		self.itemSetOrderList[1] = 1
 	end
 	self:SetActiveItemSet(tonumber(xml.attrib.activeItemSet) or 1)
+	-- Re-resolve blessing rolls from saved blessingFracs.
+	-- Build XMLs serialise blessing items as text blobs (e.g. "+69 Health"),
+	-- but the discrete-bucket roll calc in updateBlessingSlot may produce a
+	-- different value (e.g. 70) for the same frac. Without re-running the
+	-- resolver here, headless XML loads are stuck with the stale text while
+	-- GUI sessions silently recompute via +/- button presses or imports.
+	if self.blessingFracs and self.blessingData then
+		for tl, frac in pairs(self.blessingFracs) do
+			local slot = self.slots[tl]
+			local item = slot and slot.selItemId and self.items[slot.selItemId]
+			local tlData = self.blessingData[tl]
+			if item and tlData then
+				local entry
+				for _, b in ipairs(tlData.normal or {}) do
+					if b.name == item.name then entry = b; break end
+				end
+				if not entry then
+					for _, b in ipairs(tlData.grand or {}) do
+						if b.name == item.name then entry = b; break end
+					end
+				end
+				if entry then
+					self:UpdateBlessingSlot(tl, entry, frac)
+				end
+			end
+		end
+	end
 	self:ResetUndo()
 end
 
