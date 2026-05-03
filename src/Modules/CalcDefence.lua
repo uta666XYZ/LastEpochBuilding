@@ -990,6 +990,16 @@ function calcs.buildDefenceEstimations(env, actor)
 		local dotMore = modDB:More(nil, "DamageTaken", "DamageTakenOverTime")
 		output.DamageOverTimeTakenMultiplier = (1 + dotInc / 100) * dotMore
 		output.DamageOverTimeTakenIncrease = (output.DamageOverTimeTakenMultiplier - 1) * 100
+		-- LessDamageOverTimeTaken: matches in-game tooltip "Less Damage Over Time Taken"
+		-- which folds the inherent 15% baseline reduction into the displayed value
+		-- (per in-game tooltip: "Players inherently take 15% less damage over time
+		-- and that is reflected in this number").
+		--   net multiplier = (1+INC) * MORE * (1 - 0.15)
+		--   display = (1 - net multiplier) * 100
+		-- Verified vs ShutFackUp in-game: LETools INC*MORE = +12.32% taken,
+		-- 1 - 1.1232 * 0.85 = 0.04528 -> ~5% less taken, matches in-game "5%".
+		local dotInherentLess = 0.15
+		output.LessDamageOverTimeTaken = (1 - output.DamageOverTimeTakenMultiplier * (1 - dotInherentLess)) * 100
 		if breakdown then
 			breakdown.DamageOverTimeTakenIncrease = { }
 			breakdown.multiChain(breakdown.DamageOverTimeTakenIncrease, {
@@ -997,6 +1007,13 @@ function calcs.buildDefenceEstimations(env, actor)
 				{ "%.2f ^8(increased/reduced damage taken)", (1 + dotInc / 100) },
 				{ "%.2f ^8(more/less damage taken)", dotMore },
 				total = s_format("= %.2f (%+.2f%%)", output.DamageOverTimeTakenMultiplier, output.DamageOverTimeTakenIncrease),
+			})
+			breakdown.LessDamageOverTimeTaken = { }
+			breakdown.multiChain(breakdown.LessDamageOverTimeTaken, {
+				label = "Less DoT Taken (in-game UI):",
+				{ "%.4f ^8((1+INC) * MORE)", output.DamageOverTimeTakenMultiplier },
+				{ "%.2f ^8(inherent 15%% less baseline)", 1 - dotInherentLess },
+				total = s_format("= %.4f net taken (%+.2f%% less)", output.DamageOverTimeTakenMultiplier * (1 - dotInherentLess), output.LessDamageOverTimeTaken),
 			})
 		end
 	end
