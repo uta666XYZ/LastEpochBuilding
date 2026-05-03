@@ -383,7 +383,13 @@ function ModStoreClass:EvalMod(mod, cfg)
 			else
 				base = target:GetStat(tag.stat, cfg)
 			end
-			local mult = m_floor(base / (tag.div or 1) + 0.0001)
+			-- LE uses continuous scaling for "per N stat" mods (not floored).
+			-- Verified: globalTreeData.json Wisdom node reminderText "gaining 10 max
+			-- mana will always grant 0.3% increased mana regen" - fractional contribution
+			-- would be impossible if mult were floored. IL2CPP dump.cs L96229 stores
+			-- manaRegenPer100MaxMana / currentManaRegenFromMaxMana as float.
+			-- See Obsidian "ShutFackUp lv85 Spellblade in-game stats.md" (#1 Mana Regen).
+			local mult = base / (tag.div or 1)
 			local limitTotal
 			if tag.limit or tag.limitVar then
 				local limit = tag.limit or self:GetMultiplier(tag.limitVar, cfg)

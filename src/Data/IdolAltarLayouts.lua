@@ -9,9 +9,17 @@
 --
 -- row順・col順、各 row は左→右 (列1〜5)
 --
--- isMirrored    = true の場合、ドロップダウンに " (Mirrored)" が付く
--- mirrorOf      = "<altar name>" の場合、grid は指定アルターを左右反転して自動生成
--- baseCapacity  = そのアルターが提供する Omen Idol スロット数 (2のセルの個数)
+-- isMirrored        = true の場合、ドロップダウンに " (Mirrored)" が付く
+-- mirrorOf          = "<altar name>" の場合、grid は指定アルターを左右反転して自動生成
+-- omenIdolCapacity  = そのアルターが提供する Omen Idol スロット数のベース値。
+--                     ゲーム内 tooltip ヘッダ「N Omen Idol capacity」の値。
+--                     Refracted cell の数とは **別概念**。詳細:
+--                     `Development/Idol Altar Concepts.md`
+--
+-- 旧名 `baseCapacity` は誤って refracted cell 数を入れていた。
+-- 2026-05-03 に概念を分離し omenIdolCapacity に rename。
+-- Ocular Altar 以外は未確認のため、各アルターの値は in-game tooltip
+-- で要検証 (TODO コメント付き)。
 
 -- ────────────────────────────────────────────────────────────
 -- ここにアルターを追加してください
@@ -23,7 +31,7 @@ local layouts = {
     -- --------------------------------------------------------
     ["Lunar Altar"] = {
         isMirrored   = false,
-        baseCapacity = 3,
+        omenIdolCapacity = 1,  -- in-game tooltip 確認済 (2026-05-03)
         grid = {
             { 0, 1, 1, 1, 1 },  -- row 1
             { 1, 1, 1, 1, 0 },  -- row 2
@@ -35,7 +43,7 @@ local layouts = {
     ["Lunar Altar (Mirrored)"] = {
         mirrorOf     = "Lunar Altar",
         isMirrored   = true,
-        baseCapacity = 3,
+        omenIdolCapacity = 1,  -- in-game tooltip 確認済 (2026-05-03, mirror継承)
     },
 
     -- --------------------------------------------------------
@@ -43,7 +51,7 @@ local layouts = {
     -- --------------------------------------------------------
     ["Skyward Altar"] = {
         isMirrored   = false,
-        baseCapacity = 4,
+        omenIdolCapacity = 1,  -- in-game tooltip 確認済 (2026-05-03)
         grid = {
             { 0, 0, 2, 0, 0 },  -- row 1
             { 0, 1, 1, 1, 0 },  -- row 2
@@ -58,7 +66,7 @@ local layouts = {
     -- --------------------------------------------------------
     ["Spire Altar"] = {
         isMirrored   = false,
-        baseCapacity = 3,
+        omenIdolCapacity = 1,  -- in-game tooltip 確認済 (2026-05-03)
         grid = {
             { 2, 0, 0, 1, 1 },  -- row 1
             { 1, 1, 0, 1, 1 },  -- row 2
@@ -70,7 +78,7 @@ local layouts = {
     ["Spire Altar (Mirrored)"] = {
         mirrorOf     = "Spire Altar",
         isMirrored   = true,
-        baseCapacity = 3,
+        omenIdolCapacity = 1,  -- in-game tooltip 確認済 (2026-05-03, mirror継承)
     },
 
     -- --------------------------------------------------------
@@ -78,7 +86,7 @@ local layouts = {
     -- --------------------------------------------------------
     ["Twisted Altar"] = {
         isMirrored   = false,
-        baseCapacity = 4,
+        omenIdolCapacity = 1,  -- LETools planner data 確認済 (2026-05-03): 全アルター base=1
         grid = {
             { 0, 2, 1, 1, 1 },  -- row 1
             { 1, 1, 0, 0, 1 },  -- row 2
@@ -90,7 +98,7 @@ local layouts = {
     ["Twisted Altar (Mirrored)"] = {
         mirrorOf     = "Twisted Altar",
         isMirrored   = true,
-        baseCapacity = 4,
+        omenIdolCapacity = 1,  -- LETools planner data 確認済 (2026-05-03, mirror継承)
     },
 
     -- --------------------------------------------------------
@@ -98,7 +106,7 @@ local layouts = {
     -- --------------------------------------------------------
     ["Visage Altar"] = {
         isMirrored   = false,
-        baseCapacity = 4,
+        omenIdolCapacity = 1,  -- in-game tooltip 確認済 (2026-05-03)
         grid = {
             { 0, 1, 1, 1, 0 },  -- row 1
             { 2, 2, 1, 2, 2 },  -- row 2
@@ -113,7 +121,7 @@ local layouts = {
     -- --------------------------------------------------------
     ["Carcinised Altar"] = {
         isMirrored   = false,
-        baseCapacity = 2,
+        omenIdolCapacity = 1,  -- LETools planner data 確認済 (2026-05-03): 全アルター base=1
         grid = {
             { 1, 1, 0, 1, 1 },  -- row 1
             { 1, 0, 0, 0, 1 },  -- row 2
@@ -128,7 +136,7 @@ local layouts = {
     -- --------------------------------------------------------
     ["Ocular Altar"] = {
         isMirrored   = false,
-        baseCapacity = 4,
+        omenIdolCapacity = 1,  -- in-game tooltip 確認済 (2026-05-03)
         grid = {
             { 2, 1, 1, 1, 2 },  -- row 1
             { 1, 1, 0, 1, 1 },  -- row 2
@@ -143,7 +151,7 @@ local layouts = {
     -- --------------------------------------------------------
     ["Archair Altar"] = {
         isMirrored   = false,
-        baseCapacity = 2,
+        omenIdolCapacity = 1,  -- in-game tooltip 確認済 (2026-05-03, "Archaic Altar of Heresy")
         grid = {
             { 0, 1, 2, 1, 0 },  -- row 1
             { 1, 1, 1, 1, 1 },  -- row 2
@@ -158,7 +166,7 @@ local layouts = {
     -- --------------------------------------------------------
     ["Prophesied Altar"] = {
         isMirrored   = false,
-        baseCapacity = 1,
+        omenIdolCapacity = 1,  -- in-game tooltip 確認済 (2026-05-03)
         grid = {
             { 0, 1, 1, 1, 0 },  -- row 1
             { 1, 1, 1, 1, 1 },  -- row 2
@@ -173,7 +181,7 @@ local layouts = {
     -- --------------------------------------------------------
     ["Impervious Altar"] = {
         isMirrored   = false,
-        baseCapacity = 6,
+        omenIdolCapacity = 1,  -- LETools planner data 確認済 (2026-05-03)
         grid = {
             { 0, 1, 1, 1, 0 },  -- row 1
             { 0, 1, 0, 1, 0 },  -- row 2
@@ -188,7 +196,7 @@ local layouts = {
     -- --------------------------------------------------------
     ["Jagged Altar"] = {
         isMirrored   = false,
-        baseCapacity = 4,
+        omenIdolCapacity = 1,  -- in-game tooltip 確認済 (2026-05-03)
         grid = {
             { 0, 1, 1, 1, 0 },  -- row 1
             { 2, 1, 1, 1, 2 },  -- row 2
@@ -203,7 +211,7 @@ local layouts = {
     -- --------------------------------------------------------
     ["Pyramidal Altar"] = {
         isMirrored   = false,
-        baseCapacity = 6,
+        omenIdolCapacity = 1,  -- LETools planner data 確認済 (2026-05-03)
         grid = {
             { 0, 0, 1, 0, 0 },  -- row 1
             { 0, 1, 2, 1, 0 },  -- row 2
@@ -218,7 +226,7 @@ local layouts = {
     -- --------------------------------------------------------
     ["Auric Altar"] = {
         isMirrored   = false,
-        baseCapacity = 3,
+        omenIdolCapacity = 1,  -- LETools planner data 確認済 (2026-05-03)
         grid = {
             { 1, 1, 2, 1, 1 },  -- row 1
             { 1, 1, 0, 1, 1 },  -- row 2

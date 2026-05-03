@@ -59,7 +59,10 @@ local function doActorLifeMana(actor)
 	local base = modDB:Sum("BASE", nil, "Life")
 	local inc = modDB:Sum("INC", nil, "Life")
 	local more = modDB:More(nil, "Life")
-	output.Life = m_max(round(base * (1 + inc/100) * more), 1)
+	-- LE stores maxHealth as int (BaseHealth.maxHealth, dump.cs:155378). float→int
+	-- assignment in C# is truncation toward zero (= floor for positive values), so
+	-- LE displays e.g. 1258 × 1.25 = 1572.5 as 1572, not 1573 (round-half-up).
+	output.Life = m_max(m_floor(base * (1 + inc/100) * more), 1)
 	if breakdown then
 		if inc ~= 0 or more ~= 1 then
 			breakdown.Life = { }
@@ -73,7 +76,8 @@ local function doActorLifeMana(actor)
 			t_insert(breakdown.Life, s_format("= %g", output.Life))
 		end
 	end
-	output.Mana = round(calcLib.val(modDB, "Mana"))
+	-- LE stores maxMana as int (dump.cs:178322). Same truncation rule as Life.
+	output.Mana = m_floor(calcLib.val(modDB, "Mana"))
 	local base = modDB:Sum("BASE", nil, "Mana")
 	local inc = modDB:Sum("INC", nil, "Mana")
 	local more = modDB:More(nil, "Mana")
