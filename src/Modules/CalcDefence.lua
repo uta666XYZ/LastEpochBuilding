@@ -1381,6 +1381,21 @@ function calcs.buildDefenceEstimations(env, actor)
 	output.MaxCompanions = 2 + modDB:Sum("BASE", nil, "MaxCompanions")
 	output.PotionSlots = 3 + modDB:Sum("BASE", nil, "PotionSlots")
 	output.MinionPowerFromCharLevel = modDB:Sum("BASE", nil, "MinionPowerFromCharLevel")
+	-- Minion-tab "Increased Health" — LETools shows this on every build's Minion
+	-- tab regardless of whether an active minion skill exists. Minion stat mods
+	-- in LEB are routed via MinionModifier LIST entries (consumed by env.minion
+	-- in CalcPerform when an active minion skill exists). To get the always-
+	-- displayed value we iterate the LIST and sum inner INC Life mods.
+	do
+		local minionLifeInc = 0
+		for _, value in ipairs(modDB:List(nil, "MinionModifier")) do
+			local m = value.mod
+			if m and m.name == "Life" and m.type == "INC" then
+				minionLifeInc = minionLifeInc + (m.value or 0)
+			end
+		end
+		output.MinionLifeInc = minionLifeInc
+	end
 
 	-- Glancing blow and crit avoidance
 	output.GlancingBlowChance = m_min(modDB:Sum("BASE", nil, "GlancingBlowChance"), 100)
