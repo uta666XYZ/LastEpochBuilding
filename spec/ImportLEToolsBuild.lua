@@ -103,7 +103,12 @@ build.calcsTab:BuildOutput()
 
 local level = build.characterLevel or char.level or 0
 local ascend = (build.spec and build.spec.curAscendClassName) or "Unknown"
-local outDir = (io.open("../manifest.xml", "r") and "../spec/TestBuilds/1.4/") or "spec/TestBuilds/1.4/"
+local outDir = os.getenv("LEB_OUTDIR")
+if outDir and outDir ~= "" then
+    if not outDir:match("[/\\]$") then outDir = outDir .. "/" end
+else
+    outDir = (io.open("../manifest.xml", "r") and "../spec/TestBuilds/1.4/") or "spec/TestBuilds/1.4/"
+end
 local outName = string.format("%s%s lv%d %s.xml", outDir, buildId, level, ascend)
 
 local xmlText = build:SaveDB(outName)
@@ -113,7 +118,7 @@ local now = os.date("!%Y-%m-%dT%H:%M:%SZ")
 local sourceTag = string.format(
     '\t\t<Source url=%q plannerCode=%q importedAt=%q lebVersion=%q/>\n',
     "https://www.lastepochtools.com/planner/" .. buildId,
-    buildId, now, "v0.13.0")
+    buildId, now, "v0.13.2")
 
 -- Strip an existing <Source .../> line (if any) so re-import always refreshes
 -- importedAt without leaving a stale entry. Then inject after the <Build ...>
