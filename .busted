@@ -40,6 +40,12 @@ return {
         helper = "HeadlessWrapper.lua",
         ROOT = { "../spec/ImportLEToolsBuild.lua" },
     },
+    importProfile = {
+        directory = "src",
+        lpath = "../runtime/lua/?.lua;../runtime/lua/?/init.lua",
+        helper = "HeadlessWrapper.lua",
+        ROOT = { "../spec/ImportProfileBuild.lua" },
+    },
     dumpSkillCaps = {
         directory = "src",
         lpath = "../runtime/lua/?.lua;../runtime/lua/?/init.lua",
