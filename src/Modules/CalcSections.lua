@@ -820,6 +820,10 @@ return {
 	{ label = "Stun Avoidance", haveOutput = "StunAvoidance", { format = "{0:output:StunAvoidance}", { modName = "StunAvoidance" }, }, },
 	{ label = "Damage Reflected to Attackers", haveOutput = "DamageReflectedToAttackers", { format = "{0:output:DamageReflectedToAttackers}", { modName = "DamageReflectedToAttackers" }, }, },
 	{ label = "% of Damage Reflected", haveOutput = "DamageReflectedPercent", { format = "{0:output:DamageReflectedPercent}%", { modName = "DamageReflectedPercent" }, }, },
+	{ label = "Damage Over Time Taken", haveOutput = "DamageOverTimeTakenIncrease", { format = "{2:output:DamageOverTimeTakenIncrease}%",
+		{ breakdown = "DamageOverTimeTakenIncrease" },
+		{ modName = { "DamageTaken", "DamageTakenOverTime" } },
+	}, },
 } },
 } },
 -- damage taken

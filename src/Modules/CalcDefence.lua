@@ -982,6 +982,25 @@ function calcs.buildDefenceEstimations(env, actor)
 		end
 	end
 
+	-- LETools-style aggregate "Damage Over Time Taken %" — generic DoT taken
+	-- multiplier excluding per-element resist/reduction. Mirrors LETools'
+	-- summary stat to give users a single comparable number.
+	do
+		local dotInc = modDB:Sum("INC", nil, "DamageTaken", "DamageTakenOverTime")
+		local dotMore = modDB:More(nil, "DamageTaken", "DamageTakenOverTime")
+		output.DamageOverTimeTakenMultiplier = (1 + dotInc / 100) * dotMore
+		output.DamageOverTimeTakenIncrease = (output.DamageOverTimeTakenMultiplier - 1) * 100
+		if breakdown then
+			breakdown.DamageOverTimeTakenIncrease = { }
+			breakdown.multiChain(breakdown.DamageOverTimeTakenIncrease, {
+				label = "DoT Taken multiplier:",
+				{ "%.2f ^8(increased/reduced damage taken)", (1 + dotInc / 100) },
+				{ "%.2f ^8(more/less damage taken)", dotMore },
+				total = s_format("= %.2f (%+.2f%%)", output.DamageOverTimeTakenMultiplier, output.DamageOverTimeTakenIncrease),
+			})
+		end
+	end
+
 	-- Incoming hit damage multipliers
 	output["totalTakenHit"] = 0
 	if breakdown then
