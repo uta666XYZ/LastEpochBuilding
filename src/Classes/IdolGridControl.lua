@@ -200,7 +200,7 @@ function IdolGridControlClass:GetImage(filename)
 	if not filename then return nil end
 	if not self.imageHandles[filename] then
 		local h = NewImageHandle()
-		h:Load("Assets/idol/" .. filename, "ASYNC")
+		h:Load("Assets/idol/" .. filename)
 		self.imageHandles[filename] = h
 	end
 	return self.imageHandles[filename]
@@ -335,10 +335,12 @@ local blockedCellImage
 local function drawBlockedCell(cx, cy, cw, ch)
 	if not blockedCellImage then
 		blockedCellImage = NewImageHandle()
-		blockedCellImage:Load("Assets/idol/idols_blocked.png", "ASYNC")
+		blockedCellImage:Load("Assets/idol/idols_blocked.png")
 	end
-	SetDrawColor(1, 1, 1)
-	DrawImage(blockedCellImage, cx, cy, cw, ch)
+	if blockedCellImage:IsValid() then
+		SetDrawColor(1, 1, 1)
+		DrawImage(blockedCellImage, cx, cy, cw, ch)
+	end
 end
 
 -- Container/frame image constants
@@ -363,7 +365,7 @@ local ALTAR_EMPTY_SIZE = 54  -- draw size (square) for the altar circle icon
 function IdolGridControlClass:GetContainerImage()
 	if not self.imageHandles["__container"] then
 		local h = NewImageHandle()
-		h:Load("Assets/idol/idol_container.png", "ASYNC")
+		h:Load("Assets/idol/idol_container.png")
 		self.imageHandles["__container"] = h
 	end
 	return self.imageHandles["__container"]
@@ -372,7 +374,7 @@ end
 function IdolGridControlClass:GetAltarEmptyImage()
 	if not self.imageHandles["__altarEmpty"] then
 		local h = NewImageHandle()
-		h:Load("Assets/idol/idol_altar_empty.png", "ASYNC")
+		h:Load("Assets/idol/idol_altar_empty.png")
 		self.imageHandles["__altarEmpty"] = h
 	end
 	return self.imageHandles["__altarEmpty"]
@@ -394,7 +396,7 @@ function IdolGridControlClass:GetAltarImage(altarName)
 	local key = "__altar_" .. fname
 	if not self.imageHandles[key] then
 		local h = NewImageHandle()
-		h:Load("Assets/idol/" .. fname, "ASYNC")
+		h:Load("Assets/idol/" .. fname)
 		self.imageHandles[key] = h
 	end
 	return self.imageHandles[key]

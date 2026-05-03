@@ -52,7 +52,7 @@ local function getIconHandle(filename)
 	if not filename then return nil end
 	if not iconHandles[filename] then
 		local h = NewImageHandle()
-		h:Load("Assets/" .. filename, "ASYNC")
+		h:Load("Assets/" .. filename)
 		iconHandles[filename] = h
 	end
 	return iconHandles[filename]
