@@ -824,7 +824,7 @@ return {
 		{ breakdown = "DamageOverTimeTakenIncrease" },
 		{ modName = { "DamageTaken", "DamageTakenOverTime" } },
 	}, },
-	{ label = "Less DoT Taken (in-game)", haveOutput = "LessDamageOverTimeTaken", { format = "{2:output:LessDamageOverTimeTaken}%",
+	{ label = "Less DoT Taken", haveOutput = "LessDamageOverTimeTaken", { format = "{2:output:LessDamageOverTimeTaken}%",
 		{ breakdown = "LessDamageOverTimeTaken" },
 	}, },
 } },
