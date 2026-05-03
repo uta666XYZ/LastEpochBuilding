@@ -393,6 +393,7 @@ function calcs.defence(env, actor)
 		output.ProjectileEvasion = m_max(round(evasion * calcLib.mod(modDB, nil, "ProjectileEvasion")), 0)
 		output.LowestOfArmourAndEvasion = m_min(output.Armour, output.Evasion)
 		output.Ward = m_max(round(ward), 0)
+		output.StableWard = output.Ward
 
 		-- Ward Decay per second at steady-state ward (tunklab formula)
 		-- wardDecay(W, R) = (0.2*W + 0.00005*W^2) / (1 + 0.5*(R/100))
@@ -592,6 +593,7 @@ function calcs.defence(env, actor)
 		local ward = wardDecayThreshold + ((-0.2 + math.sqrt(0.04 + 0.0002 * wps * (1 + 0.5 * wardRetention / 100))) / 0.0001)
 		ward = ward * calcLib.mod(modDB, nil, "Ward", "Defences")
 		output.Ward = m_max(round(ward), 0)
+		output.StableWard = output.Ward
 		if output.Ward > 0 then
 			local effectiveWard = m_max(output.Ward - wardDecayThreshold, 0)
 			local retentionDivisor = 1 + 0.5 * wardRetention / 100
