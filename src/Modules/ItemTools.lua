@@ -204,7 +204,17 @@ function itemLib.applyRange(line, range, valueScalar, rounding)
                 -- shared linear-interp + floor path: byte=90 → 1+floor(0.706)
                 -- = 1, byte=255 → 1+floor(2)=3 capped to 2.
                 local span = maxN - minN
-                if not useRound then
+                -- Targeted fix: "+(N-N)% Physical Resistance" affixes use plain (max-min)
+                -- span to match LE/LETools display. Verified vs in-game tooltip on
+                -- ShutFackUp Cursed Coin Amulet (range 76, scalar 1.17, +(50-60)%):
+                --   plain span 10 → (50 + 76/255 × 10) × 1.17 = 61.99 → 61 ✓
+                --   span+1/prec  → (50 + 76/255 × 11) × 1.17 = 62.336 → 62 ✗
+                -- The +1/precision adjustment was added for flat-integer affixes
+                -- (e.g. "+(2-4) Strength") so the top byte reaches max; it does not
+                -- match LE's percentage interpolation. Scoped narrowly here so the
+                -- broader percentage path can be audited per resistance type.
+                local skipSpanBump = line:find("%% Physical Resistance")
+                if not useRound and not skipSpanBump then
                     span = span + 1 / precision
                 end
                 -- Interpolate first, THEN apply valueScalar, to match LE/LETools.
