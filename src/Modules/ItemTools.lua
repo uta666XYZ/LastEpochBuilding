@@ -243,6 +243,12 @@ function itemLib.applyRange(line, range, valueScalar, rounding)
             return plus .. tostring(v)
         end, 1)
     end
+    -- Single-value paren form `+(N)` (no min-max). LE renders some affixes as
+    -- `+(4) Maximum Omen Idols Equipped` for fixed-value rolls. The range gsub
+    -- above only matches `+(min-max)`, so single-value parens remain literal,
+    -- breaking the downstream parseMod form detection (`+(4) Foo` vs `+4 Foo`).
+    -- Strip the parens here so parseMod sees a clean `+4 Maximum Omen Idols`.
+    line = line:gsub("(%+?)%((%-?%d+%.?%d*)%)", "%1%2")
     return line
 end
 
