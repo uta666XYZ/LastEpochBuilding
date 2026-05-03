@@ -1357,9 +1357,30 @@ function calcs.buildDefenceEstimations(env, actor)
 	output.EnduranceThreshold = m_floor(etBase * etInc)
 	output.EnduranceThresholdValue = output.EnduranceThreshold
 
-	-- Parry and Mana-before-Health
+	-- Parry and Mana-before-Health / Mana-before-Ward
 	output.ParryChance = m_min(modDB:Sum("BASE", nil, "ParryChance"), data.misc.ParryCap)
 	output.DamageToManaBeforeHealth = m_min(modDB:Sum("BASE", nil, "DamageToManaBeforeHealth"), 100)
+	output.DamageToManaBeforeWard = m_min(modDB:Sum("BASE", nil, "DamageToManaBeforeWard"), 100)
+
+	-- LETools-parity summary lines (Health Gain on Stun/Freeze/Crit, Overkill
+	-- Leech, Maximum Companions, Potion Slots, Minion Power From Character
+	-- Level). Base values from dump.cs / in-game defaults:
+	--   - PotionSlots base = 3 (CharacterStats default before mods)
+	--   - MaxCompanions base = 0 (class-specific bonuses are added via mods;
+	--     however LE shows "2" for non-pet classes too, suggesting LE's
+	--     CharacterStats.getMaximumCompanions returns 2 by default; verified
+	--     against ShutFackUp Spellblade letools = 2). We default to 2 to
+	--     match in-game display; minion classes add their own bonuses on top.
+	--   - MinionPowerFromCharLevel = class.moreMinionDamagePerLevel * level.
+	--     Not yet wired (requires per-class table in src/Data/Classes.lua);
+	--     output 0 for now and surface via Calcs tab as "(not implemented)".
+	output.LifeOnStun = modDB:Sum("BASE", nil, "LifeOnStun")
+	output.LifeOnFreeze = modDB:Sum("BASE", nil, "LifeOnFreeze")
+	output.LifeOnCrit = modDB:Sum("BASE", nil, "LifeOnCrit")
+	output.OverkillLeech = modDB:Sum("BASE", nil, "OverkillLeech")
+	output.MaxCompanions = 2 + modDB:Sum("BASE", nil, "MaxCompanions")
+	output.PotionSlots = 3 + modDB:Sum("BASE", nil, "PotionSlots")
+	output.MinionPowerFromCharLevel = modDB:Sum("BASE", nil, "MinionPowerFromCharLevel")
 
 	-- Glancing blow and crit avoidance
 	output.GlancingBlowChance = m_min(modDB:Sum("BASE", nil, "GlancingBlowChance"), 100)

@@ -87,8 +87,11 @@ local modNameList = {
 	["critical strike avoidance"] = "CritAvoidance",
 	-- Damage Reflected (LE thorns)
 	["damage reflected to attackers"] = "DamageReflectedToAttackers",
-	["of damage reflected"] = "DamageReflectedPercent",
-	["of minion damage reflected"] = "MinionDamageReflectedPercent",
+	-- Note: formList "% of" pattern (line ~29) consumes the "of" token from
+	-- "25% of damage reflected", so the modNameList key must NOT include "of".
+	-- See Obsidian "ShutFackUp lv85 Spellblade in-game stats.md" #8.
+	["damage reflected"] = "DamageReflectedPercent",
+	["minion damage reflected"] = "MinionDamageReflectedPercent",
 	-- Resistances
 	["elemental resistance"] = { "FireResist", "LightningResist", "ColdResist" },
 	["elemental resistances"] = { "FireResist", "LightningResist", "ColdResist" },
@@ -128,6 +131,20 @@ local modNameList = {
 	-- On hit/kill/leech effects
 	["health gain on kill"] = "LifeOnKill",
 	["health gain on hit"] = { "LifeOnHit", flags = ModFlag.Hit },
+	["health gain on stun"] = "LifeOnStun",
+	["health gained on stun"] = "LifeOnStun",
+	["health gain on freeze"] = "LifeOnFreeze",
+	["health gained on freeze"] = "LifeOnFreeze",
+	["health gain on crit"] = "LifeOnCrit",
+	["health gained on crit"] = "LifeOnCrit",
+	["health gain on critical strike"] = "LifeOnCrit",
+	-- Mana / Companion / Potion / Overkill summary stats (LETools parity)
+	["overkill health leech"] = "OverkillLeech",
+	["overkill leech"] = "OverkillLeech",
+	["maximum companions"] = "MaxCompanions",
+	["maximum number of companions"] = "MaxCompanions",
+	["potion slots"] = "PotionSlots",
+	["minion power from character level"] = "MinionPowerFromCharLevel",
 	["health lost on kill"] = "LifeLossOnKillPercent",
 	-- Projectile modifiers
 	["extra projectiles"] = "ProjectileCount",
@@ -258,6 +275,8 @@ local modNameList = {
 	-- Defense stats
 	["of damage dealt to mana before health"] = "DamageToManaBeforeHealth",
 	["damage dealt to mana before health"] = "DamageToManaBeforeHealth",
+	["of damage dealt to mana before ward"] = "DamageToManaBeforeWard",
+	["damage dealt to mana before ward"] = "DamageToManaBeforeWard",
 	["parry chance"] = "ParryChance",
 	["healing effectiveness"] = "HealingEffectiveness",
 	-- On-hit resource gains
@@ -402,6 +421,8 @@ local modTagList = {
 	["per (%d+) total attributes"] = function(num) return { tag = { type = "PerStat", statList = Attributes, div = num } } end,
 	["per (%d+) maximum mana"] = function(num) return { tag = { type = "PerStat", stat = "Mana", div = num } } end,
 	["per (%d+) max mana"] = function(num) return { tag = { type = "PerStat", stat = "Mana", div = num } } end,
+	["per (%d+) maximum health"] = function(num) return { tag = { type = "PerStat", stat = "Life", div = num } } end,
+	["per (%d+) max health"] = function(num) return { tag = { type = "PerStat", stat = "Life", div = num } } end,
 	["per (%d+)%% block chance"] = function(num) return { tag = { type = "PerStat", stat = "BlockChance", div = num } } end,
 	["per (%d+) block effectiveness"] = function(num) return { tag = { type = "PerStat", stat = "BlockEffect", div = num } } end,
 	["per totem"] = { tag = { type = "PerStat", stat = "TotemsSummoned" } },
@@ -1985,6 +2006,9 @@ local function parseMod(line, order)
 		end
 		if not hasModSuffix and (modNameStr:match("Damage$") or modName == "Duration") then
 			modType = "MORE"
+		elseif not hasModSuffix and (modNameStr == "Life" or modNameStr == "Mana" or modNameStr == "Ward") then
+			-- LE convention: "+N% Health/Mana/Ward" (no "increased") means INC, not BASE
+			modType = "INC"
 		else
 			modType = "BASE"
 		end
