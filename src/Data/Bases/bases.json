@@ -11914,7 +11914,7 @@
     "implicits": [
       "+(51-83)% Lightning Resistance",
       "+1 Skills",
-      "{rounding:Integer}(4-5)% less Damage Taken"
+      "{rounding:Integer}(4-5)% increased Damage Taken"
     ]
   },
   "Spider Eye Amulet": {
