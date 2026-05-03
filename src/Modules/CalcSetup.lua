@@ -584,10 +584,11 @@ function calcs.initEnv(build, mode, override, specEnv)
 		modDB:NewMod("LifeRegen", "BASE", classStats["healthRegenPerLevel"], "Base", { type = "Multiplier", var = "Level", base = classStats["healthRegen"] })
 		modDB:NewMod("Mana", "BASE", classStats["manaPerLevel"], "Base", { type = "Multiplier", var = "Level", base = classStats["baseMana"] })
 		modDB:NewMod("ManaRegen", "BASE", classStats["manaRegen"], "Base")
-		-- StunAvoidance: only base value applies. JSON has stunAvoidancePerLevel=5
-		-- but LE does not scale this stat with level (verified against LETools
-		-- planner across 13 builds — LEB previously over by 5*Level).
-		modDB:NewMod("StunAvoidance", "BASE", classStats["baseStunAvoidance"], "Base")
+		-- StunAvoidance: in-game tooltip shows "Base Stun Avoidance: 250 + 5 per
+		-- character level". The previous "no per-level scaling" comment was
+		-- incorrect — verified against in-game character sheet on ShutFackUp
+		-- (lv85 → 250 + 5*85 = 675 base).
+		modDB:NewMod("StunAvoidance", "BASE", classStats["stunAvoidancePerLevel"], "Base", { type = "Multiplier", var = "Level", base = classStats["baseStunAvoidance"] })
 		modDB:NewMod("Endurance", "BASE", classStats["baseEndurance"] * 100, "Base")
 		modDB:NewMod("EnduranceThreshold", "BASE", classStats["enduranceThresholdPerHealth"], "Base", { type = "PerStat", stat = "Life"})
 
@@ -788,16 +789,47 @@ function calcs.initEnv(build, mode, override, specEnv)
 			end
 		end
 
-		-- Idol Altar: count idols equipped in Omen Idol (Refracted) slots
-		-- so mods like "+N per Idol in a Refracted Slot" can scale.
-		local idolInRefractedSlotCount = 0
-		for slotName, item in pairs(items) do
-			if item and slotName:sub(1, 10) == "Omen Idol " then
-				idolInRefractedSlotCount = idolInRefractedSlotCount + 1
+		-- LevelReq filter: gear whose required level exceeds the character's
+		-- level provides no effect in-game. Match that behavior here so DPS /
+		-- defense calcs reflect what the actual character would see.
+		do
+			local charLevel = build.characterLevel or 1
+			for slotName, item in pairs(items) do
+				if item and item.requirements and item.requirements.level
+					and item.requirements.level > charLevel then
+					items[slotName] = nil
+				end
 			end
 		end
-		if idolInRefractedSlotCount > 0 then
-			modDB:NewMod("Multiplier:IdolInRefractedSlot", "BASE", idolInRefractedSlotCount, "Idol Altar")
+
+		-- Idol Altar: two distinct multipliers, NOT the same count.
+		--   * Multiplier:EquippedOmenIdol      = total idols equipped in Omen
+		--                                        Idol slots (= layout occupancy
+		--                                        up to altar capacity). Scales
+		--                                        "+N per Equipped Omen Idol".
+		--   * Multiplier:IdolInRefractedSlot   = idols whose grid footprint
+		--                                        overlaps a Refracted (type-2)
+		--                                        cell on the altar layout.
+		--                                        Scales "+N per Idol in a
+		--                                        Refracted Slot".
+		-- These differ when an idol is placed on a non-refracted cell of the
+		-- altar (e.g. Ocular Altar with 5 Omen Idol capacity but only 4
+		-- refracted corner cells). Conflating them caused #2 Armor over-count
+		-- in ShutFackUp lv85 Spellblade (LEB 423 vs in-game 414, diff = 6 raw
+		-- × 1.40 INC = 9). See Obsidian "ShutFackUp lv85 Spellblade in-game
+		-- stats.md" #2.
+		local equippedOmenIdolCount = 0
+		for slotName, item in pairs(items) do
+			if item and slotName:sub(1, 10) == "Omen Idol " then
+				equippedOmenIdolCount = equippedOmenIdolCount + 1
+			end
+		end
+		if equippedOmenIdolCount > 0 then
+			modDB:NewMod("Multiplier:EquippedOmenIdol", "BASE", equippedOmenIdolCount, "Idol Altar")
+			local refractedSlotCount = build.itemsTab:CountIdolsOnRefractedCells()
+			if refractedSlotCount > 0 then
+				modDB:NewMod("Multiplier:IdolInRefractedSlot", "BASE", refractedSlotCount, "Idol Altar")
+			end
 		end
 
 		-- Idol Altar: collect items in Omen Idol (Refracted) slots and compute
@@ -1460,9 +1492,21 @@ function calcs.initEnv(build, mode, override, specEnv)
 			env.player.weaponData1 = copyTable(env.data.unarmedWeaponData[env.classId])
 		end
 		if env.player.weaponData1.countsAsDualWielding then
-			env.player.weaponData2 = env.player.itemList["Weapon 1"].weaponData[2]
+			env.player.weaponData2 = env.player.itemList["Weapon 1"].weaponData and env.player.itemList["Weapon 1"].weaponData[2] or { }
 		else
-			env.player.weaponData2 = env.player.itemList["Weapon 2"] and env.player.itemList["Weapon 2"].weaponData and env.player.itemList["Weapon 2"].weaponData[2] or { }
+			-- Mirror the weaponData1 path: derive from `base.weapon` + `base.type`.
+			-- `Item:weaponData[slotNum]` is only ever populated by
+			-- `BuildModListForSlotNum`, which nothing in LEB calls — so the prior
+			-- `.weaponData[2]` lookup always returned nil and the DualWielding
+			-- condition never activated for off-hand weapons.
+			local w2item = env.player.itemList["Weapon 2"]
+			if w2item and w2item.base and w2item.base.weapon then
+				env.player.weaponData2 = copyTable(w2item.base.weapon)
+				env.player.weaponData2.type = w2item.base.type
+				env.player.weaponData2.AttackRate = env.player.weaponData2.AttackRateBase
+			else
+				env.player.weaponData2 = { }
+			end
 		end
 
 		-- Set weapon-type conditions derived from equipped weapons
