@@ -1380,7 +1380,14 @@ function calcs.buildDefenceEstimations(env, actor)
 	output.OverkillLeech = modDB:Sum("BASE", nil, "OverkillLeech")
 	output.MaxCompanions = 2 + modDB:Sum("BASE", nil, "MaxCompanions")
 	output.PotionSlots = 3 + modDB:Sum("BASE", nil, "PotionSlots")
-	output.MinionPowerFromCharLevel = modDB:Sum("BASE", nil, "MinionPowerFromCharLevel")
+	-- Minion Power From Character Level — class-agnostic: from lv26 onwards
+	-- gain 0.8% per character level (verified in-game tooltip; lv85=48%,
+	-- lv100=60%). Formula: max(0, level - 25) * 0.8.
+	do
+		local lvl = env.build and env.build.characterLevel or modDB.multipliers["Level"] or 1
+		local fromLevel = m_max(0, lvl - 25) * 0.8
+		output.MinionPowerFromCharLevel = fromLevel + modDB:Sum("BASE", nil, "MinionPowerFromCharLevel")
+	end
 	-- Minion-tab "Increased Health" — LETools shows this on every build's Minion
 	-- tab regardless of whether an active minion skill exists. Minion stat mods
 	-- in LEB are routed via MinionModifier LIST entries (consumed by env.minion
