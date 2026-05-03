@@ -284,7 +284,7 @@ function buildMode:Init(dbFileName, buildName, buildXML, convertBuild)
 		{ stat = "ManaLeechGainPerHit", label = "Mana Leech/Gain per Hit", fmt = ".1f", color = colorCodes.MANA, compPercent = true },
 		{ },
 		{ stat = "Ward", label = "Ward", fmt = "d", color = colorCodes.WARD, compPercent = true },
-		{ stat = "WardRetention", label = "Ward Retention", fmt = "d%%", color = colorCodes.WARD},
+		{ stat = "StableWard", label = "Stable Ward", fmt = "d", color = colorCodes.WARD, compPercent = true },
 		{ },
 		{ stat = "TotalDegen", label = "Total Degen", fmt = ".1f", lowerIsBetter = true },
 		{ stat = "TotalNetRegen", label = "Total Net Recovery", fmt = "+.1f" },
@@ -293,18 +293,16 @@ function buildMode:Init(dbFileName, buildName, buildXML, convertBuild)
 		{ stat = "NetWardRegen", label = "Net Ward Recovery", fmt = "+.1f", color = colorCodes.WARD },
 		{ },
 		{ stat = "Evasion", label = "Dodge Rating", fmt = "d", color = colorCodes.EVASION, compPercent = true },
-		{ stat = "Spec:EvasionInc", label = "%Inc Dodge Rating from Tree", color = colorCodes.EVASION, fmt = "d%%" },
+		{ stat = "AttackDodgeChance", label = "Attack Dodge Chance", fmt = "d%%", overCapStat = "AttackDodgeChanceOverCap" },
 		{ stat = "MeleeEvadeChance", label = "Dodge Chance", fmt = "d%%", color = colorCodes.EVASION, condFunc = function(v,o) return v > 0 and o.MeleeEvadeChance == o.ProjectileEvadeChance end },
 		{ stat = "MeleeEvadeChance", label = "Melee Dodge Chance", fmt = "d%%", color = colorCodes.EVASION, condFunc = function(v,o) return v > 0 and o.MeleeEvadeChance ~= o.ProjectileEvadeChance end },
 		{ stat = "ProjectileEvadeChance", label = "Projectile Dodge Chance", fmt = "d%%", color = colorCodes.EVASION, condFunc = function(v,o) return v > 0 and o.MeleeEvadeChance ~= o.ProjectileEvadeChance end },
 		{ },
 		{ stat = "Armour", label = "Armor", fmt = "d", compPercent = true },
-		{ stat = "Spec:ArmourInc", label = "%Inc Armor from Tree", fmt = "d%%" },
 		{ stat = "PhysicalDamageReduction", label = "Armor Mitigation", fmt = "d%%", condFunc = function() return true end },
 		{ },
 		{ stat = "BlockChance", label = "Block Chance", fmt = "d%%", overCapStat = "BlockChanceOverCap" },
 		{ stat = "SpellBlockChance", label = "Spell Block Chance", fmt = "d%%", overCapStat = "SpellBlockChanceOverCap" },
-		{ stat = "AttackDodgeChance", label = "Attack Dodge Chance", fmt = "d%%", overCapStat = "AttackDodgeChanceOverCap" },
 		{ stat = "SpellDodgeChance", label = "Spell Dodge Chance", fmt = "d%%", overCapStat = "SpellDodgeChanceOverCap" },
 		{ },
 	})
@@ -317,7 +315,7 @@ function buildMode:Init(dbFileName, buildName, buildXML, convertBuild)
 
 	tableInsertAll(self.displayStats, {
 		{ },
-		{ stat = "EffectiveMovementSpeedMod", label = "Movement Speed Modifier", fmt = "+d%%", mod = true, condFunc = function() return true end },
+		{ stat = "EffectiveMovementSpeedMod", label = "Movement Speed", fmt = "+d%%", mod = true, condFunc = function() return true end },
 		{ },
 		{ stat = "FullDPS", label = "Full DPS", fmt = ".1f", color = colorCodes.CURRENCY, compPercent = true },
 		{ },
@@ -1525,11 +1523,24 @@ function buildMode:AddDisplayStatList(statList, actor)
 						if statData.warnFunc and statData.warnFunc(statVal, actor.output) and statData.warnColor then
 							colorOverride = colorCodes.NEGATIVE
 						end
-						t_insert(statBoxList, {
-							height = 16,
-							labelColor..statData.label..":",
-							self:FormatStat(statData, statVal, overCapStatVal, colorOverride),
-						})
+						if statData.wrapLabel then
+							t_insert(statBoxList, {
+								height = 14,
+								x = 278, align = "RIGHT_X",
+								labelColor..statData.label..":",
+							})
+							t_insert(statBoxList, {
+								height = 16,
+								"",
+								self:FormatStat(statData, statVal, overCapStatVal, colorOverride),
+							})
+						else
+							t_insert(statBoxList, {
+								height = 16,
+								labelColor..statData.label..":",
+								self:FormatStat(statData, statVal, overCapStatVal, colorOverride),
+							})
+						end
 					end
 				end
 				if statData.warnFunc and statVal and ((statData.condFunc and statData.condFunc(statVal, actor.output)) or not statData.condFunc) then
