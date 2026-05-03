@@ -80,7 +80,7 @@ local PaperdollControlClass = newClass("PaperdollControl", "Control", "TooltipHo
         -- Preload ghost sprites
         for key, path in pairs(GHOST_SPRITES) do
             local h = NewImageHandle()
-            h:Load(path, "ASYNC")
+            h:Load(path)
             self.imgHandles[key] = h
         end
     end

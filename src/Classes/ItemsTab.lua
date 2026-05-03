@@ -1114,7 +1114,6 @@ function ItemsTabClass:Draw(viewPort, inputEvents)
 	if self.controls.scrollBarH:IsShown() then
 		self.controls.scrollBarH:Draw(viewPort)
 	end
-
 	self.controls.specSelect:SetList(self.build.treeTab:GetSpecList())
 end
 

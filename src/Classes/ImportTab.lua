@@ -1727,12 +1727,15 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
                         local maxTier = 0
                         local affixCount = 0
                         local droppedAffixes = 0
-                        -- Read up to 6 affix slots: a fully-Slammed Exalted item can
-                        -- carry 5 regular affixes + 1 sealed slot. Previously this
-                        -- loop stopped at i=4 and silently dropped slot 5 (observed
-                        -- on ROGER_FDC's Astrolabe — Cold Damage T1 prefix lost).
+                        -- Read up to 7 affix slots. Maximum affix counts in-game:
+                        --   regular gear: implicit + 2 prefix + 2 suffix + 1 sealed
+                        --                 + 1 primordial + 1 corrupted = 7 affix slots
+                        --   idol:         2 prefix + 2 suffix + 2 enchant + 1 corrupted
+                        --                 = 7 affix slots
+                        -- Previously the loop stopped at i=4, silently dropping slot 5
+                        -- (observed on ROGER_FDC's Astrolabe — Cold Damage T1 prefix lost).
                         -- Affixes start at BASE+9 (byte0/tierByte), BASE+10 (byte1/idByte)
-                        for i = 0, 5 do
+                        for i = 0, 6 do
                             local dataId = BASE + 10 + i * 3
                             if #d > dataId then
                                 local affixId = d[dataId] + (d[dataId - 1] % 16) * 256
@@ -1761,11 +1764,12 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
                                 end
                             end
                         end
-                        -- Slot-overflow probe: if slot 6 has a real id+modData match,
-                        -- the loop just dropped a valid affix (catch a hypothetical
-                        -- 7-affix item the same way slot=5 caught the original bug).
+                        -- Slot-overflow probe: if slot 7 has a real id+modData match,
+                        -- the loop just dropped a valid affix (catches a hypothetical
+                        -- 8-affix item the same way slot=5 caught the original bug
+                        -- and slot=6 caught the 7-affix gap).
                         do
-                            local dataId = BASE + 10 + 6 * 3
+                            local dataId = BASE + 10 + 7 * 3
                             if #d > dataId then
                                 local affixId = d[dataId] + (d[dataId - 1] % 16) * 256
                                 if affixId and affixId > 0 then
@@ -1773,7 +1777,7 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
                                     local modId = affixId .. "_" .. affixTier
                                     if data.itemMods.Item[modId] then
                                         droppedAffixes = droppedAffixes + 1
-                                        ConPrintf("[IMPORT-DROP] base=%s slot=6(overflow) modId=%s — 6-slot loop limit dropped a real affix",
+                                        ConPrintf("[IMPORT-DROP] base=%s slot=7(overflow) modId=%s — 7-slot loop limit dropped a real affix",
                                             itemBaseName, modId)
                                     end
                                 end
