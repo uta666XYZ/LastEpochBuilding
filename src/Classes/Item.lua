@@ -808,6 +808,27 @@ function ItemClass:ParseRaw(raw, rarity, highQuality)
 			end
 		end
 	end
+	-- @leb-regression-guard: unique-req-level-override
+	-- Override base req.level with the unique entry's req.level for
+	-- UNIQUE / LEGENDARY items. Uniques can specify a lower required level
+	-- than their base type — e.g. Vaion's Chariot (lvl 50) on Solarum
+	-- Greaves base (lvl 67). Without this override the LevelReq filter in
+	-- CalcSetup (CalcSetup.lua:858-865) wrongly excludes equipped uniques
+	-- whose base type req exceeds character level, dropping the entire
+	-- item's stats from defense / DPS calcs.
+	-- Mirrors the SET item override above; the matching override in
+	-- Item:Craft() at the equivalent site keeps the value across recrafts.
+	-- Test: spec/System/TestItemParse_spec.lua
+	--   "Unique req.level overrides base req.level (UNIQUE/LEGENDARY)"
+	-- Establishing commit: see git log for 'unique-req-level-override'.
+	if (self.rarity == "UNIQUE" or self.rarity == "LEGENDARY") and self.title and data.uniques then
+		for _, u in pairs(data.uniques) do
+			if type(u) == "table" and u.name == self.title and u.req and u.req.level then
+				self.requirements.level = u.req.level
+				break
+			end
+		end
+	end
 	-- Auto-derive corrupted from affixes BEFORE the recraft path: any active
 	-- prefix/suffix mod with specialAffixType == 6 (corruption-exclusive)
 	-- implies the item is corrupted, even if the raw text lacks a "Corrupted"
@@ -1151,6 +1172,20 @@ function ItemClass:Craft()
 					self.requirements.level = e.req.level
 					break
 				end
+			end
+		end
+	end
+	-- @leb-regression-guard: unique-req-level-override
+	-- Same override as ParseRaw site: UNIQUE/LEGENDARY uniques can specify a
+	-- lower req.level than their base type (Vaion's Chariot 50 vs Solarum
+	-- Greaves 67). Without this, Craft() — invoked on recraft / XML round-trip
+	-- with crafted slot mods — resets requirements.level back to base, undoing
+	-- the ParseRaw override and re-triggering the LevelReq filter exclusion.
+	if (self.rarity == "UNIQUE" or self.rarity == "LEGENDARY") and self.title and data.uniques then
+		for _, u in pairs(data.uniques) do
+			if type(u) == "table" and u.name == self.title and u.req and u.req.level then
+				self.requirements.level = u.req.level
+				break
 			end
 		end
 	end

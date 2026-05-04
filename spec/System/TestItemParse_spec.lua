@@ -122,6 +122,60 @@ describe("TestItemParse #itemParse", function()
             "Last explicit mod must be from sat==6 corrupted affix; got: " .. tostring(last.line))
     end)
 
+    -- @leb-regression-guard: unique-req-level-override
+    -- Uniques can specify a lower req.level than their base type (e.g. Vaion's
+    -- Chariot lvl 50 vs Solarum Greaves base lvl 67). Item.lua must override
+    -- self.requirements.level from data.uniques entry's req.level for
+    -- UNIQUE/LEGENDARY items in BOTH the post-ParseRaw site AND Item:Craft();
+    -- otherwise CalcSetup's LevelReq filter (CalcSetup.lua:858-865) drops the
+    -- entire item from calc when character.level < base.req.level, even though
+    -- in-game the item is equippable at character.level >= unique.req.level.
+    -- Establishing commit: see git log for 'unique-req-level-override'.
+    it("Unique req.level overrides base req.level (UNIQUE/LEGENDARY)", function()
+        newBuild()
+        -- Vaion's Chariot: unique req=50, base Solarum Greaves req=67.
+        -- XML stores LevelReq: 67 (the base value, also asserted as
+        -- importedLevelReq by ParseRaw). After parse, requirements.level
+        -- MUST be 50, not 67, so character lv62 keeps the boots equipped.
+        build.itemsTab:CreateDisplayItemFromRaw([[Rarity: LEGENDARY
+        Vaion's Chariot
+        Solarum Greaves
+        Unique ID: 8
+        Crafted: true
+        Prefix: {range:255}28_6
+        Prefix: None
+        Prefix: None
+        Prefix: None
+        Prefix: None
+        Suffix: None
+        Suffix: None
+        Suffix: None
+        Suffix: None
+        Suffix: None
+        LevelReq: 67
+        Implicits: 3
+        +90 Armor
+        {range:38}(15-18)% increased Movement Speed
+        {range:247}+(30-45)% Fire Resistance
+        {range:255}{affixType:Prefix}(26-30)% increased Movement Speed
+        {crafted}{range:255}(10-18)% increased Movement Speed
+        {crafted}100% Increased Damage per 100% Increased Movement Speed
+        {crafted}{range:255}(24-40)% More Damage with your next Movement Skill Every 3 Seconds
+        {crafted}{range:255}+(4-10)% to All Resistances
+        {crafted}{range:255}{rounding:Integer}+(40-120) Armor]])
+
+        local item = build.itemsTab.displayItem
+        assert.is_not_nil(item, "displayItem should exist")
+        assert.is_not_nil(item.requirements, "item.requirements should exist")
+        assert.are.equals(50, item.requirements.level,
+            "Vaion's Chariot must use unique req.level=50, not base req.level=67")
+
+        -- Re-run Craft() to ensure the override survives the recraft path.
+        item:Craft()
+        assert.are.equals(50, item.requirements.level,
+            "After Craft(), unique req.level=50 must still hold (not reset to base 67)")
+    end)
+
     it("Auto-detects corrupted from specialAffixType==6 affix (no 'Corrupted' marker)", function()
         newBuild()
         -- Refuge Armor (Body Armor base) with sat==6 prefix 1002_0 (Missing Health

@@ -223,6 +223,40 @@ assertion immediately.
 
 **Establishing commit:** `153d4e455` — _fix(calc): floor maxHealth/maxMana to match in-game truncation_
 
+### `unique-req-level-override`
+
+UNIQUE / LEGENDARY items can specify a lower required level than their
+base type — Vaion's Chariot is lvl 50 even though its Solarum Greaves
+base is lvl 67. Without an override, `Item.lua` falls back to
+`self.base.req.level` and CalcSetup's LevelReq filter
+(`CalcSetup.lua:858-865`) drops the entire item when
+`character.level < base.req.level`, even at levels where the unique is
+equippable in-game. This silently zeroes out every stat the item
+contributes — implicits, unique mods, and crafted slammed mods — and
+typically shows up as a missing slot row in the breakdown panel plus
+a multi-stat resistance / armor / movement-speed deficit.
+
+The fix mirrors the existing SET item override (Item.lua:798) at two
+sites: post-ParseRaw and inside `Item:Craft()`. Both sites must override
+because Craft() resets `self.requirements.level = self.base.req.level`
+unconditionally on every recraft pass (XML round-trip with crafted slots
+re-runs Craft via `_craftingInternal`).
+
+| Site | File | What it does |
+|---|---|---|
+| post-ParseRaw | `src/Classes/Item.lua` (~line 812 after the SET override) | Look up `data.uniques` by `u.name == self.title`; if `u.req.level` exists, override `self.requirements.level` |
+| Craft()       | `src/Classes/Item.lua` (~line 1158 after the SET override in Craft) | Same override, re-applied after Craft resets to base req.level |
+
+**Spec:** `spec/System/TestItemParse_spec.lua`
+- "Unique req.level overrides base req.level (UNIQUE/LEGENDARY)"
+
+The spec uses Vaion's Chariot on Solarum Greaves (the Qqwv73q2 lv62
+Warlock case) — base 67, unique 50 — and asserts `requirements.level
+== 50` both immediately after `CreateDisplayItemFromRaw` and after a
+follow-up `item:Craft()` call.
+
+**Establishing commit:** see git log for `unique-req-level-override`.
+
 ### `unique-data-integrity`
 
 Within-version invariants for hand-migrated unique data. When LE ships a
