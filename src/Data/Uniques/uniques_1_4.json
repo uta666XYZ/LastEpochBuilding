@@ -2410,8 +2410,7 @@
       "{rounding:Integer}(70-95)% increased Cold Damage",
       "+4 to All Attributes",
       "(10-13)% increased Movement Speed",
-      "(50-25)% reduced Duration of Stuns Received",
-      "(10-13)% increased Movement Speed"
+      "(50-25)% reduced Duration of Stuns Received"
     ],
     "rollIds": [
       0,
@@ -2419,8 +2418,7 @@
       2,
       null,
       3,
-      0,
-      5
+      0
     ]
   },
   "148": {
@@ -4502,7 +4500,7 @@
       "{rounding:Integer}+(12-32) Bow Lightning Damage",
       "{rounding:Integer}+(12-32) Throwing Lightning Damage",
       "+(62-92)% Lightning Penetration with your next Throwing Attack within two seconds when you directly use a Lightning Bow Attack",
-      "+(62-92)% Lightning Penetration with your next Throwing Attack within two seconds when you directly use a Lightning Bow Attack",
+      "+(62-92)% Lightning Penetration with your next Bow Attack within two seconds when you directly use a Lightning Throwing Attack",
       "+1 Seconds of Haste when you proc both of Zeurial's Hunt's effects within 2 seconds"
     ],
     "rollIds": [

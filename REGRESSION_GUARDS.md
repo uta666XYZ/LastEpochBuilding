@@ -197,6 +197,41 @@ has no other tripwire.
 
 **Establishing commit:** `f7b598ede` — _feat(calcs): show equipped set bonuses in Calcs tab_
 
+### `unique-data-integrity`
+
+Within-version invariants for hand-migrated unique data. When LE ships a
+new patch and uniques are re-extracted from game files, copy-paste and
+range-collapse mistakes have historically slipped in. The 1.4 migration
+(2026-05-05) caught three:
+
+- **Legends Entwined (id=423)** — wildcard line `"Counts as a part of every equipped item set"` listed twice in `mods`.
+- **Raindance (id=147)** — `(10-13)% increased Movement Speed` listed twice (legitimate dual-MS uniques like 1_2/1_3 Raindance differ in *range*; same-text duplication is the bug).
+- **Zeurial's Hunt (id=251)** — second penetration line was a copy-paste of the first with Bow/Throwing direction not swapped.
+
+The guarded invariant:
+
+**DUP_LINE** — no exact-string mod line appears twice in a single unique's
+`mods` array. The two real cases where it looks like a dup (Zeurial's Hunt
+direction-pair, Raindance dual-MS in 1_2/1_3) both differ in text or range,
+so exact-string equality is the correct equivalence.
+
+ROLLID_LEN (parallel `len(rollIds) == len(mods)`) is *not* checked from
+Lua because JSON `null` becomes Lua `nil` and `#rollIds` becomes
+unreliable on sparse arrays. That check lives in the Python audit
+(`.tmp/audit_uniques_1_4_regression.py`) for one-shot use during
+migration. Cross-version (1_3 → 1_4) `ROW_DROP` / `RANGE_COLLAPSE` checks
+are also Python-only — they're false-positive heavy in 1.4 because boots
+base implicits moved out of each unique into `bases_1_4.json`.
+
+| Site | File | What it does |
+|---|---|---|
+| data | `src/Data/Uniques/uniques_1_4.json` | Source of truth for 1.4 uniques |
+
+**Spec:** `spec/System/TestUniqueDataIntegrity_spec.lua`
+- "no unique has duplicate mod lines (DUP_LINE)"
+
+**One-shot audit:** `.tmp/audit_uniques_1_4_regression.py` — DUP_LINE + ROLLID_LEN + cross-version ROW_DROP + RANGE_COLLAPSE.
+
 ## Adding a new guard
 
 1. Above the fix in source, add a comment block:
