@@ -200,6 +200,46 @@ local function applySetBonuses(env, items, ver)
 		end
 	end
 	env.itemModDB.multipliers["CompleteSetCount"] = completeSetCount
+
+	-- Publish a structured breakdown of equipped sets so the Calcs tab
+	-- "Set Bonuses" section (CalcPerform → CalcSections) can render which sets
+	-- are equipped, how many pieces, and which tier bonuses are active.
+	-- Pure data structure — never read back by calc code, only consumed by
+	-- the breakdown UI.
+	local sets = {}
+	for setId, count in pairs(pieceCount) do
+		local info = setEntry[setId]
+		local maxSize = setSize[setId] or count
+		local effective = m_min(count, maxSize)
+		local bonuses = {}
+		if info and info.bonus then
+			for tier = 2, effective do
+				local rawLine = info.bonus[tostring(tier)] or info.bonus[tier]
+				if rawLine then
+					local cleaned = rawLine:gsub("{rounding:[^}]+}", ""):gsub("{[^}]+}", "")
+					cleaned = cleaned:match("^%s*(.-)%s*$") or cleaned
+					t_insert(bonuses, { tier = tier, text = cleaned })
+				end
+			end
+		end
+		t_insert(sets, {
+			setId      = setId,
+			name       = (info and info.name) or ("Set " .. tostring(setId)),
+			pieceCount = count,
+			setSize    = maxSize,
+			complete   = (count >= maxSize),
+			bonuses    = bonuses,
+		})
+	end
+	table.sort(sets, function(a, b)
+		if a.complete ~= b.complete then return a.complete end
+		return tostring(a.name) < tostring(b.name)
+	end)
+	env.itemModDB.setBreakdown = {
+		completeSetCount = completeSetCount,
+		wildcardCount    = #wildcardItems,
+		sets             = sets,
+	}
 end
 
 -- Initialise modifier database with stats and conditions common to all actors

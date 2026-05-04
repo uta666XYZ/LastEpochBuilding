@@ -231,6 +231,32 @@ local function doActorAttribsConditions(env, actor)
 	output.CorruptedNonIdolItemsEquipped = modDB:Sum("BASE", nil, "CorruptedNonIdolItemsEquipped")
 	output.CorruptedIdolItemsEquipped = modDB:Sum("BASE", nil, "CorruptedIdolItemsEquipped")
 
+	-- Publish set-bonus breakdown for the Calcs-tab "Set Bonuses" section.
+	-- env.itemModDB.setBreakdown is built in CalcSetup.applySetBonuses and
+	-- contains { completeSetCount, wildcardCount, sets = { {name, pieceCount,
+	-- setSize, complete, bonuses}... } }. Bridge to actor.output here so
+	-- CalcSections can gate on output.SetBreakdown and render
+	-- breakdown.SetBreakdown as a string array. Pure UI-side; no calc reads it.
+	local setBreakdownData = env.itemModDB and env.itemModDB.setBreakdown
+	if setBreakdownData and setBreakdownData.sets and #setBreakdownData.sets > 0 then
+		output.SetBreakdown = #setBreakdownData.sets
+		output.CompleteSetCount = setBreakdownData.completeSetCount
+		if breakdown then
+			local lines = {}
+			if setBreakdownData.wildcardCount and setBreakdownData.wildcardCount > 0 then
+				t_insert(lines, string.format("^7Wildcard items: %d", setBreakdownData.wildcardCount))
+			end
+			for _, s in ipairs(setBreakdownData.sets) do
+				local marker = s.complete and (colorCodes.SET .. "* ") or "^7  "
+				t_insert(lines, string.format("%s%s ^7(%d/%d)", marker, tostring(s.name), s.pieceCount, s.setSize))
+				for _, b in ipairs(s.bonuses) do
+					t_insert(lines, string.format("    ^8%dpc: ^7%s", b.tier, b.text))
+				end
+			end
+			breakdown.SetBreakdown = lines
+		end
+	end
+
 	output.TotalAttr = 0
 	for _, stat in pairs(Attributes) do
 		output[stat] = round(calcLib.val(modDB, stat))
