@@ -2000,7 +2000,6 @@ c["+1.5% Health Leech"]={{[1]={flags=0,keywordFlags=0,name="DamageLifeLeech",typ
 c["+1.6% increased Spell Damage per 1% increased Movement Speed"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=1.6}},"   per 1% increased Movement Speed "}
 c["+10 Added Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="BASE",value=10}},nil}
 c["+10 Additional Targets"]={{}," Targets "}
-c["+10 All Attributes with at least 7 Corrupted non-Idol Items equipped"]={{[1]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=10},[2]={flags=0,keywordFlags=0,name="Str",type="BASE",value=10},[3]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=10},[4]={flags=0,keywordFlags=0,name="Int",type="BASE",value=10},[5]={flags=0,keywordFlags=0,name="Att",type="BASE",value=10}},"  with at least 7 Corrupted non-Idol Items equipped "}
 c["+10 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=10}},nil}
 c["+10 Armor per Equipped Corrupted Idol"]={{[1]={[1]={type="Multiplier",var="EquippedCorruptedIdol"},flags=0,keywordFlags=0,name="Armour",type="BASE",value=10}},nil}
 c["+10 Armor per Idol in a Refracted Slot"]={{[1]={[1]={type="Multiplier",var="IdolInRefractedSlot"},flags=0,keywordFlags=0,name="Armour",type="BASE",value=10}},nil}
@@ -2606,7 +2605,6 @@ c["+108% Recurve Chance with Heartseeker"]={{}," Recurve Chance with  "}
 c["+1080 Block Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="BlockEffectiveness",type="BASE",value=1080}},nil}
 c["+109 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=109}},nil}
 c["+109 Ward gained when you use Shift"]={{[1]={[1]={skillName="Shift",type="SkillName"},flags=0,keywordFlags=0,name="WardGainOnUse_Shift",source="",type="BASE",value=109},notSupported=true},nil}
-c["+11 All Attributes with at least 7 Corrupted non-Idol Items equipped"]={{[1]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=11},[2]={flags=0,keywordFlags=0,name="Str",type="BASE",value=11},[3]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=11},[4]={flags=0,keywordFlags=0,name="Int",type="BASE",value=11},[5]={flags=0,keywordFlags=0,name="Att",type="BASE",value=11}},"  with at least 7 Corrupted non-Idol Items equipped "}
 c["+11 Attunement"]={{[1]={flags=0,keywordFlags=0,name="Att",type="BASE",value=11}},nil}
 c["+11 Bow Cold Damage"]={{[1]={flags=0,keywordFlags=2048,name="ColdDamage",type="BASE",value=11}},nil}
 c["+11 Cold Damage with Spells and Attacks per Attached Infernal Shade for Minions affected by Dread Shade"]={{[1]={[1]={stat="Att",type="PerStat"},[2]={scope="minion",type="Scope"},[3]={skillName="Infernal Shade",type="SkillName"},flags=0,keywordFlags=256,name="ColdDamage",type="BASE",value=11}},"  with s and Attacks ached   affected by Dread Shade "}
@@ -2790,7 +2788,6 @@ c["+118 Ward per Second"]={{[1]={flags=0,keywordFlags=0,name="WardPerSecond",typ
 c["+118 Ward per Second for you or your allies while standing on your Glyph of Dominion"]={{[1]={[1]={type="Condition",var="StandingOnGlyphOfDominion"},flags=0,keywordFlags=0,name="WardPerSecond",type="BASE",value=118}},"  for you or your allies  "}
 c["+118% Chance to apply Frailty on Melee Hit"]={{[1]={flags=8389120,keywordFlags=0,name="FrailtyChance",type="BASE",value=118}},nil}
 c["+119 Dodge Rating if you have been hit recently"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=119},notSupported=true},nil}
-c["+12 All Attributes with at least 7 Corrupted non-Idol Items equipped"]={{[1]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=12},[2]={flags=0,keywordFlags=0,name="Str",type="BASE",value=12},[3]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=12},[4]={flags=0,keywordFlags=0,name="Int",type="BASE",value=12},[5]={flags=0,keywordFlags=0,name="Att",type="BASE",value=12}},"  with at least 7 Corrupted non-Idol Items equipped "}
 c["+12 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=12}},nil}
 c["+12 Armor per Equipped Corrupted Idol"]={{[1]={[1]={type="Multiplier",var="EquippedCorruptedIdol"},flags=0,keywordFlags=0,name="Armour",type="BASE",value=12}},nil}
 c["+12 Armor per Idol in a Refracted Slot"]={{[1]={[1]={type="Multiplier",var="IdolInRefractedSlot"},flags=0,keywordFlags=0,name="Armour",type="BASE",value=12}},nil}
@@ -3029,7 +3026,6 @@ c["+128% Chance to apply Frostbite on Cold Hit"]={{[1]={flags=8388608,keywordFla
 c["+129 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=129}},nil}
 c["+129 Ward Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="WardOnPotionUse",type="BASE",value=129}},nil}
 c["+129% Chance to inflict Bleed on Hit"]={{[1]={flags=8388608,keywordFlags=0,name="BleedChance",type="BASE",value=129}},nil}
-c["+13 All Attributes with at least 7 Corrupted non-Idol Items equipped"]={{[1]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=13},[2]={flags=0,keywordFlags=0,name="Str",type="BASE",value=13},[3]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=13},[4]={flags=0,keywordFlags=0,name="Int",type="BASE",value=13},[5]={flags=0,keywordFlags=0,name="Att",type="BASE",value=13}},"  with at least 7 Corrupted non-Idol Items equipped "}
 c["+13 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=13}},nil}
 c["+13 Armor While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="Armour",type="BASE",value=13}},nil}
 c["+13 Attunement"]={{[1]={flags=0,keywordFlags=0,name="Att",type="BASE",value=13}},nil}
@@ -3180,7 +3176,6 @@ c["+138 Dodge Rating while using Evade"]={{[1]={[1]={type="Condition",var="Using
 c["+138 Endurance Threshold"]={{[1]={flags=0,keywordFlags=0,name="EnduranceThreshold",type="BASE",value=138}},nil}
 c["+138% Chance to Shred Armor on Hit"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_ArmourShred",type="BASE",value=138}},nil}
 c["+14 Added Health for Bees per Attunement"]={{[1]={[1]={stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="Life",type="BASE",value=14}},"  for Bees  "}
-c["+14 All Attributes with at least 7 Corrupted non-Idol Items equipped"]={{[1]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=14},[2]={flags=0,keywordFlags=0,name="Str",type="BASE",value=14},[3]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=14},[4]={flags=0,keywordFlags=0,name="Int",type="BASE",value=14},[5]={flags=0,keywordFlags=0,name="Att",type="BASE",value=14}},"  with at least 7 Corrupted non-Idol Items equipped "}
 c["+14 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=14}},nil}
 c["+14 Attunement"]={{[1]={flags=0,keywordFlags=0,name="Att",type="BASE",value=14}},nil}
 c["+14 Bow Cold Damage"]={{[1]={flags=0,keywordFlags=2048,name="ColdDamage",type="BASE",value=14}},nil}
@@ -4629,7 +4624,6 @@ c["+2.5 Bees Per 10 Seconds"]={{}," Bees Per 10 Seconds "}
 c["+2.5% Global Conditional Damage"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=2.5}},"  Conditional  "}
 c["+20 Additional Healing Per Second"]={{[1]={[1]={skillName="Healing",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=20}},"  Per Second "}
 c["+20 Aftershock Spell Damage"]={{[1]={[1]={skillName="Shock",type="SkillName"},flags=0,keywordFlags=256,name="Damage",type="BASE",value=20}}," After   "}
-c["+20 All Attributes with at least 7 Corrupted non-Idol Items equipped"]={{[1]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=20},[2]={flags=0,keywordFlags=0,name="Str",type="BASE",value=20},[3]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=20},[4]={flags=0,keywordFlags=0,name="Int",type="BASE",value=20},[5]={flags=0,keywordFlags=0,name="Att",type="BASE",value=20}},"  with at least 7 Corrupted non-Idol Items equipped "}
 c["+20 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=20}},nil}
 c["+20 Armour With Shield"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=20}},"  With Shield "}
 c["+20 Block Effectiveness Per Shield"]={{[1]={flags=0,keywordFlags=0,name="BlockEffectiveness",type="BASE",value=20}},"  Per Shield "}
@@ -9382,7 +9376,6 @@ c["+79 Lightning Throwing Damage with Javelin"]={{[1]={[1]={skillName="Javelin",
 c["+79 Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="BASE",value=79}},nil}
 c["+79 Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=79}},nil}
 c["+79 Ward Decay Threshold"]={{[1]={flags=0,keywordFlags=0,name="WardDecayThreshold",type="BASE",value=79}},nil}
-c["+8 All Attributes with at least 7 Corrupted non-Idol Items equipped"]={{[1]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=8},[2]={flags=0,keywordFlags=0,name="Str",type="BASE",value=8},[3]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=8},[4]={flags=0,keywordFlags=0,name="Int",type="BASE",value=8},[5]={flags=0,keywordFlags=0,name="Att",type="BASE",value=8}},"  with at least 7 Corrupted non-Idol Items equipped "}
 c["+8 Ally Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=8}}," Ally   "}
 c["+8 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=8}},nil}
 c["+8 Armor per Idol in a Refracted Slot"]={{[1]={[1]={type="Multiplier",var="IdolInRefractedSlot"},flags=0,keywordFlags=0,name="Armour",type="BASE",value=8}},nil}
@@ -9723,7 +9716,6 @@ c["+89 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=89}
 c["+89 Stun Avoidance"]={{[1]={flags=0,keywordFlags=0,name="StunAvoidance",type="BASE",value=89}},nil}
 c["+89% Minion Freeze Rate Multiplier"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="FreezeRateMultiplier",type="BASE",value=89}}}},nil}
 c["+89% Physical Penetration with Shadow Daggers"]={{[1]={[1]={skillName="Shadow Daggers",type="SkillName"},flags=0,keywordFlags=0,name="PhysicalPenetration",type="BASE",value=89}},"  with  "}
-c["+9 All Attributes with at least 7 Corrupted non-Idol Items equipped"]={{[1]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=9},[2]={flags=0,keywordFlags=0,name="Str",type="BASE",value=9},[3]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=9},[4]={flags=0,keywordFlags=0,name="Int",type="BASE",value=9},[5]={flags=0,keywordFlags=0,name="Att",type="BASE",value=9}},"  with at least 7 Corrupted non-Idol Items equipped "}
 c["+9 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=9}},nil}
 c["+9 Armor While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="Armour",type="BASE",value=9}},nil}
 c["+9 Attunement"]={{[1]={flags=0,keywordFlags=0,name="Att",type="BASE",value=9}},nil}

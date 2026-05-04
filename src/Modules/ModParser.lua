@@ -413,6 +413,13 @@ local modTagList = {
 	[". this effect is doubled if you have (%d+) or more maximum mana."] = function(num) return { tag = { type = "StatThreshold", stat = "Mana", threshold = num, mult = 2 } } end,
 	["if you have at least (%d+) ward"] = function(num) return { tag = { type = "StatThreshold", stat = "Ward", threshold = num } } end,
 	["if you have at least (%d+) total attributes"] = function(num) return { tag = { type = "StatThreshold", stat = "TotalAttr", threshold = num } } end,
+	-- "with at least N Corrupted (non-Idol|Idol|) Items equipped"
+	-- (proposal C): proper StatThreshold against equipped corrupted-item
+	-- counts populated in CalcSetup.lua. The empty middle group covers
+	-- the unqualified "with at least N Corrupted Items equipped" wording.
+	["with at least (%d+) corrupted items equipped"] = function(num) return { tag = { type = "StatThreshold", stat = "CorruptedItemsEquipped", threshold = num } } end,
+	["with at least (%d+) corrupted non%-idol items equipped"] = function(num) return { tag = { type = "StatThreshold", stat = "CorruptedNonIdolItemsEquipped", threshold = num } } end,
+	["with at least (%d+) corrupted idol items equipped"] = function(num) return { tag = { type = "StatThreshold", stat = "CorruptedIdolItemsEquipped", threshold = num } } end,
 	["for (%d+) seconds"] = { },
 	[" on critical strike"] = { tag = { type = "Condition", var = "CriticalStrike" } },
 	["from critical strikes"] = { tag = { type = "Condition", var = "CriticalStrike" } },

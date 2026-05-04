@@ -811,6 +811,38 @@ function calcs.initEnv(build, mode, override, specEnv)
 			end
 		end
 
+		-- Corrupted item counting (post LevelReq filter so it reflects what
+		-- actually contributes in-game). Feeds StatThreshold tags emitted by
+		-- the "with at least N Corrupted [non-Idol/Idol/] Items equipped"
+		-- ModParser pattern (see proposal C). Three stats are exposed:
+		--   * CorruptedItemsEquipped       = all corrupted items
+		--   * CorruptedNonIdolItemsEquipped = corrupted items NOT in Idol slots
+		--   * CorruptedIdolItemsEquipped    = corrupted items IN Idol slots
+		do
+			local total, nonIdol, idol = 0, 0, 0
+			for slotName, item in pairs(items) do
+				if item and item.corrupted then
+					total = total + 1
+					local isIdolSlot = slotName:sub(1, 5) == "Idol "
+						or slotName:sub(1, 10) == "Omen Idol "
+					if isIdolSlot then
+						idol = idol + 1
+					else
+						nonIdol = nonIdol + 1
+					end
+				end
+			end
+			if total > 0 then
+				modDB:NewMod("CorruptedItemsEquipped", "BASE", total, "Corrupted Items")
+			end
+			if nonIdol > 0 then
+				modDB:NewMod("CorruptedNonIdolItemsEquipped", "BASE", nonIdol, "Corrupted Items")
+			end
+			if idol > 0 then
+				modDB:NewMod("CorruptedIdolItemsEquipped", "BASE", idol, "Corrupted Items")
+			end
+		end
+
 		-- Idol Altar: two distinct multipliers, NOT the same count.
 		--   * Multiplier:EquippedOmenIdol      = total idols equipped in Omen
 		--                                        Idol slots (= layout occupancy
