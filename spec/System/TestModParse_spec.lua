@@ -525,4 +525,74 @@ describe("TestModParse", function()
             assert.are.equals(5, build.configTab.modList:Sum("BASE", nil, "Str"))
         end)
     end)
+
+    -- Regression guard: in-game stat parity invariants from determined-hawking-2a827c.
+    -- These tests exist to catch a class of regressions where ModCache.lua and the
+    -- ModParser drift apart and re-introduce the ShutFackUp Health=1423 (vs in-game
+    -- 1572) bug. If any of these fail, regenerate ModCache.lua via the headless
+    -- regen flow before investigating ModParser changes.
+    describe("in-game stat parity (regression guard)", function()
+        it("'+N% Health' is INC, not BASE (ModCache regression marker)", function()
+            build.configTab.input.customMods = "+10% Health"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            assert.are.equals(10, build.configTab.modList:Sum("INC", nil, "Life"))
+            assert.are.equals(0, build.configTab.modList:Sum("BASE", nil, "Life"))
+        end)
+
+        it("'+N Additional Health Per M Vitality' carries PerStat tag", function()
+            build.configTab.input.customMods = "+1 Additional Health Per 2 Vitality"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            local found
+            for _, m in ipairs(build.configTab.modList) do
+                if m.name == "Life" and m.type == "BASE" and m.value == 1 then
+                    found = m
+                    break
+                end
+            end
+            assert.is_not_nil(found, "Life BASE mod (value 1) not found")
+            assert.is_not_nil(found[1], "PerStat tag missing on Life mod")
+            assert.are.equals("PerStat", found[1].type)
+            assert.are.equals(2, found[1].div)
+            assert.are.equals("Vit", found[1].stat)
+        end)
+
+        it("PerStat scales Life by Vitality (continuous, not floored at mod level)", function()
+            -- Without scaling mod: baseline Life from +50 Vit alone
+            build.configTab.input.customMods = "+50 Vitality"
+            build.configTab:BuildModList()
+            build.buildFlag = true
+            runCallback("OnFrame")
+            local baseline = build.calcsTab.calcsOutput.Life
+
+            build.configTab.input.customMods = "+50 Vitality\n+1 Additional Health Per 2 Vitality"
+            build.configTab:BuildModList()
+            build.buildFlag = true
+            runCallback("OnFrame")
+            -- 50 Vit / 2 = 25 extra Life
+            assert.are.equals(baseline + 25, build.calcsTab.calcsOutput.Life)
+        end)
+
+        it("'Crit Multi While At Low Health' does NOT match a Life mod", function()
+            -- Guards against ModCache entries that erroneously parse low-health
+            -- conditional crit-multi as a flat Life BASE/INC.
+            build.configTab.input.customMods = "+10% Crit Multi While At Low Health"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            assert.are.equals(0, build.configTab.modList:Sum("BASE", nil, "Life"))
+            assert.are.equals(0, build.configTab.modList:Sum("INC", nil, "Life"))
+        end)
+
+        it("maxHealth uses floor (truncation), matching in-game (1258 * 1.25 = 1572)", function()
+            -- ShutFackUp lv85 Spellblade scenario reduced to customMods:
+            -- 110 (default base) + 1148 = 1258 base, * 1.25 INC = 1572.5
+            -- floor -> 1572 (in-game). round -> 1573 (LETools). LEB must match in-game.
+            build.configTab.input.customMods = "+1148 Health\n25% increased Health"
+            build.configTab:BuildModList()
+            build.buildFlag = true
+            runCallback("OnFrame")
+            assert.are.equals(1572, build.calcsTab.calcsOutput.Life)
+        end)
+    end)
 end)
