@@ -8153,8 +8153,7 @@
       "Counts as a part of every equipped item set",
       "{rounding:Integer}+(2-5) to All Attributes per Complete Set",
       "+(2-5)% to All Resistances per Complete Set",
-      "+1 to All Skills per Complete Set",
-      "Counts as a part of every equipped item set"
+      "+1 to All Skills per Complete Set"
     ],
     "rollIds": [
       0,
@@ -8162,7 +8161,6 @@
       null,
       1,
       2,
-      null,
       null
     ]
   },

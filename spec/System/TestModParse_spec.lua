@@ -137,7 +137,10 @@ describe("TestModParse", function()
         build.skillsTab:SelSkill(1, "Fireball")
         runCallback("OnFrame")
 
-        assert.are.equals(53, build.calcsTab.calcsOutput.Mana)
+        -- Default Acolyte lv1: baseMana 50 + manaPerLevel 0.50506*1 + 2*Att(1) = 52.5
+        -- → m_floor = 52 (LE in-game truncates int, see commit 153d4e455).
+        -- Was 53 under upstream's round(); LEB switched to floor for in-game parity.
+        assert.are.equals(52, build.calcsTab.calcsOutput.Mana)
         assert.are.equals(40, build.calcsTab.mainEnv.player.mainSkill.skillModList:Sum("INC", nil, "FireDamage"))
 
         build.configTab.input.customMods = "+900 maximum mana\n\z+40% Increased fire damage. This effect is doubled if you have 300 or more maximum mana."
@@ -145,7 +148,7 @@ describe("TestModParse", function()
         build.buildFlag = true
         runCallback("OnFrame")
 
-        assert.are.equals(953, build.calcsTab.calcsOutput.Mana)
+        assert.are.equals(952, build.calcsTab.calcsOutput.Mana)
         assert.are.equals(80, build.calcsTab.mainEnv.player.mainSkill.skillModList:Sum("INC", nil, "FireDamage"))
     end)
 
