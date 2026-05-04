@@ -130,7 +130,7 @@ describe("TestItemParse #itemParse", function()
     -- otherwise CalcSetup's LevelReq filter (CalcSetup.lua:858-865) drops the
     -- entire item from calc when character.level < base.req.level, even though
     -- in-game the item is equippable at character.level >= unique.req.level.
-    -- Establishing commit: see git log for 'unique-req-level-override'.
+    -- Establishing commit: 5a88e7161
     it("Unique req.level overrides base req.level (UNIQUE/LEGENDARY)", function()
         newBuild()
         -- Vaion's Chariot: unique req=50, base Solarum Greaves req=67.

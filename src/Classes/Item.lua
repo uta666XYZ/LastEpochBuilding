@@ -820,7 +820,7 @@ function ItemClass:ParseRaw(raw, rarity, highQuality)
 	-- Item:Craft() at the equivalent site keeps the value across recrafts.
 	-- Test: spec/System/TestItemParse_spec.lua
 	--   "Unique req.level overrides base req.level (UNIQUE/LEGENDARY)"
-	-- Establishing commit: see git log for 'unique-req-level-override'.
+	-- Establishing commit: 5a88e7161
 	if (self.rarity == "UNIQUE" or self.rarity == "LEGENDARY") and self.title and data.uniques then
 		for _, u in pairs(data.uniques) do
 			if type(u) == "table" and u.name == self.title and u.req and u.req.level then

@@ -255,7 +255,7 @@ Warlock case) — base 67, unique 50 — and asserts `requirements.level
 == 50` both immediately after `CreateDisplayItemFromRaw` and after a
 follow-up `item:Craft()` call.
 
-**Establishing commit:** see git log for `unique-req-level-override`.
+**Establishing commit:** `5a88e7161` — _fix(items): override base req.level with unique req.level for UNIQUE/LEGENDARY_
 
 ### `unique-data-integrity`
 
