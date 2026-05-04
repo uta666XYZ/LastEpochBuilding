@@ -8,6 +8,7 @@ local pairs = pairs
 local ipairs = ipairs
 local next = next
 local t_insert = table.insert
+local t_remove = table.remove
 local m_min = math.min
 local m_max = math.max
 local m_floor = math.floor
@@ -201,6 +202,35 @@ function buildMode:Init(dbFileName, buildName, buildXML, convertBuild)
 		self.spec:SetWindowTitleWithBuildClass()
 		self.buildFlag = true
 	end)
+	self.controls.buildLoadouts = new("DropDownControl", {"LEFT",self.controls.ascendDrop,"RIGHT"}, 8, 0, 200, 20, {}, function(index, value)
+		if value == "^7^7Loadouts:" or value == "^7^7-----" then
+			self.controls.buildLoadouts:SetSel(1)
+			return
+		end
+		if value == "^7^7Sync" then
+			self:SyncLoadouts()
+			self.controls.buildLoadouts:SetSel(1)
+			return
+		end
+		if value == "^7^7Manage Loadouts..." then
+			self:OpenLoadoutManagePopup()
+			self.controls.buildLoadouts:SetSel(1)
+			return
+		end
+		if value == "^7^7New Loadout" then
+			self:OpenNewLoadoutPopup()
+			self.controls.buildLoadouts:SetSel(1)
+			return
+		end
+		self:SwitchLoadout(value)
+		self.controls.buildLoadouts:SelByValue(value)
+	end)
+	self.controls.buildLoadouts.tooltipFunc = function(tooltip)
+		tooltip:Clear()
+		tooltip:AddLine(16, "Switch between named Loadouts.")
+		tooltip:AddLine(14, "A Loadout bundles a Passive Tree, Item Set, Skill Set, and Config Set under a shared name.")
+		tooltip:AddLine(14, "Use 'New Loadout' to create one in all four tabs at once.")
+	end
 
 	-- List of display stats
 	-- This defines the stats in the side bar, and also which stats show in node/item comparisons
@@ -618,6 +648,8 @@ function buildMode:Init(dbFileName, buildName, buildXML, convertBuild)
 	self.calcsTab:BuildOutput()
 	self:RefreshStatList()
 
+	self:SyncLoadouts()
+
 	self.spec:SetWindowTitleWithBuildClass()
 
 	--[[
@@ -933,6 +965,187 @@ local function actExtra(act, extra)
 	return act > 2 and extra or 0
 end
 
+-- ============================================================================
+-- Loadouts
+-- A Loadout is a name shared by entries in:
+--   treeTab.specList (PassiveSpec.title)
+--   itemsTab.itemSets (ItemSet.title)
+--   skillsTab.skillSets (SkillSet.title)
+--   configTab.configSets (ConfigSet.title)
+-- Selecting a loadout calls SetActiveSpec / SetActiveItemSet / SetActiveSkillSet
+-- / SetActiveConfigSet on each tab against the matching id.
+-- ============================================================================
+
+local function trim(s)
+	return (s or ""):gsub("^%s+", ""):gsub("%s+$", "")
+end
+
+local function findIdByTitle(orderList, sets, title)
+	local needle = trim(title):lower()
+	for _, id in ipairs(orderList) do
+		local set = sets[id]
+		if set and trim(set.title or "Default"):lower() == needle then
+			return id
+		end
+	end
+	return nil
+end
+
+local function findSpecIdByTitle(specList, title)
+	local needle = trim(title):lower()
+	for id, spec in ipairs(specList) do
+		if trim(spec.title or "Default"):lower() == needle then
+			return id
+		end
+	end
+	return nil
+end
+
+function buildMode:GetActiveLoadoutName()
+	if not self.treeTab or not self.treeTab.specList[self.treeTab.activeSpec] then
+		return nil
+	end
+	return self.treeTab.specList[self.treeTab.activeSpec].title or "Default"
+end
+
+function buildMode:SyncLoadouts()
+	if not (self.controls and self.controls.buildLoadouts) then return end
+	if not (self.treeTab and self.itemsTab and self.skillsTab and self.configTab) then return end
+
+	-- Collect tree titles, then keep those that have matching titles in items, skills, and config.
+	local oneItem = #self.itemsTab.itemSetOrderList <= 1
+	local oneSkill = #self.skillsTab.skillSetOrderList <= 1
+	local oneConfig = #self.configTab.configSetOrderList <= 1
+
+	local function titleSet(orderList, sets)
+		local s = {}
+		for _, id in ipairs(orderList) do
+			if sets[id] then s[trim(sets[id].title or "Default"):lower()] = true end
+		end
+		return s
+	end
+	local itemTitles = titleSet(self.itemsTab.itemSetOrderList, self.itemsTab.itemSets)
+	local skillTitles = titleSet(self.skillsTab.skillSetOrderList, self.skillsTab.skillSets)
+	local configTitles = titleSet(self.configTab.configSetOrderList, self.configTab.configSets)
+
+	local list = { "^7^7Loadouts:" }
+	for _, spec in ipairs(self.treeTab.specList) do
+		local title = trim(spec.title or "Default")
+		local key = title:lower()
+		if (oneItem or itemTitles[key]) and (oneSkill or skillTitles[key]) and (oneConfig or configTitles[key]) then
+			t_insert(list, title)
+		end
+	end
+
+	t_insert(list, "^7^7-----")
+	t_insert(list, "^7^7New Loadout")
+	t_insert(list, "^7^7Manage Loadouts...")
+	t_insert(list, "^7^7Sync")
+
+	self.controls.buildLoadouts.list = list
+
+	local active = self:GetActiveLoadoutName()
+	if active then
+		for i, entry in ipairs(list) do
+			if entry == active then
+				self.controls.buildLoadouts:SetSel(i)
+				return
+			end
+		end
+	end
+	self.controls.buildLoadouts:SetSel(1)
+end
+
+-- Switch the active set on every tab that has a set with this title.
+-- Returns true if at least the passive tree switched (i.e. the loadout exists).
+function buildMode:SwitchLoadout(name)
+	if not name or name == "" then return false end
+	local treeId = findSpecIdByTitle(self.treeTab.specList, name)
+	if not treeId then return false end
+
+	if treeId ~= self.treeTab.activeSpec then
+		self.treeTab:SetActiveSpec(treeId)
+	end
+
+	local oneItem = #self.itemsTab.itemSetOrderList <= 1
+	if not oneItem then
+		local id = findIdByTitle(self.itemsTab.itemSetOrderList, self.itemsTab.itemSets, name)
+		if id and id ~= self.itemsTab.activeItemSetId then
+			self.itemsTab:SetActiveItemSet(id)
+		end
+	end
+
+	local oneSkill = #self.skillsTab.skillSetOrderList <= 1
+	if not oneSkill then
+		local id = findIdByTitle(self.skillsTab.skillSetOrderList, self.skillsTab.skillSets, name)
+		if id and id ~= self.skillsTab.activeSkillSetId then
+			self.skillsTab:SetActiveSkillSet(id)
+		end
+	end
+
+	local oneConfig = #self.configTab.configSetOrderList <= 1
+	if not oneConfig then
+		local id = findIdByTitle(self.configTab.configSetOrderList, self.configTab.configSets, name)
+		if id and id ~= self.configTab.activeConfigSetId then
+			self.configTab:SetActiveConfigSet(id)
+		end
+	end
+
+	self.modFlag = true
+	self.buildFlag = true
+	return true
+end
+
+function buildMode:OpenNewLoadoutPopup()
+	local controls = { }
+	controls.label = new("LabelControl", nil, 0, 20, 0, 16, "^7Enter name for this loadout:")
+	controls.edit = new("EditControl", nil, 0, 40, 350, 20, "New Loadout", nil, nil, 100, function(buf)
+		controls.save.enabled = buf:match("%S") ~= nil
+	end)
+	controls.save = new("ButtonControl", nil, -45, 70, 80, 20, "Save", function()
+		local name = trim(controls.edit.buf)
+		if name == "" then return end
+
+		local newSpec = new("PassiveSpec", self, latestTreeVersion)
+		newSpec.title = name
+		t_insert(self.treeTab.specList, newSpec)
+		self.treeTab:SetActiveSpec(#self.treeTab.specList)
+
+		local itemSet = self.itemsTab:NewItemSet(#self.itemsTab.itemSets + 1)
+		itemSet.title = name
+		t_insert(self.itemsTab.itemSetOrderList, itemSet.id)
+
+		local skillSet = self.skillsTab:NewSkillSet(#self.skillsTab.skillSets + 1)
+		skillSet.title = name
+		t_insert(self.skillsTab.skillSetOrderList, skillSet.id)
+
+		local newConfigId = #self.configTab.configSetOrderList + 1
+		while self.configTab.configSets[newConfigId] do
+			newConfigId = newConfigId + 1
+		end
+		local configSet = self.configTab:NewConfigSet(newConfigId, name)
+		t_insert(self.configTab.configSetOrderList, configSet.id)
+
+		self:SyncLoadouts()
+		self.modFlag = true
+		main:ClosePopup()
+	end)
+	controls.save.enabled = false
+	controls.cancel = new("ButtonControl", nil, 45, 70, 80, 20, "Cancel", function()
+		main:ClosePopup()
+	end)
+	main:OpenPopup(370, 100, "New Loadout", controls, "save", "edit", "cancel")
+end
+
+function buildMode:OpenLoadoutManagePopup()
+	local controls = { }
+	controls.list = new("LoadoutListControl", nil, 0, 50, 350, 200, self)
+	controls.done = new("ButtonControl", nil, 0, 259, 90, 20, "Done", function()
+		main:ClosePopup()
+	end)
+	main:OpenPopup(370, 290, "Manage Loadouts", controls, "done")
+end
+
 function buildMode:EstimatePlayerProgress()
 	local PointsUsed = self.spec:CountAllocNodes()
 	local extra = self.calcsTab.mainOutput and self.calcsTab.mainOutput.ExtraPoints or 0
@@ -1131,6 +1344,28 @@ function buildMode:OnFrame(inputEvents)
 		end
 	end
 	self:ProcessControlsInput(inputEvents, main.viewPort)
+
+	-- Defensive: self.spec should always be set after a successful Init, but a partial
+	-- load (e.g. legacy build with no Spec/Tree section) can leave it nil. Recover by
+	-- pulling the active spec out of treeTab if possible; otherwise skip the dropdown
+	-- sync this frame so we don't crash-loop and produce a black screen.
+	if not self.spec then
+		if self.treeTab and self.treeTab.specList and self.treeTab.specList[self.treeTab.activeSpec or 1] then
+			self.spec = self.treeTab.specList[self.treeTab.activeSpec or 1]
+			if not self._loggedSpecRecover then
+				ConPrintf("[LEB] OnFrame: self.spec was nil; recovered from treeTab.specList[%d]", self.treeTab.activeSpec or 1)
+				self._loggedSpecRecover = true
+			end
+		else
+			if not self._loggedSpecMissing then
+				ConPrintf("[LEB] OnFrame: self.spec is nil and treeTab has no usable specList; skipping classDrop sync")
+				self._loggedSpecMissing = true
+			end
+			main:DrawBackground(main.viewPort)
+			self:DrawControls(main.viewPort)
+			return
+		end
+	end
 
 	self.controls.classDrop:SelByValue(self.spec.curClassId, "classId")
 	self.controls.ascendDrop.list = self.controls.classDrop:GetSelValue("ascendancies")

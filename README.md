@@ -97,6 +97,16 @@ Tested with recent Wine versions; if you hit issues, please open an issue with y
 
 ---
 
+## 🐧 Linux (experimental, via Wine/Proton)
+
+LEB has not been tested on Linux. If you try it via Wine or Proton,
+please report your experience in Issues.
+
+- Wayland users: if the window opens but renders black, try
+  `GDK_BACKEND=x11 wine "./runtime/Last Epoch Building.exe"`
+
+---
+
 ## 🛠️ Roadmap
 
 - Improve calculation accuracy across all stats and skills
