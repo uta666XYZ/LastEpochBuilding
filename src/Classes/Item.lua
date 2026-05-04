@@ -1146,21 +1146,18 @@ function ItemClass:Craft()
 			end
 		end
 	end
-	-- Special-slot affixes (corrupted-only / sealed Eternity) display at the
-	-- BOTTOM of the modifiers list, after unique inherent / crafted mods, to
-	-- match LETools / in-game tooltip ordering. Detection sources:
-	--   1) ModItem `specialAffixType == 6` (corruption-exclusive affixes).
-	--   2) The affix entry's `kind` is "sealed" or "corrupted" (preserved
-	--      through import → XML round-trip via `Prefix: {kind:...}<id>`).
-	--      LETools encodes these as separate fields (`sealedAffix`,
-	--      `corruptedAffix`); they otherwise look identical to a normal LP
-	--      slam in JSON (e.g. Mighty 501_1 on Legends Entwined Reforged
-	--      Legendary corrupted = +2 Strength, specialAffixType=0 but
-	--      kind="corrupted"). Without preserving `kind` we can't distinguish
-	--      them from regular LP slams that should stay above unique mods.
-	local corruptedSealedMods = {}
+	-- Modifier ordering follows LE in-game tooltip / LETools layout:
+	--   gear   : implicits → prefix1, prefix2 → suffix1, suffix2 → sealed → primordial → corrupted
+	--   unique : implicits → prefix1, prefix2 → suffix1, suffix2 → unique mods → corrupted (sealed/primordial fall here too)
+	--   idol   : prefix1, prefix2 → suffix1, suffix2 → enchant1, enchant2 → corrupted
+	-- Affix `kind` ("normal"/"sealed"/"primordial"/"corrupted") is preserved
+	-- through import → XML round-trip via `Prefix: {kind:...}<id>`. ModItem
+	-- `specialAffixType == 6` is the legacy marker for corruption-exclusive
+	-- affixes; `specialAffixType == 4` marks Class-Specific Idol enchants.
+	local prefixMods, suffixMods, enchantMods = {}, {}, {}
+	local sealedMods, primordialMods, corruptedMods = {}, {}, {}
 	local slotKey = itemLib.slotKeyForType(self.type)
-	for _, list in ipairs({self.prefixes,self.suffixes}) do
+	for listIdx, list in ipairs({self.prefixes,self.suffixes}) do
 		for i = 1, self.affixLimit / 2 do
 			local affix = list[i]
 			if not affix then
@@ -1269,34 +1266,46 @@ function ItemClass:Craft()
 					if affix.valueScalar and affix.valueScalar ~= 1 then
 						modLine.displayValueScalar = displayScalar
 					end
-					if mod.specialAffixType == 6 or affix.kind == "sealed" or affix.kind == "corrupted" then
-						-- Sealed / corrupted-only affix: defer to end-of-list to
-						-- match LETools / in-game tooltip ordering (after unique +
-						-- crafted mods). On Reforged Legendaries this places the
-						-- Sealed Legendary Affix below the unique inherent mods
-						-- (e.g. +2 Strength below "Counts as part of every set"
-						-- on Legends Entwined).
+					if affix.kind then
 						modLine.kind = affix.kind
-						t_insert(corruptedSealedMods, modLine)
-					else
-						t_insert(self.explicitModLines, modLine)
 					end
+					-- Route into the right bucket by kind / specialAffixType.
+					-- specialAffixType==6 (corruption-exclusive) is treated as
+					-- corrupted regardless of kind, since LETools planner JSON
+					-- omits it from the corruptedAffix field on legacy data.
+					local bucket
+					if mod.specialAffixType == 6 or affix.kind == "corrupted" then
+						bucket = corruptedMods
+					elseif affix.kind == "sealed" then
+						bucket = sealedMods
+					elseif affix.kind == "primordial" then
+						bucket = primordialMods
+					elseif mod.specialAffixType == 4 then
+						bucket = enchantMods
+					elseif listIdx == 1 then
+						bucket = prefixMods
+					else
+						bucket = suffixMods
+					end
+					t_insert(bucket, modLine)
 					::nextCraftLine::
 				end
 			end
 		end
 	end
 
-	-- Restore the crafted and custom mods
+	-- Assemble explicitModLines in the canonical display order:
+	--   prefix → suffix → enchant → unique-inherent / user-crafted → sealed → primordial → corrupted
+	for _, m in ipairs(prefixMods) do t_insert(self.explicitModLines, m) end
+	for _, m in ipairs(suffixMods) do t_insert(self.explicitModLines, m) end
+	for _, m in ipairs(enchantMods) do t_insert(self.explicitModLines, m) end
+	-- Restore the saved unique-inherent / crafted / custom mods
 	for _, mod in ipairs(savedMods) do
 		t_insert(self.explicitModLines, mod)
 	end
-
-	-- Append sealed-corrupted affixes last so they render at the bottom of
-	-- the modifiers list (matching LETools / in-game tooltip layout).
-	for _, mod in ipairs(corruptedSealedMods) do
-		t_insert(self.explicitModLines, mod)
-	end
+	for _, m in ipairs(sealedMods) do t_insert(self.explicitModLines, m) end
+	for _, m in ipairs(primordialMods) do t_insert(self.explicitModLines, m) end
+	for _, m in ipairs(corruptedMods) do t_insert(self.explicitModLines, m) end
 
 	self:BuildAndParseRaw()
 end
