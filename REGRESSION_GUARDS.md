@@ -160,6 +160,43 @@ The split is intentional but easy to break in two ways:
 - Don't compare snapshot value to in-game; don't compare live value to
   LETools by ±1/affix tolerance — they're meant to use different rounding.
 
+### `set-bonus-breakdown-publish` / `set-bonus-breakdown-bridge`
+
+The Calcs-tab "Set Bonuses" section is gated on `output.SetBreakdown`,
+which is bridged from `env.itemModDB.setBreakdown` in CalcPerform. The
+producer side (`CalcSetup.applySetBonuses`) builds that structured table
+alongside the existing `multipliers["CompleteSetCount"]` counter:
+
+```lua
+env.itemModDB.setBreakdown = {
+    completeSetCount = N,
+    wildcardCount    = #wildcardItems,
+    sets = { {setId, name, pieceCount, setSize, complete, bonuses}... },
+}
+```
+
+Pure UI surface — no calc reads `output.SetBreakdown` or the breakdown
+table, so a regression here never moves a stat number. That makes
+TestBuilds snapshot diff blind to it: removing either the producer or
+the bridge silently hides the entire section without any test-suite
+signal. The paired guards exist precisely because this failure mode
+has no other tripwire.
+
+| Site | File | What it does |
+|---|---|---|
+| produce | `src/Modules/CalcSetup.lua` `applySetBonuses` (~line 215) | Builds and assigns `env.itemModDB.setBreakdown` after the `CompleteSetCount` multiplier |
+| expose  | `src/Modules/CalcSetup.lua` (~line 250) | `calcs.applySetBonuses = applySetBonuses` so the spec can drive the function without spinning up the full env pipeline |
+| bridge  | `src/Modules/CalcPerform.lua` (~line 234) | Copies `setBreakdown` to `output.SetBreakdown` / `output.CompleteSetCount` and assembles `breakdown.SetBreakdown` lines |
+| render  | `src/Modules/CalcSections.lua` (~line 755) | Section gated on `haveOutput = "SetBreakdown"`, frame color `colorCodes.SET` |
+
+**Spec:** `spec/System/TestSetBreakdown_spec.lua`
+- "publishes empty-friendly state when no set items equipped"
+- "publishes setBreakdown with sets[] and bonuses for one set piece"
+- "flags a set complete and emits the tier-2 bonus when fully equipped"
+- "counts wildcard items separately from real set pieces"
+
+**Establishing commit:** `f7b598ede` — _feat(calcs): show equipped set bonuses in Calcs tab_
+
 ## Adding a new guard
 
 1. Above the fix in source, add a comment block:

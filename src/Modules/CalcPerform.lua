@@ -231,12 +231,19 @@ local function doActorAttribsConditions(env, actor)
 	output.CorruptedNonIdolItemsEquipped = modDB:Sum("BASE", nil, "CorruptedNonIdolItemsEquipped")
 	output.CorruptedIdolItemsEquipped = modDB:Sum("BASE", nil, "CorruptedIdolItemsEquipped")
 
-	-- Publish set-bonus breakdown for the Calcs-tab "Set Bonuses" section.
-	-- env.itemModDB.setBreakdown is built in CalcSetup.applySetBonuses and
-	-- contains { completeSetCount, wildcardCount, sets = { {name, pieceCount,
-	-- setSize, complete, bonuses}... } }. Bridge to actor.output here so
-	-- CalcSections can gate on output.SetBreakdown and render
-	-- breakdown.SetBreakdown as a string array. Pure UI-side; no calc reads it.
+	-- @leb-regression-guard: set-bonus-breakdown-bridge
+	-- env.itemModDB.setBreakdown (built in CalcSetup.applySetBonuses) MUST
+	-- be bridged to actor.output so the CalcSections "Set Bonuses" row can
+	-- gate via haveOutput="SetBreakdown". Skipping this bridge silently
+	-- hides the entire section even when the data is fully populated. The
+	-- companion guard "set-bonus-breakdown-publish" locks the producer side.
+	-- Test: spec/System/TestSetBreakdown_spec.lua
+	--       "applySetBonuses publishes setBreakdown with sets[] and bonuses"
+	-- Establishing commit: f7b598ede
+	--
+	-- env.itemModDB.setBreakdown contains { completeSetCount, wildcardCount,
+	-- sets = { {name, pieceCount, setSize, complete, bonuses}... } }. Pure
+	-- UI-side; no calc reads output.SetBreakdown.
 	local setBreakdownData = env.itemModDB and env.itemModDB.setBreakdown
 	if setBreakdownData and setBreakdownData.sets and #setBreakdownData.sets > 0 then
 		output.SetBreakdown = #setBreakdownData.sets

@@ -56,6 +56,18 @@ end
 -- the crafting popup). Items with the WILDCARD_SET_MOD (e.g. Legends Entwined)
 -- count as a piece of every already-present set, and gate "per Complete Set"
 -- scaling based on how many sets are fully equipped (with the wildcard).
+-- @leb-regression-guard: set-bonus-breakdown-publish
+-- The Calcs-tab "Set Bonuses" section depends on this function publishing
+-- `env.itemModDB.setBreakdown = { completeSetCount, wildcardCount,
+-- sets = [...] }` alongside the existing `multipliers["CompleteSetCount"]`.
+-- A refactor that keeps the multiplier but drops the structured publish
+-- silently makes the section disappear (haveOutput="SetBreakdown" gate is
+-- nil) without any numeric calc regression — pure UI breakage that no
+-- snapshot diff would catch. Exposed as `calcs.applySetBonuses` so the
+-- spec can drive it without spinning up the full env pipeline.
+-- Test: spec/System/TestSetBreakdown_spec.lua
+--       "applySetBonuses publishes setBreakdown with sets[] and bonuses"
+-- Establishing commit: f7b598ede (this commit installs the guard)
 local function applySetBonuses(env, items, ver)
 	local setData = loadSetData(ver)
 	if not setData then return end
@@ -241,6 +253,9 @@ local function applySetBonuses(env, items, ver)
 		sets             = sets,
 	}
 end
+-- Exposed for spec/System/TestSetBreakdown_spec.lua. Keep `local` declaration
+-- above so callers in this module still resolve via local lookup.
+calcs.applySetBonuses = applySetBonuses
 
 -- Initialise modifier database with stats and conditions common to all actors
 function calcs.initModDB(env, modDB)
