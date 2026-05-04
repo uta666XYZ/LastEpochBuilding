@@ -95,7 +95,7 @@ sees 0 and never trips.
 from 35 to 49 after fix (LETools 44; remaining −5 is the unrelated
 `CompleteSetCount` discrepancy).
 
-**Establishing commit:** `<pending>`
+**Establishing commit:** `e9e4e64c5`
 
 ## Adding a new guard
 

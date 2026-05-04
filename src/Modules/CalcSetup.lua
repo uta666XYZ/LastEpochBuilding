@@ -834,7 +834,7 @@ function calcs.initEnv(build, mode, override, specEnv)
 					-- Test: spec/System/TestModParse_spec.lua
 					--       "Corrupted Idol Altar counts as non-Idol for
 					--        CorruptedNonIdolItemsEquipped"
-					-- Establishing commit: <pending>
+					-- Establishing commit: e9e4e64c5
 					local isIdolSlot = (slotName:sub(1, 5) == "Idol " and slotName ~= "Idol Altar")
 						or slotName:sub(1, 10) == "Omen Idol "
 					if isIdolSlot then

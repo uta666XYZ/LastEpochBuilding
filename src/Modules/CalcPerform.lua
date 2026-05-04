@@ -226,7 +226,7 @@ local function doActorAttribsConditions(env, actor)
 	-- Test: spec/System/TestModParse_spec.lua
 	--       "Corrupted Idol Altar counts as non-Idol for
 	--        CorruptedNonIdolItemsEquipped"
-	-- Establishing commit: <pending>
+	-- Establishing commit: e9e4e64c5
 	output.CorruptedItemsEquipped = modDB:Sum("BASE", nil, "CorruptedItemsEquipped")
 	output.CorruptedNonIdolItemsEquipped = modDB:Sum("BASE", nil, "CorruptedNonIdolItemsEquipped")
 	output.CorruptedIdolItemsEquipped = modDB:Sum("BASE", nil, "CorruptedIdolItemsEquipped")
