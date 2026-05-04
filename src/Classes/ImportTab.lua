@@ -1303,12 +1303,13 @@ function ImportTabClass:BuildItemsFromMaxroll(buildData, profileData, char)
                 local modId   = affix.id .. "_" .. affix.tier
                 local modData = data.itemMods.Item[modId]
                 if modData then
-                    -- Preserve `kind` ("normal" / "sealed" / "corrupted" /
-                    -- "primordial") so Item:Craft can defer sealed/corrupted
-                    -- affixes to the bottom of the modifiers list. LETools /
-                    -- in-game tooltip places these BELOW unique inherent
-                    -- mods (e.g. +2 Strength below "Counts as a part of every
-                    -- equipped item set" on Legends Entwined).
+                    -- @leb-regression-guard: affix-kind-roundtrip (import side)
+                    -- Forward `kind` ("normal" / "sealed" / "corrupted" /
+                    -- "primordial") from ConvertLEToolsItem.pushAffix so
+                    -- Item:Craft can route into the right bucket. Dropping
+                    -- `kind` here breaks Sinathia / Legends Entwined ordering
+                    -- (purple Sealed Legendary Affix moves above unique mods).
+                    -- Establishing commit: 92db3d1d6.
                     local entry = { range = affix.roll, modId = modId, kind = affix.kind }
                     if modData.type == "Prefix" then
                         table.insert(item.prefixes, entry)
@@ -1372,9 +1373,10 @@ function ImportTabClass:BuildItemsFromMaxroll(buildData, profileData, char)
                             end
                         end
                     end
-                    -- Preserve `kind` so Item:Craft can defer sealed / corrupted
-                    -- affixes to the bottom of the modifiers list (matches
-                    -- LETools / in-game tooltip ordering).
+                    -- @leb-regression-guard: affix-kind-roundtrip (import side)
+                    -- Forward `kind` from ConvertLEToolsItem.pushAffix; see the
+                    -- twin guard in the UNIQUE/LEGENDARY branch above for full
+                    -- rationale. Establishing commit: 92db3d1d6.
                     local entry = { range = affix.roll, modId = modId, kind = affix.kind }
                     if modData.type == "Prefix" then
                         table.insert(item.prefixes, entry)

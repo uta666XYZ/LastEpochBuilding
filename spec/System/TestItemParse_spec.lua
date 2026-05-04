@@ -43,6 +43,73 @@ describe("TestItemParse #itemParse", function()
         assert.are.equals(5, lifeInc)
     end)
 
+    -- @leb-regression-guard: affix-kind-roundtrip
+    -- Locks in the {kind:sealed}/{kind:corrupted}/{kind:primordial} tag emission
+    -- in Item:BuildRaw and parsing in Item:ParseRaw so future edits to those
+    -- two functions cannot silently drop the tag (commit 92db3d1d6).
+    -- If this breaks, sealed/corrupted/primordial affixes lose their bottom-of-list
+    -- placement in the modifiers display and Item:Craft cannot route them to the
+    -- correct bucket.
+    it("Affix kind tag round-trips through BuildRaw/ParseRaw", function()
+        local item = new("Item", "", "RARE")
+        item.crafted = true
+        item.prefixes = {
+            { modId = "FOO_0", range = 100, kind = "normal" },
+            { modId = "BAR_0", range = 100, kind = "sealed" },
+        }
+        item.suffixes = {
+            { modId = "BAZ_0", range = 100, kind = "corrupted" },
+            { modId = "QUX_0", range = 100, kind = "primordial" },
+        }
+        local raw = item:BuildRaw()
+        -- "normal" kind is intentionally NOT emitted (default); only the three
+        -- specials carry an explicit tag.
+        assert.is_nil(raw:find("Prefix: {kind:normal}", 1, true),
+            "kind=normal must not emit a tag (keeps legacy XMLs unchanged)")
+        assert.is_not_nil(raw:find("Prefix: {kind:sealed}{range:100}BAR_0", 1, true),
+            "sealed kind must round-trip into Prefix: line")
+        assert.is_not_nil(raw:find("Suffix: {kind:corrupted}{range:100}BAZ_0", 1, true),
+            "corrupted kind must round-trip into Suffix: line")
+        assert.is_not_nil(raw:find("Suffix: {kind:primordial}{range:100}QUX_0", 1, true),
+            "primordial kind must round-trip into Suffix: line")
+        -- Re-parse and verify the kind survives onto entry.kind.
+        item:ParseRaw(raw)
+        assert.are.equal("sealed",     item.prefixes[2].kind)
+        assert.are.equal("corrupted",  item.suffixes[1].kind)
+        assert.are.equal("primordial", item.suffixes[2].kind)
+    end)
+
+    -- @leb-regression-guard: affix-display-order
+    -- Locks in the canonical bucket order assembled by Item:Craft:
+    --   prefix -> suffix -> enchant -> savedMods (unique mods) -> sealed -> primordial -> corrupted
+    -- Uses Refuge Armor + sat==6 prefix 1002_0 to verify a corrupted-only affix
+    -- ends up AT THE END of explicitModLines (matching LE / LETools tooltip).
+    it("Craft places sat==6 corrupted affix at the bottom of explicitModLines", function()
+        newBuild()
+        build.itemsTab:CreateDisplayItemFromRaw([[Rarity: RARE
+        Test Order Body
+        Refuge Armor
+        Unique ID: TestOrder 1
+        Crafted: true
+        Prefix: {range:128}3_0
+        Prefix: {range:0}1002_0
+        Suffix: None
+        Suffix: None
+        LevelReq: 0
+        Implicits: 0]])
+
+        local item = build.itemsTab.displayItem
+        assert.is_not_nil(item, "displayItem should exist")
+        -- The last explicitModLine MUST come from the sat==6 affix (1002_0 =
+        -- "Missing Health gained as Ward per second" / "Ward Decay Threshold").
+        local last = item.explicitModLines[#item.explicitModLines]
+        assert.is_not_nil(last, "explicitModLines must not be empty")
+        local lastLine = (last.line or ""):lower()
+        assert.is_true(
+            lastLine:find("ward", 1, true) ~= nil,
+            "Last explicit mod must be from sat==6 corrupted affix; got: " .. tostring(last.line))
+    end)
+
     it("Auto-detects corrupted from specialAffixType==6 affix (no 'Corrupted' marker)", function()
         newBuild()
         -- Refuge Armor (Body Armor base) with sat==6 prefix 1002_0 (Missing Health

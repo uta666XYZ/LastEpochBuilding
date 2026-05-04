@@ -442,8 +442,11 @@ function ItemClass:ParseRaw(raw, rarity, highQuality)
 				elseif specName == "Implicit" then
 					self.implicit = true
 				elseif specName == "Prefix" or specName == "Suffix" then
-					-- Strip optional {kind:...} prefix (preserved for sealed /
-					-- corrupted slot detection in Craft).
+					-- @leb-regression-guard: affix-kind-roundtrip (read side)
+					-- Mirror of BuildRaw's affixPrefix. Strip optional {kind:...}
+					-- BEFORE {range:...} and forward to entry.kind so Craft can
+					-- route into sealed/primordial/corrupted buckets.
+					-- Test: TestItemParse_spec "Affix kind tag round-trips...".
 					local kind, rest = specVal:match("^{kind:([%a]+)}(.+)$")
 					if not kind then rest = specVal end
 					local range, affix = rest:match("{range:([%d.]+)}(.+)")
@@ -986,6 +989,11 @@ function ItemClass:BuildRaw()
 	end
 	if self.crafted then
 		t_insert(rawLines, "Crafted: true")
+		-- @leb-regression-guard: affix-kind-roundtrip (write side)
+		-- Emitting {kind:...} ahead of {range:...} is the contract relied on by
+		-- ParseRaw and TestItemParse_spec "Affix kind tag round-trips...". Do
+		-- NOT reorder or drop the kind tag without updating both. Establishing
+		-- commit: 92db3d1d6.
 		local function affixPrefix(affix)
 			local s = ""
 			if affix.kind and affix.kind ~= "normal" then
@@ -1146,6 +1154,13 @@ function ItemClass:Craft()
 			end
 		end
 	end
+	-- @leb-regression-guard: affix-display-order
+	--   STOP. Before changing the bucket assembly below, run:
+	--     busted --lua=luajit --tags=itemParse spec/System/TestItemParse_spec.lua
+	--   "Craft places sat==6 corrupted affix at the bottom" and the kind round-trip
+	--   spec will fail if any of these invariants regress. Establishing commit:
+	--   4a95318ac ("canonical affix display order via per-kind buckets in Craft").
+	--
 	-- Modifier ordering follows LE in-game tooltip / LETools layout:
 	--   gear   : implicits → prefix1, prefix2 → suffix1, suffix2 → sealed → primordial → corrupted
 	--   unique : implicits → prefix1, prefix2 → suffix1, suffix2 → unique mods → corrupted (sealed/primordial fall here too)

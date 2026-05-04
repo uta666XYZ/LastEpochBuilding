@@ -44,6 +44,23 @@ is worthless. LEB's testing has three layers:
 
 Every calculation change goes through all three before shipping.
 
+### Regression guards
+
+Some fixes are non-obvious enough that re-breaking them by accident is a real
+risk — `Item:Craft` affix ordering, sealed-vs-corrupted routing, etc. Those
+sites carry an `@leb-regression-guard:<id>` comment block pointing to the
+spec that locks the invariant in place.
+
+Before editing tagged code, run the linked spec. If it passes after your edit,
+the invariant still holds. If it fails, you regressed a previous fix — read
+the establishing commit before forcing it through.
+
+```sh
+grep -rn '@leb-regression-guard' src/ spec/
+```
+
+Full index with rationale per guard: `REGRESSION_GUARDS.md`.
+
 ## Tools I Use
 
 My setup is pragmatic — whatever compresses the time between "I see a problem"
