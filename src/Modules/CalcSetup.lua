@@ -794,9 +794,18 @@ function calcs.initEnv(build, mode, override, specEnv)
 		-- defense calcs reflect what the actual character would see.
 		do
 			local charLevel = build.characterLevel or 1
+			-- Capture set/wildcard items BEFORE level-req filter so set membership
+			-- counting reflects what's equipped regardless of stat eligibility
+			-- (matches in-game: items above char level lose stats but still
+			-- contribute set piece count and wildcard).
+			env._levelGatedSetItems = {}
 			for slotName, item in pairs(items) do
 				if item and item.requirements and item.requirements.level
 					and item.requirements.level > charLevel then
+					if item.rarity == "SET" or item.setInfo
+						or (item.modList and itemHasWildcardSetMod and itemHasWildcardSetMod(item)) then
+						env._levelGatedSetItems[slotName] = item
+					end
 					items[slotName] = nil
 				end
 			end
@@ -1232,7 +1241,18 @@ function calcs.initEnv(build, mode, override, specEnv)
 		end
 
 		-- Aggregate equipped SET pieces per setId and apply N-piece bonuses.
-		applySetBonuses(env, items, build.targetVersion)
+		-- Merge level-gated SET / wildcard items captured before the LevelReq
+		-- filter: in-game such pieces lose their stats but still count toward
+		-- set completion and wildcard "every set" expansion.
+		local setItems = items
+		if env._levelGatedSetItems and next(env._levelGatedSetItems) then
+			setItems = {}
+			for k, v in pairs(items) do setItems[k] = v end
+			for k, v in pairs(env._levelGatedSetItems) do
+				if not setItems[k] then setItems[k] = v end
+			end
+		end
+		applySetBonuses(env, setItems, build.targetVersion)
 	end
 
 	-- Merge env.itemModDB with env.ModDB
