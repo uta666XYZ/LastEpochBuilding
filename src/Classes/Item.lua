@@ -441,20 +441,23 @@ function ItemClass:ParseRaw(raw, rarity, highQuality)
 					self.crafted = true
 				elseif specName == "Implicit" then
 					self.implicit = true
-				elseif specName == "Prefix" then
-					local range, affix = specVal:match("{range:([%d.]+)}(.+)")
-					range = range or ((affix or specVal) ~= "None" and main.defaultItemAffixQuality)
-					t_insert(self.prefixes, {
-						modId = affix or specVal,
+				elseif specName == "Prefix" or specName == "Suffix" then
+					-- Strip optional {kind:...} prefix (preserved for sealed /
+					-- corrupted slot detection in Craft).
+					local kind, rest = specVal:match("^{kind:([%a]+)}(.+)$")
+					if not kind then rest = specVal end
+					local range, affix = rest:match("{range:([%d.]+)}(.+)")
+					range = range or ((affix or rest) ~= "None" and main.defaultItemAffixQuality)
+					local entry = {
+						modId = affix or rest,
 						range = tonumber(range),
-					})
-				elseif specName == "Suffix" then
-					local range, affix = specVal:match("{range:([%d.]+)}(.+)")
-					range = range or ((affix or specVal) ~= "None" and main.defaultItemAffixQuality)
-					t_insert(self.suffixes, {
-						modId = affix or specVal,
-						range = tonumber(range),
-					})
+						kind = kind,
+					}
+					if specName == "Prefix" then
+						t_insert(self.prefixes, entry)
+					else
+						t_insert(self.suffixes, entry)
+					end
 				elseif specName == "Implicits" then
 					implicitLines = specToNumber(specVal) or 0
 					gameModeStage = "EXPLICIT"
@@ -737,6 +740,13 @@ function ItemClass:ParseRaw(raw, rarity, highQuality)
 							name  = e.set.name,
 							bonus = e.set.bonus,
 						}
+						-- Set items override the base type's level requirement
+						-- (e.g. Ruby Fang Aegis = lvl 55 even though Ironglass
+						-- Shield base = 72). Use set entry's req.level when
+						-- available so LevelReq-filter / tooltip match in-game.
+						if e.req and e.req.level then
+							self.requirements.level = e.req.level
+						end
 						break
 					end
 				end
@@ -760,6 +770,36 @@ function ItemClass:ParseRaw(raw, rarity, highQuality)
 						name  = e.set.name,
 						bonus = e.set.bonus,
 					}
+					if e.req and e.req.level then
+						self.requirements.level = e.req.level
+					end
+					break
+				end
+			end
+		end
+	end
+	-- For items already saved as SET in raw text (XML stores Rarity: SET +
+	-- LevelReq from base type), override LevelReq with the set entry's req.level
+	-- when available. Set items use a different (typically lower) level
+	-- requirement than their base type — e.g. Ruby Fang Aegis = lvl 55 even
+	-- though its Ironglass Shield base = lvl 72. Without this override the
+	-- LevelReq filter in CalcSetup excludes equipped set items the character
+	-- can actually use, dropping their stats (Block Chance, etc.).
+	if self.rarity == "SET" and self.title then
+		local setData = loadItemSetData()
+		if setData then
+			for _, e in pairs(setData) do
+				if type(e) == "table" and e.set and e.req and e.req.level
+				   and (e.name == self.title
+				        or (self.title:sub(-9) == " Reforged" and e.name == self.title:sub(1, -10))) then
+					self.requirements.level = e.req.level
+					if not self.setInfo then
+						self.setInfo = {
+							setId = e.set.setId,
+							name  = e.set.name,
+							bonus = e.set.bonus,
+						}
+					end
 					break
 				end
 			end
@@ -946,11 +986,21 @@ function ItemClass:BuildRaw()
 	end
 	if self.crafted then
 		t_insert(rawLines, "Crafted: true")
+		local function affixPrefix(affix)
+			local s = ""
+			if affix.kind and affix.kind ~= "normal" then
+				s = s .. "{kind:" .. affix.kind .. "}"
+			end
+			if affix.range then
+				s = s .. "{range:" .. round(affix.range,3) .. "}"
+			end
+			return s
+		end
 		for i, affix in ipairs(self.prefixes or { }) do
-			t_insert(rawLines, "Prefix: " .. (affix.range and ("{range:" .. round(affix.range,3) .. "}") or "") .. affix.modId)
+			t_insert(rawLines, "Prefix: " .. affixPrefix(affix) .. affix.modId)
 		end
 		for i, affix in ipairs(self.suffixes or { }) do
-			t_insert(rawLines, "Suffix: " .. (affix.range and ("{range:" .. round(affix.range,3) .. "}") or "") .. affix.modId)
+			t_insert(rawLines, "Suffix: " .. affixPrefix(affix) .. affix.modId)
 		end
 	end
 	if self.itemLevel then
@@ -1082,6 +1132,33 @@ function ItemClass:Craft()
 	self.namePrefix = ""
 	self.nameSuffix = ""
 	self.requirements.level = self.base.req.level
+	-- Override base req.level with set entry's req.level for SET items
+	-- (e.g. Ruby Fang Aegis uses lvl 55 even though Ironglass Shield base = 72).
+	if self.rarity == "SET" and self.setInfo and self.setInfo.setId then
+		local setData = loadItemSetData()
+		if setData then
+			for _, e in pairs(setData) do
+				if type(e) == "table" and e.set and e.set.setId == self.setInfo.setId
+				   and e.req and e.req.level then
+					self.requirements.level = e.req.level
+					break
+				end
+			end
+		end
+	end
+	-- Special-slot affixes (corrupted-only / sealed Eternity) display at the
+	-- BOTTOM of the modifiers list, after unique inherent / crafted mods, to
+	-- match LETools / in-game tooltip ordering. Detection sources:
+	--   1) ModItem `specialAffixType == 6` (corruption-exclusive affixes).
+	--   2) The affix entry's `kind` is "sealed" or "corrupted" (preserved
+	--      through import → XML round-trip via `Prefix: {kind:...}<id>`).
+	--      LETools encodes these as separate fields (`sealedAffix`,
+	--      `corruptedAffix`); they otherwise look identical to a normal LP
+	--      slam in JSON (e.g. Mighty 501_1 on Legends Entwined Reforged
+	--      Legendary corrupted = +2 Strength, specialAffixType=0 but
+	--      kind="corrupted"). Without preserving `kind` we can't distinguish
+	--      them from regular LP slams that should stay above unique mods.
+	local corruptedSealedMods = {}
 	local slotKey = itemLib.slotKeyForType(self.type)
 	for _, list in ipairs({self.prefixes,self.suffixes}) do
 		for i = 1, self.affixLimit / 2 do
@@ -1192,7 +1269,18 @@ function ItemClass:Craft()
 					if affix.valueScalar and affix.valueScalar ~= 1 then
 						modLine.displayValueScalar = displayScalar
 					end
-					t_insert(self.explicitModLines, modLine)
+					if mod.specialAffixType == 6 or affix.kind == "sealed" or affix.kind == "corrupted" then
+						-- Sealed / corrupted-only affix: defer to end-of-list to
+						-- match LETools / in-game tooltip ordering (after unique +
+						-- crafted mods). On Reforged Legendaries this places the
+						-- Sealed Legendary Affix below the unique inherent mods
+						-- (e.g. +2 Strength below "Counts as part of every set"
+						-- on Legends Entwined).
+						modLine.kind = affix.kind
+						t_insert(corruptedSealedMods, modLine)
+					else
+						t_insert(self.explicitModLines, modLine)
+					end
 					::nextCraftLine::
 				end
 			end
@@ -1201,6 +1289,12 @@ function ItemClass:Craft()
 
 	-- Restore the crafted and custom mods
 	for _, mod in ipairs(savedMods) do
+		t_insert(self.explicitModLines, mod)
+	end
+
+	-- Append sealed-corrupted affixes last so they render at the bottom of
+	-- the modifiers list (matching LETools / in-game tooltip layout).
+	for _, mod in ipairs(corruptedSealedMods) do
 		t_insert(self.explicitModLines, mod)
 	end
 

@@ -102,8 +102,10 @@ for _, b in ipairs(blessingItems) do
 end
 print(string.format("[ImportProfileBuild] Blessings applied: %d", appliedBlessings))
 
-build.configTab.input.questApophisMajasa = true
-build.configTab.input.questTempleOfEterra = true
+-- Quest rewards are auto-detected from Maxroll `savedQuests` (questID 124 =
+-- Apophis and Majasa, 151 = Temple of Eterra) via ReadJsonSaveData ->
+-- ImportItemsAndSkills (charData.questFlags). Do NOT override here — the
+-- in-app DownloadLEToolsProfileBuild flow relies on the same auto-detection.
 build.configTab:BuildModList()
 build.configTab:UpdateControls()
 build.buildFlag = true

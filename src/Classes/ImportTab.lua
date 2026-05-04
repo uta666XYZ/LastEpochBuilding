@@ -934,16 +934,14 @@ function ImportTabClass:DownloadLEToolsPlannerBuild(url)
             self:ImportPassiveTreeAndJewels(char)
             self:ImportItemsAndSkills(char)
             self:ImportBlessingsFromLETools(data)
-            -- Quest reward 状態は LETools planner JSON に含まれず、ビルドごとに
-            -- 0/2, 1/2, 2/2 のいずれかで真値が変わる (LETools の左パネル数値と
-            -- ホバー tooltip / Quests ウィンドウの "Attribute Points: N/2" を
-            -- 確認すれば判別可能)。122 ビルド audit (2026-05-02) では両方 ON が
-            -- 大半の build (online-import 由来 fromSaveFile=2) と一致する一方、
-            -- 0/2 の build (例 oN2zRyWK) では +2 ズレる。ヒットの多い両 ON を
-            -- 維持しつつ、TODO: LETools 側を tooltip スクレイプして per-build
-            -- 自動設定する。
-            self.build.configTab.input.questApophisMajasa = true
-            self.build.configTab.input.questTempleOfEterra = true
+            -- Quest reward 状態は LETools planner JSON に含まれない。
+            -- 自動設定しない方針: デフォルト OFF とし、ユーザーが必要に応じて
+            -- Config tab で手動 ON にする (LETools 詳細情報習得方法.md 手順:
+            -- attribute tooltip に "Quest reward" が含まれていれば該当チェックを
+            -- 入れる)。以前は import 時に両方 ON していたが 0/2 build で +2 ズレ
+            -- が発生するため撤回。
+            self.build.configTab.input.questApophisMajasa = false
+            self.build.configTab.input.questTempleOfEterra = false
             self.build.configTab:BuildModList()
             self.build.configTab:UpdateControls()
             self.build.buildFlag = true
@@ -1305,10 +1303,17 @@ function ImportTabClass:BuildItemsFromMaxroll(buildData, profileData, char)
                 local modId   = affix.id .. "_" .. affix.tier
                 local modData = data.itemMods.Item[modId]
                 if modData then
+                    -- Preserve `kind` ("normal" / "sealed" / "corrupted" /
+                    -- "primordial") so Item:Craft can defer sealed/corrupted
+                    -- affixes to the bottom of the modifiers list. LETools /
+                    -- in-game tooltip places these BELOW unique inherent
+                    -- mods (e.g. +2 Strength below "Counts as a part of every
+                    -- equipped item set" on Legends Entwined).
+                    local entry = { range = affix.roll, modId = modId, kind = affix.kind }
                     if modData.type == "Prefix" then
-                        table.insert(item.prefixes, { range = affix.roll, modId = modId })
+                        table.insert(item.prefixes, entry)
                     else
-                        table.insert(item.suffixes, { range = affix.roll, modId = modId })
+                        table.insert(item.suffixes, entry)
                     end
                 end
             end
@@ -1367,10 +1372,14 @@ function ImportTabClass:BuildItemsFromMaxroll(buildData, profileData, char)
                             end
                         end
                     end
+                    -- Preserve `kind` so Item:Craft can defer sealed / corrupted
+                    -- affixes to the bottom of the modifiers list (matches
+                    -- LETools / in-game tooltip ordering).
+                    local entry = { range = affix.roll, modId = modId, kind = affix.kind }
                     if modData.type == "Prefix" then
-                        table.insert(item.prefixes, { range = affix.roll, modId = modId })
+                        table.insert(item.prefixes, entry)
                     else
-                        table.insert(item.suffixes, { range = affix.roll, modId = modId })
+                        table.insert(item.suffixes, entry)
                     end
                 end
             end
