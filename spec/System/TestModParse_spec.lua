@@ -584,6 +584,72 @@ describe("TestModParse", function()
             assert.are.equals(0, build.configTab.modList:Sum("INC", nil, "Life"))
         end)
 
+        -- @leb-regression-guard: idol-altar-not-idol-slot
+        -- Two-part guard:
+        --  (1) CalcSetup must NOT classify the "Idol Altar" equipment slot as
+        --      an idol slot (the corrupted altar feeds
+        --      CorruptedNonIdolItemsEquipped, not CorruptedIdolItemsEquipped).
+        --  (2) CalcPerform must publish CorruptedItemsEquipped /
+        --      CorruptedNonIdolItemsEquipped / CorruptedIdolItemsEquipped onto
+        --      `output` BEFORE the Attributes loop, so StatThreshold tags
+        --      (resolved via ModStore:GetStat reading actor.output[stat])
+        --      observe the correct count and the
+        --      "+N to All Attributes with at least N Corrupted non-Idol Items
+        --      equipped" affix (Shroud of Obscurity) trips.
+        -- Establishing build: Qqwv73q2 lv62 Warlock — LEB Vit 35 → 49 after fix
+        -- (still differs from LETools 44 by remaining CompleteSetCount bug B).
+        it("Corrupted Idol Altar counts as non-Idol for CorruptedNonIdolItemsEquipped", function()
+            -- Character must clear LevelReq filter (CalcSetup nulls items
+            -- whose requirements.level > characterLevel).
+            build.characterLevel = 99
+
+            -- Equip a corrupted Idol Altar; nothing else corrupted.
+            build.itemsTab:CreateDisplayItemFromRaw([[Rarity: RARE
+            Test Corrupted Altar
+            Archaic Altar
+            Unique ID: 123
+            LevelReq: 50
+            Implicits: 0
+            Corrupted]])
+            -- AddDisplayItem with noAutoEquip then manually equip into the
+            -- Idol Altar slot (auto-equip relies on slot:IsShown() which
+            -- returns false in headless tests).
+            build.itemsTab:AddDisplayItem(true)
+            local altarItemId
+            for id, it in pairs(build.itemsTab.items) do
+                if it.baseName == "Archaic Altar" then altarItemId = id; break end
+            end
+            assert.is_not_nil(altarItemId, "altar item should be in items list")
+            assert.is_not_nil(build.itemsTab.slots["Idol Altar"], "Idol Altar slot should exist")
+            build.itemsTab.slots["Idol Altar"]:SetSelItemId(altarItemId)
+            build.itemsTab:PopulateSlots()
+
+            -- Inject the Shroud-style threshold mod via customMods so we don't
+            -- depend on a specific unique's affix roll.
+            build.configTab.input.customMods =
+                "+14 to All Attributes with at least 1 Corrupted non-Idol Items equipped"
+            build.configTab:BuildModList()
+            build.buildFlag = true
+            runCallback("OnFrame")
+
+            -- (1) Counter classification: altar in non-idol bucket.
+            assert.are.equals(1, build.calcsTab.mainOutput.CorruptedNonIdolItemsEquipped)
+            assert.are.equals(0, build.calcsTab.mainOutput.CorruptedIdolItemsEquipped)
+            assert.are.equals(1, build.calcsTab.mainOutput.CorruptedItemsEquipped)
+
+            -- (2) StatThreshold trips — base Vit (no class) 0 + threshold +14 = 14.
+            assert.are.equals(14, build.calcsTab.mainOutput.Vit)
+
+            -- (3) Negative case: with no corrupted items the threshold must NOT
+            -- trip. Remove the altar and rebuild — Vit drops back to base.
+            build.itemsTab.slots["Idol Altar"]:SetSelItemId(0)
+            build.itemsTab:PopulateSlots()
+            build.buildFlag = true
+            runCallback("OnFrame")
+            assert.are.equals(0, build.calcsTab.mainOutput.CorruptedNonIdolItemsEquipped or 0)
+            assert.are.equals(0, build.calcsTab.mainOutput.Vit)
+        end)
+
         it("maxHealth uses floor (truncation), matching in-game (1258 * 1.25 = 1572)", function()
             -- ShutFackUp lv85 Spellblade scenario reduced to customMods:
             -- 110 (default base) + 1148 = 1258 base, * 1.25 INC = 1572.5

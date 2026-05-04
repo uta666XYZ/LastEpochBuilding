@@ -58,4 +58,10 @@ return {
         helper = "HeadlessWrapper.lua",
         ROOT = { "../spec/DumpSkillCaps.lua" },
     },
+    debugSetCount = {
+        directory = "src",
+        lpath = "../runtime/lua/?.lua;../runtime/lua/?/init.lua",
+        helper = "HeadlessWrapper.lua",
+        ROOT = { "../spec/DebugSetCount.lua" },
+    },
 }

@@ -215,6 +215,22 @@ local function doActorAttribsConditions(env, actor)
 		end
 	end
 
+	-- @leb-regression-guard: idol-altar-not-idol-slot
+	-- StatThreshold tags resolve via ModStore:GetStat which reads
+	-- actor.output[stat]. The corrupted-counter mods are emitted into modDB
+	-- by CalcSetup (CorruptedItemsEquipped / CorruptedNonIdolItemsEquipped /
+	-- CorruptedIdolItemsEquipped) but were never published to `output`, so
+	-- `+N to All Attributes with at least N Corrupted [non-Idol/Idol] items
+	-- equipped` (Shroud of Obscurity etc.) never tripped. Publish them BEFORE
+	-- the Attributes loop so calcLib.val sees the threshold satisfied.
+	-- Test: spec/System/TestModParse_spec.lua
+	--       "Corrupted Idol Altar counts as non-Idol for
+	--        CorruptedNonIdolItemsEquipped"
+	-- Establishing commit: <pending>
+	output.CorruptedItemsEquipped = modDB:Sum("BASE", nil, "CorruptedItemsEquipped")
+	output.CorruptedNonIdolItemsEquipped = modDB:Sum("BASE", nil, "CorruptedNonIdolItemsEquipped")
+	output.CorruptedIdolItemsEquipped = modDB:Sum("BASE", nil, "CorruptedIdolItemsEquipped")
+
 	output.TotalAttr = 0
 	for _, stat in pairs(Attributes) do
 		output[stat] = round(calcLib.val(modDB, stat))

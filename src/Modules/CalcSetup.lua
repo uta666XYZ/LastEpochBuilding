@@ -823,7 +823,19 @@ function calcs.initEnv(build, mode, override, specEnv)
 			for slotName, item in pairs(items) do
 				if item and item.corrupted then
 					total = total + 1
-					local isIdolSlot = slotName:sub(1, 5) == "Idol "
+					-- @leb-regression-guard: idol-altar-not-idol-slot
+					-- "Idol Altar" is the altar EQUIPMENT slot (a single base item
+					-- of type "Idol Altar"), NOT an idol slot. The naive
+					-- `sub(1, 5) == "Idol "` matches both "Idol 1..N" (real idols)
+					-- AND "Idol Altar", which mis-classifies a corrupted altar
+					-- as a corrupted idol and breaks
+					-- `+N to All Attributes with at least 7 Corrupted non-Idol
+					-- Items equipped` (Shroud of Obscurity etc.).
+					-- Test: spec/System/TestModParse_spec.lua
+					--       "Corrupted Idol Altar counts as non-Idol for
+					--        CorruptedNonIdolItemsEquipped"
+					-- Establishing commit: <pending>
+					local isIdolSlot = (slotName:sub(1, 5) == "Idol " and slotName ~= "Idol Altar")
 						or slotName:sub(1, 10) == "Omen Idol "
 					if isIdolSlot then
 						idol = idol + 1

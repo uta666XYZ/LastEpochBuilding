@@ -64,6 +64,39 @@ Routing rules: `specialAffixType==6 || kind=="corrupted"` → corrupted bucket;
 
 **Establishing commit:** `4a95318ac` — _fix(items): canonical affix display order via per-kind buckets in Craft()_
 
+### `idol-altar-not-idol-slot`
+
+The `"Idol Altar"` slot is the equipment slot for an Idol Altar base item
+(e.g. Archaic Altar) — it is NOT one of the `Idol N` / `Omen Idol N` cells
+in the idol grid. CalcSetup classifies corrupted equipment into three
+buckets feeding StatThreshold tags:
+
+- `CorruptedItemsEquipped` — all corrupted gear
+- `CorruptedNonIdolItemsEquipped` — corrupted gear NOT in idol cells
+- `CorruptedIdolItemsEquipped` — corrupted gear IN idol cells
+
+A naive `slotName:sub(1, 5) == "Idol "` matches both `"Idol 1..N"` and
+`"Idol Altar"`, putting a corrupted altar in the wrong bucket and breaking
+`+N to All Attributes with at least N Corrupted non-Idol Items equipped`
+(Shroud of Obscurity etc.). Independently, the three counters are emitted
+into `modDB` only — `ModStore:GetStat` resolves StatThresholds against
+`actor.output[stat]`, so without an explicit publish step the threshold
+sees 0 and never trips.
+
+| Site | File | What it does |
+|---|---|---|
+| classifier | `src/Modules/CalcSetup.lua` (~line 826) | Excludes `"Idol Altar"` from the idol-slot prefix match |
+| publish    | `src/Modules/CalcPerform.lua` (~line 218) | Copies the three counters from `modDB:Sum` to `output` BEFORE the Attributes loop so StatThreshold tags resolve correctly |
+
+**Spec:** `spec/System/TestModParse_spec.lua`
+- "Corrupted Idol Altar counts as non-Idol for CorruptedNonIdolItemsEquipped"
+
+**Establishing build:** Qqwv73q2 lv62 Warlock — Vit reported by LEB rose
+from 35 to 49 after fix (LETools 44; remaining −5 is the unrelated
+`CompleteSetCount` discrepancy).
+
+**Establishing commit:** `<pending>`
+
 ## Adding a new guard
 
 1. Above the fix in source, add a comment block:
