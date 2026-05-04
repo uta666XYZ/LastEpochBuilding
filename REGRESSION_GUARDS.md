@@ -92,13 +92,73 @@ sees 0 and never trips.
 - "Corrupted Idol Altar counts as non-Idol for CorruptedNonIdolItemsEquipped"
 
 **Establishing build:** Qqwv73q2 lv62 Warlock — Vit reported by LEB rose
-from 35 to 49 after fix (LETools 44; remaining +5 vs LETools is partly
-explained by a LETools-side display difference on Legends Entwined
-`+(2-5) per Complete Set` (LEB 5 × 6 = 30 matches in-game tooltip,
-LETools shows 27 → +3); the remaining +2 source is still under
-investigation.
+from 35 to **47** after fix (live import via `HeadlessWrapper`, which uses
+the in-game-matching floor rounding). LETools reports 44; the remaining
++3 is a LETools-side display difference on Legends Entwined
+`+(2-5) per Complete Set`: byte=203, range=2-5, in-game tooltip shows
+`+5 per Complete Set` and Ghidra-verified LE formula `2 + (203/256)*4 = 5.17 → 5`,
+so LEB's 5 × 6 sets = 30 matches LE; LETools shows 4.5 × 6 = 27.
+**No remaining residual** — earlier "+2 still under investigation" was a
+phantom caused by reading the snapshot file (`.lua` regen output), which
+uses LETools-compatible round-half-up rounding (`itemLib.useLEToolsRounding=true`,
+introduced 2026-05-04 in `src/HeadlessWrapper.lua`) and naturally diverges
+from live-import floor rounding by ±1 per affix using `applyRange`.
 
 **Establishing commit:** `e9e4e64c5`
+
+### `applyrange-rounding-mode-split`
+
+`itemLib.useLEToolsRounding` is a two-mode switch for the per-affix
+rounding of `% increased/reduced/more/less` lines:
+
+- **`false` (default, production / live LEB GUI)** — floor, matches in-game
+  tooltip per-affix display.
+- **`true` (spec / Generate14 / snapshot regen)** — round-half-up, matches
+  LETools / Maxroll display, which the `.lua` snapshot fixtures were
+  generated against.
+
+`Launch.lua` (the GUI entrypoint) does NOT flip this, so the default `false`
+is what end-users see. `HeadlessWrapper.lua` flips it to `true` after
+`OnInit` so every busted spec / snapshot regen runs in LETools-compat mode.
+
+This means the same build can produce two different stat values:
+
+| Path | Rounding | Example: Qqwv73q2 lv62 Warlock Vit |
+|---|---|---:|
+| Live LEB GUI (Launch.lua → no flip → default false) | floor | 47 (= in-game) |
+| `busted --run=generate14` (HeadlessWrapper → flip to true) | round-half-up | 49 (= LETools-style) |
+
+The split is intentional but easy to break in two ways:
+
+1. Changing the default in `ItemTools.lua` to `true` silently shifts every
+   live user's stat readout by ±1/affix and re-introduces the ShutFackUp
+   Mercurial Shrine Boots `(20-24)% reduced` regression (LEB 79% vs
+   in-game 78%, fixed 2026-05-04).
+2. Removing the `HeadlessWrapper` flip de-syncs all `.lua` snapshots from
+   LETools by the same ±1/affix and makes `node scripts/letools-diff.js`
+   noisy with rounding artefacts; also causes phantom triangulation
+   residuals like the Qqwv73q2 "+2 Vit unexplained" investigated and
+   resolved on 2026-05-05.
+
+| Site | File | What it does |
+|---|---|---|
+| default | `src/Modules/ItemTools.lua` (~line 21) | `itemLib.useLEToolsRounding = false` — production / GUI default |
+| flip    | `src/HeadlessWrapper.lua` (~line 173) | After `OnInit`, sets it to `true` so spec/ keeps LETools-compat |
+| consumer | `src/Modules/ItemTools.lua` (~line 232) | `applyRange` switches floor/round on this flag for `Integer` percent affixes |
+
+**Spec:** `spec/System/TestItemTools_spec.lua` —
+`describe("applyRange rounding mode (production vs LETools)")`
+- "HeadlessWrapper enables LETools mode for spec/ runs"
+- "production (floor) matches in-game tooltip on % reduced affix"
+- "LETools mode (round-half-up) matches LETools display on the same affix"
+
+**Establishing commits:** `73d6a712c` (rounding split), `d37e97271` (merge)
+
+**Triangulation rule** (when comparing LEB ↔ in-game ↔ LETools):
+- LEB live (GUI) value = floor = in-game match
+- LEB snapshot (`.lua`) value = round-half-up = LETools-compat
+- Don't compare snapshot value to in-game; don't compare live value to
+  LETools by ±1/affix tolerance — they're meant to use different rounding.
 
 ## Adding a new guard
 
