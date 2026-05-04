@@ -92,9 +92,11 @@ sees 0 and never trips.
 - "Corrupted Idol Altar counts as non-Idol for CorruptedNonIdolItemsEquipped"
 
 **Establishing build:** Qqwv73q2 lv62 Warlock — Vit reported by LEB rose
-from 35 to 47 after fix (LETools 44; remaining +3 is a LETools-side
-display difference on Legends Entwined `+(2-5) per Complete Set` —
-LEB 5 × 6 = 30 matches in-game tooltip, LETools shows 27. Not a LEB bug.).
+from 35 to 49 after fix (LETools 44; remaining +5 vs LETools is partly
+explained by a LETools-side display difference on Legends Entwined
+`+(2-5) per Complete Set` (LEB 5 × 6 = 30 matches in-game tooltip,
+LETools shows 27 → +3); the remaining +2 source is still under
+investigation.
 
 **Establishing commit:** `e9e4e64c5`
 
