@@ -818,6 +818,7 @@ return {
 	{ label = "Chance to Shock Attackers", haveOutput = "ChanceToShockAttackers", { format = "{0:output:ChanceToShockAttackers}%", { modName = "ChanceToShockAttackers" }, }, },
 	{ label = "Glancing Blow Chance", haveOutput = "GlancingBlowChance", { format = "{0:output:GlancingBlowChance}%", { modName = "GlancingBlowChance" }, }, },
 	{ label = "Critical Strike Avoidance", { format = "{0:output:CritAvoidance}%", { modName = "CritAvoidance" }, }, },
+	{ label = "Reduced Bonus Damage From Crits", { format = "{0:output:CritExtraDamageReduction}%", { modName = "ReduceCritExtraDamage" }, }, },
 	{ label = "Stun Avoidance", haveOutput = "StunAvoidance", { format = "{0:output:StunAvoidance}", { modName = "StunAvoidance" }, }, },
 	{ label = "Damage Reflected to Attackers", haveOutput = "DamageReflectedToAttackers", { format = "{0:output:DamageReflectedToAttackers}", { modName = "DamageReflectedToAttackers" }, }, },
 	{ label = "% of Damage Reflected", haveOutput = "DamageReflectedPercent", { format = "{0:output:DamageReflectedPercent}%", { modName = "DamageReflectedPercent" }, }, },

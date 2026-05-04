@@ -164,6 +164,15 @@ dofile("Launch.lua")
 runCallback("OnInit")
 runCallback("OnFrame") -- Need at least one frame for everything to initialise
 
+-- Tests and snapshot generation use LETools-compatible round-half-up for
+-- `% increased/reduced/more/less` affixes (production default is floor to
+-- match in-game tooltip). Flipping here after init keeps spec/ fixtures
+-- stable; ItemTools is only loaded by Launch.lua → main:Init, so this must
+-- run after OnInit, not before dofile() returns.
+if itemLib then
+	itemLib.useLEToolsRounding = true
+end
+
 if mainObject.promptMsg then
 	-- Something went wrong during startup
 	print(mainObject.promptMsg)

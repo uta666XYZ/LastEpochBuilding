@@ -13,6 +13,13 @@ local m_ceil = math.ceil
 
 itemLib = { }
 
+-- Per-affix rounding mode for `% increased/reduced/more/less` lines.
+-- false (default, production): floor — matches in-game tooltip per-affix display.
+-- true  (test/snapshot mode):   round-half-up — matches LETools/Maxroll display,
+-- which existing test fixtures and snapshots were generated against.
+-- HeadlessWrapper.lua flips this to true so spec/ runs stay LETools-compatible.
+itemLib.useLEToolsRounding = false
+
 -- Influence info (unused in Last Epoch, kept as empty table for compatibility)
 itemLib.influenceInfo = { }
 
@@ -222,7 +229,7 @@ function itemLib.applyRange(line, range, valueScalar, rounding)
                 -- grid (e.g. Apiarist's Suit Str +(11-13)×1.5 at roll 57/255 should
                 -- give round(11.447×1.5)=17, not interpolate within [16,19]→16).
                 local numVal = (minN + range * span) * valueScalar
-                if useRound then
+                if useRound and itemLib.useLEToolsRounding then
                     numVal = m_floor(numVal * precision + 0.5) / precision
                 else
                     numVal = m_floor(numVal * precision) / precision
