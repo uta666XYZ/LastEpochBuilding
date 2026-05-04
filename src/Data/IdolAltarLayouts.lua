@@ -147,9 +147,9 @@ local layouts = {
     },
 
     -- --------------------------------------------------------
-    -- Archair Altar  (対称レイアウト)
+    -- Archaic Altar  (対称レイアウト)
     -- --------------------------------------------------------
-    ["Archair Altar"] = {
+    ["Archaic Altar"] = {
         isMirrored   = false,
         omenIdolCapacity = 1,  -- in-game tooltip 確認済 (2026-05-03, "Archaic Altar of Heresy")
         grid = {

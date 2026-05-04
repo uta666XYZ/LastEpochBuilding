@@ -1113,7 +1113,7 @@ function ImportTabClass:ConvertLEToolsItem(letoolsItem, itemMap, affixMap)
                 .. " rawTier=" .. tostring(a.tier)
                 .. " tier0=" .. tostring(tier0)
                 .. " roll=" .. tostring(a.r))
-            t_insert(mx.affixes, { id = affixInt, tier = tier0, roll = a.r or 0 })
+            t_insert(mx.affixes, { id = affixInt, tier = tier0, roll = a.r or 0, kind = kind })
         end
     end
     if type(letoolsItem.affixes) == "table" then
@@ -1282,23 +1282,35 @@ function ImportTabClass:BuildItemsFromMaxroll(buildData, profileData, char)
                     table.insert(item.explicitMods, "{crafted}" .. modLine)
                 end
             end
-            -- Legendary: unique base + extra forged affixes
-            local legendAffixes = type(maxrollItem.affixes) == "table" and maxrollItem.affixes or {}
-            if #legendAffixes > 0 then
-                item.rarity = "LEGENDARY"
-                for _, affix in ipairs(legendAffixes) do
-                    local modId   = affix.id .. "_" .. affix.tier
-                    local modData = data.itemMods.Item[modId]
-                    if modData then
-                        if modData.type == "Prefix" then
-                            table.insert(item.prefixes, { range = affix.roll, modId = modId })
-                        else
-                            table.insert(item.suffixes, { range = affix.roll, modId = modId })
-                        end
+            -- Legendary: unique base + sealed Exalted T7 affix (Eternity Cache).
+            -- LE distinction (game data SpecialAffixType enum 0..6):
+            --   - sealed (LETools `sealedAffix` field)   → makes Unique into LEGENDARY
+            --   - corrupted (LETools `corruptedAffix`, sat=6) → stays UNIQUE
+            --   - primordial (LETools `primordialAffix`)     → stays UNIQUE
+            --   - normal (LETools `affixes[]`)               → not expected on uniques,
+            --                                                  but if present treat as
+            --                                                  forge-affix → LEGENDARY
+            -- ConvertLEToolsItem tags every entry with .kind ("normal"/"sealed"/
+            -- "primordial"/"corrupted") so we can route them correctly here.
+            local allAffixes = type(maxrollItem.affixes) == "table" and maxrollItem.affixes or {}
+            local hasSealedOrForge = false
+            for _, a in ipairs(allAffixes) do
+                if a.kind == "sealed" or a.kind == "normal" then
+                    hasSealedOrForge = true
+                    break
+                end
+            end
+            item.rarity = hasSealedOrForge and "LEGENDARY" or "UNIQUE"
+            for _, affix in ipairs(allAffixes) do
+                local modId   = affix.id .. "_" .. affix.tier
+                local modData = data.itemMods.Item[modId]
+                if modData then
+                    if modData.type == "Prefix" then
+                        table.insert(item.prefixes, { range = affix.roll, modId = modId })
+                    else
+                        table.insert(item.suffixes, { range = affix.roll, modId = modId })
                     end
                 end
-            else
-                item.rarity = "UNIQUE"
             end
         else
             -- Magic / Rare / Exalted / Normal
@@ -1582,7 +1594,7 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
     local altarSubTypeNames = {
         [0]="Twisted Altar", [1]="Jagged Altar", [2]="Skyward Altar",
         [3]="Spire Altar", [4]="Carcinised Altar", [5]="Visage Altar",
-        [6]="Lunar Altar", [7]="Ocular Altar", [8]="Archair Altar",
+        [6]="Lunar Altar", [7]="Ocular Altar", [8]="Archaic Altar",
         [9]="Impervious Altar", [10]="Prophesied Altar", [11]="Pyramidal Altar",
         [12]="Auric Altar",
     }
@@ -1983,56 +1995,12 @@ function ImportTabClass:ImportItemsAndSkills(charData)
     -- Auto-populate Omen Idol slots from idols placed in the layout grid.
     -- Per user spec (2026-05-03): ALL idols in the layout count as Omen Idols
     -- up to the altar's capacity (= layout.omenIdolCapacity + MaximumOmenIdols
-    -- sealed-affix bonus). This is independent of refracted-cell coverage —
-    -- the "Equipped Omen Idol" multiplier scales off layout occupancy, not
-    -- whether the idol's anchor lands on a type-2 cell.
-    -- Refracted Slot vs Omen Idol vs Capacity:
-    -- `Development/Idol Altar Concepts.md` (3 別概念整理)
-    local itemsTab = self.build.itemsTab
-    local altarName = itemsTab.activeAltarLayout
-    local altarLayouts = itemsTab.altarLayouts
-    if altarName and altarName ~= "Default" and altarLayouts and altarLayouts[altarName] then
-        local layout = altarLayouts[altarName]
-        local idolGridSlots = {
-            { "Idol 21", "Idol 1",  "Idol 2",  "Idol 3",  "Idol 22" },
-            { "Idol 4",  "Idol 5",  "Idol 6",  "Idol 7",  "Idol 8"  },
-            { "Idol 9",  "Idol 10", "Idol 23", "Idol 11", "Idol 12" },
-            { "Idol 13", "Idol 14", "Idol 15", "Idol 16", "Idol 17" },
-            { "Idol 24", "Idol 18", "Idol 19", "Idol 20", "Idol 25" },
-        }
-        -- Compute Omen Idol capacity = base + sealed bonus.
-        local capacity = (layout.omenIdolCapacity or 0) + (itemsTab:GetOmenIdolCapacityBonus() or 0)
-        -- Mirror ItemsTab.MAX_OMEN_IDOL_SLOTS (local-scoped there); keep in sync.
-        if capacity > 6 then capacity = 6 end
-        -- Collect every distinct idol placed in the layout, ordered by slot
-        -- number (so the first N fill Omen Idol 1..N deterministically).
-        local layoutIdols = {}
-        local seen = {}
-        for row = 1, 5 do
-            for col = 1, 5 do
-                local slotName = idolGridSlots[row][col]
-                local slot = itemsTab.slots[slotName]
-                if slot and slot.selItemId and slot.selItemId ~= 0 and not seen[slot.selItemId] then
-                    seen[slot.selItemId] = true
-                    local slotNum = tonumber(slotName:match("%d+"))
-                    table.insert(layoutIdols, { slotNum = slotNum, itemId = slot.selItemId })
-                end
-            end
-        end
-        table.sort(layoutIdols, function(a, b) return a.slotNum < b.slotNum end)
-        for i = 1, capacity do
-            local omenSlot = itemsTab.slots["Omen Idol " .. i]
-            if omenSlot then
-                local fi = layoutIdols[i]
-                omenSlot:SetSelItemId(fi and fi.itemId or 0)
-            end
-        end
-
-        -- Idol Altar "increased Effect of [Prefixes/Suffixes] for Idols in
-        -- Refracted Slots" is applied at calc time by CalcSetup.cloneWithAltarBoost.
-        -- Do NOT bake the boost into the imported idol here, or it would be
-        -- applied twice (once in XML-baked valueScalar, once in the clone).
-    end
+    -- sealed-affix bonus). Logic now lives in
+    -- ItemsTab:AutoPopulateOmenIdolSlots so SetActiveItemSet (load / switch
+    -- set) can reuse it. Idol Altar "increased Effect of [Prefixes/Suffixes]
+    -- for Idols in Refracted Slots" is applied at calc time by
+    -- CalcSetup.cloneWithAltarBoost — do NOT bake it here.
+    self.build.itemsTab:AutoPopulateOmenIdolSlots()
 
     -- Restore original data pointers
     data.itemBases = savedItemBases
