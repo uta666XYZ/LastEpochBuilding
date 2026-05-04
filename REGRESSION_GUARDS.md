@@ -197,6 +197,32 @@ has no other tripwire.
 
 **Establishing commit:** `f7b598ede` — _feat(calcs): show equipped set bonuses in Calcs tab_
 
+### `int-truncate-life-mana`
+
+LE stores `BaseHealth.maxHealth` and `maxMana` as `int` (dump.cs:155378
+and 178322). C# `float → int` assignment truncates toward zero, which
+equals `floor` for positive values. So a build computing `1258 × 1.25 =
+1572.5` shows **1572** in-game, not 1573.
+
+LEB previously matched upstream PoB (`round`), which diverged from
+in-game by +1 on every `.5`-exact total. Switching to `m_floor` is a
+deliberate LEB-vs-PoB divergence for in-game parity, **not a port-back
+candidate**.
+
+The tripwire is the Acolyte lv1 default mana: `50 + 0.50506 + 2 = 52.5`
+→ `floor = 52`, `round = 53`. Any revert to `round()` flips this
+assertion immediately.
+
+| Site | File | What it does |
+|---|---|---|
+| Life | `src/Modules/CalcPerform.lua` `doActorLifeMana` (~line 65) | `output.Life = m_max(m_floor(...), 1)` |
+| Mana | `src/Modules/CalcPerform.lua` `doActorLifeMana` (~line 84) | `output.Mana = m_floor(calcLib.val(modDB, "Mana"))` |
+
+**Spec:** `spec/System/TestModParse_spec.lua`
+- "effect doubled" — assertions `Mana == 52` (default Acolyte) and `Mana == 952` (with `+900 maximum mana`). Both flip to 53/953 under `round`.
+
+**Establishing commit:** `153d4e455` — _fix(calc): floor maxHealth/maxMana to match in-game truncation_
+
 ### `unique-data-integrity`
 
 Within-version invariants for hand-migrated unique data. When LE ships a

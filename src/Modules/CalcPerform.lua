@@ -59,9 +59,14 @@ local function doActorLifeMana(actor)
 	local base = modDB:Sum("BASE", nil, "Life")
 	local inc = modDB:Sum("INC", nil, "Life")
 	local more = modDB:More(nil, "Life")
-	-- LE stores maxHealth as int (BaseHealth.maxHealth, dump.cs:155378). float→int
-	-- assignment in C# is truncation toward zero (= floor for positive values), so
-	-- LE displays e.g. 1258 × 1.25 = 1572.5 as 1572, not 1573 (round-half-up).
+	-- @leb-regression-guard: int-truncate-life-mana
+	-- LE stores maxHealth/maxMana as int (BaseHealth.maxHealth, dump.cs:155378;
+	-- maxMana dump.cs:178322). C# float→int assignment is truncation toward zero
+	-- (= floor for positive values), so LE displays e.g. 1258 × 1.25 = 1572.5 as
+	-- 1572, not 1573 (round-half-up). Upstream PoB uses round(); LEB diverges on
+	-- purpose for in-game parity. Do NOT swap m_floor → round here without also
+	-- updating TestModParse "effect doubled" assertions (52 vs 53 mana, 952 vs 953).
+	-- See REGRESSION_GUARDS.md "int-truncate-life-mana".
 	output.Life = m_max(m_floor(base * (1 + inc/100) * more), 1)
 	if breakdown then
 		if inc ~= 0 or more ~= 1 then
@@ -76,7 +81,7 @@ local function doActorLifeMana(actor)
 			t_insert(breakdown.Life, s_format("= %g", output.Life))
 		end
 	end
-	-- LE stores maxMana as int (dump.cs:178322). Same truncation rule as Life.
+	-- @leb-regression-guard: int-truncate-life-mana (paired with output.Life above)
 	output.Mana = m_floor(calcLib.val(modDB, "Mana"))
 	local base = modDB:Sum("BASE", nil, "Mana")
 	local inc = modDB:Sum("INC", nil, "Mana")

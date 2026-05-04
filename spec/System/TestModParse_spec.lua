@@ -137,9 +137,11 @@ describe("TestModParse", function()
         build.skillsTab:SelSkill(1, "Fireball")
         runCallback("OnFrame")
 
+        -- @leb-regression-guard: int-truncate-life-mana
         -- Default Acolyte lv1: baseMana 50 + manaPerLevel 0.50506*1 + 2*Att(1) = 52.5
         -- → m_floor = 52 (LE in-game truncates int, see commit 153d4e455).
         -- Was 53 under upstream's round(); LEB switched to floor for in-game parity.
+        -- If this assertion flips back to 53, output.Mana truncation regressed.
         assert.are.equals(52, build.calcsTab.calcsOutput.Mana)
         assert.are.equals(40, build.calcsTab.mainEnv.player.mainSkill.skillModList:Sum("INC", nil, "FireDamage"))
 
