@@ -51,8 +51,20 @@ describe("TestItemParse #itemParse", function()
     -- placement in the modifiers display and Item:Craft cannot route them to the
     -- correct bucket.
     it("Affix kind tag round-trips through BuildRaw/ParseRaw", function()
+        -- newBuild() loads data.itemBases for the active targetVersion so
+        -- ParseRaw can resolve baseName -> base.type and populate self.affixes
+        -- before the round-trip lookup at Item.lua:696.
+        newBuild()
         local item = new("Item", "", "RARE")
         item.crafted = true
+        -- For RARE items, ParseRaw consumes the first line as `self.name` and
+        -- only enters base-detection on subsequent lines. BuildRaw emits a
+        -- two-line name+base header iff `item.title` is set, so we need both
+        -- title (any string) and a real baseName for the round-trip to find
+        -- data.itemBases[base] and populate self.affixes (Item.lua:577).
+        -- "Refuge Armor" is a real Body Armor base, also used by the next test.
+        item.title = "Test Body"
+        item.baseName = "Refuge Armor"
         item.prefixes = {
             { modId = "FOO_0", range = 100, kind = "normal" },
             { modId = "BAR_0", range = 100, kind = "sealed" },
