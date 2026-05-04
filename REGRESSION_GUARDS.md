@@ -258,6 +258,27 @@ base implicits moved out of each unique into `bases_1_4.json`.
 
 **One-shot audit:** `.tmp/audit_uniques_1_4_regression.py` — DUP_LINE + ROLLID_LEN + cross-version ROW_DROP + RANGE_COLLAPSE.
 
+**Migration recipe for the next LE patch (1.5+)**, replaying the 1.4
+playbook so the next person doesn't trip the same false positives:
+
+1. Run the within-version spec: `bash scripts/regen-shards.sh` then
+   `docker compose run --rm busted-tests busted --filter=TestUniqueDataIntegrity`.
+   Catches DUP_LINE.
+2. Run the Python audit (or copy `.tmp/audit_uniques_1_4_regression.py`
+   to `.tmp/audit_uniques_1_5_regression.py` and rebind `P14`/`P13`).
+   Triage real DUP_LINE / RANGE_COLLAPSE / ROLLID_LEN immediately.
+3. ROW_DROP needs base-implicit subtraction. The 1.4 migration moved
+   boots/quiver/sword implicits out of each unique into `bases_1_4.json`,
+   so naive cross-version diff flagged 9 false positives (Eterra's Path,
+   Suloron's Step, Transient Rest, Raindance, Snowdrift, Foot of the
+   Mountain, Stealth, Clotho's Needle, Army of Skin). Use
+   `.tmp/verify_base_implicit_migration.py` (or its 1_5 equivalent) to
+   subtract base implicits — anything still flagged after subtraction is
+   a real ROW_DROP. The verification script matches by
+   `(baseTypeID, subTypeID)` and compares range-stripped shapes.
+4. Use in-game tooltip screenshots from the user as the final ground
+   truth for any unique that still looks suspicious after step 3.
+
 ## Adding a new guard
 
 1. Above the fix in source, add a comment block:
