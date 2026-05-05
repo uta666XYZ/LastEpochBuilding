@@ -1487,13 +1487,25 @@ function buildMode:AddDisplayStatList(statList, actor)
 							if skillData.trigger and skillData.trigger ~= "" then
 								triggerStr = colorCodes.WARNING.." ("..skillData.trigger..")"..labelColor
 							end
-							local lhsString = labelColor..skillData.name..triggerStr..":"
+							local nameStr = labelColor..skillData.name
 							if skillData.count >= 2 then
-								lhsString = labelColor..tostring(skillData.count).."x "..skillData.name..triggerStr..":"
+								nameStr = labelColor..tostring(skillData.count).."x "..skillData.name
 							end
-							-- Auto-wrap: if the label is too wide for column 1 (right edge x=170), put it
-							-- on its own full-width line so the left side doesn't get clipped.
-							if DrawStringWidth(16, "VAR", lhsString) > 165 then
+							local lhsString = nameStr..triggerStr..":"
+							-- Auto-wrap: if the combined label is too wide for column 1 (right edge x=170),
+							-- put the skill name on its own line, then keep "(trigger):" + value on the
+							-- next line so the value still aligns with other rows.
+							if DrawStringWidth(16, "VAR", lhsString) > 165 and triggerStr ~= "" then
+								t_insert(statBoxList, {
+									height = 16,
+									nameStr,
+								})
+								t_insert(statBoxList, {
+									height = 16,
+									triggerStr..":",
+									self:FormatStat({fmt = "1.f"}, skillData.dps * skillData.count, overCapStatVal),
+								})
+							elseif DrawStringWidth(16, "VAR", lhsString) > 165 then
 								t_insert(statBoxList, {
 									height = 14,
 									x = 278, align = "RIGHT_X",
