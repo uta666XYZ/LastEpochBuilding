@@ -656,13 +656,22 @@ function calcs.initEnv(build, mode, override, specEnv)
 		modDB:NewMod("PoisonResist", "BASE", 1, "Vitality", {type = "PerStat", stat = "Vit"})
 		modDB:NewMod("NecroticResist", "BASE", 1, "Vitality", {type = "PerStat", stat = "Vit"})
 
-		-- Season 4 (1.4): converted attribute bonuses (same values as base attributes)
-		modDB:NewMod("Armour", "INC", 4, "Brutality", {type = "PerStat", stat = "Brutality"})
-		modDB:NewMod("Evasion", "BASE", 4, "Guile", {type = "PerStat", stat = "Guile"})
-		modDB:NewMod("Mana", "BASE", 2, "Apathy", {type = "PerStat", stat = "Apathy"})
-		modDB:NewMod("Life", "BASE", 6, "Rampancy", {type = "PerStat", stat = "Rampancy"})
-		modDB:NewMod("PoisonResist", "BASE", 1, "Rampancy", {type = "PerStat", stat = "Rampancy"})
-		modDB:NewMod("NecroticResist", "BASE", 1, "Rampancy", {type = "PerStat", stat = "Rampancy"})
+		-- Season 4 (1.4): converted attributes have their OWN unique passive bonuses,
+		-- they do NOT inherit the base-attribute bonuses (Brutality is not Strength).
+		-- @leb-regression-guard: id:s4-converted-attr-no-base-inherit
+		--   Verified against in-game LE 1.4: Brutality grants only "more melee damage
+		--   per mana cost" + "reduced damage leeched as health" — NO Armour INC.
+		--   Earlier LEB releases applied Strength's +4% Armour INC to Brutality (and
+		--   the equivalent base-attr bonuses to Guile/Apathy/Rampancy) on the false
+		--   premise that converted attributes inherit base-attribute bonuses. They
+		--   do not. Per-attribute correct effects are skill/passive specific and
+		--   handled by their own mod parsers + in-game tooltip text.
+		--   Re-introducing any of these lines (or a similar PerStat:<S4Attr> on
+		--   Armour/Evasion/Mana/Life/Resists) will inflate worst-diff builds like
+		--   Qdz2yXN3 (Necromancer, Brutality=33 → +132% Armour INC, 7x over LE).
+		--   Other S4 attributes (Guile/Apathy/Rampancy/Madness) need their actual
+		--   in-game effects implemented separately via tooltip-driven mod text.
+		-- do-not-remove
 
 		-- Initialise enemy modifier database
 		calcs.initModDB(env, enemyDB)

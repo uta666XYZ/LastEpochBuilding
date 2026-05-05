@@ -13727,7 +13727,8 @@ c["3.2 Seconds of Haste after you use a Traversal Skill"]={{[1]={[1]={skillName=
 c["3.5 Seconds of Frenzy after you use Evade"]={{[1]={[1]={skillName="Frenzy",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=3.5}}," Seconds of  after you use Evade "}
 c["3.8 Seconds of Frenzy after you use a Traversal Skill"]={{[1]={[1]={skillName="Frenzy",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=3.8}}," Seconds of  after you use a Traversal Skill "}
 c["3.8 Seconds of Haste after you use a Traversal Skill"]={{[1]={[1]={skillName="Haste",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=3.8}}," Seconds of  after you use a Traversal Skill "}
-c["30 Armour Per Vitality"]={{[1]={[1]={stat="Vit",type="PerStat"},flags=0,keywordFlags=0,name="Armour",type="BASE",value=30}},nil}
+c["25 Minion Armour Per Vitality"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={stat="Vit",type="PerStat"},flags=0,keywordFlags=0,name="Armour",type="BASE",value=25}}}},nil}
+c["30 Minion Armour Per Vitality"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={stat="Vit",type="PerStat"},flags=0,keywordFlags=0,name="Armour",type="BASE",value=30}}}},nil}
 c["30 Damage Taken by Attackers when Hit"]={{[1]={flags=8388608,keywordFlags=0,name="DamageTaken",type="BASE",value=30}},"  by Attackers when  "}
 c["30 Freeze Rate"]={{[1]={flags=0,keywordFlags=0,name="FreezeRate",type="BASE",value=30}},nil}
 c["30 Healing To Allies"]={{[1]={[1]={skillName="Healing",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=30}},"  To Allies "}

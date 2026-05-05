@@ -724,6 +724,86 @@ NaN/Inf ward for builds with very large negative retention.
 
 **Establishing commit:** `<unset; bump after first commit on this branch>`
 
+### `martyrdom-minion-armour`
+
+The Necromancer Dread Shade specialization node `ds4d3-3` ("Martyrdom")
+grants Armour to **minions** per Vitality, not to the player. Verified
+against in-game tooltip + LETools planner (the buff is a default-on toggle
+that buffs the minion target). Trigger: parsing the raw stat string
+`"30 Armour Per Vitality"` routed the bonus to the player's modDB, inflating
+player Armour by ~3000 for a 99-Vit Necromancer (the Qdz2yXN3 worst-diff
+build had `Tree:ds4d3-3 BASE=2970 PerStat:Vit` flowing into player armour).
+
+A regression here drops the `Minion ` prefix from the stat string in
+`tree_3.json`, OR rewrites the `ModCache.lua` entry to a non-`MinionModifier`
+shape, OR adds a non-minion `c["NN Armour Per Vitality"]` line. Any of those
+restores the player-armour bug.
+
+| Site | File | What it does |
+|---|---|---|
+| 1.4 tree text | `src/TreeData/1_4/tree_3.json` (node `ds4d3-3`, ~line 10091) | Stat string is `"30 Minion Armour Per Vitality"` |
+| 1.3 tree text | `src/TreeData/1_3/tree_3.json` (node `ds4d3-3`, ~line 10055) | Same `"30 Minion Armour Per Vitality"` |
+| 1.2 tree text | `src/TreeData/1_2/tree_3.json` (node `ds4d3-3`, ~line 9180) | `"25 Minion Armour Per Vitality"` (older value) |
+| ModCache | `src/Data/ModCache.lua` (~line 13730) | `c["25/30 Minion Armour Per Vitality"]` wrap mod in `MinionModifier` LIST |
+
+**Spec:** `spec/System/TestMartyrdomMinion_spec.lua`
+- "Martyrdom (ds4d3-3) grants Minion Armour, not player Armour"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `s4-converted-attr-no-base-inherit`
+
+Season 4 introduced four converted attributes (Brutality, Guile, Apathy,
+Rampancy) that replace the four base attributes for affected classes.
+Earlier LEB releases applied the base-attribute global bonuses (e.g.
+Strength's +4% Armour INC PerStat) to the converted attributes on the
+false premise that converted attributes inherit base-attribute bonuses.
+They do not — verified against in-game LE 1.4 tooltips: Brutality grants
+"more melee damage per mana cost" + "reduced damage leeched as health"
+only; no Armour INC. Each converted attribute has its own unique passive
+effects driven by tooltip text, not by inheritance.
+
+A regression here re-introduces any
+`modDB:NewMod(<DefensiveStat>, ..., {type = "PerStat", stat = "<S4Attr>"})`
+line in `calcs.initEnv`. For Qdz2yXN3 (Necromancer, Brutality=33) the
+re-introduced +4% Armour INC PerStat:Brutality inflated player Armour
+Increased by +132%, ~7x over the in-game value.
+
+| Site | File | What it does |
+|---|---|---|
+| converted-attribute init | `src/Modules/CalcSetup.lua` (~line 659) | Holds the regression-guard comment block; ANY `PerStat:Brutality/Guile/Apathy/Rampancy` mod added here without in-game tooltip evidence is the regression |
+
+**Spec:** `spec/System/TestS4ConvertedAttr_spec.lua`
+- "Brutality does NOT grant Armour Increased"
+- "Guile does NOT grant base Evasion"
+- "Apathy does NOT grant base Mana"
+- "Rampancy does NOT grant base Life"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `exulis-all-attributes-range`
+
+The unique amulet `Exulis` (id 469) rolls `+(10-18) to All Attributes`
+in-game (verified against LE 1.4 inspect panel + LETools). Earlier LEB
+data had the upper bound as `20`, which inflated the displayed value for
+mid-roll items: roll=245/255 yields `10 + 8 * 245/255 = 17.69 → 18`,
+but the (10-20) range produced 20. Trigger: a quest reward grants a
+SEPARATE `+2 to All Attributes` that some sources conflated with the
+amulet's own roll range, leading to (10-20) instead of (10-18).
+
+A regression here widens the upper bound back to 20 (or any non-18 value)
+in either uniques file.
+
+| Site | File | What it does |
+|---|---|---|
+| 1.4 unique data | `src/Data/Uniques/uniques_1_4.json` (Exulis entry, ~line 9400) | `+(10-18) to All Attributes` |
+| legacy unique data | `src/Data/Uniques/uniques.json` (Exulis id 469, ~line 10639) | `+(10-18) to All Attributes` |
+
+**Spec:** `spec/System/TestExulisRange_spec.lua`
+- "Exulis +All Attributes range is (10-18)"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
 ## Adding a new guard
 
 1. Above the fix in source, add a comment block:
