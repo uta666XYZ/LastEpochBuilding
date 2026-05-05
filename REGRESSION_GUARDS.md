@@ -557,13 +557,13 @@ Reinforcement contribution).
 
 ### `elemental-nova-spec-tree-gated-damage-type`
 
-**Status: NOT YET FIXED — guard is `pending` on the spec side.**
+**Status: FIXED.**
 
 Elemental Nova's Fire / Cold / Lightning damage are **tree-gated** in LE: a
 type is granted ONLY when the matching "Enables X Nova" specialization node
 is allocated (`en6-12` Fire, `en6-2` Ice/Cold, `en6-8` Lightning). LEB
-currently treats all three as unconditional base damage in `skills.json`,
-which leaks Fire damage onto builds that have not allocated `en6-12`.
+previously treated all three as unconditional base damage in `skills.json`,
+which leaked Fire damage onto builds that had not allocated `en6-12`.
 
 Game-file evidence (`<LE_datamining>/extracted/`):
 
@@ -581,27 +581,29 @@ Lightning. The Fire leak comes from
 `src/Data/skills.json` `ElementalNova.stats.spell_base_fire_damage = 8`
 unconditionally.
 
-**Likely fix shape:**
-- Move `spell_base_fire_damage` / `spell_base_cold_damage` /
-  `spell_base_lightning_damage` out of `skills.json` `ElementalNova.stats`
-  and onto the `en6-2` / `en6-8` / `en6-12` node `stats` arrays in
-  `tree_1.json` so each damage type is conditional on the matching
-  "Enables X Nova" allocation.
-- Honor `skillTreeConversionDamageTags` in the SkillStatMap pipeline so
-  the conversion-tagged types do not flow to the active skill unless the
-  matching tree node is taken.
+**Fix shape (applied):**
+- Removed `spell_base_fire_damage` / `spell_base_cold_damage` /
+  `spell_base_lightning_damage` from `src/Data/skills.json`
+  `ElementalNova.stats`.
+- Added `"+8 Spell {Cold,Lightning,Fire} Damage"` stats to the
+  `en6-2` / `en6-8` / `en6-12` nodes in `src/TreeData/1_4/tree_1.json`,
+  so each damage type only applies when its enabling node is allocated.
+- Cleared the static `TREE_ID_DAMAGE_TYPES["en6"]` entry in
+  `src/Classes/SkillsTab.lua` so spec-slot icons resolve via
+  `GetDynamicDamageTypesByTreeId` (addSet picks up the per-node
+  `"+N Spell <Type> Damage"` stats).
 
 | Site | File | What it does |
 |---|---|---|
-| data (current bug) | `src/Data/skills.json` `ElementalNova.stats` | Lists `spell_base_fire/cold/lightning_damage = 8` unconditionally; the three should be tree-gated |
-| stat map cross-ref | `src/Modules/../Data/SkillStatMap.lua` (~line 56) | `@leb-regression-guard:` marker; `spell_base_X_damage` keys propagate damage type to active skill, so leaving them in `skills.json.ElementalNova.stats` is the leak source |
+| skill data | `src/Data/skills.json` `ElementalNova.stats` | No longer lists `spell_base_fire/cold/lightning_damage`; tree-gated instead |
+| tree data | `src/TreeData/1_4/tree_1.json` `en6-2/8/12` | Each gate node's `stats` carries the damage grant |
+| UI resolver | `src/Classes/SkillsTab.lua` `TREE_ID_DAMAGE_TYPES["en6"]` | Cleared so dynamic resolver drives the spec-slot icons |
+| stat map cross-ref | `src/Data/SkillStatMap.lua` (~line 56) | `@leb-regression-guard:` marker; `spell_base_X_damage` keys are still mapped — the gate is achieved by ensuring those keys only appear under allocated tree nodes |
 
 **Spec:** `spec/System/TestElementalNovaDamageType_spec.lua`
-- (`pending`) "Bakbr2Ne (no Fire Nova node allocated) does not include Fire damage type on Elemental Nova"
+- "Bakbr2Ne (no Fire Nova node allocated) does not include Fire damage type on Elemental Nova"
 
-When the fix lands, flip `pending` → `it` and the assertion should pass.
-
-**Establishing commit:** `<unset; bump after first commit on this branch>`
+**Establishing commit:** `0898aea9e`
 
 ### `tooltip-mod-line-wrap`
 
