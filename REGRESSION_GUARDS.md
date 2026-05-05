@@ -236,6 +236,15 @@ contributes — implicits, unique mods, and crafted slammed mods — and
 typically shows up as a missing slot row in the breakdown panel plus
 a multi-stat resistance / armor / movement-speed deficit.
 
+**Pattern B refinement (2026-05-05):** Extracted `overrideLevelRequirement`
+flag from game data and gate the override on it. Pre-fix, the check
+`if u.req and u.req.level` was truthy on Lua's `0`, so any unique whose
+extracted entry had `req.level=0` (the placeholder for non-overriding
+uniques) would collapse `requirements.level` to 0 — wiping the legitimate
+base req. Game data shows 163/471 uniques have `overrideLevelRequirement
+= false` (Snowdrift on Outcast Boots base 23, Horn of the Bone Wisp on
+Ivory Wand base 31, etc.), so they must keep the base req.
+
 The fix mirrors the existing SET item override (Item.lua:798) at two
 sites: post-ParseRaw and inside `Item:Craft()`. Both sites must override
 because Craft() resets `self.requirements.level = self.base.req.level`
@@ -244,18 +253,23 @@ re-runs Craft via `_craftingInternal`).
 
 | Site | File | What it does |
 |---|---|---|
-| post-ParseRaw | `src/Classes/Item.lua` (~line 812 after the SET override) | Look up `data.uniques` by `u.name == self.title`; if `u.req.level` exists, override `self.requirements.level` |
-| Craft()       | `src/Classes/Item.lua` (~line 1158 after the SET override in Craft) | Same override, re-applied after Craft resets to base req.level |
+| post-ParseRaw | `src/Classes/Item.lua` (~line 824 after the SET override) | Look up `data.uniques` by `u.name == self.title`; if `u.overrideLevelRequirement` AND `u.req.level` exists, override `self.requirements.level` |
+| Craft()       | `src/Classes/Item.lua` (~line 1192 after the SET override in Craft) | Same override, re-applied after Craft resets to base req.level |
 
-**Spec:** `spec/System/TestItemParse_spec.lua`
-- "Unique req.level overrides base req.level (UNIQUE/LEGENDARY)"
+Sibling guard for SET items: `Item.lua:751, 778, 797, 1180` use
+`e.req.level > 0` so SET entries with `req.level=0` (e.g. native
+"The Last Bear's Scorn") fall back to base req.
 
-The spec uses Vaion's Chariot on Solarum Greaves (the Qqwv73q2 lv62
-Warlock case) — base 67, unique 50 — and asserts `requirements.level
-== 50` both immediately after `CreateDisplayItemFromRaw` and after a
-follow-up `item:Craft()` call.
+**Specs:** `spec/System/TestItemParse_spec.lua`
+- "Unique req.level overrides base req.level (UNIQUE/LEGENDARY)" — Vaion's Chariot (override=true, lv 50) on Solarum Greaves (base 67) → 50
+- "Unique with overrideLevelRequirement=false keeps base req.level" — Snowdrift (override=false, placeholder 0) on Outcast Boots (base 23) → 23
 
-**Establishing commit:** `5a88e7161` — _fix(items): override base req.level with unique req.level for UNIQUE/LEGENDARY_
+Both specs assert immediately after `CreateDisplayItemFromRaw` and after
+a follow-up `item:Craft()` call.
+
+**Establishing commits:**
+- `5a88e7161` — _fix(items): override base req.level with unique req.level for UNIQUE/LEGENDARY_
+- _Pattern B fix_ — gate override on `overrideLevelRequirement` flag; SET sibling fix `> 0`
 
 ### `unique-data-integrity`
 

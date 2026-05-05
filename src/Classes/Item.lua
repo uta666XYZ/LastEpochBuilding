@@ -746,8 +746,9 @@ function ItemClass:ParseRaw(raw, rarity, highQuality)
 						-- Set items override the base type's level requirement
 						-- (e.g. Ruby Fang Aegis = lvl 55 even though Ironglass
 						-- Shield base = 72). Use set entry's req.level when
-						-- available so LevelReq-filter / tooltip match in-game.
-						if e.req and e.req.level then
+						-- non-zero; req.level=0 (native sets like "The Last
+						-- Bear's Scorn") means use the base type's req.level.
+						if e.req and e.req.level and e.req.level > 0 then
 							self.requirements.level = e.req.level
 						end
 						break
@@ -773,7 +774,7 @@ function ItemClass:ParseRaw(raw, rarity, highQuality)
 						name  = e.set.name,
 						bonus = e.set.bonus,
 					}
-					if e.req and e.req.level then
+					if e.req and e.req.level and e.req.level > 0 then
 						self.requirements.level = e.req.level
 					end
 					break
@@ -792,7 +793,7 @@ function ItemClass:ParseRaw(raw, rarity, highQuality)
 		local setData = loadItemSetData()
 		if setData then
 			for _, e in pairs(setData) do
-				if type(e) == "table" and e.set and e.req and e.req.level
+				if type(e) == "table" and e.set and e.req and e.req.level and e.req.level > 0
 				   and (e.name == self.title
 				        or (self.title:sub(-9) == " Reforged" and e.name == self.title:sub(1, -10))) then
 					self.requirements.level = e.req.level
@@ -809,21 +810,27 @@ function ItemClass:ParseRaw(raw, rarity, highQuality)
 		end
 	end
 	-- @leb-regression-guard: unique-req-level-override
-	-- Override base req.level with the unique entry's req.level for
-	-- UNIQUE / LEGENDARY items. Uniques can specify a lower required level
-	-- than their base type — e.g. Vaion's Chariot (lvl 50) on Solarum
-	-- Greaves base (lvl 67). Without this override the LevelReq filter in
-	-- CalcSetup (CalcSetup.lua:858-865) wrongly excludes equipped uniques
-	-- whose base type req exceeds character level, dropping the entire
-	-- item's stats from defense / DPS calcs.
+	-- Override base req.level with the unique entry's req.level ONLY when
+	-- the game's `overrideLevelRequirement` flag is true. Uniques can specify
+	-- a lower required level than their base type — e.g. Vaion's Chariot
+	-- (lvl 50, override=True) on Solarum Greaves base (lvl 67). When the
+	-- flag is false (e.g. Snowdrift on Outcast Boots base lvl 23, Horn of
+	-- the Bone Wisp on Ivory Wand base lvl 31), the unique reuses the base
+	-- req — matching in-game tooltip "Requires: Level 23 / 31".
+	-- Without this guard the LevelReq filter in CalcSetup
+	-- (CalcSetup.lua:858-865) wrongly excludes equipped uniques whose base
+	-- type req exceeds character level, dropping the entire item's stats
+	-- from defense / DPS calcs.
 	-- Mirrors the SET item override above; the matching override in
 	-- Item:Craft() at the equivalent site keeps the value across recrafts.
 	-- Test: spec/System/TestItemParse_spec.lua
 	--   "Unique req.level overrides base req.level (UNIQUE/LEGENDARY)"
-	-- Establishing commit: 5a88e7161
+	--   "Unique with overrideLevelRequirement=false uses base req.level"
+	-- Establishing commits: 5a88e7161 (initial), Pattern B (override flag)
 	if (self.rarity == "UNIQUE" or self.rarity == "LEGENDARY") and self.title and data.uniques then
 		for _, u in pairs(data.uniques) do
-			if type(u) == "table" and u.name == self.title and u.req and u.req.level then
+			if type(u) == "table" and u.name == self.title
+			   and u.overrideLevelRequirement and u.req and u.req.level then
 				self.requirements.level = u.req.level
 				break
 			end
@@ -1168,7 +1175,7 @@ function ItemClass:Craft()
 		if setData then
 			for _, e in pairs(setData) do
 				if type(e) == "table" and e.set and e.set.setId == self.setInfo.setId
-				   and e.req and e.req.level then
+				   and e.req and e.req.level and e.req.level > 0 then
 					self.requirements.level = e.req.level
 					break
 				end
@@ -1178,12 +1185,14 @@ function ItemClass:Craft()
 	-- @leb-regression-guard: unique-req-level-override
 	-- Same override as ParseRaw site: UNIQUE/LEGENDARY uniques can specify a
 	-- lower req.level than their base type (Vaion's Chariot 50 vs Solarum
-	-- Greaves 67). Without this, Craft() — invoked on recraft / XML round-trip
-	-- with crafted slot mods — resets requirements.level back to base, undoing
-	-- the ParseRaw override and re-triggering the LevelReq filter exclusion.
+	-- Greaves 67) ONLY when overrideLevelRequirement=true. Without this,
+	-- Craft() — invoked on recraft / XML round-trip with crafted slot mods —
+	-- resets requirements.level back to base, undoing the ParseRaw override
+	-- and re-triggering the LevelReq filter exclusion.
 	if (self.rarity == "UNIQUE" or self.rarity == "LEGENDARY") and self.title and data.uniques then
 		for _, u in pairs(data.uniques) do
-			if type(u) == "table" and u.name == self.title and u.req and u.req.level then
+			if type(u) == "table" and u.name == self.title
+			   and u.overrideLevelRequirement and u.req and u.req.level then
 				self.requirements.level = u.req.level
 				break
 			end

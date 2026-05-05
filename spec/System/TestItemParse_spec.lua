@@ -176,6 +176,51 @@ describe("TestItemParse #itemParse", function()
             "After Craft(), unique req.level=50 must still hold (not reset to base 67)")
     end)
 
+    -- @leb-regression-guard: unique-req-level-override
+    -- Pattern B counterpart: when the game's `overrideLevelRequirement` flag
+    -- is FALSE (e.g. Snowdrift on Outcast Boots base lvl 23, Horn of the Bone
+    -- Wisp on Ivory Wand base lvl 31), Item.lua must NOT apply the unique's
+    -- req.level=0 placeholder — it must keep base.req.level so the in-game
+    -- tooltip "Requires: Level 23" is reproduced. Pre-fix, Item.lua's
+    -- `if u.req and u.req.level` check was truthy on 0 (Lua semantics),
+    -- collapsing 163 such uniques to LevelReq=0.
+    it("Unique with overrideLevelRequirement=false keeps base req.level", function()
+        newBuild()
+        -- Snowdrift: overrideLevelRequirement=false, unique req=0 placeholder.
+        -- Outcast Boots base req=23. Expect requirements.level == 23.
+        build.itemsTab:CreateDisplayItemFromRaw([[Rarity: UNIQUE
+        Snowdrift
+        Outcast Boots
+        Unique ID: TestSnowdrift 1
+        Crafted: true
+        Prefix: None
+        Prefix: None
+        Prefix: None
+        Prefix: None
+        Prefix: None
+        Suffix: None
+        Suffix: None
+        Suffix: None
+        Suffix: None
+        Suffix: None
+        LevelReq: 23
+        Implicits: 3
+        +20 Armor
+        {range:20}(8-10)% increased Movement Speed
+        {range:0}+1 Evade Charge]])
+
+        local item = build.itemsTab.displayItem
+        assert.is_not_nil(item, "item should be created from raw")
+        assert.is_not_nil(item.requirements, "item.requirements should exist")
+        assert.are.equals(23, item.requirements.level,
+            "Snowdrift (overrideLevelRequirement=false) must keep base req.level=23, not unique placeholder 0")
+
+        -- Round-trip via Craft(): override must NOT be re-applied.
+        item:Craft()
+        assert.are.equals(23, item.requirements.level,
+            "After Craft(), Snowdrift must still hold base req.level=23")
+    end)
+
     it("Auto-detects corrupted from specialAffixType==6 affix (no 'Corrupted' marker)", function()
         newBuild()
         -- Refuge Armor (Body Armor base) with sat==6 prefix 1002_0 (Missing Health
