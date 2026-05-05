@@ -4,11 +4,11 @@
 
 <table>
   <tr>
-    <td><img src="./docs/passiveTrees.png" width="400"/></td>
-    <td><img src="./docs/skillSelectionWindow.png" width="400"/></td>
+    <td><img src="./docs/passiveTree_v0.11.0.png" width="400"/></td>
+    <td><img src="./docs/skillSelection_v0.11.0.png" width="400"/></td>
   </tr>
   <tr>
-    <td><img src="./docs/skillTree.png" width="400"/></td>
+    <td><img src="./docs/skillTree_v0.11.0.png" width="400"/></td>
     <td><img src="./docs/itemsWindow_v0.13.0.png" width="400"/></td>
   </tr>
   <tr>

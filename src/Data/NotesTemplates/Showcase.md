@@ -105,7 +105,7 @@ SELECT \* FROM uniques WHERE class = 'Sentinel';
 
 Embedded images are downloaded once, cached on disk, and auto-resized (Word-style cap):
 
-![Last Epoch Logo](https://www.lastepochtools.com/img/le-logo.png)
+![LEB Passive Trees](https://raw.githubusercontent.com/uta666XYZ/LastEpochBuilding/main/docs/passiveTrees.png)
 
 Use `![alt](https://...)` - any of png / jpg / gif / bmp / tga.
 
