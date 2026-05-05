@@ -17,27 +17,19 @@
 --     A damage type is granted ONLY when its corresponding "Enables X Nova"
 --     node is allocated.
 --
--- Bug as of 2026-05-05 (NOT YET FIXED):
---   src/Data/skills.json declares ElementalNova base stats as
---     spell_base_fire_damage:8, spell_base_cold_damage:8,
---     spell_base_lightning_damage:8
---   unconditionally, so LEB grants Fire damage even when en6-12 (Fire Nova)
---   is not allocated. LETools correctly shows only Cold + Lightning for
---   Bakbr2Ne (which allocates en6-2 + en6-8 but NOT en6-12); LEB shows
---   Fire + Cold + Lightning.
+-- Fix (2026-05-05):
+--   - Removed spell_base_fire/cold/lightning_damage from
+--     src/Data/skills.json `ElementalNova.stats`.
+--   - Added "+8 Spell {Cold,Lightning,Fire} Damage" to en6-2 / en6-8 /
+--     en6-12 nodes' `stats` in src/TreeData/1_4/tree_1.json.
+--   - Cleared TREE_ID_DAMAGE_TYPES["en6"] in src/Classes/SkillsTab.lua so
+--     spec-slot damage-type icons resolve via the dynamic resolver
+--     (which detects "+N Spell <Type> Damage" stats on allocated nodes).
 --
 -- Establishing build: Bakbr2Ne lv86 Sorcerer (en6 allocations:
--- en6-0,2,4,5,6,8,18,21,24,25,26 — Ice + Lightning, no Fire). LE/LETools
--- expected Fire damage on Elemental Nova = 0; LEB current = 8 base.
---
--- Likely fix shape (for whoever picks this up):
---   - Move the three spell_base_*_damage entries out of skills.json's
---     ElementalNova base stats and into the en6-2 / en6-8 / en6-12 nodes'
---     stats lists in src/TreeData/1_4/tree_1.json (or attach as conditional
---     stats gated on node allocation).
---   - Honor skillTreeConversionDamageTags in the SkillStatMap pipeline so
---     the conversion-tagged damage types do not flow to the active skill
---     unless the matching tree node is taken.
+-- en6-0,2,4,5,6,8,18,21,24,25,26 — Ice + Lightning, no Fire). After fix,
+-- Elemental Nova damage type icons match LE/LETools: Cold + Lightning,
+-- no Fire.
 --
 -- See REGRESSION_GUARDS.md > "elemental-nova-spec-tree-gated-damage-type"
 -- for the index entry.
@@ -47,11 +39,12 @@ describe("ElementalNovaSpecTreeGatedDamageType", function()
         newBuild()
     end)
 
-    pending("Bakbr2Ne (no Fire Nova node allocated) does not include Fire damage type on Elemental Nova", function()
-        -- This test is `pending` because the bug is not yet fixed in
-        -- src/Data/skills.json. When the fix lands (move spell_base_*_damage
-        -- onto the en6-2 / en6-8 / en6-12 tree nodes), flip `pending` to `it`
-        -- and the assertion below should pass.
+    it("Bakbr2Ne (no Fire Nova node allocated) does not include Fire damage type on Elemental Nova", function()
+        -- The fix moved spell_base_fire/cold/lightning_damage out of
+        -- src/Data/skills.json `ElementalNova.stats` and onto the
+        -- en6-2 / en6-8 / en6-12 specialization-tree nodes' `stats`
+        -- ("+8 Spell {Cold,Lightning,Fire} Damage"), so each damage type
+        -- only applies when its enabling node is allocated.
         local f = io.open("../spec/TestBuilds/1.4/Bakbr2Ne lv86 Sorcerer.xml", "r")
         assert(f, "Bakbr2Ne XML fixture missing")
         local xml = f:read("*a")
@@ -59,28 +52,21 @@ describe("ElementalNovaSpecTreeGatedDamageType", function()
         loadBuildFromXML(xml, "Bakbr2Ne lv86 Sorcerer")
         runCallback("OnFrame")
 
-        -- Locate the Elemental Nova socket group in the skills tab.
-        local enSocketGroup
-        for _, sg in ipairs(build.skillsTab.socketGroupList) do
-            for _, gem in ipairs(sg.gemList or {}) do
-                if gem.skillId == "ElementalNova" then
-                    enSocketGroup = sg
-                    break
-                end
-            end
-            if enSocketGroup then break end
-        end
-        assert(enSocketGroup, "ElementalNova socket group not found in Bakbr2Ne fixture")
+        -- Resolve damage types via the same code path the SkillsTab UI uses
+        -- (LETools-style icons under the spec slot). This is tree-allocation-
+        -- aware: addSet picks up "+8 Spell <Type> Damage" stats only from
+        -- nodes the build actually allocates.
+        local types = build.skillsTab:GetDynamicDamageTypesByTreeId("en6", "Elemental Nova")
+        assert(types, "GetDynamicDamageTypesByTreeId returned nil for en6")
 
-        local activeSkill = enSocketGroup.displaySkillList and enSocketGroup.displaySkillList[1]
-        assert(activeSkill, "ElementalNova active skill not built")
+        local present = {}
+        for _, dt in ipairs(types) do present[dt.type] = dt.isBase end
 
-        -- Damage flags on the active skill should include Cold + Lightning
-        -- (en6-2, en6-8 allocated) but NOT Fire (en6-12 not allocated).
-        local flags = activeSkill.skillFlags or {}
-        assert.is_true(flags.cold == true, "expected Cold damage flag on Elemental Nova")
-        assert.is_true(flags.lightning == true, "expected Lightning damage flag on Elemental Nova")
-        assert.is_nil(flags.fire,
-            "Fire damage flag must be absent on Elemental Nova when en6-12 (Fire Nova) is not allocated")
+        assert.is_true(present.cold == true,
+            "expected Cold damage type on Elemental Nova (en6-2 Ice Nova allocated)")
+        assert.is_true(present.lightning == true,
+            "expected Lightning damage type on Elemental Nova (en6-8 Lightning Nova allocated)")
+        assert.is_nil(present.fire,
+            "Fire damage type must be absent on Elemental Nova when en6-12 (Fire Nova) is not allocated")
     end)
 end)
