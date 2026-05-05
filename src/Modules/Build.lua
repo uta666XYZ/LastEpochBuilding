@@ -293,7 +293,7 @@ function buildMode:Init(dbFileName, buildName, buildXML, convertBuild)
 		{ stat = "NetManaRegen", label = "Net Mana Recovery", fmt = "+.1f", color = colorCodes.MANA },
 		{ },
 		{ stat = "Evasion", label = "Dodge Rating", fmt = "d", color = colorCodes.EVASION, compPercent = true },
-		{ stat = "AttackDodgeChance", label = "Attack Dodge Chance", fmt = "d%%", color = colorCodes.EVASION, overCapStat = "AttackDodgeChanceOverCap" },
+		{ stat = "AttackDodgeChance", label = "Dodge Chance", fmt = "d%%", color = colorCodes.EVASION, overCapStat = "AttackDodgeChanceOverCap" },
 		{ stat = "MeleeEvadeChance", label = "Dodge Chance", fmt = "d%%", color = colorCodes.EVASION, condFunc = function(v,o) return v > 0 and o.MeleeEvadeChance == o.ProjectileEvadeChance end },
 		{ stat = "MeleeEvadeChance", label = "Melee Dodge Chance", fmt = "d%%", color = colorCodes.EVASION, condFunc = function(v,o) return v > 0 and o.MeleeEvadeChance ~= o.ProjectileEvadeChance end },
 		{ stat = "ProjectileEvadeChance", label = "Projectile Dodge Chance", fmt = "d%%", color = colorCodes.EVASION, condFunc = function(v,o) return v > 0 and o.MeleeEvadeChance ~= o.ProjectileEvadeChance end },
@@ -1491,11 +1491,26 @@ function buildMode:AddDisplayStatList(statList, actor)
 							if skillData.count >= 2 then
 								lhsString = labelColor..tostring(skillData.count).."x "..skillData.name..triggerStr..":"
 							end
-							t_insert(statBoxList, {
-								height = 16,
-								lhsString,
-								self:FormatStat({fmt = "1.f"}, skillData.dps * skillData.count, overCapStatVal),
-							})
+							-- Auto-wrap: if the label is too wide for column 1 (right edge x=170), put it
+							-- on its own full-width line so the left side doesn't get clipped.
+							if DrawStringWidth(16, "VAR", lhsString) > 165 then
+								t_insert(statBoxList, {
+									height = 14,
+									x = 278, align = "RIGHT_X",
+									lhsString,
+								})
+								t_insert(statBoxList, {
+									height = 16,
+									"",
+									self:FormatStat({fmt = "1.f"}, skillData.dps * skillData.count, overCapStatVal),
+								})
+							else
+								t_insert(statBoxList, {
+									height = 16,
+									lhsString,
+									self:FormatStat({fmt = "1.f"}, skillData.dps * skillData.count, overCapStatVal),
+								})
+							end
 							if skillData.skillPart then
 								t_insert(statBoxList, {
 									height = 14,
@@ -1524,11 +1539,15 @@ function buildMode:AddDisplayStatList(statList, actor)
 						if statData.warnFunc and statData.warnFunc(statVal, actor.output) and statData.warnColor then
 							colorOverride = colorCodes.NEGATIVE
 						end
-						if statData.wrapLabel then
+						local labelStr = labelColor..statData.label..":"
+						-- Auto-wrap: if the label is too wide for column 1 (right edge x=170), put it
+						-- on its own full-width line above the value so the left side doesn't get clipped.
+						local autoWrap = not statData.wrapLabel and DrawStringWidth(16, "VAR", labelStr) > 165
+						if statData.wrapLabel or autoWrap then
 							t_insert(statBoxList, {
 								height = 14,
 								x = 278, align = "RIGHT_X",
-								labelColor..statData.label..":",
+								labelStr,
 							})
 							t_insert(statBoxList, {
 								height = 16,
@@ -1538,7 +1557,7 @@ function buildMode:AddDisplayStatList(statList, actor)
 						else
 							t_insert(statBoxList, {
 								height = 16,
-								labelColor..statData.label..":",
+								labelStr,
 								self:FormatStat(statData, statVal, overCapStatVal, colorOverride),
 							})
 						end
