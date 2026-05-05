@@ -463,11 +463,17 @@ end
 -- Fire via Fire Arrow), unioning stcdt unconditionally falsely matches gear
 -- like Logi's Hunger ("+X Fire Minion Skills") even when no Fire-producing
 -- node is allocated. LETools / in-game match only the actually-active types.
+-- @leb-regression-guard:stcdt-conversion-shapes
+-- Pattern catalogue covering every conversion / addition / source-removal
+-- stat & description prose shape used across LE's skill trees as of 2026-05.
+-- Each shape has a corresponding case in spec/System/TestStcdtParser_spec.lua;
+-- see REGRESSION_GUARDS.md#stcdt-conversion-shapes for the full inventory.
 function calcs.getActiveStcdtBits(env, treeId, stcdt)
-	if not stcdt or stcdt == 0 then return 0 end
-	if not (treeId and env and env.allocNodes) then return 0 end
+	if not stcdt or stcdt == 0 then return 0, 0 end
+	if not (treeId and env and env.allocNodes) then return 0, 0 end
 	local prefix = treeId .. "-"
 	local active = 0
+	local removed = 0
 	for nodeId, node in pairs(env.allocNodes) do
 		if nodeId:sub(1, #prefix) == prefix and node.stats then
 			for _, stat in ipairs(node.stats) do
@@ -487,6 +493,31 @@ function calcs.getActiveStcdtBits(env, treeId, stcdt)
 					_, dst = stat:match("^%s*(%w+)%s+Base%s+Damage%s*%->%s*(%w+)%s*$")
 				end
 				if not dst then
+					-- Multi-source AND-join conversion: "<Src1> and <Src2> -> <Dst> Damage"
+					-- (e.g. svz81-23 Horrific Vessels: "Physical and Fire -> Necrotic Damage").
+					-- Only the destination matters here; source-side removal is
+					-- handled by getTreeTagSwaps below.
+					_, _, dst = stat:match("^%s*(%w+)%s+and%s+(%w+)%s*%->%s*(%w+)%s+Damage%s*$")
+				end
+				if not dst then
+					-- Multi-source AND-join Conversion suffix: "<Src1> and <Src2> -> <Dst> Conversion"
+					-- (e.g. tree_3 cb52d2-? "Necrotic and Fire -> Physical Conversion").
+					_, _, dst = stat:match("^%s*(%w+)%s+and%s+(%w+)%s*%->%s*(%w+)%s+Conversion%s*$")
+				end
+				if not dst then
+					-- Qualifier-prefixed modifier conversion: "Increased <Src> Damage -> <Dst> Damage"
+					-- (e.g. ds4d3-32 Vile Ghast: "Increased Necrotic Damage -> Poison Damage").
+					-- Modifier-conversion only — does not strip the source damage type
+					-- but DOES introduce the destination as a relevant scaling tag.
+					_, dst = stat:match("^%s*Increased%s+(%w+)%s+Damage%s*%->%s*(%w+)%s+Damage%s*$")
+				end
+				if not dst then
+					-- Addition: "Enables <Type> Nova" (e.g. en6-2/8/12 Elemental Nova
+					-- "Enables Cold/Lightning/Fire Nova"). The named type becomes a
+					-- legitimate damage type when the gating node is allocated.
+					dst = stat:match("^%s*Enables%s+(%w+)%s+Nova%s*$")
+				end
+				if not dst then
 					-- Bare "<Src> -> <Dst>" form (no suffix). Same fallback as
 					-- getTreeTagSwaps; see comment there. Filtered safely via
 					-- damageTypeBitsByName lookup (rejects ailment swaps).
@@ -494,6 +525,10 @@ function calcs.getActiveStcdtBits(env, treeId, stcdt)
 					_src, dst = stat:match("^%s*(%w+)%s*%->%s*(%w+)%s*$")
 					if dst and not damageTypeBitsByName[dst] then dst = nil end
 				end
+				-- Per Q2: "<X> -> Elemental Damage" (e.g. cstri-22 Elemental
+				-- Vulnerability) is a buff-modifier rewrite, not a skill damage
+				-- tag change. Skip the Elemental aggregate entirely.
+				if dst and dst:lower() == "elemental" then dst = nil end
 				if dst and damageTypeBitsByName[dst] then
 					active = bor(active, damageTypeBitsByName[dst])
 				end
@@ -552,12 +587,29 @@ function calcs.getActiveStcdtBits(env, treeId, stcdt)
 								end
 							end
 						end
+						-- Source-bit removal: "loses its <type> tag" /
+						-- "loses its {<type>} tag" without an `if` conditional
+						-- prefix (the `if` filter above already gates that).
+						-- Per Q3=(a) only unconditional/full-conversion source
+						-- removal is recognised here; partial-% conditionals
+						-- are skipped. Examples that DO match:
+						--   tree_3 rea-32: "Reap loses its {Necrotic} tag and
+						--     gains a {Physical} tag instead."
+						-- Examples that don't match (have `if` prefix):
+						--   tree_0 sw1, tree_4 srk21-25.
+						for inner in lo:gmatch("loses its[%s%S]-tag") do
+							for typeName, b in pairs(damageTypeBitsByName) do
+								if inner:find(typeName:lower(), 1, true) then
+									removed = bor(removed, b)
+								end
+							end
+						end
 					end
 				end
 			end
 		end
 	end
-	return band(stcdt, active)
+	return band(stcdt, active), removed
 end
 
 -- Item-mod driven runtime tag conversions (e.g. Ash Wake's

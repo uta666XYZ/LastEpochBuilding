@@ -724,6 +724,41 @@ NaN/Inf ward for builds with very large negative retention.
 
 **Establishing commit:** `<unset; bump after first commit on this branch>`
 
+### `stcdt-conversion-shapes`
+
+Catalogues every stat / description prose shape that introduces, redirects,
+or removes damage-type bits via skill-tree allocation. The parser is
+text-driven against a long tail of nodes; adding a shape is easy but
+*removing* one accidentally during a refactor (e.g. consolidating the
+cascading `if not dst then` chain into a generic loop) silently regresses
+Minion Tags / Scaling Tags / `+to X Skills` affix matching for whichever
+skills depend on that shape. The spec keeps the catalogue runnable.
+
+| Site | File | What it does |
+|---|---|---|
+| stcdt filter             | `src/Modules/CalcActiveSkill.lua` — `calcs.getActiveStcdtBits` | Returns `(activeBits, removedBits)` after scanning allocated nodes' stats + description |
+| Scaling Tags mirror      | `src/Classes/SkillsTab.lua` — `GetDynamicDamageTypesByTreeId` | Same shape catalogue applied to the UI's base/conv set |
+| caller wiring (minionKW) | `src/Modules/CalcSetup.lua` (~line 1793) | Captures `removedBits` and applies `bit.band(minionKW, bit.bnot(removedStcdt))` so post-conversion `+to <NewType> Skills` affixes match while the stripped source no longer matches its own tag |
+
+Shapes covered:
+- **A1**: `<Src> -> <Dst> Damage`
+- **A2**: `<Src> Damage -> <Dst> Damage`
+- **A3**: `<Src> -> <Dst> Conversion` suffix
+- **A4**: bare `<Dst> Conversion`
+- **A5**: multi-source AND-join `<Src1> and <Src2> -> <Dst> Damage` (svz81-23 Horrific Vessels)
+- **A6**: multi-source AND-join `... -> <Dst> Conversion` suffix
+- **A7**: `<Delivery> Base Damage -> <Dst>` (bg36nl-7 Pyre Golem)
+- **A8b**: bare `<Src> -> <Dst>` no-Damage suffix (fw3d-10 Lightning Ward)
+- **A12**: modifier-only `Increased <Src> Damage -> <Dst> Damage` (ds4d3-32 Vile Ghast — promotes destination as scaling tag without removing source)
+- **A13**: `<X> -> Elemental Damage` filtered out — Oil Coating cstri-22 is a buff modifier, not a skill-damage conversion
+- **B1**: `Enables <Type> Nova` addition (en6 Elemental Nova)
+- **D-prose / source removal**: unconditional `<Skill> loses its {X} tag` triggers Q3=(a) full-conversion source removal. Conditional `if ...` lines (sw1 Swipe, srk21-25 Shurikens) are skipped — partial-state aware removal is intentionally not handled
+
+**Spec:** `spec/System/TestStcdtParser_spec.lua`
+- "getActiveStcdtBits #stcdt" (17 cases — one per shape + filter / treeId guards)
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
 ## Adding a new guard
 
 1. Above the fix in source, add a comment block:

@@ -1971,11 +1971,20 @@ function calcs.initEnv(build, mode, override, specEnv)
 					-- prevents false matches like Logi's Hunger "+Fire Minion
 					-- Skills" against a Summon Skeleton without Fire Arrow.
 					local stcdt = group.grantedEffect.skillTreeConversionDamageTags or 0
-					local activeStcdt = calcs.getActiveStcdtBits(env, group.grantedEffect.treeId, stcdt)
+					local activeStcdt, removedStcdt = calcs.getActiveStcdtBits(env, group.grantedEffect.treeId, stcdt)
 					minionKW = bit.bor(
 						group.grantedEffect.minionTagsDisplay or 0,
 						activeStcdt
 					)
+					-- Tree-driven full-conversion source removal (Q3=(a)):
+					-- description prose like "X loses its {Necrotic} tag and gains a
+					-- {Physical} tag instead." (tree_3 rea-32) strips Necrotic from
+					-- the Minion Tags bitmap so post-conversion +Skills affixes
+					-- match correctly. Conditional partial-state lines (`if ...`)
+					-- are filtered upstream in getActiveStcdtBits.
+					if removedStcdt and removedStcdt ~= 0 then
+						minionKW = bit.band(minionKW, bit.bnot(removedStcdt))
+					end
 					-- Apply tree-driven minion variant pool mutations:
 					--   sm4g "Adds Pyromancers" + "Removes Mages" promotes the
 					--   minion-tag bitmap from Necrotic to Fire so amulets like
