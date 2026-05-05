@@ -1,6 +1,9 @@
 # Build scripts (internal)
 scripts/
 
+# Scratch / one-shot patch directory
+.tmp/
+
 # Development tools
 .idea/
 .vs/
