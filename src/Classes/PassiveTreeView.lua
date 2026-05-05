@@ -284,6 +284,11 @@ function PassiveTreeViewClass:Draw(build, viewPort, inputEvents)
 		treeClick = nil
 	end
 
+	-- Read-only preview mode: suppress allocation/deallocation clicks
+	if self.readOnly then
+		treeClick = nil
+	end
+
 	-- Clamp zoom offset
 	local clampFactor
 	if self.filterMode == "skill" and self.selectedSkillIndex then
