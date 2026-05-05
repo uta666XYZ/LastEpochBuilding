@@ -603,6 +603,30 @@ When the fix lands, flip `pending` → `it` and the assertion should pass.
 
 **Establishing commit:** `<unset; bump after first commit on this branch>`
 
+### `tooltip-mod-line-wrap`
+
+Item tooltips in the Items tab — including hover tooltips routed through
+`TooltipHost` (item list rows, paperdoll slots, idol grid, etc.) — must
+word-wrap long mod lines so they stay inside the tooltip box. Trigger:
+the unique mod on `Horn of the Bone Wisp` (Ivory Wand) overflowed the
+tooltip horizontally because only `displayItemTooltip` set `maxWidth`;
+every other entry path left it unset, so `Tooltip:AddLine` skipped the
+wrap branch.
+
+A regression here either re-introduces horizontal overflow or under-counts
+wrapped rows in `block.height` so the bottom border crops wrapped text.
+
+| Site | File | What it does |
+|---|---|---|
+| default maxWidth | `src/Classes/ItemsTab.lua` `AddItemTooltip` (~line 2411) | Sets `tooltip.maxWidth = 458` when caller didn't, so wrap path activates for every item tooltip |
+| wrap + height | `src/Classes/Tooltip.lua` `AddLine` | Routes through `main:WrapString` and grows `block.height` by `(size+2) * #wrapped` |
+
+**Spec:** `spec/System/TestTooltipWrap_spec.lua`
+- "AddLine wraps a long line at maxWidth into multiple visual rows"
+- "AddItemTooltip sets a default maxWidth so item tooltips wrap on hover"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
 ## Adding a new guard
 
 1. Above the fix in source, add a comment block:
