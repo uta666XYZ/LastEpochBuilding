@@ -542,10 +542,11 @@ branch.
 | gate | `src/Modules/CalcSetup.lua` (~line 1404) | `whileActiveBuffByTreeId = { fw3d = "HaveFlameWard" }`; treeId-prefixed nodes go through the buff-prefix bucketing whose `enabled` is `group.enabled and conditionActive` |
 | config | `src/Modules/ConfigOptions.lua` (~line 130) | `conditionHaveFlameWard` check; sets `Condition:HaveFlameWard` FLAG |
 
-**Spec:** `spec/System/TestBlockShield_spec.lua` (header guard) — direct
-unit-level coverage on this guard would require synthesizing a fw3d skill
-allocation, so the snapshot diff in `TestBuilds_spec.lua` is the primary
-runtime check.
+**Spec:** `spec/System/TestBlockShield_spec.lua` `describe("FlameWardTreeGate")`
+"Bakbr2Ne Armour does not include fw3d tree-node leak when Flame Ward is
+inactive" — loads the Bakbr2Ne XML directly and asserts `Armour < 1500`.
+Reverting the gate immediately fails this with `Armour=1926`. The snapshot
+diff in `TestBuilds_spec.lua` is a secondary runtime check.
 
 **Snapshot coverage:** `spec/System/TestBuilds_spec.lua` "test all builds #builds" via
 `spec/TestBuilds/1.4/Bakbr2Ne lv86 Sorcerer.{xml,lua}` — reverting the gate
