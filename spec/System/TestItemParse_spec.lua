@@ -221,6 +221,101 @@ describe("TestItemParse #itemParse", function()
             "After Craft(), Snowdrift must still hold base req.level=23")
     end)
 
+    -- @leb-regression-guard: pattern-a-affix-level-req
+    -- Pattern A: when affix tiers push the in-game level requirement above the
+    -- base/unique req, Item.lua MUST raise self.requirements.level to match
+    -- (mirroring ItemData::CalculateLevelRequirementAfterShard from
+    -- GameAssembly.dll RVA 0xeea910). Sealed/primordial/corrupted affixes
+    -- (those with a kind tag) MUST NOT contribute. 0-indexed tiers:
+    --   inner_cost = {0:1, 1:3, 2:6, 3:10, 4:14, 5:15, 6+:16}
+    --   outer_cost = {0:2, 1:6, 2:12, 3:20, 4:28, 5:30, 6+:32}
+    --   fVar = -10 + sum(inner_cost[tier]) + outer_cost[max_tier]
+    --   req  = max(base_req, clamp(fVar, 1, 90))
+    -- Pre-fix, Item.lua left req.level at base (e.g. Refuge Armor=0,
+    -- Scrivening Quill=41) so the LevelReq tooltip understated the in-game
+    -- level required and the LevelReq filter let unwearable items through.
+    -- Test: 4 plain suffixes at 0-indexed tier 5 -> sum_inner = 15*4 = 60,
+    -- max_tier = 5 -> outer = 30, fVar = -10+60+30 = 80. Refuge Armor base
+    -- req=0, so requirements.level must be 80.
+    it("Pattern A: affix tiers raise req.level above base req", function()
+        newBuild()
+        build.itemsTab:CreateDisplayItemFromRaw([[Rarity: RARE
+        Test Affix Req Body
+        Refuge Armor
+        Unique ID: TestPatternA 1
+        Crafted: true
+        Prefix: None
+        Prefix: None
+        Suffix: {range:0}1_5
+        Suffix: {range:0}7_5
+        Suffix: {range:0}8_5
+        Suffix: {range:0}10_5
+        LevelReq: 0
+        Implicits: 0]])
+
+        local item = build.itemsTab.displayItem
+        assert.is_not_nil(item, "displayItem should exist")
+        assert.are.equals(80, item.requirements.level,
+            "4x tier-index-5 suffixes -> req must be 80 (sum_inner 60 + outer 30 - 10)")
+        item:Craft()
+        assert.are.equals(80, item.requirements.level,
+            "Pattern A formula must persist after Craft()")
+    end)
+
+    -- @leb-regression-guard: pattern-a-affix-level-req
+    -- specialAffixType != 0 affixes (sat==6 corruption-only, Reforged set,
+    -- etc.) must be excluded — mirrors the in-game
+    -- ItemAffix::CanContributeToLevelRequirement check (RVA 0xf03620,
+    -- returns sat==0 AND sealed==0). Refuge Armor + 1002_0 (sat==6
+    -- "Missing Health gained as Ward per second") with no other affixes
+    -- must yield no Pattern A bump; req stays at base (Refuge Armor=0).
+    it("Pattern A: specialAffixType!=0 affix doesn't contribute to req", function()
+        newBuild()
+        build.itemsTab:CreateDisplayItemFromRaw([[Rarity: RARE
+        Test Sat6 Body
+        Refuge Armor
+        Unique ID: TestPatternA 3
+        Crafted: true
+        Prefix: {range:0}1002_0
+        Prefix: None
+        Suffix: None
+        Suffix: None
+        LevelReq: 0
+        Implicits: 0]])
+
+        local item = build.itemsTab.displayItem
+        assert.is_not_nil(item, "displayItem should exist")
+        assert.are.equals(0, item.requirements.level,
+            "sat==6 affix must not raise req (CanContributeToLevelRequirement returns false)")
+    end)
+
+    -- @leb-regression-guard: pattern-a-affix-level-req
+    -- Sealed/corrupted "kind"-tagged affixes must be excluded from the
+    -- contribution sum. Same 4 affixes as above but one tagged sealed:
+    -- only 3 contribute -> sum_inner = 15*3 = 45, max_tier still 5 -> 30,
+    -- fVar = -10+45+30 = 65.
+    it("Pattern A: sealed/corrupted kind affixes don't contribute to req", function()
+        newBuild()
+        build.itemsTab:CreateDisplayItemFromRaw([[Rarity: RARE
+        Test Affix Req Sealed
+        Refuge Armor
+        Unique ID: TestPatternA 2
+        Crafted: true
+        Prefix: None
+        Prefix: None
+        Suffix: {range:0}1_5
+        Suffix: {range:0}7_5
+        Suffix: {range:0}8_5
+        Suffix: {kind:sealed}{range:0}10_5
+        LevelReq: 0
+        Implicits: 0]])
+
+        local item = build.itemsTab.displayItem
+        assert.is_not_nil(item, "displayItem should exist")
+        assert.are.equals(65, item.requirements.level,
+            "3 plain + 1 sealed -> req must be 65 (sealed excluded from sum)")
+    end)
+
     it("Auto-detects corrupted from specialAffixType==6 affix (no 'Corrupted' marker)", function()
         newBuild()
         -- Refuge Armor (Body Armor base) with sat==6 prefix 1002_0 (Missing Health

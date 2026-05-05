@@ -87,6 +87,53 @@ local lineFlags = {
 	["crafted"] = true, ["custom"] = true, ["enchant"] = true, ["implicit"] = true,
 }
 
+-- @leb-regression-guard: pattern-a-affix-level-req
+-- Mirrors game function ItemData::CalculateLevelRequirementAfterShard
+-- (decoded from GameAssembly.dll RVA 0xeea910). For each contributing
+-- affix add an inner-cost based on the affix tier (0-indexed: T1=0..T7=6);
+-- the highest contributing tier additionally adds an outer-cost. Final
+-- value is clamped to [1, 90] and the caller takes max(base_req, ...).
+--
+-- "Contributing" exactly mirrors ItemAffix::CanContributeToLevelRequirement
+-- (RVA 0xf03620): true iff `specialAffixType == 0 AND sealedAffixType == 0`.
+-- In LEB terms: the affix entry has no `kind` tag (sealed/primordial/
+-- corrupted all set kind) AND the resolved mod's `specialAffixType` is 0
+-- (excludes Reforged set affixes, idol enchant/weaver, sat==6 corruption-
+-- only affixes etc.).
+--
+-- Used by both ParseRaw and Craft to keep req.level in sync with the
+-- in-game tooltip on items whose affix tiers push their req above the
+-- base item's req.level (e.g. crafted exalted shows Lv77 / Lv95).
+-- Test: spec/System/TestItemParse_spec.lua "Pattern A: affix-tier ..."
+local AFFIX_REQ_INNER = { [0]=1, [1]=3, [2]=6, [3]=10, [4]=14, [5]=15 }
+local AFFIX_REQ_OUTER = { [0]=2, [1]=6, [2]=12, [3]=20, [4]=28, [5]=30 }
+local function computeAffixDerivedLevelReq(item)
+	local sumInner, maxT, hasContrib = 0, -1, false
+	local affixesTable = item.affixes
+	for _, list in ipairs({ item.prefixes or {}, item.suffixes or {} }) do
+		for _, affix in ipairs(list) do
+			if affix and affix.modId and affix.modId ~= "None" and not affix.kind then
+				local mod = affixesTable and affixesTable[affix.modId]
+				local sat = (mod and mod.specialAffixType) or 0
+				if sat == 0 then
+					local t = tonumber(affix.modId:match("_(%d+)$"))
+					if t then
+						hasContrib = true
+						sumInner = sumInner + (AFFIX_REQ_INNER[t] or 16)
+						if t > maxT then maxT = t end
+					end
+				end
+			end
+		end
+	end
+	if not hasContrib then return nil end
+	local outer = (maxT >= 0) and (AFFIX_REQ_OUTER[maxT] or 32) or 0
+	local fVar = m_floor(-10 + sumInner + outer)
+	if fVar > 90 then fVar = 90 end
+	if fVar < 1 then fVar = 1 end
+	return fVar
+end
+
 -- Special function to store unique instances of modifier on specific item slots
 -- that require special handling for ItemConditions. Only called if line #224 is
 -- uncommented
@@ -836,6 +883,14 @@ function ItemClass:ParseRaw(raw, rarity, highQuality)
 			end
 		end
 	end
+	-- Pattern A: raise req.level when affix tiers push the requirement above
+	-- the base/unique/set req. See computeAffixDerivedLevelReq above.
+	do
+		local affixReq = computeAffixDerivedLevelReq(self)
+		if affixReq and (self.requirements.level or 0) < affixReq then
+			self.requirements.level = affixReq
+		end
+	end
 	-- Auto-derive corrupted from affixes BEFORE the recraft path: any active
 	-- prefix/suffix mod with specialAffixType == 6 (corruption-exclusive)
 	-- implies the item is corrupted, even if the raw text lacks a "Corrupted"
@@ -1196,6 +1251,15 @@ function ItemClass:Craft()
 				self.requirements.level = u.req.level
 				break
 			end
+		end
+	end
+	-- Pattern A: raise req.level when affix tiers push the requirement above
+	-- the base/unique/set req. Mirrors the ParseRaw site so recraft / XML
+	-- round-trip keeps the affix-derived value.
+	do
+		local affixReq = computeAffixDerivedLevelReq(self)
+		if affixReq and (self.requirements.level or 0) < affixReq then
+			self.requirements.level = affixReq
 		end
 	end
 	-- @leb-regression-guard: affix-display-order

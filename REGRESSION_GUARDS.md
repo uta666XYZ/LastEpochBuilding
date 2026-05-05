@@ -271,6 +271,60 @@ a follow-up `item:Craft()` call.
 - `5a88e7161` — _fix(items): override base req.level with unique req.level for UNIQUE/LEGENDARY_
 - _Pattern B fix_ — gate override on `overrideLevelRequirement` flag; SET sibling fix `> 0`
 
+### `pattern-a-affix-level-req`
+
+LE's in-game level requirement for an item is not just `base.req.level` —
+it is `max(base, affix-tier-derived)`. The game function
+`ItemData::CalculateLevelRequirementAfterShard` (decoded from
+`GameAssembly.dll` RVA `0xeea910`) sums an inner-cost per contributing
+affix tier, plus an outer-cost based on the highest contributing tier:
+
+- **inner_cost** (0-indexed tier, T1=0..T7=6): `{0:1, 1:3, 2:6, 3:10, 4:14, 5:15, 6+:16}`
+- **outer_cost** (0-indexed max tier): `{0:2, 1:6, 2:12, 3:20, 4:28, 5:30, 6+:32}`
+- `fVar = -10 + sum(inner_cost[t] for t in contributing) + outer_cost[max_t]`
+- `req = max(base_req, clamp(fVar, 1, 90))`
+
+Affixes are "contributing" iff `specialAffixType == 0 AND sealedAffixType
+== 0` — exactly mirroring `ItemAffix::CanContributeToLevelRequirement`
+(RVA `0xf03620`, body: `return p->specialAffixType == 0 && p->sealedAffixType == 0`).
+In LEB terms: the affix entry has no `kind` tag (sealed / primordial /
+corrupted all set kind) AND the resolved mod's `specialAffixType` is 0
+(excludes Reforged set affixes, idol enchant/weaver, sat==6 corruption-
+only mods, etc.). Pre-fix, `Item.lua` left `requirements.level` at base, so
+crafted items whose tiers pushed the in-game req to 77 / 80 / 95 displayed
+as e.g. 41 (Scrivening Quill of Endurance) or 58 (Spidersilk Sash). The
+LevelReq filter in CalcSetup let unwearable items contribute stats.
+
+The fix lives in `computeAffixDerivedLevelReq` (Item.lua near top) and is
+called from two sites — same dual-site pattern as `unique-req-level-override`:
+
+| Site | File | What it does |
+|---|---|---|
+| post-ParseRaw | `src/Classes/Item.lua` after the unique override | Compute affix-derived req; if greater than current `requirements.level`, raise it |
+| Craft()       | `src/Classes/Item.lua` after the unique override in Craft | Re-apply so the formula survives recraft / XML round-trip |
+
+Tier is parsed from `affix.modId:match("_(%d+)$")` — LEB stores affix ids
+as `"<baseId>_<tier>"` where tier is 0-indexed (matches game encoding at
+`affix+0x12` byte).
+
+**Specs:** `spec/System/TestItemParse_spec.lua`
+- "Pattern A: affix tiers raise req.level above base req" — 4× tier-5 suffixes on Refuge Armor (base req=0) → 80
+- "Pattern A: specialAffixType!=0 affix doesn't contribute to req" — sat==6 affix `1002_0` only → req stays at base
+- "Pattern A: sealed/corrupted kind affixes don't contribute to req" — 3 plain + 1 sealed → 65
+
+**Pattern C status (Runed Visage / Astrolabe small diffs):** Bakbr2Ne items
+where LETools showed +2 / +3 over base were investigated. After applying
+the decoded `AfterShard` formula (incl. exact `CanContributeToLevelRequirement`
+filter), Astrolabe and Runed Visage compute to their base req unchanged
+(Astrolabe 50, Runed Visage 63). The +2 / +3 LETools discrepancies do
+NOT come from this in-game function and are most likely a LETools-side
+display quirk — left as-is to match the in-game tooltip rather than
+LETools. If a future fix targets LETools parity here it must NOT regress
+the Pattern A specs.
+
+**Establishing commits:**
+- _Pattern A fix_ — port `CalculateLevelRequirementAfterShard` to Lua; raise `requirements.level` post-unique-override at both sites
+
 ### `unique-data-integrity`
 
 Within-version invariants for hand-migrated unique data. When LE ships a
