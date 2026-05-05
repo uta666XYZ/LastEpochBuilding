@@ -391,12 +391,21 @@ function calcs.defence(env, actor)
 		-- Use output.WardPerSecond set by CalcPerform (includes INC/MORE modifiers)
 		wardPerSecond = output.WardPerSecond or 0
 
-		-- Ward lost per second formula is (0.00005 * ( ward - wardDecayThreshold )^2 + 0.2 * (ward - wardDecayThreshold)) / (1 + 0.5 * wardRetention), we can deduce ward when this is equal to wardPerSecond:
-		-- ward = wardDecayThreshold + ((-0.2 + sqrt(0.04 + 0.0002 * wardPerSecond * (1 + 0.5 * wardRetention))) / 0.0001)
-
+		-- Ward lost per second formula (verified against game `ProtectionClass.Update` RVA 0x234B8C0):
+		--   wardLost/s = (0.00005*(W - T)^2 + 0.2*(W - T)) / (1 + 0.5 * Rclamped)
+		-- where T = WardDecayThreshold, Rclamped = max(-0.9, WardRetention) (game clamps to -90%).
+		-- Stable ward solves wgain = wardLost/s for W:
+		--   W = T + (-0.2 + sqrt(0.04 + 0.0002 * wgain * (1 + 0.5 * Rclamped))) / 0.0001
+		-- Game also applies a 0.5/s decay floor when (wardRegen + wardRegenFromStats) <= 0,
+		-- but LEB doesn't track passive ward-regen separately from transient ward-gain,
+		-- so the floor is omitted (corner case: builds with no regen and wgain < 0.5/s).
+		-- @leb-regression-guard:ward-retention-negative-clamp
+		--   Game clamps WardRetention at -90% before the decay-divisor (1 + 0.5*R) computation.
+		--   Without this clamp, R <= -200% would invert decay (negative divisor) and produce
+		--   non-finite stable ward. Match game RVA 0x234B8C0. See spec/System/TestWardFormula_spec.lua.
 		if wardPerSecond > 0 then
 		local wardDecayThreshold = output.WardDecayThreshold or 0
-		local wardRetention = output.WardRetention or 0
+		local wardRetention = m_max(output.WardRetention or 0, -90)
 		ward = wardDecayThreshold + ((-0.2 + math.sqrt(0.04 + 0.0002 * wardPerSecond * (1 + 0.5 * wardRetention / 100))) / 0.0001)
 		ward = ward * calcLib.mod(modDB, nil, "Ward", "Defences")
 		end
@@ -427,11 +436,13 @@ function calcs.defence(env, actor)
 		output.StableWard = output.Ward
 
 		-- Ward Decay per second at steady-state ward (tunklab formula)
-		-- wardDecay(W, R) = (0.2*W + 0.00005*W^2) / (1 + 0.5*(R/100))
+		-- wardDecay(W, R) = (0.2*W + 0.00005*W^2) / (1 + 0.5*(R/100)) where R is clamped at -90%
+		-- @leb-regression-guard:ward-retention-negative-clamp (display-decay site)
 		local rawWardDecayPerSecond = 0
 		if output.Ward > 0 then
 			local effectiveWard = m_max(output.Ward - output.WardDecayThreshold, 0)
-			local retentionDivisor = 1 + 0.5 * output.WardRetention / 100
+			local retentionClamped = m_max(output.WardRetention or 0, -90)
+			local retentionDivisor = 1 + 0.5 * retentionClamped / 100
 			local decayNumerator = 0.2 * effectiveWard + 0.00005 * effectiveWard ^ 2
 			rawWardDecayPerSecond = decayNumerator / retentionDivisor
 			output.WardDecayPerSecond = round(rawWardDecayPerSecond)
@@ -624,7 +635,8 @@ function calcs.defence(env, actor)
 		output.WardPerSecond = (output.WardPerSecond or 0) + bonusWardPerSec
 		local wps = output.WardPerSecond
 		local wardDecayThreshold = output.WardDecayThreshold or 0
-		local wardRetention = output.WardRetention or 0
+		-- @leb-regression-guard:ward-retention-negative-clamp (Sanguine Runestones path)
+		local wardRetention = m_max(output.WardRetention or 0, -90)
 		local ward = wardDecayThreshold + ((-0.2 + math.sqrt(0.04 + 0.0002 * wps * (1 + 0.5 * wardRetention / 100))) / 0.0001)
 		ward = ward * calcLib.mod(modDB, nil, "Ward", "Defences")
 		output.Ward = m_max(round(ward), 0)
