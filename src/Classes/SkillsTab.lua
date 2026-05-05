@@ -1337,6 +1337,43 @@ function SkillsTabClass:GetDynamicDamageTypesByTreeId(treeId, skillName)
 						end
 					end
 				end
+				-- Multi-source AND-join: "<Src1> and <Src2> -> <Dst> Damage"
+				-- (svz81-23 "Physical and Fire -> Necrotic Damage") or
+				-- "<Src1> and <Src2> -> <Dst> Conversion" suffix. Both
+				-- sources convert to the destination.
+				local mSrc1, mSrc2, mDst = stat:match("^%s*(%w+)%s+and%s+(%w+)%s*%->%s*(%w+)%s+Damage%s*$")
+				if not mDst then
+					mSrc1, mSrc2, mDst = stat:match("^%s*(%w+)%s+and%s+(%w+)%s*%->%s*(%w+)%s+Conversion%s*$")
+				end
+				if mDst then
+					local s1Lo, s2Lo, dLo = mSrc1:lower(), mSrc2:lower(), mDst:lower()
+					if TYPE_SET[s1Lo] and TYPE_SET[s2Lo] and TYPE_SET[dLo] then
+						if isMultiConv then
+							t_insert(multiList, { s1Lo, dLo })
+							t_insert(multiList, { s2Lo, dLo })
+						else
+							convMap[s1Lo] = dLo
+							convMap[s2Lo] = dLo
+						end
+					end
+				end
+				-- Modifier-only conversion: "Increased <Src> Damage -> <Dst> Damage"
+				-- (ds4d3-32 Vile Ghast "Increased Necrotic Damage -> Poison Damage").
+				-- This converts the *modifier* not the base damage, so source stays
+				-- a base type and destination is added (not replacing).
+				local _, modDst = stat:match("^%s*Increased%s+(%w+)%s+Damage%s*%->%s*(%w+)%s+Damage%s*$")
+				if modDst then
+					local dLo = modDst:lower()
+					if TYPE_SET[dLo] then addSet[dLo] = true end
+				end
+				-- Addition: "Enables <Type> Nova" (en6-2/8/12 Elemental Nova).
+				-- The named type becomes a legitimate base damage type when the
+				-- gating node is allocated.
+				local enType = stat:match("^%s*Enables%s+(%w+)%s+Nova%s*$")
+				if enType then
+					local dLo = enType:lower()
+					if TYPE_SET[dLo] then addSet[dLo] = true end
+				end
 				-- Plain damage producer: stats ending in "<DmgType> Damage"
 				-- (e.g. wc57-30 Kinetic Scream "40 Spell Physical Damage" gives
 				-- Warcry the Physical bit; wo42-14 Tundra Stalkers "+2 Cold
@@ -1439,6 +1476,45 @@ function SkillsTabClass:GetDynamicDamageTypesByTreeId(treeId, skillName)
 									else
 										convMap[fromType] = wholeTo
 									end
+								end
+							end
+						end
+						-- Tag prose: "<Skill> loses its {X} tag [and gains a
+						-- {Y} tag]" — full-conversion source removal (Q3=(a)).
+						-- Examples (unconditional, no `if` prefix):
+						--   tree_3 rea-32: "Reap loses its {Necrotic} tag and
+						--     gains a {Physical} tag instead." → Nec→Phys
+						-- Conditional / partial-state lines (sw1, srk21-25)
+						-- start with `if ` and are skipped by the outer guard.
+						-- Brace tokens `{Necrotic}` survive into the runtime
+						-- string verbatim, so type scanning uses substring
+						-- matches against TYPE_NAMES inside the captured span.
+						if not lo:match("^%s*if%s") then
+							-- "loses its X tag and gains a Y tag" — paired form
+							local lossSpan = lo:match("loses its[%s%S]-tag")
+							local gainSpan = lo:match("gains a[%s%S]-tag")
+							if lossSpan then
+								local lostType, gainedType
+								for _, dt in ipairs(TYPE_NAMES) do
+									if lossSpan:find(dt, 1, true) then lostType = dt break end
+								end
+								if gainSpan then
+									for _, dt in ipairs(TYPE_NAMES) do
+										if gainSpan:find(dt, 1, true) then gainedType = dt break end
+									end
+								end
+								if lostType and gainedType then
+									if isMultiConv then
+										t_insert(multiList, { lostType, gainedType })
+									else
+										convMap[lostType] = gainedType
+									end
+								elseif lostType then
+									-- Source removal only (no replacement named).
+									-- Drop the type from baseSet/addSet so it
+									-- doesn't surface in scaling tags.
+									baseSet[lostType] = nil
+									addSet[lostType] = nil
 								end
 							end
 						end
