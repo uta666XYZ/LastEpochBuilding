@@ -53,6 +53,7 @@ local TABLE_BORDER_THICKNESS = 1
 
 local LINK_COLOR = "^x4FA8FF"
 local LOADOUT_COLOR = "^x71E87D"
+local TREE_COLOR = "^xE8C871"
 local BOLD_COLOR = "^xFFFFFF"
 -- Bitmap font has no italic glyphs; using a faint contrast tint instead of
 -- a strong cyan keeps it readable next to body text.
@@ -113,7 +114,7 @@ local function parseSimpleBlock(line)
 		return { kind = "heading", level = level, text = text, slug = slugify(text) }
 	end
 	local imgAlt, imgURL = line:match("^!%[(.-)%]%((.-)%)%s*$")
-	if imgURL and imgURL:match("^https?://") then
+	if imgURL and imgURL ~= "" then
 		return { kind = "image", alt = imgAlt or "", url = imgURL }
 	end
 	local bullet = line:match("^[%-%*]%s+(.*)$")
@@ -152,6 +153,7 @@ function MarkdownRender.parse(text)
 	local i = 1
 	while i <= #lines do
 		local line = lines[i]
+		local startLine = i
 		if line:match("^```") then
 			-- Fenced code block
 			local body = {}
@@ -160,7 +162,7 @@ function MarkdownRender.parse(text)
 				body[#body + 1] = lines[i]
 				i = i + 1
 			end
-			nodes[#nodes + 1] = { kind = "code", lines = body }
+			nodes[#nodes + 1] = { kind = "code", lines = body, srcLine = startLine }
 			i = i + 1 -- skip closing fence (or EOF)
 		elseif line:match("^|") and isTableSeparator(lines[i + 1]) then
 			-- Table: header, separator, then rows
@@ -171,7 +173,7 @@ function MarkdownRender.parse(text)
 				rows[#rows + 1] = parseTableRow(lines[i])
 				i = i + 1
 			end
-			nodes[#nodes + 1] = { kind = "table", header = header, rows = rows }
+			nodes[#nodes + 1] = { kind = "table", header = header, rows = rows, srcLine = startLine }
 		elseif line:match("^>") then
 			-- Blockquote: consecutive `>` lines
 			local body = {}
@@ -179,9 +181,11 @@ function MarkdownRender.parse(text)
 				body[#body + 1] = lines[i]:match("^>%s?(.*)$") or ""
 				i = i + 1
 			end
-			nodes[#nodes + 1] = { kind = "quote", lines = body }
+			nodes[#nodes + 1] = { kind = "quote", lines = body, srcLine = startLine }
 		else
-			nodes[#nodes + 1] = parseSimpleBlock(line)
+			local node = parseSimpleBlock(line)
+			node.srcLine = startLine
+			nodes[#nodes + 1] = node
 			i = i + 1
 		end
 	end
@@ -217,10 +221,15 @@ local function tokenizeInline(str)
 			local close = str:find("]]", i + 2, true)
 			if close then
 				local inner = str:sub(i + 2, close - 1)
-				local target = inner:match("^[Ll]oadout%s*:%s*(.+)$") or inner:match("^[Tt]ree%s*:%s*(.+)$")
-				if target then
+				local loadoutTarget = inner:match("^[Ll]oadout%s*:%s*(.+)$")
+				local treeTarget = inner:match("^[Tt]ree%s*:%s*(.+)$")
+				if loadoutTarget then
 					flushPlain()
-					spans[#spans + 1] = { kind = "loadout", text = inner, target = target }
+					spans[#spans + 1] = { kind = "loadout", text = inner, target = loadoutTarget }
+					i = close + 2
+				elseif treeTarget then
+					flushPlain()
+					spans[#spans + 1] = { kind = "tree", text = inner, target = treeTarget }
 					i = close + 2
 				else
 					plain[#plain + 1] = c1
@@ -293,6 +302,7 @@ local function spanColor(kind)
 	if kind == "code" then return CODE_TEXT_COLOR end
 	if kind == "link" then return LINK_COLOR end
 	if kind == "loadout" then return LOADOUT_COLOR end
+	if kind == "tree" then return TREE_COLOR end
 	return nil
 end
 
@@ -309,9 +319,11 @@ local function renderSpans(spans, x, y, height, defaultColor)
 			DrawImage(nil, cursorX - 1, y, w + 2, height)
 		end
 		DrawString(cursorX, y, "LEFT", height, FONT, text)
-		if span.kind == "link" or span.kind == "loadout" then
+		if span.kind == "link" or span.kind == "loadout" or span.kind == "tree" then
 			if span.kind == "loadout" then
 				SetDrawColor(0.44, 0.91, 0.49)
+			elseif span.kind == "tree" then
+				SetDrawColor(0.91, 0.78, 0.44)
 			else
 				SetDrawColor(0.31, 0.66, 1.0)
 			end
@@ -327,7 +339,9 @@ local function renderSpans(spans, x, y, height, defaultColor)
 end
 
 -- Compute table column widths (in pixels). Width includes cell padding.
-local function tableColumnWidths(node)
+local function tableColumnWidths(node, lineHeight, cellPad)
+	lineHeight = lineHeight or LINE_HEIGHT_BODY
+	cellPad = cellPad or TABLE_CELL_PAD
 	local cols = #node.header
 	for _, row in ipairs(node.rows) do
 		if #row > cols then cols = #row end
@@ -336,14 +350,14 @@ local function tableColumnWidths(node)
 	for ci = 1, cols do widths[ci] = 0 end
 	local function consider(row)
 		for ci, cell in ipairs(row) do
-			local w = DrawStringWidth(LINE_HEIGHT_BODY, FONT, cell)
+			local w = DrawStringWidth(lineHeight, FONT, cell)
 			if w > widths[ci] then widths[ci] = w end
 		end
 	end
 	consider(node.header)
 	for _, row in ipairs(node.rows) do consider(row) end
 	for ci = 1, cols do
-		widths[ci] = widths[ci] + TABLE_CELL_PAD * 2
+		widths[ci] = widths[ci] + cellPad * 2
 	end
 	return widths, cols
 end
@@ -371,85 +385,104 @@ end
 -- Render the parsed nodes within (x, y, width). scrollY shifts content upward.
 -- Returns total content height, hotspot list, and an anchors map (slug -> y
 -- offset relative to content origin) for internal anchor link navigation.
-function MarkdownRender.render(nodes, x, y, width, scrollY)
+function MarkdownRender.render(nodes, x, y, width, scrollY, scale, scrollX)
 	scrollY = scrollY or 0
+	scrollX = scrollX or 0
+	scale = scale or 1.0
+	x = x - scrollX
+	local function S(v) return math.floor(v * scale + 0.5) end
+	local lineH = S(LINE_HEIGHT_BODY)
+	local headingSizes = { [1] = S(HEADING_SIZES[1]), [2] = S(HEADING_SIZES[2]), [3] = S(HEADING_SIZES[3]) }
+	local bulletIndent = S(BULLET_INDENT)
+	local paragraphGap = S(PARAGRAPH_GAP)
+	local headingGapTop = S(HEADING_GAP_TOP)
+	local headingGapBottom = S(HEADING_GAP_BOTTOM)
+	local codeLineH = S(CODE_LINE_HEIGHT)
+	local codePadding = S(CODE_PADDING)
+	local quoteIndent = S(QUOTE_INDENT)
+	local tableCellPad = S(TABLE_CELL_PAD)
+	local tocHeaderSize = S(TOC_HEADER_SIZE)
+	local tocLineH = S(TOC_LINE_HEIGHT)
+	local tocIndent = S(TOC_INDENT_PER_LEVEL)
+	local tocPad = S(TOC_PAD)
+	local imagePlaceholderH = S(IMAGE_PLACEHOLDER_H)
 	local cursorY = y - scrollY
 	local contentOriginY = y - scrollY
 	local hotspots = {}
 	local anchors = {}
 	for _, node in ipairs(nodes) do
 		if node.kind == "blank" then
-			cursorY = cursorY + LINE_HEIGHT_BODY
+			cursorY = cursorY + lineH
 		elseif node.kind == "heading" then
-			cursorY = cursorY + HEADING_GAP_TOP
-			local size = HEADING_SIZES[node.level] or HEADING_SIZES[3]
+			cursorY = cursorY + headingGapTop
+			local size = headingSizes[node.level] or headingSizes[3]
 			if node.slug and node.slug ~= "" then
 				anchors[node.slug] = cursorY - contentOriginY
 			end
 			local spans = tokenizeInline(node.text)
 			local _, h = renderSpans(spans, x, cursorY, size, HEADING_COLOR)
 			for _, hs in ipairs(h) do hotspots[#hotspots + 1] = hs end
-			cursorY = cursorY + size + HEADING_GAP_BOTTOM
+			cursorY = cursorY + size + headingGapBottom
 		elseif node.kind == "bullet" then
 			SetDrawColor(0.53, 0.53, 0.53)
-			DrawString(x, cursorY, "LEFT", LINE_HEIGHT_BODY, FONT, BULLET_GLYPH_COLOR .. "-")
+			DrawString(x, cursorY, "LEFT", lineH, FONT, BULLET_GLYPH_COLOR .. "-")
 			local spans = tokenizeInline(node.text)
-			local _, h = renderSpans(spans, x + BULLET_INDENT, cursorY, LINE_HEIGHT_BODY, BODY_COLOR)
+			local _, h = renderSpans(spans, x + bulletIndent, cursorY, lineH, BODY_COLOR)
 			for _, hs in ipairs(h) do hotspots[#hotspots + 1] = hs end
-			cursorY = cursorY + LINE_HEIGHT_BODY
+			cursorY = cursorY + lineH
 		elseif node.kind == "paragraph" then
 			local spans = tokenizeInline(node.text)
-			local _, h = renderSpans(spans, x, cursorY, LINE_HEIGHT_BODY, BODY_COLOR)
+			local _, h = renderSpans(spans, x, cursorY, lineH, BODY_COLOR)
 			for _, hs in ipairs(h) do hotspots[#hotspots + 1] = hs end
-			cursorY = cursorY + LINE_HEIGHT_BODY + PARAGRAPH_GAP
+			cursorY = cursorY + lineH + paragraphGap
 		elseif node.kind == "code" then
 			local lineCount = #node.lines
-			local blockH = lineCount * CODE_LINE_HEIGHT + CODE_PADDING * 2
+			local blockH = lineCount * codeLineH + codePadding * 2
 			SetDrawColor(CODE_BG[1], CODE_BG[2], CODE_BG[3])
 			DrawImage(nil, x, cursorY, width, blockH)
 			for li, codeLine in ipairs(node.lines) do
-				DrawString(x + CODE_PADDING, cursorY + CODE_PADDING + (li - 1) * CODE_LINE_HEIGHT,
-					"LEFT", CODE_LINE_HEIGHT, CODE_FONT, CODE_TEXT_COLOR .. codeLine)
+				DrawString(x + codePadding, cursorY + codePadding + (li - 1) * codeLineH,
+					"LEFT", codeLineH, CODE_FONT, CODE_TEXT_COLOR .. codeLine)
 			end
-			cursorY = cursorY + blockH + PARAGRAPH_GAP
+			cursorY = cursorY + blockH + paragraphGap
 		elseif node.kind == "quote" then
 			local lineCount = #node.lines
-			local blockH = lineCount * LINE_HEIGHT_BODY
+			local blockH = lineCount * lineH
 			SetDrawColor(QUOTE_BAR[1], QUOTE_BAR[2], QUOTE_BAR[3])
 			DrawImage(nil, x, cursorY, 3, blockH)
 			for li, qLine in ipairs(node.lines) do
 				local spans = tokenizeInline(qLine)
-				local _, hsList = renderSpans(spans, x + QUOTE_INDENT, cursorY + (li - 1) * LINE_HEIGHT_BODY,
-					LINE_HEIGHT_BODY, QUOTE_TEXT_COLOR)
+				local _, hsList = renderSpans(spans, x + quoteIndent, cursorY + (li - 1) * lineH,
+					lineH, QUOTE_TEXT_COLOR)
 				for _, hs in ipairs(hsList) do hotspots[#hotspots + 1] = hs end
 			end
-			cursorY = cursorY + blockH + PARAGRAPH_GAP
+			cursorY = cursorY + blockH + paragraphGap
 		elseif node.kind == "toc" then
 			local headings = nodes.headings or {}
 			if #headings > 0 then
-				local blockH = TOC_PAD * 2 + TOC_HEADER_SIZE + 2 + #headings * TOC_LINE_HEIGHT
+				local blockH = tocPad * 2 + tocHeaderSize + 2 + #headings * tocLineH
 				SetDrawColor(0.08, 0.10, 0.14)
 				DrawImage(nil, x, cursorY, width, blockH)
 				SetDrawColor(0.30, 0.35, 0.45)
 				DrawImage(nil, x, cursorY, 3, blockH)
-				DrawString(x + TOC_PAD, cursorY + TOC_PAD, "LEFT", TOC_HEADER_SIZE, FONT,
+				DrawString(x + tocPad, cursorY + tocPad, "LEFT", tocHeaderSize, FONT,
 					HEADING_COLOR .. TOC_HEADER_TEXT)
-				local lineY = cursorY + TOC_PAD + TOC_HEADER_SIZE + 2
+				local lineY = cursorY + tocPad + tocHeaderSize + 2
 				for _, hn in ipairs(headings) do
-					local indent = (math.max(hn.level, 1) - 1) * TOC_INDENT_PER_LEVEL
+					local indent = (math.max(hn.level, 1) - 1) * tocIndent
 					local label = LINK_COLOR .. hn.text
-					local lineX = x + TOC_PAD + indent
-					local w = DrawStringWidth(TOC_LINE_HEIGHT, FONT, label)
-					DrawString(lineX, lineY, "LEFT", TOC_LINE_HEIGHT, FONT, label)
+					local lineX = x + tocPad + indent
+					local w = DrawStringWidth(tocLineH, FONT, label)
+					DrawString(lineX, lineY, "LEFT", tocLineH, FONT, label)
 					SetDrawColor(0.31, 0.66, 1.0)
-					DrawImage(nil, lineX, lineY + TOC_LINE_HEIGHT - 1, w, 1)
+					DrawImage(nil, lineX, lineY + tocLineH - 1, w, 1)
 					hotspots[#hotspots + 1] = {
-						x = lineX, y = lineY, w = w, h = TOC_LINE_HEIGHT,
+						x = lineX, y = lineY, w = w, h = tocLineH,
 						kind = "link", target = "#" .. hn.slug,
 					}
-					lineY = lineY + TOC_LINE_HEIGHT
+					lineY = lineY + tocLineH
 				end
-				cursorY = cursorY + blockH + PARAGRAPH_GAP
+				cursorY = cursorY + blockH + paragraphGap
 			end
 		elseif node.kind == "image" then
 			local entry = ImageCache.Get(node.url)
@@ -459,13 +492,13 @@ function MarkdownRender.render(nodes, x, y, width, scrollY)
 				SetDrawColor(1, 1, 1)
 				DrawImage(entry.handle, x, cursorY, dispW, dispH)
 			elseif entry and entry.state == "error" then
-				dispW, dispH = width, LINE_HEIGHT_BODY * 2
+				dispW, dispH = width, lineH * 2
 				SetDrawColor(0.20, 0.10, 0.10)
 				DrawImage(nil, x, cursorY, dispW, dispH)
-				DrawString(x + 8, cursorY + 4, "LEFT", LINE_HEIGHT_BODY, FONT,
+				DrawString(x + 8, cursorY + 4, "LEFT", lineH, FONT,
 					"^xFF8888[image error] " .. (entry.errMsg or "unknown") .. "  " .. node.url)
 			else
-				dispW, dispH = width, IMAGE_PLACEHOLDER_H
+				dispW, dispH = width, imagePlaceholderH
 				SetDrawColor(0.12, 0.12, 0.14)
 				DrawImage(nil, x, cursorY, dispW, dispH)
 				SetDrawColor(0.30, 0.30, 0.35)
@@ -473,12 +506,12 @@ function MarkdownRender.render(nodes, x, y, width, scrollY)
 				DrawImage(nil, x, cursorY + dispH - 1, dispW, 1)
 				DrawImage(nil, x, cursorY, 1, dispH)
 				DrawImage(nil, x + dispW - 1, cursorY, 1, dispH)
-				DrawString(x + 8, cursorY + 4, "LEFT", LINE_HEIGHT_BODY, FONT,
+				DrawString(x + 8, cursorY + 4, "LEFT", lineH, FONT,
 					"^x888888Loading image... " .. node.url)
 			end
-			cursorY = cursorY + dispH + PARAGRAPH_GAP
+			cursorY = cursorY + dispH + paragraphGap
 		elseif node.kind == "table" then
-			local widths, cols = tableColumnWidths(node)
+			local widths, cols = tableColumnWidths(node, lineH, tableCellPad)
 			local totalW = 0
 			for ci = 1, cols do totalW = totalW + widths[ci] end
 			-- Top border
@@ -490,10 +523,10 @@ function MarkdownRender.render(nodes, x, y, width, scrollY)
 			for ci = 1, cols do
 				local cell = node.header[ci] or ""
 				local spans = tokenizeInline(cell)
-				renderSpans(spans, cx + TABLE_CELL_PAD, cursorY, LINE_HEIGHT_BODY, TABLE_HEADER_COLOR)
+				renderSpans(spans, cx + tableCellPad, cursorY, lineH, TABLE_HEADER_COLOR)
 				cx = cx + widths[ci]
 			end
-			cursorY = cursorY + LINE_HEIGHT_BODY
+			cursorY = cursorY + lineH
 			-- Header separator
 			SetDrawColor(TABLE_BORDER[1], TABLE_BORDER[2], TABLE_BORDER[3])
 			DrawImage(nil, x, cursorY, totalW, TABLE_BORDER_THICKNESS)
@@ -504,17 +537,17 @@ function MarkdownRender.render(nodes, x, y, width, scrollY)
 				for ci = 1, cols do
 					local cell = row[ci] or ""
 					local spans = tokenizeInline(cell)
-					local _, hsList = renderSpans(spans, cx + TABLE_CELL_PAD, cursorY,
-						LINE_HEIGHT_BODY, BODY_COLOR)
+					local _, hsList = renderSpans(spans, cx + tableCellPad, cursorY,
+						lineH, BODY_COLOR)
 					for _, hs in ipairs(hsList) do hotspots[#hotspots + 1] = hs end
 					cx = cx + widths[ci]
 				end
-				cursorY = cursorY + LINE_HEIGHT_BODY
+				cursorY = cursorY + lineH
 			end
 			-- Bottom border
 			SetDrawColor(TABLE_BORDER[1], TABLE_BORDER[2], TABLE_BORDER[3])
 			DrawImage(nil, x, cursorY, totalW, TABLE_BORDER_THICKNESS)
-			cursorY = cursorY + TABLE_BORDER_THICKNESS + PARAGRAPH_GAP
+			cursorY = cursorY + TABLE_BORDER_THICKNESS + paragraphGap
 		end
 	end
 	return cursorY - (y - scrollY), hotspots, anchors
@@ -522,44 +555,98 @@ end
 
 -- Compute content height + heading anchors map without drawing.
 -- Used for scrollbar sizing and `[label](#slug)` navigation.
-function MarkdownRender.measure(nodes, availW)
+local function inlineWidth(spans, height)
+	local w = 0
+	for _, span in ipairs(spans) do
+		w = w + DrawStringWidth(height, FONT, span.text)
+	end
+	return w
+end
+
+function MarkdownRender.measure(nodes, availW, scale)
 	availW = availW or IMAGE_MAX_W
+	scale = scale or 1.0
+	local function S(v) return math.floor(v * scale + 0.5) end
+	local lineH = S(LINE_HEIGHT_BODY)
+	local headingSizes = { [1] = S(HEADING_SIZES[1]), [2] = S(HEADING_SIZES[2]), [3] = S(HEADING_SIZES[3]) }
+	local bulletIndent = S(BULLET_INDENT)
+	local paragraphGap = S(PARAGRAPH_GAP)
+	local headingGapTop = S(HEADING_GAP_TOP)
+	local headingGapBottom = S(HEADING_GAP_BOTTOM)
+	local codeLineH = S(CODE_LINE_HEIGHT)
+	local codePadding = S(CODE_PADDING)
+	local quoteIndent = S(QUOTE_INDENT)
+	local tableCellPad = S(TABLE_CELL_PAD)
+	local tocHeaderSize = S(TOC_HEADER_SIZE)
+	local tocLineH = S(TOC_LINE_HEIGHT)
+	local tocIndent = S(TOC_INDENT_PER_LEVEL)
+	local tocPad = S(TOC_PAD)
+	local imagePlaceholderH = S(IMAGE_PLACEHOLDER_H)
 	local h = 0
+	local maxW = 0
 	local anchors = {}
-	for _, node in ipairs(nodes) do
+	local nodeYs = {}
+	for idx, node in ipairs(nodes) do
+		nodeYs[idx] = h
 		if node.kind == "blank" then
-			h = h + LINE_HEIGHT_BODY
+			h = h + lineH
 		elseif node.kind == "heading" then
-			local size = HEADING_SIZES[node.level] or HEADING_SIZES[3]
-			h = h + HEADING_GAP_TOP
+			local size = headingSizes[node.level] or headingSizes[3]
+			h = h + headingGapTop
 			if node.slug and node.slug ~= "" then anchors[node.slug] = h end
-			h = h + size + HEADING_GAP_BOTTOM
-		elseif node.kind == "bullet" or node.kind == "paragraph" then
-			h = h + LINE_HEIGHT_BODY + PARAGRAPH_GAP
+			h = h + size + headingGapBottom
+			local w = inlineWidth(tokenizeInline(node.text), size)
+			if w > maxW then maxW = w end
+		elseif node.kind == "bullet" then
+			h = h + lineH + paragraphGap
+			local w = bulletIndent + inlineWidth(tokenizeInline(node.text), lineH)
+			if w > maxW then maxW = w end
+		elseif node.kind == "paragraph" then
+			h = h + lineH + paragraphGap
+			local w = inlineWidth(tokenizeInline(node.text), lineH)
+			if w > maxW then maxW = w end
 		elseif node.kind == "code" then
-			h = h + #node.lines * CODE_LINE_HEIGHT + CODE_PADDING * 2 + PARAGRAPH_GAP
+			h = h + #node.lines * codeLineH + codePadding * 2 + paragraphGap
+			for _, codeLine in ipairs(node.lines) do
+				local w = DrawStringWidth(codeLineH, CODE_FONT, codeLine) + codePadding * 2
+				if w > maxW then maxW = w end
+			end
 		elseif node.kind == "quote" then
-			h = h + #node.lines * LINE_HEIGHT_BODY + PARAGRAPH_GAP
+			h = h + #node.lines * lineH + paragraphGap
+			for _, qLine in ipairs(node.lines) do
+				local w = quoteIndent + inlineWidth(tokenizeInline(qLine), lineH)
+				if w > maxW then maxW = w end
+			end
 		elseif node.kind == "toc" then
 			local hs = nodes.headings or {}
 			if #hs > 0 then
-				h = h + TOC_PAD * 2 + TOC_HEADER_SIZE + 2 + #hs * TOC_LINE_HEIGHT + PARAGRAPH_GAP
+				h = h + tocPad * 2 + tocHeaderSize + 2 + #hs * tocLineH + paragraphGap
+				for _, hn in ipairs(hs) do
+					local indent = (math.max(hn.level, 1) - 1) * tocIndent
+					local w = tocPad + indent + DrawStringWidth(tocLineH, FONT, hn.text) + tocPad
+					if w > maxW then maxW = w end
+				end
 			end
 		elseif node.kind == "image" then
 			local entry = ImageCache.Get(node.url)
 			if entry and entry.state == "loaded" then
-				local _, dispH = imageDisplaySize(entry.w, entry.h, availW)
-				h = h + dispH + PARAGRAPH_GAP
+				local dispW, dispH = imageDisplaySize(entry.w, entry.h, availW)
+				h = h + dispH + paragraphGap
+				if dispW > maxW then maxW = dispW end
 			elseif entry and entry.state == "error" then
-				h = h + LINE_HEIGHT_BODY * 2 + PARAGRAPH_GAP
+				h = h + lineH * 2 + paragraphGap
 			else
-				h = h + IMAGE_PLACEHOLDER_H + PARAGRAPH_GAP
+				h = h + imagePlaceholderH + paragraphGap
 			end
 		elseif node.kind == "table" then
-			h = h + TABLE_BORDER_THICKNESS * 3 + LINE_HEIGHT_BODY + #node.rows * LINE_HEIGHT_BODY + PARAGRAPH_GAP
+			h = h + TABLE_BORDER_THICKNESS * 3 + lineH + #node.rows * lineH + paragraphGap
+			local widths = tableColumnWidths(node, lineH, tableCellPad)
+			local totalW = 0
+			for _, w in ipairs(widths) do totalW = totalW + w end
+			if totalW > maxW then maxW = totalW end
 		end
 	end
-	return h, anchors
+	return h, anchors, maxW, nodeYs
 end
 
 return MarkdownRender

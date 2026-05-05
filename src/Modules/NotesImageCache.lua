@@ -9,7 +9,28 @@ local ImageCache = {}
 
 local CACHE_DIR = "Data/NotesImageCache/"
 local MAX_BYTES = 4 * 1024 * 1024
+local MIN_BYTES = 32
 local DIR_INITIALIZED = false
+
+local function looksLikeImage(path)
+	local f = io.open(path, "rb")
+	if not f then return false end
+	local head = f:read(12) or ""
+	f:close()
+	if #head < 4 then return false end
+	-- PNG
+	if head:sub(1, 8) == "\137PNG\r\n\26\n" then return true end
+	-- JPEG (FF D8 FF)
+	if head:byte(1) == 0xFF and head:byte(2) == 0xD8 and head:byte(3) == 0xFF then return true end
+	-- GIF
+	if head:sub(1, 6) == "GIF87a" or head:sub(1, 6) == "GIF89a" then return true end
+	-- BMP
+	if head:sub(1, 2) == "BM" then return true end
+	-- TGA: no magic; accept by extension only
+	local ext = path:match("%.([%w]+)$")
+	if ext and ext:lower() == "tga" then return true end
+	return false
+end
 
 -- url -> { state="pending"|"loaded"|"error", handle, w, h, errMsg, path }
 local entries = {}
@@ -59,10 +80,39 @@ local function loadHandle(entry)
 	end
 end
 
+-- Resolve a non-HTTP image reference to an absolute file path.
+-- Supports `file:///abs/path`, absolute paths (`C:\...` / `/...`), and
+-- relative paths resolved against the LEB script root so showcase templates
+-- can reference bundled assets via e.g. `Data/NotesImages/foo.png`.
+local function resolveLocalPath(ref)
+	local p = ref:gsub("^file:///", ""):gsub("^file://", "")
+	if p:match("^[A-Za-z]:[/\\]") or p:match("^[/\\]") then
+		return p
+	end
+	local base = GetScriptPath() or ""
+	if base ~= "" and not base:match("[/\\]$") then base = base .. "/" end
+	return base .. p
+end
+
 function ImageCache.Get(url)
 	if not url or url == "" then return nil end
 	local entry = entries[url]
 	if entry then return entry end
+
+	-- Local file: load directly, skip the download/cache path.
+	if not url:match("^https?://") then
+		entry = { state = "pending", path = resolveLocalPath(url) }
+		entries[url] = entry
+		local f = io.open(entry.path, "rb")
+		if not f then
+			entry.state = "error"
+			entry.errMsg = "Local file not found: " .. entry.path
+			return entry
+		end
+		f:close()
+		loadHandle(entry)
+		return entry
+	end
 
 	ensureDir()
 	local hash = fnv1a(url)
@@ -80,30 +130,38 @@ function ImageCache.Get(url)
 		return entry
 	end
 
-	-- Otherwise download asynchronously.
-	launch:DownloadPage(url, function(response, errMsg)
-		if errMsg or not response or not response.body or #response.body == 0 then
+	-- Otherwise download asynchronously. Use DownloadFile so binary bytes never
+	-- cross the subscript IPC boundary as a Lua string (which would truncate
+	-- at the first NUL — PNG/JPG/GIF all contain embedded NULs).
+	launch:DownloadFile(url, path, function(errMsg, bytes)
+		if errMsg then
 			entry.state = "error"
-			entry.errMsg = errMsg or "Empty response"
+			entry.errMsg = errMsg
 			notify()
 			return
 		end
-		if #response.body > MAX_BYTES then
+		if not bytes or bytes < MIN_BYTES then
+			os.remove(path)
+			entry.state = "error"
+			entry.errMsg = string.format("Download too small (%d bytes) — likely a redirect or HTML error page", bytes or 0)
+			notify()
+			return
+		end
+		if bytes > MAX_BYTES then
+			os.remove(path)
 			entry.state = "error"
 			entry.errMsg = string.format("Image too large (%d KB, max %d KB)",
-				math.floor(#response.body / 1024), math.floor(MAX_BYTES / 1024))
+				math.floor(bytes / 1024), math.floor(MAX_BYTES / 1024))
 			notify()
 			return
 		end
-		local out = io.open(path, "wb")
-		if not out then
+		if not looksLikeImage(path) then
+			os.remove(path)
 			entry.state = "error"
-			entry.errMsg = "Could not write cache file"
+			entry.errMsg = "Downloaded data is not a recognized image (PNG/JPG/GIF/BMP/TGA)"
 			notify()
 			return
 		end
-		out:write(response.body)
-		out:close()
 		loadHandle(entry)
 		notify()
 	end)

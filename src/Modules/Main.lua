@@ -682,6 +682,9 @@ function main:LoadSettings(ignoreBuild)
 				if node.attrib.disableDevAutoSave then
 					self.disableDevAutoSave = node.attrib.disableDevAutoSave == "true"
 				end
+				if node.attrib.notesFontScale then
+					self.notesFontScale = tonumber(node.attrib.notesFontScale) or 1.0
+				end
 			end
 		end
 	end
@@ -785,6 +788,7 @@ function main:SaveSettings()
 		POESESSID = self.POESESSID,
 		invertSliderScrollDirection = tostring(self.invertSliderScrollDirection),
 		disableDevAutoSave = tostring(self.disableDevAutoSave),
+		notesFontScale = tostring(self.notesFontScale or 1.0),
 	} })
 	local res, errMsg = common.xml.SaveXMLFile(setXML, self.userPath.."Settings.xml")
 	if not res then
