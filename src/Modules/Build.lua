@@ -283,9 +283,14 @@ function buildMode:Init(dbFileName, buildName, buildXML, convertBuild)
 		{ stat = "ManaLeechGainRate", label = "Mana Leech/On Hit Rate", fmt = ".1f", color = colorCodes.MANA, compPercent = true },
 		{ stat = "ManaLeechGainPerHit", label = "Mana Leech/Gain per Hit", fmt = ".1f", color = colorCodes.MANA, compPercent = true },
 		{ },
-		{ stat = "Ward", label = "Ward", fmt = "d", color = colorCodes.WARD, compPercent = true },
+		-- @leb-regression-guard: sidebar-ward-stat-removal
+		-- The sidebar intentionally lists ONLY StableWard here. The raw `Ward`
+		-- value and `NetWardRegen` row were removed because they duplicated
+		-- StableWard / Net Recovery already shown elsewhere and confused users.
+		-- Re-adding either row breaks TestBuilds snapshots that locked the
+		-- post-removal PlayerStat set.
+		-- Test: spec/System/TestSidebarWardStats_spec.lua
 		{ stat = "StableWard", label = "Stable Ward", fmt = "d", color = colorCodes.WARD, compPercent = true },
-		{ stat = "NetWardRegen", label = "Net Ward Recovery", fmt = "+.1f", color = colorCodes.WARD },
 		{ },
 		{ stat = "TotalDegen", label = "Total Degen", fmt = ".1f", lowerIsBetter = true },
 		{ stat = "TotalNetRegen", label = "Total Net Recovery", fmt = "+.1f" },

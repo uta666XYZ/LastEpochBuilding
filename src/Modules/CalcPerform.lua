@@ -300,13 +300,39 @@ local function doActorAttribsConditions(env, actor)
 	}
 	for _, conv in ipairs(attrConversions) do
 		output[conv.dst] = round(calcLib.val(modDB, conv.dst))
+		conv.directGrant = output[conv.dst]
 	end
 	for _, conv in ipairs(attrConversions) do
 		local pct = modDB:Sum("BASE", nil, conv.modName)
+		conv.convPct = pct or 0
+		conv.convSrcValue = output[conv.src]
 		if pct and pct > 0 then
 			local converted = round(output[conv.src] * pct / 100)
+			conv.convertedAmount = converted
 			output[conv.dst] = output[conv.dst] + converted
 			output[conv.src] = output[conv.src] - converted
+		else
+			conv.convertedAmount = 0
+		end
+	end
+	-- Build breakdowns for converted attributes (Madness/Rampancy/Brutality/Guile/Apathy)
+	-- so the Calcs tab tooltip exposes direct grants + conversion contribution.
+	if breakdown then
+		for _, conv in ipairs(attrConversions) do
+			if output[conv.dst] ~= 0 or conv.convertedAmount ~= 0 or conv.directGrant ~= 0 then
+				local lines = {}
+				if conv.directGrant ~= 0 then
+					t_insert(lines, s_format("%g ^8(direct grants of %s)", conv.directGrant, conv.dst))
+				end
+				if conv.convertedAmount ~= 0 then
+					t_insert(lines, s_format("+ %g ^8(%g%% of %s [%g] converted to %s)",
+						conv.convertedAmount, conv.convPct, conv.src, conv.convSrcValue, conv.dst))
+				end
+				if #lines > 0 then
+					t_insert(lines, s_format("= %g", output[conv.dst]))
+					breakdown[conv.dst] = lines
+				end
+			end
 		end
 	end
 

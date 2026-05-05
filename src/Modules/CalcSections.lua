@@ -694,7 +694,7 @@ return {
 			table.insert(rows, { label = AttributesColored[i], haveOutput = stat, { format = "{0:output:" .. stat .. "}", { breakdown = stat }, { modName = stat }, }, })
 			local conv = s4Pair[stat]
 			if conv then
-				table.insert(rows, { label = conv.color .. "  " .. conv.stat, haveOutput = conv.stat, { format = "{0:output:" .. conv.stat .. "}", }, })
+				table.insert(rows, { label = conv.color .. "  " .. conv.stat, haveOutput = conv.stat, { format = "{0:output:" .. conv.stat .. "}", { breakdown = conv.stat }, { modName = conv.stat }, }, })
 			end
 		end
 		return rows

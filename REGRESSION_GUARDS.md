@@ -815,6 +815,31 @@ that documents the source of truth at the data site itself.
 
 **Establishing commit:** `<unset; bump after first commit on this branch>`
 
+### `sidebar-ward-stat-removal`
+
+The Build.lua sidebar `displayStats` list was trimmed to drop the raw
+`Ward` row and the `NetWardRegen` row. Both duplicated information
+already exposed by `StableWard` and the Net Recovery breakdown rows
+(NetLifeRegen / NetManaRegen / TotalNetRegen) and confused users.
+
+After removal, TestBuilds snapshots (BjqdaPzE Sorcerer, o3Zlpkxd
+Necromancer) were regenerated and the corresponding `<PlayerStat
+stat="Ward"...>` / `<PlayerStat stat="NetWardRegen"...>` lines no
+longer appear. A regression here re-adds either row to the sidebar
+and silently drifts every snapshot.
+
+| Site | File | What it does |
+|---|---|---|
+| sidebar config | `src/Modules/Build.lua` (`displayStats`, around the StableWard row) | only `StableWard` row remains |
+| 1.4 sample snapshot | `spec/TestBuilds/1.4/BjqdaPzE lv99 Sorcerer.xml` | no Ward / NetWardRegen PlayerStat |
+| 1.4 sample snapshot | `spec/TestBuilds/1.4/o3Zlpkxd lv98 Necromancer.xml` | no Ward / NetWardRegen PlayerStat |
+
+**Spec:** `spec/System/TestSidebarWardStats_spec.lua`
+- "Build.lua sidebar displayStats does not declare stat=\"Ward\""
+- "TestBuilds snapshots reflect the removal (no Ward / NetWardRegen PlayerStat lines)"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
 ## Adding a new guard
 
 1. Above the fix in source, add a comment block:
