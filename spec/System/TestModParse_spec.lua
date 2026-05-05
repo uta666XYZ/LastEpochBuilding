@@ -137,7 +137,12 @@ describe("TestModParse", function()
         build.skillsTab:SelSkill(1, "Fireball")
         runCallback("OnFrame")
 
-        assert.are.equals(53, build.calcsTab.calcsOutput.Mana)
+        -- @leb-regression-guard: int-truncate-life-mana
+        -- Default Acolyte lv1: baseMana 50 + manaPerLevel 0.50506*1 + 2*Att(1) = 52.5
+        -- → m_floor = 52 (LE in-game truncates int, see commit 153d4e455).
+        -- Was 53 under upstream's round(); LEB switched to floor for in-game parity.
+        -- If this assertion flips back to 53, output.Mana truncation regressed.
+        assert.are.equals(52, build.calcsTab.calcsOutput.Mana)
         assert.are.equals(40, build.calcsTab.mainEnv.player.mainSkill.skillModList:Sum("INC", nil, "FireDamage"))
 
         build.configTab.input.customMods = "+900 maximum mana\n\z+40% Increased fire damage. This effect is doubled if you have 300 or more maximum mana."
@@ -145,7 +150,7 @@ describe("TestModParse", function()
         build.buildFlag = true
         runCallback("OnFrame")
 
-        assert.are.equals(953, build.calcsTab.calcsOutput.Mana)
+        assert.are.equals(952, build.calcsTab.calcsOutput.Mana)
         assert.are.equals(80, build.calcsTab.mainEnv.player.mainSkill.skillModList:Sum("INC", nil, "FireDamage"))
     end)
 
@@ -584,6 +589,72 @@ describe("TestModParse", function()
             assert.are.equals(0, build.configTab.modList:Sum("INC", nil, "Life"))
         end)
 
+        -- @leb-regression-guard: idol-altar-not-idol-slot
+        -- Two-part guard:
+        --  (1) CalcSetup must NOT classify the "Idol Altar" equipment slot as
+        --      an idol slot (the corrupted altar feeds
+        --      CorruptedNonIdolItemsEquipped, not CorruptedIdolItemsEquipped).
+        --  (2) CalcPerform must publish CorruptedItemsEquipped /
+        --      CorruptedNonIdolItemsEquipped / CorruptedIdolItemsEquipped onto
+        --      `output` BEFORE the Attributes loop, so StatThreshold tags
+        --      (resolved via ModStore:GetStat reading actor.output[stat])
+        --      observe the correct count and the
+        --      "+N to All Attributes with at least N Corrupted non-Idol Items
+        --      equipped" affix (Shroud of Obscurity) trips.
+        -- Establishing build: Qqwv73q2 lv62 Warlock — LEB Vit 35 → 49 after fix
+        -- (still differs from LETools 44 by remaining CompleteSetCount bug B).
+        it("Corrupted Idol Altar counts as non-Idol for CorruptedNonIdolItemsEquipped", function()
+            -- Character must clear LevelReq filter (CalcSetup nulls items
+            -- whose requirements.level > characterLevel).
+            build.characterLevel = 99
+
+            -- Equip a corrupted Idol Altar; nothing else corrupted.
+            build.itemsTab:CreateDisplayItemFromRaw([[Rarity: RARE
+            Test Corrupted Altar
+            Archaic Altar
+            Unique ID: 123
+            LevelReq: 50
+            Implicits: 0
+            Corrupted]])
+            -- AddDisplayItem with noAutoEquip then manually equip into the
+            -- Idol Altar slot (auto-equip relies on slot:IsShown() which
+            -- returns false in headless tests).
+            build.itemsTab:AddDisplayItem(true)
+            local altarItemId
+            for id, it in pairs(build.itemsTab.items) do
+                if it.baseName == "Archaic Altar" then altarItemId = id; break end
+            end
+            assert.is_not_nil(altarItemId, "altar item should be in items list")
+            assert.is_not_nil(build.itemsTab.slots["Idol Altar"], "Idol Altar slot should exist")
+            build.itemsTab.slots["Idol Altar"]:SetSelItemId(altarItemId)
+            build.itemsTab:PopulateSlots()
+
+            -- Inject the Shroud-style threshold mod via customMods so we don't
+            -- depend on a specific unique's affix roll.
+            build.configTab.input.customMods =
+                "+14 to All Attributes with at least 1 Corrupted non-Idol Items equipped"
+            build.configTab:BuildModList()
+            build.buildFlag = true
+            runCallback("OnFrame")
+
+            -- (1) Counter classification: altar in non-idol bucket.
+            assert.are.equals(1, build.calcsTab.mainOutput.CorruptedNonIdolItemsEquipped)
+            assert.are.equals(0, build.calcsTab.mainOutput.CorruptedIdolItemsEquipped)
+            assert.are.equals(1, build.calcsTab.mainOutput.CorruptedItemsEquipped)
+
+            -- (2) StatThreshold trips — base Vit (no class) 0 + threshold +14 = 14.
+            assert.are.equals(14, build.calcsTab.mainOutput.Vit)
+
+            -- (3) Negative case: with no corrupted items the threshold must NOT
+            -- trip. Remove the altar and rebuild — Vit drops back to base.
+            build.itemsTab.slots["Idol Altar"]:SetSelItemId(0)
+            build.itemsTab:PopulateSlots()
+            build.buildFlag = true
+            runCallback("OnFrame")
+            assert.are.equals(0, build.calcsTab.mainOutput.CorruptedNonIdolItemsEquipped or 0)
+            assert.are.equals(0, build.calcsTab.mainOutput.Vit)
+        end)
+
         it("maxHealth uses floor (truncation), matching in-game (1258 * 1.25 = 1572)", function()
             -- ShutFackUp lv85 Spellblade scenario reduced to customMods:
             -- 110 (default base) + 1148 = 1258 base, * 1.25 INC = 1572.5
@@ -594,5 +665,35 @@ describe("TestModParse", function()
             runCallback("OnFrame")
             assert.are.equals(1572, build.calcsTab.calcsOutput.Life)
         end)
+    end)
+
+    -- @leb-regression-guard: regen-pct-shorthand-inc
+    -- Locks in ModParser BASE_MORE classification for ManaRegen/LifeRegen.
+    -- LE in-game text shorthand "+N% Mana Regen" / "+N% Health Regen" (without
+    -- "increased") must be parsed as INC, matching the existing Life/Mana/Ward
+    -- exception. The game's authoritative localized_master.json affix 1015
+    -- affixProperties[1] (Mana Regen) is modifierType=1 (INC) with extraRolls
+    -- stored as 0.08-0.09 (= 8-9% multiplier). Without this, Keplahan's Cryolith
+    -- Reforged ring sealed affix +(8-9)% Mana Regen is treated as flat +8 BASE,
+    -- causing ~+15.5/s drift (Qqwv73q2: LE 16.72 vs LEB 32.20 prior to fix).
+    -- Establishing commit: <unset; bump after first commit on this branch>.
+    it("LE shorthand '+N% Mana Regen' parses as INC", function()
+        build.configTab.input.customMods = "+8% Mana Regen"
+        build.configTab:BuildModList()
+        runCallback("OnFrame")
+        assert.are.equals(0, build.configTab.modList:Sum("BASE", nil, "ManaRegen"),
+            "Bare '+8% Mana Regen' must NOT add flat BASE Mana Regen")
+        assert.are.equals(8, build.configTab.modList:Sum("INC", nil, "ManaRegen"),
+            "Bare '+8% Mana Regen' must contribute +8% INC Mana Regen")
+    end)
+
+    it("LE shorthand '+N% Health Regen' parses as INC", function()
+        build.configTab.input.customMods = "+12% Health Regen"
+        build.configTab:BuildModList()
+        runCallback("OnFrame")
+        assert.are.equals(0, build.configTab.modList:Sum("BASE", nil, "LifeRegen"),
+            "Bare '+12% Health Regen' must NOT add flat BASE Life Regen")
+        assert.are.equals(12, build.configTab.modList:Sum("INC", nil, "LifeRegen"),
+            "Bare '+12% Health Regen' must contribute +12% INC Life Regen")
     end)
 end)

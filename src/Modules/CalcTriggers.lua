@@ -886,7 +886,7 @@ function calcs.triggers(env, actor)
 			config.triggerName = config.triggerName or triggerName or uniqueName or skillName
 			config.triggerChance = config.triggerChance or (actor.mainSkill.activeEffect.srcInstance and actor.mainSkill.activeEffect.srcInstance.triggerChance)
 			if triggerOnHit then
-				config.triggerName = triggerOnHit
+				config.triggerName = (data.skills[triggerOnHit] and data.skills[triggerOnHit].name) or triggerOnHit
 			end
 			local triggerHandler = config.customHandler or defaultTriggerHandler
 		    triggerHandler(env, config)

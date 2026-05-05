@@ -441,20 +441,26 @@ function ItemClass:ParseRaw(raw, rarity, highQuality)
 					self.crafted = true
 				elseif specName == "Implicit" then
 					self.implicit = true
-				elseif specName == "Prefix" then
-					local range, affix = specVal:match("{range:([%d.]+)}(.+)")
-					range = range or ((affix or specVal) ~= "None" and main.defaultItemAffixQuality)
-					t_insert(self.prefixes, {
-						modId = affix or specVal,
+				elseif specName == "Prefix" or specName == "Suffix" then
+					-- @leb-regression-guard: affix-kind-roundtrip (read side)
+					-- Mirror of BuildRaw's affixPrefix. Strip optional {kind:...}
+					-- BEFORE {range:...} and forward to entry.kind so Craft can
+					-- route into sealed/primordial/corrupted buckets.
+					-- Test: TestItemParse_spec "Affix kind tag round-trips...".
+					local kind, rest = specVal:match("^{kind:([%a]+)}(.+)$")
+					if not kind then rest = specVal end
+					local range, affix = rest:match("{range:([%d.]+)}(.+)")
+					range = range or ((affix or rest) ~= "None" and main.defaultItemAffixQuality)
+					local entry = {
+						modId = affix or rest,
 						range = tonumber(range),
-					})
-				elseif specName == "Suffix" then
-					local range, affix = specVal:match("{range:([%d.]+)}(.+)")
-					range = range or ((affix or specVal) ~= "None" and main.defaultItemAffixQuality)
-					t_insert(self.suffixes, {
-						modId = affix or specVal,
-						range = tonumber(range),
-					})
+						kind = kind,
+					}
+					if specName == "Prefix" then
+						t_insert(self.prefixes, entry)
+					else
+						t_insert(self.suffixes, entry)
+					end
 				elseif specName == "Implicits" then
 					implicitLines = specToNumber(specVal) or 0
 					gameModeStage = "EXPLICIT"
@@ -737,6 +743,13 @@ function ItemClass:ParseRaw(raw, rarity, highQuality)
 							name  = e.set.name,
 							bonus = e.set.bonus,
 						}
+						-- Set items override the base type's level requirement
+						-- (e.g. Ruby Fang Aegis = lvl 55 even though Ironglass
+						-- Shield base = 72). Use set entry's req.level when
+						-- available so LevelReq-filter / tooltip match in-game.
+						if e.req and e.req.level then
+							self.requirements.level = e.req.level
+						end
 						break
 					end
 				end
@@ -760,8 +773,59 @@ function ItemClass:ParseRaw(raw, rarity, highQuality)
 						name  = e.set.name,
 						bonus = e.set.bonus,
 					}
+					if e.req and e.req.level then
+						self.requirements.level = e.req.level
+					end
 					break
 				end
+			end
+		end
+	end
+	-- For items already saved as SET in raw text (XML stores Rarity: SET +
+	-- LevelReq from base type), override LevelReq with the set entry's req.level
+	-- when available. Set items use a different (typically lower) level
+	-- requirement than their base type — e.g. Ruby Fang Aegis = lvl 55 even
+	-- though its Ironglass Shield base = lvl 72. Without this override the
+	-- LevelReq filter in CalcSetup excludes equipped set items the character
+	-- can actually use, dropping their stats (Block Chance, etc.).
+	if self.rarity == "SET" and self.title then
+		local setData = loadItemSetData()
+		if setData then
+			for _, e in pairs(setData) do
+				if type(e) == "table" and e.set and e.req and e.req.level
+				   and (e.name == self.title
+				        or (self.title:sub(-9) == " Reforged" and e.name == self.title:sub(1, -10))) then
+					self.requirements.level = e.req.level
+					if not self.setInfo then
+						self.setInfo = {
+							setId = e.set.setId,
+							name  = e.set.name,
+							bonus = e.set.bonus,
+						}
+					end
+					break
+				end
+			end
+		end
+	end
+	-- @leb-regression-guard: unique-req-level-override
+	-- Override base req.level with the unique entry's req.level for
+	-- UNIQUE / LEGENDARY items. Uniques can specify a lower required level
+	-- than their base type — e.g. Vaion's Chariot (lvl 50) on Solarum
+	-- Greaves base (lvl 67). Without this override the LevelReq filter in
+	-- CalcSetup (CalcSetup.lua:858-865) wrongly excludes equipped uniques
+	-- whose base type req exceeds character level, dropping the entire
+	-- item's stats from defense / DPS calcs.
+	-- Mirrors the SET item override above; the matching override in
+	-- Item:Craft() at the equivalent site keeps the value across recrafts.
+	-- Test: spec/System/TestItemParse_spec.lua
+	--   "Unique req.level overrides base req.level (UNIQUE/LEGENDARY)"
+	-- Establishing commit: 5a88e7161
+	if (self.rarity == "UNIQUE" or self.rarity == "LEGENDARY") and self.title and data.uniques then
+		for _, u in pairs(data.uniques) do
+			if type(u) == "table" and u.name == self.title and u.req and u.req.level then
+				self.requirements.level = u.req.level
+				break
 			end
 		end
 	end
@@ -946,11 +1010,26 @@ function ItemClass:BuildRaw()
 	end
 	if self.crafted then
 		t_insert(rawLines, "Crafted: true")
+		-- @leb-regression-guard: affix-kind-roundtrip (write side)
+		-- Emitting {kind:...} ahead of {range:...} is the contract relied on by
+		-- ParseRaw and TestItemParse_spec "Affix kind tag round-trips...". Do
+		-- NOT reorder or drop the kind tag without updating both. Establishing
+		-- commit: 92db3d1d6.
+		local function affixPrefix(affix)
+			local s = ""
+			if affix.kind and affix.kind ~= "normal" then
+				s = s .. "{kind:" .. affix.kind .. "}"
+			end
+			if affix.range then
+				s = s .. "{range:" .. round(affix.range,3) .. "}"
+			end
+			return s
+		end
 		for i, affix in ipairs(self.prefixes or { }) do
-			t_insert(rawLines, "Prefix: " .. (affix.range and ("{range:" .. round(affix.range,3) .. "}") or "") .. affix.modId)
+			t_insert(rawLines, "Prefix: " .. affixPrefix(affix) .. affix.modId)
 		end
 		for i, affix in ipairs(self.suffixes or { }) do
-			t_insert(rawLines, "Suffix: " .. (affix.range and ("{range:" .. round(affix.range,3) .. "}") or "") .. affix.modId)
+			t_insert(rawLines, "Suffix: " .. affixPrefix(affix) .. affix.modId)
 		end
 	end
 	if self.itemLevel then
@@ -1082,8 +1161,53 @@ function ItemClass:Craft()
 	self.namePrefix = ""
 	self.nameSuffix = ""
 	self.requirements.level = self.base.req.level
+	-- Override base req.level with set entry's req.level for SET items
+	-- (e.g. Ruby Fang Aegis uses lvl 55 even though Ironglass Shield base = 72).
+	if self.rarity == "SET" and self.setInfo and self.setInfo.setId then
+		local setData = loadItemSetData()
+		if setData then
+			for _, e in pairs(setData) do
+				if type(e) == "table" and e.set and e.set.setId == self.setInfo.setId
+				   and e.req and e.req.level then
+					self.requirements.level = e.req.level
+					break
+				end
+			end
+		end
+	end
+	-- @leb-regression-guard: unique-req-level-override
+	-- Same override as ParseRaw site: UNIQUE/LEGENDARY uniques can specify a
+	-- lower req.level than their base type (Vaion's Chariot 50 vs Solarum
+	-- Greaves 67). Without this, Craft() — invoked on recraft / XML round-trip
+	-- with crafted slot mods — resets requirements.level back to base, undoing
+	-- the ParseRaw override and re-triggering the LevelReq filter exclusion.
+	if (self.rarity == "UNIQUE" or self.rarity == "LEGENDARY") and self.title and data.uniques then
+		for _, u in pairs(data.uniques) do
+			if type(u) == "table" and u.name == self.title and u.req and u.req.level then
+				self.requirements.level = u.req.level
+				break
+			end
+		end
+	end
+	-- @leb-regression-guard: affix-display-order
+	--   STOP. Before changing the bucket assembly below, run:
+	--     busted --lua=luajit --tags=itemParse spec/System/TestItemParse_spec.lua
+	--   "Craft places sat==6 corrupted affix at the bottom" and the kind round-trip
+	--   spec will fail if any of these invariants regress. Establishing commit:
+	--   4a95318ac ("canonical affix display order via per-kind buckets in Craft").
+	--
+	-- Modifier ordering follows LE in-game tooltip / LETools layout:
+	--   gear   : implicits → prefix1, prefix2 → suffix1, suffix2 → sealed → primordial → corrupted
+	--   unique : implicits → prefix1, prefix2 → suffix1, suffix2 → unique mods → corrupted (sealed/primordial fall here too)
+	--   idol   : prefix1, prefix2 → suffix1, suffix2 → enchant1, enchant2 → corrupted
+	-- Affix `kind` ("normal"/"sealed"/"primordial"/"corrupted") is preserved
+	-- through import → XML round-trip via `Prefix: {kind:...}<id>`. ModItem
+	-- `specialAffixType == 6` is the legacy marker for corruption-exclusive
+	-- affixes; `specialAffixType == 4` marks Class-Specific Idol enchants.
+	local prefixMods, suffixMods, enchantMods = {}, {}, {}
+	local sealedMods, primordialMods, corruptedMods = {}, {}, {}
 	local slotKey = itemLib.slotKeyForType(self.type)
-	for _, list in ipairs({self.prefixes,self.suffixes}) do
+	for listIdx, list in ipairs({self.prefixes,self.suffixes}) do
 		for i = 1, self.affixLimit / 2 do
 			local affix = list[i]
 			if not affix then
@@ -1192,17 +1316,46 @@ function ItemClass:Craft()
 					if affix.valueScalar and affix.valueScalar ~= 1 then
 						modLine.displayValueScalar = displayScalar
 					end
-					t_insert(self.explicitModLines, modLine)
+					if affix.kind then
+						modLine.kind = affix.kind
+					end
+					-- Route into the right bucket by kind / specialAffixType.
+					-- specialAffixType==6 (corruption-exclusive) is treated as
+					-- corrupted regardless of kind, since LETools planner JSON
+					-- omits it from the corruptedAffix field on legacy data.
+					local bucket
+					if mod.specialAffixType == 6 or affix.kind == "corrupted" then
+						bucket = corruptedMods
+					elseif affix.kind == "sealed" then
+						bucket = sealedMods
+					elseif affix.kind == "primordial" then
+						bucket = primordialMods
+					elseif mod.specialAffixType == 4 then
+						bucket = enchantMods
+					elseif listIdx == 1 then
+						bucket = prefixMods
+					else
+						bucket = suffixMods
+					end
+					t_insert(bucket, modLine)
 					::nextCraftLine::
 				end
 			end
 		end
 	end
 
-	-- Restore the crafted and custom mods
+	-- Assemble explicitModLines in the canonical display order:
+	--   prefix → suffix → enchant → unique-inherent / user-crafted → sealed → primordial → corrupted
+	for _, m in ipairs(prefixMods) do t_insert(self.explicitModLines, m) end
+	for _, m in ipairs(suffixMods) do t_insert(self.explicitModLines, m) end
+	for _, m in ipairs(enchantMods) do t_insert(self.explicitModLines, m) end
+	-- Restore the saved unique-inherent / crafted / custom mods
 	for _, mod in ipairs(savedMods) do
 		t_insert(self.explicitModLines, mod)
 	end
+	for _, m in ipairs(sealedMods) do t_insert(self.explicitModLines, m) end
+	for _, m in ipairs(primordialMods) do t_insert(self.explicitModLines, m) end
+	for _, m in ipairs(corruptedMods) do t_insert(self.explicitModLines, m) end
 
 	self:BuildAndParseRaw()
 end

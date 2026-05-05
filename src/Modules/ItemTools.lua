@@ -13,6 +13,17 @@ local m_ceil = math.ceil
 
 itemLib = { }
 
+-- @leb-regression-guard: rounding-mode-default-floor
+-- The DEFAULT must stay `false` (= floor). Live LEB GUI (Launch.lua) never
+-- flips this, so default false is what end-users see; floor matches the
+-- in-game tooltip per-affix display. Flipping the default to true silently
+-- shifts every live build's stat values by ±1/affix and re-introduces the
+-- 2026-05-04 ShutFackUp Mercurial Shrine Boots regression (LEB 79% vs
+-- in-game 78%).
+-- Test: spec/System/TestItemTools_spec.lua "production (floor) matches
+--       in-game tooltip on % reduced affix"
+-- Establishing commit: 73d6a712c
+--
 -- Per-affix rounding mode for `% increased/reduced/more/less` lines.
 -- false (default, production): floor — matches in-game tooltip per-affix display.
 -- true  (test/snapshot mode):   round-half-up — matches LETools/Maxroll display,

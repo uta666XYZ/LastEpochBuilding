@@ -59,6 +59,13 @@ describe("TestItemTools", function()
         assert.are.equals("18% increased Health", bodyArmorLine)
     end)
 
+    -- @leb-regression-guard: applyrange-rounding-mode-split
+    -- Locks in the two-mode contract:
+    --   default (false) = floor = in-game match (production / GUI)
+    --   HeadlessWrapper flip (true) = round-half-up = LETools-compat (spec/)
+    -- See REGRESSION_GUARDS.md "applyrange-rounding-mode-split"
+    -- Establishing commit: 73d6a712c
+    --
     -- "% increased/reduced/more/less" affix rounding is mode-switched between
     -- in-game tooltip parity (floor, production default) and LETools/Maxroll
     -- parity (round-half-up, used by spec/ via HeadlessWrapper). The two

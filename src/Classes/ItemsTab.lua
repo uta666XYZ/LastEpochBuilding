@@ -256,7 +256,7 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 	self.controls.idolAltarTypeLabelLeft = new("LabelControl", {"RIGHT",self.controls.idolAltarTypeLabelRight,"LEFT"}, -2, 0, 0, 16, "^7Type:")
 	local prevOmenSlot = self.controls.idolAltarTypeLabelRight
 	for i = 1, MAX_OMEN_IDOL_SLOTS do
-		local omenSlot = new("ItemSlotControl", {"TOPLEFT",prevOmenSlot,"BOTTOMLEFT"}, 0, 2, self, "Omen Idol " .. i, "Fractured " .. i)
+		local omenSlot = new("ItemSlotControl", {"TOPLEFT",prevOmenSlot,"BOTTOMLEFT"}, 0, 2, self, "Omen Idol " .. i, "Refracted " .. i)
 		local slotNum = i
 		omenSlot.shown = function()
 			if self.activeAltarLayout == "Default" then return false end
@@ -756,7 +756,7 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 	-- cw=48, ch=46 makes the 5x5 grid aspect ratio match idol_container.png's
 	-- interior grid so the PNG border and functional cells overlap cleanly.
 	-- Y offset (90) clears the container frame's altar-circle + top border (~83px)
-	-- above the grid so the circle does not overlap the Fractured 1..4 dropdowns.
+	-- above the grid so the circle does not overlap the Refracted 1..4 dropdowns.
 	-- Visual centering on the Equipped items dropdown column. Tuned by eye.
 	self.controls.idolGrid = new("IdolGridControl",
 		-- Y offset 90 (no title bar above the container frame anymore).
@@ -1175,6 +1175,72 @@ function ItemsTabClass:GetOmenIdolCapacityBonus()
 	return bonus
 end
 
+-- Auto-populate the Omen Idol N slots from idols placed on the regular Idol
+-- 1-25 grid. ALL idols in the layout count as Omen Idols up to the altar's
+-- capacity (= layout.omenIdolCapacity + MaximumOmenIdols sealed-affix bonus).
+-- Called from:
+--   * ImportTab.ImportItemsAndSkills (after items are equipped)
+--   * ItemsTab.SetActiveItemSet (when switching/loading sets so re-opened
+--     builds also show their Refracted slots populated)
+-- Idempotent: clears slots above capacity, re-fills slots 1..N each call.
+-- @leb-regression-guard:refracted-slot-overlap-only
+-- Omen Idol slots represent idols whose footprint overlaps a Refracted (grid
+-- type=2) cell on the active Idol Altar. Idols that do NOT touch any refracted
+-- cell must NOT appear in Omen Idol slots, even if Omen capacity remains.
+-- If overlapping idols exceed capacity, only the lowest-numbered idols fit
+-- (deterministic Idol-slot-number order); the rest are dropped.
+-- See REGRESSION_GUARDS.md `refracted-slot-overlap-only`.
+function ItemsTabClass:AutoPopulateOmenIdolSlots()
+	local altarName = self.activeAltarLayout
+	local altar = altarName and altarName ~= "Default" and self.altarLayouts and self.altarLayouts[altarName]
+	-- Determine capacity (0 when no altar so we still clear stale entries).
+	local capacity = 0
+	if altar and altar.grid then
+		capacity = (altar.omenIdolCapacity or 0) + (self:GetOmenIdolCapacityBonus() or 0)
+		if capacity > MAX_OMEN_IDOL_SLOTS then capacity = MAX_OMEN_IDOL_SLOTS end
+	end
+	-- Collect distinct idols from the 5x5 layout that overlap a refracted cell,
+	-- ordered by Idol slot number so Omen Idol 1..N is filled deterministically.
+	local layoutIdols = {}
+	if altar and altar.grid then
+		local seen = {}
+		for r, rowData in ipairs(IDOL_GRID_LAYOUT) do
+			for c, slotName in ipairs(rowData) do
+				local slot = self.slots[slotName]
+				if slot and slot.selItemId and slot.selItemId ~= 0 and not seen[slot.selItemId] then
+					seen[slot.selItemId] = true
+					local item = self.items[slot.selItemId]
+					local size = item and idolSize[item.type] or { 1, 1 }
+					-- size = {w, h} (cols, rows). Walk footprint and test type==2.
+					local hit = false
+					for dr = 0, size[2] - 1 do
+						for dc = 0, size[1] - 1 do
+							local row = altar.grid[r + dr]
+							if row and row[c + dc] == 2 then
+								hit = true
+								break
+							end
+						end
+						if hit then break end
+					end
+					if hit then
+						local slotNum = tonumber(slotName:match("%d+"))
+						table.insert(layoutIdols, { slotNum = slotNum, itemId = slot.selItemId })
+					end
+				end
+			end
+		end
+		table.sort(layoutIdols, function(a, b) return a.slotNum < b.slotNum end)
+	end
+	for i = 1, MAX_OMEN_IDOL_SLOTS do
+		local omenSlot = self.slots["Omen Idol " .. i]
+		if omenSlot then
+			local fi = i <= capacity and layoutIdols[i] or nil
+			omenSlot:SetSelItemId(fi and fi.itemId or 0)
+		end
+	end
+end
+
 -- Count Omen Idols whose footprint overlaps a Refracted (type-2) cell on the
 -- active Idol Altar grid. This is what the in-game
 -- "+N per Idol in a Refracted Slot" affix scales off.
@@ -1294,6 +1360,10 @@ function ItemsTabClass:SetActiveItemSet(itemSetId)
 	else
 		self.activeAltarLayout = "Default"
 	end
+	-- Re-derive Omen Idol slot contents from the layout grid for the just-
+	-- activated set. Without this, loading a saved build (or switching sets)
+	-- shows Refracted slots empty even when idols exist on the layout.
+	self:AutoPopulateOmenIdolSlots()
 	self.build.buildFlag = true
 	self:PopulateSlots()
 end
@@ -2392,6 +2462,21 @@ function ItemsTabClass:AddItemTooltip(tooltip, item, slot, dbMode)
 		tooltip:AddLine(16, s_format("^x7F7F7F%s", self.build.data.weaponTypeInfo[base.type].label or base.type))
 		tooltip:AddLine(16, s_format("^x7F7F7FAttacks per Second: %s%.2f", "^7", base.weapon.AttackRateBase))
 		tooltip:AddLine(16, s_format("^x7F7F7FWeapon Range: %s%.1f ^x7F7F7Fmetres", "^7", base.weapon.Range))
+	end
+
+	-- @leb-regression-guard: idol-altar-capacity-tooltip
+	-- Locks the contract that Idol Altar item tooltips display the base
+	-- "Omen Idol capacity: N" header sourced from `IDOL_ALTAR_LAYOUTS[base].omenIdolCapacity`,
+	-- not from live slot counts (which mutate with sealed `+(N) Maximum Omen
+	-- Idols Equipped` bonuses) and not from a hardcoded constant (which drifts
+	-- when new altar bases ship). Matches the in-game tooltip header.
+	-- Test: spec/System/TestIdolAltarTooltip_spec.lua "Idol Altar tooltip shows base capacity"
+	-- See REGRESSION_GUARDS.md "idol-altar-capacity-tooltip".
+	if item.type == "Idol Altar" and item.baseName then
+		local layout = IDOL_ALTAR_LAYOUTS[item.baseName]
+		if layout and layout.omenIdolCapacity then
+			tooltip:AddLine(16, s_format("^x7F7F7FOmen Idol capacity: ^7%d", layout.omenIdolCapacity))
+		end
 	end
 
 	tooltip:AddSeparator(10)

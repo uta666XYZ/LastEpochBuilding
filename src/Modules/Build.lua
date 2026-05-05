@@ -293,7 +293,7 @@ function buildMode:Init(dbFileName, buildName, buildXML, convertBuild)
 		{ stat = "NetWardRegen", label = "Net Ward Recovery", fmt = "+.1f", color = colorCodes.WARD },
 		{ },
 		{ stat = "Evasion", label = "Dodge Rating", fmt = "d", color = colorCodes.EVASION, compPercent = true },
-		{ stat = "AttackDodgeChance", label = "Attack Dodge Chance", fmt = "d%%", overCapStat = "AttackDodgeChanceOverCap" },
+		{ stat = "AttackDodgeChance", label = "Attack Dodge Chance", fmt = "d%%", color = colorCodes.EVASION, overCapStat = "AttackDodgeChanceOverCap" },
 		{ stat = "MeleeEvadeChance", label = "Dodge Chance", fmt = "d%%", color = colorCodes.EVASION, condFunc = function(v,o) return v > 0 and o.MeleeEvadeChance == o.ProjectileEvadeChance end },
 		{ stat = "MeleeEvadeChance", label = "Melee Dodge Chance", fmt = "d%%", color = colorCodes.EVASION, condFunc = function(v,o) return v > 0 and o.MeleeEvadeChance ~= o.ProjectileEvadeChance end },
 		{ stat = "ProjectileEvadeChance", label = "Projectile Dodge Chance", fmt = "d%%", color = colorCodes.EVASION, condFunc = function(v,o) return v > 0 and o.MeleeEvadeChance ~= o.ProjectileEvadeChance end },

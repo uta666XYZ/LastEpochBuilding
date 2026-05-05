@@ -1383,7 +1383,11 @@ function calcs.buildDefenceEstimations(env, actor)
 	-- LETools-parity summary lines (Health Gain on Stun/Freeze/Crit, Overkill
 	-- Leech, Maximum Companions, Potion Slots, Minion Power From Character
 	-- Level). Base values from dump.cs / in-game defaults:
-	--   - PotionSlots base = 3 (CharacterStats default before mods)
+	--   - PotionSlots base = 0 (no character base; belt implicit `+N Potion
+	--     Slots` is the sole source — verified against LETools planner tooltip
+	--     on Qqwv73q2 lv62 Warlock: belt `Isadora's Tomb Binding` implicit
+	--     `+3 Potion Slots` → "Potion Slots: 3". The previous `3 +` constant
+	--     double-counted the belt mod and produced 6.
 	--   - MaxCompanions base = 0 (class-specific bonuses are added via mods;
 	--     however LE shows "2" for non-pet classes too, suggesting LE's
 	--     CharacterStats.getMaximumCompanions returns 2 by default; verified
@@ -1397,7 +1401,18 @@ function calcs.buildDefenceEstimations(env, actor)
 	output.LifeOnCrit = modDB:Sum("BASE", nil, "LifeOnCrit")
 	output.OverkillLeech = modDB:Sum("BASE", nil, "OverkillLeech")
 	output.MaxCompanions = 2 + modDB:Sum("BASE", nil, "MaxCompanions")
-	output.PotionSlots = 3 + modDB:Sum("BASE", nil, "PotionSlots")
+	-- @leb-regression-guard: potion-slots-no-character-base
+	-- Locks the contract that PotionSlots has NO character/class base — the
+	-- only source is the belt's `+N Potion Slots` implicit (and any sealed/
+	-- crafted `+N Potion Slots` mod). LE planner tooltip on Qqwv73q2 lv62
+	-- Warlock confirms: belt `Isadora's Tomb Binding` implicit `+3` → display
+	-- "Potion Slots: 3". The earlier `3 + modDB:Sum(...)` double-counted the
+	-- belt mod and produced 6. A revert to a non-zero constant would silently
+	-- drift every belted build by +constant and every beltless build away
+	-- from in-game's 0 baseline.
+	-- Test: spec/System/TestPotionSlots_spec.lua "PotionSlots has no character base"
+	-- See REGRESSION_GUARDS.md "potion-slots-no-character-base".
+	output.PotionSlots = modDB:Sum("BASE", nil, "PotionSlots")
 	-- Minion Power From Character Level — class-agnostic: from lv26 onwards
 	-- gain 0.8% per character level (verified in-game tooltip; lv85=48%,
 	-- lv100=60%). Formula: max(0, level - 25) * 0.8.

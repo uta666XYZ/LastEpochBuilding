@@ -56,6 +56,18 @@ end
 -- the crafting popup). Items with the WILDCARD_SET_MOD (e.g. Legends Entwined)
 -- count as a piece of every already-present set, and gate "per Complete Set"
 -- scaling based on how many sets are fully equipped (with the wildcard).
+-- @leb-regression-guard: set-bonus-breakdown-publish
+-- The Calcs-tab "Set Bonuses" section depends on this function publishing
+-- `env.itemModDB.setBreakdown = { completeSetCount, wildcardCount,
+-- sets = [...] }` alongside the existing `multipliers["CompleteSetCount"]`.
+-- A refactor that keeps the multiplier but drops the structured publish
+-- silently makes the section disappear (haveOutput="SetBreakdown" gate is
+-- nil) without any numeric calc regression — pure UI breakage that no
+-- snapshot diff would catch. Exposed as `calcs.applySetBonuses` so the
+-- spec can drive it without spinning up the full env pipeline.
+-- Test: spec/System/TestSetBreakdown_spec.lua
+--       "applySetBonuses publishes setBreakdown with sets[] and bonuses"
+-- Establishing commit: f7b598ede (this commit installs the guard)
 local function applySetBonuses(env, items, ver)
 	local setData = loadSetData(ver)
 	if not setData then return end
@@ -200,7 +212,50 @@ local function applySetBonuses(env, items, ver)
 		end
 	end
 	env.itemModDB.multipliers["CompleteSetCount"] = completeSetCount
+
+	-- Publish a structured breakdown of equipped sets so the Calcs tab
+	-- "Set Bonuses" section (CalcPerform → CalcSections) can render which sets
+	-- are equipped, how many pieces, and which tier bonuses are active.
+	-- Pure data structure — never read back by calc code, only consumed by
+	-- the breakdown UI.
+	local sets = {}
+	for setId, count in pairs(pieceCount) do
+		local info = setEntry[setId]
+		local maxSize = setSize[setId] or count
+		local effective = m_min(count, maxSize)
+		local bonuses = {}
+		if info and info.bonus then
+			for tier = 2, effective do
+				local rawLine = info.bonus[tostring(tier)] or info.bonus[tier]
+				if rawLine then
+					local cleaned = rawLine:gsub("{rounding:[^}]+}", ""):gsub("{[^}]+}", "")
+					cleaned = cleaned:match("^%s*(.-)%s*$") or cleaned
+					t_insert(bonuses, { tier = tier, text = cleaned })
+				end
+			end
+		end
+		t_insert(sets, {
+			setId      = setId,
+			name       = (info and info.name) or ("Set " .. tostring(setId)),
+			pieceCount = count,
+			setSize    = maxSize,
+			complete   = (count >= maxSize),
+			bonuses    = bonuses,
+		})
+	end
+	table.sort(sets, function(a, b)
+		if a.complete ~= b.complete then return a.complete end
+		return tostring(a.name) < tostring(b.name)
+	end)
+	env.itemModDB.setBreakdown = {
+		completeSetCount = completeSetCount,
+		wildcardCount    = #wildcardItems,
+		sets             = sets,
+	}
 end
+-- Exposed for spec/System/TestSetBreakdown_spec.lua. Keep `local` declaration
+-- above so callers in this module still resolve via local lookup.
+calcs.applySetBonuses = applySetBonuses
 
 -- Initialise modifier database with stats and conditions common to all actors
 function calcs.initModDB(env, modDB)
@@ -794,11 +849,64 @@ function calcs.initEnv(build, mode, override, specEnv)
 		-- defense calcs reflect what the actual character would see.
 		do
 			local charLevel = build.characterLevel or 1
+			-- Capture set/wildcard items BEFORE level-req filter so set membership
+			-- counting reflects what's equipped regardless of stat eligibility
+			-- (matches in-game: items above char level lose stats but still
+			-- contribute set piece count and wildcard).
+			env._levelGatedSetItems = {}
 			for slotName, item in pairs(items) do
 				if item and item.requirements and item.requirements.level
 					and item.requirements.level > charLevel then
+					if item.rarity == "SET" or item.setInfo
+						or (item.modList and itemHasWildcardSetMod and itemHasWildcardSetMod(item)) then
+						env._levelGatedSetItems[slotName] = item
+					end
 					items[slotName] = nil
 				end
+			end
+		end
+
+		-- Corrupted item counting (post LevelReq filter so it reflects what
+		-- actually contributes in-game). Feeds StatThreshold tags emitted by
+		-- the "with at least N Corrupted [non-Idol/Idol/] Items equipped"
+		-- ModParser pattern (see proposal C). Three stats are exposed:
+		--   * CorruptedItemsEquipped       = all corrupted items
+		--   * CorruptedNonIdolItemsEquipped = corrupted items NOT in Idol slots
+		--   * CorruptedIdolItemsEquipped    = corrupted items IN Idol slots
+		do
+			local total, nonIdol, idol = 0, 0, 0
+			for slotName, item in pairs(items) do
+				if item and item.corrupted then
+					total = total + 1
+					-- @leb-regression-guard: idol-altar-not-idol-slot
+					-- "Idol Altar" is the altar EQUIPMENT slot (a single base item
+					-- of type "Idol Altar"), NOT an idol slot. The naive
+					-- `sub(1, 5) == "Idol "` matches both "Idol 1..N" (real idols)
+					-- AND "Idol Altar", which mis-classifies a corrupted altar
+					-- as a corrupted idol and breaks
+					-- `+N to All Attributes with at least 7 Corrupted non-Idol
+					-- Items equipped` (Shroud of Obscurity etc.).
+					-- Test: spec/System/TestModParse_spec.lua
+					--       "Corrupted Idol Altar counts as non-Idol for
+					--        CorruptedNonIdolItemsEquipped"
+					-- Establishing commit: e9e4e64c5
+					local isIdolSlot = (slotName:sub(1, 5) == "Idol " and slotName ~= "Idol Altar")
+						or slotName:sub(1, 10) == "Omen Idol "
+					if isIdolSlot then
+						idol = idol + 1
+					else
+						nonIdol = nonIdol + 1
+					end
+				end
+			end
+			if total > 0 then
+				modDB:NewMod("CorruptedItemsEquipped", "BASE", total, "Corrupted Items")
+			end
+			if nonIdol > 0 then
+				modDB:NewMod("CorruptedNonIdolItemsEquipped", "BASE", nonIdol, "Corrupted Items")
+			end
+			if idol > 0 then
+				modDB:NewMod("CorruptedIdolItemsEquipped", "BASE", idol, "Corrupted Items")
 			end
 		end
 
@@ -1232,7 +1340,18 @@ function calcs.initEnv(build, mode, override, specEnv)
 		end
 
 		-- Aggregate equipped SET pieces per setId and apply N-piece bonuses.
-		applySetBonuses(env, items, build.targetVersion)
+		-- Merge level-gated SET / wildcard items captured before the LevelReq
+		-- filter: in-game such pieces lose their stats but still count toward
+		-- set completion and wildcard "every set" expansion.
+		local setItems = items
+		if env._levelGatedSetItems and next(env._levelGatedSetItems) then
+			setItems = {}
+			for k, v in pairs(items) do setItems[k] = v end
+			for k, v in pairs(env._levelGatedSetItems) do
+				if not setItems[k] then setItems[k] = v end
+			end
+		end
+		applySetBonuses(env, setItems, build.targetVersion)
 	end
 
 	-- Merge env.itemModDB with env.ModDB

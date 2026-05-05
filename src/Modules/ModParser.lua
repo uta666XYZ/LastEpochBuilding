@@ -54,6 +54,12 @@ local modNameList = {
 	-- Attributes
 	["all attributes"] = Attributes,
 	-- Life/mana
+	-- @leb-regression-guard: regen-alias-coverage
+	-- In-game tooltips render regen affixes in BOTH short (`Regen`) and long
+	-- (`Regeneration`) forms — registering only one silently drops half the
+	-- affix pool. Both Life and Mana must have both keys.
+	-- Test: spec/System/TestRegenAlias_spec.lua
+	-- See REGRESSION_GUARDS.md "regen-alias-coverage".
 	["health leech"] = "DamageLifeLeech",
 	["health"] = "Life",
 	["health regen"] = "LifeRegen",
@@ -62,6 +68,7 @@ local modNameList = {
 	["mana"] = "Mana",
 	["maximum mana"] = "Mana",
 	["mana regen"] = "ManaRegen",
+	["mana regeneration"] = "ManaRegen",
 	["mana cost"] = "ManaCost",
 	["mana efficiency"] = "ManaEfficiency",
 	["channel cost"] = "ChannelCost",
@@ -302,6 +309,18 @@ local modNameList = {
 	["abyssal decay damage"] = "AbyssalDecayDamage",
 	["spirit plague damage"] = "SpiritPlagueDamage",
 	["bone curse damage"] = "BoneCurseDamage",
+	-- @leb-regression-guard: curse-spell-damage-stat
+	-- "+N Curse Spell Damage" applies as flat spell damage to skills with the
+	-- Curse skill type (Bone Curse, Torment, Decrepify, Anguish, Penance).
+	-- Implemented as a tagged modName entry rather than a dedicated stat:
+	-- name="Damage" + keywordFlags=Spell + SkillType.Curse tag routes through
+	-- the existing skillModList:Sum("BASE", cfg, "Damage") path in CalcOffence,
+	-- so curse spell skills auto-pick up the BASE without new wiring.
+	-- Without this entry the parser leaves "Curse" as residual extra → red
+	-- "UNSUPPORTED" tooltip text on items like Hexed Grand Bone Idol.
+	-- Test: spec/System/TestCurseSpellDamage_spec.lua
+	-- See REGRESSION_GUARDS.md "curse-spell-damage-stat".
+	["curse spell damage"] = { "Damage", keywordFlags = KeywordFlag.Spell, tag = { type = "SkillType", skillType = SkillType.Curse } },
 	["torment damage"] = "TormentDamage",
 	["decrepify damage"] = "DecrepifyDamage",
 	["anguish damage"] = "AnguishDamage",
@@ -413,6 +432,13 @@ local modTagList = {
 	[". this effect is doubled if you have (%d+) or more maximum mana."] = function(num) return { tag = { type = "StatThreshold", stat = "Mana", threshold = num, mult = 2 } } end,
 	["if you have at least (%d+) ward"] = function(num) return { tag = { type = "StatThreshold", stat = "Ward", threshold = num } } end,
 	["if you have at least (%d+) total attributes"] = function(num) return { tag = { type = "StatThreshold", stat = "TotalAttr", threshold = num } } end,
+	-- "with at least N Corrupted (non-Idol|Idol|) Items equipped"
+	-- (proposal C): proper StatThreshold against equipped corrupted-item
+	-- counts populated in CalcSetup.lua. The empty middle group covers
+	-- the unqualified "with at least N Corrupted Items equipped" wording.
+	["with at least (%d+) corrupted items equipped"] = function(num) return { tag = { type = "StatThreshold", stat = "CorruptedItemsEquipped", threshold = num } } end,
+	["with at least (%d+) corrupted non%-idol items equipped"] = function(num) return { tag = { type = "StatThreshold", stat = "CorruptedNonIdolItemsEquipped", threshold = num } } end,
+	["with at least (%d+) corrupted idol items equipped"] = function(num) return { tag = { type = "StatThreshold", stat = "CorruptedIdolItemsEquipped", threshold = num } } end,
 	["for (%d+) seconds"] = { },
 	[" on critical strike"] = { tag = { type = "Condition", var = "CriticalStrike" } },
 	["from critical strikes"] = { tag = { type = "Condition", var = "CriticalStrike" } },
@@ -2009,8 +2035,19 @@ local function parseMod(line, order)
 		end
 		if not hasModSuffix and (modNameStr:match("Damage$") or modName == "Duration") then
 			modType = "MORE"
-		elseif not hasModSuffix and (modNameStr == "Life" or modNameStr == "Mana" or modNameStr == "Ward") then
-			-- LE convention: "+N% Health/Mana/Ward" (no "increased") means INC, not BASE
+		elseif not hasModSuffix and (modNameStr == "Life" or modNameStr == "Mana" or modNameStr == "Ward"
+				or modNameStr == "ManaRegen" or modNameStr == "LifeRegen") then
+			-- @leb-regression-guard: regen-pct-shorthand-inc
+			-- LE convention: "+N% Health/Mana/Ward/ManaRegen/LifeRegen" (without "increased")
+			-- is rendered in-game as an INC modifier. Game's authoritative
+			-- localized_master.json affix 1015 affixProperties[1] (Mana Regen)
+			-- has modifierType=1 (INC) and extraRolls stored as 0.08-0.09 (= 8-9%
+			-- multiplier). ModItem_1_4.json renders the row as "+(8-9)% Mana Regen"
+			-- following LE in-game text shorthand. Without ManaRegen/LifeRegen here,
+			-- ModParser falls through to BASE and the affix is treated as flat
+			-- "+8 Mana Regen" instead of "8% increased Mana Regen", causing
+			-- ~+15.5/s drift on Qqwv73q2 (LE 16.72 vs LEB 32.20). See spec
+			-- TestModParser_spec.lua "regen-pct-shorthand-inc".
 			modType = "INC"
 		else
 			modType = "BASE"

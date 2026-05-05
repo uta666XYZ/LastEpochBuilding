@@ -752,6 +752,16 @@ return {
 	{ label = "Total", { format = "{0:output:Endurance}%", { modName = "Endurance" }, }, },
 } }
 } },
+-- Set Bonuses: visible only when at least one set piece is equipped.
+-- Frame color = set rarity green (colorCodes.SET) per LE convention.
+-- Sorted complete-first, then by name; complete sets prefixed with '*'.
+{ 1, "SetBonuses", 2, colorCodes.SET, {{ defaultCollapsed = false, label = "Set Bonuses", data = {
+	haveOutput = "SetBreakdown",
+	extra = "{0:output:SetBreakdown} equipped ({0:output:CompleteSetCount} complete)",
+	{ label = "Equipped Sets", haveOutput = "SetBreakdown", { format = "{0:output:SetBreakdown}", { breakdown = "SetBreakdown" }, }, },
+	{ label = "Complete Sets", haveOutput = "SetBreakdown", { format = "{0:output:CompleteSetCount}", }, },
+} }
+} },
 -- secondary defenses
 { 1, "Resist", 3, colorCodes.DEFENCE, {{ defaultCollapsed = false, label = "Resists", data = generateTableByValues({},
 

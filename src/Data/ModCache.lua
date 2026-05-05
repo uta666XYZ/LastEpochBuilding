@@ -2000,7 +2000,6 @@ c["+1.5% Health Leech"]={{[1]={flags=0,keywordFlags=0,name="DamageLifeLeech",typ
 c["+1.6% increased Spell Damage per 1% increased Movement Speed"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="INC",value=1.6}},"   per 1% increased Movement Speed "}
 c["+10 Added Lightning Damage"]={{[1]={flags=0,keywordFlags=0,name="LightningDamage",type="BASE",value=10}},nil}
 c["+10 Additional Targets"]={{}," Targets "}
-c["+10 All Attributes with at least 7 Corrupted non-Idol Items equipped"]={{[1]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=10},[2]={flags=0,keywordFlags=0,name="Str",type="BASE",value=10},[3]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=10},[4]={flags=0,keywordFlags=0,name="Int",type="BASE",value=10},[5]={flags=0,keywordFlags=0,name="Att",type="BASE",value=10}},"  with at least 7 Corrupted non-Idol Items equipped "}
 c["+10 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=10}},nil}
 c["+10 Armor per Equipped Corrupted Idol"]={{[1]={[1]={type="Multiplier",var="EquippedCorruptedIdol"},flags=0,keywordFlags=0,name="Armour",type="BASE",value=10}},nil}
 c["+10 Armor per Idol in a Refracted Slot"]={{[1]={[1]={type="Multiplier",var="IdolInRefractedSlot"},flags=0,keywordFlags=0,name="Armour",type="BASE",value=10}},nil}
@@ -2606,11 +2605,9 @@ c["+108% Recurve Chance with Heartseeker"]={{}," Recurve Chance with  "}
 c["+1080 Block Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="BlockEffectiveness",type="BASE",value=1080}},nil}
 c["+109 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=109}},nil}
 c["+109 Ward gained when you use Shift"]={{[1]={[1]={skillName="Shift",type="SkillName"},flags=0,keywordFlags=0,name="WardGainOnUse_Shift",source="",type="BASE",value=109},notSupported=true},nil}
-c["+11 All Attributes with at least 7 Corrupted non-Idol Items equipped"]={{[1]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=11},[2]={flags=0,keywordFlags=0,name="Str",type="BASE",value=11},[3]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=11},[4]={flags=0,keywordFlags=0,name="Int",type="BASE",value=11},[5]={flags=0,keywordFlags=0,name="Att",type="BASE",value=11}},"  with at least 7 Corrupted non-Idol Items equipped "}
 c["+11 Attunement"]={{[1]={flags=0,keywordFlags=0,name="Att",type="BASE",value=11}},nil}
 c["+11 Bow Cold Damage"]={{[1]={flags=0,keywordFlags=2048,name="ColdDamage",type="BASE",value=11}},nil}
 c["+11 Cold Damage with Spells and Attacks per Attached Infernal Shade for Minions affected by Dread Shade"]={{[1]={[1]={stat="Att",type="PerStat"},[2]={scope="minion",type="Scope"},[3]={skillName="Infernal Shade",type="SkillName"},flags=0,keywordFlags=256,name="ColdDamage",type="BASE",value=11}},"  with s and Attacks ached   affected by Dread Shade "}
-c["+11 Curse Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=11}}," Curse   "}
 c["+11 Dexterity"]={{[1]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=11}},nil}
 c["+11 Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=11}},nil}
 c["+11 Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="BASE",value=11}},nil}
@@ -2693,7 +2690,7 @@ c["+11% Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="INC",value=11}}
 c["+11% Lightning Penetration"]={{[1]={flags=0,keywordFlags=0,name="LightningPenetration",type="BASE",value=11}},nil}
 c["+11% Lightning Resistance"]={{[1]={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=11}},nil}
 c["+11% Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="INC",value=11}},nil}
-c["+11% Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="BASE",value=11}},nil}
+c["+11% Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=11}},nil}
 c["+11% Minion Cast Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=256,keywordFlags=0,name="Speed",type="BASE",value=11}}}},nil}
 c["+11% Minion Cold Penetration"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="ColdPenetration",type="BASE",value=11}}}},nil}
 c["+11% Minion Cold Resistance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="ColdResist",type="BASE",value=11}}}},nil}
@@ -2790,7 +2787,6 @@ c["+118 Ward per Second"]={{[1]={flags=0,keywordFlags=0,name="WardPerSecond",typ
 c["+118 Ward per Second for you or your allies while standing on your Glyph of Dominion"]={{[1]={[1]={type="Condition",var="StandingOnGlyphOfDominion"},flags=0,keywordFlags=0,name="WardPerSecond",type="BASE",value=118}},"  for you or your allies  "}
 c["+118% Chance to apply Frailty on Melee Hit"]={{[1]={flags=8389120,keywordFlags=0,name="FrailtyChance",type="BASE",value=118}},nil}
 c["+119 Dodge Rating if you have been hit recently"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=119},notSupported=true},nil}
-c["+12 All Attributes with at least 7 Corrupted non-Idol Items equipped"]={{[1]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=12},[2]={flags=0,keywordFlags=0,name="Str",type="BASE",value=12},[3]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=12},[4]={flags=0,keywordFlags=0,name="Int",type="BASE",value=12},[5]={flags=0,keywordFlags=0,name="Att",type="BASE",value=12}},"  with at least 7 Corrupted non-Idol Items equipped "}
 c["+12 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=12}},nil}
 c["+12 Armor per Equipped Corrupted Idol"]={{[1]={[1]={type="Multiplier",var="EquippedCorruptedIdol"},flags=0,keywordFlags=0,name="Armour",type="BASE",value=12}},nil}
 c["+12 Armor per Idol in a Refracted Slot"]={{[1]={[1]={type="Multiplier",var="IdolInRefractedSlot"},flags=0,keywordFlags=0,name="Armour",type="BASE",value=12}},nil}
@@ -2803,7 +2799,6 @@ c["+12 Bow Physical Damage"]={{[1]={flags=0,keywordFlags=2048,name="PhysicalDama
 c["+12 Companion Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=12}}," Companion  "}
 c["+12 Cooldown (seconds)"]={{}," Cooldown (seconds) "}
 c["+12 Curse Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=12}}," Curse  "}
-c["+12 Curse Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=12}}," Curse   "}
 c["+12 Damage Reflect"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=12}},"  Reflect "}
 c["+12 Dexterity"]={{[1]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=12}},nil}
 c["+12 Dodge Rating per Equipped Corrupted Idol"]={{[1]={[1]={type="Multiplier",var="EquippedCorruptedIdol"},flags=0,keywordFlags=0,name="Evasion",type="BASE",value=12}},nil}
@@ -2902,7 +2897,7 @@ c["+12% Glacier Cold Penetration per Ice Spiral"]={{[1]={[1]={skillName="Glacier
 c["+12% Global Attack Speed"]={{[1]={[1]={type="Global"},flags=3584,keywordFlags=0,name="Speed",type="BASE",value=12}},nil}
 c["+12% Global Cast Speed"]={{[1]={[1]={type="Global"},flags=256,keywordFlags=0,name="Speed",type="BASE",value=12}},nil}
 c["+12% Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="INC",value=12}},nil}
-c["+12% Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="BASE",value=12}},nil}
+c["+12% Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=12}},nil}
 c["+12% Hit Damage"]={{[1]={flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=12}},nil}
 c["+12% Hit Damage Against Chilled Enemies"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="Chilled"},flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=12}},nil}
 c["+12% Hit Damage Against Shocked Enemies"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="Shocked"},flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=12}},nil}
@@ -3029,7 +3024,6 @@ c["+128% Chance to apply Frostbite on Cold Hit"]={{[1]={flags=8388608,keywordFla
 c["+129 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=129}},nil}
 c["+129 Ward Gained on Potion Use"]={{[1]={flags=0,keywordFlags=0,name="WardOnPotionUse",type="BASE",value=129}},nil}
 c["+129% Chance to inflict Bleed on Hit"]={{[1]={flags=8388608,keywordFlags=0,name="BleedChance",type="BASE",value=129}},nil}
-c["+13 All Attributes with at least 7 Corrupted non-Idol Items equipped"]={{[1]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=13},[2]={flags=0,keywordFlags=0,name="Str",type="BASE",value=13},[3]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=13},[4]={flags=0,keywordFlags=0,name="Int",type="BASE",value=13},[5]={flags=0,keywordFlags=0,name="Att",type="BASE",value=13}},"  with at least 7 Corrupted non-Idol Items equipped "}
 c["+13 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=13}},nil}
 c["+13 Armor While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="Armour",type="BASE",value=13}},nil}
 c["+13 Attunement"]={{[1]={flags=0,keywordFlags=0,name="Att",type="BASE",value=13}},nil}
@@ -3108,7 +3102,7 @@ c["+13% Lightning Resistance"]={{[1]={flags=0,keywordFlags=0,name="LightningResi
 c["+13% Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="INC",value=13}},nil}
 c["+13% Mana Efficiency"]={{[1]={flags=0,keywordFlags=0,name="ManaEfficiency",type="INC",value=13}},nil}
 c["+13% Mana Efficiency with Soul Feast"]={{[1]={[1]={skillName="Soul Feast",type="SkillName"},flags=0,keywordFlags=0,name="ManaEfficiency",type="INC",value=13}},"  with  "}
-c["+13% Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="BASE",value=13}},nil}
+c["+13% Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=13}},nil}
 c["+13% Melee Critical Strike Chance"]={{[1]={flags=0,keywordFlags=512,name="CritChance",type="BASE",value=13}},nil}
 c["+13% Minion Cast Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=256,keywordFlags=0,name="Speed",type="BASE",value=13}}}},nil}
 c["+13% More Necrotic Damage Over Time from Gravestone Aura"]={{[1]={flags=4128,keywordFlags=0,name="NecroticDamage",type="MORE",value=13}},"  from Gravestone Aura "}
@@ -3180,7 +3174,6 @@ c["+138 Dodge Rating while using Evade"]={{[1]={[1]={type="Condition",var="Using
 c["+138 Endurance Threshold"]={{[1]={flags=0,keywordFlags=0,name="EnduranceThreshold",type="BASE",value=138}},nil}
 c["+138% Chance to Shred Armor on Hit"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_ArmourShred",type="BASE",value=138}},nil}
 c["+14 Added Health for Bees per Attunement"]={{[1]={[1]={stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="Life",type="BASE",value=14}},"  for Bees  "}
-c["+14 All Attributes with at least 7 Corrupted non-Idol Items equipped"]={{[1]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=14},[2]={flags=0,keywordFlags=0,name="Str",type="BASE",value=14},[3]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=14},[4]={flags=0,keywordFlags=0,name="Int",type="BASE",value=14},[5]={flags=0,keywordFlags=0,name="Att",type="BASE",value=14}},"  with at least 7 Corrupted non-Idol Items equipped "}
 c["+14 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=14}},nil}
 c["+14 Attunement"]={{[1]={flags=0,keywordFlags=0,name="Att",type="BASE",value=14}},nil}
 c["+14 Bow Cold Damage"]={{[1]={flags=0,keywordFlags=2048,name="ColdDamage",type="BASE",value=14}},nil}
@@ -3543,7 +3536,7 @@ c["+15% Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="INC",value=15}},n
 c["+15% Mana Cost"]={{[1]={flags=0,keywordFlags=0,name="ManaCost",type="INC",value=15}},nil}
 c["+15% Mana Efficiency"]={{[1]={flags=0,keywordFlags=0,name="ManaEfficiency",type="INC",value=15}},nil}
 c["+15% Mana Efficiency with Ghostflame"]={{[1]={[1]={skillName="Ghostflame",type="SkillName"},flags=0,keywordFlags=0,name="ManaEfficiency",type="INC",value=15}},"  with  "}
-c["+15% Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="BASE",value=15}},nil}
+c["+15% Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=15}},nil}
 c["+15% Mana efficiency for Decoy"]={{[1]={[1]={skillName="Decoy",type="SkillName"},flags=0,keywordFlags=0,name="ManaEfficiency",type="BASE",value=15}},"  for  "}
 c["+15% Mana efficiency for Synchronized Strike"]={{[1]={[1]={skillName="Synchronized Strike",type="SkillName"},flags=0,keywordFlags=0,name="ManaEfficiency",type="BASE",value=15}},"  for  "}
 c["+15% Maul Melee Damage To Stunned"]={{[1]={[1]={skillName="Maul",type="SkillName"},flags=0,keywordFlags=512,name="Damage",type="MORE",value=15}},"    To Stunned "}
@@ -3800,7 +3793,6 @@ c["+168 Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="BASE",
 c["+168 Ward Decay Threshold"]={{[1]={flags=0,keywordFlags=0,name="WardDecayThreshold",type="BASE",value=168}},nil}
 c["+17 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=17}},nil}
 c["+17 Bzzzz Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="BASE",value=17}}," Bzzzz   "}
-c["+17 Curse Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=17}}," Curse   "}
 c["+17 Endurance Threshold against Shocked enemies"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="Shocked"},flags=0,keywordFlags=0,name="EnduranceThreshold",type="BASE",value=17}},nil}
 c["+17 Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=17}},nil}
 c["+17 Health Gained from Rip Blood"]={{[1]={[1]={skillName="Rip Blood",type="SkillName"},flags=0,keywordFlags=0,name="Life",type="BASE",value=17}},"  Gained from  "}
@@ -3853,7 +3845,7 @@ c["+17% Lightning Critical Strike Multiplier"]={{[1]={flags=0,keywordFlags=2,nam
 c["+17% Lightning Penetration"]={{[1]={flags=0,keywordFlags=0,name="LightningPenetration",type="BASE",value=17}},nil}
 c["+17% Lightning Resistance"]={{[1]={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=17}},nil}
 c["+17% Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="INC",value=17}},nil}
-c["+17% Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="BASE",value=17}},nil}
+c["+17% Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=17}},nil}
 c["+17% Mana efficiency for Decoy"]={{[1]={[1]={skillName="Decoy",type="SkillName"},flags=0,keywordFlags=0,name="ManaEfficiency",type="BASE",value=17}},"  for  "}
 c["+17% Mana efficiency for Synchronized Strike"]={{[1]={[1]={skillName="Synchronized Strike",type="SkillName"},flags=0,keywordFlags=0,name="ManaEfficiency",type="BASE",value=17}},"  for  "}
 c["+17% Minion Cast Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=256,keywordFlags=0,name="Speed",type="BASE",value=17}}}},nil}
@@ -4104,7 +4096,7 @@ c["+19% Lightning Critical Strike Multiplier"]={{[1]={flags=0,keywordFlags=2,nam
 c["+19% Lightning Penetration"]={{[1]={flags=0,keywordFlags=0,name="LightningPenetration",type="BASE",value=19}},nil}
 c["+19% Lightning Resistance"]={{[1]={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=19}},nil}
 c["+19% Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="INC",value=19}},nil}
-c["+19% Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="BASE",value=19}},nil}
+c["+19% Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=19}},nil}
 c["+19% Melee Critical Strike Multiplier per meter from the target (up to 5 meters)"]={{[1]={flags=0,keywordFlags=512,name="CritMultiplier",type="BASE",value=19}},"   per meter from the target (up to 5 meters) "}
 c["+19% Minion Cast Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=256,keywordFlags=0,name="Speed",type="BASE",value=19}}}},nil}
 c["+19% Minion Critical Strike Multiplier"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="CritMultiplier",type="BASE",value=19}}}},nil}
@@ -4629,7 +4621,6 @@ c["+2.5 Bees Per 10 Seconds"]={{}," Bees Per 10 Seconds "}
 c["+2.5% Global Conditional Damage"]={{[1]={[1]={type="Global"},flags=0,keywordFlags=0,name="Damage",type="MORE",value=2.5}},"  Conditional  "}
 c["+20 Additional Healing Per Second"]={{[1]={[1]={skillName="Healing",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=20}},"  Per Second "}
 c["+20 Aftershock Spell Damage"]={{[1]={[1]={skillName="Shock",type="SkillName"},flags=0,keywordFlags=256,name="Damage",type="BASE",value=20}}," After   "}
-c["+20 All Attributes with at least 7 Corrupted non-Idol Items equipped"]={{[1]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=20},[2]={flags=0,keywordFlags=0,name="Str",type="BASE",value=20},[3]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=20},[4]={flags=0,keywordFlags=0,name="Int",type="BASE",value=20},[5]={flags=0,keywordFlags=0,name="Att",type="BASE",value=20}},"  with at least 7 Corrupted non-Idol Items equipped "}
 c["+20 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=20}},nil}
 c["+20 Armour With Shield"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=20}},"  With Shield "}
 c["+20 Block Effectiveness Per Shield"]={{[1]={flags=0,keywordFlags=0,name="BlockEffectiveness",type="BASE",value=20}},"  Per Shield "}
@@ -5003,7 +4994,7 @@ c["+21% Lightning Critical Strike Multiplier"]={{[1]={flags=0,keywordFlags=2,nam
 c["+21% Lightning Penetration"]={{[1]={flags=0,keywordFlags=0,name="LightningPenetration",type="BASE",value=21}},nil}
 c["+21% Lightning Resistance"]={{[1]={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=21}},nil}
 c["+21% Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="INC",value=21}},nil}
-c["+21% Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="BASE",value=21}},nil}
+c["+21% Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=21}},nil}
 c["+21% Mana efficiency for Decoy"]={{[1]={[1]={skillName="Decoy",type="SkillName"},flags=0,keywordFlags=0,name="ManaEfficiency",type="BASE",value=21}},"  for  "}
 c["+21% Mana efficiency for Synchronized Strike"]={{[1]={[1]={skillName="Synchronized Strike",type="SkillName"},flags=0,keywordFlags=0,name="ManaEfficiency",type="BASE",value=21}},"  for  "}
 c["+21% Minion Cast Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=256,keywordFlags=0,name="Speed",type="BASE",value=21}}}},nil}
@@ -5059,7 +5050,6 @@ c["+22 Armor per Idol in a Refracted Slot"]={{[1]={[1]={type="Multiplier",var="I
 c["+22 Bow Damage"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="BASE",value=22}},nil}
 c["+22 Bow Lightning Damage"]={{[1]={flags=0,keywordFlags=2048,name="LightningDamage",type="BASE",value=22}},nil}
 c["+22 Bzzzz Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="BASE",value=22}}," Bzzzz   "}
-c["+22 Curse Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=22}}," Curse   "}
 c["+22 Endurance Threshold against Shocked enemies"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="Shocked"},flags=0,keywordFlags=0,name="EnduranceThreshold",type="BASE",value=22}},nil}
 c["+22 Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=22}},nil}
 c["+22 Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=22}},nil}
@@ -6348,7 +6338,7 @@ c["+30% Lightning Resistance"]={{[1]={flags=0,keywordFlags=0,name="LightningResi
 c["+30% Lightning Wave Base Damage"]={{[1]={flags=0,keywordFlags=2,name="Damage",type="MORE",value=30}},"  Wave Base  "}
 c["+30% Mana Cost"]={{[1]={flags=0,keywordFlags=0,name="ManaCost",type="INC",value=30}},nil}
 c["+30% Mana Efficiency"]={{[1]={flags=0,keywordFlags=0,name="ManaEfficiency",type="INC",value=30}},nil}
-c["+30% Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="BASE",value=30}},nil}
+c["+30% Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=30}},nil}
 c["+30% Maximum Hit Damage"]={{[1]={flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=30}}," Maximum   "}
 c["+30% Maximum Lightning Penetration"]={{[1]={flags=0,keywordFlags=0,name="LightningPenetration",type="BASE",value=30}}," Maximum  "}
 c["+30% Maximum Physical Penetration"]={{[1]={flags=0,keywordFlags=0,name="PhysicalPenetration",type="BASE",value=30}}," Maximum  "}
@@ -6414,7 +6404,6 @@ c["+300% seconds of Haste and Frenzy for your minions when you gain Haste or ref
 c["+301 Stun Avoidance"]={{[1]={flags=0,keywordFlags=0,name="StunAvoidance",type="BASE",value=301}},nil}
 c["+306 Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="BASE",value=306}},nil}
 c["+306 Ward per Second for you or your allies while standing on your Glyph of Dominion"]={{[1]={[1]={type="Condition",var="StandingOnGlyphOfDominion"},flags=0,keywordFlags=0,name="WardPerSecond",type="BASE",value=306}},"  for you or your allies  "}
-c["+31 Curse Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=31}}," Curse   "}
 c["+31 Endurance Threshold"]={{[1]={flags=0,keywordFlags=0,name="EnduranceThreshold",type="BASE",value=31}},nil}
 c["+31 Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=31}},nil}
 c["+31 Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="BASE",value=31}},nil}
@@ -6923,7 +6912,6 @@ c["+4 Companion Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",typ
 c["+4 Cooldown"]={{}," Cooldown "}
 c["+4 Cooldown (Seconds)"]={{}," Cooldown (Seconds) "}
 c["+4 Cooldown (seconds)"]={{}," Cooldown (seconds) "}
-c["+4 Curse Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=4}}," Curse   "}
 c["+4 Dexterity"]={{[1]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=4}},nil}
 c["+4 Dodge Rating Per Attunement"]={{[1]={[1]={stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="Evasion",type="BASE",value=4}},nil}
 c["+4 Dodge Rating per Equipped Corrupted Idol"]={{[1]={[1]={type="Multiplier",var="EquippedCorruptedIdol"},flags=0,keywordFlags=0,name="Evasion",type="BASE",value=4}},nil}
@@ -7513,7 +7501,6 @@ c["+425 Ward gained when you cast Flame Ward"]={{[1]={[1]={skillName="Flame Ward
 c["+426 Block Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="BlockEffectiveness",type="BASE",value=426}},nil}
 c["+43 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=43}},nil}
 c["+43 Armor per Rah Rune"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=43}},"  per Rah Rune "}
-c["+43 Curse Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=43}}," Curse   "}
 c["+43 Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=43}},nil}
 c["+43 Melee Cold Damage"]={{[1]={flags=0,keywordFlags=512,name="ColdDamage",type="BASE",value=43}},nil}
 c["+43 Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="BASE",value=43}},nil}
@@ -9376,13 +9363,11 @@ c["+78% Chance to gain 20 Ward on Kill with Hungering Souls"]={{},"20 Ward  with
 c["+78% Chance to inflict Bleed on Hit"]={{[1]={flags=8388608,keywordFlags=0,name="BleedChance",type="BASE",value=78}},nil}
 c["+78% Chance to inflict Time Rot on Void Hit"]={{[1]={flags=8388608,keywordFlags=16,name="TimeRotChance",type="BASE",value=78}},nil}
 c["+79 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=79}},nil}
-c["+79 Curse Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=79}}," Curse   "}
 c["+79 Dodge Rating if you have been hit recently"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=79},notSupported=true},nil}
 c["+79 Lightning Throwing Damage with Javelin"]={{[1]={[1]={skillName="Javelin",type="SkillName"},flags=0,keywordFlags=256,name="LightningDamage",type="BASE",value=79}},"  with  "}
 c["+79 Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="BASE",value=79}},nil}
 c["+79 Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=79}},nil}
 c["+79 Ward Decay Threshold"]={{[1]={flags=0,keywordFlags=0,name="WardDecayThreshold",type="BASE",value=79}},nil}
-c["+8 All Attributes with at least 7 Corrupted non-Idol Items equipped"]={{[1]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=8},[2]={flags=0,keywordFlags=0,name="Str",type="BASE",value=8},[3]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=8},[4]={flags=0,keywordFlags=0,name="Int",type="BASE",value=8},[5]={flags=0,keywordFlags=0,name="Att",type="BASE",value=8}},"  with at least 7 Corrupted non-Idol Items equipped "}
 c["+8 Ally Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=8}}," Ally   "}
 c["+8 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=8}},nil}
 c["+8 Armor per Idol in a Refracted Slot"]={{[1]={[1]={type="Multiplier",var="IdolInRefractedSlot"},flags=0,keywordFlags=0,name="Armour",type="BASE",value=8}},nil}
@@ -9393,7 +9378,6 @@ c["+8 Bow Cold Damage"]={{[1]={flags=0,keywordFlags=2048,name="ColdDamage",type=
 c["+8 Bzzzz Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="BASE",value=8}}," Bzzzz   "}
 c["+8 Channel Cost"]={{[1]={flags=0,keywordFlags=0,name="ChannelCost",type="BASE",value=8}},nil}
 c["+8 Cooldown (seconds)"]={{}," Cooldown (seconds) "}
-c["+8 Curse Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=8}}," Curse   "}
 c["+8 Dexterity"]={{[1]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=8}},nil}
 c["+8 Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="BASE",value=8}},nil}
 c["+8 Endurance Threshold"]={{[1]={flags=0,keywordFlags=0,name="EnduranceThreshold",type="BASE",value=8}},nil}
@@ -9697,7 +9681,6 @@ c["+86 Melee Physical Damage if wielding a Mace"]={{[1]={flags=0,keywordFlags=51
 c["+86% Chance to Shred Armor on Hit"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_ArmourShred",type="BASE",value=86}},nil}
 c["+86% Chance to inflict Bleed on Minion Hit"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=8388608,keywordFlags=0,name="BleedChance",type="BASE",value=86}}}},"  on   "}
 c["+86% Chance to inflict Time Rot on Void Hit"]={{[1]={flags=8388608,keywordFlags=16,name="TimeRotChance",type="BASE",value=86}},nil}
-c["+87 Curse Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=87}}," Curse   "}
 c["+87 Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="BASE",value=87}},nil}
 c["+87 Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=87}},nil}
 c["+87 Ward Decay Threshold"]={{[1]={flags=0,keywordFlags=0,name="WardDecayThreshold",type="BASE",value=87}},nil}
@@ -9723,7 +9706,6 @@ c["+89 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=89}
 c["+89 Stun Avoidance"]={{[1]={flags=0,keywordFlags=0,name="StunAvoidance",type="BASE",value=89}},nil}
 c["+89% Minion Freeze Rate Multiplier"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="FreezeRateMultiplier",type="BASE",value=89}}}},nil}
 c["+89% Physical Penetration with Shadow Daggers"]={{[1]={[1]={skillName="Shadow Daggers",type="SkillName"},flags=0,keywordFlags=0,name="PhysicalPenetration",type="BASE",value=89}},"  with  "}
-c["+9 All Attributes with at least 7 Corrupted non-Idol Items equipped"]={{[1]={flags=0,keywordFlags=0,name="Vit",type="BASE",value=9},[2]={flags=0,keywordFlags=0,name="Str",type="BASE",value=9},[3]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=9},[4]={flags=0,keywordFlags=0,name="Int",type="BASE",value=9},[5]={flags=0,keywordFlags=0,name="Att",type="BASE",value=9}},"  with at least 7 Corrupted non-Idol Items equipped "}
 c["+9 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=9}},nil}
 c["+9 Armor While Transformed"]={{[1]={[1]={type="Condition",var="Transformed"},flags=0,keywordFlags=0,name="Armour",type="BASE",value=9}},nil}
 c["+9 Attunement"]={{[1]={flags=0,keywordFlags=0,name="Att",type="BASE",value=9}},nil}
@@ -9830,7 +9812,7 @@ c["+9% Lightning Penetration with Lightning Invocations"]={{[1]={flags=0,keyword
 c["+9% Lightning Resistance"]={{[1]={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=9}},nil}
 c["+9% Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="INC",value=9}},nil}
 c["+9% Mana Efficiency"]={{[1]={flags=0,keywordFlags=0,name="ManaEfficiency",type="INC",value=9}},nil}
-c["+9% Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="BASE",value=9}},nil}
+c["+9% Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=9}},nil}
 c["+9% Maximum Health gained as Endurance Threshold"]={{[1]={flags=0,keywordFlags=0,name="LifeAsEnduranceThreshold",type="BASE",value=9}},nil}
 c["+9% Melee Critical Strike Chance"]={{[1]={flags=0,keywordFlags=512,name="CritChance",type="BASE",value=9}},nil}
 c["+9% Minion Cast Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=256,keywordFlags=0,name="Speed",type="BASE",value=9}}}},nil}

@@ -59,9 +59,14 @@ local function doActorLifeMana(actor)
 	local base = modDB:Sum("BASE", nil, "Life")
 	local inc = modDB:Sum("INC", nil, "Life")
 	local more = modDB:More(nil, "Life")
-	-- LE stores maxHealth as int (BaseHealth.maxHealth, dump.cs:155378). float→int
-	-- assignment in C# is truncation toward zero (= floor for positive values), so
-	-- LE displays e.g. 1258 × 1.25 = 1572.5 as 1572, not 1573 (round-half-up).
+	-- @leb-regression-guard: int-truncate-life-mana
+	-- LE stores maxHealth/maxMana as int (BaseHealth.maxHealth, dump.cs:155378;
+	-- maxMana dump.cs:178322). C# float→int assignment is truncation toward zero
+	-- (= floor for positive values), so LE displays e.g. 1258 × 1.25 = 1572.5 as
+	-- 1572, not 1573 (round-half-up). Upstream PoB uses round(); LEB diverges on
+	-- purpose for in-game parity. Do NOT swap m_floor → round here without also
+	-- updating TestModParse "effect doubled" assertions (52 vs 53 mana, 952 vs 953).
+	-- See REGRESSION_GUARDS.md "int-truncate-life-mana".
 	output.Life = m_max(m_floor(base * (1 + inc/100) * more), 1)
 	if breakdown then
 		if inc ~= 0 or more ~= 1 then
@@ -76,7 +81,7 @@ local function doActorLifeMana(actor)
 			t_insert(breakdown.Life, s_format("= %g", output.Life))
 		end
 	end
-	-- LE stores maxMana as int (dump.cs:178322). Same truncation rule as Life.
+	-- @leb-regression-guard: int-truncate-life-mana (paired with output.Life above)
 	output.Mana = m_floor(calcLib.val(modDB, "Mana"))
 	local base = modDB:Sum("BASE", nil, "Mana")
 	local inc = modDB:Sum("INC", nil, "Mana")
@@ -212,6 +217,55 @@ local function doActorAttribsConditions(env, actor)
 		end
 		if actor.mainSkill.skillFlags.trap then
 			condList["TriggeredTrapsRecently"] = true
+		end
+	end
+
+	-- @leb-regression-guard: idol-altar-not-idol-slot
+	-- StatThreshold tags resolve via ModStore:GetStat which reads
+	-- actor.output[stat]. The corrupted-counter mods are emitted into modDB
+	-- by CalcSetup (CorruptedItemsEquipped / CorruptedNonIdolItemsEquipped /
+	-- CorruptedIdolItemsEquipped) but were never published to `output`, so
+	-- `+N to All Attributes with at least N Corrupted [non-Idol/Idol] items
+	-- equipped` (Shroud of Obscurity etc.) never tripped. Publish them BEFORE
+	-- the Attributes loop so calcLib.val sees the threshold satisfied.
+	-- Test: spec/System/TestModParse_spec.lua
+	--       "Corrupted Idol Altar counts as non-Idol for
+	--        CorruptedNonIdolItemsEquipped"
+	-- Establishing commit: e9e4e64c5
+	output.CorruptedItemsEquipped = modDB:Sum("BASE", nil, "CorruptedItemsEquipped")
+	output.CorruptedNonIdolItemsEquipped = modDB:Sum("BASE", nil, "CorruptedNonIdolItemsEquipped")
+	output.CorruptedIdolItemsEquipped = modDB:Sum("BASE", nil, "CorruptedIdolItemsEquipped")
+
+	-- @leb-regression-guard: set-bonus-breakdown-bridge
+	-- env.itemModDB.setBreakdown (built in CalcSetup.applySetBonuses) MUST
+	-- be bridged to actor.output so the CalcSections "Set Bonuses" row can
+	-- gate via haveOutput="SetBreakdown". Skipping this bridge silently
+	-- hides the entire section even when the data is fully populated. The
+	-- companion guard "set-bonus-breakdown-publish" locks the producer side.
+	-- Test: spec/System/TestSetBreakdown_spec.lua
+	--       "applySetBonuses publishes setBreakdown with sets[] and bonuses"
+	-- Establishing commit: f7b598ede
+	--
+	-- env.itemModDB.setBreakdown contains { completeSetCount, wildcardCount,
+	-- sets = { {name, pieceCount, setSize, complete, bonuses}... } }. Pure
+	-- UI-side; no calc reads output.SetBreakdown.
+	local setBreakdownData = env.itemModDB and env.itemModDB.setBreakdown
+	if setBreakdownData and setBreakdownData.sets and #setBreakdownData.sets > 0 then
+		output.SetBreakdown = #setBreakdownData.sets
+		output.CompleteSetCount = setBreakdownData.completeSetCount
+		if breakdown then
+			local lines = {}
+			if setBreakdownData.wildcardCount and setBreakdownData.wildcardCount > 0 then
+				t_insert(lines, string.format("^7Wildcard items: %d", setBreakdownData.wildcardCount))
+			end
+			for _, s in ipairs(setBreakdownData.sets) do
+				local marker = s.complete and (colorCodes.SET .. "* ") or "^7  "
+				t_insert(lines, string.format("%s%s ^7(%d/%d)", marker, tostring(s.name), s.pieceCount, s.setSize))
+				for _, b in ipairs(s.bonuses) do
+					t_insert(lines, string.format("    ^8%dpc: ^7%s", b.tier, b.text))
+				end
+			end
+			breakdown.SetBreakdown = lines
 		end
 	end
 
