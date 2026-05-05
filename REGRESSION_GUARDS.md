@@ -697,6 +697,33 @@ wrapped rows in `block.height` so the bottom border crops wrapped text.
 
 **Establishing commit:** `<unset; bump after first commit on this branch>`
 
+### `ward-retention-negative-clamp`
+
+Stable ward and ward-decay-per-second use the formula
+`wardLost/s = (0.00005*(W-T)^2 + 0.2*(W-T)) / (1 + 0.5*R)` (verified against
+game `ProtectionClass.Update` RVA 0x234B8C0). The game clamps WardRetention
+at -90% before the divisor is computed; without that clamp, R <= -200%
+drives the divisor to zero or negative and stable ward becomes non-finite
+(division by zero / sqrt of negative). Trigger: switching LEB's stable ward
+inversion from a tunklab approximation to the verified game formula
+exposed this corner case across all four call sites.
+
+A regression here drops `m_max(..., -90)` (or the equivalent clamp constant)
+on `WardRetention` before it feeds the `(1 + 0.5 * R/100)` divisor, causing
+NaN/Inf ward for builds with very large negative retention.
+
+| Site | File | What it does |
+|---|---|---|
+| stable ward inversion | `src/Modules/CalcDefence.lua` (~line 404) | Clamps R at -90% before solving `wgain = wardLost/s` for W |
+| display decay | `src/Modules/CalcDefence.lua` (~line 442) | Clamps R at -90% in the `wardDecay(W,R)` reporter |
+| Sanguine Runestones path | `src/Modules/CalcDefence.lua` (~line 636) | Same clamp on the LifeRegenAppliesToWard recompute |
+| post-offence recompute | `src/Modules/CalcPerform.lua` (~line 1268) | Same clamp in the ManaSpentGainedAsWard branch |
+
+**Spec:** `spec/System/TestDefence_spec.lua`
+- "ward retention clamped at -90% (negative retention)"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
 ## Adding a new guard
 
 1. Above the fix in source, add a comment block:

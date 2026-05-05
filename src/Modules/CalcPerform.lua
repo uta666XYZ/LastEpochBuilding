@@ -1264,7 +1264,8 @@ function calcs.perform(env, fullDPSSkipEHP)
 			pOut.WardPerSecond = (pOut.WardPerSecond or 0) + bonusWardPerSec
 			local wps = pOut.WardPerSecond
 			local wardDecayThreshold = pOut.WardDecayThreshold or 0
-			local wardRetention = pOut.WardRetention or 0
+			-- @leb-regression-guard:ward-retention-negative-clamp (post-offence ManaSpentGainedAsWard path)
+			local wardRetention = m_max(pOut.WardRetention or 0, -90)
 			local ward = wardDecayThreshold + ((-0.2 + math.sqrt(0.04 + 0.0002 * wps * (1 + 0.5 * wardRetention / 100))) / 0.0001)
 			ward = ward * calcLib.mod(env.player.modDB, nil, "Ward", "Defences")
 			pOut.Ward = m_max(round(ward), 0)
