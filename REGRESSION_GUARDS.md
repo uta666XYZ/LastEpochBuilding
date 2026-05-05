@@ -523,11 +523,19 @@ Its skill-tree node mods (e.g. `fw3d-8 "Glacial Reinforcement"` `+10% Block
 Chance` from `notScalingStats`) are only granted while the buff is active.
 
 LEB historically poured those mods into the player modDB unconditionally,
-because Flame Ward is not classified as `SkillType.Buff` and therefore fell
-through the existing `buffSkillTreePrefixes` gate. The fix extends the gate
-with a `whileActiveBuffByTreeId` table — those skills' tree nodes are only
-applied when the user enables the matching `Condition:Have<X>` flag from
-the new `conditionHaveFlameWard` Config option.
+because Flame Ward fell through the existing `buffSkillTreePrefixes` gate.
+The fix extends the gate with a `whileActiveBuffByTreeId` table — those
+skills' tree nodes are only applied when the user enables the matching
+`Condition:Have<X>` flag from the new `conditionHaveFlameWard` Config option.
+
+**Subtle pitfall:** Flame Ward HAS `SkillType.Buff` set (skillTypeTags=131336
+= Buff 131072 + Spell 256 + 8). Splitting the buffSkillTreePrefixes loop into
+`if SkillType.Buff then ... else cond ... end` is wrong — Flame Ward enters
+the Buff branch and silently bypasses the condition gate, leaking the entire
+fw3d-* node set globally. In Bakbr2Ne (4 points in fw3d-7 Frostguard) this
+manifested as a +800 Armour over-count (LEB 1926 vs LE 828, Δ+1098). The
+correct structure ANDs `condName` into `enabled` regardless of the Buff
+branch.
 
 | Site | File | What it does |
 |---|---|---|

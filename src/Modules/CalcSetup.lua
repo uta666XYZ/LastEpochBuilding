@@ -1416,22 +1416,21 @@ function calcs.initEnv(build, mode, override, specEnv)
 		if ge and ge.treeId then
 			local prefix = ge.treeId .. "-"
 			if not buffSkillTreePrefixes[prefix] then
-				if ge.skillTypes and ge.skillTypes[SkillType.Buff] then
+				local hasBuffType = ge.skillTypes and ge.skillTypes[SkillType.Buff]
+				local condName = whileActiveBuffByTreeId[ge.treeId]
+				if hasBuffType or condName then
+					local enabled = group.enabled
+					if condName then
+						-- While-active duration buffs (e.g. Flame Ward fw3d) require the
+						-- corresponding Condition:Have<X> flag — even if SkillType.Buff is
+						-- set on the skill — otherwise their tree-node mods leak globally.
+						enabled = enabled and env.modDB:Flag(nil, "Condition:" .. condName)
+					end
 					buffSkillTreePrefixes[prefix] = {
-						enabled = group.enabled,
-						isChannel = ge.skillTypes[SkillType.Channelling] or false,
+						enabled = enabled,
+						isChannel = (hasBuffType and ge.skillTypes[SkillType.Channelling]) or false,
 						effectMod = treeIdEffectMod[ge.treeId],
 					}
-				else
-					local condName = whileActiveBuffByTreeId[ge.treeId]
-					if condName then
-						local conditionActive = env.modDB:Flag(nil, "Condition:" .. condName)
-						buffSkillTreePrefixes[prefix] = {
-							enabled = group.enabled and conditionActive,
-							isChannel = false,
-							effectMod = nil,
-						}
-					end
 				end
 			end
 		end
