@@ -461,6 +461,32 @@ on first GUI load.
 
 **Establishing commit:** `<unset; bump after first commit on this branch>`
 
+### `potion-slots-no-character-base`
+
+`output.PotionSlots` has NO character/class base — the only source is the
+belt's `+N Potion Slots` implicit (and any sealed / crafted `+N Potion
+Slots` mod). LE planner tooltip on Qqwv73q2 lv62 Warlock confirms: belt
+`Isadora's Tomb Binding` implicit `+3 Potion Slots` → display
+"Potion Slots: 3" (no character base added).
+
+The previous `output.PotionSlots = 3 + modDB:Sum("BASE", nil, "PotionSlots")`
+double-counted the belt mod (3 + 3 = 6 vs LE's 3) and would also report
+3 for beltless builds vs LE's 0. Any revert to `K + modDB:Sum(...)` for
+non-zero `K` immediately drifts every belted build by `+K` and every
+beltless build away from in-game's 0 baseline.
+
+| Site | File | What it does |
+|---|---|---|
+| compute | `src/Modules/CalcDefence.lua` (~line 1416) | `output.PotionSlots = modDB:Sum("BASE", nil, "PotionSlots")` — no constant |
+| alias   | `src/Modules/ModParser.lua` (~line 154) | `["potion slots"] = "PotionSlots"` |
+
+**Spec:** `spec/System/TestPotionSlots_spec.lua`
+- "PotionSlots has no character base (default = 0 with no mods)"
+- "PotionSlots equals sum of '+N Potion Slots' BASE mods (3)"
+- "PotionSlots stacks BASE mods additively (3 + 2 = 5)"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
 ## Adding a new guard
 
 1. Above the fix in source, add a comment block:
