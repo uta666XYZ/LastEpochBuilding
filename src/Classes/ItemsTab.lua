@@ -1183,27 +1183,50 @@ end
 --   * ItemsTab.SetActiveItemSet (when switching/loading sets so re-opened
 --     builds also show their Refracted slots populated)
 -- Idempotent: clears slots above capacity, re-fills slots 1..N each call.
+-- @leb-regression-guard:refracted-slot-overlap-only
+-- Omen Idol slots represent idols whose footprint overlaps a Refracted (grid
+-- type=2) cell on the active Idol Altar. Idols that do NOT touch any refracted
+-- cell must NOT appear in Omen Idol slots, even if Omen capacity remains.
+-- If overlapping idols exceed capacity, only the lowest-numbered idols fit
+-- (deterministic Idol-slot-number order); the rest are dropped.
+-- See REGRESSION_GUARDS.md `refracted-slot-overlap-only`.
 function ItemsTabClass:AutoPopulateOmenIdolSlots()
 	local altarName = self.activeAltarLayout
 	local altar = altarName and altarName ~= "Default" and self.altarLayouts and self.altarLayouts[altarName]
 	-- Determine capacity (0 when no altar so we still clear stale entries).
 	local capacity = 0
-	if altar then
+	if altar and altar.grid then
 		capacity = (altar.omenIdolCapacity or 0) + (self:GetOmenIdolCapacityBonus() or 0)
 		if capacity > MAX_OMEN_IDOL_SLOTS then capacity = MAX_OMEN_IDOL_SLOTS end
 	end
-	-- Collect distinct idols from the 5x5 layout, ordered by Idol slot number
-	-- so Omen Idol 1..N is filled deterministically.
+	-- Collect distinct idols from the 5x5 layout that overlap a refracted cell,
+	-- ordered by Idol slot number so Omen Idol 1..N is filled deterministically.
 	local layoutIdols = {}
-	if altar then
+	if altar and altar.grid then
 		local seen = {}
 		for r, rowData in ipairs(IDOL_GRID_LAYOUT) do
 			for c, slotName in ipairs(rowData) do
 				local slot = self.slots[slotName]
 				if slot and slot.selItemId and slot.selItemId ~= 0 and not seen[slot.selItemId] then
 					seen[slot.selItemId] = true
-					local slotNum = tonumber(slotName:match("%d+"))
-					table.insert(layoutIdols, { slotNum = slotNum, itemId = slot.selItemId })
+					local item = self.items[slot.selItemId]
+					local size = item and idolSize[item.type] or { 1, 1 }
+					-- size = {w, h} (cols, rows). Walk footprint and test type==2.
+					local hit = false
+					for dr = 0, size[2] - 1 do
+						for dc = 0, size[1] - 1 do
+							local row = altar.grid[r + dr]
+							if row and row[c + dc] == 2 then
+								hit = true
+								break
+							end
+						end
+						if hit then break end
+					end
+					if hit then
+						local slotNum = tonumber(slotName:match("%d+"))
+						table.insert(layoutIdols, { slotNum = slotNum, itemId = slot.selItemId })
+					end
 				end
 			end
 		end

@@ -2004,13 +2004,14 @@ function ImportTabClass:ImportItemsAndSkills(charData)
     end
 
     -- Auto-populate Omen Idol slots from idols placed in the layout grid.
-    -- Per user spec (2026-05-03): ALL idols in the layout count as Omen Idols
-    -- up to the altar's capacity (= layout.omenIdolCapacity + MaximumOmenIdols
-    -- sealed-affix bonus). Logic now lives in
-    -- ItemsTab:AutoPopulateOmenIdolSlots so SetActiveItemSet (load / switch
-    -- set) can reuse it. Idol Altar "increased Effect of [Prefixes/Suffixes]
-    -- for Idols in Refracted Slots" is applied at calc time by
-    -- CalcSetup.cloneWithAltarBoost — do NOT bake it here.
+    -- Per user spec (2026-05-05): only idols whose footprint overlaps a
+    -- Refracted (grid type=2) cell count as Omen Idols, up to the altar's
+    -- capacity (= layout.omenIdolCapacity + MaximumOmenIdols sealed-affix
+    -- bonus). Logic lives in ItemsTab:AutoPopulateOmenIdolSlots so
+    -- SetActiveItemSet (load / switch set) can reuse it. Idol Altar
+    -- "increased Effect of [Prefixes/Suffixes] for Idols in Refracted Slots"
+    -- is applied at calc time by CalcSetup.cloneWithAltarBoost — do NOT bake
+    -- it here.
     self.build.itemsTab:AutoPopulateOmenIdolSlots()
 
     -- Restore original data pointers
