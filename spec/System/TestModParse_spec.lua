@@ -666,4 +666,34 @@ describe("TestModParse", function()
             assert.are.equals(1572, build.calcsTab.calcsOutput.Life)
         end)
     end)
+
+    -- @leb-regression-guard: regen-pct-shorthand-inc
+    -- Locks in ModParser BASE_MORE classification for ManaRegen/LifeRegen.
+    -- LE in-game text shorthand "+N% Mana Regen" / "+N% Health Regen" (without
+    -- "increased") must be parsed as INC, matching the existing Life/Mana/Ward
+    -- exception. The game's authoritative localized_master.json affix 1015
+    -- affixProperties[1] (Mana Regen) is modifierType=1 (INC) with extraRolls
+    -- stored as 0.08-0.09 (= 8-9% multiplier). Without this, Keplahan's Cryolith
+    -- Reforged ring sealed affix +(8-9)% Mana Regen is treated as flat +8 BASE,
+    -- causing ~+15.5/s drift (Qqwv73q2: LE 16.72 vs LEB 32.20 prior to fix).
+    -- Establishing commit: <unset; bump after first commit on this branch>.
+    it("LE shorthand '+N% Mana Regen' parses as INC", function()
+        build.configTab.input.customMods = "+8% Mana Regen"
+        build.configTab:BuildModList()
+        runCallback("OnFrame")
+        assert.are.equals(0, build.configTab.modList:Sum("BASE", nil, "ManaRegen"),
+            "Bare '+8% Mana Regen' must NOT add flat BASE Mana Regen")
+        assert.are.equals(8, build.configTab.modList:Sum("INC", nil, "ManaRegen"),
+            "Bare '+8% Mana Regen' must contribute +8% INC Mana Regen")
+    end)
+
+    it("LE shorthand '+N% Health Regen' parses as INC", function()
+        build.configTab.input.customMods = "+12% Health Regen"
+        build.configTab:BuildModList()
+        runCallback("OnFrame")
+        assert.are.equals(0, build.configTab.modList:Sum("BASE", nil, "LifeRegen"),
+            "Bare '+12% Health Regen' must NOT add flat BASE Life Regen")
+        assert.are.equals(12, build.configTab.modList:Sum("INC", nil, "LifeRegen"),
+            "Bare '+12% Health Regen' must contribute +12% INC Life Regen")
+    end)
 end)

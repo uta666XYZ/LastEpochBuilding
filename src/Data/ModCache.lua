@@ -2691,7 +2691,7 @@ c["+11% Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="INC",value=11}}
 c["+11% Lightning Penetration"]={{[1]={flags=0,keywordFlags=0,name="LightningPenetration",type="BASE",value=11}},nil}
 c["+11% Lightning Resistance"]={{[1]={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=11}},nil}
 c["+11% Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="INC",value=11}},nil}
-c["+11% Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="BASE",value=11}},nil}
+c["+11% Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=11}},nil}
 c["+11% Minion Cast Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=256,keywordFlags=0,name="Speed",type="BASE",value=11}}}},nil}
 c["+11% Minion Cold Penetration"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="ColdPenetration",type="BASE",value=11}}}},nil}
 c["+11% Minion Cold Resistance"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="ColdResist",type="BASE",value=11}}}},nil}
@@ -2899,7 +2899,7 @@ c["+12% Glacier Cold Penetration per Ice Spiral"]={{[1]={[1]={skillName="Glacier
 c["+12% Global Attack Speed"]={{[1]={[1]={type="Global"},flags=3584,keywordFlags=0,name="Speed",type="BASE",value=12}},nil}
 c["+12% Global Cast Speed"]={{[1]={[1]={type="Global"},flags=256,keywordFlags=0,name="Speed",type="BASE",value=12}},nil}
 c["+12% Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="INC",value=12}},nil}
-c["+12% Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="BASE",value=12}},nil}
+c["+12% Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="INC",value=12}},nil}
 c["+12% Hit Damage"]={{[1]={flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=12}},nil}
 c["+12% Hit Damage Against Chilled Enemies"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="Chilled"},flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=12}},nil}
 c["+12% Hit Damage Against Shocked Enemies"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="Shocked"},flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=12}},nil}
@@ -3104,7 +3104,7 @@ c["+13% Lightning Resistance"]={{[1]={flags=0,keywordFlags=0,name="LightningResi
 c["+13% Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="INC",value=13}},nil}
 c["+13% Mana Efficiency"]={{[1]={flags=0,keywordFlags=0,name="ManaEfficiency",type="INC",value=13}},nil}
 c["+13% Mana Efficiency with Soul Feast"]={{[1]={[1]={skillName="Soul Feast",type="SkillName"},flags=0,keywordFlags=0,name="ManaEfficiency",type="INC",value=13}},"  with  "}
-c["+13% Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="BASE",value=13}},nil}
+c["+13% Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=13}},nil}
 c["+13% Melee Critical Strike Chance"]={{[1]={flags=0,keywordFlags=512,name="CritChance",type="BASE",value=13}},nil}
 c["+13% Minion Cast Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=256,keywordFlags=0,name="Speed",type="BASE",value=13}}}},nil}
 c["+13% More Necrotic Damage Over Time from Gravestone Aura"]={{[1]={flags=4128,keywordFlags=0,name="NecroticDamage",type="MORE",value=13}},"  from Gravestone Aura "}
@@ -3538,7 +3538,7 @@ c["+15% Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="INC",value=15}},n
 c["+15% Mana Cost"]={{[1]={flags=0,keywordFlags=0,name="ManaCost",type="INC",value=15}},nil}
 c["+15% Mana Efficiency"]={{[1]={flags=0,keywordFlags=0,name="ManaEfficiency",type="INC",value=15}},nil}
 c["+15% Mana Efficiency with Ghostflame"]={{[1]={[1]={skillName="Ghostflame",type="SkillName"},flags=0,keywordFlags=0,name="ManaEfficiency",type="INC",value=15}},"  with  "}
-c["+15% Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="BASE",value=15}},nil}
+c["+15% Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=15}},nil}
 c["+15% Mana efficiency for Decoy"]={{[1]={[1]={skillName="Decoy",type="SkillName"},flags=0,keywordFlags=0,name="ManaEfficiency",type="BASE",value=15}},"  for  "}
 c["+15% Mana efficiency for Synchronized Strike"]={{[1]={[1]={skillName="Synchronized Strike",type="SkillName"},flags=0,keywordFlags=0,name="ManaEfficiency",type="BASE",value=15}},"  for  "}
 c["+15% Maul Melee Damage To Stunned"]={{[1]={[1]={skillName="Maul",type="SkillName"},flags=0,keywordFlags=512,name="Damage",type="MORE",value=15}},"    To Stunned "}
@@ -3848,7 +3848,7 @@ c["+17% Lightning Critical Strike Multiplier"]={{[1]={flags=0,keywordFlags=2,nam
 c["+17% Lightning Penetration"]={{[1]={flags=0,keywordFlags=0,name="LightningPenetration",type="BASE",value=17}},nil}
 c["+17% Lightning Resistance"]={{[1]={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=17}},nil}
 c["+17% Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="INC",value=17}},nil}
-c["+17% Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="BASE",value=17}},nil}
+c["+17% Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=17}},nil}
 c["+17% Mana efficiency for Decoy"]={{[1]={[1]={skillName="Decoy",type="SkillName"},flags=0,keywordFlags=0,name="ManaEfficiency",type="BASE",value=17}},"  for  "}
 c["+17% Mana efficiency for Synchronized Strike"]={{[1]={[1]={skillName="Synchronized Strike",type="SkillName"},flags=0,keywordFlags=0,name="ManaEfficiency",type="BASE",value=17}},"  for  "}
 c["+17% Minion Cast Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=256,keywordFlags=0,name="Speed",type="BASE",value=17}}}},nil}
@@ -4099,7 +4099,7 @@ c["+19% Lightning Critical Strike Multiplier"]={{[1]={flags=0,keywordFlags=2,nam
 c["+19% Lightning Penetration"]={{[1]={flags=0,keywordFlags=0,name="LightningPenetration",type="BASE",value=19}},nil}
 c["+19% Lightning Resistance"]={{[1]={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=19}},nil}
 c["+19% Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="INC",value=19}},nil}
-c["+19% Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="BASE",value=19}},nil}
+c["+19% Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=19}},nil}
 c["+19% Melee Critical Strike Multiplier per meter from the target (up to 5 meters)"]={{[1]={flags=0,keywordFlags=512,name="CritMultiplier",type="BASE",value=19}},"   per meter from the target (up to 5 meters) "}
 c["+19% Minion Cast Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=256,keywordFlags=0,name="Speed",type="BASE",value=19}}}},nil}
 c["+19% Minion Critical Strike Multiplier"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="CritMultiplier",type="BASE",value=19}}}},nil}
@@ -4997,7 +4997,7 @@ c["+21% Lightning Critical Strike Multiplier"]={{[1]={flags=0,keywordFlags=2,nam
 c["+21% Lightning Penetration"]={{[1]={flags=0,keywordFlags=0,name="LightningPenetration",type="BASE",value=21}},nil}
 c["+21% Lightning Resistance"]={{[1]={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=21}},nil}
 c["+21% Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="INC",value=21}},nil}
-c["+21% Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="BASE",value=21}},nil}
+c["+21% Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=21}},nil}
 c["+21% Mana efficiency for Decoy"]={{[1]={[1]={skillName="Decoy",type="SkillName"},flags=0,keywordFlags=0,name="ManaEfficiency",type="BASE",value=21}},"  for  "}
 c["+21% Mana efficiency for Synchronized Strike"]={{[1]={[1]={skillName="Synchronized Strike",type="SkillName"},flags=0,keywordFlags=0,name="ManaEfficiency",type="BASE",value=21}},"  for  "}
 c["+21% Minion Cast Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=256,keywordFlags=0,name="Speed",type="BASE",value=21}}}},nil}
@@ -6342,7 +6342,7 @@ c["+30% Lightning Resistance"]={{[1]={flags=0,keywordFlags=0,name="LightningResi
 c["+30% Lightning Wave Base Damage"]={{[1]={flags=0,keywordFlags=2,name="Damage",type="MORE",value=30}},"  Wave Base  "}
 c["+30% Mana Cost"]={{[1]={flags=0,keywordFlags=0,name="ManaCost",type="INC",value=30}},nil}
 c["+30% Mana Efficiency"]={{[1]={flags=0,keywordFlags=0,name="ManaEfficiency",type="INC",value=30}},nil}
-c["+30% Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="BASE",value=30}},nil}
+c["+30% Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=30}},nil}
 c["+30% Maximum Hit Damage"]={{[1]={flags=8388608,keywordFlags=0,name="Damage",type="MORE",value=30}}," Maximum   "}
 c["+30% Maximum Lightning Penetration"]={{[1]={flags=0,keywordFlags=0,name="LightningPenetration",type="BASE",value=30}}," Maximum  "}
 c["+30% Maximum Physical Penetration"]={{[1]={flags=0,keywordFlags=0,name="PhysicalPenetration",type="BASE",value=30}}," Maximum  "}
@@ -9822,7 +9822,7 @@ c["+9% Lightning Penetration with Lightning Invocations"]={{[1]={flags=0,keyword
 c["+9% Lightning Resistance"]={{[1]={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=9}},nil}
 c["+9% Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="INC",value=9}},nil}
 c["+9% Mana Efficiency"]={{[1]={flags=0,keywordFlags=0,name="ManaEfficiency",type="INC",value=9}},nil}
-c["+9% Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="BASE",value=9}},nil}
+c["+9% Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=9}},nil}
 c["+9% Maximum Health gained as Endurance Threshold"]={{[1]={flags=0,keywordFlags=0,name="LifeAsEnduranceThreshold",type="BASE",value=9}},nil}
 c["+9% Melee Critical Strike Chance"]={{[1]={flags=0,keywordFlags=512,name="CritChance",type="BASE",value=9}},nil}
 c["+9% Minion Cast Speed"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=256,keywordFlags=0,name="Speed",type="BASE",value=9}}}},nil}

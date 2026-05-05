@@ -313,6 +313,35 @@ playbook so the next person doesn't trip the same false positives:
 4. Use in-game tooltip screenshots from the user as the final ground
    truth for any unique that still looks suspicious after step 3.
 
+### `regen-pct-shorthand-inc`
+
+LE in-game text uses the shorthand `+N% Mana Regen` / `+N% Health Regen`
+(without the word "increased") for what is, in the game's authoritative
+`localized_master.json`, a `modifierType=1` (INC) modifier. ModParser's
+`BASE_MORE` form classifier already had a per-stat exception for the same
+shorthand on `Life` / `Mana` / `Ward`; without `ManaRegen` / `LifeRegen`
+in that exception list, the form falls through to the default `BASE`
+classification and the affix becomes flat `+N` regen instead of `N%
+increased` regen.
+
+Concretely on Qqwv73q2 lv62 Warlock: Keplahan's Cryolith Reforged Copper
+Ring's sealed `+(8-9)% Mana Regen` was treated as `+8` flat BASE,
+inflating Mana Regen by ~+15.5/s (LE 16.72 vs LEB 32.20 prior to fix).
+
+| Site | File | What it does |
+|---|---|---|
+| classifier | `src/Modules/ModParser.lua` (~line 2017) | Adds `ManaRegen` / `LifeRegen` to the existing `Life`/`Mana`/`Ward` BASE→INC override under `BASE_MORE` form |
+
+The override is gated on `not hasModSuffix` so flag-suffixed forms
+(e.g. `+8% Mana Regen with X`) keep the explicit BASE/INC chosen by
+their suffix descriptor.
+
+**Spec:** `spec/System/TestModParse_spec.lua`
+- "LE shorthand '+N% Mana Regen' parses as INC"
+- "LE shorthand '+N% Health Regen' parses as INC"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
 ## Adding a new guard
 
 1. Above the fix in source, add a comment block:

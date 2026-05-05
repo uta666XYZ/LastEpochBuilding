@@ -2016,8 +2016,19 @@ local function parseMod(line, order)
 		end
 		if not hasModSuffix and (modNameStr:match("Damage$") or modName == "Duration") then
 			modType = "MORE"
-		elseif not hasModSuffix and (modNameStr == "Life" or modNameStr == "Mana" or modNameStr == "Ward") then
-			-- LE convention: "+N% Health/Mana/Ward" (no "increased") means INC, not BASE
+		elseif not hasModSuffix and (modNameStr == "Life" or modNameStr == "Mana" or modNameStr == "Ward"
+				or modNameStr == "ManaRegen" or modNameStr == "LifeRegen") then
+			-- @leb-regression-guard: regen-pct-shorthand-inc
+			-- LE convention: "+N% Health/Mana/Ward/ManaRegen/LifeRegen" (without "increased")
+			-- is rendered in-game as an INC modifier. Game's authoritative
+			-- localized_master.json affix 1015 affixProperties[1] (Mana Regen)
+			-- has modifierType=1 (INC) and extraRolls stored as 0.08-0.09 (= 8-9%
+			-- multiplier). ModItem_1_4.json renders the row as "+(8-9)% Mana Regen"
+			-- following LE in-game text shorthand. Without ManaRegen/LifeRegen here,
+			-- ModParser falls through to BASE and the affix is treated as flat
+			-- "+8 Mana Regen" instead of "8% increased Mana Regen", causing
+			-- ~+15.5/s drift on Qqwv73q2 (LE 16.72 vs LEB 32.20). See spec
+			-- TestModParser_spec.lua "regen-pct-shorthand-inc".
 			modType = "INC"
 		else
 			modType = "BASE"
