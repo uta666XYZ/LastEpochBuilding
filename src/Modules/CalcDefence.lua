@@ -259,6 +259,36 @@ function calcs.defence(env, actor)
 	output.EnduranceOverCap = m_max(endTotalEarly - data.misc.EnduranceCap, 0)
 
 	-- Block
+	-- @leb-regression-guard: block-requires-shield
+	-- LE requires a Shield in off-hand for Block Chance / Block Effectiveness to apply
+	-- (proof: dump.cs constant `playerPropertyBlockChanceConvertedToParryWithoutShield`
+	-- = 531 — only special builds bypass via that flag). Off-hand Catalyst, Quiver, or
+	-- empty off-hand: all block stats must be zero regardless of accumulated mods.
+	-- Test: spec/System/TestBlockSnapshot_spec.lua "Bakbr2Ne lv86 Sorcerer block snapshot"
+	local function isShield(item) return item and item.type == "Shield" end
+	local hasShield = isShield(actor.itemList["Weapon 2"]) or isShield(actor.itemList["Weapon 3"])
+	local blockAllowedWithoutShield = modDB:Flag(nil, "BlockChanceConvertedToParryWithoutShield")
+		or modDB:Flag(nil, "BlockWithoutShield")
+	if not hasShield and not blockAllowedWithoutShield then
+		output.BlockChanceMax = 0
+		output.SpellBlockChanceMax = 0
+		output.BlockChance = 0
+		output.SpellBlockChance = 0
+		output.ProjectileBlockChance = 0
+		output.SpellProjectileBlockChance = 0
+		output.BlockChanceOverCap = 0
+		output.SpellBlockChanceOverCap = 0
+		output.ShieldBlockChance = 0
+		output.AverageBlockChance = 0
+		output.BlockEffectiveness = 0
+		output.BlockMitigation = 0
+		output.BlockEffect = 0
+		output.ShowBlockEffect = false
+		output.DamageTakenOnBlock = 100
+		if breakdown then
+			breakdown.BlockChance = { "No shield equipped — block disabled" }
+		end
+	else
 	output.BlockChanceMax = modDB:Sum("BASE", nil, "BlockChanceMax")
 	if modDB:Flag(nil, "MaximumBlockAttackChanceIsEqualToParent") then
 		output.BlockChanceMax = actor.parent.output.BlockChanceMax
@@ -345,6 +375,7 @@ function calcs.defence(env, actor)
 			s_format("Block Mitigation: %d%%", output.BlockMitigation),
 		}
 	end
+	end -- else (hasShield or BlockWithoutShield) block
 
 	-- Primary defences: Ward, evasion and armour
 	do

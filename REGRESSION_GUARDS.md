@@ -487,6 +487,65 @@ beltless build away from in-game's 0 baseline.
 
 **Establishing commit:** `<unset; bump after first commit on this branch>`
 
+### `block-requires-shield`
+
+LE only grants Block Chance / Block Effectiveness / Block Mitigation when a
+Shield is equipped in the off-hand slot. Off-hand Catalyst (Sorcerer/Warlock),
+Quiver, dual-wielded weapons, or empty off-hand all yield zero block stats
+regardless of accumulated mods. The only documented bypass is the LE constant
+`playerPropertyBlockChanceConvertedToParryWithoutShield` (=531) — when set, the
+block chance is converted to parry chance instead. We model this as the
+`BlockChanceConvertedToParryWithoutShield` / `BlockWithoutShield` flag.
+
+Without the gate, Sorcerer/Warlock builds wearing an Off-Hand Catalyst plus
+e.g. Flame Ward's Glacial Reinforcement node would report 10 % Block Chance
+in LEB while LE shows 0 — a silent +30 % effective HP overstatement on the
+defence sheet.
+
+| Site | File | What it does |
+|---|---|---|
+| gate | `src/Modules/CalcDefence.lua` (~line 262) | Early-zeroes all Block outputs when neither Weapon 2/3 is `type == "Shield"` and no `BlockWithoutShield` flag is set |
+
+**Spec:** `spec/System/TestBlockShield_spec.lua`
+- "BlockChance is 0 with no shield even with +50% Block Chance mod"
+- "BlockChance applies with no shield when BlockWithoutShield flag is set"
+
+**Snapshot coverage:** `spec/System/TestBuilds_spec.lua` "test all builds #builds" via
+`spec/TestBuilds/1.4/Bakbr2Ne lv86 Sorcerer.{xml,lua}` (Astrolabe off-hand, BlockChance=0).
+
+**Establishing commit:** `6e77cc4f8`
+
+### `flame-ward-block-toggle`
+
+Flame Ward (treeId `fw3d`) is a 3-second duration defensive buff (LE class
+`FlameWardMutator`, dump.cs: `additionalBlockChance` / `wardOnBlock` fields).
+Its skill-tree node mods (e.g. `fw3d-8 "Glacial Reinforcement"` `+10% Block
+Chance` from `notScalingStats`) are only granted while the buff is active.
+
+LEB historically poured those mods into the player modDB unconditionally,
+because Flame Ward is not classified as `SkillType.Buff` and therefore fell
+through the existing `buffSkillTreePrefixes` gate. The fix extends the gate
+with a `whileActiveBuffByTreeId` table — those skills' tree nodes are only
+applied when the user enables the matching `Condition:Have<X>` flag from
+the new `conditionHaveFlameWard` Config option.
+
+| Site | File | What it does |
+|---|---|---|
+| gate | `src/Modules/CalcSetup.lua` (~line 1404) | `whileActiveBuffByTreeId = { fw3d = "HaveFlameWard" }`; treeId-prefixed nodes go through the buff-prefix bucketing whose `enabled` is `group.enabled and conditionActive` |
+| config | `src/Modules/ConfigOptions.lua` (~line 130) | `conditionHaveFlameWard` check; sets `Condition:HaveFlameWard` FLAG |
+
+**Spec:** `spec/System/TestBlockShield_spec.lua` (header guard) — direct
+unit-level coverage on this guard would require synthesizing a fw3d skill
+allocation, so the snapshot diff in `TestBuilds_spec.lua` is the primary
+runtime check.
+
+**Snapshot coverage:** `spec/System/TestBuilds_spec.lua` "test all builds #builds" via
+`spec/TestBuilds/1.4/Bakbr2Ne lv86 Sorcerer.{xml,lua}` — reverting the gate
+makes BlockChance flip from 0 (LE-correct, snapshot value) to 10 (Glacial
+Reinforcement contribution).
+
+**Establishing commit:** `6e77cc4f8`
+
 ## Adding a new guard
 
 1. Above the fix in source, add a comment block:

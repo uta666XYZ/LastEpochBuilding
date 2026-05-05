@@ -1401,18 +1401,38 @@ function calcs.initEnv(build, mode, override, specEnv)
 		["ah443"]  = "HolyAuraEffect",
 		["si4lgl"] = "SymbolsOfHopeEffect",
 	}
+	-- @leb-regression-guard: flame-ward-block-toggle
+	-- While-active duration buffs (e.g. Flame Ward) grant tree-node mods that the LE
+	-- engine only applies while the FlameWardMutator buff is up. Without an explicit
+	-- "Condition:Have<X>" flag from Config, these mods MUST NOT be added globally.
+	-- Test: spec/System/TestBlockSnapshot_spec.lua "Bakbr2Ne lv86 Sorcerer block snapshot"
+	-- Maps treeId -> Condition flag name required for the buff to be considered active.
+	local whileActiveBuffByTreeId = {
+		["fw3d"] = "HaveFlameWard",  -- Flame Ward (Mage): 3s duration, FlameWardMutator
+	}
 	local buffSkillTreePrefixes = {}
 	for _, group in pairs(build.skillsTab.socketGroupList) do
 		local ge = group.grantedEffect
-		if ge and ge.treeId and ge.skillTypes and ge.skillTypes[SkillType.Buff] then
+		if ge and ge.treeId then
 			local prefix = ge.treeId .. "-"
-			local existing = buffSkillTreePrefixes[prefix]
-			if not existing then
-				buffSkillTreePrefixes[prefix] = {
-					enabled = group.enabled,
-					isChannel = ge.skillTypes[SkillType.Channelling] or false,
-					effectMod = treeIdEffectMod[ge.treeId],
-				}
+			if not buffSkillTreePrefixes[prefix] then
+				if ge.skillTypes and ge.skillTypes[SkillType.Buff] then
+					buffSkillTreePrefixes[prefix] = {
+						enabled = group.enabled,
+						isChannel = ge.skillTypes[SkillType.Channelling] or false,
+						effectMod = treeIdEffectMod[ge.treeId],
+					}
+				else
+					local condName = whileActiveBuffByTreeId[ge.treeId]
+					if condName then
+						local conditionActive = env.modDB:Flag(nil, "Condition:" .. condName)
+						buffSkillTreePrefixes[prefix] = {
+							enabled = group.enabled and conditionActive,
+							isChannel = false,
+							effectMod = nil,
+						}
+					end
+				end
 			end
 		end
 	end
