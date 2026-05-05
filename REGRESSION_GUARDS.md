@@ -513,7 +513,7 @@ defence sheet.
 **Snapshot coverage:** `spec/System/TestBuilds_spec.lua` "test all builds #builds" via
 `spec/TestBuilds/1.4/Bakbr2Ne lv86 Sorcerer.{xml,lua}` (Astrolabe off-hand, BlockChance=0).
 
-**Establishing commit:** `6e77cc4f8`
+**Establishing commit:** `df85f92e8`
 
 ### `flame-ward-block-toggle`
 
@@ -544,7 +544,7 @@ runtime check.
 makes BlockChance flip from 0 (LE-correct, snapshot value) to 10 (Glacial
 Reinforcement contribution).
 
-**Establishing commit:** `6e77cc4f8`
+**Establishing commit:** `df85f92e8`
 
 ## Adding a new guard
 
