@@ -3285,9 +3285,6 @@
     },
     "stats": {
       "damageEffectiveness": 1.2,
-      "spell_base_fire_damage": 8,
-      "spell_base_cold_damage": 8,
-      "spell_base_lightning_damage": 8,
       "base_critical_strike_multiplier_+": 100,
       "critChance": 5,
       "base_skill_effect_duration": 10,

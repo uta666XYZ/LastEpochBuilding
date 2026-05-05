@@ -864,7 +864,12 @@ local TREE_ID_DAMAGE_TYPES = {
 	["lb23il"] = { base = { "lightning" },             conv = { "cold" } },                -- Lightning Blast
 	["fi9"]    = { base = { "fire" },                  conv = { "lightning" } },            -- Fireball
 	["ms26"]   = { base = { "lightning" },             conv = {} },                        -- Mana Strike
-	["en6"]    = { base = { "fire", "cold", "lightning" }, conv = {} },                    -- Elemental Nova
+	-- @leb-regression-guard: elemental-nova-spec-tree-gated-damage-type
+	-- Elemental Nova damage types are entirely tree-gated (en6-2 Ice, en6-8
+	-- Lightning, en6-12 Fire). Static base/conv left empty so that
+	-- GetDynamicDamageTypesByTreeId picks up types only via the corresponding
+	-- node's "+8 Spell <Type> Damage" stat (addSet path).
+	["en6"]    = { base = {},                          conv = {} },                        -- Elemental Nova
 	["sw31a"]  = { base = { "cold" },                  conv = { "lightning" } },            -- Snap Freeze
 	["gl14"]   = { base = { "cold" },                  conv = {} },                        -- Glacier
 	["dig5"]   = { base = { "lightning", "fire" },     conv = {} },                        -- Disintegrate

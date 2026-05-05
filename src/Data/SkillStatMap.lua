@@ -53,6 +53,13 @@ local result = {
 	skill("ColdMax", nil, { type = "PerStat", stat = "Int", div = 10 }),
 },
 -- Base skill damage by attack type (LE-specific)
+-- @leb-regression-guard: elemental-nova-spec-tree-gated-damage-type
+-- These stat keys are general — any skill that lists them in skills.json will
+-- gain the corresponding damage type on its active skill. ElementalNova is
+-- currently the only skill where this is INCORRECT: in LE, its Fire / Cold /
+-- Lightning damage are tree-gated by en6-12 / en6-2 / en6-8, NOT base. See
+-- spec/System/TestElementalNovaDamageType_spec.lua and the entry in
+-- REGRESSION_GUARDS.md before adding new tree-gated elemental skills.
 ["spell_base_fire_damage"] = { skill("FireDamage", nil) },
 ["spell_base_cold_damage"] = { skill("ColdDamage", nil) },
 ["spell_base_lightning_damage"] = { skill("LightningDamage", nil) },

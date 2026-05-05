@@ -2413,6 +2413,16 @@ function ItemsTabClass:AddItemTooltip(tooltip, item, slot, dbMode)
 	local rarityCode = itemDisplayColor(item)
 	tooltip.center = true
 	tooltip.color = rarityCode
+	-- @leb-regression-guard: tooltip-mod-line-wrap
+	-- Ensure long mod lines (e.g. unique conditional procs on Horn of the
+	-- Bone Wisp) wrap inside the tooltip box. The displayItemTooltip already
+	-- sets this, but AddItemTooltip is also called via TooltipHost on item
+	-- list rows, paperdoll slots, idol grid, etc., where no maxWidth was
+	-- propagated, leaving long lines to overflow horizontally.
+	-- Test: spec/System/TestTooltipWrap_spec.lua
+	if not tooltip.maxWidth then
+		tooltip.maxWidth = 458
+	end
 	if item.title then
 		tooltip:AddLine(20, rarityCode..item.title)
 		tooltip:AddLine(20, rarityCode..item.baseName:gsub(" %(.+%)",""))

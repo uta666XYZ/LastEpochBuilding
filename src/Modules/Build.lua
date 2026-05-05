@@ -285,12 +285,12 @@ function buildMode:Init(dbFileName, buildName, buildXML, convertBuild)
 		{ },
 		{ stat = "Ward", label = "Ward", fmt = "d", color = colorCodes.WARD, compPercent = true },
 		{ stat = "StableWard", label = "Stable Ward", fmt = "d", color = colorCodes.WARD, compPercent = true },
+		{ stat = "NetWardRegen", label = "Net Ward Recovery", fmt = "+.1f", color = colorCodes.WARD },
 		{ },
 		{ stat = "TotalDegen", label = "Total Degen", fmt = ".1f", lowerIsBetter = true },
 		{ stat = "TotalNetRegen", label = "Total Net Recovery", fmt = "+.1f" },
 		{ stat = "NetLifeRegen", label = "Net Life Recovery", fmt = "+.1f", color = colorCodes.LIFE },
 		{ stat = "NetManaRegen", label = "Net Mana Recovery", fmt = "+.1f", color = colorCodes.MANA },
-		{ stat = "NetWardRegen", label = "Net Ward Recovery", fmt = "+.1f", color = colorCodes.WARD },
 		{ },
 		{ stat = "Evasion", label = "Dodge Rating", fmt = "d", color = colorCodes.EVASION, compPercent = true },
 		{ stat = "AttackDodgeChance", label = "Attack Dodge Chance", fmt = "d%%", color = colorCodes.EVASION, overCapStat = "AttackDodgeChanceOverCap" },
@@ -315,6 +315,7 @@ function buildMode:Init(dbFileName, buildName, buildXML, convertBuild)
 
 	tableInsertAll(self.displayStats, {
 		{ },
+		{ stat = "PotionSlots", label = "Potion Slots", fmt = "d", condFunc = function(v) return v and v > 0 end },
 		{ stat = "EffectiveMovementSpeedMod", label = "Movement Speed", fmt = "+d%%", mod = true, condFunc = function() return true end },
 		{ },
 		{ stat = "FullDPS", label = "Full DPS", fmt = ".1f", color = colorCodes.CURRENCY, compPercent = true },

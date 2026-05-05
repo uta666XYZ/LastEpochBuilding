@@ -1401,18 +1401,37 @@ function calcs.initEnv(build, mode, override, specEnv)
 		["ah443"]  = "HolyAuraEffect",
 		["si4lgl"] = "SymbolsOfHopeEffect",
 	}
+	-- @leb-regression-guard: flame-ward-block-toggle
+	-- While-active duration buffs (e.g. Flame Ward) grant tree-node mods that the LE
+	-- engine only applies while the FlameWardMutator buff is up. Without an explicit
+	-- "Condition:Have<X>" flag from Config, these mods MUST NOT be added globally.
+	-- Test: spec/System/TestBlockSnapshot_spec.lua "Bakbr2Ne lv86 Sorcerer block snapshot"
+	-- Maps treeId -> Condition flag name required for the buff to be considered active.
+	local whileActiveBuffByTreeId = {
+		["fw3d"] = "HaveFlameWard",  -- Flame Ward (Mage): 3s duration, FlameWardMutator
+	}
 	local buffSkillTreePrefixes = {}
 	for _, group in pairs(build.skillsTab.socketGroupList) do
 		local ge = group.grantedEffect
-		if ge and ge.treeId and ge.skillTypes and ge.skillTypes[SkillType.Buff] then
+		if ge and ge.treeId then
 			local prefix = ge.treeId .. "-"
-			local existing = buffSkillTreePrefixes[prefix]
-			if not existing then
-				buffSkillTreePrefixes[prefix] = {
-					enabled = group.enabled,
-					isChannel = ge.skillTypes[SkillType.Channelling] or false,
-					effectMod = treeIdEffectMod[ge.treeId],
-				}
+			if not buffSkillTreePrefixes[prefix] then
+				local hasBuffType = ge.skillTypes and ge.skillTypes[SkillType.Buff]
+				local condName = whileActiveBuffByTreeId[ge.treeId]
+				if hasBuffType or condName then
+					local enabled = group.enabled
+					if condName then
+						-- While-active duration buffs (e.g. Flame Ward fw3d) require the
+						-- corresponding Condition:Have<X> flag — even if SkillType.Buff is
+						-- set on the skill — otherwise their tree-node mods leak globally.
+						enabled = enabled and env.modDB:Flag(nil, "Condition:" .. condName)
+					end
+					buffSkillTreePrefixes[prefix] = {
+						enabled = enabled,
+						isChannel = (hasBuffType and ge.skillTypes[SkillType.Channelling]) or false,
+						effectMod = treeIdEffectMod[ge.treeId],
+					}
+				end
 			end
 		end
 	end

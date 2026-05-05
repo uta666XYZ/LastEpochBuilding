@@ -55,17 +55,27 @@ end
 function TooltipClass:AddLine(size, text, font)
 	if text then
 		for line in s_gmatch(text .. "\n", "([^\n]*)\n") do
-			if line:match("^.*(Equipping)") == "Equipping" or line:match("^.*(Removing)") == "Removing" then
+			local isSection = line:match("^.*(Equipping)") == "Equipping" or line:match("^.*(Removing)") == "Removing"
+			if isSection then
 				t_insert(self.blocks, { height = size + 2})
-			else
-				self.blocks[#self.blocks].height = self.blocks[#self.blocks].height + size + 2
 			end
 			if self.maxWidth then
-				for _, line in ipairs(main:WrapString(line, size, self.maxWidth - H_PAD)) do
-					t_insert(self.lines, { size = size, text = line, block = #self.blocks, font = font })
+				local wrapped = main:WrapString(line, size, self.maxWidth - H_PAD)
+				for _, wline in ipairs(wrapped) do
+					t_insert(self.lines, { size = size, text = wline, block = #self.blocks, font = font })
+				end
+				-- Account for every visual row produced by wrapping, not just
+				-- the original single line. Without this the block's height
+				-- under-counts wrapped mod lines and the bottom border can
+				-- crop them.
+				if not isSection then
+					self.blocks[#self.blocks].height = self.blocks[#self.blocks].height + (size + 2) * #wrapped
 				end
 			else
 				t_insert(self.lines, { size = size, text = line, block = #self.blocks, font = font })
+				if not isSection then
+					self.blocks[#self.blocks].height = self.blocks[#self.blocks].height + size + 2
+				end
 			end
 		end
 	end

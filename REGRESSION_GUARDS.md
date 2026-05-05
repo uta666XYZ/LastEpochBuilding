@@ -236,6 +236,15 @@ contributes — implicits, unique mods, and crafted slammed mods — and
 typically shows up as a missing slot row in the breakdown panel plus
 a multi-stat resistance / armor / movement-speed deficit.
 
+**Pattern B refinement (2026-05-05):** Extracted `overrideLevelRequirement`
+flag from game data and gate the override on it. Pre-fix, the check
+`if u.req and u.req.level` was truthy on Lua's `0`, so any unique whose
+extracted entry had `req.level=0` (the placeholder for non-overriding
+uniques) would collapse `requirements.level` to 0 — wiping the legitimate
+base req. Game data shows 163/471 uniques have `overrideLevelRequirement
+= false` (Snowdrift on Outcast Boots base 23, Horn of the Bone Wisp on
+Ivory Wand base 31, etc.), so they must keep the base req.
+
 The fix mirrors the existing SET item override (Item.lua:798) at two
 sites: post-ParseRaw and inside `Item:Craft()`. Both sites must override
 because Craft() resets `self.requirements.level = self.base.req.level`
@@ -244,18 +253,23 @@ re-runs Craft via `_craftingInternal`).
 
 | Site | File | What it does |
 |---|---|---|
-| post-ParseRaw | `src/Classes/Item.lua` (~line 812 after the SET override) | Look up `data.uniques` by `u.name == self.title`; if `u.req.level` exists, override `self.requirements.level` |
-| Craft()       | `src/Classes/Item.lua` (~line 1158 after the SET override in Craft) | Same override, re-applied after Craft resets to base req.level |
+| post-ParseRaw | `src/Classes/Item.lua` (~line 824 after the SET override) | Look up `data.uniques` by `u.name == self.title`; if `u.overrideLevelRequirement` AND `u.req.level` exists, override `self.requirements.level` |
+| Craft()       | `src/Classes/Item.lua` (~line 1192 after the SET override in Craft) | Same override, re-applied after Craft resets to base req.level |
 
-**Spec:** `spec/System/TestItemParse_spec.lua`
-- "Unique req.level overrides base req.level (UNIQUE/LEGENDARY)"
+Sibling guard for SET items: `Item.lua:751, 778, 797, 1180` use
+`e.req.level > 0` so SET entries with `req.level=0` (e.g. native
+"The Last Bear's Scorn") fall back to base req.
 
-The spec uses Vaion's Chariot on Solarum Greaves (the Qqwv73q2 lv62
-Warlock case) — base 67, unique 50 — and asserts `requirements.level
-== 50` both immediately after `CreateDisplayItemFromRaw` and after a
-follow-up `item:Craft()` call.
+**Specs:** `spec/System/TestItemParse_spec.lua`
+- "Unique req.level overrides base req.level (UNIQUE/LEGENDARY)" — Vaion's Chariot (override=true, lv 50) on Solarum Greaves (base 67) → 50
+- "Unique with overrideLevelRequirement=false keeps base req.level" — Snowdrift (override=false, placeholder 0) on Outcast Boots (base 23) → 23
 
-**Establishing commit:** `5a88e7161` — _fix(items): override base req.level with unique req.level for UNIQUE/LEGENDARY_
+Both specs assert immediately after `CreateDisplayItemFromRaw` and after
+a follow-up `item:Craft()` call.
+
+**Establishing commits:**
+- `5a88e7161` — _fix(items): override base req.level with unique req.level for UNIQUE/LEGENDARY_
+- _Pattern B fix_ — gate override on `overrideLevelRequirement` flag; SET sibling fix `> 0`
 
 ### `unique-data-integrity`
 
@@ -484,6 +498,148 @@ beltless build away from in-game's 0 baseline.
 - "PotionSlots has no character base (default = 0 with no mods)"
 - "PotionSlots equals sum of '+N Potion Slots' BASE mods (3)"
 - "PotionSlots stacks BASE mods additively (3 + 2 = 5)"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `block-requires-shield`
+
+LE only grants Block Chance / Block Effectiveness / Block Mitigation when a
+Shield is equipped in the off-hand slot. Off-hand Catalyst (Sorcerer/Warlock),
+Quiver, dual-wielded weapons, or empty off-hand all yield zero block stats
+regardless of accumulated mods. The only documented bypass is the LE constant
+`playerPropertyBlockChanceConvertedToParryWithoutShield` (=531) — when set, the
+block chance is converted to parry chance instead. We model this as the
+`BlockChanceConvertedToParryWithoutShield` / `BlockWithoutShield` flag.
+
+Without the gate, Sorcerer/Warlock builds wearing an Off-Hand Catalyst plus
+e.g. Flame Ward's Glacial Reinforcement node would report 10 % Block Chance
+in LEB while LE shows 0 — a silent +30 % effective HP overstatement on the
+defence sheet.
+
+| Site | File | What it does |
+|---|---|---|
+| gate | `src/Modules/CalcDefence.lua` (~line 262) | Early-zeroes all Block outputs when neither Weapon 2/3 is `type == "Shield"` and no `BlockWithoutShield` flag is set |
+
+**Spec:** `spec/System/TestBlockShield_spec.lua`
+- "BlockChance is 0 with no shield even with +50% Block Chance mod"
+- "BlockChance applies with no shield when BlockWithoutShield flag is set"
+
+**Snapshot coverage:** `spec/System/TestBuilds_spec.lua` "test all builds #builds" via
+`spec/TestBuilds/1.4/Bakbr2Ne lv86 Sorcerer.{xml,lua}` (Astrolabe off-hand, BlockChance=0).
+
+**Establishing commit:** `df85f92e8`
+
+### `flame-ward-block-toggle`
+
+Flame Ward (treeId `fw3d`) is a 3-second duration defensive buff (LE class
+`FlameWardMutator`, dump.cs: `additionalBlockChance` / `wardOnBlock` fields).
+Its skill-tree node mods (e.g. `fw3d-8 "Glacial Reinforcement"` `+10% Block
+Chance` from `notScalingStats`) are only granted while the buff is active.
+
+LEB historically poured those mods into the player modDB unconditionally,
+because Flame Ward fell through the existing `buffSkillTreePrefixes` gate.
+The fix extends the gate with a `whileActiveBuffByTreeId` table — those
+skills' tree nodes are only applied when the user enables the matching
+`Condition:Have<X>` flag from the new `conditionHaveFlameWard` Config option.
+
+**Subtle pitfall:** Flame Ward HAS `SkillType.Buff` set (skillTypeTags=131336
+= Buff 131072 + Spell 256 + 8). Splitting the buffSkillTreePrefixes loop into
+`if SkillType.Buff then ... else cond ... end` is wrong — Flame Ward enters
+the Buff branch and silently bypasses the condition gate, leaking the entire
+fw3d-* node set globally. In Bakbr2Ne (4 points in fw3d-7 Frostguard) this
+manifested as a +800 Armour over-count (LEB 1926 vs LE 828, Δ+1098). The
+correct structure ANDs `condName` into `enabled` regardless of the Buff
+branch.
+
+| Site | File | What it does |
+|---|---|---|
+| gate | `src/Modules/CalcSetup.lua` (~line 1404) | `whileActiveBuffByTreeId = { fw3d = "HaveFlameWard" }`; treeId-prefixed nodes go through the buff-prefix bucketing whose `enabled` is `group.enabled and conditionActive` |
+| config | `src/Modules/ConfigOptions.lua` (~line 130) | `conditionHaveFlameWard` check; sets `Condition:HaveFlameWard` FLAG |
+
+**Spec:** `spec/System/TestBlockShield_spec.lua` `describe("FlameWardTreeGate")`
+"Bakbr2Ne Armour does not include fw3d tree-node leak when Flame Ward is
+inactive" — loads the Bakbr2Ne XML directly and asserts `Armour < 1500`.
+Reverting the gate immediately fails this with `Armour=1926`. The snapshot
+diff in `TestBuilds_spec.lua` is a secondary runtime check.
+
+**Snapshot coverage:** `spec/System/TestBuilds_spec.lua` "test all builds #builds" via
+`spec/TestBuilds/1.4/Bakbr2Ne lv86 Sorcerer.{xml,lua}` — reverting the gate
+makes BlockChance flip from 0 (LE-correct, snapshot value) to 10 (Glacial
+Reinforcement contribution).
+
+**Establishing commit:** `df85f92e8`
+
+### `elemental-nova-spec-tree-gated-damage-type`
+
+**Status: FIXED.**
+
+Elemental Nova's Fire / Cold / Lightning damage are **tree-gated** in LE: a
+type is granted ONLY when the matching "Enables X Nova" specialization node
+is allocated (`en6-12` Fire, `en6-2` Ice/Cold, `en6-8` Lightning). LEB
+previously treated all three as unconditional base damage in `skills.json`,
+which leaked Fire damage onto builds that had not allocated `en6-12`.
+
+Game-file evidence (`<LE_datamining>/extracted/`):
+
+- `prefab_damage.json` — `ElementalNova` baseDamage `[Phys=0, Fire=8, Cold=8,
+  Light=8, Necro=0, Void=0, Poison=0]` (the all-enabled template).
+- `skills.json` field `skillTreeConversionDamageTags = 14` = Fire(2) +
+  Cold(4) + Lightning(8) — LE flag indicating those types are tree-gated.
+- `src/TreeData/1_4/tree_1.json` — `en6-2` "Ice Nova" / `en6-8` "Lightning
+  Nova" / `en6-12` "Fire Nova" each list `" Enables {X} Nova"` in `stats`.
+
+**Establishing build:** `Bakbr2Ne lv86 Sorcerer`. en6 allocations:
+`en6-0,2,4,5,6,8,18,21,24,25,26` — Ice + Lightning, no Fire. LETools
+shows Cold + Lightning only on Elemental Nova; LEB shows Fire + Cold +
+Lightning. The Fire leak comes from
+`src/Data/skills.json` `ElementalNova.stats.spell_base_fire_damage = 8`
+unconditionally.
+
+**Fix shape (applied):**
+- Removed `spell_base_fire_damage` / `spell_base_cold_damage` /
+  `spell_base_lightning_damage` from `src/Data/skills.json`
+  `ElementalNova.stats`.
+- Added `"+8 Spell {Cold,Lightning,Fire} Damage"` stats to the
+  `en6-2` / `en6-8` / `en6-12` nodes in `src/TreeData/1_4/tree_1.json`,
+  so each damage type only applies when its enabling node is allocated.
+- Cleared the static `TREE_ID_DAMAGE_TYPES["en6"]` entry in
+  `src/Classes/SkillsTab.lua` so spec-slot icons resolve via
+  `GetDynamicDamageTypesByTreeId` (addSet picks up the per-node
+  `"+N Spell <Type> Damage"` stats).
+
+| Site | File | What it does |
+|---|---|---|
+| skill data | `src/Data/skills.json` `ElementalNova.stats` | No longer lists `spell_base_fire/cold/lightning_damage`; tree-gated instead |
+| tree data | `src/TreeData/1_4/tree_1.json` `en6-2/8/12` | Each gate node's `stats` carries the damage grant |
+| UI resolver | `src/Classes/SkillsTab.lua` `TREE_ID_DAMAGE_TYPES["en6"]` | Cleared so dynamic resolver drives the spec-slot icons |
+| stat map cross-ref | `src/Data/SkillStatMap.lua` (~line 56) | `@leb-regression-guard:` marker; `spell_base_X_damage` keys are still mapped — the gate is achieved by ensuring those keys only appear under allocated tree nodes |
+
+**Spec:** `spec/System/TestElementalNovaDamageType_spec.lua`
+- "Bakbr2Ne (no Fire Nova node allocated) does not include Fire damage type on Elemental Nova"
+
+**Establishing commit:** `0898aea9e`
+
+### `tooltip-mod-line-wrap`
+
+Item tooltips in the Items tab — including hover tooltips routed through
+`TooltipHost` (item list rows, paperdoll slots, idol grid, etc.) — must
+word-wrap long mod lines so they stay inside the tooltip box. Trigger:
+the unique mod on `Horn of the Bone Wisp` (Ivory Wand) overflowed the
+tooltip horizontally because only `displayItemTooltip` set `maxWidth`;
+every other entry path left it unset, so `Tooltip:AddLine` skipped the
+wrap branch.
+
+A regression here either re-introduces horizontal overflow or under-counts
+wrapped rows in `block.height` so the bottom border crops wrapped text.
+
+| Site | File | What it does |
+|---|---|---|
+| default maxWidth | `src/Classes/ItemsTab.lua` `AddItemTooltip` (~line 2411) | Sets `tooltip.maxWidth = 458` when caller didn't, so wrap path activates for every item tooltip |
+| wrap + height | `src/Classes/Tooltip.lua` `AddLine` | Routes through `main:WrapString` and grows `block.height` by `(size+2) * #wrapped` |
+
+**Spec:** `spec/System/TestTooltipWrap_spec.lua`
+- "AddLine wraps a long line at maxWidth into multiple visual rows"
+- "AddItemTooltip sets a default maxWidth so item tooltips wrap on hover"
 
 **Establishing commit:** `<unset; bump after first commit on this branch>`
 

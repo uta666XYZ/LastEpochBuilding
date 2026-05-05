@@ -128,6 +128,9 @@ local options = {
 	{ var = "conditionHaveLightningAegis", type = "check", label = "Do you have Lightning Aegis?", suggestBuff = "LightningAegis", tooltip = "Check if you have the Lightning Aegis buff active (Runemaster).\nEnables 'while you have lightning aegis' modifiers.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:HaveLightningAegis", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
+	{ var = "conditionHaveFlameWard", type = "check", label = "Do you have Flame Ward active?", suggestBuff = "FlameWard", tooltip = "Check if Flame Ward is currently active (Mage).\nFlame Ward is a 3-second duration defensive buff (not a permanent aura), so its skill-tree contributions only apply while the buff is up.\nEnabling this gates Flame Ward tree node mods (e.g. +10% Block Chance from Glacial Reinforcement) on top of the SkillsTab toggle.", apply = function(val, modList, enemyModList)
+		modList:NewMod("Condition:HaveFlameWard", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
+	end },
 	{ var = "conditionStandingOnGlyphOfDominion", type = "check", label = "Standing on Glyph of Dominion?", tooltip = "Check if you are standing on your Glyph of Dominion (Runemaster).\nEnables 'while standing on your Glyph of Dominion' modifiers.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:StandingOnGlyphOfDominion", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
