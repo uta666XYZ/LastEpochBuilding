@@ -1268,15 +1268,19 @@ function calcs.perform(env, fullDPSSkipEHP)
 			local ward = wardDecayThreshold + ((-0.2 + math.sqrt(0.04 + 0.0002 * wps * (1 + 0.5 * wardRetention / 100))) / 0.0001)
 			ward = ward * calcLib.mod(env.player.modDB, nil, "Ward", "Defences")
 			pOut.Ward = m_max(round(ward), 0)
+			local rawWardDecayPerSecond = 0
 			if pOut.Ward > 0 then
 				local effectiveWard = m_max(pOut.Ward - wardDecayThreshold, 0)
 				local retentionDivisor = 1 + 0.5 * wardRetention / 100
 				local decayNumerator = 0.2 * effectiveWard + 0.00005 * effectiveWard ^ 2
-				pOut.WardDecayPerSecond = round(decayNumerator / retentionDivisor)
+				rawWardDecayPerSecond = decayNumerator / retentionDivisor
+				pOut.WardDecayPerSecond = round(rawWardDecayPerSecond)
 			else
 				pOut.WardDecayPerSecond = 0
 			end
-			pOut.NetWardRegen = wps > 0 and (wps - pOut.WardDecayPerSecond) or 0
+			-- Use unrounded decay for net regen so steady-state stays ~0 instead of
+			-- the rounding residual.
+			pOut.NetWardRegen = wps > 0 and (wps - rawWardDecayPerSecond) or 0
 		end
 	end
 

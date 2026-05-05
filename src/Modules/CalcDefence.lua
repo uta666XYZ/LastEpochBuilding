@@ -428,11 +428,13 @@ function calcs.defence(env, actor)
 
 		-- Ward Decay per second at steady-state ward (tunklab formula)
 		-- wardDecay(W, R) = (0.2*W + 0.00005*W^2) / (1 + 0.5*(R/100))
+		local rawWardDecayPerSecond = 0
 		if output.Ward > 0 then
 			local effectiveWard = m_max(output.Ward - output.WardDecayThreshold, 0)
 			local retentionDivisor = 1 + 0.5 * output.WardRetention / 100
 			local decayNumerator = 0.2 * effectiveWard + 0.00005 * effectiveWard ^ 2
-			output.WardDecayPerSecond = round(decayNumerator / retentionDivisor)
+			rawWardDecayPerSecond = decayNumerator / retentionDivisor
+			output.WardDecayPerSecond = round(rawWardDecayPerSecond)
 			if breakdown then
 				breakdown.WardDecayPerSecond = {
 					s_format("%d ^8(ward)", output.Ward),
@@ -447,7 +449,9 @@ function calcs.defence(env, actor)
 		else
 			output.WardDecayPerSecond = 0
 		end
-		output.NetWardRegen = wardPerSecond > 0 and (wardPerSecond - output.WardDecayPerSecond) or 0
+		-- Use the unrounded decay for net regen so steady-state shows ~0 instead of
+		-- the rounding residual (e.g. wps=0.8 vs round(decay)=1 -> -0.2).
+		output.NetWardRegen = wardPerSecond > 0 and (wardPerSecond - rawWardDecayPerSecond) or 0
 
 		-- Armor mitigation for display (Physical and Elemental)
 		output.ArmorMitigationPhysical = round(calcs.armourReductionF(output.Armour, env.config.enemyLevel))
@@ -625,15 +629,18 @@ function calcs.defence(env, actor)
 		ward = ward * calcLib.mod(modDB, nil, "Ward", "Defences")
 		output.Ward = m_max(round(ward), 0)
 		output.StableWard = output.Ward
+		local rawWardDecayPerSecond = 0
 		if output.Ward > 0 then
 			local effectiveWard = m_max(output.Ward - wardDecayThreshold, 0)
 			local retentionDivisor = 1 + 0.5 * wardRetention / 100
 			local decayNumerator = 0.2 * effectiveWard + 0.00005 * effectiveWard ^ 2
-			output.WardDecayPerSecond = round(decayNumerator / retentionDivisor)
+			rawWardDecayPerSecond = decayNumerator / retentionDivisor
+			output.WardDecayPerSecond = round(rawWardDecayPerSecond)
 		else
 			output.WardDecayPerSecond = 0
 		end
-		output.NetWardRegen = wps > 0 and (wps - output.WardDecayPerSecond) or 0
+		-- Use unrounded decay for net regen (see steady-state rounding note above).
+		output.NetWardRegen = wps > 0 and (wps - rawWardDecayPerSecond) or 0
 	end
 
 	-- Damage Reduction
