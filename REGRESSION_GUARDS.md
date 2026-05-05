@@ -783,24 +783,35 @@ Increased by +132%, ~7x over the in-game value.
 
 ### `exulis-all-attributes-range`
 
-The unique amulet `Exulis` (id 469) rolls `+(10-18) to All Attributes`
-in-game (verified against LE 1.4 inspect panel + LETools). Earlier LEB
-data had the upper bound as `20`, which inflated the displayed value for
-mid-roll items: roll=245/255 yields `10 + 8 * 245/255 = 17.69 → 18`,
-but the (10-20) range produced 20. Trigger: a quest reward grants a
-SEPARATE `+2 to All Attributes` that some sources conflated with the
-amulet's own roll range, leading to (10-20) instead of (10-18).
+The unique amulet `Exulis` (id 469) rolls `+(10-20) to All Attributes`.
 
-A regression here widens the upper bound back to 20 (or any non-18 value)
-in either uniques file.
+**Evidence:**
+1. Game data extract `uniques_v3.json` id=469 mod[1] (property=46, All
+   Attributes) has `value=10.0, maxValue=20.0`.
+2. LETools tooltip displays `+(10 to 20) to All Attributes`.
+3. `applyRange` trace with (10-20) reproduces the in-game LEB display:
+   byte=156 → `10 + 156/255 * (20-10+1) = 16.73 → floor 16`. Matches
+   the user-observed +16 once data was corrected.
+
+An earlier guard locked this as `(10-18)`, based on a misobservation:
+a +18 roll seen in-game was actually `+16 from the amulet + 2 from a
+separate quest reward`. Conflating those two sources produced the
+wrong upper bound. Do NOT widen back to 18, and do NOT narrow further.
+
+A regression here changes the upper bound away from `20` in either
+uniques file.
 
 | Site | File | What it does |
 |---|---|---|
-| 1.4 unique data | `src/Data/Uniques/uniques_1_4.json` (Exulis entry, ~line 9400) | `+(10-18) to All Attributes` |
-| legacy unique data | `src/Data/Uniques/uniques.json` (Exulis id 469, ~line 10639) | `+(10-18) to All Attributes` |
+| 1.4 unique data | `src/Data/Uniques/uniques_1_4.json` (Exulis entry, ~line 9400) | `+(10-20) to All Attributes` |
+| legacy unique data | `src/Data/Uniques/uniques.json` (Exulis id 469, ~line 10639) | `+(10-20) to All Attributes` |
+
+Both entries also carry an inline `_leb_regression_guard` JSON field
+that documents the source of truth at the data site itself.
 
 **Spec:** `spec/System/TestExulisRange_spec.lua`
-- "Exulis +All Attributes range is (10-18)"
+- "Data/Uniques/uniques_1_4.json has Exulis '+(10-20) to All Attributes'"
+- "Data/Uniques/uniques.json has Exulis '+(10-20) to All Attributes'"
 
 **Establishing commit:** `<unset; bump after first commit on this branch>`
 

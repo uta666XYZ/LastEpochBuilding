@@ -10634,9 +10634,10 @@
     "req": {
       "level": 0
     },
+    "_leb_regression_guard": "exulis-all-attributes-range: +(10-20) is the correct upper bound. Game extract uniques_v3.json id=469 mod[1] maxValue=20.0. LETools display shows '+(10 to 20) to All Attributes'. byte=156 with span+1 rule => 10 + 156/255*11 = 16.73 -> floor 16, matches in-game display.",
     "mods": [
       "+(1-2) to Skills",
-      "+(10-18) to All Attributes",
+      "+(10-20) to All Attributes",
       "4% Increased Area for Area Spells per 10 Madness",
       "1% Chance to take 0 damage when hit per 10 Guile",
       "2% Increased Health per 10 Brutality",
