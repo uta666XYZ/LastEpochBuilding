@@ -907,14 +907,15 @@ end
 -- =============================================================================
 -- Affix list refresh (populates self.craftAffixLists)
 -- =============================================================================
-local SUBCAT_ORDER = { "general", "class_only", "set_only", "champion", "personal", "corrupted" }
+local SUBCAT_ORDER = { "general", "class_only", "set_only", "champion", "personal", "experimental", "corrupted" }
 local SUBCAT_LABEL = {
-	general    = "General",
-	class_only = "Class Only",
-	set_only   = "Set Only",
-	champion   = "Champion",
-	personal   = "Personal",
-	corrupted  = "Corrupted",
+	general      = "General",
+	class_only   = "Class Only",
+	set_only     = "Set Only",
+	champion     = "Champion",
+	personal     = "Personal",
+	experimental = "Experimental",
+	corrupted    = "Corrupted",
 }
 
 function ItemsTabClass:CraftRefreshSlotDropdowns()
@@ -1024,7 +1025,7 @@ function ItemsTabClass:CraftRefreshAffixDropdowns()
 	local playerCsBit = self:CraftGetCurrentClassReqBit() * 2
 
 	local function newBuckets()
-		return { general = {}, class_only = {}, set_only = {}, champion = {}, personal = {}, corrupted = {} }
+		return { general = {}, class_only = {}, set_only = {}, champion = {}, personal = {}, experimental = {}, corrupted = {} }
 	end
 	local prefixGroups = newBuckets()
 	local suffixGroups = newBuckets()
@@ -1034,6 +1035,8 @@ function ItemsTabClass:CraftRefreshAffixDropdowns()
 		if sat == 0 then
 			local cs = mod.classSpecificity or 0
 			return cs ~= 0 and "class_only" or "general"
+		elseif sat == 1 then
+			return "experimental"
 		elseif sat == 2 then
 			return mod.subcategory == "champion" and "champion" or "personal"
 		elseif sat == 3 then
@@ -1096,11 +1099,11 @@ function ItemsTabClass:CraftRefreshAffixDropdowns()
 	end
 	local ptabCats, corruptCats
 	if isUniqueOrSet then
-		ptabCats    = { "general", "class_only" }
-		corruptCats = { "general", "class_only", "champion", "personal", "corrupted" }
+		ptabCats    = { "general", "class_only", "experimental" }
+		corruptCats = { "general", "class_only", "champion", "personal", "experimental", "corrupted" }
 	else
-		ptabCats    = { "general", "class_only", "set_only" }
-		corruptCats = { "general", "class_only", "set_only", "champion", "personal", "corrupted" }
+		ptabCats    = { "general", "class_only", "set_only", "experimental" }
+		corruptCats = { "general", "class_only", "set_only", "champion", "personal", "experimental", "corrupted" }
 	end
 	local prefixIter = flattenBuckets(prefixGroups, ptabCats)
 	local suffixIter = flattenBuckets(suffixGroups, ptabCats)
@@ -1109,8 +1112,8 @@ function ItemsTabClass:CraftRefreshAffixDropdowns()
 		sealedPrefixIter = {}
 		sealedSuffixIter = {}
 	else
-		sealedPrefixIter = flattenBuckets(prefixGroups, { "general", "class_only", "set_only", "champion", "personal" })
-		sealedSuffixIter = flattenBuckets(suffixGroups, { "general", "class_only", "set_only", "champion", "personal" })
+		sealedPrefixIter = flattenBuckets(prefixGroups, { "general", "class_only", "set_only", "champion", "personal", "experimental" })
+		sealedSuffixIter = flattenBuckets(suffixGroups, { "general", "class_only", "set_only", "champion", "personal", "experimental" })
 	end
 	local corruptedPrefixIter = flattenBuckets(prefixGroups, corruptCats)
 	local corruptedSuffixIter = flattenBuckets(suffixGroups, corruptCats)
