@@ -2441,6 +2441,21 @@ function ItemsTabClass:AddItemTooltip(tooltip, item, slot, dbMode)
 		tooltip:AddLine(16, s_format("^x7F7F7FWeapon Range: %s%.1f ^x7F7F7Fmetres", "^7", base.weapon.Range))
 	end
 
+	-- @leb-regression-guard: idol-altar-capacity-tooltip
+	-- Locks the contract that Idol Altar item tooltips display the base
+	-- "Omen Idol capacity: N" header sourced from `IDOL_ALTAR_LAYOUTS[base].omenIdolCapacity`,
+	-- not from live slot counts (which mutate with sealed `+(N) Maximum Omen
+	-- Idols Equipped` bonuses) and not from a hardcoded constant (which drifts
+	-- when new altar bases ship). Matches the in-game tooltip header.
+	-- Test: spec/System/TestIdolAltarTooltip_spec.lua "Idol Altar tooltip shows base capacity"
+	-- See REGRESSION_GUARDS.md "idol-altar-capacity-tooltip".
+	if item.type == "Idol Altar" and item.baseName then
+		local layout = IDOL_ALTAR_LAYOUTS[item.baseName]
+		if layout and layout.omenIdolCapacity then
+			tooltip:AddLine(16, s_format("^x7F7F7FOmen Idol capacity: ^7%d", layout.omenIdolCapacity))
+		end
+	end
+
 	tooltip:AddSeparator(10)
 
 	-- Requirements

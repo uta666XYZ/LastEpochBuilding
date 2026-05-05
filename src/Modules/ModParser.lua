@@ -54,6 +54,12 @@ local modNameList = {
 	-- Attributes
 	["all attributes"] = Attributes,
 	-- Life/mana
+	-- @leb-regression-guard: regen-alias-coverage
+	-- In-game tooltips render regen affixes in BOTH short (`Regen`) and long
+	-- (`Regeneration`) forms — registering only one silently drops half the
+	-- affix pool. Both Life and Mana must have both keys.
+	-- Test: spec/System/TestRegenAlias_spec.lua
+	-- See REGRESSION_GUARDS.md "regen-alias-coverage".
 	["health leech"] = "DamageLifeLeech",
 	["health"] = "Life",
 	["health regen"] = "LifeRegen",
@@ -62,6 +68,7 @@ local modNameList = {
 	["mana"] = "Mana",
 	["maximum mana"] = "Mana",
 	["mana regen"] = "ManaRegen",
+	["mana regeneration"] = "ManaRegen",
 	["mana cost"] = "ManaCost",
 	["mana efficiency"] = "ManaEfficiency",
 	["channel cost"] = "ChannelCost",
@@ -302,6 +309,18 @@ local modNameList = {
 	["abyssal decay damage"] = "AbyssalDecayDamage",
 	["spirit plague damage"] = "SpiritPlagueDamage",
 	["bone curse damage"] = "BoneCurseDamage",
+	-- @leb-regression-guard: curse-spell-damage-stat
+	-- "+N Curse Spell Damage" applies as flat spell damage to skills with the
+	-- Curse skill type (Bone Curse, Torment, Decrepify, Anguish, Penance).
+	-- Implemented as a tagged modName entry rather than a dedicated stat:
+	-- name="Damage" + keywordFlags=Spell + SkillType.Curse tag routes through
+	-- the existing skillModList:Sum("BASE", cfg, "Damage") path in CalcOffence,
+	-- so curse spell skills auto-pick up the BASE without new wiring.
+	-- Without this entry the parser leaves "Curse" as residual extra → red
+	-- "UNSUPPORTED" tooltip text on items like Hexed Grand Bone Idol.
+	-- Test: spec/System/TestCurseSpellDamage_spec.lua
+	-- See REGRESSION_GUARDS.md "curse-spell-damage-stat".
+	["curse spell damage"] = { "Damage", keywordFlags = KeywordFlag.Spell, tag = { type = "SkillType", skillType = SkillType.Curse } },
 	["torment damage"] = "TormentDamage",
 	["decrepify damage"] = "DecrepifyDamage",
 	["anguish damage"] = "AnguishDamage",

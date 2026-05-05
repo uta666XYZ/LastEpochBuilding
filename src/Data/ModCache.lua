@@ -2608,7 +2608,6 @@ c["+109 Ward gained when you use Shift"]={{[1]={[1]={skillName="Shift",type="Ski
 c["+11 Attunement"]={{[1]={flags=0,keywordFlags=0,name="Att",type="BASE",value=11}},nil}
 c["+11 Bow Cold Damage"]={{[1]={flags=0,keywordFlags=2048,name="ColdDamage",type="BASE",value=11}},nil}
 c["+11 Cold Damage with Spells and Attacks per Attached Infernal Shade for Minions affected by Dread Shade"]={{[1]={[1]={stat="Att",type="PerStat"},[2]={scope="minion",type="Scope"},[3]={skillName="Infernal Shade",type="SkillName"},flags=0,keywordFlags=256,name="ColdDamage",type="BASE",value=11}},"  with s and Attacks ached   affected by Dread Shade "}
-c["+11 Curse Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=11}}," Curse   "}
 c["+11 Dexterity"]={{[1]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=11}},nil}
 c["+11 Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=11}},nil}
 c["+11 Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="BASE",value=11}},nil}
@@ -2800,7 +2799,6 @@ c["+12 Bow Physical Damage"]={{[1]={flags=0,keywordFlags=2048,name="PhysicalDama
 c["+12 Companion Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=12}}," Companion  "}
 c["+12 Cooldown (seconds)"]={{}," Cooldown (seconds) "}
 c["+12 Curse Damage"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=12}}," Curse  "}
-c["+12 Curse Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=12}}," Curse   "}
 c["+12 Damage Reflect"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="BASE",value=12}},"  Reflect "}
 c["+12 Dexterity"]={{[1]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=12}},nil}
 c["+12 Dodge Rating per Equipped Corrupted Idol"]={{[1]={[1]={type="Multiplier",var="EquippedCorruptedIdol"},flags=0,keywordFlags=0,name="Evasion",type="BASE",value=12}},nil}
@@ -3795,7 +3793,6 @@ c["+168 Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="BASE",
 c["+168 Ward Decay Threshold"]={{[1]={flags=0,keywordFlags=0,name="WardDecayThreshold",type="BASE",value=168}},nil}
 c["+17 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=17}},nil}
 c["+17 Bzzzz Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="BASE",value=17}}," Bzzzz   "}
-c["+17 Curse Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=17}}," Curse   "}
 c["+17 Endurance Threshold against Shocked enemies"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="Shocked"},flags=0,keywordFlags=0,name="EnduranceThreshold",type="BASE",value=17}},nil}
 c["+17 Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=17}},nil}
 c["+17 Health Gained from Rip Blood"]={{[1]={[1]={skillName="Rip Blood",type="SkillName"},flags=0,keywordFlags=0,name="Life",type="BASE",value=17}},"  Gained from  "}
@@ -5053,7 +5050,6 @@ c["+22 Armor per Idol in a Refracted Slot"]={{[1]={[1]={type="Multiplier",var="I
 c["+22 Bow Damage"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="BASE",value=22}},nil}
 c["+22 Bow Lightning Damage"]={{[1]={flags=0,keywordFlags=2048,name="LightningDamage",type="BASE",value=22}},nil}
 c["+22 Bzzzz Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="BASE",value=22}}," Bzzzz   "}
-c["+22 Curse Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=22}}," Curse   "}
 c["+22 Endurance Threshold against Shocked enemies"]={{[1]={[1]={actor="enemy",type="ActorCondition",var="Shocked"},flags=0,keywordFlags=0,name="EnduranceThreshold",type="BASE",value=22}},nil}
 c["+22 Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=22}},nil}
 c["+22 Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=22}},nil}
@@ -6408,7 +6404,6 @@ c["+300% seconds of Haste and Frenzy for your minions when you gain Haste or ref
 c["+301 Stun Avoidance"]={{[1]={flags=0,keywordFlags=0,name="StunAvoidance",type="BASE",value=301}},nil}
 c["+306 Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="BASE",value=306}},nil}
 c["+306 Ward per Second for you or your allies while standing on your Glyph of Dominion"]={{[1]={[1]={type="Condition",var="StandingOnGlyphOfDominion"},flags=0,keywordFlags=0,name="WardPerSecond",type="BASE",value=306}},"  for you or your allies  "}
-c["+31 Curse Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=31}}," Curse   "}
 c["+31 Endurance Threshold"]={{[1]={flags=0,keywordFlags=0,name="EnduranceThreshold",type="BASE",value=31}},nil}
 c["+31 Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=31}},nil}
 c["+31 Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="BASE",value=31}},nil}
@@ -6917,7 +6912,6 @@ c["+4 Companion Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",typ
 c["+4 Cooldown"]={{}," Cooldown "}
 c["+4 Cooldown (Seconds)"]={{}," Cooldown (Seconds) "}
 c["+4 Cooldown (seconds)"]={{}," Cooldown (seconds) "}
-c["+4 Curse Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=4}}," Curse   "}
 c["+4 Dexterity"]={{[1]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=4}},nil}
 c["+4 Dodge Rating Per Attunement"]={{[1]={[1]={stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="Evasion",type="BASE",value=4}},nil}
 c["+4 Dodge Rating per Equipped Corrupted Idol"]={{[1]={[1]={type="Multiplier",var="EquippedCorruptedIdol"},flags=0,keywordFlags=0,name="Evasion",type="BASE",value=4}},nil}
@@ -7507,7 +7501,6 @@ c["+425 Ward gained when you cast Flame Ward"]={{[1]={[1]={skillName="Flame Ward
 c["+426 Block Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="BlockEffectiveness",type="BASE",value=426}},nil}
 c["+43 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=43}},nil}
 c["+43 Armor per Rah Rune"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=43}},"  per Rah Rune "}
-c["+43 Curse Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=43}}," Curse   "}
 c["+43 Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="BASE",value=43}},nil}
 c["+43 Melee Cold Damage"]={{[1]={flags=0,keywordFlags=512,name="ColdDamage",type="BASE",value=43}},nil}
 c["+43 Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="BASE",value=43}},nil}
@@ -9370,7 +9363,6 @@ c["+78% Chance to gain 20 Ward on Kill with Hungering Souls"]={{},"20 Ward  with
 c["+78% Chance to inflict Bleed on Hit"]={{[1]={flags=8388608,keywordFlags=0,name="BleedChance",type="BASE",value=78}},nil}
 c["+78% Chance to inflict Time Rot on Void Hit"]={{[1]={flags=8388608,keywordFlags=16,name="TimeRotChance",type="BASE",value=78}},nil}
 c["+79 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=79}},nil}
-c["+79 Curse Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=79}}," Curse   "}
 c["+79 Dodge Rating if you have been hit recently"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=79},notSupported=true},nil}
 c["+79 Lightning Throwing Damage with Javelin"]={{[1]={[1]={skillName="Javelin",type="SkillName"},flags=0,keywordFlags=256,name="LightningDamage",type="BASE",value=79}},"  with  "}
 c["+79 Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="BASE",value=79}},nil}
@@ -9386,7 +9378,6 @@ c["+8 Bow Cold Damage"]={{[1]={flags=0,keywordFlags=2048,name="ColdDamage",type=
 c["+8 Bzzzz Melee Damage"]={{[1]={flags=0,keywordFlags=512,name="Damage",type="BASE",value=8}}," Bzzzz   "}
 c["+8 Channel Cost"]={{[1]={flags=0,keywordFlags=0,name="ChannelCost",type="BASE",value=8}},nil}
 c["+8 Cooldown (seconds)"]={{}," Cooldown (seconds) "}
-c["+8 Curse Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=8}}," Curse   "}
 c["+8 Dexterity"]={{[1]={flags=0,keywordFlags=0,name="Dex",type="BASE",value=8}},nil}
 c["+8 Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="BASE",value=8}},nil}
 c["+8 Endurance Threshold"]={{[1]={flags=0,keywordFlags=0,name="EnduranceThreshold",type="BASE",value=8}},nil}
@@ -9690,7 +9681,6 @@ c["+86 Melee Physical Damage if wielding a Mace"]={{[1]={flags=0,keywordFlags=51
 c["+86% Chance to Shred Armor on Hit"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_ArmourShred",type="BASE",value=86}},nil}
 c["+86% Chance to inflict Bleed on Minion Hit"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=8388608,keywordFlags=0,name="BleedChance",type="BASE",value=86}}}},"  on   "}
 c["+86% Chance to inflict Time Rot on Void Hit"]={{[1]={flags=8388608,keywordFlags=16,name="TimeRotChance",type="BASE",value=86}},nil}
-c["+87 Curse Spell Damage"]={{[1]={flags=0,keywordFlags=256,name="Damage",type="BASE",value=87}}," Curse   "}
 c["+87 Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="Evasion",type="BASE",value=87}},nil}
 c["+87 Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=87}},nil}
 c["+87 Ward Decay Threshold"]={{[1]={flags=0,keywordFlags=0,name="WardDecayThreshold",type="BASE",value=87}},nil}

@@ -342,6 +342,125 @@ their suffix descriptor.
 
 **Establishing commit:** `<unset; bump after first commit on this branch>`
 
+### `refracted-slot-overlap-only`
+
+`ItemsTab:AutoPopulateOmenIdolSlots` decides which idols on the 5x5 layout
+become Omen Idols. The contract: only idols whose footprint overlaps a
+Refracted (`grid` cell type=2) cell qualify; idols that sit entirely on
+type-1 cells are skipped even when Omen capacity is unfilled.
+
+If overlapping idols exceed the altar's capacity (`omenIdolCapacity` +
+`MaximumOmenIdols` sealed-affix bonus), only the lowest-numbered Idol slots
+fit; the rest are dropped, matching the in-game rule that a 1x2 idol cannot
+occupy a 1-cell remaining capacity.
+
+A regression here silently mis-counts `+N per Idol in a Refracted Slot`,
+`HealthPerEquippedOmenIdol`, and `cloneWithAltarBoost` prefix/suffix scaling
+because every downstream consumer reads `Omen Idol N` slot contents.
+
+| Site | File | What it does |
+|---|---|---|
+| auto-populate | `src/Classes/ItemsTab.lua` `AutoPopulateOmenIdolSlots` (~line 1186) | Walks IDOL_GRID_LAYOUT, tests footprint vs altar.grid type-2, fills Omen Idol N up to capacity by Idol-slot-number order |
+| import path comment | `src/Classes/ImportTab.lua` (~line 2006) | Documents the refracted-only spec for future readers |
+
+**Spec:** `spec/System/TestRefractedSlots_spec.lua`
+- "places Grand Idol at (1,2) into Omen Idol 1 (covers refracted cell (1,3))"
+- "excludes idols that do not touch any refracted cell"
+- "with capacity 2, places Idol 1 and Idol 18 (both overlap), skips non-overlapping Idol 4"
+- "when overlapping idols exceed capacity, drops higher-numbered Idol slots"
+- "clears stale Omen Idol entries when no altar is active"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `idol-altar-capacity-tooltip`
+
+The Idol Altar item tooltip carries an `Omen Idol capacity: N` line so the
+user can read base capacity without opening the altar. The value MUST come
+from `IDOL_ALTAR_LAYOUTS[baseName].omenIdolCapacity` — not from live slot
+counts (which mutate with sealed `+(N) Maximum Omen Idols Equipped` bonuses)
+and not from a hardcoded constant (which silently drifts when a 1.4+ patch
+ships a new altar base).
+
+A regression here either omits the line entirely (user can't see capacity)
+or mis-reports a stale/hardcoded number (user trusts the wrong figure when
+slotting idols in `AutoPopulateOmenIdolSlots`).
+
+| Site | File | What it does |
+|---|---|---|
+| tooltip emit | `src/Classes/ItemsTab.lua` `AddItemTooltip` (~line 2467) | Looks up layout by `item.baseName`, emits `Omen Idol capacity: N` when present |
+
+**Spec:** `spec/System/TestIdolAltarTooltip_spec.lua`
+- "Archaic Altar tooltip shows base capacity 1"
+- "tooltip omits capacity line when baseName is unknown to layout"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `regen-alias-coverage`
+
+`ModParser.lua` aliases must register **both** the short (`Regen`) and long
+(`Regeneration`) forms of regen affix nouns:
+
+- `health regen` and `health regeneration` → `LifeRegen`
+- `mana regen` and `mana regeneration` → `ManaRegen`
+
+In-game tooltips use both forms — verified via screenshots (2026-05-05; see
+Obsidian "Web版着手プラン.md"). Some tiers / bases (e.g. `Bountiful Small
+Weaver Idol`, `Sentinel's Leather Helm of Life`) render as
+`Regeneration`, while others (`Restful Small Weaver Idol`, Wand implicits,
+unique mods) render as `Regen`. If only the short form is registered, all
+`% increased Health Regeneration` / `% increased Mana Regeneration` affixes
+silently drop from the calc (parses but maps to nothing → 0% applied).
+
+| Site | File | What it does |
+|---|---|---|
+| alias table | `src/Modules/ModParser.lua` (~line 59-64) | Registers both `regen` and `regeneration` keys for Life and Mana |
+
+**Spec:** `spec/System/TestRegenAlias_spec.lua`
+- "'% increased Health Regen' parses to LifeRegen INC"
+- "'% increased Health Regeneration' parses to LifeRegen INC"
+- "'% increased Mana Regen' parses to ManaRegen INC"
+- "'% increased Mana Regeneration' parses to ManaRegen INC"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `curse-spell-damage-stat`
+
+`+N Curse Spell Damage` (e.g. Hexed Grand Bone Idol prefix, ModItem affix
+49629 family; 1.3/1.4 unique rolls "+(66-91) Curse Spell Damage") must
+parse cleanly with **no residual `extra`** so the item tooltip does not
+render the line as red `UNSUPPORTED` text. The affix flows as flat spell
+damage to skills with the Curse skill type (Bone Curse, Torment,
+Decrepify, Anguish, Penance) via the existing
+`skillModList:Sum("BASE", cfg, "Damage")` path in `CalcOffence.lua`.
+
+Implemented as a tagged `modNameList` entry rather than a dedicated
+`CurseSpellDamage` stat, so no new wiring is required:
+
+```lua
+["curse spell damage"] = { "Damage",
+    keywordFlags = KeywordFlag.Spell,
+    tag = { type = "SkillType", skillType = SkillType.Curse } },
+```
+
+Without this entry, `Curse` is left as residual after the parser matches
+`Spell Damage` → `Damage` BASE, setting `modLine.extra = " Curse   "`
+which `ItemTools.formatModLine` colors as `UNSUPPORTED` (`^xF05050`).
+
+| Site | File | What it does |
+|---|---|---|
+| alias table | `src/Modules/ModParser.lua` (~line 311-323) | Registers `curse spell damage` with `Damage` name + Spell keyword + SkillType.Curse tag |
+
+**Spec:** `spec/System/TestCurseSpellDamage_spec.lua`
+- "'+8 Curse Spell Damage' parses to Damage BASE with no residual extra"
+- "'+8 Curse Spell Damage' carries SkillType.Curse tag"
+- "'+66 Curse Spell Damage' (uniques_1_4 high roll) parses cleanly"
+
+**Note:** Stale `src/Data/ModCache.lua` entries pre-dating this fix were
+stripped (10 entries with `extra=" Curse   "`). The cache is regenerated
+on first GUI load.
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
 ## Adding a new guard
 
 1. Above the fix in source, add a comment block:
