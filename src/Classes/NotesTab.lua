@@ -5,6 +5,7 @@
 --
 local t_insert = table.insert
 local MarkdownRender = LoadModule("Modules/MarkdownRender")
+local NotesImageCache = LoadModule("Modules/NotesImageCache")
 
 local NotesTabClass = newClass("NotesTab", "ControlHost", "Control", function(self, build)
 	self.ControlHost()
@@ -17,11 +18,13 @@ local NotesTabClass = newClass("NotesTab", "ControlHost", "Control", function(se
 	self.previewMode = false
 	self.previewScroll = 0
 	self.previewHotspots = {}
+	self.previewAnchors = {}
 
-	local notesDesc = [[^7You can use Ctrl +/- (or Ctrl+Scroll) to zoom in and out and Ctrl+0 to reset.
-This field also supports different colors.  Using the caret symbol (^) followed by a Hex code or a number (0-9) will set the color.
-Below are some common color codes LEP uses:	]]
-	self.controls.notesDesc = new("LabelControl", {"TOPLEFT",self,"TOPLEFT"}, 8, 8, 150, 16, notesDesc)
+	-- Async image loads change content height; invalidate the parse cache so
+	-- measure() runs again and the scrollbar picks up the new dimensions.
+	NotesImageCache.OnInvalidation(function()
+		self.cachedPreviewSource = nil
+	end)
 
 	-- Row 1: rarity colors
 	local rarityRow = {
@@ -31,7 +34,7 @@ Below are some common color codes LEP uses:	]]
 		{ key = "set",    label = "SET",    color = colorCodes.SET },
 		{ key = "unique", label = "UNIQUE", color = colorCodes.UNIQUE },
 	}
-	self.controls.normal = new("ButtonControl", {"TOPLEFT",self.controls.notesDesc,"TOPLEFT"}, 0, 64, 100, 18, rarityRow[1].color..rarityRow[1].label, function() self:SetColor(rarityRow[1].color) end)
+	self.controls.normal = new("ButtonControl", {"TOPLEFT",self,"TOPLEFT"}, 8, 8, 100, 18, rarityRow[1].color..rarityRow[1].label, function() self:SetColor(rarityRow[1].color) end)
 	for i = 2, #rarityRow do
 		local entry = rarityRow[i]
 		self.controls[entry.key] = new("ButtonControl", {"TOPLEFT",self.controls.normal,"TOPLEFT"}, 120 * (i - 1), 0, 100, 18, entry.color..entry.label, function() self:SetColor(entry.color) end)
@@ -56,6 +59,27 @@ Below are some common color codes LEP uses:	]]
 	self.controls.edit.height = function()
 		return self.height - 170
 	end
+	-- Default 3-line wheel step feels sluggish on long Notes; bump to ~6 lines.
+	self.controls.edit.controls.scrollBarV.step = 96
+	-- Preview-mode scrollbar lives on the right border of the preview rect
+	-- (which mirrors the edit rect). Anchored to edit so position tracks
+	-- edit's geometry, but IsShown is overridden to bypass the parent-visibility
+	-- propagation in Control:IsShown — edit is hidden in preview mode, otherwise
+	-- the scrollbar would never appear. We can't use anchor.collapse because
+	-- GetPos's collapse branch shortcuts to parent's TOPLEFT, breaking TOPRIGHT
+	-- placement.
+	self.controls.previewScrollBar = new("ScrollBarControl", {"TOPRIGHT",self.controls.edit,"TOPRIGHT"}, -1, 1, 14, 0, 96, "VERTICAL", true)
+	self.controls.previewScrollBar.height = function()
+		local _, h = self.controls.edit:GetSize()
+		return h - 2
+	end
+	self.controls.previewScrollBar.shown = function()
+		return self.previewMode and self.controls.previewScrollBar.enabled
+	end
+	self.controls.previewScrollBar.IsShown = function(ctrl)
+		-- Skip parent.IsShown() chain (edit becomes hidden in preview mode).
+		return ctrl:GetProperty("shown")
+	end
 	-- Preview / Color Codes toggles, placed below the attribute row (row 3 ends at y=54 from normal).
 	self.controls.togglePreview = new("ButtonControl", {"TOPLEFT",self.controls.normal,"TOPLEFT"}, 0, 60, 120, 20, "Preview", function()
 		self:SetPreviewMode(not self.previewMode)
@@ -65,6 +89,38 @@ Below are some common color codes LEP uses:	]]
 		self:SetShowColorCodes(self.showColorCodes)
 	end)
 	self.controls.markdownHelp = new("ButtonControl", {"TOPLEFT",self.controls.toggleColorCodes,"TOPRIGHT"}, 8, 0, 24, 20, "?", function() end)
+	-- Template dropdown — discovers .md files under src/Data/NotesTemplates and
+	-- inserts the chosen one into the edit buffer. The first row is a no-op label
+	-- so the dropdown reads as a menu trigger rather than a current selection.
+	self.templateList = { { label = "Insert Template...", file = nil } }
+	local handle = NewFileSearch("Data/NotesTemplates/*.md")
+	while handle do
+		local fileName = handle:GetFileName()
+		local label = fileName:gsub("%.md$", ""):gsub("^%l", string.upper)
+		t_insert(self.templateList, { label = label, file = "Data/NotesTemplates/" .. fileName })
+		if not handle:NextFile() then break end
+	end
+	self.controls.templateDrop = new("DropDownControl", {"TOPLEFT",self.controls.markdownHelp,"TOPRIGHT"}, 8, 0, 160, 20, self.templateList, function(index, value)
+		if not value.file then return end
+		local f = io.open(value.file, "r")
+		if not f then
+			main:OpenMessagePopup("Template", "Could not read " .. value.file)
+			self.controls.templateDrop.selIndex = 1
+			return
+		end
+		local body = f:read("*a")
+		f:close()
+		local apply = function()
+			self.controls.edit:SetText(body)
+		end
+		if self.controls.edit.buf and self.controls.edit.buf:match("%S") then
+			main:OpenConfirmPopup("Replace Notes?", "This will replace the current Notes with the selected template.\nUndo (Ctrl+Z) is available.", "Replace", apply)
+		else
+			apply()
+		end
+		-- Reset selection so the dropdown stays on "Insert Template...".
+		self.controls.templateDrop.selIndex = 1
+	end)
 	-- Show the guide tooltip even when the edit control has focus (DrawControls
 	-- otherwise suppresses tooltips on non-focused controls).
 	self.controls.markdownHelp.forceTooltip = true
@@ -86,7 +142,12 @@ Below are some common color codes LEP uses:	]]
 		tooltip:AddSeparator(6)
 		tooltip:AddLine(16, "^7Links")
 		tooltip:AddLine(15, "^x888888[label](https://...)   ^7-> opens in browser")
+		tooltip:AddLine(15, "^x888888[label](#section-slug) ^7-> jumps to heading in preview")
 		tooltip:AddLine(15, "^x888888[[Loadout: Name]]      ^7-> switches to that loadout")
+		tooltip:AddLine(15, "^x888888[[TOC]]               ^7-> auto index of all headings")
+		tooltip:AddSeparator(6)
+		tooltip:AddLine(16, "^7Images")
+		tooltip:AddLine(15, "^x888888![alt](https://...png) ^7-> embedded; cached locally; auto-resized")
 		tooltip:AddSeparator(6)
 		tooltip:AddLine(16, "^7Color codes (work in Edit and Preview)")
 		tooltip:AddLine(15, "^x888888^^xRRGGBB        ^7hex color, e.g. ^xFF6B6B^^xFF6B6Bred")
@@ -142,7 +203,13 @@ end
 function NotesTabClass:HandlePreviewClick(cursorX, cursorY)
 	for _, hs in ipairs(self.previewHotspots) do
 		if cursorX >= hs.x and cursorX < hs.x + hs.w and cursorY >= hs.y and cursorY < hs.y + hs.h then
-			if hs.kind == "link" and hs.target and hs.target:match("^[a-z]+://") then
+			if hs.kind == "link" and hs.target and hs.target:sub(1, 1) == "#" then
+				local slug = hs.target:sub(2)
+				local targetY = self.previewAnchors and self.previewAnchors[slug]
+				if targetY then
+					self.controls.previewScrollBar:SetOffset(targetY)
+				end
+			elseif hs.kind == "link" and hs.target and hs.target:match("^[a-z]+://") then
 				OpenURL(hs.target)
 			elseif hs.kind == "loadout" then
 				if self.build.SwitchLoadout and self.build:SwitchLoadout(hs.target) then
@@ -166,18 +233,33 @@ function NotesTabClass:DrawPreview(viewPort)
 	DrawImage(nil, x + 1, y + 1, w - 2, h - 2)
 
 	local pad = 6
+	local availW = w - pad * 2
 	local source = normalizeColorCodes(self.controls.edit.buf or "")
-	local nodes = MarkdownRender.parse(source)
-	local contentH = MarkdownRender.measure(nodes)
+	-- Reparse only when the source actually changes; per-frame parse becomes
+	-- expensive at 1000+ lines. See Obsidian: Development/軽量性維持の原則.md
+	if source ~= self.cachedPreviewSource then
+		self.cachedPreviewSource = source
+		self.cachedPreviewNodes = MarkdownRender.parse(source)
+		self.cachedPreviewContentH, self.cachedPreviewAnchors = MarkdownRender.measure(self.cachedPreviewNodes, availW)
+	end
+	local nodes = self.cachedPreviewNodes
+	local contentH = self.cachedPreviewContentH
+	self.previewAnchors = self.cachedPreviewAnchors or {}
 
-	-- Clamp scroll.
-	local maxScroll = math.max(0, contentH - (h - pad * 2))
-	if self.previewScroll > maxScroll then self.previewScroll = maxScroll end
-	if self.previewScroll < 0 then self.previewScroll = 0 end
+	-- Drive scroll via the scrollbar so wheel + drag share state.
+	local viewH = h - pad * 2
+	self.controls.previewScrollBar:SetContentDimension(contentH, viewH)
+	self.previewScroll = self.controls.previewScrollBar.offset
 
-	SetViewport(x + pad, y + pad, w - pad * 2, h - pad * 2)
-	local _, hotspots = MarkdownRender.render(nodes, 0, 0, w - pad * 2, self.previewScroll)
+	SetViewport(x + pad, y + pad, availW, viewH)
+	local _, hotspots = MarkdownRender.render(nodes, 0, 0, availW, self.previewScroll)
 	SetViewport()
+
+	-- DrawControls already drew the scrollbar earlier, but the preview's
+	-- background rect above overpainted it. Redraw on top so it stays visible.
+	if self.controls.previewScrollBar:IsShown() then
+		self.controls.previewScrollBar:Draw(viewPort)
+	end
 
 	-- Translate hotspot rects from viewport-local to absolute screen coords.
 	self.previewHotspots = {}
@@ -262,9 +344,9 @@ function NotesTabClass:Draw(viewPort, inputEvents)
 			elseif not self.previewMode and event.key == "y" and IsKeyDown("CTRL") then
 				self.controls.edit:Redo()
 			elseif self.previewMode and event.key == "WHEELUP" then
-				self.previewScroll = math.max(0, (self.previewScroll or 0) - 32)
+				self.controls.previewScrollBar:Scroll(-1)
 			elseif self.previewMode and event.key == "WHEELDOWN" then
-				self.previewScroll = (self.previewScroll or 0) + 32
+				self.controls.previewScrollBar:Scroll(1)
 			end
 		elseif event.type == "KeyUp" and self.previewMode and event.key == "LEFTBUTTON" then
 			local cx, cy = GetCursorPos()
