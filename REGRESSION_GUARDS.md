@@ -759,6 +759,52 @@ Shapes covered:
 
 **Establishing commit:** `<unset; bump after first commit on this branch>`
 
+### `phase4-stun-aoe-melee-flag-isolation`
+
+Phase 4 LETools-parity Calcs-tab additions surface character-aggregate
+`StunChanceInc / MeleeStunChanceInc / AreaOfEffectInc / MeleeAreaOfEffectInc`.
+The Melee* rows must equal the **melee-only delta**, computed as
+`Sum(INC, {flags=Melee}, name) - Sum(INC, nil, name)`. `modDB:Sum` with a
+flag set returns mods matching the flag set OR mods with no flags — NOT
+melee-only mods. A naive rewrite to a direct melee-cfg call double-counts
+the unflagged sum into the Melee row, silently inflating every build's
+melee-stun / melee-AoE display.
+
+| Site | File |
+|---|---|
+| Melee-flag isolation block | `src/Modules/CalcDefence.lua` (~line 1472, after `OverkillLeech`) |
+
+**Spec:** `spec/System/TestPhase4LEToolsParity_spec.lua`
+- "Melee* aggregates isolate the melee-tagged delta (no double-count of unflagged)"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `phase4-minion-modifier-bucket-aggregation`
+
+Minion stat mods in LEB are routed via `MinionModifier` LIST entries
+(consumed by `env.minion` in CalcPerform when an active minion skill
+exists). The Minion* outputs on the Calcs tab must show even on builds
+without an active minion skill, so `buildDefenceEstimations` walks the
+MinionModifier LIST once and buckets inner mods by `(name, type)`. ~30
+Minion* outputs read from this bucket map.
+
+INVARIANT: every Minion* output reads via `sumMinion(name, type)` from
+the bucket. Reverting any single output to a top-level `modDB:Sum(...,
+"<name>")` silently returns 0 because the matching mods only exist
+nested inside MinionModifier LIST values, not at the modDB top level.
+This was already broken-and-fixed once for `MinionLifeInc`; the bucket
+loop generalises that fix.
+
+| Site | File |
+|---|---|
+| Bucket loop + sumMinion helper | `src/Modules/CalcDefence.lua` (~line 1525, `do … local minionMods = {}`) |
+
+**Spec:** `spec/System/TestPhase4LEToolsParity_spec.lua`
+- "Minion bucket aggregates MinionModifier LIST entries by (name,type)"
+- "Phase 4 outputs default to 0 with no mods (no character base leak)"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
 ## Adding a new guard
 
 1. Above the fix in source, add a comment block:

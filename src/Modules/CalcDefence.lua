@@ -1418,6 +1418,7 @@ function calcs.buildDefenceEstimations(env, actor)
 	end
 	-- Primalist/Rogue/Sentinel trees: "X% Max Health Gained as Endurance Threshold"
 	local lifeAsEndThresh = modDB:Sum("BASE", nil, "LifeAsEnduranceThreshold")
+	output.LifeAsEnduranceThreshold = lifeAsEndThresh
 	if lifeAsEndThresh > 0 then
 		etBase = etBase + (output.Life or 0) * lifeAsEndThresh / 100
 	end
@@ -1449,7 +1450,49 @@ function calcs.buildDefenceEstimations(env, actor)
 	output.LifeOnStun = modDB:Sum("BASE", nil, "LifeOnStun")
 	output.LifeOnFreeze = modDB:Sum("BASE", nil, "LifeOnFreeze")
 	output.LifeOnCrit = modDB:Sum("BASE", nil, "LifeOnCrit")
+	-- Character-aggregate Hit / Melee Hit gains. Per-skill versions live in
+	-- CalcOffence; these surface the flat sum so the Calcs tab can mirror
+	-- LETools' "Health Gain on Hit / Melee Hit" rows on every build.
+	output.LifeOnHit = modDB:Sum("BASE", nil, "LifeOnHit")
+	output.LifeOnMeleeHit = modDB:Sum("BASE", nil, "LifeOnMeleeHit")
+	-- Other Stats (LETools parity)
+	output.ChanceToFindPotions = modDB:Sum("BASE", nil, "ChanceToFindPotions")
+	output.ManaEfficiency = modDB:Sum("BASE", nil, "ManaEfficiency")
+	output.HealingEffectiveness = modDB:Sum("INC", nil, "HealingEffectiveness")
+	output.CooldownRecovery = modDB:Sum("INC", nil, "CooldownRecovery")
+	output.DoubleDamageChance = modDB:Sum("BASE", nil, "DoubleDamageChance")
 	output.OverkillLeech = modDB:Sum("BASE", nil, "OverkillLeech")
+	-- @leb-regression-guard: phase4-stun-aoe-melee-flag-isolation
+	-- Character-aggregate Stun Chance / Area of Effect (LETools parity).
+	-- Per-skill outputs in CalcOffence (StunChance/AreaOfEffectMod) compute
+	-- skill-specific values; these surface the flat affix sum so the Calcs tab
+	-- can mirror LETools' "Stun Chance" / "Area Of Effect" rows on every build.
+	--
+	-- INVARIANT: Melee-tagged values MUST be extracted by subtracting the
+	-- unflagged sum from the melee-cfg sum (which includes both unflagged +
+	-- melee-flagged mods). modDB:Sum with `{ flags = ModFlag.Melee }` does NOT
+	-- return melee-only mods — it returns "mods that match this flag set OR
+	-- have no flags". Replacing the subtraction with a direct call double-
+	-- counts the unflagged sum into the Melee row.
+	-- Test: spec/System/TestPhase4LEToolsParity_spec.lua "Melee* aggregates isolate the melee-tagged delta"
+	-- See REGRESSION_GUARDS.md "phase4-stun-aoe-melee-flag-isolation".
+	output.StunChanceInc = modDB:Sum("INC", nil, "StunChance")
+	output.MeleeStunChanceInc = modDB:Sum("INC", { flags = ModFlag.Melee }, "StunChance") - output.StunChanceInc
+	output.AreaOfEffectInc = modDB:Sum("INC", nil, "AreaOfEffect")
+	output.MeleeAreaOfEffectInc = modDB:Sum("INC", { flags = ModFlag.Melee }, "AreaOfEffect") - output.AreaOfEffectInc
+	-- Mana Regen INC aggregate (BASE goes through ManaRegenRecovery formula).
+	output.ManaRegenInc = modDB:Sum("INC", nil, "ManaRegen")
+	-- Phase 4-D: Ailment damage character-aggregate (Increased X Damage %).
+	output.BleedDamageInc = modDB:Sum("INC", nil, "BleedDamage")
+	output.IgniteDamageInc = modDB:Sum("INC", nil, "IgniteDamage")
+	output.PoisonDamageInc = modDB:Sum("INC", nil, "PoisonDamage")
+	output.FrostbiteDamageInc = modDB:Sum("INC", nil, "FrostbiteDamage")
+	-- Phase 4-B: Ward / Buff effect aggregates (LETools parity).
+	output.WardOnHit = modDB:Sum("BASE", nil, "WardOnHit")
+	output.WardOnCrit = modDB:Sum("BASE", nil, "WardOnCrit")
+	output.PotionHealthConvertedToWard = modDB:Sum("BASE", nil, "PotionHealthConvertedToWard")
+	output.HasteEffect = modDB:Sum("INC", nil, "HasteEffect")
+	output.FrenzyEffect = modDB:Sum("INC", nil, "FrenzyEffect")
 	output.MaxCompanions = 2 + modDB:Sum("BASE", nil, "MaxCompanions")
 	-- @leb-regression-guard: potion-slots-no-character-base
 	-- Locks the contract that PotionSlots has NO character/class base — the
@@ -1471,20 +1514,71 @@ function calcs.buildDefenceEstimations(env, actor)
 		local fromLevel = m_max(0, lvl - 25) * 0.8
 		output.MinionPowerFromCharLevel = fromLevel + modDB:Sum("BASE", nil, "MinionPowerFromCharLevel")
 	end
-	-- Minion-tab "Increased Health" — LETools shows this on every build's Minion
-	-- tab regardless of whether an active minion skill exists. Minion stat mods
-	-- in LEB are routed via MinionModifier LIST entries (consumed by env.minion
-	-- in CalcPerform when an active minion skill exists). To get the always-
-	-- displayed value we iterate the LIST and sum inner INC Life mods.
+	-- @leb-regression-guard: phase4-minion-modifier-bucket-aggregation
+	-- Minion-tab summary fields — LETools shows minion stats on every build
+	-- regardless of whether an active minion skill exists. Minion stat mods in
+	-- LEB are routed via MinionModifier LIST entries (consumed by env.minion in
+	-- CalcPerform when an active minion skill exists). To populate the always-
+	-- displayed values we walk the LIST once and bucket inner mods by
+	-- (name, type).
+	--
+	-- INVARIANT: All Minion* outputs MUST read from this bucket map. They are
+	-- NOT direct `modDB:Sum` calls — minion mods live nested inside
+	-- MinionModifier LIST values, not at the modDB top level. Reverting any
+	-- single Minion* output to `modDB:Sum("INC"|"BASE", nil, "<name>")` will
+	-- silently return 0 for every build (no top-level mods of that name
+	-- exist), which the build set has already been broken-and-fixed for once
+	-- with `MinionLifeInc`.
+	-- Test: spec/System/TestPhase4LEToolsParity_spec.lua "Minion bucket aggregates MinionModifier LIST entries"
+	-- See REGRESSION_GUARDS.md "phase4-minion-modifier-bucket-aggregation".
 	do
-		local minionLifeInc = 0
+		local minionMods = {}
 		for _, value in ipairs(modDB:List(nil, "MinionModifier")) do
 			local m = value.mod
-			if m and m.name == "Life" and m.type == "INC" then
-				minionLifeInc = minionLifeInc + (m.value or 0)
+			if m and m.name and m.type then
+				local key = m.name .. "|" .. m.type
+				minionMods[key] = (minionMods[key] or 0) + (m.value or 0)
 			end
 		end
-		output.MinionLifeInc = minionLifeInc
+		local function sumMinion(name, type) return minionMods[name .. "|" .. type] or 0 end
+		output.MinionLifeInc = sumMinion("Life", "INC")
+		output.MinionLifeRegen = sumMinion("LifeRegen", "BASE")
+		output.MinionLifeRegenInc = sumMinion("LifeRegen", "INC")
+		output.MinionEvasion = sumMinion("Evasion", "BASE")
+		output.MinionArmour = sumMinion("Armour", "BASE")
+		output.MinionCritAvoidance = sumMinion("CritAvoidance", "BASE")
+		output.MinionReduceCritExtraDamage = sumMinion("ReduceCritExtraDamage", "BASE")
+		output.MinionMovementSpeed = sumMinion("MovementSpeed", "INC")
+		output.MinionFireResist = sumMinion("FireResist", "BASE")
+		output.MinionColdResist = sumMinion("ColdResist", "BASE")
+		output.MinionLightningResist = sumMinion("LightningResist", "BASE")
+		output.MinionPhysicalResist = sumMinion("PhysicalResist", "BASE")
+		output.MinionNecroticResist = sumMinion("NecroticResist", "BASE")
+		output.MinionPoisonResist = sumMinion("PoisonResist", "BASE")
+		output.MinionVoidResist = sumMinion("VoidResist", "BASE")
+		output.MinionHealingEffectiveness = sumMinion("HealingEffectiveness", "INC")
+		output.MinionCooldownRecovery = sumMinion("CooldownRecovery", "INC")
+		output.MinionDamageReflected = sumMinion("DamageReflectedPercent", "BASE")
+		output.MinionCompanionReviveSpeed = sumMinion("CompanionReviveSpeed", "INC")
+		output.MinionCompanionReviveRange = sumMinion("CompanionReviveRange", "INC")
+		-- Phase 4-C: Minion Armor/Evasion INC (BASE already wired above) +
+		-- per-damage-type Damage INC and Penetration BASE.
+		output.MinionArmourInc = sumMinion("Armour", "INC")
+		output.MinionEvasionInc = sumMinion("Evasion", "INC")
+		output.MinionPhysicalDamageInc = sumMinion("PhysicalDamage", "INC")
+		output.MinionFireDamageInc = sumMinion("FireDamage", "INC")
+		output.MinionColdDamageInc = sumMinion("ColdDamage", "INC")
+		output.MinionLightningDamageInc = sumMinion("LightningDamage", "INC")
+		output.MinionNecroticDamageInc = sumMinion("NecroticDamage", "INC")
+		output.MinionPoisonDamageInc = sumMinion("PoisonDamage", "INC")
+		output.MinionVoidDamageInc = sumMinion("VoidDamage", "INC")
+		output.MinionPhysicalPenetration = sumMinion("PhysicalPenetration", "BASE")
+		output.MinionFirePenetration = sumMinion("FirePenetration", "BASE")
+		output.MinionColdPenetration = sumMinion("ColdPenetration", "BASE")
+		output.MinionLightningPenetration = sumMinion("LightningPenetration", "BASE")
+		output.MinionNecroticPenetration = sumMinion("NecroticPenetration", "BASE")
+		output.MinionPoisonPenetration = sumMinion("PoisonPenetration", "BASE")
+		output.MinionVoidPenetration = sumMinion("VoidPenetration", "BASE")
 	end
 
 	-- Glancing blow and crit avoidance
