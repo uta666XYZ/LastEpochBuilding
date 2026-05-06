@@ -1133,6 +1133,22 @@ function TreeTabClass:SetCompareSpec(specId)
 	self.compareSpec = curSpec
 end
 
+-- Switch to the spec whose title matches `name` (case-insensitive, trimmed).
+-- Returns true on success, false if no match was found.
+function TreeTabClass:SetActiveSpecByName(name)
+	if not name then return false end
+	local needle = name:gsub("^%s+", ""):gsub("%s+$", ""):lower()
+	for index, spec in ipairs(self.specList) do
+		local title = (spec.title or "Default"):gsub("^%s+", ""):gsub("%s+$", ""):lower()
+		if title == needle then
+			self:SetActiveSpec(index)
+			self.build.modFlag = true
+			return true
+		end
+	end
+	return false
+end
+
 function TreeTabClass:ConvertToVersion(version, remove, success, ignoreRuthlessCheck)
 	if not ignoreRuthlessCheck and self.build.spec.treeVersion:match("ruthless") and not version:match("ruthless") then
 		if isValueInTable(treeVersionList, version.."_ruthless") then

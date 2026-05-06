@@ -13727,6 +13727,14 @@ c["3.2 Seconds of Haste after you use a Traversal Skill"]={{[1]={[1]={skillName=
 c["3.5 Seconds of Frenzy after you use Evade"]={{[1]={[1]={skillName="Frenzy",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=3.5}}," Seconds of  after you use Evade "}
 c["3.8 Seconds of Frenzy after you use a Traversal Skill"]={{[1]={[1]={skillName="Frenzy",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=3.8}}," Seconds of  after you use a Traversal Skill "}
 c["3.8 Seconds of Haste after you use a Traversal Skill"]={{[1]={[1]={skillName="Haste",type="SkillName"},flags=0,keywordFlags=0,name="SkillLevel",type="BASE",value=3.8}}," Seconds of  after you use a Traversal Skill "}
+-- @leb-regression-guard: martyrdom-minion-armour
+-- The two "<N> Minion Armour Per Vitality" entries below MUST keep the
+-- MinionModifier LIST wrapper. Dropping the wrapper (e.g. emitting a flat
+-- `{stat="Vit",type="PerStat"},name="Armour",...` row) routes the bonus to
+-- the player's modDB and reintroduces the Necromancer Dread Shade
+-- "Martyrdom" (ds4d3-3) player-armour inflation bug (~+3000 armour at Vit=99).
+-- Spec: spec/System/TestMartyrdomMinion_spec.lua
+-- See REGRESSION_GUARDS.md "martyrdom-minion-armour".
 c["25 Minion Armour Per Vitality"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={stat="Vit",type="PerStat"},flags=0,keywordFlags=0,name="Armour",type="BASE",value=25}}}},nil}
 c["30 Minion Armour Per Vitality"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={[1]={stat="Vit",type="PerStat"},flags=0,keywordFlags=0,name="Armour",type="BASE",value=30}}}},nil}
 c["30 Damage Taken by Attackers when Hit"]={{[1]={flags=8388608,keywordFlags=0,name="DamageTaken",type="BASE",value=30}},"  by Attackers when  "}

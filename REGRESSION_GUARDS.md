@@ -1068,6 +1068,87 @@ LETools DOM `quest-id` attribute, and the in-app save-file quest IDs.
 
 **Establishing commit:** `<unset; bump after first commit on this branch>`
 
+### `stcdt-conversion-shapes`
+
+Catalogues every stat / description prose shape that introduces, redirects,
+or removes damage-type bits via skill-tree allocation. The parser is
+text-driven against a long tail of nodes; adding a shape is easy but
+*removing* one accidentally during a refactor (e.g. consolidating the
+cascading `if not dst then` chain into a generic loop) silently regresses
+Minion Tags / Scaling Tags / `+to X Skills` affix matching for whichever
+skills depend on that shape. The spec keeps the catalogue runnable.
+
+| Site | File | What it does |
+|---|---|---|
+| stcdt filter             | `src/Modules/CalcActiveSkill.lua` — `calcs.getActiveStcdtBits` | Returns `(activeBits, removedBits)` after scanning allocated nodes' stats + description |
+| Scaling Tags mirror      | `src/Classes/SkillsTab.lua` — `GetDynamicDamageTypesByTreeId` | Same shape catalogue applied to the UI's base/conv set |
+| caller wiring (minionKW) | `src/Modules/CalcSetup.lua` (~line 1793) | Captures `removedBits` and applies `bit.band(minionKW, bit.bnot(removedStcdt))` so post-conversion `+to <NewType> Skills` affixes match while the stripped source no longer matches its own tag |
+
+Shapes covered:
+- **A1**: `<Src> -> <Dst> Damage`
+- **A2**: `<Src> Damage -> <Dst> Damage`
+- **A3**: `<Src> -> <Dst> Conversion` suffix
+- **A4**: bare `<Dst> Conversion`
+- **A5**: multi-source AND-join `<Src1> and <Src2> -> <Dst> Damage` (svz81-23 Horrific Vessels)
+- **A6**: multi-source AND-join `... -> <Dst> Conversion` suffix
+- **A7**: `<Delivery> Base Damage -> <Dst>` (bg36nl-7 Pyre Golem)
+- **A8b**: bare `<Src> -> <Dst>` no-Damage suffix (fw3d-10 Lightning Ward)
+- **A12**: modifier-only `Increased <Src> Damage -> <Dst> Damage` (ds4d3-32 Vile Ghast — promotes destination as scaling tag without removing source)
+- **A13**: `<X> -> Elemental Damage` filtered out — Oil Coating cstri-22 is a buff modifier, not a skill-damage conversion
+- **B1**: `Enables <Type> Nova` addition (en6 Elemental Nova)
+- **D-prose / source removal**: unconditional `<Skill> loses its {X} tag` triggers Q3=(a) full-conversion source removal. Conditional `if ...` lines (sw1 Swipe, srk21-25 Shurikens) are skipped — partial-state aware removal is intentionally not handled
+
+**Spec:** `spec/System/TestStcdtParser_spec.lua`
+- "getActiveStcdtBits #stcdt" (17 cases — one per shape + filter / treeId guards)
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `phase4-stun-aoe-melee-flag-isolation`
+
+Phase 4 LETools-parity Calcs-tab additions surface character-aggregate
+`StunChanceInc / MeleeStunChanceInc / AreaOfEffectInc / MeleeAreaOfEffectInc`.
+The Melee* rows must equal the **melee-only delta**, computed as
+`Sum(INC, {flags=Melee}, name) - Sum(INC, nil, name)`. `modDB:Sum` with a
+flag set returns mods matching the flag set OR mods with no flags — NOT
+melee-only mods. A naive rewrite to a direct melee-cfg call double-counts
+the unflagged sum into the Melee row, silently inflating every build's
+melee-stun / melee-AoE display.
+
+| Site | File |
+|---|---|
+| Melee-flag isolation block | `src/Modules/CalcDefence.lua` (~line 1472, after `OverkillLeech`) |
+
+**Spec:** `spec/System/TestPhase4LEToolsParity_spec.lua`
+- "Melee* aggregates isolate the melee-tagged delta (no double-count of unflagged)"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `phase4-minion-modifier-bucket-aggregation`
+
+Minion stat mods in LEB are routed via `MinionModifier` LIST entries
+(consumed by `env.minion` in CalcPerform when an active minion skill
+exists). The Minion* outputs on the Calcs tab must show even on builds
+without an active minion skill, so `buildDefenceEstimations` walks the
+MinionModifier LIST once and buckets inner mods by `(name, type)`. ~30
+Minion* outputs read from this bucket map.
+
+INVARIANT: every Minion* output reads via `sumMinion(name, type)` from
+the bucket. Reverting any single output to a top-level `modDB:Sum(...,
+"<name>")` silently returns 0 because the matching mods only exist
+nested inside MinionModifier LIST values, not at the modDB top level.
+This was already broken-and-fixed once for `MinionLifeInc`; the bucket
+loop generalises that fix.
+
+| Site | File |
+|---|---|
+| Bucket loop + sumMinion helper | `src/Modules/CalcDefence.lua` (~line 1525, `do … local minionMods = {}`) |
+
+**Spec:** `spec/System/TestPhase4LEToolsParity_spec.lua`
+- "Minion bucket aggregates MinionModifier LIST entries by (name,type)"
+- "Phase 4 outputs default to 0 with no mods (no character base leak)"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
 ## Adding a new guard
 
 1. Above the fix in source, add a comment block:

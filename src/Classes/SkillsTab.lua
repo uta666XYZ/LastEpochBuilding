@@ -694,6 +694,9 @@ function SkillsTabClass:Save(xml)
 		t_insert(xml, child)
 
 		for index, socketGroup in pairsSortByKey(skillSet.socketGroupList) do
+			if socketGroup.isPreview then
+				goto continueSaveSocketGroup
+			end
 			local node = { elem = "Skill", attrib = {
 				index = tostring(index),
 				enabled = tostring(socketGroup.enabled),
@@ -707,6 +710,7 @@ function SkillsTabClass:Save(xml)
 				skillId = socketGroup.skillId,
 			} }
 			t_insert(child, node)
+			::continueSaveSocketGroup::
 		end
 	end
 end
@@ -1351,6 +1355,43 @@ function SkillsTabClass:GetDynamicDamageTypesByTreeId(treeId, skillName)
 						end
 					end
 				end
+				-- Multi-source AND-join: "<Src1> and <Src2> -> <Dst> Damage"
+				-- (svz81-23 "Physical and Fire -> Necrotic Damage") or
+				-- "<Src1> and <Src2> -> <Dst> Conversion" suffix. Both
+				-- sources convert to the destination.
+				local mSrc1, mSrc2, mDst = stat:match("^%s*(%w+)%s+and%s+(%w+)%s*%->%s*(%w+)%s+Damage%s*$")
+				if not mDst then
+					mSrc1, mSrc2, mDst = stat:match("^%s*(%w+)%s+and%s+(%w+)%s*%->%s*(%w+)%s+Conversion%s*$")
+				end
+				if mDst then
+					local s1Lo, s2Lo, dLo = mSrc1:lower(), mSrc2:lower(), mDst:lower()
+					if TYPE_SET[s1Lo] and TYPE_SET[s2Lo] and TYPE_SET[dLo] then
+						if isMultiConv then
+							t_insert(multiList, { s1Lo, dLo })
+							t_insert(multiList, { s2Lo, dLo })
+						else
+							convMap[s1Lo] = dLo
+							convMap[s2Lo] = dLo
+						end
+					end
+				end
+				-- Modifier-only conversion: "Increased <Src> Damage -> <Dst> Damage"
+				-- (ds4d3-32 Vile Ghast "Increased Necrotic Damage -> Poison Damage").
+				-- This converts the *modifier* not the base damage, so source stays
+				-- a base type and destination is added (not replacing).
+				local _, modDst = stat:match("^%s*Increased%s+(%w+)%s+Damage%s*%->%s*(%w+)%s+Damage%s*$")
+				if modDst then
+					local dLo = modDst:lower()
+					if TYPE_SET[dLo] then addSet[dLo] = true end
+				end
+				-- Addition: "Enables <Type> Nova" (en6-2/8/12 Elemental Nova).
+				-- The named type becomes a legitimate base damage type when the
+				-- gating node is allocated.
+				local enType = stat:match("^%s*Enables%s+(%w+)%s+Nova%s*$")
+				if enType then
+					local dLo = enType:lower()
+					if TYPE_SET[dLo] then addSet[dLo] = true end
+				end
 				-- Plain damage producer: stats ending in "<DmgType> Damage"
 				-- (e.g. wc57-30 Kinetic Scream "40 Spell Physical Damage" gives
 				-- Warcry the Physical bit; wo42-14 Tundra Stalkers "+2 Cold
@@ -1453,6 +1494,45 @@ function SkillsTabClass:GetDynamicDamageTypesByTreeId(treeId, skillName)
 									else
 										convMap[fromType] = wholeTo
 									end
+								end
+							end
+						end
+						-- Tag prose: "<Skill> loses its {X} tag [and gains a
+						-- {Y} tag]" — full-conversion source removal (Q3=(a)).
+						-- Examples (unconditional, no `if` prefix):
+						--   tree_3 rea-32: "Reap loses its {Necrotic} tag and
+						--     gains a {Physical} tag instead." → Nec→Phys
+						-- Conditional / partial-state lines (sw1, srk21-25)
+						-- start with `if ` and are skipped by the outer guard.
+						-- Brace tokens `{Necrotic}` survive into the runtime
+						-- string verbatim, so type scanning uses substring
+						-- matches against TYPE_NAMES inside the captured span.
+						if not lo:match("^%s*if%s") then
+							-- "loses its X tag and gains a Y tag" — paired form
+							local lossSpan = lo:match("loses its[%s%S]-tag")
+							local gainSpan = lo:match("gains a[%s%S]-tag")
+							if lossSpan then
+								local lostType, gainedType
+								for _, dt in ipairs(TYPE_NAMES) do
+									if lossSpan:find(dt, 1, true) then lostType = dt break end
+								end
+								if gainSpan then
+									for _, dt in ipairs(TYPE_NAMES) do
+										if gainSpan:find(dt, 1, true) then gainedType = dt break end
+									end
+								end
+								if lostType and gainedType then
+									if isMultiConv then
+										t_insert(multiList, { lostType, gainedType })
+									else
+										convMap[lostType] = gainedType
+									end
+								elseif lostType then
+									-- Source removal only (no replacement named).
+									-- Drop the type from baseSet/addSet so it
+									-- doesn't surface in scaling tags.
+									baseSet[lostType] = nil
+									addSet[lostType] = nil
 								end
 							end
 						end
@@ -1803,6 +1883,12 @@ function SkillsTabClass:DrawSpecSlots(viewPort, inputEvents, startY)
 			for id, event in ipairs(inputEvents) do
 				if event.type == "KeyUp" then
 					if event.key == "LEFTBUTTON" then
+						-- Clean up read-only preview if leaving via slot click
+						if self.socketGroupList[-1] and self.socketGroupList[-1].isPreview then
+							self.socketGroupList[-1] = nil
+							self.build.spec:BuildAllDependsAndPaths()
+							self.skillTreeViewer.readOnly = nil
+						end
 						if sg then
 							-- Open tree view for filled slot
 							self.viewMode = "tree"
@@ -2237,38 +2323,52 @@ function SkillsTabClass:DrawSkillGrid(x, y, w, skills, inputEvents, cursorX, cur
 			DrawImage(nil, cx, cy, CELL_W, CELL_H)
 		end
 
-		-- Click: assign skill to selected slot
-		if isHover and not isLocked then
+		-- Click: assign skill to selected slot, or open read-only preview if assignment isn't possible
+		if isHover then
 			for id, event in ipairs(inputEvents) do
 				if event.type == "KeyUp" and event.key == "LEFTBUTTON" then
-					local targetSlot = assignedSlot or self.selectedSlotIndex
-					if not targetSlot then goto continueSkillClick end
-					if not self.socketGroupList[targetSlot] or assignedSlot then
-						if not assignedSlot then
-							self:SelSkill(targetSlot, skill.skillId or skill.name)
-							self.build.spec:BuildAllDependsAndPaths()
-						end
-						self.viewMode = "tree"
-						self.viewingTreeSlot = assignedSlot or targetSlot
-						self.selectedSlotIndex = self.viewingTreeSlot
-						self.skillTreeViewer.selectedSkillIndex = self.viewingTreeSlot
-						self.skillTreeViewer.skillBaseScale = nil
-						self.skillTreeViewer.skillRefZoom = nil
+					if isLocked then
+						-- Locked skill (another mastery): always read-only preview
+						self:OpenLockedSkillPreview(skill)
+						inputEvents[id] = nil
 					else
-						local empty = self:FindEmptySlot()
-						if empty then
-							self:SelSkill(empty, skill.skillId or skill.name)
-							self.build.spec:BuildAllDependsAndPaths()
-							self.selectedSlotIndex = empty
+						local targetSlot = assignedSlot or self.selectedSlotIndex
+						if assignedSlot then
+							-- Already in a slot: open that slot's tree
 							self.viewMode = "tree"
-							self.viewingTreeSlot = empty
-							self.skillTreeViewer.selectedSkillIndex = empty
+							self.viewingTreeSlot = assignedSlot
+							self.selectedSlotIndex = assignedSlot
+							self.skillTreeViewer.selectedSkillIndex = assignedSlot
 							self.skillTreeViewer.skillBaseScale = nil
 							self.skillTreeViewer.skillRefZoom = nil
+						elseif targetSlot and not self.socketGroupList[targetSlot] then
+							-- Empty selected slot: assign here
+							self:SelSkill(targetSlot, skill.skillId or skill.name)
+							self.build.spec:BuildAllDependsAndPaths()
+							self.viewMode = "tree"
+							self.viewingTreeSlot = targetSlot
+							self.selectedSlotIndex = targetSlot
+							self.skillTreeViewer.selectedSkillIndex = targetSlot
+							self.skillTreeViewer.skillBaseScale = nil
+							self.skillTreeViewer.skillRefZoom = nil
+						else
+							local empty = self:FindEmptySlot()
+							if empty then
+								self:SelSkill(empty, skill.skillId or skill.name)
+								self.build.spec:BuildAllDependsAndPaths()
+								self.selectedSlotIndex = empty
+								self.viewMode = "tree"
+								self.viewingTreeSlot = empty
+								self.skillTreeViewer.selectedSkillIndex = empty
+								self.skillTreeViewer.skillBaseScale = nil
+								self.skillTreeViewer.skillRefZoom = nil
+							else
+								-- No empty slot available: open read-only preview
+								self:OpenLockedSkillPreview(skill)
+							end
 						end
+						inputEvents[id] = nil
 					end
-					inputEvents[id] = nil
-					::continueSkillClick::
 				end
 			end
 		end
@@ -2307,6 +2407,12 @@ function SkillsTabClass:DrawSkillTree(viewPort, inputEvents, startY)
 
 	for id, event in ipairs(inputEvents) do
 		if event.type == "KeyUp" and event.key == "LEFTBUTTON" and overBack then
+			-- Clean up read-only preview entry (locked-mastery skill preview)
+			if self.socketGroupList[-1] and self.socketGroupList[-1].isPreview then
+				self.socketGroupList[-1] = nil
+				self.build.spec:BuildAllDependsAndPaths()
+			end
+			self.skillTreeViewer.readOnly = nil
 			self.viewMode = "overview"
 			self.viewingTreeSlot = nil
 			inputEvents[id] = nil
@@ -2395,9 +2501,6 @@ function SkillsTabClass:DrawSkillTree(viewPort, inputEvents, startY)
 	local infoBarH = 42
 	local infoY = startY + 4
 	if sg then
-		local used = self:GetUsedSkillPoints(slot)
-		local maxPts = self:GetMaxSkillPoints(slot)
-		local rem = maxPts - used
 		local skillName = (sg.grantedEffect and sg.grantedEffect.name) or "???"
 		SetDrawLayer(nil, 145)
 		-- Thin dark background strip so text is always legible
@@ -2406,11 +2509,18 @@ function SkillsTabClass:DrawSkillTree(viewPort, inputEvents, startY)
 		-- Skill name (gold, centered)
 		SetDrawColor(1, 1, 1)
 		DrawString(viewPort.x + viewPort.width / 2, infoY, "CENTER_X", 14, "VAR", "^xDDC080" .. skillName:upper())
-		-- Unspent points (blue if > 0, gray if 0)
-		if rem > 0 then
-			DrawString(viewPort.x + viewPort.width / 2, infoY + 16, "CENTER_X", 14, "VAR", "^x4DD9FF" .. rem .. " UNSPENT POINTS")
+		if sg.isPreview then
+			DrawString(viewPort.x + viewPort.width / 2, infoY + 16, "CENTER_X", 14, "VAR", "^x888888PREVIEW (LOCKED - READ ONLY)")
 		else
-			DrawString(viewPort.x + viewPort.width / 2, infoY + 16, "CENTER_X", 14, "VAR", "^x666666" .. used .. " / " .. maxPts .. " POINTS USED")
+			local used = self:GetUsedSkillPoints(slot)
+			local maxPts = self:GetMaxSkillPoints(slot)
+			local rem = maxPts - used
+			-- Unspent points (blue if > 0, gray if 0)
+			if rem > 0 then
+				DrawString(viewPort.x + viewPort.width / 2, infoY + 16, "CENTER_X", 14, "VAR", "^x4DD9FF" .. rem .. " UNSPENT POINTS")
+			else
+				DrawString(viewPort.x + viewPort.width / 2, infoY + 16, "CENTER_X", 14, "VAR", "^x666666" .. used .. " / " .. maxPts .. " POINTS USED")
+			end
 		end
 		SetDrawLayer(nil, 0)
 	end
@@ -2651,6 +2761,36 @@ function SkillsTabClass:SetActiveSkillSet(skillSetId)
 	self.socketGroupList = self.skillSets[skillSetId].socketGroupList
 	self.activeSkillSetId = skillSetId
 	self.build.buildFlag = true
+end
+
+-- Open a read-only preview of a locked skill's tree (e.g. another mastery's skill).
+-- Inserts a temporary preview entry at index -1 so PassiveTreeView lookups work
+-- without modifying real socket groups. Cleaned up by the Back button.
+function SkillsTabClass:OpenLockedSkillPreview(skill)
+	local previewIdx = -1
+	local skillId = skill.skillId or skill.name
+	self.socketGroupList[previewIdx] = {
+		grantedEffect = self.build.data.skills[skillId] or {
+			id = skillId,
+			name = skill.label or skill.name,
+			skillTypes = {},
+			baseFlags = {},
+			stats = {},
+		},
+		skillId = skillId,
+		slot = "Skill " .. previewIdx,
+		enabled = false,
+		isPreview = true,
+	}
+	-- Rebuild visibleNodes so the locked skill's tree nodes become reachable for rendering
+	self.build.spec:BuildAllDependsAndPaths()
+	self.viewMode = "tree"
+	self.viewingTreeSlot = previewIdx
+	self.selectedSlotIndex = previewIdx
+	self.skillTreeViewer.selectedSkillIndex = previewIdx
+	self.skillTreeViewer.skillBaseScale = nil
+	self.skillTreeViewer.skillRefZoom = nil
+	self.skillTreeViewer.readOnly = true
 end
 
 function SkillsTabClass:SelSkill(index, skillId)

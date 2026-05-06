@@ -37,6 +37,15 @@ describe("MartyrdomMinionArmour", function()
         assert.are.equals(25, inner.value)
     end)
 
+    it("ModCache.lua keeps the @leb-regression-guard:martyrdom-minion-armour comment block", function()
+        local f = io.open("Data/ModCache.lua", "r")
+        assert.is_not_nil(f, "must be able to open Data/ModCache.lua")
+        local source = f:read("*a")
+        f:close()
+        assert.is_truthy(string.find(source, "@leb-regression-guard: martyrdom-minion-armour", 1, true),
+            "ModCache.lua must keep the @leb-regression-guard comment so future edits trip review")
+    end)
+
     it("ds4d3-3 stat strings in tree_3.json carry the 'Minion' prefix", function()
         local versions = { ["1_2"] = 25, ["1_3"] = 30, ["1_4"] = 30 }
         for ver, val in pairs(versions) do

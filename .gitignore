@@ -1,6 +1,9 @@
 # Build scripts (internal)
 scripts/
 
+# Scratch / one-shot patch directory
+.tmp/
+
 # Development tools
 .idea/
 .vs/
@@ -37,6 +40,9 @@ runtime/*.dll
 debug.log
 src/*.log
 src/Settings.xml
+
+# Notes runtime image cache (downloaded on demand, regenerable)
+src/Data/NotesImageCache/
 
 # Distribution archives
 runtime-win32.zip

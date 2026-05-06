@@ -18,10 +18,17 @@ local ConfigTabClass = newClass("ConfigTab", "UndoHandler", "ControlHost", "Cont
 
 	self.build = build
 
-	self.input = { }
-	self.placeholder = { }
+	-- ConfigSet system (mirrors ItemsTab.itemSets / SkillsTab.skillSets).
+	-- self.input and self.placeholder are *aliases* onto the active set's tables,
+	-- so every existing call site continues to work unchanged.
+	self.configSets = { }
+	self.configSetOrderList = { 1 }
+	self.activeConfigSetId = 1
+	self:NewConfigSet(1, "Default")
+	self.input = self.configSets[1].input
+	self.placeholder = self.configSets[1].placeholder
 	self.defaultState = { }
-	
+
 	self.enemyLevel = 100
 
 	self.sectionList = { }
@@ -42,8 +49,9 @@ local ConfigTabClass = newClass("ConfigTab", "UndoHandler", "ControlHost", "Cont
 		self.toggleConfigs = not self.toggleConfigs
 	end)
 	self.controls.resetDefaults = new("ButtonControl", { "LEFT", self.controls.toggleConfigs, "RIGHT" }, 10, 0, 120, 20, "Reset to Defaults", function()
-		self.input = { }
-		self.placeholder = { }
+		-- Wipe the active set's tables in-place so external aliases stay valid.
+		wipeTable(self.input)
+		wipeTable(self.placeholder)
 		self:AddUndoState()
 		self:BuildModList()
 		self:UpdateControls()
@@ -654,46 +662,97 @@ local ConfigTabClass = newClass("ConfigTab", "UndoHandler", "ControlHost", "Cont
 	t_insert(self.controls, self.controls.blessingPanelEnd)
 end)
 
-function ConfigTabClass:Load(xml, fileName)
-	for _, node in ipairs(xml) do
-		if node.elem == "Input" then
-			if not node.attrib.name then
-				launch:ShowErrMsg("^1Error parsing '%s': 'Input' element missing name attribute", fileName)
-				return true
-			end
-			if node.attrib.number then
-				self.input[node.attrib.name] = tonumber(node.attrib.number)
-			elseif node.attrib.string then
-				if node.attrib.name == "enemyIsBoss" then
-					self.input[node.attrib.name] = node.attrib.string:lower():gsub("(%l)(%w*)", function(a,b) return s_upper(a)..b end)
-					:gsub("Uber Atziri", "Boss"):gsub("Shaper", "Pinnacle"):gsub("Sirus", "Pinnacle")
-				-- backwards compat <=3.20, Uber Atziri Flameblast -> Atziri Flameblast
-				elseif node.attrib.name == "presetBossSkills" then
-					self.input[node.attrib.name] = node.attrib.string:gsub("^Uber ", "")
-				else
-					self.input[node.attrib.name] = node.attrib.string
-				end
-			elseif node.attrib.boolean then
-				self.input[node.attrib.name] = node.attrib.boolean == "true"
+local function loadInputPlaceholderChild(self, node, targetInput, targetPlaceholder, fileName)
+	if node.elem == "Input" then
+		if not node.attrib.name then
+			launch:ShowErrMsg("^1Error parsing '%s': 'Input' element missing name attribute", fileName)
+			return true
+		end
+		if node.attrib.number then
+			targetInput[node.attrib.name] = tonumber(node.attrib.number)
+		elseif node.attrib.string then
+			if node.attrib.name == "enemyIsBoss" then
+				targetInput[node.attrib.name] = node.attrib.string:lower():gsub("(%l)(%w*)", function(a,b) return s_upper(a)..b end)
+				:gsub("Uber Atziri", "Boss"):gsub("Shaper", "Pinnacle"):gsub("Sirus", "Pinnacle")
+			elseif node.attrib.name == "presetBossSkills" then
+				targetInput[node.attrib.name] = node.attrib.string:gsub("^Uber ", "")
 			else
-				launch:ShowErrMsg("^1Error parsing '%s': 'Input' element missing number, string or boolean attribute", fileName)
-				return true
+				targetInput[node.attrib.name] = node.attrib.string
 			end
-		elseif node.elem == "Placeholder" then
-			if not node.attrib.name then
-				launch:ShowErrMsg("^1Error parsing '%s': 'Placeholder' element missing name attribute", fileName)
-				return true
-			end
-			if node.attrib.number then
-				self.placeholder[node.attrib.name] = tonumber(node.attrib.number)
-			elseif node.attrib.string then
-				self.input[node.attrib.name] = node.attrib.string
-			else
-				launch:ShowErrMsg("^1Error parsing '%s': 'Placeholder' element missing number", fileName)
-				return true
-			end
+		elseif node.attrib.boolean then
+			targetInput[node.attrib.name] = node.attrib.boolean == "true"
+		else
+			launch:ShowErrMsg("^1Error parsing '%s': 'Input' element missing number, string or boolean attribute", fileName)
+			return true
+		end
+	elseif node.elem == "Placeholder" then
+		if not node.attrib.name then
+			launch:ShowErrMsg("^1Error parsing '%s': 'Placeholder' element missing name attribute", fileName)
+			return true
+		end
+		if node.attrib.number then
+			targetPlaceholder[node.attrib.name] = tonumber(node.attrib.number)
+		elseif node.attrib.string then
+			-- Historic LEB/PoB bug: string Placeholder values were written into input.
+			-- Preserve to keep old saves loading the same way.
+			targetInput[node.attrib.name] = node.attrib.string
+		else
+			launch:ShowErrMsg("^1Error parsing '%s': 'Placeholder' element missing number", fileName)
+			return true
 		end
 	end
+end
+
+function ConfigTabClass:Load(xml, fileName)
+	-- Detect format: if any child is <ConfigSet>, load as multi-set; otherwise treat
+	-- the whole node as a single legacy set written directly into set 1.
+	local hasConfigSets = false
+	for _, node in ipairs(xml) do
+		if type(node) == "table" and node.elem == "ConfigSet" then
+			hasConfigSets = true
+			break
+		end
+	end
+
+	-- Reset to a clean single-set state so the loaded data fully replaces it.
+	self.configSets = { }
+	self.configSetOrderList = { }
+	self.activeConfigSetId = 1
+	self:NewConfigSet(1, "Default")
+
+	if hasConfigSets then
+		for index, node in ipairs(xml) do
+			if type(node) == "table" and node.elem == "ConfigSet" then
+				local id = tonumber(node.attrib.id) or index
+				if not self.configSets[id] then
+					self:NewConfigSet(id, node.attrib.title or "Default")
+				else
+					self.configSets[id].title = node.attrib.title or self.configSets[id].title
+				end
+				self.configSetOrderList[#self.configSetOrderList + 1] = id
+				for _, child in ipairs(node) do
+					if type(child) == "table" then
+						local err = loadInputPlaceholderChild(self, child, self.configSets[id].input, self.configSets[id].placeholder, fileName)
+						if err then return true end
+					end
+				end
+			end
+		end
+		if #self.configSetOrderList == 0 then
+			self.configSetOrderList[1] = 1
+		end
+		self:SetActiveConfigSet(tonumber(xml.attrib and xml.attrib.activeConfigSet) or self.configSetOrderList[1], true)
+	else
+		self.configSetOrderList[1] = 1
+		for _, node in ipairs(xml) do
+			if type(node) == "table" then
+				local err = loadInputPlaceholderChild(self, node, self.configSets[1].input, self.configSets[1].placeholder, fileName)
+				if err then return true end
+			end
+		end
+		self:SetActiveConfigSet(1, true)
+	end
+
 	self:BuildModList()
 	self:UpdateControls()
 	self:ResetUndo()
@@ -719,9 +778,9 @@ function ConfigTabClass:GetDefaultState(var, varType)
 	end
 end
 
-function ConfigTabClass:Save(xml)
-    for k, v in pairsSortByKey(self.input) do
-		if v ~= self:GetDefaultState(k, type(v)) then
+local function writeInputPlaceholder(xml, configSet, getDefault)
+	for k, v in pairsSortByKey(configSet.input) do
+		if v ~= getDefault(k, type(v), configSet) then
 			local child = { elem = "Input", attrib = { name = k } }
 			if type(v) == "number" then
 				child.attrib.number = tostring(v)
@@ -733,7 +792,7 @@ function ConfigTabClass:Save(xml)
 			t_insert(xml, child)
 		end
 	end
-	for k, v in pairsSortByKey(self.placeholder) do
+	for k, v in pairsSortByKey(configSet.placeholder) do
 		local child = { elem = "Placeholder", attrib = { name = k } }
 		if type(v) == "number" then
 			child.attrib.number = tostring(v)
@@ -741,6 +800,88 @@ function ConfigTabClass:Save(xml)
 			child.attrib.string = tostring(v)
 		end
 		t_insert(xml, child)
+	end
+end
+
+function ConfigTabClass:Save(xml)
+	local function getDefault(var, varType, configSet)
+		-- Mirror GetDefaultState but against a specific set's placeholder table.
+		if configSet.placeholder[var] ~= nil then
+			return configSet.placeholder[var]
+		end
+		if self.defaultState[var] ~= nil then
+			return self.defaultState[var]
+		end
+		if varType == "number" then return 0 end
+		if varType == "boolean" then return false end
+		if varType == "string" then return "" end
+		return nil
+	end
+
+	-- Single-set with default title and id 1: write legacy format so older LEB
+	-- versions can still round-trip. Otherwise emit the multi-set format.
+	local onlyId = self.configSetOrderList[1]
+	local onlySet = self.configSets[onlyId]
+	if #self.configSetOrderList == 1 and onlySet and (onlySet.title == "Default" or not onlySet.title) and onlyId == 1 then
+		writeInputPlaceholder(xml, onlySet, getDefault)
+		return
+	end
+
+	xml.attrib = xml.attrib or {}
+	xml.attrib.activeConfigSet = tostring(self.activeConfigSetId)
+	for _, configSetId in ipairs(self.configSetOrderList) do
+		local configSet = self.configSets[configSetId]
+		if configSet then
+			local child = { elem = "ConfigSet", attrib = { id = tostring(configSetId), title = configSet.title or "Default" } }
+			writeInputPlaceholder(child, configSet, getDefault)
+			t_insert(xml, child)
+		end
+	end
+end
+
+function ConfigTabClass:NewConfigSet(configSetId, title)
+	if not configSetId then
+		configSetId = 1
+		while self.configSets[configSetId] do
+			configSetId = configSetId + 1
+		end
+	end
+	local configSet = { id = configSetId, title = title or "Default", input = { }, placeholder = { } }
+	-- Seed default placeholders/inputs so calc code (e.g. enemyLevel) always has values
+	-- even before the user touches a control. The constructor's varControls loop only
+	-- runs once, so a Load() that replaces configSets would otherwise leave fresh sets bare.
+	for _, varData in ipairs(varList) do
+		if varData.var then
+			if varData.defaultPlaceholderState ~= nil then
+				configSet.placeholder[varData.var] = varData.defaultPlaceholderState
+			end
+			if varData.defaultState ~= nil then
+				configSet.input[varData.var] = varData.defaultState
+			elseif varData.defaultIndex and varData.list then
+				configSet.input[varData.var] = varData.list[varData.defaultIndex].val
+			end
+		end
+	end
+	self.configSets[configSetId] = configSet
+	return configSet
+end
+
+function ConfigTabClass:SetActiveConfigSet(configSetId, init)
+	if not self.configSets[configSetId] then
+		configSetId = self.configSetOrderList[1] or 1
+		if not self.configSets[configSetId] then
+			self:NewConfigSet(configSetId, "Default")
+		end
+	end
+	self.activeConfigSetId = configSetId
+	-- Re-point the alias tables. External code keeps using self.input / self.placeholder.
+	self.input = self.configSets[configSetId].input
+	self.placeholder = self.configSets[configSetId].placeholder
+	if not init then
+		self:BuildModList()
+		self:UpdateControls()
+		self:ResetUndo()
+		self.build.buildFlag = true
 	end
 end
 

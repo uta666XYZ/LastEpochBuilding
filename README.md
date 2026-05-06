@@ -4,11 +4,11 @@
 
 <table>
   <tr>
-    <td><img src="./docs/passiveTrees.png" width="400"/></td>
-    <td><img src="./docs/skillSelectionWindow.png" width="400"/></td>
+    <td><img src="./docs/passiveTree_v0.11.0.png" width="400"/></td>
+    <td><img src="./docs/skillSelection_v0.11.0.png" width="400"/></td>
   </tr>
   <tr>
-    <td><img src="./docs/skillTree.png" width="400"/></td>
+    <td><img src="./docs/skillTree_v0.11.0.png" width="400"/></td>
     <td><img src="./docs/itemsWindow_v0.13.0.png" width="400"/></td>
   </tr>
   <tr>
@@ -94,6 +94,16 @@ LEB is currently distributed as a Windows build only. A native Linux build is **
    ```
 
 Tested with recent Wine versions; if you hit issues, please open an issue with your distro and Wine version. A native Linux/Web build is on the [Roadmap](#-roadmap).
+
+---
+
+## 🐧 Linux (experimental, via Wine/Proton)
+
+LEB has not been tested on Linux. If you try it via Wine or Proton,
+please report your experience in Issues.
+
+- Wayland users: if the window opens but renders black, try
+  `GDK_BACKEND=x11 wine "./runtime/Last Epoch Building.exe"`
 
 ---
 

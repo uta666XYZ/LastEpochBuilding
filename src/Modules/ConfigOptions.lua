@@ -604,8 +604,15 @@ local options = {
 		end
 	  end },
 	{ var = "enemyLevel", type = "count", label = "Enemy / Area Level:", defaultPlaceholderState = 100, tooltip = "This overrides the default enemy / area level used to estimate your armor reduction, ^x33FF77dodge ^7chance, and scaling of 'depending on Area Level' modifiers.\n\nThe default level is 100 and cannot exceed 100.", apply = function(val, modList, enemyModList, build)
-		build.configTab.varControls['enemyLevel']:SetPlaceholder(build.configTab.enemyLevel, true)
-		modList:NewMod("Multiplier:AreaLevel", "BASE", build.configTab.enemyLevel, "Config")
+		-- Guard: BuildModList can fire from inside ConfigTab's own constructor (before
+		-- build.configTab is assigned) when placeholders are pre-seeded. The mod still
+		-- needs to be added; only the varControls UI sync is skipped in that window.
+		local configTab = build.configTab
+		if configTab and configTab.varControls and configTab.varControls['enemyLevel'] then
+			configTab.varControls['enemyLevel']:SetPlaceholder(configTab.enemyLevel, true)
+		end
+		local enemyLevel = (configTab and configTab.enemyLevel) or val or 100
+		modList:NewMod("Multiplier:AreaLevel", "BASE", enemyLevel, "Config")
 	end },
 	{ var = "corruption", type = "count", label = "Corruption:", tooltip = "Monolith Corruption level (0-10000).\nScales enemy HP and hit damage (More %):\n  C<=100: 0.6 * C%\n  C>100:  0.002 * C^1.52 + 1.055 * C - 47.69%\nMore Damage over Time = half of the above.",
 	  apply = function(val, modList, enemyModList)

@@ -87,7 +87,9 @@ for idx, filename in ipairs(sortedNames) do
         print("ERROR opening " .. luaPath .. ": " .. tostring(errMsg))
     else
         fileHnd:write("return {\n    ")
-        fileHnd:write(buildTable("output", build.calcsTab.mainOutput) .. "\n")
+        local outputBlock = buildTable("output", build.calcsTab.mainOutput)
+        outputBlock = outputBlock:gsub("}\n$", "},\n")
+        fileHnd:write(outputBlock .. "\n")
 
         -- Per-socket-group output: cycle mainSocketGroup through every slot
         local socketGroupList = build.skillsTab and build.skillsTab.socketGroupList or {}

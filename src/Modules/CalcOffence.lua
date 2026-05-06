@@ -1663,6 +1663,7 @@ function calcs.offence(env, actor, activeSkill)
 	local freezeRateBase = modDB:Sum("BASE", skillCfg, "FreezeRate")
 	local freezeRateMult = modDB:Sum("BASE", skillCfg, "FreezeRateMultiplier")
 	output.FreezeRate = freezeRateBase * (freezeRateMult / 100)
+	output.FreezeRateMultiplier = freezeRateMult
 	do
 		local enemyLife = enemyDB:Sum("BASE", nil, "Life") or 1000
 		local enemyWard = enemyDB:Sum("BASE", nil, "Ward") or 0

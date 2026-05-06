@@ -383,6 +383,69 @@ function launch:DownloadPage(url, callback, params)
 	end
 end
 
+---Download a binary file in the background, writing directly to disk inside the subscript.
+---Avoids the NUL-truncation that happens when binary data crosses the subscript IPC boundary
+---as a Lua string (see DownloadPage).
+---@param url string
+---@param destPath string @ absolute or LEB-relative path the file is written to (mode "wb")
+---@param callback fun(errMsg:string|nil, bytes:number|nil)
+function launch:DownloadFile(url, destPath, callback)
+	local script = [[
+		local url, destPath, connectionProtocol, proxyURL = ...
+		ConPrintf("Downloading file at: %s", url)
+		local curl = require("lcurl.safe")
+		local easy = curl.easy()
+		easy:setopt_url(url)
+		easy:setopt(curl.OPT_USERAGENT, "Last Epoch Building/]]..self.versionNumber..[[")
+		easy:setopt(curl.OPT_ACCEPT_ENCODING, "")
+		easy:setopt(curl.OPT_FOLLOWLOCATION, true)
+		if connectionProtocol then
+			easy:setopt(curl.OPT_IPRESOLVE, connectionProtocol)
+		end
+		if proxyURL then
+			easy:setopt(curl.OPT_PROXY, proxyURL)
+		end
+		local out, openErr = io.open(destPath, "wb")
+		if not out then
+			easy:close()
+			ConPrintf("Download failed: cannot open %s (%s)", destPath, tostring(openErr))
+			return "Cannot open destination: "..tostring(openErr), 0
+		end
+		local bytes = 0
+		easy:setopt_writefunction(function(data)
+			bytes = bytes + #data
+			out:write(data)
+			return true
+		end)
+		local _, error = easy:perform()
+		local code = easy:getinfo(curl.INFO_RESPONSE_CODE)
+		easy:close()
+		out:close()
+		local errMsg
+		if error then
+			errMsg = error:msg()
+		elseif code ~= 200 then
+			errMsg = "Response code: "..code
+		elseif bytes == 0 then
+			errMsg = "No data returned"
+		end
+		if errMsg then
+			os.remove(destPath)
+		end
+		ConPrintf("Download complete. Status: %s (%d bytes)", errMsg or "OK", bytes)
+		return errMsg, bytes
+	]]
+	local id = LaunchSubScript(script, "", "ConPrintf", url, destPath, self.connectionProtocol, self.proxyURL)
+	if id then
+		self.subScripts[id] = {
+			type = "DOWNLOAD",
+			callback = function(errMsg, bytes)
+				callback(errMsg, bytes)
+			end
+		}
+	end
+end
+
 function launch:ApplyUpdate(mode)
 	if mode == "basic" then
 		-- Need to revert to the basic environment to fully apply the update
