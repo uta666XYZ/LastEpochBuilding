@@ -681,6 +681,54 @@ follows the same recipe: register its treeId in `whileActiveBuffByTreeId`
 Druid build that imports a Form skill enabled — reverting the gate
 re-inflates Form tree-node contributions.
 
+### `transform-cost-bypass`
+
+LE Form/Transform abilities (Werebear `wb8fo`, Spriggan `sf5rd`, Swarmblade
+`sbf4m`, Reaper `rf1azz`) are Mutators: entering Form swaps the player
+resource (mana→rage for Werebear/Swarmblade, mana→nothing for Spriggan,
+mana→soul-stack for Reaper) and the bar skills consumed in-Form are
+auto-given child abilities not modeled in LEB's `skills.json`. The Form
+ability **itself** carries no Mana cost, so CalcOffence must skip its entire
+cost loop — otherwise a phantom Mana cost re-appears and inflates the
+ManaCost diff vs LETools snapshots (which generate from a Form-OFF state).
+
+The bypass relies on TWO sites cooperating:
+
+1. **`src/Modules/DataProcess.lua`** mirrors `baseFlags.transform = true` →
+   `SkillType.Transform` in the `flagToType` table. Form entries in
+   `src/Data/skills.json` have `skillTypeTags = 0` plus
+   `baseFlags.transform = true`, so without this mirror the Transform bit
+   never reaches `activeSkill.skillTypes` and the cost-loop guard fires on a
+   nil value (i.e. fails open and re-attributes Mana cost).
+2. **`src/Modules/CalcOffence.lua`** tests
+   `not activeSkill.skillTypes[SkillType.Transform]` to short-circuit the
+   Mana/Rage/Soul/Life cost loop. Removing this AND-clause regresses the
+   bypass even if (1) is intact.
+
+This is a **separate mechanism** from `form-tree-nodes-gated-by-condition`:
+- `form-tree-nodes-gated-by-condition` gates skill-tree NODE MODS behind a
+  Calcs-tab Condition checkbox (controls whether the Form's tree-node
+  bonuses leak into modDB while the checkbox is unchecked).
+- `transform-cost-bypass` gates the SELF cost calculation of the Form
+  skill itself (controls whether a phantom Mana cost shows up on the Form
+  ability's Calcs panel regardless of checkbox state).
+
+Both are required for clean LETools diffs on Druid/Lich Form builds.
+
+| Site | File | What it does |
+|---|---|---|
+| flag mirror | `src/Modules/DataProcess.lua` (~line 102) | `flagToType.transform = SkillType.Transform` |
+| bypass guard | `src/Modules/CalcOffence.lua` (~line 1296) | `if not skillModList:Flag(skillCfg, "HasNoCost") and not activeSkill.skillTypes[SkillType.Transform] then` |
+
+**Spec:** `spec/System/TestS5TransformCostBypass_spec.lua`
+- `S5TransformCostBypass / DataProcess maps baseFlags.transform -> SkillType.Transform` — locks the flagToType mapping + guard comment
+- `S5TransformCostBypass / CalcOffence cost block is gated on \`not SkillType.Transform\`` — locks the AND-clause + HasNoCost co-existence + guard comment
+- `S5TransformCostBypass / skills.json Form entries carry baseFlags.transform=true` — locks the data-side contract for Werebear/Spriggan/Reaper Form entries
+
+**Snapshot coverage:** any Druid/Lich snapshot in `spec/TestBuilds/1.4/`
+that imports a Form skill — reverting either side re-introduces a Mana
+cost on the Form ability.
+
 ### `elemental-nova-spec-tree-gated-damage-type`
 
 **Status: FIXED.**

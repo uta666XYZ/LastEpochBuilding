@@ -99,6 +99,14 @@ for skillId, grantedEffect in pairs(data.skills) do
         -- Minion Skill — in-game, "+to Minion Skills" affixes do NOT apply to
         -- their level. Genuine Minion Skills (Summon X, Falconry, etc.) carry
         -- the Minion bit in fakeTags, which is mirrored below.
+        -- @leb-regression-guard: transform-cost-bypass
+        -- The `transform = SkillType.Transform` mapping below is required for
+        -- CalcOffence's cost-block bypass (search "transform-cost-bypass") to
+        -- recognise Werebear/Spriggan/Swarmblade/Reaper Form abilities. Their
+        -- skills.json entries carry skillTypeTags=0 plus baseFlags.transform=true,
+        -- so without this baseFlag→SkillType mirror the Transform bit never
+        -- reaches activeSkill.skillTypes and Form skills regain a phantom Mana
+        -- cost. See REGRESSION_GUARDS.md "transform-cost-bypass".
         local flagToType = {
             spell = SkillType.Spell,
             melee = SkillType.Melee,
