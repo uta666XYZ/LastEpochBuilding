@@ -461,6 +461,23 @@ if os.getenv("LEB_BLESSING_PROBE") == "1" then
     outHnd:write("    },\n")
 end
 
+-- Custom stat breakdown: dump arbitrary stats listed in LEB_STAT_DUMP (comma-sep).
+-- Example: LEB_STAT_DUMP=Strength,FireResist,AttackSpeed
+local statDumpEnv = os.getenv("LEB_STAT_DUMP")
+if statDumpEnv and statDumpEnv ~= "" and modDB then
+    outHnd:write("    customStatBreakdown = {\n")
+    for stat in string.gmatch(statDumpEnv, "([^,%s]+)") do
+        dumpModList(outHnd, stat, modDB.mods[stat])
+        local ok, base = pcall(function() return modDB:Sum("BASE", nil, stat) end)
+        local _, inc  = pcall(function() return modDB:Sum("INC",  nil, stat) end)
+        local _, more = pcall(function() return modDB:More(nil, stat) end)
+        outHnd:write(string.format("        [\"%s_summary\"] = { base=%s, inc=%s, more=%s, output=%s },\n",
+            stat, tostring(ok and base or 0), tostring(inc or 0), tostring(more or 1),
+            tostring(build.calcsTab.mainOutput[stat])))
+    end
+    outHnd:write("    },\n")
+end
+
 outHnd:write("}\n")
 outHnd:close()
 print("Wrote " .. luaPath)
