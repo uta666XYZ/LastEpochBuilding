@@ -1536,6 +1536,22 @@ function calcs.initEnv(build, mode, override, specEnv)
 		env.modDB:NewMod("Multiplier:ActiveSymbol", "BASE", maxSymbols - curSymbols, "Auto:Symbols of Hope")
 	end
 
+	-- Symbols of Hope: each active symbol grants +20% Health Regen (MORE multiplier).
+	-- Tooltip: "Each Symbol enhances your Health Regen, increasing health regeneration
+	-- by 20% per symbol". The si4lgl-24 Meditation node "Double Health Regen From
+	-- Symbols" doubles the per-symbol value (40% per symbol when allocated).
+	-- Verified against B4Xq8aG6 (LETools precalc healthRegen=262.88):
+	--   (1 + globalIncRegen) × (1 + 0.20 × ActiveSymbol × MeditationFactor) ≈ 262.81
+	-- Applied as MORE so it stacks separately from global INC LifeRegen (LE-style,
+	-- not PoE additive). Gated on the si4lgl- buff group being enabled and mode_buffs.
+	local sigilsPrefix = buffSkillTreePrefixes and buffSkillTreePrefixes["si4lgl-"]
+	if env.mode_buffs and sigilsPrefix and sigilsPrefix.enabled then
+		local hasMeditation = env.allocNodes["si4lgl-24"] ~= nil
+		local perSymbolPct = hasMeditation and 40 or 20
+		env.modDB:NewMod("LifeRegen", "MORE", perSymbolPct, "Symbols of Hope",
+			{ type = "Multiplier", var = "ActiveSymbol" })
+	end
+
 	-- Find skills granted by tree nodes
 	if not accelerate.nodeAlloc then
 		for _, node in pairs(env.allocNodes) do

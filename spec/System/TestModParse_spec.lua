@@ -70,6 +70,22 @@ describe("TestModParse", function()
         assert.are.equals(81, build.configTab.modList:Sum("BASE", nil, "NecroticResist"))
     end)
 
+    -- @leb-regression-guard:crits-abbreviation
+    -- Locks the parser routing for the Sentinel-tree "Crits" abbreviation.
+    -- If the specific "from crits$" patterns get reordered after the
+    -- "from (.+)$" catch-all in src/Modules/ModParser.lua, scan() picks the
+    -- catch-all first (longest-pattern tie-breaking), the value falls through
+    -- to LEB_NotSupported, and Sentinel-114 Heaven's Bulwark stops crediting
+    -- ReduceCritExtraDamage. This reproduces the original B4Xq8aG6 -30 diff.
+    it("crits abbreviation reduces crit damage", function()
+        build.configTab.input.customMods = "30% Reduced Bonus Damage Taken From Crits\n\z
+        2% Reduced Bonus Damage Taken From Crits\n\z
+        5% Less Bonus Damage Taken From Crits"
+        build.configTab:BuildModList()
+        runCallback("OnFrame")
+        assert.are.equals(37, build.configTab.modList:Sum("BASE", nil, "ReduceCritExtraDamage"))
+    end)
+
     it("attributes", function()
         build.configTab.input.customMods = "+2 to All Attributes"
         build.configTab:BuildModList()

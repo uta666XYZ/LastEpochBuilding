@@ -1149,6 +1149,36 @@ loop generalises that fix.
 
 **Establishing commit:** `<unset; bump after first commit on this branch>`
 
+### `crits-abbreviation`
+
+Sentinel class-tree passives (Sentinel-14 Patient Doom, Sentinel-42 Iron
+Reflexes, Sentinel-114 Heaven's Bulwark) abbreviate "Critical Strikes" as
+"Crits" in their stat strings. The parser must route "% reduced/less bonus
+damage taken from crits" to `ReduceCritExtraDamage` BEFORE the generic
+"from (.+)$" catch-all that returns `nsAny` (LEB_NotSupported).
+
+`scan()` in `ModParser.lua` resolves overlapping patterns by **longest tail
+wins**. The specific "from crits$" tail (5 chars + EOL) is one char longer
+than "from (.+)$" (4 chars + EOL) so the specific pattern wins — but only as
+long as nothing widens the catch-all or reorders entries. If this guard
+fails, the original symptom returns: B4Xq8aG6 lv95 Paladin shows
+`CritExtraDmgRed` Δ=-30 against LETools precalc (LE=58, LEB=28).
+
+ModCache.lua holds parser results keyed by mod string, so a fresh regen
+without `LEB_FORCE=1` may still load the stale `LEB_NotSupported` cache
+entry. The spec exercises the parser directly via `customMods`, so it
+catches the regression even when the cache hides it from build snapshots.
+
+| Site | File | What it does |
+|---|---|---|
+| specific patterns | `src/Modules/ModParser.lua` (~line 1750-1758) | "from crits$" → `ReduceCritExtraDamage`, must precede "from (.+)$" `nsAny` |
+| catch-all | `src/Modules/ModParser.lua` (~line 1764-1765) | "from (.+)$" → `nsAny` (only kept for unknown crit-source variants) |
+
+**Spec:** `spec/System/TestModParse_spec.lua`
+- "crits abbreviation reduces crit damage"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
 ## Adding a new guard
 
 1. Above the fix in source, add a comment block:

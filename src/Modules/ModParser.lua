@@ -1737,6 +1737,28 @@ end
 specialModList["^%+?([%d%.]+)%% less bonus damage taken from critical strikes$"] = function(num)
 	return { mod("ReduceCritExtraDamage", "BASE", num) }
 end
+-- Per Equipped Heretical Idol variant: scale by Multiplier:EquippedHereticalIdol
+-- (populated by CalcSetup at idol-altar processing time). The vanilla generic
+-- chain doesn't know which target stat "bonus damage taken from critical strikes"
+-- maps to, so handle this composite explicitly.
+specialModList["^%+?([%d%.]+)%% reduced bonus damage taken from critical strikes per equipped heretical idol$"] = function(num)
+	return { mod("ReduceCritExtraDamage", "BASE", num, { type = "Multiplier", var = "EquippedHereticalIdol" }) }
+end
+-- @leb-regression-guard:crits-abbreviation
+-- LE class trees abbreviate "Critical Strikes" as "Crits" on several Sentinel
+-- passives (Sentinel-14 Patient Doom, Sentinel-42 Iron Reflexes, Sentinel-114
+-- Heaven's Bulwark). Map them to the same ReduceCritExtraDamage stat.
+-- The "from crits$" tail must remain LONGER than the catch-all "from (.+)$"
+-- below, so scan()'s longest-pattern tie-breaking picks this specific form
+-- first. Shortening it or reordering will silently route Sentinel-114 to
+-- LEB_NotSupported and reintroduce a -30 CritExtraDmgRed diff on B4Xq8aG6.
+-- Spec: spec/System/TestModParse_spec.lua "crits abbreviation reduces crit damage"
+specialModList["^%+?([%d%.]+)%% reduced bonus damage taken from crits$"] = function(num)
+	return { mod("ReduceCritExtraDamage", "BASE", num) }
+end
+specialModList["^%+?([%d%.]+)%% less bonus damage taken from crits$"] = function(num)
+	return { mod("ReduceCritExtraDamage", "BASE", num) }
+end
 -- "bonus damage taken from X" for other X values is not yet modeled.
 specialModList["^%+?([%d%.]+)%% reduced bonus damage taken from (.+)$"] = nsAny
 specialModList["^%+?([%d%.]+)%% less bonus damage taken from (.+)$"] = nsAny

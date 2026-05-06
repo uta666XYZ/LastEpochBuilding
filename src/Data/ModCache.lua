@@ -12557,7 +12557,6 @@ c["2% More Witchfire Damage per Ignite chance"]={{[1]={[1]={skillName="Ignite",t
 c["2% Percent Of Damage Taken Stored"]={{[1]={flags=0,keywordFlags=0,name="DamageTaken",type="BASE",value=2}}," Percent Of  Stored "}
 c["2% Physical Damage Leeched as Health with an Axe and Dagger"]={{[1]={[1]={type="Condition",var="UsingAxe"},[2]={type="Condition",var="UsingDagger"},flags=0,keywordFlags=0,name="PhysicalDamageLifeLeech",type="BASE",value=2}},"    and  "}
 c["2% Portion Of Health To Ward Per Symbol"]={{[1]={[1]={type="Multiplier",var="ActiveSymbol"},flags=0,keywordFlags=0,name="Life",type="INC",value=2}}," Portion Of  To Ward  "}
-c["2% Reduced Bonus Damage Taken From Crits"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=2},notSupported=true},nil}
 c["2% Shared Elemental Resistance"]={{[1]={flags=0,keywordFlags=0,name="FireResist",type="BASE",value=2},[2]={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=2},[3]={flags=0,keywordFlags=0,name="ColdResist",type="BASE",value=2},[4]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="FireResist",type="BASE",value=2}}},[5]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=2}}},[6]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="ColdResist",type="BASE",value=2}}}},nil}
 c["2% Storm Bolt On Hit"]={{},"   "}
 c["2% Summon Chance on Rare or Boss Hit"]={{}," Summon Chance on Rare or Boss  "}
@@ -13811,7 +13810,6 @@ c["30% Necrotic Resistance Shred Chance Per Second"]={{[1]={flags=0,keywordFlags
 c["30% Percent of Missing Health Recovered"]={{[1]={flags=0,keywordFlags=0,name="Life",type="INC",value=30}}," Percent of Missing  Recovered "}
 c["30% Portion of your Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="BASE",value=30}}," Portion of your  "}
 c["30% Quadruple Cast Chance"]={{}," Quadruple Cast Chance "}
-c["30% Reduced Bonus Damage Taken From Crits"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=30},notSupported=true},nil}
 c["30% Reduced Movespeed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=-30}},nil}
 c["30% Shared Reduced Bonus Damage Taken From Crits"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=30},[2]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=30}},nil}
 c["30% Spectral Putrescence Chance"]={{}," Spectral Putrescence Chance "}
@@ -15127,7 +15125,6 @@ c["5% Poison Chance Per Equipped Dagger"]={{[1]={[1]={type="Multiplier",var="Dag
 c["5% Poison Chance per 1 Added Necrotic Damage"]={{[1]={flags=8388608,keywordFlags=32,name="ChanceToTriggerOnHit_Ailment_Poison",type="BASE",value=5}},"  per 1 Added  Damage "}
 c["5% Poison Resistance"]={{[1]={flags=0,keywordFlags=0,name="PoisonResist",type="BASE",value=5}},nil}
 c["5% Poison Wisp Chance"]={{},"  Wisp Chance "}
-c["5% Reduced Bonus Damage Taken From Crits"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=5},notSupported=true},nil}
 c["5% Reduced Cast Speed"]={{[1]={flags=256,keywordFlags=0,name="Speed",type="INC",value=-5}},nil}
 c["5% Riposte Kill Threshold With Axe"]={{[1]={[1]={type="Condition",var="UsingAxe"},flags=0,keywordFlags=0,name="KillThreshold",type="BASE",value=5}}," Riposte   "}
 c["5% Shared Increased Cold Damage"]={{[1]={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=5},[2]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="ColdDamage",type="INC",value=5}}}},nil}
@@ -16185,7 +16182,7 @@ c["75% increased Throwing Damage"]={{[1]={flags=0,keywordFlags=1024,name="Damage
 c["75% of Damage Reflected"]={{[1]={flags=0,keywordFlags=0,name="DamageReflectedPercent",type="BASE",value=75}},nil}
 c["75% of Necrotic Damage Taken as Physical"]={{[1]={flags=0,keywordFlags=1,name="NecroticDamageTaken",type="BASE",value=75}},"  as  "}
 c["75% of Poison Damage Taken as Physical"]={{[1]={flags=0,keywordFlags=1,name="PoisonDamageTaken",type="BASE",value=75}},"  as  "}
-c["75% of Sigils of Hope Mana Cost consumed to cast it every 6 seconds while above half mana"]={{[1]={flags=0,keywordFlags=0,name="ManaCost",type="BASE",value=75}}," Sigils of Hope  consumed to cast it every 6 seconds while above half mana "}
+c["75% of Symbols of Hope Mana Cost consumed to cast it every 6 seconds while above half mana"]={{[1]={flags=0,keywordFlags=0,name="ManaCost",type="BASE",value=75}}," Symbols of Hope  consumed to cast it every 6 seconds while above half mana "}
 c["75% of Void Damage Taken as Physical"]={{[1]={flags=0,keywordFlags=1,name="VoidDamageTaken",type="BASE",value=75}},"  as  "}
 c["75% of your Bleed Chance granted to your Falcon"]={{[1]={flags=8388608,keywordFlags=0,name="ChanceToTriggerOnHit_Ailment_Bleed",type="BASE",value=75}}," your  granted to your Falcon "}
 c["75% reduced Bonus Damage Taken from Critical Strikes"]={{[1]={flags=0,keywordFlags=0,name="ReduceCritExtraDamage",type="BASE",value=75}},nil}
