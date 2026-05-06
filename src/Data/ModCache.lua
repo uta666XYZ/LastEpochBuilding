@@ -10518,7 +10518,7 @@ c["1% Health Gained On Kill"]={{[1]={[1]={type="Condition",var="KilledRecently"}
 c["1% Health Gained On Rare or Boss Hit"]={{[1]={flags=8388608,keywordFlags=0,name="Life",type="INC",value=1}},"  Gained On Rare or Boss  "}
 c["1% Health Lost On Crit"]={{[1]={flags=0,keywordFlags=0,name="Life",type="INC",value=1}},"  Lost On Crit "}
 c["1% Increased Area per Uncapped Resistance"]={{[1]={flags=0,keywordFlags=0,name="AreaOfEffect",type="INC",value=1}},"  per Uncapped Resistance "}
-c["1% Increased Armor Per Strength In Human Or Spriggan"]={{[1]={[1]={stat="Str",type="PerStat"},flags=0,keywordFlags=0,name="Armour",type="INC",value=1}},"   In Human Or Spriggan "}
+c["1% Increased Armor Per Strength In Human Or Spriggan"]={{[1]={[1]={stat="Str",type="PerStat"},[2]={type="Condition",varList={"InWerebearForm","InSwarmbladeForm","InReaperForm"},neg=true},flags=0,keywordFlags=0,name="Armour",type="INC",value=1}}}
 c["1% Increased Attack Speed"]={{[1]={flags=3584,keywordFlags=0,name="Speed",type="INC",value=1}},nil}
 c["1% Increased Bleed Duration"]={{[1]={[1]={skillName="Bleed",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=1}},nil}
 c["1% Increased Buff Effect Per 3% Missing Health"]={{[1]={flags=0,keywordFlags=0,name="BuffEffect",type="INC",value=1}},"  Per 3% Missing Health "}
@@ -10540,7 +10540,7 @@ c["1% Increased Mana"]={{[1]={flags=0,keywordFlags=0,name="Mana",type="INC",valu
 c["1% Increased Mana Regen Per 1 Attunement"]={{[1]={[1]={div=1,stat="Att",type="PerStat"},flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=1}},nil}
 c["1% Increased Mana Regen Per 1% Block Chance Above 50%"]={{[1]={[1]={div=1,stat="BlockChance",type="PerStat"},flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=1}},"   Above 50% "}
 c["1% Increased Mana Regen Per Missing Mana"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="INC",value=1}},"  Per Missing Mana "}
-c["1% Increased Melee Damage Per Strength In Bear Or Swarmblade"]={{[1]={[1]={stat="Str",type="PerStat"},flags=0,keywordFlags=512,name="Damage",type="INC",value=1}},"    In Bear Or Swarmblade "}
+c["1% Increased Melee Damage Per Strength In Bear Or Swarmblade"]={{[1]={[1]={stat="Str",type="PerStat"},[2]={type="Condition",varList={"InWerebearForm","InSwarmbladeForm"}},flags=0,keywordFlags=512,name="Damage",type="INC",value=1}}}
 c["1% Increased Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=1}},nil}
 c["1% Increased Movespeed"]={{[1]={flags=0,keywordFlags=0,name="MovementSpeed",type="INC",value=1}},nil}
 c["1% Increased Poison Duration"]={{[1]={[1]={skillName="Poison",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=1}},nil}

@@ -648,13 +648,17 @@ function calcs.initEnv(build, mode, override, specEnv)
 		modDB:NewMod("EnduranceThreshold", "BASE", classStats["enduranceThresholdPerHealth"], "Base", { type = "PerStat", stat = "Life"})
 
 		-- Add attribute bonuses
-		modDB:NewMod("Armour", "INC", 4, "Strength", {type = "PerStat", stat = "Str"})
-		modDB:NewMod("Evasion", "BASE", 4, "Dexterity", {type = "PerStat", stat = "Dex"})
-		modDB:NewMod("WardRetention", "BASE", 2, "Intelligence", {type = "PerStat", stat = "Int"})
-		modDB:NewMod("Mana", "BASE", 2, "Attunement", {type = "PerStat", stat = "Att"})
-		modDB:NewMod("Life", "BASE", 6, "Vitality", {type = "PerStat", stat = "Vit"})
-		modDB:NewMod("PoisonResist", "BASE", 1, "Vitality", {type = "PerStat", stat = "Vit"})
-		modDB:NewMod("NecroticResist", "BASE", 1, "Vitality", {type = "PerStat", stat = "Vit"})
+		-- Reference Raw<Attr> (post-conversion residual, NOT including the converted twin).
+		-- Brutality must NOT inherit Strength's intrinsic +4% Armour etc. — see
+		-- @leb-regression-guard: id:s4-converted-attr-no-base-inherit (below) and
+		-- @leb-regression-guard: id:s4-perstat-base-includes-converted-twin in CalcPerform.lua.
+		modDB:NewMod("Armour", "INC", 4, "Strength", {type = "PerStat", stat = "RawStr"})
+		modDB:NewMod("Evasion", "BASE", 4, "Dexterity", {type = "PerStat", stat = "RawDex"})
+		modDB:NewMod("WardRetention", "BASE", 2, "Intelligence", {type = "PerStat", stat = "RawInt"})
+		modDB:NewMod("Mana", "BASE", 2, "Attunement", {type = "PerStat", stat = "RawAtt"})
+		modDB:NewMod("Life", "BASE", 6, "Vitality", {type = "PerStat", stat = "RawVit"})
+		modDB:NewMod("PoisonResist", "BASE", 1, "Vitality", {type = "PerStat", stat = "RawVit"})
+		modDB:NewMod("NecroticResist", "BASE", 1, "Vitality", {type = "PerStat", stat = "RawVit"})
 
 		-- Season 4 (1.4): converted attributes have their OWN unique passive bonuses,
 		-- they do NOT inherit the base-attribute bonuses (Brutality is not Strength).

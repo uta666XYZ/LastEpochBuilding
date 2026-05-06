@@ -315,6 +315,24 @@ local function doActorAttribsConditions(env, actor)
 			conv.convertedAmount = 0
 		end
 	end
+	-- @leb-regression-guard: id:s4-perstat-base-includes-converted-twin
+	-- Mirror post-conversion base attributes as Raw* values. The intrinsic
+	-- character +4% Armour / +4 Evasion / +2 WardRetention / +2 Mana / +6
+	-- Life / +1 PoisonResist / +1 NecroticResist registered in CalcSetup
+	-- now reference Raw<Attr> via PerStat tags so they remain post-conversion
+	-- (matching guard s4-converted-attr-no-base-inherit: Brutality MUST NOT
+	-- inherit Strength's intrinsic +4% Armour). All other text-parsed
+	-- "per <attribute>" mods (passive nodes, item affixes) keep PerStat:<Attr>
+	-- and at runtime ModStore.EvalMod sums the converted twin (Brutality for
+	-- Str, etc.) — verified in LE: Druid passive "Aspects of Might" gives
+	-- 1% Armour Per Strength In Human/Spriggan and counts Brutality (Qb6WlbxD
+	-- Brutality=198 → ~204% Armour). See Obsidian
+	-- 'Development/Calculator/S4 PerStat semantics.md'.
+	output.RawStr = output.Str
+	output.RawDex = output.Dex
+	output.RawInt = output.Int
+	output.RawAtt = output.Att
+	output.RawVit = output.Vit
 	-- Build breakdowns for converted attributes (Madness/Rampancy/Brutality/Guile/Apathy)
 	-- so the Calcs tab tooltip exposes direct grants + conversion contribution.
 	if breakdown then

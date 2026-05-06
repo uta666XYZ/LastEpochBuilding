@@ -17,6 +17,19 @@ local bor = bit.bor
 
 local mod_createMod = modLib.createMod
 
+-- Season 4 (1.4): converted attribute twins. Text-parsed "Per <BaseAttr>" mods
+-- (passive nodes / item affixes) count the converted twin as well — Brutality
+-- counts as Strength for "Per Strength" passives etc. Intrinsic character
+-- bonuses (+4% Armour PerStat:Str etc.) bypass this by using PerStat:RawStr.
+-- @leb-regression-guard: id:s4-perstat-base-includes-converted-twin
+local s4ConvertedTwin = {
+	Str = "Brutality",
+	Dex = "Guile",
+	Int = "Madness",
+	Att = "Apathy",
+	Vit = "Rampancy",
+}
+
 -- Magic tables for caching multiplier/condition modifier names
 local multiplierName = setmetatable({ }, { __index = function(t, var)
 	t[var] = "Multiplier:"..var
@@ -379,9 +392,24 @@ function ModStoreClass:EvalMod(mod, cfg)
 				base = 0
 				for _, stat in ipairs(tag.statList) do
 					base = base + target:GetStat(stat, cfg)
+					local twin = s4ConvertedTwin[stat]
+					if twin then
+						base = base + target:GetStat(twin, cfg)
+					end
 				end
 			else
 				base = target:GetStat(tag.stat, cfg)
+				-- @leb-regression-guard: id:s4-perstat-base-includes-converted-twin
+				-- Per-<BaseAttr> mods sum the converted twin (Brutality for Str etc.)
+				-- because LE treats converted attributes as still being the source for
+				-- text-defined "Per <Attr>" effects (Druid passive Aspects of Might
+				-- gives 1% Armour Per Strength In Human/Spriggan and counts Brutality;
+				-- Qb6WlbxD verified at 198% from Brutality=198). Intrinsic character
+				-- bonuses route through PerStat:RawStr to bypass this sum.
+				local twin = s4ConvertedTwin[tag.stat]
+				if twin then
+					base = base + target:GetStat(twin, cfg)
+				end
 			end
 			-- LE uses continuous scaling for "per N stat" mods (not floored).
 			-- Verified: globalTreeData.json Wisdom node reminderText "gaining 10 max

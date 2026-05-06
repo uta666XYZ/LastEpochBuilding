@@ -581,6 +581,13 @@ local modTagList = {
 	["in swarmblade form"] = { tag = { type = "Condition", var = "InSwarmbladeForm" } },
 	["while in reaper form"] = { tag = { type = "Condition", var = "InReaperForm" } },
 	["in reaper form"] = { tag = { type = "Condition", var = "InReaperForm" } },
+	-- Druid passive node OR-conditionals. Translated to NAND on the other forms:
+	-- "In Human Or Spriggan" fires when NOT in {Werebear, Swarmblade, Reaper}.
+	-- "In Bear Or Swarmblade" fires when in {Werebear, Swarmblade}.
+	-- Used by Aspects of Might (1% Armor Per Str In Human/Spriggan + 1% Melee
+	-- Damage Per Str In Bear/Swarmblade) and similar Druid mastery nodes.
+	["in human or spriggan"] = { tag = { type = "Condition", varList = { "InWerebearForm", "InSwarmbladeForm", "InReaperForm" }, neg = true } },
+	["in bear or swarmblade"] = { tag = { type = "Condition", varList = { "InWerebearForm", "InSwarmbladeForm" } } },
 	-- "recently" conditions not yet handled
 	["if echoed recently"] = { tag = { type = "Condition", var = "EchoedRecently" } },
 	["if you have directly cast a cold spell recently"] = { tag = { type = "Condition", var = "DirectlyCastColdSpellRecently" } },

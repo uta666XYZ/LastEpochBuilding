@@ -781,6 +781,84 @@ Increased by +132%, ~7x over the in-game value.
 
 **Establishing commit:** `<unset; bump after first commit on this branch>`
 
+### `s4-perstat-base-includes-converted-twin`
+
+Sibling to `s4-converted-attr-no-base-inherit`. Both guards must hold
+together: converted attributes (Brutality / Guile / Madness / Apathy /
+Rampancy) do **not** inherit base-attribute intrinsic bonuses, **but**
+text-parsed `Per <BaseAttr>` mods on passive nodes / item affixes
+**do** count the converted twin alongside the base attribute. In
+in-game terms: Strength's intrinsic +4% Armour does not double up onto
+Brutality, but the Druid passive "1% Increased Armor Per Strength In
+Human Or Spriggan" sees `Strength + Brutality` and a fully-converted
+Druid (Str=0, Brutality=198) gets ~198% INC, not 0%.
+
+Implementation splits the two semantics:
+
+- The seven intrinsic bonuses registered programmatically in
+  `calcs.initEnv` use `PerStat:Raw<Attr>` (RawStr / RawDex / RawInt /
+  RawAtt / RawVit). `CalcPerform` mirrors `output.Raw<Attr> =
+  output.<Attr>` after the Str→Brutality (etc.) subtraction so
+  Raw<Attr> never includes the converted twin. → preserves
+  `s4-converted-attr-no-base-inherit`.
+- All other PerStat:<BaseAttr> mods (passive node / item affix text
+  going through ModParser → ModCache) keep `tag.stat = "Str"` (Dex /
+  Int / Att / Vit), and `ModStore:EvalMod` adds the converted twin's
+  value at evaluation time via the module-scope lookup
+  `s4ConvertedTwin = { Str="Brutality", Dex="Guile", Int="Madness",
+  Att="Apathy", Vit="Rampancy" }`. Covers both the scalar `tag.stat`
+  branch and the `tag.statList` branch.
+
+Form OR-conditionals on Druid mastery nodes ("In Human Or Spriggan",
+"In Bear Or Swarmblade") parse to a `Condition` tag with `varList`
+covering the named forms — NAND for Human/Spriggan (negate against
+the three transform forms), positive OR for Bear/Swarmblade. Cache
+entries with unparsed leftover (e.g. `extra=" In Human Or Spriggan "`)
+were silently dropped by `PassiveTree.lua` (`if not list then
+node.unknown = true; elseif extra then node.extra = true ... if
+mod.list and not mod.extra then`), so the cache rows must carry the
+Condition tag with `extra=nil`.
+
+A regression here:
+
+- Drops the `s4ConvertedTwin` table or the `s4ConvertedTwin[tag.stat]`
+  / `s4ConvertedTwin[stat]` lookups in `ModStore:EvalMod` → all
+  "Per Strength" passives silently revert to 0% on fully-converted
+  Druids (Qb6WlbxD Armour 1320 vs LE 3161, Δ-1841).
+- Switches any of the seven `CalcSetup` intrinsics back to
+  `PerStat:<liveAttr>` → Brutality/Guile/Apathy/Rampancy regrow the
+  base-attribute bonuses and `s4-converted-attr-no-base-inherit`
+  fails.
+- Drops `output.Raw<Attr>` from `CalcPerform` → the intrinsic mods
+  see 0 and the +4% Armour / +4 Evasion / etc. silently disappear.
+- Re-introduces `extra=" In Human Or Spriggan "` on the ModCache row
+  → PassiveTree drops the entire mod and Aspects of Might silently
+  contributes 0%.
+
+| Site | File | What it does |
+|---|---|---|
+| twin lookup + EvalMod | `src/Classes/ModStore.lua` (top of file + EvalMod PerStat block) | `s4ConvertedTwin` table; both `tag.stat` and `tag.statList` branches sum the twin |
+| Raw<Attr> publish | `src/Modules/CalcPerform.lua` (after the Str→Brutality conversion subtraction) | `output.RawStr = output.Str` (and Dex/Int/Att/Vit) |
+| intrinsic targets | `src/Modules/CalcSetup.lua` (~line 650) | All 7 intrinsic NewMod calls use `PerStat:Raw<Attr>` |
+| Druid form-OR parser | `src/Modules/ModParser.lua` (after "in reaper form") | `"in human or spriggan"` → Condition NAND on {Werebear, Swarmblade, Reaper}; `"in bear or swarmblade"` → Condition OR on {Werebear, Swarmblade} |
+| ModCache entries | `src/Data/ModCache.lua` (~line 10521, 10543) | Aspects of Might Armour + Melee Damage rows carry the Condition tag, no `extra` leftover |
+
+**Spec:** `spec/System/TestS4PerStatBaseTwin_spec.lua`
+- "ModStore EvalMod sums converted twin for PerStat:<BaseAttr>" — declares table, scalar + statList lookups, all five base→twin pairs, and the regression-guard comment block
+- "CalcSetup intrinsic bonuses reference Raw<Attr>" — all 7 NewMod calls match the `Raw<Attr>` regex
+- "CalcPerform mirrors live attributes onto Raw<Attr> after conversion" — all 5 `output.RawX = output.X` assignments
+- "ModCache entries for Druid OR-form conditionals carry the Condition tag" — Armour entry with `neg=true`, Melee Damage entry without `neg`, both with `extra=nil`
+
+**Establishing build:** Qb6WlbxD lv100 Druid (Str=0 / Brutality=198 via
+Exulis 100% Str→Brutality conversion). Pre-fix `output.Armour=1320` (LE
+3161, Δ-1841). Post-fix `output.Armour=3110` (residual ≈ -1.6%, likely
+unrelated body-armor display rounding). The `.tmp/dump_armour_full.sh`
+trace shows `[10] INC Armour val=1 src=Tree:Primalist-111
+tags={PerStat stat=Str}{Condition varList=... neg=true}` and
+`Sum INC Armour = 244` (was 46, jumped by +198 = Brutality count).
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
 ### `exulis-all-attributes-range`
 
 The unique amulet `Exulis` (id 469) rolls `+(10-20) to All Attributes`.
