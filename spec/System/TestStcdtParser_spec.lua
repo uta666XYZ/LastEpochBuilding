@@ -31,6 +31,12 @@ local function node(stats, desc)
 end
 
 describe("getActiveStcdtBits #stcdt", function()
+    local calcs
+
+    setup(function()
+        newBuild()
+        calcs = build.calcsTab.calcs
+    end)
 
     -- Baseline / guards ---------------------------------------------------
 
