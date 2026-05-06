@@ -623,6 +623,64 @@ Reinforcement contribution).
 
 **Establishing commit:** `df85f92e8`
 
+### `form-tree-nodes-gated-by-condition`
+
+Druid/Lich Form skills (Werebear `wb8fo`, Spriggan `sf5rd`, Swarmblade `sbf4m`,
+Reaper `rf1azz`) are LE Mutators whose `statsInForm` mod set is added in
+`OnEnable` and removed in `OnDisable`. Their skill-tree nodes (e.g.
+`wb8fo-*` Werebear specializations) are **only valid while the Form is
+active in-game**.
+
+LEB historically applied all Form tree-node mods unconditionally because the
+4 Form treeIds were not registered in `whileActiveBuffByTreeId`. With
+LETools-import default `socket-group enabled = true`, this leaked Form-only
+armour / HP / damage / resistance bonuses into modDB even when the matching
+"Are you in <X> Form?" Calcs checkbox was unchecked, inflating diffs against
+LETools snapshots (which generate from Form-OFF state).
+
+The fix extends the existing `whileActiveBuffByTreeId` gate (introduced for
+Flame Ward in `flame-ward-block-toggle`) with the four Form treeIds, mapping
+each to its existing `Condition:In<X>Form` FLAG published from
+`ConfigOptions.lua` L106-121. No new Config options were needed — only the
+treeId → Condition wiring was missing.
+
+**Game-data confirmation** (`<LE_datamining>/extracted/ability_keyed_array.json`):
+
+| playerAbilityID (treeId) | abilityName | unityObjectName | class / mastery |
+|---|---|---|---|
+| `wb8fo` | Werebear Form | `WerebearForm` | Primalist / Druid |
+| `sf5rd` | Spriggan Form | `SprigganForm` | Primalist / Druid |
+| `sbf4m` | Swarmblade Form | `Swarmblade Form` | Primalist / Druid |
+| `rf1azz` | Reaper Form | `ReaperForm` | Acolyte / Lich |
+
+**Subtle pitfall:** the 4 Form skills DO have `SkillType.Buff` in
+`skillTypeTags`. Splitting `buffSkillTreePrefixes` into "Buff branch / Cond
+branch" with mutually-exclusive logic re-introduces the FlameWard-class
+leak: the Form skill enters the Buff branch and bypasses the gate entirely.
+The correct structure ANDs `condName` into `enabled` regardless of the Buff
+branch, exactly as `flame-ward-block-toggle` documents.
+
+**Default-OFF policy (Obsidian: `Test Build Suite.md` "Buff / Transform
+スキルの ON/OFF デフォルト方針"):** while-active duration buffs (Form,
+FlameWard, etc.) default OFF (gated by Condition); generic ever-on auras
+(HolyAura, SymbolsOfHope, MarkForDeath) stay default ON since the LE engine
+auto-maintains them in combat. Adding a new while-active duration buff
+follows the same recipe: register its treeId in `whileActiveBuffByTreeId`
++ add a `conditionHave<X>` / `conditionIn<X>Form` Calcs checkbox.
+
+| Site | File | What it does |
+|---|---|---|
+| gate | `src/Modules/CalcSetup.lua` (~line 1423) | `whileActiveBuffByTreeId` extended with `wb8fo / sf5rd / sbf4m / rf1azz` |
+| config | `src/Modules/ConfigOptions.lua` (L106-121) | `conditionInWerebearForm` / `InSprigganForm` / `InSwarmbladeForm` / `InReaperForm` checkboxes — already present, no change |
+
+**Spec:** `spec/System/TestS5FormTreeNodeGate_spec.lua`
+- `S5FormTreeNodeGate / CalcSetup whileActiveBuffByTreeId table contains the 4 player Forms` — asserts the 4 treeId → Condition entries plus the existing fw3d entry, plus the regression-guard comment block
+- `S5FormTreeNodeGate / ConfigOptions Calcs-tab checkboxes still publish Condition:In<X>Form FLAG` — asserts each checkbox var + its FLAG mod
+
+**Snapshot coverage:** existing `spec/System/TestBuilds_spec.lua` for any
+Druid build that imports a Form skill enabled — reverting the gate
+re-inflates Form tree-node contributions.
+
 ### `elemental-nova-spec-tree-gated-damage-type`
 
 **Status: FIXED.**

@@ -1415,13 +1415,26 @@ function calcs.initEnv(build, mode, override, specEnv)
 		["si4lgl"] = "SymbolsOfHopeEffect",
 	}
 	-- @leb-regression-guard: flame-ward-block-toggle
-	-- While-active duration buffs (e.g. Flame Ward) grant tree-node mods that the LE
-	-- engine only applies while the FlameWardMutator buff is up. Without an explicit
-	-- "Condition:Have<X>" flag from Config, these mods MUST NOT be added globally.
-	-- Test: spec/System/TestBlockSnapshot_spec.lua "Bakbr2Ne lv86 Sorcerer block snapshot"
+	-- @leb-regression-guard: form-tree-nodes-gated-by-condition
+	-- While-active duration buffs (Flame Ward) AND Druid/Lich Forms (Werebear,
+	-- Spriggan, Swarmblade, Reaper) grant tree-node mods that the LE engine only
+	-- applies while the corresponding Mutator buff (FlameWardMutator / form
+	-- Mutator with statsInForm wired via OnEnable) is up. Without an explicit
+	-- "Condition:Have<X>" or "Condition:In<X>Form" flag from Config, these mods
+	-- MUST NOT be added globally — otherwise socket-group enabled=true (LETools
+	-- import default) leaks the entire tree-node set into modDB.
+	-- Tests:
+	--   spec/System/TestBlockSnapshot_spec.lua "Bakbr2Ne lv86 Sorcerer block snapshot"
+	--   spec/System/TestS5FormTreeNodeGate_spec.lua (form treeId gate contract)
 	-- Maps treeId -> Condition flag name required for the buff to be considered active.
+	-- Form treeIds confirmed against game data (LE_datamining/extracted/ability_keyed_array.json):
+	--   wb8fo=Werebear Form, sf5rd=Spriggan Form, sbf4m=Swarmblade Form, rf1azz=Reaper Form.
 	local whileActiveBuffByTreeId = {
-		["fw3d"] = "HaveFlameWard",  -- Flame Ward (Mage): 3s duration, FlameWardMutator
+		["fw3d"]   = "HaveFlameWard",      -- Flame Ward (Mage): 3s duration, FlameWardMutator
+		["wb8fo"]  = "InWerebearForm",     -- Werebear Form (Druid)
+		["sf5rd"]  = "InSprigganForm",     -- Spriggan Form (Druid)
+		["sbf4m"]  = "InSwarmbladeForm",   -- Swarmblade Form (Druid)
+		["rf1azz"] = "InReaperForm",       -- Reaper Form (Lich)
 	}
 	local buffSkillTreePrefixes = {}
 	for _, group in pairs(build.skillsTab.socketGroupList) do
