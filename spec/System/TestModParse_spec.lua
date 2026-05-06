@@ -86,6 +86,25 @@ describe("TestModParse", function()
         assert.are.equals(37, build.configTab.modList:Sum("BASE", nil, "ReduceCritExtraDamage"))
     end)
 
+    -- @leb-regression-guard:with-a-shield-condition
+    -- Sentinel-90 "Sanctuary Guardian" lists "+15% All Resistances With A Shield"
+    -- in its notScalingStats. Without the "with a shield" condition mapping in
+    -- ModParser.modTagList, the trailing condition survives as residual extra
+    -- and PassiveTree.lua line 421-423 sets node.extra=true, causing the entire
+    -- mod to be discarded — silently dropping ~15 from every resist on B4Xq8aG6.
+    it("with a shield condition tag", function()
+        build.configTab.input.customMods = "+15% All Resistances With A Shield"
+        build.configTab:BuildModList()
+        runCallback("OnFrame")
+        -- All seven resists must each receive +15 BASE tagged with UsingShield
+        local resists = { "FireResist", "ColdResist", "LightningResist",
+            "PhysicalResist", "NecroticResist", "PoisonResist", "VoidResist" }
+        for _, key in ipairs(resists) do
+            assert.are.equals(15, build.configTab.modList:Sum("BASE", { UsingShield = true }, key))
+            assert.are.equals(0,  build.configTab.modList:Sum("BASE", { UsingShield = false }, key))
+        end
+    end)
+
     it("attributes", function()
         build.configTab.input.customMods = "+2 to All Attributes"
         build.configTab:BuildModList()

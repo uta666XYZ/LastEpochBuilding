@@ -617,6 +617,15 @@ local modTagList = {
 	["while using evade"] = { tag = { type = "Condition", var = "UsingEvade" } },
 	["while using a catalyst"] = { tag = { type = "Condition", var = "UsingCatalyst" } },
 	["while using a shield"] = { tag = { type = "Condition", var = "UsingShield" } },
+	-- @leb-regression-guard:with-a-shield-condition
+	-- LE class trees use the short form "With A Shield" (e.g. Sentinel-90
+	-- "Sanctuary Guardian": +15% All Resistances With A Shield in notScalingStats).
+	-- Without this entry the trailing " with a shield" survives as residual extra
+	-- in modLib.parseMod, which sets node.extra=true in PassiveTree.lua and
+	-- prevents the entire mod from reaching modDB — silently dropping ~15 from
+	-- every resistance on B4Xq8aG6 (and any shield-using build).
+	-- Spec: spec/System/TestModParse_spec.lua "with a shield condition tag"
+	["with a shield"] = { tag = { type = "Condition", var = "UsingShield" } },
 	["per forged weapon"] = { tag = { type = "Multiplier", var = "ForgedWeapon" } },
 	["while you have a forged weapon"] = { tag = { type = "Condition", var = "HaveForgedWeapon" } },
 	-- Runemaster: Glyph of Dominion / Arcane Momentum

@@ -1179,6 +1179,44 @@ catches the regression even when the cache hides it from build snapshots.
 
 **Establishing commit:** `<unset; bump after first commit on this branch>`
 
+### `with-a-shield-condition`
+
+Several Sentinel class-tree nodes phrase their shield-gated bonus as
+"…With A Shield" rather than the long form "while using a shield". The
+clearest example is Sentinel-90 "Sanctuary Guardian":
+`+15% All Resistances With A Shield` lives in `notScalingStats` and
+activates once 5 points are allocated.
+
+`ModParser.modTagList` must contain BOTH spellings mapped to the same
+`Condition: UsingShield` tag. If only the long form is present, the
+trailing " with a shield" survives `scan()` as residual extra. The chain
+is unforgiving:
+
+1. `modLib.parseMod` returns `(modList, extra)` with extra non-nil.
+2. `PassiveTree.lua:421-423` checks `if extra then node.extra = true`
+   and SKIPS adding the mods to `node.modList`.
+3. The +15 to all seven resists silently disappears from `modDB`.
+
+Symptom on B4Xq8aG6 lv95 Paladin: every resist shows roughly Δ-10 vs
+LETools precalc, with no Tree:Sentinel-90 entry in any resist breakdown.
+
+`Data/ModCache.lua` caches the parsed result keyed by raw text, so after
+fixing `modTagList` the stale entry must also be removed (the affected
+line was `c["+15% All Resistances With A Shield"]={…,"  With A Shield "}`).
+The spec exercises `customMods` directly so the parser path is verified
+even if the cache later regrows.
+
+| Site | File | What it does |
+|---|---|---|
+| condition mapping | `src/Modules/ModParser.lua` (~line 619-628) | Adds `["with a shield"] = { tag = Condition UsingShield }` next to "while using a shield" |
+| cache invalidation | `src/Data/ModCache.lua` | Removed stale `c["+15% All Resistances With A Shield"]` entry so it re-parses with the new tag |
+| consumer | `src/Classes/PassiveTree.lua:421-423` | Drops the entire mod when `extra` is non-nil (this is the silent failure mode) |
+
+**Spec:** `spec/System/TestModParse_spec.lua`
+- "with a shield condition tag"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
 ## Adding a new guard
 
 1. Above the fix in source, add a comment block:
