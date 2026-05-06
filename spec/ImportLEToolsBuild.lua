@@ -87,12 +87,13 @@ importTab:ImportPassiveTreeAndJewels(char)
 importTab:ImportItemsAndSkills(char)
 importTab:ImportBlessingsFromLETools(data)
 
--- Quest reward defaults match the in-app DownloadLEToolsPlannerBuild flow.
--- LETools planner JSON has no quest flag — default both OFF (matching app
--- behavior as of 2026-05-04). Users opt in manually per build via Config tab
--- after checking the LETools hover tooltip for `Quest Reward: +N` lines.
-build.configTab.input.questApophisMajasa = false
-build.configTab.input.questTempleOfEterra = false
+-- Auto-detect quest rewards from data.completedQuests, mirroring the in-app
+-- DownloadLEToolsPlannerBuild flow. See
+-- @leb-regression-guard:letools-quest-reward-from-completed-quests
+-- on ImportTabClass:DetectLEToolsQuestRewards.
+local hasApophis, hasEterra = importTab:DetectLEToolsQuestRewards(data)
+build.configTab.input.questApophisMajasa = hasApophis
+build.configTab.input.questTempleOfEterra = hasEterra
 build.configTab:BuildModList()
 build.configTab:UpdateControls()
 build.buildFlag = true

@@ -840,6 +840,50 @@ and silently drifts every snapshot.
 
 **Establishing commit:** `<unset; bump after first commit on this branch>`
 
+### `letools-quest-reward-from-completed-quests`
+
+LETools planner JSON exposes character quest completion via
+`data.completedQuests` (a list of numeric quest IDs). Two of those quests
+grant `+1 to all attributes`:
+
+- `124` — Apophis and Majasa (Ch. 9)
+- `151` — Temple of Eterra (Ch. 10)
+
+Both the in-app `DownloadLEToolsPlannerBuild` flow and the
+`spec/ImportLEToolsBuild.lua` snapshot driver MUST derive
+`questApophisMajasa` / `questTempleOfEterra` from this list. Hardcoding
+either flag — in either direction — silently drifts every imported
+build's attribute totals by ±1..±2 across all 5 attributes.
+
+Regression history this guard prevents:
+
+- Hardcoding both ON  (commit `d19abfe34`, pre-2026-05-04) → +1..+2
+  over-shoot for 0/2 and 1/2 builds.
+- Hardcoding both OFF (2026-05-04 reaction to the above) → -1..-2
+  under-shoot for 1/2 and 2/2 builds. Empirically: 36 of 38 G1
+  ATTR_UNIFORM_OTHER builds showed uniform Δ=-2 across every
+  attribute, and all 36 had `{124, 151} ⊂ completedQuests`.
+
+The numeric quest IDs are stable across the planner API JSON, the
+LETools DOM `quest-id` attribute, and the in-app save-file quest IDs.
+
+| Site | File | What it does |
+|---|---|---|
+| shared helper | `src/Classes/ImportTab.lua` `ImportTabClass:DetectLEToolsQuestRewards` | Returns `(hasApophis, hasEterra)` from `data.completedQuests` |
+| in-app import | `src/Classes/ImportTab.lua` (LETools download callback) | Calls the helper and assigns both flags |
+| snapshot driver | `spec/ImportLEToolsBuild.lua` | Calls the helper and assigns both flags |
+
+**Spec:** `spec/System/TestLEToolsQuestImport_spec.lua`
+- "returns false,false when completedQuests is nil/missing"
+- "returns false,false when completedQuests is empty"
+- "detects Apophis (124) only"
+- "detects Eterra (151) only"
+- "detects both Apophis (124) and Eterra (151)"
+- "ignores other quest IDs even when many are present"
+- "does not match string '124' or '151' (numeric ID only)"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
 ## Adding a new guard
 
 1. Above the fix in source, add a comment block:
