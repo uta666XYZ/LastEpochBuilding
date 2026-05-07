@@ -6822,7 +6822,7 @@
     "mods": [
       "{rounding:Integer}+(1-2) to Symbols of Hope",
       "(20-40)% Increased Symbol Gain Rate",
-      "(70-80)% of Sigils of Hope Mana Cost consumed to cast it every 6 seconds while above half mana",
+      "(70-80)% of Symbols of Hope Mana Cost consumed to cast it every 6 seconds while above half mana",
       "(15-25)% Increased Healing Effectiveness",
       "{rounding:Integer}(10-15)% increased Armor"
     ],
