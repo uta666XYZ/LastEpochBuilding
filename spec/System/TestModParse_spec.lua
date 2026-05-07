@@ -96,12 +96,14 @@ describe("TestModParse", function()
         build.configTab.input.customMods = "+15% All Resistances With A Shield"
         build.configTab:BuildModList()
         runCallback("OnFrame")
-        -- All seven resists must each receive +15 BASE tagged with UsingShield
+        -- All seven resists must each receive +15 BASE tagged with UsingShield.
+        -- ModStoreClass:EvalMod uses cfg.skillCond[var] for Condition tag matching
+        -- (see ModStore.lua line 563/574), so probe the cfg with skillCond set.
         local resists = { "FireResist", "ColdResist", "LightningResist",
             "PhysicalResist", "NecroticResist", "PoisonResist", "VoidResist" }
         for _, key in ipairs(resists) do
-            assert.are.equals(15, build.configTab.modList:Sum("BASE", { UsingShield = true }, key))
-            assert.are.equals(0,  build.configTab.modList:Sum("BASE", { UsingShield = false }, key))
+            assert.are.equals(15, build.configTab.modList:Sum("BASE", { skillCond = { UsingShield = true } }, key))
+            assert.are.equals(0,  build.configTab.modList:Sum("BASE", { skillCond = { UsingShield = false } }, key))
         end
     end)
 

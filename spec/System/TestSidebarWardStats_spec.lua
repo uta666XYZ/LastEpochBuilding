@@ -9,8 +9,8 @@
 
 describe("SidebarWardStatRemoval", function()
     it("Build.lua sidebar displayStats does not declare stat=\"Ward\"", function()
-        local f = io.open("src/Modules/Build.lua", "r")
-        assert.is_not_nil(f, "must be able to open src/Modules/Build.lua")
+        local f = io.open("Modules/Build.lua", "r") or io.open("src/Modules/Build.lua", "r")
+        assert.is_not_nil(f, "must be able to open Modules/Build.lua")
         local text = f:read("*a")
         f:close()
         -- Match exactly the row form: `{ stat = "Ward",`
@@ -23,18 +23,20 @@ describe("SidebarWardStatRemoval", function()
 
     it("TestBuilds snapshots reflect the removal (no Ward / NetWardRegen PlayerStat lines)", function()
         local snapshots = {
-            "spec/TestBuilds/1.4/BjqdaPzE lv99 Sorcerer.xml",
-            "spec/TestBuilds/1.4/o3Zlpkxd lv98 Necromancer.xml",
+            "BjqdaPzE lv99 Sorcerer.xml",
+            "o3Zlpkxd lv98 Necromancer.xml",
         }
-        for _, path in ipairs(snapshots) do
-            local f = io.open(path, "r")
-            assert.is_not_nil(f, "must be able to open " .. path)
+        for _, name in ipairs(snapshots) do
+            local p1 = "../spec/TestBuilds/1.4/" .. name
+            local p2 = "spec/TestBuilds/1.4/" .. name
+            local f = io.open(p1, "r") or io.open(p2, "r")
+            assert.is_not_nil(f, "must be able to open " .. name)
             local text = f:read("*a")
             f:close()
             assert.is_falsy(string.find(text, 'stat="Ward"', 1, true),
-                path .. " must not contain a Ward PlayerStat after removal")
+                name .. " must not contain a Ward PlayerStat after removal")
             assert.is_falsy(string.find(text, 'stat="NetWardRegen"', 1, true),
-                path .. " must not contain a NetWardRegen PlayerStat after removal")
+                name .. " must not contain a NetWardRegen PlayerStat after removal")
         end
     end)
 end)
