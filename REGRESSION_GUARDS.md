@@ -1448,6 +1448,35 @@ Paladin's LETools snapshot shows `+30 BASE Health Regen` from this node.
 
 **Establishing commit:** `<unset; bump after first commit on this branch>`
 
+### `sentinel-93-mana-regen-from-holy-aura`
+
+Paladin tree node Sentinel-93 (Covenant of Dominion) at 5 allocated points
+activates the `notScalingStat` `25% Increased Mana Regen From Holy Aura`.
+The cached parse in `src/Data/ModCache.lua` tags the resulting mod with
+`SkillName=Holy Aura`, but `CalcDefence.lua:580` sums `ManaRegen` INC with
+`cfg=nil` so the SkillName tag never matches and the bonus contributes 0.
+
+The LE engine treats `From Holy Aura` as an always-on while-active condition
+(Holy Aura is a permanent toggle skill): as long as Holy Aura is on the bar
+and enabled, the bonus applies globally. The fix injects a clean (untagged)
+`ManaRegen` INC mod scaled by `HolyAuraEffect` INC (Sentinel-119 Covenant of
+Light: +4%/pt) when both Sentinel-93 (≥5pts) and Holy Aura (`ah443-`) are
+active.
+
+QDxZjL4J Paladin's LETools snapshot shows `manaRegen=18.32`; pre-fix LEB
+showed `10.8` (Δ=-7.52). The Sentinel-93 bug accounts for ~30% INC of that
+gap; remaining residual is tracked separately.
+
+| Site | File | What it does |
+|---|---|---|
+| injection | `src/Modules/CalcSetup.lua` (~line 1576) | When Holy Aura enabled and Sentinel-93 ≥5pts, NewMod ManaRegen INC scaled by HolyAuraEffect |
+
+**Spec:** `spec/System/TestSentinel93ManaRegen_spec.lua`
+- "Sentinel-93 25% scales by HolyAuraEffect and surfaces as INC ManaRegen"
+- "tree_2.json Sentinel-93 retains '25% Increased Mana Regen From Holy Aura' notScalingStat"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
 ## Adding a new guard
 
 1. Above the fix in source, add a comment block:

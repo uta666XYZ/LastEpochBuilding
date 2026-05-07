@@ -1570,6 +1570,26 @@ function calcs.initEnv(build, mode, override, specEnv)
 			{ type = "Multiplier", var = "ActiveSymbol" })
 	end
 
+	-- @leb-regression-guard: sentinel-93-mana-regen-from-holy-aura
+	-- Sentinel-93 (Covenant of Dominion) notScalingStat: "25% Increased Mana Regen
+	-- From Holy Aura" activates at threshold 5 (i.e. fully allocated). The cached
+	-- parse tags this mod with SkillName=Holy Aura, but ManaRegen is summed at
+	-- CalcDefence:580 with cfg=nil so the SkillName tag never matches and the
+	-- bonus contributes nothing. The LE engine treats "From Holy Aura" as an
+	-- always-on while-active condition: as long as Holy Aura is on the bar and
+	-- enabled, the bonus applies globally. Inject a clean ManaRegen INC mod
+	-- scaled by HolyAuraEffect (Sentinel-119 Covenant of Light: +4%/pt) when
+	-- both Sentinel-93 (≥5pts) and Holy Aura (ah443-) are active.
+	-- Spec: spec/System/TestSentinel93ManaRegen_spec.lua
+	local holyAuraPrefix = buffSkillTreePrefixes and buffSkillTreePrefixes["ah443-"]
+	local s93 = env.allocNodes["Sentinel-93"]
+	if env.mode_buffs and holyAuraPrefix and holyAuraPrefix.enabled
+			and s93 and (s93.alloc or 0) >= 5 then
+		local haEffectInc = env.modDB:Sum("INC", nil, "HolyAuraEffect")
+		local scaledPct = 25 * (1 + haEffectInc / 100)
+		env.modDB:NewMod("ManaRegen", "INC", scaledPct, "Sentinel-93 Covenant of Dominion")
+	end
+
 	-- Find skills granted by tree nodes
 	if not accelerate.nodeAlloc then
 		for _, node in pairs(env.allocNodes) do
