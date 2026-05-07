@@ -500,9 +500,20 @@ if statDumpEnv and statDumpEnv ~= "" then
             local mods = modDB.mods[stat]
             if mods then
                 for i, m in ipairs(mods) do
-                    outHnd:write(string.format("            { source=%q, type=%q, value=%s, flags=%s, keywordFlags=%s },\n",
+                    local tags = ""
+                    for ti = 1, #m do
+                        local t = m[ti]
+                        tags = tags .. "{" .. tostring(t.type or "?")
+                        for tk, tv in pairs(t) do
+                            if tk ~= "type" then
+                                tags = tags .. " " .. tk .. "=" .. tostring(tv)
+                            end
+                        end
+                        tags = tags .. "}"
+                    end
+                    outHnd:write(string.format("            { source=%q, type=%q, value=%s, flags=%s, keywordFlags=%s, tags=%q },\n",
                         tostring(m.source or ""), tostring(m.type or ""), tostring(m.value),
-                        tostring(m.flags or 0), tostring(m.keywordFlags or 0)))
+                        tostring(m.flags or 0), tostring(m.keywordFlags or 0), tags))
                 end
             end
             outHnd:write("        },\n")
