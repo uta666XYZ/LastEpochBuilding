@@ -1373,6 +1373,30 @@ after this fix the snapshot matches at 61%.
 
 **Establishing commit:** `<unset; bump after first commit on this branch>`
 
+### `lifeonhit-flag-aware-sum`
+
+ModParser registers `LifeOnMeleeHit` (and `LifeOnHit`) BASE mods with
+`flags = bor(ModFlag.Melee, ModFlag.Hit)` so they participate in per-skill
+hit-rate filtering. The Calcs-tab character-aggregate row at the bottom of
+`CalcDefence.UpdateLifeShield` originally summed these with `cfg = nil`,
+which means `band(cfg.flags, mod.flags) == mod.flags` evaluates
+`band(0, Melee|Hit) ~= Melee|Hit` → ModDB silently drops the mod.
+
+Real-world hit: QDxZjL4J Paladin's main weapon **Palarus's Sacred Light**
+suffix `+11 Health Gain on Melee Hit` was surfaced as `0` in LEB while
+LETools displayed `11`. Fix passes the same flag bitmask in cfg so the
+mod actually matches.
+
+| Site | File | What it does |
+|---|---|---|
+| calc | `src/Modules/CalcDefence.lua` (output.LifeOnMeleeHit / LifeOnHit) | `Sum("BASE", { flags = bor(ModFlag.Melee, ModFlag.Hit) }, "LifeOnMeleeHit")` (and Hit-only for the Hit variant) |
+
+**Spec:** `spec/System/TestLifeOnHit_spec.lua`
+- "ModParser tags 'Health Gain on Melee Hit' with Melee+Hit flags"
+- "BASE LifeOnMeleeHit surfaces on calcsOutput with Melee+Hit cfg"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
 ## Adding a new guard
 
 1. Above the fix in source, add a comment block:

@@ -16,6 +16,7 @@ local m_sqrt = math.sqrt
 local m_modf = math.modf
 local m_huge = math.huge
 local s_format = string.format
+local bor = bit.bor
 
 local tempTable1 = { }
 
@@ -1477,11 +1478,21 @@ function calcs.buildDefenceEstimations(env, actor)
 	output.LifeOnStun = modDB:Sum("BASE", nil, "LifeOnStun")
 	output.LifeOnFreeze = modDB:Sum("BASE", nil, "LifeOnFreeze")
 	output.LifeOnCrit = modDB:Sum("BASE", nil, "LifeOnCrit")
+	-- @leb-regression-guard: lifeonhit-flag-aware-sum
 	-- Character-aggregate Hit / Melee Hit gains. Per-skill versions live in
-	-- CalcOffence; these surface the flat sum so the Calcs tab can mirror
-	-- LETools' "Health Gain on Hit / Melee Hit" rows on every build.
-	output.LifeOnHit = modDB:Sum("BASE", nil, "LifeOnHit")
-	output.LifeOnMeleeHit = modDB:Sum("BASE", nil, "LifeOnMeleeHit")
+	-- CalcOffence; the Melee Hit row is sourced here so the Calcs tab can
+	-- mirror LETools' "Health Gain on Melee Hit" on every build.
+	-- ModParser stores LifeOnMeleeHit with flags = bor(Melee, Hit); ModDB:Sum
+	-- requires the cfg to include those flags or
+	-- `band(cfg.flags, mod.flags) == mod.flags` fails and the mod is silently
+	-- dropped (e.g. Palarus's Sacred Light suffix "+11 Health Gain on Melee
+	-- Hit" surfaced as 0 on QDxZjL4J Paladin).
+	-- LifeOnHit is overwritten per-skill in CalcOffence, so the defence-layer
+	-- Sum below is best-effort and only matters before a skill recalculates;
+	-- still pass the Hit flag for parity.
+	-- Test: spec/System/TestLifeOnHit_spec.lua
+	output.LifeOnHit = modDB:Sum("BASE", { flags = ModFlag.Hit }, "LifeOnHit")
+	output.LifeOnMeleeHit = modDB:Sum("BASE", { flags = bor(ModFlag.Melee, ModFlag.Hit) }, "LifeOnMeleeHit")
 	-- Other Stats (LETools parity)
 	output.ChanceToFindPotions = modDB:Sum("BASE", nil, "ChanceToFindPotions")
 	output.ManaEfficiency = modDB:Sum("BASE", nil, "ManaEfficiency")
