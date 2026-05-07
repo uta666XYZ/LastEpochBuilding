@@ -162,6 +162,19 @@ local modNameList = {
 	-- Mana / Companion / Potion / Overkill summary stats (LETools parity)
 	["overkill health leech"] = "OverkillLeech",
 	["overkill leech"] = "OverkillLeech",
+	-- @leb-regression-guard:overkill-damage-leech-parser
+	-- Affix wording "(N)% of Overkill Damage Leeched as Health" must emit
+	-- OverkillLeech (display-only summary), NOT generic DamageLifeLeech.
+	-- LE applies overkill leech only to damage exceeding remaining HP, so
+	-- routing through DamageLifeLeech (the prior behavior, where the
+	-- generic "damage" modName + "leeched as health" suffix combined to
+	-- produce DamageLifeLeech and left "Overkill" unconsumed) would
+	-- over-leech every hit while leaving output.OverkillLeech = 0.
+	-- Symptoms before fix: BgRrP5rr OverkillLeech LE=16 LEB=0; Q9J4wvmD
+	-- LE=9 LEB=0. Match must precede the generic "damage" entry; scan()
+	-- picks earliest+longest, so this 4-word phrase wins. See spec
+	-- TestModParser_spec.lua "overkill-damage-leech-parser".
+	["overkill damage leeched as health"] = "OverkillLeech",
 	["maximum companions"] = "MaxCompanions",
 	["maximum number of companions"] = "MaxCompanions",
 	["potion slots"] = "PotionSlots",

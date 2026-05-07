@@ -491,6 +491,38 @@ silently drop from the calc (parses but maps to nothing → 0% applied).
 
 **Establishing commit:** `<unset; bump after first commit on this branch>`
 
+### `overkill-damage-leech-parser`
+
+The affix `(N)% of Overkill Damage Leeched as Health` must parse to the
+`OverkillLeech` summary modifier — **not** the generic `DamageLifeLeech`.
+LE applies overkill leech only to damage exceeding the target's remaining
+HP, so routing the affix through `DamageLifeLeech` (which `CalcOffence`
+sums for every-hit leech) would over-leech every hit while leaving the
+sidebar's Overkill Leech row at 0.
+
+Before this guard, `modNameList` had no entry for the full phrase, so
+`scan()` picked the generic `damage` name and the `leeched as health`
+suffix flag combined to produce `DamageLifeLeech` with `" Overkill   "`
+left as unconsumed text. Symptoms (G1 batch #1, 2026-05-07):
+
+- `BgRrP5rr` `OverkillLeech` LE=16 LEB=0
+- `Q9J4wvmD` `OverkillLeech` LE=9 LEB=0
+
+Fix: register the 4-word phrase in `modNameList`. `scan()` chooses the
+earliest+longest match, so the new entry wins over `damage` and consumes
+the whole right-hand side, leaving no suffix and no residual.
+
+| Site | File | What it does |
+|---|---|---|
+| alias table | `src/Modules/ModParser.lua` (~line 165-178) | Registers `overkill damage leeched as health` → `OverkillLeech` |
+
+**Spec:** `spec/System/TestOverkillLeech_spec.lua`
+- "'11% of Overkill Damage Leeched as Health' parses to OverkillLeech BASE 11"
+- "'5% of Overkill Damage Leeched as Health' parses to OverkillLeech BASE 5"
+- "does not emit DamageLifeLeech for the overkill affix wording"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
 ### `curse-spell-damage-stat`
 
 `+N Curse Spell Damage` (e.g. Hexed Grand Bone Idol prefix, ModItem affix
