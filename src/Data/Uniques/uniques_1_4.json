@@ -215,13 +215,15 @@
       "+125 Armor",
       "{rounding:Integer}+(6-10) Attunement",
       "{rounding:Integer}+(9-15) Strength",
-      "+(10-20)% Lightning Resistance"
+      "+(10-20)% Lightning Resistance",
+      "1% Increased Mana Regeneration per 2% Uncapped Lightning Resistance"
     ],
     "rollIds": [
       null,
       0,
       0,
-      0
+      0,
+      null
     ],
     "overrideLevelRequirement": false
   },
@@ -426,6 +428,7 @@
       "level": 0
     },
     "mods": [
+      "20% increased Movement Speed",
       "20% increased Minion Movement Speed",
       "(20-28)% Increased Healing Effectiveness",
       "(20-28)% Minion Increased Healing Effectiveness",
@@ -434,6 +437,7 @@
       "(20-28)% Chance each second to cast Summon Vines if you are Moving"
     ],
     "rollIds": [
+      null,
       null,
       1,
       1,
@@ -1290,12 +1294,18 @@
       "+(40-70)% Chance to Chill on Hit",
       "+13 Melee Necrotic Damage",
       "+(7-13)% Cold Resistance",
+      "+(7-13)% Minion Cold Resistance",
+      "+(7-13)% Physical Resistance",
+      "+(7-13)% Minion Physical Resistance",
       "+1 Maximum Skeletons"
     ],
     "rollIds": [
       0,
       null,
       1,
+      1,
+      2,
+      2,
       null
     ],
     "overrideLevelRequirement": false
@@ -6822,7 +6832,7 @@
     "mods": [
       "{rounding:Integer}+(1-2) to Symbols of Hope",
       "(20-40)% Increased Symbol Gain Rate",
-      "(70-80)% of Sigils of Hope Mana Cost consumed to cast it every 6 seconds while above half mana",
+      "(70-80)% of Symbols of Hope Mana Cost consumed to cast it every 6 seconds while above half mana",
       "(15-25)% Increased Healing Effectiveness",
       "{rounding:Integer}(10-15)% increased Armor"
     ],
@@ -9331,7 +9341,8 @@
       "Your Volatile Zombies which explode inside your Aura of Decay have a (20-25)% chance to resurrect",
       "(14-20)% increased Movement Speed",
       "(20-25)% Increased effect of Haste on you while Aura of Decay is active",
-      "+(50-90)% Chance to Ignite on Hit for You and your Minions",
+      "+(50-90)% Chance to Ignite on Hit",
+      "+(50-90)% Chance to Ignite on Minion Hit",
       "+(5-9)% of Fire Damage Over Time Damage Leeched as Health"
     ],
     "rollIds": [
@@ -9339,6 +9350,7 @@
       null,
       0,
       1,
+      null,
       null,
       2
     ],
@@ -9372,7 +9384,8 @@
       "+(100-170)% increased Minion Fire Damage",
       "+(100-240)% Chance to Ignite on Minion Hit",
       "+(12-24) Health Gained on Companion Hit",
-      "(30-44)% increased Health for you and your Minions",
+      "(30-44)% increased Health",
+      "(30-44)% increased Minion Health",
       "Summon Spriggan and Summon Storm Crows are converted to fire",
       "Your summoned Spriggan's Thorn Volley gains +1 projectile and 10% more damage per summoned Storm Crow",
       "+5% of current Health drained per second while above 80% Health"
@@ -9381,6 +9394,7 @@
       0,
       1,
       2,
+      null,
       null,
       null,
       null,
@@ -9395,6 +9409,7 @@
     "req": {
       "level": 0
     },
+    "_leb_regression_guard": "exulis-all-attributes-range: +(10-20) is the correct upper bound. Game extract uniques_v3.json id=469 mod[1] maxValue=20.0. LETools display shows '+(10 to 20) to All Attributes'. byte=156 with span+1 rule => 10 + 156/255*11 = 16.73 -> floor 16, matches in-game display.",
     "mods": [
       "+(1-2) to Skills",
       "+(10-20) to All Attributes",

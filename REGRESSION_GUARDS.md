@@ -573,15 +573,19 @@ defence sheet.
 | Site | File | What it does |
 |---|---|---|
 | gate | `src/Modules/CalcDefence.lua` (~line 262) | Early-zeroes all Block outputs when neither Weapon 2/3 is `type == "Shield"` and no `BlockWithoutShield` flag is set |
+| LifeOnBlock / ManaOnBlock gate | `src/Modules/CalcDefence.lua` (~line 514, ~line 700) | Same gate also applies to "Health/Mana Gained on Block" — without it, Sentinel-89 Shield Wall's `+4 Health Gained on Block` per point bleeds into LEB even on no-shield Paladins (e.g. QDxZjL4J Δ +16 phantom) |
 
 **Spec:** `spec/System/TestBlockShield_spec.lua`
 - "BlockChance is 0 with no shield even with +50% Block Chance mod"
 - "BlockChance applies with no shield when BlockWithoutShield flag is set"
+- "LifeOnBlock / ManaOnBlock are 0 with no shield (block disabled)"
+- "LifeOnBlock applies with no shield when BlockWithoutShield flag is set"
 
 **Snapshot coverage:** `spec/System/TestBuilds_spec.lua` "test all builds #builds" via
-`spec/TestBuilds/1.4/Bakbr2Ne lv86 Sorcerer.{xml,lua}` (Astrolabe off-hand, BlockChance=0).
+`spec/TestBuilds/1.4/Bakbr2Ne lv86 Sorcerer.{xml,lua}` (Astrolabe off-hand, BlockChance=0)
+and `QDxZjL4J lv97 Paladin.{xml,lua}` (dual-wield, LifeOnBlock=0).
 
-**Establishing commit:** `df85f92e8`
+**Establishing commit:** `df85f92e8` (block stats); `<branch>` (LifeOnBlock/ManaOnBlock extension)
 
 ### `flame-ward-block-toggle`
 
@@ -622,6 +626,112 @@ makes BlockChance flip from 0 (LE-correct, snapshot value) to 10 (Glacial
 Reinforcement contribution).
 
 **Establishing commit:** `df85f92e8`
+
+### `form-tree-nodes-gated-by-condition`
+
+Druid/Lich Form skills (Werebear `wb8fo`, Spriggan `sf5rd`, Swarmblade `sbf4m`,
+Reaper `rf1azz`) are LE Mutators whose `statsInForm` mod set is added in
+`OnEnable` and removed in `OnDisable`. Their skill-tree nodes (e.g.
+`wb8fo-*` Werebear specializations) are **only valid while the Form is
+active in-game**.
+
+LEB historically applied all Form tree-node mods unconditionally because the
+4 Form treeIds were not registered in `whileActiveBuffByTreeId`. With
+LETools-import default `socket-group enabled = true`, this leaked Form-only
+armour / HP / damage / resistance bonuses into modDB even when the matching
+"Are you in <X> Form?" Calcs checkbox was unchecked, inflating diffs against
+LETools snapshots (which generate from Form-OFF state).
+
+The fix extends the existing `whileActiveBuffByTreeId` gate (introduced for
+Flame Ward in `flame-ward-block-toggle`) with the four Form treeIds, mapping
+each to its existing `Condition:In<X>Form` FLAG published from
+`ConfigOptions.lua` L106-121. No new Config options were needed — only the
+treeId → Condition wiring was missing.
+
+**Game-data confirmation** (`<LE_datamining>/extracted/ability_keyed_array.json`):
+
+| playerAbilityID (treeId) | abilityName | unityObjectName | class / mastery |
+|---|---|---|---|
+| `wb8fo` | Werebear Form | `WerebearForm` | Primalist / Druid |
+| `sf5rd` | Spriggan Form | `SprigganForm` | Primalist / Druid |
+| `sbf4m` | Swarmblade Form | `Swarmblade Form` | Primalist / Druid |
+| `rf1azz` | Reaper Form | `ReaperForm` | Acolyte / Lich |
+
+**Subtle pitfall:** the 4 Form skills DO have `SkillType.Buff` in
+`skillTypeTags`. Splitting `buffSkillTreePrefixes` into "Buff branch / Cond
+branch" with mutually-exclusive logic re-introduces the FlameWard-class
+leak: the Form skill enters the Buff branch and bypasses the gate entirely.
+The correct structure ANDs `condName` into `enabled` regardless of the Buff
+branch, exactly as `flame-ward-block-toggle` documents.
+
+**Default-OFF policy (Obsidian: `Test Build Suite.md` "Buff / Transform
+スキルの ON/OFF デフォルト方針"):** while-active duration buffs (Form,
+FlameWard, etc.) default OFF (gated by Condition); generic ever-on auras
+(HolyAura, SymbolsOfHope, MarkForDeath) stay default ON since the LE engine
+auto-maintains them in combat. Adding a new while-active duration buff
+follows the same recipe: register its treeId in `whileActiveBuffByTreeId`
++ add a `conditionHave<X>` / `conditionIn<X>Form` Calcs checkbox.
+
+| Site | File | What it does |
+|---|---|---|
+| gate | `src/Modules/CalcSetup.lua` (~line 1423) | `whileActiveBuffByTreeId` extended with `wb8fo / sf5rd / sbf4m / rf1azz` |
+| config | `src/Modules/ConfigOptions.lua` (L106-121) | `conditionInWerebearForm` / `InSprigganForm` / `InSwarmbladeForm` / `InReaperForm` checkboxes — already present, no change |
+
+**Spec:** `spec/System/TestS5FormTreeNodeGate_spec.lua`
+- `S5FormTreeNodeGate / CalcSetup whileActiveBuffByTreeId table contains the 4 player Forms` — asserts the 4 treeId → Condition entries plus the existing fw3d entry, plus the regression-guard comment block
+- `S5FormTreeNodeGate / ConfigOptions Calcs-tab checkboxes still publish Condition:In<X>Form FLAG` — asserts each checkbox var + its FLAG mod
+
+**Snapshot coverage:** existing `spec/System/TestBuilds_spec.lua` for any
+Druid build that imports a Form skill enabled — reverting the gate
+re-inflates Form tree-node contributions.
+
+### `transform-cost-bypass`
+
+LE Form/Transform abilities (Werebear `wb8fo`, Spriggan `sf5rd`, Swarmblade
+`sbf4m`, Reaper `rf1azz`) are Mutators: entering Form swaps the player
+resource (mana→rage for Werebear/Swarmblade, mana→nothing for Spriggan,
+mana→soul-stack for Reaper) and the bar skills consumed in-Form are
+auto-given child abilities not modeled in LEB's `skills.json`. The Form
+ability **itself** carries no Mana cost, so CalcOffence must skip its entire
+cost loop — otherwise a phantom Mana cost re-appears and inflates the
+ManaCost diff vs LETools snapshots (which generate from a Form-OFF state).
+
+The bypass relies on TWO sites cooperating:
+
+1. **`src/Modules/DataProcess.lua`** mirrors `baseFlags.transform = true` →
+   `SkillType.Transform` in the `flagToType` table. Form entries in
+   `src/Data/skills.json` have `skillTypeTags = 0` plus
+   `baseFlags.transform = true`, so without this mirror the Transform bit
+   never reaches `activeSkill.skillTypes` and the cost-loop guard fires on a
+   nil value (i.e. fails open and re-attributes Mana cost).
+2. **`src/Modules/CalcOffence.lua`** tests
+   `not activeSkill.skillTypes[SkillType.Transform]` to short-circuit the
+   Mana/Rage/Soul/Life cost loop. Removing this AND-clause regresses the
+   bypass even if (1) is intact.
+
+This is a **separate mechanism** from `form-tree-nodes-gated-by-condition`:
+- `form-tree-nodes-gated-by-condition` gates skill-tree NODE MODS behind a
+  Calcs-tab Condition checkbox (controls whether the Form's tree-node
+  bonuses leak into modDB while the checkbox is unchecked).
+- `transform-cost-bypass` gates the SELF cost calculation of the Form
+  skill itself (controls whether a phantom Mana cost shows up on the Form
+  ability's Calcs panel regardless of checkbox state).
+
+Both are required for clean LETools diffs on Druid/Lich Form builds.
+
+| Site | File | What it does |
+|---|---|---|
+| flag mirror | `src/Modules/DataProcess.lua` (~line 102) | `flagToType.transform = SkillType.Transform` |
+| bypass guard | `src/Modules/CalcOffence.lua` (~line 1296) | `if not skillModList:Flag(skillCfg, "HasNoCost") and not activeSkill.skillTypes[SkillType.Transform] then` |
+
+**Spec:** `spec/System/TestS5TransformCostBypass_spec.lua`
+- `S5TransformCostBypass / DataProcess maps baseFlags.transform -> SkillType.Transform` — locks the flagToType mapping + guard comment
+- `S5TransformCostBypass / CalcOffence cost block is gated on \`not SkillType.Transform\`` — locks the AND-clause + HasNoCost co-existence + guard comment
+- `S5TransformCostBypass / skills.json Form entries carry baseFlags.transform=true` — locks the data-side contract for Werebear/Spriggan/Reaper Form entries
+
+**Snapshot coverage:** any Druid/Lich snapshot in `spec/TestBuilds/1.4/`
+that imports a Form skill — reverting either side re-introduces a Mana
+cost on the Form ability.
 
 ### `elemental-nova-spec-tree-gated-damage-type`
 
@@ -724,6 +834,244 @@ NaN/Inf ward for builds with very large negative retention.
 
 **Establishing commit:** `<unset; bump after first commit on this branch>`
 
+### `martyrdom-minion-armour`
+
+The Necromancer Dread Shade specialization node `ds4d3-3` ("Martyrdom")
+grants Armour to **minions** per Vitality, not to the player. Verified
+against in-game tooltip + LETools planner (the buff is a default-on toggle
+that buffs the minion target). Trigger: parsing the raw stat string
+`"30 Armour Per Vitality"` routed the bonus to the player's modDB, inflating
+player Armour by ~3000 for a 99-Vit Necromancer (the Qdz2yXN3 worst-diff
+build had `Tree:ds4d3-3 BASE=2970 PerStat:Vit` flowing into player armour).
+
+A regression here drops the `Minion ` prefix from the stat string in
+`tree_3.json`, OR rewrites the `ModCache.lua` entry to a non-`MinionModifier`
+shape, OR adds a non-minion `c["NN Armour Per Vitality"]` line. Any of those
+restores the player-armour bug.
+
+| Site | File | What it does |
+|---|---|---|
+| 1.4 tree text | `src/TreeData/1_4/tree_3.json` (node `ds4d3-3`, ~line 10091) | Stat string is `"30 Minion Armour Per Vitality"` |
+| 1.3 tree text | `src/TreeData/1_3/tree_3.json` (node `ds4d3-3`, ~line 10055) | Same `"30 Minion Armour Per Vitality"` |
+| 1.2 tree text | `src/TreeData/1_2/tree_3.json` (node `ds4d3-3`, ~line 9180) | `"25 Minion Armour Per Vitality"` (older value) |
+| ModCache | `src/Data/ModCache.lua` (~line 13730) | `c["25/30 Minion Armour Per Vitality"]` wrap mod in `MinionModifier` LIST |
+
+**Spec:** `spec/System/TestMartyrdomMinion_spec.lua`
+- "Martyrdom (ds4d3-3) grants Minion Armour, not player Armour"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `s4-converted-attr-no-base-inherit`
+
+Season 4 introduced four converted attributes (Brutality, Guile, Apathy,
+Rampancy) that replace the four base attributes for affected classes.
+Earlier LEB releases applied the base-attribute global bonuses (e.g.
+Strength's +4% Armour INC PerStat) to the converted attributes on the
+false premise that converted attributes inherit base-attribute bonuses.
+They do not — verified against in-game LE 1.4 tooltips: Brutality grants
+"more melee damage per mana cost" + "reduced damage leeched as health"
+only; no Armour INC. Each converted attribute has its own unique passive
+effects driven by tooltip text, not by inheritance.
+
+A regression here re-introduces any
+`modDB:NewMod(<DefensiveStat>, ..., {type = "PerStat", stat = "<S4Attr>"})`
+line in `calcs.initEnv`. For Qdz2yXN3 (Necromancer, Brutality=33) the
+re-introduced +4% Armour INC PerStat:Brutality inflated player Armour
+Increased by +132%, ~7x over the in-game value.
+
+| Site | File | What it does |
+|---|---|---|
+| converted-attribute init | `src/Modules/CalcSetup.lua` (~line 659) | Holds the regression-guard comment block; ANY `PerStat:Brutality/Guile/Apathy/Rampancy` mod added here without in-game tooltip evidence is the regression |
+
+**Spec:** `spec/System/TestS4ConvertedAttr_spec.lua`
+- "Brutality does NOT grant Armour Increased"
+- "Guile does NOT grant base Evasion"
+- "Apathy does NOT grant base Mana"
+- "Rampancy does NOT grant base Life"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `s4-perstat-base-includes-converted-twin`
+
+Sibling to `s4-converted-attr-no-base-inherit`. Both guards must hold
+together: converted attributes (Brutality / Guile / Madness / Apathy /
+Rampancy) do **not** inherit base-attribute intrinsic bonuses, **but**
+text-parsed `Per <BaseAttr>` mods on passive nodes / item affixes
+**do** count the converted twin alongside the base attribute. In
+in-game terms: Strength's intrinsic +4% Armour does not double up onto
+Brutality, but the Druid passive "1% Increased Armor Per Strength In
+Human Or Spriggan" sees `Strength + Brutality` and a fully-converted
+Druid (Str=0, Brutality=198) gets ~198% INC, not 0%.
+
+Implementation splits the two semantics:
+
+- The seven intrinsic bonuses registered programmatically in
+  `calcs.initEnv` use `PerStat:Raw<Attr>` (RawStr / RawDex / RawInt /
+  RawAtt / RawVit). `CalcPerform` mirrors `output.Raw<Attr> =
+  output.<Attr>` after the Str→Brutality (etc.) subtraction so
+  Raw<Attr> never includes the converted twin. → preserves
+  `s4-converted-attr-no-base-inherit`.
+- All other PerStat:<BaseAttr> mods (passive node / item affix text
+  going through ModParser → ModCache) keep `tag.stat = "Str"` (Dex /
+  Int / Att / Vit), and `ModStore:EvalMod` adds the converted twin's
+  value at evaluation time via the module-scope lookup
+  `s4ConvertedTwin = { Str="Brutality", Dex="Guile", Int="Madness",
+  Att="Apathy", Vit="Rampancy" }`. Covers both the scalar `tag.stat`
+  branch and the `tag.statList` branch.
+
+Form OR-conditionals on Druid mastery nodes ("In Human Or Spriggan",
+"In Bear Or Swarmblade") parse to a `Condition` tag with `varList`
+covering the named forms — NAND for Human/Spriggan (negate against
+the three transform forms), positive OR for Bear/Swarmblade. Cache
+entries with unparsed leftover (e.g. `extra=" In Human Or Spriggan "`)
+were silently dropped by `PassiveTree.lua` (`if not list then
+node.unknown = true; elseif extra then node.extra = true ... if
+mod.list and not mod.extra then`), so the cache rows must carry the
+Condition tag with `extra=nil`.
+
+A regression here:
+
+- Drops the `s4ConvertedTwin` table or the `s4ConvertedTwin[tag.stat]`
+  / `s4ConvertedTwin[stat]` lookups in `ModStore:EvalMod` → all
+  "Per Strength" passives silently revert to 0% on fully-converted
+  Druids (Qb6WlbxD Armour 1320 vs LE 3161, Δ-1841).
+- Switches any of the seven `CalcSetup` intrinsics back to
+  `PerStat:<liveAttr>` → Brutality/Guile/Apathy/Rampancy regrow the
+  base-attribute bonuses and `s4-converted-attr-no-base-inherit`
+  fails.
+- Drops `output.Raw<Attr>` from `CalcPerform` → the intrinsic mods
+  see 0 and the +4% Armour / +4 Evasion / etc. silently disappear.
+- Re-introduces `extra=" In Human Or Spriggan "` on the ModCache row
+  → PassiveTree drops the entire mod and Aspects of Might silently
+  contributes 0%.
+
+| Site | File | What it does |
+|---|---|---|
+| twin lookup + EvalMod | `src/Classes/ModStore.lua` (top of file + EvalMod PerStat block) | `s4ConvertedTwin` table; both `tag.stat` and `tag.statList` branches sum the twin |
+| Raw<Attr> publish | `src/Modules/CalcPerform.lua` (after the Str→Brutality conversion subtraction) | `output.RawStr = output.Str` (and Dex/Int/Att/Vit) |
+| intrinsic targets | `src/Modules/CalcSetup.lua` (~line 650) | All 7 intrinsic NewMod calls use `PerStat:Raw<Attr>` |
+| Druid form-OR parser | `src/Modules/ModParser.lua` (after "in reaper form") | `"in human or spriggan"` → Condition NAND on {Werebear, Swarmblade, Reaper}; `"in bear or swarmblade"` → Condition OR on {Werebear, Swarmblade} |
+| ModCache entries | `src/Data/ModCache.lua` (~line 10521, 10543) | Aspects of Might Armour + Melee Damage rows carry the Condition tag, no `extra` leftover |
+
+**Spec:** `spec/System/TestS4PerStatBaseTwin_spec.lua`
+- "ModStore EvalMod sums converted twin for PerStat:<BaseAttr>" — declares table, scalar + statList lookups, all five base→twin pairs, and the regression-guard comment block
+- "CalcSetup intrinsic bonuses reference Raw<Attr>" — all 7 NewMod calls match the `Raw<Attr>` regex
+- "CalcPerform mirrors live attributes onto Raw<Attr> after conversion" — all 5 `output.RawX = output.X` assignments
+- "ModCache entries for Druid OR-form conditionals carry the Condition tag" — Armour entry with `neg=true`, Melee Damage entry without `neg`, both with `extra=nil`
+
+**Establishing build:** Qb6WlbxD lv100 Druid (Str=0 / Brutality=198 via
+Exulis 100% Str→Brutality conversion). Pre-fix `output.Armour=1320` (LE
+3161, Δ-1841). Post-fix `output.Armour=3110` (residual ≈ -1.6%, likely
+unrelated body-armor display rounding). The `.tmp/dump_armour_full.sh`
+trace shows `[10] INC Armour val=1 src=Tree:Primalist-111
+tags={PerStat stat=Str}{Condition varList=... neg=true}` and
+`Sum INC Armour = 244` (was 46, jumped by +198 = Brutality count).
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `exulis-all-attributes-range`
+
+The unique amulet `Exulis` (id 469) rolls `+(10-20) to All Attributes`.
+
+**Evidence:**
+1. Game data extract `uniques_v3.json` id=469 mod[1] (property=46, All
+   Attributes) has `value=10.0, maxValue=20.0`.
+2. LETools tooltip displays `+(10 to 20) to All Attributes`.
+3. `applyRange` trace with (10-20) reproduces the in-game LEB display:
+   byte=156 → `10 + 156/255 * (20-10+1) = 16.73 → floor 16`. Matches
+   the user-observed +16 once data was corrected.
+
+An earlier guard locked this as `(10-18)`, based on a misobservation:
+a +18 roll seen in-game was actually `+16 from the amulet + 2 from a
+separate quest reward`. Conflating those two sources produced the
+wrong upper bound. Do NOT widen back to 18, and do NOT narrow further.
+
+A regression here changes the upper bound away from `20` in either
+uniques file.
+
+| Site | File | What it does |
+|---|---|---|
+| 1.4 unique data | `src/Data/Uniques/uniques_1_4.json` (Exulis entry, ~line 9400) | `+(10-20) to All Attributes` |
+| legacy unique data | `src/Data/Uniques/uniques.json` (Exulis id 469, ~line 10639) | `+(10-20) to All Attributes` |
+
+Both entries also carry an inline `_leb_regression_guard` JSON field
+that documents the source of truth at the data site itself.
+
+**Spec:** `spec/System/TestExulisRange_spec.lua`
+- "Data/Uniques/uniques_1_4.json has Exulis '+(10-20) to All Attributes'"
+- "Data/Uniques/uniques.json has Exulis '+(10-20) to All Attributes'"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `sidebar-ward-stat-removal`
+
+The Build.lua sidebar `displayStats` list was trimmed to drop the raw
+`Ward` row and the `NetWardRegen` row. Both duplicated information
+already exposed by `StableWard` and the Net Recovery breakdown rows
+(NetLifeRegen / NetManaRegen / TotalNetRegen) and confused users.
+
+After removal, TestBuilds snapshots (BjqdaPzE Sorcerer, o3Zlpkxd
+Necromancer) were regenerated and the corresponding `<PlayerStat
+stat="Ward"...>` / `<PlayerStat stat="NetWardRegen"...>` lines no
+longer appear. A regression here re-adds either row to the sidebar
+and silently drifts every snapshot.
+
+| Site | File | What it does |
+|---|---|---|
+| sidebar config | `src/Modules/Build.lua` (`displayStats`, around the StableWard row) | only `StableWard` row remains |
+| 1.4 sample snapshot | `spec/TestBuilds/1.4/BjqdaPzE lv99 Sorcerer.xml` | no Ward / NetWardRegen PlayerStat |
+| 1.4 sample snapshot | `spec/TestBuilds/1.4/o3Zlpkxd lv98 Necromancer.xml` | no Ward / NetWardRegen PlayerStat |
+
+**Spec:** `spec/System/TestSidebarWardStats_spec.lua`
+- "Build.lua sidebar displayStats does not declare stat=\"Ward\""
+- "TestBuilds snapshots reflect the removal (no Ward / NetWardRegen PlayerStat lines)"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `letools-quest-reward-from-completed-quests`
+
+LETools planner JSON exposes character quest completion via
+`data.completedQuests` (a list of numeric quest IDs). Two of those quests
+grant `+1 to all attributes`:
+
+- `124` — Apophis and Majasa (Ch. 9)
+- `151` — Temple of Eterra (Ch. 10)
+
+Both the in-app `DownloadLEToolsPlannerBuild` flow and the
+`spec/ImportLEToolsBuild.lua` snapshot driver MUST derive
+`questApophisMajasa` / `questTempleOfEterra` from this list. Hardcoding
+either flag — in either direction — silently drifts every imported
+build's attribute totals by ±1..±2 across all 5 attributes.
+
+Regression history this guard prevents:
+
+- Hardcoding both ON  (commit `d19abfe34`, pre-2026-05-04) → +1..+2
+  over-shoot for 0/2 and 1/2 builds.
+- Hardcoding both OFF (2026-05-04 reaction to the above) → -1..-2
+  under-shoot for 1/2 and 2/2 builds. Empirically: 36 of 38 G1
+  ATTR_UNIFORM_OTHER builds showed uniform Δ=-2 across every
+  attribute, and all 36 had `{124, 151} ⊂ completedQuests`.
+
+The numeric quest IDs are stable across the planner API JSON, the
+LETools DOM `quest-id` attribute, and the in-app save-file quest IDs.
+
+| Site | File | What it does |
+|---|---|---|
+| shared helper | `src/Classes/ImportTab.lua` `ImportTabClass:DetectLEToolsQuestRewards` | Returns `(hasApophis, hasEterra)` from `data.completedQuests` |
+| in-app import | `src/Classes/ImportTab.lua` (LETools download callback) | Calls the helper and assigns both flags |
+| snapshot driver | `spec/ImportLEToolsBuild.lua` | Calls the helper and assigns both flags |
+
+**Spec:** `spec/System/TestLEToolsQuestImport_spec.lua`
+- "returns false,false when completedQuests is nil/missing"
+- "returns false,false when completedQuests is empty"
+- "detects Apophis (124) only"
+- "detects Eterra (151) only"
+- "detects both Apophis (124) and Eterra (151)"
+- "ignores other quest IDs even when many are present"
+- "does not match string '124' or '151' (numeric ID only)"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
 ### `stcdt-conversion-shapes`
 
 Catalogues every stat / description prose shape that introduces, redirects,
@@ -802,6 +1150,369 @@ loop generalises that fix.
 **Spec:** `spec/System/TestPhase4LEToolsParity_spec.lua`
 - "Minion bucket aggregates MinionModifier LIST entries by (name,type)"
 - "Phase 4 outputs default to 0 with no mods (no character base leak)"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `crits-abbreviation`
+
+Sentinel class-tree passives (Sentinel-14 Patient Doom, Sentinel-42 Iron
+Reflexes, Sentinel-114 Heaven's Bulwark) abbreviate "Critical Strikes" as
+"Crits" in their stat strings. The parser must route "% reduced/less bonus
+damage taken from crits" to `ReduceCritExtraDamage` BEFORE the generic
+"from (.+)$" catch-all that returns `nsAny` (LEB_NotSupported).
+
+`scan()` in `ModParser.lua` resolves overlapping patterns by **longest tail
+wins**. The specific "from crits$" tail (5 chars + EOL) is one char longer
+than "from (.+)$" (4 chars + EOL) so the specific pattern wins — but only as
+long as nothing widens the catch-all or reorders entries. If this guard
+fails, the original symptom returns: B4Xq8aG6 lv95 Paladin shows
+`CritExtraDmgRed` Δ=-30 against LETools precalc (LE=58, LEB=28).
+
+ModCache.lua holds parser results keyed by mod string, so a fresh regen
+without `LEB_FORCE=1` may still load the stale `LEB_NotSupported` cache
+entry. The spec exercises the parser directly via `customMods`, so it
+catches the regression even when the cache hides it from build snapshots.
+
+| Site | File | What it does |
+|---|---|---|
+| specific patterns | `src/Modules/ModParser.lua` (~line 1750-1758) | "from crits$" → `ReduceCritExtraDamage`, must precede "from (.+)$" `nsAny` |
+| catch-all | `src/Modules/ModParser.lua` (~line 1764-1765) | "from (.+)$" → `nsAny` (only kept for unknown crit-source variants) |
+
+**Spec:** `spec/System/TestModParse_spec.lua`
+- "crits abbreviation reduces crit damage"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `with-a-shield-condition`
+
+Several Sentinel class-tree nodes phrase their shield-gated bonus as
+"…With A Shield" rather than the long form "while using a shield". The
+clearest example is Sentinel-90 "Sanctuary Guardian":
+`+15% All Resistances With A Shield` lives in `notScalingStats` and
+activates once 5 points are allocated.
+
+`ModParser.modTagList` must contain BOTH spellings mapped to the same
+`Condition: UsingShield` tag. If only the long form is present, the
+trailing " with a shield" survives `scan()` as residual extra. The chain
+is unforgiving:
+
+1. `modLib.parseMod` returns `(modList, extra)` with extra non-nil.
+2. `PassiveTree.lua:421-423` checks `if extra then node.extra = true`
+   and SKIPS adding the mods to `node.modList`.
+3. The +15 to all seven resists silently disappears from `modDB`.
+
+Symptom on B4Xq8aG6 lv95 Paladin: every resist shows roughly Δ-10 vs
+LETools precalc, with no Tree:Sentinel-90 entry in any resist breakdown.
+
+`Data/ModCache.lua` caches the parsed result keyed by raw text, so after
+fixing `modTagList` the stale entry must also be removed (the affected
+line was `c["+15% All Resistances With A Shield"]={…,"  With A Shield "}`).
+The spec exercises `customMods` directly so the parser path is verified
+even if the cache later regrows.
+
+| Site | File | What it does |
+|---|---|---|
+| condition mapping | `src/Modules/ModParser.lua` (~line 619-628) | Adds `["with a shield"] = { tag = Condition UsingShield }` next to "while using a shield" |
+| cache invalidation | `src/Data/ModCache.lua` | Removed stale `c["+15% All Resistances With A Shield"]` entry so it re-parses with the new tag |
+| consumer | `src/Classes/PassiveTree.lua:421-423` | Drops the entire mod when `extra` is non-nil (this is the silent failure mode) |
+
+**Spec:** `spec/System/TestModParse_spec.lua`
+- "with a shield condition tag"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `while-with-a-shield-condition`
+
+Sentinel-90 "Sanctuary Guardian" notScalingStats also uses the long form
+`+50 Armor While With A Shield`. This is a different surface from the bare
+"With A Shield" suffix: the leading word is "While". Without an explicit
+`["while with a shield"]` entry in `ModParser.modTagList`, the trailing
+" while with a shield" survives `scan()` as residual extra and the entire
+mod is silently dropped via the same `node.extra=true` chain documented
+under `with-a-shield-condition`.
+
+Symptom on AVa9YEkg lv95 Paladin: Armour Δ ≈ -178 effective (50 BASE × INC
+multiplier) with no Sentinel-90 contribution in the Armour breakdown.
+
+`Data/ModCache.lua` previously cached the bad parse:
+`c["+50 Armor While With A Shield"]={…,"  While With A Shield "}` — patched
+in place to add the `Condition: UsingShield` tag and clear the residual.
+
+| Site | File | What it does |
+|---|---|---|
+| condition mapping | `src/Modules/ModParser.lua` (~line 629) | Adds `["while with a shield"] = { tag = Condition UsingShield }` next to "with a shield" |
+| cache fix         | `src/Data/ModCache.lua` (~line 8061)    | `+50 Armor While With A Shield` entry now carries the UsingShield tag with nil residual |
+| consumer          | `src/Classes/PassiveTree.lua:421-423`   | Drops the entire mod when `extra` is non-nil (silent failure mode) |
+
+**Spec:** `spec/System/TestModParse_spec.lua`
+- "while with a shield condition tag"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `per-1pct-increased-movement-speed`
+
+The Unbroken Charge unique grants `+(11-30) Block Effectiveness per 1%
+Increased Movement Speed` (and similarly the `0.2% Increased Damage per 1%
+Increased Movement Speed` mod surfaces elsewhere). Two pieces are required
+for the mod to take effect:
+
+1. `ModParser.modTagList` needs a `["per 1%% increased movement speed"]`
+   entry mapping to `Multiplier: MovementSpeedInc`. Without it the residual
+   suffix drops the entire mod via `node.extra=true`.
+2. `CalcSetup.lua` must inject `Multiplier:MovementSpeedInc` from
+   `env.modDB:Sum("INC", nil, "MovementSpeed")` AFTER all MS INC mods have
+   been added. Without injection, the matcher exists but the multiplier is
+   always 0 so the mod contributes nothing.
+
+The injection pattern mirrors the existing `Multiplier:ActiveSymbol` logic
+for Symbols of Hope a few lines above.
+
+Symptom on AVa9YEkg lv95 Paladin: Block Effectiveness Δ ≈ -401 vs LETools
+with no Unbroken Charge contribution in the BlockEffectiveness breakdown.
+
+`Data/ModCache.lua` cached `c["+21 Block Effectiveness per 1% Increased
+Movement Speed"]` and `c["0.2% Increased Damage per 1% Increased Movement
+Speed"]` with bad residuals — both patched in place.
+
+| Site | File | What it does |
+|---|---|---|
+| matcher          | `src/Modules/ModParser.lua` (~line 636)              | `["per 1%% increased movement speed"] = { tag = Multiplier MovementSpeedInc }` |
+| auto-injection   | `src/Modules/CalcSetup.lua` (~line 1539)             | Sums `INC` `MovementSpeed`, then `NewMod("Multiplier:MovementSpeedInc", "BASE", msInc)` |
+| cache fix        | `src/Data/ModCache.lua` (~lines 4944, 10236)         | Both cached entries now carry the Multiplier tag with nil residual |
+| consumer         | `src/Classes/PassiveTree.lua:421-423` / mod resolve | Drops the entire mod when `extra` is non-nil; Multiplier resolves at calc time |
+
+**Spec:** `spec/System/TestModParse_spec.lua`
+- "per 1% increased movement speed multiplier"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `eterras-path-player-ms`
+
+Eterra's Path (unique boots, id 21) carries TWO Movement Speed mods in the
+underlying game data: a player-side `+20% Movement Speed` (tags=0) and a
+minion-side `+20% Minion Movement Speed` (tags=8192=Minion). The in-game
+tooltip collapses both into one line: "You and your minions have 20%
+increased movement speed".
+
+LEB's `uniques_1_4.json` originally listed only the minion variant, dropping
+the player MS entirely. This caused a -20% Movement Speed gap on every
+Eterra's Path build vs LETools (e.g. Qb6WgDEp lv95 Beastmaster Δ=-25,
+of which 20 came from this drop and 5 from a separate Predator BASE issue).
+
+The "You and your minions have ..." tooltip pattern in LE always means
+**two underlying mods**. When importing/transcribing such uniques into
+`uniques_<ver>.json`, list BOTH the player and minion variants. Do not
+collapse them to a single line.
+
+| Site | File | What it does |
+|---|---|---|
+| unique data | `src/Data/Uniques/uniques_1_4.json` (id `"21"`) | Lists both `"20% increased Movement Speed"` (player) and `"20% increased Minion Movement Speed"` (minion) with parallel `null` rollIds |
+
+**Spec:** `spec/System/TestEterraPathPlayerMS_spec.lua`
+- "uniques_1_4.json Eterra's Path has BOTH player and minion 20% MS mods"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `you-and-minions-dual-mods`
+
+The Eterra's Path bug is one instance of a wider data class. Any LE unique
+whose tooltip uses the wording **"for You and your Minions"** or **"You and
+your minions have ..."** is backed by TWO mods in the underlying data
+(tags=0 player + tags=8192 minion). LEB's `ModParser` does NOT have a
+generic handler for the "for You and your Minions" suffix — leaving the
+collapsed tooltip text as a single line in `uniques_<ver>.json` silently
+parses as MinionModifier-only and drops the player side.
+
+Confirmed affected uniques (game extract `extracted/items/uniques_v3.json`):
+
+| id | Name | Stats with dropped player side |
+|---|---|---|
+| 21  | Eterra's Path     | 20% increased Movement Speed (fixed: see `eterras-path-player-ms`) |
+| 66  | Hollow Finger     | +(7-13)% Cold Resistance, +(7-13)% Physical Resistance (both pairs) |
+| 461 | Ash Wake          | +(50-90)% Chance to Ignite on Hit |
+| 463 | Rahyeh's Embrace  | (30-44)% increased Health |
+
+When transcribing such uniques into `uniques_<ver>.json`, list BOTH the
+player and minion variants as separate mod text lines. Never use the
+collapsed "for You and your Minions" wording — it loses the player mod.
+
+| Site | File | What it does |
+|---|---|---|
+| unique data | `src/Data/Uniques/uniques_1_4.json` (ids `"66"`, `"461"`, `"463"`) | Player mod and `Minion <stat>` mod listed as separate entries with parallel rollIds |
+
+**Spec:** `spec/System/TestYouAndMinionsDualMods_spec.lua`
+- "Hollow Finger (id 66) carries BOTH player and minion Cold/Phys resist"
+- "Ash Wake (id 461) splits Ignite-on-hit into player and minion mods"
+- "Rahyeh's Embrace (id 463) splits increased Health into player and minion mods"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `movement-speed-base-additive`
+
+LE's Movement Speed formula is `(1 + (BASE + INC)/100) * More`. LEB
+previously computed `output.MovementSpeedMod` via
+`calcLib.mod(modDB, nil, "MovementSpeed")`, which returns only
+`(1 + INC/100) * More` and silently drops the BASE term.
+
+Passive nodes that grant `"+X% Movement Speed"` parse as
+`MovementSpeed BASE X` (see ModCache: `"+1% Movement Speed"` →
+`name="MovementSpeed", type="BASE", value=1`). Without the BASE term in
+the formula, every such node — most notably Beastmaster's **Predator**
+(+1% Movement Speed per point, up to 5 — hence -5% on every Beastmaster
+build) — contributes nothing. Combined with the Eterra's Path bug, the
+Qb6WgDEp lv95 Beastmaster snapshot was -25% short of LETools (61% vs 36%);
+after this fix the snapshot matches at 61%.
+
+| Site | File | What it does |
+|---|---|---|
+| calc | `src/Modules/CalcDefence.lua` (output.MovementSpeedMod) | Formula expanded to `(1 + (BASE + INC)/100) * More`; BASE read via `modDB:Sum("BASE", nil, "MovementSpeed")` |
+
+**Spec:** `spec/System/TestMovementSpeedBaseAdditive_spec.lua`
+- "CalcDefence Movement Speed line includes BASE"
+- "plain calcLib.mod is no longer used for the Movement Speed slot"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `lifeonhit-flag-aware-sum`
+
+ModParser registers `LifeOnMeleeHit` (and `LifeOnHit`) BASE mods with
+`flags = bor(ModFlag.Melee, ModFlag.Hit)` so they participate in per-skill
+hit-rate filtering. The Calcs-tab character-aggregate row at the bottom of
+`CalcDefence.UpdateLifeShield` originally summed these with `cfg = nil`,
+which means `band(cfg.flags, mod.flags) == mod.flags` evaluates
+`band(0, Melee|Hit) ~= Melee|Hit` → ModDB silently drops the mod.
+
+Real-world hit: QDxZjL4J Paladin's main weapon **Palarus's Sacred Light**
+suffix `+11 Health Gain on Melee Hit` was surfaced as `0` in LEB while
+LETools displayed `11`. Fix passes the same flag bitmask in cfg so the
+mod actually matches.
+
+| Site | File | What it does |
+|---|---|---|
+| calc | `src/Modules/CalcDefence.lua` (output.LifeOnMeleeHit / LifeOnHit) | `Sum("BASE", { flags = bor(ModFlag.Melee, ModFlag.Hit) }, "LifeOnMeleeHit")` (and Hit-only for the Hit variant) |
+
+**Spec:** `spec/System/TestLifeOnHit_spec.lua`
+- "ModParser tags 'Health Gain on Melee Hit' with Melee+Hit flags"
+- "BASE LifeOnMeleeHit surfaces on calcsOutput with Melee+Hit cfg"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `symbols-of-hope-inc-not-more`
+
+Symbols of Hope grants `+20% Increased Health Regen` per active symbol
+(LE: additive INC, not a separate MORE multiplier). The Meditation node
+`si4lgl-24` doubles the per-symbol value to 40%. The per-symbol value is
+itself scaled by `SymbolsOfHopeEffect` INC (e.g. Sentinel-119 Covenant of
+Light grants +4%/pt for both Holy Aura and Symbols of Hope effect).
+
+Pre-fix `CalcSetup.lua` injected the per-symbol value as `MORE LifeRegen`
+outside the `applyBuffPrefix` scaling path, so:
+- it stacked multiplicatively with global INC LifeRegen instead of additively, and
+- `SymbolsOfHopeEffect` INC never reached it.
+
+Real-world hit: QDxZjL4J Paladin's LETools snapshot shows `Health Regen
+240% Increased` from 10 active symbols (`20 × 1.20 SymbolsOfHopeEffect ×
+10`); pre-fix LEB rendered the contribution as MORE 200%, producing
+`baseRegen × (1 + globalInc) × 3.0 ≈ 453` instead of `~295`.
+
+| Site | File | What it does |
+|---|---|---|
+| auto-injection | `src/Modules/CalcSetup.lua` (~line 1559) | `LifeRegen INC perSymbolPct × (1 + SymbolsOfHopeEffect/100)`, gated on `Multiplier:ActiveSymbol` |
+
+**Spec:** `spec/System/TestSymbolsOfHope_spec.lua`
+- "per-symbol value defaults to 20% INC and scales with SymbolsOfHopeEffect"
+- "Meditation node doubles per-symbol value to 40"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `sentinel-95-base-health-regen`
+
+Paladin tree node Sentinel-95 (Covenant of Protection) grants
+`+6 Health Regen` per allocated point in addition to its armor stats.
+The LE node's internal name in
+`LE_datamining/extracted/items/globalTreeData.json` is
+`Paladin Armor Health Regen And Armor Applies To DoT`, which explicitly
+includes the Health Regen line.
+
+Pre-fix `tree_2.json` (1_4) listed only `8% Increased Armor` and
+`2% Armor Mitigation Applies To Damage Over Time` in `stats`, so 5
+allocated points dropped `+30 BASE Health Regen` entirely. QDxZjL4J
+Paladin's LETools snapshot shows `+30 BASE Health Regen` from this node.
+
+| Site | File | What it does |
+|---|---|---|
+| tree data | `src/TreeData/1_4/tree_2.json` (Sentinel-95) | `stats` array contains `+6 Health Regen` |
+
+**Spec:** `spec/System/TestSentinel95Regen_spec.lua`
+- "tree_2.json Sentinel-95 stats include '+6 Health Regen'"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `sentinel-93-mana-regen-from-holy-aura`
+
+Paladin tree node Sentinel-93 (Covenant of Dominion) at 5 allocated points
+activates the `notScalingStat` `25% Increased Mana Regen From Holy Aura`.
+The cached parse in `src/Data/ModCache.lua` tags the resulting mod with
+`SkillName=Holy Aura`, but `CalcDefence.lua:580` sums `ManaRegen` INC with
+`cfg=nil` so the SkillName tag never matches and the bonus contributes 0.
+
+The LE engine treats `From Holy Aura` as an always-on while-active condition
+(Holy Aura is a permanent toggle skill): as long as Holy Aura is on the bar
+and enabled, the bonus applies globally. The fix injects a clean (untagged)
+`ManaRegen` INC mod scaled by `HolyAuraEffect` INC (Sentinel-119 Covenant of
+Light: +4%/pt) when both Sentinel-93 (≥5pts) and Holy Aura (`ah443-`) are
+active.
+
+QDxZjL4J Paladin's LETools snapshot shows `manaRegen=18.32`; pre-fix LEB
+showed `10.8` (Δ=-7.52). The Sentinel-93 bug accounts for ~30% INC of that
+gap; remaining residual is tracked separately.
+
+| Site | File | What it does |
+|---|---|---|
+| injection | `src/Modules/CalcSetup.lua` (~line 1576) | When Holy Aura enabled and Sentinel-93 ≥5pts, NewMod ManaRegen INC scaled by HolyAuraEffect |
+
+**Spec:** `spec/System/TestSentinel93ManaRegen_spec.lua`
+- "Sentinel-93 25% scales by HolyAuraEffect and surfaces as INC ManaRegen"
+- "tree_2.json Sentinel-93 retains '25% Increased Mana Regen From Holy Aura' notScalingStat"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `urzils-pride-mana-regen-per-uncapped-lightning-res`
+
+Urzil's Pride (unique Iron Armor) carries the inherent mod
+`1% Increased Mana Regeneration per 2% Uncapped Lightning Resistance`. The
+mod was missing from `src/Data/Uniques/uniques*.json` entirely (LEB only had
+the four legendary-affix slots). LE displays / LETools breakdown both treat
+the per-2% step as **floored at integer percentage points**, not continuous
+— so at `LightningResistTotal=129` the contribution is `floor(129/2)*1=64`%
+INC, not 64.5%.
+
+A naive PerStat tag (`{type="PerStat", stat="LightningResistTotal", div=2}`)
+cannot be used because `ModStore.lua:GetStat` deliberately uses continuous
+scaling for "per N stat" mods (justified at `ModStore.lua:414` for things
+like Wisdom node `0.3% mana regen per 10 max mana`). Continuous scaling
+produces 64.5 here and surfaces as `ManaRegen=18.4` instead of the
+LETools-expected `18.32`.
+
+The fix instead emits an intermediate BASE stat
+`ManaRegenIncPerUncappedLightningRes_Per2` from ModParser, which CalcDefence
+reads after the resist totals are computed (line ~262, between resist loop
+end and Block computation), floors `LightningResistTotal / 2`, and injects
+the resulting `ManaRegen` INC mod via `modDB:NewMod`. This mirrors the
+established Sentinel Defiance pattern (`EnduranceThresholdPerUncappedEleRes`).
+
+QDxZjL4J Paladin: pre-fix `ManaRegen=13.2 / Inc=65`; post-fix `18.3 / 129`.
+
+| Site | File | What it does |
+|---|---|---|
+| data    | `src/Data/Uniques/uniques.json`,  `uniques_1_2.json`, `uniques_1_3.json`, `uniques_1_4.json` | Adds the missing mod line + roll-id null on Urzil's Pride |
+| parser  | `src/Modules/ModParser.lua` (~line 897)            | Pattern emits `ManaRegenIncPerUncappedLightningRes_Per2` BASE |
+| inject  | `src/Modules/CalcDefence.lua` (~line 262)          | Reads stat, floors div by 2, NewMod ManaRegen INC scaled by `LightningResistTotal` |
+
+**Spec:** `spec/System/TestUrzilsPrideManaRegen_spec.lua`
+- "Urzil's Pride floors mana regen INC per 2% uncapped lightning resistance"
+- "Urzil's Pride mod parses to BASE ManaRegenIncPerUncappedLightningRes_Per2"
+- "uniques_1_4.json Urzil's Pride retains the per-uncapped-lightning-res mod line"
 
 **Establishing commit:** `<unset; bump after first commit on this branch>`
 

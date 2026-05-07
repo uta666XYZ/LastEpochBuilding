@@ -16,6 +16,7 @@ local m_sqrt = math.sqrt
 local m_modf = math.modf
 local m_huge = math.huge
 local s_format = string.format
+local bor = bit.bor
 
 local tempTable1 = { }
 
@@ -257,6 +258,23 @@ function calcs.defence(env, actor)
 	output.EnduranceTotal = endTotalEarly
 	output.Endurance = m_min(endTotalEarly, data.misc.EnduranceCap)
 	output.EnduranceOverCap = m_max(endTotalEarly - data.misc.EnduranceCap, 0)
+
+	-- Urzil's Pride (unique): "1% Increased Mana Regeneration per 2% Uncapped Lightning Resistance"
+	-- @leb-regression-guard: urzils-pride-mana-regen-per-uncapped-lightning-res
+	-- Inject AFTER the resist totals are computed (LightningResistTotal is the uncapped
+	-- value, set above at line 233). Floors at integer steps to match LETools / in-game
+	-- display (LETools breakdown for QDxZjL4J Paladin shows 64% body-armour contribution
+	-- at LightningResistTotal=129, giving ManaRegen=18.32 with Belt 35% + Sentinel-93 30%).
+	-- Cannot use a PerStat tag because ModStore.GetStat uses continuous scaling
+	-- (intentional; see comment at ModStore.lua:414).
+	local manaRegenIncPerUncappedLR_Per2 = modDB:Sum("BASE", nil, "ManaRegenIncPerUncappedLightningRes_Per2")
+	if manaRegenIncPerUncappedLR_Per2 > 0 then
+		local lrTotal = output.LightningResistTotal or 0
+		local manaRegenInc = m_floor(lrTotal / 2) * manaRegenIncPerUncappedLR_Per2
+		if manaRegenInc > 0 then
+			modDB:NewMod("ManaRegen", "INC", manaRegenInc, "Urzil's Pride")
+		end
+	end
 
 	-- Block
 	-- @leb-regression-guard: block-requires-shield
@@ -511,8 +529,19 @@ function calcs.defence(env, actor)
 	end
 	
 	-- Gain on Block
-	output.LifeOnBlock = modDB:Sum("BASE", nil, "LifeOnBlock")
-	output.ManaOnBlock = modDB:Sum("BASE", nil, "ManaOnBlock")
+	-- @leb-regression-guard: block-requires-shield
+	-- LifeOnBlock / ManaOnBlock must be zero when block itself is disabled
+	-- (no shield equipped and no BlockWithoutShield flag). Without this gate
+	-- LEB surfaces a "Health Gain on Block" rating for builds that can never
+	-- block in-game (e.g. QDxZjL4J Paladin's Sentinel-89 Shield Wall x4 →
+	-- LifeOnBlock=16 phantom). See REGRESSION_GUARDS.md "block-requires-shield".
+	if hasShield or blockAllowedWithoutShield then
+		output.LifeOnBlock = modDB:Sum("BASE", nil, "LifeOnBlock")
+		output.ManaOnBlock = modDB:Sum("BASE", nil, "ManaOnBlock")
+	else
+		output.LifeOnBlock = 0
+		output.ManaOnBlock = 0
+	end
 
 	-- Gain on Kill — defensive aggregate (per-skill version is set in CalcOffence).
 	-- Items/passives provide flat "Health Gain on Kill" mods; the build defence
@@ -664,7 +693,16 @@ function calcs.defence(env, actor)
 	end
 
 	-- Miscellaneous: move speed, avoidance
-	output.MovementSpeedMod = modDB:Override(nil, "MovementSpeed") or (modDB:Flag(nil, "MovementSpeedEqualHighestLinkedPlayers") and actor.partyMembers.output.MovementSpeedMod or calcLib.mod(modDB, nil, "MovementSpeed"))
+	-- @leb-regression-guard: movement-speed-base-additive
+	-- LE Movement Speed formula = (1 + (BASE + INC)/100) * More. calcLib.mod
+	-- only returns (1 + INC/100) * More and drops BASE — passive nodes that
+	-- grant "+X% Movement Speed" (BASE) such as Beastmaster's Predator
+	-- (+1% Movement Speed per point) would silently contribute nothing.
+	-- See REGRESSION_GUARDS.md "movement-speed-base-additive".
+	local msBase = modDB:Sum("BASE", nil, "MovementSpeed")
+	local msInc  = modDB:Sum("INC",  nil, "MovementSpeed")
+	local msMore = modDB:More(nil, "MovementSpeed")
+	output.MovementSpeedMod = modDB:Override(nil, "MovementSpeed") or (modDB:Flag(nil, "MovementSpeedEqualHighestLinkedPlayers") and actor.partyMembers.output.MovementSpeedMod or (1 + (msBase + msInc) / 100) * msMore)
 	if modDB:Flag(nil, "MovementSpeedCannotBeBelowBase") then
 		output.MovementSpeedMod = m_max(output.MovementSpeedMod, 1)
 	end
@@ -683,8 +721,15 @@ function calcs.defence(env, actor)
 	end
 	
 	-- recovery on block, needs to be after primary defences
-	output.LifeOnBlock = modDB:Sum("BASE", nil, "LifeOnBlock")
-	output.ManaOnBlock = modDB:Sum("BASE", nil, "ManaOnBlock")
+	-- @leb-regression-guard: block-requires-shield
+	-- See sibling site above; same gate applies here.
+	if hasShield or blockAllowedWithoutShield then
+		output.LifeOnBlock = modDB:Sum("BASE", nil, "LifeOnBlock")
+		output.ManaOnBlock = modDB:Sum("BASE", nil, "ManaOnBlock")
+	else
+		output.LifeOnBlock = 0
+		output.ManaOnBlock = 0
+	end
 
 	-- gain on kill — defensive aggregate (mirrored from primary defences pass)
 	output.LifeOnKill = modDB:Sum("BASE", nil, "LifeOnKill")
@@ -1450,11 +1495,21 @@ function calcs.buildDefenceEstimations(env, actor)
 	output.LifeOnStun = modDB:Sum("BASE", nil, "LifeOnStun")
 	output.LifeOnFreeze = modDB:Sum("BASE", nil, "LifeOnFreeze")
 	output.LifeOnCrit = modDB:Sum("BASE", nil, "LifeOnCrit")
+	-- @leb-regression-guard: lifeonhit-flag-aware-sum
 	-- Character-aggregate Hit / Melee Hit gains. Per-skill versions live in
-	-- CalcOffence; these surface the flat sum so the Calcs tab can mirror
-	-- LETools' "Health Gain on Hit / Melee Hit" rows on every build.
-	output.LifeOnHit = modDB:Sum("BASE", nil, "LifeOnHit")
-	output.LifeOnMeleeHit = modDB:Sum("BASE", nil, "LifeOnMeleeHit")
+	-- CalcOffence; the Melee Hit row is sourced here so the Calcs tab can
+	-- mirror LETools' "Health Gain on Melee Hit" on every build.
+	-- ModParser stores LifeOnMeleeHit with flags = bor(Melee, Hit); ModDB:Sum
+	-- requires the cfg to include those flags or
+	-- `band(cfg.flags, mod.flags) == mod.flags` fails and the mod is silently
+	-- dropped (e.g. Palarus's Sacred Light suffix "+11 Health Gain on Melee
+	-- Hit" surfaced as 0 on QDxZjL4J Paladin).
+	-- LifeOnHit is overwritten per-skill in CalcOffence, so the defence-layer
+	-- Sum below is best-effort and only matters before a skill recalculates;
+	-- still pass the Hit flag for parity.
+	-- Test: spec/System/TestLifeOnHit_spec.lua
+	output.LifeOnHit = modDB:Sum("BASE", { flags = ModFlag.Hit }, "LifeOnHit")
+	output.LifeOnMeleeHit = modDB:Sum("BASE", { flags = bor(ModFlag.Melee, ModFlag.Hit) }, "LifeOnMeleeHit")
 	-- Other Stats (LETools parity)
 	output.ChanceToFindPotions = modDB:Sum("BASE", nil, "ChanceToFindPotions")
 	output.ManaEfficiency = modDB:Sum("BASE", nil, "ManaEfficiency")

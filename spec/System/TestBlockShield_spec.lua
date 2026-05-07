@@ -39,6 +39,31 @@ describe("BlockRequiresShield", function()
         assert.are.equals(0, build.calcsTab.calcsOutput.AverageBlockChance)
     end)
 
+    it("LifeOnBlock / ManaOnBlock are 0 with no shield (block disabled)", function()
+        -- Sentinel-89 Shield Wall (4 pts × +4 Health Gained on Block) and similar
+        -- nodes contribute LifeOnBlock BASE. Without a shield the block trigger
+        -- itself never fires in-game, so the surfaced rating must be 0 — otherwise
+        -- LEB shows phantom "Health Gain on Block" (e.g. QDxZjL4J Paladin Δ +16).
+        build.configTab.input.customMods = [[
+        50 Health Gained on Block
+        25 Mana Gained on Block
+        ]]
+        build.configTab:BuildModList()
+        runCallback("OnFrame")
+        assert.are.equals(0, build.calcsTab.calcsOutput.LifeOnBlock)
+        assert.are.equals(0, build.calcsTab.calcsOutput.ManaOnBlock)
+    end)
+
+    it("LifeOnBlock applies with no shield when BlockWithoutShield flag is set", function()
+        build.configTab.input.customMods = [[
+        50 Health Gained on Block
+        ]]
+        build.configTab:BuildModList()
+        build.configTab.modList:NewMod("BlockWithoutShield", "FLAG", true, "Test")
+        runCallback("OnFrame")
+        assert.is_true(build.calcsTab.calcsOutput.LifeOnBlock > 0)
+    end)
+
     it("BlockChance applies with no shield when BlockWithoutShield flag is set", function()
         build.configTab.input.customMods = [[
         +50% Block Chance

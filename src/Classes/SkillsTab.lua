@@ -928,7 +928,7 @@ local TREE_ID_DAMAGE_TYPES = {
 	["st4th"]  = { base = { "physical", "fire" },      conv = {} },                        -- Smelter's Wrath
 	-- Paladin
 	["hh7pa3"] = { base = {},                          conv = { "fire" } },                -- Healing Hands (Searing Light adds Fire)
-	["si4lgl"] = { base = { "fire" },                  conv = { "void" } },                -- Sigils of Hope (Symbols of Despair node converts to Void)
+	["si4lgl"] = { base = { "fire" },                  conv = { "void" } },                -- Symbols of Hope (Symbols of Despair node converts to Void)
 	["pa67ju"] = { base = { "fire" },                  conv = {} },                        -- Judgement
 	["ah443"]  = { base = {},                          conv = {} },                        -- Holy Aura
 	-- Acolyte base

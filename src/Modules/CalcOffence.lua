@@ -1284,6 +1284,15 @@ function calcs.offence(env, actor, activeSkill)
 		["ESPercentPerMinute"] = { type = "ES", upfront = false, percent = true, text = "ES/s", baseCost = 0, totalCost = 0, baseCostNoMult = 0, finalBaseCost = 0 },
 	}
 
+	-- @leb-regression-guard: transform-cost-bypass
+	-- Transform skills (Werebear/Spriggan/Swarmblade/Reaper Forms) MUST skip the
+	-- entire Mana/Rage/Soul cost block. In LE the Form ability has no Mana cost
+	-- itself: entering Form activates the Mutator (resource swap mana→rage for
+	-- Werebear/Swarmblade, mana→nothing for Spriggan, mana→soul-stack for Reaper)
+	-- and the bar-skills consumed in-Form are auto-given child abilities not
+	-- modeled in LEB's skills.json. Removing this guard would re-attribute mana
+	-- cost to the Form skill and inflate ManaCost diff vs LETools snapshots.
+	-- See REGRESSION_GUARDS.md "transform-cost-bypass".
 	if not skillModList:Flag(skillCfg, "HasNoCost") and not activeSkill.skillTypes[SkillType.Transform] then
 		--Support cost multipliers are calculated first and rounded down after 4 digits
 		local mult = floor(skillModList:More(skillCfg, "SupportManaMultiplier"), 4)

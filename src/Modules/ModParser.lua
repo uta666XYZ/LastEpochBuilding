@@ -594,6 +594,13 @@ local modTagList = {
 	["in swarmblade form"] = { tag = { type = "Condition", var = "InSwarmbladeForm" } },
 	["while in reaper form"] = { tag = { type = "Condition", var = "InReaperForm" } },
 	["in reaper form"] = { tag = { type = "Condition", var = "InReaperForm" } },
+	-- Druid passive node OR-conditionals. Translated to NAND on the other forms:
+	-- "In Human Or Spriggan" fires when NOT in {Werebear, Swarmblade, Reaper}.
+	-- "In Bear Or Swarmblade" fires when in {Werebear, Swarmblade}.
+	-- Used by Aspects of Might (1% Armor Per Str In Human/Spriggan + 1% Melee
+	-- Damage Per Str In Bear/Swarmblade) and similar Druid mastery nodes.
+	["in human or spriggan"] = { tag = { type = "Condition", varList = { "InWerebearForm", "InSwarmbladeForm", "InReaperForm" }, neg = true } },
+	["in bear or swarmblade"] = { tag = { type = "Condition", varList = { "InWerebearForm", "InSwarmbladeForm" } } },
 	-- "recently" conditions not yet handled
 	["if echoed recently"] = { tag = { type = "Condition", var = "EchoedRecently" } },
 	["if you have directly cast a cold spell recently"] = { tag = { type = "Condition", var = "DirectlyCastColdSpellRecently" } },
@@ -610,6 +617,29 @@ local modTagList = {
 	["while using evade"] = { tag = { type = "Condition", var = "UsingEvade" } },
 	["while using a catalyst"] = { tag = { type = "Condition", var = "UsingCatalyst" } },
 	["while using a shield"] = { tag = { type = "Condition", var = "UsingShield" } },
+	-- @leb-regression-guard:with-a-shield-condition
+	-- LE class trees use the short form "With A Shield" (e.g. Sentinel-90
+	-- "Sanctuary Guardian": +15% All Resistances With A Shield in notScalingStats).
+	-- Without this entry the trailing " with a shield" survives as residual extra
+	-- in modLib.parseMod, which sets node.extra=true in PassiveTree.lua and
+	-- prevents the entire mod from reaching modDB — silently dropping ~15 from
+	-- every resistance on B4Xq8aG6 (and any shield-using build).
+	-- Spec: spec/System/TestModParse_spec.lua "with a shield condition tag"
+	["with a shield"] = { tag = { type = "Condition", var = "UsingShield" } },
+	-- @leb-regression-guard:while-with-a-shield-condition
+	-- Sentinel-90 "Sanctuary Guardian" notScalingStats also uses the long form
+	-- "While With A Shield" (e.g. "+50 Armor While With A Shield"). Without this
+	-- entry the trailing " while with a shield" leaves residual extra and the
+	-- entire mod is silently dropped from modDB on AVa9YEkg (Paladin, lv95).
+	-- Spec: spec/System/TestModParse_spec.lua "while with a shield condition tag"
+	["while with a shield"] = { tag = { type = "Condition", var = "UsingShield" } },
+	-- @leb-regression-guard:per-1pct-increased-movement-speed
+	-- Unbroken Charge unique grants "+(11-30) Block Effectiveness per 1% Increased
+	-- Movement Speed". Without this matcher the trailing " per 1% increased
+	-- movement speed" leaves residual extra and the mod is silently dropped from
+	-- modDB. Multiplier:MovementSpeedInc is auto-populated in CalcSetup.lua.
+	-- Spec: spec/System/TestModParse_spec.lua "per 1% increased movement speed multiplier"
+	["per 1%% increased movement speed"] = { tag = { type = "Multiplier", var = "MovementSpeedInc" } },
 	["per forged weapon"] = { tag = { type = "Multiplier", var = "ForgedWeapon" } },
 	["while you have a forged weapon"] = { tag = { type = "Condition", var = "HaveForgedWeapon" } },
 	-- Runemaster: Glyph of Dominion / Arcane Momentum
@@ -861,6 +891,15 @@ local specialModList = {
 	-- Stone Shield (unique): "+1% Block Chance per 2% Endurance above the Cap"
 	["^%+?(%d+)%% block chance per (%d+)%% endurance above the cap$"] = function(_, num, div)
 		return { mod("BlockChance", "BASE", tonumber(num), { type = "PerStat", stat = "EnduranceOverCap", div = tonumber(div) }) }
+	end,
+	-- Urzil's Pride (unique): "1% Increased Mana Regeneration per 2% Uncapped Lightning Resistance"
+	-- @leb-regression-guard: urzils-pride-mana-regen-per-uncapped-lightning-res
+	-- Game behaviour is floored at integer steps (LETools matches this); we cannot use a
+	-- PerStat tag because ModStore.GetStat uses continuous scaling (intentional; see comment
+	-- at ModStore.lua:414). Instead we emit a BASE stat that CalcDefence reads after the
+	-- resist totals are computed, floors div, and injects the ManaRegen INC mod.
+	["^(%d+)%% increased mana regeneration per 2%% uncapped lightning resistance$"] = function(num)
+		return { mod("ManaRegenIncPerUncappedLightningRes_Per2", "BASE", tonumber(num)) }
 	end,
 	-- Paladin: "+N Maximum Symbols" (Polygram, Tetragram etc.)
 	["^%+?(%d+) maximum symbols?$"] = function(num)
@@ -1728,6 +1767,28 @@ specialModList["^%+?([%d%.]+)%% reduced bonus damage taken from critical strikes
 	return { mod("ReduceCritExtraDamage", "BASE", num) }
 end
 specialModList["^%+?([%d%.]+)%% less bonus damage taken from critical strikes$"] = function(num)
+	return { mod("ReduceCritExtraDamage", "BASE", num) }
+end
+-- Per Equipped Heretical Idol variant: scale by Multiplier:EquippedHereticalIdol
+-- (populated by CalcSetup at idol-altar processing time). The vanilla generic
+-- chain doesn't know which target stat "bonus damage taken from critical strikes"
+-- maps to, so handle this composite explicitly.
+specialModList["^%+?([%d%.]+)%% reduced bonus damage taken from critical strikes per equipped heretical idol$"] = function(num)
+	return { mod("ReduceCritExtraDamage", "BASE", num, { type = "Multiplier", var = "EquippedHereticalIdol" }) }
+end
+-- @leb-regression-guard:crits-abbreviation
+-- LE class trees abbreviate "Critical Strikes" as "Crits" on several Sentinel
+-- passives (Sentinel-14 Patient Doom, Sentinel-42 Iron Reflexes, Sentinel-114
+-- Heaven's Bulwark). Map them to the same ReduceCritExtraDamage stat.
+-- The "from crits$" tail must remain LONGER than the catch-all "from (.+)$"
+-- below, so scan()'s longest-pattern tie-breaking picks this specific form
+-- first. Shortening it or reordering will silently route Sentinel-114 to
+-- LEB_NotSupported and reintroduce a -30 CritExtraDmgRed diff on B4Xq8aG6.
+-- Spec: spec/System/TestModParse_spec.lua "crits abbreviation reduces crit damage"
+specialModList["^%+?([%d%.]+)%% reduced bonus damage taken from crits$"] = function(num)
+	return { mod("ReduceCritExtraDamage", "BASE", num) }
+end
+specialModList["^%+?([%d%.]+)%% less bonus damage taken from crits$"] = function(num)
 	return { mod("ReduceCritExtraDamage", "BASE", num) }
 end
 -- "bonus damage taken from X" for other X values is not yet modeled.

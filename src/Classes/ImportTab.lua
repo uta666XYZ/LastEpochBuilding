@@ -934,14 +934,12 @@ function ImportTabClass:DownloadLEToolsPlannerBuild(url)
             self:ImportPassiveTreeAndJewels(char)
             self:ImportItemsAndSkills(char)
             self:ImportBlessingsFromLETools(data)
-            -- Quest reward 状態は LETools planner JSON に含まれない。
-            -- 自動設定しない方針: デフォルト OFF とし、ユーザーが必要に応じて
-            -- Config tab で手動 ON にする (LETools 詳細情報習得方法.md 手順:
-            -- attribute tooltip に "Quest reward" が含まれていれば該当チェックを
-            -- 入れる)。以前は import 時に両方 ON していたが 0/2 build で +2 ズレ
-            -- が発生するため撤回。
-            self.build.configTab.input.questApophisMajasa = false
-            self.build.configTab.input.questTempleOfEterra = false
+            -- Auto-detect quest rewards from data.completedQuests.
+            -- See @leb-regression-guard:letools-quest-reward-from-completed-quests
+            -- on ImportTabClass:DetectLEToolsQuestRewards.
+            local hasApophis, hasEterra = self:DetectLEToolsQuestRewards(data)
+            self.build.configTab.input.questApophisMajasa = hasApophis
+            self.build.configTab.input.questTempleOfEterra = hasEterra
             self.build.configTab:BuildModList()
             self.build.configTab:UpdateControls()
             self.build.buildFlag = true
@@ -955,6 +953,34 @@ function ImportTabClass:DownloadLEToolsPlannerBuild(url)
             self.importCodeDetail = colorCodes.POSITIVE .. msg
         end, { header = "User-Agent: " .. browserUA })
     end, { header = "User-Agent: " .. browserUA })
+end
+
+-- @leb-regression-guard: letools-quest-reward-from-completed-quests
+-- LETools planner JSON DOES include quest completion via `data.completedQuests`
+-- (a list of numeric quest IDs). The two quests that grant +1 to all attributes
+-- are Apophis and Majasa (id 124) and Temple of Eterra (id 151). When both
+-- IDs appear, the character has +2 to all attributes from quest rewards.
+--
+-- Regression history (do NOT regress):
+--   * commit d19abfe34 (pre-2026-05-04): hardcoded both flags ON → broke 0/2
+--     and 1/2 builds with +1..+2 over-shoot.
+--   * 2026-05-04: hardcoded both OFF based on the (incorrect) belief that the
+--     planner JSON has no quest data → broke 1/2 and 2/2 builds with -1..-2
+--     attribute under-shoot. Empirically: 36/38 G1 ATTR_UNIFORM_OTHER builds
+--     showed Δ=-2 across all 5 attributes, all of them have both 124 and 151
+--     in completedQuests. See spec/System/TestLEToolsQuestImport_spec.lua and
+--     REGRESSION_GUARDS.md "letools-quest-reward-from-completed-quests".
+--
+-- Quest IDs are stable across the LETools planner API, the LETools DOM
+-- `quest-id` attribute, and the in-app save-file quest IDs.
+function ImportTabClass:DetectLEToolsQuestRewards(data)
+	local cq = (data and data.completedQuests) or {}
+	local hasApophis, hasEterra = false, false
+	for _, qid in ipairs(cq) do
+		if qid == 124 then hasApophis = true end
+		if qid == 151 then hasEterra = true end
+	end
+	return hasApophis, hasEterra
 end
 
 function ImportTabClass:BuildCharFromLETools(jsonData, data, buildId)

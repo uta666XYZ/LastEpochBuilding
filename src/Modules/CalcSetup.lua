@@ -648,21 +648,34 @@ function calcs.initEnv(build, mode, override, specEnv)
 		modDB:NewMod("EnduranceThreshold", "BASE", classStats["enduranceThresholdPerHealth"], "Base", { type = "PerStat", stat = "Life"})
 
 		-- Add attribute bonuses
-		modDB:NewMod("Armour", "INC", 4, "Strength", {type = "PerStat", stat = "Str"})
-		modDB:NewMod("Evasion", "BASE", 4, "Dexterity", {type = "PerStat", stat = "Dex"})
-		modDB:NewMod("WardRetention", "BASE", 2, "Intelligence", {type = "PerStat", stat = "Int"})
-		modDB:NewMod("Mana", "BASE", 2, "Attunement", {type = "PerStat", stat = "Att"})
-		modDB:NewMod("Life", "BASE", 6, "Vitality", {type = "PerStat", stat = "Vit"})
-		modDB:NewMod("PoisonResist", "BASE", 1, "Vitality", {type = "PerStat", stat = "Vit"})
-		modDB:NewMod("NecroticResist", "BASE", 1, "Vitality", {type = "PerStat", stat = "Vit"})
+		-- Reference Raw<Attr> (post-conversion residual, NOT including the converted twin).
+		-- Brutality must NOT inherit Strength's intrinsic +4% Armour etc. — see
+		-- @leb-regression-guard: id:s4-converted-attr-no-base-inherit (below) and
+		-- @leb-regression-guard: id:s4-perstat-base-includes-converted-twin in CalcPerform.lua.
+		modDB:NewMod("Armour", "INC", 4, "Strength", {type = "PerStat", stat = "RawStr"})
+		modDB:NewMod("Evasion", "BASE", 4, "Dexterity", {type = "PerStat", stat = "RawDex"})
+		modDB:NewMod("WardRetention", "BASE", 2, "Intelligence", {type = "PerStat", stat = "RawInt"})
+		modDB:NewMod("Mana", "BASE", 2, "Attunement", {type = "PerStat", stat = "RawAtt"})
+		modDB:NewMod("Life", "BASE", 6, "Vitality", {type = "PerStat", stat = "RawVit"})
+		modDB:NewMod("PoisonResist", "BASE", 1, "Vitality", {type = "PerStat", stat = "RawVit"})
+		modDB:NewMod("NecroticResist", "BASE", 1, "Vitality", {type = "PerStat", stat = "RawVit"})
 
-		-- Season 4 (1.4): converted attribute bonuses (same values as base attributes)
-		modDB:NewMod("Armour", "INC", 4, "Brutality", {type = "PerStat", stat = "Brutality"})
-		modDB:NewMod("Evasion", "BASE", 4, "Guile", {type = "PerStat", stat = "Guile"})
-		modDB:NewMod("Mana", "BASE", 2, "Apathy", {type = "PerStat", stat = "Apathy"})
-		modDB:NewMod("Life", "BASE", 6, "Rampancy", {type = "PerStat", stat = "Rampancy"})
-		modDB:NewMod("PoisonResist", "BASE", 1, "Rampancy", {type = "PerStat", stat = "Rampancy"})
-		modDB:NewMod("NecroticResist", "BASE", 1, "Rampancy", {type = "PerStat", stat = "Rampancy"})
+		-- Season 4 (1.4): converted attributes have their OWN unique passive bonuses,
+		-- they do NOT inherit the base-attribute bonuses (Brutality is not Strength).
+		-- @leb-regression-guard: id:s4-converted-attr-no-base-inherit
+		--   Verified against in-game LE 1.4: Brutality grants only "more melee damage
+		--   per mana cost" + "reduced damage leeched as health" — NO Armour INC.
+		--   Earlier LEB releases applied Strength's +4% Armour INC to Brutality (and
+		--   the equivalent base-attr bonuses to Guile/Apathy/Rampancy) on the false
+		--   premise that converted attributes inherit base-attribute bonuses. They
+		--   do not. Per-attribute correct effects are skill/passive specific and
+		--   handled by their own mod parsers + in-game tooltip text.
+		--   Re-introducing any of these lines (or a similar PerStat:<S4Attr> on
+		--   Armour/Evasion/Mana/Life/Resists) will inflate worst-diff builds like
+		--   Qdz2yXN3 (Necromancer, Brutality=33 → +132% Armour INC, 7x over LE).
+		--   Other S4 attributes (Guile/Apathy/Rampancy/Madness) need their actual
+		--   in-game effects implemented separately via tooltip-driven mod text.
+		-- do-not-remove
 
 		-- Initialise enemy modifier database
 		calcs.initModDB(env, enemyDB)
@@ -1402,13 +1415,26 @@ function calcs.initEnv(build, mode, override, specEnv)
 		["si4lgl"] = "SymbolsOfHopeEffect",
 	}
 	-- @leb-regression-guard: flame-ward-block-toggle
-	-- While-active duration buffs (e.g. Flame Ward) grant tree-node mods that the LE
-	-- engine only applies while the FlameWardMutator buff is up. Without an explicit
-	-- "Condition:Have<X>" flag from Config, these mods MUST NOT be added globally.
-	-- Test: spec/System/TestBlockSnapshot_spec.lua "Bakbr2Ne lv86 Sorcerer block snapshot"
+	-- @leb-regression-guard: form-tree-nodes-gated-by-condition
+	-- While-active duration buffs (Flame Ward) AND Druid/Lich Forms (Werebear,
+	-- Spriggan, Swarmblade, Reaper) grant tree-node mods that the LE engine only
+	-- applies while the corresponding Mutator buff (FlameWardMutator / form
+	-- Mutator with statsInForm wired via OnEnable) is up. Without an explicit
+	-- "Condition:Have<X>" or "Condition:In<X>Form" flag from Config, these mods
+	-- MUST NOT be added globally — otherwise socket-group enabled=true (LETools
+	-- import default) leaks the entire tree-node set into modDB.
+	-- Tests:
+	--   spec/System/TestBlockSnapshot_spec.lua "Bakbr2Ne lv86 Sorcerer block snapshot"
+	--   spec/System/TestS5FormTreeNodeGate_spec.lua (form treeId gate contract)
 	-- Maps treeId -> Condition flag name required for the buff to be considered active.
+	-- Form treeIds confirmed against game data (LE_datamining/extracted/ability_keyed_array.json):
+	--   wb8fo=Werebear Form, sf5rd=Spriggan Form, sbf4m=Swarmblade Form, rf1azz=Reaper Form.
 	local whileActiveBuffByTreeId = {
-		["fw3d"] = "HaveFlameWard",  -- Flame Ward (Mage): 3s duration, FlameWardMutator
+		["fw3d"]   = "HaveFlameWard",      -- Flame Ward (Mage): 3s duration, FlameWardMutator
+		["wb8fo"]  = "InWerebearForm",     -- Werebear Form (Druid)
+		["sf5rd"]  = "InSprigganForm",     -- Spriggan Form (Druid)
+		["sbf4m"]  = "InSwarmbladeForm",   -- Swarmblade Form (Druid)
+		["rf1azz"] = "InReaperForm",       -- Reaper Form (Lich)
 	}
 	local buffSkillTreePrefixes = {}
 	for _, group in pairs(build.skillsTab.socketGroupList) do
@@ -1508,6 +1534,60 @@ function calcs.initEnv(build, mode, override, specEnv)
 	local curSymbols = env.modDB:Sum("BASE", nil, "Multiplier:ActiveSymbol")
 	if curSymbols < maxSymbols then
 		env.modDB:NewMod("Multiplier:ActiveSymbol", "BASE", maxSymbols - curSymbols, "Auto:Symbols of Hope")
+	end
+
+	-- @leb-regression-guard:multiplier-movement-speed-inc
+	-- Auto-populate Multiplier:MovementSpeedInc from the sum of INC mods on
+	-- MovementSpeed so mods like Unbroken Charge's "+X Block Effectiveness per
+	-- 1% Increased Movement Speed" can resolve. Without this the matcher exists
+	-- but the multiplier is always 0 and the mod contributes nothing.
+	-- Verified against AVa9YEkg (Paladin lv95) BlockEffectiveness.
+	-- Spec: spec/System/TestCalcSetup_spec.lua "MovementSpeedInc multiplier auto-populates"
+	local msInc = env.modDB:Sum("INC", nil, "MovementSpeed")
+	if msInc and msInc > 0 then
+		env.modDB:NewMod("Multiplier:MovementSpeedInc", "BASE", msInc, "Auto:MovementSpeed")
+	end
+
+	-- @leb-regression-guard: symbols-of-hope-inc-not-more
+	-- Symbols of Hope: each active symbol grants +20% INCREASED Health Regen (additive
+	-- with other INC mods, NOT a separate MORE multiplier). The si4lgl-24 Meditation
+	-- node doubles the per-symbol value to 40%. The per-symbol value is itself scaled
+	-- by SymbolsOfHopeEffect INC (Sentinel-119 Covenant of Light: +4%/pt for both Holy
+	-- Aura and Symbols of Hope effect).
+	-- Verified against QDxZjL4J Paladin (LETools healthRegen=294.33):
+	--   10 symbols × 20% × (1 + 0.20 SymbolsOfHopeEffect INC) = 240% INC, additive
+	--   with global LifeRegen INC; matches LETools breakdown "Increased: 240%".
+	-- The pre-fix MORE shape (`(1 + globalInc) * (1 + 0.20 * symbols)`) would have
+	-- produced 60 × 2.52 × 3.0 ≈ 453 instead of the actual ~295.
+	-- Spec: spec/System/TestSymbolsOfHope_spec.lua
+	local sigilsPrefix = buffSkillTreePrefixes and buffSkillTreePrefixes["si4lgl-"]
+	if env.mode_buffs and sigilsPrefix and sigilsPrefix.enabled then
+		local hasMeditation = env.allocNodes["si4lgl-24"] ~= nil
+		local perSymbolPct = hasMeditation and 40 or 20
+		local sohEffectInc = env.modDB:Sum("INC", nil, "SymbolsOfHopeEffect")
+		local scaledPct = perSymbolPct * (1 + sohEffectInc / 100)
+		env.modDB:NewMod("LifeRegen", "INC", scaledPct, "Symbols of Hope",
+			{ type = "Multiplier", var = "ActiveSymbol" })
+	end
+
+	-- @leb-regression-guard: sentinel-93-mana-regen-from-holy-aura
+	-- Sentinel-93 (Covenant of Dominion) notScalingStat: "25% Increased Mana Regen
+	-- From Holy Aura" activates at threshold 5 (i.e. fully allocated). The cached
+	-- parse tags this mod with SkillName=Holy Aura, but ManaRegen is summed at
+	-- CalcDefence:580 with cfg=nil so the SkillName tag never matches and the
+	-- bonus contributes nothing. The LE engine treats "From Holy Aura" as an
+	-- always-on while-active condition: as long as Holy Aura is on the bar and
+	-- enabled, the bonus applies globally. Inject a clean ManaRegen INC mod
+	-- scaled by HolyAuraEffect (Sentinel-119 Covenant of Light: +4%/pt) when
+	-- both Sentinel-93 (≥5pts) and Holy Aura (ah443-) are active.
+	-- Spec: spec/System/TestSentinel93ManaRegen_spec.lua
+	local holyAuraPrefix = buffSkillTreePrefixes and buffSkillTreePrefixes["ah443-"]
+	local s93 = env.allocNodes["Sentinel-93"]
+	if env.mode_buffs and holyAuraPrefix and holyAuraPrefix.enabled
+			and s93 and (s93.alloc or 0) >= 5 then
+		local haEffectInc = env.modDB:Sum("INC", nil, "HolyAuraEffect")
+		local scaledPct = 25 * (1 + haEffectInc / 100)
+		env.modDB:NewMod("ManaRegen", "INC", scaledPct, "Sentinel-93 Covenant of Dominion")
 	end
 
 	-- Find skills granted by tree nodes

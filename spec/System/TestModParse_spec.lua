@@ -70,6 +70,84 @@ describe("TestModParse", function()
         assert.are.equals(81, build.configTab.modList:Sum("BASE", nil, "NecroticResist"))
     end)
 
+    -- @leb-regression-guard:crits-abbreviation
+    -- Locks the parser routing for the Sentinel-tree "Crits" abbreviation.
+    -- If the specific "from crits$" patterns get reordered after the
+    -- "from (.+)$" catch-all in src/Modules/ModParser.lua, scan() picks the
+    -- catch-all first (longest-pattern tie-breaking), the value falls through
+    -- to LEB_NotSupported, and Sentinel-114 Heaven's Bulwark stops crediting
+    -- ReduceCritExtraDamage. This reproduces the original B4Xq8aG6 -30 diff.
+    it("crits abbreviation reduces crit damage", function()
+        build.configTab.input.customMods = "30% Reduced Bonus Damage Taken From Crits\n\z
+        2% Reduced Bonus Damage Taken From Crits\n\z
+        5% Less Bonus Damage Taken From Crits"
+        build.configTab:BuildModList()
+        runCallback("OnFrame")
+        assert.are.equals(37, build.configTab.modList:Sum("BASE", nil, "ReduceCritExtraDamage"))
+    end)
+
+    -- @leb-regression-guard:with-a-shield-condition
+    -- Sentinel-90 "Sanctuary Guardian" lists "+15% All Resistances With A Shield"
+    -- in its notScalingStats. Without the "with a shield" condition mapping in
+    -- ModParser.modTagList, the trailing condition survives as residual extra
+    -- and PassiveTree.lua line 421-423 sets node.extra=true, causing the entire
+    -- mod to be discarded — silently dropping ~15 from every resist on B4Xq8aG6.
+    it("with a shield condition tag", function()
+        build.configTab.input.customMods = "+15% All Resistances With A Shield"
+        build.configTab:BuildModList()
+        runCallback("OnFrame")
+        -- All seven resists must each receive +15 BASE tagged with UsingShield.
+        -- ModStoreClass:EvalMod uses cfg.skillCond[var] for Condition tag matching
+        -- (see ModStore.lua line 563/574), so probe the cfg with skillCond set.
+        local resists = { "FireResist", "ColdResist", "LightningResist",
+            "PhysicalResist", "NecroticResist", "PoisonResist", "VoidResist" }
+        for _, key in ipairs(resists) do
+            assert.are.equals(15, build.configTab.modList:Sum("BASE", { skillCond = { UsingShield = true } }, key))
+            assert.are.equals(0,  build.configTab.modList:Sum("BASE", { skillCond = { UsingShield = false } }, key))
+        end
+    end)
+
+    -- @leb-regression-guard:while-with-a-shield-condition
+    -- Sentinel-90 "Sanctuary Guardian" notScalingStats also uses the long form
+    -- "+50 Armor While With A Shield". Without the "while with a shield" entry
+    -- the trailing condition leaves residual extra (non-nil), which causes
+    -- ConfigOptions.customMods (and PassiveTree.lua node ingestion) to drop the
+    -- entire mod silently. We assert at the parseMod boundary so the test
+    -- exercises the parser path even when ModList:Sum cfg semantics differ.
+    it("while with a shield condition tag", function()
+        local mods, extra = modLib.parseMod("+50 Armor While With A Shield")
+        assert.is_nil(extra, "parseMod must consume 'while with a shield' (residual='" .. tostring(extra) .. "')")
+        assert.is_not_nil(mods)
+        assert.are.equals(1, #mods)
+        assert.are.equals("Armour", mods[1].name)
+        assert.are.equals("BASE", mods[1].type)
+        assert.are.equals(50, mods[1].value)
+        local tag = mods[1][1]
+        assert.is_not_nil(tag, "expected a Condition tag on the mod")
+        assert.are.equals("Condition", tag.type)
+        assert.are.equals("UsingShield", tag.var)
+    end)
+
+    -- @leb-regression-guard:per-1pct-increased-movement-speed
+    -- Unbroken Charge unique grants "+(11-30) Block Effectiveness per 1%
+    -- Increased Movement Speed". Without the "per 1% increased movement speed"
+    -- matcher the trailing suffix leaves residual extra and the entire mod is
+    -- silently dropped. The Multiplier:MovementSpeedInc auto-injection in
+    -- CalcSetup is verified separately at the build level.
+    it("per 1% increased movement speed multiplier", function()
+        local mods, extra = modLib.parseMod("+21 Block Effectiveness per 1% Increased Movement Speed")
+        assert.is_nil(extra, "parseMod must consume 'per 1% increased movement speed' (residual='" .. tostring(extra) .. "')")
+        assert.is_not_nil(mods)
+        assert.are.equals(1, #mods)
+        assert.are.equals("BlockEffectiveness", mods[1].name)
+        assert.are.equals("BASE", mods[1].type)
+        assert.are.equals(21, mods[1].value)
+        local tag = mods[1][1]
+        assert.is_not_nil(tag, "expected a Multiplier tag on the mod")
+        assert.are.equals("Multiplier", tag.type)
+        assert.are.equals("MovementSpeedInc", tag.var)
+    end)
+
     it("attributes", function()
         build.configTab.input.customMods = "+2 to All Attributes"
         build.configTab:BuildModList()

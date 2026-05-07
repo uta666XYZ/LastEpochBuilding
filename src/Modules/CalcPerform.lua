@@ -300,13 +300,57 @@ local function doActorAttribsConditions(env, actor)
 	}
 	for _, conv in ipairs(attrConversions) do
 		output[conv.dst] = round(calcLib.val(modDB, conv.dst))
+		conv.directGrant = output[conv.dst]
 	end
 	for _, conv in ipairs(attrConversions) do
 		local pct = modDB:Sum("BASE", nil, conv.modName)
+		conv.convPct = pct or 0
+		conv.convSrcValue = output[conv.src]
 		if pct and pct > 0 then
 			local converted = round(output[conv.src] * pct / 100)
+			conv.convertedAmount = converted
 			output[conv.dst] = output[conv.dst] + converted
 			output[conv.src] = output[conv.src] - converted
+		else
+			conv.convertedAmount = 0
+		end
+	end
+	-- @leb-regression-guard: id:s4-perstat-base-includes-converted-twin
+	-- Mirror post-conversion base attributes as Raw* values. The intrinsic
+	-- character +4% Armour / +4 Evasion / +2 WardRetention / +2 Mana / +6
+	-- Life / +1 PoisonResist / +1 NecroticResist registered in CalcSetup
+	-- now reference Raw<Attr> via PerStat tags so they remain post-conversion
+	-- (matching guard s4-converted-attr-no-base-inherit: Brutality MUST NOT
+	-- inherit Strength's intrinsic +4% Armour). All other text-parsed
+	-- "per <attribute>" mods (passive nodes, item affixes) keep PerStat:<Attr>
+	-- and at runtime ModStore.EvalMod sums the converted twin (Brutality for
+	-- Str, etc.) — verified in LE: Druid passive "Aspects of Might" gives
+	-- 1% Armour Per Strength In Human/Spriggan and counts Brutality (Qb6WlbxD
+	-- Brutality=198 → ~204% Armour). See Obsidian
+	-- 'Development/Calculator/S4 PerStat semantics.md'.
+	output.RawStr = output.Str
+	output.RawDex = output.Dex
+	output.RawInt = output.Int
+	output.RawAtt = output.Att
+	output.RawVit = output.Vit
+	-- Build breakdowns for converted attributes (Madness/Rampancy/Brutality/Guile/Apathy)
+	-- so the Calcs tab tooltip exposes direct grants + conversion contribution.
+	if breakdown then
+		for _, conv in ipairs(attrConversions) do
+			if output[conv.dst] ~= 0 or conv.convertedAmount ~= 0 or conv.directGrant ~= 0 then
+				local lines = {}
+				if conv.directGrant ~= 0 then
+					t_insert(lines, s_format("%g ^8(direct grants of %s)", conv.directGrant, conv.dst))
+				end
+				if conv.convertedAmount ~= 0 then
+					t_insert(lines, s_format("+ %g ^8(%g%% of %s [%g] converted to %s)",
+						conv.convertedAmount, conv.convPct, conv.src, conv.convSrcValue, conv.dst))
+				end
+				if #lines > 0 then
+					t_insert(lines, s_format("= %g", output[conv.dst]))
+					breakdown[conv.dst] = lines
+				end
+			end
 		end
 	end
 

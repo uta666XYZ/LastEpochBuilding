@@ -236,13 +236,15 @@
       "+125 Armor",
       "{rounding:Integer}+(6-10) Attunement",
       "{rounding:Integer}+(9-15) Strength",
-      "+(10-20)% Lightning Resistance"
+      "+(10-20)% Lightning Resistance",
+      "1% Increased Mana Regeneration per 2% Uncapped Lightning Resistance"
     ],
     "rollIds": [
       null,
       0,
       0,
-      0
+      0,
+      null
     ],
     "overrideLevelRequirement": false
   },
@@ -7842,7 +7844,7 @@
     "mods": [
       "{rounding:Integer}+(1-2) to Symbols of Hope",
       "(20-40)% Increased Symbol Gain Rate",
-      "(70-80)% of Sigils of Hope Mana Cost consumed to cast it every 6 seconds while above half mana",
+      "(70-80)% of Symbols of Hope Mana Cost consumed to cast it every 6 seconds while above half mana",
       "(15-25)% Increased Healing Effectiveness",
       "{rounding:Integer}(10-15)% increased Armor"
     ],

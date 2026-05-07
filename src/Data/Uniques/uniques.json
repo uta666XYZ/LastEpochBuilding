@@ -236,13 +236,15 @@
       "+125 Armor",
       "{rounding:Integer}+(6-10) Attunement",
       "{rounding:Integer}+(9-15) Strength",
-      "+(10-20)% Lightning Resistance"
+      "+(10-20)% Lightning Resistance",
+      "1% Increased Mana Regeneration per 2% Uncapped Lightning Resistance"
     ],
     "rollIds": [
       null,
       0,
       0,
-      0
+      0,
+      null
     ],
     "overrideLevelRequirement": false
   },
@@ -7810,7 +7812,7 @@
     "mods": [
       "{rounding:Integer}+(1-2) to Symbols of Hope",
       "(20-40)% Increased Symbol Gain Rate",
-      "(70-80)% of Sigils of Hope Mana Cost consumed to cast it every 6 seconds while above half mana",
+      "(70-80)% of Symbols of Hope Mana Cost consumed to cast it every 6 seconds while above half mana",
       "(15-25)% Increased Healing Effectiveness",
       "{rounding:Integer}(10-15)% increased Armor"
     ],
@@ -10634,6 +10636,7 @@
     "req": {
       "level": 0
     },
+    "_leb_regression_guard": "exulis-all-attributes-range: +(10-20) is the correct upper bound. Game extract uniques_v3.json id=469 mod[1] maxValue=20.0. LETools display shows '+(10 to 20) to All Attributes'. byte=156 with span+1 rule => 10 + 156/255*11 = 16.73 -> floor 16, matches in-game display.",
     "mods": [
       "+(1-2) to Skills",
       "+(10-20) to All Attributes",

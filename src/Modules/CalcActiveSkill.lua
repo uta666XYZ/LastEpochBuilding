@@ -640,6 +640,14 @@ function calcs.getItemSkillTagConversions(env, grantedEffect)
 		for _, line in ipairs(modLines) do
 			local text = (line.line or ""):lower()
 			local dst = text:match("^" .. nameLower:gsub("(%W)", "%%%1") .. " is converted to (%w+)")
+			if not dst then
+				-- @leb-regression-guard: lament-base-damage-conversion
+				-- Lament of the Lost Refuge: "100% of Volcanic Orb Base Damage
+				-- Converted to Void". Only the full 100% form swaps the skill's
+				-- intrinsic damage tag; partial conversions stay handled by the
+				-- generic "% damage converted" suffix chain elsewhere.
+				dst = text:match("^100%% of " .. nameLower:gsub("(%W)", "%%%1") .. " base damage converted to (%w+)$")
+			end
 			if dst then
 				local dstCap = dst:sub(1, 1):upper() .. dst:sub(2):lower()
 				if damageTypeBitsByName[dstCap] then
@@ -670,6 +678,73 @@ function calcs.getItemSkillTagConversions(env, grantedEffect)
 	end
 	return addBits, removeBits
 end
+
+-- @leb-regression-guard: lament-base-damage-conversion
+-- Returns the lower-case destination damage type ("fire" / "cold" /
+-- "lightning" / "necrotic" / "void" / "physical" / "poison") that the
+-- equipped item set forces this skill's BASE DAMAGE stat keys onto, or
+-- nil if no full conversion applies. Used by mergeSkillInstanceMods to
+-- rewrite stat keys like `spell_base_fire_damage` -> `spell_base_void_damage`
+-- so the skill's stats.json base value flows into the destination type's
+-- damage pool. Pairs with getItemSkillTagConversions, which swaps the
+-- skill's intrinsic damage tag for matching affix targeting.
+--
+-- Pattern matched: "100% of <Skill> Base Damage Converted to <Type>"
+-- (Lament of the Lost Refuge, etc.). Only 100% performs the full swap;
+-- partial conversions are handled by the generic conversion suffix chain
+-- and don't rewrite the base damage stat key.
+function calcs.getItemSkillBaseDamageConversion(env, grantedEffect)
+	if not (env and env.player and env.player.itemList and grantedEffect and grantedEffect.name) then
+		return nil
+	end
+	local nameLower = grantedEffect.name:lower()
+	local namePat = "^100%% of " .. nameLower:gsub("(%W)", "%%%1") .. " base damage converted to (%w+)$"
+	local function scan(modLines)
+		if not modLines then return nil end
+		for _, line in ipairs(modLines) do
+			local text = (line.line or ""):lower()
+			local dst = text:match(namePat)
+			if dst then
+				local dstCap = dst:sub(1, 1):upper() .. dst:sub(2):lower()
+				if damageTypeBitsByName[dstCap] then
+					return dst
+				end
+			end
+		end
+		return nil
+	end
+	for _, item in pairs(env.player.itemList) do
+		if item then
+			local r = scan(item.explicitModLines) or scan(item.implicitModLines) or scan(item.enchantModLines)
+			if r then return r end
+		end
+	end
+	return nil
+end
+
+-- Damage-type stat-key prefixes recognized by SkillStatMap. When a skill is
+-- under a "100% of <Skill> Base Damage Converted to <Type>" item conversion
+-- (e.g. Lament -> Volcanic Orb), the stat key is rewritten from
+-- "<prefix><srcType>_damage" to "<prefix><dstType>_damage" before lookup so
+-- the skill's base damage flows into the destination damage pool.
+local BASE_DAMAGE_STAT_PREFIXES = {
+	"spell_base_", "melee_base_", "bow_base_", "throwing_base_", "None_base_",
+}
+local BASE_DAMAGE_STAT_TYPES = {
+	"fire", "cold", "lightning", "necrotic", "void", "physical", "poison",
+}
+function calcs.swapBaseDamageStatKey(stat, dstType)
+	if not (stat and dstType) then return stat end
+	for _, prefix in ipairs(BASE_DAMAGE_STAT_PREFIXES) do
+		for _, dt in ipairs(BASE_DAMAGE_STAT_TYPES) do
+			if dt ~= dstType and stat == prefix .. dt .. "_damage" then
+				return prefix .. dstType .. "_damage"
+			end
+		end
+	end
+	return stat
+end
+
 
 -- OR an additions bitmap into a skillTypes set + keywordFlags integer.
 local TAG_ADDITION_BITS = {
