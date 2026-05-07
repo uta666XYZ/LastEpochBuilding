@@ -1580,6 +1580,56 @@ Symptom before fix (BOwJnY3Y Beastmaster, eb5656-2 #3 "Safeguard"
 
 **Establishing commit:** `<unset; bump after first commit on this branch>`
 
+### `mourningfrost-per-dex-resist-penalty`
+
+Mourningfrost (Leather Boots unique, id 19) carries a per-Dexterity
+penalty `-1% Physical and Cold Resistance per point of Dexterity`
+(per LE_datamining `unique_mods_generated.json` id=19). Before fix
+`uniques_1_4.json` listed only the freeze-rate-multiplier and
+movement-speed mods, so LEB's Cold/Phys totals were ~Dex points higher
+than LE on every Mourningfrost build (e.g. Qdz2XagK Falconer Dex=91:
+LEB Cold=72 / Phys=85, LE Cold=−19 / Phys=−5, both Δ≈+91).
+
+Mod text was added as two separate lines `-1% Physical Resistance per
+Dexterity` / `-1% Cold Resistance per Dexterity` to match LEB's existing
+ModParser per-stat patterns (parses to `PhysicalResist|ColdResist BASE
+-1` with `PerStat:Dex` tag).
+
+| Site | File | What it does |
+|---|---|---|
+| data | `src/Data/Uniques/uniques_1_4.json` (id 19, Mourningfrost) | Adds the two missing per-Dex resist penalty mod lines |
+
+**Spec:** `spec/System/TestMourningfrostMods_spec.lua`
+- "uniques_1_4.json Mourningfrost has per-Dexterity Phys+Cold resist penalty"
+- "ModParser parses '-1% Physical Resistance per Dexterity' as PerStat:Dex"
+- "ModParser parses '-1% Cold Resistance per Dexterity' as PerStat:Dex"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `flat-damage-to-attacks-and-spells`
+
+LE uses the phrasing `<N> <Type> Damage to/with Attacks and Spells` on flat-added
+damage mods that should apply to BOTH attack-source skills (Melee|Throwing|Bow)
+AND spell-source skills. Mourningfrost (id 19) carries
+`+1 Cold Damage to Attacks and Spells per Dexterity` as one such case.
+
+Without explicit `modFlagList` entries, the parser would either drop the keyword
+or only catch the trailing word ("spells"), causing the attack side to silently
+fall through and the mod to undercount on attack-skill builds. Four phrasing
+permutations are registered (`to`/`with` × `Attacks and Spells`/`Spells and
+Attacks`) so any LE wording lands on `KeywordFlag.Attack | KeywordFlag.Spell`.
+
+| Site | File | What it does |
+|---|---|---|
+| parser | `src/Modules/ModParser.lua` (`modFlagList` near `to attacks and spells`) | Maps the four phrasings to `bor(KeywordFlag.Attack, KeywordFlag.Spell)` |
+| data | `src/Data/Uniques/uniques_1_4.json` (id 19) | Carries the mod line that depends on the parser entry |
+
+**Spec:** `spec/System/TestMourningfrostMods_spec.lua`
+- "ModParser parses '+1 Cold Damage to Attacks and Spells per Dexterity' with Attack+Spell flags and PerStat:Dex"
+- "uniques_1_4.json Mourningfrost has per-Dexterity Phys+Cold resist penalty" (extended to also cover the cold-damage mod line)
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
 ## Adding a new guard
 
 1. Above the fix in source, add a comment block:

@@ -423,6 +423,17 @@ local modFlagList = {
 	["hit"] = { flags = ModFlag.Hit },
 	["minion skills"] = { tag = { type = "SkillType", skillType = SkillType.Minion } },
 	["with elemental spells"] = { keywordFlags = bor(KeywordFlag.Lightning, KeywordFlag.Cold, KeywordFlag.Fire) },
+	-- @leb-regression-guard:flat-damage-to-attacks-and-spells
+	-- LE uses "<N> <Type> Damage to/with Attacks and Spells" phrasing on flat-added
+	-- damage mods that should apply to BOTH attack-source skills (Melee|Throwing|Bow)
+	-- AND spell-source skills (e.g. Mourningfrost: "+1 cold damage to attacks and
+	-- spells per point of dexterity"). Without these modFlagList entries, the
+	-- parser would either drop the keyword or only catch the second word ("spells")
+	-- and miss the attack side. Spec: TestModParserAttacksAndSpells_spec.lua.
+	["to attacks and spells"] = { keywordFlags = bor(KeywordFlag.Attack, KeywordFlag.Spell) },
+	["to spells and attacks"] = { keywordFlags = bor(KeywordFlag.Attack, KeywordFlag.Spell) },
+	["with attacks and spells"] = { keywordFlags = bor(KeywordFlag.Attack, KeywordFlag.Spell) },
+	["with spells and attacks"] = { keywordFlags = bor(KeywordFlag.Attack, KeywordFlag.Spell) },
 	["minion"] = { addToMinion = true },
 	-- Leech suffixes
 	["leeched as health"] = { modSuffix = "LifeLeech" },
