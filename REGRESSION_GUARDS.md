@@ -1548,6 +1548,38 @@ QDxZjL4J Paladin: pre-fix `ManaRegen=13.2 / Inc=65`; post-fix `18.3 / 129`.
 
 **Establishing commit:** `<unset; bump after first commit on this branch>`
 
+### `eterras-blessing-buff-gating`
+
+Eterra's Blessing (Primalist, treeId `eb5656`) is a 4s-duration cast buff
+(`skillTypeTags=131328` = `Buff(131072) | Spell(256)`), so DataProcess
+unpacks `SkillType.Buff` from the bits and CalcSetup routes it into the
+buff-tree bucket. Without an explicit entry in `whileActiveBuffByTreeId`
+the `enabled` gate on those tree-node mods degrades from
+`Condition:HaveEterrasBlessing` to `group.enabled` — i.e. "skill is on
+the bar" instead of "buff is currently active". LE's Buffs panel shows
+EB OFF by default (matching its 4s timed-duration semantics), so for
+parity LEB must default it OFF too and require the condition flag to
+turn it on.
+
+Symptom before fix (BOwJnY3Y Beastmaster, eb5656-2 #3 "Safeguard"
++15% Elemental + +15% Poison Resistance per point):
+
+| Stat | LE | LEB | Δ |
+|---|---|---|---|
+| FireResist   | 56  | 101 | +45 |
+| ColdResist   | 80  | 125 | +45 |
+| LightResist  | 179 | 224 | +45 |
+| PoisonResist | 1   | 46  | +45 |
+
+| Site | File | What it does |
+|---|---|---|
+| gate | `src/Modules/CalcSetup.lua` (~line 1432, `whileActiveBuffByTreeId`) | Adds `["eb5656"] = "HaveEterrasBlessing"` next to Flame Ward / Werebear etc |
+
+**Spec:** `spec/System/TestEterrasBlessingBuffGating_spec.lua`
+- "CalcSetup whileActiveBuffByTreeId maps eb5656 to HaveEterrasBlessing"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
 ## Adding a new guard
 
 1. Above the fix in source, add a comment block:

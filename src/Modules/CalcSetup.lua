@@ -1429,12 +1429,28 @@ function calcs.initEnv(build, mode, override, specEnv)
 	-- Maps treeId -> Condition flag name required for the buff to be considered active.
 	-- Form treeIds confirmed against game data (LE_datamining/extracted/ability_keyed_array.json):
 	--   wb8fo=Werebear Form, sf5rd=Spriggan Form, sbf4m=Swarmblade Form, rf1azz=Reaper Form.
+	-- @leb-regression-guard:eterras-blessing-buff-gating
+	-- Eterra's Blessing (eb5656) is a 4s-duration cast buff (skillTypeTags=131328
+	-- carries the Buff bit), and its specialization tree node "Safeguard" (eb5656-2)
+	-- grants "+15% Elemental Resistance" + "+15% Poison Resistance" per point. Without
+	-- this entry the SkillType.Buff bit alone is enough for CalcSetup's buff bucket,
+	-- but the gate becomes `enabled = group.enabled` — i.e. "skill is on the bar"
+	-- rather than "buff is currently active". LE's Buffs panel shows EB OFF by
+	-- default, so for parity LEB must require an explicit Condition:HaveEterrasBlessing
+	-- flag (matches Flame Ward fw3d's pattern).
+	-- Symptoms before fix (BOwJnY3Y Beastmaster, eb5656-2 #3):
+	--   * FireResist  LE=56  LEB=101 Δ=+45
+	--   * ColdResist  LE=80  LEB=125 Δ=+45
+	--   * LightResist LE=179 LEB=224 Δ=+45
+	--   * PoisonResist LE=1  LEB=46  Δ=+45
+	-- See REGRESSION_GUARDS.md "eterras-blessing-buff-gating".
 	local whileActiveBuffByTreeId = {
-		["fw3d"]   = "HaveFlameWard",      -- Flame Ward (Mage): 3s duration, FlameWardMutator
-		["wb8fo"]  = "InWerebearForm",     -- Werebear Form (Druid)
-		["sf5rd"]  = "InSprigganForm",     -- Spriggan Form (Druid)
-		["sbf4m"]  = "InSwarmbladeForm",   -- Swarmblade Form (Druid)
-		["rf1azz"] = "InReaperForm",       -- Reaper Form (Lich)
+		["fw3d"]   = "HaveFlameWard",        -- Flame Ward (Mage): 3s duration, FlameWardMutator
+		["wb8fo"]  = "InWerebearForm",       -- Werebear Form (Druid)
+		["sf5rd"]  = "InSprigganForm",       -- Spriggan Form (Druid)
+		["sbf4m"]  = "InSwarmbladeForm",     -- Swarmblade Form (Druid)
+		["rf1azz"] = "InReaperForm",         -- Reaper Form (Lich)
+		["eb5656"] = "HaveEterrasBlessing",  -- Eterra's Blessing (Primalist): 4s duration cast buff
 	}
 	local buffSkillTreePrefixes = {}
 	for _, group in pairs(build.skillsTab.socketGroupList) do
