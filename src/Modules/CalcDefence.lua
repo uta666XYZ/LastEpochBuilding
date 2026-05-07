@@ -259,6 +259,23 @@ function calcs.defence(env, actor)
 	output.Endurance = m_min(endTotalEarly, data.misc.EnduranceCap)
 	output.EnduranceOverCap = m_max(endTotalEarly - data.misc.EnduranceCap, 0)
 
+	-- Urzil's Pride (unique): "1% Increased Mana Regeneration per 2% Uncapped Lightning Resistance"
+	-- @leb-regression-guard: urzils-pride-mana-regen-per-uncapped-lightning-res
+	-- Inject AFTER the resist totals are computed (LightningResistTotal is the uncapped
+	-- value, set above at line 233). Floors at integer steps to match LETools / in-game
+	-- display (LETools breakdown for QDxZjL4J Paladin shows 64% body-armour contribution
+	-- at LightningResistTotal=129, giving ManaRegen=18.32 with Belt 35% + Sentinel-93 30%).
+	-- Cannot use a PerStat tag because ModStore.GetStat uses continuous scaling
+	-- (intentional; see comment at ModStore.lua:414).
+	local manaRegenIncPerUncappedLR_Per2 = modDB:Sum("BASE", nil, "ManaRegenIncPerUncappedLightningRes_Per2")
+	if manaRegenIncPerUncappedLR_Per2 > 0 then
+		local lrTotal = output.LightningResistTotal or 0
+		local manaRegenInc = m_floor(lrTotal / 2) * manaRegenIncPerUncappedLR_Per2
+		if manaRegenInc > 0 then
+			modDB:NewMod("ManaRegen", "INC", manaRegenInc, "Urzil's Pride")
+		end
+	end
+
 	-- Block
 	-- @leb-regression-guard: block-requires-shield
 	-- LE requires a Shield in off-hand for Block Chance / Block Effectiveness to apply

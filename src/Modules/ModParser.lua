@@ -892,6 +892,15 @@ local specialModList = {
 	["^%+?(%d+)%% block chance per (%d+)%% endurance above the cap$"] = function(_, num, div)
 		return { mod("BlockChance", "BASE", tonumber(num), { type = "PerStat", stat = "EnduranceOverCap", div = tonumber(div) }) }
 	end,
+	-- Urzil's Pride (unique): "1% Increased Mana Regeneration per 2% Uncapped Lightning Resistance"
+	-- @leb-regression-guard: urzils-pride-mana-regen-per-uncapped-lightning-res
+	-- Game behaviour is floored at integer steps (LETools matches this); we cannot use a
+	-- PerStat tag because ModStore.GetStat uses continuous scaling (intentional; see comment
+	-- at ModStore.lua:414). Instead we emit a BASE stat that CalcDefence reads after the
+	-- resist totals are computed, floors div, and injects the ManaRegen INC mod.
+	["^(%d+)%% increased mana regeneration per 2%% uncapped lightning resistance$"] = function(num)
+		return { mod("ManaRegenIncPerUncappedLightningRes_Per2", "BASE", tonumber(num)) }
+	end,
 	-- Paladin: "+N Maximum Symbols" (Polygram, Tetragram etc.)
 	["^%+?(%d+) maximum symbols?$"] = function(num)
 		return { mod("MaximumSymbols", "BASE", tonumber(num)) }

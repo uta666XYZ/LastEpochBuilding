@@ -1477,6 +1477,45 @@ gap; remaining residual is tracked separately.
 
 **Establishing commit:** `<unset; bump after first commit on this branch>`
 
+### `urzils-pride-mana-regen-per-uncapped-lightning-res`
+
+Urzil's Pride (unique Iron Armor) carries the inherent mod
+`1% Increased Mana Regeneration per 2% Uncapped Lightning Resistance`. The
+mod was missing from `src/Data/Uniques/uniques*.json` entirely (LEB only had
+the four legendary-affix slots). LE displays / LETools breakdown both treat
+the per-2% step as **floored at integer percentage points**, not continuous
+— so at `LightningResistTotal=129` the contribution is `floor(129/2)*1=64`%
+INC, not 64.5%.
+
+A naive PerStat tag (`{type="PerStat", stat="LightningResistTotal", div=2}`)
+cannot be used because `ModStore.lua:GetStat` deliberately uses continuous
+scaling for "per N stat" mods (justified at `ModStore.lua:414` for things
+like Wisdom node `0.3% mana regen per 10 max mana`). Continuous scaling
+produces 64.5 here and surfaces as `ManaRegen=18.4` instead of the
+LETools-expected `18.32`.
+
+The fix instead emits an intermediate BASE stat
+`ManaRegenIncPerUncappedLightningRes_Per2` from ModParser, which CalcDefence
+reads after the resist totals are computed (line ~262, between resist loop
+end and Block computation), floors `LightningResistTotal / 2`, and injects
+the resulting `ManaRegen` INC mod via `modDB:NewMod`. This mirrors the
+established Sentinel Defiance pattern (`EnduranceThresholdPerUncappedEleRes`).
+
+QDxZjL4J Paladin: pre-fix `ManaRegen=13.2 / Inc=65`; post-fix `18.3 / 129`.
+
+| Site | File | What it does |
+|---|---|---|
+| data    | `src/Data/Uniques/uniques.json`,  `uniques_1_2.json`, `uniques_1_3.json`, `uniques_1_4.json` | Adds the missing mod line + roll-id null on Urzil's Pride |
+| parser  | `src/Modules/ModParser.lua` (~line 897)            | Pattern emits `ManaRegenIncPerUncappedLightningRes_Per2` BASE |
+| inject  | `src/Modules/CalcDefence.lua` (~line 262)          | Reads stat, floors div by 2, NewMod ManaRegen INC scaled by `LightningResistTotal` |
+
+**Spec:** `spec/System/TestUrzilsPrideManaRegen_spec.lua`
+- "Urzil's Pride floors mana regen INC per 2% uncapped lightning resistance"
+- "Urzil's Pride mod parses to BASE ManaRegenIncPerUncappedLightningRes_Per2"
+- "uniques_1_4.json Urzil's Pride retains the per-uncapped-lightning-res mod line"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
 ## Adding a new guard
 
 1. Above the fix in source, add a comment block:

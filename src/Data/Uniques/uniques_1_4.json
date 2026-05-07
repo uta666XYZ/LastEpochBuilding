@@ -215,13 +215,15 @@
       "+125 Armor",
       "{rounding:Integer}+(6-10) Attunement",
       "{rounding:Integer}+(9-15) Strength",
-      "+(10-20)% Lightning Resistance"
+      "+(10-20)% Lightning Resistance",
+      "1% Increased Mana Regeneration per 2% Uncapped Lightning Resistance"
     ],
     "rollIds": [
       null,
       0,
       0,
-      0
+      0,
+      null
     ],
     "overrideLevelRequirement": false
   },
