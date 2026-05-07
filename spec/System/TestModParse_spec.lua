@@ -733,6 +733,52 @@ describe("TestModParse", function()
             assert.are.equals(0, build.calcsTab.mainOutput.Vit)
         end)
 
+        -- @leb-regression-guard: corrupted-count-pre-levelreq
+        -- Equipped semantics: a level-gated item still occupies its slot in
+        -- game (stats inactive) and counts toward "with at least N Corrupted
+        -- ... Items equipped" thresholds. CalcSetup must capture every
+        -- level-gated item into env._levelGatedAllItems and include it in
+        -- the corrupted-counter loop.
+        -- Establishing build: Qqwv73q2 lv62 Warlock — Silver Grail relic
+        -- (LevelReq=68 > charLevel=62) brings nonIdol from 6 to 7 → trips
+        -- Shroud of Obscurity's +11 All Attributes (affix 1011_6).
+        it("Level-gated corrupted item still counts toward CorruptedNonIdolItemsEquipped", function()
+            -- Character below the relic's LevelReq (68), so LevelReq filter
+            -- nulls it from `items[]`. Without the fix, corrupted counter
+            -- iterates the post-filter table and misses the relic.
+            build.characterLevel = 62
+
+            -- Equip a corrupted relic with LevelReq=68 (will be level-gated).
+            build.itemsTab:CreateDisplayItemFromRaw([[Rarity: RARE
+            Test Corrupted Relic
+            Silver Grail
+            Unique ID: 1
+            LevelReq: 68
+            Implicits: 0
+            Corrupted]])
+            build.itemsTab:AddDisplayItem(true)
+            local relicItemId
+            for id, it in pairs(build.itemsTab.items) do
+                if it.baseName == "Silver Grail" then relicItemId = id; break end
+            end
+            assert.is_not_nil(relicItemId, "relic item should be in items list")
+            assert.is_not_nil(build.itemsTab.slots["Relic"], "Relic slot should exist")
+            build.itemsTab.slots["Relic"]:SetSelItemId(relicItemId)
+            build.itemsTab:PopulateSlots()
+
+            -- Threshold of 1 — only the level-gated relic is corrupted.
+            -- If the fix is regressed, count=0 → threshold not met → Vit=0.
+            -- With fix, count=1 → threshold met → Vit gets +14.
+            build.configTab.input.customMods =
+                "+14 to All Attributes with at least 1 Corrupted non-Idol Items equipped"
+            build.configTab:BuildModList()
+            build.buildFlag = true
+            runCallback("OnFrame")
+
+            assert.are.equals(1, build.calcsTab.mainOutput.CorruptedNonIdolItemsEquipped)
+            assert.are.equals(14, build.calcsTab.mainOutput.Vit)
+        end)
+
         it("maxHealth uses floor (truncation), matching in-game (1258 * 1.25 = 1572)", function()
             -- ShutFackUp lv85 Spellblade scenario reduced to customMods:
             -- 110 (default base) + 1148 = 1258 base, * 1.25 INC = 1572.5

@@ -106,6 +106,38 @@ from live-import floor rounding by ±1 per affix using `applyRange`.
 
 **Establishing commit:** `e9e4e64c5`
 
+### `corrupted-count-pre-levelreq`
+
+`+N to All Attributes with at least 7 Corrupted non-Idol Items equipped`
+(Shroud of Obscurity affix `1011`) and similar Corrupted-count-conditional
+affixes use **equipped** semantics: an item occupying a slot is "equipped"
+even when its `LevelReq` exceeds the character level (in-game: stats are
+inactive but the slot is filled). LEB's `LevelReq` filter at
+`CalcSetup.lua` removes such items from `items[slotName]` so their stats
+do not contribute, which is correct for damage/defense calc — but the
+corrupted-counter loop downstream then under-counts because it iterates
+the post-filter `items` table.
+
+| Site | File | What it does |
+|---|---|---|
+| capture     | `src/Modules/CalcSetup.lua` (~line 869) | Stash every level-gated item into `env._levelGatedAllItems` BEFORE deletion (parallel to `_levelGatedSetItems` for SET membership) |
+| count       | `src/Modules/CalcSetup.lua` (~line 905) | Corrupted-counter loop iterates BOTH active `items` AND `env._levelGatedAllItems` so equipped-but-inactive corrupted gear still trips the threshold |
+
+**Spec:** `spec/System/TestModParse_spec.lua`
+- "Level-gated corrupted item still counts toward CorruptedNonIdolItemsEquipped"
+
+**Establishing build:** `Qqwv73q2 lv62 Warlock` — Silver Grail relic
+(LevelReq=68 > charLevel=62) is corrupted. Pre-fix `nonIdol` counter
+returned 6 (threshold 7 not met → Shroud +11 not applied → Vit/Str/Dex/
+Int/Att each LE-LEB delta = -11). Post-fix `nonIdol = 7`, threshold met,
+all 5 attributes gain +11 from Shroud's affix `1011_6 @ range 221`.
+
+**Why not just keep level-gated items in `items[]`?** Because their
+non-conditional stats (resistances, damage, etc.) must NOT contribute
+to active calc — that's the entire point of the `LevelReq` filter. The
+parallel `_levelGatedAllItems` table preserves the equipped/inactive
+distinction the game itself draws.
+
 ### `applyrange-rounding-mode-split`
 
 `itemLib.useLEToolsRounding` is a two-mode switch for the per-affix
