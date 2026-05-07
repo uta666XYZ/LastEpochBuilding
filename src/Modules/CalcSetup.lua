@@ -1548,19 +1548,25 @@ function calcs.initEnv(build, mode, override, specEnv)
 		env.modDB:NewMod("Multiplier:MovementSpeedInc", "BASE", msInc, "Auto:MovementSpeed")
 	end
 
-	-- Symbols of Hope: each active symbol grants +20% Health Regen (MORE multiplier).
-	-- Tooltip: "Each Symbol enhances your Health Regen, increasing health regeneration
-	-- by 20% per symbol". The si4lgl-24 Meditation node "Double Health Regen From
-	-- Symbols" doubles the per-symbol value (40% per symbol when allocated).
-	-- Verified against B4Xq8aG6 (LETools precalc healthRegen=262.88):
-	--   (1 + globalIncRegen) × (1 + 0.20 × ActiveSymbol × MeditationFactor) ≈ 262.81
-	-- Applied as MORE so it stacks separately from global INC LifeRegen (LE-style,
-	-- not PoE additive). Gated on the si4lgl- buff group being enabled and mode_buffs.
+	-- @leb-regression-guard: symbols-of-hope-inc-not-more
+	-- Symbols of Hope: each active symbol grants +20% INCREASED Health Regen (additive
+	-- with other INC mods, NOT a separate MORE multiplier). The si4lgl-24 Meditation
+	-- node doubles the per-symbol value to 40%. The per-symbol value is itself scaled
+	-- by SymbolsOfHopeEffect INC (Sentinel-119 Covenant of Light: +4%/pt for both Holy
+	-- Aura and Symbols of Hope effect).
+	-- Verified against QDxZjL4J Paladin (LETools healthRegen=294.33):
+	--   10 symbols × 20% × (1 + 0.20 SymbolsOfHopeEffect INC) = 240% INC, additive
+	--   with global LifeRegen INC; matches LETools breakdown "Increased: 240%".
+	-- The pre-fix MORE shape (`(1 + globalInc) * (1 + 0.20 * symbols)`) would have
+	-- produced 60 × 2.52 × 3.0 ≈ 453 instead of the actual ~295.
+	-- Spec: spec/System/TestSymbolsOfHope_spec.lua
 	local sigilsPrefix = buffSkillTreePrefixes and buffSkillTreePrefixes["si4lgl-"]
 	if env.mode_buffs and sigilsPrefix and sigilsPrefix.enabled then
 		local hasMeditation = env.allocNodes["si4lgl-24"] ~= nil
 		local perSymbolPct = hasMeditation and 40 or 20
-		env.modDB:NewMod("LifeRegen", "MORE", perSymbolPct, "Symbols of Hope",
+		local sohEffectInc = env.modDB:Sum("INC", nil, "SymbolsOfHopeEffect")
+		local scaledPct = perSymbolPct * (1 + sohEffectInc / 100)
+		env.modDB:NewMod("LifeRegen", "INC", scaledPct, "Symbols of Hope",
 			{ type = "Multiplier", var = "ActiveSymbol" })
 	end
 

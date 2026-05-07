@@ -1397,6 +1397,57 @@ mod actually matches.
 
 **Establishing commit:** `<unset; bump after first commit on this branch>`
 
+### `symbols-of-hope-inc-not-more`
+
+Symbols of Hope grants `+20% Increased Health Regen` per active symbol
+(LE: additive INC, not a separate MORE multiplier). The Meditation node
+`si4lgl-24` doubles the per-symbol value to 40%. The per-symbol value is
+itself scaled by `SymbolsOfHopeEffect` INC (e.g. Sentinel-119 Covenant of
+Light grants +4%/pt for both Holy Aura and Symbols of Hope effect).
+
+Pre-fix `CalcSetup.lua` injected the per-symbol value as `MORE LifeRegen`
+outside the `applyBuffPrefix` scaling path, so:
+- it stacked multiplicatively with global INC LifeRegen instead of additively, and
+- `SymbolsOfHopeEffect` INC never reached it.
+
+Real-world hit: QDxZjL4J Paladin's LETools snapshot shows `Health Regen
+240% Increased` from 10 active symbols (`20 × 1.20 SymbolsOfHopeEffect ×
+10`); pre-fix LEB rendered the contribution as MORE 200%, producing
+`baseRegen × (1 + globalInc) × 3.0 ≈ 453` instead of `~295`.
+
+| Site | File | What it does |
+|---|---|---|
+| auto-injection | `src/Modules/CalcSetup.lua` (~line 1559) | `LifeRegen INC perSymbolPct × (1 + SymbolsOfHopeEffect/100)`, gated on `Multiplier:ActiveSymbol` |
+
+**Spec:** `spec/System/TestSymbolsOfHope_spec.lua`
+- "per-symbol value defaults to 20% INC and scales with SymbolsOfHopeEffect"
+- "Meditation node doubles per-symbol value to 40"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `sentinel-95-base-health-regen`
+
+Paladin tree node Sentinel-95 (Covenant of Protection) grants
+`+6 Health Regen` per allocated point in addition to its armor stats.
+The LE node's internal name in
+`LE_datamining/extracted/items/globalTreeData.json` is
+`Paladin Armor Health Regen And Armor Applies To DoT`, which explicitly
+includes the Health Regen line.
+
+Pre-fix `tree_2.json` (1_4) listed only `8% Increased Armor` and
+`2% Armor Mitigation Applies To Damage Over Time` in `stats`, so 5
+allocated points dropped `+30 BASE Health Regen` entirely. QDxZjL4J
+Paladin's LETools snapshot shows `+30 BASE Health Regen` from this node.
+
+| Site | File | What it does |
+|---|---|---|
+| tree data | `src/TreeData/1_4/tree_2.json` (Sentinel-95) | `stats` array contains `+6 Health Regen` |
+
+**Spec:** `spec/System/TestSentinel95Regen_spec.lua`
+- "tree_2.json Sentinel-95 stats include '+6 Health Regen'"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
 ## Adding a new guard
 
 1. Above the fix in source, add a comment block:

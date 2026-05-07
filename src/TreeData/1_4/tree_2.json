@@ -1985,7 +1985,8 @@
       "masteryRequirement": 45,
       "stats": [
         "8% Increased Armor",
-        "2% Armor Mitigation Applies To Damage Over Time"
+        "2% Armor Mitigation Applies To Damage Over Time",
+        "+6 Health Regen"
       ],
       "notScalingStats": ["+5 Health Regen From Symbols Of Hope"],
       "noScalingPointThreshold": 5,
