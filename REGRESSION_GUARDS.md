@@ -1630,6 +1630,25 @@ Attacks`) so any LE wording lands on `KeywordFlag.Attack | KeywordFlag.Spell`.
 
 **Establishing commit:** `<unset; bump after first commit on this branch>`
 
+### `quest-apophis-majasa-plus-two`
+
+**Protects:** the magnitude of the "Apophis and Majasa?" quest reward.
+The in-game tooltip for the Vitality breakdown explicitly shows
+"Quest Reward: +2 Vitality" (and equivalently +2 Str/Dex/Int/Att) — confirmed
+via screenshot 2026-05-08 on Bakbr2Ne lv86 Sorcerer. LEB previously hardcoded
++1, which silently caused a uniform Δ=-2 across all 5 attributes on G1
+ATTR_UNIFORM_OTHER builds whenever Apophis was completed (this exact symptom is
+documented in the header of `TestLEToolsQuestImport_spec.lua`).
+
+| Site | File | What it does |
+|---|---|---|
+| config | `src/Modules/ConfigOptions.lua` (`questApophisMajasa`) | Adds +2 BASE to each of Str/Dex/Int/Att/Vit |
+
+**Spec:** `spec/System/TestQuestApophisMajasa_spec.lua`
+- "questApophisMajasa applies +2 BASE to all five attributes"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
 ## Adding a new guard
 
 1. Above the fix in source, add a comment block:
