@@ -32,12 +32,9 @@ local options = {
 		modList:NewMod("Att", "BASE", 1, "Quest")
 		modList:NewMod("Vit", "BASE", 1, "Quest")
 	end },
-	{ var = "questTempleOfEterra", type = "check", label = "Temple of Eterra?", tooltip = "Quest reward: +1 to all attributes. Enable once you have completed the Temple of Eterra on this character.", apply = function(val, modList, enemyModList)
-		modList:NewMod("Str", "BASE", 1, "Quest")
-		modList:NewMod("Dex", "BASE", 1, "Quest")
-		modList:NewMod("Int", "BASE", 1, "Quest")
-		modList:NewMod("Att", "BASE", 1, "Quest")
-		modList:NewMod("Vit", "BASE", 1, "Quest")
+	{ var = "questTempleOfEterra", type = "check", label = "Temple of Eterra?", tooltip = "Quest completion flag for Temple of Eterra. Note: in-game this quest does not grant +1 to all attributes (that is the Apophis/Majasa reward).", apply = function(val, modList, enemyModList)
+		-- Temple of Eterra does not grant +1 to all attributes in-game.
+		-- See LEB regression guard: letools-quest-reward-temple-of-eterra-no-attr-bonus
 	end },
 	{ var = "conditionStationary", type = "count", label = "Time spent stationary", ifCond = "Stationary",
 		tooltip = "Applies mods that use `while stationary` and `per / every second while stationary`",
