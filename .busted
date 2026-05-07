@@ -64,4 +64,10 @@ return {
         helper = "HeadlessWrapper.lua",
         ROOT = { "../spec/DebugSetCount.lua" },
     },
+    dumpArmourFull = {
+        directory = "src",
+        lpath = "../runtime/lua/?.lua;../runtime/lua/?/init.lua",
+        helper = "HeadlessWrapper.lua",
+        ROOT = { "../spec/DumpArmourFull.lua" },
+    },
 }

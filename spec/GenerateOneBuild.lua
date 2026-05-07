@@ -322,6 +322,31 @@ if modDB then
 end
 outHnd:write("    },\n")
 
+-- Resistance breakdown: dump every BASE/INC mod feeding each elemental + non-elem
+-- resist so per-build LE-vs-LEB diff can attribute the systematic resistance
+-- gap (B4Xq8aG6: Phys -19, Cold/Light/Necro -11, Void -10, Fire -9, Poison -6)
+-- to a specific source. Mirrors what the GUI Calcs tab "Resistances" hover shows.
+outHnd:write("    resistanceBreakdown = {\n")
+if modDB then
+    local resistTypes = { "Fire", "Cold", "Lightning", "Physical", "Necrotic", "Poison", "Void" }
+    local elemental = { Fire = true, Cold = true, Lightning = true }
+    -- Shared ElementalResist mods (Fire/Cold/Lightning all benefit) — dumped once
+    dumpModList(outHnd, "ElementalResist", modDB.mods["ElementalResist"])
+    for _, elem in ipairs(resistTypes) do
+        local key = elem .. "Resist"
+        dumpModList(outHnd, key, modDB.mods[key])
+        local elemTag = elemental[elem] and "ElementalResist" or nil
+        local base = elemTag and modDB:Sum("BASE", nil, key, elemTag) or modDB:Sum("BASE", nil, key) or 0
+        local inc = elemTag and modDB:Sum("INC", nil, key, elemTag) or modDB:Sum("INC", nil, key) or 0
+        outHnd:write(string.format("        [\"%s_summary\"] = { base=%d, inc=%d, final=%d, total=%d, overCap=%d },\n",
+            key, base, inc,
+            build.calcsTab.mainOutput[key] or 0,
+            build.calcsTab.mainOutput[key.."Total"] or 0,
+            build.calcsTab.mainOutput[key.."OverCap"] or 0))
+    end
+end
+outHnd:write("    },\n")
+
 -- Dump all mods on shield (item id 11)
 outHnd:write("    shieldMods = {\n")
 local items = build.itemsTab and build.itemsTab.items
@@ -458,6 +483,31 @@ if os.getenv("LEB_BLESSING_PROBE") == "1" then
         end
     end
     outHnd:write("        },\n")
+    outHnd:write("    },\n")
+end
+
+-- Custom per-stat breakdown: comma-separated stat names via LEB_STAT_DUMP env var.
+-- Example: LEB_STAT_DUMP=Strength,FireResist,Vitality
+-- Emits modDB sources (source/type/value) for each requested stat to match
+-- against LETools tooltip breakdowns.
+local statDumpEnv = os.getenv("LEB_STAT_DUMP")
+if statDumpEnv and statDumpEnv ~= "" then
+    outHnd:write("    customStatBreakdown = {\n")
+    local modDB = build.calcsTab and build.calcsTab.mainEnv and build.calcsTab.mainEnv.player and build.calcsTab.mainEnv.player.modDB
+    if modDB then
+        for stat in string.gmatch(statDumpEnv, "([^,%s]+)") do
+            outHnd:write(string.format("        [%q] = {\n", stat))
+            local mods = modDB.mods[stat]
+            if mods then
+                for i, m in ipairs(mods) do
+                    outHnd:write(string.format("            { source=%q, type=%q, value=%s, flags=%s, keywordFlags=%s },\n",
+                        tostring(m.source or ""), tostring(m.type or ""), tostring(m.value),
+                        tostring(m.flags or 0), tostring(m.keywordFlags or 0)))
+                end
+            end
+            outHnd:write("        },\n")
+        end
+    end
     outHnd:write("    },\n")
 end
 
