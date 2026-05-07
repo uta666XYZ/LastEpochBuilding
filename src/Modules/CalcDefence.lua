@@ -664,7 +664,16 @@ function calcs.defence(env, actor)
 	end
 
 	-- Miscellaneous: move speed, avoidance
-	output.MovementSpeedMod = modDB:Override(nil, "MovementSpeed") or (modDB:Flag(nil, "MovementSpeedEqualHighestLinkedPlayers") and actor.partyMembers.output.MovementSpeedMod or calcLib.mod(modDB, nil, "MovementSpeed"))
+	-- @leb-regression-guard: movement-speed-base-additive
+	-- LE Movement Speed formula = (1 + (BASE + INC)/100) * More. calcLib.mod
+	-- only returns (1 + INC/100) * More and drops BASE — passive nodes that
+	-- grant "+X% Movement Speed" (BASE) such as Beastmaster's Predator
+	-- (+1% Movement Speed per point) would silently contribute nothing.
+	-- See REGRESSION_GUARDS.md "movement-speed-base-additive".
+	local msBase = modDB:Sum("BASE", nil, "MovementSpeed")
+	local msInc  = modDB:Sum("INC",  nil, "MovementSpeed")
+	local msMore = modDB:More(nil, "MovementSpeed")
+	output.MovementSpeedMod = modDB:Override(nil, "MovementSpeed") or (modDB:Flag(nil, "MovementSpeedEqualHighestLinkedPlayers") and actor.partyMembers.output.MovementSpeedMod or (1 + (msBase + msInc) / 100) * msMore)
 	if modDB:Flag(nil, "MovementSpeedCannotBeBelowBase") then
 		output.MovementSpeedMod = m_max(output.MovementSpeedMod, 1)
 	end

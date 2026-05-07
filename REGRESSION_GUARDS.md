@@ -1282,6 +1282,93 @@ Speed"]` with bad residuals — both patched in place.
 
 **Establishing commit:** `<unset; bump after first commit on this branch>`
 
+### `eterras-path-player-ms`
+
+Eterra's Path (unique boots, id 21) carries TWO Movement Speed mods in the
+underlying game data: a player-side `+20% Movement Speed` (tags=0) and a
+minion-side `+20% Minion Movement Speed` (tags=8192=Minion). The in-game
+tooltip collapses both into one line: "You and your minions have 20%
+increased movement speed".
+
+LEB's `uniques_1_4.json` originally listed only the minion variant, dropping
+the player MS entirely. This caused a -20% Movement Speed gap on every
+Eterra's Path build vs LETools (e.g. Qb6WgDEp lv95 Beastmaster Δ=-25,
+of which 20 came from this drop and 5 from a separate Predator BASE issue).
+
+The "You and your minions have ..." tooltip pattern in LE always means
+**two underlying mods**. When importing/transcribing such uniques into
+`uniques_<ver>.json`, list BOTH the player and minion variants. Do not
+collapse them to a single line.
+
+| Site | File | What it does |
+|---|---|---|
+| unique data | `src/Data/Uniques/uniques_1_4.json` (id `"21"`) | Lists both `"20% increased Movement Speed"` (player) and `"20% increased Minion Movement Speed"` (minion) with parallel `null` rollIds |
+
+**Spec:** `spec/System/TestEterraPathPlayerMS_spec.lua`
+- "uniques_1_4.json Eterra's Path has BOTH player and minion 20% MS mods"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `you-and-minions-dual-mods`
+
+The Eterra's Path bug is one instance of a wider data class. Any LE unique
+whose tooltip uses the wording **"for You and your Minions"** or **"You and
+your minions have ..."** is backed by TWO mods in the underlying data
+(tags=0 player + tags=8192 minion). LEB's `ModParser` does NOT have a
+generic handler for the "for You and your Minions" suffix — leaving the
+collapsed tooltip text as a single line in `uniques_<ver>.json` silently
+parses as MinionModifier-only and drops the player side.
+
+Confirmed affected uniques (game extract `extracted/items/uniques_v3.json`):
+
+| id | Name | Stats with dropped player side |
+|---|---|---|
+| 21  | Eterra's Path     | 20% increased Movement Speed (fixed: see `eterras-path-player-ms`) |
+| 66  | Hollow Finger     | +(7-13)% Cold Resistance, +(7-13)% Physical Resistance (both pairs) |
+| 461 | Ash Wake          | +(50-90)% Chance to Ignite on Hit |
+| 463 | Rahyeh's Embrace  | (30-44)% increased Health |
+
+When transcribing such uniques into `uniques_<ver>.json`, list BOTH the
+player and minion variants as separate mod text lines. Never use the
+collapsed "for You and your Minions" wording — it loses the player mod.
+
+| Site | File | What it does |
+|---|---|---|
+| unique data | `src/Data/Uniques/uniques_1_4.json` (ids `"66"`, `"461"`, `"463"`) | Player mod and `Minion <stat>` mod listed as separate entries with parallel rollIds |
+
+**Spec:** `spec/System/TestYouAndMinionsDualMods_spec.lua`
+- "Hollow Finger (id 66) carries BOTH player and minion Cold/Phys resist"
+- "Ash Wake (id 461) splits Ignite-on-hit into player and minion mods"
+- "Rahyeh's Embrace (id 463) splits increased Health into player and minion mods"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `movement-speed-base-additive`
+
+LE's Movement Speed formula is `(1 + (BASE + INC)/100) * More`. LEB
+previously computed `output.MovementSpeedMod` via
+`calcLib.mod(modDB, nil, "MovementSpeed")`, which returns only
+`(1 + INC/100) * More` and silently drops the BASE term.
+
+Passive nodes that grant `"+X% Movement Speed"` parse as
+`MovementSpeed BASE X` (see ModCache: `"+1% Movement Speed"` →
+`name="MovementSpeed", type="BASE", value=1`). Without the BASE term in
+the formula, every such node — most notably Beastmaster's **Predator**
+(+1% Movement Speed per point, up to 5 — hence -5% on every Beastmaster
+build) — contributes nothing. Combined with the Eterra's Path bug, the
+Qb6WgDEp lv95 Beastmaster snapshot was -25% short of LETools (61% vs 36%);
+after this fix the snapshot matches at 61%.
+
+| Site | File | What it does |
+|---|---|---|
+| calc | `src/Modules/CalcDefence.lua` (output.MovementSpeedMod) | Formula expanded to `(1 + (BASE + INC)/100) * More`; BASE read via `modDB:Sum("BASE", nil, "MovementSpeed")` |
+
+**Spec:** `spec/System/TestMovementSpeedBaseAdditive_spec.lua`
+- "CalcDefence Movement Speed line includes BASE"
+- "plain calcLib.mod is no longer used for the Movement Speed slot"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
 ## Adding a new guard
 
 1. Above the fix in source, add a comment block:
