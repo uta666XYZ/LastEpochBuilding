@@ -626,6 +626,20 @@ local modTagList = {
 	-- every resistance on B4Xq8aG6 (and any shield-using build).
 	-- Spec: spec/System/TestModParse_spec.lua "with a shield condition tag"
 	["with a shield"] = { tag = { type = "Condition", var = "UsingShield" } },
+	-- @leb-regression-guard:while-with-a-shield-condition
+	-- Sentinel-90 "Sanctuary Guardian" notScalingStats also uses the long form
+	-- "While With A Shield" (e.g. "+50 Armor While With A Shield"). Without this
+	-- entry the trailing " while with a shield" leaves residual extra and the
+	-- entire mod is silently dropped from modDB on AVa9YEkg (Paladin, lv95).
+	-- Spec: spec/System/TestModParse_spec.lua "while with a shield condition tag"
+	["while with a shield"] = { tag = { type = "Condition", var = "UsingShield" } },
+	-- @leb-regression-guard:per-1pct-increased-movement-speed
+	-- Unbroken Charge unique grants "+(11-30) Block Effectiveness per 1% Increased
+	-- Movement Speed". Without this matcher the trailing " per 1% increased
+	-- movement speed" leaves residual extra and the mod is silently dropped from
+	-- modDB. Multiplier:MovementSpeedInc is auto-populated in CalcSetup.lua.
+	-- Spec: spec/System/TestModParse_spec.lua "per 1% increased movement speed multiplier"
+	["per 1%% increased movement speed"] = { tag = { type = "Multiplier", var = "MovementSpeedInc" } },
 	["per forged weapon"] = { tag = { type = "Multiplier", var = "ForgedWeapon" } },
 	["while you have a forged weapon"] = { tag = { type = "Condition", var = "HaveForgedWeapon" } },
 	-- Runemaster: Glyph of Dominion / Arcane Momentum

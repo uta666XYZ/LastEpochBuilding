@@ -4941,7 +4941,7 @@ c["+206 Minion Dodge Rating"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier
 c["+206 Ward Decay Threshold"]={{[1]={flags=0,keywordFlags=0,name="WardDecayThreshold",type="BASE",value=206}},nil}
 c["+207 Ward gained per Rune consumed with Runic Invocation"]={{[1]={[1]={skillName="Runic Invocation",type="SkillName"},flags=0,keywordFlags=0,name="Ward",type="BASE",value=207}},"  gained per Rune consumed with  "}
 c["+21 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=21}},nil}
-c["+21 Block Effectiveness per 1% Increased Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="BlockEffectiveness",type="BASE",value=21}},"  per 1% Increased Movement Speed "}
+c["+21 Block Effectiveness per 1% Increased Movement Speed"]={{[1]={[1]={type="Multiplier",var="MovementSpeedInc"},flags=0,keywordFlags=0,name="BlockEffectiveness",type="BASE",value=21}},nil}
 c["+21 Bow Fire Damage"]={{[1]={flags=0,keywordFlags=2048,name="FireDamage",type="BASE",value=21}},nil}
 c["+21 Health"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=21}},nil}
 c["+21 Health per Idol in a Refracted Slot"]={{[1]={[1]={type="Multiplier",var="IdolInRefractedSlot"},flags=0,keywordFlags=0,name="Life",type="BASE",value=21}},nil}
@@ -8058,7 +8058,7 @@ c["+5% of current Health drained per second while above 80% Health"]={{[1]={flag
 c["+5% to All Resistances"]={{[1]={flags=0,keywordFlags=0,name="FireResist",type="BASE",value=5},[2]={flags=0,keywordFlags=0,name="LightningResist",type="BASE",value=5},[3]={flags=0,keywordFlags=0,name="ColdResist",type="BASE",value=5},[4]={flags=0,keywordFlags=0,name="PhysicalResist",type="BASE",value=5},[5]={flags=0,keywordFlags=0,name="PoisonResist",type="BASE",value=5},[6]={flags=0,keywordFlags=0,name="NecroticResist",type="BASE",value=5},[7]={flags=0,keywordFlags=0,name="VoidResist",type="BASE",value=5}},nil}
 c["+50 Armor"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=50}},nil}
 c["+50 Armor On Cooldown"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=50}},"  On Cooldown "}
-c["+50 Armor While With A Shield"]={{[1]={flags=0,keywordFlags=0,name="Armour",type="BASE",value=50}},"  While With A Shield "}
+c["+50 Armor While With A Shield"]={{[1]={[1]={type="Condition",var="UsingShield"},flags=0,keywordFlags=0,name="Armour",type="BASE",value=50}},nil}
 c["+50 Block Effectiveness"]={{[1]={flags=0,keywordFlags=0,name="BlockEffectiveness",type="BASE",value=50}},nil}
 c["+50 Block Effectiveness with a Shield"]={{[1]={flags=0,keywordFlags=0,name="BlockEffectiveness",type="BASE",value=50}},"  with a Shield "}
 c["+50 Bow Damage"]={{[1]={flags=0,keywordFlags=2048,name="Damage",type="BASE",value=50}},nil}
@@ -10233,7 +10233,7 @@ c["0.1% of Damage Leeched as Health on Crit"]={{[1]={flags=0,keywordFlags=0,name
 c["0.1% of Elemental Damage Over Time Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=0,name="FireDamageLifeLeech",type="BASE",value=0.1},[2]={flags=0,keywordFlags=0,name="ColdDamageLifeLeech",type="BASE",value=0.1},[3]={flags=0,keywordFlags=0,name="LightningDamageLifeLeech",type="BASE",value=0.1}},"  Over Time Damage  "}
 c["0.1% of Minion Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=0.1}}}},nil}
 c["0.2 Duration Before Effect (seconds)"]={{[1]={flags=0,keywordFlags=0,name="Duration",type="BASE",value=0.2}},"  Before Effect (seconds) "}
-c["0.2% Increased Damage per 1% Increased Movement Speed"]={{[1]={flags=0,keywordFlags=0,name="Damage",type="INC",value=0.2}},"  per 1% Increased Movement Speed "}
+c["0.2% Increased Damage per 1% Increased Movement Speed"]={{[1]={[1]={type="Multiplier",var="MovementSpeedInc"},flags=0,keywordFlags=0,name="Damage",type="INC",value=0.2}},nil}
 c["0.2% Increased Movement Speed per Added Melee Void Damage"]={{[1]={flags=0,keywordFlags=528,name="MovementSpeed",type="INC",value=0.2}},"  per Added   Damage "}
 c["0.2% Physical Health Leech"]={{[1]={flags=0,keywordFlags=1,name="DamageLifeLeech",type="BASE",value=0.2}},nil}
 c["0.2% increased Shock Duration per Intelligence"]={{[1]={[1]={stat="Int",type="PerStat"},[2]={skillName="Shock",type="SkillName"},flags=0,keywordFlags=0,name="Duration",type="INC",value=0.2}},nil}

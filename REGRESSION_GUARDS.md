@@ -1217,6 +1217,71 @@ even if the cache later regrows.
 
 **Establishing commit:** `<unset; bump after first commit on this branch>`
 
+### `while-with-a-shield-condition`
+
+Sentinel-90 "Sanctuary Guardian" notScalingStats also uses the long form
+`+50 Armor While With A Shield`. This is a different surface from the bare
+"With A Shield" suffix: the leading word is "While". Without an explicit
+`["while with a shield"]` entry in `ModParser.modTagList`, the trailing
+" while with a shield" survives `scan()` as residual extra and the entire
+mod is silently dropped via the same `node.extra=true` chain documented
+under `with-a-shield-condition`.
+
+Symptom on AVa9YEkg lv95 Paladin: Armour Δ ≈ -178 effective (50 BASE × INC
+multiplier) with no Sentinel-90 contribution in the Armour breakdown.
+
+`Data/ModCache.lua` previously cached the bad parse:
+`c["+50 Armor While With A Shield"]={…,"  While With A Shield "}` — patched
+in place to add the `Condition: UsingShield` tag and clear the residual.
+
+| Site | File | What it does |
+|---|---|---|
+| condition mapping | `src/Modules/ModParser.lua` (~line 629) | Adds `["while with a shield"] = { tag = Condition UsingShield }` next to "with a shield" |
+| cache fix         | `src/Data/ModCache.lua` (~line 8061)    | `+50 Armor While With A Shield` entry now carries the UsingShield tag with nil residual |
+| consumer          | `src/Classes/PassiveTree.lua:421-423`   | Drops the entire mod when `extra` is non-nil (silent failure mode) |
+
+**Spec:** `spec/System/TestModParse_spec.lua`
+- "while with a shield condition tag"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `per-1pct-increased-movement-speed`
+
+The Unbroken Charge unique grants `+(11-30) Block Effectiveness per 1%
+Increased Movement Speed` (and similarly the `0.2% Increased Damage per 1%
+Increased Movement Speed` mod surfaces elsewhere). Two pieces are required
+for the mod to take effect:
+
+1. `ModParser.modTagList` needs a `["per 1%% increased movement speed"]`
+   entry mapping to `Multiplier: MovementSpeedInc`. Without it the residual
+   suffix drops the entire mod via `node.extra=true`.
+2. `CalcSetup.lua` must inject `Multiplier:MovementSpeedInc` from
+   `env.modDB:Sum("INC", nil, "MovementSpeed")` AFTER all MS INC mods have
+   been added. Without injection, the matcher exists but the multiplier is
+   always 0 so the mod contributes nothing.
+
+The injection pattern mirrors the existing `Multiplier:ActiveSymbol` logic
+for Symbols of Hope a few lines above.
+
+Symptom on AVa9YEkg lv95 Paladin: Block Effectiveness Δ ≈ -401 vs LETools
+with no Unbroken Charge contribution in the BlockEffectiveness breakdown.
+
+`Data/ModCache.lua` cached `c["+21 Block Effectiveness per 1% Increased
+Movement Speed"]` and `c["0.2% Increased Damage per 1% Increased Movement
+Speed"]` with bad residuals — both patched in place.
+
+| Site | File | What it does |
+|---|---|---|
+| matcher          | `src/Modules/ModParser.lua` (~line 636)              | `["per 1%% increased movement speed"] = { tag = Multiplier MovementSpeedInc }` |
+| auto-injection   | `src/Modules/CalcSetup.lua` (~line 1539)             | Sums `INC` `MovementSpeed`, then `NewMod("Multiplier:MovementSpeedInc", "BASE", msInc)` |
+| cache fix        | `src/Data/ModCache.lua` (~lines 4944, 10236)         | Both cached entries now carry the Multiplier tag with nil residual |
+| consumer         | `src/Classes/PassiveTree.lua:421-423` / mod resolve | Drops the entire mod when `extra` is non-nil; Multiplier resolves at calc time |
+
+**Spec:** `spec/System/TestModParse_spec.lua`
+- "per 1% increased movement speed multiplier"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
 ## Adding a new guard
 
 1. Above the fix in source, add a comment block:

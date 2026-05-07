@@ -1536,6 +1536,18 @@ function calcs.initEnv(build, mode, override, specEnv)
 		env.modDB:NewMod("Multiplier:ActiveSymbol", "BASE", maxSymbols - curSymbols, "Auto:Symbols of Hope")
 	end
 
+	-- @leb-regression-guard:multiplier-movement-speed-inc
+	-- Auto-populate Multiplier:MovementSpeedInc from the sum of INC mods on
+	-- MovementSpeed so mods like Unbroken Charge's "+X Block Effectiveness per
+	-- 1% Increased Movement Speed" can resolve. Without this the matcher exists
+	-- but the multiplier is always 0 and the mod contributes nothing.
+	-- Verified against AVa9YEkg (Paladin lv95) BlockEffectiveness.
+	-- Spec: spec/System/TestCalcSetup_spec.lua "MovementSpeedInc multiplier auto-populates"
+	local msInc = env.modDB:Sum("INC", nil, "MovementSpeed")
+	if msInc and msInc > 0 then
+		env.modDB:NewMod("Multiplier:MovementSpeedInc", "BASE", msInc, "Auto:MovementSpeed")
+	end
+
 	-- Symbols of Hope: each active symbol grants +20% Health Regen (MORE multiplier).
 	-- Tooltip: "Each Symbol enhances your Health Regen, increasing health regeneration
 	-- by 20% per symbol". The si4lgl-24 Meditation node "Double Health Regen From

@@ -105,6 +105,47 @@ describe("TestModParse", function()
         end
     end)
 
+    -- @leb-regression-guard:while-with-a-shield-condition
+    -- Sentinel-90 "Sanctuary Guardian" notScalingStats also uses the long form
+    -- "+50 Armor While With A Shield". Without the "while with a shield" entry
+    -- the trailing condition leaves residual extra (non-nil), which causes
+    -- ConfigOptions.customMods (and PassiveTree.lua node ingestion) to drop the
+    -- entire mod silently. We assert at the parseMod boundary so the test
+    -- exercises the parser path even when ModList:Sum cfg semantics differ.
+    it("while with a shield condition tag", function()
+        local mods, extra = modLib.parseMod("+50 Armor While With A Shield")
+        assert.is_nil(extra, "parseMod must consume 'while with a shield' (residual='" .. tostring(extra) .. "')")
+        assert.is_not_nil(mods)
+        assert.are.equals(1, #mods)
+        assert.are.equals("Armour", mods[1].name)
+        assert.are.equals("BASE", mods[1].type)
+        assert.are.equals(50, mods[1].value)
+        local tag = mods[1][1]
+        assert.is_not_nil(tag, "expected a Condition tag on the mod")
+        assert.are.equals("Condition", tag.type)
+        assert.are.equals("UsingShield", tag.var)
+    end)
+
+    -- @leb-regression-guard:per-1pct-increased-movement-speed
+    -- Unbroken Charge unique grants "+(11-30) Block Effectiveness per 1%
+    -- Increased Movement Speed". Without the "per 1% increased movement speed"
+    -- matcher the trailing suffix leaves residual extra and the entire mod is
+    -- silently dropped. The Multiplier:MovementSpeedInc auto-injection in
+    -- CalcSetup is verified separately at the build level.
+    it("per 1% increased movement speed multiplier", function()
+        local mods, extra = modLib.parseMod("+21 Block Effectiveness per 1% Increased Movement Speed")
+        assert.is_nil(extra, "parseMod must consume 'per 1% increased movement speed' (residual='" .. tostring(extra) .. "')")
+        assert.is_not_nil(mods)
+        assert.are.equals(1, #mods)
+        assert.are.equals("BlockEffectiveness", mods[1].name)
+        assert.are.equals("BASE", mods[1].type)
+        assert.are.equals(21, mods[1].value)
+        local tag = mods[1][1]
+        assert.is_not_nil(tag, "expected a Multiplier tag on the mod")
+        assert.are.equals("Multiplier", tag.type)
+        assert.are.equals("MovementSpeedInc", tag.var)
+    end)
+
     it("attributes", function()
         build.configTab.input.customMods = "+2 to All Attributes"
         build.configTab:BuildModList()
