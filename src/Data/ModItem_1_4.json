@@ -1747,7 +1747,7 @@
 		"specialAffixType": 0,
 		"slotOverrides": {
 			"body_armor": {
-				"1": "{rounding:Integer}+(45-59) Dodge Rating"
+				"1": "{rounding:Integer}+(45-58) Dodge Rating"
 			},
 			"amulet": {
 				"1": "{rounding:Integer}+(35-46) Dodge Rating"
@@ -1922,7 +1922,7 @@
 		"specialAffixType": 0,
 		"slotOverrides": {
 			"body_armor": {
-				"1": "{rounding:Integer}+(227-300) Dodge Rating"
+				"1": "{rounding:Integer}+(226-300) Dodge Rating"
 			},
 			"amulet": {
 				"1": "{rounding:Integer}+(177-234) Dodge Rating"
@@ -5793,7 +5793,7 @@
 		"1": "{rounding:Integer}+(5-15) Health",
 		"slotOverrides": {
 			"body_armor": {
-				"1": "{rounding:Integer}+(8-23) Health"
+				"1": "{rounding:Integer}+(8-22) Health"
 			}
 		},
 		"level": 0,
@@ -7124,7 +7124,7 @@
 		"1": "{rounding:Integer}+(21-35) Armor",
 		"slotOverrides": {
 			"body_armor": {
-				"1": "{rounding:Integer}+(32-53) Armor"
+				"1": "{rounding:Integer}+(32-52) Armor"
 			}
 		},
 		"level": 0,
@@ -7150,7 +7150,7 @@
 		"1": "{rounding:Integer}+(36-55) Armor",
 		"slotOverrides": {
 			"body_armor": {
-				"1": "{rounding:Integer}+(54-83) Armor"
+				"1": "{rounding:Integer}+(54-82) Armor"
 			}
 		},
 		"level": 0,
@@ -7634,7 +7634,7 @@
 				"1": "{rounding:Integer}+(13-20) Mana"
 			},
 			"body_armor": {
-				"1": "{rounding:Integer}+(17-26) Mana"
+				"1": "{rounding:Integer}+(16-26) Mana"
 			}
 		}
 	},
@@ -7700,7 +7700,7 @@
 				"1": "{rounding:Integer}+(30-41) Mana"
 			},
 			"body_armor": {
-				"1": "{rounding:Integer}+(39-53) Mana"
+				"1": "{rounding:Integer}+(39-52) Mana"
 			}
 		}
 	},
@@ -7799,7 +7799,7 @@
 				"1": "{rounding:Integer}+(106-140) Mana"
 			},
 			"body_armor": {
-				"1": "{rounding:Integer}+(137-180) Mana"
+				"1": "{rounding:Integer}+(136-180) Mana"
 			}
 		}
 	},
@@ -35661,7 +35661,7 @@
 		"specialAffixType": 0,
 		"slotOverrides": {
 			"body_armor": {
-				"1": "{rounding:Integer}+(65-84) Ward per Second"
+				"1": "{rounding:Integer}+(64-84) Ward per Second"
 			},
 			"catalyst": {
 				"1": "{rounding:Integer}+(50-66) Ward per Second"
@@ -50964,7 +50964,7 @@
 		"specialAffixType": 0,
 		"slotOverrides": {
 			"body_armor": {
-				"1": "{rounding:Integer}+(5-6) Strength"
+				"1": "{rounding:Integer}+(4-6) Strength"
 			}
 		}
 	},
@@ -51020,7 +51020,7 @@
 		"specialAffixType": 0,
 		"slotOverrides": {
 			"body_armor": {
-				"1": "{rounding:Integer}+(11-12) Strength"
+				"1": "{rounding:Integer}+(10-12) Strength"
 			}
 		}
 	},
@@ -51048,7 +51048,7 @@
 		"specialAffixType": 0,
 		"slotOverrides": {
 			"body_armor": {
-				"1": "{rounding:Integer}+(17-20) Strength"
+				"1": "{rounding:Integer}+(16-20) Strength"
 			}
 		}
 	},
@@ -51188,7 +51188,7 @@
 		"specialAffixType": 0,
 		"slotOverrides": {
 			"body_armor": {
-				"1": "{rounding:Integer}+(5-6) Intelligence"
+				"1": "{rounding:Integer}+(4-6) Intelligence"
 			}
 		}
 	},
@@ -51244,7 +51244,7 @@
 		"specialAffixType": 0,
 		"slotOverrides": {
 			"body_armor": {
-				"1": "{rounding:Integer}+(11-12) Intelligence"
+				"1": "{rounding:Integer}+(10-12) Intelligence"
 			}
 		}
 	},
@@ -51272,7 +51272,7 @@
 		"specialAffixType": 0,
 		"slotOverrides": {
 			"body_armor": {
-				"1": "{rounding:Integer}+(17-20) Intelligence"
+				"1": "{rounding:Integer}+(16-20) Intelligence"
 			}
 		}
 	},
@@ -51412,7 +51412,7 @@
 		"specialAffixType": 0,
 		"slotOverrides": {
 			"body_armor": {
-				"1": "{rounding:Integer}+(5-6) Dexterity"
+				"1": "{rounding:Integer}+(4-6) Dexterity"
 			}
 		}
 	},
@@ -51468,7 +51468,7 @@
 		"specialAffixType": 0,
 		"slotOverrides": {
 			"body_armor": {
-				"1": "{rounding:Integer}+(11-12) Dexterity"
+				"1": "{rounding:Integer}+(10-12) Dexterity"
 			}
 		}
 	},
@@ -51496,7 +51496,7 @@
 		"specialAffixType": 0,
 		"slotOverrides": {
 			"body_armor": {
-				"1": "{rounding:Integer}+(17-20) Dexterity"
+				"1": "{rounding:Integer}+(16-20) Dexterity"
 			}
 		}
 	},
@@ -51636,7 +51636,7 @@
 		"specialAffixType": 0,
 		"slotOverrides": {
 			"body_armor": {
-				"1": "{rounding:Integer}+(5-6) Attunement"
+				"1": "{rounding:Integer}+(4-6) Attunement"
 			}
 		}
 	},
@@ -51692,7 +51692,7 @@
 		"specialAffixType": 0,
 		"slotOverrides": {
 			"body_armor": {
-				"1": "{rounding:Integer}+(11-12) Attunement"
+				"1": "{rounding:Integer}+(10-12) Attunement"
 			}
 		}
 	},
@@ -51720,7 +51720,7 @@
 		"specialAffixType": 0,
 		"slotOverrides": {
 			"body_armor": {
-				"1": "{rounding:Integer}+(17-20) Attunement"
+				"1": "{rounding:Integer}+(16-20) Attunement"
 			}
 		}
 	},
@@ -51848,7 +51848,7 @@
 		"specialAffixType": 0,
 		"slotOverrides": {
 			"body_armor": {
-				"1": "{rounding:Integer}+(5-6) Vitality"
+				"1": "{rounding:Integer}+(4-6) Vitality"
 			}
 		}
 	},
@@ -51896,7 +51896,7 @@
 		"specialAffixType": 0,
 		"slotOverrides": {
 			"body_armor": {
-				"1": "{rounding:Integer}+(11-12) Vitality"
+				"1": "{rounding:Integer}+(10-12) Vitality"
 			}
 		}
 	},
@@ -51920,7 +51920,7 @@
 		"specialAffixType": 0,
 		"slotOverrides": {
 			"body_armor": {
-				"1": "{rounding:Integer}+(17-20) Vitality"
+				"1": "{rounding:Integer}+(16-20) Vitality"
 			}
 		}
 	},

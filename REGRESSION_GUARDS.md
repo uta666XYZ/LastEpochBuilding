@@ -1649,6 +1649,62 @@ documented in the header of `TestLEToolsQuestImport_spec.lua`).
 
 **Establishing commit:** `<unset; bump after first commit on this branch>`
 
+### `body_armor-banker-rounding`
+
+> **Type: JSON-comment-incompatible.** The protected sites live in
+> `src/Data/ModItem_1_4.json`, which cannot carry inline
+> `@leb-regression-guard:` markers (JSON has no comments). The 3-layer
+> contract is preserved by the spec + this index entry; any new JSON
+> mass-edit tool MUST reference this guard id in its commit message.
+> See "JSON-comment-incompatible guards" at the bottom of this file.
+
+**Protects:** the `body_armor` `slotOverride` min/max values for every affix
+that has a body_armor variant in `ModItem_1_4.json`.
+
+In LE, body_armor multiplies the canonical affix base roll by `(1 + affixEffectModifier)`
+where `affixEffectModifier = 0.5` for body_armor (verified against
+`equipmentItems.json` `BaseTypeName: "Body Armor"`, baseTypeID 1) — i.e. **×1.5**.
+The result is rounded with **banker's rounding (round half to even)**, not
+half-up. LEB previously stored pre-multiplied values with half-up rounding,
+producing min OR max values one higher than the in-game tooltip on every
+`.5`-boundary tier.
+
+Originally noticed on Vitality T5 (`505_4` displayed as 11–12, in-game 10–12);
+expanded to all body_armor slotOverrides via `.tmp/audit_body_armor_rounding.py`.
+The audit found exactly 22 mismatches, all off-by-1 in the half-up direction.
+
+**Patched affixes (22 entries across 9 affix IDs):**
+
+| affixId | Name | Tiers patched (LEB internal) |
+|---|---|---|
+| 8   | Dodge Rating       | T1, T6 |
+| 25  | Health             | T0 |
+| 31  | Armor (flat)       | T1, T2 |
+| 34  | Mana               | T1, T3, T6 |
+| 382 | Ward per Second    | T6 |
+| 501 | Strength           | T2, T4, T5 |
+| 502 | Intelligence       | T2, T4, T5 |
+| 503 | Dexterity          | T2, T4, T5 |
+| 504 | Attunement         | T2, T4, T5 |
+| 505 | Vitality           | T2, T4, T5 |
+
+Worked example (Strength T4): canonical base 7–8 → ×1.5 = 10.5–12.0 →
+banker round = **10–12** (LEB previously stored 11–12; half-up would round
+10.5 up to 11).
+
+| Site | File | What it does |
+|---|---|---|
+| data | `src/Data/ModItem_1_4.json` (22 entries listed above, body_armor.`"1"`) | Carries the banker-rounded min/max values |
+| audit | `.tmp/audit_body_armor_rounding.py` | Reproducible enumerator: parses ModItem, joins canonical tiers, asserts banker(base×1.5) == stored within ±1 |
+| canonical | `LE_datamining/extracted/items/single_affixes_v3.json` `tiers[].minRoll/maxRoll` | Source of canonical base; not in repo |
+| canonical | `LE_datamining/extracted/items/equipmentItems.json` `BaseTypeName=Body Armor` `affixEffectModifier=0.5` | Source of the ×1.5 multiplier |
+
+**Spec:** `spec/System/TestBodyArmorBankerRounding_spec.lua`
+- Asserts representative keys across all 9 affix IDs match banker(base×1.5),
+  with explicit "(was X) → (now Y)" pairs locked in.
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
 ## Adding a new guard
 
 1. Above the fix in source, add a comment block:
@@ -1664,6 +1720,30 @@ documented in the header of `TestLEToolsQuestImport_spec.lua`).
    sibling spec if a new domain). Tag them with the same comment header.
 
 3. Append a row to this file under "Active guards".
+
+## JSON-comment-incompatible guards
+
+Some fixes live in JSON data files (`src/Data/*.json`) which cannot carry
+inline `@leb-regression-guard:<id>` comments. The 3-layer contract
+(inline marker + spec + this index) collapses to 2 layers for these guards.
+To keep the contract enforceable use this template:
+
+1. **Index entry**: prepend a callout block stating
+   `> **Type: JSON-comment-incompatible.**` and naming the JSON file(s).
+2. **Spec layer**: place the spec under `spec/System/`, with the
+   `@leb-regression-guard:<id>` marker as its first comment line. The spec
+   MUST load the JSON and assert specific keys / values, not just shape.
+3. **Audit layer (recommended)**: a reproducible script under `.tmp/` or
+   `scripts/` that re-derives the expected values from canonical sources
+   (e.g. the LE_datamining workspace). Reference it from the index entry
+   so a future maintainer can re-run the audit if canonical data shifts.
+4. **Commit-message convention**: any commit that mass-edits the protected
+   JSON file MUST mention the guard id in its body, e.g.
+   `Refs: @leb-regression-guard:body_armor-banker-rounding`. This is the
+   only way the marker travels with the change.
+
+Existing JSON-comment-incompatible guards:
+- `body_armor-banker-rounding` (`src/Data/ModItem_1_4.json`)
 
 ## Layering vs canary strings
 
