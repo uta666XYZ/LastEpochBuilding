@@ -573,15 +573,19 @@ defence sheet.
 | Site | File | What it does |
 |---|---|---|
 | gate | `src/Modules/CalcDefence.lua` (~line 262) | Early-zeroes all Block outputs when neither Weapon 2/3 is `type == "Shield"` and no `BlockWithoutShield` flag is set |
+| LifeOnBlock / ManaOnBlock gate | `src/Modules/CalcDefence.lua` (~line 514, ~line 700) | Same gate also applies to "Health/Mana Gained on Block" — without it, Sentinel-89 Shield Wall's `+4 Health Gained on Block` per point bleeds into LEB even on no-shield Paladins (e.g. QDxZjL4J Δ +16 phantom) |
 
 **Spec:** `spec/System/TestBlockShield_spec.lua`
 - "BlockChance is 0 with no shield even with +50% Block Chance mod"
 - "BlockChance applies with no shield when BlockWithoutShield flag is set"
+- "LifeOnBlock / ManaOnBlock are 0 with no shield (block disabled)"
+- "LifeOnBlock applies with no shield when BlockWithoutShield flag is set"
 
 **Snapshot coverage:** `spec/System/TestBuilds_spec.lua` "test all builds #builds" via
-`spec/TestBuilds/1.4/Bakbr2Ne lv86 Sorcerer.{xml,lua}` (Astrolabe off-hand, BlockChance=0).
+`spec/TestBuilds/1.4/Bakbr2Ne lv86 Sorcerer.{xml,lua}` (Astrolabe off-hand, BlockChance=0)
+and `QDxZjL4J lv97 Paladin.{xml,lua}` (dual-wield, LifeOnBlock=0).
 
-**Establishing commit:** `df85f92e8`
+**Establishing commit:** `df85f92e8` (block stats); `<branch>` (LifeOnBlock/ManaOnBlock extension)
 
 ### `flame-ward-block-toggle`
 

@@ -511,8 +511,19 @@ function calcs.defence(env, actor)
 	end
 	
 	-- Gain on Block
-	output.LifeOnBlock = modDB:Sum("BASE", nil, "LifeOnBlock")
-	output.ManaOnBlock = modDB:Sum("BASE", nil, "ManaOnBlock")
+	-- @leb-regression-guard: block-requires-shield
+	-- LifeOnBlock / ManaOnBlock must be zero when block itself is disabled
+	-- (no shield equipped and no BlockWithoutShield flag). Without this gate
+	-- LEB surfaces a "Health Gain on Block" rating for builds that can never
+	-- block in-game (e.g. QDxZjL4J Paladin's Sentinel-89 Shield Wall x4 →
+	-- LifeOnBlock=16 phantom). See REGRESSION_GUARDS.md "block-requires-shield".
+	if hasShield or blockAllowedWithoutShield then
+		output.LifeOnBlock = modDB:Sum("BASE", nil, "LifeOnBlock")
+		output.ManaOnBlock = modDB:Sum("BASE", nil, "ManaOnBlock")
+	else
+		output.LifeOnBlock = 0
+		output.ManaOnBlock = 0
+	end
 
 	-- Gain on Kill — defensive aggregate (per-skill version is set in CalcOffence).
 	-- Items/passives provide flat "Health Gain on Kill" mods; the build defence
@@ -692,8 +703,15 @@ function calcs.defence(env, actor)
 	end
 	
 	-- recovery on block, needs to be after primary defences
-	output.LifeOnBlock = modDB:Sum("BASE", nil, "LifeOnBlock")
-	output.ManaOnBlock = modDB:Sum("BASE", nil, "ManaOnBlock")
+	-- @leb-regression-guard: block-requires-shield
+	-- See sibling site above; same gate applies here.
+	if hasShield or blockAllowedWithoutShield then
+		output.LifeOnBlock = modDB:Sum("BASE", nil, "LifeOnBlock")
+		output.ManaOnBlock = modDB:Sum("BASE", nil, "ManaOnBlock")
+	else
+		output.LifeOnBlock = 0
+		output.ManaOnBlock = 0
+	end
 
 	-- gain on kill — defensive aggregate (mirrored from primary defences pass)
 	output.LifeOnKill = modDB:Sum("BASE", nil, "LifeOnKill")
