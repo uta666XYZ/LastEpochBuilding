@@ -1700,22 +1700,37 @@ Attacks`) so any LE wording lands on `KeywordFlag.Attack | KeywordFlag.Spell`.
 
 **Establishing commit:** `<unset; bump after first commit on this branch>`
 
-### `quest-apophis-majasa-plus-two`
+### `quest-apophis-majasa-plus-one`
 
-**Protects:** the magnitude of the "Apophis and Majasa?" quest reward.
-The in-game tooltip for the Vitality breakdown explicitly shows
-"Quest Reward: +2 Vitality" (and equivalently +2 Str/Dex/Int/Att) — confirmed
-via screenshot 2026-05-08 on Bakbr2Ne lv86 Sorcerer. LEB previously hardcoded
-+1, which silently caused a uniform Δ=-2 across all 5 attributes on G1
-ATTR_UNIFORM_OTHER builds whenever Apophis was completed (this exact symptom is
-documented in the header of `TestLEToolsQuestImport_spec.lua`).
+**Protects:** the magnitude of the "Apophis and Majasa?" quest reward AND
+the "Temple of Eterra?" quest reward. Each grants `+1 to all 5 attributes`
+(Str/Dex/Int/Att/Vit). Confirmed via the in-game Completed Quests panel
+screenshot 2026-05-08, which shows `Attribute Points: 1` on each row for
+Apophis and Majasa (Ch. 9) and Temple of Eterra (Ch. 10), with the panel
+total reading `2/2` when both quests are complete.
+
+Regression history this guard prevents:
+
+- 2026-05-07 commit `f820d0c63` removed the +1 from Temple of Eterra under
+  the (incorrect) assumption that only Apophis grants the bonus. Under-shot
+  attributes by 1 on every 2/2 build.
+- 2026-05-08 commit `810eafe2f` doubled Apophis to +2 to compensate for the
+  missing Eterra bonus. Over-shot 1/2 (Apophis-only, Eterra-not-yet) builds
+  by 1, and was internally inconsistent because the Vitality breakdown
+  screenshot it cited had been taken on a 2/2 character.
+
+The correct model: `Apophis +1` AND `Eterra +1`, never `+2/0` or `0/+2`.
+Quest order is Apophis (Ch. 9) → Eterra (Ch. 10), so `Apophis 0 / Eterra +N`
+is unreachable in-game.
 
 | Site | File | What it does |
 |---|---|---|
-| config | `src/Modules/ConfigOptions.lua` (`questApophisMajasa`) | Adds +2 BASE to each of Str/Dex/Int/Att/Vit |
+| config | `src/Modules/ConfigOptions.lua` (`questApophisMajasa`) | Adds +1 BASE to each of Str/Dex/Int/Att/Vit |
+| config | `src/Modules/ConfigOptions.lua` (`questTempleOfEterra`) | Adds +1 BASE to each of Str/Dex/Int/Att/Vit |
 
 **Spec:** `spec/System/TestQuestApophisMajasa_spec.lua`
-- "questApophisMajasa applies +2 BASE to all five attributes"
+- "QuestApophisMajasa applies +1 BASE to all five attributes"
+- "QuestTempleOfEterra applies +1 BASE to all five attributes"
 
 **Establishing commit:** `<unset; bump after first commit on this branch>`
 

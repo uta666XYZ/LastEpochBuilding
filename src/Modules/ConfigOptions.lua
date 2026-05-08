@@ -25,19 +25,28 @@ end
 local options = {
 	-- Section: General options
 	{ section = "General", col = 1 },
-	{ var = "questApophisMajasa", type = "check", label = "Apophis and Majasa?", tooltip = "Quest reward: +2 to all attributes. Enable once you have defeated Apophis and Majasa on this character.", apply = function(val, modList, enemyModList)
-		-- @leb-regression-guard:quest-apophis-majasa-plus-two
-		-- LE in-game tooltip on the Vitality breakdown shows "Quest Reward: +2 Vitality"
-		-- (and equivalently +2 to Str/Dex/Int/Att). Confirmed via screenshot 2026-05-08.
-		modList:NewMod("Str", "BASE", 2, "Quest")
-		modList:NewMod("Dex", "BASE", 2, "Quest")
-		modList:NewMod("Int", "BASE", 2, "Quest")
-		modList:NewMod("Att", "BASE", 2, "Quest")
-		modList:NewMod("Vit", "BASE", 2, "Quest")
+	{ var = "questApophisMajasa", type = "check", label = "Apophis and Majasa?", tooltip = "Quest reward: +1 to all attributes. Enable once you have defeated Apophis and Majasa on this character.", apply = function(val, modList, enemyModList)
+		-- @leb-regression-guard:quest-apophis-majasa-plus-one
+		-- LE in-game Completed Quests panel shows "Attribute Points: 1" for the
+		-- Apophis and Majasa quest. Granted as +1 to each of Str/Dex/Int/Att/Vit.
+		-- Verified via in-game screenshot 2026-05-08 (Total 2/2 across both
+		-- Apophis and Temple of Eterra; each contributes 1).
+		modList:NewMod("Str", "BASE", 1, "Quest")
+		modList:NewMod("Dex", "BASE", 1, "Quest")
+		modList:NewMod("Int", "BASE", 1, "Quest")
+		modList:NewMod("Att", "BASE", 1, "Quest")
+		modList:NewMod("Vit", "BASE", 1, "Quest")
 	end },
-	{ var = "questTempleOfEterra", type = "check", label = "Temple of Eterra?", tooltip = "Quest completion flag for Temple of Eterra. Note: in-game this quest does not grant +1 to all attributes (that is the Apophis/Majasa reward).", apply = function(val, modList, enemyModList)
-		-- Temple of Eterra does not grant +1 to all attributes in-game.
-		-- See LEB regression guard: letools-quest-reward-temple-of-eterra-no-attr-bonus
+	{ var = "questTempleOfEterra", type = "check", label = "Temple of Eterra?", tooltip = "Quest reward: +1 to all attributes. Enable once you have completed the Temple of Eterra quest on this character.", apply = function(val, modList, enemyModList)
+		-- @leb-regression-guard:quest-temple-of-eterra-plus-one
+		-- LE in-game Completed Quests panel shows "Attribute Points: 1" for the
+		-- Temple of Eterra quest. Granted as +1 to each of Str/Dex/Int/Att/Vit.
+		-- Verified via in-game screenshot 2026-05-08.
+		modList:NewMod("Str", "BASE", 1, "Quest")
+		modList:NewMod("Dex", "BASE", 1, "Quest")
+		modList:NewMod("Int", "BASE", 1, "Quest")
+		modList:NewMod("Att", "BASE", 1, "Quest")
+		modList:NewMod("Vit", "BASE", 1, "Quest")
 	end },
 	{ var = "conditionStationary", type = "count", label = "Time spent stationary", ifCond = "Stationary",
 		tooltip = "Applies mods that use `while stationary` and `per / every second while stationary`",
