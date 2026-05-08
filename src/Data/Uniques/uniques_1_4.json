@@ -393,11 +393,17 @@
     },
     "mods": [
       "(30-100)% increased Freeze Rate Multiplier",
-      "(10-20)% increased Movement Speed"
+      "(10-20)% increased Movement Speed",
+      "+1 Cold Damage to Attacks and Spells per Dexterity",
+      "-1% Physical Resistance per Dexterity",
+      "-1% Cold Resistance per Dexterity"
     ],
     "rollIds": [
       0,
-      1
+      1,
+      null,
+      null,
+      null
     ],
     "overrideLevelRequirement": false
   },

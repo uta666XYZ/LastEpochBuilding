@@ -106,6 +106,38 @@ from live-import floor rounding by ±1 per affix using `applyRange`.
 
 **Establishing commit:** `e9e4e64c5`
 
+### `corrupted-count-pre-levelreq`
+
+`+N to All Attributes with at least 7 Corrupted non-Idol Items equipped`
+(Shroud of Obscurity affix `1011`) and similar Corrupted-count-conditional
+affixes use **equipped** semantics: an item occupying a slot is "equipped"
+even when its `LevelReq` exceeds the character level (in-game: stats are
+inactive but the slot is filled). LEB's `LevelReq` filter at
+`CalcSetup.lua` removes such items from `items[slotName]` so their stats
+do not contribute, which is correct for damage/defense calc — but the
+corrupted-counter loop downstream then under-counts because it iterates
+the post-filter `items` table.
+
+| Site | File | What it does |
+|---|---|---|
+| capture     | `src/Modules/CalcSetup.lua` (~line 869) | Stash every level-gated item into `env._levelGatedAllItems` BEFORE deletion (parallel to `_levelGatedSetItems` for SET membership) |
+| count       | `src/Modules/CalcSetup.lua` (~line 905) | Corrupted-counter loop iterates BOTH active `items` AND `env._levelGatedAllItems` so equipped-but-inactive corrupted gear still trips the threshold |
+
+**Spec:** `spec/System/TestModParse_spec.lua`
+- "Level-gated corrupted item still counts toward CorruptedNonIdolItemsEquipped"
+
+**Establishing build:** `Qqwv73q2 lv62 Warlock` — Silver Grail relic
+(LevelReq=68 > charLevel=62) is corrupted. Pre-fix `nonIdol` counter
+returned 6 (threshold 7 not met → Shroud +11 not applied → Vit/Str/Dex/
+Int/Att each LE-LEB delta = -11). Post-fix `nonIdol = 7`, threshold met,
+all 5 attributes gain +11 from Shroud's affix `1011_6 @ range 221`.
+
+**Why not just keep level-gated items in `items[]`?** Because their
+non-conditional stats (resistances, damage, etc.) must NOT contribute
+to active calc — that's the entire point of the `LevelReq` filter. The
+parallel `_levelGatedAllItems` table preserves the equipped/inactive
+distinction the game itself draws.
+
 ### `applyrange-rounding-mode-split`
 
 `itemLib.useLEToolsRounding` is a two-mode switch for the per-affix
@@ -410,6 +442,44 @@ their suffix descriptor.
 
 **Establishing commit:** `<unset; bump after first commit on this branch>`
 
+### `butchers-crown-no-mana-regen`
+
+The Butcher's Crown (uniqueID=449) carries a "you cannot regenerate mana"
+clause. Game tooltip reads `"You do not Regenerate Mana"`
+(`uniques.json` tooltipDescriptions[0]); LEB's unique JSON historically
+encodes the same effect as `"100% Disabled Mana Regen"`. ModParser had
+no handler for either form, so the line fell through to the generic
+chain: the `BASE_MORE` form (`^([%+%-]?[%d%.]+)%%`) consumed the leading
+`100%`, the trailing ` Disabled ` was discarded as unparsed text, and
+`Mana Regen` was matched as the stat name — yielding a `+100 BASE
+ManaRegen` mod, the exact opposite of the intended effect.
+
+Both text variants must produce a `NoManaRegen` FLAG, which
+`CalcDefence.lua:602` reads to short-circuit
+`output.ManaRegen = 0`:
+
+```lua
+if modDB:Flag(nil, "No"..resource.."Regen") or modDB:Flag(nil, "CannotGain"..resource) then
+    output[resource.."Regen"] = 0
+```
+
+Concretely on QDxZPWM9 lv99 Sorcerer: the bug inflated Mana Regen by
+~+87/s and pushed `ManaOnHit` (this unique grants `1 Mana per 12%
+increased mana regen`) into a positive feedback loop. The matched LE
+calculation correctly zeros mana regen and zeros that derived ManaOnHit.
+
+| Site | File | What it does |
+|---|---|---|
+| pattern | `src/Modules/ModParser.lua` (~line 942) | `specialModList` entries for `^you do not regenerate mana$` and `^100%% disabled mana regen$` returning `flag("NoManaRegen")` |
+| pre-cached entry | `src/Data/ModCache.lua` | Auto-generated `parseModCache` entry for `"100% Disabled Mana Regen"`; updated to the corrected `NoManaRegen` FLAG so historical cache hits don't bypass the new pattern (regenerated automatically by the next `SaveModCache` run) |
+| consumer (already present) | `src/Modules/CalcDefence.lua` (~line 602) | `if modDB:Flag(nil, "NoManaRegen") then output.ManaRegen = 0` |
+
+**Spec:** `spec/System/TestModParse_spec.lua`
+- "'You do not Regenerate Mana' sets NoManaRegen flag"
+- "'100% Disabled Mana Regen' (LEB JSON variant) sets NoManaRegen flag"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
 ### `refracted-slot-overlap-only`
 
 `ItemsTab:AutoPopulateOmenIdolSlots` decides which idols on the 5x5 layout
@@ -488,6 +558,38 @@ silently drop from the calc (parses but maps to nothing → 0% applied).
 - "'% increased Health Regeneration' parses to LifeRegen INC"
 - "'% increased Mana Regen' parses to ManaRegen INC"
 - "'% increased Mana Regeneration' parses to ManaRegen INC"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `overkill-damage-leech-parser`
+
+The affix `(N)% of Overkill Damage Leeched as Health` must parse to the
+`OverkillLeech` summary modifier — **not** the generic `DamageLifeLeech`.
+LE applies overkill leech only to damage exceeding the target's remaining
+HP, so routing the affix through `DamageLifeLeech` (which `CalcOffence`
+sums for every-hit leech) would over-leech every hit while leaving the
+sidebar's Overkill Leech row at 0.
+
+Before this guard, `modNameList` had no entry for the full phrase, so
+`scan()` picked the generic `damage` name and the `leeched as health`
+suffix flag combined to produce `DamageLifeLeech` with `" Overkill   "`
+left as unconsumed text. Symptoms (G1 batch #1, 2026-05-07):
+
+- `BgRrP5rr` `OverkillLeech` LE=16 LEB=0
+- `Q9J4wvmD` `OverkillLeech` LE=9 LEB=0
+
+Fix: register the 4-word phrase in `modNameList`. `scan()` chooses the
+earliest+longest match, so the new entry wins over `damage` and consumes
+the whole right-hand side, leaving no suffix and no residual.
+
+| Site | File | What it does |
+|---|---|---|
+| alias table | `src/Modules/ModParser.lua` (~line 165-178) | Registers `overkill damage leeched as health` → `OverkillLeech` |
+
+**Spec:** `spec/System/TestOverkillLeech_spec.lua`
+- "'11% of Overkill Damage Leeched as Health' parses to OverkillLeech BASE 11"
+- "'5% of Overkill Damage Leeched as Health' parses to OverkillLeech BASE 5"
+- "does not emit DamageLifeLeech for the overkill affix wording"
 
 **Establishing commit:** `<unset; bump after first commit on this branch>`
 
@@ -1516,6 +1618,163 @@ QDxZjL4J Paladin: pre-fix `ManaRegen=13.2 / Inc=65`; post-fix `18.3 / 129`.
 
 **Establishing commit:** `<unset; bump after first commit on this branch>`
 
+### `eterras-blessing-buff-gating`
+
+Eterra's Blessing (Primalist, treeId `eb5656`) is a 4s-duration cast buff
+(`skillTypeTags=131328` = `Buff(131072) | Spell(256)`), so DataProcess
+unpacks `SkillType.Buff` from the bits and CalcSetup routes it into the
+buff-tree bucket. Without an explicit entry in `whileActiveBuffByTreeId`
+the `enabled` gate on those tree-node mods degrades from
+`Condition:HaveEterrasBlessing` to `group.enabled` — i.e. "skill is on
+the bar" instead of "buff is currently active". LE's Buffs panel shows
+EB OFF by default (matching its 4s timed-duration semantics), so for
+parity LEB must default it OFF too and require the condition flag to
+turn it on.
+
+Symptom before fix (BOwJnY3Y Beastmaster, eb5656-2 #3 "Safeguard"
++15% Elemental + +15% Poison Resistance per point):
+
+| Stat | LE | LEB | Δ |
+|---|---|---|---|
+| FireResist   | 56  | 101 | +45 |
+| ColdResist   | 80  | 125 | +45 |
+| LightResist  | 179 | 224 | +45 |
+| PoisonResist | 1   | 46  | +45 |
+
+| Site | File | What it does |
+|---|---|---|
+| gate | `src/Modules/CalcSetup.lua` (~line 1432, `whileActiveBuffByTreeId`) | Adds `["eb5656"] = "HaveEterrasBlessing"` next to Flame Ward / Werebear etc |
+
+**Spec:** `spec/System/TestEterrasBlessingBuffGating_spec.lua`
+- "CalcSetup whileActiveBuffByTreeId maps eb5656 to HaveEterrasBlessing"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `mourningfrost-per-dex-resist-penalty`
+
+Mourningfrost (Leather Boots unique, id 19) carries a per-Dexterity
+penalty `-1% Physical and Cold Resistance per point of Dexterity`
+(per LE_datamining `unique_mods_generated.json` id=19). Before fix
+`uniques_1_4.json` listed only the freeze-rate-multiplier and
+movement-speed mods, so LEB's Cold/Phys totals were ~Dex points higher
+than LE on every Mourningfrost build (e.g. Qdz2XagK Falconer Dex=91:
+LEB Cold=72 / Phys=85, LE Cold=−19 / Phys=−5, both Δ≈+91).
+
+Mod text was added as two separate lines `-1% Physical Resistance per
+Dexterity` / `-1% Cold Resistance per Dexterity` to match LEB's existing
+ModParser per-stat patterns (parses to `PhysicalResist|ColdResist BASE
+-1` with `PerStat:Dex` tag).
+
+| Site | File | What it does |
+|---|---|---|
+| data | `src/Data/Uniques/uniques_1_4.json` (id 19, Mourningfrost) | Adds the two missing per-Dex resist penalty mod lines |
+
+**Spec:** `spec/System/TestMourningfrostMods_spec.lua`
+- "uniques_1_4.json Mourningfrost has per-Dexterity Phys+Cold resist penalty"
+- "ModParser parses '-1% Physical Resistance per Dexterity' as PerStat:Dex"
+- "ModParser parses '-1% Cold Resistance per Dexterity' as PerStat:Dex"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `flat-damage-to-attacks-and-spells`
+
+LE uses the phrasing `<N> <Type> Damage to/with Attacks and Spells` on flat-added
+damage mods that should apply to BOTH attack-source skills (Melee|Throwing|Bow)
+AND spell-source skills. Mourningfrost (id 19) carries
+`+1 Cold Damage to Attacks and Spells per Dexterity` as one such case.
+
+Without explicit `modFlagList` entries, the parser would either drop the keyword
+or only catch the trailing word ("spells"), causing the attack side to silently
+fall through and the mod to undercount on attack-skill builds. Four phrasing
+permutations are registered (`to`/`with` × `Attacks and Spells`/`Spells and
+Attacks`) so any LE wording lands on `KeywordFlag.Attack | KeywordFlag.Spell`.
+
+| Site | File | What it does |
+|---|---|---|
+| parser | `src/Modules/ModParser.lua` (`modFlagList` near `to attacks and spells`) | Maps the four phrasings to `bor(KeywordFlag.Attack, KeywordFlag.Spell)` |
+| data | `src/Data/Uniques/uniques_1_4.json` (id 19) | Carries the mod line that depends on the parser entry |
+
+**Spec:** `spec/System/TestMourningfrostMods_spec.lua`
+- "ModParser parses '+1 Cold Damage to Attacks and Spells per Dexterity' with Attack+Spell flags and PerStat:Dex"
+- "uniques_1_4.json Mourningfrost has per-Dexterity Phys+Cold resist penalty" (extended to also cover the cold-damage mod line)
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `quest-apophis-majasa-plus-two`
+
+**Protects:** the magnitude of the "Apophis and Majasa?" quest reward.
+The in-game tooltip for the Vitality breakdown explicitly shows
+"Quest Reward: +2 Vitality" (and equivalently +2 Str/Dex/Int/Att) — confirmed
+via screenshot 2026-05-08 on Bakbr2Ne lv86 Sorcerer. LEB previously hardcoded
++1, which silently caused a uniform Δ=-2 across all 5 attributes on G1
+ATTR_UNIFORM_OTHER builds whenever Apophis was completed (this exact symptom is
+documented in the header of `TestLEToolsQuestImport_spec.lua`).
+
+| Site | File | What it does |
+|---|---|---|
+| config | `src/Modules/ConfigOptions.lua` (`questApophisMajasa`) | Adds +2 BASE to each of Str/Dex/Int/Att/Vit |
+
+**Spec:** `spec/System/TestQuestApophisMajasa_spec.lua`
+- "questApophisMajasa applies +2 BASE to all five attributes"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `body_armor-banker-rounding`
+
+> **Type: JSON-comment-incompatible.** The protected sites live in
+> `src/Data/ModItem_1_4.json`, which cannot carry inline
+> `@leb-regression-guard:` markers (JSON has no comments). The 3-layer
+> contract is preserved by the spec + this index entry; any new JSON
+> mass-edit tool MUST reference this guard id in its commit message.
+> See "JSON-comment-incompatible guards" at the bottom of this file.
+
+**Protects:** the `body_armor` `slotOverride` min/max values for every affix
+that has a body_armor variant in `ModItem_1_4.json`.
+
+In LE, body_armor multiplies the canonical affix base roll by `(1 + affixEffectModifier)`
+where `affixEffectModifier = 0.5` for body_armor (verified against
+`equipmentItems.json` `BaseTypeName: "Body Armor"`, baseTypeID 1) — i.e. **×1.5**.
+The result is rounded with **banker's rounding (round half to even)**, not
+half-up. LEB previously stored pre-multiplied values with half-up rounding,
+producing min OR max values one higher than the in-game tooltip on every
+`.5`-boundary tier.
+
+Originally noticed on Vitality T5 (`505_4` displayed as 11–12, in-game 10–12);
+expanded to all body_armor slotOverrides via `.tmp/audit_body_armor_rounding.py`.
+The audit found exactly 22 mismatches, all off-by-1 in the half-up direction.
+
+**Patched affixes (22 entries across 9 affix IDs):**
+
+| affixId | Name | Tiers patched (LEB internal) |
+|---|---|---|
+| 8   | Dodge Rating       | T1, T6 |
+| 25  | Health             | T0 |
+| 31  | Armor (flat)       | T1, T2 |
+| 34  | Mana               | T1, T3, T6 |
+| 382 | Ward per Second    | T6 |
+| 501 | Strength           | T2, T4, T5 |
+| 502 | Intelligence       | T2, T4, T5 |
+| 503 | Dexterity          | T2, T4, T5 |
+| 504 | Attunement         | T2, T4, T5 |
+| 505 | Vitality           | T2, T4, T5 |
+
+Worked example (Strength T4): canonical base 7–8 → ×1.5 = 10.5–12.0 →
+banker round = **10–12** (LEB previously stored 11–12; half-up would round
+10.5 up to 11).
+
+| Site | File | What it does |
+|---|---|---|
+| data | `src/Data/ModItem_1_4.json` (22 entries listed above, body_armor.`"1"`) | Carries the banker-rounded min/max values |
+| audit | `.tmp/audit_body_armor_rounding.py` | Reproducible enumerator: parses ModItem, joins canonical tiers, asserts banker(base×1.5) == stored within ±1 |
+| canonical | `LE_datamining/extracted/items/single_affixes_v3.json` `tiers[].minRoll/maxRoll` | Source of canonical base; not in repo |
+| canonical | `LE_datamining/extracted/items/equipmentItems.json` `BaseTypeName=Body Armor` `affixEffectModifier=0.5` | Source of the ×1.5 multiplier |
+
+**Spec:** `spec/System/TestBodyArmorBankerRounding_spec.lua`
+- Asserts representative keys across all 9 affix IDs match banker(base×1.5),
+  with explicit "(was X) → (now Y)" pairs locked in.
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
 ## Adding a new guard
 
 1. Above the fix in source, add a comment block:
@@ -1531,6 +1790,30 @@ QDxZjL4J Paladin: pre-fix `ManaRegen=13.2 / Inc=65`; post-fix `18.3 / 129`.
    sibling spec if a new domain). Tag them with the same comment header.
 
 3. Append a row to this file under "Active guards".
+
+## JSON-comment-incompatible guards
+
+Some fixes live in JSON data files (`src/Data/*.json`) which cannot carry
+inline `@leb-regression-guard:<id>` comments. The 3-layer contract
+(inline marker + spec + this index) collapses to 2 layers for these guards.
+To keep the contract enforceable use this template:
+
+1. **Index entry**: prepend a callout block stating
+   `> **Type: JSON-comment-incompatible.**` and naming the JSON file(s).
+2. **Spec layer**: place the spec under `spec/System/`, with the
+   `@leb-regression-guard:<id>` marker as its first comment line. The spec
+   MUST load the JSON and assert specific keys / values, not just shape.
+3. **Audit layer (recommended)**: a reproducible script under `.tmp/` or
+   `scripts/` that re-derives the expected values from canonical sources
+   (e.g. the LE_datamining workspace). Reference it from the index entry
+   so a future maintainer can re-run the audit if canonical data shifts.
+4. **Commit-message convention**: any commit that mass-edits the protected
+   JSON file MUST mention the guard id in its body, e.g.
+   `Refs: @leb-regression-guard:body_armor-banker-rounding`. This is the
+   only way the marker travels with the change.
+
+Existing JSON-comment-incompatible guards:
+- `body_armor-banker-rounding` (`src/Data/ModItem_1_4.json`)
 
 ## Layering vs canary strings
 

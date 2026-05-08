@@ -10977,7 +10977,7 @@ c["100% Chill Immunity"]={{},"  Immunity "}
 c["100% Create a Wandering Spirit on direct Fire, Necrotic, or Void Skill Use"]={{}," Create a ering Spirit on direct , , or  Skill Use "}
 c["100% Critical Chance Below Half Health"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="BASE",value=100}},"  Below Half Health "}
 c["100% Critical Multiplier"]={{[1]={flags=0,keywordFlags=0,name="CritMultiplier",type="BASE",value=100}},nil}
-c["100% Disabled Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="BASE",value=100}}," Disabled  "}
+c["100% Disabled Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="NoManaRegen",type="FLAG",value=true}}}
 c["100% Dodge Rating -> Armor"]={{},"100% Dodge Rating -> Armor"}
 c["100% Dodge Rating -> Armor while Channeling"]={{},"100% Dodge Rating -> Armor while Channeling"}
 c["100% Elemental Nova Mana Consumption"]={{[1]={[1]={skillName="Elemental Nova",type="SkillName"},flags=0,keywordFlags=0,name="Mana",type="INC",value=100}},"   Consumption "}
@@ -11269,7 +11269,7 @@ c["11% of Melee Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=512,name=
 c["11% of Minion Damage Leeched as Health on Melee Hit"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=8389120,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=11}}}},nil}
 c["11% of Minion Damage Reflected"]={{[1]={flags=0,keywordFlags=0,name="MinionDamageReflectedPercent",type="BASE",value=11}},nil}
 c["11% of Missing Health gained as Ward per second"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=11},notSupported=true},nil}
-c["11% of Overkill Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=11}}," Overkill   "}
+c["11% of Overkill Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=0,name="OverkillLeech",type="BASE",value=11}}}
 c["11% reduced Bonus Damage Taken from Critical Strikes"]={{[1]={flags=0,keywordFlags=0,name="ReduceCritExtraDamage",type="BASE",value=11}},nil}
 c["110% Glyph of Dominion Mana Consumption"]={{[1]={[1]={skillName="Glyph of Dominion",type="SkillName"},flags=0,keywordFlags=0,name="Mana",type="INC",value=110}},"   Consumption "}
 c["110% Healing Hands Mana Consumption"]={{[1]={[1]={skillName="Healing Hands",type="SkillName"},flags=0,keywordFlags=0,name="Mana",type="INC",value=110}},"   Consumption "}
@@ -13714,7 +13714,7 @@ c["3% of Melee Damage Leeched as Health when below 65% Health"]={{[1]={flags=0,k
 c["3% of Minion Melee Damage Leeched as Health on Hit"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=8388608,keywordFlags=512,name="DamageLifeLeech",type="BASE",value=3}}}},nil}
 c["3% of Minion Physical Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="PhysicalDamageLifeLeech",type="BASE",value=3}}}},nil}
 c["3% of Necrotic Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=0,name="NecroticDamageLifeLeech",type="BASE",value=3}},nil}
-c["3% of Overkill Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=3}}," Overkill   "}
+c["3% of Overkill Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=0,name="OverkillLeech",type="BASE",value=3}}}
 c["3% of Physical Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamageLifeLeech",type="BASE",value=3}},nil}
 c["3% of Spell Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=256,name="DamageLifeLeech",type="BASE",value=3}},nil}
 c["3% of Spell Damage Leeched as Health While Channelling"]={{[1]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=256,name="DamageLifeLeech",type="BASE",value=3}},nil}
@@ -15175,7 +15175,7 @@ c["5% of Minion Damage Leeched as Health on Melee Hit"]={{[1]={flags=0,keywordFl
 c["5% of Minion Damage Reflected"]={{[1]={flags=0,keywordFlags=0,name="MinionDamageReflectedPercent",type="BASE",value=5}},nil}
 c["5% of Minion Physical Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=0,name="MinionModifier",type="LIST",value={mod={flags=0,keywordFlags=0,name="PhysicalDamageLifeLeech",type="BASE",value=5}}}},nil}
 c["5% of Missing Health gained as Ward per second"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=5},notSupported=true},nil}
-c["5% of Overkill Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=0,name="DamageLifeLeech",type="BASE",value=5}}," Overkill   "}
+c["5% of Overkill Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=0,name="OverkillLeech",type="BASE",value=5}}}
 c["5% of Physical Damage Leeched as Health"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamageLifeLeech",type="BASE",value=5}},nil}
 c["5% of Spell Damage Leeched as Health While Channelling"]={{[1]={[1]={type="Condition",var="Channelling"},flags=0,keywordFlags=256,name="DamageLifeLeech",type="BASE",value=5}},nil}
 c["5% reduced Bonus Damage Taken from Critical Strikes"]={{[1]={flags=0,keywordFlags=0,name="ReduceCritExtraDamage",type="BASE",value=5}},nil}

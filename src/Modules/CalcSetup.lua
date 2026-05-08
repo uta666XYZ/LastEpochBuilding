@@ -867,6 +867,22 @@ function calcs.initEnv(build, mode, override, specEnv)
 			-- (matches in-game: items above char level lose stats but still
 			-- contribute set piece count and wildcard).
 			env._levelGatedSetItems = {}
+			-- @leb-regression-guard: corrupted-count-pre-levelreq
+			-- "Equipped" semantics: a level-gated item is still EQUIPPED
+			-- (occupies a slot) even though its stats are inactive. Conditional
+			-- mods like `+N All Attributes with at least 7 Corrupted non-Idol
+			-- Items equipped` (Shroud of Obscurity affix 1011) count equipped
+			-- corrupted items, NOT items providing stat effect. Capture every
+			-- level-gated item here so the corrupted counter loop below can
+			-- include them. Do NOT inline them back into `items` — their stats
+			-- must remain disabled.
+			-- Test: spec/System/TestModParse_spec.lua
+			--       "Level-gated corrupted item still counts toward
+			--        CorruptedNonIdolItemsEquipped"
+			-- Establishing build: Qqwv73q2 lv62 Warlock — Silver Grail
+			--   (LevelReq=68 > charLevel=62), corrupted; brings nonIdol count
+			--   from 6 to 7 and trips Shroud's +11 All Attributes.
+			env._levelGatedAllItems = {}
 			for slotName, item in pairs(items) do
 				if item and item.requirements and item.requirements.level
 					and item.requirements.level > charLevel then
@@ -874,43 +890,49 @@ function calcs.initEnv(build, mode, override, specEnv)
 						or (item.modList and itemHasWildcardSetMod and itemHasWildcardSetMod(item)) then
 						env._levelGatedSetItems[slotName] = item
 					end
+					env._levelGatedAllItems[slotName] = item
 					items[slotName] = nil
 				end
 			end
 		end
 
-		-- Corrupted item counting (post LevelReq filter so it reflects what
-		-- actually contributes in-game). Feeds StatThreshold tags emitted by
-		-- the "with at least N Corrupted [non-Idol/Idol/] Items equipped"
-		-- ModParser pattern (see proposal C). Three stats are exposed:
+		-- Corrupted item counting. Iterates both active items AND level-gated
+		-- items (see @leb-regression-guard: corrupted-count-pre-levelreq above).
+		-- Feeds StatThreshold tags emitted by the "with at least N Corrupted
+		-- [non-Idol/Idol/] Items equipped" ModParser pattern. Three stats:
 		--   * CorruptedItemsEquipped       = all corrupted items
 		--   * CorruptedNonIdolItemsEquipped = corrupted items NOT in Idol slots
 		--   * CorruptedIdolItemsEquipped    = corrupted items IN Idol slots
 		do
 			local total, nonIdol, idol = 0, 0, 0
-			for slotName, item in pairs(items) do
-				if item and item.corrupted then
-					total = total + 1
-					-- @leb-regression-guard: idol-altar-not-idol-slot
-					-- "Idol Altar" is the altar EQUIPMENT slot (a single base item
-					-- of type "Idol Altar"), NOT an idol slot. The naive
-					-- `sub(1, 5) == "Idol "` matches both "Idol 1..N" (real idols)
-					-- AND "Idol Altar", which mis-classifies a corrupted altar
-					-- as a corrupted idol and breaks
-					-- `+N to All Attributes with at least 7 Corrupted non-Idol
-					-- Items equipped` (Shroud of Obscurity etc.).
-					-- Test: spec/System/TestModParse_spec.lua
-					--       "Corrupted Idol Altar counts as non-Idol for
-					--        CorruptedNonIdolItemsEquipped"
-					-- Establishing commit: e9e4e64c5
-					local isIdolSlot = (slotName:sub(1, 5) == "Idol " and slotName ~= "Idol Altar")
-						or slotName:sub(1, 10) == "Omen Idol "
-					if isIdolSlot then
-						idol = idol + 1
-					else
-						nonIdol = nonIdol + 1
-					end
+			local function countItem(slotName, item)
+				if not (item and item.corrupted) then return end
+				total = total + 1
+				local isIdolSlot = (slotName:sub(1, 5) == "Idol " and slotName ~= "Idol Altar")
+					or slotName:sub(1, 10) == "Omen Idol "
+				if isIdolSlot then
+					idol = idol + 1
+				else
+					nonIdol = nonIdol + 1
 				end
+			end
+			-- @leb-regression-guard: idol-altar-not-idol-slot
+			-- (classifier inside countItem above): "Idol Altar" slot is the altar
+			-- EQUIPMENT slot, NOT an idol slot. Naive `sub(1, 5) == "Idol "`
+			-- mis-classifies a corrupted altar as idol and breaks
+			-- `+N All Attributes with at least 7 Corrupted non-Idol Items
+			-- equipped` (Shroud of Obscurity etc.).
+			-- Test: spec/System/TestModParse_spec.lua
+			--       "Corrupted Idol Altar counts as non-Idol for
+			--        CorruptedNonIdolItemsEquipped"
+			-- Establishing commit: e9e4e64c5
+			for slotName, item in pairs(items) do
+				countItem(slotName, item)
+			end
+			-- Include level-gated equipped items (stats inactive but slot is
+			-- occupied) — see @leb-regression-guard: corrupted-count-pre-levelreq
+			for slotName, item in pairs(env._levelGatedAllItems or {}) do
+				countItem(slotName, item)
 			end
 			if total > 0 then
 				modDB:NewMod("CorruptedItemsEquipped", "BASE", total, "Corrupted Items")
@@ -1429,12 +1451,28 @@ function calcs.initEnv(build, mode, override, specEnv)
 	-- Maps treeId -> Condition flag name required for the buff to be considered active.
 	-- Form treeIds confirmed against game data (LE_datamining/extracted/ability_keyed_array.json):
 	--   wb8fo=Werebear Form, sf5rd=Spriggan Form, sbf4m=Swarmblade Form, rf1azz=Reaper Form.
+	-- @leb-regression-guard:eterras-blessing-buff-gating
+	-- Eterra's Blessing (eb5656) is a 4s-duration cast buff (skillTypeTags=131328
+	-- carries the Buff bit), and its specialization tree node "Safeguard" (eb5656-2)
+	-- grants "+15% Elemental Resistance" + "+15% Poison Resistance" per point. Without
+	-- this entry the SkillType.Buff bit alone is enough for CalcSetup's buff bucket,
+	-- but the gate becomes `enabled = group.enabled` — i.e. "skill is on the bar"
+	-- rather than "buff is currently active". LE's Buffs panel shows EB OFF by
+	-- default, so for parity LEB must require an explicit Condition:HaveEterrasBlessing
+	-- flag (matches Flame Ward fw3d's pattern).
+	-- Symptoms before fix (BOwJnY3Y Beastmaster, eb5656-2 #3):
+	--   * FireResist  LE=56  LEB=101 Δ=+45
+	--   * ColdResist  LE=80  LEB=125 Δ=+45
+	--   * LightResist LE=179 LEB=224 Δ=+45
+	--   * PoisonResist LE=1  LEB=46  Δ=+45
+	-- See REGRESSION_GUARDS.md "eterras-blessing-buff-gating".
 	local whileActiveBuffByTreeId = {
-		["fw3d"]   = "HaveFlameWard",      -- Flame Ward (Mage): 3s duration, FlameWardMutator
-		["wb8fo"]  = "InWerebearForm",     -- Werebear Form (Druid)
-		["sf5rd"]  = "InSprigganForm",     -- Spriggan Form (Druid)
-		["sbf4m"]  = "InSwarmbladeForm",   -- Swarmblade Form (Druid)
-		["rf1azz"] = "InReaperForm",       -- Reaper Form (Lich)
+		["fw3d"]   = "HaveFlameWard",        -- Flame Ward (Mage): 3s duration, FlameWardMutator
+		["wb8fo"]  = "InWerebearForm",       -- Werebear Form (Druid)
+		["sf5rd"]  = "InSprigganForm",       -- Spriggan Form (Druid)
+		["sbf4m"]  = "InSwarmbladeForm",     -- Swarmblade Form (Druid)
+		["rf1azz"] = "InReaperForm",         -- Reaper Form (Lich)
+		["eb5656"] = "HaveEterrasBlessing",  -- Eterra's Blessing (Primalist): 4s duration cast buff
 	}
 	local buffSkillTreePrefixes = {}
 	for _, group in pairs(build.skillsTab.socketGroupList) do

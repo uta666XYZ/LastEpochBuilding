@@ -162,6 +162,19 @@ local modNameList = {
 	-- Mana / Companion / Potion / Overkill summary stats (LETools parity)
 	["overkill health leech"] = "OverkillLeech",
 	["overkill leech"] = "OverkillLeech",
+	-- @leb-regression-guard:overkill-damage-leech-parser
+	-- Affix wording "(N)% of Overkill Damage Leeched as Health" must emit
+	-- OverkillLeech (display-only summary), NOT generic DamageLifeLeech.
+	-- LE applies overkill leech only to damage exceeding remaining HP, so
+	-- routing through DamageLifeLeech (the prior behavior, where the
+	-- generic "damage" modName + "leeched as health" suffix combined to
+	-- produce DamageLifeLeech and left "Overkill" unconsumed) would
+	-- over-leech every hit while leaving output.OverkillLeech = 0.
+	-- Symptoms before fix: BgRrP5rr OverkillLeech LE=16 LEB=0; Q9J4wvmD
+	-- LE=9 LEB=0. Match must precede the generic "damage" entry; scan()
+	-- picks earliest+longest, so this 4-word phrase wins. See spec
+	-- TestModParser_spec.lua "overkill-damage-leech-parser".
+	["overkill damage leeched as health"] = "OverkillLeech",
 	["maximum companions"] = "MaxCompanions",
 	["maximum number of companions"] = "MaxCompanions",
 	["potion slots"] = "PotionSlots",
@@ -410,6 +423,17 @@ local modFlagList = {
 	["hit"] = { flags = ModFlag.Hit },
 	["minion skills"] = { tag = { type = "SkillType", skillType = SkillType.Minion } },
 	["with elemental spells"] = { keywordFlags = bor(KeywordFlag.Lightning, KeywordFlag.Cold, KeywordFlag.Fire) },
+	-- @leb-regression-guard:flat-damage-to-attacks-and-spells
+	-- LE uses "<N> <Type> Damage to/with Attacks and Spells" phrasing on flat-added
+	-- damage mods that should apply to BOTH attack-source skills (Melee|Throwing|Bow)
+	-- AND spell-source skills (e.g. Mourningfrost: "+1 cold damage to attacks and
+	-- spells per point of dexterity"). Without these modFlagList entries, the
+	-- parser would either drop the keyword or only catch the second word ("spells")
+	-- and miss the attack side. Spec: TestModParserAttacksAndSpells_spec.lua.
+	["to attacks and spells"] = { keywordFlags = bor(KeywordFlag.Attack, KeywordFlag.Spell) },
+	["to spells and attacks"] = { keywordFlags = bor(KeywordFlag.Attack, KeywordFlag.Spell) },
+	["with attacks and spells"] = { keywordFlags = bor(KeywordFlag.Attack, KeywordFlag.Spell) },
+	["with spells and attacks"] = { keywordFlags = bor(KeywordFlag.Attack, KeywordFlag.Spell) },
 	["minion"] = { addToMinion = true },
 	-- Leech suffixes
 	["leeched as health"] = { modSuffix = "LifeLeech" },
@@ -914,6 +938,21 @@ local specialModList = {
 	end,
 	-- Rusted Cleaver unique: Intelligence gains a value equal to Strength
 	["^%+1 intelligence equals strength$"] = { flag("IntEqualsStr") },
+
+	-- The Butcher's Crown (unique helmet, uniqueID=449): zero player mana regen.
+	-- @leb-regression-guard: butchers-crown-no-mana-regen
+	-- Game tooltip text is "You do not Regenerate Mana" (uniques.json
+	-- tooltipDescriptions[0]). LEB unique JSON historically uses the variant
+	-- "100% Disabled Mana Regen"; both forms are recognised so future text
+	-- regenerations don't silently re-introduce the bug. Without this the
+	-- BASE_MORE form ("100%") matches and the trailing "Disabled Mana Regen"
+	-- collapses into a +100 BASE ManaRegen mod (boost), the opposite of intent.
+	-- The NoManaRegen flag is consumed at CalcDefence.lua:602 ("if modDB:Flag(
+	-- nil, 'No'..resource..'Regen') then output.ManaRegen = 0").
+	-- Test: spec/System/TestModParse_spec.lua "butchers-crown-no-mana-regen".
+	-- See REGRESSION_GUARDS.md "butchers-crown-no-mana-regen".
+	["^you do not regenerate mana$"] = { flag("NoManaRegen") },
+	["^100%% disabled mana regen$"] = { flag("NoManaRegen") },
 
 	-- Category A: "X% increased Damage for Totems" (distinct from "per totem")
 	["^%+?([%d%.]+)%% increased damage for totems$"] = function(num)

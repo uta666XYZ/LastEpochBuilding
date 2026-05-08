@@ -646,6 +646,27 @@ function calcs.defence(env, actor)
 			if modDB:Flag(nil, "UnaffectedBy"..resource.."Regen") then
 				t_insert(breakdown[resource.."RegenRecovery"], "Unaffected by "..resourceName.." Regen")
 			end
+			-- Surface the unique-mod source that disables this resource's regeneration so the
+			-- breakdown matches LETools' red "Helmet (Unique mod): Cannot Regenerate Mana" header.
+			-- Tabulate the FLAG to recover the originating mod's source label (e.g. "The Butcher's
+			-- Crown") and prepend a single line per distinct source to the top of the breakdown.
+			if modDB:Flag(nil, "No"..resource.."Regen") then
+				local seen = { }
+				for _, entry in ipairs(modDB:Tabulate("FLAG", nil, "No"..resource.."Regen")) do
+					local src = entry.mod and entry.mod.source or "Unique mod"
+					-- Item sources are stored as "Item:<id>:<name>"; surface the human-readable
+					-- portion so the header reads e.g. "The Butcher's Crown" rather than "Item:449:..."
+					local itemName = src:match("^Item:%d+:(.+)$")
+					local label = itemName or src
+					if not seen[label] then
+						seen[label] = true
+						t_insert(breakdown[resource.."RegenRecovery"], 1, "^1"..label..": Cannot Regenerate "..resourceName)
+					end
+				end
+				if not next(seen) then
+					t_insert(breakdown[resource.."RegenRecovery"], 1, "^1Cannot Regenerate "..resourceName)
+				end
+			end
 			if degenRate ~= 0 then
 				t_insert(breakdown[resource.."RegenRecovery"], s_format("- %.1f ^8(degen)", degenRate))
 				t_insert(breakdown[resource.."RegenRecovery"], s_format("= %.1f ^8per second", (modDB:Flag(nil, "UnaffectedBy"..resource.."Regen") and 0 or regenRate) - degenRate))

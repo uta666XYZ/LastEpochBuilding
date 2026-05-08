@@ -25,12 +25,15 @@ end
 local options = {
 	-- Section: General options
 	{ section = "General", col = 1 },
-	{ var = "questApophisMajasa", type = "check", label = "Apophis and Majasa?", tooltip = "Quest reward: +1 to all attributes. Enable once you have defeated Apophis and Majasa on this character.", apply = function(val, modList, enemyModList)
-		modList:NewMod("Str", "BASE", 1, "Quest")
-		modList:NewMod("Dex", "BASE", 1, "Quest")
-		modList:NewMod("Int", "BASE", 1, "Quest")
-		modList:NewMod("Att", "BASE", 1, "Quest")
-		modList:NewMod("Vit", "BASE", 1, "Quest")
+	{ var = "questApophisMajasa", type = "check", label = "Apophis and Majasa?", tooltip = "Quest reward: +2 to all attributes. Enable once you have defeated Apophis and Majasa on this character.", apply = function(val, modList, enemyModList)
+		-- @leb-regression-guard:quest-apophis-majasa-plus-two
+		-- LE in-game tooltip on the Vitality breakdown shows "Quest Reward: +2 Vitality"
+		-- (and equivalently +2 to Str/Dex/Int/Att). Confirmed via screenshot 2026-05-08.
+		modList:NewMod("Str", "BASE", 2, "Quest")
+		modList:NewMod("Dex", "BASE", 2, "Quest")
+		modList:NewMod("Int", "BASE", 2, "Quest")
+		modList:NewMod("Att", "BASE", 2, "Quest")
+		modList:NewMod("Vit", "BASE", 2, "Quest")
 	end },
 	{ var = "questTempleOfEterra", type = "check", label = "Temple of Eterra?", tooltip = "Quest completion flag for Temple of Eterra. Note: in-game this quest does not grant +1 to all attributes (that is the Apophis/Majasa reward).", apply = function(val, modList, enemyModList)
 		-- Temple of Eterra does not grant +1 to all attributes in-game.
