@@ -881,7 +881,9 @@ function calcs.initEnv(build, mode, override, specEnv)
 			--        CorruptedNonIdolItemsEquipped"
 			-- Establishing build: Qqwv73q2 lv62 Warlock — Silver Grail
 			--   (LevelReq=68 > charLevel=62), corrupted; brings nonIdol count
-			--   from 6 to 7 and trips Shroud's +11 All Attributes.
+			--   from 6 to 7 and trips Shroud's +14 All Attributes (T7 fixed
+			--   value; LETools/game-data verified — see REGRESSION_GUARDS.md
+			--   `corrupted-count-pre-levelreq` for the tier table).
 			env._levelGatedAllItems = {}
 			for slotName, item in pairs(items) do
 				if item and item.requirements and item.requirements.level

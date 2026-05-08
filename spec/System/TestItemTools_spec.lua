@@ -141,4 +141,56 @@ describe("TestItemTools", function()
             assert.are.equals(floorLine, roundLine)
         end)
     end)
+
+    -- @leb-regression-guard: applyrange-fixed-tier-noop
+    -- Locks in the contract that `applyRange` leaves fixed-value tier
+    -- text (no `(min-max)` pattern) unchanged regardless of the byte
+    -- passed as `range`. LETools T1-T7 corrupted tiers of affix 1011
+    -- (`+N All Attributes with at least 7 Corrupted non-Idol Items
+    -- equipped`) are FIXED 8/9/10/11/12/13/14; only T8 (primordial-only)
+    -- carries the `(19-21)` roll range. A misstated REGRESSION_GUARDS
+    -- claim that `1011_6 @ range 221 → +11` triggered a bogus
+    -- investigation 2026-05-08; this spec prevents the same mistake
+    -- from re-entering the codebase via a "scale fixed values too"
+    -- patch to applyRange.
+    -- See REGRESSION_GUARDS.md "applyrange-fixed-tier-noop".
+    describe("applyRange leaves fixed-value tier text unchanged", function()
+        local fixedT7 =
+            "+14 All Attributes with at least 7 Corrupted non-Idol Items equipped"
+        local rangedT8 =
+            "+(19-21) All Attributes with at least 7 Corrupted non-Idol Items equipped"
+
+        it("affix 1011 T7 (fixed +14) ignores the range byte", function()
+            for _, byte in ipairs({ 0, 64, 128, 221, 255 }) do
+                local line = itemLib.applyRange(fixedT7, byte, 1.0, "Integer")
+                assert.are.equals(fixedT7, line,
+                    "range byte " .. byte .. " mutated a fixed-tier line")
+            end
+        end)
+
+        it("affix 1011 T8 (range 19-21) still interpolates as expected", function()
+            -- T8 IS primordial-only; sanity-check that the (min-max)
+            -- path still works so the "fixed" guard above isn't hiding
+            -- a broken interpolator. byte=0 → min, byte=255 → max.
+            local lo = itemLib.applyRange(rangedT8, 0, 1.0, "Integer")
+            assert.are.equals(
+                "+19 All Attributes with at least 7 Corrupted non-Idol Items equipped",
+                lo)
+            local hi = itemLib.applyRange(rangedT8, 255, 1.0, "Integer")
+            assert.are.equals(
+                "+21 All Attributes with at least 7 Corrupted non-Idol Items equipped",
+                hi)
+        end)
+
+        it("a generic fixed flat-value line is unaffected by range bytes", function()
+            -- Same contract, decoupled from the 1011 affix family so a
+            -- future rename of the Shroud affix can't silently weaken
+            -- the guard.
+            local fixed = "+8 to Strength"
+            for _, byte in ipairs({ 0, 50, 200, 255 }) do
+                assert.are.equals(fixed,
+                    itemLib.applyRange(fixed, byte, 1.0, "Integer"))
+            end
+        end)
+    end)
 end)

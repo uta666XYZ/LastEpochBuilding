@@ -203,6 +203,16 @@ function itemLib.applyRange(line, range, valueScalar, rounding)
         end
         return m_floor(v * precision + 0.5) / precision
     end
+    -- @leb-regression-guard: applyrange-fixed-tier-noop
+    -- Lines without a `(min-max)` pattern are FIXED-VALUE tiers and must
+    -- pass through `applyRange` unchanged regardless of the `range`/`r`
+    -- byte. LETools T1-T7 corrupted tiers of affix 1011
+    -- (`+N All Attributes with at least 7 Corrupted non-Idol Items
+    -- equipped`) are fixed 8/9/10/11/12/13/14; only the primordial-only
+    -- T8 carries `(19-21)`. A misstated REGRESSION_GUARDS claim that
+    -- `1011_6 @ range 221 → +11` triggered a bogus investigation
+    -- 2026-05-08; do NOT add a "scale fixed values too" patch here.
+    -- See REGRESSION_GUARDS.md "applyrange-fixed-tier-noop".
     line = line:gsub("(%+?)%((%-?%d+%.?%d*)%-(%-?%d+%.?%d*)%)",
             function(plus, min, max)
                 numbers = numbers + 1

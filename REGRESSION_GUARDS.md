@@ -128,9 +128,12 @@ the post-filter `items` table.
 
 **Establishing build:** `Qqwv73q2 lv62 Warlock` — Silver Grail relic
 (LevelReq=68 > charLevel=62) is corrupted. Pre-fix `nonIdol` counter
-returned 6 (threshold 7 not met → Shroud +11 not applied → Vit/Str/Dex/
-Int/Att each LE-LEB delta = -11). Post-fix `nonIdol = 7`, threshold met,
-all 5 attributes gain +11 from Shroud's affix `1011_6 @ range 221`.
+returned 6 (threshold 7 not met → Shroud's +14 All Attributes affix not
+applied → Vit/Str/Dex/Int/Att each LEB-vs-source delta = -14). Post-fix
+`nonIdol = 7`, threshold met, all 5 attributes gain +14 from Shroud's
+affix `1011_6` (T7, fixed value — `range`/`r` is meaningless for
+fixed-value tiers; LETools T1-T7 are fixed 8/9/10/11/12/13/14, only
+the primordial-only T8 has a `(19-21)` roll range).
 
 **Why not just keep level-gated items in `items[]`?** Because their
 non-conditional stats (resistances, damage, etc.) must NOT contribute
@@ -191,6 +194,48 @@ The split is intentional but easy to break in two ways:
 - LEB snapshot (`.lua`) value = round-half-up = LETools-compat
 - Don't compare snapshot value to in-game; don't compare live value to
   LETools by ±1/affix tolerance — they're meant to use different rounding.
+
+### `applyrange-fixed-tier-noop`
+
+Affix tiers come in two shapes in the LEB mod data:
+
+- **Fixed-value tiers** — mod text has no `(min-max)` pattern, e.g.
+  `"+14 All Attributes with at least 7 Corrupted non-Idol Items equipped"`
+  for `1011_6`.
+- **Ranged tiers** — mod text has `(min-max)`, e.g.
+  `"+(19-21) All Attributes ..."` for `1011_7` (T8, primordial-only).
+
+`applyRange` only mutates lines that match the `(min-max)` regex; fixed
+lines pass through untouched. The `range` / `r` byte on a LETools import
+is therefore meaningless for fixed tiers — the value is whatever the data
+file says, not `min + range/255 * span`.
+
+This caught us out 2026-05-08: an earlier version of this file claimed
+`1011_6 @ range 221 → +11`, treating the byte as if it scaled the fixed
+value. That implied LEB had a bug that didn't exist (LEB matches LETools
+and game data at +14). Game-data verification:
+`extracted/items/singleAffixes.json` affix id 1011 ships
+T1-T7 = `8/9/10/11/12/13/14` (fixed) and T8 = `19-21` (range, primordial
+only). `src/Data/ModItem_1_4.json` `1011_0..1011_6` are flat lines and
+`1011_7` is the ranged line — so the data already encodes the
+fixed/ranged split.
+
+| Site | File | What it does |
+|---|---|---|
+| pass-through | `src/Modules/ItemTools.lua` `applyRange` (~line 206) | The `(min-max)` gsub is the ONLY mutation site; fixed lines fall through unchanged |
+
+**Spec:** `spec/System/TestItemTools_spec.lua` —
+`describe("applyRange leaves fixed-value tier text unchanged")`
+- "affix 1011 T7 (fixed +14) ignores the range byte"
+- "affix 1011 T8 (range 19-21) still interpolates as expected"
+- "a generic fixed flat-value line is unaffected by range bytes"
+
+**Why the guard:** any future patch tempted to "scale fixed values too"
+(e.g. interpreting `r` as a sub-tier modifier, or chasing a phantom
+`+11` reading) would break Shroud of Obscurity, every fixed-tier
+corrupted attribute affix, and any unique whose mod data omits the
+`(min-max)` pattern by design. The spec pins the no-op contract directly
+so the regression has somewhere to fail loudly.
 
 ### `set-bonus-breakdown-publish` / `set-bonus-breakdown-bridge`
 
