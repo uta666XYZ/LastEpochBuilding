@@ -1775,6 +1775,66 @@ banker round = **10–12** (LEB previously stored 11–12; half-up would round
 
 **Establishing commit:** `<unset; bump after first commit on this branch>`
 
+### `lament-volcanic-orb-cannot-freeze`
+
+Lament of the Lost Refuge altText (verbatim): *"Volcanic Orb's base damage is
+converted to void and scales with increases to void damage instead of fire or
+cold. **It cannot freeze even if previously converted to cold.**"* The
+freeze-suppression clause is implicit in altText only — there is no explicit
+mod line for it in `uniques.json`.
+
+Clause-to-code mapping (paste this verbatim quote in the source comment so
+future edits cannot drift from the authoritative wording):
+
+| altText clause | Code expression |
+|---|---|
+| "It cannot freeze ..." | `output.FreezeRate / FreezeChance = 0` |
+| "even if previously converted to cold" | trigger fires regardless of freeze path (tree Fire→Cold via *Frigid Wake*, item FreezeRate sources, etc.) |
+
+Two failure modes the suppression must cover:
+
+1. Volcanic Orb's tree carries Fire→Cold conversion nodes (e.g. *Frigid Wake*).
+   After Lament's `lament-base-damage-conversion` rewrites
+   `spell_base_fire_damage` → `spell_base_void_damage`, those tree nodes have
+   no Fire base damage left to convert — but earlier intermediate evaluations
+   or future refactors of the conversion order could re-introduce a Cold
+   path. Suppression closes that hole defensively.
+2. `FreezeRate` is a `modDB:Sum("BASE", skillCfg, "FreezeRate")` aggregate. It
+   accumulates from items / passives / tree, independent of whether the skill
+   actually deals Cold damage on hit. Without an explicit gate, a Lament
+   Volcanic Orb build with any external freeze-rate source still freezes —
+   contradicting altText.
+
+The fix gates `output.FreezeRate` and `output.FreezeChance` to 0 when the
+active skill is Volcanic Orb AND
+`calcs.getItemSkillBaseDamageConversion(env, grantedEffect)` returns truthy
+(any 100% base-damage conversion via an equipped item — currently only Lament
+→ Void). The destination type is NOT inspected: altText documents only the
+Lament case and gives no rule for hypothetical non-Void conversions, so a
+destination filter would be unsupported speculation. Encoded against the
+existing helper rather than introducing a new flag mod, so the suppression
+shares the same trigger as the base-damage-stat-key rewrite.
+
+The `name == "Volcanic Orb"` gate stays explicit because altText is the only
+authority for "cannot freeze" and only Lament + Volcanic Orb has it; if a
+future skill+item with the same form acquires a parallel altText clause, add
+its name to the gate (and link to the new altText source).
+
+| Site | File | What it does |
+|---|---|---|
+| gate    | `src/Modules/CalcOffence.lua` (~line 1661)         | Zeros `FreezeRate` and `FreezeChance` when Volcanic Orb has any 100% base-damage conversion in effect via an equipped item |
+| trigger | `src/Modules/CalcActiveSkill.lua` (~line 696)      | `getItemSkillBaseDamageConversion` returns the destination type (paired with `lament-base-damage-conversion`) |
+
+**Spec:** `spec/System/TestLamentVolcanicOrbCannotFreeze_spec.lua`
+- "regression-guard comment block is present"
+- "FreezeRate / FreezeChance assignments route through the cannotFreeze gate"
+- "cannotFreeze trigger uses the base-damage-conversion helper"
+- "cannotFreeze does NOT inspect destination type" (locks against speculative re-introduction of `dst ~= "cold"`)
+- "cannotFreeze gates on Volcanic Orb name"
+- "uniques*.json carry the 100% Volcanic Orb -> Void conversion line"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
 ## Adding a new guard
 
 1. Above the fix in source, add a comment block:

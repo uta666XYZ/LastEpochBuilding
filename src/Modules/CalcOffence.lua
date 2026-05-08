@@ -1660,9 +1660,32 @@ function calcs.offence(env, actor, activeSkill)
 
 	-- LE: Freeze Rate --
 	-- FreezeRateMultiplier is stored as BASE (e.g. "+200% Freeze Rate Multiplier" -> 200)
+	-- @leb-regression-guard: lament-volcanic-orb-cannot-freeze
+	-- Lament of the Lost Refuge altText (verbatim, src/Data/Uniques data mining):
+	--   "Volcanic Orb's base damage is converted to void and scales with
+	--    increases to void damage instead of fire or cold. It cannot freeze
+	--    even if previously converted to cold."
+	-- Mapping clause -> code:
+	--   "It cannot freeze ..."          -> output.FreezeRate / FreezeChance = 0
+	--   "even if previously converted   -> trigger fires regardless of the
+	--    to cold"                          freeze path (tree Fire->Cold via
+	--                                      Frigid Wake, item FreezeRate, etc.)
+	-- Trigger: Volcanic Orb has any 100% base-damage conversion in effect via
+	-- an equipped item (currently only Lament -> Void exists in game data).
+	-- The destination type is NOT inspected — altText documents only the
+	-- Lament case and does not address hypothetical non-Void conversions, so
+	-- adding a destination filter would be unsupported speculation.
+	local cannotFreeze = false
+	do
+		local ge = activeSkill.activeEffect and activeSkill.activeEffect.grantedEffect
+		if ge and ge.name == "Volcanic Orb"
+		   and calcs.getItemSkillBaseDamageConversion(env, ge) then
+			cannotFreeze = true
+		end
+	end
 	local freezeRateBase = modDB:Sum("BASE", skillCfg, "FreezeRate")
 	local freezeRateMult = modDB:Sum("BASE", skillCfg, "FreezeRateMultiplier")
-	output.FreezeRate = freezeRateBase * (freezeRateMult / 100)
+	output.FreezeRate = cannotFreeze and 0 or (freezeRateBase * (freezeRateMult / 100))
 	output.FreezeRateMultiplier = freezeRateMult
 	do
 		local enemyLife = enemyDB:Sum("BASE", nil, "Life") or 1000
@@ -1671,7 +1694,7 @@ function calcs.offence(env, actor, activeSkill)
 		local enemyIsBoss = enemyDB:Flag(nil, "Condition:Boss")
 		local bossHPMult = enemyIsBoss and data.misc.StunBossHealthMult or 1
 		local enemyEHP  = m_max(enemyLife * bossHPMult + enemyWard, 1)
-		output.FreezeChance = m_min(output.FreezeRate / enemyEHP * 100, 100)
+		output.FreezeChance = cannotFreeze and 0 or m_min(output.FreezeRate / enemyEHP * 100, 100)
 	end
 
 	-- LE Ailment Durations (enemy-side) --
