@@ -488,8 +488,9 @@ end
 
 -- Custom per-stat breakdown: comma-separated stat names via LEB_STAT_DUMP env var.
 -- Example: LEB_STAT_DUMP=Strength,FireResist,Vitality
--- Emits modDB sources (source/type/value) for each requested stat to match
--- against LETools tooltip breakdowns.
+-- Emits modDB sources (source/type/value/tags) for each requested stat plus a
+-- summary row (base/inc/more/output) to match against LETools tooltip
+-- breakdowns. The detailed row uses dumpModList so tagged mods get evaluated.
 local statDumpEnv = os.getenv("LEB_STAT_DUMP")
 if statDumpEnv and statDumpEnv ~= "" then
     outHnd:write("    customStatBreakdown = {\n")
@@ -517,6 +518,12 @@ if statDumpEnv and statDumpEnv ~= "" then
                 end
             end
             outHnd:write("        },\n")
+            local ok, base = pcall(function() return modDB:Sum("BASE", nil, stat) end)
+            local _, inc  = pcall(function() return modDB:Sum("INC",  nil, stat) end)
+            local _, more = pcall(function() return modDB:More(nil, stat) end)
+            outHnd:write(string.format("        [\"%s_summary\"] = { base=%s, inc=%s, more=%s, output=%s },\n",
+                stat, tostring(ok and base or 0), tostring(inc or 0), tostring(more or 1),
+                tostring(build.calcsTab.mainOutput[stat])))
         end
     end
     outHnd:write("    },\n")
