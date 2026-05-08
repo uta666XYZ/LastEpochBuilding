@@ -442,6 +442,44 @@ their suffix descriptor.
 
 **Establishing commit:** `<unset; bump after first commit on this branch>`
 
+### `butchers-crown-no-mana-regen`
+
+The Butcher's Crown (uniqueID=449) carries a "you cannot regenerate mana"
+clause. Game tooltip reads `"You do not Regenerate Mana"`
+(`uniques.json` tooltipDescriptions[0]); LEB's unique JSON historically
+encodes the same effect as `"100% Disabled Mana Regen"`. ModParser had
+no handler for either form, so the line fell through to the generic
+chain: the `BASE_MORE` form (`^([%+%-]?[%d%.]+)%%`) consumed the leading
+`100%`, the trailing ` Disabled ` was discarded as unparsed text, and
+`Mana Regen` was matched as the stat name — yielding a `+100 BASE
+ManaRegen` mod, the exact opposite of the intended effect.
+
+Both text variants must produce a `NoManaRegen` FLAG, which
+`CalcDefence.lua:602` reads to short-circuit
+`output.ManaRegen = 0`:
+
+```lua
+if modDB:Flag(nil, "No"..resource.."Regen") or modDB:Flag(nil, "CannotGain"..resource) then
+    output[resource.."Regen"] = 0
+```
+
+Concretely on QDxZPWM9 lv99 Sorcerer: the bug inflated Mana Regen by
+~+87/s and pushed `ManaOnHit` (this unique grants `1 Mana per 12%
+increased mana regen`) into a positive feedback loop. The matched LE
+calculation correctly zeros mana regen and zeros that derived ManaOnHit.
+
+| Site | File | What it does |
+|---|---|---|
+| pattern | `src/Modules/ModParser.lua` (~line 942) | `specialModList` entries for `^you do not regenerate mana$` and `^100%% disabled mana regen$` returning `flag("NoManaRegen")` |
+| pre-cached entry | `src/Data/ModCache.lua` | Auto-generated `parseModCache` entry for `"100% Disabled Mana Regen"`; updated to the corrected `NoManaRegen` FLAG so historical cache hits don't bypass the new pattern (regenerated automatically by the next `SaveModCache` run) |
+| consumer (already present) | `src/Modules/CalcDefence.lua` (~line 602) | `if modDB:Flag(nil, "NoManaRegen") then output.ManaRegen = 0` |
+
+**Spec:** `spec/System/TestModParse_spec.lua`
+- "'You do not Regenerate Mana' sets NoManaRegen flag"
+- "'100% Disabled Mana Regen' (LEB JSON variant) sets NoManaRegen flag"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
 ### `refracted-slot-overlap-only`
 
 `ItemsTab:AutoPopulateOmenIdolSlots` decides which idols on the 5x5 layout

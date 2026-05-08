@@ -939,6 +939,21 @@ local specialModList = {
 	-- Rusted Cleaver unique: Intelligence gains a value equal to Strength
 	["^%+1 intelligence equals strength$"] = { flag("IntEqualsStr") },
 
+	-- The Butcher's Crown (unique helmet, uniqueID=449): zero player mana regen.
+	-- @leb-regression-guard: butchers-crown-no-mana-regen
+	-- Game tooltip text is "You do not Regenerate Mana" (uniques.json
+	-- tooltipDescriptions[0]). LEB unique JSON historically uses the variant
+	-- "100% Disabled Mana Regen"; both forms are recognised so future text
+	-- regenerations don't silently re-introduce the bug. Without this the
+	-- BASE_MORE form ("100%") matches and the trailing "Disabled Mana Regen"
+	-- collapses into a +100 BASE ManaRegen mod (boost), the opposite of intent.
+	-- The NoManaRegen flag is consumed at CalcDefence.lua:602 ("if modDB:Flag(
+	-- nil, 'No'..resource..'Regen') then output.ManaRegen = 0").
+	-- Test: spec/System/TestModParse_spec.lua "butchers-crown-no-mana-regen".
+	-- See REGRESSION_GUARDS.md "butchers-crown-no-mana-regen".
+	["^you do not regenerate mana$"] = { flag("NoManaRegen") },
+	["^100%% disabled mana regen$"] = { flag("NoManaRegen") },
+
 	-- Category A: "X% increased Damage for Totems" (distinct from "per totem")
 	["^%+?([%d%.]+)%% increased damage for totems$"] = function(num)
 		return { mod("Damage", "INC", num, "", 0, 0, { type = "Scope", scope = "totem" }) }

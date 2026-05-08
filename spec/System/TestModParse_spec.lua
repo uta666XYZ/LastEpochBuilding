@@ -820,4 +820,33 @@ describe("TestModParse", function()
         assert.are.equals(12, build.configTab.modList:Sum("INC", nil, "LifeRegen"),
             "Bare '+12% Health Regen' must contribute +12% INC Life Regen")
     end)
+
+    -- @leb-regression-guard: butchers-crown-no-mana-regen
+    -- The Butcher's Crown (uniqueID=449) zeros mana regen. In-game tooltip is
+    -- "You do not Regenerate Mana"; LEB unique JSON variant is
+    -- "100% Disabled Mana Regen". Both must produce a NoManaRegen FLAG, not a
+    -- BASE ManaRegen mod. CalcDefence.lua:602 reads NoManaRegen and forces
+    -- output.ManaRegen = 0. Without this guard the BASE_MORE form ("100%")
+    -- collapses the LEB JSON variant into +100 BASE ManaRegen (boost), the
+    -- opposite of intent (~+87.4 mana/s drift on QDxZPWM9 lv99 Sorcerer).
+    -- Establishing commit: <unset; bump after first commit on this branch>.
+    it("'You do not Regenerate Mana' sets NoManaRegen flag", function()
+        build.configTab.input.customMods = "You do not Regenerate Mana"
+        build.configTab:BuildModList()
+        runCallback("OnFrame")
+        assert.is_true(build.configTab.modList:Flag(nil, "NoManaRegen"),
+            "'You do not Regenerate Mana' must set NoManaRegen flag")
+        assert.are.equals(0, build.configTab.modList:Sum("BASE", nil, "ManaRegen"),
+            "Must NOT add flat BASE ManaRegen")
+    end)
+
+    it("'100% Disabled Mana Regen' (LEB JSON variant) sets NoManaRegen flag", function()
+        build.configTab.input.customMods = "100% Disabled Mana Regen"
+        build.configTab:BuildModList()
+        runCallback("OnFrame")
+        assert.is_true(build.configTab.modList:Flag(nil, "NoManaRegen"),
+            "'100% Disabled Mana Regen' must set NoManaRegen flag")
+        assert.are.equals(0, build.configTab.modList:Sum("BASE", nil, "ManaRegen"),
+            "Must NOT add +100 BASE ManaRegen (the bug being guarded)")
+    end)
 end)

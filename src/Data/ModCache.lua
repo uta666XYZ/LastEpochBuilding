@@ -10977,7 +10977,7 @@ c["100% Chill Immunity"]={{},"  Immunity "}
 c["100% Create a Wandering Spirit on direct Fire, Necrotic, or Void Skill Use"]={{}," Create a ering Spirit on direct , , or  Skill Use "}
 c["100% Critical Chance Below Half Health"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="BASE",value=100}},"  Below Half Health "}
 c["100% Critical Multiplier"]={{[1]={flags=0,keywordFlags=0,name="CritMultiplier",type="BASE",value=100}},nil}
-c["100% Disabled Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="ManaRegen",type="BASE",value=100}}," Disabled  "}
+c["100% Disabled Mana Regen"]={{[1]={flags=0,keywordFlags=0,name="NoManaRegen",type="FLAG",value=true}}}
 c["100% Dodge Rating -> Armor"]={{},"100% Dodge Rating -> Armor"}
 c["100% Dodge Rating -> Armor while Channeling"]={{},"100% Dodge Rating -> Armor while Channeling"}
 c["100% Elemental Nova Mana Consumption"]={{[1]={[1]={skillName="Elemental Nova",type="SkillName"},flags=0,keywordFlags=0,name="Mana",type="INC",value=100}},"   Consumption "}
