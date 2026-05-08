@@ -237,6 +237,53 @@ corrupted attribute affix, and any unique whose mod data omits the
 `(min-max)` pattern by design. The spec pins the no-op contract directly
 so the regression has somewhere to fail loudly.
 
+### `per-set-fractional-precision`
+
+"per Complete Set" affixes scale with `Multiplier:CompleteSetCount` (the
+number of complete sets equipped). LE quantizes the per-source rolled
+value to **half-integer (0.5) steps**, multiplies by the set count, then
+floors. LEB historically rounded the per-item rolled value to integer
+first then multiplied — losing the `0.5×setCount` half-step contribution.
+
+Empirical fit across two builds (2026-05-08), `+(2-5) to All Attributes
+per Complete Set`:
+
+| build | byte | numVal (precision=2, span=3.5) | × setCount | floor | LE |
+|---|---|---|---|---|---|
+| BxvJP3g1 lv99 Necromancer | 41 | 2.5 | × 3 = 7.5 | 7 ✓ | 7 |
+| Qqwv73q2 lv62 Warlock | 203 | 4.5 | × 6 = 27.0 | 27 ✓ | 27 |
+
+`precision=1` (old) → BxvJP3g1 gets `2×3=6` (Δ=-1). `precision=1000`
+(intermediate, never shipped) → Qqwv73q2 gets `floor(4.388×6)=26`
+(Δ=-1). Only `precision=2` (half-step) matches both data points.
+
+LE precalc_data: BxvJP3g1 `{str:41, dex:11, int:43, att:11, vit:30}`,
+Qqwv73q2 LETools display `{str:45, dex:43, int:66, att:47, vit:44}` —
+LEB matched both after fix.
+
+| Site | File | What it does |
+|---|---|---|
+| half-step | `src/Modules/ItemTools.lua` `applyRange` (`precision=2` bump for `per Complete Set` + Integer rounding) | applyRange emits half-integer values (e.g. 2.5, 4.5) instead of integer floor |
+| tag the multiplier | `src/Modules/ModParser.lua` `["per complete set"]` | Adds `roundAfterMultiply=true` to the `Multiplier:CompleteSetCount` tag |
+| floor after multiply | `src/Classes/ModStore.lua` `EvalMod` (Multiplier branch) | When tag.roundAfterMultiply is set, `value = m_floor(value × mult)` so the half-step × setCount lands on integer |
+
+**Why the guard:** any future "simplify applyRange — round at the source"
+refactor, or any change that drops the `roundAfterMultiply` tag from the
+ModParser table-driven mapping, regresses BxvJP3g1 (and every Legends
+Entwined wearer) by 1 per attribute per complete set. The fix is also
+narrow on purpose:
+
+- `+1 to All Skills per Complete Set` (no range, value=1) is unaffected:
+  `floor(1×N) = N`.
+- `+(2-5)% to All Resistances per Complete Set` is NOT yet covered —
+  the `{rounding:Integer}` directive isn't on that line, so the
+  precision bump is gated by `rounding == "Integer"`. LE behavior on
+  the % line was not verified at fix time; revisit if a resistance Δ
+  surfaces.
+- byte=0 → `+2` exact and byte=255 → clamped to `+5` go through the old
+  ModCache integer keys, but produce the same answer (`floor(N×M) = N×M`
+  for integer N).
+
 ### `set-bonus-breakdown-publish` / `set-bonus-breakdown-bridge`
 
 The Calcs-tab "Set Bonuses" section is gated on `output.SetBreakdown`,
@@ -1124,14 +1171,10 @@ The unique amulet `Exulis` (id 469) rolls `+(10-20) to All Attributes`.
 1. Game data extract `uniques_v3.json` id=469 mod[1] (property=46, All
    Attributes) has `value=10.0, maxValue=20.0`.
 2. LETools tooltip displays `+(10 to 20) to All Attributes`.
-3. `applyRange` trace with (10-20) reproduces the in-game LEB display:
-   byte=156 → `10 + 156/255 * (20-10+1) = 16.73 → floor 16`. Matches
-   the user-observed +16 once data was corrected.
-
-An earlier guard locked this as `(10-18)`, based on a misobservation:
-a +18 roll seen in-game was actually `+16 from the amulet + 2 from a
-separate quest reward`. Conflating those two sources produced the
-wrong upper bound. Do NOT widen back to 18, and do NOT narrow further.
+3. `applyRange` trace with (10-20) reproduces the in-game LEB display
+   when the rollIds bug below is also fixed: byte=193 (shared with
+   Skills) → `floor((10 + 193/255*10) + 0.5) = floor(18.07) = 18`,
+   matching LETools display for build AL07Kea4 (Spellblade lv97).
 
 A regression here changes the upper bound away from `20` in either
 uniques file.
@@ -1147,6 +1190,43 @@ that documents the source of truth at the data site itself.
 **Spec:** `spec/System/TestExulisRange_spec.lua`
 - "Data/Uniques/uniques_1_4.json has Exulis '+(10-20) to All Attributes'"
 - "Data/Uniques/uniques.json has Exulis '+(10-20) to All Attributes'"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `exulis-shared-rollid`
+
+The unique amulet `Exulis` (id 469) has TWO rolled mods that share
+the same `rollID=0` in the game data, meaning they read the same byte
+in the imported `ur` array.
+
+**Evidence:**
+1. Game data extract `uniques_v3.json` id=469:
+   - mod[0] `canRoll=true, rollID=0, property=88` (+(1-2) to Skills)
+   - mod[1] `canRoll=true, rollID=0, property=46` (+(10-20) to All Attributes)
+   Both share `rollID=0`.
+2. LETools planner_data for build AL07Kea4 returns `ur=[193, 27, ...]`.
+   With shared rollID=0 both mods read `ur[1]=193`:
+   - Skills: `floor((1 + 193/255*1) + 0.5) = 2` (matches LE display +2)
+   - All Attrs: `floor((10 + 193/255*10) + 0.5) = 18` (matches LE display +18)
+3. Earlier extraction wrongly produced `rollIds: [0, 1, ...]`, making
+   All Attributes read the unrelated `ur[2]=27` byte → +11 (off by 7
+   from LE truth). This caused a uniform Δ=-7 gap on every attribute
+   in AL07Kea4.
+
+A regression here re-splits the rollIds. `rollIds[0]` and `rollIds[1]`
+MUST both be `0`.
+
+| Site | File | What it does |
+|---|---|---|
+| 1.4 unique data | `src/Data/Uniques/uniques_1_4.json` (Exulis entry, ~line 9400) | `rollIds: [0, 0, null, null, null, null, null]` |
+| legacy unique data | `src/Data/Uniques/uniques.json` (Exulis id 469, ~line 10639) | `rollIds: [0, 0, null, null, null, null, null]` |
+
+Both entries carry an inline `_leb_regression_guard: exulis-shared-rollid`
+field documenting the source of truth at the data site itself.
+
+**Spec:** `spec/System/TestExulisRange_spec.lua`
+- "Data/Uniques/uniques_1_4.json has Exulis rollIds[0]==rollIds[1]==0"
+- "Data/Uniques/uniques.json has Exulis rollIds[0]==rollIds[1]==0"
 
 **Establishing commit:** `<unset; bump after first commit on this branch>`
 
@@ -1776,6 +1856,64 @@ is unreachable in-game.
 **Spec:** `spec/System/TestQuestApophisMajasa_spec.lua`
 - "QuestApophisMajasa applies +1 BASE to all five attributes"
 - "QuestTempleOfEterra applies +1 BASE to all five attributes"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `humble-idol-scalar-scale-first`
+
+**Protects:** `itemLib.applyRange` in `src/Modules/ItemTools.lua` — the
+scale-first branch for idol-size scaling (`valueScalar < 1.0`).
+
+LE scales an affix on a smaller idol by rounding the canonical endpoints
+to integers first, THEN interpolating within the scaled span. The general
+`applyRange` path interpolates first then scales, which under-rounds for
+small scalars.
+
+Evidence (AL07Kea4 Spellblade, Humble Weaver Idols, scalar 0.38, line
+`+(3-7) Vitality`):
+
+| Idol id | byte | interpolate-first | scale-first | LE truth |
+|---------|------|-------------------|-------------|----------|
+| 12      | 221  | (3+221/255·5)·0.38 = 2.79 → **+2** | round(1.14)=1, round(2.66)=3; 1+221/255·3 = 3.60 → **+3** | **+3** |
+| 15      | 98   | (3+98/255·5)·0.38 = 1.87 → **+1**  | 1+98/255·3 = 2.15 → **+2**                                | **+2** |
+
+Discriminator: `not useRound and valueScalar < 1.0`. Scalars `>= 1.0`
+(uniques like Apiarist's Suit at 1.5) keep the existing interpolate-first
+path — see the sibling guard `apiarist-scalar-interpolate-first`.
+
+**Sites:**
+
+| layer | path | role |
+|-------|------|------|
+| code  | `src/Modules/ItemTools.lua` (`applyRange`) | The scale-first branch |
+| spec  | `spec/System/TestItemTools_spec.lua` | applyRange parametric tests |
+
+**Spec:** `spec/System/TestItemTools_spec.lua`
+- `tests applyRange('+(3-7) Vitality', 221.00, 0.38)` → `+3 Vitality`
+- `tests applyRange('+(3-7) Vitality', 98.00, 0.38)` → `+2 Vitality`
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `apiarist-scalar-interpolate-first`
+
+**Protects:** `itemLib.applyRange` — the >=1.0 valueScalar path that
+interpolates first then scales (the original behavior; promoted to a named
+guard alongside `humble-idol-scalar-scale-first`).
+
+Apiarist's Suit unique (`scalar 1.5`) Strength `+(11-13)` at byte 57:
+
+| approach | calculation | result | LE truth |
+|----------|-------------|--------|----------|
+| interpolate-first | (11 + 57/255·3)·1.5 = 17.51 → floor | **+17** | **+17** |
+| scale-first       | round(16.5)=16, round(19.5)=19; 16 + 57/255·4 = 16.89 → floor | +16 | (wrong) |
+
+Phys Resistance scaling (1.17, e.g. ShutFackUp Cursed Coin) takes the
+existing `% Physical Resistance` `skipSpanBump` branch in the same `>=1.0`
+path; that guard is `applyrange-fixed-tier-noop`-adjacent and described
+inline in `applyRange`.
+
+**Spec:** `spec/System/TestItemTools_spec.lua`
+- `tests applyRange('+(11-13) to Strength', 57.00, 1.50)` → `+17 to Strength`
 
 **Establishing commit:** `<unset; bump after first commit on this branch>`
 

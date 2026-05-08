@@ -10636,7 +10636,7 @@
     "req": {
       "level": 0
     },
-    "_leb_regression_guard": "exulis-all-attributes-range: +(10-20) is the correct upper bound. Game extract uniques_v3.json id=469 mod[1] maxValue=20.0. LETools display shows '+(10 to 20) to All Attributes'. byte=156 with span+1 rule => 10 + 156/255*11 = 16.73 -> floor 16, matches in-game display.",
+    "_leb_regression_guard": "exulis-shared-rollid: Skills (mod[0] property=88) and All Attributes (mod[1] property=46) BOTH have rollID=0 in uniques_v3.json id=469, meaning they read the SAME ur byte. Earlier extraction gave them separate IDs ([0,1]) which made All Attributes read an unrelated ur byte. Example: AL07Kea4 ur=[193,27,...]; with shared rollId=0 both read ur[1]=193 -> Skills floor((1+193/255*1)+0.5)=2 and All Attrs floor((10+193/255*10)+0.5)=18, matching LETools/in-game display. rollIds[0] and rollIds[1] MUST stay 0.",
     "mods": [
       "+(1-2) to Skills",
       "+(10-20) to All Attributes",
@@ -10648,7 +10648,7 @@
     ],
     "rollIds": [
       0,
-      1,
+      0,
       null,
       null,
       null,

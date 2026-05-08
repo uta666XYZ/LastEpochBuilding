@@ -4,6 +4,16 @@ local applyRangeTests = {
     [{ "(5-14)% increased Health", 96, 0.38, "Thousandth" }] = "3.2% increased Health",
     [{ "+(2-6) to All Attributes", 48, 1.0, "Integer" }] = "+2 to All Attributes",
     [{ "+(7-8) Attunement", 38, 1.5, "Integer" }] = "+10 Attunement",
+    -- @leb-regression-guard: humble-idol-scalar-scale-first
+    -- Humble Weaver Idol (scalar 0.38) on AL07Kea4. byte 221 must yield +3 and
+    -- byte 98 must yield +2 to match the in-game tooltip; interpolating first
+    -- then scaling under-rounds these to +2 / +1.
+    [{ "+(3-7) Vitality", 221, 0.38, "Integer" }] = "+3 Vitality",
+    [{ "+(3-7) Vitality", 98,  0.38, "Integer" }] = "+2 Vitality",
+    -- @leb-regression-guard: apiarist-scalar-interpolate-first
+    -- Apiarist's Suit (scalar 1.5) Strength "+(11-13)" at byte 57 must give
+    -- +17 (interpolate-first); scaling endpoints first would give +16.
+    [{ "+(11-13) to Strength", 57, 1.5, "Integer" }] = "+17 to Strength",
 }
 
 describe("TestItemTools", function()

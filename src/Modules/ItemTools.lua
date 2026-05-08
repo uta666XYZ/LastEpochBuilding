@@ -185,6 +185,21 @@ function itemLib.applyRange(line, range, valueScalar, rounding)
         precision = 1
     end
 
+    -- @leb-regression-guard: per-set-fractional-precision
+    -- "per Complete Set" affixes are multiplied by CompleteSetCount in LE
+    -- AFTER per-source quantization to HALF-INTEGER (0.5) steps, not after
+    -- floor-to-integer. LEB historically rounded the per-item roll to int
+    -- first (e.g. byte=41 +(2-5) Integer → floor(2.482)=2) then multiplied
+    -- by the set multiplier (×3 → 6), losing the +1 that LE produces.
+    -- Empirical match across two builds: precision=2 (half-step) + span+0.5:
+    --   BxvJP3g1 byte=41,  ×3: numVal→2.5 → 7.5 → floor=7  (LE=7  ✓)
+    --   Qqwv73q2 byte=203, ×6: numVal→4.5 → 27.0           (LE=27 ✓)
+    -- ModStore:EvalMod applies m_floor after the Multiplier:CompleteSetCount
+    -- tag (roundAfterMultiply) so the half-step value flows through intact.
+    if line:find("per [Cc]omplete [Ss]et") and rounding == "Integer" then
+        precision = 2
+    end
+
     -- range is actually given as a roll (TODO:rename)
     range = range / 255.0
 
@@ -245,11 +260,42 @@ function itemLib.applyRange(line, range, valueScalar, rounding)
                 if not useRound and not skipSpanBump then
                     span = span + 1 / precision
                 end
-                -- Interpolate first, THEN apply valueScalar, to match LE/LETools.
-                -- Applying scalar to min/max before interpolation shifts the integer
-                -- grid (e.g. Apiarist's Suit Str +(11-13)×1.5 at roll 57/255 should
-                -- give round(11.447×1.5)=17, not interpolate within [16,19]→16).
-                local numVal = (minN + range * span) * valueScalar
+                -- @leb-regression-guard: humble-idol-scalar-scale-first
+                -- Idol size scaling (valueScalar < 1.0, e.g. Humble=0.38, Stout=0.67)
+                -- rounds endpoints FIRST to LE's display integers, then interpolates
+                -- within the scaled span. Without this branch:
+                --   AL07Kea4 Humble Weaver byte=221, scalar=0.38, "+(3-7) Vitality"
+                --     interp-first: (3 + 221/255 × 5) × 0.38 = 2.79 → floor=2  (LE=3 ✗)
+                --     scale-first : round(3×0.38)=1, round(7×0.38)=3
+                --                   1 + 221/255 × (3-1+1) = 3.60 → floor=3   (LE=3 ✓)
+                --   AL07Kea4 Humble Weaver byte=98:
+                --     interp-first: 1.87 → 1 (LE=2 ✗); scale-first: 2.15 → 2 (LE=2 ✓)
+                --
+                -- @leb-regression-guard: apiarist-scalar-interpolate-first
+                -- Conversely, valueScalar > 1.0 (Apiarist's Suit unique = 1.5) MUST
+                -- interpolate first then scale, otherwise the integer grid shifts
+                -- and the top byte underrepresents:
+                --   Str "+(11-13)" × 1.5 byte=57:
+                --     interp-first: (11 + 57/255 × 3) × 1.5 = 17.51 → floor=17 (LE=17 ✓)
+                --     scale-first : round(16.5)=16, round(19.5)=19
+                --                   16 + 57/255 × 4 = 16.89 → floor=16        (LE=17 ✗)
+                -- Discriminator is `valueScalar < 1.0`. Phys Resistance (scalar=1.17)
+                -- already takes the >=1 path above with skipSpanBump.
+                -- See REGRESSION_GUARDS.md "humble-idol-scalar-scale-first" and
+                -- "apiarist-scalar-interpolate-first".
+                local numVal
+                if not useRound and valueScalar < 1.0 then
+                    local minScaled = roundHalfDownOnHalf(minN * valueScalar)
+                    local maxScaled_local = roundHalfDownOnHalf(maxN * valueScalar)
+                    local localSpan = maxScaled_local - minScaled
+                    if not skipSpanBump then
+                        localSpan = localSpan + 1 / precision
+                    end
+                    numVal = minScaled + range * localSpan
+                else
+                    -- Interpolate first, THEN apply valueScalar, to match LE/LETools.
+                    numVal = (minN + range * span) * valueScalar
+                end
                 if useRound and itemLib.useLEToolsRounding then
                     numVal = m_floor(numVal * precision + 0.5) / precision
                 else
