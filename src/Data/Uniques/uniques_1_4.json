@@ -8538,15 +8538,13 @@
       "level": 42
     },
     "mods": [
-      "(5-12)% increased Attack Speed",
-      "(5-12)% increased Cast Speed",
+      "(5-12)% increased Attack and Cast Speed",
       "Counts as a part of every equipped item set",
       "{rounding:Integer}+(2-5) to All Attributes per Complete Set",
       "+(2-5)% to All Resistances per Complete Set",
       "+1 to All Skills per Complete Set"
     ],
     "rollIds": [
-      0,
       0,
       null,
       1,
