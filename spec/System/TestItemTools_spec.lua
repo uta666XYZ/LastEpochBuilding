@@ -214,12 +214,18 @@ describe("TestItemTools", function()
     -- ModType: 0=ADDED 1=INCREASED 2=MORE 3=QUOTIENT
     -- Rounding: 0=Hundredth 1=Integer 2=Tenth 3=Thousandth
     describe("applyRangeStrict (vshDm direct port)", function()
-        it("Hundredth-ADDED reproduces BEdKNL0j relic Phys Res 14-28 byte=100 = 19.49", function()
-            -- Mirrors the in-game tooltip base-interp for SP=64 (Phys Res),
-            -- ModType=ADDED, rounding=Hundredth. Display "26%" on tooltip is
-            -- legendary/effectiveness multiplier, not base interpolation.
+        it("Hundredth-ADDED reproduces BEdKNL0j relic Phys Res 14-28 byte=100 = 19", function()
+            -- @leb-regression-guard:vshdm-percentage-units
+            -- LE's vshDm operates on FRACTIONS (0.14..0.28) and multiplies the
+            -- display by 100 to give an integer-percent value:
+            --   floor(100 * ((0.28+0.01-0.14)*100/255 + 0.14+0.001)) = 19.
+            -- LEB callers store percentages, so the percentage-space port
+            -- produces 19 directly (was 19.49 under the prior fraction-unit
+            -- formula, which displayed identically as floor(19.49+0.5)=19 but
+            -- accumulated as a fractional inside Calcs and produced
+            -- per-source sum drift on multi-source Resistance totals).
             local v = itemLib.applyRangeStrict(14, 28, 100, 1.0, 0, 0)
-            assert.are.equals(19.49, v)
+            assert.are.equals(19, v)
         end)
 
         it("Integer-ADDED interpolates with span+1 so top byte reaches max", function()
@@ -232,12 +238,13 @@ describe("TestItemTools", function()
         end)
 
         it("non-ADDED branch is forced to Hundredth+epsilon regardless of rounding arg", function()
+            -- @leb-regression-guard:vshdm-percentage-units
             -- Even if caller passes rounding=Integer (1), modType != 0 must
-            -- override and use Hundredth precision with the +0.001 epsilon.
-            -- byte=128: e=0.50196; (50.01 * 0.50196 + 50.001) = 75.103
-            --   floor(100 * 75.103) / 100 = 75.10
+            -- override and use Hundredth precision with the +0.1 epsilon
+            -- (was +0.001 in fraction-space). byte=128 e=0.50196:
+            --   floor((100+1-50)*0.50196 + 50 + 0.1) = floor(75.7) = 75.
             local v = itemLib.applyRangeStrict(50, 100, 128, 1.0, 1, 1)
-            assert.are.equals(75.10, v)
+            assert.are.equals(75, v)
         end)
 
         it("Tenth precision rounds to nearest 0.1", function()

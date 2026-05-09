@@ -2048,6 +2048,52 @@ banker round = **10–12** (LEB previously stored 11–12; half-up would round
 
 **Establishing commit:** `<unset; bump after first commit on this branch>`
 
+### `slot-banker-rounding`
+
+> **Type: JSON-comment-incompatible.** Sister guard to
+> `body_armor-banker-rounding`; same rationale and 3-layer contract apply.
+
+**Protects:** the `amulet`/`shield`/`catalyst` `slotOverride` min/max values
+in `src/Data/ModItem_1_4.json`. Each of these slots has
+`affixEffectModifier = 0.17` (verified against `equipmentItems.json`
+`BaseTypeName="Amulet"`/`"Shield"`/`"Catalyst"`) → **×1.17**, rounded with
+**banker's rounding** (same as body_armor).
+
+LEB previously stored five entries with half-up rounding, producing min OR
+max one higher than the in-game tooltip on `.5`-boundary tiers. Discovered
+by extending the body_armor audit; reproducible via
+`.tmp/audit_slot_rounding.py`.
+
+Game-file evidence: `AscendingValueAfterPropertyRounding` (RVA 0x2307CC0)
+decompile in `LE_datamining/extracted/rounding_decompile_raw.txt` — the
+slot-scalar × base integer-rounding step happens upstream in affix data
+prep; this guard locks the empirically banker-rounded values to match
+the existing 22-row body_armor case set.
+
+**Patched affixes (5 entries):**
+
+| affixId | Name | Slot | Tier | Base | banker(×1.17) | was |
+|---|---|---|---|---|---|---|
+| 8  | Dodge Rating    | amulet   | T3 | 50–65 | 58–76 | 59–76 |
+| 8  | Dodge Rating    | catalyst | T3 | 50–65 | 58–76 | 59–76 |
+| 34 | Mana            | amulet   | T4 | 36–50 | 42–58 | 42–59 |
+| 34 | Mana            | catalyst | T4 | 36–50 | 42–58 | 42–59 |
+| 88 | Throwing Damage | amulet   | T7 | 50–65 | 58–76 | 59–76 |
+
+| Site | File | What it does |
+|---|---|---|
+| data | `src/Data/ModItem_1_4.json` (5 entries above) | Carries banker-rounded min/max for amulet/catalyst slots |
+| audit | `.tmp/audit_slot_rounding.py` | Per-slot enumerator across amulet/shield/catalyst/idol/weapon |
+| canonical | `LE_datamining/extracted/items/single_affixes_v3.json` `tiers[].minRoll/maxRoll` | Canonical base; not in repo |
+| canonical | `LE_datamining/extracted/items/equipmentItems.json` `affixEffectModifier=0.17` | Source of the ×1.17 multiplier |
+| canonical | `LE_datamining/extracted/rounding_decompile_raw.txt` | Decompiled `AscendingValueAfterPropertyRounding` (RVA 0x2307CC0) |
+
+**Spec:** `spec/System/TestSlotBankerRounding_spec.lua`
+- Asserts the 5 patched (affixId, tier, slot) triples match banker(base×1.17),
+  with explicit "(was X)" hints locked in.
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
 ### `block-chance-total-no-shield-zero`
 
 `output.BlockChanceTotal` is the **uncapped** pre-cap total used by both the
@@ -2205,6 +2251,64 @@ flips 15 → 15.6 after Holy Aura `+4%` scaling.
 
 **Establishing commit:** `<unset; bump after first commit on this branch>`
 
+### `vshdm-percentage-units`
+
+`itemLib.applyRangeStrict` is the LEB port of LE's `vshDm` /
+`BaseStats.GetValueAfterRounding` (RVA 0x230B940). LE operates on
+**fractions** (0.05 = 5%) internally and multiplies the result by 100
+for display. LEB callers store **percentage** values (5 = 5%), so the
+direct port previously kept LE's fraction-unit constants (`+0.01`,
+`+0.001`, `floor(100*x+0.5)/100` endpoint quantization) while feeding
+percentage inputs. This worked for cases that landed near a
+1-percent boundary but drifted by 1 elsewhere — e.g. Phys Resistance
+`+(3-9)% byte=106` returned `5.49` (display 5) when LE returns 6%.
+
+Percentage-space equivalent of LE's
+`floor(100*((d_f+0.01-c_f)*e + c_f + 0.001)) / 100` × 100 (display) is
+`floor((d_pct+1-c_pct)*e + c_pct + 0.1)` with
+`c_pct = floor(min_pct + 0.5)`, `d_pct = floor(max_pct + 0.5)`.
+
+| Site | File | What it does |
+|---|---|---|
+| Hundredth ADDED branch | `src/Modules/ItemTools.lua` (`applyRangeStrict`, ~line 437) | percentage-space formula `floor((d+1-c)*e + c + 0.1)`, clamp `v ≤ d` |
+| Non-ADDED branch (INCREASED/MORE/QUOTIENT) | same | shares the percentage-space form (forced Hundredth) |
+
+**Spec:** `spec/System/TestItemTools_spec.lua`
+- "applyRangeStrict (vshDm direct port) — Hundredth-ADDED ... = 19"
+- "applyRangeStrict (vshDm direct port) — non-ADDED branch is forced to Hundredth+epsilon ..."
+
+**Establishing build:** `AL07RL31 lv52 Spellblade` — Cold Resist 39→40,
+Phys Resist 58→59 after the fix. 23 of 29 G1 resist Δ=±1 rows resolved
+in one pass; Σ|Δ|/G1 dropped from 34 to 6.
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `resist-vshdm-strict`
+
+The seven elemental resistance affix lines (`% (Cold|Fire|Lightning|
+Necrotic|Poison|Void|Physical) Resistance`) all route through
+`applyRangeStrict` Hundredth, not just Physical. The original
+`phys-res-vshdm-strict` guard scoped the routing to one resist; the
+default `applyRange` branch handled the other six but was missing
+LE's `+0.001` (fraction) / `+0.1` (percent) epsilon, so byte values
+in the middle of a range floored down by 1. Combined with
+`vshdm-percentage-units` above, all 7 resistances now match LE per
+source.
+
+| Site | File | What it does |
+|---|---|---|
+| pattern routing | `src/Modules/ItemTools.lua` (`applyRange`, ~line 269) | `% (Cold|Fire|Lightning|Necrotic|Poison|Void|Physical) Resistance` → `applyRangeStrict(minN, maxN, rollByte, valueScalar, 0, 0)` |
+
+**Spec:** indirectly covered by the `vshdm-percentage-units` cases
+plus the AL07RL31 G1 build snapshot. A dedicated spec is intentionally
+omitted because the routing pattern is a single regex and any future
+change to it will surface as a snapshot diff for the 7 resists across
+~80 builds with at least one resist roll.
+
+**Establishing build:** see `vshdm-percentage-units`.
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
 ### `corrupted-sealed-allres-round-half-up`
 
 > **Type: JSON-comment-incompatible.** Protected files: `src/Data/ModItem.json`,
@@ -2277,6 +2381,7 @@ To keep the contract enforceable use this template:
 
 Existing JSON-comment-incompatible guards:
 - `body_armor-banker-rounding` (`src/Data/ModItem_1_4.json`)
+- `slot-banker-rounding` (`src/Data/ModItem_1_4.json`)
 - `corrupted-sealed-allres-round-half-up` (`src/Data/ModItem.json`, `src/Data/ModItem_1_4.json`)
 
 ## Layering vs canary strings

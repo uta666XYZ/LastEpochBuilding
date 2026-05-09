@@ -266,10 +266,22 @@ function itemLib.applyRange(line, range, valueScalar, rounding)
                 -- 25), affecting only `oN2zNnZM lv86 Bladedancer.xml`. The
                 -- strict value 25 matches LE's in-game tooltip (vshDm direct port
                 -- = IL2CPP `BaseStats.GetValueAfterRounding`).
-                if line:find("%% Physical Resistance") then
-                    -- precision/100 was already applied because of '%'; vshDm
-                    -- always uses Hundredth precision for ADDED-Hundredth lines,
-                    -- bypassing the bespoke (max-min) span / endpoint capping.
+                -- @leb-regression-guard:resist-vshdm-strict
+                -- All seven elemental resistances route through the
+                -- game-faithful vshDm Hundredth path, not just Physical.
+                -- Pre-fix the default applyRange branch was missing LE's
+                -- `+0.001` (fraction) / `+0.1` (percent) epsilon, and
+                -- LEB's `applyRangeStrict` Hundredth branch had a
+                -- unit-mismatch bug (see vshdm-percentage-units guard).
+                -- AL07RL31 (Cold=39→40, Phys=58→59) verified vs in-game
+                -- tooltip after the combined patch.
+                if line:find("%% Cold Resistance")
+                   or line:find("%% Fire Resistance")
+                   or line:find("%% Lightning Resistance")
+                   or line:find("%% Necrotic Resistance")
+                   or line:find("%% Poison Resistance")
+                   or line:find("%% Void Resistance")
+                   or line:find("%% Physical Resistance") then
                     local v = itemLib.applyRangeStrict(minN, maxN, rollByte, valueScalar, 0, 0)
                     return (v < 0 and "" or plus) .. tostring(v)
                 end
@@ -413,11 +425,29 @@ function itemLib.applyRangeStrict(minN, maxN, roll, scalar, modType, rounding)
     end
     local e = roll / 255.0
     local c, d, v
+    -- @leb-regression-guard:vshdm-percentage-units
+    -- LE's vshDm operates on FRACTIONS (0.05 = 5%) internally and multiplies
+    -- the result by 100 for display. LEB callers store percentage values
+    -- (5 = 5%), so the percentage-space equivalent of LE's
+    --   floor(100 * ((d_f + 0.01 - c_f)*e + c_f + 0.001)) / 100         (fraction)
+    -- × 100 (for display) is
+    --   floor((d_pct + 1 - c_pct)*e + c_pct + 0.1)                      (percent)
+    -- with c_pct = floor(min_pct + 0.5), d_pct = floor(max_pct + 0.5).
+    -- Verified vs in-game tooltip on AL07RL31 spec/1.4 Spellblade build:
+    --   Cold (10-40)% byte=74 → 19 (was 18, LE=19)
+    --   Phys (3-9)% byte=106  → 6  (was 5,  LE=6)
+    --   Phys (20-45)% byte=233 scalar=0.38 → 17 (was 16, LE=17)
+    -- The previous formulation operated on percentage inputs but kept the
+    -- fraction-unit constants `+0.01`/`+0.001` and the `floor(100*x+0.5)/100`
+    -- endpoint quantization, producing values that happened to land within
+    -- 0.5 of the LE display only when the byte was near a 0.01-fraction
+    -- (=1-percent) boundary. Cases away from a boundary (e.g. byte=106 on a
+    -- 3..9 range) drifted by 1.
     if modType ~= 0 then
-        -- INCREASED / MORE / QUOTIENT: forced Hundredth + 0.001 epsilon.
-        c = m_floor(100 * minN + 0.5) / 100
-        d = m_floor(100 * maxN + 0.5) / 100
-        v = m_floor(100 * ((d + 0.01 - c) * e + c + 0.001)) / 100
+        -- INCREASED / MORE / QUOTIENT: forced Hundredth + 0.1 epsilon (was 0.001 in fraction).
+        c = m_floor(minN + 0.5)
+        d = m_floor(maxN + 0.5)
+        v = m_floor((d + 1 - c) * e + c + 0.1)
     elseif rounding == 1 then       -- Integer
         c = m_floor(minN + 0.5)
         d = m_floor(maxN + 0.5)
@@ -430,10 +460,10 @@ function itemLib.applyRangeStrict(minN, maxN, roll, scalar, modType, rounding)
         c = m_floor(1000 * minN + 0.5) / 1000
         d = m_floor(1000 * maxN + 0.5) / 1000
         v = m_floor(1000 * ((d + 0.001 - c) * e + c)) / 1000
-    else                            -- Hundredth (rounding == 0)
-        c = m_floor(100 * minN + 0.5) / 100
-        d = m_floor(100 * maxN + 0.5) / 100
-        v = m_floor(100 * ((d + 0.01 - c) * e + c + 0.001)) / 100
+    else                            -- Hundredth (rounding == 0): percentage-space LE-faithful
+        c = m_floor(minN + 0.5)
+        d = m_floor(maxN + 0.5)
+        v = m_floor((d + 1 - c) * e + c + 0.1)
     end
     if v > d then v = d end
     return v
