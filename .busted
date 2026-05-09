@@ -70,4 +70,16 @@ return {
         helper = "HeadlessWrapper.lua",
         ROOT = { "../spec/DumpArmourFull.lua" },
     },
+    dumpA21LifeRegen = {
+        directory = "src",
+        lpath = "../runtime/lua/?.lua;../runtime/lua/?/init.lua",
+        helper = "HeadlessWrapper.lua",
+        ROOT = { "../spec/DumpA21LifeRegen.lua" },
+    },
+    dumpAL07Attrs = {
+        directory = "src",
+        lpath = "../runtime/lua/?.lua;../runtime/lua/?/init.lua",
+        helper = "HeadlessWrapper.lua",
+        ROOT = { "../spec/DumpAL07Attrs.lua" },
+    },
 }

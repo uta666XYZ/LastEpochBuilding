@@ -1973,6 +1973,78 @@ banker round = **10–12** (LEB previously stored 11–12; half-up would round
 
 **Establishing commit:** `<unset; bump after first commit on this branch>`
 
+### `block-chance-total-no-shield-zero`
+
+`output.BlockChanceTotal` is the **uncapped** pre-cap total used by both the
+LETools cross-build diff (`scripts/letools-diff.js` `'block chance' →
+BlockChanceTotal`) and the Calcs detail panel. The shield-equipped branch in
+`CalcDefence.lua` writes it via `output.BlockChanceTotal = totalBlockChance`,
+but the no-shield branch historically only zeroed `BlockChance` and friends.
+With `BlockChanceTotal` left nil, `letools-diff.js status()` flagged 62/68
+shield-less G1 builds as "?" (LEB value missing), burying the entire
+no-shield majority of the cross-build coverage.
+
+The fix is one line: `output.BlockChanceTotal = 0` next to `output.BlockChance
+= 0` inside the `if not hasShield and not blockAllowedWithoutShield then`
+branch. Removing it silently regresses the diff to "?" for 62 builds — no Lua
+error fires.
+
+| Site | File | What it does |
+|---|---|---|
+| no-shield zero  | `src/Modules/CalcDefence.lua` (~line 294) | `output.BlockChanceTotal = 0` alongside `BlockChance = 0` |
+| shield-equip set | `src/Modules/CalcDefence.lua` (~line 335) | `output.BlockChanceTotal = totalBlockChance` (uncapped) |
+| diff mapping    | `scripts/letools-diff.js` (~line 86) | `'block chance' → BlockChanceTotal` |
+
+**Spec:** `spec/System/TestBlockShield_spec.lua`
+- "BlockChanceTotal is 0 (not nil) with no shield"
+
+**Snapshot coverage:** `spec/System/TestBuilds_spec.lua` "test all builds
+#builds" — 62 of 68 G1 builds have no shield and would surface
+`BlockChanceTotal = 0` in the .lua snapshot. Reverting the no-shield zero
+makes these snapshots drop the field entirely (Lua serializer omits nil),
+which the diff then re-flags as "?".
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `ward-regen-canonical-key-wardpersecond`
+
+The LETools cross-build diff label `'ward regen'` MUST map to the LEB output
+key `WardPerSecond`, not to a synthetic `WardRegen` alias and not to
+`NetWardRegen` (gross minus decay).
+
+Game-data canonical naming (`LE_datamining/extracted/localization/ui_localization.json`):
+
+```
+StatsPanel_DefenseStats_WardPerSecond_Label = "Added Ward Per Second"
+StatsPanel_DefenseStats_WardPerSecond_Description = "Added Ward Per Second"
+```
+
+The in-game stats panel and LETools tooltip both display this gross "ward per
+second" rate. `output.WardPerSecond` is set by `src/Modules/CalcPerform.lua`
+(~line 1283 stat-loop and ~line 1308 Sanguine Runestones bonus) and consumed
+by `src/Modules/CalcDefence.lua` to drive ward calculations. `NetWardRegen`
+is a derived presentation field (gross − rawWardDecayPerSecond) — it does
+NOT correspond to the game's "Ward per Second" stat and using it as the diff
+target produces phantom diffs equal to the per-build decay rate.
+
+| Site | File | What it does |
+|---|---|---|
+| diff mapping | `scripts/letools-diff.js` (~line 86) | `'ward regen' → key: 'WardPerSecond'` (with inline guard comment) |
+| compute     | `src/Modules/CalcPerform.lua` (~line 1283, ~line 1308) | Writes `output.WardPerSecond` (base + INC/MORE; Sanguine Runestones bonus) |
+| consume     | `src/Modules/CalcDefence.lua` (~line 415, ~line 690) | Reads `output.WardPerSecond` for ward / `NetWardRegen` derivation |
+
+**Spec coverage:** Diff/snapshot layer is the primary lock — reverting the
+mapping to `WardRegen` re-flags ~57 G1 builds as "?" (LEB has no
+`output.WardRegen` key). Reverting it to `NetWardRegen` introduces non-zero
+Δ on every ward-using build proportional to that build's decay rate.
+
+> **Type: JSON-comment-incompatible (JS).** The inline guard comment lives in
+> `scripts/letools-diff.js` directly above the `'ward regen'` MAP entry.
+> Source of truth for the canonical name: the `ui_localization.json` quoted
+> above, sourced from the LE_datamining workspace.
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
 ## Adding a new guard
 
 1. Above the fix in source, add a comment block:

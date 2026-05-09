@@ -291,6 +291,11 @@ function calcs.defence(env, actor)
 		output.BlockChanceMax = 0
 		output.SpellBlockChanceMax = 0
 		output.BlockChance = 0
+		-- @leb-regression-guard: block-chance-total-no-shield-zero
+		-- Must zero BlockChanceTotal here too — letools-diff cross-build coverage
+		-- treats nil as "?" (LEB missing) which buries the no-shield majority of
+		-- builds. See spec/System/TestBlockShield_spec.lua and REGRESSION_GUARDS.md.
+		output.BlockChanceTotal = 0
 		output.SpellBlockChance = 0
 		output.ProjectileBlockChance = 0
 		output.SpellProjectileBlockChance = 0

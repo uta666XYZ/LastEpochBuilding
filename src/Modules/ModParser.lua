@@ -516,7 +516,11 @@ local modTagList = {
 	["while you have a companion"] = { tag = { type = "Condition", var = "HaveCompanion" } },
 	["with arcane shield"] = { tag = { type = "Condition", var = "HaveArcaneShield" } },
 	["with concentration"] = { tag = { type = "Condition", var = "Concentration" } },
-	["per complete set"] = { tag = { type = "Multiplier", var = "CompleteSetCount" } },
+	-- @leb-regression-guard: per-set-fractional-precision
+	-- roundAfterMultiply lets ModStore:EvalMod floor(value × CompleteSetCount)
+	-- so per-set affixes match LE's calc order (round AFTER multiply, not before).
+	-- See ItemTools.lua precision=1000 bump for per-set Integer rolls.
+	["per complete set"] = { tag = { type = "Multiplier", var = "CompleteSetCount", roundAfterMultiply = true } },
 	["per arcane shield"] = { tag = { type = "Multiplier", var = "ArcaneShieldStack" } },
 	["per companion"] = { tag = { type = "Multiplier", var = "Companion" } },
 	["per idol in a refracted slot"] = { tag = { type = "Multiplier", var = "IdolInRefractedSlot" } },
@@ -545,6 +549,14 @@ local modTagList = {
 	["per active shadow"] = { tag = { type = "Multiplier", var = "ActiveShadow" } },
 	["per equipped omen idol"] = { tag = { type = "Multiplier", var = "EquippedOmenIdol" } },
 	["per equipped weaver item"] = { tag = { type = "Multiplier", var = "EquippedWeaverItem" } },
+	-- Per-summoned-minion multiplier. Multiplier:SummonedMinion is auto-supplied
+	-- by CalcPerform from the sum of activeSkill.minion.minionData.limit across
+	-- all minion-summoning skills, with the Config tab "# of Summoned Minions"
+	-- as a manual override. Required for passives like Empty The Graves
+	-- ("Increased Health Regen Per Minion").
+	["per minion"]            = { tag = { type = "Multiplier", var = "SummonedMinion" } },
+	["per active minion"]     = { tag = { type = "Multiplier", var = "SummonedMinion" } },
+	["per summoned minion"]   = { tag = { type = "Multiplier", var = "SummonedMinion" } },
 	-- Per-projectile / per-additional-totem global multipliers (fed by Config tab)
 	["per projectile"] = { tag = { type = "Multiplier", var = "ProjectileCountConfig" } },
 	["per additional totem summoned"] = { tag = { type = "Multiplier", var = "AdditionalTotem" } },

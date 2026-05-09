@@ -598,7 +598,7 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 		end
 	end
 
-	local function updateBlessingSlot(tl, blessEntry, rollFrac)
+	local function updateBlessingSlot(tl, blessEntry, rollFracs)
 		local slot = self.slots[tl]
 		if not slot then return end
 		local oldId = slot.selItemId
@@ -614,19 +614,31 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 			end
 			slot:SetSelItemId(0)
 		end
+		-- Normalize rollFracs to per-implicit table {f1, f2}. Legacy callers
+		-- passing a single number get it applied to all implicits (the prior
+		-- buggy behaviour); new LETools/Maxroll/save imports pass an array
+		-- so impl1 and impl2 can roll independently (matches LE's ir[1]/ir[2]).
+		-- @leb-canary blessing-per-implicit-frac
+		local fracTable
+		if type(rollFracs) == "table" then
+			fracTable = { rollFracs[1] or 1.0, rollFracs[2] or rollFracs[1] or 1.0 }
+		elseif type(rollFracs) == "number" then
+			fracTable = { rollFracs, rollFracs }
+		else
+			fracTable = { 1.0, 1.0 }
+		end
 		self.blessingFracs = self.blessingFracs or {}
-		self.blessingFracs[tl] = rollFrac or 1.0
+		self.blessingFracs[tl] = fracTable
 		if not blessEntry or not blessEntry.name then
 			slot:SetSelItemId(0)
 			self.build.buildFlag = true
 			return
 		end
-		local frac = rollFrac or 1.0
-		local function resolveImpl(impl)
+		local function resolveImpl(impl, frac)
 			return impl:gsub("%([0-9.]+%-[0-9.]+%)", function(range)
 				local implMin, implMax = range:match("%(([0-9.]+)%-([0-9.]+)%)")
 				local lo, hi = tonumber(implMin), tonumber(implMax)
-				-- LE blessing rolls: ir[1] is a 0-255 byte that maps to one of
+				-- LE blessing rolls: ir[i] is a 0-255 byte that maps to one of
 				-- (max-min+1) discrete integer values evenly distributed across
 				-- the range. Use bucket index = floor(frac * (hi-lo+1)) clamped
 				-- to (hi-lo) so frac=1.0 lands on max. Matches LETools display
@@ -639,8 +651,8 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 		end
 		local implCount = blessEntry.implCount or 1
 		local raw = "Rarity: NORMAL\n"..blessEntry.name.."\n"..blessEntry.name
-			.."\nImplicits: "..implCount.."\n"..resolveImpl(blessEntry.impl1 or "")
-		if blessEntry.impl2 then raw = raw.."\n"..resolveImpl(blessEntry.impl2) end
+			.."\nImplicits: "..implCount.."\n"..resolveImpl(blessEntry.impl1 or "", fracTable[1])
+		if blessEntry.impl2 then raw = raw.."\n"..resolveImpl(blessEntry.impl2, fracTable[2]) end
 		local item = new("Item", raw)
 		if not item or not item.base then
 			ConPrintf("[BLESS] ERR item.base=nil for %s in slot %s", blessEntry.name, tl)
@@ -874,7 +886,21 @@ function ItemsTabClass:Load(xml, dbFileName)
 			self.blessingFracs = self.blessingFracs or {}
 			for _, child in ipairs(node) do
 				if child.elem == "BlessingFrac" and child.attrib.timeline then
-					self.blessingFracs[child.attrib.timeline] = tonumber(child.attrib.frac) or 1.0
+					-- New schema: fracs="f1,f2" (per-implicit). Legacy: frac="f"
+					-- (single value applied to all implicits — preserves old
+					-- behavior for un-reimported builds).
+					-- @leb-canary blessing-per-implicit-frac
+					local fracs
+					if child.attrib.fracs then
+						fracs = {}
+						for f in child.attrib.fracs:gmatch("[^,]+") do
+							t_insert(fracs, tonumber(f) or 1.0)
+						end
+					else
+						local n = tonumber(child.attrib.frac) or 1.0
+						fracs = { n, n }
+					end
+					self.blessingFracs[child.attrib.timeline] = fracs
 				end
 			end
 		elseif node.elem == "ItemSet" then
@@ -1024,11 +1050,23 @@ function ItemsTabClass:Save(xml)
 		end
 		t_insert(xml, child)
 	end
-	-- Save blessing roll fractions so +/- button positions are restored on load
+	-- Save blessing roll fractions so +/- button positions are restored on load.
+	-- Schema: fracs="f1,f2" (per-implicit). Also writes legacy frac=f1 so
+	-- older LEB versions can still load these XMLs (impl1 only).
+	-- @leb-canary blessing-per-implicit-frac
 	if self.blessingFracs and next(self.blessingFracs) then
 		local fracChild = { elem = "BlessingFracs", attrib = {} }
-		for tl, frac in pairs(self.blessingFracs) do
-			t_insert(fracChild, { elem = "BlessingFrac", attrib = { timeline = tl, frac = tostring(frac) } })
+		for tl, fracs in pairs(self.blessingFracs) do
+			local attr = { timeline = tl }
+			if type(fracs) == "table" then
+				local parts = {}
+				for _, f in ipairs(fracs) do t_insert(parts, tostring(f)) end
+				attr.fracs = table.concat(parts, ",")
+				attr.frac = tostring(fracs[1] or 1.0)
+			else
+				attr.frac = tostring(fracs)
+			end
+			t_insert(fracChild, { elem = "BlessingFrac", attrib = attr })
 		end
 		t_insert(xml, fracChild)
 	end
@@ -1258,38 +1296,33 @@ function ItemsTabClass:CountIdolsOnRefractedCells()
 	local altar = self.altarLayouts and self.altarLayouts[altarName]
 	if not altar or not altar.grid then return 0 end
 
-	-- Build a quick map: itemId -> {row, col} from the regular Idol 1-25 grid.
-	local itemIdToPos = {}
+	-- Walk the regular Idol 1-25 grid: for each placed idol, check whether its
+	-- footprint (per idolSize) overlaps any altar grid cell with value == 2
+	-- (refracted). Mirrors the in-game model — there is no separate "Omen Idol"
+	-- slot type. Dedup by itemId so multi-cell idols are only counted once.
+	local seen = {}
+	local count = 0
 	for r, rowData in ipairs(IDOL_GRID_LAYOUT) do
 		for c, slotName in ipairs(rowData) do
 			local slot = self.slots[slotName]
-			if slot and slot.selItemId and slot.selItemId ~= 0 then
-				itemIdToPos[slot.selItemId] = itemIdToPos[slot.selItemId] or { r, c }
-			end
-		end
-	end
-
-	local count = 0
-	for i = 1, MAX_OMEN_IDOL_SLOTS do
-		local omenSlot = self.slots["Omen Idol " .. i]
-		if omenSlot and omenSlot.selItemId and omenSlot.selItemId ~= 0 then
-			local item = self.items[omenSlot.selItemId]
-			local pos = itemIdToPos[omenSlot.selItemId]
-			if item and pos then
-				local size = idolSize[item.type] or { 1, 1 }
-				local r0, c0 = pos[1], pos[2]
-				local hit = false
-				for dr = 0, size[2] - 1 do
-					for dc = 0, size[1] - 1 do
-						local row = altar.grid[r0 + dr]
-						if row and row[c0 + dc] == 2 then
-							hit = true
-							break
+			if slot and slot.selItemId and slot.selItemId ~= 0 and not seen[slot.selItemId] then
+				local item = self.items[slot.selItemId]
+				if item and idolSize[item.type] then
+					seen[slot.selItemId] = true
+					local size = idolSize[item.type]
+					local hit = false
+					for dr = 0, size[2] - 1 do
+						for dc = 0, size[1] - 1 do
+							local row = altar.grid[r + dr]
+							if row and row[c + dc] == 2 then
+								hit = true
+								break
+							end
 						end
+						if hit then break end
 					end
-					if hit then break end
+					if hit then count = count + 1 end
 				end
-				if hit then count = count + 1 end
 			end
 		end
 	end
