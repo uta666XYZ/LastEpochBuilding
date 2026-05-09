@@ -267,8 +267,11 @@ function itemLib.applyRange(line, range, valueScalar, rounding)
                 -- strict value 25 matches LE's in-game tooltip (vshDm direct port
                 -- = IL2CPP `BaseStats.GetValueAfterRounding`).
                 -- @leb-regression-guard:resist-vshdm-strict
-                -- All seven elemental resistances route through the
-                -- game-faithful vshDm Hundredth path, not just Physical.
+                -- All seven elemental resistances PLUS the composite
+                -- "% Elemental Resistance" affix (cold+fire+lightning)
+                -- route through the game-faithful vshDm Hundredth path.
+                -- LE property_list_v3.json:
+                --   property 52 "Elemental Resistance" roundingForAdded=0 (Hundredth)
                 -- Pre-fix the default applyRange branch was missing LE's
                 -- `+0.001` (fraction) / `+0.1` (percent) epsilon, and
                 -- LEB's `applyRangeStrict` Hundredth branch had a
@@ -281,7 +284,8 @@ function itemLib.applyRange(line, range, valueScalar, rounding)
                    or line:find("%% Necrotic Resistance")
                    or line:find("%% Poison Resistance")
                    or line:find("%% Void Resistance")
-                   or line:find("%% Physical Resistance") then
+                   or line:find("%% Physical Resistance")
+                   or line:find("%% Elemental Resistance") then
                     local v = itemLib.applyRangeStrict(minN, maxN, rollByte, valueScalar, 0, 0)
                     return (v < 0 and "" or plus) .. tostring(v)
                 end

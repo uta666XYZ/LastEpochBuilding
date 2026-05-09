@@ -2285,25 +2285,28 @@ in one pass; Σ|Δ|/G1 dropped from 34 to 6.
 
 ### `resist-vshdm-strict`
 
-The seven elemental resistance affix lines (`% (Cold|Fire|Lightning|
-Necrotic|Poison|Void|Physical) Resistance`) all route through
-`applyRangeStrict` Hundredth, not just Physical. The original
-`phys-res-vshdm-strict` guard scoped the routing to one resist; the
-default `applyRange` branch handled the other six but was missing
-LE's `+0.001` (fraction) / `+0.1` (percent) epsilon, so byte values
-in the middle of a range floored down by 1. Combined with
-`vshdm-percentage-units` above, all 7 resistances now match LE per
-source.
+The seven elemental resistance affix lines plus the composite
+`% Elemental Resistance` line all route through `applyRangeStrict`
+Hundredth, not just Physical. The original `phys-res-vshdm-strict`
+guard scoped the routing to one resist; the default `applyRange`
+branch handled the other six but was missing LE's `+0.001` (fraction)
+/ `+0.1` (percent) epsilon, so byte values in the middle of a range
+floored down by 1. Combined with `vshdm-percentage-units` above, all
+covered resistance affixes now match LE per source.
+
+LE property reference: `extracted/items/property_list_v3.json`
+property 52 "Elemental Resistance" → `roundingForAdded = 0` (Hundredth),
+which is why the composite affix joins the strict path.
 
 | Site | File | What it does |
 |---|---|---|
-| pattern routing | `src/Modules/ItemTools.lua` (`applyRange`, ~line 269) | `% (Cold|Fire|Lightning|Necrotic|Poison|Void|Physical) Resistance` → `applyRangeStrict(minN, maxN, rollByte, valueScalar, 0, 0)` |
+| pattern routing | `src/Modules/ItemTools.lua` (`applyRange`, ~line 269) | `% (Cold|Fire|Lightning|Necrotic|Poison|Void|Physical|Elemental) Resistance` → `applyRangeStrict(minN, maxN, rollByte, valueScalar, 0, 0)` |
 
 **Spec:** indirectly covered by the `vshdm-percentage-units` cases
-plus the AL07RL31 G1 build snapshot. A dedicated spec is intentionally
-omitted because the routing pattern is a single regex and any future
-change to it will surface as a snapshot diff for the 7 resists across
-~80 builds with at least one resist roll.
+plus the AL07RL31 + QeY7962P G1 build snapshots. A dedicated spec is
+intentionally omitted because the routing pattern is a single regex
+and any future change to it will surface as a snapshot diff for the
+covered resists across ~80 builds with at least one resist roll.
 
 **Establishing build:** see `vshdm-percentage-units`.
 
