@@ -273,6 +273,19 @@ function itemLib.applyRange(line, range, valueScalar, rounding)
                     local v = itemLib.applyRangeStrict(minN, maxN, rollByte, valueScalar, 0, 0)
                     return (v < 0 and "" or plus) .. tostring(v)
                 end
+                -- @leb-regression-guard: flat-int-vshdm-strict
+                -- Flat-integer "+(N-N) <Stat>" affixes (no %) at scalar=1.0
+                -- migrate to the game-faithful vshDm Integer path. Survey at
+                -- scalar=1.0 across 117 spec/1.4 builds (.tmp/survey_strict_scalar1.py)
+                -- showed 0/3241 unique-tuple divergence vs the existing
+                -- (max-min+1)-span + floor path, so this is a byte-identical
+                -- migration. Scalar != 1.0 flat-int paths (Humble idol
+                -- scale-first, Apiarist interpolate-first) remain on the
+                -- empirical branches below until separately verified.
+                if precision == 1 and not line:find("%%") and valueScalar == 1.0 then
+                    local v = itemLib.applyRangeStrict(minN, maxN, rollByte, 1.0, 0, 1)
+                    return (v < 0 and "" or plus) .. tostring(v)
+                end
                 if not useRound then
                     span = span + 1 / precision
                 end
