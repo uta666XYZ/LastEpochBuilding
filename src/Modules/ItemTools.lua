@@ -330,6 +330,76 @@ function itemLib.hasRange(line)
     return line:find("%(%-?%d+%.?%d*%-%-?%d+%.?%d*%)");
 end
 
+-- @leb-regression-guard: vshdm-direct-port
+-- Direct numeric port of LE planner JS `vshDm` ( = IL2CPP
+-- `BaseStats.GetValueAfterRounding` ). Reproduces the game's interpolation
+-- bit-for-bit so LEB can be game-faithful per stat once the existing
+-- empirical workarounds (`useRound`, `skipSpanBump`, scalar-order branches
+-- in `applyRange`) are migrated stat-by-stat.
+--
+-- Inputs:
+--   minN, maxN : roll endpoints (post-localization, pre-scalar)
+--   roll       : 0..255 byte
+--   scalar     : valueScalar (idol size / unique scalar). Default 1.0.
+--   modType    : BaseStats.ModType  (0=ADDED 1=INCREASED 2=MORE 3=QUOTIENT)
+--   rounding   : PropertyRounding   (0=Hundredth 1=Integer 2=Tenth 3=Thousandth)
+--                from src/Data/Properties/property_list_1_4.json bySP[<SP>]
+--                .roundingForAdded.
+--
+-- Output: numeric value (caller composes the line / suffix).
+--
+-- Game behavior (verified against LE 1.4.6 IL2CPP dump RVA 0x230B940 +
+-- planner JS `function vshDm(a,b,c,d,e)` decoded 2026-05-09):
+--   * Endpoints are rounded HALF-UP to the rounding precision FIRST.
+--   * Span uses `(max + 1/precision - min)` so the top byte (255) reaches max.
+--   * Hundredth-ADDED carries a `+0.001` epsilon to nudge boundary values.
+--   * Non-ADDED branch is forced to Hundredth precision regardless of input
+--     `rounding` argument (matches `if (0 != b)` clause in vshDm).
+--   * Final clamp: `min(v, d)`.
+--
+-- This function is intentionally PURE: no string parsing, no global state,
+-- no feature-flag check. Callers gate adoption per call site.
+-- Reference: src/Data/Properties/property_list_1_4.json (extracted from
+-- LE 1.4.6 resources.assets via TypeTreeGeneratorAPI).
+function itemLib.applyRangeStrict(minN, maxN, roll, scalar, modType, rounding)
+    scalar   = scalar   or 1.0
+    modType  = modType  or 0
+    rounding = rounding or 0
+    if scalar ~= 1.0 then
+        minN = minN * scalar
+        maxN = maxN * scalar
+    end
+    if minN > maxN then
+        return minN
+    end
+    local e = roll / 255.0
+    local c, d, v
+    if modType ~= 0 then
+        -- INCREASED / MORE / QUOTIENT: forced Hundredth + 0.001 epsilon.
+        c = m_floor(100 * minN + 0.5) / 100
+        d = m_floor(100 * maxN + 0.5) / 100
+        v = m_floor(100 * ((d + 0.01 - c) * e + c + 0.001)) / 100
+    elseif rounding == 1 then       -- Integer
+        c = m_floor(minN + 0.5)
+        d = m_floor(maxN + 0.5)
+        v = m_floor((d + 1 - c) * e + c)
+    elseif rounding == 2 then       -- Tenth
+        c = m_floor(10 * minN + 0.5) / 10
+        d = m_floor(10 * maxN + 0.5) / 10
+        v = m_floor(10 * ((d + 0.1 - c) * e + c)) / 10
+    elseif rounding == 3 then       -- Thousandth
+        c = m_floor(1000 * minN + 0.5) / 1000
+        d = m_floor(1000 * maxN + 0.5) / 1000
+        v = m_floor(1000 * ((d + 0.001 - c) * e + c)) / 1000
+    else                            -- Hundredth (rounding == 0)
+        c = m_floor(100 * minN + 0.5) / 100
+        d = m_floor(100 * maxN + 0.5) / 100
+        v = m_floor(100 * ((d + 0.01 - c) * e + c + 0.001)) / 100
+    end
+    if v > d then v = d end
+    return v
+end
+
 -- Map ItemClass.type -> slotOverrides key (tunklab-style slug). Returns nil
 -- for types without a distinct slot-variant table (e.g. Weapon, Idol).
 local typeToSlotKey = {

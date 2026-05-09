@@ -203,4 +203,61 @@ describe("TestItemTools", function()
             end
         end)
     end)
+
+    -- @leb-regression-guard: vshdm-direct-port
+    -- Locks in the game-faithful interpolation formula. These cases were
+    -- cross-verified against (a) the LE planner JS function `vshDm` decoded
+    -- from planner_app.js 2026-05-09, (b) the IL2CPP dump
+    -- `BaseStats.GetValueAfterRounding` at RVA 0x230B940, and (c) a Python
+    -- reference implementation at .tmp/vshdm_verify.py.
+    --
+    -- ModType: 0=ADDED 1=INCREASED 2=MORE 3=QUOTIENT
+    -- Rounding: 0=Hundredth 1=Integer 2=Tenth 3=Thousandth
+    describe("applyRangeStrict (vshDm direct port)", function()
+        it("Hundredth-ADDED reproduces BEdKNL0j relic Phys Res 14-28 byte=100 = 19.49", function()
+            -- Mirrors the in-game tooltip base-interp for SP=64 (Phys Res),
+            -- ModType=ADDED, rounding=Hundredth. Display "26%" on tooltip is
+            -- legendary/effectiveness multiplier, not base interpolation.
+            local v = itemLib.applyRangeStrict(14, 28, 100, 1.0, 0, 0)
+            assert.are.equals(19.49, v)
+        end)
+
+        it("Integer-ADDED interpolates with span+1 so top byte reaches max", function()
+            -- "+(2-5) Skill Levels" byte=255 must yield 5 (capped by min(v,d)).
+            -- Without the +1/precision span bump the top byte falls short of
+            -- max; without the min(v,d) clamp it overshoots to 6.
+            assert.are.equals(5, itemLib.applyRangeStrict(2, 5, 255, 1.0, 0, 1))
+            -- Mid-byte: floor((4+1-2)*90/255 + 2) = floor(1.058 + 2) = 3
+            assert.are.equals(3, itemLib.applyRangeStrict(2, 4, 90, 1.0, 0, 1))
+        end)
+
+        it("non-ADDED branch is forced to Hundredth+epsilon regardless of rounding arg", function()
+            -- Even if caller passes rounding=Integer (1), modType != 0 must
+            -- override and use Hundredth precision with the +0.001 epsilon.
+            -- byte=128: e=0.50196; (50.01 * 0.50196 + 50.001) = 75.103
+            --   floor(100 * 75.103) / 100 = 75.10
+            local v = itemLib.applyRangeStrict(50, 100, 128, 1.0, 1, 1)
+            assert.are.equals(75.10, v)
+        end)
+
+        it("Tenth precision rounds to nearest 0.1", function()
+            -- (1.0-2.5) byte=128: c=1.0 d=2.5 v=floor(10*((2.5+0.1-1.0)*0.5019+1.0))/10
+            --   = floor(10*(0.8030+1.0))/10 = floor(18.030)/10 = 1.8
+            assert.are.equals(1.8, itemLib.applyRangeStrict(1.0, 2.5, 128, 1.0, 0, 2))
+        end)
+
+        it("scalar < 1.0 (Humble idol) scales endpoints first", function()
+            -- AL07Kea4 Humble Weaver +(3-7) Vitality byte=221 scalar=0.38:
+            -- minN=1.14, maxN=2.66; rounded=1, 3 (Integer); span+1 = 3
+            -- v = floor(3 * 221/255 + 1) = floor(2.6 + 1) = 3
+            assert.are.equals(3, itemLib.applyRangeStrict(3, 7, 221, 0.38, 0, 1))
+        end)
+
+        it("scalar > 1.0 (Apiarist) scales then rounds (interpolation grid shifts)", function()
+            -- Apiarist +(11-13) Strength byte=57 scalar=1.5:
+            -- scaled minN=16.5, maxN=19.5 -> half-up to 17, 20; span+1 = 4
+            -- v = floor(4 * 57/255 + 17) = floor(0.894 + 17) = 17
+            assert.are.equals(17, itemLib.applyRangeStrict(11, 13, 57, 1.5, 0, 1))
+        end)
+    end)
 end)
