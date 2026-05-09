@@ -274,16 +274,23 @@ function itemLib.applyRange(line, range, valueScalar, rounding)
                     return (v < 0 and "" or plus) .. tostring(v)
                 end
                 -- @leb-regression-guard: flat-int-vshdm-strict
-                -- Flat-integer "+(N-N) <Stat>" affixes (no %) at scalar=1.0
-                -- migrate to the game-faithful vshDm Integer path. Survey at
-                -- scalar=1.0 across 117 spec/1.4 builds (.tmp/survey_strict_scalar1.py)
-                -- showed 0/3241 unique-tuple divergence vs the existing
-                -- (max-min+1)-span + floor path, so this is a byte-identical
-                -- migration. Scalar != 1.0 flat-int paths (Humble idol
-                -- scale-first, Apiarist interpolate-first) remain on the
-                -- empirical branches below until separately verified.
-                if precision == 1 and not line:find("%%") and valueScalar == 1.0 then
-                    local v = itemLib.applyRangeStrict(minN, maxN, rollByte, 1.0, 0, 1)
+                -- Flat-integer "+(N-N) <Stat>" affixes (no %) at scalar<=1.0
+                -- migrate to the game-faithful vshDm Integer path. Survey
+                -- (.tmp/survey_strict_scalar1.py / survey_strict_phase4.py)
+                -- across 117 spec/1.4 builds:
+                --   scalar=1.0  -> 0/3241 unique-tuple divergence
+                --   scalar=0.67 -> 0/3241 (Grand idol)
+                --   scalar=0.38 -> 0/3241 (Humble/Stout idol)
+                -- For integer endpoints both formulas reduce to
+                --   floor((halfup(max*s) + 1 - halfup(min*s)) * roll/255 + halfup(min*s))
+                -- so this is a byte-identical migration covering scalar=1.0
+                -- AND the humble-idol-scalar-scale-first branch's flat-int
+                -- portion. Scalar > 1.0 flat-int (Apiarist=1.5: survey shows
+                -- 656 mismatches; existing apiarist-scalar-interpolate-first
+                -- guard is empirically validated against in-game tooltip)
+                -- remains on the existing branch below.
+                if precision == 1 and not line:find("%%") and valueScalar <= 1.0 then
+                    local v = itemLib.applyRangeStrict(minN, maxN, rollByte, valueScalar, 0, 1)
                     return (v < 0 and "" or plus) .. tostring(v)
                 end
                 if not useRound then
