@@ -2120,6 +2120,59 @@ mapping to `WardRegen` re-flags ~57 G1 builds as "?" (LEB has no
 
 **Establishing commit:** `<unset; bump after first commit on this branch>`
 
+### `resist-display-round-half-up`
+
+The 7-resist loop in `src/Modules/CalcDefence.lua` previously truncated the
+total resistance via `math.modf` ("Fractional resistances are truncated").
+LE actually stores resistance as `float` and renders the tooltip integer
+with round-half-up:
+
+```
+dump.cs:156801
+  public class PrecalculatedStatsHolder : MonoBehaviour {
+      public float uncappedPhysicalResistance;     // 0x20  <-- float, not int
+      public float uncappedFireResistance;         // 0x24
+      ...
+  }
+```
+
+Per-source LETools tooltip values match `round(stored_float)` exactly:
+- Body Armor mod stored 16.83 → LETools "Body Armor (Suffix): +17%"
+- BgRrP5rr Necropolis Robes 30.14 → "+30%", Apostate's 21.89 → "+22%"
+- Cleric's Eterran Idol 6.7 → "+7%", Weaver Idol 0.8 → "+1%"
+
+Total tooltips match `round(sum_of_floats)`:
+- Qdz2yM9k: stored sum 16.83 → "Physical Resistance: 17%" (LEB: 16 ✗)
+- BgRrP5rr: stored sum 131.53 → "Physical Resistance: 132%" (LEB: 131 ✗)
+
+Replacing `math.modf` with `math.floor(v + 0.5)` reproduces both. Verified
+across 7 G1 builds with phys-resist Δ=-1 (`AL07RL31`, `BgRrP5rr`,
+`BOwJnY3Y`, `BZ37WdmV`, `Q9J4wvmD`, `Qdz2yM9k`, `Qqwv6zGN`). The loop
+iterates all 7 resist types so the same off-by-one applied across
+phys/fire/cold/light/void/poison/necrotic (~345 DIFF lines in
+`.tmp/diff-after-g1-reimport.log` pre-fix).
+
+`min` / `max` / `totemMax` come from data integers so round-half-up and
+floor agree; updated for symmetry / future-proof against a fractional
+`MaxResistCap`.
+
+**Spec / verification:** G1 build snapshot regen + letools-diff. After
+regen, builds whose underlying float sum already matched LE flip from
+Δ=-1 to Δ=0 (Q9J4wvmD: 7/7 resists OK; BgRrP5rr phys: 131→132;
+Qdz2yM9k phys: 16→17). Builds where the float sum itself is below
+LE's stored float (Idol of Hope sealed +1% stored as 0.8 in LEB,
+Holy Aura skill-tree node stored 15 vs LE 15.6, etc.) still show
+Δ=-1 on the affected resist types — those are upstream base-value
+bugs unmasked by this fix, not regressions of this guard. Compare
+`output.<elem>ResistTotal` to `round(modDB:Sum("BASE", nil,
+"<elem>Resist") + INC)` — they must match exactly.
+
+**Establishing build:** `Qdz2yM9k lv56 Necromancer` — single-source
+phys-resist (Body Armor suffix only, stored 16.83), output flips
+16 → 17 to match LE / LETools.
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
 ## Adding a new guard
 
 1. Above the fix in source, add a comment block:

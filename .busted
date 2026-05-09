@@ -94,4 +94,10 @@ return {
         helper = "HeadlessWrapper.lua",
         ROOT = { "../spec/DumpQb6PhysRes.lua" },
     },
+    dumpResAll = {
+        directory = "src",
+        lpath = "../runtime/lua/?.lua;../runtime/lua/?/init.lua",
+        helper = "HeadlessWrapper.lua",
+        ROOT = { "../spec/DumpResAll.lua" },
+    },
 }

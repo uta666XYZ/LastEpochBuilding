@@ -217,13 +217,30 @@ function calcs.defence(env, actor)
 			totemTotal = base * m_max(calcLib.mod(modDB, nil, "Totem"..elem.."Resist", isElemental[elem] and "TotemElementalResist"), 0)
 		end
 		
-		-- Fractional resistances are truncated
-		total = m_modf(total)
-		dotTotal = dotTotal and m_modf(dotTotal) or total
-		totemTotal = m_modf(totemTotal)
-		min = m_modf(min)
-		max = m_modf(max)
-		totemMax = m_modf(totemMax)
+		-- @leb-regression-guard:resist-display-round-half-up
+		-- LE stores resistance internally as float (dump.cs:156801
+		-- `PrecalculatedStatsHolder.uncappedPhysicalResistance: float`,
+		-- offset 0x20). Tooltips and per-source breakdowns are rendered
+		-- with round-half-up to integer percent. Earlier comment here
+		-- claimed "Fractional resistances are truncated" and used
+		-- `math.modf` (truncate toward zero), which mismatches both:
+		--   * LE per-source display (LETools tooltips show round, not
+		--     floor: e.g. Body Armor mod stored 16.83 -> +17%, not +16%)
+		--   * LE total display (sum 131.53 -> 132%, not 131%)
+		-- Across 7 G1 builds (Qdz2yM9k 16.83->16/17, BgRrP5rr 131.53->
+		-- 131/132, AL07RL31, BgRrP5rr, BOwJnY3Y, BZ37WdmV, Q9J4wvmD,
+		-- Qqwv6zGN) the pre-fix LEB output was uniformly Δ=-1 vs LETools.
+		-- The same loop iterates all 7 resist types so this off-by-one
+		-- propagates across phys/fire/cold/light/void/poison/necrotic
+		-- (~345 DIFF lines in `.tmp/diff-after-g1-reimport.log`).
+		-- min/max/totemMax come from data integers so round and floor
+		-- agree; total/dotTotal/totemTotal are float sums and need round.
+		total = m_floor(total + 0.5)
+		dotTotal = dotTotal and m_floor(dotTotal + 0.5) or total
+		totemTotal = m_floor(totemTotal + 0.5)
+		min = m_floor(min + 0.5)
+		max = m_floor(max + 0.5)
+		totemMax = m_floor(totemMax + 0.5)
 		
 		local final = m_max(m_min(total, max), min)
 		local dotFinal = m_max(m_min(dotTotal, max), min)
