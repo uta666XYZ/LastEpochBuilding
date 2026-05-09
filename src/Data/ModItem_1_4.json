@@ -1820,10 +1820,10 @@
 				"1": "{rounding:Integer}+(75-98) Dodge Rating"
 			},
 			"amulet": {
-				"1": "{rounding:Integer}+(59-76) Dodge Rating"
+				"1": "{rounding:Integer}+(58-76) Dodge Rating"
 			},
 			"catalyst": {
-				"1": "{rounding:Integer}+(59-76) Dodge Rating"
+				"1": "{rounding:Integer}+(58-76) Dodge Rating"
 			}
 		}
 	},
@@ -7727,10 +7727,10 @@
 		"specialAffixType": 0,
 		"slotOverrides": {
 			"amulet": {
-				"1": "{rounding:Integer}+(42-59) Mana"
+				"1": "{rounding:Integer}+(42-58) Mana"
 			},
 			"catalyst": {
-				"1": "{rounding:Integer}+(42-59) Mana"
+				"1": "{rounding:Integer}+(42-58) Mana"
 			},
 			"body_armor": {
 				"1": "{rounding:Integer}+(54-75) Mana"
@@ -18344,7 +18344,7 @@
 		"specialAffixType": 0,
 		"slotOverrides": {
 			"amulet": {
-				"1": "{rounding:Integer}+(59-76) Throwing Damage"
+				"1": "{rounding:Integer}+(58-76) Throwing Damage"
 			}
 		}
 	},
