@@ -435,6 +435,9 @@ as `"<baseId>_<tier>"` where tier is 0-indexed (matches game encoding at
 - "Pattern A: affix tiers raise req.level above base req" — 4× tier-5 suffixes on Refuge Armor (base req=0) → 80
 - "Pattern A: specialAffixType!=0 affix doesn't contribute to req" — sat==6 affix `1002_0` only → req stays at base
 - "Pattern A: sealed/corrupted kind affixes don't contribute to req" — 3 plain + 1 sealed → 65
+- "Pattern A: UNIQUE rarity skips affix-derived level req" — UNIQUE with same 4× T5 suffixes → req stays at 0 (see `legendary-affix-derived-levelreq` below)
+- "Pattern A: LEGENDARY rarity skips affix-derived level req" — same, LEGENDARY → 0
+- "Pattern A: SET rarity skips affix-derived level req" — same, SET → 0
 
 **Pattern C status (Runed Visage / Astrolabe small diffs):** Bakbr2Ne items
 where LETools showed +2 / +3 over base were investigated. After applying
@@ -448,6 +451,49 @@ the Pattern A specs.
 
 **Establishing commits:**
 - _Pattern A fix_ — port `CalculateLevelRequirementAfterShard` to Lua; raise `requirements.level` post-unique-override at both sites
+
+### `legendary-affix-derived-levelreq`
+
+Pattern A (above) targets crafted exalted/rare items where affix tiers
+push req.level above the base — the in-game function
+`CalculateLevelRequirementAfterShard` is what shows e.g. Lv77 / Lv95 on
+high-tier crafts. **It must not apply to UNIQUE / LEGENDARY / SET items.**
+Per LE rule, "unique + corrupted affix = unique" (corrupted affix does NOT
+promote rarity), so a corrupted unique like Font of the Erased keeps its
+base/unique req.level even though it carries a T7 corrupted minion-damage
+affix. The unique definition (or base item) is the authoritative source
+for these rarities — Pattern A would otherwise inflate req.level via
+the high-tier slot and silently disqualify the item from the CalcSetup
+LevelReq filter.
+
+The gate lives at the very top of `computeAffixDerivedLevelReq`
+(`src/Classes/Item.lua`):
+
+```lua
+if item.rarity == "UNIQUE" or item.rarity == "LEGENDARY" or item.rarity == "SET" then
+    return nil
+end
+```
+
+Returning `nil` makes both call sites (post-ParseRaw and `Craft()`) leave
+`requirements.level` untouched, deferring entirely to the unique-req-level
+override path (`unique-req-level-override` guard) or the base item's req.
+
+**Establishing build:** `Qb6WlPE5 lv52 Lich` — Font of the Erased Ring 1
+(corrupted Legendary, T7 corrupted minion-damage affix). Pre-fix LEB
+computed `req.level=79` (sumInner 57 + outer 32 - 10) — both rings were
+filtered out by CalcSetup's LevelReq filter, dropping the +22% Phys Res
+suffix and producing `PhysicalResistTotal=40` (Helmet 30 + Boots 10) vs
+LE's 62%. After this gate, rings are equipped at lv52 and PhysRes total
+matches LE exactly.
+
+**Specs:** `spec/System/TestItemParse_spec.lua`
+- "Pattern A: UNIQUE rarity skips affix-derived level req"
+- "Pattern A: LEGENDARY rarity skips affix-derived level req"
+- "Pattern A: SET rarity skips affix-derived level req"
+
+**Establishing commits:**
+- _Legendary affix-derived levelreq gate_ — exclude UNIQUE/LEGENDARY/SET from Pattern A; restore Font of the Erased Ring contribution on Qb6WlPE5
 
 ### `unique-data-integrity`
 
