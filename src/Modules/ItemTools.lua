@@ -297,7 +297,13 @@ function itemLib.applyRange(line, range, valueScalar, rounding)
                     span = span + 1 / precision
                 end
                 -- @leb-regression-guard: humble-idol-scalar-scale-first
-                -- Idol size scaling (valueScalar < 1.0, e.g. Humble=0.38, Stout=0.67)
+                -- Idol size scaling (valueScalar < 1.0). Per
+                -- src/Data/Bases/bases_1_4.json affixEffectModifier:
+                --   Humble  (1×1) -0.62 -> scalar 0.38
+                --   Stout   (1×2) -0.62 -> scalar 0.38   (NOT 0.67)
+                --   Grand   (1×4) -0.33 -> scalar 0.67
+                --   Adorned (1×3) -0.05 -> scalar 0.95
+                --   Ornate  (2×2)  0    -> scalar 1.00
                 -- rounds endpoints FIRST to LE's display integers, then interpolates
                 -- within the scaled span. Without this branch:
                 --   AL07Kea4 Humble Weaver byte=221, scalar=0.38, "+(3-7) Vitality"
