@@ -2283,6 +2283,56 @@ in one pass; Σ|Δ|/G1 dropped from 34 to 6.
 
 **Establishing commit:** `<unset; bump after first commit on this branch>`
 
+### `banker-round-vshdm`
+
+`applyRangeStrict` quantizes the (scaled) min/max **endpoints** with
+banker's rounding (round half to even), matching LE's
+`AscendingValueAfterPropertyRounding` (RVA 0x2307cc0) which calls
+`FUN_18038f970` — the IL2CPP banker round helper that delegates to
+`FUN_1803207e8` (modf) and biases by `±DAT_183d81f40` on parity. C#
+`Math.Round` / `Mathf.RoundToInt` default to
+`MidpointRounding.ToEven`, NOT half-up.
+
+The divergence shows up only when `scalar*min` or `scalar*max` lands
+**exactly** on `.5` (single-precision float). For all other inputs
+banker and half-up agree, which is why the original `vshdm-direct-port`
+formula passed dozens of byte-roll regressions before this case
+surfaced.
+
+Worked example — `BgRrP5rr lv98 Paladin` body_armor void resist suffix
+`(61-75)% scalar=1.5 byte=93`:
+- scaled: `91.5 .. 112.5`
+- half-up: `c=92, d=113, span+1=22`, `floor(22*93/255 + 92) = 100`
+- banker: `c=banker(91.5)=92` (f=91 odd → 92), `d=banker(112.5)=112`
+  (f=112 even → 112), `span+1=21`, `floor(21*93/255 + 92) = 99`
+- LE in-game tooltip: **99%** → banker is correct.
+
+LE constants (verified from `GameAssembly.dll` `.rdata` 2026-05-10 via
+`LE_datamining/extracted/dispatch_decompile_raw.txt` and
+`rounding_consts.txt`):
+- `DAT_183d81c50 = 255.0` (byte divisor)
+- `DAT_183d81f48 = 100.0` (Hundredth scale), `DAT_183d81ddc = 0.01`
+- `DAT_183d81e0c = 10.0`, `DAT_183d81de8 = 0.1` (Tenth)
+- `DAT_183d81e84 = 1000.0`, `DAT_183d81bdc = 0.001` (Thousandth)
+- `FUN_180322480` = `Math.Floor` (signed truncate, post-rounding ascending dispatch)
+- `FUN_18038f970` = banker round-half-to-even (used for endpoint quantization)
+
+| Site | File | What it does |
+|---|---|---|
+| helper | `src/Modules/ItemTools.lua` (`local function banker_round`, ~line 24) | round-half-to-even using `m_floor` + parity check |
+| Hundredth/Integer/Tenth/Thousandth branches | `src/Modules/ItemTools.lua` (`applyRangeStrict`, ~line 482) | use `banker_round` for `c`, `d` endpoint quantization |
+
+**Spec:** `spec/System/TestItemTools_spec.lua`
+- `describe("banker-round-vshdm endpoints (round-half-to-even)")` —
+  three cases: BgRrP5rr Void byte=93 → 99; banker(91.5)=92 +
+  banker(112.5)=112; banker(0.5)=0 + banker(1.5)=2.
+
+**Establishing build:** `BgRrP5rr lv98 Paladin` — body_armor Void
+Resistance affix overshoot (LEB 100% vs LE 99%) on the G1 top-12
+diff list.
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
 ### `resist-vshdm-strict`
 
 The seven elemental resistance affix lines plus the composite

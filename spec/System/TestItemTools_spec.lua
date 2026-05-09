@@ -262,9 +262,41 @@ describe("TestItemTools", function()
 
         it("scalar > 1.0 (Apiarist) scales then rounds (interpolation grid shifts)", function()
             -- Apiarist +(11-13) Strength byte=57 scalar=1.5:
-            -- scaled minN=16.5, maxN=19.5 -> half-up to 17, 20; span+1 = 4
-            -- v = floor(4 * 57/255 + 17) = floor(0.894 + 17) = 17
+            -- scaled minN=16.5, maxN=19.5 -> banker(16.5)=16 (even), banker(19.5)=20
+            -- (even); span+1 = 5. v = floor(5 * 57/255 + 16) = floor(1.117+16) = 17
             assert.are.equals(17, itemLib.applyRangeStrict(11, 13, 57, 1.5, 0, 1))
+        end)
+
+        -- @leb-regression-guard:banker-round-vshdm
+        -- Locks in the banker's-rounding endpoint quantization used by LE's
+        -- AscendingValueAfterPropertyRounding (RVA 0x2307cc0) via FUN_18038f970
+        -- (banker round helper). C# Math.Round / Mathf.RoundToInt default to
+        -- MidpointRounding.ToEven, NOT half-up. Half-up matches everywhere
+        -- EXCEPT when scalar*min or scalar*max lands exactly on .5, where
+        -- banker rounds to the nearest even integer.
+        --
+        -- Establishing case: BgRrP5rr lv98 Paladin Body Armor void resist
+        -- suffix (61-75)% with scalar 1.5 and byte=93. Half-up:
+        --   c = 92, d = 113, span+1 = 22, v = floor(22*93/255 + 92) = floor(8.02+92) = 100
+        -- Banker:
+        --   c = banker(91.5) = 92 (f=91 odd → +1), d = banker(112.5) = 112 (f=112 even),
+        --   span+1 = 21, v = floor(21*93/255 + 92) = floor(7.658+92) = 99
+        -- LE in-game tooltip shows 99% → banker is correct.
+        describe("banker-round-vshdm endpoints (round-half-to-even)", function()
+            it("BgRrP5rr Void (61-75) byte=93 scalar=1.5 -> 99 (was 100 under half-up)", function()
+                assert.are.equals(99, itemLib.applyRangeStrict(61, 75, 93, 1.5, 0, 0))
+            end)
+            it("banker(91.5)=92, banker(112.5)=112 (odd→up, even→down)", function()
+                -- byte=0 returns floor(c) so we can read c directly
+                assert.are.equals(92, itemLib.applyRangeStrict(61, 75, 0, 1.5, 0, 0))
+                -- byte=255 returns d (clamped)
+                assert.are.equals(112, itemLib.applyRangeStrict(61, 75, 255, 1.5, 0, 0))
+            end)
+            it("banker(0.5)=0, banker(1.5)=2 (boundary parity)", function()
+                -- min=0 max=1 scalar=1.5 -> minN=0.0, maxN=1.5; banker(0)=0, banker(1.5)=2
+                assert.are.equals(0, itemLib.applyRangeStrict(0, 1, 0,   1.5, 0, 0))
+                assert.are.equals(2, itemLib.applyRangeStrict(0, 1, 255, 1.5, 0, 0))
+            end)
         end)
     end)
 end)

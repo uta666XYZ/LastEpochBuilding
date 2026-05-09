@@ -11,6 +11,29 @@ local m_max = math.max
 local m_floor = math.floor
 local m_ceil = math.ceil
 
+-- @leb-regression-guard:banker-round-vshdm
+-- C# Math.Round / Mathf.RoundToInt default = MidpointRounding.ToEven (banker's
+-- rounding). LE's vshDm endpoint quantization (FUN_18038f970 in
+-- AscendingValueAfterPropertyRounding RVA 0x2307cc0) uses banker's rounding,
+-- not half-up. The boundary case that matters in practice is
+-- scaler-applied .5 fractions: e.g. min=61 max=75 scalar=1.5 produces
+-- min*scalar=91.5 max*scalar=112.5; banker rounds these to 92/112 (both even),
+-- not 92/113 like half-up does. This shifts the byte=93 result from 100 to 99
+-- on BgRrP5rr lv98 Paladin Body Armor void resist suffix (matches LE tooltip
+-- breakdown +99% Void Resistance).
+local function banker_round(x)
+    local f = m_floor(x)
+    local frac = x - f
+    if frac < 0.5 then
+        return f
+    elseif frac > 0.5 then
+        return f + 1
+    else
+        -- exactly at 0.5: round to even
+        if f % 2 == 0 then return f else return f + 1 end
+    end
+end
+
 itemLib = { }
 
 -- @leb-regression-guard: rounding-mode-default-floor
@@ -430,44 +453,53 @@ function itemLib.applyRangeStrict(minN, maxN, roll, scalar, modType, rounding)
     local e = roll / 255.0
     local c, d, v
     -- @leb-regression-guard:vshdm-percentage-units
-    -- LE's vshDm operates on FRACTIONS (0.05 = 5%) internally and multiplies
-    -- the result by 100 for display. LEB callers store percentage values
-    -- (5 = 5%), so the percentage-space equivalent of LE's
-    --   floor(100 * ((d_f + 0.01 - c_f)*e + c_f + 0.001)) / 100         (fraction)
-    -- × 100 (for display) is
-    --   floor((d_pct + 1 - c_pct)*e + c_pct + 0.1)                      (percent)
-    -- with c_pct = floor(min_pct + 0.5), d_pct = floor(max_pct + 0.5).
-    -- Verified vs in-game tooltip on AL07RL31 spec/1.4 Spellblade build:
-    --   Cold (10-40)% byte=74 → 19 (was 18, LE=19)
-    --   Phys (3-9)% byte=106  → 6  (was 5,  LE=6)
-    --   Phys (20-45)% byte=233 scalar=0.38 → 17 (was 16, LE=17)
-    -- The previous formulation operated on percentage inputs but kept the
-    -- fraction-unit constants `+0.01`/`+0.001` and the `floor(100*x+0.5)/100`
-    -- endpoint quantization, producing values that happened to land within
-    -- 0.5 of the LE display only when the byte was near a 0.01-fraction
-    -- (=1-percent) boundary. Cases away from a boundary (e.g. byte=106 on a
-    -- 3..9 range) drifted by 1.
+    -- @leb-regression-guard:banker-round-vshdm
+    -- LE's AscendingValueAfterPropertyRounding (RVA 0x2307cc0) is:
+    --   c_int = banker_round(min_scaled)               (FUN_18038f970, ToEven)
+    --   d_int = banker_round(max_scaled)
+    --   c = c_int / scale_f32                          (Hundredth: 100, Tenth: 10)
+    --   d = d_int / scale_f32 + epsilon_f32            (Hundredth: +0.01)
+    --   raw = ((d - c) * (byte / 255_f32) + c) * scale_f32
+    --   result = Math.Truncate(raw)                    (FUN_180322480, signed truncate)
+    -- Algebraically (in exact double precision) this reduces to:
+    --   floor((d_int - c_int + 1) * (byte/255) + c_int)
+    -- since (d/100 + 0.01 - c/100)*e*100 + c = (d - c + 1)*e + c.
+    -- LEB's previous formulation used HALF-UP endpoint rounding and an extra
+    -- "+0.1" bias which was a legacy hack that only worked away from .5
+    -- scaler boundaries. The half-up vs banker divergence shows up when
+    -- min*scalar or max*scalar lands exactly on .5 (e.g. 61*1.5=91.5,
+    -- 75*1.5=112.5 → half-up gives 92/113, banker gives 92/112).
+    -- Constants (verified from GameAssembly.dll .rdata 2026-05-10):
+    --   DAT_183d81c50 = 255.0 (byte divisor)
+    --   DAT_183d81f48 = 100.0 (Hundredth scale)
+    --   DAT_183d81ddc = 0.01  (Hundredth epsilon)
+    --   DAT_183d81e0c = 10.0, DAT_183d81de8 = 0.1   (Tenth)
+    --   DAT_183d81e84 = 1000.0, DAT_183d81bdc = 0.001 (Thousandth)
+    -- Verified vs in-game tooltip:
+    --   AL07RL31 Cold (10-40)% byte=74 → 19  (LE=19)
+    --   BgRrP5rr Void (61-75)% byte=93 scalar=1.5 → 99 (LE=99, was 100)
+    --   oN2zNnZM Cursed Coin Phys (13-40)% byte=79 scalar=1.17 → 25 (LE=25)
     if modType ~= 0 then
-        -- INCREASED / MORE / QUOTIENT: forced Hundredth + 0.1 epsilon (was 0.001 in fraction).
-        c = m_floor(minN + 0.5)
-        d = m_floor(maxN + 0.5)
-        v = m_floor((d + 1 - c) * e + c + 0.1)
+        -- INCREASED / MORE / QUOTIENT: forced Hundredth path (vshDm `if (0 != b)` clause).
+        c = banker_round(minN)
+        d = banker_round(maxN)
+        v = m_floor((d + 1 - c) * e + c)
     elseif rounding == 1 then       -- Integer
-        c = m_floor(minN + 0.5)
-        d = m_floor(maxN + 0.5)
+        c = banker_round(minN)
+        d = banker_round(maxN)
         v = m_floor((d + 1 - c) * e + c)
     elseif rounding == 2 then       -- Tenth
-        c = m_floor(10 * minN + 0.5) / 10
-        d = m_floor(10 * maxN + 0.5) / 10
+        c = banker_round(10 * minN) / 10
+        d = banker_round(10 * maxN) / 10
         v = m_floor(10 * ((d + 0.1 - c) * e + c)) / 10
     elseif rounding == 3 then       -- Thousandth
-        c = m_floor(1000 * minN + 0.5) / 1000
-        d = m_floor(1000 * maxN + 0.5) / 1000
+        c = banker_round(1000 * minN) / 1000
+        d = banker_round(1000 * maxN) / 1000
         v = m_floor(1000 * ((d + 0.001 - c) * e + c)) / 1000
-    else                            -- Hundredth (rounding == 0): percentage-space LE-faithful
-        c = m_floor(minN + 0.5)
-        d = m_floor(maxN + 0.5)
-        v = m_floor((d + 1 - c) * e + c + 0.1)
+    else                            -- Hundredth (rounding == 0)
+        c = banker_round(minN)
+        d = banker_round(maxN)
+        v = m_floor((d + 1 - c) * e + c)
     end
     if v > d then v = d end
     return v
