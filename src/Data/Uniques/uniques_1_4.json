@@ -5185,9 +5185,7 @@
       "{rounding:Integer}(100-240)% increased Minion Health",
       "{rounding:Integer}+(100-240) Minion Health",
       "+2 to Level of Minion Skills",
-      "+3 Seconds Cooldown for Bone Shatter",
-      "(100-240)% increased Minion Health",
-      "(10-24)% increased Health"
+      "+3 Seconds Cooldown for Bone Shatter"
     ],
     "rollIds": [
       null,
@@ -5197,9 +5195,7 @@
       2,
       3,
       null,
-      null,
-      4,
-      5
+      null
     ],
     "overrideLevelRequirement": true
   },

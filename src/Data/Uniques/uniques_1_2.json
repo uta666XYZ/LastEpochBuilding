@@ -1858,15 +1858,13 @@
       "{rounding:Integer}(20-30)% increased Armor",
       "{rounding:Integer}+(200-300) Armor",
       "(10-12)% Increased Armor per Forged Weapon",
-      "{rounding:Integer}+(3-6) Health Regen per Forged Weapon",
-      "(20-30)% increased Armor"
+      "{rounding:Integer}+(3-6) Health Regen per Forged Weapon"
     ],
     "rollIds": [
       0,
       1,
       3,
-      2,
-      4
+      2
     ],
     "overrideLevelRequirement": false
   },

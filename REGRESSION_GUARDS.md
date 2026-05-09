@@ -460,12 +460,37 @@ range-collapse mistakes have historically slipped in. The 1.4 migration
 - **Raindance (id=147)** — `(10-13)% increased Movement Speed` listed twice (legitimate dual-MS uniques like 1_2/1_3 Raindance differ in *range*; same-text duplication is the bug).
 - **Zeurial's Hunt (id=251)** — second penetration line was a copy-paste of the first with Bow/Throwing direction not swapped.
 
-The guarded invariant:
+A second wave (2026-05-09) caught two more during Q9J4w8PE Health-diff
+triangulation:
+
+- **Aaron's Will (id=272)** — game data has 8 mods; LEB had 10 because both
+  `(10-24)% increased Health` and `(100-240)% increased Minion Health` were
+  duplicated. Q9J4w8PE lv99 Necromancer registered +325 Health from the
+  player-Health dup. Caught by DUP_LINE on exact-string equality.
+- **Sunforged Greathelm (id=87, set entry 19)** — trailing
+  `(25-35)% increased Armor` duplicated the leading mod. Lived in
+  `set_1_4.json` (set-rarity entry merged into `data.uniques` by
+  `Modules/Data.lua`) and in `uniques_1_2.json` / `uniques_1_3.json`.
+  Surfaced via the new EXPECTED_COUNT invariant after DUP_LINE missed it
+  (the "20-30" 1_2/1_3 vs "25-35" 1_4 wording diverged enough to slip
+  exact-string equality on at least one rev).
+
+The guarded invariants:
 
 **DUP_LINE** — no exact-string mod line appears twice in a single unique's
 `mods` array. The two real cases where it looks like a dup (Zeurial's Hunt
 direction-pair, Raindance dual-MS in 1_2/1_3) both differ in text or range,
 so exact-string equality is the correct equivalence.
+
+**EXPECTED_COUNT** — hand-curated allow-list of uniques whose `mods` array
+length has been audited at least once against the game data
+(`uniques_v3.json`). Pinning the count means a future regen that re-introduces
+upstream dups (e.g. the 2026-05-09 Aaron's Will +325 health regression where
+mods drifted from 8 → 10) trips the spec instead of silently shifting
+downstream snapshots. Add a new entry to the `expected` table whenever you
+fix a unique whose row count was wrong. Currently pinned: Aaron's Will (8),
+Sunforged Greathelm (4), Raindance (6), Legends Entwined (5), Zeurial's
+Hunt (5).
 
 ROLLID_LEN (parallel `len(rollIds) == len(mods)`) is *not* checked from
 Lua because JSON `null` becomes Lua `nil` and `#rollIds` becomes
@@ -478,9 +503,13 @@ base implicits moved out of each unique into `bases_1_4.json`.
 | Site | File | What it does |
 |---|---|---|
 | data | `src/Data/Uniques/uniques_1_4.json` | Source of truth for 1.4 uniques |
+| data | `src/Data/Uniques/uniques_1_3.json`, `uniques_1_2.json`, `uniques.json` | Older-version unique data; same DUP_LINE / EXPECTED_COUNT invariants |
+| data | `src/Data/Set/set_1_4.json` | Set-rarity entries merged into `data.uniques` by `src/Modules/Data.lua` (~line 625); same invariants apply |
+| upstream | `LE_datamining/extracted/unique_overrides.json` | Hand-curated overrides applied by `apply_leb_rules.py`. Bugs fixed here (2026-05-09: Aaron's Will, Sunforged Greathelm, Raindance, Legends Entwined, Zeurial's Hunt) prevent regen from re-introducing them downstream |
 
 **Spec:** `spec/System/TestUniqueDataIntegrity_spec.lua`
 - "no unique has duplicate mod lines (DUP_LINE)"
+- "expected mod counts match game data (EXPECTED_COUNT)"
 
 **One-shot audit:** `.tmp/audit_uniques_1_4_regression.py` — DUP_LINE + ROLLID_LEN + cross-version ROW_DROP + RANGE_COLLAPSE.
 
