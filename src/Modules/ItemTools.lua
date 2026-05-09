@@ -201,6 +201,7 @@ function itemLib.applyRange(line, range, valueScalar, rounding)
     end
 
     -- range is actually given as a roll (TODO:rename)
+    local rollByte = range
     range = range / 255.0
 
     local numbers = 0
@@ -256,8 +257,23 @@ function itemLib.applyRange(line, range, valueScalar, rounding)
                 -- (e.g. "+(2-4) Strength") so the top byte reaches max; it does not
                 -- match LE's percentage interpolation. Scoped narrowly here so the
                 -- broader percentage path can be audited per resistance type.
-                local skipSpanBump = line:find("%% Physical Resistance")
-                if not useRound and not skipSpanBump then
+                -- @leb-regression-guard: phys-res-vshdm-strict
+                -- "% Physical Resistance" rolls are migrated to the game-faithful
+                -- vshDm path (`applyRangeStrict`). Verified across 117 spec/1.4
+                -- builds (.tmp/survey_phys_res_impact.py): scalar=1.0 → 0/193
+                -- divergence; scalar=1.17 (Cursed Coin) → 1/193 unique tuple
+                -- (`+(13-40)% Physical Resistance` byte=79: existing 24 → strict
+                -- 25), affecting only `oN2zNnZM lv86 Bladedancer.xml`. The
+                -- strict value 25 matches LE's in-game tooltip (vshDm direct port
+                -- = IL2CPP `BaseStats.GetValueAfterRounding`).
+                if line:find("%% Physical Resistance") then
+                    -- precision/100 was already applied because of '%'; vshDm
+                    -- always uses Hundredth precision for ADDED-Hundredth lines,
+                    -- bypassing the bespoke (max-min) span / endpoint capping.
+                    local v = itemLib.applyRangeStrict(minN, maxN, rollByte, valueScalar, 0, 0)
+                    return (v < 0 and "" or plus) .. tostring(v)
+                end
+                if not useRound then
                     span = span + 1 / precision
                 end
                 -- @leb-regression-guard: humble-idol-scalar-scale-first
@@ -279,18 +295,15 @@ function itemLib.applyRange(line, range, valueScalar, rounding)
                 --     interp-first: (11 + 57/255 × 3) × 1.5 = 17.51 → floor=17 (LE=17 ✓)
                 --     scale-first : round(16.5)=16, round(19.5)=19
                 --                   16 + 57/255 × 4 = 16.89 → floor=16        (LE=17 ✗)
-                -- Discriminator is `valueScalar < 1.0`. Phys Resistance (scalar=1.17)
-                -- already takes the >=1 path above with skipSpanBump.
+                -- Discriminator is `valueScalar < 1.0`. Phys Resistance is now
+                -- handled separately above via applyRangeStrict.
                 -- See REGRESSION_GUARDS.md "humble-idol-scalar-scale-first" and
                 -- "apiarist-scalar-interpolate-first".
                 local numVal
                 if not useRound and valueScalar < 1.0 then
                     local minScaled = roundHalfDownOnHalf(minN * valueScalar)
                     local maxScaled_local = roundHalfDownOnHalf(maxN * valueScalar)
-                    local localSpan = maxScaled_local - minScaled
-                    if not skipSpanBump then
-                        localSpan = localSpan + 1 / precision
-                    end
+                    local localSpan = maxScaled_local - minScaled + 1 / precision
                     numVal = minScaled + range * localSpan
                 else
                     -- Interpolate first, THEN apply valueScalar, to match LE/LETools.
