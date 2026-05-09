@@ -2173,6 +2173,71 @@ phys-resist (Body Armor suffix only, stored 16.83), output flips
 
 **Establishing commit:** `f09b98359`
 
+### `resist-base-high-precision`
+
+`ScaleAddMod` in `src/Classes/ModStore.lua` calls `m_modf` (integer part)
+on the scaled value when the mod's `(name, type)` pair is not registered
+in `data.highPrecisionMods`. Resist-tree skill node mods like Holy Aura
+`ah443-0` (`+15% Fire/Cold/Lightning Resistance`) get scaled by skill-buff
+prefix INC mods (Sentinel-119 _Covenant of Light_: `HolyAuraEffect +4%/pt`)
+through `CalcSetup.lua applyBuffPrefix → ScaleAddList → ScaleAddMod`.
+Without precision=1, `15 * 1.04 = 15.6` truncates to `15` and the
+resist-display round-half-up fix above can no longer recover the missing
+0.6 — Δ=-0.6 / resist vs LE.
+
+| Site | File | What it does |
+|---|---|---|
+| precision registration | `src/Modules/Data.lua` (`data.highPrecisionMods`) | `BASE = 1` for all 8 resist stat names so `ScaleAddMod` keeps fractional resistance after buff-tree scaling |
+
+The 7 stat names registered (LEB-internal short forms used by
+`ModParser` and `modDB:Sum`): `FireResist`, `ColdResist`,
+`LightningResist`, `NecroticResist`, `PoisonResist`, `VoidResist`,
+`PhysicalResist`. Elemental Resistance fans out to Fire/Cold/Lightning
+at parse time, so no separate `ElementalResist` key is needed.
+
+**Spec:** `spec/System/TestResistBaseHighPrecision_spec.lua`
+- "Data.lua highPrecisionMods registers BASE=1 precision for <stat>"
+- "Data.lua highPrecisionMods carries the @leb-regression-guard marker"
+
+**Establishing build:** `BgRrP5rr lv98 Paladin` — Cold Resistance LE total
+97.6 → display 98; LEB stored 96.8 → 97 pre-fix. ah443-0 contribution
+flips 15 → 15.6 after Holy Aura `+4%` scaling.
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `corrupted-sealed-allres-round-half-up`
+
+> **Type: JSON-comment-incompatible.** Protected files: `src/Data/ModItem.json`,
+> `src/Data/ModItem_1_4.json` (affixId `1070_0`).
+
+`Idol of Hope` and similar small idols carry a corrupted sealed
+`All Resistances` affix (`affixId 1070`, `specialAffixType 6`).
+Canonical `minRoll` / `maxRoll` in
+`LE_datamining/extracted/items/multi_affixes_v3.json` is `0.008`
+(raw float = 0.8%). LE displays the per-affix line with round-half-up
+to `+1%` AND uses the rounded `1.0` value in the per-source resist sum
+shown by LETools tooltips. LEB previously stored `+0.8%` to match the
+raw float, producing ΔBASE=-0.2 / resist vs LE's stored sum.
+
+The fix restores `+1% All Resistances` / `+1% Minion All Resistances` for
+`1070_0` in both ModItem JSON files. Each entry carries an
+`_leb_regression_guard` field so the marker travels with the value.
+
+**Spec:** `spec/System/TestResistBaseHighPrecision_spec.lua`
+- "ModItem.json affixId 1070_0 stores +1% (not +0.8%) on player and minion lines"
+- (asserted for both `ModItem.json` and `ModItem_1_4.json`)
+
+**Audit:** `LE_datamining/extracted/items/multi_affixes_v3.json` →
+`affixId == 1070`, `tiers[0].minRoll == tiers[0].maxRoll == 0.008`,
+`property == 30 (All Resistances)`. The 0.8 → 1 promotion is LE's
+display contract, not a data overwrite.
+
+**Establishing build:** `BgRrP5rr lv98 Paladin` — Idol of Hope
+contributes `+1% Cold Resistance` per LETools per-source breakdown;
+LEB stored `0.8` pre-fix.
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
 ## Adding a new guard
 
 1. Above the fix in source, add a comment block:
@@ -2212,6 +2277,7 @@ To keep the contract enforceable use this template:
 
 Existing JSON-comment-incompatible guards:
 - `body_armor-banker-rounding` (`src/Data/ModItem_1_4.json`)
+- `corrupted-sealed-allres-round-half-up` (`src/Data/ModItem.json`, `src/Data/ModItem_1_4.json`)
 
 ## Layering vs canary strings
 
