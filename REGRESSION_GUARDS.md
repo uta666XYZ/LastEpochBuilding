@@ -2171,7 +2171,7 @@ bugs unmasked by this fix, not regressions of this guard. Compare
 phys-resist (Body Armor suffix only, stored 16.83), output flips
 16 → 17 to match LE / LETools.
 
-**Establishing commit:** `<unset; bump after first commit on this branch>`
+**Establishing commit:** `f09b98359`
 
 ## Adding a new guard
 
