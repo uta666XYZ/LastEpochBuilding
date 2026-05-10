@@ -11,6 +11,29 @@ local m_max = math.max
 local m_floor = math.floor
 local m_ceil = math.ceil
 
+-- @leb-regression-guard:banker-round-vshdm
+-- C# Math.Round / Mathf.RoundToInt default = MidpointRounding.ToEven (banker's
+-- rounding). LE's vshDm endpoint quantization (FUN_18038f970 in
+-- AscendingValueAfterPropertyRounding RVA 0x2307cc0) uses banker's rounding,
+-- not half-up. The boundary case that matters in practice is
+-- scaler-applied .5 fractions: e.g. min=61 max=75 scalar=1.5 produces
+-- min*scalar=91.5 max*scalar=112.5; banker rounds these to 92/112 (both even),
+-- not 92/113 like half-up does. This shifts the byte=93 result from 100 to 99
+-- on BgRrP5rr lv98 Paladin Body Armor void resist suffix (matches LE tooltip
+-- breakdown +99% Void Resistance).
+local function banker_round(x)
+    local f = m_floor(x)
+    local frac = x - f
+    if frac < 0.5 then
+        return f
+    elseif frac > 0.5 then
+        return f + 1
+    else
+        -- exactly at 0.5: round to even
+        if f % 2 == 0 then return f else return f + 1 end
+    end
+end
+
 itemLib = { }
 
 -- @leb-regression-guard: rounding-mode-default-floor
@@ -185,7 +208,23 @@ function itemLib.applyRange(line, range, valueScalar, rounding)
         precision = 1
     end
 
+    -- @leb-regression-guard: per-set-fractional-precision
+    -- "per Complete Set" affixes are multiplied by CompleteSetCount in LE
+    -- AFTER per-source quantization to HALF-INTEGER (0.5) steps, not after
+    -- floor-to-integer. LEB historically rounded the per-item roll to int
+    -- first (e.g. byte=41 +(2-5) Integer → floor(2.482)=2) then multiplied
+    -- by the set multiplier (×3 → 6), losing the +1 that LE produces.
+    -- Empirical match across two builds: precision=2 (half-step) + span+0.5:
+    --   BxvJP3g1 byte=41,  ×3: numVal→2.5 → 7.5 → floor=7  (LE=7  ✓)
+    --   Qqwv73q2 byte=203, ×6: numVal→4.5 → 27.0           (LE=27 ✓)
+    -- ModStore:EvalMod applies m_floor after the Multiplier:CompleteSetCount
+    -- tag (roundAfterMultiply) so the half-step value flows through intact.
+    if line:find("per [Cc]omplete [Ss]et") and rounding == "Integer" then
+        precision = 2
+    end
+
     -- range is actually given as a roll (TODO:rename)
+    local rollByte = range
     range = range / 255.0
 
     local numbers = 0
@@ -203,6 +242,16 @@ function itemLib.applyRange(line, range, valueScalar, rounding)
         end
         return m_floor(v * precision + 0.5) / precision
     end
+    -- @leb-regression-guard: applyrange-fixed-tier-noop
+    -- Lines without a `(min-max)` pattern are FIXED-VALUE tiers and must
+    -- pass through `applyRange` unchanged regardless of the `range`/`r`
+    -- byte. LETools T1-T7 corrupted tiers of affix 1011
+    -- (`+N All Attributes with at least 7 Corrupted non-Idol Items
+    -- equipped`) are fixed 8/9/10/11/12/13/14; only the primordial-only
+    -- T8 carries `(19-21)`. A misstated REGRESSION_GUARDS claim that
+    -- `1011_6 @ range 221 → +11` triggered a bogus investigation
+    -- 2026-05-08; do NOT add a "scale fixed values too" patch here.
+    -- See REGRESSION_GUARDS.md "applyrange-fixed-tier-noop".
     line = line:gsub("(%+?)%((%-?%d+%.?%d*)%-(%-?%d+%.?%d*)%)",
             function(plus, min, max)
                 numbers = numbers + 1
@@ -231,15 +280,100 @@ function itemLib.applyRange(line, range, valueScalar, rounding)
                 -- (e.g. "+(2-4) Strength") so the top byte reaches max; it does not
                 -- match LE's percentage interpolation. Scoped narrowly here so the
                 -- broader percentage path can be audited per resistance type.
-                local skipSpanBump = line:find("%% Physical Resistance")
-                if not useRound and not skipSpanBump then
+                -- @leb-regression-guard: phys-res-vshdm-strict
+                -- "% Physical Resistance" rolls are migrated to the game-faithful
+                -- vshDm path (`applyRangeStrict`). Verified across 117 spec/1.4
+                -- builds (.tmp/survey_phys_res_impact.py): scalar=1.0 → 0/193
+                -- divergence; scalar=1.17 (Cursed Coin) → 1/193 unique tuple
+                -- (`+(13-40)% Physical Resistance` byte=79: existing 24 → strict
+                -- 25), affecting only `oN2zNnZM lv86 Bladedancer.xml`. The
+                -- strict value 25 matches LE's in-game tooltip (vshDm direct port
+                -- = IL2CPP `BaseStats.GetValueAfterRounding`).
+                -- @leb-regression-guard:resist-vshdm-strict
+                -- All seven elemental resistances PLUS the composite
+                -- "% Elemental Resistance" affix (cold+fire+lightning)
+                -- route through the game-faithful vshDm Hundredth path.
+                -- LE property_list_v3.json:
+                --   property 52 "Elemental Resistance" roundingForAdded=0 (Hundredth)
+                -- Pre-fix the default applyRange branch was missing LE's
+                -- `+0.001` (fraction) / `+0.1` (percent) epsilon, and
+                -- LEB's `applyRangeStrict` Hundredth branch had a
+                -- unit-mismatch bug (see vshdm-percentage-units guard).
+                -- AL07RL31 (Cold=39→40, Phys=58→59) verified vs in-game
+                -- tooltip after the combined patch.
+                if line:find("%% Cold Resistance")
+                   or line:find("%% Fire Resistance")
+                   or line:find("%% Lightning Resistance")
+                   or line:find("%% Necrotic Resistance")
+                   or line:find("%% Poison Resistance")
+                   or line:find("%% Void Resistance")
+                   or line:find("%% Physical Resistance")
+                   or line:find("%% Elemental Resistance") then
+                    local v = itemLib.applyRangeStrict(minN, maxN, rollByte, valueScalar, 0, 0)
+                    return (v < 0 and "" or plus) .. tostring(v)
+                end
+                -- @leb-regression-guard: flat-int-vshdm-strict
+                -- Flat-integer "+(N-N) <Stat>" affixes (no %) at scalar<=1.0
+                -- migrate to the game-faithful vshDm Integer path. Survey
+                -- (.tmp/survey_strict_scalar1.py / survey_strict_phase4.py)
+                -- across 117 spec/1.4 builds:
+                --   scalar=1.0  -> 0/3241 unique-tuple divergence
+                --   scalar=0.67 -> 0/3241 (Grand idol)
+                --   scalar=0.38 -> 0/3241 (Humble/Stout idol)
+                -- For integer endpoints both formulas reduce to
+                --   floor((halfup(max*s) + 1 - halfup(min*s)) * roll/255 + halfup(min*s))
+                -- so this is a byte-identical migration covering scalar=1.0
+                -- AND the humble-idol-scalar-scale-first branch's flat-int
+                -- portion. Scalar > 1.0 flat-int (Apiarist=1.5: survey shows
+                -- 656 mismatches; existing apiarist-scalar-interpolate-first
+                -- guard is empirically validated against in-game tooltip)
+                -- remains on the existing branch below.
+                if precision == 1 and not line:find("%%") and valueScalar <= 1.0 then
+                    local v = itemLib.applyRangeStrict(minN, maxN, rollByte, valueScalar, 0, 1)
+                    return (v < 0 and "" or plus) .. tostring(v)
+                end
+                if not useRound then
                     span = span + 1 / precision
                 end
-                -- Interpolate first, THEN apply valueScalar, to match LE/LETools.
-                -- Applying scalar to min/max before interpolation shifts the integer
-                -- grid (e.g. Apiarist's Suit Str +(11-13)×1.5 at roll 57/255 should
-                -- give round(11.447×1.5)=17, not interpolate within [16,19]→16).
-                local numVal = (minN + range * span) * valueScalar
+                -- @leb-regression-guard: humble-idol-scalar-scale-first
+                -- Idol size scaling (valueScalar < 1.0). Per
+                -- src/Data/Bases/bases_1_4.json affixEffectModifier:
+                --   Humble  (1×1) -0.62 -> scalar 0.38
+                --   Stout   (1×2) -0.62 -> scalar 0.38   (NOT 0.67)
+                --   Grand   (1×4) -0.33 -> scalar 0.67
+                --   Adorned (1×3) -0.05 -> scalar 0.95
+                --   Ornate  (2×2)  0    -> scalar 1.00
+                -- rounds endpoints FIRST to LE's display integers, then interpolates
+                -- within the scaled span. Without this branch:
+                --   AL07Kea4 Humble Weaver byte=221, scalar=0.38, "+(3-7) Vitality"
+                --     interp-first: (3 + 221/255 × 5) × 0.38 = 2.79 → floor=2  (LE=3 ✗)
+                --     scale-first : round(3×0.38)=1, round(7×0.38)=3
+                --                   1 + 221/255 × (3-1+1) = 3.60 → floor=3   (LE=3 ✓)
+                --   AL07Kea4 Humble Weaver byte=98:
+                --     interp-first: 1.87 → 1 (LE=2 ✗); scale-first: 2.15 → 2 (LE=2 ✓)
+                --
+                -- @leb-regression-guard: apiarist-scalar-interpolate-first
+                -- Conversely, valueScalar > 1.0 (Apiarist's Suit unique = 1.5) MUST
+                -- interpolate first then scale, otherwise the integer grid shifts
+                -- and the top byte underrepresents:
+                --   Str "+(11-13)" × 1.5 byte=57:
+                --     interp-first: (11 + 57/255 × 3) × 1.5 = 17.51 → floor=17 (LE=17 ✓)
+                --     scale-first : round(16.5)=16, round(19.5)=19
+                --                   16 + 57/255 × 4 = 16.89 → floor=16        (LE=17 ✗)
+                -- Discriminator is `valueScalar < 1.0`. Phys Resistance is now
+                -- handled separately above via applyRangeStrict.
+                -- See REGRESSION_GUARDS.md "humble-idol-scalar-scale-first" and
+                -- "apiarist-scalar-interpolate-first".
+                local numVal
+                if not useRound and valueScalar < 1.0 then
+                    local minScaled = roundHalfDownOnHalf(minN * valueScalar)
+                    local maxScaled_local = roundHalfDownOnHalf(maxN * valueScalar)
+                    local localSpan = maxScaled_local - minScaled + 1 / precision
+                    numVal = minScaled + range * localSpan
+                else
+                    -- Interpolate first, THEN apply valueScalar, to match LE/LETools.
+                    numVal = (minN + range * span) * valueScalar
+                end
                 if useRound and itemLib.useLEToolsRounding then
                     numVal = m_floor(numVal * precision + 0.5) / precision
                 else
@@ -272,6 +406,103 @@ end
 
 function itemLib.hasRange(line)
     return line:find("%(%-?%d+%.?%d*%-%-?%d+%.?%d*%)");
+end
+
+-- @leb-regression-guard: vshdm-direct-port
+-- Direct numeric port of LE planner JS `vshDm` ( = IL2CPP
+-- `BaseStats.GetValueAfterRounding` ). Reproduces the game's interpolation
+-- bit-for-bit so LEB can be game-faithful per stat once the existing
+-- empirical workarounds (`useRound`, `skipSpanBump`, scalar-order branches
+-- in `applyRange`) are migrated stat-by-stat.
+--
+-- Inputs:
+--   minN, maxN : roll endpoints (post-localization, pre-scalar)
+--   roll       : 0..255 byte
+--   scalar     : valueScalar (idol size / unique scalar). Default 1.0.
+--   modType    : BaseStats.ModType  (0=ADDED 1=INCREASED 2=MORE 3=QUOTIENT)
+--   rounding   : PropertyRounding   (0=Hundredth 1=Integer 2=Tenth 3=Thousandth)
+--                from src/Data/Properties/property_list_1_4.json bySP[<SP>]
+--                .roundingForAdded.
+--
+-- Output: numeric value (caller composes the line / suffix).
+--
+-- Game behavior (verified against LE 1.4.6 IL2CPP dump RVA 0x230B940 +
+-- planner JS `function vshDm(a,b,c,d,e)` decoded 2026-05-09):
+--   * Endpoints are rounded HALF-UP to the rounding precision FIRST.
+--   * Span uses `(max + 1/precision - min)` so the top byte (255) reaches max.
+--   * Hundredth-ADDED carries a `+0.001` epsilon to nudge boundary values.
+--   * Non-ADDED branch is forced to Hundredth precision regardless of input
+--     `rounding` argument (matches `if (0 != b)` clause in vshDm).
+--   * Final clamp: `min(v, d)`.
+--
+-- This function is intentionally PURE: no string parsing, no global state,
+-- no feature-flag check. Callers gate adoption per call site.
+-- Reference: src/Data/Properties/property_list_1_4.json (extracted from
+-- LE 1.4.6 resources.assets via TypeTreeGeneratorAPI).
+function itemLib.applyRangeStrict(minN, maxN, roll, scalar, modType, rounding)
+    scalar   = scalar   or 1.0
+    modType  = modType  or 0
+    rounding = rounding or 0
+    if scalar ~= 1.0 then
+        minN = minN * scalar
+        maxN = maxN * scalar
+    end
+    if minN > maxN then
+        return minN
+    end
+    local e = roll / 255.0
+    local c, d, v
+    -- @leb-regression-guard:vshdm-percentage-units
+    -- @leb-regression-guard:banker-round-vshdm
+    -- LE's AscendingValueAfterPropertyRounding (RVA 0x2307cc0) is:
+    --   c_int = banker_round(min_scaled)               (FUN_18038f970, ToEven)
+    --   d_int = banker_round(max_scaled)
+    --   c = c_int / scale_f32                          (Hundredth: 100, Tenth: 10)
+    --   d = d_int / scale_f32 + epsilon_f32            (Hundredth: +0.01)
+    --   raw = ((d - c) * (byte / 255_f32) + c) * scale_f32
+    --   result = Math.Truncate(raw)                    (FUN_180322480, signed truncate)
+    -- Algebraically (in exact double precision) this reduces to:
+    --   floor((d_int - c_int + 1) * (byte/255) + c_int)
+    -- since (d/100 + 0.01 - c/100)*e*100 + c = (d - c + 1)*e + c.
+    -- LEB's previous formulation used HALF-UP endpoint rounding and an extra
+    -- "+0.1" bias which was a legacy hack that only worked away from .5
+    -- scaler boundaries. The half-up vs banker divergence shows up when
+    -- min*scalar or max*scalar lands exactly on .5 (e.g. 61*1.5=91.5,
+    -- 75*1.5=112.5 → half-up gives 92/113, banker gives 92/112).
+    -- Constants (verified from GameAssembly.dll .rdata 2026-05-10):
+    --   DAT_183d81c50 = 255.0 (byte divisor)
+    --   DAT_183d81f48 = 100.0 (Hundredth scale)
+    --   DAT_183d81ddc = 0.01  (Hundredth epsilon)
+    --   DAT_183d81e0c = 10.0, DAT_183d81de8 = 0.1   (Tenth)
+    --   DAT_183d81e84 = 1000.0, DAT_183d81bdc = 0.001 (Thousandth)
+    -- Verified vs in-game tooltip:
+    --   AL07RL31 Cold (10-40)% byte=74 → 19  (LE=19)
+    --   BgRrP5rr Void (61-75)% byte=93 scalar=1.5 → 99 (LE=99, was 100)
+    --   oN2zNnZM Cursed Coin Phys (13-40)% byte=79 scalar=1.17 → 25 (LE=25)
+    if modType ~= 0 then
+        -- INCREASED / MORE / QUOTIENT: forced Hundredth path (vshDm `if (0 != b)` clause).
+        c = banker_round(minN)
+        d = banker_round(maxN)
+        v = m_floor((d + 1 - c) * e + c)
+    elseif rounding == 1 then       -- Integer
+        c = banker_round(minN)
+        d = banker_round(maxN)
+        v = m_floor((d + 1 - c) * e + c)
+    elseif rounding == 2 then       -- Tenth
+        c = banker_round(10 * minN) / 10
+        d = banker_round(10 * maxN) / 10
+        v = m_floor(10 * ((d + 0.1 - c) * e + c)) / 10
+    elseif rounding == 3 then       -- Thousandth
+        c = banker_round(1000 * minN) / 1000
+        d = banker_round(1000 * maxN) / 1000
+        v = m_floor(1000 * ((d + 0.001 - c) * e + c)) / 1000
+    else                            -- Hundredth (rounding == 0)
+        c = banker_round(minN)
+        d = banker_round(maxN)
+        v = m_floor((d + 1 - c) * e + c)
+    end
+    if v > d then v = d end
+    return v
 end
 
 -- Map ItemClass.type -> slotOverrides key (tunklab-style slug). Returns nil

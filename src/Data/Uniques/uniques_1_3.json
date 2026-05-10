@@ -1858,15 +1858,13 @@
       "{rounding:Integer}(20-30)% increased Armor",
       "{rounding:Integer}+(200-300) Armor",
       "(10-12)% Increased Armor per Forged Weapon",
-      "{rounding:Integer}+(3-6) Health Regen per Forged Weapon",
-      "(20-30)% increased Armor"
+      "{rounding:Integer}+(3-6) Health Regen per Forged Weapon"
     ],
     "rollIds": [
       0,
       1,
       3,
-      2,
-      4
+      2
     ],
     "overrideLevelRequirement": false
   },
@@ -6191,9 +6189,7 @@
       "{rounding:Integer}(100-240)% increased Minion Health",
       "{rounding:Integer}+(100-240) Minion Health",
       "+1 to All Minion Skills",
-      "+3 Seconds Cooldown for Bone Shatter",
-      "(100-240)% increased Minion Health",
-      "(10-24)% increased Health"
+      "+3 Seconds Cooldown for Bone Shatter"
     ],
     "rollIds": [
       null,
@@ -6203,9 +6199,7 @@
       2,
       3,
       null,
-      null,
-      4,
-      5
+      null
     ],
     "overrideLevelRequirement": true
   },
@@ -9805,7 +9799,7 @@
       "level": 60
     },
     "mods": [
-      "+(40-60)% Non-Unique Idol Stat Multiplier",
+      "Stats on your Non-Unique Idols have (40-60)% increased Effect",
       "+(5-10)% to All Resistances",
       "{rounding:Integer}+(20-40) Health",
       "{rounding:Integer}+(60-100) Stun Avoidance",

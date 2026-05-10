@@ -70,4 +70,34 @@ return {
         helper = "HeadlessWrapper.lua",
         ROOT = { "../spec/DumpArmourFull.lua" },
     },
+    dumpA21LifeRegen = {
+        directory = "src",
+        lpath = "../runtime/lua/?.lua;../runtime/lua/?/init.lua",
+        helper = "HeadlessWrapper.lua",
+        ROOT = { "../spec/DumpA21LifeRegen.lua" },
+    },
+    dumpAL07Attrs = {
+        directory = "src",
+        lpath = "../runtime/lua/?.lua;../runtime/lua/?/init.lua",
+        helper = "HeadlessWrapper.lua",
+        ROOT = { "../spec/DumpAL07Attrs.lua" },
+    },
+    dumpQ9J4Health = {
+        directory = "src",
+        lpath = "../runtime/lua/?.lua;../runtime/lua/?/init.lua",
+        helper = "HeadlessWrapper.lua",
+        ROOT = { "../spec/DumpQ9J4Health.lua" },
+    },
+    dumpQb6PhysRes = {
+        directory = "src",
+        lpath = "../runtime/lua/?.lua;../runtime/lua/?/init.lua",
+        helper = "HeadlessWrapper.lua",
+        ROOT = { "../spec/DumpQb6PhysRes.lua" },
+    },
+    dumpResAll = {
+        directory = "src",
+        lpath = "../runtime/lua/?.lua;../runtime/lua/?/init.lua",
+        helper = "HeadlessWrapper.lua",
+        ROOT = { "../spec/DumpResAll.lua" },
+    },
 }

@@ -108,6 +108,24 @@ local lineFlags = {
 local AFFIX_REQ_INNER = { [0]=1, [1]=3, [2]=6, [3]=10, [4]=14, [5]=15 }
 local AFFIX_REQ_OUTER = { [0]=2, [1]=6, [2]=12, [3]=20, [4]=28, [5]=30 }
 local function computeAffixDerivedLevelReq(item)
+	-- @leb-regression-guard:legendary-affix-derived-levelreq
+	-- Pattern A is calibrated for crafted exalted/rare items where affix
+	-- tiers push req.level above the base (e.g. T6/T7 prefix on a low-base
+	-- ring shows Lv77/Lv95 in-game). It does NOT apply to UNIQUE/LEGENDARY/
+	-- SET items: in-game these display req.level from the unique definition
+	-- (or base item) regardless of which affix tiers their slots happen to
+	-- carry. In particular, "unique + corrupted affix" stays a UNIQUE (per
+	-- user clarification 2026-05-09 — corrupted affix does not promote
+	-- rarity), so the corrupted T7 minion-damage affix on Font of the
+	-- Erased must NOT lift the ring's req.level above its base/unique value.
+	-- Establishing build: Qb6WlPE5 lv52 Lich — Font of the Erased Ring 1
+	--   (corrupted, T7 minion damage). Pre-fix LEB computed req.level=79;
+	--   in-game tooltip shows Requires Level: 15. Without this gate, both
+	--   rings were filtered out by CalcSetup LevelReq filter (L888-898),
+	--   removing +22% Phys Res and producing PhysRes Δ=-22 vs LETools.
+	if item.rarity == "UNIQUE" or item.rarity == "LEGENDARY" or item.rarity == "SET" then
+		return nil
+	end
 	local sumInner, maxT, hasContrib = 0, -1, false
 	local affixesTable = item.affixes
 	for _, list in ipairs({ item.prefixes or {}, item.suffixes or {} }) do

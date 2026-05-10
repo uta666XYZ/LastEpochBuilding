@@ -316,6 +316,86 @@ describe("TestItemParse #itemParse", function()
             "3 plain + 1 sealed -> req must be 65 (sealed excluded from sum)")
     end)
 
+    -- @leb-regression-guard:legendary-affix-derived-levelreq
+    -- Pattern A targets crafted exalted/rare items only. UNIQUE / LEGENDARY /
+    -- SET items derive req.level from the unique definition or base item;
+    -- their affix slots may carry high tiers (or corrupted T7 affixes) that
+    -- would otherwise inflate Pattern A's fVar above 50. In particular,
+    -- per LE rule "unique + corrupted affix = unique" (rarity does not
+    -- promote), a corrupted unique ring like Font of the Erased with a T7
+    -- minion-damage corrupted affix must NOT lift its req.level above the
+    -- base/unique value (in-game shows Requires Level: 15).
+    -- Establishing build: Qb6WlPE5 lv52 Lich — Font of the Erased Ring 1.
+    -- Pre-fix: LEB computed req.level=79 -> CalcSetup LevelReq filter
+    -- removed both rings -> +22% Phys Res suffix lost -> PhysRes Δ=-22
+    -- vs LETools. After this gate: rings are equipped at lv52, +22%
+    -- contributes, PhysRes total matches LE's 62%.
+    it("Pattern A: UNIQUE rarity skips affix-derived level req", function()
+        newBuild()
+        build.itemsTab:CreateDisplayItemFromRaw([[Rarity: UNIQUE
+        Test Unique Body
+        Refuge Armor
+        Unique ID: TestPatternALegendary 1
+        Crafted: true
+        Prefix: None
+        Prefix: None
+        Suffix: {range:0}1_5
+        Suffix: {range:0}7_5
+        Suffix: {range:0}8_5
+        Suffix: {range:0}10_5
+        LevelReq: 0
+        Implicits: 0]])
+
+        local item = build.itemsTab.displayItem
+        assert.is_not_nil(item, "displayItem should exist")
+        assert.are.equals(0, item.requirements.level,
+            "UNIQUE must skip Pattern A; req stays at base (RARE same affixes -> 80)")
+    end)
+
+    it("Pattern A: LEGENDARY rarity skips affix-derived level req", function()
+        newBuild()
+        build.itemsTab:CreateDisplayItemFromRaw([[Rarity: LEGENDARY
+        Test Legendary Body
+        Refuge Armor
+        Unique ID: TestPatternALegendary 2
+        Crafted: true
+        Prefix: None
+        Prefix: None
+        Suffix: {range:0}1_5
+        Suffix: {range:0}7_5
+        Suffix: {range:0}8_5
+        Suffix: {range:0}10_5
+        LevelReq: 0
+        Implicits: 0]])
+
+        local item = build.itemsTab.displayItem
+        assert.is_not_nil(item, "displayItem should exist")
+        assert.are.equals(0, item.requirements.level,
+            "LEGENDARY must skip Pattern A; req stays at base")
+    end)
+
+    it("Pattern A: SET rarity skips affix-derived level req", function()
+        newBuild()
+        build.itemsTab:CreateDisplayItemFromRaw([[Rarity: SET
+        Test Set Body
+        Refuge Armor
+        Unique ID: TestPatternALegendary 3
+        Crafted: true
+        Prefix: None
+        Prefix: None
+        Suffix: {range:0}1_5
+        Suffix: {range:0}7_5
+        Suffix: {range:0}8_5
+        Suffix: {range:0}10_5
+        LevelReq: 0
+        Implicits: 0]])
+
+        local item = build.itemsTab.displayItem
+        assert.is_not_nil(item, "displayItem should exist")
+        assert.are.equals(0, item.requirements.level,
+            "SET must skip Pattern A; req stays at base")
+    end)
+
     it("Auto-detects corrupted from specialAffixType==6 affix (no 'Corrupted' marker)", function()
         newBuild()
         -- Refuge Armor (Body Armor base) with sat==6 prefix 1002_0 (Missing Health

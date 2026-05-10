@@ -881,7 +881,9 @@ function calcs.initEnv(build, mode, override, specEnv)
 			--        CorruptedNonIdolItemsEquipped"
 			-- Establishing build: Qqwv73q2 lv62 Warlock — Silver Grail
 			--   (LevelReq=68 > charLevel=62), corrupted; brings nonIdol count
-			--   from 6 to 7 and trips Shroud's +11 All Attributes.
+			--   from 6 to 7 and trips Shroud's +14 All Attributes (T7 fixed
+			--   value; LETools/game-data verified — see REGRESSION_GUARDS.md
+			--   `corrupted-count-pre-levelreq` for the tier table).
 			env._levelGatedAllItems = {}
 			for slotName, item in pairs(items) do
 				if item and item.requirements and item.requirements.level
@@ -905,15 +907,36 @@ function calcs.initEnv(build, mode, override, specEnv)
 		--   * CorruptedIdolItemsEquipped    = corrupted items IN Idol slots
 		do
 			local total, nonIdol, idol = 0, 0, 0
+			-- @leb-regression-guard: omen-idol-slot-dedup-on-corruption-count
+			-- Omen Idol N slots are NOT independent inventory cells — they are
+			-- secondary references to the same physical idol item already
+			-- placed in an Idol N grid cell (populated by
+			-- ItemsTab:AutoPopulateOmenIdolSlots, see refracted-slot-overlap-only).
+			-- Iterating `items` produces both the Idol N slot AND the Omen Idol N
+			-- slot for every refracted-overlapping idol, so a naive count
+			-- double-tallies. The Idol-Altar implicit "+14 Mana per Idol in a
+			-- Refracted Slot" tooltip explicitly says "There is no additional
+			-- benefit to having an idol in multiple refracted slots", confirming
+			-- the per-physical-item semantics. Track seen item identities and
+			-- skip duplicates.
+			-- See REGRESSION_GUARDS.md "omen-idol-slot-dedup-on-corruption-count".
+			local seenIdolItem = {}
 			local function countItem(slotName, item)
 				if not (item and item.corrupted) then return end
-				total = total + 1
 				local isIdolSlot = (slotName:sub(1, 5) == "Idol " and slotName ~= "Idol Altar")
 					or slotName:sub(1, 10) == "Omen Idol "
 				if isIdolSlot then
+					-- Dedup across Idol N <-> Omen Idol N pairs by item identity.
+					-- Use item.id when present (load from XML), otherwise the
+					-- table reference (shared across slots holding the same item).
+					local key = item.id or item
+					if seenIdolItem[key] then return end
+					seenIdolItem[key] = true
 					idol = idol + 1
+					total = total + 1
 				else
 					nonIdol = nonIdol + 1
+					total = total + 1
 				end
 			end
 			-- @leb-regression-guard: idol-altar-not-idol-slot
@@ -942,6 +965,17 @@ function calcs.initEnv(build, mode, override, specEnv)
 			end
 			if idol > 0 then
 				modDB:NewMod("CorruptedIdolItemsEquipped", "BASE", idol, "Corrupted Items")
+				-- @leb-regression-guard: equipped-corrupted-idol-multiplier
+				-- "+N <stat> per Equipped Corrupted Idol" affixes (Idol Altar
+				-- corrupted/sealed prefixes such as Spire Altar T7 "+10 Mana
+				-- per Equipped Corrupted Idol", src/Data/ModItem.json:65367,
+				-- ModCache.lua:2036) scale on Multiplier:EquippedCorruptedIdol.
+				-- Without this emission the multiplier resolves to 0 and these
+				-- affixes contribute nothing. The count source is the same
+				-- `idol` accumulator used for CorruptedIdolItemsEquipped (see
+				-- @leb-regression-guard: idol-altar-not-idol-slot above).
+				-- See REGRESSION_GUARDS.md "equipped-corrupted-idol-multiplier".
+				modDB:NewMod("Multiplier:EquippedCorruptedIdol", "BASE", idol, "Corrupted Items")
 			end
 		end
 
@@ -975,18 +1009,63 @@ function calcs.initEnv(build, mode, override, specEnv)
 			end
 		end
 
-		-- Idol Altar: collect items in Omen Idol (Refracted) slots and compute
-		-- altar boost fractions for prefix / suffix / weaver-enchant affixes.
-		-- The matching idol in the regular Idol 1-25 grid contributes its base
-		-- (un-boosted) mods; the Omen Idol slot path below contributes the
-		-- boost delta via a cloned item with scaled valueScalars. To avoid
-		-- double-count, the regular-grid copy is skipped in the main merge
-		-- loop when the same item reference is present in an Omen Idol slot.
+		-- Idol Altar: identify idols whose footprint overlaps a Refracted cell
+		-- (grid value == 2) on the active Idol Altar layout. This matches the
+		-- in-game model: there is no separate "Omen Idol" slot type — any idol
+		-- placed on the regular Idol 1-25 grid that overlaps a refracted cell
+		-- receives the altar's "Effect of Prefixes/Suffixes/Weaver Enchantments
+		-- for Idols in Refracted Slots" boost. The legacy "Omen Idol N" slots
+		-- are kept only as a UI/import artifact; CalcSetup now drives boost
+		-- application from grid overlap, not from Omen Idol slot population.
 		local fracturedItemSet = {}
-		for slotName, item in pairs(items) do
-			if item and slotName:sub(1, 10) == "Omen Idol " then
-				fracturedItemSet[item] = true
+		do
+			local altarName = build.itemsTab.activeAltarLayout
+			local altarLayouts = build.itemsTab.altarLayouts
+			local altar = altarName and altarName ~= "Default" and altarLayouts and altarLayouts[altarName]
+			if altar and altar.grid then
+				local idolGridSlots = {
+					{ "Idol 21", "Idol 1",  "Idol 2",  "Idol 3",  "Idol 22" },
+					{ "Idol 4",  "Idol 5",  "Idol 6",  "Idol 7",  "Idol 8"  },
+					{ "Idol 9",  "Idol 10", "Idol 23", "Idol 11", "Idol 12" },
+					{ "Idol 13", "Idol 14", "Idol 15", "Idol 16", "Idol 17" },
+					{ "Idol 24", "Idol 18", "Idol 19", "Idol 20", "Idol 25" },
+				}
+				local idolDims = {
+					["Minor Idol"]   = {1,1}, ["Small Idol"]  = {1,1}, ["Humble Idol"] = {2,1},
+					["Stout Idol"]   = {1,2}, ["Grand Idol"]  = {3,1}, ["Large Idol"]  = {1,3},
+					["Ornate Idol"]  = {4,1}, ["Huge Idol"]   = {1,4}, ["Adorned Idol"] = {2,2},
+				}
+				for r = 1, 5 do
+					for c = 1, 5 do
+						local item = items[idolGridSlots[r][c]]
+						if item and item.type and idolDims[item.type] and not fracturedItemSet[item] then
+							local w, h = idolDims[item.type][1], idolDims[item.type][2]
+							local hit = false
+							for dr = 0, h - 1 do
+								for dc = 0, w - 1 do
+									local row = altar.grid[r + dr]
+									if row and row[c + dc] == 2 then
+										hit = true
+										break
+									end
+								end
+								if hit then break end
+							end
+							if hit then fracturedItemSet[item] = true end
+						end
+					end
+				end
 			end
+		end
+		-- gridItemSet tracks which items appear in the regular Idol 1-25 grid.
+		-- Used to dedupe the legacy Omen Idol N slot path: if an idol is on the
+		-- grid, the grid path drives merging (with or without boost); the Omen
+		-- Idol N slot is skipped to avoid double-count. Orphaned Omen Idol N
+		-- entries (no grid copy) still merge as-is, without boost.
+		local gridItemSet = {}
+		for i = 1, 25 do
+			local it = items["Idol " .. i]
+			if it then gridItemSet[it] = true end
 		end
 		local altarBoostPrefix, altarBoostSuffix, altarBoostWeaver = 0, 0, 0
 		if next(fracturedItemSet) then
@@ -1015,33 +1094,45 @@ function calcs.initEnv(build, mode, override, specEnv)
 			-- Reconstruct a parsed clone from raw so mutating valueScalar on
 			-- this clone does not affect the shared original (which is also
 			-- consumed by tooltip display with its own altarBoost path).
-			-- Each boosted modLine's valueScalar becomes value * (1 + boost)
-			-- so applyRange/parseMod during BuildAndParseRaw yields the
-			-- additively-boosted mod values in clone.modList.
+			--
+			-- Idol items are crafted (rarity=MAGIC w/ affixes), so ParseRaw
+			-- runs Craft() to (re)build explicitModLines from self.prefixes /
+			-- self.suffixes. Craft computes each line's valueScalar as
+			-- `modScalar * affix.valueScalar`. Mutating clone.explicitModLines
+			-- directly is therefore lost the next time Craft runs. Mutate
+			-- `affix.valueScalar` on prefixes/suffixes instead and re-Craft so
+			-- the boost flows through Craft → applyRange via the tail
+			-- BuildAndParseRaw inside Craft.
+			--
+			-- Enchant mods aren't driven by prefixes/suffixes; their valueScalar
+			-- on enchantModLines round-trips via raw {scalar:N} back through
+			-- ParseRaw's line-by-line populate path (no Craft on that side).
 			local clone = new("Item", srcItem:BuildRaw())
-			local function scaleList(lines, boost)
-				if not boost or boost <= 0 then return end
-				for _, modLine in ipairs(lines) do
+			local function scaleAffixList(affixList, boost)
+				if not affixList or not boost or boost <= 0 then return end
+				for _, affix in ipairs(affixList) do
+					if affix and affix.modId and affix.modId ~= "None" then
+						affix.valueScalar = (affix.valueScalar or 1) * (1 + boost)
+					end
+				end
+			end
+			scaleAffixList(clone.prefixes, altarBoostPrefix)
+			scaleAffixList(clone.suffixes, altarBoostSuffix)
+			if altarBoostWeaver and altarBoostWeaver > 0 and clone.enchantModLines then
+				for _, modLine in ipairs(clone.enchantModLines) do
 					if modLine.range then
-						modLine.valueScalar = (modLine.valueScalar or 1) * (1 + boost)
+						modLine.valueScalar = (modLine.valueScalar or 1) * (1 + altarBoostWeaver)
 					end
 				end
 			end
-			scaleList(clone.enchantModLines, altarBoostWeaver)
-			for _, modLine in ipairs(clone.explicitModLines) do
-				if modLine.range then
-					local boost
-					if modLine.affixType == "Prefix" then
-						boost = altarBoostPrefix
-					elseif modLine.affixType == "Suffix" then
-						boost = altarBoostSuffix
-					end
-					if boost and boost > 0 then
-						modLine.valueScalar = (modLine.valueScalar or 1) * (1 + boost)
-					end
-				end
+			if clone.crafted and clone.base and clone.affixes
+			   and (altarBoostPrefix > 0 or altarBoostSuffix > 0) then
+				clone._craftingInternal = true
+				clone:Craft()
+				clone._craftingInternal = nil
+			else
+				clone:BuildAndParseRaw()
 			end
-			clone:BuildAndParseRaw()
 			return clone
 		end
 
@@ -1143,25 +1234,54 @@ function calcs.initEnv(build, mode, override, specEnv)
 			end
 		end
 
+		-- @leb-regression-guard: non-unique-idol-stat-multiplier
+		-- Pre-scan: Reliquary Nest (unique relic, id=433) carries property 98
+		-- (`nonUniqueIdolStatModifier`), parsed by ModParser as
+		-- `Multiplier:NonUniqueIdolStatEffect` BASE = N. The runtime applies
+		-- this as a flat (1 + N/100) multiplier on every mod sourced from a
+		-- non-unique idol item (Adorned/Grand/Huge/Humble/Large/Minor/Ornate/
+		-- Small/Stout Idol bases). Unique idols (Julra's Obsession etc.) are
+		-- excluded; Idol Altar is excluded (it isn't an idol). The pre-scan
+		-- walks every equipped item's modList summing the BASE values so the
+		-- merge loop below can scale non-unique-idol srcLists in place.
+		-- Apply ScaleAddList(srcList, scale * (1 + N/100)) instead of
+		-- mutating ModDB.Sum so per-mod tags (PerStat, conditions, etc.)
+		-- continue to evaluate normally. See REGRESSION_GUARDS.md
+		-- "non-unique-idol-stat-multiplier".
+		local nonUniqueIdolEffectPercent = 0
+		for _, slot in pairs(build.itemsTab.orderedSlots) do
+			local item = items[slot.slotName]
+			if item and item.modList then
+				for _, m in ipairs(item.modList) do
+					if m.name == "Multiplier:NonUniqueIdolStatEffect" and m.type == "BASE" then
+						nonUniqueIdolEffectPercent = nonUniqueIdolEffectPercent + (m.value or 0)
+					end
+				end
+			end
+		end
+		local nonUniqueIdolScale = 1 + nonUniqueIdolEffectPercent / 100
+
 		for _, slot in pairs(build.itemsTab.orderedSlots) do
 			local slotName = slot.slotName
 			local item = items[slotName]
 			if slotName:sub(1, 10) == "Omen Idol " then
-				-- Idol is merged via the Omen Idol (Refracted) slot path so the
-				-- Idol Altar "increased Effect of Prefixes/Suffixes/Weaver
-				-- Enchantments for Idols in Refracted Slots" boost can be
-				-- applied. If any boost > 0, merge a clone with scaled
-				-- valueScalars; else merge the item as-is. The matching copy
-				-- in the regular Idol 1-25 grid is skipped below to avoid
-				-- double-count.
-				if item and (altarBoostPrefix > 0 or altarBoostSuffix > 0 or altarBoostWeaver > 0) then
-					item = cloneWithAltarBoost(item)
+				-- Legacy Omen Idol N slot. With grid-based refracted detection
+				-- the boost is applied via the Idol N grid path; if the same
+				-- item appears on the grid, skip this copy to avoid double-
+				-- counting. Only orphaned Omen Idol entries (not on grid) are
+				-- merged here, and they merge as-is (no boost) since refracted
+				-- status is now driven by grid overlap.
+				if item and gridItemSet[item] then
+					item = nil
 				end
 			elseif item and fracturedItemSet[item] and slotName:match("^Idol %d+$") then
-				-- Same idol is also in an Omen Idol slot; the boosted clone is
-				-- merged from the Omen Idol path. Skip this copy to avoid
-				-- double-counting base mod values.
-				item = nil
+				-- Idol overlaps a Refracted cell on the altar grid: merge a
+				-- clone with valueScalar scaled by the altar's prefix/suffix/
+				-- weaver-enchant boosts so applyRange/parseMod yields the
+				-- additively-boosted mod values.
+				if altarBoostPrefix > 0 or altarBoostSuffix > 0 or altarBoostWeaver > 0 then
+					item = cloneWithAltarBoost(item)
+				end
 			end
 			if item and item.type == "Flask" then
 				if slot.active then
@@ -1180,6 +1300,17 @@ function calcs.initEnv(build, mode, override, specEnv)
 				env.player.itemList[slotName] = item
 				-- Merge mods for this item
 				local srcList = item.modList or (item.slotModList and item.slotModList[slot.slotNum]) or {}
+				-- Reliquary Nest: scale every mod on non-unique idol items
+				-- (Adorned/Grand/Huge/Humble/Large/Minor/Ornate/Small/Stout
+				-- Idol bases) by (1 + N/100). Unique/Set idols and the Idol
+				-- Altar are excluded. See pre-scan above.
+				if nonUniqueIdolScale ~= 1 and item.base and item.base.type
+					and item.base.type ~= "Idol Altar"
+					and item.base.type:sub(-5) == " Idol"
+					and item.rarity ~= "UNIQUE"
+					and item.rarity ~= "SET" then
+					scale = scale * nonUniqueIdolScale
+				end
 				if item.requirements and not accelerate.requirementsItems then
 					t_insert(env.requirementsTableItems, {
 						source = "Item",

@@ -4,6 +4,16 @@ local applyRangeTests = {
     [{ "(5-14)% increased Health", 96, 0.38, "Thousandth" }] = "3.2% increased Health",
     [{ "+(2-6) to All Attributes", 48, 1.0, "Integer" }] = "+2 to All Attributes",
     [{ "+(7-8) Attunement", 38, 1.5, "Integer" }] = "+10 Attunement",
+    -- @leb-regression-guard: humble-idol-scalar-scale-first
+    -- Humble Weaver Idol (scalar 0.38) on AL07Kea4. byte 221 must yield +3 and
+    -- byte 98 must yield +2 to match the in-game tooltip; interpolating first
+    -- then scaling under-rounds these to +2 / +1.
+    [{ "+(3-7) Vitality", 221, 0.38, "Integer" }] = "+3 Vitality",
+    [{ "+(3-7) Vitality", 98,  0.38, "Integer" }] = "+2 Vitality",
+    -- @leb-regression-guard: apiarist-scalar-interpolate-first
+    -- Apiarist's Suit (scalar 1.5) Strength "+(11-13)" at byte 57 must give
+    -- +17 (interpolate-first); scaling endpoints first would give +16.
+    [{ "+(11-13) to Strength", 57, 1.5, "Integer" }] = "+17 to Strength",
 }
 
 describe("TestItemTools", function()
@@ -139,6 +149,154 @@ describe("TestItemTools", function()
                     "+(50-60)% Critical Strike Multiplier", 76, 1.0, "Integer")
             end)
             assert.are.equals(floorLine, roundLine)
+        end)
+    end)
+
+    -- @leb-regression-guard: applyrange-fixed-tier-noop
+    -- Locks in the contract that `applyRange` leaves fixed-value tier
+    -- text (no `(min-max)` pattern) unchanged regardless of the byte
+    -- passed as `range`. LETools T1-T7 corrupted tiers of affix 1011
+    -- (`+N All Attributes with at least 7 Corrupted non-Idol Items
+    -- equipped`) are FIXED 8/9/10/11/12/13/14; only T8 (primordial-only)
+    -- carries the `(19-21)` roll range. A misstated REGRESSION_GUARDS
+    -- claim that `1011_6 @ range 221 → +11` triggered a bogus
+    -- investigation 2026-05-08; this spec prevents the same mistake
+    -- from re-entering the codebase via a "scale fixed values too"
+    -- patch to applyRange.
+    -- See REGRESSION_GUARDS.md "applyrange-fixed-tier-noop".
+    describe("applyRange leaves fixed-value tier text unchanged", function()
+        local fixedT7 =
+            "+14 All Attributes with at least 7 Corrupted non-Idol Items equipped"
+        local rangedT8 =
+            "+(19-21) All Attributes with at least 7 Corrupted non-Idol Items equipped"
+
+        it("affix 1011 T7 (fixed +14) ignores the range byte", function()
+            for _, byte in ipairs({ 0, 64, 128, 221, 255 }) do
+                local line = itemLib.applyRange(fixedT7, byte, 1.0, "Integer")
+                assert.are.equals(fixedT7, line,
+                    "range byte " .. byte .. " mutated a fixed-tier line")
+            end
+        end)
+
+        it("affix 1011 T8 (range 19-21) still interpolates as expected", function()
+            -- T8 IS primordial-only; sanity-check that the (min-max)
+            -- path still works so the "fixed" guard above isn't hiding
+            -- a broken interpolator. byte=0 → min, byte=255 → max.
+            local lo = itemLib.applyRange(rangedT8, 0, 1.0, "Integer")
+            assert.are.equals(
+                "+19 All Attributes with at least 7 Corrupted non-Idol Items equipped",
+                lo)
+            local hi = itemLib.applyRange(rangedT8, 255, 1.0, "Integer")
+            assert.are.equals(
+                "+21 All Attributes with at least 7 Corrupted non-Idol Items equipped",
+                hi)
+        end)
+
+        it("a generic fixed flat-value line is unaffected by range bytes", function()
+            -- Same contract, decoupled from the 1011 affix family so a
+            -- future rename of the Shroud affix can't silently weaken
+            -- the guard.
+            local fixed = "+8 to Strength"
+            for _, byte in ipairs({ 0, 50, 200, 255 }) do
+                assert.are.equals(fixed,
+                    itemLib.applyRange(fixed, byte, 1.0, "Integer"))
+            end
+        end)
+    end)
+
+    -- @leb-regression-guard: vshdm-direct-port
+    -- Locks in the game-faithful interpolation formula. These cases were
+    -- cross-verified against (a) the LE planner JS function `vshDm` decoded
+    -- from planner_app.js 2026-05-09, (b) the IL2CPP dump
+    -- `BaseStats.GetValueAfterRounding` at RVA 0x230B940, and (c) a Python
+    -- reference implementation at .tmp/vshdm_verify.py.
+    --
+    -- ModType: 0=ADDED 1=INCREASED 2=MORE 3=QUOTIENT
+    -- Rounding: 0=Hundredth 1=Integer 2=Tenth 3=Thousandth
+    describe("applyRangeStrict (vshDm direct port)", function()
+        it("Hundredth-ADDED reproduces BEdKNL0j relic Phys Res 14-28 byte=100 = 19", function()
+            -- @leb-regression-guard:vshdm-percentage-units
+            -- LE's vshDm operates on FRACTIONS (0.14..0.28) and multiplies the
+            -- display by 100 to give an integer-percent value:
+            --   floor(100 * ((0.28+0.01-0.14)*100/255 + 0.14+0.001)) = 19.
+            -- LEB callers store percentages, so the percentage-space port
+            -- produces 19 directly (was 19.49 under the prior fraction-unit
+            -- formula, which displayed identically as floor(19.49+0.5)=19 but
+            -- accumulated as a fractional inside Calcs and produced
+            -- per-source sum drift on multi-source Resistance totals).
+            local v = itemLib.applyRangeStrict(14, 28, 100, 1.0, 0, 0)
+            assert.are.equals(19, v)
+        end)
+
+        it("Integer-ADDED interpolates with span+1 so top byte reaches max", function()
+            -- "+(2-5) Skill Levels" byte=255 must yield 5 (capped by min(v,d)).
+            -- Without the +1/precision span bump the top byte falls short of
+            -- max; without the min(v,d) clamp it overshoots to 6.
+            assert.are.equals(5, itemLib.applyRangeStrict(2, 5, 255, 1.0, 0, 1))
+            -- Mid-byte: floor((4+1-2)*90/255 + 2) = floor(1.058 + 2) = 3
+            assert.are.equals(3, itemLib.applyRangeStrict(2, 4, 90, 1.0, 0, 1))
+        end)
+
+        it("non-ADDED branch is forced to Hundredth+epsilon regardless of rounding arg", function()
+            -- @leb-regression-guard:vshdm-percentage-units
+            -- Even if caller passes rounding=Integer (1), modType != 0 must
+            -- override and use Hundredth precision with the +0.1 epsilon
+            -- (was +0.001 in fraction-space). byte=128 e=0.50196:
+            --   floor((100+1-50)*0.50196 + 50 + 0.1) = floor(75.7) = 75.
+            local v = itemLib.applyRangeStrict(50, 100, 128, 1.0, 1, 1)
+            assert.are.equals(75, v)
+        end)
+
+        it("Tenth precision rounds to nearest 0.1", function()
+            -- (1.0-2.5) byte=128: c=1.0 d=2.5 v=floor(10*((2.5+0.1-1.0)*0.5019+1.0))/10
+            --   = floor(10*(0.8030+1.0))/10 = floor(18.030)/10 = 1.8
+            assert.are.equals(1.8, itemLib.applyRangeStrict(1.0, 2.5, 128, 1.0, 0, 2))
+        end)
+
+        it("scalar < 1.0 (Humble idol) scales endpoints first", function()
+            -- AL07Kea4 Humble Weaver +(3-7) Vitality byte=221 scalar=0.38:
+            -- minN=1.14, maxN=2.66; rounded=1, 3 (Integer); span+1 = 3
+            -- v = floor(3 * 221/255 + 1) = floor(2.6 + 1) = 3
+            assert.are.equals(3, itemLib.applyRangeStrict(3, 7, 221, 0.38, 0, 1))
+        end)
+
+        it("scalar > 1.0 (Apiarist) scales then rounds (interpolation grid shifts)", function()
+            -- Apiarist +(11-13) Strength byte=57 scalar=1.5:
+            -- scaled minN=16.5, maxN=19.5 -> banker(16.5)=16 (even), banker(19.5)=20
+            -- (even); span+1 = 5. v = floor(5 * 57/255 + 16) = floor(1.117+16) = 17
+            assert.are.equals(17, itemLib.applyRangeStrict(11, 13, 57, 1.5, 0, 1))
+        end)
+
+        -- @leb-regression-guard:banker-round-vshdm
+        -- Locks in the banker's-rounding endpoint quantization used by LE's
+        -- AscendingValueAfterPropertyRounding (RVA 0x2307cc0) via FUN_18038f970
+        -- (banker round helper). C# Math.Round / Mathf.RoundToInt default to
+        -- MidpointRounding.ToEven, NOT half-up. Half-up matches everywhere
+        -- EXCEPT when scalar*min or scalar*max lands exactly on .5, where
+        -- banker rounds to the nearest even integer.
+        --
+        -- Establishing case: BgRrP5rr lv98 Paladin Body Armor void resist
+        -- suffix (61-75)% with scalar 1.5 and byte=93. Half-up:
+        --   c = 92, d = 113, span+1 = 22, v = floor(22*93/255 + 92) = floor(8.02+92) = 100
+        -- Banker:
+        --   c = banker(91.5) = 92 (f=91 odd → +1), d = banker(112.5) = 112 (f=112 even),
+        --   span+1 = 21, v = floor(21*93/255 + 92) = floor(7.658+92) = 99
+        -- LE in-game tooltip shows 99% → banker is correct.
+        describe("banker-round-vshdm endpoints (round-half-to-even)", function()
+            it("BgRrP5rr Void (61-75) byte=93 scalar=1.5 -> 99 (was 100 under half-up)", function()
+                assert.are.equals(99, itemLib.applyRangeStrict(61, 75, 93, 1.5, 0, 0))
+            end)
+            it("banker(91.5)=92, banker(112.5)=112 (odd→up, even→down)", function()
+                -- byte=0 returns floor(c) so we can read c directly
+                assert.are.equals(92, itemLib.applyRangeStrict(61, 75, 0, 1.5, 0, 0))
+                -- byte=255 returns d (clamped)
+                assert.are.equals(112, itemLib.applyRangeStrict(61, 75, 255, 1.5, 0, 0))
+            end)
+            it("banker(0.5)=0, banker(1.5)=2 (boundary parity)", function()
+                -- min=0 max=1 scalar=1.5 -> minN=0.0, maxN=1.5; banker(0)=0, banker(1.5)=2
+                assert.are.equals(0, itemLib.applyRangeStrict(0, 1, 0,   1.5, 0, 0))
+                assert.are.equals(2, itemLib.applyRangeStrict(0, 1, 255, 1.5, 0, 0))
+            end)
         end)
     end)
 end)

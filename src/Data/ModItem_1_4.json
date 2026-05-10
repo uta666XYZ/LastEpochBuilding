@@ -1820,10 +1820,10 @@
 				"1": "{rounding:Integer}+(75-98) Dodge Rating"
 			},
 			"amulet": {
-				"1": "{rounding:Integer}+(59-76) Dodge Rating"
+				"1": "{rounding:Integer}+(58-76) Dodge Rating"
 			},
 			"catalyst": {
-				"1": "{rounding:Integer}+(59-76) Dodge Rating"
+				"1": "{rounding:Integer}+(58-76) Dodge Rating"
 			}
 		}
 	},
@@ -7727,10 +7727,10 @@
 		"specialAffixType": 0,
 		"slotOverrides": {
 			"amulet": {
-				"1": "{rounding:Integer}+(42-59) Mana"
+				"1": "{rounding:Integer}+(42-58) Mana"
 			},
 			"catalyst": {
-				"1": "{rounding:Integer}+(42-59) Mana"
+				"1": "{rounding:Integer}+(42-58) Mana"
 			},
 			"body_armor": {
 				"1": "{rounding:Integer}+(54-75) Mana"
@@ -18344,7 +18344,7 @@
 		"specialAffixType": 0,
 		"slotOverrides": {
 			"amulet": {
-				"1": "{rounding:Integer}+(59-76) Throwing Damage"
+				"1": "{rounding:Integer}+(58-76) Throwing Damage"
 			}
 		}
 	},
@@ -121973,7 +121973,7 @@
 	"1070_0": {
 		"affixName": "All Resistances for you and your Minions",
 		"affix": "All Resistances for you and your Minions",
-		"1": "+0.8% All Resistances",
+		"1": "+1% All Resistances",
 		"level": 0,
 		"statOrderKey": 1070,
 		"statOrder": [
@@ -121982,7 +121982,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": -0.83,
-		"2": "+0.8% Minion All Resistances",
+		"2": "+1% Minion All Resistances",
 		"canRollOn": [
 			25,
 			26,
@@ -121994,7 +121994,8 @@
 			32,
 			33
 		],
-		"specialAffixType": 6
+		"specialAffixType": 6,
+		"_leb_regression_guard": "corrupted-sealed-allres-round-half-up: see REGRESSION_GUARDS.md"
 	},
 	"1073_0": {
 		"affixName": "Increased Healing Effectiveness and Health per Attunement",

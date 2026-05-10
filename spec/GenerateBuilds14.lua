@@ -57,11 +57,16 @@ local buildList = fetchBuilds("../spec/TestBuilds/1.4")
 -- Sharding & resume support via env vars:
 --   LEB_SHARD="i/N" -> process only files where sortedIndex % N == i (0-based)
 --   LEB_FORCE=1     -> regenerate even if .lua already exists
+--   LEB_ONLY="<substr>" -> regenerate ONLY files whose path contains <substr>;
+--                          skip everything else regardless of shard. Used by
+--                          .tmp/regen-one14.sh to refresh a single build's
+--                          snapshot without touching the other 116 builds.
 local shardEnv = os.getenv("LEB_SHARD") or ""
 local shardI, shardN = shardEnv:match("^(%d+)/(%d+)$")
 shardI = tonumber(shardI) or 0
 shardN = tonumber(shardN) or 1
 local force = os.getenv("LEB_FORCE") == "1"
+local onlySubstr = os.getenv("LEB_ONLY") or ""
 
 local sortedNames = {}
 for filename in pairs(buildList) do table.insert(sortedNames, filename) end
@@ -71,7 +76,9 @@ for idx, filename in ipairs(sortedNames) do
     local importCode = buildList[filename]
     local luaPath = filename:gsub("%.xml$", ".lua")
     local skip = false
-    if ((idx - 1) % shardN) ~= shardI then
+    if onlySubstr ~= "" and not filename:find(onlySubstr, 1, true) then
+        skip = true
+    elseif ((idx - 1) % shardN) ~= shardI then
         skip = true
     elseif not force then
         local existing = io.open(luaPath, "r")

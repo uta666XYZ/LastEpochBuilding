@@ -8170,7 +8170,6 @@ c["+50% Minion Critical Strike Multiplier"]={{[1]={flags=0,keywordFlags=0,name="
 c["+50% More Crit Chance when Consuming Flow"]={{[1]={flags=0,keywordFlags=0,name="CritChance",type="MORE",value=50}},"  when Consuming Flow "}
 c["+50% Necrotic Resistance"]={{[1]={flags=0,keywordFlags=0,name="NecroticResist",type="BASE",value=50}},nil}
 c["+50% Next Heartseeker Recurve Chance"]={{}," Next  Recurve Chance "}
-c["+50% Non-Unique Idol Stat Multiplier"]={{}," Non-Unique Idol Stat Multiplier "}
 c["+50% Orbit Range"]={{}," Orbit Range "}
 c["+50% Physical Damage On Direct Use"]={{[1]={flags=0,keywordFlags=0,name="PhysicalDamage",type="MORE",value=50}},"  On Direct Use "}
 c["+50% Physical Penetration with Bleed"]={{[1]={[1]={skillName="Bleed",type="SkillName"},flags=0,keywordFlags=0,name="PhysicalPenetration",type="BASE",value=50}},"  with  "}

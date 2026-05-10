@@ -39,6 +39,22 @@ describe("BlockRequiresShield", function()
         assert.are.equals(0, build.calcsTab.calcsOutput.AverageBlockChance)
     end)
 
+    -- @leb-regression-guard: block-chance-total-no-shield-zero
+    -- BlockChanceTotal is the uncapped pre-cap total (used by the LETools "Block
+    -- Chance" cross-build diff and the Calcs detail panel). The no-shield branch
+    -- in CalcDefence.lua MUST initialise it to 0 alongside BlockChance — otherwise
+    -- the field is left nil and 62/68 G1 builds without a shield get reported as
+    -- "?" (LEB value missing) in scripts/letools-diff.js. The shield-equipped
+    -- branch sets it via `output.BlockChanceTotal = totalBlockChance`; without
+    -- this guard, removing the no-shield-side initialiser silently regresses the
+    -- diff coverage rather than causing a Lua error.
+    it("BlockChanceTotal is 0 (not nil) with no shield", function()
+        build.configTab.input.customMods = "+50% Block Chance"
+        build.configTab:BuildModList()
+        runCallback("OnFrame")
+        assert.are.equals(0, build.calcsTab.calcsOutput.BlockChanceTotal)
+    end)
+
     it("LifeOnBlock / ManaOnBlock are 0 with no shield (block disabled)", function()
         -- Sentinel-89 Shield Wall (4 pts × +4 Health Gained on Block) and similar
         -- nodes contribute LifeOnBlock BASE. Without a shield the block trigger

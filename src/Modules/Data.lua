@@ -355,7 +355,27 @@ data.highPrecisionMods = {
 	},
 	["SupportManaMultiplier"] = {
 		["MORE"] = 4,
-	}
+	},
+	-- @leb-regression-guard:resist-base-high-precision
+	-- ScaleAddMod (ModStore.lua) calls m_modf on the scaled value when no
+	-- precision is registered, truncating fractional parts. Buff-tree skill
+	-- node mods like Holy Aura ah443-0 ("+15% Cold Resistance") get scaled by
+	-- HolyAuraEffect (e.g. Sentinel-119 Covenant of Light: +4%/pt) via
+	-- CalcSetup.lua applyBuffPrefix → ScaleAddList. Without precision=1,
+	-- 15 * 1.04 = 15.6 truncates to 15, producing per-resist Δ=-0.6 vs LE.
+	-- BgRrP5rr Cold pre-fix: LEB BASE=96.8 → output 97; LE total 97.6 → 98.
+	-- Spec: spec/System/TestResistBaseHighPrecision_spec.lua
+	-- Note: stat names are the LEB-internal short forms ("ColdResist", not
+	-- "ColdResistance") used by ModParser ("all resistances" → 7 short names)
+	-- and modDB:Sum keys. Elemental Resistance fans out to Fire/Cold/Lightning
+	-- on parse, so no separate "ElementalResist" key is needed.
+	["FireResist"]      = { ["BASE"] = 1 },
+	["ColdResist"]      = { ["BASE"] = 1 },
+	["LightningResist"] = { ["BASE"] = 1 },
+	["NecroticResist"]  = { ["BASE"] = 1 },
+	["PoisonResist"]    = { ["BASE"] = 1 },
+	["VoidResist"]      = { ["BASE"] = 1 },
+	["PhysicalResist"]  = { ["BASE"] = 1 },
 }
 
 data.weaponTypeInfo = {

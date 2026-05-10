@@ -855,9 +855,9 @@ function ImportTabClass:DownloadLEToolsProfileBuild(url)
             local blessingName = b.name or ""
             local info = self.currentBlessingLookup and self.currentBlessingLookup[blessingName]
             if info then
-                local rollFrac = b.blessingRollFrac or 1.0
-                ConPrintf("[BLESS-PROFILE] OK cid=%-3d tl=%-30s name=%s roll=%.3f", b.inventoryId, tostring(info.tl), blessingName, rollFrac)
-                self.build.itemsTab:UpdateBlessingSlot(info.tl, info.entry, rollFrac)
+                local rollFracs = b.blessingRollFracs or { b.blessingRollFrac or 1.0 }
+                ConPrintf("[BLESS-PROFILE] OK cid=%-3d tl=%-30s name=%s roll1=%.3f roll2=%.3f", b.inventoryId, tostring(info.tl), blessingName, rollFracs[1] or 1.0, rollFracs[2] or rollFracs[1] or 1.0)
+                self.build.itemsTab:UpdateBlessingSlot(info.tl, info.entry, rollFracs)
                 appliedBlessings = appliedBlessings + 1
             else
                 ConPrintf("[BLESS-PROFILE] SKIP cid=%s name=%q (no lookup match)", tostring(b.inventoryId), tostring(blessingName))
@@ -1208,10 +1208,18 @@ function ImportTabClass:ImportBlessingsFromLETools(data)
                 if blessingName and self.currentBlessingLookup then
                     local info = self.currentBlessingLookup[blessingName]
                     if info then
+                        -- ir holds one byte per implicit (impl1=ir[1], impl2=ir[2], …).
+                        -- Convert each to a 0-1 fraction so multi-implicit blessings
+                        -- (e.g. Grand Rhythm of the Tide: % inc HR + flat HR) roll
+                        -- independently. Previously we read only ir[1] which made
+                        -- impl2 inherit impl1's frac.
+                        -- @leb-canary blessing-per-implicit-frac
                         local ir = bl.ir or {}
-                        local roll = ir[1] or 255
-                        local rollFrac = roll / 255.0
-                        self.build.itemsTab:UpdateBlessingSlot(info.tl, info.entry, rollFrac)
+                        local fracs = {
+                            (ir[1] or 255) / 255.0,
+                            (ir[2] or ir[1] or 255) / 255.0,
+                        }
+                        self.build.itemsTab:UpdateBlessingSlot(info.tl, info.entry, fracs)
                     end
                 end
             end
@@ -1517,9 +1525,14 @@ function ImportTabClass:ImportBlessingsFromMaxroll(profileData)
             if blessingName and self.currentBlessingLookup then
                 local info = self.currentBlessingLookup[blessingName]
                 if info then
-                    local roll = (type(blessing.implicits) == "table" and blessing.implicits[1]) or 255
-                    local rollFrac = roll / 255.0
-                    self.build.itemsTab:UpdateBlessingSlot(info.tl, info.entry, rollFrac)
+                    -- Per-implicit fracs (Maxroll path). See LETools comment above.
+                    -- @leb-canary blessing-per-implicit-frac
+                    local impls = (type(blessing.implicits) == "table") and blessing.implicits or {}
+                    local fracs = {
+                        (impls[1] or 255) / 255.0,
+                        (impls[2] or impls[1] or 255) / 255.0,
+                    }
+                    self.build.itemsTab:UpdateBlessingSlot(info.tl, info.entry, fracs)
                 end
             end
         end
@@ -1704,9 +1717,16 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
                         local range = d[BASE + 3 + i] or 128
                         table.insert(item.implicitMods, "{range: " .. range .. "}" .. implicit)
                     end
-                    -- For blessing slots, set the roll fraction from the first implicit roll byte
+                    -- For blessing slots, capture per-implicit roll bytes
+                    -- (BASE+4 = impl1, BASE+5 = impl2, BASE+6 = impl3) so
+                    -- multi-implicit blessings roll independently.
+                    -- @leb-canary blessing-per-implicit-frac
                     if itemData["containerID"] >= 33 and itemData["containerID"] <= 45 then
-                        item.blessingRollFrac = d[BASE + 4] and (d[BASE + 4] / 255.0) or 1.0
+                        item.blessingRollFracs = {
+                            d[BASE + 4] and (d[BASE + 4] / 255.0) or 1.0,
+                            d[BASE + 5] and (d[BASE + 5] / 255.0) or (d[BASE + 4] and (d[BASE + 4] / 255.0)) or 1.0,
+                        }
+                        item.blessingRollFrac = item.blessingRollFracs[1]
                     end
                     local rarity = d[BASE + 2]
                     -- Weaver's Will items have bit 6 set in the rarity byte (e.g. 64+9=73 for Legendary)
@@ -2130,9 +2150,9 @@ function ImportTabClass:ImportItem(itemData, slotName)
         local blessingName = itemData.name or ""
         local info = self.currentBlessingLookup and self.currentBlessingLookup[blessingName]
         if info then
-            local rollFrac = itemData.blessingRollFrac or 1.0
-            ConPrintf("[BLESS] OK  cid=%-3d slot=%-30s name=%s  roll=%.3f", itemData.inventoryId, slotName, blessingName, rollFrac)
-            self.build.itemsTab:UpdateBlessingSlot(slotName, info.entry, rollFrac)
+            local rollFracs = itemData.blessingRollFracs or { itemData.blessingRollFrac or 1.0 }
+            ConPrintf("[BLESS] OK  cid=%-3d slot=%-30s name=%s  roll1=%.3f roll2=%.3f", itemData.inventoryId, slotName, blessingName, rollFracs[1] or 1.0, rollFracs[2] or rollFracs[1] or 1.0)
+            self.build.itemsTab:UpdateBlessingSlot(slotName, info.entry, rollFracs)
             return "bless_ok"
         else
             ConPrintf("[BLESS] ERR cid=%-3d slot=%-30s name=%s  (not in blessingLookup)", itemData.inventoryId, slotName, tostring(blessingName))

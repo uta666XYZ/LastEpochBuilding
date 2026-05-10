@@ -38,5 +38,27 @@ describe("ExulisAllAttributesRange", function()
             assert.is_falsy(string.find(window, "+(10-18) to All Attributes", 1, true),
                 path .. " Exulis must NOT carry the regressed '+(10-18) to All Attributes' upper bound")
         end)
+
+        -- @leb-regression-guard: exulis-shared-rollid
+        -- mod[0] (Skills) and mod[1] (All Attributes) share rollID=0 in the
+        -- game data (uniques_v3.json id=469), so they MUST share the ur byte
+        -- when imported. See REGRESSION_GUARDS.md "exulis-shared-rollid".
+        it(path .. " has Exulis rollIds[0]==rollIds[1]==0 (shared rollID)", function()
+            local f = io.open(path, "r")
+            assert.is_not_nil(f, "must be able to open " .. path)
+            local text = f:read("*a")
+            f:close()
+            local exulisStart = string.find(text, '"name": "Exulis"', 1, true)
+            assert.is_not_nil(exulisStart, "Exulis entry must exist in " .. path)
+            local window = string.sub(text, exulisStart, exulisStart + 1500)
+            -- Match the rollIds array. Whitespace is flexible; the first two
+            -- entries must both be 0 to keep Skills and All Attributes reading
+            -- the same ur byte.
+            local r1, r2 = string.match(window, '"rollIds"%s*:%s*%[%s*(%d+)%s*,%s*(%d+)')
+            assert.are.equal("0", r1,
+                path .. " Exulis rollIds[0] must be 0 (Skills)")
+            assert.are.equal("0", r2,
+                path .. " Exulis rollIds[1] must be 0 (All Attributes shares rollID with Skills)")
+        end)
     end
 end)

@@ -944,8 +944,16 @@ function buildMode:ReadLeToolsSave(saveContent)
 			local slotName = blessingTimelines[i] or ("Blessing " .. i)
 			local item = processItemData(slotName, blessingData)
 			if item then
-				-- ir[1] stores the actual roll as a 0-255 integer; convert to 0-1 fraction
-				item.blessingRollFrac = (blessingData['ir'] and blessingData['ir'][1]) and (blessingData['ir'][1] / 255.0) or 1.0
+				-- ir holds one byte per implicit (impl1=ir[1], impl2=ir[2]).
+				-- Capture all so multi-implicit blessings roll independently.
+				-- @leb-canary blessing-per-implicit-frac
+				local ir = blessingData['ir'] or {}
+				local f1 = ir[1] and (ir[1] / 255.0) or 1.0
+				item.blessingRollFracs = {
+					f1,
+					ir[2] and (ir[2] / 255.0) or f1,
+				}
+				item.blessingRollFrac = f1
 				table.insert(char["items"], item)
 			end
 		end

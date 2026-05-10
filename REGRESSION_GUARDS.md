@@ -106,6 +106,148 @@ from live-import floor rounding by ±1 per affix using `applyRange`.
 
 **Establishing commit:** `e9e4e64c5`
 
+### `equipped-corrupted-idol-multiplier`
+
+Idol Altar corrupted/sealed prefixes such as Spire Altar's T7
+`+10 Mana per Equipped Corrupted Idol` (game-data: `src/Data/ModItem.json`
+line 65367, parsed in `src/Data/ModCache.lua` line 2036) are encoded with
+`tag={type="Multiplier", var="EquippedCorruptedIdol"}`. Multipliers
+resolve via `modDB:Sum("BASE", nil, "Multiplier:<var>")`, so without an
+emission setting that var the affix evaluates to 0 and contributes
+nothing to the host stat — silently. Sibling guard
+`idol-altar-not-idol-slot` already counts corrupted items in idol cells
+(`Idol N` / `Omen Idol N`) into the local `idol` accumulator and emits
+`CorruptedIdolItemsEquipped` (a StatThreshold stat); this guard requires
+the same `idol` count to ALSO be emitted as `Multiplier:EquippedCorruptedIdol`
+(a Multiplier var) so per-corrupted-idol affixes scale correctly.
+
+The two emissions are NOT redundant: StatThreshold and Multiplier are
+two different lookup paths in `ModStore`. A future refactor that
+consolidates them into one emission must keep both var names live.
+
+| Site | File | What it does |
+|---|---|---|
+| emission | `src/Modules/CalcSetup.lua` (~line 953) | Emits `Multiplier:EquippedCorruptedIdol = idol` inside the existing `if idol > 0 then` block |
+
+**Spec:** `spec/System/TestEquippedCorruptedIdolMultiplier_spec.lua`
+- "emits Multiplier:EquippedCorruptedIdol with BASE type and the idol count"
+- "emission sits inside the same `if idol > 0 then` block as CorruptedIdolItemsEquipped"
+- "'+10 Mana per Equipped Corrupted Idol' parses to Multiplier:EquippedCorruptedIdol"
+
+**Establishing build:** B7GrkJrK lv100 Lich/Reaper — equips Spire Altar
+(corrupted Idol Altar) with T7 prefix `+10 Mana per Equipped Corrupted Idol`
+plus 16 corrupted items in idol cells. Reaper-form Mana before fix:
+LEB **1373** vs LE 1607.21 (Δ=-234). After emitting the multiplier:
+LEB **1548** (Δ=-59, ~75% of the gap closed). The residual ~59 is a
+separate unrelated issue: the Reliquary Nest unique relic
+`+(40-60)% Non-Unique Idol Stat Multiplier` (uniques_1_4.json id 433) is
+not yet recognised by ModParser and contributes 0; tracked separately.
+
+### `omen-idol-slot-dedup-on-corruption-count`
+
+Omen Idol slots are NOT independent inventory cells — they are secondary
+references to the same physical idol items already placed in `Idol N` grid
+cells. `ItemsTab:AutoPopulateOmenIdolSlots` mirrors any idol that overlaps
+an Omen Refracted slot into the corresponding `Omen Idol N` slot
+(see related guard `refracted-slot-overlap-only`). The Idol-Altar implicit
+"+14 Mana per Idol in a Refracted Slot" tooltip explicitly says
+"There is no additional benefit to having an idol in multiple refracted slots",
+confirming per-physical-item semantics game-side.
+
+The corrupted-item counting loop in `CalcSetup.lua` iterates `items` (and
+the level-gated set) and would naively count the same corrupted idol item
+twice when it appears under both `Idol N` and `Omen Idol N`. That double
+count flows into `CorruptedIdolItemsEquipped` (StatThreshold) and the
+sibling `Multiplier:EquippedCorruptedIdol` emission, inflating any
+"+N <stat> per Equipped Corrupted Idol" affix.
+
+The guard requires the counting loop to dedup by item identity (`item.id`
+when present, else the table reference) before incrementing the `idol`
+accumulator, so each physical corrupted idol contributes once regardless
+of how many slot names reference it.
+
+| Site | File | What it does |
+|---|---|---|
+| dedup | `src/Modules/CalcSetup.lua` (`countItem` closure inside the corrupted-counting `do` block) | Tracks `seenIdolItem[key]` and skips repeated keys so Idol N ↔ Omen Idol N pairs don't double-tally |
+
+**Spec:** `spec/System/TestOmenIdolSlotDedup_spec.lua`
+- "CalcSetup deduplicates corrupted idol items by identity inside the corrupted-counting block"
+- "the dedup table is scoped to the corrupted-counting block (not leaked across loads)"
+- "the same `seenIdolItem` set covers both the active items loop and the level-gated items loop"
+
+**Establishing build:** B7GrkJrK lv100 Lich/Reaper — equips Spire Altar
+with T7 corrupted prefix `+10 Mana per Equipped Corrupted Idol` AND has 2
+corrupted idol items appearing in both `Idol N` and `Omen Idol N` slots
+(item.id 21 → Idol 23 / Omen Idol 2; item.id 30 → Idol 25 / Omen Idol 3).
+Pre-dedup: 16 corrupted-idol count → Reaper Mana = 1548 vs LETools breakdown
+Idol-Altar-Sealed line of 134 (LETools-derived count = 14). Post-dedup:
+14 corrupted-idol count → Mana = 1526 (matches the LETools 134 breakdown
+line exactly). Sibling guard `equipped-corrupted-idol-multiplier` emits
+the multiplier; this guard fixes the count source for it.
+
+**Establishing commit:** `604eb9975`
+
+### `non-unique-idol-stat-multiplier`
+
+Reliquary Nest (unique relic, id=433, primordial baseTypeID=22 subTypeID=63)
+carries property 98 (`nonUniqueIdolStatModifier`, dump.cs offset 0x1C14). The
+runtime applies it as a flat (1 + N/100) multiplier on every mod sourced from
+a non-unique idol item. Game tooltip text:
+`Stats on your Non-Unique Idols have N% increased Effect`. Game-file
+verification: `extracted/items/uniques_v3.json` Reliquary Nest entry has
+`mods[0]: property=98, value=0.4, maxValue=0.6, type=0` and
+`tooltipDescriptions[0]: "Stats on your Non-Unique Idols have [40,60,0]% increased Effect"`.
+The runtime field is backed by `currentStatsFromNonUniqueIdolStatModifier`
+and `excludedIDsFromNonUniqueIdolStatModifier` lists (per dump.cs); for
+LEB's purposes the scaling is "all idol mods, exclude unique/set idols and
+the Idol Altar".
+
+Without parser support the LEB-internal text
+`+(40-60)% Non-Unique Idol Stat Multiplier` resolved to
+`{{}, " Non-Unique Idol Stat Multiplier "}` in `Data/ModCache.lua`
+(empty mod list + unparsed leftover) and silently contributed nothing.
+
+The guard requires three things to agree:
+
+1. **ModParser (specialModList)** parses BOTH the game tooltip text
+   `Stats on your Non-Unique Idols have N% increased Effect` AND the
+   LEB-internal `+N% Non-Unique Idol Stat Multiplier` form into a flat
+   `Multiplier:NonUniqueIdolStatEffect` BASE = N modifier.
+2. **CalcSetup pre-scan** walks every equipped item's `modList` summing
+   those BASE values into `nonUniqueIdolEffectPercent`, BEFORE the per-slot
+   merge loop runs.
+3. **CalcSetup merge loop** multiplies `scale` by `(1 + N/100)` for items
+   whose `item.base.type` ends in ` Idol` (Adorned/Grand/Huge/Humble/Large/
+   Minor/Ornate/Small/Stout) and whose `item.rarity` is not UNIQUE/SET.
+   `Idol Altar` bases are excluded (they are not idol items).
+
+The merge-time scale (Approach B) is preferred over a `ModDB:Sum` rewrite
+because per-mod tags (`PerStat`, conditions, etc.) continue to evaluate
+normally. `ScaleAddList(srcList, scale)` already exists at the merge call
+site and respects the multiplied scale.
+
+| Site | File | What it does |
+|---|---|---|
+| parse | `src/Modules/ModParser.lua` (specialModList, near IdolRefracted entries) | Parses both forms to `Multiplier:NonUniqueIdolStatEffect` BASE = N |
+| pre-scan | `src/Modules/CalcSetup.lua` (just before the orderedSlots merge loop) | Sums `Multiplier:NonUniqueIdolStatEffect` BASE across all items into `nonUniqueIdolEffectPercent`, derives `nonUniqueIdolScale = 1 + N/100` |
+| scale | `src/Modules/CalcSetup.lua` (per-slot merge block, before `ScaleAddList(srcList, scale)`) | Multiplies `scale` by `nonUniqueIdolScale` for non-unique idol items |
+| adopt | `src/Data/Uniques/uniques.json`, `uniques_1_2.json`, `uniques_1_3.json`, `uniques_1_4.json` | Reliquary Nest mod text uses the game tooltip wording |
+
+**Spec:** `spec/System/TestNonUniqueIdolStatMultiplier_spec.lua`
+- "ModParser parses both forms to Multiplier:NonUniqueIdolStatEffect BASE"
+- "CalcSetup declares the pre-scan accumulator and computes the (1 + N/100) scale"
+- "scale block excludes Idol Altar and UNIQUE/SET rarity"
+- "Reliquary Nest text adopts the game tooltip wording"
+
+**Establishing build:** B7GrkJrK lv100 Lich/Reaper — equips Reliquary Nest
+relic at crafted `{range:118}` roll (≈ +49% Non-Unique Idol Stat
+Multiplier) and 19 Minor Idols carrying Mana suffixes/prefixes. Pre-fix:
+LE Mana 1607.21, LEB 1526 (Q3 dedup baseline). Applying the +49% scale to
+the ~153 base from Minor Idol Mana mods yields ~228 base, closing the LE
+gap within affix-range rounding tolerance.
+
+**Establishing commit:** `a3a279149`
+
 ### `corrupted-count-pre-levelreq`
 
 `+N to All Attributes with at least 7 Corrupted non-Idol Items equipped`
@@ -128,9 +270,12 @@ the post-filter `items` table.
 
 **Establishing build:** `Qqwv73q2 lv62 Warlock` — Silver Grail relic
 (LevelReq=68 > charLevel=62) is corrupted. Pre-fix `nonIdol` counter
-returned 6 (threshold 7 not met → Shroud +11 not applied → Vit/Str/Dex/
-Int/Att each LE-LEB delta = -11). Post-fix `nonIdol = 7`, threshold met,
-all 5 attributes gain +11 from Shroud's affix `1011_6 @ range 221`.
+returned 6 (threshold 7 not met → Shroud's +14 All Attributes affix not
+applied → Vit/Str/Dex/Int/Att each LEB-vs-source delta = -14). Post-fix
+`nonIdol = 7`, threshold met, all 5 attributes gain +14 from Shroud's
+affix `1011_6` (T7, fixed value — `range`/`r` is meaningless for
+fixed-value tiers; LETools T1-T7 are fixed 8/9/10/11/12/13/14, only
+the primordial-only T8 has a `(19-21)` roll range).
 
 **Why not just keep level-gated items in `items[]`?** Because their
 non-conditional stats (resistances, damage, etc.) must NOT contribute
@@ -191,6 +336,95 @@ The split is intentional but easy to break in two ways:
 - LEB snapshot (`.lua`) value = round-half-up = LETools-compat
 - Don't compare snapshot value to in-game; don't compare live value to
   LETools by ±1/affix tolerance — they're meant to use different rounding.
+
+### `applyrange-fixed-tier-noop`
+
+Affix tiers come in two shapes in the LEB mod data:
+
+- **Fixed-value tiers** — mod text has no `(min-max)` pattern, e.g.
+  `"+14 All Attributes with at least 7 Corrupted non-Idol Items equipped"`
+  for `1011_6`.
+- **Ranged tiers** — mod text has `(min-max)`, e.g.
+  `"+(19-21) All Attributes ..."` for `1011_7` (T8, primordial-only).
+
+`applyRange` only mutates lines that match the `(min-max)` regex; fixed
+lines pass through untouched. The `range` / `r` byte on a LETools import
+is therefore meaningless for fixed tiers — the value is whatever the data
+file says, not `min + range/255 * span`.
+
+This caught us out 2026-05-08: an earlier version of this file claimed
+`1011_6 @ range 221 → +11`, treating the byte as if it scaled the fixed
+value. That implied LEB had a bug that didn't exist (LEB matches LETools
+and game data at +14). Game-data verification:
+`extracted/items/singleAffixes.json` affix id 1011 ships
+T1-T7 = `8/9/10/11/12/13/14` (fixed) and T8 = `19-21` (range, primordial
+only). `src/Data/ModItem_1_4.json` `1011_0..1011_6` are flat lines and
+`1011_7` is the ranged line — so the data already encodes the
+fixed/ranged split.
+
+| Site | File | What it does |
+|---|---|---|
+| pass-through | `src/Modules/ItemTools.lua` `applyRange` (~line 206) | The `(min-max)` gsub is the ONLY mutation site; fixed lines fall through unchanged |
+
+**Spec:** `spec/System/TestItemTools_spec.lua` —
+`describe("applyRange leaves fixed-value tier text unchanged")`
+- "affix 1011 T7 (fixed +14) ignores the range byte"
+- "affix 1011 T8 (range 19-21) still interpolates as expected"
+- "a generic fixed flat-value line is unaffected by range bytes"
+
+**Why the guard:** any future patch tempted to "scale fixed values too"
+(e.g. interpreting `r` as a sub-tier modifier, or chasing a phantom
+`+11` reading) would break Shroud of Obscurity, every fixed-tier
+corrupted attribute affix, and any unique whose mod data omits the
+`(min-max)` pattern by design. The spec pins the no-op contract directly
+so the regression has somewhere to fail loudly.
+
+### `per-set-fractional-precision`
+
+"per Complete Set" affixes scale with `Multiplier:CompleteSetCount` (the
+number of complete sets equipped). LE quantizes the per-source rolled
+value to **half-integer (0.5) steps**, multiplies by the set count, then
+floors. LEB historically rounded the per-item rolled value to integer
+first then multiplied — losing the `0.5×setCount` half-step contribution.
+
+Empirical fit across two builds (2026-05-08), `+(2-5) to All Attributes
+per Complete Set`:
+
+| build | byte | numVal (precision=2, span=3.5) | × setCount | floor | LE |
+|---|---|---|---|---|---|
+| BxvJP3g1 lv99 Necromancer | 41 | 2.5 | × 3 = 7.5 | 7 ✓ | 7 |
+| Qqwv73q2 lv62 Warlock | 203 | 4.5 | × 6 = 27.0 | 27 ✓ | 27 |
+
+`precision=1` (old) → BxvJP3g1 gets `2×3=6` (Δ=-1). `precision=1000`
+(intermediate, never shipped) → Qqwv73q2 gets `floor(4.388×6)=26`
+(Δ=-1). Only `precision=2` (half-step) matches both data points.
+
+LE precalc_data: BxvJP3g1 `{str:41, dex:11, int:43, att:11, vit:30}`,
+Qqwv73q2 LETools display `{str:45, dex:43, int:66, att:47, vit:44}` —
+LEB matched both after fix.
+
+| Site | File | What it does |
+|---|---|---|
+| half-step | `src/Modules/ItemTools.lua` `applyRange` (`precision=2` bump for `per Complete Set` + Integer rounding) | applyRange emits half-integer values (e.g. 2.5, 4.5) instead of integer floor |
+| tag the multiplier | `src/Modules/ModParser.lua` `["per complete set"]` | Adds `roundAfterMultiply=true` to the `Multiplier:CompleteSetCount` tag |
+| floor after multiply | `src/Classes/ModStore.lua` `EvalMod` (Multiplier branch) | When tag.roundAfterMultiply is set, `value = m_floor(value × mult)` so the half-step × setCount lands on integer |
+
+**Why the guard:** any future "simplify applyRange — round at the source"
+refactor, or any change that drops the `roundAfterMultiply` tag from the
+ModParser table-driven mapping, regresses BxvJP3g1 (and every Legends
+Entwined wearer) by 1 per attribute per complete set. The fix is also
+narrow on purpose:
+
+- `+1 to All Skills per Complete Set` (no range, value=1) is unaffected:
+  `floor(1×N) = N`.
+- `+(2-5)% to All Resistances per Complete Set` is NOT yet covered —
+  the `{rounding:Integer}` directive isn't on that line, so the
+  precision bump is gated by `rounding == "Integer"`. LE behavior on
+  the % line was not verified at fix time; revisit if a resistance Δ
+  surfaces.
+- byte=0 → `+2` exact and byte=255 → clamped to `+5` go through the old
+  ModCache integer keys, but produce the same answer (`floor(N×M) = N×M`
+  for integer N).
 
 ### `set-bonus-breakdown-publish` / `set-bonus-breakdown-bridge`
 
@@ -343,6 +577,9 @@ as `"<baseId>_<tier>"` where tier is 0-indexed (matches game encoding at
 - "Pattern A: affix tiers raise req.level above base req" — 4× tier-5 suffixes on Refuge Armor (base req=0) → 80
 - "Pattern A: specialAffixType!=0 affix doesn't contribute to req" — sat==6 affix `1002_0` only → req stays at base
 - "Pattern A: sealed/corrupted kind affixes don't contribute to req" — 3 plain + 1 sealed → 65
+- "Pattern A: UNIQUE rarity skips affix-derived level req" — UNIQUE with same 4× T5 suffixes → req stays at 0 (see `legendary-affix-derived-levelreq` below)
+- "Pattern A: LEGENDARY rarity skips affix-derived level req" — same, LEGENDARY → 0
+- "Pattern A: SET rarity skips affix-derived level req" — same, SET → 0
 
 **Pattern C status (Runed Visage / Astrolabe small diffs):** Bakbr2Ne items
 where LETools showed +2 / +3 over base were investigated. After applying
@@ -357,6 +594,49 @@ the Pattern A specs.
 **Establishing commits:**
 - _Pattern A fix_ — port `CalculateLevelRequirementAfterShard` to Lua; raise `requirements.level` post-unique-override at both sites
 
+### `legendary-affix-derived-levelreq`
+
+Pattern A (above) targets crafted exalted/rare items where affix tiers
+push req.level above the base — the in-game function
+`CalculateLevelRequirementAfterShard` is what shows e.g. Lv77 / Lv95 on
+high-tier crafts. **It must not apply to UNIQUE / LEGENDARY / SET items.**
+Per LE rule, "unique + corrupted affix = unique" (corrupted affix does NOT
+promote rarity), so a corrupted unique like Font of the Erased keeps its
+base/unique req.level even though it carries a T7 corrupted minion-damage
+affix. The unique definition (or base item) is the authoritative source
+for these rarities — Pattern A would otherwise inflate req.level via
+the high-tier slot and silently disqualify the item from the CalcSetup
+LevelReq filter.
+
+The gate lives at the very top of `computeAffixDerivedLevelReq`
+(`src/Classes/Item.lua`):
+
+```lua
+if item.rarity == "UNIQUE" or item.rarity == "LEGENDARY" or item.rarity == "SET" then
+    return nil
+end
+```
+
+Returning `nil` makes both call sites (post-ParseRaw and `Craft()`) leave
+`requirements.level` untouched, deferring entirely to the unique-req-level
+override path (`unique-req-level-override` guard) or the base item's req.
+
+**Establishing build:** `Qb6WlPE5 lv52 Lich` — Font of the Erased Ring 1
+(corrupted Legendary, T7 corrupted minion-damage affix). Pre-fix LEB
+computed `req.level=79` (sumInner 57 + outer 32 - 10) — both rings were
+filtered out by CalcSetup's LevelReq filter, dropping the +22% Phys Res
+suffix and producing `PhysicalResistTotal=40` (Helmet 30 + Boots 10) vs
+LE's 62%. After this gate, rings are equipped at lv52 and PhysRes total
+matches LE exactly.
+
+**Specs:** `spec/System/TestItemParse_spec.lua`
+- "Pattern A: UNIQUE rarity skips affix-derived level req"
+- "Pattern A: LEGENDARY rarity skips affix-derived level req"
+- "Pattern A: SET rarity skips affix-derived level req"
+
+**Establishing commits:**
+- _Legendary affix-derived levelreq gate_ — exclude UNIQUE/LEGENDARY/SET from Pattern A; restore Font of the Erased Ring contribution on Qb6WlPE5
+
 ### `unique-data-integrity`
 
 Within-version invariants for hand-migrated unique data. When LE ships a
@@ -368,12 +648,37 @@ range-collapse mistakes have historically slipped in. The 1.4 migration
 - **Raindance (id=147)** — `(10-13)% increased Movement Speed` listed twice (legitimate dual-MS uniques like 1_2/1_3 Raindance differ in *range*; same-text duplication is the bug).
 - **Zeurial's Hunt (id=251)** — second penetration line was a copy-paste of the first with Bow/Throwing direction not swapped.
 
-The guarded invariant:
+A second wave (2026-05-09) caught two more during Q9J4w8PE Health-diff
+triangulation:
+
+- **Aaron's Will (id=272)** — game data has 8 mods; LEB had 10 because both
+  `(10-24)% increased Health` and `(100-240)% increased Minion Health` were
+  duplicated. Q9J4w8PE lv99 Necromancer registered +325 Health from the
+  player-Health dup. Caught by DUP_LINE on exact-string equality.
+- **Sunforged Greathelm (id=87, set entry 19)** — trailing
+  `(25-35)% increased Armor` duplicated the leading mod. Lived in
+  `set_1_4.json` (set-rarity entry merged into `data.uniques` by
+  `Modules/Data.lua`) and in `uniques_1_2.json` / `uniques_1_3.json`.
+  Surfaced via the new EXPECTED_COUNT invariant after DUP_LINE missed it
+  (the "20-30" 1_2/1_3 vs "25-35" 1_4 wording diverged enough to slip
+  exact-string equality on at least one rev).
+
+The guarded invariants:
 
 **DUP_LINE** — no exact-string mod line appears twice in a single unique's
 `mods` array. The two real cases where it looks like a dup (Zeurial's Hunt
 direction-pair, Raindance dual-MS in 1_2/1_3) both differ in text or range,
 so exact-string equality is the correct equivalence.
+
+**EXPECTED_COUNT** — hand-curated allow-list of uniques whose `mods` array
+length has been audited at least once against the game data
+(`uniques_v3.json`). Pinning the count means a future regen that re-introduces
+upstream dups (e.g. the 2026-05-09 Aaron's Will +325 health regression where
+mods drifted from 8 → 10) trips the spec instead of silently shifting
+downstream snapshots. Add a new entry to the `expected` table whenever you
+fix a unique whose row count was wrong. Currently pinned: Aaron's Will (8),
+Sunforged Greathelm (4), Raindance (6), Legends Entwined (5), Zeurial's
+Hunt (5).
 
 ROLLID_LEN (parallel `len(rollIds) == len(mods)`) is *not* checked from
 Lua because JSON `null` becomes Lua `nil` and `#rollIds` becomes
@@ -386,9 +691,13 @@ base implicits moved out of each unique into `bases_1_4.json`.
 | Site | File | What it does |
 |---|---|---|
 | data | `src/Data/Uniques/uniques_1_4.json` | Source of truth for 1.4 uniques |
+| data | `src/Data/Uniques/uniques_1_3.json`, `uniques_1_2.json`, `uniques.json` | Older-version unique data; same DUP_LINE / EXPECTED_COUNT invariants |
+| data | `src/Data/Set/set_1_4.json` | Set-rarity entries merged into `data.uniques` by `src/Modules/Data.lua` (~line 625); same invariants apply |
+| upstream | `LE_datamining/extracted/unique_overrides.json` | Hand-curated overrides applied by `apply_leb_rules.py`. Bugs fixed here (2026-05-09: Aaron's Will, Sunforged Greathelm, Raindance, Legends Entwined, Zeurial's Hunt) prevent regen from re-introducing them downstream |
 
 **Spec:** `spec/System/TestUniqueDataIntegrity_spec.lua`
 - "no unique has duplicate mod lines (DUP_LINE)"
+- "expected mod counts match game data (EXPECTED_COUNT)"
 
 **One-shot audit:** `.tmp/audit_uniques_1_4_regression.py` — DUP_LINE + ROLLID_LEN + cross-version ROW_DROP + RANGE_COLLAPSE.
 
@@ -1079,14 +1388,10 @@ The unique amulet `Exulis` (id 469) rolls `+(10-20) to All Attributes`.
 1. Game data extract `uniques_v3.json` id=469 mod[1] (property=46, All
    Attributes) has `value=10.0, maxValue=20.0`.
 2. LETools tooltip displays `+(10 to 20) to All Attributes`.
-3. `applyRange` trace with (10-20) reproduces the in-game LEB display:
-   byte=156 → `10 + 156/255 * (20-10+1) = 16.73 → floor 16`. Matches
-   the user-observed +16 once data was corrected.
-
-An earlier guard locked this as `(10-18)`, based on a misobservation:
-a +18 roll seen in-game was actually `+16 from the amulet + 2 from a
-separate quest reward`. Conflating those two sources produced the
-wrong upper bound. Do NOT widen back to 18, and do NOT narrow further.
+3. `applyRange` trace with (10-20) reproduces the in-game LEB display
+   when the rollIds bug below is also fixed: byte=193 (shared with
+   Skills) → `floor((10 + 193/255*10) + 0.5) = floor(18.07) = 18`,
+   matching LETools display for build AL07Kea4 (Spellblade lv97).
 
 A regression here changes the upper bound away from `20` in either
 uniques file.
@@ -1102,6 +1407,43 @@ that documents the source of truth at the data site itself.
 **Spec:** `spec/System/TestExulisRange_spec.lua`
 - "Data/Uniques/uniques_1_4.json has Exulis '+(10-20) to All Attributes'"
 - "Data/Uniques/uniques.json has Exulis '+(10-20) to All Attributes'"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `exulis-shared-rollid`
+
+The unique amulet `Exulis` (id 469) has TWO rolled mods that share
+the same `rollID=0` in the game data, meaning they read the same byte
+in the imported `ur` array.
+
+**Evidence:**
+1. Game data extract `uniques_v3.json` id=469:
+   - mod[0] `canRoll=true, rollID=0, property=88` (+(1-2) to Skills)
+   - mod[1] `canRoll=true, rollID=0, property=46` (+(10-20) to All Attributes)
+   Both share `rollID=0`.
+2. LETools planner_data for build AL07Kea4 returns `ur=[193, 27, ...]`.
+   With shared rollID=0 both mods read `ur[1]=193`:
+   - Skills: `floor((1 + 193/255*1) + 0.5) = 2` (matches LE display +2)
+   - All Attrs: `floor((10 + 193/255*10) + 0.5) = 18` (matches LE display +18)
+3. Earlier extraction wrongly produced `rollIds: [0, 1, ...]`, making
+   All Attributes read the unrelated `ur[2]=27` byte → +11 (off by 7
+   from LE truth). This caused a uniform Δ=-7 gap on every attribute
+   in AL07Kea4.
+
+A regression here re-splits the rollIds. `rollIds[0]` and `rollIds[1]`
+MUST both be `0`.
+
+| Site | File | What it does |
+|---|---|---|
+| 1.4 unique data | `src/Data/Uniques/uniques_1_4.json` (Exulis entry, ~line 9400) | `rollIds: [0, 0, null, null, null, null, null]` |
+| legacy unique data | `src/Data/Uniques/uniques.json` (Exulis id 469, ~line 10639) | `rollIds: [0, 0, null, null, null, null, null]` |
+
+Both entries carry an inline `_leb_regression_guard: exulis-shared-rollid`
+field documenting the source of truth at the data site itself.
+
+**Spec:** `spec/System/TestExulisRange_spec.lua`
+- "Data/Uniques/uniques_1_4.json has Exulis rollIds[0]==rollIds[1]==0"
+- "Data/Uniques/uniques.json has Exulis rollIds[0]==rollIds[1]==0"
 
 **Establishing commit:** `<unset; bump after first commit on this branch>`
 
@@ -1700,22 +2042,95 @@ Attacks`) so any LE wording lands on `KeywordFlag.Attack | KeywordFlag.Spell`.
 
 **Establishing commit:** `<unset; bump after first commit on this branch>`
 
-### `quest-apophis-majasa-plus-two`
+### `quest-apophis-majasa-plus-one`
 
-**Protects:** the magnitude of the "Apophis and Majasa?" quest reward.
-The in-game tooltip for the Vitality breakdown explicitly shows
-"Quest Reward: +2 Vitality" (and equivalently +2 Str/Dex/Int/Att) — confirmed
-via screenshot 2026-05-08 on Bakbr2Ne lv86 Sorcerer. LEB previously hardcoded
-+1, which silently caused a uniform Δ=-2 across all 5 attributes on G1
-ATTR_UNIFORM_OTHER builds whenever Apophis was completed (this exact symptom is
-documented in the header of `TestLEToolsQuestImport_spec.lua`).
+**Protects:** the magnitude of the "Apophis and Majasa?" quest reward AND
+the "Temple of Eterra?" quest reward. Each grants `+1 to all 5 attributes`
+(Str/Dex/Int/Att/Vit). Confirmed via the in-game Completed Quests panel
+screenshot 2026-05-08, which shows `Attribute Points: 1` on each row for
+Apophis and Majasa (Ch. 9) and Temple of Eterra (Ch. 10), with the panel
+total reading `2/2` when both quests are complete.
+
+Regression history this guard prevents:
+
+- 2026-05-07 commit `f820d0c63` removed the +1 from Temple of Eterra under
+  the (incorrect) assumption that only Apophis grants the bonus. Under-shot
+  attributes by 1 on every 2/2 build.
+- 2026-05-08 commit `810eafe2f` doubled Apophis to +2 to compensate for the
+  missing Eterra bonus. Over-shot 1/2 (Apophis-only, Eterra-not-yet) builds
+  by 1, and was internally inconsistent because the Vitality breakdown
+  screenshot it cited had been taken on a 2/2 character.
+
+The correct model: `Apophis +1` AND `Eterra +1`, never `+2/0` or `0/+2`.
+Quest order is Apophis (Ch. 9) → Eterra (Ch. 10), so `Apophis 0 / Eterra +N`
+is unreachable in-game.
 
 | Site | File | What it does |
 |---|---|---|
-| config | `src/Modules/ConfigOptions.lua` (`questApophisMajasa`) | Adds +2 BASE to each of Str/Dex/Int/Att/Vit |
+| config | `src/Modules/ConfigOptions.lua` (`questApophisMajasa`) | Adds +1 BASE to each of Str/Dex/Int/Att/Vit |
+| config | `src/Modules/ConfigOptions.lua` (`questTempleOfEterra`) | Adds +1 BASE to each of Str/Dex/Int/Att/Vit |
 
 **Spec:** `spec/System/TestQuestApophisMajasa_spec.lua`
-- "questApophisMajasa applies +2 BASE to all five attributes"
+- "QuestApophisMajasa applies +1 BASE to all five attributes"
+- "QuestTempleOfEterra applies +1 BASE to all five attributes"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `humble-idol-scalar-scale-first`
+
+**Protects:** `itemLib.applyRange` in `src/Modules/ItemTools.lua` — the
+scale-first branch for idol-size scaling (`valueScalar < 1.0`).
+
+LE scales an affix on a smaller idol by rounding the canonical endpoints
+to integers first, THEN interpolating within the scaled span. The general
+`applyRange` path interpolates first then scales, which under-rounds for
+small scalars.
+
+Evidence (AL07Kea4 Spellblade, Humble Weaver Idols, scalar 0.38, line
+`+(3-7) Vitality`):
+
+| Idol id | byte | interpolate-first | scale-first | LE truth |
+|---------|------|-------------------|-------------|----------|
+| 12      | 221  | (3+221/255·5)·0.38 = 2.79 → **+2** | round(1.14)=1, round(2.66)=3; 1+221/255·3 = 3.60 → **+3** | **+3** |
+| 15      | 98   | (3+98/255·5)·0.38 = 1.87 → **+1**  | 1+98/255·3 = 2.15 → **+2**                                | **+2** |
+
+Discriminator: `not useRound and valueScalar < 1.0`. Scalars `>= 1.0`
+(uniques like Apiarist's Suit at 1.5) keep the existing interpolate-first
+path — see the sibling guard `apiarist-scalar-interpolate-first`.
+
+**Sites:**
+
+| layer | path | role |
+|-------|------|------|
+| code  | `src/Modules/ItemTools.lua` (`applyRange`) | The scale-first branch |
+| spec  | `spec/System/TestItemTools_spec.lua` | applyRange parametric tests |
+
+**Spec:** `spec/System/TestItemTools_spec.lua`
+- `tests applyRange('+(3-7) Vitality', 221.00, 0.38)` → `+3 Vitality`
+- `tests applyRange('+(3-7) Vitality', 98.00, 0.38)` → `+2 Vitality`
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `apiarist-scalar-interpolate-first`
+
+**Protects:** `itemLib.applyRange` — the >=1.0 valueScalar path that
+interpolates first then scales (the original behavior; promoted to a named
+guard alongside `humble-idol-scalar-scale-first`).
+
+Apiarist's Suit unique (`scalar 1.5`) Strength `+(11-13)` at byte 57:
+
+| approach | calculation | result | LE truth |
+|----------|-------------|--------|----------|
+| interpolate-first | (11 + 57/255·3)·1.5 = 17.51 → floor | **+17** | **+17** |
+| scale-first       | round(16.5)=16, round(19.5)=19; 16 + 57/255·4 = 16.89 → floor | +16 | (wrong) |
+
+Phys Resistance scaling (1.17, e.g. ShutFackUp Cursed Coin) takes the
+existing `% Physical Resistance` `skipSpanBump` branch in the same `>=1.0`
+path; that guard is `applyrange-fixed-tier-noop`-adjacent and described
+inline in `applyRange`.
+
+**Spec:** `spec/System/TestItemTools_spec.lua`
+- `tests applyRange('+(11-13) to Strength', 57.00, 1.50)` → `+17 to Strength`
 
 **Establishing commit:** `<unset; bump after first commit on this branch>`
 
@@ -1833,6 +2248,351 @@ its name to the gate (and link to the new altText source).
 - "cannotFreeze gates on Volcanic Orb name"
 - "uniques*.json carry the 100% Volcanic Orb -> Void conversion line"
 
+### `slot-banker-rounding`
+
+> **Type: JSON-comment-incompatible.** Sister guard to
+> `body_armor-banker-rounding`; same rationale and 3-layer contract apply.
+
+**Protects:** the `amulet`/`shield`/`catalyst` `slotOverride` min/max values
+in `src/Data/ModItem_1_4.json`. Each of these slots has
+`affixEffectModifier = 0.17` (verified against `equipmentItems.json`
+`BaseTypeName="Amulet"`/`"Shield"`/`"Catalyst"`) → **×1.17**, rounded with
+**banker's rounding** (same as body_armor).
+
+LEB previously stored five entries with half-up rounding, producing min OR
+max one higher than the in-game tooltip on `.5`-boundary tiers. Discovered
+by extending the body_armor audit; reproducible via
+`.tmp/audit_slot_rounding.py`.
+
+Game-file evidence: `AscendingValueAfterPropertyRounding` (RVA 0x2307CC0)
+decompile in `LE_datamining/extracted/rounding_decompile_raw.txt` — the
+slot-scalar × base integer-rounding step happens upstream in affix data
+prep; this guard locks the empirically banker-rounded values to match
+the existing 22-row body_armor case set.
+
+**Patched affixes (5 entries):**
+
+| affixId | Name | Slot | Tier | Base | banker(×1.17) | was |
+|---|---|---|---|---|---|---|
+| 8  | Dodge Rating    | amulet   | T3 | 50–65 | 58–76 | 59–76 |
+| 8  | Dodge Rating    | catalyst | T3 | 50–65 | 58–76 | 59–76 |
+| 34 | Mana            | amulet   | T4 | 36–50 | 42–58 | 42–59 |
+| 34 | Mana            | catalyst | T4 | 36–50 | 42–58 | 42–59 |
+| 88 | Throwing Damage | amulet   | T7 | 50–65 | 58–76 | 59–76 |
+
+| Site | File | What it does |
+|---|---|---|
+| data | `src/Data/ModItem_1_4.json` (5 entries above) | Carries banker-rounded min/max for amulet/catalyst slots |
+| audit | `.tmp/audit_slot_rounding.py` | Per-slot enumerator across amulet/shield/catalyst/idol/weapon |
+| canonical | `LE_datamining/extracted/items/single_affixes_v3.json` `tiers[].minRoll/maxRoll` | Canonical base; not in repo |
+| canonical | `LE_datamining/extracted/items/equipmentItems.json` `affixEffectModifier=0.17` | Source of the ×1.17 multiplier |
+| canonical | `LE_datamining/extracted/rounding_decompile_raw.txt` | Decompiled `AscendingValueAfterPropertyRounding` (RVA 0x2307CC0) |
+
+**Spec:** `spec/System/TestSlotBankerRounding_spec.lua`
+- Asserts the 5 patched (affixId, tier, slot) triples match banker(base×1.17),
+  with explicit "(was X)" hints locked in.
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `block-chance-total-no-shield-zero`
+
+`output.BlockChanceTotal` is the **uncapped** pre-cap total used by both the
+LETools cross-build diff (`scripts/letools-diff.js` `'block chance' →
+BlockChanceTotal`) and the Calcs detail panel. The shield-equipped branch in
+`CalcDefence.lua` writes it via `output.BlockChanceTotal = totalBlockChance`,
+but the no-shield branch historically only zeroed `BlockChance` and friends.
+With `BlockChanceTotal` left nil, `letools-diff.js status()` flagged 62/68
+shield-less G1 builds as "?" (LEB value missing), burying the entire
+no-shield majority of the cross-build coverage.
+
+The fix is one line: `output.BlockChanceTotal = 0` next to `output.BlockChance
+= 0` inside the `if not hasShield and not blockAllowedWithoutShield then`
+branch. Removing it silently regresses the diff to "?" for 62 builds — no Lua
+error fires.
+
+| Site | File | What it does |
+|---|---|---|
+| no-shield zero  | `src/Modules/CalcDefence.lua` (~line 294) | `output.BlockChanceTotal = 0` alongside `BlockChance = 0` |
+| shield-equip set | `src/Modules/CalcDefence.lua` (~line 335) | `output.BlockChanceTotal = totalBlockChance` (uncapped) |
+| diff mapping    | `scripts/letools-diff.js` (~line 86) | `'block chance' → BlockChanceTotal` |
+
+**Spec:** `spec/System/TestBlockShield_spec.lua`
+- "BlockChanceTotal is 0 (not nil) with no shield"
+
+**Snapshot coverage:** `spec/System/TestBuilds_spec.lua` "test all builds
+#builds" — 62 of 68 G1 builds have no shield and would surface
+`BlockChanceTotal = 0` in the .lua snapshot. Reverting the no-shield zero
+makes these snapshots drop the field entirely (Lua serializer omits nil),
+which the diff then re-flags as "?".
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `ward-regen-canonical-key-wardpersecond`
+
+The LETools cross-build diff label `'ward regen'` MUST map to the LEB output
+key `WardPerSecond`, not to a synthetic `WardRegen` alias and not to
+`NetWardRegen` (gross minus decay).
+
+Game-data canonical naming (`LE_datamining/extracted/localization/ui_localization.json`):
+
+```
+StatsPanel_DefenseStats_WardPerSecond_Label = "Added Ward Per Second"
+StatsPanel_DefenseStats_WardPerSecond_Description = "Added Ward Per Second"
+```
+
+The in-game stats panel and LETools tooltip both display this gross "ward per
+second" rate. `output.WardPerSecond` is set by `src/Modules/CalcPerform.lua`
+(~line 1283 stat-loop and ~line 1308 Sanguine Runestones bonus) and consumed
+by `src/Modules/CalcDefence.lua` to drive ward calculations. `NetWardRegen`
+is a derived presentation field (gross − rawWardDecayPerSecond) — it does
+NOT correspond to the game's "Ward per Second" stat and using it as the diff
+target produces phantom diffs equal to the per-build decay rate.
+
+| Site | File | What it does |
+|---|---|---|
+| diff mapping | `scripts/letools-diff.js` (~line 86) | `'ward regen' → key: 'WardPerSecond'` (with inline guard comment) |
+| compute     | `src/Modules/CalcPerform.lua` (~line 1283, ~line 1308) | Writes `output.WardPerSecond` (base + INC/MORE; Sanguine Runestones bonus) |
+| consume     | `src/Modules/CalcDefence.lua` (~line 415, ~line 690) | Reads `output.WardPerSecond` for ward / `NetWardRegen` derivation |
+
+**Spec coverage:** Diff/snapshot layer is the primary lock — reverting the
+mapping to `WardRegen` re-flags ~57 G1 builds as "?" (LEB has no
+`output.WardRegen` key). Reverting it to `NetWardRegen` introduces non-zero
+Δ on every ward-using build proportional to that build's decay rate.
+
+> **Type: JSON-comment-incompatible (JS).** The inline guard comment lives in
+> `scripts/letools-diff.js` directly above the `'ward regen'` MAP entry.
+> Source of truth for the canonical name: the `ui_localization.json` quoted
+> above, sourced from the LE_datamining workspace.
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `resist-display-round-half-up`
+
+The 7-resist loop in `src/Modules/CalcDefence.lua` previously truncated the
+total resistance via `math.modf` ("Fractional resistances are truncated").
+LE actually stores resistance as `float` and renders the tooltip integer
+with round-half-up:
+
+```
+dump.cs:156801
+  public class PrecalculatedStatsHolder : MonoBehaviour {
+      public float uncappedPhysicalResistance;     // 0x20  <-- float, not int
+      public float uncappedFireResistance;         // 0x24
+      ...
+  }
+```
+
+Per-source LETools tooltip values match `round(stored_float)` exactly:
+- Body Armor mod stored 16.83 → LETools "Body Armor (Suffix): +17%"
+- BgRrP5rr Necropolis Robes 30.14 → "+30%", Apostate's 21.89 → "+22%"
+- Cleric's Eterran Idol 6.7 → "+7%", Weaver Idol 0.8 → "+1%"
+
+Total tooltips match `round(sum_of_floats)`:
+- Qdz2yM9k: stored sum 16.83 → "Physical Resistance: 17%" (LEB: 16 ✗)
+- BgRrP5rr: stored sum 131.53 → "Physical Resistance: 132%" (LEB: 131 ✗)
+
+Replacing `math.modf` with `math.floor(v + 0.5)` reproduces both. Verified
+across 7 G1 builds with phys-resist Δ=-1 (`AL07RL31`, `BgRrP5rr`,
+`BOwJnY3Y`, `BZ37WdmV`, `Q9J4wvmD`, `Qdz2yM9k`, `Qqwv6zGN`). The loop
+iterates all 7 resist types so the same off-by-one applied across
+phys/fire/cold/light/void/poison/necrotic (~345 DIFF lines in
+`.tmp/diff-after-g1-reimport.log` pre-fix).
+
+`min` / `max` / `totemMax` come from data integers so round-half-up and
+floor agree; updated for symmetry / future-proof against a fractional
+`MaxResistCap`.
+
+**Spec / verification:** G1 build snapshot regen + letools-diff. After
+regen, builds whose underlying float sum already matched LE flip from
+Δ=-1 to Δ=0 (Q9J4wvmD: 7/7 resists OK; BgRrP5rr phys: 131→132;
+Qdz2yM9k phys: 16→17). Builds where the float sum itself is below
+LE's stored float (Idol of Hope sealed +1% stored as 0.8 in LEB,
+Holy Aura skill-tree node stored 15 vs LE 15.6, etc.) still show
+Δ=-1 on the affected resist types — those are upstream base-value
+bugs unmasked by this fix, not regressions of this guard. Compare
+`output.<elem>ResistTotal` to `round(modDB:Sum("BASE", nil,
+"<elem>Resist") + INC)` — they must match exactly.
+
+**Establishing build:** `Qdz2yM9k lv56 Necromancer` — single-source
+phys-resist (Body Armor suffix only, stored 16.83), output flips
+16 → 17 to match LE / LETools.
+
+**Establishing commit:** `f09b98359`
+
+### `resist-base-high-precision`
+
+`ScaleAddMod` in `src/Classes/ModStore.lua` calls `m_modf` (integer part)
+on the scaled value when the mod's `(name, type)` pair is not registered
+in `data.highPrecisionMods`. Resist-tree skill node mods like Holy Aura
+`ah443-0` (`+15% Fire/Cold/Lightning Resistance`) get scaled by skill-buff
+prefix INC mods (Sentinel-119 _Covenant of Light_: `HolyAuraEffect +4%/pt`)
+through `CalcSetup.lua applyBuffPrefix → ScaleAddList → ScaleAddMod`.
+Without precision=1, `15 * 1.04 = 15.6` truncates to `15` and the
+resist-display round-half-up fix above can no longer recover the missing
+0.6 — Δ=-0.6 / resist vs LE.
+
+| Site | File | What it does |
+|---|---|---|
+| precision registration | `src/Modules/Data.lua` (`data.highPrecisionMods`) | `BASE = 1` for all 8 resist stat names so `ScaleAddMod` keeps fractional resistance after buff-tree scaling |
+
+The 7 stat names registered (LEB-internal short forms used by
+`ModParser` and `modDB:Sum`): `FireResist`, `ColdResist`,
+`LightningResist`, `NecroticResist`, `PoisonResist`, `VoidResist`,
+`PhysicalResist`. Elemental Resistance fans out to Fire/Cold/Lightning
+at parse time, so no separate `ElementalResist` key is needed.
+
+**Spec:** `spec/System/TestResistBaseHighPrecision_spec.lua`
+- "Data.lua highPrecisionMods registers BASE=1 precision for <stat>"
+- "Data.lua highPrecisionMods carries the @leb-regression-guard marker"
+
+**Establishing build:** `BgRrP5rr lv98 Paladin` — Cold Resistance LE total
+97.6 → display 98; LEB stored 96.8 → 97 pre-fix. ah443-0 contribution
+flips 15 → 15.6 after Holy Aura `+4%` scaling.
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `vshdm-percentage-units`
+
+`itemLib.applyRangeStrict` is the LEB port of LE's `vshDm` /
+`BaseStats.GetValueAfterRounding` (RVA 0x230B940). LE operates on
+**fractions** (0.05 = 5%) internally and multiplies the result by 100
+for display. LEB callers store **percentage** values (5 = 5%), so the
+direct port previously kept LE's fraction-unit constants (`+0.01`,
+`+0.001`, `floor(100*x+0.5)/100` endpoint quantization) while feeding
+percentage inputs. This worked for cases that landed near a
+1-percent boundary but drifted by 1 elsewhere — e.g. Phys Resistance
+`+(3-9)% byte=106` returned `5.49` (display 5) when LE returns 6%.
+
+Percentage-space equivalent of LE's
+`floor(100*((d_f+0.01-c_f)*e + c_f + 0.001)) / 100` × 100 (display) is
+`floor((d_pct+1-c_pct)*e + c_pct + 0.1)` with
+`c_pct = floor(min_pct + 0.5)`, `d_pct = floor(max_pct + 0.5)`.
+
+| Site | File | What it does |
+|---|---|---|
+| Hundredth ADDED branch | `src/Modules/ItemTools.lua` (`applyRangeStrict`, ~line 437) | percentage-space formula `floor((d+1-c)*e + c + 0.1)`, clamp `v ≤ d` |
+| Non-ADDED branch (INCREASED/MORE/QUOTIENT) | same | shares the percentage-space form (forced Hundredth) |
+
+**Spec:** `spec/System/TestItemTools_spec.lua`
+- "applyRangeStrict (vshDm direct port) — Hundredth-ADDED ... = 19"
+- "applyRangeStrict (vshDm direct port) — non-ADDED branch is forced to Hundredth+epsilon ..."
+
+**Establishing build:** `AL07RL31 lv52 Spellblade` — Cold Resist 39→40,
+Phys Resist 58→59 after the fix. 23 of 29 G1 resist Δ=±1 rows resolved
+in one pass; Σ|Δ|/G1 dropped from 34 to 6.
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `banker-round-vshdm`
+
+`applyRangeStrict` quantizes the (scaled) min/max **endpoints** with
+banker's rounding (round half to even), matching LE's
+`AscendingValueAfterPropertyRounding` (RVA 0x2307cc0) which calls
+`FUN_18038f970` — the IL2CPP banker round helper that delegates to
+`FUN_1803207e8` (modf) and biases by `±DAT_183d81f40` on parity. C#
+`Math.Round` / `Mathf.RoundToInt` default to
+`MidpointRounding.ToEven`, NOT half-up.
+
+The divergence shows up only when `scalar*min` or `scalar*max` lands
+**exactly** on `.5` (single-precision float). For all other inputs
+banker and half-up agree, which is why the original `vshdm-direct-port`
+formula passed dozens of byte-roll regressions before this case
+surfaced.
+
+Worked example — `BgRrP5rr lv98 Paladin` body_armor void resist suffix
+`(61-75)% scalar=1.5 byte=93`:
+- scaled: `91.5 .. 112.5`
+- half-up: `c=92, d=113, span+1=22`, `floor(22*93/255 + 92) = 100`
+- banker: `c=banker(91.5)=92` (f=91 odd → 92), `d=banker(112.5)=112`
+  (f=112 even → 112), `span+1=21`, `floor(21*93/255 + 92) = 99`
+- LE in-game tooltip: **99%** → banker is correct.
+
+LE constants (verified from `GameAssembly.dll` `.rdata` 2026-05-10 via
+`LE_datamining/extracted/dispatch_decompile_raw.txt` and
+`rounding_consts.txt`):
+- `DAT_183d81c50 = 255.0` (byte divisor)
+- `DAT_183d81f48 = 100.0` (Hundredth scale), `DAT_183d81ddc = 0.01`
+- `DAT_183d81e0c = 10.0`, `DAT_183d81de8 = 0.1` (Tenth)
+- `DAT_183d81e84 = 1000.0`, `DAT_183d81bdc = 0.001` (Thousandth)
+- `FUN_180322480` = `Math.Floor` (signed truncate, post-rounding ascending dispatch)
+- `FUN_18038f970` = banker round-half-to-even (used for endpoint quantization)
+
+| Site | File | What it does |
+|---|---|---|
+| helper | `src/Modules/ItemTools.lua` (`local function banker_round`, ~line 24) | round-half-to-even using `m_floor` + parity check |
+| Hundredth/Integer/Tenth/Thousandth branches | `src/Modules/ItemTools.lua` (`applyRangeStrict`, ~line 482) | use `banker_round` for `c`, `d` endpoint quantization |
+
+**Spec:** `spec/System/TestItemTools_spec.lua`
+- `describe("banker-round-vshdm endpoints (round-half-to-even)")` —
+  three cases: BgRrP5rr Void byte=93 → 99; banker(91.5)=92 +
+  banker(112.5)=112; banker(0.5)=0 + banker(1.5)=2.
+
+**Establishing build:** `BgRrP5rr lv98 Paladin` — body_armor Void
+Resistance affix overshoot (LEB 100% vs LE 99%) on the G1 top-12
+diff list.
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `resist-vshdm-strict`
+
+The seven elemental resistance affix lines plus the composite
+`% Elemental Resistance` line all route through `applyRangeStrict`
+Hundredth, not just Physical. The original `phys-res-vshdm-strict`
+guard scoped the routing to one resist; the default `applyRange`
+branch handled the other six but was missing LE's `+0.001` (fraction)
+/ `+0.1` (percent) epsilon, so byte values in the middle of a range
+floored down by 1. Combined with `vshdm-percentage-units` above, all
+covered resistance affixes now match LE per source.
+
+LE property reference: `extracted/items/property_list_v3.json`
+property 52 "Elemental Resistance" → `roundingForAdded = 0` (Hundredth),
+which is why the composite affix joins the strict path.
+
+| Site | File | What it does |
+|---|---|---|
+| pattern routing | `src/Modules/ItemTools.lua` (`applyRange`, ~line 269) | `% (Cold|Fire|Lightning|Necrotic|Poison|Void|Physical|Elemental) Resistance` → `applyRangeStrict(minN, maxN, rollByte, valueScalar, 0, 0)` |
+
+**Spec:** indirectly covered by the `vshdm-percentage-units` cases
+plus the AL07RL31 + QeY7962P G1 build snapshots. A dedicated spec is
+intentionally omitted because the routing pattern is a single regex
+and any future change to it will surface as a snapshot diff for the
+covered resists across ~80 builds with at least one resist roll.
+
+**Establishing build:** see `vshdm-percentage-units`.
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `corrupted-sealed-allres-round-half-up`
+
+> **Type: JSON-comment-incompatible.** Protected files: `src/Data/ModItem.json`,
+> `src/Data/ModItem_1_4.json` (affixId `1070_0`).
+
+`Idol of Hope` and similar small idols carry a corrupted sealed
+`All Resistances` affix (`affixId 1070`, `specialAffixType 6`).
+Canonical `minRoll` / `maxRoll` in
+`LE_datamining/extracted/items/multi_affixes_v3.json` is `0.008`
+(raw float = 0.8%). LE displays the per-affix line with round-half-up
+to `+1%` AND uses the rounded `1.0` value in the per-source resist sum
+shown by LETools tooltips. LEB previously stored `+0.8%` to match the
+raw float, producing ΔBASE=-0.2 / resist vs LE's stored sum.
+
+The fix restores `+1% All Resistances` / `+1% Minion All Resistances` for
+`1070_0` in both ModItem JSON files. Each entry carries an
+`_leb_regression_guard` field so the marker travels with the value.
+
+**Spec:** `spec/System/TestResistBaseHighPrecision_spec.lua`
+- "ModItem.json affixId 1070_0 stores +1% (not +0.8%) on player and minion lines"
+- (asserted for both `ModItem.json` and `ModItem_1_4.json`)
+
+**Audit:** `LE_datamining/extracted/items/multi_affixes_v3.json` →
+`affixId == 1070`, `tiers[0].minRoll == tiers[0].maxRoll == 0.008`,
+`property == 30 (All Resistances)`. The 0.8 → 1 promotion is LE's
+display contract, not a data overwrite.
+
+**Establishing build:** `BgRrP5rr lv98 Paladin` — Idol of Hope
+contributes `+1% Cold Resistance` per LETools per-source breakdown;
+LEB stored `0.8` pre-fix.
+
 **Establishing commit:** `<unset; bump after first commit on this branch>`
 
 ## Adding a new guard
@@ -1874,6 +2634,8 @@ To keep the contract enforceable use this template:
 
 Existing JSON-comment-incompatible guards:
 - `body_armor-banker-rounding` (`src/Data/ModItem_1_4.json`)
+- `slot-banker-rounding` (`src/Data/ModItem_1_4.json`)
+- `corrupted-sealed-allres-round-half-up` (`src/Data/ModItem.json`, `src/Data/ModItem_1_4.json`)
 
 ## Layering vs canary strings
 

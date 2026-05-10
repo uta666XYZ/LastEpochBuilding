@@ -74604,7 +74604,7 @@
 	},
 	"1070_0": {
 		"affix": "All Resistances for you and your Minions",
-		"1": "+0.8% All Resistances",
+		"1": "+1% All Resistances",
 		"level": 0,
 		"statOrderKey": 1070,
 		"statOrder": [
@@ -74613,8 +74613,9 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": -0.83,
-		"2": "+0.8% Minion All Resistances",
-		"specialAffixType": 6
+		"2": "+1% Minion All Resistances",
+		"specialAffixType": 6,
+		"_leb_regression_guard": "corrupted-sealed-allres-round-half-up: game data minRoll=0.008 (=0.8%) but LE rounds per-affix-display via round-half-up to 1% AND uses rounded value in per-source sum. LEB stored 0.008 raw → 0.8 per resist, vs LE 1.0 (BgRrP5rr Cold ΔBASE=-0.2/resist). Restored 1% to match LE display+sum semantics. See REGRESSION_GUARDS.md."
 	},
 	"1073_0": {
 		"affix": "Increased Healing Effectiveness and Health per Attunement",

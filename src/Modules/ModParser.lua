@@ -516,7 +516,11 @@ local modTagList = {
 	["while you have a companion"] = { tag = { type = "Condition", var = "HaveCompanion" } },
 	["with arcane shield"] = { tag = { type = "Condition", var = "HaveArcaneShield" } },
 	["with concentration"] = { tag = { type = "Condition", var = "Concentration" } },
-	["per complete set"] = { tag = { type = "Multiplier", var = "CompleteSetCount" } },
+	-- @leb-regression-guard: per-set-fractional-precision
+	-- roundAfterMultiply lets ModStore:EvalMod floor(value × CompleteSetCount)
+	-- so per-set affixes match LE's calc order (round AFTER multiply, not before).
+	-- See ItemTools.lua precision=1000 bump for per-set Integer rolls.
+	["per complete set"] = { tag = { type = "Multiplier", var = "CompleteSetCount", roundAfterMultiply = true } },
 	["per arcane shield"] = { tag = { type = "Multiplier", var = "ArcaneShieldStack" } },
 	["per companion"] = { tag = { type = "Multiplier", var = "Companion" } },
 	["per idol in a refracted slot"] = { tag = { type = "Multiplier", var = "IdolInRefractedSlot" } },
@@ -545,6 +549,14 @@ local modTagList = {
 	["per active shadow"] = { tag = { type = "Multiplier", var = "ActiveShadow" } },
 	["per equipped omen idol"] = { tag = { type = "Multiplier", var = "EquippedOmenIdol" } },
 	["per equipped weaver item"] = { tag = { type = "Multiplier", var = "EquippedWeaverItem" } },
+	-- Per-summoned-minion multiplier. Multiplier:SummonedMinion is auto-supplied
+	-- by CalcPerform from the sum of activeSkill.minion.minionData.limit across
+	-- all minion-summoning skills, with the Config tab "# of Summoned Minions"
+	-- as a manual override. Required for passives like Empty The Graves
+	-- ("Increased Health Regen Per Minion").
+	["per minion"]            = { tag = { type = "Multiplier", var = "SummonedMinion" } },
+	["per active minion"]     = { tag = { type = "Multiplier", var = "SummonedMinion" } },
+	["per summoned minion"]   = { tag = { type = "Multiplier", var = "SummonedMinion" } },
 	-- Per-projectile / per-additional-totem global multipliers (fed by Config tab)
 	["per projectile"] = { tag = { type = "Multiplier", var = "ProjectileCountConfig" } },
 	["per additional totem summoned"] = { tag = { type = "Multiplier", var = "AdditionalTotem" } },
@@ -852,6 +864,21 @@ local specialModList = {
 	end,
 	["^(%d+)%% increased effect of weaver enchantment affixes for idols in refracted slots$"] = function(num)
 		return { mod("IdolRefractedWeaverEffect", "INC", num) }
+	end,
+	-- @leb-regression-guard: non-unique-idol-stat-multiplier
+	-- Reliquary Nest (unique relic, id=433) carries property 98
+	-- (`nonUniqueIdolStatModifier`) which scales every mod on every
+	-- non-unique idol item by (1 + N/100). Game tooltip reads
+	-- "Stats on your Non-Unique Idols have N% increased Effect"; the
+	-- LEB-internal text is "+N% Non-Unique Idol Stat Multiplier".
+	-- Both forms must parse to a flat BASE Multiplier:NonUniqueIdolStatEffect
+	-- so CalcSetup can pre-scan and scale non-unique idol mods at item
+	-- merge time. See REGRESSION_GUARDS.md "non-unique-idol-stat-multiplier".
+	["^%+?([%d%.]+)%% non%-unique idol stat multiplier$"] = function(num)
+		return { mod("Multiplier:NonUniqueIdolStatEffect", "BASE", tonumber(num)) }
+	end,
+	["^stats on your non%-unique idols have ([%d%.]+)%% increased effect$"] = function(num)
+		return { mod("Multiplier:NonUniqueIdolStatEffect", "BASE", tonumber(num)) }
 	end,
 	-- Ward when hit (item affix: "X% Chance to Gain 30 Ward when Hit")
 	["^(%d+)%% chance to gain (%d+) ward when hit$"] = function(num, chance, amount)

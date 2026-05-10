@@ -320,10 +320,18 @@ function ModStoreClass:EvalMod(mod, cfg)
 			if tag.invert and mult ~= 0 then
 				mult = 1 / mult
 			end
+			-- @leb-regression-guard: per-set-fractional-precision
+			-- roundAfterMultiply: per-set affixes (Multiplier:CompleteSetCount with
+			-- a fractional rolled value from ItemTools.applyRange) round AFTER the
+			-- multiplier is applied, matching LE's calc order. floor(value × mult)
+			-- mirrors LE's integer-floor on the aggregate; +1 to All Skills
+			-- (integer value=1) is unaffected since floor(1×N)=N.
+			local roundAfter = tag.roundAfterMultiply
 			if type(value) == "table" then
 				value = copyTable(value)
 				if value.mod then
 					value.mod.value = value.mod.value * mult + (tag.base or 0)
+					if roundAfter then value.mod.value = m_floor(value.mod.value) end
 					if limitTotal then
 						value.mod.value = m_min(value.mod.value, limitTotal)
 					end
@@ -336,6 +344,7 @@ function ModStoreClass:EvalMod(mod, cfg)
 					end
 				else
 					value.value = value.value * mult + (tag.base or 0)
+					if roundAfter then value.value = m_floor(value.value) end
 					if limitTotal then
 						value.value = m_min(value.value, limitTotal)
 					end
@@ -348,6 +357,7 @@ function ModStoreClass:EvalMod(mod, cfg)
 				end
 			else
 				value = value * mult + (tag.base or 0)
+				if roundAfter then value = m_floor(value) end
 				if limitTotal then
 					value = m_min(value, limitTotal)
 				end
