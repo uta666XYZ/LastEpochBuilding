@@ -106,6 +106,43 @@ from live-import floor rounding by ±1 per affix using `applyRange`.
 
 **Establishing commit:** `e9e4e64c5`
 
+### `equipped-corrupted-idol-multiplier`
+
+Idol Altar corrupted/sealed prefixes such as Spire Altar's T7
+`+10 Mana per Equipped Corrupted Idol` (game-data: `src/Data/ModItem.json`
+line 65367, parsed in `src/Data/ModCache.lua` line 2036) are encoded with
+`tag={type="Multiplier", var="EquippedCorruptedIdol"}`. Multipliers
+resolve via `modDB:Sum("BASE", nil, "Multiplier:<var>")`, so without an
+emission setting that var the affix evaluates to 0 and contributes
+nothing to the host stat — silently. Sibling guard
+`idol-altar-not-idol-slot` already counts corrupted items in idol cells
+(`Idol N` / `Omen Idol N`) into the local `idol` accumulator and emits
+`CorruptedIdolItemsEquipped` (a StatThreshold stat); this guard requires
+the same `idol` count to ALSO be emitted as `Multiplier:EquippedCorruptedIdol`
+(a Multiplier var) so per-corrupted-idol affixes scale correctly.
+
+The two emissions are NOT redundant: StatThreshold and Multiplier are
+two different lookup paths in `ModStore`. A future refactor that
+consolidates them into one emission must keep both var names live.
+
+| Site | File | What it does |
+|---|---|---|
+| emission | `src/Modules/CalcSetup.lua` (~line 953) | Emits `Multiplier:EquippedCorruptedIdol = idol` inside the existing `if idol > 0 then` block |
+
+**Spec:** `spec/System/TestEquippedCorruptedIdolMultiplier_spec.lua`
+- "emits Multiplier:EquippedCorruptedIdol with BASE type and the idol count"
+- "emission sits inside the same `if idol > 0 then` block as CorruptedIdolItemsEquipped"
+- "'+10 Mana per Equipped Corrupted Idol' parses to Multiplier:EquippedCorruptedIdol"
+
+**Establishing build:** B7GrkJrK lv100 Lich/Reaper — equips Spire Altar
+(corrupted Idol Altar) with T7 prefix `+10 Mana per Equipped Corrupted Idol`
+plus 16 corrupted items in idol cells. Reaper-form Mana before fix:
+LEB **1373** vs LE 1607.21 (Δ=-234). After emitting the multiplier:
+LEB **1548** (Δ=-59, ~75% of the gap closed). The residual ~59 is a
+separate unrelated issue: the Reliquary Nest unique relic
+`+(40-60)% Non-Unique Idol Stat Multiplier` (uniques_1_4.json id 433) is
+not yet recognised by ModParser and contributes 0; tracked separately.
+
 ### `corrupted-count-pre-levelreq`
 
 `+N to All Attributes with at least 7 Corrupted non-Idol Items equipped`

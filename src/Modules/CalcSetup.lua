@@ -944,6 +944,17 @@ function calcs.initEnv(build, mode, override, specEnv)
 			end
 			if idol > 0 then
 				modDB:NewMod("CorruptedIdolItemsEquipped", "BASE", idol, "Corrupted Items")
+				-- @leb-regression-guard: equipped-corrupted-idol-multiplier
+				-- "+N <stat> per Equipped Corrupted Idol" affixes (Idol Altar
+				-- corrupted/sealed prefixes such as Spire Altar T7 "+10 Mana
+				-- per Equipped Corrupted Idol", src/Data/ModItem.json:65367,
+				-- ModCache.lua:2036) scale on Multiplier:EquippedCorruptedIdol.
+				-- Without this emission the multiplier resolves to 0 and these
+				-- affixes contribute nothing. The count source is the same
+				-- `idol` accumulator used for CorruptedIdolItemsEquipped (see
+				-- @leb-regression-guard: idol-altar-not-idol-slot above).
+				-- See REGRESSION_GUARDS.md "equipped-corrupted-idol-multiplier".
+				modDB:NewMod("Multiplier:EquippedCorruptedIdol", "BASE", idol, "Corrupted Items")
 			end
 		end
 
