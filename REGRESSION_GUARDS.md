@@ -246,7 +246,7 @@ LE Mana 1607.21, LEB 1526 (Q3 dedup baseline). Applying the +49% scale to
 the ~153 base from Minor Idol Mana mods yields ~228 base, closing the LE
 gap within affix-range rounding tolerance.
 
-**Establishing commit:** _(pending — backfill after commit lands)_
+**Establishing commit:** `a3a279149`
 
 ### `corrupted-count-pre-levelreq`
 
