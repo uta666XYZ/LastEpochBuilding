@@ -185,7 +185,7 @@ Idol-Altar-Sealed line of 134 (LETools-derived count = 14). Post-dedup:
 line exactly). Sibling guard `equipped-corrupted-idol-multiplier` emits
 the multiplier; this guard fixes the count source for it.
 
-**Establishing commit:** TBD (Q3 fix in worktree `determined-hawking-2a827c`)
+**Establishing commit:** `604eb9975`
 
 ### `corrupted-count-pre-levelreq`
 
