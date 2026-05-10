@@ -1234,6 +1234,33 @@ function calcs.initEnv(build, mode, override, specEnv)
 			end
 		end
 
+		-- @leb-regression-guard: non-unique-idol-stat-multiplier
+		-- Pre-scan: Reliquary Nest (unique relic, id=433) carries property 98
+		-- (`nonUniqueIdolStatModifier`), parsed by ModParser as
+		-- `Multiplier:NonUniqueIdolStatEffect` BASE = N. The runtime applies
+		-- this as a flat (1 + N/100) multiplier on every mod sourced from a
+		-- non-unique idol item (Adorned/Grand/Huge/Humble/Large/Minor/Ornate/
+		-- Small/Stout Idol bases). Unique idols (Julra's Obsession etc.) are
+		-- excluded; Idol Altar is excluded (it isn't an idol). The pre-scan
+		-- walks every equipped item's modList summing the BASE values so the
+		-- merge loop below can scale non-unique-idol srcLists in place.
+		-- Apply ScaleAddList(srcList, scale * (1 + N/100)) instead of
+		-- mutating ModDB.Sum so per-mod tags (PerStat, conditions, etc.)
+		-- continue to evaluate normally. See REGRESSION_GUARDS.md
+		-- "non-unique-idol-stat-multiplier".
+		local nonUniqueIdolEffectPercent = 0
+		for _, slot in pairs(build.itemsTab.orderedSlots) do
+			local item = items[slot.slotName]
+			if item and item.modList then
+				for _, m in ipairs(item.modList) do
+					if m.name == "Multiplier:NonUniqueIdolStatEffect" and m.type == "BASE" then
+						nonUniqueIdolEffectPercent = nonUniqueIdolEffectPercent + (m.value or 0)
+					end
+				end
+			end
+		end
+		local nonUniqueIdolScale = 1 + nonUniqueIdolEffectPercent / 100
+
 		for _, slot in pairs(build.itemsTab.orderedSlots) do
 			local slotName = slot.slotName
 			local item = items[slotName]
@@ -1273,6 +1300,17 @@ function calcs.initEnv(build, mode, override, specEnv)
 				env.player.itemList[slotName] = item
 				-- Merge mods for this item
 				local srcList = item.modList or (item.slotModList and item.slotModList[slot.slotNum]) or {}
+				-- Reliquary Nest: scale every mod on non-unique idol items
+				-- (Adorned/Grand/Huge/Humble/Large/Minor/Ornate/Small/Stout
+				-- Idol bases) by (1 + N/100). Unique/Set idols and the Idol
+				-- Altar are excluded. See pre-scan above.
+				if nonUniqueIdolScale ~= 1 and item.base and item.base.type
+					and item.base.type ~= "Idol Altar"
+					and item.base.type:sub(-5) == " Idol"
+					and item.rarity ~= "UNIQUE"
+					and item.rarity ~= "SET" then
+					scale = scale * nonUniqueIdolScale
+				end
 				if item.requirements and not accelerate.requirementsItems then
 					t_insert(env.requirementsTableItems, {
 						source = "Item",

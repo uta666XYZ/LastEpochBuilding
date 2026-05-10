@@ -187,6 +187,67 @@ the multiplier; this guard fixes the count source for it.
 
 **Establishing commit:** `604eb9975`
 
+### `non-unique-idol-stat-multiplier`
+
+Reliquary Nest (unique relic, id=433, primordial baseTypeID=22 subTypeID=63)
+carries property 98 (`nonUniqueIdolStatModifier`, dump.cs offset 0x1C14). The
+runtime applies it as a flat (1 + N/100) multiplier on every mod sourced from
+a non-unique idol item. Game tooltip text:
+`Stats on your Non-Unique Idols have N% increased Effect`. Game-file
+verification: `extracted/items/uniques_v3.json` Reliquary Nest entry has
+`mods[0]: property=98, value=0.4, maxValue=0.6, type=0` and
+`tooltipDescriptions[0]: "Stats on your Non-Unique Idols have [40,60,0]% increased Effect"`.
+The runtime field is backed by `currentStatsFromNonUniqueIdolStatModifier`
+and `excludedIDsFromNonUniqueIdolStatModifier` lists (per dump.cs); for
+LEB's purposes the scaling is "all idol mods, exclude unique/set idols and
+the Idol Altar".
+
+Without parser support the LEB-internal text
+`+(40-60)% Non-Unique Idol Stat Multiplier` resolved to
+`{{}, " Non-Unique Idol Stat Multiplier "}` in `Data/ModCache.lua`
+(empty mod list + unparsed leftover) and silently contributed nothing.
+
+The guard requires three things to agree:
+
+1. **ModParser (specialModList)** parses BOTH the game tooltip text
+   `Stats on your Non-Unique Idols have N% increased Effect` AND the
+   LEB-internal `+N% Non-Unique Idol Stat Multiplier` form into a flat
+   `Multiplier:NonUniqueIdolStatEffect` BASE = N modifier.
+2. **CalcSetup pre-scan** walks every equipped item's `modList` summing
+   those BASE values into `nonUniqueIdolEffectPercent`, BEFORE the per-slot
+   merge loop runs.
+3. **CalcSetup merge loop** multiplies `scale` by `(1 + N/100)` for items
+   whose `item.base.type` ends in ` Idol` (Adorned/Grand/Huge/Humble/Large/
+   Minor/Ornate/Small/Stout) and whose `item.rarity` is not UNIQUE/SET.
+   `Idol Altar` bases are excluded (they are not idol items).
+
+The merge-time scale (Approach B) is preferred over a `ModDB:Sum` rewrite
+because per-mod tags (`PerStat`, conditions, etc.) continue to evaluate
+normally. `ScaleAddList(srcList, scale)` already exists at the merge call
+site and respects the multiplied scale.
+
+| Site | File | What it does |
+|---|---|---|
+| parse | `src/Modules/ModParser.lua` (specialModList, near IdolRefracted entries) | Parses both forms to `Multiplier:NonUniqueIdolStatEffect` BASE = N |
+| pre-scan | `src/Modules/CalcSetup.lua` (just before the orderedSlots merge loop) | Sums `Multiplier:NonUniqueIdolStatEffect` BASE across all items into `nonUniqueIdolEffectPercent`, derives `nonUniqueIdolScale = 1 + N/100` |
+| scale | `src/Modules/CalcSetup.lua` (per-slot merge block, before `ScaleAddList(srcList, scale)`) | Multiplies `scale` by `nonUniqueIdolScale` for non-unique idol items |
+| adopt | `src/Data/Uniques/uniques.json`, `uniques_1_2.json`, `uniques_1_3.json`, `uniques_1_4.json` | Reliquary Nest mod text uses the game tooltip wording |
+
+**Spec:** `spec/System/TestNonUniqueIdolStatMultiplier_spec.lua`
+- "ModParser parses both forms to Multiplier:NonUniqueIdolStatEffect BASE"
+- "CalcSetup declares the pre-scan accumulator and computes the (1 + N/100) scale"
+- "scale block excludes Idol Altar and UNIQUE/SET rarity"
+- "Reliquary Nest text adopts the game tooltip wording"
+
+**Establishing build:** B7GrkJrK lv100 Lich/Reaper — equips Reliquary Nest
+relic at crafted `{range:118}` roll (≈ +49% Non-Unique Idol Stat
+Multiplier) and 19 Minor Idols carrying Mana suffixes/prefixes. Pre-fix:
+LE Mana 1607.21, LEB 1526 (Q3 dedup baseline). Applying the +49% scale to
+the ~153 base from Minor Idol Mana mods yields ~228 base, closing the LE
+gap within affix-range rounding tolerance.
+
+**Establishing commit:** _(pending — backfill after commit lands)_
+
 ### `corrupted-count-pre-levelreq`
 
 `+N to All Attributes with at least 7 Corrupted non-Idol Items equipped`

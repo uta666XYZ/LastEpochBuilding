@@ -8798,7 +8798,7 @@
       "level": 60
     },
     "mods": [
-      "+(40-60)% Non-Unique Idol Stat Multiplier",
+      "Stats on your Non-Unique Idols have (40-60)% increased Effect",
       "+(5-10)% to All Resistances",
       "{rounding:Integer}+(20-40) Health",
       "{rounding:Integer}+(60-100) Stun Avoidance",
