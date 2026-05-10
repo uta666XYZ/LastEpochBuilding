@@ -907,15 +907,36 @@ function calcs.initEnv(build, mode, override, specEnv)
 		--   * CorruptedIdolItemsEquipped    = corrupted items IN Idol slots
 		do
 			local total, nonIdol, idol = 0, 0, 0
+			-- @leb-regression-guard: omen-idol-slot-dedup-on-corruption-count
+			-- Omen Idol N slots are NOT independent inventory cells — they are
+			-- secondary references to the same physical idol item already
+			-- placed in an Idol N grid cell (populated by
+			-- ItemsTab:AutoPopulateOmenIdolSlots, see refracted-slot-overlap-only).
+			-- Iterating `items` produces both the Idol N slot AND the Omen Idol N
+			-- slot for every refracted-overlapping idol, so a naive count
+			-- double-tallies. The Idol-Altar implicit "+14 Mana per Idol in a
+			-- Refracted Slot" tooltip explicitly says "There is no additional
+			-- benefit to having an idol in multiple refracted slots", confirming
+			-- the per-physical-item semantics. Track seen item identities and
+			-- skip duplicates.
+			-- See REGRESSION_GUARDS.md "omen-idol-slot-dedup-on-corruption-count".
+			local seenIdolItem = {}
 			local function countItem(slotName, item)
 				if not (item and item.corrupted) then return end
-				total = total + 1
 				local isIdolSlot = (slotName:sub(1, 5) == "Idol " and slotName ~= "Idol Altar")
 					or slotName:sub(1, 10) == "Omen Idol "
 				if isIdolSlot then
+					-- Dedup across Idol N <-> Omen Idol N pairs by item identity.
+					-- Use item.id when present (load from XML), otherwise the
+					-- table reference (shared across slots holding the same item).
+					local key = item.id or item
+					if seenIdolItem[key] then return end
+					seenIdolItem[key] = true
 					idol = idol + 1
+					total = total + 1
 				else
 					nonIdol = nonIdol + 1
+					total = total + 1
 				end
 			end
 			-- @leb-regression-guard: idol-altar-not-idol-slot

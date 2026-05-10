@@ -143,6 +143,50 @@ separate unrelated issue: the Reliquary Nest unique relic
 `+(40-60)% Non-Unique Idol Stat Multiplier` (uniques_1_4.json id 433) is
 not yet recognised by ModParser and contributes 0; tracked separately.
 
+### `omen-idol-slot-dedup-on-corruption-count`
+
+Omen Idol slots are NOT independent inventory cells — they are secondary
+references to the same physical idol items already placed in `Idol N` grid
+cells. `ItemsTab:AutoPopulateOmenIdolSlots` mirrors any idol that overlaps
+an Omen Refracted slot into the corresponding `Omen Idol N` slot
+(see related guard `refracted-slot-overlap-only`). The Idol-Altar implicit
+"+14 Mana per Idol in a Refracted Slot" tooltip explicitly says
+"There is no additional benefit to having an idol in multiple refracted slots",
+confirming per-physical-item semantics game-side.
+
+The corrupted-item counting loop in `CalcSetup.lua` iterates `items` (and
+the level-gated set) and would naively count the same corrupted idol item
+twice when it appears under both `Idol N` and `Omen Idol N`. That double
+count flows into `CorruptedIdolItemsEquipped` (StatThreshold) and the
+sibling `Multiplier:EquippedCorruptedIdol` emission, inflating any
+"+N <stat> per Equipped Corrupted Idol" affix.
+
+The guard requires the counting loop to dedup by item identity (`item.id`
+when present, else the table reference) before incrementing the `idol`
+accumulator, so each physical corrupted idol contributes once regardless
+of how many slot names reference it.
+
+| Site | File | What it does |
+|---|---|---|
+| dedup | `src/Modules/CalcSetup.lua` (`countItem` closure inside the corrupted-counting `do` block) | Tracks `seenIdolItem[key]` and skips repeated keys so Idol N ↔ Omen Idol N pairs don't double-tally |
+
+**Spec:** `spec/System/TestOmenIdolSlotDedup_spec.lua`
+- "CalcSetup deduplicates corrupted idol items by identity inside the corrupted-counting block"
+- "the dedup table is scoped to the corrupted-counting block (not leaked across loads)"
+- "the same `seenIdolItem` set covers both the active items loop and the level-gated items loop"
+
+**Establishing build:** B7GrkJrK lv100 Lich/Reaper — equips Spire Altar
+with T7 corrupted prefix `+10 Mana per Equipped Corrupted Idol` AND has 2
+corrupted idol items appearing in both `Idol N` and `Omen Idol N` slots
+(item.id 21 → Idol 23 / Omen Idol 2; item.id 30 → Idol 25 / Omen Idol 3).
+Pre-dedup: 16 corrupted-idol count → Reaper Mana = 1548 vs LETools breakdown
+Idol-Altar-Sealed line of 134 (LETools-derived count = 14). Post-dedup:
+14 corrupted-idol count → Mana = 1526 (matches the LETools 134 breakdown
+line exactly). Sibling guard `equipped-corrupted-idol-multiplier` emits
+the multiplier; this guard fixes the count source for it.
+
+**Establishing commit:** TBD (Q3 fix in worktree `determined-hawking-2a827c`)
+
 ### `corrupted-count-pre-levelreq`
 
 `+N to All Attributes with at least 7 Corrupted non-Idol Items equipped`
