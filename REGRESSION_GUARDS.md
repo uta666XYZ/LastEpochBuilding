@@ -2883,6 +2883,19 @@ wiring the values were parsed-but-unconsumed (silent failure
 mirroring F1/F10/F11). Per-cast accumulator semantics are
 visible-only at v1 -- combat-loop attribution is deferred.
 
+Additionally, the ModParser dispatcher calls handlers as
+`specialMod(tonumber(cap[1]), unpack(cap))`, so any N-capture
+handler MUST take `(numericFirst, rawFirst, ...rawN)`. Both
+anchored handlers here have two captures (pct/chance + cap) and
+therefore use `(_, pctStr, capStr)` / `(_, chanceStr, capStr)`
+signatures -- a 2-arg `(pct, cap)` form silently aliases `cap`
+to the first raw capture (the pct/chance string) and drops the
+`(up to N times)` value, emitting `CooldownRecoveryOnHitMaxPerCast`
+equal to the pct value. The runtime-dispatch block in
+`TestCooldownRecoveredOnHitConsumer_spec.lua` calls
+`modLib.parseMod` directly on rolled-text inputs to lock this
+convention.
+
 **Files:**
 - `src/Modules/ModParser.lua` (two anchored handlers after `mirages-created-by-lethal-mirage`)
 - `src/Modules/CalcOffence.lua` (after F10 ChanceToApplyShadowDaggerOnHit)
