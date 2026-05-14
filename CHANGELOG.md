@@ -2,6 +2,16 @@
 
 ## [Unreleased]
 
+### Game Data Compatibility
+- **LE 1.4.7 compatibility verified** — no data re-extraction required. `resources.assets.resS` MD5 (`285311EDCC5C57B00BF307E6F2ACEA84`) is unchanged from 1.4.6, confirming all serialized item / affix / skill / unique data values are byte-identical. Patch notes are bug-fix only; the sole numeric change (Silver Shroud non-consume 75% cap) lives in `GameAssembly.dll` code, not in data files.
+
+### Passive tree text
+- **Sync 4 passive nodes to game-canonical text** (LE_datamining sync_passives.py + regen_passive_stats.py). Verified in-game on 2026-05-15: the game embeds each tooltip row's pre-rendered string directly in `SkillTreeNode.stats[].statName`; no `descriptors.json` template is consulted at passive-tooltip time. The 4 affected nodes were LEB-side editorial drift:
+  - `Mage-76` Elixir of Knowledge: `"5% increased Mana Regen"` → `"5% Mana Regen"`
+  - `Mage-84` Gemini: `"+8% More Damage Taken While Dual Wielding"` → `"+8% Damage Taken While Dual Wielding"`
+  - `Sentinel-38` Infinite Bulwark: drop curated leading space on `"100% Armor -> Minion Healing"`
+  - `Sentinel-95` Covenant of Protection: remove stale duplicate `"+6 Health Regen"` from `stats` (the live `+5` line was already correct in `notScalingStats`).
+
 ---
 
 ## [v0.13.2](https://github.com/uta666XYZ/LastEpochBuilding/tree/v0.13.2) (2026/04/30)

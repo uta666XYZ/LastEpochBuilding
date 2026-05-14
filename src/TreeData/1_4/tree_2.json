@@ -853,7 +853,7 @@
         "20% Shared Increased Armor On Potion Use",
         "20% Increased Chance To Find Potions On Potion Use"
       ],
-      "notScalingStats": [" 100% Armor -> Minion Healing"],
+      "notScalingStats": ["100% Armor -> Minion Healing"],
       "noScalingPointThreshold": 4,
       "in": ["Sentinel"],
       "reqPoints": [1],
@@ -1985,8 +1985,7 @@
       "masteryRequirement": 45,
       "stats": [
         "8% Increased Armor",
-        "2% Armor Mitigation Applies To Damage Over Time",
-        "+6 Health Regen"
+        "2% Armor Mitigation Applies To Damage Over Time"
       ],
       "notScalingStats": ["+5 Health Regen From Symbols Of Hope"],
       "noScalingPointThreshold": 5,
