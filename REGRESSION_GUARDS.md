@@ -3198,10 +3198,41 @@ Detection note: ModIdol entries do **not** carry `specialAffixType=6` the
 |---|---|---|
 | Data registration | `src/Modules/Data.lua` (~line 685) | Maps every idol type name to `verIdolMods.flat` so `data.itemMods[type]` resolves to idol affix data |
 | modScalar computation | `src/Classes/Item.lua` (~line 1347) | When `isIdolBase and affix.kind in {corrupted, sealed}`, skip sAEM subtraction |
+| modScalar Omen bypass | `src/Classes/Item.lua` (~line 1449) | Inside the Omen Idol `affixEffectModifier` bypass (`modScalar = 1`), the inner re-division by `(1 + sAEM)` is also gated on `not skipSaem`. Without this gate, sealed/corrupted-kind affixes on Omen Idols balloon by `1 / (1+sAEM)` (e.g. affix 1070_0 sAEM=-0.83 → 5.882× → +29% instead of +5%) |
 
 **Spec:** `spec/System/TestIdolAffixSourceAndFormula_spec.lua`
 
-**Establishing commit:** 47ae8743e
+**Game-data evidence (2026-05-12, online trade screenshots):** Affix
+`1070_0` "All Resistances for you and your Minions" (ModIdol raw `+5%`,
+sAEM `-0.83`):
+
+| Base | aem | Predicted (5 × (1+aem) floor) | Observed in-game |
+|---|---|---|---|
+| Adorned | -0.05 | 4 (5×0.95=4.75 floor) | +4% |
+| Huge | 0 | 5 | +5% |
+| Grand/Large | -0.33 | 3 (5×0.67=3.35 floor) | +3% |
+| Omen Idol (bypass) | n/a | 5 | +5% |
+
+Throne of Ambition (Adorned Silver Idol unique) confirmed `+4%`.
+
+**Affix scope:** sealed-corrupted-only. Non-sealed idol affix raw values
+(post-routing-fix) have not been verified against in-game; their existing
+`modScalar = (1 + base.aem) - sAEM` formula is preserved.
+
+**Cross-build triangulation (2026-05-13):** Snapshot regen across all 71
+builds touching idol sealed/corrupted affixes confirms zero regressions
+outside this formula's scope. Verification breakdown:
+- 4 manual deep-dives (BgRrekzd, BjqdmXnO, QDxZjPX8, o3Zl6gyy) — every
+  changed stat traced to `raw × (1 + aem)` floor on a specific corrupted
+  idol affix + downstream cascade.
+- 67 bulk pattern-match builds — all significant diffs (resist ±1..±10,
+  Minion all-res ±1..±9, CritExtraDamageReduction, FrenzyEffect/HasteEffect
+  ±1) fit the documented formula. Largest case QDxZPWM9 (84 stats, Cold
+  TakenHit -22%) is a multi-idol "All Resistances + Minion" stack pulling
+  Minion all-res 2→11; postfix direction (resist up, TakenHit down) is
+  correct.
+
+**Establishing commit:** 47ae8743e (Omen Idol bypass row added 2026-05-17 in cherry-picked follow-up; see `src/Classes/Item.lua` ~L1449 `@leb-regression-guard:idol-affix-source-and-formula`).
 
 ### `slot-override-post-saem`
 

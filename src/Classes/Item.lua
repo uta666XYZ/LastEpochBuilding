@@ -1446,7 +1446,15 @@ function ItemClass:Craft()
 						or (self.baseName and self.baseName:find("Omen Idol", 1, true) ~= nil)
 					if self.base.affixEffectModifier and self.base.affixEffectModifier ~= 0 and isOmenIdol then
 						modScalar = 1
-						if mod.standardAffixEffectModifier then
+						-- @leb-regression-guard:idol-affix-source-and-formula
+						-- Mirror the `idol-affix-source-and-formula` guard above:
+						-- sealed/corrupted-kind affixes on idol bases must NOT re-divide
+						-- by (1+sAEM) here either. Without this gate, e.g. affix 1070_0
+						-- (sAEM=-0.83) corrupted on Large Arcane Omen Idol balloons to
+						-- 5 × (1/0.17) = 29% instead of the LE-faithful raw +5%
+						-- (2026-05-12 trade evidence; see REGRESSION_GUARDS.md
+						-- `idol-affix-source-and-formula`).
+						if mod.standardAffixEffectModifier and not skipSaem then
 							modScalar = modScalar / (1 + mod.standardAffixEffectModifier)
 						end
 					end
