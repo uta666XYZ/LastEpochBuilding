@@ -89,7 +89,13 @@ MAPPING = {
     ('General','Dodge Chance'):'DodgeChance',
     ('General','Armor'):'Armour',
     ('General','Armor Mitigation'):'ArmourMitigation',
-    ('General','Block Chance'):'BlockChance',
+    # Block Chance: *Total = raw uncapped (used by LETools planner display),
+    # bare BlockChance = capped at BlockChanceMax (75 default). LETools shows
+    # uncapped so build planners can see over-cap headroom (mirror of how it
+    # treats Endurance below). LE's own character-sheet shows capped via
+    # PrecalculatedStatsHolder.blockChanceForCharacterSheet (block_decompile.txt
+    # RVA 0x2344F70) — but that's an LE display detail, not what LETools serializes.
+    ('General','Block Chance'):'BlockChanceTotal',
     ('General','Block Effectiveness'):'BlockEffectiveness',
     ('General','Block Mitigation'):'BlockMitigation',
     # Endurance: *Total = raw, bare = post-cap (60)
