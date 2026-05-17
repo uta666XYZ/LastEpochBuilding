@@ -121,4 +121,104 @@ describe("TestUniqueDataIntegrity #uniqueData", function()
             "audited unique mod count drifted:\n  " .. table.concat(offenders, "\n  "))
     end)
 
+    -- @leb-regression-guard: unique-mod-text-tooltip-audit
+    -- Pins mod-line text for uniques where in-game tooltips were confirmed
+    -- by screenshot to differ from upstream regen / LETools / Musholic.
+    -- Audited 2026-05-15:
+    --   * Hand of Judgement: regen produced "Judgement Mana Cost" word
+    --     order, but in-game tooltip reads "Mana cost for Judgement"
+    --     (note lowercase "cost"). Override in unique_overrides.json.
+    --   * Pearls of the Swine (Blood / Fire): LEB carried a spurious
+    --     "+100% " prefix on the "Bone Curse also inflicts X" line that
+    --     in-game tooltips do NOT show. Poison variant was already clean.
+    -- A future regen of upstream that re-introduces either pattern trips
+    -- this spec instead of silently shifting tooltip text.
+    it("tooltip-audited mod text is preserved (TOOLTIP_TEXT)", function()
+        assert.is_not_nil(data.uniques, "data.uniques must be loaded")
+
+        -- For uniques with a unique name we can match by entry.name.
+        -- For Pearls of the Swine (3 variants share name), match the
+        -- variant by a sentinel substring in another mod line.
+        local cases = {
+            {
+                name        = "Hand of Judgement",
+                require_any = { "-12 to -8 Mana cost for Judgement while Unarmed" },
+                forbid_any  = { "Judgement Mana Cost while Unarmed" },
+            },
+            {
+                name        = "Pearls of the Swine",
+                variant_has = "increased Physical Damage",  -- Blood
+                require_any = { "Bone Curse also inflicts Decrepify" },
+                forbid_any  = { "+100% Bone Curse also inflicts Decrepify" },
+            },
+            {
+                name        = "Pearls of the Swine",
+                variant_has = "increased Fire Damage",      -- Fire
+                require_any = { "Bone Curse also inflicts Penance" },
+                forbid_any  = { "+100% Bone Curse also inflicts Penance" },
+            },
+            {
+                name        = "Pearls of the Swine",
+                variant_has = "increased Poison Damage",    -- Poison
+                require_any = { "Bone Curse also inflicts Acid Skin" },
+                forbid_any  = { "+100% Bone Curse also inflicts Acid Skin" },
+            },
+        }
+
+        local offenders = {}
+        for _, case in ipairs(cases) do
+            -- Collect all entries with this name; if variant_has is set,
+            -- restrict to the entry whose mods include that substring.
+            local matched
+            for _, entry in pairs(data.uniques) do
+                if type(entry) == "table" and entry.name == case.name and type(entry.mods) == "table" then
+                    if case.variant_has then
+                        for _, line in ipairs(entry.mods) do
+                            if type(line) == "string" and string.find(line, case.variant_has, 1, true) then
+                                matched = entry
+                                break
+                            end
+                        end
+                    else
+                        matched = entry
+                    end
+                    if matched then break end
+                end
+            end
+            if not matched then
+                table.insert(offenders, string.format(
+                    "name=%q variant=%q not found", case.name,
+                    tostring(case.variant_has or "")))
+            else
+                local mods = matched.mods
+                for _, want in ipairs(case.require_any or {}) do
+                    local found = false
+                    for _, line in ipairs(mods) do
+                        if type(line) == "string" and string.find(line, want, 1, true) then
+                            found = true
+                            break
+                        end
+                    end
+                    if not found then
+                        table.insert(offenders, string.format(
+                            "name=%q variant=%q missing required line %q",
+                            case.name, tostring(case.variant_has or ""), want))
+                    end
+                end
+                for _, bad in ipairs(case.forbid_any or {}) do
+                    for _, line in ipairs(mods) do
+                        if type(line) == "string" and string.find(line, bad, 1, true) then
+                            table.insert(offenders, string.format(
+                                "name=%q variant=%q contains forbidden line %q",
+                                case.name, tostring(case.variant_has or ""), bad))
+                        end
+                    end
+                end
+            end
+        end
+
+        assert.are.equal(0, #offenders,
+            "tooltip-audited mod text drifted:\n  " .. table.concat(offenders, "\n  "))
+    end)
+
 end)

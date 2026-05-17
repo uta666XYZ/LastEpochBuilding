@@ -18,10 +18,17 @@ describe("S5FormTreeNodeGate", function()
     describe("CalcSetup whileActiveBuffByTreeId table contains the 4 player Forms", function()
         local source
         setup(function()
+            -- The whileActiveBuffByTreeId mappings were extracted to Data/Global.lua
+            -- (LE_WHILE_ACTIVE_BUFF_BY_TREE_ID) and re-used by CalcSetup.lua. Read
+            -- both files so the existing string-search assertions still hold.
             local f = io.open("Modules/CalcSetup.lua", "r")
             assert.is_not_nil(f, "must be able to open Modules/CalcSetup.lua")
             source = f:read("*a")
             f:close()
+            local g = io.open("Data/Global.lua", "r")
+            assert.is_not_nil(g, "must be able to open Data/Global.lua")
+            source = source .. "\n" .. g:read("*a")
+            g:close()
         end)
 
         local forms = {

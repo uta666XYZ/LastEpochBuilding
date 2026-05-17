@@ -49,11 +49,13 @@ runtime-win32.zip
 
 # AI assistant context files (internal use only - never commit to public repo)
 CLAUDE.md
+MEMORY.md
 QWEN.md
 GEMINI.md
 AGENTS.md
 .claude/
 .claudeignore
+.codex/
 .opencode/
 .cursor/
 .aider*

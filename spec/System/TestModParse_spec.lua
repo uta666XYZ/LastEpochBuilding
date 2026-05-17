@@ -148,6 +148,42 @@ describe("TestModParse", function()
         assert.are.equals("MovementSpeedInc", tag.var)
     end)
 
+    -- @leb-regression-guard:traitors-tongue-offhand-crit-flat
+    -- Traitor's Tongue (dual-wield dagger) is the only unique in the game that
+    -- uses cross-slot self-referential mod text "with X equipped in the
+    -- offhand/mainhand" (verified 2026-05-12 against
+    -- LE_datamining/extracted/unique_mods_generated.json). Without the
+    -- "with (.-) equipped in the offhand|mainhand" matchers the trailing
+    -- condition survives as residual extra and Item.lua's processModLine
+    -- silently drops the entire mod from modDB.
+    it("equipped in the offhand condition tag", function()
+        local mods, extra = modLib.parseMod("+12% Critical Strike Chance with Traitor's Tongue equipped in the offhand")
+        assert.is_nil(extra, "parseMod must consume 'with X equipped in the offhand' (residual='" .. tostring(extra) .. "')")
+        assert.is_not_nil(mods)
+        assert.are.equals(1, #mods)
+        assert.are.equals("CritChance", mods[1].name)
+        assert.are.equals("BASE", mods[1].type)
+        assert.are.equals(12, mods[1].value)
+        local tag = mods[1][1]
+        assert.is_not_nil(tag, "expected a Condition tag on the mod")
+        assert.are.equals("Condition", tag.type)
+        assert.are.equals("OffhandHas:traitor's tongue", tag.var)
+    end)
+
+    it("equipped in the mainhand condition tag", function()
+        local mods, extra = modLib.parseMod("+12% Parry Chance with Traitor's Tongue equipped in the mainhand")
+        assert.is_nil(extra, "parseMod must consume 'with X equipped in the mainhand' (residual='" .. tostring(extra) .. "')")
+        assert.is_not_nil(mods)
+        assert.are.equals(1, #mods)
+        assert.are.equals("ParryChance", mods[1].name)
+        assert.are.equals("BASE", mods[1].type)
+        assert.are.equals(12, mods[1].value)
+        local tag = mods[1][1]
+        assert.is_not_nil(tag, "expected a Condition tag on the mod")
+        assert.are.equals("Condition", tag.type)
+        assert.are.equals("MainHandHas:traitor's tongue", tag.var)
+    end)
+
     it("attributes", function()
         build.configTab.input.customMods = "+2 to All Attributes"
         build.configTab:BuildModList()

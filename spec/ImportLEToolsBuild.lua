@@ -29,9 +29,11 @@ end
 
 local function fetch(url)
     local tmp = os.tmpname()
-    -- On Windows, os.tmpname() returns a relative path like "\s2j5.tmp" — prefix
-    -- with TEMP if available so curl doesn't choke on directory permissions.
-    if package.config:sub(1,1) == "\\" then
+    -- On Windows, os.tmpname() may return a relative path like "\s2j5.tmp" (older
+    -- LuaJIT) or an absolute path "C:\...\Temp\sysw.0" (newer). Only prefix with
+    -- TEMP when the result is clearly relative (no drive letter, doesn't start
+    -- with TEMP root) so we don't double-prepend.
+    if package.config:sub(1,1) == "\\" and not tmp:match("^%a:[/\\]") then
         local tdir = os.getenv("TEMP") or os.getenv("TMP") or "."
         tmp = tdir .. tmp
     end

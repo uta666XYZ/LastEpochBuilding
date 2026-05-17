@@ -20,10 +20,17 @@ describe("TestSetBreakdown", function()
     -- updates to set_1_4.json don't break this test.
     local KUZON_SET_ID = 4
 
+    -- Each call returns a distinct piece (unique `uniqueID`) so the dedup
+    -- guard (set-bonus-dedup-by-uniqueid) treats them as separate set members.
+    -- Without a distinct key, two `fakeSetItem()` calls share the same title
+    -- fallback dedup key and collapse to pieceCount=1.
+    local fakeSetItemCounter = 0
     local function fakeSetItem(bonusText)
+        fakeSetItemCounter = fakeSetItemCounter + 1
         return {
             rarity = "SET",
-            title = "Kuzon's fake item",
+            title = "Kuzon's fake item " .. fakeSetItemCounter,
+            uniqueID = 90000 + fakeSetItemCounter,
             setInfo = {
                 setId = KUZON_SET_ID,
                 name = "Kuzon's Set",
@@ -78,6 +85,112 @@ describe("TestSetBreakdown", function()
         assert.are.equals(2, sb.sets[1].bonuses[1].tier)
         assert.are.equals(1, sb.completeSetCount)
         assert.are.equals(1, env.itemModDB.multipliers["CompleteSetCount"])
+    end)
+
+    -- @leb-regression-guard: set-bonus-dedup-by-uniqueid
+    -- Per LE_datamining/extracted/set_formulas.md §3: in-game `setCompletion`
+    -- uses `addUnique(idx, uniqueID)`, so two copies of the same set piece in
+    -- different slots count as one member.
+    it("dedups duplicate uniqueIDs (same set ring in both ring slots)", function()
+        local env = { itemModDB = new("ModDB") }
+        -- Two copies of the same set ring (same uniqueID + title) equipped in
+        -- both ring slots — the game counts this as 1, not 2.
+        local function fakeRing()
+            return {
+                rarity = "SET",
+                title = "Kuzon's Ring",
+                uniqueID = 12345,
+                setInfo = {
+                    setId = KUZON_SET_ID,
+                    name = "Kuzon's Set",
+                    bonus = { ["2"] = "+10 Health" },
+                },
+            }
+        end
+        local items = { fakeRing(), fakeRing() }
+        calcs.applySetBonuses(env, items, "1_4")
+
+        local sb = env.itemModDB.setBreakdown
+        assert.is_not_nil(sb)
+        assert.are.equals(1, #sb.sets)
+        -- Critical: 2 equipped copies of same uniqueID => pieceCount=1, not 2.
+        assert.are.equals(1, sb.sets[1].pieceCount)
+        assert.is_false(sb.sets[1].complete)
+        assert.are.equals(0, sb.completeSetCount)
+    end)
+
+    it("dedups by title when uniqueID is absent (BuildAndParseRaw fallback)", function()
+        local env = { itemModDB = new("ModDB") }
+        -- Some items lose their uniqueID through XML round-trip; title falls
+        -- through as the dedup key.
+        local function fakeNoIDRing()
+            return {
+                rarity = "SET",
+                title = "Kuzon's Ring",
+                setInfo = {
+                    setId = KUZON_SET_ID,
+                    name = "Kuzon's Set",
+                    bonus = { ["2"] = "+10 Health" },
+                },
+            }
+        end
+        calcs.applySetBonuses(env, { fakeNoIDRing(), fakeNoIDRing() }, "1_4")
+
+        local sb = env.itemModDB.setBreakdown
+        assert.is_not_nil(sb)
+        assert.are.equals(1, sb.sets[1].pieceCount)
+        assert.is_false(sb.sets[1].complete)
+    end)
+
+    it("distinct uniqueIDs in the same set still count separately", function()
+        local env = { itemModDB = new("ModDB") }
+        local a = {
+            rarity = "SET", title = "Kuzon's Helm", uniqueID = 100,
+            setInfo = { setId = KUZON_SET_ID, name = "Kuzon's Set",
+                        bonus = { ["2"] = "+10 Health" } },
+        }
+        local b = {
+            rarity = "SET", title = "Kuzon's Boots", uniqueID = 101,
+            setInfo = { setId = KUZON_SET_ID, name = "Kuzon's Set",
+                        bonus = { ["2"] = "+10 Health" } },
+        }
+        calcs.applySetBonuses(env, { a, b }, "1_4")
+
+        local sb = env.itemModDB.setBreakdown
+        assert.are.equals(2, sb.sets[1].pieceCount)
+        assert.is_true(sb.sets[1].complete)
+        assert.are.equals(1, sb.completeSetCount)
+    end)
+
+    -- @leb-regression-guard: set-bonus-wildcard-clamp
+    -- Per LE_datamining/extracted/set_formulas.md §3: Legends Entwined "does
+    -- not stack with itself (only one slot can hold it)". Defends against
+    -- data-corruption / parse-bug paths where two wildcard-flagged items
+    -- surface simultaneously.
+    it("clamps wildcard contribution to +1 even with multiple wildcard items", function()
+        local env = { itemModDB = new("ModDB") }
+        local function wildcard(title)
+            return {
+                rarity = "UNIQUE",
+                title = title,
+                explicitModLines = {
+                    { line = "Counts as a part of every equipped item set" },
+                },
+            }
+        end
+        -- Two wildcard-flagged items + 1 real Kuzon's piece. The game caps
+        -- effective wildcards at 1 by slot constraint, so pieceCount must be
+        -- 1 (real) + 1 (clamped wildcard) = 2, NOT 1 + 2 = 3.
+        local items = { fakeSetItem(), wildcard("Legends Entwined"), wildcard("Legends Entwined Twin") }
+        calcs.applySetBonuses(env, items, "1_4")
+
+        local sb = env.itemModDB.setBreakdown
+        assert.is_not_nil(sb)
+        assert.are.equals(1, #sb.sets)
+        assert.are.equals(2, sb.sets[1].pieceCount,
+            "wildcard contribution must be clamped at +1 regardless of count")
+        assert.is_true(sb.sets[1].complete)
+        assert.are.equals(1, sb.completeSetCount)
     end)
 
     it("counts wildcard items separately from real set pieces", function()

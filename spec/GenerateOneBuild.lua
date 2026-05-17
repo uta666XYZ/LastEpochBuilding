@@ -244,6 +244,17 @@ if modDB then
 end
 outHnd:write("    },\n")
 
+outHnd:write("    wpsBreakdown = {\n")
+if modDB then
+    dumpModList(outHnd, "WardPerSecond", modDB.mods["WardPerSecond"])
+    outHnd:write(string.format("        [\"_summary\"] = { base=%d, inc=%d, more=%.3f, output=%d },\n",
+        modDB:Sum("BASE", nil, "WardPerSecond"),
+        modDB:Sum("INC", nil, "WardPerSecond"),
+        modDB:More(nil, "WardPerSecond"),
+        build.calcsTab.mainOutput.WardPerSecond or 0))
+end
+outHnd:write("    },\n")
+
 outHnd:write("    lifeRegenBreakdown = {\n")
 if modDB then
     dumpModList(outHnd, "LifeRegen", modDB.mods["LifeRegen"])

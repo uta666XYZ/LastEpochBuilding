@@ -1,9 +1,19 @@
--- @leb-regression-guard: block-requires-shield
--- Locks the contract that Block Chance / Block Effectiveness / Block Mitigation
--- are zero unless a Shield is equipped (or the BlockChanceConvertedToParryWithoutShield
--- / BlockWithoutShield flag is set). LE behaviour: dump.cs constant
--- `playerPropertyBlockChanceConvertedToParryWithoutShield` (=531) is the only
--- documented bypass; off-hand Catalyst / Quiver MUST NOT contribute block.
+-- @leb-regression-guard: game-faithful-block-no-shield-gate
+-- Locks the game-faithful contract: LE has NO automatic shield gate on Block
+-- Chance / Block Effectiveness / Block Mitigation. Verified via PyGhidra
+-- decompile of GameAssembly.dll (Last Epoch 1.4) at
+-- LE_datamining/extracted/block_decompile.txt:
+--   * PrecalculatedStatsHolder.blockChanceForCharacterSheet (RVA 0x2344F70)
+--     returns min(blockChance, maximumBlockChance) gated only on
+--     blockConversion == None — no shield/off-hand reference.
+--   * PrecalculatedStatsHolder.GetBlockChance (RVA 0x2344F00) returns
+--     min(blockChance + extra, maximumBlockChance) unconditionally.
+--   * playerPropertyBlockChanceConvertedToParryWithoutShield (=531) is a
+--     mod-driven flag on CharacterMutator that sets blockConversion = Parry,
+--     NOT an automatic gate.
+-- Therefore LEB must accumulate Block stats from item / passive mods
+-- unconditionally. Reverting to a "no-shield → zero block" branch is rejected
+-- by these specs.
 --
 -- @leb-regression-guard: flame-ward-block-toggle
 -- Locks the contract that Flame Ward (treeId fw3d) tree-node mods do NOT apply
@@ -21,76 +31,56 @@
 --
 -- See REGRESSION_GUARDS.md for the index entries.
 
-describe("BlockRequiresShield", function()
+describe("BlockGameFaithful", function()
     before_each(function()
         newBuild()
     end)
 
-    it("BlockChance is 0 with no shield even with +50% Block Chance mod", function()
+    it("BlockChance accumulates from mods with no shield (game-faithful)", function()
         build.configTab.input.customMods = [[
         +50% Block Chance
         +1000 Block Effectiveness
         ]]
         build.configTab:BuildModList()
         runCallback("OnFrame")
-        assert.are.equals(0, build.calcsTab.calcsOutput.BlockChance)
-        assert.are.equals(0, build.calcsTab.calcsOutput.BlockEffectiveness)
-        assert.are.equals(0, build.calcsTab.calcsOutput.BlockMitigation)
-        assert.are.equals(0, build.calcsTab.calcsOutput.AverageBlockChance)
+        -- LE's PrecalculatedStatsHolder.GetBlockChance returns min(blockChance + extra,
+        -- maximumBlockChance) regardless of off-hand slot — LEB must surface the mods.
+        assert.is_true(build.calcsTab.calcsOutput.BlockChance > 0,
+            "BlockChance should be > 0 with +50% Block Chance even without a shield")
+        assert.is_true(build.calcsTab.calcsOutput.BlockEffectiveness > 0,
+            "BlockEffectiveness should be > 0 with +1000 Block Effectiveness even without a shield")
     end)
 
-    -- @leb-regression-guard: block-chance-total-no-shield-zero
-    -- BlockChanceTotal is the uncapped pre-cap total (used by the LETools "Block
-    -- Chance" cross-build diff and the Calcs detail panel). The no-shield branch
-    -- in CalcDefence.lua MUST initialise it to 0 alongside BlockChance — otherwise
-    -- the field is left nil and 62/68 G1 builds without a shield get reported as
-    -- "?" (LEB value missing) in scripts/letools-diff.js. The shield-equipped
-    -- branch sets it via `output.BlockChanceTotal = totalBlockChance`; without
-    -- this guard, removing the no-shield-side initialiser silently regresses the
-    -- diff coverage rather than causing a Lua error.
-    it("BlockChanceTotal is 0 (not nil) with no shield", function()
-        build.configTab.input.customMods = "+50% Block Chance"
+    it("BlockChanceTotal is 0 (not nil) when no block mods are present", function()
+        -- letools-diff cross-build coverage requires BlockChanceTotal to always be set;
+        -- with no mods the unconditional block calc writes 0, never nil.
         build.configTab:BuildModList()
         runCallback("OnFrame")
         assert.are.equals(0, build.calcsTab.calcsOutput.BlockChanceTotal)
     end)
 
-    it("LifeOnBlock / ManaOnBlock are 0 with no shield (block disabled)", function()
-        -- Sentinel-89 Shield Wall (4 pts × +4 Health Gained on Block) and similar
-        -- nodes contribute LifeOnBlock BASE. Without a shield the block trigger
-        -- itself never fires in-game, so the surfaced rating must be 0 — otherwise
-        -- LEB shows phantom "Health Gain on Block" (e.g. QDxZjL4J Paladin Δ +16).
+    it("Bakbr2Ne-style no-mod build still produces BlockChance = 0 naturally", function()
+        -- Sanity: with no block mods anywhere, the natural sum is zero — no special
+        -- shield gate needed (LE does the same).
+        build.configTab:BuildModList()
+        runCallback("OnFrame")
+        assert.are.equals(0, build.calcsTab.calcsOutput.BlockChance)
+        assert.are.equals(0, build.calcsTab.calcsOutput.BlockEffectiveness)
+    end)
+
+    it("LifeOnBlock / ManaOnBlock accumulate from mods unconditionally", function()
+        -- LE applies Life/Mana Gained on Block on the block trigger; the trigger
+        -- has no shield prerequisite (see PrecalculatedStatsHolder above).
         build.configTab.input.customMods = [[
         50 Health Gained on Block
         25 Mana Gained on Block
         ]]
         build.configTab:BuildModList()
         runCallback("OnFrame")
-        assert.are.equals(0, build.calcsTab.calcsOutput.LifeOnBlock)
-        assert.are.equals(0, build.calcsTab.calcsOutput.ManaOnBlock)
-    end)
-
-    it("LifeOnBlock applies with no shield when BlockWithoutShield flag is set", function()
-        build.configTab.input.customMods = [[
-        50 Health Gained on Block
-        ]]
-        build.configTab:BuildModList()
-        build.configTab.modList:NewMod("BlockWithoutShield", "FLAG", true, "Test")
-        runCallback("OnFrame")
-        assert.is_true(build.calcsTab.calcsOutput.LifeOnBlock > 0)
-    end)
-
-    it("BlockChance applies with no shield when BlockWithoutShield flag is set", function()
-        build.configTab.input.customMods = [[
-        +50% Block Chance
-        +1000 Block Effectiveness
-        ]]
-        build.configTab:BuildModList()
-        -- Bypass the shield gate via the documented escape-hatch flag.
-        build.configTab.modList:NewMod("BlockWithoutShield", "FLAG", true, "Test")
-        runCallback("OnFrame")
-        assert.is_true(build.calcsTab.calcsOutput.BlockChance > 0)
-        assert.is_true(build.calcsTab.calcsOutput.BlockEffectiveness > 0)
+        assert.is_true(build.calcsTab.calcsOutput.LifeOnBlock > 0,
+            "LifeOnBlock should be > 0 with 50 Health Gained on Block mod")
+        assert.is_true(build.calcsTab.calcsOutput.ManaOnBlock > 0,
+            "ManaOnBlock should be > 0 with 25 Mana Gained on Block mod")
     end)
 end)
 

@@ -12,6 +12,9 @@
 --   id=461 Ash Wake             Chance to Ignite on Hit (player + minion)
 --   id=463 Rahyeh's Embrace     increased Health (player + minion)
 --
+-- Affected sets (Data/Set/set_1_4.json):
+--   id=0   Apiarist's Suit      +Health + +Armor (player + minion)
+--
 -- See REGRESSION_GUARDS.md "you-and-minions-dual-mods".
 
 local function readJson()
@@ -50,5 +53,20 @@ describe("YouAndMinionsDualMods", function()
         assert.is_truthy(string.find(w, '"(30-44)% increased Health"',         1, true), "player increased Health")
         assert.is_truthy(string.find(w, '"(30-44)% increased Minion Health"',  1, true), "minion increased Health")
         assert.is_falsy (string.find(w, 'increased Health for you and your Minions', 1, true), "collapsed wording must be removed")
+    end)
+
+    it("Apiarist's Suit (set id 0) splits +Health and +Armor into player and minion mods", function()
+        local f = io.open("Data/Set/set_1_4.json", "r")
+        assert.is_not_nil(f, "must be able to open set_1_4.json")
+        local text = f:read("*a")
+        f:close()
+        local i = string.find(text, '"name": "Apiarist\'s Suit"', 1, true)
+        assert.is_not_nil(i, "Apiarist's Suit entry must exist")
+        local w = string.sub(text, i, i + 1500)
+        assert.is_truthy(string.find(w, '"+(80-150) Health"',         1, true), "player +Health")
+        assert.is_truthy(string.find(w, '"+(80-150) Minion Health"',  1, true), "minion +Health")
+        assert.is_truthy(string.find(w, '"+(200-400) Armor"',         1, true), "player +Armor")
+        assert.is_truthy(string.find(w, '"+(200-400) Minion Armor"',  1, true), "minion +Armor")
+        assert.is_falsy (string.find(w, 'for you and your Minions',   1, true), "collapsed wording must be removed")
     end)
 end)
