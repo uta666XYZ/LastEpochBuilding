@@ -83,8 +83,16 @@ local function applySetBonuses(env, items, ver)
 
 	-- First pass: resolve each equipped SET / Reforged piece to its setId.
 	-- Also collect any wildcard items for later passes.
+	-- @leb-regression-guard:set-bonus-dedup-by-uniqueid
+	-- Per `LE_datamining/extracted/set_formulas.md` §3, the in-game
+	-- `setCompletion` recycling list uses `addUnique(idx, uniqueID)`, so
+	-- duplicate uniqueIDs across different slots count once (two copies of
+	-- the same set ring ≠ two members). We dedup per-setId via uniqueID
+	-- (or title as a fallback for items that lost their uniqueID through
+	-- BuildAndParseRaw round-trip) before incrementing pieceCount.
 	local pieceCount    = {} -- setId -> count
 	local setEntry      = {} -- setId -> a sample set entry (for bonus lookup)
+	local seenInSet     = {} -- setId -> { [dedupKey]=true } for uniqueID dedup
 	local wildcardItems = {} -- list of items with WILDCARD_SET_MOD
 	for _, item in pairs(items) do
 		if item then
@@ -141,22 +149,37 @@ local function applySetBonuses(env, items, ver)
 					end
 				end
 				if setId then
-					pieceCount[setId] = (pieceCount[setId] or 0) + 1
-					if not setEntry[setId] then
-						setEntry[setId] = { bonus = bonusTable, name = setName }
+					-- Dedup by uniqueID (preferred) or title (fallback). Items
+					-- without either still count once via the item table identity.
+					local dedupKey = item.uniqueID or item.title or item
+					seenInSet[setId] = seenInSet[setId] or {}
+					if not seenInSet[setId][dedupKey] then
+						seenInSet[setId][dedupKey] = true
+						pieceCount[setId] = (pieceCount[setId] or 0) + 1
+						if not setEntry[setId] then
+							setEntry[setId] = { bonus = bonusTable, name = setName }
+						end
 					end
 				end
 			end
 		end
 	end
 
-	-- Wildcard pass: each wildcard item adds +1 to every already-present setId.
+	-- Wildcard pass: Legends Entwined adds +1 to every already-present setId.
 	-- Per LE rule: wildcard ring + 1 piece of any set completes the 2-pc bonus.
 	-- Sets with zero actual pieces are NOT created from a wildcard alone.
+	-- @leb-regression-guard:set-bonus-wildcard-clamp
+	-- Per `LE_datamining/extracted/set_formulas.md` §3, Legends Entwined
+	-- "does not stack with itself (only one slot can hold it)". The game
+	-- enforces this via the equipment-slot constraint; LEB clamps the
+	-- effective wildcard count at 1 so that data-corruption / parse-bug
+	-- paths that surface two wildcard-flagged items can't balloon every
+	-- set's pieceCount.
 	if #wildcardItems > 0 and next(pieceCount) ~= nil then
 		local existingSetIds = {}
 		for setId in pairs(pieceCount) do t_insert(existingSetIds, setId) end
-		for _ = 1, #wildcardItems do
+		local effectiveWildcards = m_min(#wildcardItems, 1)
+		for _ = 1, effectiveWildcards do
 			for _, setId in ipairs(existingSetIds) do
 				pieceCount[setId] = pieceCount[setId] + 1
 			end
@@ -320,6 +343,25 @@ function calcs.buildModListForNode(env, node)
 	return modList
 end
 
+-- @leb-regression-guard: channelling-tree-node-auto-gate
+-- Channelled-buff skill tree nodes (Focus, Smelter's Wrath, Volcanic Orb,
+-- Disintegrate etc.) must have every stripped mod auto-wrapped with
+-- `Condition:Channelling` at tree-build time. Caller (caller in
+-- `prepareTrees` decides which skills get the flag based on their
+-- `Channelling` SkillType bit + the Config "Are you Channelling?" toggle).
+--
+-- Establishing commit: `eab24578b` (fix: gate channelling-skill tree node
+-- mods by Condition:Channelling) — without this gate Focus tree stats
+-- like Everward "+50% Ward Retention" (described as "while channeled")
+-- applied unconditionally, inflating Ward Retention by +100% on
+-- BakypDvx Runemaster (LEB 595% vs LETools 505%).
+--
+-- This gate stacks idempotently with ModParser-side
+-- `Condition:Channelling` injection (see
+-- `health-per-second-channelling` and
+-- `channelling-per-second-stacking-buff` guards): tree-node mods get
+-- the condition twice (A∧A == A, no functional change), while
+-- item/affix/ModCache-cold lookups rely only on the parser-side gate.
 -- Build list of modifiers from the listed tree nodes
 function calcs.buildModListForNodeList(env, nodeList, stripSkillId, gateByChannelling)
 	-- Add node modifiers
@@ -330,7 +372,36 @@ function calcs.buildModListForNodeList(env, nodeList, stripSkillId, gateByChanne
 			local transformedList = new("ModList")
 			for _, mod in ipairs(nodeModList) do
 				local hasSkillId = false
-				if stripSkillId then
+				-- @leb-regression-guard:minion-skillid-scope-martyrdom
+				-- MinionModifier mods MUST keep their SkillId tag even on the
+				-- buff-skill tree strip path (applyBuffPrefix). Otherwise a
+				-- buff skill's tree-node MinionModifier (e.g. Dread Shade
+				-- Martyrdom ds4d3-3 "30 Minion Armour Per Vitality") leaks
+				-- onto every minion's modDB instead of staying scoped to the
+				-- Dread Shade target. ModStore.lua L750-753 uses the
+				-- SkillId tag to gate by cfg.skillGrantedEffect.id, so
+				-- preserving it is the only way per-skill scoping holds.
+				-- See [[Minion Armor 三角測量 g1 調査]] (Obsidian) for the
+				-- triangulation that exposed this and REGRESSION_GUARDS.md.
+				-- @leb-regression-guard: buff-tree-cooldown-recovery-skill-local
+				-- CooldownRecovery mods on a buff-skill tree node describe the
+				-- skill's OWN cooldown ("Symbols of Hope has a shorter cooldown")
+				-- and must stay skill-local even on the buff-strip path. Game
+				-- ground truth: globalTreeData skillTrees[si4lgl].nodes[23] has
+				-- internal name "Sigils Of Hope Cooldown Recovery", and dump.cs
+				-- routes CDR-on-skill via the ability's own CD timer (not
+				-- SP.IncreasedCooldownRecoverySpeed=70 on the player). Without
+				-- this carve-out, si4lgl-23 (Enduring Hope) leaks +60% global
+				-- CDR on BgRrekMz lv92 Paladin (2/2 × 25% × 1.20 SoH effect)
+				-- inflating output.CooldownRecovery 19 → 79 vs LETools 19.
+				-- The buff-tree-only `si4lgl`/`ah443` CDR audit shows si4lgl-23
+				-- is the only player-CDR node in those trees, so the carve-out
+				-- has no other call sites today, but the rule generalises:
+				-- any future buff-tree CDR node will obey "<Skill> has a shorter
+				-- cooldown" semantics.
+				-- Test: spec/System/TestBuffTreeCooldownRecoverySkillLocal_spec.lua
+				-- See REGRESSION_GUARDS.md "buff-tree-cooldown-recovery-skill-local".
+				if stripSkillId and mod.name ~= "MinionModifier" and mod.name ~= "CooldownRecovery" then
 					for _, tag in ipairs(mod) do
 						if tag.type == "SkillId" then
 							hasSkillId = true
@@ -643,6 +714,12 @@ function calcs.initEnv(build, mode, override, specEnv)
 		-- character level". The previous "no per-level scaling" comment was
 		-- incorrect — verified against in-game character sheet on ShutFackUp
 		-- (lv85 → 250 + 5*85 = 675 base).
+		-- @leb-regression-guard: stun-avoidance-base-and-tree
+		-- BOTH `classStats["stunAvoidancePerLevel"]` as the mod value AND
+		-- `base = classStats["baseStunAvoidance"]` on the Multiplier tag are
+		-- required — dropping the `base` term silently drops the +250 lv1
+		-- floor without breaking per-level scaling. See spec
+		-- spec/System/TestStunAvoidanceBaseAndTree_spec.lua.
 		modDB:NewMod("StunAvoidance", "BASE", classStats["stunAvoidancePerLevel"], "Base", { type = "Multiplier", var = "Level", base = classStats["baseStunAvoidance"] })
 		modDB:NewMod("Endurance", "BASE", classStats["baseEndurance"] * 100, "Base")
 		modDB:NewMod("EnduranceThreshold", "BASE", classStats["enduranceThresholdPerHealth"], "Base", { type = "PerStat", stat = "Life"})
@@ -650,8 +727,8 @@ function calcs.initEnv(build, mode, override, specEnv)
 		-- Add attribute bonuses
 		-- Reference Raw<Attr> (post-conversion residual, NOT including the converted twin).
 		-- Brutality must NOT inherit Strength's intrinsic +4% Armour etc. — see
-		-- @leb-regression-guard: id:s4-converted-attr-no-base-inherit (below) and
-		-- @leb-regression-guard: id:s4-perstat-base-includes-converted-twin in CalcPerform.lua.
+		-- @leb-regression-guard:s4-converted-attr-no-base-inherit (below) and
+		-- @leb-regression-guard:s4-perstat-base-includes-converted-twin in CalcPerform.lua.
 		modDB:NewMod("Armour", "INC", 4, "Strength", {type = "PerStat", stat = "RawStr"})
 		modDB:NewMod("Evasion", "BASE", 4, "Dexterity", {type = "PerStat", stat = "RawDex"})
 		modDB:NewMod("WardRetention", "BASE", 2, "Intelligence", {type = "PerStat", stat = "RawInt"})
@@ -662,7 +739,7 @@ function calcs.initEnv(build, mode, override, specEnv)
 
 		-- Season 4 (1.4): converted attributes have their OWN unique passive bonuses,
 		-- they do NOT inherit the base-attribute bonuses (Brutality is not Strength).
-		-- @leb-regression-guard: id:s4-converted-attr-no-base-inherit
+		-- @leb-regression-guard:s4-converted-attr-no-base-inherit
 		--   Verified against in-game LE 1.4: Brutality grants only "more melee damage
 		--   per mana cost" + "reduced damage leeched as health" — NO Armour INC.
 		--   Earlier LEB releases applied Strength's +4% Armour INC to Brutality (and
@@ -1067,27 +1144,37 @@ function calcs.initEnv(build, mode, override, specEnv)
 			local it = items["Idol " .. i]
 			if it then gridItemSet[it] = true end
 		end
-		local altarBoostPrefix, altarBoostSuffix, altarBoostWeaver = 0, 0, 0
+		-- Idol Altar refracted-slot boosts map to LE `IdolAltarPropertyID`:
+		--   1 EffectOfPrefixesAndSuffixesInRefractedSlots → altarCommon (Standard only)
+		--   2 EffectOfPrefixesInRefractedSlots           → altarBoostPrefix (Standard prefix only)
+		--   3 EffectOfSuffixesInRefractedSlots           → altarBoostSuffix (Standard suffix only)
+		--   4 EffectOfIdolEnchantsInRefractedSlots       → altarBoostEnchant
+		--     (covers BOTH SpecialAffixType.IdolEnchantment AND .IdolWeaver)
+		-- Per LE `IsAffectedByAffectOfStandardPrefixesOrSuffixes`, ID 1-3 apply
+		-- ONLY to Standard affixes. Property 4 ("Weaver Enchantment Affixes" in
+		-- mod text) applies to IdolEnchantment + IdolWeaver and is NOT stacked
+		-- with the Standard common/prefix/suffix boosts.
+		local altarBoostPrefix, altarBoostSuffix, altarBoostEnchant, altarCommon = 0, 0, 0, 0
 		if next(fracturedItemSet) then
 			local altarItem = items["Idol Altar"]
 			if altarItem and altarItem.modList then
-				local common = 0
 				for _, mod in ipairs(altarItem.modList) do
 					if mod.type == "INC" then
 						if mod.name == "IdolRefractedAffixEffect" then
-							common = common + (mod.value or 0)
+							altarCommon = altarCommon + (mod.value or 0)
 						elseif mod.name == "IdolRefractedPrefixEffect" then
 							altarBoostPrefix = altarBoostPrefix + (mod.value or 0)
 						elseif mod.name == "IdolRefractedSuffixEffect" then
 							altarBoostSuffix = altarBoostSuffix + (mod.value or 0)
 						elseif mod.name == "IdolRefractedWeaverEffect" then
-							altarBoostWeaver = altarBoostWeaver + (mod.value or 0)
+							altarBoostEnchant = altarBoostEnchant + (mod.value or 0)
 						end
 					end
 				end
-				altarBoostPrefix = (altarBoostPrefix + common) / 100
-				altarBoostSuffix = (altarBoostSuffix + common) / 100
-				altarBoostWeaver = (altarBoostWeaver + common) / 100
+				altarCommon = altarCommon / 100
+				altarBoostPrefix = altarBoostPrefix / 100
+				altarBoostSuffix = altarBoostSuffix / 100
+				altarBoostEnchant = altarBoostEnchant / 100
 			end
 		end
 		local function cloneWithAltarBoost(srcItem)
@@ -1108,25 +1195,111 @@ function calcs.initEnv(build, mode, override, specEnv)
 			-- on enchantModLines round-trips via raw {scalar:N} back through
 			-- ParseRaw's line-by-line populate path (no Craft on that side).
 			local clone = new("Item", srcItem:BuildRaw())
-			local function scaleAffixList(affixList, boost)
-				if not affixList or not boost or boost <= 0 then return end
+			-- Resolve LE `SpecialAffixType` for an affix modId so we can route
+			-- it to the correct refracted-slot boost bucket. `data.modIdol.flat`
+			-- is tagged by Data.lua: general→Standard, enchanted→IdolEnchantment,
+			-- weaver→IdolWeaver, corrupted→Corrupted. ModIdol_<ver>.json stores
+			-- only a tier-0 entry per affixId (full tiers live in ModItem) so
+			-- fall back to the _0 entry when the exact tier key is missing.
+			local idolFlat = data.modIdol and data.modIdol.flat or nil
+			-- @leb-regression-guard: idol-refracted-weaver-enchant-boost
+			-- LE SpecialAffixType enum → string tag normalisation.
+			-- ModIdol_*.json _0 entries are string-tagged by Data.lua
+			-- (general→Standard, enchanted→IdolEnchantment, weaver→IdolWeaver,
+			-- corrupted→Corrupted). Tier-specific entries injected from other
+			-- sources may instead carry the raw numeric LE enum, so coerce.
+			-- Spec: spec/System/TestIdolRefractedWeaverEnchantBoost_spec.lua
+			-- See REGRESSION_GUARDS.md "idol-refracted-weaver-enchant-boost".
+			local satEnumToStr = {
+				[0] = "Standard", [4] = "IdolEnchantment",
+				[5] = "IdolWeaver", [6] = "Corrupted",
+			}
+			local function specialAffixType(modId)
+				if not modId or modId == "None" or not idolFlat then return "Standard" end
+				-- Prefer the _0 entry (canonical Data.lua string tagging) and
+				-- fall back to the tier-specific entry only if the _0 form is
+				-- missing. Verified on BxvJP3g1 affix 897_4 where the tier
+				-- entry carried numeric `4`, bypassing the string-based
+				-- IdolEnchantment routing and silently skipping the +46%
+				-- weaver-enchant refracted-slot boost.
+				local base = modId:match("^(%d+)_%d+$")
+				local entry = (base and idolFlat[base .. "_0"]) or idolFlat[modId]
+				if not entry then return "Standard" end
+				local sat = entry.specialAffixType
+				if type(sat) == "number" then return satEnumToStr[sat] or "Standard" end
+				return sat or "Standard"
+			end
+			local anyAffixBoosted = false
+			local function scaleAffixList(affixList, specificBoost)
+				if not affixList then return end
 				for _, affix in ipairs(affixList) do
 					if affix and affix.modId and affix.modId ~= "None" then
-						affix.valueScalar = (affix.valueScalar or 1) * (1 + boost)
+						-- Per LE `IsAffectedByAffectOfStandardPrefixesOrSuffixes`
+						-- (dump.cs L151678), Standard prefix/suffix boosts apply
+						-- only to Standard affixes. IdolEnchantment / IdolWeaver
+						-- instead receive `EffectOfIdolEnchantsInRefractedSlots`
+						-- (property 4). Corrupted affixes have no modeled boost.
+						local sat = specialAffixType(affix.modId)
+						local boost = 0
+						if sat == "Standard" then
+							boost = altarCommon + (specificBoost or 0)
+						elseif sat == "IdolEnchantment" or sat == "IdolWeaver" then
+							boost = altarBoostEnchant
+						end
+						if boost > 0 then
+							-- @leb-regression-guard: two-phase-floor-post-round-scalar
+							-- Altar refracted-slot boosts are LE's
+							-- `postRoundingEffectModifier` (dump.cs L165287
+							-- `ChangeAffixModifier`), applied AFTER the rolled
+							-- value is rounded to its display integer. Set
+							-- separately from `valueScalar` (idol-size scalar)
+							-- so applyRange can do the two-phase floor.
+							-- Verified on owLmrO3a Heretical Large Arcane Idol
+							-- affix 897_4 "+9 Ward per Second" T5 byte=255:
+							--   single-phase 9 × 1.22 folded into scalar via
+							--   interp-first: 10.98 → 10  but LETools shows 10
+							--   (LE rounded the rolled value 9 first, then
+							--   floored 9 × 1.22 = 10.98 → 10). Matches.
+							affix.postRoundScalar = (affix.postRoundScalar or 1) * (1 + boost)
+							-- @leb-regression-guard: idol-altar-boost-subtype-rounding
+							-- LE applies the post-round boost with **subtype-dependent**
+							-- rounding direction:
+							--   IdolEnchantment (4) → round-half-up
+							--   IdolWeaver     (5) → floor
+							-- Tag the affix so applyRange can branch. Default
+							-- (no tag) keeps round-half-up for back-compat with the
+							-- IdolEnchantment-verified two-phase-floor guard.
+							-- Triangulation: BxvJP3g1 Many Threads (raw 6 → 8 ≠ 9),
+							-- Chitin (raw 12 → 17 ≠ 18) on Altar property 4 +46%.
+							-- See "Idol Altar boost rounding 仕様" Obsidian note.
+							if sat == "IdolWeaver" then
+								affix.postRoundFloor = true
+							end
+							anyAffixBoosted = true
+						end
 					end
 				end
 			end
 			scaleAffixList(clone.prefixes, altarBoostPrefix)
 			scaleAffixList(clone.suffixes, altarBoostSuffix)
-			if altarBoostWeaver and altarBoostWeaver > 0 and clone.enchantModLines then
+			-- Enchant mods on `enchantModLines` are Weaver Enchantments cast at
+			-- the Weaver Tree; they qualify for property 4 only (not the
+			-- Standard prefix/suffix boosts).
+			local anyEnchantBoosted = false
+			if altarBoostEnchant and altarBoostEnchant > 0 and clone.enchantModLines then
 				for _, modLine in ipairs(clone.enchantModLines) do
 					if modLine.range then
-						modLine.valueScalar = (modLine.valueScalar or 1) * (1 + altarBoostWeaver)
+						-- @leb-regression-guard: two-phase-floor-post-round-scalar
+						-- Two-phase floor: post-round scalar applied AFTER the
+						-- rolled value is rounded. See CalcSetup scaleAffixList
+						-- guard above for the architecture rationale.
+						modLine.postRoundScalar = (modLine.postRoundScalar or 1) * (1 + altarBoostEnchant)
+						anyEnchantBoosted = true
 					end
 				end
 			end
 			if clone.crafted and clone.base and clone.affixes
-			   and (altarBoostPrefix > 0 or altarBoostSuffix > 0) then
+			   and (anyAffixBoosted or anyEnchantBoosted) then
 				clone._craftingInternal = true
 				clone:Craft()
 				clone._craftingInternal = nil
@@ -1279,7 +1452,7 @@ function calcs.initEnv(build, mode, override, specEnv)
 				-- clone with valueScalar scaled by the altar's prefix/suffix/
 				-- weaver-enchant boosts so applyRange/parseMod yields the
 				-- additively-boosted mod values.
-				if altarBoostPrefix > 0 or altarBoostSuffix > 0 or altarBoostWeaver > 0 then
+				if altarBoostPrefix > 0 or altarBoostSuffix > 0 or altarBoostEnchant > 0 or altarCommon > 0 then
 					item = cloneWithAltarBoost(item)
 				end
 			end
@@ -1300,6 +1473,38 @@ function calcs.initEnv(build, mode, override, specEnv)
 				env.player.itemList[slotName] = item
 				-- Merge mods for this item
 				local srcList = item.modList or (item.slotModList and item.slotModList[slot.slotNum]) or {}
+				-- @leb-regression-guard:traitors-tongue-self-source-slot
+				-- "with X equipped in the mainhand/offhand" is self-source-slot in LE:
+				-- each item's mod fires only when that item itself sits in the named
+				-- slot. Verified via LETools tooltip on QWXjqWJ2 (dual Traitor's Tongue):
+				-- Parry Chance = 13% (= +10 unique + 3 Spell Breaker), i.e. only ONE
+				-- mainhand-Parry fires even though both TT instances carry the mod.
+				-- The earlier fix (commit 6d363fc89) used a global Condition tag which
+				-- made both fire (24%). Here we drop the cross-slot mod from the wrong-
+				-- slot item, keeping only the mod whose named slot matches its source.
+				-- See REGRESSION_GUARDS.md "traitors-tongue-self-source-slot".
+				if slotName == "Weapon 1" or slotName == "Weapon 2" then
+					local dropPrefix = (slotName == "Weapon 1") and "OffhandHas:" or "MainHandHas:"
+					local filtered
+					for i, mod in ipairs(srcList) do
+						local drop = false
+						for _, tag in ipairs(mod) do
+							if tag.type == "Condition" and tag.var and tag.var:sub(1, #dropPrefix) == dropPrefix then
+								drop = true
+								break
+							end
+						end
+						if drop then
+							if not filtered then
+								filtered = {}
+								for j = 1, i - 1 do filtered[j] = srcList[j] end
+							end
+						elseif filtered then
+							t_insert(filtered, mod)
+						end
+					end
+					if filtered then srcList = filtered end
+				end
 				-- Reliquary Nest: scale every mod on non-unique idol items
 				-- (Adorned/Grand/Huge/Humble/Large/Minor/Ornate/Small/Stout
 				-- Idol bases) by (1 + N/100). Unique/Set idols and the Idol
@@ -1503,6 +1708,16 @@ function calcs.initEnv(build, mode, override, specEnv)
 			elseif offhandType == "Catalyst" then
 				env.modDB.conditions["UsingCatalyst"] = true
 			end
+			-- @leb-regression-guard:traitors-tongue-offhand-crit-flat (CalcSetup half)
+			-- Pair with ModParser matchers "with X equipped in the offhand/mainhand".
+			-- ModParser lowercases mod text before lookup, so the captured name
+			-- arrives lowercased; lowercase the item name to match.
+			if items["Weapon 2"].name then
+				env.modDB.conditions["OffhandHas:" .. items["Weapon 2"].name:lower()] = true
+			end
+		end
+		if items["Weapon 1"] and items["Weapon 1"].name then
+			env.modDB.conditions["MainHandHas:" .. items["Weapon 1"].name:lower()] = true
 		end
 
 		-- Aggregate equipped SET pieces per setId and apply N-piece bonuses.
@@ -1597,14 +1812,10 @@ function calcs.initEnv(build, mode, override, specEnv)
 	--   * LightResist LE=179 LEB=224 Δ=+45
 	--   * PoisonResist LE=1  LEB=46  Δ=+45
 	-- See REGRESSION_GUARDS.md "eterras-blessing-buff-gating".
-	local whileActiveBuffByTreeId = {
-		["fw3d"]   = "HaveFlameWard",        -- Flame Ward (Mage): 3s duration, FlameWardMutator
-		["wb8fo"]  = "InWerebearForm",       -- Werebear Form (Druid)
-		["sf5rd"]  = "InSprigganForm",       -- Spriggan Form (Druid)
-		["sbf4m"]  = "InSwarmbladeForm",     -- Swarmblade Form (Druid)
-		["rf1azz"] = "InReaperForm",         -- Reaper Form (Lich)
-		["eb5656"] = "HaveEterrasBlessing",  -- Eterra's Blessing (Primalist): 4s duration cast buff
-	}
+	-- Shared registry lives in src/Data/Global.lua so the SkillsTab UI
+	-- (toggle render path) can read the same map without forking. See
+	-- LE_WHILE_ACTIVE_BUFF_BY_TREE_ID and its guard comment.
+	local whileActiveBuffByTreeId = LE_WHILE_ACTIVE_BUFF_BY_TREE_ID
 	local buffSkillTreePrefixes = {}
 	for _, group in pairs(build.skillsTab.socketGroupList) do
 		local ge = group.grantedEffect
@@ -1705,16 +1916,41 @@ function calcs.initEnv(build, mode, override, specEnv)
 		env.modDB:NewMod("Multiplier:ActiveSymbol", "BASE", maxSymbols - curSymbols, "Auto:Symbols of Hope")
 	end
 
-	-- @leb-regression-guard:multiplier-movement-speed-inc
+	-- @leb-regression-guard:per-1pct-increased-movement-speed
 	-- Auto-populate Multiplier:MovementSpeedInc from the sum of INC mods on
 	-- MovementSpeed so mods like Unbroken Charge's "+X Block Effectiveness per
 	-- 1% Increased Movement Speed" can resolve. Without this the matcher exists
-	-- but the multiplier is always 0 and the mod contributes nothing.
+	-- but the multiplier is always 0 and the mod contributes nothing. Pairs
+	-- with the ModParser matcher site for the same guard (see ModParser.lua
+	-- "per 1%% increased movement speed").
 	-- Verified against AVa9YEkg (Paladin lv95) BlockEffectiveness.
-	-- Spec: spec/System/TestCalcSetup_spec.lua "MovementSpeedInc multiplier auto-populates"
+	-- Spec: spec/System/TestModParse_spec.lua
+	--       "per 1% increased movement speed multiplier" (parser side; this
+	--        auto-injection is verified at the build level via TestBuilds).
 	local msInc = env.modDB:Sum("INC", nil, "MovementSpeed")
 	if msInc and msInc > 0 then
 		env.modDB:NewMod("Multiplier:MovementSpeedInc", "BASE", msInc, "Auto:MovementSpeed")
+	end
+
+	-- @leb-regression-guard:ward-per-second-and-retention-family
+	-- Auto-populate INC-sum / BASE-sum multipliers used by the Ward Per Second
+	-- and Ward Retention parser family:
+	--   * Multiplier:AreaInc           sum INC on AreaOfEffect       (Cloak of Solitude)
+	--   * Multiplier:ArmourInc         sum INC on Armour             (Conjured Armor)
+	--   * Multiplier:UncappedResistTotal sum BASE on 7 resist stats  (Charged Reflections)
+	-- Without these the parser matchers exist but the multiplier is always 0
+	-- and the affixes silently contribute nothing.
+	local areaInc = env.modDB:Sum("INC", nil, "AreaOfEffect")
+	if areaInc and areaInc > 0 then
+		env.modDB:NewMod("Multiplier:AreaInc", "BASE", areaInc, "Auto:AreaOfEffect")
+	end
+	local armourInc = env.modDB:Sum("INC", nil, "Armour")
+	if armourInc and armourInc > 0 then
+		env.modDB:NewMod("Multiplier:ArmourInc", "BASE", armourInc, "Auto:Armour")
+	end
+	local resTotal = env.modDB:Sum("BASE", nil, "FireResist", "ColdResist", "LightningResist", "PhysicalResist", "NecroticResist", "VoidResist", "PoisonResist")
+	if resTotal and resTotal > 0 then
+		env.modDB:NewMod("Multiplier:UncappedResistTotal", "BASE", resTotal, "Auto:UncappedResistTotal")
 	end
 
 	-- @leb-regression-guard: symbols-of-hope-inc-not-more
@@ -1905,12 +2141,21 @@ function calcs.initEnv(build, mode, override, specEnv)
 					env.modDB.conditions["Unarmed"] = true
 				else
 					local flag = w1info.flag
+					-- @leb-regression-guard:wielding-weapon-conditions
+					-- Mace/Spear branches are required for "if wielding a Mace"
+					-- (affixId 364 etc.) and SkillStatMap UsingMace gates to fire.
+					-- Note: Sceptre items have flag == "Mace" by design (weaponTypeInfo
+					-- in Data.lua) so the UsingMace condition naturally activates when
+					-- a Sceptre is equipped — that matches LE's mace-flag mechanics.
+					-- The separate UsingSceptre flag below still publishes alongside.
 					if flag == "Bow" then env.modDB.conditions["UsingBow"] = true
 					elseif flag == "Dagger" then env.modDB.conditions["UsingDagger"] = true
 					elseif flag == "Staff" then env.modDB.conditions["UsingStaff"] = true
 					elseif flag == "Wand" then env.modDB.conditions["UsingWand"] = true
 					elseif flag == "Axe" then env.modDB.conditions["UsingAxe"] = true
+					elseif flag == "Mace" then env.modDB.conditions["UsingMace"] = true
 					elseif flag == "Sword" then env.modDB.conditions["UsingSword"] = true
+					elseif flag == "Spear" then env.modDB.conditions["UsingSpear"] = true
 					end
 					if w1type == "Sceptre" then env.modDB.conditions["UsingSceptre"] = true end
 					if not w1info.oneHand then env.modDB.conditions["UsingTwoHandedWeapon"] = true end

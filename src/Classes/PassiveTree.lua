@@ -383,10 +383,28 @@ function PassiveTreeClass:ProcessStats(node, startIndex)
     if node.stats then
         for _, stat in ipairs(node.stats) do
             if node.alloc > 1 and stat:match("%d") then
-                stat = stat:gsub("(%d[%d.]*)", function(valueStr)
-                    value = tonumber(valueStr)
-                    return tostring(value * node.alloc)
-                end)
+                -- @leb-regression-guard:tree-rank-per-stat-divisor
+                -- Rank scaling must multiply LEADING values only, not divisors
+                -- in "per N <attr>" clauses. e.g. "+3 Ward per 15 Int" at rank 5
+                -- becomes "+15 Ward per 15 Int" (NOT "+15 per 75 Int") so that the
+                -- parsed mod ends up as BASE=15, PerStat div=15. Same protection
+                -- applies to any "per N <anything>" tail (e.g. "per 10 stacks").
+                local function scaleNumbers(s)
+                    return (s:gsub("(%d[%d.]*)", function(valueStr)
+                        return tostring(tonumber(valueStr) * node.alloc)
+                    end))
+                end
+                local rebuilt, pos = "", 1
+                while pos <= #stat do
+                    local s, e = stat:find("[Pp]er%s+%d[%d.]*", pos)
+                    if not s then
+                        rebuilt = rebuilt .. scaleNumbers(stat:sub(pos))
+                        break
+                    end
+                    rebuilt = rebuilt .. scaleNumbers(stat:sub(pos, s - 1)) .. stat:sub(s, e)
+                    pos = e + 1
+                end
+                stat = rebuilt
             end
             table.insert(node.sd, stat)
         end

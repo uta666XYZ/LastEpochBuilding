@@ -364,17 +364,24 @@ function calcs.buildOutput(build, mode)
 		output["Spec:WardInc"] = env.modDB:Sum("INC", specCfg, "Ward")
 
 		-- Per-damage-type Crit Multiplier overview (player-level, no skill-specific scoping).
-		-- Sums BASE CritMultiplier mods that match each damage-type's hit flags so users
+		-- Sums BASE CritMultiplier mods that match each damage-source's keywordFlags so users
 		-- can sanity-check against LETools' per-type crit multi columns. Default base 100
 		-- mirrors LE's baseCritMulti = 2.0 (i.e. +100% bonus on crit) before player extras.
-		local critTypeFlags = {
-			Melee = ModFlag.Melee + ModFlag.Hit,
-			Spell = ModFlag.Spell + ModFlag.Hit,
-			Bow = ModFlag.Bow + ModFlag.Hit,
-			Throwing = ModFlag.Throwing + ModFlag.Hit,
+		-- @leb-regression-guard:per-type-crit-multi-overview-keywordflags
+		-- ModParser tags damage-source-prefixed mods (e.g. "Throwing Critical Strike Multiplier")
+		-- via keywordFlags = KeywordFlag.<Source> (see ModParser.lua DamageSourceTypes loop).
+		-- The cfg here MUST filter via keywordFlags (not flags) to actually match those mods;
+		-- ModFlag.<Source> shares the same numeric value but lives in a different cfg bucket.
+		-- Hit context is conveyed via flags = ModFlag.Hit, which is consistent with the
+		-- modFlagList["on hit"] tagging in ModParser.lua.
+		local critTypeKeywordFlags = {
+			Melee = KeywordFlag.Melee,
+			Spell = KeywordFlag.Spell,
+			Bow = KeywordFlag.Bow,
+			Throwing = KeywordFlag.Throwing,
 		}
-		for typeName, typeFlags in pairs(critTypeFlags) do
-			local extra = env.modDB:Sum("BASE", { flags = typeFlags }, "CritMultiplier")
+		for typeName, kwFlags in pairs(critTypeKeywordFlags) do
+			local extra = env.modDB:Sum("BASE", { flags = ModFlag.Hit, keywordFlags = kwFlags }, "CritMultiplier")
 			output[typeName .. "CritMultiplier"] = round(1 + (100 + extra) / 100, 2)
 		end
 

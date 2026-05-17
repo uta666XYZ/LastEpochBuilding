@@ -181,7 +181,36 @@ local function antonymFunc(num, word)
 end
 
 -- Apply range value (0 to 256) to a modifier that has a range: "(x-x)" or "(x-x) to (x-x)"
-function itemLib.applyRange(line, range, valueScalar, rounding)
+-- @leb-regression-guard: two-phase-floor-post-round-scalar
+-- `postRoundScalar` (optional, default 1.0) models LE's
+-- `ChangeAffixModifier(..., float affixEffectModifier, ..., float
+-- postRoundingEffectModifier = 0)` (dump.cs L165287). LE applies the
+-- post-round scalar AFTER the rolled value has been quantized to its display
+-- integer/fraction. The post-boost integer is then rendered with
+-- **round-half-up**, NOT floor — verified by comparing LETools planner
+-- tooltips against in-game UI on owLmrO3a Spellblade lv99 idol-altar.
+-- Folding refracted-slot altar boosts (Weaver Enchant ~22%) into
+-- `valueScalar` instead of this dedicated arg lets the unrounded
+-- interpolation fraction leak through the boost.
+-- Verified on owLmrO3a Heretical Large Arcane Idol affix 897_4
+-- "+(2-9) Ward per Second" T5 byte=255 boost=1.22:
+--   rolled = 9, 9 × 1.22 = 10.98
+--   floor          → 10 (pre-fix LEB, mismatched LETools/in-game)
+--   round-half-up  → 11 (post-fix LEB; matches LETools tooltip)
+-- See REGRESSION_GUARDS.md "two-phase-floor-post-round-scalar" for the
+-- 5 fix sites and the busted spec
+-- (spec/System/TestPostRoundScalarRoundHalfUp_spec.lua).
+-- @leb-regression-guard: idol-altar-boost-subtype-rounding
+-- `postRoundFloor` (optional, default false) overrides the post-round
+-- scalar's default round-half-up to **floor**. LE's Idol Altar refracted-slot
+-- boost (property 4) uses subtype-dependent rounding:
+--   IdolEnchantment (4) → round-half-up (default, see two-phase-floor guard)
+--   IdolWeaver      (5) → floor
+-- Triangulated on g1 (BxvJP3g1 Necromancer) Many Threads (raw 6 → LETools 8 =
+-- floor(6×1.46); round-half-up would be 9) and Chitin (raw 12 → LETools 17 =
+-- floor(12×1.46); round-half-up would be 18). See Obsidian note
+-- "Idol Altar boost rounding 仕様" + REGRESSION_GUARDS.md for case-by-case.
+function itemLib.applyRange(line, range, valueScalar, rounding, postRoundScalar, postRoundFloor)
     -- High precision for increased modifier
     local precision = 100
     if rounding == "Integer" then
@@ -310,6 +339,38 @@ function itemLib.applyRange(line, range, valueScalar, rounding)
                    or line:find("%% Physical Resistance")
                    or line:find("%% Elemental Resistance") then
                     local v = itemLib.applyRangeStrict(minN, maxN, rollByte, valueScalar, 0, 0)
+                    if postRoundScalar and postRoundScalar ~= 1.0 then
+                        if postRoundFloor then
+                            v = m_floor(v * postRoundScalar * precision) / precision
+                        else
+                            v = m_floor(v * postRoundScalar * precision + 0.5) / precision
+                        end
+                    end
+                    return (v < 0 and "" or plus) .. tostring(v)
+                end
+                -- @leb-regression-guard:minion-movement-speed-vshdm-strict
+                -- "% increased/reduced Minion Movement Speed" rolls route through the
+                -- LE-faithful vshDm Hundredth path. Triangulated on BxvJP3g1 lv99
+                -- Necromancer Pebbles' Collar Reforged implicit
+                -- `(6-16)% increased Minion Movement Speed` byte=186:
+                --   legacy round-half-up: floor((6 + 186/255 × 10) + 0.5) = 13
+                --   strict (vshDm):       floor((16 + 1 - 6) × 186/255 + 6) = 14
+                -- LETools planner Minion-tab "Movement Speed" = 14% — matches strict.
+                -- Scoped narrowly to the "Minion Movement Speed" SP=9 minion-scope
+                -- variant; the player-scope "% increased Movement Speed" line is NOT
+                -- migrated here (other rolls in g1 boots already match LETools under
+                -- legacy round-half-up). See REGRESSION_GUARDS.md
+                -- "minion-movement-speed-vshdm-strict".
+                if line:find("%% increased Minion Movement Speed")
+                   or line:find("%% reduced Minion Movement Speed") then
+                    local v = itemLib.applyRangeStrict(minN, maxN, rollByte, valueScalar, 0, 0)
+                    if postRoundScalar and postRoundScalar ~= 1.0 then
+                        if postRoundFloor then
+                            v = m_floor(v * postRoundScalar * precision) / precision
+                        else
+                            v = m_floor(v * postRoundScalar * precision + 0.5) / precision
+                        end
+                    end
                     return (v < 0 and "" or plus) .. tostring(v)
                 end
                 -- @leb-regression-guard: flat-int-vshdm-strict
@@ -330,6 +391,13 @@ function itemLib.applyRange(line, range, valueScalar, rounding)
                 -- remains on the existing branch below.
                 if precision == 1 and not line:find("%%") and valueScalar <= 1.0 then
                     local v = itemLib.applyRangeStrict(minN, maxN, rollByte, valueScalar, 0, 1)
+                    if postRoundScalar and postRoundScalar ~= 1.0 then
+                        if postRoundFloor then
+                            v = m_floor(v * postRoundScalar)
+                        else
+                            v = m_floor(v * postRoundScalar + 0.5)
+                        end
+                    end
                     return (v < 0 and "" or plus) .. tostring(v)
                 end
                 if not useRound then
@@ -383,6 +451,17 @@ function itemLib.applyRange(line, range, valueScalar, rounding)
                 if numVal > maxScaled then
                     numVal = maxScaled
                 end
+                if postRoundScalar and postRoundScalar ~= 1.0 then
+                    if postRoundFloor then
+                        numVal = m_floor(numVal * postRoundScalar * precision) / precision
+                        local maxBoosted = m_floor(maxScaled * postRoundScalar * precision) / precision
+                        if numVal > maxBoosted then numVal = maxBoosted end
+                    else
+                        numVal = m_floor(numVal * postRoundScalar * precision + 0.5) / precision
+                        local maxBoosted = m_floor(maxScaled * postRoundScalar * precision + 0.5) / precision
+                        if numVal > maxBoosted then numVal = maxBoosted end
+                    end
+                end
                 return (numVal < 0 and "" or plus) .. tostring(numVal)
             end)
                :gsub("%-(%d+%.?%d*%%) (%a+)", antonymFunc)
@@ -392,6 +471,23 @@ function itemLib.applyRange(line, range, valueScalar, rounding)
     if valueScalar ~= 1.0 and numbers == 0 then
         line = line:gsub("^(%+?)(%-?%d+%.?%d*)", function(plus, num)
             local v = roundHalfDownOnHalf(tonumber(num) * valueScalar)
+            if postRoundScalar and postRoundScalar ~= 1.0 then
+                if postRoundFloor then
+                    v = m_floor(v * postRoundScalar * precision) / precision
+                else
+                    v = m_floor(v * postRoundScalar * precision + 0.5) / precision
+                end
+            end
+            return plus .. tostring(v)
+        end, 1)
+    elseif (valueScalar == 1.0) and postRoundScalar and postRoundScalar ~= 1.0 and numbers == 0 then
+        line = line:gsub("^(%+?)(%-?%d+%.?%d*)", function(plus, num)
+            local v
+            if postRoundFloor then
+                v = m_floor(tonumber(num) * postRoundScalar * precision) / precision
+            else
+                v = m_floor(tonumber(num) * postRoundScalar * precision + 0.5) / precision
+            end
             return plus .. tostring(v)
         end, 1)
     end
@@ -534,7 +630,7 @@ end
 
 function itemLib.formatModLine(modLine, dbMode, altarBoost)
     local displayScalar = modLine.displayValueScalar or modLine.valueScalar
-    local line = (not dbMode and modLine.range and itemLib.applyRange(modLine.line, modLine.range, displayScalar, modLine.rounding)) or modLine.line
+    local line = (not dbMode and modLine.range and itemLib.applyRange(modLine.line, modLine.range, displayScalar, modLine.rounding, modLine.postRoundScalar, modLine.postRoundFloor)) or modLine.line
     if line:match("^%+?0%%? ") or (line:match(" %+?0%%? ") and not line:match("0 to [1-9]")) or line:match(" 0%-0 ") or line:match(" 0 to 0 ") then
         -- Hack to hide 0-value modifiers
         return
@@ -552,8 +648,12 @@ function itemLib.formatModLine(modLine, dbMode, altarBoost)
         line = line .. "  " .. colorCodes.NORMAL .. "(NOT SUPPORTED IN LEB YET)"
     end
     if altarBoost and altarBoost > 0 and not dbMode and modLine.range then
-        local boostedScalar = (modLine.valueScalar or 1) * (1 + altarBoost)
-        local boostedLine = itemLib.applyRange(modLine.line, modLine.range, boostedScalar, modLine.rounding)
+        -- @leb-regression-guard: two-phase-floor-post-round-scalar
+        -- Pass altar boost via postRoundScalar (two-phase floor) rather than
+        -- folding into valueScalar, so the tooltip preview matches LE's
+        -- post-rounding behaviour (e.g. base +9 × 1.22 → +10, not +11).
+        local boostedPostRound = (modLine.postRoundScalar or 1) * (1 + altarBoost)
+        local boostedLine = itemLib.applyRange(modLine.line, modLine.range, displayScalar, modLine.rounding, boostedPostRound)
         if boostedLine ~= line then
             line = line .. "  (-> " .. boostedLine .. " with Altar)"
         end

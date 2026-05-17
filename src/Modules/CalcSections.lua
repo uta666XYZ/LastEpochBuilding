@@ -185,6 +185,24 @@ return {
 		{ label = "Area of Effect modifiers", modName = "TrapTriggerAreaOfEffect", cfg = "skill" },
 	}, },
 	{ label = "Active Trap Limit", flag = "trap", { format = "{0:output:ActiveTrapLimit}", { modName = "ActiveTrapLimit", cfg = "skill" }, }, },
+	-- @leb-regression-guard:mirage-count-consumer
+	{ label = "Mirage Count", haveOutput = "MirageCount", { format = "{0:output:MirageCount}", { modName = "MirageCount", cfg = "skill" }, }, },
+	-- @leb-regression-guard:chance-to-apply-shadow-dagger-on-hit-consumer
+	{ label = "Shadow Dagger Apply Chance", haveOutput = "ChanceToApplyShadowDaggerOnHit", { format = "{0:output:ChanceToApplyShadowDaggerOnHit}%", { modName = "ChanceToApplyShadowDaggerOnHit", cfg = "skill" }, }, },
+	-- @leb-regression-guard:kuzons-fury-reforged-burning-dagger-chance
+	{ label = "Burning Dagger Throw Chance", haveOutput = "BurningDaggerChanceOnMeleeFire", { format = "{0:output:BurningDaggerChanceOnMeleeFire}%", { modName = "BurningDaggerChanceOnMeleeFire", cfg = "skill" }, }, },
+	-- @leb-regression-guard:proc-rate-limit-metadata-v1
+	-- Informational only: surfaces the game's ProcTimeTracker (limit, interval)
+	-- pair harvested from the static "(up to N times per M seconds)" suffix.
+	-- LEB does NOT fold this into DPS / effective-procs maths because the game
+	-- exposes no planner-visible rate-capped chance stat (runtime PTT gate only;
+	-- dump.cs L239352-L239378 + L33671-L33713).
+	{ label = "Burning Dagger Rate Limit", haveOutput = "BurningDaggerChanceOnMeleeFire_RateLimit", { format = "{0:output:BurningDaggerChanceOnMeleeFire_RateLimit} per {1:output:BurningDaggerChanceOnMeleeFire_RateInterval} sec" }, },
+	-- @leb-regression-guard:cooldown-recovered-on-hit-consumer
+	{ label = "CD Recovered per Hit", haveOutput = "CooldownRecoveryOnHit", { format = "{2:output:CooldownRecoveryOnHit}%", { modName = "CooldownRecoveryOnHit", cfg = "skill" }, }, },
+	{ label = "Max CD-Recovery Hits", haveOutput = "CooldownRecoveryOnHitMaxPerCast", { format = "{0:output:CooldownRecoveryOnHitMaxPerCast}", { modName = "CooldownRecoveryOnHitMaxPerCast", cfg = "skill" }, }, },
+	-- @leb-regression-guard:mod6-v2-combat-loop (section site)
+	{ label = "Effective Cooldown (CD-on-Hit)", haveOutput = "EffectiveCooldownFromOnHit", { format = "{3:output:EffectiveCooldownFromOnHit}s", { breakdown = "EffectiveCooldownFromOnHit" }, }, },
 	{ label = "Trap Throw Rate", flag = "trap", { format = "{2:output:TrapThrowingSpeed}",
 		{ breakdown = "TrapThrowingSpeed" },
 		{ modName = "TrapThrowingSpeed", cfg = "skill" },
@@ -747,7 +765,7 @@ return {
 	extra = "{0:output:Ward}",
 	{ label = "Retention", { format = "{0:output:WardRetention}%", { modName = "WardRetention" } }, },
 	{ label = "Decay Threshold", { format = "{0:output:WardDecayThreshold}", { modName = "WardDecayThreshold" } }, },
-	{ label = "Ward Per Second", { format = "{0:output:WardPerSecond}", { modName = "WardPerSecond" } }, },
+	{ label = "Ward Per Second", { format = "{0:output:WardPerSecond}", { breakdown = "WardPerSecond" }, { modName = "WardPerSecond" } }, },
 	{ label = "Decay Per Second", haveOutput = "WardDecayPerSecond", { format = "{0:output:WardDecayPerSecond}", { breakdown = "WardDecayPerSecond" }, }, },
 	{ label = "Net Regen", haveOutput = "NetWardRegen", { format = "{0:output:NetWardRegen}", }, },
 	{ label = "Total", { format = "{0:output:Ward}", { breakdown = "Ward" }, }, },
@@ -812,7 +830,8 @@ return {
 	{ label = "Taken From Block", haveOutput = "ShowBlockEffect", { format = "{0:output:DamageTakenOnBlock}%", }, },
 	{ label = "Life on Block", haveOutput = "LifeOnBlock", { format = "{0:output:LifeOnBlock}", { modName = "LifeOnBlock" }, }, },
 	{ label = "Mana on Block", haveOutput = "ManaOnBlock", { format = "{0:output:ManaOnBlock}", { modName = "ManaOnBlock" }, }, },
-	{ label = "Ward on Potion Use", haveOutput = "WardOnPotionUse", { format = "{0:output:WardOnPotionUse}", { modName = "WardOnPotionUse" }, }, },
+	{ label = "Ward on Block", haveOutput = "WardOnBlock", { format = "{0:output:WardOnBlock}", { breakdown = "WardOnBlock" }, { modName = { "WardOnBlock", "CurrentManaGainedAsWardOnBlock" } }, }, },
+	{ label = "Ward on Potion Use", haveOutput = "WardOnPotionUse", { format = "{0:output:WardOnPotionUse}", { breakdown = "WardOnPotionUse" }, { modName = { "WardOnPotionUse", "MissingHealthGainedAsWardOnPotionUse" } }, }, },
 	{ label = "Mana on Potion Use", haveOutput = "ManaOnPotionUse", { format = "{0:output:ManaOnPotionUse}", { modName = "ManaOnPotionUse" }, }, },
 	{ label = "Life on Potion Use", haveOutput = "LifeOnPotionUse", { format = "{0:output:LifeOnPotionUse}", { modName = "LifeOnPotionUse" }, }, },
 	{ label = "Ward on Skill Use", haveOutput = "WardOnSkillUse", { format = "{0:output:WardOnSkillUse}", { modName = "WardOnSkillUse" }, }, },
@@ -871,10 +890,15 @@ return {
 	{ label = "Increased Melee Area Of Effect", haveOutput = "MeleeAreaOfEffectInc", { format = "{0:output:MeleeAreaOfEffectInc}%", { modName = "AreaOfEffect" }, }, },
 	{ label = "Ward on Hit", haveOutput = "WardOnHit", { format = "{0:output:WardOnHit}", { modName = "WardOnHit" }, }, },
 	{ label = "Ward on Critical Strike", haveOutput = "WardOnCrit", { format = "{0:output:WardOnCrit}", { modName = "WardOnCrit" }, }, },
+	{ label = "Ward on Kill", haveOutput = "WardOnKill", { format = "{0:output:WardOnKill}", { modName = "WardOnKill" }, }, },
+	{ label = "Ward Bypass", haveOutput = "WardBypass", { format = "{0:output:WardBypass}%", { modName = "WardBypass" }, }, },
+	{ label = "Health Regen Applies to Ward", haveOutput = "LifeRegenAppliesToWard", { format = "{0:output:LifeRegenAppliesToWard}%", { modName = "LifeRegenAppliesToWard" }, }, },
 	{ label = "Potion Health Converted to Ward", haveOutput = "PotionHealthConvertedToWard", { format = "{0:output:PotionHealthConvertedToWard}%", { modName = "PotionHealthConvertedToWard" }, }, },
 	{ label = "Increased Haste Effect", haveOutput = "HasteEffect", { format = "{0:output:HasteEffect}%", { modName = "HasteEffect" }, }, },
 	{ label = "Increased Frenzy Effect", haveOutput = "FrenzyEffect", { format = "{0:output:FrenzyEffect}%", { modName = "FrenzyEffect" }, }, },
 	{ label = "Maximum Companions", haveOutput = "MaxCompanions", { format = "{0:output:MaxCompanions}", { modName = "MaxCompanions" }, }, },
+	-- @leb-regression-guard: max-shadows-output-wiring
+	{ label = "Maximum Shadows", haveOutput = "MaxShadows", { format = "{0:output:MaxShadows}", { modName = "MaxShadows" }, }, },
 	{ label = "Potion Slots", haveOutput = "PotionSlots", { format = "{0:output:PotionSlots}", { modName = "PotionSlots" }, }, },
 	{ label = "Minion Power From Char Level", haveOutput = "MinionPowerFromCharLevel", { format = "{1:output:MinionPowerFromCharLevel}%", { modName = "MinionPowerFromCharLevel" }, }, },
 	{ label = "Increased Minion Health", haveOutput = "MinionLifeInc", { format = "{0:output:MinionLifeInc}%", { modName = "MinionModifier" }, }, },

@@ -735,9 +735,12 @@ function ItemsTabClass:CraftRebuildItem()
 						item.nameSuffix = " " .. sfxName
 					end
 				end
+				-- @leb-regression-guard: affix-effect-modifier-formula
+				-- See src/Classes/Item.lua @ Item:Craft for the full rationale.
+				-- Formula: (1+AEM)/(1+standardAEM) per dump.cs line 164779.
 				local modScalar = 1 + (item.base.affixEffectModifier or 0)
 				if mod.standardAffixEffectModifier then
-					modScalar = modScalar - mod.standardAffixEffectModifier
+					modScalar = modScalar / (1 + mod.standardAffixEffectModifier)
 				end
 				local lineIdx = 0
 				for k = 1, 10 do

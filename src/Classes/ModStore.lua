@@ -21,7 +21,7 @@ local mod_createMod = modLib.createMod
 -- (passive nodes / item affixes) count the converted twin as well — Brutality
 -- counts as Strength for "Per Strength" passives etc. Intrinsic character
 -- bonuses (+4% Armour PerStat:Str etc.) bypass this by using PerStat:RawStr.
--- @leb-regression-guard: id:s4-perstat-base-includes-converted-twin
+-- @leb-regression-guard:s4-perstat-base-includes-converted-twin
 local s4ConvertedTwin = {
 	Str = "Brutality",
 	Dex = "Guile",
@@ -409,7 +409,7 @@ function ModStoreClass:EvalMod(mod, cfg)
 				end
 			else
 				base = target:GetStat(tag.stat, cfg)
-				-- @leb-regression-guard: id:s4-perstat-base-includes-converted-twin
+				-- @leb-regression-guard:s4-perstat-base-includes-converted-twin
 				-- Per-<BaseAttr> mods sum the converted twin (Brutality for Str etc.)
 				-- because LE treats converted attributes as still being the source for
 				-- text-defined "Per <Attr>" effects (Druid passive Aspects of Might
@@ -587,8 +587,20 @@ function ModStoreClass:EvalMod(mod, cfg)
 			if tag.neg then
 				match = not match
 			end
+			-- @leb-regression-guard:condition-tag-mult
+			-- F4 — Doubled mult for Condition tags. Mirror of the
+			-- StatThreshold.mult logic (~L520) so trailing-clause
+			-- modifiers like "+25% Bleed Chance, Doubled for Shadow
+			-- Attack" can keep the base value when the condition is
+			-- not met (instead of full-gating to zero) and apply
+			-- `value * mult` when it IS met. Without mult, behaviour
+			-- is unchanged: match==false returns nil (full gate).
 			if not match then
-				return
+				if not tag.mult then
+					return
+				end
+			elseif tag.mult then
+				value = value * tag.mult
 			end
 		elseif tag.type == "ActorCondition" then
 			local match = false

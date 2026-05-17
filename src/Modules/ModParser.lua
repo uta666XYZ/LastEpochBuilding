@@ -19,6 +19,16 @@ end
 local formList = {
 	["^([%+%-]?[%d%.]+)%% increased"] = "INC",
 	["^([%+%-]?[%d%.]+)%% reduced"] = "RED",
+	-- @leb-regression-guard:shadow-suffix-family-c6b-followup-f2
+	-- No-% "Increased" promotion. LE's "Increased X" is ALWAYS percent-
+	-- scaling; some affix text drops the % sign (e.g. "+1 Increased
+	-- Damage for skills used by Shadows"). Without this rule the parser
+	-- treats it as BASE and leaves " Increased " in slot[2] as residue
+	-- while the BASE mod applies inappropriately. Earliest-start +
+	-- longest-match in scan() ensures this beats the bare "+N" BASE rule
+	-- for any line containing "Increased". Same applies to "Reduced".
+	["^([%+%-]?[%d%.]+) increased"] = "INC",
+	["^([%+%-]?[%d%.]+) reduced"] = "RED",
 	["^([%+%-]?[%d%.]+)%% more"] = "MORE",
 	["^([%+%-]?[%d%.]+)%% less"] = "LESS",
 	["^(%d+)%% faster"] = "INC",
@@ -87,8 +97,33 @@ local modNameList = {
 	["ward per second"] = "WardPerSecond",
 	["ward retention"] = "WardRetention",
 	["ward regen"] = "WardPerSecond",
+	-- Idol affix (idol_900_0 Suffix): "(N) Ward gained per second while wielding a Staff".
+	-- Without this alias the parser stripped "Ward" + numeric, treated the "gained per
+	-- second" tail as unmatched residue, and the BASE mod fell through to `Ward` (max
+	-- ward) instead of `WardPerSecond`. See spec/System/TestWardGainedPerSecond_spec.lua.
+	["ward gained per second"] = "WardPerSecond",
+	-- Unique mods (uniques_1_4.json L4631 "Symbol of Hope" & L7464 unique helmet):
+	-- "(N) Ward gained each second per Active Wandering Spirit". Same silent-failure
+	-- shape as the staff idol — without this alias the BASE fell through to `Ward`
+	-- with residue "  gained each second  " and the `per Active Wandering Spirit`
+	-- multiplier was glued to the wrong stat.
+	["ward gained each second"] = "WardPerSecond",
+	-- Rune Master tree node (tree_1.json L12835 "Empowered Runes" rn7iv-13):
+	-- "+4 Ward Gain Per Second per Gon Rune". Drops the "-ed" suffix relative
+	-- to the staff idol wording. Without this alias the BASE fell through to
+	-- the bare `Ward` stat (max ward) with residue "  Gain Per Second per
+	-- Gon Rune " and the `per Gon Rune` Multiplier (added separately above)
+	-- was glued to max Ward rather than to WardPerSecond.
+	["ward gain per second"] = "WardPerSecond",
 	["glancing blow chance"] = "GlancingBlowChance",
 	["chance to take 0 damage when hit"] = "GlancingBlowChance",
+	-- @leb-regression-guard:chance-to-receive-glancing-blow-when-hit
+	-- Item affix wording: `(10-24)% Chance to receive a Glancing Blow when hit`
+	-- (e.g. BM6x3nKn lv66 Bladedancer). The form scanner consumes `N% chance`
+	-- as the CHANCE form, leaving the tail starting with `to receive ...`,
+	-- so the modNameList key must match the tail (no leading "chance").
+	-- See REGRESSION_GUARDS.md "chance-to-receive-glancing-blow-when-hit".
+	["to receive a glancing blow when hit"] = "GlancingBlowChance",
 	["block effectiveness"] = "BlockEffectiveness",
 	["stun avoidance"] = "StunAvoidance",
 	["crit avoidance"] = "CritAvoidance",
@@ -177,6 +212,12 @@ local modNameList = {
 	["overkill damage leeched as health"] = "OverkillLeech",
 	["maximum companions"] = "MaxCompanions",
 	["maximum number of companions"] = "MaxCompanions",
+	-- @leb-regression-guard:shadow-suffix-family-c6a
+	-- "+N Maximum Shadows" / "+N max Shadows" stat (count cap on the
+	-- Bladedancer Shadow pool). 3 ModCache entries fell through with empty
+	-- mods + residue " Maximum Shadows ".
+	["maximum shadows"] = "MaxShadows",
+	["max shadows"] = "MaxShadows",
 	["potion slots"] = "PotionSlots",
 	["minion power from character level"] = "MinionPowerFromCharLevel",
 	["health lost on kill"] = "LifeLossOnKillPercent",
@@ -335,6 +376,33 @@ local modNameList = {
 	["abyssal decay damage"] = "AbyssalDecayDamage",
 	["spirit plague damage"] = "SpiritPlagueDamage",
 	["bone curse damage"] = "BoneCurseDamage",
+	-- @leb-regression-guard:shadow-damage-minion-scope
+	-- C6/F9 follow-up to shadow-suffix-family-c6d. "Shadow Damage" in LE
+	-- means damage dealt by Bladedancer Rogue Shadows (the ShadowClone
+	-- prefab in src/Data/minions.json, sourced from datamined
+	-- actors_player_specific_gameplay_assets_all.bundle). Previously gated
+	-- by a no-op Condition:ShadowDamageScope placeholder which left the
+	-- mod parsed-but-unconsumed. Now routes via MinionModifier LIST with
+	-- minionTypes={"ShadowClone"} (parser infra:
+	-- guard `minion-modifier-type-narrowing`), so the Damage INC reaches
+	-- env.minion.modDB only when env.minion.type=="ShadowClone".
+	-- Dispatch site: CalcPerform.lua (`minion-modifier-multi-type-gate`).
+	["shadow damage"] = { "Damage", addToMinion = true, addToMinionTypes = { "ShadowClone" } },
+	-- @leb-regression-guard:shadow-suffix-family-c6f
+	-- P14 Lethal Mirage Shadow Dagger composite. "50% Chance to apply a
+	-- Shadow Dagger on Hit with Lethal Mirage" is parsed via this modName
+	-- entry; the "with Lethal Mirage" suffix is consumed by the modTagList
+	-- hook below, producing a SkillName-scoped trigger chance. Gate-only:
+	-- no calc consumer yet wires Shadow Dagger application from Lethal
+	-- Mirage hits to Shadow Dagger DoT damage. Follow-up: implement
+	-- Shadow Dagger application trigger and on-hit chance evaluation.
+	["chance to apply a shadow dagger on hit"] = "ChanceToApplyShadowDaggerOnHit",
+	-- @leb-regression-guard:shadow-suffix-family-c6c-followup-f7
+	-- "Chance to consume Shadow" Bladedancer consume-trigger probability.
+	-- 1 ModCache entry (10% Chance To Consume Shadow) was silent-failing
+	-- with empty mod array. Gate-only: no calc consumer yet wires the
+	-- chance-gate into Shadow consume events.
+	["chance to consume shadow"] = "ChanceToConsumeShadow",
 	-- @leb-regression-guard: curse-spell-damage-stat
 	-- "+N Curse Spell Damage" applies as flat spell damage to skills with the
 	-- Curse skill type (Bone Curse, Torment, Decrepify, Anguish, Penance).
@@ -477,6 +545,24 @@ local modTagList = {
 	["with at least (%d+) corrupted non%-idol items equipped"] = function(num) return { tag = { type = "StatThreshold", stat = "CorruptedNonIdolItemsEquipped", threshold = num } } end,
 	["with at least (%d+) corrupted idol items equipped"] = function(num) return { tag = { type = "StatThreshold", stat = "CorruptedIdolItemsEquipped", threshold = num } } end,
 	["for (%d+) seconds"] = { },
+	-- @leb-regression-guard:ward-per-second-and-retention-family
+	-- Descriptive "for you or your allies" noise-eater. LEB models a single
+	-- player so "or your allies" has no effect; this entry exists purely to
+	-- consume the text so the residue is empty and the proper Condition tag
+	-- attached by the following suffix ("while standing on your Glyph of
+	-- Dominion" etc.) is the only gate. 10 Runemaster Glyph of Dominion
+	-- ward-regen cache entries depend on this strip.
+	["for you or your allies"] = { },
+	-- @leb-regression-guard:ward-per-second-and-retention-family (W4)
+	-- Acolyte / Lich Profane Veil is a 4-second-duration buff. The Lich
+	-- ward-regen line "+N Ward per Second during Profane Veil" must be
+	-- gated on the buff being active. ConfigOptions exposes the
+	-- conditionDuringProfaneVeil check.
+	["during profane veil"] = { tag = { type = "Condition", var = "DuringProfaneVeil" } },
+	-- @leb-regression-guard:ward-per-second-and-retention-family (W5)
+	-- "for each Curse affecting you" multiplier (Acolyte self-curse stacking).
+	-- ConfigOptions exposes multiplierCurseOnSelf count input.
+	["for each curse affecting you"] = { tag = { type = "Multiplier", var = "CurseOnSelf" } },
 	[" on critical strike"] = { tag = { type = "Condition", var = "CriticalStrike" } },
 	["from critical strikes"] = { tag = { type = "Condition", var = "CriticalStrike" } },
 	-- Multipliers
@@ -494,6 +580,69 @@ local modTagList = {
 	["for your totems"] = { tag = { type = "Scope", scope = "totem" } },
 	["for minions"] = { tag = { type = "Scope", scope = "minion" } },
 	["for your minions"] = { tag = { type = "Scope", scope = "minion" } },
+	-- @leb-regression-guard:shadow-suffix-family-c6b
+	-- @leb-regression-guard:shadow-skills-minion-scope
+	-- C6/F3 follow-up. "for skills used by shadows" was previously gated
+	-- with a no-op Scope:minion placeholder (Scope tags have no calc
+	-- consumer in LEB, so the mod applied unconditionally to the player).
+	-- Now routes via MinionModifier LIST with minionTypes={"ShadowClone"}
+	-- (parser infra: guard `minion-modifier-type-narrowing`), so the
+	-- prefix mod reaches env.minion.modDB only when
+	-- env.minion.type=="ShadowClone" (the Bladedancer Rogue Shadow prefab
+	-- in src/Data/minions.json). "for shadow attack" remains a runtime
+	-- Condition toggled when the active hit is a Shadow Attack
+	-- (Shadow Cascade etc.). Dispatch site: CalcPerform.lua
+	-- (`minion-modifier-multi-type-gate`).
+	["for skills used by shadows"] = { addToMinion = true, addToMinionTypes = { "ShadowClone" } },
+	["for shadow attack"] = { tag = { type = "Condition", var = "ShadowAttack" } },
+	-- @leb-regression-guard:doubled-for-shadow-attack
+	-- @leb-regression-guard:doubled-with-bow
+	-- F4 follow-up to shadow-suffix-family-c6b. Trailing-clause patterns
+	-- ", doubled for shadow attack" and ", doubled with bow" emit a
+	-- Condition tag with mult=2. The consumer side (ModStore.lua
+	-- `condition-tag-mult`) multiplies value by mult on match and falls
+	-- through (keeps base value) when the condition is not met -- the
+	-- exact StatThreshold mult contract. scan() longest-match makes
+	-- these win over the bare "for shadow attack" / "with bow" entries.
+	[", doubled for shadow attack"] = { tag = { type = "Condition", var = "ShadowAttack", mult = 2 } },
+	[", doubled with bow"] = { tag = { type = "Condition", var = "UsingBow", mult = 2 } },
+	-- @leb-regression-guard:shadow-suffix-family-c6c
+	-- Shadow trigger gates. OnShadowCreate fires each time a Shadow is
+	-- summoned (Bladedancer); OnShadowConsume fires each time a Shadow is
+	-- consumed (Lethal Mirage etc.). No calc consumer exists yet for either
+	-- condition - parser correctness only. "gain per shadow" (3 words) wins
+	-- over "per shadow" (2 words) via scan() longest-match preference.
+	["gained on shadow creation"] = { tag = { type = "Condition", var = "OnShadowCreate" } },
+	["gain on shadow creation"] = { tag = { type = "Condition", var = "OnShadowCreate" } },
+	["gain per shadow"] = { tag = { type = "Condition", var = "OnShadowCreate" } },
+	["from subsequent shadows consumed"] = { tag = { type = "Condition", var = "OnShadowConsume" } },
+	["when you consume a shadow"] = { tag = { type = "Condition", var = "OnShadowConsume" } },
+	-- @leb-regression-guard:shadow-suffix-family-c6d
+	-- "with Shadow Daggers" residue cleanup. SkillName="Shadow Daggers" is
+	-- already attached by the skillNameList post-scan (L2562/2577) but the
+	-- leading "with" word fell out into slot[2] as orphaned residue. Explicit
+	-- modTagList hook consumes the whole phrase atomically so fresh parses
+	-- leave no residue. 10 ModCache entries patched (Physical Penetration
+	-- with Shadow Daggers).
+	["with shadow daggers"] = { tag = { type = "SkillName", skillName = "Shadow Daggers" } },
+	-- @leb-regression-guard:shadow-suffix-family-c6f
+	-- Lethal Mirage suffix family. "with lethal mirage" mirrors the C6d
+	-- Shadow Daggers fix (SkillName already attached post-scan, just need
+	-- to consume the "with" prefix atomically). "of mirage attacks with
+	-- lethal mirage" is a 5-word composite where the "of mirage attacks"
+	-- qualifier is informational - in LE all Lethal Mirage hits ARE mirage
+	-- attacks, so the SkillName:Lethal Mirage tag alone is correct.
+	-- Longest-match wins so the 5-word form takes precedence over the
+	-- bare "with lethal mirage".
+	["with lethal mirage"] = { tag = { type = "SkillName", skillName = "Lethal Mirage" } },
+	["of mirage attacks with lethal mirage"] = { tag = { type = "SkillName", skillName = "Lethal Mirage" } },
+	-- @leb-regression-guard:shadow-suffix-family-c6c-followup-f8
+	-- "From Shadow Falcons" Falconer-specific scope. Shadow Falcon is a
+	-- Companion-type minion not in data.skills, so skillNameList post-scan
+	-- doesn't match it - explicit modTagList hook required. 1 ModCache
+	-- entry (Dusk Shroud Chance From Shadow Falcons) carries the SkillName
+	-- tag with empty residue.
+	["from shadow falcons"] = { tag = { type = "SkillName", skillName = "Shadow Falcon" } },
 	-- Slot conditions
 	["while dual wielding"] = { tag = { type = "Condition", var = "DualWielding" } },
 	["while wielding a two handed melee weapon"] = { tagList = { { type = "Condition", var = "UsingTwoHandedWeapon" }, { type = "Condition", var = "UsingMeleeWeapon" } } },
@@ -506,6 +655,9 @@ local modTagList = {
 	["while frozen"] = { tag = { type = "Condition", var = "Frozen" } },
 	["while cursed"] = { tag = { type = "Condition", var = "Cursed" } },
 	["while transformed"] = { tag = { type = "Condition", var = "Transformed" } },
+	-- @leb-regression-guard:ward-per-second-and-retention-family
+	["on transform"] = { tag = { type = "Condition", var = "Transformed" } },
+	["when you transform"] = { tag = { type = "Condition", var = "Transformed" } },
 	["while at high health"] = { tag = { type = "Condition", var = "HighHealth" } },
 	["while you have ward"] = { tag = { type = "Condition", var = "HaveWard" } },
 	["while you have lightning aegis"] = { tag = { type = "Condition", var = "HaveLightningAegis" } },
@@ -544,9 +696,34 @@ local modTagList = {
 	["per active dread shade"] = { tag = { type = "Multiplier", var = "ActiveDreadShade" } },
 	["per active maelstrom"] = { tag = { type = "Multiplier", var = "ActiveMaelstrom" } },
 	["per active rune"] = { tag = { type = "Multiplier", var = "ActiveRune" } },
+	-- @leb-regression-guard:gon-rune-multiplier
+	-- Rune Master tree-node uses per-rune-type multipliers (Gon/Rah/Heo).
+	-- Gon Rune was wired first because of Ward regen (tree_1.json L12835
+	-- "+4 Ward Gain Per Second per Gon Rune"). Without this tag (and the
+	-- matching "ward gain per second" nameMap alias) the mod parsed as bare
+	-- `name="Ward"` BASE=4 with residue "  Gain Per Second per Gon Rune " —
+	-- silent failure with no numeric Ward output diff.
+	["per gon rune"] = { tag = { type = "Multiplier", var = "GonRune" } },
+	-- @leb-regression-guard:heo-rah-rune-multiplier
+	-- Heo/Rah sibling per-rune-type multipliers. Heo Rune affixes grant Dodge
+	-- Rating per active Heo Rune (silently parsed as `name="Evasion"` BASE=N
+	-- with residue "  per Heo Rune ") and the tree node "+8% Freeze Rate
+	-- Multiplier per Heo Rune" (tree_1.json) was likewise stripped of its
+	-- multiplier. Rah Rune affixes grant Armour per active Rah Rune, and the
+	-- "2% Increased Mana Regen per Rah Rune" node lost its multiplier the
+	-- same way. Mirrors the Gon Rune recipe: parser modTag + ConfigOptions
+	-- count + ModCache patches + busted guard.
+	["per heo rune"] = { tag = { type = "Multiplier", var = "HeoRune" } },
+	["per rah rune"] = { tag = { type = "Multiplier", var = "RahRune" } },
 	["per active wandering spirit"] = { tag = { type = "Multiplier", var = "ActiveWanderingSpirit" } },
 	["per active crimson shroud"] = { tag = { type = "Multiplier", var = "ActiveCrimsonShroud" } },
 	["per active shadow"] = { tag = { type = "Multiplier", var = "ActiveShadow" } },
+	-- @leb-regression-guard:shadow-suffix-family-c6a
+	-- Bare "Per Shadow" colloquial suffix + "With At Least N Shadows" threshold.
+	-- ModCache had 4 silent-failure entries with these residues; the parser
+	-- consumed the leading damage/area name and dropped the suffix into slot[2].
+	["per shadow"] = { tag = { type = "Multiplier", var = "ActiveShadow" } },
+	["with at least 3 shadows"] = { tag = { type = "MultiplierThreshold", var = "ActiveShadow", threshold = 3 } },
 	["per equipped omen idol"] = { tag = { type = "Multiplier", var = "EquippedOmenIdol" } },
 	["per equipped weaver item"] = { tag = { type = "Multiplier", var = "EquippedWeaverItem" } },
 	-- Per-summoned-minion multiplier. Multiplier:SummonedMinion is auto-supplied
@@ -621,6 +798,19 @@ local modTagList = {
 	["per slow stack"] = { tag = { type = "Multiplier", var = "SlowStack", actor = "enemy" } },
 	["per frailty stack"] = { tag = { type = "Multiplier", var = "FrailtyStack", actor = "enemy" } },
 	["per curse stack"] = { tag = { type = "Multiplier", var = "CurseStack", actor = "enemy" } },
+	-- @leb-regression-guard:per-bleed-stack-suffix-family
+	-- Colloquial "per Bleed" / "Per Bleed" used by passive-tree stats — must
+	-- be a modTagList match so the SkillName eater doesn't consume "Bleed"
+	-- first. Mirrors the existing "per bleed stack" pattern. Without these
+	-- 7 entries the parser fell through and the inner mod applied
+	-- unconditionally to any "of Bleed skill" computation.
+	["per bleed"] = { tag = { type = "Multiplier", var = "BleedStack", actor = "enemy" } },
+	["per 10 bleeds on the target, up to 200 bleeds"] = { tag = { type = "Multiplier", var = "BleedStack", actor = "enemy", div = 10, limit = 20 } },
+	["per 10 bleeds on enemy, up to 20%"] = { tag = { type = "Multiplier", var = "BleedStack", actor = "enemy", div = 10, limit = 20 } },
+	["per stack of bleed on you"] = { tag = { type = "Multiplier", var = "BleedStack", actor = "self" } },
+	["per stack of bleed on the enemy releasing it"] = { tag = { type = "Multiplier", var = "BleedStack", actor = "enemy", limit = 20 } },
+	["per stack of bleed on the target"] = { tag = { type = "Multiplier", var = "BleedStack", actor = "enemy" } },
+	["per 10% bleed chance"] = { tag = { type = "PerStat", stat = "BleedChance", div = 10 } },
 	-- Transformation form conditions
 	["while in werebear form"] = { tag = { type = "Condition", var = "InWerebearForm" } },
 	["in werebear form"] = { tag = { type = "Condition", var = "InWerebearForm" } },
@@ -669,6 +859,20 @@ local modTagList = {
 	-- entire mod is silently dropped from modDB on AVa9YEkg (Paladin, lv95).
 	-- Spec: spec/System/TestModParse_spec.lua "while with a shield condition tag"
 	["while with a shield"] = { tag = { type = "Condition", var = "UsingShield" } },
+	-- @leb-regression-guard:traitors-tongue-offhand-crit-flat
+	-- Traitor's Tongue (dual-wield dagger) has cross-slot self-referential mods:
+	-- "+(10-13)% Parry Chance with Traitor's Tongue equipped in the mainhand"
+	-- "+(10-13)% Critical Strike Chance with Traitor's Tongue equipped in the offhand"
+	-- Without these matchers the trailing condition survives as residual extra and
+	-- Item.lua's processModLine (isConnectorOnlyExtra) silently drops the entire
+	-- mod from modDB — e.g. on QWXjqWJ2 (Bladedancer, lv100) the +12 flat
+	-- CritChance was missing from every skill's CritChance output.
+	-- Spec: spec/System/TestModParse_spec.lua "equipped in the offhand/mainhand condition tag"
+	-- Game data check (2026-05-12): only Traitor's Tongue uses this pattern in
+	-- unique_mods_generated.json; no affix/set bonus matches. Generic name capture
+	-- via "(.-)" supports future cross-slot uniques without per-item patches.
+	["with (.-) equipped in the offhand"] = function(name) return { tag = { type = "Condition", var = "OffhandHas:" .. name } } end,
+	["with (.-) equipped in the mainhand"] = function(name) return { tag = { type = "Condition", var = "MainHandHas:" .. name } } end,
 	-- @leb-regression-guard:per-1pct-increased-movement-speed
 	-- Unbroken Charge unique grants "+(11-30) Block Effectiveness per 1% Increased
 	-- Movement Speed". Without this matcher the trailing " per 1% increased
@@ -699,6 +903,15 @@ for i,stat in ipairs(LongAttributes) do
 	modTagList["per player " .. stat:lower()] = { tag = { type = "PerStat", stat = Attributes[i], actor = "parent" } }
 	modTagList["per (%d+) " .. stat:lower()] = function(num) return { tag = { type = "PerStat", stat = Attributes[i], div = num } } end
 	modTagList["w?h?i[lf]e? you have at least (%d+) " .. stat:lower()] = function(num) return { tag = { type = "StatThreshold", stat = Attributes[i], threshold = num } } end
+	-- @leb-regression-guard:with-attribute-threshold
+	-- LE phrasing "with N <Attribute>" gates the leading effect behind a StatThreshold
+	-- (the effect applies in full once you reach N points of the attribute — it is
+	-- NOT a per-N divisor). Example: Mage-91 "Transcendence" rank 6 grants
+	-- "+24 Additional Ward per Second with 60 Intelligence" — players above 60 Int
+	-- get the full +24, otherwise 0. Without this entry the tail parses as `extra`
+	-- and PassiveTree.lua:458 silently drops the entire mod list.
+	-- Spec: spec/System/TestWithAttributeThreshold_spec.lua
+	modTagList["with (%d+) " .. stat:lower()] = function(num) return { tag = { type = "StatThreshold", stat = Attributes[i], threshold = num } } end
 end
 -- Also handle abbreviated attribute names (e.g. "Per Int" in addition to "Per Intelligence")
 for i,stat in ipairs(Attributes) do
@@ -707,6 +920,7 @@ for i,stat in ipairs(Attributes) do
 	modTagList["per point of " .. abbr] = { tag = { type = "PerStat", stat = Attributes[i] } }
 	modTagList["per player " .. abbr] = { tag = { type = "PerStat", stat = Attributes[i], actor = "parent" } }
 	modTagList["per (%d+) " .. abbr] = function(num) return { tag = { type = "PerStat", stat = Attributes[i], div = num } } end
+	modTagList["with (%d+) " .. abbr] = function(num) return { tag = { type = "StatThreshold", stat = Attributes[i], threshold = num } } end
 end
 -- Season 4 (1.4) converted attributes
 local S4Attributes = {
@@ -726,11 +940,61 @@ for _, weapon in ipairs(DamageSourceWeapons) do
 	modTagList["with an? " .. weapon:lower()] = { tag = { type = "Condition", var = "Using" .. weapon } }
 	modTagList["with " .. weapon:lower()] = { tag = { type = "Condition", var = "Using" .. weapon } }
 	modTagList["while wielding a " .. weapon:lower()] = { tag = { type = "Condition", var = "Using" .. weapon } }
+	-- @leb-regression-guard:wielding-weapon-conditions
+	-- 2-Handed variant: "+N Spell Damage while wielding a 2 Handed Axe" etc.
+	-- Without this entry the "2 Handed " phrase was stripped to residue and
+	-- the mod applied to any Axe (1H or 2H) — silently wrong. tagList
+	-- combines the weapon condition with UsingTwoHandedWeapon (CalcSetup
+	-- publishes the latter when `not w1info.oneHand`).
+	modTagList["while wielding a 2 handed " .. weapon:lower()] = { tagList = { { type = "Condition", var = "Using" .. weapon }, { type = "Condition", var = "UsingTwoHandedWeapon" } } }
+	-- @leb-regression-guard:with-2h-suffix-family
+	-- LEB passive-tree node text uses the colloquial "With 2h <Weapon>" form
+	-- (e.g. Rogue-83 Expert Duelist "Melee Attack Speed With 2h Sword").
+	-- Without this entry the parser stripped only "With 2h " and applied the
+	-- mod to any wielded weapon of that subtype, dropping the 2-handed gate.
+	modTagList["with 2h " .. weapon:lower()] = { tagList = { { type = "Condition", var = "Using" .. weapon }, { type = "Condition", var = "UsingTwoHandedWeapon" } } }
 	modTagList["per equipped " .. weapon:lower()] = { tag = { type = "Multiplier", var = weapon .. "Item" } }
 	modTagList["per " .. weapon:lower()] = { tag = { type = "Multiplier", var = weapon .. "Item" } }
 end
+-- @leb-regression-guard:with-2h-suffix-family
+-- Generic "With 2h" / "With 2h Weapon" suffix (no specific subtype).
+-- Sources: Sentinel-111 Champion of the Forge ("+1% Crit Multi Per 2 Str
+-- With 2h", "10% Increased Crit Chance With 2h"), Sentinel-68 Master of
+-- Arms ("+2 Strength With 2h Weapon"), Warpath va53st-7 Battlemaster's
+-- Blade ("+20% Area With 2h"), Tempest Strike ts85i-16 Heorot's Arsenal
+-- ("+8 Spell Damage With 2h Weapon"), Rogue-83 Expert Duelist
+-- ("7% Increased Melee Damage With 2h Weapon").
+modTagList["with 2h"] = { tag = { type = "Condition", var = "UsingTwoHandedWeapon" } }
+modTagList["with 2h weapon"] = { tag = { type = "Condition", var = "UsingTwoHandedWeapon" } }
 modTagList["with spear"] = { tag = { type = "Condition", var = "UsingSpear" } }
 modTagList["with a spear"] = { tag = { type = "Condition", var = "UsingSpear" } }
+-- @leb-regression-guard:dual-wield-pair-suffix-family
+-- Rogue-65 "Weapons of Choice" (and similar dual-wield nodes) describe
+-- bonuses as "with a <Weapon> and (a) <Weapon>" or "with 2 <Weapons>".
+-- Before this loop the parser stripped only the trailing weapon (matched
+-- by the single-weapon "with a <weapon>" handler), leaving the first
+-- weapon and the connector in slot[2] residue — the dual-wield gate and
+-- the first weapon condition were both lost. Each pair handler emits a
+-- tagList with both weapon conditions PLUS DualWielding. Same-weapon
+-- "with 2 <weapons>" forms emit Using<Weapon> + DualWielding.
+for _, w1 in ipairs(DamageSourceWeapons) do
+	for _, w2 in ipairs(DamageSourceWeapons) do
+		if w1 ~= w2 then
+			local a1 = (w1 == "Axe") and "an" or "a"
+			local tagList = {
+				{ type = "Condition", var = "Using" .. w1 },
+				{ type = "Condition", var = "Using" .. w2 },
+				{ type = "Condition", var = "DualWielding" },
+			}
+			modTagList["with " .. a1 .. " " .. w1:lower() .. " and " .. w2:lower()] = { tagList = tagList }
+			modTagList["with " .. a1 .. " " .. w1:lower() .. " and a " .. w2:lower()] = { tagList = tagList }
+			modTagList["with " .. a1 .. " " .. w1:lower() .. " and an " .. w2:lower()] = { tagList = tagList }
+		end
+	end
+	-- "with 2 <weapons>" pluralisation: Axe->Axes, Sword->Swords, etc.
+	-- All DamageSourceWeapons take a simple "s" suffix.
+	modTagList["with 2 " .. w1:lower() .. "s"] = { tagList = { { type = "Condition", var = "Using" .. w1 }, { type = "Condition", var = "DualWielding" } } }
+end
 
 local mod = modLib.createMod
 local function flag(name, ...)
@@ -803,9 +1067,41 @@ local specialQuickFixModList = {
 	["^([%+%-]?[%d%.]+%%) Cooldown Recovery Speed"] = "%1 increased Cooldown Recovery Speed",
 	["^([%+%-]?[%d%.]+%%) Duration"] = "%1 increased Duration",
 	["^([%+%-]?[%d%.]+%%) Movespeed"] = "%1 increased Movespeed",
+	-- @leb-regression-guard:minion-movespeed-passive-node-phrasings
+	-- LE 1.4 passive-tree nodes use multiple inconsistent phrasings for
+	-- "% Minion Movement Speed":
+	--   * Primalist-22 "The Chase"        (tree_0): "+4% Minion Movespeed"
+	--     -- no "Increased", 1-word Movespeed
+	--   * Acolyte-20 "Invigorated Dead"   (tree_3): "2% Minion Increased Movement Speed"
+	--     -- word-swap: "Minion" before "Increased"
+	-- The pre-existing "^...%%) Movespeed" rule does not match when "Minion" sits
+	-- between the percentage and "Movespeed", so these node texts parsed as either
+	-- BASE (instead of INC) or dropped entirely. Triangulated on:
+	--   Qqwvdex2 lv98 Beastmaster   (LETools 24% / LEB 0 -> after fix: 24)
+	--   oy4Jk2Y9 lv100 Beastmaster  (LETools 32% / LEB 0 -> after fix: 32)
+	--   oN2zNnaR lv100 Necromancer  (LETools 27% / LEB 0): NOT FIXED here -- its
+	--     Necromancer minion-movespeed feed is a separate skill-tree
+	--     SkillStatMap("minion_movement_speed_+%") routing bug, not text parsing.
+	-- Spec: spec/System/TestMinionMovespeedNodeText_spec.lua.
+	-- See REGRESSION_GUARDS.md "minion-movespeed-passive-node-phrasings".
+	["^([%+%-]?[%d%.]+%%) Minion Movespeed"] = "%1 increased Minion Movespeed",
+	-- Word-swap variant: "X% Minion Increased Movement Speed" (Acolyte-20 Invigorated Dead).
+	-- Narrowly targeted to Movement Speed only — other "X% Minion Increased Y" phrasings
+	-- (cast speed, healing effectiveness, etc.) also exist and have the same cache-residue
+	-- bug, but fixing those changes more snapshots than this PR's scope warrants. See the
+	-- regression-guard note for the follow-up TODO.
+	["^([%+%-]?[%d%.]+%%) Minion Increased Movement Speed"] = "%1 Increased Minion Movement Speed",
 	["^([%+%-]?[%d%.]+%%) Mana Cost"] = "%1 increased Mana Cost",
 	["^([%+%-]?[%d%.]+%%) Mana Efficiency"] = "%1 increased Mana Efficiency",
 	["%(up to %d+%)%s*$"] = "",
+	-- @leb-regression-guard:additional-flavor-strip
+	-- LE phrases certain conditional regen as "+N Additional <Stat> with M <Attr>"
+	-- (e.g. Mage-91 "Transcendence" rank 6: "+24 Additional Ward per Second with
+	-- 60 Intelligence"). "Additional" is flavor text only — strip it so the regular
+	-- mod-name parser matches "Ward per Second" cleanly. Combined with the
+	-- "with N <Attr>" StatThreshold tag this yields BASE 24 WardPerSecond gated
+	-- by StatThreshold Int >= 60.
+	["^([%+%-]?[%d%.]+) Additional "] = "%1 ",
 	-- Normalize "X% [Type] Damage Taken" (without increased/reduced keyword) to INC type
 	["^([%+%-]?[%d%.]+%%) Damage Over Time Taken"] = "%1 increased Damage Over Time Taken",
 	["^([%+%-]?[%d%.]+%%) Damage Taken"] = "%1 increased Damage Taken",
@@ -850,6 +1146,17 @@ end
 
 local specialModList = {
 	["no cooldown"] = { flag("NoCooldown") },
+	-- @leb-regression-guard:double-glancing-blow-if-not-hit
+	-- Rogue-104 "Poise" notScalingStat (after PassiveTree.lua trim) is the bare
+	-- sentence "Double Glancing Blow Chance If Not Hit". LE applies +100 INC
+	-- GlancingBlowChance while the player has NOT been hit recently. Gate on
+	-- the shared BeenHitRecently condition (neg) — the ConfigOptions "Have
+	-- you been Hit Recently?" toggle defaults off, so by default the bonus
+	-- applies and matches LE/LETools sidebar.
+	-- See REGRESSION_GUARDS.md "double-glancing-blow-if-not-hit".
+	["^double glancing blow chance if not hit$"] = function()
+		return { mod("GlancingBlowChance", "INC", 100, { type = "Condition", var = "BeenHitRecently", neg = true }) }
+	end,
 	-- Idol Altar: Refracted Slot affix-effect modifiers.
 	-- Produce named INC mods so the values accumulate on modDB and are visible (not red);
 	-- actual per-affix scaling of refracted-slot idols is handled elsewhere.
@@ -862,7 +1169,19 @@ local specialModList = {
 	["^(%d+)%% increased effect of suffixes for idols in refracted slots$"] = function(num)
 		return { mod("IdolRefractedSuffixEffect", "INC", num) }
 	end,
-	["^(%d+)%% increased effect of weaver enchantment affixes for idols in refracted slots$"] = function(num)
+	-- @leb-regression-guard: idol-refracted-weaver-enchant-boost
+	-- The in-game tooltip text for the Weaver Enchantment variant of this
+	-- Idol Altar affix omits "increased" and starts with "+" — verified on
+	-- BxvJP3g1 Altar of Arctus: "+(46-52)% Effect of Weaver Enchantment
+	-- Affixes for Idols in Refracted Slots" (XML lines 828-833 around the
+	-- standard prefix/suffix variants which DO use "increased Effect").
+	-- Accept both forms so the same `IdolRefractedWeaverEffect` mod fires.
+	-- Spec: spec/System/TestIdolRefractedWeaverEnchantBoost_spec.lua
+	-- See REGRESSION_GUARDS.md "idol-refracted-weaver-enchant-boost".
+	["^%+?(%d+)%% increased effect of weaver enchantment affixes for idols in refracted slots$"] = function(num)
+		return { mod("IdolRefractedWeaverEffect", "INC", num) }
+	end,
+	["^%+?(%d+)%% effect of weaver enchantment affixes for idols in refracted slots$"] = function(num)
 		return { mod("IdolRefractedWeaverEffect", "INC", num) }
 	end,
 	-- @leb-regression-guard: non-unique-idol-stat-multiplier
@@ -890,6 +1209,138 @@ local specialModList = {
 	end,
 	["^you and your minions deal (%d+)%% increased melee damage$"] = function(num)
 		return { mod("Damage", "INC", num, "", ModFlag.Melee), mod("MinionModifier", "LIST", { mod = mod("Damage", "INC", num, "", ModFlag.Melee) }) }
+	end,
+	-- @leb-regression-guard:crit-chance-for-skeletons-skeletal-mages
+	-- Acolyte minion-summoner affixes (idol prefix 313, item prefixes around
+	-- ModItem_1_4.json index 42387..) of the form
+	--   "+N% Critical Strike Chance for Skeletons"     (rolls separately, line "1")
+	--   "+N% Critical Strike Chance for Skeletal Mages"(rolls separately, line "2")
+	-- Before this guard the bare `name="CritChance" BASE` mod leaked the +N% onto
+	-- the PLAYER's main-skill crit chance instead of any minion. Each line emits
+	-- a MinionModifier LIST whose dispatch in CalcPerform.lua (see guard
+	-- `minion-modifier-multi-type-gate`) routes to the matching minion-family
+	-- type(s). Skeletons family covers SummonedSkeleton + Archer/Harvester/
+	-- Vanguard/Rogue per src/Data/minions.json. Skeletal Mages is a single type.
+	["^%+?([%d%.]+)%% critical strike chance for skeletons$"] = function(num)
+		return { mod("MinionModifier", "LIST", {
+			mod = mod("CritChance", "BASE", num),
+			minionTypes = {
+				"SummonedSkeleton",
+				"SummonedSkeletonArcher",
+				"SummonedSkeletonHarvester",
+				"SummonedSkeletonVanguard",
+				"SummonedSkeletonRogue",
+			},
+		}) }
+	end,
+	["^%+?([%d%.]+)%% critical strike chance for skeletal mages$"] = function(num)
+		return { mod("MinionModifier", "LIST", {
+			mod = mod("CritChance", "BASE", num),
+			type = "SummonedSkeletonMage",
+		}) }
+	end,
+	-- @leb-regression-guard:crit-for-totems-per-int-and-multi
+	-- Totem-family crit affixes:
+	--   "+N% Critical Strike Chance for Totems per Intelligence"
+	--     - inherent on unique Ferebor's Chisel (uniques.json "+1% ...")
+	--     - ModItem prefix 786 "Ferebor's Chisel Reforged" 1.4.5 text (8 values).
+	--       Note: v3 game-data dump 2026-05-01 shows affix 786 second line was
+	--       reworked post-1.4.5 to a Frenzy-on-Storm-Totem-hit line; the parser
+	--       fix is still correct for the LEB-current text and the unique mod.
+	--   "+N% Critical Strike Multiplier for Totems"
+	--     - ModItem prefix 786 first line (still active per v3 dump: property 5
+	--       Critical Strike Multiplier + tag 16384 Totem)
+	-- Before this guard, the bare `CritChance` / `CritMultiplier` BASE mod leaked
+	-- the +N% onto the PLAYER's main-skill crit instead of any totem. Each line
+	-- emits a MinionModifier LIST whose dispatch in CalcPerform.lua (see guard
+	-- `minion-modifier-multi-type-gate`) routes to the totem-family minion types.
+	-- per-Int AltText "Scales with your Intelligence" (Property_Player_175) =>
+	-- inner mod carries PerStat:Int with actor="parent" so it scales on player Int.
+	-- Totem family per src/Data/minions.json: 8 keys (Frenzy Totem, Thorn Totem,
+	-- StormTotem, HealingTotem, ClawTotem, TempestTotem, WarcryTotem, UpheavalTotem).
+	["^%+?([%d%.]+)%% critical strike chance for totems per intelligence$"] = function(num)
+		return { mod("MinionModifier", "LIST", {
+			mod = mod("CritChance", "BASE", num, "", 0, 0, { type = "PerStat", stat = "Int", actor = "parent" }),
+			minionTypes = {
+				"Frenzy Totem",
+				"Thorn Totem",
+				"StormTotem",
+				"HealingTotem",
+				"ClawTotem",
+				"TempestTotem",
+				"WarcryTotem",
+				"UpheavalTotem",
+			},
+		}) }
+	end,
+	["^%+?([%d%.]+)%% critical strike multiplier for totems$"] = function(num)
+		return { mod("MinionModifier", "LIST", {
+			mod = mod("CritMultiplier", "BASE", num),
+			minionTypes = {
+				"Frenzy Totem",
+				"Thorn Totem",
+				"StormTotem",
+				"HealingTotem",
+				"ClawTotem",
+				"TempestTotem",
+				"WarcryTotem",
+				"UpheavalTotem",
+			},
+		}) }
+	end,
+	-- @leb-regression-guard:ward-per-second-and-retention-family
+	-- Ward Per Second / Ward Retention / Ward Decay Threshold affix family.
+	-- 13 silent-failure entries: parser was emitting the bare stat with the
+	-- conditional residue left in slot[2], so the ward bonus leaked onto the
+	-- player's base ward stat unconditionally instead of being gated by the
+	-- referenced condition/multiplier. Each handler below maps to one
+	-- LEB-source tree node or unique mod text. Companion sites:
+	--   * ConfigOptions.lua  multiplierFirebrandStack + multiplierActiveSymbols
+	--     (Condition:HaveActiveSymbol)
+	--   * CalcSetup.lua      auto-populate Multiplier:AreaInc / ArmourInc /
+	--     UncappedResistTotal from sum INC / BASE on the relevant stats.
+	-- Spec: spec/System/TestWardRegenFamily_spec.lua
+	["^%+?(%d+) ward decay threshold per 2%% necro res$"] = function(num)
+		return { mod("WardDecayThreshold", "BASE", num, "", 0, 0, { type = "PerStat", stat = "NecroticResist", div = 2 }) }
+	end,
+	["^%+?(%d+) ward per second per 5%% uncapped resistances$"] = function(num)
+		return { mod("WardPerSecond", "BASE", num, "", 0, 0, { type = "Multiplier", var = "UncappedResistTotal", div = 5 }) }
+	end,
+	["^%+?(%d+)%% ward retention per 1%% increased area$"] = function(num)
+		return { mod("WardRetention", "BASE", num, "", 0, 0, { type = "Multiplier", var = "AreaInc" }) }
+	end,
+	["^%+?(%d+)%% ward retention per 100%% uncapped cold resistance$"] = function(num)
+		return { mod("WardRetention", "BASE", num, "", 0, 0, { type = "PerStat", stat = "ColdResist", div = 100 }) }
+	end,
+	["^%+?(%d+) ward per second with a catalyst$"] = function(num)
+		return { mod("WardPerSecond", "BASE", num, "", 0, 0, { type = "Condition", var = "UsingCatalyst" }) }
+	end,
+	["^%+?(%d+)%% ward retention on transform$"] = function(num)
+		return { mod("WardRetention", "BASE", num, "", 0, 0, { type = "Condition", var = "Transformed" }) }
+	end,
+	["^%+?(%d+) ward per second per 10 mana$"] = function(num)
+		return { mod("WardPerSecond", "BASE", num, "", 0, 0, { type = "PerStat", stat = "Mana", div = 10 }) }
+	end,
+	["^(%d+)%% ward retention from increased armor$"] = function(num)
+		return { mod("WardRetention", "BASE", num, "", 0, 0, { type = "Multiplier", var = "ArmourInc", div = 100 }) }
+	end,
+	["^(%d+) forged weapon ward per second$"] = function(num)
+		return { mod("MinionModifier", "LIST", {
+			mod = mod("WardPerSecond", "BASE", num),
+			type = "ForgedWeapon",
+		}) }
+	end,
+	["^(%d+) ward per second per stack$"] = function(num)
+		return { mod("WardPerSecond", "BASE", num, "", 0, 0, { type = "Multiplier", var = "FirebrandStack" }) }
+	end,
+	["^(%d+) ward regen per second$"] = function(num)
+		return { mod("WardPerSecond", "BASE", num) }
+	end,
+	["^(%d+) arcane shield ward per second$"] = function(num)
+		return { mod("WardPerSecond", "BASE", num, "", 0, 0, { type = "Condition", var = "HaveArcaneShield" }) }
+	end,
+	["^(%d+) holy symbol ward per second$"] = function(num)
+		return { mod("WardPerSecond", "BASE", num, "", 0, 0, { type = "Condition", var = "HaveActiveSymbol" }) }
 	end,
 	-- Julra's Obsession: stats on gloves also apply to minions.
 	-- Recognition only: marker mod consumed by CalcSetup to replicate
@@ -956,11 +1407,31 @@ local specialModList = {
 	["^%+?(%d+) maximum symbols?$"] = function(num)
 		return { mod("MaximumSymbols", "BASE", tonumber(num)) }
 	end,
-	-- Runemaster: Sanguine Runestones 6-point bonus
-	["^(%d+)%% of health regen also applies to ward$"] = function(num)
+	-- Boneclamor Barbute (unique helmet): "1 Ward per Second per 3% uncapped Necrotic Resistance"
+	-- @leb-regression-guard: boneclamor-barbute-ward-per-uncapped-necrotic-res
+	-- Game behaviour is floored at integer steps (matches LETools display). Like
+	-- Urzil's Pride, we cannot use a PerStat tag because ModStore.GetStat is
+	-- continuous (intentional; ModStore.lua:414). Emit a BASE stat that
+	-- CalcDefence reads after NecroticResistTotal is computed, floors div, and
+	-- adds the result directly to output.WardPerSecond (before the primary Ward
+	-- formula at CalcDefence.lua:432 consumes WardPerSecond).
+	["^(%d+) ward per second per 3%% uncapped necrotic resistance$"] = function(num)
+		return { mod("WardPerSecondPerUncappedNecroticRes_Per3", "BASE", tonumber(num)) }
+	end,
+
+	-- Runemaster: Sanguine Runestones 6-point bonus, and the
+	-- "Health Regen also applies to Ward" affix family on items
+	-- and idols. The `%+?` is critical: without it, the affix
+	-- form ("+2% Health Regen also applies to Ward", ...) fell
+	-- through to the generic "+N% health regen" handler and
+	-- silently emitted LifeRegen INC while the
+	-- LifeRegenAppliesToWard BASE that CalcDefence.lua:641, :796
+	-- consumes never fired.
+	-- @leb-regression-guard:health-regen-applies-to-ward-plus-prefix
+	["^%+?(%d+)%% of health regen also applies to ward$"] = function(num)
 		return { mod("LifeRegenAppliesToWard", "BASE", tonumber(num)) }
 	end,
-	["^(%d+)%% health regen also applies to ward$"] = function(num)
+	["^%+?(%d+)%% health regen also applies to ward$"] = function(num)
 		return { mod("LifeRegenAppliesToWard", "BASE", tonumber(num)) }
 	end,
 	-- Rusted Cleaver unique: Intelligence gains a value equal to Strength
@@ -985,6 +1456,210 @@ local specialModList = {
 	["^%+?([%d%.]+)%% increased damage for totems$"] = function(num)
 		return { mod("Damage", "INC", num, "", 0, 0, { type = "Scope", scope = "totem" }) }
 	end,
+
+	-- Lethal Mirage prefix family (idol affix, ModItem.json statOrder 537):
+	-- "+N Mirages created by Lethal Mirage" pairs with a Mana Efficiency
+	-- line on the same affix. Without this anchor the line parses to an
+	-- empty modList with empty residue -- the mirage-count half of the
+	-- affix silently produces nothing. The MirageCount BASE stat is the
+	-- F11 calc-consumer target (calcs.mirages in src/Modules/CalcMirages.lua
+	-- currently hardcodes a single mirage; F11 will read this stat).
+	-- @leb-regression-guard:mirages-created-by-lethal-mirage
+	["^%+?(%d+) mirages? created by lethal mirage$"] = function(num)
+		return { mod("MirageCount", "BASE", tonumber(num), "", 0, 0, { type = "SkillName", skillName = "Lethal Mirage" }) }
+	end,
+
+	-- Cooldown-recovered-on-hit family (2 known sources, both unique):
+	--   Black Blade of Chaos (uniqueID=339, Mod[4]): Lethal Mirage variant
+	--   Razorfall          (uniqueID=337, Mod[4]): Aerial Assault variant
+	-- Game-file source (dump.cs CharacterMutator):
+	--   L96718 lethalMirageRemainingCooldownRecoveredOnMeleeHitUpTo12TimesPerUse
+	--   L96712 chanceToRecover8pOfRemainingAerialAssaultCooldownOnThrowingHit
+	-- Both fields are plain floats on CharacterMutator with a private
+	-- "SinceLast<Skill>Use" int counter that resets on each cast of the
+	-- gating skill. The cap (12 / 3) is a const int per skill. Both
+	-- ModCache entries were silent-failure no-ops before this anchor.
+	--
+	-- v1 surface-only consumer: emit a paired
+	--   CooldownRecoveryOnHit          BASE pct (effective, chance-folded)
+	--   CooldownRecoveryOnHitMaxPerCast BASE cap (12 or 3)
+	-- both tagged with SkillName='<X>' so the breakdown row only shows
+	-- when the corresponding skill is the active calc target. Real
+	-- cooldown-projection math is deferred to v2 (would need per-cast
+	-- hit-window simulation; see open question in REGRESSION_GUARDS.md
+	-- entry cooldown-recovered-on-hit-consumer).
+	--
+	-- Razorfall's "(N)% chance to recover 8%" is folded into a single
+	-- effective value (chance * 8 / 100); the literal 8% is not stored
+	-- separately since the game's `chanceToRecover8p...` field is also
+	-- a single float (no per-source chance/value split).
+	-- @leb-regression-guard:cooldown-recovered-on-hit-consumer
+	-- Dispatch convention: specialMod(tonumber(cap[1]), unpack(cap)) so handlers
+	-- with N captures take (numericFirst, rawFirst, rawSecond, ...). For two
+	-- captures the cap-string is the THIRD arg, not the second.
+	["^%+?([%d%.]+)%% of lethal mirage's remaining cooldown recovered on melee hit %(up to (%d+) times%)$"] = function(_, pctStr, capStr)
+		return {
+			mod("CooldownRecoveryOnHit", "BASE", tonumber(pctStr), "", 0, 0, { type = "SkillName", skillName = "Lethal Mirage" }),
+			mod("CooldownRecoveryOnHitMaxPerCast", "BASE", tonumber(capStr), "", 0, 0, { type = "SkillName", skillName = "Lethal Mirage" }),
+		}
+	end,
+	-- @leb-regression-guard:cooldown-recovered-on-hit-consumer
+	["^%+?([%d%.]+)%% chance to recover 8%% of aerial assault's remaining cooldown on throwing hit %(up to (%d+) times%)$"] = function(_, chanceStr, capStr)
+		local effective = tonumber(chanceStr) * 8 / 100
+		return {
+			mod("CooldownRecoveryOnHit", "BASE", effective, "", 0, 0, { type = "SkillName", skillName = "Aerial Assault" }),
+			mod("CooldownRecoveryOnHitMaxPerCast", "BASE", tonumber(capStr), "", 0, 0, { type = "SkillName", skillName = "Aerial Assault" }),
+		}
+	end,
+
+	-- Tabi of Dusk and Dawn (uniqueID=458, body=3/3, boots): two paired
+	-- Shadow-Rend-specific descriptive lines that the game treats as pure
+	-- tooltip text -- there is no numerically scaling stat and no
+	-- CharacterMutator field backing either clause. Before this anchor both
+	-- lines were silent-failure no-ops: they parsed to empty modList with
+	-- the full residue string echoed back, which polluted ModCache and made
+	-- the unique appear partially unrecognized.
+	--
+	-- Why descriptive-only (not real wiring): "manifests a melee shadow + a
+	-- bow shadow" would require per-cast shadow-type composition (1 melee
+	-- slot + 1 bow slot for Shadow Rend specifically), and "no longer moves
+	-- you" is a behavior toggle on the player skill animation. Neither
+	-- maps onto F1 MaxShadows (integer count only) nor F3/F9
+	-- MinionType=ShadowClone (uniform shadow pool, no melee/bow split).
+	-- Combat-loop attribution is deferred; v1 is parser-anchored only so
+	-- the lines stop polluting ModCache and a future calc consumer can
+	-- attach by uniqueID without re-touching the parser.
+	-- Tabi of Dusk and Dawn (uniqueID=458, boots) carries two paired
+	-- Shadow Rend toggles. Game-file evidence (LE 1.4.6 dump.cs):
+	--
+	--   public bool shadowRendAlsoCastsOtherWeaponVersion; // 0x180B
+	--   public bool shadowRendNoPlayerMovement;            // 0x180C
+	--
+	-- Both are plain bool fields on CharacterMutator, sandwiched
+	-- between the lethalMirage* fields at L77720-77735 -- the same
+	-- section that backs the cooldown-recovered-on-hit-consumer guard.
+	-- Not pure descriptive: real toggles with measurable DPS effect
+	-- (dual-cast doubles the player's Shadow Rend swing by casting
+	-- both melee and bow ability variants; see ShadowRendMeleeMutator
+	-- and ShadowRendBowMutator cross-references in dump.cs L56914,
+	-- L57008 -- each holds a reference to the other variant's
+	-- mutator). ability_keyed_array.json (extracted/) confirms two
+	-- ability prefabs sharing playerAbilityID 'sh4re':
+	--   {key=-1115253059, unityObjectName="ShadowRend"}
+	--   {key=1439430948,  unityObjectName="ShadowRend Bow"}
+	--
+	-- v1 wiring:
+	--   - Parse both lines to FLAG mods tagged with
+	--     SkillName="Shadow Rend" (canonical SkillName per
+	--     CalcOffence.lua shadowAttackSkills allowlist).
+	--   - CalcOffence consumes ShadowRendAlsoCastsOtherWeaponVersion
+	--     as +100% MORE Damage when active skill is Shadow Rend
+	--     (surface approximation; the melee and bow variants have
+	--     non-identical damage rolls, so a v2 paired-cast computation
+	--     would be more accurate).
+	--   - ShadowRendNoPlayerMovement has no DPS-layer consumer
+	--     (movement behavior only); the FLAG is recorded so future
+	--     UI / config layers can surface it.
+	--
+	-- Flag names mirror the dump.cs field identifiers verbatim for
+	-- game-file authoritativeness.
+	-- @leb-regression-guard:tabi-of-dusk-and-dawn-flags
+	["^shadow rend no longer moves you$"] = function()
+		return { flag("ShadowRendNoPlayerMovement", { type = "SkillName", skillName = "Shadow Rend" }) }
+	end,
+	["^shadow rend always manifests a melee shadow in front of you and a bow shadow behind you$"] = function()
+		return { flag("ShadowRendAlsoCastsOtherWeaponVersion", { type = "SkillName", skillName = "Shadow Rend" }) }
+	end,
+
+	-- Orb Weaver's Fang (uniqueID=405, sword): single-source conditional
+	-- self-mult mod -- "+100% Stats on this item are doubled for 3 seconds
+	-- after hitting a boss or rare enemy that is low life". The semantics
+	-- require a per-item-scope multiplier that conditionally doubles every
+	-- OTHER mod emitted by THIS unique piece (the other 4 mod lines on
+	-- Orb Weaver's Fang: +Melee Damage, Crit, Movement Speed, Dodge
+	-- Rating). LEB has no per-item-scope multiplier infra today; the
+	-- closest precedent is the F4 ", doubled for shadow attack" trailing
+	-- clause (modTagList Condition+mult=2) which scopes by Condition tag
+	-- on the SAME mod line, not across sibling lines on the same item.
+	--
+	-- Even with the infra wired, the gate ("after hitting a boss or rare
+	-- enemy that is low life") is a transient 3s buff with a niche
+	-- trigger -- average DPS contribution would require a Config-tab
+	-- uptime input. v1 parser-only anchor matches the Tabi of Dusk and
+	-- Dawn / W6 Ward-per-Second-Duration precedent: recognise-but-emit-
+	-- nothing, clear the mangled residue, defer combat-loop attribution.
+	--
+	-- Pattern uses %d+ for the duration so future version bumps (3->5s
+	-- etc.) don't silently re-introduce the mangled residue. The leading
+	-- "+100%" is matched literally because the source line is hand-
+	-- authored on a single unique with no tier roll.
+	-- @leb-regression-guard:orb-weavers-fang-descriptive
+	["^%+?100%% stats on this item are doubled for %d+ seconds? after hitting a boss or rare enemy that is low life$"] = function() return {} end,
+
+	-- @leb-regression-guard:kuzons-fury-reforged-burning-dagger-chance
+	-- Kuzon's Fury Reforged (statOrderKey=961, 8 tiers, ModItem.json
+	-- L67773-L67890). Source line:
+	--   "+(N)% chance to throw a Burning Dagger when you use a melee
+	--    fire attack and hit at least one enemy, doubled for Dancing
+	--    Strikes (up to 4 times per second)"
+	--
+	-- Game-file evidence (LE 1.4.6 dump.cs):
+	--   L77400  public float burningDaggerChanceOnMeleeFire;
+	--             (on AbilityStatsMutatorManager -- per-skill stat
+	--              aggregator; THIS affix's exact target field)
+	--   L96248  public float chanceToThrowBurningDaggerOnHit;
+	--             (on CharacterMutator -- a *different* generic on-hit
+	--              version with its own ProcTimeTracker; not this affix)
+	--   L33670-L33715  BurningDaggerMutator (ability body)
+	--   L35408-L35546  DancingStrikes1..4Mutator family
+	--   ability_keyed_array.json  4 player variants share
+	--             abilityName="Dancing Strikes" (playerAbilityID
+	--             dacn33/34/36/37) -- skill identity, not condition tag.
+	--
+	-- Stat name `BurningDaggerChanceOnMeleeFire` is dump.cs L77400
+	-- verbatim (PascalCase'd). Game-file-authoritative naming per the
+	-- F11 MirageCount / cooldown-recovered guard precedent.
+	--
+	-- The trailing ", doubled for Dancing Strikes" clause is baked
+	-- into the mod tag list as Condition{DancingStrikes, mult=2}; the
+	-- CalcOffence-side condition gate (dancingStrikesSkills allowlist)
+	-- mirrors the F5 ShadowAttack skill-identity pattern.
+	--
+	-- The "(up to 4 times per second)" rate cap has no LEB infra today
+	-- (Limit / ProcTimeTracker family not modelled). v1 absorbs the
+	-- clause into the full-line anchor so the residue is consumed; the
+	-- chance value is surfaced without a per-second cap. A v2 Limit
+	-- infra task is spawned separately.
+	--
+	-- Tier 7 outlier (`{rounding:Integer}+(1-1.2)` with no `%`) is
+	-- deferred: it could be a fraction-representation (1.0=100%) per
+	-- the natural tier-6 (60-70%) -> tier-7 (100%) progression, or a
+	-- game-data typo. Until verified the tier-7 line emits no mod and
+	-- the mangled residue is cleared.
+	-- Design fork rationale:
+	--   Obsidian "Kuzon's Fury Reforged 設計フォーク.md"
+	-- @leb-regression-guard:proc-rate-limit-metadata-v1
+	-- The trailing "(up to 4 times per second)" clause is game-file-authoritative
+	-- runtime semantics (ProcTimeTracker; dump.cs L239352-L239378 class +
+	-- L33671-L33713 BurningDaggerMutator.burningDaggerOnMeleeFirePTT). The
+	-- per-PTT (limit, interval) pair is hardcoded in the C# Awake() init, NOT
+	-- parameterised in localisation (`Property_Ability_burningDagger_3_Name`
+	-- carries the suffix verbatim). The game exposes no planner-visible
+	-- effective-rate stat -- the cap is a runtime gate only -- so LEB
+	-- preserves the cap as passive metadata and does NOT compute equilibrium
+	-- procs/sec. The RateLimit tag is a no-op for value sums (no handler in
+	-- ModStore.lua `EvalMod`); CalcSections reads it for display only.
+	-- See REGRESSION_GUARDS.md "proc-rate-limit-metadata-v1".
+	["^%+?([%d%.]+)%% chance to throw a burning dagger when you use a melee fire attack and hit at least one enemy, doubled for dancing strikes %(up to 4 times per second%)$"] = function(num)
+		return { mod("BurningDaggerChanceOnMeleeFire", "BASE", num, "", 0, 0,
+			{ type = "Condition", var = "DancingStrikes", mult = 2 },
+			{ type = "RateLimit", limit = 4, interval = 1, var = "BurningDaggerOnMeleeFire" }) }
+	end,
+	-- Tier 7 outlier: `{rounding:Integer}+(1-1.2)` renders as "+1" after
+	-- integer rounding, no `%` suffix. Deferred until game-file semantics
+	-- are confirmed (fraction vs literal +1). Returning {} clears the
+	-- residue without emitting a mod; revisit in a follow-up task.
+	["^%+?1 chance to throw a burning dagger when you use a melee fire attack and hit at least one enemy, doubled for dancing strikes %(up to 4 times per second%)$"] = function() return {} end,
 }
 
 -- Escape Lua pattern specials (non-word chars)
@@ -1132,6 +1807,26 @@ specialModList["^%+?([%d%.]+)%% reap poison chance$"] = function(num)
 	return { mod("ChanceToTriggerOnHit_Ailment_Poison", "BASE", num, "", 0, 0, reaperFormTag) }
 end
 
+-- @leb-regression-guard:dusk-shroud-trigger-effect
+-- Doppelganger's Facade unique (uniques.json L10257 / set_1_4.json L301) carries the
+-- guaranteed-form mod line:
+--     "Consuming a Shadow grants a stack of Dusk Shroud"
+-- This is the 100%-chance counterpart to the chance-form Bladedancer affix family
+--     "+N% Chance to gain a stack of Dusk Shroud when you consume a Shadow"
+-- already locked by shadow-suffix-family C6c P8 (7 ModCache entries parse to
+-- ChanceToTriggerOnHit_Ailment_DuskShroud BASE with Condition:OnShadowConsume).
+-- Game-file backing: dump.cs L22771 `RogueShadow.duskShroudChanceOnConsumption`
+-- (field consumed inside `ConsumeShadow()` at L22808); dump.cs L123962
+-- `AilmentID DuskShroud = 82`. We emit the same stat as the chance form with
+-- BASE=100 + the OnShadowConsume condition tag, so the existing
+-- conditionOnShadowConsume Config toggle (ConfigOptions.lua L292) is the consumer
+-- surface — no new stat or accumulator needed. v2 deferred: per-cast stack limit
+-- (1 stack per consume) is not modelled here because the chance-form entries
+-- don't model it either; surface accuracy parity is intentional.
+specialModList["^consuming a shadow grants a stack of dusk shroud$"] = function()
+	return { mod("ChanceToTriggerOnHit_Ailment_DuskShroud", "BASE", 100, "", ModFlag.Hit, 0, { type = "Condition", var = "OnShadowConsume" }) }
+end
+
 -- Recognition-only catch-alls for remaining red-text idol patterns.
 -- These use broad (.+) captures and deliberately run AFTER the specific patterns above;
 -- scan() picks the longest match, so specific patterns still win when they apply.
@@ -1243,7 +1938,117 @@ local function spendGainedHandler(num, _, resource, target)
 	return nsAny(num)
 end
 specialModList["^%+?([%d%.]+)%% of (.+) spent gained as (.+)$"] = spendGainedHandler
+-- @leb-regression-guard:ward-per-n-seconds-tick
+-- Mage tree node "Decree of the Eternal Tundra" (Mage-94, tree_1.json L1900):
+--   stats = "+10 Ward Per 2 Seconds", description "You gain ward every 2 seconds."
+-- Modelled as a continuous WardPerSecond contribution with value = N / seconds
+-- (10 / 2 = 5 WPS) — the in-game tick granularity is invisible to the build
+-- planner's steady-state Ward calculation. Without this handler the BASE fell
+-- through to the bare `Ward` stat (max ward) with residue "  Per 2 Seconds ".
+-- (The notScalingStats "Doubled Effect with Heo Rune" rune-glyph mechanic is a
+-- separate concern and is NOT handled here.)
+specialModList["^%+?([%d%.]+) ward per (%d+) seconds?$"] = function(num, _, secondsStr)
+	local seconds = tonumber(secondsStr) or 1
+	if seconds <= 0 then seconds = 1 end
+	return { mod("WardPerSecond", "BASE", num / seconds) }
+end
+-- @leb-regression-guard:ward-regen-resource-conversion (parser site)
+-- Continuous resource→ward conversion affixes (multi_affix 58051/59006/59414):
+--     "X% of Missing Health gained as Ward per second"  → MissingHealthGainedAsWardPerSecond
+--     "X% of Current Mana gained as Ward per second"    → CurrentManaGainedAsWardPerSecond
+-- Also accept the bare "+X% Y gained as Z per second" form (no "of") used by
+-- some uniques/idols. CalcPerform post-offence folds these into WardPerSecond
+-- using output.LifeUnreserved/ManaUnreserved (with Multiplier:MissingHealthPercent
+-- driving the missing-health share). See REGRESSION_GUARDS.md
+-- "ward-regen-resource-conversion".
+specialModList["^%+?([%d%.]+)%% of missing health gained as ward per second$"] = function(num)
+	return { mod("MissingHealthGainedAsWardPerSecond", "BASE", num) }
+end
+specialModList["^%+?([%d%.]+)%% missing health gained as ward per second$"] = function(num)
+	return { mod("MissingHealthGainedAsWardPerSecond", "BASE", num) }
+end
+specialModList["^%+?([%d%.]+)%% of current mana gained as ward per second$"] = function(num)
+	return { mod("CurrentManaGainedAsWardPerSecond", "BASE", num) }
+end
+specialModList["^%+?([%d%.]+)%% current mana gained as ward per second$"] = function(num)
+	return { mod("CurrentManaGainedAsWardPerSecond", "BASE", num) }
+end
+-- @leb-regression-guard:ward-on-block-resource-conversion (parser site)
+-- Event-driven resource→ward conversion on block (multi_affix 963 "Added Block
+-- Chance and Current Mana gained as Ward on Block", Shield prefix). Both the
+-- "X% of Current Mana gained as Ward on Block" and the bare "+X% Current Mana
+-- gained as Ward on Block" forms appear; without these patterns the latter is
+-- mis-parsed as Mana INC + Condition:Blocking (see ModCache stale entries) and
+-- the former falls through to LEB_NotSupported. CalcDefence consumes the mod
+-- after Mana is finalised. See REGRESSION_GUARDS.md "ward-on-block-resource-conversion".
+specialModList["^%+?([%d%.]+)%% of current mana gained as ward on block$"] = function(num)
+	return { mod("CurrentManaGainedAsWardOnBlock", "BASE", num) }
+end
+specialModList["^%+?([%d%.]+)%% current mana gained as ward on block$"] = function(num)
+	return { mod("CurrentManaGainedAsWardOnBlock", "BASE", num) }
+end
+-- @leb-regression-guard:ward-stop-moving-config-amortize (parser site)
+-- Event-driven resource→ward conversion on stop moving (Transient Rest unique,
+-- "(40-60)% of Current Mana gained as Ward when you stop moving (2 second
+-- cooldown)"). Game-side field `Character.currentManaGainedAsWardOnStopMoving`
+-- (dump.cs L95850, offset 0xDB0) with const cooldown 2s (L95851). Distinct
+-- from `currentManaGainedAsWardPerSecond` (L95820, offset 0xD38, continuous).
+-- Before this pattern the line fell through to LEB_NotSupported (silent
+-- failure: see ModCache L15263). The contribution is gated by Config tab
+-- `conditionStoppedMoving` and amortized as `currentMana * pct / 100 / 2` in
+-- CalcPerform's post-offence ward fold-in (only when the Condition is on).
+-- See REGRESSION_GUARDS.md "ward-stop-moving-config-amortize".
+specialModList["^%+?([%d%.]+)%% of current mana gained as ward when you stop moving %(2 second cooldown%)$"] = function(num)
+	return { mod("CurrentManaGainedAsWardOnStopMoving", "BASE", num) }
+end
+specialModList["^%+?([%d%.]+)%% current mana gained as ward when you stop moving %(2 second cooldown%)$"] = function(num)
+	return { mod("CurrentManaGainedAsWardOnStopMoving", "BASE", num) }
+end
+-- Defensive: cooldown-suffix-stripped variants (in case future data drops the
+-- parenthetical; game text currently always includes it).
+specialModList["^%+?([%d%.]+)%% of current mana gained as ward when you stop moving$"] = function(num)
+	return { mod("CurrentManaGainedAsWardOnStopMoving", "BASE", num) }
+end
+specialModList["^%+?([%d%.]+)%% current mana gained as ward when you stop moving$"] = function(num)
+	return { mod("CurrentManaGainedAsWardOnStopMoving", "BASE", num) }
+end
+-- @leb-regression-guard:ward-on-potion-use-resource-conversion (parser site)
+-- Event-driven resource→ward conversion on potion use.
+--   * "X% [of] Missing Health gained as Ward on Potion Use" — Shield/idol affix
+--     (multi_affix 57778 "Maximum Potion Slots and Missing Health gained as Ward
+--     on Potion Use" and similar). Before this pattern the bare `+N%` form was
+--     mis-parsed as Life INC (silent failure; see ModCache stale entries).
+--   * "X% [of] Potion Health Converted to Ward" — idol affix (multi_affix 43665).
+--     The "of potion health converted to ward" keyword exists in modNameList
+--     but the generic `% of X converted to Y` handler (attrConvertedHandler)
+--     intercepts first and falls through to LEB_NotSupported. Explicit pattern
+--     here wins by being listed before the generic converted-to handler.
+-- CalcDefence consumes these after Life is finalised. See REGRESSION_GUARDS.md
+-- "ward-on-potion-use-resource-conversion".
+specialModList["^%+?([%d%.]+)%% of missing health gained as ward on potion use$"] = function(num)
+	return { mod("MissingHealthGainedAsWardOnPotionUse", "BASE", num) }
+end
+specialModList["^%+?([%d%.]+)%% missing health gained as ward on potion use$"] = function(num)
+	return { mod("MissingHealthGainedAsWardOnPotionUse", "BASE", num) }
+end
+specialModList["^%+?([%d%.]+)%% of potion health converted to ward$"] = function(num)
+	return { mod("PotionHealthConvertedToWard", "BASE", num) }
+end
+specialModList["^%+?([%d%.]+)%% potion health converted to ward$"] = function(num)
+	return { mod("PotionHealthConvertedToWard", "BASE", num) }
+end
 specialModList["^%+?([%d%.]+)%% of (.+) gained as (.+)$"] = nsAny
+-- "X% Endurance Threshold added as Ward Decay Threshold" — gear/idol affix that
+-- adds a percentage of the player's *final* Endurance Threshold to Ward Decay
+-- Threshold. Emits EnduranceThresholdAddedAsWardDecayThreshold (BASE %); CalcPerform
+-- consumes it after EnduranceThreshold is computed and before WardDecayThreshold.
+-- Examples: ModItem_1_4.json L117953-118028 (8/9/10/11/12/14/15%), uniques 1_4 L7162.
+specialModList["^%+?([%-%d%.]+)%% endurance threshold added as ward decay threshold$"] = function(num)
+	return { mod("EnduranceThresholdAddedAsWardDecayThreshold", "BASE", num) }
+end
+specialModList["^%+?([%-%d%.]+)%% of endurance threshold added as ward decay threshold$"] = function(num)
+	return { mod("EnduranceThresholdAddedAsWardDecayThreshold", "BASE", num) }
+end
 -- Season 4 (1.4) attribute → mastery conversion. e.g. "100% of Strength Converted
 -- to Brutality" on corrupted-affix unique amulets (1083_*..1087_*). Emits the
 -- *ConvertedTo* mod that CalcPerform reads to move points from base attribute
@@ -1282,6 +2087,32 @@ local function attrConvertedHandler(num, _, src, dst)
 	return nsAny(num)
 end
 specialModList["^%+?([%d%.]+)%% of (.+) converted to (.+)$"] = attrConvertedHandler
+
+-- @leb-regression-guard: game-faithful-parry-conversion
+-- "+N Block Chance converted to Parry Chance while not wielding a shield" — the only
+-- known source is the unique sword `Clotho's Needle` (uniques_1_4.json #417, mod text
+-- "+1 Block Chance converted to Parry Chance while not wielding a shield"). Game-faithful
+-- behavior per GameAssembly.dll decompile (LE_datamining/extracted/block_decompile.txt):
+--   * Property #531 `playerPropertyBlockChanceConvertedToParryWithoutShield` is a bool
+--     set unconditionally by the mod; when set AND no shield, blockConversion=Parry.
+--   * `blockChanceForCharacterSheet` (RVA 0x2344f70) returns 0 when blockConversion!=None.
+--   * `parryChanceForCharacterSheet` (RVA 0x2345390) when blockConversion==Parry returns
+--     min(blockBase, maxBlock) + parryBonus, capped at ParryCap (75).
+-- Implementation: emit BlockChance BASE +N (unconditional, joins regular block pool)
+-- AND a FLAG mod `BlockChanceConvertedToParryWithoutShield`. CalcDefence checks the
+-- flag + UsingShield condition and routes Block→Parry per the decompile semantics.
+-- Note: ModCache.lua L1325 previously parsed this as a stray "+1 BlockChance BASE"
+-- mod with residual extra "converted to Parry Chance while not wielding a shield" —
+-- the residual was non-connector so Item.lua processModLine silently dropped the
+-- entire mod (no current build was affected). This explicit handler consumes the
+-- whole string and produces the correct conversion semantics.
+-- Spec: spec/System/TestParryConversion_spec.lua
+specialModList["^%+?(%-?[%d%.]+) block chance converted to parry chance while not wielding a shield$"] = function(num)
+	return {
+		mod("BlockChance", "BASE", num),
+		flag("BlockChanceConvertedToParryWithoutShield"),
+	}
+end
 
 -- "N <resource> gained when you use <skill>" variants (already covered per-skill above,
 -- but catch unknown-skill phrasing as recognition-only)
@@ -1388,11 +2219,88 @@ for _lowerCh, _canonicalCh in pairs(skillNameByLower) do
 		specialModList["^%+?([%d%.]+) ward per second while channell?ing " .. _escCh .. "$"] = function(num)
 			return { mod("WardPerSecond", "BASE", num, "", 0, 0, { type = "Condition", var = _condVar }) }
 		end
+		-- @leb-regression-guard:skill-grants-ward-per-second
+		-- "<Skill> Grants Ward Gain Per Second" — Rune Master Disintegrate node
+		-- (tree_1.json L10164 "Runes of Disintegration", stat "+40 Disintegrate
+		-- Grants Ward Gain Per Second"). Description gates the effect on
+		-- "channelling Disintegrate while standing on your Glyph"; the build
+		-- planner models the steady state by gating on Channelling<Skill> only —
+		-- the on-Glyph sub-condition is the player's intended play pattern and is
+		-- consistent with how other channelling-WPS handlers ignore positional
+		-- sub-conditions. Without this handler the line fell through to
+		-- name="Ward" (max ward) with residue "  Grants  Gain Per Second ".
+		specialModList["^%+?([%d%.]+) " .. _escCh .. " grants ward gain per second$"] = function(num)
+			return { mod("WardPerSecond", "BASE", num, "", 0, 0, { type = "Condition", var = _condVar }) }
+		end
 	end
 end
 -- Fallback: unknown stat/skill combos still get recognised (but flagged unsupported).
 specialModList["^%+?([%d%.]+)%% (.+) while channelling (.+)$"] = nsAny
 specialModList["^%+?([%d%.]+) (.+) while channelling (.+)$"] = nsAny
+
+-- @leb-regression-guard:health-per-second-channelling
+-- Acolyte/Sentinel-style "Focus" channelled-skill tree node "Inner Growth"
+-- (Mage tree_1.json L17197 "vm53dx-14"):
+--     stats: "6 Health Per Second"
+--     description: "Focus heals the target each second while channeled."
+--     reminderText: "This effect is affected by increased healing effectiveness."
+-- Before this guard the line fell through to `name="Life"` BASE=6 with
+-- residue "  Per Second " — silently granting +6 *max* Health, completely
+-- unrelated to the actual mechanic. The fix routes the bare "+N Health Per
+-- Second" form to LifeRegen BASE=N gated on Condition:Channelling so the
+-- regen only contributes while the player is channelling (CalcPerform sets
+-- the condition from mainSkill type, and the Config tab "Are you
+-- Channelling?" toggle lets the user dial in the steady state).
+specialModList["^%+?([%d%.]+) health per second$"] = function(num)
+	return { mod("LifeRegen", "BASE", num, "", 0, 0, { type = "Condition", var = "Channelling" }) }
+end
+
+-- @leb-regression-guard:minion-health-regen-per-second
+-- Acolyte tree node "Blood Armor" (tree_3.json Acolyte-21) scaling stat is
+--     "+6 Minion Health Regen Per Second"
+-- (analogous +2 entry exists in 1_2 tree_3.json). The "Minion" prefix routes
+-- to MinionModifier and "Health Regen" maps to LifeRegen via nameMap, but the
+-- trailing "Per Second" survives as residue. modLib.parseMod sets
+-- node.extra=true on residue and PassiveTree.lua silently drops the entire
+-- mod from modDB — losing 6×ranks of minion regen on every Necromancer/
+-- Lich/Warlock build that takes Blood Armor.
+--
+-- Triangulation case (g1 BxvJP3g1 lv99 Necromancer, Acolyte-21#8):
+--   expected: +48 Minion Health Regen → output.MinionLifeRegen = 186 + 48 = 234
+--   observed (pre-fix): MinionLifeRegen = 186 (Pebbles' Collar only)
+--   LETools Minion tab: Health Regen = 234. Δ matches the missing node grant.
+--
+-- Routes the bare "+N Minion Health Regen Per Second" form directly to a
+-- MinionModifier LIST wrapping LifeRegen BASE=N, consuming the full line so
+-- no residue remains. Mirrors the existing +N Minion Health Regen path
+-- (which works because no "per second" suffix is present).
+-- Spec: spec/System/TestMinionHealthRegenPerSecond_spec.lua
+specialModList["^%+?(%d+) minion health regen per second$"] = function(num)
+	return { mod("MinionModifier", "LIST", { mod = mod("LifeRegen", "BASE", num) }) }
+end
+specialModList["^%+?(%d+) minion life regen per second$"] = function(num)
+	return { mod("MinionModifier", "LIST", { mod = mod("LifeRegen", "BASE", num) }) }
+end
+
+-- @leb-regression-guard:channelling-per-second-stacking-buff
+-- Channelling-stacking-buff "Per Second" Damage nodes such as
+--   Smelter's Wrath "+5% Damage Per Second" (tree_2.json L14336)
+--   Flurry "Accelerating Impact" "+3% Damage Per Second" (flur3-14)
+--   Volcanic Orb "+20% Damage Per Second" (tree_2.json va53st-19)
+-- gain a stack each second while the player is channelling, granting
+-- +N% MORE Damage per stack. Before this guard the bare form fell
+-- through to a flat `Damage MORE` with residue "  Per Second " —
+-- silently granting the full N% MORE Damage unconditionally,
+-- independent of channelling state or stack count.
+--
+-- The fix routes the bare "+N% damage per second" form to
+-- `Damage MORE` gated on Condition:Channelling AND multiplied by
+-- Multiplier:ChannellingSeconds (Config tab "# of Channelling
+-- Seconds"). The result is N% MORE Damage × seconds while channelling
+-- and 0 otherwise.
+specialModList["^%+?([%d%.]+)%% damage per second$"] = function(num)
+	return { mod("Damage", "MORE", num, "", 0, 0, { type = "Condition", var = "Channelling" }, { type = "Multiplier", var = "ChannellingSeconds" }) }
+end
 
 -- 5. Mitigation-also-applies-to-DoT (armor/resist mitigation crossover)
 specialModList["^%+?([%d%.]+)%% (.+) mitigation also applies to damage over time per (.+)$"] = nsAny
@@ -1996,6 +2904,16 @@ end
 local function parseMod(line, order)
 	-- Strip leading/trailing whitespace
 	line = line:match("^%s*(.-)%s*$") or line
+	-- @leb-regression-guard:dodge-more-multiplier (parser site)
+	-- Strip purely decorative "(multiplicative with other modifiers)" suffix/inline
+	-- so the parser's "extra" residue stays empty. PassiveTree.lua skips mods with
+	-- non-empty extra (`if mod.list and not mod.extra`), which dropped the
+	-- Bladedancer ascendancy "15% more dodge rating (multiplicative...)" entirely
+	-- from modDB. Without this strip the parser returns extra=" (multiplicative
+	-- with other modifiers) " and the MORE Evasion mod never reaches the calc.
+	-- Spec: spec/System/TestDodgeMoreMultiplier_spec.lua
+	line = line:gsub("%s*%(multiplicative with other modifiers%)%s*", " ")
+	line = line:match("^%s*(.-)%s*$") or line
 	-- Check if this is a special modifier
 	local lineLower = line:lower()
 	if unsupportedModList[lineLower] then
@@ -2108,7 +3026,17 @@ local function parseMod(line, order)
 	-- Fallback: if no modName found but a skill name was matched, treat as skill level
 	-- This handles "+X to [SkillName]" patterns (e.g. "+4 to Erasing Strike")
 	-- skillTag already provides the SkillName tag, so just set the mod name
-	if not modName and modForm == "BASE" and skillTag and skillTag.tag and skillTag.tag.type == "SkillName" then
+	-- @leb-regression-guard:shadow-suffix-family-c6f-followup-f12
+	-- Strict residue gate: only fire when the remaining line is whitespace-
+	-- only (clean "+N to <Skill>" or "+N <Skill>" form). If there's
+	-- non-whitespace residue the skill name appeared in a descriptive
+	-- context (e.g. "+1 Additional <Skill> Casts", "+1 <Skill> Stacks",
+	-- "+1 <Skill> is a quick attack...") and the mod is NOT a skill-level
+	-- grant. Documented follow-up: ~287 existing ModCache entries still
+	-- carry the wrong SkillLevel mod from before this gate landed; they
+	-- need a separate sweep to reclassify (Stacks / Charges / Conversion
+	-- / flag mods).
+	if not modName and modForm == "BASE" and skillTag and skillTag.tag and skillTag.tag.type == "SkillName" and line:match("^%s*$") then
 		modName = "SkillLevel"
 	end
 
@@ -2249,7 +3177,17 @@ local function parseMod(line, order)
 				modList[i] = mod("ExtraAura", "LIST", { mod = effectMod, onlyAllies = misc.newAuraOnlyAllies }, unpack(tagList))
 			end
 		elseif misc.addToMinion then
-			-- Minion modifiers
+			-- @leb-regression-guard:minion-modifier-type-narrowing
+			-- Minion modifiers. Optional `misc.addToMinionType` (single string) or
+			-- `misc.addToMinionTypes` (array of strings) narrows dispatch to the
+			-- named env.minion.type(s); without them the mod fires for any minion.
+			-- This is the assembly-side counterpart of the `value.type` /
+			-- `value.minionTypes` gate in CalcPerform.lua (guard
+			-- `minion-modifier-multi-type-gate`). F3+F9 use this to route
+			-- Shadow-specific suffix mods ("for skills used by Shadows",
+			-- "Shadow Damage") into ShadowClone only, instead of leaking onto
+			-- the player or every minion.
+			-- Spec: spec/System/TestMinionModifierTypeNarrowing_spec.lua
 			for i, effectMod in ipairs(modList) do
 				local tagList = { }
 				if misc.playerTag then t_insert(tagList, misc.playerTag) end
@@ -2259,7 +3197,10 @@ local function parseMod(line, order)
 						t_insert(tagList, tag)
 					end
 				end
-				modList[i] = mod("MinionModifier", "LIST", { mod = effectMod }, unpack(tagList))
+				local minionValue = { mod = effectMod }
+				if misc.addToMinionType then minionValue.type = misc.addToMinionType end
+				if misc.addToMinionTypes then minionValue.minionTypes = misc.addToMinionTypes end
+				modList[i] = mod("MinionModifier", "LIST", minionValue, unpack(tagList))
 			end
 		elseif misc.addToSkill then
 			-- Skill enchants or socketed gem modifiers that add additional effects

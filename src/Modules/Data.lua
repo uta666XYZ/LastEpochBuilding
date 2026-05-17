@@ -669,21 +669,67 @@ for _, ver in ipairs(treeVersionList) do
 			if not mod.modName then mod.modName = "" end
 		end
 	end
-	-- Build flat lookup for idol affixes (merged general/enchanted/corrupted/weaver)
+	-- Build flat lookup for idol affixes (merged general/enchanted/corrupted/weaver).
+	-- Tag each entry with `specialAffixType` based on its source section so the
+	-- Idol Altar refracted-slot boost can apply the correct boost type per LE's
+	-- `AffixList.SpecialAffixType` enum (Standard=0, IdolEnchantment=4, IdolWeaver=5,
+	-- Corrupted=6). See: dump.cs L164699-164710 and the
+	-- `IsAffectedByAffectOfStandardPrefixesOrSuffixes` extension method which
+	-- gates standard P/S effect boosts on Standard-typed affixes only.
 	if verIdolMods then
+		local sectionToSpecial = {
+			general   = "Standard",
+			enchanted = "IdolEnchantment",
+			corrupted = "Corrupted",
+			weaver    = "IdolWeaver",
+		}
 		local flat = {}
-		for _, entries in pairs(verIdolMods) do
+		for sectionName, entries in pairs(verIdolMods) do
 			if type(entries) == "table" then
+				local specialTag = sectionToSpecial[sectionName]
 				for k, v in pairs(entries) do
-					if type(v) == "table" then flat[k] = v end
+					if type(v) == "table" then
+						if specialTag and not v.specialAffixType then
+							v.specialAffixType = specialTag
+						end
+						flat[k] = v
+					end
 				end
 			end
 		end
+		-- @leb-regression-guard:idol-affix-tier-fallback
+		-- ModIdol_<ver>.json currently stores only tier 0 (`_0`) for every
+		-- affix. Idols can roll higher tiers (enchanted T1..T7, etc.); without
+		-- fallback those lookups return nil and the affix contributes zero.
+		-- Chain `flat` to ModItem so a missed tier-N idol lookup transparently
+		-- resolves to the ModItem entry (which carries the per-tier raw scaling).
+		-- Idol-specific corrections (e.g. 1070_0 All Resistances ModIdol +5%
+		-- vs ModItem +1%) still take precedence because `flat` is consulted
+		-- first. See REGRESSION_GUARDS.md "idol-affix-tier-fallback".
+		setmetatable(flat, { __index = verMods })
 		verIdolMods.flat = flat
 	end
 	local verBaseLists, verBaseTypeList = buildItemBaseLists(verBases or {})
+	-- @leb-regression-guard:idol-affix-source-and-formula
+	-- Idol affix entries live in ModIdol_<ver>.json (not ModItem). Register every
+	-- idol base type to point at verIdolMods.flat so Item.lua's affix lookup
+	-- (self.base.type → data.itemMods[type]) resolves to idol affix data rather
+	-- than falling back to data.itemMods.Item (the body-armor/weapon table) where
+	-- shared affix IDs have different raw values. e.g. affix 1070_0 All Resistances:
+	-- ModItem raw "+1%" (legacy/wrong); ModIdol raw "+5%" (correct, matches LE).
+	-- See REGRESSION_GUARDS.md "idol-affix-source-and-formula".
+	local idolFlat = verIdolMods and verIdolMods.flat or nil
+	local itemModsTable = { Item = verMods or {}, ["Idol Altar"] = verAltarMods or {} }
+	if idolFlat then
+		for _, idolType in ipairs({
+			"Small Idol", "Minor Idol", "Humble Idol", "Stout Idol",
+			"Grand Idol", "Large Idol", "Adorned Idol", "Ornate Idol", "Huge Idol",
+		}) do
+			itemModsTable[idolType] = idolFlat
+		end
+	end
 	data.versionData[ver] = {
-		itemMods         = { Item = verMods or {}, ["Idol Altar"] = verAltarMods or {} },
+		itemMods         = itemModsTable,
 		itemBases        = verBases   or {},
 		itemBaseLists    = verBaseLists,
 		itemBaseTypeList = verBaseTypeList,

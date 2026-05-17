@@ -1764,6 +1764,15 @@ function SkillsTabClass:DrawSpecSlots(viewPort, inputEvents, startY)
 		end
 
 		-- Buff skill enabled toggle (below damage type icons)
+		-- @leb-regression-guard: skills-tab-buff-toggle-config-sync
+		-- For "while-active" buffs and Form skills whose treeId appears in
+		-- LE_WHILE_ACTIVE_BUFF_BY_TREE_ID (Flame Ward, Werebear/Spriggan/Swarmblade/
+		-- Reaper Form, Eterra's Blessing), the toggle is a duplicate UI for the
+		-- corresponding ConfigTab "condition<X>" checkbox — both write to the same
+		-- build.configTab.input[var] entry, so flipping either updates the other on
+		-- the next frame and CalcSetup's gating (CalcSetup.lua:1618) sees a single
+		-- source of truth. For other buff skills (no registry entry), the toggle
+		-- keeps its original semantics of flipping sg.enabled directly.
 		if sg then
 			local ge = sg.grantedEffect
 			if ge and ge.skillTypes and ge.skillTypes[SkillType.Buff] then
@@ -1771,8 +1780,21 @@ function SkillsTabClass:DrawSpecSlots(viewPort, inputEvents, startY)
 				local toggleY = sy + SLOT_SIZE + 4 + 14 + 2  -- below damage type icons
 				local toggleX = sx + m_floor((SLOT_SIZE - TW) / 2)
 
-				-- Draw iOS-style toggle sprite
-				local isEnabled = sg.enabled ~= false
+				-- Resolve sync target: condition<X> input var when the skill's
+				-- treeId is in the while-active registry, otherwise nil (fall back
+				-- to sg.enabled).
+				local condName = ge.treeId and LE_WHILE_ACTIVE_BUFF_BY_TREE_ID and LE_WHILE_ACTIVE_BUFF_BY_TREE_ID[ge.treeId]
+				local configInput = self.build.configTab and self.build.configTab.input
+				local configVar = condName and ("condition" .. condName) or nil
+
+				-- Draw iOS-style toggle sprite — for registry skills read from
+				-- ConfigTab input so ConfigTab-side toggles propagate visually here.
+				local isEnabled
+				if configVar and configInput then
+					isEnabled = configInput[configVar] and true or false
+				else
+					isEnabled = sg.enabled ~= false
+				end
 				local toggleSprite = self:GetSpriteHandle(isEnabled and "toggle_on" or "toggle_off")
 				SetDrawColor(1, 1, 1)
 				if toggleSprite then
@@ -1785,7 +1807,17 @@ function SkillsTabClass:DrawSpecSlots(viewPort, inputEvents, startY)
 				if toggleHover then
 					for id, event in ipairs(inputEvents) do
 						if event.type == "KeyUp" and event.key == "LEFTBUTTON" then
-							sg.enabled = not isEnabled
+							if configVar and configInput then
+								configInput[configVar] = not isEnabled
+								-- Rebuild ConfigTab mod list so Condition:<X> FLAG is
+								-- emitted on this frame (mirrors ConfigTab.lua:200 click
+								-- handler behaviour for the same checkbox).
+								if self.build.configTab.BuildModList then
+									self.build.configTab:BuildModList()
+								end
+							else
+								sg.enabled = not isEnabled
+							end
 							self:AddUndoState()
 							self.build.buildFlag = true
 							inputEvents[id] = nil

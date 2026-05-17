@@ -315,7 +315,7 @@ local function doActorAttribsConditions(env, actor)
 			conv.convertedAmount = 0
 		end
 	end
-	-- @leb-regression-guard: id:s4-perstat-base-includes-converted-twin
+	-- @leb-regression-guard:s4-perstat-base-includes-converted-twin
 	-- Mirror post-conversion base attributes as Raw* values. The intrinsic
 	-- character +4% Armour / +4 Evasion / +2 WardRetention / +2 Mana / +6
 	-- Life / +1 PoisonResist / +1 NecroticResist registered in CalcSetup
@@ -504,8 +504,104 @@ function calcs.perform(env, fullDPSSkipEHP)
 	doActorLifeMana(env.player)
 	if env.minion then
 		for _, value in ipairs(env.player.mainSkill.skillModList:List(env.player.mainSkill.skillCfg, "MinionModifier")) do
-			if not value.type or env.minion.type == value.type then
-				env.minion.modDB:AddMod(value.mod)
+			-- @leb-regression-guard:minion-modifier-multi-type-gate
+			-- Dispatch matches when:
+			--   (1) no type/minionTypes filter → applies to all minions, OR
+			--   (2) value.type matches env.minion.type, OR
+			--   (3) value.minionTypes is a non-empty array containing env.minion.type
+			-- Path (3) supports "for Skeletons" idol/item affixes (prefix 313 in
+			-- src/Data/ModItem_1_4.json) that should hit multiple minion-family
+			-- members (SummonedSkeleton + Archer/Harvester/Vanguard/Rogue) with a
+			-- single MinionModifier mod. Before this guard the bare CritChance
+			-- parse leaked the +N% onto the PLAYER's crit chance instead of any
+			-- minion. Mirror site below in this file (~line 1164) must stay in sync.
+			local pass = (not value.type and not value.minionTypes)
+				or (value.type and env.minion.type == value.type)
+			if not pass and value.minionTypes then
+				for _, mt in ipairs(value.minionTypes) do
+					if env.minion.type == mt then pass = true; break end
+				end
+			end
+			if pass then
+				-- @leb-regression-guard:minion-modifier-perstat-parent-actor
+				-- LE minions don't carry primary attributes (Vit/Str/Dex/
+				-- Int/Att) of their own — those stats live on the player.
+				-- Tree passives like Acolyte-59's `notScalingStats`
+				--   "2% Increased Minion Armor Per Intelligence"
+				-- parse as a MinionModifier whose inner mod carries a
+				-- PerStat:Int tag. When the inner mod lands on
+				-- env.minion.modDB and ModStore L398 resolves PerStat,
+				-- `target = self` defaults to minion.modDB and
+				-- GetStat("Int") returns 0, zeroing the 86% INC that
+				-- LETools shows for BxvJP3g1 lv99 Necromancer (player
+				-- Int=43, 2% × 43 = 86%).
+				--
+				-- Inject `actor = "parent"` on PerStat tags that target
+				-- a primary attribute and don't already carry an explicit
+				-- actor binding, so the resolve routes through
+				-- minion.actor.parent.modDB (= env.player.modDB) and
+				-- LE's "Per <Attr>" wording matches game semantics.
+				--
+				-- Copy the mod (and the affected tags) before mutating
+				-- so shared references in skillModList stay clean across
+				-- minions and re-runs.
+				local injected = value.mod
+				local copied = false
+				local buffSwap = nil -- { tagIndex, condVar } when SkillId→ActorCondition swap is needed
+				for ti, tag in ipairs(value.mod) do
+					if tag.type == "PerStat" and not tag.actor then
+						local routeToParent = false
+						if tag.stat and LE_MINION_PERSTAT_PARENT_ATTRS[tag.stat] then
+							routeToParent = true
+						elseif tag.statList then
+							for _, s in ipairs(tag.statList) do
+								if LE_MINION_PERSTAT_PARENT_ATTRS[s] then
+									routeToParent = true
+									break
+								end
+							end
+						end
+						if routeToParent then
+							if not copied then
+								injected = copyTable(value.mod, true)
+								copied = true
+							end
+							injected[ti] = copyTable(tag)
+							injected[ti].actor = "parent"
+						end
+					end
+					-- @leb-regression-guard:minions-have-dread-shade-buff-gating
+					-- Detect SkillId tags belonging to buff-skills whose
+					-- effect lives on a per-target Buff Component in-game
+					-- (e.g. Dread Shade's DreadShadeMutator.auraStats,
+					-- dump.cs L38327-38446). In LE the contribution is
+					-- conditioned on whether the *individual minion*
+					-- actually carries the buff Component, not on which
+					-- skill the calc is currently scoped to. ModStore.lua
+					-- L750-753, however, treats SkillId tags as a hard
+					-- "only resolve when calc cfg matches this skill"
+					-- filter, which silently zeroes Martyrdom's
+					-- "30 Minion Armour per Vitality" on every minion
+					-- because the minion-side calc cfg isn't scoped to
+					-- DreadShade. Replacing the SkillId tag in-place with
+					-- an ActorCondition tag (actor="parent") routes the
+					-- gating through the player's modDB Condition flag —
+					-- which is closer to LE's Buff Component model and
+					-- exposes the contribution as a togglable row in the
+					-- minion breakdown. Default OFF → existing snapshots
+					-- unchanged.
+					if tag.type == "SkillId" and tag.skillId and LE_MINION_BUFF_SKILL_TO_CONDITION[tag.skillId] then
+						buffSwap = { ti = ti, condVar = LE_MINION_BUFF_SKILL_TO_CONDITION[tag.skillId] }
+					end
+				end
+				if buffSwap then
+					if not copied then
+						injected = copyTable(value.mod, true)
+						copied = true
+					end
+					injected[buffSwap.ti] = { type = "ActorCondition", actor = "parent", var = buffSwap.condVar }
+				end
+				env.minion.modDB:AddMod(injected)
 			end
 		end
 		for _, name in ipairs(env.minion.modDB:List(nil, "Keystone")) do
@@ -1162,7 +1258,15 @@ function calcs.perform(env, fullDPSSkipEHP)
 		end
 		if env.minion then
 			for _, value in ipairs(modList:List(env.player.mainSkill.skillCfg, "MinionModifier")) do
-				if not value.type or env.minion.type == value.type then
+				-- @leb-regression-guard:minion-modifier-multi-type-gate (mirror)
+				local pass = (not value.type and not value.minionTypes)
+					or (value.type and env.minion.type == value.type)
+				if not pass and value.minionTypes then
+					for _, mt in ipairs(value.minionTypes) do
+						if env.minion.type == mt then pass = true; break end
+					end
+				end
+				if pass then
 					env.minion.modDB:AddMod(value.mod)
 				end
 			end
@@ -1282,6 +1386,9 @@ function calcs.perform(env, fullDPSSkipEHP)
 	-- Defence/offence calculations
 	for _, stat in ipairs({"WardRetention", "Endurance", "EnduranceThreshold", "WardPerSecond", "WardDecayThreshold"}) do
 		output[stat] = round(calcLib.val(modDB, stat))
+		-- "X% Endurance Threshold added as Ward Decay Threshold" conversion is
+		-- applied later in CalcDefence, AFTER EnduranceThreshold is finalized
+		-- (Mana/Life/Defiance contributions are merged in CalcDefence:1507-1521).
 		if breakdown then
 			breakdown[stat] = breakdown.simple(nil, nil, output[stat], stat)
 		end
@@ -1296,19 +1403,104 @@ function calcs.perform(env, fullDPSSkipEHP)
 		calcs.offence(env, env.player, env.player.mainSkill)
 	end
 
-	-- "X% of Mana Spent Gained as Ward": integrate post-offence so we have
-	-- the main skill's ManaPerSecondCost. Recomputes Ward/WardDecay because
-	-- calcs.defence ran before offence and didn't see this contribution.
+	-- Post-offence ward regen integration. Three contributions are folded
+	-- into output.WardPerSecond here because they need values that are not
+	-- known until after calcs.offence / final Mana+Life are computed:
+	--   1. "X% of Mana Spent Gained as Ward" (event-driven, needs MainSkill.ManaPerSecondCost)
+	--   2. "X% of Current Mana gained as Ward per second" (passive, needs final Mana)
+	--   3. "X% of Missing Health gained as Ward per second" (passive, needs final Life
+	--      and Multiplier:MissingHealthPercent from Config)
+	-- Then Ward/WardDecay are recomputed because calcs.defence ran first.
+	-- @leb-regression-guard:ward-regen-resource-conversion (post-offence fold-in site)
+	-- The floor gate keys on PASSIVE regen only (game `wardRegen + wardRegenFromStats`);
+	-- mana-spent is event-driven (game `GainWard` call), so it accumulates into wps
+	-- for the inversion but does NOT count toward the floor gate snapshot.
 	do
+		local pOut = env.player.output
 		local manaSpentGainedAsWard = env.player.modDB:Sum("BASE", nil, "ManaSpentGainedAsWard")
-		local manaPerSecondCost = env.player.output.ManaPerSecondCost or 0
-		if manaSpentGainedAsWard > 0 and manaPerSecondCost > 0 then
-			local pOut = env.player.output
-			local bonusWardPerSec = manaPerSecondCost * manaSpentGainedAsWard / 100
-			pOut.WardPerSecond = (pOut.WardPerSecond or 0) + bonusWardPerSec
+		local manaPerSecondCost = pOut.ManaPerSecondCost or 0
+		local currentManaGainedAsWardPerSec = env.player.modDB:Sum("BASE", nil, "CurrentManaGainedAsWardPerSecond")
+		local missingHealthGainedAsWardPerSec = env.player.modDB:Sum("BASE", nil, "MissingHealthGainedAsWardPerSecond")
+		local missingHealthPercent = env.player.modDB:Sum("BASE", nil, "Multiplier:MissingHealthPercent") or 0
+		-- @leb-regression-guard:ward-stop-moving-config-amortize (fold-in site)
+		-- Transient Rest "(40-60)% of Current Mana gained as Ward when you stop
+		-- moving (2 second cooldown)". Game-side field
+		-- `Character.currentManaGainedAsWardOnStopMoving` (dump.cs L95850 offset
+		-- 0xDB0) with const `currentManaGainedAsWardOnStopMovingCooldown = 2`
+		-- (L95851). Event-driven (separate field from the continuous PerSecond
+		-- form), so the contribution is gated on the Config toggle
+		-- `conditionStoppedMoving` (Condition:StoppedMoving) and amortized over
+		-- the 2-second hard cooldown: `currentMana * pct / 100 / 2`. Default
+		-- off; opting in surfaces the affix as a steady-state continuous wps.
+		-- Spec: spec/System/TestWardStopMovingConfigAmortize_spec.lua
+		local currentManaGainedAsWardOnStopMoving = env.player.modDB:Sum("BASE", nil, "CurrentManaGainedAsWardOnStopMoving")
+		local isStoppedMoving = env.player.modDB:Flag(nil, "Condition:StoppedMoving")
+
+		local manaSpentContribution = (manaSpentGainedAsWard > 0 and manaPerSecondCost > 0)
+			and manaPerSecondCost * manaSpentGainedAsWard / 100 or 0
+		local currentManaContribution = currentManaGainedAsWardPerSec > 0
+			and (pOut.Mana or 0) * currentManaGainedAsWardPerSec / 100 or 0
+		local missingHealthContribution = (missingHealthGainedAsWardPerSec > 0 and missingHealthPercent > 0)
+			and (pOut.Life or 0) * (missingHealthPercent / 100) * missingHealthGainedAsWardPerSec / 100 or 0
+		local stopMovingContribution = (isStoppedMoving and currentManaGainedAsWardOnStopMoving > 0)
+			and (pOut.Mana or 0) * currentManaGainedAsWardOnStopMoving / 100 / 2 or 0
+
+		local totalContribution = manaSpentContribution + currentManaContribution + missingHealthContribution + stopMovingContribution
+
+		if totalContribution > 0 then
+			-- Snapshot passive WPS BEFORE folding in event-driven mana-spent.
+			-- Current-mana and missing-health contributions ARE passive
+			-- (continuous regen), so they belong in the passive snapshot.
+			-- StopMoving is event-driven (game `GainWard` call on the 2s CD
+			-- event), so like mana-spent it does NOT count toward the floor
+			-- gate snapshot. See `LE_datamining/extracted/ward_formulas.md §2`.
+			local baseWardPerSecond = pOut.WardPerSecond or 0
+			local passiveWardPerSecond = baseWardPerSecond + currentManaContribution + missingHealthContribution
+			-- @leb-regression-guard:ward-regen-passive-vs-event-split
+			-- KNOWN PRE-FIX BEHAVIOR: this line writes passive+event into the display
+			-- stat. The game writes only the passive sum into `wardRegen +
+			-- wardRegenFromStats` (`ProtectionClass.Update` RVA 0x234B8C0); the
+			-- event-driven `ManaSpentGainedAsWard` is applied via `GainWard()` on
+			-- spell-cast and must NOT appear in the displayed Ward Regen.
+			-- Snapshots frozen at the establishing commit (.tmp/reimport119/) capture
+			-- the +598 Σ|Δ| concentrated in 7 Sorcerer/Spellblade/Warlock/Necromancer
+			-- builds (QDxZjPX8 +354.77 etc., see REGRESSION_GUARDS.md
+			-- §ward-regen-passive-vs-event-split). Fix: `pOut.WardPerSecond =
+			-- passiveWardPerSecond` and move event contribution into the local `wps`
+			-- inversion only.
+			pOut.WardPerSecond = baseWardPerSecond + totalContribution
+			-- @leb-regression-guard:ward-regen-resource-conversion (breakdown site)
+			-- Surface the per-source arithmetic in the Calcs tab so resource→ward
+			-- contributions are visible (the modName="WardPerSecond" auto-breakdown
+			-- only sees BASE/INC/MORE stat-source mods, not these post-offence
+			-- fold-ins). Spec: spec/System/TestWardRegenResourceConversion_spec.lua.
+			if env.player.breakdown then
+				local lines = {
+					s_format("%.1f ^8(base Ward per Second)", baseWardPerSecond),
+				}
+				if missingHealthContribution > 0 then
+					t_insert(lines, s_format("+ %.1f ^8(%.1f%% of Life %d x Missing Health %.0f%%)",
+						missingHealthContribution, missingHealthGainedAsWardPerSec, pOut.Life or 0, missingHealthPercent))
+				end
+				if currentManaContribution > 0 then
+					t_insert(lines, s_format("+ %.1f ^8(%.1f%% of Current Mana %d)",
+						currentManaContribution, currentManaGainedAsWardPerSec, pOut.Mana or 0))
+				end
+				if manaSpentContribution > 0 then
+					t_insert(lines, s_format("+ %.1f ^8(%.1f%% of Mana Spent/sec %.1f)",
+						manaSpentContribution, manaSpentGainedAsWard, manaPerSecondCost))
+				end
+				if stopMovingContribution > 0 then
+					t_insert(lines, s_format("+ %.1f ^8(%.1f%% of Current Mana %d / 2s CD; Stopped Moving)",
+						stopMovingContribution, currentManaGainedAsWardOnStopMoving, pOut.Mana or 0))
+				end
+				t_insert(lines, s_format("= %.1f ^8(total Ward per Second)", pOut.WardPerSecond))
+				env.player.breakdown.WardPerSecond = lines
+			end
 			local wps = pOut.WardPerSecond
 			local wardDecayThreshold = pOut.WardDecayThreshold or 0
 			-- @leb-regression-guard:ward-retention-negative-clamp (post-offence ManaSpentGainedAsWard path)
+			-- @leb-regression-guard:ward-decay-gpp-constants (post-offence ManaSpentGainedAsWard path)
 			local wardRetention = m_max(pOut.WardRetention or 0, -90)
 			local ward = wardDecayThreshold + ((-0.2 + math.sqrt(0.04 + 0.0002 * wps * (1 + 0.5 * wardRetention / 100))) / 0.0001)
 			ward = ward * calcLib.mod(env.player.modDB, nil, "Ward", "Defences")
@@ -1319,6 +1511,16 @@ function calcs.perform(env, fullDPSSkipEHP)
 				local retentionDivisor = 1 + 0.5 * wardRetention / 100
 				local decayNumerator = 0.2 * effectiveWard + 0.00005 * effectiveWard ^ 2
 				rawWardDecayPerSecond = decayNumerator / retentionDivisor
+				-- @leb-regression-guard:ward-decay-floor-zero-passive
+				-- Game `ProtectionClass.Update` (RVA 0x234B8C0) clamps per-frame
+				-- decay to `dt * minimumWardDecayWithoutRegen` (= dt * 0.5) iff
+				-- `wardRegen + wardRegenFromStats <= 0`. In LEB terms passive WPS
+				-- corresponds to that pair; the ManaSpentGainedAsWard contribution
+				-- is event-driven (GainWard call), not part of the floor gate.
+				-- See `LE_datamining/extracted/ward_formulas.md §2`.
+				if passiveWardPerSecond <= 0 then
+					rawWardDecayPerSecond = m_max(rawWardDecayPerSecond, 0.5)
+				end
 				pOut.WardDecayPerSecond = round(rawWardDecayPerSecond)
 			else
 				pOut.WardDecayPerSecond = 0

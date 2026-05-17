@@ -983,6 +983,16 @@ function ImportTabClass:DetectLEToolsQuestRewards(data)
 	return hasApophis, hasEterra
 end
 
+-- @leb-regression-guard: letools-import-bio-level-mastery
+-- Locks the bio→classId/mastery/level resolution contract:
+--   The LETools planner API returns identity fields under `data.bio`
+--   ({level, characterClass, chosenMastery}). These MUST take precedence
+--   over top-level `jsonData.level / jsonData["class"] / jsonData.mastery`,
+--   which are stale duplicates left over from older API revisions.
+-- A regression here silently corrupts the headless TestBuilds filename
+-- (e.g. lv98 Bladedancer → lv73 Falconer) because the output name is
+-- `build.characterLevel or char.level` + `build.spec.curAscendClassName`.
+-- See REGRESSION_GUARDS.md "letools-import-bio-level-mastery".
 function ImportTabClass:BuildCharFromLETools(jsonData, data, buildId)
     local bio = data.bio or {}
     local classId = bio.characterClass or jsonData["class"] or 0
@@ -1987,6 +1997,57 @@ function ImportTabClass:ImportPassiveTreeAndJewels(charData)
     self.charImportStatus = colorCodes.POSITIVE .. "Passive tree successfully imported."
 end
 
+local FORM_ABILITY_TO_CONFIG = {
+    ["Werebear Form"]   = "conditionInWerebearForm",
+    ["Swarmblade Form"] = "conditionInSwarmbladeForm",
+    ["Spriggan Form"]   = "conditionInSprigganForm",
+}
+
+local COMPANION_ABILITIES = {
+    ["Summon Wolf"] = true,
+    ["Summon Sabertooth"] = true,
+    ["Summon Bear"] = true,
+    ["Summon Scorpion"] = true,
+    ["Summon Raptor"] = true,
+    ["Summon Squirrel"] = true,
+    ["Summon Frenzy Totem"] = false,
+}
+
+function ImportTabClass:AutoSetConfigFromAbilities(charData)
+    local cfg = self.build.configTab and self.build.configTab.input
+    if not cfg or not charData or not charData.abilities then return end
+    local touched = {}
+    local companionCount = 0
+    local isDruid = charData.ascendancy == "Druid"
+    local isBeastmaster = charData.ascendancy == "Beastmaster"
+    for _, ability in ipairs(charData.abilities) do
+        -- @leb-regression-guard:letools-import-form-condition-autoset
+        -- Form flags are LE-display-correct only for Druid (form continuously
+        -- active in the planner's stat panel). Beastmaster / Shaman can take
+        -- Spriggan/Werebear/Swarmblade as ordinary skills without being
+        -- permanently transformed — setting the flag there over-counts armor
+        -- (FugginBEESSS lv92 Beastmaster: Δ -677 → +475 without this gate).
+        if isDruid then
+            local formVar = FORM_ABILITY_TO_CONFIG[ability]
+            if formVar then
+                cfg[formVar] = true
+                touched[#touched+1] = formVar .. "=true"
+            end
+        end
+        if COMPANION_ABILITIES[ability] then
+            companionCount = companionCount + 1
+        end
+    end
+    if companionCount > 0 and isBeastmaster then
+        cfg["multiplierCompanion"] = companionCount
+        cfg["conditionHaveCompanion"] = true
+        touched[#touched+1] = "multiplierCompanion=" .. companionCount
+    end
+    if #touched > 0 then
+        ConPrintf("[IMPORT] Auto-set config: %s", table.concat(touched, ", "))
+    end
+end
+
 function ImportTabClass:ImportItemsAndSkills(charData)
     -- Reset debug.log so it only contains data from the most recent import
     if ResetDebugLog then ResetDebugLog() end
@@ -2069,6 +2130,14 @@ function ImportTabClass:ImportItemsAndSkills(charData)
     self.build.characterLevel = charData.level
     self.build.configTab:UpdateLevel()
     self.build.controls.characterLevel:SetText(charData.level)
+
+    -- @leb-regression-guard:letools-import-form-condition-autoset
+    -- LE planner displays "in-combat" stats (Form active, Companions summoned).
+    -- Without these flags LEB calculates "out of combat", producing cross-cutting
+    -- drift (armor + resist + life + mana under-report) on Druid/Beastmaster
+    -- builds. See spec/RegressionGuards/letools-import-form-condition-autoset_spec.lua.
+    self:AutoSetConfigFromAbilities(charData)
+
     self.build.buildFlag = true
 
 

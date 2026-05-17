@@ -38,10 +38,14 @@ local options = {
 		modList:NewMod("Vit", "BASE", 1, "Quest")
 	end },
 	{ var = "questTempleOfEterra", type = "check", label = "Temple of Eterra?", tooltip = "Quest reward: +1 to all attributes. Enable once you have completed the Temple of Eterra quest on this character.", apply = function(val, modList, enemyModList)
-		-- @leb-regression-guard:quest-temple-of-eterra-plus-one
+		-- @leb-regression-guard:quest-apophis-majasa-plus-one
 		-- LE in-game Completed Quests panel shows "Attribute Points: 1" for the
 		-- Temple of Eterra quest. Granted as +1 to each of Str/Dex/Int/Att/Vit.
-		-- Verified via in-game screenshot 2026-05-08.
+		-- Verified via in-game screenshot 2026-05-08 (sibling site of the
+		-- Apophis and Majasa apply block above — shares the same index entry
+		-- because both rewards must coexist as separate +1/+1, never +2/0).
+		-- Spec: spec/System/TestQuestApophisMajasa_spec.lua
+		--       "QuestTempleOfEterra applies +1 BASE to all five attributes"
 		modList:NewMod("Str", "BASE", 1, "Quest")
 		modList:NewMod("Dex", "BASE", 1, "Quest")
 		modList:NewMod("Int", "BASE", 1, "Quest")
@@ -109,6 +113,11 @@ local options = {
 	{ var = "conditionCursed", type = "check", label = "Are you Cursed?", tooltip = "Check if the player is Cursed (e.g. via Acolyte passives/skills).\nEnables 'while cursed' modifiers.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:Cursed", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
+	-- @leb-regression-guard:ward-per-second-and-retention-family (W5)
+	{ var = "multiplierCurseOnSelf", type = "count", label = "# of Curses on you:", ifMult = "CurseOnSelf", implyCond = "Cursed", tooltip = "Number of distinct Curses currently affecting you.\nEnables 'for each Curse affecting you' modifiers (e.g. Bone Curse self-curse stacking).\nAlso implies Condition:Cursed.", apply = function(val, modList, enemyModList)
+		modList:NewMod("Multiplier:CurseOnSelf", "BASE", val, "Config", { type = "Condition", var = "Combat" })
+		modList:NewMod("Condition:Cursed", "FLAG", val >= 1, "Config", { type = "Condition", var = "Combat" })
+	end },
 	{ var = "conditionTransformed", type = "check", label = "Are you Transformed?", tooltip = "Check if the player is Transformed (Werebear, Spriggan Form, etc.).\nEnables 'while transformed' modifiers.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:Transformed", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
@@ -140,8 +149,31 @@ local options = {
 	{ var = "conditionHaveFlameWard", type = "check", label = "Do you have Flame Ward active?", suggestBuff = "FlameWard", tooltip = "Check if Flame Ward is currently active (Mage).\nFlame Ward is a 3-second duration defensive buff (not a permanent aura), so its skill-tree contributions only apply while the buff is up.\nEnabling this gates Flame Ward tree node mods (e.g. +10% Block Chance from Glacial Reinforcement) on top of the SkillsTab toggle.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:HaveFlameWard", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
+	{ var = "conditionHaveEterrasBlessing", type = "check", label = "Do you have Eterra's Blessing active?", suggestBuff = "EterrasBlessing", tooltip = "Check if Eterra's Blessing is currently active (Primalist).\nEterra's Blessing is a 4-second-duration cast buff, so its skill-tree contributions only apply while the buff is up.\nEnabling this gates Eterra's Blessing tree node mods (e.g. eb5656-2 'Safeguard') on top of the SkillsTab toggle.\nSee REGRESSION_GUARDS.md 'eterras-blessing-buff-gating' for the original drift case.", apply = function(val, modList, enemyModList)
+		modList:NewMod("Condition:HaveEterrasBlessing", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
+	end },
+	{ var = "conditionMinionsHaveDreadShade", type = "check", label = "Do your minions have Dread Shade?", suggestBuff = "DreadShade", tooltip = "Check if at least one of your minions currently has the Dread Shade buff active (Necromancer).\nDread Shade is modelled in-game as a per-target Buff Component (DreadShadeMutator.DelayedCastOnMinion), so its tree-node contributions to minions (e.g. Martyrdom's '30 Minion Armour per Vitality') only apply to minions that actually carry the buff.\nEnabling this gates Dread Shade tree node minion-side mods on top of the SkillsTab toggle.\nSee REGRESSION_GUARDS.md 'minions-have-dread-shade-buff-gating'.", apply = function(val, modList, enemyModList)
+		modList:NewMod("Condition:MinionsHaveDreadShade", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
+	end },
 	{ var = "conditionStandingOnGlyphOfDominion", type = "check", label = "Standing on Glyph of Dominion?", tooltip = "Check if you are standing on your Glyph of Dominion (Runemaster).\nEnables 'while standing on your Glyph of Dominion' modifiers.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:StandingOnGlyphOfDominion", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
+	end },
+	-- @leb-regression-guard:ward-stop-moving-config-amortize (config site)
+	-- Gates the Transient Rest unique affix "X% of Current Mana gained as Ward
+	-- when you stop moving (2 second cooldown)". Game-side field is
+	-- `currentManaGainedAsWardOnStopMoving` (dump.cs L95850 offset 0xDB0) with
+	-- a hardcoded 2-second cooldown (L95851). The contribution is event-driven
+	-- in-game; LEB amortizes it as a steady-state continuous wps in
+	-- CalcPerform's post-offence ward fold-in, but ONLY when this Condition is
+	-- on (default off — preserves baseline parity with LETools UI which does
+	-- not surface event-driven ward sources).
+	-- Spec: spec/System/TestWardStopMovingConfigAmortize_spec.lua
+	{ var = "conditionStoppedMoving", type = "check", label = "Stopped Moving?", ifCond = "StoppedMoving", tooltip = "Assume you have stopped moving for at least 2 seconds.\nEnables Transient Rest's '(40-60)% of Current Mana gained as Ward when you stop moving (2 second cooldown)' affix.\nAmortized as a continuous Ward per Second contribution: Current Mana * pct / 100 / 2 (per the 2s game-side cooldown).", apply = function(val, modList, enemyModList)
+		modList:NewMod("Condition:StoppedMoving", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
+	end },
+	-- @leb-regression-guard:ward-per-second-and-retention-family (W4)
+	{ var = "conditionDuringProfaneVeil", type = "check", label = "During Profane Veil?", suggestBuff = "ProfaneVeil", tooltip = "Check if Profane Veil is currently active (Acolyte).\nProfane Veil is a 4-second-duration cast buff, so its 'during Profane Veil' contributions only apply while the buff is up.\nEnables `+97 Ward per Second during Profane Veil` (Lich tree).", apply = function(val, modList, enemyModList)
+		modList:NewMod("Condition:DuringProfaneVeil", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
 	{ var = "conditionRecentlyUsedTeleport", type = "check", label = "Recently Used Teleport?", tooltip = "Check if you have cast Teleport within the past 4 seconds (Mage / Spellblade).\nEnables Teleport skill tree nodes that only apply after casting Teleport recently.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Condition:RecentlyUsedTeleport", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
@@ -207,6 +239,11 @@ local options = {
 	end },
 	{ var = "multiplierActiveSymbols", type = "count", label = "# of Active Symbols:", tooltip = "Override for active Symbols of Hope (Paladin). Leave blank for auto (3 baseline + 'Maximum Symbols' passives).", apply = function(val, modList, enemyModList)
 		modList:NewMod("Multiplier:ActiveSymbol", "BASE", val, "Config")
+		modList:NewMod("Condition:HaveActiveSymbol", "FLAG", val >= 1, "Config", { type = "Condition", var = "Combat" })
+	end },
+	-- @leb-regression-guard:ward-per-second-and-retention-family (config site)
+	{ var = "multiplierFirebrandStack", type = "count", label = "# of Firebrand Stacks:", ifMult = "FirebrandStack", tooltip = "Number of active Firebrand stacks (Sorcerer / Warding Flames). Used for 'per stack of Firebrand' Ward per Second modifiers.", apply = function(val, modList, enemyModList)
+		modList:NewMod("Multiplier:FirebrandStack", "BASE", val, "Config", { type = "Condition", var = "Combat" })
 	end },
 	{ var = "multiplierActiveDreadShade", type = "count", label = "# of Active Dread Shades:", ifMult = "ActiveDreadShade", tooltip = "Number of active Dread Shades (Acolyte/Warlock). Used for 'per active Dread Shade' modifiers.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Multiplier:ActiveDreadShade", "BASE", val, "Config", { type = "Condition", var = "Combat" })
@@ -217,6 +254,34 @@ local options = {
 	{ var = "multiplierActiveRune", type = "count", label = "# of Active Runes:", ifMult = "ActiveRune", tooltip = "Number of active Runes (Runemaster). Used for 'per active Rune' modifiers.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Multiplier:ActiveRune", "BASE", val, "Config", { type = "Condition", var = "Combat" })
 	end },
+	-- @leb-regression-guard:gon-rune-multiplier (config site)
+	-- @leb-regression-guard:heo-rah-rune-multiplier (config site)
+	-- Per-rune-type counts driving "per Gon/Heo/Rah Rune" multipliers.
+	-- Gon Rune: Rune Master ward-regen node (tree_1.json L12835).
+	-- Heo Rune: Dodge Rating per Heo Rune affixes + "+8% Freeze Rate
+	-- Multiplier per Heo Rune" tree node.
+	-- Rah Rune: Armour per Rah Rune affixes + "2% Increased Mana Regen
+	-- per Rah Rune" tree node.
+	{ var = "multiplierGonRune", type = "count", label = "# of Active Gon Runes:", ifMult = "GonRune", tooltip = "Number of active Gon Runes (Runemaster). Used for 'per Gon Rune' modifiers such as 'Ward Gain Per Second per Gon Rune'.", apply = function(val, modList, enemyModList)
+		modList:NewMod("Multiplier:GonRune", "BASE", val, "Config", { type = "Condition", var = "Combat" })
+	end },
+	{ var = "multiplierHeoRune", type = "count", label = "# of Active Heo Runes:", ifMult = "HeoRune", tooltip = "Number of active Heo Runes (Runemaster). Used for 'per Heo Rune' modifiers such as Dodge Rating per Heo Rune and Freeze Rate Multiplier per Heo Rune.", apply = function(val, modList, enemyModList)
+		modList:NewMod("Multiplier:HeoRune", "BASE", val, "Config", { type = "Condition", var = "Combat" })
+	end },
+	{ var = "multiplierRahRune", type = "count", label = "# of Active Rah Runes:", ifMult = "RahRune", tooltip = "Number of active Rah Runes (Runemaster). Used for 'per Rah Rune' modifiers such as Armour per Rah Rune and Mana Regen per Rah Rune.", apply = function(val, modList, enemyModList)
+		modList:NewMod("Multiplier:RahRune", "BASE", val, "Config", { type = "Condition", var = "Combat" })
+	end },
+	-- @leb-regression-guard:channelling-seconds-multiplier (config site)
+	-- Channelling-stacking-buff seconds count. Drives "+N% Damage Per
+	-- Second" style nodes whose per-tick stacks accumulate while the
+	-- player is channelling (Smelter's Wrath tree_2.json L14336;
+	-- Flurry "Accelerating Impact" flur3-14; Volcanic Orb va53st-19;
+	-- channelling Arcane Ascendance et al.). Modifier-side mod is gated
+	-- on Condition:Channelling so the bonus is fully suppressed when
+	-- the player is not channelling.
+	{ var = "multiplierChannellingSeconds", type = "count", label = "# of Channelling Seconds:", ifMult = "ChannellingSeconds", tooltip = "Number of seconds the player has been channelling. Used for 'Per Second' stacking buffs such as Smelter's Wrath '+5% Damage Per Second' and Flurry 'Accelerating Impact'.", apply = function(val, modList, enemyModList)
+		modList:NewMod("Multiplier:ChannellingSeconds", "BASE", val, "Config", { type = "Condition", var = "Combat" }, { type = "Condition", var = "Channelling" })
+	end },
 	{ var = "multiplierActiveWanderingSpirit", type = "count", label = "# of Active Wandering Spirits:", ifMult = "ActiveWanderingSpirit", tooltip = "Number of active Wandering Spirits (Warlock). Used for 'per active Wandering Spirit' modifiers.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Multiplier:ActiveWanderingSpirit", "BASE", val, "Config", { type = "Condition", var = "Combat" })
 	end },
@@ -225,6 +290,23 @@ local options = {
 	end },
 	{ var = "multiplierActiveShadow", type = "count", label = "# of Active Shadows:", ifMult = "ActiveShadow", tooltip = "Number of active Shadows (Bladedancer). Used for 'per active Shadow' modifiers.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Multiplier:ActiveShadow", "BASE", val, "Config", { type = "Condition", var = "Combat" })
+	end },
+	-- @leb-regression-guard:condition-on-shadow-create-consume-config
+	-- Bladedancer Shadow event-time conditions. The parser already
+	-- emits Condition:OnShadowCreate / OnShadowConsume tags on the
+	-- affix families "+N Ward/Health Gained on Shadow Creation" and
+	-- "+N% Chance to gain a stack of Dusk Shroud when you consume a
+	-- Shadow" (see src/Modules/ModParser.lua L615-619 and the dozens
+	-- of correctly tagged ModCache entries). Without these Config
+	-- toggles those Condition flags can never resolve to true, so
+	-- the tagged mods are gated off in every snapshot -- silent
+	-- failure visible only as missing Ward/Health/Dusk Shroud
+	-- contributions in the player's defence/buff breakdown.
+	{ var = "conditionOnShadowCreate", type = "check", label = "Shadow just Created?", ifCond = "OnShadowCreate", tooltip = "Bladedancer: enables 'on Shadow Creation' modifiers (Ward/Health Gained on Shadow Creation affix family).", apply = function(val, modList, enemyModList)
+		modList:NewMod("Condition:OnShadowCreate", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
+	end },
+	{ var = "conditionOnShadowConsume", type = "check", label = "Shadow just Consumed?", ifCond = "OnShadowConsume", tooltip = "Bladedancer: enables 'when you consume a Shadow' modifiers (Dusk Shroud chance on Shadow consume affix family).", apply = function(val, modList, enemyModList)
+		modList:NewMod("Condition:OnShadowConsume", "FLAG", true, "Config", { type = "Condition", var = "Combat" })
 	end },
 	{ var = "multiplierEquippedOmenIdol", type = "count", label = "# of Equipped Omen Idols:", ifMult = "EquippedOmenIdol", tooltip = "Number of equipped Omen Idols. Used for 'per equipped Omen Idol' modifiers.", apply = function(val, modList, enemyModList)
 		modList:NewMod("Multiplier:EquippedOmenIdol", "BASE", val, "Config")

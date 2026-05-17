@@ -568,6 +568,18 @@ function ItemClass:ParseRaw(raw, rarity, highQuality)
 						modLine.range = tonumber(val)
 					elseif k == "scalar" then
 						modLine.valueScalar = tonumber(val)
+					elseif k == "postScalar" then
+						-- @leb-regression-guard: two-phase-floor-post-round-scalar
+						-- Round-trip the altar refracted-slot boost through raw
+						-- text so Craft → writeModLine → ParseRaw preserves it.
+						-- Without this, the boost is lost between Craft and the
+						-- final applyRange call, and the boosted display value
+						-- silently falls back to the pre-boost rolled integer.
+						modLine.postRoundScalar = tonumber(val)
+					elseif k == "postFloor" then
+						-- @leb-regression-guard: idol-altar-boost-subtype-rounding
+						-- Round-trip the IdolWeaver subtype rounding tag.
+						modLine.postRoundFloor = (val == "1" or val == "true")
 					elseif k == "displayScalar" then
 						modLine.displayValueScalar = tonumber(val)
 					elseif k == "rounding" then
@@ -651,7 +663,7 @@ function ItemClass:ParseRaw(raw, rarity, highQuality)
 				end
 				modLine.implicit = modLine.implicit or (not modLine.crafted and #self.implicitModLines < implicitLines)
 				modLine.range = modLine.range or main.defaultItemAffixQuality
-				local rangedLine = itemLib.applyRange(line, modLine.range, modLine.valueScalar, modLine.rounding)
+				local rangedLine = itemLib.applyRange(line, modLine.range, modLine.valueScalar, modLine.rounding, modLine.postRoundScalar, modLine.postRoundFloor)
 
 				-- Tooltip-glue split: LETools occasionally exports two adjacent legendary-slammed
 				-- prefixes concatenated with the first prefix's tooltip text, e.g.
@@ -1126,6 +1138,16 @@ function ItemClass:BuildRaw()
 		if modLine.valueScalar and modLine.valueScalar ~= 1 then
 			line = "{scalar:" .. round(modLine.valueScalar, 3) .. "}" .. line
 		end
+		if modLine.postRoundScalar and modLine.postRoundScalar ~= 1 then
+			-- @leb-regression-guard: two-phase-floor-post-round-scalar
+			-- Persist altar refracted-slot boost across Craft → ParseRaw.
+			line = "{postScalar:" .. round(modLine.postRoundScalar, 4) .. "}" .. line
+		end
+		if modLine.postRoundFloor then
+			-- @leb-regression-guard: idol-altar-boost-subtype-rounding
+			-- Persist IdolWeaver subtype rounding tag across Craft → ParseRaw.
+			line = "{postFloor:1}" .. line
+		end
 		if modLine.displayValueScalar and modLine.displayValueScalar ~= modLine.valueScalar then
 			line = "{displayScalar:" .. round(modLine.displayValueScalar, 3) .. "}" .. line
 		end
@@ -1313,10 +1335,16 @@ function ItemClass:Craft()
 					self.nameSuffix = " " .. mod.affix
 				end
 				local modLinesList = itemLib.modLinesForSlot(mod, slotKey)
+				-- @leb-regression-guard:slot-override-post-saem
 				-- slotOverrides store LETools display values already post-affixEffectModifier
 				-- (e.g. body_armor (15-18)% = default (10-12)% × 1.5 for Body Armor aem+0.5,
-				-- shield (6-11)% = default (5-9)% × 1.17 for Shield aem+0.17). When the
-				-- override is used, skip aem scaling in modScalar to avoid double-applying.
+				-- shield (6-11)% = default (5-9)% × 1.17 for Shield aem+0.17). They are
+				-- ALSO post-standardAffixEffectModifier (the per-affix sealed penalty);
+				-- verified 2026-05-12 on BZ37dR2l Sorcerer Unstable Core affix 1014_4
+				-- sealed Mana — body_armor override (46-50), sAEM=0.17. At roll byte 69
+				-- LE/LETools display 47 (=raw), confirming the override value is final.
+				-- When the override is used, skip ALL aem scaling in modScalar to avoid
+				-- double-applying. See REGRESSION_GUARDS.md "slot-override-post-saem".
 				local usingSlotOverride = slotKey and mod.slotOverrides and mod.slotOverrides[slotKey] ~= nil
 				for lineIdx, line in ipairs(modLinesList) do
 					-- Line [2+] handling (2026-04-25 SCOPE FIX — see cf2011d21 for
@@ -1338,16 +1366,46 @@ function ItemClass:Craft()
 							goto nextCraftLine
 						end
 					end
+					-- @leb-regression-guard: affix-effect-modifier-formula
+					-- LE applies the affix display multiplier as
+					--   (1 + base.affixEffectModifier) / (1 + mod.standardAffixEffectModifier)
+					-- per dump.cs AffixList.Affix.standardAffixEffectModifier tooltip
+					-- (il2cpp_dump_v142 line 164779). The historical subtraction form
+					-- only coincides when standardAffixEffectModifier == 0 and diverges
+					-- for sealed-corrupted (specialAffixType=6) and Class-Specific Idol
+					-- enchants (specialAffixType=4). The +0.17 fudge below was a
+					-- band-aid for that subtraction error and is removed.
+					-- Test: spec/System/TestAffixEffectModifierFormula_spec.lua
 					local modScalar = 1 + self.base.affixEffectModifier
-					if mod.standardAffixEffectModifier then
-						modScalar = modScalar - mod.standardAffixEffectModifier
+					-- @leb-regression-guard:idol-affix-source-and-formula
+					-- For sealed/corrupted-kind affixes on idol bases, sAEM is NOT
+					-- applied — verified against in-game (2026-05-12 trade screenshots):
+					-- affix 1070_0 raw +5% (ModIdol), displays
+					--   +4% on Adorned (aem=-0.05, 5×0.95=4.75 floor),
+					--   +5% on Huge (aem=0, 5×1=5),
+					--   +3% on Grand/Large (aem=-0.33, 5×0.67=3.35 floor),
+					--   +5% on Omen Idol (separate bypass below).
+					-- sAEM=-0.83 on this affix is ignored.
+					-- Detection note: ModIdol_<ver>.json entries do NOT carry
+					-- specialAffixType=6 the way ModItem entries do. Use the XML
+					-- `{kind:corrupted}` / `{kind:sealed}` tag forwarded onto
+					-- `affix.kind` by the Prefix/Suffix parser instead.
+					-- Scope narrowed to corrupted/sealed-kind to avoid disturbing
+					-- non-sealed idol affixes (e.g. Tenacious 1029) whose ground
+					-- truth has not been verified post-routing-fix.
+					-- See REGRESSION_GUARDS.md "idol-affix-source-and-formula".
+					local isIdolBase = self.base.type and self.base.type:sub(-5) == " Idol"
+					local skipSaem = isIdolBase and (affix.kind == "corrupted" or affix.kind == "sealed")
+					if mod.standardAffixEffectModifier and not skipSaem then
+						modScalar = modScalar / (1 + mod.standardAffixEffectModifier)
 					end
 					if usingSlotOverride then
-						-- override values are already post-aem; don't re-scale
+						-- override values are already post-aem AND post-sAEM; don't re-scale.
+						-- DO NOT divide by (1+sAEM) here — the override
+						-- range already bakes in that penalty (verified affix 1014_4 sealed
+						-- Mana body_armor: raw byte 69 of (46-50) = 47 matches LE in-game).
+						-- See REGRESSION_GUARDS.md "slot-override-post-saem".
 						modScalar = 1
-						if mod.standardAffixEffectModifier then
-							modScalar = modScalar - mod.standardAffixEffectModifier
-						end
 					end
 					-- Omen Idol affixEffectModifier bypass (DO NOT REMOVE).
 					-- Omen Idol bases carry affixEffectModifier = -0.33, but
@@ -1389,16 +1447,17 @@ function ItemClass:Craft()
 					if self.base.affixEffectModifier and self.base.affixEffectModifier ~= 0 and isOmenIdol then
 						modScalar = 1
 						if mod.standardAffixEffectModifier then
-							modScalar = modScalar - mod.standardAffixEffectModifier
+							modScalar = modScalar / (1 + mod.standardAffixEffectModifier)
 						end
 					end
--- Enchanted affix for Class-Specific Idols: specialAffixType=4 with
-					-- standardAffixEffectModifier=-0.33 rolls ~1.5x on neutral bases
-					-- (not 1.33x). +0.17 matches Maxroll parity on Solar Idol (affix 892).
-					if mod.specialAffixType == 4 and mod.standardAffixEffectModifier == -0.33
-					   and (not self.base.affixEffectModifier or self.base.affixEffectModifier == 0) then
-						modScalar = modScalar + 0.17
-					end
+					-- NOTE (2026-05-11): the historical +0.17 fudge for
+					-- specialAffixType=4 / standardAffixEffectModifier=-0.33 on
+					-- neutral bases ("rolls ~1.5x not 1.33x — Maxroll parity on
+					-- Solar Idol affix 892") was a band-aid for the subtraction
+					-- formula above. With the corrected division formula
+					-- (1+0)/(1+(-0.33)) = 1.493 ≈ 1.5x naturally, so the fudge
+					-- is no longer needed and has been removed.
+					-- See @leb-regression-guard: affix-effect-modifier-formula.
 					local displayScalar = modScalar
 					if affix.valueScalar then
 						modScalar = modScalar * affix.valueScalar
@@ -1406,6 +1465,18 @@ function ItemClass:Craft()
 					local modLine = { line = line, range = affix.range, valueScalar = modScalar, affixType = mod.type }
 					if affix.valueScalar and affix.valueScalar ~= 1 then
 						modLine.displayValueScalar = displayScalar
+					end
+					-- Propagate two-phase post-round scalar from the affix (set by
+					-- CalcSetup altar refracted-slot boost) so applyRange floors
+					-- after the rolled value is rounded.
+					if affix.postRoundScalar and affix.postRoundScalar ~= 1 then
+						modLine.postRoundScalar = affix.postRoundScalar
+					end
+					-- @leb-regression-guard: idol-altar-boost-subtype-rounding
+					-- IdolWeaver subtype uses floor rounding on the post-round
+					-- scalar, not round-half-up (set by CalcSetup).
+					if affix.postRoundFloor then
+						modLine.postRoundFloor = true
 					end
 					if affix.kind then
 						modLine.kind = affix.kind

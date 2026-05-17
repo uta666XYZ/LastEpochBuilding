@@ -393,6 +393,72 @@ function calcs.offence(env, actor, activeSkill)
 		skillFlags.focused = true
 	end
 
+	-- @leb-regression-guard:condition-shadow-attack-consumer
+	-- F5 — wire Condition:ShadowAttack on the active skill.
+	-- The parser has long emitted Condition:ShadowAttack on affixes
+	-- like "+X% Y for Shadow Attack" (modTagList["for shadow attack"])
+	-- and on the F4 "Doubled for Shadow Attack" trailing clause, but
+	-- no calc path actually set the condition true. As a result every
+	-- such modifier silently full-gated to zero.
+	--
+	-- Allowlist source (datamined LE_datamining/extracted/
+	-- ability_keyed_array.json + localized_master.json):
+	--   Shadow Cascade  -- Bladedancer mastery skill that summons
+	--                      shadows and is itself the canonical Shadow
+	--                      Attack.
+	--   Shadow Daggers  -- the auto-hit dagger finisher used by the
+	--                      Lethal Mirage / shadow set.
+	--   Shadow Rend     -- localized_master.json:
+	--                      Property_Ability_shadowRend_1_Name says it
+	--                      "performs an additional shadow attack".
+	--
+	-- Skills that the ShadowClone minion uses (Shurikens, Arrowstorm)
+	-- can also be cast by the player directly; they are NOT included
+	-- here because Condition:ShadowAttack on the player active skill
+	-- is meant to gate player-context affixes, and the player-cast
+	-- form of those skills is not a Shadow Attack from the player's
+	-- perspective. The minion's casts are computed in env.minion
+	-- scope and don't pass through this skillCfg.
+	local shadowAttackSkills = {
+		["Shadow Cascade"] = true,
+		["Shadow Daggers"] = true,
+		["Shadow Rend"]    = true,
+	}
+	local activeGrantedName = activeSkill.activeEffect and activeSkill.activeEffect.grantedEffect and activeSkill.activeEffect.grantedEffect.name
+	skillCfg.skillCond["ShadowAttack"] = shadowAttackSkills[activeGrantedName] or false
+
+	-- @leb-regression-guard:kuzons-fury-reforged-burning-dagger-chance
+	-- Dancing Strikes skill-identity gate -- parallel to shadowAttackSkills
+	-- but for the F4-shape ", doubled for Dancing Strikes" trailing
+	-- Condition tag emitted by Kuzon's Fury Reforged
+	-- (BurningDaggerChanceOnMeleeFire). Game-file evidence
+	-- (dump.cs L35408-L35546 DancingStrikes1..4Mutator family +
+	-- ability_keyed_array.json 4 player variants sharing
+	-- abilityName="Dancing Strikes", playerAbilityID dacn33/34/36/37):
+	-- Dancing Strikes is a single skill identity, not a condition tag,
+	-- so the allowlist is one entry today and follows the F5
+	-- ShadowAttack pattern exactly.
+	local dancingStrikesSkills = {
+		["Dancing Strikes"] = true,
+	}
+	skillCfg.skillCond["DancingStrikes"] = dancingStrikesSkills[activeGrantedName] or false
+
+	-- @leb-regression-guard:tabi-of-dusk-and-dawn-flags
+	-- Tabi of Dusk and Dawn (uniqueID=458) dual-cast consumer. Game-file:
+	-- dump.cs L77736 `public bool shadowRendAlsoCastsOtherWeaponVersion`
+	-- on CharacterMutator. When set and active skill is Shadow Rend, the
+	-- game casts both Melee and Bow ability variants per swing -- see
+	-- ShadowRendMeleeMutator.bowMut / ShadowRendBowMutator.meleeMut
+	-- cross-references (dump.cs L56914/57008) and ability_keyed_array.json
+	-- {ShadowRend, ShadowRend Bow} sharing playerAbilityID 'sh4re'.
+	-- v1 surface approximation: +100% MORE Damage. v2 (deferred) would
+	-- compose the two variant damage rolls separately. The Flag is
+	-- emitted by ModParser with SkillName="Shadow Rend"; the activeGrantedName
+	-- check is defensive (the SkillName tag already gates resolution).
+	if activeGrantedName == "Shadow Rend" and skillModList:Flag(skillCfg, "ShadowRendAlsoCastsOtherWeaponVersion") then
+		skillModList:NewMod("Damage", "MORE", 100, "Shadow Rend dual cast (Tabi of Dusk and Dawn)", 0, 0, { type = "SkillName", skillName = "Shadow Rend" })
+	end
+
 	-- Update skill data
 	for _, value in ipairs(skillModList:List(skillCfg, "SkillData")) do
 		if value.merge == "MAX" then
@@ -429,6 +495,86 @@ function calcs.offence(env, actor, activeSkill)
 	-- set other limits
 	output.ActiveTrapLimit = skillModList:Sum("BASE", skillCfg, "ActiveTrapLimit")
 	output.ActiveMineLimit = skillModList:Sum("BASE", skillCfg, "ActiveMineLimit")
+
+	-- @leb-regression-guard:mirage-count-consumer
+	-- F11 -- surface MirageCount on the active skill. Parser anchored
+	-- "+N Mirages created by Lethal Mirage" (idol affix, ModItem.json
+	-- statOrderKey=537, tiers 0..7 emit +1/+2/+3) emits MirageCount
+	-- BASE tagged with SkillName='Lethal Mirage' (see ModParser.lua,
+	-- mirages-created-by-lethal-mirage). Symmetric to F1 (MaxShadows)
+	-- and F10 (ChanceToApplyShadowDaggerOnHit): surface as an output
+	-- stat so the value is visible in the player breakdown; downstream
+	-- mirage-spawn calc may consume this in the future, but the
+	-- minimum-viable consumer is the breakdown row.
+	-- Test: spec/System/TestMirageCountConsumer_spec.lua
+	output.MirageCount = skillModList:Sum("BASE", skillCfg, "MirageCount")
+
+	-- @leb-regression-guard:chance-to-apply-shadow-dagger-on-hit-consumer
+	-- F10 -- surface ChanceToApplyShadowDaggerOnHit on the active skill.
+	-- Parser maps "chance to apply a shadow dagger on hit" to the stat
+	-- ChanceToApplyShadowDaggerOnHit (see ModParser.lua L399,
+	-- shadow-suffix-family-c6f). Today the only source is the unique
+	-- "Bhuldar's Wrath" / similar Lethal Mirage suffix
+	-- ("50% Chance to apply a Shadow Dagger on Hit with Lethal Mirage"),
+	-- so the BASE mod carries a SkillName='Lethal Mirage' tag and
+	-- naturally resolves only when Lethal Mirage is the active skill.
+	-- Surface as an output stat so the chance is visible in the player
+	-- breakdown (CalcSections row added separately). Pre-F10 this stat
+	-- was parsed but never consumed -- silent failure mirroring F1.
+	-- Test: spec/System/TestChanceToApplyShadowDaggerOnHitConsumer_spec.lua
+	output.ChanceToApplyShadowDaggerOnHit = skillModList:Sum("BASE", skillCfg, "ChanceToApplyShadowDaggerOnHit")
+
+	-- @leb-regression-guard:kuzons-fury-reforged-burning-dagger-chance
+	-- Surface BurningDaggerChanceOnMeleeFire on the active skill. Parser
+	-- anchor (ModParser.lua, kuzons-fury-reforged-burning-dagger-chance)
+	-- emits BASE tagged with Condition{DancingStrikes, mult=2}, so the
+	-- F4-shape condition-tag-mult contract (ModStore.lua) doubles the
+	-- value when activeGrantedName == "Dancing Strikes" and leaves it at
+	-- base otherwise. Symmetric to F10 ChanceToApplyShadowDaggerOnHit:
+	-- surface as an output stat so the chance is visible in the player
+	-- breakdown (CalcSections row added separately).
+	-- Test: spec/System/TestKuzonsFuryReforged_spec.lua
+	output.BurningDaggerChanceOnMeleeFire = skillModList:Sum("BASE", skillCfg, "BurningDaggerChanceOnMeleeFire")
+
+	-- @leb-regression-guard:proc-rate-limit-metadata-v1
+	-- Game-file-authoritative rate-limit harvest. The parser anchor stamps
+	-- a `{ type = "RateLimit", limit = N, interval = M, var = "..." }`
+	-- passive metadata tag onto the chance mod. We inspect the active
+	-- skill's tabulated mods, read the first RateLimit tag matching the
+	-- BurningDaggerOnMeleeFire var, and surface (limit, interval) for
+	-- CalcSections display. LEB does NOT compute an effective-procs/sec
+	-- because the game itself exposes no planner-visible rate-capped
+	-- chance stat -- the cap is a runtime PTT gate only (dump.cs
+	-- L239352-L239378 + L33671-L33713). The two scalar outputs let the
+	-- display read "N per M sec" without re-shaping the contract if a
+	-- future affix uses (N, M != 1).
+	-- Test: spec/System/TestProcRateLimitMetadata_spec.lua
+	for _, t in ipairs(skillModList:Tabulate("BASE", skillCfg, "BurningDaggerChanceOnMeleeFire")) do
+		for _, tag in ipairs(t.mod) do
+			if type(tag) == "table" and tag.type == "RateLimit" and tag.var == "BurningDaggerOnMeleeFire" then
+				output.BurningDaggerChanceOnMeleeFire_RateLimit = tag.limit
+				output.BurningDaggerChanceOnMeleeFire_RateInterval = tag.interval
+				break
+			end
+		end
+		if output.BurningDaggerChanceOnMeleeFire_RateLimit then break end
+	end
+
+	-- @leb-regression-guard:cooldown-recovered-on-hit-consumer
+	-- Surface CooldownRecoveryOnHit family on the active skill. Parser
+	-- anchors (ModParser.lua, cooldown-recovered-on-hit-consumer) emit
+	-- the paired stats from two unique sources:
+	--   Black Blade of Chaos (Lethal Mirage variant, cap=12)
+	--   Razorfall          (Aerial Assault variant, cap=3, chance-folded)
+	-- Both BASE mods carry a SkillName tag so the values only resolve
+	-- when the matching skill is the calc target. v1 is surface-only
+	-- (breakdown rows visible); cooldown-projection math is deferred to
+	-- v2 (would require per-cast hit-window simulation).
+	-- Pre-this-wiring both ModCache entries were {{}, ""} no-ops --
+	-- full silent drop of the unique's chase mod.
+	-- Test: spec/System/TestCooldownRecoveredOnHitConsumer_spec.lua
+	output.CooldownRecoveryOnHit          = skillModList:Sum("BASE", skillCfg, "CooldownRecoveryOnHit")
+	output.CooldownRecoveryOnHitMaxPerCast = skillModList:Sum("BASE", skillCfg, "CooldownRecoveryOnHitMaxPerCast")
 
 	-- set flask scaling
 	output.LifeFlaskRecovery = env.itemModDB.multipliers["LifeFlaskRecovery"]
@@ -1081,6 +1227,46 @@ function calcs.offence(env, actor, activeSkill)
 				s_format("/ %.2f ^8(increased/reduced cooldown recovery)", 1 + skillModList:Sum("INC", skillCfg, "CooldownRecovery") / 100),
 			}
 			t_insert(breakdown.Cooldown, s_format("= %.3fs", output.Cooldown))
+		end
+		-- @leb-regression-guard:mod6-v2-combat-loop (effective-cooldown site)
+		-- v2 of cooldown-recovered-on-hit consumer (Mod#6).
+		-- v1 surfaces output.CooldownRecoveryOnHit / ...MaxPerCast as raw
+		-- stat rows (CalcOffence L576-577, parser cooldown-recovered-on-hit-consumer).
+		-- v2 folds them into an effective Cooldown using a closed-form
+		-- equilibrium: assume the cap is reached every cast (best-case
+		-- steady state -- the affix's design intent), with each hit
+		-- recovering pct% of REMAINING cooldown (multiplicative).
+		--   effectiveCD = baseCD * (1 - pct/100)^cap
+		-- Game-file authority (dump.cs il2cpp re-extraction):
+		--   * L96712 chanceToRecover8pOfRemainingAerialAssaultCooldownOnThrowingHit
+		--   * L96716 lethalMirageRemainingCooldownRecoveredOnMeleeHitUpTo12TimesPerUse
+		--   * L96714 maxTimesToRecover...Cooldown... = const cap (3 or 12)
+		--   * per-skill SinceLast<Skill>Use int counters (heterogeneous SinceLast pattern)
+		-- LEB has no time-axis combat loop, so the closed-form equilibrium
+		-- is used in place of a per-tick simulation (Decision Log L47,
+		-- TODO.md "Mod#6 v2 combat-loop integration").
+		-- Test: spec/System/TestCooldownRecoveryOnHitV2_spec.lua
+		local cdrPct = output.CooldownRecoveryOnHit or 0
+		local cdrCap = output.CooldownRecoveryOnHitMaxPerCast or 0
+		if cdrPct > 0 and cdrCap > 0 and output.Cooldown and output.Cooldown > 0 then
+			local recoveryRetained = (1 - cdrPct / 100) ^ cdrCap
+			local effectiveCooldown = output.Cooldown * recoveryRetained
+			output.EffectiveCooldownFromOnHit = effectiveCooldown
+			if breakdown then
+				breakdown.EffectiveCooldownFromOnHit = {
+					s_format("%.3fs ^8(base cooldown)", output.Cooldown),
+					s_format("x (1 - %.2f%%)^%d ^8(closed-form equilibrium: %d hits/cycle x %.2f%% per-hit recovery)", cdrPct, cdrCap, cdrCap, cdrPct),
+					s_format("= %.3fs ^8(best-case steady state)", effectiveCooldown),
+				}
+			end
+			-- Apply to output.Cooldown so downstream speed clamps
+			-- (output.Speed = min(Speed, 1/output.Cooldown * Repeats))
+			-- pick up the recovery. This is the v2 fold-in effect.
+			output.Cooldown = effectiveCooldown
+			if breakdown and breakdown.Cooldown then
+				t_insert(breakdown.Cooldown, s_format("x (1 - %.2f%%)^%d ^8(CD recovery on hit, closed-form)", cdrPct, cdrCap))
+				t_insert(breakdown.Cooldown, s_format("= %.3fs ^8(effective)", effectiveCooldown))
+			end
 		end
 	end
 	if skillData.storedUses then
@@ -1793,9 +1979,14 @@ function calcs.offence(env, actor, activeSkill)
 	output.LeechRate = calcLib.mod(skillModList, skillCfg, "LeechRate")
 
 	-- LE Damaging Ailment DPS --
+	-- @leb-regression-guard:ailment-dps-steady-state-formula
 	-- Per LE engine: ailments are rolled per-hit. Steady-state stacks on a single target =
 	--   min( hits/sec × (chance/100) × effectiveDuration , maxStacks )
 	-- Total ailment DPS = stacks × DPSPerStack, capped at DotDpsCap.
+	-- Per-stack DPS uses the BASE duration (not effDuration): per-second rate
+	-- is preserved as duration extends, total damage scales via stack count.
+	-- This matches `dot_channel_formulas.md §3` (`baseDamage = total over
+	-- duration`) and §4 (`increasedDurationIncreasesDamage` → rate preserved).
 	-- Reference: LE_datamining/extracted/dot_channel_formulas.md, ailments_v3.json
 	local hitRate = output.HitSpeed or output.Speed or 0
 	local enemyDurationMap = {
