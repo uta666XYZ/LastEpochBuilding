@@ -193,6 +193,21 @@ KNOWN_SEMANTIC_GAPS = {
         "Investigation: 'Ward Regen o3Zlpkxd 乖離調査' (Obsidian).",
 }
 
+# @leb-regression-guard: diff-letools-abs-tolerance-floor
+# Mirror of `scripts/letools-diff.js` TOL_ABS=0.5 (~L16). LETools renders
+# several integer-display stats (Ward Regen, Block Chance, Endurance, …) by
+# rounding to nearest integer in the UI even though their underlying values
+# are floats — Ward Regen in particular shows as int while sibling Health/Mana
+# Regen show 2 decimals (see e.g. BgRrP5rr .letools.json Defense tab: Ward
+# Regen="4" vs Health Regen="185.92"). Without an absolute tolerance floor a
+# sub-1.0 float diff (e.g. LEB WardPerSecond=3.712 vs LETools "4") inflates
+# to a fake 7.2% drift purely because the LETools UI rounded its display.
+# 0.5 is the half-step of integer-rounded display = exactly the noise floor
+# below which no real-world LEB regression could ever hide. See
+# REGRESSION_GUARDS.md §ward-regen-passive-vs-event-split (post-fix residual
+# analysis 2026-05-18 entry).
+TOL_ABS = 0.5
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('build', help='Build basename (without .lua / .letools.json)')
@@ -222,6 +237,9 @@ def main():
         d = lv - lt
         pct = abs(d) / abs(lt) * 100 if abs(lt) > 1e-9 else (float('inf') if abs(d) > 1e-9 else 0)
         if not args.all and pct <= args.threshold: continue
+        # @leb-regression-guard:diff-letools-abs-tolerance-floor (consume site).
+        # Drop sub-TOL_ABS rows: LETools UI integer-rounding noise floor.
+        if not args.all and abs(d) <= TOL_ABS: continue
         rows.append((tab, name, key, lt, lv, d, pct))
 
     rows.sort(key=lambda r: -r[6])

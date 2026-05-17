@@ -4347,6 +4347,95 @@ closed; the 3 residuals are recorded here so future diff sweeps
 don't re-investigate them. If a future LETools update starts
 including the converters, these residuals will auto-converge.
 
+**Post-fix residual analysis #2 (2026-05-18, hawking worktree):** A
+fourth residual surfaced on `BgRrP5rr lv98 Paladin` after the Lane A
+split shipped, but it is a different family from the 3 above. LEB
+`WardPerSecond=3.712`, LETools `Ward Regen="4"`, Δ=−0.288. Per
+`DumpWardRegen`:
+
+```
+Sum BASE WardPerSecond  = 0
+LifeRegenAppliesToWard  = BASE 2 (Item:18 Throne of Ambition)
+output.LifeRegen        = 185.6
+```
+
+Game-faithful per Lane A: passiveWPS = base + LifeRegenAppliesToWard
+× LifeRegen / 100 = 0 + 2 × 185.6 / 100 = **3.712** (exact match,
+no LEB bug). The Δ is purely a LETools UI display-rounding quirk:
+unlike the sibling regen rows (`Health Regen="185.92"`, `Mana
+Regen="13.95"`), the LETools planner renders "Ward Regen" as
+integer-only — so the underlying 3.71x value is floored/rounded
+to "4" in the JSON snapshot before serialization.
+
+`scripts/letools-diff.js` already absorbs this class of noise via
+`TOL_ABS = 0.5` (~L16, ~L191). The Python sibling `spec/tools/diff_letools.py`
+was missing the same absolute-tolerance floor, so a sub-1.0 float
+delta inflated to a fake 7.2% drift purely because percentage rises
+unbounded for small denominators. Fixed in the establishing commit
+of `diff-letools-abs-tolerance-floor`: a `TOL_ABS = 0.5` constant
+mirroring the JS tool is applied alongside the existing percentage
+threshold. This:
+
+- Clears the BgRrP5rr WardPerSecond noise (|D|=0.288 ≤ 0.5).
+- Does NOT mask the 3 Lane A residuals (Qdz2yXLk +22.64, oR6qaLp4
+  +22.5, BZ37dR2l −3 are all far above 0.5).
+- Does NOT mask the remaining BgRrP5rr drifts (CooldownRecovery
+  |D|=1, PoisonResistTotal |D|=3 stay flagged).
+- Matches LETools UI's own integer-display convention for stats
+  like Ward Regen / Block Chance / Endurance.
+
+| Build | LEB WPS | LETools | Δ | Family |
+|---|---:|---:|---:|---|
+| BgRrP5rr lv98 Paladin | 3.712 | 4 | −0.288 | LETools integer-display rounding (LifeRegenAppliesToWard=2 × LifeRegen=185.6 / 100, exact). Below TOL_ABS=0.5 noise floor in `spec/tools/diff_letools.py`. |
+
+**Cross-ref:** `diff-letools-abs-tolerance-floor` — the comparison
+floor in `spec/tools/diff_letools.py` that absorbs this class.
+
+### `diff-letools-abs-tolerance-floor`
+
+`spec/tools/diff_letools.py` (Python LEB↔LETools stat-diff tool) must
+match the absolute-tolerance behavior of its JavaScript sibling
+`scripts/letools-diff.js`. Both apply a `TOL_ABS = 0.5` floor on
+`|LEB − LETools|` before percentage-threshold filtering, because
+several LETools UI stat fields are integer-rounded for display
+(Ward Regen, Block Chance, Endurance, …) while LEB stores the
+underlying floats. Without the floor, sub-1.0 float diffs inflate
+to fake double-digit percentage drifts on small-magnitude integer
+stats, masking real drifts elsewhere by noise.
+
+Game ground truth: LETools' planner serializes its rendered UI
+strings, not raw engine floats. The "Ward Regen" Defense-tab field
+renders `"4"` even when the underlying value is 3.71x — see
+`spec/TestBuilds/1.4/BgRrP5rr lv98 Paladin.letools.json` Defense
+tab where `Health Regen` renders `"185.92"` and `Mana Regen` renders
+`"13.95"` (both 2-decimal) but `Ward Regen` renders `"4"` (integer
+only) on the same build.
+
+Pre-fix evidence:
+- BgRrP5rr lv98 Paladin: LEB WardPerSecond=3.712 (exact: 2 × 185.6 /
+  100 from Throne of Ambition LifeRegenAppliesToWard), LETools "4",
+  Δ=−0.288, |D%|=7.2% (above default --threshold 2.0).
+
+Post-fix: |D|=0.288 ≤ TOL_ABS=0.5 → row dropped → CooldownRecovery
+and PoisonResistTotal remain the only flagged rows for BgRrP5rr.
+
+| Site | File | What it does |
+|---|---|---|
+| TOL_ABS const | `spec/tools/diff_letools.py` ~L177 | `TOL_ABS = 0.5` with `@leb-regression-guard:diff-letools-abs-tolerance-floor` marker block documenting LETools integer-rounding and naming the JS sibling tool. |
+| Filter check | `spec/tools/diff_letools.py` ~L210 | `if not args.all and abs(d) <= TOL_ABS: continue` (after the `pct <= threshold` check). `--all` bypasses both floors so the user can still inspect sub-floor rows when intentionally widening. |
+| JS counterpart | `scripts/letools-diff.js` L15-16, L191 | `const TOL_ABS = 0.5` + `if (d <= TOL_ABS) return 'OK'`. The Python tool mirrors this exactly. |
+
+**Spec:** `spec/System/TestDiffLetoolsAbsToleranceFloor_spec.lua`
+(a busted-pinned synthetic asserting the Python tool's behavior is
+self-consistent — see file).
+
+**Cross-refs:**
+- `ward-regen-passive-vs-event-split` post-fix residual #2 entry
+  documenting BgRrP5rr as the originating triangulation case for
+  this guard.
+
+**Establishing commit:** (this commit)
+
 ### `letools-armor-display-negative-on-shred-build` (docs-only)
 
 LETools' planner UI sometimes reports the player's own `Armor`
