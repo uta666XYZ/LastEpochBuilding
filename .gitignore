@@ -26,6 +26,10 @@ spec/test_generation.log
 spec/TestBuilds/
 src/luacov.stats.out
 
+# Python bytecode caches
+__pycache__/
+*.pyc
+
 # Release
 manifest-updated.xml
 
