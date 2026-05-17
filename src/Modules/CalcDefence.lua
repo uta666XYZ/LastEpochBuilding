@@ -413,6 +413,31 @@ function calcs.defence(env, actor)
 		}
 	end
 
+	-- @leb-regression-guard: paladin-sentinel70-dedication-mana-regen
+	-- Sentinel-70 (Dedication) notScalingStat "1% Increased Mana Regen Per 1%
+	-- Block Chance Above 50%" activates at threshold 5. The cached parse keeps
+	-- the leading clause "1% Increased Mana Regen Per 1% Block Chance" as a
+	-- PerStat:BlockChance ManaRegen INC mod but leaves "Above 50%" as parser
+	-- `extra`, which causes PassiveTree.lua:458 to silently drop the entire
+	-- mod (`if mod.list and not mod.extra`). Inject a clean ManaRegen INC
+	-- scaled by max(0, BlockChanceTotal - 50): use BlockChanceTotal (uncapped)
+	-- because LE applies the bonus on raw block chance, not the capped value.
+	-- Sites running before block calc (e.g. the regen loop at L680) consume
+	-- modDB:Sum("INC", "ManaRegen") via output.ManaRegenInc which is
+	-- recomputed at L1725 from the same sum — by injecting here (after L353
+	-- BlockChanceTotal is set, before L680/L1725) both regen and the INC
+	-- breakdown pick up the contribution.
+	-- Verified against BgRrP5rr lv98 Paladin (LETools ManaRegen=13.95).
+	-- Spec: spec/System/TestPaladinSentinel70DedicationManaRegen_spec.lua
+	local s70 = env.allocNodes and env.allocNodes["Sentinel-70"]
+	if s70 and (s70.alloc or 0) >= (s70.noScalingPointThreshold or 5) then
+		local rawBlock = output.BlockChanceTotal or output.BlockChance or 0
+		local dedicationInc = m_max(0, rawBlock - 50)
+		if dedicationInc > 0 then
+			modDB:NewMod("ManaRegen", "INC", dedicationInc, "Sentinel-70 Dedication")
+		end
+	end
+
 	-- @leb-regression-guard:ward-on-block-resource-conversion (calc site)
 	-- "Ward on Block" display value combines two sources:
 	--   1. flat `WardOnBlock` BASE mod (e.g. "+27 Ward Gain on Block" — already

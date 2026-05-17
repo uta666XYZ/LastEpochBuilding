@@ -4423,6 +4423,42 @@ closeout. See Obsidian `SKILL_STATUS.md` PENDING #4
 "QJWMRv53 Bladedancer Armour/BlockEffectiveness outlier"
 for the originating sweep context.
 
+### `paladin-sentinel70-dedication-mana-regen`
+
+Paladin tree node Sentinel-70 (Dedication) carries a `notScalingStat`
+`"1% Increased Mana Regen Per 1% Block Chance Above 50%"` with
+`noScalingPointThreshold: 5`. The cached parse in `src/Data/ModCache.lua`
+splits the stat into a `PerStat:BlockChance` `ManaRegen` INC mod **plus a
+leftover parser `extra = "   Above 50% "`**. `PassiveTree.lua:458` gates
+mod insertion on `if mod.list and not mod.extra then`, so the entire mod
+is silently dropped — Sentinel-70 contributes **0** to `ManaRegen` despite
+being allocated past threshold.
+
+LE applies the bonus on raw (uncapped) block chance, not the capped value.
+For BgRrP5rr (BlockChanceTotal=92, BlockChance=75 after cap), the LE engine
+yields `max(0, 92 - 50) = 42%` INC ManaRegen. The fix injects a clean INC
+ManaRegen mod from `CalcDefence` after the block calc sets
+`output.BlockChanceTotal` (~L353) and before the regen loop at ~L680 / the
+`output.ManaRegenInc` sum at ~L1725 — both downstream sites pick up the
+contribution from the same `modDB:Sum("INC", nil, "ManaRegen")` site.
+
+Real-world hit: `BgRrP5rr` lv98 Paladin LETools snapshot shows
+`manaRegen=13.95`; pre-fix LEB produced `10.5` (Δ=-24.7%). Post-fix:
+INC=73 (was 31), `output.ManaRegen=13.8` (Δ<1%).
+
+| Site | File | What it does |
+|---|---|---|
+| handler | `src/Modules/CalcDefence.lua` (~line 416) | After block calc, if `env.allocNodes["Sentinel-70"].alloc >= noScalingPointThreshold (5)`, NewMod `ManaRegen` INC = `max(0, output.BlockChanceTotal - 50)` |
+| tree data | `src/TreeData/1_4/tree_2.json` (Sentinel-70) | `notScalingStats: ["1% Increased Mana Regen Per 1% Block Chance Above 50%"]`, `noScalingPointThreshold: 5` |
+
+**Spec:** `spec/System/TestPaladinSentinel70DedicationManaRegen_spec.lua`
+- "CalcDefence handler injects ManaRegen INC = max(0, BlockChanceTotal - 50) when Sentinel-70 alloc >= threshold"
+- "Sentinel-70 below threshold contributes 0 to ManaRegen"
+- "handler uses BlockChanceTotal (uncapped), not BlockChance (capped)"
+- "tree_2.json Sentinel-70 retains notScalingStat with noScalingPointThreshold"
+
+**Establishing commit:** (this commit) — BgRrP5rr Paladin ManaRegen 10.5→13.8 Δ<1%
+
 ## Layering vs canary strings
 
 
