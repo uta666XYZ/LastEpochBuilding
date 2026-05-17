@@ -7771,7 +7771,7 @@ c["+5 Health Gained On Kill"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupport
 c["+5 Health Gained on Companion Hit"]={{[1]={flags=8388608,keywordFlags=0,name="Life",type="BASE",value=5}},"  Gained on Compani "}
 c["+5 Health Per Stack Consumed"]={{[1]={flags=0,keywordFlags=0,name="Life",type="BASE",value=5}},"  Per Stack Consumed "}
 c["+5 Health Regen"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="BASE",value=5}},nil}
-c["+5 Health Regen From Symbols Of Hope"]={{[1]={[1]={skillName="Symbols of Hope",type="SkillName"},flags=0,keywordFlags=0,name="LifeRegen",type="BASE",value=5}},"  From  "}
+c["+5 Health Regen From Symbols Of Hope"]={{[1]={[1]={type="Multiplier",var="ActiveSymbol"},flags=0,keywordFlags=0,name="LifeRegen",type="BASE",value=5}},nil}
 c["+5 Health Regen per Forged Weapon"]={{[1]={flags=0,keywordFlags=0,name="LEB_NotSupported",type="BASE",value=5},notSupported=true},nil}
 c["+5 Health Regenerated Per Second"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="BASE",value=5}}," erated Per Second "}
 c["+5 Health Regeneration per Summoned Bee"]={{[1]={flags=0,keywordFlags=0,name="LifeRegen",type="BASE",value=5}},"  per Summoned Bee "}

@@ -1590,28 +1590,50 @@ Real-world hit: QDxZjL4J Paladin's LETools snapshot shows `Health Regen
 
 **Establishing commit:** `804d333a4`
 
-### `sentinel-95-base-health-regen`
+### `paladin-sentinel95-healthregen-partition`
 
-Paladin tree node Sentinel-95 (Covenant of Protection) grants
-`+6 Health Regen` per allocated point in addition to its armor stats.
-The LE node's internal name in
-`LE_datamining/extracted/items/globalTreeData.json` is
-`Paladin Armor Health Regen And Armor Applies To DoT`, which explicitly
-includes the Health Regen line.
+Paladin tree node Sentinel-95 (Covenant of Protection) partitions its
+bonuses across two arrays: scaling `stats` (Armor + ArmorAppliesToDoT)
+and `notScalingStats` (`+5 Health Regen From Symbols Of Hope`), gated
+on `noScalingPointThreshold=5`. The LE in-game tooltip (verified
+2026-05-18, BgRrP5rr Paladin lv98) shows ONLY the two armor lines as
+scaling — there is no `+6 Health Regen` scaling stat. The non-scaling
+Health Regen bonus is a fixed +5 once the player allocates 5 points,
+and the "From Symbols Of Hope" wording in this passive context scales
+the BASE LifeRegen mod by the `Multiplier:ActiveSymbol` count (matching
+the existing Symbols of Hope per-symbol INC LifeRegen convention).
 
-Pre-fix `tree_2.json` (1_4) listed only `8% Increased Armor` and
-`2% Armor Mitigation Applies To Damage Over Time` in `stats`, so 5
-allocated points dropped `+30 BASE Health Regen` entirely. QDxZjL4J
-Paladin's LETools snapshot shows `+30 BASE Health Regen` from this node.
+Pre-fix state had two compounding errors:
+1. `tree_2.json` (1_4) listed a stale `+6 Health Regen` in scaling
+   `stats` (which would have produced +30 BASE at 5 points — wrong vs
+   game tooltip). Fixed by `815761c3a` (game-canonical tooltip sync).
+2. ModParser had no handler for the suffix `from symbols of hope`, so
+   the `+5 Health Regen From Symbols Of Hope` notScalingStat fell into
+   the ModParser residue and contributed 0 BASE LifeRegen. Fixed by
+   adding `["from symbols of hope"] = { tag = { type="Multiplier",
+   var="ActiveSymbol" } }` plus a regen of the affected ModCache entry.
+
+Net effect on BgRrP5rr (5 ActiveSymbols): Sentinel-95 contributes
++25 BASE LifeRegen (5 × 5 from the ActiveSymbol multiplier), restoring
+~33% of the +62 LifeRegen drift vs LETools.
 
 | Site | File | What it does |
 |---|---|---|
-| tree data | `src/TreeData/1_4/tree_2.json` (Sentinel-95) | `stats` array contains `+6 Health Regen` |
+| tree data | `src/TreeData/1_4/tree_2.json` (Sentinel-95) | `stats` array omits `+6 Health Regen`; `notScalingStats` contains `+5 Health Regen From Symbols Of Hope` with `noScalingPointThreshold=5` |
+| parser | `src/Modules/ModParser.lua` (`modTagList`, ~L654) | Maps "from symbols of hope" suffix to `Multiplier:ActiveSymbol` tag |
+| cache | `src/Data/ModCache.lua` (~L7775) | `+5 Health Regen From Symbols Of Hope` cached as BASE LifeRegen value=5 with `Multiplier:ActiveSymbol` tag |
 
-**Spec:** `spec/System/TestSentinel95Regen_spec.lua`
-- "tree_2.json Sentinel-95 stats include '+6 Health Regen'"
+**Spec:** `spec/System/TestPaladinSentinel95LifeRegen_spec.lua`
+- "ModParser tags '+5 Health Regen From Symbols Of Hope' with Multiplier:ActiveSymbol"
+- "with 5 ActiveSymbols Sentinel-95 sums to +25 BASE LifeRegen"
+- "tree_2.json Sentinel-95 stats omit '+6 Health Regen'"
+- "tree_2.json Sentinel-95 notScalingStats contains '+5 Health Regen From Symbols Of Hope'"
 
-**Establishing commit:** `804d333a4`
+**Establishing commit:** TBD (Part B fix commit on margulis worktree)
+**Supersedes:** `sentinel-95-base-health-regen` (804d333a4) — that guard
+asserted the now-incorrect `+6 Health Regen` scaling stat. Replaced
+because the game-canonical tooltip partitions the Health Regen as a
+notScalingStat, not a scaling stat.
 
 ### `sentinel-93-mana-regen-from-holy-aura`
 

@@ -643,6 +643,15 @@ local modTagList = {
 	-- entry (Dusk Shroud Chance From Shadow Falcons) carries the SkillName
 	-- tag with empty residue.
 	["from shadow falcons"] = { tag = { type = "SkillName", skillName = "Shadow Falcon" } },
+	-- @leb-regression-guard:paladin-sentinel95-healthregen-partition
+	-- "From Symbols of Hope" passive-suffix on Sentinel-95 Covenant of
+	-- Protection's 5-point bonus ("+5 Health Regen From Symbols Of Hope",
+	-- notScaling, noScalingPointThreshold=5). The "from <skill>" wording in
+	-- this context scales per active Symbol (LE convention - matches the
+	-- existing Symbols of Hope INC LifeRegen 41.6% per ActiveSymbol pattern),
+	-- so the tag is Multiplier:ActiveSymbol, not SkillName. With 5 symbols
+	-- active the +5 BASE becomes +25, restoring the LifeRegen drift target.
+	["from symbols of hope"] = { tag = { type = "Multiplier", var = "ActiveSymbol" } },
 	-- Slot conditions
 	["while dual wielding"] = { tag = { type = "Condition", var = "DualWielding" } },
 	["while wielding a two handed melee weapon"] = { tagList = { { type = "Condition", var = "UsingTwoHandedWeapon" }, { type = "Condition", var = "UsingMeleeWeapon" } } },
