@@ -4298,6 +4298,82 @@ marker is present at the assignment site.
 
 **Establishing commit:** (this commit)
 
+### `letools-armor-display-negative-on-shred-build` (docs-only)
+
+LETools' planner UI sometimes reports the player's own `Armor`
+stat as a **negative** value on Rogue / Bladedancer builds that
+stack `Chance to Shred Armor on Hit` affixes. Game-faithfully,
+"Armor Shred" is an **offensive** ailment applied to enemies; it
+must not subtract from the casting player's defensive armor. A
+negative armor value is physically impossible in `ProtectionClass`
+(min clamp at 0 — see `LE_datamining/il2cpp_dump_v142/dump.cs`
+ProtectionClass enumeration), and LEB's `CalcDefence.lua` armor
+chain never produces a negative output either.
+
+The displayed-vs-reality gap is a **LETools UI artifact**, not a
+LEB bug. This guard records the triangulation case so future
+diff sweeps don't waste cycles on it.
+
+**Triangulation case study** (QJWMRv53 lv98 Bladedancer,
+2026-05-17 sweep, see `spec/TestBuilds/1.4/QJWMRv53 lv98 Bladedancer.lua`
+post-fix snapshot):
+
+| Stat | LETools display | LEB output | Notes |
+|---|---:|---:|---|
+| `Armor` | **-260** | 660 | LETools negative → impossible in game |
+| `Armor Mitigation` | **-31%** | (n/a sign) | derived from negative armor |
+| `FireResistTotal` | 90 | 114 | gap +24 = blessing 19 + Rogue-60 5 |
+| `ColdResistTotal` | 104 | 128 | same +24 split |
+| `LightningResistTotal` | 153 | 177 | same +24 split |
+| `PhysicalResistTotal` | 107 | 131 | same +24 split |
+| `VoidResistTotal` | 131 | 155 | same +24 split |
+| `NecroticResistTotal` | 102 | 121 | gap +19 = blessing only |
+| `PoisonResistTotal` | 79 | 98 | gap +19 = blessing only |
+
+The resistance gap pattern is symmetric: LETools is missing
+- `Grand Resolve of Humanity` blessing `+19% to All Resistances`
+  (lands on Item:27 in the XML) → -19 on all 7 types, AND
+- `Rogue-60 Grit` passive (`+1% All Resistances` per pt × 5 pts)
+  → -5 on F/C/L/Phys/Void only (LETools' UI happens to not
+  subtract this on Necrotic/Poison; the symmetric break is
+  uninvestigated and out of scope — game-faithfully Grit applies
+  to all 7).
+
+LEB's `DumpResAll` (`spec/DumpResAll.lua`) confirms every
+listed mod sums to LEB's reported total (e.g. Fire
+16+12+19+11+11+29+5+6+5 = 114). The passive-tree data file
+`src/TreeData/1_4/tree_4.json` `Rogue-60` "Grit" has
+`"stats": ["+1% All Resistances", "+2% Endurance"]`,
+`"maxPoints": 5` — game-faithful per source.
+
+The Σ|Δ|=1270 outlier originally flagged in `SKILL_STATUS.md`
+PENDING is therefore decomposed into:
+
+1. ~+920 from the impossible-negative `Armor` display (LETools UI)
+2. ~+155 from blessing + passive-node display omission (LETools UI)
+3. ~+15 from Vit -5 / Int -5 residual (deferred — small magnitude)
+
+| Site | File |
+|---|---|
+| Player armor floor (game) | `LE_datamining/il2cpp_dump_v142/dump.cs` ProtectionClass armor accumulation |
+| Rogue-60 Grit definition | `src/TreeData/1_4/tree_4.json` node `Rogue-60` |
+| LEB armor accumulation | `src/Modules/CalcDefence.lua` `output.Armour` chain |
+| LEB resist accumulation | `src/Modules/CalcDefence.lua` per-element `*ResistTotal` |
+| Dump script | `spec/DumpResAll.lua` |
+| Diff tooling | `spec/tools/diff_letools.py` |
+
+**Spec:** none — this is a docs-only guard. LEB's own armor /
+resist calcs are locked by their respective specs
+(`TestArmourFull_spec.lua`, `TestResistanceCaps_spec.lua` and
+related). The guard exists so that the negative-armor display
+pattern is recognised as a known LETools artifact when it
+re-surfaces on other Rogue / Bladedancer builds.
+
+**Establishing commit:** (this commit) — QJWMRv53 triangulation
+closeout. See Obsidian `SKILL_STATUS.md` PENDING #4
+"QJWMRv53 Bladedancer Armour/BlockEffectiveness outlier"
+for the originating sweep context.
+
 ## Layering vs canary strings
 
 
