@@ -106,6 +106,8 @@ MAPPING = {
     # `NetWardRegen` is gross − decay (display field) and would introduce phantom
     # diffs ≈ per-build decay rate. `WardRegen` is not an LEB output key.
     # Mirror of `scripts/letools-diff.js` mapping (~line 86).
+    # See also REGRESSION_GUARDS.md §ward-regen-passive-vs-event-split for the
+    # display-only vs local-wps inversion-math split that consumes this mapping.
     ('Defense','Ward Regen'):'WardPerSecond',
     ('Defense','Ward Retention'):'WardRetention',
     ('Defense','Ward Decay Threshold'):'WardDecayThreshold',
@@ -137,15 +139,34 @@ MAPPING = {
     # See Obsidian "LEB vs LETools stat 比較.md" (既知の比較除外 stat).
     ('Minion','Critical Strike Avoidance'):'MinionCritStrikeAvoid',
     ('Minion','Reduced Bonus Damage Taken From Critical Strikes'):'MinionCriticalStrikesTakenReduction',
-    ('Minion','Movement Speed'):'MinionMovementSpeed',
-    ('Minion','Fire Resistance'):'MinionFireResist',
-    ('Minion','Cold Resistance'):'MinionColdResist',
-    ('Minion','Lightning Resistance'):'MinionLightningResist',
-    ('Minion','Physical Resistance'):'MinionPhysicalResist',
-    ('Minion','Necrotic Resistance'):'MinionNecroticResist',
-    ('Minion','Poison Resistance'):'MinionPoisonResist',
-    ('Minion','Void Resistance'):'MinionVoidResist',
-    ('Minion','Increased Cooldown Recovery Speed'):'MinionCooldownRecovery',
+    # ('Minion','Movement Speed'):'MinionMovementSpeed',
+    # ('Minion','Fire Resistance'):'MinionFireResist',
+    # ('Minion','Cold Resistance'):'MinionColdResist',
+    # ('Minion','Lightning Resistance'):'MinionLightningResist',
+    # ('Minion','Physical Resistance'):'MinionPhysicalResist',
+    # ('Minion','Necrotic Resistance'):'MinionNecroticResist',
+    # ('Minion','Poison Resistance'):'MinionPoisonResist',
+    # ('Minion','Void Resistance'):'MinionVoidResist',
+    # ('Minion','Increased Cooldown Recovery Speed'):'MinionCooldownRecovery',
+    # ^^ Excluded (2026-05-17): same aggregation-scope mismatch as MinionArmour
+    # above. The full pool of Minion* outputs in CalcDefence.lua L1752-1795 walks
+    # `modDB:List(nil, "MinionModifier")`, runs each inner mod through EvalMod,
+    # and accumulates by (name, type) bucket — so every bare `output.MinionXxx`
+    # is a *modifier-pool aggregate*, not a per-minion resolved value. LETools'
+    # Minion tab shows the resolved-on-representative-minion stat (prefab base +
+    # applied pool + per-minion-prefab adjustments), capped at 75% for resists.
+    # The two are not comparable apples-to-apples. Observed drift pattern:
+    # mean |Δ%| 10-23%, max 480% (single-digit LETools vs full-pool LEB).
+    # For MovementSpeed the additional gap is the engine-hardcoded sp=9
+    # player-MovementSpeed → minion auto-forward (LE_datamining/bepinex/
+    # MinionStatDumper Phase 7 runtime surface), which LEB's MinionModifier
+    # bucket cannot observe. For CooldownRecovery the n is only 3 builds and
+    # mean drift is sub-percent (Lane C noise).
+    # Game-faithful per `affix_tag_surface.json` (156 mods / 32 props with
+    # tag=8192 MINION) — these affixes ARE routed via MinionModifier list,
+    # matching LEB. Locked semantics, no fix needed; LETools display style
+    # mismatch only.
+    # See Obsidian "LEB vs LETools stat 比較.md" + "SKILL_STATUS.md" ALLOWED.
     ('Other','Increased Cooldown Recovery Speed'):'CooldownRecovery',
 }
 

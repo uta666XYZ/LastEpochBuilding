@@ -22,19 +22,29 @@ local function readSource(relPath)
 end
 
 describe("WardDecayFloorZeroPassive", function()
-    it("CalcPerform.lua snapshots passive WPS before adding event-driven contributions", function()
+    it("CalcPerform.lua snapshots passive WPS and assigns it to the display before folding event-driven into local wps", function()
         local text = readSource("Modules/CalcPerform.lua")
-        -- Snapshot now also folds in current-mana / missing-health PASSIVE
+        -- The passive snapshot folds in current-mana / missing-health PASSIVE
         -- contributions (which belong in game `wardRegenFromStats`); only
         -- ManaSpentGainedAsWard is event-driven and excluded.
         local idxSnap = string.find(text,
             "local passiveWardPerSecond = [%w_]+ %+ currentManaContribution %+ missingHealthContribution")
         assert.is_not_nil(idxSnap,
             "passiveWardPerSecond must combine base WPS + currentMana + missingHealth contributions")
-        local idxAdd = string.find(text, "pOut.WardPerSecond = baseWardPerSecond + totalContribution", 1, true)
-            or string.find(text, "pOut.WardPerSecond = (pOut.WardPerSecond or 0) + totalContribution", 1, true)
-        assert.is_not_nil(idxAdd, "totalContribution must be folded in after the passive snapshot")
-        assert.is_true(idxSnap < idxAdd, "passive WPS snapshot must come before the total contribution add")
+        -- Display stat = passive-only (game-faithful per ProtectionClass.Update).
+        -- @leb-regression-guard:ward-regen-passive-vs-event-split — the event-driven
+        -- ManaSpentGainedAsWard contribution lives only in the local `wps` used
+        -- for the Ward/WardDecay inversion math, never in pOut.WardPerSecond.
+        local idxDisplay = string.find(text,
+            "pOut%.WardPerSecond%s*=%s*passiveWardPerSecond")
+        assert.is_not_nil(idxDisplay,
+            "pOut.WardPerSecond must be assigned the passive-only snapshot")
+        assert.is_true(idxSnap < idxDisplay, "passive snapshot must come before the display assignment")
+        local idxWps = string.find(text,
+            "local%s+wps%s*=%s*passiveWardPerSecond%s*%+%s*manaSpentContribution")
+        assert.is_not_nil(idxWps,
+            "local wps must fold passive + event-driven manaSpentContribution after the display assignment")
+        assert.is_true(idxDisplay < idxWps, "local wps must be defined after the display assignment")
     end)
 
     it("CalcPerform.lua applies 0.5/s decay floor when passive WPS <= 0", function()

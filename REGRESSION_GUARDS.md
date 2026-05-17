@@ -4069,7 +4069,7 @@ game-faithful.
 
 **Establishing commit:** (this commit)
 
-### `ward-regen-passive-vs-event-split`
+### `ward-regen-passive-vs-event-split-pre-fix-baseline`
 
 `CalcPerform.lua` post-offence Ward Regen fold-in writes `pOut.WardPerSecond
 = baseWardPerSecond + totalContribution` (line 1441), which incorrectly
@@ -4129,9 +4129,157 @@ commit that flips the display split can be validated by snapshot diff.
 Post-fix expectation: Σ|Δ| on `WardPerSecond` drops from ≈ 598 to ≈ 6
 (Lane B / Necromancer residual only).
 
-**Spec:** TBD — pre-fix baseline frozen at this commit; a regression
-spec keyed on QDxZjPX8 (largest delta) should be added together with
-the display split fix.
+**Establishing commit:** (this commit)
+
+### `altar-property-3-standard-only-gate`
+
+The Idol Altar's properties 1 / 2 / 3 (`PrefixAndSuffix`, `Prefix`,
+`Suffix` — `IdolAltarPropertyID` enum values 1/2/3 in
+`dump.cs` L240052-240070) gate ONLY on
+`SpecialAffixType.Standard` (sat=0). They MUST NOT boost
+`SpecialAffixType.IdolEnchantment` (sat=4), `IdolWeaver` (sat=5),
+`Corrupted` (sat=6), `Set` (sat=3), `Personal` (sat=2), or
+`Experimental` (sat=1) affixes. The IdolEnchantment / IdolWeaver
+families are reached by property 4 (`EffectOfIdolEnchantsInRefractedSlots`)
+ONLY; corrupted/set/personal/experimental affixes receive no altar
+boost.
+
+LE's authoritative gate is the il2cpp method
+`IsAffectedByAffectOfStandardPrefixesOrSuffixes(SpecialAffixType)`
+(`dump.cs` L151678; header-only dump so the body is not directly
+visible, but the enum partition + property-4 design pattern make the
+gate's intent unambiguous). LEB's matching gate lives in
+`CalcSetup.lua` `cloneWithAltarBoost`:
+
+```lua
+-- L1224-1230
+local sat = specialAffixType(affix.modId)
+if sat == "Standard" then
+    boost = altarCommon + (specificBoost or 0)
+elseif sat == "IdolEnchantment" or sat == "IdolWeaver" then
+    boost = altarBoostEnchant
+end -- Corrupted/Set/Personal/Experimental → boost stays 0
+```
+
+The two prefix/suffix lanes route via separate scale lists at
+L1265-1266 so a mismatched sat cannot leak across the prefix↔suffix
+boundary:
+
+```lua
+scaleAffixList(clone.prefixes, altarBoostPrefix)
+scaleAffixList(clone.suffixes, altarBoostSuffix)
+```
+
+Any future refactor that:
+
+- Collapses the `if sat == "Standard"` branch into an
+  unconditional `boost = altarCommon + altarBoostPrefix` /
+  `altarBoostSuffix`, OR
+- Treats the property-3 suffix scalar as applying to "all suffix
+  affixes" rather than "Standard suffix affixes", OR
+- Allows `altarBoostPrefix` / `altarBoostSuffix` to feed into the
+  `boost` variable when `sat ~= "Standard"`,
+
+reintroduces the LETools-shaped over-application that the
+oN2zWaYX triangulation surfaced.
+
+Triangulation case study (inference-based — see Obsidian
+`LEB vs LETools stat 比較.md` "2026-05-16 partial verification
+report" under oN2zWaYX for the full reasoning): oN2zWaYX lv100
+Spellblade carries a Sunset Auric Altar with property 3 ≈ 36%
+("(33-39)% increased Effect of Suffixes for Idols in Refracted
+Slots") and two Chitin Small Weaver Idols whose `837_0` "of
+Chitin" suffix is tagged `specialAffixType: 5` (IdolWeaver) in
+`src/Data/ModItem_1_4.json` L96488-96526. LEB reports
+PhysicalResistTotal = 77 and MinionPhysicalResist = 20; LETools
+reports 84 / 27 (Δ-7 on both halves of the compound affix, exactly
+the +36% boost that LETools applies and LEB withholds). Because
+LE's `IsAffectedByAffectOfStandardPrefixesOrSuffixes` gate is
+documented in the il2cpp header and the SpecialAffixType enum
+partition leaves IdolWeaver outside the "standard prefixes or
+suffixes" naming, LEB's behaviour is the correctness-preserving
+read; LETools is the deviation.
+
+This guard is **inference-based**: no live LE client run was
+performed (the user does not own a playable matching character;
+test builds are LETools planner imports). Disposition is locked
+on (1) the il2cpp method name + (2) the SpecialAffixType enum
+shape + (3) the existence of a separate property 4 specifically
+for IdolEnchantment/IdolWeaver. If a future LE client trace
+contradicts the gate, this guard should be revisited.
+
+| Site | File |
+|---|---|
+| Standard-only sat gate (boost selection) | `src/Modules/CalcSetup.lua` `cloneWithAltarBoost` (~L1224-1230) |
+| Prefix/suffix routing separation | `src/Modules/CalcSetup.lua` `cloneWithAltarBoost` (~L1265-1266) |
+| `specialAffixType` _0-first resolver | `src/Modules/CalcSetup.lua` `specialAffixType` (shared with `idol-refracted-weaver-enchant-boost`) |
+| `IdolAltarPropertyID` enum reference | `LE_datamining/il2cpp_dump_v142/dump.cs` L240052-240070 |
+| `IsAffectedByAffectOfStandardPrefixesOrSuffixes` reference | `LE_datamining/il2cpp_dump_v142/dump.cs` L151678 |
+| Compound-suffix data fixture | `src/Data/ModItem_1_4.json` `837_0` "of Chitin" (sat=5) |
+
+**Spec:** existing `idol-refracted-weaver-enchant-boost` spec
+covers the positive sat=4/5 + property 4 routing; the negative
+case (sat=5 must NOT receive property 1/2/3) is implied by the
+`if/elseif` partition and is currently not asserted by a dedicated
+spec. A defensive spec asserting
+`cloneWithAltarBoost(weaverIdolWithProperty3Altar).suffixes[1].modScalar`
+matches the un-boosted scalar would lock this gate explicitly —
+deferred to the follow-up that lands the new spec alongside
+oN2zWaYX snapshot stabilisation.
+
+**Establishing commit:** (this commit) — inference close for the
+G2 minion-stat drill Lane D (oN2zWaYX). See Obsidian
+`LEB vs LETools stat 比較.md` "G2 canonical Minion-tab drift
+drill (2026-05-16 closeout)" table row Lane D for the full case
+record.
+
+### `ward-regen-passive-vs-event-split`
+
+Display Ward Regen (`pOut.WardPerSecond`) must equal the **passive**
+sum only — base + `LifeRegenAppliesToWard` + `CurrentManaGainedAsWardPerSecond`
++ `MissingHealthGainedAsWardPerSecond`. The event-driven
+`ManaSpentGainedAsWard` contribution must NOT be folded into the
+display stat; it belongs only in the local `wps` value used for the
+Ward / WardDecay inversion math.
+
+Game ground truth:
+- `ProtectionClass.Update` (RVA 0x234B8C0, LE_datamining
+  `ward_decompile.txt`): the `wardRegen` field updated per tick is
+  the SUM of passive sources only. `ManaSpentGainedAsWard` is applied
+  via `GainWard(amount)` from the spell-cast event handler — it
+  never participates in the displayed Ward Regen.
+- LETools "Ward Regen" reads the same passive snapshot — that's why
+  Sorcerer / Spellblade builds with non-zero ManaSpentGainedAsWard
+  used to show large positive `LEB − LETools` deltas while LEB's
+  display included the event contribution and LETools' did not.
+
+Pre-fix evidence (post-reimport 119 G1-G6 canonical,
+`.tmp/reimport119/stat_diff_table.md`): 7 builds accounted for
+≈ 598 of the total Σ|Δ| on `WardPerSecond`:
+
+| Build | LETools | LEB (pre-fix) | Δ |
+|---|---:|---:|---:|
+| QDxZjPX8 lv95 Sorcerer | 222 | 576.77 | +354.77 |
+| BZ37dR2l lv100 Sorcerer | 104 | 209.46 | +105.46 |
+| BgRrekOY lv82 Sorcerer | 101 | 143.16 | +42.16 |
+| Bakbr2Ne lv86 Sorcerer | 41 | 75.05 | +34.04 |
+| oR6qaLp4 lv80 Spellblade | 105 | 134.12 | +29.12 |
+| Qdz2yXLk lv100 Warlock | 151 | 173.64 | +22.64 |
+| o3Zlpkxd lv98 Necromancer | 25 | 35.01 | +10.01 |
+
+| Site | File | What it does |
+|---|---|---|
+| Display = passive only | `src/Modules/CalcPerform.lua` ~L1448 (`do … end` block from L1418) | `pOut.WardPerSecond = passiveWardPerSecond`. `passiveWardPerSecond` = base + CurrentMana + MissingHealth contributions. |
+| Event-driven in local wps | `src/Modules/CalcPerform.lua` ~L1449 | `local wps = passiveWardPerSecond + manaSpentContribution`. `wps` is used only by the Ward / WardDecay inversion math and NetWardRegen. |
+| Breakdown split | `src/Modules/CalcPerform.lua` ~L1455-1474 | Breakdown surfaces passive total, then separately the event-driven mana-spent line + effective WPS including it. |
+| Floor gate keys on passive | `src/Modules/CalcPerform.lua` ~L1495 | `if passiveWardPerSecond <= 0 then rawWardDecayPerSecond = m_max(..., 0.5)` — game-faithful (event-driven mana-spent doesn't suppress the 0.5 floor). |
+
+**Spec:** `spec/System/TestWardRegenPassiveVsEventSplit_spec.lua`
+asserts (1) the display assignment uses `passiveWardPerSecond`, not
+the previous `baseWardPerSecond + totalContribution`; (2) the local
+`wps` adds `manaSpentContribution` after the display assignment;
+(3) the inline `@leb-regression-guard:ward-regen-passive-vs-event-split`
+marker is present at the assignment site.
 
 **Cross-refs:**
 - `ward-regen-canonical-key-wardpersecond` — LETools label "Ward Regen"
@@ -4139,8 +4287,11 @@ the display split fix.
   `WardRegen`. This guard depends on that mapping being correct.
 - `ward-regen-resource-conversion` — the three passive contributions
   (CurrentMana, MissingHealth, ManaSpent) and the breakdown surface
-  remain in their post-offence fold-in site; only the display split
-  changes here.
+  remain at their post-offence fold-in site; this guard splits only
+  the display vs inversion-math destination of each contribution.
+- `ward-decay-floor-zero-passive` — the 0.5 floor is gated on
+  `passiveWardPerSecond` (not full `wps`), matching the game floor
+  gate which keys on `wardRegen + wardRegenFromStats <= 0`.
 - Obsidian `Worktree Notes/determined-hawking-2a827c.md` →
   `2026-05-17 (post-merge) G1-G6 119 builds 全 re-import + 全 stat diff
   aggregate` section.

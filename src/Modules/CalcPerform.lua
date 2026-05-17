@@ -1457,18 +1457,14 @@ function calcs.perform(env, fullDPSSkipEHP)
 			local baseWardPerSecond = pOut.WardPerSecond or 0
 			local passiveWardPerSecond = baseWardPerSecond + currentManaContribution + missingHealthContribution
 			-- @leb-regression-guard:ward-regen-passive-vs-event-split
-			-- KNOWN PRE-FIX BEHAVIOR: this line writes passive+event into the display
-			-- stat. The game writes only the passive sum into `wardRegen +
-			-- wardRegenFromStats` (`ProtectionClass.Update` RVA 0x234B8C0); the
-			-- event-driven `ManaSpentGainedAsWard` is applied via `GainWard()` on
-			-- spell-cast and must NOT appear in the displayed Ward Regen.
-			-- Snapshots frozen at the establishing commit (.tmp/reimport119/) capture
-			-- the +598 Σ|Δ| concentrated in 7 Sorcerer/Spellblade/Warlock/Necromancer
-			-- builds (QDxZjPX8 +354.77 etc., see REGRESSION_GUARDS.md
-			-- §ward-regen-passive-vs-event-split). Fix: `pOut.WardPerSecond =
-			-- passiveWardPerSecond` and move event contribution into the local `wps`
-			-- inversion only.
-			pOut.WardPerSecond = baseWardPerSecond + totalContribution
+			-- Display Ward Regen = passive sum only (game `wardRegen +
+			-- wardRegenFromStats`, ProtectionClass.Update RVA 0x234B8C0).
+			-- Event-driven ManaSpentGainedAsWard is applied via GainWard() on
+			-- spell-cast and must NOT appear in the display stat — it folds into
+			-- the local `wps` used for the Ward / WardDecay inversion only.
+			-- Spec: spec/System/TestWardRegenPassiveVsEventSplit_spec.lua.
+			pOut.WardPerSecond = passiveWardPerSecond
+			local wps = passiveWardPerSecond + manaSpentContribution
 			-- @leb-regression-guard:ward-regen-resource-conversion (breakdown site)
 			-- Surface the per-source arithmetic in the Calcs tab so resource→ward
 			-- contributions are visible (the modName="WardPerSecond" auto-breakdown
@@ -1486,9 +1482,11 @@ function calcs.perform(env, fullDPSSkipEHP)
 					t_insert(lines, s_format("+ %.1f ^8(%.1f%% of Current Mana %d)",
 						currentManaContribution, currentManaGainedAsWardPerSec, pOut.Mana or 0))
 				end
+				t_insert(lines, s_format("= %.1f ^8(passive Ward per Second)", passiveWardPerSecond))
 				if manaSpentContribution > 0 then
-					t_insert(lines, s_format("+ %.1f ^8(%.1f%% of Mana Spent/sec %.1f)",
+					t_insert(lines, s_format("+ %.1f ^8(%.1f%% of Mana Spent/sec %.1f, event-driven via GainWard)",
 						manaSpentContribution, manaSpentGainedAsWard, manaPerSecondCost))
+					t_insert(lines, s_format("= %.1f ^8(effective Ward per Second incl. event-driven)", wps))
 				end
 				if stopMovingContribution > 0 then
 					t_insert(lines, s_format("+ %.1f ^8(%.1f%% of Current Mana %d / 2s CD; Stopped Moving)",
@@ -1497,7 +1495,6 @@ function calcs.perform(env, fullDPSSkipEHP)
 				t_insert(lines, s_format("= %.1f ^8(total Ward per Second)", pOut.WardPerSecond))
 				env.player.breakdown.WardPerSecond = lines
 			end
-			local wps = pOut.WardPerSecond
 			local wardDecayThreshold = pOut.WardDecayThreshold or 0
 			-- @leb-regression-guard:ward-retention-negative-clamp (post-offence ManaSpentGainedAsWard path)
 			-- @leb-regression-guard:ward-decay-gpp-constants (post-offence ManaSpentGainedAsWard path)
