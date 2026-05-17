@@ -4298,6 +4298,33 @@ marker is present at the assignment site.
 
 **Establishing commit:** (this commit)
 
+**Post-fix residual analysis (2026-05-17, hawking worktree):** After
+applying the split, 4 of 7 builds converged on `WardPerSecond`
+(QDxZjPX8 / BgRrekOY / Bakbr2Ne / o3Zlpkxd). The remaining 3 still
+drift, but the residuals are **LETools UI display-side omissions**
+of other passive `wardRegenFromStats` contributors that LEB correctly
+folds into the display per `ProtectionClass.Update`, not LEB bugs:
+
+| Build | LEB WPS | LETools | Δ | Source (per DumpWardRegen) |
+|---|---:|---:|---:|---|
+| Qdz2yXLk lv100 Warlock | 173.644 | 151 | +22.64 | `CurrentManaGainedAsWardPerSecond=5` × Mana 434 / 100 (+21.7) + `LifeRegenAppliesToWard=4` × LifeRegen 23.6 / 100 (+0.94). `ManaSpentGainedAsWard` modDB is empty for this build — the fix had no effect because the drift never originated from event-driven ward. |
+| oR6qaLp4 lv80 Spellblade | 127.5 | 105 | +22.5 | `CurrentManaGainedAsWardPerSecond=6` × Mana 375 / 100 = +22.5 (exact). `ManaSpentGainedAsWard=22%` is present but correctly routed only to local `wps`, not display. |
+| BZ37dR2l lv100 Sorcerer | 101 | 104 | -3 | Smaller than +/-5%; mod-list inspection shows `Sunrise Pyramidal Altar of Depravity BASE=3 × Mult:EquippedHereticalIdol(0)=0` and an inactive `Apex of Thought BASE=87 cond:StandingOnGlyphOfDominion=nil`. LETools likely applies the altar bonus assuming a Heretical idol is equipped. |
+
+Game-faithful per `ward_decompile.txt` L38-41 (`wardRegen +
+wardRegenFromStats`): the `wardRegenFromStats` accumulator includes
+ALL stat-derived passive ward sources, including
+`CurrentManaGainedAsWardPerSecond` and `LifeRegenAppliesToWard`. The
+LETools "Ward Regen" UI field renders only the static `Sum BASE
+WardPerSecond` and omits these dynamic converters — the same UI
+display-style mismatch family as `letools-armor-display-negative-on-shred-build`
+below.
+
+**Action:** No further LEB code change. The Lane A split is fully
+closed; the 3 residuals are recorded here so future diff sweeps
+don't re-investigate them. If a future LETools update starts
+including the converters, these residuals will auto-converge.
+
 ### `letools-armor-display-negative-on-shred-build` (docs-only)
 
 LETools' planner UI sometimes reports the player's own `Armor`
