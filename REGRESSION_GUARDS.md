@@ -1625,11 +1625,11 @@ Net effect on BgRrP5rr (5 ActiveSymbols): Sentinel-95 contributes
 
 **Spec:** `spec/System/TestPaladinSentinel95LifeRegen_spec.lua`
 - "ModParser tags '+5 Health Regen From Symbols Of Hope' with Multiplier:ActiveSymbol"
-- "with 5 ActiveSymbols Sentinel-95 sums to +25 BASE LifeRegen"
+- "Sentinel-95 BASE LifeRegen mod reaches modDB tagged with Multiplier:ActiveSymbol"
 - "tree_2.json Sentinel-95 stats omit '+6 Health Regen'"
 - "tree_2.json Sentinel-95 notScalingStats contains '+5 Health Regen From Symbols Of Hope'"
 
-**Establishing commit:** TBD (Part B fix commit on margulis worktree)
+**Establishing commit:** `388cf4e6d` (fix(passives): partition Sentinel-95 Health Regen by Symbols Of Hope)
 **Supersedes:** `sentinel-95-base-health-regen` (804d333a4) — that guard
 asserted the now-incorrect `+6 Health Regen` scaling stat. Replaced
 because the game-canonical tooltip partitions the Health Regen as a
