@@ -172,8 +172,8 @@
       "level": 0
     },
     "mods": [
-      "+(60-100)% Chance to inflict Bleed on Minion Hit",
-      "(60-100)% Increased Bleed Duration for Minions ",
+      "+(60-100)% Chance to Inflict Bleed on Minion Hit",
+      "(60-100)% Increased Bleed Duration for Minions",
       "{rounding:Integer}+(60-100) Health"
     ],
     "rollIds": [
@@ -627,7 +627,7 @@
     "mods": [
       "{rounding:Integer}+(17-21) Melee Lightning Damage",
       "{rounding:Integer}+(17-21) Spell Lightning Damage",
-      "-6 to -3 Totem Mana Cost",
+      "{rounding:Integer}-6 to -3 Totem Mana Cost",
       "{rounding:Integer}+(3-6) Attunement",
       "{rounding:Integer}+(3-6) Strength"
     ],
@@ -1179,7 +1179,7 @@
     "mods": [
       "{rounding:Integer}+(30-50) Health",
       "{rounding:Integer}+(5-9) Minion Melee Physical Damage",
-      "+1 You can Summon Wolves up to your Maximum Number of Companions"
+      "You can Summon Wolves up to your Maximum Number of Companions"
     ],
     "rollIds": [
       0,
@@ -1220,7 +1220,7 @@
       "{rounding:Integer}+(50-75) Health",
       "{rounding:Integer}+(10-16) Minion Melee Physical Damage",
       "+100% Minion Stun Immunity",
-      "+1 You can Summon Wolves up to your Maximum Number of Companions"
+      "You can Summon Wolves up to your Maximum Number of Companions"
     ],
     "rollIds": [
       0,
@@ -3325,7 +3325,7 @@
     "mods": [
       "(100-125)% of Chance to Inflict Bleed on Hit gained as Bleed Chance per second with Hail of Arrows",
       "25% increased Bow Attack Speed",
-      "-15 to -10 Hail of Arrows Mana Cost",
+      "{rounding:Integer}-15 to -10 Hail of Arrows Mana Cost",
       "{rounding:Integer}+(25-45) Health",
       "{rounding:Integer}+(25-45) Mana",
       "2% of Damage Over Time Damage Leeched as Health"
@@ -4206,7 +4206,7 @@
     },
     "mods": [
       "(15-21)% increased Movement Speed",
-      "+1 Projectiles with Spirit Thorns per stack of Germination",
+      "{rounding:Integer}+1 Projectiles with Spirit Thorns per stack of Germination",
       "(100-160)% Increased damage while in Spriggan Form",
       "+1 You Cannot Move While in Spriggan Form",
       "{rounding:Integer}+(20-26) Health Regen per stack of Germination"
@@ -5361,7 +5361,7 @@
       "{rounding:Integer}+(50-105) Endurance Threshold",
       "(10-15)% increased area for Void Area Spells",
       "100% Chance to transport Devouring Orbs around the target location when you use Erasing Strike",
-      "-10 to -5 Erasing Strike Mana Cost"
+      "{rounding:Integer}-10 to -5 Erasing Strike Mana Cost"
     ],
     "rollIds": [
       0,
@@ -5513,7 +5513,7 @@
     "mods": [
       "{rounding:Integer}+(48-65) Melee Damage for directly used Detonating Arrow",
       "+3 to Detonating Arrow",
-      "-6 to -3 Mana Cost for Detonating Arrow",
+      "{rounding:Integer}-6 to -3 Mana Cost for Detonating Arrow",
       "1 Detonating Arrow Converted to a Melee Attack"
     ],
     "rollIds": [
@@ -5560,7 +5560,7 @@
       "(16-64)% Increased Cooldown Recovery Speed for Judgement",
       "+3 Melee Damage per Attunement for Judgement while Unarmed",
       "2% increased Area per Attunement for Judgement while Unarmed",
-      "-12 to -8 Judgement Mana Cost while Unarmed",
+      "{rounding:Integer}-12 to -8 Mana cost for Judgement while Unarmed",
       "+(8-24)% Fire Penetration",
       "{rounding:Integer}+(4-16) Attunement"
     ],
@@ -6801,7 +6801,6 @@
       "level": 72
     },
     "mods": [
-      "+1 Lethal Mirage is a quick attack with no invulnerability",
       "{rounding:Integer}+(24-56) Melee Lightning Damage",
       "{rounding:Integer}+(2-12) Dexterity",
       "+(2-4)% Lightning Penetration per 5 Dexterity",
@@ -6812,7 +6811,6 @@
       "{rounding:Integer}+(24-56) Melee Void Damage"
     ],
     "rollIds": [
-      null,
       0,
       1,
       2,
@@ -7656,7 +7654,7 @@
       "level": 0
     },
     "mods": [
-      "+100% Bone Curse also inflicts Decrepify",
+      "Bone Curse also inflicts Decrepify",
       "{rounding:Integer}(113-166) Ward per Second for each Curse affecting you",
       "{rounding:Integer}(31-55)% increased Physical Damage",
       "{rounding:Integer}+(5-9) Vitality",
@@ -7681,7 +7679,7 @@
       "level": 0
     },
     "mods": [
-      "+100% Bone Curse also inflicts Penance",
+      "Bone Curse also inflicts Penance",
       "{rounding:Integer}(113-166) Ward per Second for each Curse affecting you",
       "{rounding:Integer}(31-55)% increased Fire Damage",
       "{rounding:Integer}+(5-9) Vitality",
@@ -7706,7 +7704,7 @@
       "level": 0
     },
     "mods": [
-      "+100% Bone Curse also inflicts Acid Skin",
+      "Bone Curse also inflicts Acid Skin",
       "{rounding:Integer}(113-166) Ward per Second for each Curse affecting you",
       "{rounding:Integer}(31-55)% increased Poison Damage",
       "{rounding:Integer}+(5-9) Vitality",

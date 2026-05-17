@@ -17,9 +17,9 @@
 --                     `Development/Idol Altar Concepts.md`
 --
 -- 旧名 `baseCapacity` は誤って refracted cell 数を入れていた。
--- 2026-05-03 に概念を分離し omenIdolCapacity に rename。
--- Ocular Altar 以外は未確認のため、各アルターの値は in-game tooltip
--- で要検証 (TODO コメント付き)。
+-- 2026-05-03 に概念を分離し omenIdolCapacity に rename。全 altar の値は
+-- in-game tooltip / LETools planner data で確認済（各 entry の inline
+-- コメント参照）。
 
 -- ────────────────────────────────────────────────────────────
 -- ここにアルターを追加してください

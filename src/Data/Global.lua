@@ -95,6 +95,19 @@ DamageTypes = {
 }
 
 Attributes = {"Vit","Str","Dex","Int","Att"}
+-- @leb-regression-guard:minion-modifier-perstat-parent-actor
+-- Set of primary-attribute stat names that, when referenced via a
+-- PerStat tag on a MinionModifier mod, must resolve against the
+-- player (minion.actor.parent) instead of the minion itself. LE
+-- minions don't carry primary attributes of their own; tree-passive
+-- text like "X% Y Per Vitality" reads the player's value. Includes
+-- the Raw* variants used by intrinsic-bonus paths (see
+-- s4-perstat-base-includes-converted-twin guard in ModStore.lua).
+-- CalcPerform.lua's MinionModifier dispatch reads this table.
+LE_MINION_PERSTAT_PARENT_ATTRS = {
+    Vit = true, Str = true, Dex = true, Int = true, Att = true,
+    RawVit = true, RawStr = true, RawDex = true, RawInt = true, RawAtt = true,
+}
 LongAttributes = {"Vitality","Strength","Dexterity","Intelligence","Attunement"}
 AttributesColored = {
     colorCodes.VITALITY.."Vitality",
@@ -125,7 +138,14 @@ DamageTypeColors = {
 }
 
 DamageSourceTypes = { "Spell", "Melee", "Throwing", "Bow", "Dot"}
-DamageSourceWeapons = { "Wand", "Bow", "Axe", "Sceptre", "Staff", "Dagger", "Sword" }
+-- @leb-regression-guard:wielding-weapon-conditions
+-- Mace must be in this list — Sentinel/Forge Guard affixes like "+N Melee
+-- Physical Damage if wielding a Mace" (affixId 364 in single_affixes_v3)
+-- and SkillStatMap Elusive crit gates (UsingMace neg) all depend on the
+-- parser-side modTagList/modFlagList entries this loop generates plus the
+-- corresponding `flag == "Mace"` branch in CalcSetup that publishes the
+-- UsingMace condition.
+DamageSourceWeapons = { "Wand", "Bow", "Axe", "Mace", "Sceptre", "Staff", "Dagger", "Sword" }
 
 -- Active skill types
 SkillType = {
@@ -213,5 +233,38 @@ GlobalCache = {
 	excludeFullDpsList = { },
 	useFullDPS = false,
 	numActiveSkillInFullDPS = 0
+}
+
+-- @leb-regression-guard:while-active-buff-tree-id-map (registry site)
+-- Map of LE-skill treeId -> ModDB Condition name that gates "while active"
+-- buff-tree contributions. A node under one of these treeIds only feeds
+-- modDB while the matching Condition flag is set (mirrors LE's in-game
+-- behaviour where Flame Ward / Form-style buffs grant their tree mods only
+-- during the buff's active window). CalcSetup.lua reads this to scope tree
+-- contributions; SkillsTab can read the same map to render toggles without
+-- forking the source of truth. See CalcSetup.lua "buffSkillTreePrefixes".
+LE_WHILE_ACTIVE_BUFF_BY_TREE_ID = {
+	["fw3d"]   = "HaveFlameWard",        -- Flame Ward (Mage): 3s duration, FlameWardMutator
+	["wb8fo"]  = "InWerebearForm",       -- Werebear Form (Druid)
+	["sf5rd"]  = "InSprigganForm",       -- Spriggan Form (Druid)
+	["sbf4m"]  = "InSwarmbladeForm",     -- Swarmblade Form (Druid)
+	["rf1azz"] = "InReaperForm",         -- Reaper Form (Lich)
+	["eb5656"] = "HaveEterrasBlessing",  -- Eterra's Blessing (Primalist): 4s duration cast buff
+	["ds4d3"]  = "MinionsHaveDreadShade", -- Dread Shade (Necromancer): per-target minion buff (DreadShadeMutator)
+}
+
+-- @leb-regression-guard:minion-buff-skill-to-condition (registry site)
+-- Map of LE-skill canonical name -> ModDB Condition name that gates
+-- minion-side contributions from buff-skills whose effect applies *per
+-- target minion* (e.g. Dread Shade's per-shade auraStats). This is
+-- distinct from LE_WHILE_ACTIVE_BUFF_BY_TREE_ID (which gates the player
+-- buff's own tree-node contributions): this registry is consulted by
+-- CalcPerform.lua MinionModifier dispatch so per-minion mods carrying a
+-- SkillId tag for one of these skills also pick up an ActorCondition
+-- tag that resolves against player.modDB. Mirrors LE's in-game model
+-- where Dread Shade is a per-target Buff Component (dump.cs
+-- DreadShadeMutator.DelayedCastOnMinion()), not a skill-scope flag.
+LE_MINION_BUFF_SKILL_TO_CONDITION = {
+	DreadShade = "MinionsHaveDreadShade",
 }
 

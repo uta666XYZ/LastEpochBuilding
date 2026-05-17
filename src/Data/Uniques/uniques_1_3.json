@@ -1255,7 +1255,7 @@
     "mods": [
       "{rounding:Integer}+(30-50) Health",
       "{rounding:Integer}+(5-9) Minion Melee Physical Damage",
-      "+1 You can Summon Wolves up to your Maximum Number of Companions"
+      "You can Summon Wolves up to your Maximum Number of Companions"
     ],
     "rollIds": [
       0,
@@ -1296,7 +1296,7 @@
       "{rounding:Integer}+(50-75) Health",
       "{rounding:Integer}+(10-16) Minion Melee Physical Damage",
       "+100% Minion Stun Immunity",
-      "+1 You can Summon Wolves up to your Maximum Number of Companions"
+      "You can Summon Wolves up to your Maximum Number of Companions"
     ],
     "rollIds": [
       0,
@@ -7805,7 +7805,6 @@
       "level": 72
     },
     "mods": [
-      "+1 Lethal Mirage is a quick attack with no invulnerability",
       "{rounding:Integer}+(24-56) Melee Lightning Damage",
       "{rounding:Integer}+(2-12) Dexterity",
       "+(2-4)% Lightning Penetration per 5 Dexterity",
@@ -7816,7 +7815,6 @@
       "{rounding:Integer}+(24-56) Melee Void Damage"
     ],
     "rollIds": [
-      null,
       0,
       1,
       2,

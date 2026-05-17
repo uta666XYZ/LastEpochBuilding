@@ -12,8 +12,10 @@
       "+(2-3) Bees Per 10 Seconds",
       "+(4-6) Health Regeneration per Summoned Bee",
       "+(8-18) Attunement",
-      "+(80-150) Health for you and your Minions",
-      "+(200-400) Armor for you and your Minions",
+      "+(80-150) Health",
+      "+(80-150) Minion Health",
+      "+(200-400) Armor",
+      "+(200-400) Minion Armor",
       "+(20-30)% Physical Resistance",
       "+(50-75)% Poison Resistance"
     ],
@@ -22,6 +24,8 @@
       1,
       2,
       3,
+      3,
+      4,
       4,
       5,
       6
@@ -1499,8 +1503,8 @@
       "{rounding:Integer}+(14-24) Spell Fire Damage for Infernal Shade per Active Dread Shade",
       "(28-48)% Increased Area for Infernal Shade per Active Dread Shade",
       "{rounding:Integer}+(14-24) Spell Fire Damage Over Time",
-      "-14 to -8 Mana Cost for Infernal Shade",
-      "-14 to -8 Mana Cost for Dread Shade"
+      "{rounding:Integer}-14 to -8 Mana Cost for Infernal Shade",
+      "{rounding:Integer}-14 to -8 Mana Cost for Dread Shade"
     ],
     "rollIds": [
       0,

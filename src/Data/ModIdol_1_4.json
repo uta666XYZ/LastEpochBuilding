@@ -297,7 +297,7 @@
 		"299_0": {
 			"affixName": "Chance for +30 Throwing Fire Damage with Shield Throw",
 			"modName": "Burning",
-			"1": "+(15-40)% Chance for +30 Throwing Fire Damage with Shield Throw",
+			"1": "+(15-40)% Chance to deal +20 fire damage with Shield Throw",
 			"affix": "Burning",
 			"level": 0,
 			"statOrderKey": 175,
@@ -316,7 +316,7 @@
 		"659_0": {
 			"affixName": "Chance For Additional Multistrike Swords",
 			"modName": "Arming",
-			"1": "(15-50)% Chance for an additional sword with Multistrike at maximum Armament Stacks",
+			"1": "+(15-50)% Chance for an additional sword with Multistrike at maximum Armament Stacks",
 			"affix": "Arming",
 			"level": 0,
 			"statOrderKey": 245,
@@ -354,7 +354,7 @@
 		"300_0": {
 			"affixName": "chance for Shield Throw to Fork on the first ricochet",
 			"modName": "Blackfire",
-			"1": "100% of Shield Throw Base Damage Converted to Void",
+			"1": "+(4-8)% Shield Throw Damage Converted to Void",
 			"affix": "Blackfire",
 			"level": 0,
 			"statOrderKey": 176,
@@ -794,7 +794,7 @@
 		"221_0": {
 			"affixName": "chance to cast Maelstrom every 3 seconds",
 			"modName": "Tempestuous",
-			"1": "+(9-30)% Chance to cast Maelstrom every 3 seconds",
+			"1": "+(9-30)% Chance to cast Maelstrom every 5 seconds",
 			"affix": "Tempestuous",
 			"level": 0,
 			"statOrderKey": 103,
@@ -813,7 +813,7 @@
 		"317_0": {
 			"affixName": "Chance to Cast Marrow Shards when you Cast Transplant",
 			"modName": "Insatiable",
-			"1": "(7-17)% Chance to cast Marrow Shards when you cast Transplant",
+			"1": "+(7-17)% Chance to cast Marrow Shards when you cast Transplant",
 			"affix": "Insatiable",
 			"level": 0,
 			"statOrderKey": 186,
@@ -1201,7 +1201,7 @@
 		"493_0": {
 			"affixName": "Chance to Inflict Bleed On Bow Hit",
 			"modName": "of Barbs",
-			"1": "+(15-35)% Chance to inflict Bleed on Bow Hit",
+			"1": "+(15-35)% Chance to Inflict Bleed on Bow Hit",
 			"affix": "of Barbs",
 			"level": 0,
 			"statOrderKey": 224,
@@ -1222,7 +1222,7 @@
 		"138_0": {
 			"affixName": "Chance to Inflict Bleed On Hit",
 			"modName": "Serrated",
-			"1": "+(13-36)% Chance to inflict Bleed on Hit",
+			"1": "+(13-36)% Chance to Inflict Bleed on Hit",
 			"affix": "Serrated",
 			"level": 0,
 			"statOrderKey": 32,
@@ -1282,7 +1282,7 @@
 		"290_0": {
 			"affixName": "Chance To Inflict Bleed On Physical Spell Hit",
 			"modName": "of Slicing",
-			"1": "+(22-60)% Chance to inflict Bleed on Physical Spell Hit",
+			"1": "+(22-60)% Chance to Inflict Bleed on Physical Spell Hit",
 			"affix": "of Slicing",
 			"level": 0,
 			"statOrderKey": 169,
@@ -1302,7 +1302,7 @@
 		"208_0": {
 			"affixName": "Chance to Inflict Bleed while at High Health",
 			"modName": "of Boldness",
-			"1": "+(15-40)% Chance to inflict Bleed on Hit while at High Health",
+			"1": "+(15-40)% Chance to Inflict Bleed on Hit while at High Health",
 			"affix": "of Boldness",
 			"level": 0,
 			"statOrderKey": 91,
@@ -1562,7 +1562,7 @@
 		"522_0": {
 			"affixName": "Chance to Summon a Bee with Acid Flask (up to 3 times per second)",
 			"modName": "Stinging",
-			"1": "(10-28)% Chance to Summon a Bee with Acid Flask",
+			"1": "+(10-28)% Chance to Summon a Bee with Acid Flask",
 			"affix": "Stinging",
 			"level": 0,
 			"statOrderKey": 234,
@@ -2101,7 +2101,7 @@
 		"302_0": {
 			"affixName": "Damage Over Time to Bleeding Enemies for Marrow Shards",
 			"modName": "Fractured",
-			"1": "+(10-30)% Increased Projectile Speed with Marrow Shards",
+			"1": "(0.02-0.04) Increased Projectile Speed with Marrow Shards",
 			"2": "+(10-30)% Increased Projectile Speed with Bone Nova",
 			"affix": "Fractured",
 			"level": 0,
@@ -2912,7 +2912,7 @@
 		"480_0": {
 			"affixName": "Increased Armor Shred Duration",
 			"modName": "of Crumbling",
-			"1": "(40-100)% Increased Armor Shred Duration",
+			"1": "(40-100)% Increased Armor Shred Effect",
 			"affix": "of Crumbling",
 			"level": 0,
 			"statOrderKey": 216,
@@ -3112,7 +3112,7 @@
 		"266_0": {
 			"affixName": "Increased Aura of Decay Area",
 			"modName": "Contaminated",
-			"1": "+(10-30)% Increased Aura of Decay Area",
+			"1": "(10-30)% Increased Aura of Decay Area",
 			"affix": "Contaminated",
 			"level": 0,
 			"statOrderKey": 146,
@@ -3188,7 +3188,7 @@
 		"242_0": {
 			"affixName": "Increased Cast Speed while you have Lightning Aegis",
 			"modName": "Swift",
-			"1": "+(10-28)% Increased Cast Speed while you have Lightning Aegis",
+			"1": "(10-28)% Increased Cast Speed while you have Lightning Aegis",
 			"affix": "Swift",
 			"level": 0,
 			"statOrderKey": 124,
@@ -3578,7 +3578,7 @@
 		"512_0": {
 			"affixName": "Increased duration with Hail of Arrows",
 			"modName": "Eclipsing",
-			"1": "(10-22)% increased Hail of Arrows Duration",
+			"1": "+(10-22)% increased Hail of Arrows Duration",
 			"affix": "Eclipsing",
 			"level": 0,
 			"statOrderKey": 230,
@@ -3694,7 +3694,7 @@
 		"220_0": {
 			"affixName": "Increased Frequency of expending Storm Stacks",
 			"modName": "Beckoning",
-			"1": "(12-32)% Increased Frequency of expending Storm Stacks",
+			"1": "+(12-32)% Chance to cast Ice Thorns when you are hit",
 			"affix": "Beckoning",
 			"level": 0,
 			"statOrderKey": 102,
@@ -3754,7 +3754,7 @@
 		"252_0": {
 			"affixName": "Increased Lightning Damage while you have Lightning Aegis",
 			"modName": "Capacitive",
-			"1": "+(24-70)% Increased Lightning Damage while you have Lightning Aegis",
+			"1": "(24-70)% Increased Lightning Damage while you have Lightning Aegis",
 			"affix": "Capacitive",
 			"level": 0,
 			"statOrderKey": 133,
@@ -3792,7 +3792,7 @@
 		"286_0": {
 			"affixName": "Increased Minion Cooldown Recovery Speed",
 			"modName": "of Insight",
-			"1": "(12-35)% increased Minion Cooldown Recovery Speed",
+			"1": "(12-35)% Minion Increased Cooldown Recovery Speed",
 			"affix": "of Insight",
 			"level": 0,
 			"statOrderKey": 165,
@@ -3832,7 +3832,7 @@
 		"318_0": {
 			"affixName": "Increased Poison Damage while Aura of Decay is active",
 			"modName": "Vile",
-			"1": "+(60-100)% to Increased Poison Damage while Aura of Decay is active",
+			"1": "(60-100)% Increased Poison Damage while Aura of Decay is active",
 			"affix": "Vile",
 			"level": 0,
 			"statOrderKey": 187,
@@ -4008,7 +4008,7 @@
 		"270_0": {
 			"affixName": "Increased Warpath Area",
 			"modName": "Warlord's",
-			"1": "+(10-30)% Increased Warpath Area",
+			"1": "(10-30)% Increased Warpath Area",
 			"affix": "Warlord's",
 			"level": 0,
 			"statOrderKey": 149,
@@ -4486,7 +4486,7 @@
 		"152_0": {
 			"affixName": "Minion Chance to Inflict Bleed On Hit",
 			"modName": "of Laceration",
-			"1": "+(19-52)% Chance to inflict Bleed on Minion Hit",
+			"1": "+(19-52)% Chance to Inflict Bleed on Minion Hit",
 			"affix": "of Laceration",
 			"level": 0,
 			"statOrderKey": 46,
@@ -4625,7 +4625,7 @@
 		"148_0": {
 			"affixName": "Increased Minion Cooldown Recovery Speed",
 			"modName": "Lucid",
-			"1": "(7-20)% increased Minion Cooldown Recovery Speed",
+			"1": "(7-20)% Minion Increased Cooldown Recovery Speed",
 			"affix": "Lucid",
 			"level": 0,
 			"statOrderKey": 42,
@@ -4763,7 +4763,7 @@
 		"658_0": {
 			"affixName": "Percent Missing Health Restored On Lunge",
 			"modName": "of Defiance",
-			"1": "(5-12)% Missing Health Restored on Lunge",
+			"1": "+(5-12)% Missing Health Restored on Lunge",
 			"affix": "of Defiance",
 			"level": 0,
 			"statOrderKey": 244,
@@ -5848,7 +5848,7 @@
 		"529_0": {
 			"affixName": "Ward Gained on use with Smoke Bomb",
 			"modName": "Concealing",
-			"1": "{rounding:Integer}(22-60) Ward gained when you use Smoke Bomb",
+			"1": "{rounding:Integer}+(22-60) Ward gained when you use Smoke Bomb",
 			"affix": "Concealing",
 			"level": 0,
 			"statOrderKey": 238,
@@ -5905,7 +5905,7 @@
 		"436_0": {
 			"affixName": "Ward Gained when you create a Shadow",
 			"modName": "of Obscurity",
-			"1": "{rounding:Integer}(5-15) Ward Gained on Shadow Creation",
+			"1": "{rounding:Integer}+(5-15) Ward Gained on Shadow Creation",
 			"affix": "of Obscurity",
 			"level": 0,
 			"statOrderKey": 194,
@@ -6099,8 +6099,8 @@
 			],
 			"classSpecificity": 16
 		},
-		"1073_0": {
-			"affixName": "Increased Healing Effectiveness and Health per Attunement",
+		"126_0": {
+			"affixName": "Idol Primalist Cold Bleed Chance",
 			"1": "+(13-40)% Chance to inflict Bleed on Cold Hit",
 			"affix": "Jagged",
 			"level": 0,
@@ -6432,8 +6432,7 @@
 			"standardAffixEffectModifier": 0,
 			"rerollChance": 1,
 			"canRollOn": [
-				31,
-				32
+				31
 			],
 			"classSpecificity": 2
 		},

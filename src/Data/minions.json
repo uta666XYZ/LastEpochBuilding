@@ -81,6 +81,16 @@
     "name": "RogueFalcon",
     "life": "160"
   },
+  "ShadowClone": {
+    "skillList": [
+      "Shurikens",
+      "Arrowstorm",
+      "Shadow Cascade"
+    ],
+    "modList": [],
+    "name": "ShadowClone",
+    "life": "200"
+  },
   "Spriggan": {
     "skillList": [
       "ThornVolley"

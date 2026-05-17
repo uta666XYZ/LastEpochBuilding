@@ -14080,7 +14080,7 @@
 		"affixName": "Chance to Inflict Bleed On Hit",
 		"modName": "of Wounds",
 		"affix": "of Wounds",
-		"1": "+(10-12)% Chance to inflict Bleed on Hit",
+		"1": "+(10-12)% Chance to Inflict Bleed on Hit",
 		"level": 0,
 		"statOrderKey": 68,
 		"statOrder": [
@@ -14105,7 +14105,7 @@
 		"affixName": "Chance to Inflict Bleed On Hit",
 		"modName": "of Wounds",
 		"affix": "of Wounds",
-		"1": "+(13-16)% Chance to inflict Bleed on Hit",
+		"1": "+(13-16)% Chance to Inflict Bleed on Hit",
 		"level": 0,
 		"statOrderKey": 68,
 		"statOrder": [
@@ -14130,7 +14130,7 @@
 		"affixName": "Chance to Inflict Bleed On Hit",
 		"modName": "of Wounds",
 		"affix": "of Wounds",
-		"1": "+(17-20)% Chance to inflict Bleed on Hit",
+		"1": "+(17-20)% Chance to Inflict Bleed on Hit",
 		"level": 0,
 		"statOrderKey": 68,
 		"statOrder": [
@@ -14155,7 +14155,7 @@
 		"affixName": "Chance to Inflict Bleed On Hit",
 		"modName": "of Wounds",
 		"affix": "of Wounds",
-		"1": "+(20-23)% Chance to inflict Bleed on Hit",
+		"1": "+(20-23)% Chance to Inflict Bleed on Hit",
 		"level": 0,
 		"statOrderKey": 68,
 		"statOrder": [
@@ -14180,7 +14180,7 @@
 		"affixName": "Chance to Inflict Bleed On Hit",
 		"modName": "of Wounds",
 		"affix": "of Wounds",
-		"1": "+(24-30)% Chance to inflict Bleed on Hit",
+		"1": "+(24-30)% Chance to Inflict Bleed on Hit",
 		"level": 0,
 		"statOrderKey": 68,
 		"statOrder": [
@@ -14205,7 +14205,7 @@
 		"affixName": "Chance to Inflict Bleed On Hit",
 		"modName": "of Wounds",
 		"affix": "of Wounds",
-		"1": "+(40-49)% Chance to inflict Bleed on Hit",
+		"1": "+(40-49)% Chance to Inflict Bleed on Hit",
 		"level": 0,
 		"statOrderKey": 68,
 		"statOrder": [
@@ -14230,7 +14230,7 @@
 		"affixName": "Chance to Inflict Bleed On Hit",
 		"modName": "of Wounds",
 		"affix": "of Wounds",
-		"1": "+(50-65)% Chance to inflict Bleed on Hit",
+		"1": "+(50-65)% Chance to Inflict Bleed on Hit",
 		"level": 0,
 		"statOrderKey": 68,
 		"statOrder": [
@@ -14255,7 +14255,7 @@
 		"affixName": "Chance to Inflict Bleed On Hit",
 		"modName": "of Wounds",
 		"affix": "of Wounds",
-		"1": "+(104-130)% Chance to inflict Bleed on Hit",
+		"1": "+(104-130)% Chance to Inflict Bleed on Hit",
 		"level": 0,
 		"statOrderKey": 68,
 		"statOrder": [
@@ -19496,7 +19496,7 @@
 		"affixName": "Damage Reflected to Attackers",
 		"modName": "Thorny",
 		"affix": "Thorny",
-		"1": "{rounding:Integer}(12-18) Damage Reflected to Attackers",
+		"1": "{rounding:Integer}(10-15) Damage Reflected to Attackers",
 		"level": 4,
 		"statOrderKey": 95,
 		"statOrder": [
@@ -19519,7 +19519,7 @@
 		"affixName": "Damage Reflected to Attackers",
 		"modName": "Thorny",
 		"affix": "Thorny",
-		"1": "{rounding:Integer}(23-35) Damage Reflected to Attackers",
+		"1": "{rounding:Integer}(20-30) Damage Reflected to Attackers",
 		"level": 4,
 		"statOrderKey": 95,
 		"statOrder": [
@@ -19542,7 +19542,7 @@
 		"affixName": "Damage Reflected to Attackers",
 		"modName": "Thorny",
 		"affix": "Thorny",
-		"1": "{rounding:Integer}(47-64) Damage Reflected to Attackers",
+		"1": "{rounding:Integer}(40-55) Damage Reflected to Attackers",
 		"level": 4,
 		"statOrderKey": 95,
 		"statOrder": [
@@ -19565,7 +19565,7 @@
 		"affixName": "Damage Reflected to Attackers",
 		"modName": "Thorny",
 		"affix": "Thorny",
-		"1": "{rounding:Integer}(70-94) Damage Reflected to Attackers",
+		"1": "{rounding:Integer}(60-80) Damage Reflected to Attackers",
 		"level": 4,
 		"statOrderKey": 95,
 		"statOrder": [
@@ -19588,7 +19588,7 @@
 		"affixName": "Damage Reflected to Attackers",
 		"modName": "Thorny",
 		"affix": "Thorny",
-		"1": "{rounding:Integer}(105-176) Damage Reflected to Attackers",
+		"1": "{rounding:Integer}(90-150) Damage Reflected to Attackers",
 		"level": 4,
 		"statOrderKey": 95,
 		"statOrder": [
@@ -19611,7 +19611,7 @@
 		"affixName": "Damage Reflected to Attackers",
 		"modName": "Thorny",
 		"affix": "Thorny",
-		"1": "{rounding:Integer}(292-351) Damage Reflected to Attackers",
+		"1": "{rounding:Integer}(250-300) Damage Reflected to Attackers",
 		"level": 4,
 		"statOrderKey": 95,
 		"statOrder": [
@@ -19634,7 +19634,7 @@
 		"affixName": "Damage Reflected to Attackers",
 		"modName": "Thorny",
 		"affix": "Thorny",
-		"1": "{rounding:Integer}(352-468) Damage Reflected to Attackers",
+		"1": "{rounding:Integer}(301-400) Damage Reflected to Attackers",
 		"level": 4,
 		"statOrderKey": 95,
 		"statOrder": [
@@ -19657,7 +19657,7 @@
 		"affixName": "Damage Reflected to Attackers",
 		"modName": "Thorny",
 		"affix": "Thorny",
-		"1": "{rounding:Integer}(749-936) Damage Reflected to Attackers",
+		"1": "{rounding:Integer}(640-800) Damage Reflected to Attackers",
 		"level": 4,
 		"statOrderKey": 95,
 		"statOrder": [
@@ -19680,7 +19680,7 @@
 		"affixName": "Damage Reflected",
 		"modName": "Reflective",
 		"affix": "Reflective",
-		"1": "(6-12)% of Damage Reflected",
+		"1": "(5-10)% of Damage Reflected",
 		"level": 23,
 		"statOrderKey": 96,
 		"statOrder": [
@@ -19703,7 +19703,7 @@
 		"affixName": "Damage Reflected",
 		"modName": "Reflective",
 		"affix": "Reflective",
-		"1": "(13-22)% of Damage Reflected",
+		"1": "(11-19)% of Damage Reflected",
 		"level": 23,
 		"statOrderKey": 96,
 		"statOrder": [
@@ -19726,7 +19726,7 @@
 		"affixName": "Damage Reflected",
 		"modName": "Reflective",
 		"affix": "Reflective",
-		"1": "(23-33)% of Damage Reflected",
+		"1": "(20-28)% of Damage Reflected",
 		"level": 23,
 		"statOrderKey": 96,
 		"statOrder": [
@@ -19749,7 +19749,7 @@
 		"affixName": "Damage Reflected",
 		"modName": "Reflective",
 		"affix": "Reflective",
-		"1": "(34-44)% of Damage Reflected",
+		"1": "(29-38)% of Damage Reflected",
 		"level": 23,
 		"statOrderKey": 96,
 		"statOrder": [
@@ -19772,7 +19772,7 @@
 		"affixName": "Damage Reflected",
 		"modName": "Reflective",
 		"affix": "Reflective",
-		"1": "(46-58)% of Damage Reflected",
+		"1": "(39-50)% of Damage Reflected",
 		"level": 23,
 		"statOrderKey": 96,
 		"statOrder": [
@@ -19795,7 +19795,7 @@
 		"affixName": "Damage Reflected",
 		"modName": "Reflective",
 		"affix": "Reflective",
-		"1": "(82-94)% of Damage Reflected",
+		"1": "(70-80)% of Damage Reflected",
 		"level": 23,
 		"statOrderKey": 96,
 		"statOrder": [
@@ -19818,7 +19818,7 @@
 		"affixName": "Damage Reflected",
 		"modName": "Reflective",
 		"affix": "Reflective",
-		"1": "(95-117)% of Damage Reflected",
+		"1": "(81-100)% of Damage Reflected",
 		"level": 23,
 		"statOrderKey": 96,
 		"statOrder": [
@@ -19841,7 +19841,7 @@
 		"affixName": "Damage Reflected",
 		"modName": "Reflective",
 		"affix": "Reflective",
-		"1": "(187-234)% of Damage Reflected",
+		"1": "(160-200)% of Damage Reflected",
 		"level": 23,
 		"statOrderKey": 96,
 		"statOrder": [
@@ -21637,7 +21637,7 @@
 		"affixName": "Chance to Inflict Bleed On Cold Hit",
 		"modName": "Jagged",
 		"affix": "Jagged",
-		"1": "+(20-60)% Chance to inflict Bleed on Cold Hit",
+		"1": "+(20-60)% Chance to Inflict Bleed on Cold Hit",
 		"level": 0,
 		"statOrderKey": 126,
 		"statOrder": [
@@ -21860,7 +21860,7 @@
 		"affixName": "Chance to Inflict Bleed On Hit",
 		"modName": "Serrated",
 		"affix": "Serrated",
-		"1": "+(13-36)% Chance to inflict Bleed on Hit",
+		"1": "+(13-36)% Chance to Inflict Bleed on Hit",
 		"level": 0,
 		"statOrderKey": 138,
 		"statOrder": [
@@ -22123,7 +22123,7 @@
 		"affixName": "Minion Chance to Inflict Bleed On Hit",
 		"modName": "of Laceration",
 		"affix": "of Laceration",
-		"1": "+(19-52)% Chance to inflict Bleed on Minion Hit",
+		"1": "+(19-52)% Chance to Inflict Bleed on Minion Hit",
 		"level": 0,
 		"statOrderKey": 152,
 		"statOrder": [
@@ -23321,7 +23321,7 @@
 		"affixName": "Chance to Inflict Bleed while at High Health",
 		"modName": "of Boldness",
 		"affix": "of Boldness",
-		"1": "+(15-40)% Chance to inflict Bleed on Hit while at High Health",
+		"1": "+(15-40)% Chance to Inflict Bleed on Hit while at High Health",
 		"level": 0,
 		"statOrderKey": 208,
 		"statOrder": [
@@ -23563,7 +23563,7 @@
 		"affixName": "chance to cast Maelstrom every 3 seconds",
 		"modName": "Tempestuous",
 		"affix": "Tempestuous",
-		"1": "+(9-30)% Chance to cast Maelstrom every 3 seconds",
+		"1": "+(9-30)% Chance to cast Maelstrom every 5 seconds",
 		"level": 0,
 		"statOrderKey": 221,
 		"statOrder": [
@@ -23950,7 +23950,7 @@
 		"affixName": "Increased Cast Speed while you have Lightning Aegis",
 		"modName": "Swift",
 		"affix": "Swift",
-		"1": "+(10-28)% Increased Cast Speed while you have Lightning Aegis",
+		"1": "(10-28)% Increased Cast Speed while you have Lightning Aegis",
 		"level": 0,
 		"statOrderKey": 242,
 		"statOrder": [
@@ -24134,7 +24134,7 @@
 		"affixName": "Increased Lightning Damage while you have Lightning Aegis",
 		"modName": "Capacitive",
 		"affix": "Capacitive",
-		"1": "+(24-70)% Increased Lightning Damage while you have Lightning Aegis",
+		"1": "(24-70)% Increased Lightning Damage while you have Lightning Aegis",
 		"level": 0,
 		"statOrderKey": 252,
 		"statOrder": [
@@ -24394,7 +24394,7 @@
 		"affixName": "Increased Aura of Decay Area",
 		"modName": "Contaminated",
 		"affix": "Contaminated",
-		"1": "+(10-30)% Increased Aura of Decay Area",
+		"1": "(10-30)% Increased Aura of Decay Area",
 		"level": 0,
 		"statOrderKey": 266,
 		"statOrder": [
@@ -24468,7 +24468,7 @@
 		"affixName": "Increased Warpath Area",
 		"modName": "Warlord's",
 		"affix": "Warlord's",
-		"1": "+(10-30)% Increased Warpath Area",
+		"1": "(10-30)% Increased Warpath Area",
 		"level": 0,
 		"statOrderKey": 270,
 		"statOrder": [
@@ -24839,7 +24839,7 @@
 		"affixName": "Chance To Inflict Bleed On Physical Spell Hit",
 		"modName": "of Slicing",
 		"affix": "of Slicing",
-		"1": "+(22-60)% Chance to inflict Bleed on Physical Spell Hit",
+		"1": "+(22-60)% Chance to Inflict Bleed on Physical Spell Hit",
 		"level": 0,
 		"statOrderKey": 290,
 		"statOrder": [
@@ -25346,7 +25346,7 @@
 		"affixName": "Chance to Cast Marrow Shards when you Cast Transplant",
 		"modName": "Insatiable",
 		"affix": "Insatiable",
-		"1": "(7-17)% Chance to cast Marrow Shards when you cast Transplant",
+		"1": "+(7-17)% Chance to cast Marrow Shards when you cast Transplant",
 		"level": 0,
 		"statOrderKey": 317,
 		"statOrder": [
@@ -25364,7 +25364,7 @@
 		"affixName": "Increased Poison Damage while Aura of Decay is active",
 		"modName": "Vile",
 		"affix": "Vile",
-		"1": "+(60-100)% to Increased Poison Damage while Aura of Decay is active",
+		"1": "(60-100)% Increased Poison Damage while Aura of Decay is active",
 		"level": 0,
 		"statOrderKey": 318,
 		"statOrder": [
@@ -26612,7 +26612,7 @@
 		"affixName": "Increased Cooldown Recovery Speed while Transformed",
 		"modName": "Primalist's",
 		"affix": "Increased Cooldown Recovery Speed while Transformed",
-		"1": "(6-7)% increased Cooldown Recovery Speed While Transformed",
+		"1": "(6-7)% Increased Cooldown Recovery Speed While Transformed",
 		"level": 43,
 		"statOrderKey": 335,
 		"statOrder": [
@@ -26630,7 +26630,7 @@
 		"affixName": "Increased Cooldown Recovery Speed while Transformed",
 		"modName": "Primalist's",
 		"affix": "Increased Cooldown Recovery Speed while Transformed",
-		"1": "(8-9)% increased Cooldown Recovery Speed While Transformed",
+		"1": "(8-9)% Increased Cooldown Recovery Speed While Transformed",
 		"level": 43,
 		"statOrderKey": 335,
 		"statOrder": [
@@ -26648,7 +26648,7 @@
 		"affixName": "Increased Cooldown Recovery Speed while Transformed",
 		"modName": "Primalist's",
 		"affix": "Increased Cooldown Recovery Speed while Transformed",
-		"1": "(10-11)% increased Cooldown Recovery Speed While Transformed",
+		"1": "(10-11)% Increased Cooldown Recovery Speed While Transformed",
 		"level": 43,
 		"statOrderKey": 335,
 		"statOrder": [
@@ -26666,7 +26666,7 @@
 		"affixName": "Increased Cooldown Recovery Speed while Transformed",
 		"modName": "Primalist's",
 		"affix": "Increased Cooldown Recovery Speed while Transformed",
-		"1": "(12-13)% increased Cooldown Recovery Speed While Transformed",
+		"1": "(12-13)% Increased Cooldown Recovery Speed While Transformed",
 		"level": 43,
 		"statOrderKey": 335,
 		"statOrder": [
@@ -26684,7 +26684,7 @@
 		"affixName": "Increased Cooldown Recovery Speed while Transformed",
 		"modName": "Primalist's",
 		"affix": "Increased Cooldown Recovery Speed while Transformed",
-		"1": "(14-16)% increased Cooldown Recovery Speed While Transformed",
+		"1": "(14-16)% Increased Cooldown Recovery Speed While Transformed",
 		"level": 43,
 		"statOrderKey": 335,
 		"statOrder": [
@@ -26702,7 +26702,7 @@
 		"affixName": "Increased Cooldown Recovery Speed while Transformed",
 		"modName": "Primalist's",
 		"affix": "Increased Cooldown Recovery Speed while Transformed",
-		"1": "(19-21)% increased Cooldown Recovery Speed While Transformed",
+		"1": "(19-21)% Increased Cooldown Recovery Speed While Transformed",
 		"level": 43,
 		"statOrderKey": 335,
 		"statOrder": [
@@ -26720,7 +26720,7 @@
 		"affixName": "Increased Cooldown Recovery Speed while Transformed",
 		"modName": "Primalist's",
 		"affix": "Increased Cooldown Recovery Speed while Transformed",
-		"1": "(22-25)% increased Cooldown Recovery Speed While Transformed",
+		"1": "(22-25)% Increased Cooldown Recovery Speed While Transformed",
 		"level": 43,
 		"statOrderKey": 335,
 		"statOrder": [
@@ -26738,7 +26738,7 @@
 		"affixName": "Increased Cooldown Recovery Speed while Transformed",
 		"modName": "Primalist's",
 		"affix": "Increased Cooldown Recovery Speed while Transformed",
-		"1": "(36-40)% increased Cooldown Recovery Speed While Transformed",
+		"1": "(36-40)% Increased Cooldown Recovery Speed While Transformed",
 		"level": 43,
 		"statOrderKey": 335,
 		"statOrder": [
@@ -28932,7 +28932,7 @@
 		"affixName": "Minion Chance to Inflict Bleed on Hit",
 		"modName": "Primalist's",
 		"affix": "Minion Chance to Inflict Bleed on Hit",
-		"1": "+(30-34)% Chance to inflict Bleed on Minion Hit",
+		"1": "+(30-34)% Chance to Inflict Bleed on Minion Hit",
 		"level": 36,
 		"statOrderKey": 347,
 		"statOrder": [
@@ -28956,7 +28956,7 @@
 		"affixName": "Minion Chance to Inflict Bleed on Hit",
 		"modName": "Primalist's",
 		"affix": "Minion Chance to Inflict Bleed on Hit",
-		"1": "+(35-39)% Chance to inflict Bleed on Minion Hit",
+		"1": "+(35-39)% Chance to Inflict Bleed on Minion Hit",
 		"level": 36,
 		"statOrderKey": 347,
 		"statOrder": [
@@ -28980,7 +28980,7 @@
 		"affixName": "Minion Chance to Inflict Bleed on Hit",
 		"modName": "Primalist's",
 		"affix": "Minion Chance to Inflict Bleed on Hit",
-		"1": "+(40-44)% Chance to inflict Bleed on Minion Hit",
+		"1": "+(40-44)% Chance to Inflict Bleed on Minion Hit",
 		"level": 36,
 		"statOrderKey": 347,
 		"statOrder": [
@@ -29004,7 +29004,7 @@
 		"affixName": "Minion Chance to Inflict Bleed on Hit",
 		"modName": "Primalist's",
 		"affix": "Minion Chance to Inflict Bleed on Hit",
-		"1": "+(45-51)% Chance to inflict Bleed on Minion Hit",
+		"1": "+(45-51)% Chance to Inflict Bleed on Minion Hit",
 		"level": 36,
 		"statOrderKey": 347,
 		"statOrder": [
@@ -29028,7 +29028,7 @@
 		"affixName": "Minion Chance to Inflict Bleed on Hit",
 		"modName": "Primalist's",
 		"affix": "Minion Chance to Inflict Bleed on Hit",
-		"1": "+(52-62)% Chance to inflict Bleed on Minion Hit",
+		"1": "+(52-62)% Chance to Inflict Bleed on Minion Hit",
 		"level": 36,
 		"statOrderKey": 347,
 		"statOrder": [
@@ -29052,7 +29052,7 @@
 		"affixName": "Minion Chance to Inflict Bleed on Hit",
 		"modName": "Primalist's",
 		"affix": "Minion Chance to Inflict Bleed on Hit",
-		"1": "+(75-90)% Chance to inflict Bleed on Minion Hit",
+		"1": "+(75-90)% Chance to Inflict Bleed on Minion Hit",
 		"level": 36,
 		"statOrderKey": 347,
 		"statOrder": [
@@ -29076,7 +29076,7 @@
 		"affixName": "Minion Chance to Inflict Bleed on Hit",
 		"modName": "Primalist's",
 		"affix": "Minion Chance to Inflict Bleed on Hit",
-		"1": "+(91-110)% Chance to inflict Bleed on Minion Hit",
+		"1": "+(91-110)% Chance to Inflict Bleed on Minion Hit",
 		"level": 36,
 		"statOrderKey": 347,
 		"statOrder": [
@@ -29100,7 +29100,7 @@
 		"affixName": "Minion Chance to Inflict Bleed on Hit",
 		"modName": "Primalist's",
 		"affix": "Minion Chance to Inflict Bleed on Hit",
-		"1": "+(176-220)% Chance to inflict Bleed on Minion Hit",
+		"1": "+(176-220)% Chance to Inflict Bleed on Minion Hit",
 		"level": 36,
 		"statOrderKey": 347,
 		"statOrder": [
@@ -34344,7 +34344,7 @@
 		"affixName": "Mana Gained when you use Vengeance and Hit at least one enemy",
 		"modName": "Sentinel's",
 		"affix": "Mana Gained when you use Vengeance and Hit at least one enemy",
-		"1": "{rounding:Integer}(7-8) Mana Gained when you use Vengeance and hit at least one enemy",
+		"1": "{rounding:Integer}+(7-8) Mana Gained when you use Vengeance and hit at least one enemy",
 		"level": 12,
 		"statOrderKey": 375,
 		"statOrder": [
@@ -34363,7 +34363,7 @@
 		"affixName": "Mana Gained when you use Vengeance and Hit at least one enemy",
 		"modName": "Sentinel's",
 		"affix": "Mana Gained when you use Vengeance and Hit at least one enemy",
-		"1": "{rounding:Integer}(9-11) Mana Gained when you use Vengeance and hit at least one enemy",
+		"1": "{rounding:Integer}+(9-11) Mana Gained when you use Vengeance and hit at least one enemy",
 		"level": 12,
 		"statOrderKey": 375,
 		"statOrder": [
@@ -34382,7 +34382,7 @@
 		"affixName": "Mana Gained when you use Vengeance and Hit at least one enemy",
 		"modName": "Sentinel's",
 		"affix": "Mana Gained when you use Vengeance and Hit at least one enemy",
-		"1": "{rounding:Integer}(12-15) Mana Gained when you use Vengeance and hit at least one enemy",
+		"1": "{rounding:Integer}+(12-15) Mana Gained when you use Vengeance and hit at least one enemy",
 		"level": 12,
 		"statOrderKey": 375,
 		"statOrder": [
@@ -34401,7 +34401,7 @@
 		"affixName": "Mana Gained when you use Vengeance and Hit at least one enemy",
 		"modName": "Sentinel's",
 		"affix": "Mana Gained when you use Vengeance and Hit at least one enemy",
-		"1": "{rounding:Integer}(19-23) Mana Gained when you use Vengeance and hit at least one enemy",
+		"1": "{rounding:Integer}+(19-23) Mana Gained when you use Vengeance and hit at least one enemy",
 		"level": 12,
 		"statOrderKey": 375,
 		"statOrder": [
@@ -34492,7 +34492,7 @@
 		"affixName": "Mana Gained when you use Rive and Hit at least one enemy",
 		"modName": "Sentinel's",
 		"affix": "Mana Gained when you use Rive and Hit at least one enemy",
-		"1": "{rounding:Integer}(7-8) Mana Gained when you use Rive and hit at least one enemy",
+		"1": "{rounding:Integer}+(7-8) Mana Gained when you use Rive and hit at least one enemy",
 		"level": 12,
 		"statOrderKey": 376,
 		"statOrder": [
@@ -34510,7 +34510,7 @@
 		"affixName": "Mana Gained when you use Rive and Hit at least one enemy",
 		"modName": "Sentinel's",
 		"affix": "Mana Gained when you use Rive and Hit at least one enemy",
-		"1": "{rounding:Integer}(9-11) Mana Gained when you use Rive and hit at least one enemy",
+		"1": "{rounding:Integer}+(9-11) Mana Gained when you use Rive and hit at least one enemy",
 		"level": 12,
 		"statOrderKey": 376,
 		"statOrder": [
@@ -34528,7 +34528,7 @@
 		"affixName": "Mana Gained when you use Rive and Hit at least one enemy",
 		"modName": "Sentinel's",
 		"affix": "Mana Gained when you use Rive and Hit at least one enemy",
-		"1": "{rounding:Integer}(12-15) Mana Gained when you use Rive and hit at least one enemy",
+		"1": "{rounding:Integer}+(12-15) Mana Gained when you use Rive and hit at least one enemy",
 		"level": 12,
 		"statOrderKey": 376,
 		"statOrder": [
@@ -34546,7 +34546,7 @@
 		"affixName": "Mana Gained when you use Rive and Hit at least one enemy",
 		"modName": "Sentinel's",
 		"affix": "Mana Gained when you use Rive and Hit at least one enemy",
-		"1": "{rounding:Integer}(19-23) Mana Gained when you use Rive and hit at least one enemy",
+		"1": "{rounding:Integer}+(19-23) Mana Gained when you use Rive and hit at least one enemy",
 		"level": 12,
 		"statOrderKey": 376,
 		"statOrder": [
@@ -34564,7 +34564,7 @@
 		"affixName": "Mana Gained when you directly Cast Smite",
 		"modName": "Sentinel's",
 		"affix": "Mana Gained when you directly Cast Smite",
-		"1": "+4 Mana Gained When you directly cast Smite",
+		"1": "4 Mana Gained When you directly cast Smite",
 		"level": 23,
 		"statOrderKey": 377,
 		"statOrder": [
@@ -34582,7 +34582,7 @@
 		"affixName": "Mana Gained when you directly Cast Smite",
 		"modName": "Sentinel's",
 		"affix": "Mana Gained when you directly Cast Smite",
-		"1": "+5 Mana Gained When you directly cast Smite",
+		"1": "5 Mana Gained When you directly cast Smite",
 		"level": 23,
 		"statOrderKey": 377,
 		"statOrder": [
@@ -34600,7 +34600,7 @@
 		"affixName": "Mana Gained when you directly Cast Smite",
 		"modName": "Sentinel's",
 		"affix": "Mana Gained when you directly Cast Smite",
-		"1": "+6 Mana Gained When you directly cast Smite",
+		"1": "6 Mana Gained When you directly cast Smite",
 		"level": 23,
 		"statOrderKey": 377,
 		"statOrder": [
@@ -34618,7 +34618,7 @@
 		"affixName": "Mana Gained when you directly Cast Smite",
 		"modName": "Sentinel's",
 		"affix": "Mana Gained when you directly Cast Smite",
-		"1": "+7 Mana Gained When you directly cast Smite",
+		"1": "7 Mana Gained When you directly cast Smite",
 		"level": 23,
 		"statOrderKey": 377,
 		"statOrder": [
@@ -40880,7 +40880,7 @@
 		"affixName": "Mana Gained on Harvest Use",
 		"modName": "Acolyte's",
 		"affix": "Mana Gained on Harvest Use",
-		"1": "{rounding:Integer}(5-6) Mana Gained when you use Harvest",
+		"1": "{rounding:Integer}+(5-6) Mana Gained when you use Harvest",
 		"level": 13,
 		"statOrderKey": 411,
 		"statOrder": [
@@ -40899,7 +40899,7 @@
 		"affixName": "Mana Gained on Harvest Use",
 		"modName": "Acolyte's",
 		"affix": "Mana Gained on Harvest Use",
-		"1": "{rounding:Integer}(7-8) Mana Gained when you use Harvest",
+		"1": "{rounding:Integer}+(7-8) Mana Gained when you use Harvest",
 		"level": 13,
 		"statOrderKey": 411,
 		"statOrder": [
@@ -40918,7 +40918,7 @@
 		"affixName": "Mana Gained on Harvest Use",
 		"modName": "Acolyte's",
 		"affix": "Mana Gained on Harvest Use",
-		"1": "{rounding:Integer}(9-10) Mana Gained when you use Harvest",
+		"1": "{rounding:Integer}+(9-10) Mana Gained when you use Harvest",
 		"level": 13,
 		"statOrderKey": 411,
 		"statOrder": [
@@ -40937,7 +40937,7 @@
 		"affixName": "Mana Gained on Harvest Use",
 		"modName": "Acolyte's",
 		"affix": "Mana Gained on Harvest Use",
-		"1": "{rounding:Integer}(11-12) Mana Gained when you use Harvest",
+		"1": "{rounding:Integer}+(11-12) Mana Gained when you use Harvest",
 		"level": 13,
 		"statOrderKey": 411,
 		"statOrder": [
@@ -40956,7 +40956,7 @@
 		"affixName": "Mana Gained on Harvest Use",
 		"modName": "Acolyte's",
 		"affix": "Mana Gained on Harvest Use",
-		"1": "{rounding:Integer}(13-15) Mana Gained when you use Harvest",
+		"1": "{rounding:Integer}+(13-15) Mana Gained when you use Harvest",
 		"level": 13,
 		"statOrderKey": 411,
 		"statOrder": [
@@ -40975,7 +40975,7 @@
 		"affixName": "Mana Gained on Harvest Use",
 		"modName": "Acolyte's",
 		"affix": "Mana Gained on Harvest Use",
-		"1": "{rounding:Integer}(19-23) Mana Gained when you use Harvest",
+		"1": "{rounding:Integer}+(19-23) Mana Gained when you use Harvest",
 		"level": 13,
 		"statOrderKey": 411,
 		"statOrder": [
@@ -40994,7 +40994,7 @@
 		"affixName": "Mana Gained on Harvest Use",
 		"modName": "Acolyte's",
 		"affix": "Mana Gained on Harvest Use",
-		"1": "{rounding:Integer}(24-28) Mana Gained when you use Harvest",
+		"1": "{rounding:Integer}+(24-28) Mana Gained when you use Harvest",
 		"level": 13,
 		"statOrderKey": 411,
 		"statOrder": [
@@ -41013,7 +41013,7 @@
 		"affixName": "Mana Gained on Harvest Use",
 		"modName": "Acolyte's",
 		"affix": "Mana Gained on Harvest Use",
-		"1": "{rounding:Integer}(35-42) Mana Gained when you use Harvest",
+		"1": "{rounding:Integer}+(35-42) Mana Gained when you use Harvest",
 		"level": 13,
 		"statOrderKey": 411,
 		"statOrder": [
@@ -41032,7 +41032,7 @@
 		"affixName": "Harvest Damage Leeched as Health",
 		"modName": "Acolyte's",
 		"affix": "Harvest Damage Leeched as Health",
-		"1": "(1.2-1.6)% of Damage dealt by Harvest Leeched as Health",
+		"1": "(12-16)% of Damage dealt by Harvest Leeched as Health",
 		"level": 6,
 		"statOrderKey": 412,
 		"statOrder": [
@@ -41056,7 +41056,7 @@
 		"affixName": "Harvest Damage Leeched as Health",
 		"modName": "Acolyte's",
 		"affix": "Harvest Damage Leeched as Health",
-		"1": "(1.7-2.1)% of Damage dealt by Harvest Leeched as Health",
+		"1": "(17-21)% of Damage dealt by Harvest Leeched as Health",
 		"level": 6,
 		"statOrderKey": 412,
 		"statOrder": [
@@ -41080,7 +41080,7 @@
 		"affixName": "Harvest Damage Leeched as Health",
 		"modName": "Acolyte's",
 		"affix": "Harvest Damage Leeched as Health",
-		"1": "(2.2-2.6)% of Damage dealt by Harvest Leeched as Health",
+		"1": "(22-26)% of Damage dealt by Harvest Leeched as Health",
 		"level": 6,
 		"statOrderKey": 412,
 		"statOrder": [
@@ -41104,7 +41104,7 @@
 		"affixName": "Harvest Damage Leeched as Health",
 		"modName": "Acolyte's",
 		"affix": "Harvest Damage Leeched as Health",
-		"1": "(2.7-3.1)% of Damage dealt by Harvest Leeched as Health",
+		"1": "(27-31)% of Damage dealt by Harvest Leeched as Health",
 		"level": 6,
 		"statOrderKey": 412,
 		"statOrder": [
@@ -41128,7 +41128,7 @@
 		"affixName": "Harvest Damage Leeched as Health",
 		"modName": "Acolyte's",
 		"affix": "Harvest Damage Leeched as Health",
-		"1": "(3.2-4)% of Damage dealt by Harvest Leeched as Health",
+		"1": "(32-40)% of Damage dealt by Harvest Leeched as Health",
 		"level": 6,
 		"statOrderKey": 412,
 		"statOrder": [
@@ -41152,7 +41152,7 @@
 		"affixName": "Harvest Damage Leeched as Health",
 		"modName": "Acolyte's",
 		"affix": "Harvest Damage Leeched as Health",
-		"1": "(4.8-6)% of Damage dealt by Harvest Leeched as Health",
+		"1": "(48-60)% of Damage dealt by Harvest Leeched as Health",
 		"level": 6,
 		"statOrderKey": 412,
 		"statOrder": [
@@ -41176,7 +41176,7 @@
 		"affixName": "Harvest Damage Leeched as Health",
 		"modName": "Acolyte's",
 		"affix": "Harvest Damage Leeched as Health",
-		"1": "(6.1-7.5)% of Damage dealt by Harvest Leeched as Health",
+		"1": "(61-75)% of Damage dealt by Harvest Leeched as Health",
 		"level": 6,
 		"statOrderKey": 412,
 		"statOrder": [
@@ -41200,7 +41200,7 @@
 		"affixName": "Harvest Damage Leeched as Health",
 		"modName": "Acolyte's",
 		"affix": "Harvest Damage Leeched as Health",
-		"1": "(12-15)% of Damage dealt by Harvest Leeched as Health",
+		"1": "(120-150)% of Damage dealt by Harvest Leeched as Health",
 		"level": 6,
 		"statOrderKey": 412,
 		"statOrder": [
@@ -44981,7 +44981,7 @@
 		"affixName": "Chance to cast Marrow Shards when you cast Transplant",
 		"modName": "Acolyte's",
 		"affix": "Chance to cast Marrow Shards when you cast Transplant",
-		"1": "(5-7)% Chance to cast Marrow Shards when you cast Transplant",
+		"1": "+(5-7)% Chance to cast Marrow Shards when you cast Transplant",
 		"level": 13,
 		"statOrderKey": 435,
 		"statOrder": [
@@ -45005,7 +45005,7 @@
 		"affixName": "Chance to cast Marrow Shards when you cast Transplant",
 		"modName": "Acolyte's",
 		"affix": "Chance to cast Marrow Shards when you cast Transplant",
-		"1": "(8-15)% Chance to cast Marrow Shards when you cast Transplant",
+		"1": "+(8-15)% Chance to cast Marrow Shards when you cast Transplant",
 		"level": 13,
 		"statOrderKey": 435,
 		"statOrder": [
@@ -45029,7 +45029,7 @@
 		"affixName": "Chance to cast Marrow Shards when you cast Transplant",
 		"modName": "Acolyte's",
 		"affix": "Chance to cast Marrow Shards when you cast Transplant",
-		"1": "(16-25)% Chance to cast Marrow Shards when you cast Transplant",
+		"1": "+(16-25)% Chance to cast Marrow Shards when you cast Transplant",
 		"level": 13,
 		"statOrderKey": 435,
 		"statOrder": [
@@ -45053,7 +45053,7 @@
 		"affixName": "Chance to cast Marrow Shards when you cast Transplant",
 		"modName": "Acolyte's",
 		"affix": "Chance to cast Marrow Shards when you cast Transplant",
-		"1": "(26-30)% Chance to cast Marrow Shards when you cast Transplant",
+		"1": "+(26-30)% Chance to cast Marrow Shards when you cast Transplant",
 		"level": 13,
 		"statOrderKey": 435,
 		"statOrder": [
@@ -45077,7 +45077,7 @@
 		"affixName": "Chance to cast Marrow Shards when you cast Transplant",
 		"modName": "Acolyte's",
 		"affix": "Chance to cast Marrow Shards when you cast Transplant",
-		"1": "(31-40)% Chance to cast Marrow Shards when you cast Transplant",
+		"1": "+(31-40)% Chance to cast Marrow Shards when you cast Transplant",
 		"level": 13,
 		"statOrderKey": 435,
 		"statOrder": [
@@ -45101,7 +45101,7 @@
 		"affixName": "Chance to cast Marrow Shards when you cast Transplant",
 		"modName": "Acolyte's",
 		"affix": "Chance to cast Marrow Shards when you cast Transplant",
-		"1": "(55-75)% Chance to cast Marrow Shards when you cast Transplant",
+		"1": "+(55-75)% Chance to cast Marrow Shards when you cast Transplant",
 		"level": 13,
 		"statOrderKey": 435,
 		"statOrder": [
@@ -45125,7 +45125,7 @@
 		"affixName": "Chance to cast Marrow Shards when you cast Transplant",
 		"modName": "Acolyte's",
 		"affix": "Chance to cast Marrow Shards when you cast Transplant",
-		"1": "(76-100)% Chance to cast Marrow Shards when you cast Transplant",
+		"1": "+(76-100)% Chance to cast Marrow Shards when you cast Transplant",
 		"level": 13,
 		"statOrderKey": 435,
 		"statOrder": [
@@ -45149,7 +45149,7 @@
 		"affixName": "Chance to cast Marrow Shards when you cast Transplant",
 		"modName": "Acolyte's",
 		"affix": "Chance to cast Marrow Shards when you cast Transplant",
-		"1": "100% Chance to cast Marrow Shards when you cast Transplant",
+		"1": "+100% Chance to cast Marrow Shards when you cast Transplant",
 		"level": 13,
 		"statOrderKey": 435,
 		"statOrder": [
@@ -45173,7 +45173,7 @@
 		"affixName": "Ward Gained when you create a Shadow",
 		"modName": "of Obscurity",
 		"affix": "of Obscurity",
-		"1": "{rounding:Integer}(5-15) Ward Gained on Shadow Creation",
+		"1": "{rounding:Integer}+(5-15) Ward Gained on Shadow Creation",
 		"level": 0,
 		"statOrderKey": 436,
 		"statOrder": [
@@ -45192,7 +45192,7 @@
 		"affixName": "Ward Gained When You Create a Shadow",
 		"modName": "Rogue's",
 		"affix": "Ward Gained When You Create a Shadow",
-		"1": "{rounding:Integer}(16-20) Ward Gained on Shadow Creation",
+		"1": "{rounding:Integer}+(16-20) Ward Gained on Shadow Creation",
 		"level": 18,
 		"statOrderKey": 437,
 		"statOrder": [
@@ -45216,7 +45216,7 @@
 		"affixName": "Ward Gained When You Create a Shadow",
 		"modName": "Rogue's",
 		"affix": "Ward Gained When You Create a Shadow",
-		"1": "{rounding:Integer}(21-25) Ward Gained on Shadow Creation",
+		"1": "{rounding:Integer}+(21-25) Ward Gained on Shadow Creation",
 		"level": 18,
 		"statOrderKey": 437,
 		"statOrder": [
@@ -45240,7 +45240,7 @@
 		"affixName": "Ward Gained When You Create a Shadow",
 		"modName": "Rogue's",
 		"affix": "Ward Gained When You Create a Shadow",
-		"1": "{rounding:Integer}(26-30) Ward Gained on Shadow Creation",
+		"1": "{rounding:Integer}+(26-30) Ward Gained on Shadow Creation",
 		"level": 18,
 		"statOrderKey": 437,
 		"statOrder": [
@@ -45264,7 +45264,7 @@
 		"affixName": "Ward Gained When You Create a Shadow",
 		"modName": "Rogue's",
 		"affix": "Ward Gained When You Create a Shadow",
-		"1": "{rounding:Integer}(31-37) Ward Gained on Shadow Creation",
+		"1": "{rounding:Integer}+(31-37) Ward Gained on Shadow Creation",
 		"level": 18,
 		"statOrderKey": 437,
 		"statOrder": [
@@ -45288,7 +45288,7 @@
 		"affixName": "Ward Gained When You Create a Shadow",
 		"modName": "Rogue's",
 		"affix": "Ward Gained When You Create a Shadow",
-		"1": "{rounding:Integer}(38-50) Ward Gained on Shadow Creation",
+		"1": "{rounding:Integer}+(38-50) Ward Gained on Shadow Creation",
 		"level": 18,
 		"statOrderKey": 437,
 		"statOrder": [
@@ -45312,7 +45312,7 @@
 		"affixName": "Ward Gained When You Create a Shadow",
 		"modName": "Rogue's",
 		"affix": "Ward Gained When You Create a Shadow",
-		"1": "{rounding:Integer}(65-85) Ward Gained on Shadow Creation",
+		"1": "{rounding:Integer}+(65-85) Ward Gained on Shadow Creation",
 		"level": 18,
 		"statOrderKey": 437,
 		"statOrder": [
@@ -45336,7 +45336,7 @@
 		"affixName": "Ward Gained When You Create a Shadow",
 		"modName": "Rogue's",
 		"affix": "Ward Gained When You Create a Shadow",
-		"1": "{rounding:Integer}(86-110) Ward Gained on Shadow Creation",
+		"1": "{rounding:Integer}+(86-110) Ward Gained on Shadow Creation",
 		"level": 18,
 		"statOrderKey": 437,
 		"statOrder": [
@@ -45360,7 +45360,7 @@
 		"affixName": "Ward Gained When You Create a Shadow",
 		"modName": "Rogue's",
 		"affix": "Ward Gained When You Create a Shadow",
-		"1": "{rounding:Integer}(150-180) Ward Gained on Shadow Creation",
+		"1": "{rounding:Integer}+(150-180) Ward Gained on Shadow Creation",
 		"level": 18,
 		"statOrderKey": 437,
 		"statOrder": [
@@ -50142,7 +50142,7 @@
 		"affixName": "Chance to Inflict Bleed On Bow Hit",
 		"modName": "of Barbs",
 		"affix": "of Barbs",
-		"1": "+(15-35)% Chance to inflict Bleed on Bow Hit",
+		"1": "+(15-35)% Chance to Inflict Bleed on Bow Hit",
 		"level": 0,
 		"statOrderKey": 493,
 		"statOrder": [
@@ -50162,7 +50162,7 @@
 		"affixName": "Chance to Inflict Bleed On Bow Hit",
 		"modName": "Rogue's",
 		"affix": "Chance to Inflict Bleed On Bow Hit",
-		"1": "+(15-17)% Chance to inflict Bleed on Bow Hit",
+		"1": "+(15-17)% Chance to Inflict Bleed on Bow Hit",
 		"level": 27,
 		"statOrderKey": 494,
 		"statOrder": [
@@ -50186,7 +50186,7 @@
 		"affixName": "Chance to Inflict Bleed On Bow Hit",
 		"modName": "Rogue's",
 		"affix": "Chance to Inflict Bleed On Bow Hit",
-		"1": "+(18-20)% Chance to inflict Bleed on Bow Hit",
+		"1": "+(18-20)% Chance to Inflict Bleed on Bow Hit",
 		"level": 27,
 		"statOrderKey": 494,
 		"statOrder": [
@@ -50210,7 +50210,7 @@
 		"affixName": "Chance to Inflict Bleed On Bow Hit",
 		"modName": "Rogue's",
 		"affix": "Chance to Inflict Bleed On Bow Hit",
-		"1": "+(21-24)% Chance to inflict Bleed on Bow Hit",
+		"1": "+(21-24)% Chance to Inflict Bleed on Bow Hit",
 		"level": 27,
 		"statOrderKey": 494,
 		"statOrder": [
@@ -50234,7 +50234,7 @@
 		"affixName": "Chance to Inflict Bleed On Bow Hit",
 		"modName": "Rogue's",
 		"affix": "Chance to Inflict Bleed On Bow Hit",
-		"1": "+(25-28)% Chance to inflict Bleed on Bow Hit",
+		"1": "+(25-28)% Chance to Inflict Bleed on Bow Hit",
 		"level": 27,
 		"statOrderKey": 494,
 		"statOrder": [
@@ -50258,7 +50258,7 @@
 		"affixName": "Chance to Inflict Bleed On Bow Hit",
 		"modName": "Rogue's",
 		"affix": "Chance to Inflict Bleed On Bow Hit",
-		"1": "+(29-35)% Chance to inflict Bleed on Bow Hit",
+		"1": "+(29-35)% Chance to Inflict Bleed on Bow Hit",
 		"level": 27,
 		"statOrderKey": 494,
 		"statOrder": [
@@ -50282,7 +50282,7 @@
 		"affixName": "Chance to Inflict Bleed On Bow Hit",
 		"modName": "Rogue's",
 		"affix": "Chance to Inflict Bleed On Bow Hit",
-		"1": "+(44-55)% Chance to inflict Bleed on Bow Hit",
+		"1": "+(44-55)% Chance to Inflict Bleed on Bow Hit",
 		"level": 27,
 		"statOrderKey": 494,
 		"statOrder": [
@@ -50306,7 +50306,7 @@
 		"affixName": "Chance to Inflict Bleed On Bow Hit",
 		"modName": "Rogue's",
 		"affix": "Chance to Inflict Bleed On Bow Hit",
-		"1": "+(56-70)% Chance to inflict Bleed on Bow Hit",
+		"1": "+(56-70)% Chance to Inflict Bleed on Bow Hit",
 		"level": 27,
 		"statOrderKey": 494,
 		"statOrder": [
@@ -50330,7 +50330,7 @@
 		"affixName": "Chance to Inflict Bleed On Bow Hit",
 		"modName": "Rogue's",
 		"affix": "Chance to Inflict Bleed On Bow Hit",
-		"1": "+(112-140)% Chance to inflict Bleed on Bow Hit",
+		"1": "+(112-140)% Chance to Inflict Bleed on Bow Hit",
 		"level": 27,
 		"statOrderKey": 494,
 		"statOrder": [
@@ -52692,7 +52692,7 @@
 		"affixName": "Increased duration with Hail of Arrows",
 		"modName": "Eclipsing",
 		"affix": "Eclipsing",
-		"1": "(10-22)% increased Hail of Arrows Duration",
+		"1": "+(10-22)% increased Hail of Arrows Duration",
 		"level": 0,
 		"statOrderKey": 512,
 		"statOrder": [
@@ -52710,7 +52710,7 @@
 		"affixName": "Increased Hail of Arrows Duration",
 		"modName": "Rogue's",
 		"affix": "Increased Hail of Arrows Duration",
-		"1": "(11-13)% increased Hail of Arrows Duration",
+		"1": "+(11-13)% increased Hail of Arrows Duration",
 		"level": 50,
 		"statOrderKey": 513,
 		"statOrder": [
@@ -52728,7 +52728,7 @@
 		"affixName": "Increased Hail of Arrows Duration",
 		"modName": "Rogue's",
 		"affix": "Increased Hail of Arrows Duration",
-		"1": "(14-16)% increased Hail of Arrows Duration",
+		"1": "+(14-16)% increased Hail of Arrows Duration",
 		"level": 50,
 		"statOrderKey": 513,
 		"statOrder": [
@@ -52746,7 +52746,7 @@
 		"affixName": "Increased Hail of Arrows Duration",
 		"modName": "Rogue's",
 		"affix": "Increased Hail of Arrows Duration",
-		"1": "(17-19)% increased Hail of Arrows Duration",
+		"1": "+(17-19)% increased Hail of Arrows Duration",
 		"level": 50,
 		"statOrderKey": 513,
 		"statOrder": [
@@ -52764,7 +52764,7 @@
 		"affixName": "Increased Hail of Arrows Duration",
 		"modName": "Rogue's",
 		"affix": "Increased Hail of Arrows Duration",
-		"1": "(20-23)% increased Hail of Arrows Duration",
+		"1": "+(20-23)% increased Hail of Arrows Duration",
 		"level": 50,
 		"statOrderKey": 513,
 		"statOrder": [
@@ -52782,7 +52782,7 @@
 		"affixName": "Increased Hail of Arrows Duration",
 		"modName": "Rogue's",
 		"affix": "Increased Hail of Arrows Duration",
-		"1": "(24-30)% increased Hail of Arrows Duration",
+		"1": "+(24-30)% increased Hail of Arrows Duration",
 		"level": 50,
 		"statOrderKey": 513,
 		"statOrder": [
@@ -52800,7 +52800,7 @@
 		"affixName": "Increased Hail of Arrows Duration",
 		"modName": "Rogue's",
 		"affix": "Increased Hail of Arrows Duration",
-		"1": "(38-46)% increased Hail of Arrows Duration",
+		"1": "+(38-46)% increased Hail of Arrows Duration",
 		"level": 50,
 		"statOrderKey": 513,
 		"statOrder": [
@@ -52818,7 +52818,7 @@
 		"affixName": "Increased Hail of Arrows Duration",
 		"modName": "Rogue's",
 		"affix": "Increased Hail of Arrows Duration",
-		"1": "(47-60)% increased Hail of Arrows Duration",
+		"1": "+(47-60)% increased Hail of Arrows Duration",
 		"level": 50,
 		"statOrderKey": 513,
 		"statOrder": [
@@ -52836,7 +52836,7 @@
 		"affixName": "Increased Hail of Arrows Duration",
 		"modName": "Rogue's",
 		"affix": "Increased Hail of Arrows Duration",
-		"1": "(96-120)% increased Hail of Arrows Duration",
+		"1": "+(96-120)% increased Hail of Arrows Duration",
 		"level": 50,
 		"statOrderKey": 513,
 		"statOrder": [
@@ -53711,7 +53711,7 @@
 		"affixName": "Chance to Summon a Bee with Acid Flask (up to 3 times per second)",
 		"modName": "Stinging",
 		"affix": "Stinging",
-		"1": "(10-28)% Chance to Summon a Bee with Acid Flask",
+		"1": "+(10-28)% Chance to Summon a Bee with Acid Flask",
 		"level": 0,
 		"statOrderKey": 522,
 		"statOrder": [
@@ -54313,7 +54313,7 @@
 		"affixName": "Ward Gained on use with Smoke Bomb",
 		"modName": "Concealing",
 		"affix": "Concealing",
-		"1": "{rounding:Integer}(22-60) Ward gained when you use Smoke Bomb",
+		"1": "{rounding:Integer}+(22-60) Ward gained when you use Smoke Bomb",
 		"level": 0,
 		"statOrderKey": 529,
 		"statOrder": [
@@ -54331,7 +54331,7 @@
 		"affixName": "Ward gained on use with Smoke Bomb",
 		"modName": "Rogue's",
 		"affix": "Ward gained on use with Smoke Bomb",
-		"1": "{rounding:Integer}(25-29) Ward gained when you use Smoke Bomb",
+		"1": "{rounding:Integer}+(25-29) Ward gained when you use Smoke Bomb",
 		"level": 8,
 		"statOrderKey": 530,
 		"statOrder": [
@@ -54355,7 +54355,7 @@
 		"affixName": "Ward gained on use with Smoke Bomb",
 		"modName": "Rogue's",
 		"affix": "Ward gained on use with Smoke Bomb",
-		"1": "{rounding:Integer}(30-35) Ward gained when you use Smoke Bomb",
+		"1": "{rounding:Integer}+(30-35) Ward gained when you use Smoke Bomb",
 		"level": 8,
 		"statOrderKey": 530,
 		"statOrder": [
@@ -54379,7 +54379,7 @@
 		"affixName": "Ward gained on use with Smoke Bomb",
 		"modName": "Rogue's",
 		"affix": "Ward gained on use with Smoke Bomb",
-		"1": "{rounding:Integer}(36-45) Ward gained when you use Smoke Bomb",
+		"1": "{rounding:Integer}+(36-45) Ward gained when you use Smoke Bomb",
 		"level": 8,
 		"statOrderKey": 530,
 		"statOrder": [
@@ -54403,7 +54403,7 @@
 		"affixName": "Ward gained on use with Smoke Bomb",
 		"modName": "Rogue's",
 		"affix": "Ward gained on use with Smoke Bomb",
-		"1": "{rounding:Integer}(46-55) Ward gained when you use Smoke Bomb",
+		"1": "{rounding:Integer}+(46-55) Ward gained when you use Smoke Bomb",
 		"level": 8,
 		"statOrderKey": 530,
 		"statOrder": [
@@ -54427,7 +54427,7 @@
 		"affixName": "Ward gained on use with Smoke Bomb",
 		"modName": "Rogue's",
 		"affix": "Ward gained on use with Smoke Bomb",
-		"1": "{rounding:Integer}(56-70) Ward gained when you use Smoke Bomb",
+		"1": "{rounding:Integer}+(56-70) Ward gained when you use Smoke Bomb",
 		"level": 8,
 		"statOrderKey": 530,
 		"statOrder": [
@@ -54451,7 +54451,7 @@
 		"affixName": "Ward gained on use with Smoke Bomb",
 		"modName": "Rogue's",
 		"affix": "Ward gained on use with Smoke Bomb",
-		"1": "{rounding:Integer}(90-110) Ward gained when you use Smoke Bomb",
+		"1": "{rounding:Integer}+(90-110) Ward gained when you use Smoke Bomb",
 		"level": 8,
 		"statOrderKey": 530,
 		"statOrder": [
@@ -54475,7 +54475,7 @@
 		"affixName": "Ward gained on use with Smoke Bomb",
 		"modName": "Rogue's",
 		"affix": "Ward gained on use with Smoke Bomb",
-		"1": "{rounding:Integer}(111-145) Ward gained when you use Smoke Bomb",
+		"1": "{rounding:Integer}+(111-145) Ward gained when you use Smoke Bomb",
 		"level": 8,
 		"statOrderKey": 530,
 		"statOrder": [
@@ -54499,7 +54499,7 @@
 		"affixName": "Ward gained on use with Smoke Bomb",
 		"modName": "Rogue's",
 		"affix": "Ward gained on use with Smoke Bomb",
-		"1": "{rounding:Integer}(232-290) Ward gained when you use Smoke Bomb",
+		"1": "{rounding:Integer}+(232-290) Ward gained when you use Smoke Bomb",
 		"level": 8,
 		"statOrderKey": 530,
 		"statOrder": [
@@ -73130,7 +73130,7 @@
 		"affixName": "Endurance while Channelling Warpath",
 		"modName": "Sentinel's",
 		"affix": "Endurance while Channelling Warpath",
-		"1": "(7-10)% Endurance while channelling Warpath",
+		"1": "+(7-10)% Endurance while channelling Warpath",
 		"level": 5,
 		"statOrderKey": 656,
 		"statOrder": [
@@ -73149,7 +73149,7 @@
 		"affixName": "Endurance while Channelling Warpath",
 		"modName": "Sentinel's",
 		"affix": "Endurance while Channelling Warpath",
-		"1": "(11-14)% Endurance while channelling Warpath",
+		"1": "+(11-14)% Endurance while channelling Warpath",
 		"level": 5,
 		"statOrderKey": 656,
 		"statOrder": [
@@ -73168,7 +73168,7 @@
 		"affixName": "Endurance while Channelling Warpath",
 		"modName": "Sentinel's",
 		"affix": "Endurance while Channelling Warpath",
-		"1": "(15-18)% Endurance while channelling Warpath",
+		"1": "+(15-18)% Endurance while channelling Warpath",
 		"level": 5,
 		"statOrderKey": 656,
 		"statOrder": [
@@ -73187,7 +73187,7 @@
 		"affixName": "Endurance while Channelling Warpath",
 		"modName": "Sentinel's",
 		"affix": "Endurance while Channelling Warpath",
-		"1": "(19-23)% Endurance while channelling Warpath",
+		"1": "+(19-23)% Endurance while channelling Warpath",
 		"level": 5,
 		"statOrderKey": 656,
 		"statOrder": [
@@ -73206,7 +73206,7 @@
 		"affixName": "Endurance while Channelling Warpath",
 		"modName": "Sentinel's",
 		"affix": "Endurance while Channelling Warpath",
-		"1": "(24-30)% Endurance while channelling Warpath",
+		"1": "+(24-30)% Endurance while channelling Warpath",
 		"level": 5,
 		"statOrderKey": 656,
 		"statOrder": [
@@ -73225,7 +73225,7 @@
 		"affixName": "Endurance while Channelling Warpath",
 		"modName": "Sentinel's",
 		"affix": "Endurance while Channelling Warpath",
-		"1": "(33-36)% Endurance while channelling Warpath",
+		"1": "+(33-36)% Endurance while channelling Warpath",
 		"level": 5,
 		"statOrderKey": 656,
 		"statOrder": [
@@ -73244,7 +73244,7 @@
 		"affixName": "Endurance while Channelling Warpath",
 		"modName": "Sentinel's",
 		"affix": "Endurance while Channelling Warpath",
-		"1": "(37-40)% Endurance while channelling Warpath",
+		"1": "+(37-40)% Endurance while channelling Warpath",
 		"level": 5,
 		"statOrderKey": 656,
 		"statOrder": [
@@ -73263,7 +73263,7 @@
 		"affixName": "Endurance while Channelling Warpath",
 		"modName": "Sentinel's",
 		"affix": "Endurance while Channelling Warpath",
-		"1": "(65-80)% Endurance while channelling Warpath",
+		"1": "+(65-80)% Endurance while channelling Warpath",
 		"level": 5,
 		"statOrderKey": 656,
 		"statOrder": [
@@ -73300,7 +73300,7 @@
 		"affixName": "Percent Missing Health Restored On Lunge",
 		"modName": "of Defiance",
 		"affix": "of Defiance",
-		"1": "(5-12)% Missing Health Restored on Lunge",
+		"1": "+(5-12)% Missing Health Restored on Lunge",
 		"level": 0,
 		"statOrderKey": 658,
 		"statOrder": [
@@ -73320,7 +73320,7 @@
 		"affixName": "Chance For Additional Multistrike Swords",
 		"modName": "Arming",
 		"affix": "Arming",
-		"1": "(15-50)% Chance for an additional sword with Multistrike at maximum Armament Stacks",
+		"1": "+(15-50)% Chance for an additional sword with Multistrike at maximum Armament Stacks",
 		"level": 0,
 		"statOrderKey": 659,
 		"statOrder": [
@@ -73982,7 +73982,7 @@
 		"affixName": "Chance to create a Shockwave on Hit with Upheaval",
 		"modName": "Primalist's",
 		"affix": "Chance to create a Shockwave on Hit with Upheaval",
-		"1": "(14-19)% Chance to create a Shockwave on hit with Upheaval",
+		"1": "+(14-19)% Chance to create a Shockwave on hit with Upheaval",
 		"level": 38,
 		"statOrderKey": 665,
 		"statOrder": [
@@ -74001,7 +74001,7 @@
 		"affixName": "Chance to create a Shockwave on Hit with Upheaval",
 		"modName": "Primalist's",
 		"affix": "Chance to create a Shockwave on Hit with Upheaval",
-		"1": "(20-25)% Chance to create a Shockwave on hit with Upheaval",
+		"1": "+(20-25)% Chance to create a Shockwave on hit with Upheaval",
 		"level": 38,
 		"statOrderKey": 665,
 		"statOrder": [
@@ -74020,7 +74020,7 @@
 		"affixName": "Chance to create a Shockwave on Hit with Upheaval",
 		"modName": "Primalist's",
 		"affix": "Chance to create a Shockwave on Hit with Upheaval",
-		"1": "(26-32)% Chance to create a Shockwave on hit with Upheaval",
+		"1": "+(26-32)% Chance to create a Shockwave on hit with Upheaval",
 		"level": 38,
 		"statOrderKey": 665,
 		"statOrder": [
@@ -74039,7 +74039,7 @@
 		"affixName": "Chance to create a Shockwave on Hit with Upheaval",
 		"modName": "Primalist's",
 		"affix": "Chance to create a Shockwave on Hit with Upheaval",
-		"1": "(33-39)% Chance to create a Shockwave on hit with Upheaval",
+		"1": "+(33-39)% Chance to create a Shockwave on hit with Upheaval",
 		"level": 38,
 		"statOrderKey": 665,
 		"statOrder": [
@@ -74058,7 +74058,7 @@
 		"affixName": "Chance to create a Shockwave on Hit with Upheaval",
 		"modName": "Primalist's",
 		"affix": "Chance to create a Shockwave on Hit with Upheaval",
-		"1": "(40-60)% Chance to create a Shockwave on hit with Upheaval",
+		"1": "+(40-60)% Chance to create a Shockwave on hit with Upheaval",
 		"level": 38,
 		"statOrderKey": 665,
 		"statOrder": [
@@ -74077,7 +74077,7 @@
 		"affixName": "Chance to create a Shockwave on Hit with Upheaval",
 		"modName": "Primalist's",
 		"affix": "Chance to create a Shockwave on Hit with Upheaval",
-		"1": "(76-87)% Chance to create a Shockwave on hit with Upheaval",
+		"1": "+(76-87)% Chance to create a Shockwave on hit with Upheaval",
 		"level": 38,
 		"statOrderKey": 665,
 		"statOrder": [
@@ -74096,7 +74096,7 @@
 		"affixName": "Chance to create a Shockwave on Hit with Upheaval",
 		"modName": "Primalist's",
 		"affix": "Chance to create a Shockwave on Hit with Upheaval",
-		"1": "(88-100)% Chance to create a Shockwave on hit with Upheaval",
+		"1": "+(88-100)% Chance to create a Shockwave on hit with Upheaval",
 		"level": 38,
 		"statOrderKey": 665,
 		"statOrder": [
@@ -74115,7 +74115,7 @@
 		"affixName": "Chance to create a Shockwave on Hit with Upheaval",
 		"modName": "Primalist's",
 		"affix": "Chance to create a Shockwave on Hit with Upheaval",
-		"1": "100% Chance to create a Shockwave on hit with Upheaval",
+		"1": "+100% Chance to create a Shockwave on hit with Upheaval",
 		"level": 38,
 		"statOrderKey": 665,
 		"statOrder": [
@@ -77037,7 +77037,7 @@
 		"affixName": "increased Speed and Distance with Flame Rush",
 		"modName": "Mage's",
 		"affix": "increased Speed and Distance with Flame Rush",
-		"1": "(5-6)% increased Speed and Distance with Flame Rush",
+		"1": "+(5-6)% increased Speed and Distance with Flame Rush",
 		"level": 26,
 		"statOrderKey": 688,
 		"statOrder": [
@@ -77055,7 +77055,7 @@
 		"affixName": "increased Speed and Distance with Flame Rush",
 		"modName": "Mage's",
 		"affix": "increased Speed and Distance with Flame Rush",
-		"1": "(7-9)% increased Speed and Distance with Flame Rush",
+		"1": "+(7-9)% increased Speed and Distance with Flame Rush",
 		"level": 26,
 		"statOrderKey": 688,
 		"statOrder": [
@@ -77073,7 +77073,7 @@
 		"affixName": "increased Speed and Distance with Flame Rush",
 		"modName": "Mage's",
 		"affix": "increased Speed and Distance with Flame Rush",
-		"1": "(10-12)% increased Speed and Distance with Flame Rush",
+		"1": "+(10-12)% increased Speed and Distance with Flame Rush",
 		"level": 26,
 		"statOrderKey": 688,
 		"statOrder": [
@@ -77091,7 +77091,7 @@
 		"affixName": "increased Speed and Distance with Flame Rush",
 		"modName": "Mage's",
 		"affix": "increased Speed and Distance with Flame Rush",
-		"1": "(13-15)% increased Speed and Distance with Flame Rush",
+		"1": "+(13-15)% increased Speed and Distance with Flame Rush",
 		"level": 26,
 		"statOrderKey": 688,
 		"statOrder": [
@@ -77109,7 +77109,7 @@
 		"affixName": "increased Speed and Distance with Flame Rush",
 		"modName": "Mage's",
 		"affix": "increased Speed and Distance with Flame Rush",
-		"1": "(16-20)% increased Speed and Distance with Flame Rush",
+		"1": "+(16-20)% increased Speed and Distance with Flame Rush",
 		"level": 26,
 		"statOrderKey": 688,
 		"statOrder": [
@@ -77127,7 +77127,7 @@
 		"affixName": "increased Speed and Distance with Flame Rush",
 		"modName": "Mage's",
 		"affix": "increased Speed and Distance with Flame Rush",
-		"1": "(26-30)% increased Speed and Distance with Flame Rush",
+		"1": "+(26-30)% increased Speed and Distance with Flame Rush",
 		"level": 26,
 		"statOrderKey": 688,
 		"statOrder": [
@@ -77145,7 +77145,7 @@
 		"affixName": "increased Speed and Distance with Flame Rush",
 		"modName": "Mage's",
 		"affix": "increased Speed and Distance with Flame Rush",
-		"1": "(31-38)% increased Speed and Distance with Flame Rush",
+		"1": "+(31-38)% increased Speed and Distance with Flame Rush",
 		"level": 26,
 		"statOrderKey": 688,
 		"statOrder": [
@@ -77163,7 +77163,7 @@
 		"affixName": "increased Speed and Distance with Flame Rush",
 		"modName": "Mage's",
 		"affix": "increased Speed and Distance with Flame Rush",
-		"1": "(61-76)% increased Speed and Distance with Flame Rush",
+		"1": "+(61-76)% increased Speed and Distance with Flame Rush",
 		"level": 26,
 		"statOrderKey": 688,
 		"statOrder": [
@@ -77199,7 +77199,7 @@
 		"affixName": "Chance to Gain 20 Mana when you directly Cast Runebolt or Fireball",
 		"modName": "Mage's",
 		"affix": "Chance to Gain 20 Mana when you directly Cast Runebolt or Fireball",
-		"1": "(5-6)% chance to gain 20 mana when you directly cast Runebolt or Fireball",
+		"1": "+(5-6)% Chance to Gain 20 Mana when you directly Cast Runebolt or Fireball",
 		"level": 17,
 		"statOrderKey": 690,
 		"statOrder": [
@@ -77217,7 +77217,7 @@
 		"affixName": "Chance to Gain 20 Mana when you directly Cast Runebolt or Fireball",
 		"modName": "Mage's",
 		"affix": "Chance to Gain 20 Mana when you directly Cast Runebolt or Fireball",
-		"1": "(7-9)% chance to gain 20 mana when you directly cast Runebolt or Fireball",
+		"1": "+(7-9)% Chance to Gain 20 Mana when you directly Cast Runebolt or Fireball",
 		"level": 17,
 		"statOrderKey": 690,
 		"statOrder": [
@@ -77235,7 +77235,7 @@
 		"affixName": "Chance to Gain 20 Mana when you directly Cast Runebolt or Fireball",
 		"modName": "Mage's",
 		"affix": "Chance to Gain 20 Mana when you directly Cast Runebolt or Fireball",
-		"1": "(10-12)% chance to gain 20 mana when you directly cast Runebolt or Fireball",
+		"1": "+(10-12)% Chance to Gain 20 Mana when you directly Cast Runebolt or Fireball",
 		"level": 17,
 		"statOrderKey": 690,
 		"statOrder": [
@@ -77253,7 +77253,7 @@
 		"affixName": "Chance to Gain 20 Mana when you directly Cast Runebolt or Fireball",
 		"modName": "Mage's",
 		"affix": "Chance to Gain 20 Mana when you directly Cast Runebolt or Fireball",
-		"1": "(13-15)% chance to gain 20 mana when you directly cast Runebolt or Fireball",
+		"1": "+(13-15)% Chance to Gain 20 Mana when you directly Cast Runebolt or Fireball",
 		"level": 17,
 		"statOrderKey": 690,
 		"statOrder": [
@@ -77271,7 +77271,7 @@
 		"affixName": "Chance to Gain 20 Mana when you directly Cast Runebolt or Fireball",
 		"modName": "Mage's",
 		"affix": "Chance to Gain 20 Mana when you directly Cast Runebolt or Fireball",
-		"1": "(16-20)% chance to gain 20 mana when you directly cast Runebolt or Fireball",
+		"1": "+(16-20)% Chance to Gain 20 Mana when you directly Cast Runebolt or Fireball",
 		"level": 17,
 		"statOrderKey": 690,
 		"statOrder": [
@@ -77289,7 +77289,7 @@
 		"affixName": "Chance to Gain 20 Mana when you directly Cast Runebolt or Fireball",
 		"modName": "Mage's",
 		"affix": "Chance to Gain 20 Mana when you directly Cast Runebolt or Fireball",
-		"1": "(25-30)% chance to gain 20 mana when you directly cast Runebolt or Fireball",
+		"1": "+(25-30)% Chance to Gain 20 Mana when you directly Cast Runebolt or Fireball",
 		"level": 17,
 		"statOrderKey": 690,
 		"statOrder": [
@@ -77307,7 +77307,7 @@
 		"affixName": "Chance to Gain 20 Mana when you directly Cast Runebolt or Fireball",
 		"modName": "Mage's",
 		"affix": "Chance to Gain 20 Mana when you directly Cast Runebolt or Fireball",
-		"1": "(31-38)% chance to gain 20 mana when you directly cast Runebolt or Fireball",
+		"1": "+(31-38)% Chance to Gain 20 Mana when you directly Cast Runebolt or Fireball",
 		"level": 17,
 		"statOrderKey": 690,
 		"statOrder": [
@@ -77325,7 +77325,7 @@
 		"affixName": "Chance to Gain 20 Mana when you directly Cast Runebolt or Fireball",
 		"modName": "Mage's",
 		"affix": "Chance to Gain 20 Mana when you directly Cast Runebolt or Fireball",
-		"1": "(61-76)% chance to gain 20 mana when you directly cast Runebolt or Fireball",
+		"1": "+(61-76)% Chance to Gain 20 Mana when you directly Cast Runebolt or Fireball",
 		"level": 17,
 		"statOrderKey": 690,
 		"statOrder": [
@@ -77343,7 +77343,7 @@
 		"affixName": "Ward Gained per Rune consumed with Runic Invocation",
 		"modName": "Mage's",
 		"affix": "Ward Gained per Rune consumed with Runic Invocation",
-		"1": "{rounding:Integer}+(14-19) Ward gained per Rune consumed with Runic Invocation",
+		"1": "{rounding:Integer}+(14-19) Ward Gained per Rune consumed with Runic Invocation",
 		"level": 29,
 		"statOrderKey": 691,
 		"statOrder": [
@@ -77367,7 +77367,7 @@
 		"affixName": "Ward Gained per Rune consumed with Runic Invocation",
 		"modName": "Mage's",
 		"affix": "Ward Gained per Rune consumed with Runic Invocation",
-		"1": "{rounding:Integer}+(20-26) Ward gained per Rune consumed with Runic Invocation",
+		"1": "{rounding:Integer}+(20-26) Ward Gained per Rune consumed with Runic Invocation",
 		"level": 29,
 		"statOrderKey": 691,
 		"statOrder": [
@@ -77391,7 +77391,7 @@
 		"affixName": "Ward Gained per Rune consumed with Runic Invocation",
 		"modName": "Mage's",
 		"affix": "Ward Gained per Rune consumed with Runic Invocation",
-		"1": "{rounding:Integer}+(27-35) Ward gained per Rune consumed with Runic Invocation",
+		"1": "{rounding:Integer}+(27-35) Ward Gained per Rune consumed with Runic Invocation",
 		"level": 29,
 		"statOrderKey": 691,
 		"statOrder": [
@@ -77415,7 +77415,7 @@
 		"affixName": "Ward Gained per Rune consumed with Runic Invocation",
 		"modName": "Mage's",
 		"affix": "Ward Gained per Rune consumed with Runic Invocation",
-		"1": "{rounding:Integer}+(36-45) Ward gained per Rune consumed with Runic Invocation",
+		"1": "{rounding:Integer}+(36-45) Ward Gained per Rune consumed with Runic Invocation",
 		"level": 29,
 		"statOrderKey": 691,
 		"statOrder": [
@@ -77439,7 +77439,7 @@
 		"affixName": "Ward Gained per Rune consumed with Runic Invocation",
 		"modName": "Mage's",
 		"affix": "Ward Gained per Rune consumed with Runic Invocation",
-		"1": "{rounding:Integer}+(46-60) Ward gained per Rune consumed with Runic Invocation",
+		"1": "{rounding:Integer}+(46-60) Ward Gained per Rune consumed with Runic Invocation",
 		"level": 29,
 		"statOrderKey": 691,
 		"statOrder": [
@@ -77463,7 +77463,7 @@
 		"affixName": "Ward Gained per Rune consumed with Runic Invocation",
 		"modName": "Mage's",
 		"affix": "Ward Gained per Rune consumed with Runic Invocation",
-		"1": "{rounding:Integer}+(75-90) Ward gained per Rune consumed with Runic Invocation",
+		"1": "{rounding:Integer}+(75-90) Ward Gained per Rune consumed with Runic Invocation",
 		"level": 29,
 		"statOrderKey": 691,
 		"statOrder": [
@@ -77487,7 +77487,7 @@
 		"affixName": "Ward Gained per Rune consumed with Runic Invocation",
 		"modName": "Mage's",
 		"affix": "Ward Gained per Rune consumed with Runic Invocation",
-		"1": "{rounding:Integer}+(91-115) Ward gained per Rune consumed with Runic Invocation",
+		"1": "{rounding:Integer}+(91-115) Ward Gained per Rune consumed with Runic Invocation",
 		"level": 29,
 		"statOrderKey": 691,
 		"statOrder": [
@@ -77511,7 +77511,7 @@
 		"affixName": "Ward Gained per Rune consumed with Runic Invocation",
 		"modName": "Mage's",
 		"affix": "Ward Gained per Rune consumed with Runic Invocation",
-		"1": "{rounding:Integer}+(184-230) Ward gained per Rune consumed with Runic Invocation",
+		"1": "{rounding:Integer}+(184-230) Ward Gained per Rune consumed with Runic Invocation",
 		"level": 29,
 		"statOrderKey": 691,
 		"statOrder": [
@@ -84891,7 +84891,7 @@
 		"affixName": "Chance to Gain a Storm Stack when you use Gathering Storm and Hit an enemy",
 		"modName": "Primalist's",
 		"affix": "Chance to Gain a Storm Stack when you use Gathering Storm and Hit an enemy",
-		"1": "(7-12)% Chance to gain a Storm Stack when you use Gathering Storm and hit an enemy",
+		"1": "+(7-12)% Chance to Gain a Storm Stack when you use Gathering Storm and Hit an enemy",
 		"level": 26,
 		"statOrderKey": 737,
 		"statOrder": [
@@ -84909,7 +84909,7 @@
 		"affixName": "Chance to Gain a Storm Stack when you use Gathering Storm and Hit an enemy",
 		"modName": "Primalist's",
 		"affix": "Chance to Gain a Storm Stack when you use Gathering Storm and Hit an enemy",
-		"1": "(13-18)% Chance to gain a Storm Stack when you use Gathering Storm and hit an enemy",
+		"1": "+(13-18)% Chance to Gain a Storm Stack when you use Gathering Storm and Hit an enemy",
 		"level": 26,
 		"statOrderKey": 737,
 		"statOrder": [
@@ -84927,7 +84927,7 @@
 		"affixName": "Chance to Gain a Storm Stack when you use Gathering Storm and Hit an enemy",
 		"modName": "Primalist's",
 		"affix": "Chance to Gain a Storm Stack when you use Gathering Storm and Hit an enemy",
-		"1": "(19-24)% Chance to gain a Storm Stack when you use Gathering Storm and hit an enemy",
+		"1": "+(19-24)% Chance to Gain a Storm Stack when you use Gathering Storm and Hit an enemy",
 		"level": 26,
 		"statOrderKey": 737,
 		"statOrder": [
@@ -84945,7 +84945,7 @@
 		"affixName": "Chance to Gain a Storm Stack when you use Gathering Storm and Hit an enemy",
 		"modName": "Primalist's",
 		"affix": "Chance to Gain a Storm Stack when you use Gathering Storm and Hit an enemy",
-		"1": "(25-30)% Chance to gain a Storm Stack when you use Gathering Storm and hit an enemy",
+		"1": "+(25-30)% Chance to Gain a Storm Stack when you use Gathering Storm and Hit an enemy",
 		"level": 26,
 		"statOrderKey": 737,
 		"statOrder": [
@@ -84963,7 +84963,7 @@
 		"affixName": "Chance to Gain a Storm Stack when you use Gathering Storm and Hit an enemy",
 		"modName": "Primalist's",
 		"affix": "Chance to Gain a Storm Stack when you use Gathering Storm and Hit an enemy",
-		"1": "(31-36)% Chance to gain a Storm Stack when you use Gathering Storm and hit an enemy",
+		"1": "+(31-36)% Chance to Gain a Storm Stack when you use Gathering Storm and Hit an enemy",
 		"level": 26,
 		"statOrderKey": 737,
 		"statOrder": [
@@ -84981,7 +84981,7 @@
 		"affixName": "Chance to Gain a Storm Stack when you use Gathering Storm and Hit an enemy",
 		"modName": "Primalist's",
 		"affix": "Chance to Gain a Storm Stack when you use Gathering Storm and Hit an enemy",
-		"1": "(37-49)% Chance to gain a Storm Stack when you use Gathering Storm and hit an enemy",
+		"1": "+(37-49)% Chance to Gain a Storm Stack when you use Gathering Storm and Hit an enemy",
 		"level": 26,
 		"statOrderKey": 737,
 		"statOrder": [
@@ -84999,7 +84999,7 @@
 		"affixName": "Chance to Gain a Storm Stack when you use Gathering Storm and Hit an enemy",
 		"modName": "Primalist's",
 		"affix": "Chance to Gain a Storm Stack when you use Gathering Storm and Hit an enemy",
-		"1": "(51-70)% Chance to gain a Storm Stack when you use Gathering Storm and hit an enemy",
+		"1": "+(51-70)% Chance to Gain a Storm Stack when you use Gathering Storm and Hit an enemy",
 		"level": 26,
 		"statOrderKey": 737,
 		"statOrder": [
@@ -85017,7 +85017,7 @@
 		"affixName": "Chance to Gain a Storm Stack when you use Gathering Storm and Hit an enemy",
 		"modName": "Primalist's",
 		"affix": "Chance to Gain a Storm Stack when you use Gathering Storm and Hit an enemy",
-		"1": "100% Chance to gain a Storm Stack when you use Gathering Storm and hit an enemy",
+		"1": "+100% Chance to Gain a Storm Stack when you use Gathering Storm and Hit an enemy",
 		"level": 26,
 		"statOrderKey": 737,
 		"statOrder": [
@@ -85336,7 +85336,7 @@
 		"affixName": "Chance for 3 additional projectiles when you directly cast Chaos Bolts",
 		"modName": "Acolyte's",
 		"affix": "Chance for 3 additional projectiles when you directly cast Chaos Bolts",
-		"1": "(7-12)% Chance for 3 additional projectiles when you directly cast Chaos Bolts",
+		"1": "+(7-12)% Chance for 3 additional projectiles when you directly cast Chaos Bolts",
 		"level": 41,
 		"statOrderKey": 747,
 		"statOrder": [
@@ -85354,7 +85354,7 @@
 		"affixName": "Chance for 3 additional projectiles when you directly cast Chaos Bolts",
 		"modName": "Acolyte's",
 		"affix": "Chance for 3 additional projectiles when you directly cast Chaos Bolts",
-		"1": "(13-18)% Chance for 3 additional projectiles when you directly cast Chaos Bolts",
+		"1": "+(13-18)% Chance for 3 additional projectiles when you directly cast Chaos Bolts",
 		"level": 41,
 		"statOrderKey": 747,
 		"statOrder": [
@@ -85372,7 +85372,7 @@
 		"affixName": "Chance for 3 additional projectiles when you directly cast Chaos Bolts",
 		"modName": "Acolyte's",
 		"affix": "Chance for 3 additional projectiles when you directly cast Chaos Bolts",
-		"1": "(19-24)% Chance for 3 additional projectiles when you directly cast Chaos Bolts",
+		"1": "+(19-24)% Chance for 3 additional projectiles when you directly cast Chaos Bolts",
 		"level": 41,
 		"statOrderKey": 747,
 		"statOrder": [
@@ -85390,7 +85390,7 @@
 		"affixName": "Chance for 3 additional projectiles when you directly cast Chaos Bolts",
 		"modName": "Acolyte's",
 		"affix": "Chance for 3 additional projectiles when you directly cast Chaos Bolts",
-		"1": "(25-29)% Chance for 3 additional projectiles when you directly cast Chaos Bolts",
+		"1": "+(25-29)% Chance for 3 additional projectiles when you directly cast Chaos Bolts",
 		"level": 41,
 		"statOrderKey": 747,
 		"statOrder": [
@@ -85408,7 +85408,7 @@
 		"affixName": "Chance for 3 additional projectiles when you directly cast Chaos Bolts",
 		"modName": "Acolyte's",
 		"affix": "Chance for 3 additional projectiles when you directly cast Chaos Bolts",
-		"1": "(30-35)% Chance for 3 additional projectiles when you directly cast Chaos Bolts",
+		"1": "+(30-35)% Chance for 3 additional projectiles when you directly cast Chaos Bolts",
 		"level": 41,
 		"statOrderKey": 747,
 		"statOrder": [
@@ -85426,7 +85426,7 @@
 		"affixName": "Chance for 3 additional projectiles when you directly cast Chaos Bolts",
 		"modName": "Acolyte's",
 		"affix": "Chance for 3 additional projectiles when you directly cast Chaos Bolts",
-		"1": "(36-52)% Chance for 3 additional projectiles when you directly cast Chaos Bolts",
+		"1": "+(36-52)% Chance for 3 additional projectiles when you directly cast Chaos Bolts",
 		"level": 41,
 		"statOrderKey": 747,
 		"statOrder": [
@@ -85444,7 +85444,7 @@
 		"affixName": "Chance for 3 additional projectiles when you directly cast Chaos Bolts",
 		"modName": "Acolyte's",
 		"affix": "Chance for 3 additional projectiles when you directly cast Chaos Bolts",
-		"1": "(53-70)% Chance for 3 additional projectiles when you directly cast Chaos Bolts",
+		"1": "+(53-70)% Chance for 3 additional projectiles when you directly cast Chaos Bolts",
 		"level": 41,
 		"statOrderKey": 747,
 		"statOrder": [
@@ -85462,7 +85462,7 @@
 		"affixName": "Chance for 3 additional projectiles when you directly cast Chaos Bolts",
 		"modName": "Acolyte's",
 		"affix": "Chance for 3 additional projectiles when you directly cast Chaos Bolts",
-		"1": "100% Chance for 3 additional projectiles when you directly cast Chaos Bolts",
+		"1": "+100% Chance for 3 additional projectiles when you directly cast Chaos Bolts",
 		"level": 41,
 		"statOrderKey": 747,
 		"statOrder": [
@@ -85480,7 +85480,7 @@
 		"affixName": "Increased Spirit Frequency with Chthonic Fissure",
 		"modName": "Acolyte's",
 		"affix": "Increased Spirit Frequency with Chthonic Fissure",
-		"1": "+(6-11)% Increased Spirit Frequency with Chthonic Fissure",
+		"1": "(6-11)% Increased Spirit Frequency with Chthonic Fissure",
 		"level": 13,
 		"statOrderKey": 748,
 		"statOrder": [
@@ -85499,7 +85499,7 @@
 		"affixName": "Increased Spirit Frequency with Chthonic Fissure",
 		"modName": "Acolyte's",
 		"affix": "Increased Spirit Frequency with Chthonic Fissure",
-		"1": "+(12-17)% Increased Spirit Frequency with Chthonic Fissure",
+		"1": "(12-17)% Increased Spirit Frequency with Chthonic Fissure",
 		"level": 13,
 		"statOrderKey": 748,
 		"statOrder": [
@@ -85518,7 +85518,7 @@
 		"affixName": "Increased Spirit Frequency with Chthonic Fissure",
 		"modName": "Acolyte's",
 		"affix": "Increased Spirit Frequency with Chthonic Fissure",
-		"1": "+(18-23)% Increased Spirit Frequency with Chthonic Fissure",
+		"1": "(18-23)% Increased Spirit Frequency with Chthonic Fissure",
 		"level": 13,
 		"statOrderKey": 748,
 		"statOrder": [
@@ -85537,7 +85537,7 @@
 		"affixName": "Increased Spirit Frequency with Chthonic Fissure",
 		"modName": "Acolyte's",
 		"affix": "Increased Spirit Frequency with Chthonic Fissure",
-		"1": "+(24-29)% Increased Spirit Frequency with Chthonic Fissure",
+		"1": "(24-29)% Increased Spirit Frequency with Chthonic Fissure",
 		"level": 13,
 		"statOrderKey": 748,
 		"statOrder": [
@@ -85556,7 +85556,7 @@
 		"affixName": "Increased Spirit Frequency with Chthonic Fissure",
 		"modName": "Acolyte's",
 		"affix": "Increased Spirit Frequency with Chthonic Fissure",
-		"1": "+(30-35)% Increased Spirit Frequency with Chthonic Fissure",
+		"1": "(30-35)% Increased Spirit Frequency with Chthonic Fissure",
 		"level": 13,
 		"statOrderKey": 748,
 		"statOrder": [
@@ -85575,7 +85575,7 @@
 		"affixName": "Increased Spirit Frequency with Chthonic Fissure",
 		"modName": "Acolyte's",
 		"affix": "Increased Spirit Frequency with Chthonic Fissure",
-		"1": "+(36-52)% Increased Spirit Frequency with Chthonic Fissure",
+		"1": "(36-52)% Increased Spirit Frequency with Chthonic Fissure",
 		"level": 13,
 		"statOrderKey": 748,
 		"statOrder": [
@@ -85594,7 +85594,7 @@
 		"affixName": "Increased Spirit Frequency with Chthonic Fissure",
 		"modName": "Acolyte's",
 		"affix": "Increased Spirit Frequency with Chthonic Fissure",
-		"1": "+(53-70)% Increased Spirit Frequency with Chthonic Fissure",
+		"1": "(53-70)% Increased Spirit Frequency with Chthonic Fissure",
 		"level": 13,
 		"statOrderKey": 748,
 		"statOrder": [
@@ -85613,7 +85613,7 @@
 		"affixName": "Increased Spirit Frequency with Chthonic Fissure",
 		"modName": "Acolyte's",
 		"affix": "Increased Spirit Frequency with Chthonic Fissure",
-		"1": "+(112-140)% Increased Spirit Frequency with Chthonic Fissure",
+		"1": "(112-140)% Increased Spirit Frequency with Chthonic Fissure",
 		"level": 13,
 		"statOrderKey": 748,
 		"statOrder": [
@@ -85813,7 +85813,7 @@
 		"affixName": "Mana Efficiency for Ghostflame",
 		"modName": "Excoriating",
 		"affix": "Excoriating",
-		"1": "+(9-21)% Mana Efficiency with Ghostflame",
+		"1": "+(9-21)% Mana Efficiency for Ghostflame",
 		"level": 0,
 		"statOrderKey": 752,
 		"statOrder": [
@@ -85850,7 +85850,7 @@
 		"affixName": "increased Duration for Profane Veil",
 		"modName": "Concealed",
 		"affix": "Concealed",
-		"1": "(12-31)% Increased Duration for Profane Veil",
+		"1": "+(12-31)% increased Duration for Profane Veil",
 		"level": 0,
 		"statOrderKey": 754,
 		"statOrder": [
@@ -86546,7 +86546,7 @@
 		"affixName": "Recurve Chance for Heartseeker",
 		"modName": "Rogue's",
 		"affix": "Recurve Chance for Heartseeker",
-		"1": "+(5-6)% Recurve Chance with Heartseeker",
+		"1": "+(5-6)% Recurve Chance for Heartseeker",
 		"level": 26,
 		"statOrderKey": 762,
 		"statOrder": [
@@ -86570,7 +86570,7 @@
 		"affixName": "Recurve Chance for Heartseeker",
 		"modName": "Rogue's",
 		"affix": "Recurve Chance for Heartseeker",
-		"1": "+(7-8)% Recurve Chance with Heartseeker",
+		"1": "+(7-8)% Recurve Chance for Heartseeker",
 		"level": 26,
 		"statOrderKey": 762,
 		"statOrder": [
@@ -86594,7 +86594,7 @@
 		"affixName": "Recurve Chance for Heartseeker",
 		"modName": "Rogue's",
 		"affix": "Recurve Chance for Heartseeker",
-		"1": "+(9-11)% Recurve Chance with Heartseeker",
+		"1": "+(9-11)% Recurve Chance for Heartseeker",
 		"level": 26,
 		"statOrderKey": 762,
 		"statOrder": [
@@ -86618,7 +86618,7 @@
 		"affixName": "Recurve Chance for Heartseeker",
 		"modName": "Rogue's",
 		"affix": "Recurve Chance for Heartseeker",
-		"1": "+(12-15)% Recurve Chance with Heartseeker",
+		"1": "+(12-15)% Recurve Chance for Heartseeker",
 		"level": 26,
 		"statOrderKey": 762,
 		"statOrder": [
@@ -86642,7 +86642,7 @@
 		"affixName": "Recurve Chance for Heartseeker",
 		"modName": "Rogue's",
 		"affix": "Recurve Chance for Heartseeker",
-		"1": "+(16-20)% Recurve Chance with Heartseeker",
+		"1": "+(16-20)% Recurve Chance for Heartseeker",
 		"level": 26,
 		"statOrderKey": 762,
 		"statOrder": [
@@ -86666,7 +86666,7 @@
 		"affixName": "Recurve Chance for Heartseeker",
 		"modName": "Rogue's",
 		"affix": "Recurve Chance for Heartseeker",
-		"1": "+(28-33)% Recurve Chance with Heartseeker",
+		"1": "+(28-33)% Recurve Chance for Heartseeker",
 		"level": 26,
 		"statOrderKey": 762,
 		"statOrder": [
@@ -86690,7 +86690,7 @@
 		"affixName": "Recurve Chance for Heartseeker",
 		"modName": "Rogue's",
 		"affix": "Recurve Chance for Heartseeker",
-		"1": "+(34-40)% Recurve Chance with Heartseeker",
+		"1": "+(34-40)% Recurve Chance for Heartseeker",
 		"level": 26,
 		"statOrderKey": 762,
 		"statOrder": [
@@ -86714,7 +86714,7 @@
 		"affixName": "Recurve Chance for Heartseeker",
 		"modName": "Rogue's",
 		"affix": "Recurve Chance for Heartseeker",
-		"1": "+(64-80)% Recurve Chance with Heartseeker",
+		"1": "+(64-80)% Recurve Chance for Heartseeker",
 		"level": 26,
 		"statOrderKey": 762,
 		"statOrder": [
@@ -92653,8 +92653,8 @@
 		"affixName": "The Last Bear's Lament Reforged",
 		"modName": "The Last Bear's Lament Reforged",
 		"affix": "The Last Bear's Lament Reforged",
-		"1": "{rounding:Integer}+(1-2) Health Regen",
-		"2": "{rounding:Integer}+(10-20) Endurance Threshold",
+		"1": "{rounding:Integer}+(3-4) Health Regen",
+		"2": "{rounding:Integer}+(30-53) Endurance Threshold",
 		"level": 0,
 		"statOrderKey": 802,
 		"statOrder": [
@@ -92671,8 +92671,8 @@
 		"affixName": "The Last Bear's Lament Reforged",
 		"modName": "The Last Bear's Lament Reforged",
 		"affix": "The Last Bear's Lament Reforged",
-		"1": "{rounding:Integer}+(3-4) Health Regen",
-		"2": "{rounding:Integer}+(21-32) Endurance Threshold",
+		"1": "{rounding:Integer}+(5-6) Health Regen",
+		"2": "{rounding:Integer}+(54-77) Endurance Threshold",
 		"level": 0,
 		"statOrderKey": 802,
 		"statOrder": [
@@ -92689,8 +92689,8 @@
 		"affixName": "The Last Bear's Lament Reforged",
 		"modName": "The Last Bear's Lament Reforged",
 		"affix": "The Last Bear's Lament Reforged",
-		"1": "{rounding:Integer}+(5-6) Health Regen",
-		"2": "{rounding:Integer}+(33-45) Endurance Threshold",
+		"1": "{rounding:Integer}+(7-8) Health Regen",
+		"2": "{rounding:Integer}+(78-101) Endurance Threshold",
 		"level": 0,
 		"statOrderKey": 802,
 		"statOrder": [
@@ -92707,8 +92707,8 @@
 		"affixName": "The Last Bear's Lament Reforged",
 		"modName": "The Last Bear's Lament Reforged",
 		"affix": "The Last Bear's Lament Reforged",
-		"1": "{rounding:Integer}+(7-8) Health Regen",
-		"2": "{rounding:Integer}+(46-59) Endurance Threshold",
+		"1": "{rounding:Integer}+(9-10) Health Regen",
+		"2": "{rounding:Integer}+(102-125) Endurance Threshold",
 		"level": 0,
 		"statOrderKey": 802,
 		"statOrder": [
@@ -92743,8 +92743,8 @@
 		"affixName": "The Last Bear's Lament Reforged",
 		"modName": "The Last Bear's Lament Reforged",
 		"affix": "The Last Bear's Lament Reforged",
-		"1": "{rounding:Integer}+(12-15) Health Regen",
-		"2": "{rounding:Integer}+(90-119) Endurance Threshold",
+		"1": "{rounding:Integer}+(18-23) Health Regen",
+		"2": "{rounding:Integer}+(190-239) Endurance Threshold",
 		"level": 0,
 		"statOrderKey": 802,
 		"statOrder": [
@@ -92761,8 +92761,8 @@
 		"affixName": "The Last Bear's Lament Reforged",
 		"modName": "The Last Bear's Lament Reforged",
 		"affix": "The Last Bear's Lament Reforged",
-		"1": "{rounding:Integer}+(16-20) Health Regen",
-		"2": "{rounding:Integer}+(120-150) Endurance Threshold",
+		"1": "{rounding:Integer}+(24-30) Health Regen",
+		"2": "{rounding:Integer}+(240-300) Endurance Threshold",
 		"level": 0,
 		"statOrderKey": 802,
 		"statOrder": [
@@ -92779,8 +92779,8 @@
 		"affixName": "The Last Bear's Lament Reforged",
 		"modName": "The Last Bear's Lament Reforged",
 		"affix": "The Last Bear's Lament Reforged",
-		"1": "{rounding:Integer}+(32-40) Health Regen",
-		"2": "{rounding:Integer}+(240-300) Endurance Threshold",
+		"1": "{rounding:Integer}+(48-60) Health Regen",
+		"2": "{rounding:Integer}+(480-600) Endurance Threshold",
 		"level": 0,
 		"statOrderKey": 802,
 		"statOrder": [
@@ -92797,7 +92797,7 @@
 		"affixName": "The Last Bear's Scorn Reforged",
 		"modName": "The Last Bear's Scorn Reforged",
 		"affix": "The Last Bear's Scorn Reforged",
-		"1": "+(6-7)% Endurance",
+		"1": "+(10-12)% Endurance",
 		"2": "(0.1-0.1)% of Physical Damage Leeched as Health on Hit",
 		"level": 0,
 		"statOrderKey": 803,
@@ -92816,7 +92816,7 @@
 		"affixName": "The Last Bear's Scorn Reforged",
 		"modName": "The Last Bear's Scorn Reforged",
 		"affix": "The Last Bear's Scorn Reforged",
-		"1": "+(8-9)% Endurance",
+		"1": "+(13-15)% Endurance",
 		"2": "(0.1-0.1)% of Physical Damage Leeched as Health on Hit",
 		"level": 0,
 		"statOrderKey": 803,
@@ -92835,7 +92835,7 @@
 		"affixName": "The Last Bear's Scorn Reforged",
 		"modName": "The Last Bear's Scorn Reforged",
 		"affix": "The Last Bear's Scorn Reforged",
-		"1": "+(10-11)% Endurance",
+		"1": "+(16-18)% Endurance",
 		"2": "(0.1-0.1)% of Physical Damage Leeched as Health on Hit",
 		"level": 0,
 		"statOrderKey": 803,
@@ -92854,7 +92854,7 @@
 		"affixName": "The Last Bear's Scorn Reforged",
 		"modName": "The Last Bear's Scorn Reforged",
 		"affix": "The Last Bear's Scorn Reforged",
-		"1": "+(12-13)% Endurance",
+		"1": "+(19-21)% Endurance",
 		"2": "(0.1-0.1)% of Physical Damage Leeched as Health on Hit",
 		"level": 0,
 		"statOrderKey": 803,
@@ -92873,7 +92873,7 @@
 		"affixName": "The Last Bear's Scorn Reforged",
 		"modName": "The Last Bear's Scorn Reforged",
 		"affix": "The Last Bear's Scorn Reforged",
-		"1": "+(14-15)% Endurance",
+		"1": "+(22-25)% Endurance",
 		"2": "(0.1-0.2)% of Physical Damage Leeched as Health on Hit",
 		"level": 0,
 		"statOrderKey": 803,
@@ -92892,7 +92892,7 @@
 		"affixName": "The Last Bear's Scorn Reforged",
 		"modName": "The Last Bear's Scorn Reforged",
 		"affix": "The Last Bear's Scorn Reforged",
-		"1": "+(20-24)% Endurance",
+		"1": "+(36-42)% Endurance",
 		"2": "(0.2-0.2)% of Physical Damage Leeched as Health on Hit",
 		"level": 0,
 		"statOrderKey": 803,
@@ -92911,7 +92911,7 @@
 		"affixName": "The Last Bear's Scorn Reforged",
 		"modName": "The Last Bear's Scorn Reforged",
 		"affix": "The Last Bear's Scorn Reforged",
-		"1": "+(25-30)% Endurance",
+		"1": "+(43-50)% Endurance",
 		"2": "(0.2-0.3)% of Physical Damage Leeched as Health on Hit",
 		"level": 0,
 		"statOrderKey": 803,
@@ -92930,7 +92930,7 @@
 		"affixName": "The Last Bear's Scorn Reforged",
 		"modName": "The Last Bear's Scorn Reforged",
 		"affix": "The Last Bear's Scorn Reforged",
-		"1": "+(48-60)% Endurance",
+		"1": "+(80-100)% Endurance",
 		"2": "(0.5-0.6)% of Physical Damage Leeched as Health on Hit",
 		"level": 0,
 		"statOrderKey": 803,
