@@ -166,6 +166,12 @@ return {
         helper = "HeadlessWrapper.lua",
         ROOT = { "../spec/DumpManaRegen.lua" },
     },
+    dumpPoisonResist = {
+        directory = "src",
+        lpath = "../runtime/lua/?.lua;../runtime/lua/?/init.lua",
+        helper = "HeadlessWrapper.lua",
+        ROOT = { "../spec/DumpPoisonResist.lua" },
+    },
     dumpParry = {
         directory = "src",
         lpath = "../runtime/lua/?.lua;../runtime/lua/?/init.lua",
@@ -195,5 +201,11 @@ return {
         lpath = "../runtime/lua/?.lua;../runtime/lua/?/init.lua",
         helper = "HeadlessWrapper.lua",
         ROOT = { "../spec/DumpDruidWard.lua" },
+    },
+    dumpRefractedSuffixBoost = {
+        directory = "src",
+        lpath = "../runtime/lua/?.lua;../runtime/lua/?/init.lua",
+        helper = "HeadlessWrapper.lua",
+        ROOT = { "../spec/DumpRefractedSuffixBoost.lua" },
     },
 }
