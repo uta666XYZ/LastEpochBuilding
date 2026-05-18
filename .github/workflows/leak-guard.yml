@@ -1,0 +1,88 @@
+name: 'Leak Guard'
+
+# Server-side belt for the client-side `.git/hooks/pre-commit` guard. The
+# local hook can be bypassed (`--no-verify`) or simply missing on a fresh
+# clone / web edit / API commit, so this workflow re-runs the same pattern
+# scan on every PR and push, and fails the check if a hit slips through.
+#
+# Patterns guarded (kept in sync with `.git/hooks/pre-commit`):
+#   - the maintainer's local Windows paths under their home / game install dir
+#   - the maintainer's personal gmail address (history-scrubbed 2026-05-18)
+# See the hook file for the canonical regex.
+#
+# Escape hatches (use sparingly):
+#   - `# leb-allow-abs-path:` marker on the offending line
+#   - `# leb-allow-email:`    marker on the offending line
+
+on:
+  pull_request:
+    branches: [ dev, main, beta ]
+  push:
+    branches: [ dev, main, beta ]
+
+jobs:
+  scan-diff:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout (full history for diff range)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Scan added lines for personal info
+        env:
+          PR_BASE:     ${{ github.event.pull_request.base.sha }}
+          PUSH_BEFORE: ${{ github.event.before }}
+        run: |
+          set -euo pipefail
+
+          if [ -n "${PR_BASE:-}" ]; then
+            RANGE="$PR_BASE...HEAD"
+          elif [ -n "${PUSH_BEFORE:-}" ] \
+               && [ "$PUSH_BEFORE" != "0000000000000000000000000000000000000000" ] \
+               && git cat-file -e "$PUSH_BEFORE" 2>/dev/null; then
+            RANGE="$PUSH_BEFORE..HEAD"
+          else
+            # Initial push, force-push past local horizon, or unknown base.
+            # Fall back to the single tip commit so we still scan something.
+            RANGE="HEAD~1..HEAD"
+          fi
+          echo "Scanning diff range: $RANGE"
+
+          # Patterns are kept in sync with .git/hooks/pre-commit. The regex
+          # is built from substrings so the literal trigger strings do not
+          # appear in this file (which would itself trip the hook).
+          U='Users'
+          Y='yobk0'                                       # leb-allow-abs-path: leb-allow-email:
+          PAT_ABS="([CD]:[\\\\/]${U}[\\\\/]${Y}|/c/${U}/${Y}|[CD]:[\\\\/]Games[\\\\/]Steam|/[cd]/Games/Steam)"
+          PAT_EMAIL="${Y}831@gmail\\.com"                 # leb-allow-email:
+          PAT="(${PAT_ABS}|${PAT_EMAIL})"
+
+          DIFF=$(git diff "$RANGE" --no-color -U0)
+          HITS=$(printf '%s\n' "$DIFF" \
+            | grep -E '^\+' \
+            | grep -v '^+++' \
+            | grep -v 'leb-allow-abs-path:\|leb-allow-email:' \
+            | grep -E -i "$PAT" \
+            || true)
+
+          if [ -n "$HITS" ]; then
+            {
+              echo "Personal info or absolute path detected in added lines."
+              echo
+              echo "Offending added lines (first 20):"
+              printf '%s\n' "$HITS" | head -20 | sed 's/^/  /'
+              echo
+              echo "Public repo must not embed the maintainer's local"
+              echo "absolute paths or personal email. Replace with an env"
+              echo "var (e.g. \$LEB_DATAMINING_ROOT, \$LEB_SCRAPE_OUT_DIR)"
+              echo "or use the GitHub noreply identity."
+              echo
+              echo "If a hit is genuinely required (rare), append the marker"
+              echo "'# leb-allow-abs-path:' or '# leb-allow-email:' to the line."
+            } | tee -a "$GITHUB_STEP_SUMMARY"
+            echo "::error::Leak Guard: personal info / absolute path detected in diff"
+            exit 1
+          fi
+
+          echo "OK: no personal info or absolute paths in diff."
