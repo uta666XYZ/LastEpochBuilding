@@ -4436,6 +4436,60 @@ self-consistent — see file).
 
 **Establishing commit:** (this commit)
 
+### `diff-letools-block-chance-uncapped-mapping`
+
+`spec/tools/diff_letools.py` MUST map LETools' General-tab "Block Chance"
+to LEB `output.BlockChanceTotal` (raw uncapped), NOT to bare
+`output.BlockChance` (post-cap at BlockChanceMax=75). LETools planner
+displays the uncapped value so build planners can see over-cap headroom
+— same display family as `Endurance` → `EnduranceTotal` (mapped at the
+same site).
+
+Game ground truth: LE itself has two block-chance properties at
+different scopes:
+- `output.BlockChanceTotal` / `BlockChance` raw: the unclamped sum of
+  all sources, written by `src/Modules/CalcDefence.lua` after the block
+  calc — this is what LETools' planner serializes.
+- `output.BlockChance` (post-cap): clamped at `BlockChanceMax` (default
+  75; cap site `CalcDefence.lua` ~L350-360). LE's own character-sheet
+  reads via `PrecalculatedStatsHolder.blockChanceForCharacterSheet`
+  (block_decompile.txt RVA 0x2344F70) — that's an LE display detail,
+  distinct from the planner serialization.
+
+Pre-fix evidence:
+- BgRrP5rr lv98 Paladin: LEB capped `BlockChance=75` vs LETools "93%"
+  → phantom −19.4% drift purely because the mapping pointed at the
+  capped field. Every shield Paladin past the cap (≈ all serious
+  shield builds with 1.4 idol stacking) produced the same fake drift,
+  masking real shield-block bugs by noise.
+
+Post-fix: BlockChanceTotal=92 vs LETools 93 → Δ~1.1% under default
+threshold, clean signal.
+
+| Site | File | What it does |
+|---|---|---|
+| MAPPING entry | `spec/tools/diff_letools.py` ~L100 | `('General','Block Chance'): 'BlockChanceTotal'` with `@leb-regression-guard:diff-letools-block-chance-uncapped-mapping` marker block above. Mirrors the `Endurance` → `EnduranceTotal` mapping at ~L106 (canonical sibling pattern). |
+| Producer (uncapped write) | `src/Modules/CalcDefence.lua` ~L350-360 | Writes `output.BlockChanceTotal` (the uncapped sum) before the cap-clamp that produces `output.BlockChance`. The Sentinel-70 Dedication ManaRegen handler at L416 reads this same uncapped field — see `@leb-regression-guard:paladin-sentinel70-dedication-mana-regen`. |
+| JS counterpart | `scripts/letools-diff.js` (analogous mapping) | The JS diff tool maps 'block chance' to the same uncapped output key for parity. |
+
+**Spec:** `spec/System/TestDiffLetoolsBlockChanceUncappedMapping_spec.lua`
+asserts (1) the MAPPING entry resolves to `BlockChanceTotal`, (2) the
+inline marker is present with `BlockChanceMax` anchored in the rationale,
+(3) the canonical sibling `Endurance` → `EnduranceTotal` mapping pattern
+is preserved, (4) `CalcDefence.lua` writes `output.BlockChanceTotal` so
+the mapping has a value to consume.
+
+**Cross-refs:**
+- `paladin-sentinel70-dedication-mana-regen` — depends on
+  `output.BlockChanceTotal` being the uncapped field used by both this
+  mapping and the ManaRegen handler.
+- The `Endurance` → `EnduranceTotal` mapping is the canonical sibling
+  for the uncapped-Total pattern.
+
+**Establishing commit:** 9efeb267d (`fix(tooling): diff_letools.py
+'Block Chance' -> BlockChanceTotal mapping`). 3-layer guard formalization:
+(this commit).
+
 ### `letools-armor-display-negative-on-shred-build` (docs-only)
 
 LETools' planner UI sometimes reports the player's own `Armor`

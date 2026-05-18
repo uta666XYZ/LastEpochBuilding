@@ -89,12 +89,18 @@ MAPPING = {
     ('General','Dodge Chance'):'DodgeChance',
     ('General','Armor'):'Armour',
     ('General','Armor Mitigation'):'ArmourMitigation',
+    # @leb-regression-guard:diff-letools-block-chance-uncapped-mapping
     # Block Chance: *Total = raw uncapped (used by LETools planner display),
     # bare BlockChance = capped at BlockChanceMax (75 default). LETools shows
     # uncapped so build planners can see over-cap headroom (mirror of how it
     # treats Endurance below). LE's own character-sheet shows capped via
     # PrecalculatedStatsHolder.blockChanceForCharacterSheet (block_decompile.txt
     # RVA 0x2344F70) — but that's an LE display detail, not what LETools serializes.
+    # Establishing case: BgRrP5rr lv98 Paladin Block Chance LEB capped 75 vs
+    # LETools "93%" = phantom 19.4% drift on every shield Paladin past the cap
+    # unless this maps to BlockChanceTotal. Reverting to 'BlockChance' would
+    # silently re-introduce the regression. See REGRESSION_GUARDS.md
+    # §diff-letools-block-chance-uncapped-mapping.
     ('General','Block Chance'):'BlockChanceTotal',
     ('General','Block Effectiveness'):'BlockEffectiveness',
     ('General','Block Mitigation'):'BlockMitigation',
