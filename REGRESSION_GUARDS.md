@@ -687,7 +687,9 @@ beltless build away from in-game's 0 baseline.
 LE has **NO automatic shield gate** on Block Chance / Block Effectiveness /
 Block Mitigation. This was established by PyGhidra decompile of
 `GameAssembly.dll` (Last Epoch 1.4), dumped to
-`<LE_datamining>\extracted\block_decompile.txt`:
+`<LE_datamining>/extracted/block_decompile.txt` (the local LE_datamining tree
+path; see `$LEB_DATAMINING_ROOT` env var or the Obsidian "GameData解析 INDEX"
+note for its current location):
 
 - `PrecalculatedStatsHolder.blockChanceForCharacterSheet` (RVA `0x2344F70`)
   returns `min(blockChance, maximumBlockChance)` gated **only** on

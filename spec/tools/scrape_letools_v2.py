@@ -8,7 +8,10 @@ Usage:
   python spec/tools/scrape_letools_v2.py [--manifest PATH] [--code CODE] [--types t1,t2,...] [--out-dir DIR]
 
 Default manifest: .tmp/scrape_v2_manifest.txt  (lines: <code>|<basename>)
-Default out-dir : <scrape_out_dir>/  (temporary staging; move after validation)
+Default out-dir : $LEB_SCRAPE_OUT_DIR  (env var)
+                  or repo-root `.tmp/scrape_v2_out/` if unset (gitignored
+                  staging; move artifacts to `spec/TestBuilds/<ver>/` after
+                  validation).
 Default types   : all 9 (tooltips, items, idols, idol_grid, blessings, quests, skills, passives, buffs)
 
 Progress is tracked in .tmp/scrape_v2_progress.json so re-running resumes.
@@ -16,6 +19,7 @@ Progress is tracked in .tmp/scrape_v2_progress.json so re-running resumes.
 from __future__ import annotations
 import argparse
 import json
+import os
 import sys
 import time
 from pathlib import Path
@@ -26,7 +30,9 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 EXTRACTORS_DIR = Path(__file__).parent / "extractors"
 DEFAULT_MANIFEST = REPO_ROOT / ".tmp" / "scrape_v2_manifest.txt"
 DEFAULT_PROGRESS = REPO_ROOT / ".tmp" / "scrape_v2_progress.json"
-DEFAULT_OUT_DIR = Path(r"<scrape_out_dir>")
+# Avoid hard-coding personal paths in the public repo. Override with the
+# LEB_SCRAPE_OUT_DIR env var; otherwise stage under the gitignored .tmp/.
+DEFAULT_OUT_DIR = Path(os.environ.get("LEB_SCRAPE_OUT_DIR")) if os.environ.get("LEB_SCRAPE_OUT_DIR") else REPO_ROOT / ".tmp" / "scrape_v2_out"
 
 # Per-extractor metadata.
 #   file       : JS filename under extractors/

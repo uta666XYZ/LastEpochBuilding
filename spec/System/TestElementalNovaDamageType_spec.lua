@@ -3,8 +3,10 @@
 -- (Fire / Cold / Lightning) are CONDITIONALLY enabled by the en6 skill
 -- specialization tree, NOT all granted unconditionally as base.
 --
--- LE behaviour (verified against game files at
--- <LE_datamining>/extracted/):
+-- LE behaviour (verified against extracted LE game files; the
+-- LE_datamining tree lives outside the repo — set $LEB_DATAMINING_ROOT
+-- to point at your local copy, or see the Obsidian "GameData解析 INDEX"
+-- note for the canonical layout):
 --   - prefab_damage.json ElementalNova baseDamage = [Phys=0, Fire=8, Cold=8,
 --     Light=8, Necro=0, Void=0, Poison=0]   (the "all-enabled" template)
 --   - skills.json field skillTreeConversionDamageTags = 14 = Fire(2) + Cold(4)
