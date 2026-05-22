@@ -4755,7 +4755,7 @@
       "(23-33)% Increased Frostbite Duration ",
       "+(143-183)% Freeze Rate Multiplier",
       "{rounding:Integer}(13-23) Ward Gain on Freeze",
-      "+100% Ward Retention per 100% uncapped Cold Resistance"
+      "+1% Ward Retention per 2% uncapped Cold Resistance"
     ],
     "rollIds": [
       0,
@@ -6685,6 +6685,7 @@
   },
   "293": {
     "name": "Swaddling of the Erased",
+    "legendaryType": 1,
     "baseTypeID": 4,
     "subTypeID": 1,
     "req": {
@@ -6708,6 +6709,7 @@
   },
   "294": {
     "name": "Font of the Erased",
+    "legendaryType": 1,
     "baseTypeID": 21,
     "subTypeID": 4,
     "req": {
@@ -6729,6 +6731,7 @@
   },
   "295": {
     "name": "Cradle of the Erased",
+    "legendaryType": 1,
     "baseTypeID": 18,
     "subTypeID": 1,
     "req": {
@@ -6750,6 +6753,7 @@
   },
   "296": {
     "name": "Advent of the Erased",
+    "legendaryType": 1,
     "baseTypeID": 3,
     "subTypeID": 2,
     "req": {
@@ -6773,6 +6777,7 @@
   },
   "297": {
     "name": "Dedication of an Erased Primalist",
+    "legendaryType": 1,
     "baseTypeID": 22,
     "subTypeID": 29,
     "req": {
@@ -6792,6 +6797,7 @@
   },
   "298": {
     "name": "Knowledge of an Erased Mage",
+    "legendaryType": 1,
     "baseTypeID": 22,
     "subTypeID": 26,
     "req": {
@@ -6811,6 +6817,7 @@
   },
   "299": {
     "name": "Code of an Erased Sentinel",
+    "legendaryType": 1,
     "baseTypeID": 22,
     "subTypeID": 41,
     "req": {
@@ -6830,6 +6837,7 @@
   },
   "300": {
     "name": "Ambitions of an Erased Acolyte",
+    "legendaryType": 1,
     "baseTypeID": 22,
     "subTypeID": 12,
     "req": {
@@ -6851,6 +6859,7 @@
   },
   "301": {
     "name": "Gambit of an Erased Rogue",
+    "legendaryType": 1,
     "baseTypeID": 22,
     "subTypeID": 47,
     "req": {
@@ -7461,6 +7470,7 @@
   },
   "327": {
     "name": "Communion of the Erased",
+    "legendaryType": 1,
     "baseTypeID": 2,
     "subTypeID": 2,
     "req": {
@@ -7468,7 +7478,7 @@
     },
     "mods": [
       "+100% Belt Stat Multiplier for 1 second on Potion Use",
-      "+1 Potion Slot per equipped Weaver Item",
+      "+1 Potion Slots per equipped Weaver's Will Item",
       "{rounding:Integer}(24-54)% increased Armor",
       "(24-54)% of Mana Spent Gained as Ward",
       "(6-14)% more Damage to Stunned Enemies"
@@ -9075,6 +9085,7 @@
   },
   "405": {
     "name": "Orb Weaver's Fang",
+    "legendaryType": 1,
     "baseTypeID": 16,
     "subTypeID": 1,
     "req": {
@@ -9098,6 +9109,7 @@
   },
   "406": {
     "name": "Nest of Nightmares",
+    "legendaryType": 1,
     "baseTypeID": 7,
     "subTypeID": 9,
     "req": {
@@ -9121,6 +9133,7 @@
   },
   "407": {
     "name": "Essence Weaver",
+    "legendaryType": 1,
     "baseTypeID": 14,
     "subTypeID": 12,
     "req": {
@@ -9142,6 +9155,7 @@
   },
   "408": {
     "name": "Weaver's Gift",
+    "legendaryType": 1,
     "baseTypeID": 9,
     "subTypeID": 6,
     "req": {
@@ -9165,6 +9179,7 @@
   },
   "409": {
     "name": "Inheritance of the Erased",
+    "legendaryType": 1,
     "baseTypeID": 20,
     "subTypeID": 8,
     "req": {
@@ -9351,6 +9366,7 @@
   },
   "417": {
     "name": "Clotho's Needle",
+    "legendaryType": 1,
     "baseTypeID": 16,
     "subTypeID": 15,
     "req": {
@@ -9378,6 +9394,7 @@
   },
   "418": {
     "name": "Scissor of Atropos",
+    "legendaryType": 1,
     "baseTypeID": 9,
     "subTypeID": 5,
     "req": {
@@ -9401,6 +9418,7 @@
   },
   "419": {
     "name": "Blight of Lachesis",
+    "legendaryType": 1,
     "baseTypeID": 15,
     "subTypeID": 10,
     "req": {

@@ -33,8 +33,10 @@ describe("S4ConvertedAttrNoBaseInherit", function()
             -- Match patterns like:
             --   modDB:NewMod("Armour", "INC", 4, "Brutality", {type = "PerStat", stat = "Brutality"})
             -- The regression is any NewMod whose target stat is `c.target`
-            -- AND whose PerStat tag references `c.stat`.
-            local pat = 'NewMod%(%s*"' .. c.target .. '".-PerStat.-"' .. c.stat .. '"'
+            -- AND whose PerStat tag references `c.stat`. Pattern is scoped to a
+            -- single line (`[^\n]-`) so an unrelated NewMod elsewhere in the
+            -- file cannot trigger a false positive across newlines.
+            local pat = 'NewMod%(%s*"' .. c.target .. '"[^\n]-PerStat[^\n]-"' .. c.stat .. '"'
             local hit = string.find(source, pat)
             assert.is_falsy(hit,
                 ("CalcSetup.lua must NOT register %s PerStat:%s — that would re-introduce the base-attr-inheritance bug"):format(c.target, c.stat))

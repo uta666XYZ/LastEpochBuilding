@@ -1,7 +1,9 @@
 -- @leb-regression-guard: diff-letools-abs-tolerance-floor
--- Locks the contract that `spec/tools/diff_letools.py` mirrors the
--- `TOL_ABS = 0.5` absolute-tolerance floor of its JS sibling
--- `scripts/letools-diff.js`. The floor absorbs LETools UI integer-display
+-- Locks the contract that `spec/tools/diff_letools.py` keeps the
+-- `TOL_ABS = 0.5` absolute-tolerance floor. (Earlier docs referenced a JS
+-- sibling `scripts/letools-diff.js` — that file never actually existed in
+-- repo history, the Python tool is the sole owner.) The floor absorbs
+-- LETools UI integer-display
 -- rounding (Ward Regen, Block Chance, Endurance, …) so a sub-1.0 float
 -- delta doesn't inflate to a fake double-digit percentage drift on
 -- small-magnitude integer-rounded stats. Establishing case:
@@ -37,9 +39,6 @@ describe("DiffLetoolsAbsToleranceFloor", function()
         assert.is_not_nil(block,
             "Inline @leb-regression-guard:diff-letools-abs-tolerance-floor "
             .. "comment must precede TOL_ABS = 0.5 declaration")
-        assert.is_truthy(block:find("scripts/letools%-diff%.js", 1, false),
-            "Marker block must name the JS sibling to make the mirror-relation "
-            .. "explicit for future maintainers")
     end)
 
     it("filter loop drops rows with |D| <= TOL_ABS", function()
@@ -60,16 +59,11 @@ describe("DiffLetoolsAbsToleranceFloor", function()
             .. "preserves access to sub-floor rows for triangulation")
     end)
 
-    it("scripts/letools-diff.js still defines TOL_ABS = 0.5 (mirror integrity)", function()
-        local f = io.open("scripts/letools-diff.js", "r")
-            or io.open("../scripts/letools-diff.js", "r")
-        assert.is_not_nil(f, "scripts/letools-diff.js missing")
-        local js = f:read("*a")
-        f:close()
-        local val = js:match("TOL_ABS%s*=%s*([%d%.]+)")
-        assert.is_not_nil(val, "scripts/letools-diff.js must define TOL_ABS")
-        assert.are.equals("0.5", val,
-            "JS sibling TOL_ABS must equal 0.5 — Python tool mirrors this "
-            .. "value, so any change here must update both files in lock-step")
-    end)
+    -- Removed: "scripts/letools-diff.js still defines TOL_ABS = 0.5" assertion.
+    -- That JS sibling was claimed by the original commit (b8ce4d826) but never
+    -- actually existed in the repo's git history at any ref. The Python tool
+    -- (spec/tools/diff_letools.py) is the single source of truth for TOL_ABS.
+    -- The 4 tests above already pin the Python TOL_ABS=0.5 constant, the
+    -- filter loop, and the --all bypass — full mirror integrity for the only
+    -- real artifact.
 end)

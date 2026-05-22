@@ -396,6 +396,57 @@ describe("TestItemParse #itemParse", function()
             "SET must skip Pattern A; req stays at base")
     end)
 
+    -- @leb-regression-guard: idol-family-no-affix-derived-levelreq
+    -- The idol system (Idol Altar + idol bases) is NOT level-gated out by its
+    -- affix tiers in-game. Idols carry no level requirement (user-confirmed
+    -- 2026-05-21: "装備しているidolにlevel reqはないです"), and an Idol Altar's most
+    -- powerful affixes are typically drop-only SEALED affixes that the game's
+    -- CanContributeToLevelRequirement check excludes (RVA 0xf03620: contributes
+    -- iff specialAffixType==0 AND sealedAffixType==0). LEB's save-file/XML import
+    -- path does not preserve the per-instance sealed flag (only the LETools
+    -- import path tags `kind="sealed"`), so Pattern A would otherwise count the
+    -- sealed prefix and inflate the altar's req. We therefore exempt the whole
+    -- idol family from Pattern A.
+    -- Establishing build: ImPalmBeachPete lv36 Bladedancer — Prodigious Lunar
+    --   Altar of Azure Fountains (EXALTED, base req 0). Affixes: SEALED prefix
+    --   1095_5 (+3 Max Omen Idols / +9 Health per Omen Idol, drop-only) + suffix
+    --   1098_2 + suffix 1101_1. With the sealed prefix wrongly counted, Pattern A
+    --   computed req=44 (sum_inner 15+6+3=24, outer 30, -10 -> 44); CalcSetup's
+    --   LevelReq filter then dropped the whole altar on the lv36 character,
+    --   removing its "+3 Mana per Idol in a Refracted Slot" (x2) and showing
+    --   Mana 177 vs in-game 183. In-game the altar tooltip reads "Requires Level
+    --   11" (sealed-excluded: sum_inner 6+3=9, outer 12, -10 -> 11) and the
+    --   altar is active at lv36. See REGRESSION_GUARDS.md.
+    it("Idol Altar: affix tiers do not inflate req.level (idol family exempt)", function()
+        newBuild()
+        build.itemsTab:CreateDisplayItemFromRaw([[Rarity: EXALTED
+        Prodigious Lunar Altar of Azure Fountains
+        Lunar Altar
+        Unique ID: TestIdolAltar 1
+        Crafted: true
+        Prefix: {range:222}1095_5
+        Prefix: None
+        Prefix: None
+        Prefix: None
+        Prefix: None
+        Suffix: {range:146}1098_2
+        Suffix: {range:129}1101_1
+        Suffix: None
+        Suffix: None
+        Suffix: None
+        LevelReq: 44
+        Implicits: 0]])
+
+        local item = build.itemsTab.displayItem
+        assert.is_not_nil(item, "displayItem should exist")
+        assert.are.equals(0, item.requirements.level,
+            "Idol Altar must skip Pattern A; req stays at base 0 (Lunar Altar), "
+            .. "not the affix-derived 44 that filtered the altar at lv36")
+        item:Craft()
+        assert.are.equals(0, item.requirements.level,
+            "Idol Altar exemption must persist after Craft()")
+    end)
+
     it("Auto-detects corrupted from specialAffixType==6 affix (no 'Corrupted' marker)", function()
         newBuild()
         -- Refuge Armor (Body Armor base) with sat==6 prefix 1002_0 (Missing Health

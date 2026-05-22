@@ -219,6 +219,16 @@ local modNameList = {
 	["maximum shadows"] = "MaxShadows",
 	["max shadows"] = "MaxShadows",
 	["potion slots"] = "PotionSlots",
+	-- @leb-regression-guard: weaver-will-equipped-autocount
+	-- Singular "Potion Slot" alias. Communion of the Erased's per-item mod is
+	-- baked into saved build XML as "+1 Potion Slot per equipped Weaver Item"
+	-- (singular name). Without this alias modNameList only matched the plural
+	-- "potion slots", so the modName scan failed and the whole mod dropped,
+	-- leaving PotionSlots stuck at the implicit 3 instead of 3 + per-item count.
+	-- scan() is earliest+longest: for plural text the 12-char "potion slots"
+	-- still wins over this 11-char alias, so plural parsing is unaffected.
+	-- See REGRESSION_GUARDS.md "weaver-will-equipped-autocount".
+	["potion slot"] = "PotionSlots",
 	["minion power from character level"] = "MinionPowerFromCharLevel",
 	["health lost on kill"] = "LifeLossOnKillPercent",
 	-- Projectile modifiers
@@ -429,6 +439,7 @@ local modNameList = {
 	["critical strike chance"] = "CritChance",
 	["critical strike multiplier"] = "CritMultiplier",
 	["critical multiplier"] = "CritMultiplier",
+	["shared critical multiplier"] = "CritMultiplier",
 	["attack speed"] = { "Speed", flags = ModFlag.Attack },
 	["cast speed"] = { "Speed", flags = ModFlag.Cast },
 	["attack and cast speed"] = "Speed",
@@ -606,6 +617,19 @@ local modTagList = {
 	-- these win over the bare "for shadow attack" / "with bow" entries.
 	[", doubled for shadow attack"] = { tag = { type = "Condition", var = "ShadowAttack", mult = 2 } },
 	[", doubled with bow"] = { tag = { type = "Condition", var = "UsingBow", mult = 2 } },
+	-- @leb-regression-guard: dodge-rating-doubled-if-hit-recently
+	-- Rogue passive "Once" (Rogue-52) grants "10 Dodge Rating, Doubled if Hit
+	-- Recently" per point. Without this trailing-clause tag the modTag scan
+	-- consumed only the bare "hit recently" fragment and left residue
+	-- " , Doubled if  Recently ", so the Evasion BASE mod was dropped at tree
+	-- application -- losing 10 x allocated points of Dodge Rating (60 at 6/6 on
+	-- ImPalmBeachPete: Dodge Rating 111 -> 184, Dodge Chance 10.65% -> 15%).
+	-- Same Condition+mult contract as ", doubled for shadow attack" above:
+	-- BeenHitRecently defaults off so the base (un-doubled) value applies,
+	-- matching the in-game character-sheet display. scan() longest-match makes
+	-- this comma-anchored phrase win over the inner "hit recently" tag.
+	-- See REGRESSION_GUARDS.md "dodge-rating-doubled-if-hit-recently".
+	[", doubled if hit recently"] = { tag = { type = "Condition", var = "BeenHitRecently", mult = 2 } },
 	-- @leb-regression-guard:shadow-suffix-family-c6c
 	-- Shadow trigger gates. OnShadowCreate fires each time a Shadow is
 	-- summoned (Bladedancer); OnShadowConsume fires each time a Shadow is
@@ -735,6 +759,14 @@ local modTagList = {
 	["with at least 3 shadows"] = { tag = { type = "MultiplierThreshold", var = "ActiveShadow", threshold = 3 } },
 	["per equipped omen idol"] = { tag = { type = "Multiplier", var = "EquippedOmenIdol" } },
 	["per equipped weaver item"] = { tag = { type = "Multiplier", var = "EquippedWeaverItem" } },
+	-- @leb-regression-guard: weaver-will-equipped-autocount
+	-- Game-accurate phrasing is "per equipped Weaver's Will Item" (datamining
+	-- localization Unique_Tooltip_1_327). LEB uniques 327/8145/8191 use this
+	-- form; without this mapping the Multiplier:EquippedWeaverItem tag silently
+	-- dropped (e.g. Communion of the Erased "+1 Potion Slot(s) per equipped
+	-- Weaver's Will Item"). The legacy "per equipped weaver item" key above is
+	-- kept for back-compat. See REGRESSION_GUARDS.md "weaver-will-equipped-autocount".
+	["per equipped weaver's will item"] = { tag = { type = "Multiplier", var = "EquippedWeaverItem" } },
 	-- Per-summoned-minion multiplier. Multiplier:SummonedMinion is auto-supplied
 	-- by CalcPerform from the sum of activeSkill.minion.minionData.limit across
 	-- all minion-summoning skills, with the Config tab "# of Summoned Minions"
@@ -793,6 +825,21 @@ local modTagList = {
 	["to frail enemies"] = { tag = { type = "ActorCondition", actor = "enemy", var = "Frail" } },
 	["against enemies hit recently"] = { tag = { type = "ActorCondition", actor = "enemy", var = "HitRecently" } },
 	["against enemies stunned recently"] = { tag = { type = "ActorCondition", actor = "enemy", var = "StunnedRecently" } },
+	-- @leb-regression-guard:near-enemy-proximity-suffix-eat
+	-- Bastion of Honour Old Kite Shield intrinsic
+	-- "+1% Block Chance per Strength against enemies within 4 metres" parses
+	-- modName="BlockChance", per-Stat tag from "per Strength", and leaves
+	-- "against enemies within 4 metres" as `extra` residue. PassiveTree.lua
+	-- (`if mod.list and not mod.extra`) silently drops any mod with non-empty
+	-- extra — for an Str=125 build that means -125% BlockChance vanishes.
+	-- LETools always counts this bonus (it does not gate on proximity), so the
+	-- correct fix is to noise-eat the suffix: register an empty modTagList
+	-- entry so the scan consumes the residue without attaching a Condition.
+	-- This matches LETools display behaviour AND keeps the parser's extra
+	-- empty so consumers retain the mod. Pattern uses (%d+) instead of "4"
+	-- so the same handler covers any future "within N metres" reroll.
+	-- Spec: spec/System/TestNearEnemyProximitySuffixEat_spec.lua
+	["against enemies within (%d+) metres"] = { },
 	["if the enemy was hit recently"] = { tag = { type = "ActorCondition", actor = "enemy", var = "HitRecently" } },
 	["if the enemy was stunned recently"] = { tag = { type = "ActorCondition", actor = "enemy", var = "StunnedRecently" } },
 	["if the enemy was killed recently"] = { tag = { type = "ActorCondition", actor = "enemy", var = "KilledRecently" } },
@@ -1318,8 +1365,30 @@ local specialModList = {
 	["^%+?(%d+)%% ward retention per 1%% increased area$"] = function(num)
 		return { mod("WardRetention", "BASE", num, "", 0, 0, { type = "Multiplier", var = "AreaInc" }) }
 	end,
+	-- @leb-regression-guard:frostbite-shackles-wr-per-uncapped-cold-res
+	-- Frostbite Shackles unique text is "+1% Ward Retention per 2% uncapped
+	-- Cold Resistance" (verified via LE_datamining/extracted/items/uniques_v3.json
+	-- L27913). Emits a custom BASE mod name so CalcDefence can inject AFTER
+	-- output.ColdResistTotal is computed — a PerStat tag here would (a) read
+	-- the capped output.ColdResist and (b) be summed by CalcPerform L1388
+	-- before calcs.defence even runs, both yielding 0 contribution.
+	--
+	-- Two patterns: the correct "+N% per 2%" text (new uniques*.json
+	-- post-fix) and the LEGACY wrong "+N% per 100%" text (frozen in
+	-- existing imported build XMLs — LETools/Maxroll importers captured
+	-- the pre-fix uniques.json text verbatim). The legacy pattern also
+	-- emits the same custom BASE mod with coefficient num (treating the
+	-- legacy text as a typo of the canonical +1%/2% rate, not as a
+	-- 50× literal interpretation), matching what LE actually computes.
+	-- Spec: spec/System/TestFrostbiteShacklesWRPerUncappedColdRes_spec.lua
+	["^%+?(%d+)%% ward retention per 2%% uncapped cold resistance$"] = function(num)
+		return { mod("WardRetentionPerUncappedColdRes_Per2", "BASE", num) }
+	end,
 	["^%+?(%d+)%% ward retention per 100%% uncapped cold resistance$"] = function(num)
-		return { mod("WardRetention", "BASE", num, "", 0, 0, { type = "PerStat", stat = "ColdResist", div = 100 }) }
+		-- LEGACY text from pre-fix uniques*.json, frozen in existing build XMLs.
+		-- num is always 100 in this branch; collapse to the canonical 1 so the
+		-- CalcDefence injection computes the same round(crTotal/2)*1 bonus.
+		return { mod("WardRetentionPerUncappedColdRes_Per2", "BASE", 1) }
 	end,
 	["^%+?(%d+) ward per second with a catalyst$"] = function(num)
 		return { mod("WardPerSecond", "BASE", num, "", 0, 0, { type = "Condition", var = "UsingCatalyst" }) }
@@ -1394,6 +1463,24 @@ local specialModList = {
 	end,
 	["^%+?(%d+)%% of maximum health gained as endurance threshold$"] = function(num)
 		return { mod("LifeAsEnduranceThreshold", "BASE", tonumber(num)) }
+	end,
+	-- Strong Mind (unique): "200% of maximum mana added as stun avoidance".
+	-- @leb-regression-guard: strong-mind-mana-as-stun-avoidance
+	-- This is a tooltipDescription-only property in item data (no numeric mod
+	-- entry), so the datamining extraction dropped it and LEB applied 0. We emit
+	-- a BASE ManaAsStunAvoidance stat that CalcDefence converts against max Mana,
+	-- mirroring the Mana/Life-AsEnduranceThreshold contract above.
+	["^%+?(%d+)%% of maximum mana added as stun avoidance$"] = function(num)
+		return { mod("ManaAsStunAvoidance", "BASE", tonumber(num)) }
+	end,
+	["^%+?(%d+)%% of max mana added as stun avoidance$"] = function(num)
+		return { mod("ManaAsStunAvoidance", "BASE", tonumber(num)) }
+	end,
+	["^%+?(%d+)%% maximum mana added as stun avoidance$"] = function(num)
+		return { mod("ManaAsStunAvoidance", "BASE", tonumber(num)) }
+	end,
+	["^%+?(%d+)%% mana added as stun avoidance$"] = function(num)
+		return { mod("ManaAsStunAvoidance", "BASE", tonumber(num)) }
 	end,
 	-- Sentinel Defiance: "+1 Endurance Threshold Per 2% Uncapped Elemental Resistance"
 	["^%+?(%d+) endurance threshold per 2%% uncapped elemental resistance$"] = function(num)
@@ -2161,7 +2248,15 @@ local knownPerEquipped = {
 	["sword"] = true, ["swords"] = true,
 	["dagger"] = true, ["daggers"] = true,
 	["omen idol"] = true, ["omen idols"] = true,
+	-- @leb-regression-guard: weaver-will-equipped-autocount
+	-- "weaver item(s)" is the legacy/saved-build noun; "weaver's will item(s)"
+	-- is the game-accurate datamining phrasing (Unique_Tooltip_1_327). Both must
+	-- route through perEquippedHandler -> nil (fall through to the generic
+	-- parser) so modTagList "per equipped weaver('s will) item" attaches
+	-- Multiplier:EquippedWeaverItem. Without the "weaver's will item" keys the
+	-- handler returned nsAny -> LEB_NotSupported and the per-item scaling dropped.
 	["weaver item"] = true, ["weaver items"] = true,
+	["weaver's will item"] = true, ["weaver's will items"] = true,
 	["heretical idol"] = true, ["huge idol"] = true, ["ornate idol"] = true,
 	["grand idol"] = true, ["large idol"] = true, ["adorned idol"] = true,
 	["stout idol"] = true, ["humble idol"] = true, ["small idol"] = true,
@@ -2393,8 +2488,35 @@ specialModList["^%+?([%d%.]+)%% (.+) depending on area level(.*)$"] = nsAny
 specialModList["^%+?([%d%.]+) (.+) depending on area level(.*)$"] = nsAny
 
 -- 15. Conditional on recent action ("if you have <action> recently")
-specialModList["^%+?([%d%.]+)%% (.+) if you have (.+) recently$"] = nsAny
-specialModList["^%+?([%d%.]+) (.+) if you have (.+) recently$"] = nsAny
+-- @leb-regression-guard: conditional-recent-action-stat-recognition
+-- These catch-all nsAny patterns previously swallowed lines whose stat name
+-- AND condition phrase are BOTH known to the generic parser, demoting them
+-- to LEB_NotSupported. Example: the corrupted-sealed Julra's Obsession
+-- prefix "+305 Endurance Threshold if you have not been Hit Recently" was
+-- intercepted here before modNameList/modTagList ever ran, producing a
+-- LEB_NotSupported BASE 305 mod that CalcDefence ignored — explaining the
+-- Q9J4w8PE EnduranceThreshold -316 LEB-vs-LET diff. The fix: decline (return
+-- nil) when the stat half resolves through modNameList AND the condition
+-- half re-scans to a modTagList match, so parseMod falls through to the
+-- generic chain that builds an EnduranceThreshold BASE 305 mod tagged with
+-- Condition:BeenHitRecently(neg). For truly unknown stat or condition
+-- phrases the handler still emits nsAny(num), preserving recognition-only
+-- coverage for the long tail.
+-- Spec: spec/System/TestConditionalRecentActionStatRecognition_spec.lua
+local function conditionalRecentDecline(num, _, statName, condName)
+    local statLower = (statName or ""):lower():match("^%s*(.-)%s*$") or ""
+    local condPhrase = ("if you have " .. (condName or "") .. " recently"):lower()
+    if modNameList[statLower] then
+        for pattern in pairs(modTagList) do
+            if condPhrase:find(pattern, 1, false) then
+                return nil
+            end
+        end
+    end
+    return nsAny(num)
+end
+specialModList["^%+?([%d%.]+)%% (.+) if you have (.+) recently$"] = conditionalRecentDecline
+specialModList["^%+?([%d%.]+) (.+) if you have (.+) recently$"] = conditionalRecentDecline
 specialModList["^%+?([%d%.]+)%% (.+) if you have (.+) in the last (%d+) seconds?$"] = nsAny
 
 -- 17. Skill base damage conversion ("X% of <skill> Base Damage converted to <damageType>")
@@ -2817,6 +2939,32 @@ specialModList["^%+?([%d%.]+)%% less (.+) damage taken$"] = damageTakenTypeHandl
 specialModList["^%+?([%d%.]+)%% increased (.+) damage taken$"] = damageTakenTypeHandler
 specialModList["^%+?([%d%.]+)%% more (.+) damage taken$"] = damageTakenTypeHandler
 
+-- @leb-regression-guard:dual-attribute-and-pair
+-- "+N <Attr1> and <Attr2>" (e.g. Jormun's Hunger "+(6-10) Strength and Dexterity")
+-- is a single mod that grants BOTH attributes. The generic parse chain matches the
+-- first attribute via modNameList but leaves "and <Attr2>" as non-empty extra
+-- residue, which PassiveTree.lua / item-mod consumers DROP entirely (`if mod.list
+-- and not mod.extra`). Result: LEB silently lost +N to both attributes whereas
+-- LETools applies both. Verified on BOwJRDdE lv74 Shaman Jormun's Hunger byte=127.5:
+--   LET Str=42 Dex=17 ; LEB Str=33 Dex=8 (-9/-9 = the dual mod value)
+-- Hook here as a specialModList entry that emits two BASE mods, validating both
+-- captures against LongAttributes so unrelated "<num> <X> and <Y>" lines decline.
+local dualAttrLookup = {}
+for i, longName in ipairs(LongAttributes) do
+    dualAttrLookup[longName:lower()] = Attributes[i]
+end
+-- Dispatch convention (see L1529): specialMod(tonumber(cap[1]), unpack(cap)) →
+-- 3 captures unpack to (numericFirst, cap1str, cap2str, cap3str). attr1/attr2
+-- live at args 3/4, not 2/3 — the numeric cap-string occupies arg 2.
+specialModList["^%+?([%d%.]+) (%a+) and (%a+)$"] = function(num, _, attr1, attr2)
+    local m1 = dualAttrLookup[attr1:lower()]
+    local m2 = dualAttrLookup[attr2:lower()]
+    if m1 and m2 and m1 ~= m2 then
+        return { mod(m1, "BASE", num), mod(m2, "BASE", num) }
+    end
+    return nil
+end
+
 -- Compound "... this effect is doubled if ..." clauses (e.g. doubled-at-300-mana).
 -- Intentionally NOT hooked as specialModList — the trailing clause is matched via
 -- modTagList ("this effect is doubled if you have N or more maximum mana") which
@@ -3113,7 +3261,7 @@ local function parseMod(line, order)
 		if not hasModSuffix and (modNameStr:match("Damage$") or modName == "Duration") then
 			modType = "MORE"
 		elseif not hasModSuffix and (modNameStr == "Life" or modNameStr == "Mana" or modNameStr == "Ward"
-				or modNameStr == "ManaRegen" or modNameStr == "LifeRegen") then
+				or modNameStr == "ManaRegen" or modNameStr == "LifeRegen" or modNameStr == "Armour") then
 			-- @leb-regression-guard: regen-pct-shorthand-inc
 			-- LE convention: "+N% Health/Mana/Ward/ManaRegen/LifeRegen" (without "increased")
 			-- is rendered in-game as an INC modifier. Game's authoritative
@@ -3125,6 +3273,18 @@ local function parseMod(line, order)
 			-- "+8 Mana Regen" instead of "8% increased Mana Regen", causing
 			-- ~+15.5/s drift on Qqwv73q2 (LE 16.72 vs LEB 32.20). See spec
 			-- TestModParser_spec.lua "regen-pct-shorthand-inc".
+			--
+			-- @leb-regression-guard: armour-pct-shorthand-inc
+			-- Same convention extends to Armour. LE_datamining
+			-- multi_affixes_v3.json affix 1007 (rendered by ModItem_1_4.json as
+			-- "+(85-90)% Armor" on body_armor slotOverrides, "+(24-30)% Armor"
+			-- default) carries affixProperties[0] property=10 (Armor)
+			-- modifierType=1 (INC). Without "Armour" here, the prefix falls
+			-- through to BASE and is applied as flat +N Armor instead of
+			-- +N% increased Armor, causing 4 builds to under-count by Sum~1596:
+			-- oN2zNnaR Necromancer D=-667, BGzxJrgn Bladedancer D=-436,
+			-- Qqwv6zbR Bladedancer D=-285, QeY79rn2 Necromancer D=-208.
+			-- See spec TestArmourPctShorthandInc_spec.lua.
 			modType = "INC"
 		else
 			modType = "BASE"

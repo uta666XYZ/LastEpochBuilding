@@ -910,6 +910,23 @@ return {
 	{ label = "Increased Minion Armor", haveOutput = "MinionArmourInc", { format = "{0:output:MinionArmourInc}%", { modName = "MinionModifier" }, }, },
 	{ label = "Minion Crit Avoidance", haveOutput = "MinionCritAvoidance", { format = "{0:output:MinionCritAvoidance}%", { modName = "MinionModifier" }, }, },
 	{ label = "Minion Reduced Bonus Crit Damage", haveOutput = "MinionReduceCritExtraDamage", { format = "{0:output:MinionReduceCritExtraDamage}%", { modName = "MinionModifier" }, }, },
+	-- @leb-regression-guard: minion-melee-attack-speed-label
+	-- Label is "Melee Attack Speed", not bare "Attack Speed". Game files
+	-- (dump.cs AT enum: Melee=512, Throwing=1024, Bow=2048; SP AttackSpeed=2)
+	-- have no unqualified attack-speed stat -- both the player and minion
+	-- character sheets only expose Melee/Bow/Throwing Attack Speed + Cast
+	-- Speed. The minion attack-speed surface is the Melee one, so the
+	-- in-game minion tab shows "Increased Minion Melee Attack Speed" plus a
+	-- separate "Increased Minion Cast Speed" row. The backing output
+	-- `MinionAttackSpeed` aggregates the ModFlag.Attack (=Melee|Bow|Throwing)
+	-- bucket; both the generic "Increased Minion Attack Speed" tree text and
+	-- the Melee-tagged affix (whitelist 2/512,8192/0) parse to flags=3584
+	-- (bor(Melee,Attack)=Attack), so this single row covers both. Cast Speed
+	-- (SP=3) is its own property. See REGRESSION_GUARDS.md and
+	-- spec/minion-whitelist/MinionWhitelistCoverage_spec.lua mapping
+	-- 2/512,8192/0 -> MinionAttackSpeed, 3/8192/0 -> MinionCastSpeed.
+	{ label = "Increased Minion Melee Attack Speed", haveOutput = "MinionAttackSpeed", { format = "{0:output:MinionAttackSpeed}%", { modName = "MinionModifier" }, }, },
+	{ label = "Increased Minion Cast Speed", haveOutput = "MinionCastSpeed", { format = "{0:output:MinionCastSpeed}%", { modName = "MinionModifier" }, }, },
 	{ label = "Minion Movement Speed", haveOutput = "MinionMovementSpeed", { format = "{0:output:MinionMovementSpeed}%", { modName = "MinionModifier" }, }, },
 	{ label = "Minion Fire Resistance", haveOutput = "MinionFireResist", { format = "{0:output:MinionFireResist}%", { modName = "MinionModifier" }, }, },
 	{ label = "Minion Cold Resistance", haveOutput = "MinionColdResist", { format = "{0:output:MinionColdResist}%", { modName = "MinionModifier" }, }, },

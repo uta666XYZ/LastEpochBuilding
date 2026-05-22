@@ -747,12 +747,50 @@ function calcs.initEnv(build, mode, override, specEnv)
 		--   premise that converted attributes inherit base-attribute bonuses. They
 		--   do not. Per-attribute correct effects are skill/passive specific and
 		--   handled by their own mod parsers + in-game tooltip text.
-		--   Re-introducing any of these lines (or a similar PerStat:<S4Attr> on
-		--   Armour/Evasion/Mana/Life/Resists) will inflate worst-diff builds like
-		--   Qdz2yXN3 (Necromancer, Brutality=33 → +132% Armour INC, 7x over LE).
-		--   Other S4 attributes (Guile/Apathy/Rampancy/Madness) need their actual
-		--   in-game effects implemented separately via tooltip-driven mod text.
+		--   Re-introducing the inheritance lines (Strength's +4% Armour INC keyed
+		--   on Brutality, Vitality's +6 Life keyed on Rampancy, etc.) will inflate
+		--   worst-diff builds like Qdz2yXN3 (Necromancer, Brutality=33 → +132%
+		--   Armour INC, 7x over LE). The intrinsic AltText effects listed below
+		--   (e.g. -1% Armour per Guile) are the OPPOSITE — they are the S4
+		--   attribute's OWN effect, not inherited from the base attribute.
 		-- do-not-remove
+
+		-- S4 attribute intrinsic AltText effects.
+		-- Per LE_datamining localization/properties_localization.json each S4
+		-- attribute has a `Property_Player_<id>_AltText` describing its built-in
+		-- per-point effect (id 650..654 = Brutality/Madness/Guile/Apathy/Rampancy).
+		-- Only the ones that move a stat tracked by diff_letools MAPPING are wired
+		-- here; the others (Brutality melee damage / Madness crit / Rampancy
+		-- frenzy / Apathy current-health-loss / Brutality global health-leech)
+		-- live in their respective calc paths or remain unmodeled until needed.
+		--
+		-- @leb-regression-guard: s4-guile-per-point-armour-reduction
+		-- Property_Player_652_AltText: "Each point of Guile grants 0.3% increased
+		-- Cooldown Recovery Speed for Movement Skills and 1% Reduced Armor,
+		-- instead of granting dodge rating." The Reduced Armor is a flat INC
+		-- modifier that stacks additively with the player's other Armour INC
+		-- sources and can drive total Armour negative on high-Guile builds.
+		-- Affected at v0.14.6 (3 builds with the Dexterity→Guile sealed prefix
+		-- on an Oracle Amulet, all positive LEB-LET Armour delta):
+		--   QJWMRv53 Bladedancer Guile=207  D=+920 (LET -260, LEB 660)
+		--   Qqwv6zGN Druid       Guile=~?   D=+301 (LET 3881, LEB 4182)
+		--   Qdz2yXN3 Necromancer Guile=~?   D=+253 (LET 1758, LEB 2011)
+		modDB:NewMod("Armour", "INC", -1, "Guile", {type = "PerStat", stat = "Guile"})
+
+		-- @leb-regression-guard: s4-apathy-per-point-mana-regen-inc
+		-- Property_Player_653_AltText: "Each point of Apathy grants 2% increased
+		-- Mana Regeneration and 0.2% of Current Health Lost when you Directly
+		-- Use a Skill, instead of adding Mana." Only the Mana Regen INC moves a
+		-- stat tracked by diff_letools MAPPING; the current-health-loss is
+		-- skill-trigger semantics handled elsewhere (unmodeled until a build
+		-- depends on it). The "instead of adding Mana" half is already covered
+		-- by routing the +2 Mana intrinsic through PerStat:RawAtt (CalcSetup
+		-- Mana base mod), so Apathy correctly contributes no Mana.
+		-- Affected at v0.14.6 (1 build in G3 aggregate with Apathy>0):
+		--   BOwJRDdE Shaman Apathy=64  D=-10.28 (LET 30.48, LEB 20.2;
+		--   8 base * (1 + 153% pre-fix INC) = 20.24; with +128% Apathy INC,
+		--   8 * (1 + 281%) = 30.48 — exact match.)
+		modDB:NewMod("ManaRegen", "INC", 2, "Apathy", {type = "PerStat", stat = "Apathy"})
 
 		-- Initialise enemy modifier database
 		calcs.initModDB(env, enemyDB)
@@ -1056,34 +1094,116 @@ function calcs.initEnv(build, mode, override, specEnv)
 			end
 		end
 
-		-- Idol Altar: two distinct multipliers, NOT the same count.
-		--   * Multiplier:EquippedOmenIdol      = total idols equipped in Omen
-		--                                        Idol slots (= layout occupancy
-		--                                        up to altar capacity). Scales
-		--                                        "+N per Equipped Omen Idol".
-		--   * Multiplier:IdolInRefractedSlot   = idols whose grid footprint
-		--                                        overlaps a Refracted (type-2)
-		--                                        cell on the altar layout.
-		--                                        Scales "+N per Idol in a
-		--                                        Refracted Slot".
-		-- These differ when an idol is placed on a non-refracted cell of the
-		-- altar (e.g. Ocular Altar with 5 Omen Idol capacity but only 4
-		-- refracted corner cells). Conflating them caused #2 Armor over-count
-		-- in ShutFackUp lv85 Spellblade (LEB 423 vs in-game 414, diff = 6 raw
-		-- × 1.40 INC = 9). See Obsidian "ShutFackUp lv85 Spellblade in-game
-		-- stats.md" #2.
+		-- Idol Altar: two distinct multipliers driven by two DIFFERENT game
+		-- lists (IdolsItemContainer.equippedOmenIdols vs
+		-- .equippedIdolsInRefractedSlots, see Obsidian "Refracted Slot vs Omen
+		-- Idol vs Omen Idol Capacity 区別.md").
+		--   * Multiplier:EquippedOmenIdol    = idols whose BASE is an Omen Idol
+		--                                      category (base name contains
+		--                                      "Omen Idol", e.g. "Stout Arcane
+		--                                      Omen Idol"), clamped to the
+		--                                      altar's Omen Idol capacity. Scales
+		--                                      LE IdolAltarPropertyID 18/19
+		--                                      ("+N Haste/Health per Equipped
+		--                                      Omen Idol").
+		--   * Multiplier:IdolInRefractedSlot = idols whose grid footprint
+		--                                      overlaps a Refracted (type-2)
+		--                                      cell on the altar layout
+		--                                      (CountIdolsOnRefractedCells,
+		--                                      uncapped). Scales LE property
+		--                                      22-25 ("+N per Idol in a
+		--                                      Refracted Slot").
+		-- @leb-regression-guard: equipped-omen-idol-counts-category-not-refracted
+		-- EquippedOmenIdol must NOT be the "Omen Idol N" slot occupancy: those
+		-- slots are auto-populated with refracted-OVERLAPPING idols of ANY
+		-- category (ItemsTab:AutoPopulateOmenIdolSlots), which is the refracted
+		-- list, not the Omen Idol category list. Counting them conflated the two
+		-- game lists. Repro: ImPalmBeachPete lv36 Bladedancer has 2 refracted-
+		-- overlapping Weaver/Eterran idols and 0 Omen Idol category idols on a
+		-- Prodigious Lunar Altar carrying "+9 Health per Equipped Omen Idol";
+		-- the old occupancy count gave x2 (+18 Health, LEB 999) while in-game
+		-- applies x0. The refracted family below keeps the overlap count, so
+		-- builds with genuine "+N per Idol in a Refracted Slot" mods (ShutFackUp)
+		-- are unaffected. See REGRESSION_GUARDS.md
+		-- "equipped-omen-idol-counts-category-not-refracted".
 		local equippedOmenIdolCount = 0
-		for slotName, item in pairs(items) do
-			if item and slotName:sub(1, 10) == "Omen Idol " then
-				equippedOmenIdolCount = equippedOmenIdolCount + 1
+		do
+			local seen = {}
+			for slotName, item in pairs(items) do
+				local isIdolSlot = (slotName:sub(1, 5) == "Idol " and slotName ~= "Idol Altar")
+					or slotName:sub(1, 10) == "Omen Idol "
+				if item and isIdolSlot and item.baseName
+					and item.baseName:find("Omen Idol", 1, true) then
+					local key = item.id or item
+					if not seen[key] then
+						seen[key] = true
+						equippedOmenIdolCount = equippedOmenIdolCount + 1
+					end
+				end
+			end
+			-- @leb-regression-guard: equipped-omen-idol-capped-by-capacity
+			-- Clamp to the altar's Omen Idol equip limit (base capacity +
+			-- "+N Maximum Omen Idols Equipped" affix bonus), mirroring the
+			-- in-game cap on how many Omen Idol category idols can be equipped.
+			-- This clamp is preserved from the earlier refracted-display work; the
+			-- category-counting basis above (equipped-omen-idol-counts-category-not-
+			-- refracted) supersedes the old occupancy count but still caps here, so
+			-- both guards describe the merged code. See REGRESSION_GUARDS.md
+			-- "equipped-omen-idol-capped-by-capacity".
+			local altarName = build.itemsTab.activeAltarLayout
+			local altar = altarName and altarName ~= "Default" and build.itemsTab.altarLayouts
+				and build.itemsTab.altarLayouts[altarName]
+			local omenCapacity = ((altar and altar.omenIdolCapacity) or 0)
+				+ (build.itemsTab:GetOmenIdolCapacityBonus() or 0)
+			if omenCapacity > 0 and equippedOmenIdolCount > omenCapacity then
+				equippedOmenIdolCount = omenCapacity
 			end
 		end
 		if equippedOmenIdolCount > 0 then
 			modDB:NewMod("Multiplier:EquippedOmenIdol", "BASE", equippedOmenIdolCount, "Idol Altar")
-			local refractedSlotCount = build.itemsTab:CountIdolsOnRefractedCells()
-			if refractedSlotCount > 0 then
-				modDB:NewMod("Multiplier:IdolInRefractedSlot", "BASE", refractedSlotCount, "Idol Altar")
+		end
+		-- Refracted-slot overlap count is emitted INDEPENDENTLY of the Omen Idol
+		-- category count above: a build can have 0 Omen Idol category idols yet
+		-- several idols overlapping refracted cells (ImPalmBeachPete), and vice
+		-- versa. Nesting this under EquippedOmenIdol > 0 (the old code) would
+		-- drop the refracted bonus for such builds.
+		local refractedSlotCount = build.itemsTab:CountIdolsOnRefractedCells()
+		if refractedSlotCount > 0 then
+			modDB:NewMod("Multiplier:IdolInRefractedSlot", "BASE", refractedSlotCount, "Idol Altar")
+		end
+
+		-- @leb-regression-guard: weaver-will-equipped-autocount
+		-- Auto-count equipped Weaver's Will items to drive
+		-- Multiplier:EquippedWeaverItem (e.g. Communion of the Erased belt:
+		-- "+1 Potion Slot per equipped Weaver Item"). Weaver's Will is a
+		-- per-base property, not a random per-instance roll: exactly 18 uniques
+		-- carry legendaryType==1 in the game data (datamining
+		-- extracted/items/uniques.json -> legendaryType distribution {0:453,1:18};
+		-- IDs 293-301,327,405-409,417-419). We mirror those onto the LEB unique
+		-- data (src/Data/Uniques/uniques*.json "legendaryType": 1), build a
+		-- name-keyed set in Data.setActiveVersion, and count any equipped item
+		-- whose title matches, so 2/3/4+ Weaver's Will items are all handled
+		-- without hardcoding a per-build number. Title match is required because
+		-- the build-local item.uniqueID is NOT the global game uniqueID (LEB
+		-- resolves uniques by name everywhere). The manual ConfigOptions
+		-- "# of Equipped Weaver Items" count remains as an additive override
+		-- (default 0), matching the Omen Idol pattern above.
+		-- Repro: ImPalmBeachPete lv36 Bladedancer has belt(Communion of the
+		-- Erased)+boots(Advent of the Erased) Weaver's Will -> Potion Slots
+		-- 3(implicit)+2 = 5 (in-game/LETools=5).
+		-- Spec: spec/System/TestWeaverWillEquippedCount_spec.lua
+		-- See REGRESSION_GUARDS.md "weaver-will-equipped-autocount".
+		local equippedWeaverItemCount = 0
+		local wwSet = data.weaversWillUniques
+		if wwSet then
+			for slotName, item in pairs(items) do
+				if item and item.title and wwSet[item.title] then
+					equippedWeaverItemCount = equippedWeaverItemCount + 1
+				end
 			end
+		end
+		if equippedWeaverItemCount > 0 then
+			modDB:NewMod("Multiplier:EquippedWeaverItem", "BASE", equippedWeaverItemCount, "Weaver's Will")
 		end
 
 		-- Idol Altar: identify idols whose footprint overlaps a Refracted cell
@@ -1234,18 +1354,44 @@ function calcs.initEnv(build, mode, override, specEnv)
 				if not affixList then return end
 				for _, affix in ipairs(affixList) do
 					if affix and affix.modId and affix.modId ~= "None" then
-						-- Per LE `IsAffectedByAffectOfStandardPrefixesOrSuffixes`
-						-- (dump.cs L151678), Standard prefix/suffix boosts apply
-						-- only to Standard affixes. IdolEnchantment / IdolWeaver
-						-- instead receive `EffectOfIdolEnchantsInRefractedSlots`
-						-- (property 4). Corrupted affixes have no modeled boost.
+						-- @leb-regression-guard: idol-refracted-standard-boost-all-subtypes
+						-- LE Idol Altar property 1/2/3 ("Effect of Prefixes and
+						-- Suffixes / Prefixes / Suffixes for Idols in Refracted
+						-- Slots") boost the ROLLED VALUE of EVERY non-Corrupted
+						-- affix in a refracted slot, regardless of SpecialAffixType
+						-- — including IdolWeaver and IdolEnchantment suffixes/
+						-- prefixes, NOT just Standard. The earlier "Standard only"
+						-- gate (based on a misread of
+						-- `IsAffectedByAffectOfStandardPrefixesOrSuffixes`)
+						-- silently dropped the boost for builds whose refracted
+						-- idols carry Weaver Idol affixes.
+						--   Triangulation: ZombieWarehouse lv72 Necromancer
+						--   (Twisted Altar, property 3 = +10% Effect of Suffixes).
+						--   4 refracted idols all carry IdolWeaver suffixes:
+						--     Chitin  PhysRes 23 → 23×1.10=25.3 → 25 (in-game 77 = +2)
+						--     Many Threads (Idol10) Fire/Cold/Light 5 → 6
+						--     Many Threads (Idol11) Fire/Cold/Light 10 → 11
+						--       Cold 5+10 → 6+11=17 (in-game 54 = +2)
+						--       Light 5+10 → 17 (in-game 47 = +2)
+						--     Repose  Mana 5 → 5×1.10=5.5 → 6 (in-game 203 = +1)
+						--   All match round-half-up, NOT floor.
+						-- Property 4 (Weaver Enchantment, `altarBoostEnchant`) is a
+						-- SEPARATE bucket that additionally boosts IdolEnchantment /
+						-- IdolWeaver affixes, and uses FLOOR (verified BxvJP3g1
+						-- Many Threads raw 6 → 8 at +46%). The rounding direction is
+						-- therefore PROPERTY-determined (1/2/3 round-half-up vs
+						-- 4 floor), not purely subtype-determined.
+						-- Spec: spec/System/TestIdolRefractedStandardBoostAllSubtypes_spec.lua
 						local sat = specialAffixType(affix.modId)
-						local boost = 0
-						if sat == "Standard" then
-							boost = altarCommon + (specificBoost or 0)
-						elseif sat == "IdolEnchantment" or sat == "IdolWeaver" then
-							boost = altarBoostEnchant
-						end
+						-- Property 1/2/3 (common + prefix/suffix specific) — all
+						-- non-Corrupted subtypes, round-half-up.
+						local stdBoost = (sat ~= "Corrupted")
+							and (altarCommon + (specificBoost or 0)) or 0
+						-- Property 4 (weaver enchant) — IdolEnchantment/IdolWeaver
+						-- only, floored.
+						local weaverBoost = (sat == "IdolEnchantment" or sat == "IdolWeaver")
+							and altarBoostEnchant or 0
+						local boost = stdBoost + weaverBoost
 						if boost > 0 then
 							-- @leb-regression-guard: two-phase-floor-post-round-scalar
 							-- Altar refracted-slot boosts are LE's
@@ -1262,17 +1408,19 @@ function calcs.initEnv(build, mode, override, specEnv)
 							--   floored 9 × 1.22 = 10.98 → 10). Matches.
 							affix.postRoundScalar = (affix.postRoundScalar or 1) * (1 + boost)
 							-- @leb-regression-guard: idol-altar-boost-subtype-rounding
-							-- LE applies the post-round boost with **subtype-dependent**
-							-- rounding direction:
-							--   IdolEnchantment (4) → round-half-up
-							--   IdolWeaver     (5) → floor
-							-- Tag the affix so applyRange can branch. Default
-							-- (no tag) keeps round-half-up for back-compat with the
-							-- IdolEnchantment-verified two-phase-floor guard.
-							-- Triangulation: BxvJP3g1 Many Threads (raw 6 → 8 ≠ 9),
-							-- Chitin (raw 12 → 17 ≠ 18) on Altar property 4 +46%.
+							-- LE applies the post-round boost with rounding direction
+							-- determined by WHICH altar property drives it:
+							--   property 4 (Weaver Enchantment, `weaverBoost`) → floor
+							--   property 1/2/3 (Standard common/prefix/suffix,
+							--                   `stdBoost`)                  → round-half-up
+							-- Floor therefore applies only when the boost is purely
+							-- the property-4 weaver-enchant path (verified BxvJP3g1
+							-- Many Threads raw 6 → 8 ≠ 9, Chitin raw 12 → 17 ≠ 18 at
+							-- property 4 +46%). When property 1/2/3 is involved
+							-- (ZombieWarehouse property 3 +10% on IdolWeaver suffixes:
+							-- Mana 5→6, Cold/Light 15→17), round-half-up is correct.
 							-- See "Idol Altar boost rounding 仕様" Obsidian note.
-							if sat == "IdolWeaver" then
+							if weaverBoost > 0 and stdBoost == 0 then
 								affix.postRoundFloor = true
 							end
 							anyAffixBoosted = true
@@ -1350,9 +1498,29 @@ function calcs.initEnv(build, mode, override, specEnv)
 			end
 		end
 
+		-- @leb-regression-guard:pyramidal-altar-cdr-letools-artifact
 		-- Idol Altar: evaluate "no larger idols above smaller ones in the grid" condition.
 		-- For each grid column, walking top -> bottom, idol sizes (cell count) must be
 		-- non-decreasing; no larger idol may sit above a smaller one.
+		--
+		-- The Pyramidal Altar (`Data/Bases/bases_1_4.json` subTypeID 11, all 4
+		-- variants share this implicit) carries
+		-- "10% Increased Cooldown Recovery Speed if there are no larger idols
+		-- above smaller ones in the grid". ModParser parses this as a
+		-- conditional CDR mod gated on `Condition:NoLargerIdolsAboveSmaller`
+		-- (modTagList L700). This block evaluates the actual grid layout per
+		-- LE's rule and sets `modDB.conditions.NoLargerIdolsAboveSmaller`
+		-- when the condition holds. Without this evaluation the +10% never
+		-- applies and 13+ Pyramidal Altar builds show CDR Δ = -10 vs LETools.
+		--
+		-- Classification: **letools-artifact** — LETools planner does NOT
+		-- model this conditional implicit (Qb6WgDEp etc. show LETools
+		-- CDR=0% despite a compliant grid; LE in-game DOES apply the +10%).
+		-- LEB matches the in-game value, so LEB-LET = +10 across the cluster
+		-- is expected divergence, not a LEB bug. Removing this evaluation
+		-- would silently strip +10% CDR from every Pyramidal Altar build
+		-- for the cosmetic gain of matching LET on the CDR row.
+		-- Spec: spec/System/TestPyramidalAltarCDR_spec.lua
 		do
 			local idolDims = {
 				["Minor Idol"] = {1,1}, ["Small Idol"] = {1,1}, ["Humble Idol"] = {2,1},

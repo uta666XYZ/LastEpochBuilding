@@ -746,6 +746,18 @@ function data.setActiveVersion(version)
 	data.itemBaseLists   = vd.itemBaseLists
 	data.itemBaseTypeList = vd.itemBaseTypeList
 	data.uniques         = vd.uniques
+	-- @leb-regression-guard: weaver-will-equipped-autocount
+	-- Build a name-keyed set of Weaver's Will uniques (legendaryType == 1 in
+	-- the game data; exactly 18 uniques carry it). CalcSetup matches equipped
+	-- items by title (LEB resolves uniques by name, not by the build-local
+	-- "Unique ID" field) to auto-count Multiplier:EquippedWeaverItem. See
+	-- REGRESSION_GUARDS.md "weaver-will-equipped-autocount".
+	data.weaversWillUniques = {}
+	for _, u in pairs(vd.uniques or {}) do
+		if type(u) == "table" and u.legendaryType == 1 and u.name then
+			data.weaversWillUniques[u.name] = true
+		end
+	end
 	data.modIdol         = vd.idolMods or {}
 	data.wwMods          = vd.wwMods or {}
 	-- Use the requested version's itemBases/itemMods if non-empty,

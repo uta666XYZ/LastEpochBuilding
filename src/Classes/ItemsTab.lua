@@ -258,13 +258,24 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 	for i = 1, MAX_OMEN_IDOL_SLOTS do
 		local omenSlot = new("ItemSlotControl", {"TOPLEFT",prevOmenSlot,"BOTTOMLEFT"}, 0, 2, self, "Omen Idol " .. i, "Refracted " .. i)
 		local slotNum = i
+		-- @leb-regression-guard: refracted-display-not-omen-capacity
+		-- The "Refracted N" slots display every idol whose footprint overlaps a
+		-- Refracted (grid type=2) cell, NOT just the first `omenIdolCapacity`.
+		-- A Refracted Slot (altar grid cell) and Omen Idol capacity
+		-- (MaximumOmenIdols) are distinct concepts (see dump.cs:
+		-- equippedIdolsInRefractedSlots vs equippedOmenIdols). Gating the
+		-- display by omenIdolCapacity (=1 on every altar base) hid the 2nd/3rd
+		-- refracted idol (e.g. ZombieWarehouse lv72 Necromancer shows 3). The
+		-- EquippedOmenIdol stat is clamped separately in CalcSetup so it stays
+		-- bounded by capacity. Spec: spec/System/TestRefractedSlots_spec.lua.
+		-- See REGRESSION_GUARDS.md "refracted-display-not-omen-capacity".
 		omenSlot.shown = function()
 			if self.activeAltarLayout == "Default" then return false end
 			local layout = IDOL_ALTAR_LAYOUTS[self.activeAltarLayout]
 			if not layout then return false end
-			local capacity = (layout.omenIdolCapacity or 0) + (self:GetOmenIdolCapacityBonus() or 0)
-			if capacity > MAX_OMEN_IDOL_SLOTS then capacity = MAX_OMEN_IDOL_SLOTS end
-			return slotNum <= capacity
+			local count = self:CountIdolsOnRefractedCells()
+			if count > MAX_OMEN_IDOL_SLOTS then count = MAX_OMEN_IDOL_SLOTS end
+			return slotNum <= count
 		end
 		self.slots[omenSlot.slotName] = omenSlot
 		t_insert(self.orderedSlots, omenSlot)
@@ -1213,30 +1224,27 @@ function ItemsTabClass:GetOmenIdolCapacityBonus()
 	return bonus
 end
 
--- Auto-populate the Omen Idol N slots from idols placed on the regular Idol
--- 1-25 grid. ALL idols in the layout count as Omen Idols up to the altar's
--- capacity (= layout.omenIdolCapacity + MaximumOmenIdols sealed-affix bonus).
+-- Auto-populate the Omen Idol N (displayed "Refracted N") slots from idols
+-- placed on the regular Idol 1-25 grid. EVERY idol whose footprint overlaps a
+-- Refracted (grid type=2) cell is placed, up to MAX_OMEN_IDOL_SLOTS — the
+-- display is NOT capped by the altar's Omen Idol capacity.
 -- Called from:
 --   * ImportTab.ImportItemsAndSkills (after items are equipped)
 --   * ItemsTab.SetActiveItemSet (when switching/loading sets so re-opened
 --     builds also show their Refracted slots populated)
--- Idempotent: clears slots above capacity, re-fills slots 1..N each call.
+-- Idempotent: clears slots above the overlap count, re-fills slots 1..N each call.
 -- @leb-regression-guard:refracted-slot-overlap-only
 -- Omen Idol slots represent idols whose footprint overlaps a Refracted (grid
 -- type=2) cell on the active Idol Altar. Idols that do NOT touch any refracted
--- cell must NOT appear in Omen Idol slots, even if Omen capacity remains.
--- If overlapping idols exceed capacity, only the lowest-numbered idols fit
--- (deterministic Idol-slot-number order); the rest are dropped.
--- See REGRESSION_GUARDS.md `refracted-slot-overlap-only`.
+-- cell must NOT appear in Omen Idol slots. The fill is bounded only by
+-- MAX_OMEN_IDOL_SLOTS, NOT by omenIdolCapacity — a Refracted Slot and the Omen
+-- Idol capacity (MaximumOmenIdols) are distinct concepts (see dump.cs). The
+-- EquippedOmenIdol stat is clamped to capacity in CalcSetup, decoupled from how
+-- many idols this display populates. See REGRESSION_GUARDS.md
+-- `refracted-slot-overlap-only` and `refracted-display-not-omen-capacity`.
 function ItemsTabClass:AutoPopulateOmenIdolSlots()
 	local altarName = self.activeAltarLayout
 	local altar = altarName and altarName ~= "Default" and self.altarLayouts and self.altarLayouts[altarName]
-	-- Determine capacity (0 when no altar so we still clear stale entries).
-	local capacity = 0
-	if altar and altar.grid then
-		capacity = (altar.omenIdolCapacity or 0) + (self:GetOmenIdolCapacityBonus() or 0)
-		if capacity > MAX_OMEN_IDOL_SLOTS then capacity = MAX_OMEN_IDOL_SLOTS end
-	end
 	-- Collect distinct idols from the 5x5 layout that overlap a refracted cell,
 	-- ordered by Idol slot number so Omen Idol 1..N is filled deterministically.
 	local layoutIdols = {}
@@ -1270,10 +1278,12 @@ function ItemsTabClass:AutoPopulateOmenIdolSlots()
 		end
 		table.sort(layoutIdols, function(a, b) return a.slotNum < b.slotNum end)
 	end
+	-- Fill every refracted-overlapping idol (bounded only by MAX_OMEN_IDOL_SLOTS),
+	-- clearing slots beyond the overlap count. NOT capped by omenIdolCapacity.
 	for i = 1, MAX_OMEN_IDOL_SLOTS do
 		local omenSlot = self.slots["Omen Idol " .. i]
 		if omenSlot then
-			local fi = i <= capacity and layoutIdols[i] or nil
+			local fi = layoutIdols[i]
 			omenSlot:SetSelItemId(fi and fi.itemId or 0)
 		end
 	end
@@ -1290,6 +1300,15 @@ end
 --
 -- Returns 0 when no altar is active or its layout has no grid (i.e. Default).
 -- See Obsidian "ShutFackUp lv85 Spellblade in-game stats.md" #2.
+--
+-- @leb-regression-guard: refracted-count-independent-of-omen-capacity
+-- This count is NOT capped by omenIdolCapacity / MaximumOmenIdols. A Refracted
+-- Slot (altar-grid cell) and an Omen Idol slot (capped idol category) are
+-- distinct concepts: every distinct idol overlapping a refracted cell counts,
+-- even when more idols overlap than the altar's Omen Idol capacity. The cap
+-- applies only to AutoPopulateOmenIdolSlots / the "Refracted N" dropdown, NOT
+-- here. Spec: spec/System/TestCountIdolsOnRefractedCells_spec.lua. See
+-- REGRESSION_GUARDS.md "refracted-count-independent-of-omen-capacity".
 function ItemsTabClass:CountIdolsOnRefractedCells()
 	local altarName = self.activeAltarLayout
 	if not altarName or altarName == "Default" then return 0 end

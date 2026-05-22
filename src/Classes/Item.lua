@@ -126,6 +126,30 @@ local function computeAffixDerivedLevelReq(item)
 	if item.rarity == "UNIQUE" or item.rarity == "LEGENDARY" or item.rarity == "SET" then
 		return nil
 	end
+	-- @leb-regression-guard: idol-family-no-affix-derived-levelreq
+	-- The idol system (Idol Altar + idol bases) is NOT level-gated by affix
+	-- tiers in-game: an idol/altar with high-tier affixes stays usable from
+	-- the moment it can be socketed, displaying its base req.level (0 for most
+	-- idol/altar bases) regardless of which affix tiers it carries. Pattern A
+	-- (CalculateLevelRequirementAfterShard) is calibrated for equippable gear
+	-- (rings/armour/weapons), not the idol family. Without this gate an EXALTED
+	-- altar with T6/T3/T2 affixes computes req.level=44, and the CalcSetup
+	-- LevelReq filter then drops the whole altar on any sub-44 character —
+	-- removing its "+N <stat> per Idol in a Refracted Slot" / "per Equipped
+	-- Omen Idol" affixes and the +N Maximum Omen Idols capacity.
+	-- Ground truth: ImPalmBeachPete lv36 Bladedancer — Prodigious Lunar Altar
+	--   (EXALTED, base req 0, affix-derived 44). In-game the altar is active at
+	--   lv36 (Mana includes its +3/refracted x2 = +6, and 2 Omen Idols are
+	--   equipped, requiring the altar's +3 Maximum Omen Idols). Pre-fix LEB
+	--   computed req.level=44, filtered the altar, and showed Mana 177 vs
+	--   in-game 183. See "ImPalmBeachPete lv36 Bladedancer in-game stats" note.
+	-- Spec: spec/System/TestItemParse_spec.lua "Idol Altar: affix tiers do not
+	--   inflate req.level". See REGRESSION_GUARDS.md
+	--   "idol-family-no-affix-derived-levelreq".
+	if item.base and item.base.type
+		and (item.base.type == "Idol Altar" or item.base.type:sub(-5) == " Idol") then
+		return nil
+	end
 	local sumInner, maxT, hasContrib = 0, -1, false
 	local affixesTable = item.affixes
 	for _, list in ipairs({ item.prefixes or {}, item.suffixes or {} }) do
@@ -663,6 +687,33 @@ function ItemClass:ParseRaw(raw, rarity, highQuality)
 				end
 				modLine.implicit = modLine.implicit or (not modLine.crafted and #self.implicitModLines < implicitLines)
 				modLine.range = modLine.range or main.defaultItemAffixQuality
+
+				-- @leb-regression-guard: broken-negative-inc-implicit-text
+				-- LE datamining emits some negative-INC implicits as a literal raw
+				-- string like "+-0.6 Armor" (Deadstar Amulet implicit[3]:
+				-- property=10 type=1 value=-0.6 maxValue=-0.42). The bases JSON
+				-- stores the parametrized form "{rounding:Integer}(42-60)% reduced
+				-- Armor", but old saved XML build snapshots cache the broken
+				-- literal text (with a separate <ModRange/> for the roll). On
+				-- reload, that literal text bypasses applyRange (no "(N-M)" tpl)
+				-- and parses as a flat BASE -0.6 Armor — effectively dropping the
+				-- intended ~-50% INC. Substitute the base implicit template here so
+				-- applyRange + ModParser see the percent-reduced form. Affects:
+				-- Deadstar Amulet, Prophetic Homonculus. See spec
+				-- TestBrokenNegativeIncImplicit_spec.lua.
+				if modLine.implicit and self.base and self.base.implicits then
+					local _, _, brokenStat = line:find("^%+%-[%d%.]+%s+(.+)$")
+					if brokenStat then
+						for _, baseImplLine in ipairs(self.base.implicits) do
+							local stripped = baseImplLine:gsub("{[%a]*:?[^}]*}", "")
+							if stripped:match("%(%d+%-%d+%)%%%s+reduced%s+" .. brokenStat:gsub("(%W)", "%%%1") .. "$") then
+								line = baseImplLine
+								break
+							end
+						end
+					end
+				end
+
 				local rangedLine = itemLib.applyRange(line, modLine.range, modLine.valueScalar, modLine.rounding, modLine.postRoundScalar, modLine.postRoundFloor)
 
 				-- Tooltip-glue split: LETools occasionally exports two adjacent legendary-slammed
@@ -859,6 +910,7 @@ function ItemClass:ParseRaw(raw, rarity, highQuality)
 			end
 		end
 	end
+	-- @leb-regression-guard: set-item-req-level-override-with-native-fallback
 	-- For items already saved as SET in raw text (XML stores Rarity: SET +
 	-- LevelReq from base type), override LevelReq with the set entry's req.level
 	-- when available. Set items use a different (typically lower) level
@@ -866,14 +918,31 @@ function ItemClass:ParseRaw(raw, rarity, highQuality)
 	-- though its Ironglass Shield base = lvl 72. Without this override the
 	-- LevelReq filter in CalcSetup excludes equipped set items the character
 	-- can actually use, dropping their stats (Block Chance, etc.).
+	--
+	-- Native sets (12 entries in set_1_4.json with native=true) store
+	-- req.level=0 meaning "inherit base type's req.level". Without the native
+	-- fallback below, a stale stored LevelReq (e.g. LETools applies affix-tier
+	-- inflation to SET items, baking LevelReq=68 onto a Silver Grail base
+	-- whose real req=15 — Qqwv73q2 lv62 Warlock Relic anchor) survives and
+	-- the CalcSetup LevelReq filter excludes the item, dropping all 4 of its
+	-- affix mods (Mana +94, Fire/Necr/Void Res +16 each). SET items also skip
+	-- computeAffixDerivedLevelReq (L126), so affix tiers never inflate them
+	-- inside LEB — game-faithful behavior per the Font of the Erased anchor.
 	if self.rarity == "SET" and self.title then
 		local setData = loadItemSetData()
 		if setData then
 			for _, e in pairs(setData) do
-				if type(e) == "table" and e.set and e.req and e.req.level and e.req.level > 0
+				if type(e) == "table" and e.set
 				   and (e.name == self.title
 				        or (self.title:sub(-9) == " Reforged" and e.name == self.title:sub(1, -10))) then
-					self.requirements.level = e.req.level
+					if e.req and e.req.level and e.req.level > 0 then
+						self.requirements.level = e.req.level
+					elseif self.base and self.base.req and self.base.req.level then
+						-- Native set with req.level=0 inherits base req. Override
+						-- any stale stored LevelReq so the filter in CalcSetup
+						-- reflects in-game truth.
+						self.requirements.level = self.base.req.level
+					end
 					if not self.setInfo then
 						self.setInfo = {
 							setId = e.set.setId,

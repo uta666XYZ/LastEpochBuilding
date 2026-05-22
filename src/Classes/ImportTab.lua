@@ -872,6 +872,43 @@ function ImportTabClass:DownloadLEToolsProfileBuild(url)
     end)
 end
 
+-- LETools /profile/{account}/character/{name} URLs have no usable planner JSON
+-- (profile_data tokens rotate per page-load and are derived in obfuscated JS),
+-- so we resolve account+character via Maxroll's character API which returns
+-- the offline-save JSON format already handled by ReadJsonSaveData.
+function ImportTabClass:DownloadLEToolsProfileBuild(url)
+    self.importCodeFetching = true
+    self.importCodeDetail = colorCodes.NORMAL .. "Resolving via Maxroll account API..."
+
+    local accountName, charName = url:match("lastepochtools%.com/profile/([^/]+)/character/([^/?#]+)")
+    if not accountName or not charName then
+        self.importCodeFetching = false
+        self.importCodeDetail = colorCodes.NEGATIVE .. "Could not parse LETools profile URL"
+        return
+    end
+
+    local apiURL = "https://planners.maxroll.gg/lastepoch/characters/" .. accountName .. "/" .. charName
+    launch:DownloadPage(apiURL, function(response, errMsg)
+        self.importCodeFetching = false
+        if errMsg == "Response code: 404" then
+            self.importCodeDetail = colorCodes.NEGATIVE .. "Character not found on Maxroll. Make sure the Maxroll profile is public, or paste a /planner/ URL instead."
+            return
+        elseif errMsg then
+            self.importCodeDetail = colorCodes.NEGATIVE .. "Download failed: " .. errMsg:gsub("\n", " ")
+            return
+        end
+        local ok, charOrErr = pcall(function() return self:ReadJsonSaveData(response.body) end)
+        if not ok then
+            ConPrintf("[IMPORT-ERR] Failed to parse character data: %s", tostring(charOrErr))
+            self.importCodeDetail = colorCodes.NEGATIVE .. "Failed to parse character data."
+            return
+        end
+        self:ImportPassiveTreeAndJewels(charOrErr)
+        self:ImportItemsAndSkills(charOrErr)
+        self.importCodeDetail = colorCodes.POSITIVE .. "Build imported via Maxroll (" .. accountName .. "/" .. charName .. ")."
+    end)
+end
+
 function ImportTabClass:DownloadLEToolsPlannerBuild(url)
     self.importCodeFetching = true
     self.importCodeDetail = colorCodes.NORMAL .. "Downloading from lastepochtools.com..."
@@ -979,6 +1016,38 @@ function ImportTabClass:DetectLEToolsQuestRewards(data)
 	for _, qid in ipairs(cq) do
 		if qid == 124 then hasApophis = true end
 		if qid == 151 then hasEterra = true end
+	end
+	return hasApophis, hasEterra
+end
+
+-- @leb-regression-guard: quest-reward-requires-completion
+-- Save-file twin of DetectLEToolsQuestRewards. The offline save's
+-- `savedQuests` is a list of quest PROGRESS records, not a list of completed
+-- quests. A questID merely PRESENT means the player started it; the +1-to-all-
+-- attributes reward (Apophis and Majasa = 124, Temple of Eterra = 151) is only
+-- granted once the quest reaches its terminal step (questStepID).
+--
+-- Empirical discriminator (triangulated against three live offline saves):
+--   * ImPalmBeachPete  (lv48): quest 124 @ questStepID=652 (in-progress, 6
+--     objectives), quest 151 absent  -> in-game grants NEITHER reward
+--     (attributes 16/9/13/9/13). Presence-based detection wrongly added +1 to
+--     all five, inflating Health 992->998 and Mana 195->197.
+--   * ShutFackUp (lv85) & ZombieWarehouse (lv72): quest 124 @ terminal
+--     questStepID=656 (10 objectives) AND quest 151 @ terminal
+--     questStepID=830 (12 objectives) -> in-game grants +1 from each (+2),
+--     which LEB must reproduce.
+-- The per-step `state` field is always 0 across every observed save, so it
+-- cannot be used as the completion signal; the terminal questStepID can.
+-- See spec/System/TestSaveQuestRewardCompletion_spec.lua and
+-- REGRESSION_GUARDS.md "quest-reward-requires-completion".
+ImportTabClass.QUEST_COMPLETE_STEP = { [124] = 656, [151] = 830 }
+function ImportTabClass:DetectSaveQuestRewards(savedQuests)
+	local hasApophis, hasEterra = false, false
+	for _, q in pairs(savedQuests or {}) do
+		if self.QUEST_COMPLETE_STEP[q.questID] == q.questStepID then
+			if q.questID == 124 then hasApophis = true
+			elseif q.questID == 151 then hasEterra = true end
+		end
 	end
 	return hasApophis, hasEterra
 end
@@ -1613,13 +1682,11 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
     }
     char.cycle = saveContent["cycle"] or 0
     -- Quest reward flags from savedQuests (questID 124 = Apophis and Majasa,
-    -- 151 = Temple of Eterra; both grant +1 to all attributes). A questID
-    -- present in savedQuests means the player has progressed/completed it.
-    char.questFlags = { apophisMajasa = false, templeOfEterra = false }
-    for _, q in pairs(saveContent["savedQuests"] or {}) do
-        if q.questID == 124 then char.questFlags.apophisMajasa = true
-        elseif q.questID == 151 then char.questFlags.templeOfEterra = true end
-    end
+    -- 151 = Temple of Eterra; both grant +1 to all attributes on COMPLETION).
+    -- Completion (not mere presence) is required; see DetectSaveQuestRewards
+    -- and @leb-regression-guard:quest-reward-requires-completion.
+    local apophis, eterra = self:DetectSaveQuestRewards(saveContent["savedQuests"])
+    char.questFlags = { apophisMajasa = apophis, templeOfEterra = eterra }
     for passiveIdx, passive in pairs(saveContent["savedCharacterTree"]["nodeIDs"]) do
         local nbPoints = saveContent["savedCharacterTree"]["nodePoints"][passiveIdx]
         table.insert(char["hashes"], className .. "-" .. passive .. "#" .. nbPoints)

@@ -39,11 +39,13 @@ describe("TestMinionMovementSpeedVshdmStrict", function()
         assert.are.equals("14% reduced Minion Movement Speed", result)
     end)
 
-    it("player-scope '% increased Movement Speed' is NOT affected", function()
-        -- The strict branch matches only the "Minion Movement Speed" substring.
-        -- Player Movement Speed continues to use the legacy round-half-up path:
-        --   (15-18) byte=63 legacy = floor((15 + 63/255 × 3) + 0.5) = 16
+    it("player-scope '% increased Movement Speed' uses its own strict branch", function()
+        -- The minion branch matches only the "Minion Movement Speed" substring,
+        -- so it does NOT catch the player line. The player line is instead
+        -- routed through the sibling movement-speed-vshdm-strict branch (also
+        -- vshDm), locked by TestMovementSpeedVshdmStrict_spec.lua:
+        --   (15-18) byte=63 strict = floor((18+1-15) × 63/255 + 15) = 15
         local result = itemLib.applyRange("(15-18)% increased Movement Speed", 63, 1.0)
-        assert.are.equals("16% increased Movement Speed", result)
+        assert.are.equals("15% increased Movement Speed", result)
     end)
 end)

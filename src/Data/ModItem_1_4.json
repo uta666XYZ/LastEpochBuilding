@@ -19496,7 +19496,7 @@
 		"affixName": "Damage Reflected to Attackers",
 		"modName": "Thorny",
 		"affix": "Thorny",
-		"1": "{rounding:Integer}(10-15) Damage Reflected to Attackers",
+		"1": "{rounding:Integer}(12-18) Damage Reflected to Attackers",
 		"level": 4,
 		"statOrderKey": 95,
 		"statOrder": [
@@ -19519,7 +19519,7 @@
 		"affixName": "Damage Reflected to Attackers",
 		"modName": "Thorny",
 		"affix": "Thorny",
-		"1": "{rounding:Integer}(20-30) Damage Reflected to Attackers",
+		"1": "{rounding:Integer}(23-35) Damage Reflected to Attackers",
 		"level": 4,
 		"statOrderKey": 95,
 		"statOrder": [
@@ -19542,7 +19542,7 @@
 		"affixName": "Damage Reflected to Attackers",
 		"modName": "Thorny",
 		"affix": "Thorny",
-		"1": "{rounding:Integer}(40-55) Damage Reflected to Attackers",
+		"1": "{rounding:Integer}(47-64) Damage Reflected to Attackers",
 		"level": 4,
 		"statOrderKey": 95,
 		"statOrder": [
@@ -19565,7 +19565,7 @@
 		"affixName": "Damage Reflected to Attackers",
 		"modName": "Thorny",
 		"affix": "Thorny",
-		"1": "{rounding:Integer}(60-80) Damage Reflected to Attackers",
+		"1": "{rounding:Integer}(70-94) Damage Reflected to Attackers",
 		"level": 4,
 		"statOrderKey": 95,
 		"statOrder": [
@@ -19588,7 +19588,7 @@
 		"affixName": "Damage Reflected to Attackers",
 		"modName": "Thorny",
 		"affix": "Thorny",
-		"1": "{rounding:Integer}(90-150) Damage Reflected to Attackers",
+		"1": "{rounding:Integer}(105-176) Damage Reflected to Attackers",
 		"level": 4,
 		"statOrderKey": 95,
 		"statOrder": [
@@ -19611,7 +19611,7 @@
 		"affixName": "Damage Reflected to Attackers",
 		"modName": "Thorny",
 		"affix": "Thorny",
-		"1": "{rounding:Integer}(250-300) Damage Reflected to Attackers",
+		"1": "{rounding:Integer}(292-351) Damage Reflected to Attackers",
 		"level": 4,
 		"statOrderKey": 95,
 		"statOrder": [
@@ -19634,7 +19634,7 @@
 		"affixName": "Damage Reflected to Attackers",
 		"modName": "Thorny",
 		"affix": "Thorny",
-		"1": "{rounding:Integer}(301-400) Damage Reflected to Attackers",
+		"1": "{rounding:Integer}(352-468) Damage Reflected to Attackers",
 		"level": 4,
 		"statOrderKey": 95,
 		"statOrder": [
@@ -19657,7 +19657,7 @@
 		"affixName": "Damage Reflected to Attackers",
 		"modName": "Thorny",
 		"affix": "Thorny",
-		"1": "{rounding:Integer}(640-800) Damage Reflected to Attackers",
+		"1": "{rounding:Integer}(749-936) Damage Reflected to Attackers",
 		"level": 4,
 		"statOrderKey": 95,
 		"statOrder": [
@@ -19680,7 +19680,7 @@
 		"affixName": "Damage Reflected",
 		"modName": "Reflective",
 		"affix": "Reflective",
-		"1": "(5-10)% of Damage Reflected",
+		"1": "(6-12)% of Damage Reflected",
 		"level": 23,
 		"statOrderKey": 96,
 		"statOrder": [
@@ -19703,7 +19703,7 @@
 		"affixName": "Damage Reflected",
 		"modName": "Reflective",
 		"affix": "Reflective",
-		"1": "(11-19)% of Damage Reflected",
+		"1": "(13-22)% of Damage Reflected",
 		"level": 23,
 		"statOrderKey": 96,
 		"statOrder": [
@@ -19726,7 +19726,7 @@
 		"affixName": "Damage Reflected",
 		"modName": "Reflective",
 		"affix": "Reflective",
-		"1": "(20-28)% of Damage Reflected",
+		"1": "(23-33)% of Damage Reflected",
 		"level": 23,
 		"statOrderKey": 96,
 		"statOrder": [
@@ -19749,7 +19749,7 @@
 		"affixName": "Damage Reflected",
 		"modName": "Reflective",
 		"affix": "Reflective",
-		"1": "(29-38)% of Damage Reflected",
+		"1": "(34-44)% of Damage Reflected",
 		"level": 23,
 		"statOrderKey": 96,
 		"statOrder": [
@@ -19772,7 +19772,7 @@
 		"affixName": "Damage Reflected",
 		"modName": "Reflective",
 		"affix": "Reflective",
-		"1": "(39-50)% of Damage Reflected",
+		"1": "(46-58)% of Damage Reflected",
 		"level": 23,
 		"statOrderKey": 96,
 		"statOrder": [
@@ -19795,7 +19795,7 @@
 		"affixName": "Damage Reflected",
 		"modName": "Reflective",
 		"affix": "Reflective",
-		"1": "(70-80)% of Damage Reflected",
+		"1": "(82-94)% of Damage Reflected",
 		"level": 23,
 		"statOrderKey": 96,
 		"statOrder": [
@@ -19818,7 +19818,7 @@
 		"affixName": "Damage Reflected",
 		"modName": "Reflective",
 		"affix": "Reflective",
-		"1": "(81-100)% of Damage Reflected",
+		"1": "(95-117)% of Damage Reflected",
 		"level": 23,
 		"statOrderKey": 96,
 		"statOrder": [
@@ -19841,7 +19841,7 @@
 		"affixName": "Damage Reflected",
 		"modName": "Reflective",
 		"affix": "Reflective",
-		"1": "(160-200)% of Damage Reflected",
+		"1": "(187-234)% of Damage Reflected",
 		"level": 23,
 		"statOrderKey": 96,
 		"statOrder": [
@@ -109894,7 +109894,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(18-17)% Effect of Frenzy on You",
+		"2": "+(-18--17)% Effect of Frenzy on You",
 		"canRollOn": [
 			22
 		],
@@ -109912,7 +109912,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(16-15)% Effect of Frenzy on You",
+		"2": "+(-16--15)% Effect of Frenzy on You",
 		"canRollOn": [
 			22
 		],
@@ -109930,7 +109930,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(14-13)% Effect of Frenzy on You",
+		"2": "+(-14--13)% Effect of Frenzy on You",
 		"canRollOn": [
 			22
 		],
@@ -109948,7 +109948,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(12-11)% Effect of Frenzy on You",
+		"2": "+(-12--11)% Effect of Frenzy on You",
 		"canRollOn": [
 			22
 		],
@@ -109966,7 +109966,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(10-9)% Effect of Frenzy on You",
+		"2": "+(-10--9)% Effect of Frenzy on You",
 		"canRollOn": [
 			22
 		],
@@ -109984,7 +109984,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(8-7)% Effect of Frenzy on You",
+		"2": "+(-8--7)% Effect of Frenzy on You",
 		"canRollOn": [
 			22
 		],
@@ -110002,7 +110002,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(6-5)% Effect of Frenzy on You",
+		"2": "+(-6--5)% Effect of Frenzy on You",
 		"canRollOn": [
 			22
 		],
@@ -110020,7 +110020,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(3-2)% Effect of Frenzy on You",
+		"2": "+(-3--2)% Effect of Frenzy on You",
 		"canRollOn": [
 			22
 		],
@@ -116870,7 +116870,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(25-23)% Effect of Haste on You",
+		"2": "+(-25--23)% Effect of Haste on You",
 		"canRollOn": [
 			2,
 			3
@@ -116889,7 +116889,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(22-20)% Effect of Haste on You",
+		"2": "+(-22--20)% Effect of Haste on You",
 		"canRollOn": [
 			2,
 			3
@@ -116908,7 +116908,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(19-17)% Effect of Haste on You",
+		"2": "+(-19--17)% Effect of Haste on You",
 		"canRollOn": [
 			2,
 			3
@@ -116927,7 +116927,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(16-14)% Effect of Haste on You",
+		"2": "+(-16--14)% Effect of Haste on You",
 		"canRollOn": [
 			2,
 			3
@@ -116946,7 +116946,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(13-11)% Effect of Haste on You",
+		"2": "+(-13--11)% Effect of Haste on You",
 		"canRollOn": [
 			2,
 			3
@@ -116965,7 +116965,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(10-8)% Effect of Haste on You",
+		"2": "+(-10--8)% Effect of Haste on You",
 		"canRollOn": [
 			2,
 			3
@@ -116984,7 +116984,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(7-6)% Effect of Haste on You",
+		"2": "+(-7--6)% Effect of Haste on You",
 		"canRollOn": [
 			2,
 			3
@@ -117003,7 +117003,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(4-3)% Effect of Haste on You",
+		"2": "+(-4--3)% Effect of Haste on You",
 		"canRollOn": [
 			2,
 			3
@@ -117598,7 +117598,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+7% Fire Resistance",
+		"2": "-7% Fire Resistance",
 		"canRollOn": [
 			4,
 			3
@@ -117617,7 +117617,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+6% Fire Resistance",
+		"2": "-6% Fire Resistance",
 		"canRollOn": [
 			4,
 			3
@@ -117636,7 +117636,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+5% Fire Resistance",
+		"2": "-5% Fire Resistance",
 		"canRollOn": [
 			4,
 			3
@@ -117655,7 +117655,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+4% Fire Resistance",
+		"2": "-4% Fire Resistance",
 		"canRollOn": [
 			4,
 			3
@@ -117674,7 +117674,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+3% Fire Resistance",
+		"2": "-3% Fire Resistance",
 		"canRollOn": [
 			4,
 			3
@@ -117693,7 +117693,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+2% Fire Resistance",
+		"2": "-2% Fire Resistance",
 		"canRollOn": [
 			4,
 			3
@@ -117712,7 +117712,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+1% Fire Resistance",
+		"2": "-1% Fire Resistance",
 		"canRollOn": [
 			4,
 			3

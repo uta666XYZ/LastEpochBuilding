@@ -308,6 +308,25 @@ function calcs.defence(env, actor)
 		end
 	end
 
+	-- Frostbite Shackles (unique boots): "+1% Ward Retention per 2% uncapped Cold Resistance"
+	-- @leb-regression-guard:frostbite-shackles-wr-per-uncapped-cold-res
+	-- Inject AFTER output.ColdResistTotal is computed (resist loop above, L250).
+	-- output.WardRetention was finalized by CalcPerform L1388 BEFORE calcs.defence
+	-- runs at L1396, so a PerStat tag on WardRetention referencing output.ColdResist
+	-- returns 0 (output.ColdResist isn't set yet). We mutate output.WardRetention
+	-- here, which is then consumed by both the stable-ward formula (L509) and the
+	-- decay display (L563). round(crTotal/2)*num matches LE/LETools display
+	-- (verified QWXjqDq9 Spellblade: CR 363% → round(181.5)*1 = 182, LET shows 344
+	-- vs LEB base 162 + 182 = 344). Spec: spec/System/TestFrostbiteShacklesWRPerUncappedColdRes_spec.lua
+	local wrPerUncappedCR_Per2 = modDB:Sum("BASE", nil, "WardRetentionPerUncappedColdRes_Per2")
+	if wrPerUncappedCR_Per2 > 0 then
+		local crTotal = output.ColdResistTotal or 0
+		local bonusWR = round(crTotal / 2) * wrPerUncappedCR_Per2
+		if bonusWR > 0 then
+			output.WardRetention = (output.WardRetention or 0) + bonusWR
+		end
+	end
+
 	-- Block
 	-- @leb-regression-guard: game-faithful-block-no-shield-gate
 	-- LE itself has NO automatic shield gate on Block Chance / Effectiveness /
@@ -531,6 +550,18 @@ function calcs.defence(env, actor)
 				breakdown.slot("Global", nil, nil, evasionBase, nil, "Evasion", "ArmourAndEvasion", "Defences")
 			end
 		end
+		-- @leb-regression-guard:armour-floor-at-zero-letools-artifact
+		-- Floor Armour at 0 to match the in-game display and DR formula contract.
+		-- LE's PlayerStats.armour is a signed float, but every consumer
+		-- (display, DR = armour / (armour + flatThreshold)) treats negative
+		-- as zero. LETools planner skips this floor and reports the raw
+		-- signed sum, so builds that stack large %-reduced-Armour sources
+		-- (e.g. Bladedancer's Guile at 212%) show negative LETools Armor
+		-- (QJWMRv53: 434 base * (1 + 0.52 - 2.12) = -260) while LE in-game
+		-- and LEB show 0. Removing the floor here would inject negative
+		-- Armour into CalcDamage's armourReduct formula and break PhysDR
+		-- on every Guile-stacking build.
+		-- Spec: spec/System/TestArmourFloorAtZero_spec.lua
 		output.Armour = m_max(round(armour), 0)
 		output.ArmourDefense = (modDB:Max(nil, "ArmourDefense") or 0) / 100
 		output.RawArmourDefense = output.ArmourDefense > 0 and ((1 + output.ArmourDefense) * 100) or nil
@@ -1500,6 +1531,15 @@ function calcs.buildDefenceEstimations(env, actor)
 		-- contributions — confirmed Δ=+250 on BxvJP3g1 lv99 Necromancer.
 		-- See spec/System/TestStunAvoidanceBaseAndTree_spec.lua.
 		local flatStunAvoidance = modDB:Sum("BASE", nil, "StunAvoidance")
+		-- @leb-regression-guard: strong-mind-mana-as-stun-avoidance
+		-- Strong Mind (unique): "X% of maximum mana added as stun avoidance".
+		-- ModParser emits this conversion as a BASE ManaAsStunAvoidance stat;
+		-- fold it into the flat pool against max Mana so it feeds both the
+		-- StunAvoidance display stat and the stun-threshold pool below.
+		local manaAsStunAvoidance = modDB:Sum("BASE", nil, "ManaAsStunAvoidance")
+		if manaAsStunAvoidance ~= 0 then
+			flatStunAvoidance = flatStunAvoidance + (output.Mana or 0) * manaAsStunAvoidance / 100
+		end
 		output.StunAvoidance = m_max(round(flatStunAvoidance), 0)
 		local wardForStun = output.Ward or 0
 		if modDB:Flag(nil, "StunThresholdBasedOnManaInsteadOfLife") then
@@ -1636,7 +1676,15 @@ function calcs.buildDefenceEstimations(env, actor)
 		etBase = etBase + (output.Life or 0) * lifeAsEndThresh / 100
 	end
 	local etInc = m_max(calcLib.mod(modDB, nil, "EnduranceThreshold"), 0)
-	output.EnduranceThreshold = m_floor(etBase * etInc)
+	-- @leb-regression-guard:endurance-threshold-round-not-floor
+	-- The in-game character sheet ROUNDS the Endurance Threshold total, it does
+	-- not floor it. Triangulated on MyLittleStJames lv79 Paladin (save BETA_13):
+	--   etBase = 0.20×Life(1318)=263.6 + 180 (si4lgl-15) + 157 (Sentinel-71) = 600.6
+	--   floor(600.6) = 600  (old, off by 1)
+	--   round(600.6) = 601  = in-game character sheet
+	-- Sibling WardDecayThreshold (a few lines below) already uses round-half-up
+	-- (`m_floor(x + 0.5)`); the floor here was an internal inconsistency.
+	output.EnduranceThreshold = m_floor(etBase * etInc + 0.5)
 	output.EnduranceThresholdValue = output.EnduranceThreshold
 	-- "X% Endurance Threshold added as Ward Decay Threshold" (gear/idol affix).
 	-- Recompute WardDecayThreshold here, AFTER EnduranceThreshold is finalized
@@ -1792,12 +1840,22 @@ function calcs.buildDefenceEstimations(env, actor)
 		output.MinionPowerFromCharLevel = fromLevel + modDB:Sum("BASE", nil, "MinionPowerFromCharLevel")
 	end
 	-- @leb-regression-guard: phase4-minion-modifier-bucket-aggregation
+	-- @leb-regression-guard: minion-whitelist-3surface-union
 	-- Minion-tab summary fields — LETools shows minion stats on every build
 	-- regardless of whether an active minion skill exists. Minion stat mods in
 	-- LEB are routed via MinionModifier LIST entries (consumed by env.minion in
 	-- CalcPerform when an active minion skill exists). To populate the always-
 	-- displayed values we walk the LIST once and bucket inner mods by
 	-- (name, type).
+	--
+	-- The authoritative set of (sp, tags, specialTag) tuples that game-side
+	-- routes to minions is captured in `spec/minion-whitelist/whitelist_final.json`
+	-- (UNION of three independent surfaces: altText override / affix tag bit /
+	-- BepInEx runtime dump). New Minion* outputs added below should have a
+	-- corresponding whitelist entry; conversely, removing the inline guard
+	-- markers above or below this block silently allows reverting any single
+	-- output back to a top-level modDB:Sum, which returns 0 for every build.
+	-- See REGRESSION_GUARDS.md "minion-whitelist-3surface-union".
 	--
 	-- INVARIANT: All Minion* outputs MUST read from this bucket map. They are
 	-- NOT direct `modDB:Sum` calls — minion mods live nested inside
@@ -1813,7 +1871,20 @@ function calcs.buildDefenceEstimations(env, actor)
 		for _, value in ipairs(modDB:List(nil, "MinionModifier")) do
 			local m = value.mod
 			if m and m.name and m.type then
-				local key = m.name .. "|" .. m.type
+				-- @leb-regression-guard: minion-bucket-flags-partition
+				-- Bucket key includes ModFlag so that inner mods sharing
+				-- (name, type) but routed to different sub-surfaces stay
+				-- distinct. Concrete case (B15 HIGH-gap closure 2026-05-18):
+				-- `minion_attack_speed_+%` → mod("Speed","INC",nil,ModFlag.Attack)
+				-- and `minion_cast_speed_+%`   → mod("Speed","INC",nil,ModFlag.Cast)
+				-- both emit name="Speed" type="INC", and without the flag
+				-- suffix would collide into a single `Speed|INC` bucket so
+				-- the LEB minion-tab attack-speed line would silently
+				-- double-count cast speed (and vice versa). Default flags
+				-- = 0 keeps the prior behaviour for every flagless inner
+				-- mod (Life, Evasion, ResistXxx, PhysicalDamage, …).
+				-- See REGRESSION_GUARDS.md "minion-bucket-flags-partition".
+				local key = m.name .. "|" .. m.type .. "|" .. (m.flags or 0)
 				-- @leb-regression-guard: minion-bucket-evalmod-perstat
 				-- Inner mod may carry PerStat/Multiplier tags (e.g. Acolyte
 				-- "Grave Thorns" notScalingStat "4% Increased Minion Health
@@ -1831,7 +1902,9 @@ function calcs.buildDefenceEstimations(env, actor)
 				end
 			end
 		end
-		local function sumMinion(name, type) return minionMods[name .. "|" .. type] or 0 end
+		local function sumMinion(name, type, flags)
+			return minionMods[name .. "|" .. type .. "|" .. (flags or 0)] or 0
+		end
 		output.MinionLifeInc = sumMinion("Life", "INC")
 		output.MinionLifeRegen = sumMinion("LifeRegen", "BASE")
 		output.MinionLifeRegenInc = sumMinion("LifeRegen", "INC")
@@ -1870,6 +1943,17 @@ function calcs.buildDefenceEstimations(env, actor)
 		output.MinionNecroticPenetration = sumMinion("NecroticPenetration", "BASE")
 		output.MinionPoisonPenetration = sumMinion("PoisonPenetration", "BASE")
 		output.MinionVoidPenetration = sumMinion("VoidPenetration", "BASE")
+		-- B15 HIGH-gap closure (2026-05-18): whitelist_final.json entries
+		-- 2/512,8192/0 (Attack Speed) and 3/8192/0 (Cast Speed) are HIGH
+		-- confidence (3-surface union: altText ∪ affixTag ∪ runtime) but
+		-- had no top-level Minion* output. Inner mods are routed via
+		-- SkillStatMap "minion_attack_speed_+%" / "minion_cast_speed_+%"
+		-- as { mod = Speed INC ModFlag.Attack/Cast } — see
+		-- spec/minion-whitelist/MinionWhitelistCoverage_spec.lua
+		-- WHITELIST_TO_MINION_OUTPUT mapping and REGRESSION_GUARDS.md
+		-- "minion-bucket-flags-partition" for the partitioning rationale.
+		output.MinionAttackSpeed = sumMinion("Speed", "INC", ModFlag.Attack)
+		output.MinionCastSpeed = sumMinion("Speed", "INC", ModFlag.Cast)
 	end
 
 	-- Glancing blow and crit avoidance

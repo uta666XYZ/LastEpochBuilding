@@ -116,9 +116,16 @@ describe("WardRegenFamily", function()
         assert.is_truthy(string.find(cacheText, needle, 1, false))
     end)
 
-    it("ModCache: WardRetention per 100%% uncapped Cold Resistance carries PerStat:ColdResist div=100", function()
-        local needle = 'c%["%+100%% Ward Retention per 100%% uncapped Cold Resistance"%]={{%[1%]={%[1%]={div=100,stat="ColdResist",type="PerStat"},flags=0,keywordFlags=0,name="WardRetention",type="BASE",value=100}},""}'
-        assert.is_truthy(string.find(cacheText, needle, 1, false))
+    it("ModCache: legacy '+100%% Ward Retention per 100%% uncapped Cold Resistance' entry is PURGED (frostbite-shackles-wr-per-uncapped-cold-res guard)", function()
+        -- @leb-regression-guard:frostbite-shackles-wr-per-uncapped-cold-res
+        -- The stale cache entry tagged ColdResist (CAPPED, max 75) and ordered
+        -- before CalcDefence resist loop, producing WardRetention=0. Fix purged
+        -- the entry and routes both legacy and current text through ModParser
+        -- to a custom BASE mod consumed by CalcDefence after the resist sum.
+        -- See TestFrostbiteShacklesWRPerUncappedColdRes_spec for the new path.
+        local needle = 'c%["%+100%% Ward Retention per 100%% uncapped Cold Resistance"%]'
+        assert.is_nil(string.find(cacheText, needle, 1, false),
+            "legacy WardRetention/ColdResist cache entry must stay purged; ModParser handles both texts via WardRetentionPerUncappedColdRes_Per2")
     end)
 
     it("ModCache: WardPerSecond With A Catalyst carries Condition:UsingCatalyst", function()

@@ -30,11 +30,25 @@ if sys.stdout.encoding and sys.stdout.encoding.lower() != 'utf-8':
 # Import the MAPPING + parsers from diff_letools.py (sibling file)
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-from diff_letools import MAPPING, extract_output, parse_letools, num, find_root  # noqa
+from diff_letools import MAPPING, KNOWN_SEMANTIC_GAPS, KNOWN_BUILD_GAPS, is_known_gap, extract_output, parse_letools, num, find_root  # noqa
 
 CLIP_INF = 10000.0  # cap inf %s so a single bad stat doesn't dominate Σ
 
-def sigma_for_build(lua_path, json_path):
+# @leb-regression-guard: sigma-rank-excludes-known-semantic-gaps
+# KNOWN_SEMANTIC_GAPS are LET-side artifacts (LETools planner mismodels) or
+# LEB-side intentional in-game-faithful folds (Symbols of Hope buff, ward-
+# conversion). Including them in Σ poisons the ranking: a single artifact row
+# at |Δ%|=inf (CLIP_INF=10000) makes 4 Pyramidal Altar builds dominate G1
+# despite being LEB-correct. Skip them from Σ aggregation while still letting
+# diff_letools.py surface the row (with footnote) for visibility.
+#
+# @leb-regression-guard: sigma-rank-excludes-known-build-gaps
+# KNOWN_BUILD_GAPS are per-build-scoped artifacts (anchor builds where a
+# specific stat is a documented LET artifact, but the same stat on other
+# builds may still be a real LEB regression). Exclusion is scoped per build
+# so that, e.g., suppressing Necrotic Resistance on o3Zl6qDJ does not also
+# suppress legitimate Necrotic drifts on the other 118 builds.
+def sigma_for_build(build_basename, lua_path, json_path):
     leb = extract_output(lua_path)
     letools = parse_letools(json_path)
     sigma = 0.0
@@ -42,6 +56,10 @@ def sigma_for_build(lua_path, json_path):
     n_stats = 0
     n_diff = 0  # |Δ%| > 2.0
     for (tab, name), key in MAPPING.items():
+        if (tab, name) in KNOWN_SEMANTIC_GAPS:
+            continue
+        if (build_basename, tab, name) in KNOWN_BUILD_GAPS:
+            continue
         lt = num(letools.get(tab, {}).get(name))
         lv = leb.get(key)
         if lt is None or lv is None:
@@ -117,7 +135,7 @@ def main():
             missing_lua.append(base)
             continue
         try:
-            sigma, mx, ns, nd = sigma_for_build(lua, js)
+            sigma, mx, ns, nd = sigma_for_build(base, lua, js)
         except Exception as e:
             print(f'WARN: {base}: {e}', file=sys.stderr); continue
         ranked.append((base, sigma, mx, ns, nd))

@@ -40,17 +40,22 @@ describe("IdolAltarBoostSubtypeRounding", function()
             "IdolEnchantment+Altar 1.46 on raw 12 must produce 18 (round-half-up), got: " .. tostring(roundOut))
     end)
 
-    it("CalcSetup tags IdolWeaver affixes with postRoundFloor", function()
+    it("CalcSetup floors ONLY on the pure property-4 weaver path", function()
+        -- Rounding is PROPERTY-determined, not subtype-determined: floor applies
+        -- only when the boost is purely property-4 (weaverBoost > 0 and
+        -- stdBoost == 0). Any property-1/2/3 (stdBoost) participation keeps
+        -- round-half-up — see idol-refracted-standard-boost-all-subtypes.
         local f = io.open("Modules/CalcSetup.lua", "r")
         local src = f:read("*a"); f:close()
         assert.is_truthy(string.find(src,
-            'if sat == "IdolWeaver" then',
-            1, true),
-            "CalcSetup must branch on IdolWeaver subtype")
+            "weaverBoost%s*>%s*0%s+and%s+stdBoost%s*==%s*0"),
+            "CalcSetup must gate the floor on `weaverBoost > 0 and stdBoost == 0`")
         assert.is_truthy(string.find(src,
             'affix.postRoundFloor = true',
             1, true),
-            "CalcSetup must set affix.postRoundFloor for IdolWeaver")
+            "CalcSetup must set affix.postRoundFloor on the property-4-only branch")
+        assert.is_falsy(string.find(src, 'if sat == "IdolWeaver" then'),
+            "the old subtype-only `if sat == \"IdolWeaver\" then` floor gate must be gone")
     end)
 
     it("Item.lua plumbs postRoundFloor through Craft → writeModLine → ParseRaw → applyRange", function()

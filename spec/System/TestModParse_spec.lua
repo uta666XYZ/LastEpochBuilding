@@ -251,12 +251,13 @@ describe("TestModParse", function()
         build.skillsTab:SelSkill(1, "Fireball")
         runCallback("OnFrame")
 
-        -- @leb-regression-guard: int-truncate-life-mana
-        -- Default Acolyte lv1: baseMana 50 + manaPerLevel 0.50506*1 + 2*Att(1) = 52.5
-        -- → m_floor = 52 (LE in-game truncates int, see commit 153d4e455).
-        -- Was 53 under upstream's round(); LEB switched to floor for in-game parity.
-        -- If this assertion flips back to 53, output.Mana truncation regressed.
-        assert.are.equals(52, build.calcsTab.calcsOutput.Mana)
+        -- @leb-regression-guard: maxlife-maxmana-banker-round
+        -- Default Acolyte lv1: baseMana 50 + manaPerLevel 0.50506*1 + 2*Att(1) = 52.50506.
+        -- LE finalizes maxMana with property_list_v3 roundingForAdded="Integer" =
+        -- banker rounding (formulas_verified §38), NOT floor. frac .50506 > .5 rounds
+        -- UP → 53. floor would give 52 (the old WRONG int-truncate-life-mana guard);
+        -- a revert to floor flips this back to 52 and breaks ShutFackUp's in-game Mana 252.
+        assert.are.equals(53, build.calcsTab.calcsOutput.Mana)
         assert.are.equals(40, build.calcsTab.mainEnv.player.mainSkill.skillModList:Sum("INC", nil, "FireDamage"))
 
         build.configTab.input.customMods = "+900 maximum mana\n\z+40% Increased fire damage. This effect is doubled if you have 300 or more maximum mana."
@@ -264,7 +265,8 @@ describe("TestModParse", function()
         build.buildFlag = true
         runCallback("OnFrame")
 
-        assert.are.equals(952, build.calcsTab.calcsOutput.Mana)
+        -- 952.50506 → banker 953 (frac > .5). floor would give 952.
+        assert.are.equals(953, build.calcsTab.calcsOutput.Mana)
         assert.are.equals(80, build.calcsTab.mainEnv.player.mainSkill.skillModList:Sum("INC", nil, "FireDamage"))
     end)
 

@@ -1,0 +1,23 @@
+{
+  "_meta": {
+    "reason": "application-quit",
+    "dumpedAtUtc": "2026-05-15T18:44:49.5985493Z",
+    "distinctKeys": 8,
+    "distinctMinions": 3
+  },
+  "minions": [
+    {"instanceID":-549610,"name":"SummonedSkeletonArcher(Clone)"},
+    {"instanceID":-550692,"name":"SummonedSkeleton(Clone)"},
+    {"instanceID":-548520,"name":"SummonedSkeleton(Clone)"}
+  ],
+  "entries": [
+    {"sp":0,"tags":0,"specialTag":0,"observations":116,"addedNonZero":0,"increasedNonZero":116,"moreNonZero":39,"sources":{"Actor":116}},
+    {"sp":2,"tags":0,"specialTag":0,"observations":116,"addedNonZero":116,"increasedNonZero":0,"moreNonZero":0,"sources":{"Actor":116}},
+    {"sp":3,"tags":0,"specialTag":0,"observations":116,"addedNonZero":116,"increasedNonZero":0,"moreNonZero":0,"sources":{"Actor":116}},
+    {"sp":6,"tags":0,"specialTag":0,"observations":116,"addedNonZero":0,"increasedNonZero":0,"moreNonZero":116,"sources":{"Actor":116}},
+    {"sp":7,"tags":0,"specialTag":0,"observations":116,"addedNonZero":116,"increasedNonZero":0,"moreNonZero":0,"sources":{"Actor":116}},
+    {"sp":9,"tags":0,"specialTag":0,"observations":116,"addedNonZero":116,"increasedNonZero":0,"moreNonZero":116,"sources":{"Actor":116}},
+    {"sp":17,"tags":0,"specialTag":0,"observations":116,"addedNonZero":116,"increasedNonZero":0,"moreNonZero":0,"sources":{"Actor":116}},
+    {"sp":6,"tags":32768,"specialTag":0,"observations":116,"addedNonZero":0,"increasedNonZero":0,"moreNonZero":116,"sources":{"Actor":116}}
+  ]
+}

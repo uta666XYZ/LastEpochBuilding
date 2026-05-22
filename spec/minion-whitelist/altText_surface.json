@@ -1,0 +1,491 @@
+{
+  "minion_bit": 8192,
+  "source": "extracted/items/property_list_v3.json",
+  "schema_source": "TypeTreeGeneratorAPI (IL2CPP) -- LE 1.4.6",
+  "entries": [
+    {
+      "property": 0,
+      "propertyName": "Damage",
+      "modType": 1,
+      "modTypeName": "INCREASED",
+      "tags": 8192,
+      "tagBits": [
+        8192
+      ],
+      "specialTag": 0,
+      "overrideAltText": "Increases the damage your minions deal",
+      "overrideAltTextKey": "Property_Master_Damage_AltText_Override_25"
+    },
+    {
+      "property": 0,
+      "propertyName": "Damage",
+      "modType": 1,
+      "modTypeName": "INCREASED",
+      "tags": 8193,
+      "tagBits": [
+        1,
+        8192
+      ],
+      "specialTag": 0,
+      "overrideAltText": "Increases the physical damage your minions deal",
+      "overrideAltTextKey": "Property_Master_Damage_AltText_Override_26"
+    },
+    {
+      "property": 0,
+      "propertyName": "Damage",
+      "modType": 1,
+      "modTypeName": "INCREASED",
+      "tags": 8193,
+      "tagBits": [
+        1,
+        8192
+      ],
+      "specialTag": 0,
+      "overrideAltText": "Increases the physical damage your minions deal",
+      "overrideAltTextKey": "Property_Master_Damage_AltText_Override_40"
+    },
+    {
+      "property": 0,
+      "propertyName": "Damage",
+      "modType": 1,
+      "modTypeName": "INCREASED",
+      "tags": 8194,
+      "tagBits": [
+        2,
+        8192
+      ],
+      "specialTag": 0,
+      "overrideAltText": "Increases the lightning damage your minions deal",
+      "overrideAltTextKey": "Property_Master_Damage_AltText_Override_39"
+    },
+    {
+      "property": 0,
+      "propertyName": "Damage",
+      "modType": 1,
+      "modTypeName": "INCREASED",
+      "tags": 8196,
+      "tagBits": [
+        4,
+        8192
+      ],
+      "specialTag": 0,
+      "overrideAltText": "Increases the cold damage your minions deal",
+      "overrideAltTextKey": "Property_Master_Damage_AltText_Override_41"
+    },
+    {
+      "property": 0,
+      "propertyName": "Damage",
+      "modType": 1,
+      "modTypeName": "INCREASED",
+      "tags": 8200,
+      "tagBits": [
+        8,
+        8192
+      ],
+      "specialTag": 0,
+      "overrideAltText": "Increases the fire damage your minions deal",
+      "overrideAltTextKey": "Property_Master_Damage_AltText_Override_42"
+    },
+    {
+      "property": 0,
+      "propertyName": "Damage",
+      "modType": 1,
+      "modTypeName": "INCREASED",
+      "tags": 8208,
+      "tagBits": [
+        16,
+        8192
+      ],
+      "specialTag": 0,
+      "overrideAltText": "Increases the void damage your minions deal",
+      "overrideAltTextKey": "Property_Master_Damage_AltText_Override_43"
+    },
+    {
+      "property": 0,
+      "propertyName": "Damage",
+      "modType": 1,
+      "modTypeName": "INCREASED",
+      "tags": 8224,
+      "tagBits": [
+        32,
+        8192
+      ],
+      "specialTag": 0,
+      "overrideAltText": "Increases the necrotic damage your minions deal",
+      "overrideAltTextKey": "Property_Master_Damage_AltText_Override_44"
+    },
+    {
+      "property": 0,
+      "propertyName": "Damage",
+      "modType": 1,
+      "modTypeName": "INCREASED",
+      "tags": 8256,
+      "tagBits": [
+        64,
+        8192
+      ],
+      "specialTag": 0,
+      "overrideAltText": "Increases the poison damage your minions deal",
+      "overrideAltTextKey": "Property_Master_Damage_AltText_Override_45"
+    },
+    {
+      "property": 2,
+      "propertyName": "Attack Speed",
+      "modType": 1,
+      "modTypeName": "INCREASED",
+      "tags": 8704,
+      "tagBits": [
+        512,
+        8192
+      ],
+      "specialTag": 0,
+      "overrideAltText": "Increases the number of melee attacks your minions can use per second",
+      "overrideAltTextKey": "Property_Master_Attack Speed_AltText_Override_2"
+    },
+    {
+      "property": 3,
+      "propertyName": "Cast Speed",
+      "modType": 1,
+      "modTypeName": "INCREASED",
+      "tags": 8192,
+      "tagBits": [
+        8192
+      ],
+      "specialTag": 0,
+      "overrideAltText": "Increases the number of spells your minions can cast per second",
+      "overrideAltTextKey": "Property_Master_Cast Speed_AltText_Override_1"
+    },
+    {
+      "property": 7,
+      "propertyName": "Health",
+      "modType": 0,
+      "modTypeName": "ADDED",
+      "tags": 8192,
+      "tagBits": [
+        8192
+      ],
+      "specialTag": 0,
+      "overrideAltText": "Adds to the maximum health of your minions",
+      "overrideAltTextKey": "Property_Master_Health_AltText_Override_1"
+    },
+    {
+      "property": 7,
+      "propertyName": "Health",
+      "modType": 1,
+      "modTypeName": "INCREASED",
+      "tags": 8192,
+      "tagBits": [
+        8192
+      ],
+      "specialTag": 0,
+      "overrideAltText": "Increases the maximum health of your minions",
+      "overrideAltTextKey": "Property_Master_Health_AltText_Override_2"
+    },
+    {
+      "property": 9,
+      "propertyName": "Movement Speed",
+      "modType": 1,
+      "modTypeName": "INCREASED",
+      "tags": 8192,
+      "tagBits": [
+        8192
+      ],
+      "specialTag": 0,
+      "overrideAltText": "Increases the movement speed of your minions",
+      "overrideAltTextKey": "Property_Master_Movement Speed_AltText_Override_1"
+    },
+    {
+      "property": 10,
+      "propertyName": "Armor",
+      "modType": 0,
+      "modTypeName": "ADDED",
+      "tags": 8192,
+      "tagBits": [
+        8192
+      ],
+      "specialTag": 0,
+      "overrideAltText": "Increases the armor of your minions",
+      "overrideAltTextKey": "Property_Master_Armor_AltText_Override_1"
+    },
+    {
+      "property": 11,
+      "propertyName": "Dodge Rating",
+      "modType": 0,
+      "modTypeName": "ADDED",
+      "tags": 8192,
+      "tagBits": [
+        8192
+      ],
+      "specialTag": 0,
+      "overrideAltText": "Improves the chance for your minions to dodge",
+      "overrideAltTextKey": "Property_Master_Dodge Rating_AltText_Override_1"
+    },
+    {
+      "property": 17,
+      "propertyName": "Health Regen",
+      "modType": 1,
+      "modTypeName": "INCREASED",
+      "tags": 8192,
+      "tagBits": [
+        8192
+      ],
+      "specialTag": 0,
+      "overrideAltText": "Increases the rate at which your minions regenerate health",
+      "overrideAltTextKey": "Property_Master_Health Regen_AltText_Override_1"
+    }
+  ],
+  "byProperty": {
+    "0": [
+      {
+        "property": 0,
+        "propertyName": "Damage",
+        "modType": 1,
+        "modTypeName": "INCREASED",
+        "tags": 8192,
+        "tagBits": [
+          8192
+        ],
+        "specialTag": 0,
+        "overrideAltText": "Increases the damage your minions deal",
+        "overrideAltTextKey": "Property_Master_Damage_AltText_Override_25"
+      },
+      {
+        "property": 0,
+        "propertyName": "Damage",
+        "modType": 1,
+        "modTypeName": "INCREASED",
+        "tags": 8193,
+        "tagBits": [
+          1,
+          8192
+        ],
+        "specialTag": 0,
+        "overrideAltText": "Increases the physical damage your minions deal",
+        "overrideAltTextKey": "Property_Master_Damage_AltText_Override_26"
+      },
+      {
+        "property": 0,
+        "propertyName": "Damage",
+        "modType": 1,
+        "modTypeName": "INCREASED",
+        "tags": 8193,
+        "tagBits": [
+          1,
+          8192
+        ],
+        "specialTag": 0,
+        "overrideAltText": "Increases the physical damage your minions deal",
+        "overrideAltTextKey": "Property_Master_Damage_AltText_Override_40"
+      },
+      {
+        "property": 0,
+        "propertyName": "Damage",
+        "modType": 1,
+        "modTypeName": "INCREASED",
+        "tags": 8194,
+        "tagBits": [
+          2,
+          8192
+        ],
+        "specialTag": 0,
+        "overrideAltText": "Increases the lightning damage your minions deal",
+        "overrideAltTextKey": "Property_Master_Damage_AltText_Override_39"
+      },
+      {
+        "property": 0,
+        "propertyName": "Damage",
+        "modType": 1,
+        "modTypeName": "INCREASED",
+        "tags": 8196,
+        "tagBits": [
+          4,
+          8192
+        ],
+        "specialTag": 0,
+        "overrideAltText": "Increases the cold damage your minions deal",
+        "overrideAltTextKey": "Property_Master_Damage_AltText_Override_41"
+      },
+      {
+        "property": 0,
+        "propertyName": "Damage",
+        "modType": 1,
+        "modTypeName": "INCREASED",
+        "tags": 8200,
+        "tagBits": [
+          8,
+          8192
+        ],
+        "specialTag": 0,
+        "overrideAltText": "Increases the fire damage your minions deal",
+        "overrideAltTextKey": "Property_Master_Damage_AltText_Override_42"
+      },
+      {
+        "property": 0,
+        "propertyName": "Damage",
+        "modType": 1,
+        "modTypeName": "INCREASED",
+        "tags": 8208,
+        "tagBits": [
+          16,
+          8192
+        ],
+        "specialTag": 0,
+        "overrideAltText": "Increases the void damage your minions deal",
+        "overrideAltTextKey": "Property_Master_Damage_AltText_Override_43"
+      },
+      {
+        "property": 0,
+        "propertyName": "Damage",
+        "modType": 1,
+        "modTypeName": "INCREASED",
+        "tags": 8224,
+        "tagBits": [
+          32,
+          8192
+        ],
+        "specialTag": 0,
+        "overrideAltText": "Increases the necrotic damage your minions deal",
+        "overrideAltTextKey": "Property_Master_Damage_AltText_Override_44"
+      },
+      {
+        "property": 0,
+        "propertyName": "Damage",
+        "modType": 1,
+        "modTypeName": "INCREASED",
+        "tags": 8256,
+        "tagBits": [
+          64,
+          8192
+        ],
+        "specialTag": 0,
+        "overrideAltText": "Increases the poison damage your minions deal",
+        "overrideAltTextKey": "Property_Master_Damage_AltText_Override_45"
+      }
+    ],
+    "2": [
+      {
+        "property": 2,
+        "propertyName": "Attack Speed",
+        "modType": 1,
+        "modTypeName": "INCREASED",
+        "tags": 8704,
+        "tagBits": [
+          512,
+          8192
+        ],
+        "specialTag": 0,
+        "overrideAltText": "Increases the number of melee attacks your minions can use per second",
+        "overrideAltTextKey": "Property_Master_Attack Speed_AltText_Override_2"
+      }
+    ],
+    "3": [
+      {
+        "property": 3,
+        "propertyName": "Cast Speed",
+        "modType": 1,
+        "modTypeName": "INCREASED",
+        "tags": 8192,
+        "tagBits": [
+          8192
+        ],
+        "specialTag": 0,
+        "overrideAltText": "Increases the number of spells your minions can cast per second",
+        "overrideAltTextKey": "Property_Master_Cast Speed_AltText_Override_1"
+      }
+    ],
+    "7": [
+      {
+        "property": 7,
+        "propertyName": "Health",
+        "modType": 0,
+        "modTypeName": "ADDED",
+        "tags": 8192,
+        "tagBits": [
+          8192
+        ],
+        "specialTag": 0,
+        "overrideAltText": "Adds to the maximum health of your minions",
+        "overrideAltTextKey": "Property_Master_Health_AltText_Override_1"
+      },
+      {
+        "property": 7,
+        "propertyName": "Health",
+        "modType": 1,
+        "modTypeName": "INCREASED",
+        "tags": 8192,
+        "tagBits": [
+          8192
+        ],
+        "specialTag": 0,
+        "overrideAltText": "Increases the maximum health of your minions",
+        "overrideAltTextKey": "Property_Master_Health_AltText_Override_2"
+      }
+    ],
+    "9": [
+      {
+        "property": 9,
+        "propertyName": "Movement Speed",
+        "modType": 1,
+        "modTypeName": "INCREASED",
+        "tags": 8192,
+        "tagBits": [
+          8192
+        ],
+        "specialTag": 0,
+        "overrideAltText": "Increases the movement speed of your minions",
+        "overrideAltTextKey": "Property_Master_Movement Speed_AltText_Override_1"
+      }
+    ],
+    "10": [
+      {
+        "property": 10,
+        "propertyName": "Armor",
+        "modType": 0,
+        "modTypeName": "ADDED",
+        "tags": 8192,
+        "tagBits": [
+          8192
+        ],
+        "specialTag": 0,
+        "overrideAltText": "Increases the armor of your minions",
+        "overrideAltTextKey": "Property_Master_Armor_AltText_Override_1"
+      }
+    ],
+    "11": [
+      {
+        "property": 11,
+        "propertyName": "Dodge Rating",
+        "modType": 0,
+        "modTypeName": "ADDED",
+        "tags": 8192,
+        "tagBits": [
+          8192
+        ],
+        "specialTag": 0,
+        "overrideAltText": "Improves the chance for your minions to dodge",
+        "overrideAltTextKey": "Property_Master_Dodge Rating_AltText_Override_1"
+      }
+    ],
+    "17": [
+      {
+        "property": 17,
+        "propertyName": "Health Regen",
+        "modType": 1,
+        "modTypeName": "INCREASED",
+        "tags": 8192,
+        "tagBits": [
+          8192
+        ],
+        "specialTag": 0,
+        "overrideAltText": "Increases the rate at which your minions regenerate health",
+        "overrideAltTextKey": "Property_Master_Health Regen_AltText_Override_1"
+      }
+    ]
+  },
+  "stats": {
+    "totalEntries": 17,
+    "uniqueProperties": 8,
+    "uniquePairs_propXmodType": 9,
+    "distinctTags": 9
+  }
+}

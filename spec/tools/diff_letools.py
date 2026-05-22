@@ -197,10 +197,173 @@ KNOWN_SEMANTIC_GAPS = {
         "builds with ward-conversion gear (e.g. o3Zlpkxd: 50% Mana Spent + "
         "25.3 mana/s skill cost -> ~12.7 wps fold-in), LEB > LETools is expected. "
         "Investigation: 'Ward Regen o3Zlpkxd 乖離調査' (Obsidian).",
+    # @leb-regression-guard: health-regen-symbols-of-hope-buff-parity
+    ('General','Health Regen'):
+        "LEB auto-applies Symbols of Hope active count at MaximumSymbols (CalcSetup "
+        "L1968-1975 'Auto:Symbols of Hope'): each symbol grants +20% Health Regen "
+        "INC (scaled by SymbolsOfHopeEffect). LETools' static 'Health Regen' is "
+        "the no-buff baseline (no symbols active). For Paladin / Void Knight "
+        "builds with Symbols of Hope on the skill bar (e.g. BGzxnRdY: 5 symbols "
+        "x 20% = +100% INC, LEB 64.5 vs LET 37.63), LEB > LETools is expected. "
+        "The 'no-buff' LET value matches LEB if you set "
+        "Config 'multiplierActiveSymbols=0' explicitly.",
+    # @leb-regression-guard: pyramidal-altar-cdr-letools-artifact
+    ('Other','Increased Cooldown Recovery Speed'):
+        "The Pyramidal Altar (Idol Altar baseTypeID 41, subTypeID 11; all 4 "
+        "variants) carries the conditional implicit '10% Increased Cooldown "
+        "Recovery Speed if there are no larger idols above smaller ones in the "
+        "grid'. LEB evaluates the grid-layout condition in CalcSetup.lua "
+        "L1391-1466 and applies +10% CDR when the layout is compliant — "
+        "matching LE in-game. LETools' planner does NOT model this conditional "
+        "implicit (LET tooltip shows 0% CDR despite a compliant grid). "
+        "So for 13+ Pyramidal Altar builds LEB=10 vs LET=0 is expected "
+        "letools-artifact divergence (LEB matches game, LET is the "
+        "outlier). See REGRESSION_GUARDS.md §pyramidal-altar-cdr-letools-artifact + "
+        "spec/System/TestPyramidalAltarCDR_spec.lua.",
 }
 
+# @leb-regression-guard: known-build-gaps-per-build-scoped
+# Per-build scoped artifacts. Unlike KNOWN_SEMANTIC_GAPS (stat-global), these
+# rows are only LET-side artifacts on a specific anchor build (or short list
+# of builds). Skipping them globally would suppress legitimate diffs on other
+# builds that share the same stat. Keyed by (build_basename, tab, letools_name).
+# Both diff_letools (footnote / mark) and sigma_rank (Σ exclusion) consult
+# this table via is_known_gap(build, tab, name) below.
+KNOWN_BUILD_GAPS = {
+    # @leb-regression-guard: armour-floor-at-zero-letools-artifact
+    ('QJWMRv53 lv98 Bladedancer', 'General', 'Armor'):
+        "Anchor build for armour-floor-at-zero-letools-artifact. CalcDefence "
+        "L534 floors output.Armour at 0 to match LE in-game display; LET "
+        "planner skips the floor and reports the signed raw sum. See "
+        "REGRESSION_GUARDS.md §armour-floor-at-zero-letools-artifact.",
+    # @leb-regression-guard: armour-floor-at-zero-letools-artifact (collateral)
+    ('QJWMRv53 lv98 Bladedancer', 'Defense', 'Glancing Blow Chance'):
+        "Downstream of the armour-floor artifact: GlancingBlowChance derives "
+        "from Armor-bound formulae on this Guile-stacker. Negative Armor in "
+        "LET shifts the GBC display; LEB matches LE in-game. Same anchor "
+        "guard: armour-floor-at-zero-letools-artifact.",
+    # @leb-regression-guard: unbroken-charge-block-effectiveness-per-ms-letools-artifact
+    ('AVa9YEkg lv95 Paladin', 'General', 'Block Effectiveness'):
+        "LET reads the wrong ModRange index for Unbroken Charge's "
+        "+(11-30) BE per 1% MS line (property=98 mod[3] vs roll[0] swap "
+        "in unique_mods_postprocessed.json). LEB reads the in-game tooltip "
+        "text verbatim → matches LE. See REGRESSION_GUARDS.md §unbroken-"
+        "charge-block-effectiveness-per-ms-letools-artifact.",
+    ('AVa9YEkg lv95 Paladin', 'General', 'Block Mitigation'):
+        "Downstream of unbroken-charge-block-effectiveness-per-ms artifact: "
+        "Block Mitigation is computed from Block Effectiveness. Same guard.",
+    ('AVa9YEkg lv95 Paladin', 'General', 'Block Chance'):
+        "Collateral of unbroken-charge artifact on the AVa9YEkg anchor — "
+        "small Δ on the same Paladin/Unbroken-Charge build covered by the "
+        "BE root guard. Same guard.",
+    # @leb-regression-guard: bladedancer-no-shield-block-chance-letools-artifact
+    ('BZ37RPdY lv100 Bladedancer', 'General', 'Block Chance'):
+        "LET shows 2% Block Chance on a Bladedancer build with no shield "
+        "equipped and no Block-granting passive node allocated. LE in-game "
+        "requires a shield for non-zero Block Chance; LEB correctly reports "
+        "0. Same LET artifact appears on the duplicate QnaLnRKV save. The "
+        "3 shield-using builds with Block Chance diffs (AVa9YEkg / BgRrP5rr "
+        "/ ozwXn3D8) are covered separately or fall under the 1-2% noise "
+        "floor.",
+    ('QnaLnRKV lv100 Bladedancer', 'General', 'Block Chance'):
+        "Duplicate of BZ37RPdY (same character snapshot under a different "
+        "save name). Same artifact: LET 2% block on no-shield Bladedancer. "
+        "Same guard: bladedancer-no-shield-block-chance-letools-artifact.",
+    # @leb-regression-guard: o3zl6qdj-sorcerer-necrotic-letools-display-artifact
+    ('o3Zl6qDJ lv78 Sorcerer', 'General', 'Necrotic Resistance'):
+        "LET tooltip shows Necrotic Resistance = 138% on this lv78 Sorcerer "
+        "vs LEB=60. The 78-point gap matches charLevel exactly. LEB math is "
+        "sound: Vit=16 → +16, item-8 (Scholar's Mystic Helm of Purity) +44% "
+        "Necrotic affix at range 236 → +44; sum 60. No passive/ascendancy "
+        "node adds Necrotic. All 6 other resistances on this build match "
+        "LEB exactly — only Necrotic diverges, and only on this one build "
+        "out of 119 (sweep_necrotic.py confirms the D=charLevel pattern is "
+        "unique to o3Zl6qDJ). LET-side display artifact.",
+    # @leb-regression-guard: mental-catalysis-int-letools-conditional-display-artifact
+    # Mage-89 "Mental Catalysis" grants "+1 Intelligence with a Catalyst" per
+    # point (max 6). LE in-game Int tooltip excludes the conditional bonus
+    # (XML PlayerStat="Int" matches LEB on all 7 anchor builds). LET planner
+    # adds the conditional bonus unconditionally; on owLm3nZ7 LET doubles it
+    # (+12 vs the expected +6 — anchor for the 2x overcount). LEB gates via
+    # ModParser L869 + CalcSetup L1766 UsingCatalyst condition. Same root
+    # guard for all 7 affected builds.
+    ('owLm3nZ7 lv81 Runemaster', 'General', 'Intelligence'):
+        "LET=150 vs LEB=138 (XML PlayerStat=138). Mage-89 6 pts; build "
+        "uses Branded Skull (Catalyst). LET overcounts by +12 (2x the "
+        "expected +6) — unique among the 4 Runemaster anchors. Same guard: "
+        "mental-catalysis-int-letools-conditional-display-artifact.",
+    ('BgRrpjdv lv50 Runemaster', 'General', 'Intelligence'):
+        "LET=65 vs LEB=59 (PlayerStat=59). Mage-89 6 pts, Osprix Skull "
+        "(Catalyst). Same guard.",
+    ('Q0VbpL4J lv100 Runemaster', 'General', 'Intelligence'):
+        "LET=212 vs LEB=206 (PlayerStat=206). Mage-89 6 pts. Same guard.",
+    ('QkY5Lr96 lv95 Runemaster', 'General', 'Intelligence'):
+        "LET=188 vs LEB=182 (PlayerStat=182). Mage-89 6 pts, Rune Stone "
+        "(Catalyst). Same guard.",
+    ('o3Zl6qDJ lv78 Sorcerer', 'General', 'Intelligence'):
+        "LET=59 vs LEB=54 (PlayerStat=54). Mage-89 5 pts; build uses "
+        "Frozen Ire (Ice Sceptre, NOT a Catalyst) so LEB correctly skips "
+        "the conditional +5 via UsingCatalyst=false. LET applies it "
+        "unconditionally. Same guard.",
+    ('AKg973wG lv84 Sorcerer', 'General', 'Intelligence'):
+        "LET=101 vs LEB=98 (PlayerStat=98). Mage-89 3 pts. Same guard.",
+    ('QDxZjPX8 lv95 Sorcerer', 'General', 'Intelligence'):
+        "LET=89 vs LEB=86 (PlayerStat=86). Mage-89 3 pts; Divine "
+        "Instrument (Catalyst). Same guard.",
+    # @leb-regression-guard: atropos-mana-prefix-letools-overcount
+    # Scissor of Atropos (Falchion) carries affix 718_6 "+(91-120) Mana"
+    # — tier 6 max=120 per src/Data/ModItem_1_4.json. LEB applies the
+    # standard byte 249/255 interpolation → 119.32 → max-clamp 120.
+    # LET's tooltip on oYEOpZmJ explicitly attributes +179 Mana to the
+    # One-Handed Sword prefix, exceeding the affix max by +59. 179 fits
+    # neither tier 6 (max 120) nor tier 7 (min 192) — mathematically
+    # impossible per the ModItem data file → LET-side display artifact.
+    # The Mana Regen partner stat on the same dual-mod prefix carries
+    # the same overcount fallout (LET 14.72 vs LEB 13.0).
+    ('oYEOpZmJ lv87 Spellblade', 'General', 'Mana'):
+        "LET tooltip 'One-Handed Sword (Prefix): +179 Mana' exceeds "
+        "affix 718_6 max=120 (src/Data/ModItem_1_4.json). LEB 120 matches "
+        "the data file. LET-side artifact. Same guard: "
+        "atropos-mana-prefix-letools-overcount.",
+    ('oYEOpZmJ lv87 Spellblade', 'General', 'Mana Regen'):
+        "Mana Regen partner stat on the same 718_6 dual-mod prefix. "
+        "LET 14.72 vs LEB 13.0 inherits the same overcount root. Same "
+        "guard: atropos-mana-prefix-letools-overcount.",
+    # @leb-regression-guard: all-resistances-includes-physical-letools-drop-artifact
+    # LE property 30 "All Resistances" defaultAltText is "Adds to your
+    # physical, fire, cold, lightning, necrotic, void, and poison
+    # resistances" (src/Data/Properties/property_list_1_4.json). LEB's
+    # ModCache.lua L7246 c["+4% to All Resistances per Complete Set"]
+    # correctly expands to 7 mods including PhysicalResist. LET planner
+    # drops the PhysicalResist mod from the per-Complete-Set affix on
+    # Qb6WlbxD (LEB 45 = 17+20+8 from Legends Entwined vs LET 37 =
+    # 17+20+0). LE-game-data-truth → LEB correct, LET artifact.
+    ('Qb6WlbxD lv100 Druid', 'General', 'Physical Resistance'):
+        "LET 37 vs LEB 45 (+8 diff = exact Legends Entwined per-set "
+        "PhysRes contribution). LE property 30 'All Resistances' "
+        "includes physical per defaultAltText. LEB matches game data; "
+        "LET drops PhysRes from the per-set expansion. Same guard: "
+        "all-resistances-includes-physical-letools-drop-artifact.",
+}
+
+def is_known_gap(build, tab, name):
+    """Return the explanation string if (build, tab, name) is a known gap.
+
+    Checks both KNOWN_SEMANTIC_GAPS (stat-global) and KNOWN_BUILD_GAPS
+    (per-build scoped). Returns None when the row should be treated as a
+    real diff.
+    """
+    if (build, tab, name) in KNOWN_BUILD_GAPS:
+        return KNOWN_BUILD_GAPS[(build, tab, name)]
+    if (tab, name) in KNOWN_SEMANTIC_GAPS:
+        return KNOWN_SEMANTIC_GAPS[(tab, name)]
+    return None
+
 # @leb-regression-guard: diff-letools-abs-tolerance-floor
-# Mirror of `scripts/letools-diff.js` TOL_ABS=0.5 (~L16). LETools renders
+# TOL_ABS=0.5 absolute-tolerance floor. (Earlier docs claimed a `scripts/
+# letools-diff.js` JS sibling owned the same constant — that file never
+# actually existed in repo history, this Python tool is the sole owner.)
+# LETools renders
 # several integer-display stats (Ward Regen, Block Chance, Endurance, …) by
 # rounding to nearest integer in the UI even though their underlying values
 # are floats — Ward Regen in particular shows as int while sibling Health/Mana
@@ -234,6 +397,7 @@ def main():
 
     leb = extract_output(lua_path)
     letools = parse_letools(json_path)
+    build_basename = args.build
 
     rows = []
     for (tab, name), key in MAPPING.items():
@@ -254,16 +418,17 @@ def main():
     shown_gaps = []
     for tab, name, key, lt, lv, d, p in rows:
         ps = f"{p:.1f}" if p != float('inf') else 'inf'
-        marker = ' *' if (tab, name) in KNOWN_SEMANTIC_GAPS else ''
+        gap = is_known_gap(build_basename, tab, name)
+        marker = ' *' if gap is not None else ''
         print(f"{tab:8s} {name:40s} {key:32s} {lt:>10.4g} {lv:>10.4g} {d:>+10.4g} {ps:>8}{marker}")
-        if (tab, name) in KNOWN_SEMANTIC_GAPS:
-            shown_gaps.append((tab, name))
+        if gap is not None:
+            shown_gaps.append((tab, name, gap))
     print(f"\n{len(rows)} / {len(MAPPING)} stats shown (threshold |D%| > {args.threshold})")
     if shown_gaps:
         print("\n* Known semantic gap (not necessarily a LEB bug):")
-        for tab, name in shown_gaps:
+        for tab, name, gap in shown_gaps:
             print(f"  [{tab}] {name}:")
-            for line in KNOWN_SEMANTIC_GAPS[(tab, name)].splitlines():
+            for line in gap.splitlines():
                 print(f"    {line}")
 
 if __name__ == '__main__':

@@ -357,9 +357,9 @@ function itemLib.applyRange(line, range, valueScalar, rounding, postRoundScalar,
                 --   strict (vshDm):       floor((16 + 1 - 6) × 186/255 + 6) = 14
                 -- LETools planner Minion-tab "Movement Speed" = 14% — matches strict.
                 -- Scoped narrowly to the "Minion Movement Speed" SP=9 minion-scope
-                -- variant; the player-scope "% increased Movement Speed" line is NOT
-                -- migrated here (other rolls in g1 boots already match LETools under
-                -- legacy round-half-up). See REGRESSION_GUARDS.md
+                -- variant. The player-scope "% increased Movement Speed" line is
+                -- handled by its own strict branch immediately below (same root
+                -- cause). See REGRESSION_GUARDS.md
                 -- "minion-movement-speed-vshdm-strict".
                 if line:find("%% increased Minion Movement Speed")
                    or line:find("%% reduced Minion Movement Speed") then
@@ -369,6 +369,123 @@ function itemLib.applyRange(line, range, valueScalar, rounding, postRoundScalar,
                             v = m_floor(v * postRoundScalar * precision) / precision
                         else
                             v = m_floor(v * postRoundScalar * precision + 0.5) / precision
+                        end
+                    end
+                    return (v < 0 and "" or plus) .. tostring(v)
+                end
+                -- @leb-regression-guard:movement-speed-vshdm-strict
+                -- Player "% increased/reduced Movement Speed" rolls route through
+                -- the LE-faithful vshDm path (`applyRangeStrict`). Same root cause
+                -- as health/armour-percent-vshdm-strict: the legacy branch
+                -- interpolates over span (max-min) and floors, missing LE's
+                -- top-byte `+1` term, underrepresenting by 1 on most bytes.
+                -- Triangulated on MyLittleStJames lv79 Paladin (save BETA_13) vs
+                -- in-game item tooltip + character sheet:
+                --   Army of Skin prefix "(26-30)% increased Movement Speed" byte=157
+                --     legacy floor : floor(26 + 157/255 × (30-26))    = 28 (LEB, wrong)
+                --     strict vshDm : floor((30+1-26) × 157/255 + 26)   = 29 (tooltip ✓)
+                -- Other two boots affixes are unchanged by strict ((13-26)% byte111
+                -- = 19, (11-14)% byte31 = 11), so total Movement Speed 29+19+11 = 59
+                -- = in-game character sheet (LEB was 58 under legacy). The in-game
+                -- item tooltip directly reads "29% increased Movement Speed".
+                -- Matches the player-direct line only; the SP=9 "Minion Movement
+                -- Speed" variant is caught by the branch above and returns first.
+                -- See REGRESSION_GUARDS.md "movement-speed-vshdm-strict".
+                if line:find("%% increased Movement Speed")
+                   or line:find("%% reduced Movement Speed") then
+                    local v = itemLib.applyRangeStrict(minN, maxN, rollByte, valueScalar, 0, 0)
+                    if postRoundScalar and postRoundScalar ~= 1.0 then
+                        if postRoundFloor then
+                            v = m_floor(v * postRoundScalar * precision) / precision
+                        else
+                            v = m_floor(v * postRoundScalar * precision + 0.5) / precision
+                        end
+                    end
+                    return (v < 0 and "" or plus) .. tostring(v)
+                end
+                -- @leb-regression-guard: health-percent-vshdm-strict
+                -- Player "% increased/reduced Health" rolls route through the
+                -- LE-faithful vshDm path (`applyRangeStrict`). The legacy default
+                -- branch interpolates over span `(max-min)` and floors, which is
+                -- missing LE's `+epsilon`/`+1` top-byte term and underrepresents
+                -- by 1 on most bytes. Triangulated on ShutFackUp lv85 Spellblade
+                -- (save BETA_7) Chains of Uleros suffix `(10-12)% increased Health`
+                -- byte=193:
+                --   legacy floor: floor(10 + 193/255 × (12-10))      = floor(11.51) = 11
+                --   strict vshDm: floor((12+1-10) × 193/255 + 10)     = floor(12.27) = 12
+                -- In-game maxHealth = 1680 requires INC = 25 = Keeper's Raiment
+                -- fixed +13% + Uleros 12%; floor(1344 × 1.25) = 1680 (LEB was
+                -- 1666 under the legacy 24%). Excludes "Minion Health" (separate
+                -- minion scope) and "Health Regen" (Tenth-rounded, different prop).
+                -- Scoped to valueScalar == 1.0 (player-direct % Health): idol-scaled
+                -- health (scalar 0.38/0.67, Tenth-precision e.g. "3.2% increased
+                -- Health") stays on the scale-first path below, locked by the
+                -- TestItemTools '(5-14)% increased Health' @ 0.38 → 3.2% case.
+                -- See REGRESSION_GUARDS.md "health-percent-vshdm-strict".
+                if valueScalar == 1.0
+                   and (line:find("%% increased Health") or line:find("%% reduced Health"))
+                   and not line:find("Minion Health") and not line:find("Health Regen") then
+                    local v = itemLib.applyRangeStrict(minN, maxN, rollByte, valueScalar, 0, 0)
+                    if postRoundScalar and postRoundScalar ~= 1.0 then
+                        if postRoundFloor then
+                            v = m_floor(v * postRoundScalar * precision) / precision
+                        else
+                            v = m_floor(v * postRoundScalar * precision + 0.5) / precision
+                        end
+                    end
+                    return (v < 0 and "" or plus) .. tostring(v)
+                end
+                -- @leb-regression-guard: armour-percent-vshdm-strict
+                -- Player "% increased/reduced Armor" rolls route through the
+                -- LE-faithful vshDm path (`applyRangeStrict`). Identical root
+                -- cause to health-percent-vshdm-strict: the legacy branch
+                -- interpolates over span (max-min) and floors/round-half-ups,
+                -- missing LE's top-byte `+1` term, so it underrepresents by 1
+                -- on most bytes. Triangulated on ImPalmBeachPete lv48 Bladedancer
+                -- (save BETA_12) vs in-game tooltips:
+                --   Azure Outcast Hat of Defense "(10-12)% increased Armor" byte=185
+                --     legacy floor : floor(10 + 185/255 × (12-10))     = 11 (LEB, wrong)
+                --     strict vshDm : floor((12+1-10) × 185/255 + 10)    = 12 (in-game ✓)
+                --   Armored Minor Weaver Idol "(2-5)% increased Armor" byte=84
+                --     legacy floor : floor(2 + 84/255 × (5-2))         = 2  (LEB, wrong)
+                --     strict vshDm : floor((5+1-2) × 84/255 + 2)        = 3  (in-game ✓)
+                -- Excludes "Minion Armor" (separate minion scope), "Armor Shred"
+                -- (ailment), and idol-size-scaled rolls (valueScalar != 1.0, which
+                -- stay on the scale-first path). Matches American "Armor" and
+                -- British "Armour" spellings.
+                --
+                -- @leb-regression-guard: armour-percent-refracted-fractional
+                -- For a refracted-slot prefix boost (postRoundScalar from LE's
+                -- `postRoundingEffectModifier`, e.g. "Increased Effect of Prefixes
+                -- in Refracted Slots"), the boosted "% increased" value is NOT
+                -- re-rounded to an integer — LE stores `increased*` as a float
+                -- fraction (its integer tooltip is cosmetic), so the post-round
+                -- modifier multiplies straight into the accumulator. Only the
+                -- hundredth-mode quantum is applied (§38 mode 0). This DIFFERS
+                -- from the flat-additive two-phase path (Mana/res/Ward), which
+                -- keeps integer round-half-up / floor and is ZombieWarehouse-
+                -- ground-truth-verified — that path is deliberately left intact.
+                -- Triangulated on ImPalmBeachPete lv48 Bladedancer (BETA_12):
+                --   refracted Armored Minor Weaver Idol "(2-5)% increased Armor"
+                --   byte=84 rolls 3; Sunrise Visage Altar sealed +44% Effect of
+                --   Prefixes in Refracted Slots → 3 × 1.44 = 4.32 (NOT round→4).
+                --   Total INC 81 → 81.32; 232 × (1+81.32/100) = 420.66 → round 421
+                --   (in-game Armor = 421 ✓; integer-rounded 4 gave 419.92 → 420).
+                -- See REGRESSION_GUARDS.md "armour-percent-vshdm-strict" /
+                -- "armour-percent-refracted-fractional".
+                if valueScalar == 1.0
+                   and (line:find("%% increased Armou?r") or line:find("%% reduced Armou?r"))
+                   and not line:find("Minion Armou?r") and not line:find("Armou?r Shred") then
+                    local v = itemLib.applyRangeStrict(minN, maxN, rollByte, valueScalar, 0, 0)
+                    if postRoundScalar and postRoundScalar ~= 1.0 then
+                        if postRoundFloor then
+                            -- Property-4 weaver-enchant boost (rare on % Armour):
+                            -- preserve the verified floor direction.
+                            v = m_floor(v * postRoundScalar * precision) / precision
+                        else
+                            -- Standard prefix/suffix boost: keep the fractional
+                            -- product (hundredth quantum), do not collapse to int.
+                            v = m_floor(v * postRoundScalar * 100 + 0.5) / 100
                         end
                     end
                     return (v < 0 and "" or plus) .. tostring(v)
@@ -392,12 +509,59 @@ function itemLib.applyRange(line, range, valueScalar, rounding, postRoundScalar,
                 if precision == 1 and not line:find("%%") and valueScalar <= 1.0 then
                     local v = itemLib.applyRangeStrict(minN, maxN, rollByte, valueScalar, 0, 1)
                     if postRoundScalar and postRoundScalar ~= 1.0 then
+                        -- @leb-regression-guard: flat-health-refracted-fractional
+                        -- A refracted-slot prefix/suffix boost (postRoundScalar from
+                        -- LE's `postRoundingEffectModifier`) on flat-additive HEALTH is
+                        -- NOT re-rounded to an integer: LE keeps the boosted contribution
+                        -- as a full float in the Health accumulator (the item TOOLTIP
+                        -- shows the un-boosted integer roll, while the character sheet
+                        -- sums the float and the final maxHealth output banker-rounds).
+                        -- This mirrors the `% increased` float-retention precedent
+                        -- (armour-percent-refracted-fractional).
+                        -- Triangulated on ZombieWarehouse lv72 Necromancer (BETA_15):
+                        --   Jumping Spider's Minor Weaver Idol of Repose
+                        --   "+(14-18) Health" byte=3 rolls 14; Sunset Twisted Altar
+                        --   +10% Effect of Suffixes in Refracted Slots → 14×1.10=15.4
+                        --   (NOT round→15). Life base 1106.4; 1106.4×1.36 = 1504.704
+                        --   → 1505 (in-game ✓; integer 15 gave 1504.16 → 1504; LETools
+                        --   also reports the wrong 1504).
+                        -- SCOPED TO FLAT HEALTH ONLY. Other flat-additive stats keep
+                        -- integer round-half-up — verified by the
+                        -- two-phase-floor-post-round-scalar guard: Ward per Second
+                        -- (9×1.22=10.98→11) and Vitality (13×1.22=15.86→16) round to
+                        -- integer. Excludes "Minion Health" (minion scope) and
+                        -- "Health Regen" (separate property).
+                        -- See REGRESSION_GUARDS.md "flat-health-refracted-fractional".
+                        local flatHealth = line:find("Health")
+                            and not line:find("Minion Health") and not line:find("Health Regen")
                         if postRoundFloor then
                             v = m_floor(v * postRoundScalar)
+                        elseif flatHealth then
+                            v = m_floor(v * postRoundScalar * 100 + 0.5) / 100
                         else
                             v = m_floor(v * postRoundScalar + 0.5)
                         end
                     end
+                    return (v < 0 and "" or plus) .. tostring(v)
+                end
+                -- @leb-regression-guard: flat-int-vshdm-strict
+                -- Flat-integer "+(N-N) <Stat>" affixes (no %) at scalar<=1.0
+                -- migrate to the game-faithful vshDm Integer path. Survey
+                -- (.tmp/survey_strict_scalar1.py / survey_strict_phase4.py)
+                -- across 117 spec/1.4 builds:
+                --   scalar=1.0  -> 0/3241 unique-tuple divergence
+                --   scalar=0.67 -> 0/3241 (Grand idol)
+                --   scalar=0.38 -> 0/3241 (Humble/Stout idol)
+                -- For integer endpoints both formulas reduce to
+                --   floor((halfup(max*s) + 1 - halfup(min*s)) * roll/255 + halfup(min*s))
+                -- so this is a byte-identical migration covering scalar=1.0
+                -- AND the humble-idol-scalar-scale-first branch's flat-int
+                -- portion. Scalar > 1.0 flat-int (Apiarist=1.5: survey shows
+                -- 656 mismatches; existing apiarist-scalar-interpolate-first
+                -- guard is empirically validated against in-game tooltip)
+                -- remains on the existing branch below.
+                if precision == 1 and not line:find("%%") and valueScalar <= 1.0 then
+                    local v = itemLib.applyRangeStrict(minN, maxN, rollByte, valueScalar, 0, 1)
                     return (v < 0 and "" or plus) .. tostring(v)
                 end
                 if not useRound then

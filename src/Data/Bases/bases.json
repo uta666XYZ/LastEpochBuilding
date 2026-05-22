@@ -11900,7 +11900,7 @@
     "implicits": [
       "{rounding:Integer}(20-24)% less Damage Over Time Taken",
       "{rounding:Integer}(42-60)% increased Damage Over Time",
-      "+-0.6 Armor"
+      "{rounding:Integer}(42-60)% reduced Armor"
     ]
   },
   "Cursed Coin Amulet": {
@@ -12041,7 +12041,7 @@
     "implicits": [
       "+(61-77)% Necrotic Resistance",
       "+(61-77)% Void Resistance",
-      "+-0.47 Armor"
+      "{rounding:Integer}(37-47)% reduced Armor"
     ],
     "classReq": 8
   },

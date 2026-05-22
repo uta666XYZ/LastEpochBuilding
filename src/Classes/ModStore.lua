@@ -49,10 +49,24 @@ end)
 
 function ModStoreClass:ScaleAddMod(mod, scale)
 	local unscalable = false
+	-- @leb-regression-guard:scaleaddmod-stacking-coeff-fractional-retention
+	-- A mod carrying a Multiplier/PerStat tag stores a PER-STACK coefficient that
+	-- is multiplied by the stack count at Combine time. When a buff-effect scale
+	-- (e.g. SymbolsOfHopeEffect +20%) is applied here, the scaled coefficient must
+	-- retain its fractional part: 3 * 1.2 = 3.6, then *5 active symbols = 18. The
+	-- legacy m_modf below truncates 3.6 -> 3, so *5 = 15 (off by 3). Block
+	-- Effectiveness escaped the bug only because 45 * 1.2 = 54 is integral.
+	-- Triangulation: MyLittleStJames lv79 Paladin (BETA_13) si4lgl-26
+	--   "+1% Block Chance Per Active Symbol" alloc 3 -> 3/symbol, *1.2 effect = 3.6
+	--   in-game BlockChance 35 = 8 + 3 + 3 + 3 + 18; LEB was 32 (15 not 18).
+	-- See REGRESSION_GUARDS.md "scaleaddmod-stacking-coeff-fractional-retention".
+	local hasStackingTag = false
 	for _, effects in ipairs(mod) do
 		if effects.unscalable then
 			unscalable = true
-			break
+		end
+		if effects.type == "Multiplier" or effects.type == "PerStat" then
+			hasStackingTag = true
 		end
 	end
 	if scale == 1 or unscalable then
@@ -73,6 +87,9 @@ function ModStoreClass:ScaleAddMod(mod, scale)
 			if precision then
 				local power = 10 ^ precision
 				subMod.value = math.floor(subMod.value * scale * power) / power
+			elseif hasStackingTag then
+				-- Retain the scaled fractional coefficient (see guard comment above).
+				subMod.value = round(subMod.value * scale, 2)
 			else
 				subMod.value = m_modf(round(subMod.value * scale, 2))
 			end

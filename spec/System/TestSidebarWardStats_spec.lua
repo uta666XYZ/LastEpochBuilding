@@ -1,9 +1,11 @@
 -- @leb-regression-guard: sidebar-ward-stat-removal
 -- Locks the Build.lua sidebar `displayStats` list to NOT include the raw
--- `Ward` row or `NetWardRegen` row. They were intentionally removed in
--- favor of StableWard + the Net Recovery breakdown. TestBuilds snapshots
--- (BjqdaPzE Sorcerer, o3Zlpkxd Necromancer) were regenerated after the
--- removal — re-adding either row will silently drift those snapshots.
+-- `Ward` row. It was intentionally removed in favor of `StableWard`,
+-- which exposes the same information without confusing users.
+--
+-- `NetWardRegen` was originally also removed, but was reintroduced by
+-- a60057c1e to sit directly under `StableWard` as part of the Ward
+-- recovery grouping. The guard tracks only the raw `Ward` row now.
 --
 -- See REGRESSION_GUARDS.md "sidebar-ward-stat-removal".
 
@@ -14,14 +16,12 @@ describe("SidebarWardStatRemoval", function()
         local text = f:read("*a")
         f:close()
         -- Match exactly the row form: `{ stat = "Ward",`
-        -- StableWard and other ward-prefixed stats must remain allowed.
+        -- StableWard, NetWardRegen, and other ward-prefixed stats are allowed.
         assert.is_falsy(string.find(text, '{ stat = "Ward"', 1, true),
             "Build.lua must NOT re-add a sidebar row for raw stat=\"Ward\"")
-        assert.is_falsy(string.find(text, '{ stat = "NetWardRegen"', 1, true),
-            "Build.lua must NOT re-add a sidebar row for stat=\"NetWardRegen\"")
     end)
 
-    it("TestBuilds snapshots reflect the removal (no Ward / NetWardRegen PlayerStat lines)", function()
+    it("TestBuilds snapshots reflect the removal (no Ward PlayerStat lines)", function()
         local snapshots = {
             "BjqdaPzE lv99 Sorcerer.xml",
             "o3Zlpkxd lv98 Necromancer.xml",
@@ -35,8 +35,6 @@ describe("SidebarWardStatRemoval", function()
             f:close()
             assert.is_falsy(string.find(text, 'stat="Ward"', 1, true),
                 name .. " must not contain a Ward PlayerStat after removal")
-            assert.is_falsy(string.find(text, 'stat="NetWardRegen"', 1, true),
-                name .. " must not contain a NetWardRegen PlayerStat after removal")
         end
     end)
 end)

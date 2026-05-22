@@ -111,3 +111,31 @@ describe("FlameWardTreeGate", function()
             ("Armour=%s exceeds 1500; fw3d tree-node leak suspected"):format(tostring(armour)))
     end)
 end)
+
+describe("FlameWardTreeGate", function()
+    -- @leb-regression-guard: flame-ward-block-toggle
+    -- Direct integration check: load Bakbr2Ne (allocates fw3d-7 Frostguard +200
+    -- Armor x4 = +800, plus Flame Ward as a socket group with SkillType.Buff)
+    -- and assert Armour stays in the LE-aligned range. Reverting the gate to
+    -- the old `if Buff then ... else condName ... end` shape immediately bumps
+    -- Armour from ~790 to ~1926 because the SkillType.Buff branch bypasses the
+    -- Condition:HaveFlameWard gate.
+
+    it("Bakbr2Ne Armour does not include fw3d tree-node leak when Flame Ward is inactive", function()
+        local f = io.open("../spec/TestBuilds/1.4/Bakbr2Ne lv86 Sorcerer.xml", "r")
+        if not f then
+            pending("Bakbr2Ne XML fixture missing in this worktree; covered in determined-hawking worktree")
+            return
+        end
+        local xml = f:read("*a")
+        f:close()
+        loadBuildFromXML(xml, "Bakbr2Ne lv86 Sorcerer")
+        runCallback("OnFrame")
+        local armour = build.calcsTab.calcsOutput.Armour or 0
+        -- Threshold: 1500 lies safely between the LE-aligned value (~790) and
+        -- the broken value (~1926). Flame Ward fw3d-7 alone contributes +800
+        -- BASE so even partial regressions of the gate cross this line.
+        assert.is_true(armour < 1500,
+            ("Armour=%s exceeds 1500; fw3d tree-node leak suspected"):format(tostring(armour)))
+    end)
+end)

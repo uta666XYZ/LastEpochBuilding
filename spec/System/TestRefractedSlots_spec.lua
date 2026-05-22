@@ -1,12 +1,14 @@
 -- @leb-regression-guard: refracted-slot-overlap-only
+-- @leb-regression-guard: refracted-display-not-omen-capacity
 -- Locks the contract for ItemsTab:AutoPopulateOmenIdolSlots:
 --   * Only idols whose footprint overlaps a Refracted (grid type=2) cell
---     are placed in Omen Idol slots.
---   * If overlapping idols exceed the altar's Omen capacity, only the
---     lowest-numbered idols (by Idol-grid slot number) are placed; the
---     rest are dropped, mirroring in-game behavior where a 1x2 idol
---     cannot occupy a 1-cell remaining capacity.
--- See REGRESSION_GUARDS.md "refracted-slot-overlap-only".
+--     are placed in Omen Idol slots (refracted-slot-overlap-only).
+--   * EVERY overlapping idol is placed, up to MAX_OMEN_IDOL_SLOTS — the
+--     display is NOT capped by the altar's Omen Idol capacity. A Refracted
+--     Slot (altar grid cell) and Omen Idol capacity (MaximumOmenIdols) are
+--     distinct concepts (refracted-display-not-omen-capacity).
+-- See REGRESSION_GUARDS.md "refracted-slot-overlap-only" and
+-- "refracted-display-not-omen-capacity".
 
 describe("TestRefractedSlots", function()
     local itemsTab
@@ -72,13 +74,17 @@ describe("TestRefractedSlots", function()
         assert.are.equals(0,    omenIdolItemId(3))
     end)
 
-    it("when overlapping idols exceed capacity, drops higher-numbered Idol slots", function()
-        setCapacityBonus(0)  -- capacity = 1
+    it("displays ALL overlapping idols even when they exceed Omen capacity", function()
+        -- refracted-display-not-omen-capacity: capacity=1 must NOT hide the 2nd
+        -- refracted idol. The Refracted N display shows every overlapping idol;
+        -- the EquippedOmenIdol stat is clamped to capacity separately (CalcSetup).
+        setCapacityBonus(0)  -- Omen capacity = 1
         local id1  = placeIdol(1,  "Grand Idol")  -- hits refracted, idol# 1
-        local _id18 = placeIdol(18, "Grand Idol") -- hits refracted, idol# 18 (dropped)
+        local id18 = placeIdol(18, "Grand Idol")  -- hits refracted, idol# 18
         itemsTab:AutoPopulateOmenIdolSlots()
-        assert.are.equals(id1, omenIdolItemId(1))
-        assert.are.equals(0,   omenIdolItemId(2))
+        assert.are.equals(id1,  omenIdolItemId(1))
+        assert.are.equals(id18, omenIdolItemId(2))  -- shown despite capacity=1
+        assert.are.equals(0,    omenIdolItemId(3))
     end)
 
     it("clears stale Omen Idol entries when no altar is active", function()

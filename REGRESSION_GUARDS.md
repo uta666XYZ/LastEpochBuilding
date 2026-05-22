@@ -200,6 +200,50 @@ the Idol Altar".
 
 **Establishing commit:** `a3a279149`
 
+### `omen-idol-slot-dedup-on-corruption-count`
+
+Omen Idol slots are NOT independent inventory cells — they are secondary
+references to the same physical idol items already placed in `Idol N` grid
+cells. `ItemsTab:AutoPopulateOmenIdolSlots` mirrors any idol that overlaps
+an Omen Refracted slot into the corresponding `Omen Idol N` slot
+(see related guard `refracted-slot-overlap-only`). The Idol-Altar implicit
+"+14 Mana per Idol in a Refracted Slot" tooltip explicitly says
+"There is no additional benefit to having an idol in multiple refracted slots",
+confirming per-physical-item semantics game-side.
+
+The corrupted-item counting loop in `CalcSetup.lua` iterates `items` (and
+the level-gated set) and would naively count the same corrupted idol item
+twice when it appears under both `Idol N` and `Omen Idol N`. That double
+count flows into `CorruptedIdolItemsEquipped` (StatThreshold) and the
+sibling `Multiplier:EquippedCorruptedIdol` emission, inflating any
+"+N <stat> per Equipped Corrupted Idol" affix.
+
+The guard requires the counting loop to dedup by item identity (`item.id`
+when present, else the table reference) before incrementing the `idol`
+accumulator, so each physical corrupted idol contributes once regardless
+of how many slot names reference it.
+
+| Site | File | What it does |
+|---|---|---|
+| dedup | `src/Modules/CalcSetup.lua` (`countItem` closure inside the corrupted-counting `do` block) | Tracks `seenIdolItem[key]` and skips repeated keys so Idol N ↔ Omen Idol N pairs don't double-tally |
+
+**Spec:** `spec/System/TestOmenIdolSlotDedup_spec.lua`
+- "CalcSetup deduplicates corrupted idol items by identity inside the corrupted-counting block"
+- "the dedup table is scoped to the corrupted-counting block (not leaked across loads)"
+- "the same `seenIdolItem` set covers both the active items loop and the level-gated items loop"
+
+**Establishing build:** B7GrkJrK lv100 Lich/Reaper — equips Spire Altar
+with T7 corrupted prefix `+10 Mana per Equipped Corrupted Idol` AND has 2
+corrupted idol items appearing in both `Idol N` and `Omen Idol N` slots
+(item.id 21 → Idol 23 / Omen Idol 2; item.id 30 → Idol 25 / Omen Idol 3).
+Pre-dedup: 16 corrupted-idol count → Reaper Mana = 1548 vs LETools breakdown
+Idol-Altar-Sealed line of 134 (LETools-derived count = 14). Post-dedup:
+14 corrupted-idol count → Mana = 1526 (matches the LETools 134 breakdown
+line exactly). Sibling guard `equipped-corrupted-idol-multiplier` emits
+the multiplier; this guard fixes the count source for it.
+
+**Establishing commit:** `604eb9975`
+
 ### `corrupted-count-pre-levelreq`
 
 `+N to All Attributes with at least 7 Corrupted non-Idol Items equipped`
@@ -319,6 +363,23 @@ alongside the existing `multipliers["CompleteSetCount"]` counter:
 - "flags a set complete and emits the tier-2 bonus when fully equipped"
 - "counts wildcard items separately from real set pieces"
 
+**Datamining source:** `LE_datamining/extracted/set_formulas.md §2, §3` —
+game pipeline `ItemEquipManager.UpdateStats` (RVA `0x10FBBB0`, decomp
+L5703–6029) walks equipped items, dedups by `setID`, and gates each
+`SetBonus` mod with `mod.setRequirement <= count`. **Legends Entwined**
+(`uniqueID == 423`) increments a global legendary counter added to every
+already-present set's effective member count. LEB's
+`applySetBonuses` (`CalcSetup.lua` ~L71) mirrors this: `pieceCount` per
+`setId`, wildcard pass adds `#wildcardItems` to every existing setId
+(`next(pieceCount) ~= nil` guards the "zero-piece set never created from
+a wildcard alone" rule), and tier loop `for tier = 2, min(count, setSize)`
+realises the `setRequirement <= count` gate. **Known gaps (tracked
+separately):** (G1) §3 dedup-by-`uniqueID` ("duplicate uniqueIDs in
+different slots count once") is not enforced in LEB; identical set rings
+in both ring slots over-count. (G2) §3 "only one slot can hold Legends
+Entwined" is not clamped in the wildcard loop; relies on upstream data
+integrity.
+
 **Establishing commit:** `f7b598ede` — _feat(calcs): show equipped set bonuses in Calcs tab_
 
 ### `set-bonus-breakdown-bridge`
@@ -354,30 +415,44 @@ otherwise have no test tripwire if either half were removed.
 
 **Establishing commit:** _(this commit — set-bonus wildcard clamp)_
 
-### `int-truncate-life-mana`
+### `maxlife-maxmana-banker-round`
 
-LE stores `BaseHealth.maxHealth` and `maxMana` as `int` (dump.cs:155378
-and 178322). C# `float → int` assignment truncates toward zero, which
-equals `floor` for positive values. So a build computing `1258 × 1.25 =
-1572.5` shows **1572** in-game, not 1573.
+LE finalizes `maxHealth` / `maxMana` to an `int` via each property's
+`roundingForAdded` mode. `property_list_v3.json` marks Health (property
+7) and Mana (property 8) with `roundingForAdded: "Integer"`, which
+`formulas_verified.md §38` decodes as the **banker rounder**
+(`FUN_18038f970`, round-half-to-even) — **NOT truncation**.
 
-LEB previously matched upstream PoB (`round`), which diverged from
-in-game by +1 on every `.5`-exact total. Switching to `m_floor` is a
-deliberate LEB-vs-PoB divergence for in-game parity, **not a port-back
-candidate**.
+This **supersedes** the earlier `int-truncate-life-mana` guard (commit
+`153d4e455`), which assumed `floor`. The hard in-game witness that rules
+out floor is ShutFackUp lv85 Spellblade (save BETA_7): Mana base
+`241.9301 × 1.04 = 251.607` → in-game General panel shows **252**. floor
+= 251 (old LEB, WRONG); banker = 252. The default Acolyte lv1 mana
+`50 + 0.50506 + 2 = 52.50506` likewise → **53** (frac `> .5` rounds up),
+not 52 — so the old TestModParse `52`/`952` fixtures were wrong.
 
-The tripwire is the Acolyte lv1 default mana: `50 + 0.50506 + 2 = 52.5`
-→ `floor = 52`, `round = 53`. Any revert to `round()` flips this
+**Caveat (honest scope):** every data point observed so far has a
+fraction `≠` exactly `.5`, so banker and plain round-half-up give
+identical results on all of them. The choice of banker over round-half-up
+rests *solely* on `property_list_v3 §38 "Integer" = round-half-to-even`.
+The two rules diverge ONLY on an exact-`.5` fraction sitting on an even
+integer (e.g. a hypothetical `1572.5 → 1572` banker vs `1573` half-up) —
+no such in-game witness has been captured yet.
 
 | Site | File | What it does |
 |---|---|---|
-| Life | `src/Modules/CalcPerform.lua` `doActorLifeMana` (~line 65) | `output.Life = m_max(m_floor(...), 1)` |
-| Mana | `src/Modules/CalcPerform.lua` `doActorLifeMana` (~line 84) | `output.Mana = m_floor(calcLib.val(modDB, "Mana"))` |
+| helper | `src/Modules/CalcPerform.lua` (~line 23) | `bankerRound(x)` — round half to even |
+| Life | `src/Modules/CalcPerform.lua` `doActorLifeMana` (~line 70) | `output.Life = m_max(bankerRound(...), 1)` |
+| Mana | `src/Modules/CalcPerform.lua` `doActorLifeMana` (~line 85) | `output.Mana = bankerRound(calcLib.val(modDB, "Mana"))` |
 
 **Spec:** `spec/System/TestModParse_spec.lua`
-- "effect doubled" — assertions `Mana == 52` (default Acolyte) and `Mana == 952` (with `+900 maximum mana`). Both flip to 53/953 under `round`.
+- "effect doubled" — `Mana == 53` (default Acolyte, `52.50506 →` up) and
+  `Mana == 953` (+900 max mana, `952.50506 →` up). Both were `52`/`952`
+  under the old floor guard; banker rounds the `> .5` fraction up.
+- A revert to `floor` flips these back to `52`/`952` and breaks
+  ShutFackUp's in-game-validated Mana = 252.
 
-**Establishing commit:** `153d4e455` — _fix(calc): floor maxHealth/maxMana to match in-game truncation_
+**Establishing commit:** _(this commit — banker-round maxHealth/maxMana)_
 
 ### `unique-req-level-override`
 
@@ -400,6 +475,49 @@ a multi-stat resistance / armor / movement-speed deficit.
 **Establishing commits:**
 - `5a88e7161` — _fix(items): override base req.level with unique req.level for UNIQUE/LEGENDARY_
 - _Pattern B fix_ — gate override on `overrideLevelRequirement` flag; SET sibling fix `> 0`
+
+### `set-item-req-level-override-with-native-fallback`
+
+Native SET items (the 12 entries in `src/Data/Set/set_1_4.json` with
+`native=true`) store `req.level=0` as a sentinel meaning **"inherit the
+base type's req.level"**. The pre-existing SET override at
+`Item.lua` (post-ParseRaw) was gated on `e.req.level > 0`, so for native
+sets it never fired and a stale stored `LevelReq` line from XML survived
+verbatim. When that stored value exceeds character level, CalcSetup's
+LevelReq filter (`CalcSetup.lua:1003-1013`) drops the item, zeroing every
+mod it contributes.
+
+This bit Qqwv73q2 lv62 Warlock: the Relic XML stored `LevelReq: 68`
+(LETools applies affix-tier inflation to SET items, which LEB
+`computeAffixDerivedLevelReq` correctly skips for SET — but the stale
+68 in raw text was loaded blindly). Char level 62 < 68 → relic filtered
+out → all four of its affix mods dropped:
+- Mana **−94** (= prefix +77 + implicit +17)
+- Fire Resistance **−16** (corrupted-sealed prefix `1028_2`)
+- Necrotic Resistance **−16** (same multi-affix line 2)
+- Void Resistance **−16** (suffix `7_2` "of Hope")
+
+The fix adds a `self.base.req.level` fallback in the SET-rarity override
+branch: when `e.req.level == 0`, use `self.base.req.level`. SET items
+also skip `computeAffixDerivedLevelReq` (guard
+`legendary-affix-derived-levelreq` at L126), so affix tiers never
+re-inflate the value inside LEB — game-faithful per the Font of the
+Erased anchor. The result is `req.level = base.req.level` for native
+SET items regardless of what the stored XML LevelReq line says.
+
+| Site | File | What it does |
+|---|---|---|
+| post-ParseRaw | `src/Classes/Item.lua` (~line 896-) | If SET title matches a set entry, override `self.requirements.level` to `e.req.level` when `>0`, else fall back to `self.base.req.level` |
+| Craft()       | `src/Classes/Item.lua` (~line 1310) | Already does `self.requirements.level = self.base.req.level` first, then only overrides when `e.req.level > 0` — equivalent to the fallback policy |
+
+**Spec:** `spec/System/TestSetItemReqLevelNativeFallback_spec.lua`
+- Asserts the native-fallback marker is present in Item.lua
+- Asserts the Qqwv73q2 Warlock snapshot has FireResistTotal/
+  NecroticResistTotal/VoidResistTotal/Mana matching LET (within 1.0)
+
+**Establishing commit:** _fix(items): fall back to base req.level for
+native SET items so the LevelReq filter doesn't drop them when stored
+XML LevelReq is stale (Qqwv73q2 anchor)_
 
 ### `pattern-a-affix-level-req`
 
@@ -442,6 +560,45 @@ The gate lives at the very top of `computeAffixDerivedLevelReq`
 
 **Establishing commits:**
 - _Legendary affix-derived levelreq gate_ — exclude UNIQUE/LEGENDARY/SET from Pattern A; restore Font of the Erased Ring contribution on Qb6WlPE5
+
+### `idol-family-no-affix-derived-levelreq`
+
+Pattern A (above) must also not apply to the **idol family** (Idol Altar +
+idol bases). Two game facts converge here:
+
+1. **Idols carry no level requirement** (user-confirmed 2026-05-21: 「装備して
+   いるidolにlevel reqはないです」). An idol stays usable from the moment it can
+   be socketed, regardless of its affix tiers.
+2. **An Idol Altar's strongest affixes are drop-only SEALED affixes**, which
+   the in-game `CanContributeToLevelRequirement` check (RVA `0xf03620`,
+   returns `specialAffixType==0 AND sealedAffixType==0`) excludes from the
+   level-requirement sum. LEB's save-file / XML import path does **not**
+   preserve the per-instance sealed flag (only the LETools import path tags
+   `kind="sealed"` — `src/Classes/ImportTab.lua` L1194), so without this gate
+   Pattern A counts the sealed prefix and inflates the altar's req.
+
+Because LEB cannot currently detect per-instance sealed state from a
+save-file import, the gate exempts the whole idol family (`base.type ==
+"Idol Altar"` or `base.type` ends with `" Idol"`) from Pattern A. The gate
+lives in `computeAffixDerivedLevelReq` (`src/Classes/Item.lua`), just after
+the UNIQUE/LEGENDARY/SET gate.
+
+**Establishing build:** ImPalmBeachPete lv36 Bladedancer — Prodigious Lunar
+Altar of Azure Fountains (EXALTED, base req 0). Affixes: SEALED prefix
+`1095_5` (+3 Max Omen Idols / +9 Health per Omen Idol, drop-only) + suffixes
+`1098_2` + `1101_1`. Pre-fix, the sealed prefix was counted (sum_inner
+15+6+3=24, outer 30 → req 44); CalcSetup's LevelReq filter then dropped the
+whole altar on the lv36 character, removing its "+3 Mana per Idol in a
+Refracted Slot" (×2) and showing **Mana 177 vs in-game 183**. In-game the
+altar tooltip reads "Requires Level 11" (sealed-excluded: sum_inner 6+3=9,
+outer 12 → 11) and the altar is active at lv36.
+
+| Site | File | What it does |
+|---|---|---|
+| post-unique gate | `src/Classes/Item.lua` `computeAffixDerivedLevelReq` | Return `nil` for Idol Altar / `* Idol` bases so Pattern A never raises req.level |
+
+**Spec:** `spec/System/TestItemParse_spec.lua`
+- "Idol Altar: affix tiers do not inflate req.level (idol family exempt)"
 
 ### `unique-data-integrity`
 
@@ -495,6 +652,80 @@ inflating Mana Regen by ~+15.5/s (LE 16.72 vs LEB 32.20 prior to fix).
 
 **Establishing commit:** `7a5fed7e2`
 
+### `armour-pct-shorthand-inc`
+
+Direct extension of `regen-pct-shorthand-inc` covering the Armour stat.
+LE in-game text uses the shorthand `+N% Armor` (without the word
+"increased") for what is, per LE's authoritative
+`LE_datamining/extracted/items/multi_affixes_v3.json` affix 1007,
+`affixProperties[0]` `property=10` (Armor) `modifierType=1` (INC).
+`ModItem_1_4.json` renders the row as `"+(24-30)% Armor"` default and
+`"+(85-90)% Armor"` body_armor slotOverride at tier 5. Without `"Armour"`
+in the BASE_MORE INC-promotion list, the prefix falls through to BASE and
+is applied as flat `+N Armor` instead of `+N% increased Armor`, causing
+4 builds at v0.14.6 to under-count Armor (Sum|D| ≈ 1596):
+
+| Build | Class | LET | LEB | Δ |
+|---|---|---:|---:|---:|
+| `oN2zNnaR lv100` | Necromancer  | 1912 | 1245 | −667 |
+| `BGzxJrgn lv76`  | Bladedancer  | 1188 |  752 | −436 |
+| `Qqwv6zbR lv100` | Bladedancer  | 2991 | 2706 | −285 |
+| `QeY79rn2 lv100` | Necromancer  | 2220 | 2012 | −208 |
+
+| Site | File | What it does |
+|---|---|---|
+| classifier | `src/Modules/ModParser.lua` (~line 3117) | Adds `Armour` to the existing `Life`/`Mana`/`Ward`/`ManaRegen`/`LifeRegen` BASE→INC override under `BASE_MORE` form |
+| pre-cached entries | `src/Data/ModCache.lua` | 15 plain `+N% Armor` rows (N ∈ {15, 25, 27, 34, 35, 41, 44, 48, 53, 55, 62, 68, 71, 80, 88}) flipped from `type="BASE"` to `type="INC"` so historical cache hits don't bypass the new classifier |
+
+**Spec:** `spec/System/TestArmourPctShorthandInc_spec.lua`
+- "ModParser BASE_MORE branch includes 'Armour' in INC promotion list"
+- "ModParser carries `@leb-regression-guard: armour-pct-shorthand-inc` marker"
+- 15 × "ModCache '+N% Armor' carries name=Armour type=INC" + 15 × must-not stale BASE form
+
+### `broken-negative-inc-implicit-text`
+
+LE datamining sometimes emits negative-INC item implicits as a literal
+broken raw string of the form `"+-0.6 Armor"` (literal `+-` prefix,
+fractional value, bare stat name). The bases JSON has been corrected to
+the parametrized form `{rounding:Integer}(42-60)% reduced Armor`, but
+older saved XML build snapshots cache the broken literal text on the
+implicit line. On reload, the broken text has no `(N-M)` template, so
+`applyRange` leaves it untouched and ModParser parses it as a flat
+`BASE -0.6 Armor` mod (effectively dropped — the intended ~-50% INC
+disappears).
+
+Affected uniques (per `LE_datamining/extracted/items/equipmentItems.json`):
+
+| Base | Implicit | datamining property/type/value/maxValue | Corrected template |
+|---|---|---|---|
+| Deadstar Amulet     | implicit[2] | property=10 / type=1 / value=-0.6  / maxValue=-0.42 | `{rounding:Integer}(42-60)% reduced Armor` |
+| Prophetic Homonculus | implicit[2] | property=10 / type=1 / value=-0.47 / maxValue=-0.37 | `{rounding:Integer}(37-47)% reduced Armor` |
+
+Affected at v0.14.8 (1 build with positive Armor delta over the
+diff_letools `|Δ%|>2` threshold):
+
+| Build | Class | LET | LEB pre-fix | LEB post-fix | Δ pre | Δ post |
+|---|---|---:|---:|---:|---:|---:|
+| `BgRrekOY lv82` | Sorcerer | 263 | 375 | 259 | +112 (+42.6%) | −4 (−1.5%) |
+
+Three sites lock together:
+
+| Site | File | What it does |
+|---|---|---|
+| substitution | `src/Classes/Item.lua` (~line 666) | In `ParseRaw`, when an implicit line matches `^%+%-[%d%.]+%s+(.+)$` and `self.base.implicits` carries a `(N-M)% reduced <stat>` template for the same stat name, substitute the base template line so `applyRange` + ModParser see the percent-reduced form |
+| bases (1.4)  | `src/Data/Bases/bases_1_4.json` (~lines 12083, 12228) | Deadstar Amulet and Prophetic Homonculus implicits use the corrected `(N-M)% reduced Armor` template; broken `"+-0.X Armor"` literal removed |
+| bases legacy | `src/Data/Bases/bases.json`     (~lines 11892, 12031) | Same correction in the legacy non-versioned bases file for non-versioned base lookup |
+
+**Spec:** `spec/System/TestBrokenNegativeIncImplicit_spec.lua`
+- "Item.lua ParseRaw carries `@leb-regression-guard` marker"
+- "Item.lua ParseRaw detects '+-N.M <stat>' broken pattern"
+- "Item.lua ParseRaw substitutes from self.base.implicits"
+- "Item.lua ParseRaw matches '(N-M)% reduced <stat>' template form"
+- 2 × "bases_1_4.json implicit uses corrected template" (Deadstar, Prophetic)
+- 2 × "bases.json (legacy) implicit uses corrected template" (Deadstar, Prophetic)
+
+**Verified:** `python spec/tools/diff_letools.py "BgRrekOY lv82 Sorcerer"` shows Armor row drops below threshold after fix + snapshot regen (LEB 259 vs LET 263, |Δ%|=1.5%).
+
 ### `butchers-crown-no-mana-regen`
 
 The Butcher's Crown (uniqueID=449) carries a "you cannot regenerate mana"
@@ -525,31 +756,103 @@ Both text variants must produce a `NoManaRegen` FLAG, which
 ### `refracted-slot-overlap-only`
 
 `ItemsTab:AutoPopulateOmenIdolSlots` decides which idols on the 5x5 layout
-become Omen Idols. The contract: only idols whose footprint overlaps a
-Refracted (`grid` cell type=2) cell qualify; idols that sit entirely on
-type-1 cells are skipped even when Omen capacity is unfilled.
+populate the "Refracted N" display slots. The contract: only idols whose
+footprint overlaps a Refracted (`grid` cell type=2) cell qualify; idols that sit
+entirely on type-1 cells are skipped even when Omen capacity is unfilled.
 
-If overlapping idols exceed the altar's capacity (`omenIdolCapacity` +
-`MaximumOmenIdols` sealed-affix bonus), only the lowest-numbered Idol slots
-fit; the rest are dropped, matching the in-game rule that a 1x2 idol cannot
-occupy a 1-cell remaining capacity.
+This guard locks the **overlap-only** half of the contract (non-overlapping
+idols never appear). The **display is NOT capped by `omenIdolCapacity`** — that
+is the sibling guard `refracted-display-not-omen-capacity`.
 
 A regression here silently mis-counts `+N per Idol in a Refracted Slot`,
 `HealthPerEquippedOmenIdol`, and `cloneWithAltarBoost` prefix/suffix scaling
 
 | Site | File | What it does |
 |---|---|---|
-| auto-populate | `src/Classes/ItemsTab.lua` `AutoPopulateOmenIdolSlots` (~line 1186) | Walks IDOL_GRID_LAYOUT, tests footprint vs altar.grid type-2, fills Omen Idol N up to capacity by Idol-slot-number order |
+| auto-populate | `src/Classes/ItemsTab.lua` `AutoPopulateOmenIdolSlots` (~line 1245) | Walks IDOL_GRID_LAYOUT, tests footprint vs altar.grid type-2, fills Omen Idol N with overlapping idols by Idol-slot-number order (bounded by MAX_OMEN_IDOL_SLOTS, NOT capacity) |
 | import path comment | `src/Classes/ImportTab.lua` (~line 2006) | Documents the refracted-only spec for future readers |
 
 **Spec:** `spec/System/TestRefractedSlots_spec.lua`
 - "places Grand Idol at (1,2) into Omen Idol 1 (covers refracted cell (1,3))"
 - "excludes idols that do not touch any refracted cell"
 - "with capacity 2, places Idol 1 and Idol 18 (both overlap), skips non-overlapping Idol 4"
-- "when overlapping idols exceed capacity, drops higher-numbered Idol slots"
+- "displays ALL overlapping idols even when they exceed Omen capacity"
 - "clears stale Omen Idol entries when no altar is active"
 
 **Establishing commit:** `275343209`
+
+### `refracted-display-not-omen-capacity`
+
+The "Refracted N" display slots (`Omen Idol N` internally) show **every** idol
+whose footprint overlaps a Refracted (`grid` type=2) cell, up to
+`MAX_OMEN_IDOL_SLOTS`. They are **NOT** gated by the altar's Omen Idol capacity
+(`omenIdolCapacity`, base=1 on every altar).
+
+A Refracted Slot (an altar-grid cell) and the Omen Idol capacity
+(`MaximumOmenIdols`) are distinct concepts (`dump.cs`:
+`equippedIdolsInRefractedSlots` vs `equippedOmenIdols`). Gating the display by
+`omenIdolCapacity` hid the 2nd/3rd refracted idol — e.g. ZombieWarehouse lv72
+Necromancer has 3 idols on refracted cells but only "Refracted 1" was shown.
+The `EquippedOmenIdol` *stat* is clamped to capacity separately
+(`equipped-omen-idol-capped-by-capacity`) so this display change does NOT alter
+any per-build stat snapshot.
+
+| Site | File | What it does |
+|---|---|---|
+| dropdown `shown` | `src/Classes/ItemsTab.lua` (~line 261) | Shows slot N when `N <= CountIdolsOnRefractedCells()` (capped at MAX_OMEN_IDOL_SLOTS), not `<= omenIdolCapacity` |
+| auto-populate fill | `src/Classes/ItemsTab.lua` `AutoPopulateOmenIdolSlots` (~line 1281) | Fills every overlapping idol, not just the first `capacity` |
+
+**Spec:** `spec/System/TestRefractedSlots_spec.lua`
+- "displays ALL overlapping idols even when they exceed Omen capacity"
+
+`spec/System/TestCountIdolsOnRefractedCells_spec.lua`
+- "counts ALL overlapping idols, NOT capped by omenIdolCapacity (=1)" (now asserts AutoPopulate fills 2)
+
+### `equipped-omen-idol-capped-by-capacity`
+
+`Multiplier:EquippedOmenIdol` (scales `+N per Equipped Omen Idol`) must stay
+bounded by the altar's Omen Idol capacity (`omenIdolCapacity` +
+`GetOmenIdolCapacityBonus()`). Because the "Omen Idol N" slots now display every
+refracted-overlapping idol (`refracted-display-not-omen-capacity`), the raw count
+of populated slots can exceed capacity; CalcSetup clamps it back so the stat is
+identical to before the display change. `IdolInRefractedSlot` stays driven by the
+uncapped `CountIdolsOnRefractedCells` (`refracted-count-independent-of-omen-capacity`).
+
+| Site | File | What it does |
+|---|---|---|
+| clamp | `src/Modules/CalcSetup.lua` (~line 1119) | Reduces `equippedOmenIdolCount` to `omenCapacity` before emitting `Multiplier:EquippedOmenIdol` |
+
+**Spec:** `spec/System/TestCountIdolsOnRefractedCells_spec.lua` (describe "EquippedOmenIdolCappedByCapacity")
+- "keeps the regression-guard comment so future edits trip review"
+- "clamps equippedOmenIdolCount to the altar's Omen Idol capacity"
+- "still drives IdolInRefractedSlot from the uncapped refracted count"
+
+### `refracted-count-independent-of-omen-capacity`
+
+`ItemsTab:CountIdolsOnRefractedCells` drives `Multiplier:IdolInRefractedSlot`,
+which scales `+N per Idol in a Refracted Slot` affixes. It counts EVERY distinct
+idol whose grid footprint overlaps a Refracted (`grid` type=2) cell, and that
+count is **independent of `omenIdolCapacity` / `MaximumOmenIdols`**.
+
+A Refracted Slot (an altar-grid cell) and an Omen Idol slot (a capped idol
+category, `MaximumOmenIdols`) are different concepts. The capacity cap applies
+ONLY to `AutoPopulateOmenIdolSlots` / the "Refracted N" dropdown
+(`refracted-slot-overlap-only`), NOT to the refracted-overlap count. A
+regression that re-couples this count to capacity silently undercounts the
+`IdolInRefractedSlot` multiplier (e.g. ShutFackUp lv85 Spellblade: 3 idols in
+refracted slots but `omenIdolCapacity` = 1 — the multiplier must be 3, not 1).
+
+| Site | File | What it does |
+|---|---|---|
+| refracted count | `src/Classes/ItemsTab.lua` `CountIdolsOnRefractedCells` (~line 1293) | Walks the Idol 1-25 grid, dedups by itemId, counts idols overlapping type-2 cells; no capacity gate |
+| multiplier wiring | `src/Modules/CalcSetup.lua` (~line 1121) | Registers `Multiplier:IdolInRefractedSlot` from the count above (distinct from `EquippedOmenIdol`) |
+
+**Spec:** `spec/System/TestCountIdolsOnRefractedCells_spec.lua`
+- "counts a single overlapping idol"
+- "excludes idols that touch no refracted cell"
+- "counts ALL overlapping idols, NOT capped by omenIdolCapacity (=1)"
+- "dedups a multi-cell idol so it is counted once"
+- "returns 0 when no altar is active"
 
 ### `idol-altar-capacity-tooltip`
 
@@ -616,6 +919,38 @@ suffix flag combined to produce `DamageLifeLeech` with `" Overkill   "`
 left as unconsumed text. Symptoms (G1 batch #1, 2026-05-07):
 
 - `BgRrP5rr` `OverkillLeech` LE=16 LEB=0
+
+| Site | File | What it does |
+|---|---|---|
+| alias table | `src/Modules/ModParser.lua` (~line 165-178) | Registers `overkill damage leeched as health` → `OverkillLeech` |
+
+**Spec:** `spec/System/TestOverkillLeech_spec.lua`
+- "'11% of Overkill Damage Leeched as Health' parses to OverkillLeech BASE 11"
+- "'5% of Overkill Damage Leeched as Health' parses to OverkillLeech BASE 5"
+- "does not emit DamageLifeLeech for the overkill affix wording"
+
+**Establishing commit:** `5e0bd9abd`
+
+### `overkill-damage-leech-parser`
+
+The affix `(N)% of Overkill Damage Leeched as Health` must parse to the
+`OverkillLeech` summary modifier — **not** the generic `DamageLifeLeech`.
+LE applies overkill leech only to damage exceeding the target's remaining
+HP, so routing the affix through `DamageLifeLeech` (which `CalcOffence`
+sums for every-hit leech) would over-leech every hit while leaving the
+sidebar's Overkill Leech row at 0.
+
+Before this guard, `modNameList` had no entry for the full phrase, so
+`scan()` picked the generic `damage` name and the `leeched as health`
+suffix flag combined to produce `DamageLifeLeech` with `" Overkill   "`
+left as unconsumed text. Symptoms (G1 batch #1, 2026-05-07):
+
+- `BgRrP5rr` `OverkillLeech` LE=16 LEB=0
+- `Q9J4wvmD` `OverkillLeech` LE=9 LEB=0
+
+Fix: register the 4-word phrase in `modNameList`. `scan()` chooses the
+earliest+longest match, so the new entry wins over `damage` and consumes
+the whole right-hand side, leaving no suffix and no residual.
 
 | Site | File | What it does |
 |---|---|---|
@@ -1010,6 +1345,104 @@ A regression here re-introduces any
 
 **Establishing commit:** `6fadd1234`
 
+### `s4-guile-per-point-armour-reduction`
+
+Sibling to `s4-converted-attr-no-base-inherit`: the suppression guard
+forbids re-introducing the Strength-derived `+4% Armour PerStat:Brutality`
+inheritance; this guard locks the *opposite-direction* intrinsic that
+Guile actually carries on its own.
+
+Evidence: `LE_datamining/extracted/localization/properties_localization.json`
+contains `Property_Player_652_AltText`:
+
+> "Each point of Guile grants 0.3% increased Cooldown Recovery Speed for
+> Movement Skills and 1% Reduced Armor, instead of granting dodge rating."
+
+The `1% Reduced Armor` is built into the Guile attribute itself, not into
+the conversion affixes (`Affix_1085_*` only emit `DexterityConvertedToGuile`).
+LEB therefore wires it at attribute-init time in `CalcSetup.lua`, parallel
+to the Strength→`+4% Armour PerStat:RawStr` intrinsic.
+
+Without this intrinsic, three v0.14.6 builds carrying the Dex→Guile sealed
+prefix (Exulis Oracle Amulet) reported large positive LEB-LET Armour diffs:
+
+| Build | Guile | LEB Armour | LET Armour | Δ before | Δ after fix |
+|---|---|---|---|---|---|
+| `QJWMRv53` Bladedancer | 207 | 660 | -260 | +920 | 0 |
+| `Qqwv6zGN` Druid | — | 4182 | 3881 | +301 | ~0 |
+| `Qdz2yXN3` Necromancer | — | 2011 | 1758 | +253 | ~0 |
+
+The mod is a flat `INC -1 PerStat=Guile` that stacks additively with the
+player's other Armour `INC` sources, so on high-Guile builds it can drive
+total Armour negative — matching LET's reported `-260` on `QJWMRv53`.
+
+A regression here removes or alters the intrinsic, re-inflating Armour by
+~Guile% on every affected build.
+
+| Site | File | What it does |
+|---|---|---|
+| Guile intrinsic | `src/Modules/CalcSetup.lua` (just below the `do-not-remove` `s4-converted-attr-no-base-inherit` block, ~line 765) | `modDB:NewMod("Armour", "INC", -1, "Guile", {type = "PerStat", stat = "Guile"})` with evidence comment citing `Property_Player_652_AltText` |
+
+**Spec:** `spec/System/TestS4GuilePerPointArmourReduction_spec.lua`
+- "CalcSetup wires Armour INC -1 PerStat=Guile"
+- "CalcSetup carries @leb-regression-guard: s4-guile-per-point-armour-reduction marker"
+- "intrinsic sits below the 'do-not-remove' inheritance-suppression block"
+- "evidence comment references Property_Player_652_AltText"
+- "does NOT re-introduce the suppressed +4% Armour PerStat=Brutality inheritance"
+
+### `s4-apathy-per-point-mana-regen-inc`
+
+Sibling to `s4-guile-per-point-armour-reduction`: Apathy carries its own
+intrinsic Mana-Regen INC per point, just as Guile carries `-1% Armour per
+point`. The `s4-converted-attr-no-base-inherit` suppression guard ensures
+Apathy does **not** inherit Attunement's `+2 Mana per point`; this guard
+locks the *replacement* intrinsic that Apathy carries.
+
+Evidence: `LE_datamining/extracted/localization/properties_localization.json`
+contains `Property_Player_653_AltText`:
+
+> "Each point of Apathy grants 2% increased Mana Regeneration and 0.2% of
+> Current Health Lost when you Directly Use a Skill, instead of adding Mana."
+
+The `+2% Mana Regeneration per point` is built into the Apathy attribute
+itself, not into the conversion affixes. LEB wires it at attribute-init
+time in `CalcSetup.lua`, parallel to the Guile intrinsic.
+
+The "instead of adding Mana" half is already covered by the Mana base mod
+routing through `PerStat:RawAtt` (post-conversion residual Att), so Apathy
+correctly contributes no Mana.
+
+The 0.2%-Current-Health-Loss-on-Directly-Use-Skill half is skill-trigger
+semantics; unmodeled until a build depends on it, and it doesn't move any
+stat tracked by `diff_letools` MAPPING.
+
+Without this intrinsic, the v0.14.6 G3 BOwJRDdE Shaman build (Apathy=64
+from 100% Attunement→Apathy conversion via Exulis Helmet sealed prefix)
+reported a -10.28 ManaRegen diff:
+
+| Build | Apathy | LEB ManaRegen | LET ManaRegen | Δ before | Δ after fix |
+|---|---|---|---|---|---|
+| `BOwJRDdE` Shaman | 64 | 20.2 | 30.48 | -10.28 | 0 |
+
+Arithmetic check: base 8, pre-fix INC sum 153% → 8 × 2.53 = 20.24 (matches
+LEB pre-fix); post-fix INC sum 281% (153 + 64×2) → 8 × 3.81 = 30.48 (matches
+LET exactly).
+
+A regression here removes or alters the intrinsic, deflating ManaRegen by
+`base × (Apathy × 2 / 100)` × any further-multiplicative on the relevant
+build (≈10.28 on BOwJRDdE).
+
+| Site | File | What it does |
+|---|---|---|
+| Apathy intrinsic | `src/Modules/CalcSetup.lua` (just below the Guile intrinsic, ~line 780) | `modDB:NewMod("ManaRegen", "INC", 2, "Apathy", {type = "PerStat", stat = "Apathy"})` with evidence comment citing `Property_Player_653_AltText` |
+
+**Spec:** `spec/System/TestS4ApathyPerPointManaRegenInc_spec.lua`
+- "CalcSetup wires ManaRegen INC 2 PerStat=Apathy"
+- "CalcSetup carries @leb-regression-guard: s4-apathy-per-point-mana-regen-inc marker"
+- "intrinsic sits below the 'do-not-remove' inheritance-suppression block"
+- "evidence comment references Property_Player_653_AltText"
+- "does NOT scale Mana directly off Apathy (the 'instead of adding Mana' rule)"
+
 ### `s4-perstat-base-includes-converted-twin`
 
 Sibling to `s4-converted-attr-no-base-inherit`. Both guards must hold
@@ -1032,6 +1465,41 @@ text-parsed `Per <BaseAttr>` mods on passive nodes / item affixes
 - "ModCache entries for Druid OR-form conditionals carry the Condition tag" — Armour entry with `neg=true`, Melee Damage entry without `neg`, both with `extra=nil`
 
 **Establishing commit:** `8ade47879`
+
+### `attunement-mana-per-point`
+
+End-to-end behavioral counterpart to `s4-perstat-base-includes-converted-twin`.
+Last Epoch's Attunement attribute grants **+2 flat Mana per point** (verified
+in `LE_datamining/extracted/formulas_verified.md §23`). LEB wires this as a
+single `PerStat:RawAtt` intrinsic mod registered in `CalcSetup.lua` (~line 735).
+The wiring guard above proves the mod call exists and the runtime plumbing
+(twin-sum + RawAtt mirror) is in place; this guard proves the **observable
+output** — bumping Att by N raises `output.Mana` by exactly `2 * N` — does
+not regress. Without this end-to-end check, a future refactor that breaks
+`output.Mana ↑ when Att ↑` (e.g. mis-tagging the mod, severing PerStat eval,
+or losing the RawAtt mirror after S4 conversion) would silently slip past
+the unit-style wiring spec.
+
+Establishing context: Qqwv73q2 lv62 Warlock LETools Mana 269.31 vs LEB 175
+(Δ=-94.31 == Att=47 × +2/pt). The Δ turned out **not** to be this guard
+failing (Attunement contribution = 47×2 = 94 was firing correctly); it
+was the LevelReq filter at `CalcSetup.lua:937-976` stripping an over-level
+Silver Grail relic per the game's `FailedEquipReason.LEVEL=0` rule
+(`dump.cs:200313` / `CanEquipItem` at `dump.cs:375585`). LETools is
+planner-mode and level-ignorant, so it shows the relic's +94 Mana; LEB is
+game-canonical and filters it. The diagnostic that ruled in this guard
+prompted writing the end-to-end spec so the next "Mana looks wrong"
+investigation can rule it out in one `busted` run.
+
+| Site | File | What it does |
+|---|---|---|
+| intrinsic mod | `src/Modules/CalcSetup.lua` (~line 735) | `modDB:NewMod("Mana", "BASE", 2, "Attunement", { type = "PerStat", stat = "RawAtt" })` |
+| RawAtt publish | `src/Modules/CalcPerform.lua` (~line 334) | `output.RawAtt = output.Att` after S4 conversion |
+
+**Spec:** `spec/System/TestAttunementMana_spec.lua`
+- "each Attunement point adds +2 flat Mana via PerStat:RawAtt" — baseline `output.Mana` / `Att` / `RawAtt`, applies `customMods="+10 to Attunement"`, asserts Att +10, RawAtt mirrors Att, Mana +20
+
+**Establishing commit:** (this commit)
 
 ### `exulis-all-attributes-range`
 
@@ -1068,27 +1536,29 @@ in the imported `ur` array.
 ### `sidebar-ward-stat-removal`
 
 The Build.lua sidebar `displayStats` list was trimmed to drop the raw
-`Ward` row and the `NetWardRegen` row. Both duplicated information
-already exposed by `StableWard` and the Net Recovery breakdown rows
-(NetLifeRegen / NetManaRegen / TotalNetRegen) and confused users.
+`Ward` row because it duplicated `StableWard` and confused users.
 
-After removal, TestBuilds snapshots (BjqdaPzE Sorcerer, o3Zlpkxd
-Necromancer) were regenerated and the corresponding `<PlayerStat
-stat="Ward"...>` / `<PlayerStat stat="NetWardRegen"...>` lines no
-longer appear. A regression here re-adds either row to the sidebar
-and silently drifts every snapshot.
+`NetWardRegen` was originally removed alongside `Ward`, but was
+reintroduced by `a60057c1e` to sit directly under `StableWard` so
+the Ward recovery group reads as a unit. The guard now tracks only
+the raw `Ward` row; `NetWardRegen` is intentionally allowed.
+
+TestBuilds snapshots (BjqdaPzE Sorcerer, o3Zlpkxd Necromancer) are
+expected to omit the `<PlayerStat stat="Ward"...>` line. They may or
+may not contain a `<PlayerStat stat="NetWardRegen"...>` line depending
+on regeneration timing — that line is no longer asserted either way.
 
 | Site | File | What it does |
 |---|---|---|
-| sidebar config | `src/Modules/Build.lua` (`displayStats`, around the StableWard row) | only `StableWard` row remains |
-| 1.4 sample snapshot | `spec/TestBuilds/1.4/BjqdaPzE lv99 Sorcerer.xml` | no Ward / NetWardRegen PlayerStat |
-| 1.4 sample snapshot | `spec/TestBuilds/1.4/o3Zlpkxd lv98 Necromancer.xml` | no Ward / NetWardRegen PlayerStat |
+| sidebar config | `src/Modules/Build.lua` (`displayStats`, around the StableWard row) | no raw `Ward` row; `StableWard` + `NetWardRegen` allowed |
+| 1.4 sample snapshot | `spec/TestBuilds/1.4/BjqdaPzE lv99 Sorcerer.xml` | no Ward PlayerStat |
+| 1.4 sample snapshot | `spec/TestBuilds/1.4/o3Zlpkxd lv98 Necromancer.xml` | no Ward PlayerStat |
 
 **Spec:** `spec/System/TestSidebarWardStats_spec.lua`
 - "Build.lua sidebar displayStats does not declare stat=\"Ward\""
-- "TestBuilds snapshots reflect the removal (no Ward / NetWardRegen PlayerStat lines)"
+- "TestBuilds snapshots reflect the removal (no Ward PlayerStat lines)"
 
-**Establishing commit:** `708096bf7`
+**Establishing commit:** `708096bf7` (Ward removal); narrowed by `a60057c1e` (NetWardRegen reintroduction).
 
 ### `letools-diff-ward-regen-gross-mapping`
 
@@ -1143,6 +1613,47 @@ build's attribute totals by ±1..±2 across all 5 attributes.
 
 **Establishing commit:** `7675c0af2`
 
+### `quest-reward-requires-completion`
+
+Save-file twin of `letools-quest-reward-from-completed-quests`. The offline
+save's `savedQuests` is a list of quest **progress** records, NOT a list of
+completed quests. A questID merely present means the player started it; the
+`+1 to all attributes` reward (124 = Apophis and Majasa, 151 = Temple of
+Eterra) is granted only when the quest reaches its **terminal step**
+(`questStepID`):
+
+- `124` → terminal `questStepID = 656`
+- `151` → terminal `questStepID = 830`
+
+The per-step `state` field is always `0` across every observed save, so it
+cannot be used as the completion signal; the terminal `questStepID` can.
+`ImportTabClass:ReadJsonSaveData` MUST route through
+`DetectSaveQuestRewards(savedQuests)` rather than testing for mere presence.
+
+Triangulation (three live offline saves):
+
+| Build | quest 124 | quest 151 | In-game reward | Presence-based bug |
+|---|---|---|---|---|
+| ImPalmBeachPete lv48 | step 652 (in-progress) | absent | none (attrs 16/9/13/9/13) | wrongly +1 all → Health 992→998, Mana 195→197 |
+| ShutFackUp lv85 | step 656 (complete) | step 830 (complete) | +2 all | correct |
+| ZombieWarehouse lv72 | step 656 (complete) | step 830 (complete) | +2 all | correct |
+
+| Site | File | What it does |
+|---|---|---|
+| shared helper | `src/Classes/ImportTab.lua` `ImportTabClass:DetectSaveQuestRewards` | Returns `(hasApophis, hasEterra)`; flag set only when `questStepID == QUEST_COMPLETE_STEP[questID]` |
+| save decode | `src/Classes/ImportTab.lua` `ImportTabClass:ReadJsonSaveData` | Calls the helper and assigns `char.questFlags` |
+
+**Spec:** `spec/System/TestSaveQuestRewardCompletion_spec.lua`
+- "returns false,false when savedQuests is nil/empty"
+- "does NOT grant the reward for an in-progress quest 124 (Pete lv48)"
+- "grants Apophis (124) only when at terminal step 656"
+- "grants Eterra (151) only when at terminal step 830"
+- "grants both for a fully-completed save (ShutFackUp / ZombieWarehouse)"
+- "does NOT grant Eterra when 151 is present but pre-terminal"
+- "ignores unrelated quest IDs even at high step numbers"
+
+**Establishing commit:** (pending)
+
 ### `letools-import-form-condition-autoset`
 
 LE planner displays "in-combat" stats: Druid Form skills (Werebear /
@@ -1174,6 +1685,608 @@ Mapping (Druid ascendancy only — see class gate):
 - "does not set Form flags for non-Druid classes (Form skill not always active)"
 
 **Establishing commit:** `96e261da2`
+
+### `unbroken-charge-block-effectiveness-per-ms-letools-artifact`
+
+LE's planner ("LETools") reports a **wrong** Block Effectiveness contribution
+from Unbroken Charge's `+(11-30) Block Effectiveness per 1% Increased
+Movement Speed` line. LEB matches the **in-game tooltip text verbatim**;
+LET's value is a downstream artifact of LE's property-vs-text template
+desync inside the unique-mod data.
+
+Anchor build: `spec/TestBuilds/1.4/AVa9YEkg lv95 Paladin.xml`
+- LEB `output.BlockEffectiveness` = **1716** (matches the in-game tooltip
+  reading rule: text `(11-30)` rolled at `range:215` → `11 + 19·215/255 ≈
+  27.02 → 27`; 27 × 29% MS = 783 from the per-MS line)
+- LET planner tooltip = **1334** (per-MS shield-unique-mod contribution
+  shown as **+401**; works out to `13.85 × 29 = 401.56 → 401` — i.e. LET
+  applied the actual property value range `13-25` from `mods[3]` (property
+  98, tag 624) but read the ModRange index belonging to the **Haste**
+  chance roll (`range:18`, `rollID 0`) instead of the per-MS roll
+  (`range:215`, `rollID 2`))
+- Δ = +382 = 783 − 401, isolating cleanly to that one shield-unique-mod
+  line in the LET tooltips breakdown
+
+Root cause (LE data, not LEB):
+`LE_datamining/extracted/unique_mods_postprocessed.json` and
+`unique_overrides.json` ship the **in-game tooltip text** for Unbroken
+Charge, which has the value ranges **swapped** vs `unique_mods_regen.json`
+(the property-regenerated truth):
+
+| mod idx | postprocessed/overrides text | regen text |
+|---|---|---|
+| 1 | `(13-25)% chance to gain Haste` (range:18) | `+(11-30)% chance to gain Haste` |
+| 3 | `+(11-30) BE per 1% MS` (range:215) | `+(13-25) BE per 1% MS` |
+
+LEB reads the in-game tooltip text verbatim — that is the contract a
+player-facing planner has to honour, because it must produce the same
+arithmetic the in-game tooltip produces. LET tries to bypass the text
+and recompute from raw property values, but its ModRange-index lookup
+follows mod ordering as-printed (so the first per-property-98 mod gets
+`rollID 0`'s range, the third gets `rollID 2`'s), which only works when
+text and property-meta agree. On Unbroken Charge they don't, so LET's
+"recomputed truth" is itself wrong by 382 BE.
+
+Verdict: **LEB is correct; LET is wrong.** No source change. This guard
+exists so that a future LE data-mining refresh that fixes the
+postprocessed/overrides swap (collapsing text and property values into
+one consistent shape) **fires the spec** and prompts a re-evaluation,
+because the LEB number would then need to match LET's revised value.
+
+**Spec:** `spec/System/TestUnbrokenChargeBELetoolsArtifact_spec.lua`
+- "uniques.json mod[3] property=98 tags=624 has value range 13-25"
+- "unique_mods_postprocessed.json mod[3] text still reads '(11-30)' (the swap)"
+- "AVa9YEkg snapshot keeps output.BlockEffectiveness = 1716 (LEB-correct, LET-wrong by +382)"
+
+**Establishing commit:** (this commit)
+
+### `conditional-recent-action-stat-recognition`
+
+`Modules/ModParser.lua` `specialModList` previously paired two catch-all
+nsAny patterns for `^%+?(N) (stat) if you have (action) recently$` (with
+and without `%`). Catch-alls are checked before the generic
+form→tag→name chain, so any line whose stat half resolved through
+`modNameList` AND whose condition half resolved through `modTagList` was
+silently demoted to `LEB_NotSupported BASE N` — a stripped mod that
+CalcDefence / CalcOffence ignored.
+
+Anchor build: `spec/TestBuilds/1.4/Q9J4w8PE lv99 Necromancer.xml`
+- corrupted-sealed prefix on Julra's Obsession gloves:
+  `{range:11}{affixType:Prefix}{rounding:Integer}+(301-400) Endurance
+  Threshold if you have not been Hit Recently` → +305 EnduranceThreshold
+- pre-fix: parser emitted `LEB_NotSupported BASE 305` → CalcDefence
+  contributed 0 → LEB `EnduranceThreshold = 1028` vs LET `1344` (Δ=-316)
+- post-fix: parser emits `EnduranceThreshold BASE 305` tagged with
+  `Condition:BeenHitRecently(neg)`, which is active by default (the
+  `conditionBeenHitRecently` Config toggle defaults OFF, so neg-tagged
+  mods are gated ON to match LET's behaviour on the same line) →
+  LEB `EnduranceThreshold = 1344`, Δ = 0
+
+Fix shape: convert the two catch-alls to a single decline handler
+`conditionalRecentDecline(num, _, statName, condName)` that returns
+`nil` (cedes to the generic parser) when BOTH lookups succeed, and
+falls back to `nsAny(num)` otherwise. Recognition-only behaviour is
+preserved for the long tail of unknown stat or condition phrases
+(`+5 Floozle if you have been Hit Recently` still LEB_NotSupported;
+`+5 Endurance if you have eaten a sandwich recently` still
+LEB_NotSupported).
+
+The companion change purges 43 stale `LEB_NotSupported` entries from
+`src/Data/ModCache.lua` (Endurance Threshold + Dodge Rating variants
+that were pinned pre-fix). `Main:SaveModCache` re-emits the correct
+shape on next planner run.
+
+**Spec:** `spec/System/TestConditionalRecentActionStatRecognition_spec.lua`
+- KNOWN stat × KNOWN condition (EnduranceThreshold + BeenHitRecently neg / affirmative; Evasion + BeenHitRecently; Armour + BeenHitRecently neg) → must emit the real modName + Condition tag
+- UNKNOWN stat × KNOWN condition → must stay LEB_NotSupported
+- KNOWN stat × UNKNOWN condition → must stay LEB_NotSupported
+
+**Establishing commit:** `0bd80d264`
+
+### `armour-floor-at-zero-letools-artifact`
+
+`Modules/CalcDefence.lua` line 534 floors `output.Armour` at 0 via
+`m_max(round(armour), 0)`. This matches LE in-game display behaviour and
+the DR formula contract: LE's `PlayerStats.armour` is a signed `float`
+(`dump.cs` L156840), but every in-game consumer treats negative as zero.
+The LETools planner skips this floor and reports the raw signed sum, so
+builds that stack large `%-reduced-Armour` sources show negative LETools
+Armor values that no LEB / in-game stat panel ever renders.
+
+Anchor build: `spec/TestBuilds/1.4/QJWMRv53 lv98 Bladedancer.xml`
+- 36 + 108 + 35 + 255 = 434 base Armor from gear implicits
+- 52% increased Armor (Blessing implicit)
+- 207 Guile × -1% reduced Armour
+  (`@leb-regression-guard:s4-guile-per-point-armour-reduction`)
+- LETools planner tooltip: `434 * (1 + 0.52 - 2.07) ≈ -260`
+- LEB CalcDefence: same raw sum, floored to 0 → display 0 (matches LE)
+- diff_letools delta: LET `-260`, LEB `0`, D `+260`, |D%| `100`
+
+Classification: **letools-artifact** — LE planner missing the display
+floor. Removing the LEB floor here would inject negative Armour into
+CalcDamage's `armourReduct` formula (line 1372) and silently break
+PhysDR on every Guile-stacking build for the cosmetic gain of matching
+LET on the Armor row.
+
+Companion guards: `s4-guile-per-point-armour-reduction` (the intrinsic
+that drives the calculation negative) and `armour-pct-shorthand-inc`
+(parallel under-counting fix from v0.14.6).
+
+**Spec:** `spec/System/TestArmourFloorAtZero_spec.lua`
+- Floor line `output.Armour = m_max(round(armour), 0)` must remain present
+- `@leb-regression-guard:armour-floor-at-zero-letools-artifact` marker present
+- Parallel floors on Evasion / Ward must remain present
+- Must NOT strip the `m_max(_, 0)` wrapper
+
+**Establishing commit:** `03ea469cf`
+
+### `known-build-gaps-per-build-scoped`
+
+`spec/tools/diff_letools.py` defines two complementary skip tables:
+
+- `KNOWN_SEMANTIC_GAPS[(tab, name)]` — **stat-global** suppression. Used
+  when a stat is *always* an artifact regardless of build (e.g. Pyramidal
+  Altar CDR display row, Symbols of Hope HP regen folding).
+- `KNOWN_BUILD_GAPS[(build_basename, tab, name)]` — **per-build scoped**
+  suppression. Used when *one specific anchor build* is a documented
+  LET-side artifact for that stat, but the same stat on other builds may
+  still represent a real LEB regression.
+
+The per-build form was added because several anchor artifacts
+(`armour-floor-at-zero`, `unbroken-charge-be-per-ms`,
+`bladedancer-no-shield-block`, `o3zl6qdj-sorcerer-necrotic`,
+`mental-catalysis-int`) share a stat surface (Armor, Block*, Necrotic
+Resistance, Intelligence) with builds that need legitimate regression
+coverage. Globally skipping Armor would hide a real LEB Armor bug on
+builds 119; globally skipping Intelligence would mask Int regressions on
+the 112 non-Mental-Catalysis builds. The per-build keying is the only
+correct shape.
+
+INVARIANT: every per-build skip MUST point to a guard id (inline comment
+above the dict entry) so the rationale is auditable. The keying tuple
+shape `(build_basename, tab, letools_name)` MUST match the basename used
+in `spec/TestBuilds/1.4/*.letools.json` (no path, no `.letools.json`
+suffix) and the LETools-side tab/stat name (NOT the LEB output key).
+
+| Site | File | What it does |
+|---|---|---|
+| Dict + helper | `spec/tools/diff_letools.py` (L225-326) | `KNOWN_BUILD_GAPS` + `is_known_gap(build, tab, name)` |
+| Σ-rank consumer | `spec/tools/sigma_rank.py` (L51-80) | `sigma_for_build(build_basename, ...)` short-circuits per-build skips |
+| Spec | `spec/System/TestKnownBuildGaps_spec.lua` | locks dict / helper / sigma_rank wiring + anchor entries |
+
+**Spec:** `spec/System/TestKnownBuildGaps_spec.lua`
+- "diff_letools.py defines KNOWN_BUILD_GAPS dict" with named guard marker
+- "is_known_gap(build, tab, name) helper consults both KNOWN_BUILD_GAPS and KNOWN_SEMANTIC_GAPS"
+- per-anchor row presence assertions (18 entries as of 2026-05-20)
+- "sigma_rank.py imports KNOWN_BUILD_GAPS + is_known_gap"
+- "sigma_for_build short-circuits KNOWN_BUILD_GAPS with named guard marker"
+- "sigma_for_build takes build_basename as first arg" + caller passes it
+
+**Establishing commit:** (this commit) — architecture-level guard for
+the per-build skip table itself.
+
+### `bladedancer-no-shield-block-chance-letools-artifact`
+
+LETools planner reports `Block Chance = 2%` on Bladedancer builds that
+equip **no shield and no Block-granting passive node**. LE in-game gates
+non-zero Block on the presence of a shield in the off-hand slot — this
+is enforced in LEB via `game-faithful-block-no-shield-gate`
+(`CalcDefence.lua` block-stat clamp) which clamps `output.BlockChance =
+0` when no shield is detected. LET's value is a planner-side display
+artifact: LET reports the raw mod-summed `BlockChance` without
+re-applying the in-game shield gate at tooltip time.
+
+Anchor builds:
+- `spec/TestBuilds/1.4/BZ37RPdY lv100 Bladedancer.xml` — primary anchor.
+  No shield, no Block-granting passive; LET tooltip 2%, LEB 0%, LE
+  in-game 0%.
+- `spec/TestBuilds/1.4/QnaLnRKV lv100 Bladedancer.xml` — duplicate
+  character snapshot saved under a different name; same artifact.
+
+The 3 shield-using builds (`AVa9YEkg lv95 Paladin` / `BgRrP5rr lv95
+Paladin` / `ozwXn3D8 lv88 Sentinel`) that *do* show Block Chance diffs
+are covered separately (AVa9YEkg by `unbroken-charge-be-per-ms`
+collateral; the other two are 1-2% noise floor diffs covered by
+`diff-letools-abs-tolerance-floor`).
+
+Companion guards: `game-faithful-block-no-shield-gate` (the gate that
+zeros LEB's Block Chance correctly), `with-a-shield-condition`,
+`while-with-a-shield-condition` (the parser-side shield-condition
+plumbing).
+
+Classification: **letools-artifact** — LE planner missing the in-game
+shield gate at tooltip rendering time.
+
+**Spec:** `spec/System/TestKnownBuildGaps_spec.lua` locks the per-build
+skip entries for the two anchor saves.
+
+**Establishing commit:** (this commit)
+
+### `o3zl6qdj-sorcerer-necrotic-letools-display-artifact`
+
+LETools planner reports `Necrotic Resistance = 138%` on
+`spec/TestBuilds/1.4/o3Zl6qDJ lv78 Sorcerer.xml`; LEB and the LE in-game
+panel both report 60%. The 78-point gap **matches `charLevel` exactly**,
+hinting at a LET-side charLevel-leakage display bug specific to this
+build.
+
+LEB math (verified):
+- Vitality = 16 → +16% Necrotic
+- Item 8 Scholar's Mystic Helm of Purity carries `+(36-50)% Necrotic
+  Resistance` at `range:236` → +44% (44.06 → 44)
+- Sum 60% (no passive / ascendancy node adds Necrotic on this build)
+
+All 6 other resistances on this build match LEB exactly; only Necrotic
+diverges, and only on this one build out of 119. A sweep across the
+full 119-build corpus (`.tmp/sweep_necrotic.py`) confirms the
+`D=charLevel` pattern is unique to `o3Zl6qDJ` — no other build exhibits
+it, so the gap is not a systemic LEB miss-of-a-source.
+
+Classification: **letools-artifact** — LET display bug isolated to this
+one save. No source change. The per-build skip prevents the row from
+polluting Σ while keeping the footnote visible in `diff_letools.py`
+output.
+
+**Spec:** `spec/System/TestKnownBuildGaps_spec.lua` locks the per-build
+skip entry for `(o3Zl6qDJ lv78 Sorcerer, General, Necrotic
+Resistance)`.
+
+**Establishing commit:** (this commit)
+
+### `mental-catalysis-int-letools-conditional-display-artifact`
+
+`Mage-89 "Mental Catalysis"` passive node grants `+1 Intelligence with
+a Catalyst` per allocated point (max 6 points). The "with a Catalyst"
+phrase is a **conditional** that gates the bonus on the off-hand item
+being a Catalyst sub-type. LE in-game `PlayerStats.Int` tooltip
+**excludes the conditional bonus** from the displayed Int value
+(verified across all 7 anchor builds: LET-XML `PlayerStat="Int"`
+matches LEB on every one).
+
+LEB parses the line via `ModParser.lua` L869
+(`UsingCatalyst` condition tag) and gates the application in
+`CalcSetup.lua` L1761-1776 based on the equipped off-hand type. LET
+planner adds the bonus **unconditionally**: every point of Mage-89 adds
++1 Int to the tooltip regardless of off-hand sub-type. On `owLm3nZ7
+lv81 Runemaster` LET *doubles* the bonus (+12 vs +6) — the anchor for
+the 2× overcount.
+
+Anchor builds (7 of 119):
+
+| Build | MC pts | Off-hand | LET Int | LEB Int | PlayerStat | Δ |
+|---|---|---|---|---|---|---|
+| owLm3nZ7 lv81 Runemaster | 6 | Branded Skull (Catalyst) | 150 | 138 | 138 | +12 (2×) |
+| BgRrpjdv lv50 Runemaster | 6 | Osprix Skull (Catalyst) | 65 | 59 | 59 | +6 |
+| Q0VbpL4J lv100 Runemaster | 6 | (Catalyst) | 212 | 206 | 206 | +6 |
+| QkY5Lr96 lv95 Runemaster | 6 | Rune Stone (Catalyst) | 188 | 182 | 182 | +6 |
+| o3Zl6qDJ lv78 Sorcerer | 5 | Frozen Ire Sceptre (NOT Catalyst) | 59 | 54 | 54 | +5 |
+| AKg973wG lv84 Sorcerer | 3 | (Catalyst) | 101 | 98 | 98 | +3 |
+| QDxZjPX8 lv95 Sorcerer | 3 | Divine Instrument (Catalyst) | 89 | 86 | 86 | +3 |
+
+Verified via `.tmp/int_diff_breakdown.py` (cross-references Mage-89
+allocation against Item 2 sub-type for the 13 Int-mismatch builds).
+The 6 builds with non-MC small ±1/±2 diffs are unrelated noise
+(`.tmp/check_other_int_outliers.py` confirms 0 MC points on each).
+
+Implementation note: `CalcSetup.lua` L1766 currently reads
+`elseif offhandType == "Catalyst" then env.modDB.conditions["UsingCatalyst"] = true`,
+but Catalyst bases have `"type": "Off-Hand Catalyst"` in
+`src/Data/Bases/bases_1_4.json` — a literal string mismatch that means
+`UsingCatalyst` is *never* set. This works out: it makes LEB skip the
+conditional bonus entirely, which matches LE in-game (which also
+excludes the conditional from the Int tooltip). Fixing the string
+literal to `"Off-Hand Catalyst"` would make LEB *add* the bonus and
+diverge from LE-truth. The current behaviour is therefore **correct by
+coincidence** — but it must remain stable; this guard locks it.
+
+Classification: **letools-artifact** — LET planner ignores the
+conditional. LEB matches LE in-game tooltip on all 7 anchor builds.
+
+| Site | File | What it does |
+|---|---|---|
+| Conditional parse | `src/Modules/ModParser.lua` L869 | "with a Catalyst" → `Condition:UsingCatalyst` tag |
+| Conditional gate | `src/Modules/CalcSetup.lua` L1761-1776 | off-hand type → `env.modDB.conditions.UsingCatalyst` |
+| Game data | `src/Data/Bases/bases_1_4.json` | Catalyst bases declare `"type": "Off-Hand Catalyst"` |
+| Mage-89 node | `src/TreeData/1_4/tree_1.json` | `stats: ["+1 Intelligence with a Catalyst", ...]`, maxPoints=6 |
+
+**Spec:** `spec/System/TestKnownBuildGaps_spec.lua` locks the per-build
+skip entries for all 7 anchors.
+
+**Establishing commit:** (this commit)
+
+### `frostbite-shackles-wr-per-uncapped-cold-res`
+
+Frostbite Shackles (unique boots, uniqueID 213) carries the intrinsic
+"+1% Ward Retention per 2% uncapped Cold Resistance" (verified via
+`LE_datamining/extracted/items/uniques_v3.json` L27913). Three
+overlapping bugs had to be fixed together for the bonus to surface:
+
+1. **Wrong mod text in 4 uniques files.** `src/Data/Uniques/uniques.json`,
+   `uniques_1_2.json`, `uniques_1_3.json`, and `uniques_1_4.json` all
+   carried the WRONG text `+100% Ward Retention per 100% uncapped Cold
+   Resistance`. This was a copy/paste error from an early scrape that
+   normalised the divisor; the actual in-game text uses 1/2, not 100/100.
+2. **PerStat tag read the CAPPED resist.** ModParser emitted
+   `WardRetention BASE 100, PerStat:ColdResist, div=100`. `ColdResist`
+   is the display-capped value (max 75% in `output[elem.."Resist"]` —
+   `CalcDefence.lua:249`); the intrinsic explicitly says **uncapped**,
+   which lives at `output[elem.."ResistTotal"]` (`CalcDefence.lua:250`).
+3. **Ordering: WardRetention finalized before resist outputs exist.**
+   `CalcPerform.lua:1388` sums `output.WardRetention = round(calcLib.val(modDB, "WardRetention"))`
+   inside the early stat loop. `calcs.defence` runs at L1396, which is
+   where the resist outputs are first set. A PerStat tag on WardRetention
+   that references `output.ColdResist[Total]` therefore evaluates to 0 —
+   the resist output doesn't exist yet. This rules out any fix that
+   keeps the PerStat tag on WardRetention.
+
+Anchor build: `spec/TestBuilds/1.4/QWXjqDq9 lv95 Spellblade.xml`
+- Cold Resistance (uncapped): 363%
+- Bonus from Frostbite Shackles: `round(363 / 2) * 1 = 182`
+- LETools display: `WardRetention = 344%`
+- LEB base (no Frostbite contribution before fix): `WardRetention = 162%`
+- Post-fix: `162 + 182 = 344` → Δ closes to 0
+
+**Fix shape** (3 sites):
+- `src/Data/Uniques/uniques*.json` (4 files): correct the mod text.
+- `src/Modules/ModParser.lua` (~L1322): rewrite the pattern to match
+  `^%+?(%d+)%% ward retention per 2%% uncapped cold resistance$` and
+  emit a **custom BASE mod name** `WardRetentionPerUncappedColdRes_Per2`
+  (no PerStat tag — bypasses both the capped-vs-uncapped bug and the
+  ordering bug).
+- `src/Modules/CalcDefence.lua` (~L311, right after the Boneclamor
+  Barbute injection): `modDB:Sum("BASE", nil, "WardRetentionPerUncappedColdRes_Per2")`,
+  multiply by `round(output.ColdResistTotal / 2)`, add to
+  `output.WardRetention`. This runs AFTER the resist loop (L250) and
+  BEFORE WardRetention is consumed by the stable-ward formula (L509)
+  and the decay-display computation (L563).
+- `src/Data/ModCache.lua`: purge the stale `+100% Ward Retention per
+  100% uncapped Cold Resistance` pin so re-parse picks up the new
+  custom mod name.
+
+Companion pattern: this is structurally identical to
+`urzils-pride-mana-regen-per-uncapped-lightning-res` (ManaRegen +
+uncapped Lightning Resistance) and `boneclamor-barbute-ward-per-uncapped-necrotic-res`
+(WardPerSecond + uncapped Necrotic Resistance). Whenever a unique
+scales a CalcPerform-finalized defence stat by an uncapped resistance
+total, the fix shape is: emit a custom BASE mod name; inject in
+CalcDefence after the resist loop but before the consumer.
+
+**Spec:** `spec/System/TestFrostbiteShacklesWRPerUncappedColdRes_spec.lua`
+- all 4 uniques*.json files carry the CORRECT text
+- no uniques*.json still carries the legacy wrong text
+- ModParser emits `WardRetentionPerUncappedColdRes_Per2` BASE mod
+- ModParser pattern targets divisor 2 (not legacy 100)
+- ModParser legacy PerStat:ColdResist emission removed
+- CalcDefence carries the named guard marker
+- CalcDefence sums the custom BASE mod against `output.ColdResistTotal`
+  (uncapped) and adds to `output.WardRetention`
+- ModCache no longer pins the stale `+100%/100%` entry
+
+**Establishing commit:** (this commit)
+
+### `dual-attribute-and-pair`
+
+ModParser silently dropped the "+N <Attr1> and <Attr2>" dual-attribute
+mod form (Jormun's Hunger gloves canonical case: "+(6-10) Strength and
+Dexterity") because the generic parse chain matched only the first
+attribute via `modNameList` and left " and Dexterity" as non-empty
+`extra` residue. Item-mod consumers (PassiveTree.lua and friends)
+discard any mod with non-empty extra
+(`if mod.list and not mod.extra then ... end`), so the entire mod —
+including the Strength contribution that DID parse — was dropped from
+the player's modDB. Both attributes were lost.
+
+Anchor build: `spec/TestBuilds/1.4/BOwJRDdE lv74 Shaman.xml`
+- Jormun's Hunger gloves at byte 127.5 → applyRange substitutes value 9
+  (rendered "+9 Strength and Dexterity"; or "+8.0..." at other bytes
+  because `applyRange` defaults to precision=100 without a `to` keyword)
+- LETools display: `Str=42, Dex=17`
+- LEB (pre-fix): `Str=33, Dex=8` → Δ = -9 / -9 (exactly the dropped mod)
+
+**Fix shape** (single site):
+- `src/Modules/ModParser.lua` (after the `damageTakenTypeHandler`
+  registration block, near L2870): register a `specialModList` entry
+  for `^%+?([%d%.]+) (%a+) and (%a+)$` that emits TWO BASE mods (one
+  per attribute) when both captures resolve via a lower-cased
+  `LongAttributes` lookup table. Validating both captures lets unrelated
+  lines (e.g. `+9 Foo and Bar`) decline and fall through to the generic
+  parse chain. The handler's parameter signature must follow the
+  ModParser L1529 dispatch convention:
+  `specialMod(tonumber(cap[1]), unpack(cap))` — for 3 captures the
+  handler receives `(num, cap1str, cap2str, cap3str)` so attributes
+  live at args 3/4, not 2/3.
+
+Why a single-site fix is sufficient: the generic chain's silent-drop
+behavior is intentional (it's how parser residue is supposed to be
+rejected); the bug is that there was no upstream handler for the
+dual-attribute form. Hooking in `specialModList` matches before the
+generic chain runs, so the residue never appears.
+
+**Spec:** `spec/System/TestDualAttributeAndPair_spec.lua`
+- ModParser carries the named guard marker
+- ModParser registers the `specialModList` pattern
+- emits two BASE mods (Str + Dex) with `extra=nil` for the canonical line
+- handles float values produced by applyRange (e.g. `+8.0 Strength and Dexterity`)
+- handles all 10 ordered pairs of the 5 LE attributes (Vit/Str/Dex/Int/Att)
+- declines for non-attribute pairs (`+9 Foo and Bar`)
+- declines for same-attribute pairs (`+9 Strength and Strength`)
+
+**Establishing commit:** (this commit)
+
+### `near-enemy-proximity-suffix-eat`
+
+Bastion of Honour Old Kite Shield (uniqueID 198) intrinsic
+`"+1% Block Chance per Strength against enemies within 4 metres"` parsed
+the leading `+1% Block Chance per Strength` cleanly (modName=BlockChance
+with PerStat:Str), but `"against enemies within 4 metres"` was left as
+non-empty `extra` residue. PassiveTree.lua and friends drop any mod with
+non-empty extra (`if mod.list and not mod.extra`), so on a Str=125 build
+the entire 125% BlockChance contribution silently vanished.
+
+This is a structural twin of the `dual-attribute-and-pair` silent-drop
+pattern: a known good prefix produces a useful mod, but a trailing
+clause the parser has no handler for poisons the entire mod via the
+`extra` residue gate.
+
+Anchor builds:
+- `spec/TestBuilds/1.4/Qqwvdex2 lv98 Beastmaster.xml` (Str=125)
+  - LETools `BlockChance = 139`, LEB (pre-fix) `= 14` → Δ = -125 (89.9%)
+- `spec/TestBuilds/1.4/om6xa9dY lv100 Void Knight.xml`
+  - LETools `BlockChance = 126`, LEB (pre-fix) `= 55` → Δ = -71 (56.3%)
+
+**Fix shape** (two sites):
+1. `src/Modules/ModParser.lua` modTagList: register
+   `["against enemies within (%d+) metres"] = { }` — a pure noise-eater
+   (empty table value) sitting in the existing "against enemies …"
+   cluster. The scan consumes the trailing clause without attaching any
+   tag, so `extra` becomes whitespace-only and parseMod returns `nil`
+   for it. PassiveTree.lua then keeps the mod. We deliberately did NOT
+   attach `Condition:NearEnemy` because (a) LETools always counts this
+   bonus regardless of proximity, and (b) `conditionNearEnemy` defaults
+   to false in `ConfigOptions.lua` so a tag-based gate would close the
+   parser bug but leave the diff intact.
+2. `src/Data/ModCache.lua`: purge the stale entry
+   `c["+1% Block Chance per Strength against enemies within 4 metres"]=...`
+   that pinned the pre-fix parse (BC mod + non-empty extra). Without
+   purging, the cache short-circuits the new modTagList handler and the
+   silent-drop bug stays live.
+
+**Spec:** `spec/System/TestNearEnemyProximitySuffixEat_spec.lua`
+- ModParser carries the named guard marker
+- ModParser registers the `against enemies within (%d+) metres` modTagList entry
+- emits BlockChance BASE with PerStat:Str and `extra=nil` for the canonical line
+- does NOT attach `Condition:NearEnemy` (LETools-parity, always-on)
+- handles any `(%d+)` reroll, not just `4 metres`
+- ModCache no longer pins the stale BlockChance entry with residue
+
+**Establishing commit:** (this commit)
+
+### `pyramidal-altar-cdr-letools-artifact`
+
+The Pyramidal Altar (Idol Altar `baseTypeID 41`, `subTypeID 11`; all 4
+variants: Sunrise / Sunset / Amplifying / Entwined / Prodigious /
+Maximum Idols Equipped / Vanquisher's etc.) carries the implicit
+`"10% Increased Cooldown Recovery Speed if there are no larger idols
+above smaller ones in the grid"`. ModParser maps the conditional
+clause to `Condition:NoLargerIdolsAboveSmaller` (modTagList L700);
+`CalcSetup.lua:1376-1431` walks the idol grid per column top→bottom
+and sets `modDB.conditions.NoLargerIdolsAboveSmaller = true` when no
+larger idol sits above a smaller one in any column.
+
+LE in-game applies this +10% CDR when the layout is compliant. LEB
+matches LE. The LETools planner does NOT model this conditional
+implicit — every Pyramidal Altar build's LETools tooltip shows
+`Increased Cooldown Recovery Speed: 0%` regardless of grid layout.
+This is the same artifact pattern as `armour-floor-at-zero-letools-artifact`
+and `unbroken-charge-block-effectiveness-per-ms-letools-artifact`.
+
+Anchor cluster (13 builds, all show LEB-LET = exactly +10):
+- `BgRrekzd lv96 Marksman` — Sunset Pyramidal Altar of Eos
+- `BxvJKdPR lv97 Necromancer` — Amplifying Pyramidal Altar of the Woven Sun
+- `QDxZjPX8 lv95 Sorcerer` — Sunrise Pyramidal Altar
+- `QWXjk5R9 lv100 Beastmaster` — Amplifying Pyramidal Altar of Eos
+- `QWXjqWJ2 lv100 Bladedancer` — Sunrise Pyramidal Altar of Arctus
+- `Qb6WgDEp lv95 Beastmaster` — Vanquisher's Pyramidal Altar
+- `Qb6WlbxD lv100 Druid` — Sunset Pyramidal Altar of Heresy
+- `QeY7962P lv87 Lich` — Maximum Idols Equipped Pyramidal Altar of Heresy
+- `Qqwv6zbR lv100 Bladedancer` — Sunrise Pyramidal Altar of the Woven Sun
+- `oXz3VaZg lv100 Void Knight` — Prodigious Pyramidal Altar of Eos
+- `om6xa9dY lv100 Void Knight` — Pyramidal Altar variant
+- `oy4Jk2Y9 lv100 Beastmaster` — Sunrise Pyramidal Altar of the Sea Giant
+- `ozwXnlqx lv94 Spellblade` — Entwined Pyramidal Altar of Mesembria
+
+**Why NOT remove the LEB evaluation to match LETools:**
+The +10% CDR is a real in-game bonus. Stripping the grid evaluator
+would close the cosmetic LETools diff but silently regress every
+Pyramidal Altar build's actual CDR by 10%. This is the same trade-off
+documented in `armour-floor-at-zero-letools-artifact`: we keep the LE-
+correct value and accept the LETools divergence.
+
+**Spec:** `spec/System/TestPyramidalAltarCDR_spec.lua`
+- CalcSetup carries the named guard marker
+- CalcSetup sets `modDB.conditions.NoLargerIdolsAboveSmaller = true`
+- Column-walk algorithm shape preserved (loop + size-comparison + violation flag)
+- ModParser maps the clause to the matching condition
+- Pyramidal Altar implicit text in `bases_1_4.json` matches the parser hook
+- `spec/tools/diff_letools.py` `KNOWN_SEMANTIC_GAPS` includes the CDR entry with the named guard marker
+- `spec/tools/sigma_rank.py` imports `KNOWN_SEMANTIC_GAPS` and short-circuits those rows in Σ
+
+**Tooling-side enforcement (added 2026-05-20):**
+Before the tooling fix, `sigma_rank.py` accumulated the per-row pct of
+every MAPPING entry — including the 4 builds where LETools reports
+CDR=0 (no model) but LEB reports CDR=10 (in-game correct). That single
+row hit `|Δ%|=inf -> CLIP_INF=10000`, dragging four LEB-correct builds
+(Qb6WgDEp, oXz3VaZg, BxvJKdPR, QeY7962P) to the top of G1 (Σ≈10000)
+and hiding real LEB-side regressions further down the ranking. The
+exclusion uses the existing `KNOWN_SEMANTIC_GAPS` table so the row
+is still surfaced by `diff_letools.py` with its footnote — only the
+Σ aggregator skips it.
+
+**Establishing commit:** (this commit + 2026-05-20 tooling extension)
+
+### `health-regen-symbols-of-hope-buff-parity`
+
+LEB auto-applies Symbols of Hope's active-symbol count to its
+gameplay maximum (`CalcSetup.lua` L1968-1975, `Auto:Symbols of Hope`:
+`Multiplier:ActiveSymbol` topped to `3 + MaximumSymbols`-tree count).
+Each active symbol grants +20% Health Regen INC (scaled by
+`SymbolsOfHopeEffect` from Sentinel-119 Covenant of Light), so the
+output `LifeRegen` displayed by LEB is the **max-buff** state —
+matching the in-game tooltip while you have Symbols of Hope sustained
+at cap. LETools' static "Health Regen" is the **no-buff** baseline
+(`Multiplier:ActiveSymbol = 0`), matching the LE character sheet
+*before* Symbols of Hope is cast. Both numbers describe correct game
+states; only the snapshot moment differs.
+
+The discrepancy is non-cosmetic (often 50-100% INC depending on the
+MaximumSymbols passive investment) but it is **expected** and
+intentional whenever a Paladin / Void Knight build has Symbols of
+Hope on its skill bar. Same pattern as
+`ward-regen-passive-vs-event-split`'s residual event-vs-passive
+asymmetry: LEB integrates the live buff, LETools displays the
+character-sheet baseline.
+
+Anchor build (G3 aggregate, +71% diff):
+
+| Build | LETools | LEB | Δ | Symbols active | Per-symbol INC |
+|---|---:|---:|---:|---:|---:|
+| BGzxnRdY lv92 Void Knight | 37.63 | 64.5 | +26.87 | 5 (3 base + 2 MaximumSymbols) | 20% |
+
+Math:
+- Sum BASE = 26.88 (base level scaling + 2 Blighted Coral Ring BASE +8)
+- Sum INC = 140% = 40% (Sentinel-49 passive) + 5 × 20% (Symbols of Hope per-stack)
+- LEB output = 26.88 × (1 + 140%) = 64.51 ✓
+- LET output = 26.88 × (1 + 40%) = 37.63 ✓ (no symbols)
+
+**Reproducing the LET value in LEB:** set Config option
+`# of Active Symbols: 0` (via `multiplierActiveSymbols` in
+`ConfigOptions.lua` L240). LEB will then skip the auto-top-up branch
+and emit the same no-buff baseline LET shows.
+
+**Why NOT remove LEB's auto-top-up to match LETools:**
+Symbols of Hope is a sustained skill — the in-combat steady-state is
+"symbols up at MaximumSymbols cap". Stripping the auto-fill would
+make every Paladin / Void Knight HR display 30-60% lower than what
+the player actually has during combat. This is the same trade-off as
+`pyramidal-altar-cdr-letools-artifact` (LE-correct over LET-parity).
+
+**Site:** `spec/tools/diff_letools.py` `KNOWN_SEMANTIC_GAPS` entry
+keyed at `('General','Health Regen')` carries an inline
+`@leb-regression-guard:health-regen-symbols-of-hope-buff-parity`
+marker; the auto-top-up implementation already lives at
+`src/Modules/CalcSetup.lua` L1968-1975 (no code change required —
+this is a classification guard).
+
+**Spec:** `spec/System/TestHealthRegenSymbolsOfHopeBuffParity_spec.lua`
+asserts (1) `diff_letools.py` includes a `KNOWN_SEMANTIC_GAPS` entry
+for `('General','Health Regen')` with the named guard marker;
+(2) the gap text references `Auto:Symbols of Hope` and
+`multiplierActiveSymbols` so future maintainers can locate the
+auto-application site and the per-build override knob;
+(3) `CalcSetup.lua` still carries the auto-top-up block (the
+implementation this gap rationalizes).
+
+**Establishing commit:** (this commit)
 
 ### `stcdt-conversion-shapes`
 
@@ -1267,6 +2380,120 @@ Acolyte-23 (-24) = 128 vs LE's 148 + 260 - 24 = 384.
 
 **Establishing commit:** `f34161baa`
 
+### `minion-bucket-evalmod-perstat`
+
+The CalcDefence MinionModifier bucket must evaluate inner mods through
+`modDB:EvalMod(m)` instead of summing raw `m.value`. PerStat / Multiplier
+tags on `MinionModifier` inner mods carry the per-unit coefficient, not
+the displayed scalar — for example Acolyte-59 "Grave Thorns" notScalingStat
+`"4% Increased Minion Health Per Vitality"` wraps a `Life INC` mod with
+`value = 4` and a `PerStat:Vit` tag. The bucket must multiply by player
+Vit (4 × 65 = 260), not contribute the raw 4.
+
+Symptom before fix (G1 fresh diff, 2026-05-11):
+`BxvJKdPR lv97 Necromancer MinionLifeInc LE=384 LEB=128 Δ=-256`.
+Aaron's Will body armor (148) + Acolyte-59 (raw 4 instead of 260) +
+Acolyte-23 (-24) = 128 vs LE's 148 + 260 - 24 = 384.
+
+INVARIANT: the bucket loop calls `modDB:EvalMod(m)` and adds only when
+the result is a number (tags that exclude the mod return `nil`).
+Reverting to `m.value` re-masks any Minion* stat fed by a per-attribute
+notScalingStat or per-allocation Multiplier.
+
+| Site | File |
+|---|---|
+| Bucket loop EvalMod call | `src/Modules/CalcDefence.lua` (~line 1640, inside the phase4 bucket loop) |
+
+**Spec:** `spec/System/TestMinionPerStatScaling_spec.lua`
+- "'4% Increased Minion Health Per Vitality' wraps Life INC with PerStat:Vit"
+- "CalcDefence MinionModifier bucket evaluates via EvalMod, not raw m.value"
+- "Acolyte-59 tree_3.json carries the Per-Vitality notScalingStat"
+
+**Establishing commit:** `f34161baa`
+
+### `minion-bucket-flags-partition`
+
+The CalcDefence MinionModifier bucket key is `name|type|flags`, not the
+shorter `name|type`. Different inner mods can share `(name, type)` and
+only differ by `ModFlag`, which selects which sub-surface the value feeds.
+The canonical example is the `Minion ... Speed` pair routed through
+`SkillStatMap.lua`:
+
+```lua
+["minion_attack_speed_+%"] = {
+    mod("MinionModifier", "LIST", { mod = mod("Speed", "INC", nil, ModFlag.Attack) }),
+},
+["minion_cast_speed_+%"] = {
+    mod("MinionModifier", "LIST", { mod = mod("Speed", "INC", nil, ModFlag.Cast) }),
+},
+```
+
+Both emit `name="Speed" type="INC"`; only `flags` distinguishes them
+(`ModFlag.Attack = 3584` vs `ModFlag.Cast = 256`). A `name|type`-only
+key collapses both into a single bucket so the readers
+`sumMinion("Speed","INC",ModFlag.Attack)` and
+`sumMinion("Speed","INC",ModFlag.Cast)` would each return their **sum**
+instead of the per-surface value, double-counting both
+`MinionAttackSpeed` and `MinionCastSpeed`.
+
+INVARIANT: the bucket key composes `name .. "|" .. type .. "|" .. (m.flags or 0)`,
+and every `sumMinion(name, type, flags)` reader must pass the matching
+flag (default `0` keeps the 38 pre-existing flag-less outputs intact —
+verified by spec sweep of TestPhase4LEToolsParity + TestMinion*).
+
+| Site | File |
+|---|---|
+| Bucket key composition | `src/Modules/CalcDefence.lua` (~line 1770, inside the MinionModifier loop) |
+| sumMinion helper signature | `src/Modules/CalcDefence.lua` (~line 1786) |
+| MinionAttackSpeed / MinionCastSpeed readers | `src/Modules/CalcDefence.lua` (~line 1825-1827) |
+
+**Spec:** `spec/minion-whitelist/MinionWhitelistCoverage_spec.lua`
+- `WHITELIST_TO_MINION_OUTPUT` lists `MinionAttackSpeed` (key `2/512,8192/0`)
+  and `MinionCastSpeed` (key `3/8192/0`) and the drift-detection harness
+  asserts both `output.<key>` readers exist in CalcDefence with the
+  matching `sumMinion("Speed","INC",ModFlag.<surface>)` call shape.
+
+**Establishing commit:** _pending_ (B15 HIGH-gap closure 2026-05-18)
+
+### `minion-melee-attack-speed-label`
+
+The calcs-tab minion section row for attack speed must read **"Increased
+Minion Melee Attack Speed"**, not bare "Attack Speed". Game files have no
+unqualified attack-speed stat: the `AT` bitflag enum (`dump.cs`) splits the
+delivery tag into `Melee=512`, `Throwing=1024`, `Bow=2048`, and the `SP`
+property enum exposes `AttackSpeed=2` only ever qualified by one of those
+tags. Both the player and minion in-game character sheets confirm this —
+they list Melee / Bow / Throwing Attack Speed + Cast Speed, never a generic
+"Attack Speed". The minion attack-speed surface is the Melee one, so the
+in-game minion tab shows "Increased Minion Melee Attack Speed" alongside a
+separate "Increased Minion Cast Speed" row (both are present for minions).
+
+No aggregation change accompanies this label: the LEB parser composes
+"minion melee attack speed" to `bor(ModFlag.Melee=512, ModFlag.Attack=3584)
+= 3584` — the SAME bucket as the generic "minion attack speed" tree text —
+so the single `MinionAttackSpeed = sumMinion("Speed","INC",ModFlag.Attack)`
+reader covers both surfaces. Cast Speed (`SP=3`, `ModFlag.Cast=256`) is its
+own property and bucket. This guard exists so a future "simplify the label
+to Attack Speed" edit is recognized as a divergence from the game UI.
+
+| Site | File |
+|---|---|
+| Display row label + comment | `src/Modules/CalcSections.lua` (minion section, "Increased Minion Melee Attack Speed" / "Increased Minion Cast Speed" rows) |
+| Backing outputs | `src/Modules/CalcDefence.lua` (`MinionAttackSpeed` / `MinionCastSpeed` via `sumMinion`) |
+
+**Spec:** `spec/minion-whitelist/MinionWhitelistCoverage_spec.lua`
+- the `calcs-tab minion section labels attack/cast speed per the in-game
+  sheet` test reads `CalcSections.lua` and asserts the two literal labels
+  are wired to `MinionAttackSpeed` / `MinionCastSpeed`, AND that the bare
+  "Increased Minion Attack Speed" label is absent.
+- the coverage drift tests map `2/512,8192/0 → MinionAttackSpeed`,
+  `3/8192/0 → MinionCastSpeed`.
+
+Verified headless: A21YaLpz lv98 Necromancer → MinionAttackSpeed=40,
+MinionCastSpeed=40, both from flags 3584 (Attack) / 256 (Cast).
+
+**Establishing commit:** _pending_ (in-game label parity 2026-05-21)
+
 ### `crits-abbreviation`
 
 Sentinel class-tree passives (Sentinel-14 Patient Doom, Sentinel-42 Iron
@@ -1290,6 +2517,10 @@ fails, the original symptom returns: B4Xq8aG6 lv95 Paladin shows
 **Spec:** `spec/System/TestModParse_spec.lua`
 - "crits abbreviation reduces crit damage"
 
+**Datamining source:** `LE_datamining/extracted/critical_strike_formulas.md §3` —
+defender stat SP=114 `ReducedBonusDamageTakenFromCrits` is the
+authoritative property this parser path routes mods into.
+
 **Establishing commit:** `93d3dda3c`
 
 ### `crit-extra-damage-reduction-display-uncapped`
@@ -1306,6 +2537,15 @@ from Critical Strikes" sidebar value, which is the **raw sum** of every
 **Spec:** `spec/System/TestCritExtraDamageReduction_spec.lua`
 - "display value is uncapped sum of ReduceCritExtraDamage BASE mods"
 - "EnemyCritEffect clamps effective reduction at 100"
+
+**Datamining source:** `LE_datamining/extracted/critical_strike_formulas.md §3, §5` —
+defender stat SP=114 `ReducedBonusDamageTakenFromCrits`; verified by
+`ProtectionClass.ApplyDamage` disasm (RVA `0x18234662F`–`0x1823466F7`):
+`effective_multi = 1 + (1 - reducedBonus) × (multi − 1)`. LEB's
+`EnemyCritEffect = 1 + p × extraDamage × (1 − min(reducedBonus, 100)/100)`
+is the averaged form of the same formula, with the
+`min(…, 100)` clamp enforcing the "cannot reduce below regular hit"
+text on the effect (not on the displayed sum).
 
 **Establishing commit:** `39c3f2bb9`
 
@@ -2258,6 +3498,73 @@ affix contributed 0 wps prior to this fix.
 `LE_datamining/extracted/ward_formulas.md §2` (event-driven vs passive floor
 gate).
 
+### `ward-decay-gpp-constants`
+
+Locks the three `GlobalPlayerProperties` ward-decay constants
+(`linearWardDecay=0.2`, `quadraticWardDecay=5E-05`, retention-divisor
+form `1 + 0.5*R/100`) verbatim into the LEB stable-ward inversion and
+ward-decay-per-second formulas. The existing `ward-retention-negative-clamp`
+guard only pins the R-clamp; the GPP coefficients themselves were unguarded
+and a silent simplification (e.g. rounding `5E-05` to 0, dropping the
+quadratic term, or swapping `0.2` for an older tunklab approximation) would
+not be caught by the single-point clamp behaviour spec.
+
+Verbatim source — `LE_datamining/extracted/typetree_dumps/GlobalPlayerProperties.json`:
+
+```
+"minimumWardDecayWithoutRegen": 0.5,
+"linearWardDecay":              0.2,
+"quadraticWardDecay":           5E-05,
+```
+
+Verbatim source — `LE_datamining/extracted/ward_decompile.txt` L77-78 (non-boss
+branch of `ProtectionClass.Update`, RVA `0x234B8C0`):
+
+```c
+fVar12 = (fVar7 * (fVar9 * fVar9 * fStack_70 + (float)((ulonglong)uVar1 >> 0x20) * fVar9)) /
+         (fVar12 * DAT_183d81bf0 + DAT_183d81c08);
+// where DAT_183d81bf0 = 0.5, DAT_183d81c08 = 1.0
+```
+
+i.e. smooth decay `wardLost/s = (Q*(W-T)^2 + B*(W-T)) / (1 + 0.5*Rclamped)`.
+The stable-ward LEB form is the algebraic inversion solving
+`wgain = wardLost/s` for `W`:
+
+```
+W = T + (-B + sqrt(B^2 + 2Q*wgain*(1 + 0.5*R/100))) / Q
+  = T + (-0.2 + sqrt(0.04 + 0.0002*wgain*(1 + 0.5*R/100))) / 0.0001
+```
+
+Per-clause mapping (game → LEB):
+
+| Game clause | LEB clause |
+|---|---|
+| `linearWardDecay = 0.2`   | `0.2 * effectiveWard` (decay numerator) AND `-0.2 + sqrt(...)` (inversion) |
+| `quadraticWardDecay = 5E-05` | `0.00005 * effectiveWard ^ 2` (decay numerator) AND `+ 0.0002 * wgain * ...` (inversion: `2Q = 0.0001` divisor, `B^2 = 0.04`, `2Q-form = 0.0002`) |
+| `(1 + 0.5*Rclamped)`      | `1 + 0.5 * wardRetention / 100` (post-offence + Sanguine) AND `1 + 0.5 * retentionClamped / 100` (display-decay) |
+
+| Site | File | Inline marker | What it does |
+|---|---|---|---|
+| passive stable-ward inversion | `src/Modules/CalcDefence.lua` (~line 471) | `@leb-regression-guard:ward-decay-gpp-constants` (passive stable-ward inversion) | Solves `wgain = wardLost/s` for W using verified GPP constants |
+| display decay | `src/Modules/CalcDefence.lua` (~line 511) | `@leb-regression-guard:ward-decay-gpp-constants` (display-decay site) | Computes `WardDecayPerSecond` for tooltip |
+| Sanguine Runestones recompute | `src/Modules/CalcDefence.lua` (~line 740) | `@leb-regression-guard:ward-decay-gpp-constants` (Sanguine Runestones recompute) | Recomputes Ward/Decay after `LifeRegenAppliesToWard` bonus |
+| post-offence ManaSpentGainedAsWard | `src/Modules/CalcPerform.lua` (~line 1320) | `@leb-regression-guard:ward-decay-gpp-constants` (post-offence ManaSpentGainedAsWard path) | Recomputes Ward/Decay after `ManaSpentGainedAsWard` amortization |
+
+**Spec:** `spec/System/TestWardGPPConstants_spec.lua`
+- "CalcDefence.lua carries 3 inline guard markers (passive / display / Sanguine)"
+- "CalcPerform.lua carries 1 inline guard marker (post-offence ManaSpentGainedAsWard)"
+- "CalcDefence.lua passive stable-ward inversion uses the verified constants"
+- "CalcPerform.lua post-offence stable-ward inversion uses the verified constants"
+- "CalcDefence.lua stable-ward inversion appears at both passive + Sanguine sites"
+- "CalcDefence.lua display-decay numerator = 0.2 * W + 0.00005 * W^2"
+- "CalcDefence.lua decay numerator appears at both passive + Sanguine sites"
+- "CalcPerform.lua post-offence decay numerator uses the verified constants"
+- "CalcDefence.lua display-decay divisor uses retentionClamped at -90 floor"
+- "Sanguine + CalcPerform divisor uses wardRetention at -90 floor"
+
+**Source documentation:** `LE_datamining/extracted/ward_formulas.md §1-3` +
+`extracted/typetree_dumps/GlobalPlayerProperties.json` + `extracted/ward_decompile.txt`.
+
 ### `resist-display-round-half-up`
 
 The 7-resist loop in `src/Modules/CalcDefence.lua` previously truncated the
@@ -2392,13 +3699,10 @@ LETools planner Minion-tab "Movement Speed" = 14% ✓ matches strict
 ```
 
 **Scope:** narrow — only the `Minion Movement Speed` substring routes
-through strict. The player-scope `% increased Movement Speed` line is
-intentionally NOT migrated here: the g1 boots rolls
-`(15-18) byte=63 → legacy 16, strict 15` and
-`(26-30) byte=153 → legacy 28, strict 29` sum to 44 either way, and the
-g1 Player Movement Speed = 44 is already consistent with the LE in-game
-display contract (the +1pt LETools shows is a separate LETools-side
-display divergence not currently triangulated to a single mod).
+through this branch. The player-scope `% increased Movement Speed` line
+is handled by the sibling `movement-speed-vshdm-strict` guard (same
+vshDm path), added after this branch and matching first only because the
+minion branch returns earlier on the `Minion Movement Speed` substring.
 
 | Site | File | What it does |
 |---|---|---|
@@ -2409,11 +3713,147 @@ display divergence not currently triangulated to a single mod).
 - "low byte stays at min for narrow range"
 - "top byte clamps at max"
 - "'% reduced Minion Movement Speed' also routes through strict path"
-- "player-scope '% increased Movement Speed' is NOT affected" (guards
-  against an accidental broadening of the substring match)
+- "player-scope '% increased Movement Speed' uses its own strict branch"
+  (asserts the minion branch does not intercept the player line, which is
+  now routed through `movement-speed-vshdm-strict` to 15)
 
 **Establishing build:** `BxvJP3g1 lv99 Necromancer` — Minion-tab
 `Movement Speed` 13 → 14 LETools parity.
+
+**Establishing commit:** (pending)
+
+### `movement-speed-vshdm-strict`
+
+Player `% increased/reduced Movement Speed` rolls route through the
+LE-faithful vshDm path (`applyRangeStrict(..., modType=0, rounding=0)`,
+`floor((d+1-c) × byte/255 + c)`). The legacy `applyRange` default branch
+interpolates over `span = max - min` and floors, missing LE's top-byte
+`+1` term, so it under-rounds mid-range bytes by 1 — the same root cause
+as `health-percent-vshdm-strict` / `armour-percent-vshdm-strict`.
+
+**Triangulation:** `MyLittleStJames lv79 Paladin` (save BETA_13) Army of
+Skin prefix `(26-30)% increased Movement Speed` byte=157.
+
+```
+legacy round-half-up: round(26 + 157/255 × (30-26))  = 28
+strict (vshDm):       floor((30+1-26) × 157/255 + 26) = floor(29.08) = 29
+in-game item tooltip reads "29% increased Movement Speed" ✓
+```
+
+The boots' other two rolls are unchanged by strict (`(13-26) byte111 = 19`,
+`(11-14) byte31 = 11`), so the character-sheet Movement Speed total is
+`29 + 19 + 11 = 59%` (LEB was `58%` under the legacy path) = in-game.
+
+**Scope:** matches the player-direct line only. The SP=9
+`Minion Movement Speed` variant is caught by `minion-movement-speed-vshdm-strict`
+above and returns first, so this branch never sees it.
+
+| Site | File | What it does |
+|---|---|---|
+| pattern routing | `src/Modules/ItemTools.lua` (`applyRange`, after `minion-movement-speed-vshdm-strict` block) | `% (increased\|reduced) Movement Speed` → `applyRangeStrict(minN, maxN, rollByte, valueScalar, 0, 0)` |
+
+**Spec:** `spec/System/TestMovementSpeedVshdmStrict_spec.lua`
+- "Army of Skin (26-30) byte=157 → 29 (matches in-game tooltip)"
+- "low byte stays at min"
+- "top byte clamps at max"
+- "'% reduced Movement Speed' also routes through strict path"
+- "'Minion Movement Speed' is unaffected by the player branch"
+
+**Establishing build:** `MyLittleStJames lv79 Paladin` — character-sheet
+Movement Speed 58 → 59 in-game parity.
+
+**Establishing commit:** (pending)
+
+### `endurance-threshold-round-not-floor`
+
+The in-game character sheet **rounds** the Endurance Threshold total; it
+does not floor it. `CalcDefence.lua` previously rendered
+`output.EnduranceThreshold = m_floor(etBase * etInc)`, which truncates a
+fractional total and lands 1 below the in-game value whenever the
+fractional part is `>= 0.5`.
+
+**Triangulation:** `MyLittleStJames lv79 Paladin` (save BETA_13).
+
+```
+etBase = 0.20 × Life(1318) = 263.6
+       + 180 (si4lgl-15 passive) + 157 (Sentinel-71 passive) = 600.6
+floor(600.6) = 600   (old LEB — off by 1)
+round(600.6) = 601   = in-game character sheet ✓
+```
+
+The sibling `WardDecayThreshold` (a few lines below in the same function)
+already uses round-half-up (`m_floor(x + 0.5)`); the floor on Endurance
+Threshold was an internal inconsistency.
+
+| Site | File | What it does |
+|---|---|---|
+| total render | `src/Modules/CalcDefence.lua` (`output.EnduranceThreshold`) | `m_floor(etBase * etInc + 0.5)` (round-half-up, was bare `m_floor`) |
+
+**Spec:** `spec/System/TestEnduranceThresholdRound_spec.lua`
+- "600.6 base → 601 (rounds, not floors)"
+- "exact integer total is unchanged"
+- "x.49 floors down, x.50 rounds up"
+
+**Establishing build:** `MyLittleStJames lv79 Paladin` — character-sheet
+Endurance Threshold 600 → 601 in-game parity.
+
+**Establishing commit:** (pending)
+
+### `scaleaddmod-stacking-coeff-fractional-retention`
+
+`ModStore.lua` `ScaleAddMod` previously truncated every scaled numeric
+value with `m_modf(round(value * scale, 2))`. `m_modf` (= `math.modf`)
+returns only the integer part. That is correct for a one-shot flat mod,
+but **wrong for a mod carrying a `Multiplier` / `PerStat` tag**, because
+such a mod stores a *per-stack coefficient* that is multiplied by the
+stack count at Combine time. Truncating the scaled coefficient discards
+the fractional part *before* the stack multiply, losing
+`frac × stackCount`.
+
+A buff-effect scale (e.g. `SymbolsOfHopeEffect +20%` = ×1.2) applied to a
+per-stack coefficient must retain its fractional part:
+
+```
+si4lgl-26 "+1% Block Chance Per Active Symbol", alloc 3 → 3 / symbol
+3 × 1.2 (effect) = 3.6 / symbol         (must be retained)
+3.6 × 5 active symbols = 18             = in-game contribution ✓
+m_modf(3.6) = 3 ; 3 × 5 = 15            (old LEB — off by 3) ✗
+```
+
+**Triangulation:** `MyLittleStJames lv79 Paladin` (save BETA_13).
+
+```
+in-game Block Chance = 35
+  = 8  (Sentinel-89  +2%/pt × 4 alloc)
+  + 3  (Sentinel-1   flat notScalingStats)
+  + 3  (Sentinel-27  flat notScalingStats)
+  + 3  (Sentinel-72  flat notScalingStats)
+  + 18 (si4lgl-26    3.6 / symbol × 5 symbols)
+LEB was 32 (si4lgl-26 contributed 15, not 18) before the fix.
+```
+
+Block **Effectiveness** (the sibling per-symbol coefficient on the same
+node, `+15 / symbol`) escaped the bug only by luck: `45 × 1.2 = 54` is
+integral, so truncation was a no-op there.
+
+The fix detects a `Multiplier` / `PerStat` tag (`hasStackingTag`) and, for
+those mods only, keeps `round(value * scale, 2)` as a float instead of
+truncating. Non-stacking mods keep the legacy `m_modf` integer truncation,
+so unrelated mods are untouched.
+
+| Site | File | What it does |
+|---|---|---|
+| stacking-tag detect | `src/Classes/ModStore.lua` (`ScaleAddMod`) | sets `hasStackingTag` for `Multiplier`/`PerStat` tags |
+| stacking-tag branch | `src/Classes/ModStore.lua` (`ScaleAddMod`) | `subMod.value = round(subMod.value * scale, 2)` (float retained, no `m_modf`) |
+
+**Spec:** `spec/System/TestScaleAddModStackingCoeff_spec.lua`
+- "ModStore.lua detects a stacking tag (Multiplier/PerStat)"
+- "ScaleAddMod retains the scaled float for stacking-tag mods (no m_modf)"
+- "arithmetic: per-symbol 3 × 1.2 retained as 3.6, × 5 symbols = 18"
+- "block-effectiveness sibling stays integral (45 × 1.2 = 54, no change)"
+
+**Establishing build:** `MyLittleStJames lv79 Paladin` — character-sheet
+Block Chance 32 → 35 in-game parity.
 
 **Establishing commit:** (pending)
 
@@ -2471,23 +3911,152 @@ Worked example — `owLmrO3a` Heretical Large Arcane Idol affix `897_4`
 
 **Establishing commit:** `10651f048`
 
+### `armour-percent-vshdm-strict`
+
+Player `% increased/reduced Armour` rolls must resolve through the
+LE-faithful **vshDm strict** path (`itemLib.applyRangeStrict`,
+`m_floor((d+1-c)*e+c)` with `e=byte/255`), NOT the legacy
+`floor(min + byte/255 × (max-min))` interpolation. The `+1` top-byte term
+is what legacy `applyRange` lacks, causing systematic −1 underrepresentation.
+
+Triangulated on `ImPalmBeachPete lv48 Bladedancer` (offline save BETA_12)
+vs in-game tooltips:
+
+| Affix | byte | legacy floor (LEB, wrong) | strict vshDm (in-game ✓) |
+|---|---|---|---|
+| Azure/Manafused Outcast Hat of Defense `(10-12)% increased Armor` | 185 | `floor(10 + 185/255 × 2) = 11` | `floor((12+1-10) × 185/255 + 10) = 12` |
+| Armored Minor Weaver Idol `(2-5)% increased Armor` | 84 | `floor(2 + 84/255 × 3) = 2` | `floor((5+1-2) × 84/255 + 2) = 3` |
+
+Both British (`Armour`) and `% reduced` variants route through the same
+strict path. `% increased Minion Armor` and `Armour Shred` are EXCLUDED
+(they keep the legacy/integer path). Reverting the dispatcher in
+`src/Modules/ItemTools.lua` `applyRange` flips these back to off-by-one.
+
+### `armour-percent-refracted-fractional`
+
+When a refracted-slot prefix boost (`postRoundScalar`, e.g. Sunrise Visage
+Altar sealed +44% Effect of Prefixes in Refracted Slots → 1.44) applies to a
+player `% increased/reduced Armour` roll, LE keeps `increased*` as a **float
+fraction** — the boosted value is NOT re-rounded to an integer per-affix:
+`3 × 1.44 = 4.32` (NOT 4). The integer tooltip is cosmetic; the accumulator
+stays fractional.
+
+With Pete's idol roll fractional, character-sheet Armour =
+`round(232 × (1 + 81.32/100)) = round(420.66) = 421` (in-game ✓);
+integer-rounding the affix to 4 gave INC=81 → `round(419.92) = 420` (−1).
+
+This MOSTLY differs from the flat-additive two-phase path (Mana/res/Ward),
+which keeps integer round-half-up/floor and is `ZombieWarehouse`-ground-truth-
+verified (`two-phase-floor-post-round-scalar` above) — that path must stay
+intact. The one flat-additive EXCEPTION is **flat Health**, which DOES retain
+the boosted float (see `flat-health-refracted-fractional` below). The fix lives
+in the non-floor sub-branch of the `% increased Armour` block in
+`src/Modules/ItemTools.lua`:
+`v = m_floor(v * postRoundScalar * 100 + 0.5) / 100` (hundredth quantum,
+NOT collapsed to integer). Property-4 weaver-enchant boosts
+(`postRoundFloor=true`) still floor.
+
+**Spec (both guards):** `spec/System/TestArmourPercentVshdmStrict_spec.lua`
+- Hat `(10-12)` byte=185 → `12`; Idol `(2-5)` byte=84 → `3`
+- British `Armour` spelling and `% reduced Armor` route through strict path
+- refracted boost ×1.44: `3 → 4.32` (NOT 4); ×1.46 with `postRoundFloor` → `4`
+- `% increased Minion Armor` excluded from the fractional player branch
+
+### `flat-health-refracted-fractional`
+
+A refracted-slot prefix/suffix boost (`postRoundScalar` from LE's
+`postRoundingEffectModifier`) applied to a **flat-additive Health** affix is
+NOT re-rounded to an integer: LE keeps the boosted value as a **float** in the
+Health accumulator. The item tooltip shows the un-boosted integer roll, while
+the character sheet sums the float and only the final `maxHealth` output
+banker-rounds.
+
+Verified on `ZombieWarehouse lv72 Necromancer` (offline save BETA_15):
+Jumping Spider's Minor Weaver Idol of Repose `+(14-18) Health` byte=3 rolls
+14; the idol is on a refracted cell and Sunset Twisted Altar's sealed
+`+10% Effect of Suffixes for Idols in Refracted Slots` gives
+`postRoundScalar = 1.10` → `14 × 1.10 = 15.4` (NOT round → 15). Health base
+`1106.4`; `round(1106.4 × 1.36) = round(1504.704) = 1505` (in-game ✓).
+Integer-rounding to 15 gave base 1106 → `1504.16 → 1504` (LETools also
+reports the wrong 1504). EnduranceThreshold (`0.2 × Life`) auto-corrects
+`300 → 301`.
+
+**SCOPE (critical):** Health-only. Other flat-additive stats keep integer
+round-half-up — locked by `two-phase-floor-post-round-scalar`
+(Ward per Second `9×1.22=10.98 → 11`; Vitality `13×1.22=15.86 → 16`).
+Resistances stay integer too (the refracted resist clones round
+`5×1.10=5.5 → 6`, matching in-game Cold 54 / Lightning 47; LETools floors
+these to 53/46 and is wrong). The fix lives in the non-floor sub-branch of the
+flat-int strict block in `src/Modules/ItemTools.lua`, gated on
+`line:find("Health") and not "Minion Health" and not "Health Regen"`:
+`v = m_floor(v * postRoundScalar * 100 + 0.5) / 100`.
+
+**Spec:** `spec/System/TestFlatHealthRefractedFractional_spec.lua`
+- flat Health `(14-18)` byte=3 ×1.10 → `15.4` (float retained)
+- `postRoundScalar=1.0` identity → `14`
+- scope: Vitality `(11-15)` byte=128 ×1.22 → `16` (integer, NOT float)
+- scope: `Minion Health` → `15` and `Health Regen` → `8` excluded (integer)
+
 ### `idol-altar-boost-subtype-rounding`
 
-The Idol Altar refracted-slot boost (LE `SimpleBlessingType` property 4
-`EffectOfIdolEnchantsInRefractedSlots`) applies to BOTH
-`SpecialAffixType.IdolEnchantment` (=4) AND `SpecialAffixType.IdolWeaver`
-(=5), but LE uses **subtype-dependent rounding** on the resulting
-post-round value:
+The Idol Altar refracted-slot boost has TWO buckets that round differently,
+and the rounding direction is **PROPERTY-determined, not subtype-determined**:
+
+- **property 1/2/3** (`EffectOf{Prefixes,Suffixes,PrefixesAndSuffixes}InRefractedSlots`,
+  `stdBoost` in `CalcSetup.cloneWithAltarBoost`) → **round-half-up**.
+- **property 4** (`EffectOfIdolEnchantsInRefractedSlots`, `weaverBoost`) → **floor**.
+
+`affix.postRoundFloor` is therefore set ONLY when the boost is purely the
+property-4 path (`weaverBoost > 0 and stdBoost == 0`). Any property-1/2/3
+participation keeps round-half-up. (This corrects the earlier model, which
+floored whenever the subtype was IdolWeaver/IdolEnchantment regardless of
+which property drove the boost.)
+
+Triangulation:
+- property 3 round-half-up — ZombieWarehouse lv72 Necromancer (Twisted Altar
+  +10% Effect of Suffixes), IdolWeaver suffixes: Mana 5→6, Cold/Light 15→17,
+  Phys 23→25. All match in-game with round-half-up; floor would undershoot.
+- property 4 floor — BxvJP3g1 Many Threads raw 6 → 8 (≠9) at +46%, Chitin
+  raw 12 → 17 (≠18). Floor required.
 
 | Site | File | Branch |
 |---|---|---|
+| boost split / floor flag | `src/Modules/CalcSetup.lua` `cloneWithAltarBoost` (~L1382-1419) | `weaverBoost > 0 and stdBoost == 0` → `postRoundFloor=true` |
 | resist strict | `src/Modules/ItemTools.lua` (~L332) | `postRoundFloor` → floor, else round-half-up |
 | flat-int strict | `src/Modules/ItemTools.lua` (~L355) | ditto |
 | general interp + maxBoosted | `src/Modules/ItemTools.lua` (~L411) | ditto + matching maxBoosted clamp |
 | single-value scalar≠1 | `src/Modules/ItemTools.lua` (~L425) | ditto |
 | single-value scalar=1 zero-numbers | `src/Modules/ItemTools.lua` (~L431) | ditto |
 
-**Spec:** `spec/System/TestIdolAltarBoostSubtypeRounding_spec.lua`
+**Spec:** `spec/System/TestIdolAltarBoostSubtypeRounding_spec.lua`,
+`spec/System/TestIdolRefractedStandardBoostAllSubtypes_spec.lua`
+
+**Establishing commit:** (pending)
+
+### `idol-refracted-standard-boost-all-subtypes`
+
+LE Idol Altar property 1/2/3 ("Effect of Prefixes and Suffixes / Prefixes /
+Suffixes for Idols in Refracted Slots") boost the rolled value of **EVERY
+non-Corrupted affix** in a refracted slot, regardless of `SpecialAffixType` —
+including `IdolWeaver` (=5) and `IdolEnchantment` (=4) affixes, NOT just
+`Standard` (=0). The earlier "Standard only" gate (a misread of dump.cs
+`IsAffectedByAffectOfStandardPrefixesOrSuffixes`) silently dropped the boost
+for builds whose refracted idols carry Weaver Idol affixes.
+
+Establishing build: ZombieWarehouse lv72 Necromancer — Twisted Altar
+property 3 = +10% Effect of Suffixes; all 4 refracted idols carry IdolWeaver
+suffixes, and in-game DOES boost them (Phys 77, Cold 54, Light 47, Mana 203 —
+all exact only after broadening the gate from `sat=="Standard"` to
+`sat~="Corrupted"`).
+
+| Site | File | What it does |
+|---|---|---|
+| boost gate | `src/Modules/CalcSetup.lua` `cloneWithAltarBoost` (~L1382) | `stdBoost = (sat ~= "Corrupted") and (altarCommon + specificBoost)`; `weaverBoost` for IdolEnchantment/IdolWeaver only |
+
+**Spec:** `spec/System/TestIdolRefractedStandardBoostAllSubtypes_spec.lua`
+- "stdBoost applies to every non-Corrupted subtype (not Standard-only)"
+- "weaverBoost (property 4) applies only to IdolEnchantment / IdolWeaver"
+- "floors ONLY when the boost is purely the property-4 weaver path"
 
 **Establishing commit:** (pending)
 
@@ -3063,6 +4632,125 @@ breakdown.
 
 **Establishing commit:** (this commit)
 
+### unique-hideintooltip-letools-artifact
+
+**ID:** `unique-hideintooltip-letools-artifact`
+**Files:**
+- `src/Data/Uniques/uniques.json` / `uniques_1_2.json` / `uniques_1_3.json` / `uniques_1_4.json`
+- `src/Data/ModCache.lua` (~L1655 wolves area)
+- `spec/System/TestUniqueHideInTooltipLETools_spec.lua`
+
+**Invariant:** When a game-side unique mod has `hideInTooltip=true`
+AND `descriptors.json` has no entry for its
+`"<property>,<tags>,<specialTag>,<extraTag>"` key, the LEB string
+for that mod is a LETools fallback-formatter artifact (typically
+prefixed with `+N` where N is the raw `value` field). Two sub-cases,
+both locked here:
+
+1. **Pure descriptive flag** (no `tooltipDescriptions` text either):
+   the LEB entry MUST be deleted from `mods`+`rollIds`. Anchor case:
+   Black Blade of Chaos (`uniqueID=339`) Mod[0]
+   `"+1 Lethal Mirage is a quick attack with no invulnerability"`
+   was purged across all 4 unique JSON variants. ModCache lost the
+   matching `c["+1 Lethal Mirage is a quick attack with no
+   invulnerability"]={{},""}` no-op key as well.
+
+2. **Game tooltipDescription covers it** (game renders authored
+   text via `tooltipDescriptions` despite `hideInTooltip=true`):
+   the LEB string MUST drop the `+N ` LETools prefix to mirror the
+   game text verbatim, and ModCache MUST NOT carry a parser entry
+   for either form (the `+N`-prefixed key in particular must not
+   exist, because LETools' fallback `+1` value is meaningless and
+   any parser that ingests it produces a wrong stat). Anchor cases:
+   The Claw (`uniqueID=58`) Mod[2] and The Fang (`uniqueID=60`)
+   Mod[3], both `(property=58, tags=8, specialTag=3, extraTag=0)`
+   `hideInTooltip=true`, both string-equal to game
+   `tooltipDescriptions[0]`:
+   `"You can Summon Wolves up to your Maximum Number of Companions"`.
+   The previous LEB form `"+1 You can Summon Wolves..."` had a
+   ModCache entry incorrectly mapping it to
+   `MaxCompanions BASE +1` -- contradicting the in-game altText
+   `"Does not increase your maximum number of companions."`. That
+   entry was purged and the `+1 ` prefix stripped from all 4
+   unique JSON variants.
+
+**Establishing commit:** (this commit)
+
+---
+
+### mirage-count-consumer
+
+**ID:** `mirage-count-consumer`
+**Files:**
+- `src/Modules/CalcOffence.lua` (~L467 after `ActiveMineLimit`)
+- `src/Modules/CalcSections.lua` (~L188 after `Active Trap Limit`)
+- `spec/System/TestMirageCountConsumer_spec.lua`
+
+**Invariant:** The stat `MirageCount` (parser anchor:
+`mirages-created-by-lethal-mirage` -- `"+N Mirages created by
+Lethal Mirage"` idol affix family, ModItem.json statOrderKey=537,
+tiers 0..7 emit +1/+2/+3) MUST be summed via
+`skillModList:Sum("BASE", skillCfg, "MirageCount")` into
+`output.MirageCount`, and CalcSections MUST have a
+`haveOutput="MirageCount"` row formatting as an integer. Before
+this wiring the value was parsed but never consumed -- silent
+failure mirroring F1 (MaxShadows) and F10
+(ChanceToApplyShadowDaggerOnHit). The `SkillName="Lethal Mirage"`
+tag on the underlying mod ensures the count only resolves when
+Lethal Mirage is the active skill.
+
+**Establishing commit:** (this commit)
+
+### chance-to-apply-shadow-dagger-on-hit-consumer
+
+**ID:** `chance-to-apply-shadow-dagger-on-hit-consumer`
+**Files:**
+- `src/Modules/CalcOffence.lua` (~L466 after `ActiveMineLimit`)
+- `src/Modules/CalcSections.lua` (~L188 after `Active Trap Limit`)
+- `spec/System/TestChanceToApplyShadowDaggerOnHitConsumer_spec.lua`
+
+**Invariant:** The stat `ChanceToApplyShadowDaggerOnHit` (parser:
+`ModParser.lua` L399 `["chance to apply a shadow dagger on hit"]
+= "ChanceToApplyShadowDaggerOnHit"`, mapped from the unique
+suffix `"50% Chance to apply a Shadow Dagger on Hit with Lethal
+Mirage"` and similar Lethal Mirage idol affixes) MUST be summed
+via `skillModList:Sum("BASE", skillCfg, ...)` into
+`output.ChanceToApplyShadowDaggerOnHit`, and CalcSections MUST
+have a `haveOutput="ChanceToApplyShadowDaggerOnHit"` row
+formatting as percent. Before this wiring the value was parsed
+but never consumed -- silent failure mirroring F1. The
+`SkillName="Lethal Mirage"` tag on the underlying mod ensures
+the percentage only resolves when Lethal Mirage is the active
+skill.
+
+**Establishing commit:** (this commit)
+
+### condition-on-shadow-create-consume-config
+
+**ID:** `condition-on-shadow-create-consume-config`
+**Files:**
+- `src/Modules/ConfigOptions.lua` (two `check` toggles after `multiplierActiveShadow`)
+- `spec/System/TestConditionOnShadowCreateConsumeConfig_spec.lua`
+
+**Invariant:** The Bladedancer Shadow event-time conditions
+`OnShadowCreate` and `OnShadowConsume` are emitted by the parser
+on the affix families "+N Ward Gained on Shadow Creation" (9+
+tiers), "+N Health Gained on Shadow Creation" (8 tiers), and
+"+N% Chance to gain a stack of Dusk Shroud when you consume a
+Shadow" (multiple tiers). All ModCache entries already carry the
+correct `Condition:OnShadow{Create,Consume}` tags. The
+calc-consumer side is the two Config-tab `check` toggles in
+`ConfigOptions.lua`: `conditionOnShadowCreate` (with
+`ifCond="OnShadowCreate"`) and `conditionOnShadowConsume` (with
+`ifCond="OnShadowConsume"`), each setting
+`Condition:OnShadow{Create,Consume}` FLAG true and Combat-scoped
+so they never leak outside the combat snapshot. Without these
+toggles the tagged mods can never resolve, silently dropping
+their Ward/Health/Dusk Shroud contributions from the player
+breakdown.
+
+**Establishing commit:** (this commit)
+
 ### mirages-created-by-lethal-mirage
 
 **Invariant:** The idol-affix line `+N Mirages created by Lethal
@@ -3170,6 +4858,75 @@ itself does not surface.
 - `spec/System/TestProcRateLimitMetadata_spec.lua`
 
 **Establishing commit:** (this commit)
+
+**Migration recipe for the next LE patch (1.5+)**, replaying the 1.4
+playbook so the next person doesn't trip the same false positives:
+
+1. Run the within-version spec: `bash scripts/regen-shards.sh` then
+   `docker compose run --rm busted-tests busted --filter=TestUniqueDataIntegrity`.
+   Catches DUP_LINE.
+2. Run the Python audit (or copy `.tmp/audit_uniques_1_4_regression.py`
+   to `.tmp/audit_uniques_1_5_regression.py` and rebind `P14`/`P13`).
+   Triage real DUP_LINE / RANGE_COLLAPSE / ROLLID_LEN immediately.
+3. ROW_DROP needs base-implicit subtraction. The 1.4 migration moved
+   boots/quiver/sword implicits out of each unique into `bases_1_4.json`,
+   so naive cross-version diff flagged 9 false positives (Eterra's Path,
+   Suloron's Step, Transient Rest, Raindance, Snowdrift, Foot of the
+   Mountain, Stealth, Clotho's Needle, Army of Skin). Use
+   `.tmp/verify_base_implicit_migration.py` (or its 1_5 equivalent) to
+   subtract base implicits — anything still flagged after subtraction is
+   a real ROW_DROP. The verification script matches by
+   `(baseTypeID, subTypeID)` and compares range-stripped shapes.
+4. Use in-game tooltip screenshots from the user as the final ground
+   truth for any unique that still looks suspicious after step 3.
+
+### `tooltip-mod-line-wrap`
+
+Item tooltips in the Items tab — including hover tooltips routed through
+`TooltipHost` (item list rows, paperdoll slots, idol grid, etc.) — must
+word-wrap long mod lines so they stay inside the tooltip box. Trigger:
+the unique mod on `Horn of the Bone Wisp` (Ivory Wand) overflowed the
+tooltip horizontally because only `displayItemTooltip` set `maxWidth`;
+every other entry path left it unset, so `Tooltip:AddLine` skipped the
+wrap branch.
+
+A regression here either re-introduces horizontal overflow or under-counts
+wrapped rows in `block.height` so the bottom border crops wrapped text.
+
+| Site | File | What it does |
+|---|---|---|
+| default maxWidth | `src/Classes/ItemsTab.lua` `AddItemTooltip` (~line 2411) | Sets `tooltip.maxWidth = 458` when caller didn't, so wrap path activates for every item tooltip |
+| wrap + height | `src/Classes/Tooltip.lua` `AddLine` | Routes through `main:WrapString` and grows `block.height` by `(size+2) * #wrapped` |
+
+**Spec:** `spec/System/TestTooltipWrap_spec.lua`
+- "AddLine wraps a long line at maxWidth into multiple visual rows"
+- "AddItemTooltip sets a default maxWidth so item tooltips wrap on hover"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
+
+### `lifeonhit-flag-aware-sum`
+
+ModParser registers `LifeOnMeleeHit` (and `LifeOnHit`) BASE mods with
+`flags = bor(ModFlag.Melee, ModFlag.Hit)` so they participate in per-skill
+hit-rate filtering. The Calcs-tab character-aggregate row at the bottom of
+`CalcDefence.UpdateLifeShield` originally summed these with `cfg = nil`,
+which means `band(cfg.flags, mod.flags) == mod.flags` evaluates
+`band(0, Melee|Hit) ~= Melee|Hit` → ModDB silently drops the mod.
+
+Real-world hit: QDxZjL4J Paladin's main weapon **Palarus's Sacred Light**
+suffix `+11 Health Gain on Melee Hit` was surfaced as `0` in LEB while
+LETools displayed `11`. Fix passes the same flag bitmask in cfg so the
+mod actually matches.
+
+| Site | File | What it does |
+|---|---|---|
+| calc | `src/Modules/CalcDefence.lua` (output.LifeOnMeleeHit / LifeOnHit) | `Sum("BASE", { flags = bor(ModFlag.Melee, ModFlag.Hit) }, "LifeOnMeleeHit")` (and Hit-only for the Hit variant) |
+
+**Spec:** `spec/System/TestLifeOnHit_spec.lua`
+- "ModParser tags 'Health Gain on Melee Hit' with Melee+Hit flags"
+- "BASE LifeOnMeleeHit surfaces on calcsOutput with Melee+Hit cfg"
+
+**Establishing commit:** `<unset; bump after first commit on this branch>`
 
 ## Adding a new guard
 
@@ -3654,6 +5411,42 @@ disappeared at least once in prior refactors:
 
 **Establishing commit:** (this commit)
 
+### `strong-mind-mana-as-stun-avoidance`
+
+The Strong Mind unique grants "200% of maximum mana added as stun avoidance".
+This is a **tooltipDescription-only** property in the item data — there is no
+numeric mod entry — so the datamining extraction dropped it and LEB silently
+applied 0. The fix spans two files and both halves are required:
+
+1. **ModParser.lua** maps the tooltip string
+   (`X% of maximum mana added as stun avoidance`, plus the `max mana` /
+   `maximum mana` / `mana` wording variants) to a BASE `ManaAsStunAvoidance`
+   stat, mirroring the Mana/Life-AsEnduranceThreshold tooltip contract.
+2. **CalcDefence.lua** reads `modDB:Sum("BASE", nil, "ManaAsStunAvoidance")`
+   and folds `output.Mana * manaAsStunAvoidance / 100` into the flat
+   stun-avoidance pool, so it feeds BOTH the `StunAvoidance` display stat AND
+   the stun-threshold pool.
+
+Dropping either the ModParser mapping or the CalcDefence fold re-introduces
+the missing `2 * Mana` term.
+
+**Triangulation:** ImPalmBeachPete lv48 Bladedancer (save BETA_12). in-game
+Stun Avoidance = 880 = flat 490 (base+tree+items) + 200% * Mana 195 (= 390).
+Before the fix LEB showed 490; the lv36 XML snapshot recorded the same gap as
+430 vs 796 (= 2 * Mana 183). Headless `DumpPeteFull` confirms 880 = 880.
+
+| Site | File |
+|---|---|
+| tooltip → BASE ManaAsStunAvoidance | `src/Modules/ModParser.lua` (~line 1467) |
+| fold against max Mana into flat pool | `src/Modules/CalcDefence.lua` (~line 1534) |
+
+**Spec:** `spec/System/TestStrongMindManaAsStunAvoidance_spec.lua`
+- "ModParser maps the tooltip string to a BASE ManaAsStunAvoidance stat"
+- "CalcDefence folds ManaAsStunAvoidance against max Mana into the flat pool"
+- "arithmetic: 200% of Mana 195 adds 390 -> 490 base becomes 880"
+
+**Establishing commit:** (this commit)
+
 ### `idol-refracted-weaver-enchant-boost`
 
 The Idol Altar's property 4 (`EffectOfIdolEnchantsInRefractedSlots`,
@@ -3792,6 +5585,9 @@ the test that locks it in).
 | `idol-altar-not-idol-slot` | `spec/System/TestModParse_spec.lua` |
 | `equipped-corrupted-idol-multiplier` | `spec/System/TestEquippedCorruptedIdolMultiplier_spec.lua` |
 | `omen-idol-slot-dedup-on-corruption-count` | `spec/System/TestOmenIdolSlotDedup_spec.lua` |
+| `refracted-count-independent-of-omen-capacity` | `spec/System/TestCountIdolsOnRefractedCells_spec.lua` |
+| `refracted-display-not-omen-capacity` | `spec/System/TestRefractedSlots_spec.lua` |
+| `equipped-omen-idol-capped-by-capacity` | `spec/System/TestCountIdolsOnRefractedCells_spec.lua` |
 | `non-unique-idol-stat-multiplier` | `spec/System/TestNonUniqueIdolStatMultiplier_spec.lua` |
 | `corrupted-count-pre-levelreq` | `spec/System/TestModParse_spec.lua` |
 | `applyrange-rounding-mode-split` | `spec/System/TestItemTools_spec.lua` |
@@ -3804,6 +5600,8 @@ the test that locks it in).
 | `pattern-a-affix-level-req` | `(no spec file found)` |
 | `unique-data-integrity` | `spec/System/TestUniqueDataIntegrity_spec.lua` |
 | `regen-pct-shorthand-inc` | `spec/System/TestModParse_spec.lua` |
+| `armour-pct-shorthand-inc` | `spec/System/TestArmourPctShorthandInc_spec.lua` |
+| `broken-negative-inc-implicit-text` | `spec/System/TestBrokenNegativeIncImplicit_spec.lua` |
 | `butchers-crown-no-mana-regen` | `spec/System/TestModParse_spec.lua` |
 | `idol-altar-capacity-tooltip` | `spec/System/TestIdolAltarTooltip_spec.lua` |
 | `regen-alias-coverage` | `spec/System/TestRegenAlias_spec.lua` |
@@ -3840,6 +5638,9 @@ the test that locks it in).
 | `channelling-tree-node-auto-gate` | `(no spec file found)` |
 | `two-phase-floor-post-round-scalar` | `spec/System/TestPostRoundScalarRoundHalfUp_spec.lua` |
 | `idol-altar-boost-subtype-rounding` | `spec/System/TestIdolAltarBoostSubtypeRounding_spec.lua` |
+| `armour-percent-vshdm-strict` | `spec/System/TestArmourPercentVshdmStrict_spec.lua` |
+| `armour-percent-refracted-fractional` | `spec/System/TestArmourPercentVshdmStrict_spec.lua` |
+| `flat-health-refracted-fractional` | `spec/System/TestFlatHealthRefractedFractional_spec.lua` |
 | `affix-effect-modifier-formula` | `spec/System/TestAffixEffectModifierFormula_spec.lua` |
 | `boneclamor-barbute-ward-per-uncapped-necrotic-res` | `spec/System/TestBoneclamorBarbute_spec.lua` |
 | `skills-tab-buff-toggle-config-sync` | `spec/System/TestSkillsTabBuffToggleConfigSync_spec.lua` |
@@ -3853,8 +5654,25 @@ the test that locks it in).
 | `max-shadows-output-wiring` | `spec/System/TestMaxShadowsOutput_spec.lua` |
 | `lament-scorn-reforged-tier-ranges` | `spec/System/TestLamentScornReforgedTierRanges_spec.lua` |
 | `stun-avoidance-base-and-tree` | `spec/System/TestStunAvoidanceBaseAndTree_spec.lua` |
+| `strong-mind-mana-as-stun-avoidance` | `spec/System/TestStrongMindManaAsStunAvoidance_spec.lua` |
 | `idol-refracted-weaver-enchant-boost` | `spec/System/TestIdolRefractedWeaverEnchantBoost_spec.lua` |
 | `unique-mod-text-tooltip-audit` | `spec/System/TestUniqueDataIntegrity_spec.lua` |
+| `s4-converted-attr-no-base-inherit` | `spec/System/TestS4ConvertedAttr_spec.lua` |
+| `s4-perstat-base-includes-converted-twin` | `spec/System/TestS4PerStatBaseTwin_spec.lua` |
+| `s4-guile-per-point-armour-reduction` | `spec/System/TestS4GuilePerPointArmourReduction_spec.lua` |
+| `s4-apathy-per-point-mana-regen-inc` | `spec/System/TestS4ApathyPerPointManaRegenInc_spec.lua` |
+| `unbroken-charge-block-effectiveness-per-ms-letools-artifact` | `spec/System/TestUnbrokenChargeBELetoolsArtifact_spec.lua` |
+| `conditional-recent-action-stat-recognition` | `spec/System/TestConditionalRecentActionStatRecognition_spec.lua` |
+| `armour-floor-at-zero-letools-artifact` | `spec/System/TestArmourFloorAtZero_spec.lua` |
+| `frostbite-shackles-wr-per-uncapped-cold-res` | `spec/System/TestFrostbiteShacklesWRPerUncappedColdRes_spec.lua` |
+| `dual-attribute-and-pair` | `spec/System/TestDualAttributeAndPair_spec.lua` |
+| `near-enemy-proximity-suffix-eat` | `spec/System/TestNearEnemyProximitySuffixEat_spec.lua` |
+| `pyramidal-altar-cdr-letools-artifact` | `spec/System/TestPyramidalAltarCDR_spec.lua` |
+| `sigma-rank-excludes-known-semantic-gaps` | `spec/System/TestPyramidalAltarCDR_spec.lua` (shared) |
+| `health-regen-symbols-of-hope-buff-parity` | `spec/System/TestHealthRegenSymbolsOfHopeBuffParity_spec.lua` |
+| `movement-speed-vshdm-strict` | `spec/System/TestMovementSpeedVshdmStrict_spec.lua` |
+| `endurance-threshold-round-not-floor` | `spec/System/TestEnduranceThresholdRound_spec.lua` |
+| `scaleaddmod-stacking-coeff-fractional-retention` | `spec/System/TestScaleAddModStackingCoeff_spec.lua` |
 
 ### `minion-skillid-scope-martyrdom`
 
@@ -4616,6 +6434,290 @@ INC=73 (was 31), `output.ManaRegen=13.8` (Δ<1%).
 - "tree_2.json Sentinel-70 retains notScalingStat with noScalingPointThreshold"
 
 **Establishing commit:** (this commit) — BgRrP5rr Paladin ManaRegen 10.5→13.8 Δ<1%
+
+### `minion-whitelist-3surface-union`
+
+The set of stat-properties that route to minions in Last Epoch is
+discoverable from three independent game-data signals, each with known
+gaps:
+
+| Surface | Source | Strength | Gap |
+|---|---|---|---|
+| `altText` | `property_list_v3.json` `altTextOverrides[]` with MINION bit set | hand-curated, every entry confirmed by a localization row | only 17 entries / 8 properties — narrowest |
+| `affixTag` | All affix mods (single/multi/unique/set) with `tags & 0x2000` (8192) | affix data opted into minion-tagging directly | misses runtime-only stats (engine-hardcoded routes) |
+| `runtime` | BepInEx hook dump of `Actor.isMinion==true` over 8836 minion instances | catches engine-hardcoded routes (sp=9 Movespeed, sp=41 AdaptiveSpellDamage, playerProperty 126/127 CompanionRevive*) | includes non-player actors (Tolmat enemies etc.); confidence=low until player-only re-capture |
+
+INVARIANT: the LEB minion-stat whitelist is the **UNION** of all three
+surfaces, keyed by `(property_or_sp, frozenset(tagBits), specialTag)`.
+Each surface has known coverage gaps; switching to intersection drops
+legitimate minion stats and silently breaks the `sumMinion` fan-out in
+`CalcDefence.lua` (~line 1775).
+
+Merge output: 152 entries (14 high / 47 medium / 91 low confidence).
+High-confidence entries are voted-for by ≥2 surfaces.
+
+| Site | File |
+|---|---|
+| Whitelist data (provenance) | `spec/minion-whitelist/whitelist_final.json` |
+| Surface JSONs (audit trail) | `spec/minion-whitelist/{altText,affix_tag,minion_runtime_stats}_surface.json` (or the matching names under that dir) |
+| Inline guard | `src/Modules/CalcDefence.lua` (~line 1735, sumMinion bucket) |
+| Merge script (external) | `~/Documents/LE_datamining/merge_minion_whitelist_3surfaces.py` |
+
+**Spec:** `spec/minion-whitelist/MinionWhitelistCoverage_spec.lua`
+- "whitelist_final.json loads with 3 surfaces and 152 entries"
+- "every entry carries (property, tagBits, specialTag, surfaces, confidence)"
+- "no entry has empty surfaces (would mean merge-script bug)"
+- "CalcDefence sumMinion block still carries the guard marker"
+- **(2026-05-18, B15 wire-in C改)** "HIGH/MEDIUM whitelist entries must map to a Minion* output or be intentionally waived" — forward drift detection: every HIGH/MEDIUM entry must appear in `WHITELIST_TO_MINION_OUTPUT` (mapping to an `output.Minion*` line in `CalcDefence.lua` sumMinion) OR `INTENTIONAL_OMISSIONS` (with a non-empty reason). New HIGH/MEDIUM entries added by a future whitelist re-merge will fail this test until consciously classified, preventing silent under-coverage of the LEB minion-tab summary.
+- **(2026-05-18, B15 wire-in C改)** "reverse drift: every mapped output key must still appear as HIGH/MEDIUM in the whitelist" — catches the case where a stat was removed from game data (or demoted to LOW / runtime-only) but the LEB Minion* output is still wired against a stale whitelist key.
+- **(2026-05-18, B15 wire-in C改)** "intentional omissions also reference valid whitelist keys" — protects against stale waiver keys that don't correspond to a real whitelist entry (would leak past the forward check).
+- **(2026-05-18, B15 wire-in C改)** "mapped Minion* outputs and waivers together cover every HIGH/MEDIUM whitelist entry exactly once" — belt-and-braces against a key being pasted into both lists (a maintainer typo would otherwise silently bypass both halves of the gate).
+
+**Known HIGH gaps surfaced by the drift check (UI follow-up, recorded as INTENTIONAL_OMISSIONS):**
+- `2/512,8192/0` — Minion Melee Attack Speed (no `output.MinionAttackSpeed` yet).
+- `3/8192/0`     — Minion Cast Speed (no `output.MinionCastSpeed` yet).
+- `0/8192/0`     — generic minion Damage (no element bit, intentionally subsumed by per-element `MinionXxxDamageInc`).
+
+**Establishing commit:** `772da02f` (2026-05-17) — B15 LEB wire-in of the 3-surface
+minion-whitelist union. See Obsidian `LE_datamining 未整理バッチ一覧.md`
+B15 row, and `extracted/set_bonus_residual_triage.json` for the sibling
+B14 triage produced in the same session.
+
+**Drift-detection follow-up:** (this commit, 2026-05-18) — adds the 4
+forward/reverse/dangling/no-double-listing tests above, closing B15 wire-in
+to "Cカイ" level. See Obsidian board's 2026-05-18 (5) update.
+
+### `multi-affix-penalty-sign`
+
+"Cannot be X and Reduced Y" / "X and Reduced Y" multi-affixes
+(`specialAffixType == 6`, prefix corruption-only) store the Line 2 stat as
+a **negative** value in the game data: e.g. affix `1006` "Cannot be Chilled
+and Reduced Fire Resistance" tier 0 has `extraRolls[0].minRoll = -0.07` in
+`multi_affixes_v3.json`. Three affixes were historically authored into
+`ModItem_1_4.json` with the **positive** sign, silently flipping a player
+penalty into a bonus:
+
+| Affix | Stat | Game extraRoll t0 | LEB pre-fix | LEB post-fix (2026-05-19) |
+|---|---|---|---|---|
+| `951_*` Frenzy and Reduced Frenzy Effect | Effect of Frenzy on You | -0.18..-0.02 | `+(18-17)% .. +(3-2)%` | `+(-18--17)% .. +(-3--2)%` |
+| `1001_*` Cannot be Slowed and Reduced Effect of Haste | Effect of Haste on You | -0.25..-0.03 | `+(25-23)% .. +(4-3)%` | `+(-25--23)% .. +(-4--3)%` |
+| `1006_*` Cannot be Chilled and Reduced Fire Resistance | Fire Resistance | -0.07..0.00 | `+7% .. +0` | `-7% .. +0` |
+
+Ground truth verification (2026-05-19): `olVLdj8q lv100 Bladedancer` Item 6
+"Salt the Wound" carries `{kind:corrupted}{range:175}1006_0`. Pre-fix LEB
+applied `+7% Fire Resistance` (incorrect bonus); LETools/in-game show the
+expected `-7%` penalty. The Δ Fire +14 between LEB and LETools is exactly
+`2 × 7%` (LEB gain vs game loss), closing to 0 after sign flip.
+
+INVARIANT: every `*_*` entry in `ModItem_1_4.json` whose `affixName`
+contains "Reduced" (case-insensitive) — AND whose corresponding
+`affixProperties[k]` in `multi_affixes_v3.json` has `extraRolls[0].minRoll
+< 0` — must encode the Line 2 stat with a **negative** literal/range.
+Other "Reduced" affixes that are descriptive-only (the word "Reduced" appears
+in the player-facing label but the underlying value is naturally
+positive, e.g. "Reduced Volcanic Orb Speed" affix 246) keep positive
+storage; the discriminator is the game-data sign, not the affix name.
+
+A regression here re-introduces positive Line 2 storage on any of the
+three affixes above, or fails to negate-import a newly-extracted multi-affix
+whose game-side extraRoll is negative.
+
+| Site | File | What it does |
+|---|---|---|
+| 951_0..7 | `src/Data/ModItem_1_4.json` (~line 109894) | Line 2 is `+(-N--M)% Effect of Frenzy on You` |
+| 1001_0..7 | `src/Data/ModItem_1_4.json` (~line 116870) | Line 2 is `+(-N--M)% Effect of Haste on You` |
+| 1006_0..7 | `src/Data/ModItem_1_4.json` (~line 117589) | Line 2 is `-N% Fire Resistance` (fixed per-tier) |
+| Game ground truth | `~/Documents/LE_datamining/extracted/items/multi_affixes_v3.json` | affixes 951, 1001, 1006 have `tiers[*].extraRolls[0].minRoll < 0` |
+
+**Spec:** `spec/System/TestMultiAffixPenaltySign_spec.lua`
+- "951_*, 1001_*, 1006_* Line 2 stats are encoded with negative sign"
+- "no `*_*` entry in ModItem_1_4.json silently inverts a negative game-side extraRoll"
+
+**Establishing commit:** (this commit, 2026-05-19) — sign-import fix for
+the three multi-affixes above, closing `olVLdj8q` Fire +14 delta to ~0.
+
+### `atropos-mana-prefix-letools-overcount`
+
+`Scissor of Atropos` (Falchion, unique id 418 in
+`src/Data/Uniques/uniques_1_4.json`) carries no intrinsic Mana mod — its
+unique mod list is Melee Damage / Attack Speed / Skills / Vitality /
+Kismet only. The +Mana shown on Legendary copies of this base comes
+exclusively from a **slammed prefix**.
+
+On `spec/TestBuilds/1.4/oYEOpZmJ lv87 Spellblade.xml` (Item 10), the
+Legendary stores `{range:249}718_6` in the prefix slot. Affix 718
+"Manaforged" tier 6 in `src/Data/ModItem_1_4.json` is:
+
+```
+"718_6": {
+    affixName: "Manaforged",
+    affixType: "Prefix",
+    rolls: "+(91-120) Mana" + "(36-42)% increased Mana Regen"
+}
+```
+
+LEB applies the standard byte-interpolation `91 + (120-91) * (249/255) =
+119.32 → clamp-to-max 120`, surfacing `+120 Mana` and `+42% Mana Regen`
+in the item-mod breakdown (confirmed in the `manaBreakdown` section of
+`oYEOpZmJ lv87 Spellblade.lua` L14352-14364: `source="Item:10:Scissor
+of Atropos", type="BASE", value=120`).
+
+LET's planner tooltip on the same build reads `One-Handed Sword
+(Prefix): +179 Mana`. **179 fits neither tier 6 (max 120) nor tier 7
+(min 192)** — it is mathematically impossible per the `ModItem_1_4.json`
+data file. The Mana Regen partner stat on the same dual-mod prefix
+carries the same overcount fallout (LET 14.72 vs LEB 13.0).
+
+Classification: **letools-artifact** — LET display bug isolated to this
+one save. LEB matches LE game-data truth. The per-build skip prevents
+the row from polluting Σ.
+
+| Site | File | What it does |
+|---|---|---|
+| Affix data | `src/Data/ModItem_1_4.json` (718_6 block) | `+(91-120) Mana` + `(36-42)% increased Mana Regen` |
+| Build | `spec/TestBuilds/1.4/oYEOpZmJ lv87 Spellblade.xml` L453-494 | Item 10 stores `{range:249}718_6` |
+| Snapshot | `spec/TestBuilds/1.4/oYEOpZmJ lv87 Spellblade.lua` L14352-14364 | LEB applies +120 / +42% (matches data file max) |
+| Skip | `spec/tools/diff_letools.py` `KNOWN_BUILD_GAPS` | Per-build skip for `(oYEOpZmJ, General, Mana)` + `(oYEOpZmJ, General, Mana Regen)` |
+
+**Spec:** `spec/System/TestKnownBuildGaps_spec.lua`
+- "KNOWN_BUILD_GAPS includes oYEOpZmJ lv87 Spellblade / General / Mana"
+- "KNOWN_BUILD_GAPS includes oYEOpZmJ lv87 Spellblade / General / Mana Regen"
+
+**Σ impact:** Anchor build oYEOpZmJ dropped from Σ=54.6 (dominated by
+13.3% Mana row) to Σ=29.7 after the per-build skip.
+
+**Establishing commit:** (this commit, 2026-05-20)
+
+### `all-resistances-includes-physical-letools-drop-artifact`
+
+LE property 30 "All Resistances" is defined in
+`src/Data/Properties/property_list_1_4.json` with
+`defaultAltText = "Adds to your physical, fire, cold, lightning,
+necrotic, void, and poison resistances."` — explicitly including
+Physical. The expansion in `src/Data/ModCache.lua` L7246
+(`c["+4% to All Resistances per Complete Set"]`) correctly enumerates
+all **seven** resistances including `PhysicalResist` with a
+`Multiplier:CompleteSetCount` tag and `roundAfterMultiply=true`.
+
+On `spec/TestBuilds/1.4/Qb6WlbxD lv100 Druid.xml`, Legends Entwined
+(Item 7) is a wildcard set member with `CompleteSetCount=2`, so its
+per-set affix contributes `+4 * 2 = +8 PhysicalResist` (verified in
+`Qb6WlbxD lv100 Druid.lua` L11516-11521 `PhysicalResist_summary.base
+= 45 = 17 (Laup's Path) + 20 (Grand Resolve of Humanity) + 8 (Legends
+Entwined per-set)`).
+
+LET's planner reports `Physical Resistance = 37` on the same build —
+exactly `45 - 8`, i.e. LET drops the PhysicalResist mod from the
+per-Complete-Set affix expansion. The 6 elemental/non-physical
+resistances on this build match LEB exactly, so the gap is isolated to
+LET's handling of "All Resistances" excluding Physical.
+
+Classification: **letools-artifact** — LET treats "All Resistances" as
+elemental-only, contrary to LE's `property_list_1_4.json` definition.
+
+| Site | File | What it does |
+|---|---|---|
+| Game-data truth | `src/Data/Properties/property_list_1_4.json` property 30 | `defaultAltText` lists physical first |
+| Expansion | `src/Data/ModCache.lua` L7246 | `+4% to All Resistances per Complete Set` → 7 mods including PhysicalResist |
+| Snapshot | `spec/TestBuilds/1.4/Qb6WlbxD lv100 Druid.lua` L11516-11521 | LEB applies +8 PhysRes from Legends Entwined per-set |
+| Skip | `spec/tools/diff_letools.py` `KNOWN_BUILD_GAPS` | Per-build skip for `(Qb6WlbxD, General, Physical Resistance)` |
+
+**Spec:** `spec/System/TestKnownBuildGaps_spec.lua`
+- "KNOWN_BUILD_GAPS includes Qb6WlbxD lv100 Druid / General / Physical Resistance"
+
+**Σ impact:** Anchor build Qb6WlbxD dropped from Σ=43.8 (dominated by
+21.6% PhysRes row) to Σ=22.2 — from #3 down to #16 in G6.
+
+**Establishing commit:** (this commit, 2026-05-20)
+
+### `weaver-will-equipped-autocount`
+
+Communion of the Erased (uniqueID 327) grants "+1 Potion Slot per equipped
+Weaver('s Will) Item". On ImPalmBeachPete (lv36 Bladedancer, belt + boots =
+2 Weaver's Will items) LEB reported PotionSlots = 3 (implicit +3 only)
+instead of 5 — the per-item mod silently dropped at parse time. Three
+independent failures had to be fixed for the full chain to reach PotionSlots:
+
+1. **ModParser singular alias.** Saved-build XML / in-game text uses the
+   SINGULAR name "Potion Slot" ("+1 Potion Slot per equipped Weaver Item").
+   `modNameList` only carried the plural "potion slots", so the modName scan
+   failed and the whole mod dropped (residue " Potion Slot "). `scan()` is
+   earliest+longest, so the 12-char "potion slots" still wins for plural text.
+2. **perEquippedHandler routing.** The `knownPerEquipped` set gated which
+   "per equipped X" tails fall through to the generic parser (vs. nsAny →
+   LEB_NotSupported). It listed "weaver item(s)" but not the game-accurate
+   "weaver's will item(s)" (datamining Unique_Tooltip_1_327), so the accurate
+   phrasing routed to LEB_NotSupported. Both forms must fall through so
+   `modTagList "per equipped weaver('s will) item"` attaches
+   `Multiplier:EquippedWeaverItem`.
+3. **Data.weaversWillUniques + auto-count.** A name-keyed set built from every
+   unique with `legendaryType == 1` (the Weaver's Will uniques). CalcSetup
+   counts equipped items whose title is in this set and emits
+   `Multiplier:EquippedWeaverItem`, so 2/3/4+ equipped items all scale without
+   hardcoding.
+
+A stale precomputed `ModCache.lua` row also short-circuited the live parser
+(`c["+1 Potion Slot per equipped Weaver Item"]={{}," Potion Slot  "}`); it had
+to be rewritten to the correct PotionSlots BASE + Multiplier shape.
+
+| Site | File | What it does |
+|---|---|---|
+| singular name alias | `src/Modules/ModParser.lua` (~line 231, `modNameList`) | `["potion slot"] = "PotionSlots"` so singular text binds the name |
+| per-equipped routing | `src/Modules/ModParser.lua` (~line 2220, `knownPerEquipped`) | adds `"weaver's will item(s)"` so both phrasings fall through to the generic parser |
+| tag mapping | `src/Modules/ModParser.lua` (~line 748/756, `modTagList`) | maps both "per equipped weaver item" and "per equipped weaver's will item" → `Multiplier:EquippedWeaverItem` |
+| WW unique set | `src/Modules/Data.lua` (~line 748) | builds `data.weaversWillUniques` from `legendaryType == 1` |
+| auto-count | `src/Modules/CalcSetup.lua` (~line 1126) | counts equipped items in the set → `NewMod("Multiplier:EquippedWeaverItem", ...)` |
+| cache fix | `src/Data/ModCache.lua` (line 1542) | corrected stale `{{}," Potion Slot  "}` row to PotionSlots BASE 1 + Multiplier |
+
+**Spec:** `spec/System/TestWeaverWillEquippedCount_spec.lua`
+- "parses singular 'Potion Slot per equipped Weaver Item' to PotionSlots + Multiplier"
+- "parses game-accurate \"Weaver's Will Item\" phrasing to the same multiplier"
+- "plural text still binds the longer 'potion slots' name"
+- "PotionSlots scales with Multiplier:EquippedWeaverItem"
+- "data.weaversWillUniques is a name-keyed set of legendaryType==1 uniques"
+
+**Establishing observation:** ImPalmBeachPete PotionSlots 3 (pre) → 5 (post:
+implicit 3 + 1 BASE × Multiplier:EquippedWeaverItem(2)).
+
+**Establishing commit:** (this commit, 2026-05-21)
+
+### `dodge-rating-doubled-if-hit-recently`
+
+Rogue passive "Once" (node Rogue-52) grants "10 Dodge Rating, Doubled if Hit
+Recently" per allocated point. On ImPalmBeachPete (lv36 Bladedancer, 6/6 on
+Once = 60 base Dodge Rating) LEB reported Dodge Rating 111 / Dodge Chance
+10.65% instead of 184 / 15% — the entire Evasion BASE mod from this node
+silently dropped at parse time.
+
+Root cause: the `modTagList` scan had no trailing-clause tag for
+", doubled if hit recently", so it consumed only the inner "hit recently"
+fragment and left residue " , Doubled if  Recently ". A non-empty `extra`
+residue makes the mod invalid, so it was discarded at tree application —
+losing 10 × allocated points of Dodge Rating.
+
+The fix adds a comma-anchored `modTagList` entry mapping the whole trailing
+clause to `Condition:BeenHitRecently` with `mult = 2` — the same
+Condition+mult contract as ", doubled for shadow attack". `scan()` is
+earliest+longest-match, so the comma-anchored phrase wins over the inner
+"hit recently" tag. BeenHitRecently defaults OFF, so the base (un-doubled)
+value applies, matching the in-game character-sheet display.
+
+A stale precomputed `ModCache.lua` row cached the broken parse
+(`{{[1]={flags=8388608,...,name="Evasion",...,value=10}}," , Doubled if  Recently "}`)
+and short-circuited the live parser; it was rewritten to the correct
+Evasion BASE 10 + `Condition:BeenHitRecently{mult=2}` + nil-extra shape.
+
+| Site | File | What it does |
+|---|---|---|
+| tag mapping | `src/Modules/ModParser.lua` (~line 620, `modTagList`) | maps ", doubled if hit recently" → `Condition:BeenHitRecently{mult=2}` |
+| cache fix | `src/Data/ModCache.lua` (line 10615) | corrected stale `{...,flags=8388608...}," , Doubled if  Recently "}` row to Evasion BASE 10 + Condition tag + nil extra |
+
+**Spec:** `spec/System/TestDodgeRatingDoubledIfHitRecently_spec.lua`
+
+**Establishing observation:** ImPalmBeachPete Dodge Rating 111 → 184, Dodge
+Chance 10.65% → 15% (Once 6/6: (92 base + 60) × 1.05 INC × 1.15 MORE ≈ 184).
+
+**Establishing commit:** (this commit, 2026-05-21)
 
 ## Layering vs canary strings
 

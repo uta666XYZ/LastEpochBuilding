@@ -20,6 +20,33 @@ local m_huge = math.huge
 local bor = bit.bor
 local band = bit.band
 
+-- @leb-regression-guard: maxlife-maxmana-banker-round
+-- LE finalizes maxHealth/maxMana to an int via the property's roundingForAdded
+-- mode. property_list_v3 marks Health (property 7) and Mana (property 8) with
+-- roundingForAdded = "Integer", which formulas_verified §38 decodes as banker
+-- rounding (FUN_18038f970, round-half-to-even) — NOT truncation. This supersedes
+-- the old `int-truncate-life-mana` guard, which assumed floor.
+-- Hard in-game witness that rules out FLOOR: ShutFackUp lv85 Spellblade (save
+-- BETA_7) Mana base 241.9301 x 1.04 = 251.607 -> in-game General panel shows 252.
+-- floor=251 (old LEB, WRONG); banker=252 (correct). The default Acolyte lv1 mana
+-- 50 + 0.50506 + 2 = 52.50506 likewise -> 53 (frac > .5 rounds up), not 52.
+-- NOTE: every observed data point has a fraction != exactly .5, so banker and
+-- plain round-half-up give identical results here; the choice of banker (not
+-- round-half-up) rests solely on property_list_v3 §38 "Integer" = round-half-to-
+-- even. The distinction only ever matters on an exact-.5 fraction at an even int.
+-- See REGRESSION_GUARDS.md "maxlife-maxmana-banker-round".
+local function bankerRound(x)
+	local f = m_floor(x)
+	local frac = x - f
+	if frac < 0.5 then
+		return f
+	elseif frac > 0.5 then
+		return f + 1
+	else
+		return (f % 2 == 0) and f or (f + 1)
+	end
+end
+
 -- Merge an instance of a buff, taking the highest value of each modifier
 local function mergeBuff(src, destTable, destKey)
 	if not destTable[destKey] then
@@ -59,15 +86,14 @@ local function doActorLifeMana(actor)
 	local base = modDB:Sum("BASE", nil, "Life")
 	local inc = modDB:Sum("INC", nil, "Life")
 	local more = modDB:More(nil, "Life")
-	-- @leb-regression-guard: int-truncate-life-mana
-	-- LE stores maxHealth/maxMana as int (BaseHealth.maxHealth, dump.cs:155378;
-	-- maxMana dump.cs:178322). C# float→int assignment is truncation toward zero
-	-- (= floor for positive values), so LE displays e.g. 1258 × 1.25 = 1572.5 as
-	-- 1572, not 1573 (round-half-up). Upstream PoB uses round(); LEB diverges on
-	-- purpose for in-game parity. Do NOT swap m_floor → round here without also
-	-- updating TestModParse "effect doubled" assertions (52 vs 53 mana, 952 vs 953).
-	-- See REGRESSION_GUARDS.md "int-truncate-life-mana".
-	output.Life = m_max(m_floor(base * (1 + inc/100) * more), 1)
+	-- @leb-regression-guard: maxlife-maxmana-banker-round
+	-- LE finalizes maxHealth via Mathf.RoundToInt = banker's rounding (round half
+	-- to even), NOT truncation. See the guard block near the top of this file and
+	-- REGRESSION_GUARDS.md "maxlife-maxmana-banker-round". `.5`-at-even cases (e.g.
+	-- 1572.5 -> 1572) round down and so coincide with floor, but non-`.5` fractions
+	-- (e.g. ShutFackUp Mana 251.607 -> 252) diverge: banker matches in-game, floor
+	-- does not.
+	output.Life = m_max(bankerRound(base * (1 + inc/100) * more), 1)
 	if breakdown then
 		if inc ~= 0 or more ~= 1 then
 			breakdown.Life = { }
@@ -81,8 +107,8 @@ local function doActorLifeMana(actor)
 			t_insert(breakdown.Life, s_format("= %g", output.Life))
 		end
 	end
-	-- @leb-regression-guard: int-truncate-life-mana (paired with output.Life above)
-	output.Mana = m_floor(calcLib.val(modDB, "Mana"))
+	-- @leb-regression-guard: maxlife-maxmana-banker-round (paired with output.Life above)
+	output.Mana = bankerRound(calcLib.val(modDB, "Mana"))
 	local base = modDB:Sum("BASE", nil, "Mana")
 	local inc = modDB:Sum("INC", nil, "Mana")
 	local more = modDB:More(nil, "Mana")
