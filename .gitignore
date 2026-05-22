@@ -91,3 +91,11 @@ src/letools_raw.json
 *_maxroll_api.json
 # Internal skill verification data (contains test build filenames)
 docs/skill_usage_raw.csv
+
+# Scratch dir for throwaway diagnostic / dump tools (never committed)
+spec/_scratch/
+# One-shot diagnostic spec runners (kept locally, not for public repo)
+spec/Dump*.lua
+spec/Debug*.lua
+spec/RegenOneBuild.lua
+/*.log
