@@ -137,6 +137,14 @@ local IdolGridControlClass = newClass("IdolGridControl", "Control", "ControlHost
 			local slot = new("ItemSlotControl", {"TOPLEFT", self, "TOPLEFT"}, cx, cy, itemsTab, slotName, "", nil, self.cw, self.ch)
 			slot.arrowH = self.ch / 2
 			slot.emptyPlusMarker = true
+			-- @leb-regression-guard: idol-slot-dropdown-width
+			-- The cell itself is only self.cw wide (~68px), which would clip the
+			-- dropped list of equippable idols down to the width of "None". Let the
+			-- open list auto-expand to fit item names (up to maxDroppedWidth), while
+			-- reserving room for the leading type/primordial/corrupted row icons.
+			slot.enableDroppedWidth = true
+			slot.maxDroppedWidth = 320
+			slot.dropExtraWidth = 3 * 18
 
 			-- Show/hide based on active altar (or Default-blocked set)
 			local r, c = row, col

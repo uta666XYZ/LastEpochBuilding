@@ -1,12 +1,12 @@
 -- @leb-regression-guard:crit-extra-damage-reduction-display-uncapped
 -- Locks the split between display value (uncapped) and effect-side
 -- clamp (m_min(..., 100)) for "Reduced Bonus Damage Taken from Critical
--- Strikes". LE's sidebar shows the raw sum (e.g. 129 on BgRrP5rr Paladin
+-- Strikes". LE's sidebar shows the raw sum (e.g. 129 on <private build> Paladin
 -- lv98) while internally the multiplier (1 - X/100) cannot go negative.
 --
 -- Symptoms before fix (G1 fresh diff, 2026-05-11):
---   * BgRrP5rr Paladin: LE=129 LEB=100 Δ=-29
---   * Q9J4wvmD Paladin: LE=116 LEB=100 Δ=-16
+--   * <private build> Paladin: LE=129 LEB=100 Δ=-29
+--   * <private build> Paladin: LE=116 LEB=100 Δ=-16
 -- Root cause: m_min(modDB:Sum(...), 100) was applied to the displayed
 -- output, capping the sidebar at the same point as the effect clamp.
 -- See REGRESSION_GUARDS.md "crit-extra-damage-reduction-display-uncapped".

@@ -1,13 +1,13 @@
 -- @leb-regression-guard: armour-floor-at-zero-letools-artifact
 -- Locks CalcDefence's `output.Armour = m_max(round(armour), 0)` floor that
 -- matches the LE in-game display and DR formula contract. LE's
--- PlayerStats.armour field is a signed float (dump.cs L156840), but every
+-- PlayerStats.armour field is a signed float (datamined game source), but every
 -- in-game consumer (display tooltip, DR formula armour/(armour+threshold))
 -- treats negative as zero. The LETools planner skips this floor and reports
 -- the raw signed sum, producing negative LETools Armor values on builds that
 -- stack large %-reduced-Armour sources.
 --
--- Evidence: QJWMRv53 Bladedancer lv98 carries:
+-- Evidence: <private build> Bladedancer lv98 carries:
 --   - 36 + 108 + 35 + 255 = 434 base Armor from gear implicits
 --   - 52% increased Armor (Blessing)
 --   - 207 Guile × -1% reduced Armour (s4-guile-per-point-armour-reduction)

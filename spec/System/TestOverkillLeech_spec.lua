@@ -8,8 +8,8 @@
 -- leaving the OverkillLeech sidebar at 0.
 --
 -- Symptoms before fix (G1 batch #1, 2026-05-07):
---   * BgRrP5rr OverkillLeech LE=16 LEB=0
---   * Q9J4wvmD  OverkillLeech LE=9  LEB=0
+--   * <private build> OverkillLeech LE=16 LEB=0
+--   * <private build>  OverkillLeech LE=9  LEB=0
 -- Root cause: modNameList lacked an entry for the full affix wording,
 -- so scan() picked the generic "damage" name and "leeched as health"
 -- suffix, producing DamageLifeLeech with " Overkill " left as

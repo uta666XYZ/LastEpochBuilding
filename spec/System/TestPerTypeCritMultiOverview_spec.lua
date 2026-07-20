@@ -7,7 +7,7 @@
 -- via ModFlag.<Source> + ModFlag.Hit would silently drop those mods even
 -- though the numeric values coincide.
 --
--- Establishing build: QWXjqWJ2 lv100 Bladedancer. LETools Throwing CritMulti
+-- Establishing reference: see git log
 -- 609% vs LEB pre-fix 485% (Δ=-124% ≈ Li'raka's Claws "+123% Throwing
 -- Critical Strike Multiplier"). Melee/Spell/Bow happened to coincide because
 -- no items in that build attached the damage-source keywordFlag to their

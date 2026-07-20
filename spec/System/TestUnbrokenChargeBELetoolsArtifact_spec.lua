@@ -2,7 +2,7 @@
 -- Locks the LEB-correct / LET-wrong split on Unbroken Charge's
 -- "+(11-30) Block Effectiveness per 1% Increased Movement Speed"
 -- mod. LEB matches the in-game tooltip text verbatim (range:215 →
--- coefficient 27 BE per 1% MS on AVa9YEkg, contributing 27×29 = 783
+-- coefficient 27 BE per 1% MS on <private build>, contributing 27×29 = 783
 -- to BlockEffectiveness). LE's planner ("LETools") reports +401 for
 -- the same line because LE's `unique_mods_postprocessed.json` /
 -- `unique_overrides.json` ship the in-game tooltip text whose value

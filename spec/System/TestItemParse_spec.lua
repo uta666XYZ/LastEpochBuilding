@@ -46,7 +46,7 @@ describe("TestItemParse #itemParse", function()
     -- @leb-regression-guard: affix-kind-roundtrip
     -- Locks in the {kind:sealed}/{kind:corrupted}/{kind:primordial} tag emission
     -- in Item:BuildRaw and parsing in Item:ParseRaw so future edits to those
-    -- two functions cannot silently drop the tag (commit 92db3d1d6).
+    -- two functions cannot silently drop the tag (commit <see git log>).
     -- If this breaks, sealed/corrupted/primordial affixes lose their bottom-of-list
     -- placement in the modifiers display and Item:Craft cannot route them to the
     -- correct bucket.
@@ -130,7 +130,7 @@ describe("TestItemParse #itemParse", function()
     -- otherwise CalcSetup's LevelReq filter (CalcSetup.lua:858-865) drops the
     -- entire item from calc when character.level < base.req.level, even though
     -- in-game the item is equippable at character.level >= unique.req.level.
-    -- Establishing commit: 5a88e7161
+    -- Establishing reference: see git log
     it("Unique req.level overrides base req.level (UNIQUE/LEGENDARY)", function()
         newBuild()
         -- Vaion's Chariot: unique req=50, base Solarum Greaves req=67.
@@ -225,7 +225,7 @@ describe("TestItemParse #itemParse", function()
     -- Pattern A: when affix tiers push the in-game level requirement above the
     -- base/unique req, Item.lua MUST raise self.requirements.level to match
     -- (mirroring ItemData::CalculateLevelRequirementAfterShard from
-    -- GameAssembly.dll RVA 0xeea910). Sealed/primordial/corrupted affixes
+    -- datamined game source). Sealed/primordial/corrupted affixes
     -- (those with a kind tag) MUST NOT contribute. 0-indexed tiers:
     --   inner_cost = {0:1, 1:3, 2:6, 3:10, 4:14, 5:15, 6+:16}
     --   outer_cost = {0:2, 1:6, 2:12, 3:20, 4:28, 5:30, 6+:32}
@@ -265,7 +265,7 @@ describe("TestItemParse #itemParse", function()
     -- @leb-regression-guard: pattern-a-affix-level-req
     -- specialAffixType != 0 affixes (sat==6 corruption-only, Reforged set,
     -- etc.) must be excluded — mirrors the in-game
-    -- ItemAffix::CanContributeToLevelRequirement check (RVA 0xf03620,
+    -- ItemAffix::CanContributeToLevelRequirement check (datamined offset,
     -- returns sat==0 AND sealed==0). Refuge Armor + 1002_0 (sat==6
     -- "Missing Health gained as Ward per second") with no other affixes
     -- must yield no Pattern A bump; req stays at base (Refuge Armor=0).
@@ -325,7 +325,7 @@ describe("TestItemParse #itemParse", function()
     -- promote), a corrupted unique ring like Font of the Erased with a T7
     -- minion-damage corrupted affix must NOT lift its req.level above the
     -- base/unique value (in-game shows Requires Level: 15).
-    -- Establishing build: Qb6WlPE5 lv52 Lich — Font of the Erased Ring 1.
+    -- Establishing reference: see git log
     -- Pre-fix: LEB computed req.level=79 -> CalcSetup LevelReq filter
     -- removed both rings -> +22% Phys Res suffix lost -> PhysRes Δ=-22
     -- vs LETools. After this gate: rings are equipped at lv52, +22%
@@ -401,13 +401,13 @@ describe("TestItemParse #itemParse", function()
     -- affix tiers in-game. Idols carry no level requirement (user-confirmed
     -- 2026-05-21: "装備しているidolにlevel reqはないです"), and an Idol Altar's most
     -- powerful affixes are typically drop-only SEALED affixes that the game's
-    -- CanContributeToLevelRequirement check excludes (RVA 0xf03620: contributes
+    -- CanContributeToLevelRequirement check excludes (datamined offset: contributes
     -- iff specialAffixType==0 AND sealedAffixType==0). LEB's save-file/XML import
     -- path does not preserve the per-instance sealed flag (only the LETools
     -- import path tags `kind="sealed"`), so Pattern A would otherwise count the
     -- sealed prefix and inflate the altar's req. We therefore exempt the whole
     -- idol family from Pattern A.
-    -- Establishing build: ImPalmBeachPete lv36 Bladedancer — Prodigious Lunar
+    -- Establishing reference: see git log
     --   Altar of Azure Fountains (EXALTED, base req 0). Affixes: SEALED prefix
     --   1095_5 (+3 Max Omen Idols / +9 Health per Omen Idol, drop-only) + suffix
     --   1098_2 + suffix 1101_1. With the sealed prefix wrongly counted, Pattern A

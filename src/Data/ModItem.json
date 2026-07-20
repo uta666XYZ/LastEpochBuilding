@@ -70124,7 +70124,7 @@
 	},
 	"986_0": {
 		"affix": "Increased Melee Damage and Damage for Melee Attacks per 1 Mana Cost",
-		"1": "+(70-79)% Melee Damage",
+		"1": "(70-79)% increased Melee Damage",
 		"level": 0,
 		"statOrderKey": 986,
 		"statOrder": [
@@ -70138,7 +70138,7 @@
 	},
 	"986_1": {
 		"affix": "Increased Melee Damage and Damage for Melee Attacks per 1 Mana Cost",
-		"1": "+(80-89)% Melee Damage",
+		"1": "(80-89)% increased Melee Damage",
 		"level": 0,
 		"statOrderKey": 986,
 		"statOrder": [
@@ -70152,7 +70152,7 @@
 	},
 	"986_2": {
 		"affix": "Increased Melee Damage and Damage for Melee Attacks per 1 Mana Cost",
-		"1": "+(90-99)% Melee Damage",
+		"1": "(90-99)% increased Melee Damage",
 		"level": 0,
 		"statOrderKey": 986,
 		"statOrder": [
@@ -76308,7 +76308,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(5-10)% Throwing Damage",
+		"2": "(5-10)% increased Throwing Damage",
 		"specialAffixType": 0
 	},
 	"1090_1": {
@@ -76322,7 +76322,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(11-20)% Throwing Damage",
+		"2": "(11-20)% increased Throwing Damage",
 		"specialAffixType": 0
 	},
 	"1090_2": {
@@ -76336,7 +76336,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(21-30)% Throwing Damage",
+		"2": "(21-30)% increased Throwing Damage",
 		"specialAffixType": 0
 	},
 	"1090_3": {
@@ -76350,7 +76350,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(31-40)% Throwing Damage",
+		"2": "(31-40)% increased Throwing Damage",
 		"specialAffixType": 0
 	},
 	"1090_4": {
@@ -76364,7 +76364,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(41-60)% Throwing Damage",
+		"2": "(41-60)% increased Throwing Damage",
 		"specialAffixType": 0
 	},
 	"1090_5": {
@@ -76378,7 +76378,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(71-80)% Throwing Damage",
+		"2": "(71-80)% increased Throwing Damage",
 		"specialAffixType": 0
 	},
 	"1090_6": {
@@ -76392,7 +76392,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(81-100)% Throwing Damage",
+		"2": "(81-100)% increased Throwing Damage",
 		"specialAffixType": 0
 	},
 	"1090_7": {

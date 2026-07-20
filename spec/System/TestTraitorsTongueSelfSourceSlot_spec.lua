@@ -1,12 +1,12 @@
 -- @leb-regression-guard: traitors-tongue-self-source-slot
 -- Locks CalcSetup.lua's per-slot filtering for "with X equipped in the
--- mainhand/offhand" self-referential mods. The earlier commit 6d363fc89 used a
+-- mainhand/offhand" self-referential mods. The earlier commit <see git log> used a
 -- global Condition tag which double-fired when the same unique was equipped in
 -- both weapon slots (e.g. dual Traitor's Tongue → Parry 24% instead of LE's
 -- 13%). The filter drops the cross-slot mod from the wrong-slot item so each
 -- TT instance contributes only the mod whose named slot matches its own.
 --
--- Game-data evidence (2026-05-12): LE in-game / LETools tooltip on QWXjqWJ2
+-- Game-data evidence (2026-05-12): LE in-game / LETools tooltip on <private build>
 -- (dual Traitor's Tongue) shows Parry Chance = 13% = +10 unique + 3 Spell
 -- Breaker, i.e. ONE mainhand-Parry fires. With LEB's global-condition fix
 -- both items' mainhand-Parry fired → 24%.

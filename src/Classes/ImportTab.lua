@@ -557,7 +557,8 @@ function ImportTabClass:DownloadCharacterList()
         while handle do
             local fileName = handle:GetFileName()
 
-            if fileName:sub(-4) ~= ".bak" then
+            -- Validation provenance is retained in maintainer notes.
+            if fileName:match("^1CHARACTERSLOT_BETA_%d+$") then
                 table.insert(saves, localSaveFolder .. "\\" .. fileName)
             end
 
@@ -999,7 +1000,7 @@ end
 -- IDs appear, the character has +2 to all attributes from quest rewards.
 --
 -- Regression history (do NOT regress):
---   * commit d19abfe34 (pre-2026-05-04): hardcoded both flags ON → broke 0/2
+--   * commit <see git log> (pre-2026-05-04): hardcoded both flags ON → broke 0/2
 --     and 1/2 builds with +1..+2 over-shoot.
 --   * 2026-05-04: hardcoded both OFF based on the (incorrect) belief that the
 --     planner JSON has no quest data → broke 1/2 and 2/2 builds with -1..-2
@@ -1021,25 +1022,7 @@ function ImportTabClass:DetectLEToolsQuestRewards(data)
 end
 
 -- @leb-regression-guard: quest-reward-requires-completion
--- Save-file twin of DetectLEToolsQuestRewards. The offline save's
--- `savedQuests` is a list of quest PROGRESS records, not a list of completed
--- quests. A questID merely PRESENT means the player started it; the +1-to-all-
--- attributes reward (Apophis and Majasa = 124, Temple of Eterra = 151) is only
--- granted once the quest reaches its terminal step (questStepID).
---
--- Empirical discriminator (triangulated against three live offline saves):
---   * ImPalmBeachPete  (lv48): quest 124 @ questStepID=652 (in-progress, 6
---     objectives), quest 151 absent  -> in-game grants NEITHER reward
---     (attributes 16/9/13/9/13). Presence-based detection wrongly added +1 to
---     all five, inflating Health 992->998 and Mana 195->197.
---   * ShutFackUp (lv85) & ZombieWarehouse (lv72): quest 124 @ terminal
---     questStepID=656 (10 objectives) AND quest 151 @ terminal
---     questStepID=830 (12 objectives) -> in-game grants +1 from each (+2),
---     which LEB must reproduce.
--- The per-step `state` field is always 0 across every observed save, so it
--- cannot be used as the completion signal; the terminal questStepID can.
--- See spec/System/TestSaveQuestRewardCompletion_spec.lua and
--- REGRESSION_GUARDS.md "quest-reward-requires-completion".
+-- Validation provenance is retained in maintainer notes.
 ImportTabClass.QUEST_COMPLETE_STEP = { [124] = 656, [151] = 830 }
 function ImportTabClass:DetectSaveQuestRewards(savedQuests)
 	local hasApophis, hasEterra = false, false
@@ -1380,17 +1363,21 @@ function ImportTabClass:BuildItemsFromMaxroll(buildData, profileData, char)
             end
             item.name = uniqueBase.name
             local uniqueRolls = type(maxrollItem.uniqueRolls) == "table" and maxrollItem.uniqueRolls or {}
+            -- @leb-regression-guard:unique-inherent-not-crafted
+            -- These are the unique's OWN mods, not crafted ones. They were tagged
+            -- {crafted} historically (the old "TODO: avoid using crafted"), which made
+            -- LEB paint them CRAFTED pale blue while in-game they render white.
             for i, modLine in ipairs(uniqueBase.mods) do
                 if itemLib.hasRange(modLine) then
                     local rollId = uniqueBase.rollIds[i]
                     if rollId then
                         local range = uniqueRolls[rollId + 1] or 0
-                        table.insert(item.explicitMods, "{crafted}{range: " .. range .. "}" .. modLine)
+                        table.insert(item.explicitMods, "{uniqueInherent}{range: " .. range .. "}" .. modLine)
                     else
-                        table.insert(item.explicitMods, "{crafted}" .. modLine)
+                        table.insert(item.explicitMods, "{uniqueInherent}" .. modLine)
                     end
                 else
-                    table.insert(item.explicitMods, "{crafted}" .. modLine)
+                    table.insert(item.explicitMods, "{uniqueInherent}" .. modLine)
                 end
             end
             -- Legendary: unique base + sealed Exalted T7 affix (Eternity Cache).
@@ -1422,7 +1409,7 @@ function ImportTabClass:BuildItemsFromMaxroll(buildData, profileData, char)
                     -- Item:Craft can route into the right bucket. Dropping
                     -- `kind` here breaks Sinathia / Legends Entwined ordering
                     -- (purple Sealed Legendary Affix moves above unique mods).
-                    -- Establishing commit: 92db3d1d6.
+                    -- Establishing reference: see git log
                     local entry = { range = affix.roll, modId = modId, kind = affix.kind }
                     if modData.type == "Prefix" then
                         table.insert(item.prefixes, entry)
@@ -1459,8 +1446,18 @@ function ImportTabClass:BuildItemsFromMaxroll(buildData, profileData, char)
                     -- Resolve the stripped member name against set_<ver>.json to
                     -- capture setId/name/bonus so the item imports as a SET piece
                     -- (same effect as CraftingPopup's Reforged path).
+                    -- @leb-regression-guard: idol-altar-no-reforged-set
+                    -- Reforged Set affixes are a GEAR-only mechanic; idols and idol
+                    -- altars can never be Reforged Set pieces. This scan resolves
+                    -- every decoded affix in the generic data.itemMods.Item pool, so
+                    -- an offline-save decode OVERREAD (trailing bytes misread as a
+                    -- valid affix id, e.g. Ocular Altar -> bogus 949 "Abandoned
+                    -- Chitin of the Weaver Reforged") would wrongly promote the altar
+                    -- to a Weaver SET. Skip the scan entirely for Idol / Idol Altar
+                    -- bases. Twin guard: the scanForReforged path below + Item.lua.
+                    local isIdolOrAltar = itemBaseName:find("Idol") or itemBaseName:find("Altar")
                     ConPrintf("[REFORGED-SCAN] base=%s modId=%s affixName=%q", itemBaseName, modId, tostring(modData.affix))
-                    if modData.affix and modData.affix:sub(-9) == " Reforged" then
+                    if not isIdolOrAltar and modData.affix and modData.affix:sub(-9) == " Reforged" then
                         local bareName = modData.affix:sub(1, -10)
                         local setData = self:LoadSetDataForImport()
                         ConPrintf("[REFORGED-MATCH] bareName=%q setDataLoaded=%s", bareName, tostring(setData ~= nil))
@@ -1489,7 +1486,7 @@ function ImportTabClass:BuildItemsFromMaxroll(buildData, profileData, char)
                     -- @leb-regression-guard: affix-kind-roundtrip (import side)
                     -- Forward `kind` from ConvertLEToolsItem.pushAffix; see the
                     -- twin guard in the UNIQUE/LEGENDARY branch above for full
-                    -- rationale. Establishing commit: 92db3d1d6.
+                    -- rationale. Establishing reference: see git log
                     local entry = { range = affix.roll, modId = modId, kind = affix.kind }
                     if modData.type == "Prefix" then
                         table.insert(item.prefixes, entry)
@@ -1525,18 +1522,36 @@ function ImportTabClass:BuildItemsFromMaxroll(buildData, profileData, char)
 
             if not reforgedSetInfo then
                 local forename, surname = "", ""
+                -- @leb-regression-guard: idol-corrupted-affix-name-skip (import side)
+                -- Build the generated item name from NORMAL prefix/suffix name
+                -- words only. Corruption-exclusive affixes (specialAffixType==6)
+                -- and Class-Specific Idol enchants (specialAffixType==4) carry a
+                -- stat LABEL in `affix` in the generic data.itemMods.Item pool
+                -- (e.g. "Maximum Idols Equipped", "Bees per 10 Seconds",
+                -- "Increased Mana Regeneration and Reduced Health Regeneration"),
+                -- not a proper name word, and corruption/enchant never renames
+                -- the item. Without this skip idol / idol-altar / refracted names
+                -- were polluted with a leading stat label. Twin guards: Item.lua
+                -- ParseRaw (load side) and Item.lua Craft() (fresh craft).
+                local function affixNameWord(entry)
+                    if not entry or entry.kind == "corrupted" then return nil end
+                    local md = data.itemMods.Item[entry.modId]
+                    if not md or not md.affix or md.affix == "" then return nil end
+                    if md.specialAffixType == 6 or md.specialAffixType == 4 then return nil end
+                    return md.affix
+                end
                 for _, p in ipairs(item.prefixes) do
-                    local md = data.itemMods.Item[p.modId]
-                    if md and md.affix and md.affix ~= "" then
-                        if md.affix:sub(1,3) == "of " then surname = surname ~= "" and surname or md.affix
-                        else forename = forename ~= "" and forename or md.affix end
+                    local a = affixNameWord(p)
+                    if a then
+                        if a:sub(1,3) == "of " then surname = surname ~= "" and surname or a
+                        else forename = forename ~= "" and forename or a end
                     end
                 end
                 for _, s in ipairs(item.suffixes) do
-                    local md = data.itemMods.Item[s.modId]
-                    if md and md.affix and md.affix ~= "" then
-                        if md.affix:sub(1,3) == "of " then surname = surname ~= "" and surname or md.affix
-                        else forename = forename ~= "" and forename or md.affix end
+                    local a = affixNameWord(s)
+                    if a then
+                        if a:sub(1,3) == "of " then surname = surname ~= "" and surname or a
+                        else forename = forename ~= "" and forename or a end
                     end
                 end
                 item.name = (forename ~= "" and forename .. " " or "") .. itemBaseName .. (surname ~= "" and " " .. surname or "")
@@ -1691,22 +1706,32 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
         local nbPoints = saveContent["savedCharacterTree"]["nodePoints"][passiveIdx]
         table.insert(char["hashes"], className .. "-" .. passive .. "#" .. nbPoints)
     end
-    for _, skillTree in pairs(saveContent["savedSkillTrees"] or {}) do
-        local skillName
+    -- Resolve a skill's treeID to its in-game skill name. treeIDs are globally
+    -- unique across classes, so scan every class's skill list.
+    local function resolveSkillName(treeID)
         for _, class in pairs(self.build.latestTree.classes) do
             for _, skill in ipairs(class.skills or {}) do
-                if skill.treeId == skillTree['treeID'] then
-                    skillName = skill.name
-                    break
+                if skill.treeId == treeID then
+                    return skill.name
                 end
             end
-            if skillName then break end
         end
+        return nil
+    end
+
+    -- Specialized skills: savedSkillTrees holds the specialization slots, each
+    -- with its allocated tree nodes. Remember which treeIDs we import here so
+    -- the abilityBar pass below does not double-count a skill that is both
+    -- barred AND specialized.
+    local importedTreeIDs = {}
+    for _, skillTree in pairs(saveContent["savedSkillTrees"] or {}) do
+        local skillName = resolveSkillName(skillTree['treeID'])
         if not skillName then
             ConPrintf("[IMPORT-SKILL] No match for treeID: %s", tostring(skillTree['treeID']))
         end
 
         if skillName then
+            importedTreeIDs[skillTree['treeID']] = true
             table.insert(char["hashes"], skillTree['treeID'] .. "-" .. 0 .. "#1")
             table.insert(char["abilities"], skillName)
             for skillIdx, skill in pairs(skillTree["nodeIDs"]) do
@@ -1714,6 +1739,33 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
                 if nbPoints > 0 then
                     table.insert(char["hashes"], skillTree['treeID'] .. "-" .. skill .. "#" .. nbPoints)
                 end
+            end
+        end
+    end
+
+    -- @leb-regression-guard:import-abilitybar-unspecialized-skills
+    -- The ability bar is the set of EQUIPPED/usable skills. A low-level save can
+    -- carry a skill on the bar that has not been specialized yet (no entry in
+    -- savedSkillTrees); in-game it is cast as the base skill with an empty tree.
+    -- Importing only savedSkillTrees silently dropped those skills, so they were
+    -- absent from the LEB build entirely (Prepfor1o1 lv44: bar-only Puncture =
+    -- ~11% of in-game damage, plus Shift/Decoy, all missing). Add each bar-only
+    -- skill as a base-skill socket group (no allocated tree nodes, mirroring the
+    -- "-0#1" root that specialized skills get). Skills already imported from
+    -- savedSkillTrees are skipped via importedTreeIDs so a skill that is both
+    -- barred AND specialized is not double-counted. The inverse case
+    -- (specialized but not barred) is intentionally left untouched here.
+    -- See spec/System/TestImportAbilityBarSkills_spec.lua and
+    -- REGRESSION_GUARDS.md "import-abilitybar-unspecialized-skills".
+    for _, treeID in ipairs(saveContent["abilityBar"] or {}) do
+        if not importedTreeIDs[treeID] then
+            local skillName = resolveSkillName(treeID)
+            if skillName then
+                importedTreeIDs[treeID] = true
+                table.insert(char["hashes"], treeID .. "-" .. 0 .. "#1")
+                table.insert(char["abilities"], skillName)
+            else
+                ConPrintf("[IMPORT-SKILL] No match for abilityBar treeID: %s", tostring(treeID))
             end
         end
     end
@@ -1732,6 +1784,78 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
             if d[altarBase] == 41 then
                 char.altarName = altarSubTypeNames[d[altarBase + 1]]
                 break
+            end
+        end
+    end
+
+    -- @leb-regression-guard:import-affix-id-ceiling-phantom
+    -- Highest real affix id present in the current mod data. The game's affix
+    -- registry (AffixList singleAffixes+multiAffixes + all idol affixes) is
+    -- densely indexed and, on 1.4.7, tops out at affixId 1112. Any affixId the
+    -- 7-slot affix loop below decodes ABOVE this ceiling cannot be a real affix:
+    -- it is a phantom over-read of an item's trailing serialized payload. Omen
+    -- Idols / Woven idols / Prophesied Altars store post-affix "omen" bytes after
+    -- their real affixes, and the fixed-offset loop reads those bytes as bogus
+    -- affix triples (e.g. Xiemiel's Large Iron Omen Idol -> 1822_1 / 1835_12,
+    -- Heretical Rahyeh Idol -> 3224_7 / 2343_5, Prophesied Altar -> 3238_1). These
+    -- decode to ids far beyond 1112 with impossible tiers (>7). They are correctly
+    -- rejected (not in itemMods.Item) but were previously counted as "silently
+    -- dropped affixes", producing an alarming "N affix(es) dropped" import message
+    -- that falsely implied lost build power -- and repeatedly misled DPS-gap
+    -- investigations into hunting non-existent >1112 idol/altar affixes. Classify
+    -- over-ceiling decodes as phantom over-reads (logged, not counted); only
+    -- ids <= ceiling that are missing from itemMods remain genuine possible data
+    -- gaps. Derived from data (not hard-coded 1112) so it self-updates if the mod
+    -- tables gain higher ids. See REGRESSION_GUARDS.md + spec/System/
+    -- TestImportAffixIdCeilingPhantom_spec.lua.
+    local maxKnownAffixId = 0
+    for modId in pairs(data.itemMods.Item) do
+        local idStr = tostring(modId):match("^(%d+)_")
+        local id = idStr and tonumber(idStr)
+        if id and id > maxKnownAffixId then maxKnownAffixId = id end
+    end
+
+    -- @leb-regression-guard:import-idol-affix-namespace-phantom
+    -- Companion to import-affix-id-ceiling-phantom for SUB-ceiling mis-reads on
+    -- Woven/Omen idols. The ceiling guard above only rejects decodes > the
+    -- registry max (1112). But an idol's trailing "omen"/Woven payload can also
+    -- decode to an affixId that lands <= 1112 yet is NOT an idol affix -- it is an
+    -- EQUIPMENT affix id bleeding onto the idol. Example (Golem ACG-3's Minor
+    -- Weaver Idols): decoded affixId 597 ("Mage Level of Shatter Strike") and 545
+    -- ("Primalist Level of Summon Frenzy Totem") -- both class-specific *+Level of
+    -- Skill* EQUIPMENT (multiAffixes) ids that cannot roll on an idol. They miss
+    -- itemMods.Item at their impossible decoded tiers (9 / 12) so they fall to the
+    -- else-branch and were counted as genuine "[IMPORT-DROP]" affixes, inflating
+    -- the "N affix(es) dropped" message exactly like the >ceiling phantoms did.
+    --
+    -- The distinguishing signal: a real idol affix id is a member of the idol
+    -- affix namespace. Build that id-set once, from LEB's OWN idol mod data
+    -- (the per-idol-base tables under data.itemMods, which all point at
+    -- ModIdol_<ver>.flat), so it self-updates with the mod tables and is not
+    -- hard-coded. Datamine cross-check (datamined game source idols.json): LEB's grid-idol
+    -- id-set equals the datamine single+multi idol-affix pool EXACTLY, minus the
+    -- 20 "Idol Altar ..." affixes (1088-1109, canRollOn baseType 41) which live in
+    -- LEB's separate "Idol Altar" table and roll only on the Idol Altar (container
+    -- 123), never on a grid idol (container 29). So the namespace check is applied
+    -- ONLY to grid idols (containerID 29): equipment legitimately carries the
+    -- 545/597 ids, and altars legitimately carry the 1088-1109 ids, so gating on
+    -- container 29 avoids false-rejecting either. Verified against real saves
+    -- (Golem ACG-3, Hammerdin SUNDAY/Xiemiel): every genuine grid-idol affix is
+    -- in the pool; only the 545/597 payload mis-reads fall out.
+    -- See REGRESSION_GUARDS.md + spec/System/TestImportIdolAffixNamespacePhantom_spec.lua.
+    local idolAffixPool = {}
+    for _, idolType in ipairs({
+        "Small Idol", "Minor Idol", "Humble Idol", "Stout Idol",
+        "Grand Idol", "Large Idol", "Adorned Idol", "Ornate Idol", "Huge Idol",
+    }) do
+        local t = data.itemMods[idolType]
+        if type(t) == "table" then
+            -- pairs() walks only the raw idol keys, not the __index=ModItem
+            -- fallback metatable, so this yields the true idol-affix id-set.
+            for modId in pairs(t) do
+                local idStr = tostring(modId):match("^(%d+)_")
+                local id = idStr and tonumber(idStr)
+                if id then idolAffixPool[id] = true end
             end
         end
     end
@@ -1806,9 +1930,26 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
                         item.blessingRollFrac = item.blessingRollFracs[1]
                     end
                     local rarity = d[BASE + 2]
-                    -- Weaver's Will items have bit 6 set in the rarity byte (e.g. 64+9=73 for Legendary)
-                    local isWeaversWill = rarity >= 64
-                    local effectiveRarity = isWeaversWill and (rarity - 64) or rarity
+                    -- @leb-regression-guard:import-rarity-flag-bits
+                    -- The serialized rarity byte packs the base "visual rarity" in the
+                    -- low nibble (7=Unique, 8=Set, 9=Legendary; cf. Item.uniqueRarity /
+                    -- setItemRarity / legendaryRarity in the game dump) PLUS two
+                    -- INDEPENDENT high flag bits:
+                    --   bit6 (0x40) = Weaver's Will   (e.g. 0x49 = 73  -> WW Legendary)
+                    --   bit7 (0x80) = exalted/fused   (e.g. 0x89 = 137 -> a Legendary-
+                    --                 Potential legendary forged with exalted affixes;
+                    --                 on a non-unique the same bit is the Exalted flag,
+                    --                 0x82 = 130 = Item.visualRarityForExaltedItems).
+                    -- Both flags can co-exist on a legendary, so decode them independently
+                    -- and route by the BASE rarity (low nibble). The old code did
+                    -- `rarity >= 64` then subtracted only 0x40, so a bit7 legendary (0x89)
+                    -- collapsed to 73, fell outside the [7,9] range, and was mis-imported
+                    -- as an Exalted item with bogus affixes (the unique's roll bytes were
+                    -- read as affix ids). Repro: KhumVokhGaxx_LEB weapon Executioner's
+                    -- Tithe (uid 420) + body Core of the Mountain (uid 255), both 0x89.
+                    local isWeaversWill = band(rarity, 0x40) ~= 0
+                    local hasExaltedAffixFlag = band(rarity, 0x80) ~= 0
+                    local effectiveRarity = band(rarity, 0x0F)
                     item["explicitMods"] = {}
                     item["prefixes"] = {}
                     item["suffixes"] = {}
@@ -1831,29 +1972,41 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
                             break
                         end
                         item["name"] = uniqueBase.name
+                        ConPrintf("[IMPORT-UNIQUE] base=%s rarityByte=%d eff=%d WW(bit6)=%s exaltedFused(bit7)=%s uniqueID=%d -> %s (%s)",
+                            itemBaseName, rarity, effectiveRarity, tostring(isWeaversWill), tostring(hasExaltedAffixFlag), uniqueID, tostring(item["name"]), tostring(item["rarity"]))
+                        -- @leb-regression-guard:unique-inherent-not-crafted
+                        -- @leb-regression-guard: unique-shared-rollids-not-independent
+                        -- rollIds[i] is a roll-GROUP id, not a line index: mods sharing an
+                        -- id roll together off one saved value, and the region below is a
+                        -- fixed 8 slots, so an id the game never wrote reads as range 0 and
+                        -- silently imports that mod at its minimum.
+                        -- A rollIds array that just enumerates 0..n-1 is the bug, not the
+                        -- default: an item's ids are mostly 0 with a few exceptions, so the
+                        -- ids must be grounded per item, never assigned by line order.
+                        -- Test: spec/System/TestUniqueSharedRollIds_spec.lua "rolls as one group"
+                        -- Test: spec/System/TestUniqueSharedRollIds_spec.lua "matches the in-game solved rollIds"
                         for i, modLine in ipairs(uniqueBase.mods) do
                             if itemLib.hasRange(modLine) then
                                 local rollId = uniqueBase.rollIds[i]
                                 if rollId then
                                     local range = d[uniqueIDIndex + 2 + rollId]
-                                    -- TODO: avoid using crafted
-                                    table.insert(item.explicitMods, "{crafted}{range: " .. (range or 0) .. "}".. modLine)
+                                    table.insert(item.explicitMods, "{uniqueInherent}{range: " .. (range or 0) .. "}".. modLine)
                                 else
-                                    table.insert(item.explicitMods, "{crafted}".. modLine)
+                                    table.insert(item.explicitMods, "{uniqueInherent}".. modLine)
                                 end
                             else
-                                table.insert(item.explicitMods, "{crafted}".. modLine)
+                                table.insert(item.explicitMods, "{uniqueInherent}".. modLine)
                             end
                         end
                         if effectiveRarity == 9 then
-                            -- 8 is the maximum amount of unique mod roll bytes
+                            -- @leb-regression-guard:import-fused-affix-overrun
+                            -- uniques through this path. See REGRESSION_GUARDS.md.
+                            -- Validation provenance is retained in maintainer notes.
                             local nbAffixesIndex = uniqueIDIndex + 2 + 8
-                            local nbMods = d[nbAffixesIndex]
+                            local nbMods = band(d[nbAffixesIndex] or 0, 7)   -- low 3 bits = count
                             for i = 0, nbMods - 1 do
                                 local dataId = nbAffixesIndex + 1 + 3 * i
-                                -- There are cases where the "nbAffixesIndex" value is wrong, not sure why but
-                                -- we should at least prevent a crash when it's higher than expected (could it be lower?)
-                                if d[dataId] then
+                                if d[dataId] and d[dataId + 1] and d[dataId + 2] then
                                     local affixId = d[dataId + 1] + (d[dataId] % 16) * 256
                                     local affixTier = math.floor(d[dataId] / 16)
                                     local modId = affixId .. "_" .. affixTier
@@ -1873,15 +2026,51 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
                         local maxTier = 0
                         local affixCount = 0
                         local droppedAffixes = 0
-                        -- Read up to 7 affix slots. Maximum affix counts in-game:
-                        --   regular gear: implicit + 2 prefix + 2 suffix + 1 sealed
-                        --                 + 1 primordial + 1 corrupted = 7 affix slots
-                        --   idol:         2 prefix + 2 suffix + 2 enchant + 1 corrupted
-                        --                 = 7 affix slots
-                        -- Previously the loop stopped at i=4, silently dropping slot 5
-                        -- (observed on ROGER_FDC's Astrolabe — Cold Damage T1 prefix lost).
-                        -- Affixes start at BASE+9 (byte0/tierByte), BASE+10 (byte1/idByte)
-                        for i = 0, 6 do
+                        -- @leb-regression-guard:import-save-affix-kind
+                        -- Sealed / primordial / corrupted state IS carried by the offline
+                        -- save, but NOT inside the 3-byte affix triple (which is only
+                        -- tier<<4|id-hi, id-lo, roll — the game's ItemData.RebuildID writes
+                        -- nothing else per affix). It lives in the byte at BASE+8, the one
+                        -- immediately before the affix region, which the decoder previously
+                        -- never read. Game layout (ItemData.RebuildID, datamining
+                        -- datamined game source):
+                        --   id[11] = affixCount
+                        --          | (hasSealedAffixFromCorruption and 0x40 or 0)
+                        --          | (hasSealedRegularAffix        and 0x80 or 0)
+                        -- and read back bit-for-bit in setValuesFromSerialisation
+                        -- (datamined game source) via GetBit(id[11],7) / GetBit(id[11],6) /
+                        -- (id[11] & 0x3f). id[11] is exactly BASE+8 here: the game's index 11
+                        -- is 0-based over the same array, and its affix region starts at
+                        -- index 12 == BASE+9, which is where this loop already reads.
+                        -- Which affix is which is then POSITIONAL, not per-affix data
+                        -- (datamined game source -> loadAffixFromSerialisation, datamined game source+):
+                        --   regular sealed  = hasSealedRegularAffix   and index == 0
+                        --   corrupted       = hasSealedFromCorruption and index == (regular and 1 or 0)
+                        --   primordial      = tier nibble == 7   (an out-of-band 8th tier row;
+                        --                     LEB's own Craft tab already encodes this, see
+                        --                     ItemsTabCraft.lua "st.tier = (key == 'primordial') and 7 or 0")
+                        -- Precedence follows loadAffixFromSerialisation, which tests
+                        -- corruption BEFORE tier==7 (Item.GetSealedAffixType orders those two
+                        -- the other way; they only disagree when the corrupted-slot affix is
+                        -- itself tier 7, and the load path is authoritative here).
+                        -- Only normal affixes are left kind=nil, matching what Item.lua's
+                        -- `not affix.kind` req.level gate expects (LE's
+                        -- ItemAffix.CanContributeToLevelRequirement == specialAffixType==0
+                        -- AND sealedAffixType==0, datamined game source). Before this, every
+                        -- save-imported affix had kind=nil, so a sealed/primordial/corrupted
+                        -- affix wrongly inflated the item's affix-derived req.level and could
+                        -- get the item filtered out by the CalcSetup LevelReq filter.
+                        -- This path is the game's rarity<5 branch (Normal/Magic/Rare/Exalted,
+                        -- and all idols); Legendary (rarity 9) fused affixes use a different
+                        -- region and are NOT handled here. See REGRESSION_GUARDS.md.
+                        local sealedFlags = d[BASE + 8] or 0
+                        local hasSealedRegular = band(sealedFlags, 0x80) ~= 0
+                        local hasSealedCorrupted = band(sealedFlags, 0x40) ~= 0
+                        local serialisedAffixCount = band(sealedFlags, 0x3F)
+                        local corruptedSlotIndex = hasSealedRegular and 1 or 0
+                        -- @leb-regression-guard:import-nonunique-affix-count
+                        -- Validation provenance is retained in maintainer notes.
+                        for i = 0, serialisedAffixCount - 1 do
                             local dataId = BASE + 10 + i * 3
                             if #d > dataId then
                                 local affixId = d[dataId] + (d[dataId - 1] % 16) * 256
@@ -1890,18 +2079,74 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
                                     local modId = affixId .. "_" .. affixTier
                                     local modData = data.itemMods.Item[modId]
                                     local range = d[dataId + 1]
+                                    -- @leb-regression-guard:import-save-affix-kind
+                                    -- Positional, and only meaningful for slots the serialised
+                                    -- count covers. The loop is now bounded by that same count
+                                    -- (import-nonunique-affix-count), so every slot reached here
+                                    -- is covered by it and the old `i < serialisedAffixCount`
+                                    -- test is unconditionally true -- the bound enforces it.
+                                    local affixKind
+                                    if hasSealedRegular and i == 0 then
+                                        affixKind = "sealed"
+                                    elseif hasSealedCorrupted and i == corruptedSlotIndex then
+                                        affixKind = "corrupted"
+                                    elseif affixTier == 7 then
+                                        affixKind = "primordial"
+                                    end
 
+                                    -- @leb-regression-guard:import-ww-idol-affix-overimport
+                                    -- A grid idol's (containerID 29) affix loop can decode a
+                                    -- trailing Weaver's-Will / Omen payload byte to an affixId
+                                    -- that is BOTH <= the registry ceiling AND a real entry in
+                                    -- itemMods.Item -- but belongs to the EQUIPMENT namespace,
+                                    -- not the idol namespace (e.g. SUNDAY's WW idols yielded
+                                    -- 32=Fire Penetration / 71=Minion Dodge / 78=Melee Cold, all
+                                    -- valid equipment affixes at tier 0). The pre-existing
+                                    -- import-idol-affix-namespace-phantom guard below only fired
+                                    -- when modData was nil, so these VALID-but-wrong-namespace
+                                    -- decodes slipped through the `if modData` branch and were
+                                    -- IMPORTED as genuine idol affixes -- inflating build power
+                                    -- (calc-affecting, unlike the logging-only sub-ceiling case).
+                                    -- Gate the import branch on the same namespace check so a
+                                    -- cid29 non-idol-pool affix is reclassified as a phantom
+                                    -- over-read whether or not it resolves in itemMods.Item.
+                                    -- Genuine idol affixes are all in idolAffixPool (LEB grid-idol
+                                    -- pool == datamine single+multi idol affixes minus the 20
+                                    -- altar-only 1088-1109), so this never rejects a real one.
+                                    local idolNamespaceViolation = itemData["containerID"] == 29 and not idolAffixPool[affixId]
                                     ConPrintf("[AFFIX] base=%s slot=%d affixId=%d tier=%d modId=%s valid=%s", itemBaseName, i, affixId, affixTier, modId, tostring(modData ~= nil))
-                                    if modData then
+                                    if modData and not idolNamespaceViolation then
                                         affixCount = affixCount + 1
                                         if affixTier > maxTier then
                                             maxTier = affixTier
                                         end
                                         if modData.type == "Prefix" then
-                                            table.insert(item.prefixes, { ["range"] = range, ["modId"] = modId })
+                                            table.insert(item.prefixes, { ["range"] = range, ["modId"] = modId, ["kind"] = affixKind })
                                         else
-                                            table.insert(item.suffixes, { ["range"] = range, ["modId"] = modId })
+                                            table.insert(item.suffixes, { ["range"] = range, ["modId"] = modId, ["kind"] = affixKind })
                                         end
+                                    elseif affixId > maxKnownAffixId then
+                                        -- Phantom over-read of trailing item payload (Omen/Woven
+                                        -- idol / Prophesied Altar "omen" bytes past the real
+                                        -- affixes), NOT a lost affix. See the
+                                        -- import-affix-id-ceiling-phantom guard above.
+                                        ConPrintf("[IMPORT-OVERREAD] base=%s slot=%d modId=%s (id=%d tier=%d range=%s) affixId > registry ceiling %d — trailing Omen/Altar payload misread as an affix, not a dropped affix",
+                                            itemBaseName, i, modId, affixId, affixTier, tostring(range), maxKnownAffixId)
+                                    elseif idolNamespaceViolation then
+                                        -- Phantom over-read on a grid idol: the decoded affixId is
+                                        -- <= the registry ceiling but is NOT a member of the
+                                        -- idol-affix namespace (an equipment affix id bleeding in
+                                        -- from the idol's trailing Woven/Omen payload, e.g. Golem
+                                        -- Minor Weaver Idol 545/597 when modData=nil, or SUNDAY's
+                                        -- WW idol 32/71/78 when modData is a valid equipment entry).
+                                        -- Same treatment as the >ceiling case: logged, NOT counted
+                                        -- in _droppedAffixes, NOT imported. Applied to grid idols
+                                        -- only (container 29) so equipment's legitimate 545/597 and
+                                        -- the altar's legitimate 1088-1109 affixes are never
+                                        -- touched. See the import-idol-affix-namespace-phantom and
+                                        -- import-ww-idol-affix-overimport guards.
+                                        ConPrintf("[IMPORT-OVERREAD] base=%s slot=%d modId=%s (id=%d tier=%d range=%s) idol affixId <=ceiling but not an idol-pool affix — trailing Woven/Omen payload misread, not a dropped affix",
+                                            itemBaseName, i, modId, affixId, affixTier, tostring(range))
                                     else
                                         droppedAffixes = droppedAffixes + 1
                                         ConPrintf("[IMPORT-DROP] base=%s slot=%d modId=%s (id=%d tier=%d range=%s) not in itemMods.Item — silent drop",
@@ -1910,33 +2155,30 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
                                 end
                             end
                         end
-                        -- Slot-overflow probe: if slot 7 has a real id+modData match,
-                        -- the loop just dropped a valid affix (catches a hypothetical
-                        -- 8-affix item the same way slot=5 caught the original bug
-                        -- and slot=6 caught the 7-affix gap).
-                        do
-                            local dataId = BASE + 10 + 7 * 3
-                            if #d > dataId then
-                                local affixId = d[dataId] + (d[dataId - 1] % 16) * 256
-                                if affixId and affixId > 0 then
-                                    local affixTier = math.floor(d[dataId - 1] / 16)
-                                    local modId = affixId .. "_" .. affixTier
-                                    if data.itemMods.Item[modId] then
-                                        droppedAffixes = droppedAffixes + 1
-                                        ConPrintf("[IMPORT-DROP] base=%s slot=7(overflow) modId=%s — 7-slot loop limit dropped a real affix",
-                                            itemBaseName, modId)
-                                    end
-                                end
-                            end
-                        end
+                        -- @leb-regression-guard:import-nonunique-affix-count
+                        -- The slot-7 "overflow probe" that used to sit here is deliberately
+                        -- GONE. It existed to catch the fixed window dropping a real affix
+                        -- (slot 5 / slot 6 both did, historically). The loop is now bounded
+                        -- by the save's own affix count instead of a window, so there is no
+                        -- window left to overflow and nothing for the probe to detect.
+                        -- Worse, it would now MANUFACTURE false "[IMPORT-DROP]" reports:
+                        -- slot 7 is past the count on every real item, and payload bytes
+                        -- there resolve in itemMods ~42% of the time (223/526 measured).
+                        -- Do not restore it.
                         if droppedAffixes > 0 then
                             char._droppedAffixes = (char._droppedAffixes or 0) + droppedAffixes
                         end
                         -- Reforged-set scan: an affix whose name ends with " Reforged" indicates this
                         -- item is a Reforged Set piece. We must populate setInfo so BuildItem's
                         -- REFORGED-RESTORE path runs (otherwise calc dereferences a null setInfo).
+                        -- @leb-regression-guard: idol-altar-no-reforged-set
+                        -- Idols / idol altars can never be Reforged Set pieces (gear-only
+                        -- mechanic). An offline-save decode OVERREAD can inject a bogus
+                        -- gear affix id (e.g. 949 "Abandoned Chitin of the Weaver
+                        -- Reforged") into an altar's affix list; scanning it would wrongly
+                        -- promote the altar to a SET. Skip for Idol / Idol Altar bases.
                         local reforgedSetInfo, reforgedTitle = nil, nil
-                        do
+                        if not (itemBaseName:find("Idol") or itemBaseName:find("Altar")) then
                             local function scanForReforged(affixList)
                                 if reforgedSetInfo then return end
                                 for _, a in ipairs(affixList) do
@@ -2184,7 +2426,7 @@ function ImportTabClass:ImportItemsAndSkills(charData)
     -- bonus). Logic lives in ItemsTab:AutoPopulateOmenIdolSlots so
     -- SetActiveItemSet (load / switch set) can reuse it. Idol Altar
     -- "increased Effect of [Prefixes/Suffixes] for Idols in Refracted Slots"
-    -- is applied at calc time by CalcSetup.cloneWithAltarBoost — do NOT bake
+    -- is applied at calc time by CalcSetup.cloneWithIdolBoosts — do NOT bake
     -- it here.
     self.build.itemsTab:AutoPopulateOmenIdolSlots()
 

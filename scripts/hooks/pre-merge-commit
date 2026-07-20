@@ -1,0 +1,26 @@
+#!/bin/sh
+# @leb-dev-merge-guard
+# Fail-closed STOP: block any merge INTO 'dev' unless the sanctioned gate
+# (scripts/dev-merge.sh) set LEB_DEV_MERGE_OK=1 for the merge invocation.
+#
+# Paired with `git config branch.dev.mergeoptions --no-ff` so this hook fires
+# even for fast-forwardable merges (--no-ff forces a merge commit, and
+# pre-merge-commit only runs when a merge commit is created). Together they make
+# local dev merges DELIBERATE, never automatic/accidental.
+#
+# Installed to .git/hooks/pre-merge-commit (this file is the tracked source of
+# truth; re-install with: cp scripts/hooks/pre-merge-commit .git/hooks/ && chmod +x .git/hooks/pre-merge-commit).
+# Keep this hook paired with scripts/dev-merge.sh.
+branch=$(git symbolic-ref --short HEAD 2>/dev/null)
+if [ "$branch" = "dev" ] && [ "$LEB_DEV_MERGE_OK" != "1" ]; then
+	printf '\n' >&2
+	printf '=========================================================\n' >&2
+	printf ' STOP: direct merge into "dev" is BLOCKED (fail-closed).\n' >&2
+	printf ' Local dev merges must go through the deliberate gate:\n' >&2
+	printf '   sh scripts/dev-merge.sh <branch>            # preview, then STOP\n' >&2
+	printf '   sh scripts/dev-merge.sh <branch> --confirm  # execute the merge\n' >&2
+	printf ' This stop is intentional. Do not bypass by exporting the token by hand.\n' >&2
+	printf '=========================================================\n\n' >&2
+	exit 1
+fi
+exit 0

@@ -155,7 +155,14 @@ function MarkdownRender.parse(text)
 		local line = lines[i]
 		local startLine = i
 		if line:match("^```") then
-			-- Fenced code block
+			-- @leb-regression-guard: notes-codeblock-verbatim-monospace
+			-- Fenced code block bodies are captured VERBATIM here and rendered in
+			-- the fixed-width CODE_FONT below -- never routed through
+			-- tokenizeInline. That is what lets template ASCII art (the Showcase
+			-- "LAST EPOCH BUILDING" owl banner) keep its columns aligned. Sending
+			-- these lines through the inline tokenizer (which strips **bold** etc.)
+			-- or drawing them in the proportional FONT silently breaks every
+			-- ASCII-art banner. Test: spec/System/TestNotesCodeBlockVerbatim_spec.lua
 			local body = {}
 			i = i + 1
 			while i <= #lines and not lines[i]:match("^```") do

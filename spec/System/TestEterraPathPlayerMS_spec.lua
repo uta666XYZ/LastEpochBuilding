@@ -7,13 +7,13 @@
 --      mods[1]: value=0.2, property=9 (MovementSpeed), tags=8192   <- minion
 --      tooltipDescriptions[0]: "You and your minions have 20% increased
 --        movement speed" (single tooltip line that displays BOTH mods).
---   2. LETools planner Movement Speed breakdown for Qb6WgDEp lv95
+--   2. LETools planner Movement Speed breakdown for <private build> lv95
 --      Beastmaster (Eterra's Path equipped):
 --        Boots (Implicit) 12% + Boots (Prefix) 24% + Boots (Unique mod) 20%
 --        + Predator Tree 5% = 61% (matches in-game tooltip).
 --   3. Before fix, uniques_1_4.json id=21 listed only the minion variant,
 --      causing a -20% player Movement Speed gap on every Eterra's Path
---      build (Qb6WgDEp Δ=-25, plus the -5 Predator BASE issue).
+--      build (<private build> Δ=-25, plus the -5 Predator BASE issue).
 --
 -- The "You and your minions have ..." tooltip pattern in LE corresponds to
 -- TWO separate mods in the underlying data (one tags=0, one tags=8192=Minion).

@@ -1,7 +1,7 @@
 -- @leb-regression-guard: martyrdom-minion-armour
 -- Locks the contract that the Necromancer Dread Shade specialization node
 -- `ds4d3-3` ("Martyrdom") grants Armour to MINIONS, not the player.
--- Trigger: Qdz2yXN3 (lv99 Necromancer, Vit=99) showed +2970 player Armour
+-- Trigger: <private build> (lv99 Necromancer, Vit=99) showed +2970 player Armour
 -- (BASE PerStat:Vit) flowing from `ds4d3-3` because the raw stat string was
 -- `"30 Armour Per Vitality"` and the cached mod targeted the player modDB.
 -- The in-game tooltip + LETools planner confirm the bonus is applied to

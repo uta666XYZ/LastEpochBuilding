@@ -10,7 +10,7 @@
 -- 6×ranks of minion regen on every Necromancer/Lich/Warlock build that
 -- takes Blood Armor.
 --
--- Triangulation: BxvJP3g1 lv99 Necromancer (g1) — Acolyte-21#8 should grant
+-- Triangulation: <private build> lv99 Necromancer (g1) — Acolyte-21#8 should grant
 -- +48 Minion Health Regen, lifting output.MinionLifeRegen from 186 (Pebbles'
 -- Collar Reforged alone) to 234, matching LETools' Minion-tab Health Regen.
 -- Pre-fix LEB reported 186 (Δ-48).

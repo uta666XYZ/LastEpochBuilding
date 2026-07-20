@@ -5,7 +5,7 @@
 -- SymbolsOfHopeEffect INC (Sentinel-119 Covenant of Light grants +4%/pt).
 --
 -- Pre-fix behaviour applied 20% per symbol as MORE outside applyBuffPrefix, so
--- regen ≈ baseRegen × (1 + globalInc) × (1 + 0.20 × symbols). For QDxZjL4J this
+-- regen ≈ baseRegen × (1 + globalInc) × (1 + 0.20 × symbols). For <private build> this
 -- produced 60 × 2.52 × 3.0 ≈ 453 instead of the correct ~295.
 --
 -- See REGRESSION_GUARDS.md for the index entry.

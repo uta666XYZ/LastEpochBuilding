@@ -44,6 +44,29 @@ is worthless. LEB's testing has three layers:
 
 Every calculation change goes through all three before shipping.
 
+### Running the suite
+
+```sh
+scripts/run-specs.sh                              # full suite
+scripts/run-specs.sh ../spec/System/Foo_spec.lua  # one spec
+```
+
+Use the script rather than calling `busted` directly. It exists because two traps have
+each cost hours and neither announces itself:
+
+- **Coverage is on by default** (`.busted`), because CI reports to coveralls. Locally
+  it is pure tax — the full suite is ~94s with `--no-coverage` versus several times
+  that with it, for a byte-identical result. The flag is `--no-coverage`;
+  `--coverage=false` is not valid busted syntax and errors out.
+- **Two suite runs at once kill each other silently** — exit 1, no Lua error, output
+  truncated mid-test. It reads like a hang, so the instinct is to wait longer, which
+  never helps. The script refuses to start instead.
+
+`.busted` sets `directory = "src"`, so spec paths are relative to `src/`, i.e.
+`../spec/System/...`. In a worktree, optional local artifacts under
+`spec/TestBuilds/` and `spec/tools/` may be absent, so specs that read them can fail for environmental reasons, not
+because of your change.
+
 ### Regression guards
 
 Some fixes are non-obvious enough that re-breaking them by accident is a real

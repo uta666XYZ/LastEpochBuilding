@@ -9,9 +9,9 @@
 -- conditionBeenHitRecently=true collapses the bonus.
 --
 -- Symptoms before fix (G1 fresh diff, 2026-05-11):
---   * BM6x3nKn lv66 Bladedancer GlancingBlowChance LE=24 LEB=2 Δ=-22
---   * om6xnlL1 lv100 Bladedancer LE=26 LEB=2 Δ=-24
---   * o3Zl6gkV lv100 Bladedancer LE=26 LEB=16 Δ=-10
+--   * <private build> lv66 Bladedancer GlancingBlowChance LE=24 LEB=2 Δ=-22
+--   * <private build> lv100 Bladedancer LE=26 LEB=2 Δ=-24
+--   * <private build> lv100 Bladedancer LE=26 LEB=16 Δ=-10
 -- Root cause: the bare wording fell through to the generic parser
 -- (see ModCache.lua entry that left empty mods + leftover text), AND
 -- CalcDefence.lua summed only BASE for output.GlancingBlowChance.

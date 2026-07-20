@@ -6,7 +6,7 @@
 -- drops every flagged mod because ModDB:Sum requires
 -- `band(cfg.flags, mod.flags) == mod.flags` and a nil cfg yields flags=0.
 -- Real-world hit: Palarus's Sacred Light suffix "+11 Health Gain on Melee
--- Hit" surfaced as 0 on QDxZjL4J Paladin (LETools showed 11).
+-- Hit" surfaced as 0 on <private build> Paladin (LETools showed 11).
 --
 -- (output.LifeOnHit is overwritten per-skill in CalcOffence so its
 -- defence-layer Sum does not propagate to a single global output and is

@@ -2,7 +2,7 @@
 -- Beastmaster "The Chase" Primalist-22 and similar passives) parse into a
 -- MinionModifier(MovementSpeed, INC) mod, or does it get dropped?
 --
--- LETools tooltip on Qqwvdex2 lv98 Beastmaster:
+-- LETools tooltip on <private build> lv98 Beastmaster:
 --   "Movement Speed: 24%
 --    Beastmaster Passive Tree (The Chase): 24% increased Minion Movement Speed"
 -- LEB output.MinionMovementSpeed = 0 → 100% miss.

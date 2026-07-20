@@ -1,12 +1,12 @@
 -- @leb-regression-guard: frostbite-shackles-wr-per-uncapped-cold-res
 -- Locks the Frostbite Shackles (unique boots) intrinsic
 -- "+1% Ward Retention per 2% uncapped Cold Resistance" against three
--- regressions discovered together on QWXjqDq9 lv95 Spellblade:
+-- regressions discovered together on <private build> lv95 Spellblade:
 --
 --   1. The uniques*.json files (uniques.json, uniques_1_2/3/4.json) had
 --      the WRONG mod text "+100% Ward Retention per 100% uncapped Cold
 --      Resistance". The actual in-game text per the LE datamining dump
---      (LE_datamining/extracted/items/uniques_v3.json L27913) is
+--      (datamined game source) is
 --      "+1% Ward Retention per 2% uncapped Cold Resistance". The wrong
 --      text drove a parser pattern that produced a PerStat-tagged BASE
 --      WardRetention=100 mod.
@@ -24,7 +24,7 @@
 --      the bonus AFTER the resist loop but BEFORE WardRetention is
 --      consumed by the stable-ward / decay formulas.
 --
--- Evidence (QWXjqDq9 lv95 Spellblade):
+-- Evidence (<private build> lv95 Spellblade):
 --   - Cold Resistance (uncapped): 363%
 --   - Bonus from Frostbite Shackles: round(363 / 2) * 1 = 182
 --   - LETools display:  WardRetention = 344%
@@ -104,7 +104,7 @@ describe("FrostbiteShacklesWRPerUncappedColdRes", function()
     end)
 
     it("ModParser ALSO handles the LEGACY '+N% per 100%' text (frozen in existing build XMLs)", function()
-        -- Existing TestBuilds XMLs (e.g. QWXjqDq9 lv95 Spellblade.xml) carry the
+        -- Existing TestBuilds XMLs (e.g. <private build> lv95 Spellblade.xml) carry the
         -- pre-fix wrong text frozen into them by the importer. The parser must
         -- recognise that text and emit the SAME custom BASE mod (coefficient
         -- collapsed to 1) so already-imported builds get the bonus too.

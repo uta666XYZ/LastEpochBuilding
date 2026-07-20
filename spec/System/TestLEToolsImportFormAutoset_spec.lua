@@ -9,8 +9,8 @@
 --   * Without these auto-sets LE planner "in-combat" stat display and LEB's
 --     out-of-combat default diverge by hundreds of points across
 --     armor/resist/life/mana/dodge on Druid/Beastmaster builds. Verified on
---     QeY7m5Xq lv97 Druid (single `conditionInWerebearForm=true` closes
---     14+ stat drifts) and QJW0qO5a lv100 Beastmaster (`multiplierCompanion=1`
+--     <private build> lv97 Druid (single `conditionInWerebearForm=true` closes
+--     14+ stat drifts) and <private build> lv100 Beastmaster (`multiplierCompanion=1`
 --     closes the armor -380 drift to -59).
 --
 -- See REGRESSION_GUARDS.md "letools-import-form-condition-autoset".

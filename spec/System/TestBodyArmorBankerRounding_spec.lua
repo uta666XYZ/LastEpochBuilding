@@ -1,12 +1,14 @@
 -- @leb-regression-guard:body_armor-banker-rounding
 -- LE applies (1 + affixEffectModifier) to the canonical affix base roll on
 -- each equipment slot. body_armor's affixEffectModifier is 0.5 (verified in
--- LE_datamining/extracted/items/equipmentItems.json BaseTypeName="Body Armor"),
+-- datamined game source BaseTypeName="Body Armor"),
 -- so body_armor multiplies by x1.5 and rounds with banker's rounding
 -- (round-half-to-even). LEB previously used half-up, producing min OR max
 -- values one higher than in-game on every .5-boundary tier.
 --
--- This spec asserts all 22 patched (affixId, tier) pairs across 9 affix IDs.
+-- This spec asserts all patched (affixId, tier) pairs: the original 22 from
+-- the first pass plus 5 surfaced by the second-pass scope survey (affixIds
+-- 70, 80, 715).
 -- See REGRESSION_GUARDS.md "body_armor-banker-rounding" for the full table
 -- and the audit script `.tmp/audit_body_armor_rounding.py`.
 
@@ -32,12 +34,22 @@ describe("BodyArmorBankerRounding", function()
                 and entry.slotOverrides.body_armor["1"]
             assert.is_not_nil(override, "missing body_armor slotOverride for " .. key)
             local lo, hi = override:match("%+?%((%-?%d+)%-(%-?%d+)%)")
+            if not lo then
+                -- fixed-roll tiers (tier.min == tier.max) bake a single value,
+                -- e.g. 52_0 "4% increased Health"
+                local single = override:match("^%+?(%-?%d+)%%")
+                lo, hi = single, single
+            end
             return tonumber(lo), tonumber(hi)
         else
             local idx = modItem:find('"' .. key .. '"%s*:')
             assert.is_not_nil(idx, "missing affix entry: " .. key)
             local sub = modItem:sub(idx, idx + 1200)
             local lo, hi = sub:match('"body_armor"%s*:%s*{[^}]-%+?%((%-?%d+)%-(%-?%d+)%)')
+            if not lo then
+                local single = sub:match('"body_armor"%s*:%s*{%s*"1"%s*:%s*"%+?(%-?%d+)%%')
+                lo, hi = single, single
+            end
             return tonumber(lo), tonumber(hi)
         end
     end
@@ -80,6 +92,20 @@ describe("BodyArmorBankerRounding", function()
         { "505_2",  4,   6,  "Vitality T2 (was 5-6)" },
         { "505_4", 10,  12,  "Vitality T4 (was 11-12)" },
         { "505_5", 16,  20,  "Vitality T5 (was 17-20)" },
+        -- Increased Health % (affixId 52) T0 fixed roll: datamine
+        -- single_affixes_v3.json tiers[0] min=max=0.03 -> 3% * 1.5 = 4.5,
+        -- banker(4.5)=4. Was baked "5%" (half-up). Same affix/slot banker
+        -- behaviour in-game-confirmed at T2 (9-10, Kolheim tooltip).
+        { "52_0",   4,   4,  "Increased Health T0 fixed roll (was 5)" },
+        -- Second-pass scope-survey additions (banker(rawFloat*1.5)):
+        -- Minion Health % (affixId 70)
+        { "70_2",   84, 112, "Minion Health T2 (was 84-113)" },
+        -- Elemental Resistance % (affixId 80)
+        { "80_7",   96, 112, "Elemental Resistance T7 (was 96-113)" },
+        -- Armor flat, sealed/special line (affixId 715)
+        { "715_2",  64,  82, "Armor T2 (was 65-83)" },
+        { "715_4", 106, 142, "Armor T4 (was 107-143)" },
+        { "715_6", 256, 330, "Armor T6 (was 257-330)" },
     }
 
     for _, c in ipairs(cases) do

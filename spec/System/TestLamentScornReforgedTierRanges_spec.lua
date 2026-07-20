@@ -4,7 +4,7 @@
 -- mods (T0..T7) appearing on the Last Bear set helmets. LE 1.4.5 silently
 -- bumped both families' Health Regen / Endurance Threshold / Endurance %
 -- ranges. Prior to the bump LEB underestimated Endurance Threshold by
--- ~half on T6-T7 tiers (e.g. BxvJP3g1 lv99 Necromancer triangulation
+-- ~half on T6-T7 tiers (e.g. <private build> lv99 Necromancer triangulation
 -- showed ET -130 vs in-game until 802_6 was corrected).
 --
 -- This spec locks in the T7 (top-tier, largest absolute miss) max value

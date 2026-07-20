@@ -10,7 +10,7 @@
 -- this bug have been pruned from src/Data/ModCache.lua.
 --
 -- Symptom before fix (G1 fresh diff, 2026-05-11):
---   BM6x3nKn lv66 Bladedancer GlancingBlowChance LE=24 LEB=2 Δ=-22
+--   <private build> lv66 Bladedancer GlancingBlowChance LE=24 LEB=2 Δ=-22
 -- After fix the body-armor suffix contributes BASE GlancingBlowChance.
 -- See REGRESSION_GUARDS.md "chance-to-receive-glancing-blow-when-hit".
 

@@ -88,7 +88,7 @@ describe("TestSetBreakdown", function()
     end)
 
     -- @leb-regression-guard: set-bonus-dedup-by-uniqueid
-    -- Per LE_datamining/extracted/set_formulas.md §3: in-game `setCompletion`
+    -- Per datamined game source §3: in-game `setCompletion`
     -- uses `addUnique(idx, uniqueID)`, so two copies of the same set piece in
     -- different slots count as one member.
     it("dedups duplicate uniqueIDs (same set ring in both ring slots)", function()
@@ -163,7 +163,7 @@ describe("TestSetBreakdown", function()
     end)
 
     -- @leb-regression-guard: set-bonus-wildcard-clamp
-    -- Per LE_datamining/extracted/set_formulas.md §3: Legends Entwined "does
+    -- Per datamined game source §3: Legends Entwined "does
     -- not stack with itself (only one slot can hold it)". Defends against
     -- data-corruption / parse-bug paths where two wildcard-flagged items
     -- surface simultaneously.

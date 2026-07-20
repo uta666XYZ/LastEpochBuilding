@@ -1,7 +1,7 @@
 -- @leb-regression-guard: armour-pct-shorthand-inc
 -- Locks the BASE_MORE->INC promotion for "+N% Armor" shorthand text.
 --
--- Evidence (LE_datamining extracted/items/multi_affixes_v3.json affix 1007):
+-- Evidence (datamined game source extracted/items/multi_affixes_v3.json affix 1007):
 --   affixName: "Increased Armor and Damage Reflected to Attackers per Armor Mitigation"
 --   affixProperties[0]: property=10 (Armor), modifierType=1 (INC)
 -- ModItem_1_4.json renders the row as "+(24-30)% Armor" default and
@@ -10,10 +10,10 @@
 -- list, the prefix falls through to BASE and is applied as flat +N Armor.
 --
 -- Affected at v0.14.6 (4 builds with negative Armor delta):
---   oN2zNnaR Necromancer  D=-667
+--   <private build> Necromancer  D=-667
 --   BGzxJrgn Bladedancer  D=-436
---   Qqwv6zbR Bladedancer  D=-285
---   QeY79rn2 Necromancer  D=-208
+--   <private build> Bladedancer  D=-285
+--   <private build> Necromancer  D=-208
 --
 -- Three sites lock together:
 -- a. `Modules/ModParser.lua` BASE_MORE branch includes "Armour" in the

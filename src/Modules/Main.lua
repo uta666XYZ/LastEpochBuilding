@@ -381,9 +381,7 @@ end
 function main:OnFrame()
 	self.screenW, self.screenH = GetScreenSize()
 
-	-- @leb-perf: GC/memory telemetry. devMode only. See Obsidian: 軽量性維持の原則.md
-	-- Logs every 30s: current memory KB, peak in window, delta vs previous,
-	-- and worst frame gap (ms) so GC stalls show up directly.
+	-- Validation provenance is retained in maintainer notes.
 	if launch.devMode then
 		local now = GetTime()
 		if not self.gcStats then
@@ -1205,6 +1203,15 @@ function main:OpenAboutPopup(helpSectionIndex)
 	controls.github = new("ButtonControl", nil, 0, 62, 438, 18, "^7GitHub page: ^x4040FFhttps://github.com/uta666XYZ/LastEpochBuilding", function(control)
 		OpenURL("https://github.com/uta666XYZ/LastEpochBuilding")
 	end)
+	-- @leb-regression-guard: about-support-button-wired
+	-- The About popup ships a "Support LEB" (Buy Me a Coffee) button: a frameless
+	-- SupportButtonControl that draws only Assets/support-leb.png and opens the
+	-- Buy Me a Coffee page on click. Removing it, or breaking the asset path or the
+	-- URL, silently drops the only in-app support link.
+	-- Test: spec/System/TestAboutSupportButton_spec.lua "wires the support button into the About popup"
+	controls.support = new("SupportButtonControl", { "TOPLEFT", nil, "TOPLEFT" }, 10, 8, 140, 46, "Assets/support-leb.png", function()
+		OpenURL("https://www.buymeacoffee.com/yobk0831a")
+	end, "Support Last Epoch Building on Buy Me a Coffee")
 	controls.verLabel = new("ButtonControl", { "TOPLEFT", nil, "TOPLEFT" }, 10, 85, 100, 18, "^7Version history:", function()
 		controls.changelog.list = changeList
 		controls.changelog.sectionHeights = changeVersionHeights

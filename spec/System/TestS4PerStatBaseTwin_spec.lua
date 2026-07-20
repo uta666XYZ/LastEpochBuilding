@@ -10,7 +10,7 @@
 -- up the converted twin (sibling guard s4-converted-attr-no-base-inherit
 -- forbids Brutality from inheriting Strength's +4% Armour).
 --
--- Establishing build: Qb6WlbxD lv100 Druid (Brutality=198 via Exulis
+-- Establishing reference: see git log
 -- 100% Str→Brutality conversion). The Druid passive node Primalist-111
 -- "Aspects of Might" grants "1% Increased Armor Per Strength In Human
 -- Or Spriggan" — LE counts Brutality, giving +198% INC; LEB previously

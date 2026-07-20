@@ -9,7 +9,7 @@
 -- surfaces them as breakdown rows. Per-cast accumulator semantics
 -- are visible-only at v1 -- combat-loop attribution deferred.
 -- See game CharacterMutator SinceLast<Skill>Use counters in
--- dump.cs L96712-96719 for the underlying mechanism.
+-- datamined game source for the underlying mechanism.
 
 local function readSource(relPath)
     local f = io.open(relPath, "r") or io.open("src/" .. relPath, "r") or io.open("../src/" .. relPath, "r")
@@ -146,7 +146,7 @@ describe("CooldownRecoveredOnHitConsumer", function()
     -- Runtime guard: locks the parser dispatch convention.
     -- Without these, the static-text checks above happily pass while
     -- a 2-capture handler signature mismatch silently aliases the cap
-    -- count to the pct value (BxvJdz2m repro: cap=12 -> 23). The
+    -- count to the pct value (<private build> repro: cap=12 -> 23). The
     -- specialMod dispatcher calls handlers as
     --     specialMod(tonumber(cap[1]), unpack(cap))
     -- so 2-capture handlers must take (numericFirst, rawFirst, rawSecond);

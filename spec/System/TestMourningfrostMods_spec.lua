@@ -3,10 +3,10 @@
 -- and Cold Resistance penalty mods.
 --
 -- Evidence:
---   1. Datamining (LE_datamining/extracted/unique_mods_generated.json id=19):
+--   1. Datamining (datamined game source id=19):
 --        "+1 cold damage to attacks and spells per point of dexterity",
 --        "-1% physical and cold resistance per point of dexterity"
---   2. LETools planner Resistance breakdown for Qdz2XagK lv84 Falconer
+--   2. LETools planner Resistance breakdown for <private build> lv84 Falconer
 --      (Mourningfrost equipped, Dex=91):
 --        Cold Resistance: -19%
 --          Boots (Unique mod): -91% Cold Resistance

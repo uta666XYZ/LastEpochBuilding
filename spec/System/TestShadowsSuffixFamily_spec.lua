@@ -377,7 +377,7 @@ describe("ShadowSuffixFamily", function()
     -- of Dusk Shroud" promoted from no-op to ChanceToTriggerOnHit_Ailment_DuskShroud
     -- BASE=100 + Condition:OnShadowConsume (the guaranteed-form counterpart of the
     -- C6c P8 chance-form affix family). Verbatim source: uniques.json L10257 /
-    -- set_1_4.json L301. dump.cs L22771 RogueShadow.duskShroudChanceOnConsumption.
+    -- set_1_4.json L301. datamined game source RogueShadow.duskShroudChanceOnConsumption.
     it("C6-followup F7: ModParser specialModList wires 'consuming a shadow grants a stack of dusk shroud' to ChanceToTriggerOnHit_Ailment_DuskShroud BASE=100 + Condition:OnShadowConsume", function()
         local needle = '%["%^consuming a shadow grants a stack of dusk shroud%$"%]%s*=%s*function%(%)%s*return%s*{%s*mod%("ChanceToTriggerOnHit_Ailment_DuskShroud",%s*"BASE",%s*100,%s*"",%s*ModFlag%.Hit,%s*0,%s*{%s*type%s*=%s*"Condition",%s*var%s*=%s*"OnShadowConsume"%s*}%s*%)%s*}%s*end'
         assert.is_truthy(string.find(parserText, needle),

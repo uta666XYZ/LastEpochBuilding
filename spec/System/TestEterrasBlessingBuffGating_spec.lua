@@ -11,7 +11,7 @@
 -- Buffs panel shows EB OFF by default (matching the 4s cast-time duration
 -- semantics), so for parity LEB must default it OFF too.
 --
--- Symptoms before fix (BOwJnY3Y Beastmaster, eb5656-2 #3):
+-- Symptoms before fix (<private build> Beastmaster, eb5656-2 #3):
 --   * FireResist  LE=56  LEB=101 Δ=+45
 --   * ColdResist  LE=80  LEB=125 Δ=+45
 --   * LightResist LE=179 LEB=224 Δ=+45

@@ -5,7 +5,7 @@
 -- the base affixEffectModifier and the per-affix sealed sAEM baked in;
 -- subtracting sAEM here double-applies the penalty.
 --
--- Game-data evidence (2026-05-12): BZ37dR2l Sorcerer Unstable Core (body
+-- Game-data evidence (2026-05-12): <private build> Sorcerer Unstable Core (body
 -- armor) corrupted sealed prefix 1014_4, sAEM=0.17, range:69, body_armor
 -- override "+(46-50) Mana". LE in-game / LETools display +47. Pre-fix LEB
 -- showed 47 × 0.83 = 39.

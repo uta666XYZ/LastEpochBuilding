@@ -3,7 +3,7 @@
 -- implicits saved as a literal broken text ("+-0.6 Armor") into the
 -- correct percent-reduced template ("(42-60)% reduced Armor").
 --
--- Evidence (LE_datamining extracted/items/equipmentItems.json):
+-- Evidence (datamined game source extracted/items/equipmentItems.json):
 --   Deadstar Amulet implicit[2]: property=10 (Armor), type=1 (INC),
 --                                value=-0.6, maxValue=-0.42
 --   Prophetic Homonculus implicit[2]: property=10 (Armor), type=1 (INC),

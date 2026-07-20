@@ -76,7 +76,7 @@ describe("TestModParse", function()
     -- "from (.+)$" catch-all in src/Modules/ModParser.lua, scan() picks the
     -- catch-all first (longest-pattern tie-breaking), the value falls through
     -- to LEB_NotSupported, and Sentinel-114 Heaven's Bulwark stops crediting
-    -- ReduceCritExtraDamage. This reproduces the original B4Xq8aG6 -30 diff.
+    -- ReduceCritExtraDamage. This reproduces the original <private build> -30 diff.
     it("crits abbreviation reduces crit damage", function()
         build.configTab.input.customMods = "30% Reduced Bonus Damage Taken From Crits\n\z
         2% Reduced Bonus Damage Taken From Crits\n\z
@@ -91,7 +91,7 @@ describe("TestModParse", function()
     -- in its notScalingStats. Without the "with a shield" condition mapping in
     -- ModParser.modTagList, the trailing condition survives as residual extra
     -- and PassiveTree.lua line 421-423 sets node.extra=true, causing the entire
-    -- mod to be discarded — silently dropping ~15 from every resist on B4Xq8aG6.
+    -- mod to be discarded — silently dropping ~15 from every resist on <private build>.
     it("with a shield condition tag", function()
         build.configTab.input.customMods = "+15% All Resistances With A Shield"
         build.configTab:BuildModList()
@@ -148,11 +148,58 @@ describe("TestModParse", function()
         assert.are.equals("MovementSpeedInc", tag.var)
     end)
 
+    -- @leb-regression-guard:cradle-of-the-erased-block-eff-per-uncapped-resist
+    -- Cradle of the Erased unique grants "+1 Block Effectiveness per 1% Total
+    -- Uncapped Resistance". Without the "per 1% total uncapped resistance"
+    -- matcher the trailing suffix leaves residual extra and the entire
+    -- BlockEffectiveness mod is silently dropped (<private build> Beastmaster lv98:
+    -- LEB BlockEffectiveness 90 vs LET 945). The Multiplier:UncappedResistTotal
+    -- auto-injection in CalcSetup (Sum BASE on the 7 resists) already exists for
+    -- the Ward Per Second uncapped-resist family and is verified at the build level.
+    it("per 1% total uncapped resistance multiplier", function()
+        local mods, extra = modLib.parseMod("+1 Block Effectiveness per 1% Total Uncapped Resistance")
+        assert.is_nil(extra, "parseMod must consume 'per 1% total uncapped resistance' (residual='" .. tostring(extra) .. "')")
+        assert.is_not_nil(mods)
+        assert.are.equals(1, #mods)
+        assert.are.equals("BlockEffectiveness", mods[1].name)
+        assert.are.equals("BASE", mods[1].type)
+        assert.are.equals(1, mods[1].value)
+        local tag = mods[1][1]
+        assert.is_not_nil(tag, "expected a Multiplier tag on the mod")
+        assert.are.equals("Multiplier", tag.type)
+        assert.are.equals("UncappedResistTotal", tag.var)
+    end)
+
+    -- @leb-regression-guard:thicket-reflect-per-uncapped-phys-res
+    -- Thicket of Blinding Light (uniques_1_4 #426) craft affix "(11-17) Damage
+    -- Reflected to Attackers per 10% uncapped Physical Resistance". The BASE stat
+    -- parses via modNameList, but without the "per 10%% uncapped physical resistance"
+    -- modTagList phrase the trailing suffix leaves residual extra and the whole
+    -- per-uncapped-phys-res reflect term is silently dropped -> in-game "Thorns"
+    -- reads UNDER (HitMeBabyOneMoreTime: LEB 33096 vs in-game 34609). div=10 (per 10%),
+    -- per-TYPE Multiplier:UncappedPhysicalResist (verbatim "uncapped", NOT total),
+    -- auto-populated in CalcSetup as Sum BASE PhysicalResist. Stale ModCache row for
+    -- this line was deleted in the same commit so parseMod runs live.
+    it("reflect per 10% uncapped physical resistance multiplier", function()
+        local mods, extra = modLib.parseMod("14 Damage Reflected to Attackers per 10% uncapped Physical Resistance")
+        assert.is_nil(extra, "parseMod must consume 'per 10% uncapped physical resistance' (residual='" .. tostring(extra) .. "')")
+        assert.is_not_nil(mods)
+        assert.are.equals(1, #mods)
+        assert.are.equals("DamageReflectedToAttackers", mods[1].name)
+        assert.are.equals("BASE", mods[1].type)
+        assert.are.equals(14, mods[1].value)
+        local tag = mods[1][1]
+        assert.is_not_nil(tag, "expected a Multiplier tag on the mod")
+        assert.are.equals("Multiplier", tag.type)
+        assert.are.equals("UncappedPhysicalResist", tag.var)
+        assert.are.equals(10, tag.div)
+    end)
+
     -- @leb-regression-guard:traitors-tongue-offhand-crit-flat
     -- Traitor's Tongue (dual-wield dagger) is the only unique in the game that
     -- uses cross-slot self-referential mod text "with X equipped in the
     -- offhand/mainhand" (verified 2026-05-12 against
-    -- LE_datamining/extracted/unique_mods_generated.json). Without the
+    -- datamined game source). Without the
     -- "with (.-) equipped in the offhand|mainhand" matchers the trailing
     -- condition survives as residual extra and Item.lua's processModLine
     -- silently drops the entire mod from modDB.
@@ -717,7 +764,7 @@ describe("TestModParse", function()
         --      observe the correct count and the
         --      "+N to All Attributes with at least N Corrupted non-Idol Items
         --      equipped" affix (Shroud of Obscurity) trips.
-        -- Establishing build: Qqwv73q2 lv62 Warlock — LEB Vit 35 → 49 after fix
+        -- Establishing reference: see git log
         -- (still differs from LETools 44 by remaining CompleteSetCount bug B).
         it("Corrupted Idol Altar counts as non-Idol for CorruptedNonIdolItemsEquipped", function()
             -- Character must clear LevelReq filter (CalcSetup nulls items
@@ -777,7 +824,7 @@ describe("TestModParse", function()
         -- ... Items equipped" thresholds. CalcSetup must capture every
         -- level-gated item into env._levelGatedAllItems and include it in
         -- the corrupted-counter loop.
-        -- Establishing build: Qqwv73q2 lv62 Warlock — Silver Grail relic
+        -- Establishing reference: see git log
         -- (LevelReq=68 > charLevel=62) brings nonIdol from 6 to 7 → trips
         -- Shroud of Obscurity's +11 All Attributes (affix 1011_6).
         it("Level-gated corrupted item still counts toward CorruptedNonIdolItemsEquipped", function()
@@ -837,8 +884,8 @@ describe("TestModParse", function()
     -- affixProperties[1] (Mana Regen) is modifierType=1 (INC) with extraRolls
     -- stored as 0.08-0.09 (= 8-9% multiplier). Without this, Keplahan's Cryolith
     -- Reforged ring sealed affix +(8-9)% Mana Regen is treated as flat +8 BASE,
-    -- causing ~+15.5/s drift (Qqwv73q2: LE 16.72 vs LEB 32.20 prior to fix).
-    -- Establishing commit: <unset; bump after first commit on this branch>.
+    -- causing ~+15.5/s drift (<private build>: LE 16.72 vs LEB 32.20 prior to fix).
+    -- Establishing reference: see git log
     it("LE shorthand '+N% Mana Regen' parses as INC", function()
         build.configTab.input.customMods = "+8% Mana Regen"
         build.configTab:BuildModList()
@@ -866,8 +913,8 @@ describe("TestModParse", function()
     -- BASE ManaRegen mod. CalcDefence.lua:602 reads NoManaRegen and forces
     -- output.ManaRegen = 0. Without this guard the BASE_MORE form ("100%")
     -- collapses the LEB JSON variant into +100 BASE ManaRegen (boost), the
-    -- opposite of intent (~+87.4 mana/s drift on QDxZPWM9 lv99 Sorcerer).
-    -- Establishing commit: <unset; bump after first commit on this branch>.
+    -- opposite of intent (~+87.4 mana/s drift on <private build> lv99 Sorcerer).
+    -- Establishing reference: see git log
     it("'You do not Regenerate Mana' sets NoManaRegen flag", function()
         build.configTab.input.customMods = "You do not Regenerate Mana"
         build.configTab:BuildModList()

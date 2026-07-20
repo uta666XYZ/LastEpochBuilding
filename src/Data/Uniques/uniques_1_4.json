@@ -16,7 +16,17 @@
       1,
       2
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      1,
+      128,
+      129,
+      2
+    ],
+    "tooltipDescriptions": [
+      "(100-150)% Chance to Ignite on Hit with Fire Skills",
+      "When you kill an enemy with a fire skill you take 4 fire damage over the next 2 seconds"
+    ]
   },
   "1": {
     "name": "Fractured Crown",
@@ -37,7 +47,16 @@
       1,
       null
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      1,
+      2,
+      0,
+      128
+    ],
+    "tooltipDescriptions": [
+      "You have no ward"
+    ]
   },
   "2": {
     "name": "Snowblind",
@@ -66,7 +85,21 @@
       2,
       2
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      129,
+      128,
+      7,
+      6,
+      130
+    ],
+    "tooltipDescriptions": [
+      "40% chance to chill on hit with cold skills",
+      "40% chance to blind on hit with cold skills",
+      "You are immune to Blind and Chill"
+    ]
   },
   "3": {
     "name": "Artor's Legacy",
@@ -89,7 +122,14 @@
       2,
       3
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      4,
+      2,
+      1,
+      3
+    ]
   },
   "4": {
     "name": "Decayed Skull",
@@ -116,7 +156,19 @@
       1,
       0
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128,
+      129,
+      4,
+      130,
+      6
+    ],
+    "tooltipDescriptions": [
+      "80% increased void and necrotic damage",
+      "20% of void and necrotic damage taken as physical damage",
+      "(3-10)% More Armor (multiplicative with other modifiers)"
+    ]
   },
   "6": {
     "name": "Boneclamor Barbute",
@@ -139,7 +191,14 @@
       1,
       null
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
   },
   "7": {
     "name": "The Kestrel",
@@ -162,7 +221,14 @@
       2,
       3
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      4,
+      2,
+      3,
+      1
+    ]
   },
   "8": {
     "name": "Doublet of Onos Tull",
@@ -181,7 +247,16 @@
       1,
       0
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      2,
+      128,
+      129
+    ],
+    "tooltipDescriptions": [
+      "Minions have +(60-100)% Chance to Inflict Bleed on Hit",
+      "Minions have (60-100)% Increased Bleed Duration"
+    ]
   },
   "9": {
     "name": "Prism Wraps",
@@ -202,7 +277,13 @@
       null,
       0
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3
+    ]
   },
   "10": {
     "name": "Urzil's Pride",
@@ -250,7 +331,17 @@
       null,
       null
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      3,
+      4,
+      128,
+      129
+    ],
+    "tooltipDescriptions": [
+      "(15-30)% increased attack speed, cast speed, and movement speed if you have used a potion in the past 4 seconds",
+      "Immunity to Bleed at low health"
+    ]
   },
   "12": {
     "name": "Yrun's Wisdom",
@@ -292,7 +383,17 @@
       1,
       2
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      2,
+      4,
+      3,
+      128
+    ],
+    "tooltipDescriptions": [
+      "You do not regenerate health"
+    ]
   },
   "14": {
     "name": "Valeroot",
@@ -317,7 +418,15 @@
       4,
       3
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      4,
+      0,
+      5,
+      1,
+      2,
+      3
+    ]
   },
   "15": {
     "name": "Vipertail",
@@ -340,7 +449,14 @@
       3,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
   },
   "17": {
     "name": "Ward Trail",
@@ -359,7 +475,12 @@
       1,
       2
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      2
+    ]
   },
   "18": {
     "name": "Chains of Uleros",
@@ -382,7 +503,18 @@
       null,
       null
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      128,
+      129
+    ],
+    "tooltipDescriptions": [
+      "24% reduced duration of stuns on you",
+      "Your potions grant ward instead of health"
+    ]
   },
   "19": {
     "name": "Mourningfrost",
@@ -424,7 +556,16 @@
       0,
       1
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      128
+    ],
+    "tooltipDescriptions": [
+      "You are shocked for 4 seconds when you stop moving"
+    ]
   },
   "21": {
     "name": "Eterra's Path",
@@ -451,7 +592,19 @@
       null,
       2
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      4,
+      128,
+      129,
+      130,
+      5
+    ],
+    "tooltipDescriptions": [
+      "You and your minions have 20% increased movement speed",
+      "You and your minions have (20-28)% increased healing effectiveness",
+      "Every second if you are moving you have a (20-28)% chance to cast Summon Vines"
+    ]
   },
   "22": {
     "name": "Keeper's Gloves",
@@ -468,7 +621,15 @@
       0,
       1
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      128
+    ],
+    "tooltipDescriptions": [
+      "10% chance to summon a swarm of bees on melee hit (8 second cooldown)"
+    ]
   },
   "23": {
     "name": "Riverbend Grasp",
@@ -491,7 +652,14 @@
       3,
       4
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
   },
   "24": {
     "name": "Fighting Chance",
@@ -512,7 +680,13 @@
       2,
       3
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3
+    ]
   },
   "25": {
     "name": "Boulderfists",
@@ -535,7 +709,17 @@
       1,
       2
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      4,
+      2,
+      3,
+      128
+    ],
+    "tooltipDescriptions": [
+      "You cannot leech health"
+    ]
   },
   "27": {
     "name": "Wing Guards",
@@ -556,7 +740,16 @@
       null,
       2
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      3,
+      128
+    ],
+    "tooltipDescriptions": [
+      "You cannot deal critical strikes"
+    ]
   },
   "28": {
     "name": "Beast King",
@@ -575,7 +768,18 @@
       1,
       2
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      128,
+      129
+    ],
+    "tooltipDescriptions": [
+      "8% less damage taken if your minions have killed recently",
+      "minions take 25% less damage if you have killed recently"
+    ]
   },
   "29": {
     "name": "Taste of Blood",
@@ -596,7 +800,17 @@
       1,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      128
+    ],
+    "tooltipDescriptions": [
+      "When you hit a bleeding enemy with a melee attack all bleed stacks on that enemy double in speed"
+    ]
   },
   "30": {
     "name": "Undisputed",
@@ -615,7 +829,16 @@
       1,
       2
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      128
+    ],
+    "tooltipDescriptions": [
+      "5% increased physical damage for each recent melee hit against a bleeding enemy (up to 255%)"
+    ]
   },
   "31": {
     "name": "Tempest Maw",
@@ -629,7 +852,8 @@
       "{rounding:Integer}+(17-21) Spell Lightning Damage",
       "{rounding:Integer}-6 to -3 Totem Mana Cost",
       "{rounding:Integer}+(3-6) Attunement",
-      "{rounding:Integer}+(3-6) Strength"
+      "{rounding:Integer}+(3-6) Strength",
+      "When you summon a totem you also summon 4 Storm Sprites around the totem (up to 2 times per 6 seconds)"
     ],
     "rollIds": [
       0,
@@ -638,7 +862,18 @@
       3,
       3
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      128,
+      129
+    ],
+    "tooltipDescriptions": [
+      "+(3-6) Strength and Attunement",
+      "When you summon a totem you also summon 4 Storm Sprites around the totem (up to 2 times per 6 seconds)"
+    ]
   },
   "32": {
     "name": "Frozen Ire",
@@ -648,10 +883,16 @@
       "level": 33
     },
     "mods": [
-      "{rounding:Integer}(80-120)% increased Cold Damage"
+      "{rounding:Integer}(80-120)% increased Cold Damage",
+      "+1% Necrotic Resistance per level",
+      "+2% Freeze Rate Multiplier per level",
+      "{rounding:Integer}+1 Spell Cold Damage per 5 level"
     ],
     "rollIds": [
-      1
+      1,
+      null,
+      null,
+      null
     ],
     "overrideLevelRequirement": true
   },
@@ -674,7 +915,17 @@
       0,
       1
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      3,
+      2,
+      128
+    ],
+    "tooltipDescriptions": [
+      "100% of mana converted to ward when you reach full mana"
+    ]
   },
   "34": {
     "name": "Humming Bee",
@@ -697,7 +948,17 @@
       null,
       2
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      4,
+      1,
+      2,
+      128
+    ],
+    "tooltipDescriptions": [
+      "Elemental Attacks deal 1% Increased Damage per 200 Ward"
+    ]
   },
   "35": {
     "name": "Eye of Reen",
@@ -716,7 +977,16 @@
       1,
       2
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      128
+    ],
+    "tooltipDescriptions": [
+      "Each stack of Reen's Ire grants 5% melee critical strike multiplier and 10% increased fire damage over time"
+    ]
   },
   "36": {
     "name": "Rainbow Edge",
@@ -743,7 +1013,17 @@
       1,
       1
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      128
+    ],
+    "tooltipDescriptions": [
+      "+(25-75)% chance to Shock Ignite and Chill on Hit"
+    ]
   },
   "37": {
     "name": "Cinder Song",
@@ -768,7 +1048,19 @@
       null,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      5,
+      3,
+      2,
+      128,
+      129,
+      4
+    ],
+    "tooltipDescriptions": [
+      "(15-25)% chance to inflict Spreading Flames on Hit",
+      "-3 Mana Cost for Fire Spells"
+    ]
   },
   "38": {
     "name": "Alchemist's Ladle",
@@ -797,7 +1089,14 @@
       0,
       null
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      128,
+      7
+    ],
+    "tooltipDescriptions": [
+      "(20-45)% chance to ignite, chill, shock, bleed, slow, poison, and blind on melee hit"
+    ]
   },
   "39": {
     "name": "Reach of the Grave",
@@ -822,7 +1121,17 @@
       1,
       2
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      128,
+      129,
+      4,
+      5
+    ],
+    "tooltipDescriptions": [
+      "Your minions' spells and bow attacks deal (70-120)% increased damage",
+      "Your minions leech 10% of damage dealt by their spells and bow attacks as health"
+    ]
   },
   "40": {
     "name": "Bone Harvester",
@@ -839,7 +1148,15 @@
       0,
       1
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      128
+    ],
+    "tooltipDescriptions": [
+      "20% chance to summon a Skeleton Harvester for 15 seconds on kill"
+    ]
   },
   "41": {
     "name": "Hammer of Lorent",
@@ -850,11 +1167,15 @@
     },
     "mods": [
       "+(20-80)% Chance to Chill on Hit",
-      "{rounding:Integer}(20-80)% increased Melee Damage"
+      "{rounding:Integer}(20-80)% increased Melee Damage",
+      "+1 Melee Physical Damage per level",
+      "1% increased Melee Stun Chance per level"
     ],
     "rollIds": [
       0,
-      1
+      1,
+      null,
+      null
     ],
     "overrideLevelRequirement": false
   },
@@ -877,7 +1198,19 @@
       1,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      128,
+      129
+    ],
+    "tooltipDescriptions": [
+      "You cremate enemies you kill, burning enemies around them",
+      "You have a 10% chance to summon a Burning Skeleton for 10 seconds when you cremate an enemy"
+    ]
   },
   "43": {
     "name": "Storm Breaker",
@@ -902,7 +1235,18 @@
       3,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      128
+    ],
+    "tooltipDescriptions": [
+      "Gain a Storm Stack when you directly use a melee attack and hit at least one enemy"
+    ]
   },
   "44": {
     "name": "Draalsting",
@@ -923,7 +1267,13 @@
       0,
       null
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3
+    ]
   },
   "45": {
     "name": "Morditas' Reach",
@@ -948,7 +1298,18 @@
       0,
       3
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      1,
+      2,
+      128,
+      5,
+      129
+    ],
+    "tooltipDescriptions": [
+      "+500% chance to inflict Frostbite on Melee Hit",
+      "+(20-30) Melee Cold Damage for you and your minions"
+    ]
   },
   "46": {
     "name": "Sharktooth Saw",
@@ -965,7 +1326,17 @@
       null,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      128,
+      129
+    ],
+    "tooltipDescriptions": [
+      "35% increased damage to bleeding targets",
+      "5% chance to cause you to bleed when you hit with your weapon"
+    ]
   },
   "47": {
     "name": "The Last Laugh",
@@ -990,7 +1361,19 @@
       2,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      2,
+      4,
+      128,
+      3,
+      129
+    ],
+    "tooltipDescriptions": [
+      "Instantly kill enemies that are left below (15-20)% Health by a Melee Attack",
+      "+5% melee critical strike chance if you have less than 100 dodge rating"
+    ]
   },
   "48": {
     "name": "Volcanus",
@@ -1011,7 +1394,17 @@
       null,
       2
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      3,
+      1,
+      2,
+      128
+    ],
+    "tooltipDescriptions": [
+      "30% chance to cast Magma Shards on melee hit"
+    ]
   },
   "49": {
     "name": "Dreamthorn",
@@ -1034,7 +1427,14 @@
       1,
       2
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
   },
   "50": {
     "name": "The Slab",
@@ -1055,7 +1455,17 @@
       0,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128,
+      1,
+      129,
+      2
+    ],
+    "tooltipDescriptions": [
+      "100% less damage taken on block",
+      "Your Block Chance cannot exceed 75%"
+    ]
   },
   "51": {
     "name": "Close Call",
@@ -1074,7 +1484,16 @@
       0,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      128,
+      2
+    ],
+    "tooltipDescriptions": [
+      "40% increased dodge rating for each hit you have blocked recently"
+    ]
   },
   "52": {
     "name": "Soul Bastion",
@@ -1093,7 +1512,18 @@
       0,
       null
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      128,
+      129,
+      2
+    ],
+    "tooltipDescriptions": [
+      "Gains a Soul Charge on kill",
+      "At 5 soul charges, casts Soul Eruption"
+    ]
   },
   "53": {
     "name": "Rahyeh's Light",
@@ -1116,7 +1546,14 @@
       null,
       null
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
   },
   "54": {
     "name": "Strong Mind",
@@ -1150,7 +1587,15 @@
       0,
       0
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      128
+    ],
+    "tooltipDescriptions": [
+      "You are inflicted with bleed when you cast a spell"
+    ]
   },
   "56": {
     "name": "Chimaera's Essence",
@@ -1169,7 +1614,12 @@
       1,
       2
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2
+    ]
   },
   "58": {
     "name": "The Claw",
@@ -1188,7 +1638,16 @@
       1,
       null
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      129,
+      128
+    ],
+    "tooltipDescriptions": [
+      "You can Summon Wolves up to your Maximum Number of Companions",
+      "+(5-9) Melee Physical Damage for Minions"
+    ]
   },
   "59": {
     "name": "Death Rattle",
@@ -1209,7 +1668,18 @@
       0,
       0
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      1,
+      2,
+      128,
+      129,
+      3
+    ],
+    "tooltipDescriptions": [
+      "Your minions take (10-30)% increased damage",
+      "Regain 30 health on minion death"
+    ]
   },
   "60": {
     "name": "The Fang",
@@ -1230,7 +1700,18 @@
       null,
       null
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      129,
+      130,
+      128
+    ],
+    "tooltipDescriptions": [
+      "You can Summon Wolves up to your Maximum Number of Companions",
+      "+(10-16) Melee Physical Damage for Minions",
+      "Your minions cannot be stunned"
+    ]
   },
   "61": {
     "name": "Orian's Eye",
@@ -1251,7 +1732,16 @@
       2,
       1
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      128
+    ],
+    "tooltipDescriptions": [
+      "(75-150)% increased duration of stun immunity after being stunned"
+    ]
   },
   "62": {
     "name": "Ring of the Third Eye",
@@ -1270,7 +1760,15 @@
       null,
       0
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      128
+    ],
+    "tooltipDescriptions": [
+      "30% Chance to gain (15-18) Ward on Crit (up to 4 times per second)"
+    ]
   },
   "65": {
     "name": "Arboreal Circuit",
@@ -1289,7 +1787,16 @@
       1,
       1
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      129,
+      128
+    ],
+    "tooltipDescriptions": [
+      "10% chance to summon an illusory tree when hit (15 second cooldown)",
+      "(5-10)% increased Movement Speed for you and your minions"
+    ]
   },
   "66": {
     "name": "Hollow Finger",
@@ -1343,7 +1850,16 @@
       1,
       1
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      3,
+      128,
+      129
+    ],
+    "tooltipDescriptions": [
+      "+(15-45)% chance to chill, shock, and ignite on hit with elemental skills",
+      "(10-15)% increased chill, shock, and ignite duration"
+    ]
   },
   "68": {
     "name": "Grimoire of Necrotic Elixirs",
@@ -1370,7 +1886,17 @@
       null,
       2
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      4,
+      5,
+      128,
+      129
+    ],
+    "tooltipDescriptions": [
+      "(30-40)% less void, necrotic, and poison damage taken for 4 seconds on potion use",
+      "+(30-40) necrotic damage to melee attacks and spells for 4 seconds on potion use"
+    ]
   },
   "69": {
     "name": "Heirloom of Light",
@@ -1387,7 +1913,17 @@
       0,
       1
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      128,
+      129
+    ],
+    "tooltipDescriptions": [
+      "When you cast a spell while facing East you have a 20% chance to cast radiant nova",
+      "You have 1% increased spell damage per level if you have cast radiant nova recently"
+    ]
   },
   "70": {
     "name": "Soulfire",
@@ -1408,7 +1944,21 @@
       1,
       null
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      128,
+      129,
+      130,
+      3,
+      131
+    ],
+    "tooltipDescriptions": [
+      "+(100-160)% Chance to Ignite on Hit with Fire Skills and Necrotic Skills",
+      "60% increased fire damage if you have killed an enemy recently",
+      "100% increased armor while ignited",
+      "Hungering Souls Ignite on Hit instead of Possessing"
+    ]
   },
   "71": {
     "name": "Valdyr's Chalice",
@@ -1431,7 +1981,14 @@
       null,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
   },
   "72": {
     "name": "Orchirian's Petals",
@@ -1456,7 +2013,20 @@
       null,
       null
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      128,
+      129,
+      130,
+      4,
+      5
+    ],
+    "tooltipDescriptions": [
+      "13% Increased Cast Speed with Physical Spells",
+      "21% Increased Critical Strike Chance with Physical Spells",
+      "34% Increased Stun Chance with Physical Spells"
+    ]
   },
   "73": {
     "name": "Plague Bearer's Staff",
@@ -1479,7 +2049,20 @@
       2,
       3
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      128,
+      4,
+      130,
+      129,
+      3
+    ],
+    "tooltipDescriptions": [
+      "100% Chance To Inflict Plague on Hit",
+      "20% Chance To Blind Attackers",
+      "(10-20)% More Damage Over Time against Enemies afflicted with Plague"
+    ]
   },
   "74": {
     "name": "Ignivar's Head",
@@ -1498,7 +2081,18 @@
       1,
       2
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      2,
+      128,
+      1,
+      129
+    ],
+    "tooltipDescriptions": [
+      "Cast Fire Aura every second while Channelling",
+      "Disintegrate deals more damage equal to your spell crit chance"
+    ]
   },
   "75": {
     "name": "The Scavenger",
@@ -1515,7 +2109,15 @@
       0,
       1
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      128,
+      1
+    ],
+    "tooltipDescriptions": [
+      "Gain Haste for 3 Seconds on Potion Use"
+    ]
   },
   "76": {
     "name": "Liath's Signet",
@@ -1534,7 +2136,12 @@
       0,
       1
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2
+    ]
   },
   "80": {
     "name": "Bloodgeon",
@@ -1557,7 +2164,14 @@
       2,
       3
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
   },
   "81": {
     "name": "Ucenui's Sphere",
@@ -1578,7 +2192,19 @@
       1,
       null
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      128,
+      3,
+      129,
+      130
+    ],
+    "tooltipDescriptions": [
+      "+(20-40)% Cold and Lightning Resistance",
+      "3 Water Orbs per cast if your Attunement is Equal to your Intelligence",
+      "20% increased Cold and Lightning Damage for each Water Orb you have cast in the past 12 seconds"
+    ]
   },
   "82": {
     "name": "Arek's Bones",
@@ -1603,7 +2229,17 @@
       2,
       2
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      128,
+      129,
+      1
+    ],
+    "tooltipDescriptions": [
+      "+(60-90)% Chance to apply Armour Shred on Hit for You and Your Minions",
+      "[100, 200, 2]% Increased Armour Shred Effect for You and Your Minions"
+    ]
   },
   "83": {
     "name": "Maehlin's Hubris",
@@ -1624,7 +2260,13 @@
       1,
       2
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      3,
+      1,
+      2,
+      0
+    ]
   },
   "84": {
     "name": "Heirloom of the Last Nomad",
@@ -1649,7 +2291,18 @@
       4,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      128
+    ],
+    "tooltipDescriptions": [
+      "Using a Potion Cleanses Stun and Freeze"
+    ]
   },
   "91": {
     "name": "Fiery Dragon Shoes",
@@ -1674,7 +2327,15 @@
       4,
       5
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      4,
+      3,
+      2,
+      5
+    ]
   },
   "92": {
     "name": "Jungle Queen's Chaps of Holding",
@@ -1699,7 +2360,15 @@
       1,
       null
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      2,
+      3,
+      1,
+      4,
+      5
+    ]
   },
   "93": {
     "name": "Kermode's Cage",
@@ -1724,7 +2393,18 @@
       2,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      1,
+      2,
+      3,
+      4,
+      0,
+      128
+    ],
+    "tooltipDescriptions": [
+      "White Fur in Werebear Form"
+    ]
   },
   "103": {
     "name": "Legacy of the Quiet Forest",
@@ -1747,7 +2427,14 @@
       3,
       4
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
   },
   "104": {
     "name": "Suloron's Step",
@@ -1766,7 +2453,12 @@
       1,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2
+    ]
   },
   "105": {
     "name": "The Ashen Crown",
@@ -1789,7 +2481,17 @@
       0,
       1
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      3,
+      4,
+      1,
+      128
+    ],
+    "tooltipDescriptions": [
+      "Elemental Nova is now cast at the target location"
+    ]
   },
   "106": {
     "name": "Shroud of Obscurity",
@@ -1812,7 +2514,14 @@
       2,
       1
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      3,
+      2,
+      4
+    ]
   },
   "107": {
     "name": "Murama's Hilt",
@@ -1831,7 +2540,12 @@
       1,
       2
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      2
+    ]
   },
   "108": {
     "name": "Melvern's Writ",
@@ -1854,7 +2568,14 @@
       2,
       3
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
   },
   "111": {
     "name": "Woven Flesh",
@@ -1877,7 +2598,14 @@
       3,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
   },
   "112": {
     "name": "Strands of Souls",
@@ -1900,7 +2628,14 @@
       2,
       3
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
   },
   "113": {
     "name": "Ribbons of Blood",
@@ -1923,7 +2658,18 @@
       3,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      2,
+      3,
+      128,
+      129
+    ],
+    "tooltipDescriptions": [
+      "+(4-7) Melee Physical Damage for Minions",
+      "Your Minions cannot be Crit"
+    ]
   },
   "114": {
     "name": "Frozen Eyes of Formosus",
@@ -1948,7 +2694,18 @@
       4,
       5
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      128,
+      5
+    ],
+    "tooltipDescriptions": [
+      "(80-140)% increased Minion Cold Damage"
+    ]
   },
   "115": {
     "name": "Last Steps of the Living",
@@ -1971,7 +2728,17 @@
       2,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      3,
+      128,
+      2
+    ],
+    "tooltipDescriptions": [
+      "You are Chilled every 3 seconds"
+    ]
   },
   "116": {
     "name": "Atrophy",
@@ -1994,7 +2761,17 @@
       4,
       0
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      3,
+      2,
+      128
+    ],
+    "tooltipDescriptions": [
+      "+(20-25)% Penetration against All Resistances for Damage Over Time"
+    ]
   },
   "117": {
     "name": "Dark Shroud of Cinders",
@@ -2017,7 +2794,14 @@
       3,
       4
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
   },
   "118": {
     "name": "The Confluence of Fate",
@@ -2042,7 +2826,15 @@
       2,
       2
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ]
   },
   "119": {
     "name": "Bulwark of the Last Abyss",
@@ -2054,11 +2846,15 @@
     "mods": [
       "+(10-20)% Block Chance",
       "{rounding:Integer}(40-90)% increased Armor",
-      "100% Every 3 seconds if you are on high health you lose 25% of your current health and gain Apocalypse for 3 seconds"
+      "100% Every 3 seconds if you are on high health you lose 25% of your current health and gain Apocalypse for 3 seconds",
+      "70% increased Void Damage during Apocalypse",
+      "+70% Melee Critical Strike Multiplier during Apocalypse"
     ],
     "rollIds": [
       0,
       1,
+      null,
+      null,
       null
     ],
     "overrideLevelRequirement": true
@@ -2084,7 +2880,14 @@
       null,
       2
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
   },
   "121": {
     "name": "Coral Aegis",
@@ -2109,7 +2912,15 @@
       4,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      2,
+      5,
+      1,
+      3,
+      4
+    ]
   },
   "122": {
     "name": "Alluvion",
@@ -2138,7 +2949,17 @@
       null,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      5,
+      6,
+      0,
+      1,
+      2,
+      3,
+      4,
+      7
+    ]
   },
   "123": {
     "name": "Symbol of Demise",
@@ -2157,7 +2978,19 @@
       0,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      128,
+      129,
+      130
+    ],
+    "tooltipDescriptions": [
+      "Every 3 seconds your ward is consumed, granting a stack of Demise per 13 ward consumed",
+      "Each stack of Demise grants 10% Bleed Chance (up to 200%)",
+      "Each stack of Demise grants 1% increased Bleed Duration"
+    ]
   },
   "124": {
     "name": "Dragonflame Edict",
@@ -2182,7 +3015,15 @@
       null,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      5,
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
   },
   "125": {
     "name": "Oceareon",
@@ -2207,7 +3048,15 @@
       4,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ]
   },
   "126": {
     "name": "Mortality's Grasp",
@@ -2226,7 +3075,15 @@
       1,
       2
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128,
+      1,
+      2
+    ],
+    "tooltipDescriptions": [
+      "(30-45)% chance to Mark for Death on Hit with Necrotic Spells"
+    ]
   },
   "130": {
     "name": "Gambler's Fallacy",
@@ -2245,7 +3102,15 @@
       null,
       0
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      128,
+      1,
+      2
+    ],
+    "tooltipDescriptions": [
+      "Your Skills gain +100% Critical Strike Chance if you have not dealt a Critical Strike Recently. Excludes Channeled Skills."
+    ]
   },
   "131": {
     "name": "Avarice",
@@ -2264,7 +3129,12 @@
       0,
       null
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      2
+    ]
   },
   "132": {
     "name": "Transient Rest",
@@ -2287,7 +3157,14 @@
       null,
       0
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
   },
   "133": {
     "name": "Xithara's Conundrum",
@@ -2308,7 +3185,17 @@
       null,
       0
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      129,
+      128,
+      3
+    ],
+    "tooltipDescriptions": [
+      "You have no health regen",
+      "You have no health leech"
+    ]
   },
   "134": {
     "name": "Li'raka's Claws",
@@ -2327,7 +3214,12 @@
       1,
       null
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      2
+    ]
   },
   "135": {
     "name": "Quicksilver Coil",
@@ -2350,7 +3242,14 @@
       2,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
   },
   "136": {
     "name": "Smoke Weaver",
@@ -2373,7 +3272,14 @@
       4,
       4
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
   },
   "137": {
     "name": "Uethrin's Stand",
@@ -2396,7 +3302,17 @@
       3,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      128,
+      4
+    ],
+    "tooltipDescriptions": [
+      "+[15, 25, 3] Bow Physical Damage for Minions"
+    ]
   },
   "141": {
     "name": "Hell Reach",
@@ -2415,7 +3331,12 @@
       null,
       1
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      2
+    ]
   },
   "142": {
     "name": "Drelkor's Compass",
@@ -2436,7 +3357,13 @@
       null,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3
+    ]
   },
   "143": {
     "name": "Gladiator's Oath",
@@ -2459,7 +3386,17 @@
       2,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      3,
+      1,
+      128,
+      2
+    ],
+    "tooltipDescriptions": [
+      "Dancing Strikes' 3rd Strike Creates a Fighting Arena"
+    ]
   },
   "144": {
     "name": "Acidfletch",
@@ -2482,7 +3419,14 @@
       2,
       3
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
   },
   "145": {
     "name": "Life's Journey",
@@ -2505,7 +3449,14 @@
       2,
       2
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
   },
   "146": {
     "name": "Troaka's Teeth",
@@ -2528,7 +3479,18 @@
       3,
       null
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      128
+    ],
+    "tooltipDescriptions": [
+      "+90 Freeze Rate with Puncture"
+    ]
   },
   "147": {
     "name": "Raindance",
@@ -2553,7 +3515,15 @@
       3,
       0
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ]
   },
   "148": {
     "name": "Arrowguard",
@@ -2572,7 +3542,12 @@
       2,
       1
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      2,
+      1
+    ]
   },
   "149": {
     "name": "Omnividence",
@@ -2618,7 +3593,17 @@
       0,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      128,
+      3
+    ],
+    "tooltipDescriptions": [
+      "Flame Reave hits enemies in an expanding circle around you"
+    ]
   },
   "151": {
     "name": "Eulogy of Blood",
@@ -2643,7 +3628,15 @@
       3,
       4
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ]
   },
   "152": {
     "name": "Anchor of Oblivion",
@@ -2666,7 +3659,17 @@
       2,
       null
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      3,
+      128,
+      2
+    ],
+    "tooltipDescriptions": [
+      "When a hit leaves you below your endurance threshold you are slowed and release a powerful Wave of Void (2 second cooldown)"
+    ]
   },
   "153": {
     "name": "Wings of Argentus",
@@ -2691,7 +3694,15 @@
       null,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ]
   },
   "154": {
     "name": "Eye of Storms",
@@ -2714,7 +3725,17 @@
       3,
       4
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128,
+      0,
+      1,
+      3,
+      4
+    ],
+    "tooltipDescriptions": [
+      "Cast Maelstrom every 3 seconds"
+    ]
   },
   "155": {
     "name": "Horns of Uhkeiros",
@@ -2737,7 +3758,14 @@
       1,
       2
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
   },
   "159": {
     "name": "Reign of Winter",
@@ -2760,7 +3788,14 @@
       3,
       4
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
   },
   "160": {
     "name": "Call of the Tundra",
@@ -2785,7 +3820,20 @@
       3,
       4
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      128,
+      129,
+      2,
+      3,
+      4,
+      5
+    ],
+    "tooltipDescriptions": [
+      "Warcry is Converted to Cold",
+      "Warcry no longer knocks enemies back"
+    ]
   },
   "161": {
     "name": "Faith of the Frozen",
@@ -2808,7 +3856,14 @@
       2,
       0
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
   },
   "162": {
     "name": "Bhuldar's Wrath",
@@ -2829,7 +3884,18 @@
       null,
       1
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      3,
+      1,
+      128,
+      129
+    ],
+    "tooltipDescriptions": [
+      "Earthquake is Converted To Fire",
+      "100% of Armour Shred Chance Converted to Ignite Chance for Earthquake"
+    ]
   },
   "163": {
     "name": "Herkir's Vessel",
@@ -2852,7 +3918,14 @@
       3,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      3,
+      1,
+      4,
+      2
+    ]
   },
   "164": {
     "name": "Logi's Hunger",
@@ -2898,7 +3971,17 @@
       1,
       2
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      128,
+      2,
+      3,
+      4
+    ],
+    "tooltipDescriptions": [
+      "Minions deal 90% less Poison Damage"
+    ]
   },
   "166": {
     "name": "Moenia Mentis",
@@ -2921,7 +4004,14 @@
       3,
       4
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      4,
+      0,
+      1,
+      2,
+      3
+    ]
   },
   "167": {
     "name": "Ravens' Rise",
@@ -2963,7 +4053,21 @@
       null,
       null
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      128,
+      129,
+      130,
+      131
+    ],
+    "tooltipDescriptions": [
+      "Moving after Attacking grants you Ancient Flight for 2 seconds",
+      "+2 Arrows with Flurry and Multishot while you have Ancient Flight",
+      "100% increased Critical Strike Chance while you have Ancient Flight",
+      "+100% Critical Strike Avoidance while you have Ancient Flight"
+    ]
   },
   "169": {
     "name": "Aergon's Refuge",
@@ -3015,7 +4119,22 @@
       5,
       null
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      128,
+      130,
+      3,
+      4,
+      129
+    ],
+    "tooltipDescriptions": [
+      "Converts your Wolves into Squirrels",
+      "Howl is replaced by Sciurine Rage, which grants Squirrels 40% increased movement speed and melee attack speed for 4 seconds.",
+      "You can Summon Squirrels up to twice your Companion Limit"
+    ]
   },
   "175": {
     "name": "Omnis",
@@ -3042,7 +4161,7 @@
       4,
       5,
       6,
-      7
+      0
     ],
     "overrideLevelRequirement": true
   },
@@ -3067,7 +4186,17 @@
       2,
       3
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      128,
+      3,
+      129
+    ],
+    "tooltipDescriptions": [
+      "(6-18)% increased Attack and Cast Speed",
+      "If damage leaves you below 30% health and doesn't kill you, you are restored to full health, you gain ward equal to the health restored, all nearby enemies are slowed, and you gain haste for (3-6) seconds (20 second cooldown)."
+    ]
   },
   "177": {
     "name": "Siphon of Anguish",
@@ -3092,7 +4221,15 @@
       4,
       5
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      5,
+      4,
+      2,
+      3
+    ]
   },
   "178": {
     "name": "Stymied Fate",
@@ -3121,7 +4258,17 @@
       2,
       3
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      0,
+      6,
+      7
+    ]
   },
   "179": {
     "name": "Apathy's Maw",
@@ -3146,7 +4293,15 @@
       3,
       4
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      3,
+      2,
+      4,
+      5
+    ]
   },
   "180": {
     "name": "Shattered Chains",
@@ -3171,7 +4326,19 @@
       null,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      5,
+      128,
+      129
+    ],
+    "tooltipDescriptions": [
+      "Using a Potion Cleanses Stun and Freeze",
+      "Stun Immunity for 4 seconds when you use a Potion"
+    ]
   },
   "181": {
     "name": "Marina's Lost Soul",
@@ -3221,7 +4388,14 @@
       3,
       4
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      2,
+      1,
+      3,
+      4
+    ]
   },
   "183": {
     "name": "Leviathan Carver",
@@ -3244,7 +4418,17 @@
       null,
       null
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      128,
+      3
+    ],
+    "tooltipDescriptions": [
+      "You cannot avoid critical strikes"
+    ]
   },
   "184": {
     "name": "Lethal Concentration",
@@ -3271,7 +4455,19 @@
       2,
       3
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      128,
+      129,
+      6
+    ],
+    "tooltipDescriptions": [
+      "Your Poison Damage Modifiers also apply at (150-210)% effectiveness to your Skeleton Rogues and your Falcon",
+      "Minions leech 8% of Poison Damage as Health"
+    ]
   },
   "187": {
     "name": "Salt the Wound",
@@ -3296,7 +4492,15 @@
       0,
       1
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ]
   },
   "188": {
     "name": "Azurral's Fury",
@@ -3315,7 +4519,19 @@
       0,
       1
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      1,
+      2,
+      128,
+      129,
+      130
+    ],
+    "tooltipDescriptions": [
+      "Using a potion grants you Falsewater Fury until you run out of mana",
+      "During Falsewater Fury your mana does not regenerate and is drained at an accelerating rate",
+      "During Falsewater Fury non-channelled melee attacks consume 20 mana to deal +100 melee fire damage"
+    ]
   },
   "189": {
     "name": "Sanguine Hoard",
@@ -3340,7 +4556,15 @@
       2,
       null
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      5,
+      3,
+      4,
+      2
+    ]
   },
   "190": {
     "name": "Jasper's Searing Pride",
@@ -3367,7 +4591,21 @@
       null,
       5
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      6,
+      4,
+      128,
+      129
+    ],
+    "tooltipDescriptions": [
+      "When you use a melee attack and hit at least one enemy you gain a stack of Searing Blades for 16 seconds",
+      "Each stack of Searing Blades grants +2 melee fire damage and 20% melee ignite chance"
+    ]
   },
   "191": {
     "name": "Devotion",
@@ -3392,7 +4630,15 @@
       2,
       0
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ]
   },
   "192": {
     "name": "Fulgurite Shard",
@@ -3419,7 +4665,18 @@
       null,
       null
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      128,
+      1,
+      2,
+      4,
+      3,
+      0
+    ],
+    "tooltipDescriptions": [
+      "60% of Shuriken and Lethal Mirage Base Damage converted to Lightning"
+    ]
   },
   "195": {
     "name": "Scales of Eterra",
@@ -3444,7 +4701,19 @@
       null,
       1
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      2,
+      3,
+      4,
+      5,
+      128,
+      129
+    ],
+    "tooltipDescriptions": [
+      "Casting a cold spell grants Cold Infusion, with a 20 second cooldown",
+      "Casting a fire spell grants Fire Infusion, with a 20 second cooldown"
+    ]
   },
   "196": {
     "name": "Scales of Eterra",
@@ -3469,7 +4738,19 @@
       null,
       1
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      2,
+      3,
+      4,
+      5,
+      128,
+      129
+    ],
+    "tooltipDescriptions": [
+      "Casting a cold spell grants Cold Infusion, with a 20 second cooldown",
+      "Casting a lightning spell grants Lightning Infusion, with a 20 second cooldown"
+    ]
   },
   "197": {
     "name": "Scales of Eterra",
@@ -3494,7 +4775,19 @@
       null,
       1
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      2,
+      3,
+      4,
+      5,
+      128,
+      129
+    ],
+    "tooltipDescriptions": [
+      "Casting a fire spell grants Fire Infusion, with a 20 second cooldown",
+      "Casting a lightning spell grants Lightning Infusion, with a 20 second cooldown"
+    ]
   },
   "198": {
     "name": "Bastion of Honour",
@@ -3517,7 +4810,14 @@
       2,
       3
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      1,
+      0,
+      2,
+      3,
+      4
+    ]
   },
   "199": {
     "name": "Rule of the Simoon",
@@ -3540,7 +4840,14 @@
       2,
       3
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
   },
   "200": {
     "name": "Tongue of the Aberrant Seer",
@@ -3563,7 +4870,14 @@
       null,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      1,
+      4,
+      2,
+      3,
+      0
+    ]
   },
   "201": {
     "name": "Battlemage's Endeavour",
@@ -3590,7 +4904,16 @@
       3,
       3
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      5,
+      1,
+      6,
+      2,
+      3,
+      4
+    ]
   },
   "202": {
     "name": "Stormhide Paws",
@@ -3600,14 +4923,14 @@
       "level": 0
     },
     "mods": [
-      "{rounding:Integer}+(30-45) Melee Lightning Damage with Swipe (3 second cooldown)",
+      "{rounding:Integer}+(30-45) Melee Lightning Damage with Swipe (Empowered Swipe)",
       "{rounding:Integer}(30-45)% increased Cold Damage",
       "+1 to Swipe",
       "{rounding:Integer}+(30-45) Health",
       "+(30-45)% Cold Resistance",
       "+1 to All Attributes",
       "{rounding:Integer}(30-45)% increased Lightning Damage",
-      "100% of Base Damage converted to Lightning for Swipe (3 second cooldown)"
+      "100% of Swipe Base Damage converted to Lightning (Empowered Swipe)"
     ],
     "rollIds": [
       3,
@@ -3619,7 +4942,19 @@
       0,
       null
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      2,
+      128,
+      6,
+      1,
+      3,
+      4,
+      5
+    ],
+    "tooltipDescriptions": [
+      "Every 3 seconds your next Swipe has 100% of its base damage converted to Lightning and deals +(30-45) Melee Lightning Damage"
+    ]
   },
   "203": {
     "name": "Darkstride",
@@ -3642,7 +4977,14 @@
       0,
       1
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      3,
+      0,
+      2,
+      1,
+      4
+    ]
   },
   "204": {
     "name": "Thorn Slinger",
@@ -3665,7 +5007,14 @@
       1,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      2,
+      4,
+      1,
+      3
+    ]
   },
   "205": {
     "name": "Curse of Perseverance",
@@ -3690,7 +5039,17 @@
       null,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      1,
+      0,
+      128,
+      3,
+      4
+    ],
+    "tooltipDescriptions": [
+      "Hungering Souls projectiles are fired in sequence and can all hit the same target but deal 63% less damage"
+    ]
   },
   "206": {
     "name": "Lessons of the Metropolis",
@@ -3713,7 +5072,14 @@
       0,
       2
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      1,
+      0,
+      4,
+      3,
+      2
+    ]
   },
   "207": {
     "name": "Kelthan Blasting Agent",
@@ -3736,7 +5102,17 @@
       2,
       3
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128,
+      1,
+      2,
+      3,
+      4
+    ],
+    "tooltipDescriptions": [
+      "88% Reduced Decoy Duration"
+    ]
   },
   "208": {
     "name": "Ravenous Void",
@@ -3757,7 +5133,20 @@
       2,
       3
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      128,
+      129,
+      130,
+      3,
+      2,
+      1
+    ],
+    "tooltipDescriptions": [
+      "Gain a stack of Void Barrier every 5 seconds while above your endurance threshold",
+      "Dropping below your endurance threshold doubles all stacks of Void Barrier for 3 seconds, allowing you to exceed the normal maximum. After that all stacks of Void Barrier are converted to Mimic Feast.",
+      "Each stack of Mimic Feast deals Void Damage over Time to you and disables Void Barrier generation and Health Leech"
+    ]
   },
   "209": {
     "name": "Aberrant Call",
@@ -3782,7 +5171,18 @@
       3,
       0
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      1,
+      0,
+      128,
+      3,
+      4,
+      5
+    ],
+    "tooltipDescriptions": [
+      "Minions lose 6% of their current health per second"
+    ]
   },
   "210": {
     "name": "Flayer's Pride",
@@ -3809,7 +5209,16 @@
       null,
       0
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      3,
+      2,
+      4,
+      5,
+      6
+    ]
   },
   "211": {
     "name": "Throne of Ambition",
@@ -3819,9 +5228,19 @@
       "level": 0
     },
     "mods": [
-      "100% Chance to gain a stack of Ambition when you hit a boss or rare enemy"
+      "You gain a stack of Ambition when you hit a boss or rare enemy (1 second cooldown)",
+      "2% more Fire Damage per stack of Ambition",
+      "2% more Cold Damage per stack of Ambition",
+      "2% more Armor per stack of Ambition",
+      "20 Maximum Stacks of Ambition",
+      "You lose all stacks of Ambition if you go 4 seconds without gaining a stack"
     ],
     "rollIds": [
+      null,
+      null,
+      null,
+      null,
+      null,
       null
     ],
     "overrideLevelRequirement": false
@@ -3876,7 +5295,17 @@
       3,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      128
+    ],
+    "tooltipDescriptions": [
+      "+1% Ward Retention per 2% uncapped Cold Resistance"
+    ]
   },
   "214": {
     "name": "Stormcarved Testament",
@@ -3911,7 +5340,22 @@
       null,
       1
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      129,
+      130,
+      131,
+      128,
+      6,
+      3,
+      7
+    ],
+    "tooltipDescriptions": [
+      "+(36-44)% Lightning Resistance for You and Your Totems",
+      "+6 Spell Lightning Damage for you and your Totems",
+      "+12% Lightning Penetration for you and your Totems",
+      "+(60-94)% Shock Chance for you and your Totems"
+    ]
   },
   "215": {
     "name": "Nightbringer",
@@ -3934,7 +5378,14 @@
       3,
       4
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      2,
+      4,
+      3,
+      1
+    ]
   },
   "216": {
     "name": "Twisted Heart of Uhkeiros",
@@ -3959,7 +5410,15 @@
       1,
       2
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ]
   },
   "217": {
     "name": "Sacrificial Embrace",
@@ -3980,7 +5439,20 @@
       2,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      130,
+      0,
+      128,
+      129,
+      1,
+      2
+    ],
+    "tooltipDescriptions": [
+      "+10 maximum Abyssal Rite stacks",
+      "When you directly cast an elemental spell each stack of Abyssal Rite is consumed to grant the spell +20 spell void damage and +20% void penetration per stack",
+      "Your critical strikes do not deal additional damage"
+    ]
   },
   "218": {
     "name": "Yulia's Path",
@@ -4007,7 +5479,19 @@
       null,
       5
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      128
+    ],
+    "tooltipDescriptions": [
+      "when Maelstrom is cast from any source your minions gain +(2-4) melee necrotic damage for the maximum duration of the Maelstrom"
+    ]
   },
   "219": {
     "name": "Trinity of Flames",
@@ -4026,7 +5510,15 @@
       0,
       1
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      128,
+      1,
+      2
+    ],
+    "tooltipDescriptions": [
+      "Every 3rd fire spell you cast is guaranteed to crit, but has 36% less critical strike multiplier (multiplicative with other modifiers)"
+    ]
   },
   "220": {
     "name": "Death's Embrace",
@@ -4051,7 +5543,20 @@
       3,
       4
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      5,
+      128,
+      129,
+      3,
+      4
+    ],
+    "tooltipDescriptions": [
+      "Gain a stack of Harrowing Claim when you use Harvest and hit at least one enemy",
+      "Using Harvest while at 2 stacks of Harrowing Claim instead consumes them to perform Grim Harvest, granting 200% more melee damage and 100% increased area of effect, but consumes mana and health"
+    ]
   },
   "221": {
     "name": "Paranoia",
@@ -4076,7 +5581,19 @@
       1,
       4
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      129,
+      128,
+      4,
+      5,
+      3,
+      2
+    ],
+    "tooltipDescriptions": [
+      "(30-40)% Reduced Cooldown Recovery Speed for Lunge",
+      "Lunge Does Not Require a Target"
+    ]
   },
   "222": {
     "name": "Prismatic Gaze",
@@ -4097,7 +5614,21 @@
       null,
       1
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128,
+      0,
+      130,
+      129,
+      1,
+      2,
+      3
+    ],
+    "tooltipDescriptions": [
+      "Create a Prism Shard when you directly use an elemental skill that costs less than 40 mana",
+      "Release all Prism Shards when you directly use a skill that costs at least 40 mana",
+      "Prism Shards orbit you for up to 10 seconds and then expire. If released, they target the nearest enemy and explode, dealing elemental damage and shredding elemental resistances."
+    ]
   },
   "223": {
     "name": "Chronostasis",
@@ -4118,7 +5649,16 @@
       3,
       2
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      128,
+      1,
+      2,
+      3
+    ],
+    "tooltipDescriptions": [
+      "Your melee skills consume up to (500-2000) ward, gaining +1 melee damage per 10 ward consumed"
+    ]
   },
   "224": {
     "name": "The Judicator",
@@ -4147,7 +5687,19 @@
       4,
       4
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      128,
+      4,
+      5
+    ],
+    "tooltipDescriptions": [
+      "(20-26)% Increased Cooldown Recovery Speed for Judgement and Javelin"
+    ]
   },
   "225": {
     "name": "Aurelis",
@@ -4174,7 +5726,18 @@
       4,
       null
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      128,
+      3,
+      4,
+      6,
+      2,
+      5
+    ],
+    "tooltipDescriptions": [
+      "+[20,28, 0] Lightning Damage with Spells and Melee Attacks"
+    ]
   },
   "226": {
     "name": "Tu'rani's Bident",
@@ -4197,7 +5760,19 @@
       2,
       3
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      1,
+      0,
+      128,
+      3,
+      4,
+      129
+    ],
+    "tooltipDescriptions": [
+      "100% of Bleed and Ignite Chance converted to Electrify Chance for Javelin",
+      "When you use Javelin you gain a stack of Tu'rani's Thunder for 4 seconds. Each stack grants +(8-12) Spell Lightning Damage."
+    ]
   },
   "229": {
     "name": "Roots of Vithrasil",
@@ -4214,7 +5789,7 @@
       "{rounding:Integer}+(20-26) Health Regen per stack of Germination"
     ],
     "rollIds": [
-      null,
+      0,
       0,
       0,
       null,
@@ -4243,7 +5818,17 @@
       2,
       2
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      3,
+      4,
+      1,
+      128
+    ],
+    "tooltipDescriptions": [
+      "Your minions cannot be Stunned"
+    ]
   },
   "231": {
     "name": "Longshot",
@@ -4268,7 +5853,19 @@
       null,
       null
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      128,
+      129,
+      0,
+      1,
+      2,
+      5
+    ],
+    "tooltipDescriptions": [
+      "Puncture cannot be dodged",
+      "Puncture deals up to 40% more hit damage to distant enemies"
+    ]
   },
   "232": {
     "name": "Hakar's Phoenix",
@@ -4293,7 +5890,20 @@
       3,
       null
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      4,
+      130,
+      0,
+      2,
+      128,
+      129
+    ],
+    "tooltipDescriptions": [
+      "When a Companion is Downed it is automatically revived after 2 seconds (10 second cooldown)",
+      "When a companion is revived by Hakar's Phoenix it releases a burst of fire and gains 100 melee fire damage and 100% ignite chance for 20 seconds",
+      "+(12-20) Melee Fire Damage for you and your minions"
+    ]
   },
   "233": {
     "name": "Snowdrift",
@@ -4343,7 +5953,14 @@
       2,
       2
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
   },
   "235": {
     "name": "Silvafrond",
@@ -4366,7 +5983,18 @@
       null,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128,
+      1,
+      4,
+      129,
+      2
+    ],
+    "tooltipDescriptions": [
+      "When you directly cast Summon Vines you are teleported to the target location",
+      "Summoned Vines are immune to Poison"
+    ]
   },
   "236": {
     "name": "Drought's Release",
@@ -4389,7 +6017,14 @@
       null,
       3
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      2,
+      1,
+      4,
+      0,
+      3
+    ]
   },
   "237": {
     "name": "Thornshell",
@@ -4412,7 +6047,14 @@
       2,
       3
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
   },
   "238": {
     "name": "Julra's Stardial",
@@ -4431,7 +6073,15 @@
       1,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      128
+    ],
+    "tooltipDescriptions": [
+      "When you use a movement or time travel skill all stats on this item are tripled for 4 seconds (12 second cooldown)"
+    ]
   },
   "239": {
     "name": "Somnia",
@@ -4454,7 +6104,17 @@
       2,
       0
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      128,
+      1,
+      2,
+      3,
+      4
+    ],
+    "tooltipDescriptions": [
+      "When you kill a stunned enemy a different nearby enemy is stunned for 2 seconds (excludes bosses)"
+    ]
   },
   "240": {
     "name": "Julra's Obsession",
@@ -4475,7 +6135,16 @@
       2,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      128
+    ],
+    "tooltipDescriptions": [
+      "Stats on this item also apply to your minions"
+    ]
   },
   "241": {
     "name": "Vessel of Strife",
@@ -4498,7 +6167,14 @@
       3,
       4
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
   },
   "242": {
     "name": "Shadow String",
@@ -4521,7 +6197,14 @@
       null,
       2
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      2,
+      1,
+      3,
+      4
+    ]
   },
   "243": {
     "name": "Dragonsong",
@@ -4552,7 +6235,19 @@
       3,
       3
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      129,
+      6,
+      130,
+      128,
+      1
+    ],
+    "tooltipDescriptions": [
+      "+(4-7)% Critical Strike Chance with Fire Skills",
+      "+(12-17) Fire Damage with Spells and Attacks",
+      "+(12-17)% increased Attack and Cast Speed with Fire Skills"
+    ]
   },
   "244": {
     "name": "Harthenon's Vow",
@@ -4575,7 +6270,14 @@
       2,
       3
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
   },
   "245": {
     "name": "Renegade's Will",
@@ -4598,7 +6300,14 @@
       null,
       null
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
   },
   "246": {
     "name": "Singularity",
@@ -4617,7 +6326,14 @@
       null,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      128
+    ],
+    "tooltipDescriptions": [
+      "You cannot deal Critical Strikes"
+    ]
   },
   "247": {
     "name": "Chronicle of the Damned",
@@ -4640,7 +6356,14 @@
       1,
       2
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      3,
+      2,
+      4
+    ]
   },
   "248": {
     "name": "Flesh of Stone",
@@ -4661,7 +6384,17 @@
       0,
       0
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      129,
+      128,
+      2,
+      3
+    ],
+    "tooltipDescriptions": [
+      "Cannot Leech Health",
+      "Your Health cannot exceed your Endurance Threshold"
+    ]
   },
   "249": {
     "name": "Diothaen's Bloody Nib",
@@ -4686,7 +6419,18 @@
       1,
       2
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128,
+      1,
+      2,
+      3,
+      5,
+      4
+    ],
+    "tooltipDescriptions": [
+      "You are inflicted with bleed when you hit an enemy with Shatter Strike"
+    ]
   },
   "250": {
     "name": "Torkrefin's Hunger",
@@ -4711,7 +6455,20 @@
       2,
       3
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      129,
+      1,
+      128,
+      2,
+      3,
+      5,
+      4
+    ],
+    "tooltipDescriptions": [
+      "When you use a non-channelled Melee or Throwing Attack you expend a stack of Viscera to grant the attack +1% Physical Penetration with Bleed and +15% Bleed Chance per 5% uncapped Physical Resistance.",
+      "Every 2 seconds you gain a stack of Viscera"
+    ]
   },
   "251": {
     "name": "Zeurial's Hunt",
@@ -4734,7 +6491,19 @@
       3,
       null
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      129,
+      130,
+      128,
+      0,
+      1
+    ],
+    "tooltipDescriptions": [
+      "Triggering both effects within 2 seconds grants Haste for 2 seconds",
+      "When you use a Lightning Bow Attack your next Throwing Attack within 2 seconds has +(62-92)% Lightning Penetration",
+      "When you use a Lightning Throwing Attack your next Bow Attack within 2 seconds has +(62-92)% Lightning Penetration"
+    ]
   },
   "252": {
     "name": "Pact Severance",
@@ -4761,7 +6530,19 @@
       4,
       5
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      4,
+      128,
+      2,
+      3,
+      6,
+      129
+    ],
+    "tooltipDescriptions": [
+      "[11, 26, 0]% increased Attack and Cast Speed",
+      "When a minion dies you have a (36-49)% Chance to cast Sacrifice on your lowest health minion (up to 2 times per second)"
+    ]
   },
   "253": {
     "name": "Foot of the Mountain",
@@ -4773,11 +6554,15 @@
     "mods": [
       "+(14-28)% Endurance",
       "{rounding:Integer}+(6-12) to All Attributes",
-      "+1 Stacks of Mountains Endurance for each second you have not moved (Maximum of 3)"
+      "+1 Stacks of Mountains Endurance for each second you have not moved (Maximum of 3)",
+      "-2 Mana Cost per stack of Mountains Endurance",
+      "100% of Dodge Rating converted to Endurance Threshold while you have at least 1 stack of Mountains Endurance"
     ],
     "rollIds": [
       0,
       2,
+      null,
+      null,
       null
     ],
     "overrideLevelRequirement": true
@@ -4801,7 +6586,13 @@
       1,
       0
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3
+    ]
   },
   "255": {
     "name": "Core of the Mountain",
@@ -4824,7 +6615,17 @@
       2,
       3
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128,
+      0,
+      1,
+      3,
+      4
+    ],
+    "tooltipDescriptions": [
+      "Gain Damage Immunity for 3 seconds after being Hit (15 second cooldown)"
+    ]
   },
   "256": {
     "name": "Peak of the Mountain",
@@ -4843,7 +6644,15 @@
       null,
       1
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      128,
+      2
+    ],
+    "tooltipDescriptions": [
+      "You cannot Leech Health from Critical Strikes"
+    ]
   },
   "257": {
     "name": "Ashes of Mortality",
@@ -4866,7 +6675,17 @@
       3,
       4
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      128,
+      1,
+      2,
+      3,
+      4
+    ],
+    "tooltipDescriptions": [
+      "(13-19)% chance on hit to gain 2 Ward per Ignite and Damned on the Target and 30 Ward per Ignite and Damned on You (up to 2000 ward, 2 second cooldown)"
+    ]
   },
   "258": {
     "name": "Immolator's Oblation",
@@ -4889,7 +6708,14 @@
       2,
       3
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      3,
+      4,
+      2
+    ]
   },
   "259": {
     "name": "Pyre of Affliction",
@@ -4922,7 +6748,22 @@
       4,
       5
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      8,
+      0,
+      1,
+      128,
+      130,
+      131,
+      129
+    ],
+    "tooltipDescriptions": [
+      "Casting Transplant grants (460-694) Ward and converts every stack of Ignite on you to Damned with 160% Increased Duration",
+      "(23-13)% less Fire and Necrotic Damage Over Time Taken",
+      "Damned inflicted by Spells you cast while Damned has +(10-16)% Necrotic Penetration per stack of Damned on You",
+      "+(20-26)% Fire and Necrotic Penetration"
+    ]
   },
   "262": {
     "name": "Penumbra",
@@ -4945,7 +6786,14 @@
       2,
       3
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
   },
   "263": {
     "name": "Omen of Thunder",
@@ -4968,7 +6816,18 @@
       2,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      128,
+      3,
+      129,
+      4
+    ],
+    "tooltipDescriptions": [
+      "When you directly summon a Storm Totem all existing Totems gain (24-34) Spell Lightning Damage",
+      "When you use a Potion all your Totems are restored to full health and gain Damage Immunity for 2 seconds."
+    ]
   },
   "264": {
     "name": "Vaion's Chariot",
@@ -4991,7 +6850,18 @@
       2,
       3
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      128,
+      129,
+      3,
+      4
+    ],
+    "tooltipDescriptions": [
+      "1% Increased Damage per 1% Increased Movement Speed",
+      "Every 3 Seconds your next Movement Skill deals (24-40)% more damage"
+    ]
   },
   "265": {
     "name": "Soul Gambler's Fallacy",
@@ -5014,7 +6884,17 @@
       1,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128,
+      1,
+      2,
+      3,
+      4
+    ],
+    "tooltipDescriptions": [
+      "Your Skills gain +100% Critical Strike Chance if you have not dealt a Critical Strike Recently. Excludes Channeled Skills."
+    ]
   },
   "266": {
     "name": "Burning Avarice",
@@ -5037,7 +6917,14 @@
       null,
       1
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      3,
+      1,
+      2,
+      4
+    ]
   },
   "267": {
     "name": "Ashes of Orchirian",
@@ -5070,7 +6957,21 @@
       null,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      128,
+      129,
+      130,
+      4,
+      131
+    ],
+    "tooltipDescriptions": [
+      "13% Increased Cast Speed with Physical and Fire Spells",
+      "21% Increased Critical Strike Chance with Physical and Fire Spells",
+      "34% Increased Stun Chance with Physical and Fire Spells",
+      "89% increased Physical and Fire Damage"
+    ]
   },
   "268": {
     "name": "Bloodkeeper's Nest",
@@ -5097,7 +6998,22 @@
       null,
       null
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      128,
+      129,
+      130,
+      4,
+      132,
+      131
+    ],
+    "tooltipDescriptions": [
+      "Bees gain an additional (12-16) health and (7-12)% increased damage per point of your Attunement",
+      "Bleed inflicted by Bees has (6-8)% Physical Penetration per point of your Strength",
+      "When you directly cast Thorn Shield, the nearest Bee also gains Thorn Shield",
+      "Minions cannot deal Critical Strikes",
+      "Minions leech 4% of Physical Damage as Health"
+    ]
   },
   "269": {
     "name": "Scales of Lemniscate",
@@ -5126,7 +7042,21 @@
       null,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      129,
+      128,
+      6,
+      130
+    ],
+    "tooltipDescriptions": [
+      "Dread Shade has 30% increased Buff Effect and 25% increased Health Decay",
+      "You can only control one Shade",
+      "Casting Infernal Shade grants your minions Damage Immunity for 3 seconds (10 second cooldown)"
+    ]
   },
   "270": {
     "name": "Hive Mind",
@@ -5142,7 +7072,7 @@
       "+110 Armor",
       "+60% Poison Resistance",
       "+100% When you hit a Bee with Acid Flask, it gains Toxic Coating",
-      "+(4-6)% Poison and Elemental Penetration for Bees per Dexterity"
+      "{rounding:Tenth}+(4-6)% Poison and Elemental Penetration for Bees per Dexterity"
     ],
     "rollIds": [
       0,
@@ -5151,9 +7081,22 @@
       null,
       null,
       null,
-      3
+      0
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128,
+      129,
+      1,
+      2,
+      3,
+      4,
+      6
+    ],
+    "tooltipDescriptions": [
+      "Decoy releases (3-4) Bees when it explodes",
+      "When you hit a Bee with Acid Flask, it gains Toxic Coating"
+    ]
   },
   "271": {
     "name": "Gathering Fury",
@@ -5170,7 +7113,15 @@
       0,
       null
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      128,
+      129
+    ],
+    "tooltipDescriptions": [
+      "When you directly use a bow ability, you have a (8-12)% chance to repeat it (1 second cooldown)",
+      "When you directly use a bow ability and hit an enemy, gain 5% increased attack speed for 3 seconds, stacking up to 10 times"
+    ]
   },
   "272": {
     "name": "Aaron's Will",
@@ -5220,7 +7171,22 @@
       null,
       1
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      131,
+      2,
+      3,
+      128,
+      129,
+      130,
+      1
+    ],
+    "tooltipDescriptions": [
+      "5% Increased Movement Speed and Mana Regen per stack of Corrupted Heraldry",
+      "+5 Spell Void Damage per stack of Corrupted Heraldry",
+      "All stacks of Corrupted Heraldry are lost when you use a Traversal Skill",
+      "Volcanic Orb Converted to Void"
+    ]
   },
   "274": {
     "name": "Branch of Hallows",
@@ -5245,7 +7211,20 @@
       2,
       3
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128,
+      129,
+      130,
+      0,
+      1,
+      2
+    ],
+    "tooltipDescriptions": [
+      "Gain 400 Ward when you Transform",
+      "Each stack of Maelstrom grants (3-4) Ward per second",
+      "+(150-220)% Ward Retention for 6 seconds when you Transform"
+    ]
   },
   "275": {
     "name": "Unstable Core",
@@ -5272,7 +7251,18 @@
       null,
       4
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "tooltipDescriptions": [
+      "When you directly cast Elemental Nova 6 times without a 2 second gap, the 6th cast gains (200-350)% increased area and +(40-100) Spell Damage"
+    ]
   },
   "276": {
     "name": "Liath's Machinations",
@@ -5297,7 +7287,15 @@
       0,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      2,
+      0,
+      3,
+      5,
+      1,
+      4
+    ]
   },
   "277": {
     "name": "Red Ring of Atlaria",
@@ -5322,7 +7320,18 @@
       2,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      128
+    ],
+    "tooltipDescriptions": [
+      "10% less Damage Taken if you have at least 180 Total Attributes"
+    ]
   },
   "278": {
     "name": "Tears of the Forest",
@@ -5347,7 +7356,15 @@
       null,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      5,
+      4,
+      2,
+      0,
+      1,
+      3
+    ]
   },
   "279": {
     "name": "Shadow Beacon",
@@ -5374,7 +7391,16 @@
       null,
       5
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      3,
+      2,
+      4,
+      5,
+      6
+    ]
   },
   "280": {
     "name": "Telf'un's Mirage",
@@ -5401,7 +7427,18 @@
       null,
       3
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      3,
+      2,
+      4,
+      5,
+      6,
+      128
+    ],
+    "tooltipDescriptions": [
+      "18% increased Movement Speed while not Channelling"
+    ]
   },
   "281": {
     "name": "Vortex Pennant",
@@ -5426,7 +7463,17 @@
       null,
       0
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      128,
+      1,
+      2,
+      4,
+      5
+    ],
+    "tooltipDescriptions": [
+      "You throw an axe at a nearby enemy every second while channelling Warpath"
+    ]
   },
   "282": {
     "name": "Firestarter's Torch",
@@ -5449,7 +7496,17 @@
       null,
       null
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      128,
+      2,
+      3,
+      4
+    ],
+    "tooltipDescriptions": [
+      "(26-42)% More Fire Damage to enemies afflicted by Spreading Flames"
+    ]
   },
   "283": {
     "name": "Rotmind",
@@ -5472,7 +7529,17 @@
       null,
       1
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128,
+      1,
+      2,
+      3,
+      4
+    ],
+    "tooltipDescriptions": [
+      "+(17-29) Poison Damage for Damage Over Time Spells"
+    ]
   },
   "284": {
     "name": "The Ghost Maker",
@@ -5503,7 +7570,21 @@
       4,
       5
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      131,
+      129,
+      130,
+      7,
+      128
+    ],
+    "tooltipDescriptions": [
+      "(36-61)% Increased Area for Infernal Shade and for your Summoned Wraiths' Melee Attacks",
+      "(11-16)% Chance to Cast Summon Wraith when you or one of your Wraiths kills an enemy",
+      "[22,36, 3]% Chance to Cast Infernal Shade when you or one of your Wraiths kills an enemy",
+      "+(61-66) Necrotic Damage for Damage Over Time Spells"
+    ]
   },
   "285": {
     "name": "Jelkhor's Blast Knife",
@@ -5524,7 +7605,20 @@
       1,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      1,
+      2,
+      128,
+      129,
+      130,
+      0
+    ],
+    "tooltipDescriptions": [
+      "Detonating Arrow no longer requires a bow",
+      "Detonating Arrow's initial projectile is changed to a melee attack that applies an explosive charge to each enemy it hits. Each charge explodes after the same duration that an arrow from Detonating Arrow would, and the explosion deals the same damage.",
+      "Detonating Arrow scales with melee damage instead of bow damage"
+    ]
   },
   "286": {
     "name": "Fragment of the Enigma",
@@ -5549,7 +7643,19 @@
       null,
       null
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      3,
+      4,
+      1,
+      128,
+      0,
+      129
+    ],
+    "tooltipDescriptions": [
+      "(150-175)% more Damage for Spark Charges applied by Melee Attacks",
+      "When you cast Teleport you apply a Spark Charge to all enemies around the destination"
+    ]
   },
   "287": {
     "name": "Hand of Judgement",
@@ -5574,7 +7680,15 @@
       2,
       3
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      1,
+      2,
+      3,
+      5,
+      0,
+      4
+    ]
   },
   "288": {
     "name": "Harbinger of Stars",
@@ -5599,7 +7713,15 @@
       2,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      2,
+      0,
+      3,
+      1,
+      4,
+      5
+    ]
   },
   "289": {
     "name": "Bo's Anarchy",
@@ -5626,7 +7748,16 @@
       3,
       4
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      3,
+      4,
+      5,
+      1,
+      0,
+      2,
+      6
+    ]
   },
   "290": {
     "name": "Apostate's Sanctuary",
@@ -5651,7 +7782,18 @@
       null,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      2,
+      3,
+      128,
+      4,
+      1
+    ],
+    "tooltipDescriptions": [
+      "Health Leech is disabled for 4 seconds when you directly cast a Spell"
+    ]
   },
   "291": {
     "name": "Pillager's Gold",
@@ -5674,7 +7816,14 @@
       2,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
   },
   "292": {
     "name": "Apogee of Frozen Light",
@@ -5701,7 +7850,22 @@
       null,
       2
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      131,
+      130,
+      132,
+      128,
+      129
+    ],
+    "tooltipDescriptions": [
+      "When a Minion dies you gain a stack of Frozen Vengeance",
+      "When you Hit an enemy with a melee attack you expend a stack of Frozen Vengeance to grant all your minions Frenzy and 24% more Damage to Chilled Enemies for 8 seconds and Freeze up to 8 nearby normal and magic enemies for 3 seconds",
+      "(24-38)% chance for Minions to Chill Attackers when Hit",
+      "+3 to Cold and Necrotic Minion Skills",
+      "Minions deal (14-24)% more Cold and Necrotic Damage to Chilled Enemies"
+    ]
   },
   "293": {
     "name": "Swaddling of the Erased",
@@ -5725,7 +7889,16 @@
       1,
       2
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      128,
+      4
+    ],
+    "tooltipDescriptions": [
+      "[6, 12, 1]% increased Attack and Cast Speed"
+    ]
   },
   "294": {
     "name": "Font of the Erased",
@@ -5747,7 +7920,15 @@
       0,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128,
+      0,
+      3
+    ],
+    "tooltipDescriptions": [
+      "(4-10)% increased Health and Mana"
+    ]
   },
   "295": {
     "name": "Cradle of the Erased",
@@ -5769,7 +7950,18 @@
       null,
       2
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128,
+      1,
+      129,
+      2,
+      3
+    ],
+    "tooltipDescriptions": [
+      "Gain a stack of Golden Aegis each second",
+      "Lose a stack of Golden Aegis on Block"
+    ]
   },
   "296": {
     "name": "Advent of the Erased",
@@ -5793,7 +7985,16 @@
       3,
       null
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      2,
+      3,
+      128
+    ],
+    "tooltipDescriptions": [
+      "When you gain Haste or refresh its duration you gain (30-60) Ward (1 second cooldown) and your Minions gain Haste and Frenzy for 3 Seconds"
+    ]
   },
   "297": {
     "name": "Dedication of an Erased Primalist",
@@ -5813,7 +8014,12 @@
       0,
       1
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      2,
+      1
+    ]
   },
   "298": {
     "name": "Knowledge of an Erased Mage",
@@ -5833,7 +8039,15 @@
       1,
       0
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      128
+    ],
+    "tooltipDescriptions": [
+      "Endurance applies to (5-9) additional Health per 10 Missing Mana"
+    ]
   },
   "299": {
     "name": "Code of an Erased Sentinel",
@@ -5853,7 +8067,12 @@
       0,
       1
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2
+    ]
   },
   "300": {
     "name": "Ambitions of an Erased Acolyte",
@@ -5875,7 +8094,15 @@
       null,
       1
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      128
+    ],
+    "tooltipDescriptions": [
+      "When a nearby enemy or ally dies you gain Ward equal to 2% to (4-6)% of its maximum health, up to 3,000 ward (2 second cooldown)"
+    ]
   },
   "301": {
     "name": "Gambit of an Erased Rogue",
@@ -5895,7 +8122,15 @@
       0,
       1
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      128
+    ],
+    "tooltipDescriptions": [
+      "1 in 6 chance to take (25-15)% less Damage per Active Shadow"
+    ]
   },
   "302": {
     "name": "Howl of the West Wind",
@@ -5920,7 +8155,18 @@
       2,
       3
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      128,
+      5,
+      3,
+      4,
+      2
+    ],
+    "tooltipDescriptions": [
+      "Your Wolves cannot be Stunned"
+    ]
   },
   "303": {
     "name": "Cycle of Putrescence",
@@ -5943,7 +8189,18 @@
       2,
       null
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      129,
+      3,
+      128,
+      4,
+      2
+    ],
+    "tooltipDescriptions": [
+      "+(18-27) Poison Damage for your Minions' Damage Over Time Spells",
+      "Your Volatile Zombies have a chance to resurrect equal to 100% divided by your Number of Zombies"
+    ]
   },
   "304": {
     "name": "Static Shell",
@@ -5966,7 +8223,14 @@
       3,
       4
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
   },
   "305": {
     "name": "Reowyn's Fortress",
@@ -5993,7 +8257,16 @@
       null,
       5
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      6,
+      1,
+      2,
+      3,
+      4,
+      5
+    ]
   },
   "306": {
     "name": "Blood of the Exile",
@@ -6018,7 +8291,15 @@
       3,
       4
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ]
   },
   "307": {
     "name": "Crest of Unity",
@@ -6041,7 +8322,17 @@
       2,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      1,
+      0,
+      128,
+      2,
+      3
+    ],
+    "tooltipDescriptions": [
+      "Elemental Nova is always Tri-Elemental"
+    ]
   },
   "308": {
     "name": "Abacus Rod",
@@ -6062,7 +8353,21 @@
       null,
       1
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      3,
+      128,
+      129,
+      130,
+      131
+    ],
+    "tooltipDescriptions": [
+      "Runebolt's element always matches the last skill you used directly that had a single elemental tag",
+      "Runebolts that have a different element to the last Runebolt you cast grant you a stack of Numeromancy (up to 5) and refresh the duration of existing stacks",
+      "+5 Spell Damage per stack of Numeromancy",
+      "5% increased Cast Speed per stack of Numeromancy"
+    ]
   },
   "309": {
     "name": "Elecoe's Abandon",
@@ -6089,7 +8394,18 @@
       4,
       5
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128,
+      2,
+      3,
+      6,
+      5,
+      4
+    ],
+    "tooltipDescriptions": [
+      "Throwing an Acid Flask consumes a Potion in order to throw an additional flask that deals (125-180)% more damage"
+    ]
   },
   "310": {
     "name": "Wrongwarp",
@@ -6099,19 +8415,19 @@
       "level": 83
     },
     "mods": [
+      "When you cast Teleport or Transplant you are teleported to a random nearby location, become immune to all damage for 1 second, and gain Chronowarp for 10 seconds.",
+      "Chronowarp grants 35% increased cast speed and movement speed",
+      "When you cast teleport or transplant you time lock up to 10 enemies around the destination for 1 second. Bosses are slowed instead of time locked.",
       "(10-35)% Chance to gain Haste for 1 second on Hit",
       "2% increased Spell Damage per 1% increased Movement Speed",
-      "+1 Wrongwarp with Teleport or Transplant",
-      "(5-10)% Increased Cooldown Recovery Speed for Teleport",
-      "(5-10)% Increased Cooldown Recovery Speed for Transplant",
-      "(-3 to -5) Mana Cost for Spell Skills"
+      "Teleport and Transplant have a minimum cooldown of 3 seconds"
     ],
     "rollIds": [
+      null,
+      null,
+      null,
       0,
       null,
-      null,
-      1,
-      1,
       null
     ],
     "overrideLevelRequirement": true
@@ -6139,7 +8455,19 @@
       2,
       3
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      5,
+      128,
+      129,
+      2,
+      3,
+      4
+    ],
+    "tooltipDescriptions": [
+      "Modifiers to Volcanic Orb speed also apply to Flame Rush speed and distance at (60-64)% effectiveness",
+      "Increases to Fire Aura Area also apply to Glyph of Dominion"
+    ]
   },
   "312": {
     "name": "Box of Hydrae",
@@ -6166,7 +8494,16 @@
       5,
       6
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      3,
+      1,
+      4,
+      5,
+      2,
+      6
+    ]
   },
   "313": {
     "name": "Fundamental Criterion",
@@ -6193,7 +8530,16 @@
       null,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ]
   },
   "314": {
     "name": "Cleaver Solution",
@@ -6214,7 +8560,16 @@
       0,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128,
+      3,
+      1,
+      2
+    ],
+    "tooltipDescriptions": [
+      "Your Intelligence is equal to your Strength"
+    ]
   },
   "315": {
     "name": "Dragorath's Claw",
@@ -6235,7 +8590,17 @@
       2,
       3
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      128,
+      1,
+      2,
+      3
+    ],
+    "tooltipDescriptions": [
+      "Lightning Blast cast this way has +1% Critical Strike Chance per 5% uncapped Lightning Resistance and +1% Critical Strike Multiplier per 5% uncapped Cold Resistance"
+    ]
   },
   "316": {
     "name": "Apex of Thought",
@@ -6268,7 +8633,18 @@
       0,
       0
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      128,
+      129,
+      3
+    ],
+    "tooltipDescriptions": [
+      "While standing on your Glyph of Dominion, 100% of your Ignite Chance is converted to Fire Resistance Shred Chance, 100% of your Chill Chance is converted to Cold Resistance Shred Chance, and 100% of your Shock Chance is converted to Lightning Resistance Shred Chance.",
+      "(39-52)% increased Duration of Ignite, Chill, Shock, Fire Resistance Shred, Cold Resistance Shred, and Lightning Resistance Shred."
+    ]
   },
   "317": {
     "name": "Frey's Retreat",
@@ -6291,7 +8667,17 @@
       2,
       3
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      128,
+      3,
+      4
+    ],
+    "tooltipDescriptions": [
+      "When you directly cast Frost Wall it is cast directly in front of you and you leap backwards a short distance and invoke Revik's Blizzard at the wall."
+    ]
   },
   "318": {
     "name": "The Shattered Cycle",
@@ -6312,7 +8698,20 @@
       1,
       2
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      1,
+      128,
+      129,
+      130,
+      2,
+      3
+    ],
+    "tooltipDescriptions": [
+      "After you directly cast a One Rune Invocation you gain Dawn to Dusk",
+      "Directly casting a Two Rune Invocation consumes Dawn to Dusk to gain +48 Spell Damage and 24% increased area and grant you Dusk to Midnight",
+      "Directly casting a Three Rune Invocation consumes Dusk to Midnight to gain +96 Spell Damage and 48% increased area"
+    ]
   },
   "319": {
     "name": "Merophage",
@@ -6333,7 +8732,17 @@
       1,
       2
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      128
+    ],
+    "tooltipDescriptions": [
+      "When you shatter a Two Handed Sword while you have Merophage equipped, it absorbs the shards you would gain, using them to gain Legendary affixes or replace its existing ones."
+    ]
   },
   "320": {
     "name": "Sierpin's Fractal Tree",
@@ -6356,7 +8765,17 @@
       null,
       0
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      128,
+      3,
+      4
+    ],
+    "tooltipDescriptions": [
+      "Javelin no longer pierces, but when it hits an enemy it splits into 2 piercing spears that are fired at enemies around the target. 1 Additional spear is created per 12 Dexterity."
+    ]
   },
   "321": {
     "name": "Mad Alchemist's Ladle",
@@ -6385,7 +8804,17 @@
       null,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ]
   },
   "322": {
     "name": "The Cuckoo",
@@ -6408,7 +8837,17 @@
       2,
       3
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128,
+      1,
+      2,
+      3,
+      4
+    ],
+    "tooltipDescriptions": [
+      "The Cuckoo may permanently change into a random exalted item when a nearby enemy dies"
+    ]
   },
   "323": {
     "name": "Wheel of Torment",
@@ -6456,7 +8895,14 @@
       null,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128,
+      1
+    ],
+    "tooltipDescriptions": [
+      "Once you have one Rune for Runic Invocation your runes cannot change until they are consumed"
+    ]
   },
   "325": {
     "name": "Unvar's Hegemony",
@@ -6473,7 +8919,14 @@
       null,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128,
+      1
+    ],
+    "tooltipDescriptions": [
+      "Once you have two Runes for Runic Invocation your runes cannot change until they are consumed"
+    ]
   },
   "326": {
     "name": "Unvar's Exile",
@@ -6490,7 +8943,14 @@
       null,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128,
+      1
+    ],
+    "tooltipDescriptions": [
+      "Once you have three Runes for Runic Invocation your runes cannot change until they are consumed"
+    ]
   },
   "327": {
     "name": "Communion of the Erased",
@@ -6514,7 +8974,18 @@
       1,
       2
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      128,
+      129,
+      2,
+      3,
+      4
+    ],
+    "tooltipDescriptions": [
+      "Stats on this item are doubled for 1 second after using a Potion",
+      "+1 Potion Slot per equipped Weaver's Will Item"
+    ]
   },
   "328": {
     "name": "Stygian Coal",
@@ -6539,7 +9010,18 @@
       1,
       1
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      4,
+      5,
+      128,
+      2,
+      3
+    ],
+    "tooltipDescriptions": [
+      "Drain Life repeatedly casts Stygian Beams instead of its normal draining effect"
+    ]
   },
   "329": {
     "name": "Sigeon's Reprisal",
@@ -6562,7 +9044,14 @@
       0,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      3,
+      2,
+      0,
+      1,
+      4
+    ]
   },
   "330": {
     "name": "Spine of Malatros",
@@ -6589,7 +9078,20 @@
       3,
       4
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      128,
+      129,
+      6,
+      5
+    ],
+    "tooltipDescriptions": [
+      "Chthonic Fissures cast Flame Whip instead of releasing Spirits",
+      "Chthonic Fissure's Skill Tree applies to Flame Whip from all sources"
+    ]
   },
   "331": {
     "name": "Vial of Volatile Ice",
@@ -6600,12 +9102,14 @@
     },
     "mods": [
       "100% of Acid Flask Base Damage converted to Cold",
+      "Poison Chance from all sources is converted to Frostbite Chance for Acid Flask",
       "+(45-85)% Chance to apply Frostbite on Cold Hit",
       "(17-45)% increased area for Cold Area Skills",
       "+(45-85)% Freeze Rate Multiplier",
       "{rounding:Integer}(17-45)% increased Cold Damage"
     ],
     "rollIds": [
+      null,
       null,
       0,
       1,
@@ -6637,7 +9141,15 @@
       null,
       4
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      5,
+      2,
+      3,
+      4
+    ]
   },
   "333": {
     "name": "Falcon Fists",
@@ -6668,7 +9180,20 @@
       5,
       5
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      128,
+      4,
+      5,
+      6,
+      129
+    ],
+    "tooltipDescriptions": [
+      "While unarmed your Falcon's hits grant Cinder Strike +4 Melee Damage and 1% increasd Area for 6 seconds",
+      "+(12-27) Melee Fire Damage for you and your Minions"
+    ]
   },
   "334": {
     "name": "Talons of Valor",
@@ -6695,7 +9220,18 @@
       null,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      128
+    ],
+    "tooltipDescriptions": [
+      "When you Critically Strike an enemy your Falcon gains +25 Melee Damage for 4 seconds and your Falcon Abilities recover 25% of their remaining cooldown (1 second cooldown)"
+    ]
   },
   "335": {
     "name": "Wraithlord's Harbour",
@@ -6718,7 +9254,21 @@
       null,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      3,
+      0,
+      1,
+      2,
+      128,
+      129,
+      130
+    ],
+    "tooltipDescriptions": [
+      "Casting Summon Wraith instead summons a Wraithlord",
+      "The Wraithlord scales with your Summon Wraith Tree and summons other Wraiths for you while in combat",
+      "While at max wraiths, the Wraithlord casts Necrotic Beams and regularly consumes your non-wraith minions to empower itself, gaining Temporary Maximum Health equal to 10% of their maximum health and +3 spell damage for 10 seconds"
+    ]
   },
   "336": {
     "name": "Naal's Tooth",
@@ -6749,7 +9299,21 @@
       3,
       0
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      128,
+      129,
+      2,
+      3,
+      7,
+      8,
+      130
+    ],
+    "tooltipDescriptions": [
+      "+(10-17) Melee Damage for you and your Minions",
+      "(5-10)% increased Movement Speed for you and your Minions",
+      "You can summon Raptors up to your Companion Limit"
+    ]
   },
   "337": {
     "name": "Razorfall",
@@ -6776,7 +9340,19 @@
       null,
       4
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      6,
+      129,
+      128,
+      4
+    ],
+    "tooltipDescriptions": [
+      "You gain Haste and (12-30)% increased Throwing Attack Speed for 2 seconds after using Aerial Assault",
+      "Aerial Assault's Burst of Feathers includes 1 Umbral Blade per 20 Dexterity"
+    ]
   },
   "338": {
     "name": "Sword Catcher",
@@ -6803,7 +9379,18 @@
       3,
       4
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      3,
+      128,
+      4,
+      5,
+      6
+    ],
+    "tooltipDescriptions": [
+      "+(28-39) Melee Damage for you and your Minions"
+    ]
   },
   "339": {
     "name": "Black Blade of Chaos",
@@ -6855,7 +9442,17 @@
       3,
       4
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      3,
+      4,
+      128
+    ],
+    "tooltipDescriptions": [
+      "Symbols of Hope is automatically activated when damage taken leaves you below your endurance threshold, consuming (70-80)% of its cooldown and mana cost."
+    ]
   },
   "341": {
     "name": "Cruelty",
@@ -6880,7 +9477,19 @@
       null,
       3
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      1,
+      128,
+      2,
+      3,
+      129,
+      5
+    ],
+    "tooltipDescriptions": [
+      "Minions are automatically Sacrificed after 2 seconds. If you have any mana then (53-89)% of Sacrifice's mana cost is consumed. Otherwise this cast of Sacrifice deals 80% less damage (multiplicative with other modifiers)",
+      "Your minions cannot be Stunned"
+    ]
   },
   "342": {
     "name": "Traitor's Tongue",
@@ -6903,7 +9512,14 @@
       3,
       4
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
   },
   "343": {
     "name": "Egg of the Forgotten",
@@ -6914,7 +9530,15 @@
     },
     "mods": [],
     "rollIds": [],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128,
+      129
+    ],
+    "tooltipDescriptions": [
+      "Can be replaced with a Unique Item that lacks both Legendary Potential and Weaver's Will",
+      "Changes into a random Unique Item if challenged or empowered"
+    ]
   },
   "344": {
     "name": "Harbinger's Needle",
@@ -6925,7 +9549,13 @@
     },
     "mods": [],
     "rollIds": [],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      128
+    ],
+    "tooltipDescriptions": [
+      "Breaks if equipped when you kill a timeline boss above 90 corruption, causing that timeline boss kill to grant 3 additional Gaze of Orobyss."
+    ]
   },
   "345": {
     "name": "Bane of Winter",
@@ -6952,7 +9582,16 @@
       null,
       null
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      4,
+      5,
+      6,
+      2,
+      3,
+      1
+    ]
   },
   "346": {
     "name": "Palarus's Sacred Light",
@@ -6975,7 +9614,14 @@
       1,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
   },
   "347": {
     "name": "The Inevitable",
@@ -7000,7 +9646,18 @@
       2,
       3
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      128,
+      4,
+      5
+    ],
+    "tooltipDescriptions": [
+      "You cannot be Stunned while using Erasing Strike"
+    ]
   },
   "348": {
     "name": "Phantom Grip",
@@ -7027,7 +9684,19 @@
       4,
       5
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      6,
+      128
+    ],
+    "tooltipDescriptions": [
+      "The Stats on your Gloves apply to your Forged Weapons at (64-100)% effectiveness"
+    ]
   },
   "349": {
     "name": "Yrun's Penance",
@@ -7052,7 +9721,15 @@
       2,
       3
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ]
   },
   "350": {
     "name": "Flight of Quetzeri",
@@ -7077,7 +9754,15 @@
       3,
       4
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      4,
+      3,
+      5
+    ]
   },
   "351": {
     "name": "Triboelectra",
@@ -7131,7 +9816,16 @@
       5,
       6
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      2,
+      6,
+      1,
+      3,
+      4,
+      5
+    ]
   },
   "353": {
     "name": "Nihilis",
@@ -7156,7 +9850,15 @@
       4,
       5
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ]
   },
   "354": {
     "name": "Wall of Nothing",
@@ -7179,7 +9881,14 @@
       3,
       4
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
   },
   "355": {
     "name": "Aberroth's Command",
@@ -7206,7 +9915,20 @@
       3,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128,
+      129,
+      130,
+      0,
+      1,
+      3
+    ],
+    "tooltipDescriptions": [
+      "Void Cleave is now instant and is no longer a movement skill",
+      "Void Cleave no longer has a weapon requirement",
+      "Ravaging Auras created by Void Cleave lasts an additional (6-12) seconds and have +40% Void Penetration"
+    ]
   },
   "356": {
     "name": "Stealth",
@@ -7231,7 +9953,18 @@
       null,
       0
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      128,
+      2,
+      1,
+      5,
+      3
+    ],
+    "tooltipDescriptions": [
+      "Enemies put a lower priority on targeting you compared to your minions and other allies"
+    ]
   },
   "357": {
     "name": "Seed of Ekkidrasil",
@@ -7285,7 +10018,18 @@
       3,
       4
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      2,
+      1,
+      6,
+      5,
+      128
+    ],
+    "tooltipDescriptions": [
+      "1% less Damage Taken per 2% Resistance above the normal resistance cap (up to 20% less Damage Taken)"
+    ]
   },
   "359": {
     "name": "Fingers of the Phantom Mire",
@@ -7312,7 +10056,21 @@
       null,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128,
+      4,
+      129,
+      0,
+      1,
+      2,
+      130
+    ],
+    "tooltipDescriptions": [
+      "Evade is replaced by Terrify",
+      "You have Swiftness",
+      "You are Immune to Slow"
+    ]
   },
   "360": {
     "name": "Carcinization of Momentum",
@@ -7335,7 +10093,18 @@
       1,
       2
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128,
+      129,
+      1,
+      3,
+      4
+    ],
+    "tooltipDescriptions": [
+      "Evade is replaced by Summon Crab",
+      "You have Swiftness"
+    ]
   },
   "361": {
     "name": "Phase Point",
@@ -7360,7 +10129,15 @@
       3,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      4,
+      3,
+      1,
+      5,
+      2
+    ]
   },
   "362": {
     "name": "Grim Constitution",
@@ -7383,7 +10160,17 @@
       2,
       3
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128,
+      1,
+      2,
+      3,
+      4
+    ],
+    "tooltipDescriptions": [
+      "You cannot Gain Ward while in Combat"
+    ]
   },
   "363": {
     "name": "Monument of Protection",
@@ -7408,7 +10195,15 @@
       3,
       4
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      4,
+      1,
+      2,
+      5,
+      3
+    ]
   },
   "364": {
     "name": "Event Horizon",
@@ -7429,7 +10224,25 @@
       2,
       3
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      133,
+      128,
+      129,
+      130,
+      131,
+      132,
+      3,
+      2
+    ],
+    "tooltipDescriptions": [
+      "When you use a Melee Attack and hit at least one enemy you gain a stack of Dilation (up to 10)",
+      "15% more Melee Damage per stack of Dilation",
+      "5% less Attack and Cast Speed per stack of Dilation",
+      "5% less Movement Speed per stack of Dilation",
+      "All stacks of Dilation are lost when you use Evade",
+      "(50-72)% Penetration against All Resistances with Melee Damage"
+    ]
   },
   "365": {
     "name": "World Splitter",
@@ -7454,7 +10267,15 @@
       3,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      4,
+      0,
+      1,
+      5,
+      2,
+      3
+    ]
   },
   "366": {
     "name": "Flames of Midnight",
@@ -7483,7 +10304,21 @@
       0,
       1
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      128,
+      129,
+      130,
+      7,
+      2,
+      131
+    ],
+    "tooltipDescriptions": [
+      "Evade is replaced by Spirit Step",
+      "You have Swiftness",
+      "When you directly use a Fire, Necrotic, or Void skill you create a Wandering Spirit near the target location (4 second cooldown for each skill type).",
+      "+(7-11)% Fire, Necrotic, and Void Penetration"
+    ]
   },
   "367": {
     "name": "Celestial Doom",
@@ -7537,7 +10372,23 @@
       2,
       3
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128,
+      129,
+      130,
+      131,
+      1,
+      2,
+      3,
+      4
+    ],
+    "tooltipDescriptions": [
+      "While channelling Focus you move towards your current target location at 80% of your normal movement speed",
+      "While channelling Focus you cast Lightning Blast once per second",
+      "Mana regeneration from Focus is half as effective",
+      "You have 50% less armor while channeling Focus"
+    ]
   },
   "369": {
     "name": "Tolmat's Incorrect History of Eterra",
@@ -7562,7 +10413,18 @@
       3,
       4
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128,
+      5,
+      1,
+      2,
+      3,
+      4
+    ],
+    "tooltipDescriptions": [
+      "You summon a Historic Minion from a random era of Eterra"
+    ]
   },
   "370": {
     "name": "Mantle of the Pale Ox",
@@ -7587,7 +10449,17 @@
       4,
       5
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      1,
+      128,
+      4,
+      3,
+      5
+    ],
+    "tooltipDescriptions": [
+      "(8-12)% increased Health for you and your Minions"
+    ]
   },
   "371": {
     "name": "Phalanx",
@@ -7612,7 +10484,15 @@
       3,
       0
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      5,
+      0,
+      1,
+      3,
+      4,
+      2
+    ]
   },
   "372": {
     "name": "Grasp of the Blood Mage",
@@ -7635,7 +10515,14 @@
       2,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
   },
   "373": {
     "name": "Ravager's Dart",
@@ -7656,7 +10543,20 @@
       1,
       2
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      2,
+      128,
+      129,
+      130,
+      3
+    ],
+    "tooltipDescriptions": [
+      "Heartseeker now counts as a Throwing Skill and scales with Throwing Damage instead of Bow Damage",
+      "You are limited to one active Heartseeker",
+      "If you have no active Heartseeker and are in combat you throw one at a nearby enemy (3 second cooldown)"
+    ]
   },
   "374": {
     "name": "Pearls of the Swine",
@@ -7681,7 +10581,18 @@
       2,
       3
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      128,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "tooltipDescriptions": [
+      "Bone Curse also inflicts Decrepify"
+    ]
   },
   "375": {
     "name": "Pearls of the Swine",
@@ -7706,7 +10617,18 @@
       2,
       3
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      128,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "tooltipDescriptions": [
+      "Bone Curse also inflicts Penance"
+    ]
   },
   "376": {
     "name": "Pearls of the Swine",
@@ -7731,7 +10653,18 @@
       2,
       3
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      128,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "tooltipDescriptions": [
+      "Bone Curse also inflicts Acid Skin"
+    ]
   },
   "377": {
     "name": "Gordian Prism",
@@ -7756,7 +10689,20 @@
       null,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128,
+      129,
+      130,
+      4,
+      0,
+      1
+    ],
+    "tooltipDescriptions": [
+      "Directly cast Three Rune Invocations always cast Grand Prism Nova instead",
+      "Grand Prism Nova's base damage is converted based on the Runes used to invoke it",
+      "Grand Prism Nova gains (50-65)% chance to ignite, shock, or chill per Rune"
+    ]
   },
   "378": {
     "name": "Crystalwind",
@@ -7783,7 +10729,19 @@
       null,
       2
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      128,
+      129,
+      4,
+      5,
+      1,
+      0
+    ],
+    "tooltipDescriptions": [
+      "Gain 4 stacks of Crystalwind per second while moving and 4 stacks when you Evade (max 8)",
+      "Directly using a bow attack consumes up to 4 stacks of Crystalwind to deal (8-15)% more damage per stack"
+    ]
   },
   "379": {
     "name": "Cocooned Short Sword",
@@ -7794,7 +10752,13 @@
     },
     "mods": [],
     "rollIds": [],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128
+    ],
+    "tooltipDescriptions": [
+      "Contains a random unique one-handed sword"
+    ]
   },
   "380": {
     "name": "Cocooned Cleaver",
@@ -7805,7 +10769,13 @@
     },
     "mods": [],
     "rollIds": [],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128
+    ],
+    "tooltipDescriptions": [
+      "Contains a random unique one-handed axe"
+    ]
   },
   "381": {
     "name": "Cocooned Club",
@@ -7816,7 +10786,13 @@
     },
     "mods": [],
     "rollIds": [],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128
+    ],
+    "tooltipDescriptions": [
+      "Contains a random unique one-handed mace"
+    ]
   },
   "382": {
     "name": "Cocooned Great Sword",
@@ -7827,7 +10803,13 @@
     },
     "mods": [],
     "rollIds": [],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128
+    ],
+    "tooltipDescriptions": [
+      "Contains a random unique two-handed sword"
+    ]
   },
   "383": {
     "name": "Cocooned Great Axe",
@@ -7838,7 +10820,13 @@
     },
     "mods": [],
     "rollIds": [],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128
+    ],
+    "tooltipDescriptions": [
+      "Contains a random unique two-handed axe"
+    ]
   },
   "384": {
     "name": "Cocooned Great Mace",
@@ -7849,7 +10837,13 @@
     },
     "mods": [],
     "rollIds": [],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128
+    ],
+    "tooltipDescriptions": [
+      "Contains a random unique two-handed mace"
+    ]
   },
   "385": {
     "name": "Cocooned Spear",
@@ -7860,7 +10854,13 @@
     },
     "mods": [],
     "rollIds": [],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128
+    ],
+    "tooltipDescriptions": [
+      "Contains a random unique two-handed spear"
+    ]
   },
   "386": {
     "name": "Cocooned Staff",
@@ -7871,7 +10871,13 @@
     },
     "mods": [],
     "rollIds": [],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128
+    ],
+    "tooltipDescriptions": [
+      "Contains a random unique two-handed staff"
+    ]
   },
   "387": {
     "name": "Cocooned Cuirass",
@@ -7882,7 +10888,13 @@
     },
     "mods": [],
     "rollIds": [],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128
+    ],
+    "tooltipDescriptions": [
+      "Contains a random unique body armor"
+    ]
   },
   "388": {
     "name": "Cocooned Dagger",
@@ -7893,7 +10905,13 @@
     },
     "mods": [],
     "rollIds": [],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128
+    ],
+    "tooltipDescriptions": [
+      "Contains a random unique dagger"
+    ]
   },
   "389": {
     "name": "Cocooned Sceptre",
@@ -7904,7 +10922,13 @@
     },
     "mods": [],
     "rollIds": [],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128
+    ],
+    "tooltipDescriptions": [
+      "Contains a random unique sceptre"
+    ]
   },
   "390": {
     "name": "Cocooned Wand",
@@ -7915,7 +10939,13 @@
     },
     "mods": [],
     "rollIds": [],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128
+    ],
+    "tooltipDescriptions": [
+      "Contains a random unique wand"
+    ]
   },
   "391": {
     "name": "Cocooned Bow",
@@ -7926,7 +10956,13 @@
     },
     "mods": [],
     "rollIds": [],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128
+    ],
+    "tooltipDescriptions": [
+      "Contains a random unique bow"
+    ]
   },
   "392": {
     "name": "Cocooned Quiver",
@@ -7937,7 +10973,13 @@
     },
     "mods": [],
     "rollIds": [],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128
+    ],
+    "tooltipDescriptions": [
+      "Contains a random unique quiver"
+    ]
   },
   "393": {
     "name": "Cocooned Shield",
@@ -7948,7 +10990,13 @@
     },
     "mods": [],
     "rollIds": [],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128
+    ],
+    "tooltipDescriptions": [
+      "Contains a random unique shield"
+    ]
   },
   "394": {
     "name": "Cocooned Catalyst",
@@ -7959,7 +11007,13 @@
     },
     "mods": [],
     "rollIds": [],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128
+    ],
+    "tooltipDescriptions": [
+      "Contains a random unique catalyst"
+    ]
   },
   "395": {
     "name": "Cocooned Relic",
@@ -7970,7 +11024,13 @@
     },
     "mods": [],
     "rollIds": [],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128
+    ],
+    "tooltipDescriptions": [
+      "Contains a random unique relic"
+    ]
   },
   "396": {
     "name": "Cocooned Ring",
@@ -7981,7 +11041,13 @@
     },
     "mods": [],
     "rollIds": [],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128
+    ],
+    "tooltipDescriptions": [
+      "Contains a random unique ring"
+    ]
   },
   "397": {
     "name": "Cocooned Amulet",
@@ -7992,7 +11058,13 @@
     },
     "mods": [],
     "rollIds": [],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128
+    ],
+    "tooltipDescriptions": [
+      "Contains a random unique amulet"
+    ]
   },
   "398": {
     "name": "Cocooned Gloves",
@@ -8003,7 +11075,13 @@
     },
     "mods": [],
     "rollIds": [],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128
+    ],
+    "tooltipDescriptions": [
+      "Contains a pair of random unique gloves"
+    ]
   },
   "399": {
     "name": "Cocooned Belt",
@@ -8014,7 +11092,13 @@
     },
     "mods": [],
     "rollIds": [],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128
+    ],
+    "tooltipDescriptions": [
+      "Contains a random unique belt"
+    ]
   },
   "400": {
     "name": "Cocooned Boots",
@@ -8025,7 +11109,13 @@
     },
     "mods": [],
     "rollIds": [],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128
+    ],
+    "tooltipDescriptions": [
+      "Contains a pair of random unique boots"
+    ]
   },
   "401": {
     "name": "Cocooned Helmet",
@@ -8036,7 +11126,13 @@
     },
     "mods": [],
     "rollIds": [],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128
+    ],
+    "tooltipDescriptions": [
+      "Contains a random unique helmet"
+    ]
   },
   "402": {
     "name": "Elecoe's Innovation",
@@ -8061,7 +11157,18 @@
       null,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128,
+      5,
+      1,
+      0,
+      2,
+      3
+    ],
+    "tooltipDescriptions": [
+      "Your critical strike chance also applies to your potion uses. When a potion use crits, the health and ward you immediately gain from it is multiplied by a percentage of your critical strike multiplier."
+    ]
   },
   "403": {
     "name": "Soul of the Mountain",
@@ -8084,7 +11191,20 @@
       2,
       3
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      128,
+      129,
+      1,
+      2,
+      3,
+      4
+    ],
+    "tooltipDescriptions": [
+      "Spirit Thorns has 3% less cast speed per Vale Spirit",
+      "Gain a Vale Spirit every second while in Spriggan Form"
+    ]
   },
   "404": {
     "name": "Orian's Descent",
@@ -8109,7 +11229,21 @@
       null,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      128,
+      129,
+      130,
+      1,
+      2,
+      3
+    ],
+    "tooltipDescriptions": [
+      "Using a potion restores Volatile Reversal's cooldown",
+      "With at least 50 Intelligence Volatile Reversal deals 20% more void damage",
+      "With less than 50 Intelligence Volatile Reversal is converted to fire"
+    ]
   },
   "405": {
     "name": "Orb Weaver's Fang",
@@ -8133,7 +11267,17 @@
       3,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128,
+      0,
+      1,
+      2,
+      3
+    ],
+    "tooltipDescriptions": [
+      "Stats on this item are doubled for 3 seconds after hitting a boss or rare enemy that is at low health"
+    ]
   },
   "406": {
     "name": "Nest of Nightmares",
@@ -8157,7 +11301,16 @@
       1,
       1
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      128,
+      129
+    ],
+    "tooltipDescriptions": [
+      "+(2-6)% of Damage Leeched as Health on Melee Hit for you and your Minions",
+      "+(25-45)% Melee Critical Strike Multiplier for you and your Minions"
+    ]
   },
   "407": {
     "name": "Essence Weaver",
@@ -8179,7 +11332,20 @@
       0,
       null
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      129,
+      130,
+      128,
+      0,
+      1,
+      2
+    ],
+    "tooltipDescriptions": [
+      "Stats on this item are tripled for casts which consumed Elemental Essence",
+      "Gain a stack of Elemental Essence when you directly use a melee attack and hit at least one enemy (up to 9 times per 3 seconds)",
+      "At 9 stacks of Elemental Essence, consume all stacks to randomly cast Smite, Frost Claw, or Storm Bolt at a nearby enemy per essence consumed"
+    ]
   },
   "408": {
     "name": "Weaver's Gift",
@@ -8203,7 +11369,18 @@
       0,
       2
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      128,
+      129,
+      130
+    ],
+    "tooltipDescriptions": [
+      "+(30-60)% chance to Electrify and Slow on hit",
+      "(1-3)% of Damage Leeched as Health from Damage Over Time",
+      "+(22-33)% Penetration against All Resistances for Damage Over Time"
+    ]
   },
   "409": {
     "name": "Inheritance of the Erased",
@@ -8225,7 +11402,16 @@
       0,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128,
+      0,
+      1,
+      2
+    ],
+    "tooltipDescriptions": [
+      "Every 10 seconds a random minion is Chosen, receiving Frenzy and 200% of the stats on this item"
+    ]
   },
   "410": {
     "name": "Unearthed Memories",
@@ -8246,7 +11432,17 @@
       1,
       2
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128,
+      129,
+      2,
+      3
+    ],
+    "tooltipDescriptions": [
+      "Wandering Spirits is centered on a Gravestone at the targeted location instead of you",
+      "The Gravestone grants allies within 12 meters (10-15)% more necrotic damage over time against cursed enemies"
+    ]
   },
   "411": {
     "name": "Countenance of Majasa",
@@ -8267,7 +11463,17 @@
       1,
       0
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      128,
+      129,
+      2,
+      3
+    ],
+    "tooltipDescriptions": [
+      "Each second every enemy looking at you has up to a 20% chance to be Petrified for 2 seconds",
+      "When you block an enemy's hit it has up to a 20% chance to be Petrified for 2 seconds"
+    ]
   },
   "412": {
     "name": "Dominance of the Tundra",
@@ -8292,7 +11498,18 @@
       null,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128,
+      0,
+      1,
+      2,
+      3,
+      5
+    ],
+    "tooltipDescriptions": [
+      "Evade casts Glacier along its path"
+    ]
   },
   "413": {
     "name": "Shattered Worlds",
@@ -8317,7 +11534,19 @@
       null,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128,
+      129,
+      0,
+      2,
+      3,
+      4
+    ],
+    "tooltipDescriptions": [
+      "You are immune to Slow",
+      "You have Haste"
+    ]
   },
   "414": {
     "name": "Downfall of the Righteous",
@@ -8342,7 +11571,19 @@
       null,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      128,
+      129
+    ],
+    "tooltipDescriptions": [
+      "Witchfire deals More Damage equal to 66% of your increased Curse Damage",
+      "While you have both Ignite Overload and Damned Overload, enemies within 10 meters are inflicted with Witchfire every second"
+    ]
   },
   "415": {
     "name": "Immortal Vise",
@@ -8367,7 +11608,18 @@
       4,
       null
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      128,
+      1,
+      2,
+      3,
+      4
+    ],
+    "tooltipDescriptions": [
+      "While you have more than 10% of your maximum health as delayed damage, damage to health below your endurance threshold is reduced by 30%"
+    ]
   },
   "416": {
     "name": "Brewmaster's Buckle",
@@ -8390,7 +11642,14 @@
       0,
       null
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      4,
+      3,
+      0,
+      1,
+      2
+    ]
   },
   "417": {
     "name": "Clotho's Needle",
@@ -8418,7 +11677,19 @@
       2,
       null
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      129,
+      5,
+      128,
+      0,
+      1,
+      2
+    ],
+    "tooltipDescriptions": [
+      "20% increased range with Firebrand and Puncture",
+      "Block Chance is converted to Parry Chance while not wielding a shield"
+    ]
   },
   "418": {
     "name": "Scissor of Atropos",
@@ -8442,7 +11713,19 @@
       0,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128,
+      129,
+      0,
+      1,
+      2,
+      3
+    ],
+    "tooltipDescriptions": [
+      "Gain a stack of Kismet when you directly use a melee attack and hit at least one enemy",
+      "When you directly use a throwing attack, consume all stacks of Kismet to gain +8% throwing critical strike chance and +8 throwing physical damage per stack"
+    ]
   },
   "419": {
     "name": "Blight of Lachesis",
@@ -8497,7 +11780,23 @@
       3,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      130,
+      128,
+      129,
+      131,
+      132
+    ],
+    "tooltipDescriptions": [
+      "Gain 1 Stack of Spirit Battery when you kill an enemy or when you hit a rare or boss enemy (maximum 3 per 2 seconds)",
+      "Spirit Battery grants (2-4)% increased mana per stack and lasts for 8 seconds",
+      "Converts direct casts of Harvest to Great Harvest which has a 5 second cooldown, deals 150% more damage, and has 50% more area of effect",
+      "(2-4)% of your maximum mana restored when Great Harvest kills an enemy",
+      "(20-30)% of your maximum mana restored when Great Harvest hits a boss or rare enemy"
+    ]
   },
   "421": {
     "name": "The Land Before",
@@ -8518,7 +11817,16 @@
       1,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      128,
+      1,
+      2
+    ],
+    "tooltipDescriptions": [
+      "You cannot summon more than 1 of any type of companion"
+    ]
   },
   "422": {
     "name": "Lightning in a Bottle",
@@ -8541,7 +11849,19 @@
       null,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128,
+      2,
+      129,
+      0,
+      130
+    ],
+    "tooltipDescriptions": [
+      "Using a Potion grants an Evade Charge",
+      "After you use Evade to move next to an enemy you attack it with Gathering Storm",
+      "You are Immune to Shock"
+    ]
   },
   "423": {
     "name": "Legends Entwined",
@@ -8565,7 +11885,18 @@
       2,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128,
+      2,
+      3,
+      4,
+      129
+    ],
+    "tooltipDescriptions": [
+      "Counts as a part of every equipped item set",
+      "(5-12)% increased Attack and Cast Speed"
+    ]
   },
   "424": {
     "name": "Tyrant's Skull",
@@ -8577,10 +11908,20 @@
     },
     "mods": [
       "{rounding:Integer}+(1-2) to Level of Minion Skills",
-      "+100% Summons Tyrannosaur Minion"
+      "+100% Summons Tyrannosaur Minion",
+      "+2 Tyrannosaur Melee Damage per Strength",
+      "1% more Tyrannosaur Health and Damage per 1% Uncapped Endurance",
+      "+1% Tyrannosaur Physical Penetration per Intelligence",
+      "+1% Tyrannosaur Critical Strike Multiplier per Attunement",
+      "1% increased Tyrannosaur Attack and Cast Speed per Dexterity"
     ],
     "rollIds": [
       0,
+      null,
+      null,
+      null,
+      null,
+      null,
       null
     ],
     "overrideLevelRequirement": true
@@ -8611,7 +11952,20 @@
       5,
       6
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128,
+      129,
+      130,
+      2,
+      0,
+      1
+    ],
+    "tooltipDescriptions": [
+      "Twice per second while in combat, your Ignites on each enemy within 15 meters are spread to one other nearby enemy, and you have a (25-30)% chance to create a Wildfire Wisp next to an ignited enemy",
+      "When you directly use a non-channeled Fire Skill each Wildfire Wisp within 12 metres has a (10-12)% chance to repeat the skill with an additional (240-300)% ignite chance",
+      "Skills cast from Wildfire Wisps have +(60-100)% Fire Penetration with Ignite"
+    ]
   },
   "426": {
     "name": "Thicket of Blinding Light",
@@ -8639,7 +11993,19 @@
       4,
       5
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      128,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "tooltipDescriptions": [
+      "Every 0.5 seconds you Blind all enemies facing you and deal Damage to them based on distance, up to 100% of your Damage Reflected to Attackers stat"
+    ]
   },
   "427": {
     "name": "Harmony of the First",
@@ -8661,7 +12027,16 @@
       2,
       3
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      128
+    ],
+    "tooltipDescriptions": [
+      "All stats on this item are increased by (16-20)% per equipped non-idol magic item"
+    ]
   },
   "428": {
     "name": "Onslaught of Cerata",
@@ -8689,7 +12064,19 @@
       4,
       null
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      128,
+      2,
+      5,
+      129
+    ],
+    "tooltipDescriptions": [
+      "After you use a movement skill you attack up to 3 nearby enemies with Vengeance (max 2 times every 12 seconds)",
+      "You and your minions have (20-42)% increased area for Melee Area Skills"
+    ]
   },
   "429": {
     "name": "Blossom of Immortal Stone",
@@ -8715,7 +12102,15 @@
       1,
       2
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      4,
+      3,
+      5
+    ]
   },
   "430": {
     "name": "Chorus of the Anurok",
@@ -8745,7 +12140,20 @@
       4,
       4
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      1,
+      128,
+      129,
+      4,
+      130,
+      5
+    ],
+    "tooltipDescriptions": [
+      "If you have less than your maximum number of active companions you summon Primal Anuroks up to your maximum number of companions",
+      "+(50-75)% Cold Resistance for you and your Minions",
+      "(15-25)% increased Attack and Cast Speed for Minions"
+    ]
   },
   "431": {
     "name": "Carrion of Creation",
@@ -8777,7 +12185,18 @@
       1,
       2
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      130,
+      128,
+      129
+    ],
+    "tooltipDescriptions": [
+      "When you kill an enemy it has a (25-47)% chance to explode with Primordial Blood dealing physical damage to others around it",
+      "Primordial Blood gains (37-100)% Chance to inflict Bleed on Hit per stack of Bleed on the enemy killed (up to 20)",
+      "100% of Ignite, Frostbite, Shock, Time Rot, Damned, and Poison Chance Converted to Bleed Chance."
+    ]
   },
   "432": {
     "name": "Horn of the Bone Wisp",
@@ -8805,7 +12224,18 @@
       4,
       5
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      6,
+      128,
+      4,
+      5
+    ],
+    "tooltipDescriptions": [
+      "+(20-25) Spell Damage for you and your Minions"
+    ]
   },
   "433": {
     "name": "Reliquary Nest",
@@ -8829,7 +12259,17 @@
       3,
       4
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128,
+      1,
+      4,
+      2,
+      3
+    ],
+    "tooltipDescriptions": [
+      "Stats on your Non-Unique Idols have (40-60)% increased Effect"
+    ]
   },
   "434": {
     "name": "Mask of Indifference",
@@ -8861,7 +12301,17 @@
       2,
       3
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128,
+      5,
+      8,
+      6,
+      7
+    ],
+    "tooltipDescriptions": [
+      "You are immune to Blind, Bleed, Slow, Chill, Shock, and Stun."
+    ]
   },
   "435": {
     "name": "Permanence of Primal Knowledge",
@@ -8887,7 +12337,18 @@
       2,
       3
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128,
+      129,
+      4,
+      3,
+      5
+    ],
+    "tooltipDescriptions": [
+      "Skill Level stats from Legendary Affixes have 50% increased effect",
+      "(6-12)% increased Attack and Cast Speed"
+    ]
   },
   "436": {
     "name": "Wings of Discord",
@@ -8915,7 +12376,16 @@
       4,
       5
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      5,
+      4,
+      1,
+      0,
+      2,
+      6,
+      3
+    ]
   },
   "437": {
     "name": "Primal Cadence",
@@ -8945,7 +12415,20 @@
       null,
       5
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128,
+      4,
+      3,
+      5,
+      7,
+      6,
+      129
+    ],
+    "tooltipDescriptions": [
+      "When you or one of your minions kills an enemy with a hit (40-85)% of the Overkill damage is dealt as direct damage to surrounding enemies",
+      "+(6-15)% Critical Strike Chance for you and your minions"
+    ]
   },
   "438": {
     "name": "Whetstone Gavel",
@@ -8971,7 +12454,18 @@
       2,
       3
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      128,
+      3,
+      4,
+      5
+    ],
+    "tooltipDescriptions": [
+      "If you have an Exalted Weapon in your offhand its stats have (90-100)% increased effectiveness"
+    ]
   },
   "439": {
     "name": "Truesight Glass",
@@ -8993,7 +12487,18 @@
       1,
       2
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      128,
+      129,
+      1,
+      2,
+      3
+    ],
+    "tooltipDescriptions": [
+      "Critical Strike Chance above 100% gives you a chance to deal Deadly Strikes (up to 40% chance)",
+      "Deadly Strikes count as Critical Strikes but have an additional 300% Critical Strike Multiplier"
+    ]
   },
   "440": {
     "name": "Bluefeather Band",
@@ -9021,7 +12526,18 @@
       5,
       6
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      1,
+      2,
+      3,
+      0,
+      128,
+      6
+    ],
+    "tooltipDescriptions": [
+      "When you use 3 zero mana cost skills in a row you gain (15-21) Mana and (180-330) Ward (3 second cooldown)"
+    ]
   },
   "441": {
     "name": "Hydra Arc",
@@ -9047,7 +12563,22 @@
       4,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      3,
+      4,
+      0,
+      1,
+      2,
+      128,
+      129,
+      130
+    ],
+    "tooltipDescriptions": [
+      "After evading you repeat your most recently used bow attack at a nearby enemy (excludes channeled attacks and attacks with cooldowns), consuming 50% of its mana cost",
+      "If you have at least 75 Dexterity you repeat it at up to 2 nearby enemies instead",
+      "If you have at least 135 Dexterity you repeat it at up to 3 nearby enemies instead"
+    ]
   },
   "442": {
     "name": "Velocyn's Jaw",
@@ -9073,7 +12604,18 @@
       4,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      0,
+      1,
+      5,
+      4,
+      2,
+      128
+    ],
+    "tooltipDescriptions": [
+      "+(20-40)% Penetration against all Resistances"
+    ]
   },
   "443": {
     "name": "Army of Skin",
@@ -9094,7 +12636,22 @@
       2,
       3
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      128,
+      129,
+      130,
+      131,
+      2,
+      1,
+      3
+    ],
+    "tooltipDescriptions": [
+      "When Flay kills an enemy or hits a boss or rare enemy you gain a stack of Excoriation and have a 6% chance to cast Summon Skeleton if not at maximum skeletons",
+      "Excoriation has a maximum of 13 stacks and all stacks expire if you have not gained a new one for 13 seconds",
+      "Each stack of Excoriation grants Flay and Harvest 13% increased Area of Effect and +5 Melee Damage",
+      "Each stack of Excoriation grants an 8% chance on Flay hit to cast Rip Blood (up to 3 times per 2 seconds)"
+    ]
   },
   "444": {
     "name": "Evolution's End",
@@ -9143,7 +12700,19 @@
       5,
       6
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      6,
+      7,
+      128,
+      0,
+      1,
+      5,
+      4
+    ],
+    "tooltipDescriptions": [
+      "+(3-6) Health and Mana per Attunement"
+    ]
   },
   "446": {
     "name": "Fangs of the Berserker",
@@ -9173,7 +12742,20 @@
       6,
       null
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      128,
+      1,
+      4,
+      3,
+      0,
+      2,
+      6,
+      7
+    ],
+    "tooltipDescriptions": [
+      "You gain Frenzy for (6-10) Seconds when you use a Potion"
+    ]
   },
   "447": {
     "name": "Bones of the Ancestral Pack",
@@ -9197,7 +12779,22 @@
       3,
       4
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      128,
+      131,
+      129,
+      130,
+      1,
+      2
+    ],
+    "tooltipDescriptions": [
+      "When a minion hits an enemy you have a (7-12)% chance to gain a stack of Ancestral Pack (1 second cooldown)",
+      "When you gain a stack of Ancestral Pack so does your highest level minion",
+      "When you gain a stack of Ancestral Pack you gain Ward equal to (77-123)% of your Endurance Threshold",
+      "Each stack of Ancestral Pack grants 4% more damage, 3% increased attack and cast speed, and 2% increased cooldown recovery speed."
+    ]
   },
   "448": {
     "name": "Architects of Astral Blood",
@@ -9225,7 +12822,16 @@
       4,
       5
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      1,
+      2,
+      3,
+      0,
+      4,
+      5,
+      6
+    ]
   },
   "449": {
     "name": "The Butcher's Crown",
@@ -9251,7 +12857,20 @@
       null,
       null
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      130,
+      128,
+      0,
+      129,
+      2,
+      3
+    ],
+    "tooltipDescriptions": [
+      "You do not Regenerate Mana",
+      "12 Health and 1 Mana gained on Hit per 12% increased mana regen (up to 4 times per 2 seconds)",
+      "You have Frenzy"
+    ]
   },
   "450": {
     "name": "Unbroken Charge",
@@ -9299,7 +12918,19 @@
       2,
       3
     ],
-    "overrideLevelRequirement": true
+    "overrideLevelRequirement": true,
+    "tooltipEntries": [
+      129,
+      128,
+      2,
+      3,
+      4,
+      5
+    ],
+    "tooltipDescriptions": [
+      "Shadow Rend always manifests a melee shadow in front of you and a bow shadow behind you",
+      "Shadow Rend no longer moves you"
+    ]
   },
   "459": {
     "name": "Artifice of Devastation",
@@ -9317,9 +12948,9 @@
     ],
     "rollIds": [
       0,
-      1,
-      2,
-      3,
+      0,
+      0,
+      0,
       null
     ],
     "overrideLevelRequirement": false
@@ -9344,8 +12975,8 @@
       null,
       null,
       0,
-      1,
-      2
+      0,
+      0
     ],
     "overrideLevelRequirement": true
   },
@@ -9448,7 +13079,19 @@
       null,
       null
     ],
-    "overrideLevelRequirement": false
+    "overrideLevelRequirement": false,
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      128
+    ],
+    "tooltipDescriptions": [
+      "1% less Necrotic, Void, and Poison damage taken per 10 Apathy"
+    ]
   },
   "470": {
     "name": "Oculus of Ruin",

@@ -52,47 +52,76 @@ local globalOutput = nil
 local globalBreakdown = nil
 
 -- Calculate min/max damage for the given damage type
-local function calcDamage(activeSkill, output, cfg, breakdown, damageType, typeFlags, convDst)
+local function calcDamage(activeSkill, output, cfg, breakdown, damageType, typeFlags, convDst, convBaseIn)
 	local skillModList = activeSkill.skillModList
 
 	typeFlags = bor(typeFlags, dmgTypeFlags[damageType])
 
-	-- Calculate conversions
-	local addDmg = 0
+	-- @leb-regression-guard:conversion-direction-independent
+	-- @leb-regression-guard:conversion-multi-hop-conservation
+	-- LE damage conversion (datamined game source BaseDamageStats.convertBaseDamage(from,to,proportion))
+	-- is DIRECTION-INDEPENDENT and operates on BASE damage; the converted amount becomes the
+	-- destination type's base and scales with the DESTINATION type's increases only (dest-only).
+	-- The converged converted-in BASE -- resolved across multi-hop chains A->B->C by the
+	-- "Resolve multi-hop conversion chains" fixpoint in calcs.offence -- is precomputed once per
+	-- pass and passed in as convBaseIn (a per-type table). We read that here and scale by THIS
+	-- (destination) type's modifiers only. A single-pass model (the prior fix) folded only each
+	-- type's RAW base via ONE conversion, so an intermediate type that converts 100% out
+	-- (raw base routed onward, retains nothing) dropped everything chained through it. Falling
+	-- back to the raw base keeps the no-conversion path (and any caller running before the
+	-- precompute) byte-identical.
 	local conversionTable = activeSkill.conversionTable
-	for _, otherType in ipairs(dmgTypeList) do
-		if otherType == damageType then
-			-- Damage can only be converted from damage types that precede this one in the conversion sequence, so stop here
-			break
-		end
-		local convMult = conversionTable[otherType][damageType]
-		if convMult > 0 then
-			-- Damage is being converted/gained from the other damage type
-			local dmg = calcDamage(activeSkill, output, cfg, breakdown, otherType, typeFlags, damageType)
-			addDmg = addDmg + dmg * convMult
-		end
-	end
-	if addDmg ~= 0 then
-		addDmg = round(addDmg, 2)
-	end
-
-	local baseDmg = output[damageType.."DamageBase"]
+	local rawBase = output[damageType.."DamageBase"] or 0
+	local baseDmg = (convBaseIn and convBaseIn[damageType]) or rawBase
+	local addBase = baseDmg - rawBase
 	if baseDmg == 0 then
-		-- No base damage for this type, don't need to calculate modifiers
-		if breakdown and (addDmg ~= 0 or addMax ~= 0) then
+		-- No base damage (own or converted-in) for this type
+		if breakdown then
 			t_insert(breakdown.damageTypes, {
 				source = damageType,
-				convSrc = (addDmg ~= 0) and (addDmg .. ""),
-				total = addDmg .. "",
-				convDst = convDst and s_format("%d%% to %s", conversionTable[damageType][convDst] * 100, convDst),
+				total = "0",
+				convDst = convDst and conversionTable[damageType][convDst] and s_format("%d%% to %s", conversionTable[damageType][convDst] * 100, convDst),
 			})
 		end
-		return addDmg
+		return 0
 	end
 
 	-- Combine modifiers
 	local modNames = damageStatsForTypes[typeFlags]
-	local inc = 1 + skillModList:Sum("INC", cfg, unpack(modNames)) / 100
+	-- @leb-regression-guard:flamewave-caster-hit-context-inc
+	-- A sub-skill grant carrying `inheritCasterHitContextInc` (SubSkillGrants) computes
+	-- its hit INCREASED damage in the CASTER's hit context: the parent skill's base
+	-- flags (melee/attack/hit for Firebrand) are OR'd into the cfg flags+keywordFlags
+	-- and the parent's name is used for SkillName-scoped mods, FOR THE "INC" SUM ONLY.
+	-- MORE multipliers, added-flat pools and crit stay on the sub-skill's OWN (spell)
+	-- cfg. Game ground truth (Flame Wave, 4guanghuan_LEB paired captures 2026-07-04,
+	-- n=109+223): the wave's per-cast damage tracks the Firebrand melee hit's FULL
+	-- INC ramp (Ambition stacks, attribute INC, melee-scoped gear INC) — per-type
+	-- wave/melee is constant through the ramp — while melee-keyword MULTIPLICATIVE
+	-- stats do NOT reach it (the wave misses exactly the Enchant Weapon melee MORE
+	-- x1.50 [phys pairs at 1/1.5024 with IDENTICAL pool+INC] and the melee-scoped
+	-- +0.95 crit multiplier [CSV critMult FB 4.085 vs wave 3.135]), and melee-typed
+	-- added flat does not either (wave cold = 0 despite FB's +4 melee cold). See
+	-- SubSkillGrants.lua firebrand-flame-wave-grant for the full decomposition.
+	local incCfg = cfg
+	do
+		local sg = activeSkill.socketGroup
+		if cfg and sg and sg.inheritCasterHitContextInc and sg.subSkillOf then
+			local parent = data.skills[sg.subSkillOf]
+			if parent then
+				incCfg = copyTable(cfg, true) -- shallow: cfg has cyclic refs; skillCond stays shared
+				local ctxFlags = 0
+				for flagName in pairs(parent.baseFlags or { }) do
+					local flagBit = ModFlag[flagName:gsub("^%l", string.upper)]
+					if flagBit then ctxFlags = bor(ctxFlags, flagBit) end
+				end
+				incCfg.flags = bor(incCfg.flags or 0, ctxFlags)
+				incCfg.keywordFlags = bor(incCfg.keywordFlags or 0, ctxFlags)
+				incCfg.skillName = parent.name
+			end
+		end
+	end
+	local inc = 1 + skillModList:Sum("INC", incCfg, unpack(modNames)) / 100
 	local more = skillModList:More(cfg, unpack(modNames))
 	local genericMoreMinDamage = skillModList:More(cfg, "MinDamage")
 	local moreMinDamage = skillModList:More(cfg, "Min"..damageType.."Damage")
@@ -103,13 +132,13 @@ local function calcDamage(activeSkill, output, cfg, breakdown, damageType, typeF
 			base = baseDmg .. "",
 			inc = (inc ~= 1 and "x "..inc),
 			more = (more ~= 1 and "x "..more),
-			convSrc = (addDmg ~= 0) and (addDmg .. ""),
-			total = (round(baseDmg * inc * more, 2) + addDmg) .. "",
-			convDst = convDst and conversionTable[damageType][convDst] > 0 and s_format("%d%% to %s", conversionTable[damageType][convDst] * 100, convDst),
+			convSrc = (addBase ~= 0) and s_format("incl. %.1f converted base", addBase),
+			total = round(baseDmg * inc * more, 2) .. "",
+			convDst = convDst and conversionTable[damageType][convDst] and conversionTable[damageType][convDst] > 0 and s_format("%d%% to %s", conversionTable[damageType][convDst] * 100, convDst),
 		})
 	end
 
-	return 	round(((baseDmg * inc * more) * genericMoreMinDamage + addDmg) * moreMinDamage, 2)
+	return round((baseDmg * inc * more) * genericMoreMinDamage * moreMinDamage, 2)
 end
 
 ---Calculates skill radius
@@ -239,6 +268,17 @@ function calcSkillCooldown(skillModList, skillCfg, skillData)
 	local cooldownOverride = skillModList:Override(skillCfg, "CooldownRecovery")
 	local addedCooldown = skillModList:Sum("BASE", skillCfg, "CooldownRecovery")
 	local cooldown = cooldownOverride or ((skillData.cooldown or 0) + addedCooldown) / m_max(0, calcLib.mod(skillModList, skillCfg, "CooldownRecovery"))
+	-- @leb-regression-guard:no-cooldown-flag-zeroes-cooldown
+	-- "X No Cooldown" spec nodes (Erasing Strike/Shield Throw/Judgement/Focus/Forge
+	-- Strike/Shield Bash/...) convert the skill's cooldown into a mana cost, so the
+	-- skill is no longer cooldown-limited and fires at cast/attack speed. LEB parses
+	-- these into a NoCooldown FLAG (ModParser "no cooldown" / ModCache " No Cooldown")
+	-- but this function previously IGNORED it, leaving the base cooldown in place
+	-- (e.g. Erasing Strike 5s -> LEB 0.28/s vs in-game biman11 ~3.6/s, a 12x cadence
+	-- under-count). Honour the flag: a no-cooldown skill has cooldown 0.
+	if skillModList:Flag(skillCfg, "NoCooldown") then
+		cooldown = 0
+	end
 	-- If a skill can store extra uses and has a cooldown, it doesn't round the cooldown value to server ticks
 	local rounded = false
 	if (skillData.storedUses and skillData.storedUses > 1) or (skillData.VaalStoredUses and skillData.VaalStoredUses > 1) or skillModList:Sum("BASE", skillCfg, "AdditionalCooldownUses") > 0 then
@@ -375,6 +415,44 @@ function calcs.offence(env, actor, activeSkill)
 		return m_max(m_min(resist, maxResist), data.misc.ResistFloor)
 	end
 
+	-- @leb-regression-guard:dot-resist-pen-mitigation
+	-- See REGRESSION_GUARDS.md "dot-resist-pen-mitigation".
+	-- Validation provenance is retained in maintainer notes.
+	local function calcAilmentMitigation(damageType, cfg, ailmentName)
+		if not env.mode_effective then
+			return 1
+		end
+		local resist = calcResistForType(damageType, cfg)
+		local pen = skillModList:Sum("BASE", cfg, damageType.."Penetration", "Penetration")
+		-- @leb-regression-guard:ailment-scoped-penetration
+		-- General ailment-scoped penetration: an "Ailment<Name>Penetration" BASE mod adds
+		-- penetration that applies ONLY to this ailment's DoT (Bleed/Poison/Ignite/...), on top of
+		-- the generic <type>/global pen. Summed solely here in the ailment loop, never in the hit
+		-- loop, so it cannot leak to hits or to other ailments. Source: Salt the Wound (#187).
+		-- The type-qualified "Ailment<Name><Type>Penetration" key (emitted by the ModParser
+		-- ailment-pen-family fixup for "<Type> Penetration with <Ailment>" lines) is summed
+		-- alongside the typeless key: dual-type ailments call this once per damage type, so
+		-- each damage type receives only its own type's pen.
+		if ailmentName then
+			pen = pen + skillModList:Sum("BASE", cfg, "Ailment"..ailmentName.."Penetration", "Ailment"..ailmentName..damageType.."Penetration")
+		end
+		local invertChance = m_max(m_min(skillModList:Sum("CHANCE", cfg, "HitsInvertEleResChance"), 1), 0)
+		if isElemental[damageType] and invertChance > 0 then
+			resist = resist - 2 * invertChance * resist
+		end
+		local useRes = not skillModList:Flag(cfg, "Ignore"..damageType.."Resistance", isElemental[damageType] and "IgnoreElementalResistances" or nil)
+			and not enemyDB:Flag(nil, "SelfIgnore"..damageType.."Resistance")
+		local mitigation
+		if skillModList:Flag(cfg, isElemental[damageType] and "CannotElePenIgnore" or nil) then
+			mitigation = (1 - resist / 100)
+		elseif useRes then
+			mitigation = (1 - (resist - pen) / 100)
+		else
+			mitigation = 1
+		end
+		return mitigation
+	end
+
 	local function runSkillFunc(name)
 		local func = activeSkill.activeEffect.grantedEffect[name]
 		if func then
@@ -401,7 +479,7 @@ function calcs.offence(env, actor, activeSkill)
 	-- no calc path actually set the condition true. As a result every
 	-- such modifier silently full-gated to zero.
 	--
-	-- Allowlist source (datamined LE_datamining/extracted/
+	-- Allowlist source (datamined game source
 	-- ability_keyed_array.json + localized_master.json):
 	--   Shadow Cascade  -- Bladedancer mastery skill that summons
 	--                      shadows and is itself the canonical Shadow
@@ -432,7 +510,7 @@ function calcs.offence(env, actor, activeSkill)
 	-- but for the F4-shape ", doubled for Dancing Strikes" trailing
 	-- Condition tag emitted by Kuzon's Fury Reforged
 	-- (BurningDaggerChanceOnMeleeFire). Game-file evidence
-	-- (dump.cs L35408-L35546 DancingStrikes1..4Mutator family +
+	-- (datamined game source DancingStrikes1..4Mutator family +
 	-- ability_keyed_array.json 4 player variants sharing
 	-- abilityName="Dancing Strikes", playerAbilityID dacn33/34/36/37):
 	-- Dancing Strikes is a single skill identity, not a condition tag,
@@ -445,11 +523,11 @@ function calcs.offence(env, actor, activeSkill)
 
 	-- @leb-regression-guard:tabi-of-dusk-and-dawn-flags
 	-- Tabi of Dusk and Dawn (uniqueID=458) dual-cast consumer. Game-file:
-	-- dump.cs L77736 `public bool shadowRendAlsoCastsOtherWeaponVersion`
+	-- datamined game source `public bool shadowRendAlsoCastsOtherWeaponVersion`
 	-- on CharacterMutator. When set and active skill is Shadow Rend, the
 	-- game casts both Melee and Bow ability variants per swing -- see
 	-- ShadowRendMeleeMutator.bowMut / ShadowRendBowMutator.meleeMut
-	-- cross-references (dump.cs L56914/57008) and ability_keyed_array.json
+	-- cross-references (datamined game source) and ability_keyed_array.json
 	-- {ShadowRend, ShadowRend Bow} sharing playerAbilityID 'sh4re'.
 	-- v1 surface approximation: +100% MORE Damage. v2 (deferred) would
 	-- compose the two variant damage rolls separately. The Flag is
@@ -458,6 +536,56 @@ function calcs.offence(env, actor, activeSkill)
 	if activeGrantedName == "Shadow Rend" and skillModList:Flag(skillCfg, "ShadowRendAlsoCastsOtherWeaponVersion") then
 		skillModList:NewMod("Damage", "MORE", 100, "Shadow Rend dual cast (Tabi of Dusk and Dawn)", 0, 0, { type = "SkillName", skillName = "Shadow Rend" })
 	end
+
+		-- @leb-regression-guard:shadow-cascade-dagger-dance
+		-- Shadow Cascade "Dagger Dance" specialization (dagg3-21 Dagger Dance +
+		-- dagg3-24 Porcupine's Wrath). datamined game source ShadowCascadeMutator (TDI1399):
+		-- with Dagger Dance, Shadow Cascade throws `daggersToThrow` DaggerThrow
+		-- projectiles -- the granted ShadowCascadeDagger sub-skill (name
+		-- "Dagger Throw", base 24 x eff 1.2 throwing physical, pierce). The
+		-- count comes from the tree's "N Daggers Thrown" stats
+		-- (ModParser -> ProjectileCount BASE, routed onto the dagger via
+		-- groupSource). Two effects can't be expressed as plain tree mods:
+		--   (a) the thrown daggers nearly all connect on a single target
+		--       (in-game ~6.4/7 = 92%, Lariani_LEB 2026-05-30 CSV cluster
+		--       analysis), so the count multiplies single-target DPS ->
+		--       SequentialProjectiles (consumed below; sets dpsMultiplier =
+		--       ProjectileCount).
+		--   (b) Porcupine's Wrath (dagg3-24) "+120% Damage" is MULTIPLICATIVE
+		--       in-game ("multiplicative with other modifiers") but the tree
+		--       text parses as INC and routes here via groupSource; reclassify
+		--       it to MORE (cancel the routed +120 INC, re-add as +120 MORE).
+		--       Its co-located " No Melee Attack" flag (same single 1-pt node)
+		--       marks Porcupine's Wrath being allocated.
+		-- @leb-regression-guard:razorfall-umbral-blades-per-dex
+		-- Razorfall's Aerial Assault "Burst of Feathers" throws a burst of Umbral
+		-- Blades (ModParser parses "+1 Umbral Blades per 20 Dexterity ..." onto the
+		-- Umbral Blades ProjectileCount, PerStat Dex/20, gated on
+		-- Condition:RazorfallBurstOfFeathers; the config supplies the base burst
+		-- count). Like Dagger Dance's thrown daggers, when the burst blades connect
+		-- on a single target the count multiplies single-target DPS -> enable
+		-- SequentialProjectiles so the fold below sets dpsMultiplier = Sum
+		-- ProjectileCount. STRICTLY gated: only fires when the config condition is
+		-- set (default OFF => corpus-neutral -- no other Umbral Blades build gets
+		-- SequentialProjectiles), and only when a base ProjectileCount is present
+		-- (guards the fold against a 0 multiplier zeroing damage). NOT
+		-- capture-validated (100% single-target hit fraction assumed) -- see the
+		-- config-site guard comment. Spec: spec/System/TestRazorfallUmbralBladesPerDex_spec.lua
+		if activeGrantedName == "Umbral Blades" and skillModList:Flag(nil, "Condition:RazorfallBurstOfFeathers") and skillModList:Sum("BASE", skillCfg, "ProjectileCount") > 0 then
+			skillModList:NewMod("SequentialProjectiles", "FLAG", true, "Razorfall Burst of Feathers")
+		end
+		if activeGrantedName == "Dagger Throw" then
+			skillModList:NewMod("SequentialProjectiles", "FLAG", true, "Dagger Dance")
+			if skillModList:Flag(skillCfg, "NoMeleeAttack") then
+				skillModList:NewMod("Damage", "INC", -120, "Porcupine's Wrath (reclassified to MORE)", 0, 0, { type = "SkillName", skillName = "Dagger Throw" })
+				skillModList:NewMod("Damage", "MORE", 120, "Porcupine's Wrath", 0, 0, { type = "SkillName", skillName = "Dagger Throw" })
+			end
+		end
+		-- Porcupine's Wrath: Shadow Cascade itself no longer includes a melee
+		-- attack -- only the daggers deal damage. -100% MORE zeroes the SC hit.
+		if activeGrantedName == "Shadow Cascade" and skillModList:Flag(skillCfg, "NoMeleeAttack") then
+			skillModList:NewMod("Damage", "MORE", -100, "Porcupine's Wrath (No Melee Attack)", 0, 0, { type = "SkillName", skillName = "Shadow Cascade" })
+		end
 
 	-- Update skill data
 	for _, value in ipairs(skillModList:List(skillCfg, "SkillData")) do
@@ -544,7 +672,7 @@ function calcs.offence(env, actor, activeSkill)
 	-- BurningDaggerOnMeleeFire var, and surface (limit, interval) for
 	-- CalcSections display. LEB does NOT compute an effective-procs/sec
 	-- because the game itself exposes no planner-visible rate-capped
-	-- chance stat -- the cap is a runtime PTT gate only (dump.cs
+	-- chance stat -- the cap is a runtime PTT gate only (datamined game source
 	-- L239352-L239378 + L33671-L33713). The two scalar outputs let the
 	-- display read "N per M sec" without re-shaping the contract if a
 	-- future affix uses (N, M != 1).
@@ -621,6 +749,64 @@ function calcs.offence(env, actor, activeSkill)
 			for _, damageType in ipairs(dmgTypeList) do
 				skillModList:NewMod(damageType.."Min", "BASE", m_floor((actor.weaponData2[damageType.."Min"] or 0) * multiplier), "Spellblade Off Hand", ModFlag.Spell)
 				skillModList:NewMod(damageType.."Max", "BASE", m_floor((actor.weaponData2[damageType.."Max"] or 0) * multiplier), "Spellblade Off Hand", ModFlag.Spell)
+			end
+		end
+	end
+	-- @leb-regression-guard:spellblade-weapon-melee-added-gained-as-spell
+	-- LE Spellblade MASTERY innate: "X% of added melee damage on weapons is also gained
+	-- as added spell damage" (ModParser emits WeaponMeleeAddedGainedAsSpell BASE = X).
+	-- This is a DISTINCT mechanic from OneHandWeaponDamageAppliesToSpells above (that is a
+	-- PoB-leftover weapon-BASE->spell path, 1H-melee-gated -- inert for a Bladed Staff which
+	-- is 2H and has no base damage). Here we take X% of each equipped WEAPON item's
+	-- melee-tagged ADDED flat (typeless "Damage" and typed "<T>Damage", keywordFlags Melee)
+	-- and re-grant it as Spell-keyword added of the SAME name/type. It is additive ("also
+	-- gained as" -- the melee flat is untouched), type-preserving (typeless->adaptive spell,
+	-- fire->spell fire), and WEAPON-scoped (only Weapon 1/2 item modLists are walked, so ring
+	-- melee-added and passive-tree melee-added are correctly excluded). Grant with
+	-- keywordFlags Spell so it joins the exact spell-added pool a "+Spell Damage" affix feeds.
+	-- Validated on Tru_Flamer (Spellblade, 40%): weapon typeless melee 169 (Jasper 94+75)
+	-- x0.40 = 67.6 -> E.Nova spell-added pool 110->177.6; weapon melee-fire 117 x0.40 = 46.8
+	-- -> SpellFire +46.8. Spec: spec/System/TestSpellbladeMeleeGainedAsSpell_spec.lua.
+	local wmGainAsSpell = skillModList:Sum("BASE", skillCfg, "WeaponMeleeAddedGainedAsSpell")
+	if wmGainAsSpell and wmGainAsSpell > 0 and actor.itemList then
+		local mult = wmGainAsSpell / 100
+		local addedDmgNames = { Damage = true }
+		for _, dt in ipairs(dmgTypeList) do addedDmgNames[dt.."Damage"] = true end
+		-- @leb-regression-guard:elemental-nova-nonelement-added-not-gated
+		-- Elemental Nova alternates ONE of its three ELEMENTS per cast (Fire/Cold/Lightning
+		-- via chooseNextNovaType), each tree-node-gated (en6-12/2/8; see elemental-nova-spec-
+		-- tree-gated-damage-type + the nova-scoped added-routing at elemental-nova-tree-gated-
+		-- base-intrinsic below). A typed elemental transfer must NOT introduce one of those
+		-- three elements the nova has no node for, or the routing would surface a SPURIOUS
+		-- ELEMENT (e.g. a lightning-only nova on a fire-melee weapon). So gate ONLY the three
+		-- nova elements on their node base. A NON-element typed transfer (Physical/Void/
+		-- Necrotic/Poison) is NOT a nova alternation element and legitimately makes the nova
+		-- deal that type in-game (grounded: Tru_Flamer w/ a +45 physical-melee weapon +
+		-- mastery40%+affix10% -> 22.5 physical spell-added -> in-game E.Nova phys 183/hit,
+		-- capture 164358 SpellPhysical(add)=56.5); LEB used to drop it. Typeless "Damage" is
+		-- always safe (rides genericAdded, distributed only over already-enabled types).
+		-- Non-nova spells are unaffected by this gate.
+		local isNova = activeSkill.activeEffect.grantedEffect.name == "Elemental Nova"
+		local novaElement = { FireDamage = true, ColdDamage = true, LightningDamage = true }
+		local novaNodeBase = nil
+		if isNova then
+			novaNodeBase = { }
+			for _, dt in ipairs(dmgTypeList) do
+				novaNodeBase[dt.."Damage"] = skillModList:Sum("BASE", skillCfg, dt.."Damage") or 0
+			end
+		end
+		for _, slotName in ipairs({ "Weapon 1", "Weapon 2" }) do
+			local item = actor.itemList[slotName]
+			if item and item.modList then
+				for _, m in ipairs(item.modList) do
+					if m.type == "BASE" and type(m.value) == "number" and addedDmgNames[m.name]
+						and band(m.keywordFlags or 0, KeywordFlag.Melee) ~= 0 then
+						local gatedOut = isNova and novaElement[m.name] and (novaNodeBase[m.name] or 0) <= 0
+						if not gatedOut then
+							skillModList:NewMod(m.name, "BASE", m.value * mult, "Spellblade Mastery", 0, KeywordFlag.Spell)
+						end
+					end
+				end
 			end
 		end
 	end
@@ -779,6 +965,17 @@ function calcs.offence(env, actor, activeSkill)
 	if skillModList:Flag(nil, "SequentialProjectiles") and not skillModList:Flag(nil, "OneShotProj") and not skillModList:Flag(nil,"NoAdditionalProjectiles") and not skillModList:Flag(nil, "TriggeredBySnipe") then
 		-- Applies DPS multiplier based on projectile count
 		skillData.dpsMultiplier = skillModList:Sum("BASE", skillCfg, "ProjectileCount")
+	end
+	-- @leb-regression-guard:hammer-throw-spiral-multihit
+	-- See REGRESSION_GUARDS.md "hammer-throw-spiral-multihit".
+	-- Validation provenance is retained in maintainer notes.
+	if skillModList:Flag(skillCfg, "HammersSpiral") then
+		local additionalProj = skillModList:Sum("BASE", skillCfg, "ProjectileCount")
+		if skillModList:Flag(skillCfg, "HalveExtraProjectiles") then
+			additionalProj = m_floor(additionalProj / 2)
+		end
+		output.SpiralHammerHits = 1 + additionalProj
+		skillData.dpsMultiplier = (skillData.dpsMultiplier or 1) * output.SpiralHammerHits
 	end
 	output.Repeats = 1 + (skillModList:Sum("BASE", skillCfg, "RepeatCount") or 0)
 	if output.Repeats > 1 then
@@ -1001,6 +1198,83 @@ function calcs.offence(env, actor, activeSkill)
 		elseif modDB:HasMod("BASE", nil, "Multiplier:MomentumStacks") then
 			modDB:ReplaceMod("Multiplier:MomentumStacks", "BASE", 0, "Config")
 		end
+	end
+
+	-- @leb-regression-guard: smelters-wrath-max-charge-more
+	-- Validation provenance is retained in maintainer notes.
+	if activeSkill.activeEffect and activeSkill.activeEffect.grantedEffect
+		and activeSkill.activeEffect.grantedEffect.name == "Smelter's Wrath" then
+		local maxChargeSeconds = 2.0 -- datamine: SmeltersWrathEndMutator .ctor maxDuration = 2.0
+		if not modDB:HasMod("BASE", nil, "Multiplier:SmeltersWrathChargeSeconds") then
+			modDB:NewMod("Multiplier:SmeltersWrathChargeSeconds", "BASE", maxChargeSeconds, "Config", { type = "Condition", var = "Combat" })
+		elseif modDB:Sum("BASE", nil, "Multiplier:SmeltersWrathChargeSeconds") > maxChargeSeconds then
+			modDB:ReplaceMod("Multiplier:SmeltersWrathChargeSeconds", "BASE", maxChargeSeconds, "Config", { type = "Condition", var = "Combat" })
+		end
+		-- +100% more at full charge (2.0s) -> 50% MORE per charge-second (linear
+		-- age/maxDuration ramp). Scaled by the Multiplier so a partial-charge config
+		-- value yields a proportional MORE, and 0 charge -> no bonus.
+		skillModList:NewMod("Damage", "MORE", 100 / maxChargeSeconds, "Smelter's Wrath Charge", 0, 0, { type = "Multiplier", var = "SmeltersWrathChargeSeconds" })
+		-- @leb-regression-guard:smelters-wrath-charge-scaling-nodes
+		-- Charge IS the channel for Smelter's Wrath: SmeltersWrathEndMutator.getTempStats
+		-- drives `age` (seconds charged) from the ExistsWhileChannelling component and
+		-- scales statsPerSecondCharged by it (datamining), and applies the
+		-- full-charge MoreStats when fullyCharged (L298-324). The skill-tree per-second
+		-- nodes (Heavy Strike / Tempered Blows / Whetstone) parse to MORE x
+		-- Condition:Channelling x Multiplier:ChannellingSeconds, and the full-charge
+		-- nodes (Vulcanic Mastery) to MORE x Condition:FullyCharged (see ModParser
+		-- smelters-wrath-charge-scaling-nodes). Publish that charge state here, SCOPED
+		-- to this skill's own modList (not the global modDB) so it never leaks to other
+		-- channelled skills (Flurry / Volcanic Orb keep their Config-tab ChannellingSeconds).
+		-- ChannellingSeconds = the same charge-seconds value as the intrinsic ramp
+		-- (= age in seconds, default 2.0 at max charge), so a per-second node = value x 2.0.
+		local chargeSeconds = m_min(maxChargeSeconds, modDB:Sum("BASE", nil, "Multiplier:SmeltersWrathChargeSeconds"))
+		skillModList:NewMod("Multiplier:ChannellingSeconds", "BASE", chargeSeconds, "Smelter's Wrath Charge")
+		skillModList:NewMod("Condition:Channelling", "FLAG", true, "Smelter's Wrath Charge")
+		if chargeSeconds >= maxChargeSeconds then
+			skillModList:NewMod("Condition:FullyCharged", "FLAG", true, "Smelter's Wrath Charge")
+		end
+	end
+
+	-- @leb-regression-guard: firebrand-per-stack-added-fire
+	-- Firebrand builds a stacking buff: "Each stack of the Firebrand buff ... adds
+	-- melee fire damage." Each stack grants a FLAT +5 added melee fire damage,
+	-- INTRINSIC to the base ability (NOT a tree node): FirebrandMutator.ModifyFirebrandStacks
+	-- (datamined game source) does
+	--   uVar16 = DAT_183d720e4 (= 5);                 // per-stack added value
+	--   uVar8  = 0x208;                               // melee-fire damage-type mask (default)
+	--   Stats__AddedStat(0, uVar8, uVar16, ...)       // attached to each stack's stat list
+	-- applied once per active stack. Base max stacks = 4 (GetMaxStacks datamined offset:
+	-- field(0x134) + 4, and 0x134 is tree-granted extra max stacks = 0 on a blank char;
+	-- datamined game source). The added-damage effectiveness (1.25) and the player's
+	-- increased/more melee+fire then apply, so each stack adds 5 x 1.25 = 6.25 to the
+	-- per-type fire base. The lightning-conversion node (Lightning Brand) swaps the
+	-- 0x208 mask to lightning; LEB's normal fire->lightning conversion handles that
+	-- downstream, so the added flat is modeled as melee fire here.
+	-- LEB previously modeled the Firebrand stack ONLY for a Ward-per-second modifier
+	-- (ConfigOptions multiplierFirebrandStack -> WardPerSecond), NOT for damage, so the
+	-- per-stack fire was missing. State-matched 4guanghuan_blank capture (2026-06-30,
+	-- 0 Firebrand tree nodes, steady-state max 4 stacks): in-game pre-mit fire 4653,
+	-- LEB without stacks 3854 (-17%); +4 stacks x 6.25 -> ~180.75 base -> ~4472 (-3.9%).
+	-- Modeled at MAX stacks (base 4) by default (mirrors the Smelter's Wrath / Momentum
+	-- auto-default above); the "# of Firebrand Stacks" config overrides the count.
+	-- The phys hit is weapon-melee and already lands ~-5%; the spec'd-tree fire gap
+	-- (per-stack MORE tree nodes: Charring/Searing Brand) is a SEPARATE, larger item.
+	-- Test: spec/System/TestFirebrandPerStackFire_spec.lua
+	if activeSkill.activeEffect and activeSkill.activeEffect.grantedEffect
+		and activeSkill.activeEffect.grantedEffect.name == "Firebrand" then
+		-- @leb-regression-guard:firebrand-tree-max-stacks (consumer site)
+		-- base 4 (datamine: FirebrandMutator.GetMaxStacks field(0x134)+4) PLUS tree-granted
+		-- "+X Maximum Stacks" nodes (Wildfire f1b4d-9, Ardent Branding f1b4d-18 -> BASE
+		-- FirebrandMaxStacks via Global.lua rewrite + ModParser modNameList). 0x134 = tree extra
+		-- max stacks, =0 on a blank char. This raises BOTH the per-stack added fire and the
+		-- per-stack damage MORE to the build's real max instead of a flat 4.
+		local baseMaxStacks = 4 + (skillModList:Sum("BASE", skillCfg, "FirebrandMaxStacks") or 0)
+		if not modDB:HasMod("BASE", nil, "Multiplier:FirebrandStack") then
+			modDB:NewMod("Multiplier:FirebrandStack", "BASE", baseMaxStacks, "Config", { type = "Condition", var = "Combat" })
+		end
+		-- +5 flat added melee fire per active stack (scaled by added-damage
+		-- effectiveness and the player's increased/more melee+fire downstream).
+		skillModList:NewMod("FireDamage", "BASE", 5, "Firebrand Stack", ModFlag.Melee, 0, { type = "Multiplier", var = "FirebrandStack" })
 	end
 
 	local isAttack = skillFlags.attack
@@ -1237,7 +1511,7 @@ function calcs.offence(env, actor, activeSkill)
 		-- steady state -- the affix's design intent), with each hit
 		-- recovering pct% of REMAINING cooldown (multiplicative).
 		--   effectiveCD = baseCD * (1 - pct/100)^cap
-		-- Game-file authority (dump.cs il2cpp re-extraction):
+		-- Game-file authority (datamined game source re-extraction):
 		--   * L96712 chanceToRecover8pOfRemainingAerialAssaultCooldownOnThrowingHit
 		--   * L96716 lethalMirageRemainingCooldownRecoveredOnMeleeHitUpTo12TimesPerUse
 		--   * L96714 maxTimesToRecover...Cooldown... = const cap (3 or 12)
@@ -1589,6 +1863,14 @@ function calcs.offence(env, actor, activeSkill)
 		skillModList:NewMod("PhysicalMax", "BASE", m_floor(output.ManaCost * multiplier), "Sacrificial Zeal", ModFlag.Spell)
 	end
 
+	-- @leb-regression-guard:brutality-per-manacost-melee-more
+	-- Validation provenance is retained in maintainer notes.
+	local brutality = output.Brutality or 0
+	if brutality > 0 and (output.ManaCost or 0) > 0 then
+		local brutalityMeleeMore = 0.02 * brutality * m_min(output.ManaCost, 20)
+		skillModList:NewMod("Damage", "MORE", brutalityMeleeMore, "Brutality", ModFlag.Melee)
+	end
+
 	runSkillFunc("preDamageFunc")
 
 	-- Cache global damage disabling flags
@@ -1599,20 +1881,123 @@ function calcs.offence(env, actor, activeSkill)
 
 	-- Calculate damage conversion percentages
 	activeSkill.conversionTable = wipeTable(activeSkill.conversionTable)
-	for damageTypeIndex = 1, #dmgTypeList - 1 do
+	-- @leb-regression-guard:global-conversion-converts-added-offtype (table-build site)
+	-- A SECOND, GLOBAL-ONLY conversion table, summing ONLY the player-global (untagged)
+	-- conversion mods -- i.e. those WITHOUT a SkillName/SkillId tag. A skill-scoped
+	-- conversion (PassiveTree:ProcessStats tags every tree-node mod with its owning
+	-- skill; datamined game source: htsk5-10 "Heartseeker" cold conversion) only converts the
+	-- skill's intrinsic BASE (engine convertBaseDamage), so it must NOT touch typed ADDED
+	-- damage. A player-global conversion (Symbols of Hope's "Fire Damage -> Void", an
+	-- aura buff applied to the whole character -> untagged, ModCache si4lgl-30) converts
+	-- ALL damage of the type, INCLUDING typed added. The base-damage loop below converts
+	-- the intrinsic base via the FULL conversionTable; this global-only table is consumed
+	-- (calcDamage) ONLY to also convert OFF-TYPE typed added -- see the consumer guard.
+	activeSkill.globalConversionTable = wipeTable(activeSkill.globalConversionTable)
+	-- True for a mod that is scoped to one or more specific skills (so it is a skill-base
+	-- conversion, not a player-global one).
+	local function isSkillScopedMod(m)
+		for _, t in ipairs(m) do
+			if type(t) == "table" and (t.type == "SkillName" or t.type == "SkillId") then
+				return true
+			end
+		end
+		return false
+	end
+	-- @leb-regression-guard:whole-attack-conversion
+	-- Ability-INTRINSIC (mutator-hardcoded) conversions convert the WHOLE attack slot
+	-- (weapon base + ALL typed added + intrinsic), not just the intrinsic base -- LE calls
+	-- `convertAllDamageOfType` (to[]+=from[]; from[]=0), NOT the stat-granted `convertBaseDamage`.
+	-- Datamine: Hail of Arrows' physical->fire/cold is set in HailOfArrowsMutator.Mutate()
+	-- (datamined game source), i.e. it is NOT a tree/gear STAT conversion. LEB parses
+	-- it as a SkillId-tagged (skill-scoped) conversion, which the base-conversion loop applies
+	-- to the intrinsic base only, leaving `addedBasePart[Physical]` type-preserved -> phys
+	-- over-read + fire slightly under (project_amhoa_hailofarrows_fire_light_under). When the
+	-- skill carries `wholeAttackConversion`, fold its OWN skill-scoped conversion into the
+	-- global-only sum too, so `globalConversionTable` is populated and the gct consumer
+	-- (calcDamage) also converts the typed added off-type -- matching the engine's whole-slot
+	-- convert. GATED on the per-ability flag: for every other skill `wholeAttack` is false and
+	-- the untagged-only behavior is byte-identical (stat-granted conversions like Swarmblade /
+	-- Mana Strike stay base-only, no regression). The base-derived gate below is kept ON for
+	-- this skill (it must NOT be treated as a player-global conversion) -- see its guard note.
+	-- Spec: spec/System/TestWholeAttackConversion_spec.lua
+	local wholeAttack = activeSkill.activeEffect.grantedEffect.wholeAttackConversion
+	-- Sum the UNTAGGED (player-global) portion of one or more conversion stats -- plus, when
+	-- wholeAttackConversion is set, this skill's OWN skill-scoped conversion (whole-slot).
+	local function sumGlobalConv(name1, name2)
+		local total = 0
+		for _, modName in ipairs(name2 and { name1, name2 } or { name1 }) do
+			for _, val in ipairs(skillModList:Tabulate("BASE", skillCfg, modName)) do
+				if wholeAttack or not isSkillScopedMod(val.mod) then
+					total = total + (skillModList:EvalMod(val.mod, skillCfg) or 0)
+				end
+			end
+		end
+		return total
+	end
+	-- @leb-regression-guard:conversion-direction-independent
+	-- Build the conversion table for EVERY (source -> destination) pair, not only dst types
+	-- that follow the source in DamageTypes order. LE conversion is direction-independent
+	-- (datamined game source convertBaseDamage), so e.g. Physical(idx4)->Fire(idx1) and
+	-- Lightning(idx3)->Cold(idx2) must be recorded; the consumer (calcDamage) reads them
+	-- order-independently with dest-only scaling. (Was: outer `1..#list-1` + inner
+	-- `damageTypeIndex+1..#list`, which silently dropped every backward conversion, plus a
+	-- trailing special-case for the last type — now folded into the full-range loop.)
+	-- @leb-regression-guard:grant-base-conversion-scope
+	-- A node-granted sub-skill with its OWN intrinsic base (Avalanche's Fissure,
+	-- granted via SubSkillGrants with source="SkillId:Avalanche") must NOT have that
+	-- base converted by the PARENT specialization-tree's base-conversion nodes that
+	-- the game scopes to the parent's own ability ("Avalanche's base physical damage
+	-- is converted to cold", av75ch-20 Frost). Those tree conversions reach the grant
+	-- ONLY through the cfg.groupSource == "SkillId:<parent>" channel (ModStore L798);
+	-- they convert the PARENT's base, not the grant's. The fix uses a conversion-only
+	-- cfg with groupSource stripped, which drops the parent-tree (SkillId-tagged)
+	-- base-conversions while KEEPING global (untagged) conversions — gear/passive
+	-- phys->cold that the game DOES route onto the grant (in-game Fissure realises
+	-- ~70% cold + an invariant ~26% physical that the local Frost would otherwise zero
+	-- out; memory project_avalanche_ingame_fissure_grant). Increases/added still inherit
+	-- via the full skillCfg used everywhere else. GATED on the skill flag: for every
+	-- other skill convCfg IS skillCfg, so the conversion table is byte-identical.
+	-- NOTE Ice Branch (sf5rd-34) NAMES its grants ("Spirit Thorns ... Thorn Shield's
+	-- base ... converted") but parses to the SAME generic " Physical -> Cold Damage" as
+	-- Frost (no SkillName tag) — the grant-vs-parent scope lives only in the tooltip, so
+	-- this is opt-OUT per grant (only AvalancheFissure carries noParentTreeBaseConversion),
+	-- NOT a default change that would strip SprigganForm's intended grant conversion.
+	-- Spec: spec/System/TestAvalancheFissureGrant_spec.lua
+	local convCfg = skillCfg
+	if activeSkill.activeEffect.grantedEffect.noParentTreeBaseConversion and skillCfg.groupSource then
+		convCfg = copyTable(skillCfg, true) -- shallow: skillCfg has cyclic refs; only groupSource is overridden
+		convCfg.groupSource = nil
+	end
+	for damageTypeIndex = 1, #dmgTypeList do
 		local damageType = dmgTypeList[damageTypeIndex]
 		local globalConv = wipeTable(tempTable1)
 		local skillConv = wipeTable(tempTable2)
 		local add = wipeTable(tempTable3)
 		local globalTotal, skillTotal = 0, 0
-		for otherTypeIndex = damageTypeIndex + 1, #dmgTypeList do
-			-- For all possible destination types, check for global and skill conversions
-			otherType = dmgTypeList[otherTypeIndex]
-			globalConv[otherType] = m_max(skillModList:Sum("BASE", skillCfg, damageType.."DamageConvertTo"..otherType, isElemental[damageType] and "ElementalDamageConvertTo"..otherType or nil), 0)
-			globalTotal = globalTotal + globalConv[otherType]
-			skillConv[otherType] = m_max(skillModList:Sum("BASE", skillCfg, "Skill"..damageType.."DamageConvertTo"..otherType), 0)
-			skillTotal = skillTotal + skillConv[otherType]
-			add[otherType] = m_max(skillModList:Sum("BASE", skillCfg, damageType.."DamageGainAs"..otherType, isElemental[damageType] and "ElementalDamageGainAs"..otherType or nil), 0)
+		-- @leb-regression-guard:global-conversion-converts-added-offtype (per-type sums)
+		-- The untagged-only conversion fraction out of this type (player-global), used to
+		-- also convert OFF-TYPE typed added in calcDamage. Only computed when the type has
+		-- any conversion at all (otherwise this whole table stays empty -> no-op).
+		local globalOnlyConv = { }
+		local globalOnlyTotal = 0
+		for otherTypeIndex = 1, #dmgTypeList do
+			if otherTypeIndex ~= damageTypeIndex then
+				-- For all possible destination types, check for global and skill conversions
+				otherType = dmgTypeList[otherTypeIndex]
+				globalConv[otherType] = m_max(skillModList:Sum("BASE", convCfg, damageType.."DamageConvertTo"..otherType, isElemental[damageType] and "ElementalDamageConvertTo"..otherType or nil), 0)
+				globalTotal = globalTotal + globalConv[otherType]
+				skillConv[otherType] = m_max(skillModList:Sum("BASE", skillCfg, "Skill"..damageType.."DamageConvertTo"..otherType), 0)
+				skillTotal = skillTotal + skillConv[otherType]
+				add[otherType] = m_max(skillModList:Sum("BASE", skillCfg, damageType.."DamageGainAs"..otherType, isElemental[damageType] and "ElementalDamageGainAs"..otherType or nil), 0)
+				if globalConv[otherType] > 0 then
+					-- only the player-global (untagged) part of the convert -- skips GainAs
+					local g = m_max(sumGlobalConv(damageType.."DamageConvertTo"..otherType, isElemental[damageType] and "ElementalDamageConvertTo"..otherType or nil), 0)
+					if g > 0 then
+						globalOnlyConv[otherType] = g
+						globalOnlyTotal = globalOnlyTotal + g
+					end
+				end
+			end
 		end
 		if skillTotal > 100 then
 			-- Skill conversion exceeds 100%, scale it down and remove non-skill conversions
@@ -1638,8 +2023,20 @@ function calcs.offence(env, actor, activeSkill)
 		end
 		dmgTable.mult = 1 - m_min((globalTotal + skillTotal) / 100, 1)
 		activeSkill.conversionTable[damageType] = dmgTable
+		-- @leb-regression-guard:global-conversion-converts-added-offtype (global table)
+		-- Mirror the over-100% clamp for the untagged-only fraction; mult is the retained
+		-- (un-converted-globally) share. Only stored when there IS a global conversion out
+		-- of this type, so non-global builds keep an empty table (consumer is a no-op).
+		if globalOnlyTotal > 0 then
+			local gFactor = globalOnlyTotal > 100 and (100 / globalOnlyTotal) or 1
+			local gTable = { }
+			for type, val in pairs(globalOnlyConv) do
+				gTable[type] = val * gFactor / 100
+			end
+			gTable.mult = 1 - m_min(globalOnlyTotal / 100, 1)
+			activeSkill.globalConversionTable[damageType] = gTable
+		end
 	end
-	activeSkill.conversionTable[dmgTypeList[#dmgTypeList]] = { mult = 1 }
 
 	-- Configure damage passes
 	local passList = { }
@@ -1720,7 +2117,13 @@ function calcs.offence(env, actor, activeSkill)
 			local inc = skillModList:Sum("INC", cfg, "Speed")
 			local attackRate = nil
 			output.Speed = 1 / baseTime * round((1 + inc/100) * more, 2)
-			if isAttack then
+			-- @leb-regression-guard:ballista-minion-ignores-owner-weapon-attack-rate
+			-- A summoned turret (Ballista) fires at its own base rate, independent of the
+			-- owner's weapon attack rate. In-game controlled captures (Rem-MK3 03/04/05:
+			-- bow rate 1.05 vs unarmed 1.2 both fit the SAME base 0.649/s) prove the owner's
+			-- weapon AttackRate must NOT multiply this minion's fire rate. Data-gated per skill
+			-- via the `minionIgnoresOwnerWeaponAttackRate` flag on the granted effect.
+			if isAttack and not activeSkill.activeEffect.grantedEffect.minionIgnoresOwnerWeaponAttackRate then
 				attackRate = env.player.weaponData1.AttackRate
 				output.Speed = output.Speed * attackRate
 			end
@@ -1795,10 +2198,82 @@ function calcs.offence(env, actor, activeSkill)
 			end
 		end
 	end
+	-- @leb-regression-guard:lightning-blast-chain-rehit
+	-- Lightning Blast "Convergence" (lb23il-18) re-hits the SAME target instead
+	-- of chaining to other enemies, so on a single target each realized chain is
+	-- an extra hit. Node-gated (the flag is set only when Convergence is
+	-- allocated) custom multiplier, since LB is modeled as a spell and the
+	-- generic projectile/chain machinery never runs for it. Mechanism + constants
+	-- from a datamined game source of LightningBlastMutator
+	-- (datamining): numberOfChains, mutateDelayedCastDuration = N*0.25f,
+	-- chanceToDoubleCast / chanceToQuadCast. Re-hits fire 0.25s apart and a new
+	-- cast pre-empts pending re-hits, so the realized count is min(numChains,
+	-- castInterval/0.25) -- genuinely cast-speed dependent. doublecast/quadcast
+	-- add casts (each casts the full kit, so they multiply the per-cast hits).
+	-- Applied on output.HitSpeed (the hit-rate lever the DPS/ailment paths prefer
+	-- over output.Speed) so the cast rate itself (MaxStacks/Duration) is untouched.
+	-- See wiki concepts/lightning-blast-chain-rehit-convergence.
+	-- @leb-regression-guard:lb-chain-rehit-skill-scoped
+	-- Gate to the Lightning Blast skill itself. Triggered children (e.g. the
+	-- "Spark Nova (from Lightning Blast)" entry, ailments) inherit LB's full
+	-- modlist via cfg.groupSource and so also carry LightningBlastChainsBackOnItself.
+	-- Without this guard the chain multiplier leaks onto those children and
+	-- double-applies (the child's trigger rate is ALREADY LB's post-chain HitSpeed),
+	-- ~2x over-counting Spark Nova's hit rate. Mirrors the Maelstrom skill-name
+	-- gate below. See REGRESSION_GUARDS.md "lb-chain-rehit-skill-scoped".
+	if skillModList:Flag(skillCfg, "LightningBlastChainsBackOnItself") and output.Speed and output.Speed > 0
+		and activeSkill.activeEffect and activeSkill.activeEffect.grantedEffect
+		and activeSkill.activeEffect.grantedEffect.name == "Lightning Blast" then
+		local numChains = 2 + (skillModList:Sum("BASE", skillCfg, "MaxAdditionalChains") or 0)
+		if skillModList:Flag(skillCfg, "LightningBlastHalfChains") then
+			numChains = m_ceil(numChains * 0.5)
+		end
+		local realizedChains = m_min(numChains, (1 / output.Speed) / 0.25)
+		local dc = (skillModList:Sum("BASE", skillCfg, "DoublecastChance") or 0) / 100
+		local qc = (skillModList:Sum("BASE", skillCfg, "QuadrupleCastChance") or 0) / 100
+		local castMult = 1 + dc * ((1 - qc) * 1 + qc * 3)
+		output.LightningBlastHitMult = castMult * (1 + realizedChains)
+		output.HitSpeed = output.Speed * output.LightningBlastHitMult
+	end
 	-- Other Misc DPS multipliers (like custom source)
 	skillData.dpsMultiplier = ( skillData.dpsMultiplier or 1 ) * ( 1 + skillModList:Sum("INC", skillCfg, "DPS") / 100 ) * skillModList:More(skillCfg, "DPS")
 	if env.config.repeatMode == "FINAL" or skillModList:Flag(nil, "OnlyFinalRepeat") then
 		skillData.dpsMultiplier = skillData.dpsMultiplier / (output.Repeats or 1)
+	end
+	-- @leb-regression-guard:flame-reave-return-wave-hits
+	-- Flame Reave return-waves are same-cast hits on the SAME target that ALWAYS deal
+	-- 50% less damage (the returning-hit penalty), so they scale sustained single-target
+	-- DPS as damage-EQUIVALENTS folded into dpsMultiplier (like ProjectileCount), NOT
+	-- AverageBurstHits (a burst-DISPLAY field that does not feed TotalDPS). Two nodes
+	-- (flags emitted node-scoped, SkillId:FlameReave, in CalcPerform):
+	--   * "Flame Caller" (fr11mv-18): +1 UNCONDITIONAL return hit x 0.5 dmg -> AdditionalSameTargetHits BASE 0.5.
+	--   * "Reflash" (fr11mv-16): the wave expands+returns a SECOND time for +2 hits,
+	--     but on its OWN 3s cooldown, so it fires at most once per 3s independent of
+	--     cast rate. Its extra hits ALWAYS carry a 50% LESS damage penalty (in-game
+	--     tooltip: "The additional expanding and returning hits from Reflash always
+	--     have the 50% less damage penalty"), so 2 hits x 0.5 = +1.0 hit-EQUIVALENT
+	--     per firing. Cast-rate-AVERAGED here (output.Speed is set by ~L2143): the
+	--     firing spreads over the casts in a 3s window = +min(1, 1/(3*castRate)) hit-
+	--     equivalents/cast (the 2x0.5 folded in).
+	-- Sum into one return-wave multiplier so composition is exact (dpsMultiplier x
+	-- (1 + total return-hit equivalents)). Capture (4guanghuan 20260707_140512_03)
+	-- hits/cast ~2.5 raw (250ms cast-grouping) = Flame Caller (+1) + Reflash (2 raw
+	-- hits at half damage). NOTE the absolute magnitude is confounded (LEB models a
+	-- faster cast rate than the capture, and default buff-state is off) -- the RATIOS
+	-- are the validated part. Spec: spec/System/TestFlameReaveReturnWaveHits_spec.lua.
+	-- @leb-regression-guard:avalanche-boulder-burst-per-cast
+	-- Avalanche's per-cast boulder burst (datamined 10 boulders/cast, all landing
+	-- within the 2.5s ability lifespan) also rides this same-target-hits fold: the
+	-- "avalancheBouldersPerCast" config injects AdditionalSameTargetHits BASE (N-1)
+	-- SkillName-scoped to Avalanche, so dpsMultiplier x (1 + (N-1)) = xN boulders.
+	-- Default OFF (0/1 -> no mod) => corpus-neutral. Manual-cast only (idol-proc
+	-- boulders are single, not a 10-burst; see the config-site guard + REGRESSION_GUARDS).
+	local additionalSameTargetHits = skillModList:Sum("BASE", skillCfg, "AdditionalSameTargetHits")
+	if skillModList:Flag(skillCfg, "FlameReaveReflashActive") and (output.Speed or 0) > 0 then
+		additionalSameTargetHits = additionalSameTargetHits + m_min(1, 1 / (3 * output.Speed))
+	end
+	if additionalSameTargetHits > 0 then
+		skillData.dpsMultiplier = skillData.dpsMultiplier * (1 + additionalSameTargetHits)
 	end
 	if skillModList:Flag(nil, "TriggeredBySnipe") then
 		skillFlags.channelRelease = true
@@ -1842,6 +2317,42 @@ function calcs.offence(env, actor, activeSkill)
 		output.MaxStacks = output.Speed * output.Duration * quantityMultiplier
 	else
 		output.MaxStacks = 1
+	end
+	-- @leb-regression-guard:channel-dot-per-second-base
+	-- Disintegrate 1382/s, Ghostflame 5479/s. See REGRESSION_GUARDS.md.
+	-- Validation provenance is retained in maintainer notes.
+	if skillFlags.dot and not skillFlags.hit and skillData.duration and skillData.duration >= 1000 then
+		output.MaxStacks = 1
+	end
+	-- @leb-regression-guard:tree-node-grant-aura-single-stack
+	-- See REGRESSION_GUARDS.md "tree-node-grant-aura-single-stack".
+	-- Validation provenance is retained in maintainer notes.
+	if activeSkill.socketGroup and type(activeSkill.socketGroup.source) == "string"
+		and activeSkill.socketGroup.source:find("^TreeNodeGrant:") then
+		output.MaxStacks = 1
+	end
+	-- @leb-regression-guard:trigger-aura-stack-on-crit-when-hit
+	-- An AFFIX-granted stacking aura ("X% chance to cast Fire Aura on crit/when hit
+	-- (K second cooldown)", source "AuraTrigger:<skillId>") gains a stack per trigger at
+	-- the PTT cap rate (1/K), and each stack lasts the skill Duration (LETools "Each
+	-- stack lasts 4 seconds"). Steady-state stacks = gainRate x Duration (the ailment
+	-- stack-uptime model). This REPLACES the generic Speed x Duration (it is not cast at
+	-- cast speed) and is NOT clamped to 1 (unlike the single TreeNodeGrant aura).
+	if activeSkill.socketGroup and type(activeSkill.socketGroup.source) == "string"
+		and activeSkill.socketGroup.source:find("^AuraTrigger:")
+		and activeSkill.socketGroup.auraTriggerRatePerSecond and output.Duration then
+		output.MaxStacks = activeSkill.socketGroup.auraTriggerRatePerSecond * output.Duration * (quantityMultiplier or 1)
+	end
+
+	-- @leb-regression-guard:maelstrom-active-stacks-config
+	-- See REGRESSION_GUARDS.md "maelstrom-active-stacks-config".
+	-- Validation provenance is retained in maintainer notes.
+	if activeSkill.activeEffect and activeSkill.activeEffect.grantedEffect
+		and activeSkill.activeEffect.grantedEffect.name == "Maelstrom" then
+		local cfgStacks = activeSkill.skillModList:Sum("BASE", activeSkill.skillCfg, "Multiplier:ActiveMaelstrom")
+		if cfgStacks and cfgStacks > 0 then
+			output.MaxStacks = cfgStacks
+		end
 	end
 
 	-- LE: Freeze Rate --
@@ -1972,6 +2483,84 @@ function calcs.offence(env, actor, activeSkill)
 	output.PoisonResShredChance    = m_min(modDB:Sum("BASE", skillCfg, "PoisonResShredChance"), 100)
 	output.VoidResShredChance      = m_min(modDB:Sum("BASE", skillCfg, "VoidResShredChance"), 100)
 
+	-- @leb-regression-guard:minion-ailment-chance-bridge
+	-- See REGRESSION_GUARDS.md "minion-ailment-chance-bridge".
+	-- Validation provenance is retained in maintainer notes.
+	for ailmentName in pairs(data.damagingAilment) do
+		local triggerChance = modDB:Sum("BASE", skillCfg, "ChanceToTriggerOnHit_Ailment_" .. ailmentName)
+		if triggerChance ~= 0 then
+			output[ailmentName .. "Chance"] = m_min((output[ailmentName .. "Chance"] or 0) + triggerChance, 100)
+		end
+	end
+
+	-- @leb-regression-guard:chance-chance-conversion (consumer site)
+	-- Chance->chance conversion engine. Sources: Apex of Thought (uniques_1_4 #316,
+	-- glyph-gated: Ignite/Shock/Chill Chance -> Fire/Lightning/Cold Res Shred Chance) and
+	-- Vial of Volatile Ice (uniques_1_4 #331, skill-scoped: Poison Chance -> Frostbite
+	-- Chance for Acid Flask). ModParser emits AilmentChanceConversion LIST mods carrying
+	-- { source, dest } and the appropriate tag (Condition for Apex, SkillName for Vial);
+	-- modDB:List(skillCfg, ...) resolves the tags, so only ACTIVE conversions are returned
+	-- (glyph config OFF -> empty; wrong skill -> empty). FAITHFUL: 100% of the source
+	-- chance converts -- move the full (already 0-100 capped) source value into the dest
+	-- (re-capped at 100) and zero the source so its ailment no longer applies. With no
+	-- conversion unique equipped this loop runs zero times, so output.<X>Chance is exactly
+	-- the prior modDB:Sum value (strict no-op -> the raw->output redirects below are
+	-- byte-identical for every other build).
+	-- Spec: spec/System/TestChanceChanceConversion_spec.lua
+	-- See REGRESSION_GUARDS.md "chance-chance-conversion".
+	for _, conv in ipairs(modDB:List(skillCfg, "AilmentChanceConversion")) do
+		local src, dst = conv.source, conv.dest
+		if src and dst and output[src] ~= nil and output[dst] ~= nil then
+			local moved = output[src]
+			if moved > 0 then
+				output[dst] = m_min(output[dst] + moved, 100)
+				output[src] = 0
+			end
+		end
+	end
+
+	-- @leb-regression-guard:ailment-scoped-penetration (consumer site)
+	-- Salt the Wound (#187): "(40-50)% of added Critical Strike Multiplier Converted to
+	-- Physical Penetration with Bleed / Poison Penetration with Poison". ModParser emits
+	-- CritMultToAilmentPen LIST mods { ailment, pct }. Read the ADDED crit multiplier
+	-- (playerExtra = BASE CritMultiplier, the gear/passive bonus above the 100 skill base) and
+	-- inject pct% of it as an Ailment<Name>Penetration BASE mod, which calcAilmentMitigation
+	-- sums ONLY for that ailment's DoT. No conversion unique -> empty list -> strict no-op.
+	for _, conv in ipairs(modDB:List(skillCfg, "CritMultToAilmentPen")) do
+		if conv.ailment and conv.pct then
+			local addedCritMult = skillModList:Sum("BASE", skillCfg, "CritMultiplier")
+			local penValue = conv.pct / 100 * addedCritMult
+			if penValue ~= 0 then
+				skillModList:NewMod("Ailment"..conv.ailment.."Penetration", "BASE", penValue, "Salt the Wound")
+			end
+		end
+	end
+
+	-- @leb-regression-guard:aura-of-decay-ailment-application
+	-- Validation provenance is retained in maintainer notes.
+	if activeSkill.activeEffect and activeSkill.activeEffect.grantedEffect
+		and activeSkill.activeEffect.grantedEffect.name == "Aura Of Decay" then
+		-- @leb-regression-guard:aura-of-decay-ailment-frequency (consumer site)
+		-- See REGRESSION_GUARDS.md "aura-of-decay-ailment-frequency".
+		-- Validation provenance is retained in maintainer notes.
+		local freq = skillModList:Sum("BASE", skillCfg, "AilmentFrequency")
+		-- datamine: RepeatedlyApplyAilmentsInRadius applicationInterval 0.25s => 4/s base
+		output.HitSpeed = 4 * (1 + freq / 100)
+		local innate = skillModList:Sum("BASE", skillCfg, "ChanceToTriggerOnHit_Ailment_Poison")
+		if skillModList:Sum("BASE", skillCfg, "PoisonDamageConvertToPhysical") > 0 then
+			-- Blood Font: inflict bleed instead of poison. AoD's bleed chance =
+			-- the innate 100% (converted from poison) + the player's AoD-applicable
+			-- (non-attack) bleed chance at 75% effectiveness. output.BleedChance
+			-- (L2535) already holds that non-attack bleed chance at FULL effect, so
+			-- OVERWRITE it (not +=) to re-apply it at 75% and avoid double-counting.
+			local playerBleed = modDB:Sum("BASE", skillCfg, "BleedChance") -- AoD-applicable (non-attack) bleed chance
+			output.BleedChance = m_min(innate + playerBleed * 0.75, 100)
+			output.PoisonChance = 0
+		else
+			output.PoisonChance = m_min((output.PoisonChance or 0) + innate, 100)
+		end
+	end
+
 	-- LE Armor Shred Effect --
 	output.ArmorShredEffect = calcLib.mod(skillModList, skillCfg, "ArmorShredEffect")
 
@@ -1987,8 +2576,16 @@ function calcs.offence(env, actor, activeSkill)
 	-- is preserved as duration extends, total damage scales via stack count.
 	-- This matches `dot_channel_formulas.md §3` (`baseDamage = total over
 	-- duration`) and §4 (`increasedDurationIncreasesDamage` → rate preserved).
-	-- Reference: LE_datamining/extracted/dot_channel_formulas.md, ailments_v3.json
+	-- Reference: datamined game source ailments_v3.json
 	local hitRate = output.HitSpeed or output.Speed or 0
+	-- @leb-regression-guard:hammer-throw-spiral-multihit
+	-- Spiral Hammer Throw's N hammers each roll the ailment independently on every pass
+	-- (the direct-hit dpsMultiplier set near the SequentialProjectiles block does NOT
+	-- reach this damaging-ailment rate), so multiply the per-hit application rate by the
+	-- same deterministic same-target hammer count. See the block above / REGRESSION_GUARDS.md.
+	if output.SpiralHammerHits then
+		hitRate = hitRate * output.SpiralHammerHits
+	end
 	local enemyDurationMap = {
 		Bleed = output.EnemyBleedDuration, Ignite = output.EnemyIgniteDuration,
 		Poison = output.EnemyPoisonDuration, Frostbite = output.EnemyFrostbiteDuration,
@@ -2003,6 +2600,10 @@ function calcs.offence(env, actor, activeSkill)
 		SerpentVenom = output.EnemySerpentVenomDuration, Hemorrhage = output.EnemyHemorrhageDuration,
 		Ravage = output.EnemyRavageDuration,
 	}
+	-- @leb-regression-guard:ailment-dot-flag-magnitude
+	-- Validation provenance is retained in maintainer notes.
+	local ailmentCfg = copyTable(skillCfg, true) -- shallow: skillCfg has cyclic refs
+	ailmentCfg.flags = bor(skillCfg.flags or 0, ModFlag.Dot)
 	output.TotalAilmentDPS = 0
 	for ailmentName, ailmentData in pairs(data.damagingAilment) do
 		local chance = output[ailmentName .. "Chance"] or 0
@@ -2014,16 +2615,26 @@ function calcs.offence(env, actor, activeSkill)
 			if ailmentData.dualType then
 				local totalDmg = 0
 				for dmgType, baseDmg in pairs(ailmentData.baseDamage) do
-					local incDamage = calcLib.mod(skillModList, skillCfg, ailmentName .. "Damage", "AilmentDamage", dmgType .. "Damage", "Damage")
-					totalDmg = totalDmg + baseDmg * incDamage
+					local incDamage = calcLib.mod(skillModList, ailmentCfg, ailmentName .. "Damage", "AilmentDamage", dmgType .. "Damage", "Damage")
+					-- @leb-regression-guard:dot-resist-pen-mitigation
+					-- per-type mitigation: each damage type of a dual-type ailment is
+					-- mitigated by its OWN resistance/penetration before being summed.
+					local mitigation = calcAilmentMitigation(dmgType, skillCfg, ailmentName)
+					totalDmg = totalDmg + baseDmg * incDamage * mitigation
 				end
-				local moreDamage = calcLib.mod(skillModList, skillCfg, ailmentName .. "DamageMore") or 1
+				local moreDamage = calcLib.mod(skillModList, ailmentCfg, ailmentName .. "DamageMore") or 1
 				totalDamagePerStack = totalDmg * moreDamage
 			else
 				local baseDmg = ailmentData.baseDamage
-				local incDamage = calcLib.mod(skillModList, skillCfg, ailmentName .. "Damage", "AilmentDamage", ailmentData.associatedType .. "Damage", "Damage")
-				local moreDamage = calcLib.mod(skillModList, skillCfg, ailmentName .. "DamageMore") or 1
-				totalDamagePerStack = baseDmg * incDamage * moreDamage
+				local incDamage = calcLib.mod(skillModList, ailmentCfg, ailmentName .. "Damage", "AilmentDamage", ailmentData.associatedType .. "Damage", "Damage")
+				local moreDamage = calcLib.mod(skillModList, ailmentCfg, ailmentName .. "DamageMore") or 1
+				-- @leb-regression-guard:dot-resist-pen-mitigation
+				-- single-type mitigation: ailment is mitigated by the resistance/penetration
+				-- of its associated damage type (Bleed=Physical, Ignite=Fire, Poison=Poison,
+				-- Frostbite=Cold, Electrify=Lightning, Damned/Void/Necrotic etc.).
+				local mitigation = calcAilmentMitigation(ailmentData.associatedType, skillCfg, ailmentName)
+				totalDamagePerStack = baseDmg * incDamage * moreDamage * mitigation
+				output[ailmentName .. "Mitigation"] = mitigation
 			end
 			-- Per-stack DPS uses the BASE duration (per-stack lifetime damage / per-stack duration).
 			-- Increased duration extends total damage via stack count, not per-stack rate.
@@ -2031,12 +2642,36 @@ function calcs.offence(env, actor, activeSkill)
 			output[ailmentName .. "DamagePerStack"] = totalDamagePerStack
 			output[ailmentName .. "DPSPerStack"] = dpsPerStack
 
-			-- Steady-state stacks on a single target
-			local applicationsPerSec = hitRate * (chance / 100)
+			-- @leb-regression-guard:ailment-overstacking-uncapped
+			-- Validation provenance is retained in maintainer notes.
+			local overstackChance = modDB:Sum("BASE", skillCfg, ailmentName .. "Chance")
+				+ modDB:Sum("BASE", skillCfg, "ChanceToTriggerOnHit_Ailment_" .. ailmentName)
+			if overstackChance < chance then overstackChance = chance end -- never drop below the finalized (post-conversion) chance
+			local applicationsPerSec = hitRate * (overstackChance / 100)
 			local rawStacks = applicationsPerSec * effDuration
 			local stacks = rawStacks
 			if ailmentData.maxStacks then
 				stacks = m_min(rawStacks, ailmentData.maxStacks)
+			end
+			-- @leb-regression-guard:chthonic-fissure-torment-multistack
+			-- NOTE: this damagingAilment-path override is INERT for Chthonic Fissure.
+			-- CF applies Torment via the TRIGGER-SKILL path (chance_to_cast_Ailment_Torment
+			-- _on_hit_% -> the "Ailment_Torment" skill in skills.json), NOT this
+			-- data.damagingAilment.Torment path -- CF sets no "TormentChance" mod, so the
+			-- `chance > 0` gate above is false for it and this block never runs for CF.
+			-- The REAL multi-stack lever is "Ailment_Torment".stats.maximum_stacks
+			-- (set to 6 = the dominant CF damage; see that entry's docNote + the
+			-- 2026-06-25 dicey_blank capture: Spirits emit ~2/s, each a 3s Torment ->
+			-- 6 coexisting). This config remains for any OTHER skill that applies Torment
+			-- through the damagingAilment path (none in the current corpus): it OVERRIDES
+			-- the stack count for Torment ONLY when set (>0). Default 0 -> override
+			-- skipped -> corpus-neutral. See REGRESSION_GUARDS.md
+			-- "chthonic-fissure-torment-multistack".
+			if ailmentName == "Torment" then
+				local tormentStackOverride = modDB:Sum("BASE", skillCfg, "Multiplier:ChthonicTormentStacks") or 0
+				if tormentStackOverride > 0 then
+					stacks = tormentStackOverride
+				end
 			end
 			-- For maxStacks=1 ailments, uptime fraction caps total DPS contribution
 			local totalDPS = m_min(dpsPerStack * stacks, data.misc.DotDpsCap)
@@ -2075,7 +2710,13 @@ function calcs.offence(env, actor, activeSkill)
 	end
 	-- Ignite Overload: 1% more fire damage per 20% global ignite chance
 	if modDB:Flag(nil, "Condition:IgniteOverload") then
-		local totalIgniteChance = modDB:Sum("BASE", skillCfg, "IgniteChance")
+		-- @leb-regression-guard:chance-chance-conversion (raw-reader redirect)
+		-- Read post-conversion output.IgniteChance, not the raw modDB:Sum. When Apex of
+		-- Thought converts Ignite Chance away (glyph active), that chance no longer exists,
+		-- so Ignite Overload must scale on what remains. With no conversion equipped,
+		-- output.IgniteChance == modDB:Sum("BASE", skillCfg, "IgniteChance") (the loop
+		-- above is a no-op), so this is byte-identical for every other build.
+		local totalIgniteChance = output.IgniteChance or 0
 		local moreFire = m_floor(totalIgniteChance / 20)
 		if moreFire > 0 then
 			output.IgniteOverloadMore = moreFire
@@ -2107,7 +2748,11 @@ function calcs.offence(env, actor, activeSkill)
 		globalOutput, globalBreakdown = output, breakdown
 		local source, output, cfg, breakdown = pass.source, pass.output, pass.cfg, pass.breakdown
 
-
+		-- @leb-regression-guard:truesight-glass-super-crit (chance site)
+		-- Super-Crit lottery magnitude (LE, gated on the "CanSuperCrit" FLAG from
+		-- Truesight Glass). Populated below only when UNCAPPED crit chance > 100%;
+		-- consumed at the CritEffect blend. See parser guard + §32 datamine.
+		local superCritChance = 0
 
 		if skillModList:Flag(cfg, "NeverCrit") or not skillFlags.hit then
 			output.PreEffectiveCritChance = 0
@@ -2151,6 +2796,15 @@ function calcs.offence(env, actor, activeSkill)
 					output.CritChance = m_max(output.CritChance, 0)
 				end
 				output.PreEffectiveCritChance = output.CritChance
+				-- @leb-regression-guard:truesight-glass-super-crit (chance site)
+				-- Super-Crit only accrues once UNCAPPED crit chance exceeds 100% (the
+				-- overflow gate `1.0 < critChance` in ProtectionClass.ApplyDamage);
+				-- rate = min(uncapped% / 100 - 1, maxSuperCritChance 0.4). preCapCritChance
+				-- is the pre-cap (uncapped) value; output.CritChance here is already
+				-- clamped to CritChanceCap (100). Requires the Truesight Glass grant flag.
+				if skillModList:Flag(cfg, "CanSuperCrit") and preCapCritChance > 100 then
+					superCritChance = m_min(preCapCritChance / 100 - 1, 0.4)
+				end
 				local preLuckyCritChance = output.CritChance
 				if env.mode_effective and skillModList:Flag(cfg, "CritChanceLucky") then
 					output.CritChance = (1 - (1 - output.CritChance / 100) ^ 2) * 100
@@ -2203,6 +2857,16 @@ function calcs.offence(env, actor, activeSkill)
 				-- additively on top of the default rather than replacing it.
 				if skillBase == 0 then skillBase = 100 end
 				local playerExtra = skillModList:Sum("BASE", cfg, "CritMultiplier")
+				-- @leb-regression-guard:pierce-chance-to-crit-multiplier
+				-- Shurikens "Ricochet" (srk21-19): "Pierce chance is converted to
+				-- additional critical strike multiplier." The summed PierceChance
+				-- ledger (e.g. Ethereal Blades srk21-27 = +25%/pt) joins the
+				-- additive crit-multi pool. Sheet-verified on StarSeaVnV: in-game
+				-- carried critMult 757 = sheet Throwing 582 + Massacre 75 +
+				-- pierce 100 (Ethereal Blades x4) EXACT.
+				if skillModList:Flag(cfg, "PierceChanceConvertsToCritMultiplier") then
+					playerExtra = playerExtra + skillModList:Sum("BASE", cfg, "PierceChance")
+				end
 				local extraDamage = (skillBase + playerExtra) / 100
 				local multiOverride = skillModList:Override(skillCfg, "CritMultiplier")
 				if multiOverride then
@@ -2224,12 +2888,29 @@ function calcs.offence(env, actor, activeSkill)
 			end
 			local critChancePercentage = output.CritChance / 100
 			output.CritEffect = 1 - critChancePercentage + critChancePercentage * output.CritMultiplier
+			-- @leb-regression-guard:truesight-glass-super-crit (effect site)
+			-- Fold LE Super-Crits into the average crit blend. Among hits that crit
+			-- (fraction critChancePercentage), a fraction superCritChance become
+			-- Super-Crits dealing (CritMultiplier + 3) instead of CritMultiplier. The
+			-- 3-way blend collapses algebraically to a single additive term:
+			--   (1-cc) + cc(1-sc)*CM + cc*sc*(CM+3) == [1-cc+cc*CM] + cc*sc*3
+			-- i.e. base CritEffect + critChancePercentage * superCritChance * 3
+			-- (3.0 = addedCritMultiForSuperCrits, datamine §27/§32). superCritChance is
+			-- 0 unless CanSuperCrit is granted AND uncapped crit chance > 100%, so this
+			-- is byte-for-byte inert on every build without Truesight Glass overcapped.
+			if superCritChance > 0 then
+				output.SuperCritChance = superCritChance * 100
+				output.CritEffect = output.CritEffect + critChancePercentage * superCritChance * 3
+			end
 			if breakdown and output.CritEffect ~= 1 then
 				breakdown.CritEffect = {
 					s_format("(1 - %.4f) ^8(portion of damage from non-crits)", critChancePercentage),
 					s_format("+ [ (%.4f x %g) ^8(portion of damage from crits)", critChancePercentage, output.CritMultiplier),
-					s_format("= %.3f", output.CritEffect),
 				}
+				if superCritChance > 0 then
+					t_insert(breakdown.CritEffect, s_format("+ (%.4f x %.4f x 3) ^8(Super-Crit: +300%% multi on %.1f%% of crits)", critChancePercentage, superCritChance, superCritChance * 100))
+				end
+				t_insert(breakdown.CritEffect, s_format("= %.3f", output.CritEffect))
 			end
 		end
 
@@ -2266,7 +2947,139 @@ function calcs.offence(env, actor, activeSkill)
 		--Calculate reservation DPS
 		globalOutput.ReservationDpsMultiplier = 100 / (100 - enemyDB:Sum("BASE", nil, "LifeReservationPercent"))
 
-		-- Calculate base hit damage
+		-- @leb-regression-guard:fissure-of-wrath-ailment-scaled-added-spell-damage
+		-- Chthonic Fissure tree node 22 "Fissure of Wrath" (ch0fs-22): the Fissure's
+		-- initial hit gains +N added spell damage per 2% ailment chance, scaling on the
+		-- UNCAPPED ailment chance. Game text (sharedassets1.assets tree 476002 node 22):
+		-- "...per 2% ignite chance. This effect scales with bleed or poison if the Fissure
+		-- is converted to physical or poison respectively."; altText "Ailment chance is
+		-- counted before being converted." output.<X>Chance is capped at 100
+		-- (CalcOffence:1954) and the chance is skill-scoped (player-global is 0), so we
+		-- read the raw uncapped skill-cfg Sum and fold it into allAddedDmg below, where it
+		-- gains damage effectiveness exactly like any other added flat damage. Which
+		-- ailment chance applies is decided by the Fissure's actual conversion: Blood
+		-- Gulch (ch0fs-28) fire->physical -> bleed; otherwise ignite. (Poison conversion
+		-- ch0fs-31 is not yet wired -- no test build exercises it.)
+		-- Spec: spec/System/TestFissureOfWrathAilmentScaledDamage_spec.lua
+		local fissureOfWrathAdded = 0
+		do
+			local perAilment = skillModList:Sum("BASE", cfg, "FissureSpellDamagePerUncappedAilment_Per2")
+			if perAilment ~= 0 then
+				local chanceStat = "IgniteChance"
+				if skillModList:Sum("BASE", cfg, "FireDamageConvertToPhysical") > 0 then
+					chanceStat = "BleedChance"
+				end
+				-- @leb-regression-guard:chance-chance-conversion (raw-reader redirect)
+				-- Fissure scales on the UNCAPPED ailment chance (may exceed 100), so we keep
+				-- the raw skillModList:Sum (NOT the 0-100 capped output.<X>Chance). But if a
+				-- chance->chance conversion has moved this stat away (100% converted), the
+				-- chance no longer exists and must not scale Fissure. Subtract it locally from
+				-- the SAME store. With no conversion equipped the AilmentChanceConversion list
+				-- is empty, so uncappedChance == the prior raw Sum (byte-identical). In
+				-- practice Apex (Mage) and Fissure (Acolyte) never co-occur, but this keeps the
+				-- redirect provably no-op regardless.
+				local uncappedChance = skillModList:Sum("BASE", cfg, chanceStat)
+				for _, conv in ipairs(skillModList:List(cfg, "AilmentChanceConversion")) do
+					if conv.source == chanceStat then
+						uncappedChance = 0
+					end
+				end
+				fissureOfWrathAdded = uncappedChance / 2 * perAilment
+			end
+		end
+
+		-- @leb-regression-guard:conversion-base-only-scope
+		-- @leb-regression-guard:weapon-added-preserved-through-conversion
+		-- Validation provenance is retained in maintainer notes.
+		local skillBasePart, addedBasePart = { }, { }
+		local weaponModSources = { }
+		local skillHasConversion = false
+		-- @leb-regression-guard:weapon-added-base-only-universal (convertAllAddedDamage carve-out REMOVED 2026-06-14)
+		-- @leb-regression-guard:ailment-finisher-scaling (weapon-flat cut)
+		-- Validation provenance is retained in maintainer notes.
+		local noWeaponAdded = activeSkill.activeEffect.grantedEffect.ailmentFinisher
+		do
+			-- @leb-regression-guard:conversion-flag-requires-sourced-type
+			-- Validation provenance is retained in maintainer notes.
+			for _, t in ipairs(dmgTypeList) do
+				local ct = activeSkill.conversionTable[t]
+				if ct and (ct.mult or 1) ~= 1 and source[t.."Damage"] then
+					skillHasConversion = true
+					break
+				end
+			end
+			-- The weapon modSources are needed ONLY by the ailment-finisher path (to DROP
+			-- weapon flats). Every other skill -- conversion or not, forms included -- keeps
+			-- its weapon-sourced added type-preserved, so it does NOT need this set.
+			if noWeaponAdded and actor.itemList then
+				for _, slotName in ipairs({ "Weapon 1", "Weapon 2" }) do
+					local item = actor.itemList[slotName]
+					if item and item.modSource then
+						weaponModSources[item.modSource] = true
+					end
+				end
+			end
+		end
+		-- @leb-regression-guard:adaptive-added-post-conversion-typing
+		-- The skill-cfg generic ("Damage", typeless/adaptive: "Added Spell/Melee Damage",
+		-- AdaptiveSpellDamage) added flat is the same scalar for every damage type. For
+		-- CONVERSION skills it does NOT ride the PRE-conversion base type -- the game's
+		-- DamageStats.buildDamageStats distributes it PROPORTIONALLY over the
+		-- POST-conversion base, gated on non-zero post-conversion base (datamined game source,
+		-- datamined game source). So it is deferred out of
+		-- the per-type added part here and redistributed after the conversion fixpoint
+		-- (distribution block below). adaptiveFactorByType stashes each type's
+		-- effectiveness x added-multiplier (and DoT /duration) so the deferred share
+		-- scales exactly as a same-type added flat would have. Non-conversion skills keep
+		-- the byte-identical pre-conversion source-gated single pool.
+		local genericAdded = skillModList:Sum("BASE", cfg, "Damage") + fissureOfWrathAdded
+		local adaptiveFactorByType = { }
+		-- @leb-regression-guard:nonconv-typeless-added-proportional
+		-- The typeless/adaptive added pool (genericAdded, "+X Damage") must be added to a
+		-- hit ONCE, distributed PROPORTIONALLY over the skill's non-zero intrinsic base
+		-- types -- the game's DamageStats.buildDamageStats does this over the post-conv base
+		-- (datamining:294-356; the conversion path below already mirrors it). The
+		-- non-conversion branch historically added the FULL genericAdded to EVERY intrinsic
+		-- type (the `source[damageTypeMod] and genericAdded` line), which DOUBLE/TRIPLE-counts
+		-- the pool for multi-intrinsic-type skills (Prism Shard fire+cold+light -> +X applied
+		-- 3x; Disintegrate/Avalanche/Voidwinter Bolt/etc -> 2x). Distribute by intrinsic-base
+		-- ratio instead. SINGLE-intrinsic-type skills get 100% of the pool on their one type
+		-- => BYTE-IDENTICAL to the old behavior (the only-one-type ratio is 1.0); only
+		-- multi-intrinsic-type non-conversion skills change. See REGRESSION_GUARDS.md.
+		-- @leb-regression-guard:elemental-nova-tree-gated-base-intrinsic
+		-- Elemental Nova's per-type base (Fire/Cold/Lightning 8 each) is granted by its
+		-- specialization tree (en6-12/en6-2/en6-8) as a skillModList "<T>Damage" BASE mod,
+		-- NOT as a skills.json intrinsic base -- so source[<T>Damage] (= skillData) is nil
+		-- and the genericAdded distribution gate below (`source[damageTypeMod]`) fails,
+		-- routing ZERO of the added-spell pool onto the gated types. In-game the nova routes
+		-- the full Added Spell Damage into each cast at damageEffectiveness (1.2), so LEB was
+		-- ~24x UNDER on the gated type. Register the tree-gated per-type base as intrinsic
+		-- source so the pool distributes onto it (and, below, subtract it from the per-type
+		-- ADDED sum so it is counted ONCE and scaled as intrinsic base x1, not added xEff --
+		-- fixing a minor base over-scale 8->9.6 too). Nova is the ONLY tree-gated-base skill
+		-- (see elemental-nova-spec-tree-gated-damage-type, SkillStatMap.lua). GROUNDED:
+		-- Tru_Flamer save-08 (lightning-only spec), paired char sheet Added Spell Damage=179
+		-- -> in-game per-hit lightning 1379.6; routing LEB's pool reproduces it (the residual
+		-- external-added under-read, pool 110 vs 179, is a separate AmHoA-cluster item).
+		-- See spec/System/TestElementalNovaAddedRouting_spec.lua + REGRESSION_GUARDS.md.
+		local novaTreeBaseByType = nil
+		if activeSkill.activeEffect.grantedEffect.name == "Elemental Nova" then
+			novaTreeBaseByType = { }
+			for _, dt in ipairs(dmgTypeList) do
+				local tb = skillModList:Sum("BASE", cfg, dt.."Damage")
+				if tb and tb > 0 then
+					novaTreeBaseByType[dt] = tb
+					source[dt.."Damage"] = (source[dt.."Damage"] or 0) + tb
+				end
+			end
+		end
+		local nonConvIntrinsicTotal = 0
+		if not skillHasConversion then
+			for _, dt in ipairs(dmgTypeList) do
+				local sv = source[dt.."Damage"]
+				if sv and sv > 0 then nonConvIntrinsicTotal = nonConvIntrinsicTotal + sv end
+			end
+		end
 		for _, damageType in ipairs(dmgTypeList) do
 			local damageTypeMod = damageType.."Damage"
 			local baseMultiplier = activeSkill.activeEffect.grantedEffect.stats.baseMultiplier or skillData.baseMultiplier or 1
@@ -2275,19 +3088,103 @@ function calcs.offence(env, actor, activeSkill)
 				damageEffectiveness = 0
 			end
 			local typeAddedDmg = skillModList:Sum("BASE", cfg, damageTypeMod) + enemyDB:Sum("BASE", cfg, "Self".. damageTypeMod)
-			local allAddedDmg = source[damageTypeMod] and skillModList:Sum("BASE", cfg, "Damage") or 0
-			local addedDmg = typeAddedDmg + allAddedDmg
-			local addedMult = calcLib.mod(skillModList, cfg, "Added"..damageType.."Damage", "AddedDamage")
-			local baseDmg = ((source[damageTypeMod] or 0) + (source[damageType.."BonusMin"] or 0)) * baseMultiplier + addedDmg * damageEffectiveness * addedMult
-			if skillFlags.dot then
-				-- Base damage is applied over the given base duration unless damage_interval is specified
-				if skillData.damageInterval then
-					baseDmg = baseDmg
+			-- @leb-regression-guard:elemental-nova-tree-gated-base-intrinsic
+			-- The nova's tree-gated per-type base was just registered as intrinsic source
+			-- above; remove it from the per-type ADDED sum so it is not double-counted (it
+			-- now rides skillPart at x1, not addedPart at xEff).
+			if novaTreeBaseByType and novaTreeBaseByType[damageType] then
+				typeAddedDmg = typeAddedDmg - novaTreeBaseByType[damageType]
+			end
+			-- @leb-regression-guard:adaptive-added-post-conversion-typing
+			-- @leb-regression-guard:nonconv-typeless-added-proportional
+			-- @leb-regression-guard:typeless-split-player-direct-only
+			-- Validation provenance is retained in maintainer notes.
+			local allAddedDmg = 0
+			if (not skillHasConversion) and source[damageTypeMod] then
+				if nonConvIntrinsicTotal > 0 and actor == env.player then
+					-- player-direct: proportional by intrinsic-base ratio (single-type => ratio 1.0 => byte-identical)
+					local sv = source[damageTypeMod]
+					allAddedDmg = genericAdded * ((sv > 0 and sv or 0) / nonConvIntrinsicTotal)
 				else
-					baseDmg = baseDmg / skillData.duration
+					-- minion-inherited added => FULL per-type (capture-grounded), OR all intrinsic
+					-- bases are 0 (no ratio possible) => legacy single-pool (no div-by-zero).
+					allAddedDmg = genericAdded
 				end
 			end
+			local addedDmg = typeAddedDmg + allAddedDmg
+			local addedMult = calcLib.mod(skillModList, cfg, "Added"..damageType.."Damage", "AddedDamage")
+			-- @leb-regression-guard:weapon-added-preserved-through-conversion
+			-- Weapon-sourced added flat (the weapon's property-0 implicits AND its rolled
+			-- affixes) is statList ADDED, NOT part of the convertible BaseDamageStats (see the
+			-- guard comment above), so for a BASE-SCOPED conversion it KEEPS its type and is
+			-- NOT collected here -- it stays in the type-preserved added part below. It is
+			-- collected ONLY for an ailment-finisher (noWeaponAdded -> the weapon flats are
+			-- DROPPED, since the proc never swings a weapon). There is no convert-all carve-out
+			-- anymore (forms are base-only; see weapon-added-base-only-universal above).
+			local weaponAdded = 0
+			if noWeaponAdded and next(weaponModSources) and addedDmg ~= 0 then
+				for _, value in ipairs(skillModList:Tabulate("BASE", cfg, damageTypeMod)) do
+					if weaponModSources[value.mod.source] then
+						weaponAdded = weaponAdded + (skillModList:EvalMod(value.mod, cfg) or 0)
+					end
+				end
+				-- A convertAllAddedDamage conversion skill defers the typeless generic
+				-- ("Damage") to the post-conversion adaptive distribution (skillHasConversion),
+				-- so only the finisher (non-conversion) collects the generic weapon flat here
+				-- (to drop it). @leb-regression-guard:adaptive-added-post-conversion-typing
+				if source[damageTypeMod] and not skillHasConversion then
+					for _, value in ipairs(skillModList:Tabulate("BASE", cfg, "Damage")) do
+						if weaponModSources[value.mod.source] then
+							weaponAdded = weaponAdded + (skillModList:EvalMod(value.mod, cfg) or 0)
+						end
+					end
+				end
+			end
+			if noWeaponAdded then
+				-- ailment-finisher: drop weapon flats from the pool entirely (they neither
+				-- convert nor remain): see ailment-finisher-scaling guard above.
+				addedDmg = addedDmg - weaponAdded
+				weaponAdded = 0
+			end
+			-- The convertible part = the skill's OWN intrinsic base. weaponAdded is collected
+			-- only for an ailment-finisher and is then dropped (set to 0 above), so by here it
+			-- is always 0 -- every skill's weapon-sourced added stays type-preserved in
+			-- addedPart. No-conversion builds: addedDmg folds the source-gated single pool ->
+			-- byte-identical to the prior pool.
+			local skillPart = ((source[damageTypeMod] or 0) + (source[damageType.."BonusMin"] or 0)) * baseMultiplier + weaponAdded * damageEffectiveness * addedMult
+			local addedPart = (addedDmg - weaponAdded) * damageEffectiveness * addedMult
+			local baseDmg = skillPart + addedPart
+			local dotDurationDivisor = 1
+			if skillFlags.dot then
+				-- @leb-regression-guard:skill-dot-per-second-base
+				-- See REGRESSION_GUARDS.md "skill-dot-per-second-base".
+				-- Validation provenance is retained in maintainer notes.
+				if skillData.damageInterval then
+					baseDmg = baseDmg
+				elseif skillData.duration and not skillFlags.hit and skillData.duration < 1000 then
+					-- finite-duration pure-DoT stacking aura: base is already per-second
+					baseDmg = baseDmg
+				elseif skillData.duration then
+					-- @leb-regression-guard:pure-dot-skill-dot-flag
+					-- guard the /duration: pure-DoT auras newly flagged by the dot-flag
+					-- derivation (Aura of Decay, Spirit Plague) have NO skillData.duration,
+					-- so an unconditional `else` here divides by nil and crashes BuildOutput.
+					-- nil-duration pure-DoT keeps its per-tick base (dotDurationDivisor stays 1).
+					dotDurationDivisor = skillData.duration
+					baseDmg = baseDmg / skillData.duration
+					-- keep the conversion components consistent with the divided total
+					skillPart = skillPart / skillData.duration
+					addedPart = addedPart / skillData.duration
+				end
+			end
+			-- @leb-regression-guard:adaptive-added-post-conversion-typing
+			-- per-type scaling for one unit of deferred adaptive added flat -- matches
+			-- exactly how addedPart was scaled (effectiveness x added multiplier, incl.
+			-- the DoT /duration applied above).
+			adaptiveFactorByType[damageType] = damageEffectiveness * addedMult / dotDurationDivisor
 			output[damageTypeMod .."Base"] = baseDmg
+			skillBasePart[damageType] = skillPart
+			addedBasePart[damageType] = addedPart
 			if breakdown then
 				breakdown[damageType] = { damageTypes = { } }
 				if baseDmg ~= 0 then
@@ -2310,12 +3207,274 @@ function calcs.offence(env, actor, activeSkill)
 						end
 					end
 					if skillFlags.dot then
-						if not skillData.damageInterval and skillData.duration then
+						if not skillData.damageInterval and skillData.duration
+							and (skillFlags.hit or skillData.duration >= 1000) then
+							-- only channel / hit+dot still divides base by duration
+							-- (see @leb-regression-guard:skill-dot-per-second-base)
 							t_insert(breakdown[damageType], s_format("/ %.2f ^8(base skill duration)", skillData.duration))
 						end
 					end
 					t_insert(breakdown[damageType], s_format("= %.1f", baseDmg))
 				end
+			end
+		end
+
+		-- @leb-regression-guard:conversion-multi-hop-conservation
+		-- Resolve multi-hop conversion chains (A->B->C) to a fixpoint so converted BASE damage
+		-- is conserved across hops. The prior single-pass fix folded only each type's RAW base
+		-- via ONE conversion in calcDamage, so an intermediate type that converts 100% out
+		-- (mult=0, retains nothing in its raw base) silently DROPPED everything routed through it
+		-- (synthetic Physical->Lightning->Cold: Cold HitAverage 125->0; corpus BakypDvx lv100
+		-- Runemaster FullDPS 2068->0). Game truth (datamined game source convertBaseDamage): conversion
+		-- redistributes BASE; total base is conserved and each final type scales dest-only.
+		--   effBase[t] = rawBase[t] + sum_{s ~= t} effBase[s] * conv[s][t]
+		-- Gauss-Seidel iteration (in place: each type folds in the upstream types already updated
+		-- this pass). For acyclic conversions -- every real build -- it reaches the unique exact
+		-- fixpoint (zero delta) in <= #dmgTypeList passes regardless of type order; the zero-delta
+		-- early-exit makes the no-conversion case break after one pass with effBase == rawBase
+		-- (byte-identical, since no convMult>0 term is ever added). Sub-100% cycles converge
+		-- geometrically; a pathological 100% cycle cannot converge, so a hard iteration cap
+		-- guarantees termination -- there every cycle member has mult=0, so its (bounded, capped)
+		-- effBase is dealt as 0 and the un-exited damage simply stays in the cycle (correct limit).
+		local convBase = { }
+		do
+			local conversionTable = activeSkill.conversionTable
+			-- @leb-regression-guard:conversion-base-only-scope
+			-- The fixpoint redistributes the CONVERTIBLE part only (the skill's OWN
+			-- intrinsic base = the engine's BaseDamageStats; see the guard comment at the
+			-- base-damage loop). After convergence:
+			--   convBase[t] = fixConvertible[t] * retention(t) + addedPart[t]
+			-- where retention(t) = conversionTable[t].mult and addedPart (ALL added --
+			-- weapon-sourced AND non-weapon) NEVER converts nor gets zeroed -- it keeps its
+			-- own type. The hit-stage x convMult is gone (folded here). No-conversion builds:
+			-- fix == seed, retention == 1 -> convBase == rawBase (byte-identical).
+			local fix = { }
+			for _, t in ipairs(dmgTypeList) do
+				fix[t] = skillBasePart[t] or 0
+			end
+			local CONV_ITER_CAP = #dmgTypeList * 4
+			for _ = 1, CONV_ITER_CAP do
+				local maxDelta = 0
+				for _, t in ipairs(dmgTypeList) do
+					local v = skillBasePart[t] or 0
+					for _, s in ipairs(dmgTypeList) do
+						if s ~= t then
+							local rate = (conversionTable[s] and conversionTable[s][t]) or 0
+							if rate > 0 then
+								v = v + fix[s] * rate
+							end
+						end
+					end
+					local d = v - fix[t]
+					if d < 0 then d = -d end
+					if d > maxDelta then maxDelta = d end
+					fix[t] = v
+				end
+				if maxDelta == 0 then break end
+			end
+			-- @leb-regression-guard:conversion-opposing-cycle-conservation
+			-- The fixpoint above scales each converged type by its retention(t) =
+			-- conversionTable[t].mult. For ACYCLIC chains (and LEAKY cycles that have an
+			-- exit) this conserves the convertible total: base that converts OUT of t is
+			-- counted in t's successors, so retention(t) correctly keeps only what stays.
+			-- But a PURE (exit-less) 100% conversion CYCLE -- two opposing 100% base
+			-- conversions Cold->Phys + Phys->Cold (Primalist Avalanche av75ch-9 Rockfall +
+			-- av75ch-20 Frost), or any A<->B / A->B->..->A where every member converts 100%
+			-- out -- gives EVERY member retention=0, so fix[t]*retention zeroes the base that
+			-- is circulating with no exit. That DROPS the whole convertible base (SuXes2
+			-- Avalanche: 80 pre-eff cold lost, body cold base 417.92 -> 337.92), violating
+			-- conservation. The game never loses it: DamageStatsHolder.BaseDamageStats.
+			-- convertBaseDamage(from,to,proportion) (datamining) is
+			--   damage[to] += proportion*damage[from]; damage[from] *= (1-proportion)
+			-- applied ONCE per conversion stat in sequence -- mass is moved, never destroyed,
+			-- so total is conserved at every step. retainedIntrinsic[t] = fix[t]*retention is
+			-- the post-conversion intrinsic base; default to it (byte-identical for the
+			-- acyclic/leaky path). ONLY when the fixpoint lost intrinsic base (a pure cycle)
+			-- re-resolve the intrinsic base the game's way: a single sequential pass of each
+			-- conversion edge over a copy of skillBasePart, iterating source/dest in
+			-- DamageTypes order. For the opposing pair this lands the base at the type whose
+			-- inbound conversion is applied LAST (Cold before Physical in DamageTypes -> all
+			-- Cold), matching the in-game node reminder "If you have this and Frost, Rockfall
+			-- has no effect" (net = Frost-only = all cold). Conserves total by construction;
+			-- the acyclic/leaky path never enters this branch so it stays byte-identical.
+			local retainedIntrinsic = { }
+			do
+				for _, t in ipairs(dmgTypeList) do
+					local retention = (conversionTable[t] and conversionTable[t].mult) or 1
+					retainedIntrinsic[t] = (fix[t] or 0) * retention
+				end
+				-- Decide whether the fixpoint trapped any base. A type is "grounded" if it can
+				-- eventually deliver its base to a retention>0 SINK -- directly (retention>0) or
+				-- by converting into a grounded type. A LEAKY cycle (an exit to a sink) is all
+				-- grounded, so it converges and is left to the fixpoint (byte-identical -- this
+				-- avoids a false positive from the iteration cap's tiny un-converged residual).
+				-- A PURE/exit-less cycle has ungrounded members whose fixpoint base diverges and
+				-- is then zeroed by retention=0 -> dropped. trapped = base accumulated in any
+				-- ungrounded type. Only then re-resolve sequentially (the game-faithful pass).
+				local grounded = { }
+				for _, t in ipairs(dmgTypeList) do
+					grounded[t] = (((conversionTable[t] and conversionTable[t].mult) or 1) > 0)
+				end
+				for _ = 1, #dmgTypeList do
+					local changed = false
+					for _, t in ipairs(dmgTypeList) do
+						if not grounded[t] then
+							local row = conversionTable[t]
+							if row then
+								for _, d in ipairs(dmgTypeList) do
+									if (row[d] or 0) > 0 and grounded[d] then grounded[t] = true; changed = true; break end
+								end
+							end
+						end
+					end
+					if not changed then break end
+				end
+				local trapped = false
+				for _, t in ipairs(dmgTypeList) do
+					if not grounded[t] and (fix[t] or 0) > 1e-9 then trapped = true; break end
+				end
+				if trapped then
+					local seq = { }
+					for _, t in ipairs(dmgTypeList) do seq[t] = skillBasePart[t] or 0 end
+					for _, from in ipairs(dmgTypeList) do
+						local row = conversionTable[from]
+						if row then
+							for _, to in ipairs(dmgTypeList) do
+								local rate = row[to]
+								if rate and rate > 0 and (seq[from] or 0) ~= 0 then
+									seq[to] = (seq[to] or 0) + rate * seq[from]
+									seq[from] = seq[from] * (1 - rate)
+								end
+							end
+						end
+					end
+					for _, t in ipairs(dmgTypeList) do
+						retainedIntrinsic[t] = seq[t]
+					end
+				end
+			end
+			-- @leb-regression-guard:adaptive-added-post-conversion-typing
+			-- @leb-regression-guard:adaptive-added-distributes-over-full-postconv-base
+			-- @leb-regression-guard:global-conversion-converts-added-offtype (consumer)
+			-- Validation provenance is retained in maintainer notes.
+			local gct = (actor == env.player) and activeSkill.globalConversionTable or nil
+			if gct then
+				local seed, seeded, anySeed = { }, { }, false
+				for _, t in ipairs(dmgTypeList) do
+					local row = gct[t]
+					if row and (row.mult or 1) < 1 and (addedBasePart[t] or 0) ~= 0 then
+						seed[t] = addedBasePart[t]
+						seeded[t] = true
+						anySeed = true
+					else
+						seed[t] = 0
+					end
+				end
+				if anySeed then
+					local afix = { }
+					for _, t in ipairs(dmgTypeList) do afix[t] = seed[t] end
+					for _ = 1, #dmgTypeList * 4 do
+						local maxDelta = 0
+						for _, t in ipairs(dmgTypeList) do
+							local v = seed[t]
+							for _, s in ipairs(dmgTypeList) do
+								if s ~= t then
+									local rate = (gct[s] and gct[s][t]) or 0
+									if rate > 0 then v = v + afix[s] * rate end
+								end
+							end
+							local d = v - afix[t]
+							if d < 0 then d = -d end
+							if d > maxDelta then maxDelta = d end
+							afix[t] = v
+						end
+						if maxDelta == 0 then break end
+					end
+					for _, t in ipairs(dmgTypeList) do
+						local retention = (gct[t] and gct[t].mult) or 1
+						local final = afix[t] * retention
+						if seeded[t] then
+							-- converted-out source type: keep only the globally-retained part
+							addedBasePart[t] = final
+						elseif final ~= 0 then
+							-- destination: add the received converted added
+							addedBasePart[t] = (addedBasePart[t] or 0) + final
+						end
+					end
+				end
+			end
+			-- Distribute the deferred typeless/adaptive added flat AFTER the global added
+			-- conversion above, so it spreads over the corrected post-conversion base.
+			if skillHasConversion and genericAdded ~= 0 then
+				-- @leb-regression-guard:adaptive-added-base-derived-types-only
+				-- The adaptive/typeless "+X Damage" pool matches the attack's BASE damage type
+				-- (property_list_v3.json tags=2048 "matches the base damage of the attack"), so
+				-- it must ride only the skill's base type and the types that base CONVERTS INTO
+				-- -- never an independently-added OFF-base type. Grounded on AmHoA Hail of Arrows
+				-- (bow, intrinsic Physical -> 100% Fire) whose Hydra Arc / Elemental Arrows add
+				-- typed LIGHTNING that is NOT on the base->conversion flow: the old weight
+				-- (postBase over EVERY non-zero type) leaked ~33% of the "+Bow Damage" pool onto
+				-- lightning (engine Ctrl+Num4 per-hit, 2026-07-07: Light OVER 12983 vs 9563, Fire
+				-- UNDER 26447 vs 39388). Restrict the distribution to types reachable in the
+				-- conversion graph from a skillBasePart>0 source. PRESERVES
+				-- adaptive-added-distributes-over-full-postconv-base (Swarmblade: physical IS the
+				-- melee base type => eligible, weapon-phys lane keeps its share) and
+				-- adaptive-added-post-conversion-typing (SuXes Avalanche phys->cold: cold is the
+				-- base's conversion dest => eligible; addedBasePart[phys]=0 => phys stays 0). A
+				-- skill with NO intrinsic base at all falls back to the full post-conversion base
+				-- (old behavior) so nothing regresses there.
+				local baseDerived, anyBaseDerived = { }, false
+				for _, t in ipairs(dmgTypeList) do
+					if (skillBasePart[t] or 0) > 0 then baseDerived[t] = true; anyBaseDerived = true end
+				end
+				local ct = activeSkill.conversionTable
+				if anyBaseDerived and ct then
+					for _ = 1, #dmgTypeList do
+						for _, s in ipairs(dmgTypeList) do
+							if baseDerived[s] and ct[s] then
+								for _, u in ipairs(dmgTypeList) do
+									if (ct[s][u] or 0) > 0 then baseDerived[u] = true end
+								end
+							end
+						end
+					end
+				end
+				-- @leb-regression-guard:whole-attack-conversion
+				-- Validation provenance is retained in maintainer notes.
+				local gctForGate = (actor == env.player) and activeSkill.globalConversionTable or nil
+				local hasActiveGlobalConv = false
+				if gctForGate and not activeSkill.activeEffect.grantedEffect.wholeAttackConversion then
+					for _, gt in ipairs(dmgTypeList) do
+						local row = gctForGate[gt]
+						if row and (row.mult or 1) < 1 then hasActiveGlobalConv = true break end
+					end
+				end
+				local applyBaseDerivedGate = anyBaseDerived and not hasActiveGlobalConv
+				local postBase, totalPost = { }, 0
+				for _, t in ipairs(dmgTypeList) do
+					postBase[t] = (retainedIntrinsic[t] or 0) + (addedBasePart[t] or 0)
+					-- base-derived gate (adaptive-added-base-derived-types-only): an off-base
+					-- independently-added lane gets NO adaptive share. Base-less conversion
+					-- skills (no intrinsic base at all) fall back to the full post-conv base.
+					if applyBaseDerivedGate and not baseDerived[t] then postBase[t] = 0 end
+					totalPost = totalPost + postBase[t]
+				end
+				if totalPost > 0 then
+					for _, t in ipairs(dmgTypeList) do
+						if postBase[t] > 0 then
+							addedBasePart[t] = (addedBasePart[t] or 0) + genericAdded * (postBase[t] / totalPost) * (adaptiveFactorByType[t] or 0)
+						end
+					end
+				end
+			end
+			for _, t in ipairs(dmgTypeList) do
+				convBase[t] = (retainedIntrinsic[t] or 0) + (addedBasePart[t] or 0)
+				-- Expose the converged POST-conversion base. The only runtime reader
+				-- (calcDamage's rawBase) is overridden by convBaseIn, so this is inert for
+				-- the hit; it keeps output[<type>DamageBase] meaningful for conversion
+				-- skills (= where the adaptive added now lands). Byte-identical to the old
+				-- per-type assignment for no-conversion builds (convBase == baseDmg there).
+				output[t .."DamageBase"] = convBase[t]
 			end
 		end
 
@@ -2337,13 +3496,17 @@ function calcs.offence(env, actor, activeSkill)
 			for _, damageType in ipairs(dmgTypeList) do
 				local damageTypeHitAvg = 0
 				if canDeal[damageType] then
-					damageTypeHitAvg = calcDamage(activeSkill, output, cfg, pass == 2 and breakdown and breakdown[damageType], damageType, 0)
+					damageTypeHitAvg = calcDamage(activeSkill, output, cfg, pass == 2 and breakdown and breakdown[damageType], damageType, 0, nil, convBase)
+					-- @leb-regression-guard:conversion-base-only-scope
+					-- The conversion retention (conversionTable[t].mult) is folded into
+					-- convBase above (skill-base part only); multiplying the whole hit
+					-- here would wrongly zero the un-convertible ADDED part too.
 					local convMult = activeSkill.conversionTable[damageType].mult
 					if pass == 2 and breakdown then
 						t_insert(breakdown[damageType], "Hit damage:")
 						t_insert(breakdown[damageType], s_format("%d ^8(total damage)", damageTypeHitAvg))
 						if convMult ~= 1 then
-							t_insert(breakdown[damageType], s_format("x %g ^8(%g%% converted to other damage types)", convMult, (1-convMult)*100))
+							t_insert(breakdown[damageType], s_format("^8(%g%% of the skill base converted to other types; added damage keeps its type)", (1-convMult)*100))
 						end
 						if output.DoubleDamageEffect ~= 0 then
 							if output.TripleDamageEffect ~= 0 then
@@ -2355,7 +3518,9 @@ function calcs.offence(env, actor, activeSkill)
 							t_insert(breakdown[damageType], s_format("x %.2f ^8(multiplier from %d%% chance to deal triple damage)", 1 + output.TripleDamageEffect, output.TripleDamageChance))
 						end
 					end
-					output.allMult = convMult * output.ScaledDamageEffect
+					-- conversion-base-only-scope: retention already folded into convBase;
+					-- do NOT multiply the hit by convMult (it would zero the added part).
+					output.allMult = output.ScaledDamageEffect
 					local allMult = output.allMult
 					if pass == 1 then
 						-- Apply crit multiplier
@@ -2384,7 +3549,38 @@ function calcs.offence(env, actor, activeSkill)
 							end
 						else
 							resist = calcResistForType(damageType, cfg)
-							pen = skillModList:Sum("BASE", cfg, damageType.."Penetration", "Penetration")
+							-- @leb-regression-guard:ailment-pen-family-fixup (pseudo-skill site)
+							-- LEB imports each damaging ailment as its own ACTIVE skill whose granted-effect
+							-- name == the ailment name (skills.json Ailment_*; CalcActiveSkill.lua skillCfg.
+							-- skillName = grantedEffect.name). On dev, non-Physical family rows from ITEM
+							-- sources ("+10% Fire Penetration with Ignite" = FirePenetration {SkillName=
+							-- Ignite}) were LIVE on this very Sum during the Ignite pseudo-skill's run
+							-- (cfg.skillName=="Ignite" matched the tag). The ModParser chokepoint rewrite
+							-- strips the tag (-> AilmentIgniteFirePenetration), which would silently drop
+							-- that pen from the pseudo-skill's own DoT. Routing unification, NOT a behaviour
+							-- change: when the active skill IS a damaging-ailment pseudo-skill, also sum the
+							-- ailment-scoped channel keys here. The pseudo-skill's NESTED ailments get the
+							-- rewritten keys inside calcAilmentMitigation instead -- same shape as dev,
+							-- where the SkillName-tagged mod matched BOTH this site (own damage) and
+							-- calcAilmentMitigation's <Type>Penetration sum (nested ailments); each damage
+							-- pool is penetrated exactly once, no double-count. The Physical branch above
+							-- never summed pen on dev (armour-reduction path, no pen term), so Physical
+							-- family rows were inert there and STAY inert -- intentionally not extended.
+							-- SPACED granted-effect names ("Time Rot" for Ailment_TimeRot) resolve through
+							-- data.damagingAilmentSpacedName -- the same display-name map the parser fixup
+							-- uses to emit the stripped channel key ("AilmentTimeRotVoidPenetration"), so
+							-- the pen those rows used to deliver via the SkillName tag keeps flowing here.
+							-- Real-skill collisions ("Bone Curse"/"Spirit Plague") are excluded from that
+							-- map, so the REAL Acolyte skills (same granted-effect names) never enter the
+							-- gated branch. See REGRESSION_GUARDS.md "ailment-pen-family-fixup".
+							local asName = activeSkill.activeEffect.grantedEffect.name
+							local asKey = data.damagingAilment[asName] and asName
+								or data.damagingAilmentSpacedName[asName]
+							if asKey then
+								pen = skillModList:Sum("BASE", cfg, damageType.."Penetration", "Penetration", "Ailment"..asKey.."Penetration", "Ailment"..asKey..damageType.."Penetration")
+							else
+								pen = skillModList:Sum("BASE", cfg, damageType.."Penetration", "Penetration")
+							end
 							takenInc = takenInc + enemyDB:Sum("INC", cfg, "ElementalDamageTaken")
 						end
 						local invertChance = m_max(m_min(skillModList:Sum("CHANCE", cfg, "HitsInvertEleResChance"), 1), 0)
@@ -2466,10 +3662,10 @@ function calcs.offence(env, actor, activeSkill)
 				manaLeechTotal = manaLeechTotal + skillData.manaLeechPerUse
 			end
 
-			-- leech caps per instance
-			lifeLeechTotal = m_min(lifeLeechTotal, globalOutput.MaxLifeLeechInstance)
-			manaLeechTotal = m_min(manaLeechTotal, globalOutput.MaxManaLeechInstance)
-
+			-- @leb-regression-guard:leech-le-instance-model
+			-- LE has NO per-instance leech cap (the PoB MaxLifeLeechInstance was never
+			-- seeded -> calcLib.val=0 -> m_min(total, 0) zeroed ALL leech). The leech
+			-- instance amount = Sum(typeDmg x HealthLeech%) accumulated above, uncapped.
 			local portion = (pass == 1) and (output.CritChance / 100) or (1 - output.CritChance / 100)
 			output.LifeLeech = output.LifeLeech + lifeLeechTotal * portion
 			output.ManaLeech = output.ManaLeech + manaLeechTotal * portion
@@ -2502,31 +3698,11 @@ function calcs.offence(env, actor, activeSkill)
 			skillModList:NewMod("Condition:"..highestType.."IsHighestDamageType", "FLAG", true, "Config")
 		end
 
-		-- Calculate leech
-		local function getLeechInstances(amount, total)
-			if total == 0 then
-				return 0, 0
-			end
-			local duration = amount / total / data.misc.LeechRateBase
-			return duration, duration * hitRate
-		end
-
-		--Instant Leech
-		output.LifeLeechInstantProportion = m_max(m_min(skillModList:Sum("BASE", cfg, "InstantLifeLeech") or 0, 100), 0) / 100
-		if output.LifeLeechInstantProportion > 0 then
-			output.LifeLeechInstant = output.LifeLeech * output.LifeLeechInstantProportion
-			output.LifeLeech = output.LifeLeech * (1 - output.LifeLeechInstantProportion)
-		end
-		output.ManaLeechInstantProportion = m_max(m_min(skillModList:Sum("BASE", cfg, "InstantManaLeech") or 0, 100), 0) / 100
-		if output.ManaLeechInstantProportion > 0 then
-			output.ManaLeechInstant = output.ManaLeech * output.ManaLeechInstantProportion
-			output.ManaLeech = output.ManaLeech * (1 - output.ManaLeechInstantProportion)
-		end
-
-		output.LifeLeechDuration, output.LifeLeechInstances = getLeechInstances(output.LifeLeech, globalOutput.Life)
-		output.LifeLeechInstantRate = output.LifeLeechInstant * hitRate
-		output.ManaLeechDuration, output.ManaLeechInstances = getLeechInstances(output.ManaLeech, globalOutput.Mana)
-		output.ManaLeechInstantRate = output.ManaLeechInstant * hitRate
+		-- Leech (LE instance model -- @leb-regression-guard:leech-le-instance-model):
+		-- output.LifeLeech / output.ManaLeech now hold Sum(typeDmg x HealthLeech%) per
+		-- leeching hit (uncapped). The instance window and sustained rate are finalized
+		-- after the damage block at "Calculate leech rates" below. The PoB getLeechInstances
+		-- 2%/s-pool ramp + InstantLeech split were removed (no LE counterpart, §47).
 
 		-- Calculate gain on hit
 		if skillFlags.mine or skillFlags.trap or skillFlags.totem then
@@ -2554,6 +3730,49 @@ function calcs.offence(env, actor, activeSkill)
 
 		-- Calculate average damage and final DPS
 		output.AverageHit = totalHitAvg * (1 - output.CritChance / 100) + totalCritAvg * output.CritChance / 100
+
+		-- @leb-regression-guard:truesight-glass-super-crit (damage site)
+		-- Fold LE Super-Crits into the headline AverageHit (the value that feeds
+		-- AverageDamage -> TotalDPS). A Super-Crit deals base x (CritMultiplier + 3)
+		-- instead of base x CritMultiplier, so each Super-Crit adds base x 3 over a
+		-- normal crit. Super-Crits are a superCritChance fraction of the crit portion
+		-- (output.CritChance), and base = totalHitAvg (the x1 pre-crit-multi sum), so
+		-- the extra average = totalHitAvg x critChance x superCritChance x 3. Applied
+		-- RAW (non-boss-reduced) to match how CritMultiplier is applied to this
+		-- headline (the boss reduction lives only in the display outputs below).
+		-- superCritChance is 0 unless CanSuperCrit (Truesight Glass) is granted AND
+		-- uncapped crit chance > 100%, so this is byte-identical on every other build
+		-- (no corpus snapshot change off the gated set). Grounding: datamine
+		-- §27/§32 (critMulti += addedCritMultiForSuperCrits = 3.0f).
+		if superCritChance > 0 then
+			output.AverageHit = output.AverageHit + totalHitAvg * (output.CritChance / 100) * superCritChance * 3
+		end
+
+		-- @leb-regression-guard:boss-crit-damage-taken (consumer / display)
+		-- PoB-style non-crit / crit / crit-weighted per-hit breakdown, made
+		-- boss-target-accurate. Datamine (critical_strike_formulas.md §5): a crit is
+		-- applied DEFENDER-side as effective_multi = 1 + (1 - RBDTFC) x (multi - 1),
+		-- and a boss carries RBDTFC ~= 0.35 (game const 0.65 on the bonus) -> this is
+		-- the empirically measured "realized crit extra ~= 2/3" (wiki
+		-- crit-realization-constant). totalHitAvg / totalCritAvg here are already
+		-- post-mitigation per-hit sums. These outputs are DISPLAY-ONLY; the headline
+		-- AverageHit / TotalDPS above stay sheet-faithful, so corpus snapshots are
+		-- unchanged (no regen). The full sheet crit hit is kept as CritAverageHitSheet.
+		output.NonCritAverageHit = totalHitAvg
+		output.CritAverageHitSheet = totalCritAvg
+		local bossCritReduce = env.mode_effective and enemyDB:Sum("BASE", nil, "ReducedBonusDamageTakenFromCrits") or 0
+		bossCritReduce = m_min(m_max(bossCritReduce, 0), 1)
+		output.BossCritDamageTakenMult = 1 - bossCritReduce
+		-- keep the non-crit floor, scale only the crit BONUS (crit - non-crit) by (1 - RBDTFC)
+		-- @leb-regression-guard:truesight-glass-super-crit (boss display)
+		-- The Super-Crit +3 multiplier is part of the crit bonus, so it is reduced by
+		-- the boss RBDTFC exactly like the base crit bonus. Averaged over crits, a
+		-- superCritChance fraction carry an extra base x 3 (base = totalHitAvg), so the
+		-- per-crit bonus gains superCritChance x 3 x totalHitAvg before the boss scale.
+		-- Inert (byte-identical) when superCritChance == 0.
+		output.CritAverageHit = totalHitAvg + ((totalCritAvg - totalHitAvg) + superCritChance * 3 * totalHitAvg) * output.BossCritDamageTakenMult
+		output.CritWeightedHit = output.NonCritAverageHit * (1 - output.CritChance / 100) + output.CritAverageHit * output.CritChance / 100
+
 		if skillFlags.monsterExplode then
 			output.AverageHitToMonsterLifePercentage = output.AverageHit / monsterLife * 100
 			if skillData.hitChanceIsExplodeChance then
@@ -2584,6 +3803,10 @@ function calcs.offence(env, actor, activeSkill)
 
 		output.TotalDPS = output.AverageDamage * skillData.dpsMultiplier
 
+		-- @leb-regression-guard: devouring-orb-persistent-pulse-hit
+		-- Validation provenance is retained in maintainer notes.
+		local persistentPulseHit = not skillFlags.dot and skillFlags.hit
+			and skillFlags.duration and skillData.damageInterval
 		-- Calculates DOT stack
 		if skillFlags.dot then
 			if skillData.damageInterval then
@@ -2598,6 +3821,10 @@ function calcs.offence(env, actor, activeSkill)
 					}
 				end
 			end
+		elseif persistentPulseHit then
+			-- Each pulse is a HIT applied once per damageInterval while the area
+			-- persists; sustained DPS = AverageDamage / damageInterval.
+			output.TotalDPS = output.TotalDPS / skillData.damageInterval
 		else
 			output.TotalDPS = output.TotalDPS * (globalOutput.HitSpeed or globalOutput.Speed) * quantityMultiplier
 		end
@@ -2669,6 +3896,12 @@ function calcs.offence(env, actor, activeSkill)
 			if skillData.duration then
 				t_insert(breakdown.TotalDPS, s_format("x %.2f ^8(max stacks)", output.MaxStacks))
 			end
+		elseif not skillFlags.dot and skillFlags.hit and skillFlags.duration and skillData.damageInterval then
+			-- persistent-pulse HIT (see @leb-regression-guard: devouring-orb-persistent-pulse-hit)
+			breakdown.TotalDPS = {
+				s_format("%.1f ^8(damage per pulse)", output.AverageDamage),
+				s_format("/ %.2f ^8(damage interval -- persistent pulse)", skillData.damageInterval),
+			}
 		else
 			breakdown.TotalDPS = {
 				s_format("%.1f ^8(average hit)", output.AverageDamage),
@@ -2688,17 +3921,25 @@ function calcs.offence(env, actor, activeSkill)
 		skillData.summonSpeed = output.SummonedMinionsPerCast * (output.HitSpeed or output.Speed) * skillData.dpsMultiplier
 	end
 
-	-- Calculate leech rates
-	output.LifeLeechInstanceRate = output.Life * data.misc.LeechRateBase * calcLib.mod(skillModList, skillCfg, "LifeLeechRate")
-	output.LifeLeechRate = output.LifeLeechInstances * output.LifeLeechInstanceRate
-	output.LifeLeechPerHit = output.LifeLeechInstanceRate
-	output.ManaLeechInstanceRate = output.Mana * data.misc.LeechRateBase * calcLib.mod(skillModList, skillCfg, "ManaLeechRate")
-	output.ManaLeechRate = output.ManaLeechInstances * output.ManaLeechInstanceRate
-	output.ManaLeechPerHit = output.ManaLeechInstanceRate
-	output.LifeLeechRate = output.LifeLeechInstantRate + m_min(output.LifeLeechRate, output.MaxLifeLeechRate) * output.LifeRecoveryRateMod
-	output.LifeLeechPerHit = output.LifeLeechInstant + m_min(output.LifeLeechPerHit, output.MaxLifeLeechRate) * output.LifeLeechDuration * output.LifeRecoveryRateMod
-	output.ManaLeechRate = output.ManaLeechInstantRate + m_min(output.ManaLeechRate, output.MaxManaLeechRate) * output.ManaRecoveryRateMod
-	output.ManaLeechPerHit = output.ManaLeechInstant + m_min(output.ManaLeechPerHit, output.MaxManaLeechRate) * output.ManaLeechDuration * output.ManaRecoveryRateMod
+	-- Calculate leech rates (LE instance model -- @leb-regression-guard:leech-le-instance-model)
+	-- Each leeching hit enqueues an instance of size output.LifeLeech = Sum(typeDmg x
+	-- HealthLeech%) (SP51), healed linearly over a window = LeechDuration / (1+IncreasedLeechRate)
+	-- seconds (AddLifeLeech datamined offset; OnUpdateTick datamined offset). Every instance pays out
+	-- its FULL amount, so the sustained leech/s under continuous combat = leechPerHit x leechHitRate,
+	-- independent of the window. IncreasedLeechRate (SP102; output.LeechRate = 1+ILR) only shortens
+	-- the recovery window (peak/burst recovery), not sustained throughput. There is NO PoE-style
+	-- per-second "% of pool" cap (formulas_verified.md §47).
+	local leechHitRate = output.HitChance / 100 * (globalOutput.HitSpeed or globalOutput.Speed or 0) * (skillData.dpsMultiplier or 1)
+	local leechRateMod = m_max(output.LeechRate or 1, 0.01) -- (1 + IncreasedLeechRate)
+	output.LifeLeechDuration = data.misc.LeechDuration / leechRateMod
+	output.ManaLeechDuration = data.misc.LeechDuration / leechRateMod
+	output.LifeLeechPerHit = output.LifeLeech or 0
+	output.ManaLeechPerHit = output.ManaLeech or 0
+	output.LifeLeechRate = output.LifeLeechPerHit * leechHitRate
+	output.ManaLeechRate = output.ManaLeechPerHit * leechHitRate
+	-- average instances simultaneously draining on a single target (informational)
+	output.LifeLeechInstances = output.LifeLeechPerHit > 0 and leechHitRate * output.LifeLeechDuration or 0
+	output.ManaLeechInstances = output.ManaLeechPerHit > 0 and leechHitRate * output.ManaLeechDuration or 0
 	skillFlags.leechLife = output.LifeLeechRate > 0
 	skillFlags.leechMana = output.ManaLeechRate > 0
 	if skillData.showAverage then
@@ -2709,12 +3950,11 @@ function calcs.offence(env, actor, activeSkill)
 		output.ManaLeechGainRate = output.ManaLeechRate + output.ManaOnHitRate
 	end
 	if breakdown then
-		local hitRate = output.HitChance / 100 * (globalOutput.HitSpeed or globalOutput.Speed) * skillData.dpsMultiplier
 		if skillFlags.leechLife then
-			breakdown.LifeLeech = breakdown.leech(output.LifeLeechInstant, output.LifeLeechInstantRate, output.LifeLeechInstances, output.Life, "LifeLeechRate", output.MaxLifeLeechRate, output.LifeLeechDuration, output.LifeLeechInstantProportion, hitRate)
+			breakdown.LifeLeech = breakdown.leech(output.LifeLeechPerHit, output.LifeLeechRate, output.LifeLeechInstances, output.LifeLeechDuration, leechHitRate, output.LeechRate, "Health")
 		end
 		if skillFlags.leechMana then
-			breakdown.ManaLeech = breakdown.leech(output.ManaLeechInstant, output.ManaLeechInstantRate, output.ManaLeechInstances, output.Mana, "ManaLeechRate", output.MaxManaLeechRate, output.ManaLeechDuration, output.ManaLeechInstantProportion, hitRate)
+			breakdown.ManaLeech = breakdown.leech(output.ManaLeechPerHit, output.ManaLeechRate, output.ManaLeechInstances, output.ManaLeechDuration, leechHitRate, output.LeechRate, "Mana")
 		end
 	end
 

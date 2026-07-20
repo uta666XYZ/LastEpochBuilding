@@ -275,7 +275,7 @@ function ListClass:Draw(viewPort, noTooltip)
 				-- GetRowIcon may return a list of 16x16 icons (type / primordial /
 				-- corrupted markers). Draw each in sequence and shift the text.
 				-- Defensive :IsValid() re-check guards against non-deterministic
-				-- C++ renderer crash post-import (commit a7607e878 history).
+				-- C++ renderer crash post-import (commit <see git log> history).
 				local drawn = 0
 				for i = 1, #icon do
 					local h = icon[i]

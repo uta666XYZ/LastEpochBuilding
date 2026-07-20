@@ -8,10 +8,10 @@
 -- routes it through the ability's own CD timer, NOT through the
 -- player's SP.IncreasedCooldownRecoverySpeed=70 property.
 --
--- Game ground truth (LE_datamining/extracted):
+-- Game ground truth (datamined game source):
 --   * items/globalTreeData.json -> skillTrees[treeID=si4lgl].nodes[id=23]
 --     internal name "Sigils Of Hope Cooldown Recovery"
---   * dump.cs IdolAltarPropertyID enum has no aggregate-CDR-from-tree
+--   * datamined game source IdolAltarPropertyID enum has no aggregate-CDR-from-tree
 --     property; CDR-on-skill is per-ability state, not a player stat
 --   * audit of si4lgl/ah443 buff-tree node stats confirms si4lgl-23 is
 --     the only CooldownRecovery node in those trees (others are

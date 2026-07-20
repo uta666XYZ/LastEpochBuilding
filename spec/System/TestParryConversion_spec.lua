@@ -3,11 +3,11 @@
 -- `Clotho's Needle` (uniques_1_4.json #417) mod text
 --   "+N Block Chance converted to Parry Chance while not wielding a shield".
 --
--- Decompile reference (LE_datamining/extracted/block_decompile.txt):
+-- datamining reference (datamined game source):
 --   * Mod property #531 `playerPropertyBlockChanceConvertedToParryWithoutShield`
---   * `blockChanceForCharacterSheet`  (RVA 0x2344f70): returns 0 when
+--   * `blockChanceForCharacterSheet`  (datamined offset): returns 0 when
 --     blockConversion != None
---   * `parryChanceForCharacterSheet`  (RVA 0x2345390): when blockConversion ==
+--   * `parryChanceForCharacterSheet`  (datamined offset): when blockConversion ==
 --     Parry, returns min(blockBase, maxBlock) + parryBonus, capped at ParryCap
 --     (DAT_183d81c00 = 75)
 --
@@ -102,6 +102,6 @@ describe("TestParryConversion", function()
 	-- before our calc sees it. Wiring up a shield-equipped XML build would test
 	-- this branch, but no real build currently combines Clotho's Needle (a
 	-- two-hand sword that occupies Weapon 1) with a shield (Weapon 2). The
-	-- decompile semantics make this combination impossible in-game (two-hand
+	-- datamining semantics make this combination impossible in-game (two-hand
 	-- weapons block Weapon 2), so the branch is dead-code-for-future-safety.
 end)

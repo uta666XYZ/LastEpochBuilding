@@ -1,6 +1,6 @@
 -- @leb-regression-guard: ward-regen-resource-conversion
 -- Locks the parser+integration contract for the continuous resource→ward
--- conversion affixes. Source: LE_datamining multi_affixes_v3.json entries
+-- conversion affixes. Source: datamined game source multi_affixes_v3.json entries
 --   58051 / 59414  "Missing Health gained as Ward per Second"
 --   59006          "Current Mana Gained as Ward Per Second"
 --

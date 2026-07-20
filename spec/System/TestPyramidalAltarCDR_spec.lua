@@ -5,15 +5,15 @@
 -- 13 Pyramidal Altar builds at LEB-LET = +10).
 --
 -- Classification: letools-artifact. LETools planner does not model this
--- conditional implicit at all (Qb6WgDEp letools.json reports
+-- conditional implicit at all (<private build> letools.json reports
 -- "Increased Cooldown Recovery Speed: 0%" despite the build's compliant
 -- grid layout). LE in-game DOES apply the bonus; LEB matches LE.
 -- Removing the evaluation would close the +10 cosmetic diff vs LET but
 -- silently strip a real 10% CDR from every Pyramidal Altar build.
 --
 -- The 13 anchor builds (LEB - LETools = +10 each):
---   BgRrekzd, BxvJKdPR, QDxZjPX8, QWXjk5R9, QWXjqWJ2, Qb6WgDEp,
---   Qb6WlbxD, QeY7962P, Qqwv6zbR, oXz3VaZg, om6xa9dY, oy4Jk2Y9, ozwXnlqx
+--   BgRrekzd, BxvJKdPR, <private build>, <private build>, <private build>, <private build>,
+--   <private build>, <private build>, <private build>, <private build>, <private build>, <private build>, ozwXnlqx
 
 local function readSource(relPath)
     local f = io.open(relPath, "r") or io.open("src/" .. relPath, "r") or io.open("../src/" .. relPath, "r")
@@ -33,6 +33,9 @@ local function readRepoRel(relPath)
     return text
 end
 
+local OptionalArtifact = dofile("../spec/OptionalArtifact.lua")
+local toolsIt = OptionalArtifact.gatedIt(it, pending, "spec/tools")
+
 describe("PyramidalAltarCDR", function()
     local calcSetupText, modParserText, basesText, diffTools, sigmaRank
 
@@ -40,8 +43,9 @@ describe("PyramidalAltarCDR", function()
         calcSetupText = readSource("Modules/CalcSetup.lua")
         modParserText = readSource("Modules/ModParser.lua")
         basesText = readSource("Data/Bases/bases_1_4.json")
-        diffTools = readRepoRel("spec/tools/diff_letools.py")
-        sigmaRank = readRepoRel("spec/tools/sigma_rank.py")
+        -- Validation provenance is retained in maintainer notes.
+        diffTools = OptionalArtifact.readOptional("spec/tools/diff_letools.py")
+        sigmaRank = OptionalArtifact.readOptional("spec/tools/sigma_rank.py")
     end)
 
     it("CalcSetup carries the @leb-regression-guard:pyramidal-altar-cdr-letools-artifact marker", function()
@@ -85,7 +89,7 @@ describe("PyramidalAltarCDR", function()
             "Pyramidal Altar implicit text must remain stable for the parser hook to match")
     end)
 
-    it("diff_letools.py KNOWN_SEMANTIC_GAPS includes CDR with pyramidal-altar guard marker", function()
+    toolsIt("diff_letools.py KNOWN_SEMANTIC_GAPS includes CDR with pyramidal-altar guard marker", function()
         -- Tooling-side enforcement: the artifact row must be footnoted in
         -- diff_letools so a reader sees the LET-side limitation, and the
         -- entry must carry the named guard marker so a grep for the guard
@@ -98,7 +102,7 @@ describe("PyramidalAltarCDR", function()
             "diff_letools.py KNOWN_SEMANTIC_GAPS must include the CDR row key")
     end)
 
-    it("sigma_rank.py imports KNOWN_SEMANTIC_GAPS and skips them in Σ", function()
+    toolsIt("sigma_rank.py imports KNOWN_SEMANTIC_GAPS and skips them in Σ", function()
         -- @leb-regression-guard: sigma-rank-excludes-known-semantic-gaps
         -- Without this skip, the 4 Pyramidal Altar builds with LET CDR=0
         -- and LEB CDR=10 hit |Δ%|=inf -> CLIP_INF=10000 and dominate G1

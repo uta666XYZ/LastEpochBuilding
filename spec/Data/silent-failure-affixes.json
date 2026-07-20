@@ -2,20 +2,20 @@
   "metadata": {
     "tool": "enumerate_silent_failures",
     "modcache_path": "src/Data/ModCache.lua",
-    "total_rows": 16749,
-    "parsed_rows": 13591,
-    "neutralized_rows": 1082,
-    "silent_failure_rows": 2076,
+    "total_rows": 16371,
+    "parsed_rows": 13397,
+    "neutralized_rows": 1061,
+    "silent_failure_rows": 1913,
     "malformed_rows": 0,
-    "recognition_rate_pct": 87.61,
-    "parsed_pct": 81.15,
-    "silent_failure_pct": 12.39,
+    "recognition_rate_pct": 88.31,
+    "parsed_pct": 81.83,
+    "silent_failure_pct": 11.69,
     "by_category": {
-      "a2-numeric-real": 634,
-      "b-dm-numeric": 135,
-      "b-parser-gap": 466,
-      "c-dm-infra": 239,
-      "c-infra-gap": 602
+      "a2-numeric-real": 610,
+      "b-dm-numeric": 65,
+      "b-parser-gap": 450,
+      "c-dm-infra": 196,
+      "c-infra-gap": 592
     },
     "phase": 2,
     "datamining": {
@@ -25,11 +25,11 @@
         "ModIdol_1_4.json",
         "ModIdolAffixes_1_4.json"
       ],
-      "moditem_lines_scanned": 9525,
-      "moditem_unique_norms": 986,
-      "silent_failure_matched": 374,
-      "silent_failure_unmatched": 1702,
-      "dm_gap_count": 283
+      "moditem_lines_scanned": 9516,
+      "moditem_unique_norms": 974,
+      "silent_failure_matched": 261,
+      "silent_failure_unmatched": 1652,
+      "dm_gap_count": 296
     },
     "notes": [
       "Phase 2 deliverable: + datamining cross-reference (ModItem_1_4 et al).",
@@ -77,11 +77,6 @@
     {
       "key": "+1 Additional Charges",
       "residue": " Charges ",
-      "category": "a2-numeric-real"
-    },
-    {
-      "key": "+1 Additional Divine Bolts",
-      "residue": " Divine Bolts ",
       "category": "a2-numeric-real"
     },
     {
@@ -215,11 +210,6 @@
       "category": "a2-numeric-real"
     },
     {
-      "key": "+1 Maximum Additional Chains",
-      "residue": " Maximum Additional Chains ",
-      "category": "a2-numeric-real"
-    },
-    {
       "key": "+1 Maximum Additional Echoes",
       "residue": " Maximum Additional Echoes ",
       "category": "a2-numeric-real"
@@ -227,11 +217,6 @@
     {
       "key": "+1 Maximum Aspect of the Panther Stacks",
       "residue": " Maximum Aspect of the Panther Stacks ",
-      "category": "a2-numeric-real"
-    },
-    {
-      "key": "+1 Maximum Elemental Arrows",
-      "residue": " Maximum  Arrows ",
       "category": "a2-numeric-real"
     },
     {
@@ -305,11 +290,6 @@
       "category": "a2-numeric-real"
     },
     {
-      "key": "+1 Potion Slot per equipped Weaver Item",
-      "residue": " Potion Slot  ",
-      "category": "a2-numeric-real"
-    },
-    {
       "key": "+1 Ricochets",
       "residue": " Ricochets ",
       "category": "a2-numeric-real"
@@ -332,11 +312,6 @@
     {
       "key": "+1 Stun Immunity",
       "residue": " Stun Immunity ",
-      "category": "a2-numeric-real"
-    },
-    {
-      "key": "+1 Tolmat's Historic Minions",
-      "residue": "lmat's Historic s ",
       "category": "a2-numeric-real"
     },
     {
@@ -385,11 +360,6 @@
       "category": "a2-numeric-real"
     },
     {
-      "key": "+10% Aspect Of The Shark Effect",
-      "residue": "  Effect ",
-      "category": "a2-numeric-real"
-    },
-    {
       "key": "+10% Chance to Gain Haste",
       "residue": "Haste ",
       "category": "a2-numeric-real"
@@ -417,11 +387,6 @@
     {
       "key": "+10% Ice Shard Size",
       "residue": " Ice Shard Size ",
-      "category": "a2-numeric-real"
-    },
-    {
-      "key": "+10% Increased Healing",
-      "residue": "  ",
       "category": "a2-numeric-real"
     },
     {
@@ -925,11 +890,6 @@
       "category": "a2-numeric-real"
     },
     {
-      "key": "+20% Increased Healing",
-      "residue": "  ",
-      "category": "a2-numeric-real"
-    },
-    {
       "key": "+20% Marrow Shards frequency",
       "residue": "  frequency ",
       "category": "a2-numeric-real"
@@ -975,11 +935,6 @@
       "category": "a2-numeric-real"
     },
     {
-      "key": "+200% Increased Healing",
-      "residue": "  ",
-      "category": "a2-numeric-real"
-    },
-    {
       "key": "+200% Size",
       "residue": " Size ",
       "category": "a2-numeric-real"
@@ -1015,11 +970,6 @@
       "category": "a2-numeric-real"
     },
     {
-      "key": "+25% Consecrated Ground Healing",
-      "residue": " Consecrated Ground  ",
-      "category": "a2-numeric-real"
-    },
-    {
       "key": "+25% Delay",
       "residue": " Delay ",
       "category": "a2-numeric-real"
@@ -1037,11 +987,6 @@
     {
       "key": "+25% Holy Eruption Healing",
       "residue": " Holy Eruption  ",
-      "category": "a2-numeric-real"
-    },
-    {
-      "key": "+25% Iron Blade Speed and Range",
-      "residue": " Iron Blade Speed and Range ",
       "category": "a2-numeric-real"
     },
     {
@@ -1092,11 +1037,6 @@
     {
       "key": "+3 Cooldown (seconds)",
       "residue": " Cooldown (seconds) ",
-      "category": "a2-numeric-real"
-    },
-    {
-      "key": "+3 Daggers Thrown",
-      "residue": " s Thrown ",
       "category": "a2-numeric-real"
     },
     {
@@ -1330,11 +1270,6 @@
       "category": "a2-numeric-real"
     },
     {
-      "key": "+5% Crit Multiplier",
-      "residue": " Crit Multiplier ",
-      "category": "a2-numeric-real"
-    },
-    {
       "key": "+5% Fire Rate",
       "residue": "  Rate ",
       "category": "a2-numeric-real"
@@ -1412,11 +1347,6 @@
     {
       "key": "+6 Cooldown (seconds)",
       "residue": " Cooldown (seconds) ",
-      "category": "a2-numeric-real"
-    },
-    {
-      "key": "+6% Chance for Two Recasts with Two Handed Weapon",
-      "residue": " for Two Recasts with Two Handed Weapon ",
       "category": "a2-numeric-real"
     },
     {
@@ -1555,18 +1485,8 @@
       "category": "a2-numeric-real"
     },
     {
-      "key": "1 Daggers Thrown",
-      "residue": " s Thrown ",
-      "category": "a2-numeric-real"
-    },
-    {
       "key": "1 Delay Before Detonation (seconds)",
       "residue": " Delay Before Detonation (seconds) ",
-      "category": "a2-numeric-real"
-    },
-    {
-      "key": "1 Divine Bolts Cast",
-      "residue": " Divine Bolts Cast ",
       "category": "a2-numeric-real"
     },
     {
@@ -1627,11 +1547,6 @@
     {
       "key": "1 Max Stacks of Lagon's Slumber",
       "residue": " Max Stacks of Lagon's Slumber ",
-      "category": "a2-numeric-real"
-    },
-    {
-      "key": "1 Maximum Additional Chains",
-      "residue": " Maximum Additional Chains ",
       "category": "a2-numeric-real"
     },
     {
@@ -1717,11 +1632,6 @@
     {
       "key": "1 Physical Shred Stacks",
       "residue": "  Shred Stacks ",
-      "category": "a2-numeric-real"
-    },
-    {
-      "key": "1 Recasts",
-      "residue": " Recasts ",
       "category": "a2-numeric-real"
     },
     {
@@ -1850,11 +1760,6 @@
       "category": "a2-numeric-real"
     },
     {
-      "key": "10% Chance to recast",
-      "residue": " to recast ",
-      "category": "a2-numeric-real"
-    },
-    {
       "key": "10% Increased Companion Revive Range",
       "residue": " Companion Revive Range ",
       "category": "a2-numeric-real"
@@ -1862,11 +1767,6 @@
     {
       "key": "10% Increased Fire Rate Against Rare Enemies",
       "residue": "  Rate Against Rare Enemies ",
-      "category": "a2-numeric-real"
-    },
-    {
-      "key": "10% Increased Healing",
-      "residue": "  ",
       "category": "a2-numeric-real"
     },
     {
@@ -2355,11 +2255,6 @@
       "category": "a2-numeric-real"
     },
     {
-      "key": "24% Increased Healing",
-      "residue": "  ",
-      "category": "a2-numeric-real"
-    },
-    {
       "key": "25% Chance To Cast Marrow Shards",
       "residue": " To Cast  ",
       "category": "a2-numeric-real"
@@ -2377,11 +2272,6 @@
     {
       "key": "25% Chance To Refresh Companion Ability",
       "residue": " To Refresh Companion Ability ",
-      "category": "a2-numeric-real"
-    },
-    {
-      "key": "25% Chance for Double Ice Spirals",
-      "residue": " for Double Ice Spirals ",
       "category": "a2-numeric-real"
     },
     {
@@ -2512,11 +2402,6 @@
     {
       "key": "3 Lightning Bolt Targets",
       "residue": "  Bolt Targets ",
-      "category": "a2-numeric-real"
-    },
-    {
-      "key": "3 Maximum Elemental Arrows",
-      "residue": " Maximum  Arrows ",
       "category": "a2-numeric-real"
     },
     {
@@ -3055,11 +2940,6 @@
       "category": "a2-numeric-real"
     },
     {
-      "key": "7% Increased Healing",
-      "residue": "  ",
-      "category": "a2-numeric-real"
-    },
-    {
       "key": "7% Increased Minion Healing",
       "residue": "   ",
       "category": "a2-numeric-real"
@@ -3234,18 +3114,6 @@
       }
     },
     {
-      "key": "+1 Bees Per 10 Seconds",
-      "residue": " Bees Per 10 Seconds ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "1071_0",
-        "line_key": "1",
-        "raw": "+80% Bees Per 10 Seconds",
-        "affixName": "Bees Per 10 Seconds"
-      }
-    },
-    {
       "key": "+1 Maximum Skeletons",
       "residue": " Maximum Skeletons ",
       "category": "b-dm-numeric",
@@ -3287,22 +3155,10 @@
       "category": "b-dm-numeric",
       "datamining_match": {
         "source": "ModItem_1_4.json",
-        "entry_key": "762_0",
+        "entry_key": "763_0",
         "line_key": "1",
-        "raw": "+(5-6)% Recurve Chance with Heartseeker",
-        "affixName": "Recurve Chance for Heartseeker"
-      }
-    },
-    {
-      "key": "+100% Pierce Chance with Fireball",
-      "residue": " Pierce Chance with  ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "548_0",
-        "line_key": "1",
-        "raw": "+(12-19)% Pierce Chance with Fireball",
-        "affixName": "Fireball Pierce Chance"
+        "raw": "+(10-20)% Recurve Chance with Heartseeker",
+        "affixName": "Rogue Recurve Chance and Bow Damage"
       }
     },
     {
@@ -3311,10 +3167,10 @@
       "category": "b-dm-numeric",
       "datamining_match": {
         "source": "ModItem_1_4.json",
-        "entry_key": "762_0",
+        "entry_key": "763_0",
         "line_key": "1",
-        "raw": "+(5-6)% Recurve Chance with Heartseeker",
-        "affixName": "Recurve Chance for Heartseeker"
+        "raw": "+(10-20)% Recurve Chance with Heartseeker",
+        "affixName": "Rogue Recurve Chance and Bow Damage"
       }
     },
     {
@@ -3323,10 +3179,10 @@
       "category": "b-dm-numeric",
       "datamining_match": {
         "source": "ModItem_1_4.json",
-        "entry_key": "762_0",
+        "entry_key": "763_0",
         "line_key": "1",
-        "raw": "+(5-6)% Recurve Chance with Heartseeker",
-        "affixName": "Recurve Chance for Heartseeker"
+        "raw": "+(10-20)% Recurve Chance with Heartseeker",
+        "affixName": "Rogue Recurve Chance and Bow Damage"
       }
     },
     {
@@ -3337,7 +3193,7 @@
         "source": "ModItem_1_4.json",
         "entry_key": "748_0",
         "line_key": "1",
-        "raw": "+(6-11)% Increased Spirit Frequency with Chthonic Fissure",
+        "raw": "(6-11)% Increased Spirit Frequency with Chthonic Fissure",
         "affixName": "Increased Spirit Frequency with Chthonic Fissure"
       }
     },
@@ -3347,22 +3203,10 @@
       "category": "b-dm-numeric",
       "datamining_match": {
         "source": "ModItem_1_4.json",
-        "entry_key": "762_0",
+        "entry_key": "763_0",
         "line_key": "1",
-        "raw": "+(5-6)% Recurve Chance with Heartseeker",
-        "affixName": "Recurve Chance for Heartseeker"
-      }
-    },
-    {
-      "key": "+15 Bees Per 10 Seconds",
-      "residue": " Bees Per 10 Seconds ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "1071_0",
-        "line_key": "1",
-        "raw": "+80% Bees Per 10 Seconds",
-        "affixName": "Bees Per 10 Seconds"
+        "raw": "+(10-20)% Recurve Chance with Heartseeker",
+        "affixName": "Rogue Recurve Chance and Bow Damage"
       }
     },
     {
@@ -3373,7 +3217,7 @@
         "source": "ModItem_1_4.json",
         "entry_key": "748_0",
         "line_key": "1",
-        "raw": "+(6-11)% Increased Spirit Frequency with Chthonic Fissure",
+        "raw": "(6-11)% Increased Spirit Frequency with Chthonic Fissure",
         "affixName": "Increased Spirit Frequency with Chthonic Fissure"
       }
     },
@@ -3383,22 +3227,10 @@
       "category": "b-dm-numeric",
       "datamining_match": {
         "source": "ModItem_1_4.json",
-        "entry_key": "762_0",
+        "entry_key": "763_0",
         "line_key": "1",
-        "raw": "+(5-6)% Recurve Chance with Heartseeker",
-        "affixName": "Recurve Chance for Heartseeker"
-      }
-    },
-    {
-      "key": "+16% Pierce Chance with Fireball",
-      "residue": " Pierce Chance with  ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "548_0",
-        "line_key": "1",
-        "raw": "+(12-19)% Pierce Chance with Fireball",
-        "affixName": "Fireball Pierce Chance"
+        "raw": "+(10-20)% Recurve Chance with Heartseeker",
+        "affixName": "Rogue Recurve Chance and Bow Damage"
       }
     },
     {
@@ -3407,22 +3239,10 @@
       "category": "b-dm-numeric",
       "datamining_match": {
         "source": "ModItem_1_4.json",
-        "entry_key": "762_0",
+        "entry_key": "763_0",
         "line_key": "1",
-        "raw": "+(5-6)% Recurve Chance with Heartseeker",
-        "affixName": "Recurve Chance for Heartseeker"
-      }
-    },
-    {
-      "key": "+2 Bees Per 10 Seconds",
-      "residue": " Bees Per 10 Seconds ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "1071_0",
-        "line_key": "1",
-        "raw": "+80% Bees Per 10 Seconds",
-        "affixName": "Bees Per 10 Seconds"
+        "raw": "+(10-20)% Recurve Chance with Heartseeker",
+        "affixName": "Rogue Recurve Chance and Bow Damage"
       }
     },
     {
@@ -3450,27 +3270,15 @@
       }
     },
     {
-      "key": "+2.5 Bees Per 10 Seconds",
-      "residue": " Bees Per 10 Seconds ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "1071_0",
-        "line_key": "1",
-        "raw": "+80% Bees Per 10 Seconds",
-        "affixName": "Bees Per 10 Seconds"
-      }
-    },
-    {
       "key": "+20% Recurve Chance with Heartseeker",
       "residue": " Recurve Chance with  ",
       "category": "b-dm-numeric",
       "datamining_match": {
         "source": "ModItem_1_4.json",
-        "entry_key": "762_0",
+        "entry_key": "763_0",
         "line_key": "1",
-        "raw": "+(5-6)% Recurve Chance with Heartseeker",
-        "affixName": "Recurve Chance for Heartseeker"
+        "raw": "+(10-20)% Recurve Chance with Heartseeker",
+        "affixName": "Rogue Recurve Chance and Bow Damage"
       }
     },
     {
@@ -3481,20 +3289,8 @@
         "source": "ModItem_1_4.json",
         "entry_key": "748_0",
         "line_key": "1",
-        "raw": "+(6-11)% Increased Spirit Frequency with Chthonic Fissure",
+        "raw": "(6-11)% Increased Spirit Frequency with Chthonic Fissure",
         "affixName": "Increased Spirit Frequency with Chthonic Fissure"
-      }
-    },
-    {
-      "key": "+24% Pierce Chance with Fireball",
-      "residue": " Pierce Chance with  ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "548_0",
-        "line_key": "1",
-        "raw": "+(12-19)% Pierce Chance with Fireball",
-        "affixName": "Fireball Pierce Chance"
       }
     },
     {
@@ -3517,7 +3313,7 @@
         "source": "ModItem_1_4.json",
         "entry_key": "748_0",
         "line_key": "1",
-        "raw": "+(6-11)% Increased Spirit Frequency with Chthonic Fissure",
+        "raw": "(6-11)% Increased Spirit Frequency with Chthonic Fissure",
         "affixName": "Increased Spirit Frequency with Chthonic Fissure"
       }
     },
@@ -3527,10 +3323,10 @@
       "category": "b-dm-numeric",
       "datamining_match": {
         "source": "ModItem_1_4.json",
-        "entry_key": "762_0",
+        "entry_key": "763_0",
         "line_key": "1",
-        "raw": "+(5-6)% Recurve Chance with Heartseeker",
-        "affixName": "Recurve Chance for Heartseeker"
+        "raw": "+(10-20)% Recurve Chance with Heartseeker",
+        "affixName": "Rogue Recurve Chance and Bow Damage"
       }
     },
     {
@@ -3543,18 +3339,6 @@
         "line_key": "2",
         "raw": "+(25-27)% Effect of Weaver Enchantment Affixes for Idols in Refracted Slots",
         "affixName": "Corrupted Idol Limit"
-      }
-    },
-    {
-      "key": "+3 Bees Per 10 Seconds",
-      "residue": " Bees Per 10 Seconds ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "1071_0",
-        "line_key": "1",
-        "raw": "+80% Bees Per 10 Seconds",
-        "affixName": "Bees Per 10 Seconds"
       }
     },
     {
@@ -3587,22 +3371,10 @@
       "category": "b-dm-numeric",
       "datamining_match": {
         "source": "ModItem_1_4.json",
-        "entry_key": "762_0",
+        "entry_key": "763_0",
         "line_key": "1",
-        "raw": "+(5-6)% Recurve Chance with Heartseeker",
-        "affixName": "Recurve Chance for Heartseeker"
-      }
-    },
-    {
-      "key": "+32% Pierce Chance with Fireball",
-      "residue": " Pierce Chance with  ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "548_0",
-        "line_key": "1",
-        "raw": "+(12-19)% Pierce Chance with Fireball",
-        "affixName": "Fireball Pierce Chance"
+        "raw": "+(10-20)% Recurve Chance with Heartseeker",
+        "affixName": "Rogue Recurve Chance and Bow Damage"
       }
     },
     {
@@ -3613,7 +3385,7 @@
         "source": "ModItem_1_4.json",
         "entry_key": "748_0",
         "line_key": "1",
-        "raw": "+(6-11)% Increased Spirit Frequency with Chthonic Fissure",
+        "raw": "(6-11)% Increased Spirit Frequency with Chthonic Fissure",
         "affixName": "Increased Spirit Frequency with Chthonic Fissure"
       }
     },
@@ -3635,10 +3407,10 @@
       "category": "b-dm-numeric",
       "datamining_match": {
         "source": "ModItem_1_4.json",
-        "entry_key": "762_0",
+        "entry_key": "763_0",
         "line_key": "1",
-        "raw": "+(5-6)% Recurve Chance with Heartseeker",
-        "affixName": "Recurve Chance for Heartseeker"
+        "raw": "+(10-20)% Recurve Chance with Heartseeker",
+        "affixName": "Rogue Recurve Chance and Bow Damage"
       }
     },
     {
@@ -3654,18 +3426,6 @@
       }
     },
     {
-      "key": "+4 Bees Per 10 Seconds",
-      "residue": " Bees Per 10 Seconds ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "1071_0",
-        "line_key": "1",
-        "raw": "+80% Bees Per 10 Seconds",
-        "affixName": "Bees Per 10 Seconds"
-      }
-    },
-    {
       "key": "+4% Chance to repeat Bow Ability",
       "residue": " to repeat  Ability ",
       "category": "b-dm-numeric",
@@ -3678,18 +3438,6 @@
       }
     },
     {
-      "key": "+41% Pierce Chance with Fireball",
-      "residue": " Pierce Chance with  ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "548_0",
-        "line_key": "1",
-        "raw": "+(12-19)% Pierce Chance with Fireball",
-        "affixName": "Fireball Pierce Chance"
-      }
-    },
-    {
       "key": "+44% Increased Spirit Frequency with Chthonic Fissure",
       "residue": " Spirit Frequency with  ",
       "category": "b-dm-numeric",
@@ -3697,7 +3445,7 @@
         "source": "ModItem_1_4.json",
         "entry_key": "748_0",
         "line_key": "1",
-        "raw": "+(6-11)% Increased Spirit Frequency with Chthonic Fissure",
+        "raw": "(6-11)% Increased Spirit Frequency with Chthonic Fissure",
         "affixName": "Increased Spirit Frequency with Chthonic Fissure"
       }
     },
@@ -3707,10 +3455,10 @@
       "category": "b-dm-numeric",
       "datamining_match": {
         "source": "ModItem_1_4.json",
-        "entry_key": "762_0",
+        "entry_key": "763_0",
         "line_key": "1",
-        "raw": "+(5-6)% Recurve Chance with Heartseeker",
-        "affixName": "Recurve Chance for Heartseeker"
+        "raw": "+(10-20)% Recurve Chance with Heartseeker",
+        "affixName": "Rogue Recurve Chance and Bow Damage"
       }
     },
     {
@@ -3726,51 +3474,15 @@
       }
     },
     {
-      "key": "+5 Bees Per 10 Seconds",
-      "residue": " Bees Per 10 Seconds ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "1071_0",
-        "line_key": "1",
-        "raw": "+80% Bees Per 10 Seconds",
-        "affixName": "Bees Per 10 Seconds"
-      }
-    },
-    {
-      "key": "+5 Elemental Bees Per 10 Seconds",
-      "residue": "  Bees Per 10 Seconds ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "1072_0",
-        "line_key": "1",
-        "raw": "+80% Elemental Bees Per 10 Seconds",
-        "affixName": "Elemental Bees per 10 Seconds"
-      }
-    },
-    {
-      "key": "+53% Pierce Chance with Fireball",
-      "residue": " Pierce Chance with  ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "548_0",
-        "line_key": "1",
-        "raw": "+(12-19)% Pierce Chance with Fireball",
-        "affixName": "Fireball Pierce Chance"
-      }
-    },
-    {
       "key": "+55% Recurve Chance with Heartseeker",
       "residue": " Recurve Chance with  ",
       "category": "b-dm-numeric",
       "datamining_match": {
         "source": "ModItem_1_4.json",
-        "entry_key": "762_0",
+        "entry_key": "763_0",
         "line_key": "1",
-        "raw": "+(5-6)% Recurve Chance with Heartseeker",
-        "affixName": "Recurve Chance for Heartseeker"
+        "raw": "+(10-20)% Recurve Chance with Heartseeker",
+        "affixName": "Rogue Recurve Chance and Bow Damage"
       }
     },
     {
@@ -3779,10 +3491,10 @@
       "category": "b-dm-numeric",
       "datamining_match": {
         "source": "ModItem_1_4.json",
-        "entry_key": "762_0",
+        "entry_key": "763_0",
         "line_key": "1",
-        "raw": "+(5-6)% Recurve Chance with Heartseeker",
-        "affixName": "Recurve Chance for Heartseeker"
+        "raw": "+(10-20)% Recurve Chance with Heartseeker",
+        "affixName": "Rogue Recurve Chance and Bow Damage"
       }
     },
     {
@@ -3798,27 +3510,15 @@
       }
     },
     {
-      "key": "+6 Bees Per 10 Seconds",
-      "residue": " Bees Per 10 Seconds ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "1071_0",
-        "line_key": "1",
-        "raw": "+80% Bees Per 10 Seconds",
-        "affixName": "Bees Per 10 Seconds"
-      }
-    },
-    {
       "key": "+6% Recurve Chance with Heartseeker",
       "residue": " Recurve Chance with  ",
       "category": "b-dm-numeric",
       "datamining_match": {
         "source": "ModItem_1_4.json",
-        "entry_key": "762_0",
+        "entry_key": "763_0",
         "line_key": "1",
-        "raw": "+(5-6)% Recurve Chance with Heartseeker",
-        "affixName": "Recurve Chance for Heartseeker"
+        "raw": "+(10-20)% Recurve Chance with Heartseeker",
+        "affixName": "Rogue Recurve Chance and Bow Damage"
       }
     },
     {
@@ -3829,32 +3529,8 @@
         "source": "ModItem_1_4.json",
         "entry_key": "748_0",
         "line_key": "1",
-        "raw": "+(6-11)% Increased Spirit Frequency with Chthonic Fissure",
+        "raw": "(6-11)% Increased Spirit Frequency with Chthonic Fissure",
         "affixName": "Increased Spirit Frequency with Chthonic Fissure"
-      }
-    },
-    {
-      "key": "+7 Bees Per 10 Seconds",
-      "residue": " Bees Per 10 Seconds ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "1071_0",
-        "line_key": "1",
-        "raw": "+80% Bees Per 10 Seconds",
-        "affixName": "Bees Per 10 Seconds"
-      }
-    },
-    {
-      "key": "+72% Pierce Chance with Fireball",
-      "residue": " Pierce Chance with  ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "548_0",
-        "line_key": "1",
-        "raw": "+(12-19)% Pierce Chance with Fireball",
-        "affixName": "Fireball Pierce Chance"
       }
     },
     {
@@ -3863,10 +3539,10 @@
       "category": "b-dm-numeric",
       "datamining_match": {
         "source": "ModItem_1_4.json",
-        "entry_key": "762_0",
+        "entry_key": "763_0",
         "line_key": "1",
-        "raw": "+(5-6)% Recurve Chance with Heartseeker",
-        "affixName": "Recurve Chance for Heartseeker"
+        "raw": "+(10-20)% Recurve Chance with Heartseeker",
+        "affixName": "Rogue Recurve Chance and Bow Damage"
       }
     },
     {
@@ -3875,46 +3551,10 @@
       "category": "b-dm-numeric",
       "datamining_match": {
         "source": "ModItem_1_4.json",
-        "entry_key": "762_0",
+        "entry_key": "763_0",
         "line_key": "1",
-        "raw": "+(5-6)% Recurve Chance with Heartseeker",
-        "affixName": "Recurve Chance for Heartseeker"
-      }
-    },
-    {
-      "key": "+80% Bees Per 10 Seconds",
-      "residue": " Bees Per 10 Seconds ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "1071_0",
-        "line_key": "1",
-        "raw": "+80% Bees Per 10 Seconds",
-        "affixName": "Bees Per 10 Seconds"
-      }
-    },
-    {
-      "key": "+80% Elemental Bees Per 10 Seconds",
-      "residue": "  Bees Per 10 Seconds ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "1072_0",
-        "line_key": "1",
-        "raw": "+80% Elemental Bees Per 10 Seconds",
-        "affixName": "Elemental Bees per 10 Seconds"
-      }
-    },
-    {
-      "key": "+9 Bees Per 10 Seconds",
-      "residue": " Bees Per 10 Seconds ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "1071_0",
-        "line_key": "1",
-        "raw": "+80% Bees Per 10 Seconds",
-        "affixName": "Bees Per 10 Seconds"
+        "raw": "+(10-20)% Recurve Chance with Heartseeker",
+        "affixName": "Rogue Recurve Chance and Bow Damage"
       }
     },
     {
@@ -3925,7 +3565,7 @@
         "source": "ModItem_1_4.json",
         "entry_key": "748_0",
         "line_key": "1",
-        "raw": "+(6-11)% Increased Spirit Frequency with Chthonic Fissure",
+        "raw": "(6-11)% Increased Spirit Frequency with Chthonic Fissure",
         "affixName": "Increased Spirit Frequency with Chthonic Fissure"
       }
     },
@@ -3935,22 +3575,10 @@
       "category": "b-dm-numeric",
       "datamining_match": {
         "source": "ModItem_1_4.json",
-        "entry_key": "762_0",
+        "entry_key": "763_0",
         "line_key": "1",
-        "raw": "+(5-6)% Recurve Chance with Heartseeker",
-        "affixName": "Recurve Chance for Heartseeker"
-      }
-    },
-    {
-      "key": "+90% Pierce Chance with Fireball",
-      "residue": " Pierce Chance with  ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "548_0",
-        "line_key": "1",
-        "raw": "+(12-19)% Pierce Chance with Fireball",
-        "affixName": "Fireball Pierce Chance"
+        "raw": "+(10-20)% Recurve Chance with Heartseeker",
+        "affixName": "Rogue Recurve Chance and Bow Damage"
       }
     },
     {
@@ -3985,80 +3613,8 @@
         "source": "ModItem_1_4.json",
         "entry_key": "688_0",
         "line_key": "1",
-        "raw": "(5-6)% increased Speed and Distance with Flame Rush",
+        "raw": "+(5-6)% increased Speed and Distance with Flame Rush",
         "affixName": "increased Speed and Distance with Flame Rush"
-      }
-    },
-    {
-      "key": "125% Increased Aspect of the Lynx Effect",
-      "residue": "  Effect ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "232_0",
-        "line_key": "1",
-        "raw": "(10-25)% Increased Aspect of the Lynx Effect",
-        "affixName": "Increased Aspect of the Lynx Effect"
-      }
-    },
-    {
-      "key": "125% Increased Aspect of the Shark Effect",
-      "residue": "  Effect ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "226_0",
-        "line_key": "1",
-        "raw": "(6-20)% Increased Aspect of the Shark Effect",
-        "affixName": "Increased Aspect of the Shark Effect"
-      }
-    },
-    {
-      "key": "126% Increased Aspect of the Viper Effect",
-      "residue": "  Effect ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "230_0",
-        "line_key": "1",
-        "raw": "(10-25)% Increased Aspect of the Viper Effect",
-        "affixName": "Increased Aspect of the Viper Effect"
-      }
-    },
-    {
-      "key": "13% Increased Aspect of the Lynx Effect",
-      "residue": "  Effect ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "232_0",
-        "line_key": "1",
-        "raw": "(10-25)% Increased Aspect of the Lynx Effect",
-        "affixName": "Increased Aspect of the Lynx Effect"
-      }
-    },
-    {
-      "key": "13% Increased Aspect of the Shark Effect",
-      "residue": "  Effect ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "226_0",
-        "line_key": "1",
-        "raw": "(6-20)% Increased Aspect of the Shark Effect",
-        "affixName": "Increased Aspect of the Shark Effect"
-      }
-    },
-    {
-      "key": "14% Increased Aspect of the Shark Effect",
-      "residue": "  Effect ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "226_0",
-        "line_key": "1",
-        "raw": "(6-20)% Increased Aspect of the Shark Effect",
-        "affixName": "Increased Aspect of the Shark Effect"
       }
     },
     {
@@ -4081,80 +3637,8 @@
         "source": "ModItem_1_4.json",
         "entry_key": "688_0",
         "line_key": "1",
-        "raw": "(5-6)% increased Speed and Distance with Flame Rush",
+        "raw": "+(5-6)% increased Speed and Distance with Flame Rush",
         "affixName": "increased Speed and Distance with Flame Rush"
-      }
-    },
-    {
-      "key": "15% Increased Aspect of the Lynx Effect",
-      "residue": "  Effect ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "232_0",
-        "line_key": "1",
-        "raw": "(10-25)% Increased Aspect of the Lynx Effect",
-        "affixName": "Increased Aspect of the Lynx Effect"
-      }
-    },
-    {
-      "key": "15% Increased Aspect of the Shark Effect",
-      "residue": "  Effect ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "226_0",
-        "line_key": "1",
-        "raw": "(6-20)% Increased Aspect of the Shark Effect",
-        "affixName": "Increased Aspect of the Shark Effect"
-      }
-    },
-    {
-      "key": "17% Increased Aspect of the Lynx Effect",
-      "residue": "  Effect ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "232_0",
-        "line_key": "1",
-        "raw": "(10-25)% Increased Aspect of the Lynx Effect",
-        "affixName": "Increased Aspect of the Lynx Effect"
-      }
-    },
-    {
-      "key": "17% Increased Aspect of the Shark Effect",
-      "residue": "  Effect ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "226_0",
-        "line_key": "1",
-        "raw": "(6-20)% Increased Aspect of the Shark Effect",
-        "affixName": "Increased Aspect of the Shark Effect"
-      }
-    },
-    {
-      "key": "18% Increased Aspect of the Lynx Effect",
-      "residue": "  Effect ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "232_0",
-        "line_key": "1",
-        "raw": "(10-25)% Increased Aspect of the Lynx Effect",
-        "affixName": "Increased Aspect of the Lynx Effect"
-      }
-    },
-    {
-      "key": "18% Increased Aspect of the Viper Effect",
-      "residue": "  Effect ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "230_0",
-        "line_key": "1",
-        "raw": "(10-25)% Increased Aspect of the Viper Effect",
-        "affixName": "Increased Aspect of the Viper Effect"
       }
     },
     {
@@ -4177,44 +3661,8 @@
         "source": "ModItem_1_4.json",
         "entry_key": "688_0",
         "line_key": "1",
-        "raw": "(5-6)% increased Speed and Distance with Flame Rush",
+        "raw": "+(5-6)% increased Speed and Distance with Flame Rush",
         "affixName": "increased Speed and Distance with Flame Rush"
-      }
-    },
-    {
-      "key": "189% Increased Aspect of the Viper Effect",
-      "residue": "  Effect ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "230_0",
-        "line_key": "1",
-        "raw": "(10-25)% Increased Aspect of the Viper Effect",
-        "affixName": "Increased Aspect of the Viper Effect"
-      }
-    },
-    {
-      "key": "19% Increased Aspect of the Lynx Effect",
-      "residue": "  Effect ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "232_0",
-        "line_key": "1",
-        "raw": "(10-25)% Increased Aspect of the Lynx Effect",
-        "affixName": "Increased Aspect of the Lynx Effect"
-      }
-    },
-    {
-      "key": "19% Increased Aspect of the Shark Effect",
-      "residue": "  Effect ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "226_0",
-        "line_key": "1",
-        "raw": "(6-20)% Increased Aspect of the Shark Effect",
-        "affixName": "Increased Aspect of the Shark Effect"
       }
     },
     {
@@ -4242,18 +3690,6 @@
       }
     },
     {
-      "key": "21% Increased Aspect of the Viper Effect",
-      "residue": "  Effect ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "230_0",
-        "line_key": "1",
-        "raw": "(10-25)% Increased Aspect of the Viper Effect",
-        "affixName": "Increased Aspect of the Viper Effect"
-      }
-    },
-    {
       "key": "21% Less Frequency of expending Storm Stacks",
       "residue": " Frequency of expending Storm Stacks ",
       "category": "b-dm-numeric",
@@ -4263,30 +3699,6 @@
         "line_key": "1",
         "raw": "(12-30)% Less Frequency of expending Storm Stacks",
         "affixName": "Less frequency of Storm Stacks and Added Damage With Storm Bolt"
-      }
-    },
-    {
-      "key": "22% Increased Aspect of the Lynx Effect",
-      "residue": "  Effect ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "232_0",
-        "line_key": "1",
-        "raw": "(10-25)% Increased Aspect of the Lynx Effect",
-        "affixName": "Increased Aspect of the Lynx Effect"
-      }
-    },
-    {
-      "key": "22% Increased Aspect of the Shark Effect",
-      "residue": "  Effect ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "226_0",
-        "line_key": "1",
-        "raw": "(6-20)% Increased Aspect of the Shark Effect",
-        "affixName": "Increased Aspect of the Shark Effect"
       }
     },
     {
@@ -4302,102 +3714,6 @@
       }
     },
     {
-      "key": "23% Increased Aspect of the Lynx Effect",
-      "residue": "  Effect ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "232_0",
-        "line_key": "1",
-        "raw": "(10-25)% Increased Aspect of the Lynx Effect",
-        "affixName": "Increased Aspect of the Lynx Effect"
-      }
-    },
-    {
-      "key": "23% Increased Aspect of the Shark Effect",
-      "residue": "  Effect ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "226_0",
-        "line_key": "1",
-        "raw": "(6-20)% Increased Aspect of the Shark Effect",
-        "affixName": "Increased Aspect of the Shark Effect"
-      }
-    },
-    {
-      "key": "24% Increased Aspect of the Viper Effect",
-      "residue": "  Effect ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "230_0",
-        "line_key": "1",
-        "raw": "(10-25)% Increased Aspect of the Viper Effect",
-        "affixName": "Increased Aspect of the Viper Effect"
-      }
-    },
-    {
-      "key": "25% Increased Aspect of the Lynx Effect",
-      "residue": "  Effect ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "232_0",
-        "line_key": "1",
-        "raw": "(10-25)% Increased Aspect of the Lynx Effect",
-        "affixName": "Increased Aspect of the Lynx Effect"
-      }
-    },
-    {
-      "key": "25% Increased Aspect of the Shark Effect",
-      "residue": "  Effect ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "226_0",
-        "line_key": "1",
-        "raw": "(6-20)% Increased Aspect of the Shark Effect",
-        "affixName": "Increased Aspect of the Shark Effect"
-      }
-    },
-    {
-      "key": "27% Increased Aspect of the Viper Effect",
-      "residue": "  Effect ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "230_0",
-        "line_key": "1",
-        "raw": "(10-25)% Increased Aspect of the Viper Effect",
-        "affixName": "Increased Aspect of the Viper Effect"
-      }
-    },
-    {
-      "key": "28% Increased Aspect of the Lynx Effect",
-      "residue": "  Effect ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "232_0",
-        "line_key": "1",
-        "raw": "(10-25)% Increased Aspect of the Lynx Effect",
-        "affixName": "Increased Aspect of the Lynx Effect"
-      }
-    },
-    {
-      "key": "28% Increased Aspect of the Shark Effect",
-      "residue": "  Effect ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "226_0",
-        "line_key": "1",
-        "raw": "(6-20)% Increased Aspect of the Shark Effect",
-        "affixName": "Increased Aspect of the Shark Effect"
-      }
-    },
-    {
       "key": "28% increased Speed and Distance with Flame Rush",
       "residue": " Speed and Distance with  ",
       "category": "b-dm-numeric",
@@ -4405,20 +3721,8 @@
         "source": "ModItem_1_4.json",
         "entry_key": "688_0",
         "line_key": "1",
-        "raw": "(5-6)% increased Speed and Distance with Flame Rush",
+        "raw": "+(5-6)% increased Speed and Distance with Flame Rush",
         "affixName": "increased Speed and Distance with Flame Rush"
-      }
-    },
-    {
-      "key": "30% Increased Aspect of the Viper Effect",
-      "residue": "  Effect ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "230_0",
-        "line_key": "1",
-        "raw": "(10-25)% Increased Aspect of the Viper Effect",
-        "affixName": "Increased Aspect of the Viper Effect"
       }
     },
     {
@@ -4434,18 +3738,6 @@
       }
     },
     {
-      "key": "32% Increased Aspect of the Viper Effect",
-      "residue": "  Effect ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "230_0",
-        "line_key": "1",
-        "raw": "(10-25)% Increased Aspect of the Viper Effect",
-        "affixName": "Increased Aspect of the Viper Effect"
-      }
-    },
-    {
       "key": "33% Chance for an additional sword with Multistrike at maximum Armament Stacks",
       "residue": " for an additional  with  at maximum Armament Stacks ",
       "category": "b-dm-numeric",
@@ -4453,56 +3745,8 @@
         "source": "ModItem_1_4.json",
         "entry_key": "659_0",
         "line_key": "1",
-        "raw": "(15-50)% Chance for an additional sword with Multistrike at maximum Armament Stacks",
+        "raw": "+(15-50)% Chance for an additional sword with Multistrike at maximum Armament Stacks",
         "affixName": "Chance For Additional Multistrike Swords"
-      }
-    },
-    {
-      "key": "33% Increased Aspect of the Lynx Effect",
-      "residue": "  Effect ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "232_0",
-        "line_key": "1",
-        "raw": "(10-25)% Increased Aspect of the Lynx Effect",
-        "affixName": "Increased Aspect of the Lynx Effect"
-      }
-    },
-    {
-      "key": "33% Increased Aspect of the Shark Effect",
-      "residue": "  Effect ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "226_0",
-        "line_key": "1",
-        "raw": "(6-20)% Increased Aspect of the Shark Effect",
-        "affixName": "Increased Aspect of the Shark Effect"
-      }
-    },
-    {
-      "key": "34% Increased Aspect of the Lynx Effect",
-      "residue": "  Effect ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "232_0",
-        "line_key": "1",
-        "raw": "(10-25)% Increased Aspect of the Lynx Effect",
-        "affixName": "Increased Aspect of the Lynx Effect"
-      }
-    },
-    {
-      "key": "34% Increased Aspect of the Shark Effect",
-      "residue": "  Effect ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "226_0",
-        "line_key": "1",
-        "raw": "(6-20)% Increased Aspect of the Shark Effect",
-        "affixName": "Increased Aspect of the Shark Effect"
       }
     },
     {
@@ -4513,20 +3757,8 @@
         "source": "ModItem_1_4.json",
         "entry_key": "688_0",
         "line_key": "1",
-        "raw": "(5-6)% increased Speed and Distance with Flame Rush",
+        "raw": "+(5-6)% increased Speed and Distance with Flame Rush",
         "affixName": "increased Speed and Distance with Flame Rush"
-      }
-    },
-    {
-      "key": "36% Increased Aspect of the Viper Effect",
-      "residue": "  Effect ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "230_0",
-        "line_key": "1",
-        "raw": "(10-25)% Increased Aspect of the Viper Effect",
-        "affixName": "Increased Aspect of the Viper Effect"
       }
     },
     {
@@ -4551,54 +3783,6 @@
         "line_key": "1",
         "raw": "(1-2)% Increased Companion Revive Speed",
         "affixName": "Companion Revive Speed and Increased Minion Health"
-      }
-    },
-    {
-      "key": "41% Increased Aspect of the Viper Effect",
-      "residue": "  Effect ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "230_0",
-        "line_key": "1",
-        "raw": "(10-25)% Increased Aspect of the Viper Effect",
-        "affixName": "Increased Aspect of the Viper Effect"
-      }
-    },
-    {
-      "key": "42% Increased Aspect of the Lynx Effect",
-      "residue": "  Effect ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "232_0",
-        "line_key": "1",
-        "raw": "(10-25)% Increased Aspect of the Lynx Effect",
-        "affixName": "Increased Aspect of the Lynx Effect"
-      }
-    },
-    {
-      "key": "42% Increased Aspect of the Shark Effect",
-      "residue": "  Effect ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "226_0",
-        "line_key": "1",
-        "raw": "(6-20)% Increased Aspect of the Shark Effect",
-        "affixName": "Increased Aspect of the Shark Effect"
-      }
-    },
-    {
-      "key": "45% Increased Aspect of the Viper Effect",
-      "residue": "  Effect ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "230_0",
-        "line_key": "1",
-        "raw": "(10-25)% Increased Aspect of the Viper Effect",
-        "affixName": "Increased Aspect of the Viper Effect"
       }
     },
     {
@@ -4633,56 +3817,8 @@
         "source": "ModItem_1_4.json",
         "entry_key": "688_0",
         "line_key": "1",
-        "raw": "(5-6)% increased Speed and Distance with Flame Rush",
+        "raw": "+(5-6)% increased Speed and Distance with Flame Rush",
         "affixName": "increased Speed and Distance with Flame Rush"
-      }
-    },
-    {
-      "key": "50% Increased Aspect of the Lynx Effect",
-      "residue": "  Effect ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "232_0",
-        "line_key": "1",
-        "raw": "(10-25)% Increased Aspect of the Lynx Effect",
-        "affixName": "Increased Aspect of the Lynx Effect"
-      }
-    },
-    {
-      "key": "50% Increased Aspect of the Shark Effect",
-      "residue": "  Effect ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "226_0",
-        "line_key": "1",
-        "raw": "(6-20)% Increased Aspect of the Shark Effect",
-        "affixName": "Increased Aspect of the Shark Effect"
-      }
-    },
-    {
-      "key": "51% Increased Aspect of the Viper Effect",
-      "residue": "  Effect ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "230_0",
-        "line_key": "1",
-        "raw": "(10-25)% Increased Aspect of the Viper Effect",
-        "affixName": "Increased Aspect of the Viper Effect"
-      }
-    },
-    {
-      "key": "53% Increased Aspect of the Viper Effect",
-      "residue": "  Effect ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "230_0",
-        "line_key": "1",
-        "raw": "(10-25)% Increased Aspect of the Viper Effect",
-        "affixName": "Increased Aspect of the Viper Effect"
       }
     },
     {
@@ -4698,42 +3834,6 @@
       }
     },
     {
-      "key": "62% Increased Aspect of the Lynx Effect",
-      "residue": "  Effect ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "232_0",
-        "line_key": "1",
-        "raw": "(10-25)% Increased Aspect of the Lynx Effect",
-        "affixName": "Increased Aspect of the Lynx Effect"
-      }
-    },
-    {
-      "key": "62% Increased Aspect of the Shark Effect",
-      "residue": "  Effect ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "226_0",
-        "line_key": "1",
-        "raw": "(6-20)% Increased Aspect of the Shark Effect",
-        "affixName": "Increased Aspect of the Shark Effect"
-      }
-    },
-    {
-      "key": "63% Increased Aspect of the Viper Effect",
-      "residue": "  Effect ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "230_0",
-        "line_key": "1",
-        "raw": "(10-25)% Increased Aspect of the Viper Effect",
-        "affixName": "Increased Aspect of the Viper Effect"
-      }
-    },
-    {
       "key": "68% increased Speed and Distance with Flame Rush",
       "residue": " Speed and Distance with  ",
       "category": "b-dm-numeric",
@@ -4741,20 +3841,8 @@
         "source": "ModItem_1_4.json",
         "entry_key": "688_0",
         "line_key": "1",
-        "raw": "(5-6)% increased Speed and Distance with Flame Rush",
+        "raw": "+(5-6)% increased Speed and Distance with Flame Rush",
         "affixName": "increased Speed and Distance with Flame Rush"
-      }
-    },
-    {
-      "key": "76% Increased Aspect of the Viper Effect",
-      "residue": "  Effect ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "230_0",
-        "line_key": "1",
-        "raw": "(10-25)% Increased Aspect of the Viper Effect",
-        "affixName": "Increased Aspect of the Viper Effect"
       }
     },
     {
@@ -4777,56 +3865,8 @@
         "source": "ModItem_1_4.json",
         "entry_key": "688_0",
         "line_key": "1",
-        "raw": "(5-6)% increased Speed and Distance with Flame Rush",
+        "raw": "+(5-6)% increased Speed and Distance with Flame Rush",
         "affixName": "increased Speed and Distance with Flame Rush"
-      }
-    },
-    {
-      "key": "83% Increased Aspect of the Lynx Effect",
-      "residue": "  Effect ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "232_0",
-        "line_key": "1",
-        "raw": "(10-25)% Increased Aspect of the Lynx Effect",
-        "affixName": "Increased Aspect of the Lynx Effect"
-      }
-    },
-    {
-      "key": "83% Increased Aspect of the Shark Effect",
-      "residue": "  Effect ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "226_0",
-        "line_key": "1",
-        "raw": "(6-20)% Increased Aspect of the Shark Effect",
-        "affixName": "Increased Aspect of the Shark Effect"
-      }
-    },
-    {
-      "key": "9% Increased Aspect of the Boar Effect",
-      "residue": "  Effect ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "228_0",
-        "line_key": "1",
-        "raw": "(5-12)% Increased Aspect of the Boar Effect",
-        "affixName": "Increased Aspect of the Boar Effect"
-      }
-    },
-    {
-      "key": "95% Increased Aspect of the Viper Effect",
-      "residue": "  Effect ",
-      "category": "b-dm-numeric",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "230_0",
-        "line_key": "1",
-        "raw": "(10-25)% Increased Aspect of the Viper Effect",
-        "affixName": "Increased Aspect of the Viper Effect"
       }
     },
     {
@@ -5335,11 +4375,6 @@
       "category": "b-parser-gap"
     },
     {
-      "key": " Ignite -> Bleed Chance",
-      "residue": "Ignite -> Bleed Chance",
-      "category": "b-parser-gap"
-    },
-    {
       "key": " Ignite -> Chill Chance",
       "residue": "Ignite -> Chill Chance",
       "category": "b-parser-gap"
@@ -5517,11 +4552,6 @@
     {
       "key": " Physical -> Void Res Shred Chance",
       "residue": "Physical -> Void Res Shred Chance",
-      "category": "b-parser-gap"
-    },
-    {
-      "key": " Pierce Chance -> Critical Multiplier",
-      "residue": "Pierce Chance -> Critical Multiplier",
       "category": "b-parser-gap"
     },
     {
@@ -5765,11 +4795,6 @@
       "category": "b-parser-gap"
     },
     {
-      "key": "+1% Iron Blade Chance Per Attunement",
-      "residue": " Iron Blade Chance  ",
-      "category": "b-parser-gap"
-    },
-    {
       "key": "+1% Lighting Pen Per 5% Uncapped Lighting Res",
       "residue": " Lighting Pen Per 5% Uncapped Lighting Res ",
       "category": "b-parser-gap"
@@ -5945,11 +4970,6 @@
       "category": "b-parser-gap"
     },
     {
-      "key": "+20% Iron Blade Chance",
-      "residue": " Iron Blade Chance ",
-      "category": "b-parser-gap"
-    },
-    {
       "key": "+20% Largest Hit Ice Vortex Chance",
       "residue": " Largest  Ice Vortex Chance ",
       "category": "b-parser-gap"
@@ -5997,11 +5017,6 @@
     {
       "key": "+25% Lightning Blast Replacement Chance",
       "residue": "  Replacement Chance ",
-      "category": "b-parser-gap"
-    },
-    {
-      "key": "+25% Pierce Chance",
-      "residue": " Pierce Chance ",
       "category": "b-parser-gap"
     },
     {
@@ -6085,11 +5100,6 @@
       "category": "b-parser-gap"
     },
     {
-      "key": "+50% Pierce Chance",
-      "residue": " Pierce Chance ",
-      "category": "b-parser-gap"
-    },
-    {
       "key": "+50% Recurve Chance",
       "residue": " Recurve Chance ",
       "category": "b-parser-gap"
@@ -6142,11 +5152,6 @@
     {
       "key": "1 Caltrops per 2 Seconds",
       "residue": " Caltrops per 2 Seconds ",
-      "category": "b-parser-gap"
-    },
-    {
-      "key": "1 Elemental Arrows Per Second",
-      "residue": "  Arrows Per Second ",
       "category": "b-parser-gap"
     },
     {
@@ -6317,11 +5322,6 @@
     {
       "key": "10% Traps Throw Acid Flasks Chance",
       "residue": " Traps Throw s Chance ",
-      "category": "b-parser-gap"
-    },
-    {
-      "key": "10% Wind Tempest Chance",
-      "residue": " Wind Tempest Chance ",
       "category": "b-parser-gap"
     },
     {
@@ -6660,11 +5660,6 @@
       "category": "b-parser-gap"
     },
     {
-      "key": "20% Max More Crit Multi",
-      "residue": " Max More Crit Multi ",
-      "category": "b-parser-gap"
-    },
-    {
       "key": "20% Maximum Chance to Double Cast",
       "residue": " Maximum Chance to Double Cast ",
       "category": "b-parser-gap"
@@ -6785,11 +5780,6 @@
       "category": "b-parser-gap"
     },
     {
-      "key": "3% Crit Multiplier per Stack",
-      "residue": " Crit Multiplier per Stack ",
-      "category": "b-parser-gap"
-    },
-    {
       "key": "3% Health -> Ward Gain",
       "residue": "3% Health -> Ward Gain",
       "category": "b-parser-gap"
@@ -6827,11 +5817,6 @@
     {
       "key": "30% Less Dodge Chance",
       "residue": " Dodge Chance ",
-      "category": "b-parser-gap"
-    },
-    {
-      "key": "30% Quadruple Cast Chance",
-      "residue": " Quadruple Cast Chance ",
       "category": "b-parser-gap"
     },
     {
@@ -7010,11 +5995,6 @@
       "category": "b-parser-gap"
     },
     {
-      "key": "5% Large Boulder Chance",
-      "residue": " Large Boulder Chance ",
-      "category": "b-parser-gap"
-    },
-    {
       "key": "5% Poison Wisp Chance",
       "residue": "  Wisp Chance ",
       "category": "b-parser-gap"
@@ -7047,11 +6027,6 @@
     {
       "key": "50% Highest Increased Damage -> Falcon Damage",
       "residue": "50% Highest Increased Damage -> Falcon Damage",
-      "category": "b-parser-gap"
-    },
-    {
-      "key": "50% Increased Mana Regen -> Increased Armor",
-      "residue": "50% Increased Mana Regen -> Increased Armor",
       "category": "b-parser-gap"
     },
     {
@@ -7105,11 +6080,6 @@
       "category": "b-parser-gap"
     },
     {
-      "key": "8% Doublecast Chance",
-      "residue": " Doublecast Chance ",
-      "category": "b-parser-gap"
-    },
-    {
       "key": "8% Minion Storm Stack Chance",
       "residue": "  Storm Stack Chance ",
       "category": "b-parser-gap"
@@ -7122,11 +6092,6 @@
     {
       "key": "80% Area Skills -> Falcon Strikes Area",
       "residue": "80% Area Skills -> Falcon Strikes Area",
-      "category": "b-parser-gap"
-    },
-    {
-      "key": "80% Max Iron Blade Chance",
-      "residue": " Max Iron Blade Chance ",
       "category": "b-parser-gap"
     },
     {
@@ -7155,11 +6120,6 @@
       "category": "b-parser-gap"
     },
     {
-      "key": "Your melee attacks, throwing attacks and void spells have a 10% chance to be repeated by an echo 0.5s later (excludes movement abilities and Anomaly).",
-      "residue": "Your melee attacks, throwing attacks and void spells have a 10% chance to be repeated by an echo 0.5s later (excludes movement abilities and Anomaly). ",
-      "category": "b-parser-gap"
-    },
-    {
       "key": "+1% Chance to not consume a Potion on Potion use",
       "residue": " to not consume a Potion on Potion use ",
       "category": "c-dm-infra",
@@ -7169,18 +6129,6 @@
         "line_key": "1",
         "raw": "+1% Chance to not consume a Potion on Potion use",
         "affixName": "Chance to not consume Potion on use and Ward gained on potion use"
-      }
-    },
-    {
-      "key": "+10% Chance to cast Fire Aura when Hit (1 second cooldown)",
-      "residue": " to cast  when  (1 second cooldown) ",
-      "category": "c-dm-infra",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "247_0",
-        "line_key": "1",
-        "raw": "+(2-5)% Chance to cast Fire Aura when Hit (1 second cooldown)",
-        "affixName": "Chance to Cast Fire Aura when Hit (up to 3 times per second)"
       }
     },
     {
@@ -7220,18 +6168,6 @@
       }
     },
     {
-      "key": "+10% Effect of Haste on You",
-      "residue": " Effect of  on You ",
-      "category": "c-dm-infra",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "992_0",
-        "line_key": "1",
-        "raw": "+(5-7)% Effect of Haste on You",
-        "affixName": "Increased Haste Effect and Less Damage over Time taken during Haste"
-      }
-    },
-    {
       "key": "+10% chance to cast Shurikens on Bow Crit",
       "residue": " to cast  on  Crit ",
       "category": "c-dm-infra",
@@ -7241,18 +6177,6 @@
         "line_key": "2",
         "raw": "+4% chance to cast Shurikens on Bow Crit",
         "affixName": "Added Critical Strike Chance and Chance to cast Shurikens on Bow Crit"
-      }
-    },
-    {
-      "key": "+100% Chance to cast Maelstrom every 3 seconds",
-      "residue": " to cast  every 3 seconds ",
-      "category": "c-dm-infra",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "221_0",
-        "line_key": "1",
-        "raw": "+(9-30)% Chance to cast Maelstrom every 3 seconds",
-        "affixName": "chance to cast Maelstrom every 3 seconds"
       }
     },
     {
@@ -7292,18 +6216,6 @@
       }
     },
     {
-      "key": "+11% Chance to cast Fire Aura when Hit (1 second cooldown)",
-      "residue": " to cast  when  (1 second cooldown) ",
-      "category": "c-dm-infra",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "247_0",
-        "line_key": "1",
-        "raw": "+(2-5)% Chance to cast Fire Aura when Hit (1 second cooldown)",
-        "affixName": "Chance to Cast Fire Aura when Hit (up to 3 times per second)"
-      }
-    },
-    {
       "key": "+11% Chance to cast Harvest at 3 nearby enemies when you use Reap",
       "residue": " to cast  at 3 nearby enemies when you use Reap ",
       "category": "c-dm-infra",
@@ -7328,42 +6240,6 @@
       }
     },
     {
-      "key": "+11% Effect of Frenzy on You",
-      "residue": " Effect of  on You ",
-      "category": "c-dm-infra",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "951_0",
-        "line_key": "2",
-        "raw": "+(18-17)% Effect of Frenzy on You",
-        "affixName": "Frenzy and Reduced Frenzy Effect"
-      }
-    },
-    {
-      "key": "+11% Effect of Haste on You",
-      "residue": " Effect of  on You ",
-      "category": "c-dm-infra",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "992_0",
-        "line_key": "1",
-        "raw": "+(5-7)% Effect of Haste on You",
-        "affixName": "Increased Haste Effect and Less Damage over Time taken during Haste"
-      }
-    },
-    {
-      "key": "+12% Chance to cast Fire Aura when Hit (1 second cooldown)",
-      "residue": " to cast  when  (1 second cooldown) ",
-      "category": "c-dm-infra",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "247_0",
-        "line_key": "1",
-        "raw": "+(2-5)% Chance to cast Fire Aura when Hit (1 second cooldown)",
-        "affixName": "Chance to Cast Fire Aura when Hit (up to 3 times per second)"
-      }
-    },
-    {
       "key": "+12% Chance to create a Void Rift when you hit an enemy (2 second cooldown)",
       "residue": " to create a  when you  an enemy (2 second cooldown) ",
       "category": "c-dm-infra",
@@ -7373,18 +6249,6 @@
         "line_key": "2",
         "raw": "+(5-6)% Chance to create a Void Rift when you hit an enemy (2 second cooldown)",
         "affixName": "Locket of the Forgotten Knight Reforged"
-      }
-    },
-    {
-      "key": "+12% Effect of Haste on You",
-      "residue": " Effect of  on You ",
-      "category": "c-dm-infra",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "992_0",
-        "line_key": "1",
-        "raw": "+(5-7)% Effect of Haste on You",
-        "affixName": "Increased Haste Effect and Less Damage over Time taken during Haste"
       }
     },
     {
@@ -7412,18 +6276,6 @@
       }
     },
     {
-      "key": "+13% Effect of Frenzy on You",
-      "residue": " Effect of  on You ",
-      "category": "c-dm-infra",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "951_0",
-        "line_key": "2",
-        "raw": "+(18-17)% Effect of Frenzy on You",
-        "affixName": "Frenzy and Reduced Frenzy Effect"
-      }
-    },
-    {
       "key": "+14% Chance to create a Void Rift when you hit an enemy (2 second cooldown)",
       "residue": " to create a  when you  an enemy (2 second cooldown) ",
       "category": "c-dm-infra",
@@ -7448,18 +6300,6 @@
       }
     },
     {
-      "key": "+14% Effect of Haste on You",
-      "residue": " Effect of  on You ",
-      "category": "c-dm-infra",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "992_0",
-        "line_key": "1",
-        "raw": "+(5-7)% Effect of Haste on You",
-        "affixName": "Increased Haste Effect and Less Damage over Time taken during Haste"
-      }
-    },
-    {
       "key": "+143% Chance to gain 20 Ward on Kill with Hungering Souls",
       "residue": "20 Ward  with Hungering Souls ",
       "category": "c-dm-infra",
@@ -7469,18 +6309,6 @@
         "line_key": "1",
         "raw": "+(25-60)% Chance to gain 20 Ward on Kill with Hungering Souls",
         "affixName": "Chance to Gain 20 Ward on Kill with Hungering Souls"
-      }
-    },
-    {
-      "key": "+15% Chance to cast Fire Aura when Hit (1 second cooldown)",
-      "residue": " to cast  when  (1 second cooldown) ",
-      "category": "c-dm-infra",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "247_0",
-        "line_key": "1",
-        "raw": "+(2-5)% Chance to cast Fire Aura when Hit (1 second cooldown)",
-        "affixName": "Chance to Cast Fire Aura when Hit (up to 3 times per second)"
       }
     },
     {
@@ -7520,30 +6348,6 @@
       }
     },
     {
-      "key": "+15% Effect of Frenzy on You",
-      "residue": " Effect of  on You ",
-      "category": "c-dm-infra",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "951_0",
-        "line_key": "2",
-        "raw": "+(18-17)% Effect of Frenzy on You",
-        "affixName": "Frenzy and Reduced Frenzy Effect"
-      }
-    },
-    {
-      "key": "+15% Effect of Haste on You",
-      "residue": " Effect of  on You ",
-      "category": "c-dm-infra",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "992_0",
-        "line_key": "1",
-        "raw": "+(5-7)% Effect of Haste on You",
-        "affixName": "Increased Haste Effect and Less Damage over Time taken during Haste"
-      }
-    },
-    {
       "key": "+150% Chance to gain 20 Ward on Kill with Hungering Souls",
       "residue": "20 Ward  with Hungering Souls ",
       "category": "c-dm-infra",
@@ -7556,18 +6360,6 @@
       }
     },
     {
-      "key": "+17% Chance to cast Maelstrom every 3 seconds",
-      "residue": " to cast  every 3 seconds ",
-      "category": "c-dm-infra",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "221_0",
-        "line_key": "1",
-        "raw": "+(9-30)% Chance to cast Maelstrom every 3 seconds",
-        "affixName": "chance to cast Maelstrom every 3 seconds"
-      }
-    },
-    {
       "key": "+17% Chance to gain Dusk Shroud when you use a Melee Attack that hits",
       "residue": "Dusk Shroud when you use a Melee Attack that hits ",
       "category": "c-dm-infra",
@@ -7577,42 +6369,6 @@
         "line_key": "1",
         "raw": "+(17-21)% Chance to gain Dusk Shroud when you use a Melee Attack that hits",
         "affixName": "Chance to Gain Dusk Shroud when you use a Melee Attack that Hits"
-      }
-    },
-    {
-      "key": "+17% Effect of Frenzy on You",
-      "residue": " Effect of  on You ",
-      "category": "c-dm-infra",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "951_0",
-        "line_key": "2",
-        "raw": "+(18-17)% Effect of Frenzy on You",
-        "affixName": "Frenzy and Reduced Frenzy Effect"
-      }
-    },
-    {
-      "key": "+17% Effect of Haste on You",
-      "residue": " Effect of  on You ",
-      "category": "c-dm-infra",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "992_0",
-        "line_key": "1",
-        "raw": "+(5-7)% Effect of Haste on You",
-        "affixName": "Increased Haste Effect and Less Damage over Time taken during Haste"
-      }
-    },
-    {
-      "key": "+18% Chance to cast Fire Aura when Hit (1 second cooldown)",
-      "residue": " to cast  when  (1 second cooldown) ",
-      "category": "c-dm-infra",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "247_0",
-        "line_key": "1",
-        "raw": "+(2-5)% Chance to cast Fire Aura when Hit (1 second cooldown)",
-        "affixName": "Chance to Cast Fire Aura when Hit (up to 3 times per second)"
       }
     },
     {
@@ -7664,18 +6420,6 @@
       }
     },
     {
-      "key": "+19% Effect of Haste on You",
-      "residue": " Effect of  on You ",
-      "category": "c-dm-infra",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "992_0",
-        "line_key": "1",
-        "raw": "+(5-7)% Effect of Haste on You",
-        "affixName": "Increased Haste Effect and Less Damage over Time taken during Haste"
-      }
-    },
-    {
       "key": "+2% Chance to forge a weapon when hit",
       "residue": " to forge a weapon when  ",
       "category": "c-dm-infra",
@@ -7697,54 +6441,6 @@
         "line_key": "1",
         "raw": "+1% Chance to not consume a Potion on Potion use",
         "affixName": "Chance to not consume Potion on use and Ward gained on potion use"
-      }
-    },
-    {
-      "key": "+2% Effect of Frenzy on You",
-      "residue": " Effect of  on You ",
-      "category": "c-dm-infra",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "951_0",
-        "line_key": "2",
-        "raw": "+(18-17)% Effect of Frenzy on You",
-        "affixName": "Frenzy and Reduced Frenzy Effect"
-      }
-    },
-    {
-      "key": "+20% Chance to cast Maelstrom every 3 seconds",
-      "residue": " to cast  every 3 seconds ",
-      "category": "c-dm-infra",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "221_0",
-        "line_key": "1",
-        "raw": "+(9-30)% Chance to cast Maelstrom every 3 seconds",
-        "affixName": "chance to cast Maelstrom every 3 seconds"
-      }
-    },
-    {
-      "key": "+20% Effect of Haste on You",
-      "residue": " Effect of  on You ",
-      "category": "c-dm-infra",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "992_0",
-        "line_key": "1",
-        "raw": "+(5-7)% Effect of Haste on You",
-        "affixName": "Increased Haste Effect and Less Damage over Time taken during Haste"
-      }
-    },
-    {
-      "key": "+21% Chance to cast Fire Aura when Hit (1 second cooldown)",
-      "residue": " to cast  when  (1 second cooldown) ",
-      "category": "c-dm-infra",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "247_0",
-        "line_key": "1",
-        "raw": "+(2-5)% Chance to cast Fire Aura when Hit (1 second cooldown)",
-        "affixName": "Chance to Cast Fire Aura when Hit (up to 3 times per second)"
       }
     },
     {
@@ -7808,30 +6504,6 @@
       }
     },
     {
-      "key": "+23% Effect of Haste on You",
-      "residue": " Effect of  on You ",
-      "category": "c-dm-infra",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "992_0",
-        "line_key": "1",
-        "raw": "+(5-7)% Effect of Haste on You",
-        "affixName": "Increased Haste Effect and Less Damage over Time taken during Haste"
-      }
-    },
-    {
-      "key": "+24% Chance to cast Fire Aura when Hit (1 second cooldown)",
-      "residue": " to cast  when  (1 second cooldown) ",
-      "category": "c-dm-infra",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "247_0",
-        "line_key": "1",
-        "raw": "+(2-5)% Chance to cast Fire Aura when Hit (1 second cooldown)",
-        "affixName": "Chance to Cast Fire Aura when Hit (up to 3 times per second)"
-      }
-    },
-    {
       "key": "+24% Chance to gain Dusk Shroud when you use a Melee Attack that hits",
       "residue": "Dusk Shroud when you use a Melee Attack that hits ",
       "category": "c-dm-infra",
@@ -7853,18 +6525,6 @@
         "line_key": "1",
         "raw": "+(12-35)% Chance to gain Inspiration when you kill an enemy with a void skill",
         "affixName": "Chance To Gain Inspiration On Kills With Void Skills"
-      }
-    },
-    {
-      "key": "+27% Chance to cast Fire Aura when Hit (1 second cooldown)",
-      "residue": " to cast  when  (1 second cooldown) ",
-      "category": "c-dm-infra",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "247_0",
-        "line_key": "1",
-        "raw": "+(2-5)% Chance to cast Fire Aura when Hit (1 second cooldown)",
-        "affixName": "Chance to Cast Fire Aura when Hit (up to 3 times per second)"
       }
     },
     {
@@ -7904,18 +6564,6 @@
       }
     },
     {
-      "key": "+28% Effect of Haste on You",
-      "residue": " Effect of  on You ",
-      "category": "c-dm-infra",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "992_0",
-        "line_key": "1",
-        "raw": "+(5-7)% Effect of Haste on You",
-        "affixName": "Increased Haste Effect and Less Damage over Time taken during Haste"
-      }
-    },
-    {
       "key": "+29% Chance to gain Dusk Shroud when you use a Melee Attack that hits",
       "residue": "Dusk Shroud when you use a Melee Attack that hits ",
       "category": "c-dm-infra",
@@ -7949,18 +6597,6 @@
         "line_key": "1",
         "raw": "+1% Chance to not consume a Potion on Potion use",
         "affixName": "Chance to not consume Potion on use and Ward gained on potion use"
-      }
-    },
-    {
-      "key": "+3% Effect of Haste on You",
-      "residue": " Effect of  on You ",
-      "category": "c-dm-infra",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "992_0",
-        "line_key": "1",
-        "raw": "+(5-7)% Effect of Haste on You",
-        "affixName": "Increased Haste Effect and Less Damage over Time taken during Haste"
       }
     },
     {
@@ -8048,18 +6684,6 @@
       }
     },
     {
-      "key": "+36% Chance to cast Fire Aura when Hit (1 second cooldown)",
-      "residue": " to cast  when  (1 second cooldown) ",
-      "category": "c-dm-infra",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "247_0",
-        "line_key": "1",
-        "raw": "+(2-5)% Chance to cast Fire Aura when Hit (1 second cooldown)",
-        "affixName": "Chance to Cast Fire Aura when Hit (up to 3 times per second)"
-      }
-    },
-    {
       "key": "+36% Chance to forge a weapon when hit",
       "residue": " to forge a weapon when  ",
       "category": "c-dm-infra",
@@ -8117,18 +6741,6 @@
         "line_key": "1",
         "raw": "+(30-35)% chance to gain Haste for 5 seconds after you Block",
         "affixName": "Chance to gain Haste on Block and Haste Effect"
-      }
-    },
-    {
-      "key": "+4% Chance to cast Fire Aura when Hit (1 second cooldown)",
-      "residue": " to cast  when  (1 second cooldown) ",
-      "category": "c-dm-infra",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "247_0",
-        "line_key": "1",
-        "raw": "+(2-5)% Chance to cast Fire Aura when Hit (1 second cooldown)",
-        "affixName": "Chance to Cast Fire Aura when Hit (up to 3 times per second)"
       }
     },
     {
@@ -8240,18 +6852,6 @@
       }
     },
     {
-      "key": "+45% Effect of Haste on You",
-      "residue": " Effect of  on You ",
-      "category": "c-dm-infra",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "992_0",
-        "line_key": "1",
-        "raw": "+(5-7)% Effect of Haste on You",
-        "affixName": "Increased Haste Effect and Less Damage over Time taken during Haste"
-      }
-    },
-    {
       "key": "+45% chance to gain Haste for 5 seconds after you Block",
       "residue": "Haste  after you Block ",
       "category": "c-dm-infra",
@@ -8261,18 +6861,6 @@
         "line_key": "1",
         "raw": "+(30-35)% chance to gain Haste for 5 seconds after you Block",
         "affixName": "Chance to gain Haste on Block and Haste Effect"
-      }
-    },
-    {
-      "key": "+46% Chance to cast Fire Aura when Hit (1 second cooldown)",
-      "residue": " to cast  when  (1 second cooldown) ",
-      "category": "c-dm-infra",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "247_0",
-        "line_key": "1",
-        "raw": "+(2-5)% Chance to cast Fire Aura when Hit (1 second cooldown)",
-        "affixName": "Chance to Cast Fire Aura when Hit (up to 3 times per second)"
       }
     },
     {
@@ -8333,18 +6921,6 @@
         "line_key": "1",
         "raw": "+1% Chance to not consume a Potion on Potion use",
         "affixName": "Chance to not consume Potion on use and Ward gained on potion use"
-      }
-    },
-    {
-      "key": "+5% Effect of Frenzy on You",
-      "residue": " Effect of  on You ",
-      "category": "c-dm-infra",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "951_0",
-        "line_key": "2",
-        "raw": "+(18-17)% Effect of Frenzy on You",
-        "affixName": "Frenzy and Reduced Frenzy Effect"
       }
     },
     {
@@ -8444,18 +7020,6 @@
       }
     },
     {
-      "key": "+6% Chance to cast Fire Aura when Hit (1 second cooldown)",
-      "residue": " to cast  when  (1 second cooldown) ",
-      "category": "c-dm-infra",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "247_0",
-        "line_key": "1",
-        "raw": "+(2-5)% Chance to cast Fire Aura when Hit (1 second cooldown)",
-        "affixName": "Chance to Cast Fire Aura when Hit (up to 3 times per second)"
-      }
-    },
-    {
       "key": "+6% Chance to cast Healing Nova when hit",
       "residue": " to cast  Nova when  ",
       "category": "c-dm-infra",
@@ -8501,18 +7065,6 @@
         "line_key": "1",
         "raw": "+(1-2)% Chance to forge a weapon when hit",
         "affixName": "Sunforged Cuirass Reforged"
-      }
-    },
-    {
-      "key": "+6% Effect of Haste on You",
-      "residue": " Effect of  on You ",
-      "category": "c-dm-infra",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "992_0",
-        "line_key": "1",
-        "raw": "+(5-7)% Effect of Haste on You",
-        "affixName": "Increased Haste Effect and Less Damage over Time taken during Haste"
       }
     },
     {
@@ -8576,18 +7128,6 @@
       }
     },
     {
-      "key": "+69% Chance to cast Fire Aura when Hit (1 second cooldown)",
-      "residue": " to cast  when  (1 second cooldown) ",
-      "category": "c-dm-infra",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "247_0",
-        "line_key": "1",
-        "raw": "+(2-5)% Chance to cast Fire Aura when Hit (1 second cooldown)",
-        "affixName": "Chance to Cast Fire Aura when Hit (up to 3 times per second)"
-      }
-    },
-    {
       "key": "+69% Chance to gain 20 Ward on Kill with Hungering Souls",
       "residue": "20 Ward  with Hungering Souls ",
       "category": "c-dm-infra",
@@ -8609,18 +7149,6 @@
         "line_key": "1",
         "raw": "+(4-10)% Chance to cast Elemental Nova when Hit",
         "affixName": "Chance to cast Elemental Nova when Hit"
-      }
-    },
-    {
-      "key": "+7% Chance to cast Fire Aura when Hit (1 second cooldown)",
-      "residue": " to cast  when  (1 second cooldown) ",
-      "category": "c-dm-infra",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "247_0",
-        "line_key": "1",
-        "raw": "+(2-5)% Chance to cast Fire Aura when Hit (1 second cooldown)",
-        "affixName": "Chance to Cast Fire Aura when Hit (up to 3 times per second)"
       }
     },
     {
@@ -8696,30 +7224,6 @@
       }
     },
     {
-      "key": "+7% Effect of Frenzy on You",
-      "residue": " Effect of  on You ",
-      "category": "c-dm-infra",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "951_0",
-        "line_key": "2",
-        "raw": "+(18-17)% Effect of Frenzy on You",
-        "affixName": "Frenzy and Reduced Frenzy Effect"
-      }
-    },
-    {
-      "key": "+7% Effect of Haste on You",
-      "residue": " Effect of  on You ",
-      "category": "c-dm-infra",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "992_0",
-        "line_key": "1",
-        "raw": "+(5-7)% Effect of Haste on You",
-        "affixName": "Increased Haste Effect and Less Damage over Time taken during Haste"
-      }
-    },
-    {
       "key": "+7% chance to cast Shurikens on Bow Crit",
       "residue": " to cast  on  Crit ",
       "category": "c-dm-infra",
@@ -8768,18 +7272,6 @@
       }
     },
     {
-      "key": "+8% Chance to cast Fire Aura when Hit (1 second cooldown)",
-      "residue": " to cast  when  (1 second cooldown) ",
-      "category": "c-dm-infra",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "247_0",
-        "line_key": "1",
-        "raw": "+(2-5)% Chance to cast Fire Aura when Hit (1 second cooldown)",
-        "affixName": "Chance to Cast Fire Aura when Hit (up to 3 times per second)"
-      }
-    },
-    {
       "key": "+8% Chance to create a Void Rift when you hit an enemy (2 second cooldown)",
       "residue": " to create a  when you  an enemy (2 second cooldown) ",
       "category": "c-dm-infra",
@@ -8804,18 +7296,6 @@
       }
     },
     {
-      "key": "+8% Effect of Haste on You",
-      "residue": " Effect of  on You ",
-      "category": "c-dm-infra",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "992_0",
-        "line_key": "1",
-        "raw": "+(5-7)% Effect of Haste on You",
-        "affixName": "Increased Haste Effect and Less Damage over Time taken during Haste"
-      }
-    },
-    {
       "key": "+81% Chance to gain Dusk Shroud when you use a Melee Attack that hits",
       "residue": "Dusk Shroud when you use a Melee Attack that hits ",
       "category": "c-dm-infra",
@@ -8837,18 +7317,6 @@
         "line_key": "1",
         "raw": "+(25-60)% Chance to gain 20 Ward on Kill with Hungering Souls",
         "affixName": "Chance to Gain 20 Ward on Kill with Hungering Souls"
-      }
-    },
-    {
-      "key": "+9% Chance to cast Fire Aura when Hit (1 second cooldown)",
-      "residue": " to cast  when  (1 second cooldown) ",
-      "category": "c-dm-infra",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "247_0",
-        "line_key": "1",
-        "raw": "+(2-5)% Chance to cast Fire Aura when Hit (1 second cooldown)",
-        "affixName": "Chance to Cast Fire Aura when Hit (up to 3 times per second)"
       }
     },
     {
@@ -8885,30 +7353,6 @@
         "line_key": "1",
         "raw": "+1% Chance to not consume a Potion on Potion use",
         "affixName": "Chance to not consume Potion on use and Ward gained on potion use"
-      }
-    },
-    {
-      "key": "+9% Effect of Frenzy on You",
-      "residue": " Effect of  on You ",
-      "category": "c-dm-infra",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "951_0",
-        "line_key": "2",
-        "raw": "+(18-17)% Effect of Frenzy on You",
-        "affixName": "Frenzy and Reduced Frenzy Effect"
-      }
-    },
-    {
-      "key": "+9% Effect of Haste on You",
-      "residue": " Effect of  on You ",
-      "category": "c-dm-infra",
-      "datamining_match": {
-        "source": "ModItem_1_4.json",
-        "entry_key": "992_0",
-        "line_key": "1",
-        "raw": "+(5-7)% Effect of Haste on You",
-        "affixName": "Increased Haste Effect and Less Damage over Time taken during Haste"
       }
     },
     {
@@ -9063,7 +7507,7 @@
         "source": "ModItem_1_4.json",
         "entry_key": "737_0",
         "line_key": "1",
-        "raw": "(7-12)% Chance to gain a Storm Stack when you use Gathering Storm and hit an enemy",
+        "raw": "+(7-12)% Chance to Gain a Storm Stack when you use Gathering Storm and Hit an enemy",
         "affixName": "Chance to Gain a Storm Stack when you use Gathering Storm and Hit an enemy"
       }
     },
@@ -9087,7 +7531,7 @@
         "source": "ModItem_1_4.json",
         "entry_key": "665_0",
         "line_key": "1",
-        "raw": "(14-19)% Chance to create a Shockwave on hit with Upheaval",
+        "raw": "+(14-19)% Chance to create a Shockwave on hit with Upheaval",
         "affixName": "Chance to create a Shockwave on Hit with Upheaval"
       }
     },
@@ -9111,7 +7555,7 @@
         "source": "ModItem_1_4.json",
         "entry_key": "737_0",
         "line_key": "1",
-        "raw": "(7-12)% Chance to gain a Storm Stack when you use Gathering Storm and hit an enemy",
+        "raw": "+(7-12)% Chance to Gain a Storm Stack when you use Gathering Storm and Hit an enemy",
         "affixName": "Chance to Gain a Storm Stack when you use Gathering Storm and Hit an enemy"
       }
     },
@@ -9171,7 +7615,7 @@
         "source": "ModItem_1_4.json",
         "entry_key": "690_0",
         "line_key": "1",
-        "raw": "(5-6)% chance to gain 20 mana when you directly cast Runebolt or Fireball",
+        "raw": "+(5-6)% Chance to Gain 20 Mana when you directly Cast Runebolt or Fireball",
         "affixName": "Chance to Gain 20 Mana when you directly Cast Runebolt or Fireball"
       }
     },
@@ -9219,7 +7663,7 @@
         "source": "ModItem_1_4.json",
         "entry_key": "690_0",
         "line_key": "1",
-        "raw": "(5-6)% chance to gain 20 mana when you directly cast Runebolt or Fireball",
+        "raw": "+(5-6)% Chance to Gain 20 Mana when you directly Cast Runebolt or Fireball",
         "affixName": "Chance to Gain 20 Mana when you directly Cast Runebolt or Fireball"
       }
     },
@@ -9243,7 +7687,7 @@
         "source": "ModItem_1_4.json",
         "entry_key": "737_0",
         "line_key": "1",
-        "raw": "(7-12)% Chance to gain a Storm Stack when you use Gathering Storm and hit an enemy",
+        "raw": "+(7-12)% Chance to Gain a Storm Stack when you use Gathering Storm and Hit an enemy",
         "affixName": "Chance to Gain a Storm Stack when you use Gathering Storm and Hit an enemy"
       }
     },
@@ -9255,7 +7699,7 @@
         "source": "ModItem_1_4.json",
         "entry_key": "665_0",
         "line_key": "1",
-        "raw": "(14-19)% Chance to create a Shockwave on hit with Upheaval",
+        "raw": "+(14-19)% Chance to create a Shockwave on hit with Upheaval",
         "affixName": "Chance to create a Shockwave on Hit with Upheaval"
       }
     },
@@ -9291,7 +7735,7 @@
         "source": "ModItem_1_4.json",
         "entry_key": "690_0",
         "line_key": "1",
-        "raw": "(5-6)% chance to gain 20 mana when you directly cast Runebolt or Fireball",
+        "raw": "+(5-6)% Chance to Gain 20 Mana when you directly Cast Runebolt or Fireball",
         "affixName": "Chance to Gain 20 Mana when you directly Cast Runebolt or Fireball"
       }
     },
@@ -9327,7 +7771,7 @@
         "source": "ModItem_1_4.json",
         "entry_key": "522_0",
         "line_key": "1",
-        "raw": "(10-28)% Chance to Summon a Bee with Acid Flask",
+        "raw": "+(10-28)% Chance to Summon a Bee with Acid Flask",
         "affixName": "Chance to Summon a Bee with Acid Flask (up to 3 times per second)"
       }
     },
@@ -9459,7 +7903,7 @@
         "source": "ModItem_1_4.json",
         "entry_key": "737_0",
         "line_key": "1",
-        "raw": "(7-12)% Chance to gain a Storm Stack when you use Gathering Storm and hit an enemy",
+        "raw": "+(7-12)% Chance to Gain a Storm Stack when you use Gathering Storm and Hit an enemy",
         "affixName": "Chance to Gain a Storm Stack when you use Gathering Storm and Hit an enemy"
       }
     },
@@ -9471,7 +7915,7 @@
         "source": "ModItem_1_4.json",
         "entry_key": "665_0",
         "line_key": "1",
-        "raw": "(14-19)% Chance to create a Shockwave on hit with Upheaval",
+        "raw": "+(14-19)% Chance to create a Shockwave on hit with Upheaval",
         "affixName": "Chance to create a Shockwave on Hit with Upheaval"
       }
     },
@@ -9519,7 +7963,7 @@
         "source": "ModItem_1_4.json",
         "entry_key": "737_0",
         "line_key": "1",
-        "raw": "(7-12)% Chance to gain a Storm Stack when you use Gathering Storm and hit an enemy",
+        "raw": "+(7-12)% Chance to Gain a Storm Stack when you use Gathering Storm and Hit an enemy",
         "affixName": "Chance to Gain a Storm Stack when you use Gathering Storm and Hit an enemy"
       }
     },
@@ -9531,7 +7975,7 @@
         "source": "ModItem_1_4.json",
         "entry_key": "690_0",
         "line_key": "1",
-        "raw": "(5-6)% chance to gain 20 mana when you directly cast Runebolt or Fireball",
+        "raw": "+(5-6)% Chance to Gain 20 Mana when you directly Cast Runebolt or Fireball",
         "affixName": "Chance to Gain 20 Mana when you directly Cast Runebolt or Fireball"
       }
     },
@@ -9543,7 +7987,7 @@
         "source": "ModItem_1_4.json",
         "entry_key": "665_0",
         "line_key": "1",
-        "raw": "(14-19)% Chance to create a Shockwave on hit with Upheaval",
+        "raw": "+(14-19)% Chance to create a Shockwave on hit with Upheaval",
         "affixName": "Chance to create a Shockwave on Hit with Upheaval"
       }
     },
@@ -9639,7 +8083,7 @@
         "source": "ModItem_1_4.json",
         "entry_key": "737_0",
         "line_key": "1",
-        "raw": "(7-12)% Chance to gain a Storm Stack when you use Gathering Storm and hit an enemy",
+        "raw": "+(7-12)% Chance to Gain a Storm Stack when you use Gathering Storm and Hit an enemy",
         "affixName": "Chance to Gain a Storm Stack when you use Gathering Storm and Hit an enemy"
       }
     },
@@ -9663,7 +8107,7 @@
         "source": "ModItem_1_4.json",
         "entry_key": "690_0",
         "line_key": "1",
-        "raw": "(5-6)% chance to gain 20 mana when you directly cast Runebolt or Fireball",
+        "raw": "+(5-6)% Chance to Gain 20 Mana when you directly Cast Runebolt or Fireball",
         "affixName": "Chance to Gain 20 Mana when you directly Cast Runebolt or Fireball"
       }
     },
@@ -9675,7 +8119,7 @@
         "source": "ModItem_1_4.json",
         "entry_key": "665_0",
         "line_key": "1",
-        "raw": "(14-19)% Chance to create a Shockwave on hit with Upheaval",
+        "raw": "+(14-19)% Chance to create a Shockwave on hit with Upheaval",
         "affixName": "Chance to create a Shockwave on Hit with Upheaval"
       }
     },
@@ -9771,7 +8215,7 @@
         "source": "ModItem_1_4.json",
         "entry_key": "737_0",
         "line_key": "1",
-        "raw": "(7-12)% Chance to gain a Storm Stack when you use Gathering Storm and hit an enemy",
+        "raw": "+(7-12)% Chance to Gain a Storm Stack when you use Gathering Storm and Hit an enemy",
         "affixName": "Chance to Gain a Storm Stack when you use Gathering Storm and Hit an enemy"
       }
     },
@@ -9819,7 +8263,7 @@
         "source": "ModItem_1_4.json",
         "entry_key": "665_0",
         "line_key": "1",
-        "raw": "(14-19)% Chance to create a Shockwave on hit with Upheaval",
+        "raw": "+(14-19)% Chance to create a Shockwave on hit with Upheaval",
         "affixName": "Chance to create a Shockwave on Hit with Upheaval"
       }
     },
@@ -9855,7 +8299,7 @@
         "source": "ModItem_1_4.json",
         "entry_key": "690_0",
         "line_key": "1",
-        "raw": "(5-6)% chance to gain 20 mana when you directly cast Runebolt or Fireball",
+        "raw": "+(5-6)% Chance to Gain 20 Mana when you directly Cast Runebolt or Fireball",
         "affixName": "Chance to Gain 20 Mana when you directly Cast Runebolt or Fireball"
       }
     },
@@ -9879,7 +8323,7 @@
         "source": "ModItem_1_4.json",
         "entry_key": "737_0",
         "line_key": "1",
-        "raw": "(7-12)% Chance to gain a Storm Stack when you use Gathering Storm and hit an enemy",
+        "raw": "+(7-12)% Chance to Gain a Storm Stack when you use Gathering Storm and Hit an enemy",
         "affixName": "Chance to Gain a Storm Stack when you use Gathering Storm and Hit an enemy"
       }
     },
@@ -9903,7 +8347,7 @@
         "source": "ModItem_1_4.json",
         "entry_key": "690_0",
         "line_key": "1",
-        "raw": "(5-6)% chance to gain 20 mana when you directly cast Runebolt or Fireball",
+        "raw": "+(5-6)% Chance to Gain 20 Mana when you directly Cast Runebolt or Fireball",
         "affixName": "Chance to Gain 20 Mana when you directly Cast Runebolt or Fireball"
       }
     },
@@ -9939,7 +8383,7 @@
         "source": "ModItem_1_4.json",
         "entry_key": "690_0",
         "line_key": "1",
-        "raw": "(5-6)% chance to gain 20 mana when you directly cast Runebolt or Fireball",
+        "raw": "+(5-6)% Chance to Gain 20 Mana when you directly Cast Runebolt or Fireball",
         "affixName": "Chance to Gain 20 Mana when you directly Cast Runebolt or Fireball"
       }
     },
@@ -9963,7 +8407,7 @@
         "source": "ModItem_1_4.json",
         "entry_key": "665_0",
         "line_key": "1",
-        "raw": "(14-19)% Chance to create a Shockwave on hit with Upheaval",
+        "raw": "+(14-19)% Chance to create a Shockwave on hit with Upheaval",
         "affixName": "Chance to create a Shockwave on Hit with Upheaval"
       }
     },
@@ -10023,7 +8467,7 @@
         "source": "ModItem_1_4.json",
         "entry_key": "665_0",
         "line_key": "1",
-        "raw": "(14-19)% Chance to create a Shockwave on hit with Upheaval",
+        "raw": "+(14-19)% Chance to create a Shockwave on hit with Upheaval",
         "affixName": "Chance to create a Shockwave on Hit with Upheaval"
       }
     },
@@ -11633,11 +10077,6 @@
       "category": "c-infra-gap"
     },
     {
-      "key": "+1 Elemental Arrow consumed per bow attack",
-      "residue": "  Arrow consumed  attack ",
-      "category": "c-infra-gap"
-    },
-    {
       "key": "+1 Extra Blades On Next Throw Every 2 Seconds",
       "residue": " Extra Blades On Next Throw Every 2 Seconds ",
       "category": "c-infra-gap"
@@ -11768,11 +10207,6 @@
       "category": "c-infra-gap"
     },
     {
-      "key": "+10% Crit Multi While At Low Health",
-      "residue": " Crit Multi  ",
-      "category": "c-infra-gap"
-    },
-    {
       "key": "+10% Fester Stack Loss Rate While Moving",
       "residue": " Fester Stack Loss Rate  ",
       "category": "c-infra-gap"
@@ -11833,13 +10267,13 @@
       "category": "c-infra-gap"
     },
     {
-      "key": "+100% Stun Immunity for 4 seconds when you use a Potion",
-      "residue": " Stun Immunity   ",
+      "key": "+100% Ice Spiral Damage when Doubled",
+      "residue": " Ice Spiral  when Doubled ",
       "category": "c-infra-gap"
     },
     {
-      "key": "+100% Summons Tyrannosaur Minion",
-      "residue": " Summons Tyrannosaur  ",
+      "key": "+100% Stun Immunity for 4 seconds when you use a Potion",
+      "residue": " Stun Immunity   ",
       "category": "c-infra-gap"
     },
     {
@@ -11888,11 +10322,6 @@
       "category": "c-infra-gap"
     },
     {
-      "key": "+18% Crit Multiplier while Tethered",
-      "residue": " Crit Multiplier while Tethered ",
-      "category": "c-infra-gap"
-    },
-    {
       "key": "+18% Melee Cull on Hit",
       "residue": "  Cull  ",
       "category": "c-infra-gap"
@@ -11930,11 +10359,6 @@
     {
       "key": "+2% Chance To Cast Thorn Shield On You When Hit",
       "residue": " To Cast  On You When  ",
-      "category": "c-infra-gap"
-    },
-    {
-      "key": "+2% Crit Multiplier per Stack Consumed",
-      "residue": " Crit Multiplier per Stack Consumed ",
       "category": "c-infra-gap"
     },
     {
@@ -12080,11 +10504,6 @@
     {
       "key": "+65% Width when consuming 12 stacks",
       "residue": " Width when consuming 12 stacks ",
-      "category": "c-infra-gap"
-    },
-    {
-      "key": "+8 Bees per 10 seconds while in Spriggan Form",
-      "residue": " Bees per 10 seconds  ",
       "category": "c-infra-gap"
     },
     {
@@ -12418,11 +10837,6 @@
       "category": "c-infra-gap"
     },
     {
-      "key": "100% increased effect of stats on your Non-Unique Idols that are a different shape to all other equipped Non-Unique Idols",
-      "residue": " effect of stats on your Non-Unique Idols that are a different shape to all other equipped Non-Unique Idols ",
-      "category": "c-infra-gap"
-    },
-    {
       "key": "11% Chance to cast Static when Hit",
       "residue": " to cast  when  ",
       "category": "c-infra-gap"
@@ -12623,11 +11037,6 @@
       "category": "c-infra-gap"
     },
     {
-      "key": "25% Chance To Cast Divine Bolt On Melee Hit",
-      "residue": " To Cast Divine Bolt  ",
-      "category": "c-infra-gap"
-    },
-    {
       "key": "25% Chance To Cast Storm Bolt When Hit",
       "residue": " To Cast  When  ",
       "category": "c-infra-gap"
@@ -12640,11 +11049,6 @@
     {
       "key": "25% Chance To Cast Summon Vines At Departure",
       "residue": " To Cast Summon Vines At Departure ",
-      "category": "c-infra-gap"
-    },
-    {
-      "key": "25% Chance to Zap on Melee Hit",
-      "residue": " to Zap  ",
       "category": "c-infra-gap"
     },
     {
@@ -12878,11 +11282,6 @@
       "category": "c-infra-gap"
     },
     {
-      "key": "50% Zap Cooldown Reduction while Active",
-      "residue": " Zap Cooldown Reduction while Active ",
-      "category": "c-infra-gap"
-    },
-    {
       "key": "6% Chance To Cast Blood Tether When Hit",
       "residue": " To Cast Blood Tether When  ",
       "category": "c-infra-gap"
@@ -12950,11 +11349,6 @@
     {
       "key": "75% Cooldown Recovered on Ally Healed",
       "residue": " Cooldown Recovered on Ally Healed ",
-      "category": "c-infra-gap"
-    },
-    {
-      "key": "8% Chance To Cast Storm Bolt On Spell Cast",
-      "residue": " To Cast  On  Cast ",
       "category": "c-infra-gap"
     },
     {
@@ -13233,14 +11627,6 @@
     },
     {
       "source": "ModItem_1_4.json",
-      "entry_key": "1081_7",
-      "line_key": "1",
-      "raw": "{rounding:Integer}+1 chance to gain Haste for 5 seconds after you Block",
-      "affixName": "Chance to gain Haste on Block and Haste Effect",
-      "norm": "{rounding:integer} chance to gain haste for seconds after you block"
-    },
-    {
-      "source": "ModItem_1_4.json",
       "entry_key": "1088_0",
       "line_key": "1",
       "raw": "{rounding:Integer}+2 Health per Equipped Heretical Idol",
@@ -13425,6 +11811,14 @@
     },
     {
       "source": "ModItem_1_4.json",
+      "entry_key": "120_0",
+      "line_key": "1",
+      "raw": "(15-40)% Chance to Gain 30 Ward when Hit",
+      "affixName": "Chance to Gain 30 Ward when Hit",
+      "norm": "chance to gain ward when hit"
+    },
+    {
+      "source": "ModItem_1_4.json",
       "entry_key": "124_0",
       "line_key": "1",
       "raw": "{rounding:Integer}+(3-7) Vitality",
@@ -13545,6 +11939,14 @@
     },
     {
       "source": "ModItem_1_4.json",
+      "entry_key": "175_0",
+      "line_key": "1",
+      "raw": "(10-22)% Chance to Gain 20 Ward on Melee Hit",
+      "affixName": "Chance to Gain 20 Ward on Melee Hit",
+      "norm": "chance to gain ward on melee hit"
+    },
+    {
+      "source": "ModItem_1_4.json",
       "entry_key": "176_0",
       "line_key": "1",
       "raw": "{rounding:Integer}(30-75)% increased Cold Damage Over Time",
@@ -13641,6 +12043,30 @@
     },
     {
       "source": "ModItem_1_4.json",
+      "entry_key": "221_0",
+      "line_key": "1",
+      "raw": "+(9-30)% Chance to cast Maelstrom every 5 seconds",
+      "affixName": "chance to cast Maelstrom every 3 seconds",
+      "norm": "chance to cast maelstrom every seconds"
+    },
+    {
+      "source": "ModItem_1_4.json",
+      "entry_key": "226_0",
+      "line_key": "1",
+      "raw": "(6-20)% Increased Aspect of the Shark Effect",
+      "affixName": "Increased Aspect of the Shark Effect",
+      "norm": "increased aspect of the shark effect"
+    },
+    {
+      "source": "ModItem_1_4.json",
+      "entry_key": "228_0",
+      "line_key": "1",
+      "raw": "(5-12)% Increased Aspect of the Boar Effect",
+      "affixName": "Increased Aspect of the Boar Effect",
+      "norm": "increased aspect of the boar effect"
+    },
+    {
+      "source": "ModItem_1_4.json",
       "entry_key": "22_0",
       "line_key": "1",
       "raw": "{rounding:Integer}(6-17)% increased Health Regen",
@@ -13649,11 +12075,35 @@
     },
     {
       "source": "ModItem_1_4.json",
+      "entry_key": "230_0",
+      "line_key": "1",
+      "raw": "(10-25)% Increased Aspect of the Viper Effect",
+      "affixName": "Increased Aspect of the Viper Effect",
+      "norm": "increased aspect of the viper effect"
+    },
+    {
+      "source": "ModItem_1_4.json",
+      "entry_key": "232_0",
+      "line_key": "1",
+      "raw": "(10-25)% Increased Aspect of the Lynx Effect",
+      "affixName": "Increased Aspect of the Lynx Effect",
+      "norm": "increased aspect of the lynx effect"
+    },
+    {
+      "source": "ModItem_1_4.json",
       "entry_key": "237_0",
       "line_key": "1",
       "raw": "{rounding:Integer}+(2-3) Seconds of Stun Immunity after using Teleport",
       "affixName": "Seconds of Stun Immunity after using Teleport",
       "norm": "{rounding:integer} seconds of stun immunity after using teleport"
+    },
+    {
+      "source": "ModItem_1_4.json",
+      "entry_key": "238_0",
+      "line_key": "1",
+      "raw": "+(6-15)% Chance to cast Fire Aura on Crit (1 second cooldown)",
+      "affixName": "Chance to Cast Fire Aura on Critical Strike (up to 3 times per second)",
+      "norm": "chance to cast fire aura on crit"
     },
     {
       "source": "ModItem_1_4.json",
@@ -13678,6 +12128,14 @@
       "raw": "{rounding:Integer}+(42-96) Ward gained when you cast Flame Ward",
       "affixName": "Ward Granted When Casting Flame Ward",
       "norm": "{rounding:integer} ward gained when you cast flame ward"
+    },
+    {
+      "source": "ModItem_1_4.json",
+      "entry_key": "247_0",
+      "line_key": "1",
+      "raw": "+(2-5)% Chance to cast Fire Aura when Hit (1 second cooldown)",
+      "affixName": "Chance to Cast Fire Aura when Hit (up to 3 times per second)",
+      "norm": "chance to cast fire aura when hit"
     },
     {
       "source": "ModItem_1_4.json",
@@ -13761,6 +12219,14 @@
     },
     {
       "source": "ModItem_1_4.json",
+      "entry_key": "275_0",
+      "line_key": "1",
+      "raw": "+(4-13)% Chance to cast Divine Bolt when you use a 0 mana cost skill",
+      "affixName": "Chance To Cast Divine Bolt When You Use A 0 Cost Skill",
+      "norm": "chance to cast divine bolt when you use a mana cost skill"
+    },
+    {
+      "source": "ModItem_1_4.json",
       "entry_key": "277_0",
       "line_key": "1",
       "raw": "{rounding:Integer}+(56-150) Health gained when stunned",
@@ -13801,11 +12267,27 @@
     },
     {
       "source": "ModItem_1_4.json",
+      "entry_key": "300_0",
+      "line_key": "1",
+      "raw": "100% of Shield Throw Base Damage Converted to Void",
+      "affixName": "chance for Shield Throw to Fork on the first ricochet",
+      "norm": "of shield throw base damage converted to void"
+    },
+    {
+      "source": "ModItem_1_4.json",
       "entry_key": "301_0",
       "line_key": "1",
       "raw": "{rounding:Integer}+(4-12) Lightning Damage with Hammer Throw",
       "affixName": "Lightning Damage with Hammer Throw",
       "norm": "{rounding:integer} lightning damage with hammer throw"
+    },
+    {
+      "source": "ModItem_1_4.json",
+      "entry_key": "302_0",
+      "line_key": "1",
+      "raw": "(2-4)% more Damage Over Time to Bleeding Enemies for Marrow Shards",
+      "affixName": "Damage Over Time to Bleeding Enemies for Marrow Shards",
+      "norm": "more damage over time to bleeding enemies for marrow shards"
     },
     {
       "source": "ModItem_1_4.json",
@@ -13822,6 +12304,22 @@
       "raw": "{rounding:Integer}(6-12)% increased Physical Damage",
       "affixName": "Physical Damage",
       "norm": "{rounding:integer} increased physical damage"
+    },
+    {
+      "source": "ModItem_1_4.json",
+      "entry_key": "317_0",
+      "line_key": "1",
+      "raw": "+(7-17)% Chance to cast Marrow Shards when you cast Transplant",
+      "affixName": "Chance to Cast Marrow Shards when you Cast Transplant",
+      "norm": "chance to cast marrow shards when you cast transplant"
+    },
+    {
+      "source": "ModItem_1_4.json",
+      "entry_key": "318_0",
+      "line_key": "1",
+      "raw": "(60-100)% Increased Poison Damage while Aura of Decay is active",
+      "affixName": "Increased Poison Damage while Aura of Decay is active",
+      "norm": "increased poison damage while aura of decay is active"
     },
     {
       "source": "ModItem_1_4.json",
@@ -13971,7 +12469,7 @@
       "source": "ModItem_1_4.json",
       "entry_key": "375_4",
       "line_key": "1",
-      "raw": "{rounding:Integer}(7-8) Mana Gained when you use Vengeance and hit at least one enemy",
+      "raw": "{rounding:Integer}+(7-8) Mana Gained when you use Vengeance and hit at least one enemy",
       "affixName": "Mana Gained when you use Vengeance and Hit at least one enemy",
       "norm": "{rounding:integer} mana gained when you use vengeance and hit at least one enemy"
     },
@@ -13979,7 +12477,7 @@
       "source": "ModItem_1_4.json",
       "entry_key": "376_4",
       "line_key": "1",
-      "raw": "{rounding:Integer}(7-8) Mana Gained when you use Rive and hit at least one enemy",
+      "raw": "{rounding:Integer}+(7-8) Mana Gained when you use Rive and hit at least one enemy",
       "affixName": "Mana Gained when you use Rive and Hit at least one enemy",
       "norm": "{rounding:integer} mana gained when you use rive and hit at least one enemy"
     },
@@ -14027,7 +12525,7 @@
       "source": "ModItem_1_4.json",
       "entry_key": "411_0",
       "line_key": "1",
-      "raw": "{rounding:Integer}(5-6) Mana Gained when you use Harvest",
+      "raw": "{rounding:Integer}+(5-6) Mana Gained when you use Harvest",
       "affixName": "Mana Gained on Harvest Use",
       "norm": "{rounding:integer} mana gained when you use harvest"
     },
@@ -14075,7 +12573,7 @@
       "source": "ModItem_1_4.json",
       "entry_key": "436_0",
       "line_key": "1",
-      "raw": "{rounding:Integer}(5-15) Ward Gained on Shadow Creation",
+      "raw": "{rounding:Integer}+(5-15) Ward Gained on Shadow Creation",
       "affixName": "Ward Gained when you create a Shadow",
       "norm": "{rounding:integer} ward gained on shadow creation"
     },
@@ -14201,9 +12699,17 @@
     },
     {
       "source": "ModItem_1_4.json",
+      "entry_key": "518_0",
+      "line_key": "2",
+      "raw": "(50-80)% of Shurikens Base Damage converted to Lightning",
+      "affixName": "Lightning Damage with Shurikens",
+      "norm": "of shurikens base damage converted to lightning"
+    },
+    {
+      "source": "ModItem_1_4.json",
       "entry_key": "529_0",
       "line_key": "1",
-      "raw": "{rounding:Integer}(22-60) Ward gained when you use Smoke Bomb",
+      "raw": "{rounding:Integer}+(22-60) Ward gained when you use Smoke Bomb",
       "affixName": "Ward Gained on use with Smoke Bomb",
       "norm": "{rounding:integer} ward gained when you use smoke bomb"
     },
@@ -14222,6 +12728,14 @@
       "raw": "{rounding:Integer}+(4-10) Bow Physical Damage for Ballistae",
       "affixName": "Bow Physical Damage for Ballistae",
       "norm": "{rounding:integer} bow physical damage for ballistae"
+    },
+    {
+      "source": "ModItem_1_4.json",
+      "entry_key": "548_0",
+      "line_key": "1",
+      "raw": "+(12-19)% Pierce Chance with Fireball",
+      "affixName": "Fireball Pierce Chance",
+      "norm": "pierce chance with fireball"
     },
     {
       "source": "ModItem_1_4.json",
@@ -14411,7 +12925,7 @@
       "source": "ModItem_1_4.json",
       "entry_key": "691_0",
       "line_key": "1",
-      "raw": "{rounding:Integer}+(14-19) Ward gained per Rune consumed with Runic Invocation",
+      "raw": "{rounding:Integer}+(14-19) Ward Gained per Rune consumed with Runic Invocation",
       "affixName": "Ward Gained per Rune consumed with Runic Invocation",
       "norm": "{rounding:integer} ward gained per rune consumed with runic invocation"
     },
@@ -14577,6 +13091,14 @@
     },
     {
       "source": "ModItem_1_4.json",
+      "entry_key": "752_0",
+      "line_key": "1",
+      "raw": "+(9-21)% Mana Efficiency for Ghostflame",
+      "affixName": "Mana Efficiency for Ghostflame",
+      "norm": "mana efficiency for ghostflame"
+    },
+    {
+      "source": "ModItem_1_4.json",
       "entry_key": "755_0",
       "line_key": "1",
       "raw": "{rounding:Integer}+(47-146) Ward per Second during Profane Veil",
@@ -14590,6 +13112,22 @@
       "raw": "{rounding:Integer}+(81-120) Dodge Rating while using Evade",
       "affixName": "Dodge while Evading and Increased Dodge Rating",
       "norm": "{rounding:integer} dodge rating while using evade"
+    },
+    {
+      "source": "ModItem_1_4.json",
+      "entry_key": "762_0",
+      "line_key": "1",
+      "raw": "+(5-6)% Recurve Chance for Heartseeker",
+      "affixName": "Recurve Chance for Heartseeker",
+      "norm": "recurve chance for heartseeker"
+    },
+    {
+      "source": "ModItem_1_4.json",
+      "entry_key": "766_0",
+      "line_key": "2",
+      "raw": "1% of Current Health converted to Ward when you directly cast a Necrotic Spell",
+      "affixName": "Death Grip Champion's",
+      "norm": "of current health converted to ward when you directly cast a necrotic spell"
     },
     {
       "source": "ModItem_1_4.json",
@@ -14614,6 +13152,14 @@
       "raw": "{rounding:Integer}+(4-8) Melee Damage",
       "affixName": "Abyssal Champion's",
       "norm": "{rounding:integer} melee damage"
+    },
+    {
+      "source": "ModItem_1_4.json",
+      "entry_key": "776_0",
+      "line_key": "2",
+      "raw": "100% of Bleed Chance Converted to Ignite Chance",
+      "affixName": "Meteor Champion's",
+      "norm": "of bleed chance converted to ignite chance"
     },
     {
       "source": "ModItem_1_4.json",
@@ -14705,6 +13251,14 @@
     },
     {
       "source": "ModItem_1_4.json",
+      "entry_key": "801_0",
+      "line_key": "2",
+      "raw": "(11-14)% Increased Necrotic Damage if you have been Hit Recently",
+      "affixName": "Isadora's Tomb Binding Reforged",
+      "norm": "increased necrotic damage if you have been hit recently"
+    },
+    {
+      "source": "ModItem_1_4.json",
       "entry_key": "804_0",
       "line_key": "2",
       "raw": "{rounding:Integer}(10-13)% increased Melee Physical Damage",
@@ -14782,6 +13336,14 @@
       "raw": "{rounding:Integer}+(8-9) Melee Fire Damage per Forged Weapon",
       "affixName": "Sunforged Hammer Reforged",
       "norm": "{rounding:integer} melee fire damage per forged weapon"
+    },
+    {
+      "source": "ModItem_1_4.json",
+      "entry_key": "819_0",
+      "line_key": "1",
+      "raw": "100% of Meteor Base Damage Converted to Lightning",
+      "affixName": "Vilatria's Downfall Reforged",
+      "norm": "of meteor base damage converted to lightning"
     },
     {
       "source": "ModItem_1_4.json",
@@ -15001,14 +13563,6 @@
     },
     {
       "source": "ModItem_1_4.json",
-      "entry_key": "947_5",
-      "line_key": "1",
-      "raw": "{rounding:Integer}+(1-1.39) Increased Damage for skills used by Shadows",
-      "affixName": "Doppelganger's Deception Reforged",
-      "norm": "{rounding:integer} increased damage for skills used by shadows"
-    },
-    {
-      "source": "ModItem_1_4.json",
       "entry_key": "948_0",
       "line_key": "2",
       "raw": "{rounding:Integer}+(10-16) Health Gained on Shadow Creation",
@@ -15017,19 +13571,19 @@
     },
     {
       "source": "ModItem_1_4.json",
-      "entry_key": "948_7",
-      "line_key": "1",
-      "raw": "{rounding:Integer}+(1.25-1.5) Chance to gain a stack of Dusk Shroud when you consume a Shadow",
-      "affixName": "Doppelganger's Facade Reforged",
-      "norm": "{rounding:integer} chance to gain a stack of dusk shroud when you consume a shadow"
-    },
-    {
-      "source": "ModItem_1_4.json",
       "entry_key": "951_0",
       "line_key": "1",
       "raw": "{rounding:Integer}+1 You have Frenzy",
       "affixName": "Frenzy and Reduced Frenzy Effect",
       "norm": "{rounding:integer} you have frenzy"
+    },
+    {
+      "source": "ModItem_1_4.json",
+      "entry_key": "951_0",
+      "line_key": "2",
+      "raw": "+(-18--17)% Effect of Frenzy on You",
+      "affixName": "Frenzy and Reduced Frenzy Effect",
+      "norm": "effect of frenzy on you"
     },
     {
       "source": "ModItem_1_4.json",
@@ -15057,51 +13611,11 @@
     },
     {
       "source": "ModItem_1_4.json",
-      "entry_key": "959_7",
-      "line_key": "1",
-      "raw": "{rounding:Integer}+1 Chance to cast cold Volcanic Orb when you directly use a cold melee attack or cold traversal skill (3 second cooldown)",
-      "affixName": "Keplahan's Cryolith Reforged",
-      "norm": "{rounding:integer} chance to cast cold volcanic orb when you directly use a cold melee attack or cold traversal skill"
-    },
-    {
-      "source": "ModItem_1_4.json",
-      "entry_key": "959_7",
-      "line_key": "2",
-      "raw": "{rounding:Integer}+(1.6-2) Cold Damage",
-      "affixName": "Keplahan's Cryolith Reforged",
-      "norm": "{rounding:integer} cold damage"
-    },
-    {
-      "source": "ModItem_1_4.json",
       "entry_key": "95_0",
       "line_key": "1",
       "raw": "{rounding:Integer}(12-18) Damage Reflected to Attackers",
       "affixName": "Damage Reflected to Attackers",
       "norm": "{rounding:integer} damage reflected to attackers"
-    },
-    {
-      "source": "ModItem_1_4.json",
-      "entry_key": "960_7",
-      "line_key": "1",
-      "raw": "{rounding:Integer}+1 Chance to cast fire Volcanic Orb when you directly use a fire melee attack or fire traversal skill (3 second cooldown)",
-      "affixName": "Keplahan's Pyrolith Reforged",
-      "norm": "{rounding:integer} chance to cast fire volcanic orb when you directly use a fire melee attack or fire traversal skill"
-    },
-    {
-      "source": "ModItem_1_4.json",
-      "entry_key": "960_7",
-      "line_key": "2",
-      "raw": "{rounding:Integer}+(1.6-2) Fire Damage",
-      "affixName": "Keplahan's Pyrolith Reforged",
-      "norm": "{rounding:integer} fire damage"
-    },
-    {
-      "source": "ModItem_1_4.json",
-      "entry_key": "961_7",
-      "line_key": "1",
-      "raw": "{rounding:Integer}+(1-1.2) chance to throw a Burning Dagger when you use a melee fire attack and hit at least one enemy, doubled for Dancing Strikes (up to 4 times per second)",
-      "affixName": "Kuzon's Fury Reforged",
-      "norm": "{rounding:integer} chance to throw a burning dagger when you use a melee fire attack and hit at least one enemy, doubled for dancing strikes"
     },
     {
       "source": "ModItem_1_4.json",
@@ -15113,14 +13627,6 @@
     },
     {
       "source": "ModItem_1_4.json",
-      "entry_key": "962_7",
-      "line_key": "1",
-      "raw": "{rounding:Integer}+1 Chance to Blind on Fire Hit",
-      "affixName": "Kuzon's Guise Reforged",
-      "norm": "{rounding:integer} chance to blind on fire hit"
-    },
-    {
-      "source": "ModItem_1_4.json",
       "entry_key": "963_0",
       "line_key": "2",
       "raw": "+2% Current Mana gained as Ward on Block",
@@ -15129,27 +13635,11 @@
     },
     {
       "source": "ModItem_1_4.json",
-      "entry_key": "964_7",
-      "line_key": "1",
-      "raw": "{rounding:Integer}+1 Chance on Block to apply Marked For Death to the Attacker",
-      "affixName": "Chance to apply Marked for Death on Block",
-      "norm": "{rounding:integer} chance on block to apply marked for death to the attacker"
-    },
-    {
-      "source": "ModItem_1_4.json",
       "entry_key": "965_0",
       "line_key": "1",
       "raw": "{rounding:Integer}0.5% less Bow Bow Global Conditional Damage",
       "affixName": "Bow Damage per meter from the Target (up to 10 metres)",
       "norm": "{rounding:integer} less bow bow global conditional damage"
-    },
-    {
-      "source": "ModItem_1_4.json",
-      "entry_key": "967_3",
-      "line_key": "1",
-      "raw": "{rounding:Integer}+(1-1.09) Damage Over Time",
-      "affixName": "Increased Damage over Time and Bow Bleed Chance",
-      "norm": "{rounding:integer} damage over time"
     },
     {
       "source": "ModItem_1_4.json",
@@ -15185,14 +13675,6 @@
     },
     {
       "source": "ModItem_1_4.json",
-      "entry_key": "980_7",
-      "line_key": "1",
-      "raw": "{rounding:Integer}+(1.7-2) Chance for non-Critical Strikes to inflict Critical Vulnerability",
-      "affixName": "Chance for non-critical Strikes to inflict Critical Vulnerability for 4 seconds",
-      "norm": "{rounding:integer} chance for noncritical strikes to inflict critical vulnerability"
-    },
-    {
-      "source": "ModItem_1_4.json",
       "entry_key": "984_0",
       "line_key": "1",
       "raw": "{rounding:Integer}+5 Seconds of Frenzy granted to you and your Minions when Enemy damage leaves you at Low Health",
@@ -15209,6 +13691,14 @@
     },
     {
       "source": "ModItem_1_4.json",
+      "entry_key": "988_0",
+      "line_key": "1",
+      "raw": "+(10-11)% Added Melee Damage gained as Added Spell Damage",
+      "affixName": "Added Melee Damage from Weapons gained as Added Spell Damage",
+      "norm": "added melee damage gained as added spell damage"
+    },
+    {
+      "source": "ModItem_1_4.json",
       "entry_key": "98_0",
       "line_key": "1",
       "raw": "{rounding:Integer}(10-20)% increased Minion Damage Over Time",
@@ -15222,6 +13712,14 @@
       "raw": "{rounding:Integer}+1 Chance to cleanse all ailments when you Evade",
       "affixName": "Chance to Cleanse Ailments on Evade and Increased Ailment Damage Taken",
       "norm": "{rounding:integer} chance to cleanse all ailments when you evade"
+    },
+    {
+      "source": "ModItem_1_4.json",
+      "entry_key": "992_0",
+      "line_key": "1",
+      "raw": "+(5-7)% Effect of Haste on You",
+      "affixName": "Increased Haste Effect and Less Damage over Time taken during Haste",
+      "norm": "effect of haste on you"
     },
     {
       "source": "ModItem_1_4.json",

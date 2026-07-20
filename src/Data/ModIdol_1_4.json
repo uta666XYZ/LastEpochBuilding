@@ -7854,8 +7854,8 @@
 		},
 		"1070_0": {
 			"affixName": "All Resistances for you and your Minions",
-			"1": "+5% All Resistances",
-			"2": "+5% Minion All Resistances",
+			"1": "+0.8% All Resistances",
+			"2": "+0.8% Minion All Resistances",
 			"affix": "All Resistances for you and your Minions",
 			"level": 1,
 			"statOrderKey": 43,
@@ -7881,7 +7881,7 @@
 		"1071_0": {
 			"affixName": "Bees Per 10 Seconds",
 			"modName": "Bees per 10 Seconds",
-			"1": "+5 Bees Per 10 Seconds",
+			"1": "+0.8 Bees Per 10 Seconds",
 			"affix": "Bees per 10 Seconds",
 			"level": 1,
 			"statOrderKey": 3,
@@ -7906,7 +7906,7 @@
 		},
 		"1072_0": {
 			"affixName": "Elemental Bees per 10 Seconds",
-			"1": "+5 Elemental Bees Per 10 Seconds",
+			"1": "+0.8 Elemental Bees Per 10 Seconds",
 			"affix": "Elemental Bees per 10 Seconds",
 			"level": 1,
 			"statOrderKey": 4,
@@ -8292,7 +8292,7 @@
 			"affixName": "Damage Reflected and Damage Dealt to Attackers",
 			"modName": "of the Briar",
 			"1": "(5-15)% of Damage Reflected",
-			"2": "{rounding:Integer}(50-150) Damage Reflected to Attackers",
+			"2": "{rounding:Integer}(50-100) Damage Reflected to Attackers",
 			"affix": "of the Briar",
 			"level": 0,
 			"statOrderKey": 13,

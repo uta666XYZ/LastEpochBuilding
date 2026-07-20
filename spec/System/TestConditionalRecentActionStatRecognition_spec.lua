@@ -9,7 +9,7 @@
 -- under-counting on corrupted-sealed affixes that pair a known defence
 -- stat with a known "BeenHitRecently" / "CritRecently" / etc. tag.
 --
--- Evidence: Q9J4w8PE Necromancer's Julra's Obsession gloves carry a
+-- Evidence: <private build> Necromancer's Julra's Obsession gloves carry a
 -- corrupted prefix "+(301-400) Endurance Threshold if you have not
 -- been Hit Recently" (range 11 → 305). Pre-fix the parser produced a
 -- single LEB_NotSupported BASE 305 mod that CalcDefence ignored,

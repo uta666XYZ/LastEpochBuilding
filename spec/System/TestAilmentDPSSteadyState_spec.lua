@@ -1,6 +1,6 @@
 -- @leb-regression-guard: ailment-dps-steady-state-formula
 -- Locks the steady-state ailment DPS formula in CalcOffence.lua against the
--- game pipeline documented in LE_datamining/extracted/dot_channel_formulas.md.
+-- game pipeline documented in datamined game source
 --
 -- The formula has three structural invariants that must hold together:
 --   1. per-stack DPS divides by BASE duration (rate preserved), not effDuration
@@ -13,7 +13,7 @@
 -- than triangulating from snapshots.
 --
 -- See:
---   * LE_datamining/extracted/dot_channel_formulas.md §3, §4
+--   * datamined game source §3, §4
 --   * REGRESSION_GUARDS.md "ailment-dps-steady-state-formula"
 
 local function readSource(relPath)
@@ -40,8 +40,8 @@ describe("AilmentDPSSteadyStateFormula", function()
 
     it("steady-state stack count uses applicationsPerSec * effDuration", function()
         local text = readSource("Modules/CalcOffence.lua")
-        assert.is_truthy(string.find(text, "applicationsPerSec = hitRate * (chance / 100)", 1, true),
-            "applicationsPerSec must factor proc chance into hit rate")
+        assert.is_truthy(string.find(text, "applicationsPerSec = hitRate * (overstackChance / 100)", 1, true),
+            "applicationsPerSec must factor the (uncapped, overstacking) proc chance into hit rate")
         assert.is_truthy(string.find(text, "rawStacks = applicationsPerSec * effDuration", 1, true),
             "steady-state stacks must grow with effDuration; otherwise increased " ..
             "ailment duration loses its DPS contribution")

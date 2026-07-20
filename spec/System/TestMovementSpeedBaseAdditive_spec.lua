@@ -6,7 +6,7 @@
 -- `(1 + INC/100) * More` and silently drops BASE. Passive nodes that grant
 -- "+X% Movement Speed" (BASE) such as Beastmaster's Predator
 -- (+1% Movement Speed per point, up to 5 points) thus contributed
--- nothing — Qb6WgDEp lv95 Beastmaster snapshot was -5% short of the
+-- nothing — <private build> lv95 Beastmaster snapshot was -5% short of the
 -- LETools breakdown until this fix.
 --
 -- See REGRESSION_GUARDS.md "movement-speed-base-additive".

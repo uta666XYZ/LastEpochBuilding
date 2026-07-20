@@ -303,7 +303,9 @@ function BlessingGridControlClass:Draw(viewPort)
 			if item2.implicitModLines and #item2.implicitModLines > 0 then
 				for _, modLine in ipairs(item2.implicitModLines) do
 					local lineText = modLine.line or modLine.extra or ""
-					self.tooltip:AddLine(14, "^xCCCCCC" .. lineText)
+					-- @leb-regression-guard: blessing-tooltip-mod-font-size
+					-- Test: spec/System/TestBlessingTooltipModFontSize_spec.lua
+					self.tooltip:AddLine(16, "^xCCCCCC" .. lineText)
 				end
 			end
 		else

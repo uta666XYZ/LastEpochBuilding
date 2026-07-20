@@ -6,8 +6,8 @@
 -- jsonData.mastery` (stale duplicates from older API revisions).
 --
 -- Regression case this guard prevents:
---   Build QJWMRv53 with bio={level:98, characterClass:4, chosenMastery:1}
---   must produce `QJWMRv53 lv98 Bladedancer.xml`, NOT `lv73 Falconer.xml`.
+--   Build <private build> with bio={level:98, characterClass:4, chosenMastery:1}
+--   must produce `<private build> lv98 Bladedancer.xml`, NOT `lv73 Falconer.xml`.
 --   The XML filename derives from `build.characterLevel or char.level`
 --   + `build.spec.curAscendClassName`, so a silent fallback to wrong
 --   top-level values corrupts the output name without an error.
