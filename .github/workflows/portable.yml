@@ -24,7 +24,22 @@ jobs:
                 echo "VERSION=$VERSION" >> "$GITHUB_ENV"
             - name: Patch manifest for auto-updater
               run: |
-                sed -i 's/<Version number="\([^"]*\)"/<Version number="\1" branch="dev" platform="win32"/' manifest.xml
+                MANIFEST_BRANCH="dev"
+                if [ "$GITHUB_EVENT_NAME" = "release" ]; then
+                  MANIFEST_BRANCH="main"
+                fi
+                sed -i 's/ branch="[^"]*"//g' manifest.xml
+                sed -i 's/ platform="[^"]*"//g' manifest.xml
+                sed -i "s/<Version number=\"\([^\"]*\)\"/<Version number=\"\1\" branch=\"${MANIFEST_BRANCH}\" platform=\"win32\"/" manifest.xml
+                MANIFEST_BRANCH="$MANIFEST_BRANCH" python3 - <<'PY'
+                import os
+                import xml.etree.ElementTree as Et
+
+                version = Et.parse("manifest.xml").getroot().find("Version")
+                assert version is not None
+                assert version.get("branch") == os.environ["MANIFEST_BRANCH"]
+                assert version.get("platform") == "win32"
+                PY
             - name: Build portable zip
               run: |
                 mkdir -p dist/LastEpochBuilding
