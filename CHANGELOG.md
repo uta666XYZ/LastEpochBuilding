@@ -1,5 +1,16 @@
 # Changelog
 
+## [beta](https://github.com/PathOfBuildingCommunity/PathOfBuilding-PoE2/tree/beta) (2026/07/20)
+
+[Full Changelog](https://github.com/uta666XYZ/LastEpochBuilding/compare/v0.12.1...beta)
+
+
+## What's Changed
+### Other changes
+- release: v0.14.0 main snapshot [\#5](https://github.com/uta666XYZ/LastEpochBuilding/pull/5) ([uta666XYZ](https://github.com/uta666XYZ))
+
+
+
 ## [v0.14.0](https://github.com/uta666XYZ/LastEpochBuilding/tree/v0.14.0) (2026/07/21)
 
 > A large **DPS / calculation-accuracy** release: a trigger-skill engine, an auto-summon framework, a game-faithful damage-conversion engine, more accurate ailment / damage-over-time handling, an across-the-board minion damage fix, a Config-tab overhaul, and a Notes tab with Markdown — plus modeling for a large number of skills, uniques, and minions across every class.

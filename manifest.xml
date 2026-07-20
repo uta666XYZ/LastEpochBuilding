@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <LEPVersion>
-	<Version number="0.14.0" />
+	<Version number="0.14.0-3ff8e4e1f" />
 	<Source part="default" url="https://raw.githubusercontent.com/uta666XYZ/LastEpochBuilding/{branch}/" />
 	<Source part="runtime" platform="win32" url="https://raw.githubusercontent.com/uta666XYZ/LastEpochBuilding/{branch}/runtime/" />
 	<Source part="program" url="https://raw.githubusercontent.com/uta666XYZ/LastEpochBuilding/{branch}/src/" />
 	<Source part="tree" url="https://raw.githubusercontent.com/uta666XYZ/LastEpochBuilding/{branch}/src/" />
-	<File name="changelog.txt" part="default" sha1="c8818375b84c72c2c04de8d330df07f45dbb82c4" />
+	<File name="changelog.txt" part="default" sha1="5781f9b0c0fc1edc2c551e79222d001164e600cd" />
 	<File name="help.txt" part="default" sha1="8e894f3daa60d3515bf17e9b47eb365fe5ef8595" />
 	<File name="LICENSE.md" part="default" sha1="19ad4587752ce37e2642b996854c6ef04838afe3" />
 	<File name="Assets/blessings/allure_of_apathy.png" part="program" sha1="6c7f68f703c01ca3b8cdaabb63f6d5b5c96b701b" />
