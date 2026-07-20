@@ -3,7 +3,24 @@
     "skillList": [
       "FrenzyAura"
     ],
-    "modList": [],
+    "modList": [
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 1,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
     "name": "Frenzy Totem",
     "life": "120"
   },
@@ -11,7 +28,16 @@
     "skillList": [
       "FrenzyAura"
     ],
-    "modList": [],
+    "modList": [
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
     "name": "Manifest Shield",
     "life": "75"
   },
@@ -19,7 +45,48 @@
     "skillList": [
       "Manifest Armor 01 Melee"
     ],
-    "modList": [],
+    "modList": [
+      {
+        "name": "Speed",
+        "type": "MORE",
+        "value": -20,
+        "flags": 3584,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 4,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "Damage",
+        "type": "MORE",
+        "value": 100,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "MovementSpeed",
+        "type": "MORE",
+        "value": 60,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
     "name": "ManifestedArmor",
     "life": "350"
   },
@@ -27,7 +94,48 @@
     "skillList": [
       "PrimalBear 01 melee attack"
     ],
-    "modList": [],
+    "modList": [
+      {
+        "name": "Damage",
+        "type": "MORE",
+        "value": 75,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "Speed",
+        "type": "MORE",
+        "value": -22,
+        "flags": 3584,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 24,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "MovementSpeed",
+        "type": "INC",
+        "value": 20,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
     "name": "PrimalBear",
     "life": "360"
   },
@@ -35,7 +143,48 @@
     "skillList": [
       "PrimalSabertooth 01 Melee"
     ],
-    "modList": [],
+    "modList": [
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 14,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "Speed",
+        "type": "MORE",
+        "value": 30,
+        "flags": 3584,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "MovementSpeed",
+        "type": "INC",
+        "value": 20,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "MovementSpeed",
+        "type": "MORE",
+        "value": 82,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
     "name": "PrimalSabertooth",
     "life": "240"
   },
@@ -44,7 +193,32 @@
       "ScorpionTailMelee",
       "ScorpionMeleeComboStart"
     ],
-    "modList": [],
+    "modList": [
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 12,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "MovementSpeed",
+        "type": "MORE",
+        "value": 100,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
     "name": "PrimalScorpion",
     "life": "300"
   },
@@ -52,7 +226,48 @@
     "skillList": [
       "PrimalWolf 01 melee"
     ],
-    "modList": [],
+    "modList": [
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 12,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "Speed",
+        "type": "MORE",
+        "value": 30,
+        "flags": 3584,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "Damage",
+        "type": "MORE",
+        "value": -12,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "MovementSpeed",
+        "type": "MORE",
+        "value": 50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
     "name": "PrimalWolf",
     "life": "220"
   },
@@ -60,7 +275,16 @@
     "skillList": [
       "BallistaBolt"
     ],
-    "modList": [],
+    "modList": [
+      {
+        "name": "Damage",
+        "type": "MORE",
+        "value": 50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
     "name": "RogueBallista",
     "life": "1000"
   },
@@ -68,7 +292,16 @@
     "skillList": [
       "NullAbility"
     ],
-    "modList": [],
+    "modList": [
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 1000,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
     "name": "RogueDecoy",
     "life": "200"
   },
@@ -77,15 +310,108 @@
       "RogueFalcon Melee",
       "RogueFalcon Diving Attack"
     ],
-    "modList": [],
+    "modList": [
+      {
+        "name": "MovementSpeed",
+        "type": "INC",
+        "value": 20,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "Damage",
+        "type": "MORE",
+        "value": 50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "Speed",
+        "type": "MORE",
+        "value": 20,
+        "flags": 3584,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
     "name": "RogueFalcon",
     "life": "160"
+  },
+  "ShadowClone": {
+    "skillList": [
+      "Shurikens",
+      "Arrowstorm",
+      "Shadow Cascade"
+    ],
+    "modList": [
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 5,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "Speed",
+        "type": "MORE",
+        "value": -25,
+        "flags": 256,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
+    "name": "ShadowClone",
+    "life": "200"
   },
   "Spriggan": {
     "skillList": [
       "ThornVolley"
     ],
-    "modList": [],
+    "modList": [
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 8,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "MovementSpeed",
+        "type": "INC",
+        "value": 20,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "MovementSpeed",
+        "type": "MORE",
+        "value": 25,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
     "name": "Spriggan",
     "life": "160"
   },
@@ -93,7 +419,56 @@
     "skillList": [
       "StormCrowLightningBlast"
     ],
-    "modList": [],
+    "modList": [
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 12,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "Speed",
+        "type": "MORE",
+        "value": 30,
+        "flags": 3584,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "MovementSpeed",
+        "type": "INC",
+        "value": 20,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "MovementSpeed",
+        "type": "MORE",
+        "value": 50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "Damage",
+        "type": "MORE",
+        "value": 15,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
     "name": "StormCrow",
     "life": "200"
   },
@@ -101,7 +476,32 @@
     "skillList": [
       "LightningStorm"
     ],
-    "modList": [],
+    "modList": [
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 1,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "Damage",
+        "type": "MORE",
+        "value": 130,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
     "name": "StormTotem",
     "life": "120"
   },
@@ -110,7 +510,48 @@
       "FeatheredRaptorJumpSlash",
       "BasicEnemyMelee"
     ],
-    "modList": [],
+    "modList": [
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 14,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "Damage",
+        "type": "MORE",
+        "value": 25,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "Speed",
+        "type": "MORE",
+        "value": 10,
+        "flags": 3584,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "MovementSpeed",
+        "type": "INC",
+        "value": 20,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
     "name": "PrimalRaptor",
     "life": "240"
   },
@@ -119,7 +560,56 @@
       "Abomination Consume Minions",
       "Abomination Melee"
     ],
-    "modList": [],
+    "modList": [
+      {
+        "name": "Damage",
+        "type": "MORE",
+        "value": 60,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "Speed",
+        "type": "MORE",
+        "value": -40,
+        "flags": 3584,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 1,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "Damage",
+        "type": "MORE",
+        "value": 60,
+        "flags": 512,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "MovementSpeed",
+        "type": "INC",
+        "value": 20,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
     "name": "SummonedAbomination",
     "life": "400"
   },
@@ -130,7 +620,56 @@
       "golemMelee",
       "Bone Golem Rampage"
     ],
-    "modList": [],
+    "modList": [
+      {
+        "name": "Damage",
+        "type": "MORE",
+        "value": 40,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "Speed",
+        "type": "MORE",
+        "value": -45,
+        "flags": 3584,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 1,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "Damage",
+        "type": "MORE",
+        "value": 60,
+        "flags": 512,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "MovementSpeed",
+        "type": "INC",
+        "value": 20,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
     "name": "SummonedBoneGolem",
     "life": "400"
   },
@@ -139,7 +678,32 @@
       "BasicEnemyMelee",
       "DeathSlash"
     ],
-    "modList": [],
+    "modList": [
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 2,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "MovementSpeed",
+        "type": "INC",
+        "value": 20,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
     "name": "SummonedSkeleton",
     "life": "100"
   },
@@ -147,7 +711,40 @@
     "skillList": [
       "Summon Skeleton Archer Bow Attack"
     ],
-    "modList": [],
+    "modList": [
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 2,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "Damage",
+        "type": "MORE",
+        "value": -28,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "MovementSpeed",
+        "type": "INC",
+        "value": 20,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
     "name": "SummonedSkeletonArcher",
     "life": "100"
   },
@@ -155,7 +752,32 @@
     "skillList": [
       "Skeletal Mages Necrotic Projectile"
     ],
-    "modList": [],
+    "modList": [
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 2,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "MovementSpeed",
+        "type": "INC",
+        "value": 20,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
     "name": "SummonedSkeletonMage",
     "life": "100"
   },
@@ -163,15 +785,90 @@
     "skillList": [
       "Suicide"
     ],
-    "modList": [],
+    "modList": [
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 1,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "MovementSpeed",
+        "type": "MORE",
+        "value": 80,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "Speed",
+        "type": "MORE",
+        "value": -50,
+        "flags": 256,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "Damage",
+        "type": "MORE",
+        "value": 20,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
     "name": "SummonedVolatileZombie",
-    "life": "200"
+    "life": "200",
+    "noInherentDamageScaling": true
   },
   "SummonedWraith": {
     "skillList": [
       "Wraith 01 Melee"
     ],
-    "modList": [],
+    "modList": [
+      {
+        "name": "Damage",
+        "type": "MORE",
+        "value": 152,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 1,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "MovementSpeed",
+        "type": "INC",
+        "value": 20,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
     "name": "SummonedWraith",
     "life": "60"
   },
@@ -179,8 +876,1851 @@
     "skillList": [
       "ThornTotemAttack"
     ],
-    "modList": [],
+    "modList": [
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 1,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
     "name": "Thorn Totem",
     "life": "120"
+  },
+  "Mercenary": {
+    "skillList": [
+      "Crossbow Bolt"
+    ],
+    "modList": [
+      {
+        "name": "Damage",
+        "type": "MORE",
+        "value": 300,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 10,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "MovementSpeed",
+        "type": "INC",
+        "value": 20,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
+    "name": "Mercenary",
+    "life": "400"
+  },
+  "PrimalAnurok": {
+    "skillList": [
+      "AncientOasis01 01 Melee",
+      "AncientOasis01 02 TongueSlam",
+      "AncientOasis01 04 TongueSlap",
+      "AncientOasis01 03 v2 JumpStomp"
+    ],
+    "modList": [],
+    "name": "PrimalAnurok",
+    "life": "300",
+    "monsterScaling": {
+      "fromLevel": 10
+    }
+  },
+  "PrimalSquirrel": {
+    "skillList": [
+      "BasicEnemyMelee"
+    ],
+    "modList": [
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 12,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "Speed",
+        "type": "MORE",
+        "value": 30,
+        "flags": 3584,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "Damage",
+        "type": "MORE",
+        "value": -48,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "MovementSpeed",
+        "type": "MORE",
+        "value": 50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
+    "name": "PrimalSquirrel",
+    "life": "160"
+  },
+  "PrimalTyrannosaur": {
+    "skillList": [
+      "Giant T_Rex 05 Minion Roar",
+      "Giant T_Rex 04 Tail Slash",
+      "Giant T_Rex 01 Bite"
+    ],
+    "modList": [],
+    "name": "PrimalTyrannosaur",
+    "life": "540",
+    "monsterScaling": {
+      "fromLevel": 10
+    }
+  },
+  "QueenBee": {
+    "skillList": [
+      "Queen Bee 05 Bee Explosion",
+      "Queen Bee 02 Quadruple ScratchR",
+      "Queen Bee 01 Scratch"
+    ],
+    "modList": [
+      {
+        "name": "Damage",
+        "type": "MORE",
+        "value": 10,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
+    "name": "QueenBee",
+    "life": "50"
+  },
+  "RiftBeast": {
+    "skillList": [
+      "Time Beast Fire Head 01.1 Fireball Mortar Projectile",
+      "Time Beast Fangs 01 Super Fang",
+      "Time Beast Cold Head 02 Ice Bite",
+      "Time Beast Cold Head 01 Ice Storm",
+      "Time Beast Armor 02 Scale Shot",
+      "Time Beast Lightning Horns 01 Charge",
+      "Time Beast LIghtning Horns 02 Discharge",
+      "Time Beast Tentacles 01 Flower Spit",
+      "Time Beast Tentacles 02 Poison Burst",
+      "Time Beast Wings 01 Cyclone",
+      "Time Beast Wings 02 Dive Bomb",
+      "Time Beast Fangs 02 Roar of Time",
+      "Time Beast Fire Head 02 Incinerate",
+      "Time Beast Armor 01 Defense Curl",
+      "Time Beast Tail Spikes 02 Slam",
+      "Time Beast Tail Spikes 01 Tail Swipe",
+      "Time Beast 03 Pounce Dash",
+      "Time Beast 02 Stomp",
+      "Time Beast 01 Melee Attack"
+    ],
+    "modList": [],
+    "name": "RiftBeast",
+    "life": "800"
+  },
+  "SummonedSkeletonHarvester": {
+    "skillList": [
+      "BasicEnemyMelee"
+    ],
+    "modList": [
+      {
+        "name": "Damage",
+        "type": "MORE",
+        "value": 30,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "Speed",
+        "type": "MORE",
+        "value": 30,
+        "flags": 3584,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 1,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "MovementSpeed",
+        "type": "INC",
+        "value": 20,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
+    "name": "SkeletonHarvester",
+    "life": "200"
+  },
+  "StormSprite": {
+    "skillList": [
+      "stormSpriteDash"
+    ],
+    "modList": [
+      {
+        "name": "Speed",
+        "type": "MORE",
+        "value": -35,
+        "flags": 256,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "Damage",
+        "type": "MORE",
+        "value": 30,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "MovementSpeed",
+        "type": "INC",
+        "value": 20,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
+    "name": "StormSprite",
+    "life": "200"
+  },
+  "SummonedCrab": {
+    "skillList": [
+      "Giant Crab 2.0 Melee"
+    ],
+    "modList": [
+      {
+        "name": "Speed",
+        "type": "MORE",
+        "value": 50,
+        "flags": 3584,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "MovementSpeed",
+        "type": "MORE",
+        "value": 1000,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "Damage",
+        "type": "MORE",
+        "value": 58,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 8,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
+    "name": "SummonedCrab",
+    "life": "400"
+  },
+  "TolmatMinionAncient": {
+    "skillList": [
+      "AncientOasis02 02 Dash",
+      "AncientOasis02 05 TailSwirl",
+      "AncientOasis02 03 TailAttackR",
+      "AncientOasis02 01 MeleeBite"
+    ],
+    "modList": [],
+    "name": "Tolmat Minion (Ancient Era)",
+    "life": "300"
+  },
+  "TolmatMinionDivine": {
+    "skillList": [
+      "RahyehFactionSwarmer 03 Flamethrower",
+      "RahyehFactionSwarmer 02 Fireball",
+      "RahyehFactionSwarmer 01 Melee"
+    ],
+    "modList": [],
+    "name": "Tolmat Minion (Divine Era)",
+    "life": "225",
+    "monsterScaling": {
+      "fromLevel": 10
+    }
+  },
+  "TolmatMinionImperial": {
+    "skillList": [
+      "Immortal Eye 02 Death Cone",
+      "Immortal Eye 01 Lazer"
+    ],
+    "modList": [],
+    "name": "Tolmat Minion (Imperial Era)",
+    "life": "500"
+  },
+  "TolmatMinionRuined": {
+    "skillList": [
+      "VoidDespair 03 Leap",
+      "VoidDespair 02 StabLunge",
+      "VoidDespair 01 Melee"
+    ],
+    "modList": [],
+    "name": "Tolmat Minion (Ruined Era)",
+    "life": "275"
+  },
+  "SummonedWraithlord": {
+    "skillList": [
+      "Wraithlord 02 Summon Wraith",
+      "Wraithlord 03 Consume Minions",
+      "Wraithlord 01 Stygian Beams"
+    ],
+    "modList": [
+      {
+        "name": "Damage",
+        "type": "MORE",
+        "value": 89,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 4,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "Speed",
+        "type": "MORE",
+        "value": -20,
+        "flags": 256,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
+    "name": "Wraithlord",
+    "life": "350"
+  },
+  "SummonedSkeletonVanguard": {
+    "skillList": [
+      "SkeletonVanguard 01 Melee"
+    ],
+    "modList": [
+      {
+        "name": "Damage",
+        "type": "MORE",
+        "value": 0,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "Speed",
+        "type": "MORE",
+        "value": 30,
+        "flags": 3584,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 1,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "MovementSpeed",
+        "type": "INC",
+        "value": 20,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
+    "name": "SkeletonVanguard",
+    "life": "180"
+  },
+  "SummonedSkeletonRogue": {
+    "skillList": [
+      "Skeleton Rogue Shift",
+      "Skeleton Rogue Shurikens",
+      "Skeleton Rogue Melee"
+    ],
+    "modList": [
+      {
+        "name": "Damage",
+        "type": "MORE",
+        "value": -40,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 2,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "Speed",
+        "type": "MORE",
+        "value": 30,
+        "flags": 3584,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "MovementSpeed",
+        "type": "INC",
+        "value": 20,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
+    "name": "SkeletonRogue",
+    "life": "100"
+  },
+  "SummonedBloodWraith": {
+    "skillList": [
+      "BasicEnemyMelee"
+    ],
+    "modList": [
+      {
+        "name": "Speed",
+        "type": "MORE",
+        "value": 68,
+        "flags": 3584,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 1,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "Damage",
+        "type": "MORE",
+        "value": 240,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "MovementSpeed",
+        "type": "INC",
+        "value": 20,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
+    "name": "BloodWraith",
+    "life": "100"
+  },
+  "SummonedFlameWraith": {
+    "skillList": [
+      "FireWraith_Fireball"
+    ],
+    "modList": [
+      {
+        "name": "Damage",
+        "type": "MORE",
+        "value": 89,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 1,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "MovementSpeed",
+        "type": "INC",
+        "value": 20,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "Speed",
+        "type": "MORE",
+        "value": -20,
+        "flags": 256,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
+    "name": "FlameWraith",
+    "life": "60"
+  },
+  "SummonedPutridWraith": {
+    "skillList": [
+      "PoisonBoltAoD"
+    ],
+    "modList": [
+      {
+        "name": "Damage",
+        "type": "MORE",
+        "value": 215,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 1,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "MovementSpeed",
+        "type": "INC",
+        "value": 20,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
+    "name": "PutridWraith",
+    "life": "60"
+  },
+  "SummonedRevenant": {
+    "skillList": [
+      "SummonedRevenant 02 WeaponThrow",
+      "SummonedRevenant 01 Melee"
+    ],
+    "modList": [
+      {
+        "name": "Damage",
+        "type": "MORE",
+        "value": 50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 1,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "MovementSpeed",
+        "type": "INC",
+        "value": 20,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
+    "name": "Revenant",
+    "life": "140"
+  },
+  "SummonedPyreGolem": {
+    "skillList": [
+      "Bone Golem 02 Big Slam",
+      "Bone Golem 03 Leap Slam",
+      "golemMelee",
+      "Bone Golem Rampage"
+    ],
+    "modList": [
+      {
+        "name": "Damage",
+        "type": "MORE",
+        "value": 40,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "Speed",
+        "type": "MORE",
+        "value": -45,
+        "flags": 3584,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 1,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "Damage",
+        "type": "MORE",
+        "value": 60,
+        "flags": 512,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "MovementSpeed",
+        "type": "INC",
+        "value": 20,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
+    "name": "PyreGolem",
+    "life": "400"
+  },
+  "SummonedSpectralGolem": {
+    "skillList": [
+      "Bone Golem 10 Freezing Grasp",
+      "Bone Golem 02 Big Slam",
+      "Bone Golem 03 Leap Slam",
+      "golemMelee",
+      "Bone Golem Rampage"
+    ],
+    "modList": [
+      {
+        "name": "Damage",
+        "type": "MORE",
+        "value": 40,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "Speed",
+        "type": "MORE",
+        "value": -45,
+        "flags": 3584,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 1,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "Damage",
+        "type": "MORE",
+        "value": 60,
+        "flags": 512,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "MovementSpeed",
+        "type": "INC",
+        "value": 20,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
+    "name": "SpectralGolem",
+    "life": "400"
+  },
+  "SummonedBloodGolem": {
+    "skillList": [
+      "Bone Golem 09 Blood Orb",
+      "Bone Golem 02 Big Slam",
+      "Bone Golem 03 Leap Slam",
+      "golemMelee",
+      "Bone Golem Rampage"
+    ],
+    "modList": [
+      {
+        "name": "Damage",
+        "type": "MORE",
+        "value": 40,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "Speed",
+        "type": "MORE",
+        "value": -45,
+        "flags": 3584,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 1,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "Damage",
+        "type": "MORE",
+        "value": 60,
+        "flags": 512,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "MovementSpeed",
+        "type": "INC",
+        "value": 20,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
+    "name": "BloodGolem",
+    "life": "400"
+  },
+  "SummonedBoneMinion": {
+    "skillList": [
+      "BasicEnemyMelee"
+    ],
+    "modList": [
+      {
+        "name": "Damage",
+        "type": "MORE",
+        "value": -40,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 2,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "MovementSpeed",
+        "type": "INC",
+        "value": 20,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
+    "name": "BoneMinion",
+    "life": "100"
+  },
+  "PoisonWispMinion": {
+    "skillList": [
+      "PoisonNova"
+    ],
+    "modList": [
+      {
+        "name": "Damage",
+        "type": "MORE",
+        "value": 20,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "Speed",
+        "type": "MORE",
+        "value": -35,
+        "flags": 256,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "MovementSpeed",
+        "type": "INC",
+        "value": 20,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
+    "name": "PoisonWisp",
+    "life": "150"
+  },
+  "BonePillar": {
+    "skillList": [],
+    "modList": [
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 1,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
+    "name": "BonePillar",
+    "life": "300"
+  },
+  "SummonedCorpseParasite": {
+    "skillList": [
+      "BasicEnemyMelee"
+    ],
+    "modList": [
+      {
+        "name": "Damage",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "Speed",
+        "type": "MORE",
+        "value": 50,
+        "flags": 3584,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 1,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
+    "name": "CorpseParasite",
+    "life": "60"
+  },
+  "SummonedPyromancer": {
+    "skillList": [
+      "Skeletal Mages Fire Projectile"
+    ],
+    "modList": [
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 2,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "MovementSpeed",
+        "type": "INC",
+        "value": 20,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
+    "name": "Pyromancer",
+    "life": "100"
+  },
+  "SummonedDeathKnight": {
+    "skillList": [
+      "DeathKnightHarvest",
+      "Basic Death Knight Melee"
+    ],
+    "modList": [
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 2,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "MovementSpeed",
+        "type": "MORE",
+        "value": 8,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
+    "name": "DeathKnight",
+    "life": "200"
+  },
+  "SummonedCryomancer": {
+    "skillList": [
+      "Skeletal Mages Cold Projectile"
+    ],
+    "modList": [
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 2,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "MovementSpeed",
+        "type": "INC",
+        "value": 20,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
+    "name": "Cryomancer",
+    "life": "100"
+  },
+  "SummonedSoulWisp": {
+    "skillList": [
+      "WispNecroticNova",
+      "WispNecroticBeam"
+    ],
+    "modList": [],
+    "name": "SoulWisp",
+    "life": "150"
+  },
+  "PoisonousVine": {
+    "skillList": [
+      "SprigganVineMelee"
+    ],
+    "modList": [
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 2,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "Damage",
+        "type": "MORE",
+        "value": 50,
+        "flags": 512,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
+    "name": "PoisonousVine",
+    "life": "50"
+  },
+  "PrimalSerpent": {
+    "skillList": [
+      "SummonSerpentMelee 01"
+    ],
+    "modList": [
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "MovementSpeed",
+        "type": "INC",
+        "value": 20,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
+    "name": "PrimalSerpent",
+    "life": "500"
+  },
+  "SummonedLocust": {
+    "skillList": [
+      "LocustAttack"
+    ],
+    "modList": [
+      {
+        "name": "Speed",
+        "type": "MORE",
+        "value": 50,
+        "flags": 3584,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 1,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "Damage",
+        "type": "MORE",
+        "value": 50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
+    "name": "Locust",
+    "life": "100"
+  },
+  "HealingTotem": {
+    "skillList": [
+      "ButterflyHeal"
+    ],
+    "modList": [
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 1,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
+    "name": "HealingTotem",
+    "life": "100"
+  },
+  "ClawTotem": {
+    "skillList": [
+      "Swipe",
+      "BasicPlayerAttack"
+    ],
+    "modList": [
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 1,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "Damage",
+        "type": "MORE",
+        "value": 100,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
+    "name": "ClawTotem",
+    "life": "120"
+  },
+  "TempestTotem": {
+    "skillList": [],
+    "modList": [
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 1,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
+    "name": "TempestTotem",
+    "life": "100"
+  },
+  "WarcryTotem": {
+    "skillList": [
+      "Warcry"
+    ],
+    "modList": [
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 1,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
+    "name": "WarcryTotem",
+    "life": "100"
+  },
+  "UpheavalTotem": {
+    "skillList": [
+      "Upheaval"
+    ],
+    "modList": [
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 1,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
+    "name": "UpheavalTotem",
+    "life": "100"
+  },
+  "SpiritSabertooth": {
+    "skillList": [
+      "PrimalSabertooth 01 Melee"
+    ],
+    "modList": [
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 14,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "Speed",
+        "type": "MORE",
+        "value": 30,
+        "flags": 3584,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "MovementSpeed",
+        "type": "INC",
+        "value": 20,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "MovementSpeed",
+        "type": "MORE",
+        "value": 82,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
+    "name": "SpiritSabertooth",
+    "life": "240"
+  },
+  "BabyScorpion": {
+    "skillList": [
+      "ScorpionTailMelee",
+      "ScorpionMeleeComboStart"
+    ],
+    "modList": [
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 12,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "MovementSpeed",
+        "type": "MORE",
+        "value": 70,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
+    "name": "BabyScorpion",
+    "life": "150"
+  },
+  "SummonedRockElemental": {
+    "skillList": [
+      "Rock Elemental Melee"
+    ],
+    "modList": [
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 1,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "MovementSpeed",
+        "type": "INC",
+        "value": 20,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "Damage",
+        "type": "MORE",
+        "value": 50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
+    "name": "RockElemental",
+    "life": "250"
+  },
+  "SummonedHive": {
+    "skillList": [
+      "HiveLocustSpawn",
+      "NullAbility"
+    ],
+    "modList": [
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 1,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "Speed",
+        "type": "MORE",
+        "value": 5,
+        "flags": 256,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "Damage",
+        "type": "MORE",
+        "value": 35,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
+    "name": "Hive",
+    "life": "120"
+  },
+  "ValeSpirit": {
+    "skillList": [
+      "SpiritThorns"
+    ],
+    "modList": [
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -100,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "Damage",
+        "type": "MORE",
+        "value": 50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
+    "name": "ValeSpirit",
+    "life": "1000"
+  },
+  "MirrorImage": {
+    "skillList": [
+      "IceBolt",
+      "LightningBlast",
+      "Fireball"
+    ],
+    "modList": [
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 5,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "Speed",
+        "type": "MORE",
+        "value": -25,
+        "flags": 256,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
+    "name": "MirrorImage",
+    "life": "200"
+  },
+  "IceShield": {
+    "skillList": [
+      "NullAbility"
+    ],
+    "modList": [
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -100,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
+    "name": "IceShield",
+    "life": "300"
+  },
+  "ForgedWeapon": {
+    "skillList": [
+      "ForgedWeapon 02 slice",
+      "ForgedWeapon 01 melee"
+    ],
+    "modList": [],
+    "name": "ForgedWeapon",
+    "life": "350"
+  },
+  "ForgedAxe": {
+    "skillList": [
+      "BasicEnemyMelee"
+    ],
+    "modList": [],
+    "name": "ForgedAxe",
+    "life": "100"
+  },
+  "BallistaShield": {
+    "skillList": [
+      "NullAbility"
+    ],
+    "modList": [
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
+    "name": "BallistaShield",
+    "life": "300"
+  },
+  "AreksFlesh": {
+    "skillList": [
+      "AreksFleshSlam",
+      "BasicEnemyMelee"
+    ],
+    "modList": [
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 3,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "MovementSpeed",
+        "type": "INC",
+        "value": 20,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
+    "name": "AreksFlesh",
+    "life": "300"
+  },
+  "Bee": {
+    "skillList": [
+      "BasicEnemyMelee"
+    ],
+    "modList": [
+      {
+        "name": "Damage",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "Speed",
+        "type": "MORE",
+        "value": 50,
+        "flags": 3584,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 1,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
+    "name": "Bee",
+    "life": "60"
+  },
+  "ChillyBee": {
+    "skillList": [
+      "BasicEnemyMelee"
+    ],
+    "modList": [],
+    "name": "ChillyBee",
+    "life": "60"
+  },
+  "FireBee": {
+    "skillList": [
+      "BasicEnemyMelee"
+    ],
+    "modList": [
+      {
+        "name": "Damage",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "Speed",
+        "type": "MORE",
+        "value": 50,
+        "flags": 3584,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 1,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
+    "name": "FireBee",
+    "life": "60"
+  },
+  "LightningBee": {
+    "skillList": [
+      "BasicEnemyMelee"
+    ],
+    "modList": [
+      {
+        "name": "Damage",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "Speed",
+        "type": "MORE",
+        "value": 50,
+        "flags": 3584,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 1,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
+    "name": "LightningBee",
+    "life": "60"
+  },
+  "BurningSkeleton": {
+    "skillList": [
+      "Fireball"
+    ],
+    "modList": [
+      {
+        "name": "Damage",
+        "type": "MORE",
+        "value": 60,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 1,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
+    "name": "BurningSkeleton",
+    "life": "200"
+  },
+  "IllusoryTree": {
+    "skillList": [],
+    "modList": [
+      {
+        "name": "LifeRegen",
+        "type": "BASE",
+        "value": 1,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      },
+      {
+        "name": "DamageTaken",
+        "type": "MORE",
+        "value": -50,
+        "flags": 0,
+        "keywordFlags": 0,
+        "source": "MinionBase:ActorStats"
+      }
+    ],
+    "name": "IllusoryTree",
+    "life": "100"
   }
 }

@@ -70,6 +70,167 @@ describe("TestModParse", function()
         assert.are.equals(81, build.configTab.modList:Sum("BASE", nil, "NecroticResist"))
     end)
 
+    -- @leb-regression-guard:crits-abbreviation
+    -- Locks the parser routing for the Sentinel-tree "Crits" abbreviation.
+    -- If the specific "from crits$" patterns get reordered after the
+    -- "from (.+)$" catch-all in src/Modules/ModParser.lua, scan() picks the
+    -- catch-all first (longest-pattern tie-breaking), the value falls through
+    -- to LEB_NotSupported, and Sentinel-114 Heaven's Bulwark stops crediting
+    -- ReduceCritExtraDamage. This reproduces the original <private build> -30 diff.
+    it("crits abbreviation reduces crit damage", function()
+        build.configTab.input.customMods = "30% Reduced Bonus Damage Taken From Crits\n\z
+        2% Reduced Bonus Damage Taken From Crits\n\z
+        5% Less Bonus Damage Taken From Crits"
+        build.configTab:BuildModList()
+        runCallback("OnFrame")
+        assert.are.equals(37, build.configTab.modList:Sum("BASE", nil, "ReduceCritExtraDamage"))
+    end)
+
+    -- @leb-regression-guard:with-a-shield-condition
+    -- Sentinel-90 "Sanctuary Guardian" lists "+15% All Resistances With A Shield"
+    -- in its notScalingStats. Without the "with a shield" condition mapping in
+    -- ModParser.modTagList, the trailing condition survives as residual extra
+    -- and PassiveTree.lua line 421-423 sets node.extra=true, causing the entire
+    -- mod to be discarded — silently dropping ~15 from every resist on <private build>.
+    it("with a shield condition tag", function()
+        build.configTab.input.customMods = "+15% All Resistances With A Shield"
+        build.configTab:BuildModList()
+        runCallback("OnFrame")
+        -- All seven resists must each receive +15 BASE tagged with UsingShield.
+        -- ModStoreClass:EvalMod uses cfg.skillCond[var] for Condition tag matching
+        -- (see ModStore.lua line 563/574), so probe the cfg with skillCond set.
+        local resists = { "FireResist", "ColdResist", "LightningResist",
+            "PhysicalResist", "NecroticResist", "PoisonResist", "VoidResist" }
+        for _, key in ipairs(resists) do
+            assert.are.equals(15, build.configTab.modList:Sum("BASE", { skillCond = { UsingShield = true } }, key))
+            assert.are.equals(0,  build.configTab.modList:Sum("BASE", { skillCond = { UsingShield = false } }, key))
+        end
+    end)
+
+    -- @leb-regression-guard:while-with-a-shield-condition
+    -- Sentinel-90 "Sanctuary Guardian" notScalingStats also uses the long form
+    -- "+50 Armor While With A Shield". Without the "while with a shield" entry
+    -- the trailing condition leaves residual extra (non-nil), which causes
+    -- ConfigOptions.customMods (and PassiveTree.lua node ingestion) to drop the
+    -- entire mod silently. We assert at the parseMod boundary so the test
+    -- exercises the parser path even when ModList:Sum cfg semantics differ.
+    it("while with a shield condition tag", function()
+        local mods, extra = modLib.parseMod("+50 Armor While With A Shield")
+        assert.is_nil(extra, "parseMod must consume 'while with a shield' (residual='" .. tostring(extra) .. "')")
+        assert.is_not_nil(mods)
+        assert.are.equals(1, #mods)
+        assert.are.equals("Armour", mods[1].name)
+        assert.are.equals("BASE", mods[1].type)
+        assert.are.equals(50, mods[1].value)
+        local tag = mods[1][1]
+        assert.is_not_nil(tag, "expected a Condition tag on the mod")
+        assert.are.equals("Condition", tag.type)
+        assert.are.equals("UsingShield", tag.var)
+    end)
+
+    -- @leb-regression-guard:per-1pct-increased-movement-speed
+    -- Unbroken Charge unique grants "+(11-30) Block Effectiveness per 1%
+    -- Increased Movement Speed". Without the "per 1% increased movement speed"
+    -- matcher the trailing suffix leaves residual extra and the entire mod is
+    -- silently dropped. The Multiplier:MovementSpeedInc auto-injection in
+    -- CalcSetup is verified separately at the build level.
+    it("per 1% increased movement speed multiplier", function()
+        local mods, extra = modLib.parseMod("+21 Block Effectiveness per 1% Increased Movement Speed")
+        assert.is_nil(extra, "parseMod must consume 'per 1% increased movement speed' (residual='" .. tostring(extra) .. "')")
+        assert.is_not_nil(mods)
+        assert.are.equals(1, #mods)
+        assert.are.equals("BlockEffectiveness", mods[1].name)
+        assert.are.equals("BASE", mods[1].type)
+        assert.are.equals(21, mods[1].value)
+        local tag = mods[1][1]
+        assert.is_not_nil(tag, "expected a Multiplier tag on the mod")
+        assert.are.equals("Multiplier", tag.type)
+        assert.are.equals("MovementSpeedInc", tag.var)
+    end)
+
+    -- @leb-regression-guard:cradle-of-the-erased-block-eff-per-uncapped-resist
+    -- Cradle of the Erased unique grants "+1 Block Effectiveness per 1% Total
+    -- Uncapped Resistance". Without the "per 1% total uncapped resistance"
+    -- matcher the trailing suffix leaves residual extra and the entire
+    -- BlockEffectiveness mod is silently dropped (<private build> Beastmaster lv98:
+    -- LEB BlockEffectiveness 90 vs LET 945). The Multiplier:UncappedResistTotal
+    -- auto-injection in CalcSetup (Sum BASE on the 7 resists) already exists for
+    -- the Ward Per Second uncapped-resist family and is verified at the build level.
+    it("per 1% total uncapped resistance multiplier", function()
+        local mods, extra = modLib.parseMod("+1 Block Effectiveness per 1% Total Uncapped Resistance")
+        assert.is_nil(extra, "parseMod must consume 'per 1% total uncapped resistance' (residual='" .. tostring(extra) .. "')")
+        assert.is_not_nil(mods)
+        assert.are.equals(1, #mods)
+        assert.are.equals("BlockEffectiveness", mods[1].name)
+        assert.are.equals("BASE", mods[1].type)
+        assert.are.equals(1, mods[1].value)
+        local tag = mods[1][1]
+        assert.is_not_nil(tag, "expected a Multiplier tag on the mod")
+        assert.are.equals("Multiplier", tag.type)
+        assert.are.equals("UncappedResistTotal", tag.var)
+    end)
+
+    -- @leb-regression-guard:thicket-reflect-per-uncapped-phys-res
+    -- Thicket of Blinding Light (uniques_1_4 #426) craft affix "(11-17) Damage
+    -- Reflected to Attackers per 10% uncapped Physical Resistance". The BASE stat
+    -- parses via modNameList, but without the "per 10%% uncapped physical resistance"
+    -- modTagList phrase the trailing suffix leaves residual extra and the whole
+    -- per-uncapped-phys-res reflect term is silently dropped -> in-game "Thorns"
+    -- reads UNDER (HitMeBabyOneMoreTime: LEB 33096 vs in-game 34609). div=10 (per 10%),
+    -- per-TYPE Multiplier:UncappedPhysicalResist (verbatim "uncapped", NOT total),
+    -- auto-populated in CalcSetup as Sum BASE PhysicalResist. Stale ModCache row for
+    -- this line was deleted in the same commit so parseMod runs live.
+    it("reflect per 10% uncapped physical resistance multiplier", function()
+        local mods, extra = modLib.parseMod("14 Damage Reflected to Attackers per 10% uncapped Physical Resistance")
+        assert.is_nil(extra, "parseMod must consume 'per 10% uncapped physical resistance' (residual='" .. tostring(extra) .. "')")
+        assert.is_not_nil(mods)
+        assert.are.equals(1, #mods)
+        assert.are.equals("DamageReflectedToAttackers", mods[1].name)
+        assert.are.equals("BASE", mods[1].type)
+        assert.are.equals(14, mods[1].value)
+        local tag = mods[1][1]
+        assert.is_not_nil(tag, "expected a Multiplier tag on the mod")
+        assert.are.equals("Multiplier", tag.type)
+        assert.are.equals("UncappedPhysicalResist", tag.var)
+        assert.are.equals(10, tag.div)
+    end)
+
+    -- @leb-regression-guard:traitors-tongue-offhand-crit-flat
+    -- Traitor's Tongue (dual-wield dagger) is the only unique in the game that
+    -- uses cross-slot self-referential mod text "with X equipped in the
+    -- offhand/mainhand" (verified 2026-05-12 against
+    -- datamined game source). Without the
+    -- "with (.-) equipped in the offhand|mainhand" matchers the trailing
+    -- condition survives as residual extra and Item.lua's processModLine
+    -- silently drops the entire mod from modDB.
+    it("equipped in the offhand condition tag", function()
+        local mods, extra = modLib.parseMod("+12% Critical Strike Chance with Traitor's Tongue equipped in the offhand")
+        assert.is_nil(extra, "parseMod must consume 'with X equipped in the offhand' (residual='" .. tostring(extra) .. "')")
+        assert.is_not_nil(mods)
+        assert.are.equals(1, #mods)
+        assert.are.equals("CritChance", mods[1].name)
+        assert.are.equals("BASE", mods[1].type)
+        assert.are.equals(12, mods[1].value)
+        local tag = mods[1][1]
+        assert.is_not_nil(tag, "expected a Condition tag on the mod")
+        assert.are.equals("Condition", tag.type)
+        assert.are.equals("OffhandHas:traitor's tongue", tag.var)
+    end)
+
+    it("equipped in the mainhand condition tag", function()
+        local mods, extra = modLib.parseMod("+12% Parry Chance with Traitor's Tongue equipped in the mainhand")
+        assert.is_nil(extra, "parseMod must consume 'with X equipped in the mainhand' (residual='" .. tostring(extra) .. "')")
+        assert.is_not_nil(mods)
+        assert.are.equals(1, #mods)
+        assert.are.equals("ParryChance", mods[1].name)
+        assert.are.equals("BASE", mods[1].type)
+        assert.are.equals(12, mods[1].value)
+        local tag = mods[1][1]
+        assert.is_not_nil(tag, "expected a Condition tag on the mod")
+        assert.are.equals("Condition", tag.type)
+        assert.are.equals("MainHandHas:traitor's tongue", tag.var)
+    end)
+
     it("attributes", function()
         build.configTab.input.customMods = "+2 to All Attributes"
         build.configTab:BuildModList()
@@ -137,6 +298,12 @@ describe("TestModParse", function()
         build.skillsTab:SelSkill(1, "Fireball")
         runCallback("OnFrame")
 
+        -- @leb-regression-guard: maxlife-maxmana-banker-round
+        -- Default Acolyte lv1: baseMana 50 + manaPerLevel 0.50506*1 + 2*Att(1) = 52.50506.
+        -- LE finalizes maxMana with property_list_v3 roundingForAdded="Integer" =
+        -- banker rounding (formulas_verified §38), NOT floor. frac .50506 > .5 rounds
+        -- UP → 53. floor would give 52 (the old WRONG int-truncate-life-mana guard);
+        -- a revert to floor flips this back to 52 and breaks ShutFackUp's in-game Mana 252.
         assert.are.equals(53, build.calcsTab.calcsOutput.Mana)
         assert.are.equals(40, build.calcsTab.mainEnv.player.mainSkill.skillModList:Sum("INC", nil, "FireDamage"))
 
@@ -145,6 +312,7 @@ describe("TestModParse", function()
         build.buildFlag = true
         runCallback("OnFrame")
 
+        -- 952.50506 → banker 953 (frac > .5). floor would give 952.
         assert.are.equals(953, build.calcsTab.calcsOutput.Mana)
         assert.are.equals(80, build.calcsTab.mainEnv.player.mainSkill.skillModList:Sum("INC", nil, "FireDamage"))
     end)
@@ -524,5 +692,246 @@ describe("TestModParse", function()
             -- Should apply as Str (generic parse chain)
             assert.are.equals(5, build.configTab.modList:Sum("BASE", nil, "Str"))
         end)
+    end)
+
+    -- Regression guard: in-game stat parity invariants from determined-hawking-2a827c.
+    -- These tests exist to catch a class of regressions where ModCache.lua and the
+    -- ModParser drift apart and re-introduce the ShutFackUp Health=1423 (vs in-game
+    -- 1572) bug. If any of these fail, regenerate ModCache.lua via the headless
+    -- regen flow before investigating ModParser changes.
+    describe("in-game stat parity (regression guard)", function()
+        it("'+N% Health' is INC, not BASE (ModCache regression marker)", function()
+            build.configTab.input.customMods = "+10% Health"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            assert.are.equals(10, build.configTab.modList:Sum("INC", nil, "Life"))
+            assert.are.equals(0, build.configTab.modList:Sum("BASE", nil, "Life"))
+        end)
+
+        it("'+N Additional Health Per M Vitality' carries PerStat tag", function()
+            build.configTab.input.customMods = "+1 Additional Health Per 2 Vitality"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            local found
+            for _, m in ipairs(build.configTab.modList) do
+                if m.name == "Life" and m.type == "BASE" and m.value == 1 then
+                    found = m
+                    break
+                end
+            end
+            assert.is_not_nil(found, "Life BASE mod (value 1) not found")
+            assert.is_not_nil(found[1], "PerStat tag missing on Life mod")
+            assert.are.equals("PerStat", found[1].type)
+            assert.are.equals(2, found[1].div)
+            assert.are.equals("Vit", found[1].stat)
+        end)
+
+        it("PerStat scales Life by Vitality (continuous, not floored at mod level)", function()
+            -- Without scaling mod: baseline Life from +50 Vit alone
+            build.configTab.input.customMods = "+50 Vitality"
+            build.configTab:BuildModList()
+            build.buildFlag = true
+            runCallback("OnFrame")
+            local baseline = build.calcsTab.calcsOutput.Life
+
+            build.configTab.input.customMods = "+50 Vitality\n+1 Additional Health Per 2 Vitality"
+            build.configTab:BuildModList()
+            build.buildFlag = true
+            runCallback("OnFrame")
+            -- 50 Vit / 2 = 25 extra Life
+            assert.are.equals(baseline + 25, build.calcsTab.calcsOutput.Life)
+        end)
+
+        it("'Crit Multi While At Low Health' does NOT match a Life mod", function()
+            -- Guards against ModCache entries that erroneously parse low-health
+            -- conditional crit-multi as a flat Life BASE/INC.
+            build.configTab.input.customMods = "+10% Crit Multi While At Low Health"
+            build.configTab:BuildModList()
+            runCallback("OnFrame")
+            assert.are.equals(0, build.configTab.modList:Sum("BASE", nil, "Life"))
+            assert.are.equals(0, build.configTab.modList:Sum("INC", nil, "Life"))
+        end)
+
+        -- @leb-regression-guard: idol-altar-not-idol-slot
+        -- Two-part guard:
+        --  (1) CalcSetup must NOT classify the "Idol Altar" equipment slot as
+        --      an idol slot (the corrupted altar feeds
+        --      CorruptedNonIdolItemsEquipped, not CorruptedIdolItemsEquipped).
+        --  (2) CalcPerform must publish CorruptedItemsEquipped /
+        --      CorruptedNonIdolItemsEquipped / CorruptedIdolItemsEquipped onto
+        --      `output` BEFORE the Attributes loop, so StatThreshold tags
+        --      (resolved via ModStore:GetStat reading actor.output[stat])
+        --      observe the correct count and the
+        --      "+N to All Attributes with at least N Corrupted non-Idol Items
+        --      equipped" affix (Shroud of Obscurity) trips.
+        -- Establishing reference: see git log
+        -- (still differs from LETools 44 by remaining CompleteSetCount bug B).
+        it("Corrupted Idol Altar counts as non-Idol for CorruptedNonIdolItemsEquipped", function()
+            -- Character must clear LevelReq filter (CalcSetup nulls items
+            -- whose requirements.level > characterLevel).
+            build.characterLevel = 99
+
+            -- Equip a corrupted Idol Altar; nothing else corrupted.
+            build.itemsTab:CreateDisplayItemFromRaw([[Rarity: RARE
+            Test Corrupted Altar
+            Archaic Altar
+            Unique ID: 123
+            LevelReq: 50
+            Implicits: 0
+            Corrupted]])
+            -- AddDisplayItem with noAutoEquip then manually equip into the
+            -- Idol Altar slot (auto-equip relies on slot:IsShown() which
+            -- returns false in headless tests).
+            build.itemsTab:AddDisplayItem(true)
+            local altarItemId
+            for id, it in pairs(build.itemsTab.items) do
+                if it.baseName == "Archaic Altar" then altarItemId = id; break end
+            end
+            assert.is_not_nil(altarItemId, "altar item should be in items list")
+            assert.is_not_nil(build.itemsTab.slots["Idol Altar"], "Idol Altar slot should exist")
+            build.itemsTab.slots["Idol Altar"]:SetSelItemId(altarItemId)
+            build.itemsTab:PopulateSlots()
+
+            -- Inject the Shroud-style threshold mod via customMods so we don't
+            -- depend on a specific unique's affix roll.
+            build.configTab.input.customMods =
+                "+14 to All Attributes with at least 1 Corrupted non-Idol Items equipped"
+            build.configTab:BuildModList()
+            build.buildFlag = true
+            runCallback("OnFrame")
+
+            -- (1) Counter classification: altar in non-idol bucket.
+            assert.are.equals(1, build.calcsTab.mainOutput.CorruptedNonIdolItemsEquipped)
+            assert.are.equals(0, build.calcsTab.mainOutput.CorruptedIdolItemsEquipped)
+            assert.are.equals(1, build.calcsTab.mainOutput.CorruptedItemsEquipped)
+
+            -- (2) StatThreshold trips — base Vit (no class) 0 + threshold +14 = 14.
+            assert.are.equals(14, build.calcsTab.mainOutput.Vit)
+
+            -- (3) Negative case: with no corrupted items the threshold must NOT
+            -- trip. Remove the altar and rebuild — Vit drops back to base.
+            build.itemsTab.slots["Idol Altar"]:SetSelItemId(0)
+            build.itemsTab:PopulateSlots()
+            build.buildFlag = true
+            runCallback("OnFrame")
+            assert.are.equals(0, build.calcsTab.mainOutput.CorruptedNonIdolItemsEquipped or 0)
+            assert.are.equals(0, build.calcsTab.mainOutput.Vit)
+        end)
+
+        -- @leb-regression-guard: corrupted-count-pre-levelreq
+        -- Equipped semantics: a level-gated item still occupies its slot in
+        -- game (stats inactive) and counts toward "with at least N Corrupted
+        -- ... Items equipped" thresholds. CalcSetup must capture every
+        -- level-gated item into env._levelGatedAllItems and include it in
+        -- the corrupted-counter loop.
+        -- Establishing reference: see git log
+        -- (LevelReq=68 > charLevel=62) brings nonIdol from 6 to 7 → trips
+        -- Shroud of Obscurity's +11 All Attributes (affix 1011_6).
+        it("Level-gated corrupted item still counts toward CorruptedNonIdolItemsEquipped", function()
+            -- Character below the relic's LevelReq (68), so LevelReq filter
+            -- nulls it from `items[]`. Without the fix, corrupted counter
+            -- iterates the post-filter table and misses the relic.
+            build.characterLevel = 62
+
+            -- Equip a corrupted relic with LevelReq=68 (will be level-gated).
+            build.itemsTab:CreateDisplayItemFromRaw([[Rarity: RARE
+            Test Corrupted Relic
+            Silver Grail
+            Unique ID: 1
+            LevelReq: 68
+            Implicits: 0
+            Corrupted]])
+            build.itemsTab:AddDisplayItem(true)
+            local relicItemId
+            for id, it in pairs(build.itemsTab.items) do
+                if it.baseName == "Silver Grail" then relicItemId = id; break end
+            end
+            assert.is_not_nil(relicItemId, "relic item should be in items list")
+            assert.is_not_nil(build.itemsTab.slots["Relic"], "Relic slot should exist")
+            build.itemsTab.slots["Relic"]:SetSelItemId(relicItemId)
+            build.itemsTab:PopulateSlots()
+
+            -- Threshold of 1 — only the level-gated relic is corrupted.
+            -- If the fix is regressed, count=0 → threshold not met → Vit=0.
+            -- With fix, count=1 → threshold met → Vit gets +14.
+            build.configTab.input.customMods =
+                "+14 to All Attributes with at least 1 Corrupted non-Idol Items equipped"
+            build.configTab:BuildModList()
+            build.buildFlag = true
+            runCallback("OnFrame")
+
+            assert.are.equals(1, build.calcsTab.mainOutput.CorruptedNonIdolItemsEquipped)
+            assert.are.equals(14, build.calcsTab.mainOutput.Vit)
+        end)
+
+        it("maxHealth uses floor (truncation), matching in-game (1258 * 1.25 = 1572)", function()
+            -- ShutFackUp lv85 Spellblade scenario reduced to customMods:
+            -- 110 (default base) + 1148 = 1258 base, * 1.25 INC = 1572.5
+            -- floor -> 1572 (in-game). round -> 1573 (LETools). LEB must match in-game.
+            build.configTab.input.customMods = "+1148 Health\n25% increased Health"
+            build.configTab:BuildModList()
+            build.buildFlag = true
+            runCallback("OnFrame")
+            assert.are.equals(1572, build.calcsTab.calcsOutput.Life)
+        end)
+    end)
+
+    -- @leb-regression-guard: regen-pct-shorthand-inc
+    -- Locks in ModParser BASE_MORE classification for ManaRegen/LifeRegen.
+    -- LE in-game text shorthand "+N% Mana Regen" / "+N% Health Regen" (without
+    -- "increased") must be parsed as INC, matching the existing Life/Mana/Ward
+    -- exception. The game's authoritative localized_master.json affix 1015
+    -- affixProperties[1] (Mana Regen) is modifierType=1 (INC) with extraRolls
+    -- stored as 0.08-0.09 (= 8-9% multiplier). Without this, Keplahan's Cryolith
+    -- Reforged ring sealed affix +(8-9)% Mana Regen is treated as flat +8 BASE,
+    -- causing ~+15.5/s drift (<private build>: LE 16.72 vs LEB 32.20 prior to fix).
+    -- Establishing reference: see git log
+    it("LE shorthand '+N% Mana Regen' parses as INC", function()
+        build.configTab.input.customMods = "+8% Mana Regen"
+        build.configTab:BuildModList()
+        runCallback("OnFrame")
+        assert.are.equals(0, build.configTab.modList:Sum("BASE", nil, "ManaRegen"),
+            "Bare '+8% Mana Regen' must NOT add flat BASE Mana Regen")
+        assert.are.equals(8, build.configTab.modList:Sum("INC", nil, "ManaRegen"),
+            "Bare '+8% Mana Regen' must contribute +8% INC Mana Regen")
+    end)
+
+    it("LE shorthand '+N% Health Regen' parses as INC", function()
+        build.configTab.input.customMods = "+12% Health Regen"
+        build.configTab:BuildModList()
+        runCallback("OnFrame")
+        assert.are.equals(0, build.configTab.modList:Sum("BASE", nil, "LifeRegen"),
+            "Bare '+12% Health Regen' must NOT add flat BASE Life Regen")
+        assert.are.equals(12, build.configTab.modList:Sum("INC", nil, "LifeRegen"),
+            "Bare '+12% Health Regen' must contribute +12% INC Life Regen")
+    end)
+
+    -- @leb-regression-guard: butchers-crown-no-mana-regen
+    -- The Butcher's Crown (uniqueID=449) zeros mana regen. In-game tooltip is
+    -- "You do not Regenerate Mana"; LEB unique JSON variant is
+    -- "100% Disabled Mana Regen". Both must produce a NoManaRegen FLAG, not a
+    -- BASE ManaRegen mod. CalcDefence.lua:602 reads NoManaRegen and forces
+    -- output.ManaRegen = 0. Without this guard the BASE_MORE form ("100%")
+    -- collapses the LEB JSON variant into +100 BASE ManaRegen (boost), the
+    -- opposite of intent (~+87.4 mana/s drift on <private build> lv99 Sorcerer).
+    -- Establishing reference: see git log
+    it("'You do not Regenerate Mana' sets NoManaRegen flag", function()
+        build.configTab.input.customMods = "You do not Regenerate Mana"
+        build.configTab:BuildModList()
+        runCallback("OnFrame")
+        assert.is_true(build.configTab.modList:Flag(nil, "NoManaRegen"),
+            "'You do not Regenerate Mana' must set NoManaRegen flag")
+        assert.are.equals(0, build.configTab.modList:Sum("BASE", nil, "ManaRegen"),
+            "Must NOT add flat BASE ManaRegen")
+    end)
+
+    it("'100% Disabled Mana Regen' (LEB JSON variant) sets NoManaRegen flag", function()
+        build.configTab.input.customMods = "100% Disabled Mana Regen"
+        build.configTab:BuildModList()
+        runCallback("OnFrame")
+        assert.is_true(build.configTab.modList:Flag(nil, "NoManaRegen"),
+            "'100% Disabled Mana Regen' must set NoManaRegen flag")
+        assert.are.equals(0, build.configTab.modList:Sum("BASE", nil, "ManaRegen"),
+            "Must NOT add +100 BASE ManaRegen (the bug being guarded)")
     end)
 end)

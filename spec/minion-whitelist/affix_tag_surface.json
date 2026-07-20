@@ -1,0 +1,1626 @@
+{
+  "minion_bit": 8192,
+  "sources_scanned": [
+    "single_affixes_v3",
+    "multi_affixes_v3",
+    "uniques_v3",
+    "sets_v3"
+  ],
+  "stats": {
+    "totalMatchingMods": 156,
+    "uniqueProperties": 32,
+    "uniqueCombos_propXmtXtags": 63
+  },
+  "byProperty": {
+    "0": {
+      "propertyName": "Damage",
+      "modTypes": [
+        "ADDED",
+        "INCREASED"
+      ],
+      "tagCombos": [
+        {
+          "tags": 8448,
+          "tagBits": [
+            256,
+            8192
+          ],
+          "modType": "ADDED",
+          "sources": {
+            "multi": 3
+          },
+          "samples": [
+            {
+              "source": "multi",
+              "parentId": 102
+            },
+            {
+              "source": "multi",
+              "parentId": 643
+            },
+            {
+              "source": "multi",
+              "parentId": 926
+            }
+          ]
+        },
+        {
+          "tags": 8704,
+          "tagBits": [
+            512,
+            8192
+          ],
+          "modType": "ADDED",
+          "sources": {
+            "multi": 3
+          },
+          "samples": [
+            {
+              "source": "multi",
+              "parentId": 64
+            },
+            {
+              "source": "multi",
+              "parentId": 643
+            },
+            {
+              "source": "multi",
+              "parentId": 925
+            }
+          ]
+        },
+        {
+          "tags": 8706,
+          "tagBits": [
+            2,
+            512,
+            8192
+          ],
+          "modType": "ADDED",
+          "sources": {
+            "multi": 1
+          },
+          "samples": [
+            {
+              "source": "multi",
+              "parentId": 808
+            }
+          ]
+        },
+        {
+          "tags": 8708,
+          "tagBits": [
+            4,
+            512,
+            8192
+          ],
+          "modType": "ADDED",
+          "sources": {
+            "multi": 1
+          },
+          "samples": [
+            {
+              "source": "multi",
+              "parentId": 807
+            }
+          ]
+        },
+        {
+          "tags": 8712,
+          "tagBits": [
+            8,
+            512,
+            8192
+          ],
+          "modType": "ADDED",
+          "sources": {
+            "multi": 1
+          },
+          "samples": [
+            {
+              "source": "multi",
+              "parentId": 809
+            }
+          ]
+        },
+        {
+          "tags": 9216,
+          "tagBits": [
+            1024,
+            8192
+          ],
+          "modType": "ADDED",
+          "sources": {
+            "multi": 1
+          },
+          "samples": [
+            {
+              "source": "multi",
+              "parentId": 928
+            }
+          ]
+        },
+        {
+          "tags": 10240,
+          "tagBits": [
+            2048,
+            8192
+          ],
+          "modType": "ADDED",
+          "sources": {
+            "multi": 3
+          },
+          "samples": [
+            {
+              "source": "multi",
+              "parentId": 64
+            },
+            {
+              "source": "multi",
+              "parentId": 102
+            },
+            {
+              "source": "multi",
+              "parentId": 927
+            }
+          ]
+        },
+        {
+          "tags": 8192,
+          "tagBits": [
+            8192
+          ],
+          "modType": "INCREASED",
+          "sources": {
+            "single": 1,
+            "multi": 20
+          },
+          "samples": [
+            {
+              "source": "single",
+              "parentId": 26
+            },
+            {
+              "source": "multi",
+              "parentId": 540
+            },
+            {
+              "source": "multi",
+              "parentId": 544
+            }
+          ]
+        },
+        {
+          "tags": 8193,
+          "tagBits": [
+            1,
+            8192
+          ],
+          "modType": "INCREASED",
+          "sources": {
+            "multi": 1
+          },
+          "samples": [
+            {
+              "source": "multi",
+              "parentId": 319
+            }
+          ]
+        },
+        {
+          "tags": 8194,
+          "tagBits": [
+            2,
+            8192
+          ],
+          "modType": "INCREASED",
+          "sources": {
+            "multi": 2
+          },
+          "samples": [
+            {
+              "source": "multi",
+              "parentId": 320
+            },
+            {
+              "source": "multi",
+              "parentId": 333
+            }
+          ]
+        },
+        {
+          "tags": 8196,
+          "tagBits": [
+            4,
+            8192
+          ],
+          "modType": "INCREASED",
+          "sources": {
+            "single": 1,
+            "multi": 2
+          },
+          "samples": [
+            {
+              "source": "single",
+              "parentId": 294
+            },
+            {
+              "source": "multi",
+              "parentId": 321
+            },
+            {
+              "source": "multi",
+              "parentId": 340
+            }
+          ]
+        },
+        {
+          "tags": 8200,
+          "tagBits": [
+            8,
+            8192
+          ],
+          "modType": "INCREASED",
+          "sources": {
+            "single": 1,
+            "multi": 2
+          },
+          "samples": [
+            {
+              "source": "single",
+              "parentId": 293
+            },
+            {
+              "source": "multi",
+              "parentId": 322
+            },
+            {
+              "source": "multi",
+              "parentId": 404
+            }
+          ]
+        },
+        {
+          "tags": 8208,
+          "tagBits": [
+            16,
+            8192
+          ],
+          "modType": "INCREASED",
+          "sources": {
+            "multi": 1
+          },
+          "samples": [
+            {
+              "source": "multi",
+              "parentId": 323
+            }
+          ]
+        },
+        {
+          "tags": 8224,
+          "tagBits": [
+            32,
+            8192
+          ],
+          "modType": "INCREASED",
+          "sources": {
+            "multi": 2
+          },
+          "samples": [
+            {
+              "source": "multi",
+              "parentId": 324
+            },
+            {
+              "source": "multi",
+              "parentId": 405
+            }
+          ]
+        },
+        {
+          "tags": 8256,
+          "tagBits": [
+            64,
+            8192
+          ],
+          "modType": "INCREASED",
+          "sources": {
+            "multi": 1
+          },
+          "samples": [
+            {
+              "source": "multi",
+              "parentId": 325
+            }
+          ]
+        },
+        {
+          "tags": 8448,
+          "tagBits": [
+            256,
+            8192
+          ],
+          "modType": "INCREASED",
+          "sources": {
+            "multi": 2
+          },
+          "samples": [
+            {
+              "source": "multi",
+              "parentId": 170
+            },
+            {
+              "source": "multi",
+              "parentId": 344
+            }
+          ]
+        },
+        {
+          "tags": 8704,
+          "tagBits": [
+            512,
+            8192
+          ],
+          "modType": "INCREASED",
+          "sources": {
+            "multi": 2
+          },
+          "samples": [
+            {
+              "source": "multi",
+              "parentId": 171
+            },
+            {
+              "source": "multi",
+              "parentId": 345
+            }
+          ]
+        },
+        {
+          "tags": 12288,
+          "tagBits": [
+            4096,
+            8192
+          ],
+          "modType": "INCREASED",
+          "sources": {
+            "single": 1,
+            "multi": 1
+          },
+          "samples": [
+            {
+              "source": "single",
+              "parentId": 98
+            },
+            {
+              "source": "multi",
+              "parentId": 173
+            }
+          ]
+        }
+      ],
+      "totalOccurrences": 53
+    },
+    "1": {
+      "propertyName": "Ailment Chance",
+      "modTypes": [
+        "ADDED"
+      ],
+      "tagCombos": [
+        {
+          "tags": 8192,
+          "tagBits": [
+            8192
+          ],
+          "modType": "ADDED",
+          "sources": {
+            "single": 7,
+            "multi": 1
+          },
+          "samples": [
+            {
+              "source": "single",
+              "parentId": 152
+            },
+            {
+              "source": "single",
+              "parentId": 153
+            },
+            {
+              "source": "single",
+              "parentId": 287
+            }
+          ]
+        },
+        {
+          "tags": 8704,
+          "tagBits": [
+            512,
+            8192
+          ],
+          "modType": "ADDED",
+          "sources": {
+            "multi": 1
+          },
+          "samples": [
+            {
+              "source": "multi",
+              "parentId": 160
+            }
+          ]
+        }
+      ],
+      "totalOccurrences": 9
+    },
+    "2": {
+      "propertyName": "Attack Speed",
+      "modTypes": [
+        "INCREASED"
+      ],
+      "tagCombos": [
+        {
+          "tags": 8704,
+          "tagBits": [
+            512,
+            8192
+          ],
+          "modType": "INCREASED",
+          "sources": {
+            "single": 1,
+            "multi": 1
+          },
+          "samples": [
+            {
+              "source": "single",
+              "parentId": 147
+            },
+            {
+              "source": "multi",
+              "parentId": 925
+            }
+          ]
+        },
+        {
+          "tags": 9216,
+          "tagBits": [
+            1024,
+            8192
+          ],
+          "modType": "INCREASED",
+          "sources": {
+            "multi": 1
+          },
+          "samples": [
+            {
+              "source": "multi",
+              "parentId": 928
+            }
+          ]
+        },
+        {
+          "tags": 10240,
+          "tagBits": [
+            2048,
+            8192
+          ],
+          "modType": "INCREASED",
+          "sources": {
+            "multi": 1
+          },
+          "samples": [
+            {
+              "source": "multi",
+              "parentId": 927
+            }
+          ]
+        }
+      ],
+      "totalOccurrences": 4
+    },
+    "3": {
+      "propertyName": "Cast Speed",
+      "modTypes": [
+        "INCREASED"
+      ],
+      "tagCombos": [
+        {
+          "tags": 8192,
+          "tagBits": [
+            8192
+          ],
+          "modType": "INCREASED",
+          "sources": {
+            "multi": 2
+          },
+          "samples": [
+            {
+              "source": "multi",
+              "parentId": 926
+            },
+            {
+              "source": "multi",
+              "parentId": 978
+            }
+          ]
+        }
+      ],
+      "totalOccurrences": 2
+    },
+    "4": {
+      "propertyName": "Critical Strike Chance",
+      "modTypes": [
+        "ADDED",
+        "INCREASED"
+      ],
+      "tagCombos": [
+        {
+          "tags": 8192,
+          "tagBits": [
+            8192
+          ],
+          "modType": "ADDED",
+          "sources": {
+            "single": 1
+          },
+          "samples": [
+            {
+              "source": "single",
+              "parentId": 1045
+            }
+          ]
+        },
+        {
+          "tags": 8704,
+          "tagBits": [
+            512,
+            8192
+          ],
+          "modType": "ADDED",
+          "sources": {
+            "single": 2
+          },
+          "samples": [
+            {
+              "source": "single",
+              "parentId": 154
+            },
+            {
+              "source": "single",
+              "parentId": 348
+            }
+          ]
+        },
+        {
+          "tags": 8192,
+          "tagBits": [
+            8192
+          ],
+          "modType": "INCREASED",
+          "sources": {
+            "single": 1,
+            "multi": 3
+          },
+          "samples": [
+            {
+              "source": "single",
+              "parentId": 151
+            },
+            {
+              "source": "multi",
+              "parentId": 297
+            },
+            {
+              "source": "multi",
+              "parentId": 416
+            }
+          ]
+        },
+        {
+          "tags": 8194,
+          "tagBits": [
+            2,
+            8192
+          ],
+          "modType": "INCREASED",
+          "sources": {
+            "multi": 1
+          },
+          "samples": [
+            {
+              "source": "multi",
+              "parentId": 168
+            }
+          ]
+        },
+        {
+          "tags": 8448,
+          "tagBits": [
+            256,
+            8192
+          ],
+          "modType": "INCREASED",
+          "sources": {
+            "single": 1
+          },
+          "samples": [
+            {
+              "source": "single",
+              "parentId": 337
+            }
+          ]
+        }
+      ],
+      "totalOccurrences": 9
+    },
+    "5": {
+      "propertyName": "Critical Strike Multiplier",
+      "modTypes": [
+        "ADDED"
+      ],
+      "tagCombos": [
+        {
+          "tags": 8192,
+          "tagBits": [
+            8192
+          ],
+          "modType": "ADDED",
+          "sources": {
+            "single": 2,
+            "multi": 1
+          },
+          "samples": [
+            {
+              "source": "single",
+              "parentId": 336
+            },
+            {
+              "source": "single",
+              "parentId": 1042
+            },
+            {
+              "source": "multi",
+              "parentId": 743
+            }
+          ]
+        }
+      ],
+      "totalOccurrences": 3
+    },
+    "7": {
+      "propertyName": "Health",
+      "modTypes": [
+        "INCREASED"
+      ],
+      "tagCombos": [
+        {
+          "tags": 8192,
+          "tagBits": [
+            8192
+          ],
+          "modType": "INCREASED",
+          "sources": {
+            "single": 1,
+            "multi": 5
+          },
+          "samples": [
+            {
+              "source": "single",
+              "parentId": 70
+            },
+            {
+              "source": "multi",
+              "parentId": 545
+            },
+            {
+              "source": "multi",
+              "parentId": 592
+            }
+          ]
+        }
+      ],
+      "totalOccurrences": 6
+    },
+    "10": {
+      "propertyName": "Armor",
+      "modTypes": [
+        "ADDED"
+      ],
+      "tagCombos": [
+        {
+          "tags": 8192,
+          "tagBits": [
+            8192
+          ],
+          "modType": "ADDED",
+          "sources": {
+            "multi": 2
+          },
+          "samples": [
+            {
+              "source": "multi",
+              "parentId": 332
+            },
+            {
+              "source": "multi",
+              "parentId": 580
+            }
+          ]
+        }
+      ],
+      "totalOccurrences": 2
+    },
+    "11": {
+      "propertyName": "Dodge Rating",
+      "modTypes": [
+        "ADDED"
+      ],
+      "tagCombos": [
+        {
+          "tags": 8192,
+          "tagBits": [
+            8192
+          ],
+          "modType": "ADDED",
+          "sources": {
+            "single": 2
+          },
+          "samples": [
+            {
+              "source": "single",
+              "parentId": 71
+            },
+            {
+              "source": "single",
+              "parentId": 145
+            }
+          ]
+        }
+      ],
+      "totalOccurrences": 2
+    },
+    "13": {
+      "propertyName": "Fire Resistance",
+      "modTypes": [
+        "ADDED"
+      ],
+      "tagCombos": [
+        {
+          "tags": 8192,
+          "tagBits": [
+            8192
+          ],
+          "modType": "ADDED",
+          "sources": {
+            "multi": 2
+          },
+          "samples": [
+            {
+              "source": "multi",
+              "parentId": 852
+            },
+            {
+              "source": "multi",
+              "parentId": 887
+            }
+          ]
+        }
+      ],
+      "totalOccurrences": 2
+    },
+    "14": {
+      "propertyName": "Cold Resistance",
+      "modTypes": [
+        "ADDED"
+      ],
+      "tagCombos": [
+        {
+          "tags": 8192,
+          "tagBits": [
+            8192
+          ],
+          "modType": "ADDED",
+          "sources": {
+            "multi": 2
+          },
+          "samples": [
+            {
+              "source": "multi",
+              "parentId": 850
+            },
+            {
+              "source": "multi",
+              "parentId": 885
+            }
+          ]
+        }
+      ],
+      "totalOccurrences": 2
+    },
+    "15": {
+      "propertyName": "Lightning Resistance",
+      "modTypes": [
+        "ADDED"
+      ],
+      "tagCombos": [
+        {
+          "tags": 8192,
+          "tagBits": [
+            8192
+          ],
+          "modType": "ADDED",
+          "sources": {
+            "multi": 2
+          },
+          "samples": [
+            {
+              "source": "multi",
+              "parentId": 855
+            },
+            {
+              "source": "multi",
+              "parentId": 888
+            }
+          ]
+        }
+      ],
+      "totalOccurrences": 2
+    },
+    "17": {
+      "propertyName": "Health Regen",
+      "modTypes": [
+        "ADDED"
+      ],
+      "tagCombos": [
+        {
+          "tags": 8192,
+          "tagBits": [
+            8192
+          ],
+          "modType": "ADDED",
+          "sources": {
+            "single": 1,
+            "multi": 1
+          },
+          "samples": [
+            {
+              "source": "single",
+              "parentId": 73
+            },
+            {
+              "source": "multi",
+              "parentId": 929
+            }
+          ]
+        }
+      ],
+      "totalOccurrences": 2
+    },
+    "26": {
+      "propertyName": "Void Resistance",
+      "modTypes": [
+        "ADDED"
+      ],
+      "tagCombos": [
+        {
+          "tags": 8192,
+          "tagBits": [
+            8192
+          ],
+          "modType": "ADDED",
+          "sources": {
+            "single": 1,
+            "multi": 2
+          },
+          "samples": [
+            {
+              "source": "single",
+              "parentId": 1060
+            },
+            {
+              "source": "multi",
+              "parentId": 835
+            },
+            {
+              "source": "multi",
+              "parentId": 868
+            }
+          ]
+        }
+      ],
+      "totalOccurrences": 3
+    },
+    "27": {
+      "propertyName": "Necrotic Resistance",
+      "modTypes": [
+        "ADDED"
+      ],
+      "tagCombos": [
+        {
+          "tags": 8192,
+          "tagBits": [
+            8192
+          ],
+          "modType": "ADDED",
+          "sources": {
+            "multi": 2
+          },
+          "samples": [
+            {
+              "source": "multi",
+              "parentId": 838
+            },
+            {
+              "source": "multi",
+              "parentId": 867
+            }
+          ]
+        }
+      ],
+      "totalOccurrences": 2
+    },
+    "28": {
+      "propertyName": "Poison Resistance",
+      "modTypes": [
+        "ADDED"
+      ],
+      "tagCombos": [
+        {
+          "tags": 8192,
+          "tagBits": [
+            8192
+          ],
+          "modType": "ADDED",
+          "sources": {
+            "single": 1,
+            "multi": 2
+          },
+          "samples": [
+            {
+              "source": "single",
+              "parentId": 1064
+            },
+            {
+              "source": "multi",
+              "parentId": 836
+            },
+            {
+              "source": "multi",
+              "parentId": 869
+            }
+          ]
+        }
+      ],
+      "totalOccurrences": 3
+    },
+    "30": {
+      "propertyName": "All Resistances",
+      "modTypes": [
+        "ADDED"
+      ],
+      "tagCombos": [
+        {
+          "tags": 8192,
+          "tagBits": [
+            8192
+          ],
+          "modType": "ADDED",
+          "sources": {
+            "multi": 1
+          },
+          "samples": [
+            {
+              "source": "multi",
+              "parentId": 1070
+            }
+          ]
+        }
+      ],
+      "totalOccurrences": 1
+    },
+    "42": {
+      "propertyName": "Increased Ailment Duration",
+      "modTypes": [
+        "ADDED"
+      ],
+      "tagCombos": [
+        {
+          "tags": 8192,
+          "tagBits": [
+            8192
+          ],
+          "modType": "ADDED",
+          "sources": {
+            "multi": 3
+          },
+          "samples": [
+            {
+              "source": "multi",
+              "parentId": 161
+            },
+            {
+              "source": "multi",
+              "parentId": 343
+            },
+            {
+              "source": "multi",
+              "parentId": 407
+            }
+          ]
+        }
+      ],
+      "totalOccurrences": 3
+    },
+    "43": {
+      "propertyName": "Increased Ailment Effect",
+      "modTypes": [
+        "ADDED"
+      ],
+      "tagCombos": [
+        {
+          "tags": 8192,
+          "tagBits": [
+            8192
+          ],
+          "modType": "ADDED",
+          "sources": {
+            "multi": 1
+          },
+          "samples": [
+            {
+              "source": "multi",
+              "parentId": 408
+            }
+          ]
+        }
+      ],
+      "totalOccurrences": 1
+    },
+    "44": {
+      "propertyName": "Increased Healing Effectiveness",
+      "modTypes": [
+        "ADDED"
+      ],
+      "tagCombos": [
+        {
+          "tags": 8192,
+          "tagBits": [
+            8192
+          ],
+          "modType": "ADDED",
+          "sources": {
+            "single": 1
+          },
+          "samples": [
+            {
+              "source": "single",
+              "parentId": 149
+            }
+          ]
+        }
+      ],
+      "totalOccurrences": 1
+    },
+    "45": {
+      "propertyName": "Increased Stun Chance",
+      "modTypes": [
+        "ADDED"
+      ],
+      "tagCombos": [
+        {
+          "tags": 8704,
+          "tagBits": [
+            512,
+            8192
+          ],
+          "modType": "ADDED",
+          "sources": {
+            "single": 1
+          },
+          "samples": [
+            {
+              "source": "single",
+              "parentId": 150
+            }
+          ]
+        }
+      ],
+      "totalOccurrences": 1
+    },
+    "51": {
+      "propertyName": "Damage Leeched as Health",
+      "modTypes": [
+        "ADDED"
+      ],
+      "tagCombos": [
+        {
+          "tags": 8192,
+          "tagBits": [
+            8192
+          ],
+          "modType": "ADDED",
+          "sources": {
+            "single": 2,
+            "multi": 1
+          },
+          "samples": [
+            {
+              "source": "single",
+              "parentId": 146
+            },
+            {
+              "source": "single",
+              "parentId": 346
+            },
+            {
+              "source": "multi",
+              "parentId": 929
+            }
+          ]
+        },
+        {
+          "tags": 8193,
+          "tagBits": [
+            1,
+            8192
+          ],
+          "modType": "ADDED",
+          "sources": {
+            "multi": 1
+          },
+          "samples": [
+            {
+              "source": "multi",
+              "parentId": 409
+            }
+          ]
+        }
+      ],
+      "totalOccurrences": 4
+    },
+    "52": {
+      "propertyName": "Elemental Resistance",
+      "modTypes": [
+        "ADDED"
+      ],
+      "tagCombos": [
+        {
+          "tags": 8192,
+          "tagBits": [
+            8192
+          ],
+          "modType": "ADDED",
+          "sources": {
+            "single": 1,
+            "multi": 2
+          },
+          "samples": [
+            {
+              "source": "single",
+              "parentId": 1033
+            },
+            {
+              "source": "multi",
+              "parentId": 851
+            },
+            {
+              "source": "multi",
+              "parentId": 886
+            }
+          ]
+        }
+      ],
+      "totalOccurrences": 3
+    },
+    "59": {
+      "propertyName": "Penetration",
+      "modTypes": [
+        "ADDED"
+      ],
+      "tagCombos": [
+        {
+          "tags": 8193,
+          "tagBits": [
+            1,
+            8192
+          ],
+          "modType": "ADDED",
+          "sources": {
+            "multi": 3
+          },
+          "samples": [
+            {
+              "source": "multi",
+              "parentId": 719
+            },
+            {
+              "source": "multi",
+              "parentId": 833
+            },
+            {
+              "source": "multi",
+              "parentId": 866
+            }
+          ]
+        },
+        {
+          "tags": 8194,
+          "tagBits": [
+            2,
+            8192
+          ],
+          "modType": "ADDED",
+          "sources": {
+            "multi": 4
+          },
+          "samples": [
+            {
+              "source": "multi",
+              "parentId": 722
+            },
+            {
+              "source": "multi",
+              "parentId": 780
+            },
+            {
+              "source": "multi",
+              "parentId": 849
+            }
+          ]
+        },
+        {
+          "tags": 8196,
+          "tagBits": [
+            4,
+            8192
+          ],
+          "modType": "ADDED",
+          "sources": {
+            "multi": 3
+          },
+          "samples": [
+            {
+              "source": "multi",
+              "parentId": 721
+            },
+            {
+              "source": "multi",
+              "parentId": 847
+            },
+            {
+              "source": "multi",
+              "parentId": 882
+            }
+          ]
+        },
+        {
+          "tags": 8200,
+          "tagBits": [
+            8,
+            8192
+          ],
+          "modType": "ADDED",
+          "sources": {
+            "multi": 3
+          },
+          "samples": [
+            {
+              "source": "multi",
+              "parentId": 720
+            },
+            {
+              "source": "multi",
+              "parentId": 848
+            },
+            {
+              "source": "multi",
+              "parentId": 883
+            }
+          ]
+        },
+        {
+          "tags": 8208,
+          "tagBits": [
+            16,
+            8192
+          ],
+          "modType": "ADDED",
+          "sources": {
+            "multi": 3
+          },
+          "samples": [
+            {
+              "source": "multi",
+              "parentId": 723
+            },
+            {
+              "source": "multi",
+              "parentId": 831
+            },
+            {
+              "source": "multi",
+              "parentId": 864
+            }
+          ]
+        },
+        {
+          "tags": 8224,
+          "tagBits": [
+            32,
+            8192
+          ],
+          "modType": "ADDED",
+          "sources": {
+            "multi": 3
+          },
+          "samples": [
+            {
+              "source": "multi",
+              "parentId": 724
+            },
+            {
+              "source": "multi",
+              "parentId": 834
+            },
+            {
+              "source": "multi",
+              "parentId": 863
+            }
+          ]
+        },
+        {
+          "tags": 8256,
+          "tagBits": [
+            64,
+            8192
+          ],
+          "modType": "ADDED",
+          "sources": {
+            "multi": 3
+          },
+          "samples": [
+            {
+              "source": "multi",
+              "parentId": 725
+            },
+            {
+              "source": "multi",
+              "parentId": 832
+            },
+            {
+              "source": "multi",
+              "parentId": 865
+            }
+          ]
+        }
+      ],
+      "totalOccurrences": 22
+    },
+    "64": {
+      "propertyName": "Physical Resistance",
+      "modTypes": [
+        "ADDED"
+      ],
+      "tagCombos": [
+        {
+          "tags": 8192,
+          "tagBits": [
+            8192
+          ],
+          "modType": "ADDED",
+          "sources": {
+            "single": 1,
+            "multi": 2
+          },
+          "samples": [
+            {
+              "source": "single",
+              "parentId": 1049
+            },
+            {
+              "source": "multi",
+              "parentId": 837
+            },
+            {
+              "source": "multi",
+              "parentId": 870
+            }
+          ]
+        }
+      ],
+      "totalOccurrences": 3
+    },
+    "67": {
+      "propertyName": "Freeze Rate Multiplier",
+      "modTypes": [
+        "ADDED"
+      ],
+      "tagCombos": [
+        {
+          "tags": 8192,
+          "tagBits": [
+            8192
+          ],
+          "modType": "ADDED",
+          "sources": {
+            "single": 1
+          },
+          "samples": [
+            {
+              "source": "single",
+              "parentId": 384
+            }
+          ]
+        }
+      ],
+      "totalOccurrences": 1
+    },
+    "70": {
+      "propertyName": "Increased Cooldown Recovery Speed",
+      "modTypes": [
+        "ADDED"
+      ],
+      "tagCombos": [
+        {
+          "tags": 8192,
+          "tagBits": [
+            8192
+          ],
+          "modType": "ADDED",
+          "sources": {
+            "single": 2
+          },
+          "samples": [
+            {
+              "source": "single",
+              "parentId": 148
+            },
+            {
+              "source": "single",
+              "parentId": 286
+            }
+          ]
+        }
+      ],
+      "totalOccurrences": 2
+    },
+    "86": {
+      "propertyName": "Damage Reflected",
+      "modTypes": [
+        "ADDED"
+      ],
+      "tagCombos": [
+        {
+          "tags": 8192,
+          "tagBits": [
+            8192
+          ],
+          "modType": "ADDED",
+          "sources": {
+            "single": 1,
+            "multi": 1
+          },
+          "samples": [
+            {
+              "source": "single",
+              "parentId": 413
+            },
+            {
+              "source": "multi",
+              "parentId": 210
+            }
+          ]
+        }
+      ],
+      "totalOccurrences": 2
+    },
+    "88": {
+      "propertyName": "Level of Skills",
+      "modTypes": [
+        "ADDED"
+      ],
+      "tagCombos": [
+        {
+          "tags": 8192,
+          "tagBits": [
+            8192
+          ],
+          "modType": "ADDED",
+          "sources": {
+            "set": 1
+          },
+          "samples": [
+            {
+              "source": "set",
+              "parentId": 13
+            }
+          ]
+        }
+      ],
+      "totalOccurrences": 1
+    },
+    "89": {
+      "propertyName": "Critical Strike Avoidance",
+      "modTypes": [
+        "ADDED"
+      ],
+      "tagCombos": [
+        {
+          "tags": 8192,
+          "tagBits": [
+            8192
+          ],
+          "modType": "ADDED",
+          "sources": {
+            "multi": 1
+          },
+          "samples": [
+            {
+              "source": "multi",
+              "parentId": 162
+            }
+          ]
+        }
+      ],
+      "totalOccurrences": 1
+    },
+    "116": {
+      "propertyName": "increased Area for Area Skills",
+      "modTypes": [
+        "ADDED"
+      ],
+      "tagCombos": [
+        {
+          "tags": 8192,
+          "tagBits": [
+            8192
+          ],
+          "modType": "ADDED",
+          "sources": {
+            "multi": 1
+          },
+          "samples": [
+            {
+              "source": "multi",
+              "parentId": 945
+            }
+          ]
+        }
+      ],
+      "totalOccurrences": 1
+    },
+    "128": {
+      "propertyName": "Immunity",
+      "modTypes": [
+        "ADDED"
+      ],
+      "tagCombos": [
+        {
+          "tags": 8192,
+          "tagBits": [
+            8192
+          ],
+          "modType": "ADDED",
+          "sources": {
+            "single": 3
+          },
+          "samples": [
+            {
+              "source": "single",
+              "parentId": 1035
+            },
+            {
+              "source": "single",
+              "parentId": 1036
+            },
+            {
+              "source": "single",
+              "parentId": 1044
+            }
+          ]
+        }
+      ],
+      "totalOccurrences": 3
+    }
+  }
+}

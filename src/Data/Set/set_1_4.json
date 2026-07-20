@@ -4,6 +4,7 @@
     "uniqueID": 78,
     "baseTypeID": 1,
     "subTypeID": 1,
+    "native": true,
     "req": {
       "level": 38
     },
@@ -11,19 +12,23 @@
       "+(2-3) Bees Per 10 Seconds",
       "+(4-6) Health Regeneration per Summoned Bee",
       "+(8-18) Attunement",
-      "+(80-150) Health for you and your Minions",
-      "+(200-400) Armor for you and your Minions",
+      "+(80-150) Health",
+      "+(80-150) Minion Health",
+      "+(200-400) Armor",
+      "+(200-400) Minion Armor",
       "+(20-30)% Physical Resistance",
       "+(50-75)% Poison Resistance"
     ],
     "rollIds": [
       0,
-      1,
-      2,
+      0,
+      0,
       3,
-      4,
+      3,
       5,
-      6
+      5,
+      0,
+      0
     ],
     "set": {
       "name": "Apiarist's Set",
@@ -32,13 +37,27 @@
         "2": "Your bees cannot be damaged for 4 seconds after being summoned",
         "3": "Summon the Queen Bee"
       }
-    }
+    },
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      128,
+      129,
+      7,
+      8
+    ],
+    "tooltipDescriptions": [
+      "+[80, 150, 3] health for you and your minions",
+      "+[200, 400, 5] armor for you and your minions"
+    ]
   },
   "1": {
     "name": "Apiarist's Smoker",
     "uniqueID": 77,
     "baseTypeID": 19,
     "subTypeID": 20,
+    "native": true,
     "req": {
       "level": 40
     },
@@ -52,11 +71,11 @@
     ],
     "rollIds": [
       0,
-      1,
-      2,
-      3,
-      4,
-      5
+      0,
+      null,
+      0,
+      0,
+      0
     ],
     "set": {
       "name": "Apiarist's Set",
@@ -65,13 +84,25 @@
         "2": "Your bees cannot be damaged for 4 seconds after being summoned",
         "3": "Summon the Queen Bee"
       }
-    }
+    },
+    "tooltipEntries": [
+      0,
+      1,
+      128,
+      3,
+      4,
+      5
+    ],
+    "tooltipDescriptions": [
+      "Your bees are immune to damage over time"
+    ]
   },
   "2": {
     "name": "Apiarist's Comb",
     "uniqueID": 79,
     "baseTypeID": 7,
     "subTypeID": 3,
+    "native": true,
     "req": {
       "level": 42
     },
@@ -85,9 +116,9 @@
     "rollIds": [
       0,
       1,
-      2,
-      3,
-      4
+      0,
+      0,
+      0
     ],
     "set": {
       "name": "Apiarist's Set",
@@ -96,13 +127,24 @@
         "2": "Your bees cannot be damaged for 4 seconds after being summoned",
         "3": "Summon the Queen Bee"
       }
-    }
+    },
+    "tooltipEntries": [
+      0,
+      128,
+      2,
+      3,
+      4
+    ],
+    "tooltipDescriptions": [
+      "+(12-24) Melee Damage for your Summoned Bees"
+    ]
   },
   "3": {
     "name": "The Last Bear's Lament",
     "uniqueID": 96,
     "baseTypeID": 0,
     "subTypeID": 4,
+    "native": true,
     "req": {
       "level": 20
     },
@@ -127,13 +169,21 @@
         "2": "+2 Endurance Threshold per Strength",
         "3": "+30 Strength"
       }
-    }
+    },
+    "tooltipEntries": [
+      4,
+      2,
+      0,
+      1,
+      3
+    ]
   },
   "4": {
     "name": "The Last Bear's Fury",
     "uniqueID": 94,
     "baseTypeID": 4,
     "subTypeID": 5,
+    "native": true,
     "req": {
       "level": 31
     },
@@ -158,13 +208,21 @@
         "2": "+2 Endurance Threshold per Strength",
         "3": "+30 Strength"
       }
-    }
+    },
+    "tooltipEntries": [
+      4,
+      0,
+      1,
+      2,
+      3
+    ]
   },
   "5": {
     "name": "The Last Bear's Scorn",
     "uniqueID": 95,
     "baseTypeID": 1,
     "subTypeID": 4,
+    "native": true,
     "req": {
       "level": 0
     },
@@ -189,7 +247,14 @@
         "2": "+2 Endurance Threshold per Strength",
         "3": "+30 Strength"
       }
-    }
+    },
+    "tooltipEntries": [
+      4,
+      0,
+      1,
+      3,
+      2
+    ]
   },
   "6": {
     "name": "Isadora's Tomb Binding",
@@ -219,7 +284,13 @@
         "2": "+100% Chance to apply Damned on hit with Necrotic Spells",
         "3": "30% Necrotic Penetration with Damned, +30% Mana Efficiency with Necrotic Spells"
       }
-    }
+    },
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3
+    ]
   },
   "7": {
     "name": "Isadora's Gravechill",
@@ -245,7 +316,15 @@
         "2": "+100% Chance to apply Damned on hit with Necrotic Spells",
         "3": "30% Necrotic Penetration with Damned, +30% Mana Efficiency with Necrotic Spells"
       }
-    }
+    },
+    "tooltipEntries": [
+      1,
+      0,
+      128
+    ],
+    "tooltipDescriptions": [
+      "+100% chance to chill with necrotic abilities if you have killed an enemy in the last 5 seconds"
+    ]
   },
   "8": {
     "name": "Isadora's Revenge",
@@ -275,13 +354,23 @@
         "2": "+100% Chance to apply Damned on hit with Necrotic Spells",
         "3": "30% Necrotic Penetration with Damned, +30% Mana Efficiency with Necrotic Spells"
       }
-    }
+    },
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      128
+    ],
+    "tooltipDescriptions": [
+      "(36-48)% Increased Duration of Chill Applied by Necrotic Spells"
+    ]
   },
   "9": {
     "name": "Doppelganger's Facade",
     "uniqueID": 453,
     "baseTypeID": 0,
     "subTypeID": 47,
+    "native": true,
     "req": {
       "level": 45
     },
@@ -313,6 +402,7 @@
     "uniqueID": 452,
     "baseTypeID": 1,
     "subTypeID": 48,
+    "native": true,
     "req": {
       "level": 51
     },
@@ -337,13 +427,21 @@
         "2": "Evade creates a Shadow at your original position",
         "3": "Traversal skills create 2 Shadows along their path"
       }
-    }
+    },
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
   },
   "11": {
     "name": "Doppelganger's Mimicry",
     "uniqueID": 451,
     "baseTypeID": 22,
     "subTypeID": 52,
+    "native": true,
     "req": {
       "level": 45
     },
@@ -355,9 +453,9 @@
     ],
     "rollIds": [
       0,
-      1,
-      2,
-      3
+      0,
+      0,
+      0
     ],
     "set": {
       "name": "Doppelganger's Set",
@@ -366,13 +464,20 @@
         "2": "Evade creates a Shadow at your original position",
         "3": "Traversal skills create 2 Shadows along their path"
       }
-    }
+    },
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3
+    ]
   },
   "12": {
     "name": "Kuzon's Guise",
     "uniqueID": 457,
     "baseTypeID": 0,
     "subTypeID": 66,
+    "native": true,
     "req": {
       "level": 49
     },
@@ -398,13 +503,25 @@
       "bonus": {
         "2": "Throwing a Burning Dagger grants a stack of Dancing Dragon for 4 seconds"
       }
-    }
+    },
+    "tooltipEntries": [
+      0,
+      128,
+      2,
+      3,
+      4,
+      5
+    ],
+    "tooltipDescriptions": [
+      "Shadow Cascade is converted to Fire"
+    ]
   },
   "13": {
     "name": "Kuzon's Fury",
     "uniqueID": 456,
     "baseTypeID": 9,
     "subTypeID": 5,
+    "native": true,
     "req": {
       "level": 49
     },
@@ -434,13 +551,27 @@
       "bonus": {
         "2": "Throwing a Burning Dagger grants a stack of Dancing Dragon for 4 seconds"
       }
-    }
+    },
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      128,
+      4,
+      5,
+      6,
+      7
+    ],
+    "tooltipDescriptions": [
+      "Dancing Strikes is converted to Fire"
+    ]
   },
   "14": {
     "name": "Corsair's Blood Cowl",
     "uniqueID": 194,
     "baseTypeID": 0,
     "subTypeID": 69,
+    "native": true,
     "req": {
       "level": 57
     },
@@ -464,13 +595,21 @@
       "bonus": {
         "2": "100% of Glancing Blow Chance Converted to Block Chance, 35% less Necrotic Damage Taken on Block"
       }
-    }
+    },
+    "tooltipEntries": [
+      0,
+      2,
+      1,
+      4,
+      3
+    ]
   },
   "15": {
     "name": "Corsair's Boarding Shield",
     "uniqueID": 193,
     "baseTypeID": 18,
     "subTypeID": 6,
+    "native": true,
     "req": {
       "level": 35
     },
@@ -494,13 +633,21 @@
       "bonus": {
         "2": "100% of Glancing Blow Chance Converted to Block Chance, 35% less Necrotic Damage Taken on Block"
       }
-    }
+    },
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
   },
   "16": {
     "name": "Boardman's Legacy",
     "uniqueID": 129,
     "baseTypeID": 0,
     "subTypeID": 30,
+    "native": true,
     "req": {
       "level": 63
     },
@@ -528,13 +675,26 @@
         "2": "Storm Totem can hit allies to grant 21 health",
         "3": "Storm Totem can hit allies to grant 21 ward"
       }
-    }
+    },
+    "tooltipEntries": [
+      3,
+      0,
+      128,
+      129,
+      130
+    ],
+    "tooltipDescriptions": [
+      "You gain haste for 3 seconds when hit by your Storm Totem",
+      "21% increased minion attack and cast speed",
+      "(10-21)% Increased Area of Storm Totem Aura"
+    ]
   },
   "17": {
     "name": "Boardman's Plank",
     "uniqueID": 127,
     "baseTypeID": 8,
     "subTypeID": 4,
+    "native": true,
     "req": {
       "level": 63
     },
@@ -558,13 +718,23 @@
         "2": "Storm Totem can hit allies to grant 21 health",
         "3": "Storm Totem can hit allies to grant 21 ward"
       }
-    }
+    },
+    "tooltipEntries": [
+      0,
+      2,
+      3,
+      128
+    ],
+    "tooltipDescriptions": [
+      "Your companions are Enraged when hit by your Storm Totem"
+    ]
   },
   "18": {
     "name": "Boardman's Fallacy",
     "uniqueID": 128,
     "baseTypeID": 1,
     "subTypeID": 29,
+    "native": true,
     "req": {
       "level": 63
     },
@@ -592,13 +762,26 @@
         "2": "Storm Totem can hit allies to grant 21 health",
         "3": "Storm Totem can hit allies to grant 21 ward"
       }
-    }
+    },
+    "tooltipEntries": [
+      3,
+      4,
+      5,
+      0,
+      128,
+      129
+    ],
+    "tooltipDescriptions": [
+      "You are Frenzied for 3 seconds when hit by your Storm Totem",
+      "(10-21)% Increased Area of Storm Totem Aura"
+    ]
   },
   "19": {
     "name": "Sunforged Greathelm",
     "uniqueID": 87,
     "baseTypeID": 0,
     "subTypeID": 39,
+    "native": true,
     "req": {
       "level": 0
     },
@@ -606,15 +789,13 @@
       "{rounding:Integer}(25-35)% increased Armor",
       "{rounding:Integer}+(250-350) Armor",
       "(10-12)% Increased Armor per Forged Weapon",
-      "{rounding:Integer}+(3-6) Health Regen per Forged Weapon",
-      "(25-35)% increased Armor"
+      "{rounding:Integer}+(3-6) Health Regen per Forged Weapon"
     ],
     "rollIds": [
       0,
       1,
       3,
-      2,
-      4
+      2
     ],
     "set": {
       "name": "Sunforged Set",
@@ -623,13 +804,20 @@
         "2": "+3 to Forge Strike, +3 to Smelter's Wrath",
         "3": "+3 Maximum Forged Weapons"
       }
-    }
+    },
+    "tooltipEntries": [
+      1,
+      0,
+      2,
+      3
+    ]
   },
   "20": {
     "name": "Sunforged Cuirass",
     "uniqueID": 86,
     "baseTypeID": 1,
     "subTypeID": 39,
+    "native": true,
     "req": {
       "level": 60
     },
@@ -652,13 +840,20 @@
         "2": "+3 to Forge Strike, +3 to Smelter's Wrath",
         "3": "+3 Maximum Forged Weapons"
       }
-    }
+    },
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3
+    ]
   },
   "21": {
     "name": "Sunforged Hammer",
     "uniqueID": 85,
     "baseTypeID": 13,
     "subTypeID": 5,
+    "native": true,
     "req": {
       "level": 68
     },
@@ -685,13 +880,22 @@
         "2": "+3 to Forge Strike, +3 to Smelter's Wrath",
         "3": "+3 Maximum Forged Weapons"
       }
-    }
+    },
+    "tooltipEntries": [
+      4,
+      1,
+      2,
+      0,
+      3,
+      5
+    ]
   },
   "22": {
     "name": "Gaspar's Insight",
     "uniqueID": 158,
     "baseTypeID": 0,
     "subTypeID": 5,
+    "native": true,
     "req": {
       "level": 80
     },
@@ -716,13 +920,21 @@
         "2": "50% Cooldown Reduction for Decimate",
         "3": "15% more Void Damage to Bosses and Rare Enemies, 100% Increased Area with Decimate"
       }
-    }
+    },
+    "tooltipEntries": [
+      0,
+      4,
+      1,
+      2,
+      3
+    ]
   },
   "23": {
     "name": "Gaspar's Acuity",
     "uniqueID": 157,
     "baseTypeID": 1,
     "subTypeID": 3,
+    "native": true,
     "req": {
       "level": 72
     },
@@ -747,13 +959,21 @@
         "2": "50% Cooldown Reduction for Decimate",
         "3": "15% more Void Damage to Bosses and Rare Enemies, 100% Increased Area with Decimate"
       }
-    }
+    },
+    "tooltipEntries": [
+      0,
+      4,
+      1,
+      2,
+      3
+    ]
   },
   "24": {
     "name": "Gaspar's Will",
     "uniqueID": 156,
     "baseTypeID": 8,
     "subTypeID": 8,
+    "native": true,
     "req": {
       "level": 0
     },
@@ -776,13 +996,20 @@
         "2": "50% Cooldown Reduction for Decimate",
         "3": "15% more Void Damage to Bosses and Rare Enemies, 100% Increased Area with Decimate"
       }
-    }
+    },
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3
+    ]
   },
   "25": {
     "name": "Vilatria's Storm Crown",
     "uniqueID": 185,
     "baseTypeID": 0,
     "subTypeID": 57,
+    "native": true,
     "req": {
       "level": 0
     },
@@ -804,13 +1031,20 @@
       "bonus": {
         "2": "+1 Spell Lightning Damage per 2 Intelligence"
       }
-    }
+    },
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3
+    ]
   },
   "26": {
     "name": "Vilatria's Downfall",
     "uniqueID": 186,
     "baseTypeID": 15,
     "subTypeID": 7,
+    "native": true,
     "req": {
       "level": 46
     },
@@ -841,6 +1075,7 @@
     "uniqueID": 98,
     "baseTypeID": 3,
     "subTypeID": 5,
+    "native": true,
     "req": {
       "level": 0
     },
@@ -865,13 +1100,21 @@
         "2": "+20 Cold Spell Damage, +20 Physical Spell Damage",
         "3": "+100% Chance to cast Avalanche Boulder at target when you critically hit with a spell, +2 to Level of Avalanche"
       }
-    }
+    },
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
   },
   "28": {
     "name": "Halvar's Pledge",
     "uniqueID": 97,
     "baseTypeID": 15,
     "subTypeID": 6,
+    "native": true,
     "req": {
       "level": 0
     },
@@ -896,13 +1139,21 @@
         "2": "+20 Cold Spell Damage, +20 Physical Spell Damage",
         "3": "+100% Chance to cast Avalanche Boulder at target when you critically hit with a spell, +2 to Level of Avalanche"
       }
-    }
+    },
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
   },
   "29": {
     "name": "Last Gift of the Mountain",
     "uniqueID": 99,
     "baseTypeID": 22,
     "subTypeID": 7,
+    "native": true,
     "req": {
       "level": 42
     },
@@ -927,13 +1178,21 @@
         "2": "+20 Cold Spell Damage, +20 Physical Spell Damage",
         "3": "+100% Chance to cast Avalanche Boulder at target when you critically hit with a spell, +2 to Level of Avalanche"
       }
-    }
+    },
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
   },
   "30": {
     "name": "Jormun's Hunger",
     "uniqueID": 465,
     "baseTypeID": 5,
     "subTypeID": 3,
+    "native": true,
     "req": {
       "level": 38
     },
@@ -967,6 +1226,7 @@
     "uniqueID": 466,
     "baseTypeID": 9,
     "subTypeID": 6,
+    "native": true,
     "req": {
       "level": 42
     },
@@ -989,13 +1249,20 @@
         "2": "20% more Damage while Dual Wielding if your Mainhand is a different item type than your Offhand",
         "3": "+10% Critical Strike Multiplier"
       }
-    }
+    },
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3
+    ]
   },
   "32": {
     "name": "Jormun's Thirst",
     "uniqueID": 464,
     "baseTypeID": 2,
     "subTypeID": 5,
+    "native": true,
     "req": {
       "level": 39
     },
@@ -1022,13 +1289,22 @@
         "2": "20% more Damage while Dual Wielding if your Mainhand is a different item type than your Offhand",
         "3": "+10% Critical Strike Multiplier"
       }
-    }
+    },
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ]
   },
   "33": {
     "name": "Keplahan's Cryolith",
     "uniqueID": 468,
     "baseTypeID": 21,
     "subTypeID": 2,
+    "native": true,
     "req": {
       "level": 50
     },
@@ -1042,9 +1318,9 @@
     "rollIds": [
       null,
       0,
-      1,
-      2,
-      3
+      0,
+      0,
+      0
     ],
     "set": {
       "name": "Keplahan's Set",
@@ -1052,13 +1328,21 @@
       "bonus": {
         "2": "Volcanic Orbs now orbit you, 30% Increased Volcanic Orb Duration if last cast was different element"
       }
-    }
+    },
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
   },
   "34": {
     "name": "Keplahan's Pyrolith",
     "uniqueID": 467,
     "baseTypeID": 21,
     "subTypeID": 1,
+    "native": true,
     "req": {
       "level": 50
     },
@@ -1072,9 +1356,9 @@
     "rollIds": [
       null,
       0,
-      1,
-      2,
-      3
+      0,
+      0,
+      0
     ],
     "set": {
       "name": "Keplahan's Set",
@@ -1082,13 +1366,21 @@
       "bonus": {
         "2": "Volcanic Orbs now orbit you, 30% Increased Volcanic Orb Duration if last cast was different element"
       }
-    }
+    },
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
   },
   "35": {
     "name": "Locket of the Forgotten Knight",
     "uniqueID": 90,
     "baseTypeID": 20,
     "subTypeID": 2,
+    "native": true,
     "req": {
       "level": 0
     },
@@ -1111,13 +1403,23 @@
         "2": "50% Void Penetration with Time Rot",
         "3": "3% more Void Damage per stack of Time Rot"
       }
-    }
+    },
+    "tooltipEntries": [
+      0,
+      128,
+      2,
+      3
+    ],
+    "tooltipDescriptions": [
+      "+(2-3)% Critical Strike Chance with Void Skills"
+    ]
   },
   "36": {
     "name": "Blade of the Forgotten Knight",
     "uniqueID": 88,
     "baseTypeID": 9,
     "subTypeID": 6,
+    "native": true,
     "req": {
       "level": 60
     },
@@ -1126,8 +1428,8 @@
       "{rounding:Integer}+(35-50) Spell Void Damage",
       "{rounding:Integer}(30-70)% increased Void Damage",
       "(15-25)% Chance to gain Haste for 1 second on Hit",
-      "15% increased Cast Speed",
-      "15% increased Attack Speed"
+      "20% increased Cast Speed",
+      "20% increased Attack Speed"
     ],
     "rollIds": [
       0,
@@ -1144,13 +1446,24 @@
         "2": "50% Void Penetration with Time Rot",
         "3": "3% more Void Damage per stack of Time Rot"
       }
-    }
+    },
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      128
+    ],
+    "tooltipDescriptions": [
+      "20% increased Attack and Cast Speed"
+    ]
   },
   "37": {
     "name": "Defiance of the Forgotten Knight",
     "uniqueID": 89,
     "baseTypeID": 18,
     "subTypeID": 5,
+    "native": true,
     "req": {
       "level": 40
     },
@@ -1177,13 +1490,22 @@
         "2": "50% Void Penetration with Time Rot",
         "3": "3% more Void Damage per stack of Time Rot"
       }
-    }
+    },
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      5,
+      3,
+      4
+    ]
   },
   "38": {
     "name": "The Invoker's Frozen Heart",
     "uniqueID": 57,
     "baseTypeID": 20,
     "subTypeID": 2,
+    "native": true,
     "req": {
       "level": 0
     },
@@ -1206,13 +1528,20 @@
         "2": "15% increased Elemental Cast Speed",
         "3": "+2 to Fire Spells, +2 to Lightning Spells, +2 to Cold Spells"
       }
-    }
+    },
+    "tooltipEntries": [
+      1,
+      2,
+      3,
+      0
+    ]
   },
   "39": {
     "name": "The Invoker's Scorching Grasp",
     "uniqueID": 63,
     "baseTypeID": 21,
     "subTypeID": 1,
+    "native": true,
     "req": {
       "level": 35
     },
@@ -1235,13 +1564,20 @@
         "2": "15% increased Elemental Cast Speed",
         "3": "+2 to Fire Spells, +2 to Lightning Spells, +2 to Cold Spells"
       }
-    }
+    },
+    "tooltipEntries": [
+      0,
+      1,
+      3,
+      2
+    ]
   },
   "40": {
     "name": "The Invoker's Static Touch",
     "uniqueID": 64,
     "baseTypeID": 21,
     "subTypeID": 2,
+    "native": true,
     "req": {
       "level": 29
     },
@@ -1264,7 +1600,13 @@
         "2": "15% increased Elemental Cast Speed",
         "3": "+2 to Fire Spells, +2 to Lightning Spells, +2 to Cold Spells"
       }
-    }
+    },
+    "tooltipEntries": [
+      0,
+      1,
+      3,
+      2
+    ]
   },
   "41": {
     "name": "Abandoned Chitin of the Weaver",
@@ -1295,7 +1637,14 @@
       "bonus": {
         "2": "Legendary affixes on equipped Weaver's Will weapons have 50% increased effect"
       }
-    }
+    },
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
   },
   "42": {
     "name": "Abandoned Eyes of the Weaver",
@@ -1317,8 +1666,8 @@
       null,
       null,
       0,
-      1,
-      2
+      2,
+      3
     ],
     "set": {
       "name": "Weaver Set",
@@ -1326,13 +1675,21 @@
       "bonus": {
         "2": "Legendary affixes on equipped Weaver's Will weapons have 50% increased effect"
       }
-    }
+    },
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
   },
   "43": {
     "name": "Ferebor's Chisel",
     "uniqueID": 227,
     "baseTypeID": 6,
     "subTypeID": 7,
+    "native": true,
     "req": {
       "level": 71
     },
@@ -1356,13 +1713,21 @@
       "bonus": {
         "2": "+2 to Level of Totem Skills"
       }
-    }
+    },
+    "tooltipEntries": [
+      0,
+      1,
+      4,
+      2,
+      3
+    ]
   },
   "44": {
     "name": "Ferebor's Persistence",
     "uniqueID": 228,
     "baseTypeID": 21,
     "subTypeID": 8,
+    "native": true,
     "req": {
       "level": 72
     },
@@ -1386,20 +1751,28 @@
       "bonus": {
         "2": "+2 to Level of Totem Skills"
       }
-    }
+    },
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
   },
   "45": {
     "name": "Fragments of the Shattered Lance",
     "uniqueID": 110,
     "baseTypeID": 22,
     "subTypeID": 10,
+    "native": true,
     "req": {
       "level": 0
     },
     "mods": [
       "{rounding:Integer}(70-100)% increased Health Regen",
       "+(50-100)% Freeze Rate Multiplier",
-      "{rounding:Integer}+(7-12) Health Regen",
+      "{rounding:Integer}(10-13) Health Gain on Freeze",
       "{rounding:Integer}(50-70)% increased Melee Cold Damage"
     ],
     "rollIds": [
@@ -1414,13 +1787,20 @@
       "bonus": {
         "2": "4% Increased Melee Cold Damage per 10 Health Regen, up to 2000%"
       }
-    }
+    },
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3
+    ]
   },
   "46": {
     "name": "Shard of the Shattered Lance",
     "uniqueID": 109,
     "baseTypeID": 9,
     "subTypeID": 0,
+    "native": true,
     "req": {
       "level": 68
     },
@@ -1444,13 +1824,21 @@
       "bonus": {
         "2": "4% Increased Melee Cold Damage per 10 Health Regen, up to 2000%"
       }
-    }
+    },
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
   },
   "47": {
     "name": "Lich's Envy",
     "uniqueID": 260,
     "baseTypeID": 4,
     "subTypeID": 4,
+    "native": true,
     "req": {
       "level": 64
     },
@@ -1474,13 +1862,24 @@
       "bonus": {
         "2": "+4 Maximum Shades"
       }
-    }
+    },
+    "tooltipEntries": [
+      128,
+      0,
+      1,
+      3,
+      4
+    ],
+    "tooltipDescriptions": [
+      "+(14-24) Spell Fire Damage for Damage Over Time Spells"
+    ]
   },
   "48": {
     "name": "Lich's Scorn",
     "uniqueID": 261,
     "baseTypeID": 19,
     "subTypeID": 11,
+    "native": true,
     "req": {
       "level": 63
     },
@@ -1504,13 +1903,24 @@
       "bonus": {
         "2": "+4 Maximum Shades"
       }
-    }
+    },
+    "tooltipEntries": [
+      128,
+      1,
+      2,
+      3,
+      4
+    ],
+    "tooltipDescriptions": [
+      "Dread Shade is Converted to Cold"
+    ]
   },
   "49": {
     "name": "Pebbles' Bitemarked Sash",
     "uniqueID": 102,
     "baseTypeID": 2,
     "subTypeID": 0,
+    "native": true,
     "req": {
       "level": 12
     },
@@ -1533,13 +1943,23 @@
         "2": "+5% Chance to replenish one potion when Bone Golem hits an enemy",
         "3": "Your Summon Skeletons' spells and attacks deal +42 fire, cold or lightning damage"
       }
-    }
+    },
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      128
+    ],
+    "tooltipDescriptions": [
+      "+3 Melee Fire Damage for Minions"
+    ]
   },
   "50": {
     "name": "Pebbles' Femur",
     "uniqueID": 100,
     "baseTypeID": 10,
     "subTypeID": 6,
+    "native": true,
     "req": {
       "level": 30
     },
@@ -1562,13 +1982,23 @@
         "2": "+5% Chance to replenish one potion when Bone Golem hits an enemy",
         "3": "Your Summon Skeletons' spells and attacks deal +42 fire, cold or lightning damage"
       }
-    }
+    },
+    "tooltipEntries": [
+      0,
+      2,
+      3,
+      128
+    ],
+    "tooltipDescriptions": [
+      "+3 Melee Lightning Damage for Minions"
+    ]
   },
   "51": {
     "name": "Pebbles' Collar",
     "uniqueID": 101,
     "baseTypeID": 22,
     "subTypeID": 0,
+    "native": true,
     "req": {
       "level": 12
     },
@@ -1591,13 +2021,23 @@
         "2": "+5% Chance to replenish one potion when Bone Golem hits an enemy",
         "3": "Your Summon Skeletons' spells and attacks deal +42 fire, cold or lightning damage"
       }
-    }
+    },
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      128
+    ],
+    "tooltipDescriptions": [
+      "+3 Melee Cold Damage for Minions"
+    ]
   },
   "52": {
     "name": "Ruby Fang Cleaver",
     "uniqueID": 173,
     "baseTypeID": 5,
     "subTypeID": 3,
+    "native": true,
     "req": {
       "level": 55
     },
@@ -1621,13 +2061,21 @@
       "bonus": {
         "2": "+1% Melee Poison Chance per 1% uncapped Fire Resistance, +1 Melee Fire Damage per 5% uncapped Poison Resistance"
       }
-    }
+    },
+    "tooltipEntries": [
+      0,
+      1,
+      3,
+      2,
+      4
+    ]
   },
   "53": {
     "name": "Ruby Fang Aegis",
     "uniqueID": 174,
     "baseTypeID": 18,
     "subTypeID": 13,
+    "native": true,
     "req": {
       "level": 55
     },
@@ -1635,7 +2083,7 @@
       "+(75-100)% Chance to Poison on Fire Hit",
       "{rounding:Integer}(30-10)% less Poison Damage Taken",
       "+75% Fire Resistance",
-      "100% Chance to gain a stack of Ruby Venom for 8 seconds on Block"
+      "100% Chance to gain a stack of Ruby Venom for 10 seconds on Block"
     ],
     "rollIds": [
       0,
@@ -1649,7 +2097,21 @@
       "bonus": {
         "2": "+1% Melee Poison Chance per 1% uncapped Fire Resistance, +1 Melee Fire Damage per 5% uncapped Poison Resistance"
       }
-    }
+    },
+    "tooltipEntries": [
+      1,
+      128,
+      2,
+      129,
+      130,
+      131
+    ],
+    "tooltipDescriptions": [
+      "+(75-100)% Chance to Poison on Hit with Fire Skills",
+      "Gain Ruby Venom for 10 seconds on Block",
+      "15% increased Fire Damage per stack of Ruby Venom",
+      "15% increased Poison Damage per stack of Ruby Venom"
+    ]
   },
   "54": {
     "name": "Sinathia's Dying Breath",
@@ -1680,7 +2142,17 @@
       "bonus": {
         "2": "+3 to Curse Skills, +3 to Minion Skills"
       }
-    }
+    },
+    "tooltipEntries": [
+      1,
+      2,
+      3,
+      128,
+      4
+    ],
+    "tooltipDescriptions": [
+      "+(40-60)% to All Resistances for Minions"
+    ]
   },
   "55": {
     "name": "Sinathia's Resurrection",
@@ -1711,13 +2183,21 @@
       "bonus": {
         "2": "+3 to Curse Skills, +3 to Minion Skills"
       }
-    }
+    },
+    "tooltipEntries": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
   },
   "56": {
     "name": "Zerrick's Greed",
     "uniqueID": 139,
     "baseTypeID": 4,
     "subTypeID": 5,
+    "native": true,
     "req": {
       "level": 57
     },
@@ -1738,13 +2218,23 @@
         "2": "Potions no longer heal you, but instead grant +54 necrotic damage to melee and throwing attacks and mark you for death for 4 seconds",
         "3": "72% Increased Chance To Find Potions, 18% less Poison and Necrotic Damage Taken"
       }
-    }
+    },
+    "tooltipEntries": [
+      2,
+      1,
+      128,
+      0
+    ],
+    "tooltipDescriptions": [
+      "Cannot Leech Health from Damage over Time"
+    ]
   },
   "57": {
     "name": "Zerrick's Guile",
     "uniqueID": 138,
     "baseTypeID": 2,
     "subTypeID": 1,
+    "native": true,
     "req": {
       "level": 49
     },
@@ -1769,13 +2259,23 @@
         "2": "Potions no longer heal you, but instead grant +54 necrotic damage to melee and throwing attacks and mark you for death for 4 seconds",
         "3": "72% Increased Chance To Find Potions, 18% less Poison and Necrotic Damage Taken"
       }
-    }
+    },
+    "tooltipEntries": [
+      0,
+      2,
+      128,
+      1
+    ],
+    "tooltipDescriptions": [
+      "(15-20)% increased Melee and Throwing Attack Speed for 4 seconds when you use a Potion"
+    ]
   },
   "58": {
     "name": "Zerrick's Ambition",
     "uniqueID": 140,
     "baseTypeID": 3,
     "subTypeID": 4,
+    "native": true,
     "req": {
       "level": 52
     },

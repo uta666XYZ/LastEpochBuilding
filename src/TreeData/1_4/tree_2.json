@@ -853,7 +853,7 @@
         "20% Shared Increased Armor On Potion Use",
         "20% Increased Chance To Find Potions On Potion Use"
       ],
-      "notScalingStats": [" 100% Armor -> Minion Healing"],
+      "notScalingStats": ["100% Armor -> Minion Healing"],
       "noScalingPointThreshold": 4,
       "in": ["Sentinel"],
       "reqPoints": [1],

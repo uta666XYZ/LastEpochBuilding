@@ -598,6 +598,18 @@ local function defaultTriggerHandler(env, config)
 			if actor.mainSkill.skillData.maxStacks and actor.mainSkill.skillData.maxStacks > 0 then
 				output.TriggerRateCap = actor.mainSkill.skillData.maxStacks / actor.mainSkill.skillData.duration
 			end
+			-- @leb-regression-guard:trigger-rate-cap-ptt
+			-- LE rate-limits triggered casts with a ProcTimeTracker (datamined game source):
+			-- at most `limit` procs per `interval` seconds -> effective cap = limit/interval
+			-- ("(K second cooldown)" = PTT(1,K) -> 1/K; "(up to N per M seconds)" -> N/M).
+			-- LEB's default handler only narrows TriggerRateCap via maxStacks, so an
+			-- affix-specified cap is carried on the injected group's srcInstance as
+			-- triggerRateCapPerSecond and applied here (min). Gated on the field so no
+			-- existing trigger is affected; SkillTriggerRate = min(cap, EffectiveSourceRate).
+			local srcInst = actor.mainSkill.activeEffect.srcInstance
+			if srcInst and srcInst.triggerRateCapPerSecond and srcInst.triggerRateCapPerSecond > 0 then
+				output.TriggerRateCap = m_min(output.TriggerRateCap, srcInst.triggerRateCapPerSecond)
+			end
 			if config.triggerName == "Doom Blast" and env.build.configTab.input["doomBlastSource"] == "expiration" then
 				local expirationRate = 1 / GlobalCache.cachedData["CACHE"][uuid].Env.player.output.Duration
 				if breakdown and breakdown.EffectiveSourceRate then
@@ -823,7 +835,45 @@ local configTable = {
 
 		-- The triggered skill inherits the source skill mods
 		env.player.mainSkill.skillModList:AddList(source.activeEffect.baseMods)
-		local triggerChance = source.skillModList:Sum("BASE", source.skillCfg, "ChanceToTriggerOnHit_"..env.player.mainSkill.activeEffect.grantedEffect.id)
+		local triggeredId = env.player.mainSkill.activeEffect.grantedEffect.id
+		local triggerChance = source.skillModList:Sum("BASE", source.skillCfg, "ChanceToTriggerOnHit_"..triggeredId)
+		-- @leb-regression-guard:trigger-chance-on-throwing-hit-dps
+		-- Validation provenance is retained in maintainer notes.
+		if source.skillTypes and source.skillTypes[SkillType.Throwing] then
+			triggerChance = triggerChance + source.skillModList:Sum("BASE", source.skillCfg, "ChanceToTriggerOnThrowingHit_"..triggeredId)
+		end
+		-- @leb-regression-guard:trigger-chance-on-bow-hit-dps
+		-- Bow sibling of the throwing bridge above. "cast <skill> on bow hit"
+		-- (unique bow Reign of Winter, "(23-28)% Chance to cast Icicle on Bow Hit")
+		-- emits its chance under ChanceToTriggerOnBowHit_<id> (ModParser bow-hit
+		-- bridge) and CalcSetup sums it (sourceIsBow) to CREATE the Full-DPS group,
+		-- but only when the config toggle is on. This cast-on-hit handler must read
+		-- the SAME stat with the SAME gating, else the (config-enabled) group would
+		-- appear at triggerChance=0 -> trigRate x 0% = 0 -> dropped by the TotalDPS>0
+		-- gate (identical failure the throwing/melee/spell siblings fixed). Bow is the
+		-- SAME hit-based mechanism (trigRate = source bow hit rate). Gated on BOTH
+		-- SkillType.Bow AND Condition:ModelReignOfWinterIcicleProc (default OFF, proc
+		-- rate cap not datamined) so a non-bow source or opted-out build sums nothing.
+		if source.skillTypes and source.skillTypes[SkillType.Bow]
+				and env.modDB:Flag(nil, "Condition:ModelReignOfWinterIcicleProc") then
+			triggerChance = triggerChance + source.skillModList:Sum("BASE", source.skillCfg, "ChanceToTriggerOnBowHit_"..triggeredId)
+		end
+		-- @leb-regression-guard:trigger-chance-on-melee-hit-dps
+		-- Validation provenance is retained in maintainer notes.
+		if source.skillTypes and source.skillTypes[SkillType.Melee] then
+			triggerChance = triggerChance + source.skillModList:Sum("BASE", source.skillCfg, "ChanceToTriggerOnMeleeHit_"..triggeredId)
+		end
+		-- @leb-regression-guard:trigger-chance-after-skill-dps
+		-- Validation provenance is retained in maintainer notes.
+		if env.enemyDB:Flag(nil, "Condition:Boss") or env.enemyDB:Flag(nil, "Condition:Rare") then
+			triggerChance = triggerChance + source.skillModList:Sum("BASE", source.skillCfg, "ChanceToTriggerAfterSkill_"..triggeredId)
+		end
+		-- @leb-regression-guard:trigger-chance-on-spell-cast-dps
+		-- casting build. See REGRESSION_GUARDS.md.
+		-- Validation provenance is retained in maintainer notes.
+		if source.skillTypes and source.skillTypes[SkillType.Spell] then
+			triggerChance = triggerChance + source.skillModList:Sum("BASE", source.skillCfg, "ChanceToTriggerOnSpellCast_"..triggeredId)
+		end
 		env.player.output.TriggerChance = triggerChance
 		env.player.mainSkill.triggerSourceCfg = source.skillCfg
 		return {trigRate = trigRate, triggerChance = triggerChance, source = source, uuid = uuid, useCastRate = true, triggeredSkills = {env.player.mainSkill}}
@@ -847,6 +897,42 @@ local configTable = {
 				triggeredSkillCond = function(env, skill) return skill.skillData.chanceToTriggerOnStun and slotMatch(env, skill) end}
 	end,
 }
+
+-- @leb-regression-guard:trigger-chance-to-cast-every-n-seconds
+-- Source-INDEPENDENT timer trigger ("cast A every N seconds"). The trigger rate is
+-- a fixed, build-derived value (chance/100/N per second) carried on the injected
+-- group's srcInstance as triggerRatePerSecond. We feed it as config.trigRate with
+-- the triggered skill as its own source and do NOT set globalTrigger/ignoreSourceRate,
+-- so defaultTriggerHandler takes output.EffectiveSourceRate = trigRate (not the cap)
+-- and SkillTriggerRate = min(TriggerRateCap, trigRate). A spell source skips the
+-- Melee/Attack hit-chance/crit branch. Gated entirely on srcInstance.triggeredByTimer
+-- so no existing build path is affected.
+local function timerTriggerConfig(env, actor)
+	local srcInstance = actor.mainSkill.activeEffect.srcInstance
+	return {
+		trigRate = srcInstance.triggerRatePerSecond,
+		source = actor.mainSkill,
+		triggeredSkills = { actor.mainSkill },
+		useCastRate = true,
+	}
+end
+
+-- @leb-regression-guard:trigger-global-capped-on-crit-when-hit
+-- "on crit (K sec cooldown)" / "when hit (K sec cooldown)": cooldown-bound triggers
+-- whose firing event (crit / being hit) is build-/combat-dependent. Following PoB's
+-- CWDT model and LE's PTT cap (limit/interval), we assume the trigger fires often
+-- enough to saturate the cooldown -> rate = the PTT cap. Set globalTrigger and the
+-- skill as its own source so defaultTriggerHandler takes EffectiveSourceRate =
+-- output.TriggerRateCap (= the cap applied by the trigger-rate-cap-ptt block from
+-- srcInstance.triggerRateCapPerSecond). No source-rate / crit-handler dependency, so
+-- no shared crit-handler change. Upper bound; exact rate needs a firing-build CSV.
+local function globalCappedTriggerConfig(env, actor)
+	actor.mainSkill.skillFlags.globalTrigger = true
+	return {
+		source = actor.mainSkill,
+		triggeredSkills = { actor.mainSkill },
+	}
+end
 
 -- Find unique item trigger name
 local function getUniqueItemTriggerName(skill)
@@ -881,12 +967,16 @@ function calcs.triggers(env, actor)
         config = config or awakenedTriggerNameLower and configTable[awakenedTriggerNameLower] and configTable[awakenedTriggerNameLower](env)
         config = config or uniqueNameLower and configTable[uniqueNameLower] and configTable[uniqueNameLower](env)
 		config = config or triggerOnHit and configTable["cast on hit"](env)
+		-- @leb-regression-guard:trigger-chance-to-cast-every-n-seconds
+		config = config or (actor.mainSkill.activeEffect.srcInstance and actor.mainSkill.activeEffect.srcInstance.triggeredByTimer and timerTriggerConfig(env, actor))
+		-- @leb-regression-guard:trigger-global-capped-on-crit-when-hit
+		config = config or (actor.mainSkill.activeEffect.srcInstance and actor.mainSkill.activeEffect.srcInstance.triggeredGlobalCapped and globalCappedTriggerConfig(env, actor))
 		if config then
 		    config.actor = config.actor or actor
 			config.triggerName = config.triggerName or triggerName or uniqueName or skillName
 			config.triggerChance = config.triggerChance or (actor.mainSkill.activeEffect.srcInstance and actor.mainSkill.activeEffect.srcInstance.triggerChance)
 			if triggerOnHit then
-				config.triggerName = triggerOnHit
+				config.triggerName = (data.skills[triggerOnHit] and data.skills[triggerOnHit].name) or triggerOnHit
 			end
 			local triggerHandler = config.customHandler or defaultTriggerHandler
 		    triggerHandler(env, config)

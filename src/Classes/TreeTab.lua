@@ -132,10 +132,15 @@ local TreeTabClass = newClass("TreeTab", "ControlHost", function(self, build)
 	-- Step Number mode button is drawn raw in Draw() next to the Reset dropdown
 
 	-- Tree Version Dropdown
-	self.treeVersions = { }
-	for _, num in ipairs(treeVersionList) do
-		t_insert(self.treeVersions, treeVersions[num].display)
-	end
+	-- @leb-regression-guard: tree-version-loadable-vs-offered
+	-- Offers offeredTreeVersionList, NOT treeVersionList: retired versions (1.2 /
+	-- 1.3) stay loadable but must not be selectable. Populated via
+	-- BuildVersionList so that a build saved on a retired version still shows its
+	-- OWN version as the selection -- SelByValue no-ops on a miss and would leave
+	-- the previous index selected, i.e. a 1.2 build displaying "1.4".
+	-- Test: spec/System/TestTreeVersionRetire_spec.lua
+	--   "does not list a retired version for a live spec"
+	self.treeVersions = self:BuildVersionList()
 	self.controls.versionText = new("LabelControl", { "LEFT", self.controls.compareCheck, "RIGHT" }, 8, 0, 0, 16, "Version:")
 	self.controls.versionSelect = new("DropDownControl", { "LEFT", self.controls.versionText, "RIGHT" }, 8, 0, 100, 20, self.treeVersions, function(index, value)
 		if value ~= self.build.spec.treeVersion then
@@ -266,7 +271,9 @@ function TreeTabClass:GetBadgeHandle(name)
 		self.badgeHandles[key] = NewImageHandle()
 		self.badgeHandles[key]:Load("TreeData/sprites/badge_" .. key .. ".png")
 	end
-	return self.badgeHandles[key]
+	local h = self.badgeHandles[key]
+	if h and h:IsValid() then return h end
+	return nil
 end
 
 -- Lazy-load a sprite from Assets/tree/ directory (extracted from panels_ui.webp)
@@ -276,7 +283,9 @@ function TreeTabClass:GetSpriteHandle(spriteName)
 		self.badgeHandles[key] = NewImageHandle()
 		self.badgeHandles[key]:Load("Assets/tree/" .. spriteName .. ".png")
 	end
-	return self.badgeHandles[key]
+	local h = self.badgeHandles[key]
+	if h and h:IsValid() then return h end
+	return nil
 end
 
 -- Skill unlock data per mastery: maps mastery index to the skills unlocked
@@ -458,13 +467,18 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 	local cursorX, cursorY = GetCursorPos()
 	local badgeSize = 80
 	local badgeGap = 6
-	local badgeStartX = viewPort.x + 10
+	local nAscendancies = (spec.curClass and #spec.curClass.classes) or 3
+	local nBadges = 1 + nAscendancies
+	local badgeGroupWidth = nBadges * badgeSize + (nBadges - 1) * badgeGap
+	-- Anchor so the gap between the last badge and the name text sits at viewport horizontal center
+	local nameGap = 16
+	local badgeStartX = viewPort.x + m_floor(viewPort.width / 2) - badgeGroupWidth - m_floor(nameGap / 2)
 	local badgeY = viewPort.y + 6
 	local isMouseDown = IsKeyDown("LEFTBUTTON")
 	if not self.badgeMouseWasDown then self.badgeMouseWasDown = false end
 	local badgeClicked = self.badgeMouseWasDown and not isMouseDown
 	local inBadgeArea = cursorY >= badgeY and cursorY <= badgeY + badgeSize
-		and cursorX >= badgeStartX and cursorX <= badgeStartX + 4 * (badgeSize + badgeGap)
+		and cursorX >= badgeStartX and cursorX <= badgeStartX + badgeGroupWidth
 	if isMouseDown and inBadgeArea then
 		self.badgeMouseWasDown = true
 	elseif not isMouseDown then
@@ -657,8 +671,10 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 	local baseViewing = (selMastery == 0)
 	local baseSprName = baseViewing and "badges/class-base-selected" or "badges/class-base"
 	local baseBadgeSpr = self:GetSpriteHandle(baseSprName)
-	SetDrawColor(1, 1, 1)
-	DrawImage(baseBadgeSpr, badgeStartX, badgeY, badgeSize, badgeSize)
+	if baseBadgeSpr then
+		SetDrawColor(1, 1, 1)
+		DrawImage(baseBadgeSpr, badgeStartX, badgeY, badgeSize, badgeSize)
+	end
 
 	if spec.curClass then
 		for i, ascClass in ipairs(spec.curClass.classes) do
@@ -672,8 +688,10 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 				ascSprName = isViewing and "badges/class-mastery-selected" or "badges/class-mastery"
 			end
 			local ascBadgeSpr = self:GetSpriteHandle(ascSprName)
-			SetDrawColor(1, 1, 1)
-			DrawImage(ascBadgeSpr, bx, badgeY, badgeSize, badgeSize)
+			if ascBadgeSpr then
+				SetDrawColor(1, 1, 1)
+				DrawImage(ascBadgeSpr, bx, badgeY, badgeSize, badgeSize)
+			end
 		end
 	end
 
@@ -709,7 +727,7 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 			if ascClass.startNodeId and spec.allocNodes[ascClass.startNodeId] then
 				isAllocated = true
 			end
-			if not isAllocated then
+			if not isAllocated and lockSpr then
 				local bx = badgeStartX + i * (badgeSize + badgeGap)
 				SetDrawColor(1, 1, 1)
 				DrawImage(lockSpr, bx + m_floor((badgeSize - lockW) / 2), badgeY + badgeSize - lockH - 2, lockW, lockH)
@@ -724,7 +742,9 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 	-- Base class (mastery 0)
 	local basePts = (spec.masteryAllocedPoints and spec.masteryAllocedPoints[0]) or 0
 	SetDrawColor(1, 1, 1)
-	DrawImage(lvlHandle, badgeStartX + m_floor((badgeSize - lvlW) / 2), badgeY + badgeSize - 35, lvlW, lvlH)
+	if lvlHandle then
+		DrawImage(lvlHandle, badgeStartX + m_floor((badgeSize - lvlW) / 2), badgeY + badgeSize - 35, lvlW, lvlH)
+	end
 	DrawString(badgeStartX + m_floor(badgeSize / 2), badgeY + badgeSize - 24, "CENTER_X", 12, "VAR", "^7" .. basePts)
 	-- Ascendancy classes: only show counter after subclass is selected
 	if spec.curClass and spec.curAscendClassId ~= 0 then
@@ -732,13 +752,15 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 			local bx = badgeStartX + i * (badgeSize + badgeGap)
 			local mPts = (spec.masteryAllocedPoints and spec.masteryAllocedPoints[i]) or 0
 			SetDrawColor(1, 1, 1)
-			DrawImage(lvlHandle, bx + m_floor((badgeSize - lvlW) / 2), badgeY + badgeSize - 35, lvlW, lvlH)
+			if lvlHandle then
+				DrawImage(lvlHandle, bx + m_floor((badgeSize - lvlW) / 2), badgeY + badgeSize - 35, lvlW, lvlH)
+			end
 			DrawString(bx + m_floor(badgeSize / 2), badgeY + badgeSize - 24, "CENTER_X", 12, "VAR", "^7" .. mPts)
 		end
 	end
 
 	-- Class/mastery name display
-	local nameX = badgeStartX + 4 * (badgeSize + badgeGap) + 16
+	local nameX = badgeStartX + badgeGroupWidth + 16
 	SetDrawColor(1, 1, 1)
 	local selMastery = self.viewer.selectedMastery or 0
 	if selMastery > 0 and spec.curClass then
@@ -750,11 +772,35 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 			local startNode = spec.nodes[ascClass.startNodeId]
 			if startNode and startNode.sd then
 				local bonusY = viewPort.y + 48
+				local bonusFontSize = 14
+				local bonusFont = "FONTIN"
+				local bonusX = nameX + 8
+				local maxBonusWidth = (viewPort.x + viewPort.width) - bonusX - 8
+				local maxLines = 3
+				local linesDrawn = 0
 				for idx, line in ipairs(startNode.sd) do
-					if idx <= 3 then
-						DrawString(nameX + 8, bonusY, "LEFT", 12, "VAR", "^x8888FF" .. "* " .. line)
-						bonusY = bonusY + 16
+					if linesDrawn >= maxLines then break end
+					local fullText = "* " .. line
+					local current = ""
+					local function flush()
+						if current ~= "" then
+							DrawString(bonusX, bonusY, "LEFT", bonusFontSize, bonusFont, "^x8888FF" .. current)
+							bonusY = bonusY + 18
+							linesDrawn = linesDrawn + 1
+							current = ""
+						end
 					end
+					for word in fullText:gmatch("%S+") do
+						if linesDrawn >= maxLines then break end
+						local trial = current == "" and word or (current .. " " .. word)
+						if DrawStringWidth(bonusFontSize, bonusFont, trial) <= maxBonusWidth then
+							current = trial
+						else
+							flush()
+							current = word
+						end
+					end
+					if linesDrawn < maxLines then flush() end
 				end
 			end
 		end
@@ -839,12 +885,24 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 
 	-- Draw full background track (includes ornate arrow endpoints)
 	SetDrawColor(1, 1, 1)
-	DrawImage(barBgHandle, lineLeft - 30, lineY - barBgH / 2, lineWidth + 60, barBgH)
+	if barBgHandle then
+		DrawImage(barBgHandle, lineLeft - 30, lineY - barBgH / 2, lineWidth + 60, barBgH)
+	end
 
-	-- Draw gold fill using progress-fill.png (horizontal bar asset)
-	if progressFrac > 0 then
+	-- @leb-regression-guard: progress-bar-fill-tiled-per-point
+	-- Draw gold fill using progress-fill.png, repeated once per allocated point
+	-- (flip-book style) rather than a single image stretched across the whole fill.
+	-- Each point occupies one slot (lineWidth / maxUnlockLevel wide); N points spent
+	-- => N copies of the fill image tiled from lineLeft. N is capped at the bar length.
+	-- Do not collapse this back to one stretched DrawImage across the whole fill.
+	-- Test: spec/System/TestProgressBarFillTiled_spec.lua
+	if masteryPointsSpent > 0 and barHorizFillHandle then
 		SetDrawColor(1, 1, 1)
-		DrawImage(barHorizFillHandle, lineLeft, lineY - barFillH / 2, progressX - lineLeft, barFillH)
+		local pointWidth = lineWidth / maxUnlockLevel
+		local nFill = m_min(masteryPointsSpent, maxUnlockLevel)
+		for i = 0, nFill - 1 do
+			DrawImage(barHorizFillHandle, lineLeft + i * pointWidth, lineY - barFillH / 2, pointWidth, barFillH)
+		end
 	end
 
 	-- Tick marks on progress bar (1 per point, taller every 5 points)
@@ -878,6 +936,15 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 	local barAspect = barNativeW / barNativeH
 	local barTop = viewPort.y + HEADER_HEIGHT
 
+	-- @leb-regression-guard: passive-tree-progress-indicator-layer
+	-- The vertical mastery indicators (lock chain + progress slider) span up into the
+	-- tree and must draw BEHIND its connectors (sublayer 20) and nodes (sublayer 25),
+	-- so they go to the tree's main layer 0 at a lower sublayer here; the skill-bar
+	-- layer (1) is restored below so the skill icons and the on-bar marker draw in front.
+	-- Do not collapse these back onto one layer (the line would cover the nodes again).
+	-- Test: spec/System/TestPassiveTreeProgressIndicatorLayer_spec.lua
+	SetDrawLayer(0, 10)
+
 	-- Passive lock bar at 22.5/45 midpoint for unselected mastery trees
 	-- Disappears when this mastery is the build's chosen mastery
 	-- Medallion (bottom of image) sits on the progress bar
@@ -889,15 +956,34 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 		local lockH = lockBot - barTop
 		local lockW = lockH * barAspect
 		SetDrawColor(1, 1, 1)
-		DrawImage(lockBarHandle, lockX - lockW / 2, barTop, lockW, lockH)
+		if lockBarHandle then
+			DrawImage(lockBarHandle, lockX - lockW / 2, barTop, lockW, lockH)
+		end
 	end
 
-	-- Upward vertical indicator line from progress bar to tree bottom (Maxroll-style)
+	-- Upward vertical indicator line from progress bar to tree bottom (Maxroll-style).
+	-- Exclude the asset's bottom diamond (tex V 0.94..1.0) — that end sits at the bar
+	-- and is drawn separately below at the skill-bar layer so it lands ON the bar.
 	local sliderBot = lineY + 6
 	local sliderH = sliderBot - barTop
 	local sliderW = sliderH * barAspect
 	SetDrawColor(1, 0.85, 0.2)
-	DrawImage(sliderBarHandle, progressX - sliderW / 2, barTop, sliderW, sliderH)
+	if sliderBarHandle then
+		DrawImage(sliderBarHandle, progressX - sliderW / 2, barTop, sliderW, sliderH, 0, 0, 1, 0.94)
+	end
+
+	-- Restore the skill-bar draw layer for the skill icons / drop lines below.
+	SetDrawLayer(1)
+
+	-- Progress marker diamond: the vertical slider above runs behind the tree (layer 0),
+	-- but its diamond must sit ON the progress bar (in front) and stay within the bar.
+	-- Redraw just the slider asset's top-diamond region here, centered on the bar at the
+	-- current progress position. (The slider's own bottom diamond is hidden behind the bar.)
+	if sliderBarHandle then
+		local markerSize = barBgH * 0.7
+		SetDrawColor(1, 0.85, 0.2)
+		DrawImage(sliderBarHandle, progressX - markerSize / 2, lineY - markerSize / 2, markerSize, markerSize, 0, 0, 1, 0.05)
+	end
 
 	local frameHandle = self:GetSpriteHandle("skill-icon-frame")
 	local frameLockedHandle = self:GetSpriteHandle("skill-icon-frame-locked")
@@ -920,7 +1006,9 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 			else
 				SetDrawColor(0.25, 0.22, 0.10)
 			end
-			DrawImage(sliderBarHandle, slotCenterX - dropW / 2, dropTop, dropW, dropBot - dropTop)
+			if sliderBarHandle then
+				DrawImage(sliderBarHandle, slotCenterX - dropW / 2, dropTop, dropW, dropBot - dropTop)
+			end
 
 			-- Skill icon (drawn first so frame overlays on top)
 			local rootNodeId = sk.treeId and (sk.treeId .. "-0") or nil
@@ -943,7 +1031,7 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 					end
 				end
 				local iconHandle = self.badgeHandles[cacheKey]
-				if iconHandle then
+				if iconHandle and iconHandle:IsValid() then
 					if isUnlocked then
 						SetDrawColor(1, 1, 1)
 					else
@@ -957,10 +1045,14 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 			if isUnlocked then
 				local fh = frameSizeUnlocked / 2
 				SetDrawColor(1, 1, 1)
-				DrawImage(frameHandle, slotCenterX - fh, slotY - fh, frameSizeUnlocked, frameSizeUnlocked)
+				if frameHandle then
+					DrawImage(frameHandle, slotCenterX - fh, slotY - fh, frameSizeUnlocked, frameSizeUnlocked)
+				end
 			else
 				SetDrawColor(0.6, 0.6, 0.6)
-				DrawImage(frameLockedHandle, slotCenterX - fs2, slotY - fs2, frameSizeLocked, frameSizeLocked)
+				if frameLockedHandle then
+					DrawImage(frameLockedHandle, slotCenterX - fs2, slotY - fs2, frameSizeLocked, frameSizeLocked)
+				end
 			end
 
 			-- Level badge (centered on skill icon, hidden when unlocked)
@@ -970,7 +1062,9 @@ function TreeTabClass:Draw(viewPort, inputEvents)
 				local lvBadgeX = slotCenterX - lvBadgeW / 2
 				local lvBadgeY = slotY - lvBadgeH / 2
 				SetDrawColor(0.6, 0.6, 0.6)
-				DrawImage(levelLockedHandle, lvBadgeX, lvBadgeY, lvBadgeW, lvBadgeH)
+				if levelLockedHandle then
+					DrawImage(levelLockedHandle, lvBadgeX, lvBadgeY, lvBadgeW, lvBadgeH)
+				end
 				SetDrawColor(1, 1, 1)
 				DrawString(lvBadgeX + lvBadgeW / 2, lvBadgeY + lvBadgeH / 2 - 5, "CENTER_X", 10, "VAR", "^7" .. tostring(sk.level))
 			end
@@ -1051,6 +1145,31 @@ function TreeTabClass:Save(xml)
 	end
 end
 
+-- @leb-regression-guard: tree-version-loadable-vs-offered
+-- Build the Version dropdown's entries: every OFFERED version, plus `activeVersion`
+-- itself when that version is retired-but-loadable. Without the second part a build
+-- saved on a retired version has no entry to select, SelByValue silently no-ops,
+-- and the dropdown keeps displaying the previously selected version -- reporting a
+-- 1.2 build as "1.4". Retired versions are never added for any OTHER spec, so they
+-- remain unreachable as a conversion target.
+-- Returns a fresh table: DropDownControl:SetList wipes the list it is handed.
+-- Test: spec/System/TestTreeVersionRetire_spec.lua
+--   "shows the retired version in the dropdown instead of mislabelling it"
+--   "does not list a retired version for a live spec"
+function TreeTabClass:BuildVersionList(activeVersion)
+	local list = { }
+	for _, ver in ipairs(offeredTreeVersionList) do
+		t_insert(list, treeVersions[ver].display)
+	end
+	if activeVersion then
+		local base = activeVersion:gsub("_ruthless$", "")
+		if treeVersions[base] and not isValueInTable(offeredTreeVersionList, base) then
+			t_insert(list, 1, treeVersions[base].display)
+		end
+	end
+	return list
+end
+
 function TreeTabClass:SetActiveSpec(specId)
 	local prevSpec = self.build.spec
 	self.activeSpec = m_min(specId, #self.specList)
@@ -1067,6 +1186,10 @@ function TreeTabClass:SetActiveSpec(specId)
 	self.build.itemsTab.controls.specSelect.selIndex = specId
 	-- Update Version dropdown to active spec's
 	if self.controls.versionSelect then
+		-- Refresh entries first: the active spec may sit on a retired version, which
+		-- is only listed while it is the active one (see BuildVersionList).
+		self.treeVersions = self:BuildVersionList(curSpec.treeVersion)
+		self.controls.versionSelect:SetList(self.treeVersions)
 		self.controls.versionSelect:SelByValue(curSpec.treeVersion:gsub("%_", "."):gsub(".ruthless", " (ruthless)"))
 	end
 end
@@ -1076,6 +1199,22 @@ function TreeTabClass:SetCompareSpec(specId)
 	local curSpec = self.specList[self.activeCompareSpec]
 
 	self.compareSpec = curSpec
+end
+
+-- Switch to the spec whose title matches `name` (case-insensitive, trimmed).
+-- Returns true on success, false if no match was found.
+function TreeTabClass:SetActiveSpecByName(name)
+	if not name then return false end
+	local needle = name:gsub("^%s+", ""):gsub("%s+$", ""):lower()
+	for index, spec in ipairs(self.specList) do
+		local title = (spec.title or "Default"):gsub("^%s+", ""):gsub("%s+$", ""):lower()
+		if title == needle then
+			self:SetActiveSpec(index)
+			self.build.modFlag = true
+			return true
+		end
+	end
+	return false
 end
 
 function TreeTabClass:ConvertToVersion(version, remove, success, ignoreRuthlessCheck)
@@ -1218,7 +1357,16 @@ function TreeTabClass:OpenImportPopup()
 		if major and minor then
 			--need leading 0 here
 			local newTreeVersionNum = tonumber(string.format("%d.%02d", major, minor))
-			if newTreeVersionNum >= treeVersions[defaultTreeVersion].num and newTreeVersionNum <= treeVersions[latestTreeVersion].num then
+			-- @leb-regression-guard: tree-version-loadable-vs-offered
+			-- Lower bound is the oldest OFFERED version, not the oldest loadable one.
+			-- This popup creates a NEW spec from pasted text, so it is a place the
+			-- user picks a version and must not reach a retired one. `[1]` is
+			-- legitimately positional: offeredTreeVersionList is ordered oldest-first.
+			-- Test: spec/System/TestTreeVersionRetire_spec.lua
+			--   "offers only versions that are also loadable"
+			--   "does not offer the retired versions"
+			local oldestOffered = treeVersions[offeredTreeVersionList[1]].num
+			if newTreeVersionNum >= oldestOffered and newTreeVersionNum <= treeVersions[latestTreeVersion].num then
 				-- no leading 0 here
 				return string.format("%s_%s", major, minor) .. (isRuthless and "_ruthless" or "")
 			else

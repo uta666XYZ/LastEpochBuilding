@@ -41,7 +41,6 @@
     * **ItemsTab.lua**
     * **LabelControl.lua**
     * **ListControl.lua**
-    * **MinionListControl.lua**
     * **ModDB.lua**
     * **ModList.lua**
     * **ModStore.lua**
@@ -80,7 +79,7 @@
         top: "back", "save", "save as", skill points, level, class, ascendancy
         left: the buttons for the different tabs, bandits, pantheon, main skill, stat overview.
         Loads build, initialises all tab components, loads corresponding sections from the build file, builds calculation tab output.
-        Contains functions to load/save build and input handling, popups for build version migration, saving, spectre library.
+        Contains functions to load/save build and input handling, popups for build version migration and saving.
         Contains functions to add totem/minion stats to the sidebar, refreshing and building the statlist.
         Contains functions for attribute requirements in tooltips and comparison of tooltips.
         Contains additional file loading/saving logic.

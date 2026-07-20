@@ -69,7 +69,7 @@ function ButtonClass:Draw(viewPort, noTooltip)
 		SetDrawColor(0, 0, 0)
 	end
 	DrawImage(nil, x + 1, y + 1, width - 2, height - 2)
-	if self.image then
+	if self.image and self.image:IsValid() then
 		if enabled then
 			SetDrawColor(1, 1, 1)
 		else

@@ -83,9 +83,115 @@ for _, curInfluenceInfo in ipairs(influenceInfo) do
 	influenceItemMap[curInfluenceInfo.display.." Item"] = curInfluenceInfo.key
 end
 
+-- @leb-regression-guard:unique-inherent-not-crafted
+-- `uniqueInherent` marks a mod that comes from the unique/set definition itself
+-- (uniques_*.json `mods[]`), as opposed to an affix rolled onto the item or a mod the
+-- user crafted. It exists because the unique importers used to tag those lines
+-- `{crafted}` (two `TODO: avoid using crafted` comments marked the debt), which was
+-- both semantically wrong and visible: LEB painted unique mods in CRAFTED pale blue
+-- while in-game they render white (LE's TooltipContentBuilder.GetUniqueModifierInfoFromMod
+-- sets no ModifierColor, so the line takes the default colour).
+--
+-- The flag is load-bearing beyond colour — every former `crafted` reader that meant
+-- "unique-inherent" must test BOTH, or behaviour changes silently. In particular
+-- ItemClass:BuildAndParseRaw's isLegendaryAffix gate feeds Permanence's "increased
+-- Effect of Skill Level modifiers on Legendary Affixes": if unique mods stopped being
+-- excluded there, they would be scaled as legendary affixes and DPS would move.
+-- Readers: Craft's savedMods set, the implicit-vs-explicit split, isLegendaryAffix.
+-- Spec: spec/System/TestUniqueInherentNotCrafted_spec.lua
 local lineFlags = {
 	["crafted"] = true, ["custom"] = true, ["enchant"] = true, ["implicit"] = true,
+	["uniqueInherent"] = true,
 }
+
+-- @leb-regression-guard: pattern-a-affix-level-req
+-- Mirrors game function ItemData::CalculateLevelRequirementAfterShard
+-- (decoded from datamined game source). For each contributing
+-- affix add an inner-cost based on the affix tier (0-indexed: T1=0..T7=6);
+-- the highest contributing tier additionally adds an outer-cost. Final
+-- value is clamped to [1, 90] and the caller takes max(base_req, ...).
+--
+-- "Contributing" exactly mirrors ItemAffix::CanContributeToLevelRequirement
+-- (datamined offset): true iff `specialAffixType == 0 AND sealedAffixType == 0`.
+-- In LEB terms: the affix entry has no `kind` tag (sealed/primordial/
+-- corrupted all set kind) AND the resolved mod's `specialAffixType` is 0
+-- (excludes Reforged set affixes, idol enchant/weaver, sat==6 corruption-
+-- only affixes etc.).
+--
+-- Used by both ParseRaw and Craft to keep req.level in sync with the
+-- in-game tooltip on items whose affix tiers push their req above the
+-- base item's req.level (e.g. crafted exalted shows Lv77 / Lv95).
+-- Test: spec/System/TestItemParse_spec.lua "Pattern A: affix-tier ..."
+local AFFIX_REQ_INNER = { [0]=1, [1]=3, [2]=6, [3]=10, [4]=14, [5]=15 }
+local AFFIX_REQ_OUTER = { [0]=2, [1]=6, [2]=12, [3]=20, [4]=28, [5]=30 }
+local function computeAffixDerivedLevelReq(item)
+	-- @leb-regression-guard:legendary-affix-derived-levelreq
+	-- Pattern A is calibrated for crafted exalted/rare items where affix
+	-- tiers push req.level above the base (e.g. T6/T7 prefix on a low-base
+	-- ring shows Lv77/Lv95 in-game). It does NOT apply to UNIQUE/LEGENDARY/
+	-- SET items: in-game these display req.level from the unique definition
+	-- (or base item) regardless of which affix tiers their slots happen to
+	-- carry. In particular, "unique + corrupted affix" stays a UNIQUE (per
+	-- user clarification 2026-05-09 — corrupted affix does not promote
+	-- rarity), so the corrupted T7 minion-damage affix on Font of the
+	-- Erased must NOT lift the ring's req.level above its base/unique value.
+	-- Establishing reference: see git log
+	--   (corrupted, T7 minion damage). Pre-fix LEB computed req.level=79;
+	--   in-game tooltip shows Requires Level: 15. Without this gate, both
+	--   rings were filtered out by CalcSetup LevelReq filter (L888-898),
+	--   removing +22% Phys Res and producing PhysRes Δ=-22 vs LETools.
+	if item.rarity == "UNIQUE" or item.rarity == "LEGENDARY" or item.rarity == "SET" then
+		return nil
+	end
+	-- @leb-regression-guard: idol-family-no-affix-derived-levelreq
+	-- The idol system (Idol Altar + idol bases) is NOT level-gated by affix
+	-- tiers in-game: an idol/altar with high-tier affixes stays usable from
+	-- the moment it can be socketed, displaying its base req.level (0 for most
+	-- idol/altar bases) regardless of which affix tiers it carries. Pattern A
+	-- (CalculateLevelRequirementAfterShard) is calibrated for equippable gear
+	-- (rings/armour/weapons), not the idol family. Without this gate an EXALTED
+	-- altar with T6/T3/T2 affixes computes req.level=44, and the CalcSetup
+	-- LevelReq filter then drops the whole altar on any sub-44 character —
+	-- removing its "+N <stat> per Idol in a Refracted Slot" / "per Equipped
+	-- Omen Idol" affixes and the +N Maximum Omen Idols capacity.
+	-- Ground truth: ImPalmBeachPete lv36 Bladedancer — Prodigious Lunar Altar
+	--   (EXALTED, base req 0, affix-derived 44). In-game the altar is active at
+	--   lv36 (Mana includes its +3/refracted x2 = +6, and 2 Omen Idols are
+	--   equipped, requiring the altar's +3 Maximum Omen Idols). Pre-fix LEB
+	--   computed req.level=44, filtered the altar, and showed Mana 177 vs
+	--   in-game 183. See "ImPalmBeachPete lv36 Bladedancer in-game stats" note.
+	-- Spec: spec/System/TestItemParse_spec.lua "Idol Altar: affix tiers do not
+	--   inflate req.level". See REGRESSION_GUARDS.md
+	--   "idol-family-no-affix-derived-levelreq".
+	if item.base and item.base.type
+		and (item.base.type == "Idol Altar" or item.base.type:sub(-5) == " Idol") then
+		return nil
+	end
+	local sumInner, maxT, hasContrib = 0, -1, false
+	local affixesTable = item.affixes
+	for _, list in ipairs({ item.prefixes or {}, item.suffixes or {} }) do
+		for _, affix in ipairs(list) do
+			if affix and affix.modId and affix.modId ~= "None" and not affix.kind then
+				local mod = affixesTable and affixesTable[affix.modId]
+				local sat = (mod and mod.specialAffixType) or 0
+				if sat == 0 then
+					local t = tonumber(affix.modId:match("_(%d+)$"))
+					if t then
+						hasContrib = true
+						sumInner = sumInner + (AFFIX_REQ_INNER[t] or 16)
+						if t > maxT then maxT = t end
+					end
+				end
+			end
+		end
+	end
+	if not hasContrib then return nil end
+	local outer = (maxT >= 0) and (AFFIX_REQ_OUTER[maxT] or 32) or 0
+	local fVar = m_floor(-10 + sumInner + outer)
+	if fVar > 90 then fVar = 90 end
+	if fVar < 1 then fVar = 1 end
+	return fVar
+end
 
 -- Special function to store unique instances of modifier on specific item slots
 -- that require special handling for ItemConditions. Only called if line #224 is
@@ -441,20 +547,26 @@ function ItemClass:ParseRaw(raw, rarity, highQuality)
 					self.crafted = true
 				elseif specName == "Implicit" then
 					self.implicit = true
-				elseif specName == "Prefix" then
-					local range, affix = specVal:match("{range:([%d.]+)}(.+)")
-					range = range or ((affix or specVal) ~= "None" and main.defaultItemAffixQuality)
-					t_insert(self.prefixes, {
-						modId = affix or specVal,
+				elseif specName == "Prefix" or specName == "Suffix" then
+					-- @leb-regression-guard: affix-kind-roundtrip (read side)
+					-- Mirror of BuildRaw's affixPrefix. Strip optional {kind:...}
+					-- BEFORE {range:...} and forward to entry.kind so Craft can
+					-- route into sealed/primordial/corrupted buckets.
+					-- Test: TestItemParse_spec "Affix kind tag round-trips...".
+					local kind, rest = specVal:match("^{kind:([%a]+)}(.+)$")
+					if not kind then rest = specVal end
+					local range, affix = rest:match("{range:([%d.]+)}(.+)")
+					range = range or ((affix or rest) ~= "None" and main.defaultItemAffixQuality)
+					local entry = {
+						modId = affix or rest,
 						range = tonumber(range),
-					})
-				elseif specName == "Suffix" then
-					local range, affix = specVal:match("{range:([%d.]+)}(.+)")
-					range = range or ((affix or specVal) ~= "None" and main.defaultItemAffixQuality)
-					t_insert(self.suffixes, {
-						modId = affix or specVal,
-						range = tonumber(range),
-					})
+						kind = kind,
+					}
+					if specName == "Prefix" then
+						t_insert(self.prefixes, entry)
+					else
+						t_insert(self.suffixes, entry)
+					end
 				elseif specName == "Implicits" then
 					implicitLines = specToNumber(specVal) or 0
 					gameModeStage = "EXPLICIT"
@@ -497,6 +609,18 @@ function ItemClass:ParseRaw(raw, rarity, highQuality)
 						modLine.range = tonumber(val)
 					elseif k == "scalar" then
 						modLine.valueScalar = tonumber(val)
+					elseif k == "postScalar" then
+						-- @leb-regression-guard: two-phase-floor-post-round-scalar
+						-- Round-trip the altar refracted-slot boost through raw
+						-- text so Craft → writeModLine → ParseRaw preserves it.
+						-- Without this, the boost is lost between Craft and the
+						-- final applyRange call, and the boosted display value
+						-- silently falls back to the pre-boost rolled integer.
+						modLine.postRoundScalar = tonumber(val)
+					elseif k == "postFloor" then
+						-- @leb-regression-guard: idol-altar-boost-subtype-rounding
+						-- Round-trip the IdolWeaver subtype rounding tag.
+						modLine.postRoundFloor = (val == "1" or val == "true")
 					elseif k == "displayScalar" then
 						modLine.displayValueScalar = tonumber(val)
 					elseif k == "rounding" then
@@ -578,14 +702,62 @@ function ItemClass:ParseRaw(raw, rarity, highQuality)
 					foundImplicit = true
 					gameModeStage = "IMPLICIT"
 				end
-				modLine.implicit = modLine.implicit or (not modLine.crafted and #self.implicitModLines < implicitLines)
+				-- @leb-regression-guard:unique-inherent-not-crafted
+				-- uniqueInherent joins crafted here: a unique's own mods must never be
+				-- silently promoted into the implicit slots just because the base has
+				-- unfilled implicit lines.
+				modLine.implicit = modLine.implicit or (not modLine.crafted and not modLine.uniqueInherent and #self.implicitModLines < implicitLines)
 				modLine.range = modLine.range or main.defaultItemAffixQuality
-				local rangedLine = itemLib.applyRange(line, modLine.range, modLine.valueScalar, modLine.rounding)
+
+				-- @leb-regression-guard: broken-negative-inc-implicit-text
+				-- LE datamining emits some negative-INC implicits as a literal raw
+				-- string like "+-0.6 Armor" (Deadstar Amulet implicit[3]:
+				-- property=10 type=1 value=-0.6 maxValue=-0.42). The bases JSON
+				-- stores the parametrized form "{rounding:Integer}(42-60)% reduced
+				-- Armor", but old saved XML build snapshots cache the broken
+				-- literal text (with a separate <ModRange/> for the roll). On
+				-- reload, that literal text bypasses applyRange (no "(N-M)" tpl)
+				-- and parses as a flat BASE -0.6 Armor — effectively dropping the
+				-- intended ~-50% INC. Substitute the base implicit template here so
+				-- applyRange + ModParser see the percent-reduced form. Affects:
+				-- Deadstar Amulet, Prophetic Homonculus. See spec
+				-- TestBrokenNegativeIncImplicit_spec.lua.
+				if modLine.implicit and self.base and self.base.implicits then
+					local _, _, brokenStat = line:find("^%+%-[%d%.]+%s+(.+)$")
+					if brokenStat then
+						for _, baseImplLine in ipairs(self.base.implicits) do
+							local stripped = baseImplLine:gsub("{[%a]*:?[^}]*}", "")
+							if stripped:match("%(%d+%-%d+%)%%%s+reduced%s+" .. brokenStat:gsub("(%W)", "%%%1") .. "$") then
+								line = baseImplLine
+								break
+							end
+						end
+					end
+				end
+
+				local rangedLine = itemLib.applyRange(line, modLine.range, modLine.valueScalar, modLine.rounding, modLine.postRoundScalar, modLine.postRoundFloor)
+
+				-- Tooltip-glue split: LETools occasionally exports two adjacent legendary-slammed
+				-- prefixes concatenated with the first prefix's tooltip text, e.g.
+				--   "+18% Reduces all physical damage you take. Capped at 75%. Void Resistance"
+				-- which should be parsed as two mods: "+18% Physical Resistance" + "+18% Void Resistance".
+				local glueSecondLine
+				do
+					local gVal, gE1, gE2 = rangedLine:match("^([+%-]?%d+)%% Reduces all (%a+) damage you take%. Capped at 75%%%. (%a+) Resistance$")
+					if gVal and gE1 and gE2 then
+						local cap = function(s) return s:sub(1,1):upper()..s:sub(2):lower() end
+						rangedLine = string.format("+%d%% %s Resistance", tonumber(gVal), cap(gE1))
+						line = rangedLine
+						glueSecondLine = string.format("+%d%% %s Resistance", tonumber(gVal), cap(gE2))
+					end
+				end
+
 				local modList, extra = modLib.parseMod(rangedLine)
 
 				local modLines
 
-				if modLine.implicit or (not modLine.crafted and #self.implicitModLines < implicitLines) then
+				-- @leb-regression-guard:unique-inherent-not-crafted (mirror of the split above)
+				if modLine.implicit or (not modLine.crafted and not modLine.uniqueInherent and #self.implicitModLines < implicitLines) then
 					modLines = self.implicitModLines
 				else
 					modLines = self.explicitModLines
@@ -599,6 +771,25 @@ function ItemClass:ParseRaw(raw, rarity, highQuality)
 						modLine.notSupported = true
 					end
 					t_insert(modLines, modLine)
+					if glueSecondLine then
+						local modList2, extra2 = modLib.parseMod(glueSecondLine)
+						if modList2 then
+							local modLine2 = { modTags = {} }
+							for k, v in pairs(modLine) do
+								if k ~= "modList" and k ~= "extra" and k ~= "line" and k ~= "modTags" then
+									modLine2[k] = v
+								end
+							end
+							for _, t in ipairs(modLine.modTags) do t_insert(modLine2.modTags, t) end
+							modLine2.line = glueSecondLine
+							modLine2.modList = modList2
+							modLine2.extra = extra2
+							if modList2.notSupported then
+								modLine2.notSupported = true
+							end
+							t_insert(modLines, modLine2)
+						end
+					end
 					if mode == "GAME" then
 						if gameModeStage == "FINDIMPLICIT" then
 							gameModeStage = "IMPLICIT"
@@ -631,6 +822,50 @@ function ItemClass:ParseRaw(raw, rarity, highQuality)
 	end
 	if self.baseName and self.title then
 		self.name = self.title
+	end
+	-- @leb-regression-guard: idol-corrupted-affix-name-skip (load side)
+	-- Idol / Idol Altar / Refracted item names must be built from the base
+	-- plus NORMAL prefix/suffix name words only. Corruption-exclusive
+	-- affixes (specialAffixType == 6) and Class-Specific Idol enchants
+	-- (specialAffixType == 4) carry a stat LABEL in their `affix` field, not
+	-- a name word, and never rename the item in-game. Older imports (see the
+	-- twin guard in ImportTab.lua) baked the label into the stored name, e.g.
+	-- "Maximum Idols Equipped Spire Altar of Eos" instead of "Spire Altar of
+	-- Eos". Rebuild the display name from base + normal affixes on load so
+	-- already-saved builds heal without a re-import. Twin guards: ImportTab.lua
+	-- (import side) and Item.lua Craft() (fresh craft).
+	if self.base and self.affixes and self.baseName
+	   and self.rarity ~= "UNIQUE" and self.rarity ~= "LEGENDARY" and self.rarity ~= "SET"
+	   and (self.base.type == "Idol Altar" or self.base.type:find(" Idol$")) then
+		local forename, surname = "", ""
+		for _, list in ipairs({ self.prefixes or {}, self.suffixes or {} }) do
+			for _, affix in ipairs(list) do
+				if affix and affix.modId and affix.modId ~= "None"
+				   and affix.kind ~= "corrupted" then
+					local mod = self.affixes[affix.modId]
+					-- Corruption/enchant classification is authoritative in the
+					-- master ModItem pool (data.itemMods.Item): the idol pool
+					-- (ModIdol) can carry a corruption-exclusive affix like 1063
+					-- in a non-corrupted section with a stat-label `affix` and no
+					-- specialAffixType==6, so classify via ModItem, falling back
+					-- to the item's own pool when the id is idol-only.
+					local cls = (data.itemMods.Item and data.itemMods.Item[affix.modId]) or mod
+					local special = cls and cls.specialAffixType
+					if mod and mod.affix and mod.affix ~= ""
+					   and special ~= 6 and special ~= 4 then
+						if mod.affix:sub(1, 3) == "of " then
+							if surname == "" then surname = mod.affix end
+						elseif forename == "" then
+							forename = mod.affix
+						end
+					end
+				end
+			end
+		end
+		local rebuilt = (forename ~= "" and forename .. " " or "")
+			.. self.baseName .. (surname ~= "" and " " .. surname or "")
+		self.name = rebuilt
+		self.title = rebuilt
 	end
 	if self.base and not self.requirements.level then
 		if importedLevelReq and #self.sockets == 0 then
@@ -702,6 +937,14 @@ function ItemClass:ParseRaw(raw, rarity, highQuality)
 							name  = e.set.name,
 							bonus = e.set.bonus,
 						}
+						-- Set items override the base type's level requirement
+						-- (e.g. Ruby Fang Aegis = lvl 55 even though Ironglass
+						-- Shield base = 72). Use set entry's req.level when
+						-- non-zero; req.level=0 (native sets like "The Last
+						-- Bear's Scorn") means use the base type's req.level.
+						if e.req and e.req.level and e.req.level > 0 then
+							self.requirements.level = e.req.level
+						end
 						break
 					end
 				end
@@ -725,9 +968,92 @@ function ItemClass:ParseRaw(raw, rarity, highQuality)
 						name  = e.set.name,
 						bonus = e.set.bonus,
 					}
+					if e.req and e.req.level and e.req.level > 0 then
+						self.requirements.level = e.req.level
+					end
 					break
 				end
 			end
+		end
+	end
+	-- @leb-regression-guard: set-item-req-level-override-with-native-fallback
+	-- For items already saved as SET in raw text (XML stores Rarity: SET +
+	-- LevelReq from base type), override LevelReq with the set entry's req.level
+	-- when available. Set items use a different (typically lower) level
+	-- requirement than their base type — e.g. Ruby Fang Aegis = lvl 55 even
+	-- though its Ironglass Shield base = lvl 72. Without this override the
+	-- LevelReq filter in CalcSetup excludes equipped set items the character
+	-- can actually use, dropping their stats (Block Chance, etc.).
+	--
+	-- Native sets (12 entries in set_1_4.json with native=true) store
+	-- req.level=0 meaning "inherit base type's req.level". Without the native
+	-- fallback below, a stale stored LevelReq (e.g. LETools applies affix-tier
+	-- inflation to SET items, baking LevelReq=68 onto a Silver Grail base
+	-- whose real req=15 — <private build> lv62 Warlock Relic anchor) survives and
+	-- the CalcSetup LevelReq filter excludes the item, dropping all 4 of its
+	-- affix mods (Mana +94, Fire/Necr/Void Res +16 each). SET items also skip
+	-- computeAffixDerivedLevelReq (L126), so affix tiers never inflate them
+	-- inside LEB — game-faithful behavior per the Font of the Erased anchor.
+	if self.rarity == "SET" and self.title then
+		local setData = loadItemSetData()
+		if setData then
+			for _, e in pairs(setData) do
+				if type(e) == "table" and e.set
+				   and (e.name == self.title
+				        or (self.title:sub(-9) == " Reforged" and e.name == self.title:sub(1, -10))) then
+					if e.req and e.req.level and e.req.level > 0 then
+						self.requirements.level = e.req.level
+					elseif self.base and self.base.req and self.base.req.level then
+						-- Native set with req.level=0 inherits base req. Override
+						-- any stale stored LevelReq so the filter in CalcSetup
+						-- reflects in-game truth.
+						self.requirements.level = self.base.req.level
+					end
+					if not self.setInfo then
+						self.setInfo = {
+							setId = e.set.setId,
+							name  = e.set.name,
+							bonus = e.set.bonus,
+						}
+					end
+					break
+				end
+			end
+		end
+	end
+	-- @leb-regression-guard: unique-req-level-override
+	-- Override base req.level with the unique entry's req.level ONLY when
+	-- the game's `overrideLevelRequirement` flag is true. Uniques can specify
+	-- a lower required level than their base type — e.g. Vaion's Chariot
+	-- (lvl 50, override=True) on Solarum Greaves base (lvl 67). When the
+	-- flag is false (e.g. Snowdrift on Outcast Boots base lvl 23, Horn of
+	-- the Bone Wisp on Ivory Wand base lvl 31), the unique reuses the base
+	-- req — matching in-game tooltip "Requires: Level 23 / 31".
+	-- Without this guard the LevelReq filter in CalcSetup
+	-- (CalcSetup.lua:858-865) wrongly excludes equipped uniques whose base
+	-- type req exceeds character level, dropping the entire item's stats
+	-- from defense / DPS calcs.
+	-- Mirrors the SET item override above; the matching override in
+	-- Item:Craft() at the equivalent site keeps the value across recrafts.
+	-- Test: spec/System/TestItemParse_spec.lua
+	--   "Unique req.level overrides base req.level (UNIQUE/LEGENDARY)"
+	--   "Unique with overrideLevelRequirement=false uses base req.level"
+	-- Establishing reference: see git log
+	if (self.rarity == "UNIQUE" or self.rarity == "LEGENDARY") and self.title and data.uniques then
+		for _, u in pairs(data.uniques) do
+			if type(u) == "table" and u.name == self.title
+			   and u.overrideLevelRequirement and u.req and u.req.level then
+				self.requirements.level = u.req.level
+				break
+			end
+		end
+	end
+	-- Pattern A: raise req.level when affix tiers push the requirement above
+	-- the base/unique/set req. See computeAffixDerivedLevelReq above.
+	do
+		local affixReq = computeAffixDerivedLevelReq(self)
+		if affixReq and (self.requirements.level or 0) < affixReq then
+			self.requirements.level = affixReq
 		end
 	end
 	-- Auto-derive corrupted from affixes BEFORE the recraft path: any active
@@ -790,7 +1116,7 @@ function ItemClass:ParseRaw(raw, rarity, highQuality)
 					-- Standard multi-stat affixes (specialAffixType ~= 6, e.g. "of the
 					-- Giant" 36_* giving +Health AND %Health, or 14_* giving Freeze
 					-- Rate AND Cold Res) have Line 2 as a non-corruption-gated stat.
-					-- Older XMLs saved under the over-broad cf2011d21 gate dropped
+					-- Older XMLs saved under the over-broad <see git log> gate dropped
 					-- Line 2 entirely — re-run Craft to pick up the relaxed gate.
 					if mod[2] and (mod.specialAffixType or 0) ~= 6 then
 						needsRecraft = true
@@ -911,11 +1237,26 @@ function ItemClass:BuildRaw()
 	end
 	if self.crafted then
 		t_insert(rawLines, "Crafted: true")
+		-- @leb-regression-guard: affix-kind-roundtrip (write side)
+		-- Emitting {kind:...} ahead of {range:...} is the contract relied on by
+		-- ParseRaw and TestItemParse_spec "Affix kind tag round-trips...". Do
+		-- NOT reorder or drop the kind tag without updating both. Establishing
+		-- commit: <see git log>.
+		local function affixPrefix(affix)
+			local s = ""
+			if affix.kind and affix.kind ~= "normal" then
+				s = s .. "{kind:" .. affix.kind .. "}"
+			end
+			if affix.range then
+				s = s .. "{range:" .. round(affix.range,3) .. "}"
+			end
+			return s
+		end
 		for i, affix in ipairs(self.prefixes or { }) do
-			t_insert(rawLines, "Prefix: " .. (affix.range and ("{range:" .. round(affix.range,3) .. "}") or "") .. affix.modId)
+			t_insert(rawLines, "Prefix: " .. affixPrefix(affix) .. affix.modId)
 		end
 		for i, affix in ipairs(self.suffixes or { }) do
-			t_insert(rawLines, "Suffix: " .. (affix.range and ("{range:" .. round(affix.range,3) .. "}") or "") .. affix.modId)
+			t_insert(rawLines, "Suffix: " .. affixPrefix(affix) .. affix.modId)
 		end
 	end
 	if self.itemLevel then
@@ -932,11 +1273,24 @@ function ItemClass:BuildRaw()
 		if modLine.valueScalar and modLine.valueScalar ~= 1 then
 			line = "{scalar:" .. round(modLine.valueScalar, 3) .. "}" .. line
 		end
+		if modLine.postRoundScalar and modLine.postRoundScalar ~= 1 then
+			-- @leb-regression-guard: two-phase-floor-post-round-scalar
+			-- Persist altar refracted-slot boost across Craft → ParseRaw.
+			line = "{postScalar:" .. round(modLine.postRoundScalar, 4) .. "}" .. line
+		end
+		if modLine.postRoundFloor then
+			-- @leb-regression-guard: idol-altar-boost-subtype-rounding
+			-- Persist IdolWeaver subtype rounding tag across Craft → ParseRaw.
+			line = "{postFloor:1}" .. line
+		end
 		if modLine.displayValueScalar and modLine.displayValueScalar ~= modLine.valueScalar then
 			line = "{displayScalar:" .. round(modLine.displayValueScalar, 3) .. "}" .. line
 		end
 		if modLine.range ~= nil and itemLib.hasRange(line) then
 			line = "{range:" .. round(modLine.range, 3) .. "}" .. line
+		end
+		if modLine.uniqueInherent then
+			line = "{uniqueInherent}" .. line
 		end
 		if modLine.crafted then
 			line = "{crafted}" .. line
@@ -1035,10 +1389,13 @@ end
 
 -- Rebuild explicit modifiers using the item's affixes
 function ItemClass:Craft()
-	-- Save off any crafted or custom mods so they can be re-added at the end
+	-- Save off any unique-inherent, crafted or custom mods so they can be re-added at
+	-- the end (Craft wipes explicitModLines and rebuilds it from the affix rolls only).
+	-- @leb-regression-guard:unique-inherent-not-crafted — uniqueInherent must be in this
+	-- set, or a unique's own mods are destroyed on every re-craft.
 	local savedMods = {}
 	for _, mod in ipairs(self.explicitModLines) do
-		if mod.crafted or mod.custom then
+		if mod.crafted or mod.custom or mod.uniqueInherent then
 			t_insert(savedMods, mod)
 		end
 	end
@@ -1047,8 +1404,64 @@ function ItemClass:Craft()
 	self.namePrefix = ""
 	self.nameSuffix = ""
 	self.requirements.level = self.base.req.level
+	-- Override base req.level with set entry's req.level for SET items
+	-- (e.g. Ruby Fang Aegis uses lvl 55 even though Ironglass Shield base = 72).
+	if self.rarity == "SET" and self.setInfo and self.setInfo.setId then
+		local setData = loadItemSetData()
+		if setData then
+			for _, e in pairs(setData) do
+				if type(e) == "table" and e.set and e.set.setId == self.setInfo.setId
+				   and e.req and e.req.level and e.req.level > 0 then
+					self.requirements.level = e.req.level
+					break
+				end
+			end
+		end
+	end
+	-- @leb-regression-guard: unique-req-level-override
+	-- Same override as ParseRaw site: UNIQUE/LEGENDARY uniques can specify a
+	-- lower req.level than their base type (Vaion's Chariot 50 vs Solarum
+	-- Greaves 67) ONLY when overrideLevelRequirement=true. Without this,
+	-- Craft() — invoked on recraft / XML round-trip with crafted slot mods —
+	-- resets requirements.level back to base, undoing the ParseRaw override
+	-- and re-triggering the LevelReq filter exclusion.
+	if (self.rarity == "UNIQUE" or self.rarity == "LEGENDARY") and self.title and data.uniques then
+		for _, u in pairs(data.uniques) do
+			if type(u) == "table" and u.name == self.title
+			   and u.overrideLevelRequirement and u.req and u.req.level then
+				self.requirements.level = u.req.level
+				break
+			end
+		end
+	end
+	-- Pattern A: raise req.level when affix tiers push the requirement above
+	-- the base/unique/set req. Mirrors the ParseRaw site so recraft / XML
+	-- round-trip keeps the affix-derived value.
+	do
+		local affixReq = computeAffixDerivedLevelReq(self)
+		if affixReq and (self.requirements.level or 0) < affixReq then
+			self.requirements.level = affixReq
+		end
+	end
+	-- @leb-regression-guard: affix-display-order
+	--   STOP. Before changing the bucket assembly below, run:
+	--     busted --lua=luajit --tags=itemParse spec/System/TestItemParse_spec.lua
+	--   "Craft places sat==6 corrupted affix at the bottom" and the kind round-trip
+	--   spec will fail if any of these invariants regress. Establishing reference: see git log
+	--   <see git log> ("canonical affix display order via per-kind buckets in Craft").
+	--
+	-- Modifier ordering follows LE in-game tooltip / LETools layout:
+	--   gear   : implicits → prefix1, prefix2 → suffix1, suffix2 → sealed → primordial → corrupted
+	--   unique : implicits → prefix1, prefix2 → suffix1, suffix2 → unique mods → corrupted (sealed/primordial fall here too)
+	--   idol   : prefix1, prefix2 → suffix1, suffix2 → enchant1, enchant2 → corrupted
+	-- Affix `kind` ("normal"/"sealed"/"primordial"/"corrupted") is preserved
+	-- through import → XML round-trip via `Prefix: {kind:...}<id>`. ModItem
+	-- `specialAffixType == 6` is the legacy marker for corruption-exclusive
+	-- affixes; `specialAffixType == 4` marks Class-Specific Idol enchants.
+	local prefixMods, suffixMods, enchantMods = {}, {}, {}
+	local sealedMods, primordialMods, corruptedMods = {}, {}, {}
 	local slotKey = itemLib.slotKeyForType(self.type)
-	for _, list in ipairs({self.prefixes,self.suffixes}) do
+	for listIdx, list in ipairs({self.prefixes,self.suffixes}) do
 		for i = 1, self.affixLimit / 2 do
 			local affix = list[i]
 			if not affix then
@@ -1057,19 +1470,56 @@ function ItemClass:Craft()
 			end
 			local mod = self.affixes[affix.modId]
 			if mod then
-				if mod.type == "Prefix" then
+				-- @leb-regression-guard: idol-corrupted-affix-name-skip
+				-- Only NORMAL prefix/suffix affixes contribute to the item's
+				-- display name. Corruption-exclusive affixes (specialAffixType==6,
+				-- whose `affix` field is a stat label like "Maximum Idols Equipped"
+				-- or "Bees per 10 Seconds") and Class-Specific Idol enchants
+				-- (specialAffixType==4, affix name "UNKNOWN") do NOT rename the item
+				-- in-game. Without this skip, idol / idol-altar / refracted names were
+				-- polluted with a leading stat label ("Maximum Idols Equipped Spire
+				-- Altar of Arctus" instead of "Spire Altar of Arctus"). Mirrors the
+				-- corrupted-bucket routing condition below.
+				local namesItem = mod.specialAffixType ~= 6
+					and mod.specialAffixType ~= 4
+					and affix.kind ~= "corrupted"
+				if mod.type == "Prefix" and namesItem then
 					self.namePrefix = mod.affix .. " "
-				elseif mod.type == "Suffix" then
+				elseif mod.type == "Suffix" and namesItem then
 					self.nameSuffix = " " .. mod.affix
 				end
 				local modLinesList = itemLib.modLinesForSlot(mod, slotKey)
+				-- @leb-regression-guard:slot-override-post-saem
 				-- slotOverrides store LETools display values already post-affixEffectModifier
 				-- (e.g. body_armor (15-18)% = default (10-12)% × 1.5 for Body Armor aem+0.5,
-				-- shield (6-11)% = default (5-9)% × 1.17 for Shield aem+0.17). When the
-				-- override is used, skip aem scaling in modScalar to avoid double-applying.
+				-- shield (6-11)% = default (5-9)% × 1.17 for Shield aem+0.17). They are
+				-- ALSO post-standardAffixEffectModifier (the per-affix sealed penalty);
+				-- verified 2026-05-12 on <private build> Sorcerer Unstable Core affix 1014_4
+				-- sealed Mana — body_armor override (46-50), sAEM=0.17. At roll byte 69
+				-- LE/LETools display 47 (=raw), confirming the override value is final.
+				-- When the override is used, skip ALL aem scaling in modScalar to avoid
+				-- double-applying. See REGRESSION_GUARDS.md "slot-override-post-saem".
+				--
+				-- @leb-regression-guard:bodyarmor-health-affix-banker-round
+				-- The baked body_armor slotOverride RANGE endpoints (post-aem ×1.5
+				-- for Body Armor affixEffectModifier=0.5, datamine equipmentItems.json
+				-- "Body Armor") MUST be BANKER-rounded (round-half-to-even), matching
+				-- LE's AscendingValueAfterPropertyRounding, NOT round-half-up. The
+				-- "of the Ox" Increased Health affix (ModItem_1_4.json 52_*) tier index 2
+				-- (tooltip "Tier 3") base (6-7)% ×1.5 = (9-10.5)%; banker(10.5)=10, so the
+				-- override is (9-10)%. It was wrongly baked as (9-11)% (round-half-up of
+				-- 10.5), which over-rolled byte values near the top of the range by +1:
+				-- DoNotReleaseThem lv69 Beastmaster "Primalist's Kolheim Armor of the
+				-- Turtle" (in-game tooltip Tier 3 "Range: 9% to 10%", value 9%) was read
+				-- as 10%, pushing INC Health 37%->38% and Health 1903->1917 (+14), with a
+				-- derived Endurance Threshold +2 (Health Gained As Endurance Threshold 20%).
+				-- Tier 0 (52_0) is a fixed roll (datamine min=max=3%): 3x1.5=4.5,
+				-- banker(4.5)=4, so the override is the single value "4%" (was
+				-- over-baked "5%" by half-up; datamine-confirmed 2026-06-12).
+				-- See REGRESSION_GUARDS.md "bodyarmor-health-affix-banker-round".
 				local usingSlotOverride = slotKey and mod.slotOverrides and mod.slotOverrides[slotKey] ~= nil
 				for lineIdx, line in ipairs(modLinesList) do
-					-- Line [2+] handling (2026-04-25 SCOPE FIX — see cf2011d21 for
+					-- Line [2+] handling (2026-04-25 SCOPE FIX — see <see git log> for
 					-- the original over-broad gate). Only sealed-corrupted affixes
 					-- (specialAffixType == 6) have Line 2 as a corruption-gated
 					-- extension (e.g. "Heretical Idol Limit" 1109_* adds
@@ -1088,16 +1538,54 @@ function ItemClass:Craft()
 							goto nextCraftLine
 						end
 					end
+					-- @leb-regression-guard: affix-effect-modifier-formula
+					-- LE applies the affix display multiplier as
+					--   (1 + base.affixEffectModifier) / (1 + mod.standardAffixEffectModifier)
+					-- per datamined game source AffixList.Affix.standardAffixEffectModifier tooltip
+					-- (datamined game source line 164779). The historical subtraction form
+					-- only coincides when standardAffixEffectModifier == 0 and diverges
+					-- for sealed-corrupted (specialAffixType=6) and Class-Specific Idol
+					-- enchants (specialAffixType=4). The +0.17 fudge below was a
+					-- band-aid for that subtraction error and is removed.
+					-- Test: spec/System/TestAffixEffectModifierFormula_spec.lua
 					local modScalar = 1 + self.base.affixEffectModifier
+					-- @leb-regression-guard:idol-affix-source-and-formula
+					-- @leb-regression-guard:affix-value-saem-uniform
+					-- sAEM (mod.standardAffixEffectModifier) is divided out UNIFORMLY for
+					-- every idol affix, exactly as the engine does. Per the datamined game source
+					-- (datamined game source affix_value_formula.md, formulas_verified.md S46) the
+					-- in-engine value is round( lerp(min,max,roll/255) * (1+aem)/(1+sAEM) )
+					-- with NO sealed/corrupted branch: the (1+sAEM) division is unconditional.
+					--
+					-- For this to be correct the ModIdol bake MUST hold the RAW stated roll
+					-- (pre-aem, pre-sAEM). Every corrupted/sealed idol affix is raw-baked
+					-- (ranges like "(2-5)%" = datamine 0.02-0.05, or single "1%"). The three
+					-- Apiarist corruption affixes 1070_0 (All Resistances), 1071_0 (Bees) and
+					-- 1072_0 (Elemental Bees) were historically baked PRE-DIVIDED
+					-- ("+5%" = round(0.8/0.17)) and are now re-baked to their raw stated value
+					-- ("+0.8%" / "+0.8") so this uniform division reproduces the engine.
+					-- Verified vs in-game (2026-05-12 trade screenshots) on 1070_0
+					-- (raw 0.8%, sAEM=-0.83):
+					--   Adorned (aem=-0.05): round(0.8*0.95/0.17) = +4%
+					--   Huge    (aem= 0   ): round(0.8*1.00/0.17) = +5%
+					--   Grand/Large (aem=-0.33): round(0.8*0.67/0.17) = +3%
+					--   Omen Idol (aem=-0.33; bypass below resets modScalar then /(1+sAEM)) = +5%
+					-- The earlier per-case skipSaem / skipSaemRawPath gates (which skipped this
+					-- division to protect the pre-divided bake) are removed: with a raw bake the
+					-- uniform division is correct on every path, import-agnostic -- including
+					-- offline-save (Deluyi Stout 1070_0 -> +2; SuXes Grand Primal Omen Idol
+					-- StunAvoidance -> 1061, not 1046). See REGRESSION_GUARDS.md
+					-- "idol-affix-source-and-formula" and "affix-value-saem-uniform".
 					if mod.standardAffixEffectModifier then
-						modScalar = modScalar - mod.standardAffixEffectModifier
+						modScalar = modScalar / (1 + mod.standardAffixEffectModifier)
 					end
 					if usingSlotOverride then
-						-- override values are already post-aem; don't re-scale
+						-- override values are already post-aem AND post-sAEM; don't re-scale.
+						-- DO NOT divide by (1+sAEM) here — the override
+						-- range already bakes in that penalty (verified affix 1014_4 sealed
+						-- Mana body_armor: raw byte 69 of (46-50) = 47 matches LE in-game).
+						-- See REGRESSION_GUARDS.md "slot-override-post-saem".
 						modScalar = 1
-						if mod.standardAffixEffectModifier then
-							modScalar = modScalar - mod.standardAffixEffectModifier
-						end
 					end
 					-- Omen Idol affixEffectModifier bypass (DO NOT REMOVE).
 					-- Omen Idol bases carry affixEffectModifier = -0.33, but
@@ -1129,8 +1617,8 @@ function ItemClass:Craft()
 					-- currently not authored anywhere — future hook), then
 					-- fall back to base name substring "Omen Idol".
 					--
-					-- History: originally added 2026-04-23 (e304138e49) as cs==0
-					-- only, removed 2026-04-24 (0a5e303e7) under mistaken-lost-
+					-- History: originally added 2026-04-23 (<see git log>) as cs==0
+					-- only, removed 2026-04-24 (<see git log>) under mistaken-lost-
 					-- rationale assumption, restored and widened 2026-04-25 after
 					-- in-game tooltip verification, then re-scoped to Omen-only
 					-- after idol suffix resist parity check.
@@ -1138,36 +1626,101 @@ function ItemClass:Craft()
 						or (self.baseName and self.baseName:find("Omen Idol", 1, true) ~= nil)
 					if self.base.affixEffectModifier and self.base.affixEffectModifier ~= 0 and isOmenIdol then
 						modScalar = 1
+						-- @leb-regression-guard:idol-affix-source-and-formula
+						-- @leb-regression-guard:affix-value-saem-uniform
+						-- Omen Idol bypass resets modScalar to 1 (Omen ModItem ranges are already
+						-- pre-aem), then divides out sAEM UNIFORMLY -- same engine formula as the
+						-- main path. With the raw ModIdol bake, corrupted-kind 1070_0 (raw 0.8%,
+						-- sAEM=-0.83) on a Large Arcane Omen Idol renders round(0.8 * 1/0.17) = +5%
+						-- (matches the 2026-05-12 trade evidence and the <private build> fixture).
+						-- Offline-save corrupted Omen affixes (SuXes Grand Primal Omen Idol
+						-- StunAvoidance 1061, raw-baked, affix.kind nil) take this same division.
 						if mod.standardAffixEffectModifier then
-							modScalar = modScalar - mod.standardAffixEffectModifier
+							modScalar = modScalar / (1 + mod.standardAffixEffectModifier)
 						end
 					end
--- Enchanted affix for Class-Specific Idols: specialAffixType=4 with
-					-- standardAffixEffectModifier=-0.33 rolls ~1.5x on neutral bases
-					-- (not 1.33x). +0.17 matches Maxroll parity on Solar Idol (affix 892).
-					if mod.specialAffixType == 4 and mod.standardAffixEffectModifier == -0.33
-					   and (not self.base.affixEffectModifier or self.base.affixEffectModifier == 0) then
-						modScalar = modScalar + 0.17
-					end
+					-- NOTE (2026-05-11): the historical +0.17 fudge for
+					-- specialAffixType=4 / standardAffixEffectModifier=-0.33 on
+					-- neutral bases ("rolls ~1.5x not 1.33x — Maxroll parity on
+					-- Solar Idol affix 892") was a band-aid for the subtraction
+					-- formula above. With the corrected division formula
+					-- (1+0)/(1+(-0.33)) = 1.493 ≈ 1.5x naturally, so the fudge
+					-- is no longer needed and has been removed.
+					-- See @leb-regression-guard: affix-effect-modifier-formula.
 					local displayScalar = modScalar
 					if affix.valueScalar then
 						modScalar = modScalar * affix.valueScalar
 					end
-					local modLine = { line = line, range = affix.range, valueScalar = modScalar, affixType = mod.type }
+					-- @leb-regression-guard:modline-tier-for-source-colour
+					-- `tier` is the 0-indexed affix tier (ModItem_1_4.json `tier`, mirrored
+					-- from the `_<n>` suffix of affix.modId — see the parse at Item.lua:161).
+					-- Carried onto the modLine so the tooltip can colour exalted affixes
+					-- without re-resolving the affix DB: LE's ItemAffix.get_IsExalted is
+					-- `affixTier + 1 > 5`, i.e. tier index >= 5 (display T6/T7). T5 is the
+					-- max CRAFTABLE tier; T7 is the max tier.
+					-- `specialAffixType` is carried for the same reason as `tier`: the tooltip
+					-- needs the affix's pool to colour it (3 = Reforged Set, 6 = corruption-
+					-- exclusive, etc.) without re-resolving the affix DB per rendered line.
+					local modLine = { line = line, range = affix.range, valueScalar = modScalar, affixType = mod.type, tier = mod.tier, specialAffixType = mod.specialAffixType }
 					if affix.valueScalar and affix.valueScalar ~= 1 then
 						modLine.displayValueScalar = displayScalar
 					end
-					t_insert(self.explicitModLines, modLine)
+					-- Propagate two-phase post-round scalar from the affix (set by
+					-- CalcSetup altar refracted-slot boost) so applyRange floors
+					-- after the rolled value is rounded.
+					if affix.postRoundScalar and affix.postRoundScalar ~= 1 then
+						modLine.postRoundScalar = affix.postRoundScalar
+					end
+					-- @leb-regression-guard: idol-altar-boost-subtype-rounding
+					-- IdolWeaver subtype uses floor rounding on the post-round
+					-- scalar, not round-half-up (set by CalcSetup).
+					if affix.postRoundFloor then
+						modLine.postRoundFloor = true
+					end
+					-- `kind` is LE's SealedAffixType (None/Regular/Primordial/FromCorruption
+					-- -> nil/"sealed"/"primordial"/"corrupted"; see the note at Item.lua:115).
+					-- It is an INDEPENDENT axis from `specialAffixType` (the affix pool) —
+					-- both are carried on the modLine and the tooltip reads them separately.
+					if affix.kind then
+						modLine.kind = affix.kind
+					end
+					-- Route into the right bucket by kind / specialAffixType.
+					-- specialAffixType==6 (corruption-exclusive) is treated as
+					-- corrupted regardless of kind, since LETools planner JSON
+					-- omits it from the corruptedAffix field on legacy data.
+					local bucket
+					if mod.specialAffixType == 6 or affix.kind == "corrupted" then
+						bucket = corruptedMods
+					elseif affix.kind == "sealed" then
+						bucket = sealedMods
+					elseif affix.kind == "primordial" then
+						bucket = primordialMods
+					elseif mod.specialAffixType == 4 then
+						bucket = enchantMods
+					elseif listIdx == 1 then
+						bucket = prefixMods
+					else
+						bucket = suffixMods
+					end
+					t_insert(bucket, modLine)
 					::nextCraftLine::
 				end
 			end
 		end
 	end
 
-	-- Restore the crafted and custom mods
+	-- Assemble explicitModLines in the canonical display order:
+	--   prefix → suffix → enchant → unique-inherent / user-crafted → sealed → primordial → corrupted
+	for _, m in ipairs(prefixMods) do t_insert(self.explicitModLines, m) end
+	for _, m in ipairs(suffixMods) do t_insert(self.explicitModLines, m) end
+	for _, m in ipairs(enchantMods) do t_insert(self.explicitModLines, m) end
+	-- Restore the saved unique-inherent / crafted / custom mods
 	for _, mod in ipairs(savedMods) do
 		t_insert(self.explicitModLines, mod)
 	end
+	for _, m in ipairs(sealedMods) do t_insert(self.explicitModLines, m) end
+	for _, m in ipairs(primordialMods) do t_insert(self.explicitModLines, m) end
+	for _, m in ipairs(corruptedMods) do t_insert(self.explicitModLines, m) end
 
 	self:BuildAndParseRaw()
 end
@@ -1414,7 +1967,48 @@ function ItemClass:BuildModList()
 			end
 		end
 	end
+	-- "+N% Chance to inflict Bleed on Minion Hit" parses correctly to a
+	-- MinionModifier{BleedChance@N, Hit} mod, but the LE-flavoured ModParser
+	-- generic chain leaves connector words ("on", "with", "for", "by",
+	-- "inflicted", trailing plural "s") in modLine.extra. The legacy gate
+	-- below dropped those mods entirely — silently breaking minion-bleed,
+	-- minion-poison, and "Phys Pen with Bleed" rolls. Treat extras that
+	-- contain ONLY recognised connector words as fully consumed.
+	local function isConnectorOnlyExtra(extra)
+		if not extra or extra == "" then return true end
+		local trimmed = extra:lower():gsub("^%s+", ""):gsub("%s+$", "")
+		if trimmed == "" then return true end
+		for word in trimmed:gmatch("%S+") do
+			if not (word == "on" or word == "with" or word == "for"
+				or word == "by" or word == "inflicted" or word == "s"
+				or word == "and" or word == "the" or word == "a") then
+				return false
+			end
+		end
+		return true
+	end
 	local function processModLine(modLine)
+		-- @leb-regression-guard:unique-inherent-not-crafted (legacy save migration)
+		-- Builds saved before the flag split carry the unique's own mods as {crafted}
+		-- (633 of the corpus build files at the time of writing). Reclassify them so
+		-- they render white like in-game instead of CRAFTED pale blue, without
+		-- requiring a re-import.
+		--
+		-- CALC-INERT BY CONSTRUCTION: every reader that used `not modLine.crafted` to
+		-- mean "not unique-inherent" now tests both flags (the implicit/explicit split,
+		-- isLegendaryAffix below, Craft's savedMods set), so flipping the flag cannot
+		-- move a number — only the tooltip colour. Snapshots must be unchanged.
+		--
+		-- The discriminator is safe because {crafted} only ever had two producers: the
+		-- three unique importers (unique-inherent mods, now emitting {uniqueInherent})
+		-- and enchant lines, which are forced implicit too (Item.lua ~627) and are
+		-- excluded here. Nothing in the UI sets crafted.
+		if modLine.crafted and not modLine.uniqueInherent
+			and not modLine.enchant and not modLine.implicit
+			and (self.rarity == "UNIQUE" or self.rarity == "SET" or self.rarity == "LEGENDARY") then
+			modLine.crafted = nil
+			modLine.uniqueInherent = true
+		end
 		if self:CheckModLineVariant(modLine) then
 			-- special section for variant over-ride of pre-modifier item parameters
 			if modLine.line:find("Requires Class") then
@@ -1424,15 +2018,21 @@ function ItemClass:BuildModList()
 			if modLine.range ~= nil and itemLib.hasRange(modLine.line) then
 				t_insert(self.rangeLineList, modLine)
 			end
-			if not modLine.extra then
+			if isConnectorOnlyExtra(modLine.extra) and modLine.modList then
 				-- "Legendary Affix" = sealed Prefix/Suffix on a Reforged Legendary
 				-- (i.e. NOT crafted and NOT implicit, and the host item rarity is
 				-- LEGENDARY). Permanence's "% increased Effect of Skill Level
 				-- modifiers on Legendary Affixes" multiplies these but not crafted
 				-- or implicit/unique-inherent mods.
+				-- @leb-regression-guard:unique-inherent-not-crafted
+				-- `not modLine.uniqueInherent` carries the exclusion that `not
+				-- modLine.crafted` used to provide on its own, back when the unique
+				-- importers tagged unique mods {crafted}. Dropping it would scale a
+				-- unique's own mods by Permanence and move DPS.
 				local isLegendaryAffix = self.rarity == "LEGENDARY"
 					and modLine.affixType
 					and not modLine.crafted
+					and not modLine.uniqueInherent
 					and not modLine.implicit
 				for _, mod in ipairs(modLine.modList) do
 					mod = modLib.setSource(mod, self.modSource)

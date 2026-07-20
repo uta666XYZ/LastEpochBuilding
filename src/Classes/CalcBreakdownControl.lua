@@ -382,13 +382,45 @@ function CalcBreakdownClass:AddModSection(sectionData, modList)
 			row.name = self:FormatModName(row.mod.name)
 		end
 		local sourceType = row.mod.source:match("[^:]+")
-		if not modList and not sectionData.modSource then
-			-- No modifier source specified, add the source type to the table
-			row.source = sourceType
-			row.sourceTooltip = function(tooltip)
-				tooltip:AddLine(16, "Total from "..sourceType..":")
-				for _, line in ipairs(sourceTotals[sourceType]) do
-					tooltip:AddLine(14, line)
+		-- Friendly label override: "Item" -> equipped slot label (Amulet, Helmet…)
+		-- and "Tree" -> "Passive Tree" / "Skill Tree" depending on the node ID
+		-- (passive node IDs start with an uppercase letter; skill tree IDs do not).
+		local displaySourceType = sourceType
+		if sourceType == "Item" then
+			local itemId = tonumber(row.mod.source:match("Item:(%d+):.+"))
+			if itemId and build.itemsTab then
+				if build.itemsTab.slots then
+					for _, slot in pairs(build.itemsTab.slots) do
+						if slot.selItemId == itemId then
+							displaySourceType = slot.label or slot.slotName or "Item"
+							break
+						end
+					end
+				end
+				-- Idols sit in the IdolGridControl rather than ItemSlotControl,
+				-- so fall back to the item's base type ("Small Idol", "Minor Idol"…).
+				if displaySourceType == "Item" then
+					local item = build.itemsTab.items[itemId]
+					if item and item.type and item.type:match("Idol") then
+						displaySourceType = item.type
+					end
+				end
+			end
+		elseif sourceType == "Tree" then
+			local nodeId = row.mod.source:match("Tree:(.+)")
+			if nodeId then
+				displaySourceType = (nodeId:sub(1, 1):match("%u")) and "Passive Tree" or "Skill Tree"
+			end
+		end
+		if not modList then
+			-- Always show the friendly source label (slot name for items, Passive/Skill Tree for tree)
+			row.source = displaySourceType
+			if not sectionData.modSource then
+				row.sourceTooltip = function(tooltip)
+					tooltip:AddLine(16, "Total from "..displaySourceType..":")
+					for _, line in ipairs(sourceTotals[sourceType]) do
+						tooltip:AddLine(14, line)
+					end
 				end
 			end
 		end
@@ -415,8 +447,6 @@ function CalcBreakdownClass:AddModSection(sectionData, modList)
 			row.sourceName = build.data.skills[row.mod.source:match("Skill:(.+)")].name
 		elseif sourceType == "Pantheon" then
 			row.sourceName = row.mod.source:match("Pantheon:(.+)")
-		elseif sourceType == "Spectre" then
-			row.sourceName = row.mod.source:match("Spectre:(.+)")
 		end
 
 		if row.mod.flags ~= 0 or row.mod.keywordFlags ~= 0 then
@@ -459,7 +489,16 @@ function CalcBreakdownClass:AddModSection(sectionData, modList)
 				elseif tag.type == "SkillName" then
 					desc = "Skill: "..(tag.skillNameList and table.concat(tag.skillNameList, "/") or tag.skillName)
 				elseif tag.type == "SkillId" then
-					desc = "Skill: "..build.data.skills[tag.skillId].name
+					-- skillIdList = multi-skill tag (tree-node-skill-rescope)
+					if tag.skillIdList then
+						local names = { }
+						for _, skillId in ipairs(tag.skillIdList) do
+							table.insert(names, build.data.skills[skillId] and build.data.skills[skillId].name or skillId)
+						end
+						desc = "Skill: "..table.concat(names, "/")
+					else
+						desc = "Skill: "..build.data.skills[tag.skillId].name
+					end
 				elseif tag.type == "SkillType" then
 					for name, type in pairs(SkillType) do
 						if type == tag.skillType then
@@ -619,7 +658,13 @@ end
 
 function CalcBreakdownClass:DrawRadiusVisual(x, y, width, height, radius)
 	SetDrawColor(0.75, 0.75, 0.75)
-	DrawImage(self.rangeGuide, x, y, width, height)
+	-- Defensive :IsValid() guard. game_ui_small.png is missing from src/Assets/
+	-- so self.uiOverlay is a broken handle; calling DrawImage on it causes a
+	-- C++ renderer +0x20 access violation. range_guide.png exists but guard
+	-- both for safety.
+	if self.rangeGuide and self.rangeGuide:IsValid() then
+		DrawImage(self.rangeGuide, x, y, width, height)
+	end
 	--SetDrawColor(0, 0, 0)
 	--DrawImage(nil, x, y, width, height)
 	--[[SetDrawColor(0.5, 0.5, 0.75)
@@ -649,7 +694,9 @@ function CalcBreakdownClass:DrawRadiusVisual(x, y, width, height, radius)
 	end
 	main:RenderCircle(x, y, width, height, self.foo1, self.foo2, 30)]]
 	SetDrawColor(1, 1, 1)
-	DrawImage(self.uiOverlay, x, y, width, height)
+	if self.uiOverlay and self.uiOverlay:IsValid() then
+		DrawImage(self.uiOverlay, x, y, width, height)
+	end
 end
 
 function CalcBreakdownClass:Draw(viewPort)

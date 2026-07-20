@@ -16,6 +16,7 @@ local m_sqrt = math.sqrt
 local m_modf = math.modf
 local m_huge = math.huge
 local s_format = string.format
+local bor = bit.bor
 
 local tempTable1 = { }
 
@@ -31,10 +32,19 @@ local resistTypeList = dmgTypeList
 -- LE: armor is 70% as effective against non-physical damage
 -- Cap: 85% (data.misc.ArmorCap)
 -- Formula source: lastepoch.tunklab.com/armor (v1.1 / "082")
+-- @leb-regression-guard:calcdefence-enemylevel-nil-on-cross-class-import
+-- Defense-in-depth: the primary fix lives in CalcSetup.lua's env.config
+-- builder (mirrors env.enemyLevel's fallback chain), but the three damage-
+-- mitigation `F` functions here are called directly from defence-side code
+-- paths (line 631-632 / 641 / 418 / 1426) and a missing fallback there would
+-- crash with "attempt to perform arithmetic on local 'enemyLevel' (a nil
+-- value)" before any upstream guard could catch it. The 100 default mirrors
+-- ConfigOptions.lua's `defaultPlaceholderState = 100`.
 function calcs.armourReductionF(armour, enemyLevel)
 	if armour == 0 then
 		return 0
 	end
+	enemyLevel = enemyLevel or 100
 	local adjustedEnemyLevel = enemyLevel + 5
 	local firstPart = 1.2 * armour / ( (80 + 0.05 * adjustedEnemyLevel ^ 2) + 1.2 * armour) * 0.3
 	local secondPart = 0.0015 * armour ^ 2 / (180 * adjustedEnemyLevel + 0.0015 * armour ^ 2) * 0.55
@@ -53,6 +63,8 @@ function calcs.blockMitigationF(blockEffectiveness, enemyLevel)
 	if blockEffectiveness <= 0 then
 		return 0
 	end
+	-- @leb-regression-guard:calcdefence-enemylevel-nil-on-cross-class-import
+	enemyLevel = enemyLevel or 100
 	local L = enemyLevel + 5
 	local firstPart = 3 * blockEffectiveness / (40 + 0.03 * L ^ 2 + 3 * blockEffectiveness) * 0.25
 	local secondPart = (1.2 * blockEffectiveness + 0.0006 * blockEffectiveness ^ 2) / (60 * L + 1.2 * blockEffectiveness + 0.0006 * blockEffectiveness ^ 2) * 0.6
@@ -66,6 +78,8 @@ function calcs.dodgeChanceF(dodgeRating, enemyLevel)
 	if dodgeRating <= 0 then
 		return 0
 	end
+	-- @leb-regression-guard:calcdefence-enemylevel-nil-on-cross-class-import
+	enemyLevel = enemyLevel or 100
 	local L = enemyLevel + 5
 	local firstPart = dodgeRating / (80 + 0.05 * L ^ 2 + dodgeRating) * 0.25
 	local secondPart = 0.001 * dodgeRating ^ 2 / (32 * L + 0.001 * dodgeRating ^ 2) * 0.6
@@ -216,13 +230,30 @@ function calcs.defence(env, actor)
 			totemTotal = base * m_max(calcLib.mod(modDB, nil, "Totem"..elem.."Resist", isElemental[elem] and "TotemElementalResist"), 0)
 		end
 		
-		-- Fractional resistances are truncated
-		total = m_modf(total)
-		dotTotal = dotTotal and m_modf(dotTotal) or total
-		totemTotal = m_modf(totemTotal)
-		min = m_modf(min)
-		max = m_modf(max)
-		totemMax = m_modf(totemMax)
+		-- @leb-regression-guard:resist-display-round-half-up
+		-- LE stores resistance internally as float (datamined game source
+		-- `PrecalculatedStatsHolder.uncappedPhysicalResistance: float`,
+		-- offset 0x20). Tooltips and per-source breakdowns are rendered
+		-- with round-half-up to integer percent. Earlier comment here
+		-- claimed "Fractional resistances are truncated" and used
+		-- `math.modf` (truncate toward zero), which mismatches both:
+		--   * LE per-source display (LETools tooltips show round, not
+		--     floor: e.g. Body Armor mod stored 16.83 -> +17%, not +16%)
+		--   * LE total display (sum 131.53 -> 132%, not 131%)
+		-- Across 7 G1 builds (<private build> 16.83->16/17, <private build> 131.53->
+		-- 131/132, AL07RL31, <private build>, <private build>, <private build>, <private build>,
+		-- <private build>) the pre-fix LEB output was uniformly Δ=-1 vs LETools.
+		-- The same loop iterates all 7 resist types so this off-by-one
+		-- propagates across phys/fire/cold/light/void/poison/necrotic
+		-- (~345 DIFF lines in `.tmp/diff-after-g1-reimport.log`).
+		-- min/max/totemMax come from data integers so round and floor
+		-- agree; total/dotTotal/totemTotal are float sums and need round.
+		total = m_floor(total + 0.5)
+		dotTotal = dotTotal and m_floor(dotTotal + 0.5) or total
+		totemTotal = m_floor(totemTotal + 0.5)
+		min = m_floor(min + 0.5)
+		max = m_floor(max + 0.5)
+		totemMax = m_floor(totemMax + 0.5)
 		
 		local final = m_max(m_min(total, max), min)
 		local dotFinal = m_max(m_min(dotTotal, max), min)
@@ -252,13 +283,110 @@ function calcs.defence(env, actor)
 		end
 	end
 
+	-- Null Portent (unique body armour): "1% less Damage Taken per 2% Resistance above
+	-- the normal cap" + "20% Maximum Less Damage Taken per 2% Resistance above the normal cap".
+	-- @leb-regression-guard: null-portent-less-damage-taken-per-resist-overcap
+	-- PER-TYPE, MULTIPLICATIVE: each resistance's over-cap amount reduces THAT damage
+	-- type's damage taken (in-game tooltip: 85% fire res -> 10% over cap -> 10/2 = 5%
+	-- less FIRE damage taken), capped at the Maximum Less. Injected here, after every
+	-- <Type>ResistOverCap total is computed by the resist loop above, so the injected
+	-- <Type>DamageTaken MORE mods are visible to calcs.buildDefenceEstimations (L1256+
+	-- reads modDB:More(nil, "DamageTaken", damageType.."DamageTaken")). Floors at integer
+	-- steps to match the "per M% resistance" injection family (Urzil's Pride / Boneclamor /
+	-- Frostbite / Sentinel Defiance). The two source lines are parsed into BASE marker
+	-- stats (see ModParser null-portent guard); the stale residue ModCache rows were
+	-- deleted so they re-parse live. Spec: spec/System/TestNullPortentOvercapDamageTaken_spec.lua
+	local lessDTNum = modDB:Sum("BASE", nil, "LessDamageTakenPerResOverCapNum")
+	if lessDTNum > 0 then
+		local lessDTDiv = m_max(1, modDB:Sum("BASE", nil, "LessDamageTakenPerResOverCapDiv"))
+		local lessDTMax = modDB:Sum("BASE", nil, "LessDamageTakenPerResOverCapMax")
+		for _, elem in ipairs(resistTypeList) do
+			local overCap = output[elem.."ResistOverCap"] or 0
+			local lessDT = m_floor(overCap / lessDTDiv) * lessDTNum
+			if lessDTMax > 0 then
+				lessDT = m_min(lessDT, lessDTMax)
+			end
+			if lessDT > 0 then
+				modDB:NewMod(elem.."DamageTaken", "MORE", -lessDT, "Null Portent")
+			end
+		end
+	end
+
 	-- Endurance% (compute early so PerStat:EnduranceOverCap works for Block etc.)
 	local endTotalEarly = modDB:Sum("BASE", nil, "Endurance")
 	output.EnduranceTotal = endTotalEarly
 	output.Endurance = m_min(endTotalEarly, data.misc.EnduranceCap)
 	output.EnduranceOverCap = m_max(endTotalEarly - data.misc.EnduranceCap, 0)
 
+	-- Urzil's Pride (unique): "1% Increased Mana Regeneration per 2% Uncapped Lightning Resistance"
+	-- @leb-regression-guard: urzils-pride-mana-regen-per-uncapped-lightning-res
+	-- Inject AFTER the resist totals are computed (LightningResistTotal is the uncapped
+	-- value, set above at line 233). Floors at integer steps to match LETools / in-game
+	-- display (LETools breakdown for <private build> Paladin shows 64% body-armour contribution
+	-- at LightningResistTotal=129, giving ManaRegen=18.32 with Belt 35% + Sentinel-93 30%).
+	-- Cannot use a PerStat tag because ModStore.GetStat uses continuous scaling
+	-- (intentional; see comment at ModStore.lua:414).
+	local manaRegenIncPerUncappedLR_Per2 = modDB:Sum("BASE", nil, "ManaRegenIncPerUncappedLightningRes_Per2")
+	if manaRegenIncPerUncappedLR_Per2 > 0 then
+		local lrTotal = output.LightningResistTotal or 0
+		local manaRegenInc = m_floor(lrTotal / 2) * manaRegenIncPerUncappedLR_Per2
+		if manaRegenInc > 0 then
+			modDB:NewMod("ManaRegen", "INC", manaRegenInc, "Urzil's Pride")
+		end
+	end
+
+	-- Boneclamor Barbute (unique helmet): "N Ward per Second per 3% uncapped Necrotic Resistance"
+	-- @leb-regression-guard: boneclamor-barbute-ward-per-uncapped-necrotic-res
+	-- Inject BEFORE the primary Ward calc do-block (L420+) consumes output.WardPerSecond.
+	-- output.WardPerSecond was finalized by CalcPerform (L1283); NecroticResistTotal was
+	-- computed by the resist loop above (L250). Floors at integer steps to match LE/LETools.
+	-- Spec: spec/System/TestBoneclamorBarbute_spec.lua
+	local wpsPerUncappedNecRes_Per3 = modDB:Sum("BASE", nil, "WardPerSecondPerUncappedNecroticRes_Per3")
+	if wpsPerUncappedNecRes_Per3 > 0 then
+		local nrTotal = output.NecroticResistTotal or 0
+		local bonusWps = m_floor(nrTotal / 3) * wpsPerUncappedNecRes_Per3
+		if bonusWps > 0 then
+			output.WardPerSecond = (output.WardPerSecond or 0) + bonusWps
+		end
+	end
+
+	-- Frostbite Shackles (unique boots): "+1% Ward Retention per 2% uncapped Cold Resistance"
+	-- @leb-regression-guard:frostbite-shackles-wr-per-uncapped-cold-res
+	-- Inject AFTER output.ColdResistTotal is computed (resist loop above, L250).
+	-- output.WardRetention was finalized by CalcPerform L1388 BEFORE calcs.defence
+	-- runs at L1396, so a PerStat tag on WardRetention referencing output.ColdResist
+	-- returns 0 (output.ColdResist isn't set yet). We mutate output.WardRetention
+	-- here, which is then consumed by both the stable-ward formula (L509) and the
+	-- decay display (L563). round(crTotal/2)*num matches LE/LETools display
+	-- (verified <private build> Spellblade: CR 363% → round(181.5)*1 = 182, LET shows 344
+	-- vs LEB base 162 + 182 = 344). Spec: spec/System/TestFrostbiteShacklesWRPerUncappedColdRes_spec.lua
+	local wrPerUncappedCR_Per2 = modDB:Sum("BASE", nil, "WardRetentionPerUncappedColdRes_Per2")
+	if wrPerUncappedCR_Per2 > 0 then
+		local crTotal = output.ColdResistTotal or 0
+		local bonusWR = round(crTotal / 2) * wrPerUncappedCR_Per2
+		if bonusWR > 0 then
+			output.WardRetention = (output.WardRetention or 0) + bonusWR
+		end
+	end
+
 	-- Block
+	-- @leb-regression-guard: game-faithful-block-no-shield-gate
+	-- LE itself has NO automatic shield gate on Block Chance / Effectiveness /
+	-- Mitigation. Verified via datamined game source (Last Epoch
+	-- 1.4) — see datamined game source
+	--   * PrecalculatedStatsHolder.blockChanceForCharacterSheet (datamined offset)
+	--     returns min(blockChance, maximumBlockChance) gated only on
+	--     blockConversion == None; no shield/off-hand reference.
+	--   * PrecalculatedStatsHolder.GetBlockChance (datamined offset) returns
+	--     min(blockChance + extra, maximumBlockChance); even simpler, no gate.
+	--   * playerPropertyBlockChanceConvertedToParryWithoutShield (=531) is a
+	--     mod-driven bool on CharacterMutator, NOT an automatic gate — only sets
+	--     blockConversion = Parry when the *mod* is present.
+	-- Therefore LEB must accumulate Block stats unconditionally; off-hand
+	-- Catalyst / Quiver / empty off-hand still receive block from item/passive
+	-- mods exactly as LE computes them. A regression that reintroduces the
+	-- "if not hasShield then zero everything" branch is non-game-faithful and
+	-- must be rejected. See REGRESSION_GUARDS.md "game-faithful-block-no-shield-gate".
 	output.BlockChanceMax = modDB:Sum("BASE", nil, "BlockChanceMax")
 	if modDB:Flag(nil, "MaximumBlockAttackChanceIsEqualToParent") then
 		output.BlockChanceMax = actor.parent.output.BlockChanceMax
@@ -346,6 +474,62 @@ function calcs.defence(env, actor)
 		}
 	end
 
+	-- @leb-regression-guard: paladin-sentinel70-dedication-mana-regen
+	-- Sentinel-70 (Dedication) notScalingStat "1% Increased Mana Regen Per 1%
+	-- Block Chance Above 50%" activates at threshold 5. The cached parse keeps
+	-- the leading clause "1% Increased Mana Regen Per 1% Block Chance" as a
+	-- PerStat:BlockChance ManaRegen INC mod but leaves "Above 50%" as parser
+	-- `extra`, which causes PassiveTree.lua:458 to silently drop the entire
+	-- mod (`if mod.list and not mod.extra`). Inject a clean ManaRegen INC
+	-- scaled by max(0, BlockChanceTotal - 50): use BlockChanceTotal (uncapped)
+	-- because LE applies the bonus on raw block chance, not the capped value.
+	-- Sites running before block calc (e.g. the regen loop at L680) consume
+	-- modDB:Sum("INC", "ManaRegen") via output.ManaRegenInc which is
+	-- recomputed at L1725 from the same sum — by injecting here (after L353
+	-- BlockChanceTotal is set, before L680/L1725) both regen and the INC
+	-- breakdown pick up the contribution.
+	-- Verified against <private build> lv98 Paladin (LETools ManaRegen=13.95).
+	-- Spec: spec/System/TestPaladinSentinel70DedicationManaRegen_spec.lua
+	local s70 = env.allocNodes and env.allocNodes["Sentinel-70"]
+	if s70 and (s70.alloc or 0) >= (s70.noScalingPointThreshold or 5) then
+		local rawBlock = output.BlockChanceTotal or output.BlockChance or 0
+		local dedicationInc = m_max(0, rawBlock - 50)
+		if dedicationInc > 0 then
+			modDB:NewMod("ManaRegen", "INC", dedicationInc, "Sentinel-70 Dedication")
+		end
+	end
+
+	-- @leb-regression-guard:ward-on-block-resource-conversion (calc site)
+	-- "Ward on Block" display value combines two sources:
+	--   1. flat `WardOnBlock` BASE mod (e.g. "+27 Ward Gain on Block" — already
+	--      parsed by ModParser but had no consumer before this site existed).
+	--   2. `CurrentManaGainedAsWardOnBlock` BASE % of finalised player Mana, from
+	--      the Shield-prefix compound affix 963 "Added Block Chance and Current
+	--      Mana gained as Ward on Block" (datamined game source multi_affixes_v3.json).
+	-- Mana is finalised by CalcPerform's doActorLifeMana before calcs.defence runs.
+	-- The value is per-block; total per-second ward depends on block chance and is
+	-- not folded into output.WardPerSecond (event-driven, not passive regen).
+	-- See REGRESSION_GUARDS.md "ward-on-block-resource-conversion".
+	local wardOnBlockFlat = modDB:Sum("BASE", nil, "WardOnBlock")
+	local wardOnBlockManaPct = modDB:Sum("BASE", nil, "CurrentManaGainedAsWardOnBlock")
+	local wardOnBlockManaContribution = wardOnBlockManaPct > 0
+		and (output.Mana or 0) * wardOnBlockManaPct / 100 or 0
+	output.WardOnBlock = wardOnBlockFlat + wardOnBlockManaContribution
+	if breakdown and output.WardOnBlock > 0 then
+		local lines = {}
+		if wardOnBlockFlat > 0 then
+			t_insert(lines, s_format("%.1f ^8(flat Ward on Block)", wardOnBlockFlat))
+		end
+		if wardOnBlockManaContribution > 0 then
+			t_insert(lines, s_format("+ %.1f ^8(%.1f%% of Current Mana %d)",
+				wardOnBlockManaContribution, wardOnBlockManaPct, output.Mana or 0))
+		end
+		if #lines > 1 then
+			t_insert(lines, s_format("= %.1f ^8(total Ward on Block)", output.WardOnBlock))
+		end
+		breakdown.WardOnBlock = lines
+	end
+
 	-- Primary defences: Ward, evasion and armour
 	do
 		local ward = 0
@@ -360,31 +544,91 @@ function calcs.defence(env, actor)
 		-- Use output.WardPerSecond set by CalcPerform (includes INC/MORE modifiers)
 		wardPerSecond = output.WardPerSecond or 0
 
-		-- Ward lost per second formula is (0.00005 * ( ward - wardDecayThreshold )^2 + 0.2 * (ward - wardDecayThreshold)) / (1 + 0.5 * wardRetention), we can deduce ward when this is equal to wardPerSecond:
-		-- ward = wardDecayThreshold + ((-0.2 + sqrt(0.04 + 0.0002 * wardPerSecond * (1 + 0.5 * wardRetention))) / 0.0001)
-
+		-- Ward lost per second formula (verified against game `ProtectionClass.Update` datamined offset):
+		--   wardLost/s = (0.00005*(W - T)^2 + 0.2*(W - T)) / (1 + 0.5 * Rclamped)
+		-- where T = WardDecayThreshold, Rclamped = max(-0.9, WardRetention) (game clamps to -90%).
+		-- Stable ward solves wgain = wardLost/s for W:
+		--   W = T + (-0.2 + sqrt(0.04 + 0.0002 * wgain * (1 + 0.5 * Rclamped))) / 0.0001
+		-- Game also applies a 0.5/s decay floor when (wardRegen + wardRegenFromStats) <= 0
+		-- (see `datamined game source §2`). At THIS site the
+		-- floor cannot trigger: when WPS <= 0 the formula short-circuits below
+		-- (Ward = 0 → WardDecayPerSecond = 0), and when WPS > 0 the in-game
+		-- passive sum is by construction also > 0 (this site only sees passive
+		-- contributions). The floor IS implemented at the post-offence
+		-- ManaSpentGainedAsWard recomputation site in CalcPerform.lua, where a
+		-- transient-only WPS > 0 can coexist with passive WPS = 0; see guard
+		-- `@leb-regression-guard:ward-decay-floor-zero-passive`.
+		-- @leb-regression-guard:ward-retention-negative-clamp
+		--   Game clamps WardRetention at -90% before the decay-divisor (1 + 0.5*R) computation.
+		--   Without this clamp, R <= -200% would invert decay (negative divisor) and produce
+		--   non-finite stable ward. Match game datamined offset. See spec/System/TestWardFormula_spec.lua.
+		-- @leb-regression-guard:ward-decay-gpp-constants (passive stable-ward inversion)
+		--   linearWardDecay=0.2, quadraticWardDecay=5E-05, retentionDivisor=(1+0.5*R/100).
+		--   Sourced from GlobalPlayerProperties typetree + ProtectionClass.Update datamined offset.
 		if wardPerSecond > 0 then
 		local wardDecayThreshold = output.WardDecayThreshold or 0
-		local wardRetention = output.WardRetention or 0
+		local wardRetention = m_max(output.WardRetention or 0, -90)
 		ward = wardDecayThreshold + ((-0.2 + math.sqrt(0.04 + 0.0002 * wardPerSecond * (1 + 0.5 * wardRetention / 100))) / 0.0001)
 		ward = ward * calcLib.mod(modDB, nil, "Ward", "Defences")
 		end
 		armourBase = modDB:Sum("BASE", nil, "Armour", "ArmourAndEvasion")
 		if armourBase > 0 then
-			armour = armour + armourBase * calcLib.mod(modDB, nil, "Armour", "ArmourAndEvasion", "Defences")
+			-- @leb-regression-guard:apocrypha-incregen-to-armour (calc site)
+			-- Warlock passive Apocrypha (Acolyte-58) adds "50% Increased Mana
+			-- Regen -> Increased Armour": 50% of the total ManaRegen INC also
+			-- applies as Armour INC. ModParser emits an IncreasedStatConversion
+			-- LIST mod { src, dst, fraction }; we fold matching dst="Armour"
+			-- entries into the INC term INSIDE calcLib.mod's (1 + INC/100) * MORE
+			-- so the converted INC is scaled by the same MORE multipliers as
+			-- native Armour INC. No feedback loop: the source (ManaRegen) is
+			-- never Armour, and we read the fully-summed source INC here (calc
+			-- time, after all mods are collected) rather than mutating modDB.
+			-- Spec: spec/System/TestApocryphaIncRegenToArmour_spec.lua
+			-- See REGRESSION_GUARDS.md "apocrypha-incregen-to-armour".
+			local armourConvInc = 0
+			for _, conv in ipairs(modDB:List(nil, "IncreasedStatConversion")) do
+				if conv.dst == "Armour" and conv.src ~= "Armour" then
+					armourConvInc = armourConvInc + modDB:Sum("INC", nil, conv.src) * conv.fraction / 100
+				end
+			end
+			local armourMult
+			if armourConvInc ~= 0 then
+				local armourInc = modDB:Sum("INC", nil, "Armour", "ArmourAndEvasion", "Defences") + armourConvInc
+				armourMult = (1 + armourInc / 100) * modDB:More(nil, "Armour", "ArmourAndEvasion", "Defences")
+			else
+				armourMult = calcLib.mod(modDB, nil, "Armour", "ArmourAndEvasion", "Defences")
+			end
+			armour = armour + armourBase * armourMult
 			if breakdown then
 				breakdown.slot("Global", nil, nil, armourBase, nil, "Armour", "ArmourAndEvasion", "Defences")
 			end
 		end
 		evasionBase = modDB:Sum("BASE", nil, "Evasion", "ArmourAndEvasion")
 		if evasionBase > 0 then
-			-- Game displays Evasion using only INC modifiers (no MORE); use INC only here
-			local evasionInc = 1 + modDB:Sum("INC", nil, "Evasion", "ArmourAndEvasion", "Defences") / 100
-			evasion = evasion + evasionBase * evasionInc
+			-- @leb-regression-guard:dodge-more-multiplier (display site)
+			-- Match LETools planner: displayed Dodge Rating = BASE × (1+INC) × MORE.
+			-- An earlier version intentionally used INC only (comment claimed the
+			-- in-game tooltip excludes MORE). LE planner shows the MORE-included
+			-- value, so excluding MORE here drove <private build> Bladedancer to 2616
+			-- vs LE 3236 (15% Bladedancer ascendancy MORE silently dropped).
+			-- Spec: spec/System/TestDodgeMoreMultiplier_spec.lua
+			evasion = evasion + evasionBase * calcLib.mod(modDB, nil, "Evasion", "ArmourAndEvasion", "Defences")
 			if breakdown then
 				breakdown.slot("Global", nil, nil, evasionBase, nil, "Evasion", "ArmourAndEvasion", "Defences")
 			end
 		end
+		-- @leb-regression-guard:armour-floor-at-zero-letools-artifact
+		-- Floor Armour at 0 to match the in-game display and DR formula contract.
+		-- LE's PlayerStats.armour is a signed float, but every consumer
+		-- (display, DR = armour / (armour + flatThreshold)) treats negative
+		-- as zero. LETools planner skips this floor and reports the raw
+		-- signed sum, so builds that stack large %-reduced-Armour sources
+		-- (e.g. Bladedancer's Guile at 212%) show negative LETools Armor
+		-- (<private build>: 434 base * (1 + 0.52 - 2.12) = -260) while LE in-game
+		-- and LEB show 0. Removing the floor here would inject negative
+		-- Armour into CalcDamage's armourReduct formula and break PhysDR
+		-- on every Guile-stacking build.
+		-- Spec: spec/System/TestArmourFloorAtZero_spec.lua
 		output.Armour = m_max(round(armour), 0)
 		output.ArmourDefense = (modDB:Max(nil, "ArmourDefense") or 0) / 100
 		output.RawArmourDefense = output.ArmourDefense > 0 and ((1 + output.ArmourDefense) * 100) or nil
@@ -392,15 +636,33 @@ function calcs.defence(env, actor)
 		output.MeleeEvasion = m_max(round(evasion * calcLib.mod(modDB, nil, "MeleeEvasion")), 0)
 		output.ProjectileEvasion = m_max(round(evasion * calcLib.mod(modDB, nil, "ProjectileEvasion")), 0)
 		output.LowestOfArmourAndEvasion = m_min(output.Armour, output.Evasion)
+		-- @leb-regression-guard:foot-of-the-mountain-dodge-to-endurance (source-reduction site)
+		-- Validation provenance is retained in maintainer notes.
+		local dodgeToEndThrPct = modDB:Sum("BASE", nil, "DodgeRatingConvertedToEnduranceThreshold")
+		if dodgeToEndThrPct > 0 and output.Evasion > 0 then
+			output.DodgeRatingConvertedToEnduranceThreshold = round(output.Evasion * dodgeToEndThrPct / 100)
+			local remaining = m_max(output.Evasion - output.DodgeRatingConvertedToEnduranceThreshold, 0)
+			local scale = remaining / output.Evasion
+			output.MeleeEvasion = m_max(round(output.MeleeEvasion * scale), 0)
+			output.ProjectileEvasion = m_max(round(output.ProjectileEvasion * scale), 0)
+			output.Evasion = remaining
+			output.LowestOfArmourAndEvasion = m_min(output.Armour, output.Evasion)
+		end
 		output.Ward = m_max(round(ward), 0)
+		output.StableWard = output.Ward
 
 		-- Ward Decay per second at steady-state ward (tunklab formula)
-		-- wardDecay(W, R) = (0.2*W + 0.00005*W^2) / (1 + 0.5*(R/100))
+		-- wardDecay(W, R) = (0.2*W + 0.00005*W^2) / (1 + 0.5*(R/100)) where R is clamped at -90%
+		-- @leb-regression-guard:ward-retention-negative-clamp (display-decay site)
+		-- @leb-regression-guard:ward-decay-gpp-constants (display-decay site)
+		local rawWardDecayPerSecond = 0
 		if output.Ward > 0 then
 			local effectiveWard = m_max(output.Ward - output.WardDecayThreshold, 0)
-			local retentionDivisor = 1 + 0.5 * output.WardRetention / 100
+			local retentionClamped = m_max(output.WardRetention or 0, -90)
+			local retentionDivisor = 1 + 0.5 * retentionClamped / 100
 			local decayNumerator = 0.2 * effectiveWard + 0.00005 * effectiveWard ^ 2
-			output.WardDecayPerSecond = round(decayNumerator / retentionDivisor)
+			rawWardDecayPerSecond = decayNumerator / retentionDivisor
+			output.WardDecayPerSecond = round(rawWardDecayPerSecond)
 			if breakdown then
 				breakdown.WardDecayPerSecond = {
 					s_format("%d ^8(ward)", output.Ward),
@@ -415,7 +677,9 @@ function calcs.defence(env, actor)
 		else
 			output.WardDecayPerSecond = 0
 		end
-		output.NetWardRegen = wardPerSecond > 0 and (wardPerSecond - output.WardDecayPerSecond) or 0
+		-- Use the unrounded decay for net regen so steady-state shows ~0 instead of
+		-- the rounding residual (e.g. wps=0.8 vs round(decay)=1 -> -0.2).
+		output.NetWardRegen = wardPerSecond > 0 and (wardPerSecond - rawWardDecayPerSecond) or 0
 
 		-- Armor mitigation for display (Physical and Elemental)
 		output.ArmorMitigationPhysical = round(calcs.armourReductionF(output.Armour, env.config.enemyLevel))
@@ -464,6 +728,10 @@ function calcs.defence(env, actor)
 	end
 	
 	-- Gain on Block
+	-- @leb-regression-guard: game-faithful-block-no-shield-gate
+	-- LE applies Life/Mana Gained on Block whenever block triggers; block itself
+	-- has no automatic shield gate (see sibling guard above). LifeOnBlock /
+	-- ManaOnBlock therefore aggregate from mods unconditionally.
 	output.LifeOnBlock = modDB:Sum("BASE", nil, "LifeOnBlock")
 	output.ManaOnBlock = modDB:Sum("BASE", nil, "ManaOnBlock")
 
@@ -476,8 +744,39 @@ function calcs.defence(env, actor)
 	output.WardOnKill = modDB:Sum("BASE", nil, "WardOnKill")
 	output.LifeLossOnKillPercent = modDB:Sum("BASE", nil, "LifeLossOnKillPercent")
 
+	-- Ward auxiliary stats exposed for the offence section so otherwise-invisible
+	-- mods (Ward Bypass, "X% of Health Regen also applies to Ward") become visible.
+	output.WardBypass = modDB:Sum("BASE", nil, "WardBypass")
+	output.LifeRegenAppliesToWard = modDB:Sum("BASE", nil, "LifeRegenAppliesToWard")
+
 	-- Gain on Potion Use / Skill Use
-	output.WardOnPotionUse = modDB:Sum("BASE", nil, "WardOnPotionUse")
+	-- @leb-regression-guard:ward-on-potion-use-resource-conversion (calc site)
+	-- Combine flat WardOnPotionUse with the missing-health resource conversion
+	-- (MissingHealthGainedAsWardOnPotionUse × Life × MissingHealthPercent/100/100).
+	-- Multiplier:MissingHealthPercent is the Config-driven 0..100 share. See
+	-- REGRESSION_GUARDS.md "ward-on-potion-use-resource-conversion".
+	do
+		local flat = modDB:Sum("BASE", nil, "WardOnPotionUse")
+		local mhPct = modDB:Sum("BASE", nil, "MissingHealthGainedAsWardOnPotionUse")
+		local mhShare = modDB:Sum("BASE", nil, "Multiplier:MissingHealthPercent") or 0
+		local mhContribution = (mhPct > 0 and mhShare > 0)
+			and (output.Life or 0) * (mhShare / 100) * mhPct / 100 or 0
+		output.WardOnPotionUse = flat + mhContribution
+		if breakdown and output.WardOnPotionUse > 0 then
+			local lines = {}
+			if flat > 0 then
+				t_insert(lines, s_format("%.1f ^8(flat Ward on Potion Use)", flat))
+			end
+			if mhContribution > 0 then
+				t_insert(lines, s_format("+ %.1f ^8(%.1f%% of Life %d x Missing Health %.0f%%)",
+					mhContribution, mhPct, output.Life or 0, mhShare))
+			end
+			if #lines > 1 then
+				t_insert(lines, s_format("= %.1f ^8(total Ward on Potion Use)", output.WardOnPotionUse))
+			end
+			breakdown.WardOnPotionUse = lines
+		end
+	end
 	output.ManaOnPotionUse = modDB:Sum("BASE", nil, "ManaOnPotionUse")
 	output.LifeOnPotionUse = modDB:Sum("BASE", nil, "LifeOnPotionUse")
 	output.WardOnSkillUse = modDB:Sum("BASE", nil, "WardOnSkillUse")
@@ -486,31 +785,12 @@ function calcs.defence(env, actor)
 	output.LifeRecoveryRateMod = calcLib.mod(modDB, nil, "LifeRecoveryRate")
 	output.ManaRecoveryRateMod = calcLib.mod(modDB, nil, "ManaRecoveryRate")
 
-	-- Leech caps
-	output.MaxLifeLeechInstance = output.Life * calcLib.val(modDB, "MaxLifeLeechInstance") / 100
-	output.MaxLifeLeechRatePercent = calcLib.val(modDB, "MaxLifeLeechRate")
-	if modDB:Flag(nil, "MaximumLifeLeechIsEqualToParent") then
-		output.MaxLifeLeechRatePercent = actor.parent.output.MaxLifeLeechRatePercent
-	elseif modDB:Flag(nil, "MaximumLifeLeechIsEqualToPartyMember") then
-		output.MaxLifeLeechRatePercent = actor.partyMembers.output.MaxLifeLeechRatePercent
-	end
-	output.MaxLifeLeechRate = output.Life * output.MaxLifeLeechRatePercent / 100
-	if breakdown then
-		breakdown.MaxLifeLeechRate = {
-			s_format("%d ^8(maximum life)", output.Life),
-			s_format("x %d%% ^8(percentage of life to maximum leech rate)", output.MaxLifeLeechRatePercent),
-			s_format("= %.1f", output.MaxLifeLeechRate)
-		}
-	end
-	output.MaxManaLeechInstance = output.Mana * calcLib.val(modDB, "MaxManaLeechInstance") / 100
-	output.MaxManaLeechRate = output.Mana * calcLib.val(modDB, "MaxManaLeechRate") / 100
-	if breakdown then
-		breakdown.MaxManaLeechRate = {
-			s_format("%d ^8(maximum mana)", output.Mana),
-			s_format("x %d%% ^8(percentage of mana to maximum leech rate)", calcLib.val(modDB, "MaxManaLeechRate")),
-			s_format("= %.1f", output.MaxManaLeechRate)
-		}
-	end
+	-- @leb-regression-guard:leech-le-instance-model
+	-- LE has NO per-second "% of life/mana pool" leech cap (formulas_verified.md §47): the
+	-- only limiters are the per-instance window 3/(1+IncreasedLeechRate)s, the full-health
+	-- overheal discard (leechDropoffThreshold), and DisableLeechForDuration. The PoB
+	-- MaxLifeLeechRate/MaxManaLeechRate/MaxLifeLeechInstance pool caps were removed -- they
+	-- have no LE source AND were never seeded (calcLib.val=0), which made leech identically 0.
 
 	-- Regeneration
 	local resources = {"Mana", "Life"}
@@ -570,6 +850,27 @@ function calcs.defence(env, actor)
 			if modDB:Flag(nil, "UnaffectedBy"..resource.."Regen") then
 				t_insert(breakdown[resource.."RegenRecovery"], "Unaffected by "..resourceName.." Regen")
 			end
+			-- Surface the unique-mod source that disables this resource's regeneration so the
+			-- breakdown matches LETools' red "Helmet (Unique mod): Cannot Regenerate Mana" header.
+			-- Tabulate the FLAG to recover the originating mod's source label (e.g. "The Butcher's
+			-- Crown") and prepend a single line per distinct source to the top of the breakdown.
+			if modDB:Flag(nil, "No"..resource.."Regen") then
+				local seen = { }
+				for _, entry in ipairs(modDB:Tabulate("FLAG", nil, "No"..resource.."Regen")) do
+					local src = entry.mod and entry.mod.source or "Unique mod"
+					-- Item sources are stored as "Item:<id>:<name>"; surface the human-readable
+					-- portion so the header reads e.g. "The Butcher's Crown" rather than "Item:449:..."
+					local itemName = src:match("^Item:%d+:(.+)$")
+					local label = itemName or src
+					if not seen[label] then
+						seen[label] = true
+						t_insert(breakdown[resource.."RegenRecovery"], 1, "^1"..label..": Cannot Regenerate "..resourceName)
+					end
+				end
+				if not next(seen) then
+					t_insert(breakdown[resource.."RegenRecovery"], 1, "^1Cannot Regenerate "..resourceName)
+				end
+			end
 			if degenRate ~= 0 then
 				t_insert(breakdown[resource.."RegenRecovery"], s_format("- %.1f ^8(degen)", degenRate))
 				t_insert(breakdown[resource.."RegenRecovery"], s_format("= %.1f ^8per second", (modDB:Flag(nil, "UnaffectedBy"..resource.."Regen") and 0 or regenRate) - degenRate))
@@ -588,19 +889,25 @@ function calcs.defence(env, actor)
 		output.WardPerSecond = (output.WardPerSecond or 0) + bonusWardPerSec
 		local wps = output.WardPerSecond
 		local wardDecayThreshold = output.WardDecayThreshold or 0
-		local wardRetention = output.WardRetention or 0
+		-- @leb-regression-guard:ward-retention-negative-clamp (Sanguine Runestones path)
+		-- @leb-regression-guard:ward-decay-gpp-constants (Sanguine Runestones recompute)
+		local wardRetention = m_max(output.WardRetention or 0, -90)
 		local ward = wardDecayThreshold + ((-0.2 + math.sqrt(0.04 + 0.0002 * wps * (1 + 0.5 * wardRetention / 100))) / 0.0001)
 		ward = ward * calcLib.mod(modDB, nil, "Ward", "Defences")
 		output.Ward = m_max(round(ward), 0)
+		output.StableWard = output.Ward
+		local rawWardDecayPerSecond = 0
 		if output.Ward > 0 then
 			local effectiveWard = m_max(output.Ward - wardDecayThreshold, 0)
 			local retentionDivisor = 1 + 0.5 * wardRetention / 100
 			local decayNumerator = 0.2 * effectiveWard + 0.00005 * effectiveWard ^ 2
-			output.WardDecayPerSecond = round(decayNumerator / retentionDivisor)
+			rawWardDecayPerSecond = decayNumerator / retentionDivisor
+			output.WardDecayPerSecond = round(rawWardDecayPerSecond)
 		else
 			output.WardDecayPerSecond = 0
 		end
-		output.NetWardRegen = wps > 0 and (wps - output.WardDecayPerSecond) or 0
+		-- Use unrounded decay for net regen (see steady-state rounding note above).
+		output.NetWardRegen = wps > 0 and (wps - rawWardDecayPerSecond) or 0
 	end
 
 	-- Damage Reduction
@@ -612,7 +919,16 @@ function calcs.defence(env, actor)
 	end
 
 	-- Miscellaneous: move speed, avoidance
-	output.MovementSpeedMod = modDB:Override(nil, "MovementSpeed") or (modDB:Flag(nil, "MovementSpeedEqualHighestLinkedPlayers") and actor.partyMembers.output.MovementSpeedMod or calcLib.mod(modDB, nil, "MovementSpeed"))
+	-- @leb-regression-guard: movement-speed-base-additive
+	-- LE Movement Speed formula = (1 + (BASE + INC)/100) * More. calcLib.mod
+	-- only returns (1 + INC/100) * More and drops BASE — passive nodes that
+	-- grant "+X% Movement Speed" (BASE) such as Beastmaster's Predator
+	-- (+1% Movement Speed per point) would silently contribute nothing.
+	-- See REGRESSION_GUARDS.md "movement-speed-base-additive".
+	local msBase = modDB:Sum("BASE", nil, "MovementSpeed")
+	local msInc  = modDB:Sum("INC",  nil, "MovementSpeed")
+	local msMore = modDB:More(nil, "MovementSpeed")
+	output.MovementSpeedMod = modDB:Override(nil, "MovementSpeed") or (modDB:Flag(nil, "MovementSpeedEqualHighestLinkedPlayers") and actor.partyMembers.output.MovementSpeedMod or (1 + (msBase + msInc) / 100) * msMore)
 	if modDB:Flag(nil, "MovementSpeedCannotBeBelowBase") then
 		output.MovementSpeedMod = m_max(output.MovementSpeedMod, 1)
 	end
@@ -631,6 +947,8 @@ function calcs.defence(env, actor)
 	end
 	
 	-- recovery on block, needs to be after primary defences
+	-- @leb-regression-guard: game-faithful-block-no-shield-gate
+	-- Unconditional; see sibling site above.
 	output.LifeOnBlock = modDB:Sum("BASE", nil, "LifeOnBlock")
 	output.ManaOnBlock = modDB:Sum("BASE", nil, "ManaOnBlock")
 
@@ -641,7 +959,33 @@ function calcs.defence(env, actor)
 	output.LifeLossOnKillPercent = modDB:Sum("BASE", nil, "LifeLossOnKillPercent")
 
 	-- gain on potion use / skill use
-	output.WardOnPotionUse = modDB:Sum("BASE", nil, "WardOnPotionUse")
+	-- @leb-regression-guard:ward-on-potion-use-resource-conversion (calc site)
+	-- Combine flat WardOnPotionUse with the missing-health resource conversion
+	-- (MissingHealthGainedAsWardOnPotionUse × Life × MissingHealthPercent/100/100).
+	-- Multiplier:MissingHealthPercent is the Config-driven 0..100 share. See
+	-- REGRESSION_GUARDS.md "ward-on-potion-use-resource-conversion".
+	do
+		local flat = modDB:Sum("BASE", nil, "WardOnPotionUse")
+		local mhPct = modDB:Sum("BASE", nil, "MissingHealthGainedAsWardOnPotionUse")
+		local mhShare = modDB:Sum("BASE", nil, "Multiplier:MissingHealthPercent") or 0
+		local mhContribution = (mhPct > 0 and mhShare > 0)
+			and (output.Life or 0) * (mhShare / 100) * mhPct / 100 or 0
+		output.WardOnPotionUse = flat + mhContribution
+		if breakdown and output.WardOnPotionUse > 0 then
+			local lines = {}
+			if flat > 0 then
+				t_insert(lines, s_format("%.1f ^8(flat Ward on Potion Use)", flat))
+			end
+			if mhContribution > 0 then
+				t_insert(lines, s_format("+ %.1f ^8(%.1f%% of Life %d x Missing Health %.0f%%)",
+					mhContribution, mhPct, output.Life or 0, mhShare))
+			end
+			if #lines > 1 then
+				t_insert(lines, s_format("= %.1f ^8(total Ward on Potion Use)", output.WardOnPotionUse))
+			end
+			breakdown.WardOnPotionUse = lines
+		end
+	end
 	output.ManaOnPotionUse = modDB:Sum("BASE", nil, "ManaOnPotionUse")
 	output.LifeOnPotionUse = modDB:Sum("BASE", nil, "LifeOnPotionUse")
 	output.WardOnSkillUse = modDB:Sum("BASE", nil, "WardOnSkillUse")
@@ -677,7 +1021,11 @@ function calcs.defence(env, actor)
 	end
 
 	output.CurseAvoidChance = modDB:Flag(nil, "CurseImmune") and 100 or m_min(modDB:Sum("BASE", nil, "AvoidCurse"), 100)
-	output.CritExtraDamageReduction = m_min(modDB:Sum("BASE", nil, "ReduceCritExtraDamage"), 100)
+	-- @leb-regression-guard:crit-extra-damage-reduction-display-uncapped
+	-- Game text: "Cannot reduce damage below that of a regular hit."
+	-- That clamp lives in the effect (1 - X/100) below — the displayed/sum value
+	-- is uncapped to match LE's sidebar (e.g. LE=129 for the <private build> Paladin).
+	output.CritExtraDamageReduction = modDB:Sum("BASE", nil, "ReduceCritExtraDamage")
 	output.LightRadiusMod = calcLib.mod(modDB, nil, "LightRadius")
 	if breakdown then
 		breakdown.LightRadiusMod = breakdown.mod(modDB, nil, "LightRadius")
@@ -784,7 +1132,9 @@ function calcs.buildDefenceEstimations(env, actor)
 		end
 		local enemyCritChance = enemyDB:Flag(nil, "NeverCrit") and 0 or enemyDB:Flag(nil, "AlwaysCrit") and 100 or (m_max(m_min((modDB:Override(nil, "enemyCritChance") or env.config["enemyCritChance"] or 0) * (1 + modDB:Sum("INC", nil, "EnemyCritChance") / 100 + enemyDB:Sum("INC", nil, "CritChance") / 100) * (1 - output["ConfiguredEvadeChance"] / 100), 100), 0))
 		local enemyCritDamage = m_max((env.config["enemyCritDamage"] or 0) + enemyDB:Sum("BASE", nil, "CritMultiplier"), 0)
-		output["EnemyCritEffect"] = 1 + enemyCritChance / 100 * (enemyCritDamage / 100) * (1 - output.CritExtraDamageReduction / 100)
+		-- @leb-regression-guard:crit-extra-damage-reduction-display-uncapped
+		-- Effect-side clamp: m_min(..., 100) so multiplier (1-X/100) >= 0.
+		output["EnemyCritEffect"] = 1 + enemyCritChance / 100 * (enemyCritDamage / 100) * (1 - m_min(output.CritExtraDamageReduction, 100) / 100)
 		local enemyCfg = {keywordFlags = bit.bnot(KeywordFlag.MatchAll)} -- Match all keywordFlags parameter for enemy min-max damage mods
 		local enemyDamageConversion = {}
 		for _, damageType in ipairs(dmgTypeList) do
@@ -982,6 +1332,85 @@ function calcs.buildDefenceEstimations(env, actor)
 		end
 	end
 
+	-- Validation provenance is retained in maintainer notes.
+	do
+		local genericInc = modDB:Sum("INC", nil, "DamageTaken")
+		local genericMore = modDB:More(nil, "DamageTaken")
+		output.DamageTakenIncrease = (1 + genericInc / 100) * genericMore - 1
+		output.DamageTakenIncrease = output.DamageTakenIncrease * 100
+		-- "Less Damage Taken" display: in-game shows the same magnitude as
+		-- DamageTakenIncrease but with inverted sign and a red color when the
+		-- value is negative (= player takes MORE damage). Pre-format with color
+		-- escapes so CalcSections can substitute as a single token.
+		do
+			local lessVal = -output.DamageTakenIncrease
+			local color = lessVal < 0 and colorCodes.NEGATIVE or "^xFFFFFF"
+			output.LessDamageTakenStr = string.format("%s%.2f%%^7", color, lessVal)
+		end
+
+		-- Conditional aggregates: while moving / near enemy. Display the delta
+		-- contributed *only* by the conditional mods, not the unconditional
+		-- baseline DamageTaken. We compute (with-cond) - (without-cond) so the
+		-- LE summary line matches in-game (e.g. 0% when no Moving-tagged mods).
+		local cfgMoving = { skillCond = { Moving = true } }
+		local mvInc = modDB:Sum("INC", cfgMoving, "DamageTaken") - genericInc
+		local mvMore = modDB:More(cfgMoving, "DamageTaken") / (genericMore == 0 and 1 or genericMore)
+		output.DamageTakenWhileMoving = ((1 + mvInc / 100) * mvMore - 1) * 100
+
+		local cfgNear = { skillCond = { NearEnemy = true } }
+		local neInc = modDB:Sum("INC", cfgNear, "DamageTaken") - genericInc
+		local neMore = modDB:More(cfgNear, "DamageTaken") / (genericMore == 0 and 1 or genericMore)
+		output.DamageTakenFromNearbyEnemies = ((1 + neInc / 100) * neMore - 1) * 100
+
+		-- LeechRate: defence-side aggregate. Per-skill LeechRate already
+		-- exposed in CalcOffence; here we expose the global INC sum for the
+		-- character sheet "Increased Leech Rate" line.
+		output.LeechRateInc = modDB:Sum("INC", nil, "LeechRate")
+	end
+
+	-- LETools-style aggregate "Damage Over Time Taken %" — generic DoT taken
+	-- multiplier excluding per-element resist/reduction. Mirrors LETools'
+	-- summary stat to give users a single comparable number.
+	do
+		local dotInc = modDB:Sum("INC", nil, "DamageTaken", "DamageTakenOverTime")
+		local dotMore = modDB:More(nil, "DamageTaken", "DamageTakenOverTime")
+		output.DamageOverTimeTakenMultiplier = (1 + dotInc / 100) * dotMore
+		output.DamageOverTimeTakenIncrease = (output.DamageOverTimeTakenMultiplier - 1) * 100
+		-- "Less Damage Over Time Taken" display: same convention as
+		-- LessDamageTakenStr (negate sign, red when negative = more taken).
+		do
+			local lessVal = -output.DamageOverTimeTakenIncrease
+			local color = lessVal < 0 and colorCodes.NEGATIVE or "^xFFFFFF"
+			output.LessDamageOverTimeTakenStr = string.format("%s%.2f%%^7", color, lessVal)
+		end
+		-- LessDamageOverTimeTaken: matches in-game tooltip "Less Damage Over Time Taken"
+		-- which folds the inherent 15% baseline reduction into the displayed value
+		-- (per in-game tooltip: "Players inherently take 15% less damage over time
+		-- and that is reflected in this number").
+		--   net multiplier = (1+INC) * MORE * (1 - 0.15)
+		--   display = (1 - net multiplier) * 100
+		-- Verified vs ShutFackUp in-game: LETools INC*MORE = +12.32% taken,
+		-- 1 - 1.1232 * 0.85 = 0.04528 -> ~5% less taken, matches in-game "5%".
+		local dotInherentLess = 0.15
+		output.LessDamageOverTimeTaken = (1 - output.DamageOverTimeTakenMultiplier * (1 - dotInherentLess)) * 100
+		if breakdown then
+			breakdown.DamageOverTimeTakenIncrease = { }
+			breakdown.multiChain(breakdown.DamageOverTimeTakenIncrease, {
+				label = "DoT Taken multiplier:",
+				{ "%.2f ^8(increased/reduced damage taken)", (1 + dotInc / 100) },
+				{ "%.2f ^8(more/less damage taken)", dotMore },
+				total = s_format("= %.2f (%+.2f%%)", output.DamageOverTimeTakenMultiplier, output.DamageOverTimeTakenIncrease),
+			})
+			breakdown.LessDamageOverTimeTaken = { }
+			breakdown.multiChain(breakdown.LessDamageOverTimeTaken, {
+				label = "Less DoT Taken (in-game UI):",
+				{ "%.4f ^8((1+INC) * MORE)", output.DamageOverTimeTakenMultiplier },
+				{ "%.2f ^8(inherent 15%% less baseline)", 1 - dotInherentLess },
+				total = s_format("= %.4f net taken (%+.2f%% less)", output.DamageOverTimeTakenMultiplier * (1 - dotInherentLess), output.LessDamageOverTimeTaken),
+			})
+		end
+	end
+
 	-- Incoming hit damage multipliers
 	output["totalTakenHit"] = 0
 	if breakdown then
@@ -1146,7 +1575,22 @@ function calcs.buildDefenceEstimations(env, actor)
 	do
 		local stunThresholdBase = 0
 		local stunThresholdSource = nil
+		-- @leb-regression-guard: stun-avoidance-base-and-tree
+		-- Unconstrained BASE Sum is what lets passive-tree contributions
+		-- (e.g. Acolyte-19 "Towering Death" +50/pt) reach the player stat.
+		-- Narrowing this to an item-only lookup would silently drop tree
+		-- contributions — confirmed Δ=+250 on <private build> lv99 Necromancer.
+		-- See spec/System/TestStunAvoidanceBaseAndTree_spec.lua.
 		local flatStunAvoidance = modDB:Sum("BASE", nil, "StunAvoidance")
+		-- @leb-regression-guard: strong-mind-mana-as-stun-avoidance
+		-- Strong Mind (unique): "X% of maximum mana added as stun avoidance".
+		-- ModParser emits this conversion as a BASE ManaAsStunAvoidance stat;
+		-- fold it into the flat pool against max Mana so it feeds both the
+		-- StunAvoidance display stat and the stun-threshold pool below.
+		local manaAsStunAvoidance = modDB:Sum("BASE", nil, "ManaAsStunAvoidance")
+		if manaAsStunAvoidance ~= 0 then
+			flatStunAvoidance = flatStunAvoidance + (output.Mana or 0) * manaAsStunAvoidance / 100
+		end
 		output.StunAvoidance = m_max(round(flatStunAvoidance), 0)
 		local wardForStun = output.Ward or 0
 		if modDB:Flag(nil, "StunThresholdBasedOnManaInsteadOfLife") then
@@ -1278,20 +1722,300 @@ function calcs.buildDefenceEstimations(env, actor)
 	end
 	-- Primalist/Rogue/Sentinel trees: "X% Max Health Gained as Endurance Threshold"
 	local lifeAsEndThresh = modDB:Sum("BASE", nil, "LifeAsEnduranceThreshold")
+	output.LifeAsEnduranceThreshold = lifeAsEndThresh
 	if lifeAsEndThresh > 0 then
 		etBase = etBase + (output.Life or 0) * lifeAsEndThresh / 100
 	end
 	local etInc = m_max(calcLib.mod(modDB, nil, "EnduranceThreshold"), 0)
-	output.EnduranceThreshold = m_floor(etBase * etInc)
+	-- @leb-regression-guard:endurance-threshold-round-not-floor
+	-- Validation provenance is retained in maintainer notes.
+	output.EnduranceThreshold = m_floor(etBase * etInc + 0.5)
 	output.EnduranceThresholdValue = output.EnduranceThreshold
+	-- @leb-regression-guard:foot-of-the-mountain-dodge-to-endurance (EndThr fold-in site)
+	-- Validation provenance is retained in maintainer notes.
+	local dodgeAsEndThr = output.DodgeRatingConvertedToEnduranceThreshold
+	if dodgeAsEndThr and dodgeAsEndThr > 0 then
+		output.EnduranceThreshold = output.EnduranceThreshold + dodgeAsEndThr
+		output.EnduranceThresholdValue = output.EnduranceThreshold
+	end
+	-- "X% Endurance Threshold added as Ward Decay Threshold" (gear/idol affix).
+	-- Recompute WardDecayThreshold here, AFTER EnduranceThreshold is finalized
+	-- (mana/life/defiance contributions get merged above), and add the flat
+	-- bonus = pct% of finalized EnduranceThreshold to the WardDecayThreshold
+	-- value already set by CalcPerform's stat loop.
+	local etAsWdtPct = modDB:Sum("BASE", nil, "EnduranceThresholdAddedAsWardDecayThreshold")
+	if etAsWdtPct and etAsWdtPct ~= 0 and output.WardDecayThreshold then
+		output.WardDecayThreshold = output.WardDecayThreshold + m_floor(etAsWdtPct / 100 * output.EnduranceThreshold + 0.5)
+	end
+	-- @leb-regression-guard: life-as-ward-decay-threshold-conversion
+	-- "X% of Maximum Health gained as Ward Decay Threshold" (gear affix, e.g.
+	-- Architects of Astral Blood). Add pct% of finalized max Health to the
+	-- WardDecayThreshold value already set by CalcPerform's stat loop. Mirrors
+	-- the EnduranceThreshold-as-WardDecayThreshold fold-in just above and the
+	-- Life-as-EnduranceThreshold fold-in further up (ModParser emits the BASE
+	-- LifeAsWardDecayThreshold stat).
+	local lifeAsWdtPct = modDB:Sum("BASE", nil, "LifeAsWardDecayThreshold")
+	if lifeAsWdtPct and lifeAsWdtPct ~= 0 and output.WardDecayThreshold then
+		output.WardDecayThreshold = output.WardDecayThreshold + m_floor(lifeAsWdtPct / 100 * (output.Life or 0) + 0.5)
+	end
 
-	-- Parry and Mana-before-Health
-	output.ParryChance = m_min(modDB:Sum("BASE", nil, "ParryChance"), data.misc.ParryCap)
+	-- Parry and Mana-before-Health / Mana-before-Ward
+	-- @leb-regression-guard: game-faithful-parry-conversion
+	-- Per datamined game source (datamined game source):
+	-- `parryChanceForCharacterSheet` (datamined offset) when blockConversion==Parry (i.e.
+	-- the `BlockChanceConvertedToParryWithoutShield` property is set AND no shield)
+	-- returns min(blockBase, maxBlock) + parryBonus, capped at ParryCap (75).
+	-- `blockChanceForCharacterSheet` (datamined offset) returns 0 in that state, which
+	-- we honor by zeroing out the Block stats after the conversion routes their
+	-- value into Parry. Source: unique `Clotho's Needle` (uniques_1_4.json #417,
+	-- "+1 Block Chance converted to Parry Chance while not wielding a shield").
+	-- ModParser counterpart: specialModList["^%+?(%-?[%d%.]+) block chance converted to
+	-- parry chance while not wielding a shield$"]. Spec: TestParryConversion_spec.lua.
+	local parryBase = modDB:Sum("BASE", nil, "ParryChance")
+	local convertBlockToParry = modDB:Flag(nil, "BlockChanceConvertedToParryWithoutShield")
+		and not modDB:GetCondition("UsingShield")
+	if convertBlockToParry then
+		local converted = m_min(output.BlockChanceTotal or 0, output.BlockChanceMax)
+		output.ParryChance = m_min(converted + parryBase, data.misc.ParryCap)
+		-- Block side reads as 0 when blockConversion != None (datamining of
+		-- blockChanceForCharacterSheet). Zero the user-visible block stats so the
+		-- character sheet matches the game.
+		output.BlockChance = 0
+		output.BlockChanceTotal = 0
+		output.BlockChanceOverCap = 0
+		output.ProjectileBlockChance = 0
+		output.SpellBlockChance = 0
+		output.SpellProjectileBlockChance = 0
+		output.AverageBlockChance = 0
+		output.BlockEffectiveness = 0
+		output.BlockMitigation = 0
+		output.BlockEffect = 0
+		output.ShowBlockEffect = nil
+		output.DamageTakenOnBlock = nil
+	else
+		output.ParryChance = m_min(parryBase, data.misc.ParryCap)
+	end
 	output.DamageToManaBeforeHealth = m_min(modDB:Sum("BASE", nil, "DamageToManaBeforeHealth"), 100)
+	output.DamageToManaBeforeWard = m_min(modDB:Sum("BASE", nil, "DamageToManaBeforeWard"), 100)
+
+	-- LETools-parity summary lines (Health Gain on Stun/Freeze/Crit, Overkill
+	-- Leech, Maximum Companions, Potion Slots, Minion Power From Character
+	-- Level). Base values from datamined game source / in-game defaults:
+	--   - PotionSlots base = 0 (no character base; belt implicit `+N Potion
+	--     Slots` is the sole source — verified against LETools planner tooltip
+	--     on <private build> lv62 Warlock: belt `Isadora's Tomb Binding` implicit
+	--     `+3 Potion Slots` → "Potion Slots: 3". The previous `3 +` constant
+	--     double-counted the belt mod and produced 6.
+	--   - MaxCompanions base = 0 (class-specific bonuses are added via mods;
+	--     however LE shows "2" for non-pet classes too, suggesting LE's
+	--     CharacterStats.getMaximumCompanions returns 2 by default; verified
+	--     against ShutFackUp Spellblade letools = 2). We default to 2 to
+	--     match in-game display; minion classes add their own bonuses on top.
+	--   - MinionPowerFromCharLevel = class.moreMinionDamagePerLevel * level.
+	--     Not yet wired (requires per-class table in src/Data/Classes.lua);
+	--     output 0 for now and surface via Calcs tab as "(not implemented)".
+	output.LifeOnStun = modDB:Sum("BASE", nil, "LifeOnStun")
+	output.LifeOnFreeze = modDB:Sum("BASE", nil, "LifeOnFreeze")
+	output.LifeOnCrit = modDB:Sum("BASE", nil, "LifeOnCrit")
+	-- @leb-regression-guard: lifeonhit-flag-aware-sum
+	-- Character-aggregate Hit / Melee Hit gains. Per-skill versions live in
+	-- CalcOffence; the Melee Hit row is sourced here so the Calcs tab can
+	-- mirror LETools' "Health Gain on Melee Hit" on every build.
+	-- ModParser stores LifeOnMeleeHit with flags = bor(Melee, Hit); ModDB:Sum
+	-- requires the cfg to include those flags or
+	-- `band(cfg.flags, mod.flags) == mod.flags` fails and the mod is silently
+	-- dropped (e.g. Palarus's Sacred Light suffix "+11 Health Gain on Melee
+	-- Hit" surfaced as 0 on <private build> Paladin).
+	-- LifeOnHit is overwritten per-skill in CalcOffence, so the defence-layer
+	-- Sum below is best-effort and only matters before a skill recalculates;
+	-- still pass the Hit flag for parity.
+	-- Test: spec/System/TestLifeOnHit_spec.lua
+	output.LifeOnHit = modDB:Sum("BASE", { flags = ModFlag.Hit }, "LifeOnHit")
+	output.LifeOnMeleeHit = modDB:Sum("BASE", { flags = bor(ModFlag.Melee, ModFlag.Hit) }, "LifeOnMeleeHit")
+	-- Other Stats (LETools parity)
+	output.ChanceToFindPotions = modDB:Sum("BASE", nil, "ChanceToFindPotions")
+	output.ManaEfficiency = modDB:Sum("BASE", nil, "ManaEfficiency")
+	output.HealingEffectiveness = modDB:Sum("INC", nil, "HealingEffectiveness")
+	output.CooldownRecovery = modDB:Sum("INC", nil, "CooldownRecovery")
+	output.DoubleDamageChance = modDB:Sum("BASE", nil, "DoubleDamageChance")
+	output.OverkillLeech = modDB:Sum("BASE", nil, "OverkillLeech")
+	-- @leb-regression-guard: phase4-stun-aoe-melee-flag-isolation
+	-- Character-aggregate Stun Chance / Area of Effect (LETools parity).
+	-- Per-skill outputs in CalcOffence (StunChance/AreaOfEffectMod) compute
+	-- skill-specific values; these surface the flat affix sum so the Calcs tab
+	-- can mirror LETools' "Stun Chance" / "Area Of Effect" rows on every build.
+	--
+	-- INVARIANT: Melee-tagged values MUST be extracted by subtracting the
+	-- unflagged sum from the melee-cfg sum (which includes both unflagged +
+	-- melee-flagged mods). modDB:Sum with `{ flags = ModFlag.Melee }` does NOT
+	-- return melee-only mods — it returns "mods that match this flag set OR
+	-- have no flags". Replacing the subtraction with a direct call double-
+	-- counts the unflagged sum into the Melee row.
+	-- Test: spec/System/TestPhase4LEToolsParity_spec.lua "Melee* aggregates isolate the melee-tagged delta"
+	-- See REGRESSION_GUARDS.md "phase4-stun-aoe-melee-flag-isolation".
+	output.StunChanceInc = modDB:Sum("INC", nil, "StunChance")
+	output.MeleeStunChanceInc = modDB:Sum("INC", { flags = ModFlag.Melee }, "StunChance") - output.StunChanceInc
+	output.AreaOfEffectInc = modDB:Sum("INC", nil, "AreaOfEffect")
+	output.MeleeAreaOfEffectInc = modDB:Sum("INC", { flags = ModFlag.Melee }, "AreaOfEffect") - output.AreaOfEffectInc
+	-- Mana Regen INC aggregate (BASE goes through ManaRegenRecovery formula).
+	output.ManaRegenInc = modDB:Sum("INC", nil, "ManaRegen")
+	-- Phase 4-D: Ailment damage character-aggregate (Increased X Damage %).
+	output.BleedDamageInc = modDB:Sum("INC", nil, "BleedDamage")
+	output.IgniteDamageInc = modDB:Sum("INC", nil, "IgniteDamage")
+	output.PoisonDamageInc = modDB:Sum("INC", nil, "PoisonDamage")
+	output.FrostbiteDamageInc = modDB:Sum("INC", nil, "FrostbiteDamage")
+	-- Phase 4-B: Ward / Buff effect aggregates (LETools parity).
+	output.WardOnHit = modDB:Sum("BASE", nil, "WardOnHit")
+	output.WardOnCrit = modDB:Sum("BASE", nil, "WardOnCrit")
+	output.PotionHealthConvertedToWard = modDB:Sum("BASE", nil, "PotionHealthConvertedToWard")
+	output.HasteEffect = modDB:Sum("INC", nil, "HasteEffect")
+	output.FrenzyEffect = modDB:Sum("INC", nil, "FrenzyEffect")
+	output.MaxCompanions = 2 + modDB:Sum("BASE", nil, "MaxCompanions")
+	-- @leb-regression-guard: max-shadows-output-wiring
+	-- F1 — MaxShadows aggregate (Bladedancer Shadow pool cap). Parser maps
+	-- "+N Maximum Shadows" / "+N max Shadows" to modName "MaxShadows" (see
+	-- ModParser.lua L219-220, shadow-suffix-family-c6a). Before this wiring
+	-- the value was parsed but never surfaced -- a silent fail on the
+	-- consumer side mirroring the F1 entry in the C6 backlog.
+	-- Character base = 0: Shadows are produced by mastery passives /
+	-- skill nodes, not a class baseline. Any non-Bladedancer build will
+	-- show 0; Bladedancers display the modded value.
+	-- Test: spec/System/TestMaxShadowsOutput_spec.lua
+	output.MaxShadows = modDB:Sum("BASE", nil, "MaxShadows")
+	-- @leb-regression-guard: potion-slots-no-character-base
+	-- Locks the contract that PotionSlots has NO character/class base — the
+	-- only source is the belt's `+N Potion Slots` implicit (and any sealed/
+	-- crafted `+N Potion Slots` mod). LE planner tooltip on <private build> lv62
+	-- Warlock confirms: belt `Isadora's Tomb Binding` implicit `+3` → display
+	-- "Potion Slots: 3". The earlier `3 + modDB:Sum(...)` double-counted the
+	-- belt mod and produced 6. A revert to a non-zero constant would silently
+	-- drift every belted build by +constant and every beltless build away
+	-- from in-game's 0 baseline.
+	-- Test: spec/System/TestPotionSlots_spec.lua "PotionSlots has no character base"
+	-- See REGRESSION_GUARDS.md "potion-slots-no-character-base".
+	output.PotionSlots = modDB:Sum("BASE", nil, "PotionSlots")
+	-- Minion Power From Character Level — class-agnostic: from lv26 onwards
+	-- gain 0.8% per character level (verified in-game tooltip; lv85=48%,
+	-- lv100=60%). Formula: max(0, level - 25) * 0.8.
+	do
+		local lvl = env.build and env.build.characterLevel or modDB.multipliers["Level"] or 1
+		local fromLevel = m_max(0, lvl - 25) * 0.8
+		output.MinionPowerFromCharLevel = fromLevel + modDB:Sum("BASE", nil, "MinionPowerFromCharLevel")
+	end
+	-- @leb-regression-guard: phase4-minion-modifier-bucket-aggregation
+	-- @leb-regression-guard: minion-whitelist-3surface-union
+	-- See REGRESSION_GUARDS.md "minion-whitelist-3surface-union".
+	-- Test: spec/System/TestPhase4LEToolsParity_spec.lua "Minion bucket aggregates MinionModifier LIST entries"
+	-- See REGRESSION_GUARDS.md "phase4-minion-modifier-bucket-aggregation".
+	-- Reference: spec/minion-whitelist/whitelist_final.json
+	-- Validation provenance is retained in maintainer notes.
+	do
+		local minionMods = {}
+		for _, value in ipairs(modDB:List(nil, "MinionModifier")) do
+			local m = value.mod
+			if m and m.name and m.type then
+				-- @leb-regression-guard: minion-bucket-flags-partition
+				-- Bucket key includes ModFlag so that inner mods sharing
+				-- (name, type) but routed to different sub-surfaces stay
+				-- distinct. Concrete case (B15 HIGH-gap closure 2026-05-18):
+				-- `minion_attack_speed_+%` → mod("Speed","INC",nil,ModFlag.Attack)
+				-- and `minion_cast_speed_+%`   → mod("Speed","INC",nil,ModFlag.Cast)
+				-- both emit name="Speed" type="INC", and without the flag
+				-- suffix would collide into a single `Speed|INC` bucket so
+				-- the LEB minion-tab attack-speed line would silently
+				-- double-count cast speed (and vice versa). Default flags
+				-- = 0 keeps the prior behaviour for every flagless inner
+				-- mod (Life, Evasion, ResistXxx, PhysicalDamage, …).
+				-- See REGRESSION_GUARDS.md "minion-bucket-flags-partition".
+				local key = m.name .. "|" .. m.type .. "|" .. (m.flags or 0)
+				-- @leb-regression-guard: minion-bucket-evalmod-perstat
+				-- Inner mod may carry PerStat/Multiplier tags (e.g. Acolyte
+				-- "Grave Thorns" notScalingStat "4% Increased Minion Health
+				-- Per Vitality" → PerStat:Vitality). Raw m.value here is the
+				-- per-unit coefficient (4) — to surface the correct displayed
+				-- aggregate we must evaluate against the player modDB so the
+				-- tag multiplies by player Vit/Str/etc. EvalMod returns a
+				-- numeric value when tags resolve, or nil if a guard tag
+				-- (MultiplierThreshold, missing actor) excludes the mod.
+				-- Test: spec/System/TestMinionPerStatScaling_spec.lua
+				-- See REGRESSION_GUARDS.md "minion-bucket-evalmod-perstat".
+				local effective = modDB:EvalMod(m)
+				if type(effective) == "number" then
+					minionMods[key] = (minionMods[key] or 0) + effective
+				end
+			end
+		end
+		local function sumMinion(name, type, flags)
+			return minionMods[name .. "|" .. type .. "|" .. (flags or 0)] or 0
+		end
+		output.MinionLifeInc = sumMinion("Life", "INC")
+		output.MinionLifeRegen = sumMinion("LifeRegen", "BASE")
+		output.MinionLifeRegenInc = sumMinion("LifeRegen", "INC")
+		output.MinionEvasion = sumMinion("Evasion", "BASE")
+		output.MinionArmour = sumMinion("Armour", "BASE")
+		output.MinionCritAvoidance = sumMinion("CritAvoidance", "BASE")
+		output.MinionReduceCritExtraDamage = sumMinion("ReduceCritExtraDamage", "BASE")
+		output.MinionMovementSpeed = sumMinion("MovementSpeed", "INC")
+		output.MinionFireResist = sumMinion("FireResist", "BASE")
+		output.MinionColdResist = sumMinion("ColdResist", "BASE")
+		output.MinionLightningResist = sumMinion("LightningResist", "BASE")
+		output.MinionPhysicalResist = sumMinion("PhysicalResist", "BASE")
+		output.MinionNecroticResist = sumMinion("NecroticResist", "BASE")
+		output.MinionPoisonResist = sumMinion("PoisonResist", "BASE")
+		output.MinionVoidResist = sumMinion("VoidResist", "BASE")
+		output.MinionHealingEffectiveness = sumMinion("HealingEffectiveness", "INC")
+		output.MinionCooldownRecovery = sumMinion("CooldownRecovery", "INC")
+		output.MinionDamageReflected = sumMinion("DamageReflectedPercent", "BASE")
+		output.MinionCompanionReviveSpeed = sumMinion("CompanionReviveSpeed", "INC")
+		output.MinionCompanionReviveRange = sumMinion("CompanionReviveRange", "INC")
+		-- Phase 4-C: Minion Armor/Evasion INC (BASE already wired above) +
+		-- per-damage-type Damage INC and Penetration BASE.
+		output.MinionArmourInc = sumMinion("Armour", "INC")
+		output.MinionEvasionInc = sumMinion("Evasion", "INC")
+		output.MinionPhysicalDamageInc = sumMinion("PhysicalDamage", "INC")
+		output.MinionFireDamageInc = sumMinion("FireDamage", "INC")
+		output.MinionColdDamageInc = sumMinion("ColdDamage", "INC")
+		output.MinionLightningDamageInc = sumMinion("LightningDamage", "INC")
+		output.MinionNecroticDamageInc = sumMinion("NecroticDamage", "INC")
+		output.MinionPoisonDamageInc = sumMinion("PoisonDamage", "INC")
+		output.MinionVoidDamageInc = sumMinion("VoidDamage", "INC")
+		output.MinionPhysicalPenetration = sumMinion("PhysicalPenetration", "BASE")
+		output.MinionFirePenetration = sumMinion("FirePenetration", "BASE")
+		output.MinionColdPenetration = sumMinion("ColdPenetration", "BASE")
+		output.MinionLightningPenetration = sumMinion("LightningPenetration", "BASE")
+		output.MinionNecroticPenetration = sumMinion("NecroticPenetration", "BASE")
+		output.MinionPoisonPenetration = sumMinion("PoisonPenetration", "BASE")
+		output.MinionVoidPenetration = sumMinion("VoidPenetration", "BASE")
+		-- B15 HIGH-gap closure (2026-05-18): whitelist_final.json entries
+		-- 2/512,8192/0 (Attack Speed) and 3/8192/0 (Cast Speed) are HIGH
+		-- confidence (3-surface union: altText ∪ affixTag ∪ runtime) but
+		-- had no top-level Minion* output. Inner mods are routed via
+		-- SkillStatMap "minion_attack_speed_+%" / "minion_cast_speed_+%"
+		-- as { mod = Speed INC ModFlag.Attack/Cast } — see
+		-- spec/minion-whitelist/MinionWhitelistCoverage_spec.lua
+		-- WHITELIST_TO_MINION_OUTPUT mapping and REGRESSION_GUARDS.md
+		-- "minion-bucket-flags-partition" for the partitioning rationale.
+		output.MinionAttackSpeed = sumMinion("Speed", "INC", ModFlag.Attack)
+		output.MinionCastSpeed = sumMinion("Speed", "INC", ModFlag.Cast)
+	end
 
 	-- Glancing blow and crit avoidance
-	output.GlancingBlowChance = m_min(modDB:Sum("BASE", nil, "GlancingBlowChance"), 100)
+	-- @leb-regression-guard:double-glancing-blow-if-not-hit
+	-- Apply INC/MORE alongside BASE so the Rogue-104 "Poise" notScalingStat
+	-- ("Double Glancing Blow Chance If Not Hit"), parsed as +100 INC gated
+	-- on Condition:BeenHitRecently (neg), doubles the BASE total when the
+	-- BeenHitRecently toggle is off (default) and collapses back when the
+	-- user enables it. Matches LE's sidebar.
+	output.GlancingBlowChance = m_min(modDB:Sum("BASE", nil, "GlancingBlowChance") * calcLib.mod(modDB, nil, "GlancingBlowChance"), 100)
 	output.CritAvoidance = m_min(modDB:Sum("BASE", nil, "CritAvoidance"), 100)
+
+	-- Damage Reflected to Attackers (LE thorns)
+	-- @leb-regression-guard: thornshell-flat-reflect-per-attunement
+	-- Apply INCREASED/MORE (not just BASE): Thornshell's "% Increased Flat Damage
+	-- Reflected to Attackers per Attunement" is an INC on this stat. Summing BASE only
+	-- dropped it, reading the flat reflect ~13x under (see ModParser modNameList note).
+	output.DamageReflectedToAttackers = modDB:Sum("BASE", nil, "DamageReflectedToAttackers") * calcLib.mod(modDB, nil, "DamageReflectedToAttackers")
+	output.DamageReflectedPercent = modDB:Sum("BASE", nil, "DamageReflectedPercent")
 
 	-- Attacker debuffs (reactive)
 	output.ChanceToSlowAttackers  = modDB:Sum("BASE", nil, "ChanceToSlowAttackers")
