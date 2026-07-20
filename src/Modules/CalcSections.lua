@@ -117,14 +117,14 @@ return {
 		{ label = "Enemy modifiers", modName = "SelfCritMultiplier", enemy = true },
 	}, },
 	{ label = "Crit Effect Mod", { format = "x {3:output:CritEffect}", { breakdown = "CritEffect" }, }, },
-} }
-} },
-{ 1, "CritByType", 1, colorCodes.OFFENCE, {{ defaultCollapsed = true, label = "Crit Multiplier by Damage Type", data = {
-	extra = "Player-level (matches LETools per-type columns)",
-	{ label = "Melee", { format = "x {2:output:MeleeCritMultiplier}" } },
-	{ label = "Spell", { format = "x {2:output:SpellCritMultiplier}" } },
-	{ label = "Bow", { format = "x {2:output:BowCritMultiplier}" } },
-	{ label = "Throwing", { format = "x {2:output:ThrowingCritMultiplier}" } },
+	-- Boss-target-accurate crit breakdown (datamine: crit is applied defender-side,
+	-- bosses reduce the crit BONUS by ReducedBonusDamageTakenFromCrits ~= 0.35, i.e.
+	-- x0.65 on the bonus). These are display-only; the headline "Skill Average Hit"
+	-- stays sheet-faithful. See @leb-regression-guard:boss-crit-damage-taken.
+	{ label = "Boss Crit Dmg Taken", haveOutput = "BossCritDamageTakenMult", { format = "x {3:output:BossCritDamageTakenMult}" }, },
+	{ label = "Non-Crit Hit", haveOutput = "NonCritAverageHit", { format = "{1:output:NonCritAverageHit}", }, },
+	{ label = "Crit Hit", haveOutput = "CritAverageHit", { format = "{1:output:CritAverageHit}", }, },
+	{ label = "Avg Hit (inc. Crit)", haveOutput = "CritWeightedHit", { format = "{1:output:CritWeightedHit}", }, },
 } }
 } },
 { 1, "SkillTypeStats", 1, colorCodes.OFFENCE, {{ defaultCollapsed = false, label = "Skill type-specific Stats", data = {
@@ -193,6 +193,24 @@ return {
 		{ label = "Area of Effect modifiers", modName = "TrapTriggerAreaOfEffect", cfg = "skill" },
 	}, },
 	{ label = "Active Trap Limit", flag = "trap", { format = "{0:output:ActiveTrapLimit}", { modName = "ActiveTrapLimit", cfg = "skill" }, }, },
+	-- @leb-regression-guard:mirage-count-consumer
+	{ label = "Mirage Count", haveOutput = "MirageCount", { format = "{0:output:MirageCount}", { modName = "MirageCount", cfg = "skill" }, }, },
+	-- @leb-regression-guard:chance-to-apply-shadow-dagger-on-hit-consumer
+	{ label = "Shadow Dagger Apply Chance", haveOutput = "ChanceToApplyShadowDaggerOnHit", { format = "{0:output:ChanceToApplyShadowDaggerOnHit}%", { modName = "ChanceToApplyShadowDaggerOnHit", cfg = "skill" }, }, },
+	-- @leb-regression-guard:kuzons-fury-reforged-burning-dagger-chance
+	{ label = "Burning Dagger Throw Chance", haveOutput = "BurningDaggerChanceOnMeleeFire", { format = "{0:output:BurningDaggerChanceOnMeleeFire}%", { modName = "BurningDaggerChanceOnMeleeFire", cfg = "skill" }, }, },
+	-- @leb-regression-guard:proc-rate-limit-metadata-v1
+	-- Informational only: surfaces the game's ProcTimeTracker (limit, interval)
+	-- pair harvested from the static "(up to N times per M seconds)" suffix.
+	-- LEB does NOT fold this into DPS / effective-procs maths because the game
+	-- exposes no planner-visible rate-capped chance stat (runtime PTT gate only;
+	-- datamined game source + L33671-L33713).
+	{ label = "Burning Dagger Rate Limit", haveOutput = "BurningDaggerChanceOnMeleeFire_RateLimit", { format = "{0:output:BurningDaggerChanceOnMeleeFire_RateLimit} per {1:output:BurningDaggerChanceOnMeleeFire_RateInterval} sec" }, },
+	-- @leb-regression-guard:cooldown-recovered-on-hit-consumer
+	{ label = "CD Recovered per Hit", haveOutput = "CooldownRecoveryOnHit", { format = "{2:output:CooldownRecoveryOnHit}%", { modName = "CooldownRecoveryOnHit", cfg = "skill" }, }, },
+	{ label = "Max CD-Recovery Hits", haveOutput = "CooldownRecoveryOnHitMaxPerCast", { format = "{0:output:CooldownRecoveryOnHitMaxPerCast}", { modName = "CooldownRecoveryOnHitMaxPerCast", cfg = "skill" }, }, },
+	-- @leb-regression-guard:mod6-v2-combat-loop (section site)
+	{ label = "Effective Cooldown (CD-on-Hit)", haveOutput = "EffectiveCooldownFromOnHit", { format = "{3:output:EffectiveCooldownFromOnHit}s", { breakdown = "EffectiveCooldownFromOnHit" }, }, },
 	{ label = "Trap Throw Rate", flag = "trap", { format = "{2:output:TrapThrowingSpeed}",
 		{ breakdown = "TrapThrowingSpeed" },
 		{ modName = "TrapThrowingSpeed", cfg = "skill" },
@@ -230,10 +248,8 @@ return {
 } }
 } },
 { 1, "LeechGain", 1, colorCodes.OFFENCE, {{ defaultCollapsed = false, label = "Leech & Gain on Hit", data = {
-	{ label = "Life Leech Cap", flag = "leechLife", { format = "{1:output:MaxLifeLeechRate}",
-		{ breakdown = "MaxLifeLeechRate" },
-		{ modName = "MaxLifeLeechRate" },
-	}, },
+	-- @leb-regression-guard:leech-le-instance-model -- LE has no per-second leech-rate cap, so
+	-- the "Life/Mana Leech Cap" rows (PoB MaxLifeLeechRate/MaxManaLeechRate) were removed.
 	{ label = "Life Leech Rate", flag = "leechLife", notFlag = "showAverage", { format = "{1:output:LifeLeechRate}",
 		{ breakdown = "LifeLeech" },
 		{ label = "Player modifiers", notFlagList = { "totem", "attack" }, modName = { "DamageLeech", "DamageLifeLeech", "PhysicalDamageLifeLeech", "LightningDamageLifeLeech", "ColdDamageLifeLeech", "FireDamageLifeLeech", "PoisonDamageLifeLeech", "NecroticDamageLifeLeech", "VoidDamageLifeLeech", "ElementalDamageLifeLeech" }, modType = "BASE", cfg = "skill" },
@@ -267,10 +283,6 @@ return {
 	}, },
 	{ label = "Health Lost on Kill", haveOutput = "LifeLossOnKillPercent", { format = "{1:output:LifeLossOnKillPercent}%",
 		{modName = "LifeLossOnKillPercent"},
-	}, },
-	{ label = "Mana Leech Cap", flag = "leechMana", { format = "{1:output:MaxManaLeechRate}",
-		{ breakdown = "MaxManaLeechRate" },
-		{ modName = "MaxManaLeechRate" },
 	}, },
 	{ label = "Mana Leech Rate", flag = "leechMana", notFlag = "showAverage", { format = "{1:output:ManaLeechRate}",
 		{ breakdown = "ManaLeech" },
@@ -326,66 +338,73 @@ return {
 	{ label = "Freeze Rate", haveOutput = "FreezeRate", { format = "{2:output:FreezeRate}",
 		{ modName = { "FreezeRate", "FreezeRateMultiplier" }, cfg = "skill" },
 	}, },
+	{ label = "Freeze Rate Multiplier", haveOutput = "FreezeRateMultiplier", { format = "{0:output:FreezeRateMultiplier}%",
+		{ modName = "FreezeRateMultiplier", cfg = "skill" },
+	}, },
 	{ label = "Freeze Chance", haveOutput = "FreezeChance", { format = "{0:output:FreezeChance}%",
 		{ modName = { "FreezeRate", "FreezeRateMultiplier" }, cfg = "skill" },
 	}, },
-	{ label = "Freeze Duration Mod", haveOutput = "EnemyFreezeDuration", { format = "x {2:output:EnemyFreezeDuration}",
+	{ label = "Freeze Duration Mod", haveOutputNotOne = "EnemyFreezeDuration", { format = "x {2:output:EnemyFreezeDuration}",
 		{ modName = { "EnemyFreezeDuration", "Duration" }, cfg = "skill" },
 	}, },
 	-- Ignite
 	{ label = "Ignite Chance", haveOutput = "IgniteChance", { format = "{0:output:IgniteChance}%",
 		{ modName = "IgniteChance", cfg = "skill" },
 	}, },
-	{ label = "Ignite Duration Mod", haveOutput = "EnemyIgniteDuration", { format = "x {2:output:EnemyIgniteDuration}",
+	{ label = "Increased Ignite Damage", haveOutput = "IgniteDamageInc", { format = "{0:output:IgniteDamageInc}%", { modName = "IgniteDamage" }, }, },
+	{ label = "Ignite Duration Mod", haveOutputNotOne = "EnemyIgniteDuration", { format = "x {2:output:EnemyIgniteDuration}",
 		{ modName = { "EnemyIgniteDuration", "Duration" }, cfg = "skill" },
 	}, },
 	-- Bleed
 	{ label = "Bleed Chance", haveOutput = "BleedChance", { format = "{0:output:BleedChance}%",
 		{ modName = "BleedChance", cfg = "skill" },
 	}, },
-	{ label = "Bleed Duration Mod", haveOutput = "EnemyBleedDuration", { format = "x {2:output:EnemyBleedDuration}",
+	{ label = "Increased Bleed Damage", haveOutput = "BleedDamageInc", { format = "{0:output:BleedDamageInc}%", { modName = "BleedDamage" }, }, },
+	{ label = "Bleed Duration Mod", haveOutputNotOne = "EnemyBleedDuration", { format = "x {2:output:EnemyBleedDuration}",
 		{ modName = { "EnemyBleedDuration", "Duration" }, cfg = "skill" },
 	}, },
 	-- Poison
 	{ label = "Poison Chance", haveOutput = "PoisonChance", { format = "{0:output:PoisonChance}%",
 		{ modName = "PoisonChance", cfg = "skill" },
 	}, },
-	{ label = "Poison Duration Mod", haveOutput = "EnemyPoisonDuration", { format = "x {2:output:EnemyPoisonDuration}",
+	{ label = "Increased Poison Damage", haveOutput = "PoisonDamageInc", { format = "{0:output:PoisonDamageInc}%", { modName = "PoisonDamage" }, }, },
+	{ label = "Poison Duration Mod", haveOutputNotOne = "EnemyPoisonDuration", { format = "x {2:output:EnemyPoisonDuration}",
 		{ modName = { "EnemyPoisonDuration", "Duration" }, cfg = "skill" },
 	}, },
 	-- Shock
 	{ label = "Shock Chance", haveOutput = "ShockChance", { format = "{0:output:ShockChance}%",
 		{ modName = "ShockChance", cfg = "skill" },
 	}, },
-	{ label = "Shock Duration Mod", haveOutput = "EnemyShockDuration", { format = "x {2:output:EnemyShockDuration}",
+	{ label = "Shock Duration Mod", haveOutputNotOne = "EnemyShockDuration", { format = "x {2:output:EnemyShockDuration}",
 		{ modName = { "EnemyShockDuration", "Duration" }, cfg = "skill" },
 	}, },
 	-- Chill
 	{ label = "Chill Chance", haveOutput = "ChillChance", { format = "{0:output:ChillChance}%",
 		{ modName = "ChillChance", cfg = "skill" },
 	}, },
-	{ label = "Chill Duration Mod", haveOutput = "EnemyChillDuration", { format = "x {2:output:EnemyChillDuration}",
+	{ label = "Chill Duration Mod", haveOutputNotOne = "EnemyChillDuration", { format = "x {2:output:EnemyChillDuration}",
 		{ modName = { "EnemyChillDuration", "Duration" }, cfg = "skill" },
 	}, },
 	-- Frostbite
 	{ label = "Frostbite Chance", haveOutput = "FrostbiteChance", { format = "{0:output:FrostbiteChance}%",
 		{ modName = "FrostbiteChance", cfg = "skill" },
 	}, },
-	{ label = "Frostbite Duration Mod", haveOutput = "EnemyFrostbiteDuration", { format = "x {2:output:EnemyFrostbiteDuration}",
+	{ label = "Increased Frostbite Damage", haveOutput = "FrostbiteDamageInc", { format = "{0:output:FrostbiteDamageInc}%", { modName = "FrostbiteDamage" }, }, },
+	{ label = "Frostbite Duration Mod", haveOutputNotOne = "EnemyFrostbiteDuration", { format = "x {2:output:EnemyFrostbiteDuration}",
 		{ modName = { "EnemyFrostbiteDuration", "Duration" }, cfg = "skill" },
 	}, },
 	-- Stun
 	{ label = "Stun Chance", haveOutput = "StunChance", { format = "{0:output:StunChance}%",
 		{ modName = "StunChance", cfg = "skill" },
 	}, },
-	{ label = "Stun Duration Mod", haveOutput = "EnemyStunDuration", { format = "x {2:output:EnemyStunDuration}",
+	{ label = "Stun Duration Mod", haveOutputNotOne = "EnemyStunDuration", { format = "x {2:output:EnemyStunDuration}",
 		{ modName = { "EnemyStunDuration", "Duration" }, cfg = "skill" },
 	}, },
 	-- Electrify
 	{ label = "Electrify Chance", haveOutput = "ElectrifyChance", { format = "{0:output:ElectrifyChance}%",
 		{ modName = "ElectrifyChance", cfg = "skill" },
 	}, },
-	{ label = "Electrify Duration Mod", haveOutput = "EnemyElectrifyDuration", { format = "x {2:output:EnemyElectrifyDuration}",
+	{ label = "Electrify Duration Mod", haveOutputNotOne = "EnemyElectrifyDuration", { format = "x {2:output:EnemyElectrifyDuration}",
 		{ modName = { "EnemyElectrifyDuration", "Duration" }, cfg = "skill" },
 	}, },
 	-- Armor Shred
@@ -395,42 +414,49 @@ return {
 	{ label = "Armor Shred Effect", haveOutput = "ArmorShredEffect", { format = "x {2:output:ArmorShredEffect}",
 		{ modName = "ArmorShredEffect", cfg = "skill" },
 	}, },
-	{ label = "Armor Shred Duration Mod", haveOutput = "EnemyArmorShredDuration", { format = "x {2:output:EnemyArmorShredDuration}",
+	{ label = "Armor Shred Duration Mod", haveOutputNotOne = "EnemyArmorShredDuration", { format = "x {2:output:EnemyArmorShredDuration}",
 		{ modName = { "EnemyArmorShredDuration", "Duration" }, cfg = "skill" },
 	}, },
 	-- Time Rot
 	{ label = "Time Rot Chance", haveOutput = "TimeRotChance", { format = "{0:output:TimeRotChance}%",
 		{ modName = "TimeRotChance", cfg = "skill" },
 	}, },
-	{ label = "Time Rot Duration Mod", haveOutput = "EnemyTimeRotDuration", { format = "x {2:output:EnemyTimeRotDuration}",
+	{ label = "Time Rot Duration Mod", haveOutputNotOne = "EnemyTimeRotDuration", { format = "x {2:output:EnemyTimeRotDuration}",
 		{ modName = { "EnemyTimeRotDuration", "Duration" }, cfg = "skill" },
-	}, },
-	-- Blind
-	{ label = "Blind Chance", haveOutput = "BlindChance", { format = "{0:output:BlindChance}%",
-		{ modName = "BlindChance", cfg = "skill" },
-	}, },
-	{ label = "Blind Duration Mod", haveOutput = "EnemyBlindDuration", { format = "x {2:output:EnemyBlindDuration}",
-		{ modName = { "EnemyBlindDuration", "Duration" }, cfg = "skill" },
-	}, },
-	-- Slow
-	{ label = "Slow Chance", haveOutput = "SlowChance", { format = "{0:output:SlowChance}%",
-		{ modName = "SlowChance", cfg = "skill" },
-	}, },
-	{ label = "Slow Duration Mod", haveOutput = "EnemySlowDuration", { format = "x {2:output:EnemySlowDuration}",
-		{ modName = { "EnemySlowDuration", "Duration" }, cfg = "skill" },
-	}, },
-	-- Frailty
-	{ label = "Frailty Chance", haveOutput = "FrailtyChance", { format = "{0:output:FrailtyChance}%",
-		{ modName = "FrailtyChance", cfg = "skill" },
-	}, },
-	{ label = "Frailty Duration Mod", haveOutput = "EnemyFrailtyDuration", { format = "x {2:output:EnemyFrailtyDuration}",
-		{ modName = { "EnemyFrailtyDuration", "Duration" }, cfg = "skill" },
 	}, },
 	-- Doom
 	{ label = "Doom Chance", haveOutput = "DoomChance", { format = "{0:output:DoomChance}%",
 		{ modName = "DoomChance", cfg = "skill" },
 	}, },
 	{ label = "Doom Duration Mod", haveOutput = "EnemyDoomDuration", { format = "x {2:output:EnemyDoomDuration}",
+		{ modName = { "EnemyDoomDuration", "Duration" }, cfg = "skill" },
+	}, },
+	-- Blind
+	{ label = "Blind Chance", haveOutput = "BlindChance", { format = "{0:output:BlindChance}%",
+		{ modName = "BlindChance", cfg = "skill" },
+	}, },
+	{ label = "Blind Duration Mod", haveOutputNotOne = "EnemyBlindDuration", { format = "x {2:output:EnemyBlindDuration}",
+		{ modName = { "EnemyBlindDuration", "Duration" }, cfg = "skill" },
+	}, },
+	-- Slow
+	{ label = "Slow Chance", haveOutput = "SlowChance", { format = "{0:output:SlowChance}%",
+		{ modName = "SlowChance", cfg = "skill" },
+	}, },
+	{ label = "Slow Duration Mod", haveOutputNotOne = "EnemySlowDuration", { format = "x {2:output:EnemySlowDuration}",
+		{ modName = { "EnemySlowDuration", "Duration" }, cfg = "skill" },
+	}, },
+	-- Frailty
+	{ label = "Frailty Chance", haveOutput = "FrailtyChance", { format = "{0:output:FrailtyChance}%",
+		{ modName = "FrailtyChance", cfg = "skill" },
+	}, },
+	{ label = "Frailty Duration Mod", haveOutputNotOne = "EnemyFrailtyDuration", { format = "x {2:output:EnemyFrailtyDuration}",
+		{ modName = { "EnemyFrailtyDuration", "Duration" }, cfg = "skill" },
+	}, },
+	-- Doom
+	{ label = "Doom Chance", haveOutput = "DoomChance", { format = "{0:output:DoomChance}%",
+		{ modName = "DoomChance", cfg = "skill" },
+	}, },
+	{ label = "Doom Duration Mod", haveOutputNotOne = "EnemyDoomDuration", { format = "x {2:output:EnemyDoomDuration}",
 		{ modName = { "EnemyDoomDuration", "Duration" }, cfg = "skill" },
 	}, },
 	{ label = "Doom DPS per Stack", haveOutput = "DoomDPSPerStack", { format = "{0:output:DoomDPSPerStack}",
@@ -440,7 +466,7 @@ return {
 	{ label = "Damned Chance", haveOutput = "DamnedChance", { format = "{0:output:DamnedChance}%",
 		{ modName = "DamnedChance", cfg = "skill" },
 	}, },
-	{ label = "Damned Duration Mod", haveOutput = "EnemyDamnedDuration", { format = "x {2:output:EnemyDamnedDuration}",
+	{ label = "Damned Duration Mod", haveOutputNotOne = "EnemyDamnedDuration", { format = "x {2:output:EnemyDamnedDuration}",
 		{ modName = { "EnemyDamnedDuration", "Duration" }, cfg = "skill" },
 	}, },
 	{ label = "Damned DPS per Stack", haveOutput = "DamnedDPSPerStack", { format = "{0:output:DamnedDPSPerStack}",
@@ -450,7 +476,7 @@ return {
 	{ label = "Plague Chance", haveOutput = "PlagueChance", { format = "{0:output:PlagueChance}%",
 		{ modName = "PlagueChance", cfg = "skill" },
 	}, },
-	{ label = "Plague Duration Mod", haveOutput = "EnemyPlagueDuration", { format = "x {2:output:EnemyPlagueDuration}",
+	{ label = "Plague Duration Mod", haveOutputNotOne = "EnemyPlagueDuration", { format = "x {2:output:EnemyPlagueDuration}",
 		{ modName = { "EnemyPlagueDuration", "Duration" }, cfg = "skill" },
 	}, },
 	{ label = "Plague DPS per Stack", haveOutput = "PlagueDPSPerStack", { format = "{0:output:PlagueDPSPerStack}",
@@ -460,7 +486,7 @@ return {
 	{ label = "Witchfire Chance", haveOutput = "WitchfireChance", { format = "{0:output:WitchfireChance}%",
 		{ modName = "WitchfireChance", cfg = "skill" },
 	}, },
-	{ label = "Witchfire Duration Mod", haveOutput = "EnemyWitchfireDuration", { format = "x {2:output:EnemyWitchfireDuration}",
+	{ label = "Witchfire Duration Mod", haveOutputNotOne = "EnemyWitchfireDuration", { format = "x {2:output:EnemyWitchfireDuration}",
 		{ modName = { "EnemyWitchfireDuration", "Duration" }, cfg = "skill" },
 	}, },
 	{ label = "Witchfire DPS", haveOutput = "WitchfireDPSPerStack", { format = "{0:output:WitchfireDPSPerStack}",
@@ -470,7 +496,7 @@ return {
 	{ label = "Spreading Flames Chance", haveOutput = "SpreadingFlamesChance", { format = "{0:output:SpreadingFlamesChance}%",
 		{ modName = "SpreadingFlamesChance", cfg = "skill" },
 	}, },
-	{ label = "Spreading Flames Duration Mod", haveOutput = "EnemySpreadingFlamesDuration", { format = "x {2:output:EnemySpreadingFlamesDuration}",
+	{ label = "Spreading Flames Duration Mod", haveOutputNotOne = "EnemySpreadingFlamesDuration", { format = "x {2:output:EnemySpreadingFlamesDuration}",
 		{ modName = { "EnemySpreadingFlamesDuration", "Duration" }, cfg = "skill" },
 	}, },
 	{ label = "Spreading Flames DPS", haveOutput = "SpreadingFlamesDPSPerStack", { format = "{0:output:SpreadingFlamesDPSPerStack}",
@@ -480,7 +506,7 @@ return {
 	{ label = "Future Strike Chance", haveOutput = "FutureStrikeChance", { format = "{0:output:FutureStrikeChance}%",
 		{ modName = "FutureStrikeChance", cfg = "skill" },
 	}, },
-	{ label = "Future Strike Duration Mod", haveOutput = "EnemyFutureStrikeDuration", { format = "x {2:output:EnemyFutureStrikeDuration}",
+	{ label = "Future Strike Duration Mod", haveOutputNotOne = "EnemyFutureStrikeDuration", { format = "x {2:output:EnemyFutureStrikeDuration}",
 		{ modName = { "EnemyFutureStrikeDuration", "Duration" }, cfg = "skill" },
 	}, },
 	{ label = "Future Strike Damage", haveOutput = "FutureStrikeDamagePerStack", { format = "{0:output:FutureStrikeDamagePerStack}",
@@ -490,7 +516,7 @@ return {
 	{ label = "Abyssal Decay Chance", haveOutput = "AbyssalDecayChance", { format = "{0:output:AbyssalDecayChance}%",
 		{ modName = "AbyssalDecayChance", cfg = "skill" },
 	}, },
-	{ label = "Abyssal Decay Duration Mod", haveOutput = "EnemyAbyssalDecayDuration", { format = "x {2:output:EnemyAbyssalDecayDuration}",
+	{ label = "Abyssal Decay Duration Mod", haveOutputNotOne = "EnemyAbyssalDecayDuration", { format = "x {2:output:EnemyAbyssalDecayDuration}",
 		{ modName = { "EnemyAbyssalDecayDuration", "Duration" }, cfg = "skill" },
 	}, },
 	{ label = "Abyssal Decay DPS", haveOutput = "AbyssalDecayDPSPerStack", { format = "{0:output:AbyssalDecayDPSPerStack}",
@@ -500,7 +526,7 @@ return {
 	{ label = "Spirit Plague Chance", haveOutput = "SpiritPlagueChance", { format = "{0:output:SpiritPlagueChance}%",
 		{ modName = "SpiritPlagueChance", cfg = "skill" },
 	}, },
-	{ label = "Spirit Plague Duration Mod", haveOutput = "EnemySpiritPlagueDuration", { format = "x {2:output:EnemySpiritPlagueDuration}",
+	{ label = "Spirit Plague Duration Mod", haveOutputNotOne = "EnemySpiritPlagueDuration", { format = "x {2:output:EnemySpiritPlagueDuration}",
 		{ modName = { "EnemySpiritPlagueDuration", "Duration" }, cfg = "skill" },
 	}, },
 	{ label = "Spirit Plague DPS", haveOutput = "SpiritPlagueDPSPerStack", { format = "{0:output:SpiritPlagueDPSPerStack}",
@@ -604,6 +630,39 @@ return {
 	{ label = "Time Rot DPS per Stack", haveOutput = "TimeRotDPSPerStack", { format = "{0:output:TimeRotDPSPerStack}",
 		{ modName = { "TimeRotDamage", "AilmentDamage", "VoidDamage", "Damage" }, cfg = "skill" },
 	}, },
+	{ label = "Doom DPS per Stack", haveOutput = "DoomDPSPerStack", { format = "{0:output:DoomDPSPerStack}",
+		{ modName = { "DoomDamage", "AilmentDamage", "VoidDamage", "Damage" }, cfg = "skill" },
+	}, },
+	-- Total ailment DPS (steady-state on a single target: stacks * DPSPerStack)
+	{ label = "Bleed Stacks", haveOutput = "BleedStacks", { format = "{2:output:BleedStacks}", { modName = { }, cfg = "skill" }, }, },
+	{ label = "Bleed DPS", haveOutput = "BleedDPS", { format = "{0:output:BleedDPS}",
+		{ modName = { "BleedChance", "BleedDamage", "AilmentDamage", "PhysicalDamage", "Damage" }, cfg = "skill" },
+	}, },
+	{ label = "Ignite Stacks", haveOutput = "IgniteStacks", { format = "{2:output:IgniteStacks}", { modName = { }, cfg = "skill" }, }, },
+	{ label = "Ignite DPS", haveOutput = "IgniteDPS", { format = "{0:output:IgniteDPS}",
+		{ modName = { "IgniteChance", "IgniteDamage", "AilmentDamage", "FireDamage", "Damage" }, cfg = "skill" },
+	}, },
+	{ label = "Poison Stacks", haveOutput = "PoisonStacks", { format = "{2:output:PoisonStacks}", { modName = { }, cfg = "skill" }, }, },
+	{ label = "Poison DPS", haveOutput = "PoisonDPS", { format = "{0:output:PoisonDPS}",
+		{ modName = { "PoisonChance", "PoisonDamage", "AilmentDamage", "PoisonDamage", "Damage" }, cfg = "skill" },
+	}, },
+	{ label = "Frostbite Stacks", haveOutput = "FrostbiteStacks", { format = "{2:output:FrostbiteStacks}", { modName = { }, cfg = "skill" }, }, },
+	{ label = "Frostbite DPS", haveOutput = "FrostbiteDPS", { format = "{0:output:FrostbiteDPS}",
+		{ modName = { "FrostbiteChance", "FrostbiteDamage", "AilmentDamage", "ColdDamage", "Damage" }, cfg = "skill" },
+	}, },
+	{ label = "Electrify Stacks", haveOutput = "ElectrifyStacks", { format = "{2:output:ElectrifyStacks}", { modName = { }, cfg = "skill" }, }, },
+	{ label = "Electrify DPS", haveOutput = "ElectrifyDPS", { format = "{0:output:ElectrifyDPS}",
+		{ modName = { "ElectrifyChance", "ElectrifyDamage", "AilmentDamage", "LightningDamage", "Damage" }, cfg = "skill" },
+	}, },
+	{ label = "Time Rot Stacks", haveOutput = "TimeRotStacks", { format = "{2:output:TimeRotStacks}", { modName = { }, cfg = "skill" }, }, },
+	{ label = "Time Rot DPS", haveOutput = "TimeRotDPS", { format = "{0:output:TimeRotDPS}",
+		{ modName = { "TimeRotChance", "TimeRotDamage", "AilmentDamage", "VoidDamage", "Damage" }, cfg = "skill" },
+	}, },
+	{ label = "Doom Stacks", haveOutput = "DoomStacks", { format = "{2:output:DoomStacks}", { modName = { }, cfg = "skill" }, }, },
+	{ label = "Doom DPS", haveOutput = "DoomDPS", { format = "{0:output:DoomDPS}",
+		{ modName = { "DoomChance", "DoomDamage", "AilmentDamage", "VoidDamage", "Damage" }, cfg = "skill" },
+	}, },
+	{ label = "Total Ailment DPS", haveOutput = "TotalAilmentDPS", { format = "{0:output:TotalAilmentDPS}", { modName = { }, cfg = "skill" }, }, },
 	-- Resistance Shreds
 	{ label = "Physical Res Shred Chance", haveOutput = "PhysicalResShredChance", { format = "{0:output:PhysicalResShredChance}%",
 		{ modName = "PhysicalResShredChance", cfg = "skill" },
@@ -631,15 +690,15 @@ return {
 		{ modName = "LeechRate", cfg = "skill" },
 	}, },
 	-- Overloads (Warlock)
-	{ label = "Active Overloads", haveOutput = "ActiveOverloads", { format = "{0:output:ActiveOverloads}",
+	{ label = "Active Overloads", classRestriction = "Warlock", haveOutput = "ActiveOverloads", { format = "{0:output:ActiveOverloads}",
 	}, },
-	{ label = "Bleed Overload (more phys DoT)", haveOutput = "BleedOverloadMore", { format = "{0:output:BleedOverloadMore}%",
+	{ label = "Bleed Overload (more phys DoT)", classRestriction = "Warlock", haveOutput = "BleedOverloadMore", { format = "{0:output:BleedOverloadMore}%",
 	}, },
-	{ label = "Ignite Overload (more fire)", haveOutput = "IgniteOverloadMore", { format = "{0:output:IgniteOverloadMore}%",
+	{ label = "Ignite Overload (more fire)", classRestriction = "Warlock", haveOutput = "IgniteOverloadMore", { format = "{0:output:IgniteOverloadMore}%",
 	}, },
-	{ label = "Poison Overload (pen)", haveOutput = "PoisonOverloadPen", { format = "{0:output:PoisonOverloadPen}%",
+	{ label = "Poison Overload (pen)", classRestriction = "Warlock", haveOutput = "PoisonOverloadPen", { format = "{0:output:PoisonOverloadPen}%",
 	}, },
-	{ label = "Damned Overload (more damned)", haveOutput = "DamnedOverloadMore", { format = "{0:output:DamnedOverloadMore}%",
+	{ label = "Damned Overload (more damned)", classRestriction = "Warlock", haveOutput = "DamnedOverloadMore", { format = "{0:output:DamnedOverloadMore}%",
 	}, },
 } }
 } },
@@ -662,7 +721,19 @@ return {
 			table.insert(rows, { label = AttributesColored[i], haveOutput = stat, { format = "{0:output:" .. stat .. "}", { breakdown = stat }, { modName = stat }, }, })
 			local conv = s4Pair[stat]
 			if conv then
-				table.insert(rows, { label = conv.color .. "  " .. conv.stat, haveOutput = conv.stat, { format = "{0:output:" .. conv.stat .. "}", }, })
+				-- @leb-regression-guard:s4-converted-attr-table-from-source
+				-- A Season-4 converted attribute (Brutality/Guile/Madness/Apathy/
+				-- Rampancy) takes its value from the SOURCE attribute it replaced
+				-- (Str/Dex/Int/Att/Vit). Its per-source breakdown TABLE is therefore
+				-- driven by the SOURCE attribute's modName (`stat`, NOT `conv.stat`),
+				-- so AddModSection tabulates and resolves Str's mods (item names,
+				-- passive-node display names, equipment slots) — giving the converted
+				-- attribute the SAME per-source table every other attribute shows,
+				-- instead of an empty table (it has no mods under its own name). The
+				-- short conversion summary above the table is breakdown[conv.stat]
+				-- (CalcPerform). See guard `s4-converted-attr-source-breakdown` and
+				-- spec/System/TestS4ConvertedAttrBreakdown_spec.lua.
+				table.insert(rows, { label = conv.color .. "  " .. conv.stat, haveOutput = conv.stat, { format = "{0:output:" .. conv.stat .. "}", { breakdown = conv.stat }, { modName = stat }, }, })
 			end
 		end
 		return rows
@@ -678,7 +749,7 @@ return {
 	{ label = "Total Increased", { format = "{0:mod:1}%", { modName = "Life", modType = "INC", }, }, },
 	{ label = "Total More", { format = "{0:mod:1}%", { modName = "Life", modType = "MORE", }, }, },
 	{ label = "Total", { format = "{0:output:Life}", { breakdown = "Life" }, }, },
-	{ label = "Recovery", { format = "{1:output:LifeRegenRecovery} ({1:output:LifeRegenPercent}%)",
+	{ label = "Regen", { format = "{1:output:LifeRegenRecovery} ({1:output:LifeRegenPercent}%)",
 		{ breakdown = "LifeRegenRecovery" },
 		{ label = "Sources", modName = { "LifeRegen", "LifeRegenPercent", "LifeDegen", "LifeDegenPercent", "LifeRecovery" }, modType = "BASE" },
 		{ label = "Increased Life Regeneration Rate", modName = { "LifeRegen" }, modType = "INC" },
@@ -695,7 +766,7 @@ return {
 	{ label = "Total Base", { format = "{0:mod:1}", { modName = "Mana", modType = "BASE" }, }, },
 	{ label = "Total Increased", { format = "{0:mod:1}%", { modName = "Mana", modType = "INC" }, }, },
 	{ label = "Total", { format = "{0:output:Mana}", { breakdown = "Mana" }, }, },
-	{ label = "Recovery", { format = "{1:output:ManaRegenRecovery} ({1:output:ManaRegenPercent}%)",
+	{ label = "Regen", { format = "{1:output:ManaRegenRecovery} ({1:output:ManaRegenPercent}%)",
 		{ breakdown = "ManaRegenRecovery" },
 		{ label = "Sources", modName = { "ManaRegen", "ManaRegenPercent", "ManaDegen", "ManaDegenPercent", "ManaRecovery" }, modType = "BASE" },
 		{ label = "Increased Mana Regeneration Rate", modName = { "ManaRegen" }, modType = "INC" },
@@ -708,7 +779,7 @@ return {
 	extra = "{0:output:Ward}",
 	{ label = "Retention", { format = "{0:output:WardRetention}%", { modName = "WardRetention" } }, },
 	{ label = "Decay Threshold", { format = "{0:output:WardDecayThreshold}", { modName = "WardDecayThreshold" } }, },
-	{ label = "Ward Per Second", { format = "{0:output:WardPerSecond}", { modName = "WardPerSecond" } }, },
+	{ label = "Ward Per Second", { format = "{0:output:WardPerSecond}", { breakdown = "WardPerSecond" }, { modName = "WardPerSecond" } }, },
 	{ label = "Decay Per Second", haveOutput = "WardDecayPerSecond", { format = "{0:output:WardDecayPerSecond}", { breakdown = "WardDecayPerSecond" }, }, },
 	{ label = "Net Regen", haveOutput = "NetWardRegen", { format = "{0:output:NetWardRegen}", }, },
 	{ label = "Total", { format = "{0:output:Ward}", { breakdown = "Ward" }, }, },
@@ -717,7 +788,18 @@ return {
 { 1, "Endurance", 2, colorCodes.WARD, {{ defaultCollapsed = false, label = "Endurance", data = {
 	extra = "{0:output:Endurance}%",
 	{ label = "Threshold ", { format = "{0:output:EnduranceThreshold}", { modName = "EnduranceThreshold" } }, },
+	{ label = "Health as Endurance Threshold", haveOutput = "LifeAsEnduranceThreshold", { format = "{0:output:LifeAsEnduranceThreshold}%", { modName = "LifeAsEnduranceThreshold" }, }, },
 	{ label = "Total", { format = "{0:output:Endurance}%", { modName = "Endurance" }, }, },
+} }
+} },
+-- Set Bonuses: visible only when at least one set piece is equipped.
+-- Frame color = set rarity green (colorCodes.SET) per LE convention.
+-- Sorted complete-first, then by name; complete sets prefixed with '*'.
+{ 1, "SetBonuses", 2, colorCodes.SET, {{ defaultCollapsed = false, label = "Set Bonuses", data = {
+	haveOutput = "SetBreakdown",
+	extra = "{0:output:SetBreakdown} equipped ({0:output:CompleteSetCount} complete)",
+	{ label = "Equipped Sets", haveOutput = "SetBreakdown", { format = "{0:output:SetBreakdown}", { breakdown = "SetBreakdown" }, }, },
+	{ label = "Complete Sets", haveOutput = "SetBreakdown", { format = "{0:output:CompleteSetCount}", }, },
 } }
 } },
 -- secondary defenses
@@ -762,7 +844,8 @@ return {
 	{ label = "Taken From Block", haveOutput = "ShowBlockEffect", { format = "{0:output:DamageTakenOnBlock}%", }, },
 	{ label = "Life on Block", haveOutput = "LifeOnBlock", { format = "{0:output:LifeOnBlock}", { modName = "LifeOnBlock" }, }, },
 	{ label = "Mana on Block", haveOutput = "ManaOnBlock", { format = "{0:output:ManaOnBlock}", { modName = "ManaOnBlock" }, }, },
-	{ label = "Ward on Potion Use", haveOutput = "WardOnPotionUse", { format = "{0:output:WardOnPotionUse}", { modName = "WardOnPotionUse" }, }, },
+	{ label = "Ward on Block", haveOutput = "WardOnBlock", { format = "{0:output:WardOnBlock}", { breakdown = "WardOnBlock" }, { modName = { "WardOnBlock", "CurrentManaGainedAsWardOnBlock" } }, }, },
+	{ label = "Ward on Potion Use", haveOutput = "WardOnPotionUse", { format = "{0:output:WardOnPotionUse}", { breakdown = "WardOnPotionUse" }, { modName = { "WardOnPotionUse", "MissingHealthGainedAsWardOnPotionUse" } }, }, },
 	{ label = "Mana on Potion Use", haveOutput = "ManaOnPotionUse", { format = "{0:output:ManaOnPotionUse}", { modName = "ManaOnPotionUse" }, }, },
 	{ label = "Life on Potion Use", haveOutput = "LifeOnPotionUse", { format = "{0:output:LifeOnPotionUse}", { modName = "LifeOnPotionUse" }, }, },
 	{ label = "Ward on Skill Use", haveOutput = "WardOnSkillUse", { format = "{0:output:WardOnSkillUse}", { modName = "WardOnSkillUse" }, }, },
@@ -780,12 +863,111 @@ return {
 	{ label = "Movement Speed", { format = "x {2:output:EffectiveMovementSpeedMod}", { breakdown = "EffectiveMovementSpeedMod" }, { modName = { "MovementSpeed", "MovementSpeedEqualHighestLinkedPlayers" } }, }, },
 	{ label = "Parry Chance", haveOutput = "ParryChance", { format = "{0:output:ParryChance}%", { modName = "ParryChance" }, }, },
 	{ label = "Dmg to Mana Before Health", haveOutput = "DamageToManaBeforeHealth", { format = "{0:output:DamageToManaBeforeHealth}%", { modName = "DamageToManaBeforeHealth" }, }, },
+	{ label = "Dmg to Mana Before Ward", haveOutput = "DamageToManaBeforeWard", { format = "{0:output:DamageToManaBeforeWard}%", { modName = "DamageToManaBeforeWard" }, }, },
 	{ label = "Chance to Chill Attackers", haveOutput = "ChanceToChillAttackers", { format = "{0:output:ChanceToChillAttackers}%", { modName = "ChanceToChillAttackers" }, }, },
 	{ label = "Chance to Slow Attackers", haveOutput = "ChanceToSlowAttackers", { format = "{0:output:ChanceToSlowAttackers}%", { modName = "ChanceToSlowAttackers" }, }, },
 	{ label = "Chance to Shock Attackers", haveOutput = "ChanceToShockAttackers", { format = "{0:output:ChanceToShockAttackers}%", { modName = "ChanceToShockAttackers" }, }, },
 	{ label = "Glancing Blow Chance", haveOutput = "GlancingBlowChance", { format = "{0:output:GlancingBlowChance}%", { modName = "GlancingBlowChance" }, }, },
-	{ label = "Crit Avoidance", haveOutput = "CritAvoidance", { format = "{0:output:CritAvoidance}%", { modName = "CritAvoidance" }, }, },
+	{ label = "Critical Strike Avoidance", { format = "{0:output:CritAvoidance}%", { modName = "CritAvoidance" }, }, },
+	{ label = "Reduced Bonus Damage From Crits", { format = "{0:output:CritExtraDamageReduction}%", { modName = "ReduceCritExtraDamage" }, }, },
 	{ label = "Stun Avoidance", haveOutput = "StunAvoidance", { format = "{0:output:StunAvoidance}", { modName = "StunAvoidance" }, }, },
+	{ label = "Damage Reflected to Attackers", haveOutput = "DamageReflectedToAttackers", { format = "{0:output:DamageReflectedToAttackers}", { modName = "DamageReflectedToAttackers" }, }, },
+	{ label = "% of Damage Reflected", haveOutput = "DamageReflectedPercent", { format = "{0:output:DamageReflectedPercent}%", { modName = "DamageReflectedPercent" }, }, },
+	{ label = "Less Damage Taken", haveOutput = "LessDamageTakenStr", { format = "{output:LessDamageTakenStr}", { modName = "DamageTaken" }, }, },
+	{ label = "Less Damage Over Time Taken", haveOutput = "LessDamageOverTimeTakenStr", { format = "{output:LessDamageOverTimeTakenStr}",
+		{ breakdown = "DamageOverTimeTakenIncrease" },
+		{ modName = { "DamageTaken", "DamageTakenOverTime" } },
+	}, },
+	{ label = "Less DoT Taken (with 15% baseline)", haveOutput = "LessDamageOverTimeTaken", { format = "{2:output:LessDamageOverTimeTaken}%",
+		{ breakdown = "LessDamageOverTimeTaken" },
+	}, },
+	{ label = "Damage Taken While Moving", haveOutput = "DamageTakenWhileMoving", { format = "{2:output:DamageTakenWhileMoving}%", { modName = "DamageTaken" }, }, },
+	{ label = "Damage Taken From Nearby Enemies", haveOutput = "DamageTakenFromNearbyEnemies", { format = "{2:output:DamageTakenFromNearbyEnemies}%", { modName = "DamageTaken" }, }, },
+	{ label = "Increased Leech Rate", haveOutput = "LeechRateInc", { format = "{0:output:LeechRateInc}%", { modName = "LeechRate" }, }, },
+	{ label = "Health Gain on Hit", haveOutput = "LifeOnHit", { format = "{0:output:LifeOnHit}", { modName = "LifeOnHit" }, }, },
+	{ label = "Health Gain on Melee Hit", haveOutput = "LifeOnMeleeHit", { format = "{0:output:LifeOnMeleeHit}", { modName = "LifeOnMeleeHit" }, }, },
+	{ label = "Health Gain on Kill", haveOutput = "LifeOnKill", { format = "{0:output:LifeOnKill}", { modName = "LifeOnKill" }, }, },
+	{ label = "Health Gain on Block", haveOutput = "LifeOnBlock", { format = "{0:output:LifeOnBlock}", { modName = "LifeOnBlock" }, }, },
+	{ label = "Health Gain on Potion Use", haveOutput = "LifeOnPotionUse", { format = "{0:output:LifeOnPotionUse}", { modName = "LifeOnPotionUse" }, }, },
+	{ label = "Health Gain on Stun", haveOutput = "LifeOnStun", { format = "{0:output:LifeOnStun}", { modName = "LifeOnStun" }, }, },
+	{ label = "Health Gain on Freeze", haveOutput = "LifeOnFreeze", { format = "{0:output:LifeOnFreeze}", { modName = "LifeOnFreeze" }, }, },
+	{ label = "Health Gain on Crit", haveOutput = "LifeOnCrit", { format = "{0:output:LifeOnCrit}", { modName = "LifeOnCrit" }, }, },
+	{ label = "Overkill Leech", haveOutput = "OverkillLeech", { format = "{0:output:OverkillLeech}", { modName = "OverkillLeech" }, }, },
+	{ label = "Potion Refill On Kill", haveOutput = "ChanceToFindPotions", { format = "{0:output:ChanceToFindPotions}%", { modName = "ChanceToFindPotions" }, }, },
+	{ label = "Mana Efficiency", haveOutput = "ManaEfficiency", { format = "{0:output:ManaEfficiency}%", { modName = "ManaEfficiency" }, }, },
+	{ label = "Increased Healing Effectiveness", haveOutput = "HealingEffectiveness", { format = "{0:output:HealingEffectiveness}%", { modName = "HealingEffectiveness" }, }, },
+	{ label = "Increased Cooldown Recovery Speed", haveOutput = "CooldownRecovery", { format = "{0:output:CooldownRecovery}%", { modName = "CooldownRecovery" }, }, },
+	{ label = "Double Damage Chance", haveOutput = "DoubleDamageChance", { format = "{0:output:DoubleDamageChance}%", { modName = "DoubleDamageChance" }, }, },
+	{ label = "Increased Stun Chance", haveOutput = "StunChanceInc", { format = "{0:output:StunChanceInc}%", { modName = "StunChance" }, }, },
+	{ label = "Increased Melee Stun Chance", haveOutput = "MeleeStunChanceInc", { format = "{0:output:MeleeStunChanceInc}%", { modName = "StunChance" }, }, },
+	{ label = "Increased Area Of Effect", haveOutput = "AreaOfEffectInc", { format = "{0:output:AreaOfEffectInc}%", { modName = "AreaOfEffect" }, }, },
+	{ label = "Increased Melee Area Of Effect", haveOutput = "MeleeAreaOfEffectInc", { format = "{0:output:MeleeAreaOfEffectInc}%", { modName = "AreaOfEffect" }, }, },
+	{ label = "Ward on Hit", haveOutput = "WardOnHit", { format = "{0:output:WardOnHit}", { modName = "WardOnHit" }, }, },
+	{ label = "Ward on Critical Strike", haveOutput = "WardOnCrit", { format = "{0:output:WardOnCrit}", { modName = "WardOnCrit" }, }, },
+	{ label = "Ward on Kill", haveOutput = "WardOnKill", { format = "{0:output:WardOnKill}", { modName = "WardOnKill" }, }, },
+	{ label = "Ward Bypass", haveOutput = "WardBypass", { format = "{0:output:WardBypass}%", { modName = "WardBypass" }, }, },
+	{ label = "Health Regen Applies to Ward", haveOutput = "LifeRegenAppliesToWard", { format = "{0:output:LifeRegenAppliesToWard}%", { modName = "LifeRegenAppliesToWard" }, }, },
+	{ label = "Potion Health Converted to Ward", haveOutput = "PotionHealthConvertedToWard", { format = "{0:output:PotionHealthConvertedToWard}%", { modName = "PotionHealthConvertedToWard" }, }, },
+	{ label = "Increased Haste Effect", haveOutput = "HasteEffect", { format = "{0:output:HasteEffect}%", { modName = "HasteEffect" }, }, },
+	{ label = "Increased Frenzy Effect", haveOutput = "FrenzyEffect", { format = "{0:output:FrenzyEffect}%", { modName = "FrenzyEffect" }, }, },
+	{ label = "Maximum Companions", haveOutput = "MaxCompanions", { format = "{0:output:MaxCompanions}", { modName = "MaxCompanions" }, }, },
+	-- @leb-regression-guard: max-shadows-output-wiring
+	{ label = "Maximum Shadows", haveOutput = "MaxShadows", { format = "{0:output:MaxShadows}", { modName = "MaxShadows" }, }, },
+	{ label = "Potion Slots", haveOutput = "PotionSlots", { format = "{0:output:PotionSlots}", { modName = "PotionSlots" }, }, },
+	{ label = "Minion Power From Char Level", haveOutput = "MinionPowerFromCharLevel", { format = "{1:output:MinionPowerFromCharLevel}%", { modName = "MinionPowerFromCharLevel" }, }, },
+	{ label = "Increased Minion Health", haveOutput = "MinionLifeInc", { format = "{0:output:MinionLifeInc}%", { modName = "MinionModifier" }, }, },
+	{ label = "Minion Health Regen", haveOutput = "MinionLifeRegen", { format = "{0:output:MinionLifeRegen}", { modName = "MinionModifier" }, }, },
+	{ label = "Increased Minion Health Regen", haveOutput = "MinionLifeRegenInc", { format = "{0:output:MinionLifeRegenInc}%", { modName = "MinionModifier" }, }, },
+	{ label = "Minion Dodge Rating", haveOutput = "MinionEvasion", { format = "{0:output:MinionEvasion}", { modName = "MinionModifier" }, }, },
+	{ label = "Increased Minion Dodge Rating", haveOutput = "MinionEvasionInc", { format = "{0:output:MinionEvasionInc}%", { modName = "MinionModifier" }, }, },
+	{ label = "Minion Armor", haveOutput = "MinionArmour", { format = "{0:output:MinionArmour}", { modName = "MinionModifier" }, }, },
+	{ label = "Increased Minion Armor", haveOutput = "MinionArmourInc", { format = "{0:output:MinionArmourInc}%", { modName = "MinionModifier" }, }, },
+	{ label = "Minion Crit Avoidance", haveOutput = "MinionCritAvoidance", { format = "{0:output:MinionCritAvoidance}%", { modName = "MinionModifier" }, }, },
+	{ label = "Minion Reduced Bonus Crit Damage", haveOutput = "MinionReduceCritExtraDamage", { format = "{0:output:MinionReduceCritExtraDamage}%", { modName = "MinionModifier" }, }, },
+	-- @leb-regression-guard: minion-melee-attack-speed-label
+	-- Label is "Melee Attack Speed", not bare "Attack Speed". Game files
+	-- (datamined game source AT enum: Melee=512, Throwing=1024, Bow=2048; SP AttackSpeed=2)
+	-- have no unqualified attack-speed stat -- both the player and minion
+	-- character sheets only expose Melee/Bow/Throwing Attack Speed + Cast
+	-- Speed. The minion attack-speed surface is the Melee one, so the
+	-- in-game minion tab shows "Increased Minion Melee Attack Speed" plus a
+	-- separate "Increased Minion Cast Speed" row. The backing output
+	-- `MinionAttackSpeed` aggregates the ModFlag.Attack (=Melee|Bow|Throwing)
+	-- bucket; both the generic "Increased Minion Attack Speed" tree text and
+	-- the Melee-tagged affix (whitelist 2/512,8192/0) parse to flags=3584
+	-- (bor(Melee,Attack)=Attack), so this single row covers both. Cast Speed
+	-- (SP=3) is its own property. See REGRESSION_GUARDS.md and
+	-- spec/minion-whitelist/MinionWhitelistCoverage_spec.lua mapping
+	-- 2/512,8192/0 -> MinionAttackSpeed, 3/8192/0 -> MinionCastSpeed.
+	{ label = "Increased Minion Melee Attack Speed", haveOutput = "MinionAttackSpeed", { format = "{0:output:MinionAttackSpeed}%", { modName = "MinionModifier" }, }, },
+	{ label = "Increased Minion Cast Speed", haveOutput = "MinionCastSpeed", { format = "{0:output:MinionCastSpeed}%", { modName = "MinionModifier" }, }, },
+	{ label = "Minion Movement Speed", haveOutput = "MinionMovementSpeed", { format = "{0:output:MinionMovementSpeed}%", { modName = "MinionModifier" }, }, },
+	{ label = "Minion Fire Resistance", haveOutput = "MinionFireResist", { format = "{0:output:MinionFireResist}%", { modName = "MinionModifier" }, }, },
+	{ label = "Minion Cold Resistance", haveOutput = "MinionColdResist", { format = "{0:output:MinionColdResist}%", { modName = "MinionModifier" }, }, },
+	{ label = "Minion Lightning Resistance", haveOutput = "MinionLightningResist", { format = "{0:output:MinionLightningResist}%", { modName = "MinionModifier" }, }, },
+	{ label = "Minion Physical Resistance", haveOutput = "MinionPhysicalResist", { format = "{0:output:MinionPhysicalResist}%", { modName = "MinionModifier" }, }, },
+	{ label = "Minion Necrotic Resistance", haveOutput = "MinionNecroticResist", { format = "{0:output:MinionNecroticResist}%", { modName = "MinionModifier" }, }, },
+	{ label = "Minion Poison Resistance", haveOutput = "MinionPoisonResist", { format = "{0:output:MinionPoisonResist}%", { modName = "MinionModifier" }, }, },
+	{ label = "Minion Void Resistance", haveOutput = "MinionVoidResist", { format = "{0:output:MinionVoidResist}%", { modName = "MinionModifier" }, }, },
+	{ label = "Minion Healing Effectiveness", haveOutput = "MinionHealingEffectiveness", { format = "{0:output:MinionHealingEffectiveness}%", { modName = "MinionModifier" }, }, },
+	{ label = "Minion Cooldown Recovery Speed", haveOutput = "MinionCooldownRecovery", { format = "{0:output:MinionCooldownRecovery}%", { modName = "MinionModifier" }, }, },
+	{ label = "Minion Damage Reflected", haveOutput = "MinionDamageReflected", { format = "{0:output:MinionDamageReflected}%", { modName = "MinionModifier" }, }, },
+	{ label = "Companion Revive Speed", haveOutput = "MinionCompanionReviveSpeed", { format = "{0:output:MinionCompanionReviveSpeed}%", { modName = "MinionModifier" }, }, },
+	{ label = "Companion Revive Range", haveOutput = "MinionCompanionReviveRange", { format = "{0:output:MinionCompanionReviveRange}%", { modName = "MinionModifier" }, }, },
+	{ label = "Increased Minion Physical Damage", haveOutput = "MinionPhysicalDamageInc", { format = "{0:output:MinionPhysicalDamageInc}%", { modName = "MinionModifier" }, }, },
+	{ label = "Increased Minion Fire Damage", haveOutput = "MinionFireDamageInc", { format = "{0:output:MinionFireDamageInc}%", { modName = "MinionModifier" }, }, },
+	{ label = "Increased Minion Cold Damage", haveOutput = "MinionColdDamageInc", { format = "{0:output:MinionColdDamageInc}%", { modName = "MinionModifier" }, }, },
+	{ label = "Increased Minion Lightning Damage", haveOutput = "MinionLightningDamageInc", { format = "{0:output:MinionLightningDamageInc}%", { modName = "MinionModifier" }, }, },
+	{ label = "Increased Minion Necrotic Damage", haveOutput = "MinionNecroticDamageInc", { format = "{0:output:MinionNecroticDamageInc}%", { modName = "MinionModifier" }, }, },
+	{ label = "Increased Minion Poison Damage", haveOutput = "MinionPoisonDamageInc", { format = "{0:output:MinionPoisonDamageInc}%", { modName = "MinionModifier" }, }, },
+	{ label = "Increased Minion Void Damage", haveOutput = "MinionVoidDamageInc", { format = "{0:output:MinionVoidDamageInc}%", { modName = "MinionModifier" }, }, },
+	{ label = "Minion Physical Penetration", haveOutput = "MinionPhysicalPenetration", { format = "{0:output:MinionPhysicalPenetration}%", { modName = "MinionModifier" }, }, },
+	{ label = "Minion Fire Penetration", haveOutput = "MinionFirePenetration", { format = "{0:output:MinionFirePenetration}%", { modName = "MinionModifier" }, }, },
+	{ label = "Minion Cold Penetration", haveOutput = "MinionColdPenetration", { format = "{0:output:MinionColdPenetration}%", { modName = "MinionModifier" }, }, },
+	{ label = "Minion Lightning Penetration", haveOutput = "MinionLightningPenetration", { format = "{0:output:MinionLightningPenetration}%", { modName = "MinionModifier" }, }, },
+	{ label = "Minion Necrotic Penetration", haveOutput = "MinionNecroticPenetration", { format = "{0:output:MinionNecroticPenetration}%", { modName = "MinionModifier" }, }, },
+	{ label = "Minion Poison Penetration", haveOutput = "MinionPoisonPenetration", { format = "{0:output:MinionPoisonPenetration}%", { modName = "MinionModifier" }, }, },
+	{ label = "Minion Void Penetration", haveOutput = "MinionVoidPenetration", { format = "{0:output:MinionVoidPenetration}%", { modName = "MinionModifier" }, }, },
 } },
 } },
 -- damage taken

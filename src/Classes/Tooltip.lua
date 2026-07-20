@@ -55,17 +55,27 @@ end
 function TooltipClass:AddLine(size, text, font)
 	if text then
 		for line in s_gmatch(text .. "\n", "([^\n]*)\n") do
-			if line:match("^.*(Equipping)") == "Equipping" or line:match("^.*(Removing)") == "Removing" then
+			local isSection = line:match("^.*(Equipping)") == "Equipping" or line:match("^.*(Removing)") == "Removing"
+			if isSection then
 				t_insert(self.blocks, { height = size + 2})
-			else
-				self.blocks[#self.blocks].height = self.blocks[#self.blocks].height + size + 2
 			end
 			if self.maxWidth then
-				for _, line in ipairs(main:WrapString(line, size, self.maxWidth - H_PAD)) do
-					t_insert(self.lines, { size = size, text = line, block = #self.blocks, font = font })
+				local wrapped = main:WrapString(line, size, self.maxWidth - H_PAD)
+				for _, wline in ipairs(wrapped) do
+					t_insert(self.lines, { size = size, text = wline, block = #self.blocks, font = font })
+				end
+				-- Account for every visual row produced by wrapping, not just
+				-- the original single line. Without this the block's height
+				-- under-counts wrapped mod lines and the bottom border can
+				-- crop them.
+				if not isSection then
+					self.blocks[#self.blocks].height = self.blocks[#self.blocks].height + (size + 2) * #wrapped
 				end
 			else
 				t_insert(self.lines, { size = size, text = line, block = #self.blocks, font = font })
+				if not isSection then
+					self.blocks[#self.blocks].height = self.blocks[#self.blocks].height + size + 2
+				end
 			end
 		end
 	end
@@ -176,15 +186,27 @@ function TooltipClass:Draw(x, y, w, h, viewPort)
 	local ttX = x
 	local ttY = y
 	if w and h then
-		ttX = ttX + w + 5
-		if ttX + ttW > viewPort.x + viewPort.width then
-			ttX = m_max(viewPort.x, x - 5 - ttW)
-			if ttX + ttW > x then
-				ttY = ttY + h
+		if self.placeBelow then
+			ttX = m_floor(x + w/2 - ttW/2)
+			ttY = y + h + 2
+			if ttX < viewPort.x then ttX = viewPort.x end
+			if ttX + ttW > viewPort.x + viewPort.width then
+				ttX = viewPort.x + viewPort.width - ttW
 			end
-		end
-		if ttY + ttH > viewPort.y + viewPort.height then
-			ttY = m_max(viewPort.y, y + h - ttH)
+			if ttY + ttH > viewPort.y + viewPort.height then
+				ttY = m_max(viewPort.y, y - ttH - 2)
+			end
+		else
+			ttX = ttX + w + 5
+			if ttX + ttW > viewPort.x + viewPort.width then
+				ttX = m_max(viewPort.x, x - 5 - ttW)
+				if ttX + ttW > x then
+					ttY = ttY + h
+				end
+			end
+			if ttY + ttH > viewPort.y + viewPort.height then
+				ttY = m_max(viewPort.y, y + h - ttH)
+			end
 		end
 	elseif self.center then
 		ttX = m_floor(x - ttW/2)

@@ -1,6 +1,9 @@
 # Build scripts (internal)
 scripts/
 
+# Scratch / one-shot patch directory
+.tmp/
+
 # Development tools
 .idea/
 .vs/
@@ -23,6 +26,10 @@ spec/test_generation.log
 spec/TestBuilds/
 src/luacov.stats.out
 
+# Python bytecode caches
+__pycache__/
+*.pyc
+
 # Release
 manifest-updated.xml
 
@@ -38,16 +45,21 @@ debug.log
 src/*.log
 src/Settings.xml
 
+# Notes runtime image cache (downloaded on demand, regenerable)
+src/Data/NotesImageCache/
+
 # Distribution archives
 runtime-win32.zip
 
 # AI assistant context files (internal use only - never commit to public repo)
 CLAUDE.md
+MEMORY.md
 QWEN.md
 GEMINI.md
 AGENTS.md
 .claude/
 .claudeignore
+.codex/
 .opencode/
 .cursor/
 .aider*
@@ -75,5 +87,51 @@ src/Assets/items/
 # LETools import debug dumps
 letools_raw.json
 src/letools_raw.json
+# Maxroll account API debug dumps
+*_maxroll_api.json
 # Internal skill verification data (contains test build filenames)
 docs/skill_usage_raw.csv
+
+# Scratch dir for throwaway diagnostic / dump tools (never committed)
+spec/_scratch/
+# One-shot diagnostic spec runners (kept locally, not for public repo)
+spec/Dump*.lua
+spec/Debug*.lua
+spec/RegenOneBuild.lua
+# Internal test-build ingestion drivers (pull external planner data into the
+# private TestBuilds corpus; not used by CI, no value to LEB end users)
+spec/ImportLEToolsBuild.lua
+spec/ImportLEToolsBuildList.lua
+spec/ImportProfileBuild.lua
+spec/ImportMaxrollAccount.lua
+spec/ImportSaveToXML.lua
+# Internal snapshot-generator variants for the PRIVATE TestBuilds corpus.
+# CI only invokes GenerateBuilds.lua (nightly `busted -r generate`); these
+# variants operate on builds public users do not have, so they are dev-only.
+# GenerateBuilds.lua itself stays tracked (CI dependency, PoB-parity).
+spec/GenerateBuilds14.lua
+spec/GenerateFromList.lua
+spec/GenerateOneBuild.lua
+spec/GenerateSnapshotsFromList.lua
+# Internal dev/diagnostic tooling lives wholesale under spec/tools/ and is
+# never published: scrapers, CDP probes, stat-diff, datamining extractors.
+# FORWARD RULE: put any new internal scrape/probe/diff/extract/diagnostic
+# tool here so it is private by default. CI tests (*_spec.lua) and data
+# artifacts they consume must NOT live under spec/tools/.
+spec/tools/
+/*.log
+
+# @leb-regression-guard:handoffs-not-in-repo
+# Local hand-off notes are not repository documentation. Root-anchored so an
+# accidentally created General/ directory stays untracked without catching the
+# tracked src/Data/LEToolsImport/**/tab_gen_General___*.json files.
+# Repository documentation belongs in docs/. Verify with `git add -A --dry-run`.
+# Test: spec/System/TestHandoffsNotInRepo_spec.lua "ignores General/"
+# See REGRESSION_GUARDS.md "handoffs-not-in-repo".
+/General/
+
+# Local working task list: holds internal task descriptions, branch names, and
+# analysis notes with no value to end users. Kept untracked so `git add -A`
+# cannot sweep it into the public repo. Root-anchored so a docs/TODO.md (if one
+# is ever intentionally published) is unaffected.
+/TODO.md

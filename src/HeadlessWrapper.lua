@@ -164,6 +164,29 @@ dofile("Launch.lua")
 runCallback("OnInit")
 runCallback("OnFrame") -- Need at least one frame for everything to initialise
 
+-- @leb-regression-guard: rounding-mode-headless-flip
+-- HeadlessWrapper MUST flip `itemLib.useLEToolsRounding = true` after
+-- OnInit so every spec/ fixture (TestBuilds snapshots, Generate14, etc.)
+-- runs with LETools-compatible round-half-up. Removing this flip breaks
+-- ~all `.lua` snapshots by ±1/affix where the interpolated value lands
+-- on a half-step. Without this, `node scripts/letools-diff.js` becomes
+-- noisy with rounding-mode artefacts and Bug B-style triangulation
+-- breaks (snapshot vs live values diverge silently). <private build> lv62
+-- Warlock (2026-05-05) was the first build where the live/snapshot
+-- divergence created a phantom +2 Vit residual.
+-- Test: spec/System/TestItemTools_spec.lua "HeadlessWrapper enables
+--       LETools mode for spec/ runs"
+-- Establishing reference: see git log
+--
+-- Tests and snapshot generation use LETools-compatible round-half-up for
+-- `% increased/reduced/more/less` affixes (production default is floor to
+-- match in-game tooltip). Flipping here after init keeps spec/ fixtures
+-- stable; ItemTools is only loaded by Launch.lua → main:Init, so this must
+-- run after OnInit, not before dofile() returns.
+if itemLib then
+	itemLib.useLEToolsRounding = true
+end
+
 if mainObject.promptMsg then
 	-- Something went wrong during startup
 	print(mainObject.promptMsg)

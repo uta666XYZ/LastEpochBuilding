@@ -17,6 +17,19 @@ local bor = bit.bor
 
 local mod_createMod = modLib.createMod
 
+-- Season 4 (1.4): converted attribute twins. Text-parsed "Per <BaseAttr>" mods
+-- (passive nodes / item affixes) count the converted twin as well — Brutality
+-- counts as Strength for "Per Strength" passives etc. Intrinsic character
+-- bonuses (+4% Armour PerStat:Str etc.) bypass this by using PerStat:RawStr.
+-- @leb-regression-guard:s4-perstat-base-includes-converted-twin
+local s4ConvertedTwin = {
+	Str = "Brutality",
+	Dex = "Guile",
+	Int = "Madness",
+	Att = "Apathy",
+	Vit = "Rampancy",
+}
+
 -- Magic tables for caching multiplier/condition modifier names
 local multiplierName = setmetatable({ }, { __index = function(t, var)
 	t[var] = "Multiplier:"..var
@@ -36,10 +49,16 @@ end)
 
 function ModStoreClass:ScaleAddMod(mod, scale)
 	local unscalable = false
+	-- @leb-regression-guard:scaleaddmod-stacking-coeff-fractional-retention
+	-- See REGRESSION_GUARDS.md "scaleaddmod-stacking-coeff-fractional-retention".
+	-- Validation provenance is retained in maintainer notes.
+	local hasStackingTag = false
 	for _, effects in ipairs(mod) do
 		if effects.unscalable then
 			unscalable = true
-			break
+		end
+		if effects.type == "Multiplier" or effects.type == "PerStat" then
+			hasStackingTag = true
 		end
 	end
 	if scale == 1 or unscalable then
@@ -60,6 +79,9 @@ function ModStoreClass:ScaleAddMod(mod, scale)
 			if precision then
 				local power = 10 ^ precision
 				subMod.value = math.floor(subMod.value * scale * power) / power
+			elseif hasStackingTag then
+				-- Retain the scaled fractional coefficient (see guard comment above).
+				subMod.value = round(subMod.value * scale, 2)
 			else
 				subMod.value = m_modf(round(subMod.value * scale, 2))
 			end
@@ -307,10 +329,21 @@ function ModStoreClass:EvalMod(mod, cfg)
 			if tag.invert and mult ~= 0 then
 				mult = 1 / mult
 			end
+			-- @leb-regression-guard: per-set-integer-source-not-halfstep
+			-- roundAfterMultiply: per-set affixes (Multiplier:CompleteSetCount)
+			-- floor AFTER the multiplier, mirroring the engine: CharacterMutator
+			-- computes `count × perSourceValue` as a float and floors the
+			-- attribute total only at final display (CharacterMutator.c
+			-- L10497-10501). The Integer per-set affix's per-source value is an
+			-- INTEGER (ItemTools normal precision=1 roll, NOT a half-step), so
+			-- floor(int × mult) is exact; +1 to All Skills (value=1) is likewise
+			-- unaffected since floor(1×N)=N.
+			local roundAfter = tag.roundAfterMultiply
 			if type(value) == "table" then
 				value = copyTable(value)
 				if value.mod then
 					value.mod.value = value.mod.value * mult + (tag.base or 0)
+					if roundAfter then value.mod.value = m_floor(value.mod.value) end
 					if limitTotal then
 						value.mod.value = m_min(value.mod.value, limitTotal)
 					end
@@ -323,6 +356,7 @@ function ModStoreClass:EvalMod(mod, cfg)
 					end
 				else
 					value.value = value.value * mult + (tag.base or 0)
+					if roundAfter then value.value = m_floor(value.value) end
 					if limitTotal then
 						value.value = m_min(value.value, limitTotal)
 					end
@@ -335,6 +369,7 @@ function ModStoreClass:EvalMod(mod, cfg)
 				end
 			else
 				value = value * mult + (tag.base or 0)
+				if roundAfter then value = m_floor(value) end
 				if limitTotal then
 					value = m_min(value, limitTotal)
 				end
@@ -379,11 +414,27 @@ function ModStoreClass:EvalMod(mod, cfg)
 				base = 0
 				for _, stat in ipairs(tag.statList) do
 					base = base + target:GetStat(stat, cfg)
+					local twin = s4ConvertedTwin[stat]
+					if twin then
+						base = base + target:GetStat(twin, cfg)
+					end
 				end
 			else
 				base = target:GetStat(tag.stat, cfg)
+				-- @leb-regression-guard:s4-perstat-base-includes-converted-twin
+				-- Per-<BaseAttr> mods sum the converted twin (Brutality for Str etc.)
+				-- because LE treats converted attributes as still being the source for
+				-- text-defined "Per <Attr>" effects (Druid passive Aspects of Might
+				-- gives 1% Armour Per Strength In Human/Spriggan and counts Brutality;
+				-- <private build> verified at 198% from Brutality=198). Intrinsic character
+				-- bonuses route through PerStat:RawStr to bypass this sum.
+				local twin = s4ConvertedTwin[tag.stat]
+				if twin then
+					base = base + target:GetStat(twin, cfg)
+				end
 			end
-			local mult = m_floor(base / (tag.div or 1) + 0.0001)
+			-- Validation provenance is retained in maintainer notes.
+			local mult = base / (tag.div or 1)
 			local limitTotal
 			if tag.limit or tag.limitVar then
 				local limit = tag.limit or self:GetMultiplier(tag.limitVar, cfg)
@@ -543,8 +594,20 @@ function ModStoreClass:EvalMod(mod, cfg)
 			if tag.neg then
 				match = not match
 			end
+			-- @leb-regression-guard:condition-tag-mult
+			-- F4 — Doubled mult for Condition tags. Mirror of the
+			-- StatThreshold.mult logic (~L520) so trailing-clause
+			-- modifiers like "+25% Bleed Chance, Doubled for Shadow
+			-- Attack" can keep the base value when the condition is
+			-- not met (instead of full-gating to zero) and apply
+			-- `value * mult` when it IS met. Without mult, behaviour
+			-- is unchanged: match==false returns nil (full gate).
 			if not match then
-				return
+				if not tag.mult then
+					return
+				end
+			elseif tag.mult then
+				value = value * tag.mult
 			end
 		elseif tag.type == "ActorCondition" then
 			local match = false
@@ -569,8 +632,20 @@ function ModStoreClass:EvalMod(mod, cfg)
 			if tag.neg then
 				match = not match
 			end
+			-- @leb-regression-guard:actorcondition-tag-mult
+			-- Optional `tag.mult` for ActorCondition, mirroring the Condition
+			-- mult path (`condition-tag-mult`, ~L607) and the StatThreshold mult
+			-- path. Lets tree-node "<effect>, Doubled Against <enemy condition>"
+			-- modifiers (PassiveTree `doubled-against-condition` handler) keep the
+			-- base value when the enemy condition is OFF (no full gate) and apply
+			-- value*mult when it is ON. Without `mult`, behaviour is unchanged:
+			-- match==false returns nil (full gate, legacy).
 			if not match then
-				return
+				if not tag.mult then
+					return
+				end
+			elseif tag.mult then
+				value = value * tag.mult
 			end
 		elseif tag.type == "ItemCondition" then
 			local matches = {}
@@ -692,7 +767,33 @@ function ModStoreClass:EvalMod(mod, cfg)
 				return
 			end
 		elseif tag.type == "SkillId" then
-			if not cfg or (not cfg.skillGrantedEffect or cfg.skillGrantedEffect.id ~= tag.skillId) and cfg.groupSource ~= "SkillId:" .. tag.skillId then
+			-- @leb-regression-guard:tree-node-skill-rescope (gate site)
+			-- A SkillId tag matches when the running skill IS the tagged skill
+			-- (cfg.skillGrantedEffect.id) or when the running group was granted
+			-- BY it (cfg.groupSource, the triggered/sub-skill channel).
+			-- `skillIdList` = OR over several target skills (mirrors SkillName's
+			-- skillNameList; used when one tree node mutates both the parent
+			-- attack and its shared sub-ability, e.g. ga2st-13 lightning pen).
+			-- `directOnly` = suppress the groupSource channel: the mod belongs
+			-- to the tagged skill itself and must NOT flow onto skills it
+			-- merely triggers (e.g. ga2st-3 "Gathering Storm deals more
+			-- damage" leaking x1.24 onto the GS-triggered Storm Bolt).
+			-- Single-id, non-directOnly tags evaluate exactly as before.
+			if not cfg then
+				return
+			end
+			local match = false
+			if tag.skillIdList then
+				for _, skillId in ipairs(tag.skillIdList) do
+					if (cfg.skillGrantedEffect and cfg.skillGrantedEffect.id == skillId) or (not tag.directOnly and cfg.groupSource == "SkillId:" .. skillId) then
+						match = true
+						break
+					end
+				end
+			else
+				match = (cfg.skillGrantedEffect and cfg.skillGrantedEffect.id == tag.skillId) or (not tag.directOnly and cfg.groupSource == "SkillId:" .. tag.skillId)
+			end
+			if not match then
 				return
 			end
 		elseif tag.type == "SkillPart" then

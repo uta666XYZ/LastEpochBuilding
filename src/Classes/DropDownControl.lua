@@ -178,7 +178,13 @@ function DropDownClass:ScrollSelIntoView()
 	local itemLineH = 20
 	local scrollBar = self.controls.scrollBar
 	scrollBar:SetContentDimension(itemLineH * self:GetDropCount(), self.dropHeight)
-	scrollBar:ScrollIntoView((self:ListIndexToDropIndex(self.selIndex, 1) - 2) * itemLineH, 3 * itemLineH)
+	-- @leb-regression-guard: dropdown-scrollselintoview-nil-selindex
+	-- selIndex may be nil or point outside the (possibly filtered) list, in which
+	-- case ListIndexToDropIndex returns nil; a nil result reaches arithmetic and
+	-- crashes OnFrame when the dropdown is opened. Fall back to the first row.
+	-- Test: spec/System/TestDropdownScrollSelIntoView_spec.lua
+	local dropIndex = self:ListIndexToDropIndex(self.selIndex, 1) or 1
+	scrollBar:ScrollIntoView((dropIndex - 2) * itemLineH, 3 * itemLineH)
 end
 
 function DropDownClass:IsMouseOver()
@@ -357,10 +363,18 @@ function DropDownClass:Draw(viewPort, noTooltip)
 	local iconStripW = 0
 	if preIcons and #preIcons > 0 then
 		SetDrawColor(1, 1, 1)
+		local drawn = 0
 		for i, h in ipairs(preIcons) do
-			DrawImage(h, x + 2 + (i - 1) * 18, y + (height - 16) / 2, 16, 16)
+			-- Defensive re-check: between getItemIcons() validating the handle
+			-- and this DrawImage call the texture state can desync (commit
+			-- <see git log> documented a non-deterministic C++ renderer crash in
+			-- this loop). Skip handles that became invalid mid-frame.
+			if h and h:IsValid() then
+				DrawImage(h, x + 2 + drawn * 18, y + (height - 16) / 2, 16, 16)
+				drawn = drawn + 1
+			end
 		end
-		iconStripW = #preIcons * 18
+		iconStripW = drawn * 18
 	end
 	local fontSize = 16
 	if height >= 32 and selLabel and DrawStringWidth(fontSize, "VAR", selLabel) > drawWidth then
@@ -461,10 +475,15 @@ function DropDownClass:Draw(viewPort, noTooltip)
 						local icons = self.dropRowIcons(index, listVal)
 						if icons and #icons > 0 then
 							SetDrawColor(1, 1, 1)
+							local drawn = 0
 							for i, h in ipairs(icons) do
-								DrawImage(h, (i - 1) * 18, y + (itemLineH - 16) / 2, 16, 16)
+								-- Defensive: same renderer crash window as preIcons above.
+								if h and h:IsValid() then
+									DrawImage(h, drawn * 18, y + (itemLineH - 16) / 2, 16, 16)
+									drawn = drawn + 1
+								end
 							end
-							rowIconOffset = #icons * 18
+							rowIconOffset = drawn * 18
 							-- restore label color (DrawImage doesn't change it but
 							-- be defensive in case a future change does)
 							if index == self.hoverSel or index == self.selIndex then
@@ -610,7 +629,14 @@ function DropDownClass:CheckDroppedWidth(enable)
 		if self.dropped and self.controls.scrollBar.enabled then
 			scrollWidth = self.controls.scrollBar.width
 		end
-		local lineHeight = self.height - 4
+		-- @leb-regression-guard: idol-slot-dropdown-width
+		-- Dropdown rows are always rendered at a fixed font (see Draw: itemFontSize
+		-- = 16), independent of the box height. Measure label widths at that same
+		-- font so tall boxes (e.g. idol grid cells, height 46) don't overestimate.
+		local measureFont = 16
+		-- Reserve room for any leading per-row icon strip (dropRowIcons) so long
+		-- labels aren't drawn partly behind their icons.
+		local iconReserve = self.dropExtraWidth or 0
 
 		  -- do not be smaller than the created width
 		local dWidth = self.width
@@ -619,7 +645,7 @@ function DropDownClass:CheckDroppedWidth(enable)
 				line = line.label or ""
 			end
 			  -- +10 to stop clipping
-			dWidth = m_max(dWidth, DrawStringWidth(lineHeight, "VAR", line) + 10)
+			dWidth = m_max(dWidth, DrawStringWidth(measureFont, "VAR", line) + 10 + iconReserve)
 		end
 		  -- no greater than self.maxDroppedWidth
 		self.droppedWidth = m_min(dWidth + scrollWidth, self.maxDroppedWidth)
@@ -630,7 +656,7 @@ function DropDownClass:CheckDroppedWidth(enable)
 			end
 			-- add 20 to account for the 'down arrow' in the box
 			local boxWidth
-			boxWidth = DrawStringWidth(lineHeight, "VAR", line or "") + 20
+			boxWidth = DrawStringWidth(measureFont, "VAR", line or "") + 20
 			self.width = m_max(m_min(boxWidth, 390), 190)
 		end
 		

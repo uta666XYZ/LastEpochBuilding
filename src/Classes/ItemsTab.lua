@@ -15,6 +15,35 @@ local m_ceil = math.ceil
 local m_floor = math.floor
 local m_modf = math.modf
 
+local idolClassNames = {
+	[1] = "Primalist",
+	[2] = "Mage",
+	[4] = "Sentinel",
+	[8] = "Acolyte",
+	[16] = "Rogue",
+}
+
+local function isIdolType(item)
+	return item.type and item.type:find("Idol", 1, true) ~= nil
+end
+
+local function itemTooltipBaseLabel(item)
+	local baseLabel
+	local className
+	baseLabel = item.baseName:gsub(" %(.+%)", "")
+	-- Game localization: "ClassRequirement_Primalist_31": "Primalist Ornate Idol".
+	-- @leb-regression-guard: idol-tooltip-game-presentation
+	-- Class-specific idol labels use the required class plus the idol base type.
+	-- Test: spec/System/TestIdolTooltipPresentation_spec.lua
+	if isIdolType(item) and item.type ~= "Idol Altar" and item.base then
+		className = idolClassNames[item.base.classReq]
+		if className then
+			return className .. " " .. item.type
+		end
+	end
+	return baseLabel
+end
+
 local function itemDisplayColor(item)
 	-- Idol Altar: always displayed with Exalted (purple) text/frame colour,
 	-- regardless of the item's actual rarity.
@@ -134,7 +163,35 @@ for _, layout in pairs(IDOL_ALTAR_LAYOUTS) do
 	if layout.mirrorOf and not layout.grid then
 		local src = IDOL_ALTAR_LAYOUTS[layout.mirrorOf]
 		if src and src.grid then layout.grid = mirrorGrid(src.grid) end
+		-- refracted activation ranks mirror with the grid (c -> 6-c)
+		if src and src.refractedRanks and not layout.refractedRanks then
+			local mirrored = {}
+			for r, cols in pairs(src.refractedRanks) do
+				mirrored[r] = {}
+				for c, rank in pairs(cols) do
+					mirrored[r][6 - c] = rank
+				end
+			end
+			layout.refractedRanks = mirrored
+		end
 	end
+end
+
+-- @leb-regression-guard:refracted-rank-gating
+-- A refracted (type-2) grid cell only behaves as refracted once the altar's
+-- unlock rank reaches its activation rank (game unlockMatrix encodes
+-- refracted cells as `100 + rank`; below that the cell is a normal slot).
+-- `idolAltarUnlockRank` config (default 8 = everything active) drives this.
+-- Ground truth: StarSeaVnV Ocular Altar — idol on (5,1) rank-1 corner gets
+-- the altar prefix boost in-game, idol on (1,1) rank-7 corner does NOT
+-- (in-game sheet cc 119% closes only with that asymmetry).
+-- Spec: spec/System/TestRefractedRankGating_spec.lua
+local function refractedCellActive(altar, r, c, unlockRank)
+	local row = altar.grid[r]
+	if not row or row[c] ~= 2 then return false end
+	local ranks = altar.refractedRanks
+	local needed = ranks and ranks[r] and ranks[r][c] or 0
+	return needed <= unlockRank
 end
 
 local influenceInfo = itemLib.influenceInfo
@@ -179,7 +236,7 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 	self.slots = { }
 	self.orderedSlots = { }
 	self.slotOrder = { }
-	self.slotAnchor = new("Control", {"TOPLEFT",self,"TOPLEFT"}, 96, 76, 310, 0)
+	self.slotAnchor = new("Control", {"TOPLEFT",self,"TOPLEFT"}, 96, 52, 310, 0)
 	local prevSlot = self.slotAnchor
 	local function addSlot(slot)
 		prevSlot = slot
@@ -192,8 +249,12 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 		["Fall of the Outcasts"]=true, ["The Stolen Lance"]=true, ["The Black Sun"]=true, ["Blood, Frost, and Death"]=true, ["Ending the Storm"]=true, ["Fall of the Empire"]=true, ["Reign of Dragons"]=true, ["The Age of Winter"]=true, ["Spirits of Fire"]=true, ["The Last Ruin"]=true
 	}
 	local lastVisibleSlot = self.slotAnchor
+	local slotLabelOverrides = {
+		["Weapon 1"] = "Weapon",
+		["Weapon 2"] = "Off-hand",
+	}
 	for index, slotName in ipairs(baseSlots) do
-		local slot = new("ItemSlotControl", {"TOPLEFT",prevSlot,"BOTTOMLEFT"}, 0, 2, self, slotName)
+		local slot = new("ItemSlotControl", {"TOPLEFT",prevSlot,"BOTTOMLEFT"}, 0, 2, self, slotName, slotLabelOverrides[slotName])
 		addSlot(slot)
 		if blessingSlotNames[slotName] then
 			slot.shown = function() return false end
@@ -252,15 +313,18 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 	self.controls.idolAltarTypeLabelLeft = new("LabelControl", {"RIGHT",self.controls.idolAltarTypeLabelRight,"LEFT"}, -2, 0, 0, 16, "^7Type:")
 	local prevOmenSlot = self.controls.idolAltarTypeLabelRight
 	for i = 1, MAX_OMEN_IDOL_SLOTS do
-		local omenSlot = new("ItemSlotControl", {"TOPLEFT",prevOmenSlot,"BOTTOMLEFT"}, 0, 2, self, "Omen Idol " .. i, "Fractured " .. i)
+		local omenSlot = new("ItemSlotControl", {"TOPLEFT",prevOmenSlot,"BOTTOMLEFT"}, 0, 2, self, "Omen Idol " .. i, "Refracted " .. i)
 		local slotNum = i
+		-- @leb-regression-guard: refracted-display-not-omen-capacity
+		-- See REGRESSION_GUARDS.md "refracted-display-not-omen-capacity".
+		-- Validation provenance is retained in maintainer notes.
 		omenSlot.shown = function()
 			if self.activeAltarLayout == "Default" then return false end
 			local layout = IDOL_ALTAR_LAYOUTS[self.activeAltarLayout]
 			if not layout then return false end
-			local capacity = layout.baseCapacity + (self:GetOmenIdolCapacityBonus() or 0)
-			if capacity > MAX_OMEN_IDOL_SLOTS then capacity = MAX_OMEN_IDOL_SLOTS end
-			return slotNum <= capacity
+			local count = self:CountIdolsOnRefractedCells()
+			if count > MAX_OMEN_IDOL_SLOTS then count = MAX_OMEN_IDOL_SLOTS end
+			return slotNum <= count
 		end
 		self.slots[omenSlot.slotName] = omenSlot
 		t_insert(self.orderedSlots, omenSlot)
@@ -594,7 +658,7 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 		end
 	end
 
-	local function updateBlessingSlot(tl, blessEntry, rollFrac)
+	local function updateBlessingSlot(tl, blessEntry, rollFracs)
 		local slot = self.slots[tl]
 		if not slot then return end
 		local oldId = slot.selItemId
@@ -610,25 +674,45 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 			end
 			slot:SetSelItemId(0)
 		end
+		-- Normalize rollFracs to per-implicit table {f1, f2}. Legacy callers
+		-- passing a single number get it applied to all implicits (the prior
+		-- buggy behaviour); new LETools/Maxroll/save imports pass an array
+		-- so impl1 and impl2 can roll independently (matches LE's ir[1]/ir[2]).
+		-- @leb-canary blessing-per-implicit-frac
+		local fracTable
+		if type(rollFracs) == "table" then
+			fracTable = { rollFracs[1] or 1.0, rollFracs[2] or rollFracs[1] or 1.0 }
+		elseif type(rollFracs) == "number" then
+			fracTable = { rollFracs, rollFracs }
+		else
+			fracTable = { 1.0, 1.0 }
+		end
 		self.blessingFracs = self.blessingFracs or {}
-		self.blessingFracs[tl] = rollFrac or 1.0
+		self.blessingFracs[tl] = fracTable
 		if not blessEntry or not blessEntry.name then
 			slot:SetSelItemId(0)
 			self.build.buildFlag = true
 			return
 		end
-		local frac = rollFrac or 1.0
-		local function resolveImpl(impl)
+		local function resolveImpl(impl, frac)
 			return impl:gsub("%([0-9.]+%-[0-9.]+%)", function(range)
 				local implMin, implMax = range:match("%(([0-9.]+)%-([0-9.]+)%)")
-				local implVal = tonumber(implMin) + frac * (tonumber(implMax) - tonumber(implMin))
-				return string.format("%d", math.floor(implVal + 0.5))
+				local lo, hi = tonumber(implMin), tonumber(implMax)
+				-- LE blessing rolls: ir[i] is a 0-255 byte that maps to one of
+				-- (max-min+1) discrete integer values evenly distributed across
+				-- the range. Use bucket index = floor(frac * (hi-lo+1)) clamped
+				-- to (hi-lo) so frac=1.0 lands on max. Matches LETools display
+				-- (e.g. ir=246, range 45-70 → bucket 25 → 70, not 69).
+				local span = hi - lo + 1
+				local idx = math.floor(frac * span)
+				if idx > span - 1 then idx = span - 1 end
+				return string.format("%d", lo + idx)
 			end)
 		end
 		local implCount = blessEntry.implCount or 1
 		local raw = "Rarity: NORMAL\n"..blessEntry.name.."\n"..blessEntry.name
-			.."\nImplicits: "..implCount.."\n"..resolveImpl(blessEntry.impl1 or "")
-		if blessEntry.impl2 then raw = raw.."\n"..resolveImpl(blessEntry.impl2) end
+			.."\nImplicits: "..implCount.."\n"..resolveImpl(blessEntry.impl1 or "", fracTable[1])
+		if blessEntry.impl2 then raw = raw.."\n"..resolveImpl(blessEntry.impl2, fracTable[2]) end
 		local item = new("Item", raw)
 		if not item or not item.base then
 			ConPrintf("[BLESS] ERR item.base=nil for %s in slot %s", blessEntry.name, tl)
@@ -676,7 +760,7 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 	-- Paperdoll frame (always shown — "Crafting Items..." panel remains visible
 	-- even while editing/crafting an item so the user can see all crafted gear)
 	self.controls.paperdoll = new("PaperdollControl",
-		{"TOPLEFT", self.controls.itemList, "BOTTOMLEFT"}, 0, 78, self)
+		{"TOPLEFT", self.controls.itemList, "BOTTOMLEFT"}, 0, 34, self)
 
 	-- Display item
 	self.displayItemTooltip = new("Tooltip")
@@ -744,12 +828,11 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 	-- cw=48, ch=46 makes the 5x5 grid aspect ratio match idol_container.png's
 	-- interior grid so the PNG border and functional cells overlap cleanly.
 	-- Y offset (90) clears the container frame's altar-circle + top border (~83px)
-	-- above the grid so the circle does not overlap the Fractured 1..4 dropdowns.
+	-- above the grid so the circle does not overlap the Refracted 1..4 dropdowns.
 	-- Visual centering on the Equipped items dropdown column. Tuned by eye.
 	self.controls.idolGrid = new("IdolGridControl",
-		-- Y offset raised from 90 to 112 to leave room for the 22px title bar
-		-- drawn above the container frame ("Equipped Idols / Idol Altar").
-		{"TOPLEFT", self.controls.idolAltarEnd, "BOTTOMLEFT"}, 0, 112,
+		-- Y offset 90 (no title bar above the container frame anymore).
+		{"TOPLEFT", self.controls.idolAltarEnd, "BOTTOMLEFT"}, 0, 90,
 		self, self.idolGridLayout, 48, 46)
 	-- Padding below the grid clears the frame's bottom border (~18px) before
 	-- the blessing grid is placed, so Blessing sits fully under the new frame.
@@ -757,10 +840,11 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 	t_insert(self.controls, self.controls.idolGridPanelEnd)
 	-- ===== END IDOL GRID =====
 
-	-- Blessing slot grid: width 292, anchored to idolGrid x with -22 offset to
-	-- share the same horizontal center as the idol frame.
+	-- Blessing slot grid: shifted +4px so the top-row middle slot's center
+	-- (blessingGrid_x + 120 with SLOT_SIZE=52, w=240) lines up with the idol
+	-- altar icon's center (idolGrid_x + gridW/2 = idolGrid_x + 124, gridW=248).
 	local blessGrid = new("BlessingGridControl",
-		{"TOPLEFT", self.controls.idolGridPanelEnd, "TOPLEFT"}, -22, 0, self)
+		{"TOPLEFT", self.controls.idolGridPanelEnd, "TOPLEFT"}, 4, 0, self)
 	t_insert(self.controls, blessGrid)
 	self.controls.blessingGrid = blessGrid
 
@@ -862,7 +946,21 @@ function ItemsTabClass:Load(xml, dbFileName)
 			self.blessingFracs = self.blessingFracs or {}
 			for _, child in ipairs(node) do
 				if child.elem == "BlessingFrac" and child.attrib.timeline then
-					self.blessingFracs[child.attrib.timeline] = tonumber(child.attrib.frac) or 1.0
+					-- New schema: fracs="f1,f2" (per-implicit). Legacy: frac="f"
+					-- (single value applied to all implicits — preserves old
+					-- behavior for un-reimported builds).
+					-- @leb-canary blessing-per-implicit-frac
+					local fracs
+					if child.attrib.fracs then
+						fracs = {}
+						for f in child.attrib.fracs:gmatch("[^,]+") do
+							t_insert(fracs, tonumber(f) or 1.0)
+						end
+					else
+						local n = tonumber(child.attrib.frac) or 1.0
+						fracs = { n, n }
+					end
+					self.blessingFracs[child.attrib.timeline] = fracs
 				end
 			end
 		elseif node.elem == "ItemSet" then
@@ -891,6 +989,28 @@ function ItemsTabClass:Load(xml, dbFileName)
 		self.itemSetOrderList[1] = 1
 	end
 	self:SetActiveItemSet(tonumber(xml.attrib.activeItemSet) or 1)
+	-- Validation provenance is retained in maintainer notes.
+	if self.blessingFracs and self.blessingData then
+		for tl, frac in pairs(self.blessingFracs) do
+			local slot = self.slots[tl]
+			local item = slot and slot.selItemId and self.items[slot.selItemId]
+			local tlData = self.blessingData[tl]
+			if item and tlData then
+				local entry
+				for _, b in ipairs(tlData.normal or {}) do
+					if b.name == item.name then entry = b; break end
+				end
+				if not entry then
+					for _, b in ipairs(tlData.grand or {}) do
+						if b.name == item.name then entry = b; break end
+					end
+				end
+				if entry then
+					self:UpdateBlessingSlot(tl, entry, frac)
+				end
+			end
+		end
+	end
 	self:ResetUndo()
 end
 
@@ -984,11 +1104,23 @@ function ItemsTabClass:Save(xml)
 		end
 		t_insert(xml, child)
 	end
-	-- Save blessing roll fractions so +/- button positions are restored on load
+	-- Save blessing roll fractions so +/- button positions are restored on load.
+	-- Schema: fracs="f1,f2" (per-implicit). Also writes legacy frac=f1 so
+	-- older LEB versions can still load these XMLs (impl1 only).
+	-- @leb-canary blessing-per-implicit-frac
 	if self.blessingFracs and next(self.blessingFracs) then
 		local fracChild = { elem = "BlessingFracs", attrib = {} }
-		for tl, frac in pairs(self.blessingFracs) do
-			t_insert(fracChild, { elem = "BlessingFrac", attrib = { timeline = tl, frac = tostring(frac) } })
+		for tl, fracs in pairs(self.blessingFracs) do
+			local attr = { timeline = tl }
+			if type(fracs) == "table" then
+				local parts = {}
+				for _, f in ipairs(fracs) do t_insert(parts, tostring(f)) end
+				attr.fracs = table.concat(parts, ",")
+				attr.frac = tostring(fracs[1] or 1.0)
+			else
+				attr.frac = tostring(fracs)
+			end
+			t_insert(fracChild, { elem = "BlessingFrac", attrib = attr })
 		end
 		t_insert(xml, fracChild)
 	end
@@ -1110,7 +1242,6 @@ function ItemsTabClass:Draw(viewPort, inputEvents)
 	if self.controls.scrollBarH:IsShown() then
 		self.controls.scrollBarH:Draw(viewPort)
 	end
-
 	self.controls.specSelect:SetList(self.build.treeTab:GetSpecList())
 end
 
@@ -1134,6 +1265,131 @@ function ItemsTabClass:GetOmenIdolCapacityBonus()
 		end
 	end
 	return bonus
+end
+
+-- Auto-populate the Omen Idol N (displayed "Refracted N") slots from idols
+-- placed on the regular Idol 1-25 grid. EVERY idol whose footprint overlaps a
+-- Refracted (grid type=2) cell is placed, up to MAX_OMEN_IDOL_SLOTS — the
+-- display is NOT capped by the altar's Omen Idol capacity.
+-- Called from:
+--   * ImportTab.ImportItemsAndSkills (after items are equipped)
+--   * ItemsTab.SetActiveItemSet (when switching/loading sets so re-opened
+--     builds also show their Refracted slots populated)
+-- Idempotent: clears slots above the overlap count, re-fills slots 1..N each call.
+-- @leb-regression-guard:refracted-slot-overlap-only
+-- Omen Idol slots represent idols whose footprint overlaps a Refracted (grid
+-- type=2) cell on the active Idol Altar. Idols that do NOT touch any refracted
+-- cell must NOT appear in Omen Idol slots. The fill is bounded only by
+-- MAX_OMEN_IDOL_SLOTS, NOT by omenIdolCapacity — a Refracted Slot and the Omen
+-- Idol capacity (MaximumOmenIdols) are distinct concepts (see datamined game source). The
+-- EquippedOmenIdol stat is clamped to capacity in CalcSetup, decoupled from how
+-- many idols this display populates. See REGRESSION_GUARDS.md
+-- `refracted-slot-overlap-only` and `refracted-display-not-omen-capacity`.
+function ItemsTabClass:AutoPopulateOmenIdolSlots()
+	local altarName = self.activeAltarLayout
+	local altar = altarName and altarName ~= "Default" and self.altarLayouts and self.altarLayouts[altarName]
+	-- Collect distinct idols from the 5x5 layout that overlap a refracted cell,
+	-- ordered by Idol slot number so Omen Idol 1..N is filled deterministically.
+	local layoutIdols = {}
+	if altar and altar.grid then
+		-- @leb-regression-guard:refracted-rank-gating
+		-- Use the rank-aware check so the Omen Idol display slots are filled
+		-- with the idols that are ACTUALLY refracted at the configured altar
+		-- unlock rank — otherwise a rank-inactive idol can occupy a visible
+		-- slot while a genuinely active one is pushed past the shown count.
+		local unlockRank = 8
+		if self.build and self.build.configTab then
+			unlockRank = self.build.configTab.input.idolAltarUnlockRank
+				or self.build.configTab.placeholder.idolAltarUnlockRank
+				or 8
+		end
+		local seen = {}
+		for r, rowData in ipairs(IDOL_GRID_LAYOUT) do
+			for c, slotName in ipairs(rowData) do
+				local slot = self.slots[slotName]
+				if slot and slot.selItemId and slot.selItemId ~= 0 and not seen[slot.selItemId] then
+					seen[slot.selItemId] = true
+					local item = self.items[slot.selItemId]
+					local size = item and idolSize[item.type] or { 1, 1 }
+					-- size = {w, h} (cols, rows). Walk footprint, rank-gated.
+					local hit = false
+					for dr = 0, size[2] - 1 do
+						for dc = 0, size[1] - 1 do
+							if refractedCellActive(altar, r + dr, c + dc, unlockRank) then
+								hit = true
+								break
+							end
+						end
+						if hit then break end
+					end
+					if hit then
+						local slotNum = tonumber(slotName:match("%d+"))
+						table.insert(layoutIdols, { slotNum = slotNum, itemId = slot.selItemId })
+					end
+				end
+			end
+		end
+		table.sort(layoutIdols, function(a, b) return a.slotNum < b.slotNum end)
+	end
+	-- Fill every refracted-overlapping idol (bounded only by MAX_OMEN_IDOL_SLOTS),
+	-- clearing slots beyond the overlap count. NOT capped by omenIdolCapacity.
+	for i = 1, MAX_OMEN_IDOL_SLOTS do
+		local omenSlot = self.slots["Omen Idol " .. i]
+		if omenSlot then
+			local fi = layoutIdols[i]
+			omenSlot:SetSelItemId(fi and fi.itemId or 0)
+		end
+	end
+end
+
+-- @leb-regression-guard: refracted-count-independent-of-omen-capacity
+-- Validation provenance is retained in maintainer notes.
+function ItemsTabClass:CountIdolsOnRefractedCells()
+	local altarName = self.activeAltarLayout
+	if not altarName or altarName == "Default" then return 0 end
+	local altar = self.altarLayouts and self.altarLayouts[altarName]
+	if not altar or not altar.grid then return 0 end
+
+	-- @leb-regression-guard:refracted-rank-gating
+	-- Cells whose activation rank exceeds the configured altar unlock rank
+	-- are still normal slots, so they don't count as refracted overlap.
+	local unlockRank = 8
+	if self.build and self.build.configTab then
+		unlockRank = self.build.configTab.input.idolAltarUnlockRank
+			or self.build.configTab.placeholder.idolAltarUnlockRank
+			or 8
+	end
+
+	-- Walk the regular Idol 1-25 grid: for each placed idol, check whether its
+	-- footprint (per idolSize) overlaps any ACTIVE refracted altar grid cell.
+	-- Mirrors the in-game model — there is no separate "Omen Idol"
+	-- slot type. Dedup by itemId so multi-cell idols are only counted once.
+	local seen = {}
+	local count = 0
+	for r, rowData in ipairs(IDOL_GRID_LAYOUT) do
+		for c, slotName in ipairs(rowData) do
+			local slot = self.slots[slotName]
+			if slot and slot.selItemId and slot.selItemId ~= 0 and not seen[slot.selItemId] then
+				local item = self.items[slot.selItemId]
+				if item and idolSize[item.type] then
+					seen[slot.selItemId] = true
+					local size = idolSize[item.type]
+					local hit = false
+					for dr = 0, size[2] - 1 do
+						for dc = 0, size[1] - 1 do
+							if refractedCellActive(altar, r + dr, c + dc, unlockRank) then
+								hit = true
+								break
+							end
+						end
+						if hit then break end
+					end
+					if hit then count = count + 1 end
+				end
+			end
+		end
+	end
+	return count
 end
 
 function ItemsTabClass:RegisterLateSlot(slot)
@@ -1200,6 +1456,10 @@ function ItemsTabClass:SetActiveItemSet(itemSetId)
 	else
 		self.activeAltarLayout = "Default"
 	end
+	-- Re-derive Omen Idol slot contents from the layout grid for the just-
+	-- activated set. Without this, loading a saved build (or switching sets)
+	-- shows Refracted slots empty even when idols exist on the layout.
+	self:AutoPopulateOmenIdolSlots()
 	self.build.buildFlag = true
 	self:PopulateSlots()
 end
@@ -2247,15 +2507,34 @@ end
 function ItemsTabClass:AddItemTooltip(tooltip, item, slot, dbMode)
 	-- Item name
 	local rarityCode = itemDisplayColor(item)
+	-- @leb-regression-guard: tooltip-base-label-font-size
+	-- The base/sub-type line under a titled item name ("Turquoise Ring",
+	-- "Dragonbone Axe") renders at 16, smaller than the 20 title, matching the
+	-- in-game tooltip. Non-idols previously used 20 (== title size).
+	-- Test: spec/System/TestTooltipBaseLabelFontSize_spec.lua
+	local baseLabelHeight = 16
 	tooltip.center = true
 	tooltip.color = rarityCode
+	-- @leb-regression-guard: tooltip-mod-line-wrap
+	-- Ensure long mod lines (e.g. unique conditional procs on Horn of the
+	-- Bone Wisp) wrap inside the tooltip box. The displayItemTooltip already
+	-- sets this, but AddItemTooltip is also called via TooltipHost on item
+	-- list rows, paperdoll slots, idol grid, etc., where no maxWidth was
+	-- propagated, leaving long lines to overflow horizontally.
+	-- Test: spec/System/TestTooltipWrap_spec.lua
+	if not tooltip.maxWidth then
+		tooltip.maxWidth = 458
+	end
 	if item.title then
 		tooltip:AddLine(20, rarityCode..item.title)
-		tooltip:AddLine(20, rarityCode..item.baseName:gsub(" %(.+%)",""))
+		tooltip:AddLine(baseLabelHeight, rarityCode..itemTooltipBaseLabel(item))
 	else
 		tooltip:AddLine(20, rarityCode..item.namePrefix..item.baseName:gsub(" %(.+%)","")..item.nameSuffix)
 	end
-	if item.rarity == "EXALTED" then
+	-- Game tooltip: empowered idols omit the "Exalted Item" rarity line.
+	-- @leb-regression-guard: idol-tooltip-game-presentation
+	-- Test: spec/System/TestIdolTooltipPresentation_spec.lua
+	if item.rarity == "EXALTED" and not isIdolType(item) then
 		tooltip:AddLine(16, colorCodes.EXALTED.."Exalted Item", "FONTIN SC")
 	elseif item.rarity == "LEGENDARY" then
 		tooltip:AddLine(16, colorCodes.LEGENDARY.."Legendary Item", "FONTIN SC")
@@ -2300,6 +2579,21 @@ function ItemsTabClass:AddItemTooltip(tooltip, item, slot, dbMode)
 		tooltip:AddLine(16, s_format("^x7F7F7FWeapon Range: %s%.1f ^x7F7F7Fmetres", "^7", base.weapon.Range))
 	end
 
+	-- @leb-regression-guard: idol-altar-capacity-tooltip
+	-- Locks the contract that Idol Altar item tooltips display the base
+	-- "Omen Idol capacity: N" header sourced from `IDOL_ALTAR_LAYOUTS[base].omenIdolCapacity`,
+	-- not from live slot counts (which mutate with sealed `+(N) Maximum Omen
+	-- Idols Equipped` bonuses) and not from a hardcoded constant (which drifts
+	-- when new altar bases ship). Matches the in-game tooltip header.
+	-- Test: spec/System/TestIdolAltarTooltip_spec.lua "Idol Altar tooltip shows base capacity"
+	-- See REGRESSION_GUARDS.md "idol-altar-capacity-tooltip".
+	if item.type == "Idol Altar" and item.baseName then
+		local layout = IDOL_ALTAR_LAYOUTS[item.baseName]
+		if layout and layout.omenIdolCapacity then
+			tooltip:AddLine(16, s_format("^x7F7F7FOmen Idol capacity: ^7%d", layout.omenIdolCapacity))
+		end
+	end
+
 	tooltip:AddSeparator(10)
 
 	-- Requirements
@@ -2337,10 +2631,45 @@ function ItemsTabClass:AddItemTooltip(tooltip, item, slot, dbMode)
 	end
 
 	-- Modifiers
+	-- @leb-regression-guard:unique-tooltip-entries-display-order
+	-- Render a unique's inherent lines in the GAME's order/composition (tooltipEntries),
+	-- not in mods[] order. The plan only permutes which modLine is drawn; modDB is filled
+	-- by a separate pass (Item.lua:2037-2043) and is untouched. See ItemTools.lua
+	-- buildUniqueTooltipPlan for the invariant and why explicitModLines is not reordered.
+	-- Test: spec/System/TestUniqueTooltipEntriesOrder_spec.lua
+	local uniqueData = item.uniqueID and self.build.data.uniques and self.build.data.uniques[item.uniqueID]
+	local uniquePlan = uniqueData and itemLib.buildUniqueTooltipPlan(item.explicitModLines, uniqueData) or nil
+	local uniqueBlockDrawn = false
 	for listIdx, modList in ipairs{item.enchantModLines, item.implicitModLines, item.explicitModLines} do
 		if modList[1] then
 			for _, modLine in ipairs(modList) do
-				if item:CheckModLineVariant(modLine) then
+				if uniquePlan and modLine.uniqueInherent then
+					-- Emit the whole planned block at the position of the first inherent
+					-- line (keeps crafted affixes where the craft layout put them), then
+					-- skip the remaining inherent lines.
+					if not uniqueBlockDrawn then
+						uniqueBlockDrawn = true
+						for _, entry in ipairs(uniquePlan) do
+							if entry.modLine then
+								if item:CheckModLineVariant(entry.modLine) then
+									tooltip:AddLine(16, itemLib.formatModLine(entry.modLine, dbMode, nil, item))
+								end
+							else
+								-- A description line folds one or more hidden mods. It is
+								-- game text, not a modifier, so it never carries the
+								-- NOT SUPPORTED suffix -- that marker is per-modLine and
+								-- cannot be attributed to a folded line (see the
+								-- item-level note below).
+								tooltip:AddLine(16, colorCodes.UNIQUE .. entry.text)
+							end
+						end
+						if uniquePlan.foldedExtra > 0 or uniquePlan.foldedNotSupported > 0 then
+							tooltip:AddLine(14, colorCodes.UNSUPPORTED ..
+								"(" .. (uniquePlan.foldedExtra + uniquePlan.foldedNotSupported) ..
+								" folded modifier(s) above NOT SUPPORTED IN LEB YET)")
+						end
+					end
+				elseif item:CheckModLineVariant(modLine) then
 					local boost
 					if listIdx == 1 then
 						boost = altarBoostWeaver
@@ -2351,8 +2680,20 @@ function ItemsTabClass:AddItemTooltip(tooltip, item, slot, dbMode)
 							boost = altarBoostSuffix
 						end
 					end
-					tooltip:AddLine(16, itemLib.formatModLine(modLine, dbMode, boost))
+					-- `item` is passed for the source colour: a Legendary item's affixes are
+					-- crimson regardless of tier, which cannot be decided from the modLine
+					-- alone. See @leb-regression-guard:item-tooltip-source-colour.
+					tooltip:AddLine(16, itemLib.formatModLine(modLine, dbMode, boost, item))
 				end
+			end
+			-- Staged rollout, stated honestly: this item's rows could not be matched to the
+			-- game's mods, so it is drawn in mods[] order, which is NOT the game's order and
+			-- may differ in line count. The claim is about THIS item's correspondence being
+			-- unresolved -- it must not imply the items that do have a plan were confirmed
+			-- in-game (only two of them were; the rest are matched structurally).
+			if listIdx == 3 and uniqueData and not uniquePlan then
+				tooltip:AddLine(14, colorCodes.UNSUPPORTED ..
+					"(mod order could not be resolved for this item - showing legacy order)")
 			end
 			tooltip:AddSeparator(10)
 		end
@@ -2384,9 +2725,12 @@ function ItemsTabClass:AddItemTooltip(tooltip, item, slot, dbMode)
 			end
 		end
 		if setId and setData then
+			-- Set/bonus body text uses font size 16 to match the item's affix
+			-- mod-line size above; keep them equal so this section doesn't read
+			-- smaller than the rest of the tooltip.
 			tooltip:AddSeparator(10)
 			tooltip:AddLine(16, colorCodes.SET .. "ITEM SET")
-			tooltip:AddLine(14, "^7" .. (setName or ""))
+			tooltip:AddLine(16, "^7" .. (setName or ""))
 			-- Build equipped-name set for orange highlighting
 			local equippedNames = {}
 			local function markName(s)
@@ -2417,7 +2761,7 @@ function ItemsTabClass:AddItemTooltip(tooltip, item, slot, dbMode)
 			local ORANGE = "^xFF9933"
 			for _, name in ipairs(members) do
 				local col = equippedNames[name] and ORANGE or "^8"
-				tooltip:AddLine(13, col .. name)
+				tooltip:AddLine(16, col .. name)
 			end
 			-- Effective piece count for active-tier highlighting. Mirrors
 			-- CalcSetup.applySetBonuses: real equipped members of this set,
@@ -2464,7 +2808,7 @@ function ItemsTabClass:AddItemTooltip(tooltip, item, slot, dbMode)
 					local active = tier <= effectiveCount
 					local tierCol = active and ORANGE or "^8"
 					local textCol = active and ORANGE or "^7"
-					tooltip:AddLine(13, tierCol .. k .. " set: " .. textCol .. tostring(bonus[k]))
+					tooltip:AddLine(16, tierCol .. k .. " set: " .. textCol .. tostring(bonus[k]))
 				end
 			end
 			tooltip:AddSeparator(10)

@@ -1,0 +1,22 @@
+name: Nightly Heavy Tests
+# Runs the slow regen/diff jobs once per day so PR CI stays fast.
+# Trigger manually anytime via the "Run workflow" button.
+on:
+  schedule:
+    # 15:00 UTC = 00:00 JST (next day). Adjust if your timezone differs.
+    - cron: '0 15 * * *'
+  workflow_dispatch:
+jobs:
+  check_generated_builds:
+    runs-on: ubuntu-latest
+    container: ghcr.io/pathofbuildingcommunity/pathofbuilding-tests:latest
+    steps:
+      - name: Install xmllint and git dependency
+        run: apk add libxml2-utils git
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Generate Builds
+        run: busted --lua=luajit -r generate
+      - run: git config --global --add safe.directory $(pwd)
+      - name: Check if the generated builds are different
+        run: git diff --exit-code spec

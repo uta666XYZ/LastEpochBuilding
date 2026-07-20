@@ -207,7 +207,13 @@ function EditClass:UpdateScrollBars()
 	local width, height = self:GetSize()
 	local textHeight = self.lineHeight or (height - 4)
 	if self.lineHeight then
-		self.controls.scrollBarH:SetContentDimension(DrawStringWidth(textHeight, self.font, self.buf) + 2, width - 18)
+		-- Per-line max width: `\n` confuses DrawStringWidth, so measure each line.
+		local maxLineW = 0
+		for line in (self.buf.."\n"):gmatch("([^\n]*)\n") do
+			local w = DrawStringWidth(textHeight, self.font, line)
+			if w > maxLineW then maxLineW = w end
+		end
+		self.controls.scrollBarH:SetContentDimension(maxLineW + 2, width - 18)
 		self.controls.scrollBarV:SetContentDimension(newlineCount(self.buf.."\n") * textHeight, height - (self.controls.scrollBarH.enabled and 18 or 4))
 	else
 		self.controls.scrollBarH:SetContentDimension(DrawStringWidth(textHeight, self.font, self.buf) + 2, width - 4 - (self.prompt and DrawStringWidth(textHeight, self.font, self.prompt) + textHeight/2 or 0))

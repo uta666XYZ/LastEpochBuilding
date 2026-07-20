@@ -381,6 +381,28 @@ end
 function main:OnFrame()
 	self.screenW, self.screenH = GetScreenSize()
 
+	-- Validation provenance is retained in maintainer notes.
+	if launch.devMode then
+		local now = GetTime()
+		if not self.gcStats then
+			self.gcStats = { lastLog = now, lastFrame = now, peakMem = 0, lastMem = collectgarbage("count"), maxFrameMs = 0 }
+		else
+			local frameMs = now - self.gcStats.lastFrame
+			if frameMs > self.gcStats.maxFrameMs then self.gcStats.maxFrameMs = frameMs end
+			self.gcStats.lastFrame = now
+			local mem = collectgarbage("count")
+			if mem > self.gcStats.peakMem then self.gcStats.peakMem = mem end
+			if now - self.gcStats.lastLog >= 30000 then
+				ConPrintf("[GC] mem=%.0f KB peak=%.0f delta=%+.0f maxFrame=%dms",
+					mem, self.gcStats.peakMem, mem - self.gcStats.lastMem, self.gcStats.maxFrameMs)
+				self.gcStats.lastLog = now
+				self.gcStats.lastMem = mem
+				self.gcStats.peakMem = mem
+				self.gcStats.maxFrameMs = 0
+			end
+		end
+	end
+
 	if self.screenH > self.screenW then
 		self.portraitMode = true
 	else
@@ -658,6 +680,9 @@ function main:LoadSettings(ignoreBuild)
 				if node.attrib.disableDevAutoSave then
 					self.disableDevAutoSave = node.attrib.disableDevAutoSave == "true"
 				end
+				if node.attrib.notesFontScale then
+					self.notesFontScale = tonumber(node.attrib.notesFontScale) or 1.0
+				end
 			end
 		end
 	end
@@ -761,6 +786,7 @@ function main:SaveSettings()
 		POESESSID = self.POESESSID,
 		invertSliderScrollDirection = tostring(self.invertSliderScrollDirection),
 		disableDevAutoSave = tostring(self.disableDevAutoSave),
+		notesFontScale = tostring(self.notesFontScale or 1.0),
 	} })
 	local res, errMsg = common.xml.SaveXMLFile(setXML, self.userPath.."Settings.xml")
 	if not res then
@@ -1177,6 +1203,15 @@ function main:OpenAboutPopup(helpSectionIndex)
 	controls.github = new("ButtonControl", nil, 0, 62, 438, 18, "^7GitHub page: ^x4040FFhttps://github.com/uta666XYZ/LastEpochBuilding", function(control)
 		OpenURL("https://github.com/uta666XYZ/LastEpochBuilding")
 	end)
+	-- @leb-regression-guard: about-support-button-wired
+	-- The About popup ships a "Support LEB" (Buy Me a Coffee) button: a frameless
+	-- SupportButtonControl that draws only Assets/support-leb.png and opens the
+	-- Buy Me a Coffee page on click. Removing it, or breaking the asset path or the
+	-- URL, silently drops the only in-app support link.
+	-- Test: spec/System/TestAboutSupportButton_spec.lua "wires the support button into the About popup"
+	controls.support = new("SupportButtonControl", { "TOPLEFT", nil, "TOPLEFT" }, 10, 8, 140, 46, "Assets/support-leb.png", function()
+		OpenURL("https://www.buymeacoffee.com/yobk0831a")
+	end, "Support Last Epoch Building on Buy Me a Coffee")
 	controls.verLabel = new("ButtonControl", { "TOPLEFT", nil, "TOPLEFT" }, 10, 85, 100, 18, "^7Version history:", function()
 		controls.changelog.list = changeList
 		controls.changelog.sectionHeights = changeVersionHeights

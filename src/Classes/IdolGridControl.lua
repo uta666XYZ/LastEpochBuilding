@@ -137,6 +137,14 @@ local IdolGridControlClass = newClass("IdolGridControl", "Control", "ControlHost
 			local slot = new("ItemSlotControl", {"TOPLEFT", self, "TOPLEFT"}, cx, cy, itemsTab, slotName, "", nil, self.cw, self.ch)
 			slot.arrowH = self.ch / 2
 			slot.emptyPlusMarker = true
+			-- @leb-regression-guard: idol-slot-dropdown-width
+			-- The cell itself is only self.cw wide (~68px), which would clip the
+			-- dropped list of equippable idols down to the width of "None". Let the
+			-- open list auto-expand to fit item names (up to maxDroppedWidth), while
+			-- reserving room for the leading type/primordial/corrupted row icons.
+			slot.enableDroppedWidth = true
+			slot.maxDroppedWidth = 320
+			slot.dropExtraWidth = 3 * 18
 
 			-- Show/hide based on active altar (or Default-blocked set)
 			local r, c = row, col
@@ -200,7 +208,7 @@ function IdolGridControlClass:GetImage(filename)
 	if not filename then return nil end
 	if not self.imageHandles[filename] then
 		local h = NewImageHandle()
-		h:Load("Assets/idol/" .. filename, "ASYNC")
+		h:Load("Assets/idol/" .. filename)
 		self.imageHandles[filename] = h
 	end
 	return self.imageHandles[filename]
@@ -335,10 +343,12 @@ local blockedCellImage
 local function drawBlockedCell(cx, cy, cw, ch)
 	if not blockedCellImage then
 		blockedCellImage = NewImageHandle()
-		blockedCellImage:Load("Assets/idol/idols_blocked.png", "ASYNC")
+		blockedCellImage:Load("Assets/idol/idols_blocked.png")
 	end
-	SetDrawColor(1, 1, 1)
-	DrawImage(blockedCellImage, cx, cy, cw, ch)
+	if blockedCellImage:IsValid() then
+		SetDrawColor(1, 1, 1)
+		DrawImage(blockedCellImage, cx, cy, cw, ch)
+	end
 end
 
 -- Container/frame image constants
@@ -363,7 +373,7 @@ local ALTAR_EMPTY_SIZE = 54  -- draw size (square) for the altar circle icon
 function IdolGridControlClass:GetContainerImage()
 	if not self.imageHandles["__container"] then
 		local h = NewImageHandle()
-		h:Load("Assets/idol/idol_container.png", "ASYNC")
+		h:Load("Assets/idol/idol_container.png")
 		self.imageHandles["__container"] = h
 	end
 	return self.imageHandles["__container"]
@@ -372,7 +382,7 @@ end
 function IdolGridControlClass:GetAltarEmptyImage()
 	if not self.imageHandles["__altarEmpty"] then
 		local h = NewImageHandle()
-		h:Load("Assets/idol/idol_altar_empty.png", "ASYNC")
+		h:Load("Assets/idol/idol_altar_empty.png")
 		self.imageHandles["__altarEmpty"] = h
 	end
 	return self.imageHandles["__altarEmpty"]
@@ -394,7 +404,7 @@ function IdolGridControlClass:GetAltarImage(altarName)
 	local key = "__altar_" .. fname
 	if not self.imageHandles[key] then
 		local h = NewImageHandle()
-		h:Load("Assets/idol/" .. fname, "ASYNC")
+		h:Load("Assets/idol/" .. fname)
 		self.imageHandles[key] = h
 	end
 	return self.imageHandles[key]
@@ -443,9 +453,10 @@ function IdolGridControlClass:Draw(viewPort)
 		-- Panel background behind the frame + title bar (matches Blessings / Equipment).
 		-- Drawn BEFORE the container PNG so transparent regions of the PNG show the
 		-- dark panel colour, and the panel extends up to include the title bar.
+		-- Title bar removed; panel bg only covers the container area below.
 		local bx   = x - FRAME_DEST_SIDE_PAD
-		local byT  = y - FRAME_DEST_TOP_PAD - IDOL_TITLE_H   -- top of title bar
-		local totH = IDOL_TITLE_H + destH
+		local byT  = y - FRAME_DEST_TOP_PAD
+		local totH = destH
 		SetDrawColor(IDOL_PANEL_BG_R, IDOL_PANEL_BG_G, IDOL_PANEL_BG_B)
 		DrawImage(nil, bx, byT, destW, totH)
 
@@ -453,16 +464,6 @@ function IdolGridControlClass:Draw(viewPort)
 		if cimg and cimg:IsValid() then
 			SetDrawColor(1, 1, 1)
 			DrawImage(cimg, x - FRAME_DEST_SIDE_PAD, y - FRAME_DEST_TOP_PAD, destW, destH)
-		end
-		-- Title bar above the frame (matches Blessings / Equipment panel style)
-		do
-			SetDrawColor(IDOL_TITLE_BG_R, IDOL_TITLE_BG_G, IDOL_TITLE_BG_B)
-			DrawImage(nil, bx, byT, destW, IDOL_TITLE_H)
-			SetDrawColor(IDOL_TITLE_BORDER_R, IDOL_TITLE_BORDER_G, IDOL_TITLE_BORDER_B)
-			DrawImage(nil, bx, byT + IDOL_TITLE_H - 1, destW, 2)
-			SetDrawColor(1, 1, 1)
-			DrawString(bx + m_floor(destW / 2), byT + m_floor((IDOL_TITLE_H - 12) / 2),
-				"CENTER_X", 12, "VAR", "^xD4BB88Equipped Idols / Idol Altar")
 		end
 		-- Draw altar icon in circle center. When an altar is equipped, show the
 		-- matching Idol_Altar_<Name>.png; otherwise fall back to idol_altar_empty.
@@ -625,11 +626,16 @@ function IdolGridControlClass:Draw(viewPort)
 						DrawString(cx + pw - tw - 3, cy + ph - fs - 3, "LEFT", fs, "VAR", hint)
 					end
 				elseif not item then
-					-- Empty valid cell: border (purple for fractured, gray for normal)
-					if av == 2 then
-						drawBorder(cx, cy, cw, ch, 0.62, 0.22, 0.92)
-					else
-						drawBorder(cx, cy, cw, ch, 0.28, 0.28, 0.28)
+					-- Empty valid cell: border (purple for fractured, gray for normal).
+					-- Skip if this cell is a secondary cell of a multi-cell idol —
+					-- otherwise the gray border draws on top of the idol's icon.
+					local isSecondary = self.cellPrimary[row] and self.cellPrimary[row][col]
+					if not isSecondary then
+						if av == 2 then
+							drawBorder(cx, cy, cw, ch, 0.62, 0.22, 0.92)
+						else
+							drawBorder(cx, cy, cw, ch, 0.28, 0.28, 0.28)
+						end
 					end
 				end
 			end

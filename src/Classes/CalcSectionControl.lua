@@ -103,24 +103,35 @@ function CalcSectionClass:UpdateSize()
 			rowData.enabled = self.calcsTab:CheckFlag(rowData) and (self.id == "SkillSelect" or self.calcsTab:SearchMatch(rowData))
 			if rowData.enabled then
 				self.enabled = true
+				-- Wrap long labels that don't fit the 128px label area onto a 2nd line.
+				local rowHeight = 18
+				if rowData.label and DrawStringWidth(16, "VAR", rowData.label..":") > 128 then
+					rowHeight = 32
+				end
+				rowData._rowHeight = rowHeight
 				local xOffset = 134
 				for colour, colData in ipairs(rowData) do
 					colData.xOffset = xOffset
 					colData.yOffset = yOffset
 					colData.width = subSec.data.colWidth or width - 136
-					colData.height = 18
+					colData.height = rowHeight
 					xOffset = xOffset + colData.width
 				end
-				yOffset = yOffset + 18
-				self.height = self.height + 18
-				tempHeight = tempHeight + 18
+				yOffset = yOffset + rowHeight
+				self.height = self.height + rowHeight
+				tempHeight = tempHeight + rowHeight
 			end
 			if subSec.collapsed then
 				rowData.enabled = false
 			end
 		end
 		if self.enabled and not subSec.collapsed then
-			self.height = self.height + 22
+			-- @leb-regression-guard: calc-section-last-row-frame-gap
+			-- 22 = the subsection header; +2 = a bottom gap so the last row does
+			-- not touch the section frame / next header border below it (matches
+			-- the "lineY = lineY + 2" after the rows in Draw).
+			-- Test: spec/System/TestCalcSectionRowLayout_spec.lua "reserves a 2px bottom gap after the last row (2 rows)"
+			self.height = self.height + 22 + 2
 		else
 			self.height = self.height - tempHeight + 20
 			yOffset = yOffset - tempHeight - 2
@@ -162,7 +173,12 @@ function CalcSectionClass:FormatVal(val, p)
 end
 
 function CalcSectionClass:FormatStr(str, actor, colData)
-	str = str:gsub("{output:([%a%.:]+)}", function(c) 
+	-- @leb-regression-guard: calc-section-output-key-underscore
+	-- Output keys may contain underscores/digits (e.g. BurningDaggerChanceOnMeleeFire_RateLimit),
+	-- so the key class must include %w and _, not just letters -- otherwise the
+	-- placeholder never matches and the raw "{0:output:...}" text is shown.
+	-- Test: spec/System/TestCalcSectionOutputKeyUnderscore_spec.lua "substitutes output keys that contain underscores"
+	str = str:gsub("{output:([%w_%.:]+)}", function(c)
 		local ns, var = c:match("^(%a+)%.(%a+)$")
 		if ns then
 			return actor.output[ns] and actor.output[ns][var] or ""
@@ -170,7 +186,7 @@ function CalcSectionClass:FormatStr(str, actor, colData)
 			return actor.output[c] or ""
 		end
 	end)
-	str = str:gsub("{(%d+):output:([%a%.:]+)}", function(p, c) 
+	str = str:gsub("{(%d+):output:([%w_%.:]+)}", function(p, c)
 		local ns, var = c:match("^(%a+)%.(%a+)$")
 		if ns then
 			return self:FormatVal(actor.output[ns] and actor.output[ns][var] or 0, tonumber(p))
@@ -267,10 +283,42 @@ function CalcSectionClass:Draw(viewPort, noTooltip)
 						textColor = rowData.color
 					end
 					if rowData.label then
+						local rowHeight = rowData._rowHeight or 18
 						-- Draw row label with background
 						SetDrawColor(rowData.bgCol or "^0")
-						DrawImage(nil, x + 2, lineY, 130, 18)
-						DrawString(x + 132, lineY + 1, "RIGHT_X", 16, "VAR", textColor..rowData.label.."^7:")
+						DrawImage(nil, x + 2, lineY, 130, rowHeight)
+						-- Clip the label text to its 130px column so an over-long label
+						-- can never spill onto the section border (left) or the line
+						-- above (top). Coords below are viewport-relative; 130 = the
+						-- column's right edge (was x+132 in absolute coords).
+						SetViewport(x + 2, lineY, 130, rowHeight)
+						if rowHeight > 18 then
+							-- Wrap onto two lines, splitting at last word that fits.
+							local words = { }
+							for w in rowData.label:gmatch("%S+") do t_insert(words, w) end
+							local line1, line2 = "", ""
+							-- Fill line 1 with as many words as fit the 128px label
+							-- column, measured at the SAME 14px size the text is drawn
+							-- at (measuring at 16px underfilled line 1 and pushed the
+							-- overflow onto line 2, which then stuck out past the border).
+							for i, w in ipairs(words) do
+								local trial = (line1 == "") and w or (line1 .. " " .. w)
+								if DrawStringWidth(14, "VAR", trial) <= 128 and line2 == "" then
+									line1 = trial
+								else
+									line2 = (line2 == "") and w or (line2 .. " " .. w)
+								end
+							end
+							if line2 == "" then line2 = line1; line1 = "" end
+							-- +2 keeps the top line clear of the section/header border
+							-- line above it; the 2nd line carries the ":" so the value
+							-- (drawn below) aligns to it.
+							DrawString(130, 2,  "RIGHT_X", 14, "VAR", textColor..line1)
+							DrawString(130, 17, "RIGHT_X", 14, "VAR", textColor..line2.."^7:")
+						else
+							DrawString(130, 2, "RIGHT_X", 16, "VAR", textColor..rowData.label.."^7:")
+						end
+						SetViewport()
 					end
 					for colour, colData in ipairs(rowData) do
 						-- Draw column separator at the left end of the cell
@@ -291,14 +339,23 @@ function CalcSectionClass:Draw(viewPort, noTooltip)
 						DrawImage(nil, colData.x + 2, colData.y, colData.width - 2, colData.height)
 					end
 					local textSize = rowData.textSize or 14
+					-- For a wrapped (2-line) label the ":" sits on the 2nd line
+					-- (drawn at +17), so align the value to that line instead of
+					-- the cell centre; single-line rows stay vertically centred.
+					local valueY = (colData.height > 18) and (17 + (14 - textSize) / 2) or (colData.height / 2 - textSize / 2)
 					SetViewport(colData.x + 3, colData.y, colData.width - 4, colData.height)
-					DrawString(1, 9 - textSize/2, "LEFT", textSize, "VAR", "^7"..self:FormatStr(colData.format, actor, colData))
+					DrawString(1, valueY, "LEFT", textSize, "VAR", "^7"..self:FormatStr(colData.format, actor, colData))
 					SetViewport()
 				end
 			end
-			lineY = lineY + 18
+			lineY = lineY + (rowData._rowHeight or 18)
 				end
 			end
+			-- @leb-regression-guard: calc-section-last-row-frame-gap
+			-- 2px gap after this subsection's rows so the last row clears the
+			-- section frame (or the next subsection's header border) below it.
+			-- Must match the "+ 22 + 2" in UpdateSize or height and draw diverge.
+			lineY = lineY + 2
 		end
 	end
 end

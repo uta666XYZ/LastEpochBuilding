@@ -57,7 +57,25 @@ function calcs.mergeSkillInstanceMods(env, modList, skillEffect, extraStats)
 			stats[stat.key] = (stats[stat.key] or 0) + stat.value
 		end
 	end
-	for stat, statValue in pairs(stats) do
+	-- @leb-regression-guard: deterministic-skill-stat-merge-order
+	-- Iterate the granted-effect stats in a STABLE (sorted-key) order, not raw
+	-- pairs() order. Several stat keys map to the same skillData key — e.g.
+	-- both `None_base_fire_damage` and `spell_base_fire_damage` map to
+	-- SkillData "FireDamage" (SkillStatMap.lua) — and skillData is populated by
+	-- a last-wins assignment (`skillData[value.key] = value.value`, ~L1170).
+	-- Lua randomises string-key hash order per process, so raw pairs() made the
+	-- last-merged (winning) FireDamage nondeterministic: <private build> Runemaster's
+	-- Flame Rush base fire damage flipped 20<->40 run-to-run (FireDamageBase
+	-- 128<->148), cascading into FullDPS / Lightning*/Stun / EHP families and
+	-- producing the flaky TestBuilds_spec snapshot mismatches. Sorting the keys
+	-- makes the winning value deterministic (delivery-tagged `spell_*`=40 sorts
+	-- after the generic `None_*`=20, matching the in-game spell value). See
+	-- spec/System/TestSkillStatMergeDeterminism_spec.lua and REGRESSION_GUARDS.md.
+	local sortedStatKeys = {}
+	for stat in pairs(stats) do sortedStatKeys[#sortedStatKeys + 1] = stat end
+	table.sort(sortedStatKeys)
+	for _, stat in ipairs(sortedStatKeys) do
+		local statValue = stats[stat]
 		local map = grantedEffect.statMap[stat]
 		if map then
 			-- Some mods need different scalars for different stats, but the same value.  Putting them in a group allows this
@@ -100,7 +118,32 @@ function calcs.createActiveSkill(activeEffect, supportList, actor, socketGroup, 
 	-- Initialise skill flag set ('attack', 'projectile', etc)
 	local skillFlags = copyTable(activeGrantedEffect.baseFlags)
 	activeSkill.skillFlags = skillFlags
-	skillFlags.hit = skillFlags.hit or activeSkill.skillTypes[SkillType.Attack] or activeSkill.skillTypes[SkillType.Damage] or activeSkill.skillTypes[SkillType.Projectile]
+	-- @leb-regression-guard: melee-skill-hit-flag
+	-- In LE every weapon-delivery skill (melee/bow/throwing) lands a damaging hit;
+	-- the hit flag gates crit, on-hit effects and the entire hit-damage pass in
+	-- CalcOffence (`if NeverCrit or not skillFlags.hit then CritChance=0`). skills.json
+	-- sets baseFlags.hit for most skills, but a few attacks (ShatterStrike, CinderStrike,
+	-- DarkQuiver) omit it, and the PoB-era skillTypes fallback below never fires for LE
+	-- pure-melee skills: SkillType.Attack = Melee|Throwing|Bow and the `band(tags,type)==type`
+	-- test in DataProcess requires ALL three bits, SkillType.Damage is undefined (nil), and
+	-- SkillType.Projectile = Unsupported. So a Melee-only skill (skillTypeTags bit 512) was
+	-- left with hit=nil, zeroing its crit (in-game ShutFackUp Shatter Strike shows 35% crit,
+	-- LEB computed 0%). Ailment-delivery skills (Ailment_Laceration) carry a melee flag but
+	-- only apply a DoT — they do not directly hit, so exclude baseFlags.ailment.
+	skillFlags.hit = skillFlags.hit
+		or ((skillFlags.melee or skillFlags.bow or skillFlags.throwing) and not skillFlags.ailment)
+		or activeSkill.skillTypes[SkillType.Attack] or activeSkill.skillTypes[SkillType.Damage] or activeSkill.skillTypes[SkillType.Projectile]
+
+	-- @leb-regression-guard:pure-dot-skill-dot-flag
+	-- A PURE damage-over-time skill (Profane Veil, Aura of Decay, ...) carries the DoT
+	-- bit in skillTypeTags (skillTypes[SkillType.Dot]=true) but its baseFlags omit 'dot',
+	-- so skillFlags.dot stayed nil and the pure-dot-skill-modflag-dot block below (which
+	-- carries ModFlag.Dot so "increased Damage over Time" applies) never fired -- dropping
+	-- all increased-DoT (Profane Veil: LEB 178.5 vs in-game 400.8, +521% DoT INC filtered).
+	-- Derive dot for PURE-DoT skills only (DoT type, no hit) so hit+dot skills
+	-- (DevouringOrb/EntanglingRoots/HungeringSouls/Chthonic Fissure/Judgement) are untouched.
+	-- SkillType.Dot = 4096 (SkillType.DoT is nil -- a latent typo). See REGRESSION_GUARDS.md.
+	skillFlags.dot = skillFlags.dot or (activeSkill.skillTypes[SkillType.Dot] and not skillFlags.hit) or nil
 
 	-- Process support skills
 	activeSkill.effectList = { activeEffect }
@@ -240,8 +283,26 @@ function calcs.getTreeTagSwaps(env, treeId, grantedEffect)
 			end
 		end
 	end
+	-- @leb-regression-guard:tree-tag-swap-determinism (producer site)
+	-- Two allocated nodes on one tree can both write swaps[srcBit] (YsSmiteVK's
+	-- Smite: sm87r4-21 " Fire -> Lightning Damage" vs sm87r4-32 " Void Conversion"
+	-- whose inferred source is also Fire). swaps[src] is last-writer-wins, and
+	-- pairs(env.allocNodes) iterates string keys in per-process hash order, so the
+	-- winner flapped run-to-run (Smite's Void tag appearing/vanishing => the VK Echo
+	-- 10% MORE gate flipping => a uniform x1.10 swing on ~32 output keys). Iterate
+	-- node ids in sorted order so the LEXICALLY-LAST allocated node deterministically
+	-- wins a same-source collision — for Smite that is sm87r4-32, i.e. Void, matching
+	-- the snapshot corpus. See REGRESSION_GUARDS.md "tree-tag-swap-determinism".
+	local swapNodeIds = {}
 	for nodeId, node in pairs(env.allocNodes) do
 		if nodeId:sub(1, #prefix) == prefix and node.stats then
+			t_insert(swapNodeIds, nodeId)
+		end
+	end
+	table.sort(swapNodeIds)
+	for _, nodeId in ipairs(swapNodeIds) do
+		local node = env.allocNodes[nodeId]
+		do
 			for _, stat in ipairs(node.stats) do
 				local src, dst = stat:match("^%s*(%w+)%s*%->%s*(%w+)%s+Damage%s*$")
 				if not src then
@@ -321,7 +382,7 @@ function calcs.getTreeTagAdditions(env, treeId)
 				end
 			end
 			-- Split-effect damage-type additions parsed from node descriptions.
-			-- Per LE_datamining findings: per-node mutator state (e.g. Black Hole's
+			-- Per datamined game source findings: per-node mutator state (e.g. Black Hole's
 			-- BinaryStar bool) isn't serialized — only `<Skill>Tree.updateMutator()`
 			-- C# bytecode knows the exact mapping. As a fallback we pattern-match
 			-- description text for split-effect phrasing like Binary System
@@ -396,13 +457,33 @@ function calcs.applyTreeTagSwaps(swaps, skillTypes, keywordFlags, mutable)
 	if not swaps then return skillTypes, keywordFlags end
 	local out = mutable and skillTypes or copyTable(skillTypes)
 	local kw = keywordFlags or 0
+	-- @leb-regression-guard:tree-tag-swap-determinism (consumer site)
+	-- Two-phase apply against the PRE-swap tag set. The old incremental loop let
+	-- one swap's destination feed another swap's source test, so chained swaps
+	-- ({A->B, B->C}) double-hopped or not depending on pairs() hash order (swaps
+	-- is keyed by numeric bits whose table layout follows insertion order).
+	-- Deciding every swap against the original set makes the result independent
+	-- of iteration order: sources present up-front are removed, their
+	-- destinations added, and a destination that is also a removed source stays
+	-- present. See REGRESSION_GUARDS.md "tree-tag-swap-determinism".
+	local removeMask, addMask = 0, 0
 	for srcBit, dstBit in pairs(swaps) do
 		if out[srcBit] then
-			out[srcBit] = nil
-			out[dstBit] = true
-			kw = bor(band(kw, bnot(srcBit)), dstBit)
+			removeMask = bor(removeMask, srcBit)
+			addMask = bor(addMask, dstBit)
 		end
 	end
+	for srcBit in pairs(swaps) do
+		if band(removeMask, srcBit) ~= 0 then
+			out[srcBit] = nil
+		end
+	end
+	for srcBit, dstBit in pairs(swaps) do
+		if band(removeMask, srcBit) ~= 0 then
+			out[dstBit] = true
+		end
+	end
+	kw = bor(band(kw, bnot(removeMask)), addMask)
 	return out, kw
 end
 
@@ -463,11 +544,17 @@ end
 -- Fire via Fire Arrow), unioning stcdt unconditionally falsely matches gear
 -- like Logi's Hunger ("+X Fire Minion Skills") even when no Fire-producing
 -- node is allocated. LETools / in-game match only the actually-active types.
+-- @leb-regression-guard:stcdt-conversion-shapes
+-- Pattern catalogue covering every conversion / addition / source-removal
+-- stat & description prose shape used across LE's skill trees as of 2026-05.
+-- Each shape has a corresponding case in spec/System/TestStcdtParser_spec.lua;
+-- see REGRESSION_GUARDS.md#stcdt-conversion-shapes for the full inventory.
 function calcs.getActiveStcdtBits(env, treeId, stcdt)
-	if not stcdt or stcdt == 0 then return 0 end
-	if not (treeId and env and env.allocNodes) then return 0 end
+	if not stcdt or stcdt == 0 then return 0, 0 end
+	if not (treeId and env and env.allocNodes) then return 0, 0 end
 	local prefix = treeId .. "-"
 	local active = 0
+	local removed = 0
 	for nodeId, node in pairs(env.allocNodes) do
 		if nodeId:sub(1, #prefix) == prefix and node.stats then
 			for _, stat in ipairs(node.stats) do
@@ -487,6 +574,31 @@ function calcs.getActiveStcdtBits(env, treeId, stcdt)
 					_, dst = stat:match("^%s*(%w+)%s+Base%s+Damage%s*%->%s*(%w+)%s*$")
 				end
 				if not dst then
+					-- Multi-source AND-join conversion: "<Src1> and <Src2> -> <Dst> Damage"
+					-- (e.g. svz81-23 Horrific Vessels: "Physical and Fire -> Necrotic Damage").
+					-- Only the destination matters here; source-side removal is
+					-- handled by getTreeTagSwaps below.
+					_, _, dst = stat:match("^%s*(%w+)%s+and%s+(%w+)%s*%->%s*(%w+)%s+Damage%s*$")
+				end
+				if not dst then
+					-- Multi-source AND-join Conversion suffix: "<Src1> and <Src2> -> <Dst> Conversion"
+					-- (e.g. tree_3 cb52d2-? "Necrotic and Fire -> Physical Conversion").
+					_, _, dst = stat:match("^%s*(%w+)%s+and%s+(%w+)%s*%->%s*(%w+)%s+Conversion%s*$")
+				end
+				if not dst then
+					-- Qualifier-prefixed modifier conversion: "Increased <Src> Damage -> <Dst> Damage"
+					-- (e.g. ds4d3-32 Vile Ghast: "Increased Necrotic Damage -> Poison Damage").
+					-- Modifier-conversion only — does not strip the source damage type
+					-- but DOES introduce the destination as a relevant scaling tag.
+					_, dst = stat:match("^%s*Increased%s+(%w+)%s+Damage%s*%->%s*(%w+)%s+Damage%s*$")
+				end
+				if not dst then
+					-- Addition: "Enables <Type> Nova" (e.g. en6-2/8/12 Elemental Nova
+					-- "Enables Cold/Lightning/Fire Nova"). The named type becomes a
+					-- legitimate damage type when the gating node is allocated.
+					dst = stat:match("^%s*Enables%s+(%w+)%s+Nova%s*$")
+				end
+				if not dst then
 					-- Bare "<Src> -> <Dst>" form (no suffix). Same fallback as
 					-- getTreeTagSwaps; see comment there. Filtered safely via
 					-- damageTypeBitsByName lookup (rejects ailment swaps).
@@ -494,6 +606,10 @@ function calcs.getActiveStcdtBits(env, treeId, stcdt)
 					_src, dst = stat:match("^%s*(%w+)%s*%->%s*(%w+)%s*$")
 					if dst and not damageTypeBitsByName[dst] then dst = nil end
 				end
+				-- Per Q2: "<X> -> Elemental Damage" (e.g. cstri-22 Elemental
+				-- Vulnerability) is a buff-modifier rewrite, not a skill damage
+				-- tag change. Skip the Elemental aggregate entirely.
+				if dst and dst:lower() == "elemental" then dst = nil end
 				if dst and damageTypeBitsByName[dst] then
 					active = bor(active, damageTypeBitsByName[dst])
 				end
@@ -552,12 +668,29 @@ function calcs.getActiveStcdtBits(env, treeId, stcdt)
 								end
 							end
 						end
+						-- Source-bit removal: "loses its <type> tag" /
+						-- "loses its {<type>} tag" without an `if` conditional
+						-- prefix (the `if` filter above already gates that).
+						-- Per Q3=(a) only unconditional/full-conversion source
+						-- removal is recognised here; partial-% conditionals
+						-- are skipped. Examples that DO match:
+						--   tree_3 rea-32: "Reap loses its {Necrotic} tag and
+						--     gains a {Physical} tag instead."
+						-- Examples that don't match (have `if` prefix):
+						--   tree_0 sw1, tree_4 srk21-25.
+						for inner in lo:gmatch("loses its[%s%S]-tag") do
+							for typeName, b in pairs(damageTypeBitsByName) do
+								if inner:find(typeName:lower(), 1, true) then
+									removed = bor(removed, b)
+								end
+							end
+						end
 					end
 				end
 			end
 		end
 	end
-	return band(stcdt, active)
+	return band(stcdt, active), removed
 end
 
 -- Item-mod driven runtime tag conversions (e.g. Ash Wake's
@@ -588,6 +721,14 @@ function calcs.getItemSkillTagConversions(env, grantedEffect)
 		for _, line in ipairs(modLines) do
 			local text = (line.line or ""):lower()
 			local dst = text:match("^" .. nameLower:gsub("(%W)", "%%%1") .. " is converted to (%w+)")
+			if not dst then
+				-- @leb-regression-guard: lament-base-damage-conversion
+				-- Lament of the Lost Refuge: "100% of Volcanic Orb Base Damage
+				-- Converted to Void". Only the full 100% form swaps the skill's
+				-- intrinsic damage tag; partial conversions stay handled by the
+				-- generic "% damage converted" suffix chain elsewhere.
+				dst = text:match("^100%% of " .. nameLower:gsub("(%W)", "%%%1") .. " base damage converted to (%w+)$")
+			end
 			if dst then
 				local dstCap = dst:sub(1, 1):upper() .. dst:sub(2):lower()
 				if damageTypeBitsByName[dstCap] then
@@ -618,6 +759,73 @@ function calcs.getItemSkillTagConversions(env, grantedEffect)
 	end
 	return addBits, removeBits
 end
+
+-- @leb-regression-guard: lament-base-damage-conversion
+-- Returns the lower-case destination damage type ("fire" / "cold" /
+-- "lightning" / "necrotic" / "void" / "physical" / "poison") that the
+-- equipped item set forces this skill's BASE DAMAGE stat keys onto, or
+-- nil if no full conversion applies. Used by mergeSkillInstanceMods to
+-- rewrite stat keys like `spell_base_fire_damage` -> `spell_base_void_damage`
+-- so the skill's stats.json base value flows into the destination type's
+-- damage pool. Pairs with getItemSkillTagConversions, which swaps the
+-- skill's intrinsic damage tag for matching affix targeting.
+--
+-- Pattern matched: "100% of <Skill> Base Damage Converted to <Type>"
+-- (Lament of the Lost Refuge, etc.). Only 100% performs the full swap;
+-- partial conversions are handled by the generic conversion suffix chain
+-- and don't rewrite the base damage stat key.
+function calcs.getItemSkillBaseDamageConversion(env, grantedEffect)
+	if not (env and env.player and env.player.itemList and grantedEffect and grantedEffect.name) then
+		return nil
+	end
+	local nameLower = grantedEffect.name:lower()
+	local namePat = "^100%% of " .. nameLower:gsub("(%W)", "%%%1") .. " base damage converted to (%w+)$"
+	local function scan(modLines)
+		if not modLines then return nil end
+		for _, line in ipairs(modLines) do
+			local text = (line.line or ""):lower()
+			local dst = text:match(namePat)
+			if dst then
+				local dstCap = dst:sub(1, 1):upper() .. dst:sub(2):lower()
+				if damageTypeBitsByName[dstCap] then
+					return dst
+				end
+			end
+		end
+		return nil
+	end
+	for _, item in pairs(env.player.itemList) do
+		if item then
+			local r = scan(item.explicitModLines) or scan(item.implicitModLines) or scan(item.enchantModLines)
+			if r then return r end
+		end
+	end
+	return nil
+end
+
+-- Damage-type stat-key prefixes recognized by SkillStatMap. When a skill is
+-- under a "100% of <Skill> Base Damage Converted to <Type>" item conversion
+-- (e.g. Lament -> Volcanic Orb), the stat key is rewritten from
+-- "<prefix><srcType>_damage" to "<prefix><dstType>_damage" before lookup so
+-- the skill's base damage flows into the destination damage pool.
+local BASE_DAMAGE_STAT_PREFIXES = {
+	"spell_base_", "melee_base_", "bow_base_", "throwing_base_", "None_base_",
+}
+local BASE_DAMAGE_STAT_TYPES = {
+	"fire", "cold", "lightning", "necrotic", "void", "physical", "poison",
+}
+function calcs.swapBaseDamageStatKey(stat, dstType)
+	if not (stat and dstType) then return stat end
+	for _, prefix in ipairs(BASE_DAMAGE_STAT_PREFIXES) do
+		for _, dt in ipairs(BASE_DAMAGE_STAT_TYPES) do
+			if dt ~= dstType and stat == prefix .. dt .. "_damage" then
+				return prefix .. dstType .. "_damage"
+			end
+		end
+	end
+	return stat
+end
+
 
 -- OR an additions bitmap into a skillTypes set + keywordFlags integer.
 local TAG_ADDITION_BITS = {
@@ -782,6 +990,24 @@ function calcs.buildActiveSkillModList(env, activeSkill)
 	if skillFlags.area then
 		skillModFlags = bor(skillModFlags, ModFlag.Area)
 	end
+	-- @leb-regression-guard:pure-dot-skill-modflag-dot
+	-- A PURE damage-over-time skill (skillFlags.dot, but it does NOT hit and is
+	-- NOT an ailment) deals all of its damage as a degen, so its damage cfg must
+	-- carry ModFlag.Dot for "increased/more Damage over Time" modifiers (parsed
+	-- as { "Damage", flags = ModFlag.Dot }, ModParser) to apply -- calcDamage()
+	-- sums INC/MORE with this single cfg (there is no separate dotCfg). Without
+	-- it, e.g. Consecrated Ground (granted by Judgement) silently dropped the
+	-- "Anointed" node "+100% Damage Over Time" (pa67ju-3) and every other DoT
+	-- scalar, undercounting by the build's whole DoT multiplier stack
+	-- (MyLittleStJames CG was 32x below the in-game per-tick).
+	--   * Gated to NOT hit  -> a hit+dot skill keeps its hit damage clean (the
+	--     merged calcDamage path cannot split hit vs dot scaling).
+	--   * Gated to NOT ailment -> ailments compute on the data.damagingAilment
+	--     path with their own AilmentDamage scaling; leave that untouched.
+	-- See REGRESSION_GUARDS.md "pure-dot-skill-modflag-dot".
+	if skillFlags.dot and not skillFlags.hit and not skillFlags.ailment then
+		skillModFlags = bor(skillModFlags, ModFlag.Dot)
+	end
 
 	-- Build skill keyword flag set
 	local skillKeywordFlags = 0
@@ -815,7 +1041,8 @@ function calcs.buildActiveSkillModList(env, activeSkill)
 	if skillTypes[SkillType.Physical] then
 		skillKeywordFlags = bor(skillKeywordFlags, KeywordFlag.Physical)
 	end
-	if skillFlags.weapon1Attack and band(activeSkill.weapon1Flags, ModFlag.Bow) ~= 0 then
+	if skillFlags.weapon1Attack and band(activeSkill.weapon1Flags, ModFlag.Bow) ~= 0
+		and not skillTypes[SkillType.Throwing] then
 		skillKeywordFlags = bor(skillKeywordFlags, KeywordFlag.Bow)
 	end
 	if skillFlags.totem then
@@ -824,7 +1051,16 @@ function calcs.buildActiveSkillModList(env, activeSkill)
 		skillFlags.selfCast = true
 	end
 	if skillTypes[SkillType.Melee] then
-		skillKeywordFlags = bor(skillKeywordFlags, KeywordFlag.Attack)
+		-- @leb-regression-guard:ailment-finisher-scaling (strict delivery keyword)
+		-- @leb-regression-guard:minion-melee-keyword-no-bundle (strict minion melee)
+		-- Validation provenance is retained in maintainer notes.
+		if activeGrantedEffect.ailmentFinisher then
+			skillKeywordFlags = bor(skillKeywordFlags, KeywordFlag.Melee)
+		elseif activeSkill.actor and activeSkill.actor.minionData then
+			skillKeywordFlags = bor(skillKeywordFlags, KeywordFlag.Melee)
+		else
+			skillKeywordFlags = bor(skillKeywordFlags, KeywordFlag.Attack)
+		end
 	end
 	if skillTypes[SkillType.Spell] and not skillFlags.cast then
 		skillKeywordFlags = bor(skillKeywordFlags, KeywordFlag.Spell)
@@ -859,7 +1095,14 @@ function calcs.buildActiveSkillModList(env, activeSkill)
 	activeSkill.skillCfg = {
 		flags = bor(skillModFlags, activeSkill.weapon1Flags or activeSkill.weapon2Flags or 0),
 		keywordFlags = skillKeywordFlags,
-		skillName = activeGrantedEffect.name,
+		-- @leb-regression-guard:minion-granted-weapon-attack-base-inheritance
+		-- skillNameForMatch decouples MOD-MATCHING from the DISPLAY name. It is set only on a
+		-- minion weapon-base clone (createMinionSkills below) whose display name is re-skinned to
+		-- the player skill (e.g. "Earthquake") but which must NOT inherit that player skill's
+		-- SkillName-tagged tree mods (the bear's "-60% Earthquake" node be36ar-15). The F4 oracle
+		-- proved those do not apply in-game (EQ element-MORE 9.98 == Melee's). Nil for every normal
+		-- skill => identical behaviour (falls back to the display name).
+		skillName = activeGrantedEffect.skillNameForMatch or activeGrantedEffect.name,
 		summonSkillName = activeSkill.summonSkill and activeSkill.summonSkill.activeEffect.grantedEffect.name,
 		skillGem = activeEffect.gemData,
 		skillGrantedEffect = activeGrantedEffect,
@@ -871,7 +1114,11 @@ function calcs.buildActiveSkillModList(env, activeSkill)
 		slotName = activeSkill.slotName
 	}
 	if activeSkill.socketGroup then
-		activeSkill.skillCfg.groupSource = activeSkill.socketGroup.source
+		-- @leb-regression-guard:ailment-finisher-scaling (parent-tree cut)
+		-- Validation provenance is retained in maintainer notes.
+		if not activeGrantedEffect.ailmentFinisher then
+			activeSkill.skillCfg.groupSource = activeSkill.socketGroup.source
+		end
 	end
 	if skillFlags.weapon1Attack then
 		activeSkill.weapon1Cfg = copyTable(activeSkill.skillCfg, true)
@@ -888,9 +1135,50 @@ function calcs.buildActiveSkillModList(env, activeSkill)
 	local skillModList = new("ModList", activeSkill.actor.modDB)
 	activeSkill.skillModList = skillModList
 	activeSkill.baseSkillModList = skillModList
-	
+
+	-- @leb-regression-guard:void-knight-echo-more (consumer site)
+	-- Void Knight mastery echo bonus: a P% chance to fully re-cast the ability 0.5s
+	-- later = +P% average damage (full re-cast, no chain, full damage). The parser
+	-- (ModParser specialModList, tree_2.json "Void Knight") lands the chance as a
+	-- VoidKnightEchoChance BASE player mod; here it becomes a Damage MORE scoped to the
+	-- eligible skill set: melee attacks OR throwing attacks OR void spells, EXCLUDING
+	-- movement skills and Anomaly (game text). This any-of-minus-exclusions gate can't be
+	-- expressed as one keyword-tagged mod, so it is resolved per-skill at setup. Reading
+	-- actor.modDB keeps it player-only (minions carry no VK flag). Spec: TestVoidKnightEcho.
+	local vkEchoChance = activeSkill.actor.modDB:Sum("BASE", nil, "VoidKnightEchoChance")
+	if vkEchoChance > 0
+		and activeGrantedEffect.name ~= "Anomaly"
+		and not activeSkill.skillTypes[SkillType.Movement]
+		and (skillFlags.melee or skillFlags.throwing or (activeSkill.skillTypes[SkillType.Void] and skillFlags.spell)) then
+		skillModList:NewMod("Damage", "MORE", vkEchoChance, "Void Knight Echo")
+	end
+
+	-- @leb-regression-guard:javelin-spear-melee-to-throwing-conversion
+	-- Validation provenance is retained in maintainer notes.
+	if activeGrantedEffect.id == "Javelin" and activeSkill.skillTypes[SkillType.Throwing] then
+		local weaponData1 = activeSkill.actor.weaponData1
+		local weapon1Type = weaponData1 and env.data.weaponTypeInfo[weaponData1.type]
+		local weapon1Item = activeSkill.actor.itemList and activeSkill.actor.itemList["Weapon 1"]
+		if weapon1Type and weapon1Type.flag == "Spear" and weapon1Item and weapon1Item.modSource then
+			local weaponSource = weapon1Item.modSource
+			local meleeCfg = { keywordFlags = KeywordFlag.Melee }
+			-- typeless "Damage" last: converted generic added rides the skill's own type set
+			for _, modName in ipairs({ "PhysicalDamage", "FireDamage", "ColdDamage", "LightningDamage", "VoidDamage", "NecroticDamage", "PoisonDamage", "Damage" }) do
+				local spearMeleeAdded = 0
+				for _, entry in ipairs(skillModList:Tabulate("BASE", meleeCfg, modName)) do
+					if entry.mod.source == weaponSource then
+						spearMeleeAdded = spearMeleeAdded + (entry.value or 0)
+					end
+				end
+				if spearMeleeAdded ~= 0 then
+					skillModList:NewMod(modName, "BASE", spearMeleeAdded * 0.5, "Javelin Spear Melee Conversion")
+				end
+			end
+		end
+	end
+
 	-- The damage fixup stat applies x% less base Attack Damage and x% more base Attack Speed as confirmed by Openarl Jan 4th 2024
-	-- Implemented in this manner as the stat exists on the minion not the skills 
+	-- Implemented in this manner as the stat exists on the minion not the skills
 	if activeSkill.actor and activeSkill.actor.minionData and activeSkill.actor.minionData.damageFixup then
 		skillModList:NewMod("Damage", "MORE", -100 * activeSkill.actor.minionData.damageFixup, "Damage Fixup", ModFlag.Attack)
 		skillModList:NewMod("Speed", "MORE", 100 * activeSkill.actor.minionData.damageFixup, "Damage Fixup", ModFlag.Attack)
@@ -899,6 +1187,18 @@ function calcs.buildActiveSkillModList(env, activeSkill)
 	if skillModList:Flag(activeSkill.skillCfg, "DisableSkill") and not skillModList:Flag(activeSkill.skillCfg, "EnableSkill") then
 		skillFlags.disable = true
 		activeSkill.disableReason = "Skills of this type are disabled"
+		-- @leb-regression-guard:upheaval-totem-disable-reason
+		-- uph41-30 "Upheaval Totems" disables the PLAYER-cast Upheaval because the totem now
+		-- casts it "rather than yourself" (CalcSetup injects a SkillName-scoped DisableSkill
+		-- with source "uph41-30:replacesParentHit"; see @leb-regression-guard:upheaval-totem-grant).
+		-- Surface that real reason instead of the generic "type is disabled" text, which
+		-- misleads here (the skill TYPE is not disabled -- this specific cast is replaced).
+		for _, entry in ipairs(skillModList:Tabulate("FLAG", activeSkill.skillCfg, "DisableSkill")) do
+			if entry.mod and entry.mod.source == "uph41-30:replacesParentHit" then
+				activeSkill.disableReason = "Cast by Upheaval Totem\nsee Summon Upheaval Totem"
+				break
+			end
+		end
 	end
 
 	if skillFlags.disable then
@@ -947,7 +1247,15 @@ function calcs.buildActiveSkillModList(env, activeSkill)
 
 	-- Add extra modifiers from granted effect level
 	local stats = activeGrantedEffect.stats
-	activeSkill.skillData.CritChance = stats.critChance
+	-- @leb-regression-guard: inherent-base-crit-chance
+	-- LE gives every hit an inherent 5% base crit (datamined game source Stats.baseCritChance = 0.05). This becomes
+	-- skillData.CritChance, consumed in CalcOffence as `baseCrit` (source = skillData, line ~1648/2125).
+	-- skills.json declares critChance=5 on 137 abilities but OMITS it on ~206 others (Shatter Strike,
+	-- Wandering Spirits, ...), which left them at baseCrit=0 -- dropping the inherent 5%. Verified in-game:
+	-- ShutFackUp Shatter Strike melee crit (5 inherent + 5 sword-melee + 2 Phantom) * (1+3.95) = 59.4 -> 59,
+	-- generic (5 + 2) * 4.95 = 34.65 -> 35. `or` (not nil-coalesce on 0) keeps explicit critChance=0 at 0,
+	-- and never double-counts the 137 skills that already declare 5.
+	activeSkill.skillData.CritChance = stats.critChance or data.misc.BaseCritChance
 	if stats.cooldown then
 		activeSkill.skillData.cooldown = stats.cooldown
 	end
@@ -970,7 +1278,12 @@ function calcs.buildActiveSkillModList(env, activeSkill)
 					local mod = mods[i]
 					if mod then
 						mod = modLib.setSource(mod, source)
-						t_insert(mod, { type = "GlobalEffect", effectType = "Debuff", effectStackVar = activeGrantedEffect.id.."Stack"})
+						-- @leb-regression-guard:nondamaging-ailment-stack-cap
+						-- non-damaging (debuff) gap. See REGRESSION_GUARDS.md
+						-- Validation provenance is retained in maintainer notes.
+					local effectStackLimit = (activeGrantedEffect.baseFlags and activeGrantedEffect.baseFlags.ailment
+						and stats and stats.maximum_stacks and stats.maximum_stacks > 0) and stats.maximum_stacks or nil
+						t_insert(mod, { type = "GlobalEffect", effectType = "Debuff", effectStackVar = activeGrantedEffect.id.."Stack", effectStackLimit = effectStackLimit})
 						skillModList:AddMod(mod)
 					end
 				end
@@ -1019,14 +1332,17 @@ function calcs.buildActiveSkillModList(env, activeSkill)
 	end
 
 	-- Create minion
-	local minionList, isSpectre
+	-- @leb-regression-guard:no-spectre-library
+	-- Upstream PoB had an empty `minionList` mean "user picks the minions", filling it from
+	-- a build-level spectre library (`env.build.spectreList`). LE has no such mechanic: a
+	-- skill's minions are fixed by its data, and every minionList in skills.json is non-empty.
+	-- The library was never ported (`data.spectres` was never assigned), so that fallback was
+	-- unreachable and would have thrown on `copyTable(nil)` had it ever been hit. Do not
+	-- reintroduce a spectreList branch here; an empty minionList must stay an empty minionList.
+	-- Spec: spec/System/TestNoSpectreLibrary_spec.lua
+	local minionList
 	if activeGrantedEffect.minionList then
-		if activeGrantedEffect.minionList[1] then
-			minionList = copyTable(activeGrantedEffect.minionList)
-		else
-			minionList = copyTable(env.build.spectreList)
-			isSpectre = true
-		end
+		minionList = copyTable(activeGrantedEffect.minionList)
 	else
 		minionList = { }
 	end
@@ -1152,42 +1468,221 @@ function calcs.createMinionSkills(env, activeSkill)
 	local minionData = minion.minionData
 
 	minion.activeSkillList = { }
+	-- @leb-regression-guard:granted-summon-pipeline
+	-- A granted minion skill may REPLACE a base minion skill rather than add to it,
+	-- so the granted skill becomes the minion's main / FullDPS skill. Two sources:
+	--   * ExtraMinionSkill mods carrying a `replaces` field (tree-node grants);
+	--   * the socket group's minionSkillGrant (SubSkillGrants summons, e.g. Spriggan
+	--     Form Healing Totems cast Mystic Thorns / ThornTotemAttack instead of their
+	--     default ButterflyHeal). Collect replaced base-skill ids first.
+	-- Backward-compatible: no replaces / no minionSkillGrant -> behaviour unchanged.
+	local extraMinionSkills = activeSkill.skillModList:List(activeSkill.skillCfg, "ExtraMinionSkill")
+	local sgGrant = activeSkill.socketGroup and activeSkill.socketGroup.minionSkillGrant
+	-- @leb-regression-guard:minion-grant-replacement-in-place
+	-- A REPLACEMENT grant stands IN the replaced skill's base-kit position, so the
+	-- pipeline's stated invariant ("the granted skill becomes the minion's main /
+	-- FullDPS skill") holds structurally. Previously the replaced base skill was
+	-- dropped and ALL grants were appended in one sorted pool -- correct only while
+	-- the replacement was the sole grant. With an ADDITIVE grant co-present (e.g.
+	-- Dragonflame Edict's any-minion Dragonflame Nova proc), an emptied base kit
+	-- (Skeletal Mage + "Adds Pyromancers" replaces its only base skill) made index 1
+	-- fall to the alphabetically-first grant: "DragonfireNova" < "Skeletal Mages
+	-- Fire Projectile" -> the PROC became the mage's scored main and FullDPS x3
+	-- (QqwprgdN probe). Now replacementFor maps replaced id -> grant id; the
+	-- replacement is placed in-kit and only unplaced grants append (sorted).
+	-- Spec: spec/System/TestDragonflameNovaGrant_spec.lua (ordering cases).
+	local replacementFor = { }
+	for _, skill in ipairs(extraMinionSkills) do
+		if skill.replaces and (not skill.minionList or isValueInArray(skill.minionList, minion.type)) then
+			replacementFor[skill.replaces] = replacementFor[skill.replaces] or skill.skillId
+		end
+	end
+	if sgGrant and sgGrant.replaces then
+		replacementFor[sgGrant.replaces] = replacementFor[sgGrant.replaces] or sgGrant.skillId
+	end
+	local placedGrants = { }
 	local skillIdList = { }
 	for _, skillId in ipairs(minionData.skillList) do
-		if env.data.skills[skillId] then
+		local replacement = replacementFor[skillId]
+		if replacement then
+			-- the replacement grant takes the replaced skill's slot (once)
+			if env.data.skills[replacement] and not placedGrants[replacement] then
+				t_insert(skillIdList, replacement)
+				placedGrants[replacement] = true
+			end
+		elseif env.data.skills[skillId] then
 			t_insert(skillIdList, skillId)
 		end
 	end
-	for _, skill in ipairs(activeSkill.skillModList:List(activeSkill.skillCfg, "ExtraMinionSkill")) do
-		if not skill.minionList or isValueInArray(skill.minionList, minion.type) then
-			t_insert(skillIdList, skill.skillId)
+	-- Non-replacement grants append AFTER the minion's base kit (so index 1 / the
+	-- default selected skill stays the base attack), sorted by skillId:
+	-- ExtraMinionSkill mods surface in modDB hash order, which is not
+	-- deterministic across runs — unsorted, the minion-skill selector index
+	-- and snapshot output would flap between runs. A grant whose `replaces`
+	-- target is absent from this minion's kit still appends here (not lost).
+	local extraSkillIds = { }
+	for _, skill in ipairs(extraMinionSkills) do
+		if (not skill.minionList or isValueInArray(skill.minionList, minion.type)) and not placedGrants[skill.skillId] then
+			t_insert(extraSkillIds, skill.skillId)
 		end
+	end
+	if sgGrant and sgGrant.skillId and env.data.skills[sgGrant.skillId] and not placedGrants[sgGrant.skillId] then
+		t_insert(extraSkillIds, sgGrant.skillId)
+	end
+	table.sort(extraSkillIds)
+	for _, skillId in ipairs(extraSkillIds) do
+		t_insert(skillIdList, skillId)
 	end
 	if #skillIdList == 0 then
 		-- Not ideal, but let's avoid crashes
 		t_insert(skillIdList, "Default")
 	end
+	-- @leb-regression-guard:minion-granted-weapon-attack-base-inheritance
+	-- A granted minion skill flagged `inheritsMinionAttackBase` (ModParser "bears use swipe") is a
+	-- PLAYER weapon skill reused by the minion. In-game LE computes it off the MINION's basic-attack
+	-- damage (the bear's weapon base ~50), NOT the player skill's tiny declared intrinsic (Swipe
+	-- melee_base 2) + the player Swipe skill-tree. F4 minion-breakdown oracle (DoNotReleaseThem
+	-- 2026-07-01): Swipe final 5139 ~= Melee final 5415 (the bear's basic attack); base-2 would be
+	-- ~1/25 of Melee, and the player Swipe-tree MOREs (sw43-21/-13) do NOT apply (Swipe 5139 < Melee
+	-- 5415 = no +23% boost). So build the granted skill from a CLONE of the minion's primary basic
+	-- attack (base + the minion's base-kit damage profile), re-skinned with the granted skill's
+	-- display name and a distinct non-player-skill id (so player SkillId:Swipe tree mods do NOT
+	-- re-attach). SCOPE = opt-in flag ONLY: Manifest Armor's Charge/Whirlwind/ForgeBreath are
+	-- minion-only skills with their own datamined bases (<see git log>), are NOT flagged, stay untouched.
+	local inheritBaseSkills = { }
+	for _, skill in ipairs(extraMinionSkills) do
+		if skill.inheritsMinionAttackBase and (not skill.minionList or isValueInArray(skill.minionList, minion.type)) then
+			inheritBaseSkills[skill.skillId] = skill
+		end
+	end
+	local primaryAttackId, primaryAttackEff
+	if next(inheritBaseSkills) then
+		for _, sid in ipairs(minionData.skillList) do
+			local ge = env.data.skills[sid]
+			if ge and ge.baseFlags and ge.baseFlags.attack and ge.baseFlags.melee and not replacementFor[sid] then
+				primaryAttackId = sid
+				primaryAttackEff = (ge.stats and ge.stats.damageEffectiveness) or 1
+				break
+			end
+		end
+	end
 	for _, skillId in ipairs(skillIdList) do
+		local grantedEffect = env.data.skills[skillId]
+		local grantSkill = inheritBaseSkills[skillId]
+		if grantSkill and primaryAttackId and env.data.skills[primaryAttackId] then
+			-- clone the minion's primary basic-attack profile, re-skin as this granted skill
+			local orig = grantedEffect
+			grantedEffect = copyTable(env.data.skills[primaryAttackId], true)
+			grantedEffect.name = (orig and orig.name) or grantedEffect.name
+			grantedEffect.id = skillId .. "_MinionWeaponBase"
+			-- match-name = the distinct clone id so player SkillName:<orig> tree mods (the bear's
+			-- "-60% Earthquake" node) do NOT re-attach (F4 oracle: they don't apply in-game).
+			grantedEffect.skillNameForMatch = grantedEffect.id
+		end
 		local activeEffect = {
-			grantedEffect = env.data.skills[skillId],
+			grantedEffect = grantedEffect,
 			level = 1,
 			quality = 0,
 		}
 		local minionSkill = calcs.createActiveSkill(activeEffect, activeSkill.supportList, minion, nil, activeSkill)
 		calcs.buildActiveSkillModList(env, minionSkill)
+		-- @leb-regression-guard:minion-skill-redundant-attr-scaling
+		-- Drop a minion ATTACK skill's own "increased Damage per player <Attr>"
+		-- modifier when the parent summon already scales the minion's damage off
+		-- the SAME player attribute (skills.json baked it onto both -> the
+		-- actor="parent" PerStat resolve double-counts it). See
+		-- LE_MINION_SKILL_REDUNDANT_ATTR_SCALING (Data/Global.lua) for the
+		-- in-game-validated whitelist and the Dread Bolt 1832.7 capture.
+		local redundantAttrs = LE_MINION_SKILL_REDUNDANT_ATTR_SCALING[skillId]
+		if redundantAttrs then
+			-- ModList stores its mods as a plain sequential array on itself.
+			local sml = minionSkill.skillModList
+			for i = #sml, 1, -1 do
+				local mod = sml[i]
+				if mod.name == "Damage" and (mod.type == "INC" or mod.type == "MORE") then
+					for _, tag in ipairs(mod) do
+						if tag.type == "PerStat" then
+							local stat = tag.stat
+							if not stat and tag.statList then stat = tag.statList[1] end
+							if stat and redundantAttrs[stat] then
+								t_remove(sml, i)
+								break
+							end
+						end
+					end
+				end
+			end
+		end
 		minionSkill.skillFlags.minion = true
 		minionSkill.skillFlags.minionSkill = true
 		minionSkill.skillFlags.haveMinion = true
-		minionSkill.skillFlags.spectre = activeSkill.skillFlags.spectre
 		minionSkill.skillData.damageEffectiveness = 1 + (activeSkill.skillData.minionDamageEffectiveness or 0) / 100
+		-- @leb-regression-guard:minion-granted-weapon-attack-base-inheritance
+		-- A weapon-base clone whose granted skill hits at a higher added-damage-effectiveness
+		-- than the minion's basic attack (bear Earthquake eff 6 vs Melee eff 1, datamine pid
+		-- 261582) applies that ratio. In LE, effectiveness scales the whole weapon-base hit
+		-- (base + added) before inc/more; LEB's damageEffectiveness (pinned to 1 above for
+		-- minions) only scales ADDED, and baseMultiplier only scales the skill base, so neither
+		-- alone reproduces a uniform x(eff). Since base*(1+inc)*more*k == base*k*(1+inc)*more, we
+		-- apply the ratio as a single Hit-scoped MORE (ailments keep their own scaling). eff 6
+		-- validated by the F4 oracle: bear EQ ref-slam == Melee-clone x 6.
+		if grantSkill and grantSkill.minionAttackEffectiveness and primaryAttackEff and primaryAttackEff > 0 then
+			local effRatio = grantSkill.minionAttackEffectiveness / primaryAttackEff
+			if effRatio ~= 1 then
+				minionSkill.skillModList:NewMod("Damage", "MORE", (effRatio - 1) * 100, "MinionWeaponAttackEffectiveness", ModFlag.Hit)
+			end
+		end
+		-- @leb-regression-guard:minion-granted-weapon-attack-base-inheritance
+		-- eq5s-21 "Seismic Tide": the granted skill's initial slam occurs THREE times (0.70/0.95/
+		-- 1.30x, datamine tree_0.json, sum 2.95). The node's stat parses to the EarthquakeSeismicTide
+		-- FLAG on the player modDB (env.modDB), which the clone's distinct id/name deliberately does
+		-- NOT inherit (it drops the whole eq5s SkillId tree). So we detect the flag's existence
+		-- directly on env.modDB (allocation => the mod bucket is non-empty; tag-independent) and,
+		-- for the grant that declares it, fuse the 3 slams into one per-cast hit (Glacier-idiom:
+		-- ref x 2.95). F4 oracle validated: bear EQ per-cast ~= Melee-clone x eff6 x 2.95 (-2.2%).
+		if grantSkill and grantSkill.minionSlamNodeMod and grantSkill.minionSlamSum then
+			local bucket = env.modDB.mods[grantSkill.minionSlamNodeMod]
+			if bucket and #bucket > 0 and grantSkill.minionSlamSum ~= 1 then
+				minionSkill.skillModList:NewMod("Damage", "MORE", (grantSkill.minionSlamSum - 1) * 100, "MinionEarthquakeSeismicTide", ModFlag.Hit)
+			end
+		end
 		t_insert(minion.activeSkillList, minionSkill)
 	end
-	local skillIndex 
+	-- @leb-regression-guard:storm-totem-unmatched-storms-cadence
+	-- Validation provenance is retained in maintainer notes.
+	for _, fixed in ipairs(activeSkill.skillModList:List(activeSkill.skillCfg, "MinionFixedCastTime")) do
+		if not fixed.minionList or isValueInArray(fixed.minionList, minion.type) then
+			for _, ms in ipairs(minion.activeSkillList) do
+				ms.skillData.timeOverride = fixed.time
+			end
+		end
+	end
+	-- @leb-regression-guard:thorn-totem-attack-ignores-cast-speed
+	-- Validation provenance is retained in maintainer notes.
+	local thornAttack = env.data.skills["ThornTotemAttack"]
+	if thornAttack and thornAttack.castTime then
+		for _, ms in ipairs(minion.activeSkillList) do
+			local ge = ms.activeEffect and ms.activeEffect.grantedEffect
+			if ge and ge.id == "ThornTotemAttack" and not ms.skillData.timeOverride then
+				ms.skillData.timeOverride = thornAttack.castTime
+			end
+		end
+	end
+	-- @leb-regression-guard:minion-default-skill-index
+	-- Most minions list their primary (basic) attack at skillList[1], so the
+	-- unselected default is index 1. A few minions list a non-attack ability first
+	-- (e.g. SummonedAbomination -> "Devour" consume spell at 1, "Melee Attack" at 2)
+	-- and would default to a 0-DPS sub-skill, mis-reporting FullDPS. LE_MINION_
+	-- DEFAULT_SKILL_INDEX (Data/Global.lua) overrides the unselected default per
+	-- minion type to the in-game-validated DPS attack. A user's explicit selection
+	-- (srcInstance.skillMinionSkill*) is stored/non-nil and still takes precedence.
+	local defaultSkillIndex = LE_MINION_DEFAULT_SKILL_INDEX[minion.type] or 1
+	local skillIndex
 	if env.mode == "CALCS" then
-		skillIndex = m_max(m_min(activeEffect.srcInstance.skillMinionSkillCalcs or 1, #minion.activeSkillList), 1)
+		skillIndex = m_max(m_min(activeEffect.srcInstance.skillMinionSkillCalcs or defaultSkillIndex, #minion.activeSkillList), 1)
 		activeEffect.srcInstance.skillMinionSkillCalcs = skillIndex
 	else
-		skillIndex = m_max(m_min(activeEffect.srcInstance.skillMinionSkill or 1, #minion.activeSkillList), 1)
+		skillIndex = m_max(m_min(activeEffect.srcInstance.skillMinionSkill or defaultSkillIndex, #minion.activeSkillList), 1)
 		if env.mode == "MAIN" then
 			activeEffect.srcInstance.skillMinionSkill = skillIndex
 		end

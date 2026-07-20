@@ -15,7 +15,8 @@
       0,
       1,
       2
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "1": {
     "name": "Fractured Crown",
@@ -35,7 +36,8 @@
       0,
       1,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "2": {
     "name": "Snowblind",
@@ -63,7 +65,8 @@
       null,
       2,
       2
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "3": {
     "name": "Artor's Legacy",
@@ -85,7 +88,8 @@
       1,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "4": {
     "name": "Decayed Skull",
@@ -111,7 +115,8 @@
       0,
       1,
       0
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "5": {
     "name": "Isadora's Revenge",
@@ -131,7 +136,8 @@
       1,
       3,
       2
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "6": {
     "name": "Boneclamor Barbute",
@@ -153,7 +159,8 @@
       0,
       1,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "7": {
     "name": "The Kestrel",
@@ -175,7 +182,8 @@
       1,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "8": {
     "name": "Doublet of Onos Tull",
@@ -193,7 +201,8 @@
       2,
       1,
       0
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "9": {
     "name": "Prism Wraps",
@@ -213,7 +222,8 @@
       null,
       null,
       0
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "10": {
     "name": "Urzil's Pride",
@@ -226,14 +236,17 @@
       "+125 Armor",
       "{rounding:Integer}+(6-10) Attunement",
       "{rounding:Integer}+(9-15) Strength",
-      "+(10-20)% Lightning Resistance"
+      "+(10-20)% Lightning Resistance",
+      "1% Increased Mana Regeneration per 2% Uncapped Lightning Resistance"
     ],
     "rollIds": [
       null,
       0,
       0,
-      0
-    ]
+      0,
+      null
+    ],
+    "overrideLevelRequirement": false
   },
   "11": {
     "name": "Exsanguinous",
@@ -257,7 +270,8 @@
       null,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "12": {
     "name": "Yrun's Wisdom",
@@ -275,7 +289,8 @@
       0,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "13": {
     "name": "Titan Heart",
@@ -297,7 +312,8 @@
       null,
       1,
       2
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "14": {
     "name": "Valeroot",
@@ -321,7 +337,8 @@
       3,
       4,
       3
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "15": {
     "name": "Vipertail",
@@ -343,7 +360,8 @@
       2,
       3,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "16": {
     "name": "Isadora's Tomb Binding",
@@ -363,7 +381,8 @@
       0,
       1,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "17": {
     "name": "Ward Trail",
@@ -381,7 +400,8 @@
       0,
       1,
       2
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "18": {
     "name": "Chains of Uleros",
@@ -403,7 +423,8 @@
       0,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "19": {
     "name": "Mourningfrost",
@@ -419,7 +440,8 @@
     "rollIds": [
       0,
       1
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "20": {
     "name": "Stormtide",
@@ -437,7 +459,8 @@
       null,
       0,
       1
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "21": {
     "name": "Eterra's Path",
@@ -463,7 +486,8 @@
       0,
       null,
       2
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "22": {
     "name": "Keeper's Gloves",
@@ -479,7 +503,8 @@
     "rollIds": [
       0,
       1
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "23": {
     "name": "Riverbend Grasp",
@@ -501,7 +526,8 @@
       2,
       3,
       4
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "24": {
     "name": "Fighting Chance",
@@ -521,7 +547,8 @@
       1,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "25": {
     "name": "Boulderfists",
@@ -543,7 +570,8 @@
       null,
       1,
       2
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "26": {
     "name": "Isadora's Gravechill",
@@ -559,7 +587,8 @@
     "rollIds": [
       1,
       0
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "27": {
     "name": "Wing Guards",
@@ -579,14 +608,15 @@
       1,
       null,
       2
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "28": {
     "name": "Beast King",
     "baseTypeID": 5,
     "subTypeID": 5,
     "req": {
-      "level": 46
+      "level": 0
     },
     "mods": [
       "{rounding:Integer}+(25-35) Melee Physical Damage",
@@ -597,7 +627,8 @@
       0,
       1,
       2
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "29": {
     "name": "Taste of Blood",
@@ -617,7 +648,8 @@
       null,
       1,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "30": {
     "name": "Undisputed",
@@ -635,7 +667,8 @@
       0,
       1,
       2
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "31": {
     "name": "Tempest Maw",
@@ -657,7 +690,8 @@
       2,
       3,
       3
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "32": {
     "name": "Frozen Ire",
@@ -671,7 +705,8 @@
     ],
     "rollIds": [
       1
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "33": {
     "name": "Culnivar's Claim",
@@ -691,7 +726,8 @@
       null,
       0,
       1
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "34": {
     "name": "Humming Bee",
@@ -713,7 +749,8 @@
       null,
       null,
       2
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "35": {
     "name": "Eye of Reen",
@@ -731,7 +768,8 @@
       0,
       1,
       2
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "36": {
     "name": "Rainbow Edge",
@@ -757,7 +795,8 @@
       1,
       1,
       1
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "37": {
     "name": "Cinder Song",
@@ -781,7 +820,8 @@
       2,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "38": {
     "name": "Alchemist's Ladle",
@@ -809,7 +849,8 @@
       0,
       0,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "39": {
     "name": "Reach of the Grave",
@@ -833,7 +874,8 @@
       null,
       1,
       2
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "40": {
     "name": "Bone Harvester",
@@ -849,7 +891,8 @@
     "rollIds": [
       0,
       1
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "41": {
     "name": "Hammer of Lorent",
@@ -865,7 +908,8 @@
     "rollIds": [
       0,
       1
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "42": {
     "name": "Torch Of The Pontifex",
@@ -885,7 +929,8 @@
       0,
       1,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "43": {
     "name": "Storm Breaker",
@@ -909,7 +954,8 @@
       null,
       3,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "44": {
     "name": "Draalsting",
@@ -929,7 +975,8 @@
       null,
       0,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "45": {
     "name": "Morditas' Reach",
@@ -953,7 +1000,8 @@
       null,
       0,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "46": {
     "name": "Sharktooth Saw",
@@ -969,7 +1017,8 @@
     "rollIds": [
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "47": {
     "name": "The Last Laugh",
@@ -993,7 +1042,8 @@
       null,
       2,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "48": {
     "name": "Volcanus",
@@ -1013,7 +1063,8 @@
       1,
       null,
       2
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "49": {
     "name": "Dreamthorn",
@@ -1035,7 +1086,8 @@
       0,
       1,
       2
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "50": {
     "name": "The Slab",
@@ -1055,7 +1107,8 @@
       1,
       0,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "51": {
     "name": "Close Call",
@@ -1073,7 +1126,8 @@
       null,
       0,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "52": {
     "name": "Soul Bastion",
@@ -1091,7 +1145,8 @@
       null,
       0,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "53": {
     "name": "Rahyeh's Light",
@@ -1113,7 +1168,8 @@
       null,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "54": {
     "name": "Strong Mind",
@@ -1127,7 +1183,8 @@
     ],
     "rollIds": [
       0
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "55": {
     "name": "Bleeding Heart",
@@ -1143,7 +1200,8 @@
     "rollIds": [
       0,
       0
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "56": {
     "name": "Chimaera's Essence",
@@ -1161,7 +1219,8 @@
       0,
       1,
       2
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "57": {
     "name": "The Invoker's Frozen Heart",
@@ -1181,7 +1240,8 @@
       0,
       null,
       1
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "58": {
     "name": "The Claw",
@@ -1193,13 +1253,14 @@
     "mods": [
       "{rounding:Integer}+(30-50) Health",
       "{rounding:Integer}+(5-9) Minion Melee Physical Damage",
-      "+1 You can Summon Wolves up to your Maximum Number of Companions"
+      "You can Summon Wolves up to your Maximum Number of Companions"
     ],
     "rollIds": [
       0,
       1,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "59": {
     "name": "Death Rattle",
@@ -1219,7 +1280,8 @@
       0,
       0,
       0
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "60": {
     "name": "The Fang",
@@ -1232,14 +1294,15 @@
       "{rounding:Integer}+(50-75) Health",
       "{rounding:Integer}+(10-16) Minion Melee Physical Damage",
       "+100% Minion Stun Immunity",
-      "+1 You can Summon Wolves up to your Maximum Number of Companions"
+      "You can Summon Wolves up to your Maximum Number of Companions"
     ],
     "rollIds": [
       0,
       1,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "61": {
     "name": "Orian's Eye",
@@ -1259,7 +1322,8 @@
       0,
       2,
       1
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "62": {
     "name": "Ring of the Third Eye",
@@ -1277,7 +1341,8 @@
       null,
       null,
       0
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "63": {
     "name": "The Invoker's Scorching Grasp",
@@ -1297,7 +1362,8 @@
       1,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "64": {
     "name": "The Invoker's Static Touch",
@@ -1317,7 +1383,8 @@
       0,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "65": {
     "name": "Arboreal Circuit",
@@ -1335,7 +1402,8 @@
       0,
       1,
       1
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "66": {
     "name": "Hollow Finger",
@@ -1355,7 +1423,8 @@
       null,
       0,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "67": {
     "name": "Tome of Elements",
@@ -1381,7 +1450,8 @@
       1,
       1,
       1
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "68": {
     "name": "Grimoire of Necrotic Elixirs",
@@ -1407,14 +1477,15 @@
       1,
       null,
       2
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "69": {
     "name": "Heirloom of Light",
     "baseTypeID": 22,
     "subTypeID": 3,
     "req": {
-      "level": 28
+      "level": 0
     },
     "mods": [
       "{rounding:Integer}(50-100)% increased Health Regen",
@@ -1423,7 +1494,8 @@
     "rollIds": [
       0,
       1
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "70": {
     "name": "Soulfire",
@@ -1443,7 +1515,8 @@
       1,
       1,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "71": {
     "name": "Valdyr's Chalice",
@@ -1465,7 +1538,8 @@
       3,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "72": {
     "name": "Orchirian's Petals",
@@ -1489,7 +1563,8 @@
       null,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "73": {
     "name": "Plague Bearer's Staff",
@@ -1511,7 +1586,8 @@
       0,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "74": {
     "name": "Ignivar's Head",
@@ -1529,7 +1605,8 @@
       0,
       1,
       2
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "75": {
     "name": "The Scavenger",
@@ -1545,7 +1622,8 @@
     "rollIds": [
       0,
       1
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "76": {
     "name": "Liath's Signet",
@@ -1563,7 +1641,8 @@
       null,
       0,
       1
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "77": {
     "name": "Bee Keeper Helmet",
@@ -1627,7 +1706,8 @@
       1,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "81": {
     "name": "Ucenui's Sphere",
@@ -1647,7 +1727,8 @@
       1,
       1,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "82": {
     "name": "Arek's Bones",
@@ -1671,7 +1752,8 @@
       1,
       2,
       2
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "83": {
     "name": "Maehlin's Hubris",
@@ -1691,7 +1773,8 @@
       0,
       1,
       2
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "84": {
     "name": "Heirloom of the Last Nomad",
@@ -1715,7 +1798,8 @@
       3,
       4,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "85": {
     "name": "Sunforged Hammer",
@@ -1737,7 +1821,8 @@
       1,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "86": {
     "name": "Sunforged Cuirass",
@@ -1757,7 +1842,8 @@
       1,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "87": {
     "name": "Sunforged Greathelm",
@@ -1777,14 +1863,15 @@
       1,
       3,
       2
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "88": {
     "name": "Blade of the Forgotten Knight",
     "baseTypeID": 9,
     "subTypeID": 6,
     "req": {
-      "level": 60
+      "level": 0
     },
     "mods": [
       "{rounding:Integer}+(25-35) Melee Void Damage",
@@ -1801,14 +1888,15 @@
       3,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "89": {
     "name": "Defiance of the Forgotten Knight",
     "baseTypeID": 18,
     "subTypeID": 5,
     "req": {
-      "level": 40
+      "level": 0
     },
     "mods": [
       "{rounding:Integer}(70-105)% increased Void Damage",
@@ -1825,7 +1913,8 @@
       3,
       null,
       4
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "90": {
     "name": "Locket of the Forgotten Knight",
@@ -1845,7 +1934,8 @@
       1,
       3,
       0
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "91": {
     "name": "Fiery Dragon Shoes",
@@ -1869,7 +1959,8 @@
       3,
       4,
       5
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "92": {
     "name": "Jungle Queen's Chaps of Holding",
@@ -1893,7 +1984,8 @@
       0,
       1,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "93": {
     "name": "Kermode's Cage",
@@ -1917,7 +2009,8 @@
       1,
       2,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "94": {
     "name": "The Last Bear's Fury",
@@ -1937,7 +2030,8 @@
       null,
       1,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "95": {
     "name": "The Last Bear's Scorn",
@@ -1957,7 +2051,8 @@
       null,
       1,
       2
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "96": {
     "name": "The Last Bear's Lament",
@@ -1977,7 +2072,8 @@
       0,
       1,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "97": {
     "name": "Halvar's Pledge",
@@ -1999,7 +2095,8 @@
       3,
       null,
       4
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "98": {
     "name": "Halvar's Stand",
@@ -2019,7 +2116,8 @@
       1,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "99": {
     "name": "Last Gift of the Mountain",
@@ -2039,7 +2137,8 @@
       1,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "100": {
     "name": "Pebbles' Femur",
@@ -2059,7 +2158,8 @@
       null,
       null,
       1
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "101": {
     "name": "Pebbles' Collar",
@@ -2079,7 +2179,8 @@
       null,
       1,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "102": {
     "name": "Pebbles' Bitemarked Sash",
@@ -2099,7 +2200,8 @@
       null,
       1,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "103": {
     "name": "Legacy of the Quiet Forest",
@@ -2121,7 +2223,8 @@
       2,
       3,
       4
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "104": {
     "name": "Suloron's Step",
@@ -2139,7 +2242,8 @@
       0,
       1,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "105": {
     "name": "The Ashen Crown",
@@ -2161,7 +2265,8 @@
       null,
       0,
       1
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "106": {
     "name": "Shroud of Obscurity",
@@ -2183,7 +2288,8 @@
       0,
       2,
       1
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "107": {
     "name": "Murama's Hilt",
@@ -2201,7 +2307,8 @@
       0,
       1,
       2
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "108": {
     "name": "Melvern's Writ",
@@ -2223,7 +2330,8 @@
       1,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "109": {
     "name": "Shard of the Shattered Lance",
@@ -2245,7 +2353,8 @@
       1,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "110": {
     "name": "Fragments of the Shattered Lance",
@@ -2265,7 +2374,8 @@
       1,
       0,
       0
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "111": {
     "name": "Woven Flesh",
@@ -2287,7 +2397,8 @@
       2,
       3,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "112": {
     "name": "Strands of Souls",
@@ -2309,7 +2420,8 @@
       1,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "113": {
     "name": "Ribbons of Blood",
@@ -2331,7 +2443,8 @@
       2,
       3,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "114": {
     "name": "Frozen Eyes of Formosus",
@@ -2353,7 +2466,8 @@
       2,
       3,
       4
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "115": {
     "name": "Last Steps of the Living",
@@ -2375,7 +2489,8 @@
       1,
       2,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "116": {
     "name": "Atrophy",
@@ -2397,7 +2512,8 @@
       3,
       4,
       0
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "117": {
     "name": "Dark Shroud of Cinders",
@@ -2419,7 +2535,8 @@
       2,
       3,
       4
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "118": {
     "name": "The Confluence of Fate",
@@ -2443,7 +2560,8 @@
       2,
       2,
       2
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "119": {
     "name": "Bulwark of the Last Abyss",
@@ -2461,7 +2579,8 @@
       0,
       1,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "120": {
     "name": "Trident of the Last Abyss",
@@ -2483,7 +2602,8 @@
       null,
       null,
       2
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "121": {
     "name": "Coral Aegis",
@@ -2507,7 +2627,8 @@
       3,
       4,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "122": {
     "name": "Alluvion",
@@ -2531,7 +2652,8 @@
       3,
       4,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "123": {
     "name": "Symbol of Demise",
@@ -2549,7 +2671,8 @@
       0,
       0,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "124": {
     "name": "Dragonflame Edict",
@@ -2571,7 +2694,8 @@
       2,
       3,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "125": {
     "name": "Oceareon",
@@ -2595,7 +2719,8 @@
       3,
       4,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "126": {
     "name": "Mortality's Grasp",
@@ -2613,7 +2738,8 @@
       0,
       1,
       2
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "127": {
     "name": "Boardman's Plank",
@@ -2633,7 +2759,8 @@
       null,
       null,
       0
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "128": {
     "name": "Boardman's Fallacy",
@@ -2657,7 +2784,8 @@
       2,
       3,
       4
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "129": {
     "name": "Boardman's Legacy",
@@ -2681,7 +2809,8 @@
       null,
       null,
       1
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "130": {
     "name": "Gambler's Fallacy",
@@ -2699,7 +2828,8 @@
       null,
       null,
       0
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "131": {
     "name": "Avarice",
@@ -2717,7 +2847,8 @@
       null,
       0,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "132": {
     "name": "Transient Rest",
@@ -2739,7 +2870,8 @@
       null,
       null,
       0
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "133": {
     "name": "Xithara's Conundrum",
@@ -2759,7 +2891,8 @@
       null,
       null,
       0
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "134": {
     "name": "Li'raka's Claws",
@@ -2777,7 +2910,8 @@
       0,
       1,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "135": {
     "name": "Quicksilver Coil",
@@ -2799,7 +2933,8 @@
       1,
       2,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "136": {
     "name": "Smoke Weaver",
@@ -2821,7 +2956,8 @@
       2,
       4,
       4
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "137": {
     "name": "Uethrin's Stand",
@@ -2843,7 +2979,8 @@
       2,
       3,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "138": {
     "name": "Zerrick's Guile",
@@ -2865,7 +3002,8 @@
       null,
       3,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "139": {
     "name": "Zerrick's Greed",
@@ -2883,7 +3021,8 @@
       0,
       1,
       2
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "140": {
     "name": "Zerrick's Ambition",
@@ -2903,14 +3042,15 @@
       1,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "141": {
     "name": "Hell Reach",
     "baseTypeID": 23,
     "subTypeID": 0,
     "req": {
-      "level": 64
+      "level": 0
     },
     "mods": [
       "{rounding:Integer}+(11-20) Bow Fire Damage",
@@ -2921,7 +3061,8 @@
       0,
       null,
       1
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "142": {
     "name": "Drelkor's Compass",
@@ -2941,7 +3082,8 @@
       1,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "143": {
     "name": "Gladiator's Oath",
@@ -2963,7 +3105,8 @@
       null,
       2,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "144": {
     "name": "Acidfletch",
@@ -2985,14 +3128,15 @@
       1,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "145": {
     "name": "Life's Journey",
     "baseTypeID": 18,
     "subTypeID": 6,
     "req": {
-      "level": 38
+      "level": 0
     },
     "mods": [
       "5% of Current Health Lost per second",
@@ -3007,7 +3151,8 @@
       1,
       2,
       2
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "146": {
     "name": "Troaka's Teeth",
@@ -3029,7 +3174,8 @@
       2,
       3,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "147": {
     "name": "Raindance",
@@ -3053,7 +3199,8 @@
       null,
       3,
       0
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "148": {
     "name": "Arrowguard",
@@ -3071,7 +3218,8 @@
       0,
       2,
       1
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "149": {
     "name": "Omnividence",
@@ -3093,7 +3241,8 @@
       0,
       1,
       2
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "150": {
     "name": "Sunwreath",
@@ -3115,7 +3264,8 @@
       null,
       0,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "151": {
     "name": "Eulogy of Blood",
@@ -3139,7 +3289,8 @@
       2,
       3,
       4
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "152": {
     "name": "Anchor of Oblivion",
@@ -3161,7 +3312,8 @@
       1,
       2,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "153": {
     "name": "Wings of Argentus",
@@ -3185,7 +3337,8 @@
       null,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "154": {
     "name": "Eye of Storms",
@@ -3207,7 +3360,8 @@
       null,
       3,
       4
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "155": {
     "name": "Horns of Uhkeiros",
@@ -3229,7 +3383,8 @@
       null,
       1,
       2
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "156": {
     "name": "Gaspar's Will",
@@ -3249,7 +3404,8 @@
       0,
       1,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "157": {
     "name": "Gaspar's Acuity",
@@ -3271,7 +3427,8 @@
       2,
       null,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "158": {
     "name": "Gaspar's Insight",
@@ -3293,7 +3450,8 @@
       2,
       null,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "159": {
     "name": "Reign of Winter",
@@ -3315,7 +3473,8 @@
       2,
       3,
       4
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "160": {
     "name": "Call of the Tundra",
@@ -3339,7 +3498,8 @@
       2,
       3,
       4
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "161": {
     "name": "Faith of the Frozen",
@@ -3361,7 +3521,8 @@
       null,
       2,
       0
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "162": {
     "name": "Bhuldar's Wrath",
@@ -3381,7 +3542,8 @@
       null,
       null,
       1
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "163": {
     "name": "Herkir's Vessel",
@@ -3403,7 +3565,8 @@
       2,
       3,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "164": {
     "name": "Logi's Hunger",
@@ -3425,7 +3588,8 @@
       2,
       3,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "165": {
     "name": "Serpent's Milk",
@@ -3447,7 +3611,8 @@
       0,
       1,
       2
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "166": {
     "name": "Moenia Mentis",
@@ -3469,7 +3634,8 @@
       2,
       3,
       4
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "167": {
     "name": "Ravens' Rise",
@@ -3491,7 +3657,8 @@
       null,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "168": {
     "name": "Flight of the First",
@@ -3509,7 +3676,8 @@
       null,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "169": {
     "name": "Aergon's Refuge",
@@ -3533,7 +3701,8 @@
       3,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "170": {
     "name": "Sinathia's Dying Breath",
@@ -3555,7 +3724,8 @@
       1,
       3,
       2
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "171": {
     "name": "Sinathia's Resurrection",
@@ -3577,7 +3747,8 @@
       null,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "172": {
     "name": "Herald of the Scurry",
@@ -3601,7 +3772,8 @@
       4,
       5,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "173": {
     "name": "Ruby Fang Cleaver",
@@ -3623,7 +3795,8 @@
       null,
       2,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "174": {
     "name": "Ruby Fang Aegis",
@@ -3643,7 +3816,8 @@
       1,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "175": {
     "name": "Omnis",
@@ -3671,7 +3845,8 @@
       4,
       5,
       6
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "176": {
     "name": "Aurora's Time Glass",
@@ -3693,7 +3868,8 @@
       1,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "177": {
     "name": "Siphon of Anguish",
@@ -3717,7 +3893,8 @@
       3,
       4,
       5
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "178": {
     "name": "Stymied Fate",
@@ -3745,7 +3922,8 @@
       1,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "179": {
     "name": "Apathy's Maw",
@@ -3769,7 +3947,8 @@
       2,
       3,
       4
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "180": {
     "name": "Shattered Chains",
@@ -3793,7 +3972,8 @@
       null,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "181": {
     "name": "Marina's Lost Soul",
@@ -3817,7 +3997,8 @@
       null,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "182": {
     "name": "Eye of Orexia",
@@ -3839,7 +4020,8 @@
       2,
       3,
       4
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "183": {
     "name": "Leviathan Carver",
@@ -3861,7 +4043,8 @@
       2,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "184": {
     "name": "Lethal Concentration",
@@ -3887,7 +4070,8 @@
       null,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "185": {
     "name": "Vilatria's Storm Crown",
@@ -3907,7 +4091,8 @@
       0,
       1,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "186": {
     "name": "Vilatria's Downfall",
@@ -3927,7 +4112,8 @@
       1,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "187": {
     "name": "Salt the Wound",
@@ -3951,7 +4137,8 @@
       5,
       0,
       1
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "188": {
     "name": "Azurral's Fury",
@@ -3969,7 +4156,8 @@
       null,
       0,
       1
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "189": {
     "name": "Sanguine Hoard",
@@ -3993,7 +4181,8 @@
       2,
       2,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "190": {
     "name": "Jasper's Searing Pride",
@@ -4019,7 +4208,8 @@
       4,
       null,
       5
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "191": {
     "name": "Devotion",
@@ -4043,7 +4233,8 @@
       1,
       2,
       0
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "192": {
     "name": "Fulgurite Shard",
@@ -4069,7 +4260,8 @@
       4,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "193": {
     "name": "Corsair's Boarding Shield",
@@ -4091,7 +4283,8 @@
       0,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "194": {
     "name": "Corsair's Blood Cowl",
@@ -4113,7 +4306,8 @@
       3,
       0,
       1
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "195": {
     "name": "Scales of Eterra",
@@ -4137,7 +4331,8 @@
       null,
       null,
       1
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "196": {
     "name": "Scales of Eterra",
@@ -4161,7 +4356,8 @@
       null,
       null,
       1
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "197": {
     "name": "Scales of Eterra",
@@ -4185,7 +4381,8 @@
       null,
       null,
       1
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "198": {
     "name": "Bastion of Honour",
@@ -4207,7 +4404,8 @@
       1,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "199": {
     "name": "Rule of the Simoon",
@@ -4229,7 +4427,8 @@
       1,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "200": {
     "name": "Tongue of the Aberrant Seer",
@@ -4251,7 +4450,8 @@
       null,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "201": {
     "name": "Battlemage's Endeavour",
@@ -4277,14 +4477,15 @@
       2,
       3,
       3
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "202": {
     "name": "Stormhide Paws",
     "baseTypeID": 4,
     "subTypeID": 1,
     "req": {
-      "level": 6
+      "level": 0
     },
     "mods": [
       "{rounding:Integer}+(30-45) Melee Lightning Damage with Swipe (3 second cooldown)",
@@ -4305,7 +4506,8 @@
       null,
       0,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "203": {
     "name": "Darkstride",
@@ -4327,7 +4529,8 @@
       null,
       0,
       1
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "204": {
     "name": "Thorn Slinger",
@@ -4349,7 +4552,8 @@
       null,
       1,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "205": {
     "name": "Curse of Perseverance",
@@ -4373,7 +4577,8 @@
       2,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "206": {
     "name": "Lessons of the Metropolis",
@@ -4395,7 +4600,8 @@
       null,
       0,
       2
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "207": {
     "name": "Kelthan Blasting Agent",
@@ -4417,7 +4623,8 @@
       1,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "208": {
     "name": "Ravenous Void",
@@ -4437,7 +4644,8 @@
       1,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "209": {
     "name": "Aberrant Call",
@@ -4461,7 +4669,8 @@
       2,
       3,
       0
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "210": {
     "name": "Flayer's Pride",
@@ -4487,7 +4696,8 @@
       4,
       null,
       0
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "211": {
     "name": "Throne of Ambition",
@@ -4501,7 +4711,8 @@
     ],
     "rollIds": [
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "212": {
     "name": "Eternal Eclipse",
@@ -4529,7 +4740,8 @@
       2,
       3,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "213": {
     "name": "Frostbite Shackles",
@@ -4543,7 +4755,7 @@
       "(23-33)% Increased Frostbite Duration ",
       "+(143-183)% Freeze Rate Multiplier",
       "{rounding:Integer}(13-23) Ward Gain on Freeze",
-      "+100% Ward Retention per 100% uncapped Cold Resistance"
+      "+1% Ward Retention per 2% uncapped Cold Resistance"
     ],
     "rollIds": [
       0,
@@ -4551,7 +4763,8 @@
       2,
       3,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "214": {
     "name": "Stormcarved Testament",
@@ -4585,7 +4798,8 @@
       null,
       null,
       1
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "215": {
     "name": "Nightbringer",
@@ -4607,7 +4821,8 @@
       2,
       3,
       4
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "216": {
     "name": "Twisted Heart of Uhkeiros",
@@ -4631,7 +4846,8 @@
       null,
       1,
       2
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "217": {
     "name": "Sacrificial Embrace",
@@ -4651,7 +4867,8 @@
       1,
       2,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "218": {
     "name": "Yulia's Path",
@@ -4677,7 +4894,8 @@
       4,
       null,
       5
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "219": {
     "name": "Trinity of Flames",
@@ -4695,7 +4913,8 @@
       null,
       0,
       1
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "220": {
     "name": "Death's Embrace",
@@ -4719,7 +4938,8 @@
       2,
       3,
       4
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "221": {
     "name": "Paranoia",
@@ -4743,7 +4963,8 @@
       3,
       1,
       4
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "222": {
     "name": "Prismatic Gaze",
@@ -4763,14 +4984,15 @@
       0,
       null,
       1
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "223": {
     "name": "Chronostasis",
     "baseTypeID": 9,
     "subTypeID": 10,
     "req": {
-      "level": 62
+      "level": 0
     },
     "mods": [
       "+(50000-200000)% Ward consumed when you use a melee attack",
@@ -4783,7 +5005,8 @@
       1,
       3,
       2
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "224": {
     "name": "The Judicator",
@@ -4811,7 +5034,8 @@
       3,
       4,
       4
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "225": {
     "name": "Aurelis",
@@ -4837,7 +5061,8 @@
       3,
       4,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "226": {
     "name": "Tu'rani's Bident",
@@ -4859,7 +5084,8 @@
       1,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "227": {
     "name": "Ferebor's Chisel",
@@ -4881,7 +5107,8 @@
       null,
       2,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "228": {
     "name": "Ferebor's Persistence",
@@ -4903,7 +5130,8 @@
       1,
       2,
       2
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "229": {
     "name": "Roots of Vithrasil",
@@ -4925,7 +5153,8 @@
       0,
       null,
       0
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "230": {
     "name": "Usurper's Mandate",
@@ -4947,7 +5176,8 @@
       null,
       2,
       2
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "231": {
     "name": "Longshot",
@@ -4971,7 +5201,8 @@
       null,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "232": {
     "name": "Hakar's Phoenix",
@@ -4995,7 +5226,8 @@
       1,
       3,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "233": {
     "name": "Snowdrift",
@@ -5023,7 +5255,8 @@
       1,
       1,
       2
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "234": {
     "name": "Hazelroot",
@@ -5045,7 +5278,8 @@
       1,
       2,
       2
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "235": {
     "name": "Silvafrond",
@@ -5067,7 +5301,8 @@
       0,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "236": {
     "name": "Drought's Release",
@@ -5089,7 +5324,8 @@
       1,
       null,
       3
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "237": {
     "name": "Thornshell",
@@ -5111,7 +5347,8 @@
       1,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "238": {
     "name": "Julra's Stardial",
@@ -5129,7 +5366,8 @@
       0,
       1,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "239": {
     "name": "Somnia",
@@ -5151,7 +5389,8 @@
       1,
       2,
       0
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "240": {
     "name": "Julra's Obsession",
@@ -5171,7 +5410,8 @@
       1,
       2,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "241": {
     "name": "Vessel of Strife",
@@ -5193,7 +5433,8 @@
       2,
       3,
       4
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "242": {
     "name": "Shadow String",
@@ -5215,7 +5456,8 @@
       null,
       null,
       2
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "243": {
     "name": "Dragonsong",
@@ -5245,7 +5487,8 @@
       null,
       3,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "244": {
     "name": "Harthenon's Vow",
@@ -5267,7 +5510,8 @@
       null,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "245": {
     "name": "Renegade's Will",
@@ -5289,7 +5533,8 @@
       1,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "246": {
     "name": "Singularity",
@@ -5307,7 +5552,8 @@
       0,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "247": {
     "name": "Chronicle of the Damned",
@@ -5329,7 +5575,8 @@
       0,
       1,
       2
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "248": {
     "name": "Flesh of Stone",
@@ -5349,7 +5596,8 @@
       null,
       0,
       0
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "249": {
     "name": "Diothaen's Bloody Nib",
@@ -5373,7 +5621,8 @@
       0,
       1,
       2
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "250": {
     "name": "Torkrefin's Hunger",
@@ -5397,7 +5646,8 @@
       1,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "251": {
     "name": "Zeurial's Hunt",
@@ -5419,7 +5669,8 @@
       3,
       3,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "252": {
     "name": "Pact Severance",
@@ -5445,7 +5696,8 @@
       3,
       4,
       5
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "253": {
     "name": "Foot of the Mountain",
@@ -5463,7 +5715,8 @@
       0,
       2,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "254": {
     "name": "Face of the Mountain",
@@ -5483,7 +5736,8 @@
       0,
       1,
       0
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "255": {
     "name": "Core of the Mountain",
@@ -5505,7 +5759,8 @@
       null,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "256": {
     "name": "Peak of the Mountain",
@@ -5523,7 +5778,8 @@
       0,
       null,
       1
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "257": {
     "name": "Ashes of Mortality",
@@ -5545,7 +5801,8 @@
       2,
       3,
       4
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "258": {
     "name": "Immolator's Oblation",
@@ -5567,7 +5824,8 @@
       null,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "259": {
     "name": "Pyre of Affliction",
@@ -5599,7 +5857,8 @@
       3,
       4,
       5
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "260": {
     "name": "Lich's Envy",
@@ -5621,7 +5880,8 @@
       2,
       3,
       4
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "261": {
     "name": "Lich's Scorn",
@@ -5643,7 +5903,8 @@
       1,
       2,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "262": {
     "name": "Penumbra",
@@ -5665,7 +5926,8 @@
       null,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "263": {
     "name": "Omen of Thunder",
@@ -5687,7 +5949,8 @@
       1,
       2,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "264": {
     "name": "Vaion's Chariot",
@@ -5709,7 +5972,8 @@
       1,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "265": {
     "name": "Soul Gambler's Fallacy",
@@ -5731,7 +5995,8 @@
       0,
       1,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "266": {
     "name": "Burning Avarice",
@@ -5753,7 +6018,8 @@
       null,
       null,
       1
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "267": {
     "name": "Ashes of Orchirian",
@@ -5785,7 +6051,8 @@
       null,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "268": {
     "name": "Bloodkeeper's Nest",
@@ -5811,7 +6078,8 @@
       3,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "269": {
     "name": "Scales of Lemniscate",
@@ -5839,7 +6107,8 @@
       null,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "270": {
     "name": "Hive Mind",
@@ -5863,14 +6132,15 @@
       null,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "271": {
     "name": "Gathering Fury",
     "baseTypeID": 23,
     "subTypeID": 11,
     "req": {
-      "level": 50
+      "level": 0
     },
     "mods": [
       "+(8-12)% Chance to repeat Bow Ability",
@@ -5879,7 +6149,8 @@
     "rollIds": [
       0,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "272": {
     "name": "Aaron's Will",
@@ -5907,7 +6178,8 @@
       3,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "273": {
     "name": "Lament of the Lost Refuge",
@@ -5927,7 +6199,8 @@
       0,
       null,
       1
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "274": {
     "name": "Branch of Hallows",
@@ -5951,7 +6224,8 @@
       null,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "275": {
     "name": "Unstable Core",
@@ -5977,7 +6251,8 @@
       null,
       null,
       4
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "276": {
     "name": "Liath's Machinations",
@@ -6001,7 +6276,8 @@
       1,
       0,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "277": {
     "name": "Red Ring of Atlaria",
@@ -6025,7 +6301,8 @@
       2,
       2,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "278": {
     "name": "Tears of the Forest",
@@ -6049,7 +6326,8 @@
       0,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "279": {
     "name": "Shadow Beacon",
@@ -6075,7 +6353,8 @@
       3,
       null,
       5
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "280": {
     "name": "Telf'un's Mirage",
@@ -6101,7 +6380,8 @@
       2,
       null,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "281": {
     "name": "Vortex Pennant",
@@ -6125,7 +6405,8 @@
       0,
       null,
       0
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "282": {
     "name": "Firestarter's Torch",
@@ -6147,7 +6428,8 @@
       0,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "283": {
     "name": "Rotmind",
@@ -6169,7 +6451,8 @@
       null,
       null,
       1
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "284": {
     "name": "The Ghost Maker",
@@ -6199,7 +6482,8 @@
       3,
       4,
       5
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "285": {
     "name": "Jelkhor's Blast Knife",
@@ -6219,7 +6503,8 @@
       null,
       1,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "286": {
     "name": "Fragment of the Enigma",
@@ -6243,7 +6528,8 @@
       2,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "287": {
     "name": "Hand of Judgement",
@@ -6267,7 +6553,8 @@
       1,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "288": {
     "name": "Harbinger of Stars",
@@ -6291,7 +6578,8 @@
       0,
       2,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "289": {
     "name": "Bo's Anarchy",
@@ -6317,7 +6605,8 @@
       2,
       3,
       4
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "290": {
     "name": "Apostate's Sanctuary",
@@ -6341,7 +6630,8 @@
       0,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "291": {
     "name": "Pillager's Gold",
@@ -6363,7 +6653,8 @@
       null,
       2,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "292": {
     "name": "Apogee of Frozen Light",
@@ -6389,10 +6680,12 @@
       null,
       null,
       2
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "293": {
     "name": "Swaddling of the Erased",
+    "legendaryType": 1,
     "baseTypeID": 4,
     "subTypeID": 1,
     "req": {
@@ -6411,10 +6704,12 @@
       1,
       1,
       2
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "294": {
     "name": "Font of the Erased",
+    "legendaryType": 1,
     "baseTypeID": 21,
     "subTypeID": 4,
     "req": {
@@ -6431,10 +6726,12 @@
       0,
       0,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "295": {
     "name": "Cradle of the Erased",
+    "legendaryType": 1,
     "baseTypeID": 18,
     "subTypeID": 1,
     "req": {
@@ -6451,10 +6748,12 @@
       0,
       null,
       2
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "296": {
     "name": "Advent of the Erased",
+    "legendaryType": 1,
     "baseTypeID": 3,
     "subTypeID": 2,
     "req": {
@@ -6473,10 +6772,12 @@
       2,
       3,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "297": {
     "name": "Dedication of an Erased Primalist",
+    "legendaryType": 1,
     "baseTypeID": 22,
     "subTypeID": 29,
     "req": {
@@ -6491,10 +6792,12 @@
       null,
       0,
       1
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "298": {
     "name": "Knowledge of an Erased Mage",
+    "legendaryType": 1,
     "baseTypeID": 22,
     "subTypeID": 26,
     "req": {
@@ -6509,10 +6812,12 @@
       null,
       1,
       0
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "299": {
     "name": "Code of an Erased Sentinel",
+    "legendaryType": 1,
     "baseTypeID": 22,
     "subTypeID": 41,
     "req": {
@@ -6527,10 +6832,12 @@
       null,
       0,
       1
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "300": {
     "name": "Ambitions of an Erased Acolyte",
+    "legendaryType": 1,
     "baseTypeID": 22,
     "subTypeID": 12,
     "req": {
@@ -6547,10 +6854,12 @@
       0,
       null,
       1
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "301": {
     "name": "Gambit of an Erased Rogue",
+    "legendaryType": 1,
     "baseTypeID": 22,
     "subTypeID": 47,
     "req": {
@@ -6565,7 +6874,8 @@
       null,
       0,
       1
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "302": {
     "name": "Howl of the West Wind",
@@ -6589,7 +6899,8 @@
       1,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "303": {
     "name": "Cycle of Putrescence",
@@ -6611,7 +6922,8 @@
       1,
       2,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "304": {
     "name": "Static Shell",
@@ -6633,7 +6945,8 @@
       2,
       3,
       4
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "305": {
     "name": "Reowyn's Fortress",
@@ -6659,7 +6972,8 @@
       4,
       null,
       5
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "306": {
     "name": "Blood of the Exile",
@@ -6683,7 +6997,8 @@
       2,
       3,
       4
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "307": {
     "name": "Crest of Unity",
@@ -6705,7 +7020,8 @@
       null,
       2,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "308": {
     "name": "Abacus Rod",
@@ -6725,7 +7041,8 @@
       null,
       null,
       1
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "309": {
     "name": "Elecoe's Abandon",
@@ -6751,7 +7068,8 @@
       3,
       4,
       5
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "310": {
     "name": "Wrongwarp",
@@ -6773,7 +7091,8 @@
       null,
       1,
       1
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "311": {
     "name": "Transcriber's Graver",
@@ -6797,7 +7116,8 @@
       1,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "312": {
     "name": "Box of Hydrae",
@@ -6823,7 +7143,8 @@
       4,
       5,
       6
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "313": {
     "name": "Fundamental Criterion",
@@ -6849,7 +7170,8 @@
       null,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "314": {
     "name": "Cleaver Solution",
@@ -6869,7 +7191,8 @@
       0,
       0,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "315": {
     "name": "Dragorath's Claw",
@@ -6889,7 +7212,8 @@
       1,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "316": {
     "name": "Apex of Thought",
@@ -6921,7 +7245,8 @@
       0,
       0,
       0
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "317": {
     "name": "Frey's Retreat",
@@ -6943,7 +7268,8 @@
       null,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "318": {
     "name": "The Shattered Cycle",
@@ -6963,7 +7289,8 @@
       0,
       1,
       2
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "319": {
     "name": "Merophage",
@@ -6983,7 +7310,8 @@
       0,
       1,
       2
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "320": {
     "name": "Sierpin's Fractal Tree",
@@ -7005,7 +7333,8 @@
       null,
       null,
       0
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "321": {
     "name": "Mad Alchemist's Ladle",
@@ -7033,7 +7362,8 @@
       null,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "322": {
     "name": "The Cuckoo",
@@ -7055,7 +7385,8 @@
       1,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "323": {
     "name": "Wheel of Torment",
@@ -7083,7 +7414,8 @@
       null,
       3,
       4
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "324": {
     "name": "Unvar's Rise",
@@ -7099,7 +7431,8 @@
     "rollIds": [
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "325": {
     "name": "Unvar's Hegemony",
@@ -7115,7 +7448,8 @@
     "rollIds": [
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "326": {
     "name": "Unvar's Exile",
@@ -7131,10 +7465,12 @@
     "rollIds": [
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "327": {
     "name": "Communion of the Erased",
+    "legendaryType": 1,
     "baseTypeID": 2,
     "subTypeID": 2,
     "req": {
@@ -7142,7 +7478,7 @@
     },
     "mods": [
       "+100% Belt Stat Multiplier for 1 second on Potion Use",
-      "+1 Potion Slot per equipped Weaver Item",
+      "+1 Potion Slots per equipped Weaver's Will Item",
       "{rounding:Integer}(24-54)% increased Armor",
       "(24-54)% of Mana Spent Gained as Ward",
       "(6-14)% more Damage to Stunned Enemies"
@@ -7153,7 +7489,8 @@
       0,
       1,
       2
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "328": {
     "name": "Stygian Coal",
@@ -7177,7 +7514,8 @@
       null,
       1,
       1
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "329": {
     "name": "Sigeon's Reprisal",
@@ -7199,7 +7537,8 @@
       2,
       0,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "330": {
     "name": "Spine of Malatros",
@@ -7225,7 +7564,8 @@
       null,
       3,
       4
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "331": {
     "name": "Vial of Volatile Ice",
@@ -7247,7 +7587,8 @@
       1,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "332": {
     "name": "Blood Roost",
@@ -7271,7 +7612,8 @@
       3,
       null,
       4
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "333": {
     "name": "Falcon Fists",
@@ -7301,7 +7643,8 @@
       4,
       5,
       5
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "334": {
     "name": "Talons of Valor",
@@ -7327,7 +7670,8 @@
       3,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "335": {
     "name": "Wraithlord's Harbour",
@@ -7349,7 +7693,8 @@
       3,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "336": {
     "name": "Naal's Tooth",
@@ -7379,7 +7724,8 @@
       null,
       3,
       0
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "337": {
     "name": "Razorfall",
@@ -7405,7 +7751,8 @@
       3,
       null,
       4
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "338": {
     "name": "Sword Catcher",
@@ -7431,7 +7778,8 @@
       null,
       3,
       4
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "339": {
     "name": "Black Blade of Chaos",
@@ -7441,7 +7789,6 @@
       "level": 72
     },
     "mods": [
-      "+1 Lethal Mirage is a quick attack with no invulnerability",
       "{rounding:Integer}+(24-56) Melee Lightning Damage",
       "{rounding:Integer}+(2-12) Dexterity",
       "+(2-4)% Lightning Penetration per 5 Dexterity",
@@ -7452,7 +7799,6 @@
       "{rounding:Integer}+(24-56) Melee Void Damage"
     ],
     "rollIds": [
-      null,
       0,
       1,
       2,
@@ -7461,7 +7807,8 @@
       5,
       6,
       7
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "340": {
     "name": "Orian's Sun Seal",
@@ -7473,7 +7820,7 @@
     "mods": [
       "{rounding:Integer}+(1-2) to Symbols of Hope",
       "(20-40)% Increased Symbol Gain Rate",
-      "(70-80)% of Sigils of Hope Mana Cost consumed to cast it every 6 seconds while above half mana",
+      "(70-80)% of Symbols of Hope Mana Cost consumed to cast it every 6 seconds while above half mana",
       "(15-25)% Increased Healing Effectiveness",
       "{rounding:Integer}(10-15)% increased Armor"
     ],
@@ -7483,7 +7830,8 @@
       2,
       3,
       4
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "341": {
     "name": "Cruelty",
@@ -7507,7 +7855,8 @@
       2,
       null,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "342": {
     "name": "Traitor's Tongue",
@@ -7529,7 +7878,8 @@
       2,
       3,
       4
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "343": {
     "name": "Egg of the Forgotten",
@@ -7539,7 +7889,8 @@
       "level": 0
     },
     "mods": [],
-    "rollIds": []
+    "rollIds": [],
+    "overrideLevelRequirement": true
   },
   "344": {
     "name": "Harbinger's Needle",
@@ -7549,7 +7900,8 @@
       "level": 0
     },
     "mods": [],
-    "rollIds": []
+    "rollIds": [],
+    "overrideLevelRequirement": false
   },
   "345": {
     "name": "Bane of Winter",
@@ -7575,7 +7927,8 @@
       null,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "346": {
     "name": "Palarus's Sacred Light",
@@ -7597,7 +7950,8 @@
       0,
       1,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "347": {
     "name": "The Inevitable",
@@ -7621,7 +7975,8 @@
       null,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "348": {
     "name": "Phantom Grip",
@@ -7647,7 +8002,8 @@
       3,
       4,
       5
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "349": {
     "name": "Yrun's Penance",
@@ -7671,7 +8027,8 @@
       1,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "350": {
     "name": "Flight of Quetzeri",
@@ -7695,7 +8052,8 @@
       2,
       3,
       4
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "351": {
     "name": "Triboelectra",
@@ -7719,7 +8077,8 @@
       null,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "352": {
     "name": "Plague Dragon's Tongue",
@@ -7745,7 +8104,8 @@
       4,
       5,
       6
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "353": {
     "name": "Nihilis",
@@ -7769,7 +8129,8 @@
       3,
       4,
       5
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "354": {
     "name": "Wall of Nothing",
@@ -7791,7 +8152,8 @@
       2,
       3,
       4
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "355": {
     "name": "Aberroth's Command",
@@ -7817,7 +8179,8 @@
       null,
       3,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "356": {
     "name": "Stealth",
@@ -7841,7 +8204,8 @@
       2,
       null,
       0
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "357": {
     "name": "Seed of Ekkidrasil",
@@ -7867,7 +8231,8 @@
       4,
       5,
       6
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "358": {
     "name": "Null Portent",
@@ -7893,7 +8258,8 @@
       null,
       3,
       4
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "359": {
     "name": "Fingers of the Phantom Mire",
@@ -7919,7 +8285,8 @@
       3,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "360": {
     "name": "Carcinization of Momentum",
@@ -7941,7 +8308,8 @@
       null,
       1,
       2
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "361": {
     "name": "Phase Point",
@@ -7965,7 +8333,8 @@
       2,
       3,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "362": {
     "name": "Grim Constitution",
@@ -7987,7 +8356,8 @@
       1,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "363": {
     "name": "Monument of Protection",
@@ -8011,7 +8381,8 @@
       null,
       3,
       4
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "364": {
     "name": "Event Horizon",
@@ -8031,7 +8402,8 @@
       null,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "365": {
     "name": "World Splitter",
@@ -8055,7 +8427,8 @@
       2,
       3,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "366": {
     "name": "Flames of Midnight",
@@ -8083,7 +8456,8 @@
       0,
       0,
       1
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "367": {
     "name": "Celestial Doom",
@@ -8111,7 +8485,8 @@
       0,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "368": {
     "name": "Mana Guide",
@@ -8133,7 +8508,8 @@
       1,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "369": {
     "name": "Tolmat's Incorrect History of Eterra",
@@ -8157,7 +8533,8 @@
       2,
       3,
       4
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "370": {
     "name": "Mantle of the Pale Ox",
@@ -8181,7 +8558,8 @@
       3,
       4,
       5
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "371": {
     "name": "Phalanx",
@@ -8205,7 +8583,8 @@
       2,
       3,
       0
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "372": {
     "name": "Grasp of the Blood Mage",
@@ -8227,7 +8606,8 @@
       null,
       2,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "373": {
     "name": "Ravager's Dart",
@@ -8247,7 +8627,8 @@
       null,
       1,
       2
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "374": {
     "name": "Pearls of the Swine",
@@ -8271,7 +8652,8 @@
       1,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "375": {
     "name": "Pearls of the Swine",
@@ -8295,7 +8677,8 @@
       1,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "376": {
     "name": "Pearls of the Swine",
@@ -8319,7 +8702,8 @@
       1,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "377": {
     "name": "Gordian Prism",
@@ -8343,7 +8727,8 @@
       null,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "378": {
     "name": "Crystalwind",
@@ -8369,7 +8754,8 @@
       null,
       null,
       2
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "379": {
     "name": "Cocooned Short Sword",
@@ -8379,7 +8765,8 @@
       "level": 0
     },
     "mods": [],
-    "rollIds": []
+    "rollIds": [],
+    "overrideLevelRequirement": true
   },
   "380": {
     "name": "Cocooned Cleaver",
@@ -8389,7 +8776,8 @@
       "level": 0
     },
     "mods": [],
-    "rollIds": []
+    "rollIds": [],
+    "overrideLevelRequirement": true
   },
   "381": {
     "name": "Cocooned Club",
@@ -8399,7 +8787,8 @@
       "level": 0
     },
     "mods": [],
-    "rollIds": []
+    "rollIds": [],
+    "overrideLevelRequirement": true
   },
   "382": {
     "name": "Cocooned Great Sword",
@@ -8409,7 +8798,8 @@
       "level": 0
     },
     "mods": [],
-    "rollIds": []
+    "rollIds": [],
+    "overrideLevelRequirement": true
   },
   "383": {
     "name": "Cocooned Great Axe",
@@ -8419,7 +8809,8 @@
       "level": 0
     },
     "mods": [],
-    "rollIds": []
+    "rollIds": [],
+    "overrideLevelRequirement": true
   },
   "384": {
     "name": "Cocooned Great Mace",
@@ -8429,7 +8820,8 @@
       "level": 0
     },
     "mods": [],
-    "rollIds": []
+    "rollIds": [],
+    "overrideLevelRequirement": true
   },
   "385": {
     "name": "Cocooned Spear",
@@ -8439,7 +8831,8 @@
       "level": 0
     },
     "mods": [],
-    "rollIds": []
+    "rollIds": [],
+    "overrideLevelRequirement": true
   },
   "386": {
     "name": "Cocooned Staff",
@@ -8449,7 +8842,8 @@
       "level": 0
     },
     "mods": [],
-    "rollIds": []
+    "rollIds": [],
+    "overrideLevelRequirement": true
   },
   "387": {
     "name": "Cocooned Cuirass",
@@ -8459,7 +8853,8 @@
       "level": 0
     },
     "mods": [],
-    "rollIds": []
+    "rollIds": [],
+    "overrideLevelRequirement": true
   },
   "388": {
     "name": "Cocooned Dagger",
@@ -8469,7 +8864,8 @@
       "level": 0
     },
     "mods": [],
-    "rollIds": []
+    "rollIds": [],
+    "overrideLevelRequirement": true
   },
   "389": {
     "name": "Cocooned Sceptre",
@@ -8479,7 +8875,8 @@
       "level": 0
     },
     "mods": [],
-    "rollIds": []
+    "rollIds": [],
+    "overrideLevelRequirement": true
   },
   "390": {
     "name": "Cocooned Wand",
@@ -8489,7 +8886,8 @@
       "level": 0
     },
     "mods": [],
-    "rollIds": []
+    "rollIds": [],
+    "overrideLevelRequirement": true
   },
   "391": {
     "name": "Cocooned Bow",
@@ -8499,7 +8897,8 @@
       "level": 0
     },
     "mods": [],
-    "rollIds": []
+    "rollIds": [],
+    "overrideLevelRequirement": true
   },
   "392": {
     "name": "Cocooned Quiver",
@@ -8509,7 +8908,8 @@
       "level": 0
     },
     "mods": [],
-    "rollIds": []
+    "rollIds": [],
+    "overrideLevelRequirement": true
   },
   "393": {
     "name": "Cocooned Shield",
@@ -8519,7 +8919,8 @@
       "level": 0
     },
     "mods": [],
-    "rollIds": []
+    "rollIds": [],
+    "overrideLevelRequirement": true
   },
   "394": {
     "name": "Cocooned Catalyst",
@@ -8529,7 +8930,8 @@
       "level": 0
     },
     "mods": [],
-    "rollIds": []
+    "rollIds": [],
+    "overrideLevelRequirement": true
   },
   "395": {
     "name": "Cocooned Relic",
@@ -8539,7 +8941,8 @@
       "level": 0
     },
     "mods": [],
-    "rollIds": []
+    "rollIds": [],
+    "overrideLevelRequirement": true
   },
   "396": {
     "name": "Cocooned Ring",
@@ -8549,7 +8952,8 @@
       "level": 0
     },
     "mods": [],
-    "rollIds": []
+    "rollIds": [],
+    "overrideLevelRequirement": true
   },
   "397": {
     "name": "Cocooned Amulet",
@@ -8559,7 +8963,8 @@
       "level": 0
     },
     "mods": [],
-    "rollIds": []
+    "rollIds": [],
+    "overrideLevelRequirement": true
   },
   "398": {
     "name": "Cocooned Gloves",
@@ -8569,7 +8974,8 @@
       "level": 0
     },
     "mods": [],
-    "rollIds": []
+    "rollIds": [],
+    "overrideLevelRequirement": true
   },
   "399": {
     "name": "Cocooned Belt",
@@ -8579,7 +8985,8 @@
       "level": 0
     },
     "mods": [],
-    "rollIds": []
+    "rollIds": [],
+    "overrideLevelRequirement": true
   },
   "400": {
     "name": "Cocooned Boots",
@@ -8589,7 +8996,8 @@
       "level": 0
     },
     "mods": [],
-    "rollIds": []
+    "rollIds": [],
+    "overrideLevelRequirement": true
   },
   "401": {
     "name": "Cocooned Helmet",
@@ -8599,7 +9007,8 @@
       "level": 0
     },
     "mods": [],
-    "rollIds": []
+    "rollIds": [],
+    "overrideLevelRequirement": true
   },
   "402": {
     "name": "Elecoe's Innovation",
@@ -8623,7 +9032,8 @@
       3,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "403": {
     "name": "Soul of the Mountain",
@@ -8645,7 +9055,8 @@
       1,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "404": {
     "name": "Orian's Descent",
@@ -8669,10 +9080,12 @@
       1,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "405": {
     "name": "Orb Weaver's Fang",
+    "legendaryType": 1,
     "baseTypeID": 16,
     "subTypeID": 1,
     "req": {
@@ -8691,10 +9104,12 @@
       2,
       3,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "406": {
     "name": "Nest of Nightmares",
+    "legendaryType": 1,
     "baseTypeID": 7,
     "subTypeID": 9,
     "req": {
@@ -8713,10 +9128,12 @@
       0,
       1,
       1
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "407": {
     "name": "Essence Weaver",
+    "legendaryType": 1,
     "baseTypeID": 14,
     "subTypeID": 12,
     "req": {
@@ -8733,10 +9150,12 @@
       0,
       0,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "408": {
     "name": "Weaver's Gift",
+    "legendaryType": 1,
     "baseTypeID": 9,
     "subTypeID": 6,
     "req": {
@@ -8755,10 +9174,12 @@
       0,
       0,
       2
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "409": {
     "name": "Inheritance of the Erased",
+    "legendaryType": 1,
     "baseTypeID": 20,
     "subTypeID": 8,
     "req": {
@@ -8775,7 +9196,8 @@
       0,
       0,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "410": {
     "name": "Unearthed Memories",
@@ -8795,7 +9217,8 @@
       0,
       1,
       2
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "411": {
     "name": "Countenance of Majasa",
@@ -8815,7 +9238,8 @@
       null,
       1,
       0
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "412": {
     "name": "Dominance of the Tundra",
@@ -8839,7 +9263,8 @@
       0,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "413": {
     "name": "Shattered Worlds",
@@ -8863,7 +9288,8 @@
       2,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "414": {
     "name": "Downfall of the Righteous",
@@ -8887,7 +9313,8 @@
       2,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "415": {
     "name": "Immortal Vise",
@@ -8911,7 +9338,8 @@
       3,
       4,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "416": {
     "name": "Brewmaster's Buckle",
@@ -8933,10 +9361,12 @@
       0,
       0,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "417": {
     "name": "Clotho's Needle",
+    "legendaryType": 1,
     "baseTypeID": 16,
     "subTypeID": 15,
     "req": {
@@ -8959,10 +9389,12 @@
       null,
       2,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "418": {
     "name": "Scissor of Atropos",
+    "legendaryType": 1,
     "baseTypeID": 9,
     "subTypeID": 5,
     "req": {
@@ -8981,10 +9413,12 @@
       1,
       0,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "419": {
     "name": "Blight of Lachesis",
+    "legendaryType": 1,
     "baseTypeID": 15,
     "subTypeID": 10,
     "req": {
@@ -9005,7 +9439,8 @@
       3,
       0,
       0
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "420": {
     "name": "Executioner's Tithe",
@@ -9031,7 +9466,8 @@
       2,
       3,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "421": {
     "name": "The Land Before",
@@ -9051,7 +9487,8 @@
       0,
       1,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "422": {
     "name": "Lightning in a Bottle",
@@ -9073,7 +9510,8 @@
       1,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "423": {
     "name": "Legends Entwined",
@@ -9097,7 +9535,8 @@
       2,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "424": {
     "name": "Tyrant's Skull",
@@ -9113,7 +9552,8 @@
     "rollIds": [
       0,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "425": {
     "name": "Wildfire Embers",
@@ -9139,7 +9579,8 @@
       4,
       5,
       6
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "426": {
     "name": "Thicket of Blinding Light",
@@ -9165,7 +9606,8 @@
       3,
       4,
       5
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "427": {
     "name": "Harmony of the First",
@@ -9185,7 +9627,8 @@
       1,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "428": {
     "name": "Onslaught of Cerata",
@@ -9211,7 +9654,8 @@
       3,
       4,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "429": {
     "name": "Blossom of Immortal Stone",
@@ -9235,7 +9679,8 @@
       0,
       1,
       2
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "430": {
     "name": "Chorus of the Anurok",
@@ -9263,7 +9708,8 @@
       3,
       4,
       4
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "431": {
     "name": "Carrion of Creation",
@@ -9293,7 +9739,8 @@
       null,
       1,
       2
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "432": {
     "name": "Horn of the Bone Wisp",
@@ -9319,7 +9766,8 @@
       3,
       4,
       5
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "433": {
     "name": "Reliquary Nest",
@@ -9329,7 +9777,7 @@
       "level": 60
     },
     "mods": [
-      "+(40-60)% Non-Unique Idol Stat Multiplier",
+      "Stats on your Non-Unique Idols have (40-60)% increased Effect",
       "+(5-10)% to All Resistances",
       "{rounding:Integer}+(20-40) Health",
       "{rounding:Integer}+(60-100) Stun Avoidance",
@@ -9341,7 +9789,8 @@
       2,
       3,
       4
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "434": {
     "name": "Mask of Indifference",
@@ -9371,14 +9820,15 @@
       1,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "435": {
     "name": "Permanence of Primal Knowledge",
     "baseTypeID": 4,
     "subTypeID": 11,
     "req": {
-      "level": 0
+      "level": 50
     },
     "mods": [
       "(6-12)% increased Cast Speed",
@@ -9395,7 +9845,8 @@
       1,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "436": {
     "name": "Wings of Discord",
@@ -9419,7 +9870,8 @@
       3,
       null,
       4
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "437": {
     "name": "Primal Cadence",
@@ -9447,7 +9899,8 @@
       4,
       null,
       5
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "438": {
     "name": "Whetstone Gavel",
@@ -9471,7 +9924,8 @@
       1,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "439": {
     "name": "Truesight Glass",
@@ -9491,7 +9945,8 @@
       0,
       1,
       2
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "440": {
     "name": "Bluefeather Band",
@@ -9517,7 +9972,8 @@
       4,
       5,
       6
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "441": {
     "name": "Hydra Arc",
@@ -9541,7 +9997,8 @@
       3,
       4,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "442": {
     "name": "Velocyn's Jaw",
@@ -9565,7 +10022,8 @@
       3,
       4,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "443": {
     "name": "Army of Skin",
@@ -9585,7 +10043,8 @@
       1,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "444": {
     "name": "Evolution's End",
@@ -9601,7 +10060,8 @@
     "rollIds": [
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "445": {
     "name": "Spirit Xylem",
@@ -9629,7 +10089,8 @@
       4,
       5,
       6
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "446": {
     "name": "Fangs of the Berserker",
@@ -9657,7 +10118,8 @@
       5,
       6,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "447": {
     "name": "Bones of the Ancestral Pack",
@@ -9679,7 +10141,8 @@
       2,
       3,
       4
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "448": {
     "name": "Architects of Astral Blood",
@@ -9705,7 +10168,8 @@
       3,
       4,
       5
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "449": {
     "name": "The Butcher's Crown",
@@ -9729,7 +10193,8 @@
       2,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "450": {
     "name": "Unbroken Charge",
@@ -9751,7 +10216,8 @@
       1,
       2,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "451": {
     "name": "Doppelganger's Mimicry",
@@ -9768,10 +10234,11 @@
     ],
     "rollIds": [
       0,
-      1,
-      2,
-      3
-    ]
+      0,
+      0,
+      0
+    ],
+    "overrideLevelRequirement": true
   },
   "452": {
     "name": "Doppelganger's Deception",
@@ -9793,7 +10260,8 @@
       1,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "453": {
     "name": "Doppelganger's Facade",
@@ -9815,7 +10283,8 @@
       1,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "454": {
     "name": "Abandoned Eyes of the Weaver",
@@ -9837,7 +10306,8 @@
       0,
       1,
       2
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "455": {
     "name": "Abandoned Chitin of the Weaver",
@@ -9859,7 +10329,8 @@
       1,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "456": {
     "name": "Kuzon's Fury",
@@ -9887,7 +10358,8 @@
       3,
       4,
       5
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "457": {
     "name": "Kuzon's Guise",
@@ -9911,7 +10383,8 @@
       null,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "458": {
     "name": "Tabi of Dusk and Dawn",
@@ -9935,7 +10408,8 @@
       1,
       2,
       3
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "459": {
     "name": "Artifice of Devastation",
@@ -9953,11 +10427,12 @@
     ],
     "rollIds": [
       0,
-      1,
-      2,
-      3,
+      0,
+      0,
+      0,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "460": {
     "name": "Laup's Path",
@@ -9979,9 +10454,10 @@
       null,
       null,
       0,
-      1,
-      2
-    ]
+      0,
+      0
+    ],
+    "overrideLevelRequirement": true
   },
   "461": {
     "name": "Ash Wake",
@@ -10005,7 +10481,8 @@
       1,
       null,
       2
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "462": {
     "name": "Natural Wrath",
@@ -10021,7 +10498,8 @@
     "rollIds": [
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "463": {
     "name": "Rahyeh's Embrace",
@@ -10047,7 +10525,8 @@
       null,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "464": {
     "name": "Jormun's Thirst",
@@ -10071,7 +10550,8 @@
       3,
       4,
       5
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "465": {
     "name": "Jormun's Hunger",
@@ -10095,7 +10575,8 @@
       3,
       4,
       null
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "466": {
     "name": "Jormun's Feast",
@@ -10115,7 +10596,8 @@
       null,
       1,
       2
-    ]
+    ],
+    "overrideLevelRequirement": true
   },
   "467": {
     "name": "Keplahan's Pyrolith",
@@ -10134,10 +10616,11 @@
     "rollIds": [
       null,
       0,
-      1,
-      2,
-      3
-    ]
+      0,
+      0,
+      0
+    ],
+    "overrideLevelRequirement": true
   },
   "468": {
     "name": "Keplahan's Cryolith",
@@ -10156,10 +10639,11 @@
     "rollIds": [
       null,
       0,
-      1,
-      2,
-      3
-    ]
+      0,
+      0,
+      0
+    ],
+    "overrideLevelRequirement": true
   },
   "469": {
     "name": "Exulis",
@@ -10168,6 +10652,7 @@
     "req": {
       "level": 0
     },
+    "_leb_regression_guard": "exulis-shared-rollid: Skills (mod[0] property=88) and All Attributes (mod[1] property=46) BOTH have rollID=0 in uniques_v3.json id=469, meaning they read the SAME ur byte. Earlier extraction gave them separate IDs ([0,1]) which made All Attributes read an unrelated ur byte. Example: AL07Kea4 ur=[193,27,...]; with shared rollId=0 both read ur[1]=193 -> Skills floor((1+193/255*1)+0.5)=2 and All Attrs floor((10+193/255*10)+0.5)=18, matching LETools/in-game display. rollIds[0] and rollIds[1] MUST stay 0.",
     "mods": [
       "+(1-2) to Skills",
       "+(10-20) to All Attributes",
@@ -10179,13 +10664,14 @@
     ],
     "rollIds": [
       0,
-      1,
+      0,
       null,
       null,
       null,
       null,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   },
   "470": {
     "name": "Oculus of Ruin",
@@ -10201,6 +10687,7 @@
     "rollIds": [
       0,
       null
-    ]
+    ],
+    "overrideLevelRequirement": false
   }
 }

@@ -1,0 +1,2637 @@
+{
+  "_meta": {
+    "surfaces": [
+      "altText",
+      "affixTag",
+      "runtime"
+    ],
+    "altText_count": 17,
+    "affixTag_combos": 63,
+    "runtime_entries": 91,
+    "runtime_distinctMinions": 8836,
+    "merged_entries": 152,
+    "by_surface_count": {
+      "1": 138,
+      "2": 14
+    },
+    "guard": "minion-whitelist-3surface-union",
+    "note": "Runtime surface includes non-player-owned actors. Until player-only re-capture (Actor.summonedBy filter at hook time), 'runtime' confidence='low' rows are advisory."
+  },
+  "entries": [
+    {
+      "property": 0,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 0,
+      "modTypes": [
+        "INCREASED",
+        "MORE"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 0,
+      "propertyName": null,
+      "tagBits": [
+        1
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "INCREASED",
+        "MORE"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 0,
+      "propertyName": null,
+      "tagBits": [
+        1,
+        256
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 0,
+      "propertyName": null,
+      "tagBits": [
+        1,
+        512
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 0,
+      "propertyName": null,
+      "tagBits": [
+        1,
+        1024
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 0,
+      "propertyName": null,
+      "tagBits": [
+        1,
+        2048
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 0,
+      "propertyName": "Damage",
+      "tagBits": [
+        1,
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "INCREASED"
+      ],
+      "samples": [
+        "multi:319"
+      ],
+      "altText": "Increases the physical damage your minions deal",
+      "surfaces": [
+        "affixTag",
+        "altText"
+      ],
+      "confidence": "high"
+    },
+    {
+      "property": 0,
+      "propertyName": null,
+      "tagBits": [
+        2
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "INCREASED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 0,
+      "propertyName": "Damage",
+      "tagBits": [
+        2,
+        512,
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [
+        "multi:808"
+      ],
+      "surfaces": [
+        "affixTag"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "property": 0,
+      "propertyName": "Damage",
+      "tagBits": [
+        2,
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "INCREASED"
+      ],
+      "samples": [
+        "multi:320",
+        "multi:333"
+      ],
+      "altText": "Increases the lightning damage your minions deal",
+      "surfaces": [
+        "affixTag",
+        "altText"
+      ],
+      "confidence": "high"
+    },
+    {
+      "property": 0,
+      "propertyName": null,
+      "tagBits": [
+        4
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "INCREASED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 0,
+      "propertyName": null,
+      "tagBits": [
+        4,
+        512
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 0,
+      "propertyName": "Damage",
+      "tagBits": [
+        4,
+        512,
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [
+        "multi:807"
+      ],
+      "surfaces": [
+        "affixTag"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "property": 0,
+      "propertyName": "Damage",
+      "tagBits": [
+        4,
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "INCREASED"
+      ],
+      "samples": [
+        "single:294",
+        "multi:321",
+        "multi:340"
+      ],
+      "altText": "Increases the cold damage your minions deal",
+      "surfaces": [
+        "affixTag",
+        "altText"
+      ],
+      "confidence": "high"
+    },
+    {
+      "property": 0,
+      "propertyName": null,
+      "tagBits": [
+        8
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "INCREASED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 0,
+      "propertyName": null,
+      "tagBits": [
+        8,
+        256
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 0,
+      "propertyName": null,
+      "tagBits": [
+        8,
+        512
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 0,
+      "propertyName": "Damage",
+      "tagBits": [
+        8,
+        512,
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [
+        "multi:809"
+      ],
+      "surfaces": [
+        "affixTag"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "property": 0,
+      "propertyName": null,
+      "tagBits": [
+        8,
+        1024
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 0,
+      "propertyName": null,
+      "tagBits": [
+        8,
+        2048
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 0,
+      "propertyName": "Damage",
+      "tagBits": [
+        8,
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "INCREASED"
+      ],
+      "samples": [
+        "single:293",
+        "multi:322",
+        "multi:404"
+      ],
+      "altText": "Increases the fire damage your minions deal",
+      "surfaces": [
+        "affixTag",
+        "altText"
+      ],
+      "confidence": "high"
+    },
+    {
+      "property": 0,
+      "propertyName": "Damage",
+      "tagBits": [
+        16,
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "INCREASED"
+      ],
+      "samples": [
+        "multi:323"
+      ],
+      "altText": "Increases the void damage your minions deal",
+      "surfaces": [
+        "affixTag",
+        "altText"
+      ],
+      "confidence": "high"
+    },
+    {
+      "property": 0,
+      "propertyName": null,
+      "tagBits": [
+        32
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED",
+        "INCREASED",
+        "MORE"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 0,
+      "propertyName": null,
+      "tagBits": [
+        32,
+        256
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 0,
+      "propertyName": null,
+      "tagBits": [
+        32,
+        512
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 0,
+      "propertyName": null,
+      "tagBits": [
+        32,
+        1024
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 0,
+      "propertyName": null,
+      "tagBits": [
+        32,
+        2048
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 0,
+      "propertyName": "Damage",
+      "tagBits": [
+        32,
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "INCREASED"
+      ],
+      "samples": [
+        "multi:324",
+        "multi:405"
+      ],
+      "altText": "Increases the necrotic damage your minions deal",
+      "surfaces": [
+        "affixTag",
+        "altText"
+      ],
+      "confidence": "high"
+    },
+    {
+      "property": 0,
+      "propertyName": null,
+      "tagBits": [
+        64
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "MORE"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 0,
+      "propertyName": "Damage",
+      "tagBits": [
+        64,
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "INCREASED"
+      ],
+      "samples": [
+        "multi:325"
+      ],
+      "altText": "Increases the poison damage your minions deal",
+      "surfaces": [
+        "affixTag",
+        "altText"
+      ],
+      "confidence": "high"
+    },
+    {
+      "property": 0,
+      "propertyName": null,
+      "tagBits": [
+        256
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 0,
+      "propertyName": "Damage",
+      "tagBits": [
+        256,
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED",
+        "INCREASED"
+      ],
+      "samples": [
+        "multi:102",
+        "multi:643",
+        "multi:926",
+        "multi:170",
+        "multi:344"
+      ],
+      "surfaces": [
+        "affixTag"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "property": 0,
+      "propertyName": null,
+      "tagBits": [
+        512
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED",
+        "MORE"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 0,
+      "propertyName": "Damage",
+      "tagBits": [
+        512,
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED",
+        "INCREASED"
+      ],
+      "samples": [
+        "multi:64",
+        "multi:643",
+        "multi:925",
+        "multi:171",
+        "multi:345"
+      ],
+      "surfaces": [
+        "affixTag"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "property": 0,
+      "propertyName": null,
+      "tagBits": [
+        1024
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 0,
+      "propertyName": "Damage",
+      "tagBits": [
+        1024,
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [
+        "multi:928"
+      ],
+      "surfaces": [
+        "affixTag"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "property": 0,
+      "propertyName": null,
+      "tagBits": [
+        2048
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 0,
+      "propertyName": "Damage",
+      "tagBits": [
+        2048,
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [
+        "multi:64",
+        "multi:102",
+        "multi:927"
+      ],
+      "surfaces": [
+        "affixTag"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "property": 0,
+      "propertyName": null,
+      "tagBits": [
+        4096
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "MORE"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 0,
+      "propertyName": "Damage",
+      "tagBits": [
+        4096,
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "INCREASED"
+      ],
+      "samples": [
+        "single:98",
+        "multi:173"
+      ],
+      "surfaces": [
+        "affixTag"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "property": 0,
+      "propertyName": "Damage",
+      "tagBits": [
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "INCREASED"
+      ],
+      "samples": [
+        "single:26",
+        "multi:540",
+        "multi:544"
+      ],
+      "altText": "Increases the damage your minions deal",
+      "surfaces": [
+        "affixTag",
+        "altText"
+      ],
+      "confidence": "high"
+    },
+    {
+      "property": 0,
+      "propertyName": null,
+      "tagBits": [
+        33554432
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "MORE"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 1,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 1,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 1,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 2,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 1,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 3,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 1,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 7,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 1,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 8,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 1,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 17,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 1,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 39,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 1,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 73,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 1,
+      "propertyName": "Ailment Chance",
+      "tagBits": [
+        512,
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [
+        "multi:160"
+      ],
+      "surfaces": [
+        "affixTag"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "property": 1,
+      "propertyName": "Ailment Chance",
+      "tagBits": [
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [
+        "single:152",
+        "single:153",
+        "single:287"
+      ],
+      "surfaces": [
+        "affixTag"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "property": 2,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED",
+        "INCREASED",
+        "MORE"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 2,
+      "propertyName": null,
+      "tagBits": [
+        512
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "INCREASED",
+        "MORE"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 2,
+      "propertyName": "Attack Speed",
+      "tagBits": [
+        512,
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "INCREASED"
+      ],
+      "samples": [
+        "single:147",
+        "multi:925"
+      ],
+      "altText": "Increases the number of melee attacks your minions can use per second",
+      "surfaces": [
+        "affixTag",
+        "altText"
+      ],
+      "confidence": "high"
+    },
+    {
+      "property": 2,
+      "propertyName": null,
+      "tagBits": [
+        1024
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "INCREASED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 2,
+      "propertyName": "Attack Speed",
+      "tagBits": [
+        1024,
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "INCREASED"
+      ],
+      "samples": [
+        "multi:928"
+      ],
+      "surfaces": [
+        "affixTag"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "property": 2,
+      "propertyName": "Attack Speed",
+      "tagBits": [
+        2048,
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "INCREASED"
+      ],
+      "samples": [
+        "multi:927"
+      ],
+      "surfaces": [
+        "affixTag"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "property": 3,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED",
+        "INCREASED",
+        "MORE"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 3,
+      "propertyName": null,
+      "tagBits": [
+        512
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "INCREASED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 3,
+      "propertyName": "Cast Speed",
+      "tagBits": [
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "INCREASED"
+      ],
+      "samples": [
+        "multi:926",
+        "multi:978"
+      ],
+      "altText": "Increases the number of spells your minions can cast per second",
+      "surfaces": [
+        "affixTag",
+        "altText"
+      ],
+      "confidence": "high"
+    },
+    {
+      "property": 4,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED",
+        "INCREASED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 4,
+      "propertyName": "Critical Strike Chance",
+      "tagBits": [
+        2,
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "INCREASED"
+      ],
+      "samples": [
+        "multi:168"
+      ],
+      "surfaces": [
+        "affixTag"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "property": 4,
+      "propertyName": "Critical Strike Chance",
+      "tagBits": [
+        256,
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "INCREASED"
+      ],
+      "samples": [
+        "single:337"
+      ],
+      "surfaces": [
+        "affixTag"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "property": 4,
+      "propertyName": "Critical Strike Chance",
+      "tagBits": [
+        512,
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [
+        "single:154",
+        "single:348"
+      ],
+      "surfaces": [
+        "affixTag"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "property": 4,
+      "propertyName": "Critical Strike Chance",
+      "tagBits": [
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED",
+        "INCREASED"
+      ],
+      "samples": [
+        "single:1045",
+        "single:151",
+        "multi:297",
+        "multi:416"
+      ],
+      "surfaces": [
+        "affixTag"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "property": 5,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 5,
+      "propertyName": "Critical Strike Multiplier",
+      "tagBits": [
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [
+        "single:336",
+        "single:1042",
+        "multi:743"
+      ],
+      "surfaces": [
+        "affixTag"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "property": 6,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 0,
+      "modTypes": [
+        "INCREASED",
+        "MORE"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 6,
+      "propertyName": null,
+      "tagBits": [
+        512
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "INCREASED",
+        "MORE"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 6,
+      "propertyName": null,
+      "tagBits": [
+        32768
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "MORE"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 7,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED",
+        "INCREASED",
+        "MORE"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 7,
+      "propertyName": "Health",
+      "tagBits": [
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED",
+        "INCREASED"
+      ],
+      "samples": [
+        "single:70",
+        "multi:545",
+        "multi:592"
+      ],
+      "altText": "Increases the maximum health of your minions",
+      "surfaces": [
+        "affixTag",
+        "altText"
+      ],
+      "confidence": "high"
+    },
+    {
+      "property": 9,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED",
+        "INCREASED",
+        "MORE"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 9,
+      "propertyName": "Movement Speed",
+      "tagBits": [
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "INCREASED"
+      ],
+      "samples": [],
+      "altText": "Increases the movement speed of your minions",
+      "surfaces": [
+        "altText"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "property": 10,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED",
+        "MORE"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 10,
+      "propertyName": "Armor",
+      "tagBits": [
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [
+        "multi:332",
+        "multi:580"
+      ],
+      "altText": "Increases the armor of your minions",
+      "surfaces": [
+        "affixTag",
+        "altText"
+      ],
+      "confidence": "high"
+    },
+    {
+      "property": 11,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED",
+        "INCREASED",
+        "MORE"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 11,
+      "propertyName": "Dodge Rating",
+      "tagBits": [
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [
+        "single:71",
+        "single:145"
+      ],
+      "altText": "Improves the chance for your minions to dodge",
+      "surfaces": [
+        "affixTag",
+        "altText"
+      ],
+      "confidence": "high"
+    },
+    {
+      "property": 12,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 13,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 13,
+      "propertyName": "Fire Resistance",
+      "tagBits": [
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [
+        "multi:852",
+        "multi:887"
+      ],
+      "surfaces": [
+        "affixTag"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "property": 14,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 14,
+      "propertyName": "Cold Resistance",
+      "tagBits": [
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [
+        "multi:850",
+        "multi:885"
+      ],
+      "surfaces": [
+        "affixTag"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "property": 15,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 15,
+      "propertyName": "Lightning Resistance",
+      "tagBits": [
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [
+        "multi:855",
+        "multi:888"
+      ],
+      "surfaces": [
+        "affixTag"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "property": 17,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED",
+        "INCREASED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 17,
+      "propertyName": "Health Regen",
+      "tagBits": [
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED",
+        "INCREASED"
+      ],
+      "samples": [
+        "single:73",
+        "multi:929"
+      ],
+      "altText": "Increases the rate at which your minions regenerate health",
+      "surfaces": [
+        "affixTag",
+        "altText"
+      ],
+      "confidence": "high"
+    },
+    {
+      "property": 18,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 0,
+      "modTypes": [
+        "INCREASED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 26,
+      "propertyName": "Void Resistance",
+      "tagBits": [
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [
+        "single:1060",
+        "multi:835",
+        "multi:868"
+      ],
+      "surfaces": [
+        "affixTag"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "property": 27,
+      "propertyName": "Necrotic Resistance",
+      "tagBits": [
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [
+        "multi:838",
+        "multi:867"
+      ],
+      "surfaces": [
+        "affixTag"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "property": 28,
+      "propertyName": "Poison Resistance",
+      "tagBits": [
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [
+        "single:1064",
+        "multi:836",
+        "multi:869"
+      ],
+      "surfaces": [
+        "affixTag"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "property": 30,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 30,
+      "propertyName": "All Resistances",
+      "tagBits": [
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [
+        "multi:1070"
+      ],
+      "surfaces": [
+        "affixTag"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "property": 42,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 2,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 42,
+      "propertyName": "Increased Ailment Duration",
+      "tagBits": [
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [
+        "multi:161",
+        "multi:343",
+        "multi:407"
+      ],
+      "surfaces": [
+        "affixTag"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "property": 43,
+      "propertyName": "Increased Ailment Effect",
+      "tagBits": [
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [
+        "multi:408"
+      ],
+      "surfaces": [
+        "affixTag"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "property": 44,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 44,
+      "propertyName": "Increased Healing Effectiveness",
+      "tagBits": [
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [
+        "single:149"
+      ],
+      "surfaces": [
+        "affixTag"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "property": 45,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 45,
+      "propertyName": null,
+      "tagBits": [
+        512
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED",
+        "MORE"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 45,
+      "propertyName": "Increased Stun Chance",
+      "tagBits": [
+        512,
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [
+        "single:150"
+      ],
+      "surfaces": [
+        "affixTag"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "property": 51,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 51,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 2,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 51,
+      "propertyName": "Damage Leeched as Health",
+      "tagBits": [
+        1,
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [
+        "multi:409"
+      ],
+      "surfaces": [
+        "affixTag"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "property": 51,
+      "propertyName": null,
+      "tagBits": [
+        32
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 51,
+      "propertyName": "Damage Leeched as Health",
+      "tagBits": [
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [
+        "single:146",
+        "single:346",
+        "multi:929"
+      ],
+      "surfaces": [
+        "affixTag"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "property": 52,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 52,
+      "propertyName": "Elemental Resistance",
+      "tagBits": [
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [
+        "single:1033",
+        "multi:851",
+        "multi:886"
+      ],
+      "surfaces": [
+        "affixTag"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "property": 56,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED",
+        "INCREASED",
+        "MORE"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 59,
+      "propertyName": null,
+      "tagBits": [
+        1
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 59,
+      "propertyName": "Penetration",
+      "tagBits": [
+        1,
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [
+        "multi:719",
+        "multi:833",
+        "multi:866"
+      ],
+      "surfaces": [
+        "affixTag"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "property": 59,
+      "propertyName": "Penetration",
+      "tagBits": [
+        2,
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [
+        "multi:722",
+        "multi:780",
+        "multi:849"
+      ],
+      "surfaces": [
+        "affixTag"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "property": 59,
+      "propertyName": "Penetration",
+      "tagBits": [
+        4,
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [
+        "multi:721",
+        "multi:847",
+        "multi:882"
+      ],
+      "surfaces": [
+        "affixTag"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "property": 59,
+      "propertyName": "Penetration",
+      "tagBits": [
+        8,
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [
+        "multi:720",
+        "multi:848",
+        "multi:883"
+      ],
+      "surfaces": [
+        "affixTag"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "property": 59,
+      "propertyName": "Penetration",
+      "tagBits": [
+        16,
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [
+        "multi:723",
+        "multi:831",
+        "multi:864"
+      ],
+      "surfaces": [
+        "affixTag"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "property": 59,
+      "propertyName": "Penetration",
+      "tagBits": [
+        32,
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [
+        "multi:724",
+        "multi:834",
+        "multi:863"
+      ],
+      "surfaces": [
+        "affixTag"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "property": 59,
+      "propertyName": null,
+      "tagBits": [
+        64
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 59,
+      "propertyName": "Penetration",
+      "tagBits": [
+        64,
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [
+        "multi:725",
+        "multi:832",
+        "multi:865"
+      ],
+      "surfaces": [
+        "affixTag"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "property": 64,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 64,
+      "propertyName": "Physical Resistance",
+      "tagBits": [
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [
+        "single:1049",
+        "multi:837",
+        "multi:870"
+      ],
+      "surfaces": [
+        "affixTag"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "property": 67,
+      "propertyName": "Freeze Rate Multiplier",
+      "tagBits": [
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [
+        "single:384"
+      ],
+      "surfaces": [
+        "affixTag"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "property": 68,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 70,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED",
+        "INCREASED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 70,
+      "propertyName": "Increased Cooldown Recovery Speed",
+      "tagBits": [
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [
+        "single:148",
+        "single:286"
+      ],
+      "surfaces": [
+        "affixTag"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "property": 72,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 77,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 78,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 79,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 80,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 81,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 82,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 83,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 86,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 86,
+      "propertyName": "Damage Reflected",
+      "tagBits": [
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [
+        "single:413",
+        "multi:210"
+      ],
+      "surfaces": [
+        "affixTag"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "property": 88,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 88,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 7,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 88,
+      "propertyName": "Level of Skills",
+      "tagBits": [
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [
+        "set:13"
+      ],
+      "surfaces": [
+        "affixTag"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "property": 89,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 89,
+      "propertyName": "Critical Strike Avoidance",
+      "tagBits": [
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [
+        "multi:162"
+      ],
+      "surfaces": [
+        "affixTag"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "property": 95,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 100,
+      "propertyName": null,
+      "tagBits": [
+        1,
+        2
+      ],
+      "specialTag": 7,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 101,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 105,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 108,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 0,
+      "modTypes": [
+        "MORE"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 109,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 116,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 116,
+      "propertyName": "increased Area for Area Skills",
+      "tagBits": [
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [
+        "multi:945"
+      ],
+      "surfaces": [
+        "affixTag"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "property": 117,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 1,
+      "modTypes": [
+        "MORE"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 117,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 2,
+      "modTypes": [
+        "MORE"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 117,
+      "propertyName": null,
+      "tagBits": [],
+      "specialTag": 3,
+      "modTypes": [
+        "MORE"
+      ],
+      "samples": [],
+      "surfaces": [
+        "runtime"
+      ],
+      "confidence": "low"
+    },
+    {
+      "property": 128,
+      "propertyName": "Immunity",
+      "tagBits": [
+        8192
+      ],
+      "specialTag": 0,
+      "modTypes": [
+        "ADDED"
+      ],
+      "samples": [
+        "single:1035",
+        "single:1036",
+        "single:1044"
+      ],
+      "surfaces": [
+        "affixTag"
+      ],
+      "confidence": "medium"
+    }
+  ]
+}

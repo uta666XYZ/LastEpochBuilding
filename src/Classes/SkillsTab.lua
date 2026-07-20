@@ -28,7 +28,7 @@ local sortGemTypeList = {
 -- short label list (Fire, Cold, Melee, Spell, Intelligence, ...) shown in
 -- skill slot and skill-spec tree root tooltips. Mirrors LE's ability tooltip.
 -- Order: damage types (LE display order) -> combat class -> attributes.
--- AT enum bit -> display label, sourced from il2cpp_dump_v142/dump.cs:240086.
+-- AT enum bit -> display label, sourced from datamined game source.
 -- Bit values match Global.lua's SkillType enum (canonical AT enum layout).
 local SCALING_TAG_DAMAGE = {
     { bit = 1,   name = "Physical"  },
@@ -694,6 +694,9 @@ function SkillsTabClass:Save(xml)
 		t_insert(xml, child)
 
 		for index, socketGroup in pairsSortByKey(skillSet.socketGroupList) do
+			if socketGroup.isPreview then
+				goto continueSaveSocketGroup
+			end
 			local node = { elem = "Skill", attrib = {
 				index = tostring(index),
 				enabled = tostring(socketGroup.enabled),
@@ -707,6 +710,7 @@ function SkillsTabClass:Save(xml)
 				skillId = socketGroup.skillId,
 			} }
 			t_insert(child, node)
+			::continueSaveSocketGroup::
 		end
 	end
 end
@@ -718,7 +722,9 @@ function SkillsTabClass:GetSpriteHandle(spriteName)
 		self.spriteHandles[key] = NewImageHandle()
 		self.spriteHandles[key]:Load("Assets/tree/" .. spriteName .. ".png")
 	end
-	return self.spriteHandles[key]
+	local h = self.spriteHandles[key]
+	if h and h:IsValid() then return h end
+	return nil
 end
 
 -- Get skill icon handle using root node icon (same pattern as TreeTab)
@@ -774,8 +780,12 @@ function SkillsTabClass:GetSkillIconFromTree(treeId, useSpec)
 			handle:Load("TreeData/sprites/" .. iconName .. ".png")
 		end
 	end
-	self.spriteHandles[cacheKey] = handle
-	return handle
+	if handle and handle:IsValid() then
+		self.spriteHandles[cacheKey] = handle
+		return handle
+	end
+	self.spriteHandles[cacheKey] = false
+	return nil
 end
 
 -- Find which slot a skill is assigned to (nil if not assigned)
@@ -858,7 +868,12 @@ local TREE_ID_DAMAGE_TYPES = {
 	["lb23il"] = { base = { "lightning" },             conv = { "cold" } },                -- Lightning Blast
 	["fi9"]    = { base = { "fire" },                  conv = { "lightning" } },            -- Fireball
 	["ms26"]   = { base = { "lightning" },             conv = {} },                        -- Mana Strike
-	["en6"]    = { base = { "fire", "cold", "lightning" }, conv = {} },                    -- Elemental Nova
+	-- @leb-regression-guard: elemental-nova-spec-tree-gated-damage-type
+	-- Elemental Nova damage types are entirely tree-gated (en6-2 Ice, en6-8
+	-- Lightning, en6-12 Fire). Static base/conv left empty so that
+	-- GetDynamicDamageTypesByTreeId picks up types only via the corresponding
+	-- node's "+8 Spell <Type> Damage" stat (addSet path).
+	["en6"]    = { base = {},                          conv = {} },                        -- Elemental Nova
 	["sw31a"]  = { base = { "cold" },                  conv = { "lightning" } },            -- Snap Freeze
 	["gl14"]   = { base = { "cold" },                  conv = {} },                        -- Glacier
 	["dig5"]   = { base = { "lightning", "fire" },     conv = {} },                        -- Disintegrate
@@ -913,7 +928,7 @@ local TREE_ID_DAMAGE_TYPES = {
 	["st4th"]  = { base = { "physical", "fire" },      conv = {} },                        -- Smelter's Wrath
 	-- Paladin
 	["hh7pa3"] = { base = {},                          conv = { "fire" } },                -- Healing Hands (Searing Light adds Fire)
-	["si4lgl"] = { base = { "fire" },                  conv = { "void" } },                -- Sigils of Hope (Symbols of Despair node converts to Void)
+	["si4lgl"] = { base = { "fire" },                  conv = { "void" } },                -- Symbols of Hope (Symbols of Despair node converts to Void)
 	["pa67ju"] = { base = { "fire" },                  conv = {} },                        -- Judgement
 	["ah443"]  = { base = {},                          conv = {} },                        -- Holy Aura
 	-- Acolyte base
@@ -1117,8 +1132,11 @@ function SkillsTabClass:Draw(viewPort, inputEvents)
 		self:DrawSkillOverview(viewPort, inputEvents, contentY)
 	end
 
-	-- Draw spec slots on top of everything (high draw layer)
-	SetDrawLayer(nil, 150)
+	-- Draw spec slots on top of everything (high draw layer).
+	-- Sits one layer below the history-bar "No allocating order…" text (200)
+	-- so the text reads cleanly while the chain pendant remains in front of
+	-- the rest of the tab content.
+	SetDrawLayer(nil, 199)
 	self:DrawSpecSlots(viewPort, inputEvents, slotBarY)
 	SetDrawLayer(nil, 0)
 
@@ -1282,8 +1300,8 @@ function SkillsTabClass:GetDynamicDamageTypesByTreeId(treeId, skillName)
 	-- "split-effect" nodes like Black Hole's Binary System ("One deals fire
 	-- damage and the other deals cold damage") that simultaneously surface
 	-- multiple damage types as base, without converting away from the original.
-	-- Per LE_datamining findings, per-node mutator state isn't serialized; we
-	-- pattern-match the description as a fallback until a Ghidra-decomp
+	-- Per datamined game source findings, per-node mutator state isn't serialized; we
+	-- pattern-match the description as a fallback until a datamining-decomp
 	-- node->mutator table is available.
 	local addSet = {}
 
@@ -1336,6 +1354,43 @@ function SkillsTabClass:GetDynamicDamageTypesByTreeId(treeId, skillName)
 							convMap[sLo] = dLo
 						end
 					end
+				end
+				-- Multi-source AND-join: "<Src1> and <Src2> -> <Dst> Damage"
+				-- (svz81-23 "Physical and Fire -> Necrotic Damage") or
+				-- "<Src1> and <Src2> -> <Dst> Conversion" suffix. Both
+				-- sources convert to the destination.
+				local mSrc1, mSrc2, mDst = stat:match("^%s*(%w+)%s+and%s+(%w+)%s*%->%s*(%w+)%s+Damage%s*$")
+				if not mDst then
+					mSrc1, mSrc2, mDst = stat:match("^%s*(%w+)%s+and%s+(%w+)%s*%->%s*(%w+)%s+Conversion%s*$")
+				end
+				if mDst then
+					local s1Lo, s2Lo, dLo = mSrc1:lower(), mSrc2:lower(), mDst:lower()
+					if TYPE_SET[s1Lo] and TYPE_SET[s2Lo] and TYPE_SET[dLo] then
+						if isMultiConv then
+							t_insert(multiList, { s1Lo, dLo })
+							t_insert(multiList, { s2Lo, dLo })
+						else
+							convMap[s1Lo] = dLo
+							convMap[s2Lo] = dLo
+						end
+					end
+				end
+				-- Modifier-only conversion: "Increased <Src> Damage -> <Dst> Damage"
+				-- (ds4d3-32 Vile Ghast "Increased Necrotic Damage -> Poison Damage").
+				-- This converts the *modifier* not the base damage, so source stays
+				-- a base type and destination is added (not replacing).
+				local _, modDst = stat:match("^%s*Increased%s+(%w+)%s+Damage%s*%->%s*(%w+)%s+Damage%s*$")
+				if modDst then
+					local dLo = modDst:lower()
+					if TYPE_SET[dLo] then addSet[dLo] = true end
+				end
+				-- Addition: "Enables <Type> Nova" (en6-2/8/12 Elemental Nova).
+				-- The named type becomes a legitimate base damage type when the
+				-- gating node is allocated.
+				local enType = stat:match("^%s*Enables%s+(%w+)%s+Nova%s*$")
+				if enType then
+					local dLo = enType:lower()
+					if TYPE_SET[dLo] then addSet[dLo] = true end
 				end
 				-- Plain damage producer: stats ending in "<DmgType> Damage"
 				-- (e.g. wc57-30 Kinetic Scream "40 Spell Physical Damage" gives
@@ -1442,6 +1497,45 @@ function SkillsTabClass:GetDynamicDamageTypesByTreeId(treeId, skillName)
 								end
 							end
 						end
+						-- Tag prose: "<Skill> loses its {X} tag [and gains a
+						-- {Y} tag]" — full-conversion source removal (Q3=(a)).
+						-- Examples (unconditional, no `if` prefix):
+						--   tree_3 rea-32: "Reap loses its {Necrotic} tag and
+						--     gains a {Physical} tag instead." → Nec→Phys
+						-- Conditional / partial-state lines (sw1, srk21-25)
+						-- start with `if ` and are skipped by the outer guard.
+						-- Brace tokens `{Necrotic}` survive into the runtime
+						-- string verbatim, so type scanning uses substring
+						-- matches against TYPE_NAMES inside the captured span.
+						if not lo:match("^%s*if%s") then
+							-- "loses its X tag and gains a Y tag" — paired form
+							local lossSpan = lo:match("loses its[%s%S]-tag")
+							local gainSpan = lo:match("gains a[%s%S]-tag")
+							if lossSpan then
+								local lostType, gainedType
+								for _, dt in ipairs(TYPE_NAMES) do
+									if lossSpan:find(dt, 1, true) then lostType = dt break end
+								end
+								if gainSpan then
+									for _, dt in ipairs(TYPE_NAMES) do
+										if gainSpan:find(dt, 1, true) then gainedType = dt break end
+									end
+								end
+								if lostType and gainedType then
+									if isMultiConv then
+										t_insert(multiList, { lostType, gainedType })
+									else
+										convMap[lostType] = gainedType
+									end
+								elseif lostType then
+									-- Source removal only (no replacement named).
+									-- Drop the type from baseSet/addSet so it
+									-- doesn't surface in scaling tags.
+									baseSet[lostType] = nil
+									addSet[lostType] = nil
+								end
+							end
+						end
 					end
 				end
 			end
@@ -1541,6 +1635,53 @@ function SkillsTabClass:GetDynamicDamageTypesByTreeId(treeId, skillName)
 	return result
 end
 
+-- @leb-regression-guard:ui-accuracy-honesty-badge
+-- Resolve a skill's PoB-style accuracy-honesty badge from the release-board
+-- meta-43 map (data.skillAccuracyStatus, generated by
+-- scripts/gen_skill_accuracy_status.py). Returns nil for skills that are
+-- ±5%-verified or untracked (no badge), else a display descriptor. This is
+-- DISPLAY-ONLY: it reads a static reference table and returns strings/colours,
+-- never touching modList or calc output — so it cannot shift any DPS number.
+-- Two axes (fixed taxonomy):
+--   "approximate" (amber) = model intentionally incomplete / RE-feature-gated.
+--   "unverified"  (gray)  = number may be right but is not in-game confirmed.
+function SkillsTabClass:GetSkillAccuracyBadge(skillName)
+	if not skillName then return nil end
+	local statusMap = self.build and self.build.data and self.build.data.skillAccuracyStatus
+	if not statusMap then return nil end
+	local axis = statusMap[skillName]
+	if axis == "approximate" then
+		return {
+			axis = "approximate",
+			glyph = "~",
+			color = "^xFF9922",       -- amber (colorCodes.WARNING)
+			rgb = { 1.0, 0.6, 0.13 },
+			label = "Approximate",
+			tip = {
+				"^xFF9922~ Approximate DPS",
+				"^x9F9F9FLEB's model for this skill is intentionally incomplete or",
+				"^x9F9F9FRE/feature-gated. The DPS is a best-effort estimate, not",
+				"^x9F9F9Fyet confirmed within +/-5% of in-game measurement.",
+			},
+		}
+	elseif axis == "unverified" then
+		return {
+			axis = "unverified",
+			glyph = "?",
+			color = "^x999999",       -- gray
+			rgb = { 0.6, 0.6, 0.6 },
+			label = "Unverified",
+			tip = {
+				"^xCCCCCC? Unverified DPS",
+				"^x9F9F9FThis skill's DPS cannot be confirmed against in-game",
+				"^x9F9F9Fmeasurement (rig-unmeasurable or offline-only). The",
+				"^x9F9F9Fnumber may be correct, but it is unverified.",
+			},
+		}
+	end
+	return nil
+end
+
 -- Draw 5 hex specialization slots centered at top
 function SkillsTabClass:DrawSpecSlots(viewPort, inputEvents, startY)
 	local totalW = SLOT_SIZE * 5 + SLOT_GAP * 4
@@ -1568,7 +1709,9 @@ function SkillsTabClass:DrawSpecSlots(viewPort, inputEvents, startY)
 		else
 			SetDrawColor(0.4, 0.4, 0.4)
 		end
-		DrawImage(emptyHandle, sx, sy, SLOT_SIZE, SLOT_SIZE)
+		if emptyHandle then
+			DrawImage(emptyHandle, sx, sy, SLOT_SIZE, SLOT_SIZE)
+		end
 
 		-- Skill icon if assigned (draw before border, use pointy-top hex)
 		local slotIconHandle, slotTreeId
@@ -1586,16 +1729,18 @@ function SkillsTabClass:DrawSpecSlots(viewPort, inputEvents, startY)
 		local borderSprite = isSelected and "spec-slot-selected" or "spec-slot-border"
 		local borderHandle = self:GetSpriteHandle(borderSprite)
 		SetDrawColor(1, 1, 1)
-		if isSelected then
-			-- spec-slot-selected.png is 126x80 (wider hex border)
-			-- Maintain aspect ratio (126:80 = 1.575:1), center over slot
-			local selW = SLOT_SIZE + 16
-			local selH = m_floor((SLOT_SIZE + 16) * 80 / 126)
-			local selX = sx - m_floor((selW - SLOT_SIZE) / 2)
-			local selY = sy + m_floor((SLOT_SIZE - selH) / 2) + 21
-			DrawImage(borderHandle, selX, selY, selW, selH)
-		else
-			DrawImage(borderHandle, sx, sy, SLOT_SIZE, SLOT_SIZE)
+		if borderHandle then
+			if isSelected then
+				-- spec-slot-selected.png is 126x80 (wider hex border)
+				-- Maintain aspect ratio (126:80 = 1.575:1), center over slot
+				local selW = SLOT_SIZE + 16
+				local selH = m_floor((SLOT_SIZE + 16) * 80 / 126)
+				local selX = sx - m_floor((selW - SLOT_SIZE) / 2)
+				local selY = sy + m_floor((SLOT_SIZE - selH) / 2) + 21
+				DrawImage(borderHandle, selX, selY, selW, selH)
+			else
+				DrawImage(borderHandle, sx, sy, SLOT_SIZE, SLOT_SIZE)
+			end
 		end
 
 		-- Level badge (drawn on top of border, in front)
@@ -1609,7 +1754,9 @@ function SkillsTabClass:DrawSpecSlots(viewPort, inputEvents, startY)
 			local lvlX = sx + m_floor((SLOT_SIZE - lvlW) / 2)
 			local lvlY = sy + SLOT_SIZE - 30
 			SetDrawColor(1, 1, 1)
-			DrawImage(lvlHandle, lvlX, lvlY, lvlW, lvlH)
+			if lvlHandle then
+				DrawImage(lvlHandle, lvlX, lvlY, lvlW, lvlH)
+			end
 			-- Show effective skill level cap (Base 20 + all "+SkillLevel" bonuses),
 			-- matching the in-game "Level of <Skill>" display rather than just the
 			-- allocated tree points. The "remaining points" badge below still
@@ -1631,6 +1778,29 @@ function SkillsTabClass:DrawSpecSlots(viewPort, inputEvents, startY)
 				DrawImage(nil, badgeX + badgeW - 1, badgeY,             1, badgeH)
 				SetDrawColor(1, 1, 1)
 				DrawString(badgeX + badgeW / 2, badgeY + 3, "CENTER_X", 11, "VAR", "^7" .. rem)
+			end
+		end
+
+		-- Accuracy honesty badge (top-left corner of slot; display-only).
+		-- @leb-regression-guard:ui-accuracy-honesty-badge
+		-- A small amber "~" (approximate) or gray "?" (unverified) chip on skills
+		-- whose LEB DPS is not in-game +/-5%-verified. Pure GUI draw off the
+		-- static data.skillAccuracyStatus table — no calc/mainOutput touch.
+		if sg and sg.grantedEffect then
+			local acc = self:GetSkillAccuracyBadge(sg.grantedEffect.name)
+			if acc then
+				local aW, aH = 16, 16
+				local aX = sx + 3
+				local aY = sy + 3
+				SetDrawColor(0, 0, 0, 0.55)
+				DrawImage(nil, aX, aY, aW, aH)
+				SetDrawColor(acc.rgb[1], acc.rgb[2], acc.rgb[3])
+				DrawImage(nil, aX,          aY,          aW, 1)
+				DrawImage(nil, aX,          aY + aH - 1, aW, 1)
+				DrawImage(nil, aX,          aY,          1,  aH)
+				DrawImage(nil, aX + aW - 1, aY,          1,  aH)
+				SetDrawColor(1, 1, 1)
+				DrawString(aX + aW / 2, aY + 3, "CENTER_X", 11, "VAR", acc.color .. acc.glyph)
 			end
 		end
 
@@ -1664,6 +1834,15 @@ function SkillsTabClass:DrawSpecSlots(viewPort, inputEvents, startY)
 		end
 
 		-- Buff skill enabled toggle (below damage type icons)
+		-- @leb-regression-guard: skills-tab-buff-toggle-config-sync
+		-- For "while-active" buffs and Form skills whose treeId appears in
+		-- LE_WHILE_ACTIVE_BUFF_BY_TREE_ID (Flame Ward, Werebear/Spriggan/Swarmblade/
+		-- Reaper Form, Eterra's Blessing), the toggle is a duplicate UI for the
+		-- corresponding ConfigTab "condition<X>" checkbox — both write to the same
+		-- build.configTab.input[var] entry, so flipping either updates the other on
+		-- the next frame and CalcSetup's gating (CalcSetup.lua:1618) sees a single
+		-- source of truth. For other buff skills (no registry entry), the toggle
+		-- keeps its original semantics of flipping sg.enabled directly.
 		if sg then
 			local ge = sg.grantedEffect
 			if ge and ge.skillTypes and ge.skillTypes[SkillType.Buff] then
@@ -1671,11 +1850,26 @@ function SkillsTabClass:DrawSpecSlots(viewPort, inputEvents, startY)
 				local toggleY = sy + SLOT_SIZE + 4 + 14 + 2  -- below damage type icons
 				local toggleX = sx + m_floor((SLOT_SIZE - TW) / 2)
 
-				-- Draw iOS-style toggle sprite
-				local isEnabled = sg.enabled ~= false
+				-- Resolve sync target: condition<X> input var when the skill's
+				-- treeId is in the while-active registry, otherwise nil (fall back
+				-- to sg.enabled).
+				local condName = ge.treeId and LE_WHILE_ACTIVE_BUFF_BY_TREE_ID and LE_WHILE_ACTIVE_BUFF_BY_TREE_ID[ge.treeId]
+				local configInput = self.build.configTab and self.build.configTab.input
+				local configVar = condName and ("condition" .. condName) or nil
+
+				-- Draw iOS-style toggle sprite — for registry skills read from
+				-- ConfigTab input so ConfigTab-side toggles propagate visually here.
+				local isEnabled
+				if configVar and configInput then
+					isEnabled = configInput[configVar] and true or false
+				else
+					isEnabled = sg.enabled ~= false
+				end
 				local toggleSprite = self:GetSpriteHandle(isEnabled and "toggle_on" or "toggle_off")
 				SetDrawColor(1, 1, 1)
-				DrawImage(toggleSprite, toggleX, toggleY, TW, TH)
+				if toggleSprite then
+					DrawImage(toggleSprite, toggleX, toggleY, TW, TH)
+				end
 
 				-- Click detection
 				local toggleHover = cursorX >= toggleX and cursorX < toggleX + TW
@@ -1683,7 +1877,17 @@ function SkillsTabClass:DrawSpecSlots(viewPort, inputEvents, startY)
 				if toggleHover then
 					for id, event in ipairs(inputEvents) do
 						if event.type == "KeyUp" and event.key == "LEFTBUTTON" then
-							sg.enabled = not isEnabled
+							if configVar and configInput then
+								configInput[configVar] = not isEnabled
+								-- Rebuild ConfigTab mod list so Condition:<X> FLAG is
+								-- emitted on this frame (mirrors ConfigTab.lua:200 click
+								-- handler behaviour for the same checkbox).
+								if self.build.configTab.BuildModList then
+									self.build.configTab:BuildModList()
+								end
+							else
+								sg.enabled = not isEnabled
+							end
 							self:AddUndoState()
 							self.build.buildFlag = true
 							inputEvents[id] = nil
@@ -1713,13 +1917,40 @@ function SkillsTabClass:DrawSpecSlots(viewPort, inputEvents, startY)
 			tooltip:AddLine(16, "^7Level of " .. skillName .. ": ^x60FF60" .. maxPts)
 			tooltip:AddSeparator(8)
 			tooltip:AddLine(14, "^7Base: ^x60A0FF20")
+			-- Map "Item:<id>:<name>" sources to "<SlotLabel>: <name>" so the
+			-- breakdown reads naturally (e.g. "Amulet: Omnis" instead of
+			-- "Item:4:Omnis").
+			local function prettifySource(src)
+				if not src then return "Unknown" end
+				local idStr, itemName = src:match("^Item:(%d+):(.+)$")
+				if not idStr then return src end
+				local itemId = tonumber(idStr)
+				local slotLabel
+				if self.build.itemsTab and self.build.itemsTab.slots then
+					for _, slot in pairs(self.build.itemsTab.slots) do
+						if slot.selItemId == itemId then
+							slotLabel = slot.label or slot.slotName
+							break
+						end
+					end
+				end
+				-- Idols live in IdolGridControl, not ItemSlotControl — fall back
+				-- to the item's base type so it doesn't read as plain "Item".
+				if not slotLabel and self.build.itemsTab and self.build.itemsTab.items then
+					local item = self.build.itemsTab.items[itemId]
+					if item and item.type and item.type:match("Idol") then
+						slotLabel = item.type
+					end
+				end
+				return (slotLabel or "Item") .. ": " .. itemName
+			end
 			if breakdown and #breakdown > 0 then
 				for _, entry in ipairs(breakdown) do
 					local v = entry.value
 					local sign = v >= 0 and "+" or ""
 					-- Show 1 decimal only if non-integer (Permanence may yield fractional)
 					local valStr = (v == m_floor(v)) and tostring(m_floor(v)) or string.format("%.1f", v)
-					tooltip:AddLine(14, "^7" .. (entry.source or "Unknown") .. ": ^x60A0FF" .. sign .. valStr)
+					tooltip:AddLine(14, "^7" .. prettifySource(entry.source) .. ": ^x60A0FF" .. sign .. valStr)
 				end
 			end
 			-- Scaling Tags row (damage types + combat class + attribute scalings).
@@ -1745,6 +1976,15 @@ function SkillsTabClass:DrawSpecSlots(viewPort, inputEvents, startY)
 				if tagsLine then tooltip:AddLine(14, tagsLine) end
 				if minionLine then tooltip:AddLine(14, minionLine) end
 			end
+			-- Accuracy honesty note (display-only; see GetSkillAccuracyBadge).
+			-- @leb-regression-guard:ui-accuracy-honesty-badge
+			local acc = self:GetSkillAccuracyBadge(skillName)
+			if acc then
+				tooltip:AddSeparator(8)
+				for _, line in ipairs(acc.tip) do
+					tooltip:AddLine(14, line)
+				end
+			end
 			tooltip:Draw(sx, sy, SLOT_SIZE, SLOT_SIZE, viewPort)
 			SetDrawLayer(nil, 0)
 		end
@@ -1754,6 +1994,12 @@ function SkillsTabClass:DrawSpecSlots(viewPort, inputEvents, startY)
 			for id, event in ipairs(inputEvents) do
 				if event.type == "KeyUp" then
 					if event.key == "LEFTBUTTON" then
+						-- Clean up read-only preview if leaving via slot click
+						if self.socketGroupList[-1] and self.socketGroupList[-1].isPreview then
+							self.socketGroupList[-1] = nil
+							self.build.spec:BuildAllDependsAndPaths()
+							self.skillTreeViewer.readOnly = nil
+						end
 						if sg then
 							-- Open tree view for filled slot
 							self.viewMode = "tree"
@@ -2050,7 +2296,9 @@ function SkillsTabClass:DrawSkillGrid(x, y, w, skills, inputEvents, cursorX, cur
 		end
 
 		SetDrawColor(1, 1, 1)
-		DrawImage(frameHandle, iconX + frameOff, iconY + frameOff, FRAME_SIZE, FRAME_SIZE)
+		if frameHandle then
+			DrawImage(frameHandle, iconX + frameOff, iconY + frameOff, FRAME_SIZE, FRAME_SIZE)
+		end
 
 		-- Search match: red square outline
 		if hasSearch and isMatch then
@@ -2081,7 +2329,9 @@ function SkillsTabClass:DrawSkillGrid(x, y, w, skills, inputEvents, cursorX, cur
 				SetDrawColor(1, 1, 1)
 			end
 			local badgeHandle = self:GetSpriteHandle("skill-req-mastery-level")
-			DrawImage(badgeHandle, lvBadgeX, lvBadgeY, lvBadgeW, lvBadgeH)
+			if badgeHandle then
+				DrawImage(badgeHandle, lvBadgeX, lvBadgeY, lvBadgeW, lvBadgeH)
+			end
 			SetDrawColor(1, 1, 1)
 			DrawString(lvBadgeX + lvBadgeW / 2, lvBadgeY + lvBadgeH / 2 - 5, "CENTER_X", 10, "VAR", "^7" .. tostring(skill.level))
 		end
@@ -2099,12 +2349,16 @@ function SkillsTabClass:DrawSkillGrid(x, y, w, skills, inputEvents, cursorX, cur
 			end
 			-- Use level badge frame with mastered star inside
 			local badgeHandle = self:GetSpriteHandle("skill-req-mastery-level")
-			DrawImage(badgeHandle, lvBadgeX, lvBadgeY, lvBadgeW, lvBadgeH)
+			if badgeHandle then
+				DrawImage(badgeHandle, lvBadgeX, lvBadgeY, lvBadgeW, lvBadgeH)
+			end
 			-- Draw star icon inside (smaller)
 			local starHandle = self:GetSpriteHandle("skill-req-mastery-mastered")
 			local starSize = 24
 			SetDrawColor(1, 1, 1)
-			DrawImage(starHandle, iconX + GRID_ICON_SIZE / 2 - starSize / 2, iconY + GRID_ICON_SIZE / 2 - starSize / 2, starSize, starSize)
+			if starHandle then
+				DrawImage(starHandle, iconX + GRID_ICON_SIZE / 2 - starSize / 2, iconY + GRID_ICON_SIZE / 2 - starSize / 2, starSize, starSize)
+			end
 		end
 
 		-- Damage type icons (right side of icon, top-aligned)
@@ -2180,38 +2434,52 @@ function SkillsTabClass:DrawSkillGrid(x, y, w, skills, inputEvents, cursorX, cur
 			DrawImage(nil, cx, cy, CELL_W, CELL_H)
 		end
 
-		-- Click: assign skill to selected slot
-		if isHover and not isLocked then
+		-- Click: assign skill to selected slot, or open read-only preview if assignment isn't possible
+		if isHover then
 			for id, event in ipairs(inputEvents) do
 				if event.type == "KeyUp" and event.key == "LEFTBUTTON" then
-					local targetSlot = assignedSlot or self.selectedSlotIndex
-					if not targetSlot then goto continueSkillClick end
-					if not self.socketGroupList[targetSlot] or assignedSlot then
-						if not assignedSlot then
-							self:SelSkill(targetSlot, skill.skillId or skill.name)
-							self.build.spec:BuildAllDependsAndPaths()
-						end
-						self.viewMode = "tree"
-						self.viewingTreeSlot = assignedSlot or targetSlot
-						self.selectedSlotIndex = self.viewingTreeSlot
-						self.skillTreeViewer.selectedSkillIndex = self.viewingTreeSlot
-						self.skillTreeViewer.skillBaseScale = nil
-						self.skillTreeViewer.skillRefZoom = nil
+					if isLocked then
+						-- Locked skill (another mastery): always read-only preview
+						self:OpenLockedSkillPreview(skill)
+						inputEvents[id] = nil
 					else
-						local empty = self:FindEmptySlot()
-						if empty then
-							self:SelSkill(empty, skill.skillId or skill.name)
-							self.build.spec:BuildAllDependsAndPaths()
-							self.selectedSlotIndex = empty
+						local targetSlot = assignedSlot or self.selectedSlotIndex
+						if assignedSlot then
+							-- Already in a slot: open that slot's tree
 							self.viewMode = "tree"
-							self.viewingTreeSlot = empty
-							self.skillTreeViewer.selectedSkillIndex = empty
+							self.viewingTreeSlot = assignedSlot
+							self.selectedSlotIndex = assignedSlot
+							self.skillTreeViewer.selectedSkillIndex = assignedSlot
 							self.skillTreeViewer.skillBaseScale = nil
 							self.skillTreeViewer.skillRefZoom = nil
+						elseif targetSlot and not self.socketGroupList[targetSlot] then
+							-- Empty selected slot: assign here
+							self:SelSkill(targetSlot, skill.skillId or skill.name)
+							self.build.spec:BuildAllDependsAndPaths()
+							self.viewMode = "tree"
+							self.viewingTreeSlot = targetSlot
+							self.selectedSlotIndex = targetSlot
+							self.skillTreeViewer.selectedSkillIndex = targetSlot
+							self.skillTreeViewer.skillBaseScale = nil
+							self.skillTreeViewer.skillRefZoom = nil
+						else
+							local empty = self:FindEmptySlot()
+							if empty then
+								self:SelSkill(empty, skill.skillId or skill.name)
+								self.build.spec:BuildAllDependsAndPaths()
+								self.selectedSlotIndex = empty
+								self.viewMode = "tree"
+								self.viewingTreeSlot = empty
+								self.skillTreeViewer.selectedSkillIndex = empty
+								self.skillTreeViewer.skillBaseScale = nil
+								self.skillTreeViewer.skillRefZoom = nil
+							else
+								-- No empty slot available: open read-only preview
+								self:OpenLockedSkillPreview(skill)
+							end
 						end
+						inputEvents[id] = nil
 					end
-					inputEvents[id] = nil
-					::continueSkillClick::
 				end
 			end
 		end
@@ -2250,6 +2518,12 @@ function SkillsTabClass:DrawSkillTree(viewPort, inputEvents, startY)
 
 	for id, event in ipairs(inputEvents) do
 		if event.type == "KeyUp" and event.key == "LEFTBUTTON" and overBack then
+			-- Clean up read-only preview entry (locked-mastery skill preview)
+			if self.socketGroupList[-1] and self.socketGroupList[-1].isPreview then
+				self.socketGroupList[-1] = nil
+				self.build.spec:BuildAllDependsAndPaths()
+			end
+			self.skillTreeViewer.readOnly = nil
 			self.viewMode = "overview"
 			self.viewingTreeSlot = nil
 			inputEvents[id] = nil
@@ -2338,22 +2612,32 @@ function SkillsTabClass:DrawSkillTree(viewPort, inputEvents, startY)
 	local infoBarH = 42
 	local infoY = startY + 4
 	if sg then
-		local used = self:GetUsedSkillPoints(slot)
-		local maxPts = self:GetMaxSkillPoints(slot)
-		local rem = maxPts - used
 		local skillName = (sg.grantedEffect and sg.grantedEffect.name) or "???"
 		SetDrawLayer(nil, 145)
 		-- Thin dark background strip so text is always legible
 		SetDrawColor(0, 0, 0, 0.5)
 		DrawImage(nil, viewPort.x, infoY - 2, viewPort.width, infoBarH - 4)
-		-- Skill name (gold, centered)
+		-- Skill name (gold, centered) + accuracy honesty badge (display-only).
+		-- @leb-regression-guard:ui-accuracy-honesty-badge
 		SetDrawColor(1, 1, 1)
-		DrawString(viewPort.x + viewPort.width / 2, infoY, "CENTER_X", 14, "VAR", "^xDDC080" .. skillName:upper())
-		-- Unspent points (blue if > 0, gray if 0)
-		if rem > 0 then
-			DrawString(viewPort.x + viewPort.width / 2, infoY + 16, "CENTER_X", 14, "VAR", "^x4DD9FF" .. rem .. " UNSPENT POINTS")
+		local accSuffix = ""
+		local acc = self:GetSkillAccuracyBadge(skillName)
+		if acc then
+			accSuffix = "   " .. acc.color .. acc.glyph .. " " .. acc.label
+		end
+		DrawString(viewPort.x + viewPort.width / 2, infoY, "CENTER_X", 14, "VAR", "^xDDC080" .. skillName:upper() .. accSuffix)
+		if sg.isPreview then
+			DrawString(viewPort.x + viewPort.width / 2, infoY + 16, "CENTER_X", 14, "VAR", "^x888888PREVIEW (LOCKED - READ ONLY)")
 		else
-			DrawString(viewPort.x + viewPort.width / 2, infoY + 16, "CENTER_X", 14, "VAR", "^x666666" .. used .. " / " .. maxPts .. " POINTS USED")
+			local used = self:GetUsedSkillPoints(slot)
+			local maxPts = self:GetMaxSkillPoints(slot)
+			local rem = maxPts - used
+			-- Unspent points (blue if > 0, gray if 0)
+			if rem > 0 then
+				DrawString(viewPort.x + viewPort.width / 2, infoY + 16, "CENTER_X", 14, "VAR", "^x4DD9FF" .. rem .. " UNSPENT POINTS")
+			else
+				DrawString(viewPort.x + viewPort.width / 2, infoY + 16, "CENTER_X", 14, "VAR", "^x666666" .. used .. " / " .. maxPts .. " POINTS USED")
+			end
 		end
 		SetDrawLayer(nil, 0)
 	end
@@ -2594,6 +2878,36 @@ function SkillsTabClass:SetActiveSkillSet(skillSetId)
 	self.socketGroupList = self.skillSets[skillSetId].socketGroupList
 	self.activeSkillSetId = skillSetId
 	self.build.buildFlag = true
+end
+
+-- Open a read-only preview of a locked skill's tree (e.g. another mastery's skill).
+-- Inserts a temporary preview entry at index -1 so PassiveTreeView lookups work
+-- without modifying real socket groups. Cleaned up by the Back button.
+function SkillsTabClass:OpenLockedSkillPreview(skill)
+	local previewIdx = -1
+	local skillId = skill.skillId or skill.name
+	self.socketGroupList[previewIdx] = {
+		grantedEffect = self.build.data.skills[skillId] or {
+			id = skillId,
+			name = skill.label or skill.name,
+			skillTypes = {},
+			baseFlags = {},
+			stats = {},
+		},
+		skillId = skillId,
+		slot = "Skill " .. previewIdx,
+		enabled = false,
+		isPreview = true,
+	}
+	-- Rebuild visibleNodes so the locked skill's tree nodes become reachable for rendering
+	self.build.spec:BuildAllDependsAndPaths()
+	self.viewMode = "tree"
+	self.viewingTreeSlot = previewIdx
+	self.selectedSlotIndex = previewIdx
+	self.skillTreeViewer.selectedSkillIndex = previewIdx
+	self.skillTreeViewer.skillBaseScale = nil
+	self.skillTreeViewer.skillRefZoom = nil
+	self.skillTreeViewer.readOnly = true
 end
 
 function SkillsTabClass:SelSkill(index, skillId)

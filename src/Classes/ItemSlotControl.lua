@@ -20,7 +20,7 @@ local TYPE_ICON = {
 	["Dagger"]            = "Icon_Dagger.png",
 	["Gloves"]            = "Icon_Gloves.png",
 	["Helmet"]            = "Icon_Helmet.png",
-	["Off-Hand Catalyst"] = "Icon_Shield.png",
+	["Off-Hand Catalyst"] = "Icon_Offhand.png",
 	["One-Handed Axe"]    = "Icon_Axe.png",
 	["Two-Handed Axe"]    = "Icon_Axe.png",
 	["One-Handed Mace"]   = "Icon_Mace.png",
@@ -52,7 +52,7 @@ local function getIconHandle(filename)
 	if not filename then return nil end
 	if not iconHandles[filename] then
 		local h = NewImageHandle()
-		h:Load("Assets/" .. filename, "ASYNC")
+		h:Load("Assets/" .. filename)
 		iconHandles[filename] = h
 	end
 	return iconHandles[filename]
@@ -224,6 +224,15 @@ function ItemSlotClass:Populate()
 	end
 	if not self.selItemId or not self.itemsTab.items[self.selItemId] or not self.itemsTab:IsItemValidForSlot(self.itemsTab.items[self.selItemId], self.slotName) then
 		self:SetSelItemId(0)
+	end
+
+	-- Recompute the dropped-panel width against the freshly built item list for
+	-- slots that opt into auto-width (e.g. idol grid cells, whose narrow 68px cell
+	-- width would otherwise clip the item names). Populate() fills self.list
+	-- directly without going through SetList(), so CheckDroppedWidth must be
+	-- triggered here.
+	if self.enableDroppedWidth then
+		self:CheckDroppedWidth(true)
 	end
 
 	-- Update Abyssal Sockets

@@ -1,0 +1,30 @@
+-- @leb-regression-guard:throwing-attack-damage-inc
+-- (would give phys 346). See REGRESSION_GUARDS.md "throwing-attack-damage-inc".
+-- Validation provenance is retained in maintainer notes.
+describe("ThrowingAttackDamageInc", function()
+	it("'6% Throwing Attack Damage' live-parses residue-free as Throwing INC", function()
+		local mods, extra = modLib.parseMod("6% Throwing Attack Damage")
+		assert.is_nil(extra, "must leave no residue (residue-carrying mods are dropped by the tree layer)")
+		assert.are.equals(1, #mods)
+		assert.are.equals("Damage", mods[1].name)
+		assert.are.equals("INC", mods[1].type)
+		assert.are.equals(6, mods[1].value)
+		assert.are.equals(KeywordFlag.Throwing, mods[1].keywordFlags)
+	end)
+
+	it("'+12% Throwing Attack Damage' (plus-prefixed variant) parses identically", function()
+		local mods, extra = modLib.parseMod("+12% Throwing Attack Damage")
+		assert.is_nil(extra)
+		assert.are.equals(1, #mods)
+		assert.are.equals("INC", mods[1].type)
+		assert.are.equals(12, mods[1].value)
+	end)
+
+	it("the stale MORE bake is gone from ModCache", function()
+		local f = io.open("Data/ModCache.lua", "r") or io.open("src/Data/ModCache.lua", "r")
+		assert.is_not_nil(f)
+		local src = f:read("*a"); f:close()
+		assert.is_falsy(src:find('c["6% Throwing Attack Damage"]', 1, true), "stale row must be removed")
+		assert.is_falsy(src:find('c["+12% Throwing Attack Damage"]', 1, true), "stale row must be removed")
+	end)
+end)
