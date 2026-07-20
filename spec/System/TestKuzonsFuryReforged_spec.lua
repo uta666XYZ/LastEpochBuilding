@@ -1,25 +1,6 @@
 -- @leb-regression-guard: kuzons-fury-reforged-burning-dagger-chance
--- Locks parser / ModCache / CalcOffence / CalcSections wiring for the
--- 8-tier Kuzon's Fury Reforged affix (statOrderKey=961). Source:
---   "+(N)% chance to throw a Burning Dagger when you use a melee fire
---    attack and hit at least one enemy, doubled for Dancing Strikes
---    (up to 4 times per second)"
---
--- Game-file evidence (LE 1.4.6 dump.cs):
---   L77400  AbilityStatsMutatorManager.burningDaggerChanceOnMeleeFire
---           (the exact per-skill stat field; PascalCase'd verbatim ->
---            BurningDaggerChanceOnMeleeFire as the LEB stat name)
---   L35408-L35546 DancingStrikes1..4Mutator family + ability_keyed_array.json
---                 (4 player variants share abilityName="Dancing Strikes")
---
--- v1 wiring decisions:
---   A: stat = BurningDaggerChanceOnMeleeFire (dump.cs verbatim)
---   B: tier 7 outlier `{rounding:Integer}+(1-1.2)` deferred ({} emit)
---   C: Dancing Strikes skill-identity gate wired here (F5 pattern)
---   D: "(up to 4 times per second)" rate cap deferred (no LEB infra)
---
 -- See REGRESSION_GUARDS.md "kuzons-fury-reforged-burning-dagger-chance"
--- and Obsidian "Kuzon's Fury Reforged 設計フォーク.md".
+-- Validation provenance is retained in maintainer notes.
 
 describe("KuzonsFuryReforged", function()
 
@@ -66,7 +47,7 @@ describe("KuzonsFuryReforged", function()
 		-- authoritative metadata harvested from the static "(up to 4 times per second)"
 		-- suffix. The tag has NO handler in ModStore.lua EvalMod (pure metadata) and
 		-- LEB does NOT compute an equilibrium effective-procs/sec because the game
-		-- exposes no such planner-visible stat (runtime PTT gate only; dump.cs
+		-- exposes no such planner-visible stat (runtime PTT gate only; datamined game source
 		-- L239352-L239378 + L33671-L33713). See guard "proc-rate-limit-metadata-v1".
 		assert.is_truthy(string.find(parserSrc,
 			'{%s*type%s*=%s*"RateLimit",%s*limit%s*=%s*4,%s*interval%s*=%s*1,%s*var%s*=%s*"BurningDaggerOnMeleeFire"%s*}'),

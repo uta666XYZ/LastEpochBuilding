@@ -11,15 +11,28 @@ local m_max = math.max
 local m_floor = math.floor
 local m_ceil = math.ceil
 
+-- @leb-regression-guard:applyrange-float32-boundary
+-- LuaJIT ffi float32 round-trip. LE evaluates its value interpolation
+-- (BaseStats.GetValueAfterRounding) in single precision; LEB must round each
+-- intermediate product to float32 to reproduce the game's truncation at exact
+-- integer boundaries (see itemLib.applyRangeStrict). A double-precision reduction
+-- lands on N.0 where the game's float32 lands on (N-1).9999 → truncates to N-1.
+local ffi = require("ffi")
+local f32buf = ffi.new("float[1]")
+local function toF32(x)
+    f32buf[0] = x
+    return f32buf[0]
+end
+
 -- @leb-regression-guard:banker-round-vshdm
 -- C# Math.Round / Mathf.RoundToInt default = MidpointRounding.ToEven (banker's
 -- rounding). LE's vshDm endpoint quantization (FUN_18038f970 in
--- AscendingValueAfterPropertyRounding RVA 0x2307cc0) uses banker's rounding,
+-- AscendingValueAfterPropertyRounding datamined offset) uses banker's rounding,
 -- not half-up. The boundary case that matters in practice is
 -- scaler-applied .5 fractions: e.g. min=61 max=75 scalar=1.5 produces
 -- min*scalar=91.5 max*scalar=112.5; banker rounds these to 92/112 (both even),
 -- not 92/113 like half-up does. This shifts the byte=93 result from 100 to 99
--- on BgRrP5rr lv98 Paladin Body Armor void resist suffix (matches LE tooltip
+-- on <private build> lv98 Paladin Body Armor void resist suffix (matches LE tooltip
 -- breakdown +99% Void Resistance).
 local function banker_round(x)
     local f = m_floor(x)
@@ -45,7 +58,7 @@ itemLib = { }
 -- in-game 78%).
 -- Test: spec/System/TestItemTools_spec.lua "production (floor) matches
 --       in-game tooltip on % reduced affix"
--- Establishing commit: 73d6a712c
+-- Establishing reference: see git log
 --
 -- Per-affix rounding mode for `% increased/reduced/more/less` lines.
 -- false (default, production): floor — matches in-game tooltip per-affix display.
@@ -184,15 +197,15 @@ end
 -- @leb-regression-guard: two-phase-floor-post-round-scalar
 -- `postRoundScalar` (optional, default 1.0) models LE's
 -- `ChangeAffixModifier(..., float affixEffectModifier, ..., float
--- postRoundingEffectModifier = 0)` (dump.cs L165287). LE applies the
+-- postRoundingEffectModifier = 0)` (datamined game source). LE applies the
 -- post-round scalar AFTER the rolled value has been quantized to its display
 -- integer/fraction. The post-boost integer is then rendered with
 -- **round-half-up**, NOT floor — verified by comparing LETools planner
--- tooltips against in-game UI on owLmrO3a Spellblade lv99 idol-altar.
+-- tooltips against in-game UI on <private build> Spellblade lv99 idol-altar.
 -- Folding refracted-slot altar boosts (Weaver Enchant ~22%) into
 -- `valueScalar` instead of this dedicated arg lets the unrounded
 -- interpolation fraction leak through the boost.
--- Verified on owLmrO3a Heretical Large Arcane Idol affix 897_4
+-- Verified on <private build> Heretical Large Arcane Idol affix 897_4
 -- "+(2-9) Ward per Second" T5 byte=255 boost=1.22:
 --   rolled = 9, 9 × 1.22 = 10.98
 --   floor          → 10 (pre-fix LEB, mismatched LETools/in-game)
@@ -200,16 +213,13 @@ end
 -- See REGRESSION_GUARDS.md "two-phase-floor-post-round-scalar" for the
 -- 5 fix sites and the busted spec
 -- (spec/System/TestPostRoundScalarRoundHalfUp_spec.lua).
--- @leb-regression-guard: idol-altar-boost-subtype-rounding
 -- `postRoundFloor` (optional, default false) overrides the post-round
--- scalar's default round-half-up to **floor**. LE's Idol Altar refracted-slot
--- boost (property 4) uses subtype-dependent rounding:
---   IdolEnchantment (4) → round-half-up (default, see two-phase-floor guard)
---   IdolWeaver      (5) → floor
--- Triangulated on g1 (BxvJP3g1 Necromancer) Many Threads (raw 6 → LETools 8 =
--- floor(6×1.46); round-half-up would be 9) and Chitin (raw 12 → LETools 17 =
--- floor(12×1.46); round-half-up would be 18). See Obsidian note
--- "Idol Altar boost rounding 仕様" + REGRESSION_GUARDS.md for case-by-case.
+-- scalar's default round-half-up to **floor**. It is NOT used by Idol Altar
+-- refracted-slot boosts — those are all round-half-up (see CalcSetup
+-- scaleAffixList `idol-altar-boost-subtype-rounding` guard for why the
+-- earlier property-4→floor override was a misdiagnosis). The flag remains
+-- for the `armour-percent-vshdm-strict` guard, whose strict "% Armour" lines
+-- floor after the post-round scalar.
 function itemLib.applyRange(line, range, valueScalar, rounding, postRoundScalar, postRoundFloor)
     -- High precision for increased modifier
     local precision = 100
@@ -221,7 +231,22 @@ function itemLib.applyRange(line, range, valueScalar, rounding, postRoundScalar,
         precision = 1000
     end
     -- If there is a percent, we need to divide the precision by 100
-    if line:find("%%") and precision >= 100 then
+    -- @leb-regression-guard: per-mana-cost-melee-affix-fractional-precision
+    -- The "... for Melee Attacks per 1 Mana Cost" affix family (combined affix
+    -- 986: the Damage MORE sub-line, plus the Critical Strike Chance / Area
+    -- siblings) rolls FRACTIONAL percentages (LE property_list_1_4.json
+    -- property 0 "Damage" roundingForMore = Hundredth; the roll is e.g.
+    -- 0.2%/0.3%). The generic "% => integer percent" collapse below (default
+    -- rounding => precision 100, then /100 => 1) would round the scalar-scaled
+    -- value to an INTEGER: 0.3 x weapon-slot scalar 1.829 = 0.549 => round => 1
+    -- (~3-5x too high). The {rounding:Integer} that ships on the combined
+    -- affix is legitimate for the integer "increased Melee Damage" part, but
+    -- must NOT collapse this fractional per-mana sub-line. Keep Hundredth
+    -- precision (0.01) so the fraction survives scaling (0.549 => 0.55).
+    -- Scoped by the "per 1 Mana Cost" token, which no non-per-mana affix uses.
+    -- Spec: spec/System/TestPerManaCostMeleeAffix_spec.lua.
+    local isPerManaCostFractional = line:lower():find("per 1 mana cost") ~= nil
+    if line:find("%%") and precision >= 100 and not isPerManaCostFractional then
         precision = precision / 100
     end
     -- "+(N-N) to <name>" style affixes (e.g. "+(2-4) to Cinder Strike",
@@ -237,20 +262,35 @@ function itemLib.applyRange(line, range, valueScalar, rounding, postRoundScalar,
         precision = 1
     end
 
-    -- @leb-regression-guard: per-set-fractional-precision
-    -- "per Complete Set" affixes are multiplied by CompleteSetCount in LE
-    -- AFTER per-source quantization to HALF-INTEGER (0.5) steps, not after
-    -- floor-to-integer. LEB historically rounded the per-item roll to int
-    -- first (e.g. byte=41 +(2-5) Integer → floor(2.482)=2) then multiplied
-    -- by the set multiplier (×3 → 6), losing the +1 that LE produces.
-    -- Empirical match across two builds: precision=2 (half-step) + span+0.5:
-    --   BxvJP3g1 byte=41,  ×3: numVal→2.5 → 7.5 → floor=7  (LE=7  ✓)
-    --   Qqwv73q2 byte=203, ×6: numVal→4.5 → 27.0           (LE=27 ✓)
-    -- ModStore:EvalMod applies m_floor after the Multiplier:CompleteSetCount
-    -- tag (roundAfterMultiply) so the half-step value flows through intact.
-    if line:find("per [Cc]omplete [Ss]et") and rounding == "Integer" then
-        precision = 2
-    end
+    -- @leb-regression-guard: per-set-integer-source-not-halfstep
+    -- "per Complete Set" Integer affixes (e.g. Legends Entwined
+    -- "{rounding:Integer}+(2-5) to All Attributes per Complete Set") use the
+    -- NORMAL integer roll path (precision=1) — NO special half-step bump.
+    --
+    -- Grounded against the datamining (datamined game source):
+    --   * EpochExtensions.GetValueAfterRounding (formulas_verified.md §38) has
+    --     ONLY integer / tenth / hundredth / thousandth modes -- there is NO
+    --     0.5-step rounding mode anywhere. An Integer affix's per-source value
+    --     is an INTEGER.
+    --   * CharacterMutator (CharacterMutator.c L9697 accumulate, L10497-10501
+    --     apply) computes the applied stat as a raw float
+    --       current = completeItemSetsEquipped * allAttributesPerCompleteSet
+    --     with NO floor/round after the multiply; the All-Attributes total is
+    --     floored only at final display. Integer per-source * integer count is
+    --     already exact, so roundAfterMultiply (ModStore EvalMod) is a harmless
+    --     no-op for this affix.
+    --   * Game unique data (uniques_v3.json id 423): mod value=2 max=5
+    --     property=98 tags=566 type=0(ADDED) -- a plain integer attribute roll.
+    --
+    -- The previous `precision=2` half-step bump was a fictional mechanic fit to
+    -- LETools display, not in-game (<private build> is a `.letools.*` build). In-game
+    -- capture refutes it: Aurora_blank Legends Entwined byte=205, CompleteSet=2
+    -- shows All Attributes = 10 = 5*2; the normal integer path gives
+    -- floor(2 + 4*205/255) = floor(5.216) = 5 -> 5*2 = 10 (correct), while the
+    -- half-step model stored 4.5 -> floor(4.5*2) = 9 (the -1 bug). byte=203
+    -- (<private build>, near-identical roll) -> 5 -> *6 = 30, NOT the LETools 27 the
+    -- old fit chased.
+    -- Spec: spec/System/TestPerCompleteSetIntegerRoll_spec.lua
 
     -- range is actually given as a roll (TODO:rename)
     local rollByte = range
@@ -291,7 +331,7 @@ function itemLib.applyRange(line, range, valueScalar, rounding, postRoundScalar,
                 -- use the plain (max-min) span, matching LETools/Maxroll displays.
                 --
                 -- Applies to SP=88 LevelOfSkills "+(N-N) to <Skill/Cat>" too —
-                -- a previous attempt (f925695c5) special-cased these to ceil
+                -- a previous attempt (<see git log>) special-cased these to ceil
                 -- based on a single Omnis byte=17→+2 datapoint, but a direct
                 -- in-game verification on Phantom Grip "+(1-2) to All Minion
                 -- Skills" at range:90 showed +1 each (not +2). ceil is not
@@ -315,9 +355,9 @@ function itemLib.applyRange(line, range, valueScalar, rounding, postRoundScalar,
                 -- builds (.tmp/survey_phys_res_impact.py): scalar=1.0 → 0/193
                 -- divergence; scalar=1.17 (Cursed Coin) → 1/193 unique tuple
                 -- (`+(13-40)% Physical Resistance` byte=79: existing 24 → strict
-                -- 25), affecting only `oN2zNnZM lv86 Bladedancer.xml`. The
+                -- 25), affecting only `<private build> lv86 Bladedancer.xml`. The
                 -- strict value 25 matches LE's in-game tooltip (vshDm direct port
-                -- = IL2CPP `BaseStats.GetValueAfterRounding`).
+                -- = datamined game source `BaseStats.GetValueAfterRounding`).
                 -- @leb-regression-guard:resist-vshdm-strict
                 -- All seven elemental resistances PLUS the composite
                 -- "% Elemental Resistance" affix (cold+fire+lightning)
@@ -350,7 +390,7 @@ function itemLib.applyRange(line, range, valueScalar, rounding, postRoundScalar,
                 end
                 -- @leb-regression-guard:minion-movement-speed-vshdm-strict
                 -- "% increased/reduced Minion Movement Speed" rolls route through the
-                -- LE-faithful vshDm Hundredth path. Triangulated on BxvJP3g1 lv99
+                -- LE-faithful vshDm Hundredth path. Triangulated on <private build> lv99
                 -- Necromancer Pebbles' Collar Reforged implicit
                 -- `(6-16)% increased Minion Movement Speed` byte=186:
                 --   legacy round-half-up: floor((6 + 186/255 × 10) + 0.5) = 13
@@ -374,23 +414,8 @@ function itemLib.applyRange(line, range, valueScalar, rounding, postRoundScalar,
                     return (v < 0 and "" or plus) .. tostring(v)
                 end
                 -- @leb-regression-guard:movement-speed-vshdm-strict
-                -- Player "% increased/reduced Movement Speed" rolls route through
-                -- the LE-faithful vshDm path (`applyRangeStrict`). Same root cause
-                -- as health/armour-percent-vshdm-strict: the legacy branch
-                -- interpolates over span (max-min) and floors, missing LE's
-                -- top-byte `+1` term, underrepresenting by 1 on most bytes.
-                -- Triangulated on MyLittleStJames lv79 Paladin (save BETA_13) vs
-                -- in-game item tooltip + character sheet:
-                --   Army of Skin prefix "(26-30)% increased Movement Speed" byte=157
-                --     legacy floor : floor(26 + 157/255 × (30-26))    = 28 (LEB, wrong)
-                --     strict vshDm : floor((30+1-26) × 157/255 + 26)   = 29 (tooltip ✓)
-                -- Other two boots affixes are unchanged by strict ((13-26)% byte111
-                -- = 19, (11-14)% byte31 = 11), so total Movement Speed 29+19+11 = 59
-                -- = in-game character sheet (LEB was 58 under legacy). The in-game
-                -- item tooltip directly reads "29% increased Movement Speed".
-                -- Matches the player-direct line only; the SP=9 "Minion Movement
-                -- Speed" variant is caught by the branch above and returns first.
                 -- See REGRESSION_GUARDS.md "movement-speed-vshdm-strict".
+                -- Validation provenance is retained in maintainer notes.
                 if line:find("%% increased Movement Speed")
                    or line:find("%% reduced Movement Speed") then
                     local v = itemLib.applyRangeStrict(minN, maxN, rollByte, valueScalar, 0, 0)
@@ -404,24 +429,8 @@ function itemLib.applyRange(line, range, valueScalar, rounding, postRoundScalar,
                     return (v < 0 and "" or plus) .. tostring(v)
                 end
                 -- @leb-regression-guard: health-percent-vshdm-strict
-                -- Player "% increased/reduced Health" rolls route through the
-                -- LE-faithful vshDm path (`applyRangeStrict`). The legacy default
-                -- branch interpolates over span `(max-min)` and floors, which is
-                -- missing LE's `+epsilon`/`+1` top-byte term and underrepresents
-                -- by 1 on most bytes. Triangulated on ShutFackUp lv85 Spellblade
-                -- (save BETA_7) Chains of Uleros suffix `(10-12)% increased Health`
-                -- byte=193:
-                --   legacy floor: floor(10 + 193/255 × (12-10))      = floor(11.51) = 11
-                --   strict vshDm: floor((12+1-10) × 193/255 + 10)     = floor(12.27) = 12
-                -- In-game maxHealth = 1680 requires INC = 25 = Keeper's Raiment
-                -- fixed +13% + Uleros 12%; floor(1344 × 1.25) = 1680 (LEB was
-                -- 1666 under the legacy 24%). Excludes "Minion Health" (separate
-                -- minion scope) and "Health Regen" (Tenth-rounded, different prop).
-                -- Scoped to valueScalar == 1.0 (player-direct % Health): idol-scaled
-                -- health (scalar 0.38/0.67, Tenth-precision e.g. "3.2% increased
-                -- Health") stays on the scale-first path below, locked by the
-                -- TestItemTools '(5-14)% increased Health' @ 0.38 → 3.2% case.
                 -- See REGRESSION_GUARDS.md "health-percent-vshdm-strict".
+                -- Validation provenance is retained in maintainer notes.
                 if valueScalar == 1.0
                    and (line:find("%% increased Health") or line:find("%% reduced Health"))
                    and not line:find("Minion Health") and not line:find("Health Regen") then
@@ -436,43 +445,9 @@ function itemLib.applyRange(line, range, valueScalar, rounding, postRoundScalar,
                     return (v < 0 and "" or plus) .. tostring(v)
                 end
                 -- @leb-regression-guard: armour-percent-vshdm-strict
-                -- Player "% increased/reduced Armor" rolls route through the
-                -- LE-faithful vshDm path (`applyRangeStrict`). Identical root
-                -- cause to health-percent-vshdm-strict: the legacy branch
-                -- interpolates over span (max-min) and floors/round-half-ups,
-                -- missing LE's top-byte `+1` term, so it underrepresents by 1
-                -- on most bytes. Triangulated on ImPalmBeachPete lv48 Bladedancer
-                -- (save BETA_12) vs in-game tooltips:
-                --   Azure Outcast Hat of Defense "(10-12)% increased Armor" byte=185
-                --     legacy floor : floor(10 + 185/255 × (12-10))     = 11 (LEB, wrong)
-                --     strict vshDm : floor((12+1-10) × 185/255 + 10)    = 12 (in-game ✓)
-                --   Armored Minor Weaver Idol "(2-5)% increased Armor" byte=84
-                --     legacy floor : floor(2 + 84/255 × (5-2))         = 2  (LEB, wrong)
-                --     strict vshDm : floor((5+1-2) × 84/255 + 2)        = 3  (in-game ✓)
-                -- Excludes "Minion Armor" (separate minion scope), "Armor Shred"
-                -- (ailment), and idol-size-scaled rolls (valueScalar != 1.0, which
-                -- stay on the scale-first path). Matches American "Armor" and
-                -- British "Armour" spellings.
-                --
                 -- @leb-regression-guard: armour-percent-refracted-fractional
-                -- For a refracted-slot prefix boost (postRoundScalar from LE's
-                -- `postRoundingEffectModifier`, e.g. "Increased Effect of Prefixes
-                -- in Refracted Slots"), the boosted "% increased" value is NOT
-                -- re-rounded to an integer — LE stores `increased*` as a float
-                -- fraction (its integer tooltip is cosmetic), so the post-round
-                -- modifier multiplies straight into the accumulator. Only the
-                -- hundredth-mode quantum is applied (§38 mode 0). This DIFFERS
-                -- from the flat-additive two-phase path (Mana/res/Ward), which
-                -- keeps integer round-half-up / floor and is ZombieWarehouse-
-                -- ground-truth-verified — that path is deliberately left intact.
-                -- Triangulated on ImPalmBeachPete lv48 Bladedancer (BETA_12):
-                --   refracted Armored Minor Weaver Idol "(2-5)% increased Armor"
-                --   byte=84 rolls 3; Sunrise Visage Altar sealed +44% Effect of
-                --   Prefixes in Refracted Slots → 3 × 1.44 = 4.32 (NOT round→4).
-                --   Total INC 81 → 81.32; 232 × (1+81.32/100) = 420.66 → round 421
-                --   (in-game Armor = 421 ✓; integer-rounded 4 gave 419.92 → 420).
                 -- See REGRESSION_GUARDS.md "armour-percent-vshdm-strict" /
-                -- "armour-percent-refracted-fractional".
+                -- Validation provenance is retained in maintainer notes.
                 if valueScalar == 1.0
                    and (line:find("%% increased Armou?r") or line:find("%% reduced Armou?r"))
                    and not line:find("Minion Armou?r") and not line:find("Armou?r Shred") then
@@ -486,6 +461,32 @@ function itemLib.applyRange(line, range, valueScalar, rounding, postRoundScalar,
                             -- Standard prefix/suffix boost: keep the fractional
                             -- product (hundredth quantum), do not collapse to int.
                             v = m_floor(v * postRoundScalar * 100 + 0.5) / 100
+                        end
+                    end
+                    return (v < 0 and "" or plus) .. tostring(v)
+                end
+                -- @leb-regression-guard:pen-affix-vshdm-strict
+                -- See REGRESSION_GUARDS.md "pen-affix-vshdm-strict".
+                -- Validation provenance is retained in maintainer notes.
+                if line:find("%)%% [%a%s]-Penetration")
+                   and not line:find("Converted to")
+                   and not line:find("%% increased") and not line:find("%% reduced")
+                   and not line:find("%% more") and not line:find("%% less") then
+                    -- @leb-regression-guard: hive-mind-pen-tenth-rounding
+                    -- Most "% ... Penetration" affixes display whole (Hundredth), but
+                    -- Hive Mind (270) "+(4-6)% ... Penetration ... per Dexterity" is
+                    -- TENTH precision in-game (4.4%, not 4%). Honor an explicit
+                    -- {rounding:Tenth} tag (parsed by ParseRaw into `rounding`) instead
+                    -- of hardcoding Hundredth; untagged pen affixes (rounding=nil) keep
+                    -- Hundredth and are byte-identical. byte 56 -> 4.4 (in-game match).
+                    -- Test: spec/System/TestItemTools_spec.lua "...Penetration...per Dexterity"
+                    local penRounding = (rounding == "Tenth") and 2 or 0
+                    local v = itemLib.applyRangeStrict(minN, maxN, rollByte, valueScalar, 0, penRounding)
+                    if postRoundScalar and postRoundScalar ~= 1.0 then
+                        if postRoundFloor then
+                            v = m_floor(v * postRoundScalar * precision) / precision
+                        else
+                            v = m_floor(v * postRoundScalar * precision + 0.5) / precision
                         end
                     end
                     return (v < 0 and "" or plus) .. tostring(v)
@@ -510,28 +511,8 @@ function itemLib.applyRange(line, range, valueScalar, rounding, postRoundScalar,
                     local v = itemLib.applyRangeStrict(minN, maxN, rollByte, valueScalar, 0, 1)
                     if postRoundScalar and postRoundScalar ~= 1.0 then
                         -- @leb-regression-guard: flat-health-refracted-fractional
-                        -- A refracted-slot prefix/suffix boost (postRoundScalar from
-                        -- LE's `postRoundingEffectModifier`) on flat-additive HEALTH is
-                        -- NOT re-rounded to an integer: LE keeps the boosted contribution
-                        -- as a full float in the Health accumulator (the item TOOLTIP
-                        -- shows the un-boosted integer roll, while the character sheet
-                        -- sums the float and the final maxHealth output banker-rounds).
-                        -- This mirrors the `% increased` float-retention precedent
-                        -- (armour-percent-refracted-fractional).
-                        -- Triangulated on ZombieWarehouse lv72 Necromancer (BETA_15):
-                        --   Jumping Spider's Minor Weaver Idol of Repose
-                        --   "+(14-18) Health" byte=3 rolls 14; Sunset Twisted Altar
-                        --   +10% Effect of Suffixes in Refracted Slots → 14×1.10=15.4
-                        --   (NOT round→15). Life base 1106.4; 1106.4×1.36 = 1504.704
-                        --   → 1505 (in-game ✓; integer 15 gave 1504.16 → 1504; LETools
-                        --   also reports the wrong 1504).
-                        -- SCOPED TO FLAT HEALTH ONLY. Other flat-additive stats keep
-                        -- integer round-half-up — verified by the
-                        -- two-phase-floor-post-round-scalar guard: Ward per Second
-                        -- (9×1.22=10.98→11) and Vitality (13×1.22=15.86→16) round to
-                        -- integer. Excludes "Minion Health" (minion scope) and
-                        -- "Health Regen" (separate property).
                         -- See REGRESSION_GUARDS.md "flat-health-refracted-fractional".
+                        -- Validation provenance is retained in maintainer notes.
                         local flatHealth = line:find("Health")
                             and not line:find("Minion Health") and not line:find("Health Regen")
                         if postRoundFloor then
@@ -577,11 +558,11 @@ function itemLib.applyRange(line, range, valueScalar, rounding, postRoundScalar,
                 --   Ornate  (2×2)  0    -> scalar 1.00
                 -- rounds endpoints FIRST to LE's display integers, then interpolates
                 -- within the scaled span. Without this branch:
-                --   AL07Kea4 Humble Weaver byte=221, scalar=0.38, "+(3-7) Vitality"
+                --   <private build> Humble Weaver byte=221, scalar=0.38, "+(3-7) Vitality"
                 --     interp-first: (3 + 221/255 × 5) × 0.38 = 2.79 → floor=2  (LE=3 ✗)
                 --     scale-first : round(3×0.38)=1, round(7×0.38)=3
                 --                   1 + 221/255 × (3-1+1) = 3.60 → floor=3   (LE=3 ✓)
-                --   AL07Kea4 Humble Weaver byte=98:
+                --   <private build> Humble Weaver byte=98:
                 --     interp-first: 1.87 → 1 (LE=2 ✗); scale-first: 2.15 → 2 (LE=2 ✓)
                 --
                 -- @leb-regression-guard: apiarist-scalar-interpolate-first
@@ -669,7 +650,7 @@ function itemLib.hasRange(line)
 end
 
 -- @leb-regression-guard: vshdm-direct-port
--- Direct numeric port of LE planner JS `vshDm` ( = IL2CPP
+-- Direct numeric port of LE planner JS `vshDm` ( = datamined game source
 -- `BaseStats.GetValueAfterRounding` ). Reproduces the game's interpolation
 -- bit-for-bit so LEB can be game-faithful per stat once the existing
 -- empirical workarounds (`useRound`, `skipSpanBump`, scalar-order branches
@@ -686,7 +667,7 @@ end
 --
 -- Output: numeric value (caller composes the line / suffix).
 --
--- Game behavior (verified against LE 1.4.6 IL2CPP dump RVA 0x230B940 +
+-- Game behavior (verified against LE 1.4.6 datamined game source dump datamined offset +
 -- planner JS `function vshDm(a,b,c,d,e)` decoded 2026-05-09):
 --   * Endpoints are rounded HALF-UP to the rounding precision FIRST.
 --   * Span uses `(max + 1/precision - min)` so the top byte (255) reaches max.
@@ -710,58 +691,78 @@ function itemLib.applyRangeStrict(minN, maxN, roll, scalar, modType, rounding)
     if minN > maxN then
         return minN
     end
-    local e = roll / 255.0
-    local c, d, v
     -- @leb-regression-guard:vshdm-percentage-units
     -- @leb-regression-guard:banker-round-vshdm
-    -- LE's AscendingValueAfterPropertyRounding (RVA 0x2307cc0) is:
-    --   c_int = banker_round(min_scaled)               (FUN_18038f970, ToEven)
-    --   d_int = banker_round(max_scaled)
+    -- @leb-regression-guard:applyrange-float32-boundary
+    -- LE's AscendingValueAfterPropertyRounding (datamined offset) is:
+    --   c_int = banker_round(gm * min_scaled)          (FUN_18038f970, ToEven)
+    --   d_int = banker_round(gm * max_scaled)
     --   c = c_int / scale_f32                          (Hundredth: 100, Tenth: 10)
-    --   d = d_int / scale_f32 + epsilon_f32            (Hundredth: +0.01)
-    --   raw = ((d - c) * (byte / 255_f32) + c) * scale_f32
-    --   result = Math.Truncate(raw)                    (FUN_180322480, signed truncate)
-    -- Algebraically (in exact double precision) this reduces to:
-    --   floor((d_int - c_int + 1) * (byte/255) + c_int)
-    -- since (d/100 + 0.01 - c/100)*e*100 + c = (d - c + 1)*e + c.
+    --   d = d_int / scale_f32 + epsilon_f32            (epsilon = 1/scale)
+    --   raw = ((d - c) * (byte / 255_f32) + c) * scale_f32   -- ALL float32
+    --   result = Math.Truncate(raw) / gm               (FUN_180322480, signed truncate)
+    -- This is evaluated in SINGLE precision. The prior LEB code collapsed it to the
+    -- exact-double reduction `floor((d_int - c_int + 1) * (byte/255) + c_int)`, which
+    -- is algebraically equal but NOT bit-equal: at exact integer boundaries the double
+    -- reduction lands on N.0 while the game's float32 evaluation lands on (N-1).9999…
+    -- and truncates to N-1. Rounding each intermediate product to float32 (`toF32`,
+    -- matching the game's operation order) IS this path's purpose — do NOT re-collapse
+    -- it to the double form. The move is NOT one-directional: a double UNDER-read
+    -- (exact rational = N.0, double lands N-0.0001 → N-1) is corrected UP by float32.
+    -- Both are boundary-only (~0.14% of Hundredth triples, ~98% down / ~2% up).
+    -- LEB callers store percentages, so Hundredth uses gm=1 (endpoints are whole
+    -- percents) with scale=100; Tenth/Thousandth carry gm=scale so their sub-integer
+    -- resolution survives; Integer is gm=scale=1.
     -- LEB's previous formulation used HALF-UP endpoint rounding and an extra
     -- "+0.1" bias which was a legacy hack that only worked away from .5
     -- scaler boundaries. The half-up vs banker divergence shows up when
     -- min*scalar or max*scalar lands exactly on .5 (e.g. 61*1.5=91.5,
     -- 75*1.5=112.5 → half-up gives 92/113, banker gives 92/112).
-    -- Constants (verified from GameAssembly.dll .rdata 2026-05-10):
+    -- Constants (verified from datamined game source .rdata 2026-05-10):
     --   DAT_183d81c50 = 255.0 (byte divisor)
     --   DAT_183d81f48 = 100.0 (Hundredth scale)
     --   DAT_183d81ddc = 0.01  (Hundredth epsilon)
     --   DAT_183d81e0c = 10.0, DAT_183d81de8 = 0.1   (Tenth)
     --   DAT_183d81e84 = 1000.0, DAT_183d81bdc = 0.001 (Thousandth)
-    -- Verified vs in-game tooltip:
-    --   AL07RL31 Cold (10-40)% byte=74 → 19  (LE=19)
-    --   BgRrP5rr Void (61-75)% byte=93 scalar=1.5 → 99 (LE=99, was 100)
-    --   oN2zNnZM Cursed Coin Phys (13-40)% byte=79 scalar=1.17 → 25 (LE=25)
+    -- @leb-regression-guard: applyrange-no-epsilon-truncate
+    -- No round-up epsilon: the game interpolates in float32 and TRUNCATES, so the
+    -- legacy +0.1 was removed and MUST stay removed. Grounded by a live in-game
+    -- capture (Fehm gloves Lightning byte=98 -> 11, not 12).
+    -- Test: spec/System/TestItemTools_spec.lua
+    --   "no epsilon: Fehm gloves Lightning (10-14)% byte=98 truncates 11.922 -> 11"
+    -- Verified vs in-game tooltip (the game interpolates in float32 and TRUNCATES;
+    -- there is NO round-up epsilon -- the old +0.1 was removed and stays removed):
+    --   Fehm gloves Lightning (10-14)% byte=98 → 11 (LE=11, 11.922 truncates to 11)
+    --   Omnis Void (1-45)% byte=238 → 42 (LE=42; double reduction gave 43.0 → 43, the
+    --     float32 path lands 42.9999 → 42). This is the boundary flip this port fixes.
+    --   <private build> Void (61-75)% byte=93 scalar=1.5 → 99 (LE=99, was 100)
+    --   <private build> Cursed Coin Phys (13-40)% byte=79 scalar=1.17 → 25 (LE=25)
+    local gm, scale
     if modType ~= 0 then
-        -- INCREASED / MORE / QUOTIENT: forced Hundredth path (vshDm `if (0 != b)` clause).
-        c = banker_round(minN)
-        d = banker_round(maxN)
-        v = m_floor((d + 1 - c) * e + c)
-    elseif rounding == 1 then       -- Integer
-        c = banker_round(minN)
-        d = banker_round(maxN)
-        v = m_floor((d + 1 - c) * e + c)
-    elseif rounding == 2 then       -- Tenth
-        c = banker_round(10 * minN) / 10
-        d = banker_round(10 * maxN) / 10
-        v = m_floor(10 * ((d + 0.1 - c) * e + c)) / 10
-    elseif rounding == 3 then       -- Thousandth
-        c = banker_round(1000 * minN) / 1000
-        d = banker_round(1000 * maxN) / 1000
-        v = m_floor(1000 * ((d + 0.001 - c) * e + c)) / 1000
-    else                            -- Hundredth (rounding == 0)
-        c = banker_round(minN)
-        d = banker_round(maxN)
-        v = m_floor((d + 1 - c) * e + c)
+        gm, scale = 1, 100          -- INCREASED / MORE / QUOTIENT: forced Hundredth
+    elseif rounding == 1 then
+        gm, scale = 1, 1            -- Integer
+    elseif rounding == 2 then
+        gm, scale = 10, 10          -- Tenth
+    elseif rounding == 3 then
+        gm, scale = 1000, 1000      -- Thousandth
+    else
+        gm, scale = 1, 100          -- Hundredth (rounding == 0)
     end
-    if v > d then v = d end
+    local c_int = banker_round(gm * minN)
+    local d_int = banker_round(gm * maxN)
+    -- float32 game-order evaluation (each toF32 rounds one intermediate product).
+    local fscale = toF32(scale)
+    local c   = toF32(c_int / fscale)
+    local d   = toF32(toF32(d_int / fscale) + toF32(1.0 / fscale))
+    local bf  = toF32(roll / toF32(255.0))
+    local raw = toF32(toF32(toF32(toF32(d - c) * bf) + c) * fscale)
+    -- signed truncate toward zero (C# Math.Truncate), then back to display units.
+    local v
+    if raw >= 0 then v = m_floor(raw) else v = -m_floor(-raw) end
+    v = v / gm
+    local dmax = d_int / gm
+    if v > dmax then v = dmax end
     return v
 end
 
@@ -792,24 +793,190 @@ function itemLib.modLinesForSlot(mod, slotKey)
     return mod
 end
 
-function itemLib.formatModLine(modLine, dbMode, altarBoost)
+-- @leb-regression-guard:item-tooltip-source-colour
+-- Colours a mod line by its SOURCE, mirroring LE's own per-line priority
+-- (TooltipContentBuilder.GetItemModifierIconForAffix, which the game applies as the
+-- row's icon tint). The ORDER is load-bearing and is not a preference:
+--
+--   * The legendary test precedes the exalted test, so a Legendary item's affixes are
+--     crimson even at T7. In-game evidence (2026-07-16): Suloron's Step, an LP-crafted
+--     Legendary — "+16 Strength" (T7) and "32% Increased Cooldown Recovery Speed" (T7)
+--     both render crimson, NOT exalted purple. Contrast The Last Bear's Fury Reforged,
+--     a Set item, where the same T7 "+16 Strength" renders purple. That difference is
+--     only explicable by item-rarity-before-tier, and it matches the game's own order.
+--   * Legendary is gated on `affixType` (rolled affixes only) because on that same
+--     Suloron's Step the unique's own mods ("+95% Melee Critical Strike Multiplier"
+--     etc.) render WHITE, not crimson.
+--
+-- White (NORMAL) is the correct default, not a fallback: the game never wraps implicit,
+-- unique-inherent, or normal-tier affix text in a colour at all (GetItemImplicitInfo /
+-- GetUniqueModifierInfoFromMod / GetItemSingleAffixInfo all leave ModifierColor unset),
+-- so those lines take the default text colour.
+--
+-- Exalted is `tier >= 5` on the 0-indexed tier, matching ItemAffix.get_IsExalted
+-- (`affixTier + 1 > 5`, i.e. display T6/T7). T5 is the max craftable tier.
+--
+-- TWO INDEPENDENT AXES, do not conflate them (they are separate fields on LE's ItemAffix,
+-- and GetSealedAffixType() takes no specialAffixType argument):
+--   * `modLine.kind` ≡ LE `SealedAffixType` — HOW the affix was sealed.
+--     None=0 (nil here) / Regular=1 ("sealed") / Primordial=2 / FromCorruption=3
+--     ("corrupted"). Item.lua:115-117 states the same equivalence.
+--   * `modLine.specialAffixType` ≡ LE `AffixList.SpecialAffixType` — which POOL it came
+--     from. 0=Standard, 1=Experimental, 2=Personal, 3=Set(Reforged), 4=IdolEnchantment,
+--     5=IdolWeaver, 6=Corrupted(corruption-exclusive).
+-- `kind == "corrupted"` (sealed BY corruption, purple box #A872DE) and
+-- `specialAffixType == 6` (drawn from the corruption-only pool, #E6ADFF) are DIFFERENT
+-- facts with DIFFERENT colours. An affix can be either, both, or neither.
+--
+-- Not modelled here because the game decides them per-ITEM or on a separate path:
+-- set bonuses (rendered by ItemsTab directly) and the corrupted item marker.
+--
+-- Depends on @leb-regression-guard:idol-special-affix-type-is-integer — every `sat ==`
+-- test below is dead on idols while idol affixes are string-tagged.
+-- Spec: spec/System/TestItemTooltipSourceColour_spec.lua
+local function sourceColorCode(modLine, item)
+	local sat = modLine.specialAffixType
+	if modLine.custom then
+		-- LEB-only concept (user-authored mod); no in-game analogue.
+		return colorCodes.CUSTOM
+	end
+	-- --- sealed axis first, exactly as the game orders it ---
+	if modLine.kind == "primordial" then
+		return colorCodes.PRIMORDIAL        -- .Primordial (9)
+	end
+	if modLine.kind == "corrupted" then
+		return colorCodes.SEALEDCORRUPTED   -- .Corrupted (10) — sealed FROM corruption
+	end
+	-- --- item rarity beats every remaining per-affix fact ---
+	if item and item.rarity == "LEGENDARY" and modLine.affixType then
+		return colorCodes.LEGENDARY         -- .Legendary (12)
+	end
+	-- --- affix pool ---
+	if sat == 3 then
+		return colorCodes.SET               -- .ReforgedSet (14)
+	end
+	if sat == 4 or sat == 5 then
+		-- IdolEnchantment / IdolWeaver — both tint #35C8C8 in-game.
+		-- MUST precede the exalted test: idol enchantments tier up to T7, so a
+		-- `tier >= 5` test placed first would paint them EXALTED purple. In-game
+		-- evidence (2026-07-16): a Weaver's Touch idol's "+13 Ward Decay Threshold" /
+		-- "+18 Ward gained when you use Evade" ("Tier: 4 (enchantment only)") are CYAN.
+		-- NOTE this reads `specialAffixType`, NOT `modLine.enchant` — the latter comes
+		-- only from a `{enchant}` raw-text tag, which appears ZERO times in
+		-- ModItem_*.json / ModIdol_*.json and so can never be set by an affix roll.
+		return colorCodes.IDOL
+	end
+	if sat == 6 then
+		return colorCodes.CORRUPTEDAFFIX    -- corruption-exclusive pool
+	end
+	if modLine.tier and modLine.tier >= 5 then
+		return colorCodes.EXALTED           -- .Exalted (11) — T6/T7
+	end
+	if modLine.kind == "sealed" then
+		return colorCodes.SEALED            -- .Sealed (8) — plain sealed
+	end
+	return colorCodes.NORMAL
+end
+
+-- @leb-regression-guard:unique-tooltip-entries-display-order
+-- The game renders a unique's tooltip from its `tooltipEntries`, NOT from `mods[]` order:
+-- entry <128 -> mods[entry], entry >=128 -> tooltipDescriptions[entry-128]. Mods flagged
+-- hideInTooltip are never in tooltipEntries; they are folded into a description line, and
+-- one description can cover SEVERAL mods (Hollow Finger folds player+minion resistances
+-- into one line each). So LEB's mods[] order is NOT the display order and its row count is
+-- NOT the game's line count (Exsanguinous: 6 rows -> 4 lines).
+-- INVARIANT: `mods[]` is the MECHANICS carrier (ModParser input) and must never be
+-- reordered or rewritten for display -- 464 of the 699 rows LEB marks NOT SUPPORTED still
+-- emit real modDB mods. This layer is ADDITIVE: it only chooses which modLine to show and
+-- in what order, so the computed modDB is untouched by construction.
+-- Do NOT permute item.explicitModLines in place instead: ItemsTabCraft seeds
+-- craftUniqueRanges[i] from explicitModLines[i] and reads it back when rebuilding, so an
+-- in-place reorder desyncs the craft roll sliders.
+-- Only items whose LEB-row <-> game-mod correspondence RESOLVED carry tooltipEntries;
+-- absent = fall back to mods[] order. "Resolved" means matched structurally against the
+-- game data (property/type/tags/value signature), NOT confirmed in-game: only Exsanguinous
+-- (11) and Shattered Worlds (413) were read off screenshots. Do not let either the code or
+-- the tooltip imply the other 428 are in-game-verified.
+-- Test: spec/System/TestUniqueTooltipEntriesOrder_spec.lua
+-- Establishing commit: <see git log>
+function itemLib.buildUniqueTooltipPlan(modLines, uniqueData)
+	if not uniqueData or not uniqueData.tooltipEntries or not uniqueData.mods then
+		return nil
+	end
+	local uniqueLines = {}
+	for _, modLine in ipairs(modLines) do
+		if modLine.uniqueInherent then
+			t_insert(uniqueLines, modLine)
+		end
+	end
+	-- The k-th uniqueInherent line is mods[k] (every producer inserts them in mods[] order).
+	-- If that no longer holds, the plan's indices would point at the wrong lines, so bail
+	-- out to the unordered fallback rather than render a confident lie.
+	if #uniqueLines ~= #uniqueData.mods then
+		return nil
+	end
+	local plan = { shownByIndex = {} }
+	for _, entry in ipairs(uniqueData.tooltipEntries) do
+		if entry < 128 then
+			local modLine = uniqueLines[entry + 1]
+			if not modLine then return nil end
+			t_insert(plan, { modLine = modLine })
+			plan.shownByIndex[entry + 1] = true
+		else
+			local desc = uniqueData.tooltipDescriptions and uniqueData.tooltipDescriptions[entry - 128 + 1]
+			if not desc then return nil end
+			t_insert(plan, { text = desc })
+		end
+	end
+	-- Item-level unsupported note. A description line can cover several folded mods, and
+	-- the desc->mod attribution is NOT derivable (413 of 560 descriptions carry no rollID
+	-- placeholder; 284 of 533 folded mods map to no description), so a per-desc marker
+	-- would have to be guessed. Worse, a folded line can be PARTIALLY supported, which a
+	-- per-line marker cannot express at all. We therefore count the folded lines LEB
+	-- cannot use and let the caller state it once, for the item.
+	plan.foldedExtra, plan.foldedNotSupported = 0, 0
+	for i, modLine in ipairs(uniqueLines) do
+		if not plan.shownByIndex[i] then
+			if modLine.extra then
+				plan.foldedExtra = plan.foldedExtra + 1
+			elseif modLine.notSupported then
+				plan.foldedNotSupported = plan.foldedNotSupported + 1
+			end
+		end
+	end
+	return plan
+end
+
+function itemLib.formatModLine(modLine, dbMode, altarBoost, item)
     local displayScalar = modLine.displayValueScalar or modLine.valueScalar
     local line = (not dbMode and modLine.range and itemLib.applyRange(modLine.line, modLine.range, displayScalar, modLine.rounding, modLine.postRoundScalar, modLine.postRoundFloor)) or modLine.line
     if line:match("^%+?0%%? ") or (line:match(" %+?0%%? ") and not line:match("0 to [1-9]")) or line:match(" 0%-0 ") or line:match(" 0 to 0 ") then
         -- Hack to hide 0-value modifiers
         return
     end
-    local colorCode
-    if modLine.extra then
-        colorCode = colorCodes.UNSUPPORTED
-        if launch.devModeAlt then
-            line = line .. "   ^1'" .. modLine.extra .. "'"
-        end
-    else
-        colorCode = (modLine.crafted and colorCodes.CRAFTED) or (modLine.custom and colorCodes.CUSTOM) or colorCodes.MAGIC
+    local colorCode = sourceColorCode(modLine, item)
+    -- @leb-regression-guard:item-tooltip-source-colour
+    -- "LEB can't use this line" is signalled by a SUFFIX, not by painting the text red.
+    -- The text colour now carries the line's SOURCE (see sourceColorCode), and red text
+    -- would both destroy that signal and collide with LEGENDARY crimson (^xE80B58 vs the
+    -- old UNSUPPORTED ^xF05050). Both states get the same suffix because they mean the
+    -- same thing to someone reading a build: the line contributes nothing.
+    --   * `extra`        -- parse residue: LEB does not understand the line.
+    --   * `notSupported` -- nsList: recognised, deliberately not modelled yet.
+    -- A line that is not a modifier at all (display-only tooltip text, e.g. "20 Maximum
+    -- Stacks of Ambition") parses to zero mods with NO residue, so it lands in neither
+    -- branch and is correctly left unmarked. See ModParser's displayOnlyModList.
+    if modLine.extra and launch.devModeAlt then
+        line = line .. "   ^1'" .. modLine.extra .. "'"
     end
-    if modLine.notSupported and not modLine.extra then
-        line = line .. "  " .. colorCodes.NORMAL .. "(NOT SUPPORTED IN LEB YET)"
+    if modLine.extra or modLine.notSupported then
+        -- @leb-regression-guard:unsupported-note-own-line
+        -- Put the "(NOT SUPPORTED IN LEB YET)" note on its OWN line (\n), not appended with
+        -- spaces. Tooltip:AddLine splits on \n before width-wrapping, so a long mod line (e.g.
+        -- "16 Minions teleported around you after you use a Traversal Skill") no longer wraps
+        -- THROUGH the note ("(NOT SUPPORTED" / "IN LEB YET)"); the note sits cleanly below.
+        -- The note keeps its own UNSUPPORTED colour; the mod text keeps its source colour.
+        line = line .. "\n" .. colorCodes.UNSUPPORTED .. "(NOT SUPPORTED IN LEB YET)"
     end
     if altarBoost and altarBoost > 0 and not dbMode and modLine.range then
         -- @leb-regression-guard: two-phase-floor-post-round-scalar

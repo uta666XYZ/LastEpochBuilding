@@ -50,16 +50,8 @@ end)
 function ModStoreClass:ScaleAddMod(mod, scale)
 	local unscalable = false
 	-- @leb-regression-guard:scaleaddmod-stacking-coeff-fractional-retention
-	-- A mod carrying a Multiplier/PerStat tag stores a PER-STACK coefficient that
-	-- is multiplied by the stack count at Combine time. When a buff-effect scale
-	-- (e.g. SymbolsOfHopeEffect +20%) is applied here, the scaled coefficient must
-	-- retain its fractional part: 3 * 1.2 = 3.6, then *5 active symbols = 18. The
-	-- legacy m_modf below truncates 3.6 -> 3, so *5 = 15 (off by 3). Block
-	-- Effectiveness escaped the bug only because 45 * 1.2 = 54 is integral.
-	-- Triangulation: MyLittleStJames lv79 Paladin (BETA_13) si4lgl-26
-	--   "+1% Block Chance Per Active Symbol" alloc 3 -> 3/symbol, *1.2 effect = 3.6
-	--   in-game BlockChance 35 = 8 + 3 + 3 + 3 + 18; LEB was 32 (15 not 18).
 	-- See REGRESSION_GUARDS.md "scaleaddmod-stacking-coeff-fractional-retention".
+	-- Validation provenance is retained in maintainer notes.
 	local hasStackingTag = false
 	for _, effects in ipairs(mod) do
 		if effects.unscalable then
@@ -337,12 +329,15 @@ function ModStoreClass:EvalMod(mod, cfg)
 			if tag.invert and mult ~= 0 then
 				mult = 1 / mult
 			end
-			-- @leb-regression-guard: per-set-fractional-precision
-			-- roundAfterMultiply: per-set affixes (Multiplier:CompleteSetCount with
-			-- a fractional rolled value from ItemTools.applyRange) round AFTER the
-			-- multiplier is applied, matching LE's calc order. floor(value × mult)
-			-- mirrors LE's integer-floor on the aggregate; +1 to All Skills
-			-- (integer value=1) is unaffected since floor(1×N)=N.
+			-- @leb-regression-guard: per-set-integer-source-not-halfstep
+			-- roundAfterMultiply: per-set affixes (Multiplier:CompleteSetCount)
+			-- floor AFTER the multiplier, mirroring the engine: CharacterMutator
+			-- computes `count × perSourceValue` as a float and floors the
+			-- attribute total only at final display (CharacterMutator.c
+			-- L10497-10501). The Integer per-set affix's per-source value is an
+			-- INTEGER (ItemTools normal precision=1 roll, NOT a half-step), so
+			-- floor(int × mult) is exact; +1 to All Skills (value=1) is likewise
+			-- unaffected since floor(1×N)=N.
 			local roundAfter = tag.roundAfterMultiply
 			if type(value) == "table" then
 				value = copyTable(value)
@@ -431,19 +426,14 @@ function ModStoreClass:EvalMod(mod, cfg)
 				-- because LE treats converted attributes as still being the source for
 				-- text-defined "Per <Attr>" effects (Druid passive Aspects of Might
 				-- gives 1% Armour Per Strength In Human/Spriggan and counts Brutality;
-				-- Qb6WlbxD verified at 198% from Brutality=198). Intrinsic character
+				-- <private build> verified at 198% from Brutality=198). Intrinsic character
 				-- bonuses route through PerStat:RawStr to bypass this sum.
 				local twin = s4ConvertedTwin[tag.stat]
 				if twin then
 					base = base + target:GetStat(twin, cfg)
 				end
 			end
-			-- LE uses continuous scaling for "per N stat" mods (not floored).
-			-- Verified: globalTreeData.json Wisdom node reminderText "gaining 10 max
-			-- mana will always grant 0.3% increased mana regen" - fractional contribution
-			-- would be impossible if mult were floored. IL2CPP dump.cs L96229 stores
-			-- manaRegenPer100MaxMana / currentManaRegenFromMaxMana as float.
-			-- See Obsidian "ShutFackUp lv85 Spellblade in-game stats.md" (#1 Mana Regen).
+			-- Validation provenance is retained in maintainer notes.
 			local mult = base / (tag.div or 1)
 			local limitTotal
 			if tag.limit or tag.limitVar then
@@ -642,8 +632,20 @@ function ModStoreClass:EvalMod(mod, cfg)
 			if tag.neg then
 				match = not match
 			end
+			-- @leb-regression-guard:actorcondition-tag-mult
+			-- Optional `tag.mult` for ActorCondition, mirroring the Condition
+			-- mult path (`condition-tag-mult`, ~L607) and the StatThreshold mult
+			-- path. Lets tree-node "<effect>, Doubled Against <enemy condition>"
+			-- modifiers (PassiveTree `doubled-against-condition` handler) keep the
+			-- base value when the enemy condition is OFF (no full gate) and apply
+			-- value*mult when it is ON. Without `mult`, behaviour is unchanged:
+			-- match==false returns nil (full gate, legacy).
 			if not match then
-				return
+				if not tag.mult then
+					return
+				end
+			elseif tag.mult then
+				value = value * tag.mult
 			end
 		elseif tag.type == "ItemCondition" then
 			local matches = {}
@@ -765,7 +767,33 @@ function ModStoreClass:EvalMod(mod, cfg)
 				return
 			end
 		elseif tag.type == "SkillId" then
-			if not cfg or (not cfg.skillGrantedEffect or cfg.skillGrantedEffect.id ~= tag.skillId) and cfg.groupSource ~= "SkillId:" .. tag.skillId then
+			-- @leb-regression-guard:tree-node-skill-rescope (gate site)
+			-- A SkillId tag matches when the running skill IS the tagged skill
+			-- (cfg.skillGrantedEffect.id) or when the running group was granted
+			-- BY it (cfg.groupSource, the triggered/sub-skill channel).
+			-- `skillIdList` = OR over several target skills (mirrors SkillName's
+			-- skillNameList; used when one tree node mutates both the parent
+			-- attack and its shared sub-ability, e.g. ga2st-13 lightning pen).
+			-- `directOnly` = suppress the groupSource channel: the mod belongs
+			-- to the tagged skill itself and must NOT flow onto skills it
+			-- merely triggers (e.g. ga2st-3 "Gathering Storm deals more
+			-- damage" leaking x1.24 onto the GS-triggered Storm Bolt).
+			-- Single-id, non-directOnly tags evaluate exactly as before.
+			if not cfg then
+				return
+			end
+			local match = false
+			if tag.skillIdList then
+				for _, skillId in ipairs(tag.skillIdList) do
+					if (cfg.skillGrantedEffect and cfg.skillGrantedEffect.id == skillId) or (not tag.directOnly and cfg.groupSource == "SkillId:" .. skillId) then
+						match = true
+						break
+					end
+				end
+			else
+				match = (cfg.skillGrantedEffect and cfg.skillGrantedEffect.id == tag.skillId) or (not tag.directOnly and cfg.groupSource == "SkillId:" .. tag.skillId)
+			end
+			if not match then
 				return
 			end
 		elseif tag.type == "SkillPart" then

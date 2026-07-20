@@ -10626,7 +10626,7 @@
 		"1": "3% increased Health",
 		"slotOverrides": {
 			"body_armor": {
-				"1": "5% increased Health"
+				"1": "4% increased Health"
 			}
 		},
 		"level": 25,
@@ -10674,7 +10674,7 @@
 		"1": "{rounding:Integer}(6-7)% increased Health",
 		"slotOverrides": {
 			"body_armor": {
-				"1": "{rounding:Integer}(9-11)% increased Health"
+				"1": "{rounding:Integer}(9-10)% increased Health"
 			}
 		},
 		"level": 25,
@@ -14581,7 +14581,7 @@
 		"classSpecificity": 19,
 		"slotOverrides": {
 			"body_armor": {
-				"1": "{rounding:Integer}(84-113)% increased Minion Health"
+				"1": "{rounding:Integer}(84-112)% increased Minion Health"
 			},
 			"amulet": {
 				"1": "{rounding:Integer}(66-88)% increased Minion Health"
@@ -16868,7 +16868,7 @@
 		"type": "Suffix",
 		"slotOverrides": {
 			"body_armor": {
-				"1": "+(96-113)% Elemental Resistance"
+				"1": "+(96-112)% Elemental Resistance"
 			},
 			"amulet": {
 				"1": "+(75-88)% Elemental Resistance"
@@ -25065,10 +25065,9 @@
 	},
 	"302_0": {
 		"affixName": "Damage Over Time to Bleeding Enemies for Marrow Shards",
-		"modName": "Fractured",
-		"affix": "Fractured",
-		"1": "+(10-30)% Increased Projectile Speed with Marrow Shards",
-		"2": "+(10-30)% Increased Projectile Speed with Bone Nova",
+		"modName": "Acolyte's",
+		"affix": "Damage Over Time to Bleeding Enemies for Marrow Shards",
+		"1": "(2-4)% more Damage Over Time to Bleeding Enemies for Marrow Shards",
 		"level": 0,
 		"statOrderKey": 302,
 		"statOrder": [
@@ -25779,7 +25778,7 @@
 		"specialAffixType": 0,
 		"slotOverrides": {
 			"amulet": {
-				"1": "{rounding:Integer}(59-70)% increased Mana Regen"
+				"1": "{rounding:Integer}(58-70)% increased Mana Regen"
 			}
 		}
 	},
@@ -41032,7 +41031,7 @@
 		"affixName": "Harvest Damage Leeched as Health",
 		"modName": "Acolyte's",
 		"affix": "Harvest Damage Leeched as Health",
-		"1": "(12-16)% of Damage dealt by Harvest Leeched as Health",
+		"1": "(1.2-1.6)% of Damage dealt by Harvest Leeched as Health",
 		"level": 6,
 		"statOrderKey": 412,
 		"statOrder": [
@@ -41056,7 +41055,7 @@
 		"affixName": "Harvest Damage Leeched as Health",
 		"modName": "Acolyte's",
 		"affix": "Harvest Damage Leeched as Health",
-		"1": "(17-21)% of Damage dealt by Harvest Leeched as Health",
+		"1": "(1.7-2.1)% of Damage dealt by Harvest Leeched as Health",
 		"level": 6,
 		"statOrderKey": 412,
 		"statOrder": [
@@ -41080,7 +41079,7 @@
 		"affixName": "Harvest Damage Leeched as Health",
 		"modName": "Acolyte's",
 		"affix": "Harvest Damage Leeched as Health",
-		"1": "(22-26)% of Damage dealt by Harvest Leeched as Health",
+		"1": "(2.2-2.6)% of Damage dealt by Harvest Leeched as Health",
 		"level": 6,
 		"statOrderKey": 412,
 		"statOrder": [
@@ -41104,7 +41103,7 @@
 		"affixName": "Harvest Damage Leeched as Health",
 		"modName": "Acolyte's",
 		"affix": "Harvest Damage Leeched as Health",
-		"1": "(27-31)% of Damage dealt by Harvest Leeched as Health",
+		"1": "(2.7-3.1)% of Damage dealt by Harvest Leeched as Health",
 		"level": 6,
 		"statOrderKey": 412,
 		"statOrder": [
@@ -41128,7 +41127,7 @@
 		"affixName": "Harvest Damage Leeched as Health",
 		"modName": "Acolyte's",
 		"affix": "Harvest Damage Leeched as Health",
-		"1": "(32-40)% of Damage dealt by Harvest Leeched as Health",
+		"1": "(3.2-4)% of Damage dealt by Harvest Leeched as Health",
 		"level": 6,
 		"statOrderKey": 412,
 		"statOrder": [
@@ -41152,7 +41151,7 @@
 		"affixName": "Harvest Damage Leeched as Health",
 		"modName": "Acolyte's",
 		"affix": "Harvest Damage Leeched as Health",
-		"1": "(48-60)% of Damage dealt by Harvest Leeched as Health",
+		"1": "(4.8-6)% of Damage dealt by Harvest Leeched as Health",
 		"level": 6,
 		"statOrderKey": 412,
 		"statOrder": [
@@ -41176,7 +41175,7 @@
 		"affixName": "Harvest Damage Leeched as Health",
 		"modName": "Acolyte's",
 		"affix": "Harvest Damage Leeched as Health",
-		"1": "(61-75)% of Damage dealt by Harvest Leeched as Health",
+		"1": "(6.1-7.5)% of Damage dealt by Harvest Leeched as Health",
 		"level": 6,
 		"statOrderKey": 412,
 		"statOrder": [
@@ -41200,7 +41199,7 @@
 		"affixName": "Harvest Damage Leeched as Health",
 		"modName": "Acolyte's",
 		"affix": "Harvest Damage Leeched as Health",
-		"1": "(120-150)% of Damage dealt by Harvest Leeched as Health",
+		"1": "(12-15)% of Damage dealt by Harvest Leeched as Health",
 		"level": 6,
 		"statOrderKey": 412,
 		"statOrder": [
@@ -42024,8 +42023,7 @@
 		"affixName": "Damage Over Time to Bleeding Enemies for Marrow Shards",
 		"modName": "Acolyte's",
 		"affix": "Damage Over Time to Bleeding Enemies for Marrow Shards",
-		"1": "+(12-13)% Increased Projectile Speed with Marrow Shards",
-		"2": "+(12-13)% Increased Projectile Speed with Bone Nova",
+		"1": "1% more Damage Over Time to Bleeding Enemies for Marrow Shards",
 		"level": 45,
 		"statOrderKey": 417,
 		"statOrder": [
@@ -42043,8 +42041,7 @@
 		"affixName": "Damage Over Time to Bleeding Enemies for Marrow Shards",
 		"modName": "Acolyte's",
 		"affix": "Damage Over Time to Bleeding Enemies for Marrow Shards",
-		"1": "+(14-15)% Increased Projectile Speed with Marrow Shards",
-		"2": "+(14-15)% Increased Projectile Speed with Bone Nova",
+		"1": "2% more Damage Over Time to Bleeding Enemies for Marrow Shards",
 		"level": 45,
 		"statOrderKey": 417,
 		"statOrder": [
@@ -42062,8 +42059,7 @@
 		"affixName": "Damage Over Time to Bleeding Enemies for Marrow Shards",
 		"modName": "Acolyte's",
 		"affix": "Damage Over Time to Bleeding Enemies for Marrow Shards",
-		"1": "+(16-17)% Increased Projectile Speed with Marrow Shards",
-		"2": "+(16-17)% Increased Projectile Speed with Bone Nova",
+		"1": "3% more Damage Over Time to Bleeding Enemies for Marrow Shards",
 		"level": 45,
 		"statOrderKey": 417,
 		"statOrder": [
@@ -42081,8 +42077,7 @@
 		"affixName": "Damage Over Time to Bleeding Enemies for Marrow Shards",
 		"modName": "Acolyte's",
 		"affix": "Damage Over Time to Bleeding Enemies for Marrow Shards",
-		"1": "+(18-19)% Increased Projectile Speed with Marrow Shards",
-		"2": "+(18-19)% Increased Projectile Speed with Bone Nova",
+		"1": "4% more Damage Over Time to Bleeding Enemies for Marrow Shards",
 		"level": 45,
 		"statOrderKey": 417,
 		"statOrder": [
@@ -42100,8 +42095,7 @@
 		"affixName": "Damage Over Time to Bleeding Enemies for Marrow Shards",
 		"modName": "Acolyte's",
 		"affix": "Damage Over Time to Bleeding Enemies for Marrow Shards",
-		"1": "+(20-25)% Increased Projectile Speed with Marrow Shards",
-		"2": "+(20-25)% Increased Projectile Speed with Bone Nova",
+		"1": "5% more Damage Over Time to Bleeding Enemies for Marrow Shards",
 		"level": 45,
 		"statOrderKey": 417,
 		"statOrder": [
@@ -42119,8 +42113,7 @@
 		"affixName": "Damage Over Time to Bleeding Enemies for Marrow Shards",
 		"modName": "Acolyte's",
 		"affix": "Damage Over Time to Bleeding Enemies for Marrow Shards",
-		"1": "+(30-36)% Increased Projectile Speed with Marrow Shards",
-		"2": "+(30-36)% Increased Projectile Speed with Bone Nova",
+		"1": "(7-8)% more Damage Over Time to Bleeding Enemies for Marrow Shards",
 		"level": 45,
 		"statOrderKey": 417,
 		"statOrder": [
@@ -42138,8 +42131,7 @@
 		"affixName": "Damage Over Time to Bleeding Enemies for Marrow Shards",
 		"modName": "Acolyte's",
 		"affix": "Damage Over Time to Bleeding Enemies for Marrow Shards",
-		"1": "+(37-46)% Increased Projectile Speed with Marrow Shards",
-		"2": "+(37-46)% Increased Projectile Speed with Bone Nova",
+		"1": "(9-10)% more Damage Over Time to Bleeding Enemies for Marrow Shards",
 		"level": 45,
 		"statOrderKey": 417,
 		"statOrder": [
@@ -42157,8 +42149,7 @@
 		"affixName": "Damage Over Time to Bleeding Enemies for Marrow Shards",
 		"modName": "Acolyte's",
 		"affix": "Damage Over Time to Bleeding Enemies for Marrow Shards",
-		"1": "+(74-92)% Increased Projectile Speed with Marrow Shards",
-		"2": "+(74-92)% Increased Projectile Speed with Bone Nova",
+		"1": "(13-15)% more Damage Over Time to Bleeding Enemies for Marrow Shards",
 		"level": 45,
 		"statOrderKey": 417,
 		"statOrder": [
@@ -81099,7 +81090,7 @@
 		"specialAffixType": 0,
 		"slotOverrides": {
 			"body_armor": {
-				"1": "{rounding:Integer}+(65-83) Armor",
+				"1": "{rounding:Integer}+(64-82) Armor",
 				"2": "(22-29)% reduced Bonus Damage Taken from Critical Strikes"
 			},
 			"shield": {
@@ -81165,7 +81156,7 @@
 		"specialAffixType": 0,
 		"slotOverrides": {
 			"body_armor": {
-				"1": "{rounding:Integer}+(107-143) Armor",
+				"1": "{rounding:Integer}+(106-142) Armor",
 				"2": "(38-45)% reduced Bonus Damage Taken from Critical Strikes"
 			},
 			"shield": {
@@ -81231,7 +81222,7 @@
 		"specialAffixType": 0,
 		"slotOverrides": {
 			"body_armor": {
-				"1": "{rounding:Integer}+(257-330) Armor",
+				"1": "{rounding:Integer}+(256-330) Armor",
 				"2": "(69-90)% reduced Bonus Damage Taken from Critical Strikes"
 			},
 			"shield": {
@@ -96530,7 +96521,7 @@
 		"modName": "of the Briar",
 		"affix": "of the Briar",
 		"1": "(5-15)% of Damage Reflected",
-		"2": "{rounding:Integer}(50-150) Damage Reflected to Attackers",
+		"2": "{rounding:Integer}(50-100) Damage Reflected to Attackers",
 		"level": 0,
 		"statOrderKey": 839,
 		"statOrder": [
@@ -105058,7 +105049,7 @@
 	"964_7": {
 		"affixName": "Chance to apply Marked for Death on Block",
 		"affix": "Chance to apply Marked for Death on Block",
-		"1": "{rounding:Integer}+1 Chance on Block to apply Marked For Death to the Attacker",
+		"1": "+100% Chance on Block to apply Marked For Death to the Attacker",
 		"level": 0,
 		"statOrderKey": 964,
 		"statOrder": [
@@ -105338,7 +105329,7 @@
 	"980_7": {
 		"affixName": "Chance for non-critical Strikes to inflict Critical Vulnerability for 4 seconds",
 		"affix": "Chance for non-critical Strikes to inflict Critical Vulnerability for 4 seconds",
-		"1": "{rounding:Integer}+(1.7-2) Chance for non-Critical Strikes to inflict Critical Vulnerability",
+		"1": "+(170-200)% Chance for non-Critical Strikes to inflict Critical Vulnerability",
 		"level": 0,
 		"statOrderKey": 980,
 		"statOrder": [
@@ -109362,7 +109353,7 @@
 		"affixName": "Doppelganger's Deception Reforged",
 		"modName": "Doppelganger's Deception Reforged",
 		"affix": "Doppelganger's Deception Reforged",
-		"1": "{rounding:Integer}+(1-1.39) Increased Damage for skills used by Shadows",
+		"1": "+(100-139)% Increased Damage for skills used by Shadows",
 		"level": 0,
 		"statOrderKey": 947,
 		"statOrder": [
@@ -109382,7 +109373,7 @@
 		"affixName": "Doppelganger's Deception Reforged",
 		"modName": "Doppelganger's Deception Reforged",
 		"affix": "Doppelganger's Deception Reforged",
-		"1": "{rounding:Integer}+(1.4-1.8) Increased Damage for skills used by Shadows",
+		"1": "+(140-180)% Increased Damage for skills used by Shadows",
 		"level": 0,
 		"statOrderKey": 947,
 		"statOrder": [
@@ -109402,7 +109393,7 @@
 		"affixName": "Doppelganger's Deception Reforged",
 		"modName": "Doppelganger's Deception Reforged",
 		"affix": "Doppelganger's Deception Reforged",
-		"1": "{rounding:Integer}+(2.4-3) Increased Damage for skills used by Shadows",
+		"1": "+(240-300)% Increased Damage for skills used by Shadows",
 		"level": 0,
 		"statOrderKey": 947,
 		"statOrder": [
@@ -109562,7 +109553,7 @@
 		"affixName": "Doppelganger's Facade Reforged",
 		"modName": "Doppelganger's Facade Reforged",
 		"affix": "Doppelganger's Facade Reforged",
-		"1": "{rounding:Integer}+(1.25-1.5) Chance to gain a stack of Dusk Shroud when you consume a Shadow",
+		"1": "+(125-150)% Chance to gain a stack of Dusk Shroud when you consume a Shadow",
 		"level": 0,
 		"statOrderKey": 948,
 		"statOrder": [
@@ -111095,7 +111086,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(10-17)% Cold Damage",
+		"2": "(10-17)% increased Cold Damage",
 		"canRollOn": [
 			21
 		],
@@ -111114,7 +111105,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(18-25)% Cold Damage",
+		"2": "(18-25)% increased Cold Damage",
 		"canRollOn": [
 			21
 		],
@@ -111133,7 +111124,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(26-33)% Cold Damage",
+		"2": "(26-33)% increased Cold Damage",
 		"canRollOn": [
 			21
 		],
@@ -111152,7 +111143,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(34-41)% Cold Damage",
+		"2": "(34-41)% increased Cold Damage",
 		"canRollOn": [
 			21
 		],
@@ -111171,7 +111162,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(42-50)% Cold Damage",
+		"2": "(42-50)% increased Cold Damage",
 		"canRollOn": [
 			21
 		],
@@ -111190,7 +111181,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(70-84)% Cold Damage",
+		"2": "(70-84)% increased Cold Damage",
 		"canRollOn": [
 			21
 		],
@@ -111209,7 +111200,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(85-100)% Cold Damage",
+		"2": "(85-100)% increased Cold Damage",
 		"canRollOn": [
 			21
 		],
@@ -111219,7 +111210,7 @@
 		"affixName": "Keplahan's Cryolith Reforged",
 		"modName": "Keplahan's Cryolith Reforged",
 		"affix": "Keplahan's Cryolith Reforged",
-		"1": "{rounding:Integer}+1 Chance to cast cold Volcanic Orb when you directly use a cold melee attack or cold traversal skill (3 second cooldown)",
+		"1": "+100% Chance to cast cold Volcanic Orb when you directly use a cold melee attack or cold traversal skill (3 second cooldown)",
 		"level": 0,
 		"statOrderKey": 959,
 		"statOrder": [
@@ -111228,7 +111219,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(1.6-2) Cold Damage",
+		"2": "(160-200)% increased Cold Damage",
 		"canRollOn": [
 			21
 		],
@@ -111247,7 +111238,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(10-17)% Fire Damage",
+		"2": "(10-17)% increased Fire Damage",
 		"canRollOn": [
 			21
 		],
@@ -111266,7 +111257,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(18-25)% Fire Damage",
+		"2": "(18-25)% increased Fire Damage",
 		"canRollOn": [
 			21
 		],
@@ -111285,7 +111276,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(26-33)% Fire Damage",
+		"2": "(26-33)% increased Fire Damage",
 		"canRollOn": [
 			21
 		],
@@ -111304,7 +111295,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(34-41)% Fire Damage",
+		"2": "(34-41)% increased Fire Damage",
 		"canRollOn": [
 			21
 		],
@@ -111323,7 +111314,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(42-50)% Fire Damage",
+		"2": "(42-50)% increased Fire Damage",
 		"canRollOn": [
 			21
 		],
@@ -111342,7 +111333,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(70-84)% Fire Damage",
+		"2": "(70-84)% increased Fire Damage",
 		"canRollOn": [
 			21
 		],
@@ -111361,7 +111352,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(85-100)% Fire Damage",
+		"2": "(85-100)% increased Fire Damage",
 		"canRollOn": [
 			21
 		],
@@ -111371,7 +111362,7 @@
 		"affixName": "Keplahan's Pyrolith Reforged",
 		"modName": "Keplahan's Pyrolith Reforged",
 		"affix": "Keplahan's Pyrolith Reforged",
-		"1": "{rounding:Integer}+1 Chance to cast fire Volcanic Orb when you directly use a fire melee attack or fire traversal skill (3 second cooldown)",
+		"1": "+100% Chance to cast fire Volcanic Orb when you directly use a fire melee attack or fire traversal skill (3 second cooldown)",
 		"level": 0,
 		"statOrderKey": 960,
 		"statOrder": [
@@ -111380,7 +111371,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(1.6-2) Fire Damage",
+		"2": "(160-200)% increased Fire Damage",
 		"canRollOn": [
 			21
 		],
@@ -111399,7 +111390,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(5-13)% Fire Damage",
+		"2": "(5-13)% increased Fire Damage",
 		"canRollOn": [
 			9
 		],
@@ -111418,7 +111409,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(14-21)% Fire Damage",
+		"2": "(14-21)% increased Fire Damage",
 		"canRollOn": [
 			9
 		],
@@ -111437,7 +111428,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(22-30)% Fire Damage",
+		"2": "(22-30)% increased Fire Damage",
 		"canRollOn": [
 			9
 		],
@@ -111456,7 +111447,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(31-39)% Fire Damage",
+		"2": "(31-39)% increased Fire Damage",
 		"canRollOn": [
 			9
 		],
@@ -111475,7 +111466,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(40-50)% Fire Damage",
+		"2": "(40-50)% increased Fire Damage",
 		"canRollOn": [
 			9
 		],
@@ -111494,7 +111485,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(70-84)% Fire Damage",
+		"2": "(70-84)% increased Fire Damage",
 		"canRollOn": [
 			9
 		],
@@ -111513,7 +111504,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "+(85-100)% Fire Damage",
+		"2": "(85-100)% increased Fire Damage",
 		"canRollOn": [
 			9
 		],
@@ -111523,7 +111514,7 @@
 		"affixName": "Kuzon's Fury Reforged",
 		"modName": "Kuzon's Fury Reforged",
 		"affix": "Kuzon's Fury Reforged",
-		"1": "{rounding:Integer}+(1-1.2) chance to throw a Burning Dagger when you use a melee fire attack and hit at least one enemy, doubled for Dancing Strikes (up to 4 times per second)",
+		"1": "+(100-120)% chance to throw a Burning Dagger when you use a melee fire attack and hit at least one enemy, doubled for Dancing Strikes (up to 4 times per second)",
 		"level": 0,
 		"statOrderKey": 961,
 		"statOrder": [
@@ -111532,7 +111523,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0.75,
-		"2": "{rounding:Integer}+(1.5-1.7) Fire Damage",
+		"2": "(150-170)% increased Fire Damage",
 		"canRollOn": [
 			9
 		],
@@ -111675,7 +111666,7 @@
 		"affixName": "Kuzon's Guise Reforged",
 		"modName": "Kuzon's Guise Reforged",
 		"affix": "Kuzon's Guise Reforged",
-		"1": "{rounding:Integer}+1 Chance to Blind on Fire Hit",
+		"1": "+100% Chance to Blind on Fire Hit",
 		"level": 0,
 		"statOrderKey": 962,
 		"statOrder": [
@@ -112046,7 +112037,7 @@
 	"967_3": {
 		"affixName": "Increased Damage over Time and Bow Bleed Chance",
 		"affix": "Increased Damage over Time and Bow Bleed Chance",
-		"1": "{rounding:Integer}+(1-1.09) Damage Over Time",
+		"1": "+(100-109)% Damage Over Time",
 		"level": 0,
 		"statOrderKey": 967,
 		"statOrder": [
@@ -112065,7 +112056,7 @@
 	"967_4": {
 		"affixName": "Increased Damage over Time and Bow Bleed Chance",
 		"affix": "Increased Damage over Time and Bow Bleed Chance",
-		"1": "{rounding:Integer}+(1.1-1.19) Damage Over Time",
+		"1": "+(110-119)% Damage Over Time",
 		"level": 0,
 		"statOrderKey": 967,
 		"statOrder": [
@@ -112084,7 +112075,7 @@
 	"967_5": {
 		"affixName": "Increased Damage over Time and Bow Bleed Chance",
 		"affix": "Increased Damage over Time and Bow Bleed Chance",
-		"1": "{rounding:Integer}+(1.2-1.29) Damage Over Time",
+		"1": "+(120-129)% Damage Over Time",
 		"level": 0,
 		"statOrderKey": 967,
 		"statOrder": [
@@ -112103,7 +112094,7 @@
 	"967_6": {
 		"affixName": "Increased Damage over Time and Bow Bleed Chance",
 		"affix": "Increased Damage over Time and Bow Bleed Chance",
-		"1": "{rounding:Integer}+(1.3-1.4) Damage Over Time",
+		"1": "+(130-140)% Damage Over Time",
 		"level": 0,
 		"statOrderKey": 967,
 		"statOrder": [
@@ -112122,7 +112113,7 @@
 	"967_7": {
 		"affixName": "Increased Damage over Time and Bow Bleed Chance",
 		"affix": "Increased Damage over Time and Bow Bleed Chance",
-		"1": "{rounding:Integer}+(1.9-2.1) Damage Over Time",
+		"1": "+(190-210)% Damage Over Time",
 		"level": 0,
 		"statOrderKey": 967,
 		"statOrder": [
@@ -114606,7 +114597,7 @@
 	"985_3": {
 		"affixName": "Increased Damage over Time and Increased Area for Area Skills",
 		"affix": "Increased Damage over Time and Increased Area for Area Skills",
-		"1": "{rounding:Integer}+(1-1.09) Damage Over Time",
+		"1": "+(100-109)% Damage Over Time",
 		"level": 0,
 		"statOrderKey": 985,
 		"statOrder": [
@@ -114633,7 +114624,7 @@
 	"985_4": {
 		"affixName": "Increased Damage over Time and Increased Area for Area Skills",
 		"affix": "Increased Damage over Time and Increased Area for Area Skills",
-		"1": "{rounding:Integer}+(1.1-1.19) Damage Over Time",
+		"1": "+(110-119)% Damage Over Time",
 		"level": 0,
 		"statOrderKey": 985,
 		"statOrder": [
@@ -114660,7 +114651,7 @@
 	"985_5": {
 		"affixName": "Increased Damage over Time and Increased Area for Area Skills",
 		"affix": "Increased Damage over Time and Increased Area for Area Skills",
-		"1": "{rounding:Integer}+(1.2-1.29) Damage Over Time",
+		"1": "+(120-129)% Damage Over Time",
 		"level": 0,
 		"statOrderKey": 985,
 		"statOrder": [
@@ -114687,7 +114678,7 @@
 	"985_6": {
 		"affixName": "Increased Damage over Time and Increased Area for Area Skills",
 		"affix": "Increased Damage over Time and Increased Area for Area Skills",
-		"1": "{rounding:Integer}+(1.3-1.4) Damage Over Time",
+		"1": "+(130-140)% Damage Over Time",
 		"level": 0,
 		"statOrderKey": 985,
 		"statOrder": [
@@ -114714,7 +114705,7 @@
 	"985_7": {
 		"affixName": "Increased Damage over Time and Increased Area for Area Skills",
 		"affix": "Increased Damage over Time and Increased Area for Area Skills",
-		"1": "{rounding:Integer}+(1.9-2.1) Damage Over Time",
+		"1": "+(190-210)% Damage Over Time",
 		"level": 0,
 		"statOrderKey": 985,
 		"statOrder": [
@@ -114741,7 +114732,7 @@
 	"986_0": {
 		"affixName": "Increased Melee Damage and Damage for Melee Attacks per 1 Mana Cost",
 		"affix": "Increased Melee Damage and Damage for Melee Attacks per 1 Mana Cost",
-		"1": "+(70-79)% Melee Damage",
+		"1": "(70-79)% increased Melee Damage",
 		"level": 0,
 		"statOrderKey": 986,
 		"statOrder": [
@@ -114768,7 +114759,7 @@
 	"986_1": {
 		"affixName": "Increased Melee Damage and Damage for Melee Attacks per 1 Mana Cost",
 		"affix": "Increased Melee Damage and Damage for Melee Attacks per 1 Mana Cost",
-		"1": "+(80-89)% Melee Damage",
+		"1": "(80-89)% increased Melee Damage",
 		"level": 0,
 		"statOrderKey": 986,
 		"statOrder": [
@@ -114795,7 +114786,7 @@
 	"986_2": {
 		"affixName": "Increased Melee Damage and Damage for Melee Attacks per 1 Mana Cost",
 		"affix": "Increased Melee Damage and Damage for Melee Attacks per 1 Mana Cost",
-		"1": "+(90-99)% Melee Damage",
+		"1": "(90-99)% increased Melee Damage",
 		"level": 0,
 		"statOrderKey": 986,
 		"statOrder": [
@@ -114822,7 +114813,7 @@
 	"986_3": {
 		"affixName": "Increased Melee Damage and Damage for Melee Attacks per 1 Mana Cost",
 		"affix": "Increased Melee Damage and Damage for Melee Attacks per 1 Mana Cost",
-		"1": "{rounding:Integer}+(1-1.09) Melee Damage",
+		"1": "(100-109)% increased Melee Damage",
 		"level": 0,
 		"statOrderKey": 986,
 		"statOrder": [
@@ -114849,7 +114840,7 @@
 	"986_4": {
 		"affixName": "Increased Melee Damage and Damage for Melee Attacks per 1 Mana Cost",
 		"affix": "Increased Melee Damage and Damage for Melee Attacks per 1 Mana Cost",
-		"1": "{rounding:Integer}+(1.1-1.19) Melee Damage",
+		"1": "(110-119)% increased Melee Damage",
 		"level": 0,
 		"statOrderKey": 986,
 		"statOrder": [
@@ -114876,7 +114867,7 @@
 	"986_5": {
 		"affixName": "Increased Melee Damage and Damage for Melee Attacks per 1 Mana Cost",
 		"affix": "Increased Melee Damage and Damage for Melee Attacks per 1 Mana Cost",
-		"1": "{rounding:Integer}+(1.2-1.29) Melee Damage",
+		"1": "(120-129)% increased Melee Damage",
 		"level": 0,
 		"statOrderKey": 986,
 		"statOrder": [
@@ -114903,7 +114894,7 @@
 	"986_6": {
 		"affixName": "Increased Melee Damage and Damage for Melee Attacks per 1 Mana Cost",
 		"affix": "Increased Melee Damage and Damage for Melee Attacks per 1 Mana Cost",
-		"1": "{rounding:Integer}+(1.3-1.4) Melee Damage",
+		"1": "(130-140)% increased Melee Damage",
 		"level": 0,
 		"statOrderKey": 986,
 		"statOrder": [
@@ -114930,7 +114921,7 @@
 	"986_7": {
 		"affixName": "Increased Melee Damage and Damage for Melee Attacks per 1 Mana Cost",
 		"affix": "Increased Melee Damage and Damage for Melee Attacks per 1 Mana Cost",
-		"1": "{rounding:Integer}+(1.9-2.1) Melee Damage",
+		"1": "(190-210)% increased Melee Damage",
 		"level": 0,
 		"statOrderKey": 986,
 		"statOrder": [
@@ -117916,7 +117907,7 @@
 	"1007_7": {
 		"affixName": "Increased Armor and Damage Reflected to Attackers per Armor Mitigation",
 		"affix": "Increased Armor and Damage Reflected to Attackers per Armor Mitigation",
-		"1": "{rounding:Integer}+(1.1-1.2) Armor",
+		"1": "+(110-120)% Armor",
 		"level": 0,
 		"statOrderKey": 1007,
 		"statOrder": [
@@ -123398,7 +123389,7 @@
 	"1081_7": {
 		"affixName": "Chance to gain Haste on Block and Haste Effect",
 		"affix": "Chance to gain Haste on Block and Haste Effect",
-		"1": "{rounding:Integer}+1 chance to gain Haste for 5 seconds after you Block",
+		"1": "+100% chance to gain Haste for 5 seconds after you Block",
 		"level": 0,
 		"statOrderKey": 1081,
 		"statOrder": [
@@ -124290,7 +124281,7 @@
 		"tier": 0,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(5-10)% Throwing Damage",
+		"2": "(5-10)% increased Throwing Damage",
 		"classSpecificity": 32,
 		"canRollOn": [
 			0
@@ -124310,7 +124301,7 @@
 		"tier": 1,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(11-20)% Throwing Damage",
+		"2": "(11-20)% increased Throwing Damage",
 		"classSpecificity": 32,
 		"canRollOn": [
 			0
@@ -124330,7 +124321,7 @@
 		"tier": 2,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(21-30)% Throwing Damage",
+		"2": "(21-30)% increased Throwing Damage",
 		"classSpecificity": 32,
 		"canRollOn": [
 			0
@@ -124350,7 +124341,7 @@
 		"tier": 3,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(31-40)% Throwing Damage",
+		"2": "(31-40)% increased Throwing Damage",
 		"classSpecificity": 32,
 		"canRollOn": [
 			0
@@ -124370,7 +124361,7 @@
 		"tier": 4,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(41-60)% Throwing Damage",
+		"2": "(41-60)% increased Throwing Damage",
 		"classSpecificity": 32,
 		"canRollOn": [
 			0
@@ -124390,7 +124381,7 @@
 		"tier": 5,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(71-80)% Throwing Damage",
+		"2": "(71-80)% increased Throwing Damage",
 		"classSpecificity": 32,
 		"canRollOn": [
 			0
@@ -124410,7 +124401,7 @@
 		"tier": 6,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "+(81-100)% Throwing Damage",
+		"2": "(81-100)% increased Throwing Damage",
 		"classSpecificity": 32,
 		"canRollOn": [
 			0
@@ -124430,7 +124421,7 @@
 		"tier": 7,
 		"type": "Prefix",
 		"standardAffixEffectModifier": 0,
-		"2": "{rounding:Integer}+(1.6-2) Throwing Damage",
+		"2": "(160-200)% increased Throwing Damage",
 		"classSpecificity": 32,
 		"canRollOn": [
 			0

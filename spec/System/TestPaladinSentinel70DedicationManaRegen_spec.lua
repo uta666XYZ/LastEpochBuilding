@@ -9,7 +9,7 @@
 -- raw (uncapped) block chance, not the capped value — the handler must read
 -- BlockChanceTotal, not BlockChance.
 --
--- Real-world hit: BgRrP5rr lv98 Paladin LETools snapshot shows ManaRegen=13.95.
+-- Real-world hit: <private build> lv98 Paladin LETools snapshot shows ManaRegen=13.95.
 -- Pre-fix LEB produced 10.5 (Δ=-24.7%). Post-fix: with BlockChanceTotal=92,
 -- the handler injects +42 INC ManaRegen (= 92 - 50), pushing total INC to 73
 -- and output.ManaRegen to 13.8 (Δ<1%).

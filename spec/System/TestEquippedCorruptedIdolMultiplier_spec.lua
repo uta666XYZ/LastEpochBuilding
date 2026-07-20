@@ -7,7 +7,7 @@
 -- var="EquippedCorruptedIdol"}; without an emission of that multiplier the
 -- affix resolves to 0 and contributes nothing.
 --
--- Establishing build: B7GrkJrK lv100 Lich/Reaper. LE Mana 1607.21 vs
+-- Establishing reference: see git log
 -- LEB 1373 (Δ=-234). Adding the multiplier closes ~75% of the gap to
 -- LEB 1548. The remaining residual is unrelated (Reliquary Nest unique
 -- "+(40-60)% Non-Unique Idol Stat Multiplier" still unparsed).

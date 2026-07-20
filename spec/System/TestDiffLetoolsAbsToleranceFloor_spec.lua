@@ -7,13 +7,18 @@
 -- rounding (Ward Regen, Block Chance, Endurance, …) so a sub-1.0 float
 -- delta doesn't inflate to a fake double-digit percentage drift on
 -- small-magnitude integer-rounded stats. Establishing case:
--- BgRrP5rr lv98 Paladin WardPerSecond LEB=3.712 (exact: Throne of
+-- <private build> lv98 Paladin WardPerSecond LEB=3.712 (exact: Throne of
 -- Ambition LifeRegenAppliesToWard=2 × LifeRegen=185.6 / 100) vs LETools
 -- "4" → |D|=0.288 ≤ TOL_ABS → row dropped.
 --
 -- See REGRESSION_GUARDS.md §diff-letools-abs-tolerance-floor and
 -- §ward-regen-passive-vs-event-split post-fix residual #2.
 
+local OptionalArtifact = dofile("../spec/OptionalArtifact.lua")
+local toolsIt = OptionalArtifact.gatedIt(it, pending, "spec/tools")
+
+-- Every test here reads spec/tools/diff_letools.py, which is gitignored (main repo
+-- only), so the whole block skips rather than failing in a worktree/CI checkout.
 describe("DiffLetoolsAbsToleranceFloor", function()
     local function readPython()
         local f = io.open("spec/tools/diff_letools.py", "r")
@@ -24,7 +29,7 @@ describe("DiffLetoolsAbsToleranceFloor", function()
         return src
     end
 
-    it("TOL_ABS constant equals 0.5", function()
+    toolsIt("TOL_ABS constant equals 0.5", function()
         local src = readPython()
         local val = src:match("TOL_ABS%s*=%s*([%d%.]+)")
         assert.is_not_nil(val, "TOL_ABS constant must be defined")
@@ -32,7 +37,7 @@ describe("DiffLetoolsAbsToleranceFloor", function()
             "TOL_ABS must equal 0.5 to mirror scripts/letools-diff.js")
     end)
 
-    it("inline regression-guard marker block present at TOL_ABS", function()
+    toolsIt("inline regression-guard marker block present at TOL_ABS", function()
         local src = readPython()
         local block = src:match(
             "@leb%-regression%-guard:%s*diff%-letools%-abs%-tolerance%-floor(.-)TOL_ABS")
@@ -41,7 +46,7 @@ describe("DiffLetoolsAbsToleranceFloor", function()
             .. "comment must precede TOL_ABS = 0.5 declaration")
     end)
 
-    it("filter loop drops rows with |D| <= TOL_ABS", function()
+    toolsIt("filter loop drops rows with |D| <= TOL_ABS", function()
         local src = readPython()
         assert.is_truthy(
             src:find("abs%(d%)%s*<=%s*TOL_ABS", 1, false),
@@ -49,7 +54,7 @@ describe("DiffLetoolsAbsToleranceFloor", function()
             .. "sub-floor rows are dropped before being added to `rows`")
     end)
 
-    it("--all bypass preserved (consume-site has `not args.all` guard)", function()
+    toolsIt("--all bypass preserved (consume-site has `not args.all` guard)", function()
         -- The user can intentionally widen with --all to see sub-floor rows.
         -- This guards against a refactor accidentally hardcoding the floor.
         local src = readPython()
@@ -60,7 +65,7 @@ describe("DiffLetoolsAbsToleranceFloor", function()
     end)
 
     -- Removed: "scripts/letools-diff.js still defines TOL_ABS = 0.5" assertion.
-    -- That JS sibling was claimed by the original commit (b8ce4d826) but never
+    -- That JS sibling was claimed by the original commit (<see git log>) but never
     -- actually existed in the repo's git history at any ref. The Python tool
     -- (spec/tools/diff_letools.py) is the single source of truth for TOL_ABS.
     -- The 4 tests above already pin the Python TOL_ABS=0.5 constant, the

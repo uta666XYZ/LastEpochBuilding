@@ -12,7 +12,7 @@
 --      in CalcDefence.lua. If that call narrows to an item-only lookup,
 --      passive contributions disappear without any LEB-internal error.
 --
--- Triangulation case study: BxvJP3g1 lv99 Necromancer
+-- Triangulation case study: <private build> lv99 Necromancer
 --   745 (base 250 + 5*99) + 250 (Towering Death 5pt) + 562 (3 affixes)
 --   = 1557 — matches LEB snapshot and LE datamining; LETools displayed
 --   1075 (-482) because its left panel omits passive node contributions

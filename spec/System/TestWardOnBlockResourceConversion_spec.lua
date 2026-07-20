@@ -1,6 +1,6 @@
 -- @leb-regression-guard: ward-on-block-resource-conversion
 -- Locks the parser+integration contract for the event-driven resource→ward
--- conversion affix: LE_datamining multi_affixes_v3.json affixId 963
+-- conversion affix: datamined game source multi_affixes_v3.json affixId 963
 -- "Added Block Chance and Current Mana gained as Ward on Block" (Shield prefix,
 -- corrupted-exclusive). Before this guard the bare `+N%` form was mis-parsed
 -- as Mana INC + Condition:Blocking and the "% of" form fell through to

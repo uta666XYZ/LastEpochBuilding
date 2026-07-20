@@ -7,7 +7,7 @@
 -- CalcSetup.lua applyBuffPrefix → ScaleAddList. Without precision=1,
 -- 15 * 1.04 = 15.6 truncates to 15, producing per-resist Δ=-0.6 vs LE.
 --
--- Establishing build: BgRrP5rr lv98 Paladin (Cold Resistance LE total 97.6
+-- Establishing reference: see git log
 -- → 98; LEB stored 96.8 → 97 pre-fix).
 --
 -- This spec pins the precision registration in src/Modules/Data.lua so
@@ -23,7 +23,7 @@
 -- previously stored "+0.8%" matching the raw float, producing
 -- ΔBASE=-0.2/resist vs LE's stored sum.
 --
--- Establishing build: BgRrP5rr lv98 Paladin (Idol of Hope contributes
+-- Establishing reference: see git log
 -- "+1% Cold Resistance" per LETools; LEB stored 0.8 pre-fix).
 
 describe("ResistBaseHighPrecision", function()

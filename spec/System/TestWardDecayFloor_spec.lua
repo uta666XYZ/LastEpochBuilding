@@ -2,7 +2,7 @@
 -- Locks the 0.5/s ward-decay floor implementation in CalcPerform.lua's
 -- post-offence ManaSpentGainedAsWard recomputation site.
 --
--- Game `ProtectionClass.Update` (RVA 0x234B8C0, non-boss branch) clamps the
+-- Game `ProtectionClass.Update` (datamined offset, non-boss branch) clamps the
 -- per-frame ward decay to `dt * minimumWardDecayWithoutRegen` (0.5/s in
 -- GlobalPlayerProperties) iff `wardRegen + wardRegenFromStats <= 0`.
 -- In LEB terms passive-only WPS corresponds to that pair, and the only
@@ -10,7 +10,7 @@
 -- the post-offence ManaSpentGainedAsWard path in CalcPerform.lua.
 --
 -- See:
---   * LE_datamining/extracted/ward_formulas.md
+--   * datamined game source
 --   * REGRESSION_GUARDS.md "ward-decay-floor-zero-passive"
 
 local function readSource(relPath)

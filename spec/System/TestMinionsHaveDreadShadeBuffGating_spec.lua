@@ -2,7 +2,7 @@
 -- Locks the SkillId→ActorCondition injection at CalcPerform.lua's
 -- MinionModifier dispatch loop.
 --
--- In-game (dump.cs L38327-38446) Dread Shade is implemented as
+-- In-game (datamined game source) Dread Shade is implemented as
 -- DreadShadeMutator : AbilityMutator, attaching a per-target Buff
 -- Component (DelayedCastOnMinion) that exposes auraStats /
 -- statsToParent / addedArmorPerVit on the specific minion that

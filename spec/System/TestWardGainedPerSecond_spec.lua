@@ -11,7 +11,7 @@
 -- doesn't show up in any numeric Ward output diff.
 --
 -- See REGRESSION_GUARDS.md "ward-gained-per-second-alias" and
--- LE_datamining/extracted/ward_formulas.md for the WPS pipeline that consumes
+-- datamined game source for the WPS pipeline that consumes
 -- the corrected output.
 
 local function readSource(relPath)

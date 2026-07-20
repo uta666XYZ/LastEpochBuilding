@@ -15,6 +15,35 @@ local m_ceil = math.ceil
 local m_floor = math.floor
 local m_modf = math.modf
 
+local idolClassNames = {
+	[1] = "Primalist",
+	[2] = "Mage",
+	[4] = "Sentinel",
+	[8] = "Acolyte",
+	[16] = "Rogue",
+}
+
+local function isIdolType(item)
+	return item.type and item.type:find("Idol", 1, true) ~= nil
+end
+
+local function itemTooltipBaseLabel(item)
+	local baseLabel
+	local className
+	baseLabel = item.baseName:gsub(" %(.+%)", "")
+	-- Game localization: "ClassRequirement_Primalist_31": "Primalist Ornate Idol".
+	-- @leb-regression-guard: idol-tooltip-game-presentation
+	-- Class-specific idol labels use the required class plus the idol base type.
+	-- Test: spec/System/TestIdolTooltipPresentation_spec.lua
+	if isIdolType(item) and item.type ~= "Idol Altar" and item.base then
+		className = idolClassNames[item.base.classReq]
+		if className then
+			return className .. " " .. item.type
+		end
+	end
+	return baseLabel
+end
+
 local function itemDisplayColor(item)
 	-- Idol Altar: always displayed with Exalted (purple) text/frame colour,
 	-- regardless of the item's actual rarity.
@@ -134,7 +163,35 @@ for _, layout in pairs(IDOL_ALTAR_LAYOUTS) do
 	if layout.mirrorOf and not layout.grid then
 		local src = IDOL_ALTAR_LAYOUTS[layout.mirrorOf]
 		if src and src.grid then layout.grid = mirrorGrid(src.grid) end
+		-- refracted activation ranks mirror with the grid (c -> 6-c)
+		if src and src.refractedRanks and not layout.refractedRanks then
+			local mirrored = {}
+			for r, cols in pairs(src.refractedRanks) do
+				mirrored[r] = {}
+				for c, rank in pairs(cols) do
+					mirrored[r][6 - c] = rank
+				end
+			end
+			layout.refractedRanks = mirrored
+		end
 	end
+end
+
+-- @leb-regression-guard:refracted-rank-gating
+-- A refracted (type-2) grid cell only behaves as refracted once the altar's
+-- unlock rank reaches its activation rank (game unlockMatrix encodes
+-- refracted cells as `100 + rank`; below that the cell is a normal slot).
+-- `idolAltarUnlockRank` config (default 8 = everything active) drives this.
+-- Ground truth: StarSeaVnV Ocular Altar — idol on (5,1) rank-1 corner gets
+-- the altar prefix boost in-game, idol on (1,1) rank-7 corner does NOT
+-- (in-game sheet cc 119% closes only with that asymmetry).
+-- Spec: spec/System/TestRefractedRankGating_spec.lua
+local function refractedCellActive(altar, r, c, unlockRank)
+	local row = altar.grid[r]
+	if not row or row[c] ~= 2 then return false end
+	local ranks = altar.refractedRanks
+	local needed = ranks and ranks[r] and ranks[r][c] or 0
+	return needed <= unlockRank
 end
 
 local influenceInfo = itemLib.influenceInfo
@@ -259,16 +316,8 @@ local ItemsTabClass = newClass("ItemsTab", "UndoHandler", "ControlHost", "Contro
 		local omenSlot = new("ItemSlotControl", {"TOPLEFT",prevOmenSlot,"BOTTOMLEFT"}, 0, 2, self, "Omen Idol " .. i, "Refracted " .. i)
 		local slotNum = i
 		-- @leb-regression-guard: refracted-display-not-omen-capacity
-		-- The "Refracted N" slots display every idol whose footprint overlaps a
-		-- Refracted (grid type=2) cell, NOT just the first `omenIdolCapacity`.
-		-- A Refracted Slot (altar grid cell) and Omen Idol capacity
-		-- (MaximumOmenIdols) are distinct concepts (see dump.cs:
-		-- equippedIdolsInRefractedSlots vs equippedOmenIdols). Gating the
-		-- display by omenIdolCapacity (=1 on every altar base) hid the 2nd/3rd
-		-- refracted idol (e.g. ZombieWarehouse lv72 Necromancer shows 3). The
-		-- EquippedOmenIdol stat is clamped separately in CalcSetup so it stays
-		-- bounded by capacity. Spec: spec/System/TestRefractedSlots_spec.lua.
 		-- See REGRESSION_GUARDS.md "refracted-display-not-omen-capacity".
+		-- Validation provenance is retained in maintainer notes.
 		omenSlot.shown = function()
 			if self.activeAltarLayout == "Default" then return false end
 			local layout = IDOL_ALTAR_LAYOUTS[self.activeAltarLayout]
@@ -940,13 +989,7 @@ function ItemsTabClass:Load(xml, dbFileName)
 		self.itemSetOrderList[1] = 1
 	end
 	self:SetActiveItemSet(tonumber(xml.attrib.activeItemSet) or 1)
-	-- Re-resolve blessing rolls from saved blessingFracs.
-	-- Build XMLs serialise blessing items as text blobs (e.g. "+69 Health"),
-	-- but the discrete-bucket roll calc in updateBlessingSlot may produce a
-	-- different value (e.g. 70) for the same frac. Without re-running the
-	-- resolver here, headless XML loads are stuck with the stale text while
-	-- GUI sessions silently recompute via +/- button presses or imports.
-	-- See Obsidian "ShutFackUp lv85 Spellblade in-game stats.md" (#5 Health).
+	-- Validation provenance is retained in maintainer notes.
 	if self.blessingFracs and self.blessingData then
 		for tl, frac in pairs(self.blessingFracs) do
 			local slot = self.slots[tl]
@@ -1238,7 +1281,7 @@ end
 -- type=2) cell on the active Idol Altar. Idols that do NOT touch any refracted
 -- cell must NOT appear in Omen Idol slots. The fill is bounded only by
 -- MAX_OMEN_IDOL_SLOTS, NOT by omenIdolCapacity — a Refracted Slot and the Omen
--- Idol capacity (MaximumOmenIdols) are distinct concepts (see dump.cs). The
+-- Idol capacity (MaximumOmenIdols) are distinct concepts (see datamined game source). The
 -- EquippedOmenIdol stat is clamped to capacity in CalcSetup, decoupled from how
 -- many idols this display populates. See REGRESSION_GUARDS.md
 -- `refracted-slot-overlap-only` and `refracted-display-not-omen-capacity`.
@@ -1249,6 +1292,17 @@ function ItemsTabClass:AutoPopulateOmenIdolSlots()
 	-- ordered by Idol slot number so Omen Idol 1..N is filled deterministically.
 	local layoutIdols = {}
 	if altar and altar.grid then
+		-- @leb-regression-guard:refracted-rank-gating
+		-- Use the rank-aware check so the Omen Idol display slots are filled
+		-- with the idols that are ACTUALLY refracted at the configured altar
+		-- unlock rank — otherwise a rank-inactive idol can occupy a visible
+		-- slot while a genuinely active one is pushed past the shown count.
+		local unlockRank = 8
+		if self.build and self.build.configTab then
+			unlockRank = self.build.configTab.input.idolAltarUnlockRank
+				or self.build.configTab.placeholder.idolAltarUnlockRank
+				or 8
+		end
 		local seen = {}
 		for r, rowData in ipairs(IDOL_GRID_LAYOUT) do
 			for c, slotName in ipairs(rowData) do
@@ -1257,12 +1311,11 @@ function ItemsTabClass:AutoPopulateOmenIdolSlots()
 					seen[slot.selItemId] = true
 					local item = self.items[slot.selItemId]
 					local size = item and idolSize[item.type] or { 1, 1 }
-					-- size = {w, h} (cols, rows). Walk footprint and test type==2.
+					-- size = {w, h} (cols, rows). Walk footprint, rank-gated.
 					local hit = false
 					for dr = 0, size[2] - 1 do
 						for dc = 0, size[1] - 1 do
-							local row = altar.grid[r + dr]
-							if row and row[c + dc] == 2 then
+							if refractedCellActive(altar, r + dr, c + dc, unlockRank) then
 								hit = true
 								break
 							end
@@ -1289,35 +1342,27 @@ function ItemsTabClass:AutoPopulateOmenIdolSlots()
 	end
 end
 
--- Count Omen Idols whose footprint overlaps a Refracted (type-2) cell on the
--- active Idol Altar grid. This is what the in-game
--- "+N per Idol in a Refracted Slot" affix scales off.
---
--- Each Omen Idol N slot mirrors an idol from the regular Idol 1-25 grid (set
--- by ImportTab and ItemsTab when the user moves idols on the grid). We resolve
--- each Omen Idol back to its grid position, expand by the idol's footprint
--- (idolSize), and count idols that occupy at least one refracted cell.
---
--- Returns 0 when no altar is active or its layout has no grid (i.e. Default).
--- See Obsidian "ShutFackUp lv85 Spellblade in-game stats.md" #2.
---
 -- @leb-regression-guard: refracted-count-independent-of-omen-capacity
--- This count is NOT capped by omenIdolCapacity / MaximumOmenIdols. A Refracted
--- Slot (altar-grid cell) and an Omen Idol slot (capped idol category) are
--- distinct concepts: every distinct idol overlapping a refracted cell counts,
--- even when more idols overlap than the altar's Omen Idol capacity. The cap
--- applies only to AutoPopulateOmenIdolSlots / the "Refracted N" dropdown, NOT
--- here. Spec: spec/System/TestCountIdolsOnRefractedCells_spec.lua. See
--- REGRESSION_GUARDS.md "refracted-count-independent-of-omen-capacity".
+-- Validation provenance is retained in maintainer notes.
 function ItemsTabClass:CountIdolsOnRefractedCells()
 	local altarName = self.activeAltarLayout
 	if not altarName or altarName == "Default" then return 0 end
 	local altar = self.altarLayouts and self.altarLayouts[altarName]
 	if not altar or not altar.grid then return 0 end
 
+	-- @leb-regression-guard:refracted-rank-gating
+	-- Cells whose activation rank exceeds the configured altar unlock rank
+	-- are still normal slots, so they don't count as refracted overlap.
+	local unlockRank = 8
+	if self.build and self.build.configTab then
+		unlockRank = self.build.configTab.input.idolAltarUnlockRank
+			or self.build.configTab.placeholder.idolAltarUnlockRank
+			or 8
+	end
+
 	-- Walk the regular Idol 1-25 grid: for each placed idol, check whether its
-	-- footprint (per idolSize) overlaps any altar grid cell with value == 2
-	-- (refracted). Mirrors the in-game model — there is no separate "Omen Idol"
+	-- footprint (per idolSize) overlaps any ACTIVE refracted altar grid cell.
+	-- Mirrors the in-game model — there is no separate "Omen Idol"
 	-- slot type. Dedup by itemId so multi-cell idols are only counted once.
 	local seen = {}
 	local count = 0
@@ -1332,8 +1377,7 @@ function ItemsTabClass:CountIdolsOnRefractedCells()
 					local hit = false
 					for dr = 0, size[2] - 1 do
 						for dc = 0, size[1] - 1 do
-							local row = altar.grid[r + dr]
-							if row and row[c + dc] == 2 then
+							if refractedCellActive(altar, r + dr, c + dc, unlockRank) then
 								hit = true
 								break
 							end
@@ -2463,6 +2507,12 @@ end
 function ItemsTabClass:AddItemTooltip(tooltip, item, slot, dbMode)
 	-- Item name
 	local rarityCode = itemDisplayColor(item)
+	-- @leb-regression-guard: tooltip-base-label-font-size
+	-- The base/sub-type line under a titled item name ("Turquoise Ring",
+	-- "Dragonbone Axe") renders at 16, smaller than the 20 title, matching the
+	-- in-game tooltip. Non-idols previously used 20 (== title size).
+	-- Test: spec/System/TestTooltipBaseLabelFontSize_spec.lua
+	local baseLabelHeight = 16
 	tooltip.center = true
 	tooltip.color = rarityCode
 	-- @leb-regression-guard: tooltip-mod-line-wrap
@@ -2477,11 +2527,14 @@ function ItemsTabClass:AddItemTooltip(tooltip, item, slot, dbMode)
 	end
 	if item.title then
 		tooltip:AddLine(20, rarityCode..item.title)
-		tooltip:AddLine(20, rarityCode..item.baseName:gsub(" %(.+%)",""))
+		tooltip:AddLine(baseLabelHeight, rarityCode..itemTooltipBaseLabel(item))
 	else
 		tooltip:AddLine(20, rarityCode..item.namePrefix..item.baseName:gsub(" %(.+%)","")..item.nameSuffix)
 	end
-	if item.rarity == "EXALTED" then
+	-- Game tooltip: empowered idols omit the "Exalted Item" rarity line.
+	-- @leb-regression-guard: idol-tooltip-game-presentation
+	-- Test: spec/System/TestIdolTooltipPresentation_spec.lua
+	if item.rarity == "EXALTED" and not isIdolType(item) then
 		tooltip:AddLine(16, colorCodes.EXALTED.."Exalted Item", "FONTIN SC")
 	elseif item.rarity == "LEGENDARY" then
 		tooltip:AddLine(16, colorCodes.LEGENDARY.."Legendary Item", "FONTIN SC")
@@ -2578,10 +2631,45 @@ function ItemsTabClass:AddItemTooltip(tooltip, item, slot, dbMode)
 	end
 
 	-- Modifiers
+	-- @leb-regression-guard:unique-tooltip-entries-display-order
+	-- Render a unique's inherent lines in the GAME's order/composition (tooltipEntries),
+	-- not in mods[] order. The plan only permutes which modLine is drawn; modDB is filled
+	-- by a separate pass (Item.lua:2037-2043) and is untouched. See ItemTools.lua
+	-- buildUniqueTooltipPlan for the invariant and why explicitModLines is not reordered.
+	-- Test: spec/System/TestUniqueTooltipEntriesOrder_spec.lua
+	local uniqueData = item.uniqueID and self.build.data.uniques and self.build.data.uniques[item.uniqueID]
+	local uniquePlan = uniqueData and itemLib.buildUniqueTooltipPlan(item.explicitModLines, uniqueData) or nil
+	local uniqueBlockDrawn = false
 	for listIdx, modList in ipairs{item.enchantModLines, item.implicitModLines, item.explicitModLines} do
 		if modList[1] then
 			for _, modLine in ipairs(modList) do
-				if item:CheckModLineVariant(modLine) then
+				if uniquePlan and modLine.uniqueInherent then
+					-- Emit the whole planned block at the position of the first inherent
+					-- line (keeps crafted affixes where the craft layout put them), then
+					-- skip the remaining inherent lines.
+					if not uniqueBlockDrawn then
+						uniqueBlockDrawn = true
+						for _, entry in ipairs(uniquePlan) do
+							if entry.modLine then
+								if item:CheckModLineVariant(entry.modLine) then
+									tooltip:AddLine(16, itemLib.formatModLine(entry.modLine, dbMode, nil, item))
+								end
+							else
+								-- A description line folds one or more hidden mods. It is
+								-- game text, not a modifier, so it never carries the
+								-- NOT SUPPORTED suffix -- that marker is per-modLine and
+								-- cannot be attributed to a folded line (see the
+								-- item-level note below).
+								tooltip:AddLine(16, colorCodes.UNIQUE .. entry.text)
+							end
+						end
+						if uniquePlan.foldedExtra > 0 or uniquePlan.foldedNotSupported > 0 then
+							tooltip:AddLine(14, colorCodes.UNSUPPORTED ..
+								"(" .. (uniquePlan.foldedExtra + uniquePlan.foldedNotSupported) ..
+								" folded modifier(s) above NOT SUPPORTED IN LEB YET)")
+						end
+					end
+				elseif item:CheckModLineVariant(modLine) then
 					local boost
 					if listIdx == 1 then
 						boost = altarBoostWeaver
@@ -2592,8 +2680,20 @@ function ItemsTabClass:AddItemTooltip(tooltip, item, slot, dbMode)
 							boost = altarBoostSuffix
 						end
 					end
-					tooltip:AddLine(16, itemLib.formatModLine(modLine, dbMode, boost))
+					-- `item` is passed for the source colour: a Legendary item's affixes are
+					-- crimson regardless of tier, which cannot be decided from the modLine
+					-- alone. See @leb-regression-guard:item-tooltip-source-colour.
+					tooltip:AddLine(16, itemLib.formatModLine(modLine, dbMode, boost, item))
 				end
+			end
+			-- Staged rollout, stated honestly: this item's rows could not be matched to the
+			-- game's mods, so it is drawn in mods[] order, which is NOT the game's order and
+			-- may differ in line count. The claim is about THIS item's correspondence being
+			-- unresolved -- it must not imply the items that do have a plan were confirmed
+			-- in-game (only two of them were; the rest are matched structurally).
+			if listIdx == 3 and uniqueData and not uniquePlan then
+				tooltip:AddLine(14, colorCodes.UNSUPPORTED ..
+					"(mod order could not be resolved for this item - showing legacy order)")
 			end
 			tooltip:AddSeparator(10)
 		end
@@ -2625,9 +2725,12 @@ function ItemsTabClass:AddItemTooltip(tooltip, item, slot, dbMode)
 			end
 		end
 		if setId and setData then
+			-- Set/bonus body text uses font size 16 to match the item's affix
+			-- mod-line size above; keep them equal so this section doesn't read
+			-- smaller than the rest of the tooltip.
 			tooltip:AddSeparator(10)
 			tooltip:AddLine(16, colorCodes.SET .. "ITEM SET")
-			tooltip:AddLine(14, "^7" .. (setName or ""))
+			tooltip:AddLine(16, "^7" .. (setName or ""))
 			-- Build equipped-name set for orange highlighting
 			local equippedNames = {}
 			local function markName(s)
@@ -2658,7 +2761,7 @@ function ItemsTabClass:AddItemTooltip(tooltip, item, slot, dbMode)
 			local ORANGE = "^xFF9933"
 			for _, name in ipairs(members) do
 				local col = equippedNames[name] and ORANGE or "^8"
-				tooltip:AddLine(13, col .. name)
+				tooltip:AddLine(16, col .. name)
 			end
 			-- Effective piece count for active-tier highlighting. Mirrors
 			-- CalcSetup.applySetBonuses: real equipped members of this set,
@@ -2705,7 +2808,7 @@ function ItemsTabClass:AddItemTooltip(tooltip, item, slot, dbMode)
 					local active = tier <= effectiveCount
 					local tierCol = active and ORANGE or "^8"
 					local textCol = active and ORANGE or "^7"
-					tooltip:AddLine(13, tierCol .. k .. " set: " .. textCol .. tostring(bonus[k]))
+					tooltip:AddLine(16, tierCol .. k .. " set: " .. textCol .. tostring(bonus[k]))
 				end
 			end
 			tooltip:AddSeparator(10)

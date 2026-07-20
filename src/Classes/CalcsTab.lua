@@ -36,7 +36,14 @@ local CalcsTabClass = newClass("CalcsTab", "UndoHandler", "ControlHost", "Contro
 	self:NewSection(3, "SkillSelect", 1, colorCodes.NORMAL, {{ defaultCollapsed = false, label = "View Skill Details", data = {
 		{ label = "Active Skill", { controlName = "mainSocketGroup",
 			control = new("DropDownControl", nil, 0, 0, 300, 16, nil, function(index, value)
-				self.input.skill_number = tableKeys(self.build.skillsTab.socketGroupList)[index]
+				-- @leb-regression-guard:main-skill-dropdown-hide-ailments
+				-- Use the selected list item's `val` (the socketGroupList key
+				-- set by RefreshSkillSelectControls) rather than positional
+				-- `tableKeys(...)[index]`. The latter assumed the dropdown
+				-- order matched tableKeys order and now breaks when the
+				-- Main Skill list filters out ailment sub-skills — value.val
+				-- maps to the correct skill_number regardless of filtering.
+				self.input.skill_number = value.val
 				self:AddUndoState()
 				self.build.buildFlag = true
 			end)
@@ -86,11 +93,6 @@ local CalcsTabClass = newClass("CalcsTab", "UndoHandler", "ControlHost", "Contro
 				self.build.buildFlag = true
 			end)
 		} },
-		{ label = "Spectre Library", flag = "spectre", { controlName = "mainSkillMinionLibrary",
-			control = new("ButtonControl", nil, 0, 0, 100, 16, "Manage Spectres...", function()
-				self.build:OpenSpectreLibrary()
-			end)
-		} },
 		{ label = "Minion Skill", flag = "haveMinion", { controlName = "mainSkillMinionSkill",
 			control = new("DropDownControl", nil, 0, 0, 200, 16, nil, function(index, value)
 				local mainSocketGroup = self.build.skillsTab.socketGroupList[self.input.skill_number]
@@ -135,6 +137,17 @@ Effective DPS: Curses and enemy properties (such as resistances and status condi
 	self.controls.search = new("EditControl", {"TOPLEFT",self,"TOPLEFT"}, 4, 4, 250, 20, "", "Search", "%c", 100, function()
 		self.build.buildFlag = true
 	end, nil, nil, true)
+
+	-- Dev-mode toggle: show every stat row, including those hidden at 0 (or x1).
+	-- Drives self.showAllStats, which CheckFlag reads to skip the value-based
+	-- gates. Only shown in dev mode; sections re-layout on the next Draw so no
+	-- rebuild is needed.
+	self.controls.showAllStats = new("CheckBoxControl", {"LEFT",self.controls.search,"RIGHT"}, 100, 0, 20, "Show All", function(state)
+		self.showAllStats = state
+	end, "Show all stats, including those with a value of zero.\nDev mode only.", false)
+	self.controls.showAllStats.shown = function()
+		return launch.devMode
+	end
 
 	self.controls.scrollBar = new("ScrollBarControl", {"TOPRIGHT",self,"TOPRIGHT"}, 0, 0, 18, 0, 50, "VERTICAL", true)
 	self.powerBuilderInitialized = nil
@@ -383,20 +396,27 @@ function CalcsTabClass:CheckFlag(obj)
 			end
 		end
 	end
-	if obj.haveOutput then
-		local ns, var = obj.haveOutput:match("^(%a+)%.(%a+)$")
-		if ns then
-			if not actor.output[ns] or not actor.output[ns][var] or actor.output[ns][var] == 0 then
+	-- "Show All Stats" toggle (dev-mode button) shows every stat row
+	-- regardless of its value: skip the value-based gates (haveOutput /
+	-- haveOutputNotOne) so rows that would normally hide at 0 (or at x1)
+	-- still display. Skill/class gates below still apply, so the panel
+	-- stays scoped to the current build.
+	if not self.showAllStats then
+		if obj.haveOutput then
+			local ns, var = obj.haveOutput:match("^(%a+)%.(%a+)$")
+			if ns then
+				if not actor.output[ns] or not actor.output[ns][var] or actor.output[ns][var] == 0 then
+					return
+				end
+			elseif not actor.output[obj.haveOutput] or actor.output[obj.haveOutput] == 0 then
 				return
 			end
-		elseif not actor.output[obj.haveOutput] or actor.output[obj.haveOutput] == 0 then
-			return
 		end
-	end
-	if obj.haveOutputNotOne then
-		local v = actor.output[obj.haveOutputNotOne]
-		if not v or v == 1 then
-			return
+		if obj.haveOutputNotOne then
+			local v = actor.output[obj.haveOutputNotOne]
+			if not v or v == 1 then
+				return
+			end
 		end
 	end
 	if obj.classRestriction then
@@ -434,6 +454,22 @@ end
 -- Build the calculation output tables
 function CalcsTabClass:BuildOutput()
 	self.powerBuildFlag = true
+
+	-- @leb-regression-guard: build-output-wipes-global-cache
+	-- GlobalCache.cachedData is keyed by cacheSkillUUID, which is build-AGNOSTIC
+	-- (skill name + slot + socket-group index — no build identity, Common.lua).
+	-- The interactive app wipes the cache on every rebuild (Build.lua buildFlag
+	-- path) so it only ever holds the current build's entries. Test/snapshot
+	-- paths (TestBuilds_spec, GenerateBuilds14 socket-group cycling) call
+	-- BuildOutput directly, bypassing that wipe, so stale ailment/sub-skill
+	-- entries from a PREVIOUS build leaked in: e.g. <private build>'s Frailty
+	-- enemy-damage debuff (MaxStacks) was contaminated by a predecessor
+	-- (<private build> / BurningMyWood), dropping TotalEHP 18053 -> 15852 depending on
+	-- suite load order — an order-dependent flake across ~45 EHP/damage-taken
+	-- keys. Wiping here makes BuildOutput self-contained and order-independent;
+	-- the cache is repopulated and shared within this BuildOutput as intended.
+	-- See spec/System/TestBuildOutputCacheIsolation_spec.lua + REGRESSION_GUARDS.md.
+	wipeGlobalCache()
 
 	--[[
 	local start = GetTime()

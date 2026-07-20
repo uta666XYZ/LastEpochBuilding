@@ -11,7 +11,7 @@
 -- bonus in notScalingStats. ModParser previously had no handler for the
 -- "From Symbols of Hope" suffix, so the BASE LifeRegen mod stayed in the
 -- ModParser residue and never reached modDB. With 5 ActiveSymbols at the
--- BgRrP5rr Paladin build the +5 BASE multiplies to +25 BASE LifeRegen.
+-- <private build> Paladin build the +5 BASE multiplies to +25 BASE LifeRegen.
 --
 -- See REGRESSION_GUARDS.md for the index entry.
 

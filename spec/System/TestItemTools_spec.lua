@@ -5,7 +5,7 @@ local applyRangeTests = {
     [{ "+(2-6) to All Attributes", 48, 1.0, "Integer" }] = "+2 to All Attributes",
     [{ "+(7-8) Attunement", 38, 1.5, "Integer" }] = "+10 Attunement",
     -- @leb-regression-guard: humble-idol-scalar-scale-first
-    -- Humble Weaver Idol (scalar 0.38) on AL07Kea4. byte 221 must yield +3 and
+    -- Humble Weaver Idol (scalar 0.38) on <private build>. byte 221 must yield +3 and
     -- byte 98 must yield +2 to match the in-game tooltip; interpolating first
     -- then scaling under-rounds these to +2 / +1.
     [{ "+(3-7) Vitality", 221, 0.38, "Integer" }] = "+3 Vitality",
@@ -14,6 +14,19 @@ local applyRangeTests = {
     -- Apiarist's Suit (scalar 1.5) Strength "+(11-13)" at byte 57 must give
     -- +17 (interpolate-first); scaling endpoints first would give +16.
     [{ "+(11-13) to Strength", 57, 1.5, "Integer" }] = "+17 to Strength",
+    -- @leb-regression-guard: hive-mind-pen-tenth-rounding
+    -- Hive Mind (270) "+(4-6)% ... Penetration ... per Dexterity" displays at
+    -- TENTH precision in-game (4.4%, not 4%). Without Tenth the % path collapses
+    -- precision 100 -> 1 (whole) and renders 4%. ParseRaw extracts the
+    -- {rounding:Tenth} tag that ships in uniques_1_4.json (270 mods[7]) into the
+    -- rounding arg passed here. The stash copy's rollId-0 byte is 56 -> in-game 4.4%.
+    [{ "+(4-6)% Poison and Elemental Penetration for Bees per Dexterity", 56, 1.0, "Tenth" }] =
+        "+4.4% Poison and Elemental Penetration for Bees per Dexterity",
+    -- Scoping control for hive-mind-pen-tenth-rounding: the SAME pen mod WITHOUT
+    -- the Tenth tag must stay whole (Hundredth), proving untagged pen affixes are
+    -- byte-identical and the Tenth path is opt-in via the tag only.
+    [{ "+(4-6)% Poison and Elemental Penetration for Bees per Dexterity", 56, 1.0 }] =
+        "+4% Poison and Elemental Penetration for Bees per Dexterity",
 }
 
 describe("TestItemTools", function()
@@ -74,7 +87,7 @@ describe("TestItemTools", function()
     --   default (false) = floor = in-game match (production / GUI)
     --   HeadlessWrapper flip (true) = round-half-up = LETools-compat (spec/)
     -- See REGRESSION_GUARDS.md "applyrange-rounding-mode-split"
-    -- Establishing commit: 73d6a712c
+    -- Establishing reference: see git log
     --
     -- "% increased/reduced/more/less" affix rounding is mode-switched between
     -- in-game tooltip parity (floor, production default) and LETools/Maxroll
@@ -207,8 +220,8 @@ describe("TestItemTools", function()
     -- @leb-regression-guard: vshdm-direct-port
     -- Locks in the game-faithful interpolation formula. These cases were
     -- cross-verified against (a) the LE planner JS function `vshDm` decoded
-    -- from planner_app.js 2026-05-09, (b) the IL2CPP dump
-    -- `BaseStats.GetValueAfterRounding` at RVA 0x230B940, and (c) a Python
+    -- from planner_app.js 2026-05-09, (b) the datamined game source dump
+    -- `BaseStats.GetValueAfterRounding` at datamined offset, and (c) a Python
     -- reference implementation at .tmp/vshdm_verify.py.
     --
     -- ModType: 0=ADDED 1=INCREASED 2=MORE 3=QUOTIENT
@@ -237,14 +250,43 @@ describe("TestItemTools", function()
             assert.are.equals(3, itemLib.applyRangeStrict(2, 4, 90, 1.0, 0, 1))
         end)
 
-        it("non-ADDED branch is forced to Hundredth+epsilon regardless of rounding arg", function()
+        it("non-ADDED branch is forced to Hundredth precision regardless of rounding arg", function()
             -- @leb-regression-guard:vshdm-percentage-units
             -- Even if caller passes rounding=Integer (1), modType != 0 must
-            -- override and use Hundredth precision with the +0.1 epsilon
-            -- (was +0.001 in fraction-space). byte=128 e=0.50196:
-            --   floor((100+1-50)*0.50196 + 50 + 0.1) = floor(75.7) = 75.
+            -- override and use the Hundredth precision path. There is NO epsilon:
+            -- the game truncates (the legacy +0.1 was removed and stays removed;
+            -- see ItemTools.lua). byte=128 e=0.50196:
+            --   floor((100+1-50)*0.50196 + 50) = floor(75.6) = 75.
             local v = itemLib.applyRangeStrict(50, 100, 128, 1.0, 1, 1)
             assert.are.equals(75, v)
+        end)
+
+        -- @leb-regression-guard: applyrange-no-epsilon-truncate
+        -- In-game-grounded anchor for "the game truncates, no epsilon". Fehm
+        -- gloves Lightning Resistance (10-14)% at byte 98 reads 11 in-game;
+        -- raw 11.922 truncates to 11. Restoring the legacy +0.1 epsilon would
+        -- floor(11.922 + 0.1) = 12 and fail this. modType=0/rounding=0 is the
+        -- exact production resistance path (resist-vshdm-strict routing).
+        it("no epsilon: Fehm gloves Lightning (10-14)% byte=98 truncates 11.922 -> 11", function()
+            assert.are.equals(11, itemLib.applyRangeStrict(10, 14, 98, 1.0, 0, 0))
+        end)
+
+        -- @leb-regression-guard:applyrange-float32-boundary
+        -- Validation provenance is retained in maintainer notes.
+        it("float32 boundary: Omnis Void (1-45)% byte=238 flips 43 -> 42", function()
+            assert.are.equals(42, itemLib.applyRangeStrict(1, 45, 238, 1.0, 0, 0))
+        end)
+        it("float32 boundary: non-boundary byte=239 stays 43 (selective, not blanket -1)", function()
+            assert.are.equals(43, itemLib.applyRangeStrict(1, 45, 239, 1.0, 0, 0))
+        end)
+
+        -- Lock-spec anchors from the float32 port (all MEASURED in-game): these must
+        -- survive the double->float32 migration unchanged.
+        it("Apiarist Poison Res (50-75)% byte=181 -> 68 (span (max-min+1) form)", function()
+            assert.are.equals(68, itemLib.applyRangeStrict(50, 75, 181, 1.0, 0, 0))
+        end)
+        it("Cursed Coin Phys (13-40)% byte=79 scalar=1.17 -> 25", function()
+            assert.are.equals(25, itemLib.applyRangeStrict(13, 40, 79, 1.17, 0, 0))
         end)
 
         it("Tenth precision rounds to nearest 0.1", function()
@@ -254,7 +296,7 @@ describe("TestItemTools", function()
         end)
 
         it("scalar < 1.0 (Humble idol) scales endpoints first", function()
-            -- AL07Kea4 Humble Weaver +(3-7) Vitality byte=221 scalar=0.38:
+            -- <private build> Humble Weaver +(3-7) Vitality byte=221 scalar=0.38:
             -- minN=1.14, maxN=2.66; rounded=1, 3 (Integer); span+1 = 3
             -- v = floor(3 * 221/255 + 1) = floor(2.6 + 1) = 3
             assert.are.equals(3, itemLib.applyRangeStrict(3, 7, 221, 0.38, 0, 1))
@@ -269,13 +311,13 @@ describe("TestItemTools", function()
 
         -- @leb-regression-guard:banker-round-vshdm
         -- Locks in the banker's-rounding endpoint quantization used by LE's
-        -- AscendingValueAfterPropertyRounding (RVA 0x2307cc0) via FUN_18038f970
+        -- AscendingValueAfterPropertyRounding (datamined offset) via FUN_18038f970
         -- (banker round helper). C# Math.Round / Mathf.RoundToInt default to
         -- MidpointRounding.ToEven, NOT half-up. Half-up matches everywhere
         -- EXCEPT when scalar*min or scalar*max lands exactly on .5, where
         -- banker rounds to the nearest even integer.
         --
-        -- Establishing case: BgRrP5rr lv98 Paladin Body Armor void resist
+        -- Establishing case: <private build> lv98 Paladin Body Armor void resist
         -- suffix (61-75)% with scalar 1.5 and byte=93. Half-up:
         --   c = 92, d = 113, span+1 = 22, v = floor(22*93/255 + 92) = floor(8.02+92) = 100
         -- Banker:

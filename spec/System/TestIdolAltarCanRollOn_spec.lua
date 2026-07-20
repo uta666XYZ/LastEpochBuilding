@@ -4,9 +4,9 @@
 -- (slot id 41 = "Idol Altar"; see src/Data/LEToolsImport/slot_mapping.lua
 -- L45).
 --
--- Game-file backing (LE 1.4 il2cpp re-extraction, 2026-05-15):
---   * LE_datamining/extracted/items/single_affixes_v3.json
---   * LE_datamining/extracted/items/multi_affixes_v3.json
+-- Game-file backing (LE 1.4 datamined game source re-extraction, 2026-05-15):
+--   * datamined game source
+--   * datamined game source
 -- Every Idol Altar affixId family used by LEB (1088, 1089, 1092-1109,
 -- total 20) sets `canRollOn: [41]` in the dumped affix data. The LEB
 -- JSON was inconsistent: 16/160 entries (only 1095_* "Maximum Omen Idols

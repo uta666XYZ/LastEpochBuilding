@@ -163,7 +163,7 @@ for skillId, grantedEffect in pairs(data.skills) do
     -- NOTE: skillTreeConversionDamageTags (stcdt) is intentionally NOT mirrored
     -- into skillTypes/keywordFlags here. LE's GetTagsForLevelOfSkillsStats() —
     -- which gates "+to <Cat> Skills" affixes — uses ONLY `tags | fakeTags`
-    -- (confirmed via decompile, 2026-04). stcdt advertises tree-reachable
+    -- (confirmed via datamining, 2026-04). stcdt advertises tree-reachable
     -- damage types for the Scaling Tags tooltip row only; folding it into the
     -- cap-summing keywordFlags would falsely match affixes like Whetstone
     -- Gavel "+1 Fire Skills" against any skill whose spec tree merely has a
@@ -193,7 +193,7 @@ for skillId, grantedEffect in pairs(data.skills) do
     --   * Ability.skillTreeConversionDamageTags  (advertised tree-reachable damage
     --       types — e.g. Focus/Arcane Ascendance/Flame Ward show "Lightning" /
     --       "Cold" tags purely from this field; their tags bitmap doesn't carry
-    --       the damage type bit. Per LE_datamining 2026-04-30.)
+    --       the damage type bit. Per datamined game source)
     --   * baseFlag-derived bits (channelling/spell/melee/etc. — Focus is tagged
     --       "Channeled" via baseFlags.channelling, never via the AT bitmap)
     -- For minion-summon parents, stcdt belongs on the Minion Tags row instead

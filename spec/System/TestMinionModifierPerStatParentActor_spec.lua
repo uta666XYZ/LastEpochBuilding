@@ -1,29 +1,6 @@
 -- @leb-regression-guard:minion-modifier-perstat-parent-actor
--- Locks the PerStat→parent injection at CalcPerform.lua's
--- MinionModifier dispatch. LE minions don't carry primary attributes
--- (Vit/Str/Dex/Int/Att) of their own — tree-passive text like
---   Acolyte-59 notScalingStats[0]:
---     "2% Increased Minion Armor Per Intelligence"
--- references the player's stat. Without the injection ModStore.lua's
--- PerStat resolve (L398) defaults `target = self` to minion.modDB
--- and GetStat("Int") returns 0, zeroing every "Per <PrimaryAttr>"
--- contribution that should land on minions via MinionModifier.
---
--- The injection walks value.mod's tags before
--- `env.minion.modDB:AddMod(value.mod)` and forces `actor = "parent"`
--- on PerStat tags whose stat (or any statList entry) appears in
--- LE_MINION_PERSTAT_PARENT_ATTRS — without overwriting an explicit
--- prior actor binding, and copying the mod first so shared
--- skillModList references stay clean.
---
--- Symptoms before fix (BxvJP3g1 lv99 Necromancer):
---   * Skeleton.Armour = 30 (LETools 57; Δ-27 = 47%)
---   * Bone_Golem.Armour = 30 (same gap)
--- After fix:
---   * Skeleton.Armour = 56 (LETools 57; Δ-1 = 1.7%, rounding noise)
---   * Bone_Golem.Armour = 56
 -- See REGRESSION_GUARDS.md "minion-modifier-perstat-parent-actor"
--- and [[Minion Armor 三角測量 g1 調査]] (Obsidian).
+-- Validation provenance is retained in maintainer notes.
 
 describe("MinionModifierPerStatParentActor", function()
     it("LE_MINION_PERSTAT_PARENT_ATTRS covers the five primary attributes and their Raw twins", function()

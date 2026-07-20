@@ -4,7 +4,7 @@
 -- re-extracted from the game files. Caught migrations:
 --   2026-05-05 (1.4): Legends Entwined dup, Raindance MS dup,
 --       Zeurial's Hunt copy-paste text duplication.
---   2026-05-09 (Q9J4w8PE health +325): Aaron's Will (id=272) had
+--   2026-05-09 (<private build> health +325): Aaron's Will (id=272) had
 --       extra `(10-24)% increased Health` + `(100-240)% increased
 --       Minion Health` lines (mods=10 vs game data's 8). The exact-
 --       string DUP_LINE caught it once the audit ran. Same bug
@@ -75,13 +75,13 @@ describe("TestUniqueDataIntegrity #uniqueData", function()
         -- regen pipeline re-introduces dups or someone manually deletes a
         -- legitimate row), this trips and forces a re-audit.
         --
-        -- Curated 2026-05-09 after Aaron's Will Q9J4w8PE +325 health
+        -- Curated 2026-05-09 after Aaron's Will <private build> +325 health
         -- regression. Names verified against
-        -- LE_datamining/extracted/items/uniques_v3.json.
+        -- datamined game source
         assert.is_not_nil(data.uniques, "data.uniques must be loaded")
         local expected = {
             -- Aaron's Will: game has 8 mods. Buggy LEB had 10 (Health %
-            --   and Minion Health % duplicated; gave Q9J4w8PE +325 HP).
+            --   and Minion Health % duplicated; gave <private build> +325 HP).
             ["Aaron's Will"]         = 8,
             -- Sunforged Greathelm: game has 4 mods. LEB 1_3/1_2 carried a
             --   trailing duplicate `(20-30)% increased Armor` (5 → 4).
@@ -91,11 +91,18 @@ describe("TestUniqueDataIntegrity #uniqueData", function()
             -- Legends Entwined: game has 5 (game splits AS/CS into two
             --   mods + 1 dup `Counts as part of every set`). LEB
             --   intentionally combines AS+CS into one row (commit
-            --   e16040093) → 5 in LEB.
+            --   <see git log>) → 5 in LEB.
             ["Legends Entwined"]     = 5,
             -- Zeurial's Hunt: game has 5 (Bow Lit Dmg, Throwing Lit Dmg,
             --   Throw→Bow direction, Bow→Throw direction, Haste).
             ["Zeurial's Hunt"]       = 5,
+            -- Throne of Ambition: game data has ONE real mod (property 98,
+            --   hideInTooltip) — all 6 visible lines are tooltipDescriptions
+            --   (tooltipEntries modDisplay 128..133, i.e. all >= 128). LEB
+            --   transcribes all 6 display lines. Audited 2026-07-16: LEB
+            --   previously carried only 4, dropping the stack cap and decay
+            --   lines. See displayOnlyModList in ModParser.lua.
+            ["Throne of Ambition"]   = 6,
         }
         local byName = {}
         for _, entry in pairs(data.uniques) do
@@ -131,7 +138,32 @@ describe("TestUniqueDataIntegrity #uniqueData", function()
     --   * Pearls of the Swine (Blood / Fire): LEB carried a spurious
     --     "+100% " prefix on the "Bone Curse also inflicts X" line that
     --     in-game tooltips do NOT show. Poison variant was already clean.
-    -- A future regen of upstream that re-introduces either pattern trips
+    -- Audited 2026-05-23:
+    --   * Blade of the Forgotten Knight (set_1_4.json uniqueID=88): the
+    --     1.4 game files / LETools DB "Game Version Changes" log raised
+    --     both Cast Speed and Attack Speed from 7%-era → 15% → 20% in 1.4.
+    --     set_1_4.json still carried the pre-1.4 "15%" values for both
+    --     lines. Triple-confirmed (uniques_v3.json datamine + LETools
+    --     tooltip + LETools 1.4 change log). Fixed in set_1_4.json.
+    --     NOTE: the legacy uniques.json (no-suffix, pre-1.4 fallback) is
+    --     intentionally left at the OLD values — current 1.4 builds read
+    --     set_1_4.json (merged by Data.lua ~625), never uniques.json.
+    --   * Ruby Fang Aegis (set_1_4.json uniqueID=174): in-game tooltip and
+    --     datamine uniques_v3.json (id=174, base name "Ruby Tower Shield")
+    --     both read "Ruby Venom for 10 seconds on Block"; set_1_4.json
+    --     carried stale "8 seconds". Fixed in set_1_4.json.
+    --   * Fragments of the Shattered Lance (set_1_4.json uniqueID=110): the
+    --     3rd modifier slot in set_1_4.json carried "+(7-12) Health Regen"
+    --     — but that value is the base Relic IMPLICIT (in-game "+10 Health
+    --     Regen, Range 7 to 12"). The actual 3rd modifier is "(10-13)
+    --     Health Gain on Freeze" (datamine uniques_v3.json id=110 property
+    --     38 value=10/maxValue=13; in-game tooltip "10 Health Gain on
+    --     Freeze, Range 10 to 13"; legacy uniques_1_2/1_3.json already had
+    --     the correct text). set_1_4.json had copied the implicit into the
+    --     modifier slot with wrong stat AND wrong value. Triple-confirmed
+    --     (datamine + LETools + in-game screenshot 2026-05-23). Fixed in
+    --     set_1_4.json.
+    -- A future regen of upstream that re-introduces any pattern trips
     -- this spec instead of silently shifting tooltip text.
     it("tooltip-audited mod text is preserved (TOOLTIP_TEXT)", function()
         assert.is_not_nil(data.uniques, "data.uniques must be loaded")
@@ -162,6 +194,50 @@ describe("TestUniqueDataIntegrity #uniqueData", function()
                 variant_has = "increased Poison Damage",    -- Poison
                 require_any = { "Bone Curse also inflicts Acid Skin" },
                 forbid_any  = { "+100% Bone Curse also inflicts Acid Skin" },
+            },
+            {
+                -- Blade of the Forgotten Knight (set_1_4.json id=88): 1.4
+                -- raised Cast & Attack Speed to 20%; set_1_4.json carried
+                -- stale 15%. Pin both at 20% and forbid the old 15%.
+                name        = "Blade of the Forgotten Knight",
+                require_any = { "20% increased Cast Speed", "20% increased Attack Speed" },
+                forbid_any  = { "15% increased Cast Speed", "15% increased Attack Speed" },
+            },
+            {
+                -- Ruby Fang Aegis (set_1_4.json id=174): in-game tooltip
+                -- + datamine uniques_v3.json (id=174 "Ruby Tower Shield")
+                -- both read "Ruby Venom for 10 seconds on Block"; set_1_4
+                -- carried stale "8 seconds". Pin 10s, forbid 8s.
+                name        = "Ruby Fang Aegis",
+                require_any = { "Ruby Venom for 10 seconds on Block" },
+                forbid_any  = { "Ruby Venom for 8 seconds on Block" },
+            },
+            {
+                -- Fragments of the Shattered Lance (set_1_4.json id=110):
+                -- the 3rd modifier is "(10-13) Health Gain on Freeze"
+                -- (datamine prop38 + in-game). set_1_4.json had copied the
+                -- base Relic implicit "+(7-12) Health Regen" into the
+                -- modifier slot. Pin the Freeze line, forbid the implicit
+                -- text appearing as a (Health Regen) modifier value.
+                name        = "Fragments of the Shattered Lance",
+                require_any = { "(10-13) Health Gain on Freeze" },
+                forbid_any  = { "+(7-12) Health Regen" },
+            },
+            {
+                -- Throne of Ambition (id=211): LEB paraphrased the stack-gain
+                -- line as "100% Chance to gain a stack of Ambition ...", a
+                -- wording that exists in neither the datamine nor the in-game
+                -- tooltip, and dropped the "(1 second cooldown)" qualifier.
+                -- Pinned to uniques_v3.json tooltipDescriptions[0] verbatim,
+                -- confirmed against an in-game screenshot 2026-07-16. The
+                -- cap/decay lines are pinned too — they were absent entirely.
+                name        = "Throne of Ambition",
+                require_any = {
+                    "You gain a stack of Ambition when you hit a boss or rare enemy (1 second cooldown)",
+                    "20 Maximum Stacks of Ambition",
+                    "You lose all stacks of Ambition if you go 4 seconds without gaining a stack",
+                },
+                forbid_any  = { "100% Chance to gain a stack of Ambition" },
             },
         }
 

@@ -21,20 +21,8 @@ local bor = bit.bor
 local band = bit.band
 
 -- @leb-regression-guard: maxlife-maxmana-banker-round
--- LE finalizes maxHealth/maxMana to an int via the property's roundingForAdded
--- mode. property_list_v3 marks Health (property 7) and Mana (property 8) with
--- roundingForAdded = "Integer", which formulas_verified §38 decodes as banker
--- rounding (FUN_18038f970, round-half-to-even) — NOT truncation. This supersedes
--- the old `int-truncate-life-mana` guard, which assumed floor.
--- Hard in-game witness that rules out FLOOR: ShutFackUp lv85 Spellblade (save
--- BETA_7) Mana base 241.9301 x 1.04 = 251.607 -> in-game General panel shows 252.
--- floor=251 (old LEB, WRONG); banker=252 (correct). The default Acolyte lv1 mana
--- 50 + 0.50506 + 2 = 52.50506 likewise -> 53 (frac > .5 rounds up), not 52.
--- NOTE: every observed data point has a fraction != exactly .5, so banker and
--- plain round-half-up give identical results here; the choice of banker (not
--- round-half-up) rests solely on property_list_v3 §38 "Integer" = round-half-to-
--- even. The distinction only ever matters on an exact-.5 fraction at an even int.
 -- See REGRESSION_GUARDS.md "maxlife-maxmana-banker-round".
+-- Validation provenance is retained in maintainer notes.
 local function bankerRound(x)
 	local f = m_floor(x)
 	local frac = x - f
@@ -125,7 +113,26 @@ local function doActorLifeMana(actor)
 			t_insert(breakdown.Mana, s_format("= %g", output.Mana))
 		end
 	end
+	-- @leb-regression-guard:mana-missing-not-full-mechanics
+	-- Derive absolute output.MissingMana from Config "Your Missing Mana %"
+	-- (Multiplier:MissingManaPercent) x max mana, so LE "per N missing mana" mods
+	-- (e.g. Smite/Paladin) scale via a PerStat tag. This MUST be an idempotent
+	-- output assignment, NOT an additive modDB:NewMod -- doActorLifeMana runs more
+	-- than once per BuildOutput, so a NewMod would double-count (probe: 50% of
+	-- 219 mana gave 220 instead of 110). The static planner models full mana by
+	-- default (ModParser "per N current mana" guard), so this is 0 unless the
+	-- user sets the missing-mana% config. Percent-based "per N% missing mana"
+	-- reads the config multiplier directly. See ConfigOptions playerMissingManaPercent.
+	output.MissingMana = bankerRound(output.Mana * modDB:Sum("BASE", nil, "Multiplier:MissingManaPercent") / 100)
 	output.LowestOfMaximumLifeAndMaximumMana = m_min(output.Life, output.Mana)
+	-- @leb-regression-guard:current-mana-damage-scaling
+	-- Static planners have no live "current mana" (it fluctuates per cast), so
+	-- "X% Damage per N current mana" mods (Excited Bolts / Flame Rush / Stygian
+	-- Beam) model current mana as FULL mana == max Mana — the in-game dominant
+	-- case (mana parked at the cap). PerStat:CurrentMana reads this field; without
+	-- it GetStat returns 0 and the mod silently contributes nothing. See
+	-- ModParser.lua "per (%d+) current mana" and REGRESSION_GUARDS.md.
+	output.CurrentMana = output.Mana
 end
 
 -- Calculate attributes, and set conditions
@@ -257,7 +264,7 @@ local function doActorAttribsConditions(env, actor)
 	-- Test: spec/System/TestModParse_spec.lua
 	--       "Corrupted Idol Altar counts as non-Idol for
 	--        CorruptedNonIdolItemsEquipped"
-	-- Establishing commit: e9e4e64c5
+	-- Establishing reference: see git log
 	output.CorruptedItemsEquipped = modDB:Sum("BASE", nil, "CorruptedItemsEquipped")
 	output.CorruptedNonIdolItemsEquipped = modDB:Sum("BASE", nil, "CorruptedNonIdolItemsEquipped")
 	output.CorruptedIdolItemsEquipped = modDB:Sum("BASE", nil, "CorruptedIdolItemsEquipped")
@@ -270,7 +277,7 @@ local function doActorAttribsConditions(env, actor)
 	-- companion guard "set-bonus-breakdown-publish" locks the producer side.
 	-- Test: spec/System/TestSetBreakdown_spec.lua
 	--       "applySetBonuses publishes setBreakdown with sets[] and bonuses"
-	-- Establishing commit: f7b598ede
+	-- Establishing reference: see git log
 	--
 	-- env.itemModDB.setBreakdown contains { completeSetCount, wildcardCount,
 	-- sets = { {name, pieceCount, setSize, complete, bonuses}... } }. Pure
@@ -342,38 +349,50 @@ local function doActorAttribsConditions(env, actor)
 		end
 	end
 	-- @leb-regression-guard:s4-perstat-base-includes-converted-twin
-	-- Mirror post-conversion base attributes as Raw* values. The intrinsic
-	-- character +4% Armour / +4 Evasion / +2 WardRetention / +2 Mana / +6
-	-- Life / +1 PoisonResist / +1 NecroticResist registered in CalcSetup
-	-- now reference Raw<Attr> via PerStat tags so they remain post-conversion
-	-- (matching guard s4-converted-attr-no-base-inherit: Brutality MUST NOT
-	-- inherit Strength's intrinsic +4% Armour). All other text-parsed
-	-- "per <attribute>" mods (passive nodes, item affixes) keep PerStat:<Attr>
-	-- and at runtime ModStore.EvalMod sums the converted twin (Brutality for
-	-- Str, etc.) — verified in LE: Druid passive "Aspects of Might" gives
-	-- 1% Armour Per Strength In Human/Spriggan and counts Brutality (Qb6WlbxD
-	-- Brutality=198 → ~204% Armour). See Obsidian
-	-- 'Development/Calculator/S4 PerStat semantics.md'.
+	-- Validation provenance is retained in maintainer notes.
 	output.RawStr = output.Str
 	output.RawDex = output.Dex
 	output.RawInt = output.Int
 	output.RawAtt = output.Att
 	output.RawVit = output.Vit
 	-- Build breakdowns for converted attributes (Madness/Rampancy/Brutality/Guile/Apathy)
-	-- so the Calcs tab tooltip exposes direct grants + conversion contribution.
+	-- so the Calcs tab tooltip explains the conversion contribution + direct grants.
+	-- @leb-regression-guard:s4-converted-attr-source-breakdown
+	-- A converted attribute (e.g. Brutality) draws its value from the SOURCE
+	-- attribute it replaced (Str). The user must be able to see WHERE that value
+	-- comes from, in the SAME per-source TABLE format every other attribute uses
+	-- (Value / Notes / Source / Source Name, with item names, passive-node display
+	-- names and equipment slots resolved). That per-source table is produced by the
+	-- standard mod-section: CalcSections points the converted attribute's row at the
+	-- SOURCE attribute's modName (`{ modName = <base attr> }`), so AddModSection
+	-- tabulates Str's mods and resolves their sources — see guard
+	-- `s4-converted-attr-table-from-source`. THIS block only adds the short textual
+	-- summary that sits above that table (converted-from + direct grants + total),
+	-- mirroring how a normal attribute shows breakdown.simple above its source
+	-- table. It reads output/modDB but writes nothing to output, so it stays
+	-- corpus-neutral (snapshots compare output, not breakdown text). Spec:
+	--   spec/System/TestS4ConvertedAttrBreakdown_spec.lua
 	if breakdown then
 		for _, conv in ipairs(attrConversions) do
-			if output[conv.dst] ~= 0 or conv.convertedAmount ~= 0 or conv.directGrant ~= 0 then
+			if conv.convertedAmount ~= 0 or conv.directGrant ~= 0 then
 				local lines = {}
-				if conv.directGrant ~= 0 then
-					t_insert(lines, s_format("%g ^8(direct grants of %s)", conv.directGrant, conv.dst))
-				end
 				if conv.convertedAmount ~= 0 then
-					t_insert(lines, s_format("+ %g ^8(%g%% of %s [%g] converted to %s)",
-						conv.convertedAmount, conv.convPct, conv.src, conv.convSrcValue, conv.dst))
+					if conv.convPct ~= 100 then
+						t_insert(lines, s_format("%g ^8(%g%% of %s [%g] converted to %s)",
+							conv.convertedAmount, conv.convPct, conv.src, conv.convSrcValue, conv.dst))
+					else
+						t_insert(lines, s_format("%g ^8(converted from %s)", conv.convertedAmount, conv.src))
+					end
+				end
+				if conv.directGrant ~= 0 then
+					t_insert(lines, s_format("+ %g ^8(direct grants of %s)", conv.directGrant, conv.dst))
+				end
+				-- Only add a total line when more than one component contributes,
+				-- mirroring breakdown.simple (no redundant "= N" under a lone line).
+				if #lines > 1 then
+					t_insert(lines, s_format("= %g", output[conv.dst]))
 				end
 				if #lines > 0 then
-					t_insert(lines, s_format("= %g", output[conv.dst]))
 					breakdown[conv.dst] = lines
 				end
 			end
@@ -444,6 +463,14 @@ function calcs.perform(env, fullDPSSkipEHP)
 	local fullDPSSkipEHP = fullDPSSkipEHP or false
 
 	-- Process ailment debuffs stack count
+	-- @leb-regression-guard:nondamaging-ailment-stack-cap (consumer note)
+	-- Each non-damaging-ailment applier's MaxStacks is summed into Multiplier:<id>Stack
+	-- here; the per-ailment cap (Shock=10 etc.) is applied downstream when the debuff buff
+	-- is consumed (buff.stackLimit, set from maximum_stacks in CalcActiveSkill ~L1187).
+	-- The Spark Charge detonation participates like every Lightning hit (its Shock is no
+	-- longer suppressed -- the cap makes the in-game-validated saturation match): in-game
+	-- the detonation does apply Shock (capture: Shock instances after Spark Charge), and
+	-- the enemy total saturates at the cap of 10 regardless of how many skills feed it.
 	if env.mode ~= "CACHE" then
 		for _, activeSkill in ipairs(env.player.activeSkillList) do
 			if activeSkill.skillFlags.ailment and activeSkill.skillFlags.buffs then
@@ -458,6 +485,34 @@ function calcs.perform(env, fullDPSSkipEHP)
 					modDB:NewMod("Multiplier:" .. skillId .. "Stack", "BASE", cache.Env.player.output.MaxStacks)
 				end
 			end
+		end
+	end
+
+	-- @leb-regression-guard:elemental-arrows-resource (consumer)
+	-- Rogue/Marksman "Elemental Arrows" resource (game Property_Player_109-115). Bow attacks
+	-- consume Elemental Arrows; each consumed arrow adds fire+lightning + increased-elemental
+	-- (the "... with Elemental Arrow" / "... per Elemental Arrow used" tree stats, parsed to
+	-- Multiplier:ElementalArrowConsumed in ModParser). Steady-state consumed = min(1 base +
+	-- extra-per-attack, max cap) -- validated on AmHoA (save_20260703_031914) whose in-game
+	-- lightning FLOOR already reflects the full 3-arrow consume (no 0-arrow cluster). A build
+	-- lacking the mechanic has ElementalArrowMax == 0 and is untouched.
+	if env.mode ~= "CACHE" then
+		local maxArrows = modDB:Sum("BASE", nil, "ElementalArrowMax")
+		local extraConsume = modDB:Sum("BASE", nil, "ElementalArrowExtraConsume")
+		-- Mechanism present when the build shows any Elemental Arrows signal. The max-cap
+		-- notScalingStat ("3 Maximum Elemental Arrows") parses via the ModParser bare-number
+		-- rule; stale empty ModCache entries that shadowed it (and the +N-with-Elemental-Arrow
+		-- added lines) were deleted. Keep the game base cap of 3 (Rogue-24 grants it alongside
+		-- the resource) as a fallback for text variants that miss the max-cap parse.
+		if maxArrows > 0 or extraConsume > 0 then
+			local cap = (maxArrows > 0) and maxArrows or 3
+			local consumed = m_min(1 + extraConsume, cap)
+			modDB:NewMod("Multiplier:ElementalArrowConsumed", "BASE", consumed, "Elemental Arrows")
+			-- The build sustains the resource, so the "with Elemental Arrow" Condition (x1
+			-- increased-elemental bonus, Rogue-35) is active. Only the per-arrow ADDED scales
+			-- by the Multiplier above; the increased applies once, matching the AmHoA in-game
+			-- non-crit median (~10384) that x-consumed on the increased over-shot (~1.6x).
+			modDB:NewMod("Condition:HaveElementalArrows", "FLAG", true, "Elemental Arrows")
 		end
 	end
 
@@ -490,14 +545,366 @@ function calcs.perform(env, fullDPSSkipEHP)
 		env.minion.modDB:NewMod("Life", "BASE", env.minion.minionData.life, "Base")
 		env.minion.modDB:NewMod("Armour", "BASE", 0, "Base")
 		env.minion.modDB:NewMod("Evasion", "BASE", 0, "Base")
-		env.minion.modDB:NewMod("CritMultiplier", "BASE", 30, "Base")
+		-- @leb-regression-guard:minion-crit-multiplier-base-2
+		-- LE minion base crit multiplier is 2.0 with NO extra base bonus —
+		-- the former `NewMod("CritMultiplier", "BASE", 30, ...)` was a PoB
+		-- inheritance (PoE minions get +30% base crit multi; LE minions do
+		-- not). Game source: datamined game source baseCritMulti=2 + every extracted bear
+		-- ability prefab carries baseDamageStats.critMultiplier=2.0
+		-- (datamined game source). In-game: VoidMaster
+		-- Manifest Armor CM=2.0 with zero minion-crit affixes (2026-05-30) and
+		-- DoNotReleaseThem PrimalBear CM=3.11 = 2.0 base + 1.00 (be36ar-17
+		-- Unstoppable Force 4pts) + 0.11 (Ursine ring implicit roll) exactly;
+		-- the old +30 made LEB report 2.41. Druid "Minion CM 2.3 vs sheet 2.0"
+		-- (2026-06-10 batch) is the same artifact.
 		env.minion.modDB:NewMod("CritDegenMultiplier", "BASE", 30, "Base")
 		env.minion.modDB:NewMod("ProjectileCount", "BASE", 1, "Base")
+		-- @leb-regression-guard:minion-level-more-scaling
+		-- Validation provenance is retained in maintainer notes.
+		local charLevel = env.build.characterLevel or 1
+		-- @leb-regression-guard:minion-monster-actor-damage-scaling
+		-- @leb-regression-guard:detonation-minion-no-inherent-damage-scaling
+		-- is a per-minion bypass, not a global change. See REGRESSION_GUARDS.md.
+		-- Validation provenance is retained in maintainer notes.
+		local noInherentDamageScaling = env.minion.minionData.noInherentDamageScaling
+		local monsterScaling = env.minion.minionData.monsterScaling
+		if monsterScaling then
+			local morePct = env.data.monsterDamageScaling.getMonsterDamageMorePercent(monsterScaling.fromLevel or 10, charLevel)
+			if morePct ~= 0 then
+				env.minion.modDB:NewMod("Damage", "MORE", morePct, "MonsterActorLevelScaling")
+			end
+		elseif charLevel > 26 and not noInherentDamageScaling then
+			env.minion.modDB:NewMod("Damage", "MORE", 0.8 * (charLevel - 26), "MinionLevelScaling")
+		end
 		for _, mod in ipairs(env.minion.minionData.modList) do
-			env.minion.modDB:AddMod(mod)
+			-- detonation minions skip their actor "Damage" MORE (see guard above);
+			-- defensive/utility actor stats (DamageTaken, MovementSpeed, ...) still apply.
+			if not (noInherentDamageScaling and mod.name == "Damage" and mod.type == "MORE") then
+				env.minion.modDB:AddMod(mod)
+			end
 		end
 		for _, mod in ipairs(env.player.mainSkill.extraSkillModList) do
 			env.minion.modDB:AddMod(mod)
+		end
+		-- @leb-regression-guard:minion-skill-tree-mods-to-minion
+		-- Validation provenance is retained in maintainer notes.
+		do
+			local parentId = env.player.mainSkill.activeEffect.grantedEffect
+				and env.player.mainSkill.activeEffect.grantedEffect.id
+			local inheritIds = { }
+			for _, minionSkill in ipairs(env.minion.activeSkillList or { }) do
+				local ge = minionSkill.activeEffect and minionSkill.activeEffect.grantedEffect
+				if ge and ge.id ~= parentId and ge.treeId then
+					inheritIds[ge.id] = true
+				end
+			end
+			-- MinionModifier wrappers are routed by the dispatch below —
+			-- transferring the wrapper too would leave a second, latent copy
+			-- on the minion's own modDB. CooldownRecovery stays player-side:
+			-- minion cast cadence is not cooldown-modeled (the granted skills
+			-- use their castTime; see the bear-tree-grants-minion-skills guard
+			-- in ModParser), and an unscoped tree CDR value (be36ar-12 "+40%
+			-- Swipe Cooldown Recovery Speed" x3 bakes as a bare CooldownRecovery
+			-- BASE 120) collapses a castTime-based minion skill's Speed to
+			-- 1/120s if it lands on the minion's modDB.
+			local skipNames = { ExtraSkill = true, ExtraMinionSkill = true, SkillLevel = true, MinionModifier = true, CooldownRecovery = true }
+			for _, modList in pairs(env.modDB.mods) do
+				for _, mod in ipairs(modList) do
+					if not skipNames[mod.name] and type(mod.source) == "string" and mod.source:match("^Tree:") then
+						local skillIdTag
+						for _, tag in ipairs(mod) do
+							if tag.type == "SkillId" then
+								skillIdTag = tag.skillId
+								break
+							end
+						end
+						if skillIdTag and (skillIdTag == parentId or inheritIds[skillIdTag]) then
+							local newMod = copyTable(mod)
+							for i = #newMod, 1, -1 do
+								local tag = newMod[i]
+								if tag.type == "SkillId" and skillIdTag == parentId then
+									t_remove(newMod, i)
+								elseif tag.type == "PerStat" and not tag.actor then
+									tag.actor = "parent"
+								end
+							end
+							env.minion.modDB:AddMod(newMod)
+						end
+					end
+				end
+			end
+		end
+		-- @leb-regression-guard:manifest-armor-weapon-stats-copy
+		-- Validation provenance is retained in maintainer notes.
+		if env.minion and env.minion.type == "ManifestedArmor" then
+			local copySlots = { }
+			if env.allocNodes["ma6hdr-26"] then
+				t_insert(copySlots, { slot = "Weapon 1", mult = 1 })
+			end
+			if env.allocNodes["ma6hdr-4"] then
+				local w2 = env.player.itemList and env.player.itemList["Weapon 2"]
+				if w2 and w2.base and w2.base.type == "Shield" then
+					t_insert(copySlots, { slot = "Weapon 2", mult = 1 })
+				end
+			end
+			-- @leb-regression-guard:manifest-armor-armor-slot-copy
+			-- The armour-slot copy is Manifest Armor's BASE KIT (no node needed):
+			-- GetArmourStats admits Helmet/Body/Gloves/Boots unless an ignore flag
+			-- (0x118-0x11B, no known source) is set, and GetValueMultiplier
+			-- (datamined offset) scales each slot's stat VALUES by
+			--   1 + increasedGearStats(0x13C, no known source)
+			--     + per-slot node term + slot-pair extra (0x12C/0x138, no known source)
+			-- Per-slot nodes (ManifestArmorTree per-point tooltip values):
+			--   ma6hdr-1  Platemail     +40%/pt (chest,  baseType 1, 0x128)
+			--   ma6hdr-9  Great Helm    +60%/pt (helmet, baseType 0, 0x124)
+			--   ma6hdr-16 Steel Greaves +60%/pt (boots,  baseType 3, 0x130)
+			--   ma6hdr-21 Iron Grasp    +60%/pt (gloves, baseType 4, 0x134)
+			-- CAUTION: tooltip-vs-DAT mismatch is a proven MA failure mode
+			-- (Redistributed Steel tooltip 15 = engine 7, see
+			-- manifest-armor-redistributed-steel-7pct); the gloves multiplier is the
+			-- one validated axis (attack-speed cadence, see spec), the other three
+			-- ride the tooltip values until a per-slot measurement exists.
+			-- The multiplier scales the copied mod VALUE (engine scales Stat.value),
+			-- flat and percentage stats alike.
+			for _, def in ipairs({
+				{ slot = "Helmet",     node = "ma6hdr-9",  perPoint = 0.60 },
+				{ slot = "Body Armor", node = "ma6hdr-1",  perPoint = 0.40 },
+				{ slot = "Boots",      node = "ma6hdr-16", perPoint = 0.60 },
+				{ slot = "Gloves",     node = "ma6hdr-21", perPoint = 0.60 },
+			}) do
+				local node = env.allocNodes[def.node]
+				t_insert(copySlots, { slot = def.slot, mult = 1 + (node and (node.alloc or 0) or 0) * def.perPoint })
+			end
+			-- @leb-regression-guard:manifest-armor-lambent-metal
+			-- Lambent Metal (ma6hdr-6, maxPoints 1, "increased effect for health
+			-- regeneration from all items that affect Manifest Armor"):
+			-- GetPropertySpecificMultiplier (datamined offset) applies
+			-- 1 + increasedHealthRegenFromItems(0x140) to property 17 (flat
+			-- "Health Regenerated Per Second") stats ONLY, on top of the slot
+			-- multiplier. LEB: copied LifeRegen BASE mods get the extra x1.5.
+			-- datamining; no dedicated capture. Tooltip 50%/pt.
+			local lambent = env.allocNodes["ma6hdr-6"]
+			local regenMult = 1 + (lambent and (lambent.alloc or 0) or 0) * 0.50
+			for _, entry in ipairs(copySlots) do
+				local item = env.player.itemList and env.player.itemList[entry.slot]
+				for _, mod in ipairs(item and item.modList or { }) do
+					if (mod.type == "BASE" or mod.type == "INC" or mod.type == "MORE") and type(mod.value) == "number" then
+						local newMod = copyTable(mod)
+						newMod.value = mod.value * entry.mult
+						if mod.name == "LifeRegen" and mod.type == "BASE" then
+							newMod.value = newMod.value * regenMult
+						end
+						newMod.source = "ManifestArmorGearCopy:" .. entry.slot
+						env.minion.modDB:AddMod(newMod)
+					end
+				end
+			end
+			-- @leb-regression-guard:manifest-armor-force-of-impact
+			-- Force of Impact (ma6hdr-2, maxPoints 1, "melee physical damage equal
+			-- to a proportion of the armour on your body armour"): the engine walks
+			-- the CHEST item's FLAT-armour stat entries and adds
+			-- value x meleePhysicalDamagePerArmourOnChest(0x144) as melee physical
+			-- (ManifestArmorMutator.c L1845: per-mod getValue x 0x144 -> new
+			-- Stats.Stat, chest baseType gate) -- tooltip "1 Melee Physical Damage
+			-- per 10 Armor On Chest" -> 0.1/pt. FLAT armour entries only: the
+			-- item's own "% increased Armor" lines are a different property and do
+			-- NOT feed this. No slot multiplier (the Stat is constructed outside
+			-- the GetValueMultiplier path). datamining; no dedicated capture
+			-- (VoidMaster does not take ma6hdr-2).
+			local foi = env.allocNodes["ma6hdr-2"]
+			if foi then
+				local chest = env.player.itemList and env.player.itemList["Body Armor"]
+				local flatArmour = 0
+				for _, mod in ipairs(chest and chest.modList or { }) do
+					if mod.name == "Armour" and mod.type == "BASE" and type(mod.value) == "number" then
+						flatArmour = flatArmour + mod.value
+					end
+				end
+				if flatArmour > 0 then
+					env.minion.modDB:NewMod("PhysicalDamage", "BASE", flatArmour * 0.1 * (foi.alloc or 1), "ManifestArmorForceOfImpact", 0, KeywordFlag.Melee)
+				end
+			end
+		end
+		-- @leb-regression-guard:weapon-attack-minion-weapon-inheritance
+		-- Validation provenance is retained in maintainer notes.
+		if env.minion then
+			-- Gate on the in-game-VALIDATED whitelist (Data/Global.lua LE_WEAPON_ATTACK_MINIONS):
+			-- the qualifying-skill check below is necessary but NOT sufficient -- more than one
+			-- minion grants a bow attack (e.g. SummonedSkeletonArcher's "Summon Skeleton Archer
+			-- Bow Attack"), and only RogueBallista is validated to fire the player's bow. Without
+			-- this whitelist, Skeleton-Archer-with-bow builds would silently inherit the player's
+			-- bow damage unvalidated. The registry's `weapon` must match the equipped weapon type.
+			local weaponAttackMinion = LE_WEAPON_ATTACK_MINIONS[env.minion.type]
+			local weaponData = env.player.weaponData1
+			-- Map the validated equipped weapon's source to its damage-source keyword bit. Only Bow
+			-- (Falconer Ballista) is in-game-validated; extending to other weapon-attack minions
+			-- requires its own capture + a registry entry + a mapping here.
+			local weaponKeyword = weaponAttackMinion and weaponData
+				and weaponData.type == weaponAttackMinion.weapon
+				and weaponData.type == "Bow" and ModFlag.Bow or nil
+			if weaponKeyword then
+				-- Qualify: the minion grants a weapon ATTACK whose weapon-source tag matches
+				-- the equipped weapon (here: a Bow attack, e.g. BallistaBolt).
+				local isWeaponAttackMinion = false
+				for _, minionSkill in ipairs(env.minion.activeSkillList or { }) do
+					local ge = minionSkill.activeEffect and minionSkill.activeEffect.grantedEffect
+					if ge and ge.fromMinion and ge.baseFlags and ge.baseFlags.attack
+						and ge.skillTypeTags and band(ge.skillTypeTags, weaponKeyword) ~= 0 then
+						isWeaponAttackMinion = true
+						break
+					end
+				end
+				if isWeaponAttackMinion then
+					-- LE flat added damage is a single <Type>Damage BASE (no min/max range);
+					-- "Damage" is the typeless/generic weapon add. INC/MORE of the same names
+					-- carry the keyword too ("increased Bow <Type> Damage").
+					local inheritNames = { Damage = true, PhysicalDamage = true, FireDamage = true,
+						ColdDamage = true, LightningDamage = true, NecroticDamage = true,
+						PoisonDamage = true, VoidDamage = true }
+					for _, modList in pairs(env.modDB.mods) do
+						for _, mod in ipairs(modList) do
+							if inheritNames[mod.name] and mod.keywordFlags
+								and band(mod.keywordFlags, weaponKeyword) ~= 0 then
+								env.minion.modDB:AddMod(copyTable(mod))
+							end
+						end
+					end
+				end
+			end
+		end
+		-- @leb-regression-guard:falcon-avian-hurl-conversion
+		-- Avian Hurl (Rogue-90, Falconer, 6pts) grants the Falcon added Throwing AND
+		-- Melee damage equal to N% (fixed 50%) of the PLAYER's added throwing flat.
+		-- datamining field `falconAddedThrowingAndMeleeDamagePercentageFromPlayerThrowingDamage`
+		-- (AbilityStatsMutatorManager bucket 0x2d7) -- EHG's tree text "Conversion To
+		-- Falcon" is a GRANT/transfer, NOT an LE damage-TYPE conversion. Structurally the
+		-- same PLAYER-modDB -> MINION-modDB per-type copy as the weapon-attack inheritance
+		-- above, with three differences:
+		--   * source keyword = Throwing (the player's added-throwing flats), not the weapon's Bow;
+		--   * value scaled by pct/100 (0.5);
+		--   * output re-tagged Melee|Throwing so BOTH the Falcon's melee (Aerial Assault)
+		--     and throwing (Feather Knives) skills receive it -- the field grants "Throwing
+		--     AND Melee". Falcon per-Dex adds are tag-specific; this transfer is not.
+		-- Only FLAT ADDED damage transfers (Damage / <Type>Damage BASE); the player's
+		-- INC/MORE throwing is the player's own scaling and stays behind (the mechanic is an
+		-- "Added ... Damage ... From Player Throwing Damage" transfer). The "added flat vs
+		-- total throwing" read is INFERRED (the consumer multiply-site is absent from the
+		-- datamining subset; the field name + the crit-inheritance sibling favour added-flat)
+		-- -- if a future capture with player-added-throwing contradicts this, revisit here.
+		-- Independent of the per-Dex adds (Dex source vs added-throwing source are disjoint
+		-- pools -> no double count). Corpus-neutral where the player has no added throwing
+		-- flat (Rem-MK3: 0 -> inert). Spec: spec/System/TestFalconAvianHurl_spec.lua
+		if env.minion and env.minion.type == "RogueFalcon" then
+			local conversionPct = env.modDB:Sum("BASE", nil, "FalconAddedThrowingConversion")
+			if conversionPct > 0 then
+				local frac = conversionPct / 100
+				local falconTags = bor(KeywordFlag.Melee, KeywordFlag.Throwing)
+				local addedNames = { Damage = true, PhysicalDamage = true, FireDamage = true,
+					ColdDamage = true, LightningDamage = true, NecroticDamage = true,
+					PoisonDamage = true, VoidDamage = true }
+				for _, modList in pairs(env.modDB.mods) do
+					for _, srcMod in ipairs(modList) do
+						if addedNames[srcMod.name] and srcMod.type == "BASE" and srcMod.keywordFlags
+							and band(srcMod.keywordFlags, KeywordFlag.Throwing) ~= 0 then
+							local copy = copyTable(srcMod)
+							copy.value = srcMod.value * frac
+							copy.keywordFlags = falconTags
+							env.minion.modDB:AddMod(copy)
+						end
+					end
+				end
+			end
+		end
+		-- @leb-regression-guard:falcon-avian-arsenal-buff
+		-- Validation provenance is retained in maintainer notes.
+		if env.minion and env.minion.type == "RogueFalcon" then
+			local arsenalPct = env.modDB:Sum("BASE", nil, "FalconAvianArsenalPercent")
+			local arsenalPoolKw = env.modDB:Sum("BASE", nil, "FalconAvianArsenalPoolKeyword")
+			if arsenalPct > 0 and arsenalPoolKw > 0 then
+				local frac = arsenalPct / 100
+				local addedNames = { Damage = true, PhysicalDamage = true, FireDamage = true,
+					ColdDamage = true, LightningDamage = true, NecroticDamage = true,
+					PoisonDamage = true, VoidDamage = true }
+				for _, modList in pairs(env.modDB.mods) do
+					for _, srcMod in ipairs(modList) do
+						if addedNames[srcMod.name] and srcMod.type == "BASE" and srcMod.keywordFlags
+							and band(srcMod.keywordFlags, arsenalPoolKw) ~= 0 then
+							local copy = copyTable(srcMod)
+							copy.value = srcMod.value * frac
+							copy.keywordFlags = KeywordFlag.Melee
+							env.minion.modDB:AddMod(copy)
+						end
+					end
+				end
+			end
+		end
+		-- @leb-regression-guard:upheaval-totem-grant
+		-- PLAYER GLOBAL ADDED-FLAT -> totem-cast minion (Upheaval Totem, uph41-30).
+		-- The Upheaval Totem casts the player's Upheaval (SubSkillGrants, node-gated).
+		-- In-game the UpheavalTotemAdapter copies the player's stat fields onto the totem,
+		-- so the totem hit deals the player's GLOBAL gear added-flat (e.g. Apiarist's Comb
+		-- generic "+42 Damage") in addition to its own base + minion-damage gear. Without
+		-- this the totem nc was 428 vs capture 3686 (x8.6 under) -- the ENTIRE residual is
+		-- the missing player added-flat (decompose: minion base ~12 vs player ~86; the
+		-- minion INC 1180% is already correct = inherited player Upheaval INC via the
+		-- treeId inheritIds channel above + minion-damage gear, do NOT touch it).
+		-- This copies, from the PLAYER modDB onto the MINION modDB, ONLY the player's
+		-- BASE added-flat <Type>Damage that is GLOBAL (no SkillId/SkillName tag) and not
+		-- Tree-sourced, and that PASSES the granted skill's delivery flags. It is gated
+		-- exactly like the weapon-attack channel above and inherits its discipline:
+		--   * MINION modDB ONLY -> the player hit-loop is byte-identical; zero ripple.
+		--   * BASE ONLY, never INC/MORE -> INC already flows via inheritIds + minion gear;
+		--     copying INC/MORE would double-count and overshoot (validated arithmetic:
+		--     base 86 x INC 1233% x MORE 3.21 = 3,680 ~= capture 3,686).
+		--   * GLOBAL flats only -> SkillId/SkillName-scoped player flats are excluded
+		--     (Upheaval-tree flats already route via the inheritIds channel; other-skill
+		--     flats must not fold in). Tree: sources are likewise owned by that channel.
+		--   * DELIVERY-FLAG GATED -> a "+X Spell Damage" / wrong-weapon flat fails the
+		--     granted skill's cfg flags and is skipped (no blanket fold; the abandoned
+		--     melee fix <see git log> over-folded untyped physical for +16.7% ShutFackUp --
+		--     this cannot, being minion-only + flag-gated + opt-in per minion type).
+		--   * WHITELIST (Data/Global.lua LE_PLAYER_ADDED_FLAT_MINIONS) keyed by minion
+		--     type -> opt-in; no other summon/minion/build is affected.
+		-- Spec: spec/System/TestUpheavalTotemGrant_spec.lua.
+		do
+			local addedFlatReg = LE_PLAYER_ADDED_FLAT_MINIONS[env.minion.type]
+			if addedFlatReg then
+				local grantSkill
+				for _, minionSkill in ipairs(env.minion.activeSkillList or { }) do
+					local ge = minionSkill.activeEffect and minionSkill.activeEffect.grantedEffect
+					if ge and ge.id == addedFlatReg.skill then
+						grantSkill = minionSkill
+						break
+					end
+				end
+				if grantSkill then
+					local cfg = grantSkill.skillCfg
+					local cfgFlags = (cfg and cfg.flags) or 0
+					local cfgKw = (cfg and cfg.keywordFlags) or 0
+					local inheritNames = { Damage = true, PhysicalDamage = true, FireDamage = true,
+						ColdDamage = true, LightningDamage = true, NecroticDamage = true,
+						PoisonDamage = true, VoidDamage = true }
+					for _, modList in pairs(env.modDB.mods) do
+						for _, mod in ipairs(modList) do
+							if mod.type == "BASE" and inheritNames[mod.name]
+								and band(cfgFlags, mod.flags) == mod.flags
+								and MatchKeywordFlags(cfgKw, mod.keywordFlags) then
+								local skillScoped = false
+								for _, tag in ipairs(mod) do
+									if tag.type == "SkillId" or tag.type == "SkillName" then
+										skillScoped = true
+										break
+									end
+								end
+								local src = type(mod.source) == "string" and mod.source or ""
+								if not skillScoped and not src:match("^Tree:") then
+									env.minion.modDB:AddMod(copyTable(mod))
+								end
+							end
+						end
+					end
+				end
+			end
 		end
 	end
 
@@ -559,7 +966,7 @@ function calcs.perform(env, fullDPSSkipEHP)
 				-- env.minion.modDB and ModStore L398 resolves PerStat,
 				-- `target = self` defaults to minion.modDB and
 				-- GetStat("Int") returns 0, zeroing the 86% INC that
-				-- LETools shows for BxvJP3g1 lv99 Necromancer (player
+				-- LETools shows for <private build> lv99 Necromancer (player
 				-- Int=43, 2% × 43 = 86%).
 				--
 				-- Inject `actor = "parent"` on PerStat tags that target
@@ -600,7 +1007,7 @@ function calcs.perform(env, fullDPSSkipEHP)
 					-- Detect SkillId tags belonging to buff-skills whose
 					-- effect lives on a per-target Buff Component in-game
 					-- (e.g. Dread Shade's DreadShadeMutator.auraStats,
-					-- dump.cs L38327-38446). In LE the contribution is
+					-- datamined game source). In LE the contribution is
 					-- conditioned on whether the *individual minion*
 					-- actually carries the buff Component, not on which
 					-- skill the calc is currently scoped to. ModStore.lua
@@ -1391,14 +1798,22 @@ function calcs.perform(env, fullDPSSkipEHP)
 
 	doActorMisc(env, env.enemy)
 
-	-- Propagate enemy ailment stack counts from enemyDB mods to enemyDB.multipliers
-	-- so that "per X stack" Multiplier tags resolve correctly
-	for _, var in ipairs({"BleedStack","IgniteStack","ShockStack","ChillStack","PoisonStack","TimeRotStack","DoomStack","SlowStack","FrailtyStack","CurseStack"}) do
-		local val = enemyDB:Sum("BASE", nil, "Multiplier:"..var)
-		if val and val > 0 then
-			enemyDB.multipliers[var] = val
-		end
-	end
+	-- @leb-regression-guard:multiplier-propagation-loop-no-double-count
+	-- (REMOVED loop) Enemy ailment/curse "per X stack" counts (BleedStack, IgniteStack,
+	-- ShockStack, ChillStack, PoisonStack, TimeRotStack, DoomStack, SlowStack,
+	-- FrailtyStack, CurseStack, EnemyNegativeAilmentCount) are fed by config
+	-- "Multiplier:XStack" BASE mods on the enemy modList (with Condition:Effective).
+	-- These MUST NOT be copied into enemyDB.multipliers: ModStore:GetMultiplier already
+	-- reads them via its 3rd term `Sum("BASE", cfg, "Multiplier:"..var)`, and
+	-- enemyDB.conditions.Effective is true in the effective-DPS pass, so the config mod
+	-- IS summed there. A propagation loop `multipliers[var] = Sum("BASE",...)` therefore
+	-- made GetMultiplier = multipliers[var] + Sum(BASE) = 2N -- an unconditional doubler
+	-- for every "per X stack" consumer (Chaos Bolts ch4bo-11, Mad Alchemist's Ladle,
+	-- Profane Orb Hex Flurry, per-bleed/per-curse mods). The loop is deleted so the
+	-- BASE-sum is the single source of truth: GetMultiplier(var, cfg) == N.
+	-- (There is ZERO direct reader of enemyDB.multipliers[<stackvar>] in src/, so nothing
+	-- depended on the propagated copy.) See REGRESSION_GUARDS.md
+	-- "multiplier-propagation-loop-no-double-count". Do NOT reintroduce this loop.
 
 	for _, activeSkill in ipairs(env.player.activeSkillList) do
 		if activeSkill.skillFlags.totem then
@@ -1422,6 +1837,54 @@ function calcs.perform(env, fullDPSSkipEHP)
 	calcs.defence(env, env.player)
 	if not fullDPSSkipEHP then
 		calcs.buildDefenceEstimations(env, env.player)
+	end
+
+	-- @leb-regression-guard:singular-purpose-low-block-double
+	-- Sentinel-61 "Singular Purpose": 2% more Void Damage per point, VALUE-DOUBLED
+	-- while block chance < 30% (node description clause). Engine truth
+	-- (stat-composition oracle Ctrl+Num5, TitoGaoS4_blank 2026-07-06, 2H World
+	-- Splitter = 0% block): the void-tag Damage bucket holds a SINGLE MoreStat
+	-- 0.20 = 2%/pt x 5 x2 — a value doubling, NOT a second multiplicative mod
+	-- (10+10 stacked would give x1.21). The tree line is blanked in
+	-- LE_TREE_NODE_STAT_REWRITE; the mod is granted here, after calcs.defence,
+	-- so the gate reads the computed block chance (raw uncapped total, same
+	-- basis as the Sentinel-70 Dedication precedent; below-30 questions only
+	-- arise under the cap anyway). Spec: TestSingularPurposeLowBlock_spec.lua.
+	local s61 = env.allocNodes and env.allocNodes["Sentinel-61"]
+	if s61 and (s61.alloc or 0) > 0 then
+		local blockChance = env.player.output.BlockChanceTotal or env.player.output.BlockChance or 0
+		local double = blockChance < 30
+		env.player.modDB:NewMod("VoidDamage", "MORE", 2 * (s61.alloc or 0) * (double and 2 or 1), "SingularPurpose")
+	end
+
+	-- @leb-regression-guard:flame-reave-return-wave-hits
+	-- Flame Reave "Flame Caller" (fr11mv-18): "Flame Reave returns to you. This can hit
+	-- the same enemy again." = +1 UNCONDITIONAL same-target return hit, but the returning
+	-- hit ALWAYS deals 50% LESS damage (in-game tooltip: "Flame Reave's baseline damage
+	-- penalty from expansion still applies, meaning a returning hit always has 50% less
+	-- damage"). So it is +1 hit x 0.5 = +0.5 hit-EQUIVALENT of sustained single-target DPS.
+	-- The raw stat " Returns To You" parses to 0 mods, so LEB modeled Flame Reave at
+	-- AverageBurstHits 1 / TotalNumberOfHits 0.89 (verified probe, dev <see git log>).
+	-- AdditionalSameTargetHits is a damage-equivalent addend that CalcOffence folds into
+	-- dpsMultiplier (NOT AverageBurstHits, a burst-DISPLAY field). Injected here
+	-- (Sentinel-61 precedent) instead of via parse: the natural phrase "Additional Same
+	-- Target Hits" collides with ModParser's "additional"/"hits" tokens. SkillId:FlameReave
+	-- -scoped so it only multiplies Flame Reave. Spec: TestFlameReaveReturnWaveHits_spec.lua.
+	local flameCaller = env.allocNodes and env.allocNodes["fr11mv-18"]
+	if flameCaller and (flameCaller.alloc or 0) > 0 then
+		env.player.modDB:NewMod("AdditionalSameTargetHits", "BASE", 0.5, "FlameReaveFlameCaller", { type = "SkillId", skillId = "FlameReave" })
+	end
+	-- Flame Reave "Reflash" (fr11mv-16): "expands and returns a second time ... two
+	-- additional hits", but on its OWN 3s cooldown, and its hits ALSO carry the 50%-less
+	-- returning-hit penalty. So it fires at most once per 3s (independent of cast rate)
+	-- for +2 hits x 0.5 = +1.0 hit-equivalent per firing -> cast-rate-AVERAGED in
+	-- CalcOffence (where output.Speed is known): +min(1, 1/(3*castRate)) equivalents/cast.
+	-- Flag it here (SkillId:FlameReave-scoped) so CalcOffence applies it only to Flame
+	-- Reave. NOT parsed (raw " Expands and Returns Again" + "3 Cooldown (seconds)" yield
+	-- no hit-count mod). See flame-reave-return-wave-hits guard.
+	local reflash = env.allocNodes and env.allocNodes["fr11mv-16"]
+	if reflash and (reflash.alloc or 0) > 0 then
+		env.player.modDB:NewMod("FlameReaveReflashActive", "FLAG", true, "FlameReaveReflash", { type = "SkillId", skillId = "FlameReave" })
 	end
 
 	calcs.triggers(env, env.player)
@@ -1451,7 +1914,7 @@ function calcs.perform(env, fullDPSSkipEHP)
 		-- @leb-regression-guard:ward-stop-moving-config-amortize (fold-in site)
 		-- Transient Rest "(40-60)% of Current Mana gained as Ward when you stop
 		-- moving (2 second cooldown)". Game-side field
-		-- `Character.currentManaGainedAsWardOnStopMoving` (dump.cs L95850 offset
+		-- `Character.currentManaGainedAsWardOnStopMoving` (datamined game source offset
 		-- 0xDB0) with const `currentManaGainedAsWardOnStopMovingCooldown = 2`
 		-- (L95851). Event-driven (separate field from the continuous PerSecond
 		-- form), so the contribution is gated on the Config toggle
@@ -1461,6 +1924,23 @@ function calcs.perform(env, fullDPSSkipEHP)
 		-- Spec: spec/System/TestWardStopMovingConfigAmortize_spec.lua
 		local currentManaGainedAsWardOnStopMoving = env.player.modDB:Sum("BASE", nil, "CurrentManaGainedAsWardOnStopMoving")
 		local isStoppedMoving = env.player.modDB:Flag(nil, "Condition:StoppedMoving")
+		-- @leb-regression-guard:ward-on-cast-health-config-amortize (fold-in site)
+		-- Current Health -> Ward on directly casting a Necrotic / Elemental spell
+		-- (Twisted Heart of Uhkeiros #216, crafted affix 766). Event-driven (game
+		-- `ProtectionClass.GainWard` fires per cast), so each school's BASE % is
+		-- gated on its Config toggle (`Condition:DirectlyCast{Necrotic|Elemental}
+		-- SpellRecently`, default off) and amortized into a steady-state Ward per
+		-- Second as `Life * pct / 100 * castRate`. Cast rate = `pOut.Speed`, the
+		-- main skill's casts/second, populated by calcs.offence (run just above at
+		-- `calcs.offence(env, env.player, env.player.mainSkill)`). Like the on-
+		-- block / on-stop-moving / mana-spent sources this is event-driven, so it
+		-- is EXCLUDED from the passive-WPS floor snapshot.
+		-- Spec: spec/System/TestWardOnCastHealthConfigAmortize_spec.lua
+		local healthWardOnCastNecrotic = env.player.modDB:Sum("BASE", nil, "CurrentHealthGainedAsWardOnCastNecrotic")
+		local healthWardOnCastElemental = env.player.modDB:Sum("BASE", nil, "CurrentHealthGainedAsWardOnCastElemental")
+		local isCastingNecrotic = env.player.modDB:Flag(nil, "Condition:DirectlyCastNecroticSpellRecently")
+		local isCastingElemental = env.player.modDB:Flag(nil, "Condition:DirectlyCastElementalSpellRecently")
+		local castRate = pOut.Speed or 0
 
 		local manaSpentContribution = (manaSpentGainedAsWard > 0 and manaPerSecondCost > 0)
 			and manaPerSecondCost * manaSpentGainedAsWard / 100 or 0
@@ -1470,8 +1950,14 @@ function calcs.perform(env, fullDPSSkipEHP)
 			and (pOut.Life or 0) * (missingHealthPercent / 100) * missingHealthGainedAsWardPerSec / 100 or 0
 		local stopMovingContribution = (isStoppedMoving and currentManaGainedAsWardOnStopMoving > 0)
 			and (pOut.Mana or 0) * currentManaGainedAsWardOnStopMoving / 100 / 2 or 0
+		-- Per-cast Life% amortized by cast rate (casts/sec) -> continuous wps.
+		local healthWardOnCastNecroticContribution = (isCastingNecrotic and healthWardOnCastNecrotic > 0 and castRate > 0)
+			and (pOut.Life or 0) * healthWardOnCastNecrotic / 100 * castRate or 0
+		local healthWardOnCastElementalContribution = (isCastingElemental and healthWardOnCastElemental > 0 and castRate > 0)
+			and (pOut.Life or 0) * healthWardOnCastElemental / 100 * castRate or 0
+		local castWardContribution = healthWardOnCastNecroticContribution + healthWardOnCastElementalContribution
 
-		local totalContribution = manaSpentContribution + currentManaContribution + missingHealthContribution + stopMovingContribution
+		local totalContribution = manaSpentContribution + currentManaContribution + missingHealthContribution + stopMovingContribution + castWardContribution
 
 		if totalContribution > 0 then
 			-- Snapshot passive WPS BEFORE folding in event-driven mana-spent.
@@ -1479,18 +1965,21 @@ function calcs.perform(env, fullDPSSkipEHP)
 			-- (continuous regen), so they belong in the passive snapshot.
 			-- StopMoving is event-driven (game `GainWard` call on the 2s CD
 			-- event), so like mana-spent it does NOT count toward the floor
-			-- gate snapshot. See `LE_datamining/extracted/ward_formulas.md §2`.
+			-- gate snapshot. See `datamined game source §2`.
 			local baseWardPerSecond = pOut.WardPerSecond or 0
 			local passiveWardPerSecond = baseWardPerSecond + currentManaContribution + missingHealthContribution
 			-- @leb-regression-guard:ward-regen-passive-vs-event-split
 			-- Display Ward Regen = passive sum only (game `wardRegen +
-			-- wardRegenFromStats`, ProtectionClass.Update RVA 0x234B8C0).
+			-- wardRegenFromStats`, ProtectionClass.Update datamined offset).
 			-- Event-driven ManaSpentGainedAsWard is applied via GainWard() on
 			-- spell-cast and must NOT appear in the display stat — it folds into
 			-- the local `wps` used for the Ward / WardDecay inversion only.
 			-- Spec: spec/System/TestWardRegenPassiveVsEventSplit_spec.lua.
 			pOut.WardPerSecond = passiveWardPerSecond
-			local wps = passiveWardPerSecond + manaSpentContribution
+			-- Event-driven contributions (mana-spent + cast-driven health->ward)
+			-- feed the local `wps` used for the Ward / WardDecay inversion but are
+			-- kept out of the passive display stat / floor gate above.
+			local wps = passiveWardPerSecond + manaSpentContribution + castWardContribution
 			-- @leb-regression-guard:ward-regen-resource-conversion (breakdown site)
 			-- Surface the per-source arithmetic in the Calcs tab so resource→ward
 			-- contributions are visible (the modName="WardPerSecond" auto-breakdown
@@ -1518,6 +2007,17 @@ function calcs.perform(env, fullDPSSkipEHP)
 					t_insert(lines, s_format("+ %.1f ^8(%.1f%% of Current Mana %d / 2s CD; Stopped Moving)",
 						stopMovingContribution, currentManaGainedAsWardOnStopMoving, pOut.Mana or 0))
 				end
+				if healthWardOnCastNecroticContribution > 0 then
+					t_insert(lines, s_format("+ %.1f ^8(%.1f%% of Life %d x %.2f casts/s, event-driven; Cast Necrotic Spell)",
+						healthWardOnCastNecroticContribution, healthWardOnCastNecrotic, pOut.Life or 0, castRate))
+				end
+				if healthWardOnCastElementalContribution > 0 then
+					t_insert(lines, s_format("+ %.1f ^8(%.1f%% of Life %d x %.2f casts/s, event-driven; Cast Elemental Spell)",
+						healthWardOnCastElementalContribution, healthWardOnCastElemental, pOut.Life or 0, castRate))
+				end
+				if castWardContribution > 0 then
+					t_insert(lines, s_format("= %.1f ^8(effective Ward per Second incl. event-driven)", wps))
+				end
 				t_insert(lines, s_format("= %.1f ^8(total Ward per Second)", pOut.WardPerSecond))
 				env.player.breakdown.WardPerSecond = lines
 			end
@@ -1535,12 +2035,12 @@ function calcs.perform(env, fullDPSSkipEHP)
 				local decayNumerator = 0.2 * effectiveWard + 0.00005 * effectiveWard ^ 2
 				rawWardDecayPerSecond = decayNumerator / retentionDivisor
 				-- @leb-regression-guard:ward-decay-floor-zero-passive
-				-- Game `ProtectionClass.Update` (RVA 0x234B8C0) clamps per-frame
+				-- Game `ProtectionClass.Update` (datamined offset) clamps per-frame
 				-- decay to `dt * minimumWardDecayWithoutRegen` (= dt * 0.5) iff
 				-- `wardRegen + wardRegenFromStats <= 0`. In LEB terms passive WPS
 				-- corresponds to that pair; the ManaSpentGainedAsWard contribution
 				-- is event-driven (GainWard call), not part of the floor gate.
-				-- See `LE_datamining/extracted/ward_formulas.md §2`.
+				-- See `datamined game source §2`.
 				if passiveWardPerSecond <= 0 then
 					rawWardDecayPerSecond = m_max(rawWardDecayPerSecond, 0.5)
 				end

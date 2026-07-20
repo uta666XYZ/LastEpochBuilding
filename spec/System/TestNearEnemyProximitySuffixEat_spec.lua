@@ -17,8 +17,8 @@
 --   rerolls share the same handler.
 --
 -- Evidence (Δ = LEB - LETools, pre-fix):
---   - Qqwvdex2 lv98 Beastmaster (Str=125): LET BC=139, LEB BC=14, Δ=-125 (89.9%)
---   - om6xa9dY lv100 Void Knight: LET BC=126, LEB BC=55, Δ=-71 (56.3%)
+--   - <private build> lv98 Beastmaster (Str=125): LET BC=139, LEB BC=14, Δ=-125 (89.9%)
+--   - <private build> lv100 Void Knight: LET BC=126, LEB BC=55, Δ=-71 (56.3%)
 
 local parseMod, parserCache
 

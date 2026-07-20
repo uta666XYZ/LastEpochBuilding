@@ -2,7 +2,7 @@
 -- Locks the v2 closed-form equilibrium fold-in of Mod#6
 -- (cooldown-recovered-on-hit consumer).
 --
--- v1 (commits f5dcbb2bf / 59e9fe7e7, guard
+-- v1 (commits <see git log> / <see git log>, guard
 -- `cooldown-recovered-on-hit-consumer`) surfaces the paired stats
 -- on the active skill:
 --   output.CooldownRecoveryOnHit          (BASE pct, chance-folded)
@@ -17,7 +17,7 @@
 -- the closed form replaces a per-tick simulation (see Decision Log
 -- L47, TODO.md "Mod#6 v2 combat-loop integration").
 --
--- Game-side authority (dump.cs il2cpp re-extraction):
+-- Game-side authority (datamined game source re-extraction):
 --   * L96712 chanceToRecover8pOfRemainingAerialAssaultCooldownOnThrowingHit
 --   * L96714 maxTimesToRecover12pOfRemainingAerialAssaultCooldownOnThrowingHit = 3
 --   * L96716 lethalMirageRemainingCooldownRecoveredOnMeleeHitUpTo12TimesPerUse

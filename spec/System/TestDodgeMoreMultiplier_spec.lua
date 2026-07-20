@@ -11,7 +11,7 @@
 --       An earlier version used INC only and dropped 15%-MORE class ascendancy
 --       and item bonuses from the displayed value.
 --
--- Establishing observation: o3Zl6gkV lv100 Bladedancer
+-- Establishing observation: <private build> lv100 Bladedancer
 --   pre-fix  Evasion=2616 (LE 3236, Δ=-620; 15% MORE missing AND not applied)
 --   post-fix Evasion=3009 (LE 3236, Δ=-227; 15% MORE present and applied)
 --

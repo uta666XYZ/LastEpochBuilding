@@ -5,7 +5,7 @@
 -- melee damage per mana cost" + "reduced damage leeched as health" — no
 -- Armour Increased PerStat. Earlier LEB releases applied Strength's
 -- +4% Armour INC PerStat to Brutality (and equivalents to Guile/Apathy/
--- Rampancy), inflating Qdz2yXN3 player Armour Increased by +132%.
+-- Rampancy), inflating <private build> player Armour Increased by +132%.
 -- This test re-reads CalcSetup.lua source and asserts the offending
 -- NewMod lines are absent.
 -- See REGRESSION_GUARDS.md "s4-converted-attr-no-base-inherit".

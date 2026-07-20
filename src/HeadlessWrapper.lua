@@ -171,12 +171,12 @@ runCallback("OnFrame") -- Need at least one frame for everything to initialise
 -- ~all `.lua` snapshots by ±1/affix where the interpolated value lands
 -- on a half-step. Without this, `node scripts/letools-diff.js` becomes
 -- noisy with rounding-mode artefacts and Bug B-style triangulation
--- breaks (snapshot vs live values diverge silently). Qqwv73q2 lv62
+-- breaks (snapshot vs live values diverge silently). <private build> lv62
 -- Warlock (2026-05-05) was the first build where the live/snapshot
 -- divergence created a phantom +2 Vit residual.
 -- Test: spec/System/TestItemTools_spec.lua "HeadlessWrapper enables
 --       LETools mode for spec/ runs"
--- Establishing commit: 73d6a712c
+-- Establishing reference: see git log
 --
 -- Tests and snapshot generation use LETools-compatible round-half-up for
 -- `% increased/reduced/more/less` affixes (production default is floor to

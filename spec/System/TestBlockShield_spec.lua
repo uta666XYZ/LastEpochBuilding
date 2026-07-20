@@ -1,12 +1,12 @@
 -- @leb-regression-guard: game-faithful-block-no-shield-gate
 -- Locks the game-faithful contract: LE has NO automatic shield gate on Block
--- Chance / Block Effectiveness / Block Mitigation. Verified via PyGhidra
--- decompile of GameAssembly.dll (Last Epoch 1.4) at
--- LE_datamining/extracted/block_decompile.txt:
---   * PrecalculatedStatsHolder.blockChanceForCharacterSheet (RVA 0x2344F70)
+-- Chance / Block Effectiveness / Block Mitigation. Verified via datamining
+-- datamined game source (Last Epoch 1.4) at
+-- datamined game source
+--   * PrecalculatedStatsHolder.blockChanceForCharacterSheet (datamined offset)
 --     returns min(blockChance, maximumBlockChance) gated only on
 --     blockConversion == None — no shield/off-hand reference.
---   * PrecalculatedStatsHolder.GetBlockChance (RVA 0x2344F00) returns
+--   * PrecalculatedStatsHolder.GetBlockChance (datamined offset) returns
 --     min(blockChance + extra, maximumBlockChance) unconditionally.
 --   * playerPropertyBlockChanceConvertedToParryWithoutShield (=531) is a
 --     mod-driven flag on CharacterMutator that sets blockConversion = Parry,
@@ -20,12 +20,12 @@
 -- by default — they must be gated on Config option `conditionHaveFlameWard`
 -- (or equivalent Condition:HaveFlameWard flag). Reverting CalcSetup.lua's
 -- whileActiveBuffByTreeId table or putting fw3d nodes back on the unconditional
--- node-list path immediately fails the snapshot diff for builds like Bakbr2Ne.
+-- node-list path immediately fails the snapshot diff for builds like <private build>.
 -- IMPORTANT: Flame Ward has SkillType.Buff set (skillTypeTags=131336), so the
 -- gating MUST run regardless of the Buff branch — splitting the
 -- buffSkillTreePrefixes loop into "if Buff then ... else cond ... end" is wrong
 -- because Flame Ward enters the Buff branch and silently bypasses the condition.
--- The fw3d-7 Frostguard node alone leaks +800 Armour in Bakbr2Ne when this gate
+-- The fw3d-7 Frostguard node alone leaks +800 Armour in <private build> when this gate
 -- is wrong. The snapshot-level coverage runs in TestBuilds_spec.lua "test all
 -- builds"; this file pins the unit-level Block-Chance contract.
 --
@@ -86,7 +86,7 @@ end)
 
 describe("FlameWardTreeGate", function()
     -- @leb-regression-guard: flame-ward-block-toggle
-    -- Direct integration check: load Bakbr2Ne (allocates fw3d-7 Frostguard +200
+    -- Direct integration check: load <private build> (allocates fw3d-7 Frostguard +200
     -- Armor x4 = +800, plus Flame Ward as a socket group with SkillType.Buff)
     -- and assert Armour stays in the LE-aligned range. Reverting the gate to
     -- the old `if Buff then ... else condName ... end` shape immediately bumps
@@ -114,7 +114,7 @@ end)
 
 describe("FlameWardTreeGate", function()
     -- @leb-regression-guard: flame-ward-block-toggle
-    -- Direct integration check: load Bakbr2Ne (allocates fw3d-7 Frostguard +200
+    -- Direct integration check: load <private build> (allocates fw3d-7 Frostguard +200
     -- Armor x4 = +800, plus Flame Ward as a socket group with SkillType.Buff)
     -- and assert Armour stays in the LE-aligned range. Reverting the gate to
     -- the old `if Buff then ... else condName ... end` shape immediately bumps

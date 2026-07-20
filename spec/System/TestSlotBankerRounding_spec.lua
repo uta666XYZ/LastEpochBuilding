@@ -1,16 +1,17 @@
 -- @leb-regression-guard:slot-banker-rounding
 -- LE applies (1 + affixEffectModifier) to the canonical affix base roll on
 -- each equipment slot. amulet/shield/catalyst share affixEffectModifier=0.17
--- (verified in LE_datamining/extracted/items/equipmentItems.json
+-- (verified in datamined game source
 -- BaseTypeName="Amulet"/"Shield"/"Catalyst"), so they multiply by x1.17 and
 -- round with banker's rounding (round-half-to-even). LEB previously stored
 -- half-up values for entries hitting a .5 boundary, producing min OR max
 -- one higher than in-game.
 --
 -- Sister guard to body_armor-banker-rounding. Covers the 5 patched
--- (affixId, tier, slot) entries surfaced by .tmp/audit_slot_rounding.py.
--- Decompile evidence: AscendingValueAfterPropertyRounding (RVA 0x2307CC0)
--- in LE_datamining/extracted/rounding_decompile_raw.txt; the slot scalar
+-- (affixId, tier, slot) entries surfaced by .tmp/audit_slot_rounding.py plus
+-- one (330_6 amulet) surfaced by the second-pass scope survey.
+-- datamining evidence: AscendingValueAfterPropertyRounding (datamined offset)
+-- in datamined game source the slot scalar
 -- × base rounding happens upstream of this function in affix data prep.
 -- Empirical confirmation: existing 22-row body_armor case set.
 
@@ -59,6 +60,8 @@ describe("SlotBankerRounding", function()
         { "34_4", "catalyst", 42, 58, "Mana T4 catalyst (was 42-59)" },
         -- Throwing Damage (affixId 88) — base 50..65
         { "88_7", "amulet",   58, 76, "Throwing Damage T7 amulet (was 59-76)" },
+        -- Mana Regen % (affixId 330) — second-pass scope-survey addition
+        { "330_6", "amulet",  58, 70, "Mana Regen T6 amulet (was 59-70)" },
     }
 
     for _, c in ipairs(cases) do

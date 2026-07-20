@@ -3,14 +3,38 @@
 -- Class: Check Box Control
 -- Basic check box control.
 --
+local m_max = math.max
+
 local CheckBoxClass = newClass("CheckBoxControl", "Control", "TooltipHost", function(self, anchor, x, y, size, label, changeFunc, tooltipText, initialState)
 	self.Control(anchor, x, y, size, size)
 	self.TooltipHost(tooltipText)
 	self.label = label
-	self.labelWidth = DrawStringWidth(size - 4, "VAR", label or "") + 5
+	-- @leb-regression-guard: config-label-fit
+	-- Font size used for the label (kept uniform; the config tab wraps long
+	-- labels onto multiple lines rather than shrinking them). Derived from the
+	-- box size to match the historic value. labelWidth is computed on demand
+	-- via GetLabelWidth() so it stays correct for multi-line labels.
+	-- Test: spec/System/TestConfigLabelFit_spec.lua, TestConfigTabDrawSmoke_spec.lua
+	self.labelSize = size - 4
 	self.changeFunc = changeFunc
 	self.state = initialState
 end)
+
+function CheckBoxClass:GetLabelWidth()
+	local label = self:GetProperty("label")
+	if not label then
+		return 0
+	end
+	if label:find("\n") then
+		-- Multi-line label: hit-test width is the widest line.
+		local maxW = 0
+		for line in (label .. "\n"):gmatch("([^\n]*)\n") do
+			maxW = m_max(maxW, DrawStringWidth(self.labelSize, "VAR", line))
+		end
+		return maxW + 5
+	end
+	return DrawStringWidth(self.labelSize, "VAR", label) + 5
+end
 
 function CheckBoxClass:IsMouseOver()
 	if not self:IsShown() then
@@ -23,8 +47,9 @@ function CheckBoxClass:IsMouseOver()
 	-- move x left by label width, increase width by label width
 	local label = self:GetProperty("label")
 	if label then
-		x = x - self.labelWidth
-		width = width + self.labelWidth
+		local labelWidth = self:GetLabelWidth()
+		x = x - labelWidth
+		width = width + labelWidth
 	end
 	return cursorX >= x and cursorY >= y and cursorX < x + width and cursorY < y + height
 end
@@ -72,7 +97,16 @@ function CheckBoxClass:Draw(viewPort, noTooltip)
 	end
 	local label = self:GetProperty("label")
 	if label then
-		DrawString(x - 5, y + 2, "RIGHT_X", size - 4, "VAR", label)
+		if label:find("\n") then
+			-- Draw each wrapped line right-aligned (flush to the box), stacked.
+			local ly = y + 2
+			for line in (label .. "\n"):gmatch("([^\n]*)\n") do
+				DrawString(x - 5, ly, "RIGHT_X", self.labelSize, "VAR", line)
+				ly = ly + self.labelSize + 2
+			end
+		else
+			DrawString(x - 5, y + 2, "RIGHT_X", self.labelSize, "VAR", label)
+		end
 	end
 	if mOver and not noTooltip then
 		SetDrawLayer(nil, 100)

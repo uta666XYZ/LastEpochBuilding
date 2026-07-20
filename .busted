@@ -1,5 +1,15 @@
 return {
     _all = {
+        -- coverage is ON here for CI only: .github/workflows/test.yml runs bare `busted`
+        -- and then reports to coveralls, so this default must stay.
+        --
+        -- LOCALLY, PREFER `scripts/run-specs.sh` (or pass `--no-coverage`). Measured on
+        -- the full suite: ~94s without coverage vs several times that with it, for a
+        -- byte-identical result. Coverage does not affect calc results.
+        --
+        -- Note `--coverage=false` is NOT valid busted syntax and errors out; the flag is
+        -- `--no-coverage`. Two suite runs at once also kill each other silently (exit 1,
+        -- truncated output, no Lua error -- looks like a hang). run-specs.sh guards both.
         coverage = true,
         verbose = true,
     },
@@ -14,48 +24,11 @@ return {
         directory = "src",
         lpath = "../runtime/lua/?.lua;../runtime/lua/?/init.lua",
         helper = "HeadlessWrapper.lua",
+        -- coverage must be off for snapshot regen: luacov instrumentation makes it
+        -- ~9x slower and OOM-crashes luajit on the heaviest builds (e.g. a 27
+        -- socket-group build truncated at ~20KB / exit 1; 565s -> 62s with it off).
+        -- Coverage does not affect calc results, so snapshots are identical.
+        coverage = false,
         ROOT = { "../spec/GenerateBuilds.lua" },
-    },
-    generate14 = {
-        directory = "src",
-        lpath = "../runtime/lua/?.lua;../runtime/lua/?/init.lua",
-        helper = "HeadlessWrapper.lua",
-        ROOT = { "../spec/GenerateBuilds14.lua" },
-    },
-    generateOne = {
-        directory = "src",
-        lpath = "../runtime/lua/?.lua;../runtime/lua/?/init.lua",
-        helper = "HeadlessWrapper.lua",
-        ROOT = { "../spec/GenerateOneBuild.lua" },
-    },
-    importOne = {
-        directory = "src",
-        lpath = "../runtime/lua/?.lua;../runtime/lua/?/init.lua",
-        helper = "HeadlessWrapper.lua",
-        ROOT = { "../spec/ImportLEToolsBuild.lua" },
-    },
-    importProfile = {
-        directory = "src",
-        lpath = "../runtime/lua/?.lua;../runtime/lua/?/init.lua",
-        helper = "HeadlessWrapper.lua",
-        ROOT = { "../spec/ImportProfileBuild.lua" },
-    },
-    importMaxroll = {
-        directory = "src",
-        lpath = "../runtime/lua/?.lua;../runtime/lua/?/init.lua",
-        helper = "HeadlessWrapper.lua",
-        ROOT = { "../spec/ImportMaxrollAccount.lua" },
-    },
-    generateFromList = {
-        directory = "src",
-        lpath = "../runtime/lua/?.lua;../runtime/lua/?/init.lua",
-        helper = "HeadlessWrapper.lua",
-        ROOT = { "../spec/GenerateFromList.lua" },
-    },
-    generateSnapshotsFromList = {
-        directory = "src",
-        lpath = "../runtime/lua/?.lua;../runtime/lua/?/init.lua",
-        helper = "HeadlessWrapper.lua",
-        ROOT = { "../spec/GenerateSnapshotsFromList.lua" },
     },
 }

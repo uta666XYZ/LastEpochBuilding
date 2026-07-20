@@ -9,7 +9,7 @@
 -- socket-group enabled=true (the LETools import default) would leak the
 -- whole Form tree-node set into modDB unconditionally, inflating armour /
 -- HP / damage relative to Form-OFF LETools snapshots. Form playerAbilityIDs
--- (treeIds in LEB) come from LE_datamining/extracted/ability_keyed_array.json.
+-- (treeIds in LEB) come from datamined game source
 --
 -- See REGRESSION_GUARDS.md "form-tree-nodes-gated-by-condition".
 

@@ -4,7 +4,7 @@
 -- 1. Mace condition recognition.
 --    Sentinel/Forge Guard affixes such as "+N Melee Physical Damage if
 --    wielding a Mace" (affixId 364 in
---    LE_datamining/extracted/items/single_affixes_v3.json) gate the bonus
+--    datamined game source) gate the bonus
 --    on the player wielding a Mace. Before this guard:
 --      - Mace was NOT in Data/Global.lua `DamageSourceWeapons`, so neither
 --        `modFlagList["mace"]` nor `modTagList["with a mace"] /

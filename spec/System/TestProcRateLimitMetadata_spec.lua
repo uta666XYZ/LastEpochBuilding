@@ -1,7 +1,7 @@
 -- @leb-regression-guard: proc-rate-limit-metadata-v1
 -- Locks the game-file-conforming wiring for ProcTimeTracker-style
 -- "(up to N times per M seconds)" rate-limit clauses on chance-to-proc
--- affixes. Source: LE 1.4.6 dump.cs.
+-- affixes. Source: LE 1.4.6 datamined game source.
 --
 --   L239352-L239378  ProcTimeTracker (rolling-window timestamp buffer;
 --                    fields: int limit / float interval / float[] recentProcTimes;

@@ -6,12 +6,12 @@
 --    bow shadow behind you"
 --
 -- Game-file evidence (decisive):
---   dump.cs L77736  public bool shadowRendAlsoCastsOtherWeaponVersion;
---   dump.cs L77737  public bool shadowRendNoPlayerMovement;
+--   datamined game source  public bool shadowRendAlsoCastsOtherWeaponVersion;
+--   datamined game source  public bool shadowRendNoPlayerMovement;
 -- Both live on CharacterMutator, sandwiched in the lethalMirage* block
 -- that backs the cooldown-recovered-on-hit-consumer family. Cross-refs:
---   dump.cs L56914  ShadowRendBowMutator  (has meleeMut)
---   dump.cs L57008  ShadowRendMeleeMutator (has bowMut)
+--   datamined game source  ShadowRendBowMutator  (has meleeMut)
+--   datamined game source  ShadowRendMeleeMutator (has bowMut)
 --   ability_keyed_array.json L971 / L3421  {ShadowRend, ShadowRend Bow}
 --     share playerAbilityID 'sh4re'
 -- v1 surface model: parser emits FLAG mods tagged SkillName="Shadow Rend";

@@ -226,6 +226,15 @@ function ItemSlotClass:Populate()
 		self:SetSelItemId(0)
 	end
 
+	-- Recompute the dropped-panel width against the freshly built item list for
+	-- slots that opt into auto-width (e.g. idol grid cells, whose narrow 68px cell
+	-- width would otherwise clip the item names). Populate() fills self.list
+	-- directly without going through SetList(), so CheckDroppedWidth must be
+	-- triggered here.
+	if self.enableDroppedWidth then
+		self:CheckDroppedWidth(true)
+	end
+
 	-- Update Abyssal Sockets
 	local abyssalSocketCount = 0
 	if self.selItemId > 0 then

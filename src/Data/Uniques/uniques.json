@@ -10234,9 +10234,9 @@
     ],
     "rollIds": [
       0,
-      1,
-      2,
-      3
+      0,
+      0,
+      0
     ],
     "overrideLevelRequirement": true
   },
@@ -10427,9 +10427,9 @@
     ],
     "rollIds": [
       0,
-      1,
-      2,
-      3,
+      0,
+      0,
+      0,
       null
     ],
     "overrideLevelRequirement": false
@@ -10454,8 +10454,8 @@
       null,
       null,
       0,
-      1,
-      2
+      0,
+      0
     ],
     "overrideLevelRequirement": true
   },
@@ -10616,9 +10616,9 @@
     "rollIds": [
       null,
       0,
-      1,
-      2,
-      3
+      0,
+      0,
+      0
     ],
     "overrideLevelRequirement": true
   },
@@ -10639,9 +10639,9 @@
     "rollIds": [
       null,
       0,
-      1,
-      2,
-      3
+      0,
+      0,
+      0
     ],
     "overrideLevelRequirement": true
   },

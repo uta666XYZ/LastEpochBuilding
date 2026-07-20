@@ -1,14 +1,14 @@
 -- @leb-regression-guard: ward-decay-gpp-constants
 -- Locks the GlobalPlayerProperties ward-decay constants verbatim into the
 -- LEB ward formulas. Source anchors (verbatim from
--- LE_datamining/extracted/typetree_dumps/GlobalPlayerProperties.json):
+-- datamined game source):
 --
 --     minimumWardDecayWithoutRegen = 0.5   (already guarded by ward-decay-floor-zero-passive)
 --     linearWardDecay              = 0.2
 --     quadraticWardDecay           = 5E-05
 --
 -- Plus the retention divisor anchors from ProtectionClass.Update
--- (LE_datamining/extracted/ward_decompile.txt L77-78):
+-- (datamined game source):
 --
 --     DAT_183d81bf0 = 0.5    (retention-divisor scalar)
 --     DAT_183d81c08 = 1.0    (retention-divisor constant term)

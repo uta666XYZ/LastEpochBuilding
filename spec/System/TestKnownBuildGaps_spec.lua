@@ -1,15 +1,15 @@
 -- @leb-regression-guard:known-build-gaps-per-build-scoped
 -- Locks the per-build-scoped artifact skip surface (KNOWN_BUILD_GAPS in
 -- diff_letools.py + sigma_rank.py wiring). Without these:
---   * QJWMRv53 lv98 Bladedancer (armour-floor-at-zero anchor) dominates Σ
+--   * <private build> lv98 Bladedancer (armour-floor-at-zero anchor) dominates Σ
 --     because LET's signed-Armor display drifts from LEB's floored 0 by
 --     +260 → 100% rows for Armor / Glancing Blow Chance.
---   * AVa9YEkg lv95 Paladin (unbroken-charge-be anchor) inflates Σ from
+--   * <private build> lv95 Paladin (unbroken-charge-be anchor) inflates Σ from
 --     three correlated Block rows (BE +28.6%, Mitigation +11.9%,
 --     Chance +4.2%) all rooted in the same LET ModRange index swap.
---   * BZ37RPdY / QnaLnRKV lv100 Bladedancer (no-shield) inflate Σ from
+--   * <private build> / QnaLnRKV lv100 Bladedancer (no-shield) inflate Σ from
 --     LET's phantom 2% Block Chance with no shield equipped (LE truth = 0).
---   * o3Zl6qDJ lv78 Sorcerer inflates Σ from LET's Necrotic Resistance
+--   * <private build> lv78 Sorcerer inflates Σ from LET's Necrotic Resistance
 --     display artifact (LET 138% vs LEB 60% — the 78-pt gap = charLevel
 --     exactly; sweep_necrotic.py confirms this pattern is unique to that
 --     one build out of 119).
@@ -25,15 +25,20 @@ local function readSource(relPath)
     return text
 end
 
+local OptionalArtifact = dofile("../spec/OptionalArtifact.lua")
+local toolsIt = OptionalArtifact.gatedIt(it, pending, "spec/tools")
+
+-- Validation provenance is retained in maintainer notes.
 describe("KnownBuildGaps", function()
     local diffTools, sigmaRank
 
     setup(function()
-        diffTools = readSource("spec/tools/diff_letools.py")
-        sigmaRank = readSource("spec/tools/sigma_rank.py")
+        -- Validation provenance is retained in maintainer notes.
+        diffTools = OptionalArtifact.readOptional("spec/tools/diff_letools.py")
+        sigmaRank = OptionalArtifact.readOptional("spec/tools/sigma_rank.py")
     end)
 
-    it("diff_letools.py defines KNOWN_BUILD_GAPS dict", function()
+    toolsIt("diff_letools.py defines KNOWN_BUILD_GAPS dict", function()
         assert.is_truthy(string.find(diffTools, "KNOWN_BUILD_GAPS = {", 1, true),
             "KNOWN_BUILD_GAPS dict must be declared")
         assert.is_truthy(string.find(diffTools,
@@ -41,7 +46,7 @@ describe("KnownBuildGaps", function()
             "KNOWN_BUILD_GAPS must carry the named guard marker")
     end)
 
-    it("diff_letools.py defines is_known_gap(build, tab, name) helper", function()
+    toolsIt("diff_letools.py defines is_known_gap(build, tab, name) helper", function()
         assert.is_truthy(string.find(diffTools,
             "def is_known_gap%(build, tab, name%):", 1, false),
             "is_known_gap helper must be declared")
@@ -91,20 +96,20 @@ describe("KnownBuildGaps", function()
     }
     for _, entry in ipairs(anchorEntries) do
         local build, tab, name, why = entry[1], entry[2], entry[3], entry[4]
-        it("KNOWN_BUILD_GAPS includes " .. build .. " / " .. tab .. " / " .. name, function()
+        toolsIt("KNOWN_BUILD_GAPS includes " .. build .. " / " .. tab .. " / " .. name, function()
             local pattern = "%('" .. build .. "', '" .. tab .. "', '" .. name .. "'%):"
             assert.is_truthy(string.find(diffTools, pattern, 1, false),
                 "Missing per-build skip for " .. why)
         end)
     end
 
-    it("sigma_rank.py imports KNOWN_BUILD_GAPS + is_known_gap", function()
+    toolsIt("sigma_rank.py imports KNOWN_BUILD_GAPS + is_known_gap", function()
         assert.is_truthy(string.find(sigmaRank,
             "from diff_letools import .*KNOWN_BUILD_GAPS", 1, false),
             "sigma_rank.py must import KNOWN_BUILD_GAPS")
     end)
 
-    it("sigma_rank.py short-circuits KNOWN_BUILD_GAPS in sigma_for_build", function()
+    toolsIt("sigma_rank.py short-circuits KNOWN_BUILD_GAPS in sigma_for_build", function()
         assert.is_truthy(string.find(sigmaRank,
             "if %(build_basename, tab, name%) in KNOWN_BUILD_GAPS:", 1, false),
             "sigma_for_build must skip per-build gaps")
@@ -113,7 +118,7 @@ describe("KnownBuildGaps", function()
             "sigma_rank.py must carry the named guard marker")
     end)
 
-    it("sigma_for_build takes build_basename as first arg", function()
+    toolsIt("sigma_for_build takes build_basename as first arg", function()
         assert.is_truthy(string.find(sigmaRank,
             "def sigma_for_build%(build_basename, lua_path, json_path%):", 1, false),
             "Signature must include build_basename so per-build skip can apply")

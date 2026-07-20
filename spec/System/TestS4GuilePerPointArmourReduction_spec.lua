@@ -1,7 +1,7 @@
 -- @leb-regression-guard: s4-guile-per-point-armour-reduction
 -- Locks the Guile intrinsic "-1% Armour per point" effect wired in CalcSetup.
 --
--- Evidence (LE_datamining extracted/localization/properties_localization.json):
+-- Evidence (datamined game source extracted/localization/properties_localization.json):
 --   Property_Player_652_Name: "Dexterity Converted to Guile"
 --   Property_Player_652_AltText:
 --     "Each point of Guile grants 0.3% increased Cooldown Recovery Speed for
@@ -14,9 +14,9 @@
 -- Strength→+4% Armour intrinsic at CalcSetup.lua L732.
 --
 -- Affected at v0.14.6 (3 builds, all positive LEB-LET Armour delta):
---   QJWMRv53 Bladedancer  Guile=207  D=+920 (LET -260, LEB 660 pre-fix)
---   Qqwv6zGN Druid        D=+301
---   Qdz2yXN3 Necromancer  D=+253
+--   <private build> Bladedancer  Guile=207  D=+920 (LET -260, LEB 660 pre-fix)
+--   <private build> Druid        D=+301
+--   <private build> Necromancer  D=+253
 
 local function readSource(relPath)
     local f = io.open(relPath, "r") or io.open("src/" .. relPath, "r") or io.open("../src/" .. relPath, "r")

@@ -238,7 +238,10 @@ function buildMode:Init(dbFileName, buildName, buildXML, convertBuild)
 	self.displayStats = {
 		{ stat = "ActiveMinionLimit", label = "Active Minion Limit", fmt = "d" },
 		{ stat = "AverageHit", label = "Average Hit", fmt = ".1f", compPercent = true },
-		{ stat = "AverageDamage", label = "Average Damage", fmt = ".1f", compPercent = true, flag = "attack" },
+		-- Average Damage = Average Hit x HitChance/100, so it only differs from the
+		-- "Average Hit" row above when HitChance < 100. In LE hits land 100% unless the
+		-- target dodges, so hide this row when it would just duplicate Average Hit.
+		{ stat = "AverageDamage", label = "Average Damage", fmt = ".1f", compPercent = true, flag = "attack", condFunc = function(v,o) return o.HitChance ~= 100 end },
 		{ stat = "AverageDamage", label = "Average Damage", fmt = ".1f", compPercent = true, flag = "monsterExplode", condFunc = function(v,o) return o.HitChance ~= 100 end },
 		{ stat = "AverageBurstDamage", label = "Average Burst Damage", fmt = ".1f", compPercent = true, condFunc = function(v,o) return o.AverageBurstHits and o.AverageBurstHits > 1 and v > 0 end },
 		{ stat = "Speed", label = "Attack Rate", fmt = ".2f", compPercent = true, flag = "attack", condFunc = function(v,o) return v > 0 and (o.TriggerTime or 0) == 0 end },
@@ -248,12 +251,58 @@ function buildMode:Init(dbFileName, buildName, buildXML, convertBuild)
 		{ stat = "HitTime", label = "Channel Time", fmt = ".2fs", compPercent = true, flag = "channelRelease", lowerIsBetter = true, condFunc = function(v,o) return not o.TriggerTime end },
 		{ stat = "ChannelTimeToTrigger", label = "Channel Time", fmt = ".2fs", compPercent = true, lowerIsBetter = true, },
 		{ stat = "PreEffectiveCritChance", label = "Crit Chance", fmt = ".2f%%" },
-		{ stat = "CritChance", label = "Effective Crit Chance", fmt = ".2f%%", condFunc = function(v,o) return v ~= o.PreEffectiveCritChance end },
+		-- Effective Crit Chance = Crit Chance x AccuracyHitChance/100; it only meaningfully
+		-- differs from the "Crit Chance" row above when the attack can miss (HitChance < 100).
+		-- At full hit chance any residual is sub-rounding noise, so hide the duplicate row.
+		{ stat = "CritChance", label = "Effective Crit Chance", fmt = ".2f%%", condFunc = function(v,o) return v ~= o.PreEffectiveCritChance and o.HitChance ~= 100 end },
 		{ stat = "CritMultiplier", label = "Crit Multiplier", fmt = "d%%", pc = true, condFunc = function(v,o) return (o.CritChance or 0) > 0 end },
 		{ stat = "HitChance", label = "Hit Chance", fmt = ".0f%%", flag = "attack" },
 		{ stat = "TotalDPS", label = "Hit DPS", fmt = ".1f", compPercent = true, flag = "notAverage" },
 		{ stat = "TotalDPS", label = "Hit DPS", fmt = ".1f", compPercent = true, flag = "showAverage", condFunc = function(v,o) return (o.TriggerTime or 0) ~= 0 end },
-		{ stat = "CombinedDPS", label = "Combined DPS", fmt = ".1f", compPercent = true, flag = "notAverage", condFunc = function(v,o) return v ~= ((o.TotalDPS or 0) + (o.TotalDot or 0)) and v ~= o.WithImpaleDPS and ( o.showTotalDotDPS or ( v ~= o.WithPoisonDPS and v ~= o.WithIgniteDPS and v ~= o.WithBleedDPS ) ) end },
+		-- @leb-regression-guard:main-skill-ailment-upper-panel
+		-- Surface each of the main skill's damaging-ailment contributions in the upper panel
+		-- (PoB parity). Backed by display-only output keys (MainSkill<Ailment>DPS /
+		-- MainSkillWithAilmentsDPS) computed in calcs.buildOutput. LEB imports ailments as
+		-- separate active skills so the parent's own <Ailment>DPS is absent; each row is gated
+		-- on its aggregated value being > 0 so non-ailment builds are unaffected. Order mirrors
+		-- data.ailmentTypeList. "Total DPS inc. Ailments" = Hit DPS + ALL main-skill ailments.
+		{ stat = "MainSkillIgniteDPS",    label = "Ignite DPS",    fmt = ".1f", compPercent = true, condFunc = function(v,o) return v and v > 0 end },
+		{ stat = "MainSkillBleedDPS",     label = "Bleed DPS",     fmt = ".1f", compPercent = true, condFunc = function(v,o) return v and v > 0 end },
+		{ stat = "MainSkillPoisonDPS",    label = "Poison DPS",    fmt = ".1f", compPercent = true, condFunc = function(v,o) return v and v > 0 end },
+		{ stat = "MainSkillFrostbiteDPS", label = "Frostbite DPS", fmt = ".1f", compPercent = true, condFunc = function(v,o) return v and v > 0 end },
+		{ stat = "MainSkillElectrifyDPS", label = "Electrify DPS", fmt = ".1f", compPercent = true, condFunc = function(v,o) return v and v > 0 end },
+		{ stat = "MainSkillDamnedDPS",    label = "Damned DPS",    fmt = ".1f", compPercent = true, condFunc = function(v,o) return v and v > 0 end },
+		{ stat = "MainSkillTimeRotDPS",   label = "Time Rot DPS",  fmt = ".1f", compPercent = true, condFunc = function(v,o) return v and v > 0 end },
+		{ stat = "MainSkillDoomDPS",      label = "Doom DPS",      fmt = ".1f", compPercent = true, condFunc = function(v,o) return v and v > 0 end },
+		-- @leb-regression-guard:total-dot-dps-row
+		-- "Total DoT DPS" = the selected skill's total damage-over-time (sum of all its damaging
+		-- ailments, LE ailments STACK so this is a TOTAL not PoB's "Best"/max; + the skill's own
+		-- DoT when skillFlags.dot). Backed by output.MainSkillDotDPS (calcs.buildOutput). Hidden
+		-- when it would merely duplicate the Hit DPS or a single ailment row (i.e. shown only when
+		-- there are 2+ DoT sources, the genuine-aggregate case). "DoT" is LE-native (AT_DoT /
+		-- StatsPanel "Damage Over Time"), not a PoE-only term.
+		{ stat = "MainSkillDotDPS", label = "Total DoT DPS", fmt = ".1f", compPercent = true, condFunc = function(v,o)
+			if not v or v <= 0 then return false end
+			if v == (o.TotalDPS or 0) then return false end
+			local mx = 0
+			for _, k in ipairs({ "MainSkillIgniteDPS", "MainSkillBleedDPS", "MainSkillPoisonDPS", "MainSkillFrostbiteDPS", "MainSkillElectrifyDPS", "MainSkillDamnedDPS", "MainSkillTimeRotDPS", "MainSkillDoomDPS" }) do
+				if (o[k] or 0) > mx then mx = o[k] end
+			end
+			return v > mx + 0.001
+		end },
+		-- Single roll-up = Hit DPS + ALL surfaced main-skill ailments, shown only when it
+		-- exceeds the pure Hit DPS. (MainSkillWithIgniteDPS is still computed in
+		-- calcs.buildOutput for the legacy main-skill-ignite-upper-panel guard/spec, but is
+		-- NOT given its own row — it would duplicate this line when Ignite is the only ailment.)
+		-- @leb-regression-guard:combined-dps-row-label
+		-- The per-skill total (Hit DPS + all of the main skill's damaging ailments,
+		-- output.MainSkillWithAilmentsDPS) is labelled "Combined DPS" (PoB parity;
+		-- user-requested 2026-06-09, replacing the older "Total DPS inc. Ailments").
+		-- The legacy PoE-style output.CombinedDPS row below is suppressed whenever this
+		-- row is shown, so there is never a duplicate "Combined DPS" label; it still
+		-- renders for ailment-less builds where this row is hidden (cull/mirage combine).
+		{ stat = "MainSkillWithAilmentsDPS", label = "Combined DPS", fmt = ".1f", compPercent = true, condFunc = function(v,o) return v and v > 0 and v ~= o.TotalDPS end },
+		{ stat = "CombinedDPS", label = "Combined DPS", fmt = ".1f", compPercent = true, flag = "notAverage", condFunc = function(v,o) return v ~= ((o.TotalDPS or 0) + (o.TotalDot or 0)) and v ~= o.WithImpaleDPS and ( o.showTotalDotDPS or ( v ~= o.WithPoisonDPS and v ~= o.WithIgniteDPS and v ~= o.WithBleedDPS ) ) and not ((o.MainSkillWithAilmentsDPS or 0) > 0 and o.MainSkillWithAilmentsDPS ~= o.TotalDPS) end },
 		{ stat = "CombinedAvg", label = "Combined Total Damage", fmt = ".1f", compPercent = true, flag = "showAverage", condFunc = function(v,o) return (v ~= o.AverageDamage and (o.TotalDot or 0) == 0) and (v ~= o.WithPoisonDPS or v ~= o.WithIgniteDPS or v ~= o.WithBleedDPS) end },
 		{ stat = "Cooldown", label = "Skill Cooldown", fmt = ".3fs", lowerIsBetter = true },
 		{ stat = "AreaOfEffectRadiusMetres", label = "AoE Radius", fmt = ".1fm" },
@@ -264,9 +313,12 @@ function buildMode:Init(dbFileName, buildName, buildXML, convertBuild)
 		{ },
 	}
 
+	-- @leb-regression-guard:s4-converted-attr-single-row
 	-- Season 4 (1.4) converted attribute paired with each base attribute. The pair is
 	-- rendered together so the converted stat takes the slot of the base attribute it
 	-- replaced (e.g. Str -> Brutality, Vit -> Rampancy) instead of moving to the end.
+	-- This loop is the ONLY place each converted attribute is inserted into displayStats;
+	-- a second block elsewhere produced a duplicate sidebar row (e.g. "Madness" x2).
 	local s4AttrPair = {
 		Str = { stat = "Brutality", color = colorCodes.BRUTALITY },
 		Dex = { stat = "Guile",     color = colorCodes.GUILE },
@@ -286,17 +338,10 @@ function buildMode:Init(dbFileName, buildName, buildXML, convertBuild)
 		t_insert(self.displayStats, { stat = "Req" .. stat, label = statLabel .. " Required", fmt = "d", lowerIsBetter = true, condFunc = function(v,o) return v > o[stat] end, warnFunc = function(v) return "You do not meet the " .. statLabel .. " requirement" end })
 	end
 
-	-- Season 4 (1.4) converted attributes — shown only when the build has any (haveOutput hides rows with 0).
-	local s4Attrs = {
-		{ stat = "Brutality", color = colorCodes.BRUTALITY },
-		{ stat = "Guile",     color = colorCodes.GUILE },
-		{ stat = "Madness",   color = colorCodes.MADNESS },
-		{ stat = "Apathy",    color = colorCodes.APATHY },
-		{ stat = "Rampancy",  color = colorCodes.RAMPANCY },
-	}
-	for _, conv in ipairs(s4Attrs) do
-		t_insert(self.displayStats, { stat = conv.stat, label = conv.color .. conv.stat, fmt = "d" })
-	end
+	-- NOTE: Do NOT re-insert the Season 4 converted attributes here. Every converted
+	-- attribute (Brutality/Guile/Madness/Apathy/Rampancy) is already added by the
+	-- s4AttrPair loop above, in its base-attribute slot. A second block listing them
+	-- again produced a DUPLICATE row in the sidebar (e.g. "Madness" shown twice).
 
 	tableInsertAll(self.displayStats, {
 		{ },
@@ -326,14 +371,20 @@ function buildMode:Init(dbFileName, buildName, buildXML, convertBuild)
 		{ stat = "ManaLeechGainPerHit", label = "Mana Leech/Gain per Hit", fmt = ".1f", color = colorCodes.MANA, compPercent = true },
 		{ },
 		-- @leb-regression-guard: sidebar-ward-stat-removal
-		-- The sidebar intentionally lists ONLY StableWard here. The raw `Ward`
-		-- value and `NetWardRegen` row were removed because they duplicated
-		-- StableWard / Net Recovery already shown elsewhere and confused users.
-		-- Re-adding either row breaks TestBuilds snapshots that locked the
-		-- post-removal PlayerStat set.
+		-- The sidebar intentionally lists ONLY StableWard for the ward pool: the raw
+		-- `Ward` row was removed because it duplicated StableWard and confused users
+		-- (re-adding it breaks the TestBuilds snapshots that locked the post-removal
+		-- PlayerStat set). NetWardRegen was originally removed too but REINTRODUCED
+		-- (<see git log>) to sit under StableWard as the ward-recovery line.
 		-- Test: spec/System/TestSidebarWardStats_spec.lua
 		{ stat = "StableWard", label = "Stable Ward", fmt = "d", color = colorCodes.WARD, compPercent = true },
-		{ stat = "NetWardRegen", label = "Net Ward Recovery", fmt = "+.1f", color = colorCodes.WARD },
+		-- Net Ward Recovery = ward gained/s − ward decay/s. At the stable-ward
+		-- equilibrium this is ~0 BY CONSTRUCTION (and exactly 0 when the build has no
+		-- per-second ward generation), so a "+0.0" row carries no information — hide it
+		-- when the displayed value would round to ±0.0 (fmt +.1f → |v| < 0.05), the same
+		-- way the Mana Regen row hides at 0 (user-requested 2026-06-10). A REAL net
+		-- drift (ward still ramping or bleeding) still shows.
+		{ stat = "NetWardRegen", label = "Net Ward Recovery", fmt = "+.1f", color = colorCodes.WARD, condFunc = function(v) return v and (v >= 0.05 or v <= -0.05) end },
 		{ },
 		{ stat = "TotalDegen", label = "Total Degen", fmt = ".1f", lowerIsBetter = true },
 		{ stat = "TotalNetRegen", label = "Total Net Recovery", fmt = "+.1f" },
@@ -348,10 +399,42 @@ function buildMode:Init(dbFileName, buildName, buildXML, convertBuild)
 		{ },
 		{ stat = "Armour", label = "Armor", fmt = "d", compPercent = true },
 		{ stat = "PhysicalDamageReduction", label = "Armor Mitigation", fmt = "d%%", condFunc = function() return true end },
+		-- @leb-regression-guard:sidebar-defence-display-tweaks
+		-- Group separator between the Armor block and the Endurance block (same blank-row
+		-- spacing as the Dodge <-> Armor separator above); user-requested 2026-06-10.
+		{ },
+		-- @leb-regression-guard:le-defensive-sidebar-panel
+		-- Surfaces the LE-specific defence-layer stats that CalcDefence already COMPUTES
+		-- but the sidebar previously never displayed. Each appears on the in-game character
+		-- sheet's defence page (the sole authority for derived stats), so exposing them here
+		-- completes the defence layer to parity with the in-game panel. Every row is gated on
+		-- v>0 (Endurance/EnduranceThreshold tie to the same gate via Endurance) so builds with
+		-- none of a given stat are unaffected — these are presentation-only rows and add no new
+		-- output keys, so TestBuilds snapshots are untouched. See REGRESSION_GUARDS.md
+		-- "le-defensive-sidebar-panel". Test: spec/System/TestDefensiveSidebarPanel_spec.lua
+		{ stat = "Endurance", label = "Endurance", fmt = "d%%", condFunc = function(v) return v and v > 0 end },
+		-- @leb-regression-guard:endurance-threshold-neutral-color
+		-- Endurance Threshold renders in the default white (no `color`), matching the
+		-- sibling Endurance/Armour/Dodge defensive rows. The earlier colorCodes.LIFE
+		-- (red) tint had no functional meaning and read as a warning; user-requested
+		-- neutral color 2026-06-09.
+		{ stat = "EnduranceThreshold", label = "Endurance Threshold", fmt = "d", condFunc = function(v,o) return v and v > 0 and (o.Endurance or 0) > 0 end },
 		{ },
 		{ stat = "BlockChance", label = "Block Chance", fmt = "d%%", overCapStat = "BlockChanceOverCap" },
 		{ stat = "SpellBlockChance", label = "Spell Block Chance", fmt = "d%%", overCapStat = "SpellBlockChanceOverCap" },
+		{ stat = "BlockEffectiveness", label = "Block Effectiveness", fmt = "d", condFunc = function(v) return v and v > 0 end },
 		{ stat = "SpellDodgeChance", label = "Spell Dodge Chance", fmt = "d%%", overCapStat = "SpellDodgeChanceOverCap" },
+		{ stat = "GlancingBlowChance", label = "Glancing Blow Chance", fmt = "d%%", condFunc = function(v) return v and v > 0 end },
+		{ stat = "CritAvoidance", label = "Critical Strike Avoidance", fmt = "d%%", condFunc = function(v) return v and v > 0 end },
+		{ stat = "StunAvoidance", label = "Stun Avoidance", fmt = "d", condFunc = function(v) return v and v > 0 end },
+		-- In-game label is "Increased Healing Effectiveness" (the INC portion, e.g. 189%),
+		-- which is exactly what output.HealingEffectiveness holds (modDB:Sum("INC",...)).
+		-- Verified against MyLittleStJames lv79 in-game character sheet: 189%.
+		-- @leb-regression-guard:sidebar-defence-display-tweaks
+		-- Display label SHORTENED to "Healing Effectiveness" (user-requested 2026-06-10):
+		-- the full in-game label wraps to two lines in the sidebar. Kept (not hidden) for
+		-- in-game character-sheet parity; the row is v>0-gated so it only shows when present.
+		{ stat = "HealingEffectiveness", label = "Healing Effectiveness", fmt = "d%%", condFunc = function(v) return v and v > 0 end },
 		{ },
 	})
 
@@ -385,6 +468,13 @@ function buildMode:Init(dbFileName, buildName, buildXML, convertBuild)
 		{ stat = "PoisonDPS", label = "Poison DPS", fmt = ".1f", compPercent = true, warnFunc = function(v) return v >= data.misc.DotDpsCap and "Minion Poison dps exceeds in game limit" end },
 		{ stat = "PoisonDamage", label = "Total Damage per Poison", fmt = ".1f", compPercent = true },
 		{ stat = "WithPoisonDPS", label = "Total DPS inc. Poison", fmt = ".1f", compPercent = true, condFunc = function(v,o) return v ~= o.TotalDPS and (o.TotalDot or 0) == 0 and (o.IgniteDPS or 0) == 0 and (o.ImpaleDPS or 0) == 0 and (o.BleedDPS or 0) == 0 end },
+		-- @leb-regression-guard:minion-ailment-upper-panel
+		-- Validation provenance is retained in maintainer notes.
+		{ stat = "FrostbiteDPS", label = "Frostbite DPS", fmt = ".1f", compPercent = true, condFunc = function(v,o) return v and v > 0 end, warnFunc = function(v) return v >= data.misc.DotDpsCap and "Minion Frostbite DPS exceeds in game limit" end },
+		{ stat = "ElectrifyDPS", label = "Electrify DPS", fmt = ".1f", compPercent = true, condFunc = function(v,o) return v and v > 0 end, warnFunc = function(v) return v >= data.misc.DotDpsCap and "Minion Electrify DPS exceeds in game limit" end },
+		{ stat = "DamnedDPS",    label = "Damned DPS",    fmt = ".1f", compPercent = true, condFunc = function(v,o) return v and v > 0 end, warnFunc = function(v) return v >= data.misc.DotDpsCap and "Minion Damned DPS exceeds in game limit" end },
+		{ stat = "TimeRotDPS",   label = "Time Rot DPS",  fmt = ".1f", compPercent = true, condFunc = function(v,o) return v and v > 0 end, warnFunc = function(v) return v >= data.misc.DotDpsCap and "Minion Time Rot DPS exceeds in game limit" end },
+		{ stat = "DoomDPS",      label = "Doom DPS",      fmt = ".1f", compPercent = true, condFunc = function(v,o) return v and v > 0 end, warnFunc = function(v) return v >= data.misc.DotDpsCap and "Minion Doom DPS exceeds in game limit" end },
 		{ stat = "DecayDPS", label = "Decay DPS", fmt = ".1f", compPercent = true },
 		{ stat = "TotalDotDPS", label = "Total DoT DPS", fmt = ".1f", compPercent = true, condFunc = function(v,o) return v ~= o.TotalDot and v ~= o.ImpaleDPS and v ~= o.TotalPoisonDPS and v ~= (o.TotalIgniteDPS or o.IgniteDPS) and v ~= o.BleedDPS end, warnFunc = function(v) return v >= data.misc.DotDpsCap and "Minion DoT DPS exceeds in game limit" end },
 		{ stat = "ImpaleDPS", label = "Impale DPS", fmt = ".1f", compPercent = true, flag = "impale" },
@@ -527,9 +617,6 @@ function buildMode:Init(dbFileName, buildName, buildXML, convertBuild)
 			tooltip:AddLine(14, colorCodes.TIP.."Tip: You can drag items from the Items tab onto this dropdown to equip them onto the minion.")
 		end
 	end
-	self.controls.mainSkillMinionLibrary = new("ButtonControl", {"LEFT",self.controls.mainSkillMinion,"RIGHT"}, 2, 0, 120, 18, "Manage Spectres...", function()
-		self:OpenSpectreLibrary()
-	end)
 	self.controls.mainSkillMinionSkill = new("DropDownControl", {"TOPLEFT",self.controls.mainSkillMinion,"BOTTOMLEFT",true}, 0, 2, 200, 16, nil, function(index, value)
 		local mainSocketGroup = self.skillsTab.socketGroupList[self.mainSocketGroup]
 		local srcInstance = mainSocketGroup.displaySkillList[mainSocketGroup.mainActiveSkill].activeEffect.srcInstance
@@ -808,12 +895,23 @@ function buildMode:ReadLeToolsSave(saveContent)
 		-- Legendary fallback: unique + exalted merged item gets a different LeTools ID
 		-- that maps to the non-unique base entry. Recover uniqueId from another entry
 		-- with the same baseTypeId+subTypeId that does have a uniqueId.
+		-- @leb-regression-guard:minion-selection-determinism
+		-- Several uniques can share one baseTypeId+subTypeId (e.g. six glove
+		-- uniques on base 4/5), so this recovery is ambiguous. It used to take
+		-- the FIRST match out of pairs(), but LuaJIT seeds string hashing
+		-- per-process, so pairs() over this string-keyed table is per-process
+		-- ordered: the same build resolved to a DIFFERENT unique run-to-run
+		-- (1.2/minions.json equipped Li'raka's Claws / Falcon Fists / Maehlin's
+		-- Hubris across fresh processes -> 6 distinct output hashes). Track the
+		-- minimum uniqueId instead: order-independent, and stable even if the
+		-- encoded-id keys of bases.json are regenerated.
 		if not uniqueId then
 			for _, baseEntry in pairs(data.LETools_itemBases) do
 				if baseEntry.baseTypeId == baseTypeID and baseEntry.subTypeId == subTypeID and baseEntry.uniqueId then
-					uniqueId = baseEntry.uniqueId
+					if not uniqueId or baseEntry.uniqueId < uniqueId then
+						uniqueId = baseEntry.uniqueId
+					end
 					isLegendary = true
-					break
 				end
 			end
 		end
@@ -827,11 +925,17 @@ function buildMode:ReadLeToolsSave(saveContent)
 				break
 			end
 		end
+		-- @leb-regression-guard:minion-selection-determinism
+		-- Same pairs()-order hazard as the legendary fallback above: if two base
+		-- names share baseTypeID+subTypeID, the old loop kept whichever pairs()
+		-- yielded LAST (per-process ordered). Keep the lexically-smallest name.
 		for itemBaseName, itemBase in pairs(latestBases) do
             if itemBase.baseTypeID == baseTypeID and itemBase.subTypeID == subTypeID then
-                item.base = itemBase
-          		item.name = itemBaseName
-          		item.baseName = itemBaseName
+                if not item.baseName or itemBaseName < item.baseName then
+                    item.base = itemBase
+                    item.name = itemBaseName
+                    item.baseName = itemBaseName
+                end
             end
 		end
 		
@@ -899,15 +1003,20 @@ function buildMode:ReadLeToolsSave(saveContent)
 			    item.name = uniqueBase.name
 				item["rarity"] = isLegendary and "LEGENDARY" or "UNIQUE"
 				for i, modLine in ipairs(uniqueBase.mods) do
+                    -- @leb-regression-guard:unique-inherent-not-crafted
+                    -- @leb-regression-guard: unique-shared-rollids-not-independent
+                    -- Third rollIds consumer (with ImportTab's save + LETools loops):
+                    -- `ur` is indexed BY ROLL GROUP, so rollIds[i] is a group id, not a
+                    -- line index. Mods sharing an id intentionally read the same `ur` slot.
+                    -- Test: spec/System/TestUniqueSharedRollIds_spec.lua "matches the in-game solved rollIds"
                     if itemLib.hasRange(modLine) then
                         local range = main.defaultItemAffixQuality
                         if itemData['ur'] and #itemData['ur'] > 0 and uniqueBase.rollIds and uniqueBase.rollIds[i] ~= nil then
                             range = itemData["ur"][uniqueBase.rollIds[i] + 1] or main.defaultItemAffixQuality
                         end
-                        -- TODO: avoid using crafted
-                        table.insert(item.explicitMods, "{crafted}{range: " .. range .. "}" .. modLine)
+                        table.insert(item.explicitMods, "{uniqueInherent}{range: " .. range .. "}" .. modLine)
                     else
-                        table.insert(item.explicitMods, "{crafted}" .. modLine)
+                        table.insert(item.explicitMods, "{uniqueInherent}" .. modLine)
                     end
 				end
 			end
@@ -1575,43 +1684,56 @@ function buildMode:OpenSaveAsPopup()
 	main:OpenPopup(470, 255, self.dbFileName and "Save As" or "Save", controls, "save", "edit", "close")
 end
 
--- Open the spectre library popup
-function buildMode:OpenSpectreLibrary()
-	local destList = copyTable(self.spectreList)
-	local sourceList = { }
-	for id in pairs(self.data.spectres) do
-		t_insert(sourceList, id)
-	end
-	table.sort(sourceList, function(a,b)
-		if self.data.minions[a].name == self.data.minions[b].name then
-			return a < b
-		else
-			return self.data.minions[a].name < self.data.minions[b].name
-		end
-	end)
-	local controls = { }
-	controls.list = new("MinionListControl", nil, -100, 40, 190, 250, self.data, destList)
-	controls.source = new("MinionListControl", nil, 100, 40, 190, 250, self.data, sourceList, controls.list)
-	controls.save = new("ButtonControl", nil, -45, 330, 80, 20, "Save", function()
-		self.spectreList = destList
-		self.modFlag = true
-		self.buildFlag = true
-		main:ClosePopup()
-	end)
-	controls.cancel = new("ButtonControl", nil, 45, 330, 80, 20, "Cancel", function()
-		main:ClosePopup()
-	end)
-	controls.noteLine1 = new("LabelControl", {"TOPLEFT",controls.list,"BOTTOMLEFT"}, 24, 2, 0, 16, "Spectres in your Library must be assigned to an active")
-	main:OpenPopup(410, 360, "Spectre Library", controls)
-end
-
 -- Refresh the set of controls used to select main group/skill/minion
 function buildMode:RefreshSkillSelectControls(controls, mainGroup, suffix)
 	wipeTable(controls.mainSocketGroup.list)
+	-- @leb-regression-guard:fulldps-fold-same-skill-cycle
+	-- Set of MANUALLY-socketed skill ids (groups that are not trigger-granted). Used below
+	-- to hide a TIMER-triggered duplicate ("<X> (every Ns)") of a skill that is ALSO manually
+	-- socketed -- e.g. "Maelstrom (every 27.8s)" from a "chance to cast Maelstrom" affix while
+	-- Maelstrom is also manually cast: the auto-cast copy feeds the same skill, so it only
+	-- clutters the selector (display-only; the group still contributes to Full DPS).
+	local manualSkillIds = {}
+	for _, sg in pairs(self.skillsTab.socketGroupList) do
+		if sg.skillId and not sg.triggeredByTimer and not sg.triggeredOnHit then
+			manualSkillIds[sg.skillId] = true
+		end
+	end
 	for i, socketGroup in pairsSortByKey(self.skillsTab.socketGroupList) do
-		table.insert(controls.mainSocketGroup.list, { val = i, label = socketGroup.displayLabel })
-		if i == mainGroup then
-			controls.mainSocketGroup.selIndex = #controls.mainSocketGroup.list
+		-- @leb-regression-guard:main-skill-dropdown-hide-ailments
+		-- Hide auto-granted ailment / debuff sub-skills (e.g. "Bleed (from
+		-- Puncture)", "Shred Armour (from X)", "Critical Vulnerability (from
+		-- X)", "Blind / Chill / Slow / Frailty (from X)") from the Main Skill
+		-- selector — they clutter the dropdown and are not castable main
+		-- skills. Detected by being trigger-granted (`triggeredOnHit`) AND
+		-- `data.skills[id].baseFlags.ailment`, so a manually-equipped skill is
+		-- NEVER hidden (manual groups have no triggeredOnHit). A triggered
+		-- *damage* skill (no ailment flag) is also kept. Hidden entries still
+		-- contribute to the Full DPS breakdown — only the selector row is
+		-- suppressed. Spec: spec/System/TestMainSkillDropdownHideAilments_spec.lua.
+		local gsid = socketGroup.skillId
+		local hideAilment = socketGroup.triggeredOnHit and gsid and data.skills[gsid]
+			and data.skills[gsid].baseFlags and data.skills[gsid].baseFlags.ailment
+		-- @leb-regression-guard:fulldps-fold-same-skill-cycle
+		-- Also hide a SELF-triggered duplicate group "<X> (from <X>)" (the granted
+		-- skill is the same skill that triggers it, e.g. "Shurikens (from Shurikens)")
+		-- — it is the same skill as the manually-equipped one, just the triggered copy,
+		-- so it only clutters the selector. group.triggeredOnHit holds the source skill
+		-- id (CalcSetup); self-trigger == granted skill name equals source skill name.
+		-- Cross-skill triggers ("X (from OtherSkill)") and manual groups are NOT hidden.
+		local hideSelfTrigger = socketGroup.triggeredOnHit and gsid and data.skills[gsid]
+			and data.skills[socketGroup.triggeredOnHit]
+			and data.skills[gsid].name == data.skills[socketGroup.triggeredOnHit].name
+		-- @leb-regression-guard:fulldps-fold-same-skill-cycle
+		-- Hide a TIMER-triggered duplicate ("<X> (every Ns)", triggeredByTimer from a "chance
+		-- to cast <X>" affix) when the SAME skill is also manually socketed. Cross-skill timer
+		-- triggers and timer-only skills (no manual group) are NOT hidden. Display-only.
+		local hideTimerDuplicate = socketGroup.triggeredByTimer and gsid and manualSkillIds[gsid]
+		if not (hideAilment or hideSelfTrigger or hideTimerDuplicate) then
+			table.insert(controls.mainSocketGroup.list, { val = i, label = socketGroup.displayLabel })
+			if i == mainGroup then
+				controls.mainSocketGroup.selIndex = #controls.mainSocketGroup.list
+			end
 		end
 	end
 	controls.mainSocketGroup:CheckDroppedWidth(true)
@@ -1635,7 +1757,6 @@ function buildMode:RefreshSkillSelectControls(controls, mainGroup, suffix)
 		controls.mainSkillMineCount.shown = false
 		controls.mainSkillStageCount.shown = false
 		controls.mainSkillMinion.shown = false
-		controls.mainSkillMinionLibrary.shown = false
 		controls.mainSkillMinionSkill.shown = false
 		if displaySkillList[1] then
 			local activeSkill = displaySkillList[mainActiveSkill]
@@ -1672,8 +1793,10 @@ function buildMode:RefreshSkillSelectControls(controls, mainGroup, suffix)
 							})
 						end
 						controls.mainSkillMinion:SelByValue(activeEffect.srcInstance["skillMinionItemSet"..suffix] or 1, "itemSetId")
+						-- Item-set minions list set titles (not internal prefab names) and support
+						-- drag-to-equip, so keep the dropdown visible even with a single set.
+						controls.mainSkillMinion.shown = true
 					else
-						controls.mainSkillMinionLibrary.shown = (activeEffect.grantedEffect.minionList and not activeEffect.grantedEffect.minionList[1])
 						for _, minionId in ipairs(activeSkill.minionList) do
 							t_insert(controls.mainSkillMinion.list, {
 								label = self.data.minions[minionId].name,
@@ -1681,9 +1804,13 @@ function buildMode:RefreshSkillSelectControls(controls, mainGroup, suffix)
 							})
 						end
 						controls.mainSkillMinion:SelByValue(activeEffect.srcInstance["skillMinion"..suffix] or controls.mainSkillMinion.list[1], "minionId")
+						-- A single fixed minion is not a real choice -- showing it would only expose
+						-- the raw internal prefab name (e.g. "ManifestedArmor"). Hide unless there are
+						-- multiple minions to pick. mainSkillMinionSkill anchors to this with
+						-- collapse=true, so hiding it leaves no layout gap.
+						controls.mainSkillMinion.shown = #controls.mainSkillMinion.list > 1
 					end
 					controls.mainSkillMinion.enabled = #controls.mainSkillMinion.list > 1
-					controls.mainSkillMinion.shown = true
 					wipeTable(controls.mainSkillMinionSkill.list)
 					if activeSkill.minion then
 						for _, minionSkill in ipairs(activeSkill.minion.activeSkillList) do
@@ -1742,8 +1869,21 @@ function buildMode:AddDisplayStatList(statList, actor)
 					local overCapStatVal = actor.output[statData.overCapStat] or nil
 					if statData.stat == "SkillDPS" then
 						labelColor = colorCodes.CUSTOM
-						table.sort(actor.output.SkillDPS, function(a,b) return (a.dps * a.count) > (b.dps * b.count) end)
-						for _, skillData in ipairs(actor.output.SkillDPS) do
+						-- @leb-regression-guard:fulldps-fold-ailments-into-parent
+						-- LEB imports each damaging ailment as a SEPARATE active skill (name="Ignite",
+						-- trigger=parent skill name) so by default the Full DPS breakdown shows one row per
+						-- ailment ("Ignite (Judgement)"). Fold every damaging-ailment entry whose trigger
+						-- matches a parent entry's name back into that parent's displayed total, so the
+						-- breakdown shows a single line per skill (hit + all its ailments) — PoB parity.
+						-- Built as a fresh local list; output.SkillDPS itself is left unchanged so the
+						-- snapshot deep-compare is not affected.
+						local foldedList = self.calcsTab.calcs.foldAilmentsIntoParents(actor.output.SkillDPS, data.damagingAilment)
+						-- @leb-regression-guard:fulldps-fold-same-skill-cycle
+						-- Then merge same-skill cycle / self-trigger duplicates (e.g. "Shurikens"
+						-- + "Shurikens (Shurikens) x1/2 cycle") into one summed "Shurikens" line.
+						foldedList = self.calcsTab.calcs.foldSameSkillCycleEntries(foldedList)
+						table.sort(foldedList, function(a,b) return (a.dps * a.count) > (b.dps * b.count) end)
+						for _, skillData in ipairs(foldedList) do
 							local triggerStr = ""
 							if skillData.trigger and skillData.trigger ~= "" then
 								triggerStr = colorCodes.WARNING.." ("..skillData.trigger..")"..labelColor
@@ -1767,14 +1907,20 @@ function buildMode:AddDisplayStatList(statList, actor)
 									self:FormatStat({fmt = "1.f"}, skillData.dps * skillData.count, overCapStatVal),
 								})
 							elseif DrawStringWidth(16, "VAR", lhsString) > 165 then
+								-- @leb-regression-guard:fulldps-wrap-long-untriggered-label
+								-- No trigger to pair with the value, so the full label clips if kept in
+								-- column 1 (right edge x=170). Render it as a CENTERED two-line block
+								-- (label above, value below) so a long name like "3x Summon Upheaval
+								-- Totem:" stays readable and centered, instead of floating right-aligned
+								-- against the box edge (x=278) with the value detached below-left.
 								t_insert(statBoxList, {
-									height = 14,
-									x = 278, align = "RIGHT_X",
+									height = 16,
+									align = "CENTER_X", x = 140,
 									lhsString,
 								})
 								t_insert(statBoxList, {
 									height = 16,
-									"",
+									align = "CENTER_X", x = 140,
 									self:FormatStat({fmt = "1.f"}, skillData.dps * skillData.count, overCapStatVal),
 								})
 							else
@@ -1797,6 +1943,24 @@ function buildMode:AddDisplayStatList(statList, actor)
 									align = "CENTER_X", x = 140,
 									colorCodes.WARNING.."from " ..skillData.source,
 								})
+							end
+							-- @leb-regression-guard:minion-skill-breakdown-display
+							-- DISPLAY-ONLY: if this Full DPS entry is a multi-skill minion (Manifest
+							-- Armor, Bear, etc.), show each damaging skill the minion casts (Melee +
+							-- specials) as indented info rows. These are NOT summed into the headline
+							-- Full DPS (a minion contributes only its single default skill, per design)
+							-- -- they show the user what the minion actually does. The naive sum of
+							-- these over-counts (the minion shares its action time across skills), so
+							-- each is shown per-skill, not totalled.
+							local minionBreakdown = actor.output.MinionSkillBreakdown and actor.output.MinionSkillBreakdown[skillData.name]
+							if minionBreakdown and #minionBreakdown > 1 then
+								for _, sub in ipairs(minionBreakdown) do
+									t_insert(statBoxList, {
+										height = 14,
+										"^8      "..sub.name..":",
+										self:FormatStat({ fmt = "1.f" }, sub.dps, nil, "^8"),
+									})
+								end
 							end
 						end
 					elseif not (statData.hideStat) then
@@ -1906,7 +2070,13 @@ function buildMode:RefreshStatList()
 	end
 	if self.calcsTab.mainEnv.player.mainSkill.skillFlags.disable then
 		t_insert(statBoxList, { height = 16, "^7Skill disabled:" })
-		t_insert(statBoxList, { height = 14, align = "CENTER_X", x = 140, self.calcsTab.mainEnv.player.mainSkill.disableReason })
+		-- @leb-regression-guard:upheaval-totem-disable-reason
+		-- The statBox width truncates a long single line, so render a "\n"-separated
+		-- disableReason as one centered row per line (e.g. the Upheaval Totem reason wraps
+		-- to two lines). Single-line reasons are unaffected (one row, as before).
+		for reasonLine in (self.calcsTab.mainEnv.player.mainSkill.disableReason or ""):gmatch("[^\n]+") do
+			t_insert(statBoxList, { height = 14, align = "CENTER_X", x = 140, reasonLine })
+		end
 	end
 	self:AddDisplayStatList(self.displayStats, self.calcsTab.mainEnv.player)
 	self:InsertItemWarnings()

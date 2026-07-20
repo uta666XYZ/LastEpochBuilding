@@ -4,14 +4,14 @@
 --   "(40-60)% of Current Mana gained as Ward when you stop moving
 --    (2 second cooldown)"
 --
--- Game-side authority (dump.cs, il2cpp re-extraction):
+-- Game-side authority (datamined game source re-extraction):
 --   * L95850 `public float currentManaGainedAsWardOnStopMoving; // 0xDB0`
 --   * L95851 `private const float currentManaGainedAsWardOnStopMovingCooldown = 2;`
 --   * Distinct from the continuous-per-second variant
 --     `currentManaGainedAsWardPerSecond` (L95820 offset 0xD38).
 --   * Event-driven sources feed `ProtectionClass.GainWard(amount)` separately
 --     from passive `wardRegen + wardRegenFromStats`; they are NOT part of the
---     0.5/s decay floor gate (see LE_datamining/extracted/ward_formulas.md §2).
+--     0.5/s decay floor gate (see datamined game source §2).
 --
 -- LEB strategy: surface the affix as a steady-state continuous Ward per
 -- Second contribution, amortizing over the 2-second hard cooldown, but ONLY
@@ -21,7 +21,7 @@
 -- amortized wps = currentMana * pct / 100 / 2
 --
 -- Before this guard the line fell through to LEB_NotSupported (see ModCache
--- L15263 stale entry: 50% form → notSupported=true). The o3Zlpkxd lv98
+-- L15263 stale entry: 50% form → notSupported=true). The <private build> lv98
 -- Necromancer test build wears Transient Rest and contributed 0 wps from
 -- this affix prior to the fix.
 --
@@ -114,7 +114,7 @@ describe("WardStopMovingConfigAmortize", function()
             -- Match the computation expression `* currentManaGainedAsWardOnStopMoving / 100 / 2`
             assert.is_truthy(string.find(performText,
                 "currentManaGainedAsWardOnStopMoving / 100 / 2", 1, true),
-                "CalcPerform must divide by 2 (the dump.cs hardcoded 2s cooldown)")
+                "CalcPerform must divide by 2 (the datamined hardcoded 2s cooldown)")
         end)
 
         it("adds stopMovingContribution into totalContribution", function()

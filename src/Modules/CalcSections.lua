@@ -117,6 +117,14 @@ return {
 		{ label = "Enemy modifiers", modName = "SelfCritMultiplier", enemy = true },
 	}, },
 	{ label = "Crit Effect Mod", { format = "x {3:output:CritEffect}", { breakdown = "CritEffect" }, }, },
+	-- Boss-target-accurate crit breakdown (datamine: crit is applied defender-side,
+	-- bosses reduce the crit BONUS by ReducedBonusDamageTakenFromCrits ~= 0.35, i.e.
+	-- x0.65 on the bonus). These are display-only; the headline "Skill Average Hit"
+	-- stays sheet-faithful. See @leb-regression-guard:boss-crit-damage-taken.
+	{ label = "Boss Crit Dmg Taken", haveOutput = "BossCritDamageTakenMult", { format = "x {3:output:BossCritDamageTakenMult}" }, },
+	{ label = "Non-Crit Hit", haveOutput = "NonCritAverageHit", { format = "{1:output:NonCritAverageHit}", }, },
+	{ label = "Crit Hit", haveOutput = "CritAverageHit", { format = "{1:output:CritAverageHit}", }, },
+	{ label = "Avg Hit (inc. Crit)", haveOutput = "CritWeightedHit", { format = "{1:output:CritWeightedHit}", }, },
 } }
 } },
 { 1, "SkillTypeStats", 1, colorCodes.OFFENCE, {{ defaultCollapsed = false, label = "Skill type-specific Stats", data = {
@@ -196,7 +204,7 @@ return {
 	-- pair harvested from the static "(up to N times per M seconds)" suffix.
 	-- LEB does NOT fold this into DPS / effective-procs maths because the game
 	-- exposes no planner-visible rate-capped chance stat (runtime PTT gate only;
-	-- dump.cs L239352-L239378 + L33671-L33713).
+	-- datamined game source + L33671-L33713).
 	{ label = "Burning Dagger Rate Limit", haveOutput = "BurningDaggerChanceOnMeleeFire_RateLimit", { format = "{0:output:BurningDaggerChanceOnMeleeFire_RateLimit} per {1:output:BurningDaggerChanceOnMeleeFire_RateInterval} sec" }, },
 	-- @leb-regression-guard:cooldown-recovered-on-hit-consumer
 	{ label = "CD Recovered per Hit", haveOutput = "CooldownRecoveryOnHit", { format = "{2:output:CooldownRecoveryOnHit}%", { modName = "CooldownRecoveryOnHit", cfg = "skill" }, }, },
@@ -240,10 +248,8 @@ return {
 } }
 } },
 { 1, "LeechGain", 1, colorCodes.OFFENCE, {{ defaultCollapsed = false, label = "Leech & Gain on Hit", data = {
-	{ label = "Life Leech Cap", flag = "leechLife", { format = "{1:output:MaxLifeLeechRate}",
-		{ breakdown = "MaxLifeLeechRate" },
-		{ modName = "MaxLifeLeechRate" },
-	}, },
+	-- @leb-regression-guard:leech-le-instance-model -- LE has no per-second leech-rate cap, so
+	-- the "Life/Mana Leech Cap" rows (PoB MaxLifeLeechRate/MaxManaLeechRate) were removed.
 	{ label = "Life Leech Rate", flag = "leechLife", notFlag = "showAverage", { format = "{1:output:LifeLeechRate}",
 		{ breakdown = "LifeLeech" },
 		{ label = "Player modifiers", notFlagList = { "totem", "attack" }, modName = { "DamageLeech", "DamageLifeLeech", "PhysicalDamageLifeLeech", "LightningDamageLifeLeech", "ColdDamageLifeLeech", "FireDamageLifeLeech", "PoisonDamageLifeLeech", "NecroticDamageLifeLeech", "VoidDamageLifeLeech", "ElementalDamageLifeLeech" }, modType = "BASE", cfg = "skill" },
@@ -277,10 +283,6 @@ return {
 	}, },
 	{ label = "Health Lost on Kill", haveOutput = "LifeLossOnKillPercent", { format = "{1:output:LifeLossOnKillPercent}%",
 		{modName = "LifeLossOnKillPercent"},
-	}, },
-	{ label = "Mana Leech Cap", flag = "leechMana", { format = "{1:output:MaxManaLeechRate}",
-		{ breakdown = "MaxManaLeechRate" },
-		{ modName = "MaxManaLeechRate" },
 	}, },
 	{ label = "Mana Leech Rate", flag = "leechMana", notFlag = "showAverage", { format = "{1:output:ManaLeechRate}",
 		{ breakdown = "ManaLeech" },
@@ -719,7 +721,19 @@ return {
 			table.insert(rows, { label = AttributesColored[i], haveOutput = stat, { format = "{0:output:" .. stat .. "}", { breakdown = stat }, { modName = stat }, }, })
 			local conv = s4Pair[stat]
 			if conv then
-				table.insert(rows, { label = conv.color .. "  " .. conv.stat, haveOutput = conv.stat, { format = "{0:output:" .. conv.stat .. "}", { breakdown = conv.stat }, { modName = conv.stat }, }, })
+				-- @leb-regression-guard:s4-converted-attr-table-from-source
+				-- A Season-4 converted attribute (Brutality/Guile/Madness/Apathy/
+				-- Rampancy) takes its value from the SOURCE attribute it replaced
+				-- (Str/Dex/Int/Att/Vit). Its per-source breakdown TABLE is therefore
+				-- driven by the SOURCE attribute's modName (`stat`, NOT `conv.stat`),
+				-- so AddModSection tabulates and resolves Str's mods (item names,
+				-- passive-node display names, equipment slots) — giving the converted
+				-- attribute the SAME per-source table every other attribute shows,
+				-- instead of an empty table (it has no mods under its own name). The
+				-- short conversion summary above the table is breakdown[conv.stat]
+				-- (CalcPerform). See guard `s4-converted-attr-source-breakdown` and
+				-- spec/System/TestS4ConvertedAttrBreakdown_spec.lua.
+				table.insert(rows, { label = conv.color .. "  " .. conv.stat, haveOutput = conv.stat, { format = "{0:output:" .. conv.stat .. "}", { breakdown = conv.stat }, { modName = stat }, }, })
 			end
 		end
 		return rows
@@ -912,7 +926,7 @@ return {
 	{ label = "Minion Reduced Bonus Crit Damage", haveOutput = "MinionReduceCritExtraDamage", { format = "{0:output:MinionReduceCritExtraDamage}%", { modName = "MinionModifier" }, }, },
 	-- @leb-regression-guard: minion-melee-attack-speed-label
 	-- Label is "Melee Attack Speed", not bare "Attack Speed". Game files
-	-- (dump.cs AT enum: Melee=512, Throwing=1024, Bow=2048; SP AttackSpeed=2)
+	-- (datamined game source AT enum: Melee=512, Throwing=1024, Bow=2048; SP AttackSpeed=2)
 	-- have no unqualified attack-speed stat -- both the player and minion
 	-- character sheets only expose Melee/Bow/Throwing Attack Speed + Cast
 	-- Speed. The minion attack-speed surface is the Melee one, so the

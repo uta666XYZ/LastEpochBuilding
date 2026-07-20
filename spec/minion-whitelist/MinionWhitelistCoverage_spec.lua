@@ -1,7 +1,7 @@
 -- @leb-regression-guard:minion-whitelist-3surface-union
 -- Locks the contract that the LEB minion-stat whitelist is shipped as the
 -- UNION of three independent game-data surfaces (altText / affixTag /
--- runtime), as merged by `LE_datamining/merge_minion_whitelist_3surfaces.py`.
+-- runtime), as merged by `datamined game source`.
 --
 -- The merged JSON sits at `spec/minion-whitelist/whitelist_final.json` and
 -- documents which (sp, tagBits, specialTag) tuples game-side routes to
@@ -330,7 +330,7 @@ describe("Minion whitelist 3-surface union", function()
     -- The calcs-tab minion section must label the attack-speed row "Increased
     -- Minion Melee Attack Speed" (not bare "Attack Speed") and carry a separate
     -- "Increased Minion Cast Speed" row, matching the in-game minion character
-    -- sheet. Game files (dump.cs AT enum: Melee/Throwing/Bow; SP AttackSpeed=2)
+    -- sheet. Game files (datamined game source AT enum: Melee/Throwing/Bow; SP AttackSpeed=2)
     -- have no unqualified attack-speed stat; minions surface the Melee tag plus
     -- their own Cast Speed. Both rows must be wired to the existing
     -- MinionAttackSpeed / MinionCastSpeed outputs. See REGRESSION_GUARDS.md.

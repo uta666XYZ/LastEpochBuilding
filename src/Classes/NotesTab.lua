@@ -381,15 +381,16 @@ function NotesTabClass:DrawPreview(viewPort)
 	if edit.defaultLineHeight and edit.defaultLineHeight > 0 and edit.lineHeight then
 		scale = edit.lineHeight / edit.defaultLineHeight
 	end
-	-- Reparse only when the source actually changes; per-frame parse becomes
-	-- expensive at 1000+ lines. See Obsidian: Development/軽量性維持の原則.md
-	-- Also rebuild on scale change so measure() reflects new font size.
+	-- Validation provenance is retained in maintainer notes.
 	if source ~= self.cachedPreviewSource or scale ~= self.cachedPreviewScale then
 		self.cachedPreviewSource = source
 		self.cachedPreviewScale = scale
 		self.cachedPreviewNodes = MarkdownRender.parse(source)
 		self.cachedPreviewContentH, self.cachedPreviewAnchors, self.cachedPreviewContentW, self.cachedPreviewNodeYs =
 			MarkdownRender.measure(self.cachedPreviewNodes, availW, scale)
+		-- Content changed: drop last frame's rendered height so a taller old
+		-- document can't over-extend the scroll of a shorter new one.
+		self.lastPreviewRenderedH = nil
 	end
 	local nodes = self.cachedPreviewNodes
 	local contentH = self.cachedPreviewContentH
@@ -398,22 +399,34 @@ function NotesTabClass:DrawPreview(viewPort)
 
 	-- Drive scroll via the scrollbar so wheel + drag share state. Account
 	-- for the H bar reserving a slice at the bottom (and vice-versa).
+	-- @leb-regression-guard: notes-preview-scroll-covers-render
+	-- Scroll extent = the larger of the cached measure and the height the
+	-- renderer actually drew last frame. measure() is cached and can lag the
+	-- live render -- e.g. an async image finished loading and grew the content
+	-- after the measure was taken, and measure()/render() also drift a few px on
+	-- the same content -- and if the scrollbar trusted the shorter measure the
+	-- bottom section (References) became unreachable until a reload. max() keeps
+	-- the whole rendered document scrollable regardless. Reverting to plain
+	-- contentH silently re-hides trailing content whenever render > measure.
+	-- Test: spec/System/TestNotesPreviewScrollExtent_spec.lua
+	local scrollH = math.max(contentH, self.lastPreviewRenderedH or 0)
 	local hBarShown = contentW > availW
 	local viewH = h - pad * 2 - (hBarShown and 14 or 0)
-	local vBarShown = contentH > viewH
+	local vBarShown = scrollH > viewH
 	local viewW = availW - (vBarShown and 14 or 0)
 	-- Recompute hBar with adjusted view to handle the case where the V bar
 	-- appearing causes horizontal overflow that wasn't there before.
 	hBarShown = contentW > viewW
 	viewH = h - pad * 2 - (hBarShown and 14 or 0)
-	self.controls.previewScrollBar:SetContentDimension(contentH, viewH)
+	self.controls.previewScrollBar:SetContentDimension(scrollH, viewH)
 	self.controls.previewScrollBarH:SetContentDimension(contentW, viewW)
 	self.previewScroll = self.controls.previewScrollBar.offset
 	local scrollX = self.controls.previewScrollBarH.offset
 
 	SetViewport(x + pad, y + pad, viewW, viewH)
-	local _, hotspots = MarkdownRender.render(nodes, 0, 0, viewW, self.previewScroll, scale, scrollX)
+	local renderedH, hotspots = MarkdownRender.render(nodes, 0, 0, viewW, self.previewScroll, scale, scrollX)
 	SetViewport()
+	self.lastPreviewRenderedH = renderedH
 
 	-- DrawControls already drew the scrollbars earlier, but the preview's
 	-- background rect above overpainted them. Redraw on top so they stay visible.

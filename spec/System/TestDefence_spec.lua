@@ -72,7 +72,7 @@ describe("TestDefence", function()
     end)
 
     -- @leb-regression-guard:ward-retention-negative-clamp
-    -- Game (ProtectionClass.Update RVA 0x234B8C0) clamps WardRetention at -90% before
+    -- Game (ProtectionClass.Update datamined offset) clamps WardRetention at -90% before
     -- the (1 + 0.5*R) decay divisor. Without the clamp, R <= -200% drives the divisor
     -- to <= 0 and stable ward becomes non-finite. This spec pins the clamped result so
     -- a regression that drops the clamp is caught.

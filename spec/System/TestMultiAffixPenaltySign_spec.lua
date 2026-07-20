@@ -3,11 +3,11 @@
 -- multi-affixes (specialAffixType == 6, prefix) encode their Line 2 stat
 -- as a NEGATIVE literal/range in ModItem_1_4.json — matching the
 -- game-side extraRolls[0].minRoll < 0 found in
--- ~/Documents/LE_datamining/extracted/items/multi_affixes_v3.json.
+-- ~/Documents/datamined game source
 --
 -- Historical bug: 951_*, 1001_*, 1006_* were imported with the positive
 -- sign, silently flipping a player penalty into a bonus. Ground truth:
--- olVLdj8q lv100 Bladedancer Item 6 "Salt the Wound" carries
+-- <private build> lv100 Bladedancer Item 6 "Salt the Wound" carries
 -- {kind:corrupted}{range:175}1006_0 — pre-fix LEB granted +7% Fire
 -- Resistance instead of the in-game -7% penalty (Δ Fire = +14 vs LETools).
 --

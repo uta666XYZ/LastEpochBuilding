@@ -2,7 +2,7 @@
 -- Locks the Apathy intrinsic "+2% Mana Regen INC per point" effect wired in
 -- CalcSetup.
 --
--- Evidence (LE_datamining extracted/localization/properties_localization.json):
+-- Evidence (datamined game source extracted/localization/properties_localization.json):
 --   Property_Player_653_Name: "Attunement Converted to Apathy"
 --   Property_Player_653_AltText:
 --     "Each point of Apathy grants 2% increased Mana Regeneration and 0.2%

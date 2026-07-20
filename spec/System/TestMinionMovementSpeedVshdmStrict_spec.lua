@@ -2,7 +2,7 @@
 -- Locks the LE-faithful vshDm Hundredth path for
 -- "% increased/reduced Minion Movement Speed" rolls.
 --
--- Triangulation case: BxvJP3g1 lv99 Necromancer Pebbles' Collar Reforged
+-- Triangulation case: <private build> lv99 Necromancer Pebbles' Collar Reforged
 -- implicit `(6-16)% increased Minion Movement Speed` byte=186
 --   legacy round-half-up: floor((6 + 186/255 × 10) + 0.5) = 13
 --   strict (vshDm):       floor((16 + 1 - 6) × 186/255 + 6) = 14

@@ -10,7 +10,7 @@
 --
 -- Same protection applies to any "per N <anything>" tail (e.g. "per 10 stacks").
 --
--- Establishing build: BgRrekaR lv100 Spellblade
+-- Establishing reference: see git log
 --   pre-fix  WardPerSecond=182 (LE 323, Δ=-141; Mage-51 Prodigy under-counted ~122)
 --   post-fix WardPerSecond=304 (LE 323, Δ=-19;  residual is fw3d-14 Energize etc, separate)
 --

@@ -5,13 +5,16 @@
 -- LETools planner displays the uncapped value so build planners can
 -- see over-cap headroom — same display family as Endurance/EnduranceTotal.
 --
--- Establishing case: BgRrP5rr lv98 Paladin Block Chance LEB capped 75
+-- Establishing case: <private build> lv98 Paladin Block Chance LEB capped 75
 -- vs LETools "93%" = phantom 19.4% drift on every shield Paladin past
 -- the cap unless this maps to BlockChanceTotal. Reverting the mapping
 -- to bare `BlockChance` (the natural-looking choice) would silently
 -- re-introduce the regression.
 --
 -- See REGRESSION_GUARDS.md §diff-letools-block-chance-uncapped-mapping.
+
+local OptionalArtifact = dofile("../spec/OptionalArtifact.lua")
+local toolsIt = OptionalArtifact.gatedIt(it, pending, "spec/tools")
 
 describe("DiffLetoolsBlockChanceUncappedMapping", function()
     local function readPython()
@@ -23,7 +26,7 @@ describe("DiffLetoolsBlockChanceUncappedMapping", function()
         return src
     end
 
-    it("'Block Chance' MAPPING entry resolves to 'BlockChanceTotal'", function()
+    toolsIt("'Block Chance' MAPPING entry resolves to 'BlockChanceTotal'", function()
         local src = readPython()
         local mapping = src:match(
             "%('General','Block Chance'%):%s*'([^']+)'")
@@ -36,7 +39,7 @@ describe("DiffLetoolsBlockChanceUncappedMapping", function()
             "§diff-letools-block-chance-uncapped-mapping.")
     end)
 
-    it("inline guard marker present at the MAPPING entry", function()
+    toolsIt("inline guard marker present at the MAPPING entry", function()
         local src = readPython()
         local block = src:match(
             "@leb%-regression%-guard:diff%-letools%-block%-chance%-uncapped%-mapping(.-)'BlockChanceTotal'")
@@ -48,7 +51,7 @@ describe("DiffLetoolsBlockChanceUncappedMapping", function()
             "rationale for future maintainers")
     end)
 
-    it("Endurance mapping uses the same uncapped-Total pattern", function()
+    toolsIt("Endurance mapping uses the same uncapped-Total pattern", function()
         -- This is a cross-reference assertion: if a future refactor unifies
         -- 'uncapped Total' mappings into a helper and accidentally drops
         -- Block Chance from the set, the Endurance entry stays as the

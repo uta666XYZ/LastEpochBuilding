@@ -1,7 +1,7 @@
 {
   "minion_bit": 8192,
   "source": "extracted/items/property_list_v3.json",
-  "schema_source": "TypeTreeGeneratorAPI (IL2CPP) -- LE 1.4.6",
+  "schema_source": "TypeTreeGeneratorAPI -- LE 1.4.6",
   "entries": [
     {
       "property": 0,

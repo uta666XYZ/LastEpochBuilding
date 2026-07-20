@@ -1,7 +1,7 @@
 -- @leb-regression-guard: skill-level-false-positive-purge
 -- Locks the purge of 287 ModCache entries that the over-permissive
 -- SkillLevel fallback (ModParser ~L2643) wrongly produced. F12 (commit
--- ec1755aca) gated the fallback on whitespace-only residue, stopping
+-- <see git log>) gated the fallback on whitespace-only residue, stopping
 -- NEW false positives -- but the cache file already contained 287
 -- stale entries baked before that gate landed.
 --

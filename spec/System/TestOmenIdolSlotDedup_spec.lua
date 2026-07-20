@@ -7,7 +7,7 @@
 -- counter double-tallies and inflates `CorruptedIdolItemsEquipped` plus
 -- the sibling `Multiplier:EquippedCorruptedIdol` emission.
 --
--- Establishing build: B7GrkJrK lv100 Lich/Reaper. Pre-dedup 16 corrupted
+-- Establishing reference: see git log
 -- idol items, post-dedup 14 (item.id 21 and 30 each duplicate-referenced).
 -- Reaper Mana 1548 → 1526 matches LETools breakdown exactly.
 --

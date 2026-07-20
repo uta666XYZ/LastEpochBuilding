@@ -1,40 +1,6 @@
 -- @leb-regression-guard: elemental-nova-spec-tree-gated-damage-type
--- Locks the contract that Elemental Nova's three elemental damage types
--- (Fire / Cold / Lightning) are CONDITIONALLY enabled by the en6 skill
--- specialization tree, NOT all granted unconditionally as base.
---
--- LE behaviour (verified against extracted LE game files; the
--- LE_datamining tree lives outside the repo — set $LEB_DATAMINING_ROOT
--- to point at your local copy, or see the Obsidian "GameData解析 INDEX"
--- note for the canonical layout):
---   - prefab_damage.json ElementalNova baseDamage = [Phys=0, Fire=8, Cold=8,
---     Light=8, Necro=0, Void=0, Poison=0]   (the "all-enabled" template)
---   - skills.json field skillTreeConversionDamageTags = 14 = Fire(2) + Cold(4)
---     + Lightning(8). This is the LE flag indicating that those damage types
---     are tree-gated, not base.
---   - en6 specialization tree (src/TreeData/1_4/tree_1.json):
---       en6-2  "Ice Nova"       — Enables Ice Nova       (Cold)
---       en6-8  "Lightning Nova" — Enables Lightning Nova (Lightning)
---       en6-12 "Fire Nova"      — Enables Fire Nova      (Fire)
---     A damage type is granted ONLY when its corresponding "Enables X Nova"
---     node is allocated.
---
--- Fix (2026-05-05):
---   - Removed spell_base_fire/cold/lightning_damage from
---     src/Data/skills.json `ElementalNova.stats`.
---   - Added "+8 Spell {Cold,Lightning,Fire} Damage" to en6-2 / en6-8 /
---     en6-12 nodes' `stats` in src/TreeData/1_4/tree_1.json.
---   - Cleared TREE_ID_DAMAGE_TYPES["en6"] in src/Classes/SkillsTab.lua so
---     spec-slot damage-type icons resolve via the dynamic resolver
---     (which detects "+N Spell <Type> Damage" stats on allocated nodes).
---
--- Establishing build: Bakbr2Ne lv86 Sorcerer (en6 allocations:
--- en6-0,2,4,5,6,8,18,21,24,25,26 — Ice + Lightning, no Fire). After fix,
--- Elemental Nova damage type icons match LE/LETools: Cold + Lightning,
--- no Fire.
---
 -- See REGRESSION_GUARDS.md > "elemental-nova-spec-tree-gated-damage-type"
--- for the index entry.
+-- Validation provenance is retained in maintainer notes.
 
 describe("ElementalNovaSpecTreeGatedDamageType", function()
     before_each(function()

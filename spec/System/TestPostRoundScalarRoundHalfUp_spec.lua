@@ -6,14 +6,14 @@
 -- silently undershoots LE/LETools by 1 on every (preBoost*scalar) result whose
 -- fractional part >= 0.5.
 --
--- Verified case (owLmrO3a Spellblade lv99, idol 23, altar Weaver Enchant 22%):
+-- Verified case (<private build> Spellblade lv99, idol 23, altar Weaver Enchant 22%):
 --   pre-boost rolled value = 9 Ward per Second
 --   boostedValue = 9 * 1.22 = 10.98
 --   floor   -> 10  (pre-fix LEB; LE-tooltip mismatch)
 --   round-half-up -> 11  (post-fix LEB; matches LETools tooltip
 --                        "Large Idol (Enchanted affix): +11 Ward per Second"
 --                        and stat-row breakdown in
---                        spec/TestBuilds/1.4/owLmrO3a lv99 Spellblade.letools.tooltips.json)
+--                        spec/TestBuilds/1.4/<private build> lv99 Spellblade.letools.tooltips.json)
 -- Cross-survey of all 105 altar+idol spec/1.4 builds (.tmp/altar_stats_*.csv):
 -- 56 builds saw at least one mainOutput stat shift; 11 saw WardPerSecond +1..+4.
 --

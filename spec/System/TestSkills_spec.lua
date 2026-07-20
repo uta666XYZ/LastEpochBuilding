@@ -53,7 +53,8 @@ describe("TestSkills #skills", function()
         build.skillsTab:SelSkill(1, "Runemaster 05c3 Runebolt Cold")
         runCallback("OnFrame")
         local castSpeed = 1 / build.calcsTab.mainEnv.player.mainSkill.activeEffect.grantedEffect.castTime
-        -- base cold damage 20, no extra mods, damageEffectiveness 1
+        -- base cold damage 20, no extra mods, damageEffectiveness 1.
+        -- 1.05 = inherent 5% base crit * 2x crit multi: CritEffect = 1 - 0.05 + 0.05*2.
         assert.are.equals(round(20 * 1.05 * castSpeed, 4), round(build.calcsTab.mainOutput.TotalDPS, 4))
     end)
 
@@ -71,7 +72,15 @@ describe("TestSkills #skills", function()
 
         runCallback("OnFrame")
 
-        assert.are.equals(31.02, round(build.calcsTab.mainOutput.TotalDPS, 2))
+        -- @leb-regression-guard:pure-dot-skill-modflag-dot
+        -- The item carries "20% increased Damage Over Time" ({ "Damage", ModFlag.Dot }).
+        -- Wandering Spirits is a PURE damage-over-time skill, so it must now receive that
+        -- increase: its damage cfg carries ModFlag.Dot (CalcActiveSkill, dot && !hit &&
+        -- !ailment). Previously the cfg lacked ModFlag.Dot, so the +20% DoT was silently
+        -- dropped and only the +20% Spell increase applied (the old baked 31.02). With both
+        -- increases the multiplier is (1 + 0.20 + 0.20) / (1 + 0.20) = 1.40/1.20 higher:
+        -- 31.02 * 1.40/1.20 = 36.18.
+        assert.are.equals(36.18, round(build.calcsTab.mainOutput.TotalDPS, 2))
     end)
 
     it("Test melee skill with weapon attack speed", function()

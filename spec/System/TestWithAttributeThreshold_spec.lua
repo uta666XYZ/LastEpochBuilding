@@ -3,7 +3,7 @@
 -- The effect applies in full once the player reaches N points of the attribute —
 -- it is NOT a per-N divisor.
 --
--- Establishing build: BgRrekaR lv100 Spellblade. Mage-91 "Transcendence" rank 6
+-- Establishing reference: see git log
 -- emits "+24 Additional Ward per Second with 60 Intelligence" via notScalingStats
 -- when node.alloc >= noScalingPointThreshold. Without parser support the tail
 -- " with 60 Intelligence " stayed as parseMod `extra`, and PassiveTree.lua:458

@@ -7,11 +7,11 @@
 -- in the display stat.
 --
 -- Pre-fix evidence: 7 G1-G6 canonical builds carrying ManaSpentGainedAsWard
--- (QDxZjPX8 lv95 Sorcerer +354.77, BZ37dR2l lv100 Sorcerer +105.46,
--- BgRrekOY lv82 Sorcerer +42.16, Bakbr2Ne lv86 Sorcerer +34.04,
--- oR6qaLp4 lv80 Spellblade +29.12, Qdz2yXLk lv100 Warlock +22.64,
--- o3Zlpkxd lv98 Necromancer +10.01) accounted for ≈ 598 of Σ|Δ| on
--- WardPerSecond. Game ground truth: ProtectionClass.Update RVA 0x234B8C0
+-- (<private build> lv95 Sorcerer +354.77, <private build> lv100 Sorcerer +105.46,
+-- BgRrekOY lv82 Sorcerer +42.16, <private build> lv86 Sorcerer +34.04,
+-- <private build> lv80 Spellblade +29.12, <private build> lv100 Warlock +22.64,
+-- <private build> lv98 Necromancer +10.01) accounted for ≈ 598 of Σ|Δ| on
+-- WardPerSecond. Game ground truth: ProtectionClass.Update datamined offset
 -- writes `wardRegen + wardRegenFromStats` from passive sources only;
 -- ManaSpentGainedAsWard fires via GainWard() on spell cast.
 --

@@ -2,7 +2,7 @@
 -- Locks the contract that LEB applies the affix display multiplier as
 -- (1 + base.affixEffectModifier) / (1 + mod.standardAffixEffectModifier),
 -- mirroring AffixList.Affix.standardAffixEffectModifier in the LE
--- IL2CPP dump (dump_v142, line 164779):
+-- datamined game source dump (dump_v142, line 164779):
 --
 --     "if this is 0.5, then an item with affix effect modifier of 0.5
 --      will have the stated values, and an item with affix effect
@@ -20,7 +20,7 @@
 --       subtraction: (1-0.33) - (-0.83) = 1.500
 --       division:    (1-0.33) / (1-0.83) = 3.941
 --     LE displays +3% per resist for affix 1070_0 on the
---     QkY53Rj6 Falconer build, matching division x 0.008 = 3.15%.
+--     <private build> Falconer build, matching division x 0.008 = 3.15%.
 --   - Class-Specific Idol enchants (specialAffixType=4,
 --     standardAEM=-0.33) on neutral bases (AEM=0):
 --       subtraction: 1.33 (off vs Maxroll)
@@ -29,7 +29,7 @@
 --     purely to compensate for the subtraction error on Solar Idol
 --     (affix 892), and is removed alongside this fix.
 --
--- Establishing build: QkY53Rj6 lv73 Falconer (Item 3, uniform -2 per
+-- Establishing reference: see git log
 -- resist drift; Heretical Large Shadow Idol corrupted-sealed
 -- 1070_0).
 

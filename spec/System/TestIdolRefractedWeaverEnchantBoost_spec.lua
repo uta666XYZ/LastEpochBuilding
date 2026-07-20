@@ -19,11 +19,11 @@
 --      IdolEnchantment, weaver→IdolWeaver, corrupted→Corrupted). Tier-
 --      specific entries (e.g. `897_4`) may instead carry the raw NUMERIC
 --      LE enum value (4 for IdolEnchantment). The clone-time routing in
---      `cloneWithAltarBoost` only matches the string form, so a tier-
+--      `cloneWithIdolBoosts` only matches the string form, so a tier-
 --      specific lookup silently routes to the "Standard" default and skips
 --      the weaver-enchant boost entirely.
 --
--- Triangulation case study: BxvJP3g1 lv99 Necromancer
+-- Triangulation case study: <private build> lv99 Necromancer
 --   Altar of Arctus property 4 = +46%, Heretical Large Immortal Idol with
 --   affix 897_4 "+10 Ward per Second" — LE/LETools display
 --   floor(10 × 1.46 + 0.5) = 15. Pre-fix LEB showed 10, producing
@@ -58,36 +58,35 @@ describe("IdolRefractedWeaverEnchantBoost", function()
             "ModParser must accept the bare 'effect of weaver enchantment affixes' variant (no 'increased')")
     end)
 
-    it("CalcSetup specialAffixType normalises numeric SpecialAffixType enum to its string form", function()
+    -- REPLACES (2026-07-16) "normalises numeric SpecialAffixType enum to its string
+    -- form". That test pinned a `satEnumToStr` coercion table whose only reason to
+    -- exist was a bug: Data.lua string-tagged the ModIdol _0 entries while ModItem
+    -- carried integers, so the two halves of the same affix family disagreed in type
+    -- and `== 6` never fired on an idol. Data.lua now tags integers, so there is no
+    -- coercion to pin -- the invariant worth locking is the ABSENCE of the string form.
+    -- See @leb-regression-guard:idol-special-affix-type-is-integer and
+    -- spec/System/TestIdolSpecialAffixTypeInteger_spec.lua (which proves the
+    -- section->integer mapping is lossless against ModItem).
+    it("CalcSetup compares specialAffixType as the raw LE enum integer, not a string tag", function()
         assert.is_not_nil(setupSrc, "must read CalcSetup.lua")
-        -- The numeric→string lookup table must exist and cover the four
-        -- enum values used at runtime (Standard=0, IdolEnchantment=4,
-        -- IdolWeaver=5, Corrupted=6). The string-tag routing branch in
-        -- scaleAffixList only matches "IdolEnchantment" / "IdolWeaver"
-        -- exactly, so a tier-specific entry carrying numeric 4 must be
-        -- coerced or the boost silently drops.
-        assert.is_truthy(string.find(setupSrc,
-            '%[0%]%s*=%s*"Standard"', 1, false),
-            "specialAffixType enum table must map 0 → Standard")
-        assert.is_truthy(string.find(setupSrc,
-            '%[4%]%s*=%s*"IdolEnchantment"', 1, false),
-            "specialAffixType enum table must map 4 → IdolEnchantment")
-        assert.is_truthy(string.find(setupSrc,
-            '%[5%]%s*=%s*"IdolWeaver"', 1, false),
-            "specialAffixType enum table must map 5 → IdolWeaver")
-        assert.is_truthy(string.find(setupSrc,
-            '%[6%]%s*=%s*"Corrupted"', 1, false),
-            "specialAffixType enum table must map 6 → Corrupted")
-        assert.is_truthy(string.find(setupSrc,
-            'if type%(sat%) == "number" then return satEnumToStr%[sat%]', 1, false),
-            "specialAffixType must coerce numeric LE enum values via satEnumToStr before returning")
+        assert.is_falsy(string.find(setupSrc, "satEnumToStr", 1, true),
+            "the numeric->string coercion table must be gone; Data.lua tags integers now")
+        for _, tag in ipairs({ "Standard", "IdolEnchantment", "IdolWeaver", "Corrupted" }) do
+            assert.is_falsy(string.find(setupSrc, 'sat%s*==%s*"' .. tag .. '"'),
+                "string-tag comparison `sat == \"" .. tag .. "\"` silently fails against "
+                .. "the integers ModItem carries -- that was the original bug")
+        end
+        assert.is_truthy(string.find(setupSrc, "return entry.specialAffixType or 0", 1, true),
+            "specialAffixType must return the raw enum integer (defaulting to Standard=0)")
     end)
 
     it("CalcSetup prefers the _0 entry for SpecialAffixType lookup (avoids tier-numeric leak)", function()
         assert.is_not_nil(setupSrc, "must read CalcSetup.lua")
-        -- The _0 entry is the only one guaranteed to carry the string
-        -- specialAffixType tag from Data.lua. Looking up the tier-specific
-        -- key first risks finding a numeric-tagged entry. Lock the
+        -- The _0 entry is the canonical idol-pool entry (the only tier ModIdol
+        -- actually stores); tier-specific keys resolve through flat's __index to
+        -- ModItem (guard idol-affix-tier-fallback). Both carry the same integer now,
+        -- so this is no longer load-bearing for correctness -- but the idol pool
+        -- remains the authority for idol-specific corrections, so lock the
         -- preference order: base("_0") first, tier fallback second.
         assert.is_truthy(string.find(setupSrc,
             'local entry = %(base and idolFlat%[base %.%. "_0"%]%) or idolFlat%[modId%]',

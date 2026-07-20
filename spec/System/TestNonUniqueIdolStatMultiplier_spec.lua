@@ -1,27 +1,6 @@
 -- @leb-regression-guard: non-unique-idol-stat-multiplier
--- Locks the contract that Reliquary Nest (unique relic, id=433, primordial
--- baseTypeID=22 subTypeID=63) translates its property 98
--- (`nonUniqueIdolStatModifier`, dump.cs offset 0x1C14) into a flat scale of
--- (1 + N/100) on every mod sourced from a non-unique idol item.
---
--- Three layers must agree:
---   1. ModParser specialModList parses BOTH the game tooltip text
---      "Stats on your Non-Unique Idols have N% increased Effect" AND the
---      LEB-internal "+N% Non-Unique Idol Stat Multiplier" form to a flat
---      Multiplier:NonUniqueIdolStatEffect BASE = N. Without parser support
---      the line resolves to {{}, "..."} (empty mod list + unparsed leftover)
---      and silently contributes nothing.
---   2. CalcSetup pre-scans every equipped item's modList summing those BASE
---      values into `nonUniqueIdolEffectPercent`, BEFORE the merge loop runs.
---   3. The merge loop multiplies `scale` by (1 + N/100) for items whose base
---      ends in " Idol" (Adorned/Grand/Huge/Humble/Large/Minor/Ornate/Small/
---      Stout) and whose rarity is not UNIQUE/SET. Idol Altar bases are
---      excluded (they are not idol items).
---
--- Establishing build: B7GrkJrK lv100 Lich/Reaper. Pre-fix Mana 1526, LE 1607.
--- 19 minor-idol Mana mods totalling ~153 base × (1 + 49/100) ≈ 228 closes
 -- the residual within range-rounding tolerance. See REGRESSION_GUARDS.md
--- "non-unique-idol-stat-multiplier".
+-- Validation provenance is retained in maintainer notes.
 
 describe("NonUniqueIdolStatMultiplier", function()
 

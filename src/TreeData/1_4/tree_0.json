@@ -10438,6 +10438,7 @@
       "masteryRequirement": 0,
       "stats": [
         " Base Physical Damage -> Cold",
+        " Base Poison Damage -> Cold",
         " Poison -> Frostbite Chance",
         " Freeze Chance"
       ],

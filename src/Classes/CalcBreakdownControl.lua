@@ -447,8 +447,6 @@ function CalcBreakdownClass:AddModSection(sectionData, modList)
 			row.sourceName = build.data.skills[row.mod.source:match("Skill:(.+)")].name
 		elseif sourceType == "Pantheon" then
 			row.sourceName = row.mod.source:match("Pantheon:(.+)")
-		elseif sourceType == "Spectre" then
-			row.sourceName = row.mod.source:match("Spectre:(.+)")
 		end
 
 		if row.mod.flags ~= 0 or row.mod.keywordFlags ~= 0 then
@@ -491,7 +489,16 @@ function CalcBreakdownClass:AddModSection(sectionData, modList)
 				elseif tag.type == "SkillName" then
 					desc = "Skill: "..(tag.skillNameList and table.concat(tag.skillNameList, "/") or tag.skillName)
 				elseif tag.type == "SkillId" then
-					desc = "Skill: "..build.data.skills[tag.skillId].name
+					-- skillIdList = multi-skill tag (tree-node-skill-rescope)
+					if tag.skillIdList then
+						local names = { }
+						for _, skillId in ipairs(tag.skillIdList) do
+							table.insert(names, build.data.skills[skillId] and build.data.skills[skillId].name or skillId)
+						end
+						desc = "Skill: "..table.concat(names, "/")
+					else
+						desc = "Skill: "..build.data.skills[tag.skillId].name
+					end
 				elseif tag.type == "SkillType" then
 					for name, type in pairs(SkillType) do
 						if type == tag.skillType then

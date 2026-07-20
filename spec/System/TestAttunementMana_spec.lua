@@ -1,7 +1,7 @@
 -- @leb-regression-guard: attunement-mana-per-point
 -- Diagnostic / regression guard for "Attunement grants +2 flat Mana per point".
--- Game source-of-truth: LE_datamining/extracted/formulas_verified.md §23.
--- Establishing context: Qqwv73q2 lv62 Warlock LETools Mana 269.31 vs LEB 175
+-- Game source-of-truth: datamined game source §23.
+-- Establishing context: <private build> lv62 Warlock LETools Mana 269.31 vs LEB 175
 -- (Δ=-94.31 == Att=47 * +2/pt, confirming Attunement contribution = 0).
 --
 -- The intrinsic +2 Mana PerStat:RawAtt mod is registered in CalcSetup.lua:735.

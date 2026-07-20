@@ -5,7 +5,7 @@
 -- CalcSetup.lua L1968-1975 ('Auto:Symbols of Hope'); LETools' static
 -- 'Health Regen' is the no-buff baseline.
 --
--- Establishing build (G3 aggregate, +71%):
+-- Establishing reference: see git log
 --   BGzxnRdY lv92 Void Knight  LET 37.63  LEB 64.5  Δ +26.87
 --     Sum BASE = 26.88; Sum INC = 40% (Sentinel-49) + 5 × 20% (Symbols of
 --     Hope per-stack) = 140%.  26.88 × 2.4 = 64.51 ✓ vs LET's 26.88 × 1.4
@@ -23,12 +23,16 @@ local function readFile(relPath)
     return text
 end
 
+local OptionalArtifact = dofile("../spec/OptionalArtifact.lua")
+local toolsIt = OptionalArtifact.gatedIt(it, pending, "spec/tools")
+
 describe("HealthRegenSymbolsOfHopeBuffParity", function()
     local diffPy
     local calcSetupText
 
     setup(function()
-        diffPy = readFile("spec/tools/diff_letools.py")
+        -- Validation provenance is retained in maintainer notes.
+        diffPy = OptionalArtifact.readOptional("spec/tools/diff_letools.py")
         calcSetupText = readFile("src/Modules/CalcSetup.lua")
     end)
 
@@ -39,13 +43,13 @@ describe("HealthRegenSymbolsOfHopeBuffParity", function()
         return dictStart, entryAt
     end
 
-    it("diff_letools.py has a KNOWN_SEMANTIC_GAPS entry for ('General','Health Regen')", function()
+    toolsIt("diff_letools.py has a KNOWN_SEMANTIC_GAPS entry for ('General','Health Regen')", function()
         local _, entryAt = findGapsEntry()
         assert.is_not_nil(entryAt,
             "KNOWN_SEMANTIC_GAPS must include ('General','Health Regen')")
     end)
 
-    it("the entry carries the named guard marker", function()
+    toolsIt("the entry carries the named guard marker", function()
         local _, entryAt = findGapsEntry()
         local before = diffPy:sub(math.max(1, entryAt - 400), entryAt)
         assert.is_truthy(
@@ -56,7 +60,7 @@ describe("HealthRegenSymbolsOfHopeBuffParity", function()
         )
     end)
 
-    it("gap text references 'Auto:Symbols of Hope' and the multiplierActiveSymbols knob", function()
+    toolsIt("gap text references 'Auto:Symbols of Hope' and the multiplierActiveSymbols knob", function()
         local _, entryAt = findGapsEntry()
         local block = diffPy:sub(entryAt, entryAt + 1200)
         assert.is_truthy(
