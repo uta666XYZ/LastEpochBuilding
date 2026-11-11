@@ -13,6 +13,15 @@ local dkjson = require "dkjson"
 
 local influenceInfo = itemLib.influenceInfo
 
+-- data[1] is the item's serialization version, independent of the outer
+-- formatVersion (still 2 in Maxroll's 1.5 responses). Version 6 expands the
+-- seed from two to four bytes; every field after it moves by two bytes.
+local function itemBaseOffset(d)
+    if d[1] == 2 then return 2 end
+    if d[1] == 6 then return 6 end
+    return 4 -- versions 3/5 use a two-byte seed
+end
+
 local ImportTabClass = newClass("ImportTab", "ControlHost", "Control", function(self, build)
     self.ControlHost()
     self.Control()
@@ -1780,7 +1789,7 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
     for _, itemData in pairsSortByKey(saveContent["savedItems"]) do
         local d = itemData["data"]
         if d then
-            local altarBase = (d[1] == 2) and 2 or 4
+            local altarBase = itemBaseOffset(d)
             if d[altarBase] == 41 then
                 char.altarName = altarSubTypeNames[d[altarBase + 1]]
                 break
@@ -1869,9 +1878,7 @@ function ImportTabClass:ReadJsonSaveData(saveFileContent)
                 ["inventoryId"] = itemData["containerID"],
             }
             local d = itemData["data"]
-            -- Format version 2 (older seasons) has no seed bytes, so all offsets shift by -2.
-            -- Format version 3/5 (current) has a 2-byte seed before baseTypeID.
-            local BASE = (d and d[1] == 2) and 2 or 4
+            local BASE = itemBaseOffset(d)
             local baseTypeID = d[BASE]
             local subTypeID = d[BASE + 1]
             if itemData["containerID"] == 29 then
